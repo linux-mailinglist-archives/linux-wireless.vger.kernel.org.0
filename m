@@ -2,61 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B632373CDF1
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jun 2023 04:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAA1F73CE72
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jun 2023 06:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230495AbjFYCJi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 24 Jun 2023 22:09:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39044 "EHLO
+        id S229968AbjFYElR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 25 Jun 2023 00:41:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229975AbjFYCJh (ORCPT
+        with ESMTP id S229611AbjFYElQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 24 Jun 2023 22:09:37 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBFEF10A;
-        Sat, 24 Jun 2023 19:09:35 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1b0138963ffso911207fac.0;
-        Sat, 24 Jun 2023 19:09:35 -0700 (PDT)
+        Sun, 25 Jun 2023 00:41:16 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8539137;
+        Sat, 24 Jun 2023 21:41:14 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1b0138963ffso1016672fac.0;
+        Sat, 24 Jun 2023 21:41:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687658974; x=1690250974;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lh5vypz3YW53PE432QKm5pLDH+RzD6gJnuf3ycT8kBM=;
-        b=OFoGU0c7ug6GC3e3f97q8TNEXtZEU2tV0ovmaqfB1UVr5cadds7wn/sEj38xRQ9ZZt
-         uXfuK9BEJgASt7hE9y5pMnkaSJ5zEhlsmi1qU+sLV81VYq7TmDvR82vuWwQZKQSLi7u+
-         IQYfe/lmeVTKC0ocFMXORVgg98+mpvYaJ2mIPxsmTSBOM3YUhTvayJgRn/bOvV/c+W4c
-         6OLXAsojqH3WbcnEPXUEV9AE+6udDzDPuFE/AD0sCVg00Z//V1vGCFDpwbjiy2Q5NYNt
-         h/aNoRpbQTPgP0Bc5F4UJvtnIodDX517NDdfD9U7SssgUtWcMeMP0uY07pM8MrNAdp3u
-         B2kQ==
+        d=gmail.com; s=20221208; t=1687668074; x=1690260074;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1B4lH9WeYTv33HNkRVZObp7asR+HnhMg6dQl8HhZ2qY=;
+        b=MMnqhoSXSLWLJfn5GfJIKP92DaK/FakNRAVS4oHMhcdVp319bbfgC72mCQ56ugPmpT
+         DS4FqwEX03Db/bCNvyQ0fswZ3OKXXUvET442ZZ5Hk+boT61bVEVxXdSMtpA0/wKcMnL+
+         oN/FeLQsYqWWnIP4I+YhZ1VghbAPnGirJMdONVrr/Gyi9ErJEAaej1iYCvnXQ6hiToR4
+         RBeIvnD0q0eaJYcaBxqn6GVPnFmzh9Y4w1T5pl5a1YLmkbV5D8ldUTQGVhNAnhbjKBav
+         YhWthSSeqS0nevcQTPhp77J2Ltsn/ZXuBi7S+ItSMQf3W4nTdcqJh94kexOZtAQmqIA6
+         I0bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687658974; x=1690250974;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Lh5vypz3YW53PE432QKm5pLDH+RzD6gJnuf3ycT8kBM=;
-        b=RHxBbadrDXapT0a4OXwB6KpkD4gDciLPbo8wfUf5DxphEP4IMKMw55o3TSn8koI1CA
-         k7/RvHlgnJiapRSeg3ls6BFSxl5T4fiLgVnH/0oND4wOP4OWFeTFgnLYsbrWf2i5RXtk
-         LGJxqY6JJAqNn/yOyLFJoNd/9enJl4Srj6uVvAvLXg59QmxwH+k3sgn6cKSnRWmkLu9K
-         xVcQdz24VZBoNBhzBk8ZVh5p27AwedAq40eNkhcTBynkfHLUZf9XyejLZVan5kjwls5K
-         DrGgcCS2/nMFvJ91itY0QjAFUSPHv0pz7NyJ1JGKoZNV4WAcIEb6HkWGJARbGZ/M/0JU
-         SUBg==
-X-Gm-Message-State: AC+VfDzuin1hbdSa370+wmz8Uc701GJu8S3uWHQKLLbdgjMZ3jUpMCyF
-        qgHNFcUqsEPikrkXVOEonMM=
-X-Google-Smtp-Source: ACHHUZ5cpncIv1MmRiaENYIsyx8Vg6TUbbCUoEFjdZHKq0Nba1YPmYrzkdKycLAKDiT+oMqM9j455Q==
-X-Received: by 2002:a05:6870:a54b:b0:19f:9495:95ff with SMTP id p11-20020a056870a54b00b0019f949595ffmr29262867oal.27.1687658973515;
-        Sat, 24 Jun 2023 19:09:33 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687668074; x=1690260074;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1B4lH9WeYTv33HNkRVZObp7asR+HnhMg6dQl8HhZ2qY=;
+        b=Pc/sHJ3oZy+J5TsS9JBotrkT7tN7grU7VwuDrmXnYrEGpmlkgFte9ZSjLpqas0vxC9
+         WnwaviX6ZFTs7iV4gavZfC+j50/tYhQ2ySg3ZDnqrCr3jYmUB74ofU0dXToBNNeJ0iLQ
+         9d/OhLR2Ntz5X9iGotH4+YGQWuUaVnhxQPWpaQBPdSk610pEgjtPoOv346EMgzKNSPLV
+         rixG8rcPAYGrc+9xdfs9xCH3WtSTHaZCtJ5WeTzut4i2c6QhudEzo5udF5ro8mlHimwC
+         iqyZ74FyrWjcBqFqnWsqa0PQXH9yrrAtBRNhsSySWRmg9aGb1QvPB954VFe5EMu9egHM
+         JvTg==
+X-Gm-Message-State: AC+VfDz7DEnr8RfmOij2+idMhBQT8qVhj0YMfapzzX093xDb49kNKzLu
+        ElAMkRpaLSC8F7C+1zdFOSYWkSatqx7wtg==
+X-Google-Smtp-Source: ACHHUZ72rJJVSWVBVO8GaJv7atxqNw1z/wt95NIVyxtaWXaXjGuxoQ1OGxMVqFnFFBqjXnHbioxRhA==
+X-Received: by 2002:a05:6870:6295:b0:18e:2b7e:a846 with SMTP id s21-20020a056870629500b0018e2b7ea846mr16655070oan.50.1687668074012;
+        Sat, 24 Jun 2023 21:41:14 -0700 (PDT)
 Received: from [192.168.1.128] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id u3-20020a056830118300b006b71d22be29sm1277248otq.18.2023.06.24.19.09.32
+        by smtp.gmail.com with ESMTPSA id bd6-20020a056870d78600b001ad21a705a8sm1925228oab.49.2023.06.24.21.41.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Jun 2023 19:09:33 -0700 (PDT)
+        Sat, 24 Jun 2023 21:41:13 -0700 (PDT)
 Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <7cd80eeb-baa9-37b7-fd8c-778f015177d4@lwfinger.net>
-Date:   Sat, 24 Jun 2023 21:09:31 -0500
+Message-ID: <69b98eb4-2c4e-fe75-90b4-4b08505a595a@lwfinger.net>
+Date:   Sat, 24 Jun 2023 23:41:11 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
+From:   Larry Finger <Larry.Finger@lwfinger.net>
 Subject: Re: Fwd: After kernel 6.3.7 or 6.3.8 b43 driver fails
 To:     Bagas Sanjaya <bagasdotme@gmail.com>,
         "Sardonimous ." <sardonimous@hotmail.com>,
@@ -74,7 +74,6 @@ References: <27829c69-515c-36a6-4beb-3210225f8936@gmail.com>
  <RO2P215MB193850DDADD38492BEC8CC2FA720A@RO2P215MB1938.LAMP215.PROD.OUTLOOK.COM>
  <a3bc5eb5-9639-8016-36ab-105abc8c0ca3@gmail.com>
 Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
 In-Reply-To: <a3bc5eb5-9639-8016-36ab-105abc8c0ca3@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -160,7 +159,7 @@ On 6/24/23 19:50, Bagas Sanjaya wrote:
 Sardonimous,
 
 The critical line is:
- > Jun 20 18:20:11 askasleikir kernel:  b43_pio_tx+0x373/0x390
+> Jun 20 18:20:11 askasleikir kernel:  b43_pio_tx+0x373/0x390
 
 I certainly have not used PIO for a long time. I expect that your MacBook Pro 
 should do DMA on the b43. Apple makes wierd hardware, but not likely that wierd.
@@ -170,9 +169,10 @@ Does dmesg offer any clues as to what is happening?
 If there is nothing shown in the log, you definitely need to do a proper 
 bisection from the mainline git tree to isolate the change that led to this failure.
 
+
+
+ADDED WITH EDIT: I looked at the code and b43 will not be built for any hardware 
+without DMA, thus it appears that adding "b43.pio=1" is the only way to get PIO 
+mode. Please check the output of dmesg for PIO messages.
+
 Larry
-
-
-Larry
-
-
