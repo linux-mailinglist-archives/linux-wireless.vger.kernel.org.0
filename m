@@ -2,150 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C113573DC70
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jun 2023 12:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2706C73DF33
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jun 2023 14:29:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230008AbjFZKsp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Jun 2023 06:48:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37410 "EHLO
+        id S230510AbjFZM3V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Jun 2023 08:29:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbjFZKsn (ORCPT
+        with ESMTP id S230208AbjFZM3D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Jun 2023 06:48:43 -0400
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2093.outbound.protection.outlook.com [40.107.215.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA935E71;
-        Mon, 26 Jun 2023 03:48:41 -0700 (PDT)
+        Mon, 26 Jun 2023 08:29:03 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2111.outbound.protection.outlook.com [40.107.237.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41FD6E74;
+        Mon, 26 Jun 2023 05:29:01 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VdaycFdC/4px/ECIJWX5GYgeskgfripXZjkKT7Q6rhTvbELV5UUcAawQwLg9ylDa6DbvL/c7oLaQ1yolZel0VNhejWtuRUY2Fx0a0tQjUlr/Ymg8I7YvVPlXAAmvk1YFGuHUF4DR34yDDezdbctkvFGibxqqb4w6kWODlT2AaLziL5AluTMxzg1BUeItExGufpALcBvNjal9TtI0dem2juqgbOA/uIfbTDL2mQLyD8EDeso6qW1ye07fF+idCM6z4n4Xaj/K+Xw6oVio7p5EdksTAmS56M9s757cTs3EC3B+xkZcQ/NCdTBljPKEiOs7QuKNZJmCz1sIA0r3lFUP/w==
+ b=c8Xpb28UZZsKDRP4iZCPgGAijADIV7BWOkfKeHZ36okHpsBcD6Yr+EGmqZJLQOlvBNzw3KybBy7sIQiRqPfUyEgefchkZ1DES0SW9060FfVGpYwen5ucbtGaGYGGO31oMHxF/uLTnppM5E81tgMzElg7eR5kVkXC+h8xl5lT+PG1ayBJhAOWQNCxgjzmYT9JU4CMDPZU+mEtdFzxU5jV7tiCAQ0egPT94dfz9WWAfCXdyg53X8TUWsoyqDRELRdJFQgRZZDD6V5/d4QyQRmtF/GgeHcmMw4e3LlZSk6dJ6QjvjgrZsk9384V0X4Ro7JI+U8bDauEiKnWn14ZbPa3Sg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lSx5Hz5kXmYQDsFKZao0/1OwnhSNkx3D3g3tBFd5Ndk=;
- b=ZjotoY9lKsUYziaIyp7ZzVIpROaVzYrlxrjFTR65PkZeCBQ1qDBoAdapbKcsNCdR/LQTQEUyXNz+yLebDwUbAymlZwAMxtAgCnVEdehKsLR5VhtJzz9SAFMHniW03F2CB6I38mx5jYnsFdu1k92jrX0G0NlBrHvHjjDob0++/98HCiZ3FcyGqUfTpoU8VQX5gu3ILnDpBqbmI/cumfTcMSFk3c4hwhykG3GIsYGH22TQNjZVB8FLWTowWumbMoQx3EpmDcs3iW1PXQuVW5N+ExbdXPEtcvSL7Lqhk5gzGS0FmkS8i6agj+wTG2zcojr/dyKmOxQ/YixsoebmWzNRgw==
+ bh=dfs98W25P9e0AM+z/+jB0GJvVNgLfhFgFxfirOH9+/w=;
+ b=YLDhbmD++XFBU4VsUfRiwhvf1gbxZYEJ9ZgmrzMSJZ30jGAQsKkKlzu5PW/2sgAYhciPIEcawELomtWHm6DIX+u+eH9MV8fp5tVNfyG9bij9E/AWDz6usxQS8S6WrPG5XRUZCsePk844Jfdyv/OJb6mWGqn8oI+GYdYzEnbw1WG/Bu+08jWwKTglFPnMC+Iwryey+xeGew4EaZw+K7RWCvj+WwZYTfeGD7cW8/UHiU8cbmkkGAPvFJrFbak2pObmpAi2RyL8mwUTKPAJJNxNNgFkYhJJNPJn6z7C1H7fc3j6uppv2JEB/DXlitCsJ90FLFexCFPtLiLPE2UvQ2RiGg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lSx5Hz5kXmYQDsFKZao0/1OwnhSNkx3D3g3tBFd5Ndk=;
- b=DadNSKQ99goBWbccwuZXGE2Bv0JzodRMdD6ikQ3AZ2gKj8Ihq0LX9h29zJKpDLK6Yj/LIN2sMvvyr+Bff08O0+rl9CKtmPU1SJsSONg8mgVkwyK7Y65SODEIgTM2h+kzKuww/QNWpGbsDbgUV34A+b55AfsQsSBdLXjfz2zo5WrP4uvba8U/Tjhl24SEMrd8O7jU7yJu0KFiuigicuZU57uFJcQ69XwIIA+qUK9T0w15y+VwUQ6psYgA5qtS56oSzjAVJHVxw5rtUYRvS5YEN9gyjeH4V92Vo2yeNVb3lo6yvA/8+oDS/r7bzRSU48/UXFuwPvI3mZkgEAUeTmPB4A==
+ bh=dfs98W25P9e0AM+z/+jB0GJvVNgLfhFgFxfirOH9+/w=;
+ b=q4e/slV0tAiniRd6WEnqrpbXn9Gq5tPFXVGSwN/14SQq3HxIk951ePimT5k3XmNVTsaVPMuVbYrverWqE7GKGKbejal63NW8x7HXwNO1bR6ChOhz+jVZH/cSZHaosEG9UL8jOa+Zt6W8UhHO7b3lQ+KaaxkdMCVF+YtiWE7MNcw=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from PUZPR06MB5936.apcprd06.prod.outlook.com (2603:1096:301:11d::13)
- by SI2PR06MB4233.apcprd06.prod.outlook.com (2603:1096:4:156::10) with
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by PH0PR13MB6153.namprd13.prod.outlook.com (2603:10b6:510:297::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Mon, 26 Jun
- 2023 10:48:38 +0000
-Received: from PUZPR06MB5936.apcprd06.prod.outlook.com
- ([fe80::adc0:c22:ffae:227b]) by PUZPR06MB5936.apcprd06.prod.outlook.com
- ([fe80::adc0:c22:ffae:227b%6]) with mapi id 15.20.6500.045; Mon, 26 Jun 2023
- 10:48:37 +0000
-From:   You Kangren <youkangren@vivo.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org (open list:MAC80211),
-        netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
-        linux-kernel@vger.kernel.org (open list)
-Cc:     opensource.kernel@vivo.com, youkangren@vivo.com
-Subject: [PATCH] =?UTF-8?q?wifi=EF=BC=9Amac80211:=20Replace=20the=20ternar?= =?UTF-8?q?y=20conditional=20operator=20with=20max()?=
-Date:   Mon, 26 Jun 2023 18:48:29 +0800
-Message-Id: <20230626104829.1896-1-youkangren@vivo.com>
-X-Mailer: git-send-email 2.39.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR02CA0130.apcprd02.prod.outlook.com
- (2603:1096:4:188::8) To PUZPR06MB5936.apcprd06.prod.outlook.com
- (2603:1096:301:11d::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Mon, 26 Jun
+ 2023 12:28:58 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::eb8f:e482:76e0:fe6e]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::eb8f:e482:76e0:fe6e%5]) with mapi id 15.20.6521.023; Mon, 26 Jun 2023
+ 12:28:58 +0000
+Date:   Mon, 26 Jun 2023 14:28:51 +0200
+From:   Simon Horman <simon.horman@corigine.com>
+To:     You Kangren <youkangren@vivo.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "open list:RAYLINK/WEBGEAR 802.11 WIRELESS LAN DRIVER" 
+        <linux-wireless@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        opensource.kernel@vivo.com
+Subject: Re: [PATCH] wifi: ray_cs: Replace the ternary conditional operator
+ with min()
+Message-ID: <ZJmEg5Jw4e9KZVfA@corigine.com>
+References: <20230626093504.1325-1-youkangren@vivo.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230626093504.1325-1-youkangren@vivo.com>
+X-ClientProxiedBy: AM0PR02CA0096.eurprd02.prod.outlook.com
+ (2603:10a6:208:154::37) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PUZPR06MB5936:EE_|SI2PR06MB4233:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ddd5bad-0cae-4757-5f8f-08db7632e583
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|PH0PR13MB6153:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8144cd94-786e-439e-e614-08db7640ea10
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 8ygIEYPYrZGRAfT4zRkgdoqcf1dY37o/MSehLpLWMtRv9+e5uEQH2cBPN541E29uLAmalNkxmAeecBadToTq4P/a9TsFffBkSzWIkzlM1bIhRPDmaf5J+NtCx7LKULBIp7zGaGtFux870wPUxUA8F7ajaQu7rOEY/v+vdRWKRQxT6vRsc8rIQNhh0SoLSs99vOn5tDd98+skjxj1+/uXqV+ip01gIqYLjiMYrfr9SLn4cmi26ehrM2foO6ipI4mFEWO7Q2Jt3zJbiKIGpkbDWcQQkNDSnR0RtUwkmSp86eru76wpWEkFkhy5XMge70EqFxV8oDzfEe7/K78IT+80S1XdFq8KF8EjFlY9FjyAkRv3rPjTSzMD6t3KD4vTFfwb0QmcwO8Sb8Kbm2wbZuHsmlpSBY3sje49SCfiKxQ/wpl8NVcO9ehHdm+gWaFHC/iAZ6h8GvJhy4jie4GHZrylF7N3RdPs2LChl16oaX7EU7naPi2jnodH6yauw3me/PXcqt4h/X2ONueCRg/KUjOJTrFCaCXomxX7xDRugo3E4graXwjtWLit++PYK3Mpr9kyzL9KZfp5kSJGqm2G8RNrAwn+k32bOH8PDGMuPqIIQ32weYbYDahuyz9QbN1yhJAP
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PUZPR06MB5936.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(39860400002)(396003)(376002)(366004)(451199021)(107886003)(6666004)(2616005)(52116002)(6486002)(83380400001)(110136005)(26005)(6512007)(1076003)(6506007)(186003)(2906002)(4744005)(478600001)(5660300002)(36756003)(38350700002)(38100700002)(66946007)(4326008)(316002)(8936002)(41300700001)(86362001)(66556008)(66476007);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: gnbpmBCzng4DGK9DCrCkomsUsz0Iol1N8LXpEFNNoC8Rw8yzuMR5PIgw8W6B6Et832HdejN8vWOVfKL+JWINVNGg5KdhGt+X3C5dfdkyKlEK6Ty24wKgoqlyCCLMJMlNiclAC/atGxQMNzISYcoamXEZzoBOAvEkpL/VZDdYGElGm01+CCE3CyTwKM+eO4rfT037K3ULP/fwZUw8SZMZmSsO3ibdTR1OMS6Xl6XpKo2caCw6JJMVTseKPsrKRYIrTXhB9YpbAHnDyKxipVu8g78m7AksM7dcYdIGKtbxWOL9pYU69VtgIVyG7aKRs7L5GPrlcFOTOf9ddxHUC77kIU9IDiAx+F8jrXmJVikj6ozx7kGRgPyqFQblJzS2OCnKxL9S5SfWUujXTP+yK24J2bgZYWEB/ZqVUHWsQmqEyrtHrGUZmAV6IyDEMJ88fG2dl/uJl67ZoYBM1OuNGPfSwlTCN1BrE6u3sdeD86ojnuSWNGOVfzO4Bzl8F7mIMrsjUoBn9dIqF+plu/JWzCddji6PLAXPPmwz5IEWJ/5gSzotiCOMlES5vU7GZ4c751bXCvqQ2FXHIfgcCuqW7vbeDZsVfDYXP6xc6olWvwOwp6g=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39830400003)(366004)(376002)(136003)(346002)(396003)(451199021)(2906002)(6486002)(6666004)(38100700002)(2616005)(83380400001)(6512007)(6506007)(186003)(41300700001)(86362001)(54906003)(478600001)(66946007)(66556008)(66476007)(316002)(4326008)(6916009)(8936002)(8676002)(5660300002)(36756003)(44832011);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b3ROam5Pem5NQURmNnIrYnNjMkpweXg2MGZzMENYdU1wK1ZKRDdHdkZYZ2hs?=
- =?utf-8?B?aTYzLzQ4K3RPR2IrTnhiaXJNOXJTNnQvVC9RWm8xK2xNQzZQUGZNV1RLLzBW?=
- =?utf-8?B?dFhXVGVkNE9QWWNwRk1SWEF6K3JSajg3RUFKQkNjdGVsMFlUajNERm1lMGxQ?=
- =?utf-8?B?UWlCOTQ5eVpabkE3MXNoamhuM3BibHJKM2xLbGtPYmR1Nktyb2lnRU85MkFs?=
- =?utf-8?B?MnRtdWgwSjVyZzNneENCYXppMDViMHhJb25qTVFqWmpqNUdsUUlwNXhMOGZJ?=
- =?utf-8?B?WElFbysxdFZkSXJjL2ZDTHU1SkZadG1mTTE2NGs0dWJvN2xXcno5UERqNGo3?=
- =?utf-8?B?YnI2VDJwR211R0VnelgrZ1NsZi9xWTBUMXFMRXY1V2FDOTZmU3M5NEhYM2ZX?=
- =?utf-8?B?Y1B0ZW84R3VNZThlRUNhUzFDRlkrYTUyR3lZMjFVbllHT3pFckNJb0hSY09r?=
- =?utf-8?B?ZkR5c21CNHl2T3Uxbm1RclQ2a1BZYUlSKzFQOVZ3b0U5UG9Oby9XemlNbGZN?=
- =?utf-8?B?RGRNOHN4ejJSeHVvSUJmYjRMMlZqM3NLQjluZnVmRFh3WWx0eDQ5L293a1d3?=
- =?utf-8?B?YlJGVkNtRlZtZWRrSHNuNEQ2S1ZDRzVRQyt2RFVOTlU4dmx5ZmlvbTRWZnp0?=
- =?utf-8?B?bVVMckVqQk4xTVd0bzFQajhXUnhFWnJqRDN5UTZzY0NGdEwySittMXM1T0Jo?=
- =?utf-8?B?THFWTmNCckJDV05oeDdOVkdXZ2dFeXJpR09qblFzeVpxQVBIMHpOOXdHK2VI?=
- =?utf-8?B?ak9IWGlnR0hLRHptVElIS21ubDlJcXhrSWFwTVRIRUFvRWttRCsyOERQVmhk?=
- =?utf-8?B?Z2x2Mkk0MlJLUjdGZzA2a2theStRcGxpcUozbXZxeHNnN3BOUWFyZGlzQ05L?=
- =?utf-8?B?KzFVYWxuM0NvZ0RiN3FlL2oyUjBuNy9hRko0N0tkelhEc3lQaGwvTHZsWVhr?=
- =?utf-8?B?ejhrR1RLcGtqWTRnSk5JamFGUFZhUUh2SzRSRG5nK3BzQ0VWWVB5THVYeTRE?=
- =?utf-8?B?M0hMS3JuOHV1cTRubGJMZnZxcmZveGhPek95S20xMlovdjc2N2Rwa1dTamdh?=
- =?utf-8?B?ZWpBU0FHTDd5VnZBd2hLVzJiTitkaUF3Wkp3Q3lTL1Q2SExKQ2xXV0VpQ0VY?=
- =?utf-8?B?TUg4N0xXVTJXbmdXSGU2MElONHVISXpBZFJ6eHN0Y3VvS3RvckdUSGJZZGRF?=
- =?utf-8?B?dnJCd1YrNVR2ZENzejVGR0NCYXUxYXpXRDVPM1NxUkVtclFxT25RVVVWTnln?=
- =?utf-8?B?bEQxMDIzVThWZGg3ZDZHcGtGcVpvdWxudnZnMUNJOSswd2IreTArOHZYR2FC?=
- =?utf-8?B?REFZdnJkYnhPcExBMEFsWTdlMStJRklZUit0dGpmdjlkY2wxcXIzMFF1TzVP?=
- =?utf-8?B?enFjL2ZwNFZoSzZpZzdkYUlEWURlS3ZERWl4MHYycnVaVkdncG5ldGxaL1Vu?=
- =?utf-8?B?SWFSQmppWlFwUnNMZ0tBQVNwZVUxWXFwdlUyVGtzNFBvUlFsdDVNc2J5YVJI?=
- =?utf-8?B?d2djWHJ5TWM5dmRHUC9RbkQ5djNPa2ZmNTVGL2ZWelVtMTkyQkFTMjNQNVpy?=
- =?utf-8?B?OGRnZmpJSUVRMnUrVm1vU3NhcTV5bE42bjVIekNyZ254VWhSQUk0Q2lCN0p6?=
- =?utf-8?B?VjE5Vi9qUmhKamhZK05iK1VMcWc4aTFoMjROckE3Q0l1Wm82TERLVnJ4eGhN?=
- =?utf-8?B?aWZVVEJXczh3Z2FsN3lrS3pvK1B0ZDJxMVV0RHNaL1RadWh6aGFOM3VLcnBm?=
- =?utf-8?B?L3FnMnhqR3p4a3o3d2loY2RsWjJ5aFBQaENpODFFT25pbEQzd0k5cm0yOHdr?=
- =?utf-8?B?eEQxQjRKOGNjQ3FQaXRmaWtGalJ4VklMWWRVK2c2YmVDdEdocmR3YVgrWjQv?=
- =?utf-8?B?cmJxMmZ1dHlXVkswV0dubURBampzcW9KQlcwM0tyWTM2YlV5MXY3YmJVMHhR?=
- =?utf-8?B?UzQranMzOVlQdXZvTTRjYTVpTGFQa2lUVnNKREhVR0g2ZTFJNFYzRE02Tkxz?=
- =?utf-8?B?ZVZTa3J6RHljOWluQkFSR0daS2ZTbWF1WHNQS21xRys5blNpK3orcWx3S3ls?=
- =?utf-8?B?bGZZaWQ3bTRjZFFvb3dKeHdjdVRjT3JKNXVwWlJXa1ZhUVdLZzlaaXI2T093?=
- =?utf-8?Q?1po5v2hB9ZLAqVcynVnCQYqoP?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ddd5bad-0cae-4757-5f8f-08db7632e583
-X-MS-Exchange-CrossTenant-AuthSource: PUZPR06MB5936.apcprd06.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+jExva4blS2zNaO8FRC4GnNm0TMdZsaCp4WLbEtKnSbU7eSP5vS+Wqneir6P?=
+ =?us-ascii?Q?7rIGJlKZTUDcUN5Frlpest4kNIQxKAJIvXtk7DwTey0N5OI8aTzJzvz29oO4?=
+ =?us-ascii?Q?FQ4x7qHUEdr/Xd6Lcz5Z0PXVDAktBeRMS8TQ/z8M0Boa5W7E/pKWhYgLLnUc?=
+ =?us-ascii?Q?EmqEXilFP0Uds8OcE6R44pD9pnpgsEb8vbvW+fWAWRHDzNwnjJmpcoTbQeg1?=
+ =?us-ascii?Q?t6Mo9RbcZl9Fz7cCd6W6yWlcHk0D/8xWGVOfOqzxU/bs36hg/DZO2eRUK0ca?=
+ =?us-ascii?Q?VF65BG9gNzX/5vLyHNeuhyz3XPDfaNSzSt578tExE5B0w5+2nYjVz3FSG8n3?=
+ =?us-ascii?Q?u2MviDG9JLmfgXoXN7veyq5hbN1bp2QVM1n1kcELG0v/WhFOqds3qlKSpeXF?=
+ =?us-ascii?Q?veLnojxnAjODHh8I7db71WZnrypUTs76ccsgolgIJfQsoHBQBFY5UIMK8tm9?=
+ =?us-ascii?Q?l27AfNcIcIE7vCtEeP2uOp6fBl7EbmM62vIzQBKajsAApI23dT4h83LDgU0n?=
+ =?us-ascii?Q?+aqflYw5AoS1jKfEPhCcU5aQC5EDao22qx7eN/w+fpQcsbAW5d5Brl+LJzk0?=
+ =?us-ascii?Q?joT1Qb5N+YkNTKKFSTHyMTAloESzav2sa+CSoTsTu5eBamvvSJlH5cSy+hEK?=
+ =?us-ascii?Q?GHo2hgVSyCZthOwXQnf1k/mhO4nziyvTFtZT21fDQZRKf+9FZ38fiR7dCLJn?=
+ =?us-ascii?Q?ciNdc8KlSOVfvQ7kT96ue727ehtaq7U2KtsyY0A1hG1Dc9+Vfh1TEOOqtedP?=
+ =?us-ascii?Q?MZ7uGaZC8D9KkXmXIVA9JzwqO3DErU2/+SVxJdew4WWgJih+D/ZQ4NkuegPd?=
+ =?us-ascii?Q?Ls48Oy27QW4ghl8iCY5d13Ao1WJdwO8c2xiR89LUetLYNYme7U8AZTLP9pwO?=
+ =?us-ascii?Q?OoS6gLUBPZCl8V9KwHmMWt9VpTbUl+bkDI+MIJsO6oEYnVhGwWlWbbCExwAW?=
+ =?us-ascii?Q?ttnN5c7F7LzJ/dxJYtC8UC5yitaPn7z4qfaKngiLJXNmqqlXp4ti2GxTJo0z?=
+ =?us-ascii?Q?N/nW2cAe98VouSINQk82wNFwg9TiM1mqxSiEXyFhyb9HuxQOX0UiJe6BfFkB?=
+ =?us-ascii?Q?wxFmkdw3iEXeovN0o1fRXBDL9IPRsburNesC6vCRLEQb4xuBgDtCa0jsPIvq?=
+ =?us-ascii?Q?EOZ2BRR5k2q473L9+e5xsHAB4hC6ZPK4s5ySIcQA9+83Zzh5NqgItMM+8kYp?=
+ =?us-ascii?Q?B/GRqjVT8ANe0Sp7b5cLfhaXyrOGYbKBJtOLttLR2ydfr4mxAlVl5bb6biio?=
+ =?us-ascii?Q?zFkfyzJ8COJf0TbjXrifC96brJk9cwVZIcted5kEqUnlzlvC3+INEQq5t4+o?=
+ =?us-ascii?Q?uAMhHAe+1Rg76UQPXS5lNLOeSYBmxRuyPBgTH0Y43I3gZwISkcPWELvABX2n?=
+ =?us-ascii?Q?fDQdcoafhK/WtdByWVw6ZJlSJtcVtZ3DCTkNSDrr2gvUg8LVE5cTLlBxubUn?=
+ =?us-ascii?Q?0/pTI67vviEsLyjrIig8/Yeerkd1XgPvEGmYQad4UWMYUE94/3JECGZ44356?=
+ =?us-ascii?Q?0C4XjMGC0OXhW29w0MaawEeVlW5wxeRfl+OPp9esLFre6w1w8XADwo9c2usw?=
+ =?us-ascii?Q?A/iXTfrMLahOX/t+Qk0kv0HL+Em9gY4O9rAPlEmsC2C/+ClVZT7oUkHlOmNs?=
+ =?us-ascii?Q?MkyyGHchjULRu1jwZ7SU+p8XG1vsj2tc47ob2mCMAHN/Q/HwCRJfRsSjwFgI?=
+ =?us-ascii?Q?PMLXgQ=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8144cd94-786e-439e-e614-08db7640ea10
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 10:48:37.7157
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 12:28:58.1402
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XGQvE8JIML2hz1cewQUOexC2ptuQTVX0dMYiXNa+kXTE9IomO89nK4VvGD0nN22Cm5CqKo4M5zxk8uIrMxM/Ng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR06MB4233
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: AJTWvU40mHjsvIfjkTC+gc1dwXW9lOF11+qkUFQSW4OYr4rZ3HPQJX+MwQcjEwm5Ijx2nRrzO4J2SzzPlTvg106j0waQVkF2P6gW3vkDO60=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR13MB6153
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Replace the ternary conditional operator with max() to make the code clean
+On Mon, Jun 26, 2023 at 05:35:02PM +0800, You Kangren wrote:
+> Replace the ternary conditional operator with min() to make the code clean
+> 
+> Signed-off-by: You Kangren <youkangren@vivo.com>
+> ---
+>  drivers/net/wireless/legacy/ray_cs.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/legacy/ray_cs.c b/drivers/net/wireless/legacy/ray_cs.c
+> index 8ace797ce951..96f34d90f601 100644
+> --- a/drivers/net/wireless/legacy/ray_cs.c
+> +++ b/drivers/net/wireless/legacy/ray_cs.c
+> @@ -2086,8 +2086,7 @@ static void ray_rx(struct net_device *dev, ray_dev_t *local,
+>                         rx_data(dev, prcs, pkt_addr, rx_len);
+> 
+>                 copy_from_rx_buff(local, (UCHAR *) &local->last_bcn, pkt_addr,
+> -                                 rx_len < sizeof(struct beacon_rx) ?
+> -                                 rx_len : sizeof(struct beacon_rx));
+> +                                 min(rx_len, sizeof(struct beacon_rx));
 
-Signed-off-by: You Kangren <youkangren@vivo.com>
----
- net/mac80211/tdls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi You Kangren,
 
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index a4af3b7675ef..9f8b0842a616 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -946,7 +946,7 @@ ieee80211_tdls_build_mgmt_packet_data(struct ieee80211_sub_if_data *sdata,
- 	int ret;
- 	struct ieee80211_link_data *link;
- 
--	link_id = link_id >= 0 ? link_id : 0;
-+	link_id = max(link_id, 0);
- 	rcu_read_lock();
- 	link = rcu_dereference(sdata->link[link_id]);
- 	if (WARN_ON(!link))
--- 
-2.39.0
+I like where you are going with this patch.
+But unfortunately using min() here causes an x86_64 allmodconfig W=1 build
+to fail with both gcc-12 and clang-16.
+
+Perhaps min_t() would be more appropriate?
+
+GCC 12.3.0 says:
+
+In file included from ./include/linux/kernel.h:27,
+                 from ./arch/x86/include/asm/percpu.h:27,
+                 from ./arch/x86/include/asm/nospec-branch.h:14,
+                 from ./arch/x86/include/asm/paravirt_types.h:27,
+                 from ./arch/x86/include/asm/ptrace.h:97,
+                 from ./arch/x86/include/asm/math_emu.h:5,
+                 from ./arch/x86/include/asm/processor.h:13,
+                 from ./arch/x86/include/asm/timex.h:5,
+                 from ./include/linux/timex.h:67,
+                 from ./include/linux/time32.h:13,
+                 from ./include/linux/time.h:60,
+                 from ./include/linux/stat.h:19,
+                 from ./include/linux/module.h:13,
+                 from drivers/net/wireless/legacy/ray_cs.c:20:
+drivers/net/wireless/legacy/ray_cs.c: In function 'ray_rx':
+./include/linux/minmax.h:20:35: warning: comparison of distinct pointer types lacks a cast
+   20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+      |                                   ^~
+./include/linux/minmax.h:26:18: note: in expansion of macro '__typecheck'
+   26 |                 (__typecheck(x, y) && __no_side_effects(x, y))
+      |                  ^~~~~~~~~~~
+./include/linux/minmax.h:36:31: note: in expansion of macro '__safe_cmp'
+   36 |         __builtin_choose_expr(__safe_cmp(x, y), \
+      |                               ^~~~~~~~~~
+./include/linux/minmax.h:67:25: note: in expansion of macro '__careful_cmp'
+   67 | #define min(x, y)       __careful_cmp(x, y, <)
+      |                         ^~~~~~~~~~~~~
+drivers/net/wireless/legacy/ray_cs.c:2089:35: note: in expansion of macro 'min'
+ 2089 |                                   min(rx_len, sizeof(struct beacon_rx));
+      |                                   ^~~
+drivers/net/wireless/legacy/ray_cs.c:2089:72: error: expected ')' before ';' token
+ 2089 |                                   min(rx_len, sizeof(struct beacon_rx));
+      |                                                                        ^
+drivers/net/wireless/legacy/ray_cs.c:2088:34: note: to match this '('
+ 2088 |                 copy_from_rx_buff(local, (UCHAR *) &local->last_bcn, pkt_addr,
+      |                                  ^
+drivers/net/wireless/legacy/ray_cs.c:2098:23: error: expected ';' before '}' token
+ 2098 |                 break;
+      |                       ^
+      |                       ;
+ 2099 |         }
+      |         ~   
 
