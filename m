@@ -2,60 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F537404EA
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jun 2023 22:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C796E7405F2
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jun 2023 23:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231327AbjF0UZX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jun 2023 16:25:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45062 "EHLO
+        id S229618AbjF0VzP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jun 2023 17:55:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbjF0UZV (ORCPT
+        with ESMTP id S229468AbjF0VzM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jun 2023 16:25:21 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674CD212D;
-        Tue, 27 Jun 2023 13:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687897520; x=1719433520;
-  h=date:from:to:cc:subject:message-id;
-  bh=CZtQQkjwBTjIsN2Lz5HDJSCfMhdSSF8YauQRpgSzeq0=;
-  b=faBD1Te1bDoAjdR0cnZb6Xy4D+w+BP2aaX1FwVqOqSuf33R9JvzW5Pqv
-   JmpolW7wdnF2GdFiPUMKcx6fpc0MWktOPaEJQp9OTiZY6coGCa5daehWD
-   n2iyjYzqWncaUfqzjTvVQquXxPIffTdorl2MXQbmT9R/RmdDNa0ObMCy/
-   bC7fNxmVrd/PgClOsODLurqIGyjFtQEUdofJ4kzu4ab8apFV0OP+T7w93
-   x8q7GiEFZ7O1raDPS+2ZoHbcHkJb6Is8qw+fuXq2QtoMKOewBTjZY9XYv
-   y/kI5Z0I+cAXMLeI/mS+a17R6y7r4bkM4Kd4FHjSvfJZ4fQywVOEYZ9NL
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="365129100"
-X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
-   d="scan'208";a="365129100"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2023 13:25:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="716669046"
-X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
-   d="scan'208";a="716669046"
-Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 27 Jun 2023 13:25:17 -0700
-Received: from kbuild by 783282924a45 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qEFFU-000CBp-2F;
-        Tue, 27 Jun 2023 20:25:16 +0000
-Date:   Wed, 28 Jun 2023 04:24:18 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Linux Memory Management List <linux-mm@kvack.org>,
-        intel-gfx@lists.freedesktop.org, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: [linux-next:master] BUILD REGRESSION
- 53cdf865f90ba922a854c65ed05b519f9d728424
-Message-ID: <202306280406.l3OXp90D-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        Tue, 27 Jun 2023 17:55:12 -0400
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F564198
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jun 2023 14:55:10 -0700 (PDT)
+Date:   Tue, 27 Jun 2023 21:55:00 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1687902905; x=1688162105;
+        bh=olCNpm/B/IOvQlREF6Q6bMkATyN3ia7EIKann4/rzPo=;
+        h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=N9ND1TqW/SKzSrK+BTbnO6MUBahq+2vwv9OsCEBDnJ4/XphcvVrqTEKaMOZBrX64W
+         fE5oADUVnXmnwEZYjCT7QlWuEbTFgnJxm+cv8IMipjyF08LMAppssFYeEUxrrsbb+8
+         pizuVHEBPOeow9eT8AbUUM7VYrOPCX9oIYofFdaQEh13fCgM5YjF9iFSFgP1FJSkMN
+         We4l89pKiVKhvztiR4lqKWp1Sw9u/EGL1UdQvYkSzgtTg2XrA+aj1kjaGyjk5hYIXW
+         PGsK98nimGX9JvLMJUV5JohrueFgsKANSiA6v0rUXavpOm8pvtGQf/MqwC2Z0S1Dbm
+         i+JIjlHDpHjxg==
+To:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>
+From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Subject: Re: iwlwifi: AX201 misdetected as AX101
+Message-ID: <FFsiCdZPcJ2FItvpkX6E-0LT-gc1m-7JdRKTZ0NB9s7AmhtFt09wmR8fItdeT5xaYybsKsC_cjXuh5i_V97rgq4fJgKOmBmKytjCwSKlnAU=@protonmail.com>
+In-Reply-To: <gAwMzXEPlQZUgbc6n3yYY2soROKl4-D_JfWwoHW8CMx-LDkDEeAlwcyjOMy767W3eEVxS-e7oEihVh1PNHT-_iznSKneJjW0vu0PN7aQ9K8=@protonmail.com>
+References: <gAwMzXEPlQZUgbc6n3yYY2soROKl4-D_JfWwoHW8CMx-LDkDEeAlwcyjOMy767W3eEVxS-e7oEihVh1PNHT-_iznSKneJjW0vu0PN7aQ9K8=@protonmail.com>
+Feedback-ID: 20568564:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,229 +50,141 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 53cdf865f90ba922a854c65ed05b519f9d728424  Add linux-next specific files for 20230627
+Hi again,
 
-Error/Warning reports:
 
-https://lore.kernel.org/oe-kbuild-all/202306122223.HHER4zOo-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202306212119.fBNByIyn-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202306260401.qZlYQpV2-lkp@intel.com
+2023. m=C3=A1jus 26., p=C3=A9ntek 19:55 keltez=C3=A9ssel, Barnab=C3=A1s P=
+=C5=91cze <pobrn@protonmail.com> =C3=ADrta:
 
-Error/Warning: (recently discovered and may have been fixed)
+> Hi all,
+>=20
+> I have an Acer Aspire A315-58 laptop[0], which, according to lspci has th=
+e following intel wireless chip:
+>=20
+>    Device:=0900:14.3
+>     Class:=09Network controller [0280]
+>    Vendor:=09Intel Corporation [8086]
+>    Device:=09Wi-Fi 6 AX201 [a0f0]
+>   SVendor:=09Intel Corporation [8086]
+>   SDevice:=09Wi-Fi 6 AX201 [0244]
+>       Rev:=0920
+>    ProgIf:=0900
+>    Driver:=09iwlwifi
+>    Module:=09iwlwifi
+>=20
+> However, in the kernel message buffer, the following message is written:
+>=20
+>   [    3.633490] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX101, R=
+EV=3D0x351
+>=20
+> Also, this chip did not work with the 6.3.3 Arch Linux kernel, the driver=
+ loaded the
+> `QuZ-a0-hr-b0-74.ucode` firmware:
+>=20
+>   [    6.516505] iwlwifi 0000:00:14.3: WRT: Collecting data: ini trigger =
+13 fired (delay=3D0ms).
+>   [    6.517615] iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
+>   [    6.517616] iwlwifi 0000:00:14.3: Transport status: 0x0000004A, vali=
+d: 6
+>   [    6.517617] iwlwifi 0000:00:14.3: Loaded firmware version: 74.a5e958=
+8b.0 QuZ-a0-hr-b0-74.ucode
+>   [    6.517619] iwlwifi 0000:00:14.3: 0x00000084 | NMI_INTERRUPT_UNKNOWN
+>   ...
+>   [    6.861510] iwlwifi 0000:00:14.3: Failed to run INIT ucode: -110
+>=20
 
-arch/parisc/kernel/pdt.c:66:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
-drivers/char/mem.c:164:25: error: implicit declaration of function 'unxlate_dev_mem_ptr'; did you mean 'xlate_dev_mem_ptr'? [-Werror=implicit-function-declaration]
-drivers/gpu/drm/i915/soc/intel_gmch.c:41:13: warning: variable 'mchbar_addr' set but not used [-Wunused-but-set-variable]
-drivers/mfd/max77541.c:176:18: warning: cast to smaller integer type 'enum max7754x_ids' from 'const void *' [-Wvoid-pointer-to-enum-cast]
-lib/kunit/executor_test.c:138:4: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
-lib/kunit/test.c:775:38: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
+For the record, I have done a git-bisect[1], and that turned up
 
-Unverified Error/Warning (likely false positive, please contact us if interested):
+  d2ccc5c1526396aef5196e4dd2ec8538994e5072
+  wifi: iwlwifi: Update init sequence if tx diversity supported
 
-drivers/usb/cdns3/cdns3-starfive.c:23: warning: expecting prototype for cdns3(). Prototype was for USB_STRAP_HOST() instead
-net/wireless/scan.c:373 cfg80211_gen_new_ie() warn: potential spectre issue 'sub->data' [r]
-net/wireless/scan.c:397 cfg80211_gen_new_ie() warn: possible spectre second half.  'ext_id'
-{standard input}: Error: local label `"2" (instance number 9 of a fb label)' is not defined
-{standard input}:1097: Error: pcrel too far
-{standard input}:13: Error: symbol `__export_symbol_alpha_mv' is already defined
+as the first good commit[0].
 
-Error/Warning ids grouped by kconfigs:
+Sadly, that patch (or even the series) does not appear to be easily backpor=
+table,
+so it seems likely that current stable kernels won't be able to support thi=
+s device.
 
-gcc_recent_errors
-|-- alpha-randconfig-r024-20230627
-|   `-- standard-input:Error:symbol-__export_symbol_alpha_mv-is-already-defined
-|-- i386-randconfig-m021-20230627
-|   |-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:possible-spectre-second-half.-ext_id
-|   `-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:potential-spectre-issue-sub-data-r
-|-- parisc-allnoconfig
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-allyesconfig
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-defconfig
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-randconfig-r012-20230627
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-randconfig-r013-20230627
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-randconfig-r052-20230627
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc64-defconfig
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- riscv-allmodconfig
-|   `-- drivers-usb-cdns3-cdns3-starfive.c:warning:expecting-prototype-for-cdns3().-Prototype-was-for-USB_STRAP_HOST()-instead
-|-- riscv-allyesconfig
-|   `-- drivers-usb-cdns3-cdns3-starfive.c:warning:expecting-prototype-for-cdns3().-Prototype-was-for-USB_STRAP_HOST()-instead
-|-- sh-allmodconfig
-|   |-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
-|   |-- standard-input:Error:local-label-(instance-number-of-a-fb-label)-is-not-defined
-|   `-- standard-input:Error:pcrel-too-far
-|-- sh-j2_defconfig
-|   `-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
-|-- sh-randconfig-r015-20230627
-|   `-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
-|-- sh-rsk7203_defconfig
-|   `-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
-`-- x86_64-buildonly-randconfig-r001-20230627
-    `-- drivers-gpu-drm-i915-soc-intel_gmch.c:warning:variable-mchbar_addr-set-but-not-used
-clang_recent_errors
-|-- arm-randconfig-r031-20230627
-|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|-- hexagon-randconfig-r041-20230627
-|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|-- powerpc-randconfig-r023-20230627
-|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|-- riscv-randconfig-r042-20230627
-|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-`-- x86_64-randconfig-r011-20230627
-    `-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
 
-elapsed time: 725m
+Regards,
+Barnab=C3=A1s P=C5=91cze
 
-configs tested: 137
-configs skipped: 7
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r004-20230627   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r043-20230627   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         assabet_defconfig   gcc  
-arm                         bcm2835_defconfig   clang
-arm                                 defconfig   gcc  
-arm                         lpc32xx_defconfig   clang
-arm                        multi_v7_defconfig   gcc  
-arm                          pxa910_defconfig   gcc  
-arm                  randconfig-r031-20230627   clang
-arm                  randconfig-r035-20230627   clang
-arm                  randconfig-r046-20230627   gcc  
-arm                       spear13xx_defconfig   clang
-arm                       versatile_defconfig   clang
-arm64                            alldefconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r003-20230627   gcc  
-csky                                defconfig   gcc  
-hexagon              randconfig-r041-20230627   clang
-hexagon              randconfig-r045-20230627   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230627   gcc  
-i386         buildonly-randconfig-r005-20230627   gcc  
-i386         buildonly-randconfig-r006-20230627   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230627   gcc  
-i386                 randconfig-i002-20230627   gcc  
-i386                 randconfig-i003-20230627   gcc  
-i386                 randconfig-i004-20230627   gcc  
-i386                 randconfig-i005-20230627   gcc  
-i386                 randconfig-i006-20230627   gcc  
-i386                 randconfig-i011-20230627   clang
-i386                 randconfig-i012-20230627   clang
-i386                 randconfig-i013-20230627   clang
-i386                 randconfig-i014-20230627   clang
-i386                 randconfig-i015-20230627   clang
-i386                 randconfig-i016-20230627   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r024-20230627   gcc  
-loongarch            randconfig-r032-20230627   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        stmark2_defconfig   gcc  
-m68k                          sun3x_defconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           mtx1_defconfig   clang
-mips                 randconfig-r022-20230627   gcc  
-mips                           xway_defconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r014-20230627   gcc  
-nios2                randconfig-r026-20230627   gcc  
-openrisc             randconfig-r005-20230627   gcc  
-openrisc             randconfig-r016-20230627   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r012-20230627   gcc  
-parisc               randconfig-r013-20230627   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                    klondike_defconfig   gcc  
-powerpc                      makalu_defconfig   gcc  
-powerpc                 mpc8315_rdb_defconfig   clang
-powerpc               mpc834x_itxgp_defconfig   clang
-powerpc                 mpc836x_rdk_defconfig   clang
-powerpc                    mvme5100_defconfig   clang
-powerpc                      pasemi_defconfig   gcc  
-powerpc              randconfig-r023-20230627   clang
-powerpc                     tqm8540_defconfig   clang
-powerpc                     tqm8548_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230627   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r021-20230627   clang
-s390                 randconfig-r044-20230627   clang
-sh                               allmodconfig   gcc  
-sh                        dreamcast_defconfig   gcc  
-sh                               j2_defconfig   gcc  
-sh                          r7780mp_defconfig   gcc  
-sh                   randconfig-r015-20230627   gcc  
-sh                          rsk7203_defconfig   gcc  
-sh                   rts7751r2dplus_defconfig   gcc  
-sh                          sdk7780_defconfig   gcc  
-sh                           se7751_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64              randconfig-r001-20230627   gcc  
-sparc64              randconfig-r025-20230627   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230627   gcc  
-x86_64       buildonly-randconfig-r002-20230627   gcc  
-x86_64       buildonly-randconfig-r003-20230627   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r011-20230627   clang
-x86_64               randconfig-x001-20230627   clang
-x86_64               randconfig-x002-20230627   clang
-x86_64               randconfig-x003-20230627   clang
-x86_64               randconfig-x004-20230627   clang
-x86_64               randconfig-x005-20230627   clang
-x86_64               randconfig-x006-20230627   clang
-x86_64               randconfig-x011-20230627   gcc  
-x86_64               randconfig-x012-20230627   gcc  
-x86_64               randconfig-x013-20230627   gcc  
-x86_64               randconfig-x014-20230627   gcc  
-x86_64               randconfig-x015-20230627   gcc  
-x86_64               randconfig-x016-20230627   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                           alldefconfig   gcc  
-xtensa                       common_defconfig   gcc  
-xtensa               randconfig-r002-20230627   gcc  
-xtensa               randconfig-r006-20230627   gcc  
+[0]: https://lore.kernel.org/all/20230413102635.c2121c8694a7.Ibee3dd8765ef4=
+b7504660fa228a7c7eff78920af@changeid/
+[1]:
+  git bisect start
+  # status: waiting for both good and bad commits
+  # new: [b6dad5178ceaf23f369c3711062ce1f2afc33644] Merge tag 'nios2_fix_v6=
+.4' of git://git.kernel.org/pub/scm/linux/kernel/git/dinguyen/linux
+  git bisect new b6dad5178ceaf23f369c3711062ce1f2afc33644
+  # status: waiting for good commit(s), bad commit known
+  # old: [457391b0380335d5e9a5babdec90ac53928b23b4] Linux 6.3
+  git bisect old 457391b0380335d5e9a5babdec90ac53928b23b4
+  # new: [6e98b09da931a00bf4e0477d0fa52748bf28fcce] Merge tag 'net-next-6.4=
+' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+  git bisect new 6e98b09da931a00bf4e0477d0fa52748bf28fcce
+  # old: [088e0c188513b58a0056a488cf5b7df094a8a48a] Merge tag 'platform-dri=
+vers-x86-v6.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/pla=
+tform-drivers-x86
+  git bisect old 088e0c188513b58a0056a488cf5b7df094a8a48a
+  # new: [ca288965801572fe41386560d4e6c5cc0e5cc56d] Merge tag 'wireless-nex=
+t-2023-04-21' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wir=
+eless-next
+  git bisect new ca288965801572fe41386560d4e6c5cc0e5cc56d
+  # old: [d56417ad1133fc41752bb9fe37da7ae3187395a4] net: phy: smsc: clear e=
+dpd_enable if interrupt mode is used
+  git bisect old d56417ad1133fc41752bb9fe37da7ae3187395a4
+  # old: [c54876cd5961ce0f8e74807f79a6739cd6b35ddf] net/sched: pass netlink=
+ extack to mqprio and taprio offload
+  git bisect old c54876cd5961ce0f8e74807f79a6739cd6b35ddf
+  # new: [3288ee5844b74cebb94ed15bc9b5b9d3223ae038] Merge ath-next from git=
+://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+  git bisect new 3288ee5844b74cebb94ed15bc9b5b9d3223ae038
+  # new: [d0b6f86fdbefa62fd4ad2acd1aea6c45f9b518ba] wifi: mt76: mt7996: let=
+ non-bufferable MMPDUs use correct hw queue
+  git bisect new d0b6f86fdbefa62fd4ad2acd1aea6c45f9b518ba
+  # new: [a0e97ae3f3320a246a79db7372fc23a38556014e] wifi: rtw89: add ieee80=
+211::remain_on_channel ops
+  git bisect new a0e97ae3f3320a246a79db7372fc23a38556014e
+  # new: [d00800a289c9349bb659a698cbd7bc04521dc927] wifi: mac80211: add flu=
+sh_sta method
+  git bisect new d00800a289c9349bb659a698cbd7bc04521dc927
+  # old: [413be839bfca9a4f6b32b92807ecdc2c2c182d94] wifi: iwlwifi: add a va=
+lidity check of queue_id in iwl_txq_reclaim
+  git bisect old 413be839bfca9a4f6b32b92807ecdc2c2c182d94
+  # old: [e305a408c5f9c8df06a58e09a23375fd257f081c] wifi: iwlwifi: mvm: mov=
+e function sequence
+  git bisect old e305a408c5f9c8df06a58e09a23375fd257f081c
+  # new: [217f3c52f00d3419ecdd38a99a7eceecb11679b2] wifi: iwlwifi: mvm: don=
+'t set CHECKSUM_COMPLETE for unsupported protocols
+  git bisect new 217f3c52f00d3419ecdd38a99a7eceecb11679b2
+  # new: [5caa82529eabff044c5f3eb254f3a7ff00e9170d] wifi: iwlwifi: Update c=
+onfigurations for Bnj-a0 and specific rf devices
+  git bisect new 5caa82529eabff044c5f3eb254f3a7ff00e9170d
+  # new: [d2ccc5c1526396aef5196e4dd2ec8538994e5072] wifi: iwlwifi: Update i=
+nit sequence if tx diversity supported
+  git bisect new d2ccc5c1526396aef5196e4dd2ec8538994e5072
+  # first new commit: [d2ccc5c1526396aef5196e4dd2ec8538994e5072] wifi: iwlw=
+ifi: Update init sequence if tx diversity supported
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+>=20
+> I then noticed that firmwares 75-77 are available and that there were rec=
+ent changes
+> to the iwlwifi module that increased IWL_22000_UCODE_API_MAX, so I gave i=
+t a go,
+> and built the kernel at ae8373a5add4ea39f032563cf12a02946d1e3546 and now =
+firmware 77
+> is loaded, and that seems to work, at least I did not notice any issues s=
+o far.
+>=20
+> The full logs and other information about the laptop can be found here[0]=
+.
+>=20
+>=20
+> Regards,
+> Barnab=C3=A1s P=C5=91cze
+>=20
+>=20
+> [0]: https://linux-hardware.org/?probe=3D43069955ee
