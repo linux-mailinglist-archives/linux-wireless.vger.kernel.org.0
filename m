@@ -2,97 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11DE173FC4E
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jun 2023 14:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC9AE73FC54
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jun 2023 15:01:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbjF0M7N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jun 2023 08:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52538 "EHLO
+        id S230454AbjF0NBn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jun 2023 09:01:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229841AbjF0M7M (ORCPT
+        with ESMTP id S230338AbjF0NBj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jun 2023 08:59:12 -0400
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545C4E1;
-        Tue, 27 Jun 2023 05:59:11 -0700 (PDT)
-Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-635dbfa710dso18548336d6.0;
-        Tue, 27 Jun 2023 05:59:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687870750; x=1690462750;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q5+DuaCiOR+WAyBglQbQg08A79GQ+8qOpe+uAJINk1c=;
-        b=m0CC08U9FXkhchI54swpLsV6pI+g0px1bOiqzSuiiPa/mJruusL7KGGgD/ORhipJyM
-         5Z2sEQBsuEpSn8k12lr7hL2ta3/Bb0ZLy0Gp122QZSq0rLgi0b1banHOuhE1s9CXhnq0
-         jCWopxGWJZtyoIO2fLvsSK9y7QK7FBWyFQsAxM91HMWmPMVYV0u/of131gfQ65rSnnBg
-         XZZfd2MyLqF2cN7eI5HdYNNIJRL8N9keF+sUJy5dXDWnCYYyQGwUTyXubHWoblPLJQ1h
-         YhkFI1GVpgFupPMfhQdOk2HuJINgf0MJoXTe21+bWdNpX/L8SaUrgcd0TpTy+K/RVG39
-         HZYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687870750; x=1690462750;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q5+DuaCiOR+WAyBglQbQg08A79GQ+8qOpe+uAJINk1c=;
-        b=cAmVUxDqOzU+sg8ZFbWldAc3uUdqG6SLCejl0mD9XI7r1PGcvDdV985DaiuykzQuff
-         qgOdhO2In5z/4WE023iqPa5UG9WoIGs+F8cb50d8IjmDc7dINno1JiuvcD8m0EDhvvVM
-         kvIrlt8lsHNrn57R9GhGb7Y5atEbSvQQhRdwdxz7qDi7VJ1IgWHLqPaupDpdY4W8OJdl
-         DaTsEhcqwa9JjPesTpFjZjZchaHx4GE2JxuriSdyFrGYDiaV0sG21VnDS8gjJNRojRjt
-         6VQVtOzmqTcIv3FYgjVQjiYpq0kasR3l7w1vepExnma+KEzWb7PYyLu9RbBMHGdFpuDf
-         9kgw==
-X-Gm-Message-State: AC+VfDy4/xdh0xTzydk/3FfAyTj7sPKbt+KJqMYudKcRXRaEznKwdTEZ
-        O26yDTKWDhXYrXm9CjYDssEgQVr3BvyU1U+8sw0=
-X-Google-Smtp-Source: ACHHUZ7+L3rt8Etz7M+6oZM4CgUMh79FhCOfRxyrdMbPFyBlJyxEgk6URk9C0QQdVRaEcqHAjx0Q6qJjixNcDd9/2tU=
-X-Received: by 2002:a05:6214:20e4:b0:62d:edf6:6dcd with SMTP id
- 4-20020a05621420e400b0062dedf66dcdmr33702421qvk.51.1687870750297; Tue, 27 Jun
- 2023 05:59:10 -0700 (PDT)
+        Tue, 27 Jun 2023 09:01:39 -0400
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B80AE1
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jun 2023 06:01:36 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:18a7:0:640:a497:0])
+        by forward102b.mail.yandex.net (Yandex) with ESMTP id 85932600C5;
+        Tue, 27 Jun 2023 16:01:33 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id W1LC600WneA0-2l6yKD55;
+        Tue, 27 Jun 2023 16:01:33 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687870893;
+        bh=z/kJMvgnEYW7QCC6gU8hR3PAnmTeFs6lg3z8P7s2tTI=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=LEw2iY1qi3nFTVGSj2atiPwzwnr7Axjd0xQ/xpyV5OyZGOizlXzTGcaBHnzRRPvRN
+         e4a1+2JyC8Fy3i5+pfe+jDd0ly3ld35ZvZpGE0oMMvUPLbsDJk+gd64aeT4HcOw8JT
+         htnLwoISwYXTOT6qsemCpof2ADgkWWPIoh8YIjsU=
+Authentication-Results: mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: b43: fix cordic arithmetic
+Date:   Tue, 27 Jun 2023 16:00:27 +0300
+Message-ID: <20230627130102.63665-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230626102752.1583-1-youkangren@vivo.com> <CAGRGNgW_eeM2h7JBe98asaYjnF8hwAr50n8dfSabeK2H0u4=Qg@mail.gmail.com>
- <PUZPR06MB59369ADE01FB04AD9A7279A9AA27A@PUZPR06MB5936.apcprd06.prod.outlook.com>
-In-Reply-To: <PUZPR06MB59369ADE01FB04AD9A7279A9AA27A@PUZPR06MB5936.apcprd06.prod.outlook.com>
-From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Tue, 27 Jun 2023 22:58:58 +1000
-Message-ID: <CAGRGNgV=aNXvVZ8QkxE8R3Lr7edm6BPZ3adi5E23QeFO-q7nRw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ray_cs: Remove invalid conditional statements
-To:     =?UTF-8?B?5bCk5bq35LuB?= <youkangren@vivo.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>,
-        Simon Horman <simon.horman@corigine.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "open list:RAYLINK/WEBGEAR 802.11 WIRELESS LAN DRIVER" 
-        <linux-wireless@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "opensource.kernel" <opensource.kernel@vivo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+In 'lpphy_start_tx_tone()', 'CORDIC_FLOAT((sample.i * max) & 0xFF)'
+is invalid because it is (<32-bit> & 0xff) shifted right by 15 bits
+and so always evaluates to zero. Looking through brcmsmac's
+'wlc_lcnphy_start_tx_tone()', the result should be masked instead,
+i. e. 'CORDIC_FLOAT(sample[i].max) & 0xFF'.
 
-On Tue, Jun 27, 2023 at 10:44=E2=80=AFPM =E5=B0=A4=E5=BA=B7=E4=BB=81 <youka=
-ngren@vivo.com> wrote:
->
-> Dear Julian,
->
->     I found a warning at compiling time that the if and else branches had=
- no effect here. I looked at the code and found that the contents of both b=
-ranches were the same, so I merged the contents of both branches into one a=
-nd committed the changes.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-That's great, but it needs to be in the commit message.
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/broadcom/b43/phy_lp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
+diff --git a/drivers/net/wireless/broadcom/b43/phy_lp.c b/drivers/net/wireless/broadcom/b43/phy_lp.c
+index 0e5c076e7544..e8ef04e509aa 100644
+--- a/drivers/net/wireless/broadcom/b43/phy_lp.c
++++ b/drivers/net/wireless/broadcom/b43/phy_lp.c
+@@ -1788,8 +1788,8 @@ static void lpphy_start_tx_tone(struct b43_wldev *dev, s32 freq, u16 max)
+ 	for (i = 0; i < samples; i++) {
+ 		sample = cordic_calc_iq(CORDIC_FIXED(theta));
+ 		theta += rotation;
+-		buf[i] = CORDIC_FLOAT((sample.i * max) & 0xFF) << 8;
+-		buf[i] |= CORDIC_FLOAT((sample.q * max) & 0xFF);
++		buf[i] = (u16)((CORDIC_FLOAT(sample.i * max) & 0xFF) << 8);
++		buf[i] |= (u16)(CORDIC_FLOAT(sample.q * max) & 0xFF);
+ 	}
+ 
+ 	b43_lptab_write_bulk(dev, B43_LPTAB16(5, 0), samples, buf);
+-- 
+2.41.0
 
---=20
-Julian Calaby
-
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
