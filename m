@@ -2,94 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55CB973FF8D
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jun 2023 17:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24DC7740238
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jun 2023 19:33:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232335AbjF0PUp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jun 2023 11:20:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42490 "EHLO
+        id S230025AbjF0Rd2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jun 2023 13:33:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230444AbjF0PUo (ORCPT
+        with ESMTP id S229501AbjF0Rd1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jun 2023 11:20:44 -0400
-X-Greylist: delayed 378 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 27 Jun 2023 08:20:42 PDT
-Received: from forward205b.mail.yandex.net (forward205b.mail.yandex.net [178.154.239.152])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3AD81735;
-        Tue, 27 Jun 2023 08:20:42 -0700 (PDT)
-Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d103])
-        by forward205b.mail.yandex.net (Yandex) with ESMTP id 5D6E96751F;
-        Tue, 27 Jun 2023 18:14:27 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2929:0:640:5f6e:0])
-        by forward103c.mail.yandex.net (Yandex) with ESMTP id B861460024;
-        Tue, 27 Jun 2023 18:14:21 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id KENE8w0DV4Y0-RAocMuF0;
-        Tue, 27 Jun 2023 18:14:21 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687878861;
-        bh=6YvjUD6AxvMQ0iz8tQiHRTDEHNd8AITV9R1JP2bRykM=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=Tfhs9+qQH5DrHNkLDKTBBZAj5ntTJZ8dcXLAalkffxlN4bAL4VY0jAMF1iuAfOehR
-         kx5HiDCKVTtpqfVgyKtOTClIMj1UOK/MloWibK7mVqRhkLkjZ39F1CaVpuGXTUq6fT
-         gRHJ8/7uVoY99Y25Y57YwxA4d6dLrSW56zYB5hlA=
-Authentication-Results: mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>,
-        stable@vger.kernel.org
-Subject: [PATCH] [v2] wifi: b43: fix cordic arithmetic
-Date:   Tue, 27 Jun 2023 18:13:53 +0300
-Message-ID: <20230627151411.92749-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <ef4750f8-8de5-dbfc-2c0b-3400d30d83e5@lwfinger.net>
-References: <ef4750f8-8de5-dbfc-2c0b-3400d30d83e5@lwfinger.net>
+        Tue, 27 Jun 2023 13:33:27 -0400
+X-Greylist: delayed 6883 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 27 Jun 2023 10:33:26 PDT
+Received: from gwmail.goiania.go.gov.br (gwmail.goiania.go.gov.br [187.52.105.210])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A944213F
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jun 2023 10:33:26 -0700 (PDT)
+Received: from gwmail.goiania.go.gov.br (localhost.localdomain [127.0.0.1])
+        by gwmail.goiania.go.gov.br (Proxmox) with ESMTP id 10819244DD9;
+        Tue, 27 Jun 2023 10:31:30 -0300 (-03)
+X-Virus-Scanned: amavisd-new at mail.goiania.go.gov.br
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: AVVERTIMENTO
+To:     Recipients <admin@acme.com>
+From:   Amministratore di sistema <admin@acme.com>
+Date:   Tue, 27 Jun 2023 14:21:14 +0530
+Reply-To: sistemassadmins@mail2engineer.com
+Message-Id: <20230627085137.12A171E2C00F@mail.goiania.go.gov.br>
+X-Spam-Status: Yes, score=6.2 required=5.0 tests=BAYES_50,DATE_IN_PAST_03_06,
+        FREEMAIL_FORGED_REPLYTO,FROM_MISSP_REPLYTO,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  1.6 DATE_IN_PAST_03_06 Date: is 3 to 6 hours before Received: date
+        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  1.7 FROM_MISSP_REPLYTO From misspaced, has Reply-To
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In 'lpphy_start_tx_tone()', 'CORDIC_FLOAT((sample.i * max) & 0xFF)'
-is invalid because it is (<32-bit> & 0xff) shifted right by 15 bits
-and so always evaluates to zero. Looking through brcmsmac's
-'wlc_lcnphy_start_tx_tone()', the result should be masked instead,
-i. e. 'CORDIC_FLOAT(sample[i].max) & 0xFF'.
-
-Fixes: 6f98e62a9f1b ("b43: update cordic code to match current specs")
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Cc: stable@vger.kernel.org
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v2: add Cc: stable and Fixes: (Larry Finger)
----
- drivers/net/wireless/broadcom/b43/phy_lp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/b43/phy_lp.c b/drivers/net/wireless/broadcom/b43/phy_lp.c
-index 0e5c076e7544..e8ef04e509aa 100644
---- a/drivers/net/wireless/broadcom/b43/phy_lp.c
-+++ b/drivers/net/wireless/broadcom/b43/phy_lp.c
-@@ -1788,8 +1788,8 @@ static void lpphy_start_tx_tone(struct b43_wldev *dev, s32 freq, u16 max)
- 	for (i = 0; i < samples; i++) {
- 		sample = cordic_calc_iq(CORDIC_FIXED(theta));
- 		theta += rotation;
--		buf[i] = CORDIC_FLOAT((sample.i * max) & 0xFF) << 8;
--		buf[i] |= CORDIC_FLOAT((sample.q * max) & 0xFF);
-+		buf[i] = (u16)((CORDIC_FLOAT(sample.i * max) & 0xFF) << 8);
-+		buf[i] |= (u16)(CORDIC_FLOAT(sample.q * max) & 0xFF);
- 	}
+AVVERTIMENTO;
  
- 	b43_lptab_write_bulk(dev, B43_LPTAB16(5, 0), samples, buf);
--- 
-2.41.0
+La tua casella di posta ha superato il limite di archiviazione, che è di 5 GB come definito dall'amministratore, attualmente in esecuzione a 10,9 GB, potresti non essere in grado di inviare o ricevere nuovi messaggi fino a quando non convaliderai nuovamente la tua casella di posta. ufficio postale. Per riconvalidare la tua casella di posta, invia i seguenti dati di seguito:
+ 
+Nome: 
+Nome utente:
+parola d'ordine:
+Conferma la password:
+Indirizzo e-mail:
+Telefono:
+ 
+Se non riesci a riconvalidare la tua casella di posta, la tua casella di posta verrà disattivata!
+ 
+Ci scusiamo per l'inconveniente.
+Codice di verifica:WEB.IT:WEBMAIL.IT@ADMIN.POSTA>©2023
+Supporto tecnico tramite posta
+ 
+Grazie
+Amministratore di sistema
 
