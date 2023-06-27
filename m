@@ -2,115 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14F0F73FE70
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jun 2023 16:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6FC373FF5A
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jun 2023 17:13:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231702AbjF0Ojg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jun 2023 10:39:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40586 "EHLO
+        id S231309AbjF0PNH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jun 2023 11:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231766AbjF0OjN (ORCPT
+        with ESMTP id S229608AbjF0PNG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jun 2023 10:39:13 -0400
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17B8F3C0F
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jun 2023 07:38:41 -0700 (PDT)
-Received: by mail-oi1-x22e.google.com with SMTP id 5614622812f47-3a1e6022b93so1311340b6e.1
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jun 2023 07:38:41 -0700 (PDT)
+        Tue, 27 Jun 2023 11:13:06 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA2121FD8
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jun 2023 08:13:05 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-98934f000a5so557425066b.2
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jun 2023 08:13:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687876720; x=1690468720;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=i6aIzahldBfrr+lsTEHcYUlv3JrLHJ10EvDhR4InKus=;
-        b=POy7m/L2HlMKI10Qyre14+jnqQr78Cp9rwuCiANP+sHkOro4AaQQfVruJ419HFUA3T
-         /PjI9AOTbt3kP45w3vnjXKLWYq5xRooYMedfMi07ekalRagQ+nr0rg6cyyT/8henVS0H
-         sLdBcpizfpXu+cttlwWwhtvr45v+gs1WXgkyWHmCEd9KjR5PUoV2GMkfFEACnaaKbkLa
-         VGJo5CAAKylO6X4C79fZIUc8OdpVWv/7YIZ9Hd8XmRD1Ghqmc5bI0zyviUuvvarJBeGg
-         D+SH5YA+YN40ACexRzi+f34FkzKsimS+pucWdKjhWgoHBd8mCyYTXi3pYH2vFZDcYA70
-         +iaQ==
+        d=gmail.com; s=20221208; t=1687878784; x=1690470784;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yqvEFLxhLAXCPzW7XtrlDd0Zp0iWcQAucdkhIBiz1ao=;
+        b=RhwcS7ZAzao7cSsM6kazzQpIaDU2JZgPeWNB09F+oV9FHqv3p2GRuEs5BKC5Grr5/3
+         Lyjb4dHhS9SQqwp1v8yGu8OWMRaww7xeOdIrgb1IQ3y4cwF/llM+yBe8pZ63me2iCxj+
+         hTBC2p6uR4N25AptqkYfAbwmCyBizJ3H8rjxrd2xp9h3/Arv6TlXJluLF7h2ahhx7nCD
+         Tux8TGApg6ClgQ2n//yvfY20EnFaAe4FlBIgqryaKJvNLxVyZOc85DJ3fsdc2FZ50LSP
+         s0holU/7qeDyF35krmHKC5Qhh8swmrClPiM0TZaFH6v/jLBMBZygG1I9z0Tip0nZztpt
+         vlKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687876720; x=1690468720;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i6aIzahldBfrr+lsTEHcYUlv3JrLHJ10EvDhR4InKus=;
-        b=fLIqZIOG106KbcJ6puJ6SQM6l5bl9I8JUhnFm/bRarrStOQ97Ol1LQ6vBTRpgiNYoa
-         SrhoaBq/pb8AxdvCsv94fLRVsLux/h4ZLAmanc9QGS0EH78cqB4H6Qc/GHBdYeCWjsEA
-         8ByqR2tg2yi8c7mlRM1V3n2zsGkazOiQsKhUu8BqwJ/Oz15Z4ybc8KshBLjJvU2N+K49
-         SQlw2F938AVrfEEolL2HcoCr8QKH9wVyfvy8AyICaXVyjCaF9IvLOqwp9yG0CAu1y8W3
-         KVpEcLxq8hFnkrZ8ibGssQwBKh4vyHV8t9uhFHneQEpOWnoVcB0JTzjrYkImmmUqLP17
-         gWSA==
-X-Gm-Message-State: AC+VfDyqtEJ24mbkvPmdpabg5qFG3UfondYEP8PRouZStyqopaFu2a8+
-        yDbJ0IX9fsDK3SEnUNKEl/qSPpJSf14=
-X-Google-Smtp-Source: ACHHUZ7yE9hGP6R1Ns2Inkw+Yc2kYEyk2n+KyNV8c0DlHCyndSfkTNFL7x9X13I4u99cK+Clb3O8Qg==
-X-Received: by 2002:a05:6808:13c6:b0:39a:b1e4:ef28 with SMTP id d6-20020a05680813c600b0039ab1e4ef28mr41983058oiw.47.1687876719908;
-        Tue, 27 Jun 2023 07:38:39 -0700 (PDT)
-Received: from [192.168.1.128] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id e19-20020a05680809b300b003a05636f4a8sm3655178oig.29.2023.06.27.07.38.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jun 2023 07:38:39 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <ef4750f8-8de5-dbfc-2c0b-3400d30d83e5@lwfinger.net>
-Date:   Tue, 27 Jun 2023 09:38:38 -0500
+        d=1e100.net; s=20221208; t=1687878784; x=1690470784;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yqvEFLxhLAXCPzW7XtrlDd0Zp0iWcQAucdkhIBiz1ao=;
+        b=EKZBq0VF30oRyJ0/RIAoA+8cN3+/knU+ILLsFqgYmaoxY/lJmJNmAW0B6pVfL2K+mO
+         NaYd31+z+QUxOc4MoHKE2yEWZL4ECRye/zBNaiR8ZBQDEuLdPoyprxROJ+/ZAUWzzm+n
+         QW9w+FooSHEkKfay6DKMx7qiYju+ule7Au7tzj4J7c2kPJe2e9WI/wOJZk+A1AgSMPV4
+         VLI+i/x37sjBLk2gHkdS4JLrmT4vjRfejn7G8vvgvwxFRwhn1Lz6Ut23AOAm/T88ojQX
+         cwZ76ciJvKCGdfHuRjfze/obNac8m6C9fBihTVG0mkvRhg6s+ehuqOwoxUpQiB2tjkN6
+         LEtQ==
+X-Gm-Message-State: AC+VfDykC4R2Fjdb2pgYZTOdiB3YbaoKIsoCkxuW+sxZcqzZn6Yz74AT
+        AGVrvCxvdCk5wJHv501INKX9MT0J4KPoY+4QwfyaDsP78A==
+X-Google-Smtp-Source: ACHHUZ7nf4HpxehujY9bvhYklUwIAxeNfj2EEuJzFqtS0jTVbwvSKmCglgZAAjNzIeaRJtYI5bcNJzV/9CxvYkHaIqE=
+X-Received: by 2002:a17:907:d0f:b0:979:43d2:fee6 with SMTP id
+ gn15-20020a1709070d0f00b0097943d2fee6mr31294988ejc.1.1687878784225; Tue, 27
+ Jun 2023 08:13:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] wifi: b43: fix cordic arithmetic
-Content-Language: en-US
-To:     Dmitry Antipov <dmantipov@yandex.ru>, Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        lvc-project@linuxtesting.org
-References: <20230627130102.63665-1-dmantipov@yandex.ru>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20230627130102.63665-1-dmantipov@yandex.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+From:   Giulio Paci <giuliopaci@gmail.com>
+Date:   Tue, 27 Jun 2023 17:12:52 +0200
+Message-ID: <CA+zRt5HKvOQihOwoSj_G1eKFQ5ap9L4uRK2hvtV_SxOqwn-2Dw@mail.gmail.com>
+Subject: Realtek 8822ce connection is very unstable
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/27/23 08:00, Dmitry Antipov wrote:
-> In 'lpphy_start_tx_tone()', 'CORDIC_FLOAT((sample.i * max) & 0xFF)'
-> is invalid because it is (<32-bit> & 0xff) shifted right by 15 bits
-> and so always evaluates to zero. Looking through brcmsmac's
-> 'wlc_lcnphy_start_tx_tone()', the result should be masked instead,
-> i. e. 'CORDIC_FLOAT(sample[i].max) & 0xFF'.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
->   drivers/net/wireless/broadcom/b43/phy_lp.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/b43/phy_lp.c b/drivers/net/wireless/broadcom/b43/phy_lp.c
-> index 0e5c076e7544..e8ef04e509aa 100644
-> --- a/drivers/net/wireless/broadcom/b43/phy_lp.c
-> +++ b/drivers/net/wireless/broadcom/b43/phy_lp.c
-> @@ -1788,8 +1788,8 @@ static void lpphy_start_tx_tone(struct b43_wldev *dev, s32 freq, u16 max)
->   	for (i = 0; i < samples; i++) {
->   		sample = cordic_calc_iq(CORDIC_FIXED(theta));
->   		theta += rotation;
-> -		buf[i] = CORDIC_FLOAT((sample.i * max) & 0xFF) << 8;
-> -		buf[i] |= CORDIC_FLOAT((sample.q * max) & 0xFF);
-> +		buf[i] = (u16)((CORDIC_FLOAT(sample.i * max) & 0xFF) << 8);
-> +		buf[i] |= (u16)(CORDIC_FLOAT(sample.q * max) & 0xFF);
->   	}
->   
->   	b43_lptab_write_bulk(dev, B43_LPTAB16(5, 0), samples, buf);
+Hi everybody!
 
-This has not yet been tested, but it does need a "Fixes:" tag, and a Cc for stable.
+I am trying to install Debian Bookworm on a HP 250 g9, which includes
+a RTL8822CE wireless network adapter. Unfortunately I am experiencing
+very unstable connection.
 
-Larry
+I started with a default installation (with Gnome and NetworkManager)
+and the connection dropped quite often, just after a few minutes.
+Usually when the connection dropped dmesg reported some AER errors. I
+reported the issue at
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1037145.
 
+Then I attempted in several way to improve the situation (so far
+without much luck):
+- I added pcie_aspm=off to the Linux command line. The AER errors
+disappeared, but the connection is still unstable;
+- I tried to force bssid in NetworkManager, but I did not notice any
+visible change in stability;
+- I upgraded BIOS and all software for this laptop as provided by HP;
+- I tried to upgrade Linux and related firmware from Debian unstable.
+Initially I updated to Linux package 6.3.7-1 and firmware 20230404-1,
+and the stability degraded a lot (i.e., the connection hangs after
+just a few seconds). Then I upgraded firmware to 20230505-1 and now
+the system is quite stable at the beginning (i.e., the connection is
+stable for a few minutes) and then it becomes very unstable after the
+first issue (i.e., the connection hangs after just a few seconds). I
+noticed some correlation between system suspend and the first issue,
+but sometimes the connection just hangs, even if the system does not
+attempt to suspend. Executing "rmmod rtw88_8822ce rtw88_8822c
+rtw88_pci rtw88_core" and then "modprobe rtw88_8822ce" does not seem
+to solve the issue, instead the connection is very unstable after
+that;
+- I tried to set disable_aspm=1 and disable_msi=1 for rtw88_pci. I
+tried both options individually and together. Some additional errors
+appear in dmesg, such as `rtw_8822ce 0000:03:00.0: failed to do dpk
+calibration` when I use disable_aspm=1 and `rtw_8822ce 0000:03:00.0:
+firmware failed to report density after scan` + `rtw_8822ce
+0000:03:00.0: failed to get tx report from firmware` when
+disable_msi=1. When setting both options together the situation seems
+worse. When set individually it seems very similar to not setting any
+option;
+- I tried using drivers from  https://github.com/lwfinger/rtw88/, but
+I was not able to load the driver, since it failed to load the
+firmware (I have reported the issue at
+ihttps://github.com/lwfinger/rtw88/ssues/150).
+
+What can I do to better identify the issue and possibly solve it?
+
+Best regards,
+Giulio
