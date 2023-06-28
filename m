@@ -2,42 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 033027409FF
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jun 2023 09:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2CCA740A01
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jun 2023 09:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231596AbjF1H4F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Jun 2023 03:56:05 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:41312 "EHLO
+        id S231651AbjF1H4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Jun 2023 03:56:11 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:41380 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230313AbjF1HyL (ORCPT
+        with ESMTP id S229877AbjF1HyM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Jun 2023 03:54:11 -0400
-X-UUID: a8ae8032158211ee9cb5633481061a41-20230628
+        Wed, 28 Jun 2023 03:54:12 -0400
+X-UUID: a8bf7a04158211ee9cb5633481061a41-20230628
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=x/GB2Ybn4AH+QkUsnhFIXbSYB/1BRktYCsmkQyeUsUU=;
-        b=TwRFdA1jZKrE30xbst1/kb61RlnE73qqn7I8TzuORbh6FJuZ53QIbJHjMAIyb7IOqfU0wsy86JeG5beMbwY3LAXGyXoqWMW9GwtxlCIGW9uVwn5jhLYk6pzgmhzgn/prBbeZq8nkI+E4qcSu8mxAtsK/6LMyJw9qh2Lb3uUSmks=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=dVe4k/Rn+DcjBSH4JWRc4NQwfN692T8yUnDggT+CmXw=;
+        b=c1LBsc7DhFqKwAcBrY0YLzeSEosnhcq4XKo1HH5eJ+8O7AFS061QqxJWhp16qA/U2NUWDNBhCQnjfZlV7ugULQiEOoPZCBMf2BBW2deGVkNx7H8w2MM3OQUoVyRHjiRckhLjuntJBNUfMUt0Gw98SmLRbUjVu7EoQYoKux/kvXI=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.27,REQID:19c6b862-0e82-47fa-9966-41c208a8cefb,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:-30,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-        ON:release,TS:-35
-X-CID-META: VersionHash:01c9525,CLOUDID:2d774f0d-26a8-467f-b838-f99719a9c083,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:2,IP:nil,UR
-        L:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: a8ae8032158211ee9cb5633481061a41-20230628
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+X-CID-O-INFO: VERSION:1.1.27,REQID:a850c482-4eff-4b90-a7fb-59f35b1fdb41,IP:0,U
+        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+        ON:release,TS:70
+X-CID-INFO: VERSION:1.1.27,REQID:a850c482-4eff-4b90-a7fb-59f35b1fdb41,IP:0,URL
+        :0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTI
+        ON:quarantine,TS:70
+X-CID-META: VersionHash:01c9525,CLOUDID:2e899b0d-c22b-45ab-8a43-3004e9216b56,B
+        ulkID:230628150904MO8CV022,BulkQuantity:0,Recheck:0,SF:19|48|38|29|28|17,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+        ,OSI:0,OSA:0,AV:0,LES:1,SPR:NO
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_SDM,TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,
+        TF_CID_SPAM_FSD
+X-UUID: a8bf7a04158211ee9cb5633481061a41-20230628
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
         (envelope-from <deren.wu@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1476871299; Wed, 28 Jun 2023 15:09:01 +0800
+        with ESMTP id 646737589; Wed, 28 Jun 2023 15:09:01 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 28 Jun 2023 15:08:58 +0800
+ 15.2.1118.26; Wed, 28 Jun 2023 15:09:00 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
  mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Wed, 28 Jun 2023 15:08:58 +0800
+ 15.2.1118.26 via Frontend Transport; Wed, 28 Jun 2023 15:09:00 +0800
 From:   Deren Wu <deren.wu@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
 CC:     Sean Wang <sean.wang@mediatek.com>,
@@ -46,9 +51,9 @@ CC:     Sean Wang <sean.wang@mediatek.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH 08/11] wifi: mt76: mt76_connac3: move lmac queue enumeration in mt76_connac3_mac.h
-Date:   Wed, 28 Jun 2023 15:07:21 +0800
-Message-ID: <02453eb49f241a464cded2781c13053d0a86d64a.1687920269.git.deren.wu@mediatek.com>
+Subject: [PATCH 09/11] wifi: mt76: mt792x: move MT7921_PM_TIMEOUT and MT7921_HW_SCAN_TIMEOUT in common code
+Date:   Wed, 28 Jun 2023 15:07:22 +0800
+Message-ID: <95218a7dc09f2020ef3bf02b17d46fcfa2f6c513.1687920269.git.deren.wu@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <cover.1687920269.git.deren.wu@mediatek.com>
 References: <cover.1687920269.git.deren.wu@mediatek.com>
@@ -61,65 +66,72 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-This is a preliminary patch to introduce mt7925 chip support
+MT7921_PM_TIMEOUT is shared between mt7925 and mt7921 so move it in
+mt792x module.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 ---
- .../net/wireless/mediatek/mt76/mt76_connac3_mac.h  | 14 ++++++++++++++
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 14 --------------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c   | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c    | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 3 ---
+ drivers/net/wireless/mediatek/mt76/mt792x.h        | 3 +++
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-index 6663a0b46541..68ca0844cbbf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-@@ -4,6 +4,20 @@
- #ifndef __MT76_CONNAC3_MAC_H
- #define __MT76_CONNAC3_MAC_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 7b8876bf8fc8..ff63f37f67d9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -217,7 +217,7 @@ int mt7921_register_device(struct mt792x_dev *dev)
+ 	timer_setup(&dev->phy.roc_timer, mt792x_roc_timer, 0);
+ 	init_waitqueue_head(&dev->phy.roc_wait);
  
-+enum {
-+	MT_CTX0,
-+	MT_HIF0 = 0x0,
-+
-+	MT_LMAC_AC00 = 0x0,
-+	MT_LMAC_AC01,
-+	MT_LMAC_AC02,
-+	MT_LMAC_AC03,
-+	MT_LMAC_ALTX0 = 0x10,
-+	MT_LMAC_BMC0,
-+	MT_LMAC_BCN0,
-+	MT_LMAC_PSMP0,
-+};
-+
- #define MT_CT_PARSE_LEN			72
- #define MT_CT_DMA_BUF_NUM		2
+-	dev->pm.idle_timeout = MT7921_PM_TIMEOUT;
++	dev->pm.idle_timeout = MT792x_PM_TIMEOUT;
+ 	dev->pm.stats.last_wake_event = jiffies;
+ 	dev->pm.stats.last_doze_event = jiffies;
+ 	if (!mt76_is_usb(&dev->mt76)) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 4b77d95af958..90c93970acab 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -167,7 +167,7 @@ mt7921_mcu_scan_event(struct mt792x_dev *dev, struct sk_buff *skb)
+ 	spin_unlock_bh(&dev->mt76.lock);
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 726c222e8e1e..7354e5cf8e67 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -254,20 +254,6 @@ enum {
- 	__MT_WFDMA_MAX,
- };
+ 	ieee80211_queue_delayed_work(mphy->hw, &phy->scan_work,
+-				     MT7921_HW_SCAN_TIMEOUT);
++				     MT792x_HW_SCAN_TIMEOUT);
+ }
  
--enum {
--	MT_CTX0,
--	MT_HIF0 = 0x0,
+ static void
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index e458ddb7d99a..0f8b93a2be3a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -7,9 +7,6 @@
+ #include "../mt792x.h"
+ #include "regs.h"
+ 
+-#define MT7921_PM_TIMEOUT		(HZ / 12)
+-#define MT7921_HW_SCAN_TIMEOUT		(HZ / 10)
 -
--	MT_LMAC_AC00 = 0x0,
--	MT_LMAC_AC01,
--	MT_LMAC_AC02,
--	MT_LMAC_AC03,
--	MT_LMAC_ALTX0 = 0x10,
--	MT_LMAC_BMC0,
--	MT_LMAC_BCN0,
--	MT_LMAC_PSMP0,
--};
--
- enum {
- 	MT_RX_SEL0,
- 	MT_RX_SEL1,
+ #define MT7921_TX_RING_SIZE		2048
+ #define MT7921_TX_MCU_RING_SIZE		256
+ #define MT7921_TX_FWDL_RING_SIZE	128
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
+index 700cd0ccc5d3..d80f80bc7656 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -11,6 +11,9 @@
+ #include "mt792x_regs.h"
+ #include "mt792x_acpi_sar.h"
+ 
++#define MT792x_PM_TIMEOUT	(HZ / 12)
++#define MT792x_HW_SCAN_TIMEOUT	(HZ / 10)
++
+ #define MT792x_MAX_INTERFACES	4
+ #define MT792x_WTBL_SIZE	20
+ #define MT792x_WTBL_RESERVED	(MT792x_WTBL_SIZE - 1)
 -- 
 2.18.0
 
