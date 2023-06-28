@@ -2,42 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2CCA740A01
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jun 2023 09:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBD22740A0C
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jun 2023 09:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231651AbjF1H4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Jun 2023 03:56:11 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:41380 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229877AbjF1HyM (ORCPT
+        id S231786AbjF1H41 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Jun 2023 03:56:27 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:52982 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231219AbjF1HyR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Jun 2023 03:54:12 -0400
-X-UUID: a8bf7a04158211ee9cb5633481061a41-20230628
+        Wed, 28 Jun 2023 03:54:17 -0400
+X-UUID: a8de1c7a158211eeb20a276fd37b9834-20230628
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=dVe4k/Rn+DcjBSH4JWRc4NQwfN692T8yUnDggT+CmXw=;
-        b=c1LBsc7DhFqKwAcBrY0YLzeSEosnhcq4XKo1HH5eJ+8O7AFS061QqxJWhp16qA/U2NUWDNBhCQnjfZlV7ugULQiEOoPZCBMf2BBW2deGVkNx7H8w2MM3OQUoVyRHjiRckhLjuntJBNUfMUt0Gw98SmLRbUjVu7EoQYoKux/kvXI=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=SXSbyB9/u8C0lViXzIP/tEqH/B93jr15p2pDLciWS9E=;
+        b=YKB1uuHQ1gvcgukXWImXTIHsR9aHRPL4etr6kms2w8CNVp5H0I1rzcI4tffOJ6TU2/UKIaf7mtvD1PCs6qGSmvSLKBSen2nYVFD37ijhSMmxpYMOjDQ7xdVyJzdirzHJ+5LKm91dw4hi542krrcjHlnupAZ7VDAM9rLQJJLzokE=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.27,REQID:a850c482-4eff-4b90-a7fb-59f35b1fdb41,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-        ON:release,TS:70
-X-CID-INFO: VERSION:1.1.27,REQID:a850c482-4eff-4b90-a7fb-59f35b1fdb41,IP:0,URL
-        :0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTI
-        ON:quarantine,TS:70
-X-CID-META: VersionHash:01c9525,CLOUDID:2e899b0d-c22b-45ab-8a43-3004e9216b56,B
-        ulkID:230628150904MO8CV022,BulkQuantity:0,Recheck:0,SF:19|48|38|29|28|17,T
-        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-        ,OSI:0,OSA:0,AV:0,LES:1,SPR:NO
+X-CID-O-INFO: VERSION:1.1.27,REQID:60539542-7a27-44a4-b7ce-64feae1543db,IP:0,U
+        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:-25
+X-CID-META: VersionHash:01c9525,CLOUDID:fa764f0d-26a8-467f-b838-f99719a9c083,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO
 X-CID-BVR: 0,NGT
 X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_SDM,TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,
-        TF_CID_SPAM_FSD
-X-UUID: a8bf7a04158211ee9cb5633481061a41-20230628
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: a8de1c7a158211eeb20a276fd37b9834-20230628
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
         (envelope-from <deren.wu@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 646737589; Wed, 28 Jun 2023 15:09:01 +0800
+        with ESMTP id 476027258; Wed, 28 Jun 2023 15:09:01 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ MTKMBS14N2.mediatek.inc (172.21.101.76) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1118.26; Wed, 28 Jun 2023 15:09:00 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
@@ -51,9 +46,9 @@ CC:     Sean Wang <sean.wang@mediatek.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH 09/11] wifi: mt76: mt792x: move MT7921_PM_TIMEOUT and MT7921_HW_SCAN_TIMEOUT in common code
-Date:   Wed, 28 Jun 2023 15:07:22 +0800
-Message-ID: <95218a7dc09f2020ef3bf02b17d46fcfa2f6c513.1687920269.git.deren.wu@mediatek.com>
+Subject: [PATCH 10/11] wifi: mt76: mt7921: move mt7921_dma_init in pci.c
+Date:   Wed, 28 Jun 2023 15:07:23 +0800
+Message-ID: <b2214090ac6fdfd2ee5b36da037eb4988e991f5d.1687920269.git.deren.wu@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <cover.1687920269.git.deren.wu@mediatek.com>
 References: <cover.1687920269.git.deren.wu@mediatek.com>
@@ -66,72 +61,204 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-MT7921_PM_TIMEOUT is shared between mt7925 and mt7921 so move it in
-mt792x module.
+Move mt7921_dma_init routine in pci.c and make it static since it is run
+just in mt7921_pci_probe(). Get rid of dma.c.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/init.c   | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c    | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 3 ---
- drivers/net/wireless/mediatek/mt76/mt792x.h        | 3 +++
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ .../wireless/mediatek/mt76/mt7921/Makefile    |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   | 71 -------------------
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 -
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   | 66 +++++++++++++++++
+ 4 files changed, 67 insertions(+), 73 deletions(-)
+ delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/dma.c
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 7b8876bf8fc8..ff63f37f67d9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -217,7 +217,7 @@ int mt7921_register_device(struct mt792x_dev *dev)
- 	timer_setup(&dev->phy.roc_timer, mt792x_roc_timer, 0);
- 	init_waitqueue_head(&dev->phy.roc_wait);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+index 964eb55824cd..849be9e848e0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+@@ -7,6 +7,6 @@ obj-$(CONFIG_MT7921U) += mt7921u.o
  
--	dev->pm.idle_timeout = MT7921_PM_TIMEOUT;
-+	dev->pm.idle_timeout = MT792x_PM_TIMEOUT;
- 	dev->pm.stats.last_wake_event = jiffies;
- 	dev->pm.stats.last_doze_event = jiffies;
- 	if (!mt76_is_usb(&dev->mt76)) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 4b77d95af958..90c93970acab 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -167,7 +167,7 @@ mt7921_mcu_scan_event(struct mt792x_dev *dev, struct sk_buff *skb)
- 	spin_unlock_bh(&dev->mt76.lock);
- 
- 	ieee80211_queue_delayed_work(mphy->hw, &phy->scan_work,
--				     MT7921_HW_SCAN_TIMEOUT);
-+				     MT792x_HW_SCAN_TIMEOUT);
- }
- 
- static void
+ mt7921-common-y := mac.o mcu.o main.o init.o debugfs.o
+ mt7921-common-$(CONFIG_NL80211_TESTMODE) += testmode.o
+-mt7921e-y := pci.o pci_mac.o pci_mcu.o dma.o
++mt7921e-y := pci.o pci_mac.o pci_mcu.o
+ mt7921s-y := sdio.o sdio_mac.o sdio_mcu.o
+ mt7921u-y := usb.o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+deleted file mode 100644
+index fdc598e099f6..000000000000
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
++++ /dev/null
+@@ -1,71 +0,0 @@
+-// SPDX-License-Identifier: ISC
+-/* Copyright (C) 2020 MediaTek Inc. */
+-
+-#include "mt7921.h"
+-#include "../dma.h"
+-#include "../mt76_connac2_mac.h"
+-
+-int mt7921_dma_init(struct mt792x_dev *dev)
+-{
+-	int ret;
+-
+-	mt76_dma_attach(&dev->mt76);
+-
+-	ret = mt792x_dma_disable(dev, true);
+-	if (ret)
+-		return ret;
+-
+-	/* init tx queue */
+-	ret = mt76_connac_init_tx_queues(dev->phy.mt76, MT7921_TXQ_BAND0,
+-					 MT7921_TX_RING_SIZE,
+-					 MT_TX_RING_BASE, 0);
+-	if (ret)
+-		return ret;
+-
+-	mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, 0x4);
+-
+-	/* command to WM */
+-	ret = mt76_init_mcu_queue(&dev->mt76, MT_MCUQ_WM, MT7921_TXQ_MCU_WM,
+-				  MT7921_TX_MCU_RING_SIZE, MT_TX_RING_BASE);
+-	if (ret)
+-		return ret;
+-
+-	/* firmware download */
+-	ret = mt76_init_mcu_queue(&dev->mt76, MT_MCUQ_FWDL, MT7921_TXQ_FWDL,
+-				  MT7921_TX_FWDL_RING_SIZE, MT_TX_RING_BASE);
+-	if (ret)
+-		return ret;
+-
+-	/* event from WM before firmware download */
+-	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
+-			       MT7921_RXQ_MCU_WM,
+-			       MT7921_RX_MCU_RING_SIZE,
+-			       MT_RX_BUF_SIZE, MT_RX_EVENT_RING_BASE);
+-	if (ret)
+-		return ret;
+-
+-	/* Change mcu queue after firmware download */
+-	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
+-			       MT7921_RXQ_MCU_WM,
+-			       MT7921_RX_MCU_RING_SIZE,
+-			       MT_RX_BUF_SIZE, MT_WFDMA0(0x540));
+-	if (ret)
+-		return ret;
+-
+-	/* rx data */
+-	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MAIN],
+-			       MT7921_RXQ_BAND0, MT7921_RX_RING_SIZE,
+-			       MT_RX_BUF_SIZE, MT_RX_DATA_RING_BASE);
+-	if (ret)
+-		return ret;
+-
+-	ret = mt76_init_queues(dev, mt792x_poll_rx);
+-	if (ret < 0)
+-		return ret;
+-
+-	netif_napi_add_tx(&dev->mt76.tx_napi_dev, &dev->mt76.tx_napi,
+-			  mt792x_poll_tx);
+-	napi_enable(&dev->mt76.tx_napi);
+-
+-	return mt792x_dma_enable(dev);
+-}
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index e458ddb7d99a..0f8b93a2be3a 100644
+index 0f8b93a2be3a..87dd06855f68 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -7,9 +7,6 @@
- #include "../mt792x.h"
- #include "regs.h"
+@@ -182,7 +182,6 @@ u32 mt7921_reg_map(struct mt792x_dev *dev, u32 addr);
+ int __mt7921_start(struct mt792x_phy *phy);
+ int mt7921_register_device(struct mt792x_dev *dev);
+ void mt7921_unregister_device(struct mt792x_dev *dev);
+-int mt7921_dma_init(struct mt792x_dev *dev);
+ int mt7921_run_firmware(struct mt792x_dev *dev);
+ int mt7921_mcu_set_bss_pm(struct mt792x_dev *dev, struct ieee80211_vif *vif,
+ 			  bool enable);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index c3f22ce9f5c4..3dda84a93717 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -9,6 +9,7 @@
  
--#define MT7921_PM_TIMEOUT		(HZ / 12)
--#define MT7921_HW_SCAN_TIMEOUT		(HZ / 10)
--
- #define MT7921_TX_RING_SIZE		2048
- #define MT7921_TX_MCU_RING_SIZE		256
- #define MT7921_TX_FWDL_RING_SIZE	128
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 700cd0ccc5d3..d80f80bc7656 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -11,6 +11,9 @@
- #include "mt792x_regs.h"
- #include "mt792x_acpi_sar.h"
+ #include "mt7921.h"
+ #include "../mt76_connac2_mac.h"
++#include "../dma.h"
+ #include "mcu.h"
  
-+#define MT792x_PM_TIMEOUT	(HZ / 12)
-+#define MT792x_HW_SCAN_TIMEOUT	(HZ / 10)
+ static const struct pci_device_id mt7921_pci_device_table[] = {
+@@ -155,6 +156,71 @@ static u32 mt7921_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
+ 	return dev->bus_ops->rmw(mdev, addr, mask, val);
+ }
+ 
++static int mt7921_dma_init(struct mt792x_dev *dev)
++{
++	int ret;
 +
- #define MT792x_MAX_INTERFACES	4
- #define MT792x_WTBL_SIZE	20
- #define MT792x_WTBL_RESERVED	(MT792x_WTBL_SIZE - 1)
++	mt76_dma_attach(&dev->mt76);
++
++	ret = mt792x_dma_disable(dev, true);
++	if (ret)
++		return ret;
++
++	/* init tx queue */
++	ret = mt76_connac_init_tx_queues(dev->phy.mt76, MT7921_TXQ_BAND0,
++					 MT7921_TX_RING_SIZE,
++					 MT_TX_RING_BASE, 0);
++	if (ret)
++		return ret;
++
++	mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, 0x4);
++
++	/* command to WM */
++	ret = mt76_init_mcu_queue(&dev->mt76, MT_MCUQ_WM, MT7921_TXQ_MCU_WM,
++				  MT7921_TX_MCU_RING_SIZE, MT_TX_RING_BASE);
++	if (ret)
++		return ret;
++
++	/* firmware download */
++	ret = mt76_init_mcu_queue(&dev->mt76, MT_MCUQ_FWDL, MT7921_TXQ_FWDL,
++				  MT7921_TX_FWDL_RING_SIZE, MT_TX_RING_BASE);
++	if (ret)
++		return ret;
++
++	/* event from WM before firmware download */
++	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
++			       MT7921_RXQ_MCU_WM,
++			       MT7921_RX_MCU_RING_SIZE,
++			       MT_RX_BUF_SIZE, MT_RX_EVENT_RING_BASE);
++	if (ret)
++		return ret;
++
++	/* Change mcu queue after firmware download */
++	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
++			       MT7921_RXQ_MCU_WM,
++			       MT7921_RX_MCU_RING_SIZE,
++			       MT_RX_BUF_SIZE, MT_WFDMA0(0x540));
++	if (ret)
++		return ret;
++
++	/* rx data */
++	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MAIN],
++			       MT7921_RXQ_BAND0, MT7921_RX_RING_SIZE,
++			       MT_RX_BUF_SIZE, MT_RX_DATA_RING_BASE);
++	if (ret)
++		return ret;
++
++	ret = mt76_init_queues(dev, mt792x_poll_rx);
++	if (ret < 0)
++		return ret;
++
++	netif_napi_add_tx(&dev->mt76.tx_napi_dev, &dev->mt76.tx_napi,
++			  mt792x_poll_tx);
++	napi_enable(&dev->mt76.tx_napi);
++
++	return mt792x_dma_enable(dev);
++}
++
+ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 			    const struct pci_device_id *id)
+ {
 -- 
 2.18.0
 
