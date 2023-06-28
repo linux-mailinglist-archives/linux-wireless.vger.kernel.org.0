@@ -2,91 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9819F740B35
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jun 2023 10:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F4176740B22
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jun 2023 10:22:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232500AbjF1IY1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Jun 2023 04:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39562 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233492AbjF1IUO (ORCPT
+        id S234320AbjF1IWe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Jun 2023 04:22:34 -0400
+Received: from forward206a.mail.yandex.net ([178.154.239.87]:47028 "EHLO
+        forward206a.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234191AbjF1IO6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Jun 2023 04:20:14 -0400
-Received: from forward203a.mail.yandex.net (forward203a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d203])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACE173C07
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Jun 2023 01:11:48 -0700 (PDT)
-Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
-        by forward203a.mail.yandex.net (Yandex) with ESMTP id 2EC5047D1E
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Jun 2023 10:24:01 +0300 (MSK)
+        Wed, 28 Jun 2023 04:14:58 -0400
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d100])
+        by forward206a.mail.yandex.net (Yandex) with ESMTP id 4D74D48B5B
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Jun 2023 10:24:04 +0300 (MSK)
 Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:170e:0:640:d60c:0])
-        by forward103a.mail.yandex.net (Yandex) with ESMTP id 3458E46D33;
-        Wed, 28 Jun 2023 10:23:57 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id uNGuVj7DSKo0-2xHa7ZGi;
-        Wed, 28 Jun 2023 10:23:56 +0300
+        by forward100a.mail.yandex.net (Yandex) with ESMTP id 85F1946D68;
+        Wed, 28 Jun 2023 10:24:00 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id uNGuVj7DSKo0-nmkPQuhG;
+        Wed, 28 Jun 2023 10:24:00 +0300
 X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687937036;
-        bh=LNigIxmaIJovn4+mpBAx/a7XSSUii5fvrGrWuxN0Z2k=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=bJ5Mb2k8TmBXIdm7SFEhxuoyy7qw9fkqnjEuWJ8T5SgtmzZvbfIkbulyqR3Lln3mt
-         AQQFAjtKLjAxuMDTndijm2snedpIIXKxC4E0decS/ab7zNlZod/XcWwq1DkOZaMIKZ
-         DSRlAI3egHKVRnDDL25dFClNXzSUbmiDPoiTKpF4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687937040;
+        bh=iIFkOYWFmlXHtew25tqmTnOh/8dvH3PP3FqxJxsDY/M=;
+        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+        b=Ks7m7utqg7kk/WPKLh72Ys5jfTM89/khl3E5yI1Xx5LwXRbByDGzhMHUqqPpUOC48
+         Bfxh1BuRmRE5kWZHws+kJum/XtXXr/u8ShIzJr75k8ZX0E1Myno0k7itteKmx7igDN
+         3LfjPvpKwqddU57LqTxEZWiwAohQ6Sq1qiIZ0bqg=
 Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From:   Dmitry Antipov <dmantipov@yandex.ru>
 To:     Po-Hao Huang <phhuang@realtek.com>
 Cc:     linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
         Kalle Valo <kvalo@kernel.org>,
         Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 1/4] [v6] wifi: rtw88: delete timer and free skb queue when unloading
-Date:   Wed, 28 Jun 2023 10:23:15 +0300
-Message-ID: <20230628072327.167196-1-dmantipov@yandex.ru>
+Subject: [PATCH 2/4] [v6] wifi: rtw88: remove unused and set but unused leftovers
+Date:   Wed, 28 Jun 2023 10:23:16 +0300
+Message-ID: <20230628072327.167196-2-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230628072327.167196-1-dmantipov@yandex.ru>
+References: <20230628072327.167196-1-dmantipov@yandex.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix possible crash and memory leak on driver unload by deleting
-TX purge timer and freeing C2H queue in 'rtw_core_deinit()',
-shrink critical section in the latter by freeing COEX queue
-out of TX report lock scope.
+Drop unused and set but unused 'last_push' of 'struct rtw_txq',
+'wireless_set' of 'struct rtw_sta_info', 'usb_txagg_num' of
+'struct rtw_usb' and 'n' of 'struct rx_usb_ctrl_block', unused
+definition of 'struct rtw_timer_list', adjust related code.
 
 Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-v6: adjust to match series
+v6: drop unused 'struct rtw_timer_list' as well
 v5: adjust to match recent changes
 v4: adjust to match series
-v3: shrink critical section in rtw_core_deinit() (Ping-Ke Shih)
-v2: fix title and commit message (Kalle Valo)
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 1 -
+ drivers/net/wireless/realtek/rtw88/main.h | 9 ---------
+ drivers/net/wireless/realtek/rtw88/tx.c   | 2 --
+ drivers/net/wireless/realtek/rtw88/usb.c  | 1 -
+ drivers/net/wireless/realtek/rtw88/usb.h  | 2 --
+ 5 files changed, 15 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index c853e2f2d448..c2ddb4d382af 100644
+index c2ddb4d382af..935022246fd4 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.c
 +++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -2183,10 +2183,12 @@ void rtw_core_deinit(struct rtw_dev *rtwdev)
- 		release_firmware(wow_fw->firmware);
+@@ -1303,7 +1303,6 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
+ 	si->stbc_en = stbc_en;
+ 	si->ldpc_en = ldpc_en;
+ 	si->rf_type = rf_type;
+-	si->wireless_set = wireless_set;
+ 	si->sgi_enable = is_support_sgi;
+ 	si->vht_enable = is_vht_enable;
+ 	si->ra_mask = ra_mask;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index f9dd2ab941c8..c42ef8294d59 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -511,12 +511,6 @@ struct rtw_txpwr_idx {
+ 	struct rtw_5g_txpwr_idx pwr_idx_5g;
+ };
  
- 	destroy_workqueue(rtwdev->tx_wq);
-+	timer_delete_sync(&rtwdev->tx_report.purge_timer);
- 	spin_lock_irqsave(&rtwdev->tx_report.q_lock, flags);
- 	skb_queue_purge(&rtwdev->tx_report.queue);
--	skb_queue_purge(&rtwdev->coex.queue);
- 	spin_unlock_irqrestore(&rtwdev->tx_report.q_lock, flags);
-+	skb_queue_purge(&rtwdev->coex.queue);
-+	skb_queue_purge(&rtwdev->c2h_queue);
+-struct rtw_timer_list {
+-	struct timer_list timer;
+-	void (*function)(void *data);
+-	void *args;
+-};
+-
+ struct rtw_channel_params {
+ 	u8 center_chan;
+ 	u8 primary_chan;
+@@ -734,9 +728,7 @@ struct rtw_ra_report {
  
- 	list_for_each_entry_safe(rsvd_pkt, tmp, &rtwdev->rsvd_page_list,
- 				 build_list) {
+ struct rtw_txq {
+ 	struct list_head list;
+-
+ 	unsigned long flags;
+-	unsigned long last_push;
+ };
+ 
+ #define RTW_BC_MC_MACID 1
+@@ -754,7 +746,6 @@ struct rtw_sta_info {
+ 	u8 rate_id;
+ 	enum rtw_bandwidth bw_mode;
+ 	enum rtw_rf_type rf_type;
+-	enum rtw_wireless_set wireless_set;
+ 	u8 stbc_en:2;
+ 	u8 ldpc_en:2;
+ 	bool sgi_enable;
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 2821119dc930..f63900b6621d 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -606,8 +606,6 @@ static int rtw_txq_push_skb(struct rtw_dev *rtwdev,
+ 		rtw_err(rtwdev, "failed to write TX skb to HCI\n");
+ 		return ret;
+ 	}
+-	rtwtxq->last_push = jiffies;
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index 4a57efdba97b..0458ab02a89f 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -654,7 +654,6 @@ static int rtw_usb_alloc_rx_bufs(struct rtw_usb *rtwusb)
+ 	for (i = 0; i < RTW_USB_RXCB_NUM; i++) {
+ 		struct rx_usb_ctrl_block *rxcb = &rtwusb->rx_cb[i];
+ 
+-		rxcb->n = i;
+ 		rxcb->rtwdev = rtwusb->rtwdev;
+ 		rxcb->rx_urb = usb_alloc_urb(0, GFP_KERNEL);
+ 		if (!rxcb->rx_urb)
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.h b/drivers/net/wireless/realtek/rtw88/usb.h
+index ad1d7955c6a5..fad998005ec8 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.h
++++ b/drivers/net/wireless/realtek/rtw88/usb.h
+@@ -58,7 +58,6 @@ struct rx_usb_ctrl_block {
+ 	struct rtw_dev *rtwdev;
+ 	struct urb *rx_urb;
+ 	struct sk_buff *rx_skb;
+-	int n;
+ };
+ 
+ struct rtw_usb_tx_data {
+@@ -79,7 +78,6 @@ struct rtw_usb {
+ 	u8 pipe_in;
+ 	u8 out_ep[RTW_USB_EP_MAX];
+ 	int qsel_to_ep[TX_DESC_QSEL_MAX];
+-	u8 usb_txagg_num;
+ 
+ 	struct workqueue_struct *txwq, *rxwq;
+ 
 -- 
 2.41.0
 
