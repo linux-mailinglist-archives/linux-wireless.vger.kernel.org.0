@@ -2,38 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 324CE740A0A
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jun 2023 09:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4893B740A02
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jun 2023 09:56:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231836AbjF1H4d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Jun 2023 03:56:33 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:41438 "EHLO
+        id S231656AbjF1H4N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Jun 2023 03:56:13 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:41410 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229652AbjF1HyO (ORCPT
+        with ESMTP id S231143AbjF1HyN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Jun 2023 03:54:14 -0400
-X-UUID: a7779334158211ee9cb5633481061a41-20230628
+        Wed, 28 Jun 2023 03:54:13 -0400
+X-UUID: a79c305e158211ee9cb5633481061a41-20230628
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=kFG5BbBk6Z4khU778jwNXVIqj0Ay4jexiae7zGfqS2o=;
-        b=cITopDN+qJ+ZjadolLM1xgqcgsPj8lKv9bffz5pZiZVgpk4khrHm1lMXFhRwInmZk4NkW06buhQhOax+U6N/oVDxhl9DdLkLzO7OcgcpHcuLmXGVjxeDOPcvJv3o1+7gZPn2ureUBTuMdfH/myceZ6EPZqEfCEA5lYJX3qwsK9g=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=7cmjMQYE4Wi2vG/cNP5QXV2aRACsbiKXLTMDyZbsip8=;
+        b=bRu8OIq1+4DbCMN/omu0cPtxmCnCbEyhKZR4phTkrsq9cE06vLEjY5D8Od+7jGLQBHFGf9lMBoNkQRspK2+h87vz6pPowhChjTnEPzN8mYUeRsuzxJC45hfjO8CUBd9xfvj2UyJc4fcoXHl0ctx1rLMvfQEhSVZzhnlErDCY7lA=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.27,REQID:71ec22dd-dc11-43e6-ad47-9dca57cdaff0,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:01c9525,CLOUDID:da889b0d-c22b-45ab-8a43-3004e9216b56,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-        NO
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: a7779334158211ee9cb5633481061a41-20230628
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+X-CID-O-INFO: VERSION:1.1.27,REQID:b3bf7d85-e8bf-4119-a394-3ede21ed6b0a,IP:0,U
+        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+        ON:release,TS:70
+X-CID-INFO: VERSION:1.1.27,REQID:b3bf7d85-e8bf-4119-a394-3ede21ed6b0a,IP:0,URL
+        :0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTI
+        ON:quarantine,TS:70
+X-CID-META: VersionHash:01c9525,CLOUDID:db889b0d-c22b-45ab-8a43-3004e9216b56,B
+        ulkID:230628150901ZVLWP1JA,BulkQuantity:0,Recheck:0,SF:17|19|48|38|29|28,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
+        L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_SDM,TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,
+        TF_CID_SPAM_FSD,TF_CID_SPAM_ULN
+X-UUID: a79c305e158211ee9cb5633481061a41-20230628
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
         (envelope-from <deren.wu@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 54329994; Wed, 28 Jun 2023 15:08:59 +0800
+        with ESMTP id 691542264; Wed, 28 Jun 2023 15:08:59 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1118.26; Wed, 28 Jun 2023 15:08:58 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
@@ -47,9 +51,9 @@ CC:     Sean Wang <sean.wang@mediatek.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH 05/11] wifi: mt76: mt7921: move acpi_sar code in mt792x-lib module
-Date:   Wed, 28 Jun 2023 15:07:18 +0800
-Message-ID: <3cf24da1a670c4ce1e09f43842e47e79fd5d9b91.1687920269.git.deren.wu@mediatek.com>
+Subject: [PATCH 06/11] wifi: mt76: mt792x: introduce mt792x-usb module
+Date:   Wed, 28 Jun 2023 15:07:19 +0800
+Message-ID: <c7ff1c22514fe76e664992b297aaf0a8c297002f.1687920269.git.deren.wu@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <cover.1687920269.git.deren.wu@mediatek.com>
 References: <cover.1687920269.git.deren.wu@mediatek.com>
@@ -62,717 +66,671 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Move acpi_sar code in mt792x-lib module since it is shared between
-mt7921 and mt7925 driver.
+Add usb shared code between mt7921 and mt7925 chipset to mt792x-usb module.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/Makefile   |   1 +
- .../wireless/mediatek/mt76/mt7921/Makefile    |   1 -
- .../wireless/mediatek/mt76/mt7921/acpi_sar.h  | 105 ---------------
- .../net/wireless/mediatek/mt76/mt7921/init.c  |   2 +-
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  11 +-
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |   2 +-
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  24 ----
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  23 ++++
- .../{mt7921/acpi_sar.c => mt792x_acpi_sar.c}  | 125 ++++++++++--------
- .../wireless/mediatek/mt76/mt792x_acpi_sar.h  | 105 +++++++++++++++
- 10 files changed, 202 insertions(+), 197 deletions(-)
- delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h
- rename drivers/net/wireless/mediatek/mt76/{mt7921/acpi_sar.c => mt792x_acpi_sar.c} (64%)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h
+ drivers/net/wireless/mediatek/mt76/Kconfig    |   4 +
+ drivers/net/wireless/mediatek/mt76/Makefile   |   2 +
+ .../net/wireless/mediatek/mt76/mt7921/Kconfig |   2 +-
+ .../wireless/mediatek/mt76/mt7921/Makefile    |   2 +-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |   8 -
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   | 162 ++++++--------
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |  13 ++
+ .../mt76/{mt7921/usb_mac.c => mt792x_usb.c}   | 203 +++++++++++-------
+ 8 files changed, 208 insertions(+), 188 deletions(-)
+ rename drivers/net/wireless/mediatek/mt76/{mt7921/usb_mac.c => mt792x_usb.c} (51%)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/Kconfig b/drivers/net/wireless/mediatek/mt76/Kconfig
+index 1ddf195597a8..7eb1b0b63d11 100644
+--- a/drivers/net/wireless/mediatek/mt76/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/Kconfig
+@@ -33,6 +33,10 @@ config MT792x_LIB
+ 	tristate
+ 	select MT76_CONNAC_LIB
+ 
++config MT792x_USB
++	tristate
++	select MT76_USB
++
+ source "drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig"
+ source "drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig"
+ source "drivers/net/wireless/mediatek/mt76/mt7603/Kconfig"
 diff --git a/drivers/net/wireless/mediatek/mt76/Makefile b/drivers/net/wireless/mediatek/mt76/Makefile
-index d6231948dd6e..f8a1928d62b2 100644
+index f8a1928d62b2..85c4799be954 100644
 --- a/drivers/net/wireless/mediatek/mt76/Makefile
 +++ b/drivers/net/wireless/mediatek/mt76/Makefile
-@@ -33,6 +33,7 @@ mt76-connac-lib-y := mt76_connac_mcu.o mt76_connac_mac.o mt76_connac3_mac.o
+@@ -6,6 +6,7 @@ obj-$(CONFIG_MT76x02_LIB) += mt76x02-lib.o
+ obj-$(CONFIG_MT76x02_USB) += mt76x02-usb.o
+ obj-$(CONFIG_MT76_CONNAC_LIB) += mt76-connac-lib.o
+ obj-$(CONFIG_MT792x_LIB) += mt792x-lib.o
++obj-$(CONFIG_MT792x_USB) += mt792x-usb.o
  
+ mt76-y := \
+ 	mmio.o util.o trace.o dma.o mac80211.o debugfs.o eeprom.o \
+@@ -34,6 +35,7 @@ mt76-connac-lib-y := mt76_connac_mcu.o mt76_connac_mac.o mt76_connac3_mac.o
  mt792x-lib-y := mt792x_core.o mt792x_mac.o mt792x_trace.o \
  		mt792x_debugfs.o mt792x_dma.o
-+mt792x-lib-$(CONFIG_ACPI) += mt792x_acpi_sar.o
+ mt792x-lib-$(CONFIG_ACPI) += mt792x_acpi_sar.o
++mt792x-usb-y := mt792x_usb.o
  
  obj-$(CONFIG_MT76x0_COMMON) += mt76x0/
  obj-$(CONFIG_MT76x2_COMMON) += mt76x2/
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+index b92630cdf88b..7ed51e057857 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+@@ -27,7 +27,7 @@ config MT7921S
+ 
+ config MT7921U
+ 	tristate "MediaTek MT7921U (USB) support"
+-	select MT76_USB
++	select MT792x_USB
+ 	select MT7921_COMMON
+ 	depends on MAC80211
+ 	depends on USB
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-index fd82dff76dae..f380ec4b6de1 100644
+index f380ec4b6de1..964eb55824cd 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-@@ -7,7 +7,6 @@ obj-$(CONFIG_MT7921U) += mt7921u.o
- 
- mt7921-common-y := mac.o mcu.o main.o init.o debugfs.o
+@@ -9,4 +9,4 @@ mt7921-common-y := mac.o mcu.o main.o init.o debugfs.o
  mt7921-common-$(CONFIG_NL80211_TESTMODE) += testmode.o
--mt7921-common-$(CONFIG_ACPI) += acpi_sar.o
  mt7921e-y := pci.o pci_mac.o pci_mcu.o dma.o
  mt7921s-y := sdio.o sdio_mac.o sdio_mcu.o
- mt7921u-y := usb.o usb_mac.o
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h b/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h
-deleted file mode 100644
-index 6f2c4a572572..000000000000
---- a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h
-+++ /dev/null
-@@ -1,105 +0,0 @@
--/* SPDX-License-Identifier: ISC */
--/* Copyright (C) 2022 MediaTek Inc. */
--
--#ifndef __MT7921_ACPI_SAR_H
--#define __MT7921_ACPI_SAR_H
--
--#define MT7921_ASAR_MIN_DYN		1
--#define MT7921_ASAR_MAX_DYN		8
--#define MT7921_ASAR_MIN_GEO		3
--#define MT7921_ASAR_MAX_GEO		8
--#define MT7921_ASAR_MIN_FG		8
--
--#define MT7921_ACPI_MTCL		"MTCL"
--#define MT7921_ACPI_MTDS		"MTDS"
--#define MT7921_ACPI_MTGS		"MTGS"
--#define MT7921_ACPI_MTFG		"MTFG"
--
--struct mt7921_asar_dyn_limit {
--	u8 idx;
--	u8 frp[5];
--} __packed;
--
--struct mt7921_asar_dyn {
--	u8 names[4];
--	u8 enable;
--	u8 nr_tbl;
--	DECLARE_FLEX_ARRAY(struct mt7921_asar_dyn_limit, tbl);
--} __packed;
--
--struct mt7921_asar_dyn_limit_v2 {
--	u8 idx;
--	u8 frp[11];
--} __packed;
--
--struct mt7921_asar_dyn_v2 {
--	u8 names[4];
--	u8 enable;
--	u8 rsvd;
--	u8 nr_tbl;
--	DECLARE_FLEX_ARRAY(struct mt7921_asar_dyn_limit_v2, tbl);
--} __packed;
--
--struct mt7921_asar_geo_band {
--	u8 pwr;
--	u8 offset;
--} __packed;
--
--struct mt7921_asar_geo_limit {
--	u8 idx;
--	/* 0:2G, 1:5G */
--	struct mt7921_asar_geo_band band[2];
--} __packed;
--
--struct mt7921_asar_geo {
--	u8 names[4];
--	u8 version;
--	u8 nr_tbl;
--	DECLARE_FLEX_ARRAY(struct mt7921_asar_geo_limit, tbl);
--} __packed;
--
--struct mt7921_asar_geo_limit_v2 {
--	u8 idx;
--	/* 0:2G, 1:5G, 2:6G */
--	struct mt7921_asar_geo_band band[3];
--} __packed;
--
--struct mt7921_asar_geo_v2 {
--	u8 names[4];
--	u8 version;
--	u8 rsvd;
--	u8 nr_tbl;
--	DECLARE_FLEX_ARRAY(struct mt7921_asar_geo_limit_v2, tbl);
--} __packed;
--
--struct mt7921_asar_cl {
--	u8 names[4];
--	u8 version;
--	u8 mode_6g;
--	u8 cl6g[6];
--} __packed;
--
--struct mt7921_asar_fg {
--	u8 names[4];
--	u8 version;
--	u8 rsvd;
--	u8 nr_flag;
--	u8 rsvd1;
--	u8 flag[];
--} __packed;
--
--struct mt7921_acpi_sar {
--	u8 ver;
--	union {
--		struct mt7921_asar_dyn *dyn;
--		struct mt7921_asar_dyn_v2 *dyn_v2;
--	};
--	union {
--		struct mt7921_asar_geo *geo;
--		struct mt7921_asar_geo_v2 *geo_v2;
--	};
--	struct mt7921_asar_cl *countrylist;
--	struct mt7921_asar_fg *fg;
--};
--
--#endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 3ff0205919c2..7b8876bf8fc8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -230,7 +230,7 @@ int mt7921_register_device(struct mt792x_dev *dev)
- 	if (!mt76_is_mmio(&dev->mt76))
- 		hw->extra_tx_headroom += MT_SDIO_TXD_SIZE + MT_SDIO_HDR_SIZE;
- 
--	mt7921_init_acpi_sar(dev);
-+	mt792x_init_acpi_sar(dev);
- 
- 	ret = mt792x_init_wcid(dev);
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 73f29fed216f..0844d28b3223 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1153,19 +1153,16 @@ int mt7921_set_tx_sar_pwr(struct ieee80211_hw *hw,
- 			  const struct cfg80211_sar_specs *sar)
- {
- 	struct mt76_phy *mphy = hw->priv;
--	int err;
- 
- 	if (sar) {
--		err = mt76_init_sar_power(hw, sar);
-+		int err = mt76_init_sar_power(hw, sar);
-+
- 		if (err)
- 			return err;
- 	}
-+	mt792x_init_acpi_sar_power(mt792x_hw_phy(hw), !sar);
- 
--	mt7921_init_acpi_sar_power(mt792x_hw_phy(hw), !sar);
--
--	err = mt76_connac_mcu_set_rate_txpower(mphy);
--
--	return err;
-+	return mt76_connac_mcu_set_rate_txpower(mphy);
- }
- 
- static int mt7921_set_sar_specs(struct ieee80211_hw *hw,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index bd40ca489447..e9caf750bca5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1197,7 +1197,7 @@ int __mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
- 	} __packed req = {
- 		.idx = idx,
- 		.env = env_cap,
--		.acpi_conf = mt7921_acpi_get_flags(&dev->phy),
-+		.acpi_conf = mt792x_acpi_get_flags(&dev->phy),
- 	};
- 	int ret, valid_cnt = 0;
- 	u8 i, *pos;
+-mt7921u-y := usb.o usb_mac.o
++mt7921u-y := usb.o
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 0c60a1559041..3ba873ec6bc4 100644
+index 3ba873ec6bc4..cb22be083242 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -6,7 +6,6 @@
+@@ -332,14 +332,6 @@ void mt7921_usb_sdio_tx_complete_skb(struct mt76_dev *mdev,
+ bool mt7921_usb_sdio_tx_status_data(struct mt76_dev *mdev, u8 *update);
  
- #include "../mt792x.h"
- #include "regs.h"
--#include "acpi_sar.h"
- 
- #define MT7921_PM_TIMEOUT		(HZ / 12)
- #define MT7921_HW_SCAN_TIMEOUT		(HZ / 10)
-@@ -345,29 +344,6 @@ int mt7921_mcu_uni_add_beacon_offload(struct mt792x_dev *dev,
+ /* usb */
+-#define MT_USB_TYPE_VENDOR	(USB_TYPE_VENDOR | 0x1f)
+-#define MT_USB_TYPE_UHW_VENDOR	(USB_TYPE_VENDOR | 0x1e)
+-
+-int mt7921u_mcu_power_on(struct mt792x_dev *dev);
+-int mt7921u_wfsys_reset(struct mt792x_dev *dev);
+-int mt7921u_dma_init(struct mt792x_dev *dev, bool resume);
+-int mt7921u_init_reset(struct mt792x_dev *dev);
+-int mt7921u_mac_reset(struct mt792x_dev *dev);
+ int mt7921_mcu_uni_add_beacon_offload(struct mt792x_dev *dev,
  				      struct ieee80211_hw *hw,
  				      struct ieee80211_vif *vif,
- 				      bool enable);
--#ifdef CONFIG_ACPI
--int mt7921_init_acpi_sar(struct mt792x_dev *dev);
--int mt7921_init_acpi_sar_power(struct mt792x_phy *phy, bool set_default);
--u8 mt7921_acpi_get_flags(struct mt792x_phy *phy);
--#else
--static inline int
--mt7921_init_acpi_sar(struct mt792x_dev *dev)
--{
--	return 0;
--}
--
--static inline int
--mt7921_init_acpi_sar_power(struct mt792x_phy *phy, bool set_default)
--{
--	return 0;
--}
--
--static inline u8
--mt7921_acpi_get_flags(struct mt792x_phy *phy)
--{
--	return 0;
--}
--#endif
- int mt7921_set_tx_sar_pwr(struct ieee80211_hw *hw,
- 			  const struct cfg80211_sar_specs *sar);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index 0a31e7076324..c3981bc893ac 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -24,83 +24,6 @@ static const struct usb_device_id mt7921u_device_table[] = {
+ 	{ },
+ };
  
+-static u32 mt7921u_rr(struct mt76_dev *dev, u32 addr)
+-{
+-	u32 ret;
+-
+-	mutex_lock(&dev->usb.usb_ctrl_mtx);
+-	ret = ___mt76u_rr(dev, MT_VEND_READ_EXT,
+-			  USB_DIR_IN | MT_USB_TYPE_VENDOR, addr);
+-	mutex_unlock(&dev->usb.usb_ctrl_mtx);
+-
+-	return ret;
+-}
+-
+-static void mt7921u_wr(struct mt76_dev *dev, u32 addr, u32 val)
+-{
+-	mutex_lock(&dev->usb.usb_ctrl_mtx);
+-	___mt76u_wr(dev, MT_VEND_WRITE_EXT,
+-		    USB_DIR_OUT | MT_USB_TYPE_VENDOR, addr, val);
+-	mutex_unlock(&dev->usb.usb_ctrl_mtx);
+-}
+-
+-static u32 mt7921u_rmw(struct mt76_dev *dev, u32 addr,
+-		       u32 mask, u32 val)
+-{
+-	mutex_lock(&dev->usb.usb_ctrl_mtx);
+-	val |= ___mt76u_rr(dev, MT_VEND_READ_EXT,
+-			   USB_DIR_IN | MT_USB_TYPE_VENDOR, addr) & ~mask;
+-	___mt76u_wr(dev, MT_VEND_WRITE_EXT,
+-		    USB_DIR_OUT | MT_USB_TYPE_VENDOR, addr, val);
+-	mutex_unlock(&dev->usb.usb_ctrl_mtx);
+-
+-	return val;
+-}
+-
+-static void mt7921u_copy(struct mt76_dev *dev, u32 offset,
+-			 const void *data, int len)
+-{
+-	struct mt76_usb *usb = &dev->usb;
+-	int ret, i = 0, batch_len;
+-	const u8 *val = data;
+-
+-	len = round_up(len, 4);
+-
+-	mutex_lock(&usb->usb_ctrl_mtx);
+-	while (i < len) {
+-		batch_len = min_t(int, usb->data_len, len - i);
+-		memcpy(usb->data, val + i, batch_len);
+-		ret = __mt76u_vendor_request(dev, MT_VEND_WRITE_EXT,
+-					     USB_DIR_OUT | MT_USB_TYPE_VENDOR,
+-					     (offset + i) >> 16, offset + i,
+-					     usb->data, batch_len);
+-		if (ret < 0)
+-			break;
+-
+-		i += batch_len;
+-	}
+-	mutex_unlock(&usb->usb_ctrl_mtx);
+-}
+-
+-int mt7921u_mcu_power_on(struct mt792x_dev *dev)
+-{
+-	int ret;
+-
+-	ret = mt76u_vendor_request(&dev->mt76, MT_VEND_POWER_ON,
+-				   USB_DIR_OUT | MT_USB_TYPE_VENDOR,
+-				   0x0, 0x1, NULL, 0);
+-	if (ret)
+-		return ret;
+-
+-	if (!mt76_poll_msec(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_PWR_ON,
+-			    MT_TOP_MISC2_FW_PWR_ON, 500)) {
+-		dev_err(dev->mt76.dev, "Timeout for power on\n");
+-		ret = -EIO;
+-	}
+-
+-	return ret;
+-}
+-
+ static int
+ mt7921u_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 			 int cmd, int *seq)
+@@ -155,20 +78,69 @@ static int mt7921u_mcu_init(struct mt792x_dev *dev)
+ 	return 0;
+ }
+ 
+-static void mt7921u_stop(struct ieee80211_hw *hw)
++static int mt7921u_mac_reset(struct mt792x_dev *dev)
+ {
+-	struct mt792x_dev *dev = mt792x_hw_dev(hw);
++	int err;
++
++	mt76_txq_schedule_all(&dev->mphy);
++	mt76_worker_disable(&dev->mt76.tx_worker);
++
++	set_bit(MT76_RESET, &dev->mphy.state);
++	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 
++	wake_up(&dev->mt76.mcu.wait);
++	skb_queue_purge(&dev->mt76.mcu.res_q);
++
++	mt76u_stop_rx(&dev->mt76);
+ 	mt76u_stop_tx(&dev->mt76);
+-	mt7921_stop(hw);
++
++	mt792xu_wfsys_reset(dev);
++
++	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
++	err = mt76u_resume_rx(&dev->mt76);
++	if (err)
++		goto out;
++
++	err = mt792xu_mcu_power_on(dev);
++	if (err)
++		goto out;
++
++	err = mt792xu_dma_init(dev, false);
++	if (err)
++		goto out;
++
++	mt76_wr(dev, MT_SWDEF_MODE, MT_SWDEF_NORMAL_MODE);
++	mt76_set(dev, MT_UDMA_TX_QSEL, MT_FW_DL_EN);
++
++	err = mt7921_run_firmware(dev);
++	if (err)
++		goto out;
++
++	mt76_clear(dev, MT_UDMA_TX_QSEL, MT_FW_DL_EN);
++
++	err = mt7921_mcu_set_eeprom(dev);
++	if (err)
++		goto out;
++
++	err = mt7921_mac_init(dev);
++	if (err)
++		goto out;
++
++	err = __mt7921_start(&dev->phy);
++out:
++	clear_bit(MT76_RESET, &dev->mphy.state);
++
++	mt76_worker_enable(&dev->mt76.tx_worker);
++
++	return err;
+ }
+ 
+-static void mt7921u_cleanup(struct mt792x_dev *dev)
++static void mt7921u_stop(struct ieee80211_hw *hw)
+ {
+-	clear_bit(MT76_STATE_INITIALIZED, &dev->mphy.state);
+-	mt7921u_wfsys_reset(dev);
+-	skb_queue_purge(&dev->mt76.mcu.res_q);
+-	mt76u_queues_deinit(&dev->mt76);
++	struct mt792x_dev *dev = mt792x_hw_dev(hw);
++
++	mt76u_stop_tx(&dev->mt76);
++	mt7921_stop(hw);
+ }
+ 
+ static int mt7921u_probe(struct usb_interface *usb_intf,
+@@ -193,15 +165,15 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
+ 	};
+ 	static const struct mt792x_hif_ops hif_ops = {
+ 		.mcu_init = mt7921u_mcu_init,
+-		.init_reset = mt7921u_init_reset,
++		.init_reset = mt792xu_init_reset,
+ 		.reset = mt7921u_mac_reset,
+ 	};
+ 	static struct mt76_bus_ops bus_ops = {
+-		.rr = mt7921u_rr,
+-		.wr = mt7921u_wr,
+-		.rmw = mt7921u_rmw,
++		.rr = mt792xu_rr,
++		.wr = mt792xu_wr,
++		.rmw = mt792xu_rmw,
+ 		.read_copy = mt76u_read_copy,
+-		.write_copy = mt7921u_copy,
++		.write_copy = mt792xu_copy,
+ 		.type = MT76_BUS_USB,
+ 	};
+ 	struct usb_device *udev = interface_to_usbdev(usb_intf);
+@@ -240,12 +212,12 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
+ 	dev_dbg(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
+ 
+ 	if (mt76_get_field(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_N9_RDY)) {
+-		ret = mt7921u_wfsys_reset(dev);
++		ret = mt792xu_wfsys_reset(dev);
+ 		if (ret)
+ 			goto error;
+ 	}
+ 
+-	ret = mt7921u_mcu_power_on(dev);
++	ret = mt792xu_mcu_power_on(dev);
+ 	if (ret)
+ 		goto error;
+ 
+@@ -257,7 +229,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
+ 	if (ret)
+ 		goto error;
+ 
+-	ret = mt7921u_dma_init(dev, false);
++	ret = mt792xu_dma_init(dev, false);
+ 	if (ret)
+ 		goto error;
+ 
+@@ -291,7 +263,7 @@ static void mt7921u_disconnect(struct usb_interface *usb_intf)
+ 		return;
+ 
+ 	mt76_unregister_device(&dev->mt76);
+-	mt7921u_cleanup(dev);
++	mt792xu_cleanup(dev);
+ 
+ 	usb_set_intfdata(usb_intf, NULL);
+ 	usb_put_dev(interface_to_usbdev(usb_intf));
+@@ -350,7 +322,7 @@ static int mt7921u_resume(struct usb_interface *intf)
+ 	}
+ 
+ 	if (reinit || mt792x_dma_need_reinit(dev)) {
+-		err = mt7921u_dma_init(dev, true);
++		err = mt792xu_dma_init(dev, true);
+ 		if (err)
+ 			goto failed;
+ 	}
 diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 54ff9627530f..1ed688186fe7 100644
+index 1ed688186fe7..b226a863e5de 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt792x.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -9,6 +9,7 @@
+@@ -294,6 +294,19 @@ int mt792x_init_wcid(struct mt792x_dev *dev);
+ int mt792x_mcu_drv_pmctrl(struct mt792x_dev *dev);
+ int mt792x_mcu_fw_pmctrl(struct mt792x_dev *dev);
  
- #include "mt76_connac_mcu.h"
- #include "mt792x_regs.h"
-+#include "mt792x_acpi_sar.h"
- 
- #define MT792x_MAX_INTERFACES	4
- #define MT792x_WTBL_SIZE	20
-@@ -297,4 +298,26 @@ int __mt792xe_mcu_drv_pmctrl(struct mt792x_dev *dev);
++/* usb */
++#define MT_USB_TYPE_VENDOR	(USB_TYPE_VENDOR | 0x1f)
++#define MT_USB_TYPE_UHW_VENDOR	(USB_TYPE_VENDOR | 0x1e)
++int mt792xu_dma_init(struct mt792x_dev *dev, bool resume);
++int mt792xu_mcu_power_on(struct mt792x_dev *dev);
++int mt792xu_wfsys_reset(struct mt792x_dev *dev);
++int mt792xu_init_reset(struct mt792x_dev *dev);
++u32 mt792xu_rr(struct mt76_dev *dev, u32 addr);
++void mt792xu_wr(struct mt76_dev *dev, u32 addr, u32 val);
++u32 mt792xu_rmw(struct mt76_dev *dev, u32 addr, u32 mask, u32 val);
++void mt792xu_copy(struct mt76_dev *dev, u32 offset, const void *data, int len);
++void mt792xu_cleanup(struct mt792x_dev *dev);
++
+ int __mt792xe_mcu_drv_pmctrl(struct mt792x_dev *dev);
  int mt792xe_mcu_drv_pmctrl(struct mt792x_dev *dev);
  int mt792xe_mcu_fw_pmctrl(struct mt792x_dev *dev);
- 
-+#ifdef CONFIG_ACPI
-+int mt792x_init_acpi_sar(struct mt792x_dev *dev);
-+int mt792x_init_acpi_sar_power(struct mt792x_phy *phy, bool set_default);
-+u8 mt792x_acpi_get_flags(struct mt792x_phy *phy);
-+#else
-+static inline int mt792x_init_acpi_sar(struct mt792x_dev *dev)
-+{
-+	return 0;
-+}
-+
-+static inline int mt792x_init_acpi_sar_power(struct mt792x_phy *phy,
-+					     bool set_default)
-+{
-+	return 0;
-+}
-+
-+static inline u8 mt792x_acpi_get_flags(struct mt792x_phy *phy)
-+{
-+	return 0;
-+}
-+#endif
-+
- #endif /* __MT7925_H */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c
-similarity index 64%
-rename from drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
-rename to drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c
-index 057767ab45ff..303c0f5c9c66 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c
-@@ -1,15 +1,15 @@
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+similarity index 51%
+rename from drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
+rename to drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+index f7cb6c542af5..97480c9c9974 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+@@ -1,5 +1,5 @@
  // SPDX-License-Identifier: ISC
--/* Copyright (C) 2022 MediaTek Inc. */
-+/* Copyright (C) 2023 MediaTek Inc. */
+-/* Copyright (C) 2022 MediaTek Inc.
++/* Copyright (C) 2023 MediaTek Inc.
+  *
+  * Author: Lorenzo Bianconi <lorenzo@kernel.org>
+  */
+@@ -8,11 +8,99 @@
+ #include <linux/module.h>
+ #include <linux/usb.h>
  
- #include <linux/acpi.h>
 -#include "mt7921.h"
+-#include "mcu.h"
+-#include "../mt76_connac2_mac.h"
 +#include "mt792x.h"
++#include "mt76_connac2_mac.h"
  
- static int
--mt7921_acpi_read(struct mt792x_dev *dev, u8 *method, u8 **tbl, u32 *len)
-+mt792x_acpi_read(struct mt792x_dev *dev, u8 *method, u8 **tbl, u32 *len)
- {
- 	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER, NULL };
--	union acpi_object *sar_root, *sar_unit;
- 	struct mt76_dev *mdev = &dev->mt76;
-+	union acpi_object *sar_root;
- 	acpi_handle root, handle;
- 	acpi_status status;
- 	u32 i = 0;
-@@ -45,18 +45,20 @@ mt7921_acpi_read(struct mt792x_dev *dev, u8 *method, u8 **tbl, u32 *len)
- 			goto free;
- 		}
- 	}
+-static u32 mt7921u_uhw_rr(struct mt76_dev *dev, u32 addr)
++u32 mt792xu_rr(struct mt76_dev *dev, u32 addr)
++{
++	u32 ret;
 +
- 	if (len)
- 		*len = sar_root->package.count;
- 
- 	for (i = 0; i < sar_root->package.count; i++) {
--		sar_unit = &sar_root->package.elements[i];
-+		union acpi_object *sar_unit = &sar_root->package.elements[i];
- 
- 		if (sar_unit->type != ACPI_TYPE_INTEGER)
- 			break;
++	mutex_lock(&dev->usb.usb_ctrl_mtx);
++	ret = ___mt76u_rr(dev, MT_VEND_READ_EXT,
++			  USB_DIR_IN | MT_USB_TYPE_VENDOR, addr);
++	mutex_unlock(&dev->usb.usb_ctrl_mtx);
 +
- 		*(*tbl + i) = (u8)sar_unit->integer.value;
- 	}
--	ret = (i == sar_root->package.count) ? 0 : -EINVAL;
- 
-+	ret = i == sar_root->package.count ? 0 : -EINVAL;
- free:
- 	kfree(sar_root);
- 
-@@ -64,36 +66,37 @@ mt7921_acpi_read(struct mt792x_dev *dev, u8 *method, u8 **tbl, u32 *len)
- }
- 
- /* MTCL : Country List Table for 6G band */
--static int
--mt7921_asar_acpi_read_mtcl(struct mt792x_dev *dev, u8 **table, u8 *version)
-+static void
-+mt792x_asar_acpi_read_mtcl(struct mt792x_dev *dev, u8 **table, u8 *version)
- {
--	*version = (mt7921_acpi_read(dev, MT7921_ACPI_MTCL, table, NULL) < 0)
--		   ? 1 : 2;
--	return 0;
-+	if (mt792x_acpi_read(dev, MT792x_ACPI_MTCL, table, NULL) < 0)
-+		*version = 1;
-+	else
-+		*version = 2;
- }
- 
- /* MTDS : Dynamic SAR Power Table */
- static int
--mt7921_asar_acpi_read_mtds(struct mt792x_dev *dev, u8 **table, u8 version)
-+mt792x_asar_acpi_read_mtds(struct mt792x_dev *dev, u8 **table, u8 version)
- {
- 	int len, ret, sarlen, prelen, tblcnt;
- 	bool enable;
- 
--	ret = mt7921_acpi_read(dev, MT7921_ACPI_MTDS, table, &len);
-+	ret = mt792x_acpi_read(dev, MT792x_ACPI_MTDS, table, &len);
- 	if (ret)
- 		return ret;
- 
- 	/* Table content validation */
- 	switch (version) {
- 	case 1:
--		enable = ((struct mt7921_asar_dyn *)*table)->enable;
--		sarlen = sizeof(struct mt7921_asar_dyn_limit);
--		prelen = sizeof(struct mt7921_asar_dyn);
-+		enable = ((struct mt792x_asar_dyn *)*table)->enable;
-+		sarlen = sizeof(struct mt792x_asar_dyn_limit);
-+		prelen = sizeof(struct mt792x_asar_dyn);
- 		break;
- 	case 2:
--		enable = ((struct mt7921_asar_dyn_v2 *)*table)->enable;
--		sarlen = sizeof(struct mt7921_asar_dyn_limit_v2);
--		prelen = sizeof(struct mt7921_asar_dyn_v2);
-+		enable = ((struct mt792x_asar_dyn_v2 *)*table)->enable;
-+		sarlen = sizeof(struct mt792x_asar_dyn_limit_v2);
-+		prelen = sizeof(struct mt792x_asar_dyn_v2);
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -101,88 +104,89 @@ mt7921_asar_acpi_read_mtds(struct mt792x_dev *dev, u8 **table, u8 version)
- 
- 	tblcnt = (len - prelen) / sarlen;
- 	if (!enable ||
--	    tblcnt > MT7921_ASAR_MAX_DYN || tblcnt < MT7921_ASAR_MIN_DYN)
--		ret = -EINVAL;
-+	    tblcnt > MT792x_ASAR_MAX_DYN || tblcnt < MT792x_ASAR_MIN_DYN)
-+		return -EINVAL;
- 
--	return ret;
-+	return 0;
- }
- 
- /* MTGS : Geo SAR Power Table */
- static int
--mt7921_asar_acpi_read_mtgs(struct mt792x_dev *dev, u8 **table, u8 version)
-+mt792x_asar_acpi_read_mtgs(struct mt792x_dev *dev, u8 **table, u8 version)
- {
--	int len, ret = 0, sarlen, prelen, tblcnt;
-+	int len, ret, sarlen, prelen, tblcnt;
- 
--	ret = mt7921_acpi_read(dev, MT7921_ACPI_MTGS, table, &len);
-+	ret = mt792x_acpi_read(dev, MT792x_ACPI_MTGS, table, &len);
- 	if (ret)
- 		return ret;
- 
- 	/* Table content validation */
- 	switch (version) {
- 	case 1:
--		sarlen = sizeof(struct mt7921_asar_geo_limit);
--		prelen = sizeof(struct mt7921_asar_geo);
-+		sarlen = sizeof(struct mt792x_asar_geo_limit);
-+		prelen = sizeof(struct mt792x_asar_geo);
- 		break;
- 	case 2:
--		sarlen = sizeof(struct mt7921_asar_geo_limit_v2);
--		prelen = sizeof(struct mt7921_asar_geo_v2);
-+		sarlen = sizeof(struct mt792x_asar_geo_limit_v2);
-+		prelen = sizeof(struct mt792x_asar_geo_v2);
- 		break;
- 	default:
- 		return -EINVAL;
- 	}
- 
- 	tblcnt = (len - prelen) / sarlen;
--	if (tblcnt > MT7921_ASAR_MAX_GEO || tblcnt < MT7921_ASAR_MIN_GEO)
--		ret = -EINVAL;
-+	if (tblcnt > MT792x_ASAR_MAX_GEO || tblcnt < MT792x_ASAR_MIN_GEO)
-+		return -EINVAL;
- 
--	return ret;
-+	return 0;
- }
- 
- /* MTFG : Flag Table */
- static int
--mt7921_asar_acpi_read_mtfg(struct mt792x_dev *dev, u8 **table)
-+mt792x_asar_acpi_read_mtfg(struct mt792x_dev *dev, u8 **table)
- {
- 	int len, ret;
- 
--	ret = mt7921_acpi_read(dev, MT7921_ACPI_MTFG, table, &len);
-+	ret = mt792x_acpi_read(dev, MT792x_ACPI_MTFG, table, &len);
- 	if (ret)
- 		return ret;
- 
--	if (len < MT7921_ASAR_MIN_FG)
--		ret = -EINVAL;
-+	if (len < MT792x_ASAR_MIN_FG)
-+		return -EINVAL;
- 
--	return ret;
-+	return 0;
- }
- 
--int mt7921_init_acpi_sar(struct mt792x_dev *dev)
-+int mt792x_init_acpi_sar(struct mt792x_dev *dev)
- {
--	struct mt7921_acpi_sar *asar;
-+	struct mt792x_acpi_sar *asar;
- 	int ret;
- 
- 	asar = devm_kzalloc(dev->mt76.dev, sizeof(*asar), GFP_KERNEL);
- 	if (!asar)
- 		return -ENOMEM;
- 
--	mt7921_asar_acpi_read_mtcl(dev, (u8 **)&asar->countrylist, &asar->ver);
-+	mt792x_asar_acpi_read_mtcl(dev, (u8 **)&asar->countrylist, &asar->ver);
- 
- 	/* MTDS is mandatory. Return error if table is invalid */
--	ret = mt7921_asar_acpi_read_mtds(dev, (u8 **)&asar->dyn, asar->ver);
-+	ret = mt792x_asar_acpi_read_mtds(dev, (u8 **)&asar->dyn, asar->ver);
- 	if (ret) {
- 		devm_kfree(dev->mt76.dev, asar->dyn);
- 		devm_kfree(dev->mt76.dev, asar->countrylist);
- 		devm_kfree(dev->mt76.dev, asar);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mt792xu_rr);
 +
- 		return ret;
- 	}
- 
- 	/* MTGS is optional */
--	ret = mt7921_asar_acpi_read_mtgs(dev, (u8 **)&asar->geo, asar->ver);
-+	ret = mt792x_asar_acpi_read_mtgs(dev, (u8 **)&asar->geo, asar->ver);
- 	if (ret) {
- 		devm_kfree(dev->mt76.dev, asar->geo);
- 		asar->geo = NULL;
- 	}
- 
- 	/* MTFG is optional */
--	ret = mt7921_asar_acpi_read_mtfg(dev, (u8 **)&asar->fg);
-+	ret = mt792x_asar_acpi_read_mtfg(dev, (u8 **)&asar->fg);
- 	if (ret) {
- 		devm_kfree(dev->mt76.dev, asar->fg);
- 		asar->fg = NULL;
-@@ -191,13 +195,14 @@ int mt7921_init_acpi_sar(struct mt792x_dev *dev)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mt792x_init_acpi_sar);
- 
- static s8
--mt7921_asar_get_geo_pwr(struct mt792x_phy *phy,
-+mt792x_asar_get_geo_pwr(struct mt792x_phy *phy,
- 			enum nl80211_band band, s8 dyn_power)
- {
--	struct mt7921_acpi_sar *asar = phy->acpisar;
--	struct mt7921_asar_geo_band *band_pwr;
-+	struct mt792x_acpi_sar *asar = phy->acpisar;
-+	struct mt792x_asar_geo_band *band_pwr;
- 	s8 geo_power;
- 	u8 idx, max;
- 
-@@ -248,12 +253,12 @@ mt7921_asar_get_geo_pwr(struct mt792x_phy *phy,
- }
- 
- static s8
--mt7921_asar_range_pwr(struct mt792x_phy *phy,
-+mt792x_asar_range_pwr(struct mt792x_phy *phy,
- 		      const struct cfg80211_sar_freq_ranges *range,
- 		      u8 idx)
- {
- 	const struct cfg80211_sar_capa *capa = phy->mt76->hw->wiphy->sar_capa;
--	struct mt7921_acpi_sar *asar = phy->acpisar;
-+	struct mt792x_acpi_sar *asar = phy->acpisar;
- 	u8 *limit, band, max;
- 
- 	if (!capa)
-@@ -277,10 +282,10 @@ mt7921_asar_range_pwr(struct mt792x_phy *phy,
- 	else
- 		band = NL80211_BAND_2GHZ;
- 
--	return mt7921_asar_get_geo_pwr(phy, band, limit[idx]);
-+	return mt792x_asar_get_geo_pwr(phy, band, limit[idx]);
- }
- 
--int mt7921_init_acpi_sar_power(struct mt792x_phy *phy, bool set_default)
-+int mt792x_init_acpi_sar_power(struct mt792x_phy *phy, bool set_default)
- {
- 	const struct cfg80211_sar_capa *capa = phy->mt76->hw->wiphy->sar_capa;
- 	int i;
-@@ -300,22 +305,23 @@ int mt7921_init_acpi_sar_power(struct mt792x_phy *phy, bool set_default)
- 			continue;
- 
- 		frp->power = min_t(s8, set_default ? 127 : frp->power,
--				   mt7921_asar_range_pwr(phy, frp->range, i));
-+				   mt792x_asar_range_pwr(phy, frp->range, i));
- 	}
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mt792x_init_acpi_sar_power);
- 
--u8 mt7921_acpi_get_flags(struct mt792x_phy *phy)
-+u8 mt792x_acpi_get_flags(struct mt792x_phy *phy)
- {
--	struct mt7921_acpi_sar *acpisar = phy->acpisar;
--	struct mt7921_asar_fg *fg;
-+	struct mt792x_acpi_sar *acpisar = phy->acpisar;
-+	struct mt792x_asar_fg *fg;
- 	struct {
- 		u8 acpi_idx;
- 		u8 chip_idx;
- 	} map[] = {
--		{1, 1},
--		{4, 2},
-+		{ 1, 1 },
-+		{ 4, 2 },
- 	};
- 	u8 flags = BIT(0);
- 	int i, j;
-@@ -330,12 +336,15 @@ u8 mt7921_acpi_get_flags(struct mt792x_phy *phy)
- 	/* pickup necessary settings per device and
- 	 * translate the index of bitmap for chip command.
- 	 */
--	for (i = 0; i < fg->nr_flag; i++)
--		for (j = 0; j < ARRAY_SIZE(map); j++)
-+	for (i = 0; i < fg->nr_flag; i++) {
-+		for (j = 0; j < ARRAY_SIZE(map); j++) {
- 			if (fg->flag[i] == map[j].acpi_idx) {
- 				flags |= BIT(map[j].chip_idx);
- 				break;
- 			}
-+		}
++void mt792xu_wr(struct mt76_dev *dev, u32 addr, u32 val)
++{
++	mutex_lock(&dev->usb.usb_ctrl_mtx);
++	___mt76u_wr(dev, MT_VEND_WRITE_EXT,
++		    USB_DIR_OUT | MT_USB_TYPE_VENDOR, addr, val);
++	mutex_unlock(&dev->usb.usb_ctrl_mtx);
++}
++EXPORT_SYMBOL_GPL(mt792xu_wr);
++
++u32 mt792xu_rmw(struct mt76_dev *dev, u32 addr, u32 mask, u32 val)
++{
++	mutex_lock(&dev->usb.usb_ctrl_mtx);
++	val |= ___mt76u_rr(dev, MT_VEND_READ_EXT,
++			   USB_DIR_IN | MT_USB_TYPE_VENDOR, addr) & ~mask;
++	___mt76u_wr(dev, MT_VEND_WRITE_EXT,
++		    USB_DIR_OUT | MT_USB_TYPE_VENDOR, addr, val);
++	mutex_unlock(&dev->usb.usb_ctrl_mtx);
++
++	return val;
++}
++EXPORT_SYMBOL_GPL(mt792xu_rmw);
++
++void mt792xu_copy(struct mt76_dev *dev, u32 offset, const void *data, int len)
++{
++	struct mt76_usb *usb = &dev->usb;
++	int ret, i = 0, batch_len;
++	const u8 *val = data;
++
++	len = round_up(len, 4);
++
++	mutex_lock(&usb->usb_ctrl_mtx);
++	while (i < len) {
++		batch_len = min_t(int, usb->data_len, len - i);
++		memcpy(usb->data, val + i, batch_len);
++		ret = __mt76u_vendor_request(dev, MT_VEND_WRITE_EXT,
++					     USB_DIR_OUT | MT_USB_TYPE_VENDOR,
++					     (offset + i) >> 16, offset + i,
++					     usb->data, batch_len);
++		if (ret < 0)
++			break;
++
++		i += batch_len;
 +	}
++	mutex_unlock(&usb->usb_ctrl_mtx);
++}
++EXPORT_SYMBOL_GPL(mt792xu_copy);
++
++int mt792xu_mcu_power_on(struct mt792x_dev *dev)
++{
++	int ret;
++
++	ret = mt76u_vendor_request(&dev->mt76, MT_VEND_POWER_ON,
++				   USB_DIR_OUT | MT_USB_TYPE_VENDOR,
++				   0x0, 0x1, NULL, 0);
++	if (ret)
++		return ret;
++
++	if (!mt76_poll_msec(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_PWR_ON,
++			    MT_TOP_MISC2_FW_PWR_ON, 500)) {
++		dev_err(dev->mt76.dev, "Timeout for power on\n");
++		ret = -EIO;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mt792xu_mcu_power_on);
++
++void mt792xu_cleanup(struct mt792x_dev *dev)
++{
++	clear_bit(MT76_STATE_INITIALIZED, &dev->mphy.state);
++	mt792xu_wfsys_reset(dev);
++	skb_queue_purge(&dev->mt76.mcu.res_q);
++	mt76u_queues_deinit(&dev->mt76);
++}
++EXPORT_SYMBOL_GPL(mt792xu_cleanup);
++
++static u32 mt792xu_uhw_rr(struct mt76_dev *dev, u32 addr)
+ {
+ 	u32 ret;
  
- 	return flags;
+@@ -24,7 +112,7 @@ static u32 mt7921u_uhw_rr(struct mt76_dev *dev, u32 addr)
+ 	return ret;
  }
-+EXPORT_SYMBOL_GPL(mt792x_acpi_get_flags);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h
-new file mode 100644
-index 000000000000..d6d332e863ba
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h
-@@ -0,0 +1,105 @@
-+/* SPDX-License-Identifier: ISC */
-+/* Copyright (C) 2023 MediaTek Inc. */
-+
-+#ifndef __MT7921_ACPI_SAR_H
-+#define __MT7921_ACPI_SAR_H
-+
-+#define MT792x_ASAR_MIN_DYN		1
-+#define MT792x_ASAR_MAX_DYN		8
-+#define MT792x_ASAR_MIN_GEO		3
-+#define MT792x_ASAR_MAX_GEO		8
-+#define MT792x_ASAR_MIN_FG		8
-+
-+#define MT792x_ACPI_MTCL		"MTCL"
-+#define MT792x_ACPI_MTDS		"MTDS"
-+#define MT792x_ACPI_MTGS		"MTGS"
-+#define MT792x_ACPI_MTFG		"MTFG"
-+
-+struct mt792x_asar_dyn_limit {
-+	u8 idx;
-+	u8 frp[5];
-+} __packed;
-+
-+struct mt792x_asar_dyn {
-+	u8 names[4];
-+	u8 enable;
-+	u8 nr_tbl;
-+	DECLARE_FLEX_ARRAY(struct mt792x_asar_dyn_limit, tbl);
-+} __packed;
-+
-+struct mt792x_asar_dyn_limit_v2 {
-+	u8 idx;
-+	u8 frp[11];
-+} __packed;
-+
-+struct mt792x_asar_dyn_v2 {
-+	u8 names[4];
-+	u8 enable;
-+	u8 rsvd;
-+	u8 nr_tbl;
-+	DECLARE_FLEX_ARRAY(struct mt792x_asar_dyn_limit_v2, tbl);
-+} __packed;
-+
-+struct mt792x_asar_geo_band {
-+	u8 pwr;
-+	u8 offset;
-+} __packed;
-+
-+struct mt792x_asar_geo_limit {
-+	u8 idx;
-+	/* 0:2G, 1:5G */
-+	struct mt792x_asar_geo_band band[2];
-+} __packed;
-+
-+struct mt792x_asar_geo {
-+	u8 names[4];
-+	u8 version;
-+	u8 nr_tbl;
-+	DECLARE_FLEX_ARRAY(struct mt792x_asar_geo_limit, tbl);
-+} __packed;
-+
-+struct mt792x_asar_geo_limit_v2 {
-+	u8 idx;
-+	/* 0:2G, 1:5G, 2:6G */
-+	struct mt792x_asar_geo_band band[3];
-+} __packed;
-+
-+struct mt792x_asar_geo_v2 {
-+	u8 names[4];
-+	u8 version;
-+	u8 rsvd;
-+	u8 nr_tbl;
-+	DECLARE_FLEX_ARRAY(struct mt792x_asar_geo_limit_v2, tbl);
-+} __packed;
-+
-+struct mt792x_asar_cl {
-+	u8 names[4];
-+	u8 version;
-+	u8 mode_6g;
-+	u8 cl6g[6];
-+} __packed;
-+
-+struct mt792x_asar_fg {
-+	u8 names[4];
-+	u8 version;
-+	u8 rsvd;
-+	u8 nr_flag;
-+	u8 rsvd1;
-+	u8 flag[];
-+} __packed;
-+
-+struct mt792x_acpi_sar {
-+	u8 ver;
-+	union {
-+		struct mt792x_asar_dyn *dyn;
-+		struct mt792x_asar_dyn_v2 *dyn_v2;
-+	};
-+	union {
-+		struct mt792x_asar_geo *geo;
-+		struct mt792x_asar_geo_v2 *geo_v2;
-+	};
-+	struct mt792x_asar_cl *countrylist;
-+	struct mt792x_asar_fg *fg;
-+};
-+
-+#endif
+ 
+-static void mt7921u_uhw_wr(struct mt76_dev *dev, u32 addr, u32 val)
++static void mt792xu_uhw_wr(struct mt76_dev *dev, u32 addr, u32 val)
+ {
+ 	mutex_lock(&dev->usb.usb_ctrl_mtx);
+ 	___mt76u_wr(dev, MT_VEND_WRITE,
+@@ -32,7 +120,7 @@ static void mt7921u_uhw_wr(struct mt76_dev *dev, u32 addr, u32 val)
+ 	mutex_unlock(&dev->usb.usb_ctrl_mtx);
+ }
+ 
+-static void mt7921u_dma_prefetch(struct mt792x_dev *dev)
++static void mt792xu_dma_prefetch(struct mt792x_dev *dev)
+ {
+ 	mt76_rmw(dev, MT_UWFDMA0_TX_RING_EXT_CTRL(0),
+ 		 MT_WPDMA0_MAX_CNT_MASK, 4);
+@@ -70,9 +158,9 @@ static void mt7921u_dma_prefetch(struct mt792x_dev *dev)
+ 		 MT_WPDMA0_BASE_PTR_MASK,  0x2c0);
+ }
+ 
+-static void mt7921u_wfdma_init(struct mt792x_dev *dev)
++static void mt792xu_wfdma_init(struct mt792x_dev *dev)
+ {
+-	mt7921u_dma_prefetch(dev);
++	mt792xu_dma_prefetch(dev);
+ 
+ 	mt76_clear(dev, MT_UWFDMA0_GLO_CFG, MT_WFDMA0_GLO_CFG_OMIT_RX_INFO);
+ 	mt76_set(dev, MT_UWFDMA0_GLO_CFG,
+@@ -90,7 +178,7 @@ static void mt7921u_wfdma_init(struct mt792x_dev *dev)
+ 	mt76_set(dev, MT_WFDMA_DUMMY_CR, MT_WFDMA_NEED_REINIT);
+ }
+ 
+-static int mt7921u_dma_rx_evt_ep4(struct mt792x_dev *dev)
++static int mt792xu_dma_rx_evt_ep4(struct mt792x_dev *dev)
+ {
+ 	if (!mt76_poll(dev, MT_UWFDMA0_GLO_CFG,
+ 		       MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000))
+@@ -104,7 +192,7 @@ static int mt7921u_dma_rx_evt_ep4(struct mt792x_dev *dev)
+ 	return 0;
+ }
+ 
+-static void mt7921u_epctl_rst_opt(struct mt792x_dev *dev, bool reset)
++static void mt792xu_epctl_rst_opt(struct mt792x_dev *dev, bool reset)
+ {
+ 	u32 val;
+ 
+@@ -113,19 +201,19 @@ static void mt7921u_epctl_rst_opt(struct mt792x_dev *dev, bool reset)
+ 	 * bits[20,21]: in blk ep 4-5
+ 	 * bits[22]: in int ep 6
+ 	 */
+-	val = mt7921u_uhw_rr(&dev->mt76, MT_SSUSB_EPCTL_CSR_EP_RST_OPT);
++	val = mt792xu_uhw_rr(&dev->mt76, MT_SSUSB_EPCTL_CSR_EP_RST_OPT);
+ 	if (reset)
+ 		val |= GENMASK(9, 4) | GENMASK(22, 20);
+ 	else
+ 		val &= ~(GENMASK(9, 4) | GENMASK(22, 20));
+-	mt7921u_uhw_wr(&dev->mt76, MT_SSUSB_EPCTL_CSR_EP_RST_OPT, val);
++	mt792xu_uhw_wr(&dev->mt76, MT_SSUSB_EPCTL_CSR_EP_RST_OPT, val);
+ }
+ 
+-int mt7921u_dma_init(struct mt792x_dev *dev, bool resume)
++int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
+ {
+ 	int err;
+ 
+-	mt7921u_wfdma_init(dev);
++	mt792xu_wfdma_init(dev);
+ 
+ 	mt76_clear(dev, MT_UDMA_WLCFG_0, MT_WL_RX_FLUSH);
+ 
+@@ -139,35 +227,36 @@ int mt7921u_dma_init(struct mt792x_dev *dev, bool resume)
+ 	if (resume)
+ 		return 0;
+ 
+-	err = mt7921u_dma_rx_evt_ep4(dev);
++	err = mt792xu_dma_rx_evt_ep4(dev);
+ 	if (err)
+ 		return err;
+ 
+-	mt7921u_epctl_rst_opt(dev, false);
++	mt792xu_epctl_rst_opt(dev, false);
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mt792xu_dma_init);
+ 
+-int mt7921u_wfsys_reset(struct mt792x_dev *dev)
++int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+ {
+ 	u32 val;
+ 	int i;
+ 
+-	mt7921u_epctl_rst_opt(dev, false);
++	mt792xu_epctl_rst_opt(dev, false);
+ 
+-	val = mt7921u_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
++	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
+ 	val |= MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+-	mt7921u_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
++	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
+ 
+ 	usleep_range(10, 20);
+ 
+-	val = mt7921u_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
++	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
+ 	val &= ~MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+-	mt7921u_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
++	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
+ 
+-	mt7921u_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
++	mt792xu_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
+ 	for (i = 0; i < MT792x_WFSYS_INIT_RETRY_COUNT; i++) {
+-		val = mt7921u_uhw_rr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS);
++		val = mt792xu_uhw_rr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS);
+ 		if (val & MT_UDMA_CONN_WFSYS_INIT_DONE)
+ 			break;
+ 
+@@ -179,8 +268,9 @@ int mt7921u_wfsys_reset(struct mt792x_dev *dev)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mt792xu_wfsys_reset);
+ 
+-int mt7921u_init_reset(struct mt792x_dev *dev)
++int mt792xu_init_reset(struct mt792x_dev *dev)
+ {
+ 	set_bit(MT76_RESET, &dev->mphy.state);
+ 
+@@ -190,66 +280,13 @@ int mt7921u_init_reset(struct mt792x_dev *dev)
+ 	mt76u_stop_rx(&dev->mt76);
+ 	mt76u_stop_tx(&dev->mt76);
+ 
+-	mt7921u_wfsys_reset(dev);
++	mt792xu_wfsys_reset(dev);
+ 
+ 	clear_bit(MT76_RESET, &dev->mphy.state);
+ 
+ 	return mt76u_resume_rx(&dev->mt76);
+ }
++EXPORT_SYMBOL_GPL(mt792xu_init_reset);
+ 
+-int mt7921u_mac_reset(struct mt792x_dev *dev)
+-{
+-	int err;
+-
+-	mt76_txq_schedule_all(&dev->mphy);
+-	mt76_worker_disable(&dev->mt76.tx_worker);
+-
+-	set_bit(MT76_RESET, &dev->mphy.state);
+-	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+-
+-	wake_up(&dev->mt76.mcu.wait);
+-	skb_queue_purge(&dev->mt76.mcu.res_q);
+-
+-	mt76u_stop_rx(&dev->mt76);
+-	mt76u_stop_tx(&dev->mt76);
+-
+-	mt7921u_wfsys_reset(dev);
+-
+-	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
+-	err = mt76u_resume_rx(&dev->mt76);
+-	if (err)
+-		goto out;
+-
+-	err = mt7921u_mcu_power_on(dev);
+-	if (err)
+-		goto out;
+-
+-	err = mt7921u_dma_init(dev, false);
+-	if (err)
+-		goto out;
+-
+-	mt76_wr(dev, MT_SWDEF_MODE, MT_SWDEF_NORMAL_MODE);
+-	mt76_set(dev, MT_UDMA_TX_QSEL, MT_FW_DL_EN);
+-
+-	err = mt7921_run_firmware(dev);
+-	if (err)
+-		goto out;
+-
+-	mt76_clear(dev, MT_UDMA_TX_QSEL, MT_FW_DL_EN);
+-
+-	err = mt7921_mcu_set_eeprom(dev);
+-	if (err)
+-		goto out;
+-
+-	err = mt7921_mac_init(dev);
+-	if (err)
+-		goto out;
+-
+-	err = __mt7921_start(&dev->phy);
+-out:
+-	clear_bit(MT76_RESET, &dev->mphy.state);
+-
+-	mt76_worker_enable(&dev->mt76.tx_worker);
+-
+-	return err;
+-}
++MODULE_LICENSE("Dual BSD/GPL");
++MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
 -- 
 2.18.0
 
