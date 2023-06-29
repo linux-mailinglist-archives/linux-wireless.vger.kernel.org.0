@@ -2,167 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07F6F742E30
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jun 2023 22:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7EE67430F0
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 01:16:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230304AbjF2UNB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Jun 2023 16:13:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37946 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjF2UNA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Jun 2023 16:13:00 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1633B2D5B
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jun 2023 13:12:59 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-51452556acdso857688a12.2
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jun 2023 13:12:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1688069578; x=1690661578;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lpFu2g9owQYp6gj4kYe+hqK40cCjGL392Rh91m0VFkU=;
-        b=ItN+OQOq+f3Rdj1z0HbngihoxHd6uXVVq+mNpUXU+alPzMreoW+OgBsZ7iPri5QN5+
-         O337Hlhx8BpRJfyFMRZPav8XQ/Bzu0E3cLsmoefG6cZoxote2tugoDkKrEdOfAF2LBWI
-         QLlAIKyAGjUN+jotCm2vyBcbML2ruwwSWfmN8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688069578; x=1690661578;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lpFu2g9owQYp6gj4kYe+hqK40cCjGL392Rh91m0VFkU=;
-        b=IA7FNmLi4j2dLJ9mbx7e0e6cx0tpnbnIdqOwxTzEcqA9FRA4FMqRh265EpH+ezzVsH
-         /ctsF/9/IkocOuXj80x1nG2Pnw2VK0WScND0OBT7+nsHuwJJ/0FymUuZRkONqJM1QCu2
-         aPvnblH2h8KgzDiTV+asOg/mlGQP9TN0d9AYet8IP27Ci4P3J7rF5++3rbJ9mYZ5JSsS
-         JGZDslNrtbrnxE3bomZHY7IrrcJHSeDgWYr88WkEEqYcvLY9M+jHOx+Hqzibb0ICypsu
-         FuOxaYseUswlECncGwTZ3N0hzmxrNbIzoZCnFo8guOLs23ZJM32mP+5VqKEowWQL523A
-         RAXw==
-X-Gm-Message-State: AC+VfDyWV0OaYQ0KhfrOPJ6KLsKpetxQdrcp5DdC3jOOAUBTQyAep6dM
-        C1DT8X0GR6dJTrq5UgE4tTCjQQ==
-X-Google-Smtp-Source: ACHHUZ5yH6jAbH48TRZe/55yopoQYeKWl4rmD0NdAI2gFBlvtXKYuZWrBIoRP0SrxecUoKMzP+SD6w==
-X-Received: by 2002:a05:6a20:3b14:b0:123:8852:1a12 with SMTP id c20-20020a056a203b1400b0012388521a12mr662760pzh.23.1688069578543;
-        Thu, 29 Jun 2023 13:12:58 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:3c2b:cbff:22ae:80d6])
-        by smtp.gmail.com with ESMTPSA id c4-20020aa781c4000000b0065da94fe917sm8685360pfn.36.2023.06.29.13.12.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jun 2023 13:12:58 -0700 (PDT)
-Date:   Thu, 29 Jun 2023 13:12:56 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 3/3] [v4] wifi: mwifiex: drop BUG_ON() from TX error
- handling
-Message-ID: <ZJ3lyIQy7GPbA9YL@google.com>
-References: <20230629085115.180499-1-dmantipov@yandex.ru>
- <20230629085115.180499-3-dmantipov@yandex.ru>
+        id S230499AbjF2XQw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Jun 2023 19:16:52 -0400
+Received: from mail-yqbcan01on2069.outbound.protection.outlook.com ([40.107.116.69]:57870
+        "EHLO CAN01-YQB-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229483AbjF2XQt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Jun 2023 19:16:49 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dZFubpImMFMFXZomDUfg1D9Ml9vTS27zf/ybcr+y3Nmc/zDesOisOdgEci4r3wO/8emyAiEEPzFVbZuU46z9czCs1Bcjiv1jaDEMSrTV5LcjBactwX1AoGtm2/IBx+354tE+9inP/qUWRGtLj3clNKNcwqnGFNgjQ3fGM0fn43cwg0Gq3z3xH8lg/3/uFK42hm3MroocDUOGVDiqwrsKn4Kv/+cHtx8UBIkgth7qnmTZ0ngsaWUXwCVrshMzD1VSvSs6KMovY2z0HDCLWN3TXCudQueJJ0IJkdWiznP32IOF9kwWSJQOO0tPHw98Jb4Id9B362iP1fLfFWBWhZL+KA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UDE4i3zQGbuPwygdBlxL2AmsbAK0oMlKO525LfqXhzg=;
+ b=Nu9pZqdJcnG3bKIugddPr0wYyXuZ9cExdPxqhAJivilTRgTRkQxknaL0HrwrwnsVx4O6V3ygkkGVv4qcAutfWK0k3bkYAEvg2tYCU8rlziyYuetU55ISRo4+ZyioHBDg/MJVF1cP5Uq+39E6nSyLPUm+mjFeRKwcpGjMVzkfyRpmnyh7ZefmZrC2yzBA5ms0ADoDZ658EEdXChTlxFEpVGVIfeZ+mj3OS53/b1iSedIMWDMWLMQy6cMPp/oMPTyx6+gPexxKkZHEmc9/x+t/hpyn9O5B+q9mJtQ3dOPYXxrK3wDYqzR2ME6TIcQcwdOgOOQilfPoQGX7cA8NhiLOWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ucalgary.ca; dmarc=pass action=none header.from=ucalgary.ca;
+ dkim=pass header.d=ucalgary.ca; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=ucalgary.ca;
+Received: from YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:16::19)
+ by YT3PR01MB6082.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:5f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Thu, 29 Jun
+ 2023 23:16:47 +0000
+Received: from YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::684c:a6dd:94c8:78bc]) by YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::684c:a6dd:94c8:78bc%4]) with mapi id 15.20.6521.024; Thu, 29 Jun 2023
+ 23:16:46 +0000
+From:   Wenli Looi <wlooi@ucalgary.ca>
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH v3 00/11] wifi: ath9k: add support for QCN550x
+Date:   Thu, 29 Jun 2023 16:16:14 -0700
+Message-Id: <20230629231625.951744-1-wlooi@ucalgary.ca>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: BY3PR03CA0002.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::7) To YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:16::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230629085115.180499-3-dmantipov@yandex.ru>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: YTBPR01MB3310:EE_|YT3PR01MB6082:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71480c90-2d63-4349-4312-08db78f6e8de
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: HUmK/nxeBW0MWaMXZsVIXT+ppYK1LhKkbm2ukXMkBcbzd7yEYghqWP7Rh93RN1SHytQpoZtP3aDZD8F32FL4fu2zYvdP06KmtmUcRLnZ/4eeoA1irmjqNAhlwxa+PT00OF2/m34yZIPgRZrfQ4WAd1XeBmOdKqAncymT7pPCrcoNpLgLng70kh9/V7Eso9OxStvT8gQXAZxksSbibILuJ3qMZhbbJSKPQrw1virmsJbFC1w8dteLdrGifDXAsHnlBL/t6Mm7+IfCm/KWN63nDJ1ipKVb8cwJbWe+Tt0jWaHwxhCu7dT/werXAABxHyTK9YsHtcnDZESg/HGAqMmw/nQbPdi2rFvjg43NNXJrf/NytYdT6v43KUhsuPBCntUM2UHJN0dxkdSRkVjLVuyHqDDfkJdV8L+Oxg/WvWl7YpkU0rpew6b4C23fWfSX4wl1mWTMVmtyIAK8FaocyFGf5ARjZP5QklK8aiCrAdDwY20VlGFDkOOUKQI2kGPq49+y6IldAPRmTCNf24qMAYldy4UslYwSDLVwu4NG0sQUDpiKje76UjaiRjCY/0WrcSKQ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(346002)(396003)(366004)(39860400002)(451199021)(6506007)(1076003)(36756003)(8676002)(2906002)(6512007)(6486002)(478600001)(83380400001)(6666004)(2616005)(186003)(26005)(5660300002)(316002)(86362001)(6916009)(41300700001)(66476007)(8936002)(4326008)(38100700002)(786003)(66946007)(66556008);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uvBObGhzFSUOiBrmLaS7GQW7kyXq8xbF+09KFjKOP778TS9VtgAtKSZ0GwTm?=
+ =?us-ascii?Q?JINY6kp+nkseR2mU4PtEeu5lLs2Irww8cWoycKowVd2Ye/cH9RvW5ET4TBQp?=
+ =?us-ascii?Q?P4MbeIZJPbynS+fhkHBDDfWuIC2NSyqvtCthpTiTOPtlQHF8bRPAB4qMFGpf?=
+ =?us-ascii?Q?IiDATpAu/QKxTM1CFHZ3dxvImMU1SkgfiDJOpjpAwEXQPXs373wWMWe01CAV?=
+ =?us-ascii?Q?04QtUc2VbEXO6kBk13+9k/k6Llil4BAD1QqtaSnt/s7j+m3wfMU+GRvrOUWN?=
+ =?us-ascii?Q?+RqgCyNEvVZBztZO9sN8jvihX4J+UUroQk/72MuQn2v1vTwNT5wKwm76iSrr?=
+ =?us-ascii?Q?JBSJ8jEw9UhfmtkSLYnmeaGc1FjgiN9uFHCbEU74AuxjwgHGk50Y8Jej1tF1?=
+ =?us-ascii?Q?XlI5LbYAuPF57SB2xJPuawCZRmkTEQgE+rs2MEe1xVzEOwPWD1AZ3JRluR45?=
+ =?us-ascii?Q?Hoy8FnWqT2BjwUfSKU6ezqITziq2l8rT/8dvR8kNnAT8OuQpq7WCFJmE5XAB?=
+ =?us-ascii?Q?BrOBe9s8r7GK/wnhATnP2jP9SG34aRCT7Y3VFObh/Mq2nSw4QocwhSB1nw2f?=
+ =?us-ascii?Q?RCpcxuh8iZhm5PDakweZ1EHKUdT329lSd6Jy+MpVx1UQNB4vShVCJcH+nWk/?=
+ =?us-ascii?Q?D9yfDFeKIR66UHRD7Ktq/qY3lxhx6lnT49VpMqLcZeA7ux6rQpKsJqWD8qGv?=
+ =?us-ascii?Q?4p16JBIS9bWdvnHS4AgJumgl0tUXGaqvZ7BlSNpNOrBcFIo3c8ZcGzFflvmw?=
+ =?us-ascii?Q?uywrJWkN9pWFLa/yzQycwzHnSgybz2bsaU1gUH39UuvjecLxGM1k2oH3XGuI?=
+ =?us-ascii?Q?C5d3YaVdIqWEygvE9FySsB2Eq9IthO5s6JVCvTY9vHPbxIgp50zQ1gcqrexo?=
+ =?us-ascii?Q?wkG39LiMm+kfv2R/+HsV7OF3y9T4ICxhcuQ3KhmfO5Hzob0LUWvZrCgnivdb?=
+ =?us-ascii?Q?MT25w3KITvF/1dWnLlmJnhVZQ/3QEgv2QkUNWY/AF1fc/+EWjdBguzDfSwDF?=
+ =?us-ascii?Q?4Gtvt+tUuNMyLwwuB7HzUGiLzBqVsdQ+ANMaTDtAadht2O5mz9vBoi6xfEt4?=
+ =?us-ascii?Q?jIwMe9o5bhaTTuK9FmbnhQ10wvuzt/vUDAIO6PkDuP1//O+UtydGqMbJC9SJ?=
+ =?us-ascii?Q?pRk01vkDnt9MiwfHed9HKQe8K5Knj/f9sD89f6NhOCmtalTAwoqXlNSIitAS?=
+ =?us-ascii?Q?cInyBHtp9vS1eWAIxruYnW+K25GCzfAgWebLt8ES4DWb+8oRn3CbllxUWq5B?=
+ =?us-ascii?Q?YsUWmwZP3Gm3eUgh4GrYcJVIaXuytxCGrhxfEf4TdANNJcrJVAZxodtpdmJ/?=
+ =?us-ascii?Q?hlm+4Hqm44doQkn35dZeAy/S5fL4oUpkZjr66PpukBZoAu5CgzBCfWg+Rl8Z?=
+ =?us-ascii?Q?X2qggIjDvJwaNPVTM0tv5Nfe5F5mvoYEfL+UWx4Q5D1NnmBLz/7HiuvTpL6z?=
+ =?us-ascii?Q?ebelGITXw6Dx8IRfRTrpl/XlknIjpPiXmfj4mZZL3W3rd5ZBg6562aGnK35w?=
+ =?us-ascii?Q?lU6UkIgOQzVz5GaosIBafp60OWwPzeORgp3GISYeJM/8AMwc1Iyk18El7fD6?=
+ =?us-ascii?Q?GU/MpaVTt3vmKdZ4vlat3kBn8VdqhtosO1vyaS8N?=
+X-OriginatorOrg: ucalgary.ca
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71480c90-2d63-4349-4312-08db78f6e8de
+X-MS-Exchange-CrossTenant-AuthSource: YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 23:16:46.8418
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: c609a0ec-a5e3-4631-9686-192280bd9151
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QqZt5GIWfsJbfxO7Y02+l1xsDuwjZC8af0xdzHufJZXTptD32ozSO75ShHZozQcarIgCmrXfpAogvo3di75/6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB6082
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jun 29, 2023 at 11:51:02AM +0300, Dmitry Antipov wrote:
-> Remove 'BUG_ON()' from 'mwifiex_process_sta_txpd()' and
-> 'mwifiex_process_uap_txpd()'. In case of insufficient
-> headrom, issue warning and return NULL, which should be
-> gracefully handled in 'mwifiex_process_tx()'. Also mark
-> error handling branches with 'unlikely()' and adjust
-> format specifiers to match actual 'unsigned int' type.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
-> v4: initial version to match series
-> ---
->  drivers/net/wireless/marvell/mwifiex/sta_tx.c   | 13 +++++++++----
->  drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 13 +++++++++----
->  2 files changed, 18 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_tx.c b/drivers/net/wireless/marvell/mwifiex/sta_tx.c
-> index 13c0e67ededf..d43f6ec1ad37 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sta_tx.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sta_tx.c
-> @@ -39,14 +39,19 @@ void *mwifiex_process_sta_txpd(struct mwifiex_private *priv,
->  	u16 pkt_type, pkt_offset;
->  	int hroom = adapter->intf_hdr_len;
->  
-> -	if (!skb->len) {
-> +	if (unlikely(!skb->len)) {
->  		mwifiex_dbg(adapter, ERROR,
-> -			    "Tx: bad packet length: %d\n", skb->len);
-> +			    "Tx: bad packet length: %u\n", skb->len);
->  		tx_info->status_code = -1;
->  		return skb->data;
->  	}
-> -
-> -	BUG_ON(skb_headroom(skb) < MWIFIEX_MIN_DATA_HEADER_LEN);
-> +	if (unlikely(skb_headroom(skb) < MWIFIEX_MIN_DATA_HEADER_LEN)) {
-> +		mwifiex_dbg(adapter, ERROR,
-> +			    "Tx: insufficient skb headroom: %u\n",
-> +			    skb_headroom(skb));
-> +		tx_info->status_code = -1;
-> +		return NULL;
+This patchset adds support for QCN550x. Compared to previous versions of
+this patchset:
 
-I'm not sure why this return (NULL) should be different than the one for
-skb->len==0 (skb->data). mwifiex_process_tx() has...weird handling for
-both.
+- Removed hidden dependencies on ah macro
+  (see commit b3a663f0037d20e77bbafd9271a3d9dd0351059d)
+- Done significantly more testing and performance improvements. In my
+  informal testing, the 3x3 performance of this driver generally meets
+  or exceeds the performance of stock firmwares, which was not the case
+  for previous patchsets. The main source of the improvement was
+  enabling the clock doubler.
 
-For NULL, we fall into a default (ret==-1) case where the error message
-is wrong ("mwifiex_write_data_async failed: ...").
+Notes:
 
-For non-NULL skb->data, we still try to queue or transmit the
-skb...which seems wrong.
+- While QCN5502 is a 4-stream device, ath9k only supports 3 streams, and
+  that is unchanged.
+- The QCN550x EEPROM format is different from other AR9003 devices due
+  to the 4th stream. An abstraction layer has been added over the EEPROM
+  to support both formats.
+- This driver has been tested on the following devices:
+  - Asus RT-ACRH12 (FCC ID: MSQ-RTACRH01)
+    QCN5502 4x4 RX mode 1 (no XLNA) TX mode 1 (no XPA)
+  - Netgear EX6400v2 (FCC ID: PY318300422)
+    QCN5502 3x3 RX mode 1 (no XLNA) TX mode 1 (no XPA)
+  - Netgear EX7300v2 (FCC ID: PY318300422)
+    QCN5502 4x4 RX mode 1 (no XLNA) TX mode 1 (no XPA)
+  - TP-Link Archer A9 v6 (FCC ID: TE7A9V6)
+    QCN5502 4x4 RX mode 0 (XLNA) TX mode 1 (no XPA)
+  - Netgear EX7300v1: QCA9558 (no obvious regression observed)
+- No device has been tested that uses QCN5502 with XPA or 5GHz. I don't
+  know if such devices exists.
 
-I think they should both be returning NULL, and mwifiex_process_tx()
-should improve its error handling to more explicitly handle that case,
-instead of printing the wrong error message.
+Wenli Looi (11):
+  wifi: ath9k: group some ar9300 eeprom functions at the top
+  wifi: ath9k: delete some unused/duplicate macros
+  wifi: ath9k: add _ah parameter to certain macros
+  Revert "ath9k_hw: fall back to OTP ROM when platform data has no valid
+    eeprom data"
+  wifi: ath9k: add QCN550x device IDs
+  wifi: ath9k: basic support for QCN550x
+  wifi: ath9k: add QCN550x initvals
+  wifi: ath9k: implement QCN550x rx
+  wifi: ath9k: implement QCN550x tx
+  wifi: ath9k: add abstractions over ar9300 eeprom
+  wifi: ath9k: add QCN550x eeprom
 
-(Now, I expect neither failure cases are actually exercised in practice,
-which makes most of this moot...)
+ drivers/net/wireless/ath/ath9k/ahb.c          |    4 +
+ drivers/net/wireless/ath/ath9k/ani.c          |    2 +-
+ .../net/wireless/ath/ath9k/ar550x_initvals.h  | 1539 +++++++++++++++++
+ drivers/net/wireless/ath/ath9k/ar9003_aic.c   |   52 +-
+ drivers/net/wireless/ath/ath9k/ar9003_calib.c |   98 +-
+ .../net/wireless/ath/ath9k/ar9003_eeprom.c    | 1069 ++++++++----
+ .../net/wireless/ath/ath9k/ar9003_eeprom.h    |  112 ++
+ drivers/net/wireless/ath/ath9k/ar9003_hw.c    |   65 +
+ drivers/net/wireless/ath/ath9k/ar9003_mac.c   |   92 +-
+ drivers/net/wireless/ath/ath9k/ar9003_mac.h   |   10 +
+ drivers/net/wireless/ath/ath9k/ar9003_mci.c   |    4 +-
+ drivers/net/wireless/ath/ath9k/ar9003_paprd.c |  120 +-
+ drivers/net/wireless/ath/ath9k/ar9003_phy.c   |  370 ++--
+ drivers/net/wireless/ath/ath9k/ar9003_phy.h   |  598 ++++---
+ drivers/net/wireless/ath/ath9k/ar9003_rtt.c   |   32 +-
+ drivers/net/wireless/ath/ath9k/hw.c           |   43 +-
+ drivers/net/wireless/ath/ath9k/hw.h           |    2 +
+ drivers/net/wireless/ath/ath9k/mac.c          |    2 +-
+ drivers/net/wireless/ath/ath9k/mac.h          |   13 +
+ drivers/net/wireless/ath/ath9k/recv.c         |    2 +-
+ drivers/net/wireless/ath/ath9k/reg.h          |   13 +-
+ drivers/net/wireless/ath/ath9k/reg_aic.h      |   44 +-
+ drivers/net/wireless/ath/ath9k/rng.c          |    4 +-
+ 23 files changed, 3232 insertions(+), 1058 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath9k/ar550x_initvals.h
 
-I'm also not sure why this is part of the same series as the others.
+-- 
+2.34.1
 
-Brian
-
-> +	}
->  
->  	pkt_type = mwifiex_is_skb_mgmt_frame(skb) ? PKT_TYPE_MGMT : 0;
->  
-> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-> index e495f7eaea03..b27266742795 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-> @@ -452,14 +452,19 @@ void *mwifiex_process_uap_txpd(struct mwifiex_private *priv,
->  	u16 pkt_type, pkt_offset;
->  	int hroom = adapter->intf_hdr_len;
->  
-> -	if (!skb->len) {
-> +	if (unlikely(!skb->len)) {
->  		mwifiex_dbg(adapter, ERROR,
-> -			    "Tx: bad packet length: %d\n", skb->len);
-> +			    "Tx: bad packet length: %u\n", skb->len);
->  		tx_info->status_code = -1;
->  		return skb->data;
->  	}
-> -
-> -	BUG_ON(skb_headroom(skb) < MWIFIEX_MIN_DATA_HEADER_LEN);
-> +	if (unlikely(skb_headroom(skb) < MWIFIEX_MIN_DATA_HEADER_LEN)) {
-> +		mwifiex_dbg(adapter, ERROR,
-> +			    "Tx: insufficient skb headroom: %u\n",
-> +			    skb_headroom(skb));
-> +		tx_info->status_code = -1;
-> +		return NULL;
-> +	}
->  
->  	pkt_type = mwifiex_is_skb_mgmt_frame(skb) ? PKT_TYPE_MGMT : 0;
->  
-> -- 
-> 2.41.0
-> 
