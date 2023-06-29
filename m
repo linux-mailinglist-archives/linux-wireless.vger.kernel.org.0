@@ -2,146 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5FF27424FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jun 2023 13:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD54674251B
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jun 2023 13:44:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231281AbjF2Lb4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Jun 2023 07:31:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41972 "EHLO
+        id S231842AbjF2Lol convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Jun 2023 07:44:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229615AbjF2Lby (ORCPT
+        with ESMTP id S231557AbjF2Loj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Jun 2023 07:31:54 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9FE132
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jun 2023 04:31:52 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qEpsK-00043U-Nd; Thu, 29 Jun 2023 13:31:48 +0200
-Message-ID: <3270268e-c926-01e6-65e1-02aa6abfd0db@leemhuis.info>
-Date:   Thu, 29 Jun 2023 13:31:48 +0200
+        Thu, 29 Jun 2023 07:44:39 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872F930F1
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jun 2023 04:44:38 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-59-_FrFPb42NJGKPaNKG2-yvg-1; Thu, 29 Jun 2023 12:44:35 +0100
+X-MC-Unique: _FrFPb42NJGKPaNKG2-yvg-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 29 Jun
+ 2023 12:44:34 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Thu, 29 Jun 2023 12:44:34 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'You Kangren' <youkangren@vivo.com>, Kalle Valo <kvalo@kernel.org>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Simon Horman <simon.horman@corigine.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "open list:RAYLINK/WEBGEAR 802.11 WIRELESS LAN DRIVER" 
+        <linux-wireless@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+CC:     "opensource.kernel@vivo.com" <opensource.kernel@vivo.com>
+Subject: RE: [PATCH v3] wifi: ray_cs: Replace the ternary conditional operator
+ with min()
+Thread-Topic: [PATCH v3] wifi: ray_cs: Replace the ternary conditional
+ operator with min()
+Thread-Index: AQHZqLBYZ8a+0OdHa0iQ2j8sJOpYz6+hrI0g
+Date:   Thu, 29 Jun 2023 11:44:34 +0000
+Message-ID: <ab5f3f7ff5d24d659b2988d549499c5f@AcuMS.aculab.com>
+References: <20230627043151.19576-1-youkangren@vivo.com>
+In-Reply-To: <20230627043151.19576-1-youkangren@vivo.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: iwlwifi: AX201 misdetected as AX101
-Content-Language: en-US, de-DE
-To:     =?UTF-8?Q?Barnab=c3=a1s_P=c5=91cze?= <pobrn@protonmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-References: <gAwMzXEPlQZUgbc6n3yYY2soROKl4-D_JfWwoHW8CMx-LDkDEeAlwcyjOMy767W3eEVxS-e7oEihVh1PNHT-_iznSKneJjW0vu0PN7aQ9K8=@protonmail.com>
- <FFsiCdZPcJ2FItvpkX6E-0LT-gc1m-7JdRKTZ0NB9s7AmhtFt09wmR8fItdeT5xaYybsKsC_cjXuh5i_V97rgq4fJgKOmBmKytjCwSKlnAU=@protonmail.com>
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     Linux kernel regressions list <regressions@lists.linux.dev>
-In-Reply-To: <FFsiCdZPcJ2FItvpkX6E-0LT-gc1m-7JdRKTZ0NB9s7AmhtFt09wmR8fItdeT5xaYybsKsC_cjXuh5i_V97rgq4fJgKOmBmKytjCwSKlnAU=@protonmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688038312;bafaf617;
-X-HE-SMSGID: 1qEpsK-00043U-Nd
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[CCing the regression list, as it should be in the loop for regressions:
-https://docs.kernel.org/admin-guide/reporting-regressions.html]
+From: You Kangren <youkangren@vivo.com>
+> Sent: 27 June 2023 05:32
+> 
+> Replace the ternary conditional operator with min_t() to simplify the code
+> 
+> Signed-off-by: You Kangren <youkangren@vivo.com>
+> ---
+>  drivers/net/wireless/legacy/ray_cs.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/legacy/ray_cs.c b/drivers/net/wireless/legacy/ray_cs.c
+> index 8ace797ce951..25edbc655738 100644
+> --- a/drivers/net/wireless/legacy/ray_cs.c
+> +++ b/drivers/net/wireless/legacy/ray_cs.c
+> @@ -2086,8 +2086,7 @@ static void ray_rx(struct net_device *dev, ray_dev_t *local,
+>  			rx_data(dev, prcs, pkt_addr, rx_len);
+> 
+>  		copy_from_rx_buff(local, (UCHAR *) &local->last_bcn, pkt_addr,
+> -				  rx_len < sizeof(struct beacon_rx) ?
+> -				  rx_len : sizeof(struct beacon_rx));
+> +				  min_t(size_t, rx_len, sizeof(struct beacon_rx));
 
-On 27.06.23 23:55, Barnabás Pőcze wrote:
-> 
-> 2023. május 26., péntek 19:55 keltezéssel, Barnabás Pőcze <pobrn@protonmail.com> írta:
->>
->> I have an Acer Aspire A315-58 laptop[0], which, according to lspci has the following intel wireless chip:
->>
->>    Device:	00:14.3
->>     Class:	Network controller [0280]
->>    Vendor:	Intel Corporation [8086]
->>    Device:	Wi-Fi 6 AX201 [a0f0]
->>   SVendor:	Intel Corporation [8086]
->>   SDevice:	Wi-Fi 6 AX201 [0244]
->>       Rev:	20
->>    ProgIf:	00
->>    Driver:	iwlwifi
->>    Module:	iwlwifi
->>
->> However, in the kernel message buffer, the following message is written:
->>
->>   [    3.633490] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX101, REV=0x351
-> [...]
-> 
-> For the record, I have done a git-bisect[1], and that turned up
-> 
->   d2ccc5c1526396aef5196e4dd2ec8538994e5072
->   wifi: iwlwifi: Update init sequence if tx diversity supported
-> 
-> as the first good commit[0].
-> 
-> Sadly, that patch (or even the series) does not appear to be easily backportable,
-> so it seems likely that current stable kernels won't be able to support this device.
+You should really consider changing the type of rx_len
+before using min_t().
 
-Thx for bisecting.
+	David
 
-Thing is: 6.3 will be EOL in about two or three weeks anyway. And Arch
-will likely switch to 6.4 (which works -- or did I get this wrong?)
-within a week or two. Makes be wonder if it's the best solution for
-everyone involved to not resolve this and move on.
-
-Ciao, Thorsten
-
-> [0]: https://lore.kernel.org/all/20230413102635.c2121c8694a7.Ibee3dd8765ef4b7504660fa228a7c7eff78920af@changeid/
-> [1]:
->   git bisect start
->   # status: waiting for both good and bad commits
->   # new: [b6dad5178ceaf23f369c3711062ce1f2afc33644] Merge tag 'nios2_fix_v6.4' of git://git.kernel.org/pub/scm/linux/kernel/git/dinguyen/linux
->   git bisect new b6dad5178ceaf23f369c3711062ce1f2afc33644
->   # status: waiting for good commit(s), bad commit known
->   # old: [457391b0380335d5e9a5babdec90ac53928b23b4] Linux 6.3
->   git bisect old 457391b0380335d5e9a5babdec90ac53928b23b4
->   # new: [6e98b09da931a00bf4e0477d0fa52748bf28fcce] Merge tag 'net-next-6.4' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
->   git bisect new 6e98b09da931a00bf4e0477d0fa52748bf28fcce
->   # old: [088e0c188513b58a0056a488cf5b7df094a8a48a] Merge tag 'platform-drivers-x86-v6.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86
->   git bisect old 088e0c188513b58a0056a488cf5b7df094a8a48a
->   # new: [ca288965801572fe41386560d4e6c5cc0e5cc56d] Merge tag 'wireless-next-2023-04-21' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
->   git bisect new ca288965801572fe41386560d4e6c5cc0e5cc56d
->   # old: [d56417ad1133fc41752bb9fe37da7ae3187395a4] net: phy: smsc: clear edpd_enable if interrupt mode is used
->   git bisect old d56417ad1133fc41752bb9fe37da7ae3187395a4
->   # old: [c54876cd5961ce0f8e74807f79a6739cd6b35ddf] net/sched: pass netlink extack to mqprio and taprio offload
->   git bisect old c54876cd5961ce0f8e74807f79a6739cd6b35ddf
->   # new: [3288ee5844b74cebb94ed15bc9b5b9d3223ae038] Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
->   git bisect new 3288ee5844b74cebb94ed15bc9b5b9d3223ae038
->   # new: [d0b6f86fdbefa62fd4ad2acd1aea6c45f9b518ba] wifi: mt76: mt7996: let non-bufferable MMPDUs use correct hw queue
->   git bisect new d0b6f86fdbefa62fd4ad2acd1aea6c45f9b518ba
->   # new: [a0e97ae3f3320a246a79db7372fc23a38556014e] wifi: rtw89: add ieee80211::remain_on_channel ops
->   git bisect new a0e97ae3f3320a246a79db7372fc23a38556014e
->   # new: [d00800a289c9349bb659a698cbd7bc04521dc927] wifi: mac80211: add flush_sta method
->   git bisect new d00800a289c9349bb659a698cbd7bc04521dc927
->   # old: [413be839bfca9a4f6b32b92807ecdc2c2c182d94] wifi: iwlwifi: add a validity check of queue_id in iwl_txq_reclaim
->   git bisect old 413be839bfca9a4f6b32b92807ecdc2c2c182d94
->   # old: [e305a408c5f9c8df06a58e09a23375fd257f081c] wifi: iwlwifi: mvm: move function sequence
->   git bisect old e305a408c5f9c8df06a58e09a23375fd257f081c
->   # new: [217f3c52f00d3419ecdd38a99a7eceecb11679b2] wifi: iwlwifi: mvm: don't set CHECKSUM_COMPLETE for unsupported protocols
->   git bisect new 217f3c52f00d3419ecdd38a99a7eceecb11679b2
->   # new: [5caa82529eabff044c5f3eb254f3a7ff00e9170d] wifi: iwlwifi: Update configurations for Bnj-a0 and specific rf devices
->   git bisect new 5caa82529eabff044c5f3eb254f3a7ff00e9170d
->   # new: [d2ccc5c1526396aef5196e4dd2ec8538994e5072] wifi: iwlwifi: Update init sequence if tx diversity supported
->   git bisect new d2ccc5c1526396aef5196e4dd2ec8538994e5072
->   # first new commit: [d2ccc5c1526396aef5196e4dd2ec8538994e5072] wifi: iwlwifi: Update init sequence if tx diversity supported
 > 
-> 
->>
->> I then noticed that firmwares 75-77 are available and that there were recent changes
->> to the iwlwifi module that increased IWL_22000_UCODE_API_MAX, so I gave it a go,
->> and built the kernel at ae8373a5add4ea39f032563cf12a02946d1e3546 and now firmware 77
->> is loaded, and that seems to work, at least I did not notice any issues so far.
->>
->> The full logs and other information about the laptop can be found here[0].
->>
->>
->> Regards,
->> Barnabás Pőcze
->>
->>
->> [0]: https://linux-hardware.org/?probe=43069955ee
+>  		local->beacon_rxed = 1;
+>  		/* Get the statistics so the card counters never overflow */
+> --
+> 2.39.0
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
