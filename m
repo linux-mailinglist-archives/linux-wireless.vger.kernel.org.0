@@ -2,117 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE18741CEE
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jun 2023 02:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B670F741EEF
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jun 2023 05:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230168AbjF2Aco (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Jun 2023 20:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58002 "EHLO
+        id S231758AbjF2Dy2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Jun 2023 23:54:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230099AbjF2Ack (ORCPT
+        with ESMTP id S231984AbjF2DyC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Jun 2023 20:32:40 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8E9B71FC2
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Jun 2023 17:32:38 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35T0WERA0019534, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35T0WERA0019534
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 29 Jun 2023 08:32:14 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 29 Jun 2023 08:32:15 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Thu, 29 Jun 2023 08:32:15 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Thu, 29 Jun 2023 08:32:15 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Giulio Paci <giuliopaci@gmail.com>
-CC:     James <bjlockie@lockie.ca>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: Realtek 8822ce connection is very unstable
-Thread-Topic: Realtek 8822ce connection is very unstable
-Thread-Index: AQHZqQnme5lXUSoFX0KxvKzAZ70xJa+eSecAgAACcoCAACRSgIAA+I6AgAAXDICAADBjAIABPGiA
-Date:   Thu, 29 Jun 2023 00:32:15 +0000
-Message-ID: <518990b094f94ca489276ebb5dbf5d81@realtek.com>
-References: <CA+zRt5HKvOQihOwoSj_G1eKFQ5ap9L4uRK2hvtV_SxOqwn-2Dw@mail.gmail.com>
- <e02fe1f4-d837-4124-b53e-cf8b28105a17@lockie.ca>
- <CA+zRt5GTSbKBjARaD19V7oQEkXUJJz_pvYO1fOXA9hPrzPS1sg@mail.gmail.com>
- <c4b24c16-788b-4f15-ae68-8df44e60a27d@lockie.ca>
- <b3c5f2f05d0844dfb4e9f7e943b4cbbd@realtek.com>
- <CA+zRt5HyZaOvDpVUxF9Rfv4rrx4Us1Krs+TeiP-U9QsrA_SX6A@mail.gmail.com>
- <d4c7dbda-a24f-9ff1-3a9f-918034c60f92@gmail.com>
-In-Reply-To: <d4c7dbda-a24f-9ff1-3a9f-918034c60f92@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Wed, 28 Jun 2023 23:54:02 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5988E2D7C
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Jun 2023 20:54:00 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-6687446eaccso234510b3a.3
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Jun 2023 20:54:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1688010840; x=1690602840;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PgRCWuAL+JILQAuJVgnpzN1VGDR5+ycwundGmuPsvAc=;
+        b=Zp7/05od1Hzmg3DamsY4xVwfn6tMykIurlQXX5Rz4Xuof4ze/XQSv561GpHeqSpoKh
+         2v+EzzaIXKRz/2+ZwPdbePYm00aj+7lpLYrNJ4hAYEhBfPYw1efyvEasC85ra7aPmZY2
+         HvVIPX6DZQ3ldkpxDKKby+eFfCylabLuTSQA0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688010840; x=1690602840;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PgRCWuAL+JILQAuJVgnpzN1VGDR5+ycwundGmuPsvAc=;
+        b=cPvvzK9JK2B0g0l+eDxmlnl7ZezO+wKTrq4tO294WF5wRTfAvCp65rQg8FNoKRUvxQ
+         X4WF4vtHWvJWSmMUtGYMc00wlQvQmltFJ9IznzVSUMGcph/cPZPGde39G03Kx8nAUFoN
+         fh/OmVTLf9X+hcZqt6DUneQS2u/CIuArz71Z84l8T4eDU8RdPZBBusxTycWLYcmypW2g
+         Qg9azM7StXxlkhKtTYHW1DJiBhdSA8CNDuO1NUZXjJtE8PRIIgsF5bObyoWXLjtHJELY
+         zlGO8e8lu9HysjTPBml+YkjMHCaCls9Oph6d51NU5XhFk7tAmtJDwkIyKRUv85dTBblr
+         sdlw==
+X-Gm-Message-State: AC+VfDw9yLQnvjpAg+hZQ43NSh5Y/B7Cy8g4CZvrbzPzKAXb/KDZHapE
+        jHzOD+ToKj4kwiHHsxLyavazRw==
+X-Google-Smtp-Source: ACHHUZ6y8ticW17Bm2FXqsOoVj+oMchk8icLpia+Wu94tK8W+NMrPIcN6NkM7fNXF21kuk4TIlr51g==
+X-Received: by 2002:a05:6a20:1605:b0:115:83f:fce1 with SMTP id l5-20020a056a20160500b00115083ffce1mr48159642pzj.5.1688010839715;
+        Wed, 28 Jun 2023 20:53:59 -0700 (PDT)
+Received: from kuabhs-cdev.c.googlers.com.com (242.67.247.35.bc.googleusercontent.com. [35.247.67.242])
+        by smtp.gmail.com with ESMTPSA id r19-20020a634413000000b005579f12a238sm7019842pga.86.2023.06.28.20.53.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jun 2023 20:53:59 -0700 (PDT)
+From:   Abhishek Kumar <kuabhs@chromium.org>
+To:     johannes.berg@intel.com, kvalo@kernel.org
+Cc:     linux-kernel@vger.kernel.org, kuabhs@chromium.org,
+        netdev@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 1/2] wifi: cfg80211: call reg_call_notifier on beacon hints
+Date:   Thu, 29 Jun 2023 03:52:54 +0000
+Message-ID: <20230629035254.1.I059fe585f9f9e896c2d51028ef804d197c8c009e@changeid>
+X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgSnVuZSAyOCwg
-MjAyMyA5OjI4IFBNDQo+IFRvOiBHaXVsaW8gUGFjaSA8Z2l1bGlvcGFjaUBnbWFpbC5jb20+OyBQ
-aW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gQ2M6IEphbWVzIDxiamxvY2tpZUBs
-b2NraWUuY2E+OyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6
-IFJlYWx0ZWsgODgyMmNlIGNvbm5lY3Rpb24gaXMgdmVyeSB1bnN0YWJsZQ0KPiANCj4gT24gMjgv
-MDYvMjAyMyAxMzozNSwgR2l1bGlvIFBhY2kgd3JvdGU6DQo+ID4NCj4gPiBJIGNvbmZpcm0gdGhp
-cyBpcyB0aGUgYXBwcm9hY2ggSSB1c2VkIGluIGFsbCBteSBhdHRlbXB0cywgaW5jbHVkaW5nDQo+
-ID4gZGlzYWJsZV9scHNfZGVlcD0xLg0KPiA+IEkgYWxzbyBjaGVja2VkIC9zeXMvbW9kdWxlLyRt
-b2R1bGUvcGFyYW1ldGVycy8kb3B0aW9uIGNvbnRlbnQsIHRvDQo+ID4gY29uZmlybSB0aGF0IHRo
-ZSBvcHRpb25zIHdlcmUgY29ycmVjdGx5IHNldC4NCj4gPg0KPiA+IEkgaGF2ZSBhbHNvIGNhcnJp
-ZWQgb3V0IHNvbWUgYWRkaXRpb25hbCBhdHRlbXB0czoNCj4gPg0KPiA+IC0gYm9vdCB3aXRoIGlv
-bW11LnBhc3N0aHJvdWdoPTEgaW5zdGVhZCBvZiBwY2llX2FzcG09b2ZmLCBidXQgaXQgZG9lcw0K
-PiA+IG5vdCBzZWVtIHRvIGltcHJvdmUgYW55dGhpbmcgKGFuZCBBRVIgZXJyb3JzIGNhbWUgYmFj
-ayBpbiB0aGUgZG1lc2cpOw0KPiA+IC0gQWZ0ZXIgbXkgY29tbWVudHMgb24gaHR0cHM6Ly9naXRo
-dWIuY29tL2x3ZmluZ2VyL3J0dzg4L2lzc3Vlcy8xNTAsDQo+ID4gaHR0cHM6Ly9naXRodWIuY29t
-L2x3ZmluZ2VyL3J0dzg4LyB3YXMgdXBkYXRlZCBhbmQgSSB3YXMgYWJsZSB0byBsb2FkDQo+ID4g
-dGhlc2UgbW9kdWxlcy4gVGhlIGNvbm5lY3Rpb24gaXMgc3RpbGwgdmVyeSB1bnN0YWJsZSwgYnV0
-IHdpdGggdGhlc2UNCj4gPiBtb2R1bGVzLCB3aGVuIHRoZSBjb25uZWN0aW9uIGhhbmdzLCBkbWVz
-ZyByZXBvcnRzOg0KPiA+DQo+ID4gcnR3Xzg4MjJjZSAwMDAwOjAzOjAwLjA6IGZpcm13YXJlIGZh
-aWxlZCB0byBsZWF2ZSBscHMgc3RhdGUNCj4gPg0KPiA+IHNvbWV0aW1lcyBmb2xsb3dlZCBieToN
-Cj4gPg0KPiA+IHJ0d184ODIyY2UgMDAwMDowMzowMC4wOiBmYWlsZWQgdG8gc2VuZCBoMmMgY29t
-bWFuZA0KDQpJIHN1Z2dlc3QgdG8gdHJ5ICJpdyB3bGFuMCBzZXQgcG93ZXJfc2F2ZSBvZmYiIGZv
-ciB0aGVzZSB0d28gY2FzZXMsIG9yDQp5b3UgY2FuIGNvbmZpZ3VyZSBuZXR3b3JrX21hbmFnZXIg
-YWxvbmcgd2l0aCBbMV0uDQpBbmQsIGFzIHlvdXIgZXhwZXJpbWVudCwgc2V0IHBjaWVfYXNwbT1v
-ZmYgdG8gdGhlIExpbnV4IGNvbW1hbmQgbGluZSB0bw0KYXZvaWQgQUVSIGVycm9yLg0KDQoNClsx
-XSBodHRwczovL2dpc3QuZ2l0aHViLmNvbS9qY2JlcnRob24vZWE4Y2ZlMjc4OTk4OTY4YmE3YzVh
-OTUzNDRiYzhiNTUNCg0KPiA+IE9uZSBvZiBteSBjb2xsZWFndWVzIGhhcyB0aGUgc2FtZSBoYXJk
-d2FyZSAoc2FtZSBBUCBtb2RlbCBhbmQgc2FtZQ0KPiA+IGxhcHRvcCBtb2RlbCkgYW5kIGFsc28g
-dHJpZWQgdG8gaW5zdGFsbCBEZWJpYW4gYm9va3dvcm0gb24gaXQuIEkgYXNrZWQNCj4gPiB0byBj
-aGVjayBpZiBoZSBleHBlcmllbmNlcyB0aGUgc2FtZSBpc3N1ZSwgYnV0IGluIGhpcyBjYXNlIGhl
-IHdhcyBhYmxlDQo+ID4gdG8gc3RheSBjb25uZWN0ZWQgZm9yIGEgZmV3IGhvdXJzIHdpdGhvdXQg
-YW55IGlzc3VlLg0KPiA+IEkgd29uZGVyIGlmIHRoZSBpc3N1ZSBJIGFtIGV4cGVyaWVuY2luZyBj
-b3VsZCBiZSBkdWUgdG8gZGVmZWN0aXZlDQo+ID4gaGFyZHdhcmUgKGluaXRpYWxseSBJIGV4Y2x1
-ZGVkIGl0IHNpbmNlIHRoZSBzYW1lIGNvbmZpZ3VyYXRpb24gaXMgdmVyeQ0KPiA+IHN0YWJsZSB1
-bmRlciBXaW5kb3dzKS4gSXMgdGhlcmUgYW55IHNwZWNpZmljIHRlc3QgdGhhdCBJIGNhbiB0cnkg
-dG8NCj4gPiBleGNsdWRlIGhhcmR3YXJlIGlzc3Vlcz8NCj4gPg0KPiA+IEJlc3RzLA0KPiA+IEdp
-dWxpbw0KPiANCj4gWW91IGNhbiBzd2FwIHRoZSB3aWZpIGNhcmRzIGluIHRoZSB0d28gbGFwdG9w
-cy4gTWFrZSBzdXJlIHRvIHVucGx1Zw0KPiB0aGUgY2hhcmdlciBhbmQgdGhlIGJhdHRlcnkgYmVm
-b3JlIHdvcmtpbmcgaW5zaWRlLg0KPiANCg0KSSBoYXZlIHRoZSBzYW1lIHRoaW5raW5nLiANCg0K
-DQo=
+Currently the channel property updates are not propagated to
+driver. This causes issues in the discovery of hidden SSIDs and
+fails to connect to them.
+This change defines a new wiphy flag which when enabled by vendor
+driver, the reg_call_notifier callback will be trigger on beacon
+hints. This ensures that the channel property changes are visible
+to the vendor driver. The vendor changes the channels for active
+scans. This fixes the discovery issue of hidden SSID.
+
+Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+---
+
+ include/net/cfg80211.h |  3 +++
+ net/wireless/reg.c     | 20 ++++++++++++--------
+ 2 files changed, 15 insertions(+), 8 deletions(-)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 9e04f69712b1..48e6ebcdacb3 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -4783,6 +4783,8 @@ struct cfg80211_ops {
+  * @WIPHY_FLAG_SUPPORTS_EXT_KCK_32: The device supports 32-byte KCK keys.
+  * @WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER: The device could handle reg notify for
+  *	NL80211_REGDOM_SET_BY_DRIVER.
++ * @WIPHY_FLAG_CHANNEL_CHANGE_ON_BEACON: reg_call_notifier() is called if driver
++ *	set this flag to update channels on beacon hints.
+  */
+ enum wiphy_flags {
+ 	WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK		= BIT(0),
+@@ -4809,6 +4811,7 @@ enum wiphy_flags {
+ 	WIPHY_FLAG_SUPPORTS_5_10_MHZ		= BIT(22),
+ 	WIPHY_FLAG_HAS_CHANNEL_SWITCH		= BIT(23),
+ 	WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER	= BIT(24),
++	WIPHY_FLAG_CHANNEL_CHANGE_ON_BEACON     = BIT(25),
+ };
+ 
+ /**
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 26f11e4746c0..c76bfaad650b 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -2149,6 +2149,13 @@ static bool reg_is_world_roaming(struct wiphy *wiphy)
+ 	return false;
+ }
+ 
++static void reg_call_notifier(struct wiphy *wiphy,
++			      struct regulatory_request *request)
++{
++	if (wiphy->reg_notifier)
++		wiphy->reg_notifier(wiphy, request);
++}
++
+ static void handle_reg_beacon(struct wiphy *wiphy, unsigned int chan_idx,
+ 			      struct reg_beacon *reg_beacon)
+ {
+@@ -2156,6 +2163,7 @@ static void handle_reg_beacon(struct wiphy *wiphy, unsigned int chan_idx,
+ 	struct ieee80211_channel *chan;
+ 	bool channel_changed = false;
+ 	struct ieee80211_channel chan_before;
++	struct regulatory_request *lr = get_last_request();
+ 
+ 	sband = wiphy->bands[reg_beacon->chan.band];
+ 	chan = &sband->channels[chan_idx];
+@@ -2181,8 +2189,11 @@ static void handle_reg_beacon(struct wiphy *wiphy, unsigned int chan_idx,
+ 		channel_changed = true;
+ 	}
+ 
+-	if (channel_changed)
++	if (channel_changed) {
+ 		nl80211_send_beacon_hint_event(wiphy, &chan_before, chan);
++		if (wiphy->flags & WIPHY_FLAG_CHANNEL_CHANGE_ON_BEACON)
++			reg_call_notifier(wiphy, lr);
++	}
+ }
+ 
+ /*
+@@ -2325,13 +2336,6 @@ static void reg_process_ht_flags(struct wiphy *wiphy)
+ 		reg_process_ht_flags_band(wiphy, wiphy->bands[band]);
+ }
+ 
+-static void reg_call_notifier(struct wiphy *wiphy,
+-			      struct regulatory_request *request)
+-{
+-	if (wiphy->reg_notifier)
+-		wiphy->reg_notifier(wiphy, request);
+-}
+-
+ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
+ {
+ 	struct cfg80211_chan_def chandef = {};
+-- 
+2.41.0.162.gfafddb0af9-goog
+
