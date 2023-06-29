@@ -2,23 +2,23 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3C5F7430F1
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 01:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492917430F2
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 01:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231161AbjF2XQy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Jun 2023 19:16:54 -0400
+        id S231214AbjF2XQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Jun 2023 19:16:55 -0400
 Received: from mail-yqbcan01on2069.outbound.protection.outlook.com ([40.107.116.69]:57870
         "EHLO CAN01-YQB-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230415AbjF2XQu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Jun 2023 19:16:50 -0400
+        id S230525AbjF2XQx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Jun 2023 19:16:53 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KC1K17wh9yLpGtHqYBt25tx8rQI4yAm0nWDeXV1OklYGWynDABAbd+7zdGJNBr/ubKfkGGaabOHtpy6Pve62F1vZrrBPTuIXrw1IYj6IiUH3lHabCZZ+WdY4FwKyGk58CDSc8aRCgQ+V5aKStAnAFLE7YoJPW2rk6yMV0ftHASNF4COyIfIQygOGFb9BZ2VL0VzqaS1fDlvjtuma/2AuTUOn/fHxKD7PifCJI92A/b2eWWGXZdHM55VhYCDicVlnvwCbzamN3leBAiBvx3Kqhyaa+MXcd5Xc+OJXaVAmzFpD/K6FfTD/PRMYxb3iAwosdMJfPZx1nsMGMJisRiBWCw==
+ b=Qjhx0SL1UO/c/v/EatHCzj5JfodqfZqxTxOcy0UoYzXmUTeZrdGT0gqV9IG1O8QtsYGxb2ZLZ+Sns2yNMSkUIrs2ucz/WZfSFkuUZXTxfEG9fiI+gT5LQAqvwjUO5vlKYILyi/ww32D0VBKYLYv1pw/lX4tWpOLbi/svcFGqeEaX39SRaegn+jWyEMZyBf5CDSRF3MxenAjnQX/uH4GAA3C58Eq4X1IwNyIXBebzjh7GQaN96qwm2eRcB+SGL4NL154wAOfh41cakGQqrajyUmywvAvT18L2HA06/KW4pv0SE6og+jy+3YU92205IzD/ejMejJNMJlu5AUoNWuDUWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ahZxxTtvb03E64NQPTS/WByP8+M2b6EwlDcgV/PPxX4=;
- b=g/UNHtvY7QTHSwXcPbhXVY+XMff7PsQASDhiR4cTIv0Lb2oWKBs6e6O8Dnrn5FFYKCHHvSBjXBOy9WojStzLQMdOug9+edokBG6mqiG951/iVwRL39qgNigE3/5oUIJyuUUYv+mlPvx9I0V6GbQgJqIzy9zaPvCjNTmD6YpkgbUPIJ33DZ/a/R42qJGHVRjWz/g3h9Ppw+ZkCtap31/LGy2wFbiYPKTlMJi/OSTqpMHJPmLhUpMUStCytSjqQvXXXEHTFDKJv4sY3kli1BC37hMQpJf/jUGXftbogwJL0TiKuV7K0lnz6Z7GYJ0tYfZYwUCTzgFr0J/hlKxLb8nlqg==
+ bh=xVJ5HPkIJxlbgiPV1xBOB7MYj0FTE4Dl3j9Tc7600fw=;
+ b=nUXGEKba9YtukiZsc3flrjGgcwGCKSMcQcCVYPENfTITmURBx2oj1tQ4l/sIePkE/NMRiOpKqup/p/pRbgtajFb9ZAMTLDheEUoK93Bv41pOTps9Ad+Jq6JcQUNVVmVagvdyMWgK7PpnCVYvh3kcFY5WkYIACCf6wjKo8yJ1dWQr6aNX5t11JDhViX4C4UoXH8F045x41tBRd0H7aRwZD0h8/hmDut/nSIhdY1LcYfiKbRTegKyXpLHgmWcHS9UffYcgSV7nRn7EwMeRrM3xi+QEW9O8ezWCGsQIKN49F6kJ/Jfyh5knDAF//rwT6fKD3lWRoaT7XmTRBp5kL/XA/g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=ucalgary.ca; dmarc=pass action=none header.from=ucalgary.ca;
  dkim=pass header.d=ucalgary.ca; arc=none
@@ -36,9 +36,9 @@ Received: from YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM
 From:   Wenli Looi <wlooi@ucalgary.ca>
 To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH v3 01/11] wifi: ath9k: group some ar9300 eeprom functions at the top
-Date:   Thu, 29 Jun 2023 16:16:15 -0700
-Message-Id: <20230629231625.951744-2-wlooi@ucalgary.ca>
+Subject: [PATCH v3 02/11] wifi: ath9k: delete some unused/duplicate macros
+Date:   Thu, 29 Jun 2023 16:16:16 -0700
+Message-Id: <20230629231625.951744-3-wlooi@ucalgary.ca>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230629231625.951744-1-wlooi@ucalgary.ca>
 References: <20230629231625.951744-1-wlooi@ucalgary.ca>
@@ -50,180 +50,110 @@ X-ClientProxiedBy: BY3PR03CA0002.namprd03.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: YTBPR01MB3310:EE_|YT3PR01MB6082:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6778d28f-e6ec-43a0-4ff0-08db78f6e94e
+X-MS-Office365-Filtering-Correlation-Id: 7befb421-8dda-4167-f6a8-08db78f6e9f9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uKICYkXMENiudpRhg1Y4YE6baEGo2dcOIDek20l2hmeTFGL6m9N2mEzBqm7W7lt9a7+ZZLy32LKoMYhcLjg22+tUEh/Syg7TiHKGZv3BnPjNc0I3vTLA6tJ/j0WDtuuFwLW2sG0cTnq2+YDDN23ds0l/i0eu0yvOD8PRa97OB1NCWg0wur0ByDTOm1IpeIW5nIJXZOX+/h7u6spf4A6a+jNN2RNwDDYACqScknQ/G2h29FsQFVWyXlhy1PXOHam/8YD149Z7Jxrd50NV28ilIY8zRDud6ks9UyfDER6UArAewYjrgd6XHgXETACcDOlaaaWXfI5i4qisLM2qUBmGzf3UHHlS7/Bq2JRd7A6lskzL4PGJhv7Giqjx2at0r0DyUN/2RyvHYJ0SJAH1bDwB7KVMLTCeW6KLUUu5GYBkhCuAnK2GpZEiv2UqU3C2FQJonUEEqM5QPVWuZa8RItDtwIiS+ucm3+Tv+3M1/wvPsjqX1DQVAbM++KKP7pkhCgkZC6H7k5DQcCwZrEDuFOM419xhmdWP2BTT5lOby8hQ4PNF0HC+8L/SXcBcWjfCK4V+9+/tf4T32JfKCu9LPKNq+AJ26sqSFMrpj6TkE37XWwU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(346002)(396003)(366004)(39860400002)(451199021)(6506007)(1076003)(36756003)(8676002)(2906002)(6512007)(6486002)(478600001)(83380400001)(6666004)(2616005)(186003)(26005)(5660300002)(316002)(86362001)(6916009)(41300700001)(66476007)(8936002)(4326008)(38100700002)(786003)(66946007)(66556008)(21314003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: e5rNlugQh8ocBnNkBvo1JLRSr/oS9vlo/29Pk4HVD9a5Dasyw498k+Je0q66UEZLRlmLRAlVL9ebngx8ctU5kwicuOJ0kK9AOCdqMfuqZrzF4ogoGKrQIG2DWPlwzHa6FfaxVkl7URb2mt5qmey0LruADr3xRrQYNu8oWIKknqMyn4nIacs96GXb8LHmY28jqVe/ZeG8Bm+YwvjPIv91H8kLl/yQyT8cLagnFUI/Bm3oXuX5XFZhUTuh4g3XID7oQhSBwgoZDWlvPYOmRWurM5hDV4T5bVt4Rt77tA30rnPetzdWiLBJseOZ6nxqUneSu8pnxgteq8NU1IZPTAcApyuikIbvNeG3qCJ0RIMKlsBUx2LMnxt7WQDnd+VPz2bDWieg6AlX2HuwhbsgHGYMkxDvy9ieo6WOL9ERbObEWq9cgSsXeTAMB7ZuuV2uig/rwJrQwH/Y5Y7GBscfXAKfSDK2PI57kggomW0UGRyeRWcxlMFSmN5dbFnv3H7ixtE0pK5PS8ejzfLNAhyCrK63Rcl99HWifJKtxYOaRqbwhdJ+DWnx0PgNsKAy7UHjIp23
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(346002)(396003)(366004)(39860400002)(451199021)(6506007)(1076003)(36756003)(8676002)(2906002)(6512007)(6486002)(478600001)(83380400001)(6666004)(2616005)(186003)(26005)(5660300002)(316002)(86362001)(6916009)(41300700001)(66476007)(8936002)(4326008)(38100700002)(786003)(66946007)(66556008);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4Qk6n1XQgkXfsIZt2EvuE0LzzO534XNycQTQ9TTOj4FvAq5KgeNHko+jRntY?=
- =?us-ascii?Q?0Plgiu70O6ksKsNVFvMvTecmXiU0OCUc9qP/55OHcmhoreUsy9ams+jdmwOR?=
- =?us-ascii?Q?a3V87nV0g9CteUeTQ6SWuqEJTbQsDV+bdjE4TeB3YCbeFrIZtmv1YMWS4lxy?=
- =?us-ascii?Q?GQ6KcKxzfixROfd7Yr71vB1uytM7KZ2Ar59nVKWLidElvrxtu1ceNA0dVh5o?=
- =?us-ascii?Q?8aEVNFBvnvTwmlS/vjQml2L8JTrR4XvmwtFSziGiaAL6bDwyynuUGkynmkvP?=
- =?us-ascii?Q?3zalCwE2G2IrISJhh0oAy/ChQlS5nx3MvQYtSoQM1/Hc4ykjbZ0Ck5FFCE8Y?=
- =?us-ascii?Q?Xfim4Cw0axRD+GkoTW/t6kqKFB5l3H0IPzm1JbHrvG3lJR26vcm/G3cqThVP?=
- =?us-ascii?Q?NFgtKg1pvkVG6nTf5u+nBVLWa0uMNY/UTdnQNrFvv+cwmiOzQ0jsmrlyR66k?=
- =?us-ascii?Q?OLDN/nQ+5tXdsgP3JvVyUZXuw6uU3Rkd0MByQv3Zcw4Yne9oMbhmO8MOpuvC?=
- =?us-ascii?Q?mgbP7dDtAPfR4RdkQfh0tLYGXuazap1oGEyJFcNVFpkRaKXTZFncK7LniCeo?=
- =?us-ascii?Q?ssvpWV1KJ0LJnfCNFQXvnx+hPehQJtxMU4dswGVQHQNUJQ8Ke+Jm3qTojAzw?=
- =?us-ascii?Q?9gxAF5R/2rkyP7Ouj7jVVL7vS3Fr0GYIhKcq/EnrPXHe+ItoYQFzJz7XUcwv?=
- =?us-ascii?Q?ROZmswkEP0WvcHDbaA5H+z0X8EoRp7URfiBsoCKdkSbvSlqyoD0D1QxnS0ep?=
- =?us-ascii?Q?inLr+Kpzi6AGGb/HVGfQmZTpQJdzbMIOp9PmGZGvCoWzxhKefjQYNSOvAGGl?=
- =?us-ascii?Q?YAN7hqMRlj4a9ODohpIumSGjmRq5oZvgZiRowG3at/ShX/PGEmHqy+iMazMz?=
- =?us-ascii?Q?D/9Ch2CaH+zfs3aDrYOPskGfQprrK3Q0ZZ2wY7xw0mvdCQGDNU2m8fgvkNGX?=
- =?us-ascii?Q?cAVpas6X9uB7BZ/RGFhGHcbRKsfWFM5/1JHpEC9UtL3xUAGK+KIIwxH+Z8gl?=
- =?us-ascii?Q?JEHS5rL/y2ym2XQS2DVxb92tSAQvkRwg6w4LVeRuwMskILAjuf1u6IPC8fkW?=
- =?us-ascii?Q?CNJS/KsWKF5Rp8L0TF1Nm1esJ87nYOQQSzN14xw8ubcZ+ST26aLOkqET1d2A?=
- =?us-ascii?Q?4l9Usm8YEb6NYG/mtIfVLr5Pf6FiR5oho1j5jrqnGJ21A934vgDCqEQPR5Al?=
- =?us-ascii?Q?CXxXf+BIqUm8f7ytKbLwp5GyrPo6Zg8vtkpgJFE649wvMtQ2/cqJFeeg9Abc?=
- =?us-ascii?Q?R72Hxrc/+hDR1wPuL+JA+Uyo0VsbtGUbOl4xaUm60qzs70fbwht3mguMWick?=
- =?us-ascii?Q?bBH97hHGM38bW8NOFe5/1CH1zwxKJL3XKcRK0WexwfJ1i6pd8ECikHyuPhmN?=
- =?us-ascii?Q?t/ZEsLdTLZZcVIlc3E47zSUxMdtdWwGiNeEaxJ/jmmxF8L9QTnadZ+eCYyIi?=
- =?us-ascii?Q?H/EhoXFgTTg/C9gCdGd+me/q7E70vmSx0GcmxEGQ2e2NtAOA/O1FJ8sfjpZH?=
- =?us-ascii?Q?BUWw2XtHbF0KIITIVHQzN8CQ3k1aQRkaiVLAMYgdhPbc+FvKg3rXRUGtpcAQ?=
- =?us-ascii?Q?GpE35m5QzupyG4CKZ1yVCJMz3nZKkY5Nxvph2Szk?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0zPI3N3ccVN+HgirukK40Vst+0HQ9hi/rugK+2MbJ5P0q1e2mDVkSiOcC33t?=
+ =?us-ascii?Q?zoIwG5/bwDU8uErzdTZwiCJYpZbQ9iXWuSvYtkG37qFnwsBrjIgT9LuszZiM?=
+ =?us-ascii?Q?BIO9uOWcOyALe9SLAvK3LkJn5pE8qGL80vMu+ahpIOjyNiUucWx+l4DP7fCC?=
+ =?us-ascii?Q?/SDmLo5TGiuFQKv/2mkhuEdIC0bayM8tejKbJprURah7iefRinz7CpBYKh16?=
+ =?us-ascii?Q?V91JuV42DKnMDaJVReWt3tQfuxHJk7JzQZzjmD6jzBBwY+wk48CYl2MkZ+M9?=
+ =?us-ascii?Q?7ppjsl0sX/HdJ+sx/b7e3qSYI9FIvcFh3QIwSmxbHF1bbHHEIXSJuSkMnp0+?=
+ =?us-ascii?Q?XQ9qSXx/2IfyyWw2nP35l+4EZitxVDikQUqBwccWtf+ykdSyRA+dU2ccwWWL?=
+ =?us-ascii?Q?rkvX9rEq6JdQTod7b33VZ86JY//HuNlmWbI/yOWJQEBNovO9ghIaky3jGydH?=
+ =?us-ascii?Q?3gRi4Ij8/nlwOv9Ezx5Ui3uaIF1HB8Ci23jxjXOr/nkR9sRrV9CY0O11t5XC?=
+ =?us-ascii?Q?MKumh2JCmu6H/2tBc1ERE6x6g/4780/WTAxj6bOoFbmUspyW68jHhTfZ/3VX?=
+ =?us-ascii?Q?aXRyxZiNOS0CNLs5ScyNbB/wLsMs987YSozTOcpCM1ol1itvLPMFhvyPRuDK?=
+ =?us-ascii?Q?ss/LBK1CqtGemxFdm8hMyhdiRB2xMP36un8a8wPMSxsn1WFGLVNc1lKPSF+/?=
+ =?us-ascii?Q?yts14QtiS81SR0MpiR45NfNQ9nPoZBYlbbtoU0QndgU12GkCESRRMVysr8Av?=
+ =?us-ascii?Q?XeQNZEK/AWeNibmxytP8BrCDAW8ufqqoGMHtKMUNS4Lo3lpqUJPScIAtkLPO?=
+ =?us-ascii?Q?Q8//XuEp1bGgdXHSCwCgJ6X71L7ZzaTxfrG9wi9EayyDLX3B9uWuecoHsWgn?=
+ =?us-ascii?Q?MyMUhioA48OFKn+PSqUYAuN/pRqAcqSMLngcVKPwE1E0FFb0IceLsza0g1sG?=
+ =?us-ascii?Q?A3NoOg3w4CW4qcjnpie6y/TOPw8C6lHxTtl5TpCSJ9BWks8rv6xlJfo30MLr?=
+ =?us-ascii?Q?iuiEZCaw8+clpryYinmpvMB05T24VV+xrSz+7vMb04sOBMlx0EHjuDzRmXLu?=
+ =?us-ascii?Q?Hp4SX6a5lErK+776KXcvQyefjUlbHgJ7YIjh7Pqb9S6UeGu7VNBcfIjVD/E7?=
+ =?us-ascii?Q?Z9Pkq75JagXfUAYbQDmXEuPqgJ+aNiUe5dDcZE/FEdYShj4KZJfCPQmRTJXm?=
+ =?us-ascii?Q?WZMNt4HXwnBVzM47IRRLfiLG8al56p4SpcSyAx4np2zUGvgt7o9/8ogBReS2?=
+ =?us-ascii?Q?quGSa1hLfwgsYFXDtEjcZHLOD3EUrhwtfENfKM5ao2+dEWtcoiHtYLfIBms2?=
+ =?us-ascii?Q?OTDZeZYoB9A3UpEMppCRJ9z1UCOZWqAW7kp2sOe6Qlw44bnSgzz0AXae8Vnk?=
+ =?us-ascii?Q?jYY4tmf7m2idTa03JpcmPx89VeLUtYMMM1GclmQlWs3ib0TEY9L9jxCSSPFv?=
+ =?us-ascii?Q?zWSoHeooIDQfHu07r0pBM1KgEHGvb+KR1H+1SgfqOEBVG02TbD8wrI41C/ky?=
+ =?us-ascii?Q?Y5KpYwbBcCMZEDWxYAydGnRobCHl4dqb6FhK1VL5N+xo5/XKjP15kq3yfuZy?=
+ =?us-ascii?Q?uIqnbizyxJ1Jm9HWL6J04ivQw/4iiXwkXyJaiisg?=
 X-OriginatorOrg: ucalgary.ca
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6778d28f-e6ec-43a0-4ff0-08db78f6e94e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7befb421-8dda-4167-f6a8-08db78f6e9f9
 X-MS-Exchange-CrossTenant-AuthSource: YTBPR01MB3310.CANPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 23:16:48.0131
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 23:16:48.6670
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: c609a0ec-a5e3-4631-9686-192280bd9151
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3RUg7wbCBb0f+7bZ0bPg3pgOGsfD41CywVf+X1Q4ZVXMLgij/BCkIi4N2MJfaw+UkJkZUJ/GmYHulz3vCB8Jbw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: d3pnJ5H47SDCDnVgI4CbA8eHlSYAZTh+nHKD7Uqc6Nz/Q7CU4Vk7YODvP+udqB5mdOAq8CXjPxj9OsR1i7mjPQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB6082
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-These functions will be part of an abstraction layer that works with
-both AR9300 and QCN5502 EEPROM formats.
+The rate macros are for AR9002 and not correct for AR9003.
+
+The AGC 3 macros are unused and have incorrect values, at least for
+QCN5502, where AR_AGC3_BASE should be 0x2de00.
 
 This change does not appear to affect the final binary.
 
 Signed-off-by: Wenli Looi <wlooi@ucalgary.ca>
 ---
- .../net/wireless/ath/ath9k/ar9003_eeprom.c    | 90 +++++++++----------
- 1 file changed, 45 insertions(+), 45 deletions(-)
+ drivers/net/wireless/ath/ath9k/ar9003_phy.h | 9 ---------
+ drivers/net/wireless/ath/ath9k/reg_aic.h    | 4 ----
+ 2 files changed, 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-index 944f46cdf3..58dce556b0 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -2970,6 +2970,51 @@ static int interpolate(int x, int xa, int xb, int ya, int yb)
- 	return ya + factor + plus;
- }
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.h b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
+index 57e2b4c891..ad72a30b67 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_phy.h
++++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
+@@ -851,8 +851,6 @@
+ #define AR_PHY_TXGAIN_FORCED_TXBB1DBGAIN  0x0000000e
+ #define AR_PHY_TXGAIN_FORCED_TXBB1DBGAIN_S 1
  
-+/* XXX: review hardware docs */
-+static int ath9k_hw_ar9300_get_eeprom_ver(struct ath_hw *ah)
-+{
-+	return ah->eeprom.ar9300_eep.eepromVersion;
-+}
-+
-+/* XXX: could be read from the eepromVersion, not sure yet */
-+static int ath9k_hw_ar9300_get_eeprom_rev(struct ath_hw *ah)
-+{
-+	return 0;
-+}
-+
-+static struct ar9300_modal_eep_header *ar9003_modal_header(struct ath_hw *ah,
-+							   bool is2ghz)
-+{
-+	struct ar9300_eeprom *eep = &ah->eeprom.ar9300_eep;
-+
-+	if (is2ghz)
-+		return &eep->modalHeader2G;
-+	else
-+		return &eep->modalHeader5G;
-+}
-+
-+static u16 ar9003_hw_ant_ctrl_chain_get(struct ath_hw *ah, int chain,
-+					bool is2ghz)
-+{
-+	__le16 val = ar9003_modal_header(ah, is2ghz)->antCtrlChain[chain];
-+	return le16_to_cpu(val);
-+}
-+
-+u32 ar9003_hw_ant_ctrl_common_get(struct ath_hw *ah, bool is2ghz)
-+{
-+	return le32_to_cpu(ar9003_modal_header(ah, is2ghz)->antCtrlCommon);
-+}
-+
-+u32 ar9003_hw_ant_ctrl_common_2_get(struct ath_hw *ah, bool is2ghz)
-+{
-+	return le32_to_cpu(ar9003_modal_header(ah, is2ghz)->antCtrlCommon2);
-+}
-+
-+static u16 ar9003_switch_com_spdt_get(struct ath_hw *ah, bool is2ghz)
-+{
-+	return le16_to_cpu(ar9003_modal_header(ah, is2ghz)->switchcomspdt);
-+}
-+
- static u32 ath9k_hw_ar9300_get_eeprom(struct ath_hw *ah,
- 				      enum eeprom_param param)
- {
-@@ -3578,29 +3623,6 @@ static u32 ath9k_hw_ar9003_dump_eeprom(struct ath_hw *ah, bool dump_base_hdr,
- }
- #endif
+-#define AR_PHY_POWER_TX_RATE1   0x9934
+-#define AR_PHY_POWER_TX_RATE2   0x9938
+ #define AR_PHY_POWER_TX_RATE_MAX    0x993c
+ #define AR_PHY_POWER_TX_RATE_MAX_TPC_ENABLE 0x00000040
+ #define PHY_AGC_CLR             0x10000000
+@@ -1041,13 +1039,6 @@
  
--/* XXX: review hardware docs */
--static int ath9k_hw_ar9300_get_eeprom_ver(struct ath_hw *ah)
--{
--	return ah->eeprom.ar9300_eep.eepromVersion;
--}
--
--/* XXX: could be read from the eepromVersion, not sure yet */
--static int ath9k_hw_ar9300_get_eeprom_rev(struct ath_hw *ah)
--{
--	return 0;
--}
--
--static struct ar9300_modal_eep_header *ar9003_modal_header(struct ath_hw *ah,
--							   bool is2ghz)
--{
--	struct ar9300_eeprom *eep = &ah->eeprom.ar9300_eep;
--
--	if (is2ghz)
--		return &eep->modalHeader2G;
--	else
--		return &eep->modalHeader5G;
--}
--
- static void ar9003_hw_xpa_bias_level_apply(struct ath_hw *ah, bool is2ghz)
- {
- 	int bias = ar9003_modal_header(ah, is2ghz)->xpaBiasLvl;
-@@ -3620,28 +3642,6 @@ static void ar9003_hw_xpa_bias_level_apply(struct ath_hw *ah, bool is2ghz)
- 	}
- }
+ #define AR_PHY_TX_IQCAL_STATUS_B2_FAILED    0x00000001
  
--static u16 ar9003_switch_com_spdt_get(struct ath_hw *ah, bool is2ghz)
--{
--	return le16_to_cpu(ar9003_modal_header(ah, is2ghz)->switchcomspdt);
--}
+-/*
+- * AGC 3 Register Map
+- */
+-#define AR_AGC3_BASE	0xce00
 -
--u32 ar9003_hw_ant_ctrl_common_get(struct ath_hw *ah, bool is2ghz)
--{
--	return le32_to_cpu(ar9003_modal_header(ah, is2ghz)->antCtrlCommon);
--}
+-#define AR_PHY_RSSI_3            (AR_AGC3_BASE + 0x180)
 -
--u32 ar9003_hw_ant_ctrl_common_2_get(struct ath_hw *ah, bool is2ghz)
--{
--	return le32_to_cpu(ar9003_modal_header(ah, is2ghz)->antCtrlCommon2);
--}
+ /* GLB Registers */
+ #define AR_GLB_BASE	0x20000
+ #define AR_GLB_GPIO_CONTROL	(AR_GLB_BASE)
+diff --git a/drivers/net/wireless/ath/ath9k/reg_aic.h b/drivers/net/wireless/ath/ath9k/reg_aic.h
+index 955147ab48..f50994910e 100644
+--- a/drivers/net/wireless/ath/ath9k/reg_aic.h
++++ b/drivers/net/wireless/ath/ath9k/reg_aic.h
+@@ -17,10 +17,6 @@
+ #ifndef REG_AIC_H
+ #define REG_AIC_H
+ 
+-#define AR_SM_BASE                              0xa200
+-#define AR_SM1_BASE                             0xb200
+-#define AR_AGC_BASE                             0x9e00
 -
--static u16 ar9003_hw_ant_ctrl_chain_get(struct ath_hw *ah, int chain,
--					bool is2ghz)
--{
--	__le16 val = ar9003_modal_header(ah, is2ghz)->antCtrlChain[chain];
--	return le16_to_cpu(val);
--}
--
- static void ar9003_hw_ant_ctrl_apply(struct ath_hw *ah, bool is2ghz)
- {
- 	struct ath_common *common = ath9k_hw_common(ah);
+ #define AR_PHY_AIC_CTRL_0_B0                    (AR_SM_BASE + 0x4b0)
+ #define AR_PHY_AIC_CTRL_1_B0                    (AR_SM_BASE + 0x4b4)
+ #define AR_PHY_AIC_CTRL_2_B0                    (AR_SM_BASE + 0x4b8)
 -- 
 2.34.1
 
