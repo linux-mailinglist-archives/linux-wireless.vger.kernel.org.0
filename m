@@ -2,64 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7F6E743667
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 10:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B6CD7438DC
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 12:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232154AbjF3IDl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Jun 2023 04:03:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60386 "EHLO
+        id S232915AbjF3KCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jun 2023 06:02:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232174AbjF3IDi (ORCPT
+        with ESMTP id S232974AbjF3KBs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Jun 2023 04:03:38 -0400
-X-Greylist: delayed 502 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 30 Jun 2023 01:03:38 PDT
-Received: from mail.tradeharbor.pl (mail.tradeharbor.pl [217.61.97.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4590C2D60
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jun 2023 01:03:37 -0700 (PDT)
-Received: by mail.tradeharbor.pl (Postfix, from userid 1002)
-        id 0C0F18346D; Fri, 30 Jun 2023 09:55:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tradeharbor.pl;
-        s=mail; t=1688111714;
-        bh=+8JR9pbZKhAL6uRH+3YthTnulvnmSqiK0eDpljLgYE8=;
-        h=Date:From:To:Subject:From;
-        b=j5c+ZiM5ZBdD6JQrbVAexl2PKpYJRNlnmkrG4IjTnruqZAUggK9HQhJBQbHxUiSLA
-         YtKNxtYO9RSt5Jt43KBytUU0a49RfS/3TEWpnqIXQXjAJp/Zj419NvCgS5XDICnYjg
-         4O+DmRy42CY2gxdDpD3g2tHciSiwcar8Shk8zv/w3VkTJztNPw+1gBv7MJkCJpvBVl
-         QMZiocCTR0IVji/ZmmnIVHvQLf7ITdWmVSM+DHg6VTAukpUtPEHX0n3PNoq0Ks2de8
-         uvi8FfH8RqzGnZrj1TP4lF1XEGxILu9B8XSeRtcmTU8xOjm3FS643ri1/FGABPgR0k
-         P0X0VJbB+lShg==
-Received: by mail.tradeharbor.pl for <linux-wireless@vger.kernel.org>; Fri, 30 Jun 2023 07:54:19 GMT
-Message-ID: <20230630083000-0.1.6.4rm.0.9hwt5d9tbm@tradeharbor.pl>
-Date:   Fri, 30 Jun 2023 07:54:19 GMT
-From:   "Piotr Firek" <piotr.firek@tradeharbor.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: =?UTF-8?Q?Prosz=C4=99_o_kontakt?=
-X-Mailer: mail.tradeharbor.pl
+        Fri, 30 Jun 2023 06:01:48 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCAD1FCB
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jun 2023 03:01:47 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35U8rA2O009671;
+        Fri, 30 Jun 2023 09:32:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=PK24KpSvL0d1KNy5acQjsM972gYJThX7jVCYosHgcX8=;
+ b=Svdl01UpCRa7sW4Kd8D/iu53nOScPxSqY/knNpQS3dmhlDBefVebiH/66g3A+BZygG2q
+ XP2O6OVnASOBimnzUt8WFiwHr5KaQy+2wAzEir4fxz+KFx3Ta1k9NE61H2c9RpIYwoie
+ gbVm9ARa2xTn95oooGCTBRqvHoqilvB/DycVj/gOpanBwN3rgK44VV9w56WDW83vYTcf
+ ZCWkEMumk3oxzwtnVqTztO2bGDyopOIssH5kwk4251YdmHE+JylyC3fNPvUtxxMwypHl
+ x2cPAceEJtqX1P0XHPmr1O6W1viOkBrreNIDYUSCVHvn6F9X6ljebf6ZiSDtkQLHFmqu pw== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rh4y6auqf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jun 2023 09:32:15 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 35U9WEW1023000
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jun 2023 09:32:14 GMT
+Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.7; Fri, 30 Jun
+ 2023 02:32:13 -0700
+Message-ID: <bf774594-d1f9-8183-b5cf-55b2c0479aa4@quicinc.com>
+Date:   Fri, 30 Jun 2023 17:32:09 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC:     <ath11k@lists.infradead.org>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+ <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
+ <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
+ <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
+ <d10b88b4-0bd7-a38c-e8d7-8982a281c4b3@quicinc.com>
+ <e5adbed1524b27228c152ba14f78c550c8730baa.camel@sipsolutions.net>
+ <c15e368e-2fea-a1d8-9c0d-db9278ded5e5@quicinc.com>
+ <113761966918b2f390d3c9304307b42a0b4a829b.camel@sipsolutions.net>
+ <76863dec-1b2f-b933-7c5e-21c732de4bc6@quicinc.com>
+ <2cc79101249548f2a92c14af6aff6121143907d6.camel@sipsolutions.net>
+ <1c26c205-0240-7670-117d-02a7af068724@quicinc.com>
+ <6f8db032286923845202c7d658f1d39db79a758c.camel@sipsolutions.net>
+ <a7093d7a-0179-7b5f-cc61-a501331d35c6@quicinc.com>
+ <c60af4eb116ed330e8035503fb7944f8853bcfa4.camel@sipsolutions.net>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <c60af4eb116ed330e8035503fb7944f8853bcfa4.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: EjeUSHDCPmsfhSyh1c7o2LQPVaf5FISr
+X-Proofpoint-ORIG-GUID: EjeUSHDCPmsfhSyh1c7o2LQPVaf5FISr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-30_05,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
+ phishscore=0 impostorscore=0 mlxlogscore=645 suspectscore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306300079
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On 6/15/2023 3:56 PM, Johannes Berg wrote:
+> On Thu, 2023-06-15 at 10:26 +0800, Wen Gong wrote:
+>> On 6/15/2023 2:32 AM, Johannes Berg wrote:
+>>> On Wed, 2023-05-24 at 15:41 +0800, Wen Gong wrote:
+>>>
+...
+>> Could you tell detail about how the BSS_CHANGE flag works?😁
+> The work isn't complete yet, but basically it just calls the callback
+> whenever the valid_links changed, say by link-reconfiguration.
+>
+> johannes
+I guess the link-reconfiguration you said is for station, it means 
+station will do corresponding
+link-reconfiguration after receive link reconfiguration indication(e.g. 
+Reconfiguration
+Multi-Link element) from MLO AP, right?
 
-Czy jest mo=C5=BCliwo=C5=9B=C4=87 nawi=C4=85zania wsp=C3=B3=C5=82pracy z =
-Pa=C5=84stwem?
+I guess you will add enum BSS_CHANGED_xxx(e.g. 
+BSS_CHANGED_LINK_RECONFIG), and call
+vif_cfg_changed of struct ieee80211_ops for link-reconfiguration, right?
 
-Z ch=C4=99ci=C4=85 porozmawiam z osob=C4=85 zajmuj=C4=85c=C4=85 si=C4=99 =
-dzia=C5=82aniami zwi=C4=85zanymi ze sprzeda=C5=BC=C4=85.
+And do you will implement both remove link and add link of station?
 
-Pomagamy skutecznie pozyskiwa=C4=87 nowych klient=C3=B3w.
-
-Zapraszam do kontaktu.
-
-
-Pozdrawiam
-Piotr Firek
+For add link, it should calculate the new key of the new link("35.3.6.4 
+ML reconfiguration
+to the ML setup" of IEEE P802.11be™/D3.2).
