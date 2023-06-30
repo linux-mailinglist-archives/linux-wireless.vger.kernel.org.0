@@ -2,194 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D802F743235
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 03:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2776D7432BD
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 04:28:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229878AbjF3BXy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Jun 2023 21:23:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41344 "EHLO
+        id S231883AbjF3C2F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Jun 2023 22:28:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjF3BXx (ORCPT
+        with ESMTP id S229945AbjF3C2E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Jun 2023 21:23:53 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C50A2952
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jun 2023 18:23:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1688088232; x=1719624232;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=Gtt4Js0sbxawMZoC9hgdOjPUE4tOBY97SMh+0gZX1g0=;
-  b=tz/zP3U5aRW99PziI6ZdKiI7QehAn0N4ql41nP4cN6gJa2oYZE6YSytZ
-   Th0YEQ9OXyVdTkKK4N9DlLrFQK8o3GfLxptBf4S/kalwENTHC319C7lys
-   mHSQ4RJLUvludxR/tZcgW0OfDyDDlf8gbmJEWlUGN8dJSw7tUWw6+IM4X
-   MaV8n81YVfo81FyWdijf7d2ZpR0Eq3bG60wNKWcAWRPPpjITp1ewjTHE1
-   3KfLoZkCEXVQm3Qx7g7IqHU3+W9eTQx4U4UHvlSnRIDv5Unc5JvaxH3Fc
-   C3anMhXJ7VpOMCI2ybgK+ICTmW+fqsu1PHxWLUS+qBmessQLod2/tn1ZQ
-   w==;
-X-IronPort-AV: E=Sophos;i="6.01,169,1684825200"; 
-   d="scan'208";a="220612907"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 29 Jun 2023 18:23:52 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 29 Jun 2023 18:23:51 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Thu, 29 Jun 2023 18:23:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M60UoVMjqn1JbvOVfPWTGQ1Vt6ZpDuhB6QyHKYkBil5iBAIMBDicIdarwYIgrKH382/4aNvYfMB++zuIcph6RthNMEJT2WfnBRfi9z06XvghX5Iu4S41LiHirLmpZaQxDRhjyby1bTndrDTRd+olJjVoe6RyAutswdPJvn4NzrTocNxQwnAn2t3iaglzYuLA6XpuJJCLG1lESBVN8bM2+hfhbK6hOeMGxJn02tpIMcwgCX/4qvtcf95DA6xe8KbDJRfVTzTjmQXOAFqNkDqYyYUezI4ilOa+McQ6Wva+KWSc1hRzp4jheQvdNpUjW4Txq8IwfPwLabwRlFXMOpjE2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AXCz6mSxaYV1A4ModQwFsFZeLhIKXyJp9NV4Mx0CVEM=;
- b=I5RQjHRpbQfraX0ih9bWAc29lQXq4vYO1SaDTD3XFNt9JppPa0jpp9kGaGxtVnX3R5iowv/XxfXbmVrrf3+AL+A+ZdvyhcX9xBTpnHPkTh9enCZCKOERj8PZQnfu3RLZjCxslda21rT5UOBc/vXQJ/2YcILAbvLtxUayRl+a1pl9GFNX7u4AeMzSxCaUHteLfy8ls/5+qdb8Zmhw7EQL5vmMoYDjsDN0SkZA1VjwiKqmLem0XqIIbyXRbqdvWyfHpYXyU4Zjh4TArwIGcWIt01VXrFWPrzPjkAyJE4ndS+EpRFr2dAxHzGMrHaklQZGOZ+vOY1/u981Mcu+DgrmK1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        Thu, 29 Jun 2023 22:28:04 -0400
+Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FFC62694
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jun 2023 19:27:59 -0700 (PDT)
+Received: by mail-vs1-xe2a.google.com with SMTP id ada2fe7eead31-44357f34e2dso532666137.3
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jun 2023 19:27:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AXCz6mSxaYV1A4ModQwFsFZeLhIKXyJp9NV4Mx0CVEM=;
- b=hil9ZovtgYe9AHKPIevUFgeCGqThMsPCaIBtM8XtOXLSESd0B8J3mGuKgvAfuJejXWOU4TS2AXweYNY4riESL8gqIGEFb8ttLyzHvvqvZ7UqfU4uSBsXJSYwSXlPE3y/dTloK8J+tUAPKNE5pmydv7gn62w/0gb1l/fi7JW1fjU=
-Received: from PH0PR11MB5176.namprd11.prod.outlook.com (2603:10b6:510:3f::5)
- by SJ0PR11MB6743.namprd11.prod.outlook.com (2603:10b6:a03:47c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Fri, 30 Jun
- 2023 01:23:50 +0000
-Received: from PH0PR11MB5176.namprd11.prod.outlook.com
- ([fe80::4d70:f7e3:a90b:bab5]) by PH0PR11MB5176.namprd11.prod.outlook.com
- ([fe80::4d70:f7e3:a90b:bab5%7]) with mapi id 15.20.6544.019; Fri, 30 Jun 2023
- 01:23:49 +0000
-From:   <Ajay.Kathat@microchip.com>
-To:     <linux-firmware@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <Claudiu.Beznea@microchip.com>,
-        <Sripad.Balwadgi@microchip.com>, <Ajay.Kathat@microchip.com>
-Subject: [PATCH] linux-firmware: move wilc firmware to 'microchip/wilc'
-Thread-Topic: [PATCH] linux-firmware: move wilc firmware to 'microchip/wilc'
-Thread-Index: AQHZqvGGefcKnm2dVE+FaXjeU6nytA==
-Date:   Fri, 30 Jun 2023 01:23:49 +0000
-Message-ID: <20230630012333.1331143-1-ajay.kathat@microchip.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: git-send-email 2.34.1
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR11MB5176:EE_|SJ0PR11MB6743:EE_
-x-ms-office365-filtering-correlation-id: 673f70d4-822b-4cd6-5c3c-08db7908a890
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hRkM1889G9ydr9Ux+ZgpmzDqFFLutqBCLGJd7u+GIyJJWAOrXqxlHSRbVoFqp6QYuI9RTzJ0LeS7lrh7q2mdWTGyn8YKazJc0LjPwcUbhjduThvGJaFl/ISXed1tMdZjJTCNEir4zE85qSMxQx4k6CXZdnqYGDO9Vh7StBaml6OPJ/RRVyAoKhnStL9sOxyQX/o26wCndOGOHM30WFcVBjJhxISJJKqbtakbJVXHxhoyULkIeMKk8bf/VOXhGZkz9G1m0meedH78EH9E0wAeFvOSi9dWrx2k8kGXMyFJfUAy3JDbqIZqF8HcwVev9PF01LjlphrwTa2T3GtopSxwglRJ0BOZAdmty6U0JyGux8qhK9YcHDGrvpXWeQ0VEps6Ec0yFaOTfTwDcdETNkXpCR2/qwNswXxusLS09OY6ehUbgoiVz853w5AuOkbOeqkLtV2XwH4mMpbxivSKYoHqZbonNMhYFck3QrnL37ZjqsbY0AdNdTIeBFE3akk7d3dtjlzDW2pW/eaMNjnk0LtvuSrtklL57o/U4nJWkdhDQYsZV3sjEHA2EWf8ba4wNX42G0pqIo4HFi3cksXgdzoS6SnlqvS7fMWun3L1ND60hG0i50PVEqjuOXE1iWYohKkT
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5176.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(366004)(346002)(376002)(39860400002)(396003)(451199021)(54906003)(83380400001)(107886003)(2616005)(64756008)(186003)(478600001)(71200400001)(86362001)(6486002)(91956017)(41300700001)(66476007)(66556008)(316002)(4326008)(1076003)(6512007)(6916009)(66446008)(6506007)(66946007)(26005)(76116006)(36756003)(8936002)(8676002)(5660300002)(2906002)(38070700005)(122000001)(38100700002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?ubAXhMq+bBcoJ8Ojpq2V/H0lsPbhiHkCXfYpILrwdrtl+S1CfXxhcPMPw1?=
- =?iso-8859-1?Q?ocDilxPxsC6Umy1DWSsxXdE6EwLa4Ye8u31DFRVDC3qWK+4fmANX3rFmP0?=
- =?iso-8859-1?Q?8GyL5ps4wAzDCv+vZIR+2wnN5zduibHE7r0OlQRac56sgbFVQzXxMivCdH?=
- =?iso-8859-1?Q?ywolRBGZxRX724gDM+efJbrgjBkTnXnjPtfc5XnNuuJachzacrPl5gK3ot?=
- =?iso-8859-1?Q?ity4q1Dxotyu1F6TyjVQvDLquq6I+Sm+AP0lq6KAPTA2k+EPBwwFzFOuEc?=
- =?iso-8859-1?Q?S+Rj4bI99jfQL2n/pjFYQziKeZE7NmlHQNFdtTwgv/tp98o9C4R2WI2b6K?=
- =?iso-8859-1?Q?W6Awt53t5E15x34852z2JtpURQLBK8XX+9xAVsprRNvaU+8gDYEFzhZUdG?=
- =?iso-8859-1?Q?OGG3pT+YSQXfjRAxPxDF5GmjQzGExxDqkeQVm7ugANBrp9YxzuWQa0ZeN9?=
- =?iso-8859-1?Q?OWuFxQFGvBfIgWWlpgj/JGUpNkOvrlaH0qJW6JyjNJb+G6OCLxyGkXPY+r?=
- =?iso-8859-1?Q?C6i4XLe3bOGgB1XtZ+SWn4KRV7XqaGjv7Ee0uefSzNJKvsCNOzhxyG4pq0?=
- =?iso-8859-1?Q?cpu4bq4MwXlWmyXdIAFpuYFd+GruO2zDVJUH3MY+Xyd4T+cC+m2BdvHJyz?=
- =?iso-8859-1?Q?G9LQr+QJt+jIVndjdBT3gT/o5BDdafiF03bRD433B2c3wjB57zoqrSUQF3?=
- =?iso-8859-1?Q?edeOMlaFzuUmTEuHBeume2xGv34egfXIIFgyPFmJ+EI121XEwYjuQWymv0?=
- =?iso-8859-1?Q?9bq3PkXTEfBIDUJSdT1jHgG/nbPK7ExMjJ/psIWA6jbyauBYzOj2jNyjzG?=
- =?iso-8859-1?Q?e5ZD/ftXOwXQUf29wn9yQ+RdzV7Zlpuw8hxWRlOAXdxtEO0O7ayOVgfEeG?=
- =?iso-8859-1?Q?G8keWdsJ/p9zLb8c4ATUrspN13d/2s+euwl2LdlIEBEZJTznEI7e6Agk/r?=
- =?iso-8859-1?Q?A2Btc0m8JWbp4Ll68+MXmPmZz6SW3r7JuytpIYwRWWtXw6OZOTj4uGI6Jd?=
- =?iso-8859-1?Q?LBZzBjW7GLi6A56Pv3XkPAuLdqXRbgKmLYKlPzqS8NCQqZlDiGqy6epKNX?=
- =?iso-8859-1?Q?EeslRd4NHaNuvwszDGOOkRd9CPwPaOkCo6ssTsGjEIIwdwaMdPsGVeqHjG?=
- =?iso-8859-1?Q?LUsoYkJohXf8PthK63YLmDwS3E/hg2k57oEo/Yc7fgtkxsTfMNRh5kcqzZ?=
- =?iso-8859-1?Q?sjJsjByTBXB3y6YpnDy0wZ/CBBxMW6ADex/nQlZh5gBRCUWiGr3J6oLOL+?=
- =?iso-8859-1?Q?h+IpzFLAVtRk6dE8W2am999G5F6om0H2K5tlTl79J+F/M8UPShgq8tFJeI?=
- =?iso-8859-1?Q?zyST/+w7fG15o3ZNBgyNCKZXnWtqJVvQxaMaU2SGxEJp1CYGBD0MZs9g1F?=
- =?iso-8859-1?Q?gCve1mM4slTWzlHJkGUaiHBojTOvMY0uRqx1T0Dz2R1UqeC/biO3Wt+Ud2?=
- =?iso-8859-1?Q?1lLXx9Dcu5lsP1sdIcqgCxEUrACUd3u+Q71hd2odaNbXIhkA+mCMg44kVx?=
- =?iso-8859-1?Q?mEi/2VTC13Tm2yl4HiWKefNxo5bnYiAMs3r0TqpA4IOokPc/T/A0yQmC8B?=
- =?iso-8859-1?Q?AmPs6+jmlDGXXb6N/klY4l7tMz+xyHbWHqnI83RbWd2IrbGBlPgD59zqz5?=
- =?iso-8859-1?Q?PX2inrDa70S2n23/U7oKHHqu9cTGBXIHA13BU53QEJvOoZ/azW+PQaPw?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=google.com; s=20221208; t=1688092078; x=1690684078;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eTo9hY6za6sp4iN6jnPaCNqbOXw5FRoNumhZ0qdWDT0=;
+        b=VTJbmNvHjTej6lTE/CJNYZ8fA/ivIlXHmJZFdOes0lUdz1zqTfw57H4fzp1rceKSSC
+         KUDAuNDxQqD7xl3FXiJ0X3uKm6wsNeq4fJ9QjDIaJW+LIm1p98ZXtYj3XNfo0a/LtlvT
+         nk1uIeHhrVsTqVow7LQY2IqrA5qs/sPY3TQU0YNoLFoUi9mktogOXr1pj6Dt5+XeoYoj
+         UgaiDx/5a3R/GpHU82ujOzlyOjq/rAky0x+0JHf7o0SV4I436BP9BX4pOv/Iue4YBBNe
+         4UaC/kOCWJvUWvc/C56iyq3pkxJNkpoitRmW5H4NmXQh5P0FtNNEGebEsgAFTAtv3V51
+         GZ0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688092078; x=1690684078;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eTo9hY6za6sp4iN6jnPaCNqbOXw5FRoNumhZ0qdWDT0=;
+        b=EYRupt2TTchpqsyC3PoAr3T8VEXKQIocxKBOOTMtCAgZuh372ho3awR+6QW/4vnUL8
+         Rf5N/pr5vD4f+kIZ8HDyU/Mul3wIzoDfprHUBPEW2YtL6vv6kLHRygXH/Sirt8YDRWWi
+         +ReUZJFd3Y79pRTNAWK1IdNkyeM9pMgV1HvRwXoxLgWbuXFqAjcJ3t/HgNK/ADjoCVzw
+         sE0s/a6oLllBoJuwywHdLnG9EfGJHu5U1MAEfYGF12FHDMsEUeAlKgOnowVZn0XxZKT/
+         uODMIqalyXdQZbm6hJk/B80izOv4LHUO//KevRxt2mYcY8RiqEdiofLx9ZpPxVdz9kGP
+         FhzA==
+X-Gm-Message-State: ABy/qLaxwBwiDW02MbTMJvG5zQMDNig1wOW7fD3h9Mf4YUa6L/NlmLHF
+        /e7fwoncfPR2DP7zvQ9hKimJW/YvEvC1DWxTP3V0ng==
+X-Google-Smtp-Source: APBJJlGS5fPCjeCoPCceVsMEDJwZdtv3ffVTv0LqhfudUaRPcxeWgOGwlh4B4Gc06mRDoibfLyP/0aoGiRpvBDUVDfE=
+X-Received: by 2002:a05:6102:407:b0:440:bee1:e811 with SMTP id
+ d7-20020a056102040700b00440bee1e811mr1357973vsq.22.1688092077918; Thu, 29 Jun
+ 2023 19:27:57 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5176.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 673f70d4-822b-4cd6-5c3c-08db7908a890
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2023 01:23:49.7619
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uuZODRW6yi/5Cec79DpuvQRdXVqOVQYlS1/RH9BoPXJt7ZVeWYEclx5cMUVoL8CsPvoD7cx8RycDnuSqaP2kobdzo6Evn9d5/JCcMENn49c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6743
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230612130256.4572-1-linyunsheng@huawei.com> <20230612130256.4572-5-linyunsheng@huawei.com>
+ <20230614101954.30112d6e@kernel.org> <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
+ <20230615095100.35c5eb10@kernel.org> <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
+ <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com> <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
+ <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com> <20230616122140.6e889357@kernel.org>
+ <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com> <20230619110705.106ec599@kernel.org>
+In-Reply-To: <20230619110705.106ec599@kernel.org>
+From:   Mina Almasry <almasrymina@google.com>
+Date:   Thu, 29 Jun 2023 19:27:46 -0700
+Message-ID: <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Jesper Dangaard Brouer <jbrouer@redhat.com>, brouer@redhat.com,
+        Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ajay Singh <ajay.kathat@microchip.com>
+On Mon, Jun 19, 2023 at 11:07=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> On Fri, 16 Jun 2023 22:42:35 +0200 Jesper Dangaard Brouer wrote:
+> > > Former is better for huge pages, latter is better for IO mem
+> > > (peer-to-peer DMA). I wonder if you have different use case which
+> > > requires a different model :(
+> >
+> > I want for the network stack SKBs (and XDP) to support different memory
+> > types for the "head" frame and "data-frags". Eric have described this
+> > idea before, that hardware will do header-split, and we/he can get TCP
+> > data part is another page/frag, making it faster for TCP-streams, but
+> > this can be used for much more.
+> >
+> > My proposed use-cases involves more that TCP.  We can easily imagine
+> > NVMe protocol header-split, and the data-frag could be a mem_type that
+> > actually belongs to the harddisk (maybe CPU cannot even read this).  Th=
+e
+> > same scenario goes for GPU memory, which is for the AI use-case.  IIRC
+> > then Jonathan have previously send patches for the GPU use-case.
+> >
+> > I really hope we can work in this direction together,
+>
+> Perfect, that's also the use case I had in mind. The huge page thing
+> was just a quick thing to implement as a PoC (although useful in its
+> own right, one day I'll find the time to finish it, sigh).
+>
+> That said I couldn't convince myself that for a peer-to-peer setup we
+> have enough space in struct page to store all the information we need.
+> Or that we'd get a struct page at all, and not just a region of memory
+> with no struct page * allocated :S
+>
+> That'd require serious surgery on the page pool's fast paths to work
+> around.
+>
+> I haven't dug into the details, tho. If you think we can use page pool
+> as a frontend for iouring and/or p2p memory that'd be awesome!
+>
 
-Move the wilc1000 firmware from 'atmel' to 'microchip/wilc' path.
-The updated path not only helps to avoid confusion for users but also be
-used to keep microchip's other wifi firmware files.
+Hello Jakub, I'm looking into device memory (peer-to-peer) networking
+actually, and I plan to pursue using the page pool as a front end.
 
-To maintain backward compatabilty, the Link statement is added for existing
-'atmel' path firmware.
+Quick description of what I have so far:
+current implementation uses device memory with struct pages; I am
+putting all those pages in a gen_pool, and we have written an
+allocator that allocates pages from the gen_pool. In the driver, we
+use this allocator instead of alloc_page() (the driver in question is
+gve which currently doesn't use the page pool). When the driver is
+done with the p2p page, it simply decrements the refcount on it and
+the page is freed back to the gen_pool.
 
-Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
----
- WHENCE                                              |  11 ++++++++++-
- .../wilc}/wilc1000_wifi_firmware-1.bin              | Bin
- 2 files changed, 10 insertions(+), 1 deletion(-)
- rename {atmel =3D> microchip/wilc}/wilc1000_wifi_firmware-1.bin (100%)
+Test results are good; our best results we're able to achieve ~96%
+line rate with incoming packets going straight to device memory and
+without bouncing the memory to a host buffer (albeit these results are
+on our slighly older, production LTS, I need to work on getting
+results from linus/master).
 
-diff --git a/WHENCE b/WHENCE
-index e6309eba..f38bc980 100644
---- a/WHENCE
-+++ b/WHENCE
-@@ -5136,7 +5136,7 @@ File: atmel/wilc1000_fw.bin
- File: atmel/wilc1000_ap_fw.bin
- File: atmel/wilc1000_p2p_fw.bin
- File: atmel/wilc1000_wifi_firmware.bin
--File: atmel/wilc1000_wifi_firmware-1.bin
-+Link: atmel/wilc1000_wifi_firmware-1.bin -> ../microchip/wilc/wilc1000_wif=
-i_firmware-1.bin
- Version: 16.0
+I've discussed your page pool frontend idea with our gve owners and
+the idea is attractive. In particular it would be good not to insert
+much custom code into the driver to support device memory pages or
+other page types. I plan on trying to change my approach to match the
+page pool provider you have in progress here:
+https://github.com/kuba-moo/linux/tree/pp-providers
 
- License: Redistributable. See LICENSE.atmel for details
-@@ -6324,3 +6324,12 @@ Version: 18.99.1.p154.40
- Licence: Redistributable. See LICENSE.nxp for details
+In particular the main challenge right now seems to be that my device
+memory pages are ZONE_DEVICE pages, which can't be inserted to the
+page pool as-is due to the union in struct page between the page pool
+entries and the ZONE_DEVICE entries. I have some ideas on how to work
+around that I'm looking into.
 
- --------------------------------------------------------------------------
-+
-+Driver: wilc - Microchip wireless driver
-+
-+File: microchip/wilc/wilc1000_wifi_firmware-1.bin
-+Version: 16.0
-+
-+Licence: Redistributable. See LICENCE.microchip for details
-+
-+--------------------------------------------------------------------------
-diff --git a/atmel/wilc1000_wifi_firmware-1.bin b/microchip/wilc/wilc1000_w=
-ifi_firmware-1.bin
-similarity index 100%
-rename from atmel/wilc1000_wifi_firmware-1.bin
-rename to microchip/wilc/wilc1000_wifi_firmware-1.bin
---
-2.34.1
+It sounds like you don't have the time at the moment to work on the
+page pool provider idea; I plan to try and get my code working with
+that model and propose it if it's successful. Let me know if you have
+concerns here.
+
+> The workaround solution I had in mind would be to create a narrower API
+> for just data pages. Since we'd need to sprinkle ifs anyway, pull them
+> up close to the call site. Allowing to switch page pool for a
+> completely different implementation, like the one Jonathan coded up for
+> iouring. Basically
+>
+> $name_alloc_page(queue)
+> {
+>         if (queue->pp)
+>                 return page_pool_dev_alloc_pages(queue->pp);
+>         else if (queue->iouring..)
+>                 ...
+> }
+>
+
+
+--=20
+Thanks,
+Mina
