@@ -2,119 +2,173 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B6CD7438DC
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 12:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C1BE743970
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 12:34:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232915AbjF3KCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Jun 2023 06:02:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50928 "EHLO
+        id S232308AbjF3KeD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jun 2023 06:34:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232974AbjF3KBs (ORCPT
+        with ESMTP id S232277AbjF3Kd7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Jun 2023 06:01:48 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCAD1FCB
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jun 2023 03:01:47 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35U8rA2O009671;
-        Fri, 30 Jun 2023 09:32:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=PK24KpSvL0d1KNy5acQjsM972gYJThX7jVCYosHgcX8=;
- b=Svdl01UpCRa7sW4Kd8D/iu53nOScPxSqY/knNpQS3dmhlDBefVebiH/66g3A+BZygG2q
- XP2O6OVnASOBimnzUt8WFiwHr5KaQy+2wAzEir4fxz+KFx3Ta1k9NE61H2c9RpIYwoie
- gbVm9ARa2xTn95oooGCTBRqvHoqilvB/DycVj/gOpanBwN3rgK44VV9w56WDW83vYTcf
- ZCWkEMumk3oxzwtnVqTztO2bGDyopOIssH5kwk4251YdmHE+JylyC3fNPvUtxxMwypHl
- x2cPAceEJtqX1P0XHPmr1O6W1viOkBrreNIDYUSCVHvn6F9X6ljebf6ZiSDtkQLHFmqu pw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rh4y6auqf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 30 Jun 2023 09:32:15 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 35U9WEW1023000
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 30 Jun 2023 09:32:14 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.7; Fri, 30 Jun
- 2023 02:32:13 -0700
-Message-ID: <bf774594-d1f9-8183-b5cf-55b2c0479aa4@quicinc.com>
-Date:   Fri, 30 Jun 2023 17:32:09 +0800
+        Fri, 30 Jun 2023 06:33:59 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2083.outbound.protection.outlook.com [40.107.237.83])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F9435A0;
+        Fri, 30 Jun 2023 03:33:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=V5Npd76DPhbP60VXzKTU/NXTmms4e2uO6ywXtyR+b46TdJTq1VCV64vdjhHePrT1t3vLklKTamolN9Jf7/g0gse09oAVA8CRo5jkc8sRxar3B5EKkBbdoDWZxYW4m6iiZbzH6jst7LQozFOGeEOj/d09IILuVVb/XA6vcPmAa9D+7GP+JXQPEPF7ZjqkVVDDV3pC28gNJvsTXc/E6kV/ouOGwtpMruVgpXNTRkregunytf91BulWiQZIryXDg83YQzYkhj/6UqTxbpw73msQNwVtb7LXNTYaCZRrCt698jGLTWE//pkBmwwFztTCRLGcDLZstTaIe76QJVxhfNg8tA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TL4c+OPviGSQDv5O67ryfWB2soQ+mY/5e75OBRUsY/k=;
+ b=NlU4j3vDPvt2IqRCdQpiaT8Mp9phhS76NqKKKKo4NGYFtkfRnWZvpWR94xkyHj9cFzhpV2XjV220Fy2SyO2R4MAe7xDpEUNZcpdhggZ7EQjMEjbhrxgScwhoKIQDC1za02DiOP0aLQVY/H/6gi+sipfPSO8hqV/QJrN+AT9jYpIvdYGj3McMpPJTqN4WoMatEWFQQcIe1EK/lJ0OMc3Mn53EUOEYgpfpoIVfgvspPL6PxKCloiTBXneyIXdQ2gRU5xw10LvfuM1W2mlsMNgiV7tOvt1jBZZWBCUbE1/A7s41+mKeWRA4QOq1lm/g+C7ir+TOKTnsG29U52sFByn+mw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TL4c+OPviGSQDv5O67ryfWB2soQ+mY/5e75OBRUsY/k=;
+ b=XXwOxY8AGnXx6GCE697xIYNe0tXTAvR0fGXYdfZ7a5BB/sFHZthfxQTihZdRjh3IyrmYGRqlFVbHmXDwmC7aj1NDe1kKHCCa1wnGKemQCZZc0rcQxCaklUEZjR8rLbMLXANr716B3qaPXbeQ4GzSW1oXzkmL1Ib62x2IQ7aGKdw=
+Received: from DM6PR21CA0001.namprd21.prod.outlook.com (2603:10b6:5:174::11)
+ by SA1PR12MB7409.namprd12.prod.outlook.com (2603:10b6:806:29c::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.21; Fri, 30 Jun
+ 2023 10:33:54 +0000
+Received: from DM6NAM11FT089.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:174:cafe::8b) by DM6PR21CA0001.outlook.office365.com
+ (2603:10b6:5:174::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.13 via Frontend
+ Transport; Fri, 30 Jun 2023 10:33:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT089.mail.protection.outlook.com (10.13.173.82) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6521.43 via Frontend Transport; Fri, 30 Jun 2023 10:33:54 +0000
+Received: from equan-buildpc.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 30 Jun
+ 2023 05:33:46 -0500
+From:   Evan Quan <evan.quan@amd.com>
+To:     <rafael@kernel.org>, <lenb@kernel.org>,
+        <Alexander.Deucher@amd.com>, <Christian.Koenig@amd.com>,
+        <Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
+        <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <Mario.Limonciello@amd.com>, <mdaenzer@redhat.com>,
+        <maarten.lankhorst@linux.intel.com>, <tzimmermann@suse.de>,
+        <hdegoede@redhat.com>, <jingyuwang_vip@163.com>,
+        <Lijo.Lazar@amd.com>, <jim.cromie@gmail.com>,
+        <bellosilicio@gmail.com>, <andrealmeid@igalia.com>,
+        <trix@redhat.com>, <jsg@jsg.id.au>, <arnd@arndb.de>
+CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        Evan Quan <evan.quan@amd.com>
+Subject: [PATCH V5 0/9] Enable Wifi RFI interference mitigation feature support
+Date:   Fri, 30 Jun 2023 18:32:31 +0800
+Message-ID: <20230630103240.1557100-1-evan.quan@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     <ath11k@lists.infradead.org>
-References: <20220902141259.377789-1-johannes@sipsolutions.net>
- <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
- <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
- <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
- <d10b88b4-0bd7-a38c-e8d7-8982a281c4b3@quicinc.com>
- <e5adbed1524b27228c152ba14f78c550c8730baa.camel@sipsolutions.net>
- <c15e368e-2fea-a1d8-9c0d-db9278ded5e5@quicinc.com>
- <113761966918b2f390d3c9304307b42a0b4a829b.camel@sipsolutions.net>
- <76863dec-1b2f-b933-7c5e-21c732de4bc6@quicinc.com>
- <2cc79101249548f2a92c14af6aff6121143907d6.camel@sipsolutions.net>
- <1c26c205-0240-7670-117d-02a7af068724@quicinc.com>
- <6f8db032286923845202c7d658f1d39db79a758c.camel@sipsolutions.net>
- <a7093d7a-0179-7b5f-cc61-a501331d35c6@quicinc.com>
- <c60af4eb116ed330e8035503fb7944f8853bcfa4.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <c60af4eb116ed330e8035503fb7944f8853bcfa4.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: EjeUSHDCPmsfhSyh1c7o2LQPVaf5FISr
-X-Proofpoint-ORIG-GUID: EjeUSHDCPmsfhSyh1c7o2LQPVaf5FISr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-30_05,2023-06-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
- phishscore=0 impostorscore=0 mlxlogscore=645 suspectscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306300079
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT089:EE_|SA1PR12MB7409:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2700e21f-017c-4738-c7a5-08db795580ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: RnqiAibPXjfzzv4xCdE+nfvuAPJSXqID5S+2FhTdOGBOJO7gR1JeEqy++NXQdCukP3hxvjlhtwTOE8oecAnTqnHbUO6R7554/My0vbJh6OQ5zlQdZ/fHdGhA4H7HkLzoK9geRgi2xs1NwxL6i0nzZutRvFiUDL9YNb131I+BFEzzJVPO9bG0Ybtl4Lmosn7EGMUAG4ifEFb3/HUfvpMDB4tzNPTjo/xn88DLvGf7+ClPv5P1ew+ApCDuzD9FLAgVnuj7pjXPqYHPF1Wiu575yptnCo+5q2SXHU36ANbg3Nzt+j+yTBXl7sBGTsobiH+D2JBJW+thfB+CKOOwrqiQWS9XQ5bm2DuQFMxeIx/DfGvyQ5YvJy/5xxtXFwZz2f498hIU0u/8OZPNIU+GjVR9m8Qm7WSH4gFtUcoVDfbSxnaT+OkRpPCVuXUFVLWAVRWl4JhW6XEBuaPOBNb2DixPPu8yK1XFCMETkXPleGsPAWw0B61M6llpdjA46Mq/bpOqHmRyHU57jl/ie3d16I3HRgQJBEgpjnGIBU2JnHYZIPoFLaULUfcnYpshjPQN7PwRTEWevVAnoJ3NWb7CR3k9GiD8hI1D119jYTR5WLZJc0pyg4/l0gxBe8McECWCoAU9AhkrbjtyxtuidJjJdiCpvauS/+lmH/cSN+8RSwXNHQEVv3kUfCunASIWLEqNGKaj6rpRXCe4TlD+AhXuQ1ze4plpSj57HPvWsQtdLQYr7kFtaY0+jULN1OxXR1WMgyJ4KerLUKqCBOAKxuWpDgL9kf1Rfy+xvFyqBZmhONXU7Uw4oxe6H1ZZQDKeK1n8NpTVZMNLjjGgOJBydrcGYq4+zQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(396003)(346002)(39860400002)(451199021)(40470700004)(46966006)(36840700001)(82310400005)(36860700001)(478600001)(54906003)(16526019)(6666004)(7696005)(2616005)(110136005)(426003)(336012)(83380400001)(1076003)(186003)(26005)(2906002)(47076005)(40480700001)(7416002)(86362001)(921005)(44832011)(4326008)(70206006)(41300700001)(356005)(40460700003)(5660300002)(36756003)(70586007)(82740400003)(81166007)(316002)(8676002)(8936002)(2101003)(36900700001)(83996005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2023 10:33:54.4589
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2700e21f-017c-4738-c7a5-08db795580ee
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT089.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7409
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/15/2023 3:56 PM, Johannes Berg wrote:
-> On Thu, 2023-06-15 at 10:26 +0800, Wen Gong wrote:
->> On 6/15/2023 2:32 AM, Johannes Berg wrote:
->>> On Wed, 2023-05-24 at 15:41 +0800, Wen Gong wrote:
->>>
-...
->> Could you tell detail about how the BSS_CHANGE flag works?😁
-> The work isn't complete yet, but basically it just calls the callback
-> whenever the valid_links changed, say by link-reconfiguration.
->
-> johannes
-I guess the link-reconfiguration you said is for station, it means 
-station will do corresponding
-link-reconfiguration after receive link reconfiguration indication(e.g. 
-Reconfiguration
-Multi-Link element) from MLO AP, right?
+Due to electrical and mechanical constraints in certain platform designs there may
+be likely interference of relatively high-powered harmonics of the (G-)DDR memory
+clocks with local radio module frequency bands used by Wifi 6/6e/7. To mitigate
+possible RFI interference producers can advertise the frequencies in use and
+consumers can use this information to avoid using these frequencies for
+sensitive features.
 
-I guess you will add enum BSS_CHANGED_xxx(e.g. 
-BSS_CHANGED_LINK_RECONFIG), and call
-vif_cfg_changed of struct ieee80211_ops for link-reconfiguration, right?
+The whole patch set is based on Linux 6.4. With some brief introductions as below:
+Patch1 - 2:  Core functionality setup for WBRF feature support
+Patch3 - 4:  Bring WBRF support to wifi subsystem.
+Patch5 - 9:  Bring WBRF support to AMD graphics driver.
 
-And do you will implement both remove link and add link of station?
+Evan Quan (9):
+  drivers core: Add support for Wifi band RF mitigations
+  driver core: add ACPI based WBRF mechanism introduced by AMD
+  cfg80211: expose nl80211_chan_width_to_mhz for wide sharing
+  wifi: mac80211: Add support for ACPI WBRF
+  drm/amd/pm: update driver_if and ppsmc headers for coming wbrf feature
+  drm/amd/pm: setup the framework to support Wifi RFI mitigation feature
+  drm/amd/pm: add flood detection for wbrf events
+  drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.0
+  drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
 
-For add link, it should calculate the new key of the new link("35.3.6.4 
-ML reconfiguration
-to the ML setup" of IEEE P802.11be™/D3.2).
+ drivers/acpi/Makefile                         |   2 +
+ drivers/acpi/amd_wbrf.c                       | 236 +++++++++++++++++
+ drivers/base/Kconfig                          |  37 +++
+ drivers/base/Makefile                         |   1 +
+ drivers/base/wbrf.c                           | 250 ++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h           |   1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c       |  19 ++
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 214 +++++++++++++++
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  33 +++
+ .../inc/pmfw_if/smu13_driver_if_v13_0_0.h     |  14 +-
+ .../inc/pmfw_if/smu13_driver_if_v13_0_7.h     |  14 +-
+ .../pm/swsmu/inc/pmfw_if/smu_v13_0_0_ppsmc.h  |   3 +-
+ .../pm/swsmu/inc/pmfw_if/smu_v13_0_7_ppsmc.h  |   3 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h  |   3 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h  |   3 +
+ .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c    |   9 +
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  |  60 +++++
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  |  59 +++++
+ drivers/gpu/drm/amd/pm/swsmu/smu_internal.h   |   3 +
+ include/linux/acpi_amd_wbrf.h                 |  38 +++
+ include/linux/ieee80211.h                     |   1 +
+ include/linux/wbrf.h                          |  67 +++++
+ include/net/cfg80211.h                        |   8 +
+ net/mac80211/Makefile                         |   2 +
+ net/mac80211/chan.c                           |   9 +
+ net/mac80211/ieee80211_i.h                    |  19 ++
+ net/mac80211/main.c                           |   2 +
+ net/mac80211/wbrf.c                           | 103 ++++++++
+ net/wireless/chan.c                           |   3 +-
+ 29 files changed, 1210 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/acpi/amd_wbrf.c
+ create mode 100644 drivers/base/wbrf.c
+ create mode 100644 include/linux/acpi_amd_wbrf.h
+ create mode 100644 include/linux/wbrf.h
+ create mode 100644 net/mac80211/wbrf.c
+
+-- 
+2.34.1
+
