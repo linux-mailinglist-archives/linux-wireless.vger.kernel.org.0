@@ -2,128 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24A10744012
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jun 2023 18:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 518827444C4
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jul 2023 00:19:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232543AbjF3QrY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Jun 2023 12:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49740 "EHLO
+        id S229897AbjF3WS7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jun 2023 18:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232503AbjF3QrS (ORCPT
+        with ESMTP id S229503AbjF3WS6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Jun 2023 12:47:18 -0400
-Received: from vsp-unauthed02.binero.net (vsp-unauthed02.binero.net [195.74.38.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE6223C1E
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jun 2023 09:47:11 -0700 (PDT)
-X-Halon-ID: be8a4f90-1765-11ee-9190-9961c02482a6
-Authorized-sender: petter@technux.se
-Received: from localhost.localdomain (user33.85-195-12.netatonce.net [85.195.12.33])
-        by bin-vsp-out-02.atm.binero.net (Halon) with ESMTPSA
-        id be8a4f90-1765-11ee-9190-9961c02482a6;
-        Fri, 30 Jun 2023 18:47:06 +0200 (CEST)
-From:   petter@technux.se
-To:     petter@technux.se
-Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        s.hauer@pengutronix.de, tony0620emma@gmail.com
-Subject: Re: rtw88: rtw8822cu (LM842) -> failed to get tx report from firmware
-Date:   Fri, 30 Jun 2023 18:47:04 +0200
-Message-Id: <20230630164705.107087-1-petter@technux.se>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230526055551.1823094-1-petter@technux.se>
-References: <20230526055551.1823094-1-petter@technux.se>
+        Fri, 30 Jun 2023 18:18:58 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12AA61BC
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jun 2023 15:18:57 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-66869feb7d1so1408427b3a.3
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jun 2023 15:18:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1688163536; x=1690755536;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c4o3ZFseb13xRGcd/vSc40J69/E/2IGFhPuLqlwM6WM=;
+        b=dKmcBva0OfXgsyn4nQpgyo+dwwZZeAnKPUA9crG7kZIxfR7ngBVv3Vysn6FqjqTuKO
+         D0egZDk+Y/RXo/h3c3qJZ7pkO7BYLkTiEx1xqfrRBsq9rYXgFhQ0dGrLbbO3ei1PVsUi
+         0YuKesC1cB2chTzjq87WlDtVOK7bVmVQ/XJkA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688163536; x=1690755536;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c4o3ZFseb13xRGcd/vSc40J69/E/2IGFhPuLqlwM6WM=;
+        b=O6BehisGfPLv+h0IxCVX63kvUG+H5Dad+9mEmtnYmcDUgDfBvWlzFBR3lEZIeBnGH1
+         pA7kb9m1IcmR2ko955iBFxUvFHbB/M1v3eGhdLP1MndPHkpxEqL57155uR25I4lzShiw
+         whvcHFvP5D/Wk30l2ak4KaE4yc4PtHrpCAX1mJ0OTWFjE15duOhW/yj6wX6vTRyH9hFM
+         AZvPg2jXrDyluRsTgyaMPvHPzJEbt4258Jqy5RjLSle24V7dDsW0YYJMLtvfeLbZTaiH
+         Kr/t3FvqKo02gcx70nJJLClQa2eHII0l/etrGNcK60wqmsqHGB2w6DYHhEoAvD7ovsTt
+         D/rA==
+X-Gm-Message-State: AC+VfDzKk7gfzTF/U3Q26p3SEXpy3nbOOtU9KYvFkMgqd97ZhIRVRwNk
+        O4htnKvSWoS58xahGq7Cj0d6ZA==
+X-Google-Smtp-Source: ACHHUZ4E9KsvcvrdsLT2UhvwmcJ8MWz5jYHXp+x6WBZkfvJjVbi0TNr0D8qwKq+4v/R/D8uhAvC9+A==
+X-Received: by 2002:a05:6a20:948a:b0:12b:de8:929d with SMTP id hs10-20020a056a20948a00b0012b0de8929dmr2662683pzb.16.1688163536499;
+        Fri, 30 Jun 2023 15:18:56 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:e9c4:8375:7234:e6c2])
+        by smtp.gmail.com with ESMTPSA id u9-20020a170902e5c900b001b67a2896bdsm9653480plf.274.2023.06.30.15.18.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jun 2023 15:18:55 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     ath10k@lists.infradead.org
+Cc:     Abhishek Kumar <kuabhs@chromium.org>,
+        Youghandhar Chintala <quic_youghand@quicinc.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH] ath10k: Don't touch the CE interrupt registers after power up
+Date:   Fri, 30 Jun 2023 15:18:43 -0700
+Message-ID: <20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid>
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->>Hi Petter,
+As talked about in commit d66d24ac300c ("ath10k: Keep track of which
+interrupts fired, don't poll them"), if we access the copy engine
+register at a bad time then ath10k can go boom. However, it's not
+necessarily easy to know when it's safe to access them.
 
->>On Thu, Apr 06, 2023 at 10:41:20AM +0000, petter@technux.se wrote:
->>> Hi,
->>> 
->>> I have seen a very similar issue as Andreas. It was found when streaming a mender file (using mender install <url> from my arm device. But I have also managed to reproduce a similar issue by flooding the interface using iperf. 
->>> 
->>> on target:
->>> $ sudo iperf -s -u
->>> 
->>> On host:
->>> $ iperf -c <ip> -u -b 200M -t 300
->>> 
->>> Then it will almost instantly get problems causing the lm842 dongle to stop working.
+The ChromeOS test labs saw a crash that looked like this at
+shutdown/reboot time (on a chromeos-5.15 kernel, but likely the
+problem could also reproduce upstream):
 
->>I could finally reproduce this problem by placing an access point close
->>enough to my device. Only then the incoming packet rate is high enough
->>that the "failed to get rx_queue, overflow" message triggers.
+Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+...
+CPU: 4 PID: 6168 Comm: reboot Not tainted 5.15.111-lockdep-19350-g1d624fe6758f #1 010b9b233ab055c27c6dc88efb0be2f4e9e86f51
+Hardware name: Google Kingoftown (DT)
+...
+pc : ath10k_snoc_read32+0x50/0x74 [ath10k_snoc]
+lr : ath10k_snoc_read32+0x24/0x74 [ath10k_snoc]
+...
+Call trace:
+ath10k_snoc_read32+0x50/0x74 [ath10k_snoc ...]
+ath10k_ce_disable_interrupt+0x190/0x65c [ath10k_core ...]
+ath10k_ce_disable_interrupts+0x8c/0x120 [ath10k_core ...]
+ath10k_snoc_hif_stop+0x78/0x660 [ath10k_snoc ...]
+ath10k_core_stop+0x13c/0x1ec [ath10k_core ...]
+ath10k_halt+0x398/0x5b0 [ath10k_core ...]
+ath10k_stop+0xfc/0x1a8 [ath10k_core ...]
+drv_stop+0x148/0x6b4 [mac80211 ...]
+ieee80211_stop_device+0x70/0x80 [mac80211 ...]
+ieee80211_do_stop+0x10d8/0x15b0 [mac80211 ...]
+ieee80211_stop+0x144/0x1a0 [mac80211 ...]
+__dev_close_many+0x1e8/0x2c0
+dev_close_many+0x198/0x33c
+dev_close+0x140/0x210
+cfg80211_shutdown_all_interfaces+0xc8/0x1e0 [cfg80211 ...]
+ieee80211_remove_interfaces+0x118/0x5c4 [mac80211 ...]
+ieee80211_unregister_hw+0x64/0x1f4 [mac80211 ...]
+ath10k_mac_unregister+0x4c/0xf0 [ath10k_core ...]
+ath10k_core_unregister+0x80/0xb0 [ath10k_core ...]
+ath10k_snoc_free_resources+0xb8/0x1ec [ath10k_snoc ...]
+ath10k_snoc_shutdown+0x98/0xd0 [ath10k_snoc ...]
+platform_shutdown+0x7c/0xa0
+device_shutdown+0x3e0/0x58c
+kernel_restart_prepare+0x68/0xa0
+kernel_restart+0x28/0x7c
 
->>In my case the time it takes to print this message many times is enough
->>to confuse the device so that it finally responds with:
+Though there's no known way to reproduce the problem, it makes sense
+that it would be the same issue where we're trying to access copy
+engine registers when it's not allowed.
 
->>[  126.449305] rtw_8822cu 1-1:1.2: failed to get tx report from firmware
->>[  142.081419] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
->>[  175.929407] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
+Let's fix this by changing how we "disable" the interrupts. Instead of
+tweaking the copy engine registers we'll just use disable_irq() and
+enable_irq(). Then we'll configure the interrupts once at power up
+time.
 
->>I just sent a patch printing the message with dev_dbg_ratelimited
->>instead which fixes that problem for me, you're on Cc.
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
 
->>It likely won't fix Andreas' problem though, as I don't see this message
->>in his bug report.
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
 
->>Sascha
+ drivers/net/wireless/ath/ath10k/snoc.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
->Nice work. I have tested your patch v1 for the flooding at it solves my
->iperf issue. Also when you describe above, its the
->very same situation for me, I have been using a board that is very close
->to the access point, so this is likely why I could reproduce it quite
->easy.
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 26214c00cd0d..2c39bad7ebfb 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -828,12 +828,20 @@ static void ath10k_snoc_hif_get_default_pipe(struct ath10k *ar,
+ 
+ static inline void ath10k_snoc_irq_disable(struct ath10k *ar)
+ {
+-	ath10k_ce_disable_interrupts(ar);
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++	int id;
++
++	for (id = 0; id < CE_COUNT_MAX; id++)
++		disable_irq(ar_snoc->ce_irqs[id].irq_line);
+ }
+ 
+ static inline void ath10k_snoc_irq_enable(struct ath10k *ar)
+ {
+-	ath10k_ce_enable_interrupts(ar);
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++	int id;
++
++	for (id = 0; id < CE_COUNT_MAX; id++)
++		enable_irq(ar_snoc->ce_irqs[id].irq_line);
+ }
+ 
+ static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
+@@ -1090,6 +1098,8 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
+ 		goto err_free_rri;
+ 	}
+ 
++	ath10k_ce_enable_interrupts(ar);
++
+ 	return 0;
+ 
+ err_free_rri:
+@@ -1253,8 +1263,8 @@ static int ath10k_snoc_request_irq(struct ath10k *ar)
+ 
+ 	for (id = 0; id < CE_COUNT_MAX; id++) {
+ 		ret = request_irq(ar_snoc->ce_irqs[id].irq_line,
+-				  ath10k_snoc_per_engine_handler, 0,
+-				  ce_name[id], ar);
++				  ath10k_snoc_per_engine_handler,
++				  IRQF_NO_AUTOEN, ce_name[id], ar);
+ 		if (ret) {
+ 			ath10k_err(ar,
+ 				   "failed to register IRQ handler for CE %d: %d\n",
+-- 
+2.41.0.255.g8b1d071c50-goog
 
->I have however finally manage to make some break-through about the
->original issue Andreas described, that so far has only been seen when
->running mender install. A similar behaviour is to download large amount
->of data combined with writing to the disk. So for me I can reproduce the
->issue on my i.MX6 SoloX (single cpu board) by doing.
-
->$ sudo dd if=/dev/urandom of=/path/to/bigfile bs=4M count=500
-
->and in parallell download a large file such as:
-
->$ wget -O /dev/null http://speedtest.tele2.net/10GB.zip
-
->This will trigger the problem quite fast (within 5-15 min at least):
->[  374.763424] rtw_8822cu 1-1.2:1.2: failed to get tx report from firmware
->[  377.771790] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->[  407.813460] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
->[  414.965826] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->[  444.993462] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
->[  452.144551] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->[  482.183445] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
-
->However one very interesting thing is that I can not reproduce this on a
->more powerful device, such as i.MX8 or RPi4 etc.. But when I tried this
->on another less powerful old single core device (BCM2835), I was able to
->reproduce it quite easily again..
-
->So from my understanding it seems to be a bit related to how the driver
->behaves when the network queue/buffer etc are a bit stretch and the
->system occupied with high I/O and/or system load. By increasing buffer sizes and
->priorities for network queues, the system can handle it a bit better,
->but still enough stress of the system seems to trigger the driver to
->bail out completely..
-
->Any suggestions or ideas around this is most welcome..
-
->BR Petter
-
-Some updates on this. Things seems to work a lot better when I moved to latest 6.4 with `wifi: rtw89: correct PS calculation for SUPPORTS_DYNAMIC_PS` included (see https://lore.kernel.org/linux-wireless/168562542522.17673.4276220170409263199.kvalo@kernel.org/T/#t) and the discussions (for another rtw88 device) in https://github.com/lwfinger/rtw88/issues/129
-
-With above fix I cannot reproduce this issue anymore. I can sometimes see the "rtw_8822cu 1-1.2:1.2: failed to get tx report from firmware" appear, but the drive continues to operate and will not bail out.
-
-Only way I can still reproduce a similar issue now is when using HW offload scan through NetworkManager in combination with a business application that are using some nmlib callbacks. But I will drive that forward in a separate thread if I manage to create a better way to reproduce that. So in meantime running with above mention patch (e.g 6.4 tree) + Sascha's "wifi: rtw88: usb: silence log flooding error message" and https://lore.kernel.org/linux-wireless/87zg5mjeu4.fsf@kernel.org/T/#m65695e06fefb8cc5ae541dadacdd89ff540b875f + disable HW offload scan seems to make the driver quite stable on my i.MX6 SoloX board.
-
-Thanks for all input.
-BR Petter
