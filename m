@@ -2,181 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 518827444C4
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jul 2023 00:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 364FC744581
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jul 2023 02:20:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229897AbjF3WS7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Jun 2023 18:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51254 "EHLO
+        id S229592AbjGAAUn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jun 2023 20:20:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjF3WS6 (ORCPT
+        with ESMTP id S229563AbjGAAUm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Jun 2023 18:18:58 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12AA61BC
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jun 2023 15:18:57 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-66869feb7d1so1408427b3a.3
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jun 2023 15:18:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1688163536; x=1690755536;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=c4o3ZFseb13xRGcd/vSc40J69/E/2IGFhPuLqlwM6WM=;
-        b=dKmcBva0OfXgsyn4nQpgyo+dwwZZeAnKPUA9crG7kZIxfR7ngBVv3Vysn6FqjqTuKO
-         D0egZDk+Y/RXo/h3c3qJZ7pkO7BYLkTiEx1xqfrRBsq9rYXgFhQ0dGrLbbO3ei1PVsUi
-         0YuKesC1cB2chTzjq87WlDtVOK7bVmVQ/XJkA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688163536; x=1690755536;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c4o3ZFseb13xRGcd/vSc40J69/E/2IGFhPuLqlwM6WM=;
-        b=O6BehisGfPLv+h0IxCVX63kvUG+H5Dad+9mEmtnYmcDUgDfBvWlzFBR3lEZIeBnGH1
-         pA7kb9m1IcmR2ko955iBFxUvFHbB/M1v3eGhdLP1MndPHkpxEqL57155uR25I4lzShiw
-         whvcHFvP5D/Wk30l2ak4KaE4yc4PtHrpCAX1mJ0OTWFjE15duOhW/yj6wX6vTRyH9hFM
-         AZvPg2jXrDyluRsTgyaMPvHPzJEbt4258Jqy5RjLSle24V7dDsW0YYJMLtvfeLbZTaiH
-         Kr/t3FvqKo02gcx70nJJLClQa2eHII0l/etrGNcK60wqmsqHGB2w6DYHhEoAvD7ovsTt
-         D/rA==
-X-Gm-Message-State: AC+VfDzKk7gfzTF/U3Q26p3SEXpy3nbOOtU9KYvFkMgqd97ZhIRVRwNk
-        O4htnKvSWoS58xahGq7Cj0d6ZA==
-X-Google-Smtp-Source: ACHHUZ4E9KsvcvrdsLT2UhvwmcJ8MWz5jYHXp+x6WBZkfvJjVbi0TNr0D8qwKq+4v/R/D8uhAvC9+A==
-X-Received: by 2002:a05:6a20:948a:b0:12b:de8:929d with SMTP id hs10-20020a056a20948a00b0012b0de8929dmr2662683pzb.16.1688163536499;
-        Fri, 30 Jun 2023 15:18:56 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:e9c4:8375:7234:e6c2])
-        by smtp.gmail.com with ESMTPSA id u9-20020a170902e5c900b001b67a2896bdsm9653480plf.274.2023.06.30.15.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jun 2023 15:18:55 -0700 (PDT)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     ath10k@lists.infradead.org
-Cc:     Abhishek Kumar <kuabhs@chromium.org>,
-        Youghandhar Chintala <quic_youghand@quicinc.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH] ath10k: Don't touch the CE interrupt registers after power up
-Date:   Fri, 30 Jun 2023 15:18:43 -0700
-Message-ID: <20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid>
-X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+        Fri, 30 Jun 2023 20:20:42 -0400
+Received: from vps0.lunn.ch (unknown [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124083A9B;
+        Fri, 30 Jun 2023 17:20:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=RSoC/5hYUUQ3sGJr52lBB+aV7IzoV8b72rkry2pxCQg=; b=yAyplwTga+cJQhNVxS4WCa0avC
+        XATcUdMc7wgQTO46g7k9dcH2lTxfJGRCofunObU6mN+84w113eNMP2VoKVQEFW1R1wTRQT0i64hLW
+        KT9C9WzHFOqZAlNELVDobW+4G2P/rybEr2j3erhGyjDcrRq59amX2UprnR8BcrFLmzDQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qFOKp-000LM8-66; Sat, 01 Jul 2023 02:19:31 +0200
+Date:   Sat, 1 Jul 2023 02:19:31 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Evan Quan <evan.quan@amd.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, Alexander.Deucher@amd.com,
+        Christian.Koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH V5 1/9] drivers core: Add support for Wifi band RF
+ mitigations
+Message-ID: <7e7db6eb-4f46-407a-8d1f-16688554ad80@lunn.ch>
+References: <20230630103240.1557100-1-evan.quan@amd.com>
+ <20230630103240.1557100-2-evan.quan@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230630103240.1557100-2-evan.quan@amd.com>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-As talked about in commit d66d24ac300c ("ath10k: Keep track of which
-interrupts fired, don't poll them"), if we access the copy engine
-register at a bad time then ath10k can go boom. However, it's not
-necessarily easy to know when it's safe to access them.
+> Drivers/subsystems contributing frequencies:
+> 
+> 1) During probe, check `wbrf_supported_producer` to see if WBRF supported
+>    for the device.
 
-The ChromeOS test labs saw a crash that looked like this at
-shutdown/reboot time (on a chromeos-5.15 kernel, but likely the
-problem could also reproduce upstream):
+What is the purpose of this stage? Why would it not be supported for
+this device?
 
-Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
-...
-CPU: 4 PID: 6168 Comm: reboot Not tainted 5.15.111-lockdep-19350-g1d624fe6758f #1 010b9b233ab055c27c6dc88efb0be2f4e9e86f51
-Hardware name: Google Kingoftown (DT)
-...
-pc : ath10k_snoc_read32+0x50/0x74 [ath10k_snoc]
-lr : ath10k_snoc_read32+0x24/0x74 [ath10k_snoc]
-...
-Call trace:
-ath10k_snoc_read32+0x50/0x74 [ath10k_snoc ...]
-ath10k_ce_disable_interrupt+0x190/0x65c [ath10k_core ...]
-ath10k_ce_disable_interrupts+0x8c/0x120 [ath10k_core ...]
-ath10k_snoc_hif_stop+0x78/0x660 [ath10k_snoc ...]
-ath10k_core_stop+0x13c/0x1ec [ath10k_core ...]
-ath10k_halt+0x398/0x5b0 [ath10k_core ...]
-ath10k_stop+0xfc/0x1a8 [ath10k_core ...]
-drv_stop+0x148/0x6b4 [mac80211 ...]
-ieee80211_stop_device+0x70/0x80 [mac80211 ...]
-ieee80211_do_stop+0x10d8/0x15b0 [mac80211 ...]
-ieee80211_stop+0x144/0x1a0 [mac80211 ...]
-__dev_close_many+0x1e8/0x2c0
-dev_close_many+0x198/0x33c
-dev_close+0x140/0x210
-cfg80211_shutdown_all_interfaces+0xc8/0x1e0 [cfg80211 ...]
-ieee80211_remove_interfaces+0x118/0x5c4 [mac80211 ...]
-ieee80211_unregister_hw+0x64/0x1f4 [mac80211 ...]
-ath10k_mac_unregister+0x4c/0xf0 [ath10k_core ...]
-ath10k_core_unregister+0x80/0xb0 [ath10k_core ...]
-ath10k_snoc_free_resources+0xb8/0x1ec [ath10k_snoc ...]
-ath10k_snoc_shutdown+0x98/0xd0 [ath10k_snoc ...]
-platform_shutdown+0x7c/0xa0
-device_shutdown+0x3e0/0x58c
-kernel_restart_prepare+0x68/0xa0
-kernel_restart+0x28/0x7c
+> +#ifdef CONFIG_WBRF
+> +bool wbrf_supported_producer(struct device *dev);
+> +int wbrf_add_exclusion(struct device *adev,
+> +		       struct wbrf_ranges_in *in);
+> +int wbrf_remove_exclusion(struct device *dev,
+> +			  struct wbrf_ranges_in *in);
+> +int wbrf_retrieve_exclusions(struct device *dev,
+> +			     struct wbrf_ranges_out *out);
+> +bool wbrf_supported_consumer(struct device *dev);
+> +
+> +int wbrf_register_notifier(struct notifier_block *nb);
+> +int wbrf_unregister_notifier(struct notifier_block *nb);
+> +#else
+> +static inline bool wbrf_supported_producer(struct device *dev) { return false; }
+> +static inline int wbrf_add_exclusion(struct device *adev,
+> +				     struct wbrf_ranges_in *in) { return -ENODEV; }
+> +static inline int wbrf_remove_exclusion(struct device *dev,
+> +					struct wbrf_ranges_in *in) { return -ENODEV; }
 
-Though there's no known way to reproduce the problem, it makes sense
-that it would be the same issue where we're trying to access copy
-engine registers when it's not allowed.
+The normal aim of stubs is that so long as it is not expected to be
+fatal if the functionality is missing, the caller should not care if
+it is missing. So i would expect these to return 0, indicating
+everything worked as expected.
 
-Let's fix this by changing how we "disable" the interrupts. Instead of
-tweaking the copy engine registers we'll just use disable_irq() and
-enable_irq(). Then we'll configure the interrupts once at power up
-time.
+> +static inline int wbrf_retrieve_exclusions(struct device *dev,
+> +					   struct wbrf_ranges_out *out) { return -ENODEV; }
 
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+This is more complex. Ideally you want to return an empty set, so
+there is nothing to do. So i think the stub probably wants to do a
+memset and then return 0.
 
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
+> +static inline bool wbrf_supported_consumer(struct device *dev) { return false; }
+> +static inline int wbrf_register_notifier(struct notifier_block *nb) { return -ENODEV; }
+> +static inline int wbrf_unregister_notifier(struct notifier_block *nb) { return -ENODEV; }
 
- drivers/net/wireless/ath/ath10k/snoc.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+And these can just return 0.
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 26214c00cd0d..2c39bad7ebfb 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -828,12 +828,20 @@ static void ath10k_snoc_hif_get_default_pipe(struct ath10k *ar,
- 
- static inline void ath10k_snoc_irq_disable(struct ath10k *ar)
- {
--	ath10k_ce_disable_interrupts(ar);
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	int id;
-+
-+	for (id = 0; id < CE_COUNT_MAX; id++)
-+		disable_irq(ar_snoc->ce_irqs[id].irq_line);
- }
- 
- static inline void ath10k_snoc_irq_enable(struct ath10k *ar)
- {
--	ath10k_ce_enable_interrupts(ar);
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	int id;
-+
-+	for (id = 0; id < CE_COUNT_MAX; id++)
-+		enable_irq(ar_snoc->ce_irqs[id].irq_line);
- }
- 
- static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
-@@ -1090,6 +1098,8 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
- 		goto err_free_rri;
- 	}
- 
-+	ath10k_ce_enable_interrupts(ar);
-+
- 	return 0;
- 
- err_free_rri:
-@@ -1253,8 +1263,8 @@ static int ath10k_snoc_request_irq(struct ath10k *ar)
- 
- 	for (id = 0; id < CE_COUNT_MAX; id++) {
- 		ret = request_irq(ar_snoc->ce_irqs[id].irq_line,
--				  ath10k_snoc_per_engine_handler, 0,
--				  ce_name[id], ar);
-+				  ath10k_snoc_per_engine_handler,
-+				  IRQF_NO_AUTOEN, ce_name[id], ar);
- 		if (ret) {
- 			ath10k_err(ar,
- 				   "failed to register IRQ handler for CE %d: %d\n",
--- 
-2.41.0.255.g8b1d071c50-goog
-
+    Andrew
