@@ -2,140 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B82AF744D8A
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jul 2023 14:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D71EA744E44
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jul 2023 17:16:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjGBMNa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Jul 2023 08:13:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59236 "EHLO
+        id S229826AbjGBPQB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Jul 2023 11:16:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjGBMN3 (ORCPT
+        with ESMTP id S229516AbjGBPQA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Jul 2023 08:13:29 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8AB0E73;
-        Sun,  2 Jul 2023 05:13:26 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-666ecf9a081so2787053b3a.2;
-        Sun, 02 Jul 2023 05:13:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688300006; x=1690892006;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vudbneyh5amlB4z/hjEg2kh8mq89mabibesrDE7OD1s=;
-        b=DQF0vQEwTZm8Zhqubzz0/nOFbE7PT5ekj0ujozi8GUbmatpmKXwlNUYv+O1k6lfCrp
-         u9q3sKI2PYPwl/rQgddi/YqX0Mq3s9kE5pFJcWoqi/DLoqe9JpDl1ML2etydSY/07g9C
-         w1l2alCysL3UL9ia8c/NuzaNYzyweUjqvSD/IIq62aQ18EHhQyy9t0fAaxfA61itBDlv
-         YvsVkhPZmrhxqaLehOhExG2nxfFfW/MQtmwQzHDBIuHZADL+KQJtqorCL7pPRlLqQmtU
-         SS47Vwu3OV+xOxfagSLq1XXSBteqYfPoJ35Kd2z7YxrngyY/KlX5PBgcMkI/T7XqCw2c
-         DdNg==
+        Sun, 2 Jul 2023 11:16:00 -0400
+Received: from mail-pl1-f207.google.com (mail-pl1-f207.google.com [209.85.214.207])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB92FE6A
+        for <linux-wireless@vger.kernel.org>; Sun,  2 Jul 2023 08:15:58 -0700 (PDT)
+Received: by mail-pl1-f207.google.com with SMTP id d9443c01a7336-1b802df5298so34244605ad.3
+        for <linux-wireless@vger.kernel.org>; Sun, 02 Jul 2023 08:15:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688300006; x=1690892006;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vudbneyh5amlB4z/hjEg2kh8mq89mabibesrDE7OD1s=;
-        b=KYykWC7KQnQiB0sk5jyj8ic64zLUaMmRzUYcCdB9YhZ3VZJSoe4o+Mn99LW7VUzfOq
-         gBE0Hol/vn4MW4bUP7tZtGbmZ+yVltOBU2p35QZcEett62u51rT1b+PJ8wh9VMqUSLha
-         U/C3isWvB8C/pOoIzFVbj7Ii5reWuWDyG50DanUaAD8PukpUfOpe0TRW5zmISi4EA18k
-         v0Ml3nogCZkiTl7bN27cRenavn6JM8/s+BFN5cYvJkx1UzHnmjhbR6x92aOtgFvFXU42
-         AOwMeAPAwnHPUrMwj26pVXjEhEX69yHef9KqaJEXteLG6Yut0MsFcdpjWEFAYCFozA03
-         JplA==
-X-Gm-Message-State: ABy/qLYI8Ly1dxIkLbpDBnhmqFfp1rPuIEPOgxnjHZwjlFj+SZtrplsM
-        2GDFoB9JKtqcTzWZjyxsadY=
-X-Google-Smtp-Source: APBJJlGAwoTaYP/5ZAs1gTB/kctY9tt1kXkLpAl+wW0iwuTI7cUuoIUoFng9hsTELVCezx4xSv5i2Q==
-X-Received: by 2002:a05:6a00:1341:b0:674:6dd4:8337 with SMTP id k1-20020a056a00134100b006746dd48337mr11833992pfu.12.1688300006187;
-        Sun, 02 Jul 2023 05:13:26 -0700 (PDT)
-Received: from [192.168.0.103] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id x14-20020a056a00270e00b005d22639b577sm8566434pfv.165.2023.07.02.05.13.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Jul 2023 05:13:25 -0700 (PDT)
-Message-ID: <a5cdc7f8-b340-d372-2971-0d24b01de217@gmail.com>
-Date:   Sun, 2 Jul 2023 19:13:14 +0700
+        d=1e100.net; s=20221208; t=1688310958; x=1690902958;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Uqx05DsOQphTiupSJnXSJDQY0vj7xZsIgdvTNkwdc4I=;
+        b=EnosiEuku1sox4I8i7ZfUg1OFFMGVgi2EITZ5F7Q4CkCSsfeYQo4BrWijAcUorVceX
+         ZNJbZ8uW+TFxBrUt+OolTQSGmRuVIfgSkxLzlxMk8uYSWuA9cKhb4IeJHYddKsWCnikP
+         g50Z6PJsRfB1aeuOiwceCR3lUHrCUejAXGoIkANe0tLvjEF91E+KTpCds5QPPddJth1g
+         sV2urPlpu38s98ypikm9IqO45W5A0n6pIcGjRdpYgxL8Ubd5+lS255WP6ne1gtkAIS3z
+         YLpkfhzv7b2XjoVw6RdDqzszw7TDa4AjBJaPyMJrD5yG8GX/bdIISy0o9B/HTqNuy9Wk
+         ClLw==
+X-Gm-Message-State: ABy/qLa25wpU7QDDz/RuYKeN/wQDh1AnZ9n2k2WlwJ7brD/ZHU23PPZQ
+        2b2lk6ulMSFjWCMQj83I3btbgotdU4XZT+yG9LnwB94m6/+D
+X-Google-Smtp-Source: APBJJlGq9lPKarcsUF7brIRq5xJr+f1dOKBFojk/wn5gzcGstP+bS9/Z+X3ogEpttE7OoTGn0J2Nzuo+izXpAWX/Up0fjn2Y/sb+
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US
-To:     Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        =?UTF-8?B?TmlrbMSBdnMgS2/EvGVzxYZpa292cw==?= 
-        <pinkflames.linux@gmail.com>,
-        Nate Watterson <nwatters@codeaurora.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Linux IO Memory Management Unit <iommu@lists.linux.dev>
-Cc:     Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: iwlwifi causes dma-iommu.c:693 __iommu_dma_unmap since commit
- 19898ce9cf8a
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a17:902:e847:b0:1b8:919e:bd with SMTP id
+ t7-20020a170902e84700b001b8919e00bdmr1177364plg.13.1688310958243; Sun, 02 Jul
+ 2023 08:15:58 -0700 (PDT)
+Date:   Sun, 02 Jul 2023 08:15:58 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000efc64705ff8286a1@google.com>
+Subject: [syzbot] [wireless?] WARNING in rate_control_rate_init (2)
+From:   syzbot <syzbot+62d7eef57b09bfebcd84@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        llvm@lists.linux.dev, nathan@kernel.org, ndesaulniers@google.com,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com, trix@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hello,
 
-I notice a regression report on Bugzilla [1]: Quoting from it:
+syzbot found the following issue on:
 
-> Since commit 19898ce9cf8a the iwlwifi has generated three possibly identical kernel stack traces for me. Because I only use the Bluetooth but not the Wi-Fi functionality, this is not a big deal for me but I thought such an issue is worth reporting nontheless.
-> 
-> All three traces point at **drivers/iommu/dma-iommu.c:693 __iommu_dma_unmap+0x150/0x160**.
-> 
-> I'm attaching to this bug report the three stack traces along with other possibly relevant dmesg parts. Sorry in advance for not cutting at the cut here markers which resulted in considerably longer text but I suspected that the PCI, ACPI, memory and possibly iwlwifi related messages may be of importance, too. If I should cut the stack traces out and attach them as three distinct files (and diff to see if there's any change between them) let me know. I can provide a full (but redacted) dmesg output of a git master build, if required as well.
-> 
-> I did try booting a much more recent git master build with *iommu.passthrough=0 iommu.strict=0* on the kernel command line but that did not seem to make any difference.
-> 
-> ```
-> 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 is the first bad commit
-> commit 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2
-> Author: Johannes Berg <johannes.berg@intel.com>
-> Date:   Wed Jun 21 13:12:07 2023 +0300
-> 
->     wifi: iwlwifi: split 22000.c into multiple files
->     
->     Split the configuration list in 22000.c into four new files,
->     per new device family, so we don't have this huge unusable
->     file. Yes, this duplicates a few small things, but that's
->     still much better than what we have now.
->     
->     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->     Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
->     Link: https://lore.kernel.org/r/20230621130443.7543603b2ee7.Ia8dd54216d341ef1ddc0531f2c9aa30d30536a5d@changeid
->     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> 
->  drivers/net/wireless/intel/iwlwifi/Makefile     |   1 +
->  drivers/net/wireless/intel/iwlwifi/cfg/22000.c  | 939 +-----------------------
->  drivers/net/wireless/intel/iwlwifi/cfg/ax210.c  | 452 ++++++++++++
->  drivers/net/wireless/intel/iwlwifi/cfg/bz.c     | 523 +++++++++++++
->  drivers/net/wireless/intel/iwlwifi/cfg/sc.c     | 214 ++++++
->  drivers/net/wireless/intel/iwlwifi/iwl-config.h |   2 +
->  drivers/net/wireless/intel/iwlwifi/pcie/drv.c   |   3 +
->  7 files changed, 1206 insertions(+), 928 deletions(-)
->  create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
->  create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/bz.c
->  create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-> ```
-> 
+HEAD commit:    6e2332e0ab53 Merge tag 'cgroup-for-6.5' of git://git.kerne..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16e1c60b280000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b8f24c1070268858
+dashboard link: https://syzkaller.appspot.com/bug?extid=62d7eef57b09bfebcd84
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=171c0767280000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10113ebd280000
 
-See Bugzilla for the full thread and attached dmesg.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-6e2332e0.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/5c6bc163c340/vmlinux-6e2332e0.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/f1e705993336/bzImage-6e2332e0.xz
 
-Anyway, I'm adding it to regzbot to ensure that it doesn't fall through
-cracks unnoticed:
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+62d7eef57b09bfebcd84@syzkaller.appspotmail.com
 
-#regzbot introduced: 19898ce9cf8a33 https://bugzilla.kernel.org/show_bug.cgi?id=217622
-#regzbot title: dma-iommu.c:693 __iommu_dma_unmap bug trace due to 22000.c split
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5126 at net/mac80211/rate.c:48 rate_control_rate_init+0x548/0x740 net/mac80211/rate.c:48
+Modules linked in:
+CPU: 0 PID: 5126 Comm: syz-executor279 Not tainted 6.4.0-syzkaller-01647-g6e2332e0ab53 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.14.0-2 04/01/2014
+RIP: 0010:rate_control_rate_init+0x548/0x740 net/mac80211/rate.c:48
+Code: f7 48 c7 c2 00 84 7f 8b be 09 03 00 00 48 c7 c7 c0 83 7f 8b c6 05 f9 bc d6 04 01 e8 22 ac d6 f7 e9 d8 fd ff ff e8 a8 16 f6 f7 <0f> 0b e8 c1 32 83 00 31 ff 89 c3 89 c6 e8 b6 12 f6 f7 85 db 75 27
+RSP: 0018:ffffc90003197280 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff8881070796c0 RCX: 0000000000000000
+RDX: ffff88802a51cb80 RSI: ffffffff898db228 RDI: 0000000000000005
+RBP: ffff8880255c0000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000001
+R13: 0000000000000000 R14: ffff888021f30de0 R15: ffff888032530000
+FS:  000055555570f300(0000) GS:ffff88806b600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000080 CR3: 000000001f594000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ sta_apply_auth_flags.constprop.0+0x424/0x4a0 net/mac80211/cfg.c:1678
+ sta_apply_parameters+0xaf8/0x16f0 net/mac80211/cfg.c:2005
+ ieee80211_add_station+0x3d0/0x620 net/mac80211/cfg.c:2070
+ rdev_add_station net/wireless/rdev-ops.h:201 [inline]
+ nl80211_new_station+0x1258/0x1b20 net/wireless/nl80211.c:7564
+ genl_family_rcv_msg_doit.isra.0+0x1e6/0x2d0 net/netlink/genetlink.c:968
+ genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+ genl_rcv_msg+0x4ff/0x7e0 net/netlink/genetlink.c:1065
+ netlink_rcv_skb+0x165/0x440 net/netlink/af_netlink.c:2546
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0x547/0x7f0 net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x925/0xe30 net/netlink/af_netlink.c:1913
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0xde/0x190 net/socket.c:748
+ ____sys_sendmsg+0x722/0x900 net/socket.c:2504
+ ___sys_sendmsg+0x110/0x1b0 net/socket.c:2558
+ __sys_sendmsg+0xf7/0x1c0 net/socket.c:2587
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fc033504a69
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe0868f2d8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 000000000000ae5a RCX: 00007fc033504a69
+RDX: 0000000000000000 RSI: 0000000020000280 RDI: 0000000000000004
+RBP: 0000000000000000 R08: 00007ffe0868f478 R09: 00007ffe0868f478
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffe0868f2ec
+R13: 431bde82d7b634db R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
 
-Thanks.
 
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217622
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
--- 
-An old man doll... just what I always wanted! - Clara
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the bug is already fixed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to change bug's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the bug is a duplicate of another bug, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
