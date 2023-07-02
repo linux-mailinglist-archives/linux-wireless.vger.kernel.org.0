@@ -2,156 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D71EA744E44
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jul 2023 17:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36139745260
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Jul 2023 22:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229826AbjGBPQB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Jul 2023 11:16:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53654 "EHLO
+        id S229679AbjGBUlU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Jul 2023 16:41:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229516AbjGBPQA (ORCPT
+        with ESMTP id S229569AbjGBUlT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Jul 2023 11:16:00 -0400
-Received: from mail-pl1-f207.google.com (mail-pl1-f207.google.com [209.85.214.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB92FE6A
-        for <linux-wireless@vger.kernel.org>; Sun,  2 Jul 2023 08:15:58 -0700 (PDT)
-Received: by mail-pl1-f207.google.com with SMTP id d9443c01a7336-1b802df5298so34244605ad.3
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Jul 2023 08:15:58 -0700 (PDT)
+        Sun, 2 Jul 2023 16:41:19 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EEFE9D
+        for <linux-wireless@vger.kernel.org>; Sun,  2 Jul 2023 13:41:18 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b890e2b9b7so3271445ad.3
+        for <linux-wireless@vger.kernel.org>; Sun, 02 Jul 2023 13:41:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688330478; x=1690922478;
+        h=mime-version:user-agent:message-id:in-reply-to:date:references
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ctKzqdg7AgwS1BKS1j1WCRwbSc6flyH2Zmh4cTRtQZw=;
+        b=ggB02ip/8F9Yv8HpEMfsunIXYIiNonqwtbWQ8kuRGFo0I0eVpUZB/N/RBelrgD+UmA
+         AWynkbxWSzj+27b5AU9/M+CenBU4OHjSQSDOh8t+IepoiSQg04elgX1yimBmgZs9HzBQ
+         gvNIW45/8xlLRN7ixI6vqMtUIswuIazy/LUMwQg8eAj94L9tuwl6jg96sam1P95WhJYX
+         bAf1LKhfprDagSlcvOh4uWUHxjTYOSFSJqVzxHGcYh7RFbt+iuO7Gxs3JlwrzMy0SeyU
+         Mhp89IyPPA7uGoOoBNqErBgFDZka27FoB691l49r+/Arn2Hlez20FGMc1lbUZerWymcV
+         7SUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688310958; x=1690902958;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Uqx05DsOQphTiupSJnXSJDQY0vj7xZsIgdvTNkwdc4I=;
-        b=EnosiEuku1sox4I8i7ZfUg1OFFMGVgi2EITZ5F7Q4CkCSsfeYQo4BrWijAcUorVceX
-         ZNJbZ8uW+TFxBrUt+OolTQSGmRuVIfgSkxLzlxMk8uYSWuA9cKhb4IeJHYddKsWCnikP
-         g50Z6PJsRfB1aeuOiwceCR3lUHrCUejAXGoIkANe0tLvjEF91E+KTpCds5QPPddJth1g
-         sV2urPlpu38s98ypikm9IqO45W5A0n6pIcGjRdpYgxL8Ubd5+lS255WP6ne1gtkAIS3z
-         YLpkfhzv7b2XjoVw6RdDqzszw7TDa4AjBJaPyMJrD5yG8GX/bdIISy0o9B/HTqNuy9Wk
-         ClLw==
-X-Gm-Message-State: ABy/qLa25wpU7QDDz/RuYKeN/wQDh1AnZ9n2k2WlwJ7brD/ZHU23PPZQ
-        2b2lk6ulMSFjWCMQj83I3btbgotdU4XZT+yG9LnwB94m6/+D
-X-Google-Smtp-Source: APBJJlGq9lPKarcsUF7brIRq5xJr+f1dOKBFojk/wn5gzcGstP+bS9/Z+X3ogEpttE7OoTGn0J2Nzuo+izXpAWX/Up0fjn2Y/sb+
+        d=1e100.net; s=20221208; t=1688330478; x=1690922478;
+        h=mime-version:user-agent:message-id:in-reply-to:date:references
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ctKzqdg7AgwS1BKS1j1WCRwbSc6flyH2Zmh4cTRtQZw=;
+        b=NYhHO1u6lp8wIW5jRLmIWb+XujHT2tgMXhkf0Y05fFmJPy4uB0Qm/RuI8DNsfmBsQZ
+         lNnlNCciahv1glJWLmD8jKdJRBkNN7mHxVJUo9s5TXfh2+oGwc7UaGp0G4xnZx/T6uVZ
+         WC/oBV7O2XOsvYnjeRwf24gEaEZKHpcV5vJYF6SqZoi4Fx07XGFtJ3TFh/uk7PbpdnZW
+         ES0bdEA9uqfe2h7HKO1HRoj1N429MZDDYetrHxLVlAyHbRparXTBBICgbONQ11YbRfZw
+         kvbJkNl29TJAaOK5Uwe/8O9tyuE6PoBpiQSYQ4dI71GYlBMsu3mvkU0fxFcw6cVHVJlL
+         JE8A==
+X-Gm-Message-State: ABy/qLa75FzRkdPUkhsLs/+3pfzvtqMnANvZi7yEenqxm7blPS1/V04o
+        eej0HDRzdMD9EQ+/d3iOE14=
+X-Google-Smtp-Source: APBJJlFS69ecDLZ+ZVmiMyoboo+qv56losIiPaSWdWfWTP5u+7frLcnenVuvbYIE24TLa4GPIN/Y4A==
+X-Received: by 2002:a17:902:ab98:b0:1b8:839c:12ea with SMTP id f24-20020a170902ab9800b001b8839c12eamr3885818plr.48.1688330477565;
+        Sun, 02 Jul 2023 13:41:17 -0700 (PDT)
+Received: from athena (104-52-52-190.lightspeed.frsnca.sbcglobal.net. [104.52.52.190])
+        by smtp.gmail.com with ESMTPSA id c3-20020a170902848300b001a52c38350fsm13997604plo.169.2023.07.02.13.41.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Jul 2023 13:41:17 -0700 (PDT)
+From:   Rob Glossop <robgssp@gmail.com>
+To:     Gregory Greenman <gregory.greenman@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: Re: [iwlwifi] wifi fails on resume from suspend
+References: <87r0pq7oos.fsf@gmail.com>
+Date:   Sun, 02 Jul 2023 13:41:15 -0700
+In-Reply-To: <87r0pq7oos.fsf@gmail.com> (Rob Glossop's message of "Sun, 02 Jul
+        2023 00:33:23 -0700")
+Message-ID: <87v8f23v2s.fsf@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-X-Received: by 2002:a17:902:e847:b0:1b8:919e:bd with SMTP id
- t7-20020a170902e84700b001b8919e00bdmr1177364plg.13.1688310958243; Sun, 02 Jul
- 2023 08:15:58 -0700 (PDT)
-Date:   Sun, 02 Jul 2023 08:15:58 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000efc64705ff8286a1@google.com>
-Subject: [syzbot] [wireless?] WARNING in rate_control_rate_init (2)
-From:   syzbot <syzbot+62d7eef57b09bfebcd84@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        llvm@lists.linux.dev, nathan@kernel.org, ndesaulniers@google.com,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com, trix@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
 
-syzbot found the following issue on:
+On further poking, it looks like this problem was induced by the tlp
+daemon, so probably not a kernel issue. Sorry for the noise.
 
-HEAD commit:    6e2332e0ab53 Merge tag 'cgroup-for-6.5' of git://git.kerne..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16e1c60b280000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b8f24c1070268858
-dashboard link: https://syzkaller.appspot.com/bug?extid=62d7eef57b09bfebcd84
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=171c0767280000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10113ebd280000
+--
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-6e2332e0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/5c6bc163c340/vmlinux-6e2332e0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f1e705993336/bzImage-6e2332e0.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+62d7eef57b09bfebcd84@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5126 at net/mac80211/rate.c:48 rate_control_rate_init+0x548/0x740 net/mac80211/rate.c:48
-Modules linked in:
-CPU: 0 PID: 5126 Comm: syz-executor279 Not tainted 6.4.0-syzkaller-01647-g6e2332e0ab53 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.14.0-2 04/01/2014
-RIP: 0010:rate_control_rate_init+0x548/0x740 net/mac80211/rate.c:48
-Code: f7 48 c7 c2 00 84 7f 8b be 09 03 00 00 48 c7 c7 c0 83 7f 8b c6 05 f9 bc d6 04 01 e8 22 ac d6 f7 e9 d8 fd ff ff e8 a8 16 f6 f7 <0f> 0b e8 c1 32 83 00 31 ff 89 c3 89 c6 e8 b6 12 f6 f7 85 db 75 27
-RSP: 0018:ffffc90003197280 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff8881070796c0 RCX: 0000000000000000
-RDX: ffff88802a51cb80 RSI: ffffffff898db228 RDI: 0000000000000005
-RBP: ffff8880255c0000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000001
-R13: 0000000000000000 R14: ffff888021f30de0 R15: ffff888032530000
-FS:  000055555570f300(0000) GS:ffff88806b600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000080 CR3: 000000001f594000 CR4: 0000000000350ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- sta_apply_auth_flags.constprop.0+0x424/0x4a0 net/mac80211/cfg.c:1678
- sta_apply_parameters+0xaf8/0x16f0 net/mac80211/cfg.c:2005
- ieee80211_add_station+0x3d0/0x620 net/mac80211/cfg.c:2070
- rdev_add_station net/wireless/rdev-ops.h:201 [inline]
- nl80211_new_station+0x1258/0x1b20 net/wireless/nl80211.c:7564
- genl_family_rcv_msg_doit.isra.0+0x1e6/0x2d0 net/netlink/genetlink.c:968
- genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
- genl_rcv_msg+0x4ff/0x7e0 net/netlink/genetlink.c:1065
- netlink_rcv_skb+0x165/0x440 net/netlink/af_netlink.c:2546
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
- netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
- netlink_unicast+0x547/0x7f0 net/netlink/af_netlink.c:1365
- netlink_sendmsg+0x925/0xe30 net/netlink/af_netlink.c:1913
- sock_sendmsg_nosec net/socket.c:725 [inline]
- sock_sendmsg+0xde/0x190 net/socket.c:748
- ____sys_sendmsg+0x722/0x900 net/socket.c:2504
- ___sys_sendmsg+0x110/0x1b0 net/socket.c:2558
- __sys_sendmsg+0xf7/0x1c0 net/socket.c:2587
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7fc033504a69
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffe0868f2d8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 000000000000ae5a RCX: 00007fc033504a69
-RDX: 0000000000000000 RSI: 0000000020000280 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 00007ffe0868f478 R09: 00007ffe0868f478
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffe0868f2ec
-R13: 431bde82d7b634db R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the bug is already fixed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to change bug's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the bug is a duplicate of another bug, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Rob
