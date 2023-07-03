@@ -2,221 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A1F87460AE
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 18:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D2A4746136
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 19:13:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229885AbjGCQZK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jul 2023 12:25:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51314 "EHLO
+        id S230281AbjGCRNe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jul 2023 13:13:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229873AbjGCQZJ (ORCPT
+        with ESMTP id S230247AbjGCRNd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jul 2023 12:25:09 -0400
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED503185
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Jul 2023 09:25:07 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:859f:0:640:3817:0])
-        by forward100b.mail.yandex.net (Yandex) with ESMTP id C0EA160035;
-        Mon,  3 Jul 2023 19:25:05 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 4PUox83WqeA0-ZC79cQlx;
-        Mon, 03 Jul 2023 19:25:05 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1688401505;
-        bh=5UxoV8t7k+GjAdnKRMbEiyphbIcPfjiruHypdxFvydk=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=a1bUwnXa9+HIpZfaZWO0yFcOMomKOl0Y4cXWxenCn6A7lZ2F7A3SI11pdp8gZMEJW
-         bGUdp5TyCRbAWymdh4lCT7ir1h/eBT/kX5mQn2vuxSnIA0ZlyRdXSw+C1XtKbRBWVx
-         9K6PELE7aeA3Wl6Qrq94P2hShW+6MobQPNQSpycM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Arend van Spriel <aspriel@gmail.com>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: brcmfmac: use generic lists to manage TDLS entries
-Date:   Mon,  3 Jul 2023 19:24:40 +0300
-Message-ID: <20230703162458.155942-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Mon, 3 Jul 2023 13:13:33 -0400
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF3E1E59
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Jul 2023 10:13:31 -0700 (PDT)
+Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-401f4408955so407801cf.1
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Jul 2023 10:13:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1688404411; x=1690996411;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iHhUcDMJ3GqqYqX8PUUmG05Gp9eg0kW+H85LcvU0FfM=;
+        b=pcu1plunE/NwYXd0zKabq0kXC4lBKk8tohnsKuaUuvE/HlEsyL08J8Rrncb6tdHXMG
+         cmz9bCoXUDR/JwJsqsmr71QjeYmcARqtrt1DQSYI9zPV/Sf5pJYJl6xLdKaxJCKOgvFr
+         tnh9hlLbsw7q44xoXUaYM2Dl0zsM+CLmFGB60IzLiGOE4Gp49zPEcLGoPRuAw7HPala5
+         LXBec5FoBaHgoeX5sfQUdYjUsvGaUbSYJ1wRZy1H8aMdOztF5ksEydpAKeoXbOIbsEEp
+         30O8WuSAIYDTIkOI+/A0q8zA+SIzSI2JSocnTIfxpIswqs5WknnfbaYV8cHM0P31259d
+         HXkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688404411; x=1690996411;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iHhUcDMJ3GqqYqX8PUUmG05Gp9eg0kW+H85LcvU0FfM=;
+        b=HBE7Q5kcSxUZO6G9zAU38K9NGBrpHA7dJ0ApVooJsdSD2ymFVnVRzMJC9FIdrGdYD7
+         3R8WVUr8m3GXdW9RcmZN5iLVPL4lWRHWEF2X7aoNJ2p5a0prb6ICeysZ/x+6G36fXb/m
+         YNOnB8PgCa8IybY7rLSxN/xS9G4HcONEvM9m6zDjU1WKklt4Ncer1wIVi/ivq61FfcJK
+         wrKgi2A7bVwAnwRqgwxK9BQ+TU39ow1R4MJjbimA2stO3Tqx6h0k3NAesMlrcakzEBpW
+         BR2ObuV5/jbl669K7GJahGgyW0gMdrH0Dz4jUQidoi3c7peylodLCdhjf0sKi2pUR7VK
+         RUFg==
+X-Gm-Message-State: ABy/qLblBEVRbBr0DQ7LhZ/0ubvbuXcCpq315cU5c5ZHeC6FhZU15XFf
+        BMyyGDIS39d0mTFu80kmq1Ekv5UvcZuVARfoi3htSw==
+X-Google-Smtp-Source: APBJJlGYc95qxttE9/8PAmxKfxDwWHEqgj+xMhW5O9ooJIFZZ/PHyQ6aNbFx0eU2JgiJSidSG/eG84BaW6wvypRKK3A=
+X-Received: by 2002:ac8:574c:0:b0:3e8:684b:195d with SMTP id
+ 12-20020ac8574c000000b003e8684b195dmr44qtx.10.1688404410592; Mon, 03 Jul 2023
+ 10:13:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230612130256.4572-1-linyunsheng@huawei.com> <20230612130256.4572-5-linyunsheng@huawei.com>
+ <20230614101954.30112d6e@kernel.org> <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
+ <20230615095100.35c5eb10@kernel.org> <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
+ <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com> <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
+ <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com> <20230616122140.6e889357@kernel.org>
+ <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com> <20230619110705.106ec599@kernel.org>
+ <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
+ <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org> <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
+ <47b79e77-461b-8fe9-41fb-b69a6b205ef2@kernel.org>
+In-Reply-To: <47b79e77-461b-8fe9-41fb-b69a6b205ef2@kernel.org>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Mon, 3 Jul 2023 19:13:19 +0200
+Message-ID: <CANn89iKAvrf92Fy8a_M+V9eya6OHokey2_yxQ3JiCT87fKND_w@mail.gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+To:     David Ahern <dsahern@kernel.org>
+Cc:     Mina Almasry <almasrymina@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Prefer generic lists over ad-hoc quirks to manage TDLS
-entries, adjust related code.
+On Mon, Jul 3, 2023 at 4:45=E2=80=AFPM David Ahern <dsahern@kernel.org> wro=
+te:
+>
+> On 7/3/23 12:22 AM, Mina Almasry wrote:
+> > tcpdump is able to access the header of these skbs which is in host
+> > memory, but not the payload in device memory. Here is an example
+> > session with my netcat-like test for device memory TCP:
+> > https://pastebin.com/raw/FRjKf0kv
+> >
+> > tcpdump seems to work, and the length of the packets above is correct.
+> > tcpdump -A however isn't able to print the payload of the packets:
+> > https://pastebin.com/raw/2PcNxaZV
+>
+> That is my expectation. The tcpdump is just an easy example of accessing
+> the skb page frags. skb_copy_and_csum_bits used by icmp is another
+> example that can walk frags wanting access to device memory. You did not
+> cause a panic or trip a WARN_ON for example with the tcpdump?
+>
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- .../broadcom/brcm80211/brcmfmac/flowring.c    | 69 ++++++-------------
- .../broadcom/brcm80211/brcmfmac/flowring.h    |  4 +-
- 2 files changed, 22 insertions(+), 51 deletions(-)
+Change for af_packet was not too hard :)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.c
-index e1127d7e086d..acd3a7b5231d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.c
-@@ -44,13 +44,9 @@ brcmf_flowring_is_tdls_mac(struct brcmf_flowring *flow, u8 mac[ETH_ALEN])
- {
- 	struct brcmf_flowring_tdls_entry *search;
- 
--	search = flow->tdls_entry;
--
--	while (search) {
-+	list_for_each_entry(search, &flow->tdls_entries, list)
- 		if (memcmp(search->mac, mac, ETH_ALEN) == 0)
- 			return true;
--		search = search->next;
--	}
- 
- 	return false;
- }
-@@ -365,6 +361,7 @@ struct brcmf_flowring *brcmf_flowring_attach(struct device *dev, u16 nrofrings)
- 		flow->dev = dev;
- 		flow->nrofrings = nrofrings;
- 		spin_lock_init(&flow->block_lock);
-+		INIT_LIST_HEAD(&flow->tdls_entries);
- 		for (i = 0; i < ARRAY_SIZE(flow->addr_mode); i++)
- 			flow->addr_mode[i] = ADDR_INDIRECT;
- 		for (i = 0; i < ARRAY_SIZE(flow->hash); i++)
-@@ -385,8 +382,7 @@ void brcmf_flowring_detach(struct brcmf_flowring *flow)
- {
- 	struct brcmf_bus *bus_if = dev_get_drvdata(flow->dev);
- 	struct brcmf_pub *drvr = bus_if->drvr;
--	struct brcmf_flowring_tdls_entry *search;
--	struct brcmf_flowring_tdls_entry *remove;
-+	struct brcmf_flowring_tdls_entry *remove, *tmp;
- 	u16 flowid;
- 
- 	for (flowid = 0; flowid < flow->nrofrings; flowid++) {
-@@ -394,12 +390,11 @@ void brcmf_flowring_detach(struct brcmf_flowring *flow)
- 			brcmf_msgbuf_delete_flowring(drvr, flowid);
- 	}
- 
--	search = flow->tdls_entry;
--	while (search) {
--		remove = search;
--		search = search->next;
-+	list_for_each_entry_safe(remove, tmp, &flow->tdls_entries, list) {
-+		list_del(&remove->list);
- 		kfree(remove);
- 	}
-+
- 	kfree(flow->rings);
- 	kfree(flow);
- }
-@@ -433,24 +428,19 @@ void brcmf_flowring_delete_peer(struct brcmf_flowring *flow, int ifidx,
- 	struct brcmf_bus *bus_if = dev_get_drvdata(flow->dev);
- 	struct brcmf_pub *drvr = bus_if->drvr;
- 	struct brcmf_flowring_hash *hash;
--	struct brcmf_flowring_tdls_entry *prev;
--	struct brcmf_flowring_tdls_entry *search;
-+	struct brcmf_flowring_tdls_entry *search = NULL, *tmp;
- 	u32 i;
- 	u16 flowid;
- 	bool sta;
- 
- 	sta = (flow->addr_mode[ifidx] == ADDR_INDIRECT);
- 
--	search = flow->tdls_entry;
--	prev = NULL;
--	while (search) {
--		if (memcmp(search->mac, peer, ETH_ALEN) == 0) {
-+	list_for_each_entry(tmp, &flow->tdls_entries, list)
-+		if (memcmp(tmp->mac, peer, ETH_ALEN) == 0) {
-+			search = tmp;
- 			sta = false;
- 			break;
- 		}
--		prev = search;
--		search = search->next;
--	}
- 
- 	hash = flow->hash;
- 	for (i = 0; i < BRCMF_FLOWRING_HASHSIZE; i++) {
-@@ -463,12 +453,9 @@ void brcmf_flowring_delete_peer(struct brcmf_flowring *flow, int ifidx,
- 	}
- 
- 	if (search) {
--		if (prev)
--			prev->next = search->next;
--		else
--			flow->tdls_entry = search->next;
-+		list_del(&search->list);
- 		kfree(search);
--		if (flow->tdls_entry == NULL)
-+		if (list_empty(&flow->tdls_entries))
- 			flow->tdls_active = false;
- 	}
- }
-@@ -478,31 +465,15 @@ void brcmf_flowring_add_tdls_peer(struct brcmf_flowring *flow, int ifidx,
- 				  u8 peer[ETH_ALEN])
- {
- 	struct brcmf_flowring_tdls_entry *tdls_entry;
--	struct brcmf_flowring_tdls_entry *search;
- 
--	tdls_entry = kzalloc(sizeof(*tdls_entry), GFP_ATOMIC);
--	if (tdls_entry == NULL)
--		return;
-+	list_for_each_entry(tdls_entry, &flow->tdls_entries, list)
-+		if (memcmp(tdls_entry->mac, peer, ETH_ALEN) == 0)
-+			return;
- 
--	memcpy(tdls_entry->mac, peer, ETH_ALEN);
--	tdls_entry->next = NULL;
--	if (flow->tdls_entry == NULL) {
--		flow->tdls_entry = tdls_entry;
--	} else {
--		search = flow->tdls_entry;
--		if (memcmp(search->mac, peer, ETH_ALEN) == 0)
--			goto free_entry;
--		while (search->next) {
--			search = search->next;
--			if (memcmp(search->mac, peer, ETH_ALEN) == 0)
--				goto free_entry;
--		}
--		search->next = tdls_entry;
-+	tdls_entry = kzalloc(sizeof(*tdls_entry), GFP_ATOMIC);
-+	if (tdls_entry) {
-+		memcpy(tdls_entry->mac, peer, ETH_ALEN);
-+		list_add_tail(&tdls_entry->list, &flow->tdls_entries);
-+		flow->tdls_active = true;
- 	}
--
--	flow->tdls_active = true;
--	return;
--
--free_entry:
--	kfree(tdls_entry);
- }
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.h
-index 818882b0fd01..e7bfb5495aaf 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.h
-@@ -32,7 +32,7 @@ struct brcmf_flowring_ring {
- 
- struct brcmf_flowring_tdls_entry {
- 	u8 mac[ETH_ALEN];
--	struct brcmf_flowring_tdls_entry *next;
-+	struct list_head list;
- };
- 
- struct brcmf_flowring {
-@@ -43,7 +43,7 @@ struct brcmf_flowring {
- 	enum proto_addr_mode addr_mode[BRCMF_MAX_IFS];
- 	u16 nrofrings;
- 	bool tdls_active;
--	struct brcmf_flowring_tdls_entry *tdls_entry;
-+	struct list_head tdls_entries;
- };
- 
- 
--- 
-2.41.0
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index a2dbeb264f260e5b8923ece9aac99fe19ddfeb62..aa4133d1b1e0676e408499ea453=
+4b51262394432
+100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2152,7 +2152,7 @@ static int packet_rcv(struct sk_buff *skb,
+struct net_device *dev,
+                }
+        }
 
+-       snaplen =3D skb->len;
++       snaplen =3D skb->devmem ? skb_headlen(skb) : skb->len;
+
+        res =3D run_filter(skb, sk, snaplen);
+        if (!res)
+@@ -2275,7 +2275,7 @@ static int tpacket_rcv(struct sk_buff *skb,
+struct net_device *dev,
+                }
+        }
+
+-       snaplen =3D skb->len;
++       snaplen =3D skb->devmem ? skb_headlen(skb) : skb->len;
+
+        res =3D run_filter(skb, sk, snaplen);
+        if (!res)
+
+
+And a generic change in pskb_may_pull() ( __pskb_pull_tail() more
+exactly) was enough to cover most other cases.
