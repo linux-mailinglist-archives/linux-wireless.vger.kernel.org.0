@@ -2,123 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62E0A746160
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 19:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7BA746179
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 19:35:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231276AbjGCR0C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jul 2023 13:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46256 "EHLO
+        id S230072AbjGCRf3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jul 2023 13:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbjGCR0B (ORCPT
+        with ESMTP id S229698AbjGCRf2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jul 2023 13:26:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46CE7E62;
-        Mon,  3 Jul 2023 10:25:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA12760FEF;
-        Mon,  3 Jul 2023 17:25:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19CEC433C7;
-        Mon,  3 Jul 2023 17:25:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688405152;
-        bh=rYNHyEKxVBivZJaI/Nsw/8pEmEkG38XoEZOgA3+Gx5E=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=HRhH09xDcmyQdwdg+w9B4k0qFdh5qm8B20+2qPbVM/j6cBNpwATBWA29920ipsdqB
-         F7J6ZGI3CQDbI6idwFIgjtEfSilmVr17LolUgwKXZ4iVZtE/opYl7ICfUIT8st5Hiv
-         UxbpHaA7dWmEdwwciJmm+4gyUYba6rSUEZSepH3nxzXch2fsPbVSzaYGe0r4rI5wGM
-         Ym039RUrohqsYMxJCMpB3liziGDbDIggIi4ViVYy8fZk//93aQZ1c2OmH4npo4biPW
-         Z139jMJ6PzTzBE2Rk/CxIz4mMINsMFtO1wKBzZeV7eNjfUppPND0kRaiNMIHRjo8Sy
-         N44lUtKIfK3tQ==
-Message-ID: <31db0e5d-4b6d-9b2e-90cc-87a15d500b2e@kernel.org>
-Date:   Mon, 3 Jul 2023 11:25:50 -0600
+        Mon, 3 Jul 2023 13:35:28 -0400
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C21ACE;
+        Mon,  3 Jul 2023 10:35:24 -0700 (PDT)
+Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6b5cf23b9fcso4082352a34.0;
+        Mon, 03 Jul 2023 10:35:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688405723; x=1690997723;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=0NL0ySbb2Xb/iRrjprrBD36mGMRGbHoN4gFIm7bPFVI=;
+        b=l/q+U9ng/s84zKLFLt/NEsWSK4cDVHoctXMiY7noTh3ya6AgR+A1BogdSFRHbzBikc
+         IgUgMYkCAeTP3bLu2mQWyZTtqWxLTsDnmDVSxCSBMN9CsisJyhNTnesQUywc2hx4lLd8
+         9dPMdOD9qkrA4soKVJJtrDmUQ1xX/7ceF3z3U2CcM8xggiZScfea4fP2814fIxFsWKzh
+         UrXBQ+XDh+bFyI4kdNJrzDezZ0w+MQ1q2gw5STIGmpEC5TgY6d9iNlT0nXKywmk3PEzc
+         6ZA7jbB4QizTylp8kclYcqvKm16ZaeHihFMAotzYW2Q+lt7jISZzquRhN3GAmXBot16K
+         9nww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688405723; x=1690997723;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0NL0ySbb2Xb/iRrjprrBD36mGMRGbHoN4gFIm7bPFVI=;
+        b=K6TPuzngjk8ZuEzpVyN1B2YqZl5WY2GCw0iVfKn1DBl2TQIzOgbLD2vjM0s2vXsDO/
+         RC3qZkUx4Jb6nVBZdyaHShhwCIzInUdWPtI57usX2H17dVd73kGK4F0JOSAi2+D5zWYQ
+         /LuKfPFh43sqUi1WLNiGbVSOZaK/TsLrHMwFqcNr7TzCl0Vtm4cNr8nMx1GMxxIsdMjl
+         YOhtcxGJGWk8A1su36b2Zn7sqx6Cx6dARO1DEqNHmjAoDLUtW8e4fHOFPIehSHVQ3nYd
+         hCaCfllQ00RUvqM4GVG45UZcUNyOfo48NqXewOfclrPhEekVtkhEDZ0t3naUyM1k+y4c
+         h1lw==
+X-Gm-Message-State: AC+VfDzKG9V9/V0BTz7RFxuj2sQ85eRTmwUKxB3zMXvJYZpG1FaTLHs0
+        KWifcchmfw9MO9vN72q4/po=
+X-Google-Smtp-Source: ACHHUZ7oyJiF+8yO1ePhexm7fnkxb2DJ13EXS5+5fp/AffHM6v7o1c6Q1bnTRCVRr2PWByVMjWj/jQ==
+X-Received: by 2002:a05:6830:10c4:b0:6b8:8f8f:3f4c with SMTP id z4-20020a05683010c400b006b88f8f3f4cmr11485107oto.26.1688405723530;
+        Mon, 03 Jul 2023 10:35:23 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id z6-20020a9d7a46000000b006b8ad42654csm2974673otm.0.2023.07.03.10.35.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Jul 2023 10:35:22 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <89429625-5b5a-d0d3-ae82-0b7204262980@lwfinger.net>
+Date:   Mon, 3 Jul 2023 12:35:21 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: Fwd: After kernel 6.3.7 or 6.3.8 b43 driver fails
+To:     Sardonimous <sardonimous@hotmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>
+Cc:     =?UTF-8?Q?Michael_B=c3=bcsch?= <m@bues.ch>,
+        kernel test robot <lkp@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>
+References: <27829c69-515c-36a6-4beb-3210225f8936@gmail.com>
+ <b9428e48-f0f9-46f6-892c-4c8834c930c4@app.fastmail.com>
+ <RO2P215MB193850DDADD38492BEC8CC2FA720A@RO2P215MB1938.LAMP215.PROD.OUTLOOK.COM>
+ <a3bc5eb5-9639-8016-36ab-105abc8c0ca3@gmail.com>
+ <69b98eb4-2c4e-fe75-90b4-4b08505a595a@lwfinger.net>
+ <RO2P215MB193879B2D99DD0BAF59EFA92A721A@RO2P215MB1938.LAMP215.PROD.OUTLOOK.COM>
+ <e0a08449-554a-4a28-ac50-7051866eb95e@app.fastmail.com>
+ <da80b806-de3f-c7ea-0352-cd23e0f6dd65@lwfinger.net>
+ <RO2P215MB1938BD13105900F3525E0FE7A721A@RO2P215MB1938.LAMP215.PROD.OUTLOOK.COM>
+ <67faf4f4-f36c-3ff7-03b8-cd259e4a5548@lwfinger.net>
+ <RO2P215MB1938BA68BBB683EC696F4BFAA726A@RO2P215MB1938.LAMP215.PROD.OUTLOOK.COM>
+ <6afa0ebc-1d3f-8cba-79dc-8ddfe13c296a@lwfinger.net>
+ <RO2P215MB193898F3008E0F390CCEBC87A726A@RO2P215MB1938.LAMP215.PROD.OUTLOOK.COM>
 Content-Language: en-US
-To:     Eric Dumazet <edumazet@google.com>
-Cc:     Mina Almasry <almasrymina@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <jbrouer@redhat.com>,
-        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>
-References: <20230612130256.4572-1-linyunsheng@huawei.com>
- <20230612130256.4572-5-linyunsheng@huawei.com>
- <20230614101954.30112d6e@kernel.org>
- <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
- <20230615095100.35c5eb10@kernel.org>
- <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
- <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
- <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
- <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
- <20230616122140.6e889357@kernel.org>
- <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
- <20230619110705.106ec599@kernel.org>
- <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
- <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
- <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
- <47b79e77-461b-8fe9-41fb-b69a6b205ef2@kernel.org>
- <CANn89iJLAnnvFfkmJbQ=ZFMwaqiYDOTD3-P+NpkEMzP9aKV-ig@mail.gmail.com>
-From:   David Ahern <dsahern@kernel.org>
-In-Reply-To: <CANn89iJLAnnvFfkmJbQ=ZFMwaqiYDOTD3-P+NpkEMzP9aKV-ig@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <RO2P215MB193898F3008E0F390CCEBC87A726A@RO2P215MB1938.LAMP215.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/3/23 11:15 AM, Eric Dumazet wrote:
-> On Mon, Jul 3, 2023 at 4:45 PM David Ahern <dsahern@kernel.org> wrote:
+On 6/26/23 16:33, Sardonimous wrote:
 > 
->> That is my expectation. The tcpdump is just an easy example of accessing
->> the skb page frags. skb_copy_and_csum_bits used by icmp is another
->> example that can walk frags wanting access to device memory. You did not
->> cause a panic or trip a WARN_ON for example with the tcpdump?
+> On 6/26/23 10:21 AM, Larry Finger wrote:
+>> On 6/26/23 07:44, Sardonimous wrote:
+>>> If I were to send you some test patches, could you create a kernel with them 
+>>> applied?
+>>>
+>>> Doubtful.
 >>
+>> Sardonimous,
+>>
+>> OK, that essentially eliminates  getting DMA to work. The cost of a 
+>> MacBookPro7 is too much for me to acquire one to debug that issue.
+>>
+>> On my PowerBook G4, I also got the failure to connect, thus I should be able 
+>> to fix that problem, but getting a new kernel with the fix onto your machine 
+>> will not be easy.
 > 
-> ICMP packets do not land on the queues having devmem buffers, for
-> obvious reasons.
-
-I was not referring to ICMP packets coming in to the nic, but rather an
-icmp getting triggered during stack processing.
-
+> It might be possible to follow the arch instructions for patching the kernel
 > 
-> Only chosen TCP flows are steered to these queues.
+> https://wiki.archlinux.org/title/Kernel/Arch_build_system
+> 
+> It takes about a day to rebuild the kernel following this procedure.
+> 
+>> Is it possible to ssh into your machine, or to use TeamViewer? Those questions 
+>> do not need an answer now, but think about them.
+> 
+> This is complicated by being in a CGNAT environment.  I usually do this via 
+> tailscale.  Will have to think about it.
+> 
+>> Larry
+> 
+> Should pio=1 qos=0 cause the problems that it does?  It if is no longer a 
+> supported configuration, perhaps it should fail more gracefully.
 
-of course.
+Sardonimous,
+
+Sorry that it took so long to get back to you.
+
+For my ppc32, there is no regression. It took a while to learn the pio=1 and 
+qos=0 are BOTH needed. That I do not understand, but with both set, the device 
+works with kernel 6.4 and all earlier kernels that I tried. Fortunately, I did 
+not need to do the entire bisection.
+
+I am working on eliminating the warning that appears with qos=0, but it does not 
+inhibit operations.
+
+@Bagas Sanjaya: Please mark this "regression" as invalid.
+
+Larry
+
+
