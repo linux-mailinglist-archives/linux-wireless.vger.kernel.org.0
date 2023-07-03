@@ -2,240 +2,229 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14CFD74577A
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 10:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4B91745AD3
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 13:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229783AbjGCIiV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jul 2023 04:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39160 "EHLO
+        id S229958AbjGCLQE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jul 2023 07:16:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229750AbjGCIiV (ORCPT
+        with ESMTP id S229450AbjGCLQD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jul 2023 04:38:21 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 76864B6;
-        Mon,  3 Jul 2023 01:38:19 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D1FAA1FB;
-        Mon,  3 Jul 2023 01:39:01 -0700 (PDT)
-Received: from [10.57.38.117] (unknown [10.57.38.117])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B6F6C3F73F;
-        Mon,  3 Jul 2023 01:38:16 -0700 (PDT)
-Message-ID: <36bb826d-ecff-570c-8595-e8cb41ad45cf@arm.com>
-Date:   Mon, 3 Jul 2023 09:38:11 +0100
+        Mon, 3 Jul 2023 07:16:03 -0400
+Received: from mail-pg1-f206.google.com (mail-pg1-f206.google.com [209.85.215.206])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0826BD7
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Jul 2023 04:16:00 -0700 (PDT)
+Received: by mail-pg1-f206.google.com with SMTP id 41be03b00d2f7-53ba38cf091so4427411a12.1
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Jul 2023 04:16:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688382959; x=1690974959;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XXNgRtmNb1bvHo0qrdCNGlVQz0VT2KR3h4bH/4bvDhQ=;
+        b=ZmfI9iYLy8lfUj8LvZR7K9OYpBIgmhTGFxiau+WAl2GcA+2Su+N4UrXTb1SOuRTNhw
+         yt0yY+Wm8OCRlouWN0uH7OT87iRJusDLIapmp1MrTBGloa9Sj6S6+L6oeB4xd2Jit5Si
+         daRkeoC++gRW4kfm864kt6SX2i/usNBhCOtAUbioN2TuvxYwyL4Oquy7eGxF/TSAyksg
+         XbmsxJ9ig4A6la5N2O8vgkxwBCRTCHllwKYVOoWMvQ6xFo23UxkVmhqNP6naq1P1+ETK
+         Suut3WKSwuFG9hd0xgOzPfzk/chFz2HTlpEzmlaEIc9r4R/KOV7Yevft6hA4A8+lRT6S
+         JHhQ==
+X-Gm-Message-State: AC+VfDyq60qGpNUoXJZbHwc2ZSvA1XJr8pMQCcXu5yUpH7jFEI5WD9Ng
+        V+tP5aUQpxB3uNK7bnQel3Ec5DKGKkjdpt3AiG20qVfpeTFb
+X-Google-Smtp-Source: ACHHUZ4ErtoXsFN2urYqeqVA5Ft/zMpgnov6cqPCn4we9TqXxLLnobX7TNFGJcC/bL9dzTLnmb/rFC90lP2r/EeD+9ZwMvY1LF0g
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Fwd: iwlwifi causes dma-iommu.c:693 __iommu_dma_unmap since
- commit 19898ce9cf8a
-Content-Language: en-GB
-To:     Xi Ruoyao <xry111@xry111.site>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        =?UTF-8?B?TmlrbMSBdnMgS2/EvGVzxYZpa292cw==?= 
-        <pinkflames.linux@gmail.com>,
-        Nate Watterson <nwatters@codeaurora.org>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Linux IO Memory Management Unit <iommu@lists.linux.dev>
-Cc:     Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>
-References: <a5cdc7f8-b340-d372-2971-0d24b01de217@gmail.com>
- <9274d9bd3d080a457649ff5addcc1726f08ef5b2.camel@xry111.site>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <9274d9bd3d080a457649ff5addcc1726f08ef5b2.camel@xry111.site>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a17:903:40c6:b0:1b3:a8f6:1231 with SMTP id
+ t6-20020a17090340c600b001b3a8f61231mr6953486pld.4.1688382959538; Mon, 03 Jul
+ 2023 04:15:59 -0700 (PDT)
+Date:   Mon, 03 Jul 2023 04:15:59 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000008c5b8c05ff934a6c@google.com>
+Subject: [syzbot] [wireless?] KMSAN: uninit-value in ieee80211_rx_handlers
+From:   syzbot <syzbot+be9c824e6f269d608288@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com, glider@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2023-07-03 08:54, Xi Ruoyao wrote:
-> On Sun, 2023-07-02 at 19:13 +0700, Bagas Sanjaya wrote:
->> Hi,
->>
->> I notice a regression report on Bugzilla [1]: Quoting from it:
->>
->>> Since commit 19898ce9cf8a the iwlwifi has generated three possibly
->>> identical kernel stack traces for me. Because I only use the
->>> Bluetooth but not the Wi-Fi functionality, this is not a big deal
->>> for me but I thought such an issue is worth reporting nontheless.
->>>
->>> All three traces point at **drivers/iommu/dma-iommu.c:693
->>> __iommu_dma_unmap+0x150/0x160**.
+Hello,
 
-That warning means that the IOMMU driver was unable to unmap the whole 
-range requested. This most often indicates that the address or size 
-passed to the unmap didn't match the corresponding map, i.e. the 
-arguments passed to dma_free_coherent() have got messed up from what was 
-originally passed to dma_alloc_coherent(). CONFIG_DMA_API_DEBUG should 
-be able to confirm that, but the root cause would be somewhere within 
-iwlwifi.
+syzbot found the following issue on:
 
-Thanks,
-Robin.
->>> I'm attaching to this bug report the three stack traces along with
->>> other possibly relevant dmesg parts. Sorry in advance for not
->>> cutting at the cut here markers which resulted in considerably
->>> longer text but I suspected that the PCI, ACPI, memory and possibly
->>> iwlwifi related messages may be of importance, too. If I should cut
->>> the stack traces out and attach them as three distinct files (and
->>> diff to see if there's any change between them) let me know. I can
->>> provide a full (but redacted) dmesg output of a git master build, if
->>> required as well.
->>>
->>> I did try booting a much more recent git master build with
->>> *iommu.passthrough=0 iommu.strict=0* on the kernel command line but
->>> that did not seem to make any difference.
->>>
->>> ```
->>> 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 is the first bad commit
->>> commit 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2
->>> Author: Johannes Berg <johannes.berg@intel.com>
->>> Date:   Wed Jun 21 13:12:07 2023 +0300
->>>
->>>      wifi: iwlwifi: split 22000.c into multiple files
->>>      
->>>      Split the configuration list in 22000.c into four new files,
->>>      per new device family, so we don't have this huge unusable
->>>      file. Yes, this duplicates a few small things, but that's
->>>      still much better than what we have now.
->>>      
->>>      Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->>>      Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
->>>      Link:
->>> https://lore.kernel.org/r/20230621130443.7543603b2ee7.Ia8dd54216d341ef1ddc0531f2c9aa30d30536a5d@changeid
->>>      Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->>>
->>>   drivers/net/wireless/intel/iwlwifi/Makefile     |   1 +
->>>   drivers/net/wireless/intel/iwlwifi/cfg/22000.c  | 939 +------------
->>> -----------
->>>   drivers/net/wireless/intel/iwlwifi/cfg/ax210.c  | 452 ++++++++++++
->>>   drivers/net/wireless/intel/iwlwifi/cfg/bz.c     | 523 +++++++++++++
->>>   drivers/net/wireless/intel/iwlwifi/cfg/sc.c     | 214 ++++++
->>>   drivers/net/wireless/intel/iwlwifi/iwl-config.h |   2 +
->>>   drivers/net/wireless/intel/iwlwifi/pcie/drv.c   |   3 +
->>>   7 files changed, 1206 insertions(+), 928 deletions(-)
->>>   create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
->>>   create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/bz.c
->>>   create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/sc.c
->>> ```
->>>
->>
->> See Bugzilla for the full thread and attached dmesg.
-> 
-> I can reproduce the issue with an AX210 (the firmware is named iwlwifi-
-> ty-a0-gf-a0-81.ucode).  Reverting
-> 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 (and all following commits in
-> the same series) fixes the issue.
-> 
-> I guess some error messages might be useful:
-> 
-> [    4.058873] iwlwifi 0000:2b:00.0: Error sending NVM_ACCESS_COMPLETE: time out after 2000ms.
-> [    4.060263] iwlwifi 0000:2b:00.0: Current CMD queue read_ptr 1 write_ptr 2
-> [    4.062814] iwlwifi 0000:2b:00.0: Start IWL Error Log Dump:
-> [    4.064440] iwlwifi 0000:2b:00.0: Transport status: 0x0000004A, valid: 6
-> [    4.065481] iwlwifi 0000:2b:00.0: Loaded firmware version: 81.31fc9ae6.0 ty-a0-gf-a0-81.ucode
-> [    4.066655] iwlwifi 0000:2b:00.0: 0x00000084 | NMI_INTERRUPT_UNKNOWN
-> [    4.067725] iwlwifi 0000:2b:00.0: 0x002002F0 | trm_hw_status0
-> [    4.068799] iwlwifi 0000:2b:00.0: 0x00000000 | trm_hw_status1
-> [    4.069777] iwlwifi 0000:2b:00.0: 0x004DBEE0 | branchlink2
-> [    4.070828] iwlwifi 0000:2b:00.0: 0x004D1DEA | interruptlink1
-> [    4.071823] iwlwifi 0000:2b:00.0: 0x004D1DEA | interruptlink2
-> [    4.072774] iwlwifi 0000:2b:00.0: 0x00016582 | data1
-> [    4.073714] iwlwifi 0000:2b:00.0: 0x01000000 | data2
-> [    4.074748] iwlwifi 0000:2b:00.0: 0x00000000 | data3
-> [    4.075681] iwlwifi 0000:2b:00.0: 0x00000000 | beacon time
-> [    4.076695] iwlwifi 0000:2b:00.0: 0x002097F1 | tsf low
-> [    4.077721] iwlwifi 0000:2b:00.0: 0x00000000 | tsf hi
-> [    4.078660] iwlwifi 0000:2b:00.0: 0x00000000 | time gp1
-> [    4.079680] iwlwifi 0000:2b:00.0: 0x0021B671 | time gp2
-> [    4.080678] iwlwifi 0000:2b:00.0: 0x00000001 | uCode revision type
-> [    4.081667] iwlwifi 0000:2b:00.0: 0x00000051 | uCode version major
-> [    4.082653] iwlwifi 0000:2b:00.0: 0x31FC9AE6 | uCode version minor
-> [    4.083655] iwlwifi 0000:2b:00.0: 0x00000420 | hw version
-> [    4.084636] iwlwifi 0000:2b:00.0: 0x18C80002 | board version
-> [    4.085613] iwlwifi 0000:2b:00.0: 0x8005FF00 | hcmd
-> [    4.086578] iwlwifi 0000:2b:00.0: 0x00020000 | isr0
-> [    4.087527] iwlwifi 0000:2b:00.0: 0x00000000 | isr1
-> [    4.088469] iwlwifi 0000:2b:00.0: 0x48F00002 | isr2
-> [    4.089390] iwlwifi 0000:2b:00.0: 0x00C0001C | isr3
-> [    4.090307] iwlwifi 0000:2b:00.0: 0x00000000 | isr4
-> [    4.091202] iwlwifi 0000:2b:00.0: 0x00000000 | last cmd Id
-> [    4.092083] iwlwifi 0000:2b:00.0: 0x00016582 | wait_event
-> [    4.092943] iwlwifi 0000:2b:00.0: 0x00000000 | l2p_control
-> [    4.093801] iwlwifi 0000:2b:00.0: 0x00000000 | l2p_duration
-> [    4.094639] iwlwifi 0000:2b:00.0: 0x00000000 | l2p_mhvalid
-> [    4.095525] iwlwifi 0000:2b:00.0: 0x00000000 | l2p_addr_match
-> [    4.097449] iwlwifi 0000:2b:00.0: 0x00000009 | lmpm_pmg_sel
-> [    4.098323] iwlwifi 0000:2b:00.0: 0x00000000 | timestamp
-> [    4.099165] iwlwifi 0000:2b:00.0: 0x00000024 | flow_handler
-> [    4.100024] iwlwifi 0000:2b:00.0: Start IWL Error Log Dump:
-> [    4.100832] iwlwifi 0000:2b:00.0: Transport status: 0x0000004A, valid: 7
-> [    4.101641] iwlwifi 0000:2b:00.0: 0x20000066 | NMI_INTERRUPT_HOST
-> [    4.102522] iwlwifi 0000:2b:00.0: 0x00000000 | umac branchlink1
-> [    4.103379] iwlwifi 0000:2b:00.0: 0x8046DA88 | umac branchlink2
-> [    4.104210] iwlwifi 0000:2b:00.0: 0x8048DB3A | umac interruptlink1
-> [    4.105014] iwlwifi 0000:2b:00.0: 0x8048DB3A | umac interruptlink2
-> [    4.105790] iwlwifi 0000:2b:00.0: 0x01000000 | umac data1
-> [    4.106544] iwlwifi 0000:2b:00.0: 0x8048DB3A | umac data2
-> [    4.107338] iwlwifi 0000:2b:00.0: 0x00000000 | umac data3
-> [    4.108109] iwlwifi 0000:2b:00.0: 0x00000051 | umac major
-> [    4.108855] iwlwifi 0000:2b:00.0: 0x31FC9AE6 | umac minor
-> [    4.109581] iwlwifi 0000:2b:00.0: 0x0021B66F | frame pointer
-> [    4.110349] iwlwifi 0000:2b:00.0: 0xC0886258 | stack pointer
-> [    4.111099] iwlwifi 0000:2b:00.0: 0x00000203 | last host cmd
-> [    4.111815] iwlwifi 0000:2b:00.0: 0x00000400 | isr status reg
-> [    4.112530] iwlwifi 0000:2b:00.0: IML/ROM dump:
-> [    4.113265] iwlwifi 0000:2b:00.0: 0x00000B03 | IML/ROM error/state
-> [    4.113982] iwlwifi 0000:2b:00.0: 0x000076E7 | IML/ROM data1
-> [    4.114689] iwlwifi 0000:2b:00.0: 0x00000090 | IML/ROM WFPM_AUTH_KEY_0
-> [    4.115447] iwlwifi 0000:2b:00.0: Fseq Registers:
-> [    4.116168] iwlwifi 0000:2b:00.0: 0x60000100 | FSEQ_ERROR_CODE
-> [    4.116867] iwlwifi 0000:2b:00.0: 0x80440007 | FSEQ_TOP_INIT_VERSION
-> [    4.117548] iwlwifi 0000:2b:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
-> [    4.118265] iwlwifi 0000:2b:00.0: 0x0000A652 | FSEQ_OTP_VERSION
-> [    4.118946] iwlwifi 0000:2b:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
-> [    4.119624] iwlwifi 0000:2b:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
-> [    4.121025] iwlwifi 0000:2b:00.0: 0x00400410 | FSEQ_CNVR_ID
-> [    4.121675] iwlwifi 0000:2b:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
-> [    4.122377] iwlwifi 0000:2b:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
-> [    4.123048] iwlwifi 0000:2b:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
-> [    4.123693] iwlwifi 0000:2b:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
-> [    4.124383] iwlwifi 0000:2b:00.0: 0x00080009 | FSEQ_PREV_CNVIO_INIT_VERSION
-> [    4.125055] iwlwifi 0000:2b:00.0: 0x00440005 | FSEQ_WIFI_FSEQ_VERSION
-> [    4.125703] iwlwifi 0000:2b:00.0: 0x00440005 | FSEQ_BT_FSEQ_VERSION
-> [    4.126407] iwlwifi 0000:2b:00.0: 0x000000D2 | FSEQ_CLASS_TP_VERSION
-> [    4.127103] iwlwifi 0000:2b:00.0: UMAC CURRENT PC: 0x8048d640
-> [    4.127769] iwlwifi 0000:2b:00.0: LMAC1 CURRENT PC: 0xd0
-> [    4.128437] iwlwifi 0000:2b:00.0: Failed to run complete NVM access: -110
-> [    4.129134] iwlwifi 0000:2b:00.0: WRT: Collecting data: ini trigger 13 fired (delay=0ms).
-> 
-> And (part of) the stack trace:
-> 
-> [    5.071954]  iommu_dma_free+0x17/0x30
-> [    5.073232]  iwl_txq_gen2_free_memory+0x39/0x90 [iwlwifi]
-> [    5.074572]  iwl_txq_gen2_free+0x53/0xe0 [iwlwifi]
-> [    5.075954]  iwl_txq_gen2_tx_free+0x34/0x50 [iwlwifi]
-> [    5.077244]  _iwl_trans_pcie_gen2_stop_device+0x2f6/0x470 [iwlwifi]
-> [    5.078589]  iwl_trans_pcie_gen2_stop_device+0x50/0x70 [iwlwifi]
-> [    5.079993]  iwl_mvm_stop_device+0x35/0x50 [iwlmvm]
-> [    5.081307]  iwl_mvm_start_get_nvm+0x151/0x1d0 [iwlmvm]
-> [    5.082664]  iwl_op_mode_mvm_start+0x7b8/0x970 [iwlmvm]
-> [    5.084066]  _iwl_op_mode_start.isra.0+0x58/0x70 [iwlwifi]
-> [    5.085387]  iwl_opmode_register+0x68/0xd0 [iwlwifi]
-> [    5.086746]  ? 0xffffffffc0cf3000
-> [    5.088013]  iwl_mvm_init+0x21/0x1000 [iwlmvm]
-> 
-> I compared the iwlax210_2ax_cfg_ty_gf_a0 struct in the preprocessed
-> source before and after 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 change.
-> The only suspicious change is the removal of ".trans.use_tfh = true,",
-> but adding this line into iwlax210_2ax_cfg_ty_gf_a0 does not fix the
-> issue.
-> 
-> 
+HEAD commit:    257152fe29be string: use __builtin_memcpy() in strlcpy/str..
+git tree:       https://github.com/google/kmsan.git master
+console output: https://syzkaller.appspot.com/x/log.txt?x=13ba5e6f280000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c7bdd043d54243c
+dashboard link: https://syzkaller.appspot.com/bug?extid=be9c824e6f269d608288
+compiler:       Debian clang version 15.0.7, GNU ld (GNU Binutils for Debian) 2.35.2
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/43dcd4dfe7e1/disk-257152fe.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/f3fcd9dec66c/vmlinux-257152fe.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/08620f02113d/bzImage-257152fe.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+be9c824e6f269d608288@syzkaller.appspotmail.com
+
+=====================================================
+BUG: KMSAN: uninit-value in ieee80211_rx_h_action net/mac80211/rx.c:3716 [inline]
+BUG: KMSAN: uninit-value in ieee80211_rx_handlers+0xccf5/0x10320 net/mac80211/rx.c:4110
+ ieee80211_rx_h_action net/mac80211/rx.c:3716 [inline]
+ ieee80211_rx_handlers+0xccf5/0x10320 net/mac80211/rx.c:4110
+ ieee80211_invoke_rx_handlers net/mac80211/rx.c:4145 [inline]
+ ieee80211_prepare_and_rx_handle+0x563e/0x9620 net/mac80211/rx.c:4987
+ ieee80211_rx_for_interface+0x88d/0x990 net/mac80211/rx.c:5072
+ __ieee80211_rx_handle_packet net/mac80211/rx.c:5229 [inline]
+ ieee80211_rx_list+0x5737/0x6550 net/mac80211/rx.c:5364
+ ieee80211_rx_napi+0x87/0x350 net/mac80211/rx.c:5387
+ ieee80211_rx include/net/mac80211.h:4918 [inline]
+ ieee80211_tasklet_handler+0x1a0/0x310 net/mac80211/main.c:316
+ tasklet_action_common+0x391/0xd30 kernel/softirq.c:798
+ tasklet_action+0x26/0x30 kernel/softirq.c:823
+ __do_softirq+0x1b7/0x78f kernel/softirq.c:571
+ do_softirq+0x10d/0x190 kernel/softirq.c:472
+ __local_bh_enable_ip+0x99/0xa0 kernel/softirq.c:396
+ local_bh_enable+0x28/0x30 include/linux/bottom_half.h:33
+ __ieee80211_tx_skb_tid_band+0x276/0x560 net/mac80211/tx.c:6057
+ ieee80211_tx_skb_tid+0x203/0x290 net/mac80211/tx.c:6084
+ ieee80211_mgmt_tx+0x1cff/0x2070 net/mac80211/offchannel.c:965
+ rdev_mgmt_tx net/wireless/rdev-ops.h:746 [inline]
+ cfg80211_mlme_mgmt_tx+0x133b/0x1ba0 net/wireless/mlme.c:815
+ nl80211_tx_mgmt+0x1297/0x1840 net/wireless/nl80211.c:12594
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:968 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+ genl_rcv_msg+0x12ed/0x1380 net/netlink/genetlink.c:1065
+ netlink_rcv_skb+0x371/0x650 net/netlink/af_netlink.c:2546
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0xf28/0x1230 net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x122f/0x13d0 net/netlink/af_netlink.c:1913
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg net/socket.c:747 [inline]
+ ____sys_sendmsg+0x999/0xd50 net/socket.c:2503
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2557
+ __sys_sendmsg+0x222/0x3c0 net/socket.c:2586
+ __compat_sys_sendmsg net/compat.c:346 [inline]
+ __do_compat_sys_sendmsg net/compat.c:353 [inline]
+ __se_compat_sys_sendmsg net/compat.c:350 [inline]
+ __ia32_compat_sys_sendmsg+0x9d/0xe0 net/compat.c:350
+ do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
+ __do_fast_syscall_32+0xa2/0x100 arch/x86/entry/common.c:178
+ do_fast_syscall_32+0x37/0x80 arch/x86/entry/common.c:203
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:246
+ entry_SYSENTER_compat_after_hwframe+0x70/0x82
+
+Uninit was stored to memory at:
+ skb_copy_from_linear_data_offset include/linux/skbuff.h:4088 [inline]
+ skb_copy_bits+0x149/0xd30 net/core/skbuff.c:2758
+ skb_copy+0x47f/0xa00 net/core/skbuff.c:1948
+ mac80211_hwsim_tx_frame_no_nl+0x18db/0x2130 drivers/net/wireless/virtual/mac80211_hwsim.c:1835
+ mac80211_hwsim_tx+0x1a9b/0x2a10 drivers/net/wireless/virtual/mac80211_hwsim.c:2046
+ drv_tx net/mac80211/driver-ops.h:35 [inline]
+ ieee80211_tx_frags+0x5e7/0xd90 net/mac80211/tx.c:1752
+ __ieee80211_tx+0x46e/0x630 net/mac80211/tx.c:1806
+ ieee80211_tx+0x52e/0x570 net/mac80211/tx.c:1986
+ ieee80211_xmit+0x54a/0x5b0 net/mac80211/tx.c:2078
+ __ieee80211_tx_skb_tid_band+0x271/0x560 net/mac80211/tx.c:6056
+ ieee80211_tx_skb_tid+0x203/0x290 net/mac80211/tx.c:6084
+ ieee80211_mgmt_tx+0x1cff/0x2070 net/mac80211/offchannel.c:965
+ rdev_mgmt_tx net/wireless/rdev-ops.h:746 [inline]
+ cfg80211_mlme_mgmt_tx+0x133b/0x1ba0 net/wireless/mlme.c:815
+ nl80211_tx_mgmt+0x1297/0x1840 net/wireless/nl80211.c:12594
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:968 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+ genl_rcv_msg+0x12ed/0x1380 net/netlink/genetlink.c:1065
+ netlink_rcv_skb+0x371/0x650 net/netlink/af_netlink.c:2546
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0xf28/0x1230 net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x122f/0x13d0 net/netlink/af_netlink.c:1913
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg net/socket.c:747 [inline]
+ ____sys_sendmsg+0x999/0xd50 net/socket.c:2503
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2557
+ __sys_sendmsg+0x222/0x3c0 net/socket.c:2586
+ __compat_sys_sendmsg net/compat.c:346 [inline]
+ __do_compat_sys_sendmsg net/compat.c:353 [inline]
+ __se_compat_sys_sendmsg net/compat.c:350 [inline]
+ __ia32_compat_sys_sendmsg+0x9d/0xe0 net/compat.c:350
+ do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
+ __do_fast_syscall_32+0xa2/0x100 arch/x86/entry/common.c:178
+ do_fast_syscall_32+0x37/0x80 arch/x86/entry/common.c:203
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:246
+ entry_SYSENTER_compat_after_hwframe+0x70/0x82
+
+Uninit was created at:
+ slab_post_alloc_hook+0x12d/0xb60 mm/slab.h:716
+ slab_alloc_node mm/slub.c:3451 [inline]
+ kmem_cache_alloc_node+0x535/0xa30 mm/slub.c:3496
+ kmalloc_reserve+0x148/0x470 net/core/skbuff.c:568
+ __alloc_skb+0x318/0x740 net/core/skbuff.c:654
+ __netdev_alloc_skb+0x11a/0x6f0 net/core/skbuff.c:718
+ netdev_alloc_skb include/linux/skbuff.h:3204 [inline]
+ dev_alloc_skb include/linux/skbuff.h:3217 [inline]
+ ieee80211_mgmt_tx+0x1316/0x2070 net/mac80211/offchannel.c:907
+ rdev_mgmt_tx net/wireless/rdev-ops.h:746 [inline]
+ cfg80211_mlme_mgmt_tx+0x133b/0x1ba0 net/wireless/mlme.c:815
+ nl80211_tx_mgmt+0x1297/0x1840 net/wireless/nl80211.c:12594
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:968 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+ genl_rcv_msg+0x12ed/0x1380 net/netlink/genetlink.c:1065
+ netlink_rcv_skb+0x371/0x650 net/netlink/af_netlink.c:2546
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0xf28/0x1230 net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x122f/0x13d0 net/netlink/af_netlink.c:1913
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg net/socket.c:747 [inline]
+ ____sys_sendmsg+0x999/0xd50 net/socket.c:2503
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2557
+ __sys_sendmsg+0x222/0x3c0 net/socket.c:2586
+ __compat_sys_sendmsg net/compat.c:346 [inline]
+ __do_compat_sys_sendmsg net/compat.c:353 [inline]
+ __se_compat_sys_sendmsg net/compat.c:350 [inline]
+ __ia32_compat_sys_sendmsg+0x9d/0xe0 net/compat.c:350
+ do_syscall_32_irqs_on arch/x86/entry/common.c:112 [inline]
+ __do_fast_syscall_32+0xa2/0x100 arch/x86/entry/common.c:178
+ do_fast_syscall_32+0x37/0x80 arch/x86/entry/common.c:203
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:246
+ entry_SYSENTER_compat_after_hwframe+0x70/0x82
+
+CPU: 0 PID: 5275 Comm: syz-executor.5 Not tainted 6.4.0-syzkaller-g257152fe29be #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+=====================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the bug is already fixed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to change bug's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the bug is a duplicate of another bug, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
