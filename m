@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3EBF7460A2
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 18:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A1F87460AE
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 18:25:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229861AbjGCQVy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jul 2023 12:21:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50036 "EHLO
+        id S229885AbjGCQZK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jul 2023 12:25:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjGCQVy (ORCPT
+        with ESMTP id S229873AbjGCQZJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jul 2023 12:21:54 -0400
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50F78AD
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Jul 2023 09:21:52 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net [IPv6:2a02:6b8:c18:58f:0:640:3768:0])
-        by forward102a.mail.yandex.net (Yandex) with ESMTP id C09D946CE8;
-        Mon,  3 Jul 2023 19:21:49 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id mLUutK3DZKo0-Y6cmgCXZ;
-        Mon, 03 Jul 2023 19:21:49 +0300
+        Mon, 3 Jul 2023 12:25:09 -0400
+Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED503185
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Jul 2023 09:25:07 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:859f:0:640:3817:0])
+        by forward100b.mail.yandex.net (Yandex) with ESMTP id C0EA160035;
+        Mon,  3 Jul 2023 19:25:05 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 4PUox83WqeA0-ZC79cQlx;
+        Mon, 03 Jul 2023 19:25:05 +0300
 X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1688401309;
-        bh=xFlgheiWD4TrQ5F02FnDUsXl+2z4emDHq7Ekku2Efmw=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1688401505;
+        bh=5UxoV8t7k+GjAdnKRMbEiyphbIcPfjiruHypdxFvydk=;
         h=Message-ID:Date:Cc:Subject:To:From;
-        b=j7TbdnSVuhFnOtL91stqnVh04JpuJBX6IOvdeEwy9Zb093dr1tpgyIGWEespE6drv
-         CSFqyq2JFiccXW6mi36i1Bx8QwbjGmjMkz0zm1QB0wzAihrFHTDHWy3rHt4FHkcHlP
-         bpqyhGawlRl3JDxL7TndWu8N2EcmFWrI0ThZMR88=
-Authentication-Results: mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+        b=a1bUwnXa9+HIpZfaZWO0yFcOMomKOl0Y4cXWxenCn6A7lZ2F7A3SI11pdp8gZMEJW
+         bGUdp5TyCRbAWymdh4lCT7ir1h/eBT/kX5mQn2vuxSnIA0ZlyRdXSw+C1XtKbRBWVx
+         9K6PELE7aeA3Wl6Qrq94P2hShW+6MobQPNQSpycM=
+Authentication-Results: mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From:   Dmitry Antipov <dmantipov@yandex.ru>
 To:     Arend van Spriel <aspriel@gmail.com>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
+Cc:     Franky Lin <franky.lin@broadcom.com>,
         linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
         Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] [v2] wifi: brcmsmac: use generic lists to manage timers
-Date:   Mon,  3 Jul 2023 19:21:22 +0300
-Message-ID: <20230703162128.154451-1-dmantipov@yandex.ru>
+Subject: [PATCH] wifi: brcmfmac: use generic lists to manage TDLS entries
+Date:   Mon,  3 Jul 2023 19:24:40 +0300
+Message-ID: <20230703162458.155942-1-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,112 +49,174 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Prefer generic lists over ad-hoc quirks to manage
-timers, adjust related code.
+Prefer generic lists over ad-hoc quirks to manage TDLS
+entries, adjust related code.
 
 Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-v2: add missing list_del() in removal loop within brcms_free()
----
- .../broadcom/brcm80211/brcmsmac/mac80211_if.c | 36 +++++--------------
- .../broadcom/brcm80211/brcmsmac/mac80211_if.h |  4 +--
- 2 files changed, 10 insertions(+), 30 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/flowring.c    | 69 ++++++-------------
+ .../broadcom/brcm80211/brcmfmac/flowring.h    |  4 +-
+ 2 files changed, 22 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-index 0bd4e679a359..18a06290af1c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-@@ -314,8 +314,8 @@ static void brcms_free(struct brcms_info *wl)
- 		schedule();
- 
- 	/* free timers */
--	for (t = wl->timers; t; t = next) {
--		next = t->next;
-+	list_for_each_entry_safe(t, next, &wl->timers, list) {
-+		list_del(&t->list);
- #ifdef DEBUG
- 		kfree(t->name);
- #endif
-@@ -1152,6 +1152,8 @@ static struct brcms_info *brcms_attach(struct bcma_device *pdev)
- 	spin_lock_init(&wl->lock);
- 	spin_lock_init(&wl->isr_lock);
- 
-+	INIT_LIST_HEAD(&wl->timers);
-+
- 	/* common load-time initialization */
- 	wl->wlc = brcms_c_attach((void *)wl, pdev, unit, false, &err);
- 	if (!wl->wlc) {
-@@ -1502,8 +1504,7 @@ struct brcms_timer *brcms_init_timer(struct brcms_info *wl,
- 	t->wl = wl;
- 	t->fn = fn;
- 	t->arg = arg;
--	t->next = wl->timers;
--	wl->timers = t;
-+	list_add(&t->list, &wl->timers);
- 
- #ifdef DEBUG
- 	t->name = kstrdup(name, GFP_ATOMIC);
-@@ -1561,35 +1562,14 @@ bool brcms_del_timer(struct brcms_timer *t)
-  */
- void brcms_free_timer(struct brcms_timer *t)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.c
+index e1127d7e086d..acd3a7b5231d 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.c
+@@ -44,13 +44,9 @@ brcmf_flowring_is_tdls_mac(struct brcmf_flowring *flow, u8 mac[ETH_ALEN])
  {
--	struct brcms_info *wl = t->wl;
--	struct brcms_timer *tmp;
--
- 	/* delete the timer in case it is active */
- 	brcms_del_timer(t);
+ 	struct brcmf_flowring_tdls_entry *search;
  
--	if (wl->timers == t) {
--		wl->timers = wl->timers->next;
-+	list_del(&t->list);
- #ifdef DEBUG
--		kfree(t->name);
-+	kfree(t->name);
- #endif
--		kfree(t);
--		return;
+-	search = flow->tdls_entry;
 -
+-	while (search) {
++	list_for_each_entry(search, &flow->tdls_entries, list)
+ 		if (memcmp(search->mac, mac, ETH_ALEN) == 0)
+ 			return true;
+-		search = search->next;
 -	}
--
--	tmp = wl->timers;
--	while (tmp) {
--		if (tmp->next == t) {
--			tmp->next = t->next;
--#ifdef DEBUG
--			kfree(t->name);
--#endif
--			kfree(t);
--			return;
--		}
--		tmp = tmp->next;
--	}
--
-+	kfree(t);
+ 
+ 	return false;
  }
+@@ -365,6 +361,7 @@ struct brcmf_flowring *brcmf_flowring_attach(struct device *dev, u16 nrofrings)
+ 		flow->dev = dev;
+ 		flow->nrofrings = nrofrings;
+ 		spin_lock_init(&flow->block_lock);
++		INIT_LIST_HEAD(&flow->tdls_entries);
+ 		for (i = 0; i < ARRAY_SIZE(flow->addr_mode); i++)
+ 			flow->addr_mode[i] = ADDR_INDIRECT;
+ 		for (i = 0; i < ARRAY_SIZE(flow->hash); i++)
+@@ -385,8 +382,7 @@ void brcmf_flowring_detach(struct brcmf_flowring *flow)
+ {
+ 	struct brcmf_bus *bus_if = dev_get_drvdata(flow->dev);
+ 	struct brcmf_pub *drvr = bus_if->drvr;
+-	struct brcmf_flowring_tdls_entry *search;
+-	struct brcmf_flowring_tdls_entry *remove;
++	struct brcmf_flowring_tdls_entry *remove, *tmp;
+ 	u16 flowid;
  
- /*
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.h
-index eaf926a96a88..c2c3d90f4ed3 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.h
-@@ -41,7 +41,7 @@ struct brcms_timer {
- 	uint ms;
- 	bool periodic;
- 	bool set;		/* indicates if timer is active */
--	struct brcms_timer *next;	/* for freeing on unload */
-+	struct list_head list;	/* for freeing on unload */
- #ifdef DEBUG
- 	char *name;		/* Description of the timer */
- #endif
-@@ -75,7 +75,7 @@ struct brcms_info {
+ 	for (flowid = 0; flowid < flow->nrofrings; flowid++) {
+@@ -394,12 +390,11 @@ void brcmf_flowring_detach(struct brcmf_flowring *flow)
+ 			brcmf_msgbuf_delete_flowring(drvr, flowid);
+ 	}
  
- 	/* timer related fields */
- 	atomic_t callbacks;	/* # outstanding callback functions */
--	struct brcms_timer *timers;	/* timer cleanup queue */
-+	struct list_head timers;	/* timer cleanup queue */
+-	search = flow->tdls_entry;
+-	while (search) {
+-		remove = search;
+-		search = search->next;
++	list_for_each_entry_safe(remove, tmp, &flow->tdls_entries, list) {
++		list_del(&remove->list);
+ 		kfree(remove);
+ 	}
++
+ 	kfree(flow->rings);
+ 	kfree(flow);
+ }
+@@ -433,24 +428,19 @@ void brcmf_flowring_delete_peer(struct brcmf_flowring *flow, int ifidx,
+ 	struct brcmf_bus *bus_if = dev_get_drvdata(flow->dev);
+ 	struct brcmf_pub *drvr = bus_if->drvr;
+ 	struct brcmf_flowring_hash *hash;
+-	struct brcmf_flowring_tdls_entry *prev;
+-	struct brcmf_flowring_tdls_entry *search;
++	struct brcmf_flowring_tdls_entry *search = NULL, *tmp;
+ 	u32 i;
+ 	u16 flowid;
+ 	bool sta;
  
- 	struct tasklet_struct tasklet;	/* dpc tasklet */
- 	bool resched;		/* dpc needs to be and is rescheduled */
+ 	sta = (flow->addr_mode[ifidx] == ADDR_INDIRECT);
+ 
+-	search = flow->tdls_entry;
+-	prev = NULL;
+-	while (search) {
+-		if (memcmp(search->mac, peer, ETH_ALEN) == 0) {
++	list_for_each_entry(tmp, &flow->tdls_entries, list)
++		if (memcmp(tmp->mac, peer, ETH_ALEN) == 0) {
++			search = tmp;
+ 			sta = false;
+ 			break;
+ 		}
+-		prev = search;
+-		search = search->next;
+-	}
+ 
+ 	hash = flow->hash;
+ 	for (i = 0; i < BRCMF_FLOWRING_HASHSIZE; i++) {
+@@ -463,12 +453,9 @@ void brcmf_flowring_delete_peer(struct brcmf_flowring *flow, int ifidx,
+ 	}
+ 
+ 	if (search) {
+-		if (prev)
+-			prev->next = search->next;
+-		else
+-			flow->tdls_entry = search->next;
++		list_del(&search->list);
+ 		kfree(search);
+-		if (flow->tdls_entry == NULL)
++		if (list_empty(&flow->tdls_entries))
+ 			flow->tdls_active = false;
+ 	}
+ }
+@@ -478,31 +465,15 @@ void brcmf_flowring_add_tdls_peer(struct brcmf_flowring *flow, int ifidx,
+ 				  u8 peer[ETH_ALEN])
+ {
+ 	struct brcmf_flowring_tdls_entry *tdls_entry;
+-	struct brcmf_flowring_tdls_entry *search;
+ 
+-	tdls_entry = kzalloc(sizeof(*tdls_entry), GFP_ATOMIC);
+-	if (tdls_entry == NULL)
+-		return;
++	list_for_each_entry(tdls_entry, &flow->tdls_entries, list)
++		if (memcmp(tdls_entry->mac, peer, ETH_ALEN) == 0)
++			return;
+ 
+-	memcpy(tdls_entry->mac, peer, ETH_ALEN);
+-	tdls_entry->next = NULL;
+-	if (flow->tdls_entry == NULL) {
+-		flow->tdls_entry = tdls_entry;
+-	} else {
+-		search = flow->tdls_entry;
+-		if (memcmp(search->mac, peer, ETH_ALEN) == 0)
+-			goto free_entry;
+-		while (search->next) {
+-			search = search->next;
+-			if (memcmp(search->mac, peer, ETH_ALEN) == 0)
+-				goto free_entry;
+-		}
+-		search->next = tdls_entry;
++	tdls_entry = kzalloc(sizeof(*tdls_entry), GFP_ATOMIC);
++	if (tdls_entry) {
++		memcpy(tdls_entry->mac, peer, ETH_ALEN);
++		list_add_tail(&tdls_entry->list, &flow->tdls_entries);
++		flow->tdls_active = true;
+ 	}
+-
+-	flow->tdls_active = true;
+-	return;
+-
+-free_entry:
+-	kfree(tdls_entry);
+ }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.h
+index 818882b0fd01..e7bfb5495aaf 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/flowring.h
+@@ -32,7 +32,7 @@ struct brcmf_flowring_ring {
+ 
+ struct brcmf_flowring_tdls_entry {
+ 	u8 mac[ETH_ALEN];
+-	struct brcmf_flowring_tdls_entry *next;
++	struct list_head list;
+ };
+ 
+ struct brcmf_flowring {
+@@ -43,7 +43,7 @@ struct brcmf_flowring {
+ 	enum proto_addr_mode addr_mode[BRCMF_MAX_IFS];
+ 	u16 nrofrings;
+ 	bool tdls_active;
+-	struct brcmf_flowring_tdls_entry *tdls_entry;
++	struct list_head tdls_entries;
+ };
+ 
+ 
 -- 
 2.41.0
 
