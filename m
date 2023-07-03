@@ -2,180 +2,259 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0922745569
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 08:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79AFB74567D
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 09:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230059AbjGCGWs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jul 2023 02:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40254 "EHLO
+        id S230179AbjGCHym (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jul 2023 03:54:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229771AbjGCGWr (ORCPT
+        with ESMTP id S229926AbjGCHyl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jul 2023 02:22:47 -0400
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD39DC0
-        for <linux-wireless@vger.kernel.org>; Sun,  2 Jul 2023 23:22:45 -0700 (PDT)
-Received: by mail-ua1-x92a.google.com with SMTP id a1e0cc1a2514c-7943be26e84so1365339241.2
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Jul 2023 23:22:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688365365; x=1690957365;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dh2dAhBT/r+t8dBDKmgiVOzd46bgkC5w60SC2kQomME=;
-        b=CSbXeIllDKG52Hz2y0BzvzeWTNUEc4fr1uNpd8I0jFTbwT+x3xDzfAMsPWIKx6IndK
-         bOfUdQihG5MDXKogCsRu0ZSQMmMqJLNluQnXpau1J4w9cUIMMHIL/jF+DEbhCBDpOV4D
-         UrvGya3awuDtGeA3F5CEGu7Tsy5x6It+z9gqJsw2oPuPXEPiIxuE9fQSoLE3tGreKNSn
-         n29sZy8eBYgJ3uG2O2Vor2R9NR0H8vnSeaY4+eTO2hqtFSudrrp5NWwTcNsssh4ExF2G
-         md6hi/utlTHH/EJqeqUjebheF7KLxlDoH+TCdnplsNmsiqqiOSECjVqhIKnbPUezcxIN
-         Ax/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688365365; x=1690957365;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dh2dAhBT/r+t8dBDKmgiVOzd46bgkC5w60SC2kQomME=;
-        b=MpYoXIOGikOvqAg37KDsPyztbv0xEYW3yfJaNmW8UC+cSDNHBDbzSo96k0RbN7NBsn
-         2xkYIKS1qWHwKlDFp77FvrI15y1ENXk8bW8wmyvn9krXMglSNDPRVXRIqSXXmnDIzjkt
-         tuHxzr9Hr8cWRo7xk5l288sDsTJE6uP99zrNk3h8nnyeLNt+UcCZ7yKXpF+97XzLqeS7
-         URv8vkAafjZyIQgmzXeveC/BAT/xyWDCRyYJVsDX5X1I1mS5O7Zs4ZSKQ40FRH4pd9hJ
-         sm3EiupjFeUaBd5xzdropznnGauYzJSSfQ+DFdKQ0GSL82YUILEc0kfnjbcslx856/E1
-         3wvQ==
-X-Gm-Message-State: ABy/qLZtnxdwl/7VinlbvO1S4QwVnP8SzT+tLYK5LiBe3j70IQyNS1f+
-        DRFW8vIp4H5Naz+Vxotj66EDfG++lj10icXxpAhpZQ==
-X-Google-Smtp-Source: APBJJlH0cEalozKdN1PxBzsfGgMveO3/o2cxZaibne5GXfrl3uwlOSKqPsgSIeVejxm1iGr09N+dbcj5d2OvkAVr1vs=
-X-Received: by 2002:a67:ee55:0:b0:443:6052:43ac with SMTP id
- g21-20020a67ee55000000b00443605243acmr3287737vsp.30.1688365364750; Sun, 02
- Jul 2023 23:22:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230612130256.4572-1-linyunsheng@huawei.com> <20230612130256.4572-5-linyunsheng@huawei.com>
- <20230614101954.30112d6e@kernel.org> <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
- <20230615095100.35c5eb10@kernel.org> <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
- <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com> <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
- <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com> <20230616122140.6e889357@kernel.org>
- <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com> <20230619110705.106ec599@kernel.org>
- <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com> <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
-In-Reply-To: <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
-From:   Mina Almasry <almasrymina@google.com>
-Date:   Sun, 2 Jul 2023 23:22:33 -0700
-Message-ID: <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-To:     David Ahern <dsahern@kernel.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <jbrouer@redhat.com>,
-        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>
+        Mon, 3 Jul 2023 03:54:41 -0400
+Received: from xry111.site (xry111.site [89.208.246.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFFD9BA;
+        Mon,  3 Jul 2023 00:54:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
+        s=default; t=1688370872;
+        bh=m2Dy62S45LeV/Nzz8GqTl/9j3vHyQ7Q7zgsP/xNoTZ8=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=UFC+FosVLGklvMtA0GfoORIIuikpOC/oTZPna2OYbPXL6VzRj5qBEb27PgbqNepZc
+         yNhxfWHdw3quMSaJST9AGBQNrkm7ClBDVsbOMpt4G7p3CUijA90pi1Mdr7bh61u8+f
+         PgeD71CzJB59WT1rALLg/7pVru6IppnJAtjXsQsA=
+Received: from [IPv6:240e:358:110a:4b00:dc73:854d:832e:4] (unknown [IPv6:240e:358:110a:4b00:dc73:854d:832e:4])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
+        (Client did not present a certificate)
+        (Authenticated sender: xry111@xry111.site)
+        by xry111.site (Postfix) with ESMTPSA id 1CE0C66015;
+        Mon,  3 Jul 2023 03:54:26 -0400 (EDT)
+Message-ID: <9274d9bd3d080a457649ff5addcc1726f08ef5b2.camel@xry111.site>
+Subject: Re: Fwd: iwlwifi causes dma-iommu.c:693 __iommu_dma_unmap since
+ commit 19898ce9cf8a
+From:   Xi Ruoyao <xry111@xry111.site>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        =?gb2312?Q?Nikl=A8=A1vs_Ko=810=914es=810=923ikovs?= 
+        <pinkflames.linux@gmail.com>,
+        Nate Watterson <nwatters@codeaurora.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Linux IO Memory Management Unit <iommu@lists.linux.dev>
+Cc:     Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Networking <netdev@vger.kernel.org>
+Date:   Mon, 03 Jul 2023 15:54:17 +0800
+In-Reply-To: <a5cdc7f8-b340-d372-2971-0d24b01de217@gmail.com>
+References: <a5cdc7f8-b340-d372-2971-0d24b01de217@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.48.4 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jul 2, 2023 at 9:20=E2=80=AFPM David Ahern <dsahern@kernel.org> wro=
-te:
->
-> On 6/29/23 8:27 PM, Mina Almasry wrote:
-> >
-> > Hello Jakub, I'm looking into device memory (peer-to-peer) networking
-> > actually, and I plan to pursue using the page pool as a front end.
-> >
-> > Quick description of what I have so far:
-> > current implementation uses device memory with struct pages; I am
-> > putting all those pages in a gen_pool, and we have written an
-> > allocator that allocates pages from the gen_pool. In the driver, we
-> > use this allocator instead of alloc_page() (the driver in question is
-> > gve which currently doesn't use the page pool). When the driver is
-> > done with the p2p page, it simply decrements the refcount on it and
-> > the page is freed back to the gen_pool.
+On Sun, 2023-07-02 at 19:13 +0700, Bagas Sanjaya wrote:
+> Hi,
+>=20
+> I notice a regression report on Bugzilla [1]: Quoting from it:
+>=20
+> > Since commit 19898ce9cf8a the iwlwifi has generated three possibly
+> > identical kernel stack traces for me. Because I only use the
+> > Bluetooth but not the Wi-Fi functionality, this is not a big deal
+> > for me but I thought such an issue is worth reporting nontheless.
+> >=20
+> > All three traces point at **drivers/iommu/dma-iommu.c:693
+> > __iommu_dma_unmap+0x150/0x160**.
+> >=20
+> > I'm attaching to this bug report the three stack traces along with
+> > other possibly relevant dmesg parts. Sorry in advance for not
+> > cutting at the cut here markers which resulted in considerably
+> > longer text but I suspected that the PCI, ACPI, memory and possibly
+> > iwlwifi related messages may be of importance, too. If I should cut
+> > the stack traces out and attach them as three distinct files (and
+> > diff to see if there's any change between them) let me know. I can
+> > provide a full (but redacted) dmesg output of a git master build, if
+> > required as well.
+> >=20
+> > I did try booting a much more recent git master build with
+> > *iommu.passthrough=3D0 iommu.strict=3D0* on the kernel command line but
+> > that did not seem to make any difference.
+> >=20
+> > ```
+> > 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 is the first bad commit
+> > commit 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2
+> > Author: Johannes Berg <johannes.berg@intel.com>
+> > Date:=C2=A0=C2=A0 Wed Jun 21 13:12:07 2023 +0300
+> >=20
+> > =C2=A0=C2=A0=C2=A0 wifi: iwlwifi: split 22000.c into multiple files
+> > =C2=A0=C2=A0=C2=A0=20
+> > =C2=A0=C2=A0=C2=A0 Split the configuration list in 22000.c into four ne=
+w files,
+> > =C2=A0=C2=A0=C2=A0 per new device family, so we don't have this huge un=
+usable
+> > =C2=A0=C2=A0=C2=A0 file. Yes, this duplicates a few small things, but t=
+hat's
+> > =C2=A0=C2=A0=C2=A0 still much better than what we have now.
+> > =C2=A0=C2=A0=C2=A0=20
+> > =C2=A0=C2=A0=C2=A0 Signed-off-by: Johannes Berg <johannes.berg@intel.co=
+m>
+> > =C2=A0=C2=A0=C2=A0 Signed-off-by: Gregory Greenman <gregory.greenman@in=
+tel.com>
+> > =C2=A0=C2=A0=C2=A0 Link:
+> > https://lore.kernel.org/r/20230621130443.7543603b2ee7.Ia8dd54216d341ef1=
+ddc0531f2c9aa30d30536a5d@changeid
+> > =C2=A0=C2=A0=C2=A0 Signed-off-by: Johannes Berg <johannes.berg@intel.co=
+m>
+> >=20
+> > =C2=A0drivers/net/wireless/intel/iwlwifi/Makefile=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0=C2=A0 1 +
+> > =C2=A0drivers/net/wireless/intel/iwlwifi/cfg/22000.c=C2=A0 | 939 +-----=
+-------
+> > -----------
+> > =C2=A0drivers/net/wireless/intel/iwlwifi/cfg/ax210.c=C2=A0 | 452 ++++++=
+++++++
+> > =C2=A0drivers/net/wireless/intel/iwlwifi/cfg/bz.c=C2=A0=C2=A0=C2=A0=C2=
+=A0 | 523 +++++++++++++
+> > =C2=A0drivers/net/wireless/intel/iwlwifi/cfg/sc.c=C2=A0=C2=A0=C2=A0=C2=
+=A0 | 214 ++++++
+> > =C2=A0drivers/net/wireless/intel/iwlwifi/iwl-config.h |=C2=A0=C2=A0 2 +
+> > =C2=A0drivers/net/wireless/intel/iwlwifi/pcie/drv.c=C2=A0=C2=A0 |=C2=A0=
+=C2=A0 3 +
+> > =C2=A07 files changed, 1206 insertions(+), 928 deletions(-)
+> > =C2=A0create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
+> > =C2=A0create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+> > =C2=A0create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+> > ```
+> >=20
+>=20
+> See Bugzilla for the full thread and attached dmesg.
 
-Quick update here, I was able to get my implementation working with
-the page pool as a front end with the memory provider API Jakub wrote
-here:
-https://github.com/kuba-moo/linux/tree/pp-providers
+I can reproduce the issue with an AX210 (the firmware is named iwlwifi-
+ty-a0-gf-a0-81.ucode).  Reverting
+19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 (and all following commits in
+the same series) fixes the issue.
 
-The main complication indeed was the fact that my device memory pages
-are ZONE_DEVICE pages, which are incompatible with the page_pool due
-to the union in struct page. I thought of a couple of approaches to
-resolve that.
+I guess some error messages might be useful:
 
-1. Make my device memory pages non-ZONE_DEVICE pages. The issue with
-that is that if the page is not ZONE_DEVICE, put_page(page) will
-attempt to free it to the buddy allocator I think, which is not
-correct. The only places where the mm stack currently allow custom
-freeing callback (AFAIK), are for ZONE_DEVICE page where
-free_zone_device_page() will call the provided callback in
-page->pgmap->ops->page_free, and compound pages where the
-compound_dtor is specified. My device memory pages aren't compound
-pages so only ZONE_DEVICE pages do what I want.
+[    4.058873] iwlwifi 0000:2b:00.0: Error sending NVM_ACCESS_COMPLETE: tim=
+e out after 2000ms.
+[    4.060263] iwlwifi 0000:2b:00.0: Current CMD queue read_ptr 1 write_ptr=
+ 2
+[    4.062814] iwlwifi 0000:2b:00.0: Start IWL Error Log Dump:
+[    4.064440] iwlwifi 0000:2b:00.0: Transport status: 0x0000004A, valid: 6
+[    4.065481] iwlwifi 0000:2b:00.0: Loaded firmware version: 81.31fc9ae6.0=
+ ty-a0-gf-a0-81.ucode
+[    4.066655] iwlwifi 0000:2b:00.0: 0x00000084 | NMI_INTERRUPT_UNKNOWN    =
+  =20
+[    4.067725] iwlwifi 0000:2b:00.0: 0x002002F0 | trm_hw_status0
+[    4.068799] iwlwifi 0000:2b:00.0: 0x00000000 | trm_hw_status1
+[    4.069777] iwlwifi 0000:2b:00.0: 0x004DBEE0 | branchlink2
+[    4.070828] iwlwifi 0000:2b:00.0: 0x004D1DEA | interruptlink1
+[    4.071823] iwlwifi 0000:2b:00.0: 0x004D1DEA | interruptlink2
+[    4.072774] iwlwifi 0000:2b:00.0: 0x00016582 | data1
+[    4.073714] iwlwifi 0000:2b:00.0: 0x01000000 | data2
+[    4.074748] iwlwifi 0000:2b:00.0: 0x00000000 | data3
+[    4.075681] iwlwifi 0000:2b:00.0: 0x00000000 | beacon time
+[    4.076695] iwlwifi 0000:2b:00.0: 0x002097F1 | tsf low
+[    4.077721] iwlwifi 0000:2b:00.0: 0x00000000 | tsf hi
+[    4.078660] iwlwifi 0000:2b:00.0: 0x00000000 | time gp1
+[    4.079680] iwlwifi 0000:2b:00.0: 0x0021B671 | time gp2
+[    4.080678] iwlwifi 0000:2b:00.0: 0x00000001 | uCode revision type
+[    4.081667] iwlwifi 0000:2b:00.0: 0x00000051 | uCode version major
+[    4.082653] iwlwifi 0000:2b:00.0: 0x31FC9AE6 | uCode version minor
+[    4.083655] iwlwifi 0000:2b:00.0: 0x00000420 | hw version
+[    4.084636] iwlwifi 0000:2b:00.0: 0x18C80002 | board version
+[    4.085613] iwlwifi 0000:2b:00.0: 0x8005FF00 | hcmd
+[    4.086578] iwlwifi 0000:2b:00.0: 0x00020000 | isr0
+[    4.087527] iwlwifi 0000:2b:00.0: 0x00000000 | isr1
+[    4.088469] iwlwifi 0000:2b:00.0: 0x48F00002 | isr2
+[    4.089390] iwlwifi 0000:2b:00.0: 0x00C0001C | isr3
+[    4.090307] iwlwifi 0000:2b:00.0: 0x00000000 | isr4
+[    4.091202] iwlwifi 0000:2b:00.0: 0x00000000 | last cmd Id
+[    4.092083] iwlwifi 0000:2b:00.0: 0x00016582 | wait_event
+[    4.092943] iwlwifi 0000:2b:00.0: 0x00000000 | l2p_control
+[    4.093801] iwlwifi 0000:2b:00.0: 0x00000000 | l2p_duration
+[    4.094639] iwlwifi 0000:2b:00.0: 0x00000000 | l2p_mhvalid
+[    4.095525] iwlwifi 0000:2b:00.0: 0x00000000 | l2p_addr_match
+[    4.097449] iwlwifi 0000:2b:00.0: 0x00000009 | lmpm_pmg_sel
+[    4.098323] iwlwifi 0000:2b:00.0: 0x00000000 | timestamp
+[    4.099165] iwlwifi 0000:2b:00.0: 0x00000024 | flow_handler
+[    4.100024] iwlwifi 0000:2b:00.0: Start IWL Error Log Dump:
+[    4.100832] iwlwifi 0000:2b:00.0: Transport status: 0x0000004A, valid: 7
+[    4.101641] iwlwifi 0000:2b:00.0: 0x20000066 | NMI_INTERRUPT_HOST
+[    4.102522] iwlwifi 0000:2b:00.0: 0x00000000 | umac branchlink1
+[    4.103379] iwlwifi 0000:2b:00.0: 0x8046DA88 | umac branchlink2
+[    4.104210] iwlwifi 0000:2b:00.0: 0x8048DB3A | umac interruptlink1
+[    4.105014] iwlwifi 0000:2b:00.0: 0x8048DB3A | umac interruptlink2
+[    4.105790] iwlwifi 0000:2b:00.0: 0x01000000 | umac data1
+[    4.106544] iwlwifi 0000:2b:00.0: 0x8048DB3A | umac data2
+[    4.107338] iwlwifi 0000:2b:00.0: 0x00000000 | umac data3
+[    4.108109] iwlwifi 0000:2b:00.0: 0x00000051 | umac major
+[    4.108855] iwlwifi 0000:2b:00.0: 0x31FC9AE6 | umac minor
+[    4.109581] iwlwifi 0000:2b:00.0: 0x0021B66F | frame pointer
+[    4.110349] iwlwifi 0000:2b:00.0: 0xC0886258 | stack pointer
+[    4.111099] iwlwifi 0000:2b:00.0: 0x00000203 | last host cmd
+[    4.111815] iwlwifi 0000:2b:00.0: 0x00000400 | isr status reg
+[    4.112530] iwlwifi 0000:2b:00.0: IML/ROM dump:
+[    4.113265] iwlwifi 0000:2b:00.0: 0x00000B03 | IML/ROM error/state
+[    4.113982] iwlwifi 0000:2b:00.0: 0x000076E7 | IML/ROM data1
+[    4.114689] iwlwifi 0000:2b:00.0: 0x00000090 | IML/ROM WFPM_AUTH_KEY_0
+[    4.115447] iwlwifi 0000:2b:00.0: Fseq Registers:
+[    4.116168] iwlwifi 0000:2b:00.0: 0x60000100 | FSEQ_ERROR_CODE
+[    4.116867] iwlwifi 0000:2b:00.0: 0x80440007 | FSEQ_TOP_INIT_VERSION
+[    4.117548] iwlwifi 0000:2b:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
+[    4.118265] iwlwifi 0000:2b:00.0: 0x0000A652 | FSEQ_OTP_VERSION
+[    4.118946] iwlwifi 0000:2b:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
+[    4.119624] iwlwifi 0000:2b:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+[    4.121025] iwlwifi 0000:2b:00.0: 0x00400410 | FSEQ_CNVR_ID
+[    4.121675] iwlwifi 0000:2b:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
+[    4.122377] iwlwifi 0000:2b:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
+[    4.123048] iwlwifi 0000:2b:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_D=
+IG_DCDC_VTRIM
+[    4.123693] iwlwifi 0000:2b:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_A=
+CTIVE_VDIG_MIRROR
+[    4.124383] iwlwifi 0000:2b:00.0: 0x00080009 | FSEQ_PREV_CNVIO_INIT_VERS=
+ION
+[    4.125055] iwlwifi 0000:2b:00.0: 0x00440005 | FSEQ_WIFI_FSEQ_VERSION
+[    4.125703] iwlwifi 0000:2b:00.0: 0x00440005 | FSEQ_BT_FSEQ_VERSION
+[    4.126407] iwlwifi 0000:2b:00.0: 0x000000D2 | FSEQ_CLASS_TP_VERSION
+[    4.127103] iwlwifi 0000:2b:00.0: UMAC CURRENT PC: 0x8048d640
+[    4.127769] iwlwifi 0000:2b:00.0: LMAC1 CURRENT PC: 0xd0
+[    4.128437] iwlwifi 0000:2b:00.0: Failed to run complete NVM access: -11=
+0
+[    4.129134] iwlwifi 0000:2b:00.0: WRT: Collecting data: ini trigger 13 f=
+ired (delay=3D0ms).
 
-2. Convert the pages from ZONE_DEVICE pages to page_pool pages and
-vice versa as they're being inserted and removed from the page pool.
-This, I think, works elegantly without any issue, and is the option I
-went with. The info from ZONE_DEVICE that I care about for device
-memory TCP is the page->zone_device_data which holds the dma_addr, and
-the page->pgmap which holds the page_free op. I'm able to store both
-in my memory provider so I can swap pages from ZONE_DEVICE and
-page_pool back and forth.
+And (part of) the stack trace:
 
-So far I haven't needed to make any modifications to the memory
-provider implementation Jakub has pretty much, and my functionality
-tests are passing. If there are no major objections I'll look into
-cleaning up the interface a bit and propose it for merge. This is a
-prerequisite of device memory TCP via the page_pool.
+[    5.071954]  iommu_dma_free+0x17/0x30
+[    5.073232]  iwl_txq_gen2_free_memory+0x39/0x90 [iwlwifi]
+[    5.074572]  iwl_txq_gen2_free+0x53/0xe0 [iwlwifi]
+[    5.075954]  iwl_txq_gen2_tx_free+0x34/0x50 [iwlwifi]
+[    5.077244]  _iwl_trans_pcie_gen2_stop_device+0x2f6/0x470 [iwlwifi]
+[    5.078589]  iwl_trans_pcie_gen2_stop_device+0x50/0x70 [iwlwifi]
+[    5.079993]  iwl_mvm_stop_device+0x35/0x50 [iwlmvm]
+[    5.081307]  iwl_mvm_start_get_nvm+0x151/0x1d0 [iwlmvm]
+[    5.082664]  iwl_op_mode_mvm_start+0x7b8/0x970 [iwlmvm]
+[    5.084066]  _iwl_op_mode_start.isra.0+0x58/0x70 [iwlwifi]
+[    5.085387]  iwl_opmode_register+0x68/0xd0 [iwlwifi]
+[    5.086746]  ? 0xffffffffc0cf3000
+[    5.088013]  iwl_mvm_init+0x21/0x1000 [iwlmvm]
 
->
-> I take it these are typical Linux networking applications using standard
-> socket APIs (not dpdk or xdp sockets or such)? If so, what does tcpdump
-> show for those skbs with pages for the device memory?
->
+I compared the iwlax210_2ax_cfg_ty_gf_a0 struct in the preprocessed
+source before and after 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 change.
+The only suspicious change is the removal of ".trans.use_tfh =3D true,",
+but adding this line into iwlax210_2ax_cfg_ty_gf_a0 does not fix the
+issue.
 
-Yes these are using (mostly) standing socket APIs. We have small
-extensions to sendmsg() and recvmsg() to pass a reference to the
-device memory in both these cases, but that's about it.
-
-tcpdump is able to access the header of these skbs which is in host
-memory, but not the payload in device memory. Here is an example
-session with my netcat-like test for device memory TCP:
-https://pastebin.com/raw/FRjKf0kv
-
-tcpdump seems to work, and the length of the packets above is correct.
-tcpdump -A however isn't able to print the payload of the packets:
-https://pastebin.com/raw/2PcNxaZV
 
 --=20
-Thanks,
-Mina
+Xi Ruoyao <xry111@xry111.site>
+School of Aerospace Science and Technology, Xidian University
