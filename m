@@ -2,203 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3820A7464CE
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 23:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 609417464FF
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 23:43:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230295AbjGCVZk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jul 2023 17:25:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50774 "EHLO
+        id S231162AbjGCVnV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jul 2023 17:43:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbjGCVZj (ORCPT
+        with ESMTP id S231137AbjGCVnU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jul 2023 17:25:39 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F0EE59;
-        Mon,  3 Jul 2023 14:25:34 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-991da766865so585994266b.0;
-        Mon, 03 Jul 2023 14:25:34 -0700 (PDT)
+        Mon, 3 Jul 2023 17:43:20 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69FEEE5B
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Jul 2023 14:43:18 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1b89cfb4571so7512995ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Jul 2023 14:43:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1688419533; x=1691011533;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=27GIYsPSYheuZYjfnBgY9dY1AI+iDe9MGAyTUH7wAbw=;
-        b=IOcvgpL4lDSPZB0wS+KnFPsWFWxGPNIxVy4LTPW2eni5uV7iodZ8DZOwjd1wd5xLxQ
-         MRSmMJTnNP8IIlAafI8k0DHKDsDnT145qNImdENmUzLPwX1WGDhZVSdGf/Q6WSzcVztV
-         qzq1QbK8dm2ZVh2dYiV7p4OPFE15989TIzHRAsahrOBQqJWoNCERfNAkpnnd4bzVYmJC
-         l/EAgeNDZgmxB7rEgT9I4Zxwf5EnmYunyfBl6QuiQrXATQ1Aju8gzxktBwJZIXacdIyW
-         6WsGe3T21oddbLJiaHpHPAKlw8KWtW2CWxKDzfdR1Ws1WVPeutqciT4tMOhNz5DjekUb
-         otUA==
+        d=ziepe.ca; s=google; t=1688420598; x=1691012598;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zb/tmr/noeY2rNeZVS/rd5RWOm9XHi+842eE/ic0+a0=;
+        b=AiAmewfofTMCDjim2n5Tw+1ZtqlOIk0bXi6iRE5v5TlHNIye7/DkwQc6W3qq8LjOIp
+         Xqa4BLwykqMBs3rTWLQCqB46cY7yk3e1UlXmD3dachyhxKT3HwGyQ5ZQUBoEeRTg6FWt
+         V3FoZeb/Pfcslwv6G9ml4ZN+Vhlb3NLpYwVIhyIi4T14lqPagW7Xqsj1Vy9HAv94g+UV
+         eCE+uAt/Ww3sa8lilIbrUy2CO/y3njkzPQf1M1G2yc4qYYfB6dr/PTXL5EfFbJB+6aSL
+         RGoqXV5w3f2vXm8fzuxp5DSKfDMzQA8c3OkoqHlFbZHcWSFOF/jGyPHFIwQaqg3O6Ipn
+         SNTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688419533; x=1691011533;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=27GIYsPSYheuZYjfnBgY9dY1AI+iDe9MGAyTUH7wAbw=;
-        b=YFFTTripa6EwE8wQ7AjX+isH87filkQZVidcUV5VPJ/xXh+ISdu2lruB0U5LYqbsBC
-         rTHDuwmOEy1xdAhbOBp7ohM8Xg/RP1sGQZ5oq4piGE6tkivlHG81la4IA086LP0X3Weg
-         JvzmimlTMbGM6cTCBizeUeI+f7pnNwwshBe9FeZOqWHDyIgu0MoUXqEponsd1LMn5yXA
-         nhynXyvcY7HHGtJAZK/qAQPiDwvWkylMTx38RHORpYAJwiYq0VPexKuxHu4mDVBL9ItB
-         VKMVhOZ8hHTy8pbxCJriCPqUCd2eKkotZkxwvvleB6W4BiKKfS+6nz/1svA69XYToyw7
-         fUWg==
-X-Gm-Message-State: ABy/qLb/XwLSsyoNApcijKnqXRNvLekiw1h1iZD7bqAfJ2RKdBrH5d4/
-        17YGwyKgKydxnkqJSLzQDddGGKhXogHU93y42Uc=
-X-Google-Smtp-Source: APBJJlG1cVaF6+kUWAjUTaA3kEvvhDgugvFj0cMQX4W3OtKPYrzn1F/wkuTBHiiQU9lsS3CVTkPOsfDTpXMPEvtOLv4=
-X-Received: by 2002:a17:906:5e4b:b0:991:cd1f:e67a with SMTP id
- b11-20020a1709065e4b00b00991cd1fe67amr7901290eju.29.1688419533205; Mon, 03
- Jul 2023 14:25:33 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688420598; x=1691012598;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zb/tmr/noeY2rNeZVS/rd5RWOm9XHi+842eE/ic0+a0=;
+        b=lxzJA/9Zh+ktQAomtPIlFAAg1ubqlC3niRms400JbMqGR9+mXkbOc2jRkkXurT+qxM
+         mC+Rg+IBBSfIjjmHMcaY8mQA5S6jmIiMW4Ihpf6LfbRUMNuONd8hreld4AS2gkB3PYTh
+         hP4s7cIStbtcet50IV7VwQPxUPxVYnVeKHLMatUkpj6ImV6HMdX6N6ZwRfs79edF3Zds
+         wR4wdU5Fp8B2o1qos4W3dRT+tYMJCLZIzzP2KpyYPntiqGy++kROXhoFWEt2AbvdPA6s
+         uYNDTmQaR9ZujxPPbbKRWq70feN9b8RDzeGnclgQpdSMkiYBY/s1tVo7zcOrd0gbet9S
+         eHkg==
+X-Gm-Message-State: ABy/qLYcegURflvIpRWfA2cdWpqYuDYTr59P9LkBSsP/1V32RM+/VzVs
+        kB4WiNmrRMoFq8CJ9jr3kK3IHg==
+X-Google-Smtp-Source: APBJJlFY5Wk4ycN3RNcdbeJSOzZJDY4GA9boj1G/G7OddE78CxDwcF9OafgCPpqmAI1xuqydRL+o/g==
+X-Received: by 2002:a17:902:c1cd:b0:1b8:400a:48f2 with SMTP id c13-20020a170902c1cd00b001b8400a48f2mr12348909plc.62.1688420597872;
+        Mon, 03 Jul 2023 14:43:17 -0700 (PDT)
+Received: from ziepe.ca (ip-216-194-73-131.syban.net. [216.194.73.131])
+        by smtp.gmail.com with ESMTPSA id h23-20020a17090aea9700b0025dc5749b4csm14888942pjz.21.2023.07.03.14.43.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 14:43:17 -0700 (PDT)
+Received: from jgg by jggl with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1qGRKG-000BU8-Jc;
+        Mon, 03 Jul 2023 18:43:16 -0300
+Date:   Mon, 3 Jul 2023 18:43:16 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Mina Almasry <almasrymina@google.com>
+Cc:     David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Message-ID: <ZKNA9Pkg2vMJjHds@ziepe.ca>
+References: <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
+ <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
+ <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
+ <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
+ <20230616122140.6e889357@kernel.org>
+ <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
+ <20230619110705.106ec599@kernel.org>
+ <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
+ <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
+ <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAFBinCBaXtebixKbjkWKW_WXc5k=NdGNaGUjVE8NCPNxOhsb2g@mail.gmail.com>
- <9ab8cc85d4d440bfa63dcade4e4f9ecf@realtek.com> <CAFBinCBsg8jPhpqSOr9w2JhwN5YjPeME1Uye7meSY8h=b_N4Qg@mail.gmail.com>
- <e87abbe35f4945cba3440232880424b1@realtek.com>
-In-Reply-To: <e87abbe35f4945cba3440232880424b1@realtek.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Mon, 3 Jul 2023 23:25:22 +0200
-Message-ID: <CAFBinCB6Q67nG3Z33i=nDLcYGENCSHFKNq=ViJks0j9aXbcYpA@mail.gmail.com>
-Subject: Re: wifi: rtw88: question about SDIO RX aggregation limiting
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Lukas F. Hartmann" <lukas@mntre.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>
-Content-Type: multipart/mixed; boundary="000000000000824ae805ff9bcecc"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000824ae805ff9bcecc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Sun, Jul 02, 2023 at 11:22:33PM -0700, Mina Almasry wrote:
+> On Sun, Jul 2, 2023 at 9:20 PM David Ahern <dsahern@kernel.org> wrote:
+> >
+> > On 6/29/23 8:27 PM, Mina Almasry wrote:
+> > >
+> > > Hello Jakub, I'm looking into device memory (peer-to-peer) networking
+> > > actually, and I plan to pursue using the page pool as a front end.
+> > >
+> > > Quick description of what I have so far:
+> > > current implementation uses device memory with struct pages; I am
+> > > putting all those pages in a gen_pool, and we have written an
+> > > allocator that allocates pages from the gen_pool. In the driver, we
+> > > use this allocator instead of alloc_page() (the driver in question is
+> > > gve which currently doesn't use the page pool). When the driver is
+> > > done with the p2p page, it simply decrements the refcount on it and
+> > > the page is freed back to the gen_pool.
+> 
+> Quick update here, I was able to get my implementation working with
+> the page pool as a front end with the memory provider API Jakub wrote
+> here:
+> https://github.com/kuba-moo/linux/tree/pp-providers
+> 
+> The main complication indeed was the fact that my device memory pages
+> are ZONE_DEVICE pages, which are incompatible with the page_pool due
+> to the union in struct page. I thought of a couple of approaches to
+> resolve that.
+> 
+> 1. Make my device memory pages non-ZONE_DEVICE pages. 
 
-Hello Ping-Ke,
+Hard no on this from a mm perspective.. We need P2P memory to be
+properly tagged and have the expected struct pages to be DMA mappable
+and otherwise, you totally break everything if you try to do this..
 
-sorry again for the long waiting time. I'll be quicker next time.
+> 2. Convert the pages from ZONE_DEVICE pages to page_pool pages and
+> vice versa as they're being inserted and removed from the page pool.
 
-On Tue, Jun 20, 2023 at 7:26=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
-rote:
-[...]
-> > > The unit of BIT_RXDMA_AGG_PG_TH is 1k bytes, so I think you can
-> > > set mmc_host->max_req_size/1024.
-> > I tried this but I got a result that I don't understand.
-> > I've been testing with three BIT_RXDMA_AGG_PG_TH values on a SoC that
-> > can handle 255 * 1024 bytes. Each time I connected to the same AP and
-> > downloaded a bigger file over http(s).
-> > BIT_RXDMA_AGG_PG_TH: biggest observed rx_len in rtw_sdio_rxfifo_recv()
-> > 255: 20968
-> > 6: 5122
-> > 1: 1602
->
-> Please also print out number of packets you receive, and then we can see =
-how
-> many packets aggregate.
-sure - here are the results:
-BIT_RXDMA_AGG_PG_TH: biggest observed rx_len in rtw_sdio_rxfifo_recv()
-/ number of (aggregated) packets
-255: 20824 / 12
-6: 5128 / 4
-1: 3132 / 1 (these were a few exceptions and I'm not able to reliably
-reproduce it, 1602 / 1 is what I can easily reproduce)
+This is kind of scary, it is very, very, fragile to rework the pages
+like this. Eg what happens when the owning device unplugs and needs to
+revoke these pages? I think it would likely crash..
 
-> > The biggest rx_len I have observed for BIT_RXDMA_AGG_PG_TH 1 looks susp=
-icious:
-> > My understanding is that I shouldn't be seeing rx_len larger than
-> > BIT_RXDMA_AGG_PG_TH * 1024.
-> > BIT_RXDMA_AGG_PG_TH =3D 6 is within this limit but BIT_RXDMA_AGG_PG_TH =
-=3D
-> > 1 isn't (I'm seeing 578 extra bytes in addition to the 1024 bytes that
-> > I was expecting).
->
-> Assume threshold is 1k, and single one packet is larger than 1k. Hardware
-> will not split it into two. Also, please make sure 0x280[29] BIT_EN_PRE_C=
-ALC
-> is 1. Otherwise, it will possibly aggregate additional one packet to over
-> the threshold.
-From the numbers above it seems most likely that we're hitting the
-"one packet is larger than 1k" case.
+I think it also technically breaks the DMA API as we may need to look
+into the pgmap to do cache ops on some architectures.
 
-Also I'm seeing:
-  wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue
-state UP group default qlen 1000
-My interface's MTU is 1500 bytes. Seeing 1602 bytes rx_len with one
-packet is already odd (that would mean 102 bytes for overhead like RX
-descriptor and other headers/metadata). But 3132 bytes rx_len is very
-odd.
+I suggest you try to work with 8k folios and then the tail page's
+struct page is empty enough to store the information you need..
+Or allocate per page memory and do a memdesc like thing..
 
-BIT_EN_PRE_CALC is set, see also the attached diff (it's not meant to
-be applied anywhere - it's just so you understand what I've been
-testing with).
+Though overall, you won't find devices creating struct pages for their
+P2P memory today, so I'm not sure what the purpose is. Jonathan
+already got highly slammed for proposing code to the kernel that was
+unusable. Please don't repeat that. Other than a special NVMe use case
+the interface for P2P is DMABUF right now and it is not struct page
+backed.
 
-> 0x280[15:8] is timeout time in unit of 1us for SDIO interface. When set
-> threshold to 255, you can enlarge this to see if it can aggregate more as
-> expected.
-I did not experiment with this yet as I'd like to understand the above
-findings first.
+Even if we did get to struct pages for device memory, it is highly
+likely cases you are interested in will be using larger than 4k
+folios, so page pool would need to cope with this nicely as well.
 
-
-Best regards,
-Martin
-
---000000000000824ae805ff9bcecc
-Content-Type: text/x-patch; charset="US-ASCII"; name="rtw88-rx-agg-test.diff"
-Content-Disposition: attachment; filename="rtw88-rx-agg-test.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_ljncq4dc0>
-X-Attachment-Id: f_ljncq4dc0
-
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvc2Rpby5jIGIv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9zZGlvLmMKaW5kZXggMmMxZmIyZGFi
-ZDQwLi4wYmI4NzJlZjEyOTYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnR3ODgvc2Rpby5jCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgv
-c2Rpby5jCkBAIC02NTQsMjMgKzY1NCwzNSBAQCBzdGF0aWMgdm9pZCBydHdfc2Rpb19pbml0KHN0
-cnVjdCBydHdfZGV2ICpydHdkZXYpCiAKIHN0YXRpYyB2b2lkIHJ0d19zZGlvX2VuYWJsZV9yeF9h
-Z2dyZWdhdGlvbihzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2KQogewotCXU4IHNpemUsIHRpbWVvdXQ7
-CisJc3RydWN0IHJ0d19zZGlvICpydHdzZGlvID0gKHN0cnVjdCBydHdfc2RpbyAqKXJ0d2Rldi0+
-cHJpdjsKKwlzdHJ1Y3QgbW1jX2hvc3QgKmhvc3QgPSBydHdzZGlvLT5zZGlvX2Z1bmMtPmNhcmQt
-Pmhvc3Q7CisJdW5zaWduZWQgaW50IGhvc3RfbWF4X3BhZ2VzOworCXU4IGNoaXBfbWF4X3BhZ2Vz
-LCB0aW1lb3V0OwogCiAJaWYgKHJ0d19jaGlwX3djcHVfMTFuKHJ0d2RldikpIHsKLQkJc2l6ZSA9
-IDB4NjsKKwkJY2hpcF9tYXhfcGFnZXMgPSAweDY7CiAJCXRpbWVvdXQgPSAweDY7CiAJfSBlbHNl
-IHsKLQkJc2l6ZSA9IDB4ZmY7CisJCWNoaXBfbWF4X3BhZ2VzID0gMHhmZjsKIAkJdGltZW91dCA9
-IDB4MTsKIAl9CiAKKwlob3N0X21heF9wYWdlcyA9IGhvc3QtPm1heF9yZXFfc2l6ZSAvIFNaXzFL
-OworCisJcnR3X2VycihydHdkZXYsICJNYXggUlggcGFnZXMgLSBjaGlwIGFnZ3JlZ2F0aW9uIGxp
-bWl0OiAldSwgaG9zdCBjb250cm9sbGVyIGxpbWl0OiAldVxuIiwgY2hpcF9tYXhfcGFnZXMsIGhv
-c3RfbWF4X3BhZ2VzKTsvLyBIQUNLCisJcnR3X2RiZyhydHdkZXYsIFJUV19EQkdfU0RJTywKKwkJ
-Ik1heCBSWCBwYWdlcyAtIGNoaXAgYWdncmVnYXRpb24gbGltaXQ6ICV1LCBob3N0IGNvbnRyb2xs
-ZXIgbGltaXQ6ICV1XG4iLAorCQljaGlwX21heF9wYWdlcywgaG9zdF9tYXhfcGFnZXMpOworCiAJ
-LyogTWFrZSB0aGUgZmlybXdhcmUgaG9ub3IgdGhlIHNpemUgbGltaXQgY29uZmlndXJlZCBiZWxv
-dyAqLwogCXJ0d193cml0ZTMyX3NldChydHdkZXYsIFJFR19SWERNQV9BR0dfUEdfVEgsIEJJVF9F
-Tl9QUkVfQ0FMQyk7CiAKIAlydHdfd3JpdGU4X3NldChydHdkZXYsIFJFR19UWERNQV9QUV9NQVAs
-IEJJVF9SWERNQV9BR0dfRU4pOwogCiAJcnR3X3dyaXRlMTYocnR3ZGV2LCBSRUdfUlhETUFfQUdH
-X1BHX1RILAotCQkgICAgRklFTERfUFJFUChCSVRfUlhETUFfQUdHX1BHX1RILCBzaXplKSB8CisJ
-CSAgICBGSUVMRF9QUkVQKEJJVF9SWERNQV9BR0dfUEdfVEgsIG1pbl90KHVuc2lnbmVkIGludCwK
-KwkJCQkJCQkgIGNoaXBfbWF4X3BhZ2VzLAorCQkJCQkJCSAgaG9zdF9tYXhfcGFnZXMpKSB8CiAJ
-CSAgICBGSUVMRF9QUkVQKEJJVF9ETUFfQUdHX1RPX1YxLCB0aW1lb3V0KSk7CiAKIAlydHdfd3Jp
-dGU4X3NldChydHdkZXYsIFJFR19SWERNQV9NT0RFLCBCSVRfRE1BX01PREUpOwpAQCAtOTM2LDYg
-Kzk0OCw3IEBAIHN0YXRpYyB2b2lkIHJ0d19zZGlvX3J4Zmlmb19yZWN2KHN0cnVjdCBydHdfZGV2
-ICpydHdkZXYsIHUzMiByeF9sZW4pCiB7CiAJc3RydWN0IHJ0d19zZGlvICpydHdzZGlvID0gKHN0
-cnVjdCBydHdfc2RpbyAqKXJ0d2Rldi0+cHJpdjsKIAljb25zdCBzdHJ1Y3QgcnR3X2NoaXBfaW5m
-byAqY2hpcCA9IHJ0d2Rldi0+Y2hpcDsKKwl1bnNpZ25lZCBpbnQgbnVtX3BrdCA9IDAsIG9yaWdf
-cnhfbGVuID0gcnhfbGVuOwogCXUzMiBwa3RfZGVzY19zeiA9IGNoaXAtPnJ4X3BrdF9kZXNjX3N6
-OwogCXN0cnVjdCBpZWVlODAyMTFfcnhfc3RhdHVzIHJ4X3N0YXR1czsKIAlzdHJ1Y3QgcnR3X3J4
-X3BrdF9zdGF0IHBrdF9zdGF0OwpAQCAtOTc0LDYgKzk4Nyw3IEBAIHN0YXRpYyB2b2lkIHJ0d19z
-ZGlvX3J4Zmlmb19yZWN2KHN0cnVjdCBydHdfZGV2ICpydHdkZXYsIHUzMiByeF9sZW4pCiAJCQkg
-Ki8KIAkJCXJ0d19zZGlvX3J4X3NrYihydHdkZXYsIHNrYiwgcGt0X29mZnNldCwgJnBrdF9zdGF0
-LAogCQkJCQkmcnhfc3RhdHVzKTsKKwkJCW51bV9wa3QrKzsKIAkJCWJyZWFrOwogCQl9CiAKQEAg
-LTk4MSw2ICs5OTUsNyBAQCBzdGF0aWMgdm9pZCBydHdfc2Rpb19yeGZpZm9fcmVjdihzdHJ1Y3Qg
-cnR3X2RldiAqcnR3ZGV2LCB1MzIgcnhfbGVuKQogCQlpZiAoIXNwbGl0X3NrYikgewogCQkJcnR3
-X3NkaW9fcnhfc2tiKHJ0d2Rldiwgc2tiLCBwa3Rfb2Zmc2V0LCAmcGt0X3N0YXQsCiAJCQkJCSZy
-eF9zdGF0dXMpOworCQkJbnVtX3BrdCsrOwogCQkJYnJlYWs7CiAJCX0KIApAQCAtOTg5LDExICsx
-MDA0LDE0IEBAIHN0YXRpYyB2b2lkIHJ0d19zZGlvX3J4Zmlmb19yZWN2KHN0cnVjdCBydHdfZGV2
-ICpydHdkZXYsIHUzMiByeF9sZW4pCiAKIAkJcnR3X3NkaW9fcnhfc2tiKHJ0d2Rldiwgc3BsaXRf
-c2tiLCBwa3Rfb2Zmc2V0LCAmcGt0X3N0YXQsCiAJCQkJJnJ4X3N0YXR1cyk7CisJCW51bV9wa3Qr
-KzsKIAogCQkvKiBNb3ZlIHRvIHRoZSBzdGFydCBvZiB0aGUgbmV4dCBSWCBkZXNjcmlwdG9yICov
-CiAJCXNrYl9yZXNlcnZlKHNrYiwgY3Vycl9wa3RfbGVuKTsKIAkJcnhfbGVuIC09IGN1cnJfcGt0
-X2xlbjsKIAl9CisKKwlwcl9lcnIoIiVzKCV1KSAtIG51bWJlciBvZiBwYWNrZXRzOiAldVxuIiwg
-X19mdW5jX18sIG9yaWdfcnhfbGVuLCBudW1fcGt0KTsvLyBIQUNLCiB9CiAKIHN0YXRpYyB2b2lk
-IHJ0d19zZGlvX3J4X2lzcihzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2KQo=
---000000000000824ae805ff9bcecc--
+Jason
