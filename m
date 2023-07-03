@@ -2,95 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A068F745F2B
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 16:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3EBF7460A2
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 18:21:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231452AbjGCOya (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jul 2023 10:54:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39452 "EHLO
+        id S229861AbjGCQVy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jul 2023 12:21:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjGCOy2 (ORCPT
+        with ESMTP id S229534AbjGCQVy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jul 2023 10:54:28 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36EA7E5F;
-        Mon,  3 Jul 2023 07:54:27 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id EDDBF5C00D5;
-        Mon,  3 Jul 2023 10:54:23 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Mon, 03 Jul 2023 10:54:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1688396063; x=1688482463; bh=Js
-        OD/SvZIdkxy6EXjP9O+NhycSVS/lMDIFZrlAwZ4b0=; b=2CV/Hj/R5uyr24A7RW
-        /hB/0Qco7ufNQSWW3BrKoDpvcmEHAq5RwmfVq9f3mEPQw8N1iwpQcE88gVnIB531
-        BFIL26FMnNuyDgXWxqGoUq6FxGv/DUBwK8YUgVC/vkGwfAQkrmjTvhfTdgvKNBTe
-        BRm3ayVivQz5//mvI2MY9jnC4g/6BlkYr/lP4mysjAIaT42dFS2C9lDlRy0LIBS2
-        Ey5T/HkESyhsPM+CQS6XLM36TQdYA8kBJQkIIp+M1OPzSlZ+8lVM9ky0TVqDVZc7
-        g5ttJPgzPzMhSDJMk/+33OGz32KnAOZoPF8M6JQr9DD9vJIdWPqEopRXHlPn7BdK
-        ZkZQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1688396063; x=1688482463; bh=JsOD/SvZIdkxy
-        6EXjP9O+NhycSVS/lMDIFZrlAwZ4b0=; b=E6Xe/p+0tKDxYGRmcVcVaeL5VGS2D
-        gONzF7M3PoH+n4UrtCeKq5G3L/S0FnPEGEZtpxjqEKuCyJvXnrWgbqZDfpmssBfH
-        Lq278uzpg8tmTTr119syMGglpfqQHpfsolcVdr1c3AcEU9A1H0U/klALuqAZTyiL
-        pKgE1cGPosEa6r7ENmw3jeLvrglbP9c+N0dYvC+Ky9I3l8F/koJC2+OCUGgeUaLE
-        HQxewrm+3pQxXhwUi8ouKNGsuC439KOKZGxkNu1SGJA7J/YEPgLmRn6CP+yGHR7O
-        FMKRJcbZXFrQvx0VE7YgyLS5eKY6No1H4nwyrRq4clzbYEvPeSjpnaE3g==
-X-ME-Sender: <xms:H-GiZIb7eys8X3kuixoD8Ec1UKEuk7n8ImKjtkKos10vaD1ONO0ioQ>
-    <xme:H-GiZDaYQkNlxOvyWZnKInx0uHP2UlPoL6Z0m_a5KtM2yvyGR0ACgm7u6TlLrAxbX
-    cSsKBZqf8oWl3b8iEM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvgdektdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:H-GiZC-rQ5Vn73jg-UQexuD4OwOdfSN5qcECJah6nZLxxXqfs81_1w>
-    <xmx:H-GiZCqJ0y9nO2V5rvberimExkwuTnDo7_PFGNFwyam1XziuZ66RjQ>
-    <xmx:H-GiZDrnSIXmtDGzV8S9uq00Cep3vnSoSqYnm3JFh-td281hLANYBQ>
-    <xmx:H-GiZK3hL6QElMQsuWBO56Dy1yueBhusmxyGF7T-GpqUnlxyBAYcfw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 85633B60086; Mon,  3 Jul 2023 10:54:23 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-527-gee7b8d90aa-fm-20230629.001-gee7b8d90
-Mime-Version: 1.0
-Message-Id: <68d6cc8b-fbbc-44ff-9e81-bc91fbe5c40b@app.fastmail.com>
-In-Reply-To: <6de44cd9-a9a0-4b76-a9b5-a3c37b97f9aa@moroto.mountain>
-References: <6de44cd9-a9a0-4b76-a9b5-a3c37b97f9aa@moroto.mountain>
-Date:   Mon, 03 Jul 2023 16:54:02 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Dan Carpenter" <dan.carpenter@linaro.org>,
-        =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc:     "Kalle Valo" <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ath9k: use struct_group() to silence static checker warning
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Mon, 3 Jul 2023 12:21:54 -0400
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50F78AD
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Jul 2023 09:21:52 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net [IPv6:2a02:6b8:c18:58f:0:640:3768:0])
+        by forward102a.mail.yandex.net (Yandex) with ESMTP id C09D946CE8;
+        Mon,  3 Jul 2023 19:21:49 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id mLUutK3DZKo0-Y6cmgCXZ;
+        Mon, 03 Jul 2023 19:21:49 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1688401309;
+        bh=xFlgheiWD4TrQ5F02FnDUsXl+2z4emDHq7Ekku2Efmw=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=j7TbdnSVuhFnOtL91stqnVh04JpuJBX6IOvdeEwy9Zb093dr1tpgyIGWEespE6drv
+         CSFqyq2JFiccXW6mi36i1Bx8QwbjGmjMkz0zm1QB0wzAihrFHTDHWy3rHt4FHkcHlP
+         bpqyhGawlRl3JDxL7TndWu8N2EcmFWrI0ThZMR88=
+Authentication-Results: mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Arend van Spriel <aspriel@gmail.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] [v2] wifi: brcmsmac: use generic lists to manage timers
+Date:   Mon,  3 Jul 2023 19:21:22 +0300
+Message-ID: <20230703162128.154451-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 3, 2023, at 16:17, Dan Carpenter wrote:
-> We are deliberately copying both ba_high and ba_low so use a struct
-> group to make that clear.  Otherwise static checkers like Smatch and
-> Clang complain that we are copying beyond the end of the ba_low struct
-> member.
->
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Prefer generic lists over ad-hoc quirks to manage
+timers, adjust related code.
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v2: add missing list_del() in removal loop within brcms_free()
+---
+ .../broadcom/brcm80211/brcmsmac/mac80211_if.c | 36 +++++--------------
+ .../broadcom/brcm80211/brcmsmac/mac80211_if.h |  4 +--
+ 2 files changed, 10 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+index 0bd4e679a359..18a06290af1c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+@@ -314,8 +314,8 @@ static void brcms_free(struct brcms_info *wl)
+ 		schedule();
+ 
+ 	/* free timers */
+-	for (t = wl->timers; t; t = next) {
+-		next = t->next;
++	list_for_each_entry_safe(t, next, &wl->timers, list) {
++		list_del(&t->list);
+ #ifdef DEBUG
+ 		kfree(t->name);
+ #endif
+@@ -1152,6 +1152,8 @@ static struct brcms_info *brcms_attach(struct bcma_device *pdev)
+ 	spin_lock_init(&wl->lock);
+ 	spin_lock_init(&wl->isr_lock);
+ 
++	INIT_LIST_HEAD(&wl->timers);
++
+ 	/* common load-time initialization */
+ 	wl->wlc = brcms_c_attach((void *)wl, pdev, unit, false, &err);
+ 	if (!wl->wlc) {
+@@ -1502,8 +1504,7 @@ struct brcms_timer *brcms_init_timer(struct brcms_info *wl,
+ 	t->wl = wl;
+ 	t->fn = fn;
+ 	t->arg = arg;
+-	t->next = wl->timers;
+-	wl->timers = t;
++	list_add(&t->list, &wl->timers);
+ 
+ #ifdef DEBUG
+ 	t->name = kstrdup(name, GFP_ATOMIC);
+@@ -1561,35 +1562,14 @@ bool brcms_del_timer(struct brcms_timer *t)
+  */
+ void brcms_free_timer(struct brcms_timer *t)
+ {
+-	struct brcms_info *wl = t->wl;
+-	struct brcms_timer *tmp;
+-
+ 	/* delete the timer in case it is active */
+ 	brcms_del_timer(t);
+ 
+-	if (wl->timers == t) {
+-		wl->timers = wl->timers->next;
++	list_del(&t->list);
+ #ifdef DEBUG
+-		kfree(t->name);
++	kfree(t->name);
+ #endif
+-		kfree(t);
+-		return;
+-
+-	}
+-
+-	tmp = wl->timers;
+-	while (tmp) {
+-		if (tmp->next == t) {
+-			tmp->next = t->next;
+-#ifdef DEBUG
+-			kfree(t->name);
+-#endif
+-			kfree(t);
+-			return;
+-		}
+-		tmp = tmp->next;
+-	}
+-
++	kfree(t);
+ }
+ 
+ /*
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.h
+index eaf926a96a88..c2c3d90f4ed3 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.h
+@@ -41,7 +41,7 @@ struct brcms_timer {
+ 	uint ms;
+ 	bool periodic;
+ 	bool set;		/* indicates if timer is active */
+-	struct brcms_timer *next;	/* for freeing on unload */
++	struct list_head list;	/* for freeing on unload */
+ #ifdef DEBUG
+ 	char *name;		/* Description of the timer */
+ #endif
+@@ -75,7 +75,7 @@ struct brcms_info {
+ 
+ 	/* timer related fields */
+ 	atomic_t callbacks;	/* # outstanding callback functions */
+-	struct brcms_timer *timers;	/* timer cleanup queue */
++	struct list_head timers;	/* timer cleanup queue */
+ 
+ 	struct tasklet_struct tasklet;	/* dpc tasklet */
+ 	bool resched;		/* dpc needs to be and is rescheduled */
+-- 
+2.41.0
+
