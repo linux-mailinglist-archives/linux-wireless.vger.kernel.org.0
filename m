@@ -2,38 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2AEF7456BE
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 10:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBA90745724
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 10:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbjGCIDF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jul 2023 04:03:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47606 "EHLO
+        id S229516AbjGCITU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jul 2023 04:19:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231211AbjGCICv (ORCPT
+        with ESMTP id S231351AbjGCITR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jul 2023 04:02:51 -0400
-Received: from xry111.site (xry111.site [89.208.246.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493BEE76;
-        Mon,  3 Jul 2023 01:02:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-        s=default; t=1688371330;
-        bh=mxT+hp0pGIWfYK4XM4T63enx90hO11e+CShcYgfo8H0=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=iY49mJOi8grshnjTw7grQ3MauTVbYoj0RJm4FCUljQPdjDMRI8vQ6Y8pO6+2OS43+
-         P+fAm31J9NbYzsF/SYpRVP4ZRVFU8XLN7qQFvi4UD4SYiBFMOuvruDEw8syyH7vK+1
-         e2aIDQg/d2mT1Y1lDoBIik0J7t7IDAeqQ6I3a1eM=
-Received: from [IPv6:240e:358:110a:4b00:dc73:854d:832e:4] (unknown [IPv6:240e:358:110a:4b00:dc73:854d:832e:4])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-384))
-        (Client did not present a certificate)
-        (Authenticated sender: xry111@xry111.site)
-        by xry111.site (Postfix) with ESMTPSA id CD90E660BB;
-        Mon,  3 Jul 2023 04:02:02 -0400 (EDT)
-Message-ID: <1b331090f91215d6c061a24c4cc61680995412f8.camel@xry111.site>
-Subject: Re: [PATCH v4] =?gb2312?Q?wifi=A3=BAmac80211=3A?= Replace the
- ternary conditional operator with conditional-statements
-From:   Xi Ruoyao <xry111@xry111.site>
-To:     You Kangren <youkangren@vivo.com>,
+        Mon, 3 Jul 2023 04:19:17 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 00734E49;
+        Mon,  3 Jul 2023 01:19:11 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3638IVLG0009537, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3638IVLG0009537
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 3 Jul 2023 16:18:31 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Mon, 3 Jul 2023 16:18:33 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Mon, 3 Jul 2023 16:18:33 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Mon, 3 Jul 2023 16:18:33 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     David Laight <David.Laight@ACULAB.COM>,
+        You Kangren <youkangren@vivo.com>,
         Johannes Berg <johannes@sipsolutions.net>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
@@ -42,62 +43,82 @@ To:     You Kangren <youkangren@vivo.com>,
         "open list:MAC80211" <linux-wireless@vger.kernel.org>,
         "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
         open list <linux-kernel@vger.kernel.org>
-Cc:     opensource.kernel@vivo.com
-Date:   Mon, 03 Jul 2023 16:01:53 +0800
-In-Reply-To: <20230703030200.1067-1-youkangren@vivo.com>
-References: <20230703030200.1067-1-youkangren@vivo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 
+CC:     "opensource.kernel@vivo.com" <opensource.kernel@vivo.com>
+Subject: =?utf-8?B?UkU6IFtQQVRDSF0gd2lmae+8mm1hYzgwMjExOiBSZXBsYWNlIHRoZSB0ZXJu?= =?utf-8?Q?ary_conditional_operator_with_max()?=
+Thread-Topic: =?utf-8?B?W1BBVENIXSB3aWZp77yabWFjODAyMTE6IFJlcGxhY2UgdGhlIHRlcm5hcnkg?=
+ =?utf-8?Q?conditional_operator_with_max()?=
+Thread-Index: AQHZqBvNKITprNb9K06+yWJl2zb8J6+fcjiAgAJYBtCABfI/oA==
+Date:   Mon, 3 Jul 2023 08:18:33 +0000
+Message-ID: <cb6cc27d71144bef9b7827f541fbeb43@realtek.com>
+References: <20230626104829.1896-1-youkangren@vivo.com>
+ <9e4e3bf85ed945e7b0c8d5d389065670@realtek.com>
+ <9ea9d91e8ec94edda19bd57e835e0a79@AcuMS.aculab.com>
+In-Reply-To: <9ea9d91e8ec94edda19bd57e835e0a79@AcuMS.aculab.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-07-03 at 11:02 +0800, You Kangren wrote:
-> Replacing ternary conditional operators with conditional statements=20
-> ensures proper expression of meaning while making it easier for=20
-> the compiler to generate code.
-
-No you underestimated the compiler here.  Both GCC and Clang translates
-the ternary operator and the if statement into the same IR during very
-early passes.
-
-Maybe there is some reason to avoid ternary operators, but "making it
-easier for compiler" is just invalid.  And "my text book/my teacher says
-ternary operators are bad" will be invalid too, the kernel coding
-convention is not what the text book or teacher say.
-
-> Signed-off-by: You Kangren <youkangren@vivo.com>
-> ---
-> =C2=A0net/mac80211/tdls.c | 3 ++-
-> =C2=A01 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-> index a4af3b7675ef..41176491965d 100644
-> --- a/net/mac80211/tdls.c
-> +++ b/net/mac80211/tdls.c
-> @@ -946,7 +946,8 @@ ieee80211_tdls_build_mgmt_packet_data(struct
-> ieee80211_sub_if_data *sdata,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int ret;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ieee80211_link_dat=
-a *link;
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0link_id =3D link_id >=3D 0 ? l=
-ink_id : 0;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (link_id < 0)
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0link_id =3D 0;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0rcu_read_lock();
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0link =3D rcu_dereference(=
-sdata->link[link_id]);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (WARN_ON(!link))
-
---=20
-Xi Ruoyao <xry111@xry111.site>
-School of Aerospace Science and Technology, Xidian University
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGF2aWQgTGFpZ2h0IDxE
+YXZpZC5MYWlnaHRAQUNVTEFCLkNPTT4NCj4gU2VudDogVGh1cnNkYXksIEp1bmUgMjksIDIwMjMg
+OToyOCBQTQ0KPiBUbzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+OyBZb3UgS2Fu
+Z3JlbiA8eW91a2FuZ3JlbkB2aXZvLmNvbT47IEpvaGFubmVzIEJlcmcNCj4gPGpvaGFubmVzQHNp
+cHNvbHV0aW9ucy5uZXQ+OyBEYXZpZCBTLiBNaWxsZXIgPGRhdmVtQGRhdmVtbG9mdC5uZXQ+OyBF
+cmljIER1bWF6ZXQgPGVkdW1hemV0QGdvb2dsZS5jb20+Ow0KPiBKYWt1YiBLaWNpbnNraSA8a3Vi
+YUBrZXJuZWwub3JnPjsgUGFvbG8gQWJlbmkgPHBhYmVuaUByZWRoYXQuY29tPjsgb3BlbiBsaXN0
+Ok1BQzgwMjExDQo+IDxsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc+OyBvcGVuIGxpc3Q6
+TkVUV09SS0lORyBbR0VORVJBTF0gPG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+OyBvcGVuIGxpc3QN
+Cj4gPGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc+DQo+IENjOiBvcGVuc291cmNlLmtlcm5l
+bEB2aXZvLmNvbQ0KPiBTdWJqZWN0OiBSRTogW1BBVENIXSB3aWZp77yabWFjODAyMTE6IFJlcGxh
+Y2UgdGhlIHRlcm5hcnkgY29uZGl0aW9uYWwgb3BlcmF0b3Igd2l0aCBtYXgoKQ0KPiANCj4gRnJv
+bTogUGluZy1LZSBTaGloDQo+ID4gU2VudDogMjggSnVuZSAyMDIzIDAyOjQ5DQo+ID4NCj4gPiA+
+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBZb3UgS2FuZ3JlbiA8eW91
+a2FuZ3JlbkB2aXZvLmNvbT4NCj4gPiA+IFNlbnQ6IE1vbmRheSwgSnVuZSAyNiwgMjAyMyA2OjQ4
+IFBNDQo+ID4gPiBUbzogSm9oYW5uZXMgQmVyZyA8am9oYW5uZXNAc2lwc29sdXRpb25zLm5ldD47
+IERhdmlkIFMuIE1pbGxlciA8ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldD47IEVyaWMgRHVtYXpldA0KPiA+
+ID4gPGVkdW1hemV0QGdvb2dsZS5jb20+OyBKYWt1YiBLaWNpbnNraSA8a3ViYUBrZXJuZWwub3Jn
+PjsgUGFvbG8gQWJlbmkgPHBhYmVuaUByZWRoYXQuY29tPjsgb3Blbg0KPiA+ID4gbGlzdDpNQUM4
+MDIxMSA8bGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnPjsgb3BlbiBsaXN0Ok5FVFdPUktJ
+TkcgW0dFTkVSQUxdDQo+ID4gPG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+Ow0KPiA+ID4gb3BlbiBs
+aXN0IDxsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnPg0KPiA+ID4gQ2M6IG9wZW5zb3VyY2Uu
+a2VybmVsQHZpdm8uY29tOyB5b3VrYW5ncmVuQHZpdm8uY29tDQo+ID4gPiBTdWJqZWN0OiBbUEFU
+Q0hdIHdpZmnvvJptYWM4MDIxMTogUmVwbGFjZSB0aGUgdGVybmFyeSBjb25kaXRpb25hbCBvcGVy
+YXRvciB3aXRoIG1heCgpDQo+ID4NCj4gPiBUaGUgc2VtaWNvbG9uIG9mICJ3aWZp77yaIiBpcyBk
+aWZmZXJlbnQgZnJvbSBvdGhlcnMuDQo+ID4NCj4gPiA+DQo+ID4gPiBSZXBsYWNlIHRoZSB0ZXJu
+YXJ5IGNvbmRpdGlvbmFsIG9wZXJhdG9yIHdpdGggbWF4KCkgdG8gbWFrZSB0aGUgY29kZSBjbGVh
+bg0KPiA+ID4NCj4gPiA+IFNpZ25lZC1vZmYtYnk6IFlvdSBLYW5ncmVuIDx5b3VrYW5ncmVuQHZp
+dm8uY29tPg0KPiA+ID4gLS0tDQo+ID4gPiAgbmV0L21hYzgwMjExL3RkbHMuYyB8IDIgKy0NCj4g
+PiA+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gPiA+
+DQo+ID4gPiBkaWZmIC0tZ2l0IGEvbmV0L21hYzgwMjExL3RkbHMuYyBiL25ldC9tYWM4MDIxMS90
+ZGxzLmMNCj4gPiA+IGluZGV4IGE0YWYzYjc2NzVlZi4uOWY4YjA4NDJhNjE2IDEwMDY0NA0KPiA+
+ID4gLS0tIGEvbmV0L21hYzgwMjExL3RkbHMuYw0KPiA+ID4gKysrIGIvbmV0L21hYzgwMjExL3Rk
+bHMuYw0KPiA+ID4gQEAgLTk0Niw3ICs5NDYsNyBAQCBpZWVlODAyMTFfdGRsc19idWlsZF9tZ210
+X3BhY2tldF9kYXRhKHN0cnVjdCBpZWVlODAyMTFfc3ViX2lmX2RhdGEgKnNkYXRhLA0KPiA+ID4g
+ICAgICAgICBpbnQgcmV0Ow0KPiA+ID4gICAgICAgICBzdHJ1Y3QgaWVlZTgwMjExX2xpbmtfZGF0
+YSAqbGluazsNCj4gPiA+DQo+ID4gPiAtICAgICAgIGxpbmtfaWQgPSBsaW5rX2lkID49IDAgPyBs
+aW5rX2lkIDogMDsNCj4gPiA+ICsgICAgICAgbGlua19pZCA9IG1heChsaW5rX2lkLCAwKTsNCj4g
+Pg0KPiA+IE9yaWdpbmFsIGxvZ2ljIG1lYW5zICJpZiBsaW5rX2lkIDwgMCwgdGhlbiB1c2UgZGVm
+YXVsdCBsaW5rICgwKSIgaW5zdGVhZCBvZg0KPiA+ICJhbHdheXMgdXNlIGxpbmtfaWQgbGFyZ2Vy
+IHRoYW4gb3IgZXF1YWwgdG8gMCIuIFNvLCBJIHRoaW5rIG1heChsaW5rX2lkLCAwKSBjb3VsZA0K
+PiA+IGNhdXNlIG1pc3VuZGVyc3RhbmRpbmcuDQo+IA0KPiBUaGUgY2xlYXJlc3QgaXMgcHJvYmFi
+bHk6DQo+ICAgICAgICAgaWYgKGxpbmtfaWQgPCAwKQ0KPiAgICAgICAgICAgICAgICAgbGlua19p
+ZCA9IDA7DQo+IA0KPiBUaGUgY29tcGlsZXIgY291bGQgZWFzaWx5IGdlbmVyYXRlIHRoZSBzYW1l
+IGNvZGUgKGNvbXBhcmUgYW5kIGNvbmRpdGlvbmFsDQo+IG1vdmUpLg0KPiANCg0KVGhleSB3b3Vs
+ZCBiZSB0aGUgc2FtZSwgYnV0IHBlcnNvbmFsbHkgSSBwcmVmZXIgb3JpZ2luYWwgc2luZ2xlIG9u
+ZSBsaW5lIHN0YXRlbWVudA0KdGhhdCBpcyBjbGVhciB0byBtZS4NCg0KDQo=
