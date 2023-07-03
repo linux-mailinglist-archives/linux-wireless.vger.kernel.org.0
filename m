@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D2A4746136
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 19:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD36D746142
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jul 2023 19:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230281AbjGCRNe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Jul 2023 13:13:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39996 "EHLO
+        id S230513AbjGCRQH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Jul 2023 13:16:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230247AbjGCRNd (ORCPT
+        with ESMTP id S230450AbjGCRQG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Jul 2023 13:13:33 -0400
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF3E1E59
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Jul 2023 10:13:31 -0700 (PDT)
-Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-401f4408955so407801cf.1
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Jul 2023 10:13:31 -0700 (PDT)
+        Mon, 3 Jul 2023 13:16:06 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05505B2
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Jul 2023 10:16:01 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-4036bd4fff1so50291cf.0
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Jul 2023 10:16:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688404411; x=1690996411;
+        d=google.com; s=20221208; t=1688404560; x=1690996560;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iHhUcDMJ3GqqYqX8PUUmG05Gp9eg0kW+H85LcvU0FfM=;
-        b=pcu1plunE/NwYXd0zKabq0kXC4lBKk8tohnsKuaUuvE/HlEsyL08J8Rrncb6tdHXMG
-         cmz9bCoXUDR/JwJsqsmr71QjeYmcARqtrt1DQSYI9zPV/Sf5pJYJl6xLdKaxJCKOgvFr
-         tnh9hlLbsw7q44xoXUaYM2Dl0zsM+CLmFGB60IzLiGOE4Gp49zPEcLGoPRuAw7HPala5
-         LXBec5FoBaHgoeX5sfQUdYjUsvGaUbSYJ1wRZy1H8aMdOztF5ksEydpAKeoXbOIbsEEp
-         30O8WuSAIYDTIkOI+/A0q8zA+SIzSI2JSocnTIfxpIswqs5WknnfbaYV8cHM0P31259d
-         HXkg==
+        bh=O2iHJSmnnxF29Ro2K2lEBKDHBSEStuWZBVC+tagVTag=;
+        b=47XOYlRJzFahe96ZqkfTmm/uIVH9PurvYcuJt2zic5EN3cnyH18zDOC2xCQbsXHg/L
+         MBr2Jj89/s10fPaBK8ONh/qVH7j/ATWqW393YNi0265BIjkPPQxvp0lulXWG6lYjJqxC
+         pfOCD5aZyBHRVyZZI92JMrnVt0yKXjXbRkEMQhxo2ndkUYajECq2IgK3/Yeev3o88h4B
+         24jQ5T4PDeaC4UtHsgrlhTBPZhU3OyR0pIvCwYtTELkRIwrF6BeyujE8LAs0acdbgI10
+         eF2YyczJpJLr4KQdLu9GkOkIA7zyBQifyhaI4Rcvmthi7Yoz5I+Z6u6bhZvZL5cOaCNq
+         g4jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688404411; x=1690996411;
+        d=1e100.net; s=20221208; t=1688404560; x=1690996560;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iHhUcDMJ3GqqYqX8PUUmG05Gp9eg0kW+H85LcvU0FfM=;
-        b=HBE7Q5kcSxUZO6G9zAU38K9NGBrpHA7dJ0ApVooJsdSD2ymFVnVRzMJC9FIdrGdYD7
-         3R8WVUr8m3GXdW9RcmZN5iLVPL4lWRHWEF2X7aoNJ2p5a0prb6ICeysZ/x+6G36fXb/m
-         YNOnB8PgCa8IybY7rLSxN/xS9G4HcONEvM9m6zDjU1WKklt4Ncer1wIVi/ivq61FfcJK
-         wrKgi2A7bVwAnwRqgwxK9BQ+TU39ow1R4MJjbimA2stO3Tqx6h0k3NAesMlrcakzEBpW
-         BR2ObuV5/jbl669K7GJahGgyW0gMdrH0Dz4jUQidoi3c7peylodLCdhjf0sKi2pUR7VK
-         RUFg==
-X-Gm-Message-State: ABy/qLblBEVRbBr0DQ7LhZ/0ubvbuXcCpq315cU5c5ZHeC6FhZU15XFf
-        BMyyGDIS39d0mTFu80kmq1Ekv5UvcZuVARfoi3htSw==
-X-Google-Smtp-Source: APBJJlGYc95qxttE9/8PAmxKfxDwWHEqgj+xMhW5O9ooJIFZZ/PHyQ6aNbFx0eU2JgiJSidSG/eG84BaW6wvypRKK3A=
-X-Received: by 2002:ac8:574c:0:b0:3e8:684b:195d with SMTP id
- 12-20020ac8574c000000b003e8684b195dmr44qtx.10.1688404410592; Mon, 03 Jul 2023
- 10:13:30 -0700 (PDT)
+        bh=O2iHJSmnnxF29Ro2K2lEBKDHBSEStuWZBVC+tagVTag=;
+        b=goC0BDwENmEIfYhYsddardc7cVUK40lRgPjdMKWsUOJps08cEzxZEogN+jhgCArQNF
+         i2fohWonXKiQ7hhgf7IqcJTM1UGmNfyKb6Cdwk7RmwDXU/uOq/lvIHfh+bebt3Mo3ywW
+         5WRVIp1wt8DBJy3+/q1Hd0XcHGbS5nc+RjHEmFrn04ojiDM2+99VsG3Y4niECxdx+i/L
+         fi2SM+xax78tX0Qtl41vZ6etTMZov61K3oRdEbSYvRVHh2LG7AXR0va4g63Zv3SzlNPT
+         UtK9uAaDKMYhh9K0/IWLcB+07qOGYQ7GbWUHvM6/CeoEiWfgSty+M3x9CH+Bjl169dIx
+         DJGA==
+X-Gm-Message-State: ABy/qLYJ2RccqlurCsZib8OplLHfmvZ5p80fzl4aY4lwYEh0TrR3mIKh
+        2g6J+KW52SyQhNjGp09thhg59LUH1+z0AMpxiLgqug==
+X-Google-Smtp-Source: APBJJlEAkEot4YdZ7WBMguqh2+qizaqMNrvnDRoFX8TWve6Wd/8zmhq/dGKscf1MYzgs71C4RNIb3wdeASZ6Vhyhjvc=
+X-Received: by 2002:a05:622a:1705:b0:3fa:45ab:22a5 with SMTP id
+ h5-20020a05622a170500b003fa45ab22a5mr298105qtk.27.1688404559885; Mon, 03 Jul
+ 2023 10:15:59 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230612130256.4572-1-linyunsheng@huawei.com> <20230612130256.4572-5-linyunsheng@huawei.com>
  <20230614101954.30112d6e@kernel.org> <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
@@ -59,8 +59,8 @@ References: <20230612130256.4572-1-linyunsheng@huawei.com> <20230612130256.4572-
  <47b79e77-461b-8fe9-41fb-b69a6b205ef2@kernel.org>
 In-Reply-To: <47b79e77-461b-8fe9-41fb-b69a6b205ef2@kernel.org>
 From:   Eric Dumazet <edumazet@google.com>
-Date:   Mon, 3 Jul 2023 19:13:19 +0200
-Message-ID: <CANn89iKAvrf92Fy8a_M+V9eya6OHokey2_yxQ3JiCT87fKND_w@mail.gmail.com>
+Date:   Mon, 3 Jul 2023 19:15:48 +0200
+Message-ID: <CANn89iJLAnnvFfkmJbQ=ZFMwaqiYDOTD3-P+NpkEMzP9aKV-ig@mail.gmail.com>
 Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
  page_pool: remove PP_FLAG_PAGE_FRAG flag)
 To:     David Ahern <dsahern@kernel.org>
@@ -100,7 +100,7 @@ X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -109,52 +109,14 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Mon, Jul 3, 2023 at 4:45=E2=80=AFPM David Ahern <dsahern@kernel.org> wro=
 te:
->
-> On 7/3/23 12:22 AM, Mina Almasry wrote:
-> > tcpdump is able to access the header of these skbs which is in host
-> > memory, but not the payload in device memory. Here is an example
-> > session with my netcat-like test for device memory TCP:
-> > https://pastebin.com/raw/FRjKf0kv
-> >
-> > tcpdump seems to work, and the length of the packets above is correct.
-> > tcpdump -A however isn't able to print the payload of the packets:
-> > https://pastebin.com/raw/2PcNxaZV
->
+
 > That is my expectation. The tcpdump is just an easy example of accessing
 > the skb page frags. skb_copy_and_csum_bits used by icmp is another
 > example that can walk frags wanting access to device memory. You did not
 > cause a panic or trip a WARN_ON for example with the tcpdump?
 >
 
-Change for af_packet was not too hard :)
+ICMP packets do not land on the queues having devmem buffers, for
+obvious reasons.
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index a2dbeb264f260e5b8923ece9aac99fe19ddfeb62..aa4133d1b1e0676e408499ea453=
-4b51262394432
-100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2152,7 +2152,7 @@ static int packet_rcv(struct sk_buff *skb,
-struct net_device *dev,
-                }
-        }
-
--       snaplen =3D skb->len;
-+       snaplen =3D skb->devmem ? skb_headlen(skb) : skb->len;
-
-        res =3D run_filter(skb, sk, snaplen);
-        if (!res)
-@@ -2275,7 +2275,7 @@ static int tpacket_rcv(struct sk_buff *skb,
-struct net_device *dev,
-                }
-        }
-
--       snaplen =3D skb->len;
-+       snaplen =3D skb->devmem ? skb_headlen(skb) : skb->len;
-
-        res =3D run_filter(skb, sk, snaplen);
-        if (!res)
-
-
-And a generic change in pskb_may_pull() ( __pskb_pull_tail() more
-exactly) was enough to cover most other cases.
+Only chosen TCP flows are steered to these queues.
