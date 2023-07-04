@@ -2,111 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 841B67477B1
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jul 2023 19:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA28A7477EE
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jul 2023 19:37:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbjGDRWT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jul 2023 13:22:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38562 "EHLO
+        id S230349AbjGDRh0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jul 2023 13:37:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229971AbjGDRWR (ORCPT
+        with ESMTP id S230011AbjGDRhY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jul 2023 13:22:17 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E15BD10C1;
-        Tue,  4 Jul 2023 10:22:16 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1b078b34df5so5722037fac.2;
-        Tue, 04 Jul 2023 10:22:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688491336; x=1691083336;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=z7FZLomDWDbjdWX61WSlseufijU603RigLg7aNYHBJY=;
-        b=K1fe2Rcalt7NRZxlZdobMv7vh0ZEDnCcEUDgWPJy+StZMldSwPBP6fMT+fkU0vOvP2
-         /QYZmJ5+ZSn06Pt+4JNEso0RD0R522NQ/9YRYC26ACWTmMkhJHBCOTbEShktgPqw5MGH
-         OEGF9gfqo+YX1TAySIYzMRU6AyNAdSLKPvw7AWDW9VqCAAAnX8rfAC3xHQPb3PSQK0ZN
-         XYloU27NjWZqY/JqVpg71EzuXlsBBIXMlfBo0BrbRTjBdfwbTuuJX1+AwH9Zu36a7zOc
-         9OD+81RRk7fgUNFxRDIIJCnNWlnMdLyLZrGL8n8Q4ppfZ4B3IXmrHUOZo3VpxvqhSfes
-         ECrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688491336; x=1691083336;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=z7FZLomDWDbjdWX61WSlseufijU603RigLg7aNYHBJY=;
-        b=Mk8Ay2JHXW5NSxpS41Z6rp5MVuRXSoEwXLP6mY4I85FzudC/3lBBRWbXHHo9ywA80R
-         +Pd8gMhcOmNoFC+x2EYSEQeqTHmQBZSUKdWHNnya5rwvphGsdgsuWHx4oMFSK/CDbaqf
-         lvDVoln0LWsjjlHMAge/gxiY9ZGzTN+Oe2TaIGpZnx3gYVO45GGJtORsH5J5sJS81aES
-         49kfgqO26g571nBuUKt+sy+O372swlrSORFnR2rct+G4xDsGt+xFTCzHTKe2PKHPD5ZJ
-         weOxRVXpNu0NrdXpiMHwdt3BGqYBi7ICm89xhwEBUSkRWDdmcb67hrJyn1vbLqHQvZCt
-         tDzw==
-X-Gm-Message-State: ABy/qLbrKcNt0R5EwRn8Kf/5m4QLqVolWuEEVymmQtopocpKFfz8/xc6
-        9BRrzeYeNW12MEeiEqiRONU=
-X-Google-Smtp-Source: ACHHUZ6VEkTnut83c2dLjWl3PWRuAfEErbUOknHJwrNB91eQi5DvHdrZEnrnqA9zB6XzgUSOcEOjbA==
-X-Received: by 2002:a05:6870:ac0d:b0:191:f657:13ee with SMTP id kw13-20020a056870ac0d00b00191f65713eemr15602832oab.11.1688491336194;
-        Tue, 04 Jul 2023 10:22:16 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id z11-20020a9d65cb000000b006b884bbb4f3sm6045994oth.26.2023.07.04.10.22.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jul 2023 10:22:15 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <9ccf927e-7e68-91c4-3cfc-0ff535abe0a6@lwfinger.net>
-Date:   Tue, 4 Jul 2023 12:22:14 -0500
+        Tue, 4 Jul 2023 13:37:24 -0400
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [178.154.239.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEE3E10D7
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Jul 2023 10:37:22 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:99b:0:640:5ae0:0])
+        by forward101a.mail.yandex.net (Yandex) with ESMTP id 7479A46C85;
+        Tue,  4 Jul 2023 20:37:20 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id JbWSfGGDViE0-MWC7JUU3;
+        Tue, 04 Jul 2023 20:37:20 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1688492240;
+        bh=gbYg+lFLvg7+x8qiBmJOV1lCnuPpK7be9jfNm+8ZynA=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=TWeSNr/oSiTqZNZe2hCUYLKsOfhEGXNeKUGbSgsuhmKYyy2p9i2ZyeqPMutpZi7MI
+         I1RsmAPiiJJMAnEKKXKuxzstmt2+gEtlX9H6p7c6kfNu8sXHc27ZcdH7QdEZE36Uhy
+         twl0Ake5PoxZqaadUNTWGx/QJEdL5BfAcNw4CXWM=
+Authentication-Results: mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: ath12k: relax list iteration in ath12k_mac_vif_unref()
+Date:   Tue,  4 Jul 2023 20:37:12 +0300
+Message-ID: <20230704173718.73462-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2] wifi: rtw89: debug: fix error code in
- rtw89_debug_priv_send_h2c_set()
-To:     Zhang Shurong <zhang_shurong@foxmail.com>, pkshih@realtek.com
-Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <tencent_54814178D4285CA3D64B8CDC90D49A6CB10A@qq.com>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <tencent_54814178D4285CA3D64B8CDC90D49A6CB10A@qq.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/4/23 11:55, Zhang Shurong wrote:
-> If there is a failure during rtw89_fw_h2c_raw() rtw89_debug_priv_send_h2c
-> should return negative error code instead of a positive value count.
-> 
-> Fix this bug by returning correct error code.
-> 
-> The changes in this version:
-> - fix some compile error
-> 
-> Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+In 'ath12k_mac_vif_unref()', 'dp->tx_desc_used_list[i]'
+is not altered so 'list_for_each_entry()' should be safe.
 
-I have two comments on the patch itself:
-
-1) Whenever you have a fix for the code, you need to annotate it using the 
-"Fixes: tag". See file Documentation/process/submitting-patches.rst in your 
-source tree.
-
-2) The version change stuff should be in the following order:
-
-Signed-off-by: ....
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-v2 - fixed compile error
----
-Body of patch.
+ drivers/net/wireless/ath/ath12k/mac.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Placing it where you did would cause the details of "making the sausage" be 
-saved in the commit log. The reviewer and maintainer need to see it, but not the 
-end user.
-
-Larry
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 1bb9802ef569..a58c374f23f7 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -5201,7 +5201,7 @@ static int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
+ 
+ static void ath12k_mac_vif_unref(struct ath12k_dp *dp, struct ieee80211_vif *vif)
+ {
+-	struct ath12k_tx_desc_info *tx_desc_info, *tmp1;
++	struct ath12k_tx_desc_info *tx_desc_info;
+ 	struct ath12k_skb_cb *skb_cb;
+ 	struct sk_buff *skb;
+ 	int i;
+@@ -5209,8 +5209,8 @@ static void ath12k_mac_vif_unref(struct ath12k_dp *dp, struct ieee80211_vif *vif
+ 	for (i = 0; i < ATH12K_HW_MAX_QUEUES; i++) {
+ 		spin_lock_bh(&dp->tx_desc_lock[i]);
+ 
+-		list_for_each_entry_safe(tx_desc_info, tmp1, &dp->tx_desc_used_list[i],
+-					 list) {
++		list_for_each_entry(tx_desc_info, &dp->tx_desc_used_list[i],
++				    list) {
+ 			skb = tx_desc_info->skb;
+ 			if (!skb)
+ 				continue;
+-- 
+2.41.0
 
