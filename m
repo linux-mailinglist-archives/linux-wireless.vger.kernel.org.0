@@ -2,119 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 281D2747E2D
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 09:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2994E747E60
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 09:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231154AbjGEHYk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Jul 2023 03:24:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47026 "EHLO
+        id S232201AbjGEHhP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Jul 2023 03:37:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230383AbjGEHYj (ORCPT
+        with ESMTP id S232214AbjGEHhO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Jul 2023 03:24:39 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A891110DD;
-        Wed,  5 Jul 2023 00:24:38 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99364ae9596so356735066b.1;
-        Wed, 05 Jul 2023 00:24:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688541877; x=1691133877;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yBZ2V9YkgQb75fgLLwSDoK6jYDOYm9Ulfp2E4lReMu4=;
-        b=Ft35BGtfPjUdUryqBygCiZrglZi6RQf2Uq33+EgA0PHGC9flgpkea796/5npXeaU++
-         Fih8p0t82f+/DG0P3vVkiv8BOKDDFO8KYd3a223NUyrQRCyzPihenOF/qCb3hyDFpwOw
-         RjkFpPbNfnlrOaGNK75AbYq/jninFCMWeiwYLCAXZyZrJwmBv4NZxcg0AiUVVShaeR8S
-         8oaaOAKXVRP7xLGGvvS6kyRoZci1QMmuBHVtTvY+2Pj9aFdV/EQLboUzRBt06GCj4MDc
-         CgzOd9blKo7RLN5OYBur6/Q2WG0hSwUGI6S7zz+3G6o5ctC829YZJOBXasBINlzadVee
-         LB3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688541877; x=1691133877;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yBZ2V9YkgQb75fgLLwSDoK6jYDOYm9Ulfp2E4lReMu4=;
-        b=Ht2gP1QfOhKd+lV1p16gEXS4bPhBx9HJ08oeW585YX+4ZbRwa4LS3NbiC3av+6v5eI
-         GriVsPamOuYHsbEtwzV40/MWG0WwP+7gxGaUwxbZopDb9dSnbQ0MrVFzwq7yl8LWV1qy
-         SuCJnRqB3QhfsD+1L42zZVXQ/TnHmHaHplmEAN6CD5H0FJQf9eoyM6shYgoI9h7JyJTq
-         jR/jqyFyxmSLV31fuv3qbzTdCt7ojJzmsEMdywzrXRswC4XeXofPJ9vZwEdQeQm6aS7i
-         iOFEMq73r7HWrPzX0Y3cutaRgQJEtNrznOHC/fH2hcn6rWWUdRGdL2F/uiOkpAGYwElF
-         tyKg==
-X-Gm-Message-State: AC+VfDxrRBN7PGPFaBMkWyOusmQQpreX5OAKwE6Myp0aUdMIywclRvcI
-        N3ZHkV/VOMgt6uuzjibU/rFkV2TXLgZe/lLHVWpyCiemkfN2Wg==
-X-Google-Smtp-Source: APBJJlEzktWAFzDyfTdF5aq95BVbZzgxZ4ow0qDGxVedpqTLBRPqSrErSM08kh3Ba8Fnen97931YBN7ZnQZfEtTq87k=
-X-Received: by 2002:a17:907:100c:b0:973:ca9c:3e43 with SMTP id
- ox12-20020a170907100c00b00973ca9c3e43mr10435369ejb.45.1688541876875; Wed, 05
- Jul 2023 00:24:36 -0700 (PDT)
+        Wed, 5 Jul 2023 03:37:14 -0400
+Received: from mail.durme.pl (mail.durme.pl [217.182.69.186])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9A910DD
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Jul 2023 00:37:12 -0700 (PDT)
+Received: by mail.durme.pl (Postfix, from userid 1002)
+        id 9971F4B8CE; Wed,  5 Jul 2023 07:35:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=durme.pl; s=mail;
+        t=1688542623; bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
+        h=Date:From:To:Subject:From;
+        b=NHN8ybel9lVtUqB6ltt5okYFWlV9Nlhkx0pbIjKnqKqIw4famJU5Oi4Z6O0GUk5e2
+         LVWYxKulG9Q35kXd7BkpCumwi+ng12scV68sMJ/49RwPG61GndQ1fxsWdq+2y7g+4e
+         xanhOlLG0UCAs0uZNrhb+aKEadjUBjk1QvJiVKTan/Y57yF4v17T83twkb43FyF9ab
+         HvUq0Bu9oEFkeGogoWFOpSyxIfmQFlKrWNamS8b1bFKDcuq/Fdp31KQqRPyB2wcn4B
+         UAFbv7pqKfp/Ea1M2n/A9HIUtd8v+BqLwKPb1310IpLiJys2QIlsq4wySLHAt4WpR/
+         z67wdkKchkJvg==
+Received: by mail.durme.pl for <linux-wireless@vger.kernel.org>; Wed,  5 Jul 2023 07:35:24 GMT
+Message-ID: <20230705064501-0.1.2w.clvb.0.sa1n1j8jon@durme.pl>
+Date:   Wed,  5 Jul 2023 07:35:24 GMT
+From:   "Krystian Wieczorek" <krystian.wieczorek@durme.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.durme.pl
 MIME-Version: 1.0
-References: <20230429020951.082353595@lindbergh.monkeyblade.net>
- <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com>
- <ZE0kndhsXNBIb1g7@debian.me> <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
-In-Reply-To: <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
-From:   Jeff Chua <jeff.chua.linux@gmail.com>
-Date:   Wed, 5 Jul 2023 15:24:23 +0800
-Message-ID: <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com>
-Subject: Linux-6.5 iwlwifi crash
-To:     lkml <linux-kernel@vger.kernel.org>
-Cc:     Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,URIBL_CSS_A autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Latest linux-6.4 after June 27 crash my whole linux notebook once
-iwlwifi is loaded. Anyone seeing this?
+Dzie=C5=84 dobry,
 
-Bisect? Or there's a patch for this?
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-# modprobe iwlwifi
-... Whole system frozen!
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
 
-Here's my system before the crash ...
-
-# dmesg
-cfg80211: Loading compiled-in X.509 certificates for regulatory database
-Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
-iwlwifi 0000:00:14.3: api flags index 2 larger than supported by driver
-thermal thermal_zone1: failed to read out thermal zone (-61)
-iwlwifi 0000:00:14.3: Sorry - debug buffer is only 4096K while you
-requested 65536K
-
-# lspci
-00:14.3 Network controller: Intel Corporation Alder Lake-P PCH CNVi
-WiFi (rev 01)
-
-# linux git log
-commit d528014517f2b0531862c02865b9d4c908019dc4 (HEAD -> master,
-origin/master, origin/HEAD)
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue Jul 4 15:05:12 2023 -0700
-
-# lsmodModule                  Size  Used by
-iwlmvm                397312  0
-mac80211              626688  1 iwlmvm
-iwlwifi               307200  1 iwlmvm
-cfg80211              413696  3 iwlmvm,iwlwifi,mac80211
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
 
 
-Bisect?
-
-Thanks,
-Jeff.
+Pozdrawiam
+Krystian Wieczorek
