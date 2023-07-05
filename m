@@ -2,125 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AAB6747FD1
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 10:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 642A274804C
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 11:01:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230521AbjGEIhc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Jul 2023 04:37:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56578 "EHLO
+        id S231552AbjGEJBC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Jul 2023 05:01:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbjGEIhb (ORCPT
+        with ESMTP id S229906AbjGEJBB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Jul 2023 04:37:31 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585E7133;
-        Wed,  5 Jul 2023 01:37:27 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qGy0j-0007za-T3; Wed, 05 Jul 2023 10:37:17 +0200
-Message-ID: <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info>
-Date:   Wed, 5 Jul 2023 10:37:15 +0200
+        Wed, 5 Jul 2023 05:01:01 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E60B11F
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Jul 2023 02:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=s31663417; t=1688547637; x=1689152437; i=georgmueller@gmx.net;
+ bh=eE7iDryj0JhtvuinY11e+C3/eqvluh4edxR74CI8ga4=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=abXcnY+BJSlvOYKb7zvYBIbexHZAZtZOreUYRtrWe8DJmVPYa7Y6pQbn7Ey0zIyxOjQXMjf
+ HhcH0SgLuQ0P7gzRm1pDFdLo29VLLhI9iZ9S9O12kNkExiDxq/mZHnP/l2R1hXuqvVCfBY0Fy
+ NNhRU11YtMhxqTXLjJLcPM13UQ76DfoOzISHRRCq2VZPdZdHozFCh9JkV8/Xh40Tf0UjoEeU9
+ ejaQAUyjFZQPF6xVVjFN1cCvFEwJVMpQOL+w2Lhb5aN8EcNLeXHkbQwNePx/k5Ma6N6+OvVFs
+ AcEvvgkH53hixclI2FfGkZ48ErXxm+BjoHeRh9DMB+dmzqgrZxQA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.54.0.101] ([87.167.92.240]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mq2jC-1pe0ud2kbK-00nB9c; Wed, 05
+ Jul 2023 11:00:37 +0200
+Message-ID: <c9e6a13b-e32d-f810-741c-33598956a55e@gmx.net>
+Date:   Wed, 5 Jul 2023 11:00:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: Linux-6.5 iwlwifi crash
-To:     Jeff Chua <jeff.chua.linux@gmail.com>,
-        lkml <linux-kernel@vger.kernel.org>
-Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+Subject: Re: [PATCH v4 00/18] wifi: rtl8xxxu: Add AP mode support for 8188f
+Content-Language: en-US
+To:     Martin Kaistra <martin.kaistra@linutronix.de>,
+        linux-wireless@vger.kernel.org
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
         Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-References: <20230429020951.082353595@lindbergh.monkeyblade.net>
- <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com>
- <ZE0kndhsXNBIb1g7@debian.me> <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
- <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com>
-Content-Language: en-US, de-DE
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20230428150833.218605-1-martin.kaistra@linutronix.de>
+From:   =?UTF-8?Q?Georg_M=c3=bcller?= <georgmueller@gmx.net>
+In-Reply-To: <20230428150833.218605-1-martin.kaistra@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688546247;14f75381;
-X-HE-SMSGID: 1qGy0j-0007za-T3
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Provags-ID: V03:K1:LOnR4dUjEHUTCu+aiQeUOFDZzCSNY9YgjYT1LbYxNP9GsY29IBa
+ p30UaGZByWehfR9jL82Sn8EmJVAVwFa+SY0mIbkiw6dnYFQbMI1o6EqtqPjFX4ZdqQ1t90u
+ ORFAovMuARqf0hSqEDVWWjf2NNr4fz9920wcrY4pKTR5+6cbl1cz8LG9q6sfZvsMe3GE0ES
+ MqpJ4ZTYE1zrcCpj3sHVw==
+UI-OutboundReport: notjunk:1;M01:P0:Tc+P2xCtors=;guYMOlmeb0h6P7nPJTH2t4zBnWk
+ qj5WOvqYtJ9Ju3feo/DA1npyO7Xc5+N8ohHhignhN04+j4wlZi+Uc7yWorUBi3TEBx+8jof5/
+ emS1UzZYsm2L+nCck+Ug0AeYSfJgKBsJcuCMIpci6Jl/Lyaew7GJvgiYIF7xDT1sNyr9tIAcn
+ pdOyGs149nji6s7LFaJSO5QwqDXcW4WiIdgoXlTf9U/HGczVUuK8CvV5sHmPmL8/vKe8AdZ+w
+ 1xase+MB0Ab9DjvpHjTqubUe1zVI+UxRyVzwcVQnGO8j7vDqMRrsI3zBdfoup734cFRdtd8yc
+ VAM7FPXwbj2SP3SeIEhQqj7QHvTE4VLefD0dGAsPWNBW3ofOgVdJGrQ+2eAuODlQcl9IvJgfg
+ WCH0Q0ejFibqZ6OXoLK5NApvHFBhFpbA1V/2jn/FpHbez4OJzkpomHRhJs2LZt5Nfp16/w7EC
+ j4nhdwDTQzwJ0GjxRuGtBMJUuHrDS0vB6nPxSa/AAQ9JQ5Hrkl9LVjMkdkfzPtfoi9ZGK0HoQ
+ zm88eD2EiXHWabwxTlWLrts9CcclaYDSShUoNFwRaqTITMUoGd7riwicFbY5rmCZWb5I1HfH5
+ AUWweTJm+HZo0KyBFqFyyhJtOto2bssLvxsmi/akbZ4ixH0bUc5bZHeZQ89O9JH2L+62UrBUK
+ MLdxdV6AC3a0zcDAeWSpz6HaRYHkfPZ2+uFcDq4dslh4oD8NzuqLZCX2iruPGFGIbeNQI071X
+ xZABYpjE0crExT5lRGJHLcwtuf+uBqZgXwIZ9uG+n5rHSG8/+khsLIcHjcHO6s30Xnx4aziMz
+ 7m0GKXpbMUHzuL9vLWKFHV+J1+Tx8NO6dgC5WB5KriJAXaohkGcvvZcXotZCLEzbE2QPc3rYk
+ Z6FFTP1wotV4+Hr98nPCAd68+Zvgl1+zJLIkEsp6dT8X2nsUMBDwWaRlyNNHNRSH5IwLRs0pi
+ Vdz0rpu5tDOCvuUrGvxnBk5poIw=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi! Thanks for your report.
+Hi Martin,
 
-Side note: is there any relation to the thread[1] you posted this in?
-Doesn't look like it from here.
+Am 28.04.23 um 17:08 schrieb Martin Kaistra:
+> This series intends to bring AP mode support to the rtl8xxxu driver,
+> more specifically for the 8188f, because this is the HW I have.
+> The work is based on the vendor driver as I do not have access to
+> datasheets.
 
-Side note: discussing multiple unrelated issues in one thread increases
-the risk a lot that some or all of them are ignored:
-https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-kernel-bug-reports-are-ignored/
+I tried to enable AP mode for a 8188EU device (TP-Link TL-WN725N) with
+some mixed results.
 
-[1] https://lore.kernel.org/all/ZE0kndhsXNBIb1g7@debian.me/
+I added .supports_ap = 1 and .max_macid_num = 16 to rtl8188eu_fops.
 
-On 05.07.23 09:24, Jeff Chua wrote:
-> Latest linux-6.4
+The AP was visible and I once was able to connect to it. When connected,
+the link was stable, but I didn't do any benchmarks.
 
-What do you mean by that? From later in the mail it sounds like you mean
-latest mainline -- is that correct?
+Most of my tries I was not able to establish a connection (looks like
+timeouts) and once I got this message:
 
-> after June 27 crash my whole linux notebook once
-> iwlwifi is loaded. Anyone seeing this?
+     usb 1-4: rtl8xxxu_send_beacon_frame: Failed to read beacon valid bit
 
-I haven't heard of any such problems, but that doesn't have to mean much.
+The driver I am using currently is the out-of-tree driver rtl8188eu [1],
+which has a stable AP mode, but has some stability issues in managed mode.
 
-> Bisect? Or there's a patch for this?
-> 
-> # modprobe iwlwifi
-> ... Whole system frozen!
-> 
-> 
-> Here's my system before the crash ...
-> 
-> # dmesg
-> cfg80211: Loading compiled-in X.509 certificates for regulatory database
-> Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-> iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
-> iwlwifi 0000:00:14.3: api flags index 2 larger than supported by driver
-> thermal thermal_zone1: failed to read out thermal zone (-61)
-> iwlwifi 0000:00:14.3: Sorry - debug buffer is only 4096K while you
-> requested 65536K
-> 
-> # lspci
-> 00:14.3 Network controller: Intel Corporation Alder Lake-P PCH CNVi
-> WiFi (rev 01)
-> 
-> # linux git log
-> commit d528014517f2b0531862c02865b9d4c908019dc4 (HEAD -> master,
-> origin/master, origin/HEAD)
-> Author: Linus Torvalds <torvalds@linux-foundation.org>
-> Date:   Tue Jul 4 15:05:12 2023 -0700
-> 
-> # lsmodModule                  Size  Used by
-> iwlmvm                397312  0
-> mac80211              626688  1 iwlmvm
-> iwlwifi               307200  1 iwlmvm
-> cfg80211              413696  3 iwlmvm,iwlwifi,mac80211
-> 
-> 
-> Bisect?
+Please give me a hint if and how I may help tracking down the issue to
+enable AP mode for 8188EU as well.
 
-If none of the others CCed comes up with an idea within the next few
-hours then yes please!
+Best regards,
+Georg
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+[1]
+https://github.com/lwfinger/rtl8188eu/tree/v5.2.2.4
