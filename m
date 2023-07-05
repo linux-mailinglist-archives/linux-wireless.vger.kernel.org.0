@@ -2,112 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C6C7748379
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 13:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F91748392
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 13:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231703AbjGELtx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Jul 2023 07:49:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53040 "EHLO
+        id S231861AbjGEL5G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Jul 2023 07:57:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230521AbjGELtv (ORCPT
+        with ESMTP id S231851AbjGEL5F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Jul 2023 07:49:51 -0400
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2133.outbound.protection.outlook.com [40.107.215.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C273CE6E;
-        Wed,  5 Jul 2023 04:49:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kwtEzIe+sE0kwlWkKxPfU+vIm0D/voTtkQbWBoUa72QmN4rygzh8qFr3wQxM3maI6eh+SGBjq+0DXwKa5ej7wMzGp8xE5vxHj2YtxWVaD1PtBLkaJ+0brYHrM2TxtBMZ92YhjklLcwSL4/U7s7MwfYh0XMzg+SikFo2npHhgdecRpwxMZuUGtqeYqBwySLLbYSpy6BpDqTQkcjLzlBQQEGBsjp23/jlIjccdhmYcsVMrcZTQ4EbL0cyBMYML1tIY9j5tdgAL9M8IR2Ag20lO5QpckKMB4BwxAA09pUZq7FNlaEEIlnqgQPuKdKYK0rOuimzLEPTUcIVuKNf5jHXIQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tHtOPpeP9wbxVI/F+1cMeaMiMg7zyY5JnI0XNF2i/DI=;
- b=ARyGlH38aHwA2NK6uOT7aFsMk9hpMEMd50blkAd/EJ8UO/T7mql17Hv0gpTQpgBl7mfuzYfclnLVksEut8tafdRWkEFv3FwiMGgE7ooYK0TEC9AHIfzzTezXxB/Flrxtb7mx3KAj/7lt+g6fSF72+qU8RNNCOHmAZC1ZQBLVw8O+5R/jwHl/9ZWslBvStQRJWI3Foi9S3WIEzVqePQy/AUTMjNecX1qarnxOZEy2coKYVxKMiaaHhf/2bYXgIyaJGcUugudVNQe9MMtogrU2Nushx05g/cyYoMPkk/EnScfE0BjyYytrGQBAQzO1NzIFgt6xoMWdrDiJblzXJgFUOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tHtOPpeP9wbxVI/F+1cMeaMiMg7zyY5JnI0XNF2i/DI=;
- b=JLVAbe6Hfq7ePzSnYu9K8slIXwoN/kYUzgw9lD6aokPtiSCI9aWWddcJeaBhgDlJQvVA0MD+CNLqxa430YyZEzesybQzwjc3z0ylYp/ZfZvLiiPbN6hl2lM9Uh5nlbJQ6kfxN1/ZJzqiMcxUoG1rNgrJJVWiLNB9tpjsO2U+a5cptp+B06jqgBiZAc/BwNce7TYDBA49vl2DqQJVzc9wwU6r4JaM7CzWX+JIj3vixPV3sgozB7aOgNNsOAhNROAAPi04Y/YGRtMvfZKBfUPl+QapZ/98jdYca1zdFHhXjVsT+IpGxEYoNNRLLCdpSUn3fNmD7P4PLsIi+EGpMI1owQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SG2PR06MB5288.apcprd06.prod.outlook.com (2603:1096:4:1dc::9) by
- SI2PR06MB4139.apcprd06.prod.outlook.com (2603:1096:4:fb::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6544.19; Wed, 5 Jul 2023 11:49:43 +0000
-Received: from SG2PR06MB5288.apcprd06.prod.outlook.com
- ([fe80::c2b:41ab:3b14:f920]) by SG2PR06MB5288.apcprd06.prod.outlook.com
- ([fe80::c2b:41ab:3b14:f920%7]) with mapi id 15.20.6565.016; Wed, 5 Jul 2023
- 11:49:43 +0000
-From:   Minjie Du <duminjie@vivo.com>
-To:     Markus.Elfring@web.de,
+        Wed, 5 Jul 2023 07:57:05 -0400
+Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59C441723;
+        Wed,  5 Jul 2023 04:57:00 -0700 (PDT)
+Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-47e25709402so1453090e0c.0;
+        Wed, 05 Jul 2023 04:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688558219; x=1691150219;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SYzFOXrpHjMbau6LdBUr//Enq3hi9M8IF1iSIElak94=;
+        b=g6COHjjX6H1jp8F3+hb7jSPsaJqivsIH24rJGOJVcEtbKhzNF5ISzY8ii3ouLDdwcP
+         YlKNvcDTJHCk49YdLyZcOxvHeeP1GYrPIXXrzQSzOqPCWEllvjfGlhZ1eK/7+j1hTBLW
+         eAOtb8dY6Lv70Z4+i6oaKkkTLheyO0o2pBUemkz9wq/RBZ6FSL/l7TjLLYcSnfId9ebn
+         yAHVH3t1kYwr/2R1FfLOO5ZNsKP4yonuPzzw5D6Dybr1CeP5QpPpY6m9zac/uLpWBq7W
+         lDihrjhQ8hF/Qd9ro0sv26veYR8HAuvbB9gk9I+3vX8BuZZmGA4464B3fwy2NXEIK4AU
+         PzCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688558219; x=1691150219;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SYzFOXrpHjMbau6LdBUr//Enq3hi9M8IF1iSIElak94=;
+        b=MisjJZYCb66BMiLxeNKsZOedgB7dUmO6qox/37JBIEFyVcXC5H2JyZK80wMLvgaVzi
+         GPRa9DUCut3VRhnXYFHxUSR9UKlX8BeV15OvFUTkPnolpnfEzrOUpUtxQXSdAE+CIi1d
+         k4zvzxfJ+gOe+o9/mcRYn8UJBcCDf7gXaRWdRHXMdsd5nYsaz3MLP5CqbiICY7CiGFTk
+         yuUso9ihSzMOgUfNUU1TbdN2hBhj0EuWsA2gASCgTM+W/fGYGoNcqKSQCyr39bWvBHbV
+         IFdqlvvD850fwOnYqGdbuUuu+IqL7oybfRsctROn10/sTE8WsXBZPv2gIDx4LB8JNhTd
+         yrow==
+X-Gm-Message-State: ABy/qLa2JphGAgRFzoI8KoyFhqwB7otNoypU72tHdr2ZE9BBEPE7OTnm
+        YruDwa2oZo1mJwRb42g/mVsWz5AV+1KL1EA0V289nu48HaTWZb8q
+X-Google-Smtp-Source: APBJJlFFhOiBBRrEk3tyW0G/UO66q38pjXFSGKhoVHIsv25St86l3kpyWAQnFh8VA2c8QwfNLNINF3KnHnHTkCORxnE=
+X-Received: by 2002:a1f:4ec6:0:b0:47e:3f56:e91e with SMTP id
+ c189-20020a1f4ec6000000b0047e3f56e91emr3134115vkb.15.1688558219280; Wed, 05
+ Jul 2023 04:56:59 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230429020951.082353595@lindbergh.monkeyblade.net>
+ <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com>
+ <ZE0kndhsXNBIb1g7@debian.me> <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
+ <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com> <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info>
+In-Reply-To: <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info>
+From:   Jeff Chua <jeff.chua.linux@gmail.com>
+Date:   Wed, 5 Jul 2023 19:56:48 +0800
+Message-ID: <CAAJw_Zu=MPtGPARgCB2fteP+7F793YDFXE9RuzSH8EqYBS-OOw@mail.gmail.com>
+Subject: Re: Linux-6.5 iwlwifi crash
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     lkml <linux-kernel@vger.kernel.org>,
         Gregory Greenman <gregory.greenman@intel.com>,
         Kalle Valo <kvalo@kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Minjie Du <duminjie@vivo.com>,
-        linux-wireless@vger.kernel.org (open list:INTEL WIRELESS WIFI LINK
-        (iwlwifi)), linux-kernel@vger.kernel.org (open list)
-Cc:     opensource.kernel@vivo.com
-Subject: [PATCH v2] wifi: iwlwifi: Remove a duplicate assignment in iwl_dbgfs_amsdu_len_write()
-Date:   Wed,  5 Jul 2023 19:49:34 +0800
-Message-Id: <20230705114934.16523-1-duminjie@vivo.com>
-X-Mailer: git-send-email 2.39.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TY2PR04CA0010.apcprd04.prod.outlook.com
- (2603:1096:404:f6::22) To SG2PR06MB5288.apcprd06.prod.outlook.com
- (2603:1096:4:1dc::9)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SG2PR06MB5288:EE_|SI2PR06MB4139:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48ba11cc-e259-478d-77a2-08db7d4dec6f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wUTZ38OsWk9DX63shZtTVSFENairG9ZFWNYuFlAMqLyNt9n9076CZCqiVNQe1Y7Jb7TX/8fNDlfBU/SBu+ZQNKPxeTFbNzN3wvsoCtt4T6i34qpSK0Q0Cs0o1PMl+eWZ8RRlmMTyp7xVlXTJ1BCpz3a+gOSucG5lQ57VXNDPs1N1YG+QWnvLk1JH6QmbjwcrQzgXayaQPfSWyysaOIPqeCRH48AZbWxNIW1BUWBnYaOCJs9a8j32evaUt/m+I3XctSoQJ0Qq5hElJN9TN0VLxik0+FhPN5oQJAFf/5ndLOeJ9HxWYP8ybL78jp6WHvcxPO8jN9o7vmzsRz4gpODXkGG7Zkcf3GMsH4O3hbFv7KAEIXG4UTDEydTMrloZdC6VUq+ZklcrYuHe1h2xA8Eu8SUw5h7MMDx58xtQZC+azsP314E2t0FOXbqUoZRNLjInxzYFBarRtI0TN5TryHBSnvIHAJJex7mBLTyLB9xmbKbHtukU49TD+9AGQQOvJpfR+/9DIf2oX+BafciMINWnBuNGTwmgbXHRTLgQyyDohlqT7k/RxQvti4ONp2VBJPI8OGIhhZsKmw13MXldpwLFHFloUJ7OYb6hy400eB/EMbwEd8h6W6xXX/zDgzQ/LAxp
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB5288.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(39860400002)(346002)(366004)(396003)(451199021)(107886003)(86362001)(8676002)(5660300002)(110136005)(8936002)(26005)(6506007)(1076003)(52116002)(478600001)(186003)(6486002)(6512007)(66476007)(6666004)(66946007)(316002)(4326008)(66556008)(41300700001)(2616005)(4744005)(2906002)(83380400001)(36756003)(38350700002)(38100700002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?5mOm73etzpfHzaRrW56McHtRRxdieaTrO+fVKt0WVPytNBZ29NXc6RjvGW6k?=
- =?us-ascii?Q?ZFES4jd0etvz1KJgF+NWiCwyDFe4bw7rBW9JSCt0aVUnpnIfh2XtmAI4bt2b?=
- =?us-ascii?Q?x5OKFD3R4Ht22m2oEXP0+bW+B/qaIaPlqpw/NfdGjwU9JwjSRvQER8GCpWnu?=
- =?us-ascii?Q?l2nBpYPmuRHmEzT8WO1Z2XiuayFJOu9K5jKnSQ1DTGk7xSDi/T5yWVRgaZ6N?=
- =?us-ascii?Q?n1Rb1VY0yge3q5EsS5zBUA3Xw4sCaAM+DH1lG1pCO3Y8/9CV2kpMFRL+XYOz?=
- =?us-ascii?Q?d2iWJsOjW+lOx5eGvL1FmZeJ2+YNvyz2tc3Z2AvQFtN4f92ev+Rrs2mzXTDk?=
- =?us-ascii?Q?UlLC/rt0app+8OCwKTyYD2t3fFt3kUJbQm6Jsu52KG7dn33ZZ0n50txCfknM?=
- =?us-ascii?Q?LH3ixeF5vtJFW86Jr0fNtKhAHfPQso5mHvDjOc2HF7dglXs9a5Drm29f+FtZ?=
- =?us-ascii?Q?D2nKNObClNEmRkXRL923hy2feJeG8qXSFe8FG0JoMyz8XCiFlWY7/UgYQzpb?=
- =?us-ascii?Q?Ves1QieZiEE5ggzoeFXGdgDSgVACNePCmL/pihDbCxcd76GZqOj2HW3P5Z6d?=
- =?us-ascii?Q?d0Raxj6slgChNxPIF1E6+LzQB1HM+e1PUVr0O1O0WHpoTpfi8PaB0Qd5x3wo?=
- =?us-ascii?Q?MitLB9ZtUi6/DDaD7MI04Wr5spHo49sVvbOmbCaPIakuyZXFai1VcIBLaPoT?=
- =?us-ascii?Q?ZAn/5FFg25YOTveQxgeXX6viHKSLfzS8Vyb3ooZdfbN9X8KB26a/uTnMvUb3?=
- =?us-ascii?Q?oAZxdBLWlm2HlruERjyTCQNiOuuHnvK8tPNX/3mKJ9zgY7xlpdQdG6VQnuv8?=
- =?us-ascii?Q?mgRg+0bnCT03BVB0vBO9mv13AXZeFx1gXQEEfu2YPPpov6sBSNaC7nm3HpHa?=
- =?us-ascii?Q?jVYJ8XeqtKDMPKBs9HfPu74UKIzP2hygft6mAUUTA4Dq5kHe0V64o/OZjW9g?=
- =?us-ascii?Q?1kbbN1tSfe1IQ9hB6lKJ+fbxNXwoZfLNk94OOplMXYwWKYTT8dojmqE5Mbpb?=
- =?us-ascii?Q?sAqBzPoop42SvQ1fi+jua9i80rLc/QLmbr3mrI4ijinPiHiMwIJUvdHDh6jK?=
- =?us-ascii?Q?+J1NHoHwjgQnBleLSh33FnnJu/TZMbLnNR4CJeLuogwYFCODWSGLmEhAKijo?=
- =?us-ascii?Q?VYisxMLJ5hCTpVAMvRfzStXiuTme/oC8UVHGK5k3lGHaOWNW4ToRxG9xQFwM?=
- =?us-ascii?Q?mx/uzoqXGpByPAHWjh9LL1idID6GfERli2xXvhplyhRn6DfaO2HOXhB1njz8?=
- =?us-ascii?Q?Wy//wd6dZ9Or/AqQxhRvJCVmP6DX/F/PInNAIVkl9z+wvf5TZz3pvuvI7vbw?=
- =?us-ascii?Q?gsMkjEWjUkkHGD4oqq2eMl1I39tJiUBbIsXD8yQ0+RTTUTtTdNxH8mQCs1Qf?=
- =?us-ascii?Q?JT5PSU1VJJyLC50rsCwChusJ3bODWhW6hHcBlh3FrSEPrfQHwnwJ7kFkdjHp?=
- =?us-ascii?Q?a+uV1mkam44tKZp5k34O1tdEk3Fo7yzBzhVFJtkuNeepB6IlZeg0mvicES2K?=
- =?us-ascii?Q?1Bc9SpD2VePl3luKsIRzHQ4zW/YgvTZtEfjH0cct+gseXK90YjGo/eoRnyQs?=
- =?us-ascii?Q?kKQzsVjwK8GHdBqVlpBz98DJum+nlRjIBuoUeljh?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48ba11cc-e259-478d-77a2-08db7d4dec6f
-X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB5288.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jul 2023 11:49:43.7640
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2pubLkWZV5qxziOnL4Mf5c4Am4+c6IY9dERhIrSbFSZVf8svabo7HGI0e1oz+Ue9tsROjyd07/KD9OCThrcnag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR06MB4139
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Bagas Sanjaya <bagasdotme@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -115,25 +80,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Delete a duplicate statement from this function implementation.
+On Wed, Jul 5, 2023 at 4:37=E2=80=AFPM Linux regression tracking (Thorsten
+Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> Hi! Thanks for your report.
+>
+> Side note: is there any relation to the thread[1] you posted this in?
 
-Signed-off-by: Minjie Du <duminjie@vivo.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 1 -
- 1 file changed, 1 deletion(-)
+Sorry, I was just posting to the same email list that I had reported
+about a different wifi list earlier. No relation to this, but it's a
+new wifi issue.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index cf27f106d..7f48457a9 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -455,7 +455,6 @@ static ssize_t iwl_dbgfs_amsdu_len_write(struct ieee80211_link_sta *link_sta,
- 	if (amsdu_len) {
- 		mvm_link_sta->orig_amsdu_len = link_sta->agg.max_amsdu_len;
- 		link_sta->agg.max_amsdu_len = amsdu_len;
--		link_sta->agg.max_amsdu_len = amsdu_len;
- 		for (i = 0; i < ARRAY_SIZE(link_sta->agg.max_tid_amsdu_len); i++)
- 			link_sta->agg.max_tid_amsdu_len[i] = amsdu_len;
- 	} else {
--- 
-2.39.0
+> Doesn't look like it from here.
+>
+> Side note: discussing multiple unrelated issues in one thread increases
+> the risk a lot that some or all of them are ignored:
+> https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-k=
+ernel-bug-reports-are-ignored/
+>
+> [1] https://lore.kernel.org/all/ZE0kndhsXNBIb1g7@debian.me/
+>
+> On 05.07.23 09:24, Jeff Chua wrote:
+> > Latest linux-6.4
+>
+> What do you mean by that? From later in the mail it sounds like you mean
+> latest mainline -- is that correct?
 
+It's from linux git pull. It's 6.5-rc but I didn't write that way
+becuase Linus's branch is still 6.4 ... that 6.5-rc0 or rc1 should
+have more appropriate.
+
+> > after June 27 crash my whole linux notebook once
+> > iwlwifi is loaded. Anyone seeing this?
+>
+> I haven't heard of any such problems, but that doesn't have to mean much.
+
+> > Bisect? Or there's a patch for this?
+> >
+> > # modprobe iwlwifi
+> > ... Whole system frozen!
+> >
+> >
+> > Here's my system before the crash ...
+> >
+> > # dmesg
+> > cfg80211: Loading compiled-in X.509 certificates for regulatory databas=
+e
+> > Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+> > iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
+> > iwlwifi 0000:00:14.3: api flags index 2 larger than supported by driver
+> > thermal thermal_zone1: failed to read out thermal zone (-61)
+> > iwlwifi 0000:00:14.3: Sorry - debug buffer is only 4096K while you
+> > requested 65536K
+> >
+> > # lspci
+> > 00:14.3 Network controller: Intel Corporation Alder Lake-P PCH CNVi
+> > WiFi (rev 01)
+> >
+> > # linux git log
+> > commit d528014517f2b0531862c02865b9d4c908019dc4 (HEAD -> master,
+> > origin/master, origin/HEAD)
+> > Author: Linus Torvalds <torvalds@linux-foundation.org>
+> > Date:   Tue Jul 4 15:05:12 2023 -0700
+> >
+> > # lsmodModule                  Size  Used by
+> > iwlmvm                397312  0
+> > mac80211              626688  1 iwlmvm
+> > iwlwifi               307200  1 iwlmvm
+> > cfg80211              413696  3 iwlmvm,iwlwifi,mac80211
+> >
+> >
+> > Bisect?
+>
+> If none of the others CCed comes up with an idea within the next few
+> hours then yes please!
+
+I will wait for a day, then bisect.
+
+Thank you!
+
+
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
