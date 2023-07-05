@@ -2,110 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B809A747A8B
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 01:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6AA747AAC
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 02:17:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231338AbjGDXwD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Jul 2023 19:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56902 "EHLO
+        id S230464AbjGEART convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Jul 2023 20:17:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229671AbjGDXwC (ORCPT
+        with ESMTP id S230417AbjGEARS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Jul 2023 19:52:02 -0400
-X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 04 Jul 2023 16:52:02 PDT
-Received: from mx-lax3-1.ucr.edu (mx-lax3-1.ucr.edu [169.235.156.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 357E6B2
-        for <linux-wireless@vger.kernel.org>; Tue,  4 Jul 2023 16:52:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
-  t=1688514722; x=1720050722;
-  h=mime-version:from:date:message-id:subject:to;
-  bh=wSdyC5891jJbFmTuKtYjfgMjLQS/fVpwoPNKrqoId3M=;
-  b=LQt8CHbz0PTsLv7YQAGQABnaue47u6IDohF+EIslsPf5zWcenvr6sBvq
-   sBcq4rXz8SjtsSm/GP4Z6sjaRUXUsQhadM936GxSFHJ2EkNxzip01vnur
-   +XZThu57YdAEtVTWg74oiwkKtFdJKwFTRzppnD1nK/vsf2Bau8uJZgPZ1
-   qYU04s1fP8U5npSgq7jGlhBUhkO3jKqTUaWsC4g2gj9R/RtyHzG4kJsDX
-   l3pnr0LzPHRdBFJgxbVoDDGFiC724jz2prObjp23DVOKDEVnSfR8gQ9tf
-   RCAlpCzKkofBqq8sHNa7/ZqF/1TRazAohYD+QvxwE4B4iUIXwGNCHqi0T
-   g==;
-Received: from mail-wr1-f72.google.com ([209.85.221.72])
-  by smtp-lax3-1.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Jul 2023 16:50:59 -0700
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3143c941d0bso889567f8f.1
-        for <linux-wireless@vger.kernel.org>; Tue, 04 Jul 2023 16:50:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ucr.edu; s=rmail; t=1688514657; x=1691106657;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/mXMcy887qPFqnoPqho388ScuVrFV543nUjedX0tcHQ=;
-        b=bzV6Rgax6AZfFeVKbuPFqnvFeBXJEjwMahX2psJdYDuKMlY4Dw92ZLBWN6XXHX1Xq/
-         aZdYx5Hluixt0Os3s0kds/ggce1w/hGlbUNWkWecszOUKx3vFI0mcKzME6KbKBA8pnlL
-         DOAen/gLefwSU5jiBe7Z+0IxY5DivM2BptD28=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688514657; x=1691106657;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/mXMcy887qPFqnoPqho388ScuVrFV543nUjedX0tcHQ=;
-        b=YkQ5g9kaDGByhk0dGt7CdD2ZIVgPzxmoDQ8OM1NMHsQ29MA6bggmct5So0wpcORlce
-         L7LdL4oiw34DmFhEyW8MqCjizUIqrj239JXrhIQXRH9B96bvA1g24I/DOTHLnBiM4cXw
-         QGoMJc2VWr4qL6lRBFPWbKyS655QoW+p5gumDQBreaPyziG+sxMdoFYkzp41oDagtMad
-         eAUwCfDGvLJBJrTI35Np9lAtmKmmdFJq/KtWb7BpauTKY9MvoO8e+S27dQKewrO0Hs9r
-         rcuuJ/llGUaxYX6k3ja0w9Og0h0PM8pGGsZcrnnx/xzR3UKfR5ZlaG0EY0r8UUSfSlZQ
-         U55w==
-X-Gm-Message-State: ABy/qLYO5BxRchbYt1NxldtbjZfgniP+g9DrtmD+2UkUWXDALofa7crb
-        YvJv3gMSV7r80e9JEbrqLh2x8aZbDs2xBdJN0omSv6ugRPXSk3J1S9fE9sYbaOkOUK2Rv/q9PGD
-        W6VOog6MxOpqEDJK3lRA7JXX/1apjajuFEZ2ian49eKXX
-X-Received: by 2002:a5d:5148:0:b0:314:3c84:4da2 with SMTP id u8-20020a5d5148000000b003143c844da2mr3793303wrt.13.1688514657473;
-        Tue, 04 Jul 2023 16:50:57 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFopcbRFlM/QXxH3jqxO61w82vcVsCVkdkO//2H4gliBuit9v82WgR6YBumb+o9c6O+3lD56vmkqTBlRIC1K6Y=
-X-Received: by 2002:a5d:5148:0:b0:314:3c84:4da2 with SMTP id
- u8-20020a5d5148000000b003143c844da2mr3793298wrt.13.1688514657217; Tue, 04 Jul
- 2023 16:50:57 -0700 (PDT)
+        Tue, 4 Jul 2023 20:17:18 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AF13C10EC;
+        Tue,  4 Jul 2023 17:17:15 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3650GtYfA022836, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3650GtYfA022836
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 5 Jul 2023 08:16:55 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 5 Jul 2023 08:16:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Wed, 5 Jul 2023 08:16:58 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Wed, 5 Jul 2023 08:16:58 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Zhang Shurong <zhang_shurong@foxmail.com>
+CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2] wifi: rtw89: debug: fix error code in rtw89_debug_priv_send_h2c_set()
+Thread-Topic: [PATCH v2] wifi: rtw89: debug: fix error code in
+ rtw89_debug_priv_send_h2c_set()
+Thread-Index: AQHZrphiwDYjKTiieUyOq1vcNBvSGa+qS9AA
+Date:   Wed, 5 Jul 2023 00:16:58 +0000
+Message-ID: <023e7728935f49bf8307616691322c9f@realtek.com>
+References: <tencent_54814178D4285CA3D64B8CDC90D49A6CB10A@qq.com>
+In-Reply-To: <tencent_54814178D4285CA3D64B8CDC90D49A6CB10A@qq.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-From:   Yu Hao <yhao016@ucr.edu>
-Date:   Tue, 4 Jul 2023 16:50:45 -0700
-Message-ID: <CA+UBctBLWF14TsgT4OfanmnxTqbm9mNxyHhjJqpFo7c+kdjDsw@mail.gmail.com>
-Subject: [PATCH] net: wireless: cisco: Fix possible uninit bug
-To:     kvalo@kernel.org, keescook@chromium.org, gustavoars@kernel.org,
-        Jason@zx2c4.com, linux-wireless@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The struct cap_rid should be initialized by function readCapabilityRid.
-However, there is not return value check. Iit is possible that
-the function readCapabilityRid returns error code and cap_rid.softCap
-is not initialized. But there is a read later for this field.
 
-Signed-off-by: Yu Hao <yhao016@ucr.edu>
----
- drivers/net/wireless/cisco/airo.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/cisco/airo.c
-b/drivers/net/wireless/cisco/airo.c
-index 7c4cc5f5e1eb..b3736d76a5d5 100644
---- a/drivers/net/wireless/cisco/airo.c
-+++ b/drivers/net/wireless/cisco/airo.c
-@@ -6950,8 +6950,11 @@ static int airo_get_range(struct net_device *dev,
-    CapabilityRid cap_rid;      /* Card capability info */
-    int     i;
-    int     k;
-+   int     status;
+> -----Original Message-----
+> From: Zhang Shurong <zhang_shurong@foxmail.com>
+> Sent: Wednesday, July 5, 2023 12:55 AM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: kvalo@kernel.org; linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org; Zhang Shurong
+> <zhang_shurong@foxmail.com>
+> Subject: [PATCH v2] wifi: rtw89: debug: fix error code in rtw89_debug_priv_send_h2c_set()
+> 
+> If there is a failure during rtw89_fw_h2c_raw() rtw89_debug_priv_send_h2c
+> should return negative error code instead of a positive value count.
+> 
+> Fix this bug by returning correct error code.
+> 
+> The changes in this version:
+> - fix some compile error
 
--   readCapabilityRid(local, &cap_rid, 1);
-+   status = readCapabilityRid(local, &cap_rid, 1);
-+   if (status != SUCCESS)
-+       return ERROR;
+As Larry mentioned, this should be added after delimiter '---'.
 
-    dwrq->length = sizeof(struct iw_range);
-    memset(range, 0, sizeof(*range));
--- 
-2.34.1
+> 
+> Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+> 
+> update
+
+Also, remove this 'update'.
+
+> ---
+>  drivers/net/wireless/realtek/rtw89/debug.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+> index 1db2d59d33ff..a679f79b85ec 100644
+> --- a/drivers/net/wireless/realtek/rtw89/debug.c
+> +++ b/drivers/net/wireless/realtek/rtw89/debug.c
+> @@ -3026,17 +3026,18 @@ static ssize_t rtw89_debug_priv_send_h2c_set(struct file *filp,
+>         struct rtw89_debugfs_priv *debugfs_priv = filp->private_data;
+>         struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
+
+Move 'int err = 0' here in reverse X'mas tree order, and use 'int ret = 0' instead,
+so people don't need to guess if there is special meaning of 'err', which is just
+a regular error code. 
+
+>         u8 *h2c;
+> +       int err = 0;
+>         u16 h2c_len = count / 2;
+> 
+>         h2c = rtw89_hex2bin_user(rtwdev, user_buf, count);
+>         if (IS_ERR(h2c))
+>                 return -EFAULT;
+> 
+> -       rtw89_fw_h2c_raw(rtwdev, h2c, h2c_len);
+> +       err = rtw89_fw_h2c_raw(rtwdev, h2c, h2c_len);
+> 
+>         kfree(h2c);
+> 
+> -       return count;
+> +       return err ? err : count;
+>  }
+> 
+>  static int
+> --
+> 2.41.0
+
