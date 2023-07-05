@@ -2,166 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F91748392
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 13:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4141F7487AF
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jul 2023 17:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231861AbjGEL5G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Jul 2023 07:57:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56864 "EHLO
+        id S233161AbjGEPTM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Jul 2023 11:19:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231851AbjGEL5F (ORCPT
+        with ESMTP id S231676AbjGEPTM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Jul 2023 07:57:05 -0400
-Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59C441723;
-        Wed,  5 Jul 2023 04:57:00 -0700 (PDT)
-Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-47e25709402so1453090e0c.0;
-        Wed, 05 Jul 2023 04:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688558219; x=1691150219;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SYzFOXrpHjMbau6LdBUr//Enq3hi9M8IF1iSIElak94=;
-        b=g6COHjjX6H1jp8F3+hb7jSPsaJqivsIH24rJGOJVcEtbKhzNF5ISzY8ii3ouLDdwcP
-         YlKNvcDTJHCk49YdLyZcOxvHeeP1GYrPIXXrzQSzOqPCWEllvjfGlhZ1eK/7+j1hTBLW
-         eAOtb8dY6Lv70Z4+i6oaKkkTLheyO0o2pBUemkz9wq/RBZ6FSL/l7TjLLYcSnfId9ebn
-         yAHVH3t1kYwr/2R1FfLOO5ZNsKP4yonuPzzw5D6Dybr1CeP5QpPpY6m9zac/uLpWBq7W
-         lDihrjhQ8hF/Qd9ro0sv26veYR8HAuvbB9gk9I+3vX8BuZZmGA4464B3fwy2NXEIK4AU
-         PzCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688558219; x=1691150219;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SYzFOXrpHjMbau6LdBUr//Enq3hi9M8IF1iSIElak94=;
-        b=MisjJZYCb66BMiLxeNKsZOedgB7dUmO6qox/37JBIEFyVcXC5H2JyZK80wMLvgaVzi
-         GPRa9DUCut3VRhnXYFHxUSR9UKlX8BeV15OvFUTkPnolpnfEzrOUpUtxQXSdAE+CIi1d
-         k4zvzxfJ+gOe+o9/mcRYn8UJBcCDf7gXaRWdRHXMdsd5nYsaz3MLP5CqbiICY7CiGFTk
-         yuUso9ihSzMOgUfNUU1TbdN2hBhj0EuWsA2gASCgTM+W/fGYGoNcqKSQCyr39bWvBHbV
-         IFdqlvvD850fwOnYqGdbuUuu+IqL7oybfRsctROn10/sTE8WsXBZPv2gIDx4LB8JNhTd
-         yrow==
-X-Gm-Message-State: ABy/qLa2JphGAgRFzoI8KoyFhqwB7otNoypU72tHdr2ZE9BBEPE7OTnm
-        YruDwa2oZo1mJwRb42g/mVsWz5AV+1KL1EA0V289nu48HaTWZb8q
-X-Google-Smtp-Source: APBJJlFFhOiBBRrEk3tyW0G/UO66q38pjXFSGKhoVHIsv25St86l3kpyWAQnFh8VA2c8QwfNLNINF3KnHnHTkCORxnE=
-X-Received: by 2002:a1f:4ec6:0:b0:47e:3f56:e91e with SMTP id
- c189-20020a1f4ec6000000b0047e3f56e91emr3134115vkb.15.1688558219280; Wed, 05
- Jul 2023 04:56:59 -0700 (PDT)
+        Wed, 5 Jul 2023 11:19:12 -0400
+Received: from out203-205-221-155.mail.qq.com (out203-205-221-155.mail.qq.com [203.205.221.155])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 682BD170B;
+        Wed,  5 Jul 2023 08:19:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1688570346;
+        bh=2d4C37vHOrdi0OO9Rhqhynwy01/E8ygnR5bhbW9of4c=;
+        h=From:To:Cc:Subject:Date;
+        b=J3bPwYiuTNcKrv9uudBp97Hli+sKQ10EQ2BsQzdwHC6pay5LMfCGvH+6rrP4Yp6ZE
+         SzCOgADoygFJXmf4/RwqqgwbqoqOY4kurzmP1VQFpnU2TEpIarX2Qq4QTjIeJa6QZP
+         cN1FU5JqURzpQI4OzcFSNv8IKBmIYoh4YPC5jYqs=
+Received: from KernelDevBox.byted.org ([180.184.49.4])
+        by newxmesmtplogicsvrszc5-0.qq.com (NewEsmtp) with SMTP
+        id 2AE37A77; Wed, 05 Jul 2023 23:10:46 +0800
+X-QQ-mid: xmsmtpt1688569846t1sorvnm6
+Message-ID: <tencent_D74C0118F55D22E6A6B1767CCB01CCC1E305@qq.com>
+X-QQ-XMAILINFO: NMmJpeSXIGQNty4hmHbo9gpwyyQqd59lGplGiTGUNZ6P7tsjc5H4PcG+vnZ16o
+         XXVuWcXfP9ovPspBmVHpO3C48L2vfODSOXaD3SOhqTzhE6teaCQq1LcbFVVpj6URmrtjKLbfgqmi
+         sZZfHQSsGlYWrTlvuZszL3r+Cfj1/HuwCv7gHvuXrPEAiudIElwgQrGg94ESE1iWTiOYDf8lZ+oi
+         /GXmOxV+xQvZ87O4vJbJNqz7Bj2Bz6yIXA8Jh0XGcEU4rLrrp8yDFaoKf73PqMxhi/18kxW41fv2
+         kUhkTPljwHhfD3tPOvA3flK/2HnzXwUpQl72xS5KCBjjxAplaC2B7pVA2Ef3qeZQmJJ2YGFbnUse
+         RnLCJ5by1aSiFpINk1fG/9OnYO0RgghRUTdFjhazTzq6ckjsinqAWWmsomYQOvMhvNF528sTKA5e
+         F5fYeAmNdWtTb/ico6yF4Rgvx7nkfH+XbqhYBR7gGBxnco/qU2wlKZULBMg1w2vmPq6sYmNkHp5/
+         jy+v66k2WpyNmiiiLnbpoNCmZqSJ8ata6weAY3pZcNrZHu+MW/NDFdJ1qEWf0yVLyeEoII7sBkOa
+         okUcHsB/rdU2UBgO5IB22SME6jUxS3ZEb5WG0NfpI7pMzveiLAzTGNIUtIsTO36TpAsUFdpclxYZ
+         IuSpQK54C0st0wPxsLsc0Nkw6+7cp11rg2Y7jMEbIKpFUPsGluPoKsB0z/O5dsRC8KCcvbP6+JqD
+         t9oF7haTqxQSzUuDbfCTvLnQwxL0c/36zfO71WShmUtEOca87jyxBsJsXXtISXyipwl++Sb5my7s
+         ibMig+SWQ5MeUgS38aKIbUZz3JucedqeyLYAqNMZ+jTq8IxiuCA4mGSL8JeGcprFjMnTttCa0b3j
+         2GA3yoWaHzoJdcefwY3UXC7iN/V/kTBKSCsGlX8yWYMOcI95sJ/5roUYW6IwPsfI7ofw2Cozbxz6
+         2D9QnLhenWOHN3WcTko1YBBN+DuTzvTlHD0PEsg4V+hHrvraA2AOlmrOt3T8gETi1JjIUPoAs=
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+From:   Zhang Shurong <zhang_shurong@foxmail.com>
+To:     pkshih@realtek.com
+Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Zhang Shurong <zhang_shurong@foxmail.com>
+Subject: [PATCH v3] wifi: rtw89: debug: fix error code in rtw89_debug_priv_send_h2c_set()
+Date:   Wed,  5 Jul 2023 23:10:44 +0800
+X-OQ-MSGID: <20230705151044.1159881-1-zhang_shurong@foxmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20230429020951.082353595@lindbergh.monkeyblade.net>
- <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com>
- <ZE0kndhsXNBIb1g7@debian.me> <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
- <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com> <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info>
-In-Reply-To: <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info>
-From:   Jeff Chua <jeff.chua.linux@gmail.com>
-Date:   Wed, 5 Jul 2023 19:56:48 +0800
-Message-ID: <CAAJw_Zu=MPtGPARgCB2fteP+7F793YDFXE9RuzSH8EqYBS-OOw@mail.gmail.com>
-Subject: Re: Linux-6.5 iwlwifi crash
-To:     Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     lkml <linux-kernel@vger.kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 4:37=E2=80=AFPM Linux regression tracking (Thorsten
-Leemhuis) <regressions@leemhuis.info> wrote:
->
-> Hi! Thanks for your report.
->
-> Side note: is there any relation to the thread[1] you posted this in?
+If there is a failure during rtw89_fw_h2c_raw() rtw89_debug_priv_send_h2c
+should return negative error code instead of a positive value count.
+Fix this bug by returning correct error code.
 
-Sorry, I was just posting to the same email list that I had reported
-about a different wifi list earlier. No relation to this, but it's a
-new wifi issue.
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
 
-> Doesn't look like it from here.
->
-> Side note: discussing multiple unrelated issues in one thread increases
-> the risk a lot that some or all of them are ignored:
-> https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-k=
-ernel-bug-reports-are-ignored/
->
-> [1] https://lore.kernel.org/all/ZE0kndhsXNBIb1g7@debian.me/
->
-> On 05.07.23 09:24, Jeff Chua wrote:
-> > Latest linux-6.4
->
-> What do you mean by that? From later in the mail it sounds like you mean
-> latest mainline -- is that correct?
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+---
+Changes in v2:
+- fixed compile error
+Changes in v3:
+- Corrected the annotation of this patch
+- Used variable ret instead of err
+---
+ drivers/net/wireless/realtek/rtw89/debug.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-It's from linux git pull. It's 6.5-rc but I didn't write that way
-becuase Linus's branch is still 6.4 ... that 6.5-rc0 or rc1 should
-have more appropriate.
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index 1db2d59d33ff..a4bbac916e22 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -3026,17 +3026,18 @@ static ssize_t rtw89_debug_priv_send_h2c_set(struct file *filp,
+ 	struct rtw89_debugfs_priv *debugfs_priv = filp->private_data;
+ 	struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
+ 	u8 *h2c;
++	int ret;
+ 	u16 h2c_len = count / 2;
+ 
+ 	h2c = rtw89_hex2bin_user(rtwdev, user_buf, count);
+ 	if (IS_ERR(h2c))
+ 		return -EFAULT;
+ 
+-	rtw89_fw_h2c_raw(rtwdev, h2c, h2c_len);
++	ret = rtw89_fw_h2c_raw(rtwdev, h2c, h2c_len);
+ 
+ 	kfree(h2c);
+ 
+-	return count;
++	return ret ? ret : count;
+ }
+ 
+ static int
+-- 
+2.30.2
 
-> > after June 27 crash my whole linux notebook once
-> > iwlwifi is loaded. Anyone seeing this?
->
-> I haven't heard of any such problems, but that doesn't have to mean much.
-
-> > Bisect? Or there's a patch for this?
-> >
-> > # modprobe iwlwifi
-> > ... Whole system frozen!
-> >
-> >
-> > Here's my system before the crash ...
-> >
-> > # dmesg
-> > cfg80211: Loading compiled-in X.509 certificates for regulatory databas=
-e
-> > Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-> > iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
-> > iwlwifi 0000:00:14.3: api flags index 2 larger than supported by driver
-> > thermal thermal_zone1: failed to read out thermal zone (-61)
-> > iwlwifi 0000:00:14.3: Sorry - debug buffer is only 4096K while you
-> > requested 65536K
-> >
-> > # lspci
-> > 00:14.3 Network controller: Intel Corporation Alder Lake-P PCH CNVi
-> > WiFi (rev 01)
-> >
-> > # linux git log
-> > commit d528014517f2b0531862c02865b9d4c908019dc4 (HEAD -> master,
-> > origin/master, origin/HEAD)
-> > Author: Linus Torvalds <torvalds@linux-foundation.org>
-> > Date:   Tue Jul 4 15:05:12 2023 -0700
-> >
-> > # lsmodModule                  Size  Used by
-> > iwlmvm                397312  0
-> > mac80211              626688  1 iwlmvm
-> > iwlwifi               307200  1 iwlmvm
-> > cfg80211              413696  3 iwlmvm,iwlwifi,mac80211
-> >
-> >
-> > Bisect?
->
-> If none of the others CCed comes up with an idea within the next few
-> hours then yes please!
-
-I will wait for a day, then bisect.
-
-Thank you!
-
-
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
