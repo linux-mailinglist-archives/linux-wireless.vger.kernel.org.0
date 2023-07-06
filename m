@@ -2,67 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56BBB7492FB
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jul 2023 03:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D118E749300
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jul 2023 03:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232446AbjGFBRy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Jul 2023 21:17:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42040 "EHLO
+        id S232576AbjGFBTP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Jul 2023 21:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231753AbjGFBRx (ORCPT
+        with ESMTP id S232259AbjGFBTO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Jul 2023 21:17:53 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BADE1703
-        for <linux-wireless@vger.kernel.org>; Wed,  5 Jul 2023 18:17:52 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-bc379e4c1cbso132090276.2
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Jul 2023 18:17:52 -0700 (PDT)
+        Wed, 5 Jul 2023 21:19:14 -0400
+Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFD7219AD
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Jul 2023 18:19:12 -0700 (PDT)
+Received: by mail-ua1-x92a.google.com with SMTP id a1e0cc1a2514c-794b496ee6dso74586241.1
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Jul 2023 18:19:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688606271; x=1691198271;
+        d=google.com; s=20221208; t=1688606351; x=1691198351;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jLpBEWm0pyR5LDArWKNLZgik34a5WAbJKk4VIu4a3mM=;
-        b=4//uKxlvWkGMHPzbfDP452dSEOLEXmN1iaJ//zX0rqP/mbDzvCG5TyTIw0DWPUERnF
-         bFuiirw8RrlS3ZXoiPx8V5m2pC0/DQmoyQq6pRMgeyiiosUaxxiNJEhNVlxNVkTtjfcD
-         O0HbxSwU8xJBqKqU7og1+KqIEUJ3mGr5lsE9XcRDCuzBQbMLXb7X8fhCRp1PtUEgSPxa
-         98p815bY0xDraVhFBsnQipGUjeeVYLIte4Tj4mb2UHdtPIGrc/AubtmyLjTwpJ+LFftM
-         WS73MxucrQDbAc0IIf+hHxzZ3cp7tBFtvv6B/uj+lOSXbnepsln4ABkuwudKSVOcQbK0
-         QYnA==
+        bh=gG5qEwxagC4+ySUQRGnCqzQVgx8YJDmgKYEwBwBbHi8=;
+        b=WMb9JUkj68NIqA151cJeWq+K4uPDzjvVMzwUNQ7V4uLik7F/mwPqb/9E7uaaVRzJL0
+         0M3W+l5Wpg0NYKNut4knANvMOjAKPnUYPjvDyDIHQFnFHedjDJQwlvzVdCtfTKIXcA0G
+         cFwY++6voTGFWrrbQDYteX0eT/EnnSZjfyyd3g6fjfrkkXoYRonL+Da3UeqGgWhFXHYg
+         oW1v42NaF0AE5lnAh7MhvFF9ChNcLvl9h2zEoae33BSI4GvprdIhWxlQzumISRkjVFJ3
+         kugXVSyaSsJBiJzwPFA2NFjjIoo85T3VCqcRJB1qMAYJ6Py2B6ZA5ytZTNSXX4WAKvsA
+         +KhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688606271; x=1691198271;
+        d=1e100.net; s=20221208; t=1688606351; x=1691198351;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jLpBEWm0pyR5LDArWKNLZgik34a5WAbJKk4VIu4a3mM=;
-        b=PBxIp0qzucOE8TrY1mNA7TjRpLe1C5NBeClpsDxivBgQqYhxf0yzQrA7u04wakKWqR
-         HxgGr9KFc5vzlBJ0XqeGCyiUlGiX7tizdUx/8G3uSsaiX9jD+WN72+DNXClj8iU9kzBC
-         WTd960r5T3i68vvq2SoU4uJ/P39TDgoD+/S5ZX1NFwM9mt1snsO5UTMW5CXylPKNo1FP
-         WCsifJ4lC3c3zNjbC8Ft9CUFcXShcdJ+sTLCbLa4LbcmcTaKlVvbzPpjI1ZnfZhgSBQb
-         EWJRfKkuoZY8m0IModSqgVeGRNm+2I8UHhLUvxCTNd+Cx5hstYFcOvXf0PjsCssOpPoI
-         8QtQ==
-X-Gm-Message-State: ABy/qLav94RicA1OiJlp6hOXB0L+YgClG20RsSxegrgkh6O7Y4QM1ZYE
-        JSozLQabjJMhhQq+MSAY+Wigo609UFs/Xxclxv8WRA==
-X-Google-Smtp-Source: APBJJlGkjwSPjge9ilAY8GDDe5IrMG3BEPPOLWt15ljhiPhs9+iYTg+xk7Xou7RlUIzPoz00OzNcF0vADrayLGJqrP8=
-X-Received: by 2002:a05:6902:110:b0:c62:bdfa:57f4 with SMTP id
- o16-20020a056902011000b00c62bdfa57f4mr924315ybh.15.1688606271064; Wed, 05 Jul
- 2023 18:17:51 -0700 (PDT)
+        bh=gG5qEwxagC4+ySUQRGnCqzQVgx8YJDmgKYEwBwBbHi8=;
+        b=BU13L65nwnYYZmQ+31Z2Rb/n6oAsXigPbB9x5OvlH+XcbXiZrtnooDoWP7Mqf0u3Tr
+         PzoAseXUSVnkwnZVZT4VjKsdSzPWrjexJU6M2KnxOLQkUwavbVxWWIDDCPLTwhF+tS6A
+         toPsNOANDfwTu9NGQ9ImTgrjDlNduJExVdO2nIdFYmk4XP2Rr1rYshM7zvn2IjBglhur
+         zzM5/nf39+GG0giAZdix2NOwN2oajx7jhGhe2ExAEzR0n5T5QEHh7pqJ3QySOTh5HHXe
+         cBqlqjIJbmqoAlHbTkwY6+demskvnEcuAv9I1yQ11YzjLSjA5IF+b1Rcip+OcS3rzeGe
+         Q5Ow==
+X-Gm-Message-State: ABy/qLYWDqLGCQtxEsWGqwP+gdBdGSt1/Ih60Qp8h+lrgdir71IBQphE
+        /fevFQ9Hk57MmgjgCPfNWm1IbMKWza4DUfW2DcWJmw==
+X-Google-Smtp-Source: APBJJlHTpxzJQ8qMkls8/kIG3QOBs1ceFkXZ5NSrihcQZjqbTz7tGm96dN/xChDtfBDJkv3zbfLFcn2Iuq8tSQKFcC4=
+X-Received: by 2002:a67:e989:0:b0:443:90ff:c691 with SMTP id
+ b9-20020a67e989000000b0044390ffc691mr600930vso.13.1688606351586; Wed, 05 Jul
+ 2023 18:19:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
+References: <20230612130256.4572-1-linyunsheng@huawei.com> <20230612130256.4572-5-linyunsheng@huawei.com>
+ <20230614101954.30112d6e@kernel.org> <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
+ <20230615095100.35c5eb10@kernel.org> <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
  <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com> <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
  <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com> <20230616122140.6e889357@kernel.org>
  <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com> <20230619110705.106ec599@kernel.org>
  <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
  <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org> <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
- <ZKNA9Pkg2vMJjHds@ziepe.ca>
-In-Reply-To: <ZKNA9Pkg2vMJjHds@ziepe.ca>
+ <47b79e77-461b-8fe9-41fb-b69a6b205ef2@kernel.org> <CANn89iKAvrf92Fy8a_M+V9eya6OHokey2_yxQ3JiCT87fKND_w@mail.gmail.com>
+ <011d3204-5c33-782c-41d1-53bf9bd2e095@kernel.org>
+In-Reply-To: <011d3204-5c33-782c-41d1-53bf9bd2e095@kernel.org>
 From:   Mina Almasry <almasrymina@google.com>
-Date:   Wed, 5 Jul 2023 18:17:39 -0700
-Message-ID: <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
+Date:   Wed, 5 Jul 2023 18:19:00 -0700
+Message-ID: <CAHS8izPF7WjMKLA82fy5LjE9XzUWNVMgs9tD7JM5UY3xfw93Yw@mail.gmail.com>
 Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
  page_pool: remove PP_FLAG_PAGE_FRAG flag)
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+To:     David Ahern <dsahern@kernel.org>
+Cc:     Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Jesper Dangaard Brouer <jbrouer@redhat.com>,
         brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
         Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
@@ -71,7 +75,6 @@ Cc:     David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
         Yisen Zhuang <yisen.zhuang@huawei.com>,
         Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
         Sunil Goutham <sgoutham@marvell.com>,
         Geetha sowjanya <gakula@marvell.com>,
         Subbaraya Sundeep <sbhatta@marvell.com>,
@@ -98,107 +101,40 @@ X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 3, 2023 at 2:43=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrote=
-:
+On Mon, Jul 3, 2023 at 10:23=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
+ote:
 >
-> On Sun, Jul 02, 2023 at 11:22:33PM -0700, Mina Almasry wrote:
-> > On Sun, Jul 2, 2023 at 9:20=E2=80=AFPM David Ahern <dsahern@kernel.org>=
- wrote:
-> > >
-> > > On 6/29/23 8:27 PM, Mina Almasry wrote:
-> > > >
-> > > > Hello Jakub, I'm looking into device memory (peer-to-peer) networki=
-ng
-> > > > actually, and I plan to pursue using the page pool as a front end.
-> > > >
-> > > > Quick description of what I have so far:
-> > > > current implementation uses device memory with struct pages; I am
-> > > > putting all those pages in a gen_pool, and we have written an
-> > > > allocator that allocates pages from the gen_pool. In the driver, we
-> > > > use this allocator instead of alloc_page() (the driver in question =
-is
-> > > > gve which currently doesn't use the page pool). When the driver is
-> > > > done with the p2p page, it simply decrements the refcount on it and
-> > > > the page is freed back to the gen_pool.
+> On 7/3/23 11:13 AM, Eric Dumazet wrote:
+> > diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> > index a2dbeb264f260e5b8923ece9aac99fe19ddfeb62..aa4133d1b1e0676e408499e=
+a4534b51262394432
+> > 100644
+> > --- a/net/packet/af_packet.c
+> > +++ b/net/packet/af_packet.c
+> > @@ -2152,7 +2152,7 @@ static int packet_rcv(struct sk_buff *skb,
+> > struct net_device *dev,
+> >                 }
+> >         }
 > >
-> > Quick update here, I was able to get my implementation working with
-> > the page pool as a front end with the memory provider API Jakub wrote
-> > here:
-> > https://github.com/kuba-moo/linux/tree/pp-providers
+> > -       snaplen =3D skb->len;
+> > +       snaplen =3D skb->devmem ? skb_headlen(skb) : skb->len;
 > >
-> > The main complication indeed was the fact that my device memory pages
-> > are ZONE_DEVICE pages, which are incompatible with the page_pool due
-> > to the union in struct page. I thought of a couple of approaches to
-> > resolve that.
-> >
-> > 1. Make my device memory pages non-ZONE_DEVICE pages.
 >
-> Hard no on this from a mm perspective.. We need P2P memory to be
-> properly tagged and have the expected struct pages to be DMA mappable
-> and otherwise, you totally break everything if you try to do this..
+> Ok, so you expect a flag on the skb noting the use of 'untouchable'
+> memory. That aligns with my expectations based on POCs.
 >
-> > 2. Convert the pages from ZONE_DEVICE pages to page_pool pages and
-> > vice versa as they're being inserted and removed from the page pool.
->
-> This is kind of scary, it is very, very, fragile to rework the pages
-> like this. Eg what happens when the owning device unplugs and needs to
-> revoke these pages? I think it would likely crash..
->
-> I think it also technically breaks the DMA API as we may need to look
-> into the pgmap to do cache ops on some architectures.
->
-> I suggest you try to work with 8k folios and then the tail page's
-> struct page is empty enough to store the information you need..
+> Based on the above: 1) skb->head is expected to be host memory, and 2)
+> the flag is a global for all frags, so no mix and match.
 
-Hi Jason, sorry for the late reply,
+Yes, both are correct (i.e. what I plan to propose).
 
-I think this could work, and the page pool already supports > order 0
-allocations. It may end up being a big change to the GVE driver which
-as I understand currently deals with order 0 allocations exclusively.
-
-Another issue is that in networks with low MTU, we could be DMAing
-1400/1500 bytes into each allocation, which is problematic if the
-allocation is 8K+. I would need to investigate a bit to see if/how to
-solve that, and we may end up having to split the page and again run
-into the 'not enough room in struct page' problem.
-
-> Or allocate per page memory and do a memdesc like thing..
->
-
-I need to review memdesc more closely. Do you imagine I add a pointer
-in struct page that points to the memdesc? Or implement a page to
-memdesc mapping in the page_pool? Either approach could work. I think
-the concern would be accessing the memdesc entries may be a cache miss
-unacceptable in fast paths, but I think I already dereference
-page->pgmap in a few places and it doesn't seem to be an issue.
-
-> Though overall, you won't find devices creating struct pages for their
-> P2P memory today, so I'm not sure what the purpose is. Jonathan
-> already got highly slammed for proposing code to the kernel that was
-> unusable. Please don't repeat that. Other than a special NVMe use case
-> the interface for P2P is DMABUF right now and it is not struct page
-> backed.
->
-
-Our approach is actually to extend DMABUF to provide struct page
-backed attachment mappings, which as far as I understand sidesteps the
-issues Jonathan ran into. Our code is fully functional with any device
-that supports dmabuf and in fact a lot of my tests use udmabuf to
-minimize the dependencies. The RFC may come with a udmabuf selftest to
-showcase that any dmabuf, even a mocked one, would be supported.
-
-> Even if we did get to struct pages for device memory, it is highly
-> likely cases you are interested in will be using larger than 4k
-> folios, so page pool would need to cope with this nicely as well.
->
-
---
+--=20
 Thanks,
 Mina
