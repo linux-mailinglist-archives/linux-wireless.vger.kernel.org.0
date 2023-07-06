@@ -2,62 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 639B5749A56
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jul 2023 13:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3C1B749A67
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jul 2023 13:17:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230453AbjGFLNF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jul 2023 07:13:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57572 "EHLO
+        id S231466AbjGFLRf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jul 2023 07:17:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232597AbjGFLMz (ORCPT
+        with ESMTP id S229486AbjGFLRe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jul 2023 07:12:55 -0400
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A6419A7;
-        Thu,  6 Jul 2023 04:12:52 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1688641970; bh=xgKgNWy4nEmc+hEQwsmN7MH//WVy6dUyusJwtV1VA7U=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=Ue/GFQ6l7jRnGGmdA/Wj2sqeZbgnF9j5fZW4CxuflsyldM1Jq6x/3mAZ93wvwQjLS
-         c6U2bTDGdfUc7G5mRWOipCq5TCMB6HOW3nYEct6mkxbmnJpVojRGEF+dktWPNhtrT6
-         RABYSONbBDCW1ObaQCZLX7/KoNGjnX0edws7+Pi+Evkmsc+tplyRa9MbRSKaSDNC/M
-         QXmwVKiOv3sa+G0v3hzjGRfmfWaDkzfgQ5H24bzZzMJ678/i4WLzxylRrO/gO8G2Al
-         Ozj2Y9nH1frBheBLiNwCzKmw5mfNw3gzl2GiAZEiHj1c56UMo1QF1Sh5/8mcnbN7Yb
-         yhrP0014qKTDA==
-To:     Dongliang Mu <dzm91@hust.edu.cn>, Kalle Valo <kvalo@kernel.org>
+        Thu, 6 Jul 2023 07:17:34 -0400
+Received: from hust.edu.cn (unknown [202.114.0.240])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E47170F;
+        Thu,  6 Jul 2023 04:17:33 -0700 (PDT)
+Received: from pride-poweredge-r740.. ([172.16.0.254])
+        (user=dzm91@hust.edu.cn mech=LOGIN bits=0)
+        by mx1.hust.edu.cn  with ESMTP id 366BH8YK013936-366BH8YN013936
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Thu, 6 Jul 2023 19:17:13 +0800
+From:   Dongliang Mu <dzm91@hust.edu.cn>
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>
 Cc:     Dongliang Mu <dzm91@hust.edu.cn>, linux-wireless@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: ath9k: fix printk specifier
-In-Reply-To: <20230706040214.62324-1-dzm91@hust.edu.cn>
-References: <20230706040214.62324-1-dzm91@hust.edu.cn>
-Date:   Thu, 06 Jul 2023 13:12:49 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87lefts37y.fsf@toke.dk>
+Subject: [PATCH v3] wifi: ath9k: fix printk specifier
+Date:   Thu,  6 Jul 2023 19:17:00 +0800
+Message-Id: <20230706111700.14305-1-dzm91@hust.edu.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-FEAS-AUTH-USER: dzm91@hust.edu.cn
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dongliang Mu <dzm91@hust.edu.cn> writes:
+Smatch reports:
 
-> Smatch reports:
->
-> ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
-> ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
->
-> Fix it by modifying %lx to %p in printk.
->
-> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-> ---
-> v1->v2: modify %px to %p
+ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
+ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
 
-But now the patch uses %px :)
+Fix it by modifying %lx to %p in printk.
 
--Toke
+Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+---
+v2->v3: modify %px to %p in the patch
+v1->v2: modify %px to %p in the commit message
+
+ drivers/net/wireless/ath/ath9k/ahb.c | 4 ++--
+ drivers/net/wireless/ath/ath9k/pci.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
+index 9cd12b20b18d..a683757eecd4 100644
+--- a/drivers/net/wireless/ath/ath9k/ahb.c
++++ b/drivers/net/wireless/ath/ath9k/ahb.c
+@@ -132,8 +132,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
+ 
+ 	ah = sc->sc_ah;
+ 	ath9k_hw_name(ah, hw_name, sizeof(hw_name));
+-	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
+-		   hw_name, (unsigned long)mem, irq);
++	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
++		   hw_name, mem, irq);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
+index a09f9d223f3d..12c00c7c1408 100644
+--- a/drivers/net/wireless/ath/ath9k/pci.c
++++ b/drivers/net/wireless/ath/ath9k/pci.c
+@@ -988,8 +988,8 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	sc->sc_ah->msi_reg = 0;
+ 
+ 	ath9k_hw_name(sc->sc_ah, hw_name, sizeof(hw_name));
+-	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
+-		   hw_name, (unsigned long)sc->mem, pdev->irq);
++	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
++		   hw_name, sc->mem, pdev->irq);
+ 
+ 	return 0;
+ 
+-- 
+2.34.1
+
