@@ -2,74 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1B927498B8
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jul 2023 11:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 639B5749A56
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jul 2023 13:13:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231915AbjGFJuq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jul 2023 05:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48606 "EHLO
+        id S230453AbjGFLNF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jul 2023 07:13:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjGFJuo (ORCPT
+        with ESMTP id S232597AbjGFLMz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jul 2023 05:50:44 -0400
-X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 06 Jul 2023 02:50:41 PDT
-Received: from mail.wsbck.net (unknown [IPv6:2a03:4000:6:f837:b87d:beff:fe7a:4fa2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AACF31998;
-        Thu,  6 Jul 2023 02:50:41 -0700 (PDT)
-From:   Johannes Wiesboeck <johannes.wiesboeck@aisec.fraunhofer.de>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Wiesboeck <johannes.wiesboeck@aisec.fraunhofer.de>,
-        =?UTF-8?q?Michael=20Wei=C3=9F?= <michael.weiss@aisec.fraunhofer.de>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: mwifiex: Set WIPHY_FLAG_NETNS_OK flag
-Date:   Thu,  6 Jul 2023 11:34:36 +0200
-Message-ID: <20230706093437.3380526-1-johannes.wiesboeck@aisec.fraunhofer.de>
-X-Mailer: git-send-email 2.41.0
+        Thu, 6 Jul 2023 07:12:55 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A6419A7;
+        Thu,  6 Jul 2023 04:12:52 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1688641970; bh=xgKgNWy4nEmc+hEQwsmN7MH//WVy6dUyusJwtV1VA7U=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Ue/GFQ6l7jRnGGmdA/Wj2sqeZbgnF9j5fZW4CxuflsyldM1Jq6x/3mAZ93wvwQjLS
+         c6U2bTDGdfUc7G5mRWOipCq5TCMB6HOW3nYEct6mkxbmnJpVojRGEF+dktWPNhtrT6
+         RABYSONbBDCW1ObaQCZLX7/KoNGjnX0edws7+Pi+Evkmsc+tplyRa9MbRSKaSDNC/M
+         QXmwVKiOv3sa+G0v3hzjGRfmfWaDkzfgQ5H24bzZzMJ678/i4WLzxylRrO/gO8G2Al
+         Ozj2Y9nH1frBheBLiNwCzKmw5mfNw3gzl2GiAZEiHj1c56UMo1QF1Sh5/8mcnbN7Yb
+         yhrP0014qKTDA==
+To:     Dongliang Mu <dzm91@hust.edu.cn>, Kalle Valo <kvalo@kernel.org>
+Cc:     Dongliang Mu <dzm91@hust.edu.cn>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: ath9k: fix printk specifier
+In-Reply-To: <20230706040214.62324-1-dzm91@hust.edu.cn>
+References: <20230706040214.62324-1-dzm91@hust.edu.cn>
+Date:   Thu, 06 Jul 2023 13:12:49 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87lefts37y.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Allow moving the wiphy device for mwififex to a non-inital network
-namespace. Many wireless drivers enable this flag implicitly by
-initializing through the generic ieee80211_alloc_hw_nm function. As
-mwifiex does not utilize this function WIPHY_FLAG_NETNS_OK must be set
-explicitly.
+Dongliang Mu <dzm91@hust.edu.cn> writes:
 
-Moving to network namespace and working connection tested using
-wpa_supplicant from a network namespace as well as from a container on
-GyroidOS. The hardware was the Toradex Apalis i.MX8QM Board using the
-Azurewave AW-CM276NF wireless module.
+> Smatch reports:
+>
+> ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
+> ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
+>
+> Fix it by modifying %lx to %p in printk.
+>
+> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+> ---
+> v1->v2: modify %px to %p
 
-Signed-off-by: Johannes Wiesboeck <johannes.wiesboeck@aisec.fraunhofer.de>
-Reviewed-by: Michael Weiß <michael.weiss@aisec.fraunhofer.de>
----
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 1 +
- 1 file changed, 1 insertion(+)
+But now the patch uses %px :)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 813d1cbebe19b..ba4e29713a8c9 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4395,6 +4395,7 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
- 			WIPHY_FLAG_AP_UAPSD |
- 			WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL |
- 			WIPHY_FLAG_HAS_CHANNEL_SWITCH |
-+			WIPHY_FLAG_NETNS_OK |
- 			WIPHY_FLAG_PS_ON_BY_DEFAULT;
- 
- 	if (ISSUPP_TDLS_ENABLED(adapter->fw_cap_info))
--- 
-2.41.0
-
+-Toke
