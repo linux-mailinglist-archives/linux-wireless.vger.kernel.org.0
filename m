@@ -2,90 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0054E749481
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jul 2023 06:02:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14816749506
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jul 2023 07:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbjGFECx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Jul 2023 00:02:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35112 "EHLO
+        id S233266AbjGFFgJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Jul 2023 01:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232330AbjGFECv (ORCPT
+        with ESMTP id S233253AbjGFFgI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Jul 2023 00:02:51 -0400
-Received: from hust.edu.cn (unknown [202.114.0.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B49419A0;
-        Wed,  5 Jul 2023 21:02:49 -0700 (PDT)
-Received: from pride-poweredge-r740.. ([172.16.0.254])
-        (user=dzm91@hust.edu.cn mech=LOGIN bits=0)
-        by mx1.hust.edu.cn  with ESMTP id 36642GKw008403-36642GL1008403
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Thu, 6 Jul 2023 12:02:21 +0800
-From:   Dongliang Mu <dzm91@hust.edu.cn>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     Dongliang Mu <dzm91@hust.edu.cn>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] wifi: ath9k: fix printk specifier
-Date:   Thu,  6 Jul 2023 12:02:14 +0800
-Message-Id: <20230706040214.62324-1-dzm91@hust.edu.cn>
-X-Mailer: git-send-email 2.34.1
+        Thu, 6 Jul 2023 01:36:08 -0400
+Received: from mail-pf1-f205.google.com (mail-pf1-f205.google.com [209.85.210.205])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25FAD1BF8
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Jul 2023 22:35:59 -0700 (PDT)
+Received: by mail-pf1-f205.google.com with SMTP id d2e1a72fcca58-66871648c25so653422b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Jul 2023 22:35:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688621758; x=1691213758;
+        h=content-transfer-encoding:to:from:subject:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=M8IG/7a1r+lbg72l7T26yvBl01awCMA71YiK77chGGY=;
+        b=TuGjknUXiaJej5+kw302bsp3oJOLTB7of8E/9v3bWPgD0dNUzcKgrJnjvMVA6NKFtZ
+         6Pp+Uimb2cSxv0Z6tOnBc5ZJF3cSXABn6SImudyenxKYo23aujHlgrz2B49iiOCsMnsp
+         QN1EBn4ZYmAZCehMUq1CecX31sOn8VIRGZcb8OcPMhU8zReVA3eXCYQLQW8rd46GTy0y
+         uIGG28grgG8oXinBo0u20Qdo96MQE47GRjHXhubA1e5c5HrDp8gapmIu/xT/fG5ORMEX
+         F6imT6dZ8y3cBWnknFVYyDoTFIYlfrbtTNxZ1MCXg+/ynQTtQ74zVSLPmJlmKtesHZvK
+         10FA==
+X-Gm-Message-State: ABy/qLYdWgW2+ioaR1Iv+uXZ07XAxvZVK8E/OjCCzQupDzqmywcOJOL0
+        g794dDmbaiVmZ52ZG0UhZNN9LDxjcBDWbXBxotxmdKkd+xC1
+X-Google-Smtp-Source: APBJJlHZV14xswxelXjf2gNMVwi7ttbcjOZU6bY8KMzghjNPkZhZ4HCiV3TXsEZ54Vyvhpc7pg50NtR8npI/+S5dYgQVOThu6sJn
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-FEAS-AUTH-USER: dzm91@hust.edu.cn
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Received: by 2002:a05:6a00:2d16:b0:677:c9da:14b6 with SMTP id
+ fa22-20020a056a002d1600b00677c9da14b6mr1140786pfb.4.1688621758557; Wed, 05
+ Jul 2023 22:35:58 -0700 (PDT)
+Date:   Wed, 05 Jul 2023 22:35:58 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000001432c105ffcae455@google.com>
+Subject: [syzbot] [wireless?] WARNING in restore_regulatory_settings (2)
+From:   syzbot <syzbot+dfe2fbeb4e710bbaddf9@syzkaller.appspotmail.com>
+To:     axboe@kernel.dk, brauner@kernel.org, davem@davemloft.net,
+        edumazet@google.com, hare@suse.de, hch@lst.de,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Smatch reports:
+Hello,
 
-ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
-ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
+syzbot found the following issue on:
 
-Fix it by modifying %lx to %p in printk.
+HEAD commit:    6352a698ca5b Add linux-next specific files for 20230630
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=11f564a4a80000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=39b764f3018462fe
+dashboard link: https://syzkaller.appspot.com/bug?extid=dfe2fbeb4e710bbaddf9
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1640f4a0a80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11a10c40a80000
 
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/55254daea013/disk-6352a698.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/cb343779c938/vmlinux-6352a698.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/3d451333dab6/bzImage-6352a698.xz
+
+The issue was bisected to:
+
+commit ae220766d87cd6799dbf918fea10613ae14c0654
+Author: Christoph Hellwig <hch@lst.de>
+Date:   Thu Jun 8 11:02:37 2023 +0000
+
+    block: remove the unused mode argument to ->release
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1340a3f0a80000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=10c0a3f0a80000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1740a3f0a80000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+dfe2fbeb4e710bbaddf9@syzkaller.appspotmail.com
+Fixes: ae220766d87c ("block: remove the unused mode argument to ->release")
+
+------------[ cut here ]------------
+Unexpected user alpha2: �I
+WARNING: CPU: 0 PID: 9 at net/wireless/reg.c:438 is_user_regdom_saved net/wireless/reg.c:438 [inline]
+WARNING: CPU: 0 PID: 9 at net/wireless/reg.c:438 restore_alpha2 net/wireless/reg.c:3399 [inline]
+WARNING: CPU: 0 PID: 9 at net/wireless/reg.c:438 restore_regulatory_settings+0x210/0x1760 net/wireless/reg.c:3491
+Modules linked in:
+CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.4.0-next-20230630-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+Workqueue: events_power_efficient crda_timeout_work
+RIP: 0010:is_user_regdom_saved net/wireless/reg.c:438 [inline]
+RIP: 0010:restore_alpha2 net/wireless/reg.c:3399 [inline]
+RIP: 0010:restore_regulatory_settings+0x210/0x1760 net/wireless/reg.c:3491
+Code: e6 03 44 89 f6 e8 50 d7 09 f8 45 84 f6 0f 85 7a 07 00 00 e8 62 db 09 f8 44 89 e2 44 89 ee 48 c7 c7 20 bc 9f 8b e8 c0 2b d1 f7 <0f> 0b e8 49 db 09 f8 48 8b 1d d2 80 f8 04 48 b8 00 00 00 00 00 fc
+RSP: 0018:ffffc900000e7c30 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 00000000000000bf RCX: 0000000000000000
+RDX: ffff888016a68000 RSI: ffffffff814c65a7 RDI: 0000000000000001
+RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000049
+R13: 00000000000000bf R14: 0000000000000000 R15: ffff8880b983bb80
+FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000140 CR3: 0000000073e5d000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ crda_timeout_work+0x28/0x50 net/wireless/reg.c:540
+ process_one_work+0xa34/0x16f0 kernel/workqueue.c:2597
+ worker_thread+0x67d/0x10c0 kernel/workqueue.c:2748
+ kthread+0x344/0x440 kernel/kthread.c:389
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+ </TASK>
+
+
 ---
-v1->v2: modify %px to %p
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
- drivers/net/wireless/ath/ath9k/ahb.c | 4 ++--
- drivers/net/wireless/ath/ath9k/pci.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
-diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
-index 9cd12b20b18d..a683757eecd4 100644
---- a/drivers/net/wireless/ath/ath9k/ahb.c
-+++ b/drivers/net/wireless/ath/ath9k/ahb.c
-@@ -132,8 +132,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 
- 	ah = sc->sc_ah;
- 	ath9k_hw_name(ah, hw_name, sizeof(hw_name));
--	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
--		   hw_name, (unsigned long)mem, irq);
-+	wiphy_info(hw->wiphy, "%s mem=0x%px, irq=%d\n",
-+		   hw_name, mem, irq);
- 
- 	return 0;
- 
-diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
-index a09f9d223f3d..12c00c7c1408 100644
---- a/drivers/net/wireless/ath/ath9k/pci.c
-+++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -988,8 +988,8 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	sc->sc_ah->msi_reg = 0;
- 
- 	ath9k_hw_name(sc->sc_ah, hw_name, sizeof(hw_name));
--	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
--		   hw_name, (unsigned long)sc->mem, pdev->irq);
-+	wiphy_info(hw->wiphy, "%s mem=0x%px, irq=%d\n",
-+		   hw_name, sc->mem, pdev->irq);
- 
- 	return 0;
- 
--- 
-2.34.1
+If the bug is already fixed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to change bug's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the bug is a duplicate of another bug, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
