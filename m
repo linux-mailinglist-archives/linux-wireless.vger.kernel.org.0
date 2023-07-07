@@ -2,139 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27E6C74AE0C
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 11:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AADED74AE16
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 11:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232577AbjGGJss (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jul 2023 05:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57762 "EHLO
+        id S232785AbjGGJvk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jul 2023 05:51:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231334AbjGGJsq (ORCPT
+        with ESMTP id S232730AbjGGJvj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jul 2023 05:48:46 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050ED2125;
-        Fri,  7 Jul 2023 02:48:41 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qHi4q-0004Vb-G6; Fri, 07 Jul 2023 11:48:36 +0200
-Message-ID: <bf9a48ff-5427-50a5-0ec8-df12734c696e@leemhuis.info>
-Date:   Fri, 7 Jul 2023 11:48:35 +0200
+        Fri, 7 Jul 2023 05:51:39 -0400
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17F841BEE;
+        Fri,  7 Jul 2023 02:51:35 -0700 (PDT)
+Received: from ed3e173716be.home.arpa (unknown [124.16.138.129])
+        by APP-03 (Coremail) with SMTP id rQCowAB3l2Qd4KdkZ0rOCA--.27075S2;
+        Fri, 07 Jul 2023 17:51:26 +0800 (CST)
+From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
+To:     amitkarwar@gmail.com, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@kernel.org, dkiran@marvell.com, patila@marvell.com,
+        bzhao@marvell.com, linville@tuxdriver.com
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Subject: [PATCH] mwifiex: Add check for skb_copy
+Date:   Fri,  7 Jul 2023 17:51:21 +0800
+Message-Id: <20230707095121.10453-1-jiasheng@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Linux-6.5 iwlwifi crash
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Jeff Chua <jeff.chua.linux@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-References: <20230429020951.082353595@lindbergh.monkeyblade.net>
- <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com>
- <ZE0kndhsXNBIb1g7@debian.me> <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
- <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com>
- <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info>
- <CAAJw_Zu=MPtGPARgCB2fteP+7F793YDFXE9RuzSH8EqYBS-OOw@mail.gmail.com>
- <64b8732f-6319-9f10-b82a-b4a3dd8d4b8e@lwfinger.net>
- <CAAJw_ZvZNQzrFyQizJnKe5PerqqAUOmPYd6cnjAcvs68xNdwSA@mail.gmail.com>
- <ff646259-8ce1-f1fe-4627-cdf99321dba8@leemhuis.info>
-In-Reply-To: <ff646259-8ce1-f1fe-4627-cdf99321dba8@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688723322;1c32058d;
-X-HE-SMSGID: 1qHi4q-0004Vb-G6
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-CM-TRANSID: rQCowAB3l2Qd4KdkZ0rOCA--.27075S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Wr48KF1xAF1fuw1DWFy5XFb_yoWfZrgEka
+        4kXw4fuw47Grn7Kw1jyw1fur9Yyrn0qFyfWan7trWfGrW0vrZxJ34rZFZ3JrW7C3ZIvrnx
+        Jr17A3y7A3y5XjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbsAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+        Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
+        1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+        cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+        ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+        0xkIwI1lc2xSY4AK67AK6r4fMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+        4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+        67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+        x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+        z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+        UI43ZEXa7VUjMmh5UUUUU==
+X-Originating-IP: [124.16.138.129]
+X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 07.07.23 10:43, Linux regression tracking (Thorsten Leemhuis) wrote:
-> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-> for once, to make this easily accessible to everyone.
-> 
-> Jeff, thx for bisecting. Johannes afaik is unavailable for a while
-> (CCing him nevertheless), hence:
-> [...]
+Add check for the return value of skb_copy in order to avoid NULL pointer
+dereference.
 
-Just noticed: there is a bug in bugzilla about this issue already. See
-here: https://bugzilla.kernel.org/show_bug.cgi?id=217622
+Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+---
+ drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index e495f7eaea03..9cfa5de57207 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -243,6 +243,8 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
+ 
+ 	if (is_multicast_ether_addr(ra)) {
+ 		skb_uap = skb_copy(skb, GFP_ATOMIC);
++		if (!skb_uap)
++			return -ENOMEM;
+ 		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
+ 	} else {
+ 		if (mwifiex_get_sta_entry(priv, ra)) {
+-- 
+2.25.1
 
-
-> On 07.07.23 03:56, Jeff Chua wrote:
->> On Thu, Jul 6, 2023 at 2:11 AM Larry Finger <Larry.Finger@lwfinger.net> wrote:
->>
->>> Fow what it is worth, my 6.4-git (6.5-rc0?) commit d528014517f2 (pulled today)
->>> is working OK with iwlmvm. Lspci says my device is
->>>
->>> 04:00.0 Network controller [0280]: Intel Corporation Wireless 7260 [8086:08b1]
->>> (rev 73)
->>>
->>> I think you do need to do a bisection.
->>> Larry
->>
->>
->> Larry,
->>
->> I did a bisect and here's what it came up with ... reverted the
->> following and iwlwiifi worked again.
->>
->>
->> 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 is the first bad commit
->> commit 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2
->> Author: Johannes Berg <johannes.berg@intel.com>
->> Date:   Wed Jun 21 13:12:07 2023 +0300
->>
->>     wifi: iwlwifi: split 22000.c into multiple files
->>
->>     Split the configuration list in 22000.c into four new files,
->>     per new device family, so we don't have this huge unusable
->>     file. Yes, this duplicates a few small things, but that's
->>     still much better than what we have now.
->>
->>     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->>     Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
->>     Link: https://lore.kernel.org/r/20230621130443.7543603b2ee7.Ia8dd54216d341ef1ddc0531f2c9aa30d30536a5d@changeid
->>     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->>
->>  drivers/net/wireless/intel/iwlwifi/Makefile     |   1 +
->>  drivers/net/wireless/intel/iwlwifi/cfg/22000.c  | 939 +-----------------------
->>  drivers/net/wireless/intel/iwlwifi/cfg/ax210.c  | 452 ++++++++++++
->>  drivers/net/wireless/intel/iwlwifi/cfg/bz.c     | 523 +++++++++++++
->>  drivers/net/wireless/intel/iwlwifi/cfg/sc.c     | 214 ++++++
->>  drivers/net/wireless/intel/iwlwifi/iwl-config.h |   2 +
->>  drivers/net/wireless/intel/iwlwifi/pcie/drv.c   |   3 +
->>  7 files changed, 1206 insertions(+), 928 deletions(-)
->>  create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
->>  create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/bz.c
->>  create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/sc.c
->>
->>
->> My best.,
->> Jeff
->>
->>>
->>>
->>
->>
