@@ -2,91 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DE7574B616
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 20:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F84074B76E
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 21:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230134AbjGGSHw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jul 2023 14:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58962 "EHLO
+        id S230516AbjGGTnF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jul 2023 15:43:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjGGSHu (ORCPT
+        with ESMTP id S230245AbjGGTmy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jul 2023 14:07:50 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2AE1737;
-        Fri,  7 Jul 2023 11:07:49 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1a1fa977667so2140947fac.1;
-        Fri, 07 Jul 2023 11:07:49 -0700 (PDT)
+        Fri, 7 Jul 2023 15:42:54 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22FB226A9
+        for <linux-wireless@vger.kernel.org>; Fri,  7 Jul 2023 12:41:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1688758877; x=1720294877;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=4nbJsR4YZGvfpLyALStJYuq/7OmxN+NxDyQBzFSAKO0=;
+  b=ytez5EfgzGH+5/K3uDc6cYwpLvB1dHe41b/HU7pgt74Hney/vw+wtvoZ
+   OpE3UUN2BduxE8zkb0qU9RBkM8Q1eFkZXHyCRE0oYyI2I+Sc3QUghrsCz
+   kO2IaUrSMjcpKNjmfVtsO6RBjjNK3wzQ8r3IAyZ+Ux1JFLgMk3U2wuZa5
+   M3xhfjzf7ejD61oFas1t8pEujgrDHYdxL+ZwfdjX72h0m33Gn29grCddW
+   /D7AxEUZDFHWPg2dvmfvE5vJpMbRuB9tikHrIW3wC0BK0hRYj5XgowFuW
+   MN6H+I0y0d+mbDq/4RD4jpokAgdlBNZYOz1jM4oFc8ceV+yTHOeNmngva
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.01,189,1684825200"; 
+   d="scan'208";a="223667797"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 07 Jul 2023 12:41:16 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Fri, 7 Jul 2023 12:41:16 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Fri, 7 Jul 2023 12:41:15 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PF0ioLCHTx0d4J0KXH7fnY+byjcNo4sraEGiyqdxS7hqN79cDuFMHj58e/ir71vDeoQ3Sk+OuEhVkUKTyK5diabqLV2HOrokh3LG9S/xd5rYCQbjGNECv4j2x04pBy/P53LNpEBfBV9n5TMMbr0mDnZh1BgyMpk+9X124t0LYSmrGJh8WwWUqG3vf7UKgbL3buudbzYRBgfGTsNCryjAynfOzEXkbhtSnZ5l++AEFWqUQlLATFChPVdm/tspXqpNEMTIN9TAhWRl3REaiF3ro1xypLfpTheiawzy/K7oFWHHOjvTYeW1+HSJF/6AOfe8pCOi53HPRbpFfdquZS5Kew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nh+WeOPsj95AQYnL7atLJZ4PxgsGtMihYG0H6mykr+Q=;
+ b=YZWq5SEWz1Y0liVL4465elkhHMDuer7G8vyFQL6eo9SRRbzmj/0DnU4o5XaTh0SbKlyvDcRCaigW6BV80kQYFTRVLN9GpY/ZEDHBcEBd/h7Fqd4hZffuBH0lo3ex9xo8SBjhZIYHSlsTaaLZ+9s2SWHze0CqU7dCR7hT+A4w7QJzOpttQ83YmjOVSGE9Kyo4jnu12eETm58xDslneJzLTyNekuJW17owLyBDbgBSke4x6Ct+zeR9zX8YEBvRf160UEkPPMrX65qtD8fd73C5mnu+E93KWwTjwP93pRUrnrNFbv1fI00kvopprmAWTGwWo6UPnUs6Kktr2fdzmqCzCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688753268; x=1691345268;
-        h=in-reply-to:from:references:cc:to:content-language:subject
-         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MNLF+fuq4TwaQ32ICM7m5ZBV/Z5mA1VvoEw8wI2AGyA=;
-        b=SqRz5j/2lsoKMcuriLUbAQ498kgk2U4b4mn+RiYqlCYGCZOfshyAZDDshjsBRX3KPb
-         N1cYVcM6TdijsWv5Z6F/2X4YNDzlVMPH4BkdH/px3uxUb8n7wH37QD41rfpr6VZ2Yx9/
-         J91ruoPGL7vmQY9Wvnh5EDcz1Kv75NA0235ags9TcWwBqMtjBtOjyFEQjjVPyocRW5ZO
-         uFUgVCPJAsCRfvsGF48hekjP7XtYZGHTFGuaZ/NRKeYMXwwvXp+WdiE9mvZGU1TB429n
-         vcYbwGWc6FCp1uYNLKqxL3bAs5zYLqoz6vNtcBaXYCO8eLAQkfuTtbIVQB79iAGmcb+Q
-         Ezvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688753268; x=1691345268;
-        h=in-reply-to:from:references:cc:to:content-language:subject
-         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MNLF+fuq4TwaQ32ICM7m5ZBV/Z5mA1VvoEw8wI2AGyA=;
-        b=W9lLdReyHCanNbUfK8OivXDi8O5zscIDthzUpXtryS1Pgm1hLMdZ8QUYbPEeWR60Ad
-         YfMEz17r49dWfy3hZxRe27oR3Wn21viHFjTM+JbrVNfRgunN5Ad+KB3P75SarEZMnmLG
-         kLvPzNKA12B+pPEG2f6hmqIQXYnu9jS8Ot9IKdPZX/mctKy4e07oBAJdxulB1IDuv5fb
-         hcu9+xVDqZEl5I2pqlgKBS2zpyQ9zHtu50HZk4HYNCJB+oa+JqyXLr01FVnliKtu+f19
-         pTqdr69MlKwCGI9E6SSCeZEIHj1O6rgGGAUZPLxUlX2j8EHO8gbLZEf8wuQzP+QO5niY
-         qTDw==
-X-Gm-Message-State: ABy/qLbXHqvbG/GNOC8f13cjUJO5IsTY01gx1ml8S4n6lyhS6Cy/VKWS
-        KrhHyBmLbpTKY3x0HSjmAyc=
-X-Google-Smtp-Source: APBJJlEylm+KgLskpWfNy37k0fc95tNPJc/nhbkPj/QWCNzxSdVHOzh/vo3l2BXudUBAImvMQkq8+w==
-X-Received: by 2002:a05:6870:3912:b0:1a3:2447:7f4a with SMTP id b18-20020a056870391200b001a324477f4amr7987499oap.32.1688753268411;
-        Fri, 07 Jul 2023 11:07:48 -0700 (PDT)
-Received: from [192.168.1.205] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id dx26-20020a056870769a00b001a68feb9440sm2034955oab.9.2023.07.07.11.07.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Jul 2023 11:07:47 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Content-Type: multipart/mixed; boundary="------------C6f4cDILumD0bj2hMiJ0eR6O"
-Message-ID: <0068af47-e475-7e8d-e476-c374e90dff5f@lwfinger.net>
-Date:   Fri, 7 Jul 2023 13:07:45 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Linux-6.5 iwlwifi crash
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nh+WeOPsj95AQYnL7atLJZ4PxgsGtMihYG0H6mykr+Q=;
+ b=AkTYxznBpkVPeJ04HyLPzSkZ0gwctyGE1IvvLJiK1cDCAtwDqi1RDcozKBMxu3yz4v8CRJXcb771SrIz9g3+ek6Mnz1BmwKsGwtOx1nmfrAbfcD4PZYnzUNcxCZSBW8bPpsKKAy2TuCuEPdEbwKHX0VomahTeytwCXiLlan4Grs=
+Received: from CO1PR11MB5172.namprd11.prod.outlook.com (2603:10b6:303:6c::10)
+ by SN7PR11MB6851.namprd11.prod.outlook.com (2603:10b6:806:2a3::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.25; Fri, 7 Jul
+ 2023 19:41:13 +0000
+Received: from CO1PR11MB5172.namprd11.prod.outlook.com
+ ([fe80::ea9c:8971:305c:c5c6]) by CO1PR11MB5172.namprd11.prod.outlook.com
+ ([fe80::ea9c:8971:305c:c5c6%5]) with mapi id 15.20.6565.025; Fri, 7 Jul 2023
+ 19:41:13 +0000
+From:   <Ajay.Kathat@microchip.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <Claudiu.Beznea@microchip.com>, <Sripad.Balwadgi@microchip.com>,
+        <Ajay.Kathat@microchip.com>
+Subject: [PATCH v2] wifi: wilc1000: change firmware path from 'atmel' to
+ 'microchip/wilc'
+Thread-Topic: [PATCH v2] wifi: wilc1000: change firmware path from 'atmel' to
+ 'microchip/wilc'
+Thread-Index: AQHZsQr8xYfyiYJXlkSvmHc+dTfaZQ==
+Date:   Fri, 7 Jul 2023 19:41:13 +0000
+Message-ID: <20230707194025.47085-1-ajay.kathat@microchip.com>
+Accept-Language: en-US
 Content-Language: en-US
-To:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        Jeff Chua <jeff.chua.linux@gmail.com>
-Cc:     lkml <linux-kernel@vger.kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>
-References: <20230429020951.082353595@lindbergh.monkeyblade.net>
- <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com>
- <ZE0kndhsXNBIb1g7@debian.me> <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
- <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com>
- <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info>
- <CAAJw_Zu=MPtGPARgCB2fteP+7F793YDFXE9RuzSH8EqYBS-OOw@mail.gmail.com>
- <64b8732f-6319-9f10-b82a-b4a3dd8d4b8e@lwfinger.net>
- <CAAJw_ZvZNQzrFyQizJnKe5PerqqAUOmPYd6cnjAcvs68xNdwSA@mail.gmail.com>
- <ff646259-8ce1-f1fe-4627-cdf99321dba8@leemhuis.info>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <ff646259-8ce1-f1fe-4627-cdf99321dba8@leemhuis.info>
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: git-send-email 2.34.1
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO1PR11MB5172:EE_|SN7PR11MB6851:EE_
+x-ms-office365-filtering-correlation-id: 1e50de95-cf8d-4ea4-3137-08db7f221f81
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 6IkGrdzqJrNEED/+zLNzrKqYQJNxzaWYFSYAV1blp3QzvfEe7InFPd7SiA2FOIkcjMuwXKwqcFKD8cAw8T/GB6IlJO2VeyxhkOBUBrD8PjZ7eM6TWmvQurDCwVGjb0cd967BC+BIS2xuTbsfutGBoYIgJS6sik1C0hNI8RTOc6+/Ofv/ioaWNCSaTwekQu1ofL1UFt3IgwHqkP5+MSGW8ukc6xZRnLJ4IHD7+IfOgLgsQKuQ6V2KOwBeWFimAtdBmp6DUEAHCthq61wME7DSrdVvUNLtIl72FYzdiajA/BSLsywtHpPznDKMYIwgnWtZl5w4ikHTBJZsVG0flhLn5X3AqxRsK52Oekq7enMIq40e+K5kH97EYQAeKFIjtye7e7tMgffI90UpVPw2t0CZhGf4AZcuko2fYmoRWewCjErsOE3MtqV89Pw7hFSmKGG9buZPLdo4355mCMK23QI30pcqXZ2tlc7TZ+QdjLWiBKK3tXa/hShMvCLLP5jkuZBs49BtTGtSqSRjFbAdAiWtDJhp9JzweF2XkXGw0oGFffQoIYiK5RTeOMcE5MOisHf4NMJW7jzRJJRgfw+n6pDvQuwfbwEbtcNgFNldbnoO9P9Bs5HjMosYvWunBRxDUqDr
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5172.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(376002)(366004)(396003)(346002)(39860400002)(451199021)(122000001)(38100700002)(36756003)(86362001)(38070700005)(6512007)(41300700001)(8936002)(107886003)(26005)(5660300002)(71200400001)(6506007)(1076003)(186003)(2616005)(2906002)(83380400001)(478600001)(76116006)(66946007)(316002)(6486002)(54906003)(8676002)(66556008)(91956017)(4326008)(66446008)(64756008)(6916009)(66476007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?fXY4Gp699MJIgWnRZib79Ce2JZgRDM4GEtFlmPGPpv+sPlqKKfBMVEQ0ep?=
+ =?iso-8859-1?Q?0V71uCwKlBdHjsPdHh9FZ3baGtu3eG7d56d+o5Sn7Jq+rIIFgVW/Pi0/d/?=
+ =?iso-8859-1?Q?OsG9ZJ+KBa4Rr5gFryNxUQNa3rVZnqkU6zZp8TFqWq2CXob/GaPj2ZLL4I?=
+ =?iso-8859-1?Q?BRHugHVnSJs9e0pRaIXJpqXTlfEnHYa1uPrpp09nux4e+V078n2MXr/IT5?=
+ =?iso-8859-1?Q?3RJKWiisrK0PTsPp3Ds9IY0ymZhLzNjD3zWpQSj+w2jBXMoiIbh3mh63xS?=
+ =?iso-8859-1?Q?XLMPsfH2CwWoEXx7LY2gFPGYV5yBAJI3hdSc2JlyA63VBLFFtgWoHH0fs/?=
+ =?iso-8859-1?Q?S1c639KuYTetX+zaViUUfuyxmQf1I7QRwFqqvr30SJ7tXOHwS6/dWu7Eus?=
+ =?iso-8859-1?Q?OAKqg5iWCfcngMrIss+YkelxDVBkkpPFGaXlJl3S92fWbugG9j60RHfwPE?=
+ =?iso-8859-1?Q?PauwZx4Nwz53ZdnEuhUvjUhMOtdgrvNof6Saiz5wVxl7Tvgi3fv3FuWCcH?=
+ =?iso-8859-1?Q?brqYR1MKhl20GTwQiauRryrhqR3VutJU7kh31gy9NGbNvcOKRC7Y1MCsgK?=
+ =?iso-8859-1?Q?5V6u1TmAwA3GMYAWlxiRORA3OXwUd6sg3WxTVI5G7trozRMR1aW6Dj3O0T?=
+ =?iso-8859-1?Q?/FA8gFcsMKE2+yMMH0W98+NnEBm9+svXIEd5AxDe1w3naiQxnWuhXtpBRN?=
+ =?iso-8859-1?Q?wZo8RFUbjEJQngzjnQzMAqevqKKRQAP1QyxsPyXq9vnsPJNu6pBA1VSVyZ?=
+ =?iso-8859-1?Q?1lrcBPRRsOr/q8AKw/oQlyTq5vH0I/bnI/zorgUtypKrdCt83K4nBWLKn1?=
+ =?iso-8859-1?Q?LzXdFVsdPApjhQghqqZcRj8AZBZxMWaNhoCY6M7tDzMa3oMySy4jAM9WG2?=
+ =?iso-8859-1?Q?ZRY1Olw70KN6N/7buYYXkMJML11MRtk4UwQMbp3bsV7ZGafox5ZNUllrKb?=
+ =?iso-8859-1?Q?sOAHJiSSgKcbN3ivwT12xieDccrP/mV0V/3vM5O10WjzPXg/h8JAHJLpht?=
+ =?iso-8859-1?Q?VMpunBB5d/grTfzTw315PZePF2Gd6jMHw5xz0lEsFuP438a/qhAxl0/lW8?=
+ =?iso-8859-1?Q?pn7IgKremse8gRuefAH8ohVdF9FV4aX6ad8pFEk+q9IWjD+/FOAlWNtFvv?=
+ =?iso-8859-1?Q?k/hJHR8zGmy8yu/W7MpOBINZcaajoU8gmy6JGWfSu07hoOocgNKPSrFUN3?=
+ =?iso-8859-1?Q?obFYotgFmfam84ypLQyS8DDk8o8V1yxJVwDfVOPpmbYF4/+qyNHGjm9izY?=
+ =?iso-8859-1?Q?1Ny7CsXBuBZfX4IpBsbFdHLOdZErjahh0R06T4DwlQ8w2QMExkLsuCP3+P?=
+ =?iso-8859-1?Q?A55GHHvagLP5vhRIlX+zuhSaiW2Or/MekbvsXO20YMaP8xhJ0ZpdhexeDZ?=
+ =?iso-8859-1?Q?2HGhTKZ4iBoUYBRrITnV4sQxKLgWdSdhmV5kL/rZr+U/Qu+14f/0ngadV+?=
+ =?iso-8859-1?Q?oFoF4el88luKZON8KR6kTzq2KzFxszDJAu6nU1obxabeBq7DqZ/HAqtc3l?=
+ =?iso-8859-1?Q?5OPCm2hwKueO928GazeIpS4THm0OOQc4e6hK/6edNyyx7MRdo45QARuS2f?=
+ =?iso-8859-1?Q?n+fWC2EJOabAQnmHVLksvjruOMcW7aXrJlHmmTPlnxt4OEpFULMasN3ea0?=
+ =?iso-8859-1?Q?0oWvDeatl3DHMhHrhBE5VJo8MAoEYFWfgw9CB10VI+9g0CLMycf7Qa2A?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5172.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e50de95-cf8d-4ea4-3137-08db7f221f81
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jul 2023 19:41:13.6823
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZIW+P2m0zespi3kLPaQOyvv6MqwIs24QL/puDFY9TNk0iDfM/rnstfXlb60vosrf8Crz90y36A/9Mo4oVmBwWNklUhTcP8w6QBJTusX15hY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6851
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,113 +145,87 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------C6f4cDILumD0bj2hMiJ0eR6O
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Ajay Singh <ajay.kathat@microchip.com>
 
-On 7/7/23 03:43, Linux regression tracking (Thorsten Leemhuis) wrote:
-> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-> for once, to make this easily accessible to everyone.
-> 
-> Jeff, thx for bisecting. Johannes afaik is unavailable for a while
-> (CCing him nevertheless), hence:
-> 
-> Gregory, could you please take a look at this? And maybe provide a few
-> hints for Jeff how to generate more data that allows us to find the root
-> of the problem?
-> 
-> Jeff, btw, the iwlwifi bug reporting guide (
-> https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging
-> ) says to file a bugs in http://bugzilla.kernel.org/ Might be wise to do
-> this in case Gregory is also unavailable, but instructed someone to keep
-> an eye on things there.
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
-> 
-> On 07.07.23 03:56, Jeff Chua wrote:
->> On Thu, Jul 6, 2023 at 2:11 AM Larry Finger <Larry.Finger@lwfinger.net> wrote:
->>
->>> Fow what it is worth, my 6.4-git (6.5-rc0?) commit d528014517f2 (pulled today)
->>> is working OK with iwlmvm. Lspci says my device is
->>>
->>> 04:00.0 Network controller [0280]: Intel Corporation Wireless 7260 [8086:08b1]
->>> (rev 73)
->>>
->>> I think you do need to do a bisection.
->>> Larry
->>
->>
->> Larry,
->>
->> I did a bisect and here's what it came up with ... reverted the
->> following and iwlwiifi worked again.
->>
->>
->> 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 is the first bad commit
->> commit 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2
->> Author: Johannes Berg <johannes.berg@intel.com>
->> Date:   Wed Jun 21 13:12:07 2023 +0300
->>
->>      wifi: iwlwifi: split 22000.c into multiple files
->>
->>      Split the configuration list in 22000.c into four new files,
->>      per new device family, so we don't have this huge unusable
->>      file. Yes, this duplicates a few small things, but that's
->>      still much better than what we have now.
->>
->>      Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->>      Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
->>      Link: https://lore.kernel.org/r/20230621130443.7543603b2ee7.Ia8dd54216d341ef1ddc0531f2c9aa30d30536a5d@changeid
->>      Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+To inline 'linux-firmware' path with driver, the firmware path is changed
+from 'atmel' to 'microchip/wilc'. The path change will be submitted to
+'linux-firmware' repo.
+For backward compatibility, when the updated kernel and older
+linux-firmware that has firmware at 'atmel/' path are used, add a fallback
+method to read firmware from 'atmel' path.
 
-Jeff,
+Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+---
+ changes since v1:
+  - load firmware from older path when firmware is missing at new path for
+  backward compatibility.
 
-I am certainly no expert on iwlwifi, but this change looks suspicious:
+---
+ .../net/wireless/microchip/wilc1000/netdev.c  | 33 ++++++++++++++-----
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-@@ -10,8 +10,7 @@
-  #include "fw/api/txq.h"
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net=
+/wireless/microchip/wilc1000/netdev.c
+index e9f59de31b0b..c0dd7072decc 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+@@ -19,10 +19,13 @@
+ /* latest API version supported */
+ #define WILC1000_API_VER		1
 
-  /* Highest firmware API version supported */
--#define IWL_22000_UCODE_API_MAX        81
--#define IWL_22500_UCODE_API_MAX        77
-+#define IWL_22000_UCODE_API_MAX        77
+-#define WILC1000_FW_PREFIX		"atmel/wilc1000_wifi_firmware-"
++#define WILC1000_FW_PREFIX		"wilc1000_wifi_firmware-"
+ #define __WILC1000_FW(api)		WILC1000_FW_PREFIX #api ".bin"
+ #define WILC1000_FW(api)		__WILC1000_FW(api)
 
-  /* Lowest firmware API version supported */
++#define WILC1000_ATMEL_FW(api)          "atmel/" WILC1000_FW(api)
++#define WILC1000_MICROCHIP_FW(api)      "microchip/wilc/" WILC1000_FW(api)
++
+ static irqreturn_t isr_uh_routine(int irq, void *user_data)
+ {
+ 	struct wilc *wilc =3D user_data;
+@@ -187,14 +190,27 @@ static int wilc_wlan_get_firmware(struct net_device *=
+dev)
+ 	chip_id =3D wilc_get_chipid(wilc, false);
 
-The parameter that was originally set to 81 is now set to 77.
+ 	netdev_info(dev, "ChipID [%x] loading firmware [%s]\n", chip_id,
+-		    WILC1000_FW(WILC1000_API_VER));
++		    WILC1000_MICROCHIP_FW(WILC1000_API_VER));
 
-Please try the attached patch.
+-	ret =3D request_firmware(&wilc_fw, WILC1000_FW(WILC1000_API_VER),
++	ret =3D request_firmware(&wilc_fw,
++			       WILC1000_MICROCHIP_FW(WILC1000_API_VER),
+ 			       wilc->dev);
+-	if (ret !=3D 0) {
+-		netdev_err(dev, "%s - firmware not available\n",
+-			   WILC1000_FW(WILC1000_API_VER));
+-		return -EINVAL;
++	if (ret =3D=3D -ENOENT) {
++		netdev_info(dev, "firmware not found at[%s], try [%s]\n",
++			    WILC1000_MICROCHIP_FW(WILC1000_API_VER),
++			    WILC1000_ATMEL_FW(WILC1000_API_VER));
++		ret =3D request_firmware(&wilc_fw,
++				       WILC1000_ATMEL_FW(WILC1000_API_VER),
++				       wilc->dev);
++		if (ret) {
++			netdev_err(dev, "[%s] - request firmware failed %d\n",
++				   WILC1000_ATMEL_FW(WILC1000_API_VER), ret);
++			return ret;
++		}
++	} else if (ret) {
++		netdev_err(dev, "[%s] - request firmware failed %d\n",
++			   WILC1000_MICROCHIP_FW(WILC1000_API_VER), ret);
++		return ret;
+ 	}
+ 	wilc->firmware =3D wilc_fw;
 
-Larry
+@@ -1007,4 +1023,5 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl=
+, const char *name,
+ }
 
---------------C6f4cDILumD0bj2hMiJ0eR6O
-Content-Type: text/x-patch; charset=UTF-8; name="test_iwlwifi.patch"
-Content-Disposition: attachment; filename="test_iwlwifi.patch"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Npc2NvL2Fpcm8uYyBiL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL2Npc2NvL2Fpcm8uYwppbmRleCBiZWVlMDlkZDk1OGMuLjRjYTZh
-MWJhNzhlOCAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvY2lzY28vYWlyby5j
-CisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Npc2NvL2Fpcm8uYwpAQCAtNjE1Niw3ICs2
-MTU2LDcgQEAgc3RhdGljIGludCBhaXJvX2dldF9yYXRlKHN0cnVjdCBuZXRfZGV2aWNlICpk
-ZXYsCiB7CiAJc3RydWN0IGl3X3BhcmFtICp2d3JxID0gJndycXUtPmJpdHJhdGU7CiAJc3Ry
-dWN0IGFpcm9faW5mbyAqbG9jYWwgPSBkZXYtPm1sX3ByaXY7Ci0JU3RhdHVzUmlkIHN0YXR1
-c19yaWQ7CQkvKiBDYXJkIHN0YXR1cyBpbmZvICovCisJU3RhdHVzUmlkIHN0YXR1c19yaWQg
-PSB7fTsJCS8qIENhcmQgc3RhdHVzIGluZm8gKi8KIAogCXJlYWRTdGF0dXNSaWQobG9jYWws
-ICZzdGF0dXNfcmlkLCAxKTsKIApkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-aW50ZWwvaXdsd2lmaS9jZmcvMjIwMDAuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVs
-L2l3bHdpZmkvY2ZnLzIyMDAwLmMKaW5kZXggYWE0MzIwY2E0YzMwLi5kM2U3MGMzM2ZiY2Yg
-MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvY2ZnLzIy
-MDAwLmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9jZmcvMjIw
-MDAuYwpAQCAtMTAsNyArMTAsNyBAQAogI2luY2x1ZGUgImZ3L2FwaS90eHEuaCIKIAogLyog
-SGlnaGVzdCBmaXJtd2FyZSBBUEkgdmVyc2lvbiBzdXBwb3J0ZWQgKi8KLSNkZWZpbmUgSVdM
-XzIyMDAwX1VDT0RFX0FQSV9NQVgJNzcKKyNkZWZpbmUgSVdMXzIyMDAwX1VDT0RFX0FQSV9N
-QVgJODEKIAogLyogTG93ZXN0IGZpcm13YXJlIEFQSSB2ZXJzaW9uIHN1cHBvcnRlZCAqLwog
-I2RlZmluZSBJV0xfMjIwMDBfVUNPREVfQVBJX01JTgk1MAo=
-
---------------C6f4cDILumD0bj2hMiJ0eR6O--
+ MODULE_LICENSE("GPL");
+-MODULE_FIRMWARE(WILC1000_FW(WILC1000_API_VER));
++MODULE_FIRMWARE(WILC1000_ATMEL_FW(WILC1000_API_VER));
++MODULE_FIRMWARE(WILC1000_MICROCHIP_FW(WILC1000_API_VER));
+--
+2.34.1
