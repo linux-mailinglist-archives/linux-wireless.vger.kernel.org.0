@@ -2,45 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A7274AF18
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 12:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9E2874AF23
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 12:55:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232447AbjGGKww (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jul 2023 06:52:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52338 "EHLO
+        id S232700AbjGGKzZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jul 2023 06:55:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231281AbjGGKwt (ORCPT
+        with ESMTP id S232277AbjGGKzY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jul 2023 06:52:49 -0400
-Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [178.154.239.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D9241994
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Jul 2023 03:52:47 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:5f1d:0:640:49bf:0])
-        by forward100a.mail.yandex.net (Yandex) with ESMTP id CCF2C46CD9;
-        Fri,  7 Jul 2023 13:52:45 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id jqS2XrLDX0U0-DPymzbai;
-        Fri, 07 Jul 2023 13:52:45 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1688727165;
-        bh=X03PZEGyOlJUStvc5FVgbUoZ8zqRvoqEPTPhNtvXIPU=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=Tz95Xu3Kl2n0FSApJv9YUvCd1UDS53uG4w5UjNNu4DV4GazDc8b6SujiT/eVwKMrw
-         iddfR51g0Go2X3PBv/qpObF7EaXdDVOrpeRvsIy2qYtI69+eRljR+gxu1ZyRTUf6Co
-         q02CVZt1cxDlE8JapUVQPy1GGUndT9+4/auVblh4=
-Authentication-Results: mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Rakesh Pillai <quic_pillair@quicinc.com>,
-        linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: ath10k: fix memory leak in WMI management
-Date:   Fri,  7 Jul 2023 13:52:26 +0300
-Message-ID: <20230707105243.22824-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Fri, 7 Jul 2023 06:55:24 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 319AF19A5;
+        Fri,  7 Jul 2023 03:55:23 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qHj7N-00011c-O6; Fri, 07 Jul 2023 12:55:17 +0200
+Message-ID: <a4265090-d6b8-b185-a400-b09b27a347cc@leemhuis.info>
+Date:   Fri, 7 Jul 2023 12:55:14 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [Regression][BISECTED] kernel boot hang after 19898ce9cf8a
+ ("wifi: iwlwifi: split 22000.c into multiple files")
+To:     "Zhang, Rui" <rui.zhang@intel.com>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "Berg, Johannes" <johannes.berg@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Baruch, Yaara" <yaara.baruch@intel.com>,
+        "Ben Ami, Golan" <golan.ben.ami@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Sisodiya, Mukesh" <mukesh.sisodiya@intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        netdev <netdev@vger.kernel.org>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bagas Sanjaya <bagasdotme@gmail.com>
+References: <b533071f38804247f06da9e52a04f15cce7a3836.camel@intel.com>
+Content-Language: en-US, de-DE
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <b533071f38804247f06da9e52a04f15cce7a3836.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688727323;ee51f3a8;
+X-HE-SMSGID: 1qHj7N-00011c-O6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,67 +62,74 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since 'mgmt_pending_tx' of 'struct ath10k_wmi' contains pointers
-to dynamically allocated 'struct ath10k_mgmt_tx_pkt_addr' objects,
-these objects should be explicitly freed when removing from idr
-or when the whole idr is destroyed.
+[CCing the regression list, netdev, the net maintainers, and Linus;
+Johannes and Kalle as well, but just for the record, they afaik are
+unavailable]
 
-Fixes: dc405152bb64 ("ath10k: handle mgmt tx completion event")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/ath/ath10k/wmi-tlv.c | 11 +++++++++--
- drivers/net/wireless/ath/ath10k/wmi.c     |  5 +++--
- 2 files changed, 12 insertions(+), 4 deletions(-)
+Hi, Thorsten here, the Linux kernel's regression tracker.
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index 6b6aa3c36744..45a445c5f1df 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -3038,11 +3038,18 @@ ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(struct ath10k *ar,
- 				       struct sk_buff *msdu)
- {
- 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(msdu);
-+	struct ath10k_mgmt_tx_pkt_addr *pkt_addr;
- 	struct ath10k_wmi *wmi = &ar->wmi;
- 
--	idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
-+	pkt_addr = idr_find(&wmi->mgmt_pending_tx, cb->msdu_id);
-+	if (pkt_addr) {
-+		idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
-+		kfree(pkt_addr);
-+		return 0;
-+	}
- 
--	return 0;
-+	ath10k_warn(ar, "invalid msdu_id: %d\n", cb->msdu_id);
-+	return -ENOENT;
- }
- 
- static int
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 05fa7d4c0e1a..20534a7d6551 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -2433,9 +2433,9 @@ wmi_process_mgmt_tx_comp(struct ath10k *ar, struct mgmt_tx_compl_params *param)
- 	ieee80211_tx_status_irqsafe(ar->hw, msdu);
- 
- 	ret = 0;
--
--out:
- 	idr_remove(&wmi->mgmt_pending_tx, param->desc_id);
-+	kfree(pkt_addr);
-+out:
- 	spin_unlock_bh(&ar->data_lock);
- 	return ret;
- }
-@@ -9539,6 +9539,7 @@ static int ath10k_wmi_mgmt_tx_clean_up_pending(int msdu_id, void *ptr,
- 	dma_unmap_single(ar->dev, pkt_addr->paddr,
- 			 msdu->len, DMA_TO_DEVICE);
- 	ieee80211_free_txskb(ar->hw, msdu);
-+	kfree(pkt_addr);
- 
- 	return 0;
- }
--- 
-2.41.0
+On 07.07.23 10:25, Zhang, Rui wrote:
+> 
+> I run into a NULL pointer dereference and kernel boot hang after
+> switching to latest upstream kernel, and git bisect shows that below
+> commit is the first offending commit, and I have confirmed that commit
+> 19898ce9cf8a has the issue while 19898ce9cf8a~1 does not.
 
+FWIW, this is the fourth such report about this that I'm aware of.
+
+The first is this one (with two affected users afaics):
+https://bugzilla.kernel.org/show_bug.cgi?id=217622
+
+The second is this one:
+https://lore.kernel.org/all/CAAJw_Zug6VCS5ZqTWaFSr9sd85k%3DtyPm9DEE%2BmV%3DAKoECZM%2BsQ@mail.gmail.com/
+
+The third:
+https://lore.kernel.org/all/9274d9bd3d080a457649ff5addcc1726f08ef5b2.camel@xry111.site/
+
+And in the past few days two people from Fedora land talked to me on IRC
+with problems that in retrospective might be caused by this as well.
+
+This many reports about a problem at this stage of the cycle makes me
+suspect we'll see a lot more once -rc1 is out. That's why I raising the
+awareness of this. Sadly a simple revert of just this commit is not
+possible. :-/
+
+Ciao, Thorsten
+
+> commit 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 (refs/bisect/bad)
+> Author:     Johannes Berg <johannes.berg@intel.com>
+> AuthorDate: Wed Jun 21 13:12:07 2023 +0300
+> Commit:     Johannes Berg <johannes.berg@intel.com>
+> CommitDate: Wed Jun 21 14:07:00 2023 +0200
+> 
+>     wifi: iwlwifi: split 22000.c into multiple files
+>     
+>     Split the configuration list in 22000.c into four new files,
+>     per new device family, so we don't have this huge unusable
+>     file. Yes, this duplicates a few small things, but that's
+>     still much better than what we have now.
+>     
+>     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+>     Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+>     Link:
+> https://lore.kernel.org/r/20230621130443.7543603b2ee7.Ia8dd54216d341ef1ddc0531f2c9aa30d30536a5d@changeid
+>     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> 
+> I have some screenshots which show that RIP points to iwl_mem_free_skb,
+> I can create a kernel bugzilla and attach the screenshots there if
+> needed.
+> 
+> BTW, lspci output of the wifi device and git bisect log attached.
+> 
+> If any other information needed, please let me know.
+
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
+
+P.S.: for regzbot
+
+#regzbot ^introduced 19898ce9cf8a
+#regzbot dup-of:
+https://lore.kernel.org/all/a5cdc7f8-b340-d372-2971-0d24b01de217@gmail.com/
