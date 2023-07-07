@@ -2,134 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9E2874AF23
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 12:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D292574B21B
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 15:44:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232700AbjGGKzZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jul 2023 06:55:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53582 "EHLO
+        id S232159AbjGGNo4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jul 2023 09:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232277AbjGGKzY (ORCPT
+        with ESMTP id S229471AbjGGNoz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jul 2023 06:55:24 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 319AF19A5;
-        Fri,  7 Jul 2023 03:55:23 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qHj7N-00011c-O6; Fri, 07 Jul 2023 12:55:17 +0200
-Message-ID: <a4265090-d6b8-b185-a400-b09b27a347cc@leemhuis.info>
-Date:   Fri, 7 Jul 2023 12:55:14 +0200
+        Fri, 7 Jul 2023 09:44:55 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 401F426A9;
+        Fri,  7 Jul 2023 06:44:44 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1688737482; bh=uCuhTufCRaaXdnLKFmIMWVnD1T8kuwipzJVxUSjwA7c=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=dlsquq97LlWh4Cq1t+/166gbWWGi49X8vKT2jo9hCbgx2o6rZldmedRqPEtSm7kE8
+         6KXAX1Bj1320Cafe/JT47wcu9nh850XAufj3lH6P55pC4WEzAHDOnWboH1JA9HwyIT
+         +JQBikOCgPU+bSi28Ltg2Vx3Op4Lka3laaMYLz4/4RM/1gSInqLXSRh5/rOoFDeE42
+         yEDdKU8rlepQ8iQijuNr5k7KvRDyAOKuVc361adBf0vmU5jm0BDEewfWdgwSb+189f
+         oeaycFK4EB4lMmC1AFQXNB/Brdp49xro2DJt0BT4JTsrTFNJmYNbTiq5FbSu8emcqW
+         E5cOVFIGxpEfw==
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+Cc:     Dongliang Mu <dzm91@hust.edu.cn>, Kalle Valo <kvalo@kernel.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] wifi: ath9k: fix printk specifier
+In-Reply-To: <CAOiHx=kccbUFGsWMA_31UPW6p=k1qa+HyL5OGyzv50W2Mc111w@mail.gmail.com>
+References: <20230706111700.14305-1-dzm91@hust.edu.cn>
+ <87cz15s2gv.fsf@toke.dk>
+ <CAOiHx=kccbUFGsWMA_31UPW6p=k1qa+HyL5OGyzv50W2Mc111w@mail.gmail.com>
+Date:   Fri, 07 Jul 2023 15:44:41 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87a5w7hm46.fsf@toke.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [Regression][BISECTED] kernel boot hang after 19898ce9cf8a
- ("wifi: iwlwifi: split 22000.c into multiple files")
-To:     "Zhang, Rui" <rui.zhang@intel.com>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "Berg, Johannes" <johannes.berg@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Baruch, Yaara" <yaara.baruch@intel.com>,
-        "Ben Ami, Golan" <golan.ben.ami@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Sisodiya, Mukesh" <mukesh.sisodiya@intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        netdev <netdev@vger.kernel.org>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-References: <b533071f38804247f06da9e52a04f15cce7a3836.camel@intel.com>
-Content-Language: en-US, de-DE
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <b533071f38804247f06da9e52a04f15cce7a3836.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688727323;ee51f3a8;
-X-HE-SMSGID: 1qHj7N-00011c-O6
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[CCing the regression list, netdev, the net maintainers, and Linus;
-Johannes and Kalle as well, but just for the record, they afaik are
-unavailable]
+Jonas Gorski <jonas.gorski@gmail.com> writes:
 
-Hi, Thorsten here, the Linux kernel's regression tracker.
+> On Thu, 6 Jul 2023 at 13:39, Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.=
+dk> wrote:
+>>
+>> Dongliang Mu <dzm91@hust.edu.cn> writes:
+>>
+>> > Smatch reports:
+>> >
+>> > ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
+>> > ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
+>> >
+>> > Fix it by modifying %lx to %p in printk.
+>> >
+>> > Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+>>
+>> Third time is the charm! :)
+>>
+>> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+>
+> But do we *want* to replace %lx with %p? Because this now causes a
+> change in behavior, as the kernel will omit the pointer's address,
+> while before it printed the actual memory address. Using %px would
+> have kept the original behavior.
 
-On 07.07.23 10:25, Zhang, Rui wrote:
-> 
-> I run into a NULL pointer dereference and kernel boot hang after
-> switching to latest upstream kernel, and git bisect shows that below
-> commit is the first offending commit, and I have confirmed that commit
-> 19898ce9cf8a has the issue while 19898ce9cf8a~1 does not.
+So this is basically an informational log message, which really
+shouldn't be leaking kernel pointer addresses. So I think %p is the
+right choice here, and if someone wants to see the real address for
+debugging they should be booting with no_hash_pointers.
 
-FWIW, this is the fourth such report about this that I'm aware of.
+> So if the change is desired, it should be noted in the commit message.
 
-The first is this one (with two affected users afaics):
-https://bugzilla.kernel.org/show_bug.cgi?id=217622
+That is a fair point, documenting this in the commit message would be
+good...
 
-The second is this one:
-https://lore.kernel.org/all/CAAJw_Zug6VCS5ZqTWaFSr9sd85k%3DtyPm9DEE%2BmV%3DAKoECZM%2BsQ@mail.gmail.com/
-
-The third:
-https://lore.kernel.org/all/9274d9bd3d080a457649ff5addcc1726f08ef5b2.camel@xry111.site/
-
-And in the past few days two people from Fedora land talked to me on IRC
-with problems that in retrospective might be caused by this as well.
-
-This many reports about a problem at this stage of the cycle makes me
-suspect we'll see a lot more once -rc1 is out. That's why I raising the
-awareness of this. Sadly a simple revert of just this commit is not
-possible. :-/
-
-Ciao, Thorsten
-
-> commit 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 (refs/bisect/bad)
-> Author:     Johannes Berg <johannes.berg@intel.com>
-> AuthorDate: Wed Jun 21 13:12:07 2023 +0300
-> Commit:     Johannes Berg <johannes.berg@intel.com>
-> CommitDate: Wed Jun 21 14:07:00 2023 +0200
-> 
->     wifi: iwlwifi: split 22000.c into multiple files
->     
->     Split the configuration list in 22000.c into four new files,
->     per new device family, so we don't have this huge unusable
->     file. Yes, this duplicates a few small things, but that's
->     still much better than what we have now.
->     
->     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->     Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
->     Link:
-> https://lore.kernel.org/r/20230621130443.7543603b2ee7.Ia8dd54216d341ef1ddc0531f2c9aa30d30536a5d@changeid
->     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> 
-> I have some screenshots which show that RIP points to iwl_mem_free_skb,
-> I can create a kernel bugzilla and attach the screenshots there if
-> needed.
-> 
-> BTW, lspci output of the wifi device and git bisect log attached.
-> 
-> If any other information needed, please let me know.
-
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
-
-P.S.: for regzbot
-
-#regzbot ^introduced 19898ce9cf8a
-#regzbot dup-of:
-https://lore.kernel.org/all/a5cdc7f8-b340-d372-2971-0d24b01de217@gmail.com/
+-Toke
