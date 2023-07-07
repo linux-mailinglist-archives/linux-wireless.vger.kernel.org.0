@@ -2,109 +2,205 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A4474B606
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 19:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE7574B616
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 20:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232501AbjGGRzY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jul 2023 13:55:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56918 "EHLO
+        id S230134AbjGGSHw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jul 2023 14:07:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232533AbjGGRzX (ORCPT
+        with ESMTP id S229458AbjGGSHu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jul 2023 13:55:23 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9059E2685
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Jul 2023 10:55:21 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-51dff848168so2905751a12.2
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Jul 2023 10:55:21 -0700 (PDT)
+        Fri, 7 Jul 2023 14:07:50 -0400
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2AE1737;
+        Fri,  7 Jul 2023 11:07:49 -0700 (PDT)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1a1fa977667so2140947fac.1;
+        Fri, 07 Jul 2023 11:07:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688752520; x=1691344520;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NVDSYxwa05jJn6QPiRRRKEE5xPGES75ekgR3d7z/2Wo=;
-        b=rRgFAd5Pa42kuMa6vOq9+WOtlbhRaoVw8YKHo0xq0mlC64wqzsAkFLolRjmppyaKAh
-         9a1RAyR0JXrvGv9J0C9lQP4gmq22G5etHc6iHC0o1HX4VY1EyjyAeYfiww2ZWO2PA6ia
-         ize3poarKh1emUv2tLiNcAIBwSBtXYFIPMWycF6h4H4/N3ZjKtcvWH5A92UFqln+YXPS
-         MxVjf9tN6TRCISbL/bjFaGpZBVJUnJQDhTIbtyMr04cF+bMtQ9sDAuK/eL980kZ2q1vi
-         /b2aU4ERPmFRiLcHENfdw6XJyiXUigbsWJxPnRy8CeVUu0gSzB7U4npSXX1BpEWVeOiW
-         XhVw==
+        d=gmail.com; s=20221208; t=1688753268; x=1691345268;
+        h=in-reply-to:from:references:cc:to:content-language:subject
+         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MNLF+fuq4TwaQ32ICM7m5ZBV/Z5mA1VvoEw8wI2AGyA=;
+        b=SqRz5j/2lsoKMcuriLUbAQ498kgk2U4b4mn+RiYqlCYGCZOfshyAZDDshjsBRX3KPb
+         N1cYVcM6TdijsWv5Z6F/2X4YNDzlVMPH4BkdH/px3uxUb8n7wH37QD41rfpr6VZ2Yx9/
+         J91ruoPGL7vmQY9Wvnh5EDcz1Kv75NA0235ags9TcWwBqMtjBtOjyFEQjjVPyocRW5ZO
+         uFUgVCPJAsCRfvsGF48hekjP7XtYZGHTFGuaZ/NRKeYMXwwvXp+WdiE9mvZGU1TB429n
+         vcYbwGWc6FCp1uYNLKqxL3bAs5zYLqoz6vNtcBaXYCO8eLAQkfuTtbIVQB79iAGmcb+Q
+         Ezvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688752520; x=1691344520;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NVDSYxwa05jJn6QPiRRRKEE5xPGES75ekgR3d7z/2Wo=;
-        b=Dab42mFOn4g736kNl9BhNRZyngVoRfhaqeTSTHFdPBaEdcITyq+1YrergkgNrYLH88
-         S6pDFC0gUALG1Ql6amYNQiw/ETTt6PV/ITszhTAnGpaaVCFqo2ZRkoEH7BqdeaQ7u2gV
-         9N9yIDr+TjwWkxZAYFo92y9ofUXyNz/wmWEzWYqaBjvMzA61+3VP1v7jmsoPQ1XsuXCc
-         i50+S8TPjQc24C1j1oRUilaN+EXR88FoPFI/Z+6rpXrc+KiJJx1fO9BJDyNuMXXVgLxU
-         Djk2x9dl7wi5zFZFaY7kasHgr9jGM1IT8cWcHPzImDZRuNoL8nqckVOoyU9JVmsbc8Qs
-         TIWA==
-X-Gm-Message-State: ABy/qLaZ/jhQvVNa9Q5YjG7kBXFlLDQXbshhgDh9pqczlxJSmp0dYkNz
-        NQgbSuV6okFxylXpZtY01ls=
-X-Google-Smtp-Source: APBJJlFXR2MmvgdA6QigEdXjJqSSrMMtxljzcc5HVPz3vFELici50W+67H2v0xSf77CF7tE9VjX8Cw==
-X-Received: by 2002:a17:907:1246:b0:982:ab8d:1e08 with SMTP id wc6-20020a170907124600b00982ab8d1e08mr3969330ejb.59.1688752519814;
-        Fri, 07 Jul 2023 10:55:19 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.57])
-        by smtp.gmail.com with ESMTPSA id v9-20020a170906858900b0098e78ff1a87sm2445227ejx.120.2023.07.07.10.55.17
+        d=1e100.net; s=20221208; t=1688753268; x=1691345268;
+        h=in-reply-to:from:references:cc:to:content-language:subject
+         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MNLF+fuq4TwaQ32ICM7m5ZBV/Z5mA1VvoEw8wI2AGyA=;
+        b=W9lLdReyHCanNbUfK8OivXDi8O5zscIDthzUpXtryS1Pgm1hLMdZ8QUYbPEeWR60Ad
+         YfMEz17r49dWfy3hZxRe27oR3Wn21viHFjTM+JbrVNfRgunN5Ad+KB3P75SarEZMnmLG
+         kLvPzNKA12B+pPEG2f6hmqIQXYnu9jS8Ot9IKdPZX/mctKy4e07oBAJdxulB1IDuv5fb
+         hcu9+xVDqZEl5I2pqlgKBS2zpyQ9zHtu50HZk4HYNCJB+oa+JqyXLr01FVnliKtu+f19
+         pTqdr69MlKwCGI9E6SSCeZEIHj1O6rgGGAUZPLxUlX2j8EHO8gbLZEf8wuQzP+QO5niY
+         qTDw==
+X-Gm-Message-State: ABy/qLbXHqvbG/GNOC8f13cjUJO5IsTY01gx1ml8S4n6lyhS6Cy/VKWS
+        KrhHyBmLbpTKY3x0HSjmAyc=
+X-Google-Smtp-Source: APBJJlEylm+KgLskpWfNy37k0fc95tNPJc/nhbkPj/QWCNzxSdVHOzh/vo3l2BXudUBAImvMQkq8+w==
+X-Received: by 2002:a05:6870:3912:b0:1a3:2447:7f4a with SMTP id b18-20020a056870391200b001a324477f4amr7987499oap.32.1688753268411;
+        Fri, 07 Jul 2023 11:07:48 -0700 (PDT)
+Received: from [192.168.1.205] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id dx26-20020a056870769a00b001a68feb9440sm2034955oab.9.2023.07.07.11.07.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Jul 2023 10:55:19 -0700 (PDT)
-Message-ID: <938ae608-a865-4056-06de-c230d74e1847@gmail.com>
-Date:   Fri, 7 Jul 2023 20:55:16 +0300
+        Fri, 07 Jul 2023 11:07:47 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Content-Type: multipart/mixed; boundary="------------C6f4cDILumD0bj2hMiJ0eR6O"
+Message-ID: <0068af47-e475-7e8d-e476-c374e90dff5f@lwfinger.net>
+Date:   Fri, 7 Jul 2023 13:07:45 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v4 00/18] wifi: rtl8xxxu: Add AP mode support for 8188f
-To:     Martin Kaistra <martin.kaistra@linutronix.de>,
-        =?UTF-8?Q?Georg_M=c3=bcller?= <georgmueller@gmx.net>,
-        linux-wireless@vger.kernel.org
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-References: <20230428150833.218605-1-martin.kaistra@linutronix.de>
- <c9e6a13b-e32d-f810-741c-33598956a55e@gmx.net>
- <997e1858-a499-2188-a6a1-f0c4f0c90079@linutronix.de>
+Subject: Re: Linux-6.5 iwlwifi crash
 Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <997e1858-a499-2188-a6a1-f0c4f0c90079@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+To:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        Jeff Chua <jeff.chua.linux@gmail.com>
+Cc:     lkml <linux-kernel@vger.kernel.org>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>
+References: <20230429020951.082353595@lindbergh.monkeyblade.net>
+ <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com>
+ <ZE0kndhsXNBIb1g7@debian.me> <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
+ <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com>
+ <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info>
+ <CAAJw_Zu=MPtGPARgCB2fteP+7F793YDFXE9RuzSH8EqYBS-OOw@mail.gmail.com>
+ <64b8732f-6319-9f10-b82a-b4a3dd8d4b8e@lwfinger.net>
+ <CAAJw_ZvZNQzrFyQizJnKe5PerqqAUOmPYd6cnjAcvs68xNdwSA@mail.gmail.com>
+ <ff646259-8ce1-f1fe-4627-cdf99321dba8@leemhuis.info>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <ff646259-8ce1-f1fe-4627-cdf99321dba8@leemhuis.info>
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 07/07/2023 10:23, Martin Kaistra wrote:
-> Hi Georg,
+This is a multi-part message in MIME format.
+--------------C6f4cDILumD0bj2hMiJ0eR6O
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+On 7/7/23 03:43, Linux regression tracking (Thorsten Leemhuis) wrote:
+> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+> for once, to make this easily accessible to everyone.
 > 
-> Am 05.07.23 um 11:00 schrieb Georg Müller:
->> Hi Martin,
+> Jeff, thx for bisecting. Johannes afaik is unavailable for a while
+> (CCing him nevertheless), hence:
+> 
+> Gregory, could you please take a look at this? And maybe provide a few
+> hints for Jeff how to generate more data that allows us to find the root
+> of the problem?
+> 
+> Jeff, btw, the iwlwifi bug reporting guide (
+> https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging
+> ) says to file a bugs in http://bugzilla.kernel.org/ Might be wise to do
+> this in case Gregory is also unavailable, but instructed someone to keep
+> an eye on things there.
+> 
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+> 
+> On 07.07.23 03:56, Jeff Chua wrote:
+>> On Thu, Jul 6, 2023 at 2:11 AM Larry Finger <Larry.Finger@lwfinger.net> wrote:
 >>
+>>> Fow what it is worth, my 6.4-git (6.5-rc0?) commit d528014517f2 (pulled today)
+>>> is working OK with iwlmvm. Lspci says my device is
+>>>
+>>> 04:00.0 Network controller [0280]: Intel Corporation Wireless 7260 [8086:08b1]
+>>> (rev 73)
+>>>
+>>> I think you do need to do a bisection.
+>>> Larry
+>>
+>>
+>> Larry,
+>>
+>> I did a bisect and here's what it came up with ... reverted the
+>> following and iwlwiifi worked again.
+>>
+>>
+>> 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 is the first bad commit
+>> commit 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2
+>> Author: Johannes Berg <johannes.berg@intel.com>
+>> Date:   Wed Jun 21 13:12:07 2023 +0300
+>>
+>>      wifi: iwlwifi: split 22000.c into multiple files
+>>
+>>      Split the configuration list in 22000.c into four new files,
+>>      per new device family, so we don't have this huge unusable
+>>      file. Yes, this duplicates a few small things, but that's
+>>      still much better than what we have now.
+>>
+>>      Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+>>      Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+>>      Link: https://lore.kernel.org/r/20230621130443.7543603b2ee7.Ia8dd54216d341ef1ddc0531f2c9aa30d30536a5d@changeid
+>>      Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-[...]
+Jeff,
 
->> Please give me a hint if and how I may help tracking down the issue to
->> enable AP mode for 8188EU as well.
-> 
-> I would suggest the following:
-> - in rtl8xxxu_fill_txdesc_v3, set macid, HW_SEQ like in the v2 function
-> - 8188e does decide on the tx rate in software, so rtl8188e_handle_ra_tx_report2() will probably need some adjustments to handle multiple macids (maybe ra_info in rtl8xxxu_priv should be an array of size RTL8XXXU_MAX_MAC_ID_NUM?)
+I am certainly no expert on iwlwifi, but this change looks suspicious:
 
-ra_info should be an array(?), except the dynamic_tx_rpt_timing_counter
-member should be moved to rtl8xxxu_priv. In the vendor driver it was
-a static variable in the odm_rate_decision_8188e() function.
+@@ -10,8 +10,7 @@
+  #include "fw/api/txq.h"
 
-An array or some dynamic data structure? The array would take up at
-least 3072 bytes, including when the driver is handling some other
-chip which doesn't need the array.
+  /* Highest firmware API version supported */
+-#define IWL_22000_UCODE_API_MAX        81
+-#define IWL_22500_UCODE_API_MAX        77
++#define IWL_22000_UCODE_API_MAX        77
 
-Additionally, rtl8xxxu_sta_add() and rtl8xxxu_sta_remove() need to
-increase/decrease REG_TX_REPORT_CTRL + 1, otherwise you will only get
-correct rate control for the first station which connects to the AP.
+  /* Lowest firmware API version supported */
+
+The parameter that was originally set to 81 is now set to 77.
+
+Please try the attached patch.
+
+Larry
+
+--------------C6f4cDILumD0bj2hMiJ0eR6O
+Content-Type: text/x-patch; charset=UTF-8; name="test_iwlwifi.patch"
+Content-Disposition: attachment; filename="test_iwlwifi.patch"
+Content-Transfer-Encoding: base64
+
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Npc2NvL2Fpcm8uYyBiL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL2Npc2NvL2Fpcm8uYwppbmRleCBiZWVlMDlkZDk1OGMuLjRjYTZh
+MWJhNzhlOCAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvY2lzY28vYWlyby5j
+CisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Npc2NvL2Fpcm8uYwpAQCAtNjE1Niw3ICs2
+MTU2LDcgQEAgc3RhdGljIGludCBhaXJvX2dldF9yYXRlKHN0cnVjdCBuZXRfZGV2aWNlICpk
+ZXYsCiB7CiAJc3RydWN0IGl3X3BhcmFtICp2d3JxID0gJndycXUtPmJpdHJhdGU7CiAJc3Ry
+dWN0IGFpcm9faW5mbyAqbG9jYWwgPSBkZXYtPm1sX3ByaXY7Ci0JU3RhdHVzUmlkIHN0YXR1
+c19yaWQ7CQkvKiBDYXJkIHN0YXR1cyBpbmZvICovCisJU3RhdHVzUmlkIHN0YXR1c19yaWQg
+PSB7fTsJCS8qIENhcmQgc3RhdHVzIGluZm8gKi8KIAogCXJlYWRTdGF0dXNSaWQobG9jYWws
+ICZzdGF0dXNfcmlkLCAxKTsKIApkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+aW50ZWwvaXdsd2lmaS9jZmcvMjIwMDAuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVs
+L2l3bHdpZmkvY2ZnLzIyMDAwLmMKaW5kZXggYWE0MzIwY2E0YzMwLi5kM2U3MGMzM2ZiY2Yg
+MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvY2ZnLzIy
+MDAwLmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9jZmcvMjIw
+MDAuYwpAQCAtMTAsNyArMTAsNyBAQAogI2luY2x1ZGUgImZ3L2FwaS90eHEuaCIKIAogLyog
+SGlnaGVzdCBmaXJtd2FyZSBBUEkgdmVyc2lvbiBzdXBwb3J0ZWQgKi8KLSNkZWZpbmUgSVdM
+XzIyMDAwX1VDT0RFX0FQSV9NQVgJNzcKKyNkZWZpbmUgSVdMXzIyMDAwX1VDT0RFX0FQSV9N
+QVgJODEKIAogLyogTG93ZXN0IGZpcm13YXJlIEFQSSB2ZXJzaW9uIHN1cHBvcnRlZCAqLwog
+I2RlZmluZSBJV0xfMjIwMDBfVUNPREVfQVBJX01JTgk1MAo=
+
+--------------C6f4cDILumD0bj2hMiJ0eR6O--
