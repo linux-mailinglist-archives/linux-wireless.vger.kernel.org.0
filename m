@@ -2,86 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D292574B21B
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 15:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 801C574B33F
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jul 2023 16:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232159AbjGGNo4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Jul 2023 09:44:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57686 "EHLO
+        id S232627AbjGGOsv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Jul 2023 10:48:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjGGNoz (ORCPT
+        with ESMTP id S229542AbjGGOsu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Jul 2023 09:44:55 -0400
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 401F426A9;
-        Fri,  7 Jul 2023 06:44:44 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1688737482; bh=uCuhTufCRaaXdnLKFmIMWVnD1T8kuwipzJVxUSjwA7c=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=dlsquq97LlWh4Cq1t+/166gbWWGi49X8vKT2jo9hCbgx2o6rZldmedRqPEtSm7kE8
-         6KXAX1Bj1320Cafe/JT47wcu9nh850XAufj3lH6P55pC4WEzAHDOnWboH1JA9HwyIT
-         +JQBikOCgPU+bSi28Ltg2Vx3Op4Lka3laaMYLz4/4RM/1gSInqLXSRh5/rOoFDeE42
-         yEDdKU8rlepQ8iQijuNr5k7KvRDyAOKuVc361adBf0vmU5jm0BDEewfWdgwSb+189f
-         oeaycFK4EB4lMmC1AFQXNB/Brdp49xro2DJt0BT4JTsrTFNJmYNbTiq5FbSu8emcqW
-         E5cOVFIGxpEfw==
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     Dongliang Mu <dzm91@hust.edu.cn>, Kalle Valo <kvalo@kernel.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] wifi: ath9k: fix printk specifier
-In-Reply-To: <CAOiHx=kccbUFGsWMA_31UPW6p=k1qa+HyL5OGyzv50W2Mc111w@mail.gmail.com>
-References: <20230706111700.14305-1-dzm91@hust.edu.cn>
- <87cz15s2gv.fsf@toke.dk>
- <CAOiHx=kccbUFGsWMA_31UPW6p=k1qa+HyL5OGyzv50W2Mc111w@mail.gmail.com>
-Date:   Fri, 07 Jul 2023 15:44:41 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87a5w7hm46.fsf@toke.dk>
+        Fri, 7 Jul 2023 10:48:50 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD8C31FD7
+        for <linux-wireless@vger.kernel.org>; Fri,  7 Jul 2023 07:48:49 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3fbc587febfso20336325e9.2
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Jul 2023 07:48:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=citymesh.com; s=google; t=1688741328; x=1691333328;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=t+W5Rk/cflPgn8rvKwsUFWa9ozTvPv5RDoKQhBnj0NU=;
+        b=fh6I6PVGfEWTCmtBtEXQigMl02oCyAtyMRC5//VFJwlLnWSmEJD9Sc8lFBziaNWKTp
+         G2wV46Kqjl30qwBJF32T4LYKixu0mhryRO0EzqIu0PAj+g4j3bOanvvbHIYpjNhwg3wx
+         z/WS0VKsbgMHHBlW6buZe2GncW7xggLHPVZMFJKtGNiJfxAwGsJU6jI4jefuU7ulwGIU
+         RaeVf+Nu4D3jv8huZExjcxZTw2H5QFwq26XlixnuzgDXhUPR4U1xTOnwdeQ/MFgh4/sw
+         hz+GcZE0OLOzPQPDmFEmQNBem5xN2v/QPrK8NkaumyCLu6UbbkbyyLlBOuzV+0PZduVA
+         Kipg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688741328; x=1691333328;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t+W5Rk/cflPgn8rvKwsUFWa9ozTvPv5RDoKQhBnj0NU=;
+        b=DBqSKq2wWOhux4wrVdHkxqQdsX8lkeKxwWa5+9h5JdHRK8Zq4MtK+Z1HsV799FCS/S
+         Y295+KA2S2c7AZAn0thwYv6EXvhDUs7X/KANCF/3ljx22JAhhnv5e5w5FVWYEkZgxjex
+         8+J2uGvIpI4SQ6QOcsBANweSvpG5rbQ2DQ9DHLzrMFWRs/xrIcWGCxlToRety4E6vm1M
+         jDJ5OMGHhPotatjx0cSKv+6EEZcFmxtI7mQujc/aixfnp/9nWmS61XqbPSozZKoig6f0
+         DNOnjHk8TKcCmqPeWjPdd3QCzC8fpNZDX1zvdfaheZz4+dydC21PDwe9eqecfnw3argx
+         qjoQ==
+X-Gm-Message-State: ABy/qLa41HOhRq8GWHlUAdVCkus7Jv/baaa/lVUr10FuV8QEQhw8QaQu
+        0OlQYRh0FRd2ZG3JgHG1IJ7N1qd45nOqjFZqHSs=
+X-Google-Smtp-Source: APBJJlGUX3NLfI3L/Ivtwo/OK9/J3WRQLaRszpIZBYtRioaTmjOqlglXhSwq/jotIbbUCdDrXBzXEA==
+X-Received: by 2002:a5d:5942:0:b0:313:ef57:5bde with SMTP id e2-20020a5d5942000000b00313ef575bdemr3988161wri.42.1688741328268;
+        Fri, 07 Jul 2023 07:48:48 -0700 (PDT)
+Received: from localhost.localdomain ([2a09:bac5:4ca:30f::4e:5f])
+        by smtp.gmail.com with ESMTPSA id z13-20020a5d4d0d000000b002fb60c7995esm4662830wrt.8.2023.07.07.07.48.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jul 2023 07:48:48 -0700 (PDT)
+From:   Koen Vandeputte <koen.vandeputte@citymesh.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net,
+        Koen Vandeputte <koen.vandeputte@citymesh.com>
+Subject: [PATCH] iw: fix attribute size mismatch
+Date:   Fri,  7 Jul 2023 16:48:26 +0200
+Message-Id: <20230707144826.3043151-1-koen.vandeputte@citymesh.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jonas Gorski <jonas.gorski@gmail.com> writes:
+NL80211_ATTR_MAX_AP_ASSOC_STA gets packed as u32 in the kernel.
+Change the receiving side to match this, or it will be wrong
+on big-endian.
 
-> On Thu, 6 Jul 2023 at 13:39, Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.=
-dk> wrote:
->>
->> Dongliang Mu <dzm91@hust.edu.cn> writes:
->>
->> > Smatch reports:
->> >
->> > ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
->> > ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
->> >
->> > Fix it by modifying %lx to %p in printk.
->> >
->> > Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
->>
->> Third time is the charm! :)
->>
->> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
->
-> But do we *want* to replace %lx with %p? Because this now causes a
-> change in behavior, as the kernel will omit the pointer's address,
-> while before it printed the actual memory address. Using %px would
-> have kept the original behavior.
+Signed-off-by: Koen Vandeputte <koen.vandeputte@citymesh.com>
+---
+ info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So this is basically an informational log message, which really
-shouldn't be leaking kernel pointer addresses. So I think %p is the
-right choice here, and if someone wants to see the real address for
-debugging they should be booting with no_hash_pointers.
+diff --git a/info.c b/info.c
+index 364f9b3..4c5f463 100644
+--- a/info.c
++++ b/info.c
+@@ -879,7 +879,7 @@ broken_combination:
+ 
+ 	if (tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA])
+ 		printf("\tMaximum associated stations in AP mode: %u\n",
+-		       nla_get_u16(tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA]));
++		       nla_get_u32(tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA]));
+ 
+ 	return NL_SKIP;
+ }
+-- 
+2.34.1
 
-> So if the change is desired, it should be noted in the commit message.
-
-That is a fair point, documenting this in the commit message would be
-good...
-
--Toke
