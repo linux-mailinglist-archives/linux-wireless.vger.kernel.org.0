@@ -2,138 +2,173 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C10C74BDC5
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jul 2023 16:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07BD774BEBA
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jul 2023 20:29:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbjGHOR7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jul 2023 10:17:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45922 "EHLO
+        id S229942AbjGHS3q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Jul 2023 14:29:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbjGHOR6 (ORCPT
+        with ESMTP id S229436AbjGHS3p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jul 2023 10:17:58 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0599F183;
-        Sat,  8 Jul 2023 07:17:57 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qI8kx-00053q-Qa; Sat, 08 Jul 2023 16:17:51 +0200
-Message-ID: <c65d0837-5e64-bec7-9e56-04aa91148d05@leemhuis.info>
-Date:   Sat, 8 Jul 2023 16:17:51 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [Regression][BISECTED] kernel boot hang after 19898ce9cf8a
- ("wifi: iwlwifi: split 22000.c into multiple files")
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     "Zhang, Rui" <rui.zhang@intel.com>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "Berg, Johannes" <johannes.berg@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Baruch, Yaara" <yaara.baruch@intel.com>,
-        "Ben Ami, Golan" <golan.ben.ami@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Sisodiya, Mukesh" <mukesh.sisodiya@intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sat, 8 Jul 2023 14:29:45 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98BE9D2;
+        Sat,  8 Jul 2023 11:29:44 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-31297125334so2465983f8f.0;
+        Sat, 08 Jul 2023 11:29:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688840983; x=1691432983;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2nWPM4jwPafYGbRkd318KIxOMWqBhLm3R65ukPzT5Hw=;
+        b=Eo+Ve0tiHadMyHDD4YevTQOQH7jWzOxi9XRPXgvke/Z4nauF7ijUaEBi86hGQl1XeI
+         v/DReW2ssHDGOaL78gYoJwUkr+JrfAyCGMEIyZ9iV2OOaGFTxcsiHR2/n2LUpIyVU70h
+         oEm2qI6A+t1pfxzOJBQx0x0JBQjis34S6KFKialnq17k8ZAoX4/xCIPJfd/V6uNtcUr2
+         SwqD9LqMph/nDcn1lYu7Ksw46/xs55Sz+KcUILIIh4SawmW/BxIVfxfpTpR5z2gI4bPL
+         6W3Fxz8xe3RtAXl/X/rW3fmFFswhtmiYF2GRediYYo3FA98sh/GGx5oB0CGJmayEPwte
+         Pvkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688840983; x=1691432983;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2nWPM4jwPafYGbRkd318KIxOMWqBhLm3R65ukPzT5Hw=;
+        b=BgUME7KrvC4WbXxpjgMmSVpDLxW+S9FKwZ9aFDT0ltR44W6G67HoHMstpeZeySoNuv
+         kn02Bipdg4oXZgBhj+8duHI9BLfc8PUhH121J4zDYuxhFK+MgOzp9W8Zavd6kWyDKx27
+         Csp0VfLiowEu08zZVBz961pJ9oN6nMjWNMeZDlgo4wSMWNCM1EsuxnsbnhW0x2pvUQEq
+         zc8F7QCUZKsNLrX/Lm70bbNHxRn9W/FN2AKdv/YwIGmrR5A+7UBRH5QMF4v3zsmThKP7
+         zX/OFBtiVgArj29rX8iveQIFyOvTnH+slqH+WOL2eXtl2ys+aR1pIa0ztRFs2alA+moC
+         Fw8A==
+X-Gm-Message-State: ABy/qLbHNYj2tKZsyWZX/D2MW+2h8PC4G8Fkb8cpM5yQyZvVpoqxmV0W
+        eCJ5yYqcu8GEdeGOs8aVHa8ly7p/atE=
+X-Google-Smtp-Source: APBJJlHEs+Abh2p4LsTa9DS8Xo9WLU3gZZVMEj49tQExaGWJKA40ooL/IXqMn0LcwfERBDMYoUmscw==
+X-Received: by 2002:a5d:420d:0:b0:314:3f1:cebf with SMTP id n13-20020a5d420d000000b0031403f1cebfmr11449963wrq.28.1688840982706;
+        Sat, 08 Jul 2023 11:29:42 -0700 (PDT)
+Received: from localhost.localdomain (93-34-93-173.ip49.fastwebnet.it. [93.34.93.173])
+        by smtp.googlemail.com with ESMTPSA id h9-20020adfe989000000b0030647449730sm7492067wrm.74.2023.07.08.11.29.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Jul 2023 11:29:42 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
         Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        netdev <netdev@vger.kernel.org>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-References: <b533071f38804247f06da9e52a04f15cce7a3836.camel@intel.com>
- <a4265090-d6b8-b185-a400-b09b27a347cc@leemhuis.info>
-In-Reply-To: <a4265090-d6b8-b185-a400-b09b27a347cc@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688825877;d2788880;
-X-HE-SMSGID: 1qI8kx-00053q-Qa
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Cc:     Christian Marangi <ansuelsmth@gmail.com>
+Subject: [PATCH 1/2] wifi: mt76: split get_of_eeprom in subfunction
+Date:   Sat,  8 Jul 2023 20:29:35 +0200
+Message-Id: <20230708182936.24469-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 07.07.23 12:55, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 07.07.23 10:25, Zhang, Rui wrote:
->>
->> I run into a NULL pointer dereference and kernel boot hang after
->> switching to latest upstream kernel, and git bisect shows that below
->> commit is the first offending commit, and I have confirmed that commit
->> 19898ce9cf8a has the issue while 19898ce9cf8a~1 does not.
-> 
-> FWIW, this is the fourth such report about this that I'm aware of.
-> 
-> The first is this one (with two affected users afaics):
-> https://bugzilla.kernel.org/show_bug.cgi?id=217622
-> 
-> The second is this one:
-> https://lore.kernel.org/all/CAAJw_Zug6VCS5ZqTWaFSr9sd85k%3DtyPm9DEE%2BmV%3DAKoECZM%2BsQ@mail.gmail.com/
-> 
-> The third:
-> https://lore.kernel.org/all/9274d9bd3d080a457649ff5addcc1726f08ef5b2.camel@xry111.site/
-> 
-> And in the past few days two people from Fedora land talked to me on IRC
-> with problems that in retrospective might be caused by this as well.
+In preparation for NVMEM support, split get_of_eeprom() in subfunction
+to tidy the code and facilitate the addition of alternative method to
+get eeprom data. No behaviour change intended.
 
-I got confirmation: one of those cases is also caused by 19898ce9cf8a
-But I write for a different reason:
+While at it also drop OF ifdef checks as OF have stubs and calling
+of_get_property would result in the same error returned.
 
-Larry (now CCed) looked at the culprit and spotted something that looked
-suspicious to him; he posted a patch and looks for testers:
-https://lore.kernel.org/all/0068af47-e475-7e8d-e476-c374e90dff5f@lwfinger.net/
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt76/eeprom.c | 51 ++++++++++++++-------
+ 1 file changed, 35 insertions(+), 16 deletions(-)
 
-Ciao, Thorsten
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index dce851d42e08..c3a762074be8 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -9,31 +9,35 @@
+ #include <linux/etherdevice.h>
+ #include "mt76.h"
+ 
+-int mt76_get_of_eeprom(struct mt76_dev *dev, void *eep, int offset, int len)
++static int mt76_get_of_eeprom_data(struct mt76_dev *dev, void *eep, int len)
+ {
+-#if defined(CONFIG_OF) && defined(CONFIG_MTD)
+ 	struct device_node *np = dev->dev->of_node;
+-	struct mtd_info *mtd;
+-	const __be32 *list;
+ 	const void *data;
+-	const char *part;
+-	phandle phandle;
+ 	int size;
+-	size_t retlen;
+-	int ret;
+ 
+-	if (!np)
++	data = of_get_property(np, "mediatek,eeprom-data", &size);
++	if (!data)
+ 		return -ENOENT;
+ 
+-	data = of_get_property(np, "mediatek,eeprom-data", &size);
+-	if (data) {
+-		if (size > len)
+-			return -EINVAL;
++	if (size > len)
++		return -EINVAL;
+ 
+-		memcpy(eep, data, size);
++	memcpy(eep, data, size);
+ 
+-		return 0;
+-	}
++	return 0;
++}
++
++static int mt76_get_of_epprom_from_mtd(struct mt76_dev *dev, void *eep, int offset, int len)
++{
++#ifdef CONFIG_MTD
++	struct device_node *np = dev->dev->of_node;
++	struct mtd_info *mtd;
++	const __be32 *list;
++	const char *part;
++	phandle phandle;
++	size_t retlen;
++	int size;
++	int ret;
+ 
+ 	list = of_get_property(np, "mediatek,mtd-eeprom", &size);
+ 	if (!list)
+@@ -100,6 +104,21 @@ int mt76_get_of_eeprom(struct mt76_dev *dev, void *eep, int offset, int len)
+ 	return -ENOENT;
+ #endif
+ }
++
++int mt76_get_of_eeprom(struct mt76_dev *dev, void *eep, int offset, int len)
++{
++	struct device_node *np = dev->dev->of_node;
++	int ret;
++
++	if (!np)
++		return -ENOENT;
++
++	ret = mt76_get_of_eeprom_data(dev, eep, len);
++	if (!ret)
++		return 0;
++
++	return mt76_get_of_epprom_from_mtd(dev, eep, offset, len);
++}
+ EXPORT_SYMBOL_GPL(mt76_get_of_eeprom);
+ 
+ void
+-- 
+2.40.1
 
-> This many reports about a problem at this stage of the cycle makes me
-> suspect we'll see a lot more once -rc1 is out. That's why I raising the
-> awareness of this. Sadly a simple revert of just this commit is not
-> possible. :-/
-> 
-> Ciao, Thorsten
-> 
->> commit 19898ce9cf8a33e0ac35cb4c7f68de297cc93cb2 (refs/bisect/bad)
->> Author:     Johannes Berg <johannes.berg@intel.com>
->> AuthorDate: Wed Jun 21 13:12:07 2023 +0300
->> Commit:     Johannes Berg <johannes.berg@intel.com>
->> CommitDate: Wed Jun 21 14:07:00 2023 +0200
->>
->>     wifi: iwlwifi: split 22000.c into multiple files
->>     
->>     Split the configuration list in 22000.c into four new files,
->>     per new device family, so we don't have this huge unusable
->>     file. Yes, this duplicates a few small things, but that's
->>     still much better than what we have now.
->>     
->>     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->>     Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
->>     Link:
->> https://lore.kernel.org/r/20230621130443.7543603b2ee7.Ia8dd54216d341ef1ddc0531f2c9aa30d30536a5d@changeid
->>     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->>
->> I have some screenshots which show that RIP points to iwl_mem_free_skb,
->> I can create a kernel bugzilla and attach the screenshots there if
->> needed.
->>
->> BTW, lspci output of the wifi device and git bisect log attached.
->>
->> If any other information needed, please let me know.
-> 
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> That page also explains what to do if mails like this annoy you.
-> 
-> P.S.: for regzbot
-> 
-> #regzbot ^introduced 19898ce9cf8a
-> #regzbot dup-of:
-> https://lore.kernel.org/all/a5cdc7f8-b340-d372-2971-0d24b01de217@gmail.com/
