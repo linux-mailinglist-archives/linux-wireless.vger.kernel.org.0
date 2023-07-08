@@ -2,66 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50BB774BC6D
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jul 2023 08:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 529AF74BC7F
+	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jul 2023 09:08:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229737AbjGHGtQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jul 2023 02:49:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55022 "EHLO
+        id S229868AbjGHHIN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Jul 2023 03:08:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbjGHGtO (ORCPT
+        with ESMTP id S229458AbjGHHIM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jul 2023 02:49:14 -0400
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20C381FEE;
-        Fri,  7 Jul 2023 23:49:14 -0700 (PDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-56fff21c2ebso32211797b3.3;
-        Fri, 07 Jul 2023 23:49:14 -0700 (PDT)
+        Sat, 8 Jul 2023 03:08:12 -0400
+Received: from mail-oo1-xc2a.google.com (mail-oo1-xc2a.google.com [IPv6:2607:f8b0:4864:20::c2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89861FF6;
+        Sat,  8 Jul 2023 00:08:09 -0700 (PDT)
+Received: by mail-oo1-xc2a.google.com with SMTP id 006d021491bc7-56344354e2cso2061889eaf.1;
+        Sat, 08 Jul 2023 00:08:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688798953; x=1691390953;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bhDYRPAnWtP4afL9YE9AQDbWS73jCYbg75eIeWdN/J4=;
-        b=dq/LBJ2idRI3N9zXzeN6u/bqeED+hF558rz85ZMvmAuopaWlBqzj1c2ayGYJgSC/6d
-         oo1SPG2l/wrEfDjCKo/38U6/9oC4kONsHrP3CVLP4XcbwaTzeeiHlNlpPPUkYk3SMgNv
-         r8IRdQJ5o/ywpQme0gAmEYjXBdCpT0/GsWxjKQJksbqNvQ6RWMtisLJmep7+FZep9l45
-         OV8PzklsEJY9qb4zyZXCbmEeaqtGfHYkIaUrb728dY8E8HJ5mbDz0z9jHbPdRE7GWTDj
-         IsWfOcVDM5w4Je1OAX3jfrA4IH0Bgk0uroX5WC+NFtWTubI3TlDtR8pBp1wcZIIPTskY
-         0KyA==
+        d=gmail.com; s=20221208; t=1688800089; x=1691392089;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vhOQaj6DH8O9iDDeN5q+g6pr6FJO1sQN66ELsNlx9aY=;
+        b=Yqc5GlcJ5tBitAQkFanwJm/qSvFbEbVc4nz9BQ4HjQJLgKKLBpObSL3DKgK/T8Ep7d
+         UaRD8UohHW+SLqKWWrhZ0DeqCwPrTa4ya8uIk3UGQDCYIRp+yB0ByR1uyXOfXicMAXub
+         NxNrSVzJ56gWvBiPJWSPs62l2VVcIOgL7iby1LhmAzAyjOPb2sXCbtmXVACQwf/V8+1I
+         5JqP+k/j2c4+Oh5CItVfIERbGIBMth4+Z2LtsK4BdvxDIcobj0YB8fooPTJmFnpiX6n7
+         tTdn/8/CMQv2nm6tjBNWzYnrlHU/8GnNjO/f0AMr62kfYHNCIbI2f+sH4lMdjOvuwmFV
+         FZfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688798953; x=1691390953;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bhDYRPAnWtP4afL9YE9AQDbWS73jCYbg75eIeWdN/J4=;
-        b=UoMyUhGpRaApNjL5YO1zsTbyW065YAdG9rUte+9wZPmP39PG5jv3omAfQ7VT9enPIi
-         mMkM6RiBkPSwzgIm4WWzYNB4EjCMsYJNsGUIcpUnLp810j+0zJfGw5v8sMq1q1DXSWSL
-         xyU0BO0haCtYKef4nBF+pp/7TPklLz3+42no6jUrbtZSLDfPy0z2w4ToAhD+8isWOmPp
-         QOxeB2zsuQEle9FBwKQf8nX20Q2b7uP4CYDmow6IfjgCCVyriJqRBtem5HDhWIcXz90V
-         MuWFtYoP08j28RIq5VvHJl6JqGA7vPp2B1OOSSvIvdi83XAlEAvr72OuYi1ZcRqd/TN0
-         2s8w==
-X-Gm-Message-State: ABy/qLaoWNkXdOjqW8zpcf62NsSuo/t0/Z+1NalZ29mxtkcFoK18+IIV
-        CuMJci4JoUwOOt6ghY7CtUWDgjlhrvcYoFQq
-X-Google-Smtp-Source: APBJJlHZ5OBvQlf9tUZQdDYG6c1ETsclWCZH3f1yMNgx5QJbE4S/RaUX7JUa+wpayhNywkEQ0h1MKg==
-X-Received: by 2002:a0d:d6ca:0:b0:577:16f7:91d9 with SMTP id y193-20020a0dd6ca000000b0057716f791d9mr7480114ywd.12.1688798953257;
-        Fri, 07 Jul 2023 23:49:13 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688800089; x=1691392089;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vhOQaj6DH8O9iDDeN5q+g6pr6FJO1sQN66ELsNlx9aY=;
+        b=DeyAl+fVLSp4mSaKho1RIxY9QC0fponPgUYsgrfoS0aIn6AkKCHVVW1NmiGTFKmSyu
+         Uym5J6l4v9C7LJZei99cgd3VQ7W1YpHJTxggeyXeVHD/NrMeN1L0VFkepRqZTupLd4/C
+         MrG6XbnmtuvzER6uj7fwpIlrx6slgDya95wdePx0OfcM8h23MVbXOsqr+OUw9fbPWtii
+         YcNneHeLqURyca8VsvcK3QOGPm9uSNYf+p9NaUjzXEF6HUzQVWPG0FYxLWpMcQlpLCOw
+         JK+kJw5oswWWK6CxsLw0M8rnmjy7hV/a4AUcyiJrSKbIOEEYJcjm/xRmzJ17k5MwzxHG
+         U6Ww==
+X-Gm-Message-State: ABy/qLZigFI/T2EV6oBwvzFoq1xJyCL5+TT/ksQhqHNiDTaBJpZDsZt6
+        WB7tS62ZCO0NzSNpWR0izxI=
+X-Google-Smtp-Source: APBJJlGNBQZBwxLer5NcCiWnab4doxze9cZqlQlvd0mA4RpMCv/7iE//0NNRjSfDOqZJWpie9st4iw==
+X-Received: by 2002:a05:6808:138c:b0:3a3:9463:ccbf with SMTP id c12-20020a056808138c00b003a39463ccbfmr9939334oiw.15.1688800089035;
+        Sat, 08 Jul 2023 00:08:09 -0700 (PDT)
 Received: from localhost.localdomain ([221.231.171.18])
-        by smtp.gmail.com with ESMTPSA id 24-20020a17090a035800b0025be7b69d73sm2712272pjf.12.2023.07.07.23.49.10
+        by smtp.gmail.com with ESMTPSA id q15-20020a62ae0f000000b00678159eacecsm3819078pff.121.2023.07.08.00.08.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jul 2023 23:49:12 -0700 (PDT)
+        Sat, 08 Jul 2023 00:08:08 -0700 (PDT)
 From:   pinkperfect <pinkperfect2021@gmail.com>
-To:     pinkperfect2021@gmail.com
-Cc:     amitkarwar@gmail.com, ganapathi017@gmail.com,
-        huxinming820@gmail.com, kvalo@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        sharvari.harisangam@nxp.com
-Subject: Re: [PATCH] wifi: mwifiex: Fix memcpy oobs in mwifiex_set_encode
-Date:   Sat,  8 Jul 2023 06:48:30 +0000
-Message-Id: <20230708064830.2380766-1-pinkperfect2021@gmail.com>
+To:     amitkarwar@gmail.com, kvalo@kernel.org, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        pinkperfect <pinkperfect2021@gmail.com>
+Subject: [PATCH v2] wifi: mwifiex: Fix OOB and integer underflow in mwifiex_process_mgmt_packet
+Date:   Sat,  8 Jul 2023 07:07:49 +0000
+Message-Id: <20230708070749.2382045-1-pinkperfect2021@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230706020751.859773-1-pinkperfect2021@gmail.com>
-References: <20230706020751.859773-1-pinkperfect2021@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -74,4 +70,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch is false alert, please ignore it. Thanks!
+In outside functions have checked upper limit of rx_pkt_length,
+in mwifiex_process_mgmt_packet should make sure rx_pkt_length not underflow
+and make sure skb->len big enough to avoid OOB access.
+
+Signed-off-by: pinkperfect <pinkperfect2021@gmail.com>
+---
+ drivers/net/wireless/marvell/mwifiex/util.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+index 94c2d219835d..31e1a82883e4 100644
+--- a/drivers/net/wireless/marvell/mwifiex/util.c
++++ b/drivers/net/wireless/marvell/mwifiex/util.c
+@@ -399,6 +399,11 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+ 
+ 	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
+ 
++	if (pkt_len < sizeof(struct ieee80211_hdr) || skb->len < pkt_len) {
++		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
++		return -1;
++	}
++
+ 	ieee_hdr = (void *)skb->data;
+ 	if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
+ 		if (mwifiex_parse_mgmt_packet(priv, (u8 *)ieee_hdr,
+-- 
+2.25.1
+
