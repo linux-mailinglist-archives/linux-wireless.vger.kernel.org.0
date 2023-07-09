@@ -2,110 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E8174C01A
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 02:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D7FF74C06F
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 04:46:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229973AbjGIAA4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jul 2023 20:00:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50884 "EHLO
+        id S229784AbjGICqB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Jul 2023 22:46:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjGIAAz (ORCPT
+        with ESMTP id S229437AbjGICqB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jul 2023 20:00:55 -0400
-Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC970D3;
-        Sat,  8 Jul 2023 17:00:52 -0700 (PDT)
-Received: by mail-ua1-x936.google.com with SMTP id a1e0cc1a2514c-7918b56b1e1so1126003241.2;
-        Sat, 08 Jul 2023 17:00:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688860852; x=1691452852;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gCTYOFpZ33F5UhgemDclft92cknyKeyRtlgFADnqHWw=;
-        b=FGjGp/5lxuVEZkuZWmh5w2IVh5U1D+j17NreINRb8RWNJl0qmLm3RKcIy/p0KdxZUQ
-         zVeS6ihFXJPSYvG/5lcBr40wbBr+wUHx4ZgFizrxHCd3yV6KbnRutUErmq56ph/sYMXn
-         6YwZclgJLVsJXSKiTNlloO/fvNIXpFK4I5iRgeyNBHxMIpj6BJdPQGYPMDISR85huQjt
-         PQyQ4A8yWT01bFRrizqNVW5zg0FErnPp82vzEbE7L43ugKjLRzTgvdx+c9VfNWu/bWjy
-         r8qh9KsPnznq5i4sayiN9nOy90Xlm887qdZ3CafcFwmuMfIr1rj9pTvfqRgWzXSYEnSH
-         D1YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688860852; x=1691452852;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gCTYOFpZ33F5UhgemDclft92cknyKeyRtlgFADnqHWw=;
-        b=goNVGfR9XzDpS1c0noEoqpTpGDmPHhAO8om8CCKytUybM3QES6Jq9UwBSxV01UU9d1
-         Wbqvnab+Ka1O8NOFb6MyrwChQZF/4CZZKllmZcLu5sjorM6Ht5i3IaOrSQQKXrmE6Kzn
-         nmGlGRwLHIhB02N8NyAqJk6wC5cISksopS176Wa/B0tR8DP6sb4Yd8xCr4yA4giew9Dz
-         LBtDfLey09Wj7t8PabjNgjwkst1nPC3UjxjkQdqVp14slegIt690eynwffp2bDvGlg5y
-         iNSqdoHdgB/WJjpwccmBV0+AN+THG62895blgvV67KkHic+47rxfwaUuEwEimAQY8ZbK
-         RA4w==
-X-Gm-Message-State: ABy/qLaMwgJ7/MJcTRXdTfYtemKzqNr9ALeqSjn2N1zUj+6hFgFlCrux
-        /5c6dIC3VCaAR9Ymm3WE/tgkdNCm5ASqtRnXaow=
-X-Google-Smtp-Source: APBJJlHDtm11y7Gufvz4Gqec/NdH2pk7IDgpiKTKFnJaCaJR+CTIONi0xDNiCGcBLGGDfcIbBTwGJCuNj3yHuFr+fdg=
-X-Received: by 2002:a1f:d486:0:b0:453:b080:632d with SMTP id
- l128-20020a1fd486000000b00453b080632dmr6263863vkg.0.1688860851887; Sat, 08
- Jul 2023 17:00:51 -0700 (PDT)
+        Sat, 8 Jul 2023 22:46:01 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C30E43;
+        Sat,  8 Jul 2023 19:45:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
+        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+        bh=kScoLng5YFNBErHSexheuj/gXT92kmX2io+vy4xr8rM=; b=PsMUpS186cZHQRQgwfdKjLfJaX
+        MAf7f9B1u/aXkeb/zojz6CD+TnJa0HqpXDmu8Vpbvk9jHYJehmIr0jU8qd3k1hkA7PitP98NQ+vvp
+        JxhNKaz/eH7PE6yS+gBvCYKGCVqciRGaIRJYGebsHLf1T2FPzgdh9w5WkwhOx6Pc+TfROtcY9AtUQ
+        mCiuO78NEKeL/IeiJtkK1KvEiqnKJyunCyhMPv8iDBHqMzo8VDx4+DTKzaxT16AxPv28FoFqPceBz
+        8rCgIthiWHkiaR4XVslEU8BpUXyWssYqC2XBeXRq1W6mbxZoliz0o4xACjbPXtXFMgZ5w8KK168Ka
+        ZBqg7aNg==;
+Received: from [2601:1c2:980:9ec0::2764]
+        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qIKQt-008BoB-0h;
+        Sun, 09 Jul 2023 02:45:55 +0000
+Message-ID: <2f6ffd1c-a756-b7b8-bba4-77c2308f26b9@infradead.org>
+Date:   Sat, 8 Jul 2023 19:45:53 -0700
 MIME-Version: 1.0
-References: <20230429020951.082353595@lindbergh.monkeyblade.net>
- <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com>
- <ZE0kndhsXNBIb1g7@debian.me> <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
- <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com>
- <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info> <CAAJw_Zu=MPtGPARgCB2fteP+7F793YDFXE9RuzSH8EqYBS-OOw@mail.gmail.com>
- <64b8732f-6319-9f10-b82a-b4a3dd8d4b8e@lwfinger.net> <CAAJw_ZvZNQzrFyQizJnKe5PerqqAUOmPYd6cnjAcvs68xNdwSA@mail.gmail.com>
- <ff646259-8ce1-f1fe-4627-cdf99321dba8@leemhuis.info> <0068af47-e475-7e8d-e476-c374e90dff5f@lwfinger.net>
-In-Reply-To: <0068af47-e475-7e8d-e476-c374e90dff5f@lwfinger.net>
-From:   Jeff Chua <jeff.chua.linux@gmail.com>
-Date:   Sun, 9 Jul 2023 08:00:40 +0800
-Message-ID: <CAAJw_ZvBUpMMC886CDdsLFW6bUG69X78zVfre7gCfu=aTR1xGQ@mail.gmail.com>
-Subject: Re: Linux-6.5 iwlwifi crash
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+From:   Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: Build regressions/improvements in v6.4 (wireless/airo)
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+References: <CAHk-=wi7fwNWfqj-QQqEfZTUOB4bbKT8QiEUDHoPk0ecuYA7cA@mail.gmail.com>
+ <20230626081950.2090627-1-geert@linux-m68k.org>
+ <39abf2c7-24a-f167-91da-ed4c5435d1c4@linux-m68k.org>
+Content-Language: en-US
+In-Reply-To: <39abf2c7-24a-f167-91da-ed4c5435d1c4@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jul 8, 2023 at 2:07=E2=80=AFAM Larry Finger <Larry.Finger@lwfinger.=
-net> wrote:
-> I am certainly no expert on iwlwifi, but this change looks suspicious:
->
-> @@ -10,8 +10,7 @@
->   #include "fw/api/txq.h"
->
->   /* Highest firmware API version supported */
-> -#define IWL_22000_UCODE_API_MAX        81
-> -#define IWL_22500_UCODE_API_MAX        77
-> +#define IWL_22000_UCODE_API_MAX        77
->
->   /* Lowest firmware API version supported */
->
-> The parameter that was originally set to 81 is now set to 77.
->
-> Please try the attached patch.
->
-> Larry
+Hi Geert,
 
-Larry, tried, but that didn't help.
+[+ Adrian]
 
-Thanks,
-Jeff.
+On 6/26/23 01:24, Geert Uytterhoeven wrote:
+> On Mon, 26 Jun 2023, Geert Uytterhoeven wrote:
+>> JFYI, when comparing v6.4[1] to v6.4-rc7[3], the summaries are:
+>>  - build errors: +1/-0
+> 
+>   + /kisskb/src/drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]:  => 6163:45
+
+I cannot reproduce this build error. (I don't doubt the problem, just having a problem
+making it happen for me.)
+I have tried it with gcc-11.1.0, gcc-11.3.0, and gcc-13.1.0.
+
+I'm surprised that this is the only instance that gcc found/warned about.
+
+I have a patch for this one instance, but there are 40+ instances of
+	readStatusRid()
+	readConfigRid()
+	readSsidRid()
+	readStatsRid()
+	readCapabilityRid()
+that don't check the return status of the function calls.
+
+I suppose that a patch can quieten the compiler error/warning, but given
+the 40+ other problems, it won't make the driver any noticeably better IMO.
+
+And the there is the general problem of not being able to build sh* cleanly any way.
+(See all of the other build issues in
+  http://kisskb.ellerman.id.au/kisskb/buildresult/14948832/
+.)
+
+Adrian, what toolchain do you use for arch/sh/ builds?
+
+
+> sh4-gcc11/sh-allmodconfig
+> seen before
+> 
+> This is actually a real issue, and it's been here since basically forever.
+> 
+> drivers/net/wireless/cisco/airo.c:
+> 
+>     static int airo_get_rate(struct net_device *dev,
+>                              struct iw_request_info *info,
+>                              union iwreq_data *wrqu,
+>                              char *extra)
+>     {
+>             struct iw_param *vwrq = &wrqu->bitrate;
+>             struct airo_info *local = dev->ml_priv;
+>             StatusRid status_rid;           /* Card status info */
+> 
+>             readStatusRid(local, &status_rid, 1);
+> 
+> ==>         vwrq->value = le16_to_cpu(status_rid.currentXmitRate) * 500000;
+>             ...
+>     }
+> 
+>     static int readStatusRid(struct airo_info *ai, StatusRid *statr, int lock)
+>     {
+>             return PC4500_readrid(ai, RID_STATUS, statr, sizeof(*statr), lock);
+>     }
+> 
+>     static int PC4500_readrid(struct airo_info *ai, u16 rid, void *pBuf, int len, int lock)
+>     {
+>             u16 status;
+>             int rc = SUCCESS;
+> 
+>             if (lock) {
+>                     if (down_interruptible(&ai->sem))
+>                             return ERROR;
+> 
+> pBuf output buffer contents not initialized.
+> 
+>             }
+>             ...
+>     }
+> 
+> 
+>> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/6995e2de6891c724bfeb2db33d7b87775f913ad1/ (all 160 configs)
+>> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/45a3e24f65e90a047bef86f927ebdc4c710edaa1/ (all 160 configs)
+
+I appreciate the synopsis.  Here's a patch.  WDYT?
+Thanks.
+---
+From: Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH] wifi: airo: avoid uninitialized warning in airo_get_rate()
+
+Quieten a gcc (11.3.0) build error or warning by checking the function
+call status and returning -EIO if the function call failed.
+This is similar to what several other wireless drivers do for the
+SIOCGIWRATE ioctl call.
+
+drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: lore.kernel.org/r/39abf2c7-24a-f167-91da-ed4c5435d1c4@linux-m68k.org
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+---
+ drivers/net/wireless/cisco/airo.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff -- a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -6157,8 +6157,11 @@ static int airo_get_rate(struct net_devi
+ 	struct iw_param *vwrq = &wrqu->bitrate;
+ 	struct airo_info *local = dev->ml_priv;
+ 	StatusRid status_rid;		/* Card status info */
++	int ret;
+ 
+-	readStatusRid(local, &status_rid, 1);
++	ret = readStatusRid(local, &status_rid, 1);
++	if (ret)
++		return -EIO;
+ 
+ 	vwrq->value = le16_to_cpu(status_rid.currentXmitRate) * 500000;
+ 	/* If more than one rate, set auto */
+
+
