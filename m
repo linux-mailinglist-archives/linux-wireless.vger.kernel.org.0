@@ -2,54 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC12F74C52B
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBDAA74C533
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:14:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233226AbjGIPOs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 11:14:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54032 "EHLO
+        id S233340AbjGIPO4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 11:14:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233204AbjGIPO1 (ORCPT
+        with ESMTP id S233258AbjGIPOf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jul 2023 11:14:27 -0400
+        Sun, 9 Jul 2023 11:14:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBAA10CE;
-        Sun,  9 Jul 2023 08:13:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 472411731;
+        Sun,  9 Jul 2023 08:14:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5507C60BFB;
-        Sun,  9 Jul 2023 15:13:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8607C433C8;
-        Sun,  9 Jul 2023 15:13:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54EC460C1F;
+        Sun,  9 Jul 2023 15:14:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB19BC433CB;
+        Sun,  9 Jul 2023 15:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688915629;
-        bh=82O17sxXXzuPYLGcWF4tN/DycdJSlQkvD6RvlBq4FhI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aLfMjxEyjknDa3oLrCBEuRbb98okm0qrZIAd7r3zCM+dOPEGRRQSHPuXW97ZDKzpM
-         PSfaex5UctVC8ymAfPhM6RlFZRn4C7mLPaeUVEl81xCMK+LAHA2vSYlRl4YB8KM9kc
-         DHZdqViKOgTwIak4L4DI0fy3VusxuT0rJwnwCTDEQ/91/UI29bGnCzCahPfeCFi1wE
-         x+CXbLXmWO7LD0ndEIEzpGjP8mXNjm73YyylkndPQKVX5yQOd8eL2dbhX8upcjva46
-         MzONvp7rsvizq+/s83wRUcMdvFY3ctKbZz9XiLDwvmZh3BlMzQcp3cscRmJ22dHR/F
-         VSQ6c0DeR6ygg==
+        s=k20201202; t=1688915639;
+        bh=0eFe3KRCvz+ys88CHld0g81ComcntN9akzS7FOdbrYw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=SMt4UKXMWpyTlWR1aB3VKFtP2FpUdVf86PdSAUySz2iH8qKBB3PsW9aefC+SshKl1
+         HQHIU7QFPdgb7j03e9e2APfqdI17E3NSEUL/ItPLUTGFHAo1wUweFgN7DCpUlkBU86
+         OCX5TS4LRH7Si9gzyb+juRlS98toxDgVUoxVLCitZzSCxFlAOUSsWakLfvDfF37//Q
+         AbEVbczPdUrm61/Bi5G6s2Ee5SluenS6BbF6z5C1CDY4LOQBZw257dLaNf+/19EPU7
+         D/xxa+N5K7BZNep5oHLHEniOHyFqW9u6oE/Hr319vartUy/2jkQfE9PEdpdd7ZXUsB
+         YIy+92ti05etQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Yi Kuo <yi@yikuo.dev>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Maxime Bizon <mbizon@freebox.fr>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        mukesh.sisodiya@intel.com, linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.4 24/26] wifi: iwlwifi: pcie: add device id 51F1 for killer 1675
-Date:   Sun,  9 Jul 2023 11:12:53 -0400
-Message-Id: <20230709151255.512931-24-sashal@kernel.org>
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.3 01/22] wifi: ath11k: fix registration of 6Ghz-only phy without the full channel range
+Date:   Sun,  9 Jul 2023 11:13:35 -0400
+Message-Id: <20230709151356.513279-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230709151255.512931-1-sashal@kernel.org>
-References: <20230709151255.512931-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.4.2
+X-stable-base: Linux 6.3.12
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -61,36 +58,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yi Kuo <yi@yikuo.dev>
+From: Maxime Bizon <mbizon@freebox.fr>
 
-[ Upstream commit f4daceae4087bbb3e9a56044b44601d520d009d2 ]
+[ Upstream commit e2ceb1de2f83aafd8003f0b72dfd4b7441e97d14 ]
 
-Intel Killer AX1675i/s with device id 51f1 would show
-"No config found for PCI dev 51f1/1672" in dmesg and refuse to work.
-Add the new device id 51F1 for 1675i/s to fix the issue.
+Because of what seems to be a typo, a 6Ghz-only phy for which the BDF
+does not allow the 7115Mhz channel will fail to register:
 
-Signed-off-by: Yi Kuo <yi@yikuo.dev>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230621130444.ee224675380b.I921c905e21e8d041ad808def8f454f27b5ebcd8b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+  WARNING: CPU: 2 PID: 106 at net/wireless/core.c:907 wiphy_register+0x914/0x954
+  Modules linked in: ath11k_pci sbsa_gwdt
+  CPU: 2 PID: 106 Comm: kworker/u8:5 Not tainted 6.3.0-rc7-next-20230418-00549-g1e096a17625a-dirty #9
+  Hardware name: Freebox V7R Board (DT)
+  Workqueue: ath11k_qmi_driver_event ath11k_qmi_driver_event_work
+  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : wiphy_register+0x914/0x954
+  lr : ieee80211_register_hw+0x67c/0xc10
+  sp : ffffff800b123aa0
+  x29: ffffff800b123aa0 x28: 0000000000000000 x27: 0000000000000000
+  x26: 0000000000000000 x25: 0000000000000006 x24: ffffffc008d51418
+  x23: ffffffc008cb0838 x22: ffffff80176c2460 x21: 0000000000000168
+  x20: ffffff80176c0000 x19: ffffff80176c03e0 x18: 0000000000000014
+  x17: 00000000cbef338c x16: 00000000d2a26f21 x15: 00000000ad6bb85f
+  x14: 0000000000000020 x13: 0000000000000020 x12: 00000000ffffffbd
+  x11: 0000000000000208 x10: 00000000fffffdf7 x9 : ffffffc009394718
+  x8 : ffffff80176c0528 x7 : 000000007fffffff x6 : 0000000000000006
+  x5 : 0000000000000005 x4 : ffffff800b304284 x3 : ffffff800b304284
+  x2 : ffffff800b304d98 x1 : 0000000000000000 x0 : 0000000000000000
+  Call trace:
+   wiphy_register+0x914/0x954
+   ieee80211_register_hw+0x67c/0xc10
+   ath11k_mac_register+0x7c4/0xe10
+   ath11k_core_qmi_firmware_ready+0x1f4/0x570
+   ath11k_qmi_driver_event_work+0x198/0x590
+   process_one_work+0x1b8/0x328
+   worker_thread+0x6c/0x414
+   kthread+0x100/0x104
+   ret_from_fork+0x10/0x20
+  ---[ end trace 0000000000000000 ]---
+  ath11k_pci 0002:01:00.0: ieee80211 registration failed: -22
+  ath11k_pci 0002:01:00.0: failed register the radio with mac80211: -22
+  ath11k_pci 0002:01:00.0: failed to create pdev core: -22
+
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230421145445.2612280-1-mbizon@freebox.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath11k/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index e9fe6cea891aa..e086664a4eaca 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -684,6 +684,8 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 	IWL_DEV_INFO(0x2726, 0x1672, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675i_name),
- 	IWL_DEV_INFO(0x51F0, 0x1671, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675s_name),
- 	IWL_DEV_INFO(0x51F0, 0x1672, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675i_name),
-+	IWL_DEV_INFO(0x51F1, 0x1671, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675s_name),
-+	IWL_DEV_INFO(0x51F1, 0x1672, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675i_name),
- 	IWL_DEV_INFO(0x54F0, 0x1671, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675s_name),
- 	IWL_DEV_INFO(0x54F0, 0x1672, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675i_name),
- 	IWL_DEV_INFO(0x7A70, 0x1671, iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_killer_1675s_name),
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 110a38cce0a71..850ef35c1f75e 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8778,7 +8778,7 @@ static int ath11k_mac_setup_channels_rates(struct ath11k *ar,
+ 	}
+ 
+ 	if (supported_bands & WMI_HOST_WLAN_5G_CAP) {
+-		if (reg_cap->high_5ghz_chan >= ATH11K_MAX_6G_FREQ) {
++		if (reg_cap->high_5ghz_chan >= ATH11K_MIN_6G_FREQ) {
+ 			channels = kmemdup(ath11k_6ghz_channels,
+ 					   sizeof(ath11k_6ghz_channels), GFP_KERNEL);
+ 			if (!channels) {
 -- 
 2.39.2
 
