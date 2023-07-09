@@ -2,44 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B988074C5BB
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A297874C58A
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:17:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233645AbjGIPS7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 11:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54594 "EHLO
+        id S233626AbjGIPQ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 11:16:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233683AbjGIPS2 (ORCPT
+        with ESMTP id S233487AbjGIPPq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jul 2023 11:18:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A8A272A;
-        Sun,  9 Jul 2023 08:16:01 -0700 (PDT)
+        Sun, 9 Jul 2023 11:15:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570F626AB;
+        Sun,  9 Jul 2023 08:15:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 464DD60C01;
-        Sun,  9 Jul 2023 15:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB18C433CB;
-        Sun,  9 Jul 2023 15:14:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 96AF360C3A;
+        Sun,  9 Jul 2023 15:15:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2EDC43391;
+        Sun,  9 Jul 2023 15:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688915693;
-        bh=s/Cb8Zm+6Qly1ZMy/ulzm3Pf5rMTvuUA8VEfjYDv+pQ=;
+        s=k20201202; t=1688915700;
+        bh=9b+9aKuIZCx+bFQNZ80VhD+Nbq2DsN2OchqWP/egD/Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nyn/YpOsg5LQ5nK6pKEHK7ZhI36mOhQPWp1ODyz31GwVa3sxv+A1sjAhg2rf+uvK8
-         kA+VpEEkjg33OsBhBJOcuM7xmSLqdk8SLvRt6J6xlkuvMo91gkvG3z/pMYZ2u8ECBW
-         PXm9hF4DolcEBg27+6fvWyp+l8JVtp3i/6qcgQ7XlqiuBA/29Pke2CEuAu2UuVgoZ0
-         HYSjcyu0W5jcCUM4aLFS5Aayl3ql67xHR1F50tA68bdOxI51A5lxTQj0BMOXOI1fDp
-         XHKxORIzeIRli3r/vpvSfaADHXLIAR6qQuyaLxvuJ53+GuXsOwGU1fs75O2bRPLa0J
-         H7cwNpDscLfKg==
+        b=nJqHqdOI3MG8JUllt9D5LBgDjc3EpO7KBhRIL8Vz7kNMPtfXXFbElmBXZOa1Drb/3
+         sLZmR7PjcLlTxKf/nvJSKlyiXzPj0X1CClsOa8RwUV0R8o2QCkW69RrPEUm83imbeR
+         rRRO0Nw5PxELMNuGchinuOgwx7xJNZx+kebn4FIT5jCqRX4Df+EaRuBN16izXGGnQ6
+         QtRuJa7JTRE+G19URpkCajrWzsc1GNwpH/Us86TtkqawaXntUFuWvpD7IpSRFm0n5s
+         lu+ODfQ/WrrCPIVCKx7irLfL5sCvKp/OKlVmlsGCKaWkvPCQEcDbgBSvky0YIjC026
+         pFALBn+I5RM1w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 03/18] wifi: rtw89: 8851be: add 8851BE PCI entry and fill PCI capabilities
-Date:   Sun,  9 Jul 2023 11:14:31 -0400
-Message-Id: <20230709151446.513549-3-sashal@kernel.org>
+Cc:     Wen Gong <quic_wgong@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 07/18] wifi: ath11k: add support default regdb while searching board-2.bin for WCN6855
+Date:   Sun,  9 Jul 2023 11:14:35 -0400
+Message-Id: <20230709151446.513549-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230709151446.513549-1-sashal@kernel.org>
 References: <20230709151446.513549-1-sashal@kernel.org>
@@ -58,114 +60,134 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-[ Upstream commit 99ff8da56322cda9eb9b37021e27b127c2d1cad8 ]
+[ Upstream commit 88ca89202f8e8afb5225eb5244d79cd67c15d744 ]
 
-Add PCI entry to 8851BE with its device ID 10ec:b851, also fill PCI info
-according to its capabilities.
+Sometimes board-2.bin does not have the regdb data which matched the
+parameters such as vendor, device, subsystem-vendor, subsystem-device
+and etc. Add default regdb data with 'bus=%s' into board-2.bin for
+WCN6855, then ath11k use 'bus=pci' to search regdb data in board-2.bin
+for WCN6855.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230421024551.29994-3-pkshih@realtek.com
+kernel: [  122.515808] ath11k_pci 0000:03:00.0: boot using board name 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262'
+kernel: [  122.517240] ath11k_pci 0000:03:00.0: boot firmware request ath11k/WCN6855/hw2.0/board-2.bin size 6179564
+kernel: [  122.517280] ath11k_pci 0000:03:00.0: failed to fetch regdb data for bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262 from ath11k/WCN6855/hw2.0/board-2.bin
+kernel: [  122.517464] ath11k_pci 0000:03:00.0: boot using board name 'bus=pci'
+kernel: [  122.518901] ath11k_pci 0000:03:00.0: boot firmware request ath11k/WCN6855/hw2.0/board-2.bin size 6179564
+kernel: [  122.518915] ath11k_pci 0000:03:00.0: board name
+kernel: [  122.518917] ath11k_pci 0000:03:00.0: 00000000: 62 75 73 3d 70 63 69                             bus=pci
+kernel: [  122.518918] ath11k_pci 0000:03:00.0: boot found match regdb data for name 'bus=pci'
+kernel: [  122.518920] ath11k_pci 0000:03:00.0: boot found regdb data for 'bus=pci'
+kernel: [  122.518921] ath11k_pci 0000:03:00.0: fetched regdb
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230517133959.8224-1-quic_wgong@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtw89/rtw8851be.c    | 86 +++++++++++++++++++
- 1 file changed, 86 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851be.c
+ drivers/net/wireless/ath/ath11k/core.c | 53 +++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851be.c b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-new file mode 100644
-index 0000000000000..0f7711c50bd15
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-@@ -0,0 +1,86 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) 2022-2023  Realtek Corporation
-+ */
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index b99180bc81723..893fefadbba96 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -870,7 +870,8 @@ int ath11k_core_check_dt(struct ath11k_base *ab)
+ }
+ 
+ static int __ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+-					   size_t name_len, bool with_variant)
++					   size_t name_len, bool with_variant,
++					   bool bus_type_mode)
+ {
+ 	/* strlen(',variant=') + strlen(ab->qmi.target.bdf_ext) */
+ 	char variant[9 + ATH11K_QMI_BDF_EXT_STR_LENGTH] = { 0 };
+@@ -881,15 +882,20 @@ static int __ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ 
+ 	switch (ab->id.bdf_search) {
+ 	case ATH11K_BDF_SEARCH_BUS_AND_BOARD:
+-		scnprintf(name, name_len,
+-			  "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
+-			  ath11k_bus_str(ab->hif.bus),
+-			  ab->id.vendor, ab->id.device,
+-			  ab->id.subsystem_vendor,
+-			  ab->id.subsystem_device,
+-			  ab->qmi.target.chip_id,
+-			  ab->qmi.target.board_id,
+-			  variant);
++		if (bus_type_mode)
++			scnprintf(name, name_len,
++				  "bus=%s",
++				  ath11k_bus_str(ab->hif.bus));
++		else
++			scnprintf(name, name_len,
++				  "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
++				  ath11k_bus_str(ab->hif.bus),
++				  ab->id.vendor, ab->id.device,
++				  ab->id.subsystem_vendor,
++				  ab->id.subsystem_device,
++				  ab->qmi.target.chip_id,
++				  ab->qmi.target.board_id,
++				  variant);
+ 		break;
+ 	default:
+ 		scnprintf(name, name_len,
+@@ -908,13 +914,19 @@ static int __ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ static int ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ 					 size_t name_len)
+ {
+-	return __ath11k_core_create_board_name(ab, name, name_len, true);
++	return __ath11k_core_create_board_name(ab, name, name_len, true, false);
+ }
+ 
+ static int ath11k_core_create_fallback_board_name(struct ath11k_base *ab, char *name,
+ 						  size_t name_len)
+ {
+-	return __ath11k_core_create_board_name(ab, name, name_len, false);
++	return __ath11k_core_create_board_name(ab, name, name_len, false, false);
++}
 +
-+#include <linux/module.h>
-+#include <linux/pci.h>
++static int ath11k_core_create_bus_type_board_name(struct ath11k_base *ab, char *name,
++						  size_t name_len)
++{
++	return __ath11k_core_create_board_name(ab, name, name_len, false, true);
+ }
+ 
+ const struct firmware *ath11k_core_firmware_request(struct ath11k_base *ab,
+@@ -1218,7 +1230,7 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ 
+ int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ {
+-	char boardname[BOARD_NAME_SIZE];
++	char boardname[BOARD_NAME_SIZE], default_boardname[BOARD_NAME_SIZE];
+ 	int ret;
+ 
+ 	ret = ath11k_core_create_board_name(ab, boardname, BOARD_NAME_SIZE);
+@@ -1235,6 +1247,21 @@ int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd
+ 	if (!ret)
+ 		goto exit;
+ 
++	ret = ath11k_core_create_bus_type_board_name(ab, default_boardname,
++						     BOARD_NAME_SIZE);
++	if (ret) {
++		ath11k_dbg(ab, ATH11K_DBG_BOOT,
++			   "failed to create default board name for regdb: %d", ret);
++		goto exit;
++	}
 +
-+#include "pci.h"
-+#include "reg.h"
-+#include "rtw8851b.h"
++	ret = ath11k_core_fetch_board_data_api_n(ab, bd, default_boardname,
++						 ATH11K_BD_IE_REGDB,
++						 ATH11K_BD_IE_REGDB_NAME,
++						 ATH11K_BD_IE_REGDB_DATA);
++	if (!ret)
++		goto exit;
 +
-+static const struct rtw89_pci_info rtw8851b_pci_info = {
-+	.txbd_trunc_mode	= MAC_AX_BD_TRUNC,
-+	.rxbd_trunc_mode	= MAC_AX_BD_TRUNC,
-+	.rxbd_mode		= MAC_AX_RXBD_PKT,
-+	.tag_mode		= MAC_AX_TAG_MULTI,
-+	.tx_burst		= MAC_AX_TX_BURST_2048B,
-+	.rx_burst		= MAC_AX_RX_BURST_128B,
-+	.wd_dma_idle_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
-+	.wd_dma_act_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
-+	.multi_tag_num		= MAC_AX_TAG_NUM_8,
-+	.lbc_en			= MAC_AX_PCIE_ENABLE,
-+	.lbc_tmr		= MAC_AX_LBC_TMR_2MS,
-+	.autok_en		= MAC_AX_PCIE_DISABLE,
-+	.io_rcy_en		= MAC_AX_PCIE_DISABLE,
-+	.io_rcy_tmr		= MAC_AX_IO_RCY_ANA_TMR_6MS,
-+
-+	.init_cfg_reg		= R_AX_PCIE_INIT_CFG1,
-+	.txhci_en_bit		= B_AX_TXHCI_EN,
-+	.rxhci_en_bit		= B_AX_RXHCI_EN,
-+	.rxbd_mode_bit		= B_AX_RXBD_MODE,
-+	.exp_ctrl_reg		= R_AX_PCIE_EXP_CTRL,
-+	.max_tag_num_mask	= B_AX_MAX_TAG_NUM,
-+	.rxbd_rwptr_clr_reg	= R_AX_RXBD_RWPTR_CLR,
-+	.txbd_rwptr_clr2_reg	= 0,
-+	.dma_stop1		= {R_AX_PCIE_DMA_STOP1, B_AX_TX_STOP1_MASK_V1},
-+	.dma_stop2		= {0},
-+	.dma_busy1		= {R_AX_PCIE_DMA_BUSY1, DMA_BUSY1_CHECK_V1},
-+	.dma_busy2_reg		= 0,
-+	.dma_busy3_reg		= R_AX_PCIE_DMA_BUSY1,
-+
-+	.rpwm_addr		= R_AX_PCIE_HRPWM,
-+	.cpwm_addr		= R_AX_CPWM,
-+	.tx_dma_ch_mask		= BIT(RTW89_TXCH_ACH4) | BIT(RTW89_TXCH_ACH5) |
-+				  BIT(RTW89_TXCH_ACH6) | BIT(RTW89_TXCH_ACH7) |
-+				  BIT(RTW89_TXCH_CH10) | BIT(RTW89_TXCH_CH11),
-+	.bd_idx_addr_low_power	= NULL,
-+	.dma_addr_set		= &rtw89_pci_ch_dma_addr_set,
-+	.bd_ram_table		= &rtw89_bd_ram_table_single,
-+
-+	.ltr_set		= rtw89_pci_ltr_set,
-+	.fill_txaddr_info	= rtw89_pci_fill_txaddr_info,
-+	.config_intr_mask	= rtw89_pci_config_intr_mask,
-+	.enable_intr		= rtw89_pci_enable_intr,
-+	.disable_intr		= rtw89_pci_disable_intr,
-+	.recognize_intrs	= rtw89_pci_recognize_intrs,
-+};
-+
-+static const struct rtw89_driver_info rtw89_8851be_info = {
-+	.chip = &rtw8851b_chip_info,
-+	.bus = {
-+		.pci = &rtw8851b_pci_info,
-+	},
-+};
-+
-+static const struct pci_device_id rtw89_8851be_id_table[] = {
-+	{
-+		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xb851),
-+		.driver_data = (kernel_ulong_t)&rtw89_8851be_info,
-+	},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(pci, rtw89_8851be_id_table);
-+
-+static struct pci_driver rtw89_8851be_driver = {
-+	.name		= "rtw89_8851be",
-+	.id_table	= rtw89_8851be_id_table,
-+	.probe		= rtw89_pci_probe,
-+	.remove		= rtw89_pci_remove,
-+	.driver.pm	= &rtw89_pm_ops,
-+};
-+module_pci_driver(rtw89_8851be_driver);
-+
-+MODULE_AUTHOR("Realtek Corporation");
-+MODULE_DESCRIPTION("Realtek 802.11ax wireless 8851BE driver");
-+MODULE_LICENSE("Dual BSD/GPL");
+ 	ret = ath11k_core_fetch_board_data_api_1(ab, bd, ATH11K_REGDB_FILE_NAME);
+ 	if (ret)
+ 		ath11k_dbg(ab, ATH11K_DBG_BOOT, "failed to fetch %s from %s\n",
 -- 
 2.39.2
 
