@@ -2,47 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6339F74C592
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B73C74C5D6
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:20:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233651AbjGIPRD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 11:17:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54448 "EHLO
+        id S233842AbjGIPUN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 11:20:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233502AbjGIPPr (ORCPT
+        with ESMTP id S233321AbjGIPT0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jul 2023 11:15:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF4A51999;
-        Sun,  9 Jul 2023 08:15:06 -0700 (PDT)
+        Sun, 9 Jul 2023 11:19:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E157230F8;
+        Sun,  9 Jul 2023 08:16:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7D9A60C02;
-        Sun,  9 Jul 2023 15:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47499C433CA;
-        Sun,  9 Jul 2023 15:15:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6811860C13;
+        Sun,  9 Jul 2023 15:15:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A047C433C8;
+        Sun,  9 Jul 2023 15:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688915704;
-        bh=GrdR5Q7vdb3BWDoBJBU9/vUbDinfvJzNkbJ2rHQ4WyA=;
+        s=k20201202; t=1688915711;
+        bh=DhWxYX3fwMTSTTYeMti6w7NylsaqchfOaT/y3dOFFIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fyNyFwYluOB1AlEp1dYJ6Zzyd3ylI4uNhhrOhDH26SeR2x3NWtqK/WdHDFmYwjqDc
-         XS5c0ZtfOR+dfAhNXXZYjGOsdSYloVFx61PbZ8FesyTxBjm/4DNeeyNaeb9E4Sd2Wf
-         3VX9hqtPK/iGjB4NZrgZMtQwdOV5slhFKfCalnbqfCxlAFCnzXBFhJdewWSBXNPz5w
-         qsRpBcQf8GvYYXw2OWOzAPn0KINuDH61Cm1M6ceeZWWvtVjlRtaCfFuX+qjWZBfJqM
-         v0itEVQ7IdxfLh4ogJJBMAw8SzNjO2fYXhO6xh4rh0QcmQp2g4OoW3fJoQWR4Sdgd0
-         UHrJN7VUHS84Q==
+        b=XwrnHZOnd/dGAm4NtMxwNByaJ7NVUJN9Nehu06zF5Cm/GUyh0cnuyjYRC4M87p8Ny
+         PYDtzR6WUonH44Z7Bin4Lv2jO34eXJrxRY0s1YmxLAIMG/gG0fVWW5BQFiegHQ0QbU
+         BIUgsVqV25EXXoryQj3JtAmHcSBreR/4luLxMAsTq9CfgFCNMHzTUH/oMJI91FDsUx
+         D0wHaV1DNhivRCnADLYhUDXLPdVFhZhj2n/lC819xvjEX2LAzXx98KcIBnNYISRtHd
+         QU7SbpTKe/wX5mWefoRCX8afxrCxJWI1kHvspryFHcSUHiQC2EdoiDLGyvEB+jmEes
+         cP9BvDMEt9OvA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     P Praneesh <quic_ppranees@quicinc.com>,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 10/18] wifi: ath11k: fix memory leak in WMI firmware stats
-Date:   Sun,  9 Jul 2023 11:14:38 -0400
-Message-Id: <20230709151446.513549-10-sashal@kernel.org>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 13/18] wifi: wext-core: Fix -Wstringop-overflow warning in ioctl_standard_iw_point()
+Date:   Sun,  9 Jul 2023 11:14:41 -0400
+Message-Id: <20230709151446.513549-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230709151446.513549-1-sashal@kernel.org>
 References: <20230709151446.513549-1-sashal@kernel.org>
@@ -61,61 +63,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 
-[ Upstream commit 6aafa1c2d3e3fea2ebe84c018003f2a91722e607 ]
+[ Upstream commit 71e7552c90db2a2767f5c17c7ec72296b0d92061 ]
 
-Memory allocated for firmware pdev, vdev and beacon statistics
-are not released during rmmod.
+-Wstringop-overflow is legitimately warning us about extra_size
+pontentially being zero at some point, hence potenially ending
+up _allocating_ zero bytes of memory for extra pointer and then
+trying to access such object in a call to copy_from_user().
 
-Fix it by calling ath11k_fw_stats_free() function before hardware
-unregister.
+Fix this by adding a sanity check to ensure we never end up
+trying to allocate zero bytes of data for extra pointer, before
+continue executing the rest of the code in the function.
 
-While at it, avoid calling ath11k_fw_stats_free() while processing
-the firmware stats received in the WMI event because the local list
-is getting spliced and reinitialised and hence there are no elements
-in the list after splicing.
+Address the following -Wstringop-overflow warning seen when built
+m68k architecture with allyesconfig configuration:
+                 from net/wireless/wext-core.c:11:
+In function '_copy_from_user',
+    inlined from 'copy_from_user' at include/linux/uaccess.h:183:7,
+    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:825:7:
+arch/m68k/include/asm/string.h:48:25: warning: '__builtin_memset' writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
+   48 | #define memset(d, c, n) __builtin_memset(d, c, n)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/uaccess.h:153:17: note: in expansion of macro 'memset'
+  153 |                 memset(to + (n - res), 0, res);
+      |                 ^~~~~~
+In function 'kmalloc',
+    inlined from 'kzalloc' at include/linux/slab.h:694:9,
+    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:819:10:
+include/linux/slab.h:577:16: note: at offset 1 into destination object of size 0 allocated by '__kmalloc'
+  577 |         return __kmalloc(size, flags);
+      |                ^~~~~~~~~~~~~~~~~~~~~~
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+This help with the ongoing efforts to globally enable
+-Wstringop-overflow.
 
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230606091128.14202-1-quic_adisi@quicinc.com
+Link: https://github.com/KSPP/linux/issues/315
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/ZItSlzvIpjdjNfd8@work
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 1 +
- drivers/net/wireless/ath/ath11k/wmi.c | 5 +++++
- 2 files changed, 6 insertions(+)
+ net/wireless/wext-core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index b19d44b3f5dfb..cb77dd6ce9665 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -9279,6 +9279,7 @@ void ath11k_mac_destroy(struct ath11k_base *ab)
- 		if (!ar)
- 			continue;
- 
-+		ath11k_fw_stats_free(&ar->fw_stats);
- 		ieee80211_free_hw(ar->hw);
- 		pdev->ar = NULL;
+diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
+index fe8765c4075d3..8a4b85f96a13a 100644
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
+@@ -799,6 +799,12 @@ static int ioctl_standard_iw_point(struct iw_point *iwp, unsigned int cmd,
+ 		}
  	}
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index fad9f8d308a20..3e0a47f4a3ebd 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -7590,6 +7590,11 @@ static void ath11k_update_stats_event(struct ath11k_base *ab, struct sk_buff *sk
- 	rcu_read_unlock();
- 	spin_unlock_bh(&ar->data_lock);
  
-+	/* Since the stats's pdev, vdev and beacon list are spliced and reinitialised
-+	 * at this point, no need to free the individual list.
++	/* Sanity-check to ensure we never end up _allocating_ zero
++	 * bytes of data for extra.
 +	 */
-+	return;
++	if (extra_size <= 0)
++		return -EFAULT;
 +
- free:
- 	ath11k_fw_stats_free(&stats);
- }
+ 	/* kzalloc() ensures NULL-termination for essid_compat. */
+ 	extra = kzalloc(extra_size, GFP_KERNEL);
+ 	if (!extra)
 -- 
 2.39.2
 
