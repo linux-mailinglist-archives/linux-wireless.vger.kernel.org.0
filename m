@@ -2,129 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 494BA74C5EE
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:21:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A359674C66C
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 18:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233844AbjGIPUz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 11:20:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59738 "EHLO
+        id S230075AbjGIQ2H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 12:28:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233823AbjGIPUR (ORCPT
+        with ESMTP id S229534AbjGIQ2G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jul 2023 11:20:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B4D1BD2;
-        Sun,  9 Jul 2023 08:17:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BE2360C2D;
-        Sun,  9 Jul 2023 15:16:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83851C433CD;
-        Sun,  9 Jul 2023 15:16:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688915811;
-        bh=nTYRnmB0100wh1J1+ZWj878exMeOb0t/OxCjUY+Jk5g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aka/h7pr7kPKpthF9zvrvKm3vCmM9w32qI/6WB3FyzFNwQZRKW5kTC7O6mkEKcdRM
-         R4vYF4coGXq1gAiWi7DCjsuMkZKsWA3adxZuzYPCSVgOg7aL2ADRn348wJnvdSgZd1
-         oGMO59zHFftCvkEdKU4HIcO8MJKWXMK1YXAiPccIp5o6TEXovvuKAACvwXglB427GT
-         SLUKdj9XiFktz2TUvF9UVytMwYPzMIfjyO/Apsv1qE//HVUKNefZ2VpN+3kJqgy17f
-         q/NP9hF/Fv9Il5umI3pX6FIplAiieoeMe3hh59NsRvHuezpcV+ylP4qnc3H6UxCyiQ
-         RQYBzchMY9OiQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 3/4] wifi: wext-core: Fix -Wstringop-overflow warning in ioctl_standard_iw_point()
-Date:   Sun,  9 Jul 2023 11:16:43 -0400
-Message-Id: <20230709151645.514172-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230709151645.514172-1-sashal@kernel.org>
-References: <20230709151645.514172-1-sashal@kernel.org>
+        Sun, 9 Jul 2023 12:28:06 -0400
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E5B2A8;
+        Sun,  9 Jul 2023 09:28:05 -0700 (PDT)
+Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-5634db21a78so2678409eaf.0;
+        Sun, 09 Jul 2023 09:28:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688920084; x=1691512084;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mnp7Gx1O4lBi6RB6np/kLFboJ0ahJMfnsN6pSM7+9k4=;
+        b=C3Z8Rw5eHLgZLt/1ByF8+nxD3uvgzIOCbeyD6rfZNLgsRMPLgEexhGgcnFPbQyoWGj
+         74ImKO3YsvkZWRNVmzLcacKTxJV6nV7KsBeEtOC1BKWbHH86F1mJOGgbAV459dfl/FJu
+         XCevRxYtHvMp4XASirzqqS2qF7pTeDqdiTaLpj106T/gzelDXnvnkLOjmjBb6o//AOZH
+         tlEA7j0fgMYsdlLibdsah5rlxd+qVHwDj4I+hYcOXU8l58HHRk2O5InJCRhk6VpW8t43
+         gEgCi1VhGtk0YgXXtzYSioCp237OKLhuxeKxNP67W21scEUsDzxjr99/QQNo9lTTK5np
+         bG0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688920084; x=1691512084;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Mnp7Gx1O4lBi6RB6np/kLFboJ0ahJMfnsN6pSM7+9k4=;
+        b=HRRbPPrdzS6qQaAf6kUq+cnDGWP6eFLRrpmHJ76RDFN5FnsVc+S089Bod6FJyzwiUL
+         9/uVjq5eOnjMbSt5+ADoJRF27Bi22mZHeQvRHS2LKi/RgKz9wX0bm+qdL8Pm3wNlzH4T
+         V8uFqKFzCOSTWv7EqniG/am9kV/GMWfzgnNpiXRcQPjc7ehtsPYk6t6/ZqU3h7CZFwGf
+         dP09D85g4WGZxF36Tsus6M6InNl1dvaRSOCLw/5nbz9VTLuJcna7AsuMV35VMWBcQxwc
+         czvtlFIQiqXIWvOQOhIDPdAh0AE0vBcnLZ7Cg0PNCC7MUeIS63AOh8ZAakBn1IyUUXgJ
+         ndsg==
+X-Gm-Message-State: ABy/qLbjXSmG9wljqTMauu5+4d1k6/RJDuMaLfwfvxeO9E2M9UNewmJ2
+        kwd+tSlXL7UIzxflILQQNhc=
+X-Google-Smtp-Source: APBJJlE60avBl+3E9vLwVQj9Z7ucwDB15X967F/kv0vGm7ovzn82ucw0rFV/AvNaXRSZZAkAskZtJQ==
+X-Received: by 2002:a05:6808:1a81:b0:3a3:6536:dd89 with SMTP id bm1-20020a0568081a8100b003a36536dd89mr9022353oib.49.1688920084438;
+        Sun, 09 Jul 2023 09:28:04 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id n5-20020aca2405000000b003a1f444307esm3367199oic.58.2023.07.09.09.28.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Jul 2023 09:28:03 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <b4063a55-be7c-8f3a-2529-e1211080d323@lwfinger.net>
+Date:   Sun, 9 Jul 2023 11:28:02 -0500
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.320
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [Regression][BISECTED] kernel boot hang after 19898ce9cf8a
+ ("wifi: iwlwifi: split 22000.c into multiple files")
+To:     "Zhang, Rui" <rui.zhang@intel.com>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "Berg, Johannes" <johannes.berg@intel.com>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Cc:     "bagasdotme@gmail.com" <bagasdotme@gmail.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "Baruch, Yaara" <yaara.baruch@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Torvalds, Linus" <torvalds@linux-foundation.org>,
+        "Ben Ami, Golan" <golan.ben.ami@intel.com>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "Sisodiya, Mukesh" <mukesh.sisodiya@intel.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>
+References: <b533071f38804247f06da9e52a04f15cce7a3836.camel@intel.com>
+ <a4265090-d6b8-b185-a400-b09b27a347cc@leemhuis.info>
+ <c65d0837-5e64-bec7-9e56-04aa91148d05@leemhuis.info>
+ <4153ce0aac6dc760a3a9c7204c5c9141b60839a4.camel@intel.com>
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <4153ce0aac6dc760a3a9c7204c5c9141b60839a4.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+On 7/9/23 08:27, Zhang, Rui wrote:
+> On Sat, 2023-07-08 at 16:17 +0200, Thorsten Leemhuis wrote:
+>> On 07.07.23 12:55, Linux regression tracking (Thorsten Leemhuis)
+>> wrote:
+>>> On 07.07.23 10:25, Zhang, Rui wrote:
+>>>>
+>>>> I run into a NULL pointer dereference and kernel boot hang after
+>>>> switching to latest upstream kernel, and git bisect shows that
+>>>> below
+>>>> commit is the first offending commit, and I have confirmed that
+>>>> commit
+>>>> 19898ce9cf8a has the issue while 19898ce9cf8a~1 does not.
+>>>
+>>> FWIW, this is the fourth such report about this that I'm aware of.
+>>>
+>>> The first is this one (with two affected users afaics):
+>>> https://bugzilla.kernel.org/show_bug.cgi?id=217622
+>>>
+>>> The second is this one:
+>>> https://lore.kernel.org/all/CAAJw_Zug6VCS5ZqTWaFSr9sd85k%3DtyPm9DEE%2BmV%3DAKoECZM%2BsQ@mail.gmail.com/
+>>>
+>>> The third:
+>>> https://lore.kernel.org/all/9274d9bd3d080a457649ff5addcc1726f08ef5b2.camel@xry111.site/
+>>>
+>>> And in the past few days two people from Fedora land talked to me
+>>> on IRC
+>>> with problems that in retrospective might be caused by this as
+>>> well.
+>>
+>> I got confirmation: one of those cases is also caused by 19898ce9cf8a
+>> But I write for a different reason:
+>>
+>> Larry (now CCed) looked at the culprit and spotted something that
+>> looked
+>> suspicious to him; he posted a patch and looks for testers:
+>> https://lore.kernel.org/all/0068af47-e475-7e8d-e476-c374e90dff5f@lwfinger.net/
+> 
+> I applied this patch but the problem still exists.
+> 
+> thanks,
+> rui
 
-[ Upstream commit 71e7552c90db2a2767f5c17c7ec72296b0d92061 ]
+Rui,
 
--Wstringop-overflow is legitimately warning us about extra_size
-pontentially being zero at some point, hence potenially ending
-up _allocating_ zero bytes of memory for extra pointer and then
-trying to access such object in a call to copy_from_user().
+I am not surprised that the patch did not help. I guess you will need to stay 
+with kernel 6.3.X until the Intel developers return from their summer break.
 
-Fix this by adding a sanity check to ensure we never end up
-trying to allocate zero bytes of data for extra pointer, before
-continue executing the rest of the code in the function.
+Larry
 
-Address the following -Wstringop-overflow warning seen when built
-m68k architecture with allyesconfig configuration:
-                 from net/wireless/wext-core.c:11:
-In function '_copy_from_user',
-    inlined from 'copy_from_user' at include/linux/uaccess.h:183:7,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:825:7:
-arch/m68k/include/asm/string.h:48:25: warning: '__builtin_memset' writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
-   48 | #define memset(d, c, n) __builtin_memset(d, c, n)
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-include/linux/uaccess.h:153:17: note: in expansion of macro 'memset'
-  153 |                 memset(to + (n - res), 0, res);
-      |                 ^~~~~~
-In function 'kmalloc',
-    inlined from 'kzalloc' at include/linux/slab.h:694:9,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:819:10:
-include/linux/slab.h:577:16: note: at offset 1 into destination object of size 0 allocated by '__kmalloc'
-  577 |         return __kmalloc(size, flags);
-      |                ^~~~~~~~~~~~~~~~~~~~~~
-
-This help with the ongoing efforts to globally enable
--Wstringop-overflow.
-
-Link: https://github.com/KSPP/linux/issues/315
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/ZItSlzvIpjdjNfd8@work
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/wireless/wext-core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index b6414c7bef556..4bf33f9b28870 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -798,6 +798,12 @@ static int ioctl_standard_iw_point(struct iw_point *iwp, unsigned int cmd,
- 		}
- 	}
- 
-+	/* Sanity-check to ensure we never end up _allocating_ zero
-+	 * bytes of data for extra.
-+	 */
-+	if (extra_size <= 0)
-+		return -EFAULT;
-+
- 	/* kzalloc() ensures NULL-termination for essid_compat. */
- 	extra = kzalloc(extra_size, GFP_KERNEL);
- 	if (!extra)
--- 
-2.39.2
 
