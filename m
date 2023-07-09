@@ -2,79 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79FD674BEBC
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Jul 2023 20:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13E8174C01A
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 02:01:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229986AbjGHS3r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Jul 2023 14:29:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49634 "EHLO
+        id S229973AbjGIAA4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 8 Jul 2023 20:00:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjGHS3q (ORCPT
+        with ESMTP id S229458AbjGIAAz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Jul 2023 14:29:46 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D4A7130;
-        Sat,  8 Jul 2023 11:29:45 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-3fbf1b82de7so24520085e9.1;
-        Sat, 08 Jul 2023 11:29:45 -0700 (PDT)
+        Sat, 8 Jul 2023 20:00:55 -0400
+Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC970D3;
+        Sat,  8 Jul 2023 17:00:52 -0700 (PDT)
+Received: by mail-ua1-x936.google.com with SMTP id a1e0cc1a2514c-7918b56b1e1so1126003241.2;
+        Sat, 08 Jul 2023 17:00:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688840984; x=1691432984;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1688860852; x=1691452852;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aRlinllzuoLno5ix8NJN30aYnS4fPlc7sOxq/5PjHIk=;
-        b=qu+RlsIaWJd8WTxko1JbxVTi2ZRF7I15gRBdEyTNLfm4+1YU0LEOFxXJKCmCZx4YPc
-         Ki0bBjXQwBl8NaKHddnzIJI2Mij6+V+yE6uvl6l1XmSAVrYvC5sG2VjQhUsxakdvkBK1
-         39b+6bIJw2iuskMXwiLzm3PLKfI3LYPiUsDt6HAPSpYnSJFCkclV3zcMU3s9mg/IG6GL
-         +VOY8OuxYuucrplErZc5fXwHGZfhcmqkV2B0eq3xGJdAzmYeMET5T7QEAWtN9BX7oCFu
-         M7ddlT44sT/CngI3SzNKFmrKkYG4nwEP1EQmoszDP3zkW5xtBfsGc0PlKdfD39LKBaFF
-         Twdg==
+        bh=gCTYOFpZ33F5UhgemDclft92cknyKeyRtlgFADnqHWw=;
+        b=FGjGp/5lxuVEZkuZWmh5w2IVh5U1D+j17NreINRb8RWNJl0qmLm3RKcIy/p0KdxZUQ
+         zVeS6ihFXJPSYvG/5lcBr40wbBr+wUHx4ZgFizrxHCd3yV6KbnRutUErmq56ph/sYMXn
+         6YwZclgJLVsJXSKiTNlloO/fvNIXpFK4I5iRgeyNBHxMIpj6BJdPQGYPMDISR85huQjt
+         PQyQ4A8yWT01bFRrizqNVW5zg0FErnPp82vzEbE7L43ugKjLRzTgvdx+c9VfNWu/bWjy
+         r8qh9KsPnznq5i4sayiN9nOy90Xlm887qdZ3CafcFwmuMfIr1rj9pTvfqRgWzXSYEnSH
+         D1YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688840984; x=1691432984;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1688860852; x=1691452852;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aRlinllzuoLno5ix8NJN30aYnS4fPlc7sOxq/5PjHIk=;
-        b=UasoNzYV1rodkMyaYsjG5AKfh2Piw2CiiCItl1WJHuLhyywIolWaXX7EfY56rLafOB
-         Yr6MpXyODldynA6U1FA0vjL+0wFVcOcbI1Uz4E0UF2GYUBYgWZa6rkNvTO1Xrc3l66I3
-         SHGak6HRyBKgO2l5U3MdhtGV9gxjnfdgH/KA+zlrkYWjy4POE51wJ/TqdVMXJGTollm2
-         VFfnf/JMQKb2NRQgl4qEfqUHY9Z86V8QN/4aaL7m/43rvnhBXLtG/daO6ruBL6H7P1QB
-         dKsXhA37M/377R0tssNcgmVRcszt85yYUC91wFO3uEKe00pEwWe4L8PcgqFoH6xAxhLr
-         LbzA==
-X-Gm-Message-State: ABy/qLYAYWO31Ty0sa7emuy4lcOfyvRRbYTB/8KWICwDix+4iPWNddY/
-        olDQIYEAdN2y+9/9X3dpTRE=
-X-Google-Smtp-Source: APBJJlHQCf5NSpNxS5BwssHQcf8A1hFtRUGQ9JeBaBFBFtD02S1IhjHLWTq+vacSUBIVP3j3aXcnkw==
-X-Received: by 2002:a05:600c:2207:b0:3f7:e660:cdc5 with SMTP id z7-20020a05600c220700b003f7e660cdc5mr7583435wml.9.1688840983788;
-        Sat, 08 Jul 2023 11:29:43 -0700 (PDT)
-Received: from localhost.localdomain (93-34-93-173.ip49.fastwebnet.it. [93.34.93.173])
-        by smtp.googlemail.com with ESMTPSA id h9-20020adfe989000000b0030647449730sm7492067wrm.74.2023.07.08.11.29.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Jul 2023 11:29:43 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     Christian Marangi <ansuelsmth@gmail.com>
-Subject: [PATCH 2/2] wifi: mt76: add support for providing eeprom in nvmem cells
-Date:   Sat,  8 Jul 2023 20:29:36 +0200
-Message-Id: <20230708182936.24469-2-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230708182936.24469-1-ansuelsmth@gmail.com>
-References: <20230708182936.24469-1-ansuelsmth@gmail.com>
+        bh=gCTYOFpZ33F5UhgemDclft92cknyKeyRtlgFADnqHWw=;
+        b=goNVGfR9XzDpS1c0noEoqpTpGDmPHhAO8om8CCKytUybM3QES6Jq9UwBSxV01UU9d1
+         Wbqvnab+Ka1O8NOFb6MyrwChQZF/4CZZKllmZcLu5sjorM6Ht5i3IaOrSQQKXrmE6Kzn
+         nmGlGRwLHIhB02N8NyAqJk6wC5cISksopS176Wa/B0tR8DP6sb4Yd8xCr4yA4giew9Dz
+         LBtDfLey09Wj7t8PabjNgjwkst1nPC3UjxjkQdqVp14slegIt690eynwffp2bDvGlg5y
+         iNSqdoHdgB/WJjpwccmBV0+AN+THG62895blgvV67KkHic+47rxfwaUuEwEimAQY8ZbK
+         RA4w==
+X-Gm-Message-State: ABy/qLaMwgJ7/MJcTRXdTfYtemKzqNr9ALeqSjn2N1zUj+6hFgFlCrux
+        /5c6dIC3VCaAR9Ymm3WE/tgkdNCm5ASqtRnXaow=
+X-Google-Smtp-Source: APBJJlHDtm11y7Gufvz4Gqec/NdH2pk7IDgpiKTKFnJaCaJR+CTIONi0xDNiCGcBLGGDfcIbBTwGJCuNj3yHuFr+fdg=
+X-Received: by 2002:a1f:d486:0:b0:453:b080:632d with SMTP id
+ l128-20020a1fd486000000b00453b080632dmr6263863vkg.0.1688860851887; Sat, 08
+ Jul 2023 17:00:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230429020951.082353595@lindbergh.monkeyblade.net>
+ <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com>
+ <ZE0kndhsXNBIb1g7@debian.me> <b9ab37d2-42bf-cc31-a2c0-a9b604e95530@gmail.com>
+ <CAAJw_Zug6VCS5ZqTWaFSr9sd85k=tyPm9DEE+mV=AKoECZM+sQ@mail.gmail.com>
+ <7fee3284-b9ba-58f4-8118-fe0b99ae6bf7@leemhuis.info> <CAAJw_Zu=MPtGPARgCB2fteP+7F793YDFXE9RuzSH8EqYBS-OOw@mail.gmail.com>
+ <64b8732f-6319-9f10-b82a-b4a3dd8d4b8e@lwfinger.net> <CAAJw_ZvZNQzrFyQizJnKe5PerqqAUOmPYd6cnjAcvs68xNdwSA@mail.gmail.com>
+ <ff646259-8ce1-f1fe-4627-cdf99321dba8@leemhuis.info> <0068af47-e475-7e8d-e476-c374e90dff5f@lwfinger.net>
+In-Reply-To: <0068af47-e475-7e8d-e476-c374e90dff5f@lwfinger.net>
+From:   Jeff Chua <jeff.chua.linux@gmail.com>
+Date:   Sun, 9 Jul 2023 08:00:40 +0800
+Message-ID: <CAAJw_ZvBUpMMC886CDdsLFW6bUG69X78zVfre7gCfu=aTR1xGQ@mail.gmail.com>
+Subject: Re: Linux-6.5 iwlwifi crash
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        lkml <linux-kernel@vger.kernel.org>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,80 +85,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support for providing eeprom in nvmem cells by adding nvmem cell as
-an alternative source for mt76_get_of_eeprom().
+On Sat, Jul 8, 2023 at 2:07=E2=80=AFAM Larry Finger <Larry.Finger@lwfinger.=
+net> wrote:
+> I am certainly no expert on iwlwifi, but this change looks suspicious:
+>
+> @@ -10,8 +10,7 @@
+>   #include "fw/api/txq.h"
+>
+>   /* Highest firmware API version supported */
+> -#define IWL_22000_UCODE_API_MAX        81
+> -#define IWL_22500_UCODE_API_MAX        77
+> +#define IWL_22000_UCODE_API_MAX        77
+>
+>   /* Lowest firmware API version supported */
+>
+> The parameter that was originally set to 81 is now set to 77.
+>
+> Please try the attached patch.
+>
+> Larry
 
-Nvmem cells will follow standard nvmem cell definition and needs to be
-called 'eeprom' to be correctly identified.
+Larry, tried, but that didn't help.
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/eeprom.c | 38 ++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index c3a762074be8..36564930aef1 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -6,6 +6,7 @@
- #include <linux/of_net.h>
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/partitions.h>
-+#include <linux/nvmem-consumer.h>
- #include <linux/etherdevice.h>
- #include "mt76.h"
- 
-@@ -105,6 +106,37 @@ static int mt76_get_of_epprom_from_mtd(struct mt76_dev *dev, void *eep, int offs
- #endif
- }
- 
-+static int mt76_get_of_epprom_from_nvmem(struct mt76_dev *dev, void *eep, int len)
-+{
-+	struct device_node *np = dev->dev->of_node;
-+	struct nvmem_cell *cell;
-+	const void *data;
-+	size_t retlen;
-+	int ret = 0;
-+
-+	cell = of_nvmem_cell_get(np, "eeprom");
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
-+
-+	data = nvmem_cell_read(cell, &retlen);
-+	nvmem_cell_put(cell);
-+
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
-+	if (retlen < len) {
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	memcpy(eep, data, len);
-+
-+exit:
-+	kfree(data);
-+
-+	return ret;
-+}
-+
- int mt76_get_of_eeprom(struct mt76_dev *dev, void *eep, int offset, int len)
- {
- 	struct device_node *np = dev->dev->of_node;
-@@ -117,7 +149,11 @@ int mt76_get_of_eeprom(struct mt76_dev *dev, void *eep, int offset, int len)
- 	if (!ret)
- 		return 0;
- 
--	return mt76_get_of_epprom_from_mtd(dev, eep, offset, len);
-+	ret = mt76_get_of_epprom_from_mtd(dev, eep, offset, len);
-+	if (!ret)
-+		return 0;
-+
-+	return mt76_get_of_epprom_from_nvmem(dev, eep, len);
- }
- EXPORT_SYMBOL_GPL(mt76_get_of_eeprom);
- 
--- 
-2.40.1
-
+Thanks,
+Jeff.
