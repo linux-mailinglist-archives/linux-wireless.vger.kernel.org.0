@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60AA174C51D
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EEA974C520
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233180AbjGIPOT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 11:14:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54136 "EHLO
+        id S233212AbjGIPOU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 11:14:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233184AbjGIPOG (ORCPT
+        with ESMTP id S233189AbjGIPOG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 9 Jul 2023 11:14:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 307041BB;
-        Sun,  9 Jul 2023 08:13:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79EC0E45;
+        Sun,  9 Jul 2023 08:13:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DBC160BC9;
-        Sun,  9 Jul 2023 15:13:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7F6C433C7;
-        Sun,  9 Jul 2023 15:13:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5160460C0F;
+        Sun,  9 Jul 2023 15:13:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4E8C43391;
+        Sun,  9 Jul 2023 15:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688915611;
-        bh=sB+XtJAYpsxpgs8eSEbivLDZHx106L5FQ9mAbaQJbvE=;
+        s=k20201202; t=1688915617;
+        bh=LH2hwoUFKM2bcWoEr3Ue+OY/SGHBF6JkUd2BHQ0tcIo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YqtOpYBtCVs8ntmAofPDLeI249mW/4gBC72w61uj3z897T228Eqhq8zsy4sJvu5uy
-         RnR4MxSwer9PrW7/W2VO7CPASPYA9CukSD/Oyjc2qUuluyhr86IHeRHVwo2LeVavC4
-         VwzZGrgB4zUTDI7ZSkY/MhMUqmmnSXFD8uxgZolqvrIEwXTuUidXflAcP5fY4bHUnm
-         MnydT5t9Q6hzrL9kGanQHO6JMuhHi6E0AXr2Mr0ddlUiEZz3cZZjNT0GImh+QP4Qyh
-         4unEh9LOSzmzCuY/DrG8k3zkJctpUzznEaTxKNYfCUeBLsrHS9kcQIlhykmjX4i02p
-         tFEJF0WNadgpQ==
+        b=ahWir//vbjRqGSMU/6bD+fL+CSG9eefXn/CpY0w1gxXIWc7WXcW5t2IEh0Qv4F+lj
+         Lc6XiNkqW5K4mgioeqN/oJ+aM68hd58fjt9r6T8U1goQD2Bf9HsoJ0gSG8OzxnTs+K
+         YCRJE7BCpuqiH1DzG/XjZfVYXJHmkDcRu9+aKn98w3P9+CK67hcB4D0qOGSc0zLLcZ
+         zI9XVUfhjZaI0bW1N7TJ/+g4hV+jVT2zzoJkpcxhe+JD5A+kDCj+B13lJTnOephKq3
+         MhhQDTcvv97RTg50IDWumFHMtQ3z6lXsOnfhm2jbmLNeBX277XqeH1Rn/PGyCYOjaK
+         JsWqOObMzX3fg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+Cc:     Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        ilan.peer@intel.com, avraham.stern@intel.com,
         linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.4 17/26] wifi: iwlwifi: mvm: fix potential array out of bounds access
-Date:   Sun,  9 Jul 2023 11:12:46 -0400
-Message-Id: <20230709151255.512931-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.4 20/26] wifi: iwlwifi: mvm: Add NULL check before dereferencing the pointer
+Date:   Sun,  9 Jul 2023 11:12:49 -0400
+Message-Id: <20230709151255.512931-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230709151255.512931-1-sashal@kernel.org>
 References: <20230709151255.512931-1-sashal@kernel.org>
@@ -61,49 +61,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-[ Upstream commit 637452360ecde9ac972d19416e9606529576b302 ]
+[ Upstream commit 7dd50fd5478056929a012c6bf8b3c6f87c7e9e87 ]
 
-Account for IWL_SEC_WEP_KEY_OFFSET when needed while verifying
-key_len size in iwl_mvm_sec_key_add().
+While vif pointers are protected by the corresponding "*active"
+fields, static checkers can get confused sometimes. Add an explicit
+check.
 
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230613155501.f193b7493a93.I6948ba625b9318924b96a5e22602ac75d2bd0125@changeid
+Link: https://lore.kernel.org/r/20230614154951.78749ae91fb5.Id3c05d13eeee6638f0930f750e93fb928d5c9dee@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/power.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-index 8853821b37168..1e659bd07392a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2022 Intel Corporation
-+ * Copyright (C) 2022 - 2023 Intel Corporation
-  */
- #include <linux/kernel.h>
- #include <net/mac80211.h>
-@@ -179,9 +179,14 @@ int iwl_mvm_sec_key_add(struct iwl_mvm *mvm,
- 		.u.add.key_flags = cpu_to_le32(key_flags),
- 		.u.add.tx_seq = cpu_to_le64(atomic64_read(&keyconf->tx_pn)),
- 	};
-+	int max_key_len = sizeof(cmd.u.add.key);
- 	int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/power.c b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
+index ac1dae52556f8..19839cc44eb3d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/power.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
+@@ -647,30 +647,32 @@ static void iwl_mvm_power_set_pm(struct iwl_mvm *mvm,
+ 		return;
  
--	if (WARN_ON(keyconf->keylen > sizeof(cmd.u.add.key)))
-+	if (keyconf->cipher == WLAN_CIPHER_SUITE_WEP40 ||
-+	    keyconf->cipher == WLAN_CIPHER_SUITE_WEP104)
-+		max_key_len -= IWL_SEC_WEP_KEY_OFFSET;
-+
-+	if (WARN_ON(keyconf->keylen > max_key_len))
- 		return -EINVAL;
+ 	/* enable PM on bss if bss stand alone */
+-	if (vifs->bss_active && !vifs->p2p_active && !vifs->ap_active) {
++	if (bss_mvmvif && vifs->bss_active && !vifs->p2p_active &&
++	    !vifs->ap_active) {
+ 		bss_mvmvif->pm_enabled = true;
+ 		return;
+ 	}
  
- 	if (WARN_ON(!sta_mask))
+ 	/* enable PM on p2p if p2p stand alone */
+-	if (vifs->p2p_active && !vifs->bss_active && !vifs->ap_active) {
++	if (p2p_mvmvif && vifs->p2p_active && !vifs->bss_active &&
++	    !vifs->ap_active) {
+ 		p2p_mvmvif->pm_enabled = true;
+ 		return;
+ 	}
+ 
+-	if (vifs->bss_active && vifs->p2p_active)
++	if (p2p_mvmvif && bss_mvmvif && vifs->bss_active && vifs->p2p_active)
+ 		client_same_channel =
+ 			iwl_mvm_have_links_same_channel(bss_mvmvif, p2p_mvmvif);
+ 
+-	if (vifs->bss_active && vifs->ap_active)
++	if (bss_mvmvif && ap_mvmvif && vifs->bss_active && vifs->ap_active)
+ 		ap_same_channel =
+ 			iwl_mvm_have_links_same_channel(bss_mvmvif, ap_mvmvif);
+ 
+ 	/* clients are not stand alone: enable PM if DCM */
+ 	if (!(client_same_channel || ap_same_channel)) {
+-		if (vifs->bss_active)
++		if (bss_mvmvif && vifs->bss_active)
+ 			bss_mvmvif->pm_enabled = true;
+-		if (vifs->p2p_active)
++		if (p2p_mvmvif && vifs->p2p_active)
+ 			p2p_mvmvif->pm_enabled = true;
+ 		return;
+ 	}
 -- 
 2.39.2
 
