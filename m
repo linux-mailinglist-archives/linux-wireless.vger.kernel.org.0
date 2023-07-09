@@ -2,56 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89BE674C620
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21DEC74C633
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:31:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233034AbjGIP2c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 11:28:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37560 "EHLO
+        id S233916AbjGIPbg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 11:31:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234003AbjGIP2B (ORCPT
+        with ESMTP id S232937AbjGIPbW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jul 2023 11:28:01 -0400
+        Sun, 9 Jul 2023 11:31:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21A152705;
-        Sun,  9 Jul 2023 08:25:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B7712A;
+        Sun,  9 Jul 2023 08:30:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E07860C17;
-        Sun,  9 Jul 2023 15:16:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9EAC433C7;
-        Sun,  9 Jul 2023 15:16:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EF1760C0F;
+        Sun,  9 Jul 2023 15:16:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E97BC433C7;
+        Sun,  9 Jul 2023 15:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688915771;
-        bh=+ARJS2fRf3jq6v4YN1dAH/bW3KjrxUoS3Vmx7GvoMn0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=orD2q+19KYLSiW+giGtlkUveOpIN2bx6LEK0VwpvBKP3UL3YBsWPyGmiHZGN995sp
-         KNMJkkOWLOAYgGAXT4+g5Wk9j3kTyJyAx3tB9kVSSbxkf/QKeamfmcUeyf5gnnu/mw
-         XDEBeirEoAW5Ix72Dydzhdf8rlBqXFuMCRwt0Od+4jnx/F2f++OI7Chnj8gRfz1NCX
-         jVWt3ozhUnPwzQZfGq8JmobqiXauQRNFu6NXuqXCUTnmnCrFMhr6ABx8jTRG/PqsNV
-         6eg7TNaB1gmDrOYbsY+RI18L3OIASGlgJRup27hTrIjM8vJHc0sMTRUUIvKhxgLaTH
-         FLPVnbYkeAc/A==
+        s=k20201202; t=1688915777;
+        bh=s/Cb8Zm+6Qly1ZMy/ulzm3Pf5rMTvuUA8VEfjYDv+pQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=s+dLI75LDQWXDqJPF09YayVDRqvmfk6Vk0NHAPWY5wUs+mYKxAzWqqCBORWu20SJC
+         MOkV6kmu+iBpZGLx4W8jvwPaVqq/acIyxaqiy8H7yT97NVpvDGbU8fdtONQ0eFNXqK
+         cminsDhCa7LQ+iP/8NdxwAKdVV2yhMvVTryUBUIZFEyGTWfyKUJ6dMpwa9wD36tRUi
+         zn6AoslQbrw515qm8b+G3LsIfeit0lqB9qzRWNJSGGbL2VqYR1a4bc4e/YkqOUg3kb
+         Ut0sKTInRv+q2wU/MGw1WawA569AI9pCFh7LOu7Ti/TJPq130nFG3YlzK1BduLsokj
+         5c/HEN90Cfmcw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Roee Goldfiner <roee.h.goldfiner@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        miriam.rachel.korenblit@intel.com, avraham.stern@intel.com,
-        benjamin.berg@intel.com, jtornosm@redhat.com,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 6/7] wifi: iwlwifi: mvm: avoid baid size integer overflow
-Date:   Sun,  9 Jul 2023 11:15:54 -0400
-Message-Id: <20230709151555.513910-6-sashal@kernel.org>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/6] wifi: rtw89: 8851be: add 8851BE PCI entry and fill PCI capabilities
+Date:   Sun,  9 Jul 2023 11:16:08 -0400
+Message-Id: <20230709151615.514009-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230709151555.513910-1-sashal@kernel.org>
-References: <20230709151555.513910-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.186
+X-stable-base: Linux 5.4.249
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -63,45 +56,114 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 1a528ab1da324d078ec60283c34c17848580df24 ]
+[ Upstream commit 99ff8da56322cda9eb9b37021e27b127c2d1cad8 ]
 
-Roee reported various hard-to-debug crashes with pings in
-EHT aggregation scenarios. Enabling KASAN showed that we
-access the BAID allocation out of bounds, and looking at
-the code a bit shows that since the reorder buffer entry
-(struct iwl_mvm_reorder_buf_entry) is 128 bytes if debug
-such as lockdep is enabled, then staring from an agg size
-512 we overflow the size calculation, and allocate a much
-smaller structure than we should, causing slab corruption
-once we initialize this.
+Add PCI entry to 8851BE with its device ID 10ec:b851, also fill PCI info
+according to its capabilities.
 
-Fix this by simply using u32 instead of u16.
-
-Reported-by: Roee Goldfiner <roee.h.goldfiner@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230620125813.f428c856030d.I2c2bb808e945adb71bc15f5b2bac2d8957ea90eb@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230421024551.29994-3-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/realtek/rtw89/rtw8851be.c    | 86 +++++++++++++++++++
+ 1 file changed, 86 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851be.c
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 09f870c48a4f6..141581fa74c82 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -2590,7 +2590,7 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	}
- 
- 	if (iwl_mvm_has_new_rx_api(mvm) && start) {
--		u16 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
-+		u32 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
- 
- 		/* sparse doesn't like the __align() so don't check */
- #ifndef __CHECKER__
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851be.c b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
+new file mode 100644
+index 0000000000000..0f7711c50bd15
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
+@@ -0,0 +1,86 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/* Copyright(c) 2022-2023  Realtek Corporation
++ */
++
++#include <linux/module.h>
++#include <linux/pci.h>
++
++#include "pci.h"
++#include "reg.h"
++#include "rtw8851b.h"
++
++static const struct rtw89_pci_info rtw8851b_pci_info = {
++	.txbd_trunc_mode	= MAC_AX_BD_TRUNC,
++	.rxbd_trunc_mode	= MAC_AX_BD_TRUNC,
++	.rxbd_mode		= MAC_AX_RXBD_PKT,
++	.tag_mode		= MAC_AX_TAG_MULTI,
++	.tx_burst		= MAC_AX_TX_BURST_2048B,
++	.rx_burst		= MAC_AX_RX_BURST_128B,
++	.wd_dma_idle_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
++	.wd_dma_act_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
++	.multi_tag_num		= MAC_AX_TAG_NUM_8,
++	.lbc_en			= MAC_AX_PCIE_ENABLE,
++	.lbc_tmr		= MAC_AX_LBC_TMR_2MS,
++	.autok_en		= MAC_AX_PCIE_DISABLE,
++	.io_rcy_en		= MAC_AX_PCIE_DISABLE,
++	.io_rcy_tmr		= MAC_AX_IO_RCY_ANA_TMR_6MS,
++
++	.init_cfg_reg		= R_AX_PCIE_INIT_CFG1,
++	.txhci_en_bit		= B_AX_TXHCI_EN,
++	.rxhci_en_bit		= B_AX_RXHCI_EN,
++	.rxbd_mode_bit		= B_AX_RXBD_MODE,
++	.exp_ctrl_reg		= R_AX_PCIE_EXP_CTRL,
++	.max_tag_num_mask	= B_AX_MAX_TAG_NUM,
++	.rxbd_rwptr_clr_reg	= R_AX_RXBD_RWPTR_CLR,
++	.txbd_rwptr_clr2_reg	= 0,
++	.dma_stop1		= {R_AX_PCIE_DMA_STOP1, B_AX_TX_STOP1_MASK_V1},
++	.dma_stop2		= {0},
++	.dma_busy1		= {R_AX_PCIE_DMA_BUSY1, DMA_BUSY1_CHECK_V1},
++	.dma_busy2_reg		= 0,
++	.dma_busy3_reg		= R_AX_PCIE_DMA_BUSY1,
++
++	.rpwm_addr		= R_AX_PCIE_HRPWM,
++	.cpwm_addr		= R_AX_CPWM,
++	.tx_dma_ch_mask		= BIT(RTW89_TXCH_ACH4) | BIT(RTW89_TXCH_ACH5) |
++				  BIT(RTW89_TXCH_ACH6) | BIT(RTW89_TXCH_ACH7) |
++				  BIT(RTW89_TXCH_CH10) | BIT(RTW89_TXCH_CH11),
++	.bd_idx_addr_low_power	= NULL,
++	.dma_addr_set		= &rtw89_pci_ch_dma_addr_set,
++	.bd_ram_table		= &rtw89_bd_ram_table_single,
++
++	.ltr_set		= rtw89_pci_ltr_set,
++	.fill_txaddr_info	= rtw89_pci_fill_txaddr_info,
++	.config_intr_mask	= rtw89_pci_config_intr_mask,
++	.enable_intr		= rtw89_pci_enable_intr,
++	.disable_intr		= rtw89_pci_disable_intr,
++	.recognize_intrs	= rtw89_pci_recognize_intrs,
++};
++
++static const struct rtw89_driver_info rtw89_8851be_info = {
++	.chip = &rtw8851b_chip_info,
++	.bus = {
++		.pci = &rtw8851b_pci_info,
++	},
++};
++
++static const struct pci_device_id rtw89_8851be_id_table[] = {
++	{
++		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xb851),
++		.driver_data = (kernel_ulong_t)&rtw89_8851be_info,
++	},
++	{},
++};
++MODULE_DEVICE_TABLE(pci, rtw89_8851be_id_table);
++
++static struct pci_driver rtw89_8851be_driver = {
++	.name		= "rtw89_8851be",
++	.id_table	= rtw89_8851be_id_table,
++	.probe		= rtw89_pci_probe,
++	.remove		= rtw89_pci_remove,
++	.driver.pm	= &rtw89_pm_ops,
++};
++module_pci_driver(rtw89_8851be_driver);
++
++MODULE_AUTHOR("Realtek Corporation");
++MODULE_DESCRIPTION("Realtek 802.11ax wireless 8851BE driver");
++MODULE_LICENSE("Dual BSD/GPL");
 -- 
 2.39.2
 
