@@ -2,99 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C83A874C1C5
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 11:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CACD474C442
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 15:10:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230226AbjGIJ7Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 05:59:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51964 "EHLO
+        id S230373AbjGINKF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 09:10:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjGIJ7P (ORCPT
+        with ESMTP id S229450AbjGINKE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jul 2023 05:59:15 -0400
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F525129;
-        Sun,  9 Jul 2023 02:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1688896749;
-        bh=Ok2UwAr6nX11lqE2tuCWc4B2WooiEHa6YY7cWJtYm5c=;
-        h=From:To:Cc:Subject:Date;
-        b=cQd5gBrxZo7fGbwbn8T4madSXQbDYcfpj+xEqi3vrAmdhK5wJYlOLAvSfIquDdCdw
-         ZZhKXSDF6rQRqCb1SOknbbX4PgEWeaIgf8C+yEaDrhE3VADIfjJwp9TMCj1+ZIa0Br
-         OvzgCboAkku91IR0wGAxDMXWUIfNdNuTVGyCDwfo=
-Received: from KernelDevBox.byted.org ([180.184.51.70])
-        by newxmesmtplogicsvrszb6-0.qq.com (NewEsmtp) with SMTP
-        id EC6B723B; Sun, 09 Jul 2023 17:59:06 +0800
-X-QQ-mid: xmsmtpt1688896746txvus3ima
-Message-ID: <tencent_D22D1FB0000F210538D44A09AA9BB6DAB407@qq.com>
-X-QQ-XMAILINFO: MiPTq5wGoKOmUZayXFMbPdKq3GyQoIS6wb3ksGfePb/XTg/wF4e/VTzejTczIZ
-         qZsjbOgAXkF60VdxvoqdJUSkRMBNao2VOk2M7hYKGxm9qNyrIy6v55ZiO5LW6nOAfBgqGIURQv83
-         2af/VAryqaPxSr/+/KYfbqX1l6wI0mVhqZMHHGO+lcYZwhKVr9kUmuFJ8dXGKFvZlBVnDdDzcfFc
-         zsjXQ1IBBG2Pz1sNAvsNRmWOqSBLZ/9y4ZIphKUsG3pZfmwsCKrkWKubuMqmIVE04RRKGzUz5nTY
-         L/iFJreE5qb3X8NbBc6pnw2CEA/0PRg15tyJ4WBkhl8zMQ8c2pjbPEoIE44fGJRcFc4uvRYdofea
-         wLkJ+Es94Uf0zmrjKHv1l8PjOsulU+IXUcEAatF3HPa3DpJdyJ4koehe3xD72KLnhDqTtgz6g9PW
-         3ZO3w4NlU20UQ8d4kdKEA1NvUa8bQFD0lg51ZylVD2PagOHml4gFoxq+dyrMydofXo4blu09XZt3
-         HsQu5Q0vW1tvk4PVIbvHPmq4DKWn8y/l+CaCzv7tJG/MgN9DBgNxpyQepNYALjQc1nHbJGnoulSY
-         IpqBlkbY82Jnhy+aPViDkBQ1xRNQcmf6ehUyXV65rQd6jn8qgqFtJz/GQKE055h2TJPcpowfDQze
-         c8c29/tqA2b6i4nQOm7l7nDV0WNykxVuUl92Na7G5iuwtnuI78TjDddBVDwtKa6VuxU6vS2MwTNz
-         keKQr1Y3Dxe35P15kIHcYOxCulCkW/hOS7aFJ6pJP2Q1MQAvqz4rn6mTOzNc8NFqcRApd8LRxAkF
-         tT3+bpN+M7pxqiILFj551jc6y9tZL6kWwVilir1vkPppIOv4FhcK/MtNBLU+HSKdaJZCLoimRJKV
-         Tf5jiP9zrnvDCX809nsc5ardylVyNqtvWhysF+tsSfIDNKFfM8U17TtNxdjOe1tSdS4qgSybF6u6
-         6d/IwFeQouAhblg65FYPx9AaSEJiNS59dz+sQ3ojl/HZd1YVDc6D6CnUQ1KmQtTyoiMEPgiQ8=
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-From:   Zhang Shurong <zhang_shurong@foxmail.com>
-To:     pkshih@realtek.com
-Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Zhang Shurong <zhang_shurong@foxmail.com>
-Subject: [PATCH] wifi: rtw89: debug: fix error code in rtw89_debug_priv_btc_manual_set
-Date:   Sun,  9 Jul 2023 17:59:06 +0800
-X-OQ-MSGID: <20230709095906.1162670-1-zhang_shurong@foxmail.com>
-X-Mailer: git-send-email 2.30.2
+        Sun, 9 Jul 2023 09:10:04 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 102D3FA;
+        Sun,  9 Jul 2023 06:10:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+        bh=gexUvKKIc9oDoq/NsirfrhorBTnN0Cb1DAtE70BoWvM=; b=ag36sDrMwjfnkB3dAcxl63zNfz
+        gJ6ykzI0aQN221xWuTFehjev7jovx15LwGm3lvAkKQQ7749MbzKFquJ1KY4AzW/Py4JIDOnzl2UW2
+        /t4HEzsg3lMPO9MTflpcZRBFeq4JGZ0b72DjMB55Rk6b1PADrfJGB1MIkvWV7PO4YQlJ6UzWS09gb
+        eGQHmImlU6JwPLd9oETxROD3tV7P2akXvdZPUJ+a5/zPutGjMqtHExWiN/Iwv6ufg6Nnfs9AUaAdF
+        F22TSBUdaUDouBBtFnWRxAZhXAmSnaem/rMnEFPANKFvqe52PJPim2giwc+uZfRYhzZREFIalqbn6
+        daNjYc8g==;
+Received: from [2601:1c2:980:9ec0::2764]
+        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qIUAk-0098nP-2j;
+        Sun, 09 Jul 2023 13:09:54 +0000
+Message-ID: <93529a87-f794-8c51-7963-66277ef5e1d6@infradead.org>
+Date:   Sun, 9 Jul 2023 06:09:51 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: Build regressions/improvements in v6.4 (wireless/airo)
+Content-Language: en-US
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+References: <CAHk-=wi7fwNWfqj-QQqEfZTUOB4bbKT8QiEUDHoPk0ecuYA7cA@mail.gmail.com>
+ <20230626081950.2090627-1-geert@linux-m68k.org>
+ <39abf2c7-24a-f167-91da-ed4c5435d1c4@linux-m68k.org>
+ <2f6ffd1c-a756-b7b8-bba4-77c2308f26b9@infradead.org>
+ <300ea73d06587f493a2eeb962e5f62776f3676ac.camel@physik.fu-berlin.de>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <300ea73d06587f493a2eeb962e5f62776f3676ac.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If there is a failure during kstrtobool_from_user()
-rtw89_debug_priv_btc_manual_set should return negative error code
-instead of a positive value count. Fix this bug by returning
-correct error code.
 
-Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
----
- drivers/net/wireless/realtek/rtw89/debug.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+On 7/9/23 00:38, John Paul Adrian Glaubitz wrote:
+> Hi Randy!
+> 
+> On Sat, 2023-07-08 at 19:45 -0700, Randy Dunlap wrote:
+>> Adrian, what toolchain do you use for arch/sh/ builds?
+> 
+> I'm currently using the sh4 toolchain from here:
+> 
+>> https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/11.1.0/
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 1db2d59d33ff..35fe6b4ad9b3 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -3192,9 +3192,13 @@ static ssize_t rtw89_debug_priv_btc_manual_set(struct file *filp,
- 	struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	bool btc_manual;
-+	int ret;
- 
--	if (kstrtobool_from_user(user_buf, count, &btc_manual))
-+	ret = kstrtobool_from_user(user_buf, count, &btc_manual);
-+	if (ret) {
-+		count = ret;
- 		goto out;
-+	}
- 
- 	btc->ctrl.manual = btc_manual;
- out:
+I use the crosstools from there also.
+
+How do you avoid the build errors as listed here?
+  http://kisskb.ellerman.id.au/kisskb/buildresult/14948832/
+
+thanks.
+
 -- 
-2.30.2
-
+~Randy
