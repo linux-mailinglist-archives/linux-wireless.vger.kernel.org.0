@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 010DC74C58B
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6339F74C592
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:17:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233640AbjGIPRA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 11:17:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54408 "EHLO
+        id S233651AbjGIPRD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 11:17:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233497AbjGIPPr (ORCPT
+        with ESMTP id S233502AbjGIPPr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 9 Jul 2023 11:15:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBA1E1985;
-        Sun,  9 Jul 2023 08:15:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF4A51999;
+        Sun,  9 Jul 2023 08:15:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D1B2C60C20;
-        Sun,  9 Jul 2023 15:15:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72816C43395;
-        Sun,  9 Jul 2023 15:15:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7D9A60C02;
+        Sun,  9 Jul 2023 15:15:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47499C433CA;
+        Sun,  9 Jul 2023 15:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688915701;
-        bh=a4wMq27j/EWZNqwO+rq1s4R6BtjIZtULFaHYmTnHUsk=;
+        s=k20201202; t=1688915704;
+        bh=GrdR5Q7vdb3BWDoBJBU9/vUbDinfvJzNkbJ2rHQ4WyA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fVZsCI6nNDj+wwqUEb/ljD3R0gTQDet5JZQDrt5TgrJv6spMtY0SNOiR1y7+VK5OO
-         +2lLjGRHCosRNoKlG6VkZXcfqT4FifpMCnpY0kwh1VTULoaJyaqb7isgJi51HIwRLv
-         NQjqd2OdbSvv0yplj6DDdT+SspVAmK+fHicEoR4L5FIKRjjtfgBQchAjSZTvGUF0Xc
-         WLkIPqY/fQXwH8z9/Z+Qq00esi78q7tJzALrtZDdRxfCkv8KRJrrNejutisyUhpFOo
-         8XZa44nCjQbZ/D0JgIUESbpczkHAPUXo3oDwwhas95ty6vHvFMDCgITDJuGAyj7C4O
-         mYQNtbnQk93DA==
+        b=fyNyFwYluOB1AlEp1dYJ6Zzyd3ylI4uNhhrOhDH26SeR2x3NWtqK/WdHDFmYwjqDc
+         XS5c0ZtfOR+dfAhNXXZYjGOsdSYloVFx61PbZ8FesyTxBjm/4DNeeyNaeb9E4Sd2Wf
+         3VX9hqtPK/iGjB4NZrgZMtQwdOV5slhFKfCalnbqfCxlAFCnzXBFhJdewWSBXNPz5w
+         qsRpBcQf8GvYYXw2OWOzAPn0KINuDH61Cm1M6ceeZWWvtVjlRtaCfFuX+qjWZBfJqM
+         v0itEVQ7IdxfLh4ogJJBMAw8SzNjO2fYXhO6xh4rh0QcmQp2g4OoW3fJoQWR4Sdgd0
+         UHrJN7VUHS84Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     P Praneesh <quic_ppranees@quicinc.com>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 08/18] wifi: mac80211_hwsim: Fix possible NULL dereference
-Date:   Sun,  9 Jul 2023 11:14:36 -0400
-Message-Id: <20230709151446.513549-8-sashal@kernel.org>
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 10/18] wifi: ath11k: fix memory leak in WMI firmware stats
+Date:   Sun,  9 Jul 2023 11:14:38 -0400
+Message-Id: <20230709151446.513549-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230709151446.513549-1-sashal@kernel.org>
 References: <20230709151446.513549-1-sashal@kernel.org>
@@ -61,44 +61,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 0cc80943ef518a1c51a1111e9346d1daf11dd545 ]
+[ Upstream commit 6aafa1c2d3e3fea2ebe84c018003f2a91722e607 ]
 
-In a call to mac80211_hwsim_select_tx_link() the sta pointer might
-be NULL, thus need to check that it is not NULL before accessing it.
+Memory allocated for firmware pdev, vdev and beacon statistics
+are not released during rmmod.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230604120651.f4d889fc98c4.Iae85f527ed245a37637a874bb8b8c83d79812512@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix it by calling ath11k_fw_stats_free() function before hardware
+unregister.
+
+While at it, avoid calling ath11k_fw_stats_free() while processing
+the firmware stats received in the WMI event because the local list
+is getting spliced and reinitialised and hence there are no elements
+in the list after splicing.
+
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230606091128.14202-1-quic_adisi@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mac80211_hwsim.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 1 +
+ drivers/net/wireless/ath/ath11k/wmi.c | 5 +++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 0d81098c7b45c..da5c355405f68 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -4,7 +4,7 @@
-  * Copyright (c) 2008, Jouni Malinen <j@w1.fi>
-  * Copyright (c) 2011, Javier Lopez <jlopex@gmail.com>
-  * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2022 Intel Corporation
-+ * Copyright (C) 2018 - 2023 Intel Corporation
-  */
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index b19d44b3f5dfb..cb77dd6ce9665 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -9279,6 +9279,7 @@ void ath11k_mac_destroy(struct ath11k_base *ab)
+ 		if (!ar)
+ 			continue;
  
- /*
-@@ -1753,7 +1753,7 @@ mac80211_hwsim_select_tx_link(struct mac80211_hwsim_data *data,
++		ath11k_fw_stats_free(&ar->fw_stats);
+ 		ieee80211_free_hw(ar->hw);
+ 		pdev->ar = NULL;
+ 	}
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index fad9f8d308a20..3e0a47f4a3ebd 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -7590,6 +7590,11 @@ static void ath11k_update_stats_event(struct ath11k_base *ab, struct sk_buff *sk
+ 	rcu_read_unlock();
+ 	spin_unlock_bh(&ar->data_lock);
  
- 	WARN_ON(is_multicast_ether_addr(hdr->addr1));
- 
--	if (WARN_ON_ONCE(!sta->valid_links))
-+	if (WARN_ON_ONCE(!sta || !sta->valid_links))
- 		return &vif->bss_conf;
- 
- 	for (i = 0; i < ARRAY_SIZE(vif->link_conf); i++) {
++	/* Since the stats's pdev, vdev and beacon list are spliced and reinitialised
++	 * at this point, no need to free the individual list.
++	 */
++	return;
++
+ free:
+ 	ath11k_fw_stats_free(&stats);
+ }
 -- 
 2.39.2
 
