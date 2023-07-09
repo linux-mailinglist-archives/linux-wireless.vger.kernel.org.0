@@ -2,44 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A9374C5E6
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 877AD74C614
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jul 2023 17:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233789AbjGIPUn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 11:20:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59912 "EHLO
+        id S233217AbjGIPZs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 11:25:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233792AbjGIPUL (ORCPT
+        with ESMTP id S233857AbjGIPZd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jul 2023 11:20:11 -0400
+        Sun, 9 Jul 2023 11:25:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A9235A7;
-        Sun,  9 Jul 2023 08:17:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA0334230;
+        Sun,  9 Jul 2023 08:22:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0811560BEC;
-        Sun,  9 Jul 2023 15:15:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDA3C433C9;
-        Sun,  9 Jul 2023 15:15:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4840760C09;
+        Sun,  9 Jul 2023 15:15:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCB4C433CA;
+        Sun,  9 Jul 2023 15:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688915734;
-        bh=s/Cb8Zm+6Qly1ZMy/ulzm3Pf5rMTvuUA8VEfjYDv+pQ=;
+        s=k20201202; t=1688915745;
+        bh=DhWxYX3fwMTSTTYeMti6w7NylsaqchfOaT/y3dOFFIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L4ey7B+vHJ3aAQg/mSX5DU2R9MUQuSM6sdU4jaTc/jcE247AyMF6Z1+LQNt0jAqaf
-         VMn3EehK+vEeq3yWsCDIH09NLFWXit7cDpx/HMbVfqqLOq8FkIguzyNLmRG7DrsGfR
-         5s5LnV5WF3ZQzriyNikgVOIFj8N5Tr9gJU6NSs80mu4wQov+OKNm/4FqFZkddA7K0N
-         chXHnkfp6AV1SXMMgD2kWFNy+qIp9QfSM6OVBVoXfR/fgslCIt375TnKaW2FrA4qgh
-         ZazOx1E5I+02ttaPZufv6gC5dCb2lL0ih2Cr5MMAN+yg/A7hiy2O2cjE3G8+HYNLkf
-         MwynK1nkFkpPw==
+        b=MYcZ00rKh5ngaJBe9q6uNp63CcDno6PcQN0+8WChOEmeNLNSxVmOcdW+PrFXo/ULZ
+         mNa4ThJSXL3tuT5cDsGzG1ipUSkEMAw3Pv3jB05Dgm/8lc0880aXpTKzVEkdj0dXLq
+         E5UYLdsySvgJ6UkRWJx6BHXcGqP7kuBN4+Hh2IuwZQtOITXxB0i/v2ILsJjpYWLWYz
+         wOVwZnGCPluXikCTs5jc8bQooyAym2KBe0ddYCMbaNrsMETWnr4J9RxRg5WWNOZo1Z
+         5zaDyO21+8CyEH+EPq3QGJsf8QSROd2l7ksKlOsk7MCzDS1Rbd3pUqxK1UKFAryXCJ
+         lNyIscsu8QODg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 02/10] wifi: rtw89: 8851be: add 8851BE PCI entry and fill PCI capabilities
-Date:   Sun,  9 Jul 2023 11:15:20 -0400
-Message-Id: <20230709151528.513775-2-sashal@kernel.org>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 07/10] wifi: wext-core: Fix -Wstringop-overflow warning in ioctl_standard_iw_point()
+Date:   Sun,  9 Jul 2023 11:15:25 -0400
+Message-Id: <20230709151528.513775-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230709151528.513775-1-sashal@kernel.org>
 References: <20230709151528.513775-1-sashal@kernel.org>
@@ -58,114 +63,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 
-[ Upstream commit 99ff8da56322cda9eb9b37021e27b127c2d1cad8 ]
+[ Upstream commit 71e7552c90db2a2767f5c17c7ec72296b0d92061 ]
 
-Add PCI entry to 8851BE with its device ID 10ec:b851, also fill PCI info
-according to its capabilities.
+-Wstringop-overflow is legitimately warning us about extra_size
+pontentially being zero at some point, hence potenially ending
+up _allocating_ zero bytes of memory for extra pointer and then
+trying to access such object in a call to copy_from_user().
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230421024551.29994-3-pkshih@realtek.com
+Fix this by adding a sanity check to ensure we never end up
+trying to allocate zero bytes of data for extra pointer, before
+continue executing the rest of the code in the function.
+
+Address the following -Wstringop-overflow warning seen when built
+m68k architecture with allyesconfig configuration:
+                 from net/wireless/wext-core.c:11:
+In function '_copy_from_user',
+    inlined from 'copy_from_user' at include/linux/uaccess.h:183:7,
+    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:825:7:
+arch/m68k/include/asm/string.h:48:25: warning: '__builtin_memset' writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
+   48 | #define memset(d, c, n) __builtin_memset(d, c, n)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/uaccess.h:153:17: note: in expansion of macro 'memset'
+  153 |                 memset(to + (n - res), 0, res);
+      |                 ^~~~~~
+In function 'kmalloc',
+    inlined from 'kzalloc' at include/linux/slab.h:694:9,
+    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:819:10:
+include/linux/slab.h:577:16: note: at offset 1 into destination object of size 0 allocated by '__kmalloc'
+  577 |         return __kmalloc(size, flags);
+      |                ^~~~~~~~~~~~~~~~~~~~~~
+
+This help with the ongoing efforts to globally enable
+-Wstringop-overflow.
+
+Link: https://github.com/KSPP/linux/issues/315
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/ZItSlzvIpjdjNfd8@work
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtw89/rtw8851be.c    | 86 +++++++++++++++++++
- 1 file changed, 86 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851be.c
+ net/wireless/wext-core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851be.c b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-new file mode 100644
-index 0000000000000..0f7711c50bd15
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-@@ -0,0 +1,86 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) 2022-2023  Realtek Corporation
-+ */
+diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
+index fe8765c4075d3..8a4b85f96a13a 100644
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
+@@ -799,6 +799,12 @@ static int ioctl_standard_iw_point(struct iw_point *iwp, unsigned int cmd,
+ 		}
+ 	}
+ 
++	/* Sanity-check to ensure we never end up _allocating_ zero
++	 * bytes of data for extra.
++	 */
++	if (extra_size <= 0)
++		return -EFAULT;
 +
-+#include <linux/module.h>
-+#include <linux/pci.h>
-+
-+#include "pci.h"
-+#include "reg.h"
-+#include "rtw8851b.h"
-+
-+static const struct rtw89_pci_info rtw8851b_pci_info = {
-+	.txbd_trunc_mode	= MAC_AX_BD_TRUNC,
-+	.rxbd_trunc_mode	= MAC_AX_BD_TRUNC,
-+	.rxbd_mode		= MAC_AX_RXBD_PKT,
-+	.tag_mode		= MAC_AX_TAG_MULTI,
-+	.tx_burst		= MAC_AX_TX_BURST_2048B,
-+	.rx_burst		= MAC_AX_RX_BURST_128B,
-+	.wd_dma_idle_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
-+	.wd_dma_act_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
-+	.multi_tag_num		= MAC_AX_TAG_NUM_8,
-+	.lbc_en			= MAC_AX_PCIE_ENABLE,
-+	.lbc_tmr		= MAC_AX_LBC_TMR_2MS,
-+	.autok_en		= MAC_AX_PCIE_DISABLE,
-+	.io_rcy_en		= MAC_AX_PCIE_DISABLE,
-+	.io_rcy_tmr		= MAC_AX_IO_RCY_ANA_TMR_6MS,
-+
-+	.init_cfg_reg		= R_AX_PCIE_INIT_CFG1,
-+	.txhci_en_bit		= B_AX_TXHCI_EN,
-+	.rxhci_en_bit		= B_AX_RXHCI_EN,
-+	.rxbd_mode_bit		= B_AX_RXBD_MODE,
-+	.exp_ctrl_reg		= R_AX_PCIE_EXP_CTRL,
-+	.max_tag_num_mask	= B_AX_MAX_TAG_NUM,
-+	.rxbd_rwptr_clr_reg	= R_AX_RXBD_RWPTR_CLR,
-+	.txbd_rwptr_clr2_reg	= 0,
-+	.dma_stop1		= {R_AX_PCIE_DMA_STOP1, B_AX_TX_STOP1_MASK_V1},
-+	.dma_stop2		= {0},
-+	.dma_busy1		= {R_AX_PCIE_DMA_BUSY1, DMA_BUSY1_CHECK_V1},
-+	.dma_busy2_reg		= 0,
-+	.dma_busy3_reg		= R_AX_PCIE_DMA_BUSY1,
-+
-+	.rpwm_addr		= R_AX_PCIE_HRPWM,
-+	.cpwm_addr		= R_AX_CPWM,
-+	.tx_dma_ch_mask		= BIT(RTW89_TXCH_ACH4) | BIT(RTW89_TXCH_ACH5) |
-+				  BIT(RTW89_TXCH_ACH6) | BIT(RTW89_TXCH_ACH7) |
-+				  BIT(RTW89_TXCH_CH10) | BIT(RTW89_TXCH_CH11),
-+	.bd_idx_addr_low_power	= NULL,
-+	.dma_addr_set		= &rtw89_pci_ch_dma_addr_set,
-+	.bd_ram_table		= &rtw89_bd_ram_table_single,
-+
-+	.ltr_set		= rtw89_pci_ltr_set,
-+	.fill_txaddr_info	= rtw89_pci_fill_txaddr_info,
-+	.config_intr_mask	= rtw89_pci_config_intr_mask,
-+	.enable_intr		= rtw89_pci_enable_intr,
-+	.disable_intr		= rtw89_pci_disable_intr,
-+	.recognize_intrs	= rtw89_pci_recognize_intrs,
-+};
-+
-+static const struct rtw89_driver_info rtw89_8851be_info = {
-+	.chip = &rtw8851b_chip_info,
-+	.bus = {
-+		.pci = &rtw8851b_pci_info,
-+	},
-+};
-+
-+static const struct pci_device_id rtw89_8851be_id_table[] = {
-+	{
-+		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xb851),
-+		.driver_data = (kernel_ulong_t)&rtw89_8851be_info,
-+	},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(pci, rtw89_8851be_id_table);
-+
-+static struct pci_driver rtw89_8851be_driver = {
-+	.name		= "rtw89_8851be",
-+	.id_table	= rtw89_8851be_id_table,
-+	.probe		= rtw89_pci_probe,
-+	.remove		= rtw89_pci_remove,
-+	.driver.pm	= &rtw89_pm_ops,
-+};
-+module_pci_driver(rtw89_8851be_driver);
-+
-+MODULE_AUTHOR("Realtek Corporation");
-+MODULE_DESCRIPTION("Realtek 802.11ax wireless 8851BE driver");
-+MODULE_LICENSE("Dual BSD/GPL");
+ 	/* kzalloc() ensures NULL-termination for essid_compat. */
+ 	extra = kzalloc(extra_size, GFP_KERNEL);
+ 	if (!extra)
 -- 
 2.39.2
 
