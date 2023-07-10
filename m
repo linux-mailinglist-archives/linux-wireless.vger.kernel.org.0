@@ -2,51 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5DEB74D3D6
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 12:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F162F74D4A2
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 13:32:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230228AbjGJKrN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 06:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50538 "EHLO
+        id S229679AbjGJLcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 07:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjGJKrM (ORCPT
+        with ESMTP id S229469AbjGJLca (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 06:47:12 -0400
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92405B5;
-        Mon, 10 Jul 2023 03:47:10 -0700 (PDT)
-Date:   Mon, 10 Jul 2023 10:47:04 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1688986028; x=1689245228;
-        bh=JUSxIhlyp5Rsy2QluQCpjPVJMXty3tKlls6ZhMmED8c=;
-        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-        b=oGK35t+2jrXUNI7a8SJ7Is0Dge8JAq+HiFi8NW5VHDdxm6M5ZHBMmjd1QYqt27v6x
-         l5TI5rV29lpRsdVb+aDSpjmTyP8ZP7QWFBmlgEmm4IA4OGmNdceNQnME2CH5Qhd6YV
-         tTzMV7HPbfxlhMmcUymsZKC8K5mdWVLpbr5Yy0efHWYhYaw+tybokV5M3ZckKrcnTt
-         o5gD1OKC2QDZrjz71KUtYFIOgWjSvxcMxzcRQzWpQ5GWWUqp/rpQjVmCwMf5VYVBaS
-         GakmffrhJ+lWtDRMLy6VnFV3TZ3iqpF1SLth5ydmVAV6PMAh2gEnqGhFrSfeeEnkg1
-         45kko/82wvJCg==
-To:     linux-wireless@vger.kernel.org
-From:   Harry Austen <hpausten@protonmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Avraham Stern <avraham.stern@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Harry Austen <hpausten@protonmail.com>
-Subject: [PATCH] wifi: iwlwifi: mvm: enable thermal zone only when firmware is loaded
-Message-ID: <20230710104626.8399-1-hpausten@protonmail.com>
-Feedback-ID: 53116287:user:proton
+        Mon, 10 Jul 2023 07:32:30 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BD64E3
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 04:32:29 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qIp7v-0003nH-Fu; Mon, 10 Jul 2023 13:32:23 +0200
+Message-ID: <809500b6-4eec-7a5e-5930-00e7eeebcc5e@leemhuis.info>
+Date:   Mon, 10 Jul 2023 13:32:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [regression] STP on 80211s is broken in 6.4-rc4
+Content-Language: en-US, de-DE
+To:     Nicolas Escande <nico.escande@gmail.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Bagas Sanjaya <bagasdotme@gmail.com>, nbd@nbd.name,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse> <ZIQbs0wqdRh7c0Kx@debian.me>
+ <a9d02800-2cd6-a27b-7998-4c97cf2eb692@leemhuis.info>
+ <CTDWJJDKSYYD.XBG1CAZB3A5W@syracuse>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <CTDWJJDKSYYD.XBG1CAZB3A5W@syracuse>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688988749;487c7bc5;
+X-HE-SMSGID: 1qIp7v-0003nH-Fu
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,102 +52,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In iwl_mvm_thermal_zone_register(), when registering a thermal zone, the
-thermal subsystem will evaluate its temperature.
-But iwl_mvm_tzone_get_temp() fails at this time because
-iwl_mvm_firmware_running() returns false.
-And that's why many users report that they see
-"thermal thermal_zoneX: failed to read out thermal zone (-61)"
-message during wifi driver probing.
+On 16.06.23 09:45, Nicolas Escande wrote:
+> On Thu Jun 15, 2023 at 2:54 PM CEST, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> On 10.06.23 08:44, Bagas Sanjaya wrote:
+>>> On Tue, Jun 06, 2023 at 12:55:57PM +0200, Nicolas Escande wrote:
+>>>>
+>>>> As user of the mesh part of mac80211 on multiple products at work let me say
+>>>> thank you for all the work you do on wifi, especially on 80211s, and especially
+>>>> the recent improvements you made for mesh fast RX/TX & cross vendor AMSDU compat
+>>>>
+>>>> We upgraded our kernel from an older (5.15) to a newer 6.4. The problem is STP 
+>>>> doesn't work anymore and alas we use it for now (for the better or worse).
+>>>>
+>>>> What I gathered so far from my setup:
+>>>>  - we use ath9k & ath10k
+>>>>  - in my case STP frames are received as regular packet and not as amsdu
+>>>>  - the received packets have a wrong length of 44 in tcpdump
+>>>>    (instead of 38 with our previous kernel)
+>>>>  - llc_fixup_skb() tries to pull some 41 bytes out of a 35 bytes packet
+>>>>    this makes llc_rcv() discard the frames & breaks STP
+>>>>
+>>>> >From bisecting the culprit seems to be 986e43b19ae9176093da35e0a844e65c8bf9ede7
+>>>> (wifi: mac80211: fix receiving A-MSDU frames on mesh interfaces)
+>>>>
+>>>> I guess that your changes to handle both ampdu subframes & normal frames in the
+>>>> same datapath ends up putting a wrong skb->len for STP (multicast) frames ?
+>>>> Honestly I don't understand enough of the 80211 internals & spec to pinpoint the
+>>>> exact problem.
+>>>>
+>>>> It seems this change was already in the 6.3 kernel so I guess someone should
+>>>> have seen it before (but I didn't find anything..) ? Maybe I missed something...
+>>>>
+>>>> Anyway I'm happy to provide more info or try anything you throw at me.
+>> [...]
+>> Hmmm, Felix did not reply. But let's ignore that for now.
+> 
+> I haven't seen mails from felix on the list for a few days, I'm guessing he's
+> unavailable for now but I'll hapilly wait.
 
-This patch attempts to fix this by delaying enabling of the thermal zone
-until after the firmware has been loaded/initialized. It also gets
-disabled when going into suspend.
+Still no progress. Hmmm. Are you still okay with that? I've seen no
+other reports about this, so waiting is somewhat (albeit not completely)
+fine for me if it is for you.
 
-Signed-off-by: Harry Austen <hpausten@protonmail.com>
----
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c  | 18 ++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/tt.c    |  9 +--------
- 2 files changed, 19 insertions(+), 8 deletions(-)
+But in any case it might be good if you could recheck 6.5-rc1.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/ne=
-t/wireless/intel/iwlwifi/mvm/mac80211.c
-index ce7905faa08f..a47d29a64dd4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1187,6 +1187,17 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
-
- =09mutex_unlock(&mvm->mutex);
-
-+#ifdef CONFIG_THERMAL
-+=09/* Needs to be done outside of mutex guarded section to prevent deadloc=
-k, since enabling
-+=09 * the thermal zone calls the .get_temp() callback, which attempts to a=
-cquire the mutex.
-+=09 */
-+=09if (!ret) {
-+=09=09ret =3D thermal_zone_device_enable(mvm->tz_device.tzone);
-+=09=09if (ret)
-+=09=09=09IWL_DEBUG_TEMP(mvm, "Failed to enable thermal zone (err =3D %d)\n=
-", ret);
-+=09}
-+#endif
-+
- =09iwl_mvm_mei_set_sw_rfkill_state(mvm);
-
- =09return ret;
-@@ -1282,6 +1293,7 @@ void __iwl_mvm_mac_stop(struct iwl_mvm *mvm)
- void iwl_mvm_mac_stop(struct ieee80211_hw *hw)
- {
- =09struct iwl_mvm *mvm =3D IWL_MAC80211_GET_MVM(hw);
-+=09int ret;
-
- =09flush_work(&mvm->async_handlers_wk);
- =09flush_work(&mvm->add_stream_wk);
-@@ -1307,6 +1319,12 @@ void iwl_mvm_mac_stop(struct ieee80211_hw *hw)
-
- =09iwl_mvm_mei_set_sw_rfkill_state(mvm);
-
-+#ifdef CONFIG_THERMAL
-+=09ret =3D thermal_zone_device_disable(mvm->tz_device.tzone);
-+=09if (ret)
-+=09=09IWL_DEBUG_TEMP(mvm, "Failed to disable thermal zone (err =3D %d)\n",=
- ret);
-+#endif
-+
- =09mutex_lock(&mvm->mutex);
- =09__iwl_mvm_mac_stop(mvm);
- =09mutex_unlock(&mvm->mutex);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wire=
-less/intel/iwlwifi/mvm/tt.c
-index 157e96fa23c1..964d2d011c6b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-@@ -680,7 +680,7 @@ static  struct thermal_zone_device_ops tzone_ops =3D {
-
- static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
- {
--=09int i, ret;
-+=09int i;
- =09char name[16];
- =09static atomic_t counter =3D ATOMIC_INIT(0);
-
-@@ -707,13 +707,6 @@ static void iwl_mvm_thermal_zone_register(struct iwl_m=
-vm *mvm)
- =09=09return;
- =09}
-
--=09ret =3D thermal_zone_device_enable(mvm->tz_device.tzone);
--=09if (ret) {
--=09=09IWL_DEBUG_TEMP(mvm, "Failed to enable thermal zone\n");
--=09=09thermal_zone_device_unregister(mvm->tz_device.tzone);
--=09=09return;
--=09}
--
- =09/* 0 is a valid temperature,
- =09 * so initialize the array with S16_MIN which invalid temperature
- =09 */
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
 --
-2.41.0
-
-
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
