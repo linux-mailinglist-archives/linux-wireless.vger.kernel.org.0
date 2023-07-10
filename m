@@ -2,223 +2,303 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12FB674D05B
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 10:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CA0674D236
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 11:51:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232211AbjGJIlq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 04:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51484 "EHLO
+        id S231528AbjGJJvA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 05:51:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233026AbjGJIlN (ORCPT
+        with ESMTP id S232226AbjGJJuI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 04:41:13 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B78081BE1;
-        Mon, 10 Jul 2023 01:40:20 -0700 (PDT)
+        Mon, 10 Jul 2023 05:50:08 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1488B3AA7
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 02:44:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1688982284; x=1720518284;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=x3zv9dsB9oa5z94WWqi/rmQdzxi8+HuiD4yaJsR8GHk=;
+  b=pF2Cz2W868Vjfn77FZ7blnr2M4B8mkTThKeq6OITkqPUQ2eI3fPOS5Nl
+   5j2bL7w4U7PK+zvgv7U9KH6v+5afAraei47RsSnbuqu7DfRcAka7dBY9F
+   nqFCyIl/bluuuYD4WF9SuK469wbGuJNOOvMqg2gi5HRSf7hgz34y3KqNh
+   8dTBaH7LEa0Q0M25gAnweN7maY8byCLGnUFqbtjP57MuQAEoyKjHhhnTy
+   d0lX/kz0IHOaEphwjJ4nt2oG+qjXwinqxvBVlVQtMpT1kdWlONudUJKgM
+   /Swvo3cqeQvV7MZ1CBVHxbt0DofiDMEC9Ej8fYBUPsyK/rH4Q4akLH1kY
+   w==;
+X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
+   d="scan'208";a="219609897"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 10 Jul 2023 02:44:43 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 10 Jul 2023 02:44:09 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Mon, 10 Jul 2023 02:44:09 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CzS7gk/0eVRIcFMPLvglM9i1uyn0hCv8f0cSz9vAZ2XoUo379++Cj4zur4fG/CYPsu3FNVvtmU2RWf7LVx+WC33+mQD3t2R6M7DkiZ8VqlTchbCc5z3y5iMmagsMzaaYto3KQqrSoqU1G468oAJng+KQX9RWr4yJ4dWINBtqfMaIuJzEZytkqwYsEXs7OpuQvj99Kri3ZBAbTc+1n5ZZD94hJPartW9vqfwaP217oMwZzoBYeO2ZztatDljt/vyIMEc7O7EzQEv772oxHx7nAcXiC57g0EjpWFHRlM7+qut2PxeYg0106MmMRoizZu04ty9LEVTYwR1PEfkAXRi1XQ==
+ b=I4ZOxV5PnR0LbtLau+L8ZM9vWbvoKaUQP97ATVLnDP76QvbCVPxtlg8fvSUFQyDeb+3cHvzmwsrQHevCCo9tyFSzxd3IZJyfWm3zdaGwo29wdSotVR3shTg2Y52fqVXDXQMZOexRjklsw/h8LMuA2Z7OgfZEMO90RSm8jfxJdDXl3XiHEm4elKMP8Jvwmheu3DLd5siMWGrk/HUMkr5NyMtZBhqIuK50MsL2WSc+CKiklbibzGJn4btascKHrRZ/8au8XQw98rE9nlWwLWxtKnK1tdSGxLBbPzRKz8HvWYqS0/+s2a1NcwP9vo0wsO7xxTNHduTDQbtl7tHjQiT+dg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cfth29BrWZrzk+qu1CaoTQ6BbwxlunM+2D18Jm9HX9w=;
- b=iuJ4uJrECU7A/Kc7ew0vpKxXeXApfjnIrCi6YjGEnwMs8yIlXeTQZYjZzJvU9G99fZu1sDOVnU4+Qscr8EasQ/wzPEdRX45bvKZ/vaSpXj2tejICytOaYCOiN16C1ak8EIi968sIVOo+BNzai7/06swI5oIHgZ6nJ7sMPf33b8ZLwBCyuEKi231CKh2znYIO016TBfAsWvMwYI/26ZH9l2SzxB/9+waC2lGuunWquoYPgzq5z30ceAhvMroVaBwQbPWZahaBt02HbVo/b5waP8QJGzxJexbjnRyuZHr5Ua7DwTEkWZSnn5vOv2VoQXmF/Hahv+OSuzH3WJBhtqoEeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=x0lAMyWwWFjy4fXNHuYHUcsg65fxILUNjnKdDTmLuFM=;
+ b=MDIlS8gtvopmGoVZw7UCwrvvqtnyxfFL9dDdSNpxZ31jB/bsgEwlACzF5crZIqAk5pUNDH6m1FR0ylo8SwLfPMg7ONwv8485f06sZG0kajLnK61Jn7bM1l3Vcmj7Y42KPbjeSYDxwGsxSF1kSXRpq2QvOj/E0tTZYOZVZovALzZijp600QHhEICoRqHoxl4a43UnZblojnkcRpuYWERlYlTrNal/jhnxdBk2IJ3XGql3YSDf4H63wNGuV93kMKtFfYVAV4gT4pP8PsYP/d2g+qqVCcQ1PxX9qwnVNfrVGlbts72R1Vn5qoPJvjkxzTbPzV5pu/gCSXHvyzuLS3gq9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cfth29BrWZrzk+qu1CaoTQ6BbwxlunM+2D18Jm9HX9w=;
- b=KIHj7z9bicSbfjZYksGMQuCyrOyj6BThcgZv42/0nfyAmJEsGS3InS2oeYI9o8NL06whXCEW+ySllN1b76EIkVwaI2+NMP9MTFSJylh0H/i4A3qiuyMayw43p984OgcSxNfcDO49JxiW7TmUTOEXiZxZySfcB6IyodsKkeuU5Rk=
-Received: from BY5PR16CA0028.namprd16.prod.outlook.com (2603:10b6:a03:1a0::41)
- by CH0PR12MB5172.namprd12.prod.outlook.com (2603:10b6:610:bb::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30; Mon, 10 Jul
- 2023 08:40:13 +0000
-Received: from DM6NAM11FT027.eop-nam11.prod.protection.outlook.com
- (2603:10b6:a03:1a0:cafe::f5) by BY5PR16CA0028.outlook.office365.com
- (2603:10b6:a03:1a0::41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30 via Frontend
- Transport; Mon, 10 Jul 2023 08:40:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT027.mail.protection.outlook.com (10.13.172.205) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6588.19 via Frontend Transport; Mon, 10 Jul 2023 08:40:12 +0000
-Received: from equan-buildpc.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 10 Jul
- 2023 03:40:03 -0500
-From:   Evan Quan <evan.quan@amd.com>
-To:     <rafael@kernel.org>, <lenb@kernel.org>,
-        <Alexander.Deucher@amd.com>, <Christian.Koenig@amd.com>,
-        <Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
-        <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <Mario.Limonciello@amd.com>, <mdaenzer@redhat.com>,
-        <maarten.lankhorst@linux.intel.com>, <tzimmermann@suse.de>,
-        <hdegoede@redhat.com>, <jingyuwang_vip@163.com>,
-        <Lijo.Lazar@amd.com>, <jim.cromie@gmail.com>,
-        <bellosilicio@gmail.com>, <andrealmeid@igalia.com>,
-        <trix@redhat.com>, <jsg@jsg.id.au>, <arnd@arndb.de>,
-        <andrew@lunn.ch>
-CC:     <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        Evan Quan <evan.quan@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH V6 9/9] drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
-Date:   Mon, 10 Jul 2023 16:36:41 +0800
-Message-ID: <20230710083641.2132264-10-evan.quan@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230710083641.2132264-1-evan.quan@amd.com>
-References: <20230710083641.2132264-1-evan.quan@amd.com>
+ bh=x0lAMyWwWFjy4fXNHuYHUcsg65fxILUNjnKdDTmLuFM=;
+ b=e2X5LDT40TxsH2XDSh7oqPg7yWgU6H+yMhUvoK15HoP7qwr5GzYu17jX49CJZbhQawNhNL5fN1QyUrdwtvCNPROgjHYRdL8wVUkRtzCcXrP4LpN8V8BqX5UqQS0KA7mjV6cKvHZYdvOnNzPn6e+/Ez+MMADXWzVjv+AsfR2HwQk=
+Received: from DM4PR11MB6336.namprd11.prod.outlook.com (2603:10b6:8:b9::7) by
+ MN0PR11MB6012.namprd11.prod.outlook.com (2603:10b6:208:373::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6565.30; Mon, 10 Jul 2023 09:44:04 +0000
+Received: from DM4PR11MB6336.namprd11.prod.outlook.com
+ ([fe80::e09e:159a:ea7e:1884]) by DM4PR11MB6336.namprd11.prod.outlook.com
+ ([fe80::e09e:159a:ea7e:1884%3]) with mapi id 15.20.6565.028; Mon, 10 Jul 2023
+ 09:44:03 +0000
+From:   <Prasurjya.Rohansaikia@microchip.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <Ajay.Kathat@microchip.com>, <Claudiu.Beznea@microchip.com>
+Subject: [PATCH] wifi: wilc1000: remove use of has_thrpt_enh3 flag
+Thread-Topic: [PATCH] wifi: wilc1000: remove use of has_thrpt_enh3 flag
+Thread-Index: AQHZsxMPwXszMpuH1EGsdQmB8pBnWQ==
+Date:   Mon, 10 Jul 2023 09:44:03 +0000
+Message-ID: <20230710094401.235222-1-prasurjya.rohansaikia@microchip.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6336:EE_|MN0PR11MB6012:EE_
+x-ms-office365-filtering-correlation-id: 67fe7234-d1ab-4b16-4b56-08db812a327a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 5zi+OgsdYoKd5GDOLUZZTR3e2MEv2rweVNX3JTwQvE/aGXv6S3pJFBKnV9LiRZuO+ePqEe7nZvv73x3ULm/mGh/Zxzanrt21YeRapI2HbmUbsAwK9uNhZsCA/Nkrd92a6tvsZHLKX1QMKYkTl6WFVTcSZq02PD2v5bXmuLT/+5NylSA8DQElL40E7qYiQO26O51NLBt4ukK8qDb4XZfI5tRiXDfIudAHjVdnF2Zv/Cr9BcTItLu6U2pyzLwcnD940Mj/tQ1tgJQfve4l9hZKiKJkjQp/dLOJOkqjYVsSG+H/8/0rOfOJXI+VyvIZt27uddEsvEa+dBy3+IYQVRhBRTZNCF6cCAxU1E/6TrQWl+IwXOcFMPVq9JBMBpJIAEzDsD2hsJnYhPoItTZGGVp/5l1zyUFPsrDfgeJnmLaortAGJHFbavV4BKMIHGE8rEMuZz+Be/YCwj6jcbG1q+6PzE9RYHVRyzD3IlJxKebPQRWsTkYeBEPppwLnrzftpSPK6V4T9dE51TiNc3DaIonKkERenh7plk1Qx99Z3nJmNw4WYRua4cVbYOIZKpMDCqUN+JPky5yF9jgNlS2Wm+r17HbFNkkZ7bX8u9UEuqFnV281ha5ftLjOZ7zLOwmkwpRJ
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6336.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(39860400002)(366004)(376002)(136003)(451199021)(86362001)(38100700002)(38070700005)(36756003)(71200400001)(6486002)(54906003)(76116006)(91956017)(122000001)(107886003)(6506007)(26005)(186003)(1076003)(6512007)(2616005)(5660300002)(2906002)(66556008)(316002)(478600001)(66946007)(8936002)(66476007)(8676002)(83380400001)(4326008)(6916009)(64756008)(66446008)(41300700001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?9kwlH/o7qMspfHIe4ipuOnXkGqNXecP9zWee9zVo16eGYh/J1x4zgm4vEG?=
+ =?iso-8859-1?Q?63Ahk2HfD2Pv0qUst3ch4Y9NjaS6AUZMe9mjthiEL83cQ/yYKbskqECbEl?=
+ =?iso-8859-1?Q?VxHpC3Lnwa4QxEygmLoo0wjbVRUa+XDAEOStFXUN0P8dOBVOzf8Bf8i4/w?=
+ =?iso-8859-1?Q?3SgBToRkENgYWicXnQ7kXRL1CVrUzUyi825cVWtU55TvtsRkjkuuf4WvBc?=
+ =?iso-8859-1?Q?9gFujloTIRehAd29S1DgrPJ5YZRbpaMGHjzJbzEtrPg6iS5g9B8zOZktoD?=
+ =?iso-8859-1?Q?kheCy4+tMUd2daZ36W/5/WMnraKaVAIRjkWzrllAtWdjzi6aGJGsnoaoqC?=
+ =?iso-8859-1?Q?oFQxplwtKgu2lQ6D36lvtgPKLfNOgQQ4ngM7Vzi/S5OMB5XO7fpjssDy7A?=
+ =?iso-8859-1?Q?ljpWqKlSSugl+7NGT80mDvdWt3IsPO6vmeeVl5x6+3EdgsThPjst/OD7a0?=
+ =?iso-8859-1?Q?15C+pRZI0C7XghLa/FYH52c9rxL1cm6QVUl8icEdzkMuBd92i5CR//TIVI?=
+ =?iso-8859-1?Q?zi6dB83oYJLiQn1W2sBYFBtRizep5smeITnuCSxAxcuZs+A8q6lC+B/+VT?=
+ =?iso-8859-1?Q?uhU2FxVuuPYiNjtvJCw/odEZsNcXUZYEpKxBsQHuYlYuNsleiTZ64P0jvF?=
+ =?iso-8859-1?Q?njJyNc7H6CPes+dKRdRwlBeZoGtUagnSTOaBIj6GB8JxaW4wM/EQJamS/v?=
+ =?iso-8859-1?Q?CiW/GPCCDxP5m0IOHv6uY89vwnfu162ZsUsfqefx7b2jKbvDG7uY73nKVe?=
+ =?iso-8859-1?Q?UvcRDS+ctVmFyqiwz8AvWrBT6NA4aTUKTFULFzxVy+F488i+K10GJn6jYm?=
+ =?iso-8859-1?Q?+/i41h1oLPcgI+CyWTI3ZTRKKdnQFcBj3qtog/YOPReHuBZ6kwijuKhE4J?=
+ =?iso-8859-1?Q?dtqq5K2v9jMRmphX0n5KpMD4PLcV0d9cgcdq4iKBxgK2hTC7EYGZtXBYne?=
+ =?iso-8859-1?Q?ptX4z2onpD9Kqg0XBm3duler6jIfUX495CQ7XNVR2Uo6v8ilHu262iekFC?=
+ =?iso-8859-1?Q?PBzZ1EmnQKc/Tv/3fSsYcx7xI2/906NzOD8IawQ92gfuOPJ5Rqd6OqlgvM?=
+ =?iso-8859-1?Q?9prPbpJSKsGOOn0wrZbNyNwhwqBF/+jA1Lkl+Fv68uiVJjC3WsSEV0nPJY?=
+ =?iso-8859-1?Q?405Oq/9B4pdB/xhJcpEKyvhqOvpUHZLOtSObLlGqUfDjSYkvR9H6yH5dB5?=
+ =?iso-8859-1?Q?AKNEBnFFFSWcm22t1QHsN8tuCK0sMk+PjN98dNAib+OrHY3ok8MfH4BQ11?=
+ =?iso-8859-1?Q?d/LCXE+TWHCs4dOJrfpoq3/w+IiBrkK3irNgn/wipultYepWKQtQfHcOzk?=
+ =?iso-8859-1?Q?B2+mPo49sS0F5UjeEiUhGZHL8MCW+iPj1xLh3tzmQwkQjVHkyZdu2unDY2?=
+ =?iso-8859-1?Q?Bulu7hJXxh06CgMhEBlrvlHBJ8ywH8G+s7/r0lDNBOB/46vDXoJXn9ANli?=
+ =?iso-8859-1?Q?+RKi8aJ9EPHHHWWgEmsMP+iQ+tuFN7bh76/PocfEzVvxtnx/UtKHc7QWdv?=
+ =?iso-8859-1?Q?m03I/kdaTgwLt/8pjVsTNg3nqdQbVWBkaU+E/v38DAabTwFa0gujcc0FHR?=
+ =?iso-8859-1?Q?RZV+A1CLo+Ia8Ilz4nk5/uLAIPQ/Sc7gtG9Wu5NCMakNkXyoRUel6JUzMK?=
+ =?iso-8859-1?Q?46h2lhRSIttrB7wb2tNSOR68298gamth/dqj+WR5NIGuHoj+CDbRsYNeNj?=
+ =?iso-8859-1?Q?vaole0Rzu7AjSoBVcBJ7APTZFxv3IGXyIvnXiod+?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT027:EE_|CH0PR12MB5172:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1403ae10-5218-4d31-6351-08db8121471d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gANj/KlIu4SSE8WWpwUeQC6tml3Dl+QzgL9ziHjR9TrU3OCRH5cmPS4alqG9AiqGyUITmZvDFNFOlJR6xZROgpyOSlcPZ/H46+EhP/IgULgC9d+V8hLByAASEfv64hLafic0aSUveilOAvnoLWWmQSYyGcLTofw7e8v2fDRX6DZgxmKyQI45HQynVD/7fyzNDQZbjboC9HaXH8WZVu4/vDjVnGOdZl+WSgk+TLTUrjMoO9gzF8+Kv2DrC8Yd2vJ9LDLBAlIiWKHJ/ev2/RIF3E0w4WLkXNYRueNgvy2yy5XfOD+OwA2M55N9Yks25XN2qOJ/f9SJghHWujjWIeDDuKD9SL6aOtbhHUe4P7xRDMTLVpPFJpAnkUYen9dHfNZCrm/lToebd1VLQftFFwwrRMyPTe4qPalR7ojpbZX8GwEHQ6KqzOkI+9NFdGffYLaEQniHlhnkZ3XpP4P8+FmjjUdtqdU8M5gQWxsJvixHz4FES3c56+lnslThV4uVR0sPddK9P8eVHE5tuC2/GvCLoGDwOWhh2kQknw9gFc3fC6URKClsgTgNBONiVg6nq5bvSEoeIzKb1g0PrQ35o7oxd847W1KFFVFfFVv7PHbjh3QpvdjwQJXn61I/3ORT8dV3jYjWHOeEl77zOfoGzM9kUB0smopsZByen8RlpBTeFiU1qUgxUisWIP2LyDzwrf9HWgm/WVLqOdCurjfKqHBnGoNQzHwj37h3Oy+xZgVHGLqb1v3Y6jUagmQKp9yosefWyMyuTTtrg2maNRiOeDp+DiTtqi/QW52viL7cPVwuRrL70ty18rQnWKNUXlQgcrZPHVmqMB0XoeOc8bAd/KR9Hg==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(39860400002)(136003)(376002)(396003)(451199021)(36840700001)(46966006)(40470700004)(82310400005)(6666004)(70206006)(70586007)(40460700003)(2616005)(7696005)(82740400003)(26005)(478600001)(356005)(186003)(86362001)(1076003)(36756003)(921005)(40480700001)(16526019)(81166007)(110136005)(54906003)(47076005)(41300700001)(83380400001)(316002)(44832011)(36860700001)(5660300002)(7416002)(8676002)(8936002)(426003)(2906002)(4326008)(336012)(36900700001)(2101003)(83996005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2023 08:40:12.9288
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6336.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67fe7234-d1ab-4b16-4b56-08db812a327a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jul 2023 09:44:03.8080
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1403ae10-5218-4d31-6351-08db8121471d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT027.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5172
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XQnIUxYKmdRhduByfcatJRF1+UFQcpP22HVHd5wdCj9cIRc1T1ly7Jf20eQuBfPIoHAsepv896uYwFTE8LwYY1WQkEygMUWYVJOmM10AyKQ1mZXaQtIX60zOA6amXjdG
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6012
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fulfill the SMU13.0.7 support for Wifi RFI mitigation feature.
+From: Prasurjya Rohan Saikia <prasurjya.rohansaikia@microchip.com>
 
-Signed-off-by: Evan Quan <evan.quan@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+The 'enhance throughput flow' algorithm is used by default. So older
+sections of the code are removed so as to always use this new algorithm.
+
+Signed-off-by: Prasurjya Rohan Saikia <prasurjya.rohansaikia@microchip.com>
 ---
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  | 59 +++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ .../net/wireless/microchip/wilc1000/sdio.c    | 103 ++----------------
+ 1 file changed, 10 insertions(+), 93 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-index bba621615abf..4a680756208b 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -126,6 +126,7 @@ static struct cmn2asic_msg_mapping smu_v13_0_7_message_map[SMU_MSG_MAX_COUNT] =
- 	MSG_MAP(AllowGpo,			PPSMC_MSG_SetGpoAllow,           0),
- 	MSG_MAP(GetPptLimit,			PPSMC_MSG_GetPptLimit,                 0),
- 	MSG_MAP(NotifyPowerSource,		PPSMC_MSG_NotifyPowerSource,           0),
-+	MSG_MAP(EnableUCLKShadow,		PPSMC_MSG_EnableUCLKShadow,            0),
+diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/w=
+ireless/microchip/wilc1000/sdio.c
+index a05bda7b9a3b..87948ba69a22 100644
+--- a/drivers/net/wireless/microchip/wilc1000/sdio.c
++++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+@@ -28,7 +28,6 @@ struct wilc_sdio {
+ 	bool irq_gpio;
+ 	u32 block_size;
+ 	bool isinit;
+-	int has_thrpt_enh3;
+ 	u8 *cmd53_buf;
  };
- 
- static struct cmn2asic_mapping smu_v13_0_7_clk_map[SMU_CLK_COUNT] = {
-@@ -206,6 +207,7 @@ static struct cmn2asic_mapping smu_v13_0_7_table_map[SMU_TABLE_COUNT] = {
- 	TAB_MAP(DRIVER_SMU_CONFIG),
- 	TAB_MAP(ACTIVITY_MONITOR_COEFF),
- 	[SMU_TABLE_COMBO_PPTABLE] = {1, TABLE_COMBO_PPTABLE},
-+	TAB_MAP(WIFIBAND),
- };
- 
- static struct cmn2asic_mapping smu_v13_0_7_pwr_src_map[SMU_POWER_SOURCE_COUNT] = {
-@@ -488,6 +490,9 @@ static int smu_v13_0_7_tables_init(struct smu_context *smu)
- 	               AMDGPU_GEM_DOMAIN_VRAM);
- 	SMU_TABLE_INIT(tables, SMU_TABLE_COMBO_PPTABLE, MP0_MP1_DATA_REGION_SIZE_COMBOPPTABLE,
- 			PAGE_SIZE, AMDGPU_GEM_DOMAIN_VRAM);
-+	SMU_TABLE_INIT(tables, SMU_TABLE_WIFIBAND,
-+		       sizeof(WifiBandEntryTable_t), PAGE_SIZE,
-+		       AMDGPU_GEM_DOMAIN_VRAM);
- 
- 	smu_table->metrics_table = kzalloc(sizeof(SmuMetricsExternal_t), GFP_KERNEL);
- 	if (!smu_table->metrics_table)
-@@ -1722,6 +1727,57 @@ static int smu_v13_0_7_set_df_cstate(struct smu_context *smu,
- 					       NULL);
- }
- 
-+static bool smu_v13_0_7_wbrf_support_check(struct smu_context *smu)
-+{
-+	return smu->smc_fw_version > 0x00524600;
-+}
+=20
+@@ -722,21 +721,12 @@ static int wilc_sdio_init(struct wilc *wilc, bool res=
+ume)
+ 	 *      make sure can read back chip id correctly
+ 	 **/
+ 	if (!resume) {
+-		int rev;
+-
+ 		ret =3D wilc_sdio_read_reg(wilc, WILC_CHIPID, &chipid);
+ 		if (ret) {
+ 			dev_err(&func->dev, "Fail cmd read chip id...\n");
+ 			return ret;
+ 		}
+ 		dev_err(&func->dev, "chipid (%08x)\n", chipid);
+-		rev =3D FIELD_GET(WILC_CHIP_REV_FIELD, chipid);
+-		if (rev > FIELD_GET(WILC_CHIP_REV_FIELD, WILC_1000_BASE_ID_2A))
+-			sdio_priv->has_thrpt_enh3 =3D 1;
+-		else
+-			sdio_priv->has_thrpt_enh3 =3D 0;
+-		dev_info(&func->dev, "has_thrpt_enh3 =3D %d...\n",
+-			 sdio_priv->has_thrpt_enh3);
+ 	}
+=20
+ 	sdio_priv->isinit =3D true;
+@@ -809,102 +799,29 @@ static int wilc_sdio_clear_int_ext(struct wilc *wilc=
+, u32 val)
+ 	struct sdio_func *func =3D dev_to_sdio_func(wilc->dev);
+ 	struct wilc_sdio *sdio_priv =3D wilc->bus_data;
+ 	int ret;
+-	int vmm_ctl;
+-
+-	if (sdio_priv->has_thrpt_enh3) {
+-		u32 reg =3D 0;
+-
+-		if (sdio_priv->irq_gpio)
+-			reg =3D val & (BIT(MAX_NUM_INT) - 1);
+-
+-		/* select VMM table 0 */
+-		if (val & SEL_VMM_TBL0)
+-			reg |=3D BIT(5);
+-		/* select VMM table 1 */
+-		if (val & SEL_VMM_TBL1)
+-			reg |=3D BIT(6);
+-		/* enable VMM */
+-		if (val & EN_VMM)
+-			reg |=3D BIT(7);
+-		if (reg) {
+-			struct sdio_cmd52 cmd;
+-
+-			cmd.read_write =3D 1;
+-			cmd.function =3D 0;
+-			cmd.raw =3D 0;
+-			cmd.address =3D WILC_SDIO_IRQ_CLEAR_FLAG_REG;
+-			cmd.data =3D reg;
+-
+-			ret =3D wilc_sdio_cmd52(wilc, &cmd);
+-			if (ret) {
+-				dev_err(&func->dev,
+-					"Failed cmd52, set (%02x) data (%d) ...\n",
+-					cmd.address, __LINE__);
+-				return ret;
+-			}
+-		}
+-		return 0;
+-	}
+-	if (sdio_priv->irq_gpio) {
+-		/* has_thrpt_enh2 uses register 0xf8 to clear interrupts. */
+-		/*
+-		 * Cannot clear multiple interrupts.
+-		 * Must clear each interrupt individually.
+-		 */
+-		u32 flags;
+-		int i;
+-
+-		flags =3D val & (BIT(MAX_NUM_INT) - 1);
+-		for (i =3D 0; i < NUM_INT_EXT && flags; i++) {
+-			if (flags & BIT(i)) {
+-				struct sdio_cmd52 cmd;
+-
+-				cmd.read_write =3D 1;
+-				cmd.function =3D 0;
+-				cmd.raw =3D 0;
+-				cmd.address =3D WILC_SDIO_IRQ_CLEAR_FLAG_REG;
+-				cmd.data =3D BIT(i);
+-
+-				ret =3D wilc_sdio_cmd52(wilc, &cmd);
+-				if (ret) {
+-					dev_err(&func->dev,
+-						"Failed cmd52, set (%02x) data (%d) ...\n",
+-						cmd.address, __LINE__);
+-					return ret;
+-				}
+-				flags &=3D ~BIT(i);
+-			}
+-		}
++	u32 reg =3D 0;
+=20
+-		for (i =3D NUM_INT_EXT; i < MAX_NUM_INT && flags; i++) {
+-			if (flags & BIT(i)) {
+-				dev_err(&func->dev,
+-					"Unexpected interrupt cleared %d...\n",
+-					i);
+-				flags &=3D ~BIT(i);
+-			}
+-		}
+-	}
++	if (sdio_priv->irq_gpio)
++		reg =3D val & (BIT(MAX_NUM_INT) - 1);
+=20
+-	vmm_ctl =3D 0;
+ 	/* select VMM table 0 */
+ 	if (val & SEL_VMM_TBL0)
+-		vmm_ctl |=3D BIT(0);
++		reg |=3D BIT(5);
+ 	/* select VMM table 1 */
+ 	if (val & SEL_VMM_TBL1)
+-		vmm_ctl |=3D BIT(1);
++		reg |=3D BIT(6);
+ 	/* enable VMM */
+ 	if (val & EN_VMM)
+-		vmm_ctl |=3D BIT(2);
+-
+-	if (vmm_ctl) {
++		reg |=3D BIT(7);
++	if (reg) {
+ 		struct sdio_cmd52 cmd;
+=20
+ 		cmd.read_write =3D 1;
+ 		cmd.function =3D 0;
+ 		cmd.raw =3D 0;
+-		cmd.address =3D WILC_SDIO_VMM_TBL_CTRL_REG;
+-		cmd.data =3D vmm_ctl;
++		cmd.address =3D WILC_SDIO_IRQ_CLEAR_FLAG_REG;
++		cmd.data =3D reg;
 +
-+static int smu_v13_0_7_set_wbrf_exclusion_ranges(struct smu_context *smu,
-+						 struct exclusion_range *exclusion_ranges)
-+{
-+	WifiBandEntryTable_t wifi_bands;
-+	int valid_entries = 0;
-+	int ret, i;
-+
-+	memset(&wifi_bands, 0, sizeof(wifi_bands));
-+	for (i = 0; i < ARRAY_SIZE(wifi_bands.WifiBandEntry); i++) {
-+		if (!exclusion_ranges[i].start &&
-+		    !exclusion_ranges[i].end)
-+			break;
-+
-+		/* PMFW expects the inputs to be in Mhz unit */
-+		wifi_bands.WifiBandEntry[valid_entries].LowFreq =
-+			DIV_ROUND_DOWN_ULL(exclusion_ranges[i].start, HZ_IN_MHZ);
-+		wifi_bands.WifiBandEntry[valid_entries++].HighFreq =
-+			DIV_ROUND_UP_ULL(exclusion_ranges[i].end, HZ_IN_MHZ);
-+	}
-+	wifi_bands.WifiBandEntryNum = valid_entries;
-+
-+	/*
-+	 * Per confirm with PMFW team, WifiBandEntryNum = 0 is a valid setting.
-+	 * Considering the scenarios below:
-+	 * - At first the wifi device adds an exclusion range e.g. (2400,2500) to
-+	 *   BIOS and our driver gets notified. We will set WifiBandEntryNum = 1
-+	 *   and pass the WifiBandEntry (2400, 2500) to PMFW.
-+	 *
-+	 * - Later the wifi device removes the wifiband list added above and
-+	 *   our driver gets notified again. At this time, driver will set
-+	 *   WifiBandEntryNum = 0 and pass an empty WifiBandEntry list to PMFW.
-+	 *   - PMFW may still need to do some uclk shadow update(e.g. switching
-+	 *     from shadow clock back to primary clock) on receiving this.
-+	 */
-+
-+	ret = smu_cmn_update_table(smu,
-+				   SMU_TABLE_WIFIBAND,
-+				   0,
-+				   (void *)(&wifi_bands),
-+				   true);
-+	if (ret)
-+		dev_err(smu->adev->dev, "Failed to set wifiband!");
-+
-+	return ret;
-+}
-+
- static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.get_allowed_feature_mask = smu_v13_0_7_get_allowed_feature_mask,
- 	.set_default_dpm_table = smu_v13_0_7_set_default_dpm_table,
-@@ -1787,6 +1843,9 @@ static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.set_mp1_state = smu_v13_0_7_set_mp1_state,
- 	.set_df_cstate = smu_v13_0_7_set_df_cstate,
- 	.gpo_control = smu_v13_0_gpo_control,
-+	.is_asic_wbrf_supported = smu_v13_0_7_wbrf_support_check,
-+	.enable_uclk_shadow = smu_v13_0_enable_uclk_shadow,
-+	.set_wbrf_exclusion_ranges = smu_v13_0_7_set_wbrf_exclusion_ranges,
- };
- 
- void smu_v13_0_7_set_ppt_funcs(struct smu_context *smu)
--- 
+ 		ret =3D wilc_sdio_cmd52(wilc, &cmd);
+ 		if (ret) {
+ 			dev_err(&func->dev,
+--=20
 2.34.1
-
