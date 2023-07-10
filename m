@@ -2,87 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1413674E1B2
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 01:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AB9F74E1CD
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 01:06:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230304AbjGJXDX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 19:03:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42026 "EHLO
+        id S229641AbjGJXGD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 19:06:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230307AbjGJXDV (ORCPT
+        with ESMTP id S229970AbjGJXGA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 19:03:21 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B99F21B2;
-        Mon, 10 Jul 2023 16:03:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=oMzYfni/SqAXGE8TOxN7w+2uYv8fFjCLm4K0/twX6OM=; b=K7VvjRLJQTC/xFqwV3RHdTwTYS
-        m2bhtQ3xb0qZJOrdb6B+iJ5AhfM+iWWkMgm16p+Ewi4TTLEI52/VjurgAlFfs3MMnLBn9DBOyCMMi
-        hs2mgQblUvUhaOv09xqWizRERYP0QDLDCu0HFtc3zorNIUFlyp1Z2bNuRLgArFaVCh8+dYGpgdfh6
-        lTpYTHuUqxeuWbVm8vFgrUnTTa+CrhwwmY7sOy7qF90CBPYUF7/pGq9tqO/RBSjn1UFig64bS/A8W
-        +E+zqp8PsEr3MfNtpb7IXmL5M4YQyy9RycNKU2NHVyLbWbVm/qP2Xwr/bG6GIsFcCzpCLgzorc3KB
-        5w7qV1PA==;
-Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qIzuY-00CuO1-0T;
-        Mon, 10 Jul 2023 23:03:18 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     netdev@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Benjamin Berg <benjamin.berg@intel.com>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH net 09/12] wifi: mac80211: fix kernel-doc notation warning
-Date:   Mon, 10 Jul 2023 16:03:09 -0700
-Message-ID: <20230710230312.31197-10-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230710230312.31197-1-rdunlap@infradead.org>
-References: <20230710230312.31197-1-rdunlap@infradead.org>
+        Mon, 10 Jul 2023 19:06:00 -0400
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2545F10D
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 16:05:59 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1b3f281c4e1so4720470fac.3
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 16:05:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1689030358; x=1691622358;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3kdB0Zjv6MHxg1jrCOxa5nOK7H6uTbKe8bxREOoXZ/8=;
+        b=KD7av0sNv+y/rnfGiRqoMlQj57lQXBoY7teeOYOH9jC4tLFy7ZNa09c8VdwrwZwGxK
+         Yaw+BPsT5QOaMdw3APWhed+lAsBHPdJe8XP6D0ofn4Gtpgar32OZtgNVL6c5w7961h7v
+         dBC0DTfESJabyowoDk8ib4+fJR3xG5WPA6lNs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689030358; x=1691622358;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3kdB0Zjv6MHxg1jrCOxa5nOK7H6uTbKe8bxREOoXZ/8=;
+        b=DQKWhfs9i2HuxZg69qfcUtwxyDSFotU62ZrJHdQMlpxlFliraolX7mXCWPkKDmcm9d
+         9OiCQVAAPV/fP+Q2WgiDVjddkw9T4UXiYH78WFOQ0gOWgFt4/XGlZIHaQbsMCSWWdiZ4
+         3zsC1OJr3LtklSK7MmZYebaN8QH8llph108EpT2nyriDNN95SqePBB7pE/UdNGuAulPy
+         06PNQV0ezGhpYN8PE3NxXqmHfTzb5bAk7tmIJH+3hqqXK7F4PsMj4vKsE1dVBJxLumCq
+         D/CM8UGX0ZsoW2c66mQNdrWp43acV1EDmuip73sGx89t32UHe0ZvolvkIgc5zmPzt/nC
+         SWJA==
+X-Gm-Message-State: ABy/qLZJ9lsYyifmXz1/y1eD6vhEYx6A+4yevFNaOsUjz87mezVpZvul
+        vqOfovhc3/kJ39441uQbokQmeg==
+X-Google-Smtp-Source: APBJJlFsyIeItqeqTbyIX7LVYMFdu4mDKSTHQBbMvpo3712AvbnzfW0w5FdFkj5sXvtKxzvfbKv+kQ==
+X-Received: by 2002:a05:6871:60c:b0:1b7:15ac:ab9c with SMTP id w12-20020a056871060c00b001b715acab9cmr7269757oan.36.1689030358074;
+        Mon, 10 Jul 2023 16:05:58 -0700 (PDT)
+Received: from arowa.mtv.corp.google.com ([2620:15c:9d:4:816b:4512:ab1f:a663])
+        by smtp.gmail.com with ESMTPSA id z20-20020a17090ab11400b00263e1db8460sm6768947pjq.9.2023.07.10.16.05.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jul 2023 16:05:57 -0700 (PDT)
+From:   Arowa Suliman <arowa@chromium.org>
+X-Google-Original-From: Arowa Suliman <arowa@google.com>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Arowa Suliman <arowa@google.com>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH] wifi: ath11k: Add crash logging
+Date:   Mon, 10 Jul 2023 16:04:53 -0700
+Message-ID: <20230710230546.3544912-1-arowa@google.com>
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add description for struct member 'agg' to prevent a kernel-doc
-warning.
+Change crash logging from debug to informational and add warning when
+firmware crash MHI_CB_EE_RDDM happens.
 
-mac80211.h:2289: warning: Function parameter or member 'agg' not described in 'ieee80211_link_sta'
-
-Fixes: 4c51541ddb78 ("wifi: mac80211: keep A-MSDU data in sta and per-link")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org
+Tested-on: Qualcomm WCN6855
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306141105.c1e82Q0y-lkp@intel.com/
+Signed-off-by: Arowa Suliman <arowa@google.com>
 ---
- include/net/mac80211.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath11k/mhi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff -- a/include/net/mac80211.h b/include/net/mac80211.h
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2259,6 +2259,7 @@ struct ieee80211_sta_aggregates {
-  * @he_cap: HE capabilities of this STA
-  * @he_6ghz_capa: on 6 GHz, holds the HE 6 GHz band capabilities
-  * @eht_cap: EHT capabilities of this STA
-+ * @agg: station's active links data
-  * @bandwidth: current bandwidth the station can receive with
-  * @rx_nss: in HT/VHT, the maximum number of spatial streams the
-  *	station can receive at the moment, changed by operating mode
+diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+index 3ac689f1def4..5db4b61c1cba 100644
+--- a/drivers/net/wireless/ath/ath11k/mhi.c
++++ b/drivers/net/wireless/ath/ath11k/mhi.c
+@@ -325,7 +325,7 @@ static void ath11k_mhi_op_status_cb(struct mhi_controller *mhi_cntrl,
+ {
+ 	struct ath11k_base *ab = dev_get_drvdata(mhi_cntrl->cntrl_dev);
+ 
+-	ath11k_dbg(ab, ATH11K_DBG_BOOT, "notify status reason %s\n",
++        ath11k_info(ab, "notify status reason %s\n",
+ 		   ath11k_mhi_op_callback_to_str(cb));
+ 
+ 	switch (cb) {
+@@ -333,7 +333,8 @@ static void ath11k_mhi_op_status_cb(struct mhi_controller *mhi_cntrl,
+ 		ath11k_warn(ab, "firmware crashed: MHI_CB_SYS_ERROR\n");
+ 		break;
+ 	case MHI_CB_EE_RDDM:
+-		if (!(test_bit(ATH11K_FLAG_UNREGISTERING, &ab->dev_flags)))
++		ath11k_warn(ab, "firmware crashed: MHI_CB_EE_RDDM\n");
++                if (!(test_bit(ATH11K_FLAG_UNREGISTERING, &ab->dev_flags)))
+ 			queue_work(ab->workqueue_aux, &ab->reset_work);
+ 		break;
+ 	default:
+-- 
+2.41.0.255.g8b1d071c50-goog
+
