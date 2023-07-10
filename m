@@ -2,166 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7CCA74DB7B
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 18:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 972FF74DCAB
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 19:44:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230402AbjGJQub (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 12:50:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48674 "EHLO
+        id S231637AbjGJRoL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 13:44:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230016AbjGJQua (ORCPT
+        with ESMTP id S231418AbjGJRoJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 12:50:30 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61AFE3
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 09:50:28 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fbc0609cd6so47910175e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 09:50:28 -0700 (PDT)
+        Mon, 10 Jul 2023 13:44:09 -0400
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 981C9128
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 10:44:07 -0700 (PDT)
+Received: by mail-qk1-x734.google.com with SMTP id af79cd13be357-7672303c831so431614885a.2
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 10:44:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689007827; x=1691599827;
-        h=in-reply-to:references:message-id:to:from:subject:cc:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MY+TyIudZCiZOFG2r90LBXniZOQ3ZD0PRf6V3zd0L3w=;
-        b=oegLEW/xnJMUooitotWowEO74EBik6GwF+HLHwDCrnMlR+j5+9jY2gMnvdZKoVdZGF
-         8djoLzQiXaBgDRoyHz1Jkb3ZqaAGT/QqmwynW4NLrVHYu2V/YXCX89S3Ir9fNRhcnGQf
-         3MvzREBAx1JVaMeEQfRhnEqmg9PnZYbvObUrnJ5Gd5FyYiI6WGDc9PAhKSsphOA0MtCz
-         y8TNYqCkC3EouWJyIAZx6ZGv7AyAnEd6SrZWnNAF6CeeulkQfzNS6oJMGeEXnm95s/2e
-         vwVJceOx+VFFJYFEC+FeG2ykGcVnxiGhKuEZpU7od3TEkD9aGxX0gWZvVR/Ftw7wv6QC
-         jD6g==
+        d=ziepe.ca; s=google; t=1689011047; x=1691603047;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AOnVzen9HDghW2bswxVCUVsZLhlFm73bqh1O1PTU2i4=;
+        b=WLQs6EGun6B4BulXmKogPdCt5oDVFVpE2okzj27FHCHNnLDGIi5Czr14p89ybAaXYJ
+         lhMk1w685GxTpiUrgFlizkUlyNVVz8nobylcjl30cPaLaTPeJE3z6JVgYmXjCN3ss5vo
+         Q82dok6ccsNwR6dZZeC5Uc8sSHaM9gSRZNnou3UkB0vrGQPnuGeSrm1Q/3KZboxAzoVb
+         H13lwGXwQ6e6Km+Dl3IMJxRHMGkEVGEkOp0D+LLl6byPLvxeJpBIju++uVvCt5NYV2/7
+         7w/6QRlieWrNTaKDG74MRdVrZ5SqOcAGw5ip54VjrxKSNLq8BAtYgaaEz7vgDQF4W/kA
+         ufBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689007827; x=1691599827;
-        h=in-reply-to:references:message-id:to:from:subject:cc:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MY+TyIudZCiZOFG2r90LBXniZOQ3ZD0PRf6V3zd0L3w=;
-        b=MolJ0IrUz761TPG1OvZkWqM/CaQMsQEYHGz8XeyZsbnHs3P7p6k8b1LmgR9+OwS60R
-         uOOKuMtZhiROQOiaTTSqxjgK1mDkDFswcJgTshPjIDDzc01nsyJW9ovBYzB3s4idhXHE
-         J+gYHOzAJzuB8A7IG+wtnSTcxIjCb+KvGQSJOsPHnXFWtF8iQkF2jeJbus8YVX7/fIaz
-         pPL1VNKPkcsTIzcDj1NrX3bdyG6L6GEWvPiJhxrVXFebzLK451by0FhiLL8LI7P7kDws
-         xAUM6tOgT8ynCfUwHFgGCzyrsCrcwtKKRfutvJwXtGoee+Vu7aZl3OeBAFEnvFvyGoFY
-         Lc9Q==
-X-Gm-Message-State: ABy/qLa4t4YEHN/RFR8d/L7Wxv/B2zUGsrlOS/cntTzq22U5bdVCsOwE
-        CukDi1YejR549t0jhDFmpwY=
-X-Google-Smtp-Source: APBJJlFvJ9ZgWVMBwCn8tDFQxqtyaoU25Y933RNpn39LVgvBeuom2J6oL4/Sy+hoLffrelj7Nl0yfw==
-X-Received: by 2002:a7b:c389:0:b0:3fc:9e:eead with SMTP id s9-20020a7bc389000000b003fc009eeeadmr8389566wmj.20.1689007827077;
-        Mon, 10 Jul 2023 09:50:27 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id n12-20020adfe78c000000b00314367cf43asm12191950wrm.106.2023.07.10.09.50.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jul 2023 09:50:26 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 10 Jul 2023 18:50:26 +0200
-Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [regression] STP on 80211s is broken in 6.4-rc4
-From:   "Nicolas Escande" <nico.escande@gmail.com>
-To:     "Linux regressions mailing list" <regressions@lists.linux.dev>,
-        "Bagas Sanjaya" <bagasdotme@gmail.com>, <nbd@nbd.name>,
-        =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        "Kalle Valo" <kvalo@kernel.org>,
-        "Johannes Berg" <johannes.berg@intel.com>
-Message-Id: <CTYNAK10A6AJ.1I4W9V78VG1NB@syracuse>
-X-Mailer: aerc 0.15.1
-References: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse>
- <ZIQbs0wqdRh7c0Kx@debian.me>
- <a9d02800-2cd6-a27b-7998-4c97cf2eb692@leemhuis.info>
- <CTDWJJDKSYYD.XBG1CAZB3A5W@syracuse>
- <809500b6-4eec-7a5e-5930-00e7eeebcc5e@leemhuis.info>
-In-Reply-To: <809500b6-4eec-7a5e-5930-00e7eeebcc5e@leemhuis.info>
+        d=1e100.net; s=20221208; t=1689011047; x=1691603047;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AOnVzen9HDghW2bswxVCUVsZLhlFm73bqh1O1PTU2i4=;
+        b=XETaRFjET345FPZodElyLKqx0EU1x7BExUkZdxCbYRzk3vhI2VwDamoq1ZFsr+oF85
+         40nMH0iVEwEjuB9ulL5LYHK2SGDhJArHs8cfudBq8EJZmVCLy4r7E8U2nBK/f+Gi6C2E
+         IK8MC6CPqijMqOXmPm+PJSIZR9tevoA3SpMTA3Hx33/UZuUfUKJ4zAIQpU7lC3URJ5RK
+         BlJ4YF0X+yCGbVduN0ZTPqix3seY96WrQ9s6PKEfuXoDmiUN/0SxbdSoft3cvwy4naN/
+         8+VRJ11U/LD/0/6SA9piqpfx7wFMKQ2I5HBztYireh/sz6NRoVfUq68PyCyFaR8h5MNP
+         7tRg==
+X-Gm-Message-State: ABy/qLZqhscqSneu7gHeUcFvLQjrbn01wNCTwpE4hIC1Bn0Iyp3QAdJG
+        pCWCGJwicrVG+hczUV2J9QBkqg==
+X-Google-Smtp-Source: APBJJlEadY1dI3vNQ2N0fmgDC+Ual1DpU2psFdVln3u1qHl6Z/3ncb0HysMERESWP4YSo180rdHzZw==
+X-Received: by 2002:a37:b645:0:b0:75d:4e8b:9d19 with SMTP id g66-20020a37b645000000b0075d4e8b9d19mr14672746qkf.26.1689011046739;
+        Mon, 10 Jul 2023 10:44:06 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
+        by smtp.gmail.com with ESMTPSA id o8-20020a0cf4c8000000b0063007ccaf42sm59906qvm.57.2023.07.10.10.44.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jul 2023 10:44:06 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1qIuvd-0004KO-KO;
+        Mon, 10 Jul 2023 14:44:05 -0300
+Date:   Mon, 10 Jul 2023 14:44:05 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Mina Almasry <almasrymina@google.com>
+Cc:     David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Message-ID: <ZKxDZfVAbVHgNgIM@ziepe.ca>
+References: <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
+ <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
+ <20230616122140.6e889357@kernel.org>
+ <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
+ <20230619110705.106ec599@kernel.org>
+ <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
+ <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
+ <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
+ <ZKNA9Pkg2vMJjHds@ziepe.ca>
+ <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon Jul 10, 2023 at 1:32 PM CEST, Linux regression tracking (Thorsten Le=
-emhuis) wrote:
-> On 16.06.23 09:45, Nicolas Escande wrote:
-> > On Thu Jun 15, 2023 at 2:54 PM CEST, Linux regression tracking (Thorste=
-n Leemhuis) wrote:
-> >> On 10.06.23 08:44, Bagas Sanjaya wrote:
-> >>> On Tue, Jun 06, 2023 at 12:55:57PM +0200, Nicolas Escande wrote:
-> >>>>
-> >>>> As user of the mesh part of mac80211 on multiple products at work le=
-t me say
-> >>>> thank you for all the work you do on wifi, especially on 80211s, and=
- especially
-> >>>> the recent improvements you made for mesh fast RX/TX & cross vendor =
-AMSDU compat
-> >>>>
-> >>>> We upgraded our kernel from an older (5.15) to a newer 6.4. The prob=
-lem is STP=20
-> >>>> doesn't work anymore and alas we use it for now (for the better or w=
-orse).
-> >>>>
-> >>>> What I gathered so far from my setup:
-> >>>>  - we use ath9k & ath10k
-> >>>>  - in my case STP frames are received as regular packet and not as a=
-msdu
-> >>>>  - the received packets have a wrong length of 44 in tcpdump
-> >>>>    (instead of 38 with our previous kernel)
-> >>>>  - llc_fixup_skb() tries to pull some 41 bytes out of a 35 bytes pac=
-ket
-> >>>>    this makes llc_rcv() discard the frames & breaks STP
-> >>>>
-> >>>> >From bisecting the culprit seems to be 986e43b19ae9176093da35e0a844=
-e65c8bf9ede7
-> >>>> (wifi: mac80211: fix receiving A-MSDU frames on mesh interfaces)
-> >>>>
-> >>>> I guess that your changes to handle both ampdu subframes & normal fr=
-ames in the
-> >>>> same datapath ends up putting a wrong skb->len for STP (multicast) f=
-rames ?
-> >>>> Honestly I don't understand enough of the 80211 internals & spec to =
-pinpoint the
-> >>>> exact problem.
-> >>>>
-> >>>> It seems this change was already in the 6.3 kernel so I guess someon=
-e should
-> >>>> have seen it before (but I didn't find anything..) ? Maybe I missed =
-something...
-> >>>>
-> >>>> Anyway I'm happy to provide more info or try anything you throw at m=
-e.
-> >> [...]
-> >> Hmmm, Felix did not reply. But let's ignore that for now.
-> >=20
-> > I haven't seen mails from felix on the list for a few days, I'm guessin=
-g he's
-> > unavailable for now but I'll hapilly wait.
->
-> Still no progress. Hmmm. Are you still okay with that? I've seen no
-> other reports about this, so waiting is somewhat (albeit not completely)
-> fine for me if it is for you.
-I'm not so surprised no one else reported it, using STP on wifi (and 802.11=
-s) is
-not a really common thing to do, to be honest (and STP on wifi is unreliabl=
-e).
-Even though some openwrt guys do it for sure, I'm guessing their kernel ver=
-sion
-is lagging behind...
->
-> But in any case it might be good if you could recheck 6.5-rc1.
-Testing on 6.5 as a whole won't be as easy for me as testing a single patch=
- on
-top of 6.4. I'll do my best to try but from what I saw nothing got merged t=
-hat
-would even remotely help me on this issue.=20
+On Wed, Jul 05, 2023 at 06:17:39PM -0700, Mina Almasry wrote:
 
-I am not loosing hope that Felix or someone that understands this stuff bet=
-ter
-finds the time to look into this. I'm guessing it's the summer vacation eff=
-et.
+> Another issue is that in networks with low MTU, we could be DMAing
+> 1400/1500 bytes into each allocation, which is problematic if the
+> allocation is 8K+. I would need to investigate a bit to see if/how to
+> solve that, and we may end up having to split the page and again run
+> into the 'not enough room in struct page' problem.
 
->
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
+You don't have an intree driver to use this with, so who knows, but
+the out of tree GPU drivers tend to use a 64k memory management page
+size, and I don't expect you'd make progress with a design where a 64K
+naturaly sized allocator is producing 4k/8k non-compound pages just
+for netdev. We are still struggling with pagemap support for variable
+page size folios, so there is a bunch of technical blockers before
+drivers could do this.
+
+This is why it is so important to come with a complete in-tree
+solution, as we cannot review this design if your work is done with
+hacked up out of tree drivers.
+
+Fully and properly adding P2P ZONE_DEVICE to a real world driver is a
+pretty big ask still.
+
+> > Or allocate per page memory and do a memdesc like thing..
+> 
+> I need to review memdesc more closely. Do you imagine I add a pointer
+> in struct page that points to the memdesc? 
+
+Pointer to extra memory from the PFN has been the usual meaning of
+memdesc, so doing an interm where the pointer is in the struct page is
+a reasonable starting point.
+
+> > Though overall, you won't find devices creating struct pages for their
+> > P2P memory today, so I'm not sure what the purpose is. Jonathan
+> > already got highly slammed for proposing code to the kernel that was
+> > unusable. Please don't repeat that. Other than a special NVMe use case
+> > the interface for P2P is DMABUF right now and it is not struct page
+> > backed.
+> >
+> 
+> Our approach is actually to extend DMABUF to provide struct page
+> backed attachment mappings, which as far as I understand sidesteps the
+> issues Jonathan ran into.
+
+No DMABUF exporters do this today, so your patch series is just as
+incomplete as the prior ones. Please don't post it as non-RFC,
+unusable code like this must not be merged.
+
+> that supports dmabuf and in fact a lot of my tests use udmabuf to
+> minimize the dependencies. The RFC may come with a udmabuf selftest to
+> showcase that any dmabuf, even a mocked one, would be supported.
+
+That is not good enough to get merged. You need to get agreement and
+coded merged from actual driver owners of dmabuf exporters that they
+want to support this direction. As above it has surprising road
+blocks outside netdev :\
+
+Jason
