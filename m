@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2830174E1AF
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 01:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C00DC74E1AB
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 01:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230295AbjGJXDY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 19:03:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42040 "EHLO
+        id S229669AbjGJXDS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 19:03:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230345AbjGJXDV (ORCPT
+        with ESMTP id S230295AbjGJXDQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 19:03:21 -0400
+        Mon, 10 Jul 2023 19:03:16 -0400
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B798E42;
-        Mon, 10 Jul 2023 16:03:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B992D10D;
+        Mon, 10 Jul 2023 16:03:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=hEmg3A0RYm7ry5jQKFwhBPeFaR0jwydfS2VR7x1r72Y=; b=W3k4lCx1bPdNRNN0M14srtcpat
-        2p26tO4jXRFFQyO45qpXAT83Vjaj9en+Wyg4syI+e6pmY+zV8d7vBiHGSMnMRnvEUq2vvX6zOqnSL
-        3ghf7W0Oq/cblsFUiqQFCcqKC2QoLPLPStw0a9SwIgBi9fH5K+wHzOL81Gm1lYtDdg4vfpJwX5GPK
-        AHt3u9Pm1/YySHr70TzWMhmPFyQZ/I1PSXFjXrq601W5sU3gY0ptzpfHXumxAwQQ+NXuWhpjPtEg2
-        om6bIXqMgTL31pssKF5Z+gexvdcAANlwSgchRSGOIFlKO0JfEkTGfXEjvhd+cVz4ziK/qU2IMwFDr
-        gMDK/7mw==;
+        MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+        :Reply-To:Content-Type:Content-ID:Content-Description;
+        bh=tumxd6dc0vA2G3EW/fnOXAr0IYFDVpLv9/tSCnYJH58=; b=MNrqg8ZIwFfxKGIYijdmU6rN8z
+        xUZdZrBz62rQNWs3uQWIKBLIJIx1kxNHVi3zkAkRQPSSBJ0gwiZySD1ol8/+BtoS16tX60pVIlTpW
+        jwwU5+ErUDgUouPP2HVQZJBPEX6yozCrXfKZFT9D4MWDwRw1qdtYZ8GgL5l1RP868Mf71tGe01LG/
+        nu5YN7XfjYFTFgs38CoWETwCV7e2mvavhGXmUZoEVAwlNmYccWvbmQLKCrXviZO69gTxivSozv2S5
+        1hxhFYfKC0i3FDG7G59IHMpv4KZ3zOJyQF2iQPo2Ne9TXaJWBscvnh5RHsW3eVBU7PVkVQMHQMa+Q
+        4PIJtOBw==;
 Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
         by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qIzuU-00CuO1-0m;
-        Mon, 10 Jul 2023 23:03:14 +0000
+        id 1qIzuV-00CuO1-0S;
+        Mon, 10 Jul 2023 23:03:15 +0000
 From:   Randy Dunlap <rdunlap@infradead.org>
 To:     netdev@vger.kernel.org
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
@@ -36,36 +36,15 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, linux-wpan@vger.kernel.org,
-        Jay Vosburgh <j.vosburgh@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
         Johannes Berg <johannes@sipsolutions.net>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Dave Taht <dave.taht@bufferbloat.net>,
-        Arkadi Sharshevsky <arkadis@mellanox.com>,
-        Moshe Shemesh <moshe@mellanox.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Benjamin Berg <benjamin.berg@intel.com>,
-        Yi Yang <yi.y.yang@intel.com>, Jiri Benc <jbenc@redhat.com>,
-        Leslie Monis <lesliemonis@gmail.com>,
-        "Mohit P. Tahiliani" <tahiliani@nitk.edu.in>,
-        Gautam Ramakrishnan <gautamramk@gmail.com>,
-        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
-        Siva Rebbagondla <siva.rebbagondla@redpinesignals.com>,
-        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH net 00/12] net: fix kernel-doc problems in include/net/
-Date:   Mon, 10 Jul 2023 16:03:00 -0700
-Message-ID: <20230710230312.31197-1-rdunlap@infradead.org>
+        linux-wireless@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH net 02/12] wifi: cfg80211: remove dead/unused enum value
+Date:   Mon, 10 Jul 2023 16:03:02 -0700
+Message-ID: <20230710230312.31197-3-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230710230312.31197-1-rdunlap@infradead.org>
+References: <20230710230312.31197-1-rdunlap@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -78,64 +57,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix many (but not all) kernel-doc warnings in include/net/.
+Drop an unused (extra) enum value to prevent a kernel-doc warning.
 
- [PATCH net 01/12] net: bonding: remove kernel-doc comment marker
- [PATCH net 02/12] wifi: cfg80211: remove dead/unused enum value
- [PATCH net 03/12] net: cfg802154: fix kernel-doc notation warnings
- [PATCH net 04/12] codel: fix kernel-doc notation warnings
- [PATCH net 05/12] devlink: fix kernel-doc notation warnings
- [PATCH net 06/12] wifi: radiotap: fix kernel-doc notation warnings
- [PATCH net 07/12] inet: frags: remove kernel-doc comment marker
- [PATCH net 08/12] net: llc: fix kernel-doc notation warnings
- [PATCH net 09/12] wifi: mac80211: fix kernel-doc notation warning
- [PATCH net 10/12] net: NSH: fix kernel-doc notation warning
- [PATCH net 11/12] pie: fix kernel-doc notation warning
- [PATCH net 12/12] rsi: remove kernel-doc comment marker
+cfg80211.h:1492: warning: Excess enum value 'STATION_PARAM_APPLY_STA_TXPOWER' description in 'station_parameters_apply_mask'
 
- include/net/bonding.h            |    2 +-
- include/net/cfg80211.h           |    1 -
- include/net/cfg802154.h          |    3 ++-
- include/net/codel.h              |    4 ++--
- include/net/devlink.h            |   28 ++++++++++++++++------------
- include/net/ieee80211_radiotap.h |    3 ++-
- include/net/inet_frag.h          |    2 +-
- include/net/llc_pdu.h            |    6 ++++--
- include/net/mac80211.h           |    1 +
- include/net/nsh.h                |    2 +-
- include/net/pie.h                |    2 +-
- include/net/rsi_91x.h            |    2 +-
- 12 files changed, 32 insertions(+), 24 deletions(-)
-
+Fixes: 2d8b08fef0af ("wifi: cfg80211: fix kernel-doc warnings all over the file")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Eric Dumazet <edumazet@google.com>
 Cc: Jakub Kicinski <kuba@kernel.org>
 Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: linux-wpan@vger.kernel.org
-Cc: Jay Vosburgh <j.vosburgh@gmail.com>
-Cc: Andy Gospodarek <andy@greyhouse.net>
 Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
 Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Alexander Aring <alex.aring@gmail.com>
-Cc: Stefan Schmidt <stefan@datenfreihafen.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
-Cc: Dave Taht <dave.taht@bufferbloat.net>
-Cc: Arkadi Sharshevsky <arkadis@mellanox.com>
-Cc: Moshe Shemesh <moshe@mellanox.com>
-Cc: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Cc: Yi Yang <yi.y.yang@intel.com>
-Cc: Jiri Benc <jbenc@redhat.com>
-Cc: Leslie Monis <lesliemonis@gmail.com>
-Cc: "Mohit P. Tahiliani" <tahiliani@nitk.edu.in>
-Cc: Gautam Ramakrishnan <gautamramk@gmail.com>
-Cc: Prameela Rani Garnepudi <prameela.j04cs@gmail.com>
-Cc: Siva Rebbagondla <siva.rebbagondla@redpinesignals.com>
-Cc: Amitkumar Karwar <amit.karwar@redpinesignals.com>
-Cc: Kalle Valo <kvalo@kernel.org>
+---
+ include/net/cfg80211.h |    1 -
+ 1 file changed, 1 deletion(-)
+
+diff -- a/include/net/cfg80211.h b/include/net/cfg80211.h
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1479,7 +1479,6 @@ struct iface_combination_params {
+  * @STATION_PARAM_APPLY_UAPSD: apply new uAPSD parameters (uapsd_queues, max_sp)
+  * @STATION_PARAM_APPLY_CAPABILITY: apply new capability
+  * @STATION_PARAM_APPLY_PLINK_STATE: apply new plink state
+- * @STATION_PARAM_APPLY_STA_TXPOWER: apply tx power for STA
+  *
+  * Not all station parameters have in-band "no change" signalling,
+  * for those that don't these flags will are used.
