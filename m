@@ -2,110 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE04574CA24
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 05:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B298E74CA2F
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 05:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjGJDDu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 23:03:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50030 "EHLO
+        id S230219AbjGJDGf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 23:06:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjGJDDt (ORCPT
+        with ESMTP id S229680AbjGJDGe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jul 2023 23:03:49 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B9F3EC
-        for <linux-wireless@vger.kernel.org>; Sun,  9 Jul 2023 20:03:48 -0700 (PDT)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36A2kObw029979;
-        Mon, 10 Jul 2023 03:03:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=LoxxLL/+E/9qdH8uQyJ4p3c8CVoRc1vARGpSw0cg3To=;
- b=Ey1GfxGAxqGIVunP3U4uajBo7bTGbNMjWThaPWCRN1Dr/lf9vna6olZq6VRoKii4w7rg
- 5kCawOS/8Qoi+fB8/VFWa52GTEKGElPMO+wzY7RCJmeJ8esCiUtB5d0AvZLdY90TgB8Z
- wJkZJJzNf824WBZAcs2wonzNp1UttH+gfiIcev6Ap7SzjTkbHCRU74WKsYfGk3RArEv+
- YDEbgZjQokq6wQMTdj3Xm0ew0CNz1dFN3B7A9xASOaz7TBtmzEooRaK+O6Jr7gZWTTUY
- hFoALMd5w/wKncYjk/RtrrBZoA2xkMLYF61QHes1m+mlpRjTc1VZQYjBe1N6EpgtNmyh Ag== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rq0jpja2p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 10 Jul 2023 03:03:44 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36A33haA012406
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 10 Jul 2023 03:03:43 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Sun, 9 Jul
- 2023 20:03:42 -0700
-Message-ID: <2579553c-2e7f-787c-ad6b-9d21f8a08b39@quicinc.com>
-Date:   Mon, 10 Jul 2023 11:03:39 +0800
+        Sun, 9 Jul 2023 23:06:34 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A97B2F4;
+        Sun,  9 Jul 2023 20:06:30 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-78654448524so106913639f.2;
+        Sun, 09 Jul 2023 20:06:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688958390; x=1691550390;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tzyqXosdnDO68LtdH9MXWVaSATpoziQrNIP/nKesUIU=;
+        b=ZgjBUwWkJkWTLTgZjnUl36bz4hxN+A/JDp2vGU5E8dlQ/+FtHwSQ4j5JH9bVccfcQx
+         u/PQyu6P3cwxEXMM5oGk/aLjfuPLPTzvekiafWvtjc3mEpZW7Zppqrab3eslKKDccOlL
+         b+xn9eO7dXiVFL6jpvp3S96xBPsrPU2fK/7qNE0+gK4Yr5osxV/R5pxBzyXnDlZ+BZvd
+         tfmSVqcutKhiici1jMwMD4RmZik4S11EOfxtYlzBDKfjDpHy0Es4QygPcUi8+ayZoFX5
+         ULk6pjSUo36zNQphYyUAKZOMZ/9H/gzUMJyTjvred3eAhUfqPQ6n8ghcYf81hSkjGjbI
+         4awg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688958390; x=1691550390;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tzyqXosdnDO68LtdH9MXWVaSATpoziQrNIP/nKesUIU=;
+        b=LHXy7eeEShiu9tJnGvFWNMNPdSQRRh+KRkbOSaQnN5/e1HrT51Ge7sN0Eb3h5wcsLx
+         GzyjiCS/pLk+aJU598OOw3YlsnuBEhuL4W93SjVp3bU986mC13LrF9B022Vms+bDq93n
+         y/L1IUsL8FAJdvtzVApJVLEgkK2MOa7hFDULncQBeuBS1oDS2D35MUckCT7enl4uynlM
+         L6SLoRg/3wwHnwYpgLXyp2kRucxcpQFPaRwjOoH+UWOfzw6cvDuGu5+tOneiCMUntkvA
+         iP11sszoZAdfuCsU5qF3U6f9c5z3c88pEFw2qLZZg1yj6ccqOhhbm2qz1vWNmV/XcGWu
+         cE7g==
+X-Gm-Message-State: ABy/qLYvlGZvNvuhH83fMcsHF3LSjlmw3H8v8KkUgdNkWtuxaz4JtEPs
+        FeocMIK43IMQ/Kbcg7Urqd8=
+X-Google-Smtp-Source: APBJJlE8CT21Yy9HxFydGW3qQDl6rJ1NBWg0JbeZFSqKmqU4woX9tlMfu/gL47Aw5RG60sJwrhDwNw==
+X-Received: by 2002:a6b:7b49:0:b0:780:bf50:32ce with SMTP id m9-20020a6b7b49000000b00780bf5032cemr11185666iop.19.1688958389884;
+        Sun, 09 Jul 2023 20:06:29 -0700 (PDT)
+Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
+        by smtp.gmail.com with ESMTPSA id s11-20020a5eaa0b000000b00785cd25010esm3318732ioe.11.2023.07.09.20.06.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Jul 2023 20:06:29 -0700 (PDT)
+From:   Azeem Shaikh <azeemshaikh38@gmail.com>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>
+Cc:     linux-hardening@vger.kernel.org,
+        Azeem Shaikh <azeemshaikh38@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH] wifi: mwifiex: Replace strlcpy with strscpy
+Date:   Mon, 10 Jul 2023 03:06:25 +0000
+Message-ID: <20230710030625.812707-1-azeemshaikh38@gmail.com>
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 0/2] wifi: ath11k: fix data out of sync for channel list
- for reg update
-Content-Language: en-US
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230329091235.19500-1-quic_wgong@quicinc.com>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <20230329091235.19500-1-quic_wgong@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: gX-VbmAx3IAmbPffUYFiaBG1j-boV1UI
-X-Proofpoint-GUID: gX-VbmAx3IAmbPffUYFiaBG1j-boV1UI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-10_02,2023-07-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- mlxlogscore=999 adultscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307100026
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/29/2023 5:12 PM, Wen Gong wrote:
-> Currently there are two threads to updating/fetch data of channel
-> list, and there are no synchronization for the data, it leads data out
-> of sync for channel list for reg update.
->
-> So change the call flow to make sure the fetch data running after the
-> update data finished, then data of channel list become synchronization.
->
-> Fixes: f45cb6b29cd3 ("wifi: ath11k: avoid deadlock during regulatory update in ath11k_regd_update()")
->
-> Wen Gong (2):
->    wifi: ath11k: move update channel list from update reg worker to reg
->      notifier
->    wifi: ath11k: move udpate channel list to worker for wait flag
->
->   drivers/net/wireless/ath/ath11k/core.c |   1 +
->   drivers/net/wireless/ath/ath11k/core.h |   4 +
->   drivers/net/wireless/ath/ath11k/mac.c  |  13 ++++
->   drivers/net/wireless/ath/ath11k/reg.c  | 100 ++++++++++++++++---------
->   drivers/net/wireless/ath/ath11k/reg.h  |   1 +
->   drivers/net/wireless/ath/ath11k/wmi.h  |   1 +
->   6 files changed, 86 insertions(+), 34 deletions(-)
->
->
-> base-commit: 5aa9ff08c0b71be15a607341fa5344546e19ceb2
+strlcpy() reads the entire source buffer first.
+This read may exceed the destination size limit.
+This is both inefficient and can lead to linear read
+overflows if a source string is not NUL-terminated [1].
+In an effort to remove strlcpy() completely [2], replace
+strlcpy() here with strscpy().
 
-Hi Kalle,
+Direct replacement is safe here since return value of -errno
+is used to check for truncation instead of sizeof(dest).
 
-Will you plan to merge it or will you give comments?
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
+
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+---
+ drivers/net/wireless/marvell/mwifiex/main.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+index 1cd9d20cca16..8d3c4bcf9c89 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -725,9 +725,8 @@ static int mwifiex_init_hw_fw(struct mwifiex_adapter *adapter,
+ 	 * manufacturing mode is enabled
+ 	 */
+ 	if (mfg_mode) {
+-		if (strlcpy(adapter->fw_name, MFG_FIRMWARE,
+-			    sizeof(adapter->fw_name)) >=
+-			    sizeof(adapter->fw_name)) {
++		if (strscpy(adapter->fw_name, MFG_FIRMWARE,
++			    sizeof(adapter->fw_name)) < 0) {
+ 			pr_err("%s: fw_name too long!\n", __func__);
+ 			return -1;
+ 		}
+-- 
+2.41.0.255.g8b1d071c50-goog
+
 
