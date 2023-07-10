@@ -2,100 +2,196 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A535374DFFA
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 23:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA86474E1A5
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 01:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229814AbjGJVFX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 17:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34804 "EHLO
+        id S230253AbjGJXDO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 19:03:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231420AbjGJVFV (ORCPT
+        with ESMTP id S229532AbjGJXDN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 17:05:21 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F0F41A7
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 14:05:18 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-99357737980so647882366b.2
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 14:05:18 -0700 (PDT)
+        Mon, 10 Jul 2023 19:03:13 -0400
+Received: from mail-ua1-x935.google.com (mail-ua1-x935.google.com [IPv6:2607:f8b0:4864:20::935])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBEA310D
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 16:03:11 -0700 (PDT)
+Received: by mail-ua1-x935.google.com with SMTP id a1e0cc1a2514c-79470b88d88so1601266241.0
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 16:03:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689023116; x=1691615116;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c2QOZ4p9y9licAqcmEwdS8OXFAh7Q+nEgiRJis+2CAw=;
-        b=Hto1kQVE0Z/k7NCbb4cZrhvGnw/jJUWTtI9jjSmfDuB5PwPr5tXfZgyL4LsvQ/ncgb
-         LvPcCX9abRhrrZbJp0BhlXgwNjd43y26rdYZgOuAoXUZbdcTm835vASZZvUBEMRvTkPj
-         QJPHWSG3ts3VCsEx8QdnOABLAiOARxd/swUr/53/sMKIkyPa7t6cPBpPK2bUxFlbUm1m
-         Pv5s34AO3u6Yb1nTC8NdFc+so30sRUo32F7eVHxInJFQPGHilnY00r9ixLg8xJkuzTLc
-         ow5kEunhiMi7rkKALnchmYOsIkW/QxhIFwrZapy/hs0yknDU1kINMaZmnOFvUYiV524p
-         aiNQ==
+        d=google.com; s=20221208; t=1689030191; x=1691622191;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kYDiR4A6sQZndl0XT9fcGxrXdj+op4ndy7BoHFL4s70=;
+        b=FVxq5TQOlzhUeYgxXSn6ArdwnVF2hbExv8ZbNJDmV9BNzKz3GBQj6+AD6uZMvrgdjA
+         xH2s5MBcoPw8P9HZMTzQhVMKFl7KLPJ/0aYueLJBRDrbwr7gSzHyFM2YiWW1icDJju+E
+         vvdGR1RgvoEhOEE7I/nKR+NRqYhT3L43ky2dAfF+c8Z90UTc/eqloAdFhr/7E+KCVHK9
+         hmmNiC+ql5Bd32aUQnuNmcp+0Qy7zkHQvVJSNgsTENiN4USow1G7e7mPbk+cREQGS465
+         1Oh+BTqTZLre92S8DtOsIdsUe/09sJwqAJZZGaMzR0YFR5OxuiKhWVVSnovORxiSqyLX
+         xwyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689023116; x=1691615116;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c2QOZ4p9y9licAqcmEwdS8OXFAh7Q+nEgiRJis+2CAw=;
-        b=IMiB2/Tmyzg7NWVqJwZ7o/qYTdNMl0Cbi0FiX6d0u4Q3ElrJDkMRALOvu+b71WoRNE
-         uKkaDSq5DAT9Qp7w2MRdTtYa4g5DY/LdaAhbPTTe87XYw5SWKiSfx+njQW3bFH3RRUNz
-         5+XAW/xdPD0KlYtZ3hlzSi/SJNq9f3P8IyOEaMzFAw10d3YLIv5eAncgR6EmU+w9Dsqg
-         HAAUXC15XMrL1nUmNLQB4OM3H13nr/DcLwpg8xeS1ECM7kaAUmCdG+w9DW8WIb+XsOG+
-         hRAT3KhambhCxcmRoIHVCn23H7nHg7OAJa/yHVD+BPOVtY7EH95I5fXqY6dDp8RFu4OG
-         zdfA==
-X-Gm-Message-State: ABy/qLYOA+GyumfLDpz1tS4t2pLNCLB3wIyzRdpUsNvJZ1B55YgG9x2V
-        bjaDSdPlJWTygcwHYaBbGf6tbf1MLlk=
-X-Google-Smtp-Source: APBJJlGVHWko7eQfk+azVIZAHzJp/miP6P1HXLCij7AEJ2ExkoJAH9Ara2BI0YfgAXR+C/eHrq5lgQ==
-X-Received: by 2002:a17:907:3ad1:b0:982:79fa:4532 with SMTP id fi17-20020a1709073ad100b0098279fa4532mr12561862ejc.53.1689023116449;
-        Mon, 10 Jul 2023 14:05:16 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.57])
-        by smtp.gmail.com with ESMTPSA id g23-20020a170906395700b00992a9bd70dasm228274eje.10.2023.07.10.14.05.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jul 2023 14:05:16 -0700 (PDT)
-Message-ID: <b2876c56-0ea7-c398-5c9b-635f9f894f2c@gmail.com>
-Date:   Tue, 11 Jul 2023 00:05:14 +0300
+        d=1e100.net; s=20221208; t=1689030191; x=1691622191;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kYDiR4A6sQZndl0XT9fcGxrXdj+op4ndy7BoHFL4s70=;
+        b=JufpsZN9KX1qmIocujSsi6pKzdCZKXWswjppokV1pAVS+mhPSPqok0zBlQB8glvWUF
+         fSe9nJEEDsp72m2d6DhPFrbCsNgCch8vNOyb865b0WkYudrSdgOyamgmd41+b79Z0EE8
+         o8Pd5owFakSekFwq3YhsEecCUQAm+T1JHZI4EBSEsCQgVPN6XYPjvLeO/ThGg4nPbImq
+         1clz8eL9L3tphzm9bb80E5/2VZgKVFJJZj92w7+Mngu0+le2wy73aS72bKINTzjgmmNA
+         bDmIwaHEQ9CauggHthukD5P4Du2US3BKlubco5CAnK0Kd24FgcjKdIawDJWfHDixn+X0
+         tITA==
+X-Gm-Message-State: ABy/qLaRDglsKgmUef1KZKd1OCN6sBHh65lkh5CuYmSk7EfqvehgNfyk
+        1we0k9pP96zIvU3PkBi3rB6VgsHcMZqZm0eZcIx6YA==
+X-Google-Smtp-Source: APBJJlHd8B3bLHM0BGlcUeLB7BK4Rn2fyXUPRVAiBYrDcyC69ohOF9Etzy1j0dKI2yZcDqXki7DFnPYYFtgRKmlffZ0=
+X-Received: by 2002:a67:ff91:0:b0:443:8eab:c664 with SMTP id
+ v17-20020a67ff91000000b004438eabc664mr5887615vsq.13.1689030190853; Mon, 10
+ Jul 2023 16:03:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: [PATCH 4/4] wifi: rtl8xxxu: Enable AP mode for RTL8723BU
-Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-References: <ffcabba5-7e9e-674c-ad03-73646b040b96@gmail.com>
-In-Reply-To: <ffcabba5-7e9e-674c-ad03-73646b040b96@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
+ <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com> <20230616122140.6e889357@kernel.org>
+ <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com> <20230619110705.106ec599@kernel.org>
+ <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
+ <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org> <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
+ <ZKNA9Pkg2vMJjHds@ziepe.ca> <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
+ <ZKxDZfVAbVHgNgIM@ziepe.ca>
+In-Reply-To: <ZKxDZfVAbVHgNgIM@ziepe.ca>
+From:   Mina Almasry <almasrymina@google.com>
+Date:   Mon, 10 Jul 2023 16:02:59 -0700
+Message-ID: <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Theoretically this chip can handle 127 clients.
+On Mon, Jul 10, 2023 at 10:44=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wro=
+te:
+>
+> On Wed, Jul 05, 2023 at 06:17:39PM -0700, Mina Almasry wrote:
+>
+> > Another issue is that in networks with low MTU, we could be DMAing
+> > 1400/1500 bytes into each allocation, which is problematic if the
+> > allocation is 8K+. I would need to investigate a bit to see if/how to
+> > solve that, and we may end up having to split the page and again run
+> > into the 'not enough room in struct page' problem.
+>
+> You don't have an intree driver to use this with, so who knows, but
+> the out of tree GPU drivers tend to use a 64k memory management page
+> size, and I don't expect you'd make progress with a design where a 64K
+> naturaly sized allocator is producing 4k/8k non-compound pages just
+> for netdev. We are still struggling with pagemap support for variable
+> page size folios, so there is a bunch of technical blockers before
+> drivers could do this.
+>
+> This is why it is so important to come with a complete in-tree
+> solution, as we cannot review this design if your work is done with
+> hacked up out of tree drivers.
+>
 
-Only compile tested but it should work as well as the RTL8188FU.
+I think you're assuming the proposal requires dma-buf exporter driver
+changes, and I have a 'hacked up out of tree driver' not visible to
+you. Both are not quite right. The proposal requires no changes to the
+dma-buf exporter, and works with udmabuf _as is_, proving that. Please
+do review the proposal:
+https://lore.kernel.org/netdev/20230710223304.1174642-1-almasrymina@google.=
+com/
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 2 ++
- 1 file changed, 2 insertions(+)
+If you still don't like the approach, we can try something else.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-index 13ad5d5b73f4..954369ed6226 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-@@ -1742,6 +1742,8 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
- 	.ampdu_max_time = 0x5e,
- 	.ustime_tsf_edca = 0x50,
- 	.max_aggr_num = 0x0c14,
-+	.supports_ap = 1,
-+	.max_macid_num = 128,
- 	.adda_1t_init = 0x01c00014,
- 	.adda_1t_path_on = 0x01c00014,
- 	.adda_2t_path_on_a = 0x01c00014,
--- 
-2.41.0
+> Fully and properly adding P2P ZONE_DEVICE to a real world driver is a
+> pretty big ask still.
+>
+
+There is no such ask.
+
+> > > Or allocate per page memory and do a memdesc like thing..
+> >
+> > I need to review memdesc more closely. Do you imagine I add a pointer
+> > in struct page that points to the memdesc?
+>
+> Pointer to extra memory from the PFN has been the usual meaning of
+> memdesc, so doing an interm where the pointer is in the struct page is
+> a reasonable starting point.
+>
+> > > Though overall, you won't find devices creating struct pages for thei=
+r
+> > > P2P memory today, so I'm not sure what the purpose is. Jonathan
+> > > already got highly slammed for proposing code to the kernel that was
+> > > unusable. Please don't repeat that. Other than a special NVMe use cas=
+e
+> > > the interface for P2P is DMABUF right now and it is not struct page
+> > > backed.
+> > >
+> >
+> > Our approach is actually to extend DMABUF to provide struct page
+> > backed attachment mappings, which as far as I understand sidesteps the
+> > issues Jonathan ran into.
+>
+> No DMABUF exporters do this today, so your patch series is just as
+> incomplete as the prior ones. Please don't post it as non-RFC,
+> unusable code like this must not be merged.
+>
+> > that supports dmabuf and in fact a lot of my tests use udmabuf to
+> > minimize the dependencies. The RFC may come with a udmabuf selftest to
+> > showcase that any dmabuf, even a mocked one, would be supported.
+>
+> That is not good enough to get merged. You need to get agreement and
+> coded merged from actual driver owners of dmabuf exporters that they
+> want to support this direction. As above it has surprising road
+> blocks outside netdev :\
+>
+
+The current proposal requires no changes to the dma-buf exporters:
+https://lore.kernel.org/netdev/20230710223304.1174642-1-almasrymina@google.=
+com/
+
+On dma-buf changes required. I do need approval from the dma-buf
+maintainers, but AFAICT, no approval from the dma-buf exporters (all I
+need is already supported). If we need to change direction to a
+proposal that needs additional support from the driver owners, yes,
+we'd need their approval, but this is not the case at the moment.
+
+--=20
+Thanks,
+Mina
