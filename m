@@ -2,102 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6794374D96A
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 17:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8314974D96F
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 17:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233327AbjGJPCB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 11:02:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59096 "EHLO
+        id S233393AbjGJPCx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 11:02:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233288AbjGJPCA (ORCPT
+        with ESMTP id S233404AbjGJPCt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 11:02:00 -0400
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 100F3E0;
-        Mon, 10 Jul 2023 08:01:58 -0700 (PDT)
-Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6b71cdb47e1so4120530a34.2;
-        Mon, 10 Jul 2023 08:01:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689001317; x=1691593317;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+smcknHrpiFqVT0cxAi9rwiL8Xxn68TLxXVOwTZ5eD8=;
-        b=HOHirMDwtZWJ82gvHYqNLnb0VERup2FZ9liADlXWv6oB2EO+62osD7McJXgnAmIfOH
-         Ro5maxeEqNTQwLMrvbadbH+ndqoIW0j/QJIk4/LYzJ4BPBrdMiU/vi68ulO/PSyifVtt
-         xj/iRAvDGAkDMAGNG3AK2GDpJEhxKHCAySdVnMQmy3jGOavQM6fXUPl1koj6fJjl/w55
-         kBkAhR5L0ra3v6W/SdC4TenPLmiFRcifVerb9xEG3ahcplhkQFv/FEU77lkamrPECOFK
-         AfvluZmHTPH1CmEdkoUwfIzKEWqv1ta0H1JIpxEonTsZhVV1Ql7SwXrEZvP4sZAH6BHX
-         14NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689001317; x=1691593317;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+smcknHrpiFqVT0cxAi9rwiL8Xxn68TLxXVOwTZ5eD8=;
-        b=Im4k79K1X/0uYpamx6Vh2L2EHy949vD10ilyJ201GveuZa0BSzGrXqMM78pmSo7M8U
-         8DrqmMAcKwvoasudGgIDpyJ0Ca/CFplmmWP2k910JABJSTp3VhZ160mwIXqaCsDRZBMc
-         qd9s326Paa1BC4MReEvoiCADohPRlzTE6JwwKY2wXahG1KZ8mWBhodW+05UTorIoPc8m
-         CoQhtqSVPy+0vLTBziRhq6kACZxk2E255mqHePGqsOh53VzllxwlgjRI/w7NQffP7dAp
-         dL+7oInWXKdzyCFnZ1J6VdjWpbMa1JY/RR2J93JlTE/hMxhDArZzaI5fq+3jkfYcOLY6
-         un6g==
-X-Gm-Message-State: ABy/qLYgxiOkiGaisnUTCLXxExoKvXn6Y2rGez/qnlIH4GbO4q2XEQML
-        xzfq4/cr7SYcImU2BfYjCbE=
-X-Google-Smtp-Source: APBJJlE0DQhL+lnXcJXKSvuZOuOKYgi9cKwt8vL4c23Ru3wlI4zLZVAQ0qV91+slvB9MbJ02kluZCA==
-X-Received: by 2002:a05:6830:3b04:b0:6b5:6b95:5876 with SMTP id dk4-20020a0568303b0400b006b56b955876mr13400381otb.25.1689001317106;
-        Mon, 10 Jul 2023 08:01:57 -0700 (PDT)
-Received: from localhost.localdomain ([221.231.171.18])
-        by smtp.gmail.com with ESMTPSA id a19-20020a637f13000000b0055b3af821d5sm7564886pgd.25.2023.07.10.08.01.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jul 2023 08:01:56 -0700 (PDT)
-From:   pinkperfect <pinkperfect2021@gmail.com>
-To:     pinkperfect2021@gmail.com
-Cc:     amitkarwar@gmail.com, ganapathi017@gmail.com,
-        huxinming820@gmail.com, kvalo@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        sharvari.harisangam@nxp.com
-Subject: Re: [PATCH v2] wifi: mwifiex: Fix OOB and integer underflow in mwifiex_process_mgmt_packet
-Date:   Mon, 10 Jul 2023 15:01:30 +0000
-Message-Id: <20230710150130.2449934-1-pinkperfect2021@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230708070749.2382045-1-pinkperfect2021@gmail.com>
-References: <20230708070749.2382045-1-pinkperfect2021@gmail.com>
+        Mon, 10 Jul 2023 11:02:49 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A00127;
+        Mon, 10 Jul 2023 08:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=sXd8fOLlAD3XJ6DIwb78DhwDpyb7fuPEHcC/aPSb/gc=;
+        t=1689001368; x=1690210968; b=XVwhYssLpdLBnXqXjbzYGELl3TEydzxLWmGXcfhUI1LguJf
+        7sPifFt3Yu1/rukcIrRLrBrWKF8HPqfv0VbrM7kD0+v9sTQFqngVUFadMxcPTaBmtJYYrBQNWsQKv
+        L9mIM7TaZJg79cuB0AsP4VzAdPP3+6vGnCaq2TIwshyyTapcDMykx1LlJz/lEvGn6u09erivMXTYk
+        aDLENC0xngbKgV3+LxQmmQSGMj0X+Ftah2BStUMsEklmGfXADX3W5zFZH/D4Gv2LdKyRPpgD0sSfZ
+        6zITbhRg1EB2Da4eIT1bLLB297hr+Ylno1pyoqXw9EAq061sbIxuXfBEFSMv9h8w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qIsPR-00EgUu-0L;
+        Mon, 10 Jul 2023 17:02:41 +0200
+Message-ID: <047c7bdc8057175f2bb78981a5f1a1aa6b493153.camel@sipsolutions.net>
+Subject: Re: [regression] iwlwifi driver broken on Intel 3165 network card
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        Aloka Dixit <quic_alokad@quicinc.com>,
+        John Crispin <john@phrozen.org>
+Cc:     Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Date:   Mon, 10 Jul 2023 17:02:40 +0200
+In-Reply-To: <6f8715af-95c2-8333-2b32-206a143ebb52@leemhuis.info>
+References: <6f8715af-95c2-8333-2b32-206a143ebb52@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, this vulnerability has been reported to and discussed with chromeos teams,
-the detail analysis, see comments in below code:
-mwifiex_process_sta_rx_packet makes sure rx_pkt_offset + rx_pkt_length <= skb->len
-In mwifiex_process_mgmt_packet:
+On Mon, 2023-07-10 at 10:32 +0200, Linux regression tracking (Thorsten
+Leemhuis) wrote:
+> Hi, Thorsten here, the Linux kernel's regression tracker.
+>=20
+> I noticed a regression report in bugzilla.kernel.org. As many (most?)
+> kernel developers don't keep an eye on it, I decided to forward it by mai=
+l.
+>=20
+> Aloka Dixit, apparently it's cause by a change of yours: bd54f3c2907
+> ("wifi: mac80211: generate EMA beacons in AP mode") [v6.4-rc1]
+>=20
 
-        rx_pd = (struct rxpd *)skb->data;
+That bisect result seems unlikely to be correct. Those changes are in
+"how to get beacons" (in AP mode) which isn't even used in client mode
+here.
 
-        // skb->len -= rx_pkt_offset, skb->len == rx_pkt_length
-        skb_pull(skb, le16_to_cpu(rx_pd->rx_pkt_offset));
-        // skb->len == rx_pkt_length - 2, if set rx_pkt_length == 4, skb->len == 2
-        skb_pull(skb, sizeof(pkt_len));
-
-        pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
-
-        //skip..
-
-        // now skb->len == 2, skb->data + 24 is oob from skb buffer
-        // skb->data + 30 is oob from skb buffer
-        // pkt_len == 4, so underflow
-        memmove(skb->data + sizeof(struct ieee80211_hdr_3addr),
-                skb->data + sizeof(struct ieee80211_hdr),
-                pkt_len - sizeof(struct ieee80211_hdr));
-
-On MT8173 chromebook, the arm64 memmove.S / memcpy.S code logical
-cause memove(dst, src, -x) a possible exploitable oob write vulnerability
-not only a unexploitable crash
-
+johannes
