@@ -2,118 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EDE974D394
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 12:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E40F174D3BE
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 12:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231824AbjGJKeB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 06:34:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43750 "EHLO
+        id S233060AbjGJKjv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 06:39:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231340AbjGJKd7 (ORCPT
+        with ESMTP id S233429AbjGJKju (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 06:33:59 -0400
-Received: from xry111.site (xry111.site [89.208.246.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9085ED1;
-        Mon, 10 Jul 2023 03:33:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-        s=default; t=1688985230;
-        bh=Qd7Jq6PV9bUrlUetZdlFipTTG5XNVHRahk+7pTupUnY=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=hnWfx1femhGVzcnMKSnDNf5xgExdFaoCKOuaJ7ctT8uwiVSpSlPmmIAI906gmEQ+4
-         0owCsZvwTSPxqkE5OG0BhsTeRBEFCnEw61/oroH4BdFCoDwDucZwRFDJsYpLsNac3a
-         nZkP5TXtpTvOEY4bvFfgSRt+BdyWIKfa6EDfvFUg=
-Received: from [192.168.124.11] (unknown [113.140.11.4])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
-        (Client did not present a certificate)
-        (Authenticated sender: xry111@xry111.site)
-        by xry111.site (Postfix) with ESMTPSA id 7226465AB5;
-        Mon, 10 Jul 2023 06:33:47 -0400 (EDT)
-Message-ID: <2856be90ec133a2bafd5f11e537f8d589d0f8cb9.camel@xry111.site>
-Subject: Re: [RFC PATCH] wifi: iwlwifi: remove 'use_tfh' config to fix crash
-From:   Xi Ruoyao <xry111@xry111.site>
-To:     Jeff Chua <jeff.chua.linux@gmail.com>,
-        "Zhang, Rui" <rui.zhang@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "Berg, Johannes" <johannes.berg@intel.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        lkml <linux-kernel@vger.kernel.org>
-Date:   Mon, 10 Jul 2023 18:33:45 +0800
-In-Reply-To: <CAAJw_Zuo1L3yTP-PVgdW74uYg=R7YxXF0hA5s0Gfm1bCqC90RQ@mail.gmail.com>
-References: <20230709181323.12085-2-johannes@sipsolutions.net>
-         <19f7bc7f43922c257238127d5fe84ea01cf2be79.camel@intel.com>
-         <CAAJw_Zuo1L3yTP-PVgdW74uYg=R7YxXF0hA5s0Gfm1bCqC90RQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 
+        Mon, 10 Jul 2023 06:39:50 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6D52CC;
+        Mon, 10 Jul 2023 03:39:28 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qIoIc-0000vr-Cy; Mon, 10 Jul 2023 12:39:22 +0200
+Message-ID: <f04feee0-bb2c-b778-0603-2817c5b9bc40@leemhuis.info>
+Date:   Mon, 10 Jul 2023 12:39:19 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [Regression][BISECTED] kernel boot hang after 19898ce9cf8a
+ ("wifi: iwlwifi: split 22000.c into multiple files")
+Content-Language: en-US, de-DE
+To:     "Zhang, Rui" <rui.zhang@intel.com>,
+        "Torvalds, Linus" <torvalds@linux-foundation.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Cc:     "bagasdotme@gmail.com" <bagasdotme@gmail.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "Baruch, Yaara" <yaara.baruch@intel.com>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Ben Ami, Golan" <golan.ben.ami@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "Sisodiya, Mukesh" <mukesh.sisodiya@intel.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        Xi Ruoyao <xry111@xry111.site>
+References: <b533071f38804247f06da9e52a04f15cce7a3836.camel@intel.com>
+ <a4265090-d6b8-b185-a400-b09b27a347cc@leemhuis.info>
+ <CAHk-=wg23SdKRcn2W+BWWEfJ2Efp0sreJx9=iw0AsUPjW3qznw@mail.gmail.com>
+ <446c25888d9316d0f15e6bcc6ecb100dda99324e.camel@sipsolutions.net>
+ <e7d7945055802e5d3f1b42750716bc6a314ec97b.camel@intel.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <e7d7945055802e5d3f1b42750716bc6a314ec97b.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688985569;044dc97e;
+X-HE-SMSGID: 1qIoIc-0000vr-Cy
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-07-10 at 18:16 +0800, Jeff Chua wrote:
-> On Mon, Jul 10, 2023 at 9:53=E2=80=AFAM Zhang, Rui <rui.zhang@intel.com> =
-wrote:
-> >=20
-> > On Sun, 2023-07-09 at 20:13 +0200, Johannes Berg wrote:
-> > > From: Johannes Berg <johannes.berg@intel.com>
-> > >=20
-> > > This is equivalent to 'gen2', and it's confusing to have two
-> > > of the same configs. The split config patch actually had been
-> > > originally developed after this, and didn't add the use_tfh
-> > > in the new configs because they were copied to the new files
-> > > after ...
-> > >=20
-> > > There's clearly still an unwind error in iwl_txq_gen2_init()
-> > > since it crashes if something fails there, but the reason it
-> > > fails in the first place is due to the gen2/use_tfh confusion.
-> > >=20
-> > > Reported-by: Jeff Chua <jeff.chua.linux@gmail.com>
-> > > Reported-by: "Zhang, Rui" <rui.zhang@intel.com>
-> > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217622
-> > > Link:
-> > > https://lore.kernel.org/all/9274d9bd3d080a457649ff5addcc1726f08ef5b2.=
-camel@xry111.site/
-> > > Link:
-> > > https://lore.kernel.org/all/CAAJw_Zug6VCS5ZqTWaFSr9sd85k%3DtyPm9DEE%2=
-BmV%3DAKoECZM%2BsQ@mail.gmail.com/
-> > > Fixes: 19898ce9cf8a ("wifi: iwlwifi: split 22000.c into multiple
-> > > files")
-> > > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> >=20
-> > Hi, Johannes,
-> >=20
-> > Thanks for the patch. It fixes the problem on my side.
-> >=20
-> > Tested-by: Zhang Rui <rui.zhang@intel.com>
-> >=20
-> > thanks,
-> > rui
->=20
->=20
-> Johannes,
->=20
-> Fixed as well! Thank you!
+[CCing one
 
-Works for me too, thanks!
+On 10.07.23 03:54, Zhang, Rui wrote:
+> On Sun, 2023-07-09 at 20:07 +0200, Johannes Berg wrote:
+>> On Sun, 2023-07-09 at 09:31 -0700, Linus Torvalds wrote:
+>>> On Fri, 7 Jul 2023 at 03:55, Linux regression tracking (Thorsten
+>>> Leemhuis) <regressions@leemhuis.info> wrote:
+>>>>
+>>>> [CCing the regression list, netdev, the net maintainers, and
+>>>> Linus;
+>>>> Johannes and Kalle as well, but just for the record, they afaik
+>>>> are
+>>>> unavailable]
+>>>
+>>> So I will release rc1 with this issue, but remind me - if it hasn't
+>>> had any traction next week and the radio silence continues, I'll
+>>> just
+>>> revert it all.
+>>
+>> Sorry. I got back home a few hours ago (for few days anyway) and I
+>> think
+>> I already know what the issue is. 
 
-Tested-by: Xi Ruoyao <xry111@xry111.site>
+Many many thx for taking a look at this!
 
---=20
-Xi Ruoyao <xry111@xry111.site>
-School of Aerospace Science and Technology, Xidian University
+FWIW in case anyone wonders where that fix is, find it here:
+https://lore.kernel.org/all/20230709181323.12085-2-johannes@sipsolutions.net/
+
+(or here: https://bugzilla.kernel.org/show_bug.cgi?id=217622#c9 )
+
+> I have tested Johannes' patch and it fixes the problem on my side.
+
+Ahh, great.
+
+Ciao, Thorsten
