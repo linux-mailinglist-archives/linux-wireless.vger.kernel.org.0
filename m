@@ -2,61 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBA2174D8E4
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 16:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1B7374D953
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 16:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232650AbjGJOXY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 10:23:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
+        id S232012AbjGJOvE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 10:51:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230213AbjGJOXX (ORCPT
+        with ESMTP id S231201AbjGJOvC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 10:23:23 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1908E;
-        Mon, 10 Jul 2023 07:23:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688999002; x=1720535002;
-  h=date:from:to:cc:subject:message-id;
-  bh=4Jumx6nxrCWGdjFiyUIxNFOqMEbIpj6jCs+e+jNHm5Y=;
-  b=ZIeNqBlxb1xfkdU4q5xV1RfVl3gOSRgpNrI2zHHozxm1AREqM4rD6Y/x
-   vRy/Q3eTa6x8V314ndUvlBbx+vy10XDkml8P3droPIKaQ3WWn6LiBIrgv
-   406OmNybUzf6Yui8aE1+cn96WBaZfvNgtO7TYGv+Nsnc12/DES0Nzn/66
-   w0pdpV919fItlftrcjbgr10IxT+7RHo1ecI78XO21xe6YR0pw4PJmYrfB
-   T6Vl2jsIGy9VJVXanLebVWKDu73zLuyGxXGlhMn//BlT0lW11Gd4dF4fz
-   nCMBJIJh8XHWMe5vZuclBx7ls8eYJ+5cBeSyWu9fvbFHaf95Par3EzvgY
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="367849857"
-X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="367849857"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 07:23:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="790813939"
-X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="790813939"
-Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 10 Jul 2023 07:23:18 -0700
-Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qIrnJ-0003kO-0w;
-        Mon, 10 Jul 2023 14:23:17 +0000
-Date:   Mon, 10 Jul 2023 22:23:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Linux Memory Management List <linux-mm@kvack.org>,
-        intel-gfx@lists.freedesktop.org, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [linux-next:master] BUILD REGRESSION
- fe57d0d86f03a8b2afe2869a95477d0ed1824c96
-Message-ID: <202307102208.Lh6ryqCu-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        Mon, 10 Jul 2023 10:51:02 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B581106;
+        Mon, 10 Jul 2023 07:51:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=7iIxcZkXz83i4lz2fQQyDk8MCnaJiYjPow60zsjrwhc=; t=1689000660; x=1690210260; 
+        b=yGTkMPwR2ObmQomiA9g8U14/f5Y1PE/8DL47sptc8e7lZvpONsvepT0x5XyWCBzQulyq7qqYocg
+        6qPx6GnvfNHR0wueW0WbMgZvDL0Ja8wnHj2qnKjciToAUTP3p7aH7RfdRnUNfr64mb8kEU3dJFx84
+        NiPw+nLP++b55tad8kjVKM113dZo4VC//WYoyFn+zyuEFwYwCiQ7zJjgXkL4JK+f+usSIWqjgriZn
+        stqNYMXpI6JHQPFa9rPPWGCXUZqPIGfBNkvJjttQqC9XPv3vVeBBHwdAbjgnc5OY7y+a95LE2zM90
+        XuFFuB79Y6ZxO6yTH3Af0FjBW9cs/vAi2qfg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qIsE4-00EgGl-37;
+        Mon, 10 Jul 2023 16:50:57 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Xi Ruoyao <xry111@xry111.site>,
+        =?UTF-8?q?Nikl=C4=81vs=20Ko=C4=BCes=C5=86ikovs?= 
+        <pinkflames.linux@gmail.com>,
+        Jeff Chua <jeff.chua.linux@gmail.com>,
+        Zhang Rui <rui.zhang@intel.com>
+Subject: [PATCH net] wifi: iwlwifi: remove 'use_tfh' config to fix crash
+Date:   Mon, 10 Jul 2023 16:50:39 +0200
+Message-ID: <20230710145038.84186-2-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,198 +57,293 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: fe57d0d86f03a8b2afe2869a95477d0ed1824c96  Add linux-next specific files for 20230710
+From: Johannes Berg <johannes.berg@intel.com>
 
-Error/Warning reports:
+This is equivalent to 'gen2', and it was always confusing to have
+two identical config entries. The split config patch actually had
+been originally developed after removing 'use_tfh" and didn't add
+the use_tfh in the new configs as they'd later been copied to the
+new files. Thus the easiest way to fix the init crash here now is
+to just remove use_tfh (which is erroneously unset in most of the
+configs now) and use 'gen2' in the code instead.
 
-https://lore.kernel.org/oe-kbuild-all/202306122223.HHER4zOo-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202306141719.MJHClSrC-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202306291857.nyJjYwqk-lkp@intel.com
+There's possibly still an unwind error in iwl_txq_gen2_init() as
+it crashes if TXQ 0 fails to initialize, but we can deal with it
+later since the original failure is due to the use_tfh confusion.
 
-Error/Warning: (recently discovered and may have been fixed)
+Tested-by: Xi Ruoyao <xry111@xry111.site>
+Reported-and-tested-by: Niklāvs Koļesņikovs <pinkflames.linux@gmail.com>
+Reported-and-tested-by: Jeff Chua <jeff.chua.linux@gmail.com>
+Reported-and-tested-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217622
+Link: https://lore.kernel.org/all/9274d9bd3d080a457649ff5addcc1726f08ef5b2.camel@xry111.site/
+Link: https://lore.kernel.org/all/CAAJw_Zug6VCS5ZqTWaFSr9sd85k%3DtyPm9DEE%2BmV%3DAKoECZM%2BsQ@mail.gmail.com/
+Fixes: 19898ce9cf8a ("wifi: iwlwifi: split 22000.c into multiple files")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c  |  5 -----
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h |  2 --
+ drivers/net/wireless/intel/iwlwifi/iwl-fh.h     |  4 ++--
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.c  |  6 +++---
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h    |  2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c |  4 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c    |  2 +-
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c   | 10 +++++-----
+ drivers/net/wireless/intel/iwlwifi/queue/tx.h   |  8 ++++----
+ 9 files changed, 18 insertions(+), 25 deletions(-)
 
-arch/parisc/kernel/pdt.c:67:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
-drivers/gpu/drm/i915/soc/intel_gmch.c:41:13: error: variable 'mchbar_addr' set but not used [-Werror=unused-but-set-variable]
-lib/kunit/executor_test.c:138:4: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
-lib/kunit/test.c:775:38: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
-
-Unverified Error/Warning (likely false positive, please contact us if interested):
-
-drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c:98 mlx5_devcom_register_device() error: uninitialized symbol 'tmp_dev'.
-net/wireless/scan.c:373 cfg80211_gen_new_ie() warn: potential spectre issue 'sub->data' [r]
-net/wireless/scan.c:397 cfg80211_gen_new_ie() warn: possible spectre second half.  'ext_id'
-{standard input}: Error: local label `"2" (instance number 9 of a fb label)' is not defined
-
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- i386-buildonly-randconfig-r006-20230710
-|   `-- drivers-gpu-drm-i915-soc-intel_gmch.c:error:variable-mchbar_addr-set-but-not-used
-|-- parisc-randconfig-r004-20230710
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-randconfig-r024-20230710
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-randconfig-r031-20230710
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- riscv-randconfig-r071-20230710
-|   |-- arch-riscv-kernel-signal.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-void-noderef-__user-datap-got-void
-|   `-- arch-riscv-kernel-signal.c:sparse:sparse:incorrect-type-in-initializer-(different-address-spaces)-expected-void-__x-got-void-noderef-__user-assigned-datap
-|-- sh-allmodconfig
-|   `-- standard-input:Error:local-label-(instance-number-of-a-fb-label)-is-not-defined
-`-- x86_64-randconfig-m001-20230710
-    |-- drivers-net-ethernet-mellanox-mlx5-core-lib-devcom.c-mlx5_devcom_register_device()-error:uninitialized-symbol-tmp_dev-.
-    |-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:possible-spectre-second-half.-ext_id
-    `-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:potential-spectre-issue-sub-data-r
-clang_recent_errors
-|-- hexagon-randconfig-r041-20230710
-|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|-- hexagon-randconfig-r045-20230710
-|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-`-- riscv-randconfig-r042-20230710
-    |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-    `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-
-elapsed time: 725m
-
-configs tested: 133
-configs skipped: 5
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r014-20230710   gcc  
-alpha                randconfig-r016-20230710   gcc  
-alpha                randconfig-r021-20230710   gcc  
-arc                              alldefconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                            hsdk_defconfig   gcc  
-arc                        nsimosci_defconfig   gcc  
-arc                  randconfig-r002-20230710   gcc  
-arc                  randconfig-r011-20230710   gcc  
-arc                  randconfig-r035-20230710   gcc  
-arc                  randconfig-r043-20230710   gcc  
-arc                    vdk_hs38_smp_defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         bcm2835_defconfig   clang
-arm                                 defconfig   gcc  
-arm                      integrator_defconfig   gcc  
-arm                      jornada720_defconfig   gcc  
-arm                            mmp2_defconfig   clang
-arm                       multi_v4t_defconfig   gcc  
-arm                          pxa3xx_defconfig   gcc  
-arm                  randconfig-r025-20230710   gcc  
-arm                  randconfig-r046-20230710   gcc  
-arm                         socfpga_defconfig   clang
-arm                       spear13xx_defconfig   clang
-arm                    vt8500_v6_v7_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r006-20230710   gcc  
-arm64                randconfig-r035-20230710   gcc  
-arm64                randconfig-r036-20230710   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r015-20230710   gcc  
-csky                 randconfig-r034-20230710   gcc  
-hexagon              randconfig-r041-20230710   clang
-hexagon              randconfig-r045-20230710   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r006-20230710   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i006-20230710   gcc  
-i386                 randconfig-i011-20230710   clang
-i386                 randconfig-i012-20230710   clang
-i386                 randconfig-i013-20230710   clang
-i386                 randconfig-i014-20230710   clang
-i386                 randconfig-i015-20230710   clang
-i386                 randconfig-i016-20230710   clang
-i386                 randconfig-r036-20230710   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r005-20230710   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                          amiga_defconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5275evb_defconfig   gcc  
-m68k                       m5475evb_defconfig   gcc  
-m68k                 randconfig-r033-20230710   gcc  
-microblaze           randconfig-r026-20230710   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                  decstation_64_defconfig   gcc  
-mips                           jazz_defconfig   gcc  
-mips                          malta_defconfig   clang
-mips                        maltaup_defconfig   clang
-mips                        vocore2_defconfig   gcc  
-nios2                         10m50_defconfig   gcc  
-nios2                               defconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r004-20230710   gcc  
-parisc               randconfig-r024-20230710   gcc  
-parisc               randconfig-r031-20230710   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                    ge_imp3a_defconfig   clang
-powerpc                        icon_defconfig   clang
-powerpc                  iss476-smp_defconfig   gcc  
-powerpc                     kilauea_defconfig   clang
-powerpc                       maple_defconfig   gcc  
-powerpc                     mpc512x_defconfig   clang
-powerpc                     mpc83xx_defconfig   gcc  
-powerpc                      pasemi_defconfig   gcc  
-powerpc                      ppc40x_defconfig   gcc  
-powerpc                      ppc44x_defconfig   clang
-powerpc              randconfig-r032-20230710   gcc  
-powerpc                    sam440ep_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r031-20230710   gcc  
-riscv                randconfig-r042-20230710   clang
-riscv                          rv32_defconfig   gcc  
-s390                             alldefconfig   clang
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230710   clang
-sh                               allmodconfig   gcc  
-sh                               j2_defconfig   gcc  
-sh                   randconfig-r023-20230710   gcc  
-sh                          rsk7203_defconfig   gcc  
-sh                          rsk7269_defconfig   gcc  
-sh                      rts7751r2d1_defconfig   gcc  
-sh                           se7721_defconfig   gcc  
-sh                     sh7710voipgw_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64              randconfig-r012-20230710   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r003-20230710   clang
-um                   randconfig-r033-20230710   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r013-20230710   clang
-x86_64               randconfig-r032-20230710   gcc  
-x86_64               randconfig-x006-20230710   clang
-x86_64               randconfig-x016-20230710   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r035-20230710   gcc  
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+index aa4320ca4c30..d594694206b3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -84,7 +84,6 @@ const struct iwl_ht_params iwl_22000_ht_params = {
+ 	.mac_addr_from_csr = 0x380,					\
+ 	.ht_params = &iwl_22000_ht_params,				\
+ 	.nvm_ver = IWL_22000_NVM_VERSION,				\
+-	.trans.use_tfh = true,						\
+ 	.trans.rf_id = true,						\
+ 	.trans.gen2 = true,						\
+ 	.nvm_type = IWL_NVM_EXT,					\
+@@ -122,7 +121,6 @@ const struct iwl_ht_params iwl_22000_ht_params = {
+ 
+ const struct iwl_cfg_trans_params iwl_qu_trans_cfg = {
+ 	.mq_rx_supported = true,
+-	.use_tfh = true,
+ 	.rf_id = true,
+ 	.gen2 = true,
+ 	.device_family = IWL_DEVICE_FAMILY_22000,
+@@ -134,7 +132,6 @@ const struct iwl_cfg_trans_params iwl_qu_trans_cfg = {
+ 
+ const struct iwl_cfg_trans_params iwl_qu_medium_latency_trans_cfg = {
+ 	.mq_rx_supported = true,
+-	.use_tfh = true,
+ 	.rf_id = true,
+ 	.gen2 = true,
+ 	.device_family = IWL_DEVICE_FAMILY_22000,
+@@ -146,7 +143,6 @@ const struct iwl_cfg_trans_params iwl_qu_medium_latency_trans_cfg = {
+ 
+ const struct iwl_cfg_trans_params iwl_qu_long_latency_trans_cfg = {
+ 	.mq_rx_supported = true,
+-	.use_tfh = true,
+ 	.rf_id = true,
+ 	.gen2 = true,
+ 	.device_family = IWL_DEVICE_FAMILY_22000,
+@@ -200,7 +196,6 @@ const struct iwl_cfg_trans_params iwl_ax200_trans_cfg = {
+ 	.device_family = IWL_DEVICE_FAMILY_22000,
+ 	.base_params = &iwl_22000_base_params,
+ 	.mq_rx_supported = true,
+-	.use_tfh = true,
+ 	.rf_id = true,
+ 	.gen2 = true,
+ 	.bisr_workaround = 1,
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+index 742096c5a36a..241a9e3f2a1a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+@@ -256,7 +256,6 @@ enum iwl_cfg_trans_ltr_delay {
+  * @xtal_latency: power up latency to get the xtal stabilized
+  * @extra_phy_cfg_flags: extra configuration flags to pass to the PHY
+  * @rf_id: need to read rf_id to determine the firmware image
+- * @use_tfh: use TFH
+  * @gen2: 22000 and on transport operation
+  * @mq_rx_supported: multi-queue rx support
+  * @integrated: discrete or integrated
+@@ -271,7 +270,6 @@ struct iwl_cfg_trans_params {
+ 	u32 xtal_latency;
+ 	u32 extra_phy_cfg_flags;
+ 	u32 rf_id:1,
+-	    use_tfh:1,
+ 	    gen2:1,
+ 	    mq_rx_supported:1,
+ 	    integrated:1,
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-fh.h b/drivers/net/wireless/intel/iwlwifi/iwl-fh.h
+index bedd78a47f67..4e4a60ddf9b2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-fh.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-fh.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2005-2014, 2018-2021 Intel Corporation
++ * Copyright (C) 2005-2014, 2018-2021, 2023 Intel Corporation
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+  */
+ #ifndef __iwl_fh_h__
+@@ -71,7 +71,7 @@
+ static inline unsigned int FH_MEM_CBBC_QUEUE(struct iwl_trans *trans,
+ 					     unsigned int chnl)
+ {
+-	if (trans->trans_cfg->use_tfh) {
++	if (trans->trans_cfg->gen2) {
+ 		WARN_ON_ONCE(chnl >= 64);
+ 		return TFH_TFDQ_CBB_TABLE + 8 * chnl;
+ 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index b1af9359cea5..4bd759432d44 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -2,7 +2,7 @@
+ /*
+  * Copyright (C) 2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+- * Copyright (C) 2019-2021 Intel Corporation
++ * Copyright (C) 2019-2021, 2023 Intel Corporation
+  */
+ #include <linux/kernel.h>
+ #include <linux/bsearch.h>
+@@ -42,7 +42,7 @@ struct iwl_trans *iwl_trans_alloc(unsigned int priv_size,
+ 
+ 	WARN_ON(!ops->wait_txq_empty && !ops->wait_tx_queues_empty);
+ 
+-	if (trans->trans_cfg->use_tfh) {
++	if (trans->trans_cfg->gen2) {
+ 		trans->txqs.tfd.addr_size = 64;
+ 		trans->txqs.tfd.max_tbs = IWL_TFH_NUM_TBS;
+ 		trans->txqs.tfd.size = sizeof(struct iwl_tfh_tfd);
+@@ -101,7 +101,7 @@ int iwl_trans_init(struct iwl_trans *trans)
+ 
+ 	/* Some things must not change even if the config does */
+ 	WARN_ON(trans->txqs.tfd.addr_size !=
+-		(trans->trans_cfg->use_tfh ? 64 : 36));
++		(trans->trans_cfg->gen2 ? 64 : 36));
+ 
+ 	snprintf(trans->dev_cmd_pool_name, sizeof(trans->dev_cmd_pool_name),
+ 		 "iwl_cmd_pool:%s", dev_name(trans->dev));
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index b83df0631279..b18c91c5dd5d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1450,7 +1450,7 @@ static inline bool iwl_mvm_has_new_station_api(const struct iwl_fw *fw)
+ static inline bool iwl_mvm_has_new_tx_api(struct iwl_mvm *mvm)
+ {
+ 	/* TODO - replace with TLV once defined */
+-	return mvm->trans->trans_cfg->use_tfh;
++	return mvm->trans->trans_cfg->gen2;
+ }
+ 
+ static inline bool iwl_mvm_has_unified_ucode(struct iwl_mvm *mvm)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index eacbbdbffb5e..3e988da44973 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -819,7 +819,7 @@ static int iwl_pcie_load_cpu_sections_8000(struct iwl_trans *trans,
+ 
+ 	iwl_enable_interrupts(trans);
+ 
+-	if (trans->trans_cfg->use_tfh) {
++	if (trans->trans_cfg->gen2) {
+ 		if (cpu == 1)
+ 			iwl_write_prph(trans, UREG_UCODE_LOAD_STATUS,
+ 				       0xFFFF);
+@@ -3394,7 +3394,7 @@ iwl_trans_pcie_dump_data(struct iwl_trans *trans,
+ 			u8 tfdidx;
+ 			u32 caplen, cmdlen;
+ 
+-			if (trans->trans_cfg->use_tfh)
++			if (trans->trans_cfg->gen2)
+ 				tfdidx = idx;
+ 			else
+ 				tfdidx = ptr;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 1337fa95f657..790e5b124740 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -364,7 +364,7 @@ void iwl_trans_pcie_tx_reset(struct iwl_trans *trans)
+ 	for (txq_id = 0; txq_id < trans->trans_cfg->base_params->num_of_queues;
+ 	     txq_id++) {
+ 		struct iwl_txq *txq = trans->txqs.txq[txq_id];
+-		if (trans->trans_cfg->use_tfh)
++		if (trans->trans_cfg->gen2)
+ 			iwl_write_direct64(trans,
+ 					   FH_MEM_CBBC_QUEUE(trans, txq_id),
+ 					   txq->dma_addr);
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+index fbacbe9ada15..5bb3cc3367c9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+@@ -985,7 +985,7 @@ void iwl_txq_log_scd_error(struct iwl_trans *trans, struct iwl_txq *txq)
+ 	bool active;
+ 	u8 fifo;
+ 
+-	if (trans->trans_cfg->use_tfh) {
++	if (trans->trans_cfg->gen2) {
+ 		IWL_ERR(trans, "Queue %d is stuck %d %d\n", txq_id,
+ 			txq->read_ptr, txq->write_ptr);
+ 		/* TODO: access new SCD registers and dump them */
+@@ -1040,7 +1040,7 @@ int iwl_txq_alloc(struct iwl_trans *trans, struct iwl_txq *txq, int slots_num,
+ 	if (WARN_ON(txq->entries || txq->tfds))
+ 		return -EINVAL;
+ 
+-	if (trans->trans_cfg->use_tfh)
++	if (trans->trans_cfg->gen2)
+ 		tfd_sz = trans->txqs.tfd.size * slots_num;
+ 
+ 	timer_setup(&txq->stuck_timer, iwl_txq_stuck_timer, 0);
+@@ -1347,7 +1347,7 @@ static inline dma_addr_t iwl_txq_gen1_tfd_tb_get_addr(struct iwl_trans *trans,
+ 	dma_addr_t addr;
+ 	dma_addr_t hi_len;
+ 
+-	if (trans->trans_cfg->use_tfh) {
++	if (trans->trans_cfg->gen2) {
+ 		struct iwl_tfh_tfd *tfh_tfd = _tfd;
+ 		struct iwl_tfh_tb *tfh_tb = &tfh_tfd->tbs[idx];
+ 
+@@ -1408,7 +1408,7 @@ void iwl_txq_gen1_tfd_unmap(struct iwl_trans *trans,
+ 
+ 	meta->tbs = 0;
+ 
+-	if (trans->trans_cfg->use_tfh) {
++	if (trans->trans_cfg->gen2) {
+ 		struct iwl_tfh_tfd *tfd_fh = (void *)tfd;
+ 
+ 		tfd_fh->num_tbs = 0;
+@@ -1625,7 +1625,7 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 
+ 		txq->entries[read_ptr].skb = NULL;
+ 
+-		if (!trans->trans_cfg->use_tfh)
++		if (!trans->trans_cfg->gen2)
+ 			iwl_txq_gen1_inval_byte_cnt_tbl(trans, txq);
+ 
+ 		iwl_txq_free_tfd(trans, txq);
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.h b/drivers/net/wireless/intel/iwlwifi/queue/tx.h
+index eca53bfd326d..1e4a24ab9bab 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.h
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2020-2022 Intel Corporation
++ * Copyright (C) 2020-2023 Intel Corporation
+  */
+ #ifndef __iwl_trans_queue_tx_h__
+ #define __iwl_trans_queue_tx_h__
+@@ -38,7 +38,7 @@ static inline void iwl_wake_queue(struct iwl_trans *trans,
+ static inline void *iwl_txq_get_tfd(struct iwl_trans *trans,
+ 				    struct iwl_txq *txq, int idx)
+ {
+-	if (trans->trans_cfg->use_tfh)
++	if (trans->trans_cfg->gen2)
+ 		idx = iwl_txq_get_cmd_index(txq, idx);
+ 
+ 	return (u8 *)txq->tfds + trans->txqs.tfd.size * idx;
+@@ -135,7 +135,7 @@ static inline u8 iwl_txq_gen1_tfd_get_num_tbs(struct iwl_trans *trans,
+ {
+ 	struct iwl_tfd *tfd;
+ 
+-	if (trans->trans_cfg->use_tfh) {
++	if (trans->trans_cfg->gen2) {
+ 		struct iwl_tfh_tfd *tfh_tfd = _tfd;
+ 
+ 		return le16_to_cpu(tfh_tfd->num_tbs) & 0x1f;
+@@ -151,7 +151,7 @@ static inline u16 iwl_txq_gen1_tfd_tb_get_len(struct iwl_trans *trans,
+ 	struct iwl_tfd *tfd;
+ 	struct iwl_tfd_tb *tb;
+ 
+-	if (trans->trans_cfg->use_tfh) {
++	if (trans->trans_cfg->gen2) {
+ 		struct iwl_tfh_tfd *tfh_tfd = _tfd;
+ 		struct iwl_tfh_tb *tfh_tb = &tfh_tfd->tbs[idx];
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.41.0
+
