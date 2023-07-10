@@ -2,198 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A1A74C9BC
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 03:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9151774CA19
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 04:53:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbjGJByi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Jul 2023 21:54:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36802 "EHLO
+        id S230396AbjGJCxz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Jul 2023 22:53:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbjGJByg (ORCPT
+        with ESMTP id S229805AbjGJCxy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Jul 2023 21:54:36 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB09F103;
-        Sun,  9 Jul 2023 18:54:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688954074; x=1720490074;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=thS7fBH2rXDICpPBOwRYEsJJzUauQd5rVSjZ/j2L4NQ=;
-  b=GRiOUOCbch5EmLHXsxB8RgLoXcEcuw4ktQBw4KnUxSDOvnUrb45LAxay
-   VfvQf861HkaAr4VST8jYI0m78UasKa6o11vF3W53NXT/xSLLbfqTBvAjs
-   esb3DECXnAhDIK0UlfimI9GQlkiGlJGHFtUCQeOl4WWShh2t8HIAd4JtR
-   4wHuUdhab5X5okMQAZLTAhJ6zvTavdmffMYA69TXqjOSLz3bpQdcLT2SP
-   Wz3rKnV0U0j9pPGDVZbFpS7wPOo5TaE7njcwSzrH/5Ya59jjwyn5akBLX
-   cA04OWY7Y5an0+P+CXtCyAImPl57lZy7xYO//9ia2R3B8kC895axxjo2o
+        Sun, 9 Jul 2023 22:53:54 -0400
+X-Greylist: delayed 63 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 09 Jul 2023 19:53:53 PDT
+Received: from mx2.ucr.edu (mx2.ucr.edu [138.23.62.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C9A9126
+        for <linux-wireless@vger.kernel.org>; Sun,  9 Jul 2023 19:53:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
+  t=1688957634; x=1720493634;
+  h=mime-version:references:in-reply-to:from:date:message-id:
+   subject:to:cc:content-transfer-encoding;
+  bh=81s/g0szo3YqoqeNAsHyknwaB3cC/IHDl8+zCGik79U=;
+  b=hBc7HlBBok/TEJW6d98mXFtZHspwT7LBLZCgPDGlEESTrbvPWJNugRcb
+   9PgHWcUHbQ781VI4pvQeFjXOw4ILsB4gzmD1y9QcBKNBdPA3Yd/SMPVnm
+   pVgYYoqqdfEl9Q5svEqJIUqX1qR1m+R8rXvHJvyxBZ0VQ2NNfhxqhkHEm
+   B/HWXViXdgErsaPZiE3kKIngN8RiPikEsKcThXNRAhX2u0/2eKjuL1ER7
+   EOhL8EJonQ5gZekISRBcCRPnAoG+Md+EkdDI23M2ZKNalAl92X8PrOTTd
+   LNNDQJ/TgyG4cpmX8JiKmN4batK/XFGnXjOFxpHqryl6BlibpnemYqO6R
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="343829530"
-X-IronPort-AV: E=Sophos;i="6.01,193,1684825200"; 
-   d="scan'208";a="343829530"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2023 18:54:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="755822919"
-X-IronPort-AV: E=Sophos;i="6.01,193,1684825200"; 
-   d="scan'208";a="755822919"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga001.jf.intel.com with ESMTP; 09 Jul 2023 18:54:26 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Sun, 9 Jul 2023 18:54:26 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Sun, 9 Jul 2023 18:54:26 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Sun, 9 Jul 2023 18:54:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dA8AQoC19VVh5rdqsi7W9z+AikbMkF1d34RyygbfcCpFkPP+Wc5n/FyEmXsRJTcRGIV4kphZa2a2wJATccEHqiuq7y/jHZE+fzJf6PaKgT9/aY//KuRyW5CytpGqRJLERH78VWaUvufrY9G8uVVdJLCINhYoyGPe7/piexcgI5J4BBRnxAEo5Ewft0WgwlIvtRhkg52On6XzeKzSrePRIWHsslmSai2Lhhaut7ghi+nnRPJUygNQToeQGDZ9YfP/ZPM4C2gShZiyVMQtnFnJhQ83+DVfegJ7HnOvonaNLj95RYJCk8rhMcRRuvTtXKScFEFgD7FlnbvUr5biysyJ5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=thS7fBH2rXDICpPBOwRYEsJJzUauQd5rVSjZ/j2L4NQ=;
- b=RWfM040ZSO/DrOsmlAYeckUavVVfXoJHlogb3zqj+IzZ3vjVoCCxDeEDw6kJwx6pq0/1zOlktl5NAiMi2hW/tygiNFCneHpC/K+a9HxCWbZ7XTxUnw/p52XTnA1HPciYiGazb4M2h99hJ2T4g434iODnpMwUkf9SwydXegM3DcU65U1KTX1SC4igv2+Syw5vLMuWhXa1k1NERPQZj/i/I23BsGPfaLxK7geMuoi19wTnBLbvudnT8Jx1+vBtoDdmpe9b53c8pP6NzZJ/mOUo3WA+7uFRm5d3oPwOoALvbSNg5PY0pbGqHQguKarzJ4v8oQBqj5CsZ7yF3C+9C3/ptQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6605.namprd11.prod.outlook.com (2603:10b6:510:1b0::16)
- by MW5PR11MB5812.namprd11.prod.outlook.com (2603:10b6:303:193::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30; Mon, 10 Jul
- 2023 01:54:23 +0000
-Received: from PH7PR11MB6605.namprd11.prod.outlook.com
- ([fe80::f6a8:daa0:7575:801d]) by PH7PR11MB6605.namprd11.prod.outlook.com
- ([fe80::f6a8:daa0:7575:801d%7]) with mapi id 15.20.6565.028; Mon, 10 Jul 2023
- 01:54:23 +0000
-From:   "Zhang, Rui" <rui.zhang@intel.com>
-To:     "Torvalds, Linus" <torvalds@linux-foundation.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-CC:     "bagasdotme@gmail.com" <bagasdotme@gmail.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "Baruch, Yaara" <yaara.baruch@intel.com>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Ben Ami, Golan" <golan.ben.ami@intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "Sisodiya, Mukesh" <mukesh.sisodiya@intel.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>
-Subject: Re: [Regression][BISECTED] kernel boot hang after 19898ce9cf8a
- ("wifi: iwlwifi: split 22000.c into multiple files")
-Thread-Topic: [Regression][BISECTED] kernel boot hang after 19898ce9cf8a
- ("wifi: iwlwifi: split 22000.c into multiple files")
-Thread-Index: AQHZsKyQVsJac0DEX0yOQldskAnw0a+uIaoAgAOCsQCAABrLAIAAgmMA
-Date:   Mon, 10 Jul 2023 01:54:23 +0000
-Message-ID: <e7d7945055802e5d3f1b42750716bc6a314ec97b.camel@intel.com>
-References: <b533071f38804247f06da9e52a04f15cce7a3836.camel@intel.com>
-         <a4265090-d6b8-b185-a400-b09b27a347cc@leemhuis.info>
-         <CAHk-=wg23SdKRcn2W+BWWEfJ2Efp0sreJx9=iw0AsUPjW3qznw@mail.gmail.com>
-         <446c25888d9316d0f15e6bcc6ecb100dda99324e.camel@sipsolutions.net>
-In-Reply-To: <446c25888d9316d0f15e6bcc6ecb100dda99324e.camel@sipsolutions.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.44.4-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6605:EE_|MW5PR11MB5812:EE_
-x-ms-office365-filtering-correlation-id: 83feda81-3698-4a8d-c2bb-08db80e89584
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hgrHML+jvyW2aZCvnHRoRCmCwoGGCvVYa9SH8UwxnU4JM0CUwrzgXH2POZTibeF/m7aqY8RBXd1U/Qk3KZx43CfTM5ggpW2LMVQcOeoA/oKkaeMApRdElgtN5vJFF6Oizx8RMw/sWOKhELqoAxLuRr37zgOSiBPKon6McdRsVa7CqMc+6ntUhUd4PNDO2kdu3s6eefVAeFKB96UBuVgHOuQIWf7KgBs7wv97RjOLxd+eW+Uo6WeQETncInF9z/qbA/+RBqO+wqeIhxagaZpCw4FVI6G7Jc5CaEJ3MI+PHDRfw2LnttKGMopW3VXP9pRFpQj04IccMz73EGsDOks1XzXD0JfpV6cOZWq8C1stZ22QHzPUyp/72yGPfU+jLoNL+75zx3iPuGTFHDX8lNQY6wLjjx4ln71ORSEQyPQCXbwM96Sq6FHvJPB4cZb83JMP7bho8VuOWh5jzIdzw/RSX/2H5sPQVl3FhijJ2bISwiJ+1PXGpxPu6KMw07Dt096gr6n1SUMZ4Abmf8wf26F2dYHHBvDYk7UT1KOn5wmQny/OPwsWoCEvBGqlwxo7zl0MSPPKaRfUweNuh7ceSiB2C+ptIml+Ts/oh0Jm8Z35U+DFR9ZbxP1MamiptDQp4/4j
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6605.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(346002)(396003)(366004)(39860400002)(136003)(451199021)(6486002)(478600001)(71200400001)(91956017)(76116006)(110136005)(54906003)(6506007)(26005)(186003)(6512007)(66946007)(2906002)(41300700001)(316002)(66556008)(66476007)(66446008)(64756008)(4326008)(5660300002)(7416002)(8676002)(8936002)(38100700002)(122000001)(82960400001)(86362001)(36756003)(38070700005)(2616005)(83380400001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZmZkUkp0YkFlYlg2VHdjaFRBNkRUYXc5NjhaVjg5dHhVOXlNU1pqWEZpbDlO?=
- =?utf-8?B?ZURFMVZmU0M2aUdsZjdabG1USVdmbjJIVDlsNWVsdGdINjZIV3pLbzdWaG05?=
- =?utf-8?B?ZVJLMnE0ei9pWjdweHZreVd4eEtuZ1IwWkEweGduZzUzNmhOMWludzczVUJz?=
- =?utf-8?B?RlpHQTBYSGtuWEJNQlA2cVRlR2luSldNQ1UvaTdXaDg4LzFENUs2ZVpmY25x?=
- =?utf-8?B?VHVqb0ZFQSt0ZEdBaWVob0hacytmaHhlMThtaWlhZVQxalRTVFlwaEhWRStT?=
- =?utf-8?B?TndnSFo4cm0xNkVVa3J1N2cxMmxtbzlXZmxMT0dSMlRDbW5wTEw5ZVBMR0Zo?=
- =?utf-8?B?M3ZxMXJzdGRtWS93eFdpdDM3b1BMYVVRazNVbFpQSTAraG5sNTR4K3pJVVIw?=
- =?utf-8?B?blBISGZhLzNGbXJXRGc3bXRZOW9ZUUgvMi9kMUlUOHJ4eXpJSG5ta0c2WC9E?=
- =?utf-8?B?TE9pSWttZ0krNFRUb1UwN25sWEJFYWxEVDIxeXNkRWpibTFBbmVST1VEL2l0?=
- =?utf-8?B?NzUvK2lzSUVnQ2xtMmVzaW4zaHo1Njg0Mk5LRU1hTm1weXBqK1V5Z1A5RjBj?=
- =?utf-8?B?dEZZSHFwZTJ2VEgzc3AyQ1VBUkIxaHF6Qlh1NE85THF3ejVFNXozcUtqRjh3?=
- =?utf-8?B?NVFYdTdwR0RUSkFwaWIxZitIVWNLNjVOL3dPVm9yenlPaStwMkF0c051UU1v?=
- =?utf-8?B?WnhPNjkvYWdFQnp0SjVNSU0zbm1DNlRGeGtVejVrZklmdTh3TC9xN0Y1VkNh?=
- =?utf-8?B?TlkvVUtqelIzU0FhaUdSZ3NFUHFsTjcwUzN5WTVHQXNKZ2QyVTd5bmRCV1dz?=
- =?utf-8?B?b0NSeW9vQ3FrVU04K1J2SFNXT2pxa2lISHR3eHdNWjNaVmwzYmJuOHFzYVFT?=
- =?utf-8?B?S2ZkYmRBZWh0aEFrL09FNkV6TlNrNlJjeXNMZ21pZTJFNlBVdXFDTHFXRVNr?=
- =?utf-8?B?eUJJMzdxWWt5aTdhYWg3ZXlQQ0FhOGVIc3E1Q1VhbEE2UUVZQkUvZ1h0Ni8z?=
- =?utf-8?B?a1MrUkViSUlGWnlLRHFaWWR3WTlDOEtDcWQ4VzJLczNDT05Qck9XYndnVHJn?=
- =?utf-8?B?dWt2Y0NEa05yYXhwNkZic0JFaXp0bUJiRXJ2MW14T2FpME9yRGtYMTdPeEcz?=
- =?utf-8?B?dzBUUCtMTzByeWprVzNwaWYzclhBRXRGSG9wT0xwMXpXaXhvYUhYTzNONGho?=
- =?utf-8?B?S05Ka0RNWXAxby9NS0dDbDlVdFZTSXR5c3k4b3JINCtZZUNUWHVab05pbUJ3?=
- =?utf-8?B?NmM5Z2FkRHRqR1U1S3FNdzc5d0RxYU1kYzVVZ1p2cG5EUnRYcHRaNTZQbTE3?=
- =?utf-8?B?YnZPOGFLelFGUDI5b2NIMjhSQi9sMkVaeTFHazRyS2duMFJYRW1LM054elg4?=
- =?utf-8?B?NUdWR1ZjVGhFU1ZaRlZWNXRKRUpzZDZpQVYrMDBXRVFOZlBPSmc5MXl3SXVh?=
- =?utf-8?B?T0x1a1dKNUp4cnp3dVRTTjVKWktqZEJhNkR0UzQ5QzA2eHUzc0poWHFpNHFw?=
- =?utf-8?B?RVJ3TExLR2NTTlQ1eXpJdUFFcUE4MWZlQzhlQStqOEdoNDh1cndMakxGektv?=
- =?utf-8?B?YUVhT3R6V0dUeXdZNTdDeGc2bCtZeXZZVWFocDNrNGE2U1ozOUZNTmJqK2RL?=
- =?utf-8?B?ZWIwUjdKMFZpK2ZkeXZMR3UzWmREUW5YVzJMSnEvOTRPMWFLdlZmSGphcW9m?=
- =?utf-8?B?YTRKVVYxSzB0NjBXTjNxUEVHVlFGUzJpNldKZkt3YmdTM21GVm5PRXB4aUpu?=
- =?utf-8?B?T3lXTjUyc1JxbDhTVmpDby93Qlc2cUNXRVp1NHV3RndRVXZMSWc0YmlKaGp5?=
- =?utf-8?B?bkdiZE5QWkJBSFdzRU1Kd1BSemIxR0JQcnpHdm1CdURoamhDbVFiL05qOUN5?=
- =?utf-8?B?NzZVSzU0Q2d1OWpOb1hacXQrRUlsbVY5cUNBTG4xSHJ3eE13RkpQZ3lLWVFI?=
- =?utf-8?B?VjdXekNSSkplcXJqQ0NjT3pqRnp2UklUcDhaeXZvbWhLR1FPR2pFakVLUnVy?=
- =?utf-8?B?aHVZZENxNjRmV1BMWUlCSmJQVUpsbHpFbWpaeEw3RHdMMVJKM2NxRnl5TCtD?=
- =?utf-8?B?b0FMMEVjdHJhR1ZvWnhJbytEbjJaMWpQTm5VNkRYdkRaUEtpQVdYVTk1OTFy?=
- =?utf-8?Q?evsw3yW9fiIgy+d7FjudIspGR?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <EACEA5F33801BC4E8605623427D0B8D6@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mail-wr1-f72.google.com ([209.85.221.72])
+  by smtp2.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Jul 2023 19:52:50 -0700
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-314394a798dso1830236f8f.0
+        for <linux-wireless@vger.kernel.org>; Sun, 09 Jul 2023 19:52:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ucr.edu; s=rmail; t=1688957567; x=1691549567;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8k9sNy74+QzQoMmro40H1gRC7AOP1wY8QwqFhYNQlm8=;
+        b=wVFHQ7R+R6aQ9RStN/XTqOK9UecFL/n/YyciGqdtjR3SjjkewQaUJpAfE2HVKh7CL4
+         DYLMrymgHk/1JmL2kWA107TXaoPmuiEyIg6EvFsdraMVt+x4KXpUTGg1zbmnQWQpP1uc
+         0EUsbXovZyDqU7P+7tpnBz8lFSrQz+GKqduvg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688957567; x=1691549567;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8k9sNy74+QzQoMmro40H1gRC7AOP1wY8QwqFhYNQlm8=;
+        b=ciNZ6Sha3zvAg+qhs9dp2qSienGuaY7MJT+SdhVC3MHYlVYttA7aelm/dbjLG3u0KU
+         s3TaeFIHq6rHwdWMghiYwikEib3PC+CpcdKAfFibPzMilrXFEsOHb61xXGKi1Izb2P4K
+         GsOF6NKqWvjn3M2b4XE3RFhunsicCefHOk+gEVw/kxKvPJNrSqlyEqblw21cF7ELXdLF
+         kvwMDvpQDzqr+fFh/ozK6IFdd2z6fnW558p8eDJwsDk3Z+yW0QaWxBS95CHmIDt32vVn
+         MB6T8UbMGlPcUa1SBwx6BcGLnCepd+8Q8pUf0lt7RXgk/T9PIS/RrAOHz5nvG/2PWWKe
+         zOBQ==
+X-Gm-Message-State: ABy/qLbsaWSold5/3QFVsTmcybMPUSuXIhkhed9aexJRZy7H8LMa3mwN
+        p1sQZJ97uxp+t3hYXU+wOu1r3jc7hhTmnoul9JZfOKL+KA2HqDj8ZAzYSB4oaBxRlHtKq8qcfb8
+        gm708hcBhOqkHN9xrXuqs7HEII32F8sR19HwXxy0LY50N
+X-Received: by 2002:a5d:4ec6:0:b0:313:e391:e492 with SMTP id s6-20020a5d4ec6000000b00313e391e492mr10012798wrv.17.1688957567439;
+        Sun, 09 Jul 2023 19:52:47 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHam+aDebvhumMMgkhgf6P6bFx86kMlMA6n+IUwkhnAapTFQYABBfRdkN4liHbnkyQANIDiKlxS14QAThsHSu8=
+X-Received: by 2002:a5d:4ec6:0:b0:313:e391:e492 with SMTP id
+ s6-20020a5d4ec6000000b00313e391e492mr10012792wrv.17.1688957567124; Sun, 09
+ Jul 2023 19:52:47 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6605.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83feda81-3698-4a8d-c2bb-08db80e89584
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jul 2023 01:54:23.1779
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: X3RESAVcFVOLTlezw8MqgaBPqf3EZapYZMbkaN4Qi0z2o3t3sS2XMqMDWhlHr45lGkM6XyKnQj6zb/50As5U5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5812
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <CA+UBctBLWF14TsgT4OfanmnxTqbm9mNxyHhjJqpFo7c+kdjDsw@mail.gmail.com>
+ <a8c6e741a9c704dad9b63e1e85136a8e6da09b44.camel@redhat.com>
+In-Reply-To: <a8c6e741a9c704dad9b63e1e85136a8e6da09b44.camel@redhat.com>
+From:   Yu Hao <yhao016@ucr.edu>
+Date:   Sun, 9 Jul 2023 19:52:36 -0700
+Message-ID: <CA+UBctANALC+FdNf+0v+hFZS5RPry=44LF3HQWKMYCxibgb_vw@mail.gmail.com>
+Subject: Re: [PATCH] net: wireless: cisco: Fix possible uninit bug
+To:     Paolo Abeni <pabeni@redhat.com>
+Cc:     kvalo@kernel.org, keescook@chromium.org, gustavoars@kernel.org,
+        Jason@zx2c4.com, linux-wireless@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gU3VuLCAyMDIzLTA3LTA5IGF0IDIwOjA3ICswMjAwLCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0K
-PiBPbiBTdW4sIDIwMjMtMDctMDkgYXQgMDk6MzEgLTA3MDAsIExpbnVzIFRvcnZhbGRzIHdyb3Rl
-Og0KPiA+IE9uIEZyaSwgNyBKdWwgMjAyMyBhdCAwMzo1NSwgTGludXggcmVncmVzc2lvbiB0cmFj
-a2luZyAoVGhvcnN0ZW4NCj4gPiBMZWVtaHVpcykgPHJlZ3Jlc3Npb25zQGxlZW1odWlzLmluZm8+
-IHdyb3RlOg0KPiA+ID4gDQo+ID4gPiBbQ0NpbmcgdGhlIHJlZ3Jlc3Npb24gbGlzdCwgbmV0ZGV2
-LCB0aGUgbmV0IG1haW50YWluZXJzLCBhbmQNCj4gPiA+IExpbnVzOw0KPiA+ID4gSm9oYW5uZXMg
-YW5kIEthbGxlIGFzIHdlbGwsIGJ1dCBqdXN0IGZvciB0aGUgcmVjb3JkLCB0aGV5IGFmYWlrDQo+
-ID4gPiBhcmUNCj4gPiA+IHVuYXZhaWxhYmxlXQ0KPiA+IA0KPiA+IFNvIEkgd2lsbCByZWxlYXNl
-IHJjMSB3aXRoIHRoaXMgaXNzdWUsIGJ1dCByZW1pbmQgbWUgLSBpZiBpdCBoYXNuJ3QNCj4gPiBo
-YWQgYW55IHRyYWN0aW9uIG5leHQgd2VlayBhbmQgdGhlIHJhZGlvIHNpbGVuY2UgY29udGludWVz
-LCBJJ2xsDQo+ID4ganVzdA0KPiA+IHJldmVydCBpdCBhbGwuDQo+IA0KPiBTb3JyeS4gSSBnb3Qg
-YmFjayBob21lIGEgZmV3IGhvdXJzIGFnbyAoZm9yIGZldyBkYXlzIGFueXdheSkgYW5kIEkNCj4g
-dGhpbmsNCj4gSSBhbHJlYWR5IGtub3cgd2hhdCB0aGUgaXNzdWUgaXMuIEknbGwgc2VuZCBhIGZp
-eCB0byB0cnkgaW4gYSBmZXcNCj4gbWludXRlcywgd2FzIGp1c3QgdHJ5aW5nIHRvIGNvbGxlY3Qg
-YWxsIHRoZSByZXBvcnRlZC1ieSBldGMuDQo+IA0KPiBUaGVyZSdzIGNsZWFybHkgYSBzZXBhcmF0
-ZSBidWcgaW4gdGhlIGluaXQgZmFpbHVyZSBwYXRoLCBidXQgdGhlDQo+IHJlYXNvbg0KPiBpdCBm
-YWlscyBpbiB0aGUgZmlyc3QgcGxhY2UgaXMgYSBtaXNtYXRjaCBiZXR3ZWVuIGRpZmZlcmVudCBj
-aGFuZ2VzLg0KPiANCj4gDQpJIGhhdmUgdGVzdGVkIEpvaGFubmVzJyBwYXRjaCBhbmQgaXQgZml4
-ZXMgdGhlIHByb2JsZW0gb24gbXkgc2lkZS4NCg0KVGhhbmtzLA0KcnVpDQoNCg==
+Sure.
+
+I found that the related code is from Linux-2.6.12-rc2.
+In this situation, the 'Fixes' tag should be 'Fixes: 1da177e4c3f4
+("Linux-2.6.12-rc2")'?
+
+Yu Hao
+
+On Thu, Jul 6, 2023 at 12:54=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On Tue, 2023-07-04 at 16:50 -0700, Yu Hao wrote:
+> > The struct cap_rid should be initialized by function readCapabilityRid.
+> > However, there is not return value check. Iit is possible that
+> > the function readCapabilityRid returns error code and cap_rid.softCap
+> > is not initialized. But there is a read later for this field.
+> >
+> > Signed-off-by: Yu Hao <yhao016@ucr.edu>
+> > ---
+> >  drivers/net/wireless/cisco/airo.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/wireless/cisco/airo.c
+> > b/drivers/net/wireless/cisco/airo.c
+> > index 7c4cc5f5e1eb..b3736d76a5d5 100644
+> > --- a/drivers/net/wireless/cisco/airo.c
+> > +++ b/drivers/net/wireless/cisco/airo.c
+> > @@ -6950,8 +6950,11 @@ static int airo_get_range(struct net_device *dev=
+,
+> >     CapabilityRid cap_rid;      /* Card capability info */
+> >     int     i;
+> >     int     k;
+> > +   int     status;
+> >
+> > -   readCapabilityRid(local, &cap_rid, 1);
+> > +   status =3D readCapabilityRid(local, &cap_rid, 1);
+> > +   if (status !=3D SUCCESS)
+> > +       return ERROR;
+>
+> This value is returned directly to the network stack, you must use a
+> standard error code instead (e.g. -EINVAL).
+>
+> Also, please add a suitable 'Fixes' tag, thanks!
+>
+> Paolo
+>
