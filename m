@@ -2,87 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F4A74D45F
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 13:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A18EA74D322
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jul 2023 12:17:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231578AbjGJLSw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Jul 2023 07:18:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36510 "EHLO
+        id S233349AbjGJKRI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Jul 2023 06:17:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjGJLSv (ORCPT
+        with ESMTP id S231622AbjGJKQx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Jul 2023 07:18:51 -0400
-X-Greylist: delayed 3314 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 10 Jul 2023 04:18:50 PDT
-Received: from vps082603.grandeslagos.com.ar (ns1.grandeslagos.com.ar [131.196.180.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 23C5CD2;
-        Mon, 10 Jul 2023 04:18:50 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by vps082603.grandeslagos.com.ar (Postfix) with ESMTP id C1AEF208DB;
-        Mon, 10 Jul 2023 06:53:05 -0300 (-03)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        grandeslagos.com.ar; h=reply-to:date:date:from:from:subject
-        :subject:content-description:content-transfer-encoding
-        :mime-version:content-type:content-type; s=default; t=
-        1688982785; x=1690797186; bh=E5F5liCt13b32Oc+Ob2vRs5jFVPItTSBzSL
-        SWgOGj2M=; b=m/32S+n7vry355Xedu/pxbgIANhHyTh1bgJIsybzm3yGdVq687M
-        Rndg3rgOqK8iIWGb/7F9YSlvOF8TKrKBjxwa4VYjCddt9GOJqivf/qwD1yumuCY2
-        77IoyJwPFMrXPj+WBp14luXrX+uLn+fiBAzRg58f7AQawTNIr+3o0iFmc7vUdtGN
-        jUx6nrJ0lWO1/L5+1HA4L7A5v4tYEKGtbuIDLMHwZVDZhuc81oRGbDbFJ/NKA15e
-        aIPAvA2Szt57i7oBzQxhE3AraFNxH79+4axTctnYEFMuOL8+YGSbho8yCbBKJ1pf
-        7sSy4DF3LlweeXXUtPF0W8GUFdq14PbQUQQ==
-X-Virus-Scanned: Debian amavisd-new at vps082603.grandeslagos.com.ar
-Received: from vps082603.grandeslagos.com.ar ([127.0.0.1])
-        by localhost (mail.grandeslagos.com.ar [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id eCDKVuEGcKon; Mon, 10 Jul 2023 06:53:05 -0300 (-03)
-Received: from [192.168.8.101] (unknown [41.85.163.164])
-        (Authenticated sender: gustavo@grandeslagos.com.ar)
-        by vps082603.grandeslagos.com.ar (Postfix) with ESMTPSA id 11CAF208D6;
-        Mon, 10 Jul 2023 06:52:56 -0300 (-03)
-Content-Type: text/plain; charset="iso-8859-1"
+        Mon, 10 Jul 2023 06:16:53 -0400
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2DC8E7D;
+        Mon, 10 Jul 2023 03:16:29 -0700 (PDT)
+Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-4452fe640fbso488937137.0;
+        Mon, 10 Jul 2023 03:16:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688984189; x=1691576189;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LzWFsqoe/v6zSf+Upw+SNFQ6NrSy8Ce/GjnyKdu6vQk=;
+        b=aVCPEK61dljR5uzJMRK3Wv1AlsHllj4aC/RZOqqJ/SrYFxoRQAb7TyeyOM1MDRZAem
+         VDTcwv6HRLb/pD85hxjIh27u4ebYfMOSZcS2DMWYaYqnSSUCHDidj8P4/iij50jyBJq6
+         odKQdVvU/x8oXreEKAaFI9zNvPLvj+2rB5AeO13nqv0HI8XsOuWIVn4IfkBnKYiBdOt3
+         g/1CtOIX2405bjBXs3Ot+vp4HQ7xp1QHY2Gq7yTNHXwVuwfd72BPYTlp9D1cKzxlTpXE
+         YoBt9sJXwKfIjosP0VTAi07XikVkSmInJygBJHEYATrJGBHMXThJ6AvSjnrPgqFyzZmo
+         qgtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688984189; x=1691576189;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LzWFsqoe/v6zSf+Upw+SNFQ6NrSy8Ce/GjnyKdu6vQk=;
+        b=AFYqQW7o97yerhZWAjUtQ8uf61umzYJP3L3ToJrqoTWNiOi7FBWEFtdq8eDSOI8JYV
+         lcVJAwNlR84zELrhyDpp+qhOvTOFiA7Qz+Hwosp7mHhVD6KDUO9x/8FswypsO9i0SRpa
+         MahyLq+pIAOajq4ypcFk/nioubYAczWZ0bW5EYw3Yzoa/sBktTYpHp/b+vn9JkJ0hRrS
+         HDZsARUkNd6FwpAjpvQRnHWkBCr0u2jGlSUb97s1+/MQiCmxjUX/Nnb8QPsCw4HCAeqw
+         5S23EOm/D1z5SO/nW8sAXsA3pjIqW+ytx4iz+gyG9lR4tD65Z5Y+e28VRQMacL++r7WB
+         vbEA==
+X-Gm-Message-State: ABy/qLa33YHMzrOvIxXXc7Lbf9HYBSNRJ5pajA/pX+Yy307fvxGiacPL
+        NKnEHl3x1h2mALDFthRrPHv0LfG5u0dxiGUWgAY=
+X-Google-Smtp-Source: APBJJlG4I9tVvLXnSxYL9jvsaXKYazWNuZRHN1x2UL7e+8MRHM8teg5dqRCNtwNZRXsCsa2n6w7nRP8w9HJR/tmcYTs=
+X-Received: by 2002:a67:f446:0:b0:444:bb70:db73 with SMTP id
+ r6-20020a67f446000000b00444bb70db73mr3105959vsn.28.1688984188693; Mon, 10 Jul
+ 2023 03:16:28 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230709181323.12085-2-johannes@sipsolutions.net> <19f7bc7f43922c257238127d5fe84ea01cf2be79.camel@intel.com>
+In-Reply-To: <19f7bc7f43922c257238127d5fe84ea01cf2be79.camel@intel.com>
+From:   Jeff Chua <jeff.chua.linux@gmail.com>
+Date:   Mon, 10 Jul 2023 18:16:17 +0800
+Message-ID: <CAAJw_Zuo1L3yTP-PVgdW74uYg=R7YxXF0hA5s0Gfm1bCqC90RQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] wifi: iwlwifi: remove 'use_tfh' config to fix crash
+To:     "Zhang, Rui" <rui.zhang@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "Berg, Johannes" <johannes.berg@intel.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        lkml <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Representative 
-To:     Recipients <gustavo@grandeslagos.com.ar>
-From:   Global Trader Company <gustavo@grandeslagos.com.ar>
-Date:   Mon, 10 Jul 2023 10:52:46 +0100
-Reply-To: potterroger11@gmail.com
-Message-Id: <20230710095305.C1AEF208DB@vps082603.grandeslagos.com.ar>
-X-Spam-Status: Yes, score=6.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,FROM_MISSP_SPF_FAIL,RCVD_IN_SBL_CSS,
-        SPF_FAIL,SPF_HELO_NONE,TO_EQ_FM_DOM_SPF_FAIL,TO_EQ_FM_SPF_FAIL,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [41.85.163.164 listed in zen.spamhaus.org]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 SPF_FAIL SPF: sender does not match SPF record (fail)
-        *      [SPF failed: Please see http://www.openspf.org/Why?s=mfrom;id=gustavo%40grandeslagos.com.ar;ip=131.196.180.11;r=lindbergh.monkeyblade.net]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [potterroger11[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 FROM_MISSP_SPF_FAIL No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-        *  0.0 TO_EQ_FM_SPF_FAIL To == From and external SPF failed
-        *  0.0 TO_EQ_FM_DOM_SPF_FAIL To domain == From domain and external SPF
-        *       failed
-X-Spam-Level: ******
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My name is , Mrs Rita Potter Rogers we need a Company Representative in you=
-r city location, you can work online or at home and get good payment, conta=
-ct us if interested on this Email: potterroger11@gmail.com
+On Mon, Jul 10, 2023 at 9:53=E2=80=AFAM Zhang, Rui <rui.zhang@intel.com> wr=
+ote:
+>
+> On Sun, 2023-07-09 at 20:13 +0200, Johannes Berg wrote:
+> > From: Johannes Berg <johannes.berg@intel.com>
+> >
+> > This is equivalent to 'gen2', and it's confusing to have two
+> > of the same configs. The split config patch actually had been
+> > originally developed after this, and didn't add the use_tfh
+> > in the new configs because they were copied to the new files
+> > after ...
+> >
+> > There's clearly still an unwind error in iwl_txq_gen2_init()
+> > since it crashes if something fails there, but the reason it
+> > fails in the first place is due to the gen2/use_tfh confusion.
+> >
+> > Reported-by: Jeff Chua <jeff.chua.linux@gmail.com>
+> > Reported-by: "Zhang, Rui" <rui.zhang@intel.com>
+> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217622
+> > Link:
+> > https://lore.kernel.org/all/9274d9bd3d080a457649ff5addcc1726f08ef5b2.ca=
+mel@xry111.site/
+> > Link:
+> > https://lore.kernel.org/all/CAAJw_Zug6VCS5ZqTWaFSr9sd85k%3DtyPm9DEE%2Bm=
+V%3DAKoECZM%2BsQ@mail.gmail.com/
+> > Fixes: 19898ce9cf8a ("wifi: iwlwifi: split 22000.c into multiple
+> > files")
+> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+>
+> Hi, Johannes,
+>
+> Thanks for the patch. It fixes the problem on my side.
+>
+> Tested-by: Zhang Rui <rui.zhang@intel.com>
+>
+> thanks,
+> rui
+
+
+Johannes,
+
+Fixed as well! Thank you!
+
+cc to those I've posted before as well.
+
+Jeff
