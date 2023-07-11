@@ -2,423 +2,292 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C15FF74F017
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 15:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 574F974F280
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 16:42:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232524AbjGKN3S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 09:29:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
+        id S231852AbjGKOmL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 10:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230263AbjGKN3R (ORCPT
+        with ESMTP id S231588AbjGKOmK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 09:29:17 -0400
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3AAE77
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 06:29:13 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:3922:0:640:7af7:0])
-        by forward102b.mail.yandex.net (Yandex) with ESMTP id D41AE60034;
-        Tue, 11 Jul 2023 16:29:09 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 8TZOrUgWlqM0-zhFRwTC0;
-        Tue, 11 Jul 2023 16:29:09 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689082149;
-        bh=+R3xNct0BbU6sWtdyx97XJ911yLAQrPJ7LG8jmcnBj8=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=nqbxROciNAkBrMwqNLPa5NZmQyuNa/kjZo3aXjIrUtmx68JvACYSfGe9O5s27fS+q
-         RGpeIHYMvEOEpH/v+qos17ef8Hshlu8si8Jwtc40RznSjSOnIv2nFvsPp94Ypi9yBb
-         qmhEzhaN6uQd2WNGRt3tV5HAWqIUZUxDVpoiU8N0=
-Authentication-Results: mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: ath10k: unify PCI and SNOC interfaces to CE pipes
-Date:   Tue, 11 Jul 2023 16:28:26 +0300
-Message-ID: <20230711132850.116267-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        Tue, 11 Jul 2023 10:42:10 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E4FE54;
+        Tue, 11 Jul 2023 07:42:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689086528; x=1720622528;
+  h=date:from:to:cc:subject:message-id;
+  bh=Z9jiyaePgsMbmdrujTSUssRF+Y0zC6OSwoYNX9z5U+4=;
+  b=ULRUMqdS6SLpldW6jBJUx4j8newgen60zLTqNtAv7agDfNIsTlpFAJYm
+   pJhhGP4Kyo7FhLxYQfNonEfUFZBn4NZU4TFxr6YXGHO5QgDsqSMzdx2df
+   BPjaNSzBT/0p8jllmf4Zamj6HgAFvcw9+/DRTI5dwx6fdINJZ8qscm/hT
+   2bRES0Zm5oyvg52HrDMDVZtUEZ/m2v7A7WoBiD01JoLLFj0lMQtNmI8eE
+   J8xupYqc99Yh2oVVG14hHZB9+wVAcuwHAMNfaOA5AAK3vruBf3LcgiuxJ
+   zNc54OTlep3GS2A7jI1v+q46073ZcKOJFCRrZU0rUcHy4CK4wFWYUbeBh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="430724303"
+X-IronPort-AV: E=Sophos;i="6.01,196,1684825200"; 
+   d="scan'208";a="430724303"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2023 07:42:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="671396922"
+X-IronPort-AV: E=Sophos;i="6.01,196,1684825200"; 
+   d="scan'208";a="671396922"
+Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 11 Jul 2023 07:42:05 -0700
+Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qJEZ2-0004rl-0K;
+        Tue, 11 Jul 2023 14:42:04 +0000
+Date:   Tue, 11 Jul 2023 22:41:14 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Linux Memory Management List <linux-mm@kvack.org>,
+        kunit-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
+        linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [linux-next:master] BUILD REGRESSION
+ 8e4b7f2f3d6071665b1dfd70786229c8a5d6c256
+Message-ID: <202307112207.TIrHLxRW-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Unify 'struct ath10k_snoc_pipe' and 'struct ath10k_pci_pipe'
-into (smaller and simpler) 'struct ath10k_pipe', drop relevant
-leftovers and adjust related code.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 8e4b7f2f3d6071665b1dfd70786229c8a5d6c256  Add linux-next specific files for 20230711
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/ath/ath10k/ce.h   | 12 ++++++
- drivers/net/wireless/ath/ath10k/pci.c  | 51 +++++++++++---------------
- drivers/net/wireless/ath/ath10k/pci.h  | 19 +---------
- drivers/net/wireless/ath/ath10k/snoc.c | 43 +++++++++-------------
- drivers/net/wireless/ath/ath10k/snoc.h | 12 +-----
- 5 files changed, 52 insertions(+), 85 deletions(-)
+Error/Warning reports:
 
-diff --git a/drivers/net/wireless/ath/ath10k/ce.h b/drivers/net/wireless/ath/ath10k/ce.h
-index 666ce384a1d8..8a32dfaf2a61 100644
---- a/drivers/net/wireless/ath/ath10k/ce.h
-+++ b/drivers/net/wireless/ath/ath10k/ce.h
-@@ -130,6 +130,18 @@ struct ath10k_ce_pipe {
- 	const struct ath10k_ce_ops *ops;
- };
- 
-+/* Per-pipe state used in both PCI and SNOC interfaces. */
-+struct ath10k_pipe {
-+	/* Handle of an underlying Copy Engine. */
-+	struct ath10k_ce_pipe *ce_hdl;
-+
-+	/* Index of this pipe in pipe_info arrays. */
-+	u8 pipe_num;
-+
-+	/* Pipe buffer size. */
-+	size_t buf_sz;
-+};
-+
- /* Copy Engine settable attributes */
- struct ce_attr;
- 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index a7f44f6335fb..910aae83ae1d 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -761,11 +761,11 @@ static inline const char *ath10k_pci_get_irq_method(struct ath10k *ar)
- 	return "legacy";
- }
- 
--static int __ath10k_pci_rx_post_buf(struct ath10k_pci_pipe *pipe)
-+static int __ath10k_pci_rx_post_buf(struct ath10k_pipe *pipe)
- {
--	struct ath10k *ar = pipe->hif_ce_state;
--	struct ath10k_ce *ce = ath10k_ce_priv(ar);
- 	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
-+	struct ath10k *ar = ce_pipe->ar;
-+	struct ath10k_ce *ce = ath10k_ce_priv(ar);
- 	struct sk_buff *skb;
- 	dma_addr_t paddr;
- 	int ret;
-@@ -800,12 +800,12 @@ static int __ath10k_pci_rx_post_buf(struct ath10k_pci_pipe *pipe)
- 	return 0;
- }
- 
--static void ath10k_pci_rx_post_pipe(struct ath10k_pci_pipe *pipe)
-+static void ath10k_pci_rx_post_pipe(struct ath10k_pipe *pipe)
- {
--	struct ath10k *ar = pipe->hif_ce_state;
-+	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
-+	struct ath10k *ar = ce_pipe->ar;
- 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
--	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
- 	int ret, num;
- 
- 	if (pipe->buf_sz == 0)
-@@ -1193,7 +1193,7 @@ static void ath10k_pci_process_rx_cb(struct ath10k_ce_pipe *ce_state,
- {
- 	struct ath10k *ar = ce_state->ar;
- 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
--	struct ath10k_pci_pipe *pipe_info =  &ar_pci->pipe_info[ce_state->id];
-+	struct ath10k_pipe *pipe_info =  &ar_pci->pipe_info[ce_state->id];
- 	struct sk_buff *skb;
- 	struct sk_buff_head list;
- 	void *transfer_context;
-@@ -1236,7 +1236,7 @@ static void ath10k_pci_process_htt_rx_cb(struct ath10k_ce_pipe *ce_state,
- {
- 	struct ath10k *ar = ce_state->ar;
- 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
--	struct ath10k_pci_pipe *pipe_info =  &ar_pci->pipe_info[ce_state->id];
-+	struct ath10k_pipe *pipe_info =  &ar_pci->pipe_info[ce_state->id];
- 	struct ath10k_ce_pipe *ce_pipe = pipe_info->ce_hdl;
- 	struct sk_buff *skb;
- 	struct sk_buff_head list;
-@@ -1351,7 +1351,7 @@ int ath10k_pci_hif_tx_sg(struct ath10k *ar, u8 pipe_id,
- {
- 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
--	struct ath10k_pci_pipe *pci_pipe = &ar_pci->pipe_info[pipe_id];
-+	struct ath10k_pipe *pci_pipe = &ar_pci->pipe_info[pipe_id];
- 	struct ath10k_ce_pipe *ce_pipe = pci_pipe->ce_hdl;
- 	struct ath10k_ce_ring *src_ring = ce_pipe->src_ring;
- 	unsigned int nentries_mask;
-@@ -1969,18 +1969,14 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
- 	return 0;
- }
- 
--static void ath10k_pci_rx_pipe_cleanup(struct ath10k_pci_pipe *pci_pipe)
-+static void ath10k_pci_rx_pipe_cleanup(struct ath10k_pipe *pci_pipe)
- {
--	struct ath10k *ar;
--	struct ath10k_ce_pipe *ce_pipe;
--	struct ath10k_ce_ring *ce_ring;
-+	struct ath10k_ce_pipe *ce_pipe = pci_pipe->ce_hdl;
-+	struct ath10k_ce_ring *ce_ring = ce_pipe->dest_ring;
-+	struct ath10k *ar = ce_pipe->ar;
- 	struct sk_buff *skb;
- 	int i;
- 
--	ar = pci_pipe->hif_ce_state;
--	ce_pipe = pci_pipe->ce_hdl;
--	ce_ring = ce_pipe->dest_ring;
--
- 	if (!ce_ring)
- 		return;
- 
-@@ -2001,18 +1997,14 @@ static void ath10k_pci_rx_pipe_cleanup(struct ath10k_pci_pipe *pci_pipe)
- 	}
- }
- 
--static void ath10k_pci_tx_pipe_cleanup(struct ath10k_pci_pipe *pci_pipe)
-+static void ath10k_pci_tx_pipe_cleanup(struct ath10k_pipe *pci_pipe)
- {
--	struct ath10k *ar;
--	struct ath10k_ce_pipe *ce_pipe;
--	struct ath10k_ce_ring *ce_ring;
-+	struct ath10k_ce_pipe *ce_pipe = pci_pipe->ce_hdl;
-+	struct ath10k_ce_ring *ce_ring = ce_pipe->src_ring;
-+	struct ath10k *ar = ce_pipe->ar;
- 	struct sk_buff *skb;
- 	int i;
- 
--	ar = pci_pipe->hif_ce_state;
--	ce_pipe = pci_pipe->ce_hdl;
--	ce_ring = ce_pipe->src_ring;
--
- 	if (!ce_ring)
- 		return;
- 
-@@ -2044,7 +2036,7 @@ static void ath10k_pci_buffer_cleanup(struct ath10k *ar)
- 	int pipe_num;
- 
- 	for (pipe_num = 0; pipe_num < CE_COUNT; pipe_num++) {
--		struct ath10k_pci_pipe *pipe_info;
-+		struct ath10k_pipe *pipe_info;
- 
- 		pipe_info = &ar_pci->pipe_info[pipe_num];
- 		ath10k_pci_rx_pipe_cleanup(pipe_info);
-@@ -2105,8 +2097,8 @@ int ath10k_pci_hif_exchange_bmi_msg(struct ath10k *ar,
- 				    void *resp, u32 *resp_len)
- {
- 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
--	struct ath10k_pci_pipe *pci_tx = &ar_pci->pipe_info[BMI_CE_NUM_TO_TARG];
--	struct ath10k_pci_pipe *pci_rx = &ar_pci->pipe_info[BMI_CE_NUM_TO_HOST];
-+	struct ath10k_pipe *pci_tx = &ar_pci->pipe_info[BMI_CE_NUM_TO_TARG];
-+	struct ath10k_pipe *pci_rx = &ar_pci->pipe_info[BMI_CE_NUM_TO_HOST];
- 	struct ath10k_ce_pipe *ce_tx = pci_tx->ce_hdl;
- 	struct ath10k_ce_pipe *ce_rx = pci_rx->ce_hdl;
- 	dma_addr_t req_paddr = 0;
-@@ -2487,7 +2479,7 @@ static void ath10k_pci_override_ce_config(struct ath10k *ar)
- int ath10k_pci_alloc_pipes(struct ath10k *ar)
- {
- 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
--	struct ath10k_pci_pipe *pipe;
-+	struct ath10k_pipe *pipe;
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
- 	int i, ret;
- 
-@@ -2495,7 +2487,6 @@ int ath10k_pci_alloc_pipes(struct ath10k *ar)
- 		pipe = &ar_pci->pipe_info[i];
- 		pipe->ce_hdl = &ce->ce_states[i];
- 		pipe->pipe_num = i;
--		pipe->hif_ce_state = ar;
- 
- 		ret = ath10k_ce_alloc_pipe(ar, i, &ar_pci->attr[i]);
- 		if (ret) {
-diff --git a/drivers/net/wireless/ath/ath10k/pci.h b/drivers/net/wireless/ath/ath10k/pci.h
-index 480cd97ab739..633c64e53a89 100644
---- a/drivers/net/wireless/ath/ath10k/pci.h
-+++ b/drivers/net/wireless/ath/ath10k/pci.h
-@@ -76,23 +76,6 @@ struct pcie_state {
- /* PCIE_CONFIG_FLAG definitions */
- #define PCIE_CONFIG_FLAG_ENABLE_L1  0x0000001
- 
--/* Per-pipe state. */
--struct ath10k_pci_pipe {
--	/* Handle of underlying Copy Engine */
--	struct ath10k_ce_pipe *ce_hdl;
--
--	/* Our pipe number; facilitates use of pipe_info ptrs. */
--	u8 pipe_num;
--
--	/* Convenience back pointer to hif_ce_state. */
--	struct ath10k *hif_ce_state;
--
--	size_t buf_sz;
--
--	/* protects compl_free and num_send_allowed */
--	spinlock_t pipe_lock;
--};
--
- struct ath10k_pci_supp_chip {
- 	u32 dev_id;
- 	u32 rev_id;
-@@ -114,7 +97,7 @@ struct ath10k_pci {
- 	/* Operating interrupt mode */
- 	enum ath10k_pci_irq_mode oper_irq_mode;
- 
--	struct ath10k_pci_pipe pipe_info[CE_COUNT_MAX];
-+	struct ath10k_pipe pipe_info[CE_COUNT_MAX];
- 
- 	/* Copy Engine used for Diagnostic Accesses */
- 	struct ath10k_ce_pipe *ce_diag;
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 26214c00cd0d..c228000a6e0f 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -488,10 +488,10 @@ static u32 ath10k_snoc_read32(struct ath10k *ar, u32 offset)
- 	return val;
- }
- 
--static int __ath10k_snoc_rx_post_buf(struct ath10k_snoc_pipe *pipe)
-+static int __ath10k_snoc_rx_post_buf(struct ath10k_pipe *pipe)
- {
- 	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
--	struct ath10k *ar = pipe->hif_ce_state;
-+	struct ath10k *ar = ce_pipe->ar;
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
- 	struct sk_buff *skb;
- 	dma_addr_t paddr;
-@@ -527,12 +527,12 @@ static int __ath10k_snoc_rx_post_buf(struct ath10k_snoc_pipe *pipe)
- 	return 0;
- }
- 
--static void ath10k_snoc_rx_post_pipe(struct ath10k_snoc_pipe *pipe)
-+static void ath10k_snoc_rx_post_pipe(struct ath10k_pipe *pipe)
- {
--	struct ath10k *ar = pipe->hif_ce_state;
-+	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
-+	struct ath10k *ar = ce_pipe->ar;
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
- 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
--	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
- 	int ret, num;
- 
- 	if (pipe->buf_sz == 0)
-@@ -572,7 +572,7 @@ static void ath10k_snoc_process_rx_cb(struct ath10k_ce_pipe *ce_state,
- {
- 	struct ath10k *ar = ce_state->ar;
- 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
--	struct ath10k_snoc_pipe *pipe_info =  &ar_snoc->pipe_info[ce_state->id];
-+	struct ath10k_pipe *pipe_info =  &ar_snoc->pipe_info[ce_state->id];
- 	struct sk_buff *skb;
- 	struct sk_buff_head list;
- 	void *transfer_context;
-@@ -688,7 +688,7 @@ static int ath10k_snoc_hif_tx_sg(struct ath10k *ar, u8 pipe_id,
- {
- 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
--	struct ath10k_snoc_pipe *snoc_pipe;
-+	struct ath10k_pipe *snoc_pipe;
- 	struct ath10k_ce_pipe *ce_pipe;
- 	int err, i = 0;
- 
-@@ -836,18 +836,14 @@ static inline void ath10k_snoc_irq_enable(struct ath10k *ar)
- 	ath10k_ce_enable_interrupts(ar);
- }
- 
--static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
-+static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_pipe *snoc_pipe)
- {
--	struct ath10k_ce_pipe *ce_pipe;
--	struct ath10k_ce_ring *ce_ring;
-+	struct ath10k_ce_pipe *ce_pipe = snoc_pipe->ce_hdl;
-+	struct ath10k_ce_ring *ce_ring = ce_pipe->dest_ring;
-+	struct ath10k *ar = ce_pipe->ar;
- 	struct sk_buff *skb;
--	struct ath10k *ar;
- 	int i;
- 
--	ar = snoc_pipe->hif_ce_state;
--	ce_pipe = snoc_pipe->ce_hdl;
--	ce_ring = ce_pipe->dest_ring;
--
- 	if (!ce_ring)
- 		return;
- 
-@@ -868,18 +864,14 @@ static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
- 	}
- }
- 
--static void ath10k_snoc_tx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
-+static void ath10k_snoc_tx_pipe_cleanup(struct ath10k_pipe *snoc_pipe)
- {
--	struct ath10k_ce_pipe *ce_pipe;
--	struct ath10k_ce_ring *ce_ring;
-+	struct ath10k_ce_pipe *ce_pipe = snoc_pipe->ce_hdl;
-+	struct ath10k_ce_ring *ce_ring = ce_pipe->src_ring;
-+	struct ath10k *ar = ce_pipe->ar;
- 	struct sk_buff *skb;
--	struct ath10k *ar;
- 	int i;
- 
--	ar = snoc_pipe->hif_ce_state;
--	ce_pipe = snoc_pipe->ce_hdl;
--	ce_ring = ce_pipe->src_ring;
--
- 	if (!ce_ring)
- 		return;
- 
-@@ -900,7 +892,7 @@ static void ath10k_snoc_tx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
- static void ath10k_snoc_buffer_cleanup(struct ath10k *ar)
- {
- 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
--	struct ath10k_snoc_pipe *pipe_info;
-+	struct ath10k_pipe *pipe_info;
- 	int pipe_num;
- 
- 	del_timer_sync(&ar_snoc->rx_post_retry);
-@@ -1374,7 +1366,7 @@ static int ath10k_snoc_setup_resource(struct ath10k *ar)
- {
- 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
--	struct ath10k_snoc_pipe *pipe;
-+	struct ath10k_pipe *pipe;
- 	int i, ret;
- 
- 	timer_setup(&ar_snoc->rx_post_retry, ath10k_snoc_rx_replenish_retry, 0);
-@@ -1383,7 +1375,6 @@ static int ath10k_snoc_setup_resource(struct ath10k *ar)
- 		pipe = &ar_snoc->pipe_info[i];
- 		pipe->ce_hdl = &ce->ce_states[i];
- 		pipe->pipe_num = i;
--		pipe->hif_ce_state = ar;
- 
- 		ret = ath10k_ce_alloc_pipe(ar, i, &host_ce_config_wlan[i]);
- 		if (ret) {
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
-index d4bce1707696..e29788201347 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.h
-+++ b/drivers/net/wireless/ath/ath10k/snoc.h
-@@ -23,16 +23,6 @@ struct snoc_state {
- 	u32 svc_to_pipe_map;
- };
- 
--struct ath10k_snoc_pipe {
--	struct ath10k_ce_pipe *ce_hdl;
--	u8 pipe_num;
--	struct ath10k *hif_ce_state;
--	size_t buf_sz;
--	/* protect ce info */
--	spinlock_t pipe_lock;
--	struct ath10k_snoc *ar_snoc;
--};
--
- struct ath10k_snoc_target_info {
- 	u32 target_version;
- 	u32 target_type;
-@@ -69,7 +59,7 @@ struct ath10k_snoc {
- 	dma_addr_t mem_pa;
- 	struct ath10k_snoc_target_info target_info;
- 	size_t mem_len;
--	struct ath10k_snoc_pipe pipe_info[CE_COUNT_MAX];
-+	struct ath10k_pipe pipe_info[CE_COUNT_MAX];
- 	struct ath10k_snoc_ce_irq ce_irqs[CE_COUNT_MAX];
- 	struct ath10k_ce ce;
- 	struct timer_list rx_post_retry;
+https://lore.kernel.org/oe-kbuild-all/202306122223.HHER4zOo-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202306260401.qZlYQpV2-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202307111309.401QvMTN-lkp@intel.com
+
+Error/Warning: (recently discovered and may have been fixed)
+
+arch/parisc/kernel/pdt.c:67:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
+arch/s390/include/asm/io.h:29:17: error: implicit declaration of function 'iounmap'; did you mean 'vunmap'? [-Werror=implicit-function-declaration]
+drivers/mfd/max77541.c:176:18: warning: cast to smaller integer type 'enum max7754x_ids' from 'const void *' [-Wvoid-pointer-to-enum-cast]
+drivers/net/arcnet/arc-rimi.c:107:13: error: implicit declaration of function 'ioremap'; did you mean 'ifr_map'? [-Werror=implicit-function-declaration]
+drivers/net/arcnet/com90xx.c:225:24: error: implicit declaration of function 'ioremap'; did you mean 'ifr_map'? [-Werror=implicit-function-declaration]
+drivers/net/ethernet/8390/pcnet_cs.c:290:12: error: implicit declaration of function 'ioremap'; did you mean 'ifr_map'? [-Werror=implicit-function-declaration]
+drivers/net/ethernet/fujitsu/fmvj18x_cs.c:549:12: error: implicit declaration of function 'ioremap'; did you mean 'iounmap'? [-Werror=implicit-function-declaration]
+drivers/net/ethernet/smsc/smc91c92_cs.c:447:17: error: implicit declaration of function 'ioremap'; did you mean 'ifr_map'? [-Werror=implicit-function-declaration]
+drivers/net/ethernet/xircom/xirc2ps_cs.c:843:28: error: implicit declaration of function 'ioremap'; did you mean 'iounmap'? [-Werror=implicit-function-declaration]
+drivers/pcmcia/cistpl.c:103:31: error: implicit declaration of function 'ioremap'; did you mean 'iounmap'? [-Werror=implicit-function-declaration]
+drivers/tty/ipwireless/main.c:115:30: error: implicit declaration of function 'ioremap'; did you mean 'iounmap'? [-Werror=implicit-function-declaration]
+lib/kunit/executor_test.c:138:4: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
+lib/kunit/test.c:775:38: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/clk/imx/clk-imx93.c:294 imx93_clocks_probe() error: uninitialized symbol 'base'.
+drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c:98 mlx5_devcom_register_device() error: uninitialized symbol 'tmp_dev'.
+net/wireless/scan.c:373 cfg80211_gen_new_ie() warn: potential spectre issue 'sub->data' [r]
+net/wireless/scan.c:397 cfg80211_gen_new_ie() warn: possible spectre second half.  'ext_id'
+{standard input}: Error: local label `"2" (instance number 9 of a fb label)' is not defined
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- arm64-randconfig-m041-20230710
+|   `-- drivers-clk-imx-clk-imx93.c-imx93_clocks_probe()-error:uninitialized-symbol-base-.
+|-- parisc-randconfig-r083-20230710
+|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
+|-- s390-allmodconfig
+|   |-- arch-s390-include-asm-io.h:error:implicit-declaration-of-function-iounmap
+|   |-- drivers-net-arcnet-arc-rimi.c:error:implicit-declaration-of-function-ioremap
+|   |-- drivers-net-arcnet-com9x.c:error:implicit-declaration-of-function-ioremap
+|   |-- drivers-net-ethernet-fujitsu-fmvj18x_cs.c:error:implicit-declaration-of-function-ioremap
+|   |-- drivers-net-ethernet-pcnet_cs.c:error:implicit-declaration-of-function-ioremap
+|   |-- drivers-net-ethernet-smsc-smc91c92_cs.c:error:implicit-declaration-of-function-ioremap
+|   |-- drivers-net-ethernet-xircom-xirc2ps_cs.c:error:implicit-declaration-of-function-ioremap
+|   |-- drivers-pcmcia-cistpl.c:error:implicit-declaration-of-function-ioremap
+|   `-- drivers-tty-ipwireless-main.c:error:implicit-declaration-of-function-ioremap
+|-- sh-allmodconfig
+|   `-- standard-input:Error:local-label-(instance-number-of-a-fb-label)-is-not-defined
+`-- x86_64-randconfig-m001-20230710
+    |-- drivers-net-ethernet-mellanox-mlx5-core-lib-devcom.c-mlx5_devcom_register_device()-error:uninitialized-symbol-tmp_dev-.
+    |-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:possible-spectre-second-half.-ext_id
+    `-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:potential-spectre-issue-sub-data-r
+clang_recent_errors
+|-- arm-randconfig-r001-20230710
+|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|-- arm64-randconfig-r013-20230710
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|-- arm64-randconfig-r024-20230710
+|   |-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
+|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|-- hexagon-randconfig-r041-20230710
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|-- hexagon-randconfig-r045-20230710
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|-- riscv-randconfig-r042-20230710
+|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+`-- x86_64-buildonly-randconfig-r002-20230711
+    `-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
+
+elapsed time: 720m
+
+configs tested: 140
+configs skipped: 4
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r004-20230710   gcc  
+alpha                randconfig-r005-20230710   gcc  
+alpha                randconfig-r034-20230710   gcc  
+arc                              alldefconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                          axs103_defconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r043-20230710   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                       aspeed_g4_defconfig   clang
+arm                                 defconfig   gcc  
+arm                            dove_defconfig   clang
+arm                         lpc18xx_defconfig   gcc  
+arm                        mvebu_v7_defconfig   gcc  
+arm                       netwinder_defconfig   clang
+arm                       omap2plus_defconfig   gcc  
+arm                  randconfig-r001-20230710   clang
+arm                  randconfig-r026-20230710   gcc  
+arm                  randconfig-r046-20230710   gcc  
+arm                           sama5_defconfig   gcc  
+arm                        spear3xx_defconfig   clang
+arm                           stm32_defconfig   gcc  
+arm                       versatile_defconfig   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r013-20230710   clang
+arm64                randconfig-r024-20230710   clang
+csky                                defconfig   gcc  
+csky                 randconfig-r006-20230710   gcc  
+csky                 randconfig-r016-20230710   gcc  
+csky                 randconfig-r036-20230710   gcc  
+hexagon                             defconfig   clang
+hexagon              randconfig-r041-20230710   clang
+hexagon              randconfig-r045-20230710   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230711   clang
+i386         buildonly-randconfig-r005-20230711   clang
+i386         buildonly-randconfig-r006-20230711   clang
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230710   gcc  
+i386                 randconfig-i002-20230710   gcc  
+i386                 randconfig-i003-20230710   gcc  
+i386                 randconfig-i004-20230710   gcc  
+i386                 randconfig-i005-20230710   gcc  
+i386                 randconfig-i006-20230710   gcc  
+i386                 randconfig-i011-20230710   clang
+i386                 randconfig-i012-20230710   clang
+i386                 randconfig-i013-20230710   clang
+i386                 randconfig-i014-20230710   clang
+i386                 randconfig-i015-20230710   clang
+i386                 randconfig-i016-20230710   clang
+i386                 randconfig-r011-20230710   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                         amcore_defconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        m5307c3_defconfig   gcc  
+m68k                 randconfig-r021-20230710   gcc  
+m68k                        stmark2_defconfig   gcc  
+m68k                           virt_defconfig   gcc  
+microblaze                      mmu_defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                         cobalt_defconfig   gcc  
+mips                        maltaup_defconfig   clang
+nios2                               defconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r015-20230710   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                     asp8347_defconfig   gcc  
+powerpc                 linkstation_defconfig   gcc  
+powerpc                    mvme5100_defconfig   clang
+powerpc                       ppc64_defconfig   gcc  
+powerpc              randconfig-r035-20230710   gcc  
+powerpc                     tqm8560_defconfig   clang
+powerpc                      walnut_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r002-20230710   gcc  
+riscv                randconfig-r031-20230710   gcc  
+riscv                randconfig-r032-20230710   gcc  
+riscv                randconfig-r042-20230710   clang
+riscv                          rv32_defconfig   gcc  
+s390                             alldefconfig   clang
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230710   clang
+sh                               allmodconfig   gcc  
+sh                               j2_defconfig   gcc  
+sh                            migor_defconfig   gcc  
+sh                   rts7751r2dplus_defconfig   gcc  
+sh                           se7750_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r022-20230710   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r023-20230710   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230711   clang
+x86_64       buildonly-randconfig-r002-20230711   clang
+x86_64       buildonly-randconfig-r003-20230711   clang
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r025-20230710   clang
+x86_64               randconfig-r033-20230710   gcc  
+x86_64               randconfig-x001-20230710   clang
+x86_64               randconfig-x002-20230710   clang
+x86_64               randconfig-x003-20230710   clang
+x86_64               randconfig-x004-20230710   clang
+x86_64               randconfig-x005-20230710   clang
+x86_64               randconfig-x006-20230710   clang
+x86_64               randconfig-x011-20230710   gcc  
+x86_64               randconfig-x012-20230710   gcc  
+x86_64               randconfig-x013-20230710   gcc  
+x86_64               randconfig-x014-20230710   gcc  
+x86_64               randconfig-x015-20230710   gcc  
+x86_64               randconfig-x016-20230710   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                           alldefconfig   gcc  
+xtensa                generic_kc705_defconfig   gcc  
+xtensa               randconfig-r012-20230710   gcc  
+
 -- 
-2.41.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
