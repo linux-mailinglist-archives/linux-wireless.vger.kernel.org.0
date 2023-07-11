@@ -2,50 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EE2374F9EE
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 23:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EEF674FBF8
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jul 2023 01:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230462AbjGKVjz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 17:39:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41858 "EHLO
+        id S231153AbjGKX5E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 19:57:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230431AbjGKVju (ORCPT
+        with ESMTP id S229548AbjGKX5C (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 17:39:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A9D2170F;
-        Tue, 11 Jul 2023 14:39:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1F8861632;
-        Tue, 11 Jul 2023 21:39:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF44BC433CD;
-        Tue, 11 Jul 2023 21:39:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689111588;
-        bh=JeYMKVTHpX+mkS2wyDV046rxCvoZrycBAR6v9F7dqzQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=BIxi+xqxXbSAAHSDt3HW5sc8s+Bze60OcJfIesLMLzc3ubmdKI+LkzhTB6R385BCP
-         ZhuOVwrSSGqlRFzuRdfUliB9xXFKZGpWJHG15yymsWXnC28OMSwPdlipwDoPyC8WaV
-         qahwRAi9RNg8YBfqDKMYKzV9b0pgM/uxXj6JTR5iBr+Ev1d7+XD/0PRdNrLF2uuoCB
-         AH9nKR1XnLkK2FVLC6O8IE9/rZA7whb6wtYFFvPEGTwU68azvz2XzarsLz99lntKFG
-         LFYDygWxhUZbte80d+3b6lTReiohgRpfR+oaqjY/lBz9Jho4pWgrC65B6XcKEjtKng
-         vXGneiM3kO1GQ==
-Message-ID: <2263ae79-690e-8a4d-fca2-31aacc5c9bc6@kernel.org>
-Date:   Tue, 11 Jul 2023 15:39:45 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Mina Almasry <almasrymina@google.com>
-Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Christoph Hellwig <hch@lst.de>,
+        Tue, 11 Jul 2023 19:57:02 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 190A11711
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 16:57:00 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-38e04d1b2b4so4828810b6e.3
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 16:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1689119819; x=1691711819;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=leJKi4u06YRTzo0lBrUW1GjV6mczJ561dFwtREQL+Dg=;
+        b=DXK8WidcvmvzjeVYH/6WijviZ73toBOmyVp9mIOd03ZD+R3rHWdoxQSvE5e9wD1KCJ
+         9mK/DDwssbLXSnouE8MAwnVDe+VkRcpQSrinJNmyu0FnYmd+CKVNA1F34dvSGu5lfZwy
+         cyr25JKjczwfRObdI7oARPE9gHghtmOAegQpocDq/APkFl+1PNSXGJo1xP2SNdGpJGtv
+         /nEQL7vqxVxYsTwIY7luylFSj8xoTEsYM9t5cm2HxYfPwTnzx8rs4qClhieKHRjwL54Q
+         8sya8gM8UB4rmOcx/i0v01+HlH4cbtNGlO2x9kzZaZUcFmUL9dtfGxX7fDRkv+FMzf1u
+         InjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689119819; x=1691711819;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=leJKi4u06YRTzo0lBrUW1GjV6mczJ561dFwtREQL+Dg=;
+        b=d0uSvg8lhA1oS677cNX+1jZ69NxCAbAHpuI9+qVodIuDs5pbgPE4wqOZs8w5NN104N
+         UDlolPCwfPL/J/ygVDU4E6osuxCbIOGuPUoLmSaUXgVWuf6WU0zm+ZWrobdeJY5+7iL7
+         d3C64Dz8mozibKHPRwDqh9l19CRb/pWQ3pPc2ZO54P4AC1tTogtjhQ09JL72c1OJSBJk
+         2X9D6lWSUT5/h6ExzcudWi5S91LZtgMeqk5+anFs32JYSgTHLusInCaVemb0TQZ7H0xP
+         6DL7fooYmjIrt1oMh7kK8S0nNc41AvwzRVb4rEQWCPbJgm/cDnnD3yzj7Pg3qbbAvAE2
+         XRqA==
+X-Gm-Message-State: ABy/qLbxc5DN55pRMKmWFjeaBTZttmYRiSRrIf7xgwRcJySLirdRkSqi
+        vSd9nM37l+xfDi19DbZn1ABTWg==
+X-Google-Smtp-Source: APBJJlHPVDwycmPbbNO1kwHaGDMrzsNQAmVLFppzVomF/d82yUMQJxrek5vJqs3gAPlID0cxcW6lxg==
+X-Received: by 2002:a05:6808:11cf:b0:3a3:fa64:b543 with SMTP id p15-20020a05680811cf00b003a3fa64b543mr9841890oiv.12.1689119819344;
+        Tue, 11 Jul 2023 16:56:59 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
+        by smtp.gmail.com with ESMTPSA id x11-20020a63b34b000000b005533c53f550sm1952223pgt.45.2023.07.11.16.56.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jul 2023 16:56:58 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1qJNE0-000KOY-Hj;
+        Tue, 11 Jul 2023 20:56:56 -0300
+Date:   Tue, 11 Jul 2023 20:56:56 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Mina Almasry <almasrymina@google.com>,
         John Hubbard <jhubbard@nvidia.com>,
         Dan Williams <dan.j.williams@intel.com>,
+        David Ahern <dsahern@kernel.org>,
         Jesper Dangaard Brouer <jbrouer@redhat.com>,
         brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
         Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
@@ -75,94 +90,83 @@ Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Christoph Hellwig <hch@lst.de>,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org,
         Jonathan Lemon <jonathan.lemon@gmail.com>
-References: <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
- <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
- <ZKNA9Pkg2vMJjHds@ziepe.ca>
- <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
- <ZKxDZfVAbVHgNgIM@ziepe.ca>
- <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
- <ZKyZBbKEpmkFkpWV@ziepe.ca> <20230711042708.GA18658@lst.de>
- <20230710215906.49514550@kernel.org> <20230711050445.GA19323@lst.de>
- <ZK1FbjG+VP/zxfO1@ziepe.ca> <20230711090047.37d7fe06@kernel.org>
- <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
- <20230711093224.1bf30ed5@kernel.org>
- <CAHS8izNHkLF0OowU=p=mSNZss700HKAzv1Oxqu2bvvfX_HxttA@mail.gmail.com>
- <20230711133915.03482fdc@kernel.org>
-From:   David Ahern <dsahern@kernel.org>
-In-Reply-To: <20230711133915.03482fdc@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Message-ID: <ZK3sSMSVWM5EbHLG@ziepe.ca>
+References: <ZKyZBbKEpmkFkpWV@ziepe.ca>
+ <20230711042708.GA18658@lst.de>
+ <20230710215906.49514550@kernel.org>
+ <20230711050445.GA19323@lst.de>
+ <ZK1FbjG+VP/zxfO1@ziepe.ca>
+ <20230711090047.37d7fe06@kernel.org>
+ <ZK2Gh2qGxlpZexCM@ziepe.ca>
+ <20230711100636.63b0a88a@kernel.org>
+ <ZK2k9YQiXTtcGhp0@ziepe.ca>
+ <20230711133420.5df88f02@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230711133420.5df88f02@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/11/23 2:39 PM, Jakub Kicinski wrote:
-> On Tue, 11 Jul 2023 10:06:28 -0700 Mina Almasry wrote:
->>>> Any reason not to allow an alternative representation for skb frags than
->>>> struct page?  
->>>
->>> I don't think there's a hard technical reason. We can make it work.  
->>
->> I also think we can switch the representation for skb frags to
->> something else. However - please do correct me if I'm wrong - I don't
->> think that is sufficient for device memory TCP. My understanding is
->> that we also need to modify any NIC drivers that want to use device
->> memory TCP to understand a new memory type, and the page pool as well
->> if that's involved. I think in particular modifying the memory type in
->> all the NIC drivers that want to do device memory TCP is difficult. Do
->> you think this is feasible?
+On Tue, Jul 11, 2023 at 01:34:20PM -0700, Jakub Kicinski wrote:
+
+> > Yep. At the high end open standards based ethernet has also notably
+> > "failed" as well. Every switch vendor now offers their own proprietary
+> > ecosystem on a whole bunch of different axis. They all present
+> > "ethernet" toward the host but the host often needs to work in a
+> > special way to really take full advantage of the proprietary fabric
+> > behaviors.
 > 
-> That's why I was thinking about adding an abstraction between 
-> the page pool and the driver. Instead of feeding driver pages
-> a new abstraction could feed the driver just an identifier and a PA.
+> I'm not familiar with "high end open standards based on ethernet", would
+> those be some RDMA / storage things? For TCP/IP networks pretty much
+> the only things that matter in a switch are bandwidth, size of buffers,
+> power... Implementation stuff.
 
-skb frag is currently a bio_vec. Overloading the 'struct page' address
-in that struct with another address is easy to do. Requiring a certain
-alignment on the address gives you a few low bits to use a flags / magic
-/ etc.
+I would say when you are getting into ethernet deployments with 25 or
+51 Tbps switches directly connected to hosts running at >100G you are
+getting into the high end side of things.
 
-Overloading len and offset is not really possible - way too much code is
-affected (e.g., iov walking and MSS / TSO segmenting).
+These are very expensive networks. They run complex congestion
+provoking workloads. They have sophisticated multi-pathing. They often
+use use a non-blocking topology. Congestion management is important.
 
-ie., you could overload page address with a pointer to an object in your
-new abstraction layer and the struct has the other meta data.
+Making this work with good utilization, and low tail latency is a
+really hard problem. Many of the solutions come with switch features
+supporting it.
 
-typedef struct skb_frag {
-	union {
-		struct bio_vec bvec;
-		struct new_abstraction abs;
-	};
-} skb_frag_t;
+You'd proably say these are not TCP focused networks, even though they
+are based on ethernet and IP.
 
-where
+So I think of them as high end "standards based" ethernet and IP
+looking networks that have proprietary elements mixed in throughout.
 
-struct new_abstraction {
-	void *addr,
-	unsigned int len;
-	unsigned int offset;
-};
+Right now there is a bit of a press war between vendors on 'ethernet
+for AI'. Both Broadcom and NVIDIA are taking techonlogies that were
+originally built for TCP ethernet networks and remixing/speeding them
+up to run roce workloads effectively. There is alot more information
+available now without NDA that shows some detail on this space.
 
-I have been playing with a similar and it co-exists with the existing
-code quite well with the constraint on location of len and offset.
+AWS's SRD multipathing, Broadcom "AI Ethernet" and NVIDIA's Spectrum-X
+spring to mind as topical to what these sorts of ethernet networks
+are.
 
-> 
-> Whether we want to support fragmentation in that model or not would 
-> have to be decided.
-> 
-> We can take pages from the page pool and feed them to drivers via
-> such an API, but drivers need to stop expecting pages.
+> A lot of "standardization" efforts are just attempts to prove to 
+> a buyers that an ecosystem exists.
 
-yes, drivers would have to be updated to understand the new format. A
-downside, but again relatively easy to manage.
+Heh, that was probably more true years ago. These days it seems like
+some standardization is also being done so the large hyperscalers can
+improve their Approved Vendors List.
 
-> 
-> That's for data buffers only, obviously. We can keep using pages 
-> and raw page pool for headers.
+I suppose as long as the result is something we can implement openly
+in Linux the motivation for standardization is less important.
 
-yes.
+Jason
