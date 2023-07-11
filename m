@@ -2,69 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BB4174E8BA
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 10:14:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45EB574E8FB
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 10:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229888AbjGKIOB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 04:14:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38442 "EHLO
+        id S231215AbjGKIZR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 04:25:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjGKIOA (ORCPT
+        with ESMTP id S231148AbjGKIZQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 04:14:00 -0400
-Received: from mail.ettrick.pl (mail.ettrick.pl [141.94.21.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62FF79C
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 01:13:59 -0700 (PDT)
-Received: by mail.ettrick.pl (Postfix, from userid 1002)
-        id 25E5A27453; Tue, 11 Jul 2023 08:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ettrick.pl; s=mail;
-        t=1689063070; bh=V4qwQGqC7KpJoyielzRpnopuINFIOvKXsSgJ3ZENIXU=;
-        h=Date:From:To:Subject:From;
-        b=WG589LCQOKBJ1zrvmQqyfYQu24OQphNgCEzVo/JBagxyfee8ZvCj1zNovdOmkd+Tj
-         Cxe7zyQKysCtR6vBDH5KcvYsdkn/jcjmg2NekzvDpgDfNTdJneZ9Q/S7lQ3oANzaon
-         kKIbV64jA3rpEHQNehdlQK5osA1c+zqDJqk1cBeR9eUo7m8W0nxNqPNXY1SoVY91Wh
-         xQT1rCmg/mxN/jXKzXldiEspmBAMDYg+MDNQcGe2cXHZcI8XnWvvK8WP+3mDhdHQzc
-         4E7QWShdL1HPokuCLhHggOB2whKcU0xBilyxSqc1upzmIGjzDzA5Ist5ZsU4YII53S
-         o5nQTbuZSqQjQ==
-Received: by mail.ettrick.pl for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 08:11:02 GMT
-Message-ID: <20230711064500-0.1.8.1w8u.0.qgl6lkoump@ettrick.pl>
-Date:   Tue, 11 Jul 2023 08:11:02 GMT
-From:   "Norbert Karecki" <norbert.karecki@ettrick.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: Fotowoltaika - propozycja instalacji
-X-Mailer: mail.ettrick.pl
+        Tue, 11 Jul 2023 04:25:16 -0400
+Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93B0E6F
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 01:25:10 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2891:0:640:3c15:0])
+        by forward100b.mail.yandex.net (Yandex) with ESMTP id CD9E96012C;
+        Tue, 11 Jul 2023 11:25:07 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 6PUZDhdWpeA0-R7j3s1K3;
+        Tue, 11 Jul 2023 11:25:07 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689063907;
+        bh=JVtVuLOgeFfxBRVHtvOXE4rJ6XxxWw4GSNDfk+UNLV0=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=axPYPaG9lWuxRhqCY3emkHAxdVa1xYk+uhF34dTuIU+p5prYjsGQeApqHsu2qiEqo
+         /cFGi4m4jTof0CAqc0YtevDtmgnFZ/CgBDpQOyKnHSYsXvOMusacD57kDhfWiXU+ns
+         ITEzn86FfSj5de14+y6SdcFH2AcX8/2XVeRTbzIQ=
+Authentication-Results: mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: mwifiex: fix memory leak in mwifiex_histogram_read()
+Date:   Tue, 11 Jul 2023 11:24:53 +0300
+Message-ID: <20230711082504.18838-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_ABUSE_SURBL,URIBL_BLOCKED,URIBL_CSS_A autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
-=20
-Czy rozwa=C5=BCali Pa=C5=84stwo monta=C5=BC systemu fotowoltaicznego?
-=20
-Instalacja fotowoltaiczna jest najlepszym sposobem na obni=C5=BCenie wyso=
-ko=C5=9Bci rachunk=C3=B3w za pr=C4=85d (pozostaj=C4=85 tylko op=C5=82aty =
-sta=C5=82e) i zabezpieczenie si=C4=99 przed rosn=C4=85cymi cenami energii=
- elektrycznej. Jest to w pe=C5=82ni odnawialne i bezemisyjne =C5=BAr=C3=B3=
-d=C5=82o energii, dzi=C4=99ki czemu przyczyniamy si=C4=99 do ochrony =C5=9B=
-rodowiska naturalnego.
-=20
-Dzia=C5=82amy od wielu lat na rynku energetycznym. Przygotujemy projekt, =
-wycen=C4=99 oraz kompleksowo wykonamy i zg=C5=82osimy realizacj=C4=99 do =
-zak=C5=82adu energetycznego.=20
-=20
-Czy chc=C4=85 Pa=C5=84stwo pozna=C4=87 nasz=C4=85 propozycj=C4=99? =20
+Always free the zeroed page on return from mwifiex_histogram_read().
 
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/marvell/mwifiex/debugfs.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Pozdrawiam
-Norbert Karecki
+diff --git a/drivers/net/wireless/marvell/mwifiex/debugfs.c b/drivers/net/wireless/marvell/mwifiex/debugfs.c
+index 52b18f4a774b..0cdd6c50c1c0 100644
+--- a/drivers/net/wireless/marvell/mwifiex/debugfs.c
++++ b/drivers/net/wireless/marvell/mwifiex/debugfs.c
+@@ -253,8 +253,11 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	if (!priv || !priv->hist_data)
+-		return -EFAULT;
++	if (!priv || !priv->hist_data) {
++		ret = -EFAULT;
++		goto free_and_exit;
++	}
++
+ 	phist_data = priv->hist_data;
+ 
+ 	p += sprintf(p, "\n"
+@@ -309,6 +312,8 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
+ 	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
+ 				      (unsigned long)p - page);
+ 
++free_and_exit:
++	free_page(page);
+ 	return ret;
+ }
+ 
+-- 
+2.41.0
+
