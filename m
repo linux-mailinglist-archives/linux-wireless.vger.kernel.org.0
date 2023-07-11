@@ -2,75 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D720A74F584
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 18:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAAE274F5BC
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 18:43:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233471AbjGKQd2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 12:33:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33656 "EHLO
+        id S232606AbjGKQmx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 12:42:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233392AbjGKQdD (ORCPT
+        with ESMTP id S232105AbjGKQmw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 12:33:03 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 864EA1FE0
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 09:32:50 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2b702319893so94686461fa.3
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 09:32:50 -0700 (PDT)
+        Tue, 11 Jul 2023 12:42:52 -0400
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2345410C0
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 09:42:50 -0700 (PDT)
+Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-765ae938b1bso554485485a.0
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 09:42:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689093167; x=1691685167;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VWtpptzPuOCoLkyZBw7yYHV5FeI36rJVjotbONsdA94=;
-        b=WFibieZ2v0r4nWPy0J1wGTrFtOXxVksWo9Ycvtk6r1viqsBFsWV1+2Luw0tJWYEc2d
-         EybaDJGcl9KBnd0R2+PpSfAnadC6cUCuzXIeMjWw73PxDtrOeheXj3MKd/apxW9S3ScJ
-         Bl58mCaKB5LUAOIUynXr102zB7CYguU8HSAJLcDpZc+IWY8x5SiZcHZRkmcdW0/ue2oa
-         8aXF0EdL9nkFqQ8NQ6NYa+DFo+gCiYHKk0xm586Z7LI3nLfD/P1f+sXgZTNlbdV9CQLJ
-         zPkvhLIsOegU5GpzkADKnE1GLB+w6gcz5zA7aFFk4hLsPcOTQHM9yDbvmbKV8wZAXdVk
-         LFCQ==
+        d=ziepe.ca; s=google; t=1689093769; x=1691685769;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uu6KIyFq5ICxck51tOZTlrhfx/dAZN9zejRdcXCeDIQ=;
+        b=hutFTkWd80/JWvtlN74IkzBT25OF7LVT1vr1QbOtoLia7gCMDN/IthFasmJc6qiQay
+         3tVmOsZw93jMQD1ismCSE3/TO08LFEoKmWO4bSv0VW+Fcc+nXAGs1l4AEEucg2NIWTfz
+         qtsg3PHnJJ+65RVJUeDP0+OnLtSMLDGe8uG31BIeuyVQUZmFXwqtQpoxmzPe0CWl2vF+
+         PVSnB774tyoY7PSisg55xASa4YKGevTLCboavkgbiFWYJv3oSZ8GGZIln/OlViAGZJQ0
+         1osG2kQZAkLmJs3+qeezOegAZ4lq6SI4eQiiwkKS9Ht/DJCtY3YykcRdmrRaLS2HudM/
+         80kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689093167; x=1691685167;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VWtpptzPuOCoLkyZBw7yYHV5FeI36rJVjotbONsdA94=;
-        b=EF5eW4AhHCqAGIV//2i87U2c/kn1wJMSZ/pI+3sRHCb0D0WZ8m7E5MMb0jMb0fc2pT
-         5ggF+gazFpwXm1One83egAaFjpnmIFl4VOXtZAlws5vFFJHVMhKTSIfzASsjd0VYVqf+
-         2+FfFH4WthCKh2CzFGdN3NFKMTwtnDod7jSM18UrXE+yLWxqy7ru0v1brBctGFzys8vr
-         2r2Y9toHpiPka+NWMhFoqRBaKuL+uPWXj2L8jd2CAB2g236U51l63+QBfi34MD9Inww8
-         Ir+wv1il2o53vNdcE+n0tta5Ukl8iovidKvEJUx+EmyX6byAbrLIn24sp36+5VIE5Ul+
-         AJ4g==
-X-Gm-Message-State: ABy/qLYsVoz4aPYU9Y4rmxiIJRshuNmHf7HRVrSzwBil5kHcxbVNo4tJ
-        OfAvV8w2NCZ2Z3MfudG7utieArbfnSOaGb3xi+M=
-X-Google-Smtp-Source: APBJJlH1If/svLi3ZvVSK9N5XCgAEROHhzB3qlp5M8M0oO6v2qngfJe3MewXHmdWauY1GePpYxisCh5XUDIQqNBIkDk=
-X-Received: by 2002:a05:651c:120c:b0:2b6:fc80:c45f with SMTP id
- i12-20020a05651c120c00b002b6fc80c45fmr12883371lja.13.1689093167200; Tue, 11
- Jul 2023 09:32:47 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689093769; x=1691685769;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Uu6KIyFq5ICxck51tOZTlrhfx/dAZN9zejRdcXCeDIQ=;
+        b=T5vPcICsm8ENZMWJegYaeUiEadHU/6NHlFqvuvTH4hBLoLTyLDjD8GerTx+vUp6jIn
+         c4vzMFbz8IwhfSll5TIxoqYfmqSnrNHnMT5zw0AOUi8gn57GeCJRuXh/9pTVefwXAq+y
+         i0dxN1JY1rIqv1k65lp6OcrTs6ASeeJbLNRygw16fnqZoMgsaqfSAPyxshQdidsAw6E1
+         6/uC9AKngstNlCwTu+hWEuvWbS7s0wXdEWlkZDd8WWpNbzjs30Z7xdsCmmtHlzqt9DuN
+         bboYhCBagOd56NZe2wCPamxqsXc7mIshq/EEeCbvs0N4IaRINmVQPAOkrZqNaCfIbA8c
+         1Xxg==
+X-Gm-Message-State: ABy/qLbTJpL/HCQ71XpYVxP+5KwidSSGLEjz4nXx3MxKMU5bfRKYU+AK
+        n9XVdSzNe5fHCLFvQsXAOJZCLQ==
+X-Google-Smtp-Source: APBJJlHrfEpx0F5ZCb1qXKIKZ/LjogbATKeqxd6U5nNdJ3jhzMUvs4D3C+kS3MbzveBt3oiLYSo3MA==
+X-Received: by 2002:a37:f70f:0:b0:767:5689:bc7a with SMTP id q15-20020a37f70f000000b007675689bc7amr15355662qkj.25.1689093769195;
+        Tue, 11 Jul 2023 09:42:49 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
+        by smtp.gmail.com with ESMTPSA id k2-20020a05620a138200b00767d6427339sm1165653qki.69.2023.07.11.09.42.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jul 2023 09:42:48 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1qJGRr-000IQx-QI;
+        Tue, 11 Jul 2023 13:42:47 -0300
+Date:   Tue, 11 Jul 2023 13:42:47 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Mina Almasry <almasrymina@google.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Ahern <dsahern@kernel.org>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Message-ID: <ZK2Gh2qGxlpZexCM@ziepe.ca>
+References: <ZKNA9Pkg2vMJjHds@ziepe.ca>
+ <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
+ <ZKxDZfVAbVHgNgIM@ziepe.ca>
+ <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
+ <ZKyZBbKEpmkFkpWV@ziepe.ca>
+ <20230711042708.GA18658@lst.de>
+ <20230710215906.49514550@kernel.org>
+ <20230711050445.GA19323@lst.de>
+ <ZK1FbjG+VP/zxfO1@ziepe.ca>
+ <20230711090047.37d7fe06@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a17:907:1c16:b0:986:7a95:9cc0 with HTTP; Tue, 11 Jul 2023
- 09:32:46 -0700 (PDT)
-Reply-To: mrsvl06@gmail.com
-From:   Veronica Lee <nd4846496@gmail.com>
-Date:   Tue, 11 Jul 2023 18:32:46 +0200
-Message-ID: <CAPadVRx=24t+dtCfxOJ-H_QTG0496dY-ZfFTyFRXoPSEnRePwA@mail.gmail.com>
-Subject: re
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230711090047.37d7fe06@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-16nXnNeV150g15nXp9eZ16jXqteZINep157Xl9eUINec15TXkteZ16Ig15DXnNeZ15og16nXldeR
-INeZ16kg15zXmSDXnteZ15nXnCDXkdei15HXqCDXnNec15Ag16rXkteV15HXlCDXkNeg15kg157X
-lteb15nXqA0K15zXkteR15kg15fXldeW15Qg16nXkNeg15kg16jXldem15Qg15zXqdeq16Mg15DX
-ldeq15og15fXlteV16gg15DXnNeZ15kg15zXpNeo15jXmdedINeg15XXodek15nXnSDXkNeg15kg
-157Xl9eb15QNCteQ16DXkA0K
+On Tue, Jul 11, 2023 at 09:00:47AM -0700, Jakub Kicinski wrote:
+
+> > So is Infiniband, Jakub has a unique definition of "proprietary".
+> 
+> For IB AFAIU there's only one practically usable vendor, such an
+> impressive ecosystem!!
+
+IB has roce (RDMA Over Converged Ethernet, better thought of as IB
+over Ethernet) under it's standization umbrella and every major
+commodity NIC vendor (mellanox, broadcom, intel) now implements
+roce. We also have the roce support in the switch from all major
+switch vendors.
+
+IB as a link layer "failed" with most implementors leaving the
+ecosystem broadly because Ethernet link layer always wins in
+networking - this is more of an economic outcome than a
+standardization outcome in my mind.
+
+Due to roce, IB as a transport and software protocol has a solid
+multi-vendor ecosystem.
+
+Jason
