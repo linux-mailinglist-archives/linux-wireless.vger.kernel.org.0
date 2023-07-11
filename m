@@ -2,48 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BC7B74F502
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 18:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D020874F55F
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 18:32:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231258AbjGKQVe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 12:21:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53514 "EHLO
+        id S232579AbjGKQck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 12:32:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231458AbjGKQVS (ORCPT
+        with ESMTP id S232429AbjGKQcc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 12:21:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB1E19A3;
-        Tue, 11 Jul 2023 09:21:02 -0700 (PDT)
+        Tue, 11 Jul 2023 12:32:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44EC2173A;
+        Tue, 11 Jul 2023 09:32:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7179C61556;
-        Tue, 11 Jul 2023 16:21:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481CAC433C7;
-        Tue, 11 Jul 2023 16:20:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D065F6155E;
+        Tue, 11 Jul 2023 16:32:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058E9C433C9;
+        Tue, 11 Jul 2023 16:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689092460;
-        bh=NnvGyeFdqT1PJXerhGhkw4nha+gp/hm34hmEQZehQBc=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Q41kwYFyr8xOB61pvc5FELxseCH+442Dfz/DDdwc4nm0O7JlQxfOdE8eTyj4F38un
-         9SVnab643Xy9DHecsJiimbYR73eH+hWG966vCNGvww2Wot57F6wrGsNXk/uZEJpnhq
-         WuoWb78NXvY0FHvB/7RBe3L5/HzqtGNiLFQ0wz2Yzzm/nj1M7Y90DL73GXVj2KU6PN
-         vLfRRu6T5KbDARbYtXLhJO6oYV11t6WP55vDJMJ3Eu7KazqQXS7E5Rkyp9BO1P4C8k
-         D20Bh6Lu9Nc+aO6pLS89qrGOhZa786q5r+/cU9U0a0eclcSTY1Cyvi1DqYKmSEO4jv
-         QFjLXRx3oQvqg==
-Message-ID: <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
-Date:   Tue, 11 Jul 2023 10:20:58 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Christoph Hellwig <hch@lst.de>
-Cc:     Mina Almasry <almasrymina@google.com>,
+        s=k20201202; t=1689093146;
+        bh=/yz1VNIx8w5vnZQUrnW46zn2dCf4xJSJ/w4OLb6WBAk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Yg4EUjxEPD06/Bn6reOhE6TdmtCBNfXmQqLeCVeuc3B4GVfMn6aCEif09HCeYn0Uz
+         Uh06QjoXyuXz76Qh5WxlMsRGgkCEP7GU/xz19BFKHWMX9QP3c0f6H0pfTBv/CMzFNR
+         Gce9NhJ0EAOEBKlWz+3t/42M+JkZEBcqbImWn7g+k7QPFZpUzXnG2Z1YmAU3XT7xgc
+         etgVuONKYWYaRKo7d3AavNFlRtsW7kOs9f5RUjTcfpugo5ljkNFTIaY6eHMNaVhk9c
+         uHeshfY+jsKSE6st5tdcIBLc4raTCwWlwmHFJSEDn5De4UwjLIv6N+Hw3CwjBc6UeH
+         ZQDhJ2SfdHm6Q==
+Date:   Tue, 11 Jul 2023 09:32:24 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     David Ahern <dsahern@kernel.org>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Christoph Hellwig <hch@lst.de>,
+        Mina Almasry <almasrymina@google.com>,
         John Hubbard <jhubbard@nvidia.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Jesper Dangaard Brouer <jbrouer@redhat.com>,
@@ -75,36 +69,50 @@ Cc:     Mina Almasry <almasrymina@google.com>,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org,
         Jonathan Lemon <jonathan.lemon@gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Message-ID: <20230711093224.1bf30ed5@kernel.org>
+In-Reply-To: <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
 References: <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
- <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
- <ZKNA9Pkg2vMJjHds@ziepe.ca>
- <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
- <ZKxDZfVAbVHgNgIM@ziepe.ca>
- <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
- <ZKyZBbKEpmkFkpWV@ziepe.ca> <20230711042708.GA18658@lst.de>
- <20230710215906.49514550@kernel.org> <20230711050445.GA19323@lst.de>
- <ZK1FbjG+VP/zxfO1@ziepe.ca> <20230711090047.37d7fe06@kernel.org>
-From:   David Ahern <dsahern@kernel.org>
-In-Reply-To: <20230711090047.37d7fe06@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+        <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
+        <ZKNA9Pkg2vMJjHds@ziepe.ca>
+        <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
+        <ZKxDZfVAbVHgNgIM@ziepe.ca>
+        <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
+        <ZKyZBbKEpmkFkpWV@ziepe.ca>
+        <20230711042708.GA18658@lst.de>
+        <20230710215906.49514550@kernel.org>
+        <20230711050445.GA19323@lst.de>
+        <ZK1FbjG+VP/zxfO1@ziepe.ca>
+        <20230711090047.37d7fe06@kernel.org>
+        <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/11/23 10:00 AM, Jakub Kicinski wrote:
->> RDMA works with the AMD and Intel intree drivers using DMABUF without
->> requiring struct pages using the DRM hacky scatterlist approach.
-> I see, thanks. We need pages primarily for refcounting. Avoiding all
-> the infamous problems with memory pins. Oh well.
+On Tue, 11 Jul 2023 10:20:58 -0600 David Ahern wrote:
+> On 7/11/23 10:00 AM, Jakub Kicinski wrote:
+> >> RDMA works with the AMD and Intel intree drivers using DMABUF without
+> >> requiring struct pages using the DRM hacky scatterlist approach.  
+> > I see, thanks. We need pages primarily for refcounting. Avoiding all
+> > the infamous problems with memory pins. Oh well.  
+> 
+> io_uring for example already manages the page pinning. An skb flag was
+> added for ZC Tx API to avoid refcounting in the core networking layer.
 
-io_uring for example already manages the page pinning. An skb flag was
-added for ZC Tx API to avoid refcounting in the core networking layer.
-Any reason not to allow an alternative representation for skb frags than
-struct page?
+Right, we can refcount in similar fashion. Still tracking explicitly
+when buffers are handed over to the NIC.
+
+> Any reason not to allow an alternative representation for skb frags than
+> struct page?
+
+I don't think there's a hard technical reason. We can make it work.
