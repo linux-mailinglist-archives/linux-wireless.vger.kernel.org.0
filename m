@@ -2,165 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C93CD74F736
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 19:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B11274F82A
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 20:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjGKRZ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 13:25:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38716 "EHLO
+        id S230460AbjGKSwn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 14:52:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231258AbjGKRZY (ORCPT
+        with ESMTP id S230358AbjGKSwm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 13:25:24 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2100.outbound.protection.outlook.com [40.107.236.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D87241BB;
-        Tue, 11 Jul 2023 10:25:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E8SS2CYuBCBZOebMhvGbN2G/OIYZjIb4IjhyrP2SB84xhipH/8vqUzE8nomVT/nDu1bPD+NhOTWyNg+DPjxuPOQz3zrxt7tMe/5QxuhOsQdnuoHPwu2u0DUBsh1cWjBG4lapr3XPOh2mJIsbII/DBSYS7pg7yTCcbXQwKny+C80UKcxFChNO3Y+lfPVczfNnrPShgQ6eHa39D0JQBgYmT8Gs47v1OKxaIc8MCYUlNlhO3527qq1t5qE3w3jMQiTxh1oTSjIAFNNVLYcENjx49FRnenu7by2i4XBBP6tP5Z4bNNQCZl7o8xhuE7nKuIbjS344/6q9BuNYfNFBTQP9qA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4y+re6ONZ553vKGeW3MM5fjpxsV5Qv0GFjYYZfQVfUY=;
- b=U8M4tKkcv+Ku9CqqlC1+BMpcgsKMtTG9mLnLbsqV267KnrMlXlGb7ZfryzMWHxZR4/RU0CYo80CwzKb4UZ1CATY/bnxo5Q7pyB92WaFzYCTZq+SoEc+jtdrp1U3gPzmSexYAN4CQgwHsRHLpzVgkbhU20ag8s/oLFeyHbra0FiOXcGD5lGada+S+Irbww+ccG94KscotkyFOKQj4085JeA5WjIDsQBjqr5Fu87+CO0pgMOjBeEjM3pbwGpCALMAd1tzJu1uJyXjH43CxAZCVNkFlPqlSAX4Q+GsBoP8rESLhUaIOgdkh96GH3GhcXj/8dZVbNLIZxhBKWuX1JpLc7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        Tue, 11 Jul 2023 14:52:42 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9AB01704
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 11:52:39 -0700 (PDT)
+Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-76754b9eac0so579999185a.0
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 11:52:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4y+re6ONZ553vKGeW3MM5fjpxsV5Qv0GFjYYZfQVfUY=;
- b=Qu3Zy1T+2nXs3PQlH2cCetR17t9h3vUiOopv5cvvGhNY89ihIIhKJ8yN//RX3aJQYWYbuSTisUuEnBSkSPNb/pEA/TlFX+a94u/a7d9YwY/OZKwimRnwFJvQTJCaVf1WkM7ZUy9r15kXHOd3k6nhkKarO/Dw1/zRM3UFivs7m8I=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BY3PR13MB4884.namprd13.prod.outlook.com (2603:10b6:a03:354::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.31; Tue, 11 Jul
- 2023 17:25:19 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::d23a:8c12:d561:470]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::d23a:8c12:d561:470%6]) with mapi id 15.20.6588.017; Tue, 11 Jul 2023
- 17:25:19 +0000
-Date:   Tue, 11 Jul 2023 18:25:12 +0100
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
+        d=ziepe.ca; s=google; t=1689101559; x=1691693559;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=csq2hP6IGrsJizVBuDWOWzciwuvySb83mfb1bAUQeAw=;
+        b=O6yj1kfBmt/f46fGl5YF3ZVJn3iClEXfkHrq1NBwzA3zeFlPKxh61DLstld0JhkzXq
+         h9GCIk46LJKP5FEMhlmgxGdR6DZHqGE8zkEPe0m8HwO3oYCvuIT+h216JZzEKzRT45VH
+         fihme1JeEVJ5o7rLj+sp0HM+VyiPgOa+4UWUCJ8nczCJMAvSl0mDXfZE65/pQiDQgR46
+         KXQ8MO1UkrrB/BNF3dM4Tr7JLFvYzyjqwWXAqiIjG0pmZzaxZyvvqaOWcuYKyh4LOvP4
+         IvsRAbNbBcQCuYjr3QJF3eqkPZPCTeLSQBqYAlk4Rf6atATMuVoe1YiRvI7PbrsyIUPo
+         WEyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689101559; x=1691693559;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=csq2hP6IGrsJizVBuDWOWzciwuvySb83mfb1bAUQeAw=;
+        b=FhB0qbNMoSG8l4oY41dKozlX8jRg4m+kKwZUXCuFVAiznYU+Q6EcbkMUmvq0A6nFq1
+         14stkgSRmJ9yCFU+nZ+k4CiVavGVGxEUx93MNYqcpOXpRVE2zClwtl/24bHC4+HB0tZl
+         iOJfuA+LZ/SIB2ede/odpQrfIGTziKGpfD+SLrbukQzF34qk0vEgo+SoE2ZMhLaj140v
+         qMHNj/6LREjabY1BYLroNp7Ek5MOgWIa6KXMqwdCcys6uWFFiLMia5tyifsqD9Vt3p2Z
+         RY2pYDaTwUNzGncvXgCoXKuO7mWi4TZ5C7mt+Z+DOtg5voL1mbEuQKP57Dd5YXjbGWxq
+         ooHQ==
+X-Gm-Message-State: ABy/qLZGtQ70JWJXHeujtzw/XFpKhs2MGdENL+8COo7MHmsK+xNjoPPB
+        YzpaZ+wZl+fa+NIZcsPo86AECA==
+X-Google-Smtp-Source: APBJJlGz3e2wm1ItETv6Tpn24AKM42/GznMyImhnBUCl/FD/+Lt6lzms0CFX41BO0AXGLY19Tbl9Zw==
+X-Received: by 2002:a05:620a:2904:b0:75d:5640:22e7 with SMTP id m4-20020a05620a290400b0075d564022e7mr22796538qkp.55.1689101558954;
+        Tue, 11 Jul 2023 11:52:38 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
+        by smtp.gmail.com with ESMTPSA id j3-20020a05620a146300b00765ab6d3e81sm1269520qkl.122.2023.07.11.11.52.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jul 2023 11:52:38 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1qJITV-000JMj-F8;
+        Tue, 11 Jul 2023 15:52:37 -0300
+Date:   Tue, 11 Jul 2023 15:52:37 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Mina Almasry <almasrymina@google.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Ahern <dsahern@kernel.org>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
         Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net] wifi: airo: avoid uninitialized warning in
- airo_get_rate()
-Message-ID: <ZK2QeBZKWi0Q6vuW@corigine.com>
-References: <20230709133154.26206-1-rdunlap@infradead.org>
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Message-ID: <ZK2k9YQiXTtcGhp0@ziepe.ca>
+References: <ZKxDZfVAbVHgNgIM@ziepe.ca>
+ <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
+ <ZKyZBbKEpmkFkpWV@ziepe.ca>
+ <20230711042708.GA18658@lst.de>
+ <20230710215906.49514550@kernel.org>
+ <20230711050445.GA19323@lst.de>
+ <ZK1FbjG+VP/zxfO1@ziepe.ca>
+ <20230711090047.37d7fe06@kernel.org>
+ <ZK2Gh2qGxlpZexCM@ziepe.ca>
+ <20230711100636.63b0a88a@kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230709133154.26206-1-rdunlap@infradead.org>
-X-ClientProxiedBy: LNXP265CA0090.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:76::30) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BY3PR13MB4884:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09da4e10-b299-44a1-64f4-08db8233cc6a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: aESLwaYMhbdJD3+8FHsONcPCY4zgDBY5HE3PeUH09kpWHc58wdUUtG8aDomqq6X8qzkQal8ZjO3RWlve6joPQVDDVqOt668++Lofl6tAwSYRiEFkH+CANdo5s//AoDBGccHpxbgo9dOuHITrm007Koux4hKnNMmiV75zmYAkleTObOWPaYeoWV/TUpvLv0BN0ufXGn4p8HgVpddcktc8bowfRAUaITGKfLCPHve56gmm0EN9zjcMfL6B6lQ5idU29OX4uizwfdJ2XJXuHB97a2c/QJ6Y0MUcFv0NED3Y4Hi6NVCSkb298ohb+DrSAgiwbBbUmyWZ27GFHHNGCch87BRg/5qMBZvai/k1RoxNIDZiGxst4VwhdaFgGUFaJsOdFI+gXNmyOCQbOdJQ9knvAge0KBCq3MuHJPeMmnjpfctZmqxT+n47ESraJyyiOFk697XfVOZ4saX3WltbPvhxyGo2NlkIvMSTV24+/SRcbC8vKQg7a7pB9WDTf8uN9WASeYIwqRMPHaIdQWAHtpHJrw+tkz1h49n/AEg//HI8ncS5u14Sp8HKlSMYbNtbOCb/epx2X/0+7gSMmAgMatNzbpGQsCijwUQ47osc3XctQ7U=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(346002)(39840400004)(376002)(366004)(451199021)(478600001)(36756003)(86362001)(38100700002)(6666004)(54906003)(84970400001)(6486002)(6512007)(8676002)(8936002)(44832011)(5660300002)(7416002)(2906002)(316002)(4326008)(6916009)(66556008)(66476007)(41300700001)(66946007)(2616005)(6506007)(26005)(83380400001)(186003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?08hegpWuPylQG49MBfGzD+gfs3N3I9Q8jtrDhjDzEEx/gTQI3/P9p2waUo0N?=
- =?us-ascii?Q?03bx2z523RWAO0LMOkvAmitpJohVmrNhCpSW4xr4pevUSLWJ8K1KZE95CSR9?=
- =?us-ascii?Q?O9cYiCORxT6xoLsZoa+1w4mhcOYYuF3qqRi3sjLlliZ2oIifjeOVSSaef7xS?=
- =?us-ascii?Q?YKbHrdRs7UmnF6C8v15Y3SaUxMroaDkr275cg14qwBmQj6YCxatRyusggAcM?=
- =?us-ascii?Q?xhiAdSxHPYuZ71KcN83chbdq6ALNSp7NitdI/+i/uxHZsBwVwf9NiSHCH8T8?=
- =?us-ascii?Q?Xw66aMOuMcwMW92CCz3O1Pt4pX7C3XozR9vNRsB0yMg2tw2nov+nqj+Dvcoi?=
- =?us-ascii?Q?FVIl0vtNOfMxVZlU9iwdF4gQkcR8nQS9o4xQK25uJh6G79I4tpzq1tFYW4ee?=
- =?us-ascii?Q?FKMH5GIZ6umrzNt06qn27APQnQC4SkFc3YRCVUdvHRJvK6eVtyD+8uBOxIaG?=
- =?us-ascii?Q?pphWwA64oDFUp9jtFAjB+NgO7+yG1yaeRzixcIypkjCD0zBL0rpxcKqheo0l?=
- =?us-ascii?Q?twyVKXrnBqSeYtu8s8t/azTESafeeTUp86nCXDUfUdCDuzDtmQi95WFqKDDM?=
- =?us-ascii?Q?XYDNkzaYHuQipdfPECkeSvftrhUOL18RpwbbTIszn+f/ylwv/amAbtpL8Jfq?=
- =?us-ascii?Q?9dx9u5a4ElHtMrwbZOPtVZGH+uAr+FsJ5e9fkQuLlpssyMtuhFanRXlNfPL+?=
- =?us-ascii?Q?biXCRl1fiBtAGL0Bf2RHY1P3sk63twosF9Y6alfbuDbY2qcGibmX26dtCoLX?=
- =?us-ascii?Q?RFHMAcvJcWcwg6BlfXxDFvUkKhbxj7DOGNGeM8WyPfz/J4aZuhsyaoOSXKB9?=
- =?us-ascii?Q?wlLveQIVGDWMS5mqDDHWUDW0NpfzyouMzI1sQlY8njddPVnmyu6StuNJ+hbp?=
- =?us-ascii?Q?XkxLjX6JsD9ZXIfhabE7IbtMzT1N2z7c0AJ5/v9iFN2ordPf2Ows8jjDb3W6?=
- =?us-ascii?Q?OltcU9j/vjuqq9TX+if1ubadMpwVbju2nsO2xPANql4Frmh+HHpcqP6SonBr?=
- =?us-ascii?Q?LkzZCgf1BACtkuBA4V8Q5vm6b39DVtBZFOWs6zYcxiVL2qkhl8DgpS/cPKI2?=
- =?us-ascii?Q?Vx6u0DbpmVfAwIw4/06SM3CDTsw0wsFUX3HOlDEx9nqXQCbchcTeKKv85p0M?=
- =?us-ascii?Q?8eF61A0quWTo4on06Ah8HUFLb9GIKyAkmdS0E9VC3AnJLlVWq8zYFFMYTo7p?=
- =?us-ascii?Q?E/HHkyCAoorxm3koAl/BxTWEjF8WVYFv6AM1fHd+0N3XBXSujTe855KamzUy?=
- =?us-ascii?Q?HXcHk65ec1TTcpg0NUTLM8MNZeREt7i1MR69MpidBWemeA7gwfA7KFoP/0IK?=
- =?us-ascii?Q?FXtZx7LhOleSCsiJNabcKix8mzLmdpd3hPPUyI9UGELMarYd5yb/oqr/wQl2?=
- =?us-ascii?Q?ZxqgJ5o+COb1f5QvjG8iRgxHKW/e0LLiEmLoM3ter6/Hzfzx4zlubs5JeTs2?=
- =?us-ascii?Q?lizaoTGwFRiEpKUdLCafkJsq6OOowWv8RGqIkPZIfLv5NwhgMTty/wBh2P9+?=
- =?us-ascii?Q?rLkrSd1jmg1gyZXBTxpV3JAcCo3GrVm3hX1leVNcRsyP1Pn1AHhSIic/KA/D?=
- =?us-ascii?Q?5SKmYS+1zUQljs8QIIPCvsZ651BqWQgtl4bw/ddI+61xcBAxFqbaE1XpIaQ8?=
- =?us-ascii?Q?vA=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09da4e10-b299-44a1-64f4-08db8233cc6a
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2023 17:25:18.9384
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eagEkZKewLFtqcINSaRLVytw2pXDcs1RYqKBod7F8PPKMV/NlrReFwUPVfzvcMSfyRCVws7REFQLrWRHzYxEkeGQw7Bwp8Okceitrp+x1U8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR13MB4884
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230711100636.63b0a88a@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jul 09, 2023 at 06:31:54AM -0700, Randy Dunlap wrote:
-> Quieten a gcc (11.3.0) build error or warning by checking the function
-> call status and returning -EBUSY if the function call failed.
-> This is similar to what several other wireless drivers do for the
-> SIOCGIWRATE ioctl call when there is a locking problem.
-> 
-> drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]
+On Tue, Jul 11, 2023 at 10:06:36AM -0700, Jakub Kicinski wrote:
 
-Hi Randy,
+> Now we're getting into our favorite argument and completely
+> sidetracking the conversation, aren't we? :) And as usual 
+> our ability to present facts is limited by various NDAs..
 
-There seem to be other calls to readStatusRid() in the same file
-with similar properties. Perhaps it would be best to fix them too?
+Yes, well, maybe I should stop taking the bait everytime you write
+"proprietary" :)
+ 
+> > We also have the roce support in the switch from all major
+> > switch vendors.
+> 
+> By which you mean all major switch vendors should support basic RoCE
+> requirements. But most vendors will try to put special features into
+> their switches trying to make the full NIC + switch solution as sticky
+> as possible.
 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Link: lore.kernel.org/r/39abf2c7-24a-f167-91da-ed4c5435d1c4@linux-m68k.org
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: netdev@vger.kernel.org
-> ---
->  drivers/net/wireless/cisco/airo.c |    5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff -- a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
-> --- a/drivers/net/wireless/cisco/airo.c
-> +++ b/drivers/net/wireless/cisco/airo.c
-> @@ -6157,8 +6157,11 @@ static int airo_get_rate(struct net_devi
->  	struct iw_param *vwrq = &wrqu->bitrate;
->  	struct airo_info *local = dev->ml_priv;
->  	StatusRid status_rid;		/* Card status info */
-> +	int ret;
->  
-> -	readStatusRid(local, &status_rid, 1);
-> +	ret = readStatusRid(local, &status_rid, 1);
-> +	if (ret)
-> +		return -EBUSY;
->  
->  	vwrq->value = le16_to_cpu(status_rid.currentXmitRate) * 500000;
->  	/* If more than one rate, set auto */
-> 
+Yep. At the high end open standards based ethernet has also notably
+"failed" as well. Every switch vendor now offers their own proprietary
+ecosystem on a whole bunch of different axis. They all present
+"ethernet" toward the host but the host often needs to work in a
+special way to really take full advantage of the proprietary fabric
+behaviors.
+
+> Last I checked every generation of HW from even a single vendor came out
+> with a new congestion control algorithm and add-ons. 
+
+Probably, but I don't really view this as an IB or roce issue.
+
+Back in the day, there was "data center ethernet" which was a
+standardization effort to try and tame some of these problems. roce
+was imagined as an important workload over DCE, but the effort was
+ethernet focused and generic. Sadly DCE and successor standard based
+congestion mangement approaches did not work, or were "standardized"
+in a way that had a big hole that needed to be filled with proprietary
+algorithms. Eventualy the interest in standardization seems to have
+waned and several of the big network operators seem to be valuing
+their unique congestion management as a proprietary element. From a
+vendor perspective this is has turned into an interop train
+wreck. Sigh.
+
+roce is just highly sensitive to loss - which is managed in ethernet
+through congestion management. This is why you see roce and congestion
+management so tightly linked, and perhaps in some deployments becomes
+the motivating reason to look at congestion management.
+
+However, TCP under congestion management is also very interesting and
+is a motivation to deploy congestion management in its own right in
+some cases.
+
+Jason
