@@ -2,85 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 190BE751081
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jul 2023 20:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C746751324
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 00:02:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231592AbjGLS14 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jul 2023 14:27:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38870 "EHLO
+        id S231791AbjGLWCS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jul 2023 18:02:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233050AbjGLS1z (ORCPT
+        with ESMTP id S232888AbjGLWCM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jul 2023 14:27:55 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D341CDC;
-        Wed, 12 Jul 2023 11:27:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=u0DMZJiVIf563aqVx60BkXx3lve5bk9ZgOTpPvU5Mu0=; b=EoK+8bj1c8leE24XB6sfrjwrsO
-        Af4oBayvGsRkwBvQmKmyZRkTUug4T5dPHblMRemI0875e+dzC2CVMgL9EO9DesFx4y88EgBTXqOJd
-        cGC0WyVn+NSfhKEKrqri6eginv0tON5ut4P3TXarqd5krV6Y1HtP4gGgjAhE6Iha0h+wfTqKX7NVl
-        NA10OSiuCRvhJGN1yKiBtKoZ9cusy/DMfficR0YYNMRrZSSWHg2yuCPazfyuETExvIXJCCKccwxTn
-        /ibjxC35fSDl1xxM05sJY6PJTba6Hqp6Kv7njid7grNibyue+pGqL53uK+hUd0zhz0YOHKRyCFaNQ
-        kyHMCvrQ==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1qJeZ6-000tN5-0m;
-        Wed, 12 Jul 2023 18:27:52 +0000
-Date:   Wed, 12 Jul 2023 11:27:52 -0700
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Minjie Du <duminjie@vivo.com>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "open list:ATHEROS ATH5K WIRELESS DRIVER" 
-        <linux-wireless@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        opensource.kernel@vivo.com
-Subject: Re: [PATCH v1] drivers: wireless: ath5k: fix parameter check in
- ath5k_debug_init_device
-Message-ID: <ZK7wqH86hEswxGo6@bombadil.infradead.org>
-References: <20230712124259.15096-1-duminjie@vivo.com>
+        Wed, 12 Jul 2023 18:02:12 -0400
+X-Greylist: delayed 12634 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 12 Jul 2023 15:01:51 PDT
+Received: from puskom.unisbablitar.ac.id (unknown [36.66.216.186])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87AF526A1
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 15:01:51 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by puskom.unisbablitar.ac.id (Postfix) with ESMTP id 8F3BB3866AB;
+        Tue, 11 Jul 2023 20:34:45 +0700 (WIB)
+Received: from puskom.unisbablitar.ac.id ([127.0.0.1])
+        by localhost (puskom.unisbablitar.ac.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id shMGlT2YrMrG; Tue, 11 Jul 2023 20:34:42 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by puskom.unisbablitar.ac.id (Postfix) with ESMTP id C487D383649;
+        Tue, 11 Jul 2023 20:34:41 +0700 (WIB)
+X-Virus-Scanned: amavisd-new at unisbablitar.ac.id
+Received: from puskom.unisbablitar.ac.id ([127.0.0.1])
+        by localhost (puskom.unisbablitar.ac.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 25pVm3VyOjqW; Tue, 11 Jul 2023 20:34:41 +0700 (WIB)
+Received: from [192.168.8.101] (unknown [41.85.163.141])
+        by puskom.unisbablitar.ac.id (Postfix) with ESMTPSA id 4A7BA3893DE;
+        Tue, 11 Jul 2023 20:34:33 +0700 (WIB)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230712124259.15096-1-duminjie@vivo.com>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Representative 
+To:     Recipients <mail@puskom.unisbablitar.ac.id>
+From:   Global Trader Company <mail@puskom.unisbablitar.ac.id>
+Date:   Tue, 11 Jul 2023 14:34:25 +0100
+Reply-To: potterroger11@gmail.com
+Message-Id: <20230711133434.4A7BA3893DE@puskom.unisbablitar.ac.id>
+X-Spam-Status: Yes, score=7.3 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,RDNS_NONE,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [36.66.216.186 listed in list.dnswl.org]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [41.85.163.141 listed in zen.spamhaus.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [potterroger11[at]gmail.com]
+        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 08:42:59PM +0800, Minjie Du wrote:
-> Make IS_ERR() judge the debugfs_create_dir() function return
-> in ath5k_debug_init_device().
-> 
-> Signed-off-by: Minjie Du <duminjie@vivo.com>
-> ---
->  drivers/net/wireless/ath/ath5k/debug.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath5k/debug.c b/drivers/net/wireless/ath/ath5k/debug.c
-> index 4b41160e5..08058b3f7 100644
-> --- a/drivers/net/wireless/ath/ath5k/debug.c
-> +++ b/drivers/net/wireless/ath/ath5k/debug.c
-> @@ -982,7 +982,7 @@ ath5k_debug_init_device(struct ath5k_hw *ah)
->  	ah->debug.level = ath5k_debug;
->  
->  	phydir = debugfs_create_dir("ath5k", ah->hw->wiphy->debugfsdir);
-> -	if (!phydir)
-> +	if (IS_ERR(phydir))
-
-Please use IS_ERR_OR_NULL() instead.
-
-With that change added:
-
-Acked-by: Luis Chamberlain <mcgrof@kernel.org>
-
-  Luis
+My name is , Mrs Rita Potter Rogers we need a Company Representative in your city location, you can work online or at home and get good payment, contact us if interested on this Email: potterroger11@gmail.com
