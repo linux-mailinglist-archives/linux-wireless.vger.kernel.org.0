@@ -2,148 +2,423 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F11C74EFEA
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 15:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C15FF74F017
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 15:29:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232925AbjGKNLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 09:11:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39902 "EHLO
+        id S232524AbjGKN3S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 09:29:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjGKNLa (ORCPT
+        with ESMTP id S230263AbjGKN3R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 09:11:30 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF112F7
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 06:11:28 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-55b5a3915f5so3919471a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 06:11:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1689081088; x=1691673088;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wPdyri92L3qWMfLakhYh6hhyYNfXQVLXTm4MfbgrCSM=;
-        b=HwueZwYKGASMpnXA54qa8kJRp+Y4TROwaWVjgJT4DHOi3ase5SMQmwObiWZdcOnT2b
-         CwCMZWz9Hl0Nf8clwIL1/U8+96qtWxYbRLt78/Fl90aPtkcN457gFUR5xSld5i5HM9tr
-         Oavf4f466zEk31fxGKU7oxnYu6069ftd+pioCLw9L1Zz95x2dH0oN3DPndP4gxw9RR2l
-         Q+6idxu3a9Gwva3IUt/XaDHCSfP8VtvG4OKolu00OkEPrPR6Bss4kT7j64ItS/p+g4OJ
-         /yCYIbcFLFzGPz5W1FDVexH7CCmz3cmPkKfhUC40s6RPZmxWu/Wm088eTy+yzVLEHOUU
-         7VGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689081088; x=1691673088;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wPdyri92L3qWMfLakhYh6hhyYNfXQVLXTm4MfbgrCSM=;
-        b=aTh2BFMMMczblC8UW/JblVVJ6eZgsxkxGLybk1nmnndLVe8txTOZ75XrZD/QZIixzP
-         gQR9vjkySxPGY9PLzreNFX5Kb+vDYFlfv1JCIPWOptYOfDq/1L+ie9yg7P8rm+te8QPa
-         vovkWL+VIoRCqG7VJ1iFen1vb0rUfENdPxfQkLQU6ZpDgyZOHatrGrUM9RNzFwOlv2Cs
-         TfYvFc0kz3HxssL4XcrWjKANBUoh3V3vsZg9jP8rw+gkEMnr95WFNkXr/2L9QLpvCkjK
-         28Ll7JmEfNDIdFYchj6rzNAHSA1lO4mQHQqDs9Zhcs90XDReBFPP+P0nhziOSwldpnxT
-         DQdg==
-X-Gm-Message-State: ABy/qLZAR6Rjp2yMRsCw12HHHDt7jkr7o8GWFykDpFV+GZSJ2ZC9BRCu
-        SVwQeHkZ+FhtDexpHAiUqO3ZjQ==
-X-Google-Smtp-Source: APBJJlH/pNqhx9Sk3rAUvsyO9Yo5N3ENJbgYjIKEPGeTeHsBGXcH1oaexcEKAHIm23DxD+Q1c2BUkg==
-X-Received: by 2002:a17:90a:df02:b0:25c:571:44bc with SMTP id gp2-20020a17090adf0200b0025c057144bcmr12789299pjb.28.1689081087984;
-        Tue, 11 Jul 2023 06:11:27 -0700 (PDT)
-Received: from ziepe.ca ([206.223.160.26])
-        by smtp.gmail.com with ESMTPSA id q17-20020a17090a2e1100b00256353eb8f2sm7811671pjd.5.2023.07.11.06.11.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 06:11:27 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1qJD9J-0009xq-LG;
-        Tue, 11 Jul 2023 10:11:25 -0300
-Date:   Tue, 11 Jul 2023 10:11:25 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Mina Almasry <almasrymina@google.com>
-Cc:     Christoph Hellwig <hch@lst.de>, John Hubbard <jhubbard@nvidia.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <jbrouer@redhat.com>,
-        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Message-ID: <ZK1U/Vo0NvhNm9pq@ziepe.ca>
-References: <20230619110705.106ec599@kernel.org>
- <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
- <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
- <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
- <ZKNA9Pkg2vMJjHds@ziepe.ca>
- <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
- <ZKxDZfVAbVHgNgIM@ziepe.ca>
- <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
- <ZKyZBbKEpmkFkpWV@ziepe.ca>
- <CAHS8izOTiSO5PkM+x-CASjwew=U2j=JRNpbz_6NC6AsDTQ17Ug@mail.gmail.com>
+        Tue, 11 Jul 2023 09:29:17 -0400
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3AAE77
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 06:29:13 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:3922:0:640:7af7:0])
+        by forward102b.mail.yandex.net (Yandex) with ESMTP id D41AE60034;
+        Tue, 11 Jul 2023 16:29:09 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 8TZOrUgWlqM0-zhFRwTC0;
+        Tue, 11 Jul 2023 16:29:09 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689082149;
+        bh=+R3xNct0BbU6sWtdyx97XJ911yLAQrPJ7LG8jmcnBj8=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=nqbxROciNAkBrMwqNLPa5NZmQyuNa/kjZo3aXjIrUtmx68JvACYSfGe9O5s27fS+q
+         RGpeIHYMvEOEpH/v+qos17ef8Hshlu8si8Jwtc40RznSjSOnIv2nFvsPp94Ypi9yBb
+         qmhEzhaN6uQd2WNGRt3tV5HAWqIUZUxDVpoiU8N0=
+Authentication-Results: mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: ath10k: unify PCI and SNOC interfaces to CE pipes
+Date:   Tue, 11 Jul 2023 16:28:26 +0300
+Message-ID: <20230711132850.116267-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHS8izOTiSO5PkM+x-CASjwew=U2j=JRNpbz_6NC6AsDTQ17Ug@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 05:45:05PM -0700, Mina Almasry wrote:
+Unify 'struct ath10k_snoc_pipe' and 'struct ath10k_pci_pipe'
+into (smaller and simpler) 'struct ath10k_pipe', drop relevant
+leftovers and adjust related code.
 
-> > At least from my position I want to see MEMORY_DEVICE_PCI_P2PDMA used
-> > to represent P2P memory.
-> 
-> Would using p2pdma API instead of dmabuf be an acceptable direction?
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/ath/ath10k/ce.h   | 12 ++++++
+ drivers/net/wireless/ath/ath10k/pci.c  | 51 +++++++++++---------------
+ drivers/net/wireless/ath/ath10k/pci.h  | 19 +---------
+ drivers/net/wireless/ath/ath10k/snoc.c | 43 +++++++++-------------
+ drivers/net/wireless/ath/ath10k/snoc.h | 12 +-----
+ 5 files changed, 52 insertions(+), 85 deletions(-)
 
-"p2pdma API" is really just using MEMORY_DEVICE_PCI_P2PDMA and
-teaching the pagepool how to work with ZONE_DEVICE pages.
+diff --git a/drivers/net/wireless/ath/ath10k/ce.h b/drivers/net/wireless/ath/ath10k/ce.h
+index 666ce384a1d8..8a32dfaf2a61 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.h
++++ b/drivers/net/wireless/ath/ath10k/ce.h
+@@ -130,6 +130,18 @@ struct ath10k_ce_pipe {
+ 	const struct ath10k_ce_ops *ops;
+ };
+ 
++/* Per-pipe state used in both PCI and SNOC interfaces. */
++struct ath10k_pipe {
++	/* Handle of an underlying Copy Engine. */
++	struct ath10k_ce_pipe *ce_hdl;
++
++	/* Index of this pipe in pipe_info arrays. */
++	u8 pipe_num;
++
++	/* Pipe buffer size. */
++	size_t buf_sz;
++};
++
+ /* Copy Engine settable attributes */
+ struct ce_attr;
+ 
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index a7f44f6335fb..910aae83ae1d 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -761,11 +761,11 @@ static inline const char *ath10k_pci_get_irq_method(struct ath10k *ar)
+ 	return "legacy";
+ }
+ 
+-static int __ath10k_pci_rx_post_buf(struct ath10k_pci_pipe *pipe)
++static int __ath10k_pci_rx_post_buf(struct ath10k_pipe *pipe)
+ {
+-	struct ath10k *ar = pipe->hif_ce_state;
+-	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
++	struct ath10k *ar = ce_pipe->ar;
++	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 	struct sk_buff *skb;
+ 	dma_addr_t paddr;
+ 	int ret;
+@@ -800,12 +800,12 @@ static int __ath10k_pci_rx_post_buf(struct ath10k_pci_pipe *pipe)
+ 	return 0;
+ }
+ 
+-static void ath10k_pci_rx_post_pipe(struct ath10k_pci_pipe *pipe)
++static void ath10k_pci_rx_post_pipe(struct ath10k_pipe *pipe)
+ {
+-	struct ath10k *ar = pipe->hif_ce_state;
++	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
++	struct ath10k *ar = ce_pipe->ar;
+ 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+-	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
+ 	int ret, num;
+ 
+ 	if (pipe->buf_sz == 0)
+@@ -1193,7 +1193,7 @@ static void ath10k_pci_process_rx_cb(struct ath10k_ce_pipe *ce_state,
+ {
+ 	struct ath10k *ar = ce_state->ar;
+ 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
+-	struct ath10k_pci_pipe *pipe_info =  &ar_pci->pipe_info[ce_state->id];
++	struct ath10k_pipe *pipe_info =  &ar_pci->pipe_info[ce_state->id];
+ 	struct sk_buff *skb;
+ 	struct sk_buff_head list;
+ 	void *transfer_context;
+@@ -1236,7 +1236,7 @@ static void ath10k_pci_process_htt_rx_cb(struct ath10k_ce_pipe *ce_state,
+ {
+ 	struct ath10k *ar = ce_state->ar;
+ 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
+-	struct ath10k_pci_pipe *pipe_info =  &ar_pci->pipe_info[ce_state->id];
++	struct ath10k_pipe *pipe_info =  &ar_pci->pipe_info[ce_state->id];
+ 	struct ath10k_ce_pipe *ce_pipe = pipe_info->ce_hdl;
+ 	struct sk_buff *skb;
+ 	struct sk_buff_head list;
+@@ -1351,7 +1351,7 @@ int ath10k_pci_hif_tx_sg(struct ath10k *ar, u8 pipe_id,
+ {
+ 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+-	struct ath10k_pci_pipe *pci_pipe = &ar_pci->pipe_info[pipe_id];
++	struct ath10k_pipe *pci_pipe = &ar_pci->pipe_info[pipe_id];
+ 	struct ath10k_ce_pipe *ce_pipe = pci_pipe->ce_hdl;
+ 	struct ath10k_ce_ring *src_ring = ce_pipe->src_ring;
+ 	unsigned int nentries_mask;
+@@ -1969,18 +1969,14 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
+ 	return 0;
+ }
+ 
+-static void ath10k_pci_rx_pipe_cleanup(struct ath10k_pci_pipe *pci_pipe)
++static void ath10k_pci_rx_pipe_cleanup(struct ath10k_pipe *pci_pipe)
+ {
+-	struct ath10k *ar;
+-	struct ath10k_ce_pipe *ce_pipe;
+-	struct ath10k_ce_ring *ce_ring;
++	struct ath10k_ce_pipe *ce_pipe = pci_pipe->ce_hdl;
++	struct ath10k_ce_ring *ce_ring = ce_pipe->dest_ring;
++	struct ath10k *ar = ce_pipe->ar;
+ 	struct sk_buff *skb;
+ 	int i;
+ 
+-	ar = pci_pipe->hif_ce_state;
+-	ce_pipe = pci_pipe->ce_hdl;
+-	ce_ring = ce_pipe->dest_ring;
+-
+ 	if (!ce_ring)
+ 		return;
+ 
+@@ -2001,18 +1997,14 @@ static void ath10k_pci_rx_pipe_cleanup(struct ath10k_pci_pipe *pci_pipe)
+ 	}
+ }
+ 
+-static void ath10k_pci_tx_pipe_cleanup(struct ath10k_pci_pipe *pci_pipe)
++static void ath10k_pci_tx_pipe_cleanup(struct ath10k_pipe *pci_pipe)
+ {
+-	struct ath10k *ar;
+-	struct ath10k_ce_pipe *ce_pipe;
+-	struct ath10k_ce_ring *ce_ring;
++	struct ath10k_ce_pipe *ce_pipe = pci_pipe->ce_hdl;
++	struct ath10k_ce_ring *ce_ring = ce_pipe->src_ring;
++	struct ath10k *ar = ce_pipe->ar;
+ 	struct sk_buff *skb;
+ 	int i;
+ 
+-	ar = pci_pipe->hif_ce_state;
+-	ce_pipe = pci_pipe->ce_hdl;
+-	ce_ring = ce_pipe->src_ring;
+-
+ 	if (!ce_ring)
+ 		return;
+ 
+@@ -2044,7 +2036,7 @@ static void ath10k_pci_buffer_cleanup(struct ath10k *ar)
+ 	int pipe_num;
+ 
+ 	for (pipe_num = 0; pipe_num < CE_COUNT; pipe_num++) {
+-		struct ath10k_pci_pipe *pipe_info;
++		struct ath10k_pipe *pipe_info;
+ 
+ 		pipe_info = &ar_pci->pipe_info[pipe_num];
+ 		ath10k_pci_rx_pipe_cleanup(pipe_info);
+@@ -2105,8 +2097,8 @@ int ath10k_pci_hif_exchange_bmi_msg(struct ath10k *ar,
+ 				    void *resp, u32 *resp_len)
+ {
+ 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
+-	struct ath10k_pci_pipe *pci_tx = &ar_pci->pipe_info[BMI_CE_NUM_TO_TARG];
+-	struct ath10k_pci_pipe *pci_rx = &ar_pci->pipe_info[BMI_CE_NUM_TO_HOST];
++	struct ath10k_pipe *pci_tx = &ar_pci->pipe_info[BMI_CE_NUM_TO_TARG];
++	struct ath10k_pipe *pci_rx = &ar_pci->pipe_info[BMI_CE_NUM_TO_HOST];
+ 	struct ath10k_ce_pipe *ce_tx = pci_tx->ce_hdl;
+ 	struct ath10k_ce_pipe *ce_rx = pci_rx->ce_hdl;
+ 	dma_addr_t req_paddr = 0;
+@@ -2487,7 +2479,7 @@ static void ath10k_pci_override_ce_config(struct ath10k *ar)
+ int ath10k_pci_alloc_pipes(struct ath10k *ar)
+ {
+ 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
+-	struct ath10k_pci_pipe *pipe;
++	struct ath10k_pipe *pipe;
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 	int i, ret;
+ 
+@@ -2495,7 +2487,6 @@ int ath10k_pci_alloc_pipes(struct ath10k *ar)
+ 		pipe = &ar_pci->pipe_info[i];
+ 		pipe->ce_hdl = &ce->ce_states[i];
+ 		pipe->pipe_num = i;
+-		pipe->hif_ce_state = ar;
+ 
+ 		ret = ath10k_ce_alloc_pipe(ar, i, &ar_pci->attr[i]);
+ 		if (ret) {
+diff --git a/drivers/net/wireless/ath/ath10k/pci.h b/drivers/net/wireless/ath/ath10k/pci.h
+index 480cd97ab739..633c64e53a89 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.h
++++ b/drivers/net/wireless/ath/ath10k/pci.h
+@@ -76,23 +76,6 @@ struct pcie_state {
+ /* PCIE_CONFIG_FLAG definitions */
+ #define PCIE_CONFIG_FLAG_ENABLE_L1  0x0000001
+ 
+-/* Per-pipe state. */
+-struct ath10k_pci_pipe {
+-	/* Handle of underlying Copy Engine */
+-	struct ath10k_ce_pipe *ce_hdl;
+-
+-	/* Our pipe number; facilitates use of pipe_info ptrs. */
+-	u8 pipe_num;
+-
+-	/* Convenience back pointer to hif_ce_state. */
+-	struct ath10k *hif_ce_state;
+-
+-	size_t buf_sz;
+-
+-	/* protects compl_free and num_send_allowed */
+-	spinlock_t pipe_lock;
+-};
+-
+ struct ath10k_pci_supp_chip {
+ 	u32 dev_id;
+ 	u32 rev_id;
+@@ -114,7 +97,7 @@ struct ath10k_pci {
+ 	/* Operating interrupt mode */
+ 	enum ath10k_pci_irq_mode oper_irq_mode;
+ 
+-	struct ath10k_pci_pipe pipe_info[CE_COUNT_MAX];
++	struct ath10k_pipe pipe_info[CE_COUNT_MAX];
+ 
+ 	/* Copy Engine used for Diagnostic Accesses */
+ 	struct ath10k_ce_pipe *ce_diag;
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 26214c00cd0d..c228000a6e0f 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -488,10 +488,10 @@ static u32 ath10k_snoc_read32(struct ath10k *ar, u32 offset)
+ 	return val;
+ }
+ 
+-static int __ath10k_snoc_rx_post_buf(struct ath10k_snoc_pipe *pipe)
++static int __ath10k_snoc_rx_post_buf(struct ath10k_pipe *pipe)
+ {
+ 	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
+-	struct ath10k *ar = pipe->hif_ce_state;
++	struct ath10k *ar = ce_pipe->ar;
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 	struct sk_buff *skb;
+ 	dma_addr_t paddr;
+@@ -527,12 +527,12 @@ static int __ath10k_snoc_rx_post_buf(struct ath10k_snoc_pipe *pipe)
+ 	return 0;
+ }
+ 
+-static void ath10k_snoc_rx_post_pipe(struct ath10k_snoc_pipe *pipe)
++static void ath10k_snoc_rx_post_pipe(struct ath10k_pipe *pipe)
+ {
+-	struct ath10k *ar = pipe->hif_ce_state;
++	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
++	struct ath10k *ar = ce_pipe->ar;
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+-	struct ath10k_ce_pipe *ce_pipe = pipe->ce_hdl;
+ 	int ret, num;
+ 
+ 	if (pipe->buf_sz == 0)
+@@ -572,7 +572,7 @@ static void ath10k_snoc_process_rx_cb(struct ath10k_ce_pipe *ce_state,
+ {
+ 	struct ath10k *ar = ce_state->ar;
+ 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+-	struct ath10k_snoc_pipe *pipe_info =  &ar_snoc->pipe_info[ce_state->id];
++	struct ath10k_pipe *pipe_info =  &ar_snoc->pipe_info[ce_state->id];
+ 	struct sk_buff *skb;
+ 	struct sk_buff_head list;
+ 	void *transfer_context;
+@@ -688,7 +688,7 @@ static int ath10k_snoc_hif_tx_sg(struct ath10k *ar, u8 pipe_id,
+ {
+ 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+-	struct ath10k_snoc_pipe *snoc_pipe;
++	struct ath10k_pipe *snoc_pipe;
+ 	struct ath10k_ce_pipe *ce_pipe;
+ 	int err, i = 0;
+ 
+@@ -836,18 +836,14 @@ static inline void ath10k_snoc_irq_enable(struct ath10k *ar)
+ 	ath10k_ce_enable_interrupts(ar);
+ }
+ 
+-static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
++static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_pipe *snoc_pipe)
+ {
+-	struct ath10k_ce_pipe *ce_pipe;
+-	struct ath10k_ce_ring *ce_ring;
++	struct ath10k_ce_pipe *ce_pipe = snoc_pipe->ce_hdl;
++	struct ath10k_ce_ring *ce_ring = ce_pipe->dest_ring;
++	struct ath10k *ar = ce_pipe->ar;
+ 	struct sk_buff *skb;
+-	struct ath10k *ar;
+ 	int i;
+ 
+-	ar = snoc_pipe->hif_ce_state;
+-	ce_pipe = snoc_pipe->ce_hdl;
+-	ce_ring = ce_pipe->dest_ring;
+-
+ 	if (!ce_ring)
+ 		return;
+ 
+@@ -868,18 +864,14 @@ static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
+ 	}
+ }
+ 
+-static void ath10k_snoc_tx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
++static void ath10k_snoc_tx_pipe_cleanup(struct ath10k_pipe *snoc_pipe)
+ {
+-	struct ath10k_ce_pipe *ce_pipe;
+-	struct ath10k_ce_ring *ce_ring;
++	struct ath10k_ce_pipe *ce_pipe = snoc_pipe->ce_hdl;
++	struct ath10k_ce_ring *ce_ring = ce_pipe->src_ring;
++	struct ath10k *ar = ce_pipe->ar;
+ 	struct sk_buff *skb;
+-	struct ath10k *ar;
+ 	int i;
+ 
+-	ar = snoc_pipe->hif_ce_state;
+-	ce_pipe = snoc_pipe->ce_hdl;
+-	ce_ring = ce_pipe->src_ring;
+-
+ 	if (!ce_ring)
+ 		return;
+ 
+@@ -900,7 +892,7 @@ static void ath10k_snoc_tx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
+ static void ath10k_snoc_buffer_cleanup(struct ath10k *ar)
+ {
+ 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+-	struct ath10k_snoc_pipe *pipe_info;
++	struct ath10k_pipe *pipe_info;
+ 	int pipe_num;
+ 
+ 	del_timer_sync(&ar_snoc->rx_post_retry);
+@@ -1374,7 +1366,7 @@ static int ath10k_snoc_setup_resource(struct ath10k *ar)
+ {
+ 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+-	struct ath10k_snoc_pipe *pipe;
++	struct ath10k_pipe *pipe;
+ 	int i, ret;
+ 
+ 	timer_setup(&ar_snoc->rx_post_retry, ath10k_snoc_rx_replenish_retry, 0);
+@@ -1383,7 +1375,6 @@ static int ath10k_snoc_setup_resource(struct ath10k *ar)
+ 		pipe = &ar_snoc->pipe_info[i];
+ 		pipe->ce_hdl = &ce->ce_states[i];
+ 		pipe->pipe_num = i;
+-		pipe->hif_ce_state = ar;
+ 
+ 		ret = ath10k_ce_alloc_pipe(ar, i, &host_ce_config_wlan[i]);
+ 		if (ret) {
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
+index d4bce1707696..e29788201347 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.h
++++ b/drivers/net/wireless/ath/ath10k/snoc.h
+@@ -23,16 +23,6 @@ struct snoc_state {
+ 	u32 svc_to_pipe_map;
+ };
+ 
+-struct ath10k_snoc_pipe {
+-	struct ath10k_ce_pipe *ce_hdl;
+-	u8 pipe_num;
+-	struct ath10k *hif_ce_state;
+-	size_t buf_sz;
+-	/* protect ce info */
+-	spinlock_t pipe_lock;
+-	struct ath10k_snoc *ar_snoc;
+-};
+-
+ struct ath10k_snoc_target_info {
+ 	u32 target_version;
+ 	u32 target_type;
+@@ -69,7 +59,7 @@ struct ath10k_snoc {
+ 	dma_addr_t mem_pa;
+ 	struct ath10k_snoc_target_info target_info;
+ 	size_t mem_len;
+-	struct ath10k_snoc_pipe pipe_info[CE_COUNT_MAX];
++	struct ath10k_pipe pipe_info[CE_COUNT_MAX];
+ 	struct ath10k_snoc_ce_irq ce_irqs[CE_COUNT_MAX];
+ 	struct ath10k_ce ce;
+ 	struct timer_list rx_post_retry;
+-- 
+2.41.0
 
-I suspect this will clash badly with Matthew's work here:
-
-https://lore.kernel.org/all/20230111042214.907030-1-willy@infradead.org/
-
-As from a mm side we haven't ever considered that ZONE_DEVICE and
-"netmem" can be composed together. The entire point of netmem like
-stuff is that the allocator hands over the majority of struct page to
-the allocatee, and ZONE_DEVICE can't work like that. 
-
-However, assuming that can be solved in some agreeable way then it
-would be OK to go down this path.
-
-But, I feel like this is just overall too hard a direction from the mm
-perspective.
-
-I don't know anything about page pool, but the main sticking point is
-its reliance on struct page. If it can find another way to locate its
-meta data (eg an xarray), at least for some cases, it would make
-things alot easier.
-
-Jason
