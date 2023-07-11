@@ -2,106 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C635D74E647
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 07:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6216674E64D
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 07:23:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229871AbjGKFSH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 01:18:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55692 "EHLO
+        id S230103AbjGKFXR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 01:23:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjGKFSG (ORCPT
+        with ESMTP id S229888AbjGKFXQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 01:18:06 -0400
-Received: from mx-lax3-1.ucr.edu (mx-lax3-1.ucr.edu [169.235.156.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D0B812A
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 22:18:05 -0700 (PDT)
+        Tue, 11 Jul 2023 01:23:16 -0400
+Received: from mx2.ucr.edu (mx2.ucr.edu [138.23.62.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA1012E
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 22:23:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
-  t=1689052686; x=1720588686;
-  h=mime-version:references:in-reply-to:from:date:message-id:
-   subject:to:cc:content-transfer-encoding;
-  bh=J7mRGXWzjzUypZl1YrlY6WnKyilGpAMzn3Fsy5/G7mU=;
-  b=PmTPaJFcFG+/TLTLWbus1VXCqqhLtqyxqJ/7DoYNG6mCXPPUlgVEi4KA
-   HgwVihUyrsYn5qPFhOSB8qLmZWuccA+iVB2oNXgmC3g/N+oJxMD6Pe3uN
-   hhSd8RNFM2+MglXqe3g4tRygiIkUl9b71OYbLY0cYzzm1fJtiMyRECaWp
-   xJxPkXu4AKUvW/x+aQdFBrH00Dtz634UzrJNPFwCnG2ohKjAiwb2CXiy4
-   8IvbveLO7pYQ0+tqMgEaQsGLn2uklytbIwEvZYB6eLIUW9/38Fyp4WZtS
-   QwlpiZ+qHeg1RPajnHnsBFfo1LrvDhjztuRHORVh6HLYuGAxBriBjD1Gt
-   w==;
-Received: from mail-wr1-f72.google.com ([209.85.221.72])
-  by smtp-lax3-1.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Jul 2023 22:18:05 -0700
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-31596170243so1664372f8f.1
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 22:18:04 -0700 (PDT)
+  t=1689052995; x=1720588995;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QWyU+rQMzDLb05pXkZZeTLSin284oMZhWweJMfW0gaY=;
+  b=biBcNYoidbc6c8HEqKGo2fXrm1Snl/nBAIMu+7d7ZYHgx/kBY102JgPm
+   MJDo3EFZ87sR1NRGvMXXN6NrtQ8bl9sr6Wz8uUUqtaucZyen5fPmjLwgJ
+   Jb7yTeSluh6suExHNLXi7PauV6f+Jcvc6T67JxIffNcZfLEPhl4HHNTwy
+   TYzsBhFe8dNz9N3y9PShrP2eoN4fJqZY3J/XsRGijF/W7dwBuxrCKRY5O
+   az5ck2+/bjPua4EbAKmcLHf/1apIb47TDEqhlVBEi/V9l2WbURsxj81//
+   WrLECY3d1hKEKFWL+7fWs4mv+ATd9Jb9YTPh2Uwp+InVqu4FmIdnvbbfK
+   Q==;
+Received: from mail-io1-f72.google.com ([209.85.166.72])
+  by smtp2.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Jul 2023 22:23:14 -0700
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-786f2ff0697so133843839f.1
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Jul 2023 22:23:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ucr.edu; s=rmail; t=1689052683; x=1691644683;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J7mRGXWzjzUypZl1YrlY6WnKyilGpAMzn3Fsy5/G7mU=;
-        b=tGMxj18PMGNBcN11yKaDN2a8+AEOJLpLBtgkukMkomxoAQW1SohL/wOlp+9LgZhM4G
-         pF23yM43mJennj9ItvgP8QjvrMd+x8pPaEhJjALVGAfRog6uEKW1Lee/OvPzIlUpMqK8
-         hHbP+QByT0LmmexpGnpvo0jMr+kjJ6wMkgrTU=
+        d=ucr.edu; s=rmail; t=1689052993; x=1691644993;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uqg7UvHO1vogsyp/LtKhkl2lP5WBKlgMWbM9rdXBjjo=;
+        b=rcIHN6HSzv8xTsnDg2XTYIHns8S/NOUBjbpDbF4if0iRlKef7Pvit7zPbPxnCK3WqX
+         zh8TxuQBSVwe8zYMzdUc2T27cQK1+0Zsgq6F89tKRGe28yy5X01yuwTSVdC6OV2q9KE0
+         +Y0KFC2izKv5WWML3jeH4Tjbvf8s6nGuurxo0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689052683; x=1691644683;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J7mRGXWzjzUypZl1YrlY6WnKyilGpAMzn3Fsy5/G7mU=;
-        b=PQ1e7Zd/4QoInbQ+pb7rCdooyHvNa3oUh+c3ewbdPIm5OTqmtWbmrdJTMGmBUvo/cK
-         h1GMKsy7JJyL2vgWTqQS7InAXoZBQ925PdDYMGBOnLM4zQj/1C6GOfAWrI6qIvajwesS
-         Qw5MvbN1GdnnwfIJZt+Uxr44JaScHQ667vpJzfGMW/JrGRxi4fPYJsXGlm09JvoKd/Ih
-         7Ma3td9oUAsPZkYrWttguESsRw3OExDF/PbIgHXw3fuob5678z+lOkY6FRiSxBYlRvhE
-         agTOtrHaekc+faWAbiPYQX7DMIskSH4W7VebAfpD1j9GKQxgYU1xBJ5TyBBqGM1Cxdct
-         EjQw==
-X-Gm-Message-State: ABy/qLbWwA7nieIQd/ge2tYHu2KcgkqQH7N8f9XEdFbIwzytNrkGBZ+c
-        0mZjt4YnNgD3LjDvCnUB6u+a/aVRWuGU+56vGv/XWTNZEyN93u4q+acr+UArg/+YNyJ5e4SoCtu
-        db+0xUBhI1O7dudTZjXkgYZV9y8khYQBMsgwfkZV97SBlqGlWZEH0
-X-Received: by 2002:a5d:504d:0:b0:314:1582:6eb4 with SMTP id h13-20020a5d504d000000b0031415826eb4mr13048366wrt.46.1689052682981;
-        Mon, 10 Jul 2023 22:18:02 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFcnTK0PswcZXZPjRlH+DrHN2Yu+zWHba4C9fsKbw7o/gHv+E+HaCsuq/OYFlMktrMxYq6kbtwbdKeqSeL4N7A=
-X-Received: by 2002:a5d:504d:0:b0:314:1582:6eb4 with SMTP id
- h13-20020a5d504d000000b0031415826eb4mr13048355wrt.46.1689052682700; Mon, 10
- Jul 2023 22:18:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <CA+UBctBLWF14TsgT4OfanmnxTqbm9mNxyHhjJqpFo7c+kdjDsw@mail.gmail.com>
- <a8c6e741a9c704dad9b63e1e85136a8e6da09b44.camel@redhat.com>
- <CA+UBctANALC+FdNf+0v+hFZS5RPry=44LF3HQWKMYCxibgb_vw@mail.gmail.com> <770f630823c33f25ecddcbac19ef3acad82c2636.camel@redhat.com>
-In-Reply-To: <770f630823c33f25ecddcbac19ef3acad82c2636.camel@redhat.com>
+        d=1e100.net; s=20221208; t=1689052993; x=1691644993;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uqg7UvHO1vogsyp/LtKhkl2lP5WBKlgMWbM9rdXBjjo=;
+        b=WdUj8rKkHq/RGfS280urASJG6WaqaOYvvSTDrtXLtvvzSg2OnmwNTlDHeySEf3ucwe
+         gu7kjMLbw+KaiikApaW2spkwkWTh9TXFKpE1FAp0ZVl+KSsmDEV2dxFm04U6npag0MQ9
+         Nn9Wnacvqd3gBrpy90Y4ztycZ+2wwdyGvgKKpcm+NbeYs6e9hOaxYS4LLngUdyftx93W
+         Whdbt7L6LuLkoAHvrWBJrFXHFRYjn0tQvvpgc6/jhpxJFEZStVAWzspBmg/UPapYVm5w
+         5pD4ykzkKy+w7j5OQa+TviBS45Z2NCIDUstBxNbkaGKeUXKpY7CwBRde7/Z11/svomny
+         XLsA==
+X-Gm-Message-State: ABy/qLb08MJxg2bMG9V80TXgL8BB9GxLgC2lrA+UJLhsBAeGKcovOSQU
+        0W8zgSY31597/WY0iE+ryA+CIYsABLLqmkKb2kDgzVV+HwNZu2djnrQJW3sXcvwFfkUdhgkObyH
+        kOSUIPr/lijMFzY0x4FAOSTH9gjPS
+X-Received: by 2002:a6b:760f:0:b0:786:26f0:3092 with SMTP id g15-20020a6b760f000000b0078626f03092mr13386668iom.3.1689052993318;
+        Mon, 10 Jul 2023 22:23:13 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGrx6Kz6Gs0LaOT30w9EoY4muW18zkAHNptQE+3CUjBhiLcxLh7TEpn7B09U7qWS5jWcj4d3w==
+X-Received: by 2002:a6b:760f:0:b0:786:26f0:3092 with SMTP id g15-20020a6b760f000000b0078626f03092mr13386657iom.3.1689052992971;
+        Mon, 10 Jul 2023 22:23:12 -0700 (PDT)
+Received: from yuhao-ms.. ([2600:6c51:4700:3f7c:3e6a:a7ff:fe52:5148])
+        by smtp.gmail.com with ESMTPSA id k14-20020a6bef0e000000b007870c56387dsm380530ioh.49.2023.07.10.22.23.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jul 2023 22:23:12 -0700 (PDT)
 From:   Yu Hao <yhao016@ucr.edu>
-Date:   Mon, 10 Jul 2023 22:17:51 -0700
-Message-ID: <CA+UBctA8iE+NWqgTk-v8K5-nAGzX9Zb4fJu+xP0PKmzyxzVufg@mail.gmail.com>
-Subject: Re: [PATCH] net: wireless: cisco: Fix possible uninit bug
-To:     Paolo Abeni <pabeni@redhat.com>
-Cc:     kvalo@kernel.org, keescook@chromium.org, gustavoars@kernel.org,
-        Jason@zx2c4.com, linux-wireless@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc:     Yu Hao <yhao016@ucr.edu>, Kalle Valo <kvalo@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Kees Cook <keescook@chromium.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH RFC] net: wireless: cisco: Fix possible uninit bug
+Date:   Mon, 10 Jul 2023 22:23:07 -0700
+Message-Id: <20230711052310.3294305-1-yhao016@ucr.edu>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Got it. Let me do this.
+The struct cap_rid should be initialized by function readCapabilityRid.
+However, there is not return value check. Iit is possible that
+the function readCapabilityRid returns error code and cap_rid.softCap
+is not initialized. But there is a read later for this field.
 
-Yu Hao
+Signed-off-by: Yu Hao <yhao016@ucr.edu>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+---
+ drivers/net/wireless/cisco/airo.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-On Mon, Jul 10, 2023 at 9:20=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> On Sun, 2023-07-09 at 19:52 -0700, Yu Hao wrote:
-> > I found that the related code is from Linux-2.6.12-rc2.
-> > In this situation, the 'Fixes' tag should be 'Fixes: 1da177e4c3f4
-> > ("Linux-2.6.12-rc2")'?
->
-> Exactly!
->
-> Cheers,
->
-> Paolo
->
+diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+index 7c4cc5f5e1eb..391ac1e9e261 100644
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -6950,8 +6950,11 @@ static int airo_get_range(struct net_device *dev,
+ 	CapabilityRid cap_rid;		/* Card capability info */
+ 	int		i;
+ 	int		k;
++	int		status;
+ 
+-	readCapabilityRid(local, &cap_rid, 1);
++	status = readCapabilityRid(local, &cap_rid, 1);
++	if (status != SUCCESS)
++		return -EINVAL;
+ 
+ 	dwrq->length = sizeof(struct iw_range);
+ 	memset(range, 0, sizeof(*range));
+-- 
+2.34.1
+
