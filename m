@@ -2,291 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38EA774E78F
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 08:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B072174E8B4
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 10:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230431AbjGKGw0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 02:52:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35120 "EHLO
+        id S230150AbjGKIKh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 04:10:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230322AbjGKGwY (ORCPT
+        with ESMTP id S229635AbjGKIKf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 02:52:24 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5940F188;
-        Mon, 10 Jul 2023 23:52:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689058343; x=1720594343;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=xmfyUKctCz038dw1lR/RnkSSZj+tRTiIoFCVnQGhR4c=;
-  b=SRY0FOdG/ycWK6LOa28bQY2osHtahl2MksQBN65u9HRnkZRNDs5cwSdY
-   qdP9Qz7K+xK+p7f/NL6HuRizadDYOR6WzdBJZSoAqBFZAXRnwwdJ0oTRD
-   tMK7EESFonwk2m0+4vWY6eZHNA77AuUfz2V1ej+wVq3+0JiHdLGkrg0X3
-   LMxSBtgM867cMIDCOazIgrKbpkauy8DiEeKwpOXWBWBSNJOZ4dcUdE2A6
-   nhlQyhtB+l1bSWPiX2M4fKl6KsCZA/CfrnnfH0cfemWz3+ggcNa1WycXi
-   JpzbOEFPlToVvdf9rNzB7guGv7MXvDgxiW08qQ3MNMfi8y2STYdMkfev8
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="430628326"
-X-IronPort-AV: E=Sophos;i="6.01,196,1684825200"; 
-   d="scan'208";a="430628326"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 23:52:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="698331084"
-X-IronPort-AV: E=Sophos;i="6.01,196,1684825200"; 
-   d="scan'208";a="698331084"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orsmga006.jf.intel.com with ESMTP; 10 Jul 2023 23:52:22 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 10 Jul 2023 23:52:21 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Mon, 10 Jul 2023 23:52:21 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.43) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Mon, 10 Jul 2023 23:52:21 -0700
+        Tue, 11 Jul 2023 04:10:35 -0400
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2067.outbound.protection.outlook.com [40.107.117.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228071A8
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 01:10:33 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Iq5G5XQduhzgxDV6EPtqBOLnhSG6/k/5lG3btVdnjwr+PrSQTAe52p2RZZWDwG8KygTp1HyP03oK3mjpBaVR0BeR9OjTI6X44vXagUsXuWkUagNS5GzG+P5qQ5r8ntvx1nVVYLdp0RMYp0l+XVx06d07KHllU+tW83IiU6JBqFzNFqmnaChNXXrpXxgooyEbSBDk9baHVUAkBC1T/n0dC7iDU9gVGONhZtyB11HBMmSa8xhXwDwdiVe5fpQa70eg00AG8VrBJYrk3pzy54eA9jx3WJZY1AXc/e1dg4KVQc5yc9bldvWUEuR8SgrhHwtvYDM4lS0JwgBvF7YcouwlIQ==
+ b=LSWesRMRbAnhpJWm8s9ezpDdKTo/BPEdajyqoL5inUtHL/UZOh8Iiy0TNhcJkp7UpcpjQsId97UiGlAPv+Uszjf38LunR4E7sufzLAhFRf+7rzI3f6r2jdNHRuc+jINooMsqoCun8Bm8xbxcF29WGUw2SspOjBznqJXbbe2Wuhx6p9Jp9azL7QcbzNDFtrGPhX4FYX6MFCIijPPqiQrb1ya6Iiuo7Anzpg8FMoAMz2vgKF0+Cq7BZvwd/QU4d5TQjsrrrZ1HrEc5314A6yxz7r+5GTV7oYUrtfkV8CCrrPzhqdIppGjLJ6SSpmPmS2VWnUTisLc/dfDDphR3NiEe5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BvTT4j1o6+uQ+KN5RKHhuZPQKNry6jQllwG61INyw4M=;
- b=GlKAcY9p+qacbh8MGe5GO1vz6hr8hT1yG+9QaY2IVOE/d8TtpMUtXzsF2VkQ5TNIxWOSnxHtbBXkyJKvc3Le3heHOaQdIzZav/+SStbSty3ux0q3N4KtrxmALJN6cqH4VUdXDW4QWImJeBVSuHx94dfJDqxVg8Qze/lTfL+QKWBkZoNk/VD3tYB77x3co0NcvwKRDG3S4yIGX2xxgjS6bOWzM7ueU7X9wRt1fNcfKQXuPhLU7H03Sq1ltnEXkRQcHnGZ2z+tIMrJ5rIA2HjO5M9BFwO/2RglHB13xyIA8KJdxyitwnax/kr11p6piqpOVfWDHnKE1oe2AJ0tj0xjgA==
+ bh=z7yytgArhhcQAhzvZYbDgi3LqaSH3GT1FPkR4PsI4PQ=;
+ b=B9XMFHpfyJJbOum374whOQ9PzS0bqCPAT9fICuGhkGFE300nAapZt5GRRcNbLpIFaY9yPG5HmLdF0j8i8eK7qJWvdk0A2XOXn8ip1Qq1AlfKw73AQQ0100t106y4tRYhY9T+fRSj1MyTASonIf+8QNZ7MjuDh03+cjnoyUtuwG2eI6i9BatrtDU0QB+k+PTlaJLnb6loTmb6UWZW58o3vI9geyEumLMjS6B4wqz6OBiAO4+pVj6WroFDiurAp9Pdn6uRTyohvcHkCTPXRgR3vhko5X87q8bSqwbRIM+6leVrvT6YRgfV9H/lg9oaRSpOFw3A/Isd0w2J5yNdgrzYsA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=newratek.com; dmarc=pass action=none header.from=newratek.com;
+ dkim=pass header.d=newratek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=newratek.onmicrosoft.com; s=selector1-newratek-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z7yytgArhhcQAhzvZYbDgi3LqaSH3GT1FPkR4PsI4PQ=;
+ b=s4V8lY4Tukz/pQszyLdLxdJ4ba4TpkTeyvyt6nfL378+Co7NN4NmtbMzDdpnt4BwVqkw27gt3N8ghN4fXXVq1ErWLvMz1vzxze+M2iNTcpZJHSs2NCc5kCObnur8AIq9QDuuOxzm8HfuKX5yCRD8wXETNGIWFl0wA5EX+zWLmu8=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by PH0PR11MB4952.namprd11.prod.outlook.com (2603:10b6:510:40::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30; Tue, 11 Jul
- 2023 06:52:19 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::aeb:12b5:6ac9:fab0]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::aeb:12b5:6ac9:fab0%7]) with mapi id 15.20.6500.029; Tue, 11 Jul 2023
- 06:52:19 +0000
-Date:   Mon, 10 Jul 2023 23:52:14 -0700
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     Jason Gunthorpe <jgg@ziepe.ca>,
-        Mina Almasry <almasrymina@google.com>,
-        Christoph Hellwig <hch@lst.de>,
-        John Hubbard <jhubbard@nvidia.com>,
-        "Dan Williams" <dan.j.williams@intel.com>
-CC:     David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        "Jesper Dangaard Brouer" <jbrouer@redhat.com>, <brouer@redhat.com>,
-        Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, <davem@davemloft.net>,
-        <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        "Yisen Zhuang" <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Geetha sowjanya" <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        "Leon Romanovsky" <leon@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        <linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Jonathan Lemon <jonathan.lemon@gmail.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Message-ID: <64acfc1e46a80_8e17829462@dwillia2-xfh.jf.intel.com.notmuch>
-References: <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
- <20230619110705.106ec599@kernel.org>
- <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
- <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
- <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
- <ZKNA9Pkg2vMJjHds@ziepe.ca>
- <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
- <ZKxDZfVAbVHgNgIM@ziepe.ca>
- <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
- <ZKyZBbKEpmkFkpWV@ziepe.ca>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+ header.d=none;dmarc=none action=none header.from=newratek.com;
+Received: from SG2PR01MB3286.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:80::10) by SG2PR01MB4364.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:1b7::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.44; Tue, 11 Jul
+ 2023 08:10:29 +0000
+Received: from SG2PR01MB3286.apcprd01.prod.exchangelabs.com
+ ([fe80::a0c:9c3f:6dba:79aa]) by SG2PR01MB3286.apcprd01.prod.exchangelabs.com
+ ([fe80::a0c:9c3f:6dba:79aa%4]) with mapi id 15.20.6565.028; Tue, 11 Jul 2023
+ 08:10:29 +0000
+From:   JUN-KYU SHIN <jk.shin@newratek.com>
+To:     kuba@kernel.org
+Cc:     jk.shin@newratek.com, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: mac80211: fix error handling when channel_switch on S1G band
+Date:   Tue, 11 Jul 2023 17:09:18 +0900
+Message-Id: <20230711080918.20114-1-jk.shin@newratek.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230705141206.22a74fa3@kernel.org>
+References: <20230705141206.22a74fa3@kernel.org>
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZKyZBbKEpmkFkpWV@ziepe.ca>
-X-ClientProxiedBy: MW3PR06CA0029.namprd06.prod.outlook.com
- (2603:10b6:303:2a::34) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+Content-Type: text/plain
+X-ClientProxiedBy: SGAP274CA0016.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::28)
+ To SG2PR01MB3286.apcprd01.prod.exchangelabs.com (2603:1096:4:80::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH0PR11MB4952:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e2411a9-95bc-4816-93b1-08db81db5e73
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: SG2PR01MB3286:EE_|SG2PR01MB4364:EE_
+X-MS-Office365-Filtering-Correlation-Id: bf591e38-8e40-488f-bdc7-08db81e64a16
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 5lOmx+jWgR4SuCCKZRKsCI1/HZsm+u3676QyWGpb2SsIbAe0C4DmhYpTolb6sdSmucSQLLP38EUhUHlrfA2BUXuQz7sYTmNTMu8RS2EctYZZzLYpvN+DEcmY1zHGxuxJo+pebJ9CGhZD6VupTfrOo4k9papVeGODJD71XkxHgWUM46wQTIdzNH0QLMTbd5m8l17LYTg0C56v5bpgwsVWUyNWpsQfUd6TguU6o3foaE6Fmjnf+yZEYnmLXO++2wXiftHOjwwnJHWpz7I7SF75jAUHWF0bM76NU9/ZOZOhaMc5BNUyGq5mP667mvD4HoRhk8FZ9GqYd7RRxVx0Ls+LFpln6S6/bVbaZxnJqzVa1UyFK3Mh7ai3eisWTsDUc7EJEwOGqXzYpincAV3SPoalSJRkNAYYvRQwzOM8xuctjuT7uZjdKTiRoGtpQO6jFjfxgGj5I8phssADD6qqFufXm21vgr4uayH+F5BStuY5iZcOLIL22fxwPtpMmTpO1e5n7AfyzuKr0cHguM7JTek1AqUPPCMT4yYPJbEP9jaDp1o=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(136003)(39860400002)(396003)(366004)(376002)(451199021)(38100700002)(86362001)(7406005)(6666004)(6486002)(54906003)(110136005)(82960400001)(26005)(6506007)(53546011)(186003)(9686003)(6512007)(966005)(66556008)(7416002)(2906002)(5660300002)(316002)(66476007)(478600001)(66946007)(8936002)(8676002)(83380400001)(4326008)(41300700001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: IlyYap4NHboF6IJIM5xD1w4iEQ7IQtmL1GZE5b26My53pYN6czj/esiBSrexItTwrWwWcb+HXS4xroOX/MV4NyBsroPe5eZFSiJmnkxXASIf76xg2pdWteQIh3wRTU8v4GmdNfP1s8fl/id7AM7XYJ281GlA29TdJksMFZTsEsejOVLowGN5qpJaRL0/I/7F1TDONfx8G28GSOa4+UnHPJdNj9dG0uh3qxX6T7JkT+kvHpmkT5vIrE27BW7E66z62j6/xGmdjYfk0WyGj+rwZ+YtMRd4GmYrXkUeQ6mbnzYPlHSCTCIXVacW6YeV/lx3QmLGMx/giVSQ5VnxzExg0S/m4/pHJJd5uALlSYTdwibgwnb1UlVN33zCV35eR8gW4RAdp+JedC//cnZthFMVUD0Y8J/3Z9CjM8ho5QVOzaoME1FrIiae9+X2Ib1oHUL1xNgYzSlftNMxbR+tJFB11NZpvOpbb/Ns9kM5cYk1IRWNy0LrMxw56LM9w+k6pqPhEi2Zmq8OSNZThno7nSwSP2by9njHggkI8cSm1sEBM0NxmWvwXZj2kWjwTzI6jg0vZKSxNFnSM7GzqrWym2190Nkzxa3mdz3TLcWd1utXIrA4Cas9ySqE9wCf2SGGHvFL
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR01MB3286.apcprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(366004)(136003)(39840400004)(396003)(376002)(451199021)(6666004)(6486002)(478600001)(38100700002)(86362001)(36756003)(41300700001)(6506007)(66946007)(4744005)(5660300002)(8676002)(66556008)(316002)(26005)(52116002)(2906002)(6512007)(1076003)(6916009)(8936002)(4326008)(83380400001)(2616005)(38350700002)(66476007)(186003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QmJOQ2tUWG8xK09OaTE3YmNINGZDcVBqY040SXdjc0hLZ0E4b25vdTFGS1Nr?=
- =?utf-8?B?RUJtMWJkclFHZHRta1JqM3ZVbm5qcXY2TTdHVUZwb1I2VmlVWm9nd3hzMHhC?=
- =?utf-8?B?VWpaaCtETUE5QytDV2o2Ky9ndGZ1bUZSN25vUTMyRnhRalBvQytVazN6THBi?=
- =?utf-8?B?M0pxd0JMS3lGK0VrajBUTFN2N1ZTdytIWFNRRFlGeTVwNm1IeXZmQ2tKWHZF?=
- =?utf-8?B?VCtiUVk0bUxYVFZ5KzVEMFU3dkM2NEErRWc4RFdiNTUydW5DdW5URmY1ekZ2?=
- =?utf-8?B?Rmt4andsVjJwT21QbmJRaWkrZjIrcmp0NWFKdTF0ZDk0MGw5ZGRnRW9BZnd6?=
- =?utf-8?B?YnZoWm9CR1puT3FBVzZVU3FhL0J4Wlg4RVNiZTNlQkVybWpFcFVnT01iOXgx?=
- =?utf-8?B?UEVtTk9DWjdFRXphdis4a1BCazYxbkFuWUFUMXVZbjVHZnhsak12WlAzV0RB?=
- =?utf-8?B?NUJaWEZmZW9acGxMWjhjODUzVkp3UjlSUUFUUjBSVXdNVGw1SFZBRXFzRFBI?=
- =?utf-8?B?ZVFjRlc3ZnlTeDdYejNvbG54aWt2T1RpZmhQVnIxL2E1WnBmSjBxSzcxWk5E?=
- =?utf-8?B?enY4Smx5Wkw4S0RmRXhrUld5aWpUNmdZb3NERkVkMExOakU4OXVxc1R6bXVO?=
- =?utf-8?B?YWdML29FdUFYOXpOS1VEd3dHalVGZm1uR0VWalFBckRQTno1TXFOSXA4RmRn?=
- =?utf-8?B?cGt2UTVqMjQycE80aDk0SFRnV3FYV2NiYmJFOExLYkVOdDMwdEt1bU1QZjBs?=
- =?utf-8?B?R2crQjZhUzZkOU5hQXh2b3Z1R2JwUzJwRFg2TkM5SytoK1krZjBXT2ZDait6?=
- =?utf-8?B?NG80Rnc3NTcyTGc0Q2IvdXJVeGZ5SzBPR1VOUmRUTE9TQ0FpWGF2VDc2TGdN?=
- =?utf-8?B?eTRERFRKMWFGNkdrdFhaZ2l0c1lpL0d1L0hTWGR3c1UwMFRsNHR1QXY2OW5l?=
- =?utf-8?B?T0N4T2tTRFNuNWFVZy83K05mS0o5aVVZa043RFloU0l0dlVaS2Q5RWUwcTBR?=
- =?utf-8?B?bGdhanQxUFhIQXBWTS9sKytQc1ZjSHF4VFpmTExVaytWa3FWNEdDbEJyM0xv?=
- =?utf-8?B?VEFDN3dQd2NBdVU2QkVhSERvYXQzdU1pd2NaNkZtSzdLenFSaWZvaDhmSzAv?=
- =?utf-8?B?a1RHR3M0ZkZlUzcyaXhtaXFBbXFwRS9lOEdZellBYWNvdXRlZEJFSjA3UjFY?=
- =?utf-8?B?bUFWSndwcFpheVF0TjkwRjh4N0RuaDZ0OGc5MGptYVlBeXNWVGNYbFdRMnpI?=
- =?utf-8?B?Y0g5RVF6V0xaSlIrNnBjLzVnZ3hYRFdtZUdnMmJIWGZSTVdQYUVwaU9rMTlZ?=
- =?utf-8?B?eUpUaXB6cUE4bk43c3NvaDBwbmZvOWVJUzBMdHBmdDNKRDJWU2FkRC9EVTUx?=
- =?utf-8?B?M080amVxTGdRMG5GYWhHT1V6OCtaNDA4ZkRrTGE3a1JDSkJQUVY2dmlzWmdt?=
- =?utf-8?B?ampCOHlTZzNORTlnbmt2cDBWcU5ZZUdoM3lvNmVLVzZEUXNOV2YwVjAwc0RU?=
- =?utf-8?B?VUFwaERvUW5RaHJVaXFNdFZYMmtmSC8raysyZGg4MmxSRHBGQ29sY2pXVUxF?=
- =?utf-8?B?cWxrWDJvdXdNbmhMMURzSWpGcThDYTBmbmRzRXF2MWtOS29QUEU0dGg3b0xx?=
- =?utf-8?B?QjRDanovaWlSVDlHbUJvL3ExRjZJRFpDL2tLdFI3aFBwVTRjL1pvRkFLejQ3?=
- =?utf-8?B?b0Q5clNFVzRqcXc3TVAveS8xWm9rbURtelRNQlkyaWR3aTU0MlFheGlTU1pJ?=
- =?utf-8?B?UzdIMjZPVXNXeVU5eVFnY2gzMTNveUozc2dsQUZGZmVpUXErc1J1SnU2QnFp?=
- =?utf-8?B?bi9qMnBQL1NhYUx2Ui9Vb1A3K1o0ZXJ5bkhESTV4cG1CRWUyV0w0NkU3SGZW?=
- =?utf-8?B?cDk1NEZhQUU3OURwd0RtSDB3enZQeXBzeWNyRTJJdVBPSHdmOWY1elM5bnRY?=
- =?utf-8?B?cHZZajJJd0NodUJQOVdaSjNBREEwSzZlZEYxWmkrL0J4YUF6cC9ZUVdaMkdN?=
- =?utf-8?B?Ui9Mbkg1dmZkRk9nTVQvMmYxeFY3YVVBYlQxUEdBVmJsVUY2ZmlTRnJseGVM?=
- =?utf-8?B?MWhNMWNaV2JkRjl6YU5aRTZKWlJ6Q0pRYUUyM3JiLy8xcUIxUlNPMUxMZkR5?=
- =?utf-8?B?MGMvTW5LdER1clo5S2VpbC9LYVJCeUZSRU5uMkZrTkZKd2ZsNjdDZm16N0x6?=
- =?utf-8?B?S1E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e2411a9-95bc-4816-93b1-08db81db5e73
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?dpDBdtBfXOjfTC+bCUBfCIYCpd5oBI3i9Hj4F6NGAa9XNSC3qZ4pjXUzj5b9?=
+ =?us-ascii?Q?rBKVmddDEjJ1pCy6dHFI0oCAytPT1KNMXUHYZSLgnbeRGoR4E2D8bNRXde+1?=
+ =?us-ascii?Q?vd/TveKkegpyrqqtlCwJXXt9NU6K+SD6MuEs63bIcgBe1iwybsMR11sC8mGM?=
+ =?us-ascii?Q?XwS7yCvsnLVKiII0rN2U+k6gc/QI4WtWuxHjStv729RlIJ5k+c1g1pwdlBUj?=
+ =?us-ascii?Q?YahEDZ+l0uxkRUaSx0Rdz1up+3KfSDAzspLUPK8C+ZeRG4hQwoKNgnxqiaFr?=
+ =?us-ascii?Q?8rXRRZK4KPl9E8brOwlmKWT5eozkvFmFgIzibBjBjZ/qkyjBsVvwT0UDLmUk?=
+ =?us-ascii?Q?55MyybaHlAMDQOmo3mr1E1v0MsUInYwjieqybEC6FY3BGCL0pqe+cZ9bt2+F?=
+ =?us-ascii?Q?vBrQJVWU6VfRMrymi5mcuFbrORaZcxhfp5X7vFw6GL6Mjra0vzOM6YbttpkV?=
+ =?us-ascii?Q?ws0wLtBpXO7Y7/AoClsxCxJg7TVZHHoOZOiQbek6QkWo5gXlUA3mQz3x0wi5?=
+ =?us-ascii?Q?L0FhvafpN5IHOmtZy1U9Q2I37CTTSzxV56y1MMgjBjYaVvbUEyc7PyKZ2dLw?=
+ =?us-ascii?Q?Yxp6CwdHuAQ4/UbDcRgDpkWdHYqzMRNXQfvLUHANOvNJLLGx6YNQ+IwvRZfV?=
+ =?us-ascii?Q?KCetq8eXxIGLplBgRDPFPl/B+0qDCUZvRFH7wGbfSmToMH9IfJDyIXthJrHZ?=
+ =?us-ascii?Q?nH2pGDd6f1Vkeq9qwge0yhAjd/CMKJWAfBPRV64UVsp3KtqzIW4W3sYwWnj+?=
+ =?us-ascii?Q?NtSLmJcFWsIa97miyGtWsbVVQOpzKx0uidE6WpqXYOLD9LBX3j+LKuQAt+4C?=
+ =?us-ascii?Q?g1i/53mvN5HZqqQ8l1h2FLFKE7ZSMq3CyARVG5DT/nU50HOY3y0JT8d1bXPP?=
+ =?us-ascii?Q?zDOWHaMs9Jnn0L2jropxesn9RdQ8HSZGwuyqW22ES4pRWCFaV9O8yQO4HBaV?=
+ =?us-ascii?Q?VnQT7OERgL6MH4atCrR8rgC0IXrlrFN7huRzz0nTV/6jAA2IM2qgso2Bx4UX?=
+ =?us-ascii?Q?osh1bO/e4oBh9yBS4pY564YW4gfnPv6HSashlxH+nPFPo2tFl7obAOIoiFyP?=
+ =?us-ascii?Q?O5r/ArIf1ColItDMmzeggyD9ve8qT6j99i0nbJZQ2jUWnMmJGDndx3rxq33t?=
+ =?us-ascii?Q?LvGgw5SCFOhjVKL6gtAJMkQqu+9T3Xg9H3isLRhAAQl8R/J4y69g2LnGmBgM?=
+ =?us-ascii?Q?CShx8uj9XwVqrWhoDrp4nvkcP1aorIeEHGhRy6Pz3dqNP0CR/+rVHthq7vEU?=
+ =?us-ascii?Q?n+7zP+pbtf1CCRFmvD81broiaBtTukKbZxJMalxqB3btABPrFfJnKaxneM68?=
+ =?us-ascii?Q?+unakrzreXAFUUv/0rXPm1M6vW5cvqu9psEEY35YXzWaodXf4NOdYcPvhQhT?=
+ =?us-ascii?Q?EWc6bPwFrPmhyjy3fzO1OS+/5cmJ/5ZfGAGfmWC1wOqXClnR6x1zKAKKVXw6?=
+ =?us-ascii?Q?j/N2EWuLSU5Ws9/IEDdCQv8sldUwk2FUFzan8+v9TgagvfzWrY2i7BHaQQ+t?=
+ =?us-ascii?Q?FEN0TPs9K43cc53sEXCrHMMoSffRppGnDNy42KUn6TKJ45JEVhW1pofYPD9E?=
+ =?us-ascii?Q?mYBIfx9RzExk6pkJuxrsTt6X9WPeT7xXt8PGk7R2?=
+X-OriginatorOrg: newratek.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf591e38-8e40-488f-bdc7-08db81e64a16
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR01MB3286.apcprd01.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2023 06:52:18.9871
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2023 08:10:29.1483
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 5494d269-d3ac-4a40-bf0d-8c29f5475032
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0V9IMFrrRj9ZpKfKDJfLXw42iG7KptrCLlcWI5e0oh44wSCI+gNDsczQvcrTP6UedoQISLU5XS0BnR0qrP+0FqCV8W8bzYh609vSIaR0dE4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4952
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: CrKWu8LCW67TRhtUzCeivndFYz4zegyhHcChY+KPGDnDhRV7TYtfiK0oHYrHveJa1VrdFJFtKWBYFGNHNe397A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR01MB4364
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jason Gunthorpe wrote:
-> On Mon, Jul 10, 2023 at 04:02:59PM -0700, Mina Almasry wrote:
-> > On Mon, Jul 10, 2023 at 10:44 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> > >
-> > > On Wed, Jul 05, 2023 at 06:17:39PM -0700, Mina Almasry wrote:
-> > >
-> > > > Another issue is that in networks with low MTU, we could be DMAing
-> > > > 1400/1500 bytes into each allocation, which is problematic if the
-> > > > allocation is 8K+. I would need to investigate a bit to see if/how to
-> > > > solve that, and we may end up having to split the page and again run
-> > > > into the 'not enough room in struct page' problem.
-> > >
-> > > You don't have an intree driver to use this with, so who knows, but
-> > > the out of tree GPU drivers tend to use a 64k memory management page
-> > > size, and I don't expect you'd make progress with a design where a 64K
-> > > naturaly sized allocator is producing 4k/8k non-compound pages just
-> > > for netdev. We are still struggling with pagemap support for variable
-> > > page size folios, so there is a bunch of technical blockers before
-> > > drivers could do this.
-> > >
-> > > This is why it is so important to come with a complete in-tree
-> > > solution, as we cannot review this design if your work is done with
-> > > hacked up out of tree drivers.
-> > >
-> > 
-> > I think you're assuming the proposal requires dma-buf exporter driver
-> > changes, and I have a 'hacked up out of tree driver' not visible to
-> > you.
-> 
-> Oh, I thought it was obvious what you did in patch 1 was a total
-> non-starter when I said you can't abuse the ZONE_DEVICE pages like
-> this.
-> 
-> You must create ZONE_DEVICE P2P pages, not MEMORY_DEVICE_PRIVATE to
-> represent P2P memory, and you can't do that automatically from the
-> dmabuf core code.
-> 
-> Without doing this the DMA API doesn't actually work properly because
-> it doesn't have enough information to know about what the underlying
-> exporter is.
-> 
-> The entire point of DEVICE_PRIVATE is that the page content, and
-> access to the page's physical location, is *explicitly* unavailable to
-> anyone but the pgmap owner.
-> 
-> > > Fully and properly adding P2P ZONE_DEVICE to a real world driver is a
-> > > pretty big ask still.
-> > 
-> > There is no such ask.
-> 
-> Well, there is from me if you want to use stuct pages as handles for
-> P2P memory. That is what we have defined in the pgmap area.
-> 
-> Also I should warn you that your 'option 2' is being NAK'd by
-> Christoph for now, we are not adding any new code around DMABUF's
-> hacky use of NULL sg_page scatterlist for P2P memory either. I've been
-> working on solutions here but it is slow going.
-> 
-> > On dma-buf changes required. I do need approval from the dma-buf
-> > maintainers,
-> 
-> It is a neat hack, of sorts, to abuse DEVICE_PRIVATE to create struct
-> pages for the exclusive use of pagepool - but you need more approval
-> than just dmabuf maintainers to abuse the pgmap framework like
-> this.
-> 
-> At least from my position I want to see MEMORY_DEVICE_PCI_P2PDMA used
-> to represent P2P memory. You haven't CC'd anyone from the mm community
-> so I've added some people here to see if there are other opinions.
-> 
-> To be clear, you need an explicit ack from mm people on the abusive
-> use of pgmap in patch 1.
+When channel_switch is performed to a channel with a freq_offset,
+such as 909.5 MHz, channel_switch fails with the "-EOPNOTSUPP" error.
+Since freq_offset is used in the S1G band, it should not be treated
+as an error only with the freq_offset condition.
 
-This thread is long so I am only reacting to this first message I am
-copied on, but yes agree with Jason anything peer-to-peer DMA needs to
-reuse p2pdma and it definitely needs in-tree producers and consumers for
-all infrastructure.
+Fixes: b6011960f392 ("mac80211: handle channel frequency offset")
+Signed-off-by: JUN-KYU SHIN <jk.shin@newratek.com>
+---
+ net/mac80211/cfg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-One piece of technical debt standing in the way of any proposed
-expansion of pgmap usage is the final resolution of this topic:
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f2d08dbccfb7..f251945cf6fd 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3909,8 +3909,9 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 		goto out;
+ 	}
+ 
+-	if (params->chandef.chan->freq_offset) {
+-		/* this may work, but is untested */
++	if (params->chandef.chan->freq_offset &&
++	    params->chandef.chan->band != NL80211_BAND_S1GHZ) {
++		/* Currently, offset is supported only on the S1G band. */
+ 		err = -EOPNOTSUPP;
+ 		goto out;
+ 	}
+-- 
+2.25.1
 
-https://lore.kernel.org/all/166579181584.2236710.17813547487183983273.stgit@dwillia2-xfh.jf.intel.com/
-
-I am also generally reticent to entertain taking on new pgmap
-maintenance. I.e. now that accelerator memory attached over a coherent
-link is an open hardware standard (CXL) that addresses what pgmap
-infrastructure enabled in software.
-
-> I know it is not what you want to hear, but there are actual reasons
-> why the P2P DMA problem has been festering for so long, and hacky
-> quick fixes like this are not going to be enough..
-> 
-> Jason
