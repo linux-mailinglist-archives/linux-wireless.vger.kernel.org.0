@@ -2,88 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45EB574E8FB
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 10:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 689E974EC67
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 13:12:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbjGKIZR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 04:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43834 "EHLO
+        id S229990AbjGKLMp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 07:12:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231148AbjGKIZQ (ORCPT
+        with ESMTP id S231558AbjGKLMo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 04:25:16 -0400
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93B0E6F
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 01:25:10 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2891:0:640:3c15:0])
-        by forward100b.mail.yandex.net (Yandex) with ESMTP id CD9E96012C;
-        Tue, 11 Jul 2023 11:25:07 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 6PUZDhdWpeA0-R7j3s1K3;
-        Tue, 11 Jul 2023 11:25:07 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689063907;
-        bh=JVtVuLOgeFfxBRVHtvOXE4rJ6XxxWw4GSNDfk+UNLV0=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=axPYPaG9lWuxRhqCY3emkHAxdVa1xYk+uhF34dTuIU+p5prYjsGQeApqHsu2qiEqo
-         /cFGi4m4jTof0CAqc0YtevDtmgnFZ/CgBDpQOyKnHSYsXvOMusacD57kDhfWiXU+ns
-         ITEzn86FfSj5de14+y6SdcFH2AcX8/2XVeRTbzIQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: mwifiex: fix memory leak in mwifiex_histogram_read()
-Date:   Tue, 11 Jul 2023 11:24:53 +0300
-Message-ID: <20230711082504.18838-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Tue, 11 Jul 2023 07:12:44 -0400
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409D018D
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 04:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Dd+7wNioSMr7f6iy1H0hUOUn4CdjNtwL/S3FkoiVhz0=; b=hjhgaxNuJLhNikHs63JLRoWYLv
+        3YshzsRxup/o7RFKvdaUvX1t5weypZRxIgdChs40ecAQZnRZ4IhD2w5c70rs7RjhjPePfumIVObg1
+        f1FmupwlKahpobHSRwVfYSjwPL4XJExZCbDd2TGiP76k7JI56qWHLHsdOQS3WKtN7Nx8=;
+Received: from p4ff134dd.dip0.t-ipconnect.de ([79.241.52.221] helo=nf.local)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1qJBI7-00Gtjt-CV; Tue, 11 Jul 2023 13:12:23 +0200
+Message-ID: <4bb71d8a-daf1-5f60-daf0-44aa8afcfdc3@nbd.name>
+Date:   Tue, 11 Jul 2023 13:12:22 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [regression] STP on 80211s is broken in 6.4-rc4
+Content-Language: en-US
+To:     Nicolas Escande <nico.escande@gmail.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rg?= =?UTF-8?Q?ensen?= 
+        <toke@toke.dk>, Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse> <ZIQbs0wqdRh7c0Kx@debian.me>
+ <a9d02800-2cd6-a27b-7998-4c97cf2eb692@leemhuis.info>
+ <CTDWJJDKSYYD.XBG1CAZB3A5W@syracuse>
+ <809500b6-4eec-7a5e-5930-00e7eeebcc5e@leemhuis.info>
+ <CTYNAK10A6AJ.1I4W9V78VG1NB@syracuse>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <CTYNAK10A6AJ.1I4W9V78VG1NB@syracuse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Always free the zeroed page on return from mwifiex_histogram_read().
+On 10.07.23 18:50, Nicolas Escande wrote:
+> On Mon Jul 10, 2023 at 1:32 PM CEST, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> On 16.06.23 09:45, Nicolas Escande wrote:
+>> > On Thu Jun 15, 2023 at 2:54 PM CEST, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> >> On 10.06.23 08:44, Bagas Sanjaya wrote:
+>> >>> On Tue, Jun 06, 2023 at 12:55:57PM +0200, Nicolas Escande wrote:
+>> >>>>
+>> >>>> As user of the mesh part of mac80211 on multiple products at work let me say
+>> >>>> thank you for all the work you do on wifi, especially on 80211s, and especially
+>> >>>> the recent improvements you made for mesh fast RX/TX & cross vendor AMSDU compat
+>> >>>>
+>> >>>> We upgraded our kernel from an older (5.15) to a newer 6.4. The problem is STP 
+>> >>>> doesn't work anymore and alas we use it for now (for the better or worse).
+>> >>>>
+>> >>>> What I gathered so far from my setup:
+>> >>>>  - we use ath9k & ath10k
+>> >>>>  - in my case STP frames are received as regular packet and not as amsdu
+>> >>>>  - the received packets have a wrong length of 44 in tcpdump
+>> >>>>    (instead of 38 with our previous kernel)
+>> >>>>  - llc_fixup_skb() tries to pull some 41 bytes out of a 35 bytes packet
+>> >>>>    this makes llc_rcv() discard the frames & breaks STP
+>> >>>>
+>> >>>> >From bisecting the culprit seems to be 986e43b19ae9176093da35e0a844e65c8bf9ede7
+>> >>>> (wifi: mac80211: fix receiving A-MSDU frames on mesh interfaces)
+>> >>>>
+>> >>>> I guess that your changes to handle both ampdu subframes & normal frames in the
+>> >>>> same datapath ends up putting a wrong skb->len for STP (multicast) frames ?
+>> >>>> Honestly I don't understand enough of the 80211 internals & spec to pinpoint the
+>> >>>> exact problem.
+>> >>>>
+>> >>>> It seems this change was already in the 6.3 kernel so I guess someone should
+>> >>>> have seen it before (but I didn't find anything..) ? Maybe I missed something...
+>> >>>>
+>> >>>> Anyway I'm happy to provide more info or try anything you throw at me.
+>> >> [...]
+>> >> Hmmm, Felix did not reply. But let's ignore that for now.
+>> > 
+>> > I haven't seen mails from felix on the list for a few days, I'm guessing he's
+>> > unavailable for now but I'll hapilly wait.
+>>
+>> Still no progress. Hmmm. Are you still okay with that? I've seen no
+>> other reports about this, so waiting is somewhat (albeit not completely)
+>> fine for me if it is for you.
+> I'm not so surprised no one else reported it, using STP on wifi (and 802.11s) is
+> not a really common thing to do, to be honest (and STP on wifi is unreliable).
+> Even though some openwrt guys do it for sure, I'm guessing their kernel version
+> is lagging behind...
+>>
+>> But in any case it might be good if you could recheck 6.5-rc1.
+> Testing on 6.5 as a whole won't be as easy for me as testing a single patch on
+> top of 6.4. I'll do my best to try but from what I saw nothing got merged that
+> would even remotely help me on this issue.
+> 
+> I am not loosing hope that Felix or someone that understands this stuff better
+> finds the time to look into this. I'm guessing it's the summer vacation effet.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Sorry for the delay. This should fix the regression, please test.
+I will submit it for 6.5 soon.
 ---
- drivers/net/wireless/marvell/mwifiex/debugfs.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -580,6 +580,8 @@ int ieee80211_strip_8023_mesh_hdr(struct
+  		hdrlen += ETH_ALEN + 2;
+  	else if (!pskb_may_pull(skb, hdrlen))
+  		return -EINVAL;
++	else
++		payload.eth.h_proto = htons(skb->len - hdrlen);
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/debugfs.c b/drivers/net/wireless/marvell/mwifiex/debugfs.c
-index 52b18f4a774b..0cdd6c50c1c0 100644
---- a/drivers/net/wireless/marvell/mwifiex/debugfs.c
-+++ b/drivers/net/wireless/marvell/mwifiex/debugfs.c
-@@ -253,8 +253,11 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
- 	if (!p)
- 		return -ENOMEM;
- 
--	if (!priv || !priv->hist_data)
--		return -EFAULT;
-+	if (!priv || !priv->hist_data) {
-+		ret = -EFAULT;
-+		goto free_and_exit;
-+	}
-+
- 	phist_data = priv->hist_data;
- 
- 	p += sprintf(p, "\n"
-@@ -309,6 +312,8 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
- 	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
- 				      (unsigned long)p - page);
- 
-+free_and_exit:
-+	free_page(page);
- 	return ret;
- }
- 
--- 
-2.41.0
+  	mesh_addr = skb->data + sizeof(payload.eth) + ETH_ALEN;
+  	switch (payload.flags & MESH_FLAGS_AE) {
+
 
