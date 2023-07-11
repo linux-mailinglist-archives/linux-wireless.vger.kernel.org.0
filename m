@@ -2,30 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A4874E5D5
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 06:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EED774E628
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 06:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbjGKE1P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 00:27:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42048 "EHLO
+        id S229785AbjGKE7N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 00:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjGKE1O (ORCPT
+        with ESMTP id S229583AbjGKE7L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 00:27:14 -0400
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21EE890;
-        Mon, 10 Jul 2023 21:27:12 -0700 (PDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 381696732D; Tue, 11 Jul 2023 06:27:08 +0200 (CEST)
-Date:   Tue, 11 Jul 2023 06:27:08 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Mina Almasry <almasrymina@google.com>,
-        Christoph Hellwig <hch@lst.de>,
+        Tue, 11 Jul 2023 00:59:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6C1FB;
+        Mon, 10 Jul 2023 21:59:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 437196130B;
+        Tue, 11 Jul 2023 04:59:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F237CC433C7;
+        Tue, 11 Jul 2023 04:59:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689051549;
+        bh=AlR0iPOgoKsKvFSvb1vV3TApDy+DT+0ogO2Yh+Wcku8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=njdD/4DeJKfeTDojWA0Tg1eTORxGZbCgaxTa2/UtYp4xgiyGyFEGk14pSiHp6opa8
+         VVcsh/wK3lSkMhbfQJnZ2+ZKtunW9YFlbXrt6vfpZB/ihXCpE73cjkPTAAJRmMoXoH
+         NP1qwYCAceYIfMGoIvREeoiPNT2uTZ/fx9Hq9ZDljyRr5nBdbY1++JtsUBTKF+SK3z
+         TY01Zg3KRgh4LTmsN3HJ0tagmi7SdC3ap8JIH8cXOYqNFDnABfqko8GUdqwlGz6q1G
+         G1qIcD9bPPstlPGhQY/mcYFjB2Feo0mHnEX0/FMvhOg7qH/M0284Ia8X5ds5ElKnri
+         bnwfGwXdbRE2g==
+Date:   Mon, 10 Jul 2023 21:59:06 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
+        Mina Almasry <almasrymina@google.com>,
         John Hubbard <jhubbard@nvidia.com>,
         Dan Williams <dan.j.williams@intel.com>,
         David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
         Jesper Dangaard Brouer <jbrouer@redhat.com>,
         brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
         Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
@@ -57,15 +72,25 @@ Cc:     Mina Almasry <almasrymina@google.com>,
         Jonathan Lemon <jonathan.lemon@gmail.com>
 Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
  page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Message-ID: <20230711042708.GA18658@lst.de>
-References: <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com> <20230619110705.106ec599@kernel.org> <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com> <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org> <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com> <ZKNA9Pkg2vMJjHds@ziepe.ca> <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com> <ZKxDZfVAbVHgNgIM@ziepe.ca> <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com> <ZKyZBbKEpmkFkpWV@ziepe.ca>
+Message-ID: <20230710215906.49514550@kernel.org>
+In-Reply-To: <20230711042708.GA18658@lst.de>
+References: <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
+        <20230619110705.106ec599@kernel.org>
+        <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
+        <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
+        <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
+        <ZKNA9Pkg2vMJjHds@ziepe.ca>
+        <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
+        <ZKxDZfVAbVHgNgIM@ziepe.ca>
+        <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
+        <ZKyZBbKEpmkFkpWV@ziepe.ca>
+        <20230711042708.GA18658@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZKyZBbKEpmkFkpWV@ziepe.ca>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,13 +98,14 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 08:49:25PM -0300, Jason Gunthorpe wrote:
-> The entire point of DEVICE_PRIVATE is that the page content, and
-> access to the page's physical location, is *explicitly* unavailable to
-> anyone but the pgmap owner.
+On Tue, 11 Jul 2023 06:27:08 +0200 Christoph Hellwig wrote:
+> Not going to comment on the rest of this as it seems bat shit crazy
+> hacks for out of tree junk.  Why is anyone even wasting time on this?
 
-DEVICE_PRIVATE is in fact availably to no one at all.  It is a place
-holder for memory not addressable at all.
+Noob question - how does RDMA integrate with the out of tree junk?
+AFAIU it's possible to run the "in-tree" RDMA stack and get "GPU
+direct".
 
-Not going to comment on the rest of this as it seems bat shit crazy
-hacks for out of tree junk.  Why is anyone even wasting time on this?
+Both Jonathan in the past (Meta) and now Mina (Google) are trying 
+to move the needle and at least feed the GPUs over TCP, instead of
+patented, proprietary and closed RDMA transports.
