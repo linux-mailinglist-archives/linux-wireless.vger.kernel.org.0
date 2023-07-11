@@ -2,106 +2,148 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D011A74EEBC
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 14:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F11C74EFEA
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jul 2023 15:11:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229911AbjGKMYz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 08:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57254 "EHLO
+        id S232925AbjGKNLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 09:11:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231646AbjGKMYh (ORCPT
+        with ESMTP id S229537AbjGKNLa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 08:24:37 -0400
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B1651BC5
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 05:23:49 -0700 (PDT)
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-3fbc656873eso69892315e9.1
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 05:23:48 -0700 (PDT)
+        Tue, 11 Jul 2023 09:11:30 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF112F7
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 06:11:28 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-55b5a3915f5so3919471a12.0
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 06:11:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689078084; x=1691670084;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j8qL+FKB3NRMZQtW5eTuMeVwqoQBnBSAfsF2IIW3bbc=;
-        b=kuM1GEoDt8Mocq9w/zJDYB5c9ttnEgfS5VXxqxZD/5oq0wwmArHOtCTNas3Av7JeNQ
-         ufZAx7KjT/yMBMFSjxlCmvyRicdHAZokN8PJ0Z2zUcQ6QW4rraND/03Sn+GWrjZ56wgT
-         Tw/F68zO6r/gjzl0JGqzGFMtkGuto4tZStEzNKzJQsad6lq1zZxYTwxvRYROzgGel1RD
-         y/puRb38aWOdZY5wIUVchDBkmJ6sx71cUY865Luno1tN8z0VevwqejVG1AWr3+NrSIAZ
-         JXS6BPDvxGQ2vD/NgFh8uUDz0VsMf6F4PkXsDuSENigk+gTOA+6MhEaS3hcF7aoE0+0I
-         GsJw==
+        d=ziepe.ca; s=google; t=1689081088; x=1691673088;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wPdyri92L3qWMfLakhYh6hhyYNfXQVLXTm4MfbgrCSM=;
+        b=HwueZwYKGASMpnXA54qa8kJRp+Y4TROwaWVjgJT4DHOi3ase5SMQmwObiWZdcOnT2b
+         CwCMZWz9Hl0Nf8clwIL1/U8+96qtWxYbRLt78/Fl90aPtkcN457gFUR5xSld5i5HM9tr
+         Oavf4f466zEk31fxGKU7oxnYu6069ftd+pioCLw9L1Zz95x2dH0oN3DPndP4gxw9RR2l
+         Q+6idxu3a9Gwva3IUt/XaDHCSfP8VtvG4OKolu00OkEPrPR6Bss4kT7j64ItS/p+g4OJ
+         /yCYIbcFLFzGPz5W1FDVexH7CCmz3cmPkKfhUC40s6RPZmxWu/Wm088eTy+yzVLEHOUU
+         7VGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689078084; x=1691670084;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=j8qL+FKB3NRMZQtW5eTuMeVwqoQBnBSAfsF2IIW3bbc=;
-        b=A36704ZzautmBXW4Wq0GJ//zNhXtNUDOINaedUcpX8w36xtRuBxI+YVIOJW+nHhx+M
-         vrBJv+CFZxtaQf++n0jSWjK/0HBYPydbnnJV77HWK3Nje18G3Ec7N1G+LXZOvCCt5+Ek
-         UEADBLYnb9WbO+Zsngdk15Zah9XPzY38Qf1r2SB+AtIcwz62eAhpfGySUB9pZFfruChv
-         1YMtAj4M2sxD2FJSLoZfa2v4EgB8ESigZ5shnBuqqhhXjtZn82GXuMnQ6TZ7m0wHD6hI
-         G7JCWcG1mfWPtuEs4sG7ZTMhc5IZ3UsBWklTb9yLHR1IC219XJWlu3BKN7ZslukiYTw+
-         312A==
-X-Gm-Message-State: ABy/qLaHaq2i95ACHuKuBg8LSCNl0+KEG0+XLdjRzkjFNng0wc0Wpfyu
-        GNhf1aaJwxvKH36TWQ+raSQ=
-X-Google-Smtp-Source: APBJJlFQBUu6b2DbatZUXch40wSVSOfWoQq9oz1L4KwNOCmH910soO14F5zdUJUa2Pr+V+ihVR5JkQ==
-X-Received: by 2002:a7b:cd94:0:b0:3f7:f2d0:b904 with SMTP id y20-20020a7bcd94000000b003f7f2d0b904mr20170516wmj.8.1689078083530;
-        Tue, 11 Jul 2023 05:21:23 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id e14-20020a5d65ce000000b0031437ec7ec1sm2166600wrw.2.2023.07.11.05.21.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jul 2023 05:21:23 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 11 Jul 2023 14:21:22 +0200
-Message-Id: <CTZC7J3QNXPE.LQ6QWU7ZR0L8@syracuse>
-Subject: Re: [PATCH wireless] wifi: cfg80211: fix receving mesh packets
- without RFC1042 header
-From:   "Nicolas Escande" <nico.escande@gmail.com>
-To:     "Felix Fietkau" <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-Cc:     <johannes@sipsolutions.net>
-X-Mailer: aerc 0.15.1
-References: <20230711115052.68430-1-nbd@nbd.name>
-In-Reply-To: <20230711115052.68430-1-nbd@nbd.name>
+        d=1e100.net; s=20221208; t=1689081088; x=1691673088;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wPdyri92L3qWMfLakhYh6hhyYNfXQVLXTm4MfbgrCSM=;
+        b=aTh2BFMMMczblC8UW/JblVVJ6eZgsxkxGLybk1nmnndLVe8txTOZ75XrZD/QZIixzP
+         gQR9vjkySxPGY9PLzreNFX5Kb+vDYFlfv1JCIPWOptYOfDq/1L+ie9yg7P8rm+te8QPa
+         vovkWL+VIoRCqG7VJ1iFen1vb0rUfENdPxfQkLQU6ZpDgyZOHatrGrUM9RNzFwOlv2Cs
+         TfYvFc0kz3HxssL4XcrWjKANBUoh3V3vsZg9jP8rw+gkEMnr95WFNkXr/2L9QLpvCkjK
+         28Ll7JmEfNDIdFYchj6rzNAHSA1lO4mQHQqDs9Zhcs90XDReBFPP+P0nhziOSwldpnxT
+         DQdg==
+X-Gm-Message-State: ABy/qLZAR6Rjp2yMRsCw12HHHDt7jkr7o8GWFykDpFV+GZSJ2ZC9BRCu
+        SVwQeHkZ+FhtDexpHAiUqO3ZjQ==
+X-Google-Smtp-Source: APBJJlH/pNqhx9Sk3rAUvsyO9Yo5N3ENJbgYjIKEPGeTeHsBGXcH1oaexcEKAHIm23DxD+Q1c2BUkg==
+X-Received: by 2002:a17:90a:df02:b0:25c:571:44bc with SMTP id gp2-20020a17090adf0200b0025c057144bcmr12789299pjb.28.1689081087984;
+        Tue, 11 Jul 2023 06:11:27 -0700 (PDT)
+Received: from ziepe.ca ([206.223.160.26])
+        by smtp.gmail.com with ESMTPSA id q17-20020a17090a2e1100b00256353eb8f2sm7811671pjd.5.2023.07.11.06.11.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jul 2023 06:11:27 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1qJD9J-0009xq-LG;
+        Tue, 11 Jul 2023 10:11:25 -0300
+Date:   Tue, 11 Jul 2023 10:11:25 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Mina Almasry <almasrymina@google.com>
+Cc:     Christoph Hellwig <hch@lst.de>, John Hubbard <jhubbard@nvidia.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Message-ID: <ZK1U/Vo0NvhNm9pq@ziepe.ca>
+References: <20230619110705.106ec599@kernel.org>
+ <CAHS8izOySGEcXmMg3Gbb5DS-D9-B165gNpwf5a+ObJ7WigLmHg@mail.gmail.com>
+ <5e0ac5bb-2cfa-3b58-9503-1e161f3c9bd5@kernel.org>
+ <CAHS8izP2fPS56uXKMCnbKnPNn=xhTd0SZ1NRUgnAvyuSeSSjGA@mail.gmail.com>
+ <ZKNA9Pkg2vMJjHds@ziepe.ca>
+ <CAHS8izNB0qNaU8OTcwDYmeVPtCrEjTTOhwCHtVsLiyhXmPLsXQ@mail.gmail.com>
+ <ZKxDZfVAbVHgNgIM@ziepe.ca>
+ <CAHS8izO3h3yh=CLJgzhLwCVM4SLgf64nnmBtGrXs=vxuJQHnMQ@mail.gmail.com>
+ <ZKyZBbKEpmkFkpWV@ziepe.ca>
+ <CAHS8izOTiSO5PkM+x-CASjwew=U2j=JRNpbz_6NC6AsDTQ17Ug@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHS8izOTiSO5PkM+x-CASjwew=U2j=JRNpbz_6NC6AsDTQ17Ug@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue Jul 11, 2023 at 1:50 PM CEST, Felix Fietkau wrote:
-> Fix ethernet header length field after stripping the mesh header
->
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/all/CT5GNZSK28AI.2K6M69OXM9RW5@syracuse/
-> Fixes: 986e43b19ae9 ("wifi: mac80211: fix receiving A-MSDU frames on mesh=
- interfaces")
-> Reported-by: Nicolas Escande <nico.escande@gmail.com>
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->  net/wireless/util.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/net/wireless/util.c b/net/wireless/util.c
-> index 89c9ad6c886e..1783ab9d57a3 100644
-> --- a/net/wireless/util.c
-> +++ b/net/wireless/util.c
-> @@ -580,6 +580,8 @@ int ieee80211_strip_8023_mesh_hdr(struct sk_buff *skb=
-)
->  		hdrlen +=3D ETH_ALEN + 2;
->  	else if (!pskb_may_pull(skb, hdrlen))
->  		return -EINVAL;
-> +	else
-> +		payload.eth.h_proto =3D htons(skb->len - hdrlen);
-> =20
->  	mesh_addr =3D skb->data + sizeof(payload.eth) + ETH_ALEN;
->  	switch (payload.flags & MESH_FLAGS_AE) {
+On Mon, Jul 10, 2023 at 05:45:05PM -0700, Mina Almasry wrote:
 
-I tested this on my side and everything works again, so if you want/need it=
-:
+> > At least from my position I want to see MEMORY_DEVICE_PCI_P2PDMA used
+> > to represent P2P memory.
+> 
+> Would using p2pdma API instead of dmabuf be an acceptable direction?
 
-Tested-by: Nicolas Escande <nico.escande@gmail.com>
+"p2pdma API" is really just using MEMORY_DEVICE_PCI_P2PDMA and
+teaching the pagepool how to work with ZONE_DEVICE pages.
+
+I suspect this will clash badly with Matthew's work here:
+
+https://lore.kernel.org/all/20230111042214.907030-1-willy@infradead.org/
+
+As from a mm side we haven't ever considered that ZONE_DEVICE and
+"netmem" can be composed together. The entire point of netmem like
+stuff is that the allocator hands over the majority of struct page to
+the allocatee, and ZONE_DEVICE can't work like that. 
+
+However, assuming that can be solved in some agreeable way then it
+would be OK to go down this path.
+
+But, I feel like this is just overall too hard a direction from the mm
+perspective.
+
+I don't know anything about page pool, but the main sticking point is
+its reliance on struct page. If it can find another way to locate its
+meta data (eg an xarray), at least for some cases, it would make
+things alot easier.
+
+Jason
