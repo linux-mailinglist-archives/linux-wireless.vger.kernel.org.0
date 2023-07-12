@@ -2,163 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EFC37513B7
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 00:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA377751440
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 01:14:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232565AbjGLWmE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jul 2023 18:42:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43360 "EHLO
+        id S232259AbjGLXN7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jul 2023 19:13:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231811AbjGLWmB (ORCPT
+        with ESMTP id S231435AbjGLXNt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jul 2023 18:42:01 -0400
-Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2EB51BF0
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 15:42:00 -0700 (PDT)
-Received: by mail-vs1-xe35.google.com with SMTP id ada2fe7eead31-440c14d6a5eso78035137.0
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 15:42:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689201720; x=1691793720;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mz/xfQs228JkD+EmKHVt4aMZuBD4Ky+nWhlpQiowkyI=;
-        b=3JuEXg+yPSc6oD9k/gVHY9JmrXpcmYz2DdmUKfAenXycWth8Ys52+0sfJNBJqhx+JA
-         POfjtfGzT4R2YWrxkgajUcAHuZwh0tHTbms8ZnyvNuUeIHHVBkyqjnNmi7pVjn+1p2XO
-         FT+BJijgfx1i+WKA7jlT7PyuiJDtM4V2bSpZ2ORkcz5BPrprzhZVrwTkYbGJtevpuwWu
-         +4s8IYxiO+jzUiXLxbNo6SvC/rtIpPMvBFlxMxrSFT5yrglpO/RRHqDNwsQ7XIWt3Mrm
-         6q7/TIQmwLLzR3bbJ6UgAadSF6ClWCYMawulX/tcO2I2umBPB5clyz54VDHR+jYWjASk
-         +o/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689201720; x=1691793720;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mz/xfQs228JkD+EmKHVt4aMZuBD4Ky+nWhlpQiowkyI=;
-        b=UOZayfPFmbih4hoYOAj1xbmIN6W01FGQnniD4xvQr8IXrJY+t/2kCw4w1F90uBz9sV
-         jfA/lT4ZIakG9+Pjr6IENf8VovFnjsaWxrN6+CuEMo0zo9NVcZSK+gdsJjYN7bWXe13T
-         IAbLfp46218RrBZwm17Er8Ok/0wMpcyyVhsgpjedZd9afoJ+wiP3oB8Pu1jpaGohmrUr
-         T2ZE3knN2Kge070l/6jUiTN/ZM3XM3mXWSav7z+sDakNKdxjT9Wl2okePEB3e/hYtYWV
-         mThCHWgu/ZRKwF7iGMz1NWuZqHeJ0NxHGUhq3Y8bDsTiu8fu1l33WN6uqjo6XH11pMeV
-         COrw==
-X-Gm-Message-State: ABy/qLai89XsTuxHAHhVtmwCqTfmGl3R0xz6rBhVXhwMMc4LeAwynGSM
-        Mf+CfW79qrNX70dd5Y/lS2J3mo2duJPwTapuU85zIg==
-X-Google-Smtp-Source: APBJJlHG9tuCdU7vOjJOYos5RKoNNv0/pCxlxo2gIMlFQovsMtvJLWra+WgillnY1AK2C/ycTstYjvsR47Bt+BOekOU=
-X-Received: by 2002:a67:b407:0:b0:443:4eca:f7f0 with SMTP id
- x7-20020a67b407000000b004434ecaf7f0mr99255vsl.11.1689201719631; Wed, 12 Jul
- 2023 15:41:59 -0700 (PDT)
+        Wed, 12 Jul 2023 19:13:49 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F14C5270B;
+        Wed, 12 Jul 2023 16:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=Y5SzVlzKIJDGUT9EANNyQG9MJsCdwH/wBupzje6OdiM=; b=qhP8b1q/52VMiBvnIqhcAYbjNx
+        zbmKTamtufBzg+FG6s1+PVEzoqOJ204eV2UElZ37KrbQLYVyDSiK3GxXP0qars3wTrekPxYD75yqo
+        /kzmMYfzIweYsm5sAkfnZyOWVOglsadzHxqCcH5EKZlU5o7VwRpv0YvWNw5bim8GYR/E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qJj08-001BOI-Go; Thu, 13 Jul 2023 01:12:04 +0200
+Date:   Thu, 13 Jul 2023 01:12:04 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Evan Quan <evan.quan@amd.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, Alexander.Deucher@amd.com,
+        Christian.Koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH V6 1/9] drivers core: Add support for Wifi band RF
+ mitigations
+Message-ID: <5439dd61-7b5f-4fc9-8ccd-f7df43a791dd@lunn.ch>
+References: <20230710083641.2132264-1-evan.quan@amd.com>
+ <20230710083641.2132264-2-evan.quan@amd.com>
 MIME-Version: 1.0
-References: <20230711050445.GA19323@lst.de> <ZK1FbjG+VP/zxfO1@ziepe.ca>
- <20230711090047.37d7fe06@kernel.org> <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
- <20230711093224.1bf30ed5@kernel.org> <CAHS8izNHkLF0OowU=p=mSNZss700HKAzv1Oxqu2bvvfX_HxttA@mail.gmail.com>
- <20230711133915.03482fdc@kernel.org> <2263ae79-690e-8a4d-fca2-31aacc5c9bc6@kernel.org>
- <CAHS8izP=k8CqUZk7bGUx4ctm4m2kRC2MyEJv+N4+b0cHVkTQmA@mail.gmail.com>
- <20f6cbda-e361-9a81-de51-b395ec13841a@amd.com> <ZK6ktnwIjXIobFIM@ziepe.ca> <4f6e62e0-b4c2-9fca-6964-28cfea902de0@amd.com>
-In-Reply-To: <4f6e62e0-b4c2-9fca-6964-28cfea902de0@amd.com>
-From:   Mina Almasry <almasrymina@google.com>
-Date:   Wed, 12 Jul 2023 15:41:47 -0700
-Message-ID: <CAHS8izPK4DZ-7JKuxh712tjuh1zpB+Stu6aSdC6vbN3YWHLfMg@mail.gmail.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-To:     =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc:     Jason Gunthorpe <jgg@ziepe.ca>, David Ahern <dsahern@kernel.org>,
-        Samiullah Khawaja <skhawaja@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Jesper Dangaard Brouer <jbrouer@redhat.com>,
-        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>, logang@deltatee.com,
-        Bjorn Helgaas <bhelgaas@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230710083641.2132264-2-evan.quan@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 6:35=E2=80=AFAM Christian K=C3=B6nig
-<christian.koenig@amd.com> wrote:
->
-> Am 12.07.23 um 15:03 schrieb Jason Gunthorpe:
-> > On Wed, Jul 12, 2023 at 09:55:51AM +0200, Christian K=C3=B6nig wrote:
-> >
-> >>> Anyone see any glaring issues with this approach? I plan on trying to
-> >>> implement a PoC and sending an RFC v2.
-> >> Well we already have DMA-buf as user API for this use case, which is
-> >> perfectly supported by RDMA if I'm not completely mistaken.
-> >>
-> >> So what problem do you try to solve here actually?
-> > In a nutshell, netdev's design currently needs struct pages to do DMA
-> > to it's packet buffers.
-> >
-> > So it cannot consume the scatterlist that dmabuf puts out
-> >
-> > RDMA doesn't need struct pages at all, so it is fine.
-> >
-> > If Mina can go down the path of changing netdev to avoid needing
-> > struct pages then no changes to DRM side things.
-> >
-> > Otherwise a P2P struct page and a co-existance with netmem on a
-> > ZONE_DEVICE page would be required. :\
->
-> Uff, depending on why netdev needs struct page (I think I have a good
-> idea why) this isn't really going to work generically either way.
->
-> What we maybe able to do is to allow copy_file_range() between DMA-buf
-> file descriptor and a TCP socket.
->
-> If I'm not completely mistaken that should then end up in DMA-bufs
-> file_operations->copy_file_range callback (maybe with some minor change
-> to allows this).
->
-> The DMA-buf framework could then forward this to the exporter of the
-> memory which owns the backing memory could then do the necessary steps.
->
+> +/**
+> + * wbrf_supported_producer - Determine if the device can report frequencies
+> + *
+> + * @dev: device pointer
+> + *
+> + * WBRF is used to mitigate devices that cause harmonic interference.
+> + * This function will determine if this device needs to report such frequencies.
 
-I may be missing something, but the way it works on our end for
-receive is that we give a list of buffers (dma_addr + length + other
-metadata) to the network card, and the network card writes incoming
-packets to these dma_addrs and gives us an rx completion pointing to
-the data it DMA'd. Usually the network card does something like an
-alloc_page() + dma_map_page() and provides the to the network card.
-Transmit path works similarly. Not sure that adding copy_file_range()
-support to dma-buf enables this in some way.
+How is the WBRF core supposed to answer this question? That it knows
+there is at least one device which has registered with WBRF saying it
+can change its behaviour to avoid causing interference?
 
---=20
-Thanks,
-Mina
+Rather than "Determine if the device can report frequencies" should it be
+"Determine if the device should report frequencies"
+
+A WiFi device can always report frequencies, since it knows what
+frequency is it currently using. However, it is pointless making such
+reports if there is no device which can actually make use of the
+information. 
+
+> +bool wbrf_supported_producer(struct device *dev)
+> +{
+> +	return true;
+> +}
+
+I found the default implementation of true being odd. It makes me
+wounder, what is the point of this call. I would expect this to see if
+a linked list is empty or not.
+
+> +/**
+> + * wbrf_supported_consumer - Determine if the device can react to frequencies
+
+This again seems odd. A device should know if it can react to
+frequencies or not. WBRF core should not need to tell it. What makes
+more sense to me is that this call is about a device telling the WBRF
+core it is able to react to frequencies. The WBRF core then can give a
+good answer to wbrf_supported_producer(), yes, i know of some other
+device who might be able to do something to avoid causing interference
+to you, so please do tell me about frequencies you want to use.
+
+What is missing here in this API is policy information. The WBRF core
+knows it has zero or more devices which can report what frequencies
+they are using, and it has zero or more devices which maybe can do
+something. But then you need policy to say this particular board needs
+any registered devices to actually do something because of poor
+shielding. Should this policy be as simple as a bool, or should it
+actually say the board has shielding issues for a list of frequencies?
+I think the answer to what will depend on the cost of taking action
+when no action is actually required.
+
+> + * wbrf_register_notifier - Register for notifications of frequency changes
+> + *
+> + * @nb: driver notifier block
+> + *
+> + * WBRF is used to mitigate devices that cause harmonic interference.
+> + * This function will allow consumers to register for frequency notifications.
+> + */
+> +int wbrf_register_notifier(struct notifier_block *nb)
+> +{
+> +	return blocking_notifier_chain_register(&wbrf_chain_head, nb);
+> +}
+
+What are the timing requirements for the handler? Should the handler
+block until the device has finished doing what it needs to do and the
+frequency response has settled? We don't want the WiFi device doing a
+SNR measurement until we know local noise is at a minimum. I think it
+would be good to document things like this here.
+
+> +struct wbrf_ranges_out {
+> +	u32			num_of_ranges;
+> +	struct exclusion_range	band_list[MAX_NUM_OF_WBRF_RANGES];
+> +} __packed;
+
+Seems odd using packed here. It is the only structure which is
+packed. I would also move the u32 after the struct so it is naturally
+aligned on 64 bit systems.
+
+	Andrew
