@@ -2,82 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9FA0750A42
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jul 2023 16:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37366750A5C
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jul 2023 16:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232557AbjGLOAZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jul 2023 10:00:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
+        id S233449AbjGLOBo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jul 2023 10:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232206AbjGLOAY (ORCPT
+        with ESMTP id S233312AbjGLOBf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jul 2023 10:00:24 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F6710CB;
-        Wed, 12 Jul 2023 07:00:23 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fb4146e8deso84217005e9.0;
-        Wed, 12 Jul 2023 07:00:23 -0700 (PDT)
+        Wed, 12 Jul 2023 10:01:35 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 131C31BD7;
+        Wed, 12 Jul 2023 07:01:25 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-3094910b150so7621311f8f.0;
+        Wed, 12 Jul 2023 07:01:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689170421; x=1691762421;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20221208; t=1689170483; x=1691762483;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wwBA6CgC/uSWwgysf9itlxsD4ci1tHALzPKkAgebLIk=;
-        b=nzBtO/tTreuHkaSg8fsmex2z01A3jTBVz5BYmCLBaOKK8UpmigesIYHZBbNV2F3fUv
-         vJdnAapY4APjKKP+9/rmFjtawAPdjbHnVNb4lh+lopJ+3P4aijA5Tr95wdIyCqyk40vr
-         b3MnQVXo/0Zj710PhEU/YLcW5cViZfLTh0wj2d8H5suZHhhxtejfJaxVaYJ1hAw+rJ/V
-         uSwUWo+loigI+FKGX+PTV4GYsP0EWoXevShhDTDbcGMMHgDTbj8532fAyEpLkXh0h8km
-         63pq5NTHGgroUfKe64sFwNEbaf3hHrQR/LeI6GSidazJTrIrh3X4I1s6dZJlTmovozPj
-         3HJw==
+        bh=oLoUCPxnupfNO6uLn5EK6KmWZhEjry+QHiAYeyrmQL0=;
+        b=qbC/Mua1AagtqfeuNO0IRxyeEFL79/IlJPeKTpbOltK7AOHH9AGUtGjDM3uaY/g6r4
+         m0F8Dwy020eqoHWaJK+xU1v7Y4riqAARXF1A8bkJeq5Nh1lWPsoEFBagfnpyWJNKXFsg
+         GQ00XKuuhnZ/tlUWKDKIUojgJaLoX3NPFug8u9cOSQs9KFcskp+1+o1/+U1jiedFil1o
+         mxd8hU3Yy9N2XrkwWFbn3D0GLNHhYku50aM6kvPscgJnj0XweWA8cTAA5e+VwsqkW3ab
+         PgJmfTGfwjesI0jDrxFiAnGSPUmyBDOhgCUl6JFbktse6sRJVkfG5ZeE15R5pr+z/1vF
+         5ZaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689170421; x=1691762421;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20221208; t=1689170483; x=1691762483;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=wwBA6CgC/uSWwgysf9itlxsD4ci1tHALzPKkAgebLIk=;
-        b=lXAxe6u9cXwRp/8c78BSErFgA76sMLuDnS+ICN4K007LmWKYAVB0TFJCsxQh3ZdTF1
-         1gDoD2Ksk1fgdVPNtjQuGf5k5zlAzRYqgPfylpSDGfXlYssXGF+L8XXHr2OT2bXpNEic
-         cPHklwZxCUsG0dcRH5OwGQ0gqNspwzXXGtYdb0A2cs8H3BF/MabSMC9dKFDRKcmCEZwA
-         IWjpWF5JwTV1w8LzPotjxhZrfN77dKEPl48n7KiUc4Cj/PJj+8MFCpbVVPAtKo6pe7Ot
-         oqRetUGUxvSzNTC0nOWd6KIvcTekaiSZbPh/qRD6Tshq1vHGr6a5GQFAn6d6Iiuru3K+
-         XjaQ==
-X-Gm-Message-State: ABy/qLZpJRz7iPqEnhfwQhbZAt4xinjx8wXt9YoTz6NJnNQ6GulQyls3
-        tIuVpXKXDNG0ScBC1Jc7UwA=
-X-Google-Smtp-Source: APBJJlFvnpQKOvU0aobzPw3hMQLbsfLRGV5h6VkWcrOUeWACf5DxRZADF7vQ5lsCh/oTJ22vnfnZOA==
-X-Received: by 2002:a1c:f709:0:b0:3f5:fff8:d4f3 with SMTP id v9-20020a1cf709000000b003f5fff8d4f3mr22648888wmh.7.1689170421080;
-        Wed, 12 Jul 2023 07:00:21 -0700 (PDT)
+        bh=oLoUCPxnupfNO6uLn5EK6KmWZhEjry+QHiAYeyrmQL0=;
+        b=Pm4xbGZcfwlu2OH8Ti6sY2BJCfRWcsRqHGTbRfKnXkkGCsiZhS27tUh/lWk1xWUC8f
+         y2VsE57NvLl5El2PPE1eGCFBUxRLzyCSNGpgU05zzKLwtJ+0MjGsdk5RC2VX9G34N19H
+         AUYMpZIRTDdY9eu93IoZbrH1WVnSzptoAWXNs1cFExLSj+rhiFvtvdexnmwbyEy4jw4d
+         ZOBmrCMT/WhX+fF1L1ARghkUPn7/2gdkeblnVASEDEoIZNFwFISmwEJ1b0poOgw56PPY
+         3GGhU2wphAFWGf0y030/IrWzizhPmpQukYXgQ3AktABpfd3PMjPtBm2FsIBYOuHu+Db0
+         JNBQ==
+X-Gm-Message-State: ABy/qLaWk2YvKqwSsE2Mo9Jv7U/hkFZhbKHXhKowXgr9r0NsG53ZFKNl
+        l+twjVcRxK9e0GdfeDXEzpM=
+X-Google-Smtp-Source: APBJJlE1qCq6jKSx9GKM45xt1xi/FuXENuug5kURGhSzKoUhs0C5fn216+TKtnHYHTfhQhIPy8WB8w==
+X-Received: by 2002:adf:e60f:0:b0:314:3742:ff0e with SMTP id p15-20020adfe60f000000b003143742ff0emr18373589wrm.52.1689170483245;
+        Wed, 12 Jul 2023 07:01:23 -0700 (PDT)
 Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id c14-20020adfed8e000000b0031411b7087dsm5201659wro.20.2023.07.12.07.00.20
+        by smtp.gmail.com with ESMTPSA id q15-20020adffecf000000b003142439c7bcsm5174167wrs.80.2023.07.12.07.01.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jul 2023 07:00:20 -0700 (PDT)
+        Wed, 12 Jul 2023 07:01:22 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 12 Jul 2023 16:00:20 +0200
-Message-Id: <CU08XUB327HO.3J4AY0JF2ZRL3@syracuse>
-Cc:     <opensource.kernel@vivo.com>
-Subject: Re: [PATCH v1] drivers: wireless: mt76: fix parameter check in
- mt76_register_debugfs_fops()
+Date:   Wed, 12 Jul 2023 16:01:22 +0200
+Message-Id: <CU08YMZ7867W.ITLC05RV2R69@syracuse>
 From:   "Nicolas Escande" <nico.escande@gmail.com>
-To:     "Minjie Du" <duminjie@vivo.com>, "Felix Fietkau" <nbd@nbd.name>,
-        "Lorenzo Bianconi" <lorenzo@kernel.org>,
-        "Ryder Lee" <ryder.lee@mediatek.com>,
-        "Shayne Chen" <shayne.chen@mediatek.com>,
-        "Sean Wang" <sean.wang@mediatek.com>,
+To:     "Minjie Du" <duminjie@vivo.com>,
+        "Gregory Greenman" <gregory.greenman@intel.com>,
         "Kalle Valo" <kvalo@kernel.org>,
-        "Matthias Brugger" <matthias.bgg@gmail.com>,
-        "AngeloGioacchino Del Regno" 
-        <angelogioacchino.delregno@collabora.com>,
-        "open list:MEDIATEK MT76 WIRELESS LAN DRIVER" 
+        "Stephen Rothwell" <sfr@canb.auug.org.au>,
+        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
         <linux-wireless@vger.kernel.org>,
-        "open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
+        "open list" <linux-kernel@vger.kernel.org>
+Cc:     <opensource.kernel@vivo.com>
+Subject: Re: [PATCH v1] drivers/net: intel: iwlwifi: fix two parameters
+ check in iwl_mei_dbgfs_register()
 X-Mailer: aerc 0.15.1
-References: <20230712130005.15809-1-duminjie@vivo.com>
-In-Reply-To: <20230712130005.15809-1-duminjie@vivo.com>
+References: <20230712131407.16462-1-duminjie@vivo.com>
+In-Reply-To: <20230712131407.16462-1-duminjie@vivo.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -88,31 +79,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed Jul 12, 2023 at 3:00 PM CEST, Minjie Du wrote:
+On Wed Jul 12, 2023 at 3:14 PM CEST, Minjie Du wrote:
 > Make IS_ERR() judge the debugfs_create_dir() function return
-> in mt76_register_debugfs_fops().
+> in iwl_mei_dbgfs_register().
 >
 > Signed-off-by: Minjie Du <duminjie@vivo.com>
 > ---
->  drivers/net/wireless/mediatek/mt76/debugfs.c | 2 +-
+>  drivers/net/wireless/intel/iwlwifi/mei/main.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/w=
-ireless/mediatek/mt76/debugfs.c
-> index 57fbcc83e..d9ba70013 100644
-> --- a/drivers/net/wireless/mediatek/mt76/debugfs.c
-> +++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
-> @@ -109,7 +109,7 @@ mt76_register_debugfs_fops(struct mt76_phy *phy,
->  	struct dentry *dir;
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mei/main.c b/drivers/net/=
+wireless/intel/iwlwifi/mei/main.c
+> index 54445f39f..e5d203a62 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mei/main.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mei/main.c
+> @@ -1888,7 +1888,7 @@ static void iwl_mei_dbgfs_register(struct iwl_mei *=
+mei)
+>  {
+>  	mei->dbgfs_dir =3D debugfs_create_dir(KBUILD_MODNAME, NULL);
 > =20
->  	dir =3D debugfs_create_dir("mt76", phy->hw->wiphy->debugfsdir);
-> -	if (!dir)
-> +	if (IS_ERR(dir))
->  		return NULL;
+> -	if (!mei->dbgfs_dir)
+> +	if (IS_ERR(mei->dbgfs_dir))
+>  		return;
 
-Check the mailing list this subject has been discussed many times...
-I believe the current state of the art is to remove the check altogether
+same as the other one
 
 > =20
->  	debugfs_create_u8("led_pin", 0600, dir, &phy->leds.pin);
+>  	debugfs_create_ulong("status", S_IRUSR,
 
