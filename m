@@ -2,139 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DBDD75120A
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jul 2023 22:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EFC37513B7
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 00:42:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232196AbjGLU5s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jul 2023 16:57:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60762 "EHLO
+        id S232565AbjGLWmE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jul 2023 18:42:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231916AbjGLU5q (ORCPT
+        with ESMTP id S231811AbjGLWmB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jul 2023 16:57:46 -0400
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E311BEC;
-        Wed, 12 Jul 2023 13:57:45 -0700 (PDT)
-Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6b5d5e6b086so790491a34.1;
-        Wed, 12 Jul 2023 13:57:45 -0700 (PDT)
+        Wed, 12 Jul 2023 18:42:01 -0400
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2EB51BF0
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 15:42:00 -0700 (PDT)
+Received: by mail-vs1-xe35.google.com with SMTP id ada2fe7eead31-440c14d6a5eso78035137.0
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 15:42:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689195464; x=1691787464;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=1RnYYOt2ROeAmSiJt8+HCO24CDCU5SuB0/XP79pTxVU=;
-        b=HoO3K91cclh+Ar8T00O5cP1lKwZeTWwAiaR/SLOkDnhDkXG+Xk0zKHG6XykVvda24i
-         Ak818Mw3+mPA1kgFE5DIVfcpGuhfXaAlGWTrCME+mnv6AjzSPkcxAtbQGgx9Dc6drHYV
-         lt+Mvppfu2m/rDowChjeOAbpCu9N/utyr6Plr5UEMTFEf03iOvTScbDdBtusSuL4Xdsi
-         6+TSgtHX7dlze9xjbIeEuTytDwRfYQNXNAPoI4An2QJlBMOvWp/dPT6YzIqpzShmRrNx
-         ha6lASemaLZ5SH8/qBsENOkXgUlfBTSXvZnzKqTl81bWUq3y07/a5Dq2GKV8oy+gyupA
-         35sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689195464; x=1691787464;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20221208; t=1689201720; x=1691793720;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1RnYYOt2ROeAmSiJt8+HCO24CDCU5SuB0/XP79pTxVU=;
-        b=WDjDeJXQcB5pNNDznkax3Q4Ln9gQ1k1LtlkSiwLHuUz4kN512Ch8BnVHGW4xlZ6utE
-         mqmigN5Hido7wWiIPlODJkfXldgLAMt/5uB+yhkX7A+2rbwIYCYt/V3biXacbnOkOReU
-         JW18ru2TMFISOgEX2n2lvWesf4PgVnezaTy9cIv3I8HgggXrDX+RCiqDCLReFPp7CV3V
-         sMAaUUxjqhACBSMOkd1bJjrubRbsFqY+KDsqY9dbBGxJ+AzWlmlY+zNOHJfR+xo4S/iW
-         03EEdPir6SZ7DqISF93KI6sfIazY8JxiSAqK6TTGj0vcADdkQekFnFWmAQlKFhdVUjus
-         rYHA==
-X-Gm-Message-State: ABy/qLbXPvFqYdGwrkzULKXWCVYKGvC4sZ1u1XI8Wqb0QlgzQdTZolhb
-        ghl7cja/MQkV/G2TUkjJ0iA=
-X-Google-Smtp-Source: APBJJlE1MYhtH+H9dFumCjnqewXMgIlQ6LNofQwnPzRvk2hpc95lQHmslpfQWnbzhMZSs/hirn/rPA==
-X-Received: by 2002:a9d:7759:0:b0:6b8:b83c:a1f8 with SMTP id t25-20020a9d7759000000b006b8b83ca1f8mr1617676otl.19.1689195464515;
-        Wed, 12 Jul 2023 13:57:44 -0700 (PDT)
-Received: from localhost.localdomain ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id b3-20020a056830104300b006b469ace1b1sm2288715otp.22.2023.07.12.13.57.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 13:57:43 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-Subject: [PATCH] staging: 7811: Fix memory leak in _r8712_init_xmit_priv
-Date:   Wed, 12 Jul 2023 15:57:32 -0500
-Message-ID: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.41.0
+        bh=mz/xfQs228JkD+EmKHVt4aMZuBD4Ky+nWhlpQiowkyI=;
+        b=3JuEXg+yPSc6oD9k/gVHY9JmrXpcmYz2DdmUKfAenXycWth8Ys52+0sfJNBJqhx+JA
+         POfjtfGzT4R2YWrxkgajUcAHuZwh0tHTbms8ZnyvNuUeIHHVBkyqjnNmi7pVjn+1p2XO
+         FT+BJijgfx1i+WKA7jlT7PyuiJDtM4V2bSpZ2ORkcz5BPrprzhZVrwTkYbGJtevpuwWu
+         +4s8IYxiO+jzUiXLxbNo6SvC/rtIpPMvBFlxMxrSFT5yrglpO/RRHqDNwsQ7XIWt3Mrm
+         6q7/TIQmwLLzR3bbJ6UgAadSF6ClWCYMawulX/tcO2I2umBPB5clyz54VDHR+jYWjASk
+         +o/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689201720; x=1691793720;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mz/xfQs228JkD+EmKHVt4aMZuBD4Ky+nWhlpQiowkyI=;
+        b=UOZayfPFmbih4hoYOAj1xbmIN6W01FGQnniD4xvQr8IXrJY+t/2kCw4w1F90uBz9sV
+         jfA/lT4ZIakG9+Pjr6IENf8VovFnjsaWxrN6+CuEMo0zo9NVcZSK+gdsJjYN7bWXe13T
+         IAbLfp46218RrBZwm17Er8Ok/0wMpcyyVhsgpjedZd9afoJ+wiP3oB8Pu1jpaGohmrUr
+         T2ZE3knN2Kge070l/6jUiTN/ZM3XM3mXWSav7z+sDakNKdxjT9Wl2okePEB3e/hYtYWV
+         mThCHWgu/ZRKwF7iGMz1NWuZqHeJ0NxHGUhq3Y8bDsTiu8fu1l33WN6uqjo6XH11pMeV
+         COrw==
+X-Gm-Message-State: ABy/qLai89XsTuxHAHhVtmwCqTfmGl3R0xz6rBhVXhwMMc4LeAwynGSM
+        Mf+CfW79qrNX70dd5Y/lS2J3mo2duJPwTapuU85zIg==
+X-Google-Smtp-Source: APBJJlHG9tuCdU7vOjJOYos5RKoNNv0/pCxlxo2gIMlFQovsMtvJLWra+WgillnY1AK2C/ycTstYjvsR47Bt+BOekOU=
+X-Received: by 2002:a67:b407:0:b0:443:4eca:f7f0 with SMTP id
+ x7-20020a67b407000000b004434ecaf7f0mr99255vsl.11.1689201719631; Wed, 12 Jul
+ 2023 15:41:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+References: <20230711050445.GA19323@lst.de> <ZK1FbjG+VP/zxfO1@ziepe.ca>
+ <20230711090047.37d7fe06@kernel.org> <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
+ <20230711093224.1bf30ed5@kernel.org> <CAHS8izNHkLF0OowU=p=mSNZss700HKAzv1Oxqu2bvvfX_HxttA@mail.gmail.com>
+ <20230711133915.03482fdc@kernel.org> <2263ae79-690e-8a4d-fca2-31aacc5c9bc6@kernel.org>
+ <CAHS8izP=k8CqUZk7bGUx4ctm4m2kRC2MyEJv+N4+b0cHVkTQmA@mail.gmail.com>
+ <20f6cbda-e361-9a81-de51-b395ec13841a@amd.com> <ZK6ktnwIjXIobFIM@ziepe.ca> <4f6e62e0-b4c2-9fca-6964-28cfea902de0@amd.com>
+In-Reply-To: <4f6e62e0-b4c2-9fca-6964-28cfea902de0@amd.com>
+From:   Mina Almasry <almasrymina@google.com>
+Date:   Wed, 12 Jul 2023 15:41:47 -0700
+Message-ID: <CAHS8izPK4DZ-7JKuxh712tjuh1zpB+Stu6aSdC6vbN3YWHLfMg@mail.gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+To:     =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, David Ahern <dsahern@kernel.org>,
+        Samiullah Khawaja <skhawaja@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>, logang@deltatee.com,
+        Bjorn Helgaas <bhelgaas@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In the above mentioned routine, memory is allocated in several places.
-If the first succeeds and a later one fails, the routine will leak memory.
-Fixes commit 2865d42c78a9 ("staging: r8712u: Add the new driver to the
-mainline kernel").
+On Wed, Jul 12, 2023 at 6:35=E2=80=AFAM Christian K=C3=B6nig
+<christian.koenig@amd.com> wrote:
+>
+> Am 12.07.23 um 15:03 schrieb Jason Gunthorpe:
+> > On Wed, Jul 12, 2023 at 09:55:51AM +0200, Christian K=C3=B6nig wrote:
+> >
+> >>> Anyone see any glaring issues with this approach? I plan on trying to
+> >>> implement a PoC and sending an RFC v2.
+> >> Well we already have DMA-buf as user API for this use case, which is
+> >> perfectly supported by RDMA if I'm not completely mistaken.
+> >>
+> >> So what problem do you try to solve here actually?
+> > In a nutshell, netdev's design currently needs struct pages to do DMA
+> > to it's packet buffers.
+> >
+> > So it cannot consume the scatterlist that dmabuf puts out
+> >
+> > RDMA doesn't need struct pages at all, so it is fine.
+> >
+> > If Mina can go down the path of changing netdev to avoid needing
+> > struct pages then no changes to DRM side things.
+> >
+> > Otherwise a P2P struct page and a co-existance with netmem on a
+> > ZONE_DEVICE page would be required. :\
+>
+> Uff, depending on why netdev needs struct page (I think I have a good
+> idea why) this isn't really going to work generically either way.
+>
+> What we maybe able to do is to allow copy_file_range() between DMA-buf
+> file descriptor and a TCP socket.
+>
+> If I'm not completely mistaken that should then end up in DMA-bufs
+> file_operations->copy_file_range callback (maybe with some minor change
+> to allows this).
+>
+> The DMA-buf framework could then forward this to the exporter of the
+> memory which owns the backing memory could then do the necessary steps.
+>
 
-Fixes: 2865d42c78a9 ("staging: r8712u: Add the new driver to the mainline kernel")
-Reported-by: syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
- drivers/staging/rtl8712/rtl871x_xmit.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+I may be missing something, but the way it works on our end for
+receive is that we give a list of buffers (dma_addr + length + other
+metadata) to the network card, and the network card writes incoming
+packets to these dma_addrs and gives us an rx completion pointing to
+the data it DMA'd. Usually the network card does something like an
+alloc_page() + dma_map_page() and provides the to the network card.
+Transmit path works similarly. Not sure that adding copy_file_range()
+support to dma-buf enables this in some way.
 
-diff --git a/drivers/staging/rtl8712/rtl871x_xmit.c b/drivers/staging/rtl8712/rtl871x_xmit.c
-index 090345bad223..16b815588b97 100644
---- a/drivers/staging/rtl8712/rtl871x_xmit.c
-+++ b/drivers/staging/rtl8712/rtl871x_xmit.c
-@@ -117,11 +117,8 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 	_init_queue(&pxmitpriv->pending_xmitbuf_queue);
- 	pxmitpriv->pallocated_xmitbuf =
- 		kmalloc(NR_XMITBUFF * sizeof(struct xmit_buf) + 4, GFP_ATOMIC);
--	if (!pxmitpriv->pallocated_xmitbuf) {
--		kfree(pxmitpriv->pallocated_frame_buf);
--		pxmitpriv->pallocated_frame_buf = NULL;
--		return -ENOMEM;
--	}
-+	if (!pxmitpriv->pallocated_xmitbuf)
-+		goto clean_up_frame_buf;
- 	pxmitpriv->pxmitbuf = pxmitpriv->pallocated_xmitbuf + 4 -
- 			      ((addr_t)(pxmitpriv->pallocated_xmitbuf) & 3);
- 	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
-@@ -130,12 +127,12 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 		pxmitbuf->pallocated_buf =
- 			kmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ, GFP_ATOMIC);
- 		if (!pxmitbuf->pallocated_buf)
--			return -ENOMEM;
-+			goto clean_up_xmit_buf;
- 		pxmitbuf->pbuf = pxmitbuf->pallocated_buf + XMITBUF_ALIGN_SZ -
- 				 ((addr_t) (pxmitbuf->pallocated_buf) &
- 				 (XMITBUF_ALIGN_SZ - 1));
- 		if (r8712_xmit_resource_alloc(padapter, pxmitbuf))
--			return -ENOMEM;
-+			goto clean_up_xmit_buf;
- 		list_add_tail(&pxmitbuf->list,
- 				 &(pxmitpriv->free_xmitbuf_queue.queue));
- 		pxmitbuf++;
-@@ -146,6 +143,14 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
- 	init_hwxmits(pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
- 	tasklet_setup(&pxmitpriv->xmit_tasklet, r8712_xmit_bh);
- 	return 0;
-+
-+clean_up_xmit_buf:
-+	kfree(pxmitbuf->pallocated_xmitbuf);
-+	pxmitbuf->pallocated_buf = NULL;
-+clean_up_frame_buf:
-+	kfree(pxmitpriv->pallocated_frame_buf);
-+	pxmitpriv->pallocated_frame_buf = NULL;
-+	return -ENOMEM;
- }
- 
- void _free_xmit_priv(struct xmit_priv *pxmitpriv)
--- 
-2.41.0
-
+--=20
+Thanks,
+Mina
