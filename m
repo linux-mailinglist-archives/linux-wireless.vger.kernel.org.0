@@ -2,171 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEF674FBF8
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jul 2023 01:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9920974FD11
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jul 2023 04:30:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231153AbjGKX5E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Jul 2023 19:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56524 "EHLO
+        id S230402AbjGLCaX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Jul 2023 22:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjGKX5C (ORCPT
+        with ESMTP id S229505AbjGLCaW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Jul 2023 19:57:02 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 190A11711
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 16:57:00 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-38e04d1b2b4so4828810b6e.3
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jul 2023 16:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1689119819; x=1691711819;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=leJKi4u06YRTzo0lBrUW1GjV6mczJ561dFwtREQL+Dg=;
-        b=DXK8WidcvmvzjeVYH/6WijviZ73toBOmyVp9mIOd03ZD+R3rHWdoxQSvE5e9wD1KCJ
-         9mK/DDwssbLXSnouE8MAwnVDe+VkRcpQSrinJNmyu0FnYmd+CKVNA1F34dvSGu5lfZwy
-         cyr25JKjczwfRObdI7oARPE9gHghtmOAegQpocDq/APkFl+1PNSXGJo1xP2SNdGpJGtv
-         /nEQL7vqxVxYsTwIY7luylFSj8xoTEsYM9t5cm2HxYfPwTnzx8rs4qClhieKHRjwL54Q
-         8sya8gM8UB4rmOcx/i0v01+HlH4cbtNGlO2x9kzZaZUcFmUL9dtfGxX7fDRkv+FMzf1u
-         InjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689119819; x=1691711819;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=leJKi4u06YRTzo0lBrUW1GjV6mczJ561dFwtREQL+Dg=;
-        b=d0uSvg8lhA1oS677cNX+1jZ69NxCAbAHpuI9+qVodIuDs5pbgPE4wqOZs8w5NN104N
-         UDlolPCwfPL/J/ygVDU4E6osuxCbIOGuPUoLmSaUXgVWuf6WU0zm+ZWrobdeJY5+7iL7
-         d3C64Dz8mozibKHPRwDqh9l19CRb/pWQ3pPc2ZO54P4AC1tTogtjhQ09JL72c1OJSBJk
-         2X9D6lWSUT5/h6ExzcudWi5S91LZtgMeqk5+anFs32JYSgTHLusInCaVemb0TQZ7H0xP
-         6DL7fooYmjIrt1oMh7kK8S0nNc41AvwzRVb4rEQWCPbJgm/cDnnD3yzj7Pg3qbbAvAE2
-         XRqA==
-X-Gm-Message-State: ABy/qLbxc5DN55pRMKmWFjeaBTZttmYRiSRrIf7xgwRcJySLirdRkSqi
-        vSd9nM37l+xfDi19DbZn1ABTWg==
-X-Google-Smtp-Source: APBJJlHPVDwycmPbbNO1kwHaGDMrzsNQAmVLFppzVomF/d82yUMQJxrek5vJqs3gAPlID0cxcW6lxg==
-X-Received: by 2002:a05:6808:11cf:b0:3a3:fa64:b543 with SMTP id p15-20020a05680811cf00b003a3fa64b543mr9841890oiv.12.1689119819344;
-        Tue, 11 Jul 2023 16:56:59 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
-        by smtp.gmail.com with ESMTPSA id x11-20020a63b34b000000b005533c53f550sm1952223pgt.45.2023.07.11.16.56.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 16:56:58 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1qJNE0-000KOY-Hj;
-        Tue, 11 Jul 2023 20:56:56 -0300
-Date:   Tue, 11 Jul 2023 20:56:56 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Mina Almasry <almasrymina@google.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        David Ahern <dsahern@kernel.org>,
-        Jesper Dangaard Brouer <jbrouer@redhat.com>,
-        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Message-ID: <ZK3sSMSVWM5EbHLG@ziepe.ca>
-References: <ZKyZBbKEpmkFkpWV@ziepe.ca>
- <20230711042708.GA18658@lst.de>
- <20230710215906.49514550@kernel.org>
- <20230711050445.GA19323@lst.de>
- <ZK1FbjG+VP/zxfO1@ziepe.ca>
- <20230711090047.37d7fe06@kernel.org>
- <ZK2Gh2qGxlpZexCM@ziepe.ca>
- <20230711100636.63b0a88a@kernel.org>
- <ZK2k9YQiXTtcGhp0@ziepe.ca>
- <20230711133420.5df88f02@kernel.org>
+        Tue, 11 Jul 2023 22:30:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF991722;
+        Tue, 11 Jul 2023 19:30:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33995616A4;
+        Wed, 12 Jul 2023 02:30:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8F878C433C9;
+        Wed, 12 Jul 2023 02:30:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689129020;
+        bh=P4blXZ/KNZGfsUitb08zZr/C5+eX2FocoJvgmALEdm0=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=paBfqdkuq3Sx5xcQMiTl27OWk9cKsQWxs54wgcPB6qC+8OIWNGpyFlAoe5YD+ONTu
+         QHd0ad4oX8CeSB/oFc+3IwKq3i0xyBrjSbHTLvYObTb2pKwYnN0sK2YK99T6/hBmKj
+         l7FxUe/Bt4+7bXfDudtYvj5TzFSYTGw5u7QA8nDoQN2rrMe5hW//N4PAs9dldQ32TG
+         xDUVfuoaHDXYSWNzWF7j88kFRfLe6MVJ/IYO+fTm6h5AXuTYvbKTkjT/s+hiMU9p3N
+         wtbx/hKXswz+VFeRqUqIUdhEXZl00qhfDrPYylEsFBNbQsD2KRqjDNjU2vFLLz5WF9
+         grmXb1oFGT0xQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7184AE29F44;
+        Wed, 12 Jul 2023 02:30:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230711133420.5df88f02@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] wifi: airo: avoid uninitialized warning in
+ airo_get_rate()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168912902045.27748.5229570051520953441.git-patchwork-notify@kernel.org>
+Date:   Wed, 12 Jul 2023 02:30:20 +0000
+References: <20230709133154.26206-1-rdunlap@infradead.org>
+In-Reply-To: <20230709133154.26206-1-rdunlap@infradead.org>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, geert@linux-m68k.org,
+        kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, netdev@vger.kernel.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 11, 2023 at 01:34:20PM -0700, Jakub Kicinski wrote:
+Hello:
 
-> > Yep. At the high end open standards based ethernet has also notably
-> > "failed" as well. Every switch vendor now offers their own proprietary
-> > ecosystem on a whole bunch of different axis. They all present
-> > "ethernet" toward the host but the host often needs to work in a
-> > special way to really take full advantage of the proprietary fabric
-> > behaviors.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sun,  9 Jul 2023 06:31:54 -0700 you wrote:
+> Quieten a gcc (11.3.0) build error or warning by checking the function
+> call status and returning -EBUSY if the function call failed.
+> This is similar to what several other wireless drivers do for the
+> SIOCGIWRATE ioctl call when there is a locking problem.
 > 
-> I'm not familiar with "high end open standards based on ethernet", would
-> those be some RDMA / storage things? For TCP/IP networks pretty much
-> the only things that matter in a switch are bandwidth, size of buffers,
-> power... Implementation stuff.
+> drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]
+> 
+> [...]
 
-I would say when you are getting into ethernet deployments with 25 or
-51 Tbps switches directly connected to hosts running at >100G you are
-getting into the high end side of things.
+Here is the summary with links:
+  - [net] wifi: airo: avoid uninitialized warning in airo_get_rate()
+    https://git.kernel.org/netdev/net/c/9373771aaed1
 
-These are very expensive networks. They run complex congestion
-provoking workloads. They have sophisticated multi-pathing. They often
-use use a non-blocking topology. Congestion management is important.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Making this work with good utilization, and low tail latency is a
-really hard problem. Many of the solutions come with switch features
-supporting it.
 
-You'd proably say these are not TCP focused networks, even though they
-are based on ethernet and IP.
-
-So I think of them as high end "standards based" ethernet and IP
-looking networks that have proprietary elements mixed in throughout.
-
-Right now there is a bit of a press war between vendors on 'ethernet
-for AI'. Both Broadcom and NVIDIA are taking techonlogies that were
-originally built for TCP ethernet networks and remixing/speeding them
-up to run roce workloads effectively. There is alot more information
-available now without NDA that shows some detail on this space.
-
-AWS's SRD multipathing, Broadcom "AI Ethernet" and NVIDIA's Spectrum-X
-spring to mind as topical to what these sorts of ethernet networks
-are.
-
-> A lot of "standardization" efforts are just attempts to prove to 
-> a buyers that an ecosystem exists.
-
-Heh, that was probably more true years ago. These days it seems like
-some standardization is also being done so the large hyperscalers can
-improve their Approved Vendors List.
-
-I suppose as long as the result is something we can implement openly
-in Linux the motivation for standardization is less important.
-
-Jason
