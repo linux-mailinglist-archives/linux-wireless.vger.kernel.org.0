@@ -2,184 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C567508C5
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jul 2023 14:52:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EBFA7508F6
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jul 2023 15:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232605AbjGLMwz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jul 2023 08:52:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32848 "EHLO
+        id S232864AbjGLNA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jul 2023 09:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230482AbjGLMwy (ORCPT
+        with ESMTP id S230035AbjGLNA0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jul 2023 08:52:54 -0400
-Received: from mail-ot1-f77.google.com (mail-ot1-f77.google.com [209.85.210.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F35E1986
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 05:52:53 -0700 (PDT)
-Received: by mail-ot1-f77.google.com with SMTP id 46e09a7af769-6b792b78e53so7522885a34.3
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 05:52:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689166372; x=1691758372;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1V4z/Vswotro/VzHGCMeSdk+NTVdWdvbvSiVrh+SJc0=;
-        b=QKJO3Z/S9t6izSr0FC47u8qpuK7E5RmHbXoN/cDq5ntpQxfqTJfceD/E1ltMOB2DTs
-         DYsSyXsa0+6RdkeBAXKQJhfjO6j8WYZ0Yl+oURNbiZOf0tP7TbcZSwm+utGrDJHvWy9x
-         yP626oRLvl6nviSerwZgdAHBLrOlGUIyJpnI+/m/tgcCby8nkVvKYPB9pmTkFDzSsRhl
-         yOD/DJMgUxebNj8HR9mamhmsjGjX+cAWRlz/n4iDh4CPTmQN+k3+DIXsgZPJcijTm6z8
-         949CWssXK/c7cwkl9UpBd/7dnG5tOGU15VdsGNWWQOYjt0ordiwAMGTBdTkfGdgH3Q9b
-         VC3g==
-X-Gm-Message-State: ABy/qLapTmo1EBEdQcy+wj5pDv6UJyPN5iKVpgG4j8v1Ts62jHto57cz
-        D+p/naRnF2Wp1p3ZQ16qvw9aiD0NilxQTKY8k3iioJqNRyYv
-X-Google-Smtp-Source: APBJJlHGd7HlxecPxSlbDYhQtqGdt4W8rnFkS3fUR7i0HrW/13UjwkqacALwK8JlyW+xCK5BcqnkXrP65Dztt0ABBgR3UfBlwmuU
+        Wed, 12 Jul 2023 09:00:26 -0400
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01on2115.outbound.protection.outlook.com [40.107.255.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D92B61981;
+        Wed, 12 Jul 2023 06:00:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZJXyLGQ9gbUfF1xOwBHjwMDWoOuP3WNfEnQGeIlcEQO2XR1OW2DlzOx+oXRPTyqX8pGHAkgk9JJxnlRL5yJsdBBLLpU0Rw4e+Tzdt2Zm5fRVXuKsC3GUsoToKh7P+75Er6WFL+Oy75ipLdzYPGOptGILIJyLseB86HaQ+DbdWqZ8w5MPgJphMKW1MivTsSn5/MY4AiPGUYKxLKWORxQa7+mO3fkZMvC58+G4qLePvOWiBu/ftlF0Rf8yjptGSX7SYbe9S0cMOT//i1mg1UfKVXfSc3cQQUhHy3oBFJ9nFIKRsxUPnIGfni+M31wl9ShpUBgljhl+2GAS31Kg3FsfVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1MsbiiOYH7QAY/DuQbpfGMnAX2rpx/XkuX+WX2ZdLCI=;
+ b=GK8x1ruzMffZs7kwe0QPLOjBdqraiMtxA/lXDPYYpXN1b0WyylFwm6gGhlx7CHZnKybaJpYi1RdLs0DDGItYMaO2p1pXQ5zczIjFroih3HhWJB3Z92nZ6QTvk2fwzepenmvzu8dMxXx1NYRZM5zTxyZhTalq261Svc+pyMr3PIfi8dFO2a6iFp4tXP7sfSxUrMF105Yw/qyM9new3U5X+cquFOuY/pF8gJiAEr+5fylUzGXngGwxD6oXt9Zwj3oKStMaxPe1z1tkhpk6B5yF6qw0Es0oZRnmiofp3DeIL4HpUeyf8QwHlc8N8WeST2kNoRKe0T1oUHwD8fpN1QZ/Fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1MsbiiOYH7QAY/DuQbpfGMnAX2rpx/XkuX+WX2ZdLCI=;
+ b=B0P6TLdkfFA6Roz3Q9inln7v0zAAFrPzTb2MDkWVvo8oICV91wtGrtcLf75SvJ2UHY1Wks2uwF0d4q/uCe1RZSwLxuw4ye6MX14+Ven388/SZS4Fy4ymVbtX/1DXnUdmbsBRc4Ek5j+1nXhmes4ADr7xVM2ug4rI2XRNB5BZEJgXTPx5eawvZGejsfg+iWAvjs+rb3pLHgIe4Zo+4no5P+7om3TumQF0YCRSUXBd5VQHy2k0uoprUlRlW4pmExH7iBBkIt6QBazoGVtxvlNWEowoarjRRw3TygB66d69HPNEAzzboe9PQSBBIOhokNIQsn3iN1HH89PbZbiIrkkMWQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SG2PR06MB5288.apcprd06.prod.outlook.com (2603:1096:4:1dc::9) by
+ SEYPR06MB5280.apcprd06.prod.outlook.com (2603:1096:101:81::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6565.29; Wed, 12 Jul 2023 13:00:16 +0000
+Received: from SG2PR06MB5288.apcprd06.prod.outlook.com
+ ([fe80::f9b8:80b5:844e:f49a]) by SG2PR06MB5288.apcprd06.prod.outlook.com
+ ([fe80::f9b8:80b5:844e:f49a%6]) with mapi id 15.20.6565.028; Wed, 12 Jul 2023
+ 13:00:16 +0000
+From:   Minjie Du <duminjie@vivo.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-wireless@vger.kernel.org (open list:MEDIATEK MT76 WIRELESS LAN
+        DRIVER),
+        linux-kernel@vger.kernel.org (open list:ARM/Mediatek SoC support),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC
+        support),
+        linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC
+        support)
+Cc:     opensource.kernel@vivo.com, Minjie Du <duminjie@vivo.com>
+Subject: [PATCH v1] drivers: wireless: mt76: fix parameter check in mt76_register_debugfs_fops()
+Date:   Wed, 12 Jul 2023 21:00:05 +0800
+Message-Id: <20230712130005.15809-1-duminjie@vivo.com>
+X-Mailer: git-send-email 2.39.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYAPR01CA0062.jpnprd01.prod.outlook.com
+ (2603:1096:404:2b::26) To SG2PR06MB5288.apcprd06.prod.outlook.com
+ (2603:1096:4:1dc::9)
 MIME-Version: 1.0
-X-Received: by 2002:a9d:7a86:0:b0:6b9:208b:c91a with SMTP id
- l6-20020a9d7a86000000b006b9208bc91amr4632052otn.5.1689166372498; Wed, 12 Jul
- 2023 05:52:52 -0700 (PDT)
-Date:   Wed, 12 Jul 2023 05:52:52 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000997319060049b1e4@google.com>
-Subject: [syzbot] [wireless?] INFO: task hung in cfg80211_event_work (2)
-From:   syzbot <syzbot+85f0eb24e10cec9b8a10@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SG2PR06MB5288:EE_|SEYPR06MB5280:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9da29cc-3b33-4db1-c8da-08db82d7f046
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: crLjH8PJLuEYMoQFVREH71Pmu/g+O8R5dhQNOfefWHKmJtNCs63IvrAWfwVN3fkpTjUjWPeBU+hMzAu+Vse3VDSbNosnbOSHc450/AGh6JSEn9XVbRCYNX8uClGKdjIVFGC7Qbt8uHLoAMvhgy8xrvZ2Y4YiU4WGETJyqzYPJ8cIFFauTCh6M/KwpL//itfa65LP63R5ZNOBFE7I7hu7ClhucOfP4w0n2j1mVCVurJjXSjlBQcAf8JG5s9wlbH1oPQ5DpekDppjbN4pv6nVQK7zGFeaRB7IyXgqlUIaJzNH7YuaAsllYaz3yn8XTkF4MaUUybNUrwrGTMv2D7uCv/3tHsbbr33jDPJpOkl8qK+ak4UcabgbWZ8+fJKrGuzLN+upbJ93TTA8cT3K8LqUzFdatpNCN4wOU8rSDQgIgd9Rz2WEQ8myqXfipd0e9+Co0o5mfuhTk7ikGEZ2lS4ugHnuVmZIrIAtyex74nBOpd1Hh5fbJyeHtvqZqIyBGfgRwpzEaRBn/rNyf+lWXaLGbl+hJs5LLwMoI82KCdpKos8TkUsOtBWVbt3GsiqBRQr5Fy/7bgsorfQ+kmz+Zh/gj1D1gTYlN6ri7IoRaUl0ztr4lyMQ7LNbgrROy/uNX+/QpNOF0EJx9LGqaFdRNBKJbsnNoXCOswCnQGam6hbMPxxSGTB/FhGL2leVyvEVYzXGd
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB5288.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(39860400002)(376002)(396003)(346002)(136003)(451199021)(4744005)(36756003)(2616005)(2906002)(41300700001)(83380400001)(5660300002)(6506007)(26005)(1076003)(186003)(7416002)(8936002)(8676002)(107886003)(921005)(110136005)(6486002)(66476007)(66556008)(66946007)(52116002)(4326008)(6666004)(86362001)(478600001)(38100700002)(38350700002)(316002)(6512007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?VBPAhBJfmr0oXceD12EtL8t21jlDUYVWZfYGXrcXgGZRo5GbpzEng8uVbC4u?=
+ =?us-ascii?Q?bIgE/5IoDjCqVMdyROXCUunEAAWfXyNznvU3nsffqLVuDXt5AoQYnxwISCbK?=
+ =?us-ascii?Q?oyGSOCa89SrWBQPylTKFsAK72v/lzlxQmd1KgxqiVW6Ymf6AEex5yMnpMPzQ?=
+ =?us-ascii?Q?5f9rlLttqZt/8BP0uDJvJx78TO5fDHH/83JqEXWTeMPW9LTZ3LvmrfoVOQj4?=
+ =?us-ascii?Q?eEMD6QcmCuUH2WnF/R+WRVmSUIhPo2008Mseyo3gTZZeQ92i5ET55Yd5Y8oR?=
+ =?us-ascii?Q?dngYKfh4JaAjFRNkYU50LVnSoO3t3mlJgA7SMnbhv4k5qfkObBJcN+9yMb4U?=
+ =?us-ascii?Q?/En7dwRX4FTuIwY0y5yMKG6mgUj3XT7m/Grl+H56s/F1o2HTb7FdLXX8Yq5M?=
+ =?us-ascii?Q?slZL2nL48jgmUGrTqgf//zSNswV79ms6hFSICJszKL1B0rxlK9IBmE3LCn7n?=
+ =?us-ascii?Q?mV8ktVoGBGFxWYBFdMtAP+AY1Ba0SQbFcsl+G1kl6gxlPH4XWko5dcYcnQT4?=
+ =?us-ascii?Q?5wJ+SXxI5SIxE+3xjnB/g210aDCczlipI7drjJwuumzGuJM34O4IfwbFKPwE?=
+ =?us-ascii?Q?ho6BAEszXK+RiPE9TFntLFTCKL8BkttG4mz2ymu+9GwZOaYX1E8crsJSplX7?=
+ =?us-ascii?Q?Mp7KzMSCfpZ9tkAT3EsuUHJwySXz0+7lv5fpDXHwbJKqjhuCxkqCUaJg2T8i?=
+ =?us-ascii?Q?rtiWM7hZyic9nIWftAgAUW6ghmjvRim5Jlh4H/AB0vkc/GJOTQsJJpP2kPjA?=
+ =?us-ascii?Q?zv7m0TIa6ec4OaUH1eU5OQlzCMoT78WwKHDBfBH5MuQOwqkR1BuHOYZHeVOm?=
+ =?us-ascii?Q?zQloz7bKUYTIKsZVBuTvkzersp8x3foKDhGB2mqVfcJJsSzhRb94G4PHumyh?=
+ =?us-ascii?Q?M8D6ukV6Yk3gnTzh4hyjBcKF5JKV7pqgDmeK5lwGGzz9+bRqubpYFbh5JAKp?=
+ =?us-ascii?Q?tUiuecAuqXKPtQCCuxYGPMc4srfiQW2xYxr2u9ytnl3jJbxMkFskuQPlDtk5?=
+ =?us-ascii?Q?TKaPTNt7i0eHLzDTVQLZ8T9cBputnLmb9hTnfmmeRMWONl3xeDIEugl2Hq+l?=
+ =?us-ascii?Q?VfuuWp78NtZO+rurrronTVI2HE/dXBUlciFMNnpa6DnIykyuSOjEU6wC5Fw+?=
+ =?us-ascii?Q?eJoz1XVdGRIBzZCHWmsYkdrmEJChBlU3Sav3QQbuyJROt9hGokHFsSuja62E?=
+ =?us-ascii?Q?DLBG1kwr8ILGxO3dfcx9YicdoF1QQFUgW93eEa9h1wFfgDyMkk+kAQDQK8an?=
+ =?us-ascii?Q?d31IoRDaoFQwg3DrfXtdZCESpEjgG0r10M3U5r3/GLkQ+Kn30S/hQnmdhqc1?=
+ =?us-ascii?Q?IQUqaGB315WDtppOliqv7eU5ki1fL+AlfPmlJN8olUrY22m7gJq55LIWqD/T?=
+ =?us-ascii?Q?4AJyN2vsCPnNdmiCYzkrz+ZmK7KaVo/AFJ6ntwyVASNMbTW9ddPAC2y3jah3?=
+ =?us-ascii?Q?eKzjVtxV0XuM4V8Jcvna+4AGzwaeYBtp6Q9zZoSGzXUzmmdcrmedyt9QvR3q?=
+ =?us-ascii?Q?2wnmP5m6SbIQ023qnLe8lhRPUKq+rMCh5kuHscqqsEGA/Sey3iJ1u2YLuRb+?=
+ =?us-ascii?Q?imvli1aXa6plH4HoqIVx7PE6YPcC279hLK09jyG4?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9da29cc-3b33-4db1-c8da-08db82d7f046
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB5288.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2023 13:00:16.5826
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IgogDx697GKtcCVRYh7RBK5AxUosryOxxpCf1wjZAhl9dQY7TMeZjV8R/OCAoO/Ac/p2CbyKL/hUsznPaaikow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB5280
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Make IS_ERR() judge the debugfs_create_dir() function return
+in mt76_register_debugfs_fops().
 
-syzbot found the following issue on:
-
-HEAD commit:    123212f53f3e Add linux-next specific files for 20230707
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=12442688a80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=15ec80b62f588543
-dashboard link: https://syzkaller.appspot.com/bug?extid=85f0eb24e10cec9b8a10
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1049ee88a80000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12b31cbca80000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/098f7ee2237c/disk-123212f5.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/88defebbfc49/vmlinux-123212f5.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/d5e9343ec16a/bzImage-123212f5.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+85f0eb24e10cec9b8a10@syzkaller.appspotmail.com
-
-INFO: task kworker/u4:0:10 blocked for more than 143 seconds.
-      Not tainted 6.4.0-next-20230707-syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/u4:0    state:D
- stack:25000 pid:10    ppid:2      flags:0x00004000
-Workqueue: cfg80211 cfg80211_event_work
-
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5380 [inline]
- __schedule+0xc9a/0x5880 kernel/sched/core.c:6709
- schedule+0xde/0x1a0 kernel/sched/core.c:6785
- schedule_preempt_disabled+0x13/0x20 kernel/sched/core.c:6844
- __mutex_lock_common kernel/locking/mutex.c:679 [inline]
- __mutex_lock+0xa3b/0x1350 kernel/locking/mutex.c:747
- wiphy_lock include/net/cfg80211.h:5773 [inline]
- cfg80211_event_work+0x1f/0x40 net/wireless/core.c:332
- process_one_work+0xa34/0x16f0 kernel/workqueue.c:2597
- worker_thread+0x67d/0x10c0 kernel/workqueue.c:2748
- kthread+0x344/0x440 kernel/kthread.c:389
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
- </TASK>
-
-Showing all locks held in the system:
-3 locks held by kworker/u4:0/10:
- #0: 
-ffff888016688938
- (
-(wq_completion)cfg80211){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:20 [inline]
-(wq_completion)cfg80211){+.+.}-{0:0}, at: raw_atomic64_set include/linux/atomic/atomic-arch-fallback.h:2608 [inline]
-(wq_completion)cfg80211){+.+.}-{0:0}, at: raw_atomic_long_set include/linux/atomic/atomic-long.h:79 [inline]
-(wq_completion)cfg80211){+.+.}-{0:0}, at: atomic_long_set include/linux/atomic/atomic-instrumented.h:3196 [inline]
-(wq_completion)cfg80211){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:675 [inline]
-(wq_completion)cfg80211){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:702 [inline]
-(wq_completion)cfg80211){+.+.}-{0:0}, at: process_one_work+0x8fd/0x16f0 kernel/workqueue.c:2567
- #1: ffffc900000f7db0 ((work_completion)(&rdev->event_work)){+.+.}-{0:0}, at: process_one_work+0x930/0x16f0 kernel/workqueue.c:2571
- #2: ffff88807dc48768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5773 [inline]
- #2: ffff88807dc48768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: cfg80211_event_work+0x1f/0x40 net/wireless/core.c:332
-1 lock held by rcu_tasks_kthre/13:
- #0: 
-ffffffff8c9a3db0 (rcu_tasks.tasks_gp_mutex){+.+.}-{3:3}, at: rcu_tasks_one_gp+0x31/0xd80 kernel/rcu/tasks.h:522
-1 lock held by rcu_tasks_trace/14:
- #0: ffffffff8c9a3ab0 (rcu_tasks_trace.tasks_gp_mutex){+.+.}-{3:3}, at: rcu_tasks_one_gp+0x31/0xd80 kernel/rcu/tasks.h:522
-1 lock held by khungtaskd/28:
- #0: ffffffff8c9a49c0 (rcu_read_lock){....}-{1:2}, at: debug_show_all_locks+0x55/0x340 kernel/locking/lockdep.c:6615
-2 locks held by getty/4776:
- #0: 
-ffff8880287e2098 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x26/0x80 drivers/tty/tty_ldisc.c:243
- #1: ffffc900015872f0 (&ldata->atomic_read_lock){+.+.}-{3:3}, at: n_tty_read+0xf08/0x13f0 drivers/tty/n_tty.c:2187
-8 locks held by kworker/0:0/5070:
-
-=============================================
-
-NMI backtrace for cpu 1
-CPU: 1 PID: 28 Comm: khungtaskd Not tainted 6.4.0-next-20230707-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/03/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
- nmi_cpu_backtrace+0x29c/0x350 lib/nmi_backtrace.c:113
- nmi_trigger_cpumask_backtrace+0x2a4/0x300 lib/nmi_backtrace.c:62
- trigger_all_cpu_backtrace include/linux/nmi.h:160 [inline]
- check_hung_uninterruptible_tasks kernel/hung_task.c:222 [inline]
- watchdog+0xe16/0x1090 kernel/hung_task.c:379
- kthread+0x344/0x440 kernel/kthread.c:389
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
- </TASK>
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 PID: 5070 Comm: kworker/0:0 Not tainted 6.4.0-next-20230707-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/03/2023
-Workqueue: events cfg80211_wiphy_work
-RIP: 0010:arch_static_branch arch/x86/include/asm/jump_label.h:27 [inline]
-RIP: 0010:static_key_false include/linux/jump_label.h:207 [inline]
-RIP: 0010:trace_irq_enable.constprop.0+0x2/0x100 include/trace/events/preemptirq.h:40
-Code: 00 75 0b 48 83 ec 80 5b 5d 41 5c 41 5d c3 e8 45 74 94 08 0f 1f 44 00 00 f3 0f 1e fa c3 66 66 2e 0f 1f 84 00 00 00 00 00 55 53 <66> 90 65 8b 1d b1 2b 78 7e 83 fb 07 0f 87 cb 00 00 00 89 db be 08
-RSP: 0018:ffffc90000007d4SeaBIOS (version 1.8.2-google)
-
-
+Signed-off-by: Minjie Du <duminjie@vivo.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/mediatek/mt76/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
+index 57fbcc83e..d9ba70013 100644
+--- a/drivers/net/wireless/mediatek/mt76/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
+@@ -109,7 +109,7 @@ mt76_register_debugfs_fops(struct mt76_phy *phy,
+ 	struct dentry *dir;
+ 
+ 	dir = debugfs_create_dir("mt76", phy->hw->wiphy->debugfsdir);
+-	if (!dir)
++	if (IS_ERR(dir))
+ 		return NULL;
+ 
+ 	debugfs_create_u8("led_pin", 0600, dir, &phy->leds.pin);
+-- 
+2.39.0
 
-If the bug is already fixed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to change bug's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the bug is a duplicate of another bug, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
