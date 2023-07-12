@@ -2,93 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4177B7514CF
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 01:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F14417514D5
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 01:57:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232992AbjGLXz3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jul 2023 19:55:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56384 "EHLO
+        id S233180AbjGLX5l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jul 2023 19:57:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232636AbjGLXz2 (ORCPT
+        with ESMTP id S233071AbjGLX5k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jul 2023 19:55:28 -0400
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A69501FC9
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 16:55:26 -0700 (PDT)
-Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5577900c06bso172747a12.2
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 16:55:26 -0700 (PDT)
+        Wed, 12 Jul 2023 19:57:40 -0400
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9E631BF6
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 16:57:38 -0700 (PDT)
+Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6b9610b8a64so68590a34.3
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 16:57:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1689206126; x=1691798126;
+        d=ziepe.ca; s=google; t=1689206258; x=1691798258;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/vU/3bfdHl64WUkd75ReRDYfirTILS0gvYwUTQH7DSM=;
-        b=J7alN4E4ewEYIushjF5RhD5xtHURzl5VVAKqYeqMlBLF8w84WUPewCv7Owf2hO1Sx8
-         s+NCKO3579s52rnAVRhkl9Bu3oO8BbS3ffYhxKwUqGrTmYDf88Wx6URNb5AOSDmk5OMZ
-         e9iOjL4hPL/awuWYemSCQciujiFphf+0gfcEU=
+        bh=w48DGD9rzIYkzJBQTh6OIxxXx9CGgucCjaW9OKrfELw=;
+        b=dZNheAfiCySsh2SaF2XcW+MMtkBXzAtYE1bKH9YhwIV5aznEQU+CjZeCa77zb9yIk6
+         qG+SrhnIMvWxK7E7LJBxvt7kKYojgedSKLDV175irtZzmYSzdjxrNR/orOxNwsksjvXf
+         GDMRbGW9fLNbDSM+t3gp6eKGlvp16V9gJTJZ6uT9KJBkGxPNxs9avkoNwrmJ6V9aLc6T
+         WfD5p0qtqYKkvHFwuvXwBDY0D/CSjiNJn7J8dSA2CKs095u3oYzL0q4Cvz5tIaiRrOT3
+         gRxMAUo38ckigMsyz9+7UyLvXeSyTkAho0dZS5xKm5199rXgmqJgmB2X2XuqQVPPGFxq
+         1MDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689206126; x=1691798126;
+        d=1e100.net; s=20221208; t=1689206258; x=1691798258;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/vU/3bfdHl64WUkd75ReRDYfirTILS0gvYwUTQH7DSM=;
-        b=lUXPiwZizO5TTY+lNbXPkHno6tTMxx3EzqXTy2JfVb6VK8CX2sxe7peoCQk0CCx8hG
-         XLObgg7K/k351sOZV6joxl+hGkmoPwMMM0DKVeEU8ykacMYiuGLN41XZKWGTWiRMdqIM
-         Qqb3VNDgdLLNvFIeyjwRKg6MH8DU7sx7lINVGiorvczIt/TkxppuifFQori8/FTZzgiP
-         CxCizlDDVUo6gncWglMrf5yNdycI4twsbxcJvF4eHZGBjXNGam9Ei2ze/dBrv/1sNP0r
-         HsQBG+VexZfWaHxeFZ61pIDB0ko2koymGxKb0eLyA7gVCeQClqhg0xbHscyAjNH2a5HE
-         fU8g==
-X-Gm-Message-State: ABy/qLaLCcNPJHa6ym7DjzniOQw6UHg83/4nf2xwthHGF8X205uW+cpI
-        +l8qWfrY9KQJHxEwAAQC0CepbQ==
-X-Google-Smtp-Source: APBJJlHQZRshLJRZTXRiub4lrbl9NPrV3egVjkpObEu7LZ5J/dFpr8E4upDYkJFMKJLvoGPiSxabFw==
-X-Received: by 2002:a05:6a20:3257:b0:120:1baf:e56e with SMTP id hm23-20020a056a20325700b001201bafe56emr21055274pzc.19.1689206126202;
-        Wed, 12 Jul 2023 16:55:26 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id j2-20020aa783c2000000b0064f76992905sm4120145pfn.202.2023.07.12.16.55.25
+        bh=w48DGD9rzIYkzJBQTh6OIxxXx9CGgucCjaW9OKrfELw=;
+        b=SiAroZHOpe5GtmxzBzFXFeibUXjBTqYslKGIIQbWbHen592ASg21sW2p3gTiaHjeKO
+         JsgxqLE3IgAcK5LKeWguJa+pac9FS6grihndg8Ms+e8kTkmwh5bjlkV9Cm2zXWWO3ksz
+         Lo6C94YlKzcSmj80eCUZXHCUrJfnVeCe0RKwGiUvL6Le5Id/MyDkw73gGUcc91IfFhkD
+         b/I592N+IQQOK7KJcNVZFs4ZNyPHMdARuxsTay/eQLixaDXIXg769YGosbO84VbgwNZT
+         HKz7spkHrTOgFeHVC++vVVMAy3vadMzEoTSfrifE5cMfHz7gGLjmn+AlB2ix42W1MhAJ
+         YOFA==
+X-Gm-Message-State: ABy/qLZdjUzEGLgMBzYYE3W8bcrpOqWmdyIKNFM3gUPpNSEykPhEUVJR
+        Uc56OOwOnMiPKB1ud9Mz/9RszQ==
+X-Google-Smtp-Source: APBJJlHj3zv5+y0d8YqMlYnepQ1WLcvsZHbqObTNCneoz62gOcAbi9uLTi3aOdJ7p2PueOx0bKfwWQ==
+X-Received: by 2002:a05:6870:7309:b0:1b3:c39a:7c34 with SMTP id q9-20020a056870730900b001b3c39a7c34mr397690oal.25.1689206258019;
+        Wed, 12 Jul 2023 16:57:38 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
+        by smtp.gmail.com with ESMTPSA id i14-20020a17090acf8e00b0026596b8f33asm8834060pju.40.2023.07.12.16.57.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 16:55:25 -0700 (PDT)
-Date:   Wed, 12 Jul 2023 16:55:25 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Azeem Shaikh <azeemshaikh38@gmail.com>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: Re: [PATCH] wifi: mwifiex: Replace strlcpy with strscpy
-Message-ID: <202307121655.C365BB8@keescook>
-References: <20230710030625.812707-1-azeemshaikh38@gmail.com>
+        Wed, 12 Jul 2023 16:57:37 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1qJjiB-000gjk-N4;
+        Wed, 12 Jul 2023 20:57:35 -0300
+Date:   Wed, 12 Jul 2023 20:57:35 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Mina Almasry <almasrymina@google.com>
+Cc:     David Ahern <dsahern@kernel.org>,
+        Samiullah Khawaja <skhawaja@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>,
+        Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+        logang@deltatee.com, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Message-ID: <ZK8978wUKKP3/zIW@ziepe.ca>
+References: <ZK1FbjG+VP/zxfO1@ziepe.ca>
+ <20230711090047.37d7fe06@kernel.org>
+ <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
+ <20230711093224.1bf30ed5@kernel.org>
+ <CAHS8izNHkLF0OowU=p=mSNZss700HKAzv1Oxqu2bvvfX_HxttA@mail.gmail.com>
+ <20230711133915.03482fdc@kernel.org>
+ <2263ae79-690e-8a4d-fca2-31aacc5c9bc6@kernel.org>
+ <CAHS8izP=k8CqUZk7bGUx4ctm4m2kRC2MyEJv+N4+b0cHVkTQmA@mail.gmail.com>
+ <ZK6kOBl4EgyYPtaD@ziepe.ca>
+ <CAHS8izNuda2DXKTFAov64F7J2_BbMPaqJg1NuMpWpqGA20+S_Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230710030625.812707-1-azeemshaikh38@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <CAHS8izNuda2DXKTFAov64F7J2_BbMPaqJg1NuMpWpqGA20+S_Q@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 03:06:25AM +0000, Azeem Shaikh wrote:
-> strlcpy() reads the entire source buffer first.
-> This read may exceed the destination size limit.
-> This is both inefficient and can lead to linear read
-> overflows if a source string is not NUL-terminated [1].
-> In an effort to remove strlcpy() completely [2], replace
-> strlcpy() here with strscpy().
-> 
-> Direct replacement is safe here since return value of -errno
-> is used to check for truncation instead of sizeof(dest).
-> 
-> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-> [2] https://github.com/KSPP/linux/issues/89
-> 
-> Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+On Wed, Jul 12, 2023 at 01:16:00PM -0700, Mina Almasry wrote:
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+> The proposal was that the uapi in step #1 allocates a region of GPU
+> memory, and sets up a p2pdma provider for this region of memory.
 
--- 
-Kees Cook
+Honestly that feels too hacky, which is why I've said a few times
+you'd actually need to integrate p2p pages into a DRM driver properly.
+
+> 2. The p2pdma semantics seem to be global to the pci device. I.e., 1
+> GPU can export 1 p2pdma resource at a time (the way I'm reading the
+> API).
+
+All of this is just a reflection that you are trying to use it in a
+wrong hacky way. The driver is supposed to create a p2p registration
+for its entire BAR at startup. Not on demand and not in fragments.
+
+Jason
