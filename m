@@ -2,92 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E14697517A8
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 06:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09D527517ED
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 07:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233446AbjGMEo7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 00:44:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44440 "EHLO
+        id S233758AbjGMFOb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 01:14:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233032AbjGMEo6 (ORCPT
+        with ESMTP id S232068AbjGMFOa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 00:44:58 -0400
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DECACF
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 21:44:55 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:170e:0:640:d60c:0])
-        by forward102a.mail.yandex.net (Yandex) with ESMTP id 9308441C62;
-        Thu, 13 Jul 2023 07:44:53 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id qiSVn37DXCg0-XhxUOqWN;
-        Thu, 13 Jul 2023 07:44:53 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689223493;
-        bh=cMdW4WRtGi9MWXlD0+g6bIkYHAToqAiodESle5tVj5E=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=wRnC6JG19PDgs5RzSjv4FQQzM3D7oNE6tBmkgiXcVUkoF3ViQeDX48GfhncRWtNTg
-         f4GUYVYZnnGa5iSCZ91aWOM2sbd+SvVsAjXJ1E1Nys5cu1q08UJtFBic7vLHGioik+
-         DqE6V7tnQRC5+gTxAUfSmAIjVd5egw3xrxBn3ALg=
-Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] [v2] wifi: mwifiex: fix memory leak in mwifiex_histogram_read()
-Date:   Thu, 13 Jul 2023 07:43:41 +0300
-Message-ID: <20230713044434.12494-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230712175819.1f8a7c24@kernel.org>
-References: <20230712175819.1f8a7c24@kernel.org>
+        Thu, 13 Jul 2023 01:14:30 -0400
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70A22114;
+        Wed, 12 Jul 2023 22:14:29 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-51e344efd75so582988a12.1;
+        Wed, 12 Jul 2023 22:14:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689225268; x=1691817268;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nfnofkg0FptbzpW86eoHnAne8pvThGCH60cE1/nO4Po=;
+        b=IF7RaZOjyGFDlMX8uCniF3KcGLyeucQ9ZIb8tMY+cg2UMCEifub+MvhZzO7AkXdxGS
+         nChZEFAgWI2O/d4xIMc5I0ofJ1eK/yWhfmK6BkEPdygqEh2QzSBuJ+NoCa9vQ6K0iF2J
+         e9PO3FC86e4NwbXFmnUpeX/tAYQHtq6mVtocjSq0Fsc5J/s+Y57ivy/XrEdyqZdjx4wU
+         cko9nh0fr4JmPH3ZmR2uibZAdHvdCBWvtrTOW1qUMYdoJB+YFAO2FGK3zpv23I1u7c1V
+         DA3P/7qYMUWHYrY5KCj3BfJQzLSX29CgwDS2yJHecZX/mGX8cy7oFWKLM0BM4lBSCwb3
+         t/Og==
+X-Gm-Message-State: ABy/qLY8zPdFuQDtbYkR3T4mzJfaJ+Bb08PGQSjTPyLsTwBAwiD+dnH8
+        0OLahjshw21bFG1zETuqb6M=
+X-Google-Smtp-Source: APBJJlG9IkGuCA9qc29kS3GH6EONHM9XAJOoKE1TgztSufCNLdLnrE2U9qYniDXurrVAwKkNdaGpNg==
+X-Received: by 2002:aa7:c75a:0:b0:51e:22db:897 with SMTP id c26-20020aa7c75a000000b0051e22db0897mr1210925eds.11.1689225268179;
+        Wed, 12 Jul 2023 22:14:28 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id d17-20020aa7d691000000b0051ded17b30bsm3690698edr.40.2023.07.12.22.14.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jul 2023 22:14:27 -0700 (PDT)
+Message-ID: <fcb9f467-d579-782a-80f7-68e14e98e1cd@kernel.org>
+Date:   Thu, 13 Jul 2023 07:14:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] drivers: wireless: ath5k: fix parameter check in
+ ath5k_debug_init_device()
+Content-Language: en-US
+To:     Minjie Du <duminjie@vivo.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        "open list:ATHEROS ATH5K WIRELESS DRIVER" 
+        <linux-wireless@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Cc:     opensource.kernel@vivo.com
+References: <20230713033647.2109-1-duminjie@vivo.com>
+From:   Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <20230713033647.2109-1-duminjie@vivo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Always free the zeroed page on return from mwifiex_histogram_read().
+On 13. 07. 23, 5:36, Minjie Du wrote:
+> Make IS_ERR_OR_NULL() judge the debugfs_create_dir() function return
+> in ath5k_debug_init_device().
+> 
+> Signed-off-by: Minjie Du <duminjie@vivo.com>
+> Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+> ---
+> v1-v2:
+> use IS_ERR_OR_NULL() instead of IS_ERR()
+> ---
+>   drivers/net/wireless/ath/ath5k/debug.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath5k/debug.c b/drivers/net/wireless/ath/ath5k/debug.c
+> index 4b41160e5..7c8823759 100644
+> --- a/drivers/net/wireless/ath/ath5k/debug.c
+> +++ b/drivers/net/wireless/ath/ath5k/debug.c
+> @@ -982,7 +982,7 @@ ath5k_debug_init_device(struct ath5k_hw *ah)
+>   	ah->debug.level = ath5k_debug;
+>   
+>   	phydir = debugfs_create_dir("ath5k", ah->hw->wiphy->debugfsdir);
+> -	if (!phydir)
+> +	if (IS_ERR_OR_NULL(phydir))
 
-Fixes: cbf6e05527a76 ("mwifiex: add rx histogram statistics support")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v2: add Fixes: reference (Jakub Kicinski)
----
- drivers/net/wireless/marvell/mwifiex/debugfs.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+When can debugfs_create_dir() return NULL?
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/debugfs.c b/drivers/net/wireless/marvell/mwifiex/debugfs.c
-index 52b18f4a774b..0cdd6c50c1c0 100644
---- a/drivers/net/wireless/marvell/mwifiex/debugfs.c
-+++ b/drivers/net/wireless/marvell/mwifiex/debugfs.c
-@@ -253,8 +253,11 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
- 	if (!p)
- 		return -ENOMEM;
- 
--	if (!priv || !priv->hist_data)
--		return -EFAULT;
-+	if (!priv || !priv->hist_data) {
-+		ret = -EFAULT;
-+		goto free_and_exit;
-+	}
-+
- 	phist_data = priv->hist_data;
- 
- 	p += sprintf(p, "\n"
-@@ -309,6 +312,8 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
- 	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
- 				      (unsigned long)p - page);
- 
-+free_and_exit:
-+	free_page(page);
- 	return ret;
- }
- 
+>   		return;
+>   
+>   	debugfs_create_file("debug", 0600, phydir, ah, &fops_debug);
+
 -- 
-2.41.0
+js
+suse labs
 
