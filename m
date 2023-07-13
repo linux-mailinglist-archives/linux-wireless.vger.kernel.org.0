@@ -2,125 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28A1775219A
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 14:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6AB07523BA
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 15:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234423AbjGMMr0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 08:47:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57520 "EHLO
+        id S231280AbjGMNac (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 09:30:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233952AbjGMMrX (ORCPT
+        with ESMTP id S234574AbjGMNa1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 08:47:23 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C3C30C0;
-        Thu, 13 Jul 2023 05:46:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689252410; x=1720788410;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=AAJmAZ+sXj0MECM7XPTmd1pa5VhGBIS57bxBnXZUE7M=;
-  b=aFeG0ZyWf1uzHA6KpqrodpF8tvGnLpuj82RD5IUKBQp7nFbyexIyDpa2
-   qfTRh9BmLyhjJ3W4b1Pm6LDZhzh0uS7JJZZ11d/7mvcuv8DxBvH8djpv1
-   f2fL+ljJgGpiozABoGcDaFZxYz8dppZr4VEfNmuie39bojowHgyYM1AMI
-   inQOxdHaXtwzOeZul9pmhG8SfI3rWj3XOMbYNwRFCFwJxCmJ+YYPiwzVH
-   91tuPLv/83D0xn1fpuvpQjjF42NDl78ZqWNi7BQsK3KKMua+3cP7nNnqD
-   93jqqzY2olgf7+oynU/UXmX+N/1odhd/h1awmvs+2eExJF42E+gCXylH4
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="367797041"
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="367797041"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2023 05:46:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="757144512"
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="757144512"
-Received: from ijarvine-mobl2.ger.corp.intel.com ([10.251.222.39])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2023 05:46:35 -0700
-From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>, Kalle Valo <kvalo@kernel.org>,
-        Michal Kazior <michal.kazior@tieto.com>,
-        Janusz Dziedzic <janusz.dziedzic@tieto.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Dean Luick <dean.luick@cornelisnetworks.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v4 10/11] wifi: ath10k: Use RMW accessors for changing LNKCTL
-Date:   Thu, 13 Jul 2023 15:45:04 +0300
-Message-Id: <20230713124505.94866-11-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230713124505.94866-1-ilpo.jarvinen@linux.intel.com>
-References: <20230713124505.94866-1-ilpo.jarvinen@linux.intel.com>
+        Thu, 13 Jul 2023 09:30:27 -0400
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D119E68
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 06:30:24 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:332f:0:640:4ab4:0])
+        by forward102b.mail.yandex.net (Yandex) with ESMTP id 24D5460043;
+        Thu, 13 Jul 2023 16:30:22 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id LUb8nu0DU4Y0-duGuLURI;
+        Thu, 13 Jul 2023 16:30:21 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689255021;
+        bh=pQ/7B2s+wiHzYTGswyAw58YygajU2ErEZPpVCQuEwv0=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=Y8Q3JFzxKe8SO6i57erTqM0CuaU8BQ6BaWgfbtEXRajCECWFT/rNVoCPxt4sT+uD4
+         j+STOB1AV9H50MVUKAVOQFxyAi8BYk58himmSOwxR/r13OfUHWQgP9SbnSohi8lksd
+         Qt+IeA2NDb1F8Oygas74Gknbh9zWSS673BurD20g=
+Authentication-Results: mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: cfg80211: improve documentation for flag fields
+Date:   Thu, 13 Jul 2023 16:29:36 +0300
+Message-ID: <20230713132957.275859-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Don't assume that only the driver would be accessing LNKCTL. ASPM
-policy changes can trigger write to LNKCTL outside of driver's control.
+Fix and hopefully improve documentation for 'flag' fields of
+a few types by adding references to relevant enumerations.
 
-Use RMW capability accessors which does proper locking to avoid losing
-concurrent updates to the register value. On restore, clear the ASPMC
-field properly.
-
-Fixes: 76d870ed09ab ("ath10k: enable ASPM")
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/net/cfg80211.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index a7f44f6335fb..9275a672f90c 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -1963,8 +1963,9 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
- 	ath10k_pci_irq_enable(ar);
- 	ath10k_pci_rx_post(ar);
- 
--	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
--				   ar_pci->link_ctl);
-+	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPMC,
-+					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
- 
- 	return 0;
- }
-@@ -2821,8 +2822,8 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
- 
- 	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
- 				  &ar_pci->link_ctl);
--	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
--				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
-+	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-+				   PCI_EXP_LNKCTL_ASPMC);
- 
- 	/*
- 	 * Bring the target up cleanly.
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 7c7d03aa9d06..7f76f731e541 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -263,7 +263,7 @@ enum ieee80211_privacy {
+  * are only for driver use when pointers to this structure are
+  * passed around.
+  *
+- * @flags: rate-specific flags
++ * @flags: rate-specific flags from &enum ieee80211_rate_flags
+  * @bitrate: bitrate in units of 100 Kbps
+  * @hw_value: driver/hardware value for this rate
+  * @hw_value_short: driver/hardware value for this rate when
+@@ -1350,7 +1350,7 @@ struct cfg80211_unsol_bcast_probe_resp {
+  * @twt_responder: Enable Target Wait Time
+  * @he_required: stations must support HE
+  * @sae_h2e_required: stations must support direct H2E technique in SAE
+- * @flags: flags, as defined in enum cfg80211_ap_settings_flags
++ * @flags: flags, as defined in &enum nl80211_ap_settings_flags
+  * @he_obss_pd: OBSS Packet Detection settings
+  * @he_oper: HE operation IE (or %NULL if HE isn't enabled)
+  * @fils_discovery: FILS discovery transmission parameters
+@@ -2153,7 +2153,7 @@ enum mpath_info_flags {
+  * @sn: target sequence number
+  * @metric: metric (cost) of this mesh path
+  * @exptime: expiration time for the mesh path from now, in msecs
+- * @flags: mesh path flags
++ * @flags: mesh path flags from &enum mesh_path_flags
+  * @discovery_timeout: total mesh path discovery timeout, in msecs
+  * @discovery_retries: mesh path discovery retries
+  * @generation: generation number for nl80211 dumps.
+@@ -2493,7 +2493,7 @@ struct cfg80211_scan_6ghz_params {
+  *	the actual dwell time may be shorter.
+  * @duration_mandatory: if set, the scan duration must be as specified by the
+  *	%duration field.
+- * @flags: bit field of flags controlling operation
++ * @flags: control flags from &enum nl80211_scan_flags
+  * @rates: bitmap of rates to advertise for each band
+  * @wiphy: the wiphy this was for
+  * @scan_start: time (in jiffies) when the scan started
+@@ -2613,7 +2613,7 @@ struct cfg80211_bss_select_adjust {
+  * @scan_width: channel width for scanning
+  * @ie: optional information element(s) to add into Probe Request or %NULL
+  * @ie_len: length of ie in octets
+- * @flags: bit field of flags controlling operation
++ * @flags: control flags from &enum nl80211_scan_flags
+  * @match_sets: sets of parameters to be matched for a scan result
+  *	entry to be considered valid and to be passed to the host
+  *	(others are filtered out).
+@@ -8115,7 +8115,7 @@ void cfg80211_conn_failed(struct net_device *dev, const u8 *mac_addr,
+  * @link_id: the ID of the link the frame was received	on
+  * @buf: Management frame (header + body)
+  * @len: length of the frame data
+- * @flags: flags, as defined in enum nl80211_rxmgmt_flags
++ * @flags: flags, as defined in &enum nl80211_rxmgmt_flags
+  * @rx_tstamp: Hardware timestamp of frame RX in nanoseconds
+  * @ack_tstamp: Hardware timestamp of ack TX in nanoseconds
+  */
 -- 
-2.30.2
+2.41.0
 
