@@ -2,105 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09D527517ED
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 07:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19B457517FD
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 07:21:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233758AbjGMFOb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 01:14:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51482 "EHLO
+        id S233815AbjGMFVm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 01:21:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232068AbjGMFOa (ORCPT
+        with ESMTP id S233803AbjGMFVl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 01:14:30 -0400
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70A22114;
-        Wed, 12 Jul 2023 22:14:29 -0700 (PDT)
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-51e344efd75so582988a12.1;
-        Wed, 12 Jul 2023 22:14:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689225268; x=1691817268;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nfnofkg0FptbzpW86eoHnAne8pvThGCH60cE1/nO4Po=;
-        b=IF7RaZOjyGFDlMX8uCniF3KcGLyeucQ9ZIb8tMY+cg2UMCEifub+MvhZzO7AkXdxGS
-         nChZEFAgWI2O/d4xIMc5I0ofJ1eK/yWhfmK6BkEPdygqEh2QzSBuJ+NoCa9vQ6K0iF2J
-         e9PO3FC86e4NwbXFmnUpeX/tAYQHtq6mVtocjSq0Fsc5J/s+Y57ivy/XrEdyqZdjx4wU
-         cko9nh0fr4JmPH3ZmR2uibZAdHvdCBWvtrTOW1qUMYdoJB+YFAO2FGK3zpv23I1u7c1V
-         DA3P/7qYMUWHYrY5KCj3BfJQzLSX29CgwDS2yJHecZX/mGX8cy7oFWKLM0BM4lBSCwb3
-         t/Og==
-X-Gm-Message-State: ABy/qLY8zPdFuQDtbYkR3T4mzJfaJ+Bb08PGQSjTPyLsTwBAwiD+dnH8
-        0OLahjshw21bFG1zETuqb6M=
-X-Google-Smtp-Source: APBJJlG9IkGuCA9qc29kS3GH6EONHM9XAJOoKE1TgztSufCNLdLnrE2U9qYniDXurrVAwKkNdaGpNg==
-X-Received: by 2002:aa7:c75a:0:b0:51e:22db:897 with SMTP id c26-20020aa7c75a000000b0051e22db0897mr1210925eds.11.1689225268179;
-        Wed, 12 Jul 2023 22:14:28 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id d17-20020aa7d691000000b0051ded17b30bsm3690698edr.40.2023.07.12.22.14.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jul 2023 22:14:27 -0700 (PDT)
-Message-ID: <fcb9f467-d579-782a-80f7-68e14e98e1cd@kernel.org>
-Date:   Thu, 13 Jul 2023 07:14:26 +0200
+        Thu, 13 Jul 2023 01:21:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADCA92114;
+        Wed, 12 Jul 2023 22:21:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B4EA61A17;
+        Thu, 13 Jul 2023 05:21:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D6FC433C8;
+        Thu, 13 Jul 2023 05:21:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689225696;
+        bh=wQyN/phaMAVOufua/AruswFV26dN3USZ1Q3/Ucif1mA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Hwpk+OKSW6E3452BnVFbO2AWkzxQJJLV+ONr+xTPIjLIzuKalVaFMxWF/CKKfpjKU
+         bk1+eQpIS139fe2KkkwWXtqct7iu30cY2yj775yhuQY/CRyY0NC3BplUUiKZdX29Wn
+         5ECNjy78cmEVX8vTFRq3Ff8kzdamfdkJV8oHSe61T5B1EPLZ+EMuFEgk/VXYqM0Szg
+         BABdEpyK9CatPJMdo7X1m5Qk5qO8AXokY3ayWZjpUqgR3pnx9mAVKaXMn5goHGk7yt
+         iy4qR+JDPx7L9rnYm+kCulQwSC2nOXGDbtds2LNbCXLcflYkywa1/qcnlqb1x8Mxxh
+         6C+ma5mH7MEZw==
+Date:   Thu, 13 Jul 2023 07:21:28 +0200
+From:   Mauro Carvalho Chehab <mchehab@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Enrico Mioso <mrkiko.rs@gmail.com>,
+        Jan Engelhardt <jengelh@inai.de>, linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Maciej =?UTF-8?B?xbtlbmN6eWtvd3NraQ==?= <maze@google.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        =?UTF-8?B?xYF1a2Fzeg==?= Stelmach <l.stelmach@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Ilja Van Sprundel <ivansprundel@ioactive.com>,
+        Joseph Tartaro <joseph.tartaro@ioactive.com>
+Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
+Message-ID: <20230713072128.4f4bd9cd@coco.lan>
+In-Reply-To: <2023070430-fragment-remember-2fdd@gregkh>
+References: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
+        <n9108s34-9rn0-3n8q-r3s5-51r9647331ns@vanv.qr>
+        <ZKM5nbDnKnFZLOlY@rivendell>
+        <2023070430-fragment-remember-2fdd@gregkh>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] drivers: wireless: ath5k: fix parameter check in
- ath5k_debug_init_device()
-Content-Language: en-US
-To:     Minjie Du <duminjie@vivo.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        "open list:ATHEROS ATH5K WIRELESS DRIVER" 
-        <linux-wireless@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Cc:     opensource.kernel@vivo.com
-References: <20230713033647.2109-1-duminjie@vivo.com>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20230713033647.2109-1-duminjie@vivo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 13. 07. 23, 5:36, Minjie Du wrote:
-> Make IS_ERR_OR_NULL() judge the debugfs_create_dir() function return
-> in ath5k_debug_init_device().
+Em Tue, 4 Jul 2023 07:47:31 +0100
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> escreveu:
+
+> On Mon, Jul 03, 2023 at 11:11:57PM +0200, Enrico Mioso wrote:
+> > Hi all!!
+> > 
+> > I think the rndis_host USB driver might emit a warning in the dmesg, but disabling the driver wouldn't be a good idea.
+> > The TP-Link MR6400 V1 LTE modem and also some ZTE modems integrated in routers do use this protocol.
+> > 
+> > We may also distinguish between these cases and devices you might plug in - as they pose different risk levels.  
 > 
-> Signed-off-by: Minjie Du <duminjie@vivo.com>
-> Acked-by: Luis Chamberlain <mcgrof@kernel.org>
-> ---
-> v1-v2:
-> use IS_ERR_OR_NULL() instead of IS_ERR()
-> ---
->   drivers/net/wireless/ath/ath5k/debug.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath5k/debug.c b/drivers/net/wireless/ath/ath5k/debug.c
-> index 4b41160e5..7c8823759 100644
-> --- a/drivers/net/wireless/ath/ath5k/debug.c
-> +++ b/drivers/net/wireless/ath/ath5k/debug.c
-> @@ -982,7 +982,7 @@ ath5k_debug_init_device(struct ath5k_hw *ah)
->   	ah->debug.level = ath5k_debug;
->   
->   	phydir = debugfs_create_dir("ath5k", ah->hw->wiphy->debugfsdir);
-> -	if (!phydir)
-> +	if (IS_ERR_OR_NULL(phydir))
+> Again, you have to fully trust the other side of an RNDIS connection,
+> any hints on how to have the kernel determine that?
 
-When can debugfs_create_dir() return NULL?
+Kernel may not know but the user does.
 
->   		return;
->   
->   	debugfs_create_file("debug", 0600, phydir, ah, &fops_debug);
+See, when doing a security risk assessment, one needs to evaluate the
+risks, the costs to implement mitigation issues, and the measures that
+will be taken. Sometimes, the measure is to just accept the risk, as
+either the chances to actually happen on a particular scenario is 
+very unlikely, and/or the costs to mitigate are too high.
 
--- 
-js
-suse labs
+In any case, it should not be up to Kernel developers to do risk
+assessment, as this has to be checked case by case.
 
+For instance I usually disable several the security options on my
+slow test devices, as the risk to run untrusted code on them
+while I'm testing a new Kernel I just built is close to zero
+and doesn't pay off the the extra hours I'll be wasting otherwise.
+
+In the specific case of untrusted USB devices, the risk of having 
+USB untrusted sticks connected to my desktop machine is very low, 
+and if a criminal breaks into my house to be close enough to plug an
+USB device, I would have a lot more to be concerned than just my PC.
+
+Granted, the risk is higher on laptops and mobile devices, but
+still it might be acceptable on some use cases.
+
+Maybe a compromise would be to add a modprobe parameter and/or
+a Kconfig option to allow enabling RDNIS host and RDNIS gadget
+support at the security options to let the user select what 
+kind of risks he's willing to take.
+
+Thanks,
+Mauro
