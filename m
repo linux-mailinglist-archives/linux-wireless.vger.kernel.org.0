@@ -2,92 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C77D752A7A
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 20:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32C75752AA7
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 21:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230093AbjGMSvF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 14:51:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
+        id S232080AbjGMTAz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 15:00:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbjGMSvD (ORCPT
+        with ESMTP id S230442AbjGMTAy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 14:51:03 -0400
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F5AC1BD5;
-        Thu, 13 Jul 2023 11:51:03 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3a3790a0a48so830589b6e.1;
-        Thu, 13 Jul 2023 11:51:03 -0700 (PDT)
+        Thu, 13 Jul 2023 15:00:54 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 678042715
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 12:00:50 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3fc075d9994so14825e9.0
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 12:00:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689274262; x=1691866262;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=0SWbPYGf/VHa1Vrek8TS84jAYeRKRYqep/VhZf8G5PQ=;
-        b=UHXnNJWWgaeZbH+Im6rfsnEO6+5CNWnj3UtXdTDq5IMfUWlHGIQj8qZm54+qB5OQbo
-         og6qpu12lu6nLpbrsjuKuZDwXB1zify8A0M9xlPC35GyEN9icBdB6G60xVWkw/PZ+svR
-         dZRQCgv5rI4sxAb/7uJzQxCYAXVWNUpluPGCu8wdpM/D2EU1v+JL+vOBUfNrjZRjcxet
-         1rx5wTe3pgXIBQKzXBV4rGCn/DP/4g3tG18jBZRPLdW/eb70HMA6vYEVwgQEqzzXxoVt
-         oI+6h5spqAdhb/yF97AgPt2Ebv62BFMLfqdwtYw3OMETn8avGHbztJpTz1v8SpFzbBQz
-         MyLw==
+        d=google.com; s=20221208; t=1689274849; x=1691866849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fpaS1t14ocFfpWfA4r7YMHKUrjpT8EG6McsCuyMXf0w=;
+        b=h9CKt8tSLkeJqOlX42EdZhaSr8bEX0S67A2Fv1Ie4Tfvr7GPUEj9PsQrGnrr4No529
+         b5LH5p9kuuAsBuL+n74M89Z1UxADUNF+ST35xiT0fUvhzcwX4BVrGup61WLB06Ad4Qyv
+         qSFsiKabxnzIDjXfPxlJPO9uE3kHtgilGhDVUUOL1WsKtNrxU/HcP+vi2/I7SzxFCNnS
+         e0TbzhhhT39vKFu7OA3UIDktN5kO/Ez3tWvdbO27cOwn46Yy7giRCn9e/xbzKV8CM9Y0
+         ncoTdlOJnr+VxbIAbl6myJ7j14xK+FsXckuhrapTzOMvRdDGJfQBH4UTPq211e79UkEH
+         KWjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689274262; x=1691866262;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0SWbPYGf/VHa1Vrek8TS84jAYeRKRYqep/VhZf8G5PQ=;
-        b=JFm2clQhhMSVXZuEU567hmkod2vw3eckjqfQVusqSGuAzXrLUALvWXLtv8ND6CYXpJ
-         jEU3vH4FmZTjoz0RIk2A4QLk2IQiXykfQpRkT+3l9A++Fzc4VKLAnfJa9szOsE/WRWhx
-         scEtnj7wnwRXVHq1ySZW93e9RXaGrOLM27OgzIMAcJrU/tWY7IpKjP2uvK1V+EUKxEAE
-         yedHwf5wDuPJ11F2zqU4gAMVSQaksK7+cGUeFWIbe33WefnGFk0DkcaYsuKVFsKmr+U4
-         4tVJk5U/s/IeZVKL+6J9jfrQ8hAXXjox4QtVbRoWz/VZnvsFGjPGixqEXVj9IkvYScNd
-         5AQA==
-X-Gm-Message-State: ABy/qLacH3RIOokC7yHmhZF2k4u6ky9plcaNXOsS/862WZcnnxHfMHGd
-        n9w+KvjLc7x2BkZOF4DJhhk=
-X-Google-Smtp-Source: APBJJlGsZaZS/WeRem6l3voNBw16PU9/3Aa1djVpMcdsJe0OYN0tMH7+t5C7WMbtkERM1UJ4HOxJZQ==
-X-Received: by 2002:a05:6808:f09:b0:3a1:d8bc:ff8b with SMTP id m9-20020a0568080f0900b003a1d8bcff8bmr2789761oiw.38.1689274262384;
-        Thu, 13 Jul 2023 11:51:02 -0700 (PDT)
-Received: from [192.168.0.202] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id k11-20020a54440b000000b003a1ec14d8c6sm3131600oiw.23.2023.07.13.11.51.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Jul 2023 11:51:01 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <b684a76e-7d22-fece-5358-f459e4a979ff@lwfinger.net>
-Date:   Thu, 13 Jul 2023 13:51:00 -0500
+        d=1e100.net; s=20221208; t=1689274849; x=1691866849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fpaS1t14ocFfpWfA4r7YMHKUrjpT8EG6McsCuyMXf0w=;
+        b=S1H0dWFwnhHjcqwANatnb0u91mOcfsZobjUDb6OfO3cECw0hwGl7pbPy4CMRHi45jo
+         civbRx4CaLdh3Y/Q4Cw/1DCtuceiMN5a3KfIvdFeSa2IkwR6KhAno7BLGmjGxDyRLiU5
+         mW2+sQDRDYSKv+0wtdS5+lGaMyScvU7i52J6MCu3/z1LgaKJl8dN4yyov1dsXp+cWGr6
+         Z0z64mOBaNpG0XzXhPMxccd2bs0R6zUG0Kf8WPl8xnde89JieZKtaGvKjNchF4Mf54EG
+         NVWh2zThVPvf+u0Crr5irWkwj/mh/ncevgl2H8M5g3EAng1qgO2SQ0z20+GCfzoibc4D
+         G4JQ==
+X-Gm-Message-State: ABy/qLbQO/pjpsEitnkp1VXYQyOeliDWOsG80PusQZTWhMI8ombGPPsZ
+        8o5759wPi04whkQtLC/cG6VqY3BeVGuHHWlUwCOXvw==
+X-Google-Smtp-Source: APBJJlESmB4Lu5P8++T2+oASx3PmdOOp2AtvnTbFgHLS7YLoUktqE/L70NW9IqnTBuc0Qz9I3BB4CHYA2RnxaglJevc=
+X-Received: by 2002:a05:600c:2196:b0:3f7:e4d8:2569 with SMTP id
+ e22-20020a05600c219600b003f7e4d82569mr241283wme.5.1689274848857; Thu, 13 Jul
+ 2023 12:00:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] staging: 7811: Fix memory leak in _r8712_init_xmit_priv
-To:     Your Name <namcaov@gmail.com>
-Cc:     gregkh@linuxfoundation.org, linux-staging@lists.linux.dev,
+References: <000000000000c2dccb05d0cee49a@google.com> <0000000000005ac8fc060061f4c5@google.com>
+In-Reply-To: <0000000000005ac8fc060061f4c5@google.com>
+From:   Aleksandr Nogikh <nogikh@google.com>
+Date:   Thu, 13 Jul 2023 21:00:37 +0200
+Message-ID: <CANp29Y4ANdDSd4R8u=H5GX7t+1WZr=a2pemZ-VwQRraknJ8Pew@mail.gmail.com>
+Subject: Re: [syzbot] [wireless?] WARNING in ieee80211_free_ack_frame (2)
+To:     syzbot <syzbot+ac648b0525be1feba506@syzkaller.appspotmail.com>
+Cc:     casey@schaufler-ca.com, davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-References: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
- <ZLA1942ebuVcUT3h@nam-dell>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <ZLA1942ebuVcUT3h@nam-dell>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        netdev@vger.kernel.org, pabeni@redhat.com, paul@paul-moore.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/13/23 12:35, Your Name wrote:
-> The allocation was done in a loop. Shouldn't memory from previous loop iterations
-> also be freed? And allocation by r8712_xmit_resource_alloc() should be freed too.
+On Thu, Jul 13, 2023 at 7:49=E2=80=AFPM syzbot
+<syzbot+ac648b0525be1feba506@syzkaller.appspotmail.com> wrote:
+>
+> syzbot suspects this issue was fixed by commit:
+>
+> commit 1661372c912d1966e21e0cb5463559984df8249b
+> Author: Paul Moore <paul@paul-moore.com>
+> Date:   Tue Feb 7 22:06:51 2023 +0000
+>
+>     lsm: move the program execution hook comments to security/security.c
+>
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D1024a074a8=
+0000
+> start commit:   33189f0a94b9 r8169: fix RTL8168H and RTL8107E rx crc erro=
+r
+> git tree:       net
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dea09b0836073e=
+e4
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dac648b0525be1fe=
+ba506
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D15346b1ec80=
+000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D162e3b89c8000=
+0
+>
+> If the result looks correct, please mark the issue as fixed by replying w=
+ith:
 
-Nam,
+No, this one is invalid.
 
-You are right on both counts. I will prepare version 2.
-
-Larry
-
+>
+> #syz fix: lsm: move the program execution hook comments to security/secur=
+ity.c
+>
+> For information about bisection process see: https://goo.gl/tpsmEJ#bisect=
+ion
+>
+> --
