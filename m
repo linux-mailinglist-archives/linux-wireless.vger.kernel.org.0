@@ -2,55 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2505752A14
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 19:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C77D752A7A
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 20:51:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230092AbjGMR4s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 13:56:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34674 "EHLO
+        id S230093AbjGMSvF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 14:51:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229953AbjGMR4r (ORCPT
+        with ESMTP id S229620AbjGMSvD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 13:56:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9D862722
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 10:56:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7425B61B11
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 17:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C377C433C8;
-        Thu, 13 Jul 2023 17:56:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689271005;
-        bh=XOm7h67SEFjPll5LwXucwRWSAmJfBKZbmCSZdC4SY/c=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OnEAiGDiUNFexGX9go7GWytA0ObHN73KVCUXJC9JmLBLBJhAGoZhBRTQa8sf7TNE0
-         rQu5G7iS+tI6Gqa2ie9FpXNzDGkjE2HyC7LxEgwLUszoQaW0o2zGXnD2bRrRwi4Gfi
-         aaBRBCl4L+30ANVH2pI0bc3pTwacWKTNRT2AybK0zfpsrTyuGUxkOmlJtw9CorVT4e
-         OxsOLUee1FnvNUuSwmoOEovq8cklDsBJmZRJD1WNw+mAUVm3wO6jviMJBe+0/MYVDm
-         0zmKbvjOrh8KRsBnYwcAMNi24n1AVgxLkqXEoVi0/9KNFLEpzk7xyd5zGPtjJwkIn3
-         Pn74IxGfvL4Vg==
-Date:   Thu, 13 Jul 2023 10:56:44 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Pink Perfect <pinkperfect2021@gmail.com>
-Cc:     amitkarwar@gmail.com, kvalo@kernel.org, ganapathi017@gmail.com,
-        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v3] wifi: mwifiex: Fix OOB and integer underflow when rx
- packets
-Message-ID: <20230713105644.49444826@kernel.org>
-In-Reply-To: <CAKNAPeOvG1MVD0y5xuZpN8mSEzvrzcvRhdyrTJhju-_Z1nGV0g@mail.gmail.com>
-References: <20230713023731.2518507-1-pinkperfect2021@gmail.com>
-        <CAKNAPeOvG1MVD0y5xuZpN8mSEzvrzcvRhdyrTJhju-_Z1nGV0g@mail.gmail.com>
+        Thu, 13 Jul 2023 14:51:03 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F5AC1BD5;
+        Thu, 13 Jul 2023 11:51:03 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3a3790a0a48so830589b6e.1;
+        Thu, 13 Jul 2023 11:51:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689274262; x=1691866262;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=0SWbPYGf/VHa1Vrek8TS84jAYeRKRYqep/VhZf8G5PQ=;
+        b=UHXnNJWWgaeZbH+Im6rfsnEO6+5CNWnj3UtXdTDq5IMfUWlHGIQj8qZm54+qB5OQbo
+         og6qpu12lu6nLpbrsjuKuZDwXB1zify8A0M9xlPC35GyEN9icBdB6G60xVWkw/PZ+svR
+         dZRQCgv5rI4sxAb/7uJzQxCYAXVWNUpluPGCu8wdpM/D2EU1v+JL+vOBUfNrjZRjcxet
+         1rx5wTe3pgXIBQKzXBV4rGCn/DP/4g3tG18jBZRPLdW/eb70HMA6vYEVwgQEqzzXxoVt
+         oI+6h5spqAdhb/yF97AgPt2Ebv62BFMLfqdwtYw3OMETn8avGHbztJpTz1v8SpFzbBQz
+         MyLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689274262; x=1691866262;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0SWbPYGf/VHa1Vrek8TS84jAYeRKRYqep/VhZf8G5PQ=;
+        b=JFm2clQhhMSVXZuEU567hmkod2vw3eckjqfQVusqSGuAzXrLUALvWXLtv8ND6CYXpJ
+         jEU3vH4FmZTjoz0RIk2A4QLk2IQiXykfQpRkT+3l9A++Fzc4VKLAnfJa9szOsE/WRWhx
+         scEtnj7wnwRXVHq1ySZW93e9RXaGrOLM27OgzIMAcJrU/tWY7IpKjP2uvK1V+EUKxEAE
+         yedHwf5wDuPJ11F2zqU4gAMVSQaksK7+cGUeFWIbe33WefnGFk0DkcaYsuKVFsKmr+U4
+         4tVJk5U/s/IeZVKL+6J9jfrQ8hAXXjox4QtVbRoWz/VZnvsFGjPGixqEXVj9IkvYScNd
+         5AQA==
+X-Gm-Message-State: ABy/qLacH3RIOokC7yHmhZF2k4u6ky9plcaNXOsS/862WZcnnxHfMHGd
+        n9w+KvjLc7x2BkZOF4DJhhk=
+X-Google-Smtp-Source: APBJJlGsZaZS/WeRem6l3voNBw16PU9/3Aa1djVpMcdsJe0OYN0tMH7+t5C7WMbtkERM1UJ4HOxJZQ==
+X-Received: by 2002:a05:6808:f09:b0:3a1:d8bc:ff8b with SMTP id m9-20020a0568080f0900b003a1d8bcff8bmr2789761oiw.38.1689274262384;
+        Thu, 13 Jul 2023 11:51:02 -0700 (PDT)
+Received: from [192.168.0.202] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id k11-20020a54440b000000b003a1ec14d8c6sm3131600oiw.23.2023.07.13.11.51.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Jul 2023 11:51:01 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <b684a76e-7d22-fece-5358-f459e4a979ff@lwfinger.net>
+Date:   Thu, 13 Jul 2023 13:51:00 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] staging: 7811: Fix memory leak in _r8712_init_xmit_priv
+To:     Your Name <namcaov@gmail.com>
+Cc:     gregkh@linuxfoundation.org, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
+        stable@vger.kernel.org
+References: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
+ <ZLA1942ebuVcUT3h@nam-dell>
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <ZLA1942ebuVcUT3h@nam-dell>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,29 +81,13 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 13 Jul 2023 10:44:56 +0800 Pink Perfect wrote:
-> Sorry, forgot to change the signoff name, after you review this patch I c=
-an
-> submit a new one
+On 7/13/23 12:35, Your Name wrote:
+> The allocation was done in a loop. Shouldn't memory from previous loop iterations
+> also be freed? And allocation by r8712_xmit_resource_alloc() should be freed too.
 
-Do you mean change to "Pink Perfect", is that the name you'd sign
-legal documents with?
+Nam,
 
-> On Thu, Jul 13, 2023 at 10:37=E2=80=AFAM pinkperfect <pinkperfect2021@gma=
-il.com>
-> wrote:
->=20
-> > Make sure mwifiex_process_mgmt_packet and its callers
-> > mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet
-> > not out-of-bounds access the skb->data buffer.
-> >
-> > Fixes: 2dbaf751b1de ("mwifiex: report received management frames to
-> > cfg80211")
-> >
-> > Signed-off-by: pinkperfect <pinkperfect2021@gmail.com>
+You are right on both counts. I will prepare version 2.
 
-No empty lines between tags, please.
+Larry
 
-You mentioned reporting the problem to chromeos, since mwifiex
-"maintainters" seem to be AWoL, would someone from their team
-possibly be willing to venture a review tag for the patch?
