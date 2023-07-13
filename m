@@ -2,136 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF48F7529E9
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 19:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C415752A02
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 19:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231864AbjGMRgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 13:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56194 "EHLO
+        id S232014AbjGMRtf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 13:49:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232590AbjGMRgA (ORCPT
+        with ESMTP id S231263AbjGMRte (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 13:36:00 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3973F2723;
-        Thu, 13 Jul 2023 10:35:55 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-986d8332f50so141956866b.0;
-        Thu, 13 Jul 2023 10:35:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689269753; x=1691861753;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XG/k/cRtJtXp+BY1mTTrU8F/8twPnwgKPwg/xoLbVKM=;
-        b=evZSon4l1w3MFy/kCvyyEqoToXQToZRIyQSE9MND+5jNfHLI1TOCN+fjMOdMWOA+eS
-         SzG6Y6kTOYR4Z/Krhkc6fJHoZayn+73DK3FCT9ATfk7bRASMH1TfvrUsJs60UlE/aYfP
-         qeEoeRn4twXlBqmEjfP74nuKcGUY9y7qtuT0vLISYCbtAsSQbbnOeRROTUlWHHPkkC+M
-         fH3JbQ6FuK8MZVAWkbkJrk/54EUGSnvXAtPfK5f7bh/aMvWrU5ott8xJPk29+ahNZ7uh
-         NVqogluvhA43Bj6BaNjawBGZs9zKBlK5fduPGsjcO3yyuB3MFukoncPmBtWdHzCqP5p7
-         njsQ==
+        Thu, 13 Jul 2023 13:49:34 -0400
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5859D2721
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 10:49:32 -0700 (PDT)
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-3a3df1e1f38so1715733b6e.2
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 10:49:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689269753; x=1691861753;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XG/k/cRtJtXp+BY1mTTrU8F/8twPnwgKPwg/xoLbVKM=;
-        b=aQoXX4n+4iq51i1tk2Bez8ubQ5isIrVIzw7L3AVTeVTKNQFNOY4CvzCre20i11j6RA
-         o95ULQYvDLRE/J5cBgHy7Hmd9B4vmOydlaHCW0GXGAWNzPCMycl1TzTBz55k57P7aCl7
-         Z965RkJ9UkYyff96Aif3uCmmMMUX/ifvsEXVFqBl6g86PdY8IE7MgMIoq9f0ziJdplwa
-         INxEFfPAsF5gbNdtvCG+dWXfqk6yXkTVdP9vKfDVgYLznH9q+FLYEpWhJ43ZSMSAmvvI
-         NnYAnEISeHUI3/IvHnjK/LeENGR+QHtojzm1iDas/QHU6E3FAxmp10FO//m88/xFGWeJ
-         rbCw==
-X-Gm-Message-State: ABy/qLYkTMfGtPCEr4z3LCtTpgwSJmutL3eA8r2D1uVWq+P2JSx03+CU
-        BU9sfsAgcfYdqwusSYE8a62brDHR0A8=
-X-Google-Smtp-Source: APBJJlEoVwCZyYqw2lRcbmkrycs1KkdtU2F3uyCceyq6KuekHGCkgPRN1+ZfVY/y4X2+tmz583Jdbw==
-X-Received: by 2002:a17:906:8474:b0:993:d589:8b70 with SMTP id hx20-20020a170906847400b00993d5898b70mr2158652ejc.10.1689269753041;
-        Thu, 13 Jul 2023 10:35:53 -0700 (PDT)
-Received: from nam-dell (ip-217-105-46-58.ip.prioritytelecom.net. [217.105.46.58])
-        by smtp.gmail.com with ESMTPSA id v11-20020a1709061dcb00b00986211f35bdsm4204682ejh.80.2023.07.13.10.35.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jul 2023 10:35:52 -0700 (PDT)
-From:   Your Name <namcaov@gmail.com>
-X-Google-Original-From: Your Name <my.email@gmail.com>
-Date:   Thu, 13 Jul 2023 19:35:51 +0200
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     gregkh@linuxfoundation.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] staging: 7811: Fix memory leak in _r8712_init_xmit_priv
-Message-ID: <ZLA1942ebuVcUT3h@nam-dell>
-References: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
+        d=1e100.net; s=20221208; t=1689270571; x=1691862571;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zpXZu9kLoCoL0GAf9Mkv1VSpnIG+XGAoWicN/hHKyA4=;
+        b=P/zWccCS+LkwXCb75L1pv5LPNwq0gpRK4MSUhV00/95FUofB9xpIVUzPrEK/ZmSjs8
+         WNdKy/bUwxzvm22RXB81ul9Hho81j0tqCs6qiK+bTOmkbg9TtmWC0mpysixwsxFghw0j
+         D5Zk4XDwZgkM62UVLsi++WXD4jfHdRWjN5waznYSQ0pz8bDNBsga3sZoU93JseugJj/r
+         giUH2STg9Q+mA0/6rEdhXJZirbZ1HFBJsto5MFFDflVdOpFxFBvrjHQToO/3kGjL/pTn
+         dFQKer0E1BQ9lHgNqB83gPoo/3ap/JBFELmRBU+A48ULqV2hS8Nyn2rFN0+znCcG0Hwu
+         bO3A==
+X-Gm-Message-State: ABy/qLZ358/vJKW5fBLFuF2/+xruySFce5pF51fN2Qkx6vSB4iDXr9cr
+        g5PYpmNwAZgq1+Vi2m/tcAbDgSjq6FYlc5oi4IcOZofpP3qR
+X-Google-Smtp-Source: APBJJlGN9W5XdNXXehBzjUnB4kBTA2iqNXiDhtVJyC/P38CxxXOcAxcnjlKaW1qshLuWFfQkyWklM43sW3RYct+1AdFj3tYAOsQS
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a05:6808:f8b:b0:3a1:edf0:c79f with SMTP id
+ o11-20020a0568080f8b00b003a1edf0c79fmr2890448oiw.3.1689270571679; Thu, 13 Jul
+ 2023 10:49:31 -0700 (PDT)
+Date:   Thu, 13 Jul 2023 10:49:31 -0700
+In-Reply-To: <000000000000c2dccb05d0cee49a@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000005ac8fc060061f4c5@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in ieee80211_free_ack_frame (2)
+From:   syzbot <syzbot+ac648b0525be1feba506@syzkaller.appspotmail.com>
+To:     casey@schaufler-ca.com, davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com, paul@paul-moore.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 03:57:32PM -0500, Larry Finger wrote:
-> In the above mentioned routine, memory is allocated in several places.
-> If the first succeeds and a later one fails, the routine will leak memory.
-> Fixes commit 2865d42c78a9 ("staging: r8712u: Add the new driver to the
-> mainline kernel").
-> 
-> Fixes: 2865d42c78a9 ("staging: r8712u: Add the new driver to the mainline kernel")
-> Reported-by: syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> ---
->  drivers/staging/rtl8712/rtl871x_xmit.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/staging/rtl8712/rtl871x_xmit.c b/drivers/staging/rtl8712/rtl871x_xmit.c
-> index 090345bad223..16b815588b97 100644
-> --- a/drivers/staging/rtl8712/rtl871x_xmit.c
-> +++ b/drivers/staging/rtl8712/rtl871x_xmit.c
-> @@ -117,11 +117,8 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
->  	_init_queue(&pxmitpriv->pending_xmitbuf_queue);
->  	pxmitpriv->pallocated_xmitbuf =
->  		kmalloc(NR_XMITBUFF * sizeof(struct xmit_buf) + 4, GFP_ATOMIC);
-> -	if (!pxmitpriv->pallocated_xmitbuf) {
-> -		kfree(pxmitpriv->pallocated_frame_buf);
-> -		pxmitpriv->pallocated_frame_buf = NULL;
-> -		return -ENOMEM;
-> -	}
-> +	if (!pxmitpriv->pallocated_xmitbuf)
-> +		goto clean_up_frame_buf;
->  	pxmitpriv->pxmitbuf = pxmitpriv->pallocated_xmitbuf + 4 -
->  			      ((addr_t)(pxmitpriv->pallocated_xmitbuf) & 3);
->  	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
-> @@ -130,12 +127,12 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
->  		pxmitbuf->pallocated_buf =
->  			kmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ, GFP_ATOMIC);
->  		if (!pxmitbuf->pallocated_buf)
-> -			return -ENOMEM;
-> +			goto clean_up_xmit_buf;
->  		pxmitbuf->pbuf = pxmitbuf->pallocated_buf + XMITBUF_ALIGN_SZ -
->  				 ((addr_t) (pxmitbuf->pallocated_buf) &
->  				 (XMITBUF_ALIGN_SZ - 1));
->  		if (r8712_xmit_resource_alloc(padapter, pxmitbuf))
-> -			return -ENOMEM;
-> +			goto clean_up_xmit_buf;
->  		list_add_tail(&pxmitbuf->list,
->  				 &(pxmitpriv->free_xmitbuf_queue.queue));
->  		pxmitbuf++;
-> @@ -146,6 +143,14 @@ int _r8712_init_xmit_priv(struct xmit_priv *pxmitpriv,
->  	init_hwxmits(pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
->  	tasklet_setup(&pxmitpriv->xmit_tasklet, r8712_xmit_bh);
->  	return 0;
-> +
-> +clean_up_xmit_buf:
-> +	kfree(pxmitbuf->pallocated_xmitbuf);
-> +	pxmitbuf->pallocated_buf = NULL;
+syzbot suspects this issue was fixed by commit:
 
-The allocation was done in a loop. Shouldn't memory from previous loop iterations
-also be freed? And allocation by r8712_xmit_resource_alloc() should be freed too.
+commit 1661372c912d1966e21e0cb5463559984df8249b
+Author: Paul Moore <paul@paul-moore.com>
+Date:   Tue Feb 7 22:06:51 2023 +0000
 
-Best regards,
-Nam
+    lsm: move the program execution hook comments to security/security.c
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1024a074a80000
+start commit:   33189f0a94b9 r8169: fix RTL8168H and RTL8107E rx crc error
+git tree:       net
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ea09b0836073ee4
+dashboard link: https://syzkaller.appspot.com/bug?extid=ac648b0525be1feba506
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15346b1ec80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=162e3b89c80000
+
+If the result looks correct, please mark the issue as fixed by replying with:
+
+#syz fix: lsm: move the program execution hook comments to security/security.c
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
