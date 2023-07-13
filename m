@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E29C75155C
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 02:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A1DB751581
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 02:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232359AbjGMAh2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jul 2023 20:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42212 "EHLO
+        id S232935AbjGMAvI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jul 2023 20:51:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbjGMAh1 (ORCPT
+        with ESMTP id S232572AbjGMAvH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jul 2023 20:37:27 -0400
+        Wed, 12 Jul 2023 20:51:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C6E1BFB
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 17:37:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A6142101;
+        Wed, 12 Jul 2023 17:51:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6917A619B9
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 00:37:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93ED4C433C7;
-        Thu, 13 Jul 2023 00:37:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC56261904;
+        Thu, 13 Jul 2023 00:51:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15641C433C8;
+        Thu, 13 Jul 2023 00:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689208645;
-        bh=LOAVn9+pATn/Vt/7EXwXAcCap/hGsEeh17u0hMrEIVA=;
+        s=k20201202; t=1689209463;
+        bh=V+Vc3hjjHuh25UinU0PX6yE946ivKVnfKEPeBSWk9QQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BjexO3JT/aiut/uBQ2DmljR3ffJc9ENHEPN3OH70ml8xfgZeaTMEA4eqT0EiZoCUV
-         QVKuAWJLtnRm3RArhNwqJ1PpI+gIgaIMEBseY+0eFTRjvnk0ncp8D7D9iPAwxyuxPU
-         wzGxu+ZRsU2bv21ByDq46SogTW9otrhj92d2NqfOq2CQt2tZUnr7I8xUfNX/+WlaOi
-         V+kM5WBniz+wm0+AQsGhblcxoo4j84Wm6e6VmxW8clznbjqfhu9TscPjLEvyro6UXO
-         cLOdtxPe0huHkpX81MYDJpxo6j9l2od76R58NZLg5yA1ZHdD4Zaa/1ii+gOkrUDQnM
-         g+vRZdHEUg5hQ==
-Date:   Wed, 12 Jul 2023 17:37:24 -0700
+        b=K3HmB2PZzULWXiOCPbKeRfxZRLqerrD+PiuJ1pv/ZYmELo+Mlk+H0SxSjHWLeK4Wo
+         I1SEj1T5bMx2MnceT7BvSQBNgd0AqB8kDtSm6MXP1YzYXjAePFACYBkeE3EMEQoB1l
+         cYMZrqlw4cWCzoZgQo94J7hb2HWBeHvZA1dW1XpskMSHtxFLqCDEdw/w4XSNihivJa
+         3aoGfO7RRbmjg8NDIcVQIQsUMpiPFok6MZgPJdyiRLv7WvXOfxeoAdBcMs7P7ryDdl
+         ljcaq/yts+XegC0ZqDlRVxDWRGWrnL367Lfh6jR+vWq+NxmuRnKsGMUVv5dUDOlVG8
+         RBKupVXLZFgLQ==
+Date:   Wed, 12 Jul 2023 17:51:02 -0700
 From:   Jakub Kicinski <kuba@kernel.org>
-To:     johannes@sipsolutions.net
-Cc:     JUN-KYU SHIN <jk.shin@newratek.com>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: mac80211: fix error handling when channel_switch
- on S1G band
-Message-ID: <20230712173724.607067c7@kernel.org>
-In-Reply-To: <20230711080918.20114-1-jk.shin@newratek.com>
-References: <20230705141206.22a74fa3@kernel.org>
-        <20230711080918.20114-1-jk.shin@newratek.com>
+To:     pinkperfect <pinkperfect2021@gmail.com>
+Cc:     amitkarwar@gmail.com, kvalo@kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: Fix integer underflow in
+ mwifiex_process_mgmt_packet
+Message-ID: <20230712175102.59d2bda9@kernel.org>
+In-Reply-To: <20230705044350.838428-1-pinkperfect2021@gmail.com>
+References: <20230705044350.838428-1-pinkperfect2021@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -56,13 +56,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 11 Jul 2023 17:09:18 +0900 JUN-KYU SHIN wrote:
-> When channel_switch is performed to a channel with a freq_offset,
-> such as 909.5 MHz, channel_switch fails with the "-EOPNOTSUPP" error.
-> Since freq_offset is used in the S1G band, it should not be treated
-> as an error only with the freq_offset condition.
-> 
-> Fixes: b6011960f392 ("mac80211: handle channel frequency offset")
-> Signed-off-by: JUN-KYU SHIN <jk.shin@newratek.com>
+On Wed,  5 Jul 2023 04:43:50 +0000 pinkperfect wrote:
+> In outside functions have checked upper limit of rx_pkt_length,
+> in mwifiex_process_mgmt_packet should make sure rx_pkt_length not underflow
+> to avoid OOB access.
 
-Johannes, since you seem to be around - yes/no/can wait? :)
+Please add a Fixes tag.
+
+> Signed-off-by: pinkperfect <pinkperfect2021@gmail.com>
+
+We need something close to your legal name, or basically know who you
+are. Because of developer certificate of origin. We're working on real
+code under real copyright law..
+
+> diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+> index 94c2d219835d..4291252e06ea 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/util.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/util.c
+> @@ -399,6 +399,11 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+>  
+>  	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
+>  
+> +	if (pkt_len < sizeof(struct ieee80211_hdr)) {
+
+The callers also look at the header and the MAC addresses in it.
+I think we need to pull this check earlier.
+
+> +		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
+> +		return -1;
