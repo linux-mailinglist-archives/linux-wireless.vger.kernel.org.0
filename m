@@ -2,125 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FC627527EC
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 18:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 118C47527EA
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 18:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229464AbjGMQC0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 12:02:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57134 "EHLO
+        id S235157AbjGMQCJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 12:02:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235146AbjGMQCU (ORCPT
+        with ESMTP id S232816AbjGMQBr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 12:02:20 -0400
-Received: from forward102c.mail.yandex.net (forward102c.mail.yandex.net [178.154.239.213])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899A8271F
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 09:02:18 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:3c81:0:640:d488:0])
-        by forward102c.mail.yandex.net (Yandex) with ESMTP id 43E3A60021;
-        Thu, 13 Jul 2023 19:02:16 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id F2eqB42Wn8c0-kKnLUxVr;
-        Thu, 13 Jul 2023 19:02:15 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689264135;
-        bh=hPPMmiKwY1oM20k4fidTnyeo0kqVYkehCNjEfUoLMkI=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=J8JdN0TvzfVqOr1qWFkyWacVyaNWgMNqD3UeNN5G9SMBOKHpwC/8CXqHB7KUajfA4
-         sPLtZpAU7OdjpNhhdSl33sTUgYhrGX76dlgKFV88k1uIchWr+ME8lD5+WS7lAYigJ3
-         UNa4sNz+gEkjathesJ+W2HK9xHfFrgIGvWx2GHok=
-Authentication-Results: mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Arnd Bergmann <arnd@arndb.de>,
-        linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: ath10k: fix PCI and SNOC RX pipe operations
-Date:   Thu, 13 Jul 2023 19:00:57 +0300
-Message-ID: <20230713160101.333483-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Thu, 13 Jul 2023 12:01:47 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BB9B270D;
+        Thu, 13 Jul 2023 09:01:47 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36DF0Icj001283;
+        Thu, 13 Jul 2023 16:01:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=CsT9iAfXVZR9OmieCUMutP9im1dY1nRQpXp0+pqVraU=;
+ b=omTjDHwojwQZNIE+LPUxUgFssq2p8tnAxnGeJLe9sn2yRwiW8qJ+eg5v+ja3lVk6Arpr
+ EuPP7d+p/Fi7r+l0agwK5Tc6ERmb1dlX3FDMsKaGPkmsYUzXRvD7xzJXLrnyNdHA/YQT
+ motXpcgHkgrNE7vO+WdclCnm/ZDCB5IDma0q3VaFFHK0eE19JIc5msOQ36eiFjqNDH1a
+ pRnTQBjsbzvTCrIH0zX/UfZI+D6CuLUiQKATa1hWRdxEuvOoUF5HEaCHbyHUe8ERk/IC
+ AhnFb9xIMUSf7li5knDBIf1jj3y7CIwAKrrFhOzrIMu4qNq7zDyeakdgIO26pzHcXwup hA== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rt3qfhxwq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 13 Jul 2023 16:01:40 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36DG1eqC028111
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 13 Jul 2023 16:01:40 GMT
+Received: from [10.111.182.44] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 13 Jul
+ 2023 09:01:39 -0700
+Message-ID: <0c205c06-bdbd-a6f6-f351-52c918b1cff0@quicinc.com>
+Date:   Thu, 13 Jul 2023 09:01:39 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH net v2] ath6kl: Remove error checking for
+ debugfs_create_dir()
+Content-Language: en-US
+To:     Wang Ming <machel@vivo.com>, Kalle Valo <kvalo@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <opensource.kernel@vivo.com>, <pabeni@redhat.com>
+References: <20230713100404.5096-1-machel@vivo.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230713100404.5096-1-machel@vivo.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: WZfuo20TynACNMheW7FBEj_qV9-CIp-k
+X-Proofpoint-GUID: WZfuo20TynACNMheW7FBEj_qV9-CIp-k
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ mlxscore=0 suspectscore=0 adultscore=0 priorityscore=1501 mlxlogscore=544
+ phishscore=0 malwarescore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2307130141
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since 'mod_timer()' expects expiration time in jiffies, add
-missing 'msecs_to_jiffies()' in 'ath10k_pci_rx_post_pipe()'
-and 'ath10k_snoc_rx_post_pipe()'. Also simplify the loops
-and fix number of loop iterations in the former (it should
-be equal to 'num' (i.e. number of buffers) and not 'num + 1'.
+subject prefix should be "wifi: ath6kl: "
 
-Fixes: 728f95eef523 ("ath10k: rework posting pci rx buffers")
-Fixes: a6e149a9ff03 ("ath10k: add hif start/stop methods for wcn3990 snoc layer")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/ath/ath10k/pci.c  | 16 +++++++---------
- drivers/net/wireless/ath/ath10k/snoc.c | 14 +++++++-------
- 2 files changed, 14 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index a7f44f6335fb..c004c87d3211 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -818,17 +818,15 @@ static void ath10k_pci_rx_post_pipe(struct ath10k_pci_pipe *pipe)
- 	num = __ath10k_ce_rx_num_free_bufs(ce_pipe);
- 	spin_unlock_bh(&ce->ce_lock);
- 
--	while (num >= 0) {
-+	while (num--) {
- 		ret = __ath10k_pci_rx_post_buf(pipe);
--		if (ret) {
--			if (ret == -ENOSPC)
--				break;
--			ath10k_warn(ar, "failed to post pci rx buf: %d\n", ret);
--			mod_timer(&ar_pci->rx_post_retry, jiffies +
--				  ATH10K_PCI_RX_POST_RETRY_MS);
-+		if (ret)
- 			break;
--		}
--		num--;
-+	}
-+	if (ret != -ENOSPC) {
-+		ath10k_warn(ar, "failed to post PCI rx buf: %d\n", ret);
-+		mod_timer(&ar_pci->rx_post_retry, jiffies +
-+			  msecs_to_jiffies(ATH10K_PCI_RX_POST_RETRY_MS));
- 	}
- }
- 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 26214c00cd0d..9ced24b1b177 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -544,16 +544,16 @@ static void ath10k_snoc_rx_post_pipe(struct ath10k_snoc_pipe *pipe)
- 	spin_lock_bh(&ce->ce_lock);
- 	num = __ath10k_ce_rx_num_free_bufs(ce_pipe);
- 	spin_unlock_bh(&ce->ce_lock);
-+
- 	while (num--) {
- 		ret = __ath10k_snoc_rx_post_buf(pipe);
--		if (ret) {
--			if (ret == -ENOSPC)
--				break;
--			ath10k_warn(ar, "failed to post rx buf: %d\n", ret);
--			mod_timer(&ar_snoc->rx_post_retry, jiffies +
--				  ATH10K_SNOC_RX_POST_RETRY_MS);
-+		if (ret)
- 			break;
--		}
-+	}
-+	if (ret != -ENOSPC) {
-+		ath10k_warn(ar, "failed to post SNOC rx buf: %d\n", ret);
-+		mod_timer(&ar_snoc->rx_post_retry, jiffies +
-+			  msecs_to_jiffies(ATH10K_SNOC_RX_POST_RETRY_MS));
- 	}
- }
- 
--- 
-2.41.0
 
