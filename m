@@ -2,139 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F14417514D5
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 01:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACB00751536
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 02:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233180AbjGLX5l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jul 2023 19:57:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57718 "EHLO
+        id S231901AbjGMAYC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jul 2023 20:24:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233071AbjGLX5k (ORCPT
+        with ESMTP id S229800AbjGMAXa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jul 2023 19:57:40 -0400
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9E631BF6
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 16:57:38 -0700 (PDT)
-Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6b9610b8a64so68590a34.3
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 16:57:38 -0700 (PDT)
+        Wed, 12 Jul 2023 20:23:30 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00FCC10EC
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 17:23:28 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-666eba6f3d6so96632b3a.3
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jul 2023 17:23:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1689206258; x=1691798258;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w48DGD9rzIYkzJBQTh6OIxxXx9CGgucCjaW9OKrfELw=;
-        b=dZNheAfiCySsh2SaF2XcW+MMtkBXzAtYE1bKH9YhwIV5aznEQU+CjZeCa77zb9yIk6
-         qG+SrhnIMvWxK7E7LJBxvt7kKYojgedSKLDV175irtZzmYSzdjxrNR/orOxNwsksjvXf
-         GDMRbGW9fLNbDSM+t3gp6eKGlvp16V9gJTJZ6uT9KJBkGxPNxs9avkoNwrmJ6V9aLc6T
-         WfD5p0qtqYKkvHFwuvXwBDY0D/CSjiNJn7J8dSA2CKs095u3oYzL0q4Cvz5tIaiRrOT3
-         gRxMAUo38ckigMsyz9+7UyLvXeSyTkAho0dZS5xKm5199rXgmqJgmB2X2XuqQVPPGFxq
-         1MDg==
+        d=chromium.org; s=google; t=1689207808; x=1691799808;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sT4EPf3iKpEGqJ9z73dP6QmwaakqTzng8UdClO0Piew=;
+        b=aRIYCxnqUBaRxyMH1DBKp/8X4qC1atHIh1r2/LHdWve6SewdPZoLngvOxRUYaIPykF
+         vEvFITAIPdtjiZ9Z8oF90zWyqEle5fM1PhH5EyETF+eyjgqZqBVGBqgOtvzpxzHpM6lQ
+         gJmpOcFz+vYnoQlDsXpmzjRTuCgYXk4ZwK+/o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689206258; x=1691798258;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w48DGD9rzIYkzJBQTh6OIxxXx9CGgucCjaW9OKrfELw=;
-        b=SiAroZHOpe5GtmxzBzFXFeibUXjBTqYslKGIIQbWbHen592ASg21sW2p3gTiaHjeKO
-         JsgxqLE3IgAcK5LKeWguJa+pac9FS6grihndg8Ms+e8kTkmwh5bjlkV9Cm2zXWWO3ksz
-         Lo6C94YlKzcSmj80eCUZXHCUrJfnVeCe0RKwGiUvL6Le5Id/MyDkw73gGUcc91IfFhkD
-         b/I592N+IQQOK7KJcNVZFs4ZNyPHMdARuxsTay/eQLixaDXIXg769YGosbO84VbgwNZT
-         HKz7spkHrTOgFeHVC++vVVMAy3vadMzEoTSfrifE5cMfHz7gGLjmn+AlB2ix42W1MhAJ
-         YOFA==
-X-Gm-Message-State: ABy/qLZdjUzEGLgMBzYYE3W8bcrpOqWmdyIKNFM3gUPpNSEykPhEUVJR
-        Uc56OOwOnMiPKB1ud9Mz/9RszQ==
-X-Google-Smtp-Source: APBJJlHj3zv5+y0d8YqMlYnepQ1WLcvsZHbqObTNCneoz62gOcAbi9uLTi3aOdJ7p2PueOx0bKfwWQ==
-X-Received: by 2002:a05:6870:7309:b0:1b3:c39a:7c34 with SMTP id q9-20020a056870730900b001b3c39a7c34mr397690oal.25.1689206258019;
-        Wed, 12 Jul 2023 16:57:38 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
-        by smtp.gmail.com with ESMTPSA id i14-20020a17090acf8e00b0026596b8f33asm8834060pju.40.2023.07.12.16.57.37
+        d=1e100.net; s=20221208; t=1689207808; x=1691799808;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sT4EPf3iKpEGqJ9z73dP6QmwaakqTzng8UdClO0Piew=;
+        b=Zv7Zb90JCfhfz0msozDIAvozCDpp6X5+sysl1MgBMP2fnX+2gUbGSyIhstswswslDV
+         RWhguptiB7n47dP3UaTD559wdlzNax7MzI/iBIqbX/Z2F74eX+c0r8pWVAeFMlccaK1D
+         QTKUMh2D2HlP+8FeudvU+hmkjFTN26dVxVN+JeMa3ayivME6szp7NHEj3jFDxSer8REA
+         kADM3gINCDE5zGVP0QIYCz9ZTXF4S8smoM4ykpeZnoUvzi53joxBgi40VgYMMsv2qBsU
+         g1yb9uM/ixBU8aOJHXbr1yYy5PozMStus7aGEnrlQftUUhtIKm9FO3s1DKlg0Nk91zi7
+         D4/w==
+X-Gm-Message-State: ABy/qLZQi/PMxy1Oh5oPVKuNuLBHcPPXWiLWg+wuiAm3PoOo/3M+sliy
+        Fj+DBQwaFfuEdipVqnHO3NqZJQ==
+X-Google-Smtp-Source: APBJJlGKjZCgdVN17RxPtjOTfMluNOyGQtpx6cSkveJ3gQkvS7LPdpApIOmQefFMYURTDvN7ZXUL0w==
+X-Received: by 2002:a05:6a00:1399:b0:681:ee3c:c5fe with SMTP id t25-20020a056a00139900b00681ee3cc5femr162644pfg.33.1689207808438;
+        Wed, 12 Jul 2023 17:23:28 -0700 (PDT)
+Received: from arowa.mtv.corp.google.com ([2620:15c:9d:4:7744:239:e1aa:a886])
+        by smtp.gmail.com with ESMTPSA id s4-20020aa78284000000b0066883d75932sm4143886pfm.204.2023.07.12.17.23.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 16:57:37 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1qJjiB-000gjk-N4;
-        Wed, 12 Jul 2023 20:57:35 -0300
-Date:   Wed, 12 Jul 2023 20:57:35 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Mina Almasry <almasrymina@google.com>
-Cc:     David Ahern <dsahern@kernel.org>,
-        Samiullah Khawaja <skhawaja@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Jesper Dangaard Brouer <jbrouer@redhat.com>,
-        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>,
-        Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-        logang@deltatee.com, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Message-ID: <ZK8978wUKKP3/zIW@ziepe.ca>
-References: <ZK1FbjG+VP/zxfO1@ziepe.ca>
- <20230711090047.37d7fe06@kernel.org>
- <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
- <20230711093224.1bf30ed5@kernel.org>
- <CAHS8izNHkLF0OowU=p=mSNZss700HKAzv1Oxqu2bvvfX_HxttA@mail.gmail.com>
- <20230711133915.03482fdc@kernel.org>
- <2263ae79-690e-8a4d-fca2-31aacc5c9bc6@kernel.org>
- <CAHS8izP=k8CqUZk7bGUx4ctm4m2kRC2MyEJv+N4+b0cHVkTQmA@mail.gmail.com>
- <ZK6kOBl4EgyYPtaD@ziepe.ca>
- <CAHS8izNuda2DXKTFAov64F7J2_BbMPaqJg1NuMpWpqGA20+S_Q@mail.gmail.com>
+        Wed, 12 Jul 2023 17:23:28 -0700 (PDT)
+From:   Arowa Suliman <arowa@chromium.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Arowa Suliman <arowa@chromium.org>
+Subject: [v3] wifi: ath11k: Add crash logging
+Date:   Wed, 12 Jul 2023 17:22:18 -0700
+Message-ID: <20230713002319.4057612-1-arowa@chromium.org>
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHS8izNuda2DXKTFAov64F7J2_BbMPaqJg1NuMpWpqGA20+S_Q@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 01:16:00PM -0700, Mina Almasry wrote:
+Currently, the ath11k driver does not print a crash signature when a
+crash happens. Checked by triggering a simulated crash using the command
+[1] and checking dmesg for logs.
 
-> The proposal was that the uapi in step #1 allocates a region of GPU
-> memory, and sets up a p2pdma provider for this region of memory.
+[1] echo assert > /sys/kernel/debug/ath11k/../simulate_fw_crash
 
-Honestly that feels too hacky, which is why I've said a few times
-you'd actually need to integrate p2p pages into a DRM driver properly.
+Change the crash logging from debug to informational and add a warning
+when firmware crash MHI_CB_EE_RDDM happens.
 
-> 2. The p2pdma semantics seem to be global to the pci device. I.e., 1
-> GPU can export 1 p2pdma resource at a time (the way I'm reading the
-> API).
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
 
-All of this is just a reflection that you are trying to use it in a
-wrong hacky way. The driver is supposed to create a p2p registration
-for its entire BAR at startup. Not on demand and not in fragments.
+Signed-off-by: Arowa Suliman <arowa@chromium.org>
+---
+v3:
+1- Fixed the error:
+drivers/net/wireless/ath/ath11k/mhi.c:328:25: warning: passing argument 2 of 'ath11k_info' makes pointer from integer without a cast [-Wint-conversion]
+2- Removed extra spaces in lines 329 and 338
+3- Updated commit message with correct Tested-on flag and the reason of
+the change.
+---
+ drivers/net/wireless/ath/ath11k/mhi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Jason
+diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+index 3ac689f1def4..d9783c2e0529 100644
+--- a/drivers/net/wireless/ath/ath11k/mhi.c
++++ b/drivers/net/wireless/ath/ath11k/mhi.c
+@@ -325,7 +325,7 @@ static void ath11k_mhi_op_status_cb(struct mhi_controller *mhi_cntrl,
+ {
+ 	struct ath11k_base *ab = dev_get_drvdata(mhi_cntrl->cntrl_dev);
+ 
+-	ath11k_dbg(ab, ATH11K_DBG_BOOT, "notify status reason %s\n",
++	ath11k_info(ab, "notify status reason %s\n",
+ 		   ath11k_mhi_op_callback_to_str(cb));
+ 
+ 	switch (cb) {
+@@ -333,6 +333,7 @@ static void ath11k_mhi_op_status_cb(struct mhi_controller *mhi_cntrl,
+ 		ath11k_warn(ab, "firmware crashed: MHI_CB_SYS_ERROR\n");
+ 		break;
+ 	case MHI_CB_EE_RDDM:
++		ath11k_warn(ab, "firmware crashed: MHI_CB_EE_RDDM\n");
+ 		if (!(test_bit(ATH11K_FLAG_UNREGISTERING, &ab->dev_flags)))
+ 			queue_work(ab->workqueue_aux, &ab->reset_work);
+ 		break;
+-- 
+2.41.0.255.g8b1d071c50-goog
+
