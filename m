@@ -2,85 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A1DB751581
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 02:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5390B75158F
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 02:54:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232935AbjGMAvI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Jul 2023 20:51:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46866 "EHLO
+        id S233434AbjGMAyL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Jul 2023 20:54:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232572AbjGMAvH (ORCPT
+        with ESMTP id S233305AbjGMAyF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Jul 2023 20:51:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A6142101;
-        Wed, 12 Jul 2023 17:51:04 -0700 (PDT)
+        Wed, 12 Jul 2023 20:54:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0582115;
+        Wed, 12 Jul 2023 17:53:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC56261904;
-        Thu, 13 Jul 2023 00:51:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15641C433C8;
-        Thu, 13 Jul 2023 00:51:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A360A619EB;
+        Thu, 13 Jul 2023 00:53:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39E9C433C7;
+        Thu, 13 Jul 2023 00:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689209463;
-        bh=V+Vc3hjjHuh25UinU0PX6yE946ivKVnfKEPeBSWk9QQ=;
+        s=k20201202; t=1689209635;
+        bh=NVtdLL8+xBR7hSGyKtnjjHvGDMITqkluq9Z4RcbYLcY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=K3HmB2PZzULWXiOCPbKeRfxZRLqerrD+PiuJ1pv/ZYmELo+Mlk+H0SxSjHWLeK4Wo
-         I1SEj1T5bMx2MnceT7BvSQBNgd0AqB8kDtSm6MXP1YzYXjAePFACYBkeE3EMEQoB1l
-         cYMZrqlw4cWCzoZgQo94J7hb2HWBeHvZA1dW1XpskMSHtxFLqCDEdw/w4XSNihivJa
-         3aoGfO7RRbmjg8NDIcVQIQsUMpiPFok6MZgPJdyiRLv7WvXOfxeoAdBcMs7P7ryDdl
-         ljcaq/yts+XegC0ZqDlRVxDWRGWrnL367Lfh6jR+vWq+NxmuRnKsGMUVv5dUDOlVG8
-         RBKupVXLZFgLQ==
-Date:   Wed, 12 Jul 2023 17:51:02 -0700
+        b=X/8mgt68l7feMz0hsXgsMTNUkn0ONkHeP5UBKgp99f/bxTz8LMoGZFmyn4A1/AkKP
+         cattpVEPet5zNiBKZ2BzIqpL2E43KBGfSEd9HR8EyEKlvyeKyseTaMyihI1k5F5fbZ
+         K/CHYNUswo+EFn0/n/t54vsjh3+6mSvQ7adfTb9Ujai/N9a2n0mmOYdH8yCI5FZjia
+         WDSOl+5nAa2Yk/FI2pUcTGSHpEmYlPyINWd3TyJcGRy10S9NeCC7GcXk9MxljrCiK+
+         5tHUjG09w/vomiNcCqGKZm0qZZZ96xkLKuCUuNVuOYRecgJ7gsin6LoyWxTZHQyGaZ
+         TJDJEvizn1ieQ==
+Date:   Wed, 12 Jul 2023 17:53:53 -0700
 From:   Jakub Kicinski <kuba@kernel.org>
-To:     pinkperfect <pinkperfect2021@gmail.com>
-Cc:     amitkarwar@gmail.com, kvalo@kernel.org,
+To:     Zhang Shurong <zhang_shurong@foxmail.com>
+Cc:     pkshih@realtek.com, kvalo@kernel.org,
         linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mwifiex: Fix integer underflow in
- mwifiex_process_mgmt_packet
-Message-ID: <20230712175102.59d2bda9@kernel.org>
-In-Reply-To: <20230705044350.838428-1-pinkperfect2021@gmail.com>
-References: <20230705044350.838428-1-pinkperfect2021@gmail.com>
+Subject: Re: [PATCH v4] wifi: rtw89: debug: fix error code in
+ rtw89_debug_priv_send_h2c_set()
+Message-ID: <20230712175353.01ca65c5@kernel.org>
+In-Reply-To: <tencent_AD09A61BC4DA92AD1EB0790F5C850E544D07@qq.com>
+References: <tencent_AD09A61BC4DA92AD1EB0790F5C850E544D07@qq.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed,  5 Jul 2023 04:43:50 +0000 pinkperfect wrote:
-> In outside functions have checked upper limit of rx_pkt_length,
-> in mwifiex_process_mgmt_packet should make sure rx_pkt_length not underflow
-> to avoid OOB access.
+On Thu,  6 Jul 2023 10:45:00 +0800 Zhang Shurong wrote:
+> If there is a failure during rtw89_fw_h2c_raw() rtw89_debug_priv_send_h2c
+> should return negative error code instead of a positive value count.
+> Fix this bug by returning correct error code.
+> 
+> Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+> Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
 
-Please add a Fixes tag.
-
-> Signed-off-by: pinkperfect <pinkperfect2021@gmail.com>
-
-We need something close to your legal name, or basically know who you
-are. Because of developer certificate of origin. We're working on real
-code under real copyright law..
-
-> diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
-> index 94c2d219835d..4291252e06ea 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/util.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/util.c
-> @@ -399,6 +399,11 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
->  
->  	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
->  
-> +	if (pkt_len < sizeof(struct ieee80211_hdr)) {
-
-The callers also look at the header and the MAC addresses in it.
-I think we need to pull this check earlier.
-
-> +		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
-> +		return -1;
+Applied, thanks!
