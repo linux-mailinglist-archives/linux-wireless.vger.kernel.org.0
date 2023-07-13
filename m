@@ -2,112 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32C75752AA7
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 21:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED99D752B69
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 22:11:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232080AbjGMTAz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 15:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52470 "EHLO
+        id S232525AbjGMULC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 16:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230442AbjGMTAy (ORCPT
+        with ESMTP id S231171AbjGMULB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 15:00:54 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 678042715
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 12:00:50 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3fc075d9994so14825e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 12:00:50 -0700 (PDT)
+        Thu, 13 Jul 2023 16:11:01 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5DE2D72;
+        Thu, 13 Jul 2023 13:10:39 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9924ac01f98so155465166b.1;
+        Thu, 13 Jul 2023 13:10:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689274849; x=1691866849;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fpaS1t14ocFfpWfA4r7YMHKUrjpT8EG6McsCuyMXf0w=;
-        b=h9CKt8tSLkeJqOlX42EdZhaSr8bEX0S67A2Fv1Ie4Tfvr7GPUEj9PsQrGnrr4No529
-         b5LH5p9kuuAsBuL+n74M89Z1UxADUNF+ST35xiT0fUvhzcwX4BVrGup61WLB06Ad4Qyv
-         qSFsiKabxnzIDjXfPxlJPO9uE3kHtgilGhDVUUOL1WsKtNrxU/HcP+vi2/I7SzxFCNnS
-         e0TbzhhhT39vKFu7OA3UIDktN5kO/Ez3tWvdbO27cOwn46Yy7giRCn9e/xbzKV8CM9Y0
-         ncoTdlOJnr+VxbIAbl6myJ7j14xK+FsXckuhrapTzOMvRdDGJfQBH4UTPq211e79UkEH
-         KWjg==
+        d=gmail.com; s=20221208; t=1689279037; x=1691871037;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yreGFvCmpHnziSDHuJXMrwPArv/PIvS/Cz4S/6XBN9o=;
+        b=MQ8cTiSmhMxzzKWxx8hq7LNeFS3a7hWxrQdeumfh5bfeBisfhkQj4+bGg6+mtJBtgZ
+         UGVHFc/SBdS8WepYaxgHqVYw1XK//Y9oPdUzYLhA6phUhFxgVzvwGdivLXc0AFWA7ZI4
+         9rd+WiBHbA9opPbdk/do7WTcn4GwcFmsSm+DEMfTgd9wPKMsf1sg8WLwxyCA+JAf0YUM
+         WmI26O1yDduxglzRuhiXAuE9EzJ1GjcCEpuOdWtWlKiB7rnUqmYwZoA41RJoxHBK5JKO
+         nKtT/sMVbaYdpD3nXYeN0YfKQ3dG4yH0LnvzU76m5SjolfEQ+wtPHeRaaA6CPGeW0DM+
+         BtGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689274849; x=1691866849;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fpaS1t14ocFfpWfA4r7YMHKUrjpT8EG6McsCuyMXf0w=;
-        b=S1H0dWFwnhHjcqwANatnb0u91mOcfsZobjUDb6OfO3cECw0hwGl7pbPy4CMRHi45jo
-         civbRx4CaLdh3Y/Q4Cw/1DCtuceiMN5a3KfIvdFeSa2IkwR6KhAno7BLGmjGxDyRLiU5
-         mW2+sQDRDYSKv+0wtdS5+lGaMyScvU7i52J6MCu3/z1LgaKJl8dN4yyov1dsXp+cWGr6
-         Z0z64mOBaNpG0XzXhPMxccd2bs0R6zUG0Kf8WPl8xnde89JieZKtaGvKjNchF4Mf54EG
-         NVWh2zThVPvf+u0Crr5irWkwj/mh/ncevgl2H8M5g3EAng1qgO2SQ0z20+GCfzoibc4D
-         G4JQ==
-X-Gm-Message-State: ABy/qLbQO/pjpsEitnkp1VXYQyOeliDWOsG80PusQZTWhMI8ombGPPsZ
-        8o5759wPi04whkQtLC/cG6VqY3BeVGuHHWlUwCOXvw==
-X-Google-Smtp-Source: APBJJlESmB4Lu5P8++T2+oASx3PmdOOp2AtvnTbFgHLS7YLoUktqE/L70NW9IqnTBuc0Qz9I3BB4CHYA2RnxaglJevc=
-X-Received: by 2002:a05:600c:2196:b0:3f7:e4d8:2569 with SMTP id
- e22-20020a05600c219600b003f7e4d82569mr241283wme.5.1689274848857; Thu, 13 Jul
- 2023 12:00:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <000000000000c2dccb05d0cee49a@google.com> <0000000000005ac8fc060061f4c5@google.com>
-In-Reply-To: <0000000000005ac8fc060061f4c5@google.com>
-From:   Aleksandr Nogikh <nogikh@google.com>
-Date:   Thu, 13 Jul 2023 21:00:37 +0200
-Message-ID: <CANp29Y4ANdDSd4R8u=H5GX7t+1WZr=a2pemZ-VwQRraknJ8Pew@mail.gmail.com>
-Subject: Re: [syzbot] [wireless?] WARNING in ieee80211_free_ack_frame (2)
-To:     syzbot <syzbot+ac648b0525be1feba506@syzkaller.appspotmail.com>
-Cc:     casey@schaufler-ca.com, davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
+        d=1e100.net; s=20221208; t=1689279037; x=1691871037;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yreGFvCmpHnziSDHuJXMrwPArv/PIvS/Cz4S/6XBN9o=;
+        b=lH2KemvBWQTrSPJ3WWKk6pipYCbZ5G6zm/4DeUTpg11lnR4ScgEKx6NbFo8h30Pftn
+         HXD3hLHG9dTfDwt327BVfWEOspbGzk64pohAB8/yjaUtC2d2I74PtLXnxFub0uE5Pg9a
+         bYbgqIZeQ5/X8mcibXATTC8Uv3NziOn0qTztRh4gR+J5cjJT/8VRgTBvm7yQDrLtHukW
+         50WtRnVTkY6RkDwgAL8Lzz0jqr7cA3QzYcYZ93ccXWrZXp+Y2MSIvVHgjFQgsfMaHrB7
+         4m0bcDBCbZPeCmTP6q6NU7vHOLK4urdKODkus7Fy2h/jDIsEam0DEZYc8lZvR4Mt/gA2
+         SbMg==
+X-Gm-Message-State: ABy/qLbAMPJXJSZo20717nqgJ6QM78EjfkDpUOSRcx+jKtot6eDHJOSL
+        UsSrdN2bjcYYvSgW5JVKxZA0Ly2IJMw=
+X-Google-Smtp-Source: APBJJlFNGTLlZYUpz8EsCiTChVxpbGWOz7UmSy+UjyXaCRtqOEDO7oiQjxyK4Nn+vG63aWiegdD2HQ==
+X-Received: by 2002:a17:907:6e24:b0:987:16f5:692f with SMTP id sd36-20020a1709076e2400b0098716f5692fmr2852136ejc.44.1689279036847;
+        Thu, 13 Jul 2023 13:10:36 -0700 (PDT)
+Received: from nam-dell (ip-217-105-46-58.ip.prioritytelecom.net. [217.105.46.58])
+        by smtp.gmail.com with ESMTPSA id x25-20020a170906135900b00992acab8c45sm4450161ejb.12.2023.07.13.13.10.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jul 2023 13:10:36 -0700 (PDT)
+Date:   Thu, 13 Jul 2023 22:10:35 +0200
+From:   Nam Cao <namcaov@gmail.com>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     gregkh@linuxfoundation.org, linux-staging@lists.linux.dev,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com, paul@paul-moore.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-15.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=no autolearn_force=no version=3.4.6
+        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] staging: 7811: Fix memory leak in _r8712_init_xmit_priv
+Message-ID: <ZLBaO2/p32h0enDT@nam-dell>
+References: <20230712205733.29794-1-Larry.Finger@lwfinger.net>
+ <ZLA1942ebuVcUT3h@nam-dell>
+ <b684a76e-7d22-fece-5358-f459e4a979ff@lwfinger.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b684a76e-7d22-fece-5358-f459e4a979ff@lwfinger.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 7:49=E2=80=AFPM syzbot
-<syzbot+ac648b0525be1feba506@syzkaller.appspotmail.com> wrote:
->
-> syzbot suspects this issue was fixed by commit:
->
-> commit 1661372c912d1966e21e0cb5463559984df8249b
-> Author: Paul Moore <paul@paul-moore.com>
-> Date:   Tue Feb 7 22:06:51 2023 +0000
->
->     lsm: move the program execution hook comments to security/security.c
->
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D1024a074a8=
-0000
-> start commit:   33189f0a94b9 r8169: fix RTL8168H and RTL8107E rx crc erro=
-r
-> git tree:       net
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dea09b0836073e=
-e4
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dac648b0525be1fe=
-ba506
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D15346b1ec80=
-000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D162e3b89c8000=
-0
->
-> If the result looks correct, please mark the issue as fixed by replying w=
-ith:
+On Thu, Jul 13, 2023 at 01:51:00PM -0500, Larry Finger wrote:
+> On 7/13/23 12:35, Your Name wrote:
+> > The allocation was done in a loop. Shouldn't memory from previous loop iterations
+> > also be freed? And allocation by r8712_xmit_resource_alloc() should be freed too.
+> 
+> Nam,
+> 
+> You are right on both counts. I will prepare version 2.
+> 
+> Larry
 
-No, this one is invalid.
+Perhaps you can make use of my WIP that I didn't have time to finish:
+https://github.com/covanam/linux/commit/ee8a0719ec8535f932b30aa67325fc21ba998c50
 
->
-> #syz fix: lsm: move the program execution hook comments to security/secur=
-ity.c
->
-> For information about bisection process see: https://goo.gl/tpsmEJ#bisect=
-ion
->
-> --
+(Untested and the label names are kind of dumb)
+
+Best regards,
+Nam 
