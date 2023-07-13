@@ -2,45 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6AB07523BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 15:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F9D57524DE
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 16:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231280AbjGMNac (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 09:30:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34392 "EHLO
+        id S235073AbjGMOQA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 10:16:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234574AbjGMNa1 (ORCPT
+        with ESMTP id S235105AbjGMOPo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 09:30:27 -0400
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D119E68
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 06:30:24 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:332f:0:640:4ab4:0])
-        by forward102b.mail.yandex.net (Yandex) with ESMTP id 24D5460043;
-        Thu, 13 Jul 2023 16:30:22 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id LUb8nu0DU4Y0-duGuLURI;
-        Thu, 13 Jul 2023 16:30:21 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689255021;
-        bh=pQ/7B2s+wiHzYTGswyAw58YygajU2ErEZPpVCQuEwv0=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=Y8Q3JFzxKe8SO6i57erTqM0CuaU8BQ6BaWgfbtEXRajCECWFT/rNVoCPxt4sT+uD4
-         j+STOB1AV9H50MVUKAVOQFxyAi8BYk58himmSOwxR/r13OfUHWQgP9SbnSohi8lksd
-         Qt+IeA2NDb1F8Oygas74Gknbh9zWSS673BurD20g=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: cfg80211: improve documentation for flag fields
-Date:   Thu, 13 Jul 2023 16:29:36 +0300
-Message-ID: <20230713132957.275859-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Thu, 13 Jul 2023 10:15:44 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 221043A85;
+        Thu, 13 Jul 2023 07:15:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689257720; x=1720793720;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=t6/CWbos/88643w3iuRqAiJYN+TLmHJLjYSn3gBi4eg=;
+  b=a8pqdw3JDPJMlhyK6l0Igr8Aos006Cq7giuu52WnY2ZGi/V94SooImKM
+   1fCFUBH1YMWa7A9D8Bc4aoQ80lvkYKI7JzclVoZyEY0XMjWkBL+4pIcKJ
+   x4zvociAeqEPFd5Xx5rVitjoMnDeQNYYDJADj/y3LC1pN7nHZL3/P+LP5
+   goP/GvT5B6WlrTtk3V0HTZolRry9HAkyBgn9BqPUqT0jX7u8s7s3xB2qS
+   9qyG1BOSZpkfN2S9HfZjhh2MyCJ+c2l+jYOL48TZVKm02rxMU3uTditTF
+   fei1sHixozj2oUC2j8G1v6M5Uyj1J/u2R/Zv2307wO5vRhEQgVtSsa0vJ
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="345513060"
+X-IronPort-AV: E=Sophos;i="6.01,203,1684825200"; 
+   d="scan'208";a="345513060"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2023 07:15:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="725315229"
+X-IronPort-AV: E=Sophos;i="6.01,203,1684825200"; 
+   d="scan'208";a="725315229"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 13 Jul 2023 07:15:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1qJx6B-002PjM-3C;
+        Thu, 13 Jul 2023 17:15:15 +0300
+Date:   Thu, 13 Jul 2023 17:15:15 +0300
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        regressions@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>
+Subject: Re: Closing down the wireless trees for a summer break?
+Message-ID: <ZLAG85HEMH0MeW1G@smile.fi.intel.com>
+References: <87y1kncuh4.fsf@kernel.org>
+ <ZK7Yzd0VvblA3ONU@smile.fi.intel.com>
+ <87wmz43xy4.fsf@kernel.org>
+ <d1f9ca04bb055dc07f2a7f9f07f774e08913cf00.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d1f9ca04bb055dc07f2a7f9f07f774e08913cf00.camel@sipsolutions.net>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,72 +70,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix and hopefully improve documentation for 'flag' fields of
-a few types by adding references to relevant enumerations.
+On Thu, Jul 13, 2023 at 01:05:45PM +0200, Johannes Berg wrote:
+> On Thu, 2023-07-13 at 13:30 +0300, Kalle Valo wrote:
+> > Andy Shevchenko <andriy.shevchenko@intel.com> writes:
+> > > On Tue, Jun 13, 2023 at 05:22:47PM +0300, Kalle Valo wrote:
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- include/net/cfg80211.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+...
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 7c7d03aa9d06..7f76f731e541 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -263,7 +263,7 @@ enum ieee80211_privacy {
-  * are only for driver use when pointers to this structure are
-  * passed around.
-  *
-- * @flags: rate-specific flags
-+ * @flags: rate-specific flags from &enum ieee80211_rate_flags
-  * @bitrate: bitrate in units of 100 Kbps
-  * @hw_value: driver/hardware value for this rate
-  * @hw_value_short: driver/hardware value for this rate when
-@@ -1350,7 +1350,7 @@ struct cfg80211_unsol_bcast_probe_resp {
-  * @twt_responder: Enable Target Wait Time
-  * @he_required: stations must support HE
-  * @sae_h2e_required: stations must support direct H2E technique in SAE
-- * @flags: flags, as defined in enum cfg80211_ap_settings_flags
-+ * @flags: flags, as defined in &enum nl80211_ap_settings_flags
-  * @he_obss_pd: OBSS Packet Detection settings
-  * @he_oper: HE operation IE (or %NULL if HE isn't enabled)
-  * @fils_discovery: FILS discovery transmission parameters
-@@ -2153,7 +2153,7 @@ enum mpath_info_flags {
-  * @sn: target sequence number
-  * @metric: metric (cost) of this mesh path
-  * @exptime: expiration time for the mesh path from now, in msecs
-- * @flags: mesh path flags
-+ * @flags: mesh path flags from &enum mesh_path_flags
-  * @discovery_timeout: total mesh path discovery timeout, in msecs
-  * @discovery_retries: mesh path discovery retries
-  * @generation: generation number for nl80211 dumps.
-@@ -2493,7 +2493,7 @@ struct cfg80211_scan_6ghz_params {
-  *	the actual dwell time may be shorter.
-  * @duration_mandatory: if set, the scan duration must be as specified by the
-  *	%duration field.
-- * @flags: bit field of flags controlling operation
-+ * @flags: control flags from &enum nl80211_scan_flags
-  * @rates: bitmap of rates to advertise for each band
-  * @wiphy: the wiphy this was for
-  * @scan_start: time (in jiffies) when the scan started
-@@ -2613,7 +2613,7 @@ struct cfg80211_bss_select_adjust {
-  * @scan_width: channel width for scanning
-  * @ie: optional information element(s) to add into Probe Request or %NULL
-  * @ie_len: length of ie in octets
-- * @flags: bit field of flags controlling operation
-+ * @flags: control flags from &enum nl80211_scan_flags
-  * @match_sets: sets of parameters to be matched for a scan result
-  *	entry to be considered valid and to be passed to the host
-  *	(others are filtered out).
-@@ -8115,7 +8115,7 @@ void cfg80211_conn_failed(struct net_device *dev, const u8 *mac_addr,
-  * @link_id: the ID of the link the frame was received	on
-  * @buf: Management frame (header + body)
-  * @len: length of the frame data
-- * @flags: flags, as defined in enum nl80211_rxmgmt_flags
-+ * @flags: flags, as defined in &enum nl80211_rxmgmt_flags
-  * @rx_tstamp: Hardware timestamp of frame RX in nanoseconds
-  * @ack_tstamp: Hardware timestamp of ack TX in nanoseconds
-  */
+> > > > [1] https://phb-crystal-ball.sipsolutions.net/
+> > > 
+> > > How could one use the shut down site?
+> > 
+> > What do you mean? At least from Finland it Works for me:
+> 
+> That did in fact not work yesterday for some time as I was doing some
+> maintenance :)
+
+Good to know!
+
 -- 
-2.41.0
+With Best Regards,
+Andy Shevchenko
+
 
