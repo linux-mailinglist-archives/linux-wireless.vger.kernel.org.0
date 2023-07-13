@@ -2,135 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 754B275182F
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 07:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BE78751852
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 07:48:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233979AbjGMFey (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 01:34:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58286 "EHLO
+        id S232920AbjGMFr7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 01:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232495AbjGMFew (ORCPT
+        with ESMTP id S233654AbjGMFr6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 01:34:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 622FE172C;
-        Wed, 12 Jul 2023 22:34:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0046161A1B;
-        Thu, 13 Jul 2023 05:34:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAB5C433C7;
-        Thu, 13 Jul 2023 05:34:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689226490;
-        bh=2JHbtG+sVXQmGWauZLsAOKWDbI5gnT577OPCK1jp+Q8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vleIFVTtBrOWd38hiGN+XWTgere583yQr9l83OgWqtUajbTSeJibPzYO/xFj0AJy3
-         ieXPRyRE6xoo4/g6NUWSfeMiFBotIaFyznioia33n5ClOJigpoWP+UqFmHcBF7sM0G
-         fWgmD3zcAouV0YT11ceet/Tx0ES3+y42z5vgnk3g=
-Date:   Thu, 13 Jul 2023 07:34:45 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Oliver Neukum <oneukum@suse.com>,
-        Enrico Mioso <mrkiko.rs@gmail.com>,
-        Jan Engelhardt <jengelh@inai.de>, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Maciej =?utf-8?Q?=C5=BBenczykowski?= <maze@google.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        =?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Ilja Van Sprundel <ivansprundel@ioactive.com>,
-        Joseph Tartaro <joseph.tartaro@ioactive.com>
-Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
-Message-ID: <2023071333-wildly-playroom-878b@gregkh>
-References: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
- <n9108s34-9rn0-3n8q-r3s5-51r9647331ns@vanv.qr>
- <ZKM5nbDnKnFZLOlY@rivendell>
- <2023070430-fragment-remember-2fdd@gregkh>
- <e5a92f9c-2d56-00fc-5e01-56e7df8dc1c1@suse.com>
- <6a4a8980912380085ea628049b5e19e38bcd8e1d.camel@sipsolutions.net>
- <2023071222-asleep-vacancy-4cfa@gregkh>
- <2d26c0028590a80e7aa80487cbeffd5ca6e6a5ea.camel@sipsolutions.net>
+        Thu, 13 Jul 2023 01:47:58 -0400
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10C3C1BD5;
+        Wed, 12 Jul 2023 22:47:57 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-3fbc1218262so2206705e9.3;
+        Wed, 12 Jul 2023 22:47:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689227275; x=1691819275;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g/23YouR6ifHDZ8U/xHyTwj4qWiz/nazDA45VtndnBg=;
+        b=P/H1yik60KnfTDst5gL+4AmCxOvNKGwrwqn2wvHIxnPJAGBjzhZi/OdJV/1DfCTNcT
+         hBUgIymq9fpjCRGrOSnmfWPnno2xYlbMGlg0S1zqfnd11LgJWx3FPJ2QC6Fy1tgyGD3W
+         vRBZvWAr+PomsoOOsQeFr2GDvUWYsvsH0QoBOiaKOKc76nErUmL/GXIqsvS4gSB0SllR
+         FlLDoqEDq6bVLSbia044oV5z4pG0q0qa+qCSSnjbLzZeHmISi22reS613w6fKhfgC0RX
+         pD3A2kngHvlC4Nw9y3FWHFPy7xra4af5bZcgid0z3bb88aLa+R6e887iR3JgrkAVeEpz
+         IWPg==
+X-Gm-Message-State: ABy/qLagW5vAgJ3zBok1BnLfbYlNJ15K4+u9ytznvSO1yU1lntt/FIA6
+        clUTgnsTUEGR0nC0iyfRens=
+X-Google-Smtp-Source: APBJJlFANUI6X4TyBnut+ulAcfN4Oe7AF2hbXKvVPpVzvQ/r1juJj6KodJuZscorIn/o6ImILHX6XQ==
+X-Received: by 2002:a7b:c38b:0:b0:3fb:b3aa:1c8a with SMTP id s11-20020a7bc38b000000b003fbb3aa1c8amr410378wmj.16.1689227275300;
+        Wed, 12 Jul 2023 22:47:55 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id u9-20020a7bc049000000b003fbc681c8d1sm17300945wmc.36.2023.07.12.22.47.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jul 2023 22:47:54 -0700 (PDT)
+Message-ID: <986bc150-1ab3-4ec1-dd76-d3be69bfcef9@kernel.org>
+Date:   Thu, 13 Jul 2023 07:47:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d26c0028590a80e7aa80487cbeffd5ca6e6a5ea.camel@sipsolutions.net>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] drivers: wireless: ath5k: fix parameter check in
+ ath5k_debug_init_device
+Content-Language: en-US
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Minjie Du <duminjie@vivo.com>, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Cc:     opensource.kernel@vivo.com, LKML <linux-kernel@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Nick Kossifidis <mickflemm@gmail.com>
+References: <ZK7wqH86hEswxGo6@bombadil.infradead.org>
+ <3e831a9c-b469-f1d3-1eaf-c9e275a74da5@web.de>
+From:   Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <3e831a9c-b469-f1d3-1eaf-c9e275a74da5@web.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 13, 2023 at 02:28:26AM +0200, Johannes Berg wrote:
-> On Wed, 2023-07-12 at 18:39 +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Jul 12, 2023 at 03:00:55PM +0200, Johannes Berg wrote:
-> > > On Wed, 2023-07-12 at 11:22 +0200, Oliver Neukum wrote:
-> > > > 
-> > > > On 04.07.23 08:47, Greg Kroah-Hartman wrote:
-> > > > > On Mon, Jul 03, 2023 at 11:11:57PM +0200, Enrico Mioso wrote:
-> > > > > > Hi all!!
-> > > > > > 
-> > > > > > I think the rndis_host USB driver might emit a warning in the dmesg, but disabling the driver wouldn't be a good idea.
-> > > > > > The TP-Link MR6400 V1 LTE modem and also some ZTE modems integrated in routers do use this protocol.
-> > > > > > 
-> > > > > > We may also distinguish between these cases and devices you might plug in - as they pose different risk levels.
-> > > > > 
-> > > > > Again, you have to fully trust the other side of an RNDIS connection,
-> > > > > any hints on how to have the kernel determine that?
-> > > 
-> > > > it is a network protocol. So this statement is kind of odd.
-> > > > Are you saying that there are RNDIS messages that cannot be verified
-> > > > for some reason, that still cannot be disclosed?
-> > > 
-> > > Agree, it's also just a USB device, so no special trickery with DMA,
-> > > shared buffers, etc.
-> > > 
-> > > I mean, yeah, the RNDIS code is really old and almost certainly has a
-> > > severe lack of input validation, but that still doesn't mean it's
-> > > fundamentally impossible.
-> > 
-> > You all are going to make me have to write some exploits aren't you...
+On 12. 07. 23, 21:07, Markus Elfring wrote:
+>>> +++ b/drivers/net/wireless/ath/ath5k/debug.c
+>>> @@ -982,7 +982,7 @@ ath5k_debug_init_device(struct ath5k_hw *ah)
+>>>   	ah->debug.level = ath5k_debug;
+>>>
+>>>   	phydir = debugfs_create_dir("ath5k", ah->hw->wiphy->debugfsdir);
+>> -	if (!phydir)
+>>> +	if (IS_ERR(phydir))
+>>
+>> Please use IS_ERR_OR_NULL() instead.
 > 
-> This is getting a bit childish. Nobody ever said that wasn't possible,
-> in fact I did say exactly above that I'm sure since it's old and all it
-> lacks input validation. So yeah, I full well believe that you can write
-> exploits for it.
+> I find your support for consistent error detection interesting here.
+> Contributors for other Linux software components provide different
+> development views.
 
-I wasn't trying to be glib here, sorry if it came across that way.  I'll
-blame the heat...
+IS_ERR_OR_NULL() is almost never correct. It is used exceptionally in 
+cases where one needs to distinct three states. It's not the case for 
+sysfs/debugfs interfaces.
 
-> All we said is that your statement of "RNDIS is fundamentally unfixable"
-> doesn't make a lot of sense. If this were the case, all USB drivers
-> would have to "trust the other side" as well, right?
+> Would a subject like “[PATCH v2] ath5k: Fix an error check in ath5k_debug_init_device()”
+> be more appropriate?
 
-No, well, yes.  See the zillion patches we have had to apply to the
-kernel over the years when someone decided that "usb devices are not to
-be trusted" that syzbot has helped find :)
-
-It's not a DMA issue here, it's a "the protocol allows for buffer
-overflows and does not seem to be able to be verified to prevent this"
-from what I remember (it's been a year since I looked at this last,
-details are hazy.)  At the time, I didn't see a way that it could be
-fixed, hence this patch.
-
-But yes, details matter, again I'll refrain from submitting this change
-until I have those details.
+Yes (pointing out specifically "()" at the end). And add the "why" part 
+to the message log too, please.
 
 thanks,
+-- 
+js
+suse labs
 
-greg k-h
