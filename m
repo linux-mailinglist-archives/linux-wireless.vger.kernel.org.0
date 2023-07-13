@@ -2,479 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5279C751BAC
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 10:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7649D751BD2
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 10:39:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234509AbjGMIfT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 04:35:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41928 "EHLO
+        id S234105AbjGMIjJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 04:39:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234619AbjGMIeq (ORCPT
+        with ESMTP id S233993AbjGMIiq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 04:34:46 -0400
-Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4929F3595
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 01:26:47 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:5e29:0:640:21c5:0])
-        by forward101b.mail.yandex.net (Yandex) with ESMTP id 7B06460159;
-        Thu, 13 Jul 2023 11:26:44 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id hQWpE79DRCg0-uIPIyc9A;
-        Thu, 13 Jul 2023 11:26:43 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689236803;
-        bh=8xHOZ0Y89F+H+pG8f6PrlCHGO2j5xdRlpIn1SiyTxoQ=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=LZ4i66lIqpj4iRg7gzkryJBsPuhjpJFVKohvRq66LgIUoVQmNz/yan1U3aoNS8+zi
-         E2J6JUq//0hgLnOtUr25xuiEwGWt9eDoZj7rJqwl1ljP7xS8oPyONQIihGWxm35tK4
-         JtIyUE03qjfnGK07xY7LKwnMaErHXorrBzQosmIg=
-Authentication-Results: mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ajay Singh <ajay.kathat@microchip.com>
-Cc:     Amisha Patel <amisha.patel@microchip.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: wilc1000: simplify TX callback functions
-Date:   Thu, 13 Jul 2023 11:26:09 +0300
-Message-ID: <20230713082616.112160-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Thu, 13 Jul 2023 04:38:46 -0400
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2072.outbound.protection.outlook.com [40.107.22.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 361A83C17;
+        Thu, 13 Jul 2023 01:33:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hZYYsM07bz6Lub5TfHsurRCmXHh2i41i9LrnVCwe6nYvSV9mw0LOX0OHPnkNtU9g9nGfxCRN/EI2VehBOVGCP5og82mHHka0+/Nsf9YG1X/3/zMks4/Y72fU7oBCHfOe+gYwvQE+F7hyFUwav89YnxTm1CMJKCR2qJJaCtlKu34yzDk1OIh4/orL7Kp5dqLxBtcKgwlxgQwfSqUOCCWG+bk6rDAY6thPUKPOYT1/2TLWzwD2ocjVH0uRDCwt6hloBX3dFXgnR9kLgdWrzb6GJsc8qxDRTL1zkkyJgE2+N25wWTTPk8merguTpIYSCHv6QUHZftKc4BFLyTLXdso7vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r+YNl78J7Kh0Al/guMR1GqVM33sQwnsbgtuy4gRpSBM=;
+ b=fvFI+BBr+QN/kLcpdPS276NyQompwRiDU/e1UAP4LEjuQUfRQF4wvN9+9tv51K/IDTWe8WUWqgGPh+Ouzk7/K6odSBafZ5qBFHcHu8tC0hRg6SUeLoL53aXimpWhr8Tw7eMeWkAx8W/+uCzJy70hFXjsLxnROx5F5+23r9++ycHJO2yWiXZwj21bxE+4937qvpfqJD4EMTY/8Mcm5uFGa+OKtn51OD2XXOsIxYNvHACAPKKL+ZA3wjamtJUW7k/0Kn/YniADOclZUcmgYyKEIFl2fNuoSaRltnVTFl37jdeXfL2CU1lGCQTSr6FJmDqAFOqS9D+GoGFj+FySCQPA1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r+YNl78J7Kh0Al/guMR1GqVM33sQwnsbgtuy4gRpSBM=;
+ b=4lzCwm0O0vQv0+rt1LA1OIgODZZDIY4AoXLuZTQOeBeUNUt3N6Q00Utn/scfIATdLfqufTHsPY865fJB/1SGN2YJ9EX9+J5kY+fuHAitZ68V+G4Wiq7tamihGd51hWLneS0YXVHylGGCLUNEO1wtnl9WWsWonnOKZKsS57FRGUjttC7FztNJePbpDzu8hFhdH88Ed9YQm3DSseqZ56xU986VHoCf1JMEtRP1xR++/KSGs/KeFFjzefs61qxmZnSSFojC0bq+T1PhTATQ1OSSRrY47lTLPqTV5eyjduPVwuDJCD7fzPTdN6UU8H/iusUBVT3YFq2peyZ/amIWjpMclw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=suse.com;
+Received: from VI1PR04MB7104.eurprd04.prod.outlook.com (2603:10a6:800:126::9)
+ by AM9PR04MB8241.eurprd04.prod.outlook.com (2603:10a6:20b:3e4::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.22; Thu, 13 Jul
+ 2023 08:33:33 +0000
+Received: from VI1PR04MB7104.eurprd04.prod.outlook.com
+ ([fe80::a31f:d35c:5ef8:a31b]) by VI1PR04MB7104.eurprd04.prod.outlook.com
+ ([fe80::a31f:d35c:5ef8:a31b%7]) with mapi id 15.20.6588.017; Thu, 13 Jul 2023
+ 08:33:32 +0000
+Message-ID: <de77578f-a783-a241-3ef5-e74f49029bb5@suse.com>
+Date:   Thu, 13 Jul 2023 10:33:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     Oliver Neukum <oneukum@suse.com>,
+        Enrico Mioso <mrkiko.rs@gmail.com>,
+        Jan Engelhardt <jengelh@inai.de>, linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        =?UTF-8?Q?Maciej_=c5=bbenczykowski?= <maze@google.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        =?UTF-8?Q?=c5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Ilja Van Sprundel <ivansprundel@ioactive.com>,
+        Joseph Tartaro <joseph.tartaro@ioactive.com>
+References: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
+ <n9108s34-9rn0-3n8q-r3s5-51r9647331ns@vanv.qr> <ZKM5nbDnKnFZLOlY@rivendell>
+ <2023070430-fragment-remember-2fdd@gregkh>
+ <e5a92f9c-2d56-00fc-5e01-56e7df8dc1c1@suse.com>
+ <6a4a8980912380085ea628049b5e19e38bcd8e1d.camel@sipsolutions.net>
+ <2023071222-asleep-vacancy-4cfa@gregkh>
+ <2d26c0028590a80e7aa80487cbeffd5ca6e6a5ea.camel@sipsolutions.net>
+ <2023071333-wildly-playroom-878b@gregkh>
+From:   Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <2023071333-wildly-playroom-878b@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FRYP281CA0010.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::20)
+ To VI1PR04MB7104.eurprd04.prod.outlook.com (2603:10a6:800:126::9)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR04MB7104:EE_|AM9PR04MB8241:EE_
+X-MS-Office365-Filtering-Correlation-Id: 509f0a94-ec56-4c86-f451-08db837bd703
+X-LD-Processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtFwd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: FXSsB/fH4ZtLoCCKvs0cjwfYzgZ4EFsiif5duEMPHep+QqzqlYGOr9b8lIMQBAslPrCRy0S77T9yD8fEOmApNQBwURdWWikXoThBWE5kyvg9m7jnBiNfvP3yfUGfrYmbY2Oae4zY0JBZYSV22lXB++X+S7zvsYYi+NZHOTRs0Uz2CRRKsx/ojtAfX8m2qnSzYv9GUqAMirydIqRojMDJE+R/VzrkitIZxoNMkyG3BrP3+PSB/mhwdOLFnS17xfl8oiYk/RpSDM98ux/dEDl5XGWY5ZuDdWpjs6eRvxISDUuRb91JDEfEmgHkdRFk8fYZUaVji2sLBbItkUT92Tw4J3zN/zvYHRwfANR6vC7x5JEVu9Zjp1LWp4f0enn2l+qk054qnnMPIpIoYACdaJYhSzbyxhSYzJcUF75Aqj3f+aZCELwM7SKdF9dyUS+9pF6YZKkC/vQmOnDjd0GXUCIUSGOVFaA3/YT7C39wAIsUEcZrHCzrngnLGEUm90HKpr5gI806g95N7Q5AiMqczg6hWtgaAPPx8Udn8yrTVz3f4eOi1CS1aiR2AOAHXZBufYx5ckF2V6DlyVhEEkmd8X4QLNYJk7ij4yMvvd2uiINOp3rRZI6hvHuVKNkp91jxv4zGlZ1A4co1gnZCs1gmATBYRA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7104.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(366004)(346002)(136003)(39860400002)(376002)(451199021)(6512007)(4326008)(53546011)(6506007)(54906003)(110136005)(36756003)(7416002)(38100700002)(8676002)(5660300002)(8936002)(86362001)(41300700001)(316002)(66476007)(2906002)(66556008)(66946007)(31696002)(6486002)(6666004)(478600001)(83380400001)(2616005)(31686004)(186003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SU56VGhONmNCMXA0NXc4UXQ4WXZxdUh4T2RKM296cG5mZmJFOXJ6aEZ0ak9z?=
+ =?utf-8?B?YU5MQ0xBT2FmanZ5bDBRbG93aVFDQkI5YzlZdW5FOFkybFJXYjN5S3pTbkN3?=
+ =?utf-8?B?dEZ1bm5WL2pvbGlNMmFUVUxuQldCQXVCN0s3TTd6dy9FSzVVRG94MDRPSzMz?=
+ =?utf-8?B?MDk4WjkvU1k2NEJRdWdXY2daTWJMVzVmdFovSFlqUTNsVDFOekc0ckhzenFq?=
+ =?utf-8?B?RENwN1JJMmtSVnMzQU1RTlQ4R3JLR2sweDBZaU4rb0JFeUdqSWEwc1NWOGFs?=
+ =?utf-8?B?STZKeVFIKzFFMUkwQXlmMUpjY1UyWHpIMGdlTm1xdE1pcW5TR09HajRMZUtJ?=
+ =?utf-8?B?VWgyVmgwUjJKcHpnN1J5S1BQYW9OaHZKTlBnRWV1aHdMUU5ycEpUZmVpcnB6?=
+ =?utf-8?B?Wlk0ZGRnTlRUalZ4aTVlRnRLVStrT2xOY2VHeGJ1NGpyRmxNSjNCZWVyMmRv?=
+ =?utf-8?B?dXhpRVh3RkdxVmZiU2Joam9INE1EWklxazBleFFrVHdkNEZ5TXFvcEdMSGRC?=
+ =?utf-8?B?eVhLVGVYSjhmRFo3RnJiUm4rUnlDaFR6MnMyeTd1ZkFjNmVLdGp1emVQcFNk?=
+ =?utf-8?B?dzZFbEhWV1FtZXBJSWZUVTh6SUZSekk0UXQ1aUpKM0tCMHhSQTdUYlhkdTV3?=
+ =?utf-8?B?L0FZbUpqL1ZsL2lrN1l3c2ppbEt6M1RmU1F1amhxR2ZTV1lGUllYQzN3TnRJ?=
+ =?utf-8?B?VGx1SittdWRJQ3Q5WHRjYnlBdmcyczhtTXJPWHlTRm5PNUp0SDMwYWtVdWxM?=
+ =?utf-8?B?ZGRyQVB2UzJHU0dsVVNMaFh6RnNMVWFML1hzeHpobU44VlZLK0EvZTRrRVBE?=
+ =?utf-8?B?V3Fmd2lRUlV4R3FId2x4UG5NU0N0R3VoMEc0OWFCWEJrRkxjNTBTVUhDV0gr?=
+ =?utf-8?B?Sk5YcnVzSCt0R3FnWlB3ai9oZlM0cGRRY2xkTnNUV3pLSWxmRFFvczFHYVNM?=
+ =?utf-8?B?VnJyeTVFWk55WkpkVG5VUGdMbFdTeE8yWDNOZTdubFp5UjBWbWs1S2lZdVAy?=
+ =?utf-8?B?aU9SQk1aVWpBRHdpL2hsTmFGRWppeWtQZEhacnRaenV6elVGLzk1OTNLU21l?=
+ =?utf-8?B?ZlZGR0NBdmZLSEZaV01hYVNWaiswbldsNTZJOVZwbnkrSFRaRmNrUktzNURk?=
+ =?utf-8?B?QisrbzhpWkoxbUMzZzRldjk4cStaZ2hXN3QyU1IzYXBkcVVNeldYQnVCcHVj?=
+ =?utf-8?B?TnhPRytpbFBJNEN6aU40RU5iS29WbGFVQWorTnQxTEN2TGJQb05yd2dqd1My?=
+ =?utf-8?B?TEtpQTFvcEhqcUtJcE9STTBxL2NYOXdFU05oTjZ1VUs1KzgzeUliV0ZWbFpt?=
+ =?utf-8?B?aW9OM01SaXNNQ0FXSkMxZWxITWJyeVVndzEyOVRqeGwzMUhJdjdXN0hVSUlk?=
+ =?utf-8?B?TjdialVxcTFhaHg0bkltZlJkdkpXaGltWWxpQytIQVo2UWZjb2tyRmQ0Y3Z2?=
+ =?utf-8?B?SThvZ05Rc2QzOW91dnlxRE1pdEpoNFJKV09iL0ZaaThadzFFWlVKYSttZEFQ?=
+ =?utf-8?B?SWZTNlVXWkRIeC9QVUUzNlpXTmg3Z0xBalo1R2RmMW1NZGQxaXAwTnAvTFNs?=
+ =?utf-8?B?N2YvTzFhQ1dtMDRVdGpFQWZ5V1NhWHhQQUZ6cEdyRk41M0VMVGlMd3F6dlZF?=
+ =?utf-8?B?TEk0S2t3QU9yYlpmZ2pRSllsNmlGb2lWRTk4QjJiNm5tSUFzeXVldTdSWUZr?=
+ =?utf-8?B?eEwyNjB6VUdTbGMrMFQvYlZsakNORi9pWDJQeStqOE1saXVNdVEreE9LSU9L?=
+ =?utf-8?B?OEFobmdnR3B2aVhIZjdYNC9EZGQyTmtPc0dwZ0NnUmtEZ3pEejFMVW9QNDJn?=
+ =?utf-8?B?OWtPU3ZINE5zT29nb1AwTGdRcnBrMWIrRVB2azFqZSswVnJCSXJDSzBPZ3RM?=
+ =?utf-8?B?NzlOdnNmNUxyL0NqRTh2enZpM29Ud3J6dXB5UDFCNmZ2U2xPY2d1eTJvK3NZ?=
+ =?utf-8?B?ZjBOd1gzTnVTbWNyNFRpWURVSVZyZ3ZNYUZuNXpVRUdNVS9mNGtOdmt1NDVN?=
+ =?utf-8?B?N05IU2dmSHg5bS9qMFNmNDVOQ1dhR1BnUDVySWxNZ1FGWTN6SG1IaDNEVHJW?=
+ =?utf-8?B?ZHB0OUlGekFOSGJOWWdxREEwUmhlUDlFbDJUbU5TcFNTOXp1UTE2SGpPU0tQ?=
+ =?utf-8?B?SGVEeEJadGwyRnR0bFFjV3NGd1E0QVBHN0d5c0VlZFlzK1U1M0VObVNTOGds?=
+ =?utf-8?Q?iZFrlW9L6eGOSw+aQNSllYo=3D?=
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 509f0a94-ec56-4c86-f451-08db837bd703
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB7104.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2023 08:33:31.9613
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MyNtASnWSTvVGWabfywZs8ZOMJhLlhY0qzj5v39Y7w5/e3V0FxGDG47m1sWj0h8eSRsyDDUZecPHLPJhrj78cQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8241
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Drop unused second argument of TX callback functions and use
-'struct txq_entry_t *' as the only argument, thus removing
-'struct wilc_p2p_mgmt_data', 'struct tx_complete_mon_data'
-and 'struct tx_complete_data' (actually intended just to
-pass callbacks parameters) as well. This also shrinks
-'struct txq_entry_t' by 'priv' field and eliminates a few
-'kmalloc()/kfree()' calls (at the cost of having dummy
-stack-allocated 'struct txq_entry_t' instances).
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- .../wireless/microchip/wilc1000/cfg80211.c    | 33 +++---------
- drivers/net/wireless/microchip/wilc1000/mon.c | 32 +++---------
- .../net/wireless/microchip/wilc1000/netdev.c  | 24 ++-------
- .../net/wireless/microchip/wilc1000/wlan.c    | 50 +++++++++----------
- .../net/wireless/microchip/wilc1000/wlan.h    | 22 +++-----
- 5 files changed, 50 insertions(+), 111 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-index b545d93c6e37..4490713a963b 100644
---- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-+++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-@@ -54,11 +54,6 @@ static const struct wiphy_wowlan_support wowlan_support = {
- };
- #endif
- 
--struct wilc_p2p_mgmt_data {
--	int size;
--	u8 *buff;
--};
--
- struct wilc_p2p_pub_act_frame {
- 	u8 category;
- 	u8 action;
-@@ -1086,12 +1081,9 @@ void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size)
- 	cfg80211_rx_mgmt(&priv->wdev, freq, 0, buff, size, 0);
- }
- 
--static void wilc_wfi_mgmt_tx_complete(void *priv, int status)
-+static void wilc_wfi_mgmt_tx_complete(struct txq_entry_t *tqe)
- {
--	struct wilc_p2p_mgmt_data *pv_data = priv;
--
--	kfree(pv_data->buff);
--	kfree(pv_data);
-+	kfree(tqe->buffer);
- }
- 
- static void wilc_wfi_remain_on_channel_expired(void *data, u64 cookie)
-@@ -1172,7 +1164,6 @@ static int mgmt_tx(struct wiphy *wiphy,
- 	const u8 *buf = params->buf;
- 	size_t len = params->len;
- 	const struct ieee80211_mgmt *mgmt;
--	struct wilc_p2p_mgmt_data *mgmt_tx;
- 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
- 	struct wilc_priv *priv = &vif->priv;
- 	struct host_if_drv *wfi_drv = priv->hif_drv;
-@@ -1181,6 +1172,7 @@ static int mgmt_tx(struct wiphy *wiphy,
- 	int ie_offset = offsetof(struct ieee80211_mgmt, u) + sizeof(*d);
- 	const u8 *vendor_ie;
- 	int ret = 0;
-+	u8 *copy;
- 
- 	*cookie = get_random_u32();
- 	priv->tx_cookie = *cookie;
-@@ -1189,21 +1181,12 @@ static int mgmt_tx(struct wiphy *wiphy,
- 	if (!ieee80211_is_mgmt(mgmt->frame_control))
- 		goto out;
- 
--	mgmt_tx = kmalloc(sizeof(*mgmt_tx), GFP_KERNEL);
--	if (!mgmt_tx) {
--		ret = -ENOMEM;
--		goto out;
--	}
--
--	mgmt_tx->buff = kmemdup(buf, len, GFP_KERNEL);
--	if (!mgmt_tx->buff) {
-+	copy = kmemdup(buf, len, GFP_KERNEL);
-+	if (!copy) {
- 		ret = -ENOMEM;
--		kfree(mgmt_tx);
- 		goto out;
- 	}
- 
--	mgmt_tx->size = len;
--
- 	if (ieee80211_is_probe_resp(mgmt->frame_control)) {
- 		wilc_set_mac_chnl_num(vif, chan->hw_value);
- 		vif->wilc->op_ch = chan->hw_value;
-@@ -1230,8 +1213,7 @@ static int mgmt_tx(struct wiphy *wiphy,
- 		goto out_set_timeout;
- 
- 	vendor_ie = cfg80211_find_vendor_ie(WLAN_OUI_WFA, WLAN_OUI_TYPE_WFA_P2P,
--					    mgmt_tx->buff + ie_offset,
--					    len - ie_offset);
-+					    copy + ie_offset, len - ie_offset);
- 	if (!vendor_ie)
- 		goto out_set_timeout;
- 
-@@ -1243,8 +1225,7 @@ static int mgmt_tx(struct wiphy *wiphy,
- 
- out_txq_add_pkt:
- 
--	wilc_wlan_txq_add_mgmt_pkt(wdev->netdev, mgmt_tx,
--				   mgmt_tx->buff, mgmt_tx->size,
-+	wilc_wlan_txq_add_mgmt_pkt(wdev->netdev, NULL, copy, len,
- 				   wilc_wfi_mgmt_tx_complete);
- 
- out:
-diff --git a/drivers/net/wireless/microchip/wilc1000/mon.c b/drivers/net/wireless/microchip/wilc1000/mon.c
-index 03b7229a0ff5..05e0af133dd3 100644
---- a/drivers/net/wireless/microchip/wilc1000/mon.c
-+++ b/drivers/net/wireless/microchip/wilc1000/mon.c
-@@ -95,45 +95,25 @@ void wilc_wfi_monitor_rx(struct net_device *mon_dev, u8 *buff, u32 size)
- 	netif_rx(skb);
- }
- 
--struct tx_complete_mon_data {
--	int size;
--	void *buff;
--};
--
--static void mgmt_tx_complete(void *priv, int status)
-+static void mgmt_tx_complete(struct txq_entry_t *tqe)
- {
--	struct tx_complete_mon_data *pv_data = priv;
--	/*
--	 * in case of fully hosting mode, the freeing will be done
--	 * in response to the cfg packet
--	 */
--	kfree(pv_data->buff);
--
--	kfree(pv_data);
-+	kfree(tqe->buffer);
- }
- 
- static int mon_mgmt_tx(struct net_device *dev, const u8 *buf, size_t len)
- {
--	struct tx_complete_mon_data *mgmt_tx = NULL;
-+	u8 *buff;
- 
- 	if (!dev)
- 		return -EFAULT;
- 
- 	netif_stop_queue(dev);
--	mgmt_tx = kmalloc(sizeof(*mgmt_tx), GFP_ATOMIC);
--	if (!mgmt_tx)
--		return -ENOMEM;
- 
--	mgmt_tx->buff = kmemdup(buf, len, GFP_ATOMIC);
--	if (!mgmt_tx->buff) {
--		kfree(mgmt_tx);
-+	buff = kmemdup(buf, len, GFP_ATOMIC);
-+	if (!buff)
- 		return -ENOMEM;
--	}
--
--	mgmt_tx->size = len;
- 
--	wilc_wlan_txq_add_mgmt_pkt(dev, mgmt_tx, mgmt_tx->buff, mgmt_tx->size,
--				   mgmt_tx_complete);
-+	wilc_wlan_txq_add_mgmt_pkt(dev, NULL, buff, len, mgmt_tx_complete);
- 
- 	netif_wake_queue(dev);
- 	return 0;
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index e9f59de31b0b..74864505ea22 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -713,19 +713,15 @@ static void wilc_set_multicast_list(struct net_device *dev)
- 		kfree(mc_list);
- }
- 
--static void wilc_tx_complete(void *priv, int status)
-+static void wilc_tx_complete(struct txq_entry_t *tqe)
- {
--	struct tx_complete_data *pv_data = priv;
--
--	dev_kfree_skb(pv_data->skb);
--	kfree(pv_data);
-+	dev_kfree_skb(tqe->skb);
- }
- 
- netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
- {
- 	struct wilc_vif *vif = netdev_priv(ndev);
- 	struct wilc *wilc = vif->wilc;
--	struct tx_complete_data *tx_data = NULL;
- 	int queue_count;
- 
- 	if (skb->dev != ndev) {
-@@ -734,21 +730,9 @@ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
- 		return NETDEV_TX_OK;
- 	}
- 
--	tx_data = kmalloc(sizeof(*tx_data), GFP_ATOMIC);
--	if (!tx_data) {
--		dev_kfree_skb(skb);
--		netif_wake_queue(ndev);
--		return NETDEV_TX_OK;
--	}
--
--	tx_data->buff = skb->data;
--	tx_data->size = skb->len;
--	tx_data->skb  = skb;
--
- 	vif->netstats.tx_packets++;
--	vif->netstats.tx_bytes += tx_data->size;
--	queue_count = wilc_wlan_txq_add_net_pkt(ndev, tx_data,
--						tx_data->buff, tx_data->size,
-+	vif->netstats.tx_bytes += skb->len;
-+	queue_count = wilc_wlan_txq_add_net_pkt(ndev, skb, skb->data, skb->len,
- 						wilc_tx_complete);
- 
- 	if (queue_count > FLOW_CONTROL_UPPER_THRESHOLD) {
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 58bbf50081e4..19561a807137 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -221,8 +221,7 @@ static void wilc_wlan_txq_filter_dup_tcp_ack(struct net_device *dev)
- 				wilc_wlan_txq_remove(wilc, tqe->q_num, tqe);
- 				tqe->status = 1;
- 				if (tqe->tx_complete_func)
--					tqe->tx_complete_func(tqe->priv,
--							      tqe->status);
-+					tqe->tx_complete_func(tqe);
- 				kfree(tqe);
- 				dropped++;
- 			}
-@@ -270,10 +269,10 @@ static int wilc_wlan_txq_add_cfg_pkt(struct wilc_vif *vif, u8 *buffer,
- 	}
- 
- 	tqe->type = WILC_CFG_PKT;
-+	tqe->skb = NULL;
- 	tqe->buffer = buffer;
- 	tqe->buffer_size = buffer_size;
- 	tqe->tx_complete_func = NULL;
--	tqe->priv = NULL;
- 	tqe->q_num = AC_VO_Q;
- 	tqe->ack_idx = NOT_TCP_ACK;
- 	tqe->vif = vif;
-@@ -410,12 +409,12 @@ static inline u8 ac_change(struct wilc *wilc, u8 *ac)
- 	return 1;
- }
- 
--int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
--			      struct tx_complete_data *tx_data, u8 *buffer,
--			      u32 buffer_size,
--			      void (*tx_complete_fn)(void *, int))
-+int wilc_wlan_txq_add_net_pkt(struct net_device *dev, struct sk_buff *skb,
-+			      u8 *buffer, u32 buffer_size,
-+			      void (*tx_complete_fn)(struct txq_entry_t *))
- {
--	struct txq_entry_t *tqe;
-+	struct txq_entry_t *tqe, dummy = { .skb = skb, .buffer = buffer,
-+					   .buffer_size = buffer_size };
- 	struct wilc_vif *vif = netdev_priv(dev);
- 	struct wilc *wilc;
- 	u8 q_num;
-@@ -423,32 +422,32 @@ int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
- 	wilc = vif->wilc;
- 
- 	if (wilc->quit) {
--		tx_complete_fn(tx_data, 0);
-+		tx_complete_fn(&dummy);
- 		return 0;
- 	}
- 
- 	if (!wilc->initialized) {
--		tx_complete_fn(tx_data, 0);
-+		tx_complete_fn(&dummy);
- 		return 0;
- 	}
- 
- 	tqe = kmalloc(sizeof(*tqe), GFP_ATOMIC);
- 
- 	if (!tqe) {
--		tx_complete_fn(tx_data, 0);
-+		tx_complete_fn(&dummy);
- 		return 0;
- 	}
- 	tqe->type = WILC_NET_PKT;
-+	tqe->skb = skb;
- 	tqe->buffer = buffer;
- 	tqe->buffer_size = buffer_size;
- 	tqe->tx_complete_func = tx_complete_fn;
--	tqe->priv = tx_data;
- 	tqe->vif = vif;
- 
--	q_num = ac_classify(wilc, tx_data->skb);
-+	q_num = ac_classify(wilc, skb);
- 	tqe->q_num = q_num;
- 	if (ac_change(wilc, &q_num)) {
--		tx_complete_fn(tx_data, 0);
-+		tx_complete_fn(tqe);
- 		kfree(tqe);
- 		return 0;
- 	}
-@@ -459,43 +458,44 @@ int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
- 			tcp_process(dev, tqe);
- 		wilc_wlan_txq_add_to_tail(dev, q_num, tqe);
- 	} else {
--		tx_complete_fn(tx_data, 0);
-+		tx_complete_fn(tqe);
- 		kfree(tqe);
- 	}
- 
- 	return wilc->txq_entries;
- }
- 
--int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buffer,
--			       u32 buffer_size,
--			       void (*tx_complete_fn)(void *, int))
-+int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, struct sk_buff *skb,
-+			       u8 *buffer, u32 buffer_size,
-+			       void (*tx_complete_fn)(struct txq_entry_t *))
- {
--	struct txq_entry_t *tqe;
-+	struct txq_entry_t *tqe, dummy = { .skb = skb, .buffer = buffer,
-+					   .buffer_size = buffer_size };
- 	struct wilc_vif *vif = netdev_priv(dev);
- 	struct wilc *wilc;
- 
- 	wilc = vif->wilc;
- 
- 	if (wilc->quit) {
--		tx_complete_fn(priv, 0);
-+		tx_complete_fn(&dummy);
- 		return 0;
- 	}
- 
- 	if (!wilc->initialized) {
--		tx_complete_fn(priv, 0);
-+		tx_complete_fn(&dummy);
- 		return 0;
- 	}
- 	tqe = kmalloc(sizeof(*tqe), GFP_ATOMIC);
- 
- 	if (!tqe) {
--		tx_complete_fn(priv, 0);
-+		tx_complete_fn(&dummy);
- 		return 0;
- 	}
- 	tqe->type = WILC_MGMT_PKT;
-+	tqe->skb = skb;
- 	tqe->buffer = buffer;
- 	tqe->buffer_size = buffer_size;
- 	tqe->tx_complete_func = tx_complete_fn;
--	tqe->priv = priv;
- 	tqe->q_num = AC_BE_Q;
- 	tqe->ack_idx = NOT_TCP_ACK;
- 	tqe->vif = vif;
-@@ -918,7 +918,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- 		i++;
- 		tqe->status = 1;
- 		if (tqe->tx_complete_func)
--			tqe->tx_complete_func(tqe->priv, tqe->status);
-+			tqe->tx_complete_func(tqe);
- 		if (tqe->ack_idx != NOT_TCP_ACK &&
- 		    tqe->ack_idx < MAX_PENDING_ACKS)
- 			vif->ack_filter.pending_acks[tqe->ack_idx].txqe = NULL;
-@@ -1244,7 +1244,7 @@ void wilc_wlan_cleanup(struct net_device *dev)
- 	for (ac = 0; ac < NQUEUES; ac++) {
- 		while ((tqe = wilc_wlan_txq_remove_from_head(wilc, ac))) {
- 			if (tqe->tx_complete_func)
--				tqe->tx_complete_func(tqe->priv, 0);
-+				tqe->tx_complete_func(tqe);
- 			kfree(tqe);
- 		}
- 	}
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
-index a72cd5cac81d..ecccd43baaa3 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.h
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -328,10 +328,10 @@ struct txq_entry_t {
- 	int ack_idx;
- 	u8 *buffer;
- 	int buffer_size;
--	void *priv;
-+	struct sk_buff *skb;
- 	int status;
- 	struct wilc_vif *vif;
--	void (*tx_complete_func)(void *priv, int status);
-+	void (*tx_complete_func)(struct txq_entry_t *tqe);
- };
- 
- struct txq_fw_recv_queue_stat {
-@@ -378,12 +378,6 @@ struct wilc_hif_func {
- 
- #define WILC_MAX_CFG_FRAME_SIZE		1468
- 
--struct tx_complete_data {
--	int size;
--	void *buff;
--	struct sk_buff *skb;
--};
--
- struct wilc_cfg_cmd_hdr {
- 	u8 cmd_type;
- 	u8 seq_no;
-@@ -407,10 +401,9 @@ int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
- 				u32 buffer_size);
- int wilc_wlan_start(struct wilc *wilc);
- int wilc_wlan_stop(struct wilc *wilc, struct wilc_vif *vif);
--int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
--			      struct tx_complete_data *tx_data, u8 *buffer,
--			      u32 buffer_size,
--			      void (*tx_complete_fn)(void *, int));
-+int wilc_wlan_txq_add_net_pkt(struct net_device *dev, struct sk_buff *skb,
-+			      u8 *buffer, u32 buffer_size,
-+			      void (*tx_complete_fn)(struct txq_entry_t *));
- int wilc_wlan_handle_txq(struct wilc *wl, u32 *txq_count);
- void wilc_handle_isr(struct wilc *wilc);
- void wilc_wlan_cleanup(struct net_device *dev);
-@@ -418,8 +411,9 @@ int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer,
- 		      u32 buffer_size, int commit, u32 drv_handler);
- int wilc_wlan_cfg_get(struct wilc_vif *vif, int start, u16 wid, int commit,
- 		      u32 drv_handler);
--int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buffer,
--			       u32 buffer_size, void (*func)(void *, int));
-+int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, struct sk_buff *skb,
-+			       u8 *buffer, u32 buffer_size,
-+			       void (*tx_complete_fn)(struct txq_entry_t *));
- void wilc_enable_tcp_ack_filter(struct wilc_vif *vif, bool value);
- int wilc_wlan_get_num_conn_ifcs(struct wilc *wilc);
- netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *dev);
--- 
-2.41.0
+On 13.07.23 07:34, Greg Kroah-Hartman wrote:
+> On Thu, Jul 13, 2023 at 02:28:26AM +0200, Johannes Berg wrote:
+>> On Wed, 2023-07-12 at 18:39 +0200, Greg Kroah-Hartman wrote:
 
+Hi,
+  
+>> All we said is that your statement of "RNDIS is fundamentally unfixable"
+>> doesn't make a lot of sense. If this were the case, all USB drivers
+>> would have to "trust the other side" as well, right?
+> 
+> No, well, yes.  See the zillion patches we have had to apply to the
+> kernel over the years when someone decided that "usb devices are not to
+> be trusted" that syzbot has helped find :)
+
+Well, there are protocols that are in a sense unfixable. Like,
+hypothetical example, you allow the execution of postscript code.
+Hence it is kind of important to keep that distinction.
+
+Yes, our attitude here is inconsistent. With the advent of Thunderbolt
+we should have gone through all PCI drivers and audited them for things
+malicious devices can do.
+However, we can wait for Pandora for the purpose of this discussion.
+
+> It's not a DMA issue here, it's a "the protocol allows for buffer
+> overflows and does not seem to be able to be verified to prevent this"
+> from what I remember (it's been a year since I looked at this last,
+> details are hazy.)  At the time, I didn't see a way that it could be
+> fixed, hence this patch.
+
+That makes sort of sense, but still leaves us with the option of verifying
+each memcopy for being within allowed buffers.
+
+Now, by no means let me stop you from getting into your supervillain outfit
+and write exploits. But just telling us the rest of the issues would do, though
+not as well.
+
+	Regards
+		Oliver
