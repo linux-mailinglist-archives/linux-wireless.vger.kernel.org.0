@@ -2,87 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6C92751DAB
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 11:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7A0D751E2C
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 12:05:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233014AbjGMJtq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 05:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35942 "EHLO
+        id S234405AbjGMKFM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 06:05:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231693AbjGMJtp (ORCPT
+        with ESMTP id S234569AbjGMKEz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 05:49:45 -0400
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63D462126
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 02:49:43 -0700 (PDT)
-Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-401d1d967beso208741cf.0
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 02:49:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689241782; x=1691833782;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ryqyAP9tKPKotwL6vu1Y1mHjFaSNUus4rsld5nnYfgw=;
-        b=N8rSQAjlrQXU12Xu6CXnyjqbGWrJsRbPMdvfW5lexfRs8KSdvhxCMMV37SYjqmOxq6
-         cAz6C8dWisIxCw0/HL0AjpmvQeEBgIDV3S++YV2Qd5odLidGHOg5ZcFNsxpH6/sG5yx+
-         EXD4y92NBKX6LTAOFRlEznn7fDkENIYw+GLO4k0nh5lg3BYkhFIKQjrP2Th4PuXIrZeA
-         IUUlGtDsF+BlxIyYQUXwUR3sNe+f1x31iGPx2I2b4uOyUL3jnjSF8auy+fI2I1QJFyzn
-         I5EzGiK0UHfKgum7NtMhDMkLWnH2KSQLNhCY0T8mtWvubETEcisTjjZz0Y460cNV/1mF
-         aZUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689241782; x=1691833782;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ryqyAP9tKPKotwL6vu1Y1mHjFaSNUus4rsld5nnYfgw=;
-        b=SY0mH7KAX7fXYnhko6R4+GpNBqePmYaoKq2wbkpBycxITkRZo+jCqNzzpFRlMN6FOp
-         ySEmblQb2T4MYoQewH0kKtbOuGXaGV1KoEzyR0OCSsFlbIUI4s4UJd6DRSW5akCcnzIc
-         Oo5BRAlJtnQvWTRfrSOG/BG0DozgoSq6y3I0sQUun+KvRtX+IiK1klw0VB6KaIyCKq1X
-         hnFhJiUR4cAaRj/Goqw6QiJvaj1t4mAqoNtNdEeVGuXyK+bRe/tx4deUTxOQXWRrDZEW
-         tgdN/7QqzaY8rQ9dBRy948xEkTKIWgThrBSlXaaHuse69Hs5u9MiE/eXTspcNgNJqnDB
-         5L7g==
-X-Gm-Message-State: ABy/qLbPsq/MThRLy1leqysh0cxnl2B0KNd/ipuMKIOsFolkspPF38HE
-        sUQ2wDXXPef/q5XEjN7bJTWhHWfYKKWIEQGPl/aghQ==
-X-Google-Smtp-Source: APBJJlEh5CQdsxkwnfLLUE3rHjVYMfQs0H3kiM5Ssy3VD4hCu+ThNpm+zcgvoGeS28sH3cHiUeMFAvwHAveXX24A0/8=
-X-Received: by 2002:a05:622a:58d:b0:403:59cb:66c4 with SMTP id
- c13-20020a05622a058d00b0040359cb66c4mr423533qtb.23.1689241782406; Thu, 13 Jul
- 2023 02:49:42 -0700 (PDT)
+        Thu, 13 Jul 2023 06:04:55 -0400
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2139.outbound.protection.outlook.com [40.107.215.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D7822D77;
+        Thu, 13 Jul 2023 03:04:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=k4f7To4+Im+Hy8cceSwzeeP6cmYqqp61PxtAZhLgAU9jCnaM6hBbbnK/AcxI2E/VU5+MtMSLP5SusmzL3nY6fsxt/WeZdD2IUuDa9igK2R8l8+4h8qFpfg0AGEqwxZRKVeNxCCuhJbRfrhtkwYCKztg/A4+J+O9WE3Ud9CbdMeOajMjYxj3r9jVKUlkEyUfPIyDWDzK7h5krRejFG3LRbFScZW3fXIJACkarTsPokZnglE+6rHM9xazt2xZEU0dXwTD5TiVASNAkhzuKxXZr+wWBs4GWD7Rh55WzdNzEThiBX67rcfMmbS05cXmAUt/2i/iztJiF6ewghp8gXn4KHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JygoujT0HJMPyhBYZRZGKaebtH3lUlWTp8CsN8SMKSw=;
+ b=GY62QE1Vn1WKoASGOp0U7dFrAeTZmCh6q4EbXvcp3EUG5fE5Y7UyQp3N9fPQroHgYnwqOQaJSUpwjF8iI0pjTaql8L1hGOhUIrzdiIye37iCwvZddVMlKrAKAXVDgTZXuujbY3hSEdIoxS3Jp2ICsfd8JiE1bQ/pJO1030VL/SEDjMtOFDD4RPeLEbyMqv8fa+KCFuJT6pmrR68PVJID5TqynE7ehJznxapuun6r3NHPnEL84c4IwUmvRTsTL6ET2gsz0pqfYUHeVaTXgo9zRWSOUL9aAU+5GmRUtuwhP+w1YMpja/GG7ZGxthkibx5CICLUjE3BD/U7o6eHekyPJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JygoujT0HJMPyhBYZRZGKaebtH3lUlWTp8CsN8SMKSw=;
+ b=T/TGsjv6ab84TbTftfekYRiIrR05qCp4tXQqsG7P5121F7UbeK4Py8Z1M+McRUos6orAM0qTWgFJiB2DVaR44IS8PcuU2T+UFGCCKwqZ7YEnJBri1tSkUMVxbSF3yf3z9FlawtYyfwURD7E1NdkzdRGFcpIqV7y9k5lw4B8GWVMOZTLRApVUPDSaNKnvjIXBMcCGPrg9b7zXKSLUcFubq5U4kiNd48797yQj6bqMiS7XOQBU65AOiNIaOXKuKIZmMBmspuMUh5B8rKdAj8LfbYJ3nSTpsu1b1URzwa0Q2q/6l4WyHGU71jDXys/r3DVbmq70/beAwcbqrwlUpR3zwg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SG2PR06MB3743.apcprd06.prod.outlook.com (2603:1096:4:d0::18) by
+ SG2PR06MB5156.apcprd06.prod.outlook.com (2603:1096:4:1cf::14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6588.20; Thu, 13 Jul 2023 10:04:23 +0000
+Received: from SG2PR06MB3743.apcprd06.prod.outlook.com
+ ([fe80::2a86:a42:b60a:470c]) by SG2PR06MB3743.apcprd06.prod.outlook.com
+ ([fe80::2a86:a42:b60a:470c%4]) with mapi id 15.20.6588.024; Thu, 13 Jul 2023
+ 10:04:23 +0000
+From:   Wang Ming <machel@vivo.com>
+To:     Kalle Valo <kvalo@kernel.org>, Wang Ming <machel@vivo.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     opensource.kernel@vivo.com, pabeni@redhat.com
+Subject: [PATCH net v2] ath6kl: Remove error checking for debugfs_create_dir()
+Date:   Thu, 13 Jul 2023 18:03:51 +0800
+Message-Id: <20230713100404.5096-1-machel@vivo.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR02CA0115.apcprd02.prod.outlook.com
+ (2603:1096:4:92::31) To SG2PR06MB3743.apcprd06.prod.outlook.com
+ (2603:1096:4:d0::18)
 MIME-Version: 1.0
-References: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
- <n9108s34-9rn0-3n8q-r3s5-51r9647331ns@vanv.qr> <ZKM5nbDnKnFZLOlY@rivendell>
- <2023070430-fragment-remember-2fdd@gregkh> <e5a92f9c-2d56-00fc-5e01-56e7df8dc1c1@suse.com>
- <6a4a8980912380085ea628049b5e19e38bcd8e1d.camel@sipsolutions.net>
- <2023071222-asleep-vacancy-4cfa@gregkh> <2d26c0028590a80e7aa80487cbeffd5ca6e6a5ea.camel@sipsolutions.net>
- <2023071333-wildly-playroom-878b@gregkh> <de77578f-a783-a241-3ef5-e74f49029bb5@suse.com>
-In-Reply-To: <de77578f-a783-a241-3ef5-e74f49029bb5@suse.com>
-From:   =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
-Date:   Thu, 13 Jul 2023 11:49:31 +0200
-Message-ID: <CANP3RGeiQgcJ6zj3OHvoLy=f+spB7Xmv9gKuGoBwajwMFR08Jg@mail.gmail.com>
-Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
-To:     Oliver Neukum <oneukum@suse.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Enrico Mioso <mrkiko.rs@gmail.com>,
-        Jan Engelhardt <jengelh@inai.de>, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        =?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Ilja Van Sprundel <ivansprundel@ioactive.com>,
-        Joseph Tartaro <joseph.tartaro@ioactive.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SG2PR06MB3743:EE_|SG2PR06MB5156:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ef88f88-6c24-4adc-0121-08db8388883c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: D8V7COrDavDZQRo93gBbFI61XcD2pzCmR13t7amrwcaoDQx+K2o+C3wY3rLDA10YiWmit0wkxRU2gF5ZbtXz0SnllTfMsqNVMuJaS1OLSIHlr8qx64Up6Q1m12ilFJ5UKoRG1NlRwTDBl1s9qtlPiLT0MlzNyZndrrMD6H+/MO7QUsYPq4O7G0hXq9noAtiUZE3vT6Az5xM1K5xGR2CRoGP5P2x8USnW0u3c+8bJUaY3F6+8d38+9+oOadYp88AZu6esfvGLX01sLZbut/aiRQPEyqW/UTOMkEx281gkVjwfQ+ubVd40Fu8F4Rk+qAWW+Vw/Sb6LRFBzB1atuvnM4CMUWGc7O1CRBZT4TQhDI8J6k7ev7k6H2yshTR1ncrO/WEfS48hPfM5Oylx6vQEAl1RX+68WjsLVpSlrRojUjiECjdrXOaplRKiLhEcBdE/wYtB8v+sGXT9cMymlOkra87JiPiipAMoKm9tNNR9Gru/kGJ9P3uCdvNJBxa+iKuWVTSIu7LKGXaXL4aW9eh11wMUJ18YUwCaoVq+3ZhpZQkI+PzwzgQfgLZeCnSPZZZlU4JLaB9AsXB4KT2zaUM4ZNfzejtKoz8gX0eEwccWf4+Xfj1KVW86kp/FoZvnQmockO8z3UbwASwUifQuWTksh2g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB3743.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(39860400002)(136003)(366004)(346002)(451199021)(2906002)(66556008)(110136005)(6666004)(52116002)(478600001)(36756003)(8676002)(41300700001)(8936002)(66476007)(66946007)(4326008)(316002)(4744005)(83380400001)(38350700002)(6486002)(6512007)(38100700002)(5660300002)(6506007)(86362001)(2616005)(1076003)(26005)(186003)(32563001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?phqUQmTqVEr5idnsd9dbyBwyEAclxOvLdLF6fW2aYZ7NkJVRea8OtXIUGCat?=
+ =?us-ascii?Q?XSwCj11XLWJmEU/sGdI7BVwX4WRBwMH9FG+/R4nQcL6hL5eydA/xF3giNY22?=
+ =?us-ascii?Q?BR+/nSCUSDcKzT/B+Kzi0YmInJaU3YIptDdKZi/2TvXMen3Pjil9Y+/48aQw?=
+ =?us-ascii?Q?GWIunWboFqC7m4KGEZJwQbDE3HPhhKyibZUpvctPe8Qnc5RhWxOlnkNJnAhX?=
+ =?us-ascii?Q?4wUc7lPnnGUnXOKyAjHvr7lALe7a0yf2TAXuJ/n7IGx2+1io25fmVlE7v8an?=
+ =?us-ascii?Q?qePpugHh7jjGdV2A2w7ZSxW69c7k2znA3wBVK9/TG2BXFjAo+R+woK/+OVD2?=
+ =?us-ascii?Q?HR49EIGgDpxx63M7+7u8n9Q67FaPIWrqceNFwfMdKtL+AEGuvUKdzAVWpHMB?=
+ =?us-ascii?Q?jKbvTn/AlvlGXj1BW9MtEy3pNLNCKPXb6CZ7yr7RMR8Dh/XYLo48hHtdMbtZ?=
+ =?us-ascii?Q?Ss6CjZcaHweB6KCBKOlJ9bfxS0vOjS19Klde/p3LpiNptJJoMC3sRX+khCRA?=
+ =?us-ascii?Q?7rPyMEu4k0EQ+PaN1+DZCkiaowbPGZHHZuaJQjhBNVYCYj5idLTCexXJoZV6?=
+ =?us-ascii?Q?b6zh+SPEanUZ5LG/23ghONMuUN+G1jsXqHdzD7iFw5POVeHwLdwEW1IwF7dk?=
+ =?us-ascii?Q?HCyF+DxKClERufGhgbhM3TSFQ4AvcPBx8esdOnW+akhBW3HXyWlioemXcFFq?=
+ =?us-ascii?Q?qmCENTOZc38tL8K+zvCzmj/dtgzG7hzNuKxqr/OupSRH+50WQw+/lVOtQYww?=
+ =?us-ascii?Q?N9kglg1yeT6boe8J0UGs8N394Z5hU7cjnqDnHfgapYFcqr7kAS/2um8P6R4Q?=
+ =?us-ascii?Q?zwof3g68noUZvmTvUhb6kw7ynQY7KYoL6jhyXqtwgkPwt1JOJlp/UvNBn9Sc?=
+ =?us-ascii?Q?BvCLeobVjn4DWCVbhtNO0MVum81ZVoD+MaP96iv9KcNXsK1PrUoXXj7GYJTZ?=
+ =?us-ascii?Q?MjffDGTO3IX70fxl8o2yQvopSUCDN7j6+Uz9jcyz5jIGrMKu+mbzq98RY1Tz?=
+ =?us-ascii?Q?PXAuiidYwRsG41q1U3EncN6cZCACBbB82ly5Offf8UnVGD3Jq+vtWE7p+Tbh?=
+ =?us-ascii?Q?bCunjqjRPuRfKSewp6Fxv7vhjfBPgM4WmMA8R+gb1IJ+xvvB3bZY/1/9P0Vs?=
+ =?us-ascii?Q?1i+ZFyEz56TS9DZ7+lgKBT3VQg1jyMv8K3A6AgGduX+EL3dPQ88oWTow6EZA?=
+ =?us-ascii?Q?mF3XLwnKH90WfV1Wzu0BjffKy7dpa2YWJFPDhX3f7C9GwW6r1WPhS1K2jjbO?=
+ =?us-ascii?Q?fM3czCAE3ra2dj6F4bXfG1FXRdT+KeX3IHiVfnKL/4pPuy0UP0Pbe8EJwyHo?=
+ =?us-ascii?Q?zWjpTp/NggYNNhNsIlqXXiWcoigF+pobKZyXtq55zTC3q5ZP2AzNjOhBa6bZ?=
+ =?us-ascii?Q?Lkzu15ZKRi+5OYinRhZs7dr2An88Hb6qXjHpCu2FxoKqzJ9JRi2ZjUNwYSGP?=
+ =?us-ascii?Q?mWs5zLDTmbkJTMTsXlGfH/E6Li9JHBVFxX1xsh8qy8cY9mJjoRhLSVx5Gx0s?=
+ =?us-ascii?Q?B5L7AoEg8uOM8yE5feKzb1a3ts5T2VP6yO6HEcJyUvox4QArRivxygOjAsHI?=
+ =?us-ascii?Q?P5k98TKWJ1tuWwXsbJhhBRnwW+klF9UOmTtYW67/?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ef88f88-6c24-4adc-0121-08db8388883c
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3743.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2023 10:04:23.0973
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1uq7UvdbTNYn4YVxK8zVS3EHMC49vnWMykP26pM2SWHH/R5L4ks7qxvgeNTzhpMwKnQhBSc+wX9dAIv/5xAdTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR06MB5156
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,58 +110,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I know the NCM protocol a *lot* better than I do RNDIS, but...
+It is expected that most callers should _ignore_ the errors
+return by debugfs_create_dir() in ath6kl_debug_init_fs().
 
-RNDIS is just passing around chunks of memory (packets with some
-metadata) over a usb channel.
-*Any and all* exploits can be fixed - this isn't a complex DMA level
-HW problem like pcie or firewire.
-The trouble is finding the problems (ie. the places where input
-validation is missing or wrong).
-Indeed if you can write an exploit, it means you understand the
-problem well enough to fix it,
-and indeed fixing it is going to be *much* easier than writing the exploit.
-(the hard part is finding the problems)
+Signed-off-by: Wang Ming <machel@vivo.com>
+---
+ drivers/net/wireless/ath/ath6kl/debug.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-The (rndis host) code could probably be audited - the protocol is not
-(afaik) that complex,
-nor is the driver all that large.
+diff --git a/drivers/net/wireless/ath/ath6kl/debug.c b/drivers/net/wireless/ath/ath6kl/debug.c
+index 433a047f3747..b837d31416df 100644
+--- a/drivers/net/wireless/ath/ath6kl/debug.c
++++ b/drivers/net/wireless/ath/ath6kl/debug.c
+@@ -1793,8 +1793,6 @@ int ath6kl_debug_init_fs(struct ath6kl *ar)
+ {
+ 	ar->debugfs_phy = debugfs_create_dir("ath6kl",
+ 					     ar->wiphy->debugfsdir);
+-	if (!ar->debugfs_phy)
+-		return -ENOMEM;
+ 
+ 	debugfs_create_file("tgt_stats", 0400, ar->debugfs_phy, ar,
+ 			    &fops_tgt_stats);
+-- 
+2.25.1
 
-I no longer have the email reporting the problems (deleted in a mass
-inbox zero purge by mistake), but from what I recall
-at least a few of them should have been fixable by making types
-unsigned instead of signed and the like.
-(ie. adding basic checks for whether values are in range)
-
-As for things we can do:
-
-- I think we can outright delete Linux' RNDIS gadget side code - that
-should be half the problem.
-Why? Because Linux/Mac support better protocols (CDC NCM) and Windows
-10+ NCM support exists too.
-(though the windows driver is afaik a little bit buggier than I'd like...)
-Android devices (phones, etc) that support RNDIS gadget side don't
-(AFAIK) use the upstream rndis gadget code anyway,
-they use out-of-tree versions with offload support (at least afaik
-that's the case for qualcomm chipsets).
-Devices without hw reasons (offload) to use RNDIS can just switch to NCM.
-Deleting it in Linux 6.~5+ doesn't affect older Linux versions anyway,
-so it doesn't affect any older devices...
-
-(Though deleting the code does mean we lose the ability to test linux
-host side with linux gadget side...
-I guess you can always just use an old kernel (or even just an old
-phone) on the gadget side to test that combo...)
-
-- I think we could change the RNDIS host side driver to be default
-disabled (or even experimental)
-However, be aware people (Linux users wanting to usb tether their
-laptops off of most Android phones out there) will complain if we do
-this and distros will end up enabling them anyway.
-
-What we should really do is just start finding/fixing the bugs in the
-rndis_host side.
-It *cannot* be that hard.
-
-If someone re-forwards me the kernel-security report, I promise to
-send back at least a few fixes...
