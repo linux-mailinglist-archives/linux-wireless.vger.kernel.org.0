@@ -2,46 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86360751F73
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 13:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 623ED75212F
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jul 2023 14:22:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234050AbjGMLGB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 07:06:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50756 "EHLO
+        id S234662AbjGMMWw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 08:22:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233627AbjGMLFx (ORCPT
+        with ESMTP id S234271AbjGMMWv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 07:05:53 -0400
+        Thu, 13 Jul 2023 08:22:51 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C2C211E;
-        Thu, 13 Jul 2023 04:05:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C9302D5F;
+        Thu, 13 Jul 2023 05:22:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=fIgDmYcoJkd7PIFdP4hS9xlcqxhxEOoDJGq8m/+LNS4=;
-        t=1689246352; x=1690455952; b=doIBk7MGZgnTTJV7nIYLFuwpy+bCHNt1nRywQsnp9LIleqg
-        jROGJwzAEdJUzdpG5X2UegUpurOmpC6KyJ43MVrMA+EtsH7WZfYpkvPK68ZtAEm+AjBoNEZDNH8gq
-        R5DHP1cKM7yo4smrRYaiQLPApg5FGwSbqOc8Otyc/ix2kGfI9IEz07Y5RTXUz4ZeGxSUpn9Q9kzoQ
-        sMzfdBuK8XcSACFdGPjX9LtuWhNYPPM6++OIIQp7xamAk9lFcay6GJjM46eW6kv+y/L1fsX9HN4AT
-        dDmCUwyrq7azMEEmt5m8q8FShoIMpB9DWx/Q9Z7OQD+j18MU4ibrcC4V9XUgKoLw==;
+        Resent-Cc:Resent-Message-ID; bh=vjuO5R/KxvsMqsY6ylLB1bwZHDgruZucXbpLJVFeYDU=;
+        t=1689250939; x=1690460539; b=mKvjJVr/i8ovv/d+lTmhaL2gKpxwIkmD5UG/8hnbjyvNHTB
+        miUia7QyZxTWojZ0IninjFs9CA1av/gY7z/gqNY6wkExvZnMeGgidmnNBQf7zwEmUNVHVif0dLMjS
+        wFshQMwZfAUWujcj3suK+gimlFTTRH24/b60xDgQARU1SuprKjEVZit+d0oOvvRBZHAhQeRWByW3n
+        xCTtGwO2/zoOgCfhUexJmrAKrpia7UrffiNBDWY/vgEvQzRyfY/hAkiyPRIXYqQqq0EHPS/0oi1LW
+        0gH0tSlEQ/KHVjcGHkKbuCbgJ+Rv5q0vDltPPhaIfJ6pXp+N9th4dSnEQV2HNS7A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qJu8p-001Df9-0b;
-        Thu, 13 Jul 2023 13:05:47 +0200
-Message-ID: <d1f9ca04bb055dc07f2a7f9f07f774e08913cf00.camel@sipsolutions.net>
-Subject: Re: Closing down the wireless trees for a summer break?
+        id 1qJvKO-001IDj-0c;
+        Thu, 13 Jul 2023 14:21:48 +0200
+Message-ID: <42f91f17602fea258fecb443ba81fa573bae1acb.camel@sipsolutions.net>
+Subject: Re: [PATCH] USB: disable all RNDIS protocol drivers
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        Jakub Kicinski <kuba@kernel.org>
-Date:   Thu, 13 Jul 2023 13:05:45 +0200
-In-Reply-To: <87wmz43xy4.fsf@kernel.org>
-References: <87y1kncuh4.fsf@kernel.org>
-         <ZK7Yzd0VvblA3ONU@smile.fi.intel.com> <87wmz43xy4.fsf@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Oliver Neukum <oneukum@suse.com>,
+        Enrico Mioso <mrkiko.rs@gmail.com>,
+        Jan Engelhardt <jengelh@inai.de>, linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Maciej =?UTF-8?Q?=C5=BBenczykowski?= <maze@google.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        =?UTF-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Ilja Van Sprundel <ivansprundel@ioactive.com>,
+        Joseph Tartaro <joseph.tartaro@ioactive.com>
+Date:   Thu, 13 Jul 2023 14:21:46 +0200
+In-Reply-To: <2023071333-wildly-playroom-878b@gregkh>
+References: <20221123124620.1387499-1-gregkh@linuxfoundation.org>
+         <n9108s34-9rn0-3n8q-r3s5-51r9647331ns@vanv.qr> <ZKM5nbDnKnFZLOlY@rivendell>
+         <2023070430-fragment-remember-2fdd@gregkh>
+         <e5a92f9c-2d56-00fc-5e01-56e7df8dc1c1@suse.com>
+         <6a4a8980912380085ea628049b5e19e38bcd8e1d.camel@sipsolutions.net>
+         <2023071222-asleep-vacancy-4cfa@gregkh>
+         <2d26c0028590a80e7aa80487cbeffd5ca6e6a5ea.camel@sipsolutions.net>
+         <2023071333-wildly-playroom-878b@gregkh>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -57,20 +78,73 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-07-13 at 13:30 +0300, Kalle Valo wrote:
-> Andy Shevchenko <andriy.shevchenko@intel.com> writes:
->=20
-> > On Tue, Jun 13, 2023 at 05:22:47PM +0300, Kalle Valo wrote:
-> >=20
-> > ...
-> >=20
-> > > [1] https://phb-crystal-ball.sipsolutions.net/
-> >=20
-> > How could one use the shut down site?
->=20
-> What do you mean? At least from Finland it Works for me:
+On Thu, 2023-07-13 at 07:34 +0200, Greg Kroah-Hartman wrote:
+> I wasn't trying to be glib here, sorry if it came across that way.  I'll
+> blame the heat...
 
-That did in fact not work yesterday for some time as I was doing some
-maintenance :)
+No worries.
 
+> > All we said is that your statement of "RNDIS is fundamentally unfixable=
+"
+> > doesn't make a lot of sense. If this were the case, all USB drivers
+> > would have to "trust the other side" as well, right?
+>=20
+> No, well, yes.  See the zillion patches we have had to apply to the
+> kernel over the years when someone decided that "usb devices are not to
+> be trusted" that syzbot has helped find :)
+
+Sure, I'm well aware of that. But that's also exactly my point - nowhere
+has anyone previously suggested that the protocol for any of those
+devices is fundamentally broken and the drivers should be removed. We've
+fixed those things and moved on.
+
+I can even understand the initial reaction of "oh hey this ancient thing
+is probably not used any more, let's just remove it", but even that's a
+different reasoning, along the lines of "this has bugs and nobody needs
+it". Though that nobody uses it has in fact been proven wrong, which is
+pretty much why we're have this discussion at all.
+
+> It's not a DMA issue here, it's a "the protocol allows for buffer
+> overflows and does not seem to be able to be verified to prevent this"
+> from what I remember (it's been a year since I looked at this last,
+> details are hazy.)
+
+If you s/be able to be verified/be verified in the code/ I entirely
+believe it, in fact I think it's quite likely given the age of the code
+and all. It's just that not being _able_ to verify it seems questionable
+to me (and you haven't given any reasons), given that it's USB and you
+always have a full buffer in hand when processing it, at a time where
+the device can no longer modify it (IOW no TOCTTOU issues either.)
+
+(As an aside, I've wondered about TOCTTOU with PCI, given that IOMMUs
+can and will do lazy unmap ... but that's a different discussion.)
+
+
+> At the time, I didn't see a way that it could be
+> fixed, hence this patch.
+
+Yeah I mean, the code isn't great, even if it's not _that_ much, but all
+the likely() and things in there don't make it easy to read, and the
+buffer size handling seems not immediately clear to me. So I probably
+couldn't fix it quickly either, though I haven't even seen the reports.
+Maciej seems to think it's fixable, at least. And yeah, we'd want to
+actually review/audit that, I suppose.
+
+
+So if you'd have said something like
+
+   Let's disable the RNDIS driver(s) because there are known exploits
+   there, nobody really knows how to fix this, and we need a short-term
+   solution until the issues are public and somebody steps up to fix and
+   maintain it.
+
+I'd have much less of a problem with that. That's not _great_, but at
+least it's honest and realistic. That could give us some time and maybe
+then we can get the bug reports public once it's no longer an immediate
+threat for all kernels, and go about fixing it with more time, maybe
+eventually backporting fixes and reverting the disablement etc.
+
+I guess this is why secret bug reports suck so much :-)
+
+Thanks,
 johannes
