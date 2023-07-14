@@ -2,136 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA4CD753584
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 10:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B367535FD
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 11:03:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235139AbjGNIt6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 04:49:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55818 "EHLO
+        id S234861AbjGNJDP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jul 2023 05:03:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233017AbjGNIt5 (ORCPT
+        with ESMTP id S234609AbjGNJDO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 04:49:57 -0400
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2108.outbound.protection.outlook.com [40.107.215.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528272683;
-        Fri, 14 Jul 2023 01:49:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OrMEd4OVqp4Pf58puXsGBmmdMmwrCWpl7QkEVsUi2lKlEhiBeISsau1kWPn0uAtT/vv7iXFtg0CNeojfKIqvYVzOaDdL5av6kZkPjKIgF3rMmWI0jwSjAJe7UPJgav23JKSIdcYtpmKnsYi6hBY91e3DfgFNzhWJrgmmv1iOOutjIweZef7NK/gJbFTPsCGR6miLtThkN2U4Ygjvj3cFuVwWBBwWOCip72807U8U8WlozZ/g3aSpFqpCLr9D38o57aCr4YC+fgPBMJqr2KpIxaPUmCqbeI6z8/eOvNhLdmAsu2g7dCGmenCx0HYrhrJ+C8jsKHS8fSnLIPkNiQZTJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2W1onGJNTOUmgR5Pgg5nCVcLVymgFxCURVkAxwVQUxM=;
- b=apiUayPNl/daRGMkTucPsiObzqmtcrwgcYnlxXOf+F7r8V/KXlXHE2TkUrIv/ixmLUfDCI+1PIjcVBOvlkeJe3CY063ptQfnybQBsh4EIfK6Pfv+hcM8jX4hqwNMShLOoYJxOm4PkfdoYNaMBwnE2ZL9q5OY6gE36Vw7jofSAeW1ejca14b3t2mL+ftVZe1+j1vpraKlzhLgVXdoA2IxhAEJoOn7akIye4T9hY9ox+c30UhMNkXV3Z9SFr+nN/eEJzxgxG4g/in1EO9VG0gxfjec/a67/e+O3G16Xa1c2r6Xi8kKeMYWlUgetJKj+kQUKn/uexB1nFtOCmKeHsBlHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2W1onGJNTOUmgR5Pgg5nCVcLVymgFxCURVkAxwVQUxM=;
- b=OvlzA6pdGuNSl9enxsDsdCEvlRMO6qzkl2QLfRhpElkfYYMyjhAQORhPCAyPXArWa1lqinV0Y1aw7JjUlUTon8oXKyKB77S8uv/FU6hkvpq5nty6HT53sLl07P01Wqtfs1suBpybW8fEPW1jEdm6Dyrg94LMDNvNTw2jva+93MSACm9QCy+yMDqCr5BQHWNErVd20qToIxG168t/9H3EwRDYd8NqJioll8nMEF9aPQ/KrwDiJBU03M+9MU1HHSPcFYF2KkboUFxTheW+VH4DK6YZ0NXZxwYI5D5fznvI2z/FsLAr9AtoU2JIRtWTaO89vrUTZZj+ig5QhZEVD34kPw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SG2PR06MB3743.apcprd06.prod.outlook.com (2603:1096:4:d0::18) by
- TYZPR06MB6700.apcprd06.prod.outlook.com (2603:1096:400:44c::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6588.22; Fri, 14 Jul 2023 08:49:52 +0000
-Received: from SG2PR06MB3743.apcprd06.prod.outlook.com
- ([fe80::2a86:a42:b60a:470c]) by SG2PR06MB3743.apcprd06.prod.outlook.com
- ([fe80::2a86:a42:b60a:470c%4]) with mapi id 15.20.6588.027; Fri, 14 Jul 2023
- 08:49:52 +0000
-From:   Wang Ming <machel@vivo.com>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     opensource.kernel@vivo.com, quic_jjohnson@quicinc.com,
-        Wang Ming <machel@vivo.com>
-Subject: [PATCH net v2] wifi: ath9k: Remove error checking for debugfs_create_dir()
-Date:   Fri, 14 Jul 2023 16:49:11 +0800
-Message-Id: <20230714084926.10986-1-machel@vivo.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 14 Jul 2023 05:03:14 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8CD31734
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 02:03:11 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36E4vdh7025029;
+        Fri, 14 Jul 2023 09:03:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=DCnHI/tlQRCCnZQQMDWUH38S4Zi9InVHJ2qvIzmxVzc=;
+ b=cWmoL4wfchb7w0mtLha7YXvcji374aPWbETeq97BgwtQqmXSZ43GZdW0OM4GG5yA+SgY
+ z/61IyCRKRCzRRmWccVrqYLopmjAtwNODwxxPjWcUY87kwcd+Q1lV/pAV/cycctlZLHd
+ 4vpk7K+MXY1XZ4liOdTveupFi8xJp6HMZRa/qA5x8vm6+RdK/r9m1hc6L00hwserfvwy
+ kabsN2hvkNrH2Du73fl0oi4yNRatoxEwYIncFY0yN4LOwnK36m3KD1FOo19VxXwb1/nr
+ zoy5f8s+28hv57nUgQlWYXvjod8SvwrpBF6KYgmDtuW9ax295Ux4yBBpYoxoUltMzdQD SA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rtptu9b4k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2023 09:03:06 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36E936CO031779
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2023 09:03:06 GMT
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Fri, 14 Jul 2023 02:03:04 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH] wifi: ath12k: trigger station disconnect on hardware restart
+Date:   Fri, 14 Jul 2023 05:02:50 -0400
+Message-ID: <20230714090250.1409-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SG2PR04CA0163.apcprd04.prod.outlook.com (2603:1096:4::25)
- To SG2PR06MB3743.apcprd06.prod.outlook.com (2603:1096:4:d0::18)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SG2PR06MB3743:EE_|TYZPR06MB6700:EE_
-X-MS-Office365-Filtering-Correlation-Id: b6c30040-eb70-4270-5368-08db844749bb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: a/D4B3uhEaJJuKVRymmClgpXCtMEcfhFWNpANftdf+v2g+8VyqiR8XZ4aNJdvbsyA+MIPaIa5fEjQURZ+qWXaMYfjqhixSnYQRlofsnWwXn7RQccDtTG4S6MxZiv5udvbNGOT9lu7QkP4lNXX+149SDYfChKULYdJf7uwGSPzkKfyvQoQfp0YjD1ZjQipXf5TGDdifeevgGWqShRcboW5m7B5T7jVpBhevQxvwbwFBiqc+X11w4WQAX8Y4A8vHDZiJbSp/okRUIISAogJRUBgD9A4+GBaP/7cmi3HvBpFc4a5FNDOXW4xDbh8qu+b7MExfWSnd2SRRxzz6p6C6UgpS5lh1nlf43yquJxXEys9wdSfpZDEvF5L/Ym2OyC6IASiO0MNDYd11jtUAdLMl9e4inA107EaG54LwV2Wd4XyCgc6UNtRv1PblTM+zELjFrWJzhJHplanYFmZX6c32MODSiwmONzirnjFDYo19grfMw0wg0KRYNJZUDwq/lTlekKbJpXKZs9TmoKfjacvmdAvrudJlfKUy4ttfPZY7lI0BJjXJTNZ/1tO1VyhLy2SEb7dxIqVN7c2ea2uzzuRTJT0To97lRswHmHGoZXBozhbzEYsuNtVB86BN99ul6yrQVQ
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB3743.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(366004)(346002)(376002)(396003)(136003)(451199021)(86362001)(6666004)(186003)(52116002)(6486002)(316002)(4326008)(66946007)(66476007)(66556008)(36756003)(6512007)(41300700001)(26005)(6506007)(1076003)(107886003)(5660300002)(478600001)(4744005)(38100700002)(38350700002)(2906002)(110136005)(2616005)(8936002)(8676002)(83380400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?27KFBUhi0Dt0nRP5GI3LA4p7piezcXLc9VQwwx121izd/nPffDqNsFkXU/jz?=
- =?us-ascii?Q?laxvVEBYG/hptSUaAEeitmwK08ErxGVPVuccazW868GiBkyiJyyqW/jIfIz2?=
- =?us-ascii?Q?BqG6uWBfQTSemsGHtjWlEfo0CLQzROwqUTyIynbfF/3XMrLQIWR3aAtUzobV?=
- =?us-ascii?Q?qBQBkGjdJrvfOToNw0rOOiYD7gYGU8KaDWJjs4EYp0f+rwQlqkUVcTx3k+lt?=
- =?us-ascii?Q?NgkI8t/gZ1g+RPEVZPaAwlK45daZGg4pApU1YLapDqlrPIVsYfkGe+anxp+a?=
- =?us-ascii?Q?9d2gWaFOlpKRK2IIcuHDPHFl9KfdUTwVRfwWs/mDAFJqK+x9J5OFBRG6+voH?=
- =?us-ascii?Q?CN0OWkwMmoZHfCmQyRiywGuorzwBgDYMIz6XNMTHbmkfyyIbn5LBClbUpjA6?=
- =?us-ascii?Q?epdqg/w8Mr0XIuZaJIQm5aaAvYygVPjSrU+Ghob2RFb7u+0BOIQffpyNYAja?=
- =?us-ascii?Q?uZqbJlXrTdj/u8kLN97raJBCIHmSU0U9bjYLWSc/3sWYyb3NWgq/DGRzlxEa?=
- =?us-ascii?Q?YJkc+y3nePYrPqO9gK3x+ajKNSIZwjfaE/Gg3uOSbcd/BIHAzlzvIoGen6w+?=
- =?us-ascii?Q?GGeQJB3f8+yDFSSuRbeLsbyRSlfoYt8e48eE/Rsheb3dCvwJ8Ed8QZH7dKs3?=
- =?us-ascii?Q?95bZj2uiRKFS4o3O8SzWOLq/ZFJxLP91Lsm6WsL1sfFkcdk4V0vIMjYuf3Zk?=
- =?us-ascii?Q?NyIJbtjFbilfXSrjRe243jH/WnTjoyuXsxKeBAX/fKIFpiKHp6EFuvI5tV16?=
- =?us-ascii?Q?IZW1G/DW01RLCDpoPI6N2vi4SNls5yVRvJsKgRVEohiY5cDPnDZHh/vikvvP?=
- =?us-ascii?Q?q8qbaZ9vT8kHBCJwrZ4TJlS2qRX/44jx1pujBnVkl8hcOIBV5A0zctUiXdun?=
- =?us-ascii?Q?8vBrom7XdPdjRWLxyJJwNaqako5fyX+NyCETTzWTg4JYsRthc2KzjmAKTXK1?=
- =?us-ascii?Q?WIMG57TdFNcte3iQTerTQf7/QBm+jptMiLWbkQtBfqgvAdO7A80z721pBGA+?=
- =?us-ascii?Q?+8V7hTJS9XkEgKSdqW5qMKVSM8ooDYOWV3R0KT8HDHEx/8gRMEY7Lue7wfng?=
- =?us-ascii?Q?8fECILi1WfHD7EOeA9pV8/HmEkk3RVX9UucKeqSkJ9ERnKJYecXoBzYiLjc8?=
- =?us-ascii?Q?XnmN92JKA4XQXyfMKtZEchyiL+09CtLxOKDlMVekasA0eCCOTdx4P7giqfEx?=
- =?us-ascii?Q?Z7fsuOy6V0oI5cwrrg+yegRgNUFw4lvLb1AacdOf9phi6xKuAkXVdL4Qjcdf?=
- =?us-ascii?Q?EJmQ+dJ8YoJAxEgpMQxQIv49hdPg8ZJunj/YKnd2wtA5k0mx8Yzrgo1ucxZi?=
- =?us-ascii?Q?GlZoEWhFXm8q5qW7teZf4NMNPciaMdV2EyOhCA2yxIh2edkyfdc+RwjkKIv2?=
- =?us-ascii?Q?sDRd9jD9l9JhUep+QEK42/Lktx1oe/mMABlAtWa/Df00Eu6PgBpg497YUoPq?=
- =?us-ascii?Q?8ilj5b98XHbFUq0ZyEM1qx76KqhbaGhnXUihtMiXbO24EuXw1N4VwTfX41SE?=
- =?us-ascii?Q?pHJDf2GzFtR0nOGMkXUnhbONbvXIzZ8eLZzXyrS51hMICMgO/O3uNP6r043K?=
- =?us-ascii?Q?apKweCQtJ3N4/SOOtSzUfYpP5gTVKeD42bVqma4C?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6c30040-eb70-4270-5368-08db844749bb
-X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3743.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2023 08:49:51.9014
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O5/gaB5Yns4W2zcXoz0mYVSR4/WOm84tnvyZj+ghgXW//HYAi3SUMpIru/mAnUwO5bUfaMVV75KUXiAyrgjsbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB6700
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: yi4sLuCQNWDeiGDV9yFJxW2mKBWERmut
+X-Proofpoint-ORIG-GUID: yi4sLuCQNWDeiGDV9yFJxW2mKBWERmut
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-14_04,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 phishscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=999 spamscore=0 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307140082
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It is expected that most callers should _ignore_ the errors
-return by debugfs_create_dir() in ath9k_htc_init_debug().
+Currently after the hardware restart triggered from the driver, the
+station interface connection remains intact, since a disconnect
+trigger is not sent to userspace. This can lead to a problem in
+targets where the wifi mac sequence is added by the firmware.
 
-Signed-off-by: Wang Ming <machel@vivo.com>
+After the target restart, its wifi mac sequence number gets reset to
+zero. Hence AP to which our device is connected will receive frames
+with a wifi mac sequence number jump to the past, thereby resulting
+in the AP dropping all these frames, until the frame arrives with a
+wifi mac sequence number which AP was expecting.
+
+To avoid such frame drops, its better to trigger a station disconnect
+upon target hardware restart which can be done with API
+ieee80211_reconfig_disconnect exposed to mac80211.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-index b3ed65e5c4da..85ad45771b44 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-@@ -491,8 +491,6 @@ int ath9k_htc_init_debug(struct ath_hw *ah)
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index ee792822b411..9d77ad6933b8 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -6364,6 +6364,7 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
+ {
+ 	struct ath12k *ar = hw->priv;
+ 	struct ath12k_base *ab = ar->ab;
++	struct ath12k_vif *arvif;
+ 	int recovery_count;
  
- 	priv->debug.debugfs_phy = debugfs_create_dir(KBUILD_MODNAME,
- 					     priv->hw->wiphy->debugfsdir);
--	if (!priv->debug.debugfs_phy)
--		return -ENOMEM;
+ 	if (reconfig_type != IEEE80211_RECONFIG_TYPE_RESTART)
+@@ -6392,6 +6393,21 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
+ 				ath12k_dbg(ab, ATH12K_DBG_BOOT, "reset success\n");
+ 			}
+ 		}
++
++		list_for_each_entry(arvif, &ar->arvifs, list) {
++			ath12k_dbg(ab, ATH12K_DBG_BOOT,
++				   "reconfig cipher %d up %d vdev type %d\n",
++				   arvif->key_cipher,
++				   arvif->is_up,
++				   arvif->vdev_type);
++			if (arvif->is_up &&
++			    arvif->vdev_type == WMI_VDEV_TYPE_STA &&
++			    arvif->vdev_subtype == WMI_VDEV_SUBTYPE_NONE) {
++				ieee80211_hw_restart_disconnect(arvif->vif);
++				ath12k_dbg(ab, ATH12K_DBG_BOOT,
++					   "restart disconnect\n");
++			}
++		}
+ 	}
  
- 	ath9k_cmn_spectral_init_debug(&priv->spec_priv, priv->debug.debugfs_phy);
- 
+ 	mutex_unlock(&ar->conf_mutex);
+
+base-commit: 0a00db612b6df1fad80485e3642529d1f28ea084
 -- 
-2.25.1
+2.40.1
 
