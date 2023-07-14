@@ -2,162 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E46B67544E5
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 00:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91596754503
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 00:38:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230043AbjGNWRN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 18:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57412 "EHLO
+        id S229819AbjGNWiv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jul 2023 18:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229986AbjGNWRM (ORCPT
+        with ESMTP id S229437AbjGNWit (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 18:17:12 -0400
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B062726
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 15:17:10 -0700 (PDT)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-1b06777596cso1980283fac.2
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 15:17:10 -0700 (PDT)
+        Fri, 14 Jul 2023 18:38:49 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5D6030DB;
+        Fri, 14 Jul 2023 15:38:48 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-668709767b1so1847611b3a.2;
+        Fri, 14 Jul 2023 15:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1689373029; x=1691965029;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1689374328; x=1691966328;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qdzHr07zTGluOEPoHrNDfSU95b5L29PdHHrd1vv/M7g=;
-        b=abj0MkO8lcO9upHhziT/xhOgnHzY2pYWq7mFKHg1wbTaYYs3KdwPF4Ub8GturcaKbY
-         66FWrW/QFPBAiU/UFxQfLOmlWpffyaJSsZSX48mBmuU3wz0GQJsxoevr5HW9FMXq5Gyi
-         N+B1038jDI8I0oARmHCPnUoWPBRVvQCUbbDw8=
+        bh=SvCYC5lv06+yLWhD0vA+gpIwnot2YJ3/Uyd9naS/lsA=;
+        b=nmRGUqPWsPTlmQZTGYimNHPs27FHh0igPCKpfO6fXyDKn32CX6rpE5gB2tnhku/76u
+         eRWTmj17XcctctljaDWxdsoXbEE4WPqFKxQFznPet1ysMA1E58pYVO3No+m/j6SMRxVy
+         OfBgVtKZZYTwsFBB37PAu38FEffYlXqf3zFYZOIsBTjsmkaCr1JnVcSFGyBM/Xiv0ZWh
+         O20pN6R0Ktnq1dW8yTzZys0mnpaOSwDHagJhk2MpBnyysWrs960tMz67481GAg2xQp/2
+         h9/x42QOvoOAozKFtvcl2r5PoPdKbAnK8+IoslaDXGOc9AVArtd3s9daTvGB2E+NrRyh
+         cLdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689373029; x=1691965029;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1689374328; x=1691966328;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qdzHr07zTGluOEPoHrNDfSU95b5L29PdHHrd1vv/M7g=;
-        b=SELbV0pH/HGBrclkKTHF+BwRu1iNmB8/LiRq5CdKhry88IYCZTLyi4P8LCXRo3yLpq
-         M9MToUwchPYnkTq9k47UtJx1Vc4D+JD4noR8idPlEzyRcHd6N9wvyrV31/3ybz1KlkuS
-         ocHNdTGm9kSMnLv4m9tXznwOhjbFIWlOmfAIWqhsJUQc+fZSGVF8XFrztXci/ECUBZBy
-         2Cz8bpCFDDsCYp+oX8VbNP5zwpT0vDIxlj+6UBpajigeylARQUluNJmaY6xhEMrnwAqL
-         9svpInRe2zn1hTV14hiTRADYRDy/yBerprQODdqLND/SJ31IdXAntCBcjlCtkEq2y5aD
-         cOPA==
-X-Gm-Message-State: ABy/qLYlT6svW+tVDTtDdC3IfBtHIBixuxAp/lDNdvYuRB/69fLd2iBa
-        lqivSQxWDQtPdX8wSwj1kg05EtfK3H/UJX9eDq7tjA==
-X-Google-Smtp-Source: APBJJlF+444Rtf5lv/i1FfrEOMuYg/0oSCGX92ogiIgjyKKypfPbtbiXcWR15nGp46E9p7ad2yllRJQXa/JNva2tC4Y=
-X-Received: by 2002:a05:6871:720:b0:1b7:30eb:9055 with SMTP id
- f32-20020a056871072000b001b730eb9055mr7023268oap.49.1689373029563; Fri, 14
- Jul 2023 15:17:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230714120222.3920248-1-pinkperfect2021@gmail.com>
-In-Reply-To: <20230714120222.3920248-1-pinkperfect2021@gmail.com>
-From:   Matthew Wang <matthewmwang@chromium.org>
-Date:   Sat, 15 Jul 2023 00:16:58 +0200
-Message-ID: <CABRiz0q8ujbAvYJCQFtx4gvxG4H_FGM5TZWdWULX0UpoZhH=uQ@mail.gmail.com>
+        bh=SvCYC5lv06+yLWhD0vA+gpIwnot2YJ3/Uyd9naS/lsA=;
+        b=Y2kU9JxmQX8Py8mzi9U2lOl8vKGGo7Lp064LqYxxzkgim7kgiVucv79fWlEn0mPApP
+         WKzVBbviKHlG0DtuZhUasLsBKBOBLQuEtRtENME3ncHdh9kk7/5uGg2MZR9G4gtDf18c
+         OfLrH5swTJnAlHskEL7EloOZKdp/62QFfkA5d9FGtsWg5Rxjy6QY0JulebuQ/ncwlupX
+         OwIjtEsaOEfJ4OkZstKsZRgRgL/i8JXbvSKP07nKeCj6I3WixgUjXWjVMn1TKDWhm8SH
+         1DjumjyFhkjKf48Swvw43kIqbfcSz+IrX58tWNhm/Tg74fTaTG3B8qi8DGM/iOjzH83s
+         h3wA==
+X-Gm-Message-State: ABy/qLZYUuXU6eLFzU+vH0gDtFHUESxas+6PekkY/bDbUivmoPKT85qp
+        Lw1v73YIpzVJ5vc7PCcSZelBGjenAWr4rB14Vcw=
+X-Google-Smtp-Source: APBJJlEQ97yEQ5WWAnqQqNasWTEfg+38d4oTAKDBV9QwaDQUny3iCJE2CnNMXAPyiF1PBaJkK4oNRg==
+X-Received: by 2002:a05:6a20:9d94:b0:131:dd82:8c01 with SMTP id mu20-20020a056a209d9400b00131dd828c01mr4200677pzb.23.1689374328043;
+        Fri, 14 Jul 2023 15:38:48 -0700 (PDT)
+Received: from localhost.localdomain ([221.231.171.18])
+        by smtp.gmail.com with ESMTPSA id q19-20020a170902bd9300b001b9e0918b0asm8225460pls.169.2023.07.14.15.38.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jul 2023 15:38:47 -0700 (PDT)
+From:   Polaris Pi <pinkperfect2021@gmail.com>
+To:     kuabhs@chromium.org
+Cc:     amitkarwar@gmail.com, ganapathi017@gmail.com,
+        huxinming820@gmail.com, kuba@kernel.org, kvalo@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        pinkperfect2021@gmail.com, sharvari.harisangam@nxp.com
 Subject: Re: [PATCH v5] wifi: mwifiex: Fix OOB and integer underflow when rx packets
-To:     Polaris Pi <pinkperfect2021@gmail.com>
-Cc:     kuba@kernel.org, amitkarwar@gmail.com, kvalo@kernel.org,
-        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
-        huxinming820@gmail.com, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+Date:   Fri, 14 Jul 2023 22:38:07 +0000
+Message-Id: <20230714223807.3926654-1-pinkperfect2021@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <CACTWRwuhkz60t8TSy6xvPjeS5BGp9f5H_o=rf42yUUcrY5m5eA@mail.gmail.com>
+References: <CACTWRwuhkz60t8TSy6xvPjeS5BGp9f5H_o=rf42yUUcrY5m5eA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jul 14, 2023 at 2:02=E2=80=AFPM Polaris Pi <pinkperfect2021@gmail.c=
-om> wrote:
->
-> Make sure mwifiex_process_mgmt_packet and its callers
-> mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet
-> not out-of-bounds access the skb->data buffer.
->
-> Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80=
-211")
-> Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-> ---
-> V5: Follow chromeos comments: preserve the original flow of mwifiex_proce=
-ss_uap_rx_packet
-> ---
->  drivers/net/wireless/marvell/mwifiex/sta_rx.c   |  3 ++-
->  drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 11 +++++++++++
->  drivers/net/wireless/marvell/mwifiex/util.c     |  5 +++++
->  3 files changed, 18 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/=
-wireless/marvell/mwifiex/sta_rx.c
-> index 13659b02ba88..88aaec645291 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-> @@ -194,7 +194,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_priv=
-ate *priv,
->
->         rx_pkt_hdr =3D (void *)local_rx_pd + rx_pkt_offset;
->
-> -       if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
-> +       if ((rx_pkt_offset + rx_pkt_length) > (u16)skb->len ||
-> +           skb->len - rx_pkt_offset < sizeof(*rx_pkt_hdr)) {
->                 mwifiex_dbg(adapter, ERROR,
->                             "wrong rx packet: len=3D%d, rx_pkt_offset=3D%=
-d, rx_pkt_length=3D%d\n",
->                             skb->len, rx_pkt_offset, rx_pkt_length);
-> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/ne=
-t/wireless/marvell/mwifiex/uap_txrx.c
-> index e495f7eaea03..32f4626a4d76 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-> @@ -367,6 +367,17 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_pri=
-vate *priv,
->         rx_pkt_type =3D le16_to_cpu(uap_rx_pd->rx_pkt_type);
->         rx_pkt_hdr =3D (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_=
-offset);
->
-> +       if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len ||
-> +           skb->len - le16_to_cpu(uap_rx_pd->rx_pkt_offset) < sizeof(*rx=
-_pkt_hdr)) {
+> formatting issue, space after (u16)
+Delete space is required by checkpatch.pl
 
-The second condition is strictly a subset of the first. Can we just make th=
-is:
+> why return -1 instead of returning appropriate error code , may be EMSGSIZE
+Because of all other error paths return -1, follow original return code
 
-le16_to_cpu(uap_rx_pd->rx_pkt_offset) + sizeof(*rx_pkt_hdr) > skb->len
-
-> +               mwifiex_dbg(adapter, ERROR,
-> +                           "wrong rx packet offset: len=3D%d, offset=3D%=
-d\n",
-> +                           skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offse=
-t));
-> +               priv->stats.rx_dropped++;
-> +
-> +               dev_kfree_skb_any(skb);
-> +               return 0;
-> +       }
-> +
->         ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
->
->         if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-> diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wi=
-reless/marvell/mwifiex/util.c
-> index 94c2d219835d..31e1a82883e4 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/util.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/util.c
-> @@ -399,6 +399,11 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *=
-priv,
->
->         pkt_len =3D le16_to_cpu(rx_pd->rx_pkt_length);
->
-> +       if (pkt_len < sizeof(struct ieee80211_hdr) || skb->len < pkt_len)=
- {
-> +               mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length"=
-);
-> +               return -1;
-> +       }
-> +
->         ieee_hdr =3D (void *)skb->data;
->         if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
->                 if (mwifiex_parse_mgmt_packet(priv, (u8 *)ieee_hdr,
-> --
-> 2.25.1
->
+Thanks
