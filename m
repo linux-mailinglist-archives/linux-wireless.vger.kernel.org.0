@@ -2,94 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C668752E3F
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 02:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 956AB752E50
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 02:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232577AbjGNAUm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 20:20:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43328 "EHLO
+        id S234493AbjGNAeo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 20:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232141AbjGNAUm (ORCPT
+        with ESMTP id S229916AbjGNAem (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 20:20:42 -0400
+        Thu, 13 Jul 2023 20:34:42 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A5EA82D50
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 17:20:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0DAE52D4B;
+        Thu, 13 Jul 2023 17:34:40 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36E0KTH20014095, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36E0KTH20014095
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36E0Y7n84015630, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36E0Y7n84015630
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 14 Jul 2023 08:20:29 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+        Fri, 14 Jul 2023 08:34:08 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 14 Jul 2023 08:20:36 +0800
+ 15.1.2375.32; Fri, 14 Jul 2023 08:34:14 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 14 Jul 2023 08:20:35 +0800
+ 15.1.2375.34; Fri, 14 Jul 2023 08:34:14 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
  RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Fri, 14 Jul 2023 08:20:35 +0800
+ 15.01.2375.007; Fri, 14 Jul 2023 08:34:14 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+To:     "Lukas F. Hartmann" <lukas@mntre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH RFC] wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU
-Thread-Topic: [PATCH RFC] wifi: rtl8xxxu: Fix the TX power of RTL8192CU,
- RTL8723AU
-Thread-Index: AQHZspSGOtt7g+TK3EqOf7swN4bu+K+yN0+AgAU7GQCAAPom4A==
-Date:   Fri, 14 Jul 2023 00:20:35 +0000
-Message-ID: <46e638c9a44841b28cf11e10d95111ec@realtek.com>
-References: <52c28b65-6f28-2cc0-7281-179bb1087c2a@gmail.com>
- <509e09b7bfa445fb81f4e3dc3a83dd65@realtek.com>
- <6894e812-975b-cb00-3ff9-4c6796158980@gmail.com>
-In-Reply-To: <6894e812-975b-cb00-3ff9-4c6796158980@gmail.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
+Subject: RE: [PATCH] wifi: rtw88: sdio: Honor the host max_req_size in the RX path
+Thread-Topic: [PATCH] wifi: rtw88: sdio: Honor the host max_req_size in the RX
+ path
+Thread-Index: AQHZsp+XbJMjQ56edkCHhTIfjugPgq+yJqHggAT+3gCAAUh3EA==
+Date:   Fri, 14 Jul 2023 00:34:14 +0000
+Message-ID: <208ee32354b44205bb76a55c0d4bc93b@realtek.com>
+References: <20230709195712.603200-1-martin.blumenstingl@googlemail.com>
+ <b55cd3172ea7474ba1a67db2d5b39301@realtek.com> <87pm4w3rjp.fsf@mntre.com>
+In-Reply-To: <87pm4w3rjp.fsf@mntre.com>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
 x-kse-antispam-interceptor-info: fallback
 x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgSnVseSAxNCwgMjAy
-MyAxOjI0IEFNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IGxpbnV4
-LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzogSmVzIFNvcmVuc2VuIDxKZXMuU29yZW5z
-ZW5AZ21haWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIFJGQ10gd2lmaTogcnRsOHh4eHU6
-IEZpeCB0aGUgVFggcG93ZXIgb2YgUlRMODE5MkNVLCBSVEw4NzIzQVUNCj4gDQo+IE9uIDEwLzA3
-LzIwMjMgMDQ6NDIsIFBpbmctS2UgU2hpaCB3cm90ZToNCj4gPg0KPiA+DQo+ID4+IC0tLS0tT3Jp
-Z2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+IEZyb206IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFj
-ZXJmZTJAZ21haWwuY29tPg0KPiA+PiBTZW50OiBNb25kYXksIEp1bHkgMTAsIDIwMjMgMjozOCBB
-TQ0KPiA+PiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+ID4+IENjOiBKZXMg
-U29yZW5zZW4gPEplcy5Tb3JlbnNlbkBnbWFpbC5jb20+OyBQaW5nLUtlIFNoaWggPHBrc2hpaEBy
-ZWFsdGVrLmNvbT4NCj4gPj4gU3ViamVjdDogW1BBVENIIFJGQ10gd2lmaTogcnRsOHh4eHU6IEZp
-eCB0aGUgVFggcG93ZXIgb2YgUlRMODE5MkNVLCBSVEw4NzIzQVUNCj4gPj4NCj4gPj4gICAgICAg
-ICBmb3IgKGkgPSAwOyBpIDwgMzsgaSsrKSB7DQo+ID4+ICAgICAgICAgICAgICAgICBpZiAoaSAh
-PSAyKQ0KPiA+PiAtICAgICAgICAgICAgICAgICAgICAgICB2YWw4ID0gKG1jc2Jhc2VbMF0gPiA4
-KSA/IChtY3NiYXNlWzBdIC0gOCkgOiAwOw0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgICB2
-YWw4ID0gKHZhbDggPiA4KSA/ICh2YWw4IC0gOCkgOiAwOw0KPiA+PiAgICAgICAgICAgICAgICAg
-ZWxzZQ0KPiA+PiAtICAgICAgICAgICAgICAgICAgICAgICB2YWw4ID0gKG1jc2Jhc2VbMF0gPiA2
-KSA/IChtY3NiYXNlWzBdIC0gNikgOiAwOw0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgICB2
-YWw4ID0gKHZhbDggPiA2KSA/ICh2YWw4IC0gNikgOiAwOw0KPiA+DQo+ID4gV291bGQgeW91IGxp
-a2UgdmFsOCA9IG1pbl90KGludCwgdmFsOCAtIDYsIDApOyA/DQo+ID4NCj4gPiBFdmVuLCBtZXJn
-ZSB0d28gYnJhbmNoZXMgaW50byBvbmUuDQo+ID4gICBiYXNlID0gaSAhPSAyID8gOCA6IDY7DQo+
-ID4gICB2YWw4ID0gbWluX3QoaW50LCB2YWw4IC0gYmFzZSwgMCk7DQo+ID4NCj4gPiBbLi4uXQ0K
-PiA+DQo+IA0KPiBJIHRoaW5rIG1heF90LCBidXQgb3RoZXJ3aXNlIHllcywgdGhhdCBsb29rcyBn
-b29kLg0KPiANCg0KT29wcy4gWW91IGFyZSByaWdodC4gU29ycnkgZm9yIHRoZSBtaXN0YWtlcy4N
-Cg0KDQoNCg==
+
+> -----Original Message-----
+> From: Lukas F. Hartmann <lukas@mntre.com>
+> Sent: Thursday, July 13, 2023 8:49 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>; Martin Blumenstingl <martin.blumenstingl@googlemail.com>;
+> linux-wireless@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org; jernej.skrabec@gmail.com; ulf.hansson@linaro.org; kvalo@kernel.org;
+> tony0620emma@gmail.com
+> Subject: RE: [PATCH] wifi: rtw88: sdio: Honor the host max_req_size in the RX path
+> 
+> Hi,
+> 
+> Ping-Ke Shih <pkshih@realtek.com> writes:
+> 
+> > I assume your conclusion is correct for all platforms, so I add my reviewed-by.
+> > But, I think it would be better that Lukas can help to test this patch on his
+> > platform, and give a tested-by tag before getting this patch merged.
+> 
+> I have been testing this now more rigorously in my own laptop with
+> Kernel 6.4.1 (from Debian experimental) and this patch applied. I first
+> had issues with rtw_power_mode_change (and "firmware failed to leave lps
+> state"), so I turned off power_save using iw. This made everything
+> quiet, but unfortunately after about 1 hour of usage I get
+> skb_over_panic again and I believe some memory corruption happens in the
+> kernel, as I can do dmesg only once and then another dmesg will hang forever.
+> (After WARNING: CPU: 4 PID: 0 at kernel/context_tracking.c:128
+> ct_kernel_exit.constprop.0+0xa0/0xa8)
+> 
+> Here are the errors that lead up to this:
+> http://dump.mntmn.com/rtw88-failure-1h-dmesg.txt
+
+Hi Martin,
+
+The dmesg shows that
+"rtw_8822cs mmc2:0001:1: Failed to read 1536 byte(s) from SDIO port 0x000000d1"
+
+Shouldn't we return an error code (with proper error handling) instead of
+just break the loop? Because 'buf' content isn't usable. 
+
+I wonder the approach of this patch is still not enough for Lukas' platform. 
+
+Ping-Ke
+
