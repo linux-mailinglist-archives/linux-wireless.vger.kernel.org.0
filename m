@@ -2,49 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44F72753EA1
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 17:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9A38753F5B
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 17:55:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235942AbjGNPSy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 11:18:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46418 "EHLO
+        id S236112AbjGNPzJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jul 2023 11:55:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235272AbjGNPSx (ORCPT
+        with ESMTP id S229826AbjGNPzI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 11:18:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 718D21734;
-        Fri, 14 Jul 2023 08:18:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F9C161D27;
-        Fri, 14 Jul 2023 15:18:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F26C433C8;
-        Fri, 14 Jul 2023 15:18:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689347929;
-        bh=GHCoMZ/UoQEwvyyLj6obOxuoQTyZeeHkQU5SH5+3Uxs=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=lrmyl9F8q9Rq2thyyQq0ZVZLcPhb4o/lwoL+z/+ADAjtZdUKdfTZTiunxbU+4kdKK
-         0Da5r0Eqg/61a4BCR/TFnukrBg1hJ7hEXuVYybrFim2RlP3R8UrA4w+0ROUPMcdX9f
-         1+xUb26QVvO2B/rhetJRb87Q5Q3VURFnqoLzqkAn2E0hFpF9NPAg9uj0EQdClX9hb6
-         C21oI9cSaPoxbm5sZLfsENXUBliAPZVEL1tx/P1ZxBiNTYRTv23FAc5qinpPFMLPDV
-         Vf3K0PJg8Ga+KB1Oi1jU7cRPCbfbwS3CAx+M2LAUNJAog2sZeKoQb8gvPpvQiiLyz9
-         al4TZNje6hjmA==
-Message-ID: <9cf3ce79-2d5e-090d-c83e-0c359ace1cb9@kernel.org>
-Date:   Fri, 14 Jul 2023 09:18:46 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Content-Language: en-US
-To:     Mina Almasry <almasrymina@google.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Hari Ramakrishnan <rharix@google.com>
-Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
+        Fri, 14 Jul 2023 11:55:08 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B17359F
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 08:55:06 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-668704a5b5bso2013848b3a.0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 08:55:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1689350106; x=1691942106;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=23iFgtcXrSM/wqHFC50gmHfN2DfdTspVrWVZMTWF67M=;
+        b=jVVndNxSJywFc3NlTe7W4yP3yU7NCgigpzMr+FQbbEvXGao5yncV705uEsUHe+SsoH
+         99ahIHBc808HZFPmudJtgOEMfoALXOrhBGEH/5iOoJP0M0QQaAurUJwVbwvDh8rCWyFm
+         0mOdTbt8hmBwtxDeUh5QRPqHwXPIqgVZNGldoXiTm0eDhVqBfh+70yBcJwuiProAPmNP
+         q/bsMSOuP5fGR6gpmHPhHBCAGFMboGnKQPaY5xYLCGUxj9eKBY7inLb+03hQDErrcHpw
+         o1qif2uGPWsACD+WU5iH4kmBUQe/D+z7BmCSmmyvl9y8UNGUZZpD2xWPHtSqInNnfuFp
+         5rXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689350106; x=1691942106;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=23iFgtcXrSM/wqHFC50gmHfN2DfdTspVrWVZMTWF67M=;
+        b=TOwD7JDMw6ybScwlvQiRBwpei+gATYeu/KnbXnyCg9wi76uqPBa+TuKYSSPJzlEV+X
+         sg9CfYAmqwoex5cEQasuWXU5aLLfy0ORAyQZizDvuARs2uBuimPzWio+33Okjg3gPfF8
+         +cLL/HMlPoos9nmocSe12dGaUjxKmG4hqyjoe/A30PjP/Rm86yFdMgCUbgZwytWdeA0A
+         fBIXX6GWp+yvcSqgEzJaDQE0W6D+rvIfm7/wlzKdeX36PpkyAonbu0LgfZfqwgicL6iB
+         RVoCGmWfHaswPeM4ffrSlz2nrosfnhPgxw7vlxG06BvIGk7pGxeB51E/EQm+zqK4nW1f
+         Q2DA==
+X-Gm-Message-State: ABy/qLYdKxdlHn6NvvbCOQdNtQd5VbkaOW1kuqCICRXgV6SV5bOT5/5B
+        F5SDjoqEVo/djmIslzhBq5Fexg==
+X-Google-Smtp-Source: APBJJlE1OjvT/TWbZXaXcXtxRNjTULARYcXX/dBfz79zC72vXKyKqx8JeuoEXOUCn7f0w2b2Le5zeg==
+X-Received: by 2002:a05:6a00:1951:b0:668:731b:517e with SMTP id s17-20020a056a00195100b00668731b517emr5873790pfk.24.1689350106259;
+        Fri, 14 Jul 2023 08:55:06 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
+        by smtp.gmail.com with ESMTPSA id t9-20020a63b709000000b0055be951145csm7037672pgf.36.2023.07.14.08.55.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jul 2023 08:55:05 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1qKL8K-0017jv-8O;
+        Fri, 14 Jul 2023 12:55:04 -0300
+Date:   Fri, 14 Jul 2023 12:55:04 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Mina Almasry <almasrymina@google.com>
+Cc:     Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+        Hari Ramakrishnan <rharix@google.com>,
+        David Ahern <dsahern@kernel.org>,
         Samiullah Khawaja <skhawaja@google.com>,
         Willem de Bruijn <willemb@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -81,10 +95,10 @@ Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
         linux-mediatek@lists.infradead.org,
         Jonathan Lemon <jonathan.lemon@gmail.com>, logang@deltatee.com,
         Bjorn Helgaas <bhelgaas@google.com>
-References: <20230710215906.49514550@kernel.org>
- <20230711050445.GA19323@lst.de> <ZK1FbjG+VP/zxfO1@ziepe.ca>
- <20230711090047.37d7fe06@kernel.org>
- <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Message-ID: <ZLFv2PIgdeH8gKmh@ziepe.ca>
+References: <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
  <20230711093224.1bf30ed5@kernel.org>
  <CAHS8izNHkLF0OowU=p=mSNZss700HKAzv1Oxqu2bvvfX_HxttA@mail.gmail.com>
  <20230711133915.03482fdc@kernel.org>
@@ -94,13 +108,13 @@ References: <20230710215906.49514550@kernel.org>
  <CAHS8izNuda2DXKTFAov64F7J2_BbMPaqJg1NuMpWpqGA20+S_Q@mail.gmail.com>
  <143a7ca4-e695-db98-9488-84cf8b78cf86@amd.com>
  <CAHS8izPm6XRS54LdCDZVd0C75tA1zHSu6jLVO8nzTLXCc=H7Nw@mail.gmail.com>
-From:   David Ahern <dsahern@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <CAHS8izPm6XRS54LdCDZVd0C75tA1zHSu6jLVO8nzTLXCc=H7Nw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -108,38 +122,8 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/14/23 8:55 AM, Mina Almasry wrote:
-> 
-> I guess the remaining option not fully explored is the idea of getting
-> the networking stack to consume the scatterlist that
-> dma_buf_map_attachment() provides for the device memory. The very
-> rough approach I have in mind (for the RX path) is:
-> 
-> 1. Some uapi that binds a dmabuf to an RX queue. It will do a
-> dma_buf_map_attachment() and get the sg table.
-> 
-> 2. We need to feed the scratterlist entries to some allocator that
-> will chunk it up into pieces that can be allocated by the NIC for
-> incoming traffic. I'm thinking genalloc may work for this as-is, but I
-> may need to add one or use something else if I run into some issue.
-> 
-> 3. We can implement a memory_provider that allocates these chunks and
-> wraps them in a struct new_abstraction (as David called it) and feeds
-> those into the page pool.
-> 
-> 4. The page pool would need to be able to process these struct
-> new_abstraction alongside the struct pages it normally gets from
-> providers. This is maybe the most complicated part, but looking at the
-> page pool code it doesn't seem that big of a hurdle (but I have not
-> tried a POC yet).
-> 
-> 5. The drivers (I looked at mlx5) seem to avoid making any mm calls on
-> the struct pages returned by the pool; the pool abstracts everything
-> already. The changes to the drivers may be minimal..?
-> 
-> 6. We would need to add a new helper, skb_add_rx_new_abstraction_frag
-> that creates a frag out of new_abstraction rather than a struct page.
-> 
+On Fri, Jul 14, 2023 at 07:55:15AM -0700, Mina Almasry wrote:
+
 > Once the skb frags with struct new_abstraction are in the TCP stack,
 > they will need some special handling in code accessing the frags. But
 > my RFC already addressed that somewhat because the frags were
@@ -147,23 +131,21 @@ On 7/14/23 8:55 AM, Mina Almasry wrote:
 > inaccessible and will not be struct pages at all (things like
 > get_page() will not work), so more special handling will be required,
 > maybe.
-> 
-> I imagine the TX path would be considerably less complicated because
-> the allocator and page pool are not involved (I think).
-> 
-> Anyone see any glaring issues with this approach?
 
-Moving skb_frags to an alternative scheme is essential to make this
-work. The current page scheme to go from user virtual to pages to
-physical is not needed for the dmabuf use case.
+It seems sort of reasonable, though there will be interesting concerns
+about coherence and synchronization with generial purpose DMABUFs that
+will need tackling.
 
-For the driver and hardware queue: don't you need a dedicated queue for
-the flow(s) in question? If not, how can you properly handle the
-teardown case (e.g., app crashes and you need to ensure all references
-to GPU memory are removed from NIC descriptors)? If you agree on this
-point, then you can require the dedicated queue management in the driver
-to use and expect only the alternative frag addressing scheme. ie., it
-knows the address is not struct page (validates by checking skb flag or
-frag flag or address magic), but a reference to say a page_pool entry
-(if you are using page_pool for management of the dmabuf slices) which
-contains the metadata needed for the use case.
+Still it is such a lot of churn and weridness in the netdev side, I
+think you'd do well to present an actual full application as
+justification.
+
+Yes, you showed you can stick unordered TCP data frags into GPU memory
+sort of quickly, but have you gone further with this to actually show
+it is useful for a real world GPU centric application?
+
+BTW your cover letter said 96% utilization, the usual server
+configuation is one NIC per GPU, so you were able to hit 1500Gb/sec of
+TCP BW with this?
+
+Jason
