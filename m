@@ -2,89 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D73875329E
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 09:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11A0775331F
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 09:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235150AbjGNHLa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 03:11:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49908 "EHLO
+        id S231864AbjGNHYg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jul 2023 03:24:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232542AbjGNHL2 (ORCPT
+        with ESMTP id S229930AbjGNHYf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 03:11:28 -0400
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 396991727;
-        Fri, 14 Jul 2023 00:11:27 -0700 (PDT)
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-4fb41682472so2488775e87.2;
-        Fri, 14 Jul 2023 00:11:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689318685; x=1691910685;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b5iPI8hWmCK9XFWSynDHqauVU6Gjyq6if7QTIUYaQJU=;
-        b=JSE3eIGNPl0c0ctWBKoX/HMro9ZcaVpq2/fkTRsGPgRPD/rRR3nm3EdYCkeBV07BsI
-         Vrh1RS3z0C58hd9k7ym8SPCPpoQSLxHv8+wWCh2XnltRLNZg677ApsEPCE17sELRQS28
-         8QcG8dvAxbBNWFkfwPfZiX8zmP9FLR7VCGVltVz/FVpkMxP/y5jmzn/GSERGE+cYV1pD
-         0yc5K8yFn7OO1TRcoHP1VGCZ1aS4BVA7oPiE7HjTdGCaAQOMJrvCTL1QQmI3b9dExVHk
-         X/c1qoYLxr+G/wqyICO2mrJ3RN+0BShwEwmYlXbbuH1HMmAEzfK/G24wT4Ml8lhtIJmB
-         MgDA==
-X-Gm-Message-State: ABy/qLY+9w1+AZuwfcTeTzf+EfyJEEjVEeX/ARCLyOXT53RzgKcRn+pe
-        DPWjGF25XsMkEWubiOLTTaF9lKGSWwI=
-X-Google-Smtp-Source: APBJJlHZDogVIK3v5qJxwOJsO5cLmycgyqXASWgNpNGCcQa9GK6FtgtYSuxqcBnCJKpeJnpyzoeuNw==
-X-Received: by 2002:a19:6507:0:b0:4f8:5713:7dd5 with SMTP id z7-20020a196507000000b004f857137dd5mr2985939lfb.10.1689318685209;
-        Fri, 14 Jul 2023 00:11:25 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id w22-20020a056402071600b0051de3c6c5e5sm5299564edx.94.2023.07.14.00.11.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Jul 2023 00:11:24 -0700 (PDT)
-Message-ID: <0eabcf39-dfd3-bff9-5d61-ff8fca7e3ba1@kernel.org>
-Date:   Fri, 14 Jul 2023 09:11:23 +0200
+        Fri, 14 Jul 2023 03:24:35 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D2AC0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 00:24:34 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36E6Gm7O029335;
+        Fri, 14 Jul 2023 07:24:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=Cjw8DDFVhCw353h6rtzIrzrDq3pD+EchseT4VKpq1/g=;
+ b=j89tohQH+Yfkpjj6QfOeNmXOpHoAE2Ln72/luaviVXCvmLyds9wpqJGaYQxbEYDjACwj
+ wBecFGpHLyaOW69UEBe4NIYUpR2jmD8xO3t+yuNzaersRilb2L+SXNasvPEunvHmq/K/
+ rGDMc8fS2aE5Gl7pZEflmhgZwM83Eal/BcdiiEGKz7mspMfY0cVytn3D6YTuZhUTd/HX
+ 4KzS5p8zSROAPmCs4HVgdMvylFBgaT9k9lUDvtVDmumNbT5Xn4bX6acgm9ySIXs7jNwk
+ j4tGIJNd9DWpFXdc9EsvBxsQ+mR5E+XdFPsPP2jDTmFwg8xh57u9Jfx1PBHkOzchMT4X Gg== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rtpuks4hb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2023 07:24:27 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36E7OQ4I000683
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2023 07:24:26 GMT
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Fri, 14 Jul 2023 00:24:24 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH] wifi: ath12k: avoid array overflow of hw mode for preferred_hw_mode
+Date:   Fri, 14 Jul 2023 03:24:05 -0400
+Message-ID: <20230714072405.28705-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v5] wifi: ath5k: remove phydir check from
- ath5k_debug_init_device()
-Content-Language: en-US
-To:     Minjie Du <duminjie@vivo.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        "open list:ATHEROS ATH5K WIRELESS DRIVER" 
-        <linux-wireless@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Cc:     opensource.kernel@vivo.com
-References: <20230714071002.1264-1-duminjie@vivo.com>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20230714071002.1264-1-duminjie@vivo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: U_9-BpAinQg7BRMhm4LgufR1pWoG5B7M
+X-Proofpoint-GUID: U_9-BpAinQg7BRMhm4LgufR1pWoG5B7M
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-14_04,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ adultscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1011 bulkscore=0
+ phishscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307140067
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14. 07. 23, 9:10, Minjie Du wrote:
-> 'phydir' returned from debugfs_create_dir() is checked against NULL.
-> As the debugfs API returns an error pointer,
-> the returned value can never be NULL.
-> 
-> Therefore, as the documentation suggests that the check is unnecessary
-> and other debugfs calls have no operation in error cases,
-> it is advisable to completely eliminate the check.
-> 
-> Signed-off-by: Minjie Du <duminjie@vivo.com>
+Currently ath12k define WMI_HOST_HW_MODE_DBS_OR_SBS=5 as max hw mode
+for enum wmi_host_hw_mode_config_type, it is also same for the array
+ath12k_hw_mode_pri_map.
 
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+When tested with new version firmware/board data which support new
+hw mode eMLSR mode with hw mode value 8, it leads overflow usage for
+array ath12k_hw_mode_pri_map in function ath12k_wmi_hw_mode_caps(),
+and then lead preferred_hw_mode changed to 8, and finally function
+ath12k_pull_mac_phy_cap_svc_ready_ext() select the capability of hw
+mode 8, but the capability of eMLSR mode report from firmware does
+not support 2.4 GHz band for WCN7850, so finally 2.4 GHz band is
+disabled.
 
-thanks,
+Skip the hw mode which exceeds WMI_HOST_HW_MODE_MAX in function
+ath12k_wmi_hw_mode_caps() helps to avoid array overflow, then the 2.4
+GHz band will not be disabled.
+
+This is to keep compatibility with newer version firmware/board data
+files, this change is still needed after ath12k add eMLSR hw mode 8 in
+array ath12k_hw_mode_pri_map and enum wmi_host_hw_mode_config_type,
+because more hw mode maybe added in next firmware/board data version
+e.g hw mode 9, then it will also lead new array overflow without this
+change.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 7ae0bb78b2b5..cef01148fc16 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -3701,6 +3701,10 @@ static int ath12k_wmi_hw_mode_caps(struct ath12k_base *soc,
+ 	for (i = 0 ; i < svc_rdy_ext->n_hw_mode_caps; i++) {
+ 		hw_mode_caps = &svc_rdy_ext->hw_mode_caps[i];
+ 		mode = le32_to_cpu(hw_mode_caps->hw_mode_id);
++
++		if (mode >= WMI_HOST_HW_MODE_MAX)
++			continue;
++
+ 		pref = soc->wmi_ab.preferred_hw_mode;
+ 
+ 		if (ath12k_hw_mode_pri_map[mode] < ath12k_hw_mode_pri_map[pref]) {
+
+base-commit: 0a00db612b6df1fad80485e3642529d1f28ea084
 -- 
-js
-suse labs
+2.40.1
 
