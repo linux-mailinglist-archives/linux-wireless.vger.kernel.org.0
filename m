@@ -2,120 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 956AB752E50
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 02:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6871E752E8D
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 03:30:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234493AbjGNAeo convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Jul 2023 20:34:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46048 "EHLO
+        id S233557AbjGNBa5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Jul 2023 21:30:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229916AbjGNAem (ORCPT
+        with ESMTP id S233753AbjGNBay (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Jul 2023 20:34:42 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0DAE52D4B;
-        Thu, 13 Jul 2023 17:34:40 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36E0Y7n84015630, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36E0Y7n84015630
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 14 Jul 2023 08:34:08 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 14 Jul 2023 08:34:14 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Fri, 14 Jul 2023 08:34:14 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Fri, 14 Jul 2023 08:34:14 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "Lukas F. Hartmann" <lukas@mntre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
-Subject: RE: [PATCH] wifi: rtw88: sdio: Honor the host max_req_size in the RX path
-Thread-Topic: [PATCH] wifi: rtw88: sdio: Honor the host max_req_size in the RX
- path
-Thread-Index: AQHZsp+XbJMjQ56edkCHhTIfjugPgq+yJqHggAT+3gCAAUh3EA==
-Date:   Fri, 14 Jul 2023 00:34:14 +0000
-Message-ID: <208ee32354b44205bb76a55c0d4bc93b@realtek.com>
-References: <20230709195712.603200-1-martin.blumenstingl@googlemail.com>
- <b55cd3172ea7474ba1a67db2d5b39301@realtek.com> <87pm4w3rjp.fsf@mntre.com>
-In-Reply-To: <87pm4w3rjp.fsf@mntre.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 13 Jul 2023 21:30:54 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A07D2D7B
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Jul 2023 18:30:42 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36E1JQ5d009251;
+        Fri, 14 Jul 2023 01:30:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=iIYd+ndnBP9Et0RdX1MT727gSCrDVeXp4gIeVGs58Xo=;
+ b=Bn837O5NuhmHE4Z7uzcSiFILDjnM239SjcdIG7ZjO9JcP25UZn+GAU3sXYNlxS8tA8cM
+ pgU2aPzQ4zn2KSOUD0KedJTgBCxdTG1gh2IH/okgl6O8yxsuGM0tdYVNP4Ucz9oA8OHb
+ BH8KaK2XjwsEmAFap0SjwtqRysJiEE32+fUO31r+EjDANG5H/1Tm93dH6mGyTefCsU03
+ RNWbpJitLIvQCLPFOIQk6a9rInGjH4iX9D0nO0IQwjcNV7W/HBQCB3EHEa1lLWKK2O9l
+ lsvd9smMeDbeMjB9ktWD+/uOUyCJi6xGYyKtyNXSOINrN+DcG76twxsjaptNkbt4lpsS 4A== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rtptu8kcv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2023 01:30:30 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36E1UT7C026872
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Jul 2023 01:30:29 GMT
+Received: from [10.111.182.44] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 13 Jul
+ 2023 18:30:29 -0700
+Message-ID: <c88f4ea8-34ca-8544-3b74-4641557da9ba@quicinc.com>
+Date:   Thu, 13 Jul 2023 18:30:28 -0700
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [v4] wifi: ath11k: Add crash logging
+Content-Language: en-US
+To:     Arowa Suliman <arowa@chromium.org>, <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20230714001126.463127-1-arowa@chromium.org>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230714001126.463127-1-arowa@chromium.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Y9nnnd2rj8rolU2ha7XreZeiABh70oYe
+X-Proofpoint-ORIG-GUID: Y9nnnd2rj8rolU2ha7XreZeiABh70oYe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-13_12,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 phishscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=999 spamscore=0 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307140012
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-> -----Original Message-----
-> From: Lukas F. Hartmann <lukas@mntre.com>
-> Sent: Thursday, July 13, 2023 8:49 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>; Martin Blumenstingl <martin.blumenstingl@googlemail.com>;
-> linux-wireless@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org; jernej.skrabec@gmail.com; ulf.hansson@linaro.org; kvalo@kernel.org;
-> tony0620emma@gmail.com
-> Subject: RE: [PATCH] wifi: rtw88: sdio: Honor the host max_req_size in the RX path
+On 7/13/2023 5:10 PM, Arowa Suliman wrote:
+> Currently, the ath11k driver does not print a crash signature when a
+> crash happens. Checked by triggering a simulated crash using the command
+> [1] and checking dmesg for logs.
 > 
-> Hi,
+> [1] echo assert > /sys/kernel/debug/ath11k/../simulate_fw_crash
 > 
-> Ping-Ke Shih <pkshih@realtek.com> writes:
+> Change the crash logging from debug to informational and add a warning
+> when firmware crash MHI_CB_EE_RDDM happens.
 > 
-> > I assume your conclusion is correct for all platforms, so I add my reviewed-by.
-> > But, I think it would be better that Lukas can help to test this patch on his
-> > platform, and give a tested-by tag before getting this patch merged.
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
 > 
-> I have been testing this now more rigorously in my own laptop with
-> Kernel 6.4.1 (from Debian experimental) and this patch applied. I first
-> had issues with rtw_power_mode_change (and "firmware failed to leave lps
-> state"), so I turned off power_save using iw. This made everything
-> quiet, but unfortunately after about 1 hour of usage I get
-> skb_over_panic again and I believe some memory corruption happens in the
-> kernel, as I can do dmesg only once and then another dmesg will hang forever.
-> (After WARNING: CPU: 4 PID: 0 at kernel/context_tracking.c:128
-> ct_kernel_exit.constprop.0+0xa0/0xa8)
-> 
-> Here are the errors that lead up to this:
-> http://dump.mntmn.com/rtw88-failure-1h-dmesg.txt
+> Signed-off-by: Arowa Suliman <arowa@chromium.org>
 
-Hi Martin,
-
-The dmesg shows that
-"rtw_8822cs mmc2:0001:1: Failed to read 1536 byte(s) from SDIO port 0x000000d1"
-
-Shouldn't we return an error code (with proper error handling) instead of
-just break the loop? Because 'buf' content isn't usable. 
-
-I wonder the approach of this patch is still not enough for Lukas' platform. 
-
-Ping-Ke
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
