@@ -2,118 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9A38753F5B
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 17:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 226FF753F6A
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 18:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236112AbjGNPzJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 11:55:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36820 "EHLO
+        id S235500AbjGNQA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jul 2023 12:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbjGNPzI (ORCPT
+        with ESMTP id S235396AbjGNQA1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 11:55:08 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B17359F
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 08:55:06 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-668704a5b5bso2013848b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 08:55:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1689350106; x=1691942106;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=23iFgtcXrSM/wqHFC50gmHfN2DfdTspVrWVZMTWF67M=;
-        b=jVVndNxSJywFc3NlTe7W4yP3yU7NCgigpzMr+FQbbEvXGao5yncV705uEsUHe+SsoH
-         99ahIHBc808HZFPmudJtgOEMfoALXOrhBGEH/5iOoJP0M0QQaAurUJwVbwvDh8rCWyFm
-         0mOdTbt8hmBwtxDeUh5QRPqHwXPIqgVZNGldoXiTm0eDhVqBfh+70yBcJwuiProAPmNP
-         q/bsMSOuP5fGR6gpmHPhHBCAGFMboGnKQPaY5xYLCGUxj9eKBY7inLb+03hQDErrcHpw
-         o1qif2uGPWsACD+WU5iH4kmBUQe/D+z7BmCSmmyvl9y8UNGUZZpD2xWPHtSqInNnfuFp
-         5rXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689350106; x=1691942106;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=23iFgtcXrSM/wqHFC50gmHfN2DfdTspVrWVZMTWF67M=;
-        b=TOwD7JDMw6ybScwlvQiRBwpei+gATYeu/KnbXnyCg9wi76uqPBa+TuKYSSPJzlEV+X
-         sg9CfYAmqwoex5cEQasuWXU5aLLfy0ORAyQZizDvuARs2uBuimPzWio+33Okjg3gPfF8
-         +cLL/HMlPoos9nmocSe12dGaUjxKmG4hqyjoe/A30PjP/Rm86yFdMgCUbgZwytWdeA0A
-         fBIXX6GWp+yvcSqgEzJaDQE0W6D+rvIfm7/wlzKdeX36PpkyAonbu0LgfZfqwgicL6iB
-         RVoCGmWfHaswPeM4ffrSlz2nrosfnhPgxw7vlxG06BvIGk7pGxeB51E/EQm+zqK4nW1f
-         Q2DA==
-X-Gm-Message-State: ABy/qLYdKxdlHn6NvvbCOQdNtQd5VbkaOW1kuqCICRXgV6SV5bOT5/5B
-        F5SDjoqEVo/djmIslzhBq5Fexg==
-X-Google-Smtp-Source: APBJJlE1OjvT/TWbZXaXcXtxRNjTULARYcXX/dBfz79zC72vXKyKqx8JeuoEXOUCn7f0w2b2Le5zeg==
-X-Received: by 2002:a05:6a00:1951:b0:668:731b:517e with SMTP id s17-20020a056a00195100b00668731b517emr5873790pfk.24.1689350106259;
-        Fri, 14 Jul 2023 08:55:06 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
-        by smtp.gmail.com with ESMTPSA id t9-20020a63b709000000b0055be951145csm7037672pgf.36.2023.07.14.08.55.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jul 2023 08:55:05 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1qKL8K-0017jv-8O;
-        Fri, 14 Jul 2023 12:55:04 -0300
-Date:   Fri, 14 Jul 2023 12:55:04 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Mina Almasry <almasrymina@google.com>
-Cc:     Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-        Hari Ramakrishnan <rharix@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Samiullah Khawaja <skhawaja@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Jesper Dangaard Brouer <jbrouer@redhat.com>,
-        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>, logang@deltatee.com,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Message-ID: <ZLFv2PIgdeH8gKmh@ziepe.ca>
-References: <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org>
- <20230711093224.1bf30ed5@kernel.org>
- <CAHS8izNHkLF0OowU=p=mSNZss700HKAzv1Oxqu2bvvfX_HxttA@mail.gmail.com>
- <20230711133915.03482fdc@kernel.org>
- <2263ae79-690e-8a4d-fca2-31aacc5c9bc6@kernel.org>
- <CAHS8izP=k8CqUZk7bGUx4ctm4m2kRC2MyEJv+N4+b0cHVkTQmA@mail.gmail.com>
- <ZK6kOBl4EgyYPtaD@ziepe.ca>
- <CAHS8izNuda2DXKTFAov64F7J2_BbMPaqJg1NuMpWpqGA20+S_Q@mail.gmail.com>
- <143a7ca4-e695-db98-9488-84cf8b78cf86@amd.com>
- <CAHS8izPm6XRS54LdCDZVd0C75tA1zHSu6jLVO8nzTLXCc=H7Nw@mail.gmail.com>
+        Fri, 14 Jul 2023 12:00:27 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14A613595
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 09:00:24 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 319DA240061;
+        Fri, 14 Jul 2023 16:00:21 +0000 (UTC)
+Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 70E2813C2B0;
+        Fri, 14 Jul 2023 09:00:20 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 70E2813C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1689350420;
+        bh=44I/oHYpbwaGxyZuGaybTNxfNGqp10/QKkaYBwyOFzk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=DFdRxE8QPNnZ379IcYI+CW5LKLBTUGjU3yGmYpAnto46hWDWhnyFmeQCRuOcF+noI
+         MaqP5OVcDNrAb7L76tifu1mJBfAShUdV1IlwctLh00uxWLnqb5V+4xltuViwRnIZ+V
+         7B+ZQsXTGdnNfeopZkMA/li0xeHDppvjdJY3lXKY=
+Message-ID: <486cb426-737e-fa57-20da-344fc44bb4de@candelatech.com>
+Date:   Fri, 14 Jul 2023 09:00:20 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHS8izPm6XRS54LdCDZVd0C75tA1zHSu6jLVO8nzTLXCc=H7Nw@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: move mib_stats structure in
+ mt76.h
+Content-Language: en-US
+To:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+References: <cover.1683930235.git.lorenzo@kernel.org>
+ <d7f29306df3495e183304825cd3159bf1ccb1d87.1683930235.git.lorenzo@kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <d7f29306df3495e183304825cd3159bf1ccb1d87.1683930235.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1689350422-WHbnmeyIBCtF
+X-MDID-O: us5;at1;1689350422;WHbnmeyIBCtF;<greearb@candelatech.com>;0a45d51dfbd39c7bb3fe23128efe5de6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -122,30 +62,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jul 14, 2023 at 07:55:15AM -0700, Mina Almasry wrote:
+On 5/12/23 15:29, Lorenzo Bianconi wrote:
+> mib_stats structure is shared by mostly all chipsets. Move it to shared
+> code.
 
-> Once the skb frags with struct new_abstraction are in the TCP stack,
-> they will need some special handling in code accessing the frags. But
-> my RFC already addressed that somewhat because the frags were
-> inaccessible in that case. In this case the frags will be both
-> inaccessible and will not be struct pages at all (things like
-> get_page() will not work), so more special handling will be required,
-> maybe.
+In case this thing hasn't been pushed upstream yet, then a suggestion:
 
-It seems sort of reasonable, though there will be interesting concerns
-about coherence and synchronization with generial purpose DMABUFs that
-will need tackling.
+Create a struct mt76_mib_stats_common class that has the common counters,
+and then per-driver can have that struct as first member of its mib stats.
 
-Still it is such a lot of churn and weridness in the netdev side, I
-think you'd do well to present an actual full application as
-justification.
+I have added a lot of per-driver stats that never made it upstream
+and are not fully shared across different drivers.
 
-Yes, you showed you can stick unordered TCP data frags into GPU memory
-sort of quickly, but have you gone further with this to actually show
-it is useful for a real world GPU centric application?
+Thanks,
+Ben
 
-BTW your cover letter said 96% utilization, the usual server
-configuation is one NIC per GPU, so you were able to hit 1500Gb/sec of
-TCP BW with this?
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt76.h     | 63 +++++++++++++++++++
+>   .../wireless/mediatek/mt76/mt7915/debugfs.c   |  4 +-
+>   .../net/wireless/mediatek/mt76/mt7915/mac.c   |  2 +-
+>   .../net/wireless/mediatek/mt76/mt7915/main.c  |  4 +-
+>   .../wireless/mediatek/mt76/mt7915/mt7915.h    | 63 +------------------
+>   5 files changed, 69 insertions(+), 67 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+> index 75b5c2c56a92..45bf1022a051 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -857,6 +857,69 @@ struct mt76_dev {
+>   	};
+>   };
+>   
+> +/* per-phy stats.  */
+> +struct mt76_mib_stats {
+> +	u32 ack_fail_cnt;
 
-Jason
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
+
