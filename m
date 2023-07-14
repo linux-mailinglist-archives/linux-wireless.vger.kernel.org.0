@@ -2,565 +2,349 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56189753D4F
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 16:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2307753E2E
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 16:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235494AbjGNO2R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 10:28:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42960 "EHLO
+        id S236213AbjGNOzn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jul 2023 10:55:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235406AbjGNO2Q (ORCPT
+        with ESMTP id S236210AbjGNOzh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 10:28:16 -0400
-Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 166B435AF
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 07:27:57 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:3c81:0:640:d488:0])
-        by forward100c.mail.yandex.net (Yandex) with ESMTP id 78B10600CD;
-        Fri, 14 Jul 2023 17:27:55 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id sRdbPWBWwmI0-YpsZkFwG;
-        Fri, 14 Jul 2023 17:27:54 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689344874;
-        bh=ZmvuW2wl1WF9v+E7zUFpUtgvX+xRtxT5cBTec1PSPRA=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=dpaad0sJDY+TFX7O2VWW3tW2nnr+MruGQDe4XYl16/kGU+nYkqLnlsHot50JEJVWE
-         gwjUiJ3FH/7G7D4qliTFYgdTMi+DPyTGs8e+P5gXPE5g8pt0zmyx9/mmTfzVyOjFCP
-         jrAAi6qX7ZLKjm291DCFP9xqapabQ53qQ8V9C0Ag=
-Authentication-Results: mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ajay.Kathat@microchip.com
-Cc:     Amisha.Patel@microchip.com, Kalle Valo <kvalo@kernel.org>,
-        linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: wilc1000: simplify and cleanup TX paths
-Date:   Fri, 14 Jul 2023 17:27:09 +0300
-Message-ID: <20230714142726.129126-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <df4db7fe-b51d-5eba-dd9d-527753903eac@microchip.com>
-References: <df4db7fe-b51d-5eba-dd9d-527753903eac@microchip.com>
+        Fri, 14 Jul 2023 10:55:37 -0400
+Received: from mail-vk1-xa34.google.com (mail-vk1-xa34.google.com [IPv6:2607:f8b0:4864:20::a34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 160F63AB9
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 07:55:27 -0700 (PDT)
+Received: by mail-vk1-xa34.google.com with SMTP id 71dfb90a1353d-47e1c7c1148so1352670e0c.0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 07:55:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689346527; x=1691938527;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lvhGhwK3hQYyA21peYmIOow9+J4vgG6yjc5ZbzkLWoM=;
+        b=isA2RXNjdhF7BOs33nOBn3lihMCe3kNYZD3BN3FIEdKzVqlcWyzk8XpFLn258zHyEx
+         HZOASVCBXuVm91A+F7BWUEYVD4jZGITprf9R/xww+VODmQp3M1QPjuTOsPlKg0PGqS6t
+         9vac0rtvOFw92FOBg/eEOJ68XftLNynN/g7COuISgMOGRfLAoHin6HKDhyVfm3W2rVs/
+         J381i1bCkLsUZp2vPLZ+dLZmgojIu1+dqrbD7g9LEp69nM30B6nNSSDxB7CDUYyAfUpg
+         P9z/I7nISrbUKQ2sJfi4DNan84G5015UYVOFe72As/l7uxSrGtCM7gZYuBxQIYgasUbh
+         nnqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689346527; x=1691938527;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lvhGhwK3hQYyA21peYmIOow9+J4vgG6yjc5ZbzkLWoM=;
+        b=hHQCqo1Pegu201WCXtAP6WGU3hkDhpI9ACILYuHM1sMoh3E+Q3HZZ6EXBaptPtLVTM
+         6TkxEzcntY6sfYe22IAvPtqt5+keCFv4hLTdN7W3U0MVuHUaNHyBBqncUxTQrZyzk0AU
+         Pb02Djp6JUgoF/LUyv1w/w1GObsxklZMsxsa3crjcvkMrOF0ciczE6Mb3SFD4r5VR15L
+         8RC2tJS/BtcJqezdqi2Uh/WW1kONAxFeNK6FRVJ2U8Fzijhi8GbuAiRXmUMRyXo7rgQ3
+         ZmO1BZq4NuwjpTBvcTFHisMKG2NVPBpallv+2ipCVMvdcbJ4eNfx+vcfDJE47xirRx3j
+         SVlg==
+X-Gm-Message-State: ABy/qLb464D30A0WVBVjkGfyViA+mA9PhHYZ1vT/ngVuyMXPzp+sZUYh
+        PaDyUxs92f343/rzr2M2+fzufwJpN6slfXBTCP1y2Q==
+X-Google-Smtp-Source: APBJJlFBpLWkkLl2CX8PmjOhecvGDRkTotYcCL9xT6rQwbez+/O2UZuGeqOlALIkH5NJmj0CD30GBsPbAGECLf0e6Os=
+X-Received: by 2002:a1f:a289:0:b0:481:2ff9:fc3f with SMTP id
+ l131-20020a1fa289000000b004812ff9fc3fmr1025156vke.5.1689346526764; Fri, 14
+ Jul 2023 07:55:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20230710215906.49514550@kernel.org> <20230711050445.GA19323@lst.de>
+ <ZK1FbjG+VP/zxfO1@ziepe.ca> <20230711090047.37d7fe06@kernel.org>
+ <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org> <20230711093224.1bf30ed5@kernel.org>
+ <CAHS8izNHkLF0OowU=p=mSNZss700HKAzv1Oxqu2bvvfX_HxttA@mail.gmail.com>
+ <20230711133915.03482fdc@kernel.org> <2263ae79-690e-8a4d-fca2-31aacc5c9bc6@kernel.org>
+ <CAHS8izP=k8CqUZk7bGUx4ctm4m2kRC2MyEJv+N4+b0cHVkTQmA@mail.gmail.com>
+ <ZK6kOBl4EgyYPtaD@ziepe.ca> <CAHS8izNuda2DXKTFAov64F7J2_BbMPaqJg1NuMpWpqGA20+S_Q@mail.gmail.com>
+ <143a7ca4-e695-db98-9488-84cf8b78cf86@amd.com>
+In-Reply-To: <143a7ca4-e695-db98-9488-84cf8b78cf86@amd.com>
+From:   Mina Almasry <almasrymina@google.com>
+Date:   Fri, 14 Jul 2023 07:55:15 -0700
+Message-ID: <CAHS8izPm6XRS54LdCDZVd0C75tA1zHSu6jLVO8nzTLXCc=H7Nw@mail.gmail.com>
+Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+To:     =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Hari Ramakrishnan <rharix@google.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, David Ahern <dsahern@kernel.org>,
+        Samiullah Khawaja <skhawaja@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>,
+        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>, logang@deltatee.com,
+        Bjorn Helgaas <bhelgaas@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Not a formal description but some thoughts on Ajay's review:
+On Thu, Jul 13, 2023 at 12:56=E2=80=AFAM Christian K=C3=B6nig
+<christian.koenig@amd.com> wrote:
+>
+> Am 12.07.23 um 22:16 schrieb Mina Almasry:
+> > On Wed, Jul 12, 2023 at 6:01=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> =
+wrote:
+> >> On Tue, Jul 11, 2023 at 08:42:24PM -0700, Mina Almasry wrote:
+> >>
+> >>> 1. The device memory driver would be the p2pdma provider. It would
+> >>> expose a user API which allocates a device memory region, calls
+> >>> pci_p2pdma_add_resource() and pci_p2pmem_publish() on it, and returns
+> >>> a reference to it to the userspace.
+> >> This is not quite right, if you convert any of the GPU drivers to use
+> >> P2PDMA you are going to need to restructure the p2pmem stuff to
+> >> seperate the genalloc. The GPU driver must continue to be the owner
+> >> and allocator of the MMIO memory it already controls, we can't have
+> >> two allocators working in parallel.
+> >>
+> >> The genalloc stuff supports the special NVMe use case, I don't know of
+> >> anything else that would like to work that way.
+> >>
+> > I think maybe you misunderstood the proposal. AFAICT the genalloc
+> > stuff works for us, although there are other issues with p2pdma that I
+> > need to solve.
+> >
+> > The proposal was that the uapi in step #1 allocates a region of GPU
+> > memory, and sets up a p2pdma provider for this region of memory. From
+> > the perspective of the GPU, the memory is allocated, and in use by the
+> > user. The p2pdma provider uses genalloc to give out 4K regions with
+> > struct pages to in-kernel allocators from this memory region. Why
+> > would that not work?
+>
+> Oh well, where should I start.
+>
+> struct page is used in the various I/O  subsystems instead of DMA
+> addresses because it allows for a wider range of operations.
+>
+> For example when a page is acquired using get_user_pages() somebody can
+> use the rmap to figure out where a page is mapped and eventually unmap
+> it, map it read only or change the caching attributes etc...
+>
+> Then you have the ability to grab a reference to a page, this for
+> example allows I/O operations to complete and not access freed memory
+> even when the application has already long died.
+>
+> Then a very common use case is that you need to fallback to a CPU copy
+> because the data inside the page isn't aligned or outside the physical
+> reach of a device.
+>
+> The are just numerous issues with what I listed above, for example some
+> of those use cases only work with pagecache pages.
+>
+> Approaching it from the user side, with GPUs there is usually no
+> guarantee that stuff is coherent. E.g. a network card wouldn't
+> automatically see the results of a calculation.
+>
+> Then GPUs usually have tons of memory which isn't CPU accessible or even
+> PCIe bus accessible. So a bounce buffer done with a CPU copy won't work,
+> you need to bounce this with a hw assisted copy. Or you have inter
+> device connections. For example ethernet over HDMI links would be able
+> to access all of the internal GPU resources.
+>
+> Then GPUs often need to shuffle memory around, e.g. similar
+> functionality to ___GFP_MOVABLE. Just with stuff not CPU accessible nor
+> mapped into CPU page tables.
+>
+> ...
+>
+> I mean I can go with this list for quite some time :)
+>
+> > Looking at the code, that seems to be how p2pdma
+> > works today. The p2pdma provider does p2pdma_add_resource() on a chunk
+> > of its memory, and the genalloc allocates memory from that chunk?
+>
+> Well this is how it works for NVMe, that doesn't mean this way works for
+> GPUs or acceleration devices.
+>
 
-1. An initial intention was to remove intermediate data structures
-used only to pass parameters, and related 'kmalloc()/kfree()' calls
-used to manage these structures.
+Thanks Christian, yes, I misunderstood how this works and I apologize
+for that. From reading the p2pdma interface it looked to me like it
+takes a buffer as input and goes ahead and allocates the struct pages
+for it and exports them as a provider. As you and Jason have
+repeatedly tried to explain to me this bit is NVMe specific and as
+Jason puts it it is a "big ask to P2P enable any of the DRM drivers".
 
-2. Why not use the common cleanup function for all type of frames?
-Since the type is always known (it's recorded in 'struct txq_entry_t'),
-cleanup function may call 'dev_kfree_skb()' or 'kfree()' for plain
-buffers. This also shrinks 'struct txq_entry_t' by one pointer field.
+I am facing some logistical issues as well. My use case requires NIC
+with special features, and even getting access to the appropriate
+hardware may be an issue for me.
 
-3. IMHO it makes sense to make 'struct txq_entry_t' as small as
-possible. To avoid the redundancy (of storing 'skb' nearby to raw
-buffer and its size) for WILC_NET_PKT frames, it's possible to use
-a union, e.g.:
+I guess the remaining option not fully explored is the idea of getting
+the networking stack to consume the scatterlist that
+dma_buf_map_attachment() provides for the device memory. The very
+rough approach I have in mind (for the RX path) is:
 
-struct txq_entry_t {
-        int type;
-	...
-        union {
-                /* Used by WILC_NET_PKT entries */
-                struct sk_buff *skb;
-                /* Used by WILC_MGMT_PKT and WILC_CFG_PKT entries */
-                struct {
-                        u8 *buffer;
-                        u32 size;
-                } data;
-        } u;
-        ...
-};
+1. Some uapi that binds a dmabuf to an RX queue. It will do a
+dma_buf_map_attachment() and get the sg table.
 
-but this will require some wrappers to access frame data and size,
-e.g.:
+2. We need to feed the scratterlist entries to some allocator that
+will chunk it up into pieces that can be allocated by the NIC for
+incoming traffic. I'm thinking genalloc may work for this as-is, but I
+may need to add one or use something else if I run into some issue.
 
-static inline u8 *txq_entry_data(struct txq_entry_t *tqe)
-{
-        return (tqe->type == WILC_NET_PKT
-                ? tqe->u.skb->data : tqe->u.data.buffer);
-}
+3. We can implement a memory_provider that allocates these chunks and
+wraps them in a struct new_abstraction (as David called it) and feeds
+those into the page pool.
 
-static inline u32 txq_entry_size(struct txq_entry_t *tqe)
-{
-        return (tqe->type == WILC_NET_PKT
-                ? tqe->u.skb->len : tqe->u.data.size);
-}
+4. The page pool would need to be able to process these struct
+new_abstraction alongside the struct pages it normally gets from
+providers. This is maybe the most complicated part, but looking at the
+page pool code it doesn't seem that big of a hurdle (but I have not
+tried a POC yet).
 
-I'm not sure that this makes sense just to shrink 'struct txq_entry_t'
-by one more pointer field.
+5. The drivers (I looked at mlx5) seem to avoid making any mm calls on
+the struct pages returned by the pool; the pool abstracts everything
+already. The changes to the drivers may be minimal..?
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- .../wireless/microchip/wilc1000/cfg80211.c    | 37 ++-------
- drivers/net/wireless/microchip/wilc1000/mon.c | 47 +++--------
- .../net/wireless/microchip/wilc1000/netdev.c  | 34 ++++----
- .../net/wireless/microchip/wilc1000/netdev.h  |  1 +
- .../net/wireless/microchip/wilc1000/wlan.c    | 80 +++++--------------
- .../net/wireless/microchip/wilc1000/wlan.h    | 25 ++----
- 6 files changed, 66 insertions(+), 158 deletions(-)
+6. We would need to add a new helper, skb_add_rx_new_abstraction_frag
+that creates a frag out of new_abstraction rather than a struct page.
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-index b545d93c6e37..7d244c6c1a92 100644
---- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-+++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-@@ -54,11 +54,6 @@ static const struct wiphy_wowlan_support wowlan_support = {
- };
- #endif
- 
--struct wilc_p2p_mgmt_data {
--	int size;
--	u8 *buff;
--};
--
- struct wilc_p2p_pub_act_frame {
- 	u8 category;
- 	u8 action;
-@@ -1086,14 +1081,6 @@ void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size)
- 	cfg80211_rx_mgmt(&priv->wdev, freq, 0, buff, size, 0);
- }
- 
--static void wilc_wfi_mgmt_tx_complete(void *priv, int status)
--{
--	struct wilc_p2p_mgmt_data *pv_data = priv;
--
--	kfree(pv_data->buff);
--	kfree(pv_data);
--}
--
- static void wilc_wfi_remain_on_channel_expired(void *data, u64 cookie)
- {
- 	struct wilc_vif *vif = data;
-@@ -1172,7 +1159,6 @@ static int mgmt_tx(struct wiphy *wiphy,
- 	const u8 *buf = params->buf;
- 	size_t len = params->len;
- 	const struct ieee80211_mgmt *mgmt;
--	struct wilc_p2p_mgmt_data *mgmt_tx;
- 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
- 	struct wilc_priv *priv = &vif->priv;
- 	struct host_if_drv *wfi_drv = priv->hif_drv;
-@@ -1181,6 +1167,7 @@ static int mgmt_tx(struct wiphy *wiphy,
- 	int ie_offset = offsetof(struct ieee80211_mgmt, u) + sizeof(*d);
- 	const u8 *vendor_ie;
- 	int ret = 0;
-+	u8 *copy;
- 
- 	*cookie = get_random_u32();
- 	priv->tx_cookie = *cookie;
-@@ -1189,21 +1176,12 @@ static int mgmt_tx(struct wiphy *wiphy,
- 	if (!ieee80211_is_mgmt(mgmt->frame_control))
- 		goto out;
- 
--	mgmt_tx = kmalloc(sizeof(*mgmt_tx), GFP_KERNEL);
--	if (!mgmt_tx) {
-+	copy = kmemdup(buf, len, GFP_KERNEL);
-+	if (!copy) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
- 
--	mgmt_tx->buff = kmemdup(buf, len, GFP_KERNEL);
--	if (!mgmt_tx->buff) {
--		ret = -ENOMEM;
--		kfree(mgmt_tx);
--		goto out;
--	}
--
--	mgmt_tx->size = len;
--
- 	if (ieee80211_is_probe_resp(mgmt->frame_control)) {
- 		wilc_set_mac_chnl_num(vif, chan->hw_value);
- 		vif->wilc->op_ch = chan->hw_value;
-@@ -1230,8 +1208,7 @@ static int mgmt_tx(struct wiphy *wiphy,
- 		goto out_set_timeout;
- 
- 	vendor_ie = cfg80211_find_vendor_ie(WLAN_OUI_WFA, WLAN_OUI_TYPE_WFA_P2P,
--					    mgmt_tx->buff + ie_offset,
--					    len - ie_offset);
-+					    copy + ie_offset, len - ie_offset);
- 	if (!vendor_ie)
- 		goto out_set_timeout;
- 
-@@ -1243,10 +1220,8 @@ static int mgmt_tx(struct wiphy *wiphy,
- 
- out_txq_add_pkt:
- 
--	wilc_wlan_txq_add_mgmt_pkt(wdev->netdev, mgmt_tx,
--				   mgmt_tx->buff, mgmt_tx->size,
--				   wilc_wfi_mgmt_tx_complete);
--
-+	if (wilc_wlan_txq_add_mgmt_pkt(wdev->netdev, copy, len) < 0)
-+		kfree(copy);
- out:
- 
- 	return ret;
-diff --git a/drivers/net/wireless/microchip/wilc1000/mon.c b/drivers/net/wireless/microchip/wilc1000/mon.c
-index 03b7229a0ff5..28c642af943d 100644
---- a/drivers/net/wireless/microchip/wilc1000/mon.c
-+++ b/drivers/net/wireless/microchip/wilc1000/mon.c
-@@ -95,48 +95,25 @@ void wilc_wfi_monitor_rx(struct net_device *mon_dev, u8 *buff, u32 size)
- 	netif_rx(skb);
- }
- 
--struct tx_complete_mon_data {
--	int size;
--	void *buff;
--};
--
--static void mgmt_tx_complete(void *priv, int status)
--{
--	struct tx_complete_mon_data *pv_data = priv;
--	/*
--	 * in case of fully hosting mode, the freeing will be done
--	 * in response to the cfg packet
--	 */
--	kfree(pv_data->buff);
--
--	kfree(pv_data);
--}
--
--static int mon_mgmt_tx(struct net_device *dev, const u8 *buf, size_t len)
-+static int mon_mgmt_tx(struct net_device *dev, const u8 *buf, u32 len)
- {
--	struct tx_complete_mon_data *mgmt_tx = NULL;
-+	u8 *copy;
-+	int ret = -EFAULT;
- 
- 	if (!dev)
--		return -EFAULT;
-+		return ret;
- 
- 	netif_stop_queue(dev);
--	mgmt_tx = kmalloc(sizeof(*mgmt_tx), GFP_ATOMIC);
--	if (!mgmt_tx)
--		return -ENOMEM;
--
--	mgmt_tx->buff = kmemdup(buf, len, GFP_ATOMIC);
--	if (!mgmt_tx->buff) {
--		kfree(mgmt_tx);
--		return -ENOMEM;
-+	copy = kmemdup(buf, len, GFP_ATOMIC);
-+	if (!copy) {
-+		ret = -ENOMEM;
-+	} else {
-+		if (wilc_wlan_txq_add_mgmt_pkt(dev, copy, len) < 0)
-+			kfree(copy);
-+		ret = 0;
- 	}
--
--	mgmt_tx->size = len;
--
--	wilc_wlan_txq_add_mgmt_pkt(dev, mgmt_tx, mgmt_tx->buff, mgmt_tx->size,
--				   mgmt_tx_complete);
--
- 	netif_wake_queue(dev);
--	return 0;
-+	return ret;
- }
- 
- static netdev_tx_t wilc_wfi_mon_xmit(struct sk_buff *skb,
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index e9f59de31b0b..82143d4d16e1 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -713,19 +713,28 @@ static void wilc_set_multicast_list(struct net_device *dev)
- 		kfree(mc_list);
- }
- 
--static void wilc_tx_complete(void *priv, int status)
-+void wilc_tx_complete(struct txq_entry_t *tqe)
- {
--	struct tx_complete_data *pv_data = priv;
--
--	dev_kfree_skb(pv_data->skb);
--	kfree(pv_data);
-+	switch (tqe->type) {
-+	case WILC_NET_PKT:
-+		dev_kfree_skb(tqe->skb);
-+		break;
-+	case WILC_MGMT_PKT:
-+		kfree(tqe->buffer);
-+		break;
-+	case WILC_CFG_PKT:
-+		/* nothing */
-+		break;
-+	default:
-+		netdev_err(tqe->vif->ndev, "bad packet type %d\n", tqe->type);
-+		break;
-+	}
- }
- 
- netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
- {
- 	struct wilc_vif *vif = netdev_priv(ndev);
- 	struct wilc *wilc = vif->wilc;
--	struct tx_complete_data *tx_data = NULL;
- 	int queue_count;
- 
- 	if (skb->dev != ndev) {
-@@ -734,22 +743,15 @@ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
- 		return NETDEV_TX_OK;
- 	}
- 
--	tx_data = kmalloc(sizeof(*tx_data), GFP_ATOMIC);
--	if (!tx_data) {
-+	queue_count = wilc_wlan_txq_add_net_pkt(ndev, skb);
-+	if (queue_count < 0) {
- 		dev_kfree_skb(skb);
- 		netif_wake_queue(ndev);
- 		return NETDEV_TX_OK;
- 	}
- 
--	tx_data->buff = skb->data;
--	tx_data->size = skb->len;
--	tx_data->skb  = skb;
--
- 	vif->netstats.tx_packets++;
--	vif->netstats.tx_bytes += tx_data->size;
--	queue_count = wilc_wlan_txq_add_net_pkt(ndev, tx_data,
--						tx_data->buff, tx_data->size,
--						wilc_tx_complete);
-+	vif->netstats.tx_bytes += skb->len;
- 
- 	if (queue_count > FLOW_CONTROL_UPPER_THRESHOLD) {
- 		int srcu_idx;
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
-index bb1a315a7b7e..b3ba87bd3581 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.h
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
-@@ -277,6 +277,7 @@ struct wilc_wfi_mon_priv {
- 	struct net_device *real_ndev;
- };
- 
-+void wilc_tx_complete(struct txq_entry_t *tqe);
- void wilc_frmw_to_host(struct wilc *wilc, u8 *buff, u32 size, u32 pkt_offset);
- void wilc_mac_indicate(struct wilc *wilc);
- void wilc_netdev_cleanup(struct wilc *wilc);
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 58bbf50081e4..d594178d05d0 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -219,10 +219,7 @@ static void wilc_wlan_txq_filter_dup_tcp_ack(struct net_device *dev)
- 			tqe = f->pending_acks[i].txqe;
- 			if (tqe) {
- 				wilc_wlan_txq_remove(wilc, tqe->q_num, tqe);
--				tqe->status = 1;
--				if (tqe->tx_complete_func)
--					tqe->tx_complete_func(tqe->priv,
--							      tqe->status);
-+				wilc_tx_complete(tqe);
- 				kfree(tqe);
- 				dropped++;
- 			}
-@@ -272,8 +269,6 @@ static int wilc_wlan_txq_add_cfg_pkt(struct wilc_vif *vif, u8 *buffer,
- 	tqe->type = WILC_CFG_PKT;
- 	tqe->buffer = buffer;
- 	tqe->buffer_size = buffer_size;
--	tqe->tx_complete_func = NULL;
--	tqe->priv = NULL;
- 	tqe->q_num = AC_VO_Q;
- 	tqe->ack_idx = NOT_TCP_ACK;
- 	tqe->vif = vif;
-@@ -410,45 +405,30 @@ static inline u8 ac_change(struct wilc *wilc, u8 *ac)
- 	return 1;
- }
- 
--int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
--			      struct tx_complete_data *tx_data, u8 *buffer,
--			      u32 buffer_size,
--			      void (*tx_complete_fn)(void *, int))
-+int wilc_wlan_txq_add_net_pkt(struct net_device *dev, struct sk_buff *skb)
- {
- 	struct txq_entry_t *tqe;
- 	struct wilc_vif *vif = netdev_priv(dev);
--	struct wilc *wilc;
-+	struct wilc *wilc = vif->wilc;
- 	u8 q_num;
- 
--	wilc = vif->wilc;
--
--	if (wilc->quit) {
--		tx_complete_fn(tx_data, 0);
--		return 0;
--	}
--
--	if (!wilc->initialized) {
--		tx_complete_fn(tx_data, 0);
--		return 0;
--	}
-+	if (wilc->quit || !wilc->initialized)
-+		return -1;
- 
- 	tqe = kmalloc(sizeof(*tqe), GFP_ATOMIC);
-+	if (!tqe)
-+		return -1;
- 
--	if (!tqe) {
--		tx_complete_fn(tx_data, 0);
--		return 0;
--	}
- 	tqe->type = WILC_NET_PKT;
--	tqe->buffer = buffer;
--	tqe->buffer_size = buffer_size;
--	tqe->tx_complete_func = tx_complete_fn;
--	tqe->priv = tx_data;
-+	tqe->skb = skb;
-+	tqe->buffer = skb->data;
-+	tqe->buffer_size = skb->len;
- 	tqe->vif = vif;
- 
--	q_num = ac_classify(wilc, tx_data->skb);
-+	q_num = ac_classify(wilc, skb);
- 	tqe->q_num = q_num;
- 	if (ac_change(wilc, &q_num)) {
--		tx_complete_fn(tx_data, 0);
-+		wilc_tx_complete(tqe);
- 		kfree(tqe);
- 		return 0;
- 	}
-@@ -459,43 +439,30 @@ int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
- 			tcp_process(dev, tqe);
- 		wilc_wlan_txq_add_to_tail(dev, q_num, tqe);
- 	} else {
--		tx_complete_fn(tx_data, 0);
-+		wilc_tx_complete(tqe);
- 		kfree(tqe);
- 	}
- 
- 	return wilc->txq_entries;
- }
- 
--int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buffer,
--			       u32 buffer_size,
--			       void (*tx_complete_fn)(void *, int))
-+int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, u8 *buffer,
-+			       u32 buffer_size)
- {
- 	struct txq_entry_t *tqe;
- 	struct wilc_vif *vif = netdev_priv(dev);
--	struct wilc *wilc;
--
--	wilc = vif->wilc;
-+	struct wilc *wilc = vif->wilc;
- 
--	if (wilc->quit) {
--		tx_complete_fn(priv, 0);
--		return 0;
--	}
-+	if (wilc->quit || !wilc->initialized)
-+		return -1;
- 
--	if (!wilc->initialized) {
--		tx_complete_fn(priv, 0);
--		return 0;
--	}
- 	tqe = kmalloc(sizeof(*tqe), GFP_ATOMIC);
-+	if (!tqe)
-+		return -1;
- 
--	if (!tqe) {
--		tx_complete_fn(priv, 0);
--		return 0;
--	}
- 	tqe->type = WILC_MGMT_PKT;
- 	tqe->buffer = buffer;
- 	tqe->buffer_size = buffer_size;
--	tqe->tx_complete_func = tx_complete_fn;
--	tqe->priv = priv;
- 	tqe->q_num = AC_BE_Q;
- 	tqe->ack_idx = NOT_TCP_ACK;
- 	tqe->vif = vif;
-@@ -916,9 +883,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- 		       tqe->buffer, tqe->buffer_size);
- 		offset += vmm_sz;
- 		i++;
--		tqe->status = 1;
--		if (tqe->tx_complete_func)
--			tqe->tx_complete_func(tqe->priv, tqe->status);
-+		wilc_tx_complete(tqe);
- 		if (tqe->ack_idx != NOT_TCP_ACK &&
- 		    tqe->ack_idx < MAX_PENDING_ACKS)
- 			vif->ack_filter.pending_acks[tqe->ack_idx].txqe = NULL;
-@@ -1243,8 +1208,7 @@ void wilc_wlan_cleanup(struct net_device *dev)
- 	wilc->quit = 1;
- 	for (ac = 0; ac < NQUEUES; ac++) {
- 		while ((tqe = wilc_wlan_txq_remove_from_head(wilc, ac))) {
--			if (tqe->tx_complete_func)
--				tqe->tx_complete_func(tqe->priv, 0);
-+			wilc_tx_complete(tqe);
- 			kfree(tqe);
- 		}
- 	}
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
-index a72cd5cac81d..f5ba836c595a 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.h
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -323,15 +323,13 @@ enum ip_pkt_priority {
- 
- struct txq_entry_t {
- 	struct list_head list;
--	int type;
-+	u8 type;
- 	u8 q_num;
--	int ack_idx;
-+	s16 ack_idx;
-+	struct sk_buff *skb;
- 	u8 *buffer;
--	int buffer_size;
--	void *priv;
--	int status;
-+	u32 buffer_size;
- 	struct wilc_vif *vif;
--	void (*tx_complete_func)(void *priv, int status);
- };
- 
- struct txq_fw_recv_queue_stat {
-@@ -378,12 +376,6 @@ struct wilc_hif_func {
- 
- #define WILC_MAX_CFG_FRAME_SIZE		1468
- 
--struct tx_complete_data {
--	int size;
--	void *buff;
--	struct sk_buff *skb;
--};
--
- struct wilc_cfg_cmd_hdr {
- 	u8 cmd_type;
- 	u8 seq_no;
-@@ -407,10 +399,7 @@ int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
- 				u32 buffer_size);
- int wilc_wlan_start(struct wilc *wilc);
- int wilc_wlan_stop(struct wilc *wilc, struct wilc_vif *vif);
--int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
--			      struct tx_complete_data *tx_data, u8 *buffer,
--			      u32 buffer_size,
--			      void (*tx_complete_fn)(void *, int));
-+int wilc_wlan_txq_add_net_pkt(struct net_device *dev, struct sk_buff *skb);
- int wilc_wlan_handle_txq(struct wilc *wl, u32 *txq_count);
- void wilc_handle_isr(struct wilc *wilc);
- void wilc_wlan_cleanup(struct net_device *dev);
-@@ -418,8 +407,8 @@ int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer,
- 		      u32 buffer_size, int commit, u32 drv_handler);
- int wilc_wlan_cfg_get(struct wilc_vif *vif, int start, u16 wid, int commit,
- 		      u32 drv_handler);
--int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buffer,
--			       u32 buffer_size, void (*func)(void *, int));
-+int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, u8 *buffer,
-+			       u32 buffer_size);
- void wilc_enable_tcp_ack_filter(struct wilc_vif *vif, bool value);
- int wilc_wlan_get_num_conn_ifcs(struct wilc *wilc);
- netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *dev);
--- 
-2.41.0
+Once the skb frags with struct new_abstraction are in the TCP stack,
+they will need some special handling in code accessing the frags. But
+my RFC already addressed that somewhat because the frags were
+inaccessible in that case. In this case the frags will be both
+inaccessible and will not be struct pages at all (things like
+get_page() will not work), so more special handling will be required,
+maybe.
 
+I imagine the TX path would be considerably less complicated because
+the allocator and page pool are not involved (I think).
+
+Anyone see any glaring issues with this approach?
+
+> Regards,
+> Christian.
+>
+> >
+> > The actual issues I see with this approach are:
+> >
+> > 1. There is no way for the p2pdma provider to relinquish back the
+> > memory it has provided via pci_p2pdma_add_resource(), in the case that
+> > the user crashed or would like to free the GPU buffer. I would need to
+> > add a pci_p2pdma_remove_resource(). Would that be  acceptable?
+> >
+> > 2. The p2pdma semantics seem to be global to the pci device. I.e., 1
+> > GPU can export 1 p2pdma resource at a time (the way I'm reading the
+> > API). This is not usable for my use case. I would need multiple users
+> > to be able to use the uapi in step #1 simultaneously. I would need the
+> > same pci device to export different p2pdma resources simultaneously
+> > and the p2pdma clients would need to be able to import some of the
+> > resources. I would likely need to add an api like this:
+> >
+> > diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
+> > index 8318a97c9c61..c9d754713fdc 100644
+> > --- a/include/linux/pci-p2pdma.h
+> > +++ b/include/linux/pci-p2pdma.h
+> > @@ -19,6 +19,33 @@ struct scatterlist;
+> >   #ifdef CONFIG_PCI_P2PDMA
+> >   int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t siz=
+e,
+> >                  u64 offset);
+> > +
+> > +/* Adds a resource similar to pci_p2pdma_add_resource, and returns a f=
+ile
+> > + * handle referring to this resource. Multiple such resources can be e=
+xported
+> > + * by the same pci device.
+> > + */
+> > +struct file *pci_p2pdma_add_resource_with_handle(struct pci_dev *pdev,
+> > +               int bar,
+> > +               size_t size,
+> > +               u64 offset);
+> > +
+> > +/* Remove a resource added via pci_p2pdma_add_resource_with_handle() *=
+/
+> > +struct file *pci_p2pdma_remove_resource_with_handle(
+> > +               struct file *p2pdma_resource_file);
+> > +
+> > +/* Allocates memory from a resource created using
+> > + * pci_p2pdma_add_resource_with_handle()
+> > + */
+> > +void *pci_alloc_p2pmem_from_handle(struct file *p2pdma_resource_file,
+> > +               size_t size);
+> > +
+> > +/* Frees p2pmem to a resource created using
+> > + * pci_p2pdma_add_resource_with_handle()
+> > + */
+> > +void pci_free_p2pmem_to_handle(struct pci_dev *p2pdma_resource_file,
+> > +               void *addr,
+> > +               size_t size);
+> > +
+> >
+> > Looking for feedback from anyone knowledgeable, but the p2pdma
+> > maintainers as well if possibl.
+> >
+> >>> 2. The NIC driver would be the p2pdma client and orchestrator. It
+> >>> would expose a user API which binds an rxq to a pci device. Prior to
+> >>> the bind the user API would check that the pci device has published
+> >>> p2p memory (pci_has_p2pmem()), and check the the p2p mem is accessibl=
+e
+> >>> to the driver (pci_p2pdma_distance() I think), etc.
+> >> This doesn't fit the programming model for GPUs at all. You don't want
+> >> to get packets landing in random GPU memory that a kernel side
+> >> allocator selects, you want packets landing in GPU memory owned by a
+> >> specific process that owns the TCP connection.
+> >>
+> > I think this comment is maybe a side effect of the misunderstanding.
+> > In the proposal, the user allocates a GPU buffer using the API in step
+> > #1, and then binds the memory to the NIC rx queue using the API
+> > specified in step #2. We use flow steering & RSS to steer this user's
+> > TCP traffic to the buffer owned by them.
+> >
+> >> This is why DMABUF is used here as it gives a handle to the GPU
+> >> memory. What you want is to get the P2P pages either directly from the
+> >> DMABUF or via pin_user_pages() on the DMABUF's mmap.
+> >>
+> >>> AFAICT, all the concerns brought up in this thread are sidestepped by
+> >>> using p2pdma. I need not allocate struct pages in the core dma-buf
+> >>> code anymore (or anywhere), and I need not allocate pgmaps. I would
+> >>> just re-use the p2pdma support.
+> >> Well, as I said it is going to be a big ask to P2P enable any of the
+> >> DRM drivers.
+> >>
+> >> And you still have the netmem vs zone_device struct page conflict to
+> >> figure out
+> >>
+> >> But it is alot closer to reasonable than this RFC.
+> >>
+> >> Jason
+>
+
+
+--=20
+Thanks,
+Mina
