@@ -2,54 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B2057544D9
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 00:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E46B67544E5
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 00:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229490AbjGNWMp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 18:12:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55752 "EHLO
+        id S230043AbjGNWRN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jul 2023 18:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229891AbjGNWMo (ORCPT
+        with ESMTP id S229986AbjGNWRM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 18:12:44 -0400
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8030E35AE
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 15:12:39 -0700 (PDT)
-Received: by mail-io1-xd29.google.com with SMTP id ca18e2360f4ac-786f25bcb40so102539639f.3
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 15:12:39 -0700 (PDT)
+        Fri, 14 Jul 2023 18:17:12 -0400
+Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B062726
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 15:17:10 -0700 (PDT)
+Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-1b06777596cso1980283fac.2
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 15:17:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1689372759; x=1691964759;
+        d=chromium.org; s=google; t=1689373029; x=1691965029;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ikwQGi9IXlkGeo4HUQH8f09/gzobjMF0voFNfM49Sww=;
-        b=S1MpqZ1ZMss8lTp6KfBes4FPGzsNj63QZ+hQqRV8N87fyQklTURbZdp1/yOGEFl+If
-         zLl21Al+xQmIF0gHbgA8FXkQ0Lp1mKdjXLL4EEhwTqk97NK6V/UpJqUe0abC2cUfX2zS
-         Cj0n3BpTpDww5r+V5O+B9m42vK6gM11/YDSOw=
+        bh=qdzHr07zTGluOEPoHrNDfSU95b5L29PdHHrd1vv/M7g=;
+        b=abj0MkO8lcO9upHhziT/xhOgnHzY2pYWq7mFKHg1wbTaYYs3KdwPF4Ub8GturcaKbY
+         66FWrW/QFPBAiU/UFxQfLOmlWpffyaJSsZSX48mBmuU3wz0GQJsxoevr5HW9FMXq5Gyi
+         N+B1038jDI8I0oARmHCPnUoWPBRVvQCUbbDw8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689372759; x=1691964759;
+        d=1e100.net; s=20221208; t=1689373029; x=1691965029;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ikwQGi9IXlkGeo4HUQH8f09/gzobjMF0voFNfM49Sww=;
-        b=SCZMlCY7XmHtntJ20tA64vSvT7nitKe/Z5cW+C1IQ/h7TEyPt5/4oNU3v27UJ+stnc
-         l4LuHM8NG1cdsHNdG4PlauPHLiBAvPaZid6WYkP09cTdtL4GUYUYvGmVqUjEfJgx899p
-         eggLhgXz0dQXK3XoW+keGEcWlizScQzZwTXSmmr0xRxsQbUAMl+7mCXtjKv4+AOZ9Hmt
-         9Nhh74HeI9qS8y2JMnK/EDyRksMWFOA1XBJqe8AQtq9I9AoncXA1TYMZ48jQb0cUc53k
-         hThbphidfZSa2sicRARXSBTtWjL3zj/K5m/aXLxbHhbUVTe2aejqz6232VaehgAAwO6H
-         Nl9w==
-X-Gm-Message-State: ABy/qLa+VNrjBcu+KRZR/wL41NxAJ9wRY66WLGGx8q1jEsff5shq+S+O
-        QD27nZAAQKdr6J0dMMkjCpKtWzMmI8u+qFmj7b2z7Q==
-X-Google-Smtp-Source: APBJJlHxYBsV/ay/4NzodEfY8v/wpwnSIpg4olIWppigc5a7E+NF93pSrJVs2yqxzwlLO5FbdFH/R9vqQ06SWPA/iX4=
-X-Received: by 2002:a5e:dc06:0:b0:786:cd9b:1cd7 with SMTP id
- b6-20020a5edc06000000b00786cd9b1cd7mr6383634iok.9.1689372758902; Fri, 14 Jul
- 2023 15:12:38 -0700 (PDT)
+        bh=qdzHr07zTGluOEPoHrNDfSU95b5L29PdHHrd1vv/M7g=;
+        b=SELbV0pH/HGBrclkKTHF+BwRu1iNmB8/LiRq5CdKhry88IYCZTLyi4P8LCXRo3yLpq
+         M9MToUwchPYnkTq9k47UtJx1Vc4D+JD4noR8idPlEzyRcHd6N9wvyrV31/3ybz1KlkuS
+         ocHNdTGm9kSMnLv4m9tXznwOhjbFIWlOmfAIWqhsJUQc+fZSGVF8XFrztXci/ECUBZBy
+         2Cz8bpCFDDsCYp+oX8VbNP5zwpT0vDIxlj+6UBpajigeylARQUluNJmaY6xhEMrnwAqL
+         9svpInRe2zn1hTV14hiTRADYRDy/yBerprQODdqLND/SJ31IdXAntCBcjlCtkEq2y5aD
+         cOPA==
+X-Gm-Message-State: ABy/qLYlT6svW+tVDTtDdC3IfBtHIBixuxAp/lDNdvYuRB/69fLd2iBa
+        lqivSQxWDQtPdX8wSwj1kg05EtfK3H/UJX9eDq7tjA==
+X-Google-Smtp-Source: APBJJlF+444Rtf5lv/i1FfrEOMuYg/0oSCGX92ogiIgjyKKypfPbtbiXcWR15nGp46E9p7ad2yllRJQXa/JNva2tC4Y=
+X-Received: by 2002:a05:6871:720:b0:1b7:30eb:9055 with SMTP id
+ f32-20020a056871072000b001b730eb9055mr7023268oap.49.1689373029563; Fri, 14
+ Jul 2023 15:17:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230714120222.3920248-1-pinkperfect2021@gmail.com>
 In-Reply-To: <20230714120222.3920248-1-pinkperfect2021@gmail.com>
-From:   Abhishek Kumar <kuabhs@chromium.org>
-Date:   Fri, 14 Jul 2023 15:12:27 -0700
-Message-ID: <CACTWRwuhkz60t8TSy6xvPjeS5BGp9f5H_o=rf42yUUcrY5m5eA@mail.gmail.com>
+From:   Matthew Wang <matthewmwang@chromium.org>
+Date:   Sat, 15 Jul 2023 00:16:58 +0200
+Message-ID: <CABRiz0q8ujbAvYJCQFtx4gvxG4H_FGM5TZWdWULX0UpoZhH=uQ@mail.gmail.com>
 Subject: Re: [PATCH v5] wifi: mwifiex: Fix OOB and integer underflow when rx packets
 To:     Polaris Pi <pinkperfect2021@gmail.com>
 Cc:     kuba@kernel.org, amitkarwar@gmail.com, kvalo@kernel.org,
@@ -59,18 +59,16 @@ Cc:     kuba@kernel.org, amitkarwar@gmail.com, kvalo@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Left some comments around the formatting. Did you run checkpatch.pl
-before pushing the change , if not please run.
-On Fri, Jul 14, 2023 at 5:02=E2=80=AFAM Polaris Pi <pinkperfect2021@gmail.c=
+On Fri, Jul 14, 2023 at 2:02=E2=80=AFPM Polaris Pi <pinkperfect2021@gmail.c=
 om> wrote:
 >
 > Make sure mwifiex_process_mgmt_packet and its callers
@@ -101,7 +99,6 @@ ate *priv,
 >
 > -       if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
 > +       if ((rx_pkt_offset + rx_pkt_length) > (u16)skb->len ||
-formatting issue, space after (u16)
 > +           skb->len - rx_pkt_offset < sizeof(*rx_pkt_hdr)) {
 >                 mwifiex_dbg(adapter, ERROR,
 >                             "wrong rx packet: len=3D%d, rx_pkt_offset=3D%=
@@ -121,6 +118,12 @@ offset);
 > +       if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len ||
 > +           skb->len - le16_to_cpu(uap_rx_pd->rx_pkt_offset) < sizeof(*rx=
 _pkt_hdr)) {
+
+The second condition is strictly a subset of the first. Can we just make th=
+is:
+
+le16_to_cpu(uap_rx_pd->rx_pkt_offset) + sizeof(*rx_pkt_hdr) > skb->len
+
 > +               mwifiex_dbg(adapter, ERROR,
 > +                           "wrong rx packet offset: len=3D%d, offset=3D%=
 d\n",
@@ -150,11 +153,6 @@ priv,
 > +               mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length"=
 );
 > +               return -1;
-why return -1 instead of returning appropriate error code , may be EMSGSIZE
-
-Thanks
-Abhishek
-
 > +       }
 > +
 >         ieee_hdr =3D (void *)skb->data;
