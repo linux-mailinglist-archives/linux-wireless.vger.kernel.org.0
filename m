@@ -2,141 +2,565 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE03753A4A
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 14:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56189753D4F
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 16:28:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235370AbjGNMCi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 08:02:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54476 "EHLO
+        id S235494AbjGNO2R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jul 2023 10:28:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230101AbjGNMCi (ORCPT
+        with ESMTP id S235406AbjGNO2Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 08:02:38 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CDF211C;
-        Fri, 14 Jul 2023 05:02:37 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1b89600a37fso10977425ad.2;
-        Fri, 14 Jul 2023 05:02:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689336156; x=1691928156;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=m+OdrVc56e5RTuGTUrMy61ven4IlP20DP2UghO8h8RM=;
-        b=AzIMpdwlDQJ2KUyfUMnKMVov3Csi/ihnnmuI0jugRRL7/8oVFPoLGWdjUP01q2sK2m
-         pX3ft9HdvKv0TE5/hErX3pAUJC6j7X7a25fbPHi7aLH4lselSMKarrKHxk36Z5ZDVoJM
-         h28wVe/zIOggYsHjijzc5wGfGxeGJuLnzS7QPK0Vw7rtGfJxhAHn515rDI6gJObO+qS2
-         TfbYFuybWVsgK7jIMDFdoXLQlwujLPCKrUpjEh25asmAnb2sb/ct7MKbVdrFaXESprWN
-         c5Zbi/rDQamWr7SdQVoc4RMzM5+5Ah87qrlrDDNewZ/q1KkKwKDdRvmNwUPvF4i/Tk+A
-         S4Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689336156; x=1691928156;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=m+OdrVc56e5RTuGTUrMy61ven4IlP20DP2UghO8h8RM=;
-        b=GD50c2svbmNOT1CaKMPebHQh0N0fVzPlbuPTe7PaVFyRZ34W5rLsYLGAfuTn9jB7Nl
-         EBjasOoAxGVRfP9Gmm9vF9yzbFaZ8nkrXl0T4tQ0r/twANNkR6GD/b+iLg8vYkRCdp+K
-         FbW8ziF5tFXpLZ028R8Wzwdl/5rOzTq6f7mEbHvGUbfb71cBh71mbXH+gfON6fYnuC+3
-         D/kZzHKsgdqnW9W6hzFzy3ETS79fRgW636BIFinDqFgnHS+CuL0QwU1WXgLpGlt45MyV
-         RmTOIvUCi4zzUezTvqPKjVEpLuZnpEcQnmuWvGOUgRQitCQUQzkStzCKybqJbGCw5k25
-         InQA==
-X-Gm-Message-State: ABy/qLZCi71uNVuTauaZkEgyXOJdgHzQRwWGrT+kxnHAaDEmFUg1CR1+
-        YsGJG+NFd1hFXSEhQx772rU=
-X-Google-Smtp-Source: APBJJlHej3x4nD/U+DIesYA9vD9DFRscADJJ/Jdwi47liaBoBDxN+tgO6LVu/jyQivZn0kJjqnPsyQ==
-X-Received: by 2002:a17:902:b285:b0:1b8:af5e:853f with SMTP id u5-20020a170902b28500b001b8af5e853fmr3334432plr.24.1689336156350;
-        Fri, 14 Jul 2023 05:02:36 -0700 (PDT)
-Received: from localhost.localdomain ([221.231.171.18])
-        by smtp.gmail.com with ESMTPSA id c9-20020a170902c1c900b001b567bbe82dsm7634350plc.150.2023.07.14.05.02.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jul 2023 05:02:35 -0700 (PDT)
-From:   Polaris Pi <pinkperfect2021@gmail.com>
-To:     kuba@kernel.org, amitkarwar@gmail.com, kvalo@kernel.org,
-        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
-        huxinming820@gmail.com
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Polaris Pi <pinkperfect2021@gmail.com>
-Subject: [PATCH v5] wifi: mwifiex: Fix OOB and integer underflow when rx packets
-Date:   Fri, 14 Jul 2023 12:02:22 +0000
-Message-Id: <20230714120222.3920248-1-pinkperfect2021@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 14 Jul 2023 10:28:16 -0400
+Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 166B435AF
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jul 2023 07:27:57 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:3c81:0:640:d488:0])
+        by forward100c.mail.yandex.net (Yandex) with ESMTP id 78B10600CD;
+        Fri, 14 Jul 2023 17:27:55 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id sRdbPWBWwmI0-YpsZkFwG;
+        Fri, 14 Jul 2023 17:27:54 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1689344874;
+        bh=ZmvuW2wl1WF9v+E7zUFpUtgvX+xRtxT5cBTec1PSPRA=;
+        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+        b=dpaad0sJDY+TFX7O2VWW3tW2nnr+MruGQDe4XYl16/kGU+nYkqLnlsHot50JEJVWE
+         gwjUiJ3FH/7G7D4qliTFYgdTMi+DPyTGs8e+P5gXPE5g8pt0zmyx9/mmTfzVyOjFCP
+         jrAAi6qX7ZLKjm291DCFP9xqapabQ53qQ8V9C0Ag=
+Authentication-Results: mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Ajay.Kathat@microchip.com
+Cc:     Amisha.Patel@microchip.com, Kalle Valo <kvalo@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: wilc1000: simplify and cleanup TX paths
+Date:   Fri, 14 Jul 2023 17:27:09 +0300
+Message-ID: <20230714142726.129126-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <df4db7fe-b51d-5eba-dd9d-527753903eac@microchip.com>
+References: <df4db7fe-b51d-5eba-dd9d-527753903eac@microchip.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Make sure mwifiex_process_mgmt_packet and its callers
-mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet
-not out-of-bounds access the skb->data buffer.
+Not a formal description but some thoughts on Ajay's review:
 
-Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80211")
-Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
----
-V5: Follow chromeos comments: preserve the original flow of mwifiex_process_uap_rx_packet
----
- drivers/net/wireless/marvell/mwifiex/sta_rx.c   |  3 ++-
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 11 +++++++++++
- drivers/net/wireless/marvell/mwifiex/util.c     |  5 +++++
- 3 files changed, 18 insertions(+), 1 deletion(-)
+1. An initial intention was to remove intermediate data structures
+used only to pass parameters, and related 'kmalloc()/kfree()' calls
+used to manage these structures.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index 13659b02ba88..88aaec645291 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -194,7 +194,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_private *priv,
+2. Why not use the common cleanup function for all type of frames?
+Since the type is always known (it's recorded in 'struct txq_entry_t'),
+cleanup function may call 'dev_kfree_skb()' or 'kfree()' for plain
+buffers. This also shrinks 'struct txq_entry_t' by one pointer field.
+
+3. IMHO it makes sense to make 'struct txq_entry_t' as small as
+possible. To avoid the redundancy (of storing 'skb' nearby to raw
+buffer and its size) for WILC_NET_PKT frames, it's possible to use
+a union, e.g.:
+
+struct txq_entry_t {
+        int type;
+	...
+        union {
+                /* Used by WILC_NET_PKT entries */
+                struct sk_buff *skb;
+                /* Used by WILC_MGMT_PKT and WILC_CFG_PKT entries */
+                struct {
+                        u8 *buffer;
+                        u32 size;
+                } data;
+        } u;
+        ...
+};
+
+but this will require some wrappers to access frame data and size,
+e.g.:
+
+static inline u8 *txq_entry_data(struct txq_entry_t *tqe)
+{
+        return (tqe->type == WILC_NET_PKT
+                ? tqe->u.skb->data : tqe->u.data.buffer);
+}
+
+static inline u32 txq_entry_size(struct txq_entry_t *tqe)
+{
+        return (tqe->type == WILC_NET_PKT
+                ? tqe->u.skb->len : tqe->u.data.size);
+}
+
+I'm not sure that this makes sense just to shrink 'struct txq_entry_t'
+by one more pointer field.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ .../wireless/microchip/wilc1000/cfg80211.c    | 37 ++-------
+ drivers/net/wireless/microchip/wilc1000/mon.c | 47 +++--------
+ .../net/wireless/microchip/wilc1000/netdev.c  | 34 ++++----
+ .../net/wireless/microchip/wilc1000/netdev.h  |  1 +
+ .../net/wireless/microchip/wilc1000/wlan.c    | 80 +++++--------------
+ .../net/wireless/microchip/wilc1000/wlan.h    | 25 ++----
+ 6 files changed, 66 insertions(+), 158 deletions(-)
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+index b545d93c6e37..7d244c6c1a92 100644
+--- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
++++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+@@ -54,11 +54,6 @@ static const struct wiphy_wowlan_support wowlan_support = {
+ };
+ #endif
  
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
+-struct wilc_p2p_mgmt_data {
+-	int size;
+-	u8 *buff;
+-};
+-
+ struct wilc_p2p_pub_act_frame {
+ 	u8 category;
+ 	u8 action;
+@@ -1086,14 +1081,6 @@ void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size)
+ 	cfg80211_rx_mgmt(&priv->wdev, freq, 0, buff, size, 0);
+ }
  
--	if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
-+	if ((rx_pkt_offset + rx_pkt_length) > (u16)skb->len ||
-+	    skb->len - rx_pkt_offset < sizeof(*rx_pkt_hdr)) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
- 			    skb->len, rx_pkt_offset, rx_pkt_length);
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index e495f7eaea03..32f4626a4d76 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -367,6 +367,17 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_type = le16_to_cpu(uap_rx_pd->rx_pkt_type);
- 	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
+-static void wilc_wfi_mgmt_tx_complete(void *priv, int status)
+-{
+-	struct wilc_p2p_mgmt_data *pv_data = priv;
+-
+-	kfree(pv_data->buff);
+-	kfree(pv_data);
+-}
+-
+ static void wilc_wfi_remain_on_channel_expired(void *data, u64 cookie)
+ {
+ 	struct wilc_vif *vif = data;
+@@ -1172,7 +1159,6 @@ static int mgmt_tx(struct wiphy *wiphy,
+ 	const u8 *buf = params->buf;
+ 	size_t len = params->len;
+ 	const struct ieee80211_mgmt *mgmt;
+-	struct wilc_p2p_mgmt_data *mgmt_tx;
+ 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
+ 	struct wilc_priv *priv = &vif->priv;
+ 	struct host_if_drv *wfi_drv = priv->hif_drv;
+@@ -1181,6 +1167,7 @@ static int mgmt_tx(struct wiphy *wiphy,
+ 	int ie_offset = offsetof(struct ieee80211_mgmt, u) + sizeof(*d);
+ 	const u8 *vendor_ie;
+ 	int ret = 0;
++	u8 *copy;
  
-+	if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len ||
-+	    skb->len - le16_to_cpu(uap_rx_pd->rx_pkt_offset) < sizeof(*rx_pkt_hdr)) {
-+		mwifiex_dbg(adapter, ERROR,
-+			    "wrong rx packet offset: len=%d, offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+
-+		dev_kfree_skb_any(skb);
-+		return 0;
+ 	*cookie = get_random_u32();
+ 	priv->tx_cookie = *cookie;
+@@ -1189,21 +1176,12 @@ static int mgmt_tx(struct wiphy *wiphy,
+ 	if (!ieee80211_is_mgmt(mgmt->frame_control))
+ 		goto out;
+ 
+-	mgmt_tx = kmalloc(sizeof(*mgmt_tx), GFP_KERNEL);
+-	if (!mgmt_tx) {
++	copy = kmemdup(buf, len, GFP_KERNEL);
++	if (!copy) {
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+ 
+-	mgmt_tx->buff = kmemdup(buf, len, GFP_KERNEL);
+-	if (!mgmt_tx->buff) {
+-		ret = -ENOMEM;
+-		kfree(mgmt_tx);
+-		goto out;
+-	}
+-
+-	mgmt_tx->size = len;
+-
+ 	if (ieee80211_is_probe_resp(mgmt->frame_control)) {
+ 		wilc_set_mac_chnl_num(vif, chan->hw_value);
+ 		vif->wilc->op_ch = chan->hw_value;
+@@ -1230,8 +1208,7 @@ static int mgmt_tx(struct wiphy *wiphy,
+ 		goto out_set_timeout;
+ 
+ 	vendor_ie = cfg80211_find_vendor_ie(WLAN_OUI_WFA, WLAN_OUI_TYPE_WFA_P2P,
+-					    mgmt_tx->buff + ie_offset,
+-					    len - ie_offset);
++					    copy + ie_offset, len - ie_offset);
+ 	if (!vendor_ie)
+ 		goto out_set_timeout;
+ 
+@@ -1243,10 +1220,8 @@ static int mgmt_tx(struct wiphy *wiphy,
+ 
+ out_txq_add_pkt:
+ 
+-	wilc_wlan_txq_add_mgmt_pkt(wdev->netdev, mgmt_tx,
+-				   mgmt_tx->buff, mgmt_tx->size,
+-				   wilc_wfi_mgmt_tx_complete);
+-
++	if (wilc_wlan_txq_add_mgmt_pkt(wdev->netdev, copy, len) < 0)
++		kfree(copy);
+ out:
+ 
+ 	return ret;
+diff --git a/drivers/net/wireless/microchip/wilc1000/mon.c b/drivers/net/wireless/microchip/wilc1000/mon.c
+index 03b7229a0ff5..28c642af943d 100644
+--- a/drivers/net/wireless/microchip/wilc1000/mon.c
++++ b/drivers/net/wireless/microchip/wilc1000/mon.c
+@@ -95,48 +95,25 @@ void wilc_wfi_monitor_rx(struct net_device *mon_dev, u8 *buff, u32 size)
+ 	netif_rx(skb);
+ }
+ 
+-struct tx_complete_mon_data {
+-	int size;
+-	void *buff;
+-};
+-
+-static void mgmt_tx_complete(void *priv, int status)
+-{
+-	struct tx_complete_mon_data *pv_data = priv;
+-	/*
+-	 * in case of fully hosting mode, the freeing will be done
+-	 * in response to the cfg packet
+-	 */
+-	kfree(pv_data->buff);
+-
+-	kfree(pv_data);
+-}
+-
+-static int mon_mgmt_tx(struct net_device *dev, const u8 *buf, size_t len)
++static int mon_mgmt_tx(struct net_device *dev, const u8 *buf, u32 len)
+ {
+-	struct tx_complete_mon_data *mgmt_tx = NULL;
++	u8 *copy;
++	int ret = -EFAULT;
+ 
+ 	if (!dev)
+-		return -EFAULT;
++		return ret;
+ 
+ 	netif_stop_queue(dev);
+-	mgmt_tx = kmalloc(sizeof(*mgmt_tx), GFP_ATOMIC);
+-	if (!mgmt_tx)
+-		return -ENOMEM;
+-
+-	mgmt_tx->buff = kmemdup(buf, len, GFP_ATOMIC);
+-	if (!mgmt_tx->buff) {
+-		kfree(mgmt_tx);
+-		return -ENOMEM;
++	copy = kmemdup(buf, len, GFP_ATOMIC);
++	if (!copy) {
++		ret = -ENOMEM;
++	} else {
++		if (wilc_wlan_txq_add_mgmt_pkt(dev, copy, len) < 0)
++			kfree(copy);
++		ret = 0;
+ 	}
+-
+-	mgmt_tx->size = len;
+-
+-	wilc_wlan_txq_add_mgmt_pkt(dev, mgmt_tx, mgmt_tx->buff, mgmt_tx->size,
+-				   mgmt_tx_complete);
+-
+ 	netif_wake_queue(dev);
+-	return 0;
++	return ret;
+ }
+ 
+ static netdev_tx_t wilc_wfi_mon_xmit(struct sk_buff *skb,
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
+index e9f59de31b0b..82143d4d16e1 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+@@ -713,19 +713,28 @@ static void wilc_set_multicast_list(struct net_device *dev)
+ 		kfree(mc_list);
+ }
+ 
+-static void wilc_tx_complete(void *priv, int status)
++void wilc_tx_complete(struct txq_entry_t *tqe)
+ {
+-	struct tx_complete_data *pv_data = priv;
+-
+-	dev_kfree_skb(pv_data->skb);
+-	kfree(pv_data);
++	switch (tqe->type) {
++	case WILC_NET_PKT:
++		dev_kfree_skb(tqe->skb);
++		break;
++	case WILC_MGMT_PKT:
++		kfree(tqe->buffer);
++		break;
++	case WILC_CFG_PKT:
++		/* nothing */
++		break;
++	default:
++		netdev_err(tqe->vif->ndev, "bad packet type %d\n", tqe->type);
++		break;
 +	}
-+
- 	ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
+ }
  
- 	if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
-index 94c2d219835d..31e1a82883e4 100644
---- a/drivers/net/wireless/marvell/mwifiex/util.c
-+++ b/drivers/net/wireless/marvell/mwifiex/util.c
-@@ -399,6 +399,11 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
+ {
+ 	struct wilc_vif *vif = netdev_priv(ndev);
+ 	struct wilc *wilc = vif->wilc;
+-	struct tx_complete_data *tx_data = NULL;
+ 	int queue_count;
  
- 	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
+ 	if (skb->dev != ndev) {
+@@ -734,22 +743,15 @@ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 		return NETDEV_TX_OK;
+ 	}
  
-+	if (pkt_len < sizeof(struct ieee80211_hdr) || skb->len < pkt_len) {
-+		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
+-	tx_data = kmalloc(sizeof(*tx_data), GFP_ATOMIC);
+-	if (!tx_data) {
++	queue_count = wilc_wlan_txq_add_net_pkt(ndev, skb);
++	if (queue_count < 0) {
+ 		dev_kfree_skb(skb);
+ 		netif_wake_queue(ndev);
+ 		return NETDEV_TX_OK;
+ 	}
+ 
+-	tx_data->buff = skb->data;
+-	tx_data->size = skb->len;
+-	tx_data->skb  = skb;
+-
+ 	vif->netstats.tx_packets++;
+-	vif->netstats.tx_bytes += tx_data->size;
+-	queue_count = wilc_wlan_txq_add_net_pkt(ndev, tx_data,
+-						tx_data->buff, tx_data->size,
+-						wilc_tx_complete);
++	vif->netstats.tx_bytes += skb->len;
+ 
+ 	if (queue_count > FLOW_CONTROL_UPPER_THRESHOLD) {
+ 		int srcu_idx;
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
+index bb1a315a7b7e..b3ba87bd3581 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.h
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
+@@ -277,6 +277,7 @@ struct wilc_wfi_mon_priv {
+ 	struct net_device *real_ndev;
+ };
+ 
++void wilc_tx_complete(struct txq_entry_t *tqe);
+ void wilc_frmw_to_host(struct wilc *wilc, u8 *buff, u32 size, u32 pkt_offset);
+ void wilc_mac_indicate(struct wilc *wilc);
+ void wilc_netdev_cleanup(struct wilc *wilc);
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index 58bbf50081e4..d594178d05d0 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -219,10 +219,7 @@ static void wilc_wlan_txq_filter_dup_tcp_ack(struct net_device *dev)
+ 			tqe = f->pending_acks[i].txqe;
+ 			if (tqe) {
+ 				wilc_wlan_txq_remove(wilc, tqe->q_num, tqe);
+-				tqe->status = 1;
+-				if (tqe->tx_complete_func)
+-					tqe->tx_complete_func(tqe->priv,
+-							      tqe->status);
++				wilc_tx_complete(tqe);
+ 				kfree(tqe);
+ 				dropped++;
+ 			}
+@@ -272,8 +269,6 @@ static int wilc_wlan_txq_add_cfg_pkt(struct wilc_vif *vif, u8 *buffer,
+ 	tqe->type = WILC_CFG_PKT;
+ 	tqe->buffer = buffer;
+ 	tqe->buffer_size = buffer_size;
+-	tqe->tx_complete_func = NULL;
+-	tqe->priv = NULL;
+ 	tqe->q_num = AC_VO_Q;
+ 	tqe->ack_idx = NOT_TCP_ACK;
+ 	tqe->vif = vif;
+@@ -410,45 +405,30 @@ static inline u8 ac_change(struct wilc *wilc, u8 *ac)
+ 	return 1;
+ }
+ 
+-int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
+-			      struct tx_complete_data *tx_data, u8 *buffer,
+-			      u32 buffer_size,
+-			      void (*tx_complete_fn)(void *, int))
++int wilc_wlan_txq_add_net_pkt(struct net_device *dev, struct sk_buff *skb)
+ {
+ 	struct txq_entry_t *tqe;
+ 	struct wilc_vif *vif = netdev_priv(dev);
+-	struct wilc *wilc;
++	struct wilc *wilc = vif->wilc;
+ 	u8 q_num;
+ 
+-	wilc = vif->wilc;
+-
+-	if (wilc->quit) {
+-		tx_complete_fn(tx_data, 0);
+-		return 0;
+-	}
+-
+-	if (!wilc->initialized) {
+-		tx_complete_fn(tx_data, 0);
+-		return 0;
+-	}
++	if (wilc->quit || !wilc->initialized)
 +		return -1;
-+	}
-+
- 	ieee_hdr = (void *)skb->data;
- 	if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
- 		if (mwifiex_parse_mgmt_packet(priv, (u8 *)ieee_hdr,
+ 
+ 	tqe = kmalloc(sizeof(*tqe), GFP_ATOMIC);
++	if (!tqe)
++		return -1;
+ 
+-	if (!tqe) {
+-		tx_complete_fn(tx_data, 0);
+-		return 0;
+-	}
+ 	tqe->type = WILC_NET_PKT;
+-	tqe->buffer = buffer;
+-	tqe->buffer_size = buffer_size;
+-	tqe->tx_complete_func = tx_complete_fn;
+-	tqe->priv = tx_data;
++	tqe->skb = skb;
++	tqe->buffer = skb->data;
++	tqe->buffer_size = skb->len;
+ 	tqe->vif = vif;
+ 
+-	q_num = ac_classify(wilc, tx_data->skb);
++	q_num = ac_classify(wilc, skb);
+ 	tqe->q_num = q_num;
+ 	if (ac_change(wilc, &q_num)) {
+-		tx_complete_fn(tx_data, 0);
++		wilc_tx_complete(tqe);
+ 		kfree(tqe);
+ 		return 0;
+ 	}
+@@ -459,43 +439,30 @@ int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
+ 			tcp_process(dev, tqe);
+ 		wilc_wlan_txq_add_to_tail(dev, q_num, tqe);
+ 	} else {
+-		tx_complete_fn(tx_data, 0);
++		wilc_tx_complete(tqe);
+ 		kfree(tqe);
+ 	}
+ 
+ 	return wilc->txq_entries;
+ }
+ 
+-int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buffer,
+-			       u32 buffer_size,
+-			       void (*tx_complete_fn)(void *, int))
++int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, u8 *buffer,
++			       u32 buffer_size)
+ {
+ 	struct txq_entry_t *tqe;
+ 	struct wilc_vif *vif = netdev_priv(dev);
+-	struct wilc *wilc;
+-
+-	wilc = vif->wilc;
++	struct wilc *wilc = vif->wilc;
+ 
+-	if (wilc->quit) {
+-		tx_complete_fn(priv, 0);
+-		return 0;
+-	}
++	if (wilc->quit || !wilc->initialized)
++		return -1;
+ 
+-	if (!wilc->initialized) {
+-		tx_complete_fn(priv, 0);
+-		return 0;
+-	}
+ 	tqe = kmalloc(sizeof(*tqe), GFP_ATOMIC);
++	if (!tqe)
++		return -1;
+ 
+-	if (!tqe) {
+-		tx_complete_fn(priv, 0);
+-		return 0;
+-	}
+ 	tqe->type = WILC_MGMT_PKT;
+ 	tqe->buffer = buffer;
+ 	tqe->buffer_size = buffer_size;
+-	tqe->tx_complete_func = tx_complete_fn;
+-	tqe->priv = priv;
+ 	tqe->q_num = AC_BE_Q;
+ 	tqe->ack_idx = NOT_TCP_ACK;
+ 	tqe->vif = vif;
+@@ -916,9 +883,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 		       tqe->buffer, tqe->buffer_size);
+ 		offset += vmm_sz;
+ 		i++;
+-		tqe->status = 1;
+-		if (tqe->tx_complete_func)
+-			tqe->tx_complete_func(tqe->priv, tqe->status);
++		wilc_tx_complete(tqe);
+ 		if (tqe->ack_idx != NOT_TCP_ACK &&
+ 		    tqe->ack_idx < MAX_PENDING_ACKS)
+ 			vif->ack_filter.pending_acks[tqe->ack_idx].txqe = NULL;
+@@ -1243,8 +1208,7 @@ void wilc_wlan_cleanup(struct net_device *dev)
+ 	wilc->quit = 1;
+ 	for (ac = 0; ac < NQUEUES; ac++) {
+ 		while ((tqe = wilc_wlan_txq_remove_from_head(wilc, ac))) {
+-			if (tqe->tx_complete_func)
+-				tqe->tx_complete_func(tqe->priv, 0);
++			wilc_tx_complete(tqe);
+ 			kfree(tqe);
+ 		}
+ 	}
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
+index a72cd5cac81d..f5ba836c595a 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.h
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
+@@ -323,15 +323,13 @@ enum ip_pkt_priority {
+ 
+ struct txq_entry_t {
+ 	struct list_head list;
+-	int type;
++	u8 type;
+ 	u8 q_num;
+-	int ack_idx;
++	s16 ack_idx;
++	struct sk_buff *skb;
+ 	u8 *buffer;
+-	int buffer_size;
+-	void *priv;
+-	int status;
++	u32 buffer_size;
+ 	struct wilc_vif *vif;
+-	void (*tx_complete_func)(void *priv, int status);
+ };
+ 
+ struct txq_fw_recv_queue_stat {
+@@ -378,12 +376,6 @@ struct wilc_hif_func {
+ 
+ #define WILC_MAX_CFG_FRAME_SIZE		1468
+ 
+-struct tx_complete_data {
+-	int size;
+-	void *buff;
+-	struct sk_buff *skb;
+-};
+-
+ struct wilc_cfg_cmd_hdr {
+ 	u8 cmd_type;
+ 	u8 seq_no;
+@@ -407,10 +399,7 @@ int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
+ 				u32 buffer_size);
+ int wilc_wlan_start(struct wilc *wilc);
+ int wilc_wlan_stop(struct wilc *wilc, struct wilc_vif *vif);
+-int wilc_wlan_txq_add_net_pkt(struct net_device *dev,
+-			      struct tx_complete_data *tx_data, u8 *buffer,
+-			      u32 buffer_size,
+-			      void (*tx_complete_fn)(void *, int));
++int wilc_wlan_txq_add_net_pkt(struct net_device *dev, struct sk_buff *skb);
+ int wilc_wlan_handle_txq(struct wilc *wl, u32 *txq_count);
+ void wilc_handle_isr(struct wilc *wilc);
+ void wilc_wlan_cleanup(struct net_device *dev);
+@@ -418,8 +407,8 @@ int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer,
+ 		      u32 buffer_size, int commit, u32 drv_handler);
+ int wilc_wlan_cfg_get(struct wilc_vif *vif, int start, u16 wid, int commit,
+ 		      u32 drv_handler);
+-int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buffer,
+-			       u32 buffer_size, void (*func)(void *, int));
++int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, u8 *buffer,
++			       u32 buffer_size);
+ void wilc_enable_tcp_ack_filter(struct wilc_vif *vif, bool value);
+ int wilc_wlan_get_num_conn_ifcs(struct wilc *wilc);
+ netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *dev);
 -- 
-2.25.1
+2.41.0
 
