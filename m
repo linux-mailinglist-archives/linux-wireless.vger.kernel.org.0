@@ -2,136 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB72D7530BA
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 06:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5FDF753165
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jul 2023 07:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234671AbjGNEvh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 00:51:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42706 "EHLO
+        id S234833AbjGNFmE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Jul 2023 01:42:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234629AbjGNEvf (ORCPT
+        with ESMTP id S229574AbjGNFmC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 00:51:35 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9B782D63;
-        Thu, 13 Jul 2023 21:51:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=fBHNk/5teiKF0xP49UxyZpW8fISmJXjYny9DANXhPDk=; b=2COurhKX5QFYivf6i7Zr/aNn73
-        QFFQ79/cPF9S01KhV09HQkEqM5Bt35VjzWKVmNOKOT3MEeM6pkE3uEDw8ivqQBpq9erUaV3YkcIvf
-        4KKB3kjBHTP34sgqauv/08O/xu4iuu66FaTGHGzWq+YYuAeG1ih+6cqEkeUsYVeJQ23Ksa24W33I3
-        eIVIANOCr6Z4LCeia34z+kHDpbc3bsUYs8FLvJPlbpV5AWHUNH/9CxsPCBrqTMHsyr6o+iU71HABO
-        HhpCvEEbemhL+GihI88F8uZQPx0QmjmcwABlhqL2FW8SBPTYWqGXFgOvVYXoRjVyNu5+T2K6gZcvL
-        8CIe6Kgw==;
-Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qKAm8-0050ZV-2k;
-        Fri, 14 Jul 2023 04:51:28 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     netdev@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, linux-wpan@vger.kernel.org,
-        Jay Vosburgh <j.vosburgh@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Dave Taht <dave.taht@bufferbloat.net>,
-        Moshe Shemesh <moshe@mellanox.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Benjamin Berg <benjamin.berg@intel.com>,
-        Jiri Benc <jbenc@redhat.com>,
-        Leslie Monis <lesliemonis@gmail.com>,
-        "Mohit P. Tahiliani" <tahiliani@nitk.edu.in>,
-        Gautam Ramakrishnan <gautamramk@gmail.com>,
-        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
-        Siva Rebbagondla <siva.rebbagondla@redpinesignals.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH v2 net 0/9] net: fix kernel-doc problems in include/net/
-Date:   Thu, 13 Jul 2023 21:51:18 -0700
-Message-ID: <20230714045127.18752-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.41.0
+        Fri, 14 Jul 2023 01:42:02 -0400
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 132DF211C;
+        Thu, 13 Jul 2023 22:41:58 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-98377c5d53eso211224666b.0;
+        Thu, 13 Jul 2023 22:41:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689313316; x=1691905316;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GlZFb68wNBynoMUUWnbthgOtvqoVTjliLFFvPyquQvc=;
+        b=CFkh7R00Ixw1W5er527PSsd815EGyUiP/63Ymlo9qSSkkF72+EULXet3iTHIdpAOaG
+         QQQcbsn4+YMdS1VVJhi1Zn327yYJumPQlONN0xmxO6CF9OCj0nnDKVNczBRUDb6Mb6JB
+         ysOImWj+h8dW4CbvV0kufXiGy3j4sOnD9Jg74js8cVBkfU+PyvPHejXq0NG9p5EZyRYh
+         FQZM5e3vJN3h8iBRe0zdLytziZsYAdY8PNB++KML47NjA4BrIKmSsSTMZh/qMFBb04af
+         SZOyCAUaRwjH80ndwV7dZrBqHtsQyr6lWJN6JQOFu7KtsKur8i/J3Yn3p5KUdU0wFV8A
+         piEA==
+X-Gm-Message-State: ABy/qLai57EycDEnM9yeMCVzqmGxG9i71UO/phTAMebZkvr0qtZi/YMp
+        2vkrsdXpS4XZuXFb2FbBlIST/6NiBME=
+X-Google-Smtp-Source: APBJJlGQ0OGERa3wrZmlcwpl3P1BJmz5mDsbfmNWdhgV9dRm3nwGTNOsaO5U1B9SBhMRTeG0zEHICw==
+X-Received: by 2002:a17:906:20dd:b0:993:f11a:fe42 with SMTP id c29-20020a17090620dd00b00993f11afe42mr3538831ejc.6.1689313316059;
+        Thu, 13 Jul 2023 22:41:56 -0700 (PDT)
+Received: from [192.168.1.58] (185-219-167-24-static.vivo.cz. [185.219.167.24])
+        by smtp.gmail.com with ESMTPSA id n11-20020a1709061d0b00b00982cfe1fe5dsm4902403ejh.65.2023.07.13.22.41.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Jul 2023 22:41:55 -0700 (PDT)
+Message-ID: <1bc521b4-5425-38bf-9600-a6efe11a2549@kernel.org>
+Date:   Fri, 14 Jul 2023 07:41:54 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        Minjie Du <duminjie@vivo.com>, opensource.kernel@vivo.com,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Kalle Valo <kvalo@kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Nick Kossifidis <mickflemm@gmail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>
+References: <20230713082433.11485-1-duminjie@vivo.com>
+ <288c6005-7d0b-3eb0-514d-e2ac09ae6b00@web.de>
+From:   Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH v4] wifi: ath5k: remove parameter check in
+ ath5k_debug_init_device()
+In-Reply-To: <288c6005-7d0b-3eb0-514d-e2ac09ae6b00@web.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix many (but not all) kernel-doc warnings in include/net/.
+On 13. 07. 23, 14:30, Markus Elfring wrote:
+> Please apply the subject “[PATCH v5] wifi: ath5k: Remove an error check in ath5k_debug_init_device()”.
 
- [PATCH v2 net 1/9] net: bonding: remove kernel-doc comment marker
- [PATCH v2 net 2/9] net: cfg802154: fix kernel-doc notation warnings
- [PATCH v2 net 3/9] codel: fix kernel-doc notation warnings
- [PATCH v2 net 4/9] devlink: fix kernel-doc notation warnings
- [PATCH v2 net 5/9] inet: frags: remove kernel-doc comment marker
- [PATCH v2 net 6/9] net: llc: fix kernel-doc notation warnings
- [PATCH v2 net 7/9] net: NSH: fix kernel-doc notation warning
- [PATCH v2 net 8/9] pie: fix kernel-doc notation warning
- [PATCH v2 net 9/9] rsi: remove kernel-doc comment marker
+FWIW I personally prefer the European style: lowercase after colon. So I 
+would not suggest anyone to use one or the other.
 
-v2: drop the wifi/80211 patches, waiting for their reviewers or
-    maintainers;
-    include/linux/inet_frag.h: keep the kernel-doc comment;
+-- 
+js
+suse labs
 
- include/net/bonding.h            |    2 +-
- include/net/cfg80211.h           |    1 -
- include/net/cfg802154.h          |    3 ++-
- include/net/codel.h              |    4 ++--
- include/net/devlink.h            |   28 ++++++++++++++++------------
- include/net/ieee80211_radiotap.h |    3 ++-
- include/net/inet_frag.h          |    2 +-
- include/net/llc_pdu.h            |    6 ++++--
- include/net/mac80211.h           |    1 +
- include/net/nsh.h                |    2 +-
- include/net/pie.h                |    2 +-
- include/net/rsi_91x.h            |    2 +-
- 12 files changed, 32 insertions(+), 24 deletions(-)
-
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: linux-wpan@vger.kernel.org
-Cc: Jay Vosburgh <j.vosburgh@gmail.com>
-Cc: Andy Gospodarek <andy@greyhouse.net>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Alexander Aring <alex.aring@gmail.com>
-Cc: Stefan Schmidt <stefan@datenfreihafen.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
-Cc: Dave Taht <dave.taht@bufferbloat.net>
-Cc: Moshe Shemesh <moshe@mellanox.com>
-Cc: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Cc: Jiri Benc <jbenc@redhat.com>
-Cc: Leslie Monis <lesliemonis@gmail.com>
-Cc: "Mohit P. Tahiliani" <tahiliani@nitk.edu.in>
-Cc: Gautam Ramakrishnan <gautamramk@gmail.com>
-Cc: Prameela Rani Garnepudi <prameela.j04cs@gmail.com>
-Cc: Siva Rebbagondla <siva.rebbagondla@redpinesignals.com>
-Cc: Kalle Valo <kvalo@kernel.org>
