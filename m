@@ -2,116 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45C4E7546A0
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 05:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C96B754720
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 08:55:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbjGODuZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Jul 2023 23:50:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
+        id S229872AbjGOGve (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jul 2023 02:51:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjGODuY (ORCPT
+        with ESMTP id S229483AbjGOGvd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Jul 2023 23:50:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DFDE30E3;
-        Fri, 14 Jul 2023 20:50:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D0F9561DEF;
-        Sat, 15 Jul 2023 03:50:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3AAD0C433C9;
-        Sat, 15 Jul 2023 03:50:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689393022;
-        bh=mjhOLI+yCD9rfoSJAQ1b1UeP1kkeR8pIp7XLs7anurs=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=hqYHDGlIuqx6UIDdefgNxJVFK2OVcg5sTDqrD9CRqRpHncmwTEWXKqaOlVTXZHKOZ
-         O/i/TM55YwqHMkx89KmekKuyrO5UNCJbRsTboIcYDQgKvyqAANFJylV2xJt+y6n+uy
-         MFcFzQ8w8vPePjo/KAI0DgTCbO72KdRLJEpAucTPj/5REYOOn7vget+t9MJ+inrqLs
-         5NHnS8e64q1B0CgZDwpKiW1opfWxSH2fRggIT438XtB5gmn/JLDJDVXaK1LxUkM7Ak
-         mmBKc0/4cmdznxjbiGgHpeR6ccYMUqNO5axQyfgPNnWUZsGjiB40wLMnRDTOWlk7di
-         Q0iW1e0kz/nTA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 11A75E49BBF;
-        Sat, 15 Jul 2023 03:50:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Sat, 15 Jul 2023 02:51:33 -0400
+Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91FE23599;
+        Fri, 14 Jul 2023 23:51:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1689403880;
+        bh=NERu/KtVTq3aiG51hr0iINkM+uTg2JQTX/C5jpABD4s=;
+        h=From:To:Cc:Subject:Date;
+        b=MKeuIyY4KWXwpz9KEL+skFtpEZLTM6Ex9evYkT7Xxk2i8ulUwqgvaRUFpjUgy773Q
+         ab70YvDnoqEIwRkU/c6jrRfA0jOijlDKpSD+kSdR0e14+VHmy1+5Vfaf0DESzwxatr
+         ZxO//BLXPyJ4nveiQODt8xXdzKDseAiMt0OScAbg=
+Received: from KernelDevBox.byted.org ([180.184.51.134])
+        by newxmesmtplogicsvrsza7-0.qq.com (NewEsmtp) with SMTP
+        id B3B81259; Sat, 15 Jul 2023 14:44:59 +0800
+X-QQ-mid: xmsmtpt1689403499tmzqxrafn
+Message-ID: <tencent_7C09B91B925AF62D7CB0280F028563540807@qq.com>
+X-QQ-XMAILINFO: N9hOYgqt7GNxrr4Li6otSOTa8O04DwYr+WikfpSer4UK0QDbrd6ZleBYBOIRAl
+         OgML/EAumXg724d67ZIB0HXO0zLdcyZRrKgQXbFyg10o9sU0NQcyNQp2vhb0FDLlMDfPWjblJJoD
+         tAQs4D542v3lU33EHZmQp9pfw+2c4hD9UW/YwqqyB5InmOpUN6ZXvWZLWqRpvzYKbO5C9LcvPgps
+         ushAi64oygxBYZbz4EfOPNCguy9OI74ktLLBPU1Oy6BlaqGSIsmo4yGljM2oQN6Q+gK/DCmJzTcB
+         Z+6OUUtb6pG3L4lMHTICOGi6oJ+lletXFlbx4BA6tp61nIDB/lPU8QHCrllJjHYoKd7Uo4N80b/6
+         uygKLYbypUp4/MQ2lPVwfH4iivvhJQaUnjXRh9SLDoArBzmqOhSE+vjl514DfeMYAPLHgxhzRXsI
+         3Yla0+Vv/rjvANov1tRxmyVtyw0bx8xmz9QA9oulDj2XYBMmpu3vzCKcco6QVpE+WJD+FToPHLVD
+         W59KNrxstEqEwqmhPjaVO7/SlWARNnNlVjMXhmO5x/W5sS/a9PiDWytCRRGzQANFNkdwja/Hs+4/
+         jl9/py0UqhpyI2/iWeXhdaPwrHbL2v/oDZ7/2WG1K2LYp4tmK5rz9w3Zah1ElJEieNIxMYxcCFY3
+         ApDSgq+JwL73EFoWOd6vj0o450pMoB3x5mcv0ST/roEJE45wAOU69tFT4gPeP6sLX6lylkJ3qm82
+         8+qdynZzB3W1N0npufLKDGDcMdhnnTSnUN00WibpFFFtK0nge3H0LYpUEGuo/Sd0F4P0ucUmMJ3E
+         teSN+AhrN/uVkmXbZ77VGFE/50N0hmfARRwVYP4U9AFs+MprtOe0Uk7fQ0BiWMEQUu6GFtdwif5v
+         eWs1+n2sGF0Ulu3VTj6PsJvmFoSIFxZap1flLZH9owe5hcnRXbGH8yLnBZLyoxynjmX09NrWJTpo
+         A3aXeS/pwjKFKuqNLs2xqwist1Z5kXQzTtOC7UdmhnkyEASweHDu7lPzMpUoNq
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+From:   Zhang Shurong <zhang_shurong@foxmail.com>
+To:     pkshih@realtek.com, Markus.Elfring@web.de, kuba@kernel.org
+Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Zhang Shurong <zhang_shurong@foxmail.com>
+Subject: [PATCH v2] wifi: rtw89: debug: fix error code in rtw89_debug_priv_btc_manual_set
+Date:   Sat, 15 Jul 2023 14:44:57 +0800
+X-OQ-MSGID: <20230715064457.971310-1-zhang_shurong@foxmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net 0/9] net: fix kernel-doc problems in include/net/
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168939302206.24345.17268044128458529302.git-patchwork-notify@kernel.org>
-Date:   Sat, 15 Jul 2023 03:50:22 +0000
-References: <20230714045127.18752-1-rdunlap@infradead.org>
-In-Reply-To: <20230714045127.18752-1-rdunlap@infradead.org>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        linux-wpan@vger.kernel.org, j.vosburgh@gmail.com,
-        andy@greyhouse.net, johannes@sipsolutions.net, mchehab@kernel.org,
-        alex.aring@gmail.com, stefan@datenfreihafen.org,
-        miquel.raynal@bootlin.com, marcel@holtmann.org, jhs@mojatatu.com,
-        xiyou.wangcong@gmail.com, jiri@resnulli.us,
-        dave.taht@bufferbloat.net, moshe@mellanox.com,
-        jacob.e.keller@intel.com, razor@blackwall.org,
-        benjamin.berg@intel.com, jbenc@redhat.com, lesliemonis@gmail.com,
-        tahiliani@nitk.edu.in, gautamramk@gmail.com,
-        prameela.j04cs@gmail.com, siva.rebbagondla@redpinesignals.com,
-        kvalo@kernel.org
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_BLOCKED,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+If there is a failure during kstrtobool_from_user()
+rtw89_debug_priv_btc_manual_set should return negative error code
+instead of returning the count driectly.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Fix this bug by returning the correct error code.
 
-On Thu, 13 Jul 2023 21:51:18 -0700 you wrote:
-> Fix many (but not all) kernel-doc warnings in include/net/.
-> 
->  [PATCH v2 net 1/9] net: bonding: remove kernel-doc comment marker
->  [PATCH v2 net 2/9] net: cfg802154: fix kernel-doc notation warnings
->  [PATCH v2 net 3/9] codel: fix kernel-doc notation warnings
->  [PATCH v2 net 4/9] devlink: fix kernel-doc notation warnings
->  [PATCH v2 net 5/9] inet: frags: remove kernel-doc comment marker
->  [PATCH v2 net 6/9] net: llc: fix kernel-doc notation warnings
->  [PATCH v2 net 7/9] net: NSH: fix kernel-doc notation warning
->  [PATCH v2 net 8/9] pie: fix kernel-doc notation warning
->  [PATCH v2 net 9/9] rsi: remove kernel-doc comment marker
-> 
-> [...]
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+---
+Changes in v2:
+- Corrected the format of this patch
+- Used variable ret instead of goto out
 
-Here is the summary with links:
-  - [v2,net,1/9] net: bonding: remove kernel-doc comment marker
-    https://git.kernel.org/netdev/net/c/a66557c79020
-  - [v2,net,2/9] net: cfg802154: fix kernel-doc notation warnings
-    https://git.kernel.org/netdev/net/c/a63e40444e1b
-  - [v2,net,3/9] codel: fix kernel-doc notation warnings
-    https://git.kernel.org/netdev/net/c/cfe57122bba5
-  - [v2,net,4/9] devlink: fix kernel-doc notation warnings
-    https://git.kernel.org/netdev/net/c/839f55c5ebdf
-  - [v2,net,5/9] inet: frags: eliminate kernel-doc warning
-    https://git.kernel.org/netdev/net/c/d20909a0689f
-  - [v2,net,6/9] net: llc: fix kernel-doc notation warnings
-    https://git.kernel.org/netdev/net/c/201a08830d8c
-  - [v2,net,7/9] net: NSH: fix kernel-doc notation warning
-    https://git.kernel.org/netdev/net/c/d1533d726aa1
-  - [v2,net,8/9] pie: fix kernel-doc notation warning
-    https://git.kernel.org/netdev/net/c/d1cca974548d
-  - [v2,net,9/9] rsi: remove kernel-doc comment marker
-    https://git.kernel.org/netdev/net/c/04be3c95da82
+ drivers/net/wireless/realtek/rtw89/debug.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-You are awesome, thank you!
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index a4bbac916e22..ce5a9ac08145 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -3193,12 +3193,14 @@ static ssize_t rtw89_debug_priv_btc_manual_set(struct file *filp,
+ 	struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
+ 	struct rtw89_btc *btc = &rtwdev->btc;
+ 	bool btc_manual;
++	int ret;
+ 
+-	if (kstrtobool_from_user(user_buf, count, &btc_manual))
+-		goto out;
++	ret = kstrtobool_from_user(user_buf, count, &btc_manual);
++	if (ret)
++		return ret;
+ 
+ 	btc->ctrl.manual = btc_manual;
+-out:
++
+ 	return count;
+ }
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.30.2
 
