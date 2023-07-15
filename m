@@ -2,82 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45AA3754736
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 09:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4371275480E
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 11:56:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230308AbjGOHWZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jul 2023 03:22:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33378 "EHLO
+        id S230111AbjGOJ43 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jul 2023 05:56:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbjGOHWY (ORCPT
+        with ESMTP id S229482AbjGOJ42 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jul 2023 03:22:24 -0400
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 704DE2722
-        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 00:22:19 -0700 (PDT)
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-6b9ca98ff25so335754a34.2
-        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 00:22:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689405738; x=1691997738;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=deZLZrvEZSfc6NLa+Id53ZoNS1q+sg7vXw6lADs5UZc=;
-        b=gylbLvHVjxMp1NbGxreq9d58raJCdLaAj2VqmTgPn4eoCzkODVutI9f7GWkyXtIepF
-         s8FdaafGAL9BBy7Q2PRzHTkpox18zwWIFNVekTD6EwqAuiFBRHh+ZLwInBbN+RmE/I6P
-         8xsTSppCVn1cCRX7rylh+cwdq5Wd/tQWZIy8PAfSgFJYjYEDkTcBjsscRSIOxlnqIt0L
-         KpGn1p6TdoKXlHpNn97fysmBTqKwTXKzkCjE3IXt4fuPLajgoNjvj1JcWcn/oNNkMZR3
-         iDBonaGhoP1FdyuBOIsYs3PE2TqUIMI9KwcHWnA6njVne4VSY1wcINJWCx83TJrnep+y
-         Zlvw==
-X-Gm-Message-State: ABy/qLZ2A5dnghMZlcGQM+0Ow6KiM/iOZurfh+vMRjn4w8Rz/5rkh7Ii
-        1e/0Jb+lnzsylpMCSGj40Tb0oeNX8QToGPQf68FSJT16PfR2
-X-Google-Smtp-Source: APBJJlHH3FSfjH01K1UTktigpFdlK7JuDCmmfNBSiY8NRr4eGW+fSxrKOo/LJfiNFaYQXY2HWu5EgCuMiPB05g3I5MvkoHyT3gES
+        Sat, 15 Jul 2023 05:56:28 -0400
+Received: from out203-205-251-82.mail.qq.com (out203-205-251-82.mail.qq.com [203.205.251.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A8A26BC;
+        Sat, 15 Jul 2023 02:56:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1689414973;
+        bh=JpDCCEP/8aNDbjWStl7V/1DHXjS0bFNz+rqHDxrKpuk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=VstwCYvtKqUXCxgOt60w+O655qL4wwfbwkr0CC6EjGQvgiNptIxAsN/tWsk6p/b5N
+         3K8MLNsu00HsY7/3UUTb5SRAmDogyY223Ke/RdcrrScvcgIpokBtlw5EYvnGXwoZYp
+         oG3MXXUw3KkcyJ5zWg0jsPRhh34ofxIDOzTl2TL4=
+Received: from localhost.localdomain ([220.243.191.12])
+        by newxmesmtplogicsvrszc2-0.qq.com (NewEsmtp) with SMTP
+        id E0AA9045; Sat, 15 Jul 2023 17:56:10 +0800
+X-QQ-mid: xmsmtpt1689414970tnk2wq92o
+Message-ID: <tencent_283F851E543C098B9BC8DAA32D79B00A0F07@qq.com>
+X-QQ-XMAILINFO: N7xt/Xavkw6SPgp6fMF86Ya0b7fRfpshou9aHNkYNeG1Lo+iWmEXJqDEFpx8mn
+         R53G9Kqvzuxpp4AivDQQAkcq3WEnyYs161XP9+s9urcpHOeJugw1hxAtzEURchfp9Ok/vdljHukV
+         PRKGW3UHHKnAAQOnTuuwZCOs4iRIr7z0Gof+gdnd6w/ZWrZeTxpVraEbyzDBzExC+5B1T9WqORo+
+         7dFG6M9QyffDAmzFWZ74FRz0MUjZ4iinjBVj6q6aVq29taxGUHhfh4uCALPPaRzZpvgF6Xnuivad
+         c2ZF2f+Coo7UsvsMYllMNSp057dMyrfkbkhp7mRAMPQVB9TgsWNL0taZQmdbUrpcxbbwGJ8WHrpd
+         MULh4pKppfqaZgjYWFQ24wV+n2PsirV4wAmqMBT97rXQTUu+eTnZb8dYep1KnTqiazjJaNKh+6hl
+         RQl3bh9/CnF2Adb/U5ziSsd+LxT9BOkUcGTevMVoeJCw5bZ+QUS0oC0/BS1/d9eu6OPj1cptKt0X
+         +NUzcSD6YtNQljpGr9xgzoW68D6difgy7vJHYFFnhd0H5JjZWdVmDOScrcNaDdFVBlMJLa88LlCQ
+         iqnhi9v3pgd/nomO0vXRQ2M8LEXxATM2ytMgTh4EuxrWD/ZCmGuHqUE0WmwzLjMbexkRtEmVtUY6
+         3f5NOTwZy1z4iJ34OEE9xwJ9S7lSfAgrvSZ1LlBxulgvOdo25Sj+LJ7uG4Ki1togfTZUdN9osOp+
+         sxRraaBgHi+lQXTg2ZKDs+CeI4sRDyhCyrtyGfdR1ifsVi5Qe7pVdP+dj5TXJqp7rtcpeJxVtBRH
+         76q86plXVMOq/DpoBTuuDvr/UjILgGz62wLQlZgB1UTP90tkXwj4vjWtXhefZU5vWp8feAuwO81J
+         29H9NvnDvf8OUFPFhwAicuNa9hIe/MOLP5/OMKiZZs++ahGV3wKumdOdU0mqzrhHSNPMHsdgmcw3
+         A7UAj+M2KBpEls0OQkBVUpCzuCdJcI01iR9jkMY3alxG6ScR8eumxC7OYJjtAm
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+From:   Zhang Shurong <zhang_shurong@foxmail.com>
+To:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Markus Elfring <Markus.Elfring@web.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] wifi: rtw89: debug: fix error code in
+ rtw89_debug_priv_btc_manual_set
+Date:   Sat, 15 Jul 2023 17:56:10 +0800
+X-OQ-MSGID: <4849586.31r3eYUQgx@localhost.localdomain>
+In-Reply-To: <a97b0b0c-8141-5391-727a-aa29fedc016b@web.de>
+References: <tencent_7C09B91B925AF62D7CB0280F028563540807@qq.com>
+ <a97b0b0c-8141-5391-727a-aa29fedc016b@web.de>
 MIME-Version: 1.0
-X-Received: by 2002:a9d:7406:0:b0:6b7:4ec4:cbb1 with SMTP id
- n6-20020a9d7406000000b006b74ec4cbb1mr5640443otk.7.1689405738355; Sat, 15 Jul
- 2023 00:22:18 -0700 (PDT)
-Date:   Sat, 15 Jul 2023 00:22:18 -0700
-In-Reply-To: <0000000000000de35905ead6dcc1@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ea91fa0600816cb8@google.com>
-Subject: Re: [syzbot] [afs?] general protection fault in skb_queue_tail (3)
-From:   syzbot <syzbot+160a7250e255d25725eb@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com, hdanton@sina.com,
-        kuba@kernel.org, kvalo@kernel.org, linux-afs@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        pabeni@redhat.com, pchelkin@ispras.ru, quic_kvalo@quicinc.com,
-        syzkaller-bugs@googlegroups.com, toke@toke.dk
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_BLOCKED,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot suspects this issue was fixed by commit:
+=E5=9C=A8 2023=E5=B9=B47=E6=9C=8815=E6=97=A5=E6=98=9F=E6=9C=9F=E5=85=AD CST=
+ =E4=B8=8B=E5=8D=885:22:08=EF=BC=8CMarkus Elfring =E5=86=99=E9=81=93=EF=BC=
+=9A
+> > If there is a failure during kstrtobool_from_user()
+> > rtw89_debug_priv_btc_manual_set should return negative error code
+> > instead of returning the count driectly.
+> >=20
+> > Fix this bug by returning the correct error code.
+>=20
+> How do you think about to use an other wording approach
+> (like the following) for an improved change description?
+>=20
+>=20
+>   Return an error code instead of a count after a failed call
+>   of the function =E2=80=9Ckstrtobool_from_user=E2=80=9D.
+>   Omit the label =E2=80=9Cout=E2=80=9D with this source code correction.
+>=20
+>=20
+> Regards,
+> Markus
+Thanks for your kindness reply and advice and I will change my description
+in the next version.
 
-commit 061b0cb9327b80d7a0f63a33e7c3e2a91a71f142
-Author: Fedor Pchelkin <pchelkin@ispras.ru>
-Date:   Wed May 17 15:03:17 2023 +0000
+Regards,
+Shurong
 
-    wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12253b7ca80000
-start commit:   98555239e4c3 Merge tag 'arc-6.1-fixes' of git://git.kernel..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=701f2aae1cb0470e
-dashboard link: https://syzkaller.appspot.com/bug?extid=160a7250e255d25725eb
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1482f0b6880000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=119e4dce880000
 
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
