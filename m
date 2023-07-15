@@ -2,99 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4371275480E
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 11:56:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC89E75487B
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 13:55:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230111AbjGOJ43 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jul 2023 05:56:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60040 "EHLO
+        id S229958AbjGOLzY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jul 2023 07:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjGOJ42 (ORCPT
+        with ESMTP id S229530AbjGOLzW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jul 2023 05:56:28 -0400
-Received: from out203-205-251-82.mail.qq.com (out203-205-251-82.mail.qq.com [203.205.251.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A8A26BC;
-        Sat, 15 Jul 2023 02:56:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1689414973;
-        bh=JpDCCEP/8aNDbjWStl7V/1DHXjS0bFNz+rqHDxrKpuk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=VstwCYvtKqUXCxgOt60w+O655qL4wwfbwkr0CC6EjGQvgiNptIxAsN/tWsk6p/b5N
-         3K8MLNsu00HsY7/3UUTb5SRAmDogyY223Ke/RdcrrScvcgIpokBtlw5EYvnGXwoZYp
-         oG3MXXUw3KkcyJ5zWg0jsPRhh34ofxIDOzTl2TL4=
-Received: from localhost.localdomain ([220.243.191.12])
-        by newxmesmtplogicsvrszc2-0.qq.com (NewEsmtp) with SMTP
-        id E0AA9045; Sat, 15 Jul 2023 17:56:10 +0800
-X-QQ-mid: xmsmtpt1689414970tnk2wq92o
-Message-ID: <tencent_283F851E543C098B9BC8DAA32D79B00A0F07@qq.com>
-X-QQ-XMAILINFO: N7xt/Xavkw6SPgp6fMF86Ya0b7fRfpshou9aHNkYNeG1Lo+iWmEXJqDEFpx8mn
-         R53G9Kqvzuxpp4AivDQQAkcq3WEnyYs161XP9+s9urcpHOeJugw1hxAtzEURchfp9Ok/vdljHukV
-         PRKGW3UHHKnAAQOnTuuwZCOs4iRIr7z0Gof+gdnd6w/ZWrZeTxpVraEbyzDBzExC+5B1T9WqORo+
-         7dFG6M9QyffDAmzFWZ74FRz0MUjZ4iinjBVj6q6aVq29taxGUHhfh4uCALPPaRzZpvgF6Xnuivad
-         c2ZF2f+Coo7UsvsMYllMNSp057dMyrfkbkhp7mRAMPQVB9TgsWNL0taZQmdbUrpcxbbwGJ8WHrpd
-         MULh4pKppfqaZgjYWFQ24wV+n2PsirV4wAmqMBT97rXQTUu+eTnZb8dYep1KnTqiazjJaNKh+6hl
-         RQl3bh9/CnF2Adb/U5ziSsd+LxT9BOkUcGTevMVoeJCw5bZ+QUS0oC0/BS1/d9eu6OPj1cptKt0X
-         +NUzcSD6YtNQljpGr9xgzoW68D6difgy7vJHYFFnhd0H5JjZWdVmDOScrcNaDdFVBlMJLa88LlCQ
-         iqnhi9v3pgd/nomO0vXRQ2M8LEXxATM2ytMgTh4EuxrWD/ZCmGuHqUE0WmwzLjMbexkRtEmVtUY6
-         3f5NOTwZy1z4iJ34OEE9xwJ9S7lSfAgrvSZ1LlBxulgvOdo25Sj+LJ7uG4Ki1togfTZUdN9osOp+
-         sxRraaBgHi+lQXTg2ZKDs+CeI4sRDyhCyrtyGfdR1ifsVi5Qe7pVdP+dj5TXJqp7rtcpeJxVtBRH
-         76q86plXVMOq/DpoBTuuDvr/UjILgGz62wLQlZgB1UTP90tkXwj4vjWtXhefZU5vWp8feAuwO81J
-         29H9NvnDvf8OUFPFhwAicuNa9hIe/MOLP5/OMKiZZs++ahGV3wKumdOdU0mqzrhHSNPMHsdgmcw3
-         A7UAj+M2KBpEls0OQkBVUpCzuCdJcI01iR9jkMY3alxG6ScR8eumxC7OYJjtAm
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-From:   Zhang Shurong <zhang_shurong@foxmail.com>
-To:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Markus Elfring <Markus.Elfring@web.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] wifi: rtw89: debug: fix error code in
- rtw89_debug_priv_btc_manual_set
-Date:   Sat, 15 Jul 2023 17:56:10 +0800
-X-OQ-MSGID: <4849586.31r3eYUQgx@localhost.localdomain>
-In-Reply-To: <a97b0b0c-8141-5391-727a-aa29fedc016b@web.de>
-References: <tencent_7C09B91B925AF62D7CB0280F028563540807@qq.com>
- <a97b0b0c-8141-5391-727a-aa29fedc016b@web.de>
+        Sat, 15 Jul 2023 07:55:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E26721B6
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 04:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689422077;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=HO8eluITwq5usskkxIIA5wEQJ0xPhRcAfshKZ7UlAF0=;
+        b=SRkVXrjzocQuApkEWY/AZoqhhYZRQ5v/AoQkDk/UVT5e9kYcF56VwOlCLIQLdM/kpbJWvs
+        87WmLNW5LorMbrGrh+vr1U1oBBP3vM3cMM/bf/uimzgKV/OXHRVkfXPCOG10dBTd6IOo9x
+        Mb1ZaVYIB8GFrsYzOkCcFqu/umfwhFA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-V74IuyZvOUGQf8e6fBG53Q-1; Sat, 15 Jul 2023 07:54:36 -0400
+X-MC-Unique: V74IuyZvOUGQf8e6fBG53Q-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-315a03cae87so1523406f8f.0
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 04:54:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689422075; x=1692014075;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HO8eluITwq5usskkxIIA5wEQJ0xPhRcAfshKZ7UlAF0=;
+        b=PWljFi6Vsqw2YCI3B71REwgCRHOyb0uz7redWvz9fi1ZAh0HcOFJQ+0aZ4X1QQ+uRa
+         uCeXEyf/nxTAs/qXxh7Xp1KV3sYMz3odvfRSA6V7OJgBbP056sOIOj4yHV8h/I1S6+dT
+         S2z3wwkPY07IpDXchPhR6yio/gzqFglEl19diF+GVWqp0BD62u//efF3n9R/01duMw70
+         3ssJXxQDPFzIAc5wZFCUSuc+YnQyQPYxQWm/zMA9nJKm+pZGoPCO6eWHZP1jLyk+eFiK
+         Y3sN/CMKyZDl1tsDYcUiUfqLbbtO9LP0YdZ0CC11UXgcgSEYL+uUK13E8CNl14ulcjfP
+         17AQ==
+X-Gm-Message-State: ABy/qLYvbsliMyjpcAD9W+Y1IwSWa8qiNDLa1CAgnB5XJw0G0MHcBsR+
+        o9cAxJ2+GTcVqoFwpF3mb0MFoUs6+2wUIRGSOnuBWFXQW2PjkFF+KCoXsf388J28tBvURuOtYye
+        oHEiH7pmvbzfmO1rlYRuQk4KFEZA=
+X-Received: by 2002:a5d:444a:0:b0:314:475:bc6b with SMTP id x10-20020a5d444a000000b003140475bc6bmr4619634wrr.18.1689422075147;
+        Sat, 15 Jul 2023 04:54:35 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFdULB0xr3cUVFtXAPOWUAVW3BYg8EG0CRBXGWW4ar26vrrBLWk/l7ee6qaTJkvOT/aVo7UCQ==
+X-Received: by 2002:a5d:444a:0:b0:314:475:bc6b with SMTP id x10-20020a5d444a000000b003140475bc6bmr4619619wrr.18.1689422074688;
+        Sat, 15 Jul 2023 04:54:34 -0700 (PDT)
+Received: from localhost (net-130-25-106-149.cust.vodafonedsl.it. [130.25.106.149])
+        by smtp.gmail.com with ESMTPSA id a12-20020a5d508c000000b00316f9abf073sm123046wrt.82.2023.07.15.04.54.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Jul 2023 04:54:32 -0700 (PDT)
+Date:   Sat, 15 Jul 2023 13:54:30 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Ben Greear <greearb@candelatech.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: move mib_stats structure in
+ mt76.h
+Message-ID: <ZLKI9tiNytMl8Vlo@lore-desk>
+References: <cover.1683930235.git.lorenzo@kernel.org>
+ <d7f29306df3495e183304825cd3159bf1ccb1d87.1683930235.git.lorenzo@kernel.org>
+ <486cb426-737e-fa57-20da-344fc44bb4de@candelatech.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_BLOCKED,RDNS_DYNAMIC,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4D+/XRYv8Rax2OeT"
+Content-Disposition: inline
+In-Reply-To: <486cb426-737e-fa57-20da-344fc44bb4de@candelatech.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-=E5=9C=A8 2023=E5=B9=B47=E6=9C=8815=E6=97=A5=E6=98=9F=E6=9C=9F=E5=85=AD CST=
- =E4=B8=8B=E5=8D=885:22:08=EF=BC=8CMarkus Elfring =E5=86=99=E9=81=93=EF=BC=
-=9A
-> > If there is a failure during kstrtobool_from_user()
-> > rtw89_debug_priv_btc_manual_set should return negative error code
-> > instead of returning the count driectly.
-> >=20
-> > Fix this bug by returning the correct error code.
+
+--4D+/XRYv8Rax2OeT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> On 5/12/23 15:29, Lorenzo Bianconi wrote:
+> > mib_stats structure is shared by mostly all chipsets. Move it to shared
+> > code.
 >=20
-> How do you think about to use an other wording approach
-> (like the following) for an improved change description?
+> In case this thing hasn't been pushed upstream yet, then a suggestion:
 >=20
+> Create a struct mt76_mib_stats_common class that has the common counters,
+> and then per-driver can have that struct as first member of its mib stats.
 >=20
->   Return an error code instead of a count after a failed call
->   of the function =E2=80=9Ckstrtobool_from_user=E2=80=9D.
->   Omit the label =E2=80=9Cout=E2=80=9D with this source code correction.
->=20
->=20
-> Regards,
-> Markus
-Thanks for your kindness reply and advice and I will change my description
-in the next version.
+> I have added a lot of per-driver stats that never made it upstream
+> and are not fully shared across different drivers.
+
+I would say mt76_mib_stats is quite a general name. I think we can do somot=
+hing
+like (if it is really necessary):
+
+struct mt7915_mib_stats {
+	struct mt76_mib_stats mt76;
+	...
+};
 
 Regards,
-Shurong
+Lorenzo
 
+>=20
+> Thanks,
+> Ben
+>=20
+> >=20
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > ---
+> >   drivers/net/wireless/mediatek/mt76/mt76.h     | 63 +++++++++++++++++++
+> >   .../wireless/mediatek/mt76/mt7915/debugfs.c   |  4 +-
+> >   .../net/wireless/mediatek/mt76/mt7915/mac.c   |  2 +-
+> >   .../net/wireless/mediatek/mt76/mt7915/main.c  |  4 +-
+> >   .../wireless/mediatek/mt76/mt7915/mt7915.h    | 63 +------------------
+> >   5 files changed, 69 insertions(+), 67 deletions(-)
+> >=20
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wi=
+reless/mediatek/mt76/mt76.h
+> > index 75b5c2c56a92..45bf1022a051 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> > @@ -857,6 +857,69 @@ struct mt76_dev {
+> >   	};
+> >   };
+> > +/* per-phy stats.  */
+> > +struct mt76_mib_stats {
+> > +	u32 ack_fail_cnt;
+>=20
+> --=20
+> Ben Greear <greearb@candelatech.com>
+> Candela Technologies Inc  http://www.candelatech.com
+>=20
+>=20
 
+--4D+/XRYv8Rax2OeT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZLKI9gAKCRA6cBh0uS2t
+rDI4AQDSjKDXZ6AbzTHfPrmpnCFvJvf9oRDR1fcGOCwjMv3HtwEA7bDBKTUD0ken
+m79xrORxMP5kAwyEQglWOGvX3MFybgY=
+=D/hV
+-----END PGP SIGNATURE-----
+
+--4D+/XRYv8Rax2OeT--
 
