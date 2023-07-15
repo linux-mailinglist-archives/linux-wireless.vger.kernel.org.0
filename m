@@ -2,155 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD530754A4C
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 18:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DED31754C03
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 22:23:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbjGOQ7G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jul 2023 12:59:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55818 "EHLO
+        id S229554AbjGOUXC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jul 2023 16:23:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbjGOQ7D (ORCPT
+        with ESMTP id S229797AbjGOUW6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jul 2023 12:59:03 -0400
-Received: from mail-oa1-f80.google.com (mail-oa1-f80.google.com [209.85.160.80])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04ABE2694
-        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 09:59:01 -0700 (PDT)
-Received: by mail-oa1-f80.google.com with SMTP id 586e51a60fabf-1b789515871so4556947fac.3
-        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 09:59:00 -0700 (PDT)
+        Sat, 15 Jul 2023 16:22:58 -0400
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6332718
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 13:22:57 -0700 (PDT)
+Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6b74791c948so2554314a34.3
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 13:22:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1689452576; x=1692044576;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=STm6LkRTWi6KPP077fUx+V22dGnylBXk6BWjTWf9c5Q=;
+        b=UplMPPtxWpR+M1tc1YmgYZwfsstBdqB/7ya0NgKvoPH4uS5+eZiyNMUGtlcCT/WGE5
+         Kkg95bU2jd6uaDNX09hN0jQhgcbYc7s6lslyObvmy1tzZlNJviIo5ZpqtGGfBkESlwDJ
+         hdpx9DywYD9wI9/lT2z44nS+iIVB0Gl7hEdLM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689440340; x=1692032340;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VVggWaxW/y//zbxzMj5Up/8PG70H1D3JvD8YAt+BrH8=;
-        b=FqotlH9Pt9sUGiX/GKF7hDw7NQRPLJDHZ62BfN2DAZL+T6t55V40QLMnB02WA5VcoO
-         uSHWUN+gQMTk3H3z1vyZl1oiuhS6+Wz0HjyygGs5gg/ablhRL/j56vtF0RBrDIITptRx
-         Lsw83FsDkfK9J44jk0+XjEBBapJZ9gGjXsGtQasig+L798ZNBy9hvfa4DYCzJfeOdwbQ
-         uGCU2eDrGirWahHLJWlNrmwA7aw3bzHQBQxwftNynhqUxxmskJvIT0GKz7hNcHHZiiMh
-         cHisgPugTLWGeq3Zx88/qIAik9lnKqKx1Nt6te+Qbx8hiSnju2sFkSU3ImRZv7bBAfdV
-         H+0A==
-X-Gm-Message-State: ABy/qLYCppc33xRAmagl/BBgVvdv2lRLy1qSVcI29Ggj3fMpfkL51Kjf
-        HdgJ4YNkWvl8o10aEDVkfOU+nfPaaAsMiukyPGoX+prkZQvc
-X-Google-Smtp-Source: APBJJlHiIE+UxfTCFUslPbf6t9y+2TdEnS71GrV0V7tk323+8NpCl1UrA6V7rN5jD9rPYQDzSuqQxp3UUDohHVfgDch0q2r+qg3N
+        d=1e100.net; s=20221208; t=1689452576; x=1692044576;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=STm6LkRTWi6KPP077fUx+V22dGnylBXk6BWjTWf9c5Q=;
+        b=PfZIu2vVUYzyP2XE4oEmWokMW9Od+E1mnc5s61k3eXkmwzuAFRmATwAFglsQufvxvB
+         vXTMBTH8CkQNEf9g2GYyWdmGfr3cwXgq9WU9DQeIIyHnpKB8v0nuqTDn/Oz3llGGnO/C
+         Ja6KffsQpCdVJOwMTpSoPL2f0nNTKgxm8eZR4hsPXF3xgwagoJD2ObnOezIZ1GWeSdLc
+         Oll51nLDGXWBSl4WszVt7+zMsOJ7/tPpqhDGrqDtZoJ+hvBIwitn5BaBnD8BWiH+Tv/c
+         s6mQ9lFzKzFQwUhs/HTz6iJZArRL/faudoJQUfBEO0CuDAccdGftcwkpX4uvDVq1TVdx
+         lc6w==
+X-Gm-Message-State: ABy/qLYzGl51cnTelCNdHRaiB5/cF9MpD+aBCBKsKtogIO5DWfvUnrdl
+        wbreE35aoqJIwwOk85ZXmgT2f0BUjMdmHceeZl62gg==
+X-Google-Smtp-Source: APBJJlHJdHTFo7V2BQV74YAeVfMeCZgqlAxzMn625VyvO6ThFwBrne1mLIXfJmPujhAa+DkO3pLnXiid3t6cyJpMyFw=
+X-Received: by 2002:a05:6808:bd1:b0:38e:a824:27d3 with SMTP id
+ o17-20020a0568080bd100b0038ea82427d3mr10093062oik.27.1689452576704; Sat, 15
+ Jul 2023 13:22:56 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6870:5b35:b0:1b0:3f7f:673e with SMTP id
- ds53-20020a0568705b3500b001b03f7f673emr6699714oab.6.1689440340161; Sat, 15
- Jul 2023 09:59:00 -0700 (PDT)
-Date:   Sat, 15 Jul 2023 09:59:00 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000005839700600897be6@google.com>
-Subject: [syzbot] [wireless?] WARNING in sta_info_insert_rcu (3)
-From:   syzbot <syzbot+2676771ed06a6df166ad@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, ebiederm@xmission.com, edumazet@google.com,
-        hbh25y@gmail.com, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
+References: <20230714224809.3929539-1-pinkperfect2021@gmail.com>
+In-Reply-To: <20230714224809.3929539-1-pinkperfect2021@gmail.com>
+From:   Matthew Wang <matthewmwang@chromium.org>
+Date:   Sat, 15 Jul 2023 22:22:45 +0200
+Message-ID: <CABRiz0qR6j51QXZvNG2iZCK4__rB2w3VZ5kX+ZPWrVhuK02CyA@mail.gmail.com>
+Subject: Re: [PATCH v6] wifi: mwifiex: Fix OOB and integer underflow when rx packets
+To:     Polaris Pi <pinkperfect2021@gmail.com>
+Cc:     kuba@kernel.org, kuabhs@chromium.org, amitkarwar@gmail.com,
+        kvalo@kernel.org, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
 
-syzbot found the following issue on:
-
-HEAD commit:    3f01e9fed845 Merge tag 'linux-watchdog-6.5-rc2' of git://w..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=11089df2a80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=150188feee7071a7
-dashboard link: https://syzkaller.appspot.com/bug?extid=2676771ed06a6df166ad
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=122f5682a80000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=158dbaeca80000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/47d90db1f2d1/disk-3f01e9fe.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/266e07b43566/vmlinux-3f01e9fe.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/62efdb874ac7/bzImage-3f01e9fe.xz
-
-The issue was bisected to:
-
-commit c579d60f0d0cd87552f64fdebe68b5d941d20309
-Author: Hangyu Hua <hbh25y@gmail.com>
-Date:   Fri Jul 15 06:23:01 2022 +0000
-
-    ipc: mqueue: fix possible memory leak in init_mqueue_fs()
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=14a40b58a80000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=16a40b58a80000
-console output: https://syzkaller.appspot.com/x/log.txt?x=12a40b58a80000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+2676771ed06a6df166ad@syzkaller.appspotmail.com
-Fixes: c579d60f0d0c ("ipc: mqueue: fix possible memory leak in init_mqueue_fs()")
-
-wlan1: authenticate with 08:02:11:00:00:01
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1148 at net/mac80211/sta_info.c:728 sta_info_insert_check net/mac80211/sta_info.c:728 [inline]
-WARNING: CPU: 1 PID: 1148 at net/mac80211/sta_info.c:728 sta_info_insert_rcu+0x25e/0x1af0 net/mac80211/sta_info.c:940
-Modules linked in:
-CPU: 1 PID: 1148 Comm: kworker/1:2 Not tainted 6.5.0-rc1-syzkaller-00006-g3f01e9fed845 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/03/2023
-Workqueue: events cfg80211_conn_work
-RIP: 0010:sta_info_insert_check net/mac80211/sta_info.c:728 [inline]
-RIP: 0010:sta_info_insert_rcu+0x25e/0x1af0 net/mac80211/sta_info.c:940
-Code: e8 a7 14 ef f7 44 89 e0 31 ff 83 e0 01 89 c6 88 44 24 08 e8 74 10 ef f7 0f b6 44 24 08 84 c0 0f 84 19 01 00 00 e8 82 14 ef f7 <0f> 0b c7 44 24 08 ea ff ff ff e8 73 14 ef f7 48 8b 7c 24 28 4c 89
-RSP: 0018:ffffc90005bff1f0 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff888027478c80 RCX: 0000000000000000
-RDX: ffff888021f78000 RSI: ffffffff8995cd3e RDI: 0000000000000005
-RBP: 0000000000000100 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 000000000000000f R12: 0000000000110208
-R13: ffff8880768fc048 R14: ffff88807d171730 R15: ffff8880768fc000
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8913442270 CR3: 000000000c775000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- sta_info_insert+0x17/0xd0 net/mac80211/sta_info.c:953
- ieee80211_prep_connection+0x5fd/0x14a0 net/mac80211/mlme.c:7047
- ieee80211_mgd_auth+0x891/0x1170 net/mac80211/mlme.c:7205
- rdev_auth net/wireless/rdev-ops.h:481 [inline]
- cfg80211_mlme_auth+0x3b3/0x8c0 net/wireless/mlme.c:284
- cfg80211_conn_do_work+0xd3c/0xff0 net/wireless/sme.c:181
- cfg80211_conn_work+0x27f/0x3d0 net/wireless/sme.c:273
- process_one_work+0xa34/0x16f0 kernel/workqueue.c:2597
- worker_thread+0x67d/0x10c0 kernel/workqueue.c:2748
- kthread+0x344/0x440 kernel/kthread.c:389
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-
-If the bug is already fixed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to change bug's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the bug is a duplicate of another bug, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+On Sat, Jul 15, 2023 at 12:48=E2=80=AFAM Polaris Pi <pinkperfect2021@gmail.=
+com> wrote:
+>
+> Make sure mwifiex_process_mgmt_packet and its callers
+> mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet
+> not out-of-bounds access the skb->data buffer.
+>
+> Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80=
+211")
+> Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
+> ---
+> V5: Follow chromeos comments: preserve the original flow of mwifiex_proce=
+ss_uap_rx_packet
+> V6: Simplify check in mwifiex_process_uap_rx_packet
+> ---
+>  drivers/net/wireless/marvell/mwifiex/sta_rx.c   |  3 ++-
+>  drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 ++++++++++
+>  drivers/net/wireless/marvell/mwifiex/util.c     |  5 +++++
+>  3 files changed, 17 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/=
+wireless/marvell/mwifiex/sta_rx.c
+> index 13659b02ba88..88aaec645291 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+> @@ -194,7 +194,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_priv=
+ate *priv,
+>
+>         rx_pkt_hdr =3D (void *)local_rx_pd + rx_pkt_offset;
+>
+> -       if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
+> +       if ((rx_pkt_offset + rx_pkt_length) > (u16)skb->len ||
+> +           skb->len - rx_pkt_offset < sizeof(*rx_pkt_hdr)) {
+>                 mwifiex_dbg(adapter, ERROR,
+>                             "wrong rx packet: len=3D%d, rx_pkt_offset=3D%=
+d, rx_pkt_length=3D%d\n",
+>                             skb->len, rx_pkt_offset, rx_pkt_length);
+> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/ne=
+t/wireless/marvell/mwifiex/uap_txrx.c
+> index e495f7eaea03..f0711b73ba3e 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+> @@ -367,6 +367,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_pri=
+vate *priv,
+>         rx_pkt_type =3D le16_to_cpu(uap_rx_pd->rx_pkt_type);
+>         rx_pkt_hdr =3D (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_=
+offset);
+>
+> +       if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) + sizeof(*rx_pkt_hdr) >=
+ skb->len) {
+> +               mwifiex_dbg(adapter, ERROR,
+> +                           "wrong rx packet offset: len=3D%d, offset=3D%=
+d\n",
+> +                           skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offse=
+t));
+> +               priv->stats.rx_dropped++;
+> +
+> +               dev_kfree_skb_any(skb);
+> +               return 0;
+> +       }
+> +
+>         ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
+>
+>         if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
+> diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wi=
+reless/marvell/mwifiex/util.c
+> index 94c2d219835d..31e1a82883e4 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/util.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/util.c
+> @@ -399,6 +399,11 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *=
+priv,
+>
+>         pkt_len =3D le16_to_cpu(rx_pd->rx_pkt_length);
+>
+> +       if (pkt_len < sizeof(struct ieee80211_hdr) || skb->len < pkt_len)=
+ {
+> +               mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length"=
+);
+> +               return -1;
+> +       }
+> +
+>         ieee_hdr =3D (void *)skb->data;
+>         if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
+>                 if (mwifiex_parse_mgmt_packet(priv, (u8 *)ieee_hdr,
+> --
+> 2.25.1
+>
