@@ -2,114 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 298367548CF
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 15:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 332447549AC
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 17:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjGONnL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jul 2023 09:43:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34134 "EHLO
+        id S230134AbjGOPL7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jul 2023 11:11:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjGONnK (ORCPT
+        with ESMTP id S230043AbjGOPL4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jul 2023 09:43:10 -0400
-Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 982E82723;
-        Sat, 15 Jul 2023 06:43:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1689428580;
-        bh=dNz+OjNDlEUgComoIKSnoAm4Bz3z0vkm3h5nOzFr4OQ=;
-        h=From:To:Cc:Subject:Date;
-        b=mKONzNztJXodzzw/CkXykbombfvQ2uVvMtGyajakZF9CVHSC2+Sov3a/DS0a+55M8
-         skF7IP0HHNJIxnTAAEDoqsPeMpXCzqmVc1S606dRSXE9g3xdBnZcDoqVgFg6euVIev
-         JBaeir6vnqiC7s5N7O9GvN3ekFJGdgCNQB1SPoUU=
-Received: from KernelDevBox.byted.org ([180.184.51.70])
-        by newxmesmtplogicsvrszb9-0.qq.com (NewEsmtp) with SMTP
-        id ABA2A299; Sat, 15 Jul 2023 21:42:58 +0800
-X-QQ-mid: xmsmtpt1689428578tn155qoz3
-Message-ID: <tencent_1C09B99BD7DA9CAD18B00C8F0F050F540607@qq.com>
-X-QQ-XMAILINFO: MiQgh5atCJQAwR+fZ+cyonpPeTO5jOVHv2Mq4MaV0HbaGp0Cth8XI5PitKG+k7
-         OKN4BzQjChRIYr9z5MY60HCE428A6f+aay46117OjE42AUjC0PTvpnOQH+4IhZp/54EzBCQH6eEc
-         GXtkm17vh2VcrdHQzhT9ihWJ7ytbcBes418+BVSpoMtmMXANWnS1lI4hbPjLteGa6dEbta8COmpP
-         rzpw5I+EgUjRM0VMLNt/kIWN6PhzwU2PI+Fs5hqRI5dJkyAPp6ctmnLxVnuFNuZ1rukhfTfA+q2R
-         p8leTdTn6oqE5FYqZL1xl47jXLKvWXS0Cb+Wi+CLcOdods88sRrJvVu2ex2aM6BBP9QvL5kMUjB7
-         CB6YmsO14I8r8Wk4RBKAPG2+bqFSnjHzpsQ2EoifQw7vYwVwei8A3IcklUvjhCCylCnzly23gDI0
-         w6OjCMYwsmH9kzuyZJ7v1rBP0sYLesG/SuRwGxhCQVhdLdIEOL+zt4XZSLBOHzSQNU5+TXfNRs/a
-         kcxnZeNNKPEKdgBxQ+kxtZDzvqFVPdXFCdWmqXx1GuaGAGQUyPXdzbTbnxMlFEC+VDwui1ZzmDVj
-         AZMMVDCVcV75s6IdyZ+hT76BWbacTrxTuLfIgJXCUtenhHthlHh1E2Z9tTXuYLVNUSW3qjjRL+WV
-         AaY4QymS0P7xc5gdvL+d8x0moDGXElG3a1FJF77RUC6yx0PpncFtThwHURZjyfeqml1v2kkMgnis
-         2NKNR+dDiExFefspAjet7pKCc8sKU3mWg+o8O3/6KF9YZKbewHBVk+3FpHxtq4a+0UEm83W9gUEs
-         NEjc5D9MqQH8F9FSrq3T+PTQjqhrMmbOV8vKhYNYuW0oclHJ0ioUaMnF9fx955q8k0HY4WXaNz+f
-         gNMvsqiT6ehDc4zl38CjffwMQ27e28TSYuY5/KhccSBN+9dQwpIHuv809ZEo7BNHleoncXTyVNid
-         rv66H81AV5s890/SA9u/v4vnvnjHDAtFeUMdDRuqnDyCW/MnHg6gPasRgHpD8UhTBJ2UkVns8Nzf
-         J8IT3AD/mcD7D4it2Ydth8lof1oDkWhBmSFocIl6cil/cB1yee
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-From:   Zhang Shurong <zhang_shurong@foxmail.com>
-To:     pkshih@realtek.com, Markus.Elfring@web.de, kuba@kernel.org
-Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Zhang Shurong <zhang_shurong@foxmail.com>
-Subject: [PATCH v4] wifi: rtw89: debug: Fix error handling in rtw89_debug_priv_btc_manual_set()
-Date:   Sat, 15 Jul 2023 21:42:57 +0800
-X-OQ-MSGID: <20230715134257.1847511-1-zhang_shurong@foxmail.com>
-X-Mailer: git-send-email 2.30.2
+        Sat, 15 Jul 2023 11:11:56 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37E6D30C0
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 08:11:50 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-346129c9512so6465625ab.1
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 08:11:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google; t=1689433909; x=1692025909;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x9XlpRMNdAAEFImKOS7TDT4umEsjSeY77+bJ4P1MRe8=;
+        b=KpbiwA9NRF8+W6tdUk7oAEajedYliLcT3fLwx1hKWNPafETFpJG9nnPmhVRp1UdI1a
+         ec9mVwfBesk49WkdsrPfeQTQNowRCIhbKJuP16XD7dO7TZekJ8yDxNsj6kgUO5dmVinN
+         O/xItmOPmt9BnCnKdfjfmpm5zf8eizKb7wHPU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689433909; x=1692025909;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x9XlpRMNdAAEFImKOS7TDT4umEsjSeY77+bJ4P1MRe8=;
+        b=fpi6JB1kNcvNhs/SYbmt7sHNsryQtvdjsns5H6xJ5he3jvOdk384ZdlZRkfcIt+V82
+         kx4sIZzRqUWthVFVye9ScgJZdPthzuKahZlQH15yQjDZlIJN2COyJo+XXdxQbghf9AuB
+         de2/8d8y+sgx3T1V5G0ZtbZsncP2WVdQ9eEY1CokBNyMA/cn/6HOXO41rpPrM9Wz3zt0
+         Ldnc2U0ODXiPafL8Olt/vO+nzUUUcjx5zffJ3LpjtZmJEAgCzfOKJ4WrXeg+ghI7mX8d
+         5SZhN17Yv15lHs7EYhr3ZDpPAyNtE1xBJ/M//TtYzopeN7bsrFgYoOzuzp3N/ovHQjPX
+         xeSQ==
+X-Gm-Message-State: ABy/qLaZ+0UnSoFOeHamp8V7p+IGzCvtSTy4Jg5TZeLkADbmRU0fGUBv
+        KHw2eVOsJrmNVqvzq/8GCkA+hA==
+X-Google-Smtp-Source: APBJJlGJVqbBu5lKEA54CgyQF24n/fOTJfhIYz9w3XH4VGOvH3KCmWksDsEmgsEiSCeG83sO26Hgmw==
+X-Received: by 2002:a05:6e02:1148:b0:343:ef5e:8286 with SMTP id o8-20020a056e02114800b00343ef5e8286mr3847417ill.7.1689433909634;
+        Sat, 15 Jul 2023 08:11:49 -0700 (PDT)
+Received: from [10.211.55.3] (c-98-61-227-136.hsd1.mn.comcast.net. [98.61.227.136])
+        by smtp.googlemail.com with ESMTPSA id f8-20020a056638022800b0042b2959e6dcsm3321388jaq.87.2023.07.15.08.11.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 Jul 2023 08:11:48 -0700 (PDT)
+Message-ID: <1c6175fc-496a-843c-c8c5-2173e065eaa8@ieee.org>
+Date:   Sat, 15 Jul 2023 10:11:46 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] net: Explicitly include correct DT includes
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Alex Elder <elder@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
+        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-wpan@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        wcn36xx@lists.infradead.org
+References: <20230714174809.4060885-1-robh@kernel.org>
+From:   Alex Elder <elder@ieee.org>
+In-Reply-To: <20230714174809.4060885-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If there is a failure during kstrtobool_from_user()
-rtw89_debug_priv_btc_manual_set should return a negative error code
-instead of returning the count directly.
+On 7/14/23 12:48 PM, Rob Herring wrote:
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it as merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-Fix this bug by returning an error code instead of a count after 
-a failed call of the function "kstrtobool_from_user". Moreover
-I omitted the label "out" with this source code correction.
+(I significantly reduced the addressee list to permit the message
+to be sent.)
 
-Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
----
-Changes in v2:
-- Corrected the format of this patch
-- Used variable ret instead of goto out
-Changes in v3:
-- Improved change description
-Changes in v4:
-- Improved change description
+For "drivers/net/ipa/ipa_main.c":
 
- drivers/net/wireless/realtek/rtw89/debug.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Acked-by: Alex Elder <elder@linaro.org>
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index a4bbac916e22..ce5a9ac08145 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -3193,12 +3193,14 @@ static ssize_t rtw89_debug_priv_btc_manual_set(struct file *filp,
- 	struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	bool btc_manual;
-+	int ret;
- 
--	if (kstrtobool_from_user(user_buf, count, &btc_manual))
--		goto out;
-+	ret = kstrtobool_from_user(user_buf, count, &btc_manual);
-+	if (ret)
-+		return ret;
- 
- 	btc->ctrl.manual = btc_manual;
--out:
-+
- 	return count;
- }
- 
--- 
-2.30.2
+> ---
+>   drivers/net/can/bxcan.c                                 | 1 -
+>   drivers/net/can/ifi_canfd/ifi_canfd.c                   | 1 -
+. . .
+>   drivers/net/ieee802154/ca8210.c                         | 1 -
+>   drivers/net/ipa/ipa_main.c                              | 2 +-
+>   drivers/net/pcs/pcs-rzn1-miic.c                         | 1 +
+>   drivers/net/phy/marvell-88x2222.c                       | 1 -
+>   drivers/net/phy/mediatek-ge-soc.c                       | 2 --
+>   drivers/net/wireless/ath/ath10k/ahb.c                   | 2 +-
+>   drivers/net/wireless/ath/ath11k/qmi.c                   | 1 -
+>   drivers/net/wireless/ath/wcn36xx/main.c                 | 3 +--
+>   drivers/net/wireless/intersil/orinoco/airport.c         | 2 +-
+>   drivers/net/wireless/mediatek/mt76/mt7915/soc.c         | 1 -
+>   drivers/net/wireless/silabs/wfx/bus_sdio.c              | 2 +-
+>   net/core/of_net.c                                       | 1 +
+>   124 files changed, 110 insertions(+), 120 deletions(-)
 
+. . .
+
+> diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+> index 6a2f2fc2f501..da853353a5c7 100644
+> --- a/drivers/net/ipa/ipa_main.c
+> +++ b/drivers/net/ipa/ipa_main.c
+> @@ -13,8 +13,8 @@
+>   #include <linux/firmware.h>
+>   #include <linux/module.h>
+>   #include <linux/of.h>
+> -#include <linux/of_device.h>
+>   #include <linux/of_address.h>
+> +#include <linux/platform_device.h>
+>   #include <linux/pm_runtime.h>
+>   #include <linux/firmware/qcom/qcom_scm.h>
+>   #include <linux/soc/qcom/mdt_loader.h>
+
+. . .
