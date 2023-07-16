@@ -2,158 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DED31754C03
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jul 2023 22:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40727754CD6
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Jul 2023 02:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbjGOUXC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Jul 2023 16:23:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44064 "EHLO
+        id S229795AbjGPAAe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Jul 2023 20:00:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229797AbjGOUW6 (ORCPT
+        with ESMTP id S229665AbjGPAAd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Jul 2023 16:22:58 -0400
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6332718
-        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 13:22:57 -0700 (PDT)
-Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6b74791c948so2554314a34.3
-        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 13:22:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1689452576; x=1692044576;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=STm6LkRTWi6KPP077fUx+V22dGnylBXk6BWjTWf9c5Q=;
-        b=UplMPPtxWpR+M1tc1YmgYZwfsstBdqB/7ya0NgKvoPH4uS5+eZiyNMUGtlcCT/WGE5
-         Kkg95bU2jd6uaDNX09hN0jQhgcbYc7s6lslyObvmy1tzZlNJviIo5ZpqtGGfBkESlwDJ
-         hdpx9DywYD9wI9/lT2z44nS+iIVB0Gl7hEdLM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689452576; x=1692044576;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=STm6LkRTWi6KPP077fUx+V22dGnylBXk6BWjTWf9c5Q=;
-        b=PfZIu2vVUYzyP2XE4oEmWokMW9Od+E1mnc5s61k3eXkmwzuAFRmATwAFglsQufvxvB
-         vXTMBTH8CkQNEf9g2GYyWdmGfr3cwXgq9WU9DQeIIyHnpKB8v0nuqTDn/Oz3llGGnO/C
-         Ja6KffsQpCdVJOwMTpSoPL2f0nNTKgxm8eZR4hsPXF3xgwagoJD2ObnOezIZ1GWeSdLc
-         Oll51nLDGXWBSl4WszVt7+zMsOJ7/tPpqhDGrqDtZoJ+hvBIwitn5BaBnD8BWiH+Tv/c
-         s6mQ9lFzKzFQwUhs/HTz6iJZArRL/faudoJQUfBEO0CuDAccdGftcwkpX4uvDVq1TVdx
-         lc6w==
-X-Gm-Message-State: ABy/qLYzGl51cnTelCNdHRaiB5/cF9MpD+aBCBKsKtogIO5DWfvUnrdl
-        wbreE35aoqJIwwOk85ZXmgT2f0BUjMdmHceeZl62gg==
-X-Google-Smtp-Source: APBJJlHJdHTFo7V2BQV74YAeVfMeCZgqlAxzMn625VyvO6ThFwBrne1mLIXfJmPujhAa+DkO3pLnXiid3t6cyJpMyFw=
-X-Received: by 2002:a05:6808:bd1:b0:38e:a824:27d3 with SMTP id
- o17-20020a0568080bd100b0038ea82427d3mr10093062oik.27.1689452576704; Sat, 15
- Jul 2023 13:22:56 -0700 (PDT)
+        Sat, 15 Jul 2023 20:00:33 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B0D2118
+        for <linux-wireless@vger.kernel.org>; Sat, 15 Jul 2023 17:00:32 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 64FD0340061;
+        Sun, 16 Jul 2023 00:00:30 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.112.12])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id F3FBB13C2B0;
+        Sat, 15 Jul 2023 17:00:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F3FBB13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1689465629;
+        bh=fEiPZ3FMcQFglGMn2iejpQZqWwaKcd+hEleVApCk4lM=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=piNXzXWrgjI18l6uD3Pi2xEK7etpXTfjnzwDL1J1XhHIUrw0RmL0Dz2lsdXGLwNwG
+         mBXT8ydYTti+p0yIJGZDeQoClX/45JG0kLWRYszDqlA1EEag+6bLp3y+EgFSA4IEge
+         7BfiYxC/vTIBjSfrqwHM/sBsQ/HZVGI55nLKv/Lo=
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: move mib_stats structure in
+ mt76.h
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
+        linux-wireless@vger.kernel.org
+References: <cover.1683930235.git.lorenzo@kernel.org>
+ <d7f29306df3495e183304825cd3159bf1ccb1d87.1683930235.git.lorenzo@kernel.org>
+ <486cb426-737e-fa57-20da-344fc44bb4de@candelatech.com>
+ <ZLKI9tiNytMl8Vlo@lore-desk>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <a168df1e-573a-43ba-b466-b7e5784dc2ff@candelatech.com>
+Date:   Sat, 15 Jul 2023 17:00:28 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-References: <20230714224809.3929539-1-pinkperfect2021@gmail.com>
-In-Reply-To: <20230714224809.3929539-1-pinkperfect2021@gmail.com>
-From:   Matthew Wang <matthewmwang@chromium.org>
-Date:   Sat, 15 Jul 2023 22:22:45 +0200
-Message-ID: <CABRiz0qR6j51QXZvNG2iZCK4__rB2w3VZ5kX+ZPWrVhuK02CyA@mail.gmail.com>
-Subject: Re: [PATCH v6] wifi: mwifiex: Fix OOB and integer underflow when rx packets
-To:     Polaris Pi <pinkperfect2021@gmail.com>
-Cc:     kuba@kernel.org, kuabhs@chromium.org, amitkarwar@gmail.com,
-        kvalo@kernel.org, ganapathi017@gmail.com,
-        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZLKI9tiNytMl8Vlo@lore-desk>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-MDID: 1689465631-6GqKUXb52O1b
+X-MDID-O: us5;ut7;1689465631;6GqKUXb52O1b;<greearb@candelatech.com>;0a45d51dfbd39c7bb3fe23128efe5de6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
+On 7/15/23 4:54 AM, Lorenzo Bianconi wrote:
+>> On 5/12/23 15:29, Lorenzo Bianconi wrote:
+>>> mib_stats structure is shared by mostly all chipsets. Move it to shared
+>>> code.
+>>
+>> In case this thing hasn't been pushed upstream yet, then a suggestion:
+>>
+>> Create a struct mt76_mib_stats_common class that has the common counters,
+>> and then per-driver can have that struct as first member of its mib stats.
+>>
+>> I have added a lot of per-driver stats that never made it upstream
+>> and are not fully shared across different drivers.
+> 
+> I would say mt76_mib_stats is quite a general name. I think we can do somothing
+> like (if it is really necessary):
+> 
+> struct mt7915_mib_stats {
+> 	struct mt76_mib_stats mt76;
+> 	...
+> };
 
-On Sat, Jul 15, 2023 at 12:48=E2=80=AFAM Polaris Pi <pinkperfect2021@gmail.=
-com> wrote:
->
-> Make sure mwifiex_process_mgmt_packet and its callers
-> mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet
-> not out-of-bounds access the skb->data buffer.
->
-> Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80=
-211")
-> Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-> ---
-> V5: Follow chromeos comments: preserve the original flow of mwifiex_proce=
-ss_uap_rx_packet
-> V6: Simplify check in mwifiex_process_uap_rx_packet
-> ---
->  drivers/net/wireless/marvell/mwifiex/sta_rx.c   |  3 ++-
->  drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 ++++++++++
->  drivers/net/wireless/marvell/mwifiex/util.c     |  5 +++++
->  3 files changed, 17 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/=
-wireless/marvell/mwifiex/sta_rx.c
-> index 13659b02ba88..88aaec645291 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-> @@ -194,7 +194,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_priv=
-ate *priv,
->
->         rx_pkt_hdr =3D (void *)local_rx_pd + rx_pkt_offset;
->
-> -       if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
-> +       if ((rx_pkt_offset + rx_pkt_length) > (u16)skb->len ||
-> +           skb->len - rx_pkt_offset < sizeof(*rx_pkt_hdr)) {
->                 mwifiex_dbg(adapter, ERROR,
->                             "wrong rx packet: len=3D%d, rx_pkt_offset=3D%=
-d, rx_pkt_length=3D%d\n",
->                             skb->len, rx_pkt_offset, rx_pkt_length);
-> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/ne=
-t/wireless/marvell/mwifiex/uap_txrx.c
-> index e495f7eaea03..f0711b73ba3e 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-> @@ -367,6 +367,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_pri=
-vate *priv,
->         rx_pkt_type =3D le16_to_cpu(uap_rx_pd->rx_pkt_type);
->         rx_pkt_hdr =3D (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_=
-offset);
->
-> +       if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) + sizeof(*rx_pkt_hdr) >=
- skb->len) {
-> +               mwifiex_dbg(adapter, ERROR,
-> +                           "wrong rx packet offset: len=3D%d, offset=3D%=
-d\n",
-> +                           skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offse=
-t));
-> +               priv->stats.rx_dropped++;
-> +
-> +               dev_kfree_skb_any(skb);
-> +               return 0;
-> +       }
-> +
->         ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
->
->         if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-> diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wi=
-reless/marvell/mwifiex/util.c
-> index 94c2d219835d..31e1a82883e4 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/util.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/util.c
-> @@ -399,6 +399,11 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *=
-priv,
->
->         pkt_len =3D le16_to_cpu(rx_pd->rx_pkt_length);
->
-> +       if (pkt_len < sizeof(struct ieee80211_hdr) || skb->len < pkt_len)=
- {
-> +               mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length"=
-);
-> +               return -1;
-> +       }
-> +
->         ieee_hdr =3D (void *)skb->data;
->         if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
->                 if (mwifiex_parse_mgmt_packet(priv, (u8 *)ieee_hdr,
-> --
-> 2.25.1
->
+Maybe:
+
+struct mt7915_mib_stats {
+	struct mt76_mib_stats common;
+	...
+};
+
+I also noticed that Ryder added a few of my patches that extended the
+stats, so I think there are probably a lot of stats in that struct
+that are not set on the 7921 driver and probably older drivers too.
+
+To me, unset stats are confusing, so I'd prefer to put stats that are mostly
+common in a common struct, and have per-driver stats just found in the driver
+itself.
+
+Thanks,
+Ben
+
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
