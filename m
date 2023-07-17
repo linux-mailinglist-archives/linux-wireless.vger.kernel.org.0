@@ -2,113 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8300A755957
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 04:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D188575595C
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 04:06:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230367AbjGQCFh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Jul 2023 22:05:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45920 "EHLO
+        id S229579AbjGQCGB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Jul 2023 22:06:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230356AbjGQCFg (ORCPT
+        with ESMTP id S229591AbjGQCGA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Jul 2023 22:05:36 -0400
-Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69BE9E5A
-        for <linux-wireless@vger.kernel.org>; Sun, 16 Jul 2023 19:05:34 -0700 (PDT)
-Received: by mail-ua1-x933.google.com with SMTP id a1e0cc1a2514c-7948c329363so1416753241.0
-        for <linux-wireless@vger.kernel.org>; Sun, 16 Jul 2023 19:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689559533; x=1692151533;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NbHxQY6TxAMzw+E74X1AuxdarcQJj9Gt/ZbpwZ/TygU=;
-        b=LlSTUor5++VfrsgeMNhTsQvIQfzINqZTzWZQdM/YlSc1psb5UXBj79x8AXNgn/Hc5A
-         KaTvYC4VC1eG+mmxJ4DbPB6p+VgNFFYOC4tYdVzYNT3ug5LNJgsRg8VsoyzcS+sm04pE
-         Wt6eRiT0+FDWCzJqcN53T2IfZTeSknkhipnm3jGqPVT4dK4nCvsAPXomUyqhI8+MYlbe
-         Tz/Ilq2UPKQNetNtsj4hODKleTp8Z+h1sWKV52KA6HPz8QiUF3xBp4UM4U28CixheMZj
-         b6a42JRIQsnZ2XS9G1W0iVxXQt3cn/loHL8RtxGp6yeNpHvnKxpK/70JC5nAjn3wb7MP
-         KwKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689559533; x=1692151533;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NbHxQY6TxAMzw+E74X1AuxdarcQJj9Gt/ZbpwZ/TygU=;
-        b=X4ccZqQay1rsrXzvDHIfkc0ZT/s/B2ie5pm7iBY4nLxowo3Nhju8F6JtF3ZzYSEiQs
-         eeN25VKOj204lzyz78pFzWVsLr+O2mRctQiWKei8NvguBAujAd71pk0WfyP+YQOFaX6v
-         l82qqLECg68hHafLB4lUcUinSImDJfU5bjIbPuPvzW9YJvVGmBEfxViW0HeRPGp9uhqu
-         9vFdvmyw0Lztv8qtj5Vs1mNjBtndWUEebrOlwCMn9bQmq/hYt6BiORoEi9C/ALA+AkYa
-         aNhao2P6Sx5NCMUS54wAk2JpqowAyJ8daBHneSsWcG/3YODtETVEd5FPhpViwcPPYfCO
-         to4g==
-X-Gm-Message-State: ABy/qLZkcF21tJ0Y/mttwRrJRps3x4eWUhKZcsB+dI6fjVleYNl0wuCr
-        /SOO2Ii69LxQPW/Dn3RP3tgvXW1aWrZ9XOCRODocFw==
-X-Google-Smtp-Source: APBJJlG4p2cK4W1H1tKopPr5y8IaWqaroILZGMK9NaigJZOT2EvVy25vSJ7aG1DyEXnwo0jMC/4B7Ob3YzhioH3ibTM=
-X-Received: by 2002:a1f:e004:0:b0:481:2d4c:162d with SMTP id
- x4-20020a1fe004000000b004812d4c162dmr5072269vkg.8.1689559533341; Sun, 16 Jul
- 2023 19:05:33 -0700 (PDT)
+        Sun, 16 Jul 2023 22:06:00 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AAD75E59
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Jul 2023 19:05:57 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36H25bqW6008939, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36H25bqW6008939
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 17 Jul 2023 10:05:37 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Mon, 17 Jul 2023 10:05:45 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Mon, 17 Jul 2023 10:05:45 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Mon, 17 Jul 2023 10:05:45 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Sean Mollet <sean@malmoset.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH] RTW88 firmware download issues - improvement, but not perfect
+Thread-Topic: [PATCH] RTW88 firmware download issues - improvement, but not
+ perfect
+Thread-Index: AQHZtx+ZfIlqxfTQEkiCCTUOUI99I6+8Kt+AgAEJcJA=
+Date:   Mon, 17 Jul 2023 02:05:44 +0000
+Message-ID: <feadf58594b14c67bcf981dde6a60077@realtek.com>
+References: <491EE697-0DFE-433A-97EA-F7D40E9FE0A5@malmoset.com>
+ <09b6e6ab-5db4-ceb6-3590-f1a729f234d5@lwfinger.net>
+In-Reply-To: <09b6e6ab-5db4-ceb6-3590-f1a729f234d5@lwfinger.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230710215906.49514550@kernel.org> <20230711050445.GA19323@lst.de>
- <ZK1FbjG+VP/zxfO1@ziepe.ca> <20230711090047.37d7fe06@kernel.org>
- <04187826-8dad-d17b-2469-2837bafd3cd5@kernel.org> <20230711093224.1bf30ed5@kernel.org>
- <CAHS8izNHkLF0OowU=p=mSNZss700HKAzv1Oxqu2bvvfX_HxttA@mail.gmail.com>
- <20230711133915.03482fdc@kernel.org> <2263ae79-690e-8a4d-fca2-31aacc5c9bc6@kernel.org>
- <CAHS8izP=k8CqUZk7bGUx4ctm4m2kRC2MyEJv+N4+b0cHVkTQmA@mail.gmail.com>
- <ZK6kOBl4EgyYPtaD@ziepe.ca> <CAHS8izNuda2DXKTFAov64F7J2_BbMPaqJg1NuMpWpqGA20+S_Q@mail.gmail.com>
- <143a7ca4-e695-db98-9488-84cf8b78cf86@amd.com> <CAHS8izPm6XRS54LdCDZVd0C75tA1zHSu6jLVO8nzTLXCc=H7Nw@mail.gmail.com>
- <9cf3ce79-2d5e-090d-c83e-0c359ace1cb9@kernel.org>
-In-Reply-To: <9cf3ce79-2d5e-090d-c83e-0c359ace1cb9@kernel.org>
-From:   Mina Almasry <almasrymina@google.com>
-Date:   Sun, 16 Jul 2023 19:05:21 -0700
-Message-ID: <CAHS8izOL593X7=9pGaeC1JJ_5hYookZDn7O=fike=e48+myvxA@mail.gmail.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-To:     David Ahern <dsahern@kernel.org>
-Cc:     =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Hari Ramakrishnan <rharix@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Samiullah Khawaja <skhawaja@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Jesper Dangaard Brouer <jbrouer@redhat.com>,
-        brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>, logang@deltatee.com,
-        Bjorn Helgaas <bhelgaas@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -116,105 +70,63 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jul 14, 2023 at 8:19=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
-ote:
->
-> On 7/14/23 8:55 AM, Mina Almasry wrote:
-> >
-> > I guess the remaining option not fully explored is the idea of getting
-> > the networking stack to consume the scatterlist that
-> > dma_buf_map_attachment() provides for the device memory. The very
-> > rough approach I have in mind (for the RX path) is:
-> >
-> > 1. Some uapi that binds a dmabuf to an RX queue. It will do a
-> > dma_buf_map_attachment() and get the sg table.
-> >
-> > 2. We need to feed the scratterlist entries to some allocator that
-> > will chunk it up into pieces that can be allocated by the NIC for
-> > incoming traffic. I'm thinking genalloc may work for this as-is, but I
-> > may need to add one or use something else if I run into some issue.
-> >
-> > 3. We can implement a memory_provider that allocates these chunks and
-> > wraps them in a struct new_abstraction (as David called it) and feeds
-> > those into the page pool.
-> >
-> > 4. The page pool would need to be able to process these struct
-> > new_abstraction alongside the struct pages it normally gets from
-> > providers. This is maybe the most complicated part, but looking at the
-> > page pool code it doesn't seem that big of a hurdle (but I have not
-> > tried a POC yet).
-> >
-> > 5. The drivers (I looked at mlx5) seem to avoid making any mm calls on
-> > the struct pages returned by the pool; the pool abstracts everything
-> > already. The changes to the drivers may be minimal..?
-> >
-> > 6. We would need to add a new helper, skb_add_rx_new_abstraction_frag
-> > that creates a frag out of new_abstraction rather than a struct page.
-> >
-> > Once the skb frags with struct new_abstraction are in the TCP stack,
-> > they will need some special handling in code accessing the frags. But
-> > my RFC already addressed that somewhat because the frags were
-> > inaccessible in that case. In this case the frags will be both
-> > inaccessible and will not be struct pages at all (things like
-> > get_page() will not work), so more special handling will be required,
-> > maybe.
-> >
-> > I imagine the TX path would be considerably less complicated because
-> > the allocator and page pool are not involved (I think).
-> >
-> > Anyone see any glaring issues with this approach?
->
-> Moving skb_frags to an alternative scheme is essential to make this
-> work. The current page scheme to go from user virtual to pages to
-> physical is not needed for the dmabuf use case.
->
-> For the driver and hardware queue: don't you need a dedicated queue for
-> the flow(s) in question?
-
-In the RFC and the implementation I'm thinking of, the queue is
-'dedicated' in that each queue will be a devmem TCP queue or a regular
-queue. devmem queues generate devmem skbs and non-devmem queues
-generate non-devmem skbs. We support switching queues between devmem
-mode and non-devmem mode via a uapi.
-
-> If not, how can you properly handle the
-> teardown case (e.g., app crashes and you need to ensure all references
-> to GPU memory are removed from NIC descriptors)?
-
-Jason and Christian will correct me if I'm wrong, but AFAICT the
-dma-buf API requires the dma-buf provider to keep the attachment
-mapping alive as long as the importer requires it. The dma-buf API
-gives the importer dma_buf_map_attachment() and
-dma_buf_unmap_attachment() APIs, but there is no callback for the
-exporter to inform the importer that it has to take the mapping away.
-The closest thing I saw was the move_notify() callback, but that is
-optional.
-
-In my mind the way it works is that there will be some uapi that binds
-a dma-buf to an RX queue, that will create the attachment and the
-mapping. If the user crashes or closes the dma-buf handle then that
-will unbind the dma-buf from the RX queue, but the mapping will remain
-alive (via some refcounting) until all the NIC descriptors are freed
-and the mapping is not under use anymore. Usually this will happen
-next driver reset which destroys and recreates rx queues thereby
-freeing all the NIC descriptors (but could be a new API so that we
-don't rely on a driver reset).
-
-> If you agree on this
-> point, then you can require the dedicated queue management in the driver
-> to use and expect only the alternative frag addressing scheme. ie., it
-> knows the address is not struct page (validates by checking skb flag or
-> frag flag or address magic), but a reference to say a page_pool entry
-> (if you are using page_pool for management of the dmabuf slices) which
-> contains the metadata needed for the use case.
-
-Honestly if my understanding above doesn't match what you want, I
-could implement 'dedicated queues' instead, just let me know what you
-want at some future iteration. Now, I'm more worried about this memory
-format issue and I'm working on an RX prototype without struct pages.
-So far purely technically speaking it seems possible.
-
-
---=20
-Thanks,
-Mina
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTGFycnkgRmluZ2VyIDxs
+YXJyeS5maW5nZXJAZ21haWwuY29tPiBPbiBCZWhhbGYgT2YgTGFycnkgRmluZ2VyDQo+IFNlbnQ6
+IE1vbmRheSwgSnVseSAxNywgMjAyMyAyOjAyIEFNDQo+IFRvOiBTZWFuIE1vbGxldCA8c2VhbkBt
+YWxtb3NldC5jb20+OyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDog
+UmU6IFtQQVRDSF0gUlRXODggZmlybXdhcmUgZG93bmxvYWQgaXNzdWVzIC0gaW1wcm92ZW1lbnQs
+IGJ1dCBub3QgcGVyZmVjdA0KPiANCj4gDQo+IFBhdGNoZXMgZm9yIHRoZSBydGx3aWZpLCBydHc4
+OCwgYW5kIHJ0dzg5IGRyaXZlcnMgc2hvdWxkIGJlIGFkZHJlc3NlZCB0byBQaW5nLUtlDQo+IFNo
+aWggPHBrc2hpaEByZWFsdGVrLmNvbT4uIEFueSBwYXRjaCBmb3IgYSBkcml2ZXIgaW4gZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvLi4uDQo+IHNob3VsZCBiZSBzZW50IHRvIEthbGxlIFZhbG8gPGt2YWxv
+QGtlcm5lbC5vcmc+LiBDYyBsaW51eC13aXJlbGVzcy4NCg0KSSBzdWJzY3JpYmUgdGhpcyBtYWls
+aW5nIGxpc3QgYW5kIHRyZWF0IHJ0bHdpZmkvcnR3ODgvcnR3ODkgd2l0aCBzcGVjaWFsIGZpbHRl
+ciwgc28NCkkgdGhpbmsgSSBkb24ndCBtaXNzIHRoaXMgbWFpbC4gOi0pDQoNCj4gDQo+IFRoZSBz
+dWJqZWN0IGxpbmUgc2hvdWxkIGJlICJ3aWZpOiBydHc4ODogLi4uLi4uIg0KDQpJIHRoaW5rIHRo
+aXMgc2hvdWxkIGJlICJSRkMiIGluc3RlYWQgb2YgIlBBVENIIiBhcyBzdWJqZWN0LiANCj4gPiBA
+QCAtNzk0LDE1ICs3OTQsMTUgQEAgc3RhdGljIGludCBfX3J0d19kb3dubG9hZF9maXJtd2FyZShz
+dHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LA0KPiA+DQo+ID4gICAgICAgICAgd2xhbl9jcHVfZW5hYmxl
+KHJ0d2RldiwgdHJ1ZSk7DQo+ID4NCj4gPiAtICAgICAgIGlmICghbHRlY29leF9yZWdfd3JpdGUo
+cnR3ZGV2LCAweDM4LCBsdGVjb2V4X2Jja3ApKSB7DQo+ID4gLSAgICAgICAgICAgICAgIHJldCA9
+IC1FQlVTWTsNCj4gPiAtICAgICAgICAgICAgICAgZ290byBkbGZ3X2ZhaWw7DQo+ID4gLSAgICAg
+ICB9DQo+ID4gLQ0KPiA+ICAgICAgICAgIHJldCA9IGRvd25sb2FkX2Zpcm13YXJlX3ZhbGlkYXRl
+KHJ0d2Rldik7DQo+ID4gICAgICAgICAgaWYgKHJldCkNCj4gPiAgICAgICAgICAgICAgICAgIGdv
+dG8gZGxmd19mYWlsOw0KPiA+DQo+ID4gKyAgICAgICBpZiAoIWx0ZWNvZXhfcmVnX3dyaXRlKHJ0
+d2RldiwgMHgzOCwgbHRlY29leF9iY2twKSkgew0KPiA+ICsgICAgICAgICAgICAgICByZXQgPSAt
+RUJVU1k7DQo+ID4gKyAgICAgICAgICAgICAgIGdvdG8gZGxmd19mYWlsOw0KPiA+ICsgICAgICAg
+fQ0KPiA+ICsNCg0KVGhpcyBsb29rcyByZWFzb24gdG8gcmVzdG9yZSAweDM4IGFmdGVyIHZhbGlk
+YXRpbmcgZmlybXdhcmUuIERvIHlvdSBoYXZlIGEgcmVzdWx0IA0KaG93IHRoaXMgY2hhbmdlIGNh
+biBpbXByb3ZlPyANCg0KPiA+ICAgICAgICAgIC8qIHJlc2V0IGRlc2MgYW5kIGluZGV4ICovDQo+
+ID4gICAgICAgICAgcnR3X2hjaV9zZXR1cChydHdkZXYpOw0KPiA+DQo+ID4gZGlmZiAtLWdpdCBh
+L3V0aWwuYyBiL3V0aWwuYw0KPiA+IGluZGV4IGZmM2MyNjkuLmZiZDY1OTkgMTAwNjQ0DQo+ID4g
+LS0tIGEvdXRpbC5jDQo+ID4gKysrIGIvdXRpbC5jDQo+ID4gQEAgLTEwLDExICsxMCwxMSBAQCBi
+b29sIGNoZWNrX2h3X3JlYWR5KHN0cnVjdCBydHdfZGV2ICpydHdkZXYsIHUzMiBhZGRyLCB1MzIg
+bWFzaywgdTMyIHRhcmdldCkNCj4gPiAgIHsNCj4gPiAgICAgICAgICB1MzIgY250Ow0KPiA+DQo+
+ID4gLSAgICAgICBmb3IgKGNudCA9IDA7IGNudCA8IDEwMDA7IGNudCsrKSB7DQo+ID4gKyAgICAg
+ICBmb3IgKGNudCA9IDA7IGNudCA8IDUwMDA7IGNudCsrKSB7DQo+ID4gICAgICAgICAgICAgICAg
+ICBpZiAocnR3X3JlYWQzMl9tYXNrKHJ0d2RldiwgYWRkciwgbWFzaykgPT0gdGFyZ2V0KQ0KPiA+
+ICAgICAgICAgICAgICAgICAgICAgICAgICByZXR1cm4gdHJ1ZTsNCj4gPg0KPiA+IC0gICAgICAg
+ICAgICAgICB1ZGVsYXkoMTApOw0KPiA+ICsgICAgICAgICAgICAgICB1ZGVsYXkoNTApOw0KDQpJ
+IGxvb2sgaW50byB0aGUgbGF0ZXN0IHZlbmRvciBkcml2ZXIsIGl0IHNob3dzIHRoYXQgY250IGJl
+Y29tZXMgMTAsMDAwIGFuZCBkZWxheQ0KaXMgNTB1cyBhcyB5b3VyIGNoYW5nZS4gDQoNCj4gDQo+
+IFlvdSBoYXZlIGluY3JlYXNlZCB0aGUgbWF4aW11bSBzdGFsbCB0aW1lIGZyb20gMTAgbXNlYyB0
+byAyNTAgbXNlYy4gRG8geW91DQo+IHJlYWxseSBuZWVkIHRvIGxvY2sgdXAgYSBDUFUgZm9yIHRo
+YXQgbG9uZz8gVGhpcyBpcyBhIHBsYWNlIHdoZXJlIHlvdSBzaG91bGQNCj4gZG9jdW1lbnQgaG93
+IGxvbmcgaXQgYWN0dWFsbHkgdGFrZXMsIGlmIGl0IHJlYWxseSBpcyBtb3JlIHRoYW4gMTAgbXNl
+Yy4gT24gbXkNCj4gcnR3ODgyMWNlIGNhcmQsIHRoZSBsb25nZXN0IGl0IHRvb2sgd2FzIDYuMjUg
+bXNlYy4gVGhlIFVTQiBkZXZpY2Ugd2lsbCBsaWtlbHkNCj4gdGFrZSBsb25nZXIsIGJ1dCBJIHdv
+dWxkIGJlIGludGVyZXN0ZWQgaW4geW91ciB3b3JzdCBjYXNlLg0KDQpNYXliZSwgd2UgY2FuIHNl
+dCBjbnQvdWRlbGF5IGFjY29yZGluZyB0byAncnR3ZGV2LT5oY2kudHlwZScsIGFuZCBjaGFuZ2Ug
+dWRlbGF5KCkNCnRvIGZzbGVlcCgpIGlmIGFsbCBjYWxsZXJzIGFyZSBydW5uaW5nIG9uIHRocmVh
+ZCBjb250ZXh0LiANCg0KQW5vdGhlciBub3RlIGlzIHRoYXQgY2hlY2tfaHdfcmVhZHkoKSBpcyBh
+bHNvIHVzZWQgYnkgbWFueSBvdGhlciBwbGFjZXMuDQoNCj4gRllJLCBJIGNoYW5nZWQNCj4gY2hl
+Y2tfaHdfcmVhZHkoKSB0byByZWFkDQo+IA0KPiAgICAgICAgICAgICAgICAgIGZvciAoY250ID0g
+MDsgY250IDwgNTAwMDsgY250KyspIHsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgIGlmIChy
+dHdfcmVhZDMyX21hc2socnR3ZGV2LCBhZGRyLCBtYXNrKSA9PSB0YXJnZXQpIHsNCj4gICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGNudCA+IDUwKQ0KPiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHByX2luZm8oImh3X3JlYWR5IGF0IGNvdW50ICVk
+XG4iLCBjbnQpOw0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIHRydWU7DQo+ICAg
+ICAgICAgICAgICAgICAgfQ0KPiANCj4gICAgICAgICAgICAgICAgICB1ZGVsYXkoNTApOw0KDQpU
+aGlzIGxvb2tzIHdlaXJkLiBJZiB1ZGVsYXkoKSBpc24ndCBpbiBsb29wLCBQQ0lFIGRldmljZSBj
+YW4gcnVuIHF1aWNrbHkgYW5kIGdldA0KYSByZXN1bHQgIm5vdCByZWFkeSIuIEJ1dCwgZm9yIHNs
+b3cgSU8gVVNCL1NESU8sIHRoaXMgbWlnaHQgYmUgZmluZS4gDQoNClBpbmctS2UNCg0K
