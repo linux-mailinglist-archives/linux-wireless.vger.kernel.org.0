@@ -2,74 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 547F4756C4B
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 20:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20579756E2B
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 22:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231245AbjGQSj5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jul 2023 14:39:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40026 "EHLO
+        id S230092AbjGQUZj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jul 2023 16:25:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229708AbjGQSjy (ORCPT
+        with ESMTP id S230040AbjGQUZh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jul 2023 14:39:54 -0400
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 278E6E5
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 11:39:51 -0700 (PDT)
-Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-3465bd756afso31284065ab.3
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 11:39:51 -0700 (PDT)
+        Mon, 17 Jul 2023 16:25:37 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD83188
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 13:25:36 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6b9b52724ccso3498492a34.1
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 13:25:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=malmoset.com; s=google; t=1689619190; x=1692211190;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j+eVEGdokKQ4lR7Af2rfhLpiKn6z9rGJ2bDBGVVtIwA=;
-        b=1tz4Bft6VUQ7K79SgiOt+VJIrvRK3Ef7VfZfD9F+NaYB4AyKcLu/N3y3s7I1T0VX1m
-         XQ0q16373ayE/w/60NjZM405kNsE8kp2f5zNHU/sg8SRtwfK6kyS/Zo8B+6CiA9ajli4
-         sE6wTXsT/Hg2O8NzrbcFzAnpQ9+2oN5MeQCdXcDpmphdmgFvOVbORjaoucF5KHntC0Ow
-         ZczKxLb1r86gprNzLHmfSmGhVLxM2CS2dscBs7rpp2MXpLVesY4vsSdP9cip7TwapQvs
-         jfwcTs0Q2Olxhe0tisscmdzPXWxGQkvk8W8mcE27pc8gBuLIdNI9nrPlBuA6TEeK5Sax
-         LWJw==
+        d=gmail.com; s=20221208; t=1689625535; x=1692217535;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=g0JSh+z2d+zqcPVdUtuAQhMLrDU9xuX3h0UUhD28LEo=;
+        b=WptWjU7FJR7ZOx55vnAQVsbFftM7NBRvZuZ5QyjcQTHb9GkGqf7LGBXRi1aasK5LKd
+         V/onxEHLW28STCv4umGA+jDJJJfCLFbM2qxX/47PL+NU+Z/D+R5ELsUu3GZlhvc6fllV
+         FoGHHNSevqEWR4owsgtynNU9unmlcODEI/iHG/vfkfeeTEdXz50e185BT7O/6TBg0lij
+         UnrzencTJOkXHhS4GaQnkjhLG3dJZLcNwX5M9JREnGxMCEAcXbOphQzIgKCDpcQaEGYU
+         zEbAdDx0tL+ZPoQZR/p+4+zMBLfWIoQQwafkO6yQ5K0ur7dIADlOpGOpLhcCAMHhVYHG
+         Ir2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689619190; x=1692211190;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j+eVEGdokKQ4lR7Af2rfhLpiKn6z9rGJ2bDBGVVtIwA=;
-        b=LdewTQjzWFjAxTpBlTeeTGN+Hh7tE0DrqjpuWPC/bTvcQ3MwLW+vXT5pvStYLS/eA3
-         ItH6klgyFlI/MmVofJ/ACWqLjCJbkq4YGw+bW9dPfQpsviU6OwXNwtONnG3uJYdy/WcW
-         m8FdrvBRLwIr15oFCciC1vv23q1ZrwTcq2XWZ223QookuIUJGY4r59KV7V6rCJzqSVU6
-         lL6G7uYIUEXIbhYMO8nnCQjC8zJwINGKGsYxa5IypR2PyE9NTDHOKqAeiJ/CjaYV4rGR
-         FCjWFkn3rPZLkUQEyQ9tsHkohqKwcrnd2wAz2jylhc6lq1Mj+PSHPa9S6n4G3kaaINLI
-         v0Ew==
-X-Gm-Message-State: ABy/qLYp4xrFK90h0tCYqM7swva/0OWTRUJMV5j/XT3AxRjioJW2G5lz
-        8mjcmx8Sz2N3WdVXICAvPi+ijOEld9ZALXXXa52FPQ==
-X-Google-Smtp-Source: APBJJlF/MxgGrH9lsWKVILCaF99L2RN+swJ8tfLS3lT8etPT+OTNLrSO7jW8bVxpqN8qxmxgNPM+MQ==
-X-Received: by 2002:a05:6e02:12e4:b0:348:8146:ef2a with SMTP id l4-20020a056e0212e400b003488146ef2amr708206iln.0.1689619190515;
-        Mon, 17 Jul 2023 11:39:50 -0700 (PDT)
-Received: from smtpclient.apple ([2605:a601:ac77:5802:dd29:b5d9:1cd3:3ab8])
-        by smtp.gmail.com with ESMTPSA id p2-20020a056e0206c200b003339733e374sm108232ils.86.2023.07.17.11.39.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Jul 2023 11:39:50 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
-Subject: Re: [RFC] RTW88 firmware download issues - improvement, but not
- perfect
-From:   Sean Mollet <sean@malmoset.com>
-In-Reply-To: <8d629c6ac46444d6b5920566ae2c7e52@realtek.com>
-Date:   Mon, 17 Jul 2023 13:39:39 -0500
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <ADEE3321-9472-4035-B86F-A9817438C493@malmoset.com>
-References: <feadf58594b14c67bcf981dde6a60077@realtek.com>
- <ACAD9039-DD62-477E-BBCF-B8053822E042@malmoset.com>
- <8d629c6ac46444d6b5920566ae2c7e52@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-X-Mailer: Apple Mail (2.3731.600.7)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        d=1e100.net; s=20221208; t=1689625535; x=1692217535;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=g0JSh+z2d+zqcPVdUtuAQhMLrDU9xuX3h0UUhD28LEo=;
+        b=ZcMfTLl6B04NJLdTUxP3ZSvhaYehghCMeN+ATFZr52YzLmzie8cKdrt+z7uM8+aA1w
+         VPqHcNABukgmiecL62dnyu7egF+v2USzvAL0j6JZvpEs+HtkbxG/ve3u3kSkySlTzzSD
+         6CAoqUy0u5J8O1K24T1FsGQMR8Rs18ssqFkm7m552nD/YhC+7nkFEsZFDcvymeEn+WFo
+         EMHx6ROItXtgXc+gjLt25P/adc4BNaijtRSAyub5FJ9raWuCz9rcHbZmxBgCPF+0hMoe
+         FHrarfdcLQlfdcyCH2kksP2HYgrkPxBx6gFY9KwbHa/3b8874xsdoyNN5UU8LeD7GvNA
+         4kqQ==
+X-Gm-Message-State: ABy/qLa7abA7U8kA48uL8sFK3toKLqZEXPZ6TZ3QkwOMSY0u6GFcEvKk
+        IEUprktvoubYJrGFVzG0Cd8=
+X-Google-Smtp-Source: APBJJlHJCn2Mo8X1lBE4gfspEHR6GgULO9FSafuRmzBl2Zmc3ZT8tsA/WHDgFV5sgOAIWgGVD7PlWw==
+X-Received: by 2002:a05:6870:6194:b0:1b7:8836:95bd with SMTP id a20-20020a056870619400b001b7883695bdmr12661665oah.11.1689625535604;
+        Mon, 17 Jul 2023 13:25:35 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id w11-20020a9d77cb000000b006b9be9b41e7sm248758otl.68.2023.07.17.13.25.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jul 2023 13:25:35 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <f5e75b2b-14eb-7ffc-6716-70324d2d13c5@lwfinger.net>
+Date:   Mon, 17 Jul 2023 15:25:34 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: rtw89 driver and compressed firmware files
+To:     Takashi Iwai <tiwai@suse.de>, Ping-Ke Shih <pkshih@realtek.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <87zg3uvawm.wl-tiwai@suse.de>
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <87zg3uvawm.wl-tiwai@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,129 +77,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I added a check of those two registers and rebooted 20 units 10 times. =
-Failure rate was consistent and the traces were all like this:
+On 7/17/23 10:02, Takashi Iwai wrote:
+> Hi,
+> 
+> while debugging a reported rtw89 issue
+>    https://bugzilla.suse.com/show_bug.cgi?id=1212808
+> we noticed that rtw89 driver didn't load the firmware properly.
+> 
+> And, this turned out that it's because the driver uses
+> request_partial_firmware_into_buf() function with the combination of
+> compressed firmware files (that are standard on some distros like
+> openSUSE).
+> It's a known limitation of the request_partial_firmware_into_buf() API
+> function itself; it won't load compressed files, because otherwise
+> it'd have to read the full data.  That said, the use of
+> request_partial_*() should be only for very limited use cases, and
+> this doesn't look fitting well for rtw89.
+> (And, as usual, the information is missing in the documentation :-<
+> The API document should state it clearly; I'm going to submit a patch
+> to add the information.)
+> 
+> There was already a workaround for CONFIG_SECURIY_LOADPIN_ENFORCE for
+> a similar problem, but such a fallback is required in general for all
+> cases, as it seems.
+> 
+> I can cook a hackish patch for the fallback, but I wonder whether it
+> still makes sense to keep the use of that API function.  rtw89 is the
+> only driver except for bcm-vk (where the API was introduced just for
+> this driver), after all...
 
-[   30.227933] rtx_88 failed in download_firmware_validate
-               Support information:
-[   30.228392] rtx_88 0/50 0x1C4: 0, 0x10FC: 0
-[   30.244149] rtx_88 1/50 0x1C4: fe000000, 0x10FC: 800350a6
-[   30.251142] rtx_88 2/50 0x1C4: fe000000, 0x10FC: 800350a6
-[   30.258269] rtx_88 3/50 0x1C4: fe000000, 0x10FC: 800350f5
-[   30.244149] rtx_88 1/50 0x1C4: fe000000, 0x10FC: 800350a6
-[   30.251142] rtx_88 2/50 0x1C4: fe000000, 0x10FC: 800350a6
-[   30.258269] rtx_88 3/50 0x1C4: fe000000, 0x10FC: 800350f5
-[   30.265399] rtx_88 4/50 0x1C4: fe000000, 0x10FC: 800350a6
-[   30.272388] rtx_88 5/50 0x1C4: fe000000, 0x10FC: 800350a5
-[   30.279387] rtx_88 6/50 0x1C4: fe000000, 0x10FC: 800350a5
-[   30.286387] rtx_88 7/50 0x1C4: fe000000, 0x10FC: 800350a5
-[   30.293392] rtx_88 8/50 0x1C4: fe000000, 0x10FC: 800350f5
-[   30.300386] rtx_88 9/50 0x1C4: fe000000, 0x10FC: 800350a5
-[   30.307387] rtx_88 10/50 0x1C4: fe000000, 0x10FC: 800350a5
-[   30.314518] rtx_88 11/50 0x1C4: fe000000, 0x10FC: 800350a5
-[   30.321654] rtx_88 12/50 0x1C4: fe000000, 0x10FC: 800350a6
-[   30.329913] rtx_88 13/50 0x1C4: fe000000, 0x10FC: 800350f6
-[   30.338722] rtx_88 14/50 0x1C4: fe000000, 0x10FC: 800350a6
+Takashi,
 
-The pattern and addresses continue and are the same on any device that =
-fails. Going on your statement that 0x10FC is a PC like register, it =
-looks like it=E2=80=99s caught in an infinite loop.
+I am trying to duplicate the OPs problem in boo#1212808. I am currently running 
+with an RTW8851BE, thus I must use kernel 6.5-rc2, or the repo at 
+https://github.com/lwfinger/rtw89.git, which is the source for the Hardware 
+entry at openSUSE. The firmware loading code is common for my chip and the 
+RTW8852BE in the bugzilla entry. In my dmesg output, I see the following:
 
+[  160.142412] rtw89_8851be 0000:02:00.0: Direct firmware load for 
+rtw89/rtw8851b_fw.bin failed with error -2
+[  160.142418] rtw89_8851be 0000:02:00.0: failed to early request firmware: -2
+[  160.170098] rtw89_8851be 0000:02:00.0: Firmware version 0.29.41.0, cmd 
+version 0, type 5
+[  160.170103] rtw89_8851be 0000:02:00.0: Firmware version 0.29.41.0, cmd 
+version 0, type 3
+[  160.505451] rtw89_8851be 0000:02:00.0: chip rfe_type is 1
+[  160.551131] rtw89_8851be 0000:02:00.0 wls1: renamed from wlan0
 
-Sean
+The first attempt fails, but the second works. The firmware file in question is 
+xz compressed. This result was obtained with the in-kernel version of the driver.
 
+All of this was done using Tumbleweed. My next step will be to try Leap 15.5 and 
+Leap 15.4. I will report those tests later.
 
-> On Jul 17, 2023, at 3:52 AM, Ping-Ke Shih <pkshih@realtek.com> wrote:
->=20
->=20
->=20
->> -----Original Message-----
->> From: Sean Mollet <sean@malmoset.com>
->> Sent: Monday, July 17, 2023 10:24 AM
->> To: Ping-Ke Shih <pkshih@realtek.com>
->> Cc: Larry Finger <Larry.Finger@lwfinger.net>; =
-linux-wireless@vger.kernel.org
->> Subject: [RFC] RTW88 firmware download issues - improvement, but not =
-perfect
->>=20
->> On Jul 16, 2023, at 9:05 PM, Ping-Ke Shih <pkshih@realtek.com> wrote:
->>>=20
->>>=20
->>>=20
->>>>> @@ -794,15 +794,15 @@ static int __rtw_download_firmware(struct =
-rtw_dev *rtwdev,
->>>>>=20
->>>>>        wlan_cpu_enable(rtwdev, true);
->>>>>=20
->>>>> -       if (!ltecoex_reg_write(rtwdev, 0x38, ltecoex_bckp)) {
->>>>> -               ret =3D -EBUSY;
->>>>> -               goto dlfw_fail;
->>>>> -       }
->>>>> -
->>>>>        ret =3D download_firmware_validate(rtwdev);
->>>>>        if (ret)
->>>>>                goto dlfw_fail;
->>>>>=20
->>>>> +       if (!ltecoex_reg_write(rtwdev, 0x38, ltecoex_bckp)) {
->>>>> +               ret =3D -EBUSY;
->>>>> +               goto dlfw_fail;
->>>>> +       }
->>>>> +
->>>=20
->>> This looks reason to restore 0x38 after validating firmware. Do you =
-have a result
->>> how this change can improve?
->>>=20
->>=20
->> Using a Pi 4 CM as host, this reduces failures from 1 in 5 to 1 in =
-20.
->>=20
->> I don=E2=80=99t know why, but it makes a measurable difference.
->=20
-> I will check this with my colleague to see if we can apply this =
-change.=20
->=20
->>=20
->>>>>        /* reset desc and index */
->>>>>        rtw_hci_setup(rtwdev);
->>>>>=20
->>>>> diff --git a/util.c b/util.c
->>>>> index ff3c269..fbd6599 100644
->>>>> --- a/util.c
->>>>> +++ b/util.c
->>>>> @@ -10,11 +10,11 @@ bool check_hw_ready(struct rtw_dev *rtwdev, =
-u32 addr, u32 mask, u32 target)
->>>>> {
->>>>>        u32 cnt;
->>>>>=20
->>>>> -       for (cnt =3D 0; cnt < 1000; cnt++) {
->>>>> +       for (cnt =3D 0; cnt < 5000; cnt++) {
->>>>>                if (rtw_read32_mask(rtwdev, addr, mask) =3D=3D =
-target)
->>>>>                        return true;
->>>>>=20
->>>>> -               udelay(10);
->>>>> +               udelay(50);
->>>=20
->>> I look into the latest vendor driver, it shows that cnt becomes =
-10,000 and delay
->>> is 50us as your change.
->> Interesting. Is it possible that the real problem is simply not =
-waiting long enough?
->>=20
->> Can you share some details of what the chip is doing and how long it =
-should take?
->>=20
->=20
-> It seems like I misread the code, the latest version is 5,000 as you =
-mentioned.=20
->=20
-> If failed to polling ready, please read and print out 0x1C4 and 0x10fc =
-20 times
-> with 1ms or more delay. These store firmware PC-like address, so we =
-can check
-> if firmware is running or getting stuck.=20
->=20
-> Ping-Ke
->=20
+Larry
 
