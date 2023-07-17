@@ -2,48 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B71BD75672B
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 17:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE2CF75670D
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 17:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbjGQPHr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jul 2023 11:07:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45196 "EHLO
+        id S230138AbjGQPCh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jul 2023 11:02:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjGQPHr (ORCPT
+        with ESMTP id S229780AbjGQPCg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jul 2023 11:07:47 -0400
-Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.199])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8F7DE10A
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 08:07:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=7rbCAG5coNINQnK+bW
-        N2b1Y9ju2yuPS40hfsCL/t69I=; b=p15itanoK/qlTWiT1QTksOQxKYSb7GWJjj
-        uRBK7ogONYFQ2lawjFczu4H77kosWo0ATUzrLmgaMeq3VAKSm/FxJQMdM5mLb1MV
-        weg0hcDZJATMmdIBPnLFXRkhYSe2IFKozMhxBC0LB7vCS5qa9rgqiK/jCvmxF/VH
-        Ohv/BQZ58=
-Received: from localhost.localdomain (unknown [202.112.113.212])
-        by zwqz-smtp-mta-g3-4 (Coremail) with SMTP id _____wAH1SEiVbVkAqIxAg--.34560S4;
-        Mon, 17 Jul 2023 22:50:13 +0800 (CST)
-From:   Yuanjun Gong <ruc_gongyuanjun@163.com>
-To:     Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH 1/1] net: mt76: fix return value check in mt76x02_mac_process_rx
-Date:   Mon, 17 Jul 2023 22:50:08 +0800
-Message-Id: <20230717145008.26999-1-ruc_gongyuanjun@163.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: _____wAH1SEiVbVkAqIxAg--.34560S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jr43XFyrAF1ftFWUtF1UWrg_yoWfAFX_Wr
-        n2q3ZrJr18GFn3Kr42yr4xCrWYkay8WFykGF98trWYvrW7AFyUur9xuF9rJrZrC3Z2yry7
-        Jr1DuFW8XayFvjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRurWr5UUUUU==
-X-Originating-IP: [202.112.113.212]
-X-CM-SenderInfo: 5uxfsw5rqj53pdqm30i6rwjhhfrp/xtbBSQqv5VaEH4VJggAAsK
+        Mon, 17 Jul 2023 11:02:36 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15C91E7F
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 08:02:35 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id CAED31FDAC;
+        Mon, 17 Jul 2023 15:02:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1689606153; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type;
+        bh=eWzOtnXm2Hy4S1jCmff80w4hY3eg/amZQU7YSqRKHes=;
+        b=1ApxgJ0SuQiQO0cupArPashIuQ+Ml/XKTWkrRLUdbETBpNrZFgjtBAXcNMl7qVVKQ59t+Z
+        82ApgS+bkPtswSVA31ssNn/ebE+QkQz+x/Gq46Fo6sevdRtgVoX0qqnEEGOUj6r3/XcFF1
+        1N2I3JXhJxhIxpnf733/SPdZW/T/4Lk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1689606153;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type;
+        bh=eWzOtnXm2Hy4S1jCmff80w4hY3eg/amZQU7YSqRKHes=;
+        b=2KP0Z9jwQT4q/M1v9P0fBQq1xv163rR+V1lSMtH4pDqxNSG7xAmjZpwJp4/+nnHNOoCD5i
+        Aog4/521Oc6KyNBw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B034713276;
+        Mon, 17 Jul 2023 15:02:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 10AeKglYtWTBAgAAMHmgww
+        (envelope-from <tiwai@suse.de>); Mon, 17 Jul 2023 15:02:33 +0000
+Date:   Mon, 17 Jul 2023 17:02:33 +0200
+Message-ID: <87zg3uvawm.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: rtw89 driver and compressed firmware files
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,28 +64,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-in mt76x02_mac_process_rx(), return an error code if an
-unexpected result is returned by pskb_trim.
+Hi,
 
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
----
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+while debugging a reported rtw89 issue
+  https://bugzilla.suse.com/show_bug.cgi?id=1212808
+we noticed that rtw89 driver didn't load the firmware properly.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index 3e41d809ade3..d5db6ffd6d36 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -853,7 +853,8 @@ int mt76x02_mac_process_rx(struct mt76x02_dev *dev, struct sk_buff *skb,
- 	if (WARN_ON_ONCE(len > skb->len))
- 		return -EINVAL;
- 
--	pskb_trim(skb, len);
-+	if (pskb_trim(skb, len))
-+		return -EINVAL;
- 
- 	status->chains = BIT(0);
- 	signal = mt76x02_mac_get_rssi(dev, rxwi->rssi[0], 0);
--- 
-2.17.1
+And, this turned out that it's because the driver uses
+request_partial_firmware_into_buf() function with the combination of
+compressed firmware files (that are standard on some distros like
+openSUSE).
+It's a known limitation of the request_partial_firmware_into_buf() API
+function itself; it won't load compressed files, because otherwise
+it'd have to read the full data.  That said, the use of
+request_partial_*() should be only for very limited use cases, and
+this doesn't look fitting well for rtw89.
+(And, as usual, the information is missing in the documentation :-<
+The API document should state it clearly; I'm going to submit a patch
+to add the information.)
 
+There was already a workaround for CONFIG_SECURIY_LOADPIN_ENFORCE for
+a similar problem, but such a fallback is required in general for all
+cases, as it seems.
+
+I can cook a hackish patch for the fallback, but I wonder whether it
+still makes sense to keep the use of that API function.  rtw89 is the
+only driver except for bcm-vk (where the API was introduced just for
+this driver), after all... 
+
+
+thanks,
+
+Takashi
