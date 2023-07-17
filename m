@@ -2,79 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4147565B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 16:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D6BC756681
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 16:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231145AbjGQOCw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jul 2023 10:02:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34144 "EHLO
+        id S230305AbjGQOfu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jul 2023 10:35:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229932AbjGQOCv (ORCPT
+        with ESMTP id S229471AbjGQOft (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jul 2023 10:02:51 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB8BEBD
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 07:02:50 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-666edfc50deso2713160b3a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 07:02:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689602570; x=1692194570;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fvHDF/tX78O6/RyEhYiGIXcYSL6N5wva7LECII5yNVU=;
-        b=I1t0n+/KyqNFgNzawyXXqBIoyr5H62Z7UFhqNFzC10vdvCuUTcgntMJDJQtXXyebGz
-         Ea3M10Tsw4kCXZ63M+ozIY6JEX2X4N6jipMIoAYT9mVPcFKFleWfOsx5ge49pFHWrGSK
-         zCENAXcG+DgvV6jkIhrivndMcOBzv4JrpQvYwyhiNAhX1gupVVm2fIKN1dxiSyk5t6Pi
-         /Yi6fsW0T8+KU+4j6K/ITgg7P6Hpen0O27K8ubbfZY/LYLBnn/BWryJNjCjQUAeJrVAg
-         /i5u61Ob0j+Pv6Mpj+g1PifdNtXdDjvsMyorMd6SYkHJLa2Pr/guhE6ywqeToZa/jrEf
-         aUtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689602570; x=1692194570;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fvHDF/tX78O6/RyEhYiGIXcYSL6N5wva7LECII5yNVU=;
-        b=V69srcjrH/1s4cWt0zOgLnrLL1lsfUE7XY8P1n+RMDVItefCYqij3FNj/gbtOGnced
-         Xm1sj8e/75m3JlOCuALMkkRmdYmn0VZJo/8i6xtlGq4exjJU1gnSKTdM+r13CwWfZB6q
-         RwEixQbxjKUBiRMhyZz0WkMDBLaXEY3EaiZIUSduJ0159WNu2MdWWkiDuD8ZziDrrUP8
-         oawTvC7g8h0lxlxovdFOHM2lklbRf2zrpq1PR8s9CbVmSnKbi8av25yaunkiL/+JXDir
-         KJz98IAruisJxXlRWbVcleD1q2WZsN+bHuW0dm4Jr0L1OwoJikIQRY07m5sQXC55Ro0X
-         SkAw==
-X-Gm-Message-State: ABy/qLZwndZIFmpR7dAy89rLaByRo9NSfZ//CbtKoAnpTlbZWfxR1+Sd
-        QjfupXc2MgWtE+jNRZI8aiw=
-X-Google-Smtp-Source: APBJJlF33zba/N5qdY7LQMFro/pNEauGIWiav37oTzqwNB5AXXurchZz/jWSvlT6zTF4shhlCUdyEA==
-X-Received: by 2002:a05:6a20:3d91:b0:134:3a9b:4cd7 with SMTP id s17-20020a056a203d9100b001343a9b4cd7mr6653440pzi.23.1689602570125;
-        Mon, 17 Jul 2023 07:02:50 -0700 (PDT)
-Received: from localhost.localdomain ([221.231.171.18])
-        by smtp.gmail.com with ESMTPSA id ey24-20020a056a0038d800b00666add7f047sm11950013pfb.207.2023.07.17.07.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jul 2023 07:02:49 -0700 (PDT)
-From:   Polaris Pi <pinkperfect2021@gmail.com>
-To:     kuba@kernel.org
-Cc:     pinkperfect2021@gmail.com, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v6] wifi: mwifiex: Fix OOB and integer underflow when rx packets
-Date:   Mon, 17 Jul 2023 14:02:32 +0000
-Message-Id: <20230717140232.3978004-1-pinkperfect2021@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230714224809.3929539-1-pinkperfect2021@gmail.com>
-References: <20230714224809.3929539-1-pinkperfect2021@gmail.com>
+        Mon, 17 Jul 2023 10:35:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6371BE;
+        Mon, 17 Jul 2023 07:35:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4848C61070;
+        Mon, 17 Jul 2023 14:35:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF66C433C7;
+        Mon, 17 Jul 2023 14:35:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689604547;
+        bh=wkWyQH5Rw+uI//ie9kDz9PJG5ccJnGGiK/ksrVALN6o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hi7bxdt9naGox+8fFiNdaQJGdo30qUe2u1C+0LkKsRVePOP7YXW+bBNBJwhq/3mqm
+         O+LtoGZYjvSozZ0xkkV76ua2xCQxPJs8A18aO8BJ8C5UpsfvNhpvh9iG8Y6yd2ruKi
+         CucdNDZeyVcD6qoGNlYhxt/+2Pm1YHdHuKT+eFGE=
+Date:   Mon, 17 Jul 2023 16:35:45 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Wang Ming <machel@vivo.com>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, opensource.kernel@vivo.com
+Subject: Re: [PATCH net v1] net: wireless: Use kfree_sensitive instead of
+ kfree
+Message-ID: <2023071715-marsupial-matron-c743@gregkh>
+References: <20230717093456.17474-1-machel@vivo.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230717093456.17474-1-machel@vivo.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jakub, 
+On Mon, Jul 17, 2023 at 05:34:43PM +0800, Wang Ming wrote:
+> key might contain private part of the key, so better use
+> kfree_sensitive to free it.
 
-This patch has been reviewed by chromeos wifi team, and review tag has been added by their tech leader.
-Could you please review it again? 
+"might"?  What determines if it does, or does not, contain the private
+part of the key?
 
-Thanks!
+Shouldn't this always be known?
+
+> Fixes: 7cec84fdfd88 ("staging: wilc1000: split add_key() to avoid line over 80 chars")
+> Signed-off-by: Wang Ming <machel@vivo.com>
+> ---
+>  drivers/net/wireless/microchip/wilc1000/cfg80211.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+> index b545d93c6e37..45bcadeba2da 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+> @@ -518,7 +518,7 @@ static int wilc_wfi_cfg_allocate_wpa_igtk_entry(struct wilc_priv *priv, u8 idx)
+>  static int wilc_wfi_cfg_copy_wpa_info(struct wilc_wfi_key *key_info,
+>  				      struct key_params *params)
+>  {
+> -	kfree(key_info->key);
+> +	kfree_sensitive(key_info->key);
+
+For most systems, this would have been wiped when kfree() was called due
+to allocation being zeroed out, right?
+
+But, if you want to be safe, and you know this was a private key, that's
+fine to do as well, but please figure out if this really is, or is not,
+a private key.
+
+thanks,
+
+greg k-h
