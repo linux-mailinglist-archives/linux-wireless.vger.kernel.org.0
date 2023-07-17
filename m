@@ -2,233 +2,204 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4126756941
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 18:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 547F4756C4B
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 20:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231440AbjGQQeF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jul 2023 12:34:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43946 "EHLO
+        id S231245AbjGQSj5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jul 2023 14:39:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbjGQQeE (ORCPT
+        with ESMTP id S229708AbjGQSjy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jul 2023 12:34:04 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9D20E4F;
-        Mon, 17 Jul 2023 09:34:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689611643; x=1721147643;
-  h=date:from:to:cc:subject:message-id;
-  bh=AfEwFCjpbJBXCqKqIsD7F+4bRn66pB86cNt06Bq8h34=;
-  b=BxmPe4031Zz/dtVXN/N3DgTJzMLUpMUuCtN1HXYoo1c3wCzTWSpnfGr8
-   VQYljG9OCQYw5ZE52c68EWPCGGr/kQ/35VAfieafqYu7s8d0l3rlZ5kjX
-   N8CyKgesE3T/W5SQzBMXnik6ydP07+2EJoO0CxkiaeCIkBeAnLkIdlyef
-   VW9SjbZAkrhjV3jT6cL1wADLebvzy8x0Vt/t9eST/I0QKWVwmbOPpM/C+
-   8FL20dROTuKAl5IYri+9yCWDvfvl8y/6IazA/bdhgBEB+VVWEQeFsoUIK
-   Ilhbyy3ufz80s78lIO17z1r/hAvVFE8rL/bpbvbGv576CadatPWEQ3S45
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="346280843"
-X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; 
-   d="scan'208";a="346280843"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2023 09:34:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="866790419"
-Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 17 Jul 2023 09:34:02 -0700
-Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qLRAf-0009hi-0x;
-        Mon, 17 Jul 2023 16:34:01 +0000
-Date:   Tue, 18 Jul 2023 00:33:19 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Linux Memory Management List <linux-mm@kvack.org>,
-        linux-cxl@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: [linux-next:master] BUILD SUCCESS WITH WARNING
- 2205be537aeb1ca2ace998e2fefaa2be04e393e4
-Message-ID: <202307180010.dg0yWiVQ-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Mon, 17 Jul 2023 14:39:54 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 278E6E5
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 11:39:51 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-3465bd756afso31284065ab.3
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 11:39:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=malmoset.com; s=google; t=1689619190; x=1692211190;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j+eVEGdokKQ4lR7Af2rfhLpiKn6z9rGJ2bDBGVVtIwA=;
+        b=1tz4Bft6VUQ7K79SgiOt+VJIrvRK3Ef7VfZfD9F+NaYB4AyKcLu/N3y3s7I1T0VX1m
+         XQ0q16373ayE/w/60NjZM405kNsE8kp2f5zNHU/sg8SRtwfK6kyS/Zo8B+6CiA9ajli4
+         sE6wTXsT/Hg2O8NzrbcFzAnpQ9+2oN5MeQCdXcDpmphdmgFvOVbORjaoucF5KHntC0Ow
+         ZczKxLb1r86gprNzLHmfSmGhVLxM2CS2dscBs7rpp2MXpLVesY4vsSdP9cip7TwapQvs
+         jfwcTs0Q2Olxhe0tisscmdzPXWxGQkvk8W8mcE27pc8gBuLIdNI9nrPlBuA6TEeK5Sax
+         LWJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689619190; x=1692211190;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j+eVEGdokKQ4lR7Af2rfhLpiKn6z9rGJ2bDBGVVtIwA=;
+        b=LdewTQjzWFjAxTpBlTeeTGN+Hh7tE0DrqjpuWPC/bTvcQ3MwLW+vXT5pvStYLS/eA3
+         ItH6klgyFlI/MmVofJ/ACWqLjCJbkq4YGw+bW9dPfQpsviU6OwXNwtONnG3uJYdy/WcW
+         m8FdrvBRLwIr15oFCciC1vv23q1ZrwTcq2XWZ223QookuIUJGY4r59KV7V6rCJzqSVU6
+         lL6G7uYIUEXIbhYMO8nnCQjC8zJwINGKGsYxa5IypR2PyE9NTDHOKqAeiJ/CjaYV4rGR
+         FCjWFkn3rPZLkUQEyQ9tsHkohqKwcrnd2wAz2jylhc6lq1Mj+PSHPa9S6n4G3kaaINLI
+         v0Ew==
+X-Gm-Message-State: ABy/qLYp4xrFK90h0tCYqM7swva/0OWTRUJMV5j/XT3AxRjioJW2G5lz
+        8mjcmx8Sz2N3WdVXICAvPi+ijOEld9ZALXXXa52FPQ==
+X-Google-Smtp-Source: APBJJlF/MxgGrH9lsWKVILCaF99L2RN+swJ8tfLS3lT8etPT+OTNLrSO7jW8bVxpqN8qxmxgNPM+MQ==
+X-Received: by 2002:a05:6e02:12e4:b0:348:8146:ef2a with SMTP id l4-20020a056e0212e400b003488146ef2amr708206iln.0.1689619190515;
+        Mon, 17 Jul 2023 11:39:50 -0700 (PDT)
+Received: from smtpclient.apple ([2605:a601:ac77:5802:dd29:b5d9:1cd3:3ab8])
+        by smtp.gmail.com with ESMTPSA id p2-20020a056e0206c200b003339733e374sm108232ils.86.2023.07.17.11.39.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 17 Jul 2023 11:39:50 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
+Subject: Re: [RFC] RTW88 firmware download issues - improvement, but not
+ perfect
+From:   Sean Mollet <sean@malmoset.com>
+In-Reply-To: <8d629c6ac46444d6b5920566ae2c7e52@realtek.com>
+Date:   Mon, 17 Jul 2023 13:39:39 -0500
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <ADEE3321-9472-4035-B86F-A9817438C493@malmoset.com>
+References: <feadf58594b14c67bcf981dde6a60077@realtek.com>
+ <ACAD9039-DD62-477E-BBCF-B8053822E042@malmoset.com>
+ <8d629c6ac46444d6b5920566ae2c7e52@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+X-Mailer: Apple Mail (2.3731.600.7)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 2205be537aeb1ca2ace998e2fefaa2be04e393e4  Add linux-next specific files for 20230717
+I added a check of those two registers and rebooted 20 units 10 times. =
+Failure rate was consistent and the traces were all like this:
 
-Warning reports:
+[   30.227933] rtx_88 failed in download_firmware_validate
+               Support information:
+[   30.228392] rtx_88 0/50 0x1C4: 0, 0x10FC: 0
+[   30.244149] rtx_88 1/50 0x1C4: fe000000, 0x10FC: 800350a6
+[   30.251142] rtx_88 2/50 0x1C4: fe000000, 0x10FC: 800350a6
+[   30.258269] rtx_88 3/50 0x1C4: fe000000, 0x10FC: 800350f5
+[   30.244149] rtx_88 1/50 0x1C4: fe000000, 0x10FC: 800350a6
+[   30.251142] rtx_88 2/50 0x1C4: fe000000, 0x10FC: 800350a6
+[   30.258269] rtx_88 3/50 0x1C4: fe000000, 0x10FC: 800350f5
+[   30.265399] rtx_88 4/50 0x1C4: fe000000, 0x10FC: 800350a6
+[   30.272388] rtx_88 5/50 0x1C4: fe000000, 0x10FC: 800350a5
+[   30.279387] rtx_88 6/50 0x1C4: fe000000, 0x10FC: 800350a5
+[   30.286387] rtx_88 7/50 0x1C4: fe000000, 0x10FC: 800350a5
+[   30.293392] rtx_88 8/50 0x1C4: fe000000, 0x10FC: 800350f5
+[   30.300386] rtx_88 9/50 0x1C4: fe000000, 0x10FC: 800350a5
+[   30.307387] rtx_88 10/50 0x1C4: fe000000, 0x10FC: 800350a5
+[   30.314518] rtx_88 11/50 0x1C4: fe000000, 0x10FC: 800350a5
+[   30.321654] rtx_88 12/50 0x1C4: fe000000, 0x10FC: 800350a6
+[   30.329913] rtx_88 13/50 0x1C4: fe000000, 0x10FC: 800350f6
+[   30.338722] rtx_88 14/50 0x1C4: fe000000, 0x10FC: 800350a6
 
-https://lore.kernel.org/oe-kbuild-all/202307171416.dMlpHle6-lkp@intel.com
+The pattern and addresses continue and are the same on any device that =
+fails. Going on your statement that 0x10FC is a PC like register, it =
+looks like it=E2=80=99s caught in an infinite loop.
 
-Warning: (recently discovered and may have been fixed)
 
-drivers/cxl/acpi.c:300:4: warning: format specifies type 'unsigned long long' but the argument has type 'resource_size_t' (aka 'unsigned int') [-Wformat]
+Sean
 
-Unverified Warning (likely false positive, please contact us if interested):
 
-mm/khugepaged.c:2137 collapse_file() warn: variable dereferenced before check 'cc' (see line 1787)
-net/wireless/scan.c:373 cfg80211_gen_new_ie() warn: potential spectre issue 'sub->data' [r]
-net/wireless/scan.c:397 cfg80211_gen_new_ie() warn: possible spectre second half.  'ext_id'
+> On Jul 17, 2023, at 3:52 AM, Ping-Ke Shih <pkshih@realtek.com> wrote:
+>=20
+>=20
+>=20
+>> -----Original Message-----
+>> From: Sean Mollet <sean@malmoset.com>
+>> Sent: Monday, July 17, 2023 10:24 AM
+>> To: Ping-Ke Shih <pkshih@realtek.com>
+>> Cc: Larry Finger <Larry.Finger@lwfinger.net>; =
+linux-wireless@vger.kernel.org
+>> Subject: [RFC] RTW88 firmware download issues - improvement, but not =
+perfect
+>>=20
+>> On Jul 16, 2023, at 9:05 PM, Ping-Ke Shih <pkshih@realtek.com> wrote:
+>>>=20
+>>>=20
+>>>=20
+>>>>> @@ -794,15 +794,15 @@ static int __rtw_download_firmware(struct =
+rtw_dev *rtwdev,
+>>>>>=20
+>>>>>        wlan_cpu_enable(rtwdev, true);
+>>>>>=20
+>>>>> -       if (!ltecoex_reg_write(rtwdev, 0x38, ltecoex_bckp)) {
+>>>>> -               ret =3D -EBUSY;
+>>>>> -               goto dlfw_fail;
+>>>>> -       }
+>>>>> -
+>>>>>        ret =3D download_firmware_validate(rtwdev);
+>>>>>        if (ret)
+>>>>>                goto dlfw_fail;
+>>>>>=20
+>>>>> +       if (!ltecoex_reg_write(rtwdev, 0x38, ltecoex_bckp)) {
+>>>>> +               ret =3D -EBUSY;
+>>>>> +               goto dlfw_fail;
+>>>>> +       }
+>>>>> +
+>>>=20
+>>> This looks reason to restore 0x38 after validating firmware. Do you =
+have a result
+>>> how this change can improve?
+>>>=20
+>>=20
+>> Using a Pi 4 CM as host, this reduces failures from 1 in 5 to 1 in =
+20.
+>>=20
+>> I don=E2=80=99t know why, but it makes a measurable difference.
+>=20
+> I will check this with my colleague to see if we can apply this =
+change.=20
+>=20
+>>=20
+>>>>>        /* reset desc and index */
+>>>>>        rtw_hci_setup(rtwdev);
+>>>>>=20
+>>>>> diff --git a/util.c b/util.c
+>>>>> index ff3c269..fbd6599 100644
+>>>>> --- a/util.c
+>>>>> +++ b/util.c
+>>>>> @@ -10,11 +10,11 @@ bool check_hw_ready(struct rtw_dev *rtwdev, =
+u32 addr, u32 mask, u32 target)
+>>>>> {
+>>>>>        u32 cnt;
+>>>>>=20
+>>>>> -       for (cnt =3D 0; cnt < 1000; cnt++) {
+>>>>> +       for (cnt =3D 0; cnt < 5000; cnt++) {
+>>>>>                if (rtw_read32_mask(rtwdev, addr, mask) =3D=3D =
+target)
+>>>>>                        return true;
+>>>>>=20
+>>>>> -               udelay(10);
+>>>>> +               udelay(50);
+>>>=20
+>>> I look into the latest vendor driver, it shows that cnt becomes =
+10,000 and delay
+>>> is 50us as your change.
+>> Interesting. Is it possible that the real problem is simply not =
+waiting long enough?
+>>=20
+>> Can you share some details of what the chip is doing and how long it =
+should take?
+>>=20
+>=20
+> It seems like I misread the code, the latest version is 5,000 as you =
+mentioned.=20
+>=20
+> If failed to polling ready, please read and print out 0x1C4 and 0x10fc =
+20 times
+> with 1ms or more delay. These store firmware PC-like address, so we =
+can check
+> if firmware is running or getting stuck.=20
+>=20
+> Ping-Ke
+>=20
 
-Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- i386-randconfig-m021-20230717
-|   |-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:possible-spectre-second-half.-ext_id
-|   `-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:potential-spectre-issue-sub-data-r
-`-- x86_64-randconfig-m001-20230717
-    `-- mm-khugepaged.c-collapse_file()-warn:variable-dereferenced-before-check-cc-(see-line-)
-clang_recent_errors
-`-- i386-randconfig-i004-20230717
-    `-- drivers-cxl-acpi.c:warning:format-specifies-type-unsigned-long-long-but-the-argument-has-type-resource_size_t-(aka-unsigned-int-)
-
-elapsed time: 731m
-
-configs tested: 132
-configs skipped: 4
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                          axs103_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                  randconfig-r043-20230717   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                         mv78xx0_defconfig   clang
-arm                        mvebu_v7_defconfig   gcc  
-arm                          pxa168_defconfig   clang
-arm                          pxa3xx_defconfig   gcc  
-arm                  randconfig-r046-20230717   clang
-arm                        realview_defconfig   gcc  
-arm                        spear6xx_defconfig   gcc  
-arm                        vexpress_defconfig   clang
-arm                         vf610m4_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r034-20230717   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r021-20230717   gcc  
-hexagon              randconfig-r016-20230717   clang
-hexagon              randconfig-r041-20230717   clang
-hexagon              randconfig-r045-20230717   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230717   clang
-i386         buildonly-randconfig-r005-20230717   clang
-i386         buildonly-randconfig-r006-20230717   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230717   clang
-i386                 randconfig-i002-20230717   clang
-i386                 randconfig-i003-20230717   clang
-i386                 randconfig-i004-20230717   clang
-i386                 randconfig-i005-20230717   clang
-i386                 randconfig-i006-20230717   clang
-i386                 randconfig-i011-20230717   gcc  
-i386                 randconfig-i012-20230717   gcc  
-i386                 randconfig-i013-20230717   gcc  
-i386                 randconfig-i014-20230717   gcc  
-i386                 randconfig-i015-20230717   gcc  
-i386                 randconfig-i016-20230717   gcc  
-i386                 randconfig-r004-20230717   clang
-i386                 randconfig-r011-20230717   gcc  
-i386                 randconfig-r035-20230717   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r013-20230717   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                     decstation_defconfig   gcc  
-mips                            gpr_defconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc             randconfig-r012-20230717   gcc  
-openrisc             randconfig-r024-20230717   gcc  
-openrisc             randconfig-r032-20230717   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r014-20230717   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                 mpc8313_rdb_defconfig   clang
-powerpc                 mpc834x_itx_defconfig   gcc  
-powerpc                    mvme5100_defconfig   clang
-powerpc                      ppc44x_defconfig   clang
-powerpc                    sam440ep_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r015-20230717   gcc  
-riscv                randconfig-r033-20230717   clang
-riscv                randconfig-r042-20230717   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r025-20230717   gcc  
-s390                 randconfig-r044-20230717   gcc  
-sh                               allmodconfig   gcc  
-sh                        edosk7760_defconfig   gcc  
-sh                          polaris_defconfig   gcc  
-sh                   randconfig-r002-20230717   gcc  
-sh                          rsk7269_defconfig   gcc  
-sh                           se7722_defconfig   gcc  
-sh                            titan_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r036-20230717   gcc  
-sparc64              randconfig-r006-20230717   gcc  
-sparc64              randconfig-r023-20230717   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r026-20230717   clang
-um                   randconfig-r031-20230717   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230717   clang
-x86_64       buildonly-randconfig-r002-20230717   clang
-x86_64       buildonly-randconfig-r003-20230717   clang
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-x001-20230717   gcc  
-x86_64               randconfig-x002-20230717   gcc  
-x86_64               randconfig-x003-20230717   gcc  
-x86_64               randconfig-x004-20230717   gcc  
-x86_64               randconfig-x005-20230717   gcc  
-x86_64               randconfig-x006-20230717   gcc  
-x86_64               randconfig-x011-20230717   clang
-x86_64               randconfig-x012-20230717   clang
-x86_64               randconfig-x013-20230717   clang
-x86_64               randconfig-x014-20230717   clang
-x86_64               randconfig-x015-20230717   clang
-x86_64               randconfig-x016-20230717   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                       common_defconfig   gcc  
-xtensa                              defconfig   gcc  
-xtensa               randconfig-r001-20230717   gcc  
-xtensa               randconfig-r022-20230717   gcc  
-xtensa                    smp_lx200_defconfig   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
