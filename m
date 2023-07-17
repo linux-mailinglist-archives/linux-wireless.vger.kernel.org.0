@@ -2,53 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66832755C56
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 09:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54B49755CD6
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jul 2023 09:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230063AbjGQHES (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Jul 2023 03:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
+        id S230349AbjGQH0k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Jul 2023 03:26:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230057AbjGQHEQ (ORCPT
+        with ESMTP id S230335AbjGQH0i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Jul 2023 03:04:16 -0400
+        Mon, 17 Jul 2023 03:26:38 -0400
 Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB0641B1
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 00:04:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5095F171B
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 00:26:30 -0700 (PDT)
 Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4R4Cjs65fVzBQHHW
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 15:04:01 +0800 (CST)
+        by mail.208.org (Postfix) with ESMTP id 4R4D1b1pPlzBQHHf
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 15:17:39 +0800 (CST)
 Authentication-Results: mail.208.org (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)" header.d=208.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
         content-transfer-encoding:content-type:message-id:user-agent
         :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1689577441; x=1692169442; bh=myKEdCAbM5yxWamoUqPx5G8iLCz
-        lCrrZkWCdNkmucXk=; b=XzI5ucUftMKcRL/UG9U0qOWuBf6L2SC3qkc+fXC5sel
-        N3T7RmdCM4xppwbp9A3N6g7wAzvhvSTicTTsaCUJFan9F2cqnPT+C1wV+bJ5tnxj
-        /vIBRML0sJe2PSCgh3PH2OdcRD6urVDIB68aL7b6jWa8pqtZynJCGC+i9qPsq6QK
-        li77c97GANbNARt7Mr5YU2xVAZcOzvT2tXd3bOSsbsrJq1DPkzsmRhXeJqj04S27
-        wAcHHHqOOUwxi9ID9auBLM5VjP3P9IcnYMykfYrSfDAWuxJQgCo4J5OlrV2wR5eC
-        hjfX5mGX466aOLh7MHxiKl0N847NLjdKSOwXlZHdIfw==
+        dkim; t=1689578259; x=1692170260; bh=WOF11T8cPGBiDtBHkc2Q1W/gt3q
+        HG2GPKagEpk0fQ3Q=; b=FwJByUz0ZJ9HL8zss0c/4ZS6C1yOXvHUO75MX+4rc0v
+        uiUXsQIwNI+NW3319/Xvv+ZRKF3HSZGVKopXyuWASZqeXITVAPfpouga1CcErLay
+        WR53Jt7g8Z7eEuw84JK2fIspdf2V3cqali8b2plXp7gQDkvmKPhu4I73VslmfEiu
+        RDECq8WT/ZkIF1m83w3V5xoGjwfYr1thY2A+zBAKZUjwJvweJXlk59p2MHwiEEFh
+        g/ZnAMXx+e4vdA6mjCsa5pe98Y6OrwiIoG0Nl5lF8WGKNzqNnRn3yTyNze0M1Eb1
+        36RFvIq5QMIcR9+UwFRHjqyH6cS3HLGyDWKH8YCVgAQ==
 X-Virus-Scanned: amavisd-new at mail.208.org
 Received: from mail.208.org ([127.0.0.1])
         by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id eWX4Vwtxo2jg for <linux-wireless@vger.kernel.org>;
-        Mon, 17 Jul 2023 15:04:01 +0800 (CST)
+        with ESMTP id qkNGlv4RI706 for <linux-wireless@vger.kernel.org>;
+        Mon, 17 Jul 2023 15:17:39 +0800 (CST)
 Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4R4Cjs3sPxzBJR3x;
-        Mon, 17 Jul 2023 15:04:01 +0800 (CST)
+        by mail.208.org (Postfix) with ESMTPSA id 4R4D1Z6RJvzBJTJt;
+        Mon, 17 Jul 2023 15:17:38 +0800 (CST)
 MIME-Version: 1.0
-Date:   Mon, 17 Jul 2023 15:04:01 +0800
+Date:   Mon, 17 Jul 2023 15:17:38 +0800
 From:   hanyu001@208suo.com
 To:     kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] wcn36xx: remove space before ')'
-In-Reply-To: <tencent_5D948ECE7946A4A04536C5EAD0B120565B07@qq.com>
-References: <tencent_5D948ECE7946A4A04536C5EAD0B120565B07@qq.com>
+Subject: [PATCH] ath: wcn36xx: space required after that ','
+In-Reply-To: <tencent_1007902217D11483429F82606CE33B24E609@qq.com>
+References: <tencent_1007902217D11483429F82606CE33B24E609@qq.com>
 User-Agent: Roundcube Webmail
-Message-ID: <f2d9a75e98698b245e5126eb425944a1@208suo.com>
+Message-ID: <8d242d729e447fe0f41af7bccc35396e@208suo.com>
 X-Sender: hanyu001@208suo.com
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
@@ -62,40 +62,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes checkpatch.pl error:
+This patch fixes the checkpatch.pl error:
 
-./drivers/net/wireless/ath/wcn36xx/dxe.c:470: ERROR: space prohibited 
-before that close parenthesis ')'
-./drivers/net/wireless/ath/wcn36xx/dxe.c:509: ERROR: space prohibited 
-before that close parenthesis ')'
+./drivers/net/wireless/ath/wcn36xx/dxe.c:233: ERROR: space required 
+after that ',' (ctx:VxV)
 
 Signed-off-by: maqimei <2433033762@qq.com>
 ---
-  drivers/net/wireless/ath/wcn36xx/dxe.c | 4 ++--
-  1 file changed, 2 insertions(+), 2 deletions(-)
+  drivers/net/wireless/ath/wcn36xx/dxe.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/ath/wcn36xx/dxe.c 
 b/drivers/net/wireless/ath/wcn36xx/dxe.c
-index 9013f05..b8d7676 100644
+index b8d7676..1e660b6 100644
 --- a/drivers/net/wireless/ath/wcn36xx/dxe.c
 +++ b/drivers/net/wireless/ath/wcn36xx/dxe.c
-@@ -467,7 +467,7 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, 
-void *dev)
-                         WCN36XX_DXE_0_INT_CLR,
-                         WCN36XX_INT_MASK_CHAN_TX_H);
+@@ -230,7 +230,7 @@ static void wcn36xx_dxe_deinit_descs(struct device 
+*dev, struct wcn36xx_dxe_ch *
+      size_t size;
 
--        if (int_reason & WCN36XX_CH_STAT_INT_ERR_MASK ) {
-+        if (int_reason & WCN36XX_CH_STAT_INT_ERR_MASK) {
-              wcn36xx_dxe_write_register(wcn,
-                             WCN36XX_DXE_0_INT_ERR_CLR,
-                             WCN36XX_INT_MASK_CHAN_TX_H);
-@@ -506,7 +506,7 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, 
-void *dev)
-                         WCN36XX_DXE_0_INT_CLR,
-                         WCN36XX_INT_MASK_CHAN_TX_L);
+      size = wcn_ch->desc_num * sizeof(struct wcn36xx_dxe_desc);
+-    dma_free_coherent(dev, size,wcn_ch->cpu_addr, wcn_ch->dma_addr);
++    dma_free_coherent(dev, size, wcn_ch->cpu_addr, wcn_ch->dma_addr);
+  }
 
--        if (int_reason & WCN36XX_CH_STAT_INT_ERR_MASK ) {
-+        if (int_reason & WCN36XX_CH_STAT_INT_ERR_MASK) {
-              wcn36xx_dxe_write_register(wcn,
-                             WCN36XX_DXE_0_INT_ERR_CLR,
-                             WCN36XX_INT_MASK_CHAN_TX_L);
+  static void wcn36xx_dxe_init_tx_bd(struct wcn36xx_dxe_ch *ch,
