@@ -2,92 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BC92757F3D
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jul 2023 16:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A2F75810B
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jul 2023 17:36:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232976AbjGRORG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jul 2023 10:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42664 "EHLO
+        id S231844AbjGRPgJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jul 2023 11:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232446AbjGRORE (ORCPT
+        with ESMTP id S231739AbjGRPgI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jul 2023 10:17:04 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E58188;
-        Tue, 18 Jul 2023 07:17:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=foGX3qPz8g1mE0AjGZ0RURTetuvRz0ZaIIFsjuTQ33o=; b=JBWA+Dva8h/kZCHzxx0beMUCVO
-        DBM9NutUs8keY3cK4qSE6pjYwC5UbxQ9p8BI2hjbn36sLUsJjXa4y569DibqyziXWk0dXdIQ/ymwt
-        OrHeqJt0QmXf5YAkADGAfUAJ3xrX0I1mXokQ96A+GrImP/aazfRTj/U6IF8GcT4CGHYo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qLlUl-001dCP-Ng; Tue, 18 Jul 2023 16:16:07 +0200
-Date:   Tue, 18 Jul 2023 16:16:07 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     "Quan, Evan" <Evan.Quan@amd.com>
-Cc:     "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        "airlied@gmail.com" <airlied@gmail.com>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
-        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
-        "maarten.lankhorst@linux.intel.com" 
-        <maarten.lankhorst@linux.intel.com>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
-        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
-        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
-        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
-        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
-        "trix@redhat.com" <trix@redhat.com>,
-        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH V6 1/9] drivers core: Add support for Wifi band RF
- mitigations
-Message-ID: <642e3f4d-976b-4ee1-8f63-844b9568462e@lunn.ch>
-References: <20230710083641.2132264-1-evan.quan@amd.com>
- <20230710083641.2132264-2-evan.quan@amd.com>
- <5439dd61-7b5f-4fc9-8ccd-f7df43a791dd@lunn.ch>
- <DM6PR12MB2619CF4D4601864FF251A1FAE438A@DM6PR12MB2619.namprd12.prod.outlook.com>
+        Tue, 18 Jul 2023 11:36:08 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9451DD
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jul 2023 08:36:07 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1b9ecf0cb4cso35540395ad.2
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jul 2023 08:36:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689694567; x=1692286567;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=46Qd00mqgwhkkW6amCqEXLEzCc/q28cqM0GW7xvshDA=;
+        b=R3hbh38cuvLrCtUSLTR8JtErKRR2fIVcj0bNVFoonKuYB5n1xZZZtY7CEtR8Knq6bl
+         3E1oRZqQmYUTb3/1sn6602gtx5WKMdwcJBOgpAXQGyxH/edIMT5jttMRZbparBoGuM/D
+         tuUDwFd61p72vbN84OUfQusb6mzJDYBroRqhc/PBBjHwBrb+esKDN5fNcOaSwPC9B5ix
+         07BEUVvZiEkpTYxkONld9frmC1wWwnw3Ns/1cDuli3Kpq/D8blNUoVVy7D5V62Txkvmy
+         GN+weOBd6h445+iWh2JjSorEvVdpGdR86Jqy7NXmpOyGN47svUPdkdS/uJcBatZVApk3
+         XO+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689694567; x=1692286567;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=46Qd00mqgwhkkW6amCqEXLEzCc/q28cqM0GW7xvshDA=;
+        b=aKH6dF1nrvTlrzujxS+bc1l5iruhtumCD9/W4wM8rKsRFO87a4ivgbhcUtV5e/tA6j
+         wjCQWMhDGJC12vcB+3llw8YPpgH7MqD49nhSASQbsFeDXnL8rn73oQ0RWKa+gXg8yDr2
+         qrFTjj3vTn6rTgWD86QUkj93hlSWhKpY7L6QYnH9MAluRW70UYIbc2HQv3IcumvaCs8h
+         mnVK9OmPfCgCOPXLYye6BBgtZDSumzfZtMNB9qFWR7Dv/mp2EotHQjjC4Bf3C5v9fo9F
+         vh2iPTzB3kYe2oCyS0mmFEHlCiL9V3JbJtMhkwS09yepSUMHL3O4JHEmgYUNlHuWHzTa
+         c5Fg==
+X-Gm-Message-State: ABy/qLY0Tqdl2+zD6QdIm2h1NIz/nmLNsf0ZBlcS1Bd2QR7c5SJcIU6N
+        qB4AcXmWDDjZOtgclgp1FoRXiM93tpZFqY93AnU=
+X-Google-Smtp-Source: APBJJlFVeBZddoMAxnlve5aothXWcgQ+Zp1dXzWjsRzCMYKu50xCfZVVqDE7gn7Ea32g15qCtq+d6fsxanTkHhjNuzs=
+X-Received: by 2002:a17:902:820f:b0:1b8:9551:a705 with SMTP id
+ x15-20020a170902820f00b001b89551a705mr76367pln.55.1689694567192; Tue, 18 Jul
+ 2023 08:36:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM6PR12MB2619CF4D4601864FF251A1FAE438A@DM6PR12MB2619.namprd12.prod.outlook.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a17:902:ce88:b0:1b9:db41:6e6b with HTTP; Tue, 18 Jul 2023
+ 08:36:06 -0700 (PDT)
+Reply-To: lassounadage563@gmail.com
+From:   Ms Nadage Lassou <nadagelassou@gmail.com>
+Date:   Tue, 18 Jul 2023 16:36:06 +0100
+Message-ID: <CAJ97MqTo9trhvvyyGL9OrYvbf44sgSAvZwM4QQ+_p7q2LkMnzg@mail.gmail.com>
+Subject: IMMEDIATE REPLY FOR DETAILS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [2607:f8b0:4864:20:0:0:0:635 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5341]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [lassounadage563[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [nadagelassou[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> The wbrf_supported_producer and wbrf_supported_consumer APIs seem
-> unnecessary for the generic implementation.
+Greetings.
 
-I'm happy with these, once the description is corrected. As i said in
-another comment, 'can' should be replaced with 'should'. The device
-itself knows if it can, only the core knows if it should, based on the
-policy of if actions need to be taken, and there are both providers
-and consumers registered with the core.
-
-   Andrew
+I have something important to tell you.
+i will send you the details once i hear from you.
+Thanks,
+Ms Nadage Lassou
