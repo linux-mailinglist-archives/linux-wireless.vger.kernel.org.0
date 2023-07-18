@@ -2,179 +2,240 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7458775733F
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jul 2023 07:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60C27757629
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jul 2023 10:03:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230159AbjGRFgD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jul 2023 01:36:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39642 "EHLO
+        id S231562AbjGRIDn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jul 2023 04:03:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230156AbjGRFgC (ORCPT
+        with ESMTP id S232177AbjGRIDJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jul 2023 01:36:02 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B05E43
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jul 2023 22:36:00 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36I5Y5sQ005063;
-        Tue, 18 Jul 2023 05:35:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=wI2pBkxpLUpAB3X5rfTIAH0MJvDD2NlcQekkg1nEGUk=;
- b=e2KcgLyqFebnOHTXEKc9GWCRGHM4aGemEcYZo3TGYpZLROmKqPmtqzd3F3J+LKJlrg+J
- 21y1SCUNwRWdw+ekp6dnUI+EQKX/mGKfuq5mDqoK2NL0huvRFFOAdEaZGAVJKdwXCvue
- 4kd49xGBbENrn2+FT13vQ4a1zU+fukvyQISeLY/8Wa4XiGhRvzaFtbDbpijIghH6kgJ0
- 2SclE+TbTdo2QLEQ2eC9HZh5mOp/GsZTpwAztC6MRH6hAQqpdEpRn+Zowk2MhnEUPIpe
- Yk72SQAaAyfBtEz+0S+AMa0m4IfQ8Fdp9J8LNPdMMIcS/364AjlUP53MPEN7Rlm6TnC1 ng== 
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rw4af21j0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Jul 2023 05:35:45 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36I5ZiDt020303
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Jul 2023 05:35:44 GMT
-Received: from rajson-linux.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Mon, 17 Jul 2023 22:35:42 -0700
-From:   Rajat Soni <quic_rajson@quicinc.com>
-To:     <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Rajat Soni <quic_rajson@quicinc.com>
-Subject: [PATCH] wifi: ath12k: Fix memory leak in rx_desc and tx_desc
-Date:   Tue, 18 Jul 2023 11:05:10 +0530
-Message-ID: <20230718053510.30894-1-quic_rajson@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        Tue, 18 Jul 2023 04:03:09 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 009D51FD8
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jul 2023 01:02:32 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b9cdef8619so33409235ad.0
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jul 2023 01:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=heitbaum.com; s=google; t=1689667351; x=1692259351;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fnwKc/o3ISHm8NcR21OLJ9uDUCnyHyDdo8J6H/w7iTw=;
+        b=YDBzoZ2QJljNIlYmSvS0QS08AyWmQkA8eWYBsjFyGKN2ULcH2tKZpx2j3CTyz5zKJ1
+         itg3Haejzl9W/y1o8RiUcUBiZwDyI8F4M0avo9WLTpITRc+UcnRqZCEnYxvW4wgL6D8Y
+         Z2Gz1B74iO4ilDDZM6OZhcD/m62y4/h25ry3U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689667351; x=1692259351;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fnwKc/o3ISHm8NcR21OLJ9uDUCnyHyDdo8J6H/w7iTw=;
+        b=GqeBq7pLNsq5O7noInH5BGqG5MyKlfotoDkwNVxQrQh46f24TibRtAr/sp75WweT/L
+         aPiYLfJFv+7hjJ9GZPCX7lYUhOkCph1/5LaDR2973drB1OD34qf5o2VVscz9zyFnkDAU
+         SUAU9YWT+xh1m9Nczhp+PB8nFP0XRugjC/lrQO7JfQchmlijXLY3VkOzdgLkiS2ISSDr
+         DT7PMonBpEfjyCQjJkl6eWxdxqae0LePo+e+vsQq0tfq3mRpCAC1ALXLSO/qxJHfWnre
+         Nqds5oSvrz5AO6orm5S/f6ZUD0YvE1bDCzIxyva5XZjOTFoJ7S4hOXOH6soxKNx0HnUU
+         o9Vw==
+X-Gm-Message-State: ABy/qLZDPKwvk5RUK+/ebkyNpCDUHD+viEqtanbdu+/SDFaJptPyoc8O
+        soNixKiuk30X7woutioJZpUN2A==
+X-Google-Smtp-Source: APBJJlEe7fB6yHcAj9JWOSeLLAJphdyZKwKLmfC2xgNTv4YvfT8lwCODnKRipFxioXejYwrlNBunGA==
+X-Received: by 2002:a17:902:e743:b0:1b2:5d5b:e871 with SMTP id p3-20020a170902e74300b001b25d5be871mr1425468plf.59.1689667350665;
+        Tue, 18 Jul 2023 01:02:30 -0700 (PDT)
+Received: from 503599e9be06 ([122.199.31.3])
+        by smtp.gmail.com with ESMTPSA id y6-20020a17090322c600b001b53953f306sm1173206plg.178.2023.07.18.01.02.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 01:02:29 -0700 (PDT)
+Date:   Tue, 18 Jul 2023 08:02:22 +0000
+From:   Rudi Heitbaum <rudi@heitbaum.com>
+To:     "Peer, Ilan" <ilan.peer@intel.com>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux Wireless <linux-wireless@vger.kernel.org>
+Subject: Re: mm/page_alloc.c:4453 with cfg80211_wiphy_work [cfg80211]
+Message-ID: <ZLZHDm3mcxaLdvRH@503599e9be06>
+References: <51e53417-cfad-542c-54ee-0fb9e26c4a38@gmail.com>
+ <DM4PR11MB6043088A4A65CBF124F5D518E93BA@DM4PR11MB6043.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: HMJ4rck0Vtq5ttlW12fJjs_ZM5UHm0ZD
-X-Proofpoint-ORIG-GUID: HMJ4rck0Vtq5ttlW12fJjs_ZM5UHm0ZD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-17_15,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 mlxlogscore=882 mlxscore=0 malwarescore=0 bulkscore=0
- phishscore=0 clxscore=1011 suspectscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307180052
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM4PR11MB6043088A4A65CBF124F5D518E93BA@DM4PR11MB6043.namprd11.prod.outlook.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently when ath12k_dp_cc_desc_init api is triggered we allocate
-memory to rx_descs and tx_descs. In ath12k_dp_cc_cleanup, during
-descriptor cleanup rx_descs and tx_descs memory is not freed.
+> From 5a6fcc4b2a91608917697f8446ec3e10b2ce9178 Mon Sep 17 00:00:00 2001
+> From: Ilan Peer <ilan.peer@intel.com>
+> Date: Tue, 18 Jul 2023 00:33:04 +0300
+> Subject: [PATCH] wifi: cfg80211: Fix return value in scan logic
+> 
+> As cfg80211_parse_colocated_ap() is not expected to return a negative
+> value return 0 and not a negative value if cfg80211_calc_short_ssid()
+> fails.
+> 
+> This bug was introduced in commit c8cb5b854b40f
+> ('nl80211/cfg80211: support 6 GHz scanning').
+> 
+> Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+> ---
+> net/wireless/scan.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+>index 8bf00caf5d29..0cf1ce7b6934 100644
+>--- a/net/wireless/scan.c
+>+++ b/net/wireless/scan.c
+>@@ -657,7 +657,7 @@ static int cfg80211_parse_colocated_ap(const struct cfg80211_bss_ies *ies,
+> 
+> 	ret = cfg80211_calc_short_ssid(ies, &ssid_elem, &s_ssid_tmp);
+> 	if (ret)
+>-		return ret;
+>+		return 0;
+> 
+> 	for_each_element_id(elem, WLAN_EID_REDUCED_NEIGHBOR_REPORT,
+> 			    ies->data, ies->len) {
+>-- 
+>2.25.1
 
-This is cause of memory leak. These allocated memory should be
-freed in ath12k_dp_cc_cleanup.
+Hi Ilan, 
 
-In ath12k_dp_cc_desc_init, we can save base address of rx_descs
-and tx_descs. In ath12k_dp_cc_cleanup, we can free rx_descs and
-tx_descs memory using their base address.
+I can confirm that this fixes the error in my dmesg.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Regards
+Rudi
 
-Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp.c | 30 +++++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath12k/dp.h |  2 ++
- 2 files changed, 31 insertions(+), 1 deletion(-)
+Tested-by: Rudi Heitbaum <rudi@heitbaum.com>
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index ae1645d0f42a..db6ac0e0be2c 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -1129,6 +1129,7 @@ static void ath12k_dp_cc_cleanup(struct ath12k_base *ab)
- 	struct ath12k_dp *dp = &ab->dp;
- 	struct sk_buff *skb;
- 	int i;
-+	u32  pool_id, tx_spt_page;
- 
- 	if (!dp->spt_info)
- 		return;
-@@ -1148,6 +1149,14 @@ static void ath12k_dp_cc_cleanup(struct ath12k_base *ab)
- 		dev_kfree_skb_any(skb);
- 	}
- 
-+	for (i = 0; i < ATH12K_NUM_RX_SPT_PAGES; i++) {
-+		if (!dp->spt_info->rxbaddr[i])
-+			continue;
-+
-+		kfree(dp->spt_info->rxbaddr[i]);
-+		dp->spt_info->rxbaddr[i] = NULL;
-+	}
-+
- 	spin_unlock_bh(&dp->rx_desc_lock);
- 
- 	/* TX Descriptor cleanup */
-@@ -1170,6 +1179,21 @@ static void ath12k_dp_cc_cleanup(struct ath12k_base *ab)
- 		spin_unlock_bh(&dp->tx_desc_lock[i]);
- 	}
- 
-+	for (pool_id = 0; pool_id < ATH12K_HW_MAX_QUEUES; pool_id++) {
-+		spin_lock_bh(&dp->tx_desc_lock[pool_id]);
-+
-+		for (i = 0; i < ATH12K_TX_SPT_PAGES_PER_POOL; i++) {
-+			tx_spt_page = i + pool_id * ATH12K_TX_SPT_PAGES_PER_POOL;
-+			if (!dp->spt_info->txbaddr[tx_spt_page])
-+				continue;
-+
-+			kfree(dp->spt_info->txbaddr[tx_spt_page]);
-+			dp->spt_info->txbaddr[tx_spt_page] = NULL;
-+		}
-+
-+		spin_unlock_bh(&dp->tx_desc_lock[pool_id]);
-+	}
-+
- 	/* unmap SPT pages */
- 	for (i = 0; i < dp->num_spt_pages; i++) {
- 		if (!dp->spt_info[i].vaddr)
-@@ -1343,6 +1367,8 @@ static int ath12k_dp_cc_desc_init(struct ath12k_base *ab)
- 			return -ENOMEM;
- 		}
- 
-+		dp->spt_info->rxbaddr[i] = &rx_descs[0];
-+
- 		for (j = 0; j < ATH12K_MAX_SPT_ENTRIES; j++) {
- 			rx_descs[j].cookie = ath12k_dp_cc_cookie_gen(i, j);
- 			rx_descs[j].magic = ATH12K_DP_RX_DESC_MAGIC;
-@@ -1368,8 +1394,10 @@ static int ath12k_dp_cc_desc_init(struct ath12k_base *ab)
- 				return -ENOMEM;
- 			}
- 
-+			tx_spt_page = i + pool_id * ATH12K_TX_SPT_PAGES_PER_POOL;
-+			dp->spt_info->txbaddr[tx_spt_page] = &tx_descs[0];
-+
- 			for (j = 0; j < ATH12K_MAX_SPT_ENTRIES; j++) {
--				tx_spt_page = i + pool_id * ATH12K_TX_SPT_PAGES_PER_POOL;
- 				ppt_idx = ATH12K_NUM_RX_SPT_PAGES + tx_spt_page;
- 				tx_descs[j].desc_id = ath12k_dp_cc_cookie_gen(ppt_idx, j);
- 				tx_descs[j].pool_id = pool_id;
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index 7c5dafce5a68..9aeda0321cd7 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -289,6 +289,8 @@ struct ath12k_tx_desc_info {
- struct ath12k_spt_info {
- 	dma_addr_t paddr;
- 	u64 *vaddr;
-+	struct ath12k_rx_desc_info *rxbaddr[ATH12K_NUM_RX_SPT_PAGES];
-+	struct ath12k_tx_desc_info *txbaddr[ATH12K_NUM_TX_SPT_PAGES];
- };
- 
- struct ath12k_reo_queue_ref {
--- 
-2.17.1
+On Mon, Jul 17, 2023 at 01:41:43PM +0000, Peer, Ilan wrote:
+> Hi Sanjaya,
+> 
+> Can you please check if the attached patch fixes your issue?
+> 
+> Thanks in advance,
+> 
+> Ilan.
+> 
+> > -----Original Message-----
+> > From: Bagas Sanjaya <bagasdotme@gmail.com>
+> > Sent: Sunday, July 16, 2023 14:11
+> > To: Rudi Heitbaum <rudi@heitbaum.com>; Johannes Berg
+> > <johannes@sipsolutions.net>; David S. Miller <davem@davemloft.net>; Eric
+> > Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>;
+> > Paolo Abeni <pabeni@redhat.com>; Kirill A. Shutemov
+> > <kirill.shutemov@linux.intel.com>; Michael Ellerman
+> > <mpe@ellerman.id.au>; Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>; Linux
+> > Regressions <regressions@lists.linux.dev>; Linux Memory Management List
+> > <linux-mm@kvack.org>; Linux Networking <netdev@vger.kernel.org>; Linux
+> > Wireless <linux-wireless@vger.kernel.org>
+> > Subject: Fwd: mm/page_alloc.c:4453 with cfg80211_wiphy_work [cfg80211]
+> > 
+> > Hi,
+> > 
+> > I notice a regression report on Bugzilla [1]. Quoting from it:
+> > 
+> > > Linux version 6.5.0-rc1+ - up to
+> > > 831fe284d8275987596b7d640518dddba5735f61
+> > >
+> > > [    7.312665] ------------[ cut here ]------------
+> > > [    7.312671] WARNING: CPU: 8 PID: 659 at mm/page_alloc.c:4453
+> > __alloc_pages+0x329/0x340
+> > > [    7.312683] Modules linked in: exfat ntfs3 bnep btusb btrtl btbcm btintel
+> > btmtk bluetooth ecdh_generic ecc iwlmvm mac80211 libarc4
+> > snd_hda_codec_hdmi iwlwifi snd_hda_codec_realtek
+> > snd_hda_codec_generic ledtrig_audio cfg80211 snd_hda_intel
+> > snd_hda_codec snd_hwdep intel_rapl_msr x86_pkg_temp_thermal
+> > intel_powerclamp snd_hda_core tpm_tis intel_rapl_common
+> > snd_intel_dspcfg tpm_tis_core idma64 rfkill tpm_crb tpm rng_core
+> > pkcs8_key_parser fuse dmi_sysfs
+> > > [    7.312725] CPU: 8 PID: 659 Comm: kworker/8:2 Not tainted 6.5.0-rc1 #1
+> > > [    7.312729] Hardware name: Intel(R) Client Systems
+> > NUC12WSKi7/NUC12WSBi7, BIOS WSADL357.0087.2023.0306.1931 03/06/2023
+> > > [    7.312731] Workqueue: events cfg80211_wiphy_work [cfg80211]
+> > > [    7.312785] RIP: 0010:__alloc_pages+0x329/0x340
+> > > [    7.312791] Code: a8 44 89 e6 89 df c6 45 c8 00 4c 89 6d b0 41 89 de e8 0b ef
+> > ff ff 49 89 c7 e9 90 fe ff ff 80 e3 3f eb c0 c6 05 69 49 f7 09 01 <0f> 0b eb 98 e8
+> > 1e ec 6d 01 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f
+> > > [    7.312794] RSP: 0018:ffffad8e80defbf8 EFLAGS: 00010246
+> > > [    7.312798] RAX: 0000000000000000 RBX: 0000000000040dc0 RCX:
+> > 0000000000000000
+> > > [    7.312800] RDX: 0000000000000000 RSI: 0000000000000000 RDI:
+> > 0000000000040dc0
+> > > [    7.312802] RBP: ffffad8e80defc50 R08: 0000000000000005 R09:
+> > 0000000000000018
+> > > [    7.312804] R10: ffff938899d4a800 R11: ffff938891a9c800 R12:
+> > 0000000000000034
+> > > [    7.312806] R13: 0000000000000000 R14: ffffffffc02b150d R15:
+> > fffffffffffffc90
+> > > [    7.312808] FS:  0000000000000000(0000) GS:ffff938fb6600000(0000)
+> > knlGS:0000000000000000
+> > > [    7.312811] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > [    7.312813] CR2: 00007f540c94b710 CR3: 000000059502c000 CR4:
+> > 0000000000f50ea0
+> > > [    7.312815] PKRU: 55555554
+> > > [    7.312817] Call Trace:
+> > > [    7.312819]  <TASK>
+> > > [    7.312822]  ? show_regs+0x69/0x80
+> > > [    7.312827]  ? __warn+0x89/0x140
+> > > [    7.312833]  ? __alloc_pages+0x329/0x340
+> > > [    7.312837]  ? report_bug+0x15d/0x180
+> > > [    7.312843]  ? handle_bug+0x42/0x80
+> > > [    7.312848]  ? exc_invalid_op+0x1c/0x70
+> > > [    7.312852]  ? asm_exc_invalid_op+0x1f/0x30
+> > > [    7.312857]  ? cfg80211_scan_6ghz+0x12d/0xcb0 [cfg80211]
+> > > [    7.312911]  ? __alloc_pages+0x329/0x340
+> > > [    7.312916]  ? cfg80211_scan_6ghz+0x12d/0xcb0 [cfg80211]
+> > > [    7.312968]  __kmalloc_large_node+0x7e/0x170
+> > > [    7.312973]  __kmalloc+0xb9/0x120
+> > > [    7.312976]  cfg80211_scan_6ghz+0x12d/0xcb0 [cfg80211]
+> > > [    7.313028]  ? sched_clock_noinstr+0xd/0x20
+> > > [    7.313034]  ? sched_clock_cpu+0x14/0x190
+> > > [    7.313040]  ? raw_spin_rq_lock_nested+0x12/0x20
+> > > [    7.313046]  ___cfg80211_scan_done+0x1e0/0x250 [cfg80211]
+> > > [    7.313099]  __cfg80211_scan_done+0x23/0x30 [cfg80211]
+> > > [    7.313153]  cfg80211_wiphy_work+0xae/0xd0 [cfg80211]
+> > > [    7.313201]  process_one_work+0x1f1/0x3e0
+> > > [    7.313204]  worker_thread+0x51/0x3f0
+> > > [    7.313207]  ? _raw_spin_unlock_irqrestore+0x26/0x30
+> > > [    7.313212]  ? __pfx_worker_thread+0x10/0x10
+> > > [    7.313217]  kthread+0xdb/0x110
+> > > [    7.313222]  ? __pfx_kthread+0x10/0x10
+> > > [    7.313226]  ret_from_fork+0x3e/0x60
+> > > [    7.313229]  ? __pfx_kthread+0x10/0x10
+> > > [    7.313233]  ret_from_fork_asm+0x1b/0x30
+> > > [    7.313237]  </TASK>
+> > > [    7.313239] ---[ end trace 0000000000000000 ]---
+> > 
+> > See Bugzilla for the full thread.
+> > 
+> > Anyway, I'm adding it to regzbot to make sure it doesn't fall through cracks
+> > unnoticed:
+> > 
+> > #regzbot introduced: v6.5-rc1..831fe284d82759
+> > https://bugzilla.kernel.org/show_bug.cgi?id=217675
+> > 
+> > Thanks.
+> > 
+> > [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217675
+> > 
+> > --
+> > An old man doll... just what I always wanted! - Clara
+
 
