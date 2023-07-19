@@ -2,243 +2,232 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12A0D759D28
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 20:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4301759EDD
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 21:40:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbjGSSUb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jul 2023 14:20:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49226 "EHLO
+        id S229492AbjGSTkr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jul 2023 15:40:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGSSUa (ORCPT
+        with ESMTP id S229816AbjGSTkp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jul 2023 14:20:30 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A9E61FC8;
-        Wed, 19 Jul 2023 11:20:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689790827; x=1721326827;
-  h=date:from:to:cc:subject:message-id;
-  bh=B3io9gKG46+1pdvWfRsh5YGmc/FQHBrucuNmIgsXnwg=;
-  b=gvRc/J1GL84E1sHDLQZD2yO5pT+/GT1fIs7/cU58kKcoYqiPglmdzS9+
-   IPFcy8DgntenT8oBTzpIL3Z0To3JK46iU2s9WQiwrky2XOrAtvK/28WLS
-   SiOjFbu39cUMHUizo7221PFCQnwxjaSHLmlVuLLgX1jFO8fzGqU4snuP4
-   ae9sfQlMDvS+Hta2ytS0STPv+hZjN8TsnfjnjeSYRWjYGC7LEItyefEGW
-   z1wecLuXA1UDzC2r3hsogMn4hpEgQjvAxL9qmkuB5TzvhXAW0kGyWSS//
-   b6/HPr3kl3IKhXei2DHCF6NSkm0mJF9J13LgOxBzvG4aN55wqn0roJ0dy
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10776"; a="365421536"
-X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
-   d="scan'208";a="365421536"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2023 11:20:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10776"; a="753788149"
-X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
-   d="scan'208";a="753788149"
-Received: from lkp-server02.sh.intel.com (HELO 36946fcf73d7) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 19 Jul 2023 11:20:25 -0700
-Received: from kbuild by 36946fcf73d7 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qMBmi-0005Ml-1e;
-        Wed, 19 Jul 2023 18:20:24 +0000
-Date:   Thu, 20 Jul 2023 02:19:33 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Linux Memory Management List <linux-mm@kvack.org>,
-        linux-serial@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: [linux-next:master] BUILD SUCCESS WITH WARNING
- 352ce39a8bbaec0405793682be59fae120fc6b05
-Message-ID: <202307200227.IYOW22gm-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        Wed, 19 Jul 2023 15:40:45 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079CB1FD3
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jul 2023 12:40:44 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1b8baa836a5so38855ad.1
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jul 2023 12:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689795643; x=1690400443;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=538CnBBrHOSem6p7BaqZGrPHWTZO235qiwneX3PtIpk=;
+        b=ML0eDQsY6hXz8g9K+f3FAY0yBisvXuEGe547NeRU+dpqwQxTukHJuCmIGNZAy8s1fA
+         C+aROZnC4ekzG/pbwGpk1yUi5S2gJ8nfB9zYmL3D9zhFfywgbm14orYhDxkS+iKLetxq
+         u1TWk5s+TBvmkLAzBnEMzMj7xYhcGKeAiEuvau9D2DXih83XqFlY6kWmtNB5goUkS4UL
+         Oh7/96jRpePI5y/EjedtjLqpmRUzvtK1JyeIINqJlOKp2pGnGTQUVUx4rrz6Wb6xqSex
+         n7lGbwY7KASOtD4ZgcWkSrK+M6E7Qygjo75Er1MVYPW0A/tOSzCqod/8u7mvXtaOC2fi
+         /iag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689795643; x=1690400443;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=538CnBBrHOSem6p7BaqZGrPHWTZO235qiwneX3PtIpk=;
+        b=MJ+DioL232+zFn8TgF93Pd/RBpnDiEhzfF9iKmzX3n8kOAP6qz92R5ViTj5HTA2JLn
+         6p6sLX3Xvxeudm0UhyPTTaaqYTEqJOAsdNrRg0PRfN4FX5Bo+FbHLMFARPwIX0bgRP4r
+         aOyhsgQ2TDKJ7b8R0M6THFSL2hVGoaW6ZwT8a9bkJOMk+TIWeAFYv4TiL3Qm7AZ7Rear
+         9uPdC5I1q6trMngigftRa1y5GeYBF2/yAo2YC3v9oOP4wCMEtCxkwH+fSnAkZIUJ2u8A
+         H8iXhb9XO1WKekBJeGQ/6TyIjG9UgyGzAuJkiEYxqYjA1uuL7AE7YG5SibGVK7lzQXs+
+         cszQ==
+X-Gm-Message-State: ABy/qLaBI4j1XrXZkrx+4OBWzULr/sW33VtlCasQpzhpMykeRh2oZfPr
+        oDvgfnbzaOa3aA7D2rq4f8ggAbI+SkY=
+X-Google-Smtp-Source: APBJJlEmEzJZLyoAgwxUJI0LpZxOa4aiy7aJZWt2En58B0Hg0vej3Y48rn6EkMJmco2E/gscSx7Dww==
+X-Received: by 2002:a17:902:dad2:b0:1b8:b3f7:4872 with SMTP id q18-20020a170902dad200b001b8b3f74872mr23869479plx.28.1689795643089;
+        Wed, 19 Jul 2023 12:40:43 -0700 (PDT)
+Received: from smtp.gmail.com ([49.205.249.77])
+        by smtp.gmail.com with ESMTPSA id jc17-20020a17090325d100b001b042c0939fsm4358299plb.99.2023.07.19.12.40.41
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jul 2023 12:40:42 -0700 (PDT)
+From:   Chaitanya Tata <chaitanya.mgit@gmail.com>
+X-Google-Original-From: Chaitanya Tata <Chaitanya.Tata@nordicsemi.no>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: Add support for sending BSSMaxIdle in association request
+Date:   Thu, 20 Jul 2023 01:10:39 +0530
+Message-Id: <20230719194039.16179-1-Chaitanya.Tata@nordicsemi.no>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 352ce39a8bbaec0405793682be59fae120fc6b05  Add linux-next specific files for 20230719
+When WNM is enabled, a station can send its preferred BSS maximum idle
+period in the association request, add a new netlink attribute to get
+this value from the supplicant and add BSS maximum idle IE in the
+association request.
 
-Warning reports:
+Tested using mac80211_hwsim with the corresponding WPA supplicant patch.
 
-https://lore.kernel.org/oe-kbuild-all/202306260401.qZlYQpV2-lkp@intel.com
+Signed-off-by: Chaitanya Tata <Chaitanya.Tata@nordicsemi.no>
+---
+ include/net/cfg80211.h       |  2 ++
+ include/uapi/linux/nl80211.h |  2 ++
+ net/mac80211/ieee80211_i.h   |  4 ++++
+ net/mac80211/mlme.c          |  4 ++++
+ net/mac80211/util.c          | 11 +++++++++++
+ net/wireless/nl80211.c       | 11 +++++++++++
+ net/wireless/sme.c           |  1 +
+ 7 files changed, 35 insertions(+)
 
-Warning: (recently discovered and may have been fixed)
-
-drivers/mfd/max77541.c:176:18: warning: cast to smaller integer type 'enum max7754x_ids' from 'const void *' [-Wvoid-pointer-to-enum-cast]
-
-Unverified Warning (likely false positive, please contact us if interested):
-
-drivers/tty/serial/fsl_lpuart.c:1314 lpuart_timer_func() error: uninitialized symbol 'flags'.
-mm/khugepaged.c:2137 collapse_file() warn: variable dereferenced before check 'cc' (see line 1787)
-net/wireless/scan.c:373 cfg80211_gen_new_ie() warn: potential spectre issue 'sub->data' [r]
-net/wireless/scan.c:397 cfg80211_gen_new_ie() warn: possible spectre second half.  'ext_id'
-
-Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- i386-randconfig-m021-20230717
-|   |-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:possible-spectre-second-half.-ext_id
-|   `-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:potential-spectre-issue-sub-data-r
-|-- nios2-randconfig-m031-20230717
-|   `-- drivers-tty-serial-fsl_lpuart.c-lpuart_timer_func()-error:uninitialized-symbol-flags-.
-`-- x86_64-randconfig-m001-20230717
-    `-- mm-khugepaged.c-collapse_file()-warn:variable-dereferenced-before-check-cc-(see-line-)
-clang_recent_errors
-|-- powerpc-allmodconfig
-|   `-- clang:error:unsupported-option-fsanitize-thread-for-target-powerpc-unknown-linux-gnu
-|-- powerpc-randconfig-r025-20230718
-|   `-- clang:error:unsupported-option-fsanitize-thread-for-target-powerpc-unknown-linux-gnu
-|-- s390-randconfig-r044-20230718
-|   `-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
-|-- x86_64-randconfig-x002-20230718
-|   `-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
-|-- x86_64-randconfig-x003-20230718
-|   `-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
-|-- x86_64-randconfig-x004-20230718
-|   `-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
-|-- x86_64-randconfig-x005-20230718
-|   `-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
-`-- x86_64-randconfig-x006-20230718
-    `-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
-
-elapsed time: 772m
-
-configs tested: 124
-configs skipped: 6
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                          axs101_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r043-20230718   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                          ixp4xx_defconfig   clang
-arm                        mvebu_v5_defconfig   clang
-arm                  randconfig-r015-20230718   gcc  
-arm                  randconfig-r034-20230718   clang
-arm                  randconfig-r036-20230718   clang
-arm                  randconfig-r046-20230718   gcc  
-arm                        spear6xx_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r001-20230718   gcc  
-csky                                defconfig   gcc  
-hexagon              randconfig-r031-20230718   clang
-hexagon              randconfig-r041-20230718   clang
-hexagon              randconfig-r045-20230718   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230718   gcc  
-i386         buildonly-randconfig-r005-20230718   gcc  
-i386         buildonly-randconfig-r006-20230718   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230718   gcc  
-i386                 randconfig-i002-20230718   gcc  
-i386                 randconfig-i003-20230718   gcc  
-i386                 randconfig-i004-20230718   gcc  
-i386                 randconfig-i005-20230718   gcc  
-i386                 randconfig-i006-20230718   gcc  
-i386                 randconfig-i011-20230718   clang
-i386                 randconfig-i012-20230718   clang
-i386                 randconfig-i013-20230718   clang
-i386                 randconfig-i014-20230718   clang
-i386                 randconfig-i015-20230718   clang
-i386                 randconfig-i016-20230718   clang
-i386                 randconfig-r013-20230718   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5208evb_defconfig   gcc  
-m68k                          multi_defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                         bigsur_defconfig   gcc  
-mips                     cu1000-neo_defconfig   clang
-mips                           jazz_defconfig   gcc  
-mips                        maltaup_defconfig   clang
-mips                 randconfig-r023-20230718   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r002-20230718   gcc  
-nios2                randconfig-r005-20230718   gcc  
-nios2                randconfig-r035-20230718   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                generic-64bit_defconfig   gcc  
-parisc               randconfig-r022-20230718   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   clang
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          g5_defconfig   clang
-powerpc                        icon_defconfig   clang
-powerpc                      mgcoge_defconfig   gcc  
-powerpc              randconfig-r025-20230718   clang
-powerpc                     skiroot_defconfig   clang
-powerpc                     tqm8540_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230718   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230718   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r012-20230718   gcc  
-sh                           se7724_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r003-20230718   gcc  
-sparc                randconfig-r004-20230718   gcc  
-sparc                randconfig-r024-20230718   gcc  
-sparc                       sparc32_defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r011-20230718   gcc  
-um                   randconfig-r026-20230718   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230718   gcc  
-x86_64       buildonly-randconfig-r002-20230718   gcc  
-x86_64       buildonly-randconfig-r003-20230718   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-x001-20230718   clang
-x86_64               randconfig-x002-20230718   clang
-x86_64               randconfig-x003-20230718   clang
-x86_64               randconfig-x004-20230718   clang
-x86_64               randconfig-x005-20230718   clang
-x86_64               randconfig-x006-20230718   clang
-x86_64               randconfig-x011-20230718   gcc  
-x86_64               randconfig-x012-20230718   gcc  
-x86_64               randconfig-x013-20230718   gcc  
-x86_64               randconfig-x014-20230718   gcc  
-x86_64               randconfig-x015-20230718   gcc  
-x86_64               randconfig-x016-20230718   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                              defconfig   gcc  
-xtensa               randconfig-r006-20230718   gcc  
-xtensa               randconfig-r033-20230718   gcc  
-
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 9e04f69712b1..fe8a5149a1d5 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -2961,6 +2961,7 @@ struct cfg80211_assoc_request {
+ 	struct cfg80211_assoc_link links[IEEE80211_MLD_MAX_NUM_LINKS];
+ 	const u8 *ap_mld_addr;
+ 	s8 link_id;
++	u16 bss_max_idle_period;
+ };
+ 
+ /**
+@@ -3173,6 +3174,7 @@ struct cfg80211_connect_params {
+ 	size_t fils_erp_rrk_len;
+ 	bool want_1x;
+ 	struct ieee80211_edmg edmg;
++	u16 bss_max_idle_period;
+ };
+ 
+ /**
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index c59fec406da5..b1608df96b83 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -3341,6 +3341,8 @@ enum nl80211_attrs {
+ 
+ 	NL80211_ATTR_EMA_RNR_ELEMS,
+ 
++	NL80211_ATTR_BSS_MAX_IDLE_PERIOD,
++
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index a0a7839cb961..5d83e9bd30ea 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -436,6 +436,8 @@ struct ieee80211_mgd_assoc_data {
+ 	u8 fils_kek[FILS_MAX_KEK_LEN];
+ 	size_t fils_kek_len;
+ 
++	u16 bss_max_idle_period;
++
+ 	size_t ie_len;
+ 	u8 *ie_pos; /* used to fill ie[] with link[].elems */
+ 	u8 ie[];
+@@ -2614,4 +2616,6 @@ ieee80211_eht_cap_ie_to_sta_eht_cap(struct ieee80211_sub_if_data *sdata,
+ 				    const struct ieee80211_eht_cap_elem *eht_cap_ie_elem,
+ 				    u8 eht_cap_len,
+ 				    struct link_sta_info *link_sta);
++
++u8 *ieee80211_add_bss_max_idle_ie(u8 *buf, u16 max_idle_period);
+ #endif /* IEEE80211_I_H */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index e13a0354c397..2d955b237014 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1203,6 +1203,8 @@ static size_t ieee80211_assoc_link_elems(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_add_s1g_capab_ie(sdata, &sband->s1g_cap, skb);
+ 	}
+ 
++	ieee80211_add_bss_max_idle_ie(skb_put(skb, 5), assoc_data->bss_max_idle_period);
++
+ 	if (iftd && iftd->vendor_elems.data && iftd->vendor_elems.len)
+ 		skb_put_data(skb, iftd->vendor_elems.data, iftd->vendor_elems.len);
+ 
+@@ -7378,6 +7380,8 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 					req->crypto.control_port_over_nl80211;
+ 	sdata->control_port_no_preauth = req->crypto.control_port_no_preauth;
+ 
++	assoc_data->bss_max_idle_period = req->bss_max_idle_period;
++
+ 	/* kick off associate process */
+ 	ifmgd->assoc_data = assoc_data;
+ 
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 1527d6aafc14..d0217fd50d50 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -5076,3 +5076,14 @@ void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos)
+ 
+ 	*len_pos = elem_len;
+ }
++
++u8 *ieee80211_add_bss_max_idle_ie(u8 *buf, u16 max_idle_period)
++{
++	*buf++ = WLAN_EID_BSS_MAX_IDLE_PERIOD;
++	*buf++ = 3;
++	*(u16 *)buf++ = cpu_to_le16(max_idle_period);
++	/* Protected keep alive not applicable in association request */
++	*buf++ = 0;
++
++	return buf;
++}
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d95f8053020d..1e6c49096407 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -816,6 +816,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MAX_HW_TIMESTAMP_PEERS] = { .type = NLA_U16 },
+ 	[NL80211_ATTR_HW_TIMESTAMP_ENABLED] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_EMA_RNR_ELEMS] = { .type = NLA_NESTED },
++	[NL80211_ATTR_BSS_MAX_IDLE_PERIOD] = { .type = NLA_U16 },
+ };
+ 
+ /* policy for the key attributes */
+@@ -11136,6 +11137,11 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
+ 		ap_addr = req.bss->bssid;
+ 	}
+ 
++	if (info->attrs[NL80211_ATTR_BSS_MAX_IDLE_PERIOD]) {
++		req.bss_max_idle_period =
++			nla_get_u16(info->attrs[NL80211_ATTR_BSS_MAX_IDLE_PERIOD]);
++	}
++
+ 	err = nl80211_crypto_settings(rdev, info, &req.crypto, 1);
+ 	if (!err) {
+ 		wdev_lock(dev->ieee80211_ptr);
+@@ -11971,6 +11977,11 @@ static int nl80211_connect(struct sk_buff *skb, struct genl_info *info)
+ 	if (nla_get_flag(info->attrs[NL80211_ATTR_MLO_SUPPORT]))
+ 		connect.flags |= CONNECT_REQ_MLO_SUPPORT;
+ 
++	if (info->attrs[NL80211_ATTR_BSS_MAX_IDLE_PERIOD]) {
++		connect.bss_max_idle_period =
++			nla_get_u16(info->attrs[NL80211_ATTR_BSS_MAX_IDLE_PERIOD]);
++	}
++
+ 	wdev_lock(dev->ieee80211_ptr);
+ 
+ 	err = cfg80211_connect(rdev, dev, &connect, connkeys,
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 7bdeb8eea92d..3ab9adb3f1a4 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -200,6 +200,7 @@ static int cfg80211_conn_do_work(struct wireless_dev *wdev,
+ 		req.vht_capa = params->vht_capa;
+ 		req.vht_capa_mask = params->vht_capa_mask;
+ 		req.link_id = -1;
++		req.bss_max_idle_period = params->bss_max_idle_period;
+ 
+ 		req.bss = cfg80211_get_bss(&rdev->wiphy, params->channel,
+ 					   params->bssid,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
