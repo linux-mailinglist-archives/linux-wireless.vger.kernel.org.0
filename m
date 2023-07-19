@@ -2,96 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD7AE758E2B
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 08:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F40D4758E17
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 08:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231228AbjGSG4A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jul 2023 02:56:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38916 "EHLO
+        id S231149AbjGSGsU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jul 2023 02:48:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229590AbjGSGz7 (ORCPT
+        with ESMTP id S230055AbjGSGsT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jul 2023 02:55:59 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B350F1FC4;
-        Tue, 18 Jul 2023 23:55:57 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-51cff235226so1038271a12.0;
-        Tue, 18 Jul 2023 23:55:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689749756; x=1692341756;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=idS0iCzx7eFGMTV38VDkZYqyRsHIoOKLdTk6ADUO6Wk=;
-        b=TXj7JYK829kTN42IX87oR+dv1Bhmi/Ytn/BfMsZB/TIzFVzr3ocgR48UlYdmGAfh5V
-         gLNDMxuxt+kzJbK+XJ+sF+TGHGlDUjbpANtPNOIA654j8FI0gkOjrG/vVWC5CbiXCfpz
-         P7MsvLUxqAA9KZJOwGyT4IcHJ7MUXrhF5uO8sr0B/Vo9rdESAs6tdLVeGVEuHujq+EE6
-         WZ3vbGlApM/43BmsAIF56h7zrLF3HvMwEHNoG2/L/8YiTBugtkzsYvFU5H3gG9kXzXxs
-         5XEVRyLqXV4JD19Pbrbmdy+AHs+9g4R4ifMRt5Es95eAsQeePO8CM+VtncGVDtK3Z7vu
-         M+WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689749756; x=1692341756;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=idS0iCzx7eFGMTV38VDkZYqyRsHIoOKLdTk6ADUO6Wk=;
-        b=HlGPryGdbGCcQwbUiUpWerojzhDmemDMFQtTkK2I8+iQ4FeBDCqIVVy+NHtcPMC1tj
-         kMe9tESiyZY1fLDg/SQlwe/liRfbiJpmC/+FLRt8UJi+BvNMeCVOq6a8fdoH7YB5XLGP
-         D7pnN1nxIdn9szKAyEZxW8l+e8QsfRzAOLA3fTJH1T9LLIf4WqG18jZjqX2DMmr1F1XZ
-         LJOofIPUzsHTIntlgQo0cx+OWmDEGO0SGWh8PMNgkB9HC8IN2yDwwJz/k1gEPMg2YccY
-         R0NgW2V6Llu+Ozx9MsO+jMpIxgsvtAmo2HIMkPdP4pDGB7IV/9sRwjKby+M/7oK7sPcn
-         zvfw==
-X-Gm-Message-State: ABy/qLY6tnlV8tn24J19694RYNc7FHZgs3Ol56Js43+QdR/4BXykas35
-        OlgBQCNtftMeGIhwZLAJgj64+9mpjmU=
-X-Google-Smtp-Source: APBJJlHZi5Ev24UIeyWRbnLbNs4tsiNaZj7bd6/BgxkuOC0d9xKcix3IISSeP9rN4kw5CCIC8fzvUw==
-X-Received: by 2002:a05:6402:3c5:b0:51d:e185:a211 with SMTP id t5-20020a05640203c500b0051de185a211mr1304894edw.21.1689749755735;
-        Tue, 18 Jul 2023 23:55:55 -0700 (PDT)
-Received: from nam-dell (ip-217-105-46-58.ip.prioritytelecom.net. [217.105.46.58])
-        by smtp.gmail.com with ESMTPSA id d18-20020a056402079200b0051ddfb4385asm2266405edy.45.2023.07.18.23.55.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 23:55:55 -0700 (PDT)
-Date:   Wed, 19 Jul 2023 08:55:53 +0200
-From:   Nam Cao <namcaov@gmail.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     gregkh@linuxfoundation.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] staging: r8712: Fix memory leak in
- _r8712_init_xmit_priv()
-Message-ID: <ZLeI+b3oXP3hstdg@nam-dell>
-References: <20230714175417.18578-1-Larry.Finger@lwfinger.net>
+        Wed, 19 Jul 2023 02:48:19 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2A9B1BFD
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jul 2023 23:48:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689749299; x=1721285299;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eOYM3iN0mfoqzR+XbZE5GPSe5JYgB81uPM28Ed9uHo0=;
+  b=Fn8+HI1KlRAHu95hkddp7VvB0nL1ySCw3tceLzEjDorOyYo1wfTRkucY
+   XOMRps4GrfJYzwl3KLOAIQKWufm48rJ9QyF9jr+cCElj/wjLNb+3Rdvn7
+   Ql/ybg7P7vfv8u3tJcfYRXhpL9ZehrN5q8RXqqKGPq/PvO3iEmtemuL/4
+   FZDpu7ZRNgHuYXfJI8vsLTEZMgIqzEOISEBn9xDPLHZLL5Gf1eXz/d/z9
+   NwPmplAGrt3PGbTloOB8X4cHx17Owhdfxzv4H2SZ+Tlglpoy3RWuoxnGC
+   +u+c15rS1uPkLQHy+Rg8T3ldgMfJYfpdTl4FZUKS5EF7JAQu12va3VSlh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="369033242"
+X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
+   d="scan'208";a="369033242"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 23:48:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="814026998"
+X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
+   d="scan'208";a="814026998"
+Received: from jed01829.iil.intel.com ([10.12.217.181])
+  by FMSMGA003.fm.intel.com with ESMTP; 18 Jul 2023 23:48:17 -0700
+From:   Ilan Peer <ilan.peer@intel.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH] wifi: cfg80211: Fix return value in scan logic
+Date:   Wed, 19 Jul 2023 17:51:20 +0300
+Message-Id: <20230719145120.739521-1-ilan.peer@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230714175417.18578-1-Larry.Finger@lwfinger.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jul 14, 2023 at 12:54:17PM -0500, Larry Finger wrote:
-> In the above mentioned routine, memory is allocated in several places.
-> If the first succeeds and a later one fails, the routine will leak memory.
-> This patch fixes commit 2865d42c78a9 ("staging: r8712u: Add the new driver
-> to the mainline kernel"). A potential memory leak in
-> r8712_xmit_resource_alloc() is also addressed.
-> 
-> Fixes: 2865d42c78a9 ("staging: r8712u: Add the new driver to the mainline kernel")
-> Reported-by: syzbot+cf71097ffb6755df8251@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/x/log.txt?x=11ac3fa0a80000
-> Cc: stable@vger.kernel.org
-> Cc: Nam Cao <namcaov@gmail.com>
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+As cfg80211_parse_colocated_ap() is not expected to return a negative
+value return 0 and not a negative value if cfg80211_calc_short_ssid()
+fails.
 
-I am not qualified to make comments on the code style, but it looks functionally
-correct to me. So:
+This bug was introduced in commit c8cb5b854b40f
+('nl80211/cfg80211: support 6 GHz scanning').
 
-Reviewed-by: Nam Cao <namcaov@gmail.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+---
+ net/wireless/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards,
-Nam
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 8bf00caf5d29..0cf1ce7b6934 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -657,7 +657,7 @@ static int cfg80211_parse_colocated_ap(const struct cfg80211_bss_ies *ies,
+ 
+ 	ret = cfg80211_calc_short_ssid(ies, &ssid_elem, &s_ssid_tmp);
+ 	if (ret)
+-		return ret;
++		return 0;
+ 
+ 	for_each_element_id(elem, WLAN_EID_REDUCED_NEIGHBOR_REPORT,
+ 			    ies->data, ies->len) {
+-- 
+2.25.1
+
