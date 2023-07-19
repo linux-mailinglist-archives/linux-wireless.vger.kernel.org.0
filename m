@@ -2,158 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DCB6758E10
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 08:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 247A1758E18
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 08:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230344AbjGSGqL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jul 2023 02:46:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35116 "EHLO
+        id S230490AbjGSGsV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jul 2023 02:48:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjGSGqK (ORCPT
+        with ESMTP id S230143AbjGSGsU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jul 2023 02:46:10 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35A621FC4;
-        Tue, 18 Jul 2023 23:46:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689749169; x=1721285169;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=3HWSZPLfe63jyruIzncyGrTB6B69Z8qKP4a90FW8cBw=;
-  b=TzujoLAWKLDEr9tbz05ssZ1mUS01Y9jxaG6jNCv2ggJccepOehKbPRDG
-   0vAoDsEltPAMsGmRPI2L7euoO+DuTmCmO7lOv5Qz26qxzRNmSsH2SSpht
-   o/SPaGkAsMPBO2bKFfmhecwOLX5flokO/BW9ngoZPpZK24uJA9+7OzE33
-   vly8FKF8FC9XMU5W4ZfBGnRQTFlpkOg/uW0ZayxJDkhuI79KfXSSq2Cp/
-   HEmbcG32qYB+MKLvNtpw1HrWgzOatYzobqZ5fwCXXp2AcsPL6Vfv69TfS
-   LjhI30oALBu1peEppNwh8RxWbzbjwjEC1km+eiiZCJpRs+cBfO3xZvXm7
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="351255985"
-X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
-   d="scan'208";a="351255985"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 23:46:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="727198267"
-X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
-   d="scan'208";a="727198267"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmsmga007.fm.intel.com with ESMTP; 18 Jul 2023 23:46:04 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 18 Jul 2023 23:46:04 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Tue, 18 Jul 2023 23:46:04 -0700
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.174)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Tue, 18 Jul 2023 23:46:04 -0700
+        Wed, 19 Jul 2023 02:48:20 -0400
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2052.outbound.protection.outlook.com [40.107.7.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B231BFC
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jul 2023 23:48:16 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ioWSmCgrzkkjlf8MWrqh3GCohHpaJvJPySCr27FpHU/JRbZn2ffJkSqtsXMcapxw4AYJ3N4LGV02sZb7a/wnV1/dz1Xt7QhVw5LKd76HKFaQK6WV12LYqpf9O/9k193jx3txqERCWPP8S8YjpY6Hn46+Slpx7PXvbwfSs0UX0qAD6pDrKL6rYtmpGW7s+hDvJEeHZHRGpmKsC04Ye6Ymf5u+SGOpJHuYaNG2jNn47BLEbitq9m02MJNlUkR3Nd7VTXoQxnzkiioBk3lSDPKLz9rgcaZlUS7JXWZ1Z2V38WpRKsqzbKwWKL7m4OdhUc51ZpakyzOYPhnyyy8rNaNvzg==
+ b=hnccj3vajCyKbAjE57m6J6qDO8Ajd7zEWhfk3Zu9ACBwQNSmiGKe6SoGgag8KtEbBOXJwJG3Yr7gxsoqZlRuhe1lE875jtbxoVhTMy+xYlgjj3kphLc0M+cJ655OZNAmSIkf+yFpFMcZE+jGLcaJAME3k4ZsJL/dOZgcOrbvCP83wucnxvOvSrmZ7QAjiB61W+hka35HLKYHX6a3IuHVxfG54XKelIpooibJLcIP09YF5fDnletenfkouT/cr2o7HMrFkHLfvwYFTegGYIi+aWIZdG2Czhun1Dke3EFWjzfp2EWi36cNbt31yBbuIB3ECcnHfQd5pfuvY5rCA0ceog==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3HWSZPLfe63jyruIzncyGrTB6B69Z8qKP4a90FW8cBw=;
- b=VXqnYxt+OlAajPxPEoS3csYrzVFaP06JT67YtR/ITPPaPo+ALy6Bk0g7VwGAfAAKh0C1+jEB1vbnbvjaPlBTGIUBfXInBc9Q40gzBvNlEMEXSZrNmXapnxEkOKjlMtXsnWDjKUHRFWjc1XkHLMFosW4glMfSPtATStpRHwoZvwEfuZDKYknBpBD3mgKz8NrdzFtz76BEzZiEFdHF57U0z4UPDYBXamYDBnse6QAtcgb6NINZcoGyXx4FpWxs3Fvd5v8mNEvHkogFOdCQldpar4OeirAjE4QOktJvMEEZ+cfR3VOgU8YTWAseWbORoccfUaUaflDUiNIWTh/5rAE0Bg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB6043.namprd11.prod.outlook.com (2603:10b6:8:62::8) by
- MN6PR11MB8218.namprd11.prod.outlook.com (2603:10b6:208:47c::20) with
+ bh=87hoOUKrERrXKFYfuVQhHK/v5Lv8Ybu4TlzcZwFSjgc=;
+ b=QrzDA0KIhgdirwbi0cXoa2p5BeDJnAgFcGwytkG2zPB9ZoCbepxNw3ZfkFJkBGpCRB9ufypbFFdDBDFciH8q5D3tkYRumU7CiObzplvXu1Lqpj5CaUYZn//iAzV+mJkSgXomzXsidHUxKd/UCPOCaql+AkssM+a2J3D9s8sM71jnHRTxjzPHvC69KpkBMurUWfefqAjh5SGiEX9r+EgG6Uqs4BOXEaBGRjrMyZEAc1VR8ana78uTYmaxykl/xCLejroK5LjlfK7QS0+vpd4g96gwX0jlL8dMeKkFiGES2IJsmLlo3A/bbvkKyE9qcaVde6iHDAD3uo5sVNXlbXF1yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 91.183.173.212) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=macqel.be; dmarc=fail (p=none sp=none pct=100) action=none
+ header.from=macq.eu; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=macq.eu; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=87hoOUKrERrXKFYfuVQhHK/v5Lv8Ybu4TlzcZwFSjgc=;
+ b=Mt7IifLeNMd80xqln6v1RDeFpa+96nqoFFdxOQrizKN7h4wTPNkDyNTmpdI5UcqToGYe80QVAu34hTqLkoLvDVcE6VoaOilsnukmuBLVC1bJxDbWtgkItYH8RFFM3NoJdR3bbw5C/fyJRte3yUJnpEFAy3txjjttoKvIlGSzKmFxT738YFF1mkbTZY2M7peQtE74JwATbUW/DiEp3nPXcquo1zhsb4f2oEGrJAY9n5OGD+KplmvmhMnVK01TECfum4PztnfPFdMfmqNm5+nfE2/lAFLgmNbbJXyIMsk8sS0jIwrdgUyzhyXDbktgppCJ87mKAUdTmUrQx2My8PFkPg==
+Received: from AM7PR03CA0029.eurprd03.prod.outlook.com (2603:10a6:20b:130::39)
+ by AS2PR05MB10056.eurprd05.prod.outlook.com (2603:10a6:20b:5fd::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Wed, 19 Jul
- 2023 06:45:56 +0000
-Received: from DM4PR11MB6043.namprd11.prod.outlook.com
- ([fe80::e1a8:582d:1efc:dffc]) by DM4PR11MB6043.namprd11.prod.outlook.com
- ([fe80::e1a8:582d:1efc:dffc%4]) with mapi id 15.20.6588.031; Wed, 19 Jul 2023
- 06:45:56 +0000
-From:   "Peer, Ilan" <ilan.peer@intel.com>
-To:     Rudi Heitbaum <rudi@heitbaum.com>
-CC:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        "Linux Wireless" <linux-wireless@vger.kernel.org>
-Subject: RE: mm/page_alloc.c:4453 with cfg80211_wiphy_work [cfg80211]
-Thread-Topic: mm/page_alloc.c:4453 with cfg80211_wiphy_work [cfg80211]
-Thread-Index: AQHZt9Y8Drzo+t4D60uEaI2mUoJeL6+9+JZAgAE0GgCAAXycwA==
-Date:   Wed, 19 Jul 2023 06:45:56 +0000
-Message-ID: <DM4PR11MB604304FC3551BCD9AB13EBBDE939A@DM4PR11MB6043.namprd11.prod.outlook.com>
-References: <51e53417-cfad-542c-54ee-0fb9e26c4a38@gmail.com>
- <DM4PR11MB6043088A4A65CBF124F5D518E93BA@DM4PR11MB6043.namprd11.prod.outlook.com>
- <ZLZHDm3mcxaLdvRH@503599e9be06>
-In-Reply-To: <ZLZHDm3mcxaLdvRH@503599e9be06>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB6043:EE_|MN6PR11MB8218:EE_
-x-ms-office365-filtering-correlation-id: 4436cff0-14be-48ad-664a-08db8823cdd5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 8nPIZ1yOtbaIbdQySiXhxbv86fwelcELPfMpfzSROlOHj1ZzKWaaa2GQD7i9KaWANcsfabKwJe+1Wqg1y4fuQWaFO93OGyU/C6l/WFTT9jRbeq/SWJDJRPGMEfRJ7tvVpMieY9RjTD5vQGVvKP37OmgU4Oc2nRxXEx5ukZJQoYEwsSNOJFz6EhqrOWhOehuawTXvkA0TIMmg9/AAtO+aPEpLWUNBTJRmcuu7cgd53OfmLvS/S+hscEjxg0+3M9kz4P18O+/AWKLteOJoLCsW3ilnHUg1flgZjnOfnUfI3glw8CO1tSR8j6y147JbBaVFcdagReOQL5WRuU8uCb29UOKRSmMYCcK/HvLtI8wgyE3d+E8l/0heGSR5y+IOulHFDNwPl//kpJKCBPFGw27k/7u8sa7/mk6dZuexii+9709vf+L8Z6G9qx2vvYElb/TJ4f4oVr3qo8miHRKmhIi6O7mLYBYirTNX+iZsYJv+cLLIX0zfw3JHCDkKqm7aXG631HztnsmbJMW11xCyOqCkuHEfaXjVw82hMdhPgVQjuJttb/Si6H3Z9EiPkIZ70nGyCrORArnAHNK4xjDLq72X5Y8XoqCdmoHcnPAYxwDEdUZfJzOqr8gzDfZ0m+El8BhM
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6043.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(366004)(136003)(39860400002)(346002)(376002)(451199021)(71200400001)(9686003)(478600001)(54906003)(7696005)(6506007)(186003)(26005)(2906002)(76116006)(8936002)(64756008)(5660300002)(6916009)(66946007)(4326008)(41300700001)(7416002)(66446008)(316002)(8676002)(52536014)(66556008)(82960400001)(38100700002)(122000001)(38070700005)(86362001)(558084003)(83380400001)(55016003)(33656002)(66476007);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?K6/p0Z2YgDVzxwwjciGS3yi8TPGzOA4nOVoyxauI2h0C1dog360MuHo9Wqo4?=
- =?us-ascii?Q?BYG7woo13d5etGxVO0FCf1+54MLFjwkbXBWeBH2wJeifY9jXdimvcxzvP7pX?=
- =?us-ascii?Q?dNnTtKt6dU1X2Lbt1Nd97Majqryalya+3ilGwPFEttp9obyVjGRcxraQcA3C?=
- =?us-ascii?Q?jrdGLv1b20nDWsrdci1wNVwCL2LwbNbN49pFlNJ07VSSTtY+u0hMjbv2cmiG?=
- =?us-ascii?Q?RQ0Cw2QVa7SoizOdsk/wMsYiFlhzib0PaFuul3mY5NC+yHLkMwNiij8IeUBk?=
- =?us-ascii?Q?WTvcjNPf0H3iwy1DKyf0ti/BXqWY5O+4F+kP+sPo3tdNqbc8sGVOUFFIRf+s?=
- =?us-ascii?Q?jYiZ5Zal5TMH91D+6G7S7gL2Kp1ZBdISgGB6Fv1m8nXzZIUPVqumkBWVtAb8?=
- =?us-ascii?Q?0cLCSZPpwcJxD3wjQLsEBUsJRdraTl5Y8mDz9LgFgQQOTS0ZOrc406RLZVdb?=
- =?us-ascii?Q?l8TIO87uUjeoTIHFrvKRp0sbON6MjxFB8yTfiJ+SsIFVbLppqbqulZuAzgse?=
- =?us-ascii?Q?70xfOW0LMKYYluX4jIfqvTPIPXbQebUXzTqB5fD67EXarJDQdqXVGhMM5WRg?=
- =?us-ascii?Q?clWxYUxvt+DTvsMwdQv20pwywqeDpJjd/528eNNqDRUrjT3fC5uoIxUxPXJO?=
- =?us-ascii?Q?qc+gcg6x4sUcSrFeaB5o6Ys5YycUFzwFK4Cvb7iMr+9qDuhQVQZuA658yiD8?=
- =?us-ascii?Q?EPJEVnHf4awEoyWYfBz5sire4pol8oMQnJjI5YCQNe3gdg8SQwK88SfUxcOZ?=
- =?us-ascii?Q?FegyaLvz8w/15n+OlJwZU9g0PD41ekdbW0zj/qW9I1bXKD3moOXkQBq76Hv4?=
- =?us-ascii?Q?AO8U2VQ3AqOAW9WrG0Km3Yr8YpFxq3dpgmgcTasfdfxs82PpRBUDqmk6VzHt?=
- =?us-ascii?Q?6vm+nH+0N+XhX104cmFRmvwIZmpZtTKaSWGYpIofnUYdCT2yYvio2ZIMFgvT?=
- =?us-ascii?Q?dwLPYE2wmZWuO5OdH8Kc+5fM5qwFSOz4QjGQ8doDq3B0vs5v0PUq5DUYEHU/?=
- =?us-ascii?Q?Q/TDkaiQmbu0Z6G/DMJpYw+B89aSsCl9tFU3lYMIeBZuOkv9GVaj33BKUef7?=
- =?us-ascii?Q?RgDu3NspCB/kTCG77KVvso3WG0SioffqZ8GZ9txY4iosqkGIlBT+kfYOQq5I?=
- =?us-ascii?Q?rJFQVHxDxL1axv5E2njqJD8rX41NnyOOwFDGVWYg4Itl3qkHF4Ivzl0HQR4W?=
- =?us-ascii?Q?ydDw3AZtFupD3XYAsqeyILm9X1xjyOwmbQ2rTeHl4jrWqRzPG9qK7dxbdsSw?=
- =?us-ascii?Q?GqrVSerVNeGw+rlI2e8uTY6zooqmKIXGttas/SOA8dG7oU3tUHXeLapA8uBQ?=
- =?us-ascii?Q?NhGtuNZfNnw3Ni7RfREH5GiX27tL3Ir+lf4Qakz/q/tAHqzUYj/7IbVSR0Cj?=
- =?us-ascii?Q?KTV6zv2RpuabxyDyJLJa3gwFuEN8NPV1C9yrlCQEWodTdC1HSV+zCVceS5zI?=
- =?us-ascii?Q?knhcoOu6P/TIPu0ADD+Hso6it31JB9DoHdQWSPmkAhbZmVTymgC2tc2R3hr9?=
- =?us-ascii?Q?Df+KnO6U/AHyo7veiQNRrooxI2uA5mJG3lNAmdzOKE8ZjmpXt+Xw0JsGROng?=
- =?us-ascii?Q?DXQZgh+6Q4NkIbdtWAU=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.32; Wed, 19 Jul
+ 2023 06:48:12 +0000
+Received: from AM0EUR02FT025.eop-EUR02.prod.protection.outlook.com
+ (2603:10a6:20b:130:cafe::61) by AM7PR03CA0029.outlook.office365.com
+ (2603:10a6:20b:130::39) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.24 via Frontend
+ Transport; Wed, 19 Jul 2023 06:48:12 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
+ 91.183.173.212) smtp.mailfrom=macqel.be; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=macq.eu;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ macqel.be discourages use of 91.183.173.212 as permitted sender)
+Received: from frolo.macqel.be (91.183.173.212) by
+ AM0EUR02FT025.mail.protection.outlook.com (10.13.54.65) with Microsoft SMTP
+ Server id 15.20.6609.24 via Frontend Transport; Wed, 19 Jul 2023 06:48:12
+ +0000
+Received: by frolo.macqel.be (Postfix, from userid 1000)
+        id 51AADDF00B2; Wed, 19 Jul 2023 08:48:12 +0200 (CEST)
+Date:   Wed, 19 Jul 2023 08:48:12 +0200
+From:   Philippe De Muyter <phdm@macq.eu>
+To:     linuxlovemin@yonsei.ac.kr, gregkh@linuxfoundation.org,
+        linux-wireless@vger.kernel.org
+Subject: linux-stable v4.9.337 brcmfmac compilation error
+Message-ID: <20230719064812.GA29927@frolo.corp.macq.eu>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6043.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4436cff0-14be-48ad-664a-08db8823cdd5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jul 2023 06:45:56.1502
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.5.16 (2007-06-09)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0EUR02FT025:EE_|AS2PR05MB10056:EE_
+X-MS-Office365-Filtering-Correlation-Id: 279d3371-2e5c-4c36-2c92-08db88241f20
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 37juewoCdoYWDrmTGRvqWK0kTHDkyw0wHH775TGh0cR/HgcT29zsXsIw6bddAC9CIIzFE+CKYwT1c15mgTp8HM2trMYGqdYRuYMdXCcYiSuj0FVIPsVeE+9RvxJtoRWNxg2ysVjSBbIw4kP6hLXmm2kw2vlGaPg84znfxH7n7NueWCeFfKcOmJUYbEBK4E3lflpUFc5XCfot6llKIPZ0a9BOIcvkaDMH5dqLB23MNN+QisyACjBZM6y3SibYMoYwOlTcf5DoRwkDYZPL075K9h/JzQTd8UEtYA/If1IQxtxMjmRtujumRU/ySJ2FmCY7Af7YTGXfIuHm5/MeTGyXYyh3oBUe8etq0iXokOYcAx+3Zs2s8kfwgoGDuqRxVwz7X4Ev0GCpOWGBA07euqzZQXFYR3m/AtXTwtOoU+ktYen5FFBDn5XVjTdCWVGpRcaWVwBoyBQcmAI8atsr+hfj645lL2ar0bdFnbK9c5oUGETuY/QfxWYvKJzjYsENLiqcMHaHVQ2Y/qh86qSAt6Mj79T3p/UK0QZzS0Rhhv9UFN52Fl5zEFzQ6WV+0BPcoZdbclSS4aENK1afSioJLJLxBASH7IEBF/hJxpgJoVtDHlYqkKdKzvsyQt/+H42mGrQbx9YkPIHQtYW7/HNdOrr309hh1/h9RyOXlJD9wg5rKMQaSg2ZYMCJ9YxXZ3QKsaS0Uy1tY6Elc+LbkzyYTQp/bnmFzo8boOwdm3kvCvHZz5g4obshVBnBdG0lkPt7sFjd
+X-Forefront-Antispam-Report: CIP:91.183.173.212;CTRY:BE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:frolo.macqel.be;PTR:212.173-183-91.adsl-static.isp.belgacom.be;CAT:NONE;SFS:(13230028)(4636009)(346002)(39840400004)(396003)(136003)(376002)(451199021)(82310400008)(46966006)(36840700001)(33656002)(40480700001)(6266002)(83380400001)(1076003)(186003)(336012)(26005)(478600001)(41300700001)(8676002)(2906002)(8936002)(70206006)(70586007)(36860700001)(316002)(42186006)(5660300002)(47076005)(81166007)(356005)(75936004)(14776008);DIR:OUT;SFP:1101;
+X-OriginatorOrg: macq.eu
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2023 06:48:12.4990
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hjDCpoT1v3qahUdEZBnu/QGy08ipTsSE+NW02BC7jyP52wEgoktQd/IcyXqk1JmSr4nIx+r46y+bplWfACXSSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8218
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+X-MS-Exchange-CrossTenant-Network-Message-Id: 279d3371-2e5c-4c36-2c92-08db88241f20
+X-MS-Exchange-CrossTenant-Id: 5541087b-384c-4066-992a-42aa5fe171eb
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5541087b-384c-4066-992a-42aa5fe171eb;Ip=[91.183.173.212];Helo=[frolo.macqel.be]
+X-MS-Exchange-CrossTenant-AuthSource: AM0EUR02FT025.eop-EUR02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR05MB10056
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -161,18 +91,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hello,
 
-> Hi Ilan,
->=20
-> I can confirm that this fixes the error in my dmesg.
->=20
-> Regards
-> Rudi
->=20
+compilation of the brcmfmac driver in linux-4.9.y (tag v4.9.337) fails with
 
-Thanks for the update. I'll push a patch to the wireless mailing list.
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c: In function ‘brcmf_fw_map_chip_to_name’:
+ include/linux/stddef.h:7:14: error: return makes integer from pointer without a cast [-Werror=int-conversion]
+  #define NULL ((void *)0)
+               ^
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:577:10: note: in expansion of macro ‘NULL’
+    return NULL;
+           ^~~~
+ cc1: all warnings being treated as errors
 
-Regards,
+This is caused by commit 1db036d13e10809943c2dce553e2fa7fc9c6cd80
+ wifi: brcmfmac: Fix potential shift-out-of-bounds in brcmf_fw_alloc_request()
 
-Ilan.
+    [ Upstream commit 81d17f6f3331f03c8eafdacea68ab773426c1e3c ]
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+index 33a7378..6675de1 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+@@ -572,6 +572,11 @@ int brcmf_fw_map_chip_to_name(u32 chip, u32 chiprev,
+        u32 i;
+        char end;
+
++       if (chiprev >= BITS_PER_TYPE(u32)) {
++               brcmf_err("Invalid chip revision %u\n", chiprev);
++               return NULL;
++       }
++
+        for (i = 0; i < table_size; i++) {
+                if (mapping_table[i].chipid == chip &&
+                    mapping_table[i].revmask & BIT(chiprev))
+
+The problem is that in the upstream commit, the patch is applied to
+brcmf_fw_alloc_request(), which returns a pointer, while in v4.9.337
+it is applied to brcmf_fw_map_chip_to_name() which returns 'int'.
+
+Should we simply revert that patch, or rather add the missing
+intermediate patches ?
+
+Best regards
+
+Philippe
+
+-- 
+Philippe De Muyter +32 2 6101532 Macq SA rue de l'Aeronef 2 B-1140 Bruxelles
