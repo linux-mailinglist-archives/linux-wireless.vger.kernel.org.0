@@ -2,113 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55695758D33
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 07:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 127D6758E0F
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 08:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229739AbjGSFgM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jul 2023 01:36:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59662 "EHLO
+        id S230212AbjGSGos (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jul 2023 02:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGSFgL (ORCPT
+        with ESMTP id S229478AbjGSGor (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jul 2023 01:36:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9F28D2;
-        Tue, 18 Jul 2023 22:36:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6246F60B4A;
-        Wed, 19 Jul 2023 05:36:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3810C433C8;
-        Wed, 19 Jul 2023 05:36:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689744968;
-        bh=d3/IxNuFlljicHq27zgThypsE9G9mnM25K7t3Fk1Ydw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DiKRDBeRYX7ESq/ogBKlUjPVwSz0hBHnVgLsDhViy+CGjZ582sXbGYCbff8xsb9gj
-         7PEa2XSMLvgX4C9f3/ntcW1TKTP1MMrxtjD62N9U3sfgY4SyTrHrrBn7Cxm87dfxvm
-         zX5d0VoeXsX0WgfMPELO7CIppkj3hj5JIG0lginY=
-Date:   Wed, 19 Jul 2023 07:36:04 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     =?utf-8?B?546L5piOLei9r+S7tuW6leWxguaKgOacr+mDqA==?= 
-        <machel@vivo.com>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "opensource.kernel" <opensource.kernel@vivo.com>
-Subject: Re: [PATCH net v2] net: wireless: Use kfree_sensitive instead of
- kfree
-Message-ID: <2023071950-nervous-grub-5ee3@gregkh>
-References: <20230719022041.663-1-machel@vivo.com>
+        Wed, 19 Jul 2023 02:44:47 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53EE1BF3
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Jul 2023 23:44:46 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36J6Orfl031221;
+        Wed, 19 Jul 2023 06:44:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=Cb6DvDrWEBxB94sYgoPejnVukAljeQUEaVmedz+ukXs=;
+ b=HlsLQn2xD6HtBIZQEthzpKSeXZESRkddcAQiD5Oet3J6n55JVq3tnt2Fltoacsq7U8ma
+ mmFBf/yyjci1Eu73cUnKZ05gHLNNrZAZaTJxVyh65GtZLkGNGqmPaMVsRhWO7INU2lPc
+ vMzerK6MpD8+PCi+OTDDP/dbJY353lwthfC45aVxxIpNENf/4Tix5ynFswDXandtgA0D
+ 7fBFWNHs/mGqptmX8Cc5m1TNgs3mlxEyRiMT69IKAOO8UkIi0Ce8hzbsQbwkvWuIYZXq
+ bwuhPG79g6OCN5L/DteSDn5fm5LG+mpp9W0s9J/rbWwiBMPF/OkxKDpI6tDSjiqhYUGV KA== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rwpphjjt3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Jul 2023 06:44:42 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36J6igxP018181
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Jul 2023 06:44:42 GMT
+Received: from haric-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 18 Jul 2023 23:44:40 -0700
+From:   Hari Chandrakanthan <quic_haric@quicinc.com>
+To:     <quic_kvalo@quicinc.com>, <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Hari Chandrakanthan <quic_haric@quicinc.com>
+Subject: wifi: ath12k: do not drop data frames from unassociated stations
+Date:   Wed, 19 Jul 2023 12:14:34 +0530
+Message-ID: <1689749074-14676-1-git-send-email-quic_haric@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230719022041.663-1-machel@vivo.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: HoYQ6VSeFuLvzvFq17LZrP-95rri9Ztz
+X-Proofpoint-ORIG-GUID: HoYQ6VSeFuLvzvFq17LZrP-95rri9Ztz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-19_03,2023-07-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 priorityscore=1501 impostorscore=0 spamscore=0 clxscore=1011
+ bulkscore=0 mlxlogscore=834 malwarescore=0 mlxscore=0 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307190063
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 19, 2023 at 02:21:16AM +0000, 王明-软件底层技术部 wrote:
-> key contains private part of the key, so better use
-> kfree_sensitive to free it.
-> 
-> Fixes: 7cec84fdfd88 ("staging: wilc1000: split add_key() to avoid line over 80 chars")
-> Signed-off-by: Wang Ming <machel@vivo.com>
+From 'IEEE Std 802.11-2020 section 11.3.4.1':
+If STA A in an infrastructure BSS receives a Class 2 or Class 3 frame
+from STA B that is not authenticated with STA A
+(i.e., the state for STA B is State 1), STA A shall discard the frame.
+If the frame has an individual address in the Address 1 field,
+the MLME of STA A shall send a Deauthentication frame to STA B.
 
-Why not also use 王明-软件底层技术部 <machel@vivo.com> here as well?
+When data frames from unassociated stations are received by an AP,
+the AP is supposed to send a deauthentication/disassociation frame with
+reason code "Class 2 frame received from nonauthenticated STA" or
+"Class 3 frame received from nonassociated STA".
 
+But ath12k AP doesn't send deauthentication/disassociation frames,
+when it receives data frames from unassociated stations.
 
-> ---
->  drivers/net/wireless/microchip/wilc1000/cfg80211.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+The ath12k driver drops the data frames from unassociated
+station and the upper layer(mac80211/hostapd) is not aware of such event.
+Hence deauthentication/disassociation frame is not sent to that
+particular station by the AP.
 
-No change log from what changed from version 1?
+To address this issue, allow the data frames from the
+unassociated stations to reach mac80211 so that mac80211 can send
+NL80211_CMD_UNEXPECTED_FRAME event to userspace(hostapd) and hostapd
+upon receiving the event will send the deauthentication/disassociation
+frame with proper reason code.
 
+The data frame from unassociated stations gets dropped in mac80211.
 
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0-02903-QCAHKSWPL_SILICONZ-1
 
-> 
-> diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-> index b545d93c6e37..45bcadeba2da 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-> @@ -518,7 +518,7 @@ static int wilc_wfi_cfg_allocate_wpa_igtk_entry(struct wilc_priv *priv, u8 idx)
->  static int wilc_wfi_cfg_copy_wpa_info(struct wilc_wfi_key *key_info,
->  				      struct key_params *params)
->  {
-> -	kfree(key_info->key);
-> +	kfree_sensitive(key_info->key);
->  
->  	key_info->key = kmemdup(params->key, params->key_len, GFP_KERNEL);
->  	if (!key_info->key)
-> @@ -656,7 +656,7 @@ static int del_key(struct wiphy *wiphy, struct net_device *netdev, int link_id,
->  	if (!pairwise && (key_index == 4 || key_index == 5)) {
->  		key_index -= 4;
->  		if (priv->wilc_igtk[key_index]) {
-> -			kfree(priv->wilc_igtk[key_index]->key);
-> +			kfree_sensitive(priv->wilc_igtk[key_index]->key);
+Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-Normally "kfree_sensitive()" is used at the end of a function for when
-kfree() of a local variable might not be called because the compiler
-thinks it is smarter than us and optimizes it away.
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 0adcbcf..90eaf2d 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -3485,23 +3485,13 @@ static int ath12k_dp_rx_h_null_q_desc(struct ath12k *ar, struct sk_buff *msdu,
+ 				      struct sk_buff_head *msdu_list)
+ {
+ 	struct ath12k_base *ab = ar->ab;
+-	u16 msdu_len, peer_id;
++	u16 msdu_len;
+ 	struct hal_rx_desc *desc = (struct hal_rx_desc *)msdu->data;
+ 	u8 l3pad_bytes;
+ 	struct ath12k_skb_rxcb *rxcb = ATH12K_SKB_RXCB(msdu);
+ 	u32 hal_rx_desc_sz = ar->ab->hw_params->hal_desc_sz;
+ 
+ 	msdu_len = ath12k_dp_rx_h_msdu_len(ab, desc);
+-	peer_id = ath12k_dp_rx_h_peer_id(ab, desc);
+-
+-	spin_lock(&ab->base_lock);
+-	if (!ath12k_peer_find_by_id(ab, peer_id)) {
+-		spin_unlock(&ab->base_lock);
+-		ath12k_dbg(ab, ATH12K_DBG_DATA, "invalid peer id received in wbm err pkt%d\n",
+-			   peer_id);
+-		return -EINVAL;
+-	}
+-	spin_unlock(&ab->base_lock);
+ 
+ 	if (!rxcb->is_frag && ((msdu_len + hal_rx_desc_sz) > DP_RX_BUFFER_SIZE)) {
+ 		/* First buffer will be freed by the caller, so deduct it's length */
+-- 
+2.7.4
 
-Putting it here, in the normal operation, really doesn't do anything,
-right?  There's always going to be odd data in the heap and normal
-distros/users who care about that, always wipe the heap when doing new
-allocations as that's a kernel config option.
-
-So what exactly is this "fixing" here?  What is the bug?
-
-thanks,
-
-greg k-h
