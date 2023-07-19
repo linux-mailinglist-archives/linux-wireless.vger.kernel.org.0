@@ -2,87 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 485CE758217
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jul 2023 18:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91408758AD4
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 03:25:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232484AbjGRQ2U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Jul 2023 12:28:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42844 "EHLO
+        id S229861AbjGSBZh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Jul 2023 21:25:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232166AbjGRQ2S (ORCPT
+        with ESMTP id S229479AbjGSBZg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Jul 2023 12:28:18 -0400
-Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A95010CB
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Jul 2023 09:28:17 -0700 (PDT)
-Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4R54BN1JSMzBR9tW
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Jul 2023 00:28:12 +0800 (CST)
-Authentication-Results: mail.208.org (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)" header.d=208.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
-        content-transfer-encoding:content-type:message-id:user-agent
-        :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1689697691; x=1692289692; bh=L/fVwDWX1SeWGkJL/o0bh3V1ilW
-        UOI62DbgomHvpqDM=; b=nRFW0Zt0KRSrCacvzLNI9tVXAHCGdE3Gla/WLfeJq5U
-        MS0lBUf+S4+KhRuImMvEw0p5iD0ATcJYNzQWwRYVMeuXn83bmjB/N3gTyAK8MWyQ
-        8grFbf6jd3EXymBjfnbPSO1emarhGxMj/VzPIjavqQaNvzw7xxZOzJkKJQMrs67o
-        nMQ+5418AIrMZSJbPKRTWk6IB1xwR8o3XBRhU255LRM+Q0f1YYM2WxBu36rhduSU
-        ++sROdgFpRi+ezldL1ejJEUYaWrFjvWY6zGhKVYl+OLgGD8wAvdEI3GVSwZhW7Ys
-        yMpUyWJgDIqYPtS9BUo9z4ILwlWJT9sG3t9ylkAllHg==
-X-Virus-Scanned: amavisd-new at mail.208.org
-Received: from mail.208.org ([127.0.0.1])
-        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id xpM1fyrMwkRy for <linux-wireless@vger.kernel.org>;
-        Wed, 19 Jul 2023 00:28:11 +0800 (CST)
-Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4R54BM358fzBR9tP;
-        Wed, 19 Jul 2023 00:28:11 +0800 (CST)
+        Tue, 18 Jul 2023 21:25:36 -0400
+Received: from hust.edu.cn (mail.hust.edu.cn [202.114.0.240])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E258B12F;
+        Tue, 18 Jul 2023 18:25:34 -0700 (PDT)
+Received: from [IPV6:2001:250:4000:5113:b1a1:bdb4:62a:cbc5] ([172.16.0.254])
+        (user=dzm91@hust.edu.cn mech=PLAIN bits=0)
+        by mx1.hust.edu.cn  with ESMTP id 36J1P3dQ011344-36J1P3dR011344
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+        Wed, 19 Jul 2023 09:25:03 +0800
+Message-ID: <b14a23c8-826e-ad36-1cbb-bea4938b6368@hust.edu.cn>
+Date:   Wed, 19 Jul 2023 09:25:03 +0800
 MIME-Version: 1.0
-Date:   Wed, 19 Jul 2023 00:28:11 +0800
-From:   pangzizhen001@208suo.com
-To:     kvalo@kernel.org, gregory.greenman@intel.com
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iwlwifi/mvm: Fix typos in comments
-In-Reply-To: <7d3a7075b8bf9af194c56c74eeaaefb7@208suo.com>
-References: <20230718161711.61222-1-wangjianli@cdjrlc.com>
- <7d3a7075b8bf9af194c56c74eeaaefb7@208suo.com>
-User-Agent: Roundcube Webmail
-Message-ID: <e005b58439b42874d01f55e6496e421d@208suo.com>
-X-Sender: pangzizhen001@208suo.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,SPF_HELO_FAIL,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v3] wifi: ath9k: fix printk specifier
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        Jonas Gorski <jonas.gorski@gmail.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230706111700.14305-1-dzm91@hust.edu.cn>
+ <87cz15s2gv.fsf@toke.dk>
+ <CAOiHx=kccbUFGsWMA_31UPW6p=k1qa+HyL5OGyzv50W2Mc111w@mail.gmail.com>
+ <87a5w7hm46.fsf@toke.dk>
+From:   Dongliang Mu <dzm91@hust.edu.cn>
+In-Reply-To: <87a5w7hm46.fsf@toke.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-FEAS-AUTH-USER: dzm91@hust.edu.cn
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Delete duplicate word "the"
 
-Signed-off-by: Zizhen Pang <pangzizhen001@208suo.com>
----
-  drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
+On 2023/7/7 21:44, Toke Høiland-Jørgensen wrote:
+> Jonas Gorski <jonas.gorski@gmail.com> writes:
+>
+>> On Thu, 6 Jul 2023 at 13:39, Toke Høiland-Jørgensen <toke@toke.dk> wrote:
+>>> Dongliang Mu <dzm91@hust.edu.cn> writes:
+>>>
+>>>> Smatch reports:
+>>>>
+>>>> ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
+>>>> ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
+>>>>
+>>>> Fix it by modifying %lx to %p in printk.
+>>>>
+>>>> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+>>> Third time is the charm! :)
+>>>
+>>> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+>> But do we *want* to replace %lx with %p? Because this now causes a
+>> change in behavior, as the kernel will omit the pointer's address,
+>> while before it printed the actual memory address. Using %px would
+>> have kept the original behavior.
+> So this is basically an informational log message, which really
+> shouldn't be leaking kernel pointer addresses. So I think %p is the
+> right choice here, and if someone wants to see the real address for
+> debugging they should be booting with no_hash_pointers.
+>
+>> So if the change is desired, it should be noted in the commit message.
+> That is a fair point, documenting this in the commit message would be
+> good...
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c 
-b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-index a5b432bc9e2f..4745cba25391 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-@@ -31,7 +31,7 @@ u8 iwl_mvm_get_channel_width(struct cfg80211_chan_def 
-*chandef)
+Hi Toke,
 
-  /*
-   * Maps the driver specific control channel position (relative to the 
-center
-- * freq) definitions to the the fw values
-+ * freq) definitions to the fw values
-   */
-  u8 iwl_mvm_get_ctrl_pos(struct cfg80211_chan_def *chandef)
-  {
+What's the next? Patch v4 with a note at the end, like the following,
+
+"Note that %p would by default print a hashed value without leaking the 
+kernel pointer to user space."
+
+
+> -Toke
