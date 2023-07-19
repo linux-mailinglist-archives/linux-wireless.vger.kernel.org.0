@@ -2,53 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B1A27591AF
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 11:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49818759223
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 11:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbjGSJb6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jul 2023 05:31:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43450 "EHLO
+        id S229592AbjGSJ5X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jul 2023 05:57:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjGSJbz (ORCPT
+        with ESMTP id S229530AbjGSJ5W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jul 2023 05:31:55 -0400
+        Wed, 19 Jul 2023 05:57:22 -0400
 Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57708E42
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Jul 2023 02:31:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCFD1106
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jul 2023 02:54:38 -0700 (PDT)
 Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4R5VvX05RczBR5D1
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Jul 2023 17:31:51 +0800 (CST)
+        by mail.208.org (Postfix) with ESMTP id 4R5WPj56JYzBRDrT
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jul 2023 17:54:33 +0800 (CST)
 Authentication-Results: mail.208.org (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)" header.d=208.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
         content-transfer-encoding:content-type:message-id:user-agent
         :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1689759111; x=1692351112; bh=LItqP0llwziE0Rh0tkeMsYWBjcC
-        emIDMOFOvno6nS6k=; b=nCKn0hTdixU+lqLNSIUoagua6whh2WdHvOraOw3UZsk
-        Gi0NAF1gU4cpxEvHYX/1XjJWb1RvxvBYGR4CxV39qnIr33WjMIePC06a5BELZF1T
-        t9lTlNjYKMc/JQy8ssWfyla0HxYQq5FjPPSgFiFD5T37rv34ZxbM6PihRr+4FcSS
-        gHEvAv8YGgYXcP842ZLjRKwtVJ9P7ovEdLAiUpyV/fS63NNAq8f9oF4XzwuwkU+x
-        azgNUPHTY+rV/kcoT/eJjafw4fDCCntS/fKLTDRR2Ut4fgvqsr7OYCxI/SGPIYxQ
-        7p3AjePkUt9jn8gF7tEPML6MFaho2hU+2PIHw9SO1pA==
+        dkim; t=1689760473; x=1692352474; bh=iZ7MHDXMAeTe21V130fRphXLFoc
+        oLkF9T3oPe8TXaRU=; b=A7FrCShP8IWzWnXTNctVB5FUbpvV3i7boTOXyu0+Rrf
+        6EjkxZQwKnlCi3OwEOofgQunTbAQcEWuFIrKqfmmqcKw4F4qSa5MiiIx+QAeYRZZ
+        r8L8qwJcFmagKCzdJ9O3hcRDreEJ5ohA679Z4j+wMYUceng2+qF6cFPjkFPrep55
+        XhF1lZUkTfbCkA4ixJCypzCpfRETwUamm1mcTg1hWybaLEyvvLx1C220uVK+21FI
+        U09KhGw4bhD6pothBSubf3GWomiQciRggHESM3B+QD7BsNKKrPCl3/5iMB+NxC4d
+        E6u7vuyaFLzQnuPQBF+It3DFBu4VPfYmKexUgA6H8Wg==
 X-Virus-Scanned: amavisd-new at mail.208.org
 Received: from mail.208.org ([127.0.0.1])
         by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id zEJSOgpiF8Y8 for <linux-wireless@vger.kernel.org>;
-        Wed, 19 Jul 2023 17:31:51 +0800 (CST)
+        with ESMTP id SZroP2Sfvu2x for <linux-wireless@vger.kernel.org>;
+        Wed, 19 Jul 2023 17:54:33 +0800 (CST)
 Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4R5VvW4lmDzBR1Nw;
-        Wed, 19 Jul 2023 17:31:51 +0800 (CST)
+        by mail.208.org (Postfix) with ESMTPSA id 4R5WPj3JmgzBRDrF;
+        Wed, 19 Jul 2023 17:54:33 +0800 (CST)
 MIME-Version: 1.0
-Date:   Wed, 19 Jul 2023 17:31:51 +0800
+Date:   Wed, 19 Jul 2023 17:54:33 +0800
 From:   hanyu001@208suo.com
-To:     kvalo@kernel.org
-Cc:     libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] libertas: debugfs: Added missing spaces
-In-Reply-To: <tencent_0EA6836B1E10A9623158112DD43D48C95605@qq.com>
-References: <tencent_0EA6836B1E10A9623158112DD43D48C95605@qq.com>
+To:     pkshih@realtek.com, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] rtlwifi: rtl8192de: phy: "foo * bar" should be "foo *bar"
+In-Reply-To: <tencent_56B12E143DA8D1D6A9C3669E04C963914905@qq.com>
+References: <tencent_56B12E143DA8D1D6A9C3669E04C963914905@qq.com>
 User-Agent: Roundcube Webmail
-Message-ID: <013fa54eeb505b6a7080c6d4ccc3a445@208suo.com>
+Message-ID: <8ef50a4e96014949bbfde956edd07108@208suo.com>
 X-Sender: hanyu001@208suo.com
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
@@ -63,103 +62,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes the following checkpatch errors:
 
-./drivers/net/wireless/marvell/libertas/debugfs.c:712: ERROR: spaces 
-required around that '=' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:712: ERROR: spaces 
-required around that '<' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:723: ERROR: spaces 
-required around that '=' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:723: ERROR: spaces 
-required around that '<' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:734: ERROR: spaces 
-required around that '=' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:734: ERROR: spaces 
-required around that '<' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:754: ERROR: spaces 
-required around that '=' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:754: ERROR: spaces 
-required around that '<' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:754: ERROR: space 
-required before the open parenthesis '('
-./drivers/net/wireless/marvell/libertas/debugfs.c:759: ERROR: spaces 
-required around that '=' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:759: ERROR: spaces 
-required around that '<' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:759: ERROR: space 
-required before the open parenthesis '('
-./drivers/net/wireless/marvell/libertas/debugfs.c:766: ERROR: spaces 
-required around that '=' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:766: ERROR: spaces 
-required around that '<' (ctx:VxV)
-./drivers/net/wireless/marvell/libertas/debugfs.c:766: ERROR: space 
-required before the open parenthesis '('
+This patch fixes the checkpatch.pl error:
+
+./drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:2434: ERROR: "foo 
+* bar" should be "foo *bar"
 
 Signed-off-by: Yu Han <hanyu001@208suo.com>
 ---
-  drivers/net/wireless/marvell/libertas/debugfs.c | 12 ++++++------
-  1 file changed, 6 insertions(+), 6 deletions(-)
+  drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/debugfs.c 
-b/drivers/net/wireless/marvell/libertas/debugfs.c
-index c604613..8939bf4 100644
---- a/drivers/net/wireless/marvell/libertas/debugfs.c
-+++ b/drivers/net/wireless/marvell/libertas/debugfs.c
-@@ -709,7 +709,7 @@ void lbs_debugfs_init_one(struct lbs_private *priv, 
-struct net_device *dev)
-
-      priv->debugfs_dir = debugfs_create_dir(dev->name, lbs_dir);
-
--    for (i=0; i<ARRAY_SIZE(debugfs_files); i++) {
-+    for (i = 0; i < ARRAY_SIZE(debugfs_files); i++) {
-          files = &debugfs_files[i];
-          priv->debugfs_files[i] = debugfs_create_file(files->name,
-                                   files->perm,
-@@ -720,7 +720,7 @@ void lbs_debugfs_init_one(struct lbs_private *priv, 
-struct net_device *dev)
-
-      priv->events_dir = debugfs_create_dir("subscribed_events", 
-priv->debugfs_dir);
-
--    for (i=0; i<ARRAY_SIZE(debugfs_events_files); i++) {
-+    for (i = 0; i < ARRAY_SIZE(debugfs_events_files); i++) {
-          files = &debugfs_events_files[i];
-          priv->debugfs_events_files[i] = 
-debugfs_create_file(files->name,
-                                   files->perm,
-@@ -731,7 +731,7 @@ void lbs_debugfs_init_one(struct lbs_private *priv, 
-struct net_device *dev)
-
-      priv->regs_dir = debugfs_create_dir("registers", 
-priv->debugfs_dir);
-
--    for (i=0; i<ARRAY_SIZE(debugfs_regs_files); i++) {
-+    for (i = 0; i < ARRAY_SIZE(debugfs_regs_files); i++) {
-          files = &debugfs_regs_files[i];
-          priv->debugfs_regs_files[i] = debugfs_create_file(files->name,
-                                   files->perm,
-@@ -751,19 +751,19 @@ void lbs_debugfs_remove_one(struct lbs_private 
-*priv)
-  {
-      int i;
-
--    for(i=0; i<ARRAY_SIZE(debugfs_regs_files); i++)
-+    for (i = 0; i < ARRAY_SIZE(debugfs_regs_files); i++)
-          debugfs_remove(priv->debugfs_regs_files[i]);
-
-      debugfs_remove(priv->regs_dir);
-
--    for(i=0; i<ARRAY_SIZE(debugfs_events_files); i++)
-+    for (i = 0; i < ARRAY_SIZE(debugfs_events_files); i++)
-          debugfs_remove(priv->debugfs_events_files[i]);
-
-      debugfs_remove(priv->events_dir);
-  #ifdef PROC_DEBUG
-      debugfs_remove(priv->debugfs_debug);
-  #endif
--    for(i=0; i<ARRAY_SIZE(debugfs_files); i++)
-+    for (i = 0; i < ARRAY_SIZE(debugfs_files); i++)
-          debugfs_remove(priv->debugfs_files[i]);
-      debugfs_remove(priv->debugfs_dir);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c 
+b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+index d18c092..27b029b 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -2431,7 +2431,7 @@ static bool _rtl92d_is_legal_5g_channel(struct 
+ieee80211_hw *hw, u8 channel)
   }
+
+  static void _rtl92d_phy_calc_curvindex(struct ieee80211_hw *hw,
+-                       u32 *targetchnl, u32 * curvecount_val,
++                       u32 *targetchnl, u32 *curvecount_val,
+                         bool is5g, u32 *curveindex)
+  {
+      struct rtl_priv *rtlpriv = rtl_priv(hw);
