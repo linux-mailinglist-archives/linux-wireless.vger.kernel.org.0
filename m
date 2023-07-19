@@ -2,141 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 127D6758E0F
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 08:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DCB6758E10
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jul 2023 08:46:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230212AbjGSGos (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Jul 2023 02:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34894 "EHLO
+        id S230344AbjGSGqL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Jul 2023 02:46:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjGSGor (ORCPT
+        with ESMTP id S229478AbjGSGqK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Jul 2023 02:44:47 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53EE1BF3
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Jul 2023 23:44:46 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36J6Orfl031221;
-        Wed, 19 Jul 2023 06:44:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=Cb6DvDrWEBxB94sYgoPejnVukAljeQUEaVmedz+ukXs=;
- b=HlsLQn2xD6HtBIZQEthzpKSeXZESRkddcAQiD5Oet3J6n55JVq3tnt2Fltoacsq7U8ma
- mmFBf/yyjci1Eu73cUnKZ05gHLNNrZAZaTJxVyh65GtZLkGNGqmPaMVsRhWO7INU2lPc
- vMzerK6MpD8+PCi+OTDDP/dbJY353lwthfC45aVxxIpNENf/4Tix5ynFswDXandtgA0D
- 7fBFWNHs/mGqptmX8Cc5m1TNgs3mlxEyRiMT69IKAOO8UkIi0Ce8hzbsQbwkvWuIYZXq
- bwuhPG79g6OCN5L/DteSDn5fm5LG+mpp9W0s9J/rbWwiBMPF/OkxKDpI6tDSjiqhYUGV KA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rwpphjjt3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Jul 2023 06:44:42 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36J6igxP018181
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Jul 2023 06:44:42 GMT
-Received: from haric-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+        Wed, 19 Jul 2023 02:46:10 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35A621FC4;
+        Tue, 18 Jul 2023 23:46:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689749169; x=1721285169;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=3HWSZPLfe63jyruIzncyGrTB6B69Z8qKP4a90FW8cBw=;
+  b=TzujoLAWKLDEr9tbz05ssZ1mUS01Y9jxaG6jNCv2ggJccepOehKbPRDG
+   0vAoDsEltPAMsGmRPI2L7euoO+DuTmCmO7lOv5Qz26qxzRNmSsH2SSpht
+   o/SPaGkAsMPBO2bKFfmhecwOLX5flokO/BW9ngoZPpZK24uJA9+7OzE33
+   vly8FKF8FC9XMU5W4ZfBGnRQTFlpkOg/uW0ZayxJDkhuI79KfXSSq2Cp/
+   HEmbcG32qYB+MKLvNtpw1HrWgzOatYzobqZ5fwCXXp2AcsPL6Vfv69TfS
+   LjhI30oALBu1peEppNwh8RxWbzbjwjEC1km+eiiZCJpRs+cBfO3xZvXm7
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="351255985"
+X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
+   d="scan'208";a="351255985"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 23:46:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="727198267"
+X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
+   d="scan'208";a="727198267"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga007.fm.intel.com with ESMTP; 18 Jul 2023 23:46:04 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 18 Jul 2023 23:46:04 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Tue, 18 Jul 2023 23:46:04 -0700
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.174)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Tue, 18 Jul 2023 23:44:40 -0700
-From:   Hari Chandrakanthan <quic_haric@quicinc.com>
-To:     <quic_kvalo@quicinc.com>, <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Hari Chandrakanthan <quic_haric@quicinc.com>
-Subject: wifi: ath12k: do not drop data frames from unassociated stations
-Date:   Wed, 19 Jul 2023 12:14:34 +0530
-Message-ID: <1689749074-14676-1-git-send-email-quic_haric@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+ 15.1.2507.27; Tue, 18 Jul 2023 23:46:04 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ioWSmCgrzkkjlf8MWrqh3GCohHpaJvJPySCr27FpHU/JRbZn2ffJkSqtsXMcapxw4AYJ3N4LGV02sZb7a/wnV1/dz1Xt7QhVw5LKd76HKFaQK6WV12LYqpf9O/9k193jx3txqERCWPP8S8YjpY6Hn46+Slpx7PXvbwfSs0UX0qAD6pDrKL6rYtmpGW7s+hDvJEeHZHRGpmKsC04Ye6Ymf5u+SGOpJHuYaNG2jNn47BLEbitq9m02MJNlUkR3Nd7VTXoQxnzkiioBk3lSDPKLz9rgcaZlUS7JXWZ1Z2V38WpRKsqzbKwWKL7m4OdhUc51ZpakyzOYPhnyyy8rNaNvzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3HWSZPLfe63jyruIzncyGrTB6B69Z8qKP4a90FW8cBw=;
+ b=VXqnYxt+OlAajPxPEoS3csYrzVFaP06JT67YtR/ITPPaPo+ALy6Bk0g7VwGAfAAKh0C1+jEB1vbnbvjaPlBTGIUBfXInBc9Q40gzBvNlEMEXSZrNmXapnxEkOKjlMtXsnWDjKUHRFWjc1XkHLMFosW4glMfSPtATStpRHwoZvwEfuZDKYknBpBD3mgKz8NrdzFtz76BEzZiEFdHF57U0z4UPDYBXamYDBnse6QAtcgb6NINZcoGyXx4FpWxs3Fvd5v8mNEvHkogFOdCQldpar4OeirAjE4QOktJvMEEZ+cfR3VOgU8YTWAseWbORoccfUaUaflDUiNIWTh/5rAE0Bg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM4PR11MB6043.namprd11.prod.outlook.com (2603:10b6:8:62::8) by
+ MN6PR11MB8218.namprd11.prod.outlook.com (2603:10b6:208:47c::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Wed, 19 Jul
+ 2023 06:45:56 +0000
+Received: from DM4PR11MB6043.namprd11.prod.outlook.com
+ ([fe80::e1a8:582d:1efc:dffc]) by DM4PR11MB6043.namprd11.prod.outlook.com
+ ([fe80::e1a8:582d:1efc:dffc%4]) with mapi id 15.20.6588.031; Wed, 19 Jul 2023
+ 06:45:56 +0000
+From:   "Peer, Ilan" <ilan.peer@intel.com>
+To:     Rudi Heitbaum <rudi@heitbaum.com>
+CC:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Linux Networking <netdev@vger.kernel.org>,
+        "Linux Wireless" <linux-wireless@vger.kernel.org>
+Subject: RE: mm/page_alloc.c:4453 with cfg80211_wiphy_work [cfg80211]
+Thread-Topic: mm/page_alloc.c:4453 with cfg80211_wiphy_work [cfg80211]
+Thread-Index: AQHZt9Y8Drzo+t4D60uEaI2mUoJeL6+9+JZAgAE0GgCAAXycwA==
+Date:   Wed, 19 Jul 2023 06:45:56 +0000
+Message-ID: <DM4PR11MB604304FC3551BCD9AB13EBBDE939A@DM4PR11MB6043.namprd11.prod.outlook.com>
+References: <51e53417-cfad-542c-54ee-0fb9e26c4a38@gmail.com>
+ <DM4PR11MB6043088A4A65CBF124F5D518E93BA@DM4PR11MB6043.namprd11.prod.outlook.com>
+ <ZLZHDm3mcxaLdvRH@503599e9be06>
+In-Reply-To: <ZLZHDm3mcxaLdvRH@503599e9be06>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6043:EE_|MN6PR11MB8218:EE_
+x-ms-office365-filtering-correlation-id: 4436cff0-14be-48ad-664a-08db8823cdd5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 8nPIZ1yOtbaIbdQySiXhxbv86fwelcELPfMpfzSROlOHj1ZzKWaaa2GQD7i9KaWANcsfabKwJe+1Wqg1y4fuQWaFO93OGyU/C6l/WFTT9jRbeq/SWJDJRPGMEfRJ7tvVpMieY9RjTD5vQGVvKP37OmgU4Oc2nRxXEx5ukZJQoYEwsSNOJFz6EhqrOWhOehuawTXvkA0TIMmg9/AAtO+aPEpLWUNBTJRmcuu7cgd53OfmLvS/S+hscEjxg0+3M9kz4P18O+/AWKLteOJoLCsW3ilnHUg1flgZjnOfnUfI3glw8CO1tSR8j6y147JbBaVFcdagReOQL5WRuU8uCb29UOKRSmMYCcK/HvLtI8wgyE3d+E8l/0heGSR5y+IOulHFDNwPl//kpJKCBPFGw27k/7u8sa7/mk6dZuexii+9709vf+L8Z6G9qx2vvYElb/TJ4f4oVr3qo8miHRKmhIi6O7mLYBYirTNX+iZsYJv+cLLIX0zfw3JHCDkKqm7aXG631HztnsmbJMW11xCyOqCkuHEfaXjVw82hMdhPgVQjuJttb/Si6H3Z9EiPkIZ70nGyCrORArnAHNK4xjDLq72X5Y8XoqCdmoHcnPAYxwDEdUZfJzOqr8gzDfZ0m+El8BhM
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6043.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(366004)(136003)(39860400002)(346002)(376002)(451199021)(71200400001)(9686003)(478600001)(54906003)(7696005)(6506007)(186003)(26005)(2906002)(76116006)(8936002)(64756008)(5660300002)(6916009)(66946007)(4326008)(41300700001)(7416002)(66446008)(316002)(8676002)(52536014)(66556008)(82960400001)(38100700002)(122000001)(38070700005)(86362001)(558084003)(83380400001)(55016003)(33656002)(66476007);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?K6/p0Z2YgDVzxwwjciGS3yi8TPGzOA4nOVoyxauI2h0C1dog360MuHo9Wqo4?=
+ =?us-ascii?Q?BYG7woo13d5etGxVO0FCf1+54MLFjwkbXBWeBH2wJeifY9jXdimvcxzvP7pX?=
+ =?us-ascii?Q?dNnTtKt6dU1X2Lbt1Nd97Majqryalya+3ilGwPFEttp9obyVjGRcxraQcA3C?=
+ =?us-ascii?Q?jrdGLv1b20nDWsrdci1wNVwCL2LwbNbN49pFlNJ07VSSTtY+u0hMjbv2cmiG?=
+ =?us-ascii?Q?RQ0Cw2QVa7SoizOdsk/wMsYiFlhzib0PaFuul3mY5NC+yHLkMwNiij8IeUBk?=
+ =?us-ascii?Q?WTvcjNPf0H3iwy1DKyf0ti/BXqWY5O+4F+kP+sPo3tdNqbc8sGVOUFFIRf+s?=
+ =?us-ascii?Q?jYiZ5Zal5TMH91D+6G7S7gL2Kp1ZBdISgGB6Fv1m8nXzZIUPVqumkBWVtAb8?=
+ =?us-ascii?Q?0cLCSZPpwcJxD3wjQLsEBUsJRdraTl5Y8mDz9LgFgQQOTS0ZOrc406RLZVdb?=
+ =?us-ascii?Q?l8TIO87uUjeoTIHFrvKRp0sbON6MjxFB8yTfiJ+SsIFVbLppqbqulZuAzgse?=
+ =?us-ascii?Q?70xfOW0LMKYYluX4jIfqvTPIPXbQebUXzTqB5fD67EXarJDQdqXVGhMM5WRg?=
+ =?us-ascii?Q?clWxYUxvt+DTvsMwdQv20pwywqeDpJjd/528eNNqDRUrjT3fC5uoIxUxPXJO?=
+ =?us-ascii?Q?qc+gcg6x4sUcSrFeaB5o6Ys5YycUFzwFK4Cvb7iMr+9qDuhQVQZuA658yiD8?=
+ =?us-ascii?Q?EPJEVnHf4awEoyWYfBz5sire4pol8oMQnJjI5YCQNe3gdg8SQwK88SfUxcOZ?=
+ =?us-ascii?Q?FegyaLvz8w/15n+OlJwZU9g0PD41ekdbW0zj/qW9I1bXKD3moOXkQBq76Hv4?=
+ =?us-ascii?Q?AO8U2VQ3AqOAW9WrG0Km3Yr8YpFxq3dpgmgcTasfdfxs82PpRBUDqmk6VzHt?=
+ =?us-ascii?Q?6vm+nH+0N+XhX104cmFRmvwIZmpZtTKaSWGYpIofnUYdCT2yYvio2ZIMFgvT?=
+ =?us-ascii?Q?dwLPYE2wmZWuO5OdH8Kc+5fM5qwFSOz4QjGQ8doDq3B0vs5v0PUq5DUYEHU/?=
+ =?us-ascii?Q?Q/TDkaiQmbu0Z6G/DMJpYw+B89aSsCl9tFU3lYMIeBZuOkv9GVaj33BKUef7?=
+ =?us-ascii?Q?RgDu3NspCB/kTCG77KVvso3WG0SioffqZ8GZ9txY4iosqkGIlBT+kfYOQq5I?=
+ =?us-ascii?Q?rJFQVHxDxL1axv5E2njqJD8rX41NnyOOwFDGVWYg4Itl3qkHF4Ivzl0HQR4W?=
+ =?us-ascii?Q?ydDw3AZtFupD3XYAsqeyILm9X1xjyOwmbQ2rTeHl4jrWqRzPG9qK7dxbdsSw?=
+ =?us-ascii?Q?GqrVSerVNeGw+rlI2e8uTY6zooqmKIXGttas/SOA8dG7oU3tUHXeLapA8uBQ?=
+ =?us-ascii?Q?NhGtuNZfNnw3Ni7RfREH5GiX27tL3Ir+lf4Qakz/q/tAHqzUYj/7IbVSR0Cj?=
+ =?us-ascii?Q?KTV6zv2RpuabxyDyJLJa3gwFuEN8NPV1C9yrlCQEWodTdC1HSV+zCVceS5zI?=
+ =?us-ascii?Q?knhcoOu6P/TIPu0ADD+Hso6it31JB9DoHdQWSPmkAhbZmVTymgC2tc2R3hr9?=
+ =?us-ascii?Q?Df+KnO6U/AHyo7veiQNRrooxI2uA5mJG3lNAmdzOKE8ZjmpXt+Xw0JsGROng?=
+ =?us-ascii?Q?DXQZgh+6Q4NkIbdtWAU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: HoYQ6VSeFuLvzvFq17LZrP-95rri9Ztz
-X-Proofpoint-ORIG-GUID: HoYQ6VSeFuLvzvFq17LZrP-95rri9Ztz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-19_03,2023-07-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 priorityscore=1501 impostorscore=0 spamscore=0 clxscore=1011
- bulkscore=0 mlxlogscore=834 malwarescore=0 mlxscore=0 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307190063
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6043.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4436cff0-14be-48ad-664a-08db8823cdd5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jul 2023 06:45:56.1502
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hjDCpoT1v3qahUdEZBnu/QGy08ipTsSE+NW02BC7jyP52wEgoktQd/IcyXqk1JmSr4nIx+r46y+bplWfACXSSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8218
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From 'IEEE Std 802.11-2020 section 11.3.4.1':
-If STA A in an infrastructure BSS receives a Class 2 or Class 3 frame
-from STA B that is not authenticated with STA A
-(i.e., the state for STA B is State 1), STA A shall discard the frame.
-If the frame has an individual address in the Address 1 field,
-the MLME of STA A shall send a Deauthentication frame to STA B.
+Hi,
 
-When data frames from unassociated stations are received by an AP,
-the AP is supposed to send a deauthentication/disassociation frame with
-reason code "Class 2 frame received from nonauthenticated STA" or
-"Class 3 frame received from nonassociated STA".
+> Hi Ilan,
+>=20
+> I can confirm that this fixes the error in my dmesg.
+>=20
+> Regards
+> Rudi
+>=20
 
-But ath12k AP doesn't send deauthentication/disassociation frames,
-when it receives data frames from unassociated stations.
+Thanks for the update. I'll push a patch to the wireless mailing list.
 
-The ath12k driver drops the data frames from unassociated
-station and the upper layer(mac80211/hostapd) is not aware of such event.
-Hence deauthentication/disassociation frame is not sent to that
-particular station by the AP.
+Regards,
 
-To address this issue, allow the data frames from the
-unassociated stations to reach mac80211 so that mac80211 can send
-NL80211_CMD_UNEXPECTED_FRAME event to userspace(hostapd) and hostapd
-upon receiving the event will send the deauthentication/disassociation
-frame with proper reason code.
-
-The data frame from unassociated stations gets dropped in mac80211.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0-02903-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp_rx.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 0adcbcf..90eaf2d 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -3485,23 +3485,13 @@ static int ath12k_dp_rx_h_null_q_desc(struct ath12k *ar, struct sk_buff *msdu,
- 				      struct sk_buff_head *msdu_list)
- {
- 	struct ath12k_base *ab = ar->ab;
--	u16 msdu_len, peer_id;
-+	u16 msdu_len;
- 	struct hal_rx_desc *desc = (struct hal_rx_desc *)msdu->data;
- 	u8 l3pad_bytes;
- 	struct ath12k_skb_rxcb *rxcb = ATH12K_SKB_RXCB(msdu);
- 	u32 hal_rx_desc_sz = ar->ab->hw_params->hal_desc_sz;
- 
- 	msdu_len = ath12k_dp_rx_h_msdu_len(ab, desc);
--	peer_id = ath12k_dp_rx_h_peer_id(ab, desc);
--
--	spin_lock(&ab->base_lock);
--	if (!ath12k_peer_find_by_id(ab, peer_id)) {
--		spin_unlock(&ab->base_lock);
--		ath12k_dbg(ab, ATH12K_DBG_DATA, "invalid peer id received in wbm err pkt%d\n",
--			   peer_id);
--		return -EINVAL;
--	}
--	spin_unlock(&ab->base_lock);
- 
- 	if (!rxcb->is_frag && ((msdu_len + hal_rx_desc_sz) > DP_RX_BUFFER_SIZE)) {
- 		/* First buffer will be freed by the caller, so deduct it's length */
--- 
-2.7.4
-
+Ilan.
