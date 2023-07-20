@@ -2,54 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2677D75AFA5
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 15:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05E3775B1A6
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 16:50:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231844AbjGTNZo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jul 2023 09:25:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44328 "EHLO
+        id S232338AbjGTOu1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jul 2023 10:50:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231842AbjGTNZn (ORCPT
+        with ESMTP id S232348AbjGTOuX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jul 2023 09:25:43 -0400
+        Thu, 20 Jul 2023 10:50:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05EE610F5;
-        Thu, 20 Jul 2023 06:25:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF1B2707
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jul 2023 07:50:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8947B61A8B;
-        Thu, 20 Jul 2023 13:25:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176AFC433C8;
-        Thu, 20 Jul 2023 13:25:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1689859541;
-        bh=enaNhtEJLb4KtURfM6qBYfwCJGCa/Tdqz7P+nOYyZ/E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Go319qZyg13GGPs35l/yGV/4md06yQbR6TD4+X7whtGiAv6azHi2lAOtBNWctMsjG
-         iZSimSvMTK5h9fTZWWhtSqm5uYxzZz8NTt57MEpjDpBp9H7iY9psVBziCVvoNEaXn4
-         YlmQ1THYjEzcoMFkgx1TkMccjFQWXA6dkOKji9Y4=
-Date:   Thu, 20 Jul 2023 15:25:38 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     =?utf-8?B?546L5piOLei9r+S7tuW6leWxguaKgOacr+mDqA==?= 
-        <machel@vivo.com>, Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "opensource.kernel" <opensource.kernel@vivo.com>
-Subject: Re: [PATCH net v2] net: wireless: Use kfree_sensitive instead of
- kfree
-Message-ID: <2023072020-epilepsy-duchess-0a80@gregkh>
-References: <20230719022041.663-1-machel@vivo.com>
- <2023071950-nervous-grub-5ee3@gregkh>
- <ZLj5HPT2y8cRhWnC@duo.ucw.cz>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 672AD61B1C
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jul 2023 14:50:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FFCC433C8;
+        Thu, 20 Jul 2023 14:50:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689864618;
+        bh=TG6z5dRQwCt/sYCGe95SPZS568gTDayz1xvikEEkloE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=WI9ddpFayIhRbod+iKt2pUJmpght+8YzGJq4egJ7HvSZ7LNMu+/ttSzJ2ovE4fsuN
+         ChYqVQMR3FNyhCXMCiLxw1e7Y6iJM8JP1JBty5kbmCHMg3NHcodk/Uypbv4z1ok2vx
+         QfSKnuBlg7ULYL2Nsk8dcw0p6LZBqPzHjP2y1W1AJQue+md5xeI7P2H1uEes8aaaTB
+         rOrP91zsCyfldLJhhZfd0DdKBltR91tghtjNeg3Sj6mO8//5h+we/itsh2GZ13Gtlk
+         8i7icauBiLy97QCDTFiIvp5bh4zBqLZyhrBcEuFouZgDalCRf3J0/aw9TT3fK59b+Y
+         Iwzk13XoSh/LQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     <Ajay.Kathat@microchip.com>
+Cc:     <kuba@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <Claudiu.Beznea@microchip.com>, <Sripad.Balwadgi@microchip.com>
+Subject: Re: [PATCH] wifi: wilc1000: change firmware path from 'atmel' to
+ 'microchip/wilc'
+References: <20230630012136.1330784-1-ajay.kathat@microchip.com>
+        <20230705140338.77896d11@kernel.org>
+        <5500a007-4e52-f8dc-2535-3baa7decfe52@microchip.com>
+        <20230705172754.61ca21ae@kernel.org> <87cz0o2nm4.fsf@kernel.org>
+        <4aef9340-7b03-43af-f211-c8e45f749e73@microchip.com>
+Date:   Thu, 20 Jul 2023 17:50:15 +0300
+In-Reply-To: <4aef9340-7b03-43af-f211-c8e45f749e73@microchip.com> (Ajay
+        Kathat's message of "Wed, 19 Jul 2023 16:20:57 +0000")
+Message-ID: <877cqu4oyg.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZLj5HPT2y8cRhWnC@duo.ucw.cz>
+Content-Type: text/plain
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -60,38 +61,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 20, 2023 at 11:06:36AM +0200, Pavel Machek wrote:
-> Hi!
-> 
-> > > diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-> > > index b545d93c6e37..45bcadeba2da 100644
-> > > --- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-> > > +++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-> > > @@ -518,7 +518,7 @@ static int wilc_wfi_cfg_allocate_wpa_igtk_entry(struct wilc_priv *priv, u8 idx)
-> > >  static int wilc_wfi_cfg_copy_wpa_info(struct wilc_wfi_key *key_info,
-> > >  				      struct key_params *params)
-> > >  {
-> > > -	kfree(key_info->key);
-> > > +	kfree_sensitive(key_info->key);
-> > >  
-> > >  	key_info->key = kmemdup(params->key, params->key_len, GFP_KERNEL);
-> > >  	if (!key_info->key)
-> > > @@ -656,7 +656,7 @@ static int del_key(struct wiphy *wiphy, struct net_device *netdev, int link_id,
-> > >  	if (!pairwise && (key_index == 4 || key_index == 5)) {
-> > >  		key_index -= 4;
-> > >  		if (priv->wilc_igtk[key_index]) {
-> > > -			kfree(priv->wilc_igtk[key_index]->key);
-> > > +			kfree_sensitive(priv->wilc_igtk[key_index]->key);
-> > 
-> > Normally "kfree_sensitive()" is used at the end of a function for when
-> > kfree() of a local variable might not be called because the compiler
-> > thinks it is smarter than us and optimizes it away.
-> > 
-> > Putting it here, in the normal operation, really doesn't do anything,
-> > right?  There's always going to be odd data in the heap and normal
-> 
-> It does memzero.
-> 
-> https://elixir.bootlin.com/linux/latest/source/mm/slab_common.c#L1411
+<Ajay.Kathat@microchip.com> writes:
 
-I know what it does, I'm saying "why is this required".
+> On 7/19/23 03:37, Kalle Valo wrote:
+>
+>> Jakub Kicinski <kuba@kernel.org> writes:
+>> 
+>>>> In order to address scenario#1, a fallback method that loads the FW from
+>>>> the older path(/atmel) can be added in the driver. I think that change
+>>>> will make it compatible for scenario#1.
+>>>> Please suggest, if there is a generic/recommended approach to handle
+>>>> backward compatibility for FW path change.
+>>>
+>>> I'm afraid you need to request from both new and old patch for some
+>>> time. Push the change to linux-firmware, but make driver be compatible
+>>> with both for maybe three full releases? Then the risk of someone still
+>>> having stale linux-firmware goes down quite a bit.
+>> 
+>> I would say at least minimum of two years, preferably more to make it
+>> possible to upgrade kernel on LTS distro releases.
+>> 
+>>> TBH renaming FW paths, much like renaming drivers is usually more risk
+>>> than reward.
+>> 
+>> I agree, it's just extra work without no actually benefit. Maybe an
+>> exception here is iwlwifi, that should be fixed as that clutters the top
+>> level firmware directory with dozens of files:
+>> 
+>
+> Definitely, this change will not have any functionality improvements. It
+> will just help to organize the wilc firmware directory structure.
+>
+> Currently, only wilc1000 firmwares are present in linux-firmware but the
+> work to support wilc3000 and wilc's next-gen device is in progress. The
+> existing wilc driver will be extended and the new firmware files needs
+> to be added to linux-firmware. After this change, the all firmware's can
+> organized under same root directory since adding a new device firmware's
+> under 'atmel' folder may not make sense.
+
+'atmel' is only a name, I wouldn't worry about that too much. For
+example we still have drivers/net/wireless/ath even though Atheros is
+long gone.
+
+> Alternatively, the new device firmware(e.g wilc3000) can be added to
+> '/microchip/wilc' without changing wilc1000 firmware path. Is this
+> approach okay.
+
+I haven't seen the actual patches but in principle having a new
+directory 'microchip/wilc/ in linux-firmare sounds like a good idea to
+me. But better to wait for comments from others for a while before
+submitting anything.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
