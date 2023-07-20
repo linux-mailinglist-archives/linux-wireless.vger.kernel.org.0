@@ -2,50 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA92175B08F
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 15:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2677D75AFA5
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 15:25:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbjGTN6r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jul 2023 09:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38176 "EHLO
+        id S231844AbjGTNZo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jul 2023 09:25:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbjGTN6p (ORCPT
+        with ESMTP id S231842AbjGTNZn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jul 2023 09:58:45 -0400
-X-Greylist: delayed 1201 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Jul 2023 06:58:44 PDT
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 219561BFC;
-        Thu, 20 Jul 2023 06:58:44 -0700 (PDT)
-Received: from localhost (unknown [10.10.165.16])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 445A2407675E;
-        Thu, 20 Jul 2023 13:22:35 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 445A2407675E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1689859355;
-        bh=yZMlngbh3YKbzLA0HIeJWnW6IMjTlDcM5F2W41AYGrI=;
+        Thu, 20 Jul 2023 09:25:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05EE610F5;
+        Thu, 20 Jul 2023 06:25:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8947B61A8B;
+        Thu, 20 Jul 2023 13:25:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176AFC433C8;
+        Thu, 20 Jul 2023 13:25:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1689859541;
+        bh=enaNhtEJLb4KtURfM6qBYfwCJGCa/Tdqz7P+nOYyZ/E=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IUB6OW3MSaCKf93RcbWVMQPkAVesm0BoP36zT9/9Rx5JcDN+3NQAC64L4Ay/67wiv
-         TothD/T/TeyAo1G586LQW7skGrfPNrwmnAUYkRegS/aVi2IPl0s86BgpbSu6aMsjqO
-         +0wKkltPmgpYXPWIO6dDHfawnu6e9NB4stmNdF2M=
-Date:   Thu, 20 Jul 2023 16:22:34 +0300
-From:   Fedor Pchelkin <pchelkin@ispras.ru>
-To:     syzbot <syzbot+160a7250e255d25725eb@syzkaller.appspotmail.com>
-Cc:     kvalo@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com, toke@toke.dk,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org
-Subject: Re: [syzbot] [afs?] general protection fault in skb_queue_tail (3)
-Message-ID: <5tu3vxj3bs4crdypi75bv5e5a4wazsuwze5kas3yao2ng65gtd@6a7gfrtsyc6o>
-References: <0000000000000de35905ead6dcc1@google.com>
- <000000000000ea91fa0600816cb8@google.com>
+        b=Go319qZyg13GGPs35l/yGV/4md06yQbR6TD4+X7whtGiAv6azHi2lAOtBNWctMsjG
+         iZSimSvMTK5h9fTZWWhtSqm5uYxzZz8NTt57MEpjDpBp9H7iY9psVBziCVvoNEaXn4
+         YlmQ1THYjEzcoMFkgx1TkMccjFQWXA6dkOKji9Y4=
+Date:   Thu, 20 Jul 2023 15:25:38 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     =?utf-8?B?546L5piOLei9r+S7tuW6leWxguaKgOacr+mDqA==?= 
+        <machel@vivo.com>, Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "opensource.kernel" <opensource.kernel@vivo.com>
+Subject: Re: [PATCH net v2] net: wireless: Use kfree_sensitive instead of
+ kfree
+Message-ID: <2023072020-epilepsy-duchess-0a80@gregkh>
+References: <20230719022041.663-1-machel@vivo.com>
+ <2023071950-nervous-grub-5ee3@gregkh>
+ <ZLj5HPT2y8cRhWnC@duo.ucw.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <000000000000ea91fa0600816cb8@google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+In-Reply-To: <ZLj5HPT2y8cRhWnC@duo.ucw.cz>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,35 +60,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 23/07/15 12:22AM, syzbot wrote:
-> syzbot suspects this issue was fixed by commit:
+On Thu, Jul 20, 2023 at 11:06:36AM +0200, Pavel Machek wrote:
+> Hi!
 > 
-> commit 061b0cb9327b80d7a0f63a33e7c3e2a91a71f142
-> Author: Fedor Pchelkin <pchelkin@ispras.ru>
-> Date:   Wed May 17 15:03:17 2023 +0000
+> > > diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+> > > index b545d93c6e37..45bcadeba2da 100644
+> > > --- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+> > > +++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+> > > @@ -518,7 +518,7 @@ static int wilc_wfi_cfg_allocate_wpa_igtk_entry(struct wilc_priv *priv, u8 idx)
+> > >  static int wilc_wfi_cfg_copy_wpa_info(struct wilc_wfi_key *key_info,
+> > >  				      struct key_params *params)
+> > >  {
+> > > -	kfree(key_info->key);
+> > > +	kfree_sensitive(key_info->key);
+> > >  
+> > >  	key_info->key = kmemdup(params->key, params->key_len, GFP_KERNEL);
+> > >  	if (!key_info->key)
+> > > @@ -656,7 +656,7 @@ static int del_key(struct wiphy *wiphy, struct net_device *netdev, int link_id,
+> > >  	if (!pairwise && (key_index == 4 || key_index == 5)) {
+> > >  		key_index -= 4;
+> > >  		if (priv->wilc_igtk[key_index]) {
+> > > -			kfree(priv->wilc_igtk[key_index]->key);
+> > > +			kfree_sensitive(priv->wilc_igtk[key_index]->key);
+> > 
+> > Normally "kfree_sensitive()" is used at the end of a function for when
+> > kfree() of a local variable might not be called because the compiler
+> > thinks it is smarter than us and optimizes it away.
+> > 
+> > Putting it here, in the normal operation, really doesn't do anything,
+> > right?  There's always going to be odd data in the heap and normal
 > 
->     wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
+> It does memzero.
 > 
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12253b7ca80000
-> start commit:   98555239e4c3 Merge tag 'arc-6.1-fixes' of git://git.kernel..
-> git tree:       upstream
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=701f2aae1cb0470e
-> dashboard link: https://syzkaller.appspot.com/bug?extid=160a7250e255d25725eb
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1482f0b6880000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=119e4dce880000
-> 
-> If the result looks correct, please mark the issue as fixed by replying with:
-> 
-> #syz fix: wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
-> 
-> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+> https://elixir.bootlin.com/linux/latest/source/mm/slab_common.c#L1411
 
-Seems reasonable since the reproducer here manages to modify ENDPOINT0
-attrs and this leads to the invalid behaviour in different ways - the one
-is this bug and another is the one fixed by the commit which syzbot
-bisected. Those attempts to modify ENDPOINT0 are now prohibited with this
-commit. So I think the result is correct (apart from that this issue is
-not related to afs).
-
-#syz fix: wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
-
+I know what it does, I'm saying "why is this required".
