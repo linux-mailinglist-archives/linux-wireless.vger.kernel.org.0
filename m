@@ -2,87 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2CF75A5F9
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 08:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 899E775A691
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 08:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbjGTGEx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jul 2023 02:04:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54338 "EHLO
+        id S231228AbjGTGfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jul 2023 02:35:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229671AbjGTGEw (ORCPT
+        with ESMTP id S231229AbjGTGes (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jul 2023 02:04:52 -0400
-Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B865C1724
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Jul 2023 23:04:50 -0700 (PDT)
-Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4R62G72tv4zBRDsD
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jul 2023 14:04:47 +0800 (CST)
-Authentication-Results: mail.208.org (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)" header.d=208.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
-        content-transfer-encoding:content-type:message-id:user-agent
-        :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1689833087; x=1692425088; bh=wN9MJCeTp0uLboPfJ3UF4H7+r1d
-        VVYUCJ5o5m7snluc=; b=w7GD9fvycDKvEE/BVr0h4oL0VCt1iV+TZbBBasw2Adz
-        N37ZxVPt7RLvnSGjMj0ikUYDIv3Y5AAW+i717i7oJyR0xIUj5eqspO8emBISdmdQ
-        uAC5c4bOIhRlYshDTa+K6RQDf+la8Jmaj9IOT4H4qXWb7lHUFQ8kAvpdsQFKggg2
-        3+dJqLk/R9wwy/5r9kneGfFxieQ6jmrw4+WiMhJe/iZrrl6kYpkRpFvjlpE3VXxX
-        gyrk9gIrsqSt3aen0WIPPvbwAN3ULdsn+Xxs38C+gDyg03iYpA0PMXMSy4qNhXMi
-        kst1yeCtPl1FFojbCPe+igwFO/J6lWci7ZVAbfBSZ7g==
-X-Virus-Scanned: amavisd-new at mail.208.org
-Received: from mail.208.org ([127.0.0.1])
-        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id WiNOOa34z5fW for <linux-wireless@vger.kernel.org>;
-        Thu, 20 Jul 2023 14:04:47 +0800 (CST)
-Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4R62G66P2czBR1P6;
-        Thu, 20 Jul 2023 14:04:46 +0800 (CST)
+        Thu, 20 Jul 2023 02:34:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62EA2710;
+        Wed, 19 Jul 2023 23:33:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFF7761262;
+        Thu, 20 Jul 2023 06:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91891C433C8;
+        Thu, 20 Jul 2023 06:32:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689834743;
+        bh=kV6JsnExwwo1YJnGmJAUSTP40/eUKQgcHZroq4jZ6GQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Ef+VO3MInVwf2uh9WHAYjdWAB5DaACntxp1J5W3OkvBT0GyYkZLJhmpOtSOyQPYPP
+         h24qjhk4fimcCHe/lQf0EajAZZlS+LHwLKqOL9vKioLroAfqS2vOjQRuTZKOUVffBn
+         cSIYCBuxY2IfoVcHO1wbjO4i28jkOO7vRwIiBDtH1M5oP6YrrNvgr+1zvJtNFvZqHp
+         EFrTB5w78SUu0RKQCRgPW36j2B+W29SpoAAWhohDCotNlaVt/kzkeWpjctKUaSPWFQ
+         XXW6cnm7Htyc2ZiQJqTev6Fu5r4PfuxqnJYGde0WfgamXBzCwUH/t4vg7L32xFYBZS
+         AjukCEIsn1zbg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Minjie Du <duminjie@vivo.com>
+Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-wireless@vger.kernel.org (open list:INTEL WIRELESS WIFI LINK
+        (iwlwifi)), linux-kernel@vger.kernel.org (open list),
+        opensource.kernel@vivo.com
+Subject: Re: [PATCH v1] drivers: mvm: remove duplicate assignments
+References: <20230705063421.9827-1-duminjie@vivo.com>
+Date:   Thu, 20 Jul 2023 09:32:20 +0300
+In-Reply-To: <20230705063421.9827-1-duminjie@vivo.com> (Minjie Du's message of
+        "Wed, 5 Jul 2023 14:34:21 +0800")
+Message-ID: <87wmyv3xfv.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Date:   Thu, 20 Jul 2023 14:04:46 +0800
-From:   hanyu001@208suo.com
-To:     pkshih@realtek.com, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: rtlwifi: "foo * bar" should be "foo *bar"
-In-Reply-To: <tencent_1E1DC9F32D48318BC38ABDA111410EB69808@qq.com>
-References: <tencent_1E1DC9F32D48318BC38ABDA111410EB69808@qq.com>
-User-Agent: Roundcube Webmail
-Message-ID: <cb183c8c82f9bcaa245efb4a8878ba1b@208suo.com>
-X-Sender: hanyu001@208suo.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RDNS_NONE,SPF_HELO_FAIL,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch fixes the checkpatch.pl error:
+Minjie Du <duminjie@vivo.com> writes:
 
-./drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c:416: ERROR: "foo 
-* bar" should be "foo *bar"
+> make link_sta->agg.max_amsdu_len avoid double assignment.
+>
+> Signed-off-by: Minjie Du <duminjie@vivo.com>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-Signed-off-by: Yu Han<hanyu001@208suo.com>
----
-  drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
+The title should be:
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c 
-b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-index b70767e..c86102b 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-@@ -413,7 +413,7 @@ static void _rtl_rx_process(struct ieee80211_hw *hw, 
-struct sk_buff *skb)
-      ieee80211_rx(hw, skb);
-  }
+wifi: iwlwifi: mvm: remove duplicate assignments
 
--void  rtl8192cu_rx_hdl(struct ieee80211_hw *hw, struct sk_buff * skb)
-+void  rtl8192cu_rx_hdl(struct ieee80211_hw *hw, struct sk_buff *skb)
-  {
-      _rtl_rx_process(hw, skb);
-  }
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
