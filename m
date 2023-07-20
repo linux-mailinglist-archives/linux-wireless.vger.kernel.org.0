@@ -2,49 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2114575A706
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 08:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E2BF75A70C
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 08:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231341AbjGTG5P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jul 2023 02:57:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35698 "EHLO
+        id S230088AbjGTG6N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jul 2023 02:58:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229950AbjGTG5O (ORCPT
+        with ESMTP id S229651AbjGTG6M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jul 2023 02:57:14 -0400
+        Thu, 20 Jul 2023 02:58:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66B2510A;
-        Wed, 19 Jul 2023 23:57:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A0A8110;
+        Wed, 19 Jul 2023 23:58:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DAA2B6187C;
-        Thu, 20 Jul 2023 06:57:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7AAC433C8;
-        Thu, 20 Jul 2023 06:57:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B0780618E3;
+        Thu, 20 Jul 2023 06:58:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB64C433C8;
+        Thu, 20 Jul 2023 06:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689836232;
-        bh=fXs2fVY+vB+2/iBQGPg3xvGoYcgTskOcTkd1P5PzeBI=;
+        s=k20201202; t=1689836290;
+        bh=7mK4Ss6OHN/futLgmH2TgGuEhX+eZoCr1St7KNuM1Ak=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=MEWYyVxgEPFJ81W2p5kB28IKWg+NqfX8JHDsa5apWHBZCRdxBd+ygz50SMQTu22p3
-         +sOZmcdi03ZFJhJsaLJ0eeKckaiB7ks6P4x+WV4IJ7oKDAXeSuLARE/l5q3rt08wda
-         j9AHnknjNeRSq9+UitjX8pG1uFdqg5CSWfXwrce9/5yCMutnxGsXRzixJVO35aXIFf
-         m3010qmx3ervxRenrRA6j37vu/Kk5CHLL52Y7QyDe3v8LK7XDvP0bvk/evLIytRa1l
-         iwWyFGbwgBAYS6nv3E3VD9GsgAlZX70kdAlzi9EKpqRK8ddxtJjU8k+/d20t3izr+m
-         Vvc3mNMG2UYlQ==
+        b=rW7A+yfNq+AWVSYmbDooALBYl0/JFJ3+2+nqaxcFE8jj+p5JxoqT2khnsjgh/NzD9
+         oy7n8TGTAq5sTOFXmX07dK0eNxRn5eQOFHRuIX4QOzcQGTjlkskvQ+/FBt7QnG5QNu
+         WMScSjUy6Wcfj06CO0yzFT7+i9MFU0XPPwC6D3VyiSsLMPVsR6K/xaajGcg1YZ26RI
+         cPxX6RLsQIRDFucf2itNBo3a2TiiU9Ov34Dg6dfQZq4EFVTa87sonvVs6bTkLeK4ca
+         6cLwcC/AjZ2bdrlFAdycmJmm86n9iOti6KwaFBgYGY0gMo7KCw86a2U8AYyGr9S7Nt
+         ry2p3who6IsSA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Wang Ming <machel@vivo.com>
-Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        opensource.kernel@vivo.com, quic_jjohnson@quicinc.com
-Subject: Re: [PATCH net v2] wifi: ath9k: Remove error checking for
- debugfs_create_dir()
-References: <20230714084926.10986-1-machel@vivo.com>
-Date:   Thu, 20 Jul 2023 09:57:08 +0300
-In-Reply-To: <20230714084926.10986-1-machel@vivo.com> (Wang Ming's message of
-        "Fri, 14 Jul 2023 16:49:11 +0800")
-Message-ID: <87o7k73waj.fsf@kernel.org>
+To:     Paolo Abeni <pabeni@redhat.com>
+Cc:     Wang Ming <machel@vivo.com>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, opensource.kernel@vivo.com
+Subject: Re: [PATCH net v1] ath6kl:Fix error checking for debugfs_create_dir()
+References: <20230713040518.13734-1-machel@vivo.com>
+        <a9dc336793322d3525280e4f30b2acbd0c88bbf8.camel@redhat.com>
+Date:   Thu, 20 Jul 2023 09:58:06 +0300
+In-Reply-To: <a9dc336793322d3525280e4f30b2acbd0c88bbf8.camel@redhat.com>
+        (Paolo Abeni's message of "Thu, 13 Jul 2023 11:29:30 +0200")
+Message-ID: <87jzuv3w8x.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -58,14 +57,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wang Ming <machel@vivo.com> writes:
+Paolo Abeni <pabeni@redhat.com> writes:
 
-> It is expected that most callers should _ignore_ the errors
-> return by debugfs_create_dir() in ath9k_htc_init_debug().
+> On Thu, 2023-07-13 at 12:05 +0800, Wang Ming wrote:
+>> The debugfs_create_dir() function returns error pointers,
+>> it never returns NULL. Most incorrect error checks were fixed,
+>> but the one in ath6kl_debug_init_fs() was forgotten.
+>> 
+>> Fix the remaining error check.
+>> 
+>> Signed-off-by: Wang Ming <machel@vivo.com>
+>> 
+>> Fixes: 9b9a4f2acac2 ("ath6kl: store firmware logs in skbuffs")
 >
-> Signed-off-by: Wang Ming <machel@vivo.com>
+> The SoB tag should be after the 'Fixes' one and you must avoid empty
+> lines in between.
+>
+> (The same applies to your other patch)
 
-This is not urgent and should go to ath-next, not to the net tree.
+And the same as with the ath9k patch: this should go to ath-next, not
+net.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
