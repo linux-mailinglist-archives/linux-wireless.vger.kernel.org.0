@@ -2,53 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E2BF75A70C
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 08:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE7FD75A71F
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 09:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbjGTG6N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jul 2023 02:58:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36350 "EHLO
+        id S230246AbjGTHDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jul 2023 03:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjGTG6M (ORCPT
+        with ESMTP id S229604AbjGTHDo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jul 2023 02:58:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A0A8110;
-        Wed, 19 Jul 2023 23:58:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B0780618E3;
-        Thu, 20 Jul 2023 06:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB64C433C8;
-        Thu, 20 Jul 2023 06:58:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689836290;
-        bh=7mK4Ss6OHN/futLgmH2TgGuEhX+eZoCr1St7KNuM1Ak=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=rW7A+yfNq+AWVSYmbDooALBYl0/JFJ3+2+nqaxcFE8jj+p5JxoqT2khnsjgh/NzD9
-         oy7n8TGTAq5sTOFXmX07dK0eNxRn5eQOFHRuIX4QOzcQGTjlkskvQ+/FBt7QnG5QNu
-         WMScSjUy6Wcfj06CO0yzFT7+i9MFU0XPPwC6D3VyiSsLMPVsR6K/xaajGcg1YZ26RI
-         cPxX6RLsQIRDFucf2itNBo3a2TiiU9Ov34Dg6dfQZq4EFVTa87sonvVs6bTkLeK4ca
-         6cLwcC/AjZ2bdrlFAdycmJmm86n9iOti6KwaFBgYGY0gMo7KCw86a2U8AYyGr9S7Nt
-         ry2p3who6IsSA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Paolo Abeni <pabeni@redhat.com>
-Cc:     Wang Ming <machel@vivo.com>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, opensource.kernel@vivo.com
-Subject: Re: [PATCH net v1] ath6kl:Fix error checking for debugfs_create_dir()
-References: <20230713040518.13734-1-machel@vivo.com>
-        <a9dc336793322d3525280e4f30b2acbd0c88bbf8.camel@redhat.com>
-Date:   Thu, 20 Jul 2023 09:58:06 +0300
-In-Reply-To: <a9dc336793322d3525280e4f30b2acbd0c88bbf8.camel@redhat.com>
-        (Paolo Abeni's message of "Thu, 13 Jul 2023 11:29:30 +0200")
-Message-ID: <87jzuv3w8x.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Thu, 20 Jul 2023 03:03:44 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A643B1711
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jul 2023 00:03:43 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36K56mhg007200;
+        Thu, 20 Jul 2023 07:03:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=yXgt4FHATKYK0VOfUc9aRHAK7qmm0qh15o3ne/8jeLQ=;
+ b=TVlVlk3P/Zn2S6u0KFAcg8e0H3ah183LJy//Hka/i+bD38KzrF6kkjX3WjoMUXRUKEl+
+ hXI2nN75dwFRi8w89Op9U+wg9GodShnDXG24Fq+EI8jZphl8w9hJbnyNdxMoC6YmSG9O
+ f0OLA8jWdG9HlR0oCnIOQODkUPd2u8BqjnHW7lSRIzSb/VERFtw3UdXm7cKATv4Ah53w
+ IDIWofRal7bi23vj8pBCcPmp9xQFczOyXFWf+FwWcD6zpvXkH+e9ejFhB1MJhSgqFUOy
+ Poyb168rqBbvwUkCFgxD7yqUXvxFqEGoCiLZCpyR/5Wcl489meqSHU5welM+8w08LSBF Mw== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rx728u2em-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Jul 2023 07:03:39 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36K73d1T018397
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Jul 2023 07:03:39 GMT
+Received: from [10.216.33.52] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 20 Jul
+ 2023 00:03:37 -0700
+Message-ID: <6cd11c6d-8ea8-c605-1c91-f550dd891149@quicinc.com>
+Date:   Thu, 20 Jul 2023 12:33:09 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] wifi: mac80211: Add support to randomize TA of auth and
+ deauth frames
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20230112012415.167556-3-quic_vjakkam@quicinc.com>
+ <20230307102225.74883-1-johannes@sipsolutions.net>
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+In-Reply-To: <20230307102225.74883-1-johannes@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: KRclQ3GwiaoEIUNFwECMgwyc1Sx-jnZ2
+X-Proofpoint-ORIG-GUID: KRclQ3GwiaoEIUNFwECMgwyc1Sx-jnZ2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-19_16,2023-07-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxlogscore=731 impostorscore=0 spamscore=0 clxscore=1011 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307200058
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,28 +80,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Paolo Abeni <pabeni@redhat.com> writes:
 
-> On Thu, 2023-07-13 at 12:05 +0800, Wang Ming wrote:
->> The debugfs_create_dir() function returns error pointers,
->> it never returns NULL. Most incorrect error checks were fixed,
->> but the one in ath6kl_debug_init_fs() was forgotten.
->> 
->> Fix the remaining error check.
->> 
->> Signed-off-by: Wang Ming <machel@vivo.com>
->> 
->> Fixes: 9b9a4f2acac2 ("ath6kl: store firmware logs in skbuffs")
+On 3/7/2023 3:52 PM, Johannes Berg wrote:
+> ---
+> So this is the patch I ended up with after some cleanups, but
+> then at the end I noticed you didn't unset the temp address
+> when the remain-on-channel expires, and wasn't sure exactly
+> how that should be handled, and you probably have the better
+> test setup right now too ...
 >
-> The SoB tag should be after the 'Fixes' one and you must avoid empty
-> lines in between.
->
-> (The same applies to your other patch)
+> johannes
+> ---
 
-And the same as with the ath9k patch: this should go to ath-next, not
-net.
+Hi Johannes,
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+I verified this patch using below "mac80211_hwsim" and hostap patches. 
+It is working fine.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://patchwork.kernel.org/project/linux-wireless/patch/20230112012415.167556-4-quic_vjakkam@quicinc.com/
+
+https://patchwork.ozlabs.org/project/hostap/list/?series=335502&state=* 
+<https://patchwork.ozlabs.org/project/hostap/list/?series=335502&state=*> 
+- hostap HWSIM test changes
+
+---
+
+veeru
+
