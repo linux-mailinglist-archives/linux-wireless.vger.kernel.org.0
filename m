@@ -2,79 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24DAF75AC8F
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 13:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA92175B08F
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jul 2023 15:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230060AbjGTLHh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jul 2023 07:07:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53000 "EHLO
+        id S229935AbjGTN6r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jul 2023 09:58:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjGTLHf (ORCPT
+        with ESMTP id S229517AbjGTN6p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jul 2023 07:07:35 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32EAB268F;
-        Thu, 20 Jul 2023 04:07:34 -0700 (PDT)
-Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4R68vq66JMztRZQ;
-        Thu, 20 Jul 2023 19:04:23 +0800 (CST)
-Received: from [10.69.30.204] (10.69.30.204) by dggpemm500005.china.huawei.com
- (7.185.36.74) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 20 Jul
- 2023 19:07:31 +0800
-Subject: Re: [PATCH net-next] page_pool: split types and declarations from
- page_pool.h
-To:     Alexander Lobakin <aleksander.lobakin@intel.com>
-CC:     <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Wei Fang <wei.fang@nxp.com>,
-        Shenwei Wang <shenwei.wang@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        <linux-rdma@vger.kernel.org>, <bpf@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-References: <20230719121339.63331-1-linyunsheng@huawei.com>
- <0838ed9e-8b5c-cc93-0175-9d6cbf695dda@intel.com>
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <7e9c1276-9996-d9dd-c061-b1e66361c48b@huawei.com>
-Date:   Thu, 20 Jul 2023 19:07:31 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+        Thu, 20 Jul 2023 09:58:45 -0400
+X-Greylist: delayed 1201 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Jul 2023 06:58:44 PDT
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 219561BFC;
+        Thu, 20 Jul 2023 06:58:44 -0700 (PDT)
+Received: from localhost (unknown [10.10.165.16])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 445A2407675E;
+        Thu, 20 Jul 2023 13:22:35 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 445A2407675E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1689859355;
+        bh=yZMlngbh3YKbzLA0HIeJWnW6IMjTlDcM5F2W41AYGrI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IUB6OW3MSaCKf93RcbWVMQPkAVesm0BoP36zT9/9Rx5JcDN+3NQAC64L4Ay/67wiv
+         TothD/T/TeyAo1G586LQW7skGrfPNrwmnAUYkRegS/aVi2IPl0s86BgpbSu6aMsjqO
+         +0wKkltPmgpYXPWIO6dDHfawnu6e9NB4stmNdF2M=
+Date:   Thu, 20 Jul 2023 16:22:34 +0300
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     syzbot <syzbot+160a7250e255d25725eb@syzkaller.appspotmail.com>
+Cc:     kvalo@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com, toke@toke.dk,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org
+Subject: Re: [syzbot] [afs?] general protection fault in skb_queue_tail (3)
+Message-ID: <5tu3vxj3bs4crdypi75bv5e5a4wazsuwze5kas3yao2ng65gtd@6a7gfrtsyc6o>
+References: <0000000000000de35905ead6dcc1@google.com>
+ <000000000000ea91fa0600816cb8@google.com>
 MIME-Version: 1.0
-In-Reply-To: <0838ed9e-8b5c-cc93-0175-9d6cbf695dda@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.69.30.204]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500005.china.huawei.com (7.185.36.74)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <000000000000ea91fa0600816cb8@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,27 +53,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2023/7/20 0:42, Alexander Lobakin wrote:
+On 23/07/15 12:22AM, syzbot wrote:
+> syzbot suspects this issue was fixed by commit:
 > 
-> BTW, what do you think: is it better to have those two includes in the
-> root include/net/ folder or do something like
+> commit 061b0cb9327b80d7a0f63a33e7c3e2a91a71f142
+> Author: Fedor Pchelkin <pchelkin@ispras.ru>
+> Date:   Wed May 17 15:03:17 2023 +0000
 > 
-> include/net/page_pool/
->   * types.h
->   * <some meaningful name>.h (let's say driver.h)
+>     wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
 > 
-> like it's done e.g. for GPIO (see include/linux/gpio/)?
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12253b7ca80000
+> start commit:   98555239e4c3 Merge tag 'arc-6.1-fixes' of git://git.kernel..
+> git tree:       upstream
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=701f2aae1cb0470e
+> dashboard link: https://syzkaller.appspot.com/bug?extid=160a7250e255d25725eb
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1482f0b6880000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=119e4dce880000
+> 
+> If the result looks correct, please mark the issue as fixed by replying with:
+> 
+> #syz fix: wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
+> 
+> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
-It make more sense to add a new dir for page pool if there are
-more new headers added. As we are still keeping the page_pool.h
-mirroring include/linux/gpio.h, adding a new dir for only one
-header file only add another level of dir without abvious benefit.
-We can add a new dir for it if we turn out to be needing more header
-file for page pool in the future, does it make sense?
+Seems reasonable since the reproducer here manages to modify ENDPOINT0
+attrs and this leads to the invalid behaviour in different ways - the one
+is this bug and another is the one fixed by the commit which syzbot
+bisected. Those attempts to modify ENDPOINT0 are now prohibited with this
+commit. So I think the result is correct (apart from that this issue is
+not related to afs).
 
-> 
-> Thanks,
-> Olek
-> 
-> .
-> 
+#syz fix: wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
+
