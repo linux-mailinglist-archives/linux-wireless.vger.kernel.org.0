@@ -2,48 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7669975C524
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 12:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72B4275C577
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 13:08:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231226AbjGUK6M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jul 2023 06:58:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49006 "EHLO
+        id S229920AbjGULIv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jul 2023 07:08:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230369AbjGUK6B (ORCPT
+        with ESMTP id S232109AbjGULIU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jul 2023 06:58:01 -0400
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFF821731;
-        Fri, 21 Jul 2023 03:57:55 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1689937072; bh=g0/y5gTWfkk2JQzH50DsaOTRZD0cVu75wCoJfKdJ2OE=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=PWMbcVtkEqNmU46vpk63Tnbr2JrWwSYk7IAd6DTKGqbgTLkLUyDa5M3GerO4zAYiZ
-         TA+WUkOOEly1rNgnWB4Pqw7Wjq/WzkEkC4YK3qyLNmhscyk7F7i6XY4kyHfuhHP5GF
-         FedWZnnCLQgm40Mh77ejdeNUcLbDKRxusGMWcrhTleg5q5a/1eU+fx+2qvmRZNuLIV
-         k/zNUavZyEAoHsR5yDABj1E3r9v6NWSm3ZntwFIu5c89SXo1TF/M3KbpJb/d890kft
-         Wt6YNqJEPV7lY2O1T6gnZgR1lpDxpF8qruaKIVoyRSx93ALGRSWp4PYis5ihgyOj+O
-         y8mBhQSDNSjIg==
-To:     Dongliang Mu <dzm91@hust.edu.cn>,
-        Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] wifi: ath9k: fix printk specifier
-In-Reply-To: <b14a23c8-826e-ad36-1cbb-bea4938b6368@hust.edu.cn>
-References: <20230706111700.14305-1-dzm91@hust.edu.cn>
- <87cz15s2gv.fsf@toke.dk>
- <CAOiHx=kccbUFGsWMA_31UPW6p=k1qa+HyL5OGyzv50W2Mc111w@mail.gmail.com>
- <87a5w7hm46.fsf@toke.dk>
- <b14a23c8-826e-ad36-1cbb-bea4938b6368@hust.edu.cn>
-Date:   Fri, 21 Jul 2023 12:57:52 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87y1j9sf9r.fsf@toke.dk>
+        Fri, 21 Jul 2023 07:08:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C9DD171A;
+        Fri, 21 Jul 2023 04:05:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF37C619D9;
+        Fri, 21 Jul 2023 11:05:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE7FC433C8;
+        Fri, 21 Jul 2023 11:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689937519;
+        bh=K7zqp+s4CDeGyhNHIFPhw6m+qj8ULlENlAuVa/pcIzM=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=jj89ih0lGg7+izzBkhBsIasVUqFVHKkGe/DwXNZ3TtLvhSx57ZMc9NHGaY0Y7Z3XS
+         m8ByqI62K/KJwynF5xUTAic6covFlxMmgFkgIvoJYGdXFCTAUesg0CGau/8coUEq8Y
+         GEs2N/QLfsCRbAdbNem3+yy9APOEpQDTCm+1Zhj0ZAJi4yx6pkqW/aQxTz8vDpufNU
+         KloxeQC0rFRVml2QJ8ofRWMI4tmyNSbdRusdlcWcbZQC+MeLnxDEWYR9IEscEhPLdl
+         rAk2sO0eVrZ8I1+3npeu41oO4BEQ9qgAKzcxwZ0H+/KxColT/dISsWeonWpLfFpBcf
+         oR3NTSZWHIuNw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wcn36xx: remove space before ')'
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <f2d9a75e98698b245e5126eb425944a1@208suo.com>
+References: <f2d9a75e98698b245e5126eb425944a1@208suo.com>
+To:     hanyu001@208suo.com
+Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <168993751601.2026970.14080569101846538355.kvalo@kernel.org>
+Date:   Fri, 21 Jul 2023 11:05:17 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,55 +56,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dongliang Mu <dzm91@hust.edu.cn> writes:
+hanyu001@208suo.com wrote:
 
-> On 2023/7/7 21:44, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Jonas Gorski <jonas.gorski@gmail.com> writes:
->>
->>> On Thu, 6 Jul 2023 at 13:39, Toke H=C3=B8iland-J=C3=B8rgensen <toke@tok=
-e.dk> wrote:
->>>> Dongliang Mu <dzm91@hust.edu.cn> writes:
->>>>
->>>>> Smatch reports:
->>>>>
->>>>> ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
->>>>> ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
->>>>>
->>>>> Fix it by modifying %lx to %p in printk.
->>>>>
->>>>> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
->>>> Third time is the charm! :)
->>>>
->>>> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
->>> But do we *want* to replace %lx with %p? Because this now causes a
->>> change in behavior, as the kernel will omit the pointer's address,
->>> while before it printed the actual memory address. Using %px would
->>> have kept the original behavior.
->> So this is basically an informational log message, which really
->> shouldn't be leaking kernel pointer addresses. So I think %p is the
->> right choice here, and if someone wants to see the real address for
->> debugging they should be booting with no_hash_pointers.
->>
->>> So if the change is desired, it should be noted in the commit message.
->> That is a fair point, documenting this in the commit message would be
->> good...
->
-> Hi Toke,
->
-> What's the next? Patch v4 with a note at the end, like the following,
->
-> "Note that %p would by default print a hashed value without leaking the=20
-> kernel pointer to user space."
+> Fixes checkpatch.pl error:
+> 
+> ./drivers/net/wireless/ath/wcn36xx/dxe.c:470: ERROR: space prohibited 
+> before that close parenthesis ')'
+> ./drivers/net/wireless/ath/wcn36xx/dxe.c:509: ERROR: space prohibited 
+> before that close parenthesis ')'
+> 
+> Signed-off-by: maqimei <2433033762@qq.com>
 
-Yes, please send a new version with the explanation added. However, this
-should include not just *what* is changed, but *why* as well. So maybe
-something like:
+ERROR: Missing Signed-off-by: hanyu001@208suo.com
 
-"Note that with this change, the pointer address will be printed as a
-hashed value by default. This is appropriate because the kernel
-shouldn't leak kernel pointers to user space in an informational
-message. If someone wants to see the real address for debugging
-purposes, this can be achieved using the no_hash_pointers kernel option"
+Patch set to Changes Requested.
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/f2d9a75e98698b245e5126eb425944a1@208suo.com/
 
--Toke
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
