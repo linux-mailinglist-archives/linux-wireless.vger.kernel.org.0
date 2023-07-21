@@ -2,79 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8332475C599
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 13:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92FE275C594
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 13:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231175AbjGULMQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jul 2023 07:12:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58900 "EHLO
+        id S230072AbjGULLy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jul 2023 07:11:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231181AbjGULMA (ORCPT
+        with ESMTP id S229553AbjGULLm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jul 2023 07:12:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EE36358B;
-        Fri, 21 Jul 2023 04:11:38 -0700 (PDT)
+        Fri, 21 Jul 2023 07:11:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25AF26B0;
+        Fri, 21 Jul 2023 04:11:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C34E61961;
-        Fri, 21 Jul 2023 11:10:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F86C433CA;
-        Fri, 21 Jul 2023 11:10:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4892618E5;
+        Fri, 21 Jul 2023 11:11:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1634EC433CA;
+        Fri, 21 Jul 2023 11:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689937805;
-        bh=doH7QBRGiTSMgWAl8lnHKFFkVmk48+gAH6oH3iUKSSk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=TeAAwkPYEkdHeLK0jHxq6rhHVazN/1TU7+62HrOkZfmqnl2lsKp3jBdYSSSx3x6Uh
-         m15wh0fBK+D8y/YNmxsYmZbhKqahbucNApMvstvBdluZ1jjMWp3xqUeOWKIgMVPmHn
-         /VuGq9YznORGspLjh+kXxyfS4zeYzoKVtb1T9v+EMRd8I2SJaIjLsOOItDHDp9Cyov
-         wYV0qE0CJlIdZ8XcBcTBG8nm4qUcKUew8YQR8u4OhZVhYtwIvL0eJ9oMTZrVXaEyEP
-         IgzxkYYIZv+2ogIMyEQdmY0HIQJr2qb68R+SiKTahVIeZdt05ZiiBl8mp33tp2Ti/M
-         bLI+aH7ty9Iag==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        regressions@lists.linux.dev,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: Closing down the wireless trees for a summer break?
-References: <87y1kncuh4.fsf@kernel.org>
-Date:   Fri, 21 Jul 2023 14:10:02 +0300
-In-Reply-To: <87y1kncuh4.fsf@kernel.org> (Kalle Valo's message of "Tue, 13 Jun
-        2023 17:22:47 +0300")
-Message-ID: <87sf9h1px1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1689937873;
+        bh=hC15AaY2HM+zWk65QMnTXiZVBLT00VwVI7aLdU5+an0=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=NXpbOvdo60cr61CTrqpswTAvyiB34JQfDDX5D7aFH02J1Ibe3ztO5luE/+/cigdr7
+         6C27xP/hxObLfodLgVN0l4mP8yhoQ9ThD6DIou7y7rhnnbzQQOaLzbgFFwUpNWyW0l
+         TPhf7yc2D7m0Ngcl1gaAAzP79XVx+n7NrXiGX18gbFDwz02zsS1ahrN8vwYxNxn2sb
+         U1A8CQixQkdP460NWq5Qc+w97X9jYmNZaBcOLuYPtJUrquJ0X5fDrx7OzAjo1r8dJF
+         2pyZVkzHJ2+FrRec9pvpMz6skdHLXMappwyNjauM1RyEF1tmx9yyCKBv8Gb0c0o+AY
+         nPyn0dh3ypV5A==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath: wcn36xx: space required after that ','
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <8d242d729e447fe0f41af7bccc35396e@208suo.com>
+References: <8d242d729e447fe0f41af7bccc35396e@208suo.com>
+To:     hanyu001@208suo.com
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <168993786988.2026970.3002620284292904646.kvalo@kernel.org>
+Date:   Fri, 21 Jul 2023 11:11:11 +0000 (UTC)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+hanyu001@208suo.com wrote:
 
-> Me and Johannes are planning to take a longer break from upstream this
-> summer. To keep things simple my suggestion is that we would official
-> close wireless and wireless-next trees from June 23rd to August 14th
-> (approximately).
->
-> During that time urgent fixes would need go directly to the net tree.
-> Patches can keep flowing to the wireless list but the the net
-> maintainers will follow the list and they'll just apply them to the
-> net tree directly.
+> This patch fixes the checkpatch.pl error:
+> 
+> ./drivers/net/wireless/ath/wcn36xx/dxe.c:233: ERROR: space required 
+> after that ',' (ctx:VxV)
+> 
+> Signed-off-by: maqimei <2433033762@qq.com>
 
-A change of plans, I'm actually back already now and have opened both
-wireless and wireless-next trees. I will go back offline at some point
-but hopefully Johannes will be back by then.
+ERROR: 'wifi:' prefix missing: "[PATCH] ath: wcn36xx: space required after that ','"
+ERROR: Missing Signed-off-by: hanyu001@208suo.com
+
+Patch set to Changes Requested.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/8d242d729e447fe0f41af7bccc35396e@208suo.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
