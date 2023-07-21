@@ -2,106 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A91575D7CC
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Jul 2023 01:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52BE475D7D1
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Jul 2023 01:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbjGUXGN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jul 2023 19:06:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53666 "EHLO
+        id S229797AbjGUXHt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jul 2023 19:07:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjGUXGM (ORCPT
+        with ESMTP id S229704AbjGUXHs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jul 2023 19:06:12 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6415F3A97
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 16:06:11 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-66f3fc56ef4so2422495b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 16:06:11 -0700 (PDT)
+        Fri, 21 Jul 2023 19:07:48 -0400
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A0FF0
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 16:07:47 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6bb0cadd3ccso1356788a34.3
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 16:07:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1689980770; x=1690585570;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zSrDjDHl7M7aRHZl+hH2qRE/q2U1EWsUQrb4m16evQQ=;
-        b=e7VYFNcPtyxA/7YKqgz+xaSqDqrgxBZEJxkRVKCYUW+3k1SfKVAN23A3c5vvZhnewY
-         ifNUYUIS7egzud2wfJdOFWULD/8J4kk148hIO5vpDCAgS7htthDK/RcvIRT0mN19mUoH
-         FBd95ghUzERqMViWl0W5cJXcieWcN8vSJ0vNk=
+        d=chromium.org; s=google; t=1689980866; x=1690585666;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=elgJU4KYXnMU4elu+VWtZiXEvECTg2Czc+aEZpm934k=;
+        b=GR/qfrPtrl3E60huygGbxqHchOVMW0l4uNKW2wEKq91ORQRuUPn3h6c8jAUP8uJ3Mg
+         ZgZTq1icVE5NXLyzvQcg2XWQcU/nNooUwpCLGA96oyBiktsiSIioVGVXxE5cmEmzm1X+
+         Nh5kypgUE3uepME3vqa5cVTm/bbmluyTc5rKE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689980770; x=1690585570;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zSrDjDHl7M7aRHZl+hH2qRE/q2U1EWsUQrb4m16evQQ=;
-        b=D6xeokDALrYYvc2dtP4iQ64NDE7sfv5l1dkZ9jYXpjzRUDkc7/35EoNKTx5h+iPq7M
-         CVlRbWVTNZw7lW0Q+Snl0/GO2tOGSD/v4pN3e7O4dnF5/WkVfy5PF/7HIKdeP5uBJaRH
-         GtV8GPG84yjz8gYP4dpJnMkd72+77lQzkwOwBjezQgg7WSZ7SMzITfwjHqd11IDMEeQO
-         j3oLLSrLYbr1dRtyRt/n1mIFAYGj+xmktG4By1wLkOg4wfhw0vjANXCOsf3ai3sGz6pl
-         cr+9jBKHozl5innkEXR2+z/Q7X4776e0g933u1R74B3yPeyl8I76PjtMtkT+KoVJ/pvC
-         rH/g==
-X-Gm-Message-State: ABy/qLZ8vLtmIi86os/WaK3OSkOjpwb1wknxGEDvonToLomt5YSDEwXz
-        evoIOnvNmVrFf+bTloKckES21mX+9+lZ/FYqC3yPbQ==
-X-Google-Smtp-Source: APBJJlEsrquSi/UMk8rheYMDnKjcyfuaU5Z1aEcK19lv6UzJyylMbD4qg8/9ka36cgx8szXD3ViFEQ==
-X-Received: by 2002:a05:6a20:6a11:b0:12e:caac:f263 with SMTP id p17-20020a056a206a1100b0012ecaacf263mr4280993pzk.20.1689980770572;
-        Fri, 21 Jul 2023 16:06:10 -0700 (PDT)
-Received: from localhost ([2620:15c:9d:2:4fa:e795:a6b:cf7f])
-        by smtp.gmail.com with UTF8SMTPSA id fm10-20020a056a002f8a00b006783ee5df8asm3422249pfb.189.2023.07.21.16.06.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Jul 2023 16:06:10 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689980866; x=1690585666;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=elgJU4KYXnMU4elu+VWtZiXEvECTg2Czc+aEZpm934k=;
+        b=Yj1dQATUdcarLsdNG85d+sXiPL+lZhkE7RUJYbkmPTuqvY/kdTo6cQpFhHwAZHTt7T
+         LytCIuwja5zmqfNlhLDxdvpFruWtOUH4YUOlnNPkzOMm0PfotiHFnccCVY/xuJdcMj7O
+         6PcU3JteK6asZEQESpSmztALgQUBJlK0KqsEZIjinbzk5gvJs8PC6czR2J9snlMbhcgi
+         kxtTx5Qf2SZRaGEhGEjy25e4O7CWlJR9EE5abKmRawOZZqMFEt32X8gB6v+cfVscQvvS
+         4cOKXt6JcNlw5cjgRHmsU2osVJB8kyGQg4/N2XBSMuKihgA9XaIavZRPrMC9os/R+IyD
+         ryDA==
+X-Gm-Message-State: ABy/qLbEBU4VBjJiIPE/QN5X5dQZMihc+T2tgU4FWjxGXJy5YTLYGPe3
+        XBW26mK2y8vgucmfBL4lglsbpQ==
+X-Google-Smtp-Source: APBJJlGY4P/LgBLx4iQxqLFZd6P0VS5vniPk5QGjZeNHVPESPlAbrax90FYrqQADYpl06F0vGzg78Q==
+X-Received: by 2002:a05:6870:15c7:b0:1b0:2506:8d21 with SMTP id k7-20020a05687015c700b001b025068d21mr3675315oad.24.1689980866389;
+        Fri, 21 Jul 2023 16:07:46 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:4fa:e795:a6b:cf7f])
+        by smtp.gmail.com with ESMTPSA id fm26-20020a056a002f9a00b00675701f456csm3480204pfb.54.2023.07.21.16.07.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jul 2023 16:07:45 -0700 (PDT)
+Date:   Fri, 21 Jul 2023 16:07:43 -0700
 From:   Brian Norris <briannorris@chromium.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>
-Subject: [PATCH] MAINTAINERS: Update mwifiex maintainer list
-Date:   Fri, 21 Jul 2023 16:06:04 -0700
-Message-ID: <20230721160603.1.Idf0e8025f59c62d73c08960638249b58cf215acc@changeid>
-X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        Pink Perfect <pinkperfect2021@gmail.com>, amitkarwar@gmail.com,
+        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
+        huxinming820@gmail.com, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v3] wifi: mwifiex: Fix OOB and integer underflow when rx
+ packets
+Message-ID: <ZLsPv34t2lVgyqNi@google.com>
+References: <20230713023731.2518507-1-pinkperfect2021@gmail.com>
+ <CAKNAPeOvG1MVD0y5xuZpN8mSEzvrzcvRhdyrTJhju-_Z1nGV0g@mail.gmail.com>
+ <20230713105644.49444826@kernel.org>
+ <87sf9j3wd1.fsf@kernel.org>
+ <ZLlrd4dDz+kA5l18@google.com>
+ <87tttx3fci.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87tttx3fci.fsf@kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We haven't heard anything from these folks in years. I've been reviewing
-many submissions and plan to keep doing so.
+On Fri, Jul 21, 2023 at 10:15:25AM +0300, Kalle Valo wrote:
+> Brian Norris <briannorris@chromium.org> writes:
+> > I'll submit the MAINTAINERS patch if you'd like.
+> 
+> Sounds very good to me, thank you! Please submit the patch if you can.
 
-Cc: Amitkumar Karwar <amitkarwar@gmail.com>
-Cc: Ganapathi Bhat <ganapathi017@gmail.com>
-Cc: Sharvari Harisangam <sharvari.harisangam@nxp.com>
-Cc: Xinming Hu <huxinming820@gmail.com>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
----
+Done:
+https://lore.kernel.org/linux-wireless/20230721160603.1.Idf0e8025f59c62d73c08960638249b58cf215acc@changeid/
 
- MAINTAINERS | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dfbb271f1667..42e78a696be6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12579,12 +12579,9 @@ F:	Documentation/devicetree/bindings/net/marvell,pp2.yaml
- F:	drivers/net/ethernet/marvell/mvpp2/
- 
- MARVELL MWIFIEX WIRELESS DRIVER
--M:	Amitkumar Karwar <amitkarwar@gmail.com>
--M:	Ganapathi Bhat <ganapathi017@gmail.com>
--M:	Sharvari Harisangam <sharvari.harisangam@nxp.com>
--M:	Xinming Hu <huxinming820@gmail.com>
-+M:	Brian Norris <briannorris@chromium.org>
- L:	linux-wireless@vger.kernel.org
--S:	Maintained
-+S:	Odd Fixes
- F:	drivers/net/wireless/marvell/mwifiex/
- 
- MARVELL MWL8K WIRELESS DRIVER
--- 
-2.41.0.487.g6d72f3e995-goog
-
+Brian
