@@ -2,52 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8B5975BEDE
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 08:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 446BE75BEF3
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 08:34:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230394AbjGUG3l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jul 2023 02:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59028 "EHLO
+        id S230477AbjGUGew (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jul 2023 02:34:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbjGUG32 (ORCPT
+        with ESMTP id S231148AbjGUGep (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jul 2023 02:29:28 -0400
+        Fri, 21 Jul 2023 02:34:45 -0400
 Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26274EE
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jul 2023 23:29:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDEA72735
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jul 2023 23:34:43 -0700 (PDT)
 Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4R6fm22DTnzBRDtT
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 14:29:22 +0800 (CST)
+        by mail.208.org (Postfix) with ESMTP id 4R6ft72g5CzBRDtX
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 14:34:39 +0800 (CST)
 Authentication-Results: mail.208.org (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)" header.d=208.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
         content-transfer-encoding:content-type:message-id:user-agent
         :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1689920962; x=1692512963; bh=tDJteWg3Jdb43RW9e1MsfKXwxaa
-        RkDZKhkFPyrYOd00=; b=mMZDGWwDRdxO2hCm1HSIqBz8HIVYgwWGpw5lxl+tpX1
-        zQMlHsW0Gn7HvNz2yt9U8/R43ydGzXNihMMMr1EjW9ZxHqguJcq6qo1i0YNtPRAK
-        1I7LKYRZE+HT3EJeo4RDJfqMTCj6mNcB2u65A3ggIaa3ABzABnvDnVc4uSJX7etg
-        XzmOC4wT2OwYbyif/GA7nuwXsUNruWxxDZKtsMm4ZWPl4f5PDVOYtA2oc6vevFeZ
-        wOpl8LjqrM7rZ5fW8QxEbFl+iEJJTMAzcdQ4IUaMAlr4lhtrxSlJV3fyR+RpPhYq
-        YNrmVyGO7ZZ8YIntxgojj+nb9OxOXyTsV+gefRVmAMg==
+        dkim; t=1689921279; x=1692513280; bh=r92ntZahQbmDCf0JiTXJwPOJu5M
+        CPbYJWcWzgZtza0I=; b=htzDzupy1Rfy25l8jaWfoDmZqaeZJYgCnWfTvsNQx+z
+        Rfv2XRFAC7KkAdWqwi5sHhSSj0X6lW77Rq0QfrNYZTzAW/la7g/x2n3ijEqNeVqw
+        mpGzT/tPVMSKNq2o4f9PrJnHQjDrTzyizqeNLHLwBg2+toDammKwXcVVXeYGAeGq
+        6zLOJTQjDqBaYCmeeNmslzQPGZKn3q0GjodBlZRh+iWkwBlOHag2fhQj37xcV4gH
+        5/MbvY3V3sE2o2h/v8cqfm2DkYJmIFq1raPMQQHuytKEIJSmsnocUbupunZk+L/1
+        YqKKOB4V/cZVo03Xn6FxXd4nRj3vuVUXz6HPyOkuuFA==
 X-Virus-Scanned: amavisd-new at mail.208.org
 Received: from mail.208.org ([127.0.0.1])
         by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id U040mdIfBXuH for <linux-wireless@vger.kernel.org>;
-        Fri, 21 Jul 2023 14:29:22 +0800 (CST)
+        with ESMTP id D5UYy60Y5hvV for <linux-wireless@vger.kernel.org>;
+        Fri, 21 Jul 2023 14:34:39 +0800 (CST)
 Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4R6fm172sGzBRDrq;
-        Fri, 21 Jul 2023 14:29:21 +0800 (CST)
+        by mail.208.org (Postfix) with ESMTPSA id 4R6ft707nLzBRDtJ;
+        Fri, 21 Jul 2023 14:34:38 +0800 (CST)
 MIME-Version: 1.0
-Date:   Fri, 21 Jul 2023 14:29:21 +0800
+Date:   Fri, 21 Jul 2023 14:34:38 +0800
 From:   hanyu001@208suo.com
 To:     stf_xl@wp.pl, helmut.schaa@googlemail.com, kvalo@kernel.org
 Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: wireless: ralink: rt2x00:
-In-Reply-To: <tencent_5118A9715146B132F423C8C9B6A3237C9E05@qq.com>
-References: <tencent_5118A9715146B132F423C8C9B6A3237C9E05@qq.com>
+Subject: [PATCH] net: wireless: ralink: rt2x00: "foo* bar" should be "foo
+ *bar"
+In-Reply-To: <tencent_316424AFC531C5F050C0203FDBA08E84F907@qq.com>
+References: <tencent_316424AFC531C5F050C0203FDBA08E84F907@qq.com>
 User-Agent: Roundcube Webmail
-Message-ID: <3620e0bc76d3715cb8aecb0c7874390e@208suo.com>
+Message-ID: <18520fa625b8a901314c65bb8e557091@208suo.com>
 X-Sender: hanyu001@208suo.com
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
@@ -61,7 +62,7 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix checkpatch warnings:"foo* bar" should be "foo *bar"
+Fix checkpatch warnings:
 
 ./drivers/net/wireless/ralink/rt2x00/rt2x00.h:386: ERROR: "foo* bar" 
 should be "foo *bar"
