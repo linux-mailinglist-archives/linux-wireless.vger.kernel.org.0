@@ -2,95 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31B9775C328
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 11:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6058E75C4F1
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 12:46:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229628AbjGUJiG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jul 2023 05:38:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52068 "EHLO
+        id S229599AbjGUKqZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jul 2023 06:46:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjGUJiE (ORCPT
+        with ESMTP id S231178AbjGUKqA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jul 2023 05:38:04 -0400
-Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E05AA
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 02:38:03 -0700 (PDT)
-Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4R6kxg6dSPzBKy88
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 17:37:59 +0800 (CST)
-Authentication-Results: mail.208.org (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)" header.d=208.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
-        content-transfer-encoding:content-type:message-id:user-agent
-        :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1689932279; x=1692524280; bh=s6hrHq+4i66w2AiBgRCGMJw/RnQ
-        ClA/Vxds/eXz/JfQ=; b=EK4nNgoRUS9mUW6LQ/ze1Q/ITykCUHM2iLZOqFxrsXh
-        29x0uieOSUDXifqD3HjIdMPUuzcsqypkQpw/TxKwwObSJAcWn9NHA8A19Htm7NQg
-        AeeoW5nt2GO4ZVbI69UgEp8lWa4JOHpYi6fDRHlWFDws8Aqkgx/V+XAG5fA0hZAH
-        njRa0ubSNmLoaMtbfU2Nma68HVMMg0HAvWrvOTQHaFxD4W7ivVqhTif5ZYuIyjF+
-        CBygfOgFNnGJLoekCHCifIW84IBFBwdwh04mtzv28OFl0TrQe48hiwluhiuX4xgC
-        dA/N3sCgm6x9Pw0Ih3WbZqvul6bw7gO95rbmcJ8HPXw==
-X-Virus-Scanned: amavisd-new at mail.208.org
-Received: from mail.208.org ([127.0.0.1])
-        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id r2M3qfKQh-ud for <linux-wireless@vger.kernel.org>;
-        Fri, 21 Jul 2023 17:37:59 +0800 (CST)
-Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4R6kxg4nDnzBHXgs;
-        Fri, 21 Jul 2023 17:37:59 +0800 (CST)
-MIME-Version: 1.0
-Date:   Fri, 21 Jul 2023 17:37:59 +0800
-From:   hanyu001@208suo.com
-To:     stf_xl@wp.pl, helmut.schaa@googlemail.com, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wireless: ralink: rt2x00: Remove unnecessary spaces
-In-Reply-To: <tencent_0AFA418AB6A31D66F3B0481E8BC58A70A108@qq.com>
+        Fri, 21 Jul 2023 06:46:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED421FE1;
+        Fri, 21 Jul 2023 03:45:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8D5860B9B;
+        Fri, 21 Jul 2023 10:45:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05F4C433C7;
+        Fri, 21 Jul 2023 10:45:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689936353;
+        bh=bVNXVddqgqx1/2cVxz9Duf0iI7M4JNjftVODFvQksBw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=MMe8+UN1AYvQDmbxtdcaYtRwOeD1cv/rDNshzQLq818XgH9e9Sy3CimOVXUYbevj2
+         v+3ZR4LXFpeHaqtJII/ktXn26Zy8RTCGnyOoGgMQAklZA3HxoHDQfEmO05xLKzTioU
+         VPwFZ1bAmhNLo4q7LsybDaqDcaR/9GTV6pKHB0WnzK/x+oZ2UEffhonGX6Ybf6bfy3
+         d6s582PefhesphdgBW6O8uGwvszjjl48ShHR/fmbSf1K+j7AOfh/s8a7ua9qKWWeBP
+         rDTBT1J0+VE4ZK3KbOW77vOea28fMt/hFTS9D9MaErXuzHEbJB8TigSOS0qEGMiy/x
+         GuILY+9gHJhZg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     hanyu001@208suo.com
+Cc:     stf_xl@wp.pl, helmut.schaa@googlemail.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wireless: ralink: rt2x00: Remove unnecessary spaces
 References: <tencent_0AFA418AB6A31D66F3B0481E8BC58A70A108@qq.com>
-User-Agent: Roundcube Webmail
-Message-ID: <c0f897b57f6b05d26f2c006154fa15ed@208suo.com>
-X-Sender: hanyu001@208suo.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RDNS_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        <c0f897b57f6b05d26f2c006154fa15ed@208suo.com>
+Date:   Fri, 21 Jul 2023 13:45:50 +0300
+In-Reply-To: <c0f897b57f6b05d26f2c006154fa15ed@208suo.com> (hanyu's message of
+        "Fri, 21 Jul 2023 17:37:59 +0800")
+Message-ID: <87pm4l35lt.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix checkpatch warnings:
+hanyu001@208suo.com writes:
 
-./drivers/net/wireless/ralink/rt2x00/rt2x00reg.h:168: ERROR: space 
-prohibited after that open parenthesis '('
-./drivers/net/wireless/ralink/rt2x00/rt2x00reg.h:168: ERROR: space 
-prohibited before that close parenthesis ')'
-./drivers/net/wireless/ralink/rt2x00/rt2x00reg.h:169: ERROR: space 
-prohibited after that open parenthesis '('
-./drivers/net/wireless/ralink/rt2x00/rt2x00reg.h:169: ERROR: space 
-prohibited before that close parenthesis ')'
+> Fix checkpatch warnings:
+>
+> ./drivers/net/wireless/ralink/rt2x00/rt2x00reg.h:168: ERROR: space
+> prohibited after that open parenthesis '('
+> ./drivers/net/wireless/ralink/rt2x00/rt2x00reg.h:168: ERROR: space
+> prohibited before that close parenthesis ')'
+> ./drivers/net/wireless/ralink/rt2x00/rt2x00reg.h:169: ERROR: space
+> prohibited after that open parenthesis '('
+> ./drivers/net/wireless/ralink/rt2x00/rt2x00reg.h:169: ERROR: space
+> prohibited before that close parenthesis ')'
+>
+> Signed-off-by: Yu Han <hanyu001@208suo.com>
 
-Signed-off-by: Yu Han <hanyu001@208suo.com>
----
-  drivers/net/wireless/ralink/rt2x00/rt2x00reg.h | 4 ++--
-  1 file changed, 2 insertions(+), 2 deletions(-)
+I have seen a lot of checkpatch fixes from you. We do not really like
+random checkpatch fixes from new people, too much work for very little
+gain. From looking at the title it's clear that you have not even read
+our wireless specific instructions from our wiki (see link below).
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00reg.h 
-b/drivers/net/wireless/ralink/rt2x00/rt2x00reg.h
-index ffe802b..0e5094a 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00reg.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00reg.h
-@@ -165,8 +165,8 @@ struct rt2x00_field32 {
-   * Note that we cannot use the is_power_of_2() function since this
-   * check must be done at compile-time.
-   */
--#define is_power_of_two(x)    ( !((x) & ((x)-1)) )
--#define low_bit_mask(x)        ( ((x)-1) & ~(x) )
-+#define is_power_of_two(x)    (!((x) & ((x)-1)))
-+#define low_bit_mask(x)        (((x)-1) & ~(x))
-  #define is_valid_mask(x)    is_power_of_two(1LU + (x) + 
-low_bit_mask(x))
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-  /*
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
