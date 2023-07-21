@@ -2,61 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C578D75CA28
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 16:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21BB675CABF
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 16:56:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230460AbjGUOhK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jul 2023 10:37:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53290 "EHLO
+        id S231534AbjGUO4Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jul 2023 10:56:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231667AbjGUOhE (ORCPT
+        with ESMTP id S231368AbjGUO4X (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jul 2023 10:37:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13852E68;
-        Fri, 21 Jul 2023 07:37:04 -0700 (PDT)
+        Fri, 21 Jul 2023 10:56:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C389330E3;
+        Fri, 21 Jul 2023 07:56:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C6AF61B41;
-        Fri, 21 Jul 2023 14:37:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7671FC433C7;
-        Fri, 21 Jul 2023 14:37:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F15161CB7;
+        Fri, 21 Jul 2023 14:56:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9D1C433C7;
+        Fri, 21 Jul 2023 14:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689950223;
-        bh=TAtVRatQJl7dp+O8SxA2iZNWmvzPDyQDzJ+19l+YMPM=;
+        s=k20201202; t=1689951377;
+        bh=GbEdKOfppLFqOiQbkW2R1KhTapJ4FFcPNoaoNaBCLKY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jr1bpJYXgtl6kH7UuJx2WoWg4zRlM14AAfNfU40kal/bQWfMfCoNDOwcS8vuCiNb4
-         wLu8gn+dumG1/je/9W115PNjpPz/I3SzSOYR6kS/hRv7m/LU2a4ALWVB4EYu8GUiXq
-         sRgBPMfHvuavOl3TzThwDlwMjR3RpfGF7Pvl+8hj5k9yxDwD7m8B1nESPns4rQ2E3q
-         qiZg/TJo/YYQL+hf+3r2OecLWy2DkX0ad/o/IOIbKnbWNIxGUbSDtJ/IESBENNO1oj
-         pRuPeiqEV4TAie6sd8rSCDLMIgi5y5L0fVoXmVVlFiUGcaGfyq5ISw1jbPbcfRpsX1
-         3zY0iA6uS851w==
-Date:   Fri, 21 Jul 2023 07:37:01 -0700
+        b=NXlKWpLuPeKFqxlrQAj4ALgNKRqep1DB4i8zp75V7Cvk8c/efHwVnko4stlpjU4/i
+         90qJ6XaOrO/Q0iWCqzCKbSXeO6sa2SO8PtbYKhoqUEWtwhsbZNFjOGVPxUj9cQ1ONL
+         ea6ISpEAjOP6gaPvwe/PUjlGBh22NxI2o7vYtxmgTFkSWT1OlhLe0BLR1a4Np62JRc
+         WqwybNdxjwXcxp6R6p8oFhYpuRHyGsHIIyyOGgCnFxqCBiA6Kd8/VJqDZDqoNRCI9g
+         K+ABmjUwR9H1QO1ejIRI9WI99NrytMs340M2ScQtOwONLs/z+3O+SClu0JjxYM/nic
+         /bxbxhWrBks3A==
+Date:   Fri, 21 Jul 2023 07:56:15 -0700
 From:   Jakub Kicinski <kuba@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Paul Fertser <fercerpav@gmail.com>, linux-wireless@vger.kernel.org,
+To:     Yunsheng Lin <linyunsheng@huawei.com>
+Cc:     Alexander Lobakin <aleksander.lobakin@intel.com>,
+        <davem@davemloft.net>, <pabeni@redhat.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
         Ryder Lee <ryder.lee@mediatek.com>,
         Shayne Chen <shayne.chen@mediatek.com>,
         Sean Wang <sean.wang@mediatek.com>,
         Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, Rani Hod <rani.hod@gmail.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] mt76: mt7615: do not advertise 5 GHz on first phy of
- MT7615D (DBDC)
-Message-ID: <20230721073701.38f8479c@kernel.org>
-In-Reply-To: <00a2f5ba-7f46-641c-2c0e-e8ecb1356df8@nbd.name>
-References: <20230605073408.8699-1-fercerpav@gmail.com>
-        <00a2f5ba-7f46-641c-2c0e-e8ecb1356df8@nbd.name>
+        <angelogioacchino.delregno@collabora.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-rdma@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH net-next] page_pool: split types and declarations from
+ page_pool.h
+Message-ID: <20230721075615.118acad4@kernel.org>
+In-Reply-To: <f5d40062-bb0d-055b-8c02-912cfd020aca@huawei.com>
+References: <20230719121339.63331-1-linyunsheng@huawei.com>
+        <0838ed9e-8b5c-cc93-0175-9d6cbf695dda@intel.com>
+        <7e9c1276-9996-d9dd-c061-b1e66361c48b@huawei.com>
+        <20230720092247.279d65f3@kernel.org>
+        <f5d40062-bb0d-055b-8c02-912cfd020aca@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -70,21 +90,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 21 Jul 2023 10:03:49 +0200 Felix Fietkau wrote:
-> On 05.06.23 09:34, Paul Fertser wrote:
-> > On DBDC devices the first (internal) phy is only capable of using
-> > 2.4 GHz band, and the 5 GHz band is exposed via a separate phy object,
-> > so avoid the false advertising.
-> > 
-> > Reported-by: Rani Hod <rani.hod@gmail.com>
-> > Closes: https://github.com/openwrt/openwrt/pull/12361
-> > Fixes: 7660a1bd0c22 ("mt76: mt7615: register ext_phy if DBDC is detected")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Paul Fertser <fercerpav@gmail.com>  
-> Acked-by: Felix Fietkau <nbd@nbd.name>
-> 
-> Jakub, could you please pick this one up for 6.5?
+On Fri, 21 Jul 2023 19:12:25 +0800 Yunsheng Lin wrote:
+> Just to be clear, include/net/page_pool.h is still there, we are not
+> putting page_pool.h in include/net/page_pool/ and renaming it to
+> something else, right? As there is no that kind of uniformity in
+> include/net/* as far as I can see.
 
-Kalle reported that he's back to wireless duties a few hours after you
-posted so just to avoid any confusion - I'll leave this one to Kalle
-unless told otherwise.
+Like many things the uniformity is a plan which mostly exists in my head
+at this stage :) But it is somewhat inspired by include/linux/sched.*
+
+> More specificly, yon means the below, right?
+> include/net/page_pool.h
+> include/net/page_pool/types.h
+
+Yes.
