@@ -2,267 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DF5375BAFF
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 01:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 191A275BC55
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jul 2023 04:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjGTXG3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Jul 2023 19:06:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34482 "EHLO
+        id S230148AbjGUCfP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Jul 2023 22:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGTXG2 (ORCPT
+        with ESMTP id S229637AbjGUCfN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Jul 2023 19:06:28 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C305319A1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jul 2023 16:06:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689894386; x=1721430386;
-  h=date:from:to:cc:subject:message-id;
-  bh=SKJBSZRZ27mVdCpxvgtGrwXaoq65UXkWd/W7NWtPIlE=;
-  b=XFeYh8modhDeIOjXbYqiyEJVAErzeqDm68tOGhx/i3Ud3GbZjAir7AWB
-   YW9jV/gPENcKFFXo4FF+Of/SlV24ic7KGZfUGlYi6PeIHdUURRxDxhurP
-   jbz0rp+0ArHjxQpcVufTXUFN89Me3Suy21WBissHJg4hsyxtLK5JV1Gwt
-   m3WfbHnr/k0Zqeu8ENcHEWafVWIJJCXC7r99GHY38cRtvbw6Qn/Q+I/xQ
-   uvvZxjTki+tfgTkPNObyvxaZRxQ+WJ3d0d2uKHqZtWvxbCwwLcRyEDG0+
-   6lth/+VbUgLpoGUKB+9F2pPL7N3QL+h8y/UyLGLFs6qJfRjwUJDpVj77H
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="370484519"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="370484519"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 16:06:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="724598034"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="724598034"
-Received: from lkp-server02.sh.intel.com (HELO 36946fcf73d7) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 20 Jul 2023 16:06:24 -0700
-Received: from kbuild by 36946fcf73d7 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qMcj1-0006bi-2u;
-        Thu, 20 Jul 2023 23:06:23 +0000
-Date:   Fri, 21 Jul 2023 07:03:37 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Paolo Abeni <pabeni@redhat.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- ac528649f7c63bc233cc0d33cff11f767cc666e3
-Message-ID: <202307210735.Cy52F7dS-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Thu, 20 Jul 2023 22:35:13 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B38271F
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jul 2023 19:35:08 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36L0oxu7006767;
+        Fri, 21 Jul 2023 02:35:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=xdB3HCkQK/4WR/kMTZeZ3SvbLyyXK0Lqg0JvsGOnMwU=;
+ b=nW2wNNa6VSYHvrUZDz+jNZIxspiFb6+3xcxRfwUkkDhI9iFoQm2gpFqZQ4QZmtJ5NHDv
+ z1+oM2epPVSu7ea+NXtToT4BaIK95nnJyLu7yvxlDv7/vSji5jLH6J6/KSVRsPZiqhPA
+ AlIUxnZYySH3EL6HWebcWSYt6FeUgYAM70Loa3Z1kLdn1j0lf1A9RqUEDTBbaoFAOAmA
+ dNvKmPGT0cDHkNWPK82epH8uV9XmvYG8T/p+xAfqDY8qsnhT5/Itu8P8OUgI4mI53vIx
+ TiwOtpuaISsLipuWt2IgSkcFnxylAqk8NaaYqNYF+UniLnFIV81Md2s1ZGPD5C7PDvUl Hg== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rxxqv2mkn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Jul 2023 02:35:01 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36L2Z0eB011455
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Jul 2023 02:35:00 GMT
+Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Thu, 20 Jul 2023 19:34:59 -0700
+From:   Baochen Qiang <quic_bqiang@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [RFC 0/3] ath12k: Make suspend/resume work for WCN7850
+Date:   Fri, 21 Jul 2023 10:34:43 +0800
+Message-ID: <20230721023446.3706-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: T47WrBlhrsDAog_vz4Ndqh9N_OK9GbA0
+X-Proofpoint-GUID: T47WrBlhrsDAog_vz4Ndqh9N_OK9GbA0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-20_12,2023-07-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ spamscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 adultscore=0
+ impostorscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0
+ mlxlogscore=402 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307210021
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: ac528649f7c63bc233cc0d33cff11f767cc666e3  Merge branch 'net-support-stp-on-bridge-in-non-root-netns'
+This patch set flushes all data and management packets before
+suspend, so the 500ms delay workaround in ath12k_core_suspend
+is not needed and removed.
 
-elapsed time: 796m
+Due to MHI bugs, at the moment we are not able to shutdown and
+fully power off the device. As a workaround we put firmware to
+WoW state to make sure no unexpected activities while host is
+in suspend.
 
-configs tested: 189
-configs skipped: 17
+With all suspend/resume functionality implemented, we change
+supports_suspend to true for WCN7850 to make it work.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Baochen Qiang (3):
+  wifi: ath12k: Flush all packets before suspend
+  wifi: ath12k: Put firmware to WoW state during suspend
+  wifi: ath12k: Turn on suspend/resume switch for WCN7850
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r014-20230720   gcc  
-alpha                randconfig-r021-20230720   gcc  
-alpha                randconfig-r022-20230720   gcc  
-alpha                randconfig-r024-20230720   gcc  
-alpha                randconfig-r033-20230720   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                        nsim_700_defconfig   gcc  
-arc                  randconfig-r006-20230720   gcc  
-arc                  randconfig-r011-20230720   gcc  
-arc                  randconfig-r012-20230720   gcc  
-arc                  randconfig-r032-20230720   gcc  
-arc                  randconfig-r035-20230720   gcc  
-arc                  randconfig-r043-20230720   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                           h3600_defconfig   gcc  
-arm                          pxa910_defconfig   gcc  
-arm                  randconfig-r014-20230720   gcc  
-arm                  randconfig-r033-20230720   clang
-arm                  randconfig-r035-20230720   clang
-arm                  randconfig-r046-20230720   gcc  
-arm                         s3c6400_defconfig   gcc  
-arm                        vexpress_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r003-20230720   gcc  
-arm64                randconfig-r013-20230720   clang
-arm64                randconfig-r022-20230720   clang
-arm64                randconfig-r023-20230720   clang
-arm64                randconfig-r026-20230720   clang
-arm64                randconfig-r032-20230720   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r011-20230720   gcc  
-csky                 randconfig-r015-20230720   gcc  
-csky                 randconfig-r016-20230720   gcc  
-csky                 randconfig-r021-20230720   gcc  
-csky                 randconfig-r034-20230720   gcc  
-hexagon              randconfig-r022-20230720   clang
-hexagon              randconfig-r024-20230720   clang
-hexagon              randconfig-r036-20230720   clang
-hexagon              randconfig-r041-20230720   clang
-hexagon              randconfig-r045-20230720   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230720   gcc  
-i386         buildonly-randconfig-r005-20230720   gcc  
-i386         buildonly-randconfig-r006-20230720   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230720   gcc  
-i386                 randconfig-i002-20230720   gcc  
-i386                 randconfig-i003-20230720   gcc  
-i386                 randconfig-i004-20230720   gcc  
-i386                 randconfig-i005-20230720   gcc  
-i386                 randconfig-i006-20230720   gcc  
-i386                 randconfig-i011-20230720   clang
-i386                 randconfig-i012-20230720   clang
-i386                 randconfig-i013-20230720   clang
-i386                 randconfig-i014-20230720   clang
-i386                 randconfig-i015-20230720   clang
-i386                 randconfig-i016-20230720   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r014-20230720   gcc  
-loongarch            randconfig-r015-20230720   gcc  
-loongarch            randconfig-r032-20230720   gcc  
-loongarch            randconfig-r034-20230720   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                          amiga_defconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        mvme147_defconfig   gcc  
-m68k                 randconfig-r006-20230720   gcc  
-m68k                 randconfig-r012-20230720   gcc  
-m68k                 randconfig-r015-20230720   gcc  
-m68k                 randconfig-r023-20230720   gcc  
-m68k                 randconfig-r025-20230720   gcc  
-microblaze                      mmu_defconfig   gcc  
-microblaze           randconfig-r001-20230720   gcc  
-microblaze           randconfig-r005-20230720   gcc  
-microblaze           randconfig-r011-20230720   gcc  
-microblaze           randconfig-r016-20230720   gcc  
-microblaze           randconfig-r023-20230720   gcc  
-microblaze           randconfig-r033-20230720   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                  cavium_octeon_defconfig   clang
-mips                            gpr_defconfig   gcc  
-mips                  maltasmvp_eva_defconfig   gcc  
-mips                        omega2p_defconfig   clang
-mips                        qi_lb60_defconfig   clang
-mips                 randconfig-r004-20230720   clang
-mips                 randconfig-r012-20230720   gcc  
-mips                 randconfig-r013-20230720   gcc  
-mips                 randconfig-r016-20230720   gcc  
-mips                 randconfig-r026-20230720   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r002-20230720   gcc  
-nios2                randconfig-r003-20230720   gcc  
-nios2                randconfig-r012-20230720   gcc  
-nios2                randconfig-r026-20230720   gcc  
-openrisc             randconfig-r002-20230720   gcc  
-openrisc             randconfig-r022-20230720   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r002-20230720   gcc  
-parisc               randconfig-r004-20230720   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                      katmai_defconfig   clang
-powerpc                    klondike_defconfig   gcc  
-powerpc                     ksi8560_defconfig   clang
-powerpc                 mpc834x_itx_defconfig   gcc  
-powerpc              randconfig-r001-20230720   gcc  
-powerpc              randconfig-r014-20230720   clang
-powerpc              randconfig-r015-20230720   clang
-powerpc              randconfig-r024-20230720   clang
-powerpc              randconfig-r026-20230720   clang
-powerpc              randconfig-r031-20230720   gcc  
-powerpc                     stx_gp3_defconfig   gcc  
-powerpc                         wii_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r002-20230720   gcc  
-riscv                randconfig-r042-20230720   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r003-20230720   gcc  
-s390                 randconfig-r013-20230720   clang
-s390                 randconfig-r024-20230720   clang
-s390                 randconfig-r031-20230720   gcc  
-s390                 randconfig-r044-20230720   clang
-sh                               allmodconfig   gcc  
-sh                 kfr2r09-romimage_defconfig   gcc  
-sh                     magicpanelr2_defconfig   gcc  
-sh                   randconfig-r001-20230720   gcc  
-sh                   randconfig-r006-20230720   gcc  
-sh                   randconfig-r025-20230720   gcc  
-sh                          rsk7201_defconfig   gcc  
-sh                           se7343_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r005-20230720   gcc  
-sparc64              randconfig-r013-20230720   gcc  
-sparc64              randconfig-r033-20230720   gcc  
-sparc64              randconfig-r036-20230720   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r004-20230720   clang
-um                   randconfig-r031-20230720   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230720   gcc  
-x86_64       buildonly-randconfig-r002-20230720   gcc  
-x86_64       buildonly-randconfig-r003-20230720   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r005-20230720   gcc  
-x86_64               randconfig-r011-20230720   clang
-x86_64               randconfig-r016-20230720   clang
-x86_64               randconfig-r032-20230720   gcc  
-x86_64               randconfig-x001-20230720   clang
-x86_64               randconfig-x002-20230720   clang
-x86_64               randconfig-x003-20230720   clang
-x86_64               randconfig-x004-20230720   clang
-x86_64               randconfig-x005-20230720   clang
-x86_64               randconfig-x006-20230720   clang
-x86_64               randconfig-x011-20230720   gcc  
-x86_64               randconfig-x012-20230720   gcc  
-x86_64               randconfig-x013-20230720   gcc  
-x86_64               randconfig-x014-20230720   gcc  
-x86_64               randconfig-x015-20230720   gcc  
-x86_64               randconfig-x016-20230720   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r011-20230720   gcc  
-xtensa               randconfig-r025-20230720   gcc  
+ drivers/net/wireless/ath/ath12k/Makefile |   1 +
+ drivers/net/wireless/ath/ath12k/core.c   |  31 ++++-
+ drivers/net/wireless/ath/ath12k/core.h   |   4 +
+ drivers/net/wireless/ath/ath12k/hw.c     |   2 +-
+ drivers/net/wireless/ath/ath12k/mac.c    |  44 ++++--
+ drivers/net/wireless/ath/ath12k/mac.h    |   1 +
+ drivers/net/wireless/ath/ath12k/wmi.c    | 107 +++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h    | 165 +++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wow.c    |  74 ++++++++++
+ drivers/net/wireless/ath/ath12k/wow.h    |  30 +++++
+ 10 files changed, 442 insertions(+), 17 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/wow.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/wow.h
 
+
+base-commit: b21fe5be53eb873c02e7479372726c8aeed171e3
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
