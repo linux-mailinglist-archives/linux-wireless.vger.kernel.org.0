@@ -2,87 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52BE475D7D1
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Jul 2023 01:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEC2475D8B3
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Jul 2023 03:29:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbjGUXHt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Jul 2023 19:07:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54358 "EHLO
+        id S230062AbjGVB3r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Jul 2023 21:29:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbjGUXHs (ORCPT
+        with ESMTP id S229534AbjGVB3q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Jul 2023 19:07:48 -0400
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A0FF0
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 16:07:47 -0700 (PDT)
-Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6bb0cadd3ccso1356788a34.3
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jul 2023 16:07:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1689980866; x=1690585666;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=elgJU4KYXnMU4elu+VWtZiXEvECTg2Czc+aEZpm934k=;
-        b=GR/qfrPtrl3E60huygGbxqHchOVMW0l4uNKW2wEKq91ORQRuUPn3h6c8jAUP8uJ3Mg
-         ZgZTq1icVE5NXLyzvQcg2XWQcU/nNooUwpCLGA96oyBiktsiSIioVGVXxE5cmEmzm1X+
-         Nh5kypgUE3uepME3vqa5cVTm/bbmluyTc5rKE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689980866; x=1690585666;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=elgJU4KYXnMU4elu+VWtZiXEvECTg2Czc+aEZpm934k=;
-        b=Yj1dQATUdcarLsdNG85d+sXiPL+lZhkE7RUJYbkmPTuqvY/kdTo6cQpFhHwAZHTt7T
-         LytCIuwja5zmqfNlhLDxdvpFruWtOUH4YUOlnNPkzOMm0PfotiHFnccCVY/xuJdcMj7O
-         6PcU3JteK6asZEQESpSmztALgQUBJlK0KqsEZIjinbzk5gvJs8PC6czR2J9snlMbhcgi
-         kxtTx5Qf2SZRaGEhGEjy25e4O7CWlJR9EE5abKmRawOZZqMFEt32X8gB6v+cfVscQvvS
-         4cOKXt6JcNlw5cjgRHmsU2osVJB8kyGQg4/N2XBSMuKihgA9XaIavZRPrMC9os/R+IyD
-         ryDA==
-X-Gm-Message-State: ABy/qLbEBU4VBjJiIPE/QN5X5dQZMihc+T2tgU4FWjxGXJy5YTLYGPe3
-        XBW26mK2y8vgucmfBL4lglsbpQ==
-X-Google-Smtp-Source: APBJJlGY4P/LgBLx4iQxqLFZd6P0VS5vniPk5QGjZeNHVPESPlAbrax90FYrqQADYpl06F0vGzg78Q==
-X-Received: by 2002:a05:6870:15c7:b0:1b0:2506:8d21 with SMTP id k7-20020a05687015c700b001b025068d21mr3675315oad.24.1689980866389;
-        Fri, 21 Jul 2023 16:07:46 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:4fa:e795:a6b:cf7f])
-        by smtp.gmail.com with ESMTPSA id fm26-20020a056a002f9a00b00675701f456csm3480204pfb.54.2023.07.21.16.07.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 16:07:45 -0700 (PDT)
-Date:   Fri, 21 Jul 2023 16:07:43 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Pink Perfect <pinkperfect2021@gmail.com>, amitkarwar@gmail.com,
-        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
-        huxinming820@gmail.com, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v3] wifi: mwifiex: Fix OOB and integer underflow when rx
- packets
-Message-ID: <ZLsPv34t2lVgyqNi@google.com>
-References: <20230713023731.2518507-1-pinkperfect2021@gmail.com>
- <CAKNAPeOvG1MVD0y5xuZpN8mSEzvrzcvRhdyrTJhju-_Z1nGV0g@mail.gmail.com>
- <20230713105644.49444826@kernel.org>
- <87sf9j3wd1.fsf@kernel.org>
- <ZLlrd4dDz+kA5l18@google.com>
- <87tttx3fci.fsf@kernel.org>
+        Fri, 21 Jul 2023 21:29:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3EF3AA7;
+        Fri, 21 Jul 2023 18:29:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BCC2161DC3;
+        Sat, 22 Jul 2023 01:29:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D365C433C9;
+        Sat, 22 Jul 2023 01:29:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689989385;
+        bh=R5mM7X0dWWGe8uUNwpNWWJBPRCjYazXGxXdFnAodWvw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HmuHP5XXPJ9OGtuSX0ZEUaobPZhKyyzy3vPE6pZquoHGaxKkuOBYJK6imJ3otDRay
+         GckHYEcvBviIAOUIw3ZdJtbN6F1o2H+lCIY7cYQ6rlgStZ1JAPRyy4yzkpDWSw2rA5
+         iCEa/d1g0S86jnzKTU5948tooRNODGKE9yL97nmTfJCwL7CruJltGOB+Tq5ejSar8W
+         G/DioqTgh+MEEAuF5EW/SrMesfAMaXhXwJFBpucPUUaC+OiyWaJm3lsjKMghTj/1pv
+         ayRVX+l0X3k8Z/M+GfF9SEGp4PJL82byym5BcnsB8T6OOY3SH7KRPb+uo1nAaBHe1s
+         2T3QLRT6rdakg==
+Date:   Fri, 21 Jul 2023 18:29:42 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc:     Yunsheng Lin <linyunsheng@huawei.com>, <davem@davemloft.net>,
+        <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Eric Dumazet <edumazet@google.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        "Subbaraya Sundeep" <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        "Saeed Mahameed" <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        "Alexei Starovoitov" <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
+        <linux-rdma@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH net-next] page_pool: split types and declarations from
+ page_pool.h
+Message-ID: <20230721182942.0ca57663@kernel.org>
+In-Reply-To: <ccb728be-832c-be93-2023-6a5c78c53e6a@intel.com>
+References: <20230719121339.63331-1-linyunsheng@huawei.com>
+        <0838ed9e-8b5c-cc93-0175-9d6cbf695dda@intel.com>
+        <7e9c1276-9996-d9dd-c061-b1e66361c48b@huawei.com>
+        <20230720092247.279d65f3@kernel.org>
+        <f5d40062-bb0d-055b-8c02-912cfd020aca@huawei.com>
+        <20230721075615.118acad4@kernel.org>
+        <ccb728be-832c-be93-2023-6a5c78c53e6a@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87tttx3fci.fsf@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 10:15:25AM +0300, Kalle Valo wrote:
-> Brian Norris <briannorris@chromium.org> writes:
-> > I'll submit the MAINTAINERS patch if you'd like.
+On Fri, 21 Jul 2023 17:51:17 +0200 Alexander Lobakin wrote:
+> >> More specificly, yon means the below, right?
+> >> include/net/page_pool.h
+> >> include/net/page_pool/types.h  
+> > 
+> > Yes.  
 > 
-> Sounds very good to me, thank you! Please submit the patch if you can.
+> What I meant is
+> 
+> include/net/page_pool/types.h
+> include/net/page_pool/driver.h
+> 
+> I'm not insisting, just to be clear :)
 
-Done:
-https://lore.kernel.org/linux-wireless/20230721160603.1.Idf0e8025f59c62d73c08960638249b58cf215acc@changeid/
-
-Brian
+I thought we already talked about naming headers after the user :S
+Unless you're _defining_ a driver in driver.h that's not a good name.
+types.h, helpers.h, functions.h, dma.h are good names.
