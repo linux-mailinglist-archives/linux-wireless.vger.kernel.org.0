@@ -2,64 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C63575E4AB
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jul 2023 21:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B5C75E4D9
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jul 2023 22:32:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229821AbjGWTzc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Jul 2023 15:55:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58144 "EHLO
+        id S229643AbjGWUcp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Jul 2023 16:32:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbjGWTza (ORCPT
+        with ESMTP id S229456AbjGWUco (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Jul 2023 15:55:30 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 868EE134
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Jul 2023 12:55:27 -0700 (PDT)
-Received: (qmail 1824359 invoked by uid 1000); 23 Jul 2023 15:55:26 -0400
-Date:   Sun, 23 Jul 2023 15:55:26 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Oliver Neukum <oneukum@suse.com>
-Cc:     Wireless mailing list <linux-wireless@vger.kernel.org>,
-        USB mailing list <linux-usb@vger.kernel.org>,
-        PCI mailing list <linux-pci@vger.kernel.org>
-Subject: Re: Nomenclature for USB-connected WiFi devices
-Message-ID: <fa6bc5b7-489f-455d-a26b-1789de6d6934@rowland.harvard.edu>
-References: <8ce5288f-9ed2-4df9-a0a2-bb46941089fb@rowland.harvard.edu>
- <b6e48f28-c832-7a05-d05f-e35514bec7b8@suse.com>
+        Sun, 23 Jul 2023 16:32:44 -0400
+X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 23 Jul 2023 13:32:43 PDT
+Received: from smtp.smtpout.orange.fr (smtp-21.smtpout.orange.fr [80.12.242.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 97D751B8
+        for <linux-wireless@vger.kernel.org>; Sun, 23 Jul 2023 13:32:43 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id NfdYqBzmMQztPNfdZqOQPG; Sun, 23 Jul 2023 22:25:06 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1690143906;
+        bh=fiLQ1tlpJj1LRpew92AztLTpxiVgw4Le/tOPPNtRsXs=;
+        h=From:To:Cc:Subject:Date;
+        b=r7cvxUQ3Y3BP1WuBmUAe9nDSZNt/2yt0WBoq27TFMwsk1hYI94yjHvxVWlsxK+xGr
+         EBxucGGAT6oh9Eu/bkgvIbRgErkMx/6H1gQAJ/E+fq+L3fwSUYIxap5i1g2LSg0NVd
+         gXFgGExfH/LcPokz9R30TDg26K1bdeeEDWDtU8auwXAQ4iu3w68jkcco4ZpwmPerbr
+         pmy0kwj3AzXqmgERYN60g4QLRZ/8mt8UzcpbyUgO/MB0MIOQ7FFAPvE4KCwC7gsVzI
+         2hcVStpXgPQMJRmCwIID7v9ii/m2c2mh6zP2fTQCl6njBwcP9dG6fHnoIHVLs12ZvX
+         aAmqpcfBsLxOw==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 23 Jul 2023 22:25:06 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH wireless] wifi: iwlwifi: mvm: Fix a memory corruption issue
+Date:   Sun, 23 Jul 2023 22:24:59 +0200
+Message-Id: <23f0ec986ef1529055f4f93dcb3940a6cf8d9a94.1690143750.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b6e48f28-c832-7a05-d05f-e35514bec7b8@suse.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jul 23, 2023 at 07:05:40PM +0200, Oliver Neukum wrote:
-> On 23.07.23 18:04, Alan Stern wrote:
-> > If you've got a WiFi device that connects to the host computer via USB,
-> > do you refer to it as a "wireless USB device" or as a "USB wireless
-> > device"?
-> > 
-> > The second would seem to be more logical, by analogy with things like a
-> > USB mouse or a USB thumbdrive -- we don't say "mouse USB device" or
-> > "thumbdrive USB device"!
-> 
-> If you are doing this, why not go to USB WiFi? We want to know what
-> kind of wireless device it is.
+A few lines above, space is kzalloc()'ed for:
+	sizeof(struct iwl_nvm_data) +
+	sizeof(struct ieee80211_channel) +
+	sizeof(struct ieee80211_rate)
 
-Doing that would require more knowledge than I possess.  :-)
+'mvm->nvm_data' is a 'struct iwl_nvm_data', so it is fine.
 
-I don't know what kinds of wireless device these different drivers are 
-meant for.  Presumably most of them are WiFi, but are all of them?
+At the end of this structure, there is the 'channels' flex array.
+Each element is of type 'struct ieee80211_channel'.
+So only 1 element is allocated in this array.
 
-Besides, if the original authors felt it was appropriate to write 
-"wireless USB" instead of "WiFi USB", then most likely they will also 
-feel it is appropriate to change the text to "USB wireless" instead of 
-"USB WiFi".
+When doing:
+  mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
+We point at the first element of the 'channels' flex array.
+So this is fine.
 
-Alan Stern
+However, when doing:
+  mvm->nvm_data->bands[0].bitrates =
+			(void *)((u8 *)mvm->nvm_data->channels + 1);
+because of the "(u8 *)" cast, we add only 1 to the address of the beginning
+of the flex array.
+
+It is likely that we want point at the 'struct ieee80211_rate' allocated
+just after.
+
+Remove the spurious casting so that the pointer arithmetic works as
+expected.
+
+Fixes: 8ca151b568b6 ("iwlwifi: add the MVM driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+I've checked in the .s files, and :
+
+Before
+======
+# drivers/net/wireless/intel/iwlwifi/mvm/fw.c:801: 		mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
+	leaq	1448(%r13), %rax	#, tmp248
+
+# drivers/net/wireless/intel/iwlwifi/mvm/fw.c:805: 			(void *)((u8 *)mvm->nvm_data->channels + 1);
+	leaq	1449(%r13), %rax	#, tmp252
+
+
+After:
+=====
+# drivers/net/wireless/intel/iwlwifi/mvm/fw.c:801: 		mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
+	leaq	1448(%r13), %rax	#, tmp248
+
+# drivers/net/wireless/intel/iwlwifi/mvm/fw.c:805: 			(void *)(mvm->nvm_data->channels + 1);
+	leaq	1512(%r13), %rax	#, tmp252
+
+And on my system sizeof(struct ieee80211_channel) = 64
+
+/!\ This patch is only speculative and untested. /!\
+
+It is strange that a memory corruption issue has been un-noticed for more
+than 10 years.
+
+So review with care.
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 1f5db65a088d..1d5ee4330f29 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -802,7 +802,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm)
+ 		mvm->nvm_data->bands[0].n_channels = 1;
+ 		mvm->nvm_data->bands[0].n_bitrates = 1;
+ 		mvm->nvm_data->bands[0].bitrates =
+-			(void *)((u8 *)mvm->nvm_data->channels + 1);
++			(void *)(mvm->nvm_data->channels + 1);
+ 		mvm->nvm_data->bands[0].bitrates->hw_value = 10;
+ 	}
+ 
+-- 
+2.34.1
+
