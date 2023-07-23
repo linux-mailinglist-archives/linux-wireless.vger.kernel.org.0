@@ -2,86 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8549975E1AF
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jul 2023 14:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADB3E75E2F8
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jul 2023 18:05:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229931AbjGWMHg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Jul 2023 08:07:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41090 "EHLO
+        id S229797AbjGWQEz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Jul 2023 12:04:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjGWMHf (ORCPT
+        with ESMTP id S229666AbjGWQEy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Jul 2023 08:07:35 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F502E5B
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Jul 2023 05:07:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690114055; x=1721650055;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=b6thoYWjp8mQVV1VYXnw2skiXLGMpwG4GHEhAzilOTA=;
-  b=YidQaSq6R18aXcPb3tZF8a1lCGwIDrhHKGdr4BiU8ffm2R2P1Gjfgb8m
-   XarqxfXqshnzZYp9iTB9CnBrNJ0CnVjMjEUmJ6fIqA/iWH4HN0o1U/Q0U
-   DoT4GlvfqMO/ni/gMExSZm0Yhveqe3C3hMoSLEEkO31lJLvpxiSV6wnXR
-   EnvS84QgQnVfzzKbhTb1d5p6PQJluVUffoGN/tjb+7GruF8RlUOBiHbQT
-   HWeK7JTSFD1UZVTIPS3GBE3Qon3/O/f8+u6CCVyDeNy+xc1x0cQ26Jps+
-   Y1RG79US/zekQe9VKm4lNovt3J1RIv7AjGfMNMPC/8zeejbwPtQ71NUut
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10779"; a="433509105"
-X-IronPort-AV: E=Sophos;i="6.01,226,1684825200"; 
-   d="scan'208";a="433509105"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2023 05:07:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10779"; a="795489488"
-X-IronPort-AV: E=Sophos;i="6.01,226,1684825200"; 
-   d="scan'208";a="795489488"
-Received: from jed01829.iil.intel.com ([10.12.217.181])
-  by fmsmga004.fm.intel.com with ESMTP; 23 Jul 2023 05:07:33 -0700
-From:   Ilan Peer <ilan.peer@intel.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH v2] wifi: cfg80211: Fix return value in scan logic
-Date:   Sun, 23 Jul 2023 23:10:43 +0300
-Message-Id: <20230723201043.3007430-1-ilan.peer@intel.com>
-X-Mailer: git-send-email 2.25.1
+        Sun, 23 Jul 2023 12:04:54 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 61FC7107
+        for <linux-wireless@vger.kernel.org>; Sun, 23 Jul 2023 09:04:51 -0700 (PDT)
+Received: (qmail 1819799 invoked by uid 1000); 23 Jul 2023 12:04:50 -0400
+Date:   Sun, 23 Jul 2023 12:04:50 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Wireless mailing list <linux-wireless@vger.kernel.org>,
+        USB mailing list <linux-usb@vger.kernel.org>,
+        PCI mailing list <linux-pci@vger.kernel.org>
+Subject: Nomenclature for USB-connected WiFi devices
+Message-ID: <8ce5288f-9ed2-4df9-a0a2-bb46941089fb@rowland.harvard.edu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-As cfg80211_parse_colocated_ap() is not expected to return a negative
-value return 0 and not a negative value if cfg80211_calc_short_ssid()
-fails.
+If you've got a WiFi device that connects to the host computer via USB, 
+do you refer to it as a "wireless USB device" or as a "USB wireless 
+device"?
 
-Fixes: c8cb5b854b40f ("nl80211/cfg80211: support 6 GHz scanning")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217675
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
----
- net/wireless/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The second would seem to be more logical, by analogy with things like a 
+USB mouse or a USB thumbdrive -- we don't say "mouse USB device" or 
+"thumbdrive USB device"!
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 8bf00caf5d29..0cf1ce7b6934 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -657,7 +657,7 @@ static int cfg80211_parse_colocated_ap(const struct cfg80211_bss_ies *ies,
- 
- 	ret = cfg80211_calc_short_ssid(ies, &ssid_elem, &s_ssid_tmp);
- 	if (ret)
--		return ret;
-+		return 0;
- 
- 	for_each_element_id(elem, WLAN_EID_REDUCED_NEIGHBOR_REPORT,
- 			    ies->data, ies->len) {
--- 
-2.25.1
+Furthermore, the first ("Wireless USB") is in fact the name of a defunct 
+specification for an Ultra-WideBand interface that would run the USB 
+communication protocol over a wireless connection.
 
+Nevertheless there are quite a few places in the kernel source that use 
+"wireless USB" where they really mean "USB wireless".  (A few of them 
+are gray cases, like "Sierra Wireless USB-to-WWAN", although here the 
+word "Wireless" evidently is redundant -- maybe it is part of a brand 
+name?)
+
+Would there be any objection to a patch that does a wholesale conversion 
+from "wireless USB" to "USB wireless"?
+
+Alan Stern
+
+PS: Similar reasoning applies to the term "wireless PCIe device", 
+although here the number of offenders is smaller.
