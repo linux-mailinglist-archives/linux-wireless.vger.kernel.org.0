@@ -2,188 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9149075E035
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jul 2023 09:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C95A175E08B
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jul 2023 10:41:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229713AbjGWHIC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Jul 2023 03:08:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40722 "EHLO
+        id S229677AbjGWIlE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Jul 2023 04:41:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229736AbjGWHH5 (ORCPT
+        with ESMTP id S229591AbjGWIlD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Jul 2023 03:07:57 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03A11BD1
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Jul 2023 00:07:53 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-267f8f36a3cso365040a91.2
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Jul 2023 00:07:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690096073; x=1690700873;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RPTaawMampB8RdvwrfDPokZ7/oEYhLgXuDoV4Vx7Y/M=;
-        b=aMZxCKQzDFYXJjEVDT0G/DPOcKAPOyQatzh9GimtvKnJQtSrgGDAgfKecnu1izGL4J
-         yREIV6O7Fo0nJcLwH6w4FpABhMI3A/W8OsI3ZaESbUqD350YYQcOpQDT0njNEnwb5Cir
-         VkVy95ovvDcAXRJOhOTXrqdbpvCxhS9xURoihYXf07oLeGOuKQQOV4qKgARU+BE+PT7F
-         M2lD+iDnO6Ez8AQpM1eXuEaP9THjGDGjULkqj/Elr2yTGLahmwBIxxsEJ/+bgdsL7obk
-         NgCsGECDqforv5Vv0+zj97hDBdQGVP6m4/dVT+xVlmU2G1Z01DgjoKjwoOE8F7NFjBOc
-         JPlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690096073; x=1690700873;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RPTaawMampB8RdvwrfDPokZ7/oEYhLgXuDoV4Vx7Y/M=;
-        b=M4d/tDZu7EB+HTbOT07s+7C8TJNEhGkMjW38DQmLKxod1ggbhaER01CnK7+6auZRqI
-         DgrK49B/gT5kXe/kxODAUyILV52IaXHd0dYA40mZT+HEc4ns3d1lGkpR3ZeviDRWvKGl
-         dycF8kr3JavRsW3WrFnEiaHTNnI8z9v+F4e1y1eTIUlZyIpIRv6mdhVGVyFGOB6Kwi0a
-         Kfkp2luh6qAdv48U9LdHsmAqtK8sa4rDuTaXEv7a9VBl4WNEwsyj7LfpMyzu/hsVQ+si
-         6ECgTVXWYoKwzquZne6r3Gf4JKQV34bA584BnLAfZl6Pt9JduUSaoFOWMAh4FfVHOOsm
-         /SHg==
-X-Gm-Message-State: ABy/qLY+iBiAhYFRGkZBzct0FyFKE8MkHB0I1EfujDeG159nl5Wb1FM5
-        qkIC5LkWX/QxI7gEZqQMU8mWjWCDE/+8Qg==
-X-Google-Smtp-Source: APBJJlFlrF4ptKIOjz/JRoKvWPagSULmYR36TptlotsY6FWMqDL3GtYbr2dyPnxGUWyvC2rTdFGOPQ==
-X-Received: by 2002:a17:90a:e2c1:b0:268:2f2:cc88 with SMTP id fr1-20020a17090ae2c100b0026802f2cc88mr2471813pjb.12.1690096072979;
-        Sun, 23 Jul 2023 00:07:52 -0700 (PDT)
-Received: from localhost.localdomain ([221.231.189.81])
-        by smtp.gmail.com with ESMTPSA id gd17-20020a17090b0fd100b00263dee538b1sm4744192pjb.25.2023.07.23.00.07.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jul 2023 00:07:52 -0700 (PDT)
-From:   Polaris Pi <pinkperfect2021@gmail.com>
-To:     matthewmwang@chromium.org, briannorris@chromium.org,
-        kuba@kernel.org, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org,
-        Polaris Pi <pinkperfect2021@gmail.com>
-Subject: [PATCH v7] wifi: mwifiex: Fix OOB and integer underflow when rx packets
-Date:   Sun, 23 Jul 2023 07:07:41 +0000
-Message-Id: <20230723070741.1544662-1-pinkperfect2021@gmail.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Sun, 23 Jul 2023 04:41:03 -0400
+X-Greylist: delayed 2191 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 23 Jul 2023 01:41:01 PDT
+Received: from zju.edu.cn (spam.zju.edu.cn [61.164.42.155])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2C1EFE7D
+        for <linux-wireless@vger.kernel.org>; Sun, 23 Jul 2023 01:41:00 -0700 (PDT)
+Received: from localhost.localdomain (unknown [39.174.92.167])
+        by mail-app3 (Coremail) with SMTP id cC_KCgBXX5_o3rxk7IN_Cw--.18863S4;
+        Sun, 23 Jul 2023 16:03:53 +0800 (CST)
+From:   Lin Ma <linma@zju.edu.cn>
+To:     nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+        shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
+        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Cc:     Lin Ma <linma@zju.edu.cn>
+Subject: [PATCH v1] wifi: mt76: testmode: add nla_policy for MT76_TM_ATTR_TX_LENGTH
+Date:   Sun, 23 Jul 2023 16:03:50 +0800
+Message-Id: <20230723080350.3716135-1-linma@zju.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: cC_KCgBXX5_o3rxk7IN_Cw--.18863S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7Gw15JF48ZFWfur4kWr1Dtrb_yoW8Jr4xpa
+        y2ga4xCayDCr4DJ3ykJF48WFn5Xa43ArWjgrnxX3s5Zr95ta1fKryft3Z2yryktF1UZ3yf
+        Z3W5K343GFyY937anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+        JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+        CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+        2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+        Y2ka0xkIwI1lc2xSY4AK67AK6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+        1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+        b7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0x
+        vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+        42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvf
+        C2KfnxnUUI43ZEXa7VUjj-e5UUUUU==
+X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Make sure mwifiex_process_mgmt_packet,
-mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
-mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
-not out-of-bounds access the skb->data buffer.
+It seems that the nla_policy in mt76_tm_policy is missed for attribute
+MT76_TM_ATTR_TX_LENGTH. This patch adds the correct description to make
+sure the
 
-Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80211")
-Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
----
-V5: Follow chromeos comments: preserve the original flow of mwifiex_process_uap_rx_packet
-V6: Simplify check in mwifiex_process_uap_rx_packet
-V7: Fix drop packets issue when auotest V6, now pass manual and auto tests
----
- drivers/net/wireless/marvell/mwifiex/sta_rx.c | 11 ++++++++++-
- .../net/wireless/marvell/mwifiex/uap_txrx.c   | 19 +++++++++++++++++++
- drivers/net/wireless/marvell/mwifiex/util.c   | 10 +++++++---
- 3 files changed, 36 insertions(+), 4 deletions(-)
+  u32 val = nla_get_u32(tb[MT76_TM_ATTR_TX_LENGTH]);
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index 13659b02ba88..f2899d53a43f 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -86,6 +86,14 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
- 
-+	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
-+		mwifiex_dbg(priv->adapter, ERROR,
-+			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
-+			    skb->len, rx_pkt_off);
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+	}
-+
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
- 		     sizeof(bridge_tunnel_header))) ||
- 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-@@ -194,7 +202,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_private *priv,
- 
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
- 
--	if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
-+	if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
-+	    sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
- 			    skb->len, rx_pkt_offset, rx_pkt_length);
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index e495f7eaea03..04ff051f5d18 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -103,6 +103,15 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
- 		return;
- 	}
- 
-+	if (sizeof(*rx_pkt_hdr) +
-+	    le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
-+		mwifiex_dbg(adapter, ERROR,
-+			    "wrong rx packet offset: len=%d,rx_pkt_offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+	}
-+
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
- 		     sizeof(bridge_tunnel_header))) ||
- 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-@@ -367,6 +376,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_type = le16_to_cpu(uap_rx_pd->rx_pkt_type);
- 	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
- 
-+	if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-+	    sizeof(rx_pkt_hdr->eth803_hdr) > skb->len) {
-+		mwifiex_dbg(adapter, ERROR,
-+			    "wrong rx packet for struct ethhdr: len=%d, offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		return 0;
-+	}
-+
- 	ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
- 
- 	if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
-index 94c2d219835d..745b1d925b21 100644
---- a/drivers/net/wireless/marvell/mwifiex/util.c
-+++ b/drivers/net/wireless/marvell/mwifiex/util.c
-@@ -393,11 +393,15 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
- 	}
- 
- 	rx_pd = (struct rxpd *)skb->data;
-+	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
-+	if (pkt_len < sizeof(struct ieee80211_hdr) + sizeof(pkt_len)) {
-+		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
-+		return -1;
-+	}
- 
- 	skb_pull(skb, le16_to_cpu(rx_pd->rx_pkt_offset));
- 	skb_pull(skb, sizeof(pkt_len));
--
--	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
-+	pkt_len -= sizeof(pkt_len);
- 
- 	ieee_hdr = (void *)skb->data;
- 	if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
-@@ -410,7 +414,7 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
- 		skb->data + sizeof(struct ieee80211_hdr),
- 		pkt_len - sizeof(struct ieee80211_hdr));
- 
--	pkt_len -= ETH_ALEN + sizeof(pkt_len);
-+	pkt_len -= ETH_ALEN;
- 	rx_pd->rx_pkt_length = cpu_to_le16(pkt_len);
- 
- 	cfg80211_rx_mgmt(&priv->wdev, priv->roc_cfg.chan.center_freq,
+in function mt76_testmode_cmd() is safe and will not result in
+out-of-attribute read.
+
+Fixes: f0efa8621550 ("mt76: add API for testmode support")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+---
+ drivers/net/wireless/mediatek/mt76/testmode.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/testmode.c b/drivers/net/wireless/mediatek/mt76/testmode.c
+index 0accc71a91c9..4644dace9bb3 100644
+--- a/drivers/net/wireless/mediatek/mt76/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/testmode.c
+@@ -8,6 +8,7 @@ const struct nla_policy mt76_tm_policy[NUM_MT76_TM_ATTRS] = {
+ 	[MT76_TM_ATTR_RESET] = { .type = NLA_FLAG },
+ 	[MT76_TM_ATTR_STATE] = { .type = NLA_U8 },
+ 	[MT76_TM_ATTR_TX_COUNT] = { .type = NLA_U32 },
++	[MT76_TM_ATTR_TX_LENGTH] = { .type = NLA_U32 },
+ 	[MT76_TM_ATTR_TX_RATE_MODE] = { .type = NLA_U8 },
+ 	[MT76_TM_ATTR_TX_RATE_NSS] = { .type = NLA_U8 },
+ 	[MT76_TM_ATTR_TX_RATE_IDX] = { .type = NLA_U8 },
 -- 
-2.25.1
+2.17.1
 
