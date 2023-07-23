@@ -2,136 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B5C75E4D9
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jul 2023 22:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A92C375E4E6
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jul 2023 22:39:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbjGWUcp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Jul 2023 16:32:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37796 "EHLO
+        id S229850AbjGWUjG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Jul 2023 16:39:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjGWUco (ORCPT
+        with ESMTP id S229468AbjGWUjF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Jul 2023 16:32:44 -0400
-X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 23 Jul 2023 13:32:43 PDT
-Received: from smtp.smtpout.orange.fr (smtp-21.smtpout.orange.fr [80.12.242.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 97D751B8
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Jul 2023 13:32:43 -0700 (PDT)
-Received: from pop-os.home ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id NfdYqBzmMQztPNfdZqOQPG; Sun, 23 Jul 2023 22:25:06 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1690143906;
-        bh=fiLQ1tlpJj1LRpew92AztLTpxiVgw4Le/tOPPNtRsXs=;
-        h=From:To:Cc:Subject:Date;
-        b=r7cvxUQ3Y3BP1WuBmUAe9nDSZNt/2yt0WBoq27TFMwsk1hYI94yjHvxVWlsxK+xGr
-         EBxucGGAT6oh9Eu/bkgvIbRgErkMx/6H1gQAJ/E+fq+L3fwSUYIxap5i1g2LSg0NVd
-         gXFgGExfH/LcPokz9R30TDg26K1bdeeEDWDtU8auwXAQ4iu3w68jkcco4ZpwmPerbr
-         pmy0kwj3AzXqmgERYN60g4QLRZ/8mt8UzcpbyUgO/MB0MIOQ7FFAPvE4KCwC7gsVzI
-         2hcVStpXgPQMJRmCwIID7v9ii/m2c2mh6zP2fTQCl6njBwcP9dG6fHnoIHVLs12ZvX
-         aAmqpcfBsLxOw==
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 23 Jul 2023 22:25:06 +0200
-X-ME-IP: 86.243.2.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH wireless] wifi: iwlwifi: mvm: Fix a memory corruption issue
-Date:   Sun, 23 Jul 2023 22:24:59 +0200
-Message-Id: <23f0ec986ef1529055f4f93dcb3940a6cf8d9a94.1690143750.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+        Sun, 23 Jul 2023 16:39:05 -0400
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ED23E49;
+        Sun, 23 Jul 2023 13:39:04 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.west.internal (Postfix) with ESMTP id BA3613200035;
+        Sun, 23 Jul 2023 16:39:00 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Sun, 23 Jul 2023 16:39:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1690144740; x=1690231140; bh=NV
+        7k/N80dOAADhSM9J12JfLW++A3+GdGL/V6Zz2j2C0=; b=fPWTBoXpkB56qtTjok
+        3e3s5L7XCe4y1hhcsKbHkaSp8TjVhA5i0Ux98l6IEZ+1zXwO4B6IoneOs+S43Oem
+        6wn+W696K9xYJLCpMybZ85DRMPeZBnl3tLrN5k69WFOwgeYiVab1IegVfqe0abci
+        jKhF653DQsnurP3nTp0gWCIGZ4HiaSR5aiAAhd33Tr1+Uin2S0VhZwVNQ9L4QU6R
+        LHbFLyPw/zcLT0Q9i/7Nljs2E5wFkcFjomg5ILZ4uuAZlbwb/t0Pj2aG9jnFi7eL
+        /cW2jhziimDGAwnUjp7c7tqRfuZ7C99eLo97AtRR5ZksCsOstaMn31cNJ/QqaJd2
+        CVEA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1690144740; x=1690231140; bh=NV7k/N80dOAAD
+        hSM9J12JfLW++A3+GdGL/V6Zz2j2C0=; b=KBQkDcB3o5zDygvA1JjP0lJaHT06m
+        VxNPkhZbYVpT2uIAzH5j2zBTFnzrQyTd4i966To6VRPu0TW3wFrdzqqMgivDuFIx
+        UMAI/AEwcez6rSAr3CJ8jj81XdQFnaRSUhIP7OJP4vZ+Qd0GotKyKzqENfMPAh07
+        q9Q14NK0ohdp6uNE5hhen/NJ/TxnJdjANiKWwrxBMksrXTINbSZSEjNELRZbf7TU
+        YeeAm1G/jbK5ONF3fcmaQLlLPZFb5NgGtafzo3TZcapvuIPWzjQku15zrI/Jjjx9
+        W9PT6Lf/h5mrp5z/e+ZiKwjQ9Q4FYiHchfjouDhYJFAsyxdrJhW74ziiQ==
+X-ME-Sender: <xms:5I-9ZIdgeVjtMP2q8sgaORYg2XR-vNSbF3_5DZKcIwVwatx09JSsyQ>
+    <xme:5I-9ZKN_0Q64Rl3R2hWy-Q9tEcb-81k__IiXb7FlN_rnFcwZW-87yOjSbML9DwOSo
+    qTNdZH7CgpyYA>
+X-ME-Received: <xmr:5I-9ZJgihIOcgIu6qGNblaNlW1NQ7KydLy-C0lLd0xLZU_2NfDgLNVMYomLip3z9Lz22t5DKaBEl3KurWKhElRYaO3vOSe7Zf1MP-g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrheeigdduhedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:5I-9ZN-2Wq-ZSNrsmwdZZ6d_pm0sBjq66T8ZFbsWPXTvSyu3-MlHIQ>
+    <xmx:5I-9ZEv7w10kVJgMbwtlWKAyXvIgJ1_Kbw4BAezyxLoNQI2koPf74Q>
+    <xmx:5I-9ZEH9QTRSy4tltcRSGdePsefFd7rkGEJ0iQay9OhRVvdYIKPUpQ>
+    <xmx:5I-9ZIj1K3LxIZXMpKcSUCL4bNtc8-dPDAF9vsTu3Y-VqVKDj3W3Mg>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 23 Jul 2023 16:38:59 -0400 (EDT)
+Date:   Sun, 23 Jul 2023 22:38:56 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     Wireless mailing list <linux-wireless@vger.kernel.org>,
+        USB mailing list <linux-usb@vger.kernel.org>,
+        PCI mailing list <linux-pci@vger.kernel.org>
+Subject: Re: Nomenclature for USB-connected WiFi devices
+Message-ID: <2023072345-snowboard-isolated-e390@gregkh>
+References: <8ce5288f-9ed2-4df9-a0a2-bb46941089fb@rowland.harvard.edu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8ce5288f-9ed2-4df9-a0a2-bb46941089fb@rowland.harvard.edu>
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A few lines above, space is kzalloc()'ed for:
-	sizeof(struct iwl_nvm_data) +
-	sizeof(struct ieee80211_channel) +
-	sizeof(struct ieee80211_rate)
+On Sun, Jul 23, 2023 at 12:04:50PM -0400, Alan Stern wrote:
+> If you've got a WiFi device that connects to the host computer via USB, 
+> do you refer to it as a "wireless USB device" or as a "USB wireless 
+> device"?
 
-'mvm->nvm_data' is a 'struct iwl_nvm_data', so it is fine.
+A "USB wifi device", just like the "PCI wifi device" in my desktop.
 
-At the end of this structure, there is the 'channels' flex array.
-Each element is of type 'struct ieee80211_channel'.
-So only 1 element is allocated in this array.
+Or "USB keyboard", or "USB mouse", or "USB thermometer", etc.
 
-When doing:
-  mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
-We point at the first element of the 'channels' flex array.
-So this is fine.
+> The second would seem to be more logical, by analogy with things like a 
+> USB mouse or a USB thumbdrive -- we don't say "mouse USB device" or 
+> "thumbdrive USB device"!
 
-However, when doing:
-  mvm->nvm_data->bands[0].bitrates =
-			(void *)((u8 *)mvm->nvm_data->channels + 1);
-because of the "(u8 *)" cast, we add only 1 to the address of the beginning
-of the flex array.
+Exactly.
 
-It is likely that we want point at the 'struct ieee80211_rate' allocated
-just after.
+> Furthermore, the first ("Wireless USB") is in fact the name of a defunct 
+> specification for an Ultra-WideBand interface that would run the USB 
+> communication protocol over a wireless connection.
 
-Remove the spurious casting so that the pointer arithmetic works as
-expected.
+Exactly, let's not get things confused with that obsolete and dead
+technology please.
 
-Fixes: 8ca151b568b6 ("iwlwifi: add the MVM driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-I've checked in the .s files, and :
+> Nevertheless there are quite a few places in the kernel source that use 
+> "wireless USB" where they really mean "USB wireless".  (A few of them 
+> are gray cases, like "Sierra Wireless USB-to-WWAN", although here the 
+> word "Wireless" evidently is redundant -- maybe it is part of a brand 
+> name?)
+> 
+> Would there be any objection to a patch that does a wholesale conversion 
+> from "wireless USB" to "USB wireless"?
 
-Before
-======
-# drivers/net/wireless/intel/iwlwifi/mvm/fw.c:801: 		mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
-	leaq	1448(%r13), %rax	#, tmp248
+I would be glad to take such a patch.
 
-# drivers/net/wireless/intel/iwlwifi/mvm/fw.c:805: 			(void *)((u8 *)mvm->nvm_data->channels + 1);
-	leaq	1449(%r13), %rax	#, tmp252
+> PS: Similar reasoning applies to the term "wireless PCIe device", 
+> although here the number of offenders is smaller.
 
+Hah, I should have read the whole email :)
 
-After:
-=====
-# drivers/net/wireless/intel/iwlwifi/mvm/fw.c:801: 		mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
-	leaq	1448(%r13), %rax	#, tmp248
+thanks,
 
-# drivers/net/wireless/intel/iwlwifi/mvm/fw.c:805: 			(void *)(mvm->nvm_data->channels + 1);
-	leaq	1512(%r13), %rax	#, tmp252
-
-And on my system sizeof(struct ieee80211_channel) = 64
-
-/!\ This patch is only speculative and untested. /!\
-
-It is strange that a memory corruption issue has been un-noticed for more
-than 10 years.
-
-So review with care.
----
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 1f5db65a088d..1d5ee4330f29 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -802,7 +802,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm)
- 		mvm->nvm_data->bands[0].n_channels = 1;
- 		mvm->nvm_data->bands[0].n_bitrates = 1;
- 		mvm->nvm_data->bands[0].bitrates =
--			(void *)((u8 *)mvm->nvm_data->channels + 1);
-+			(void *)(mvm->nvm_data->channels + 1);
- 		mvm->nvm_data->bands[0].bitrates->hw_value = 10;
- 	}
- 
--- 
-2.34.1
-
+greg k-h
