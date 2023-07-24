@@ -2,77 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A46DA75FEB3
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 20:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED5775FEDA
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 20:12:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbjGXSDK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jul 2023 14:03:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33374 "EHLO
+        id S230026AbjGXSMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jul 2023 14:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231479AbjGXSDH (ORCPT
+        with ESMTP id S230033AbjGXSMI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jul 2023 14:03:07 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2594993
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 11:03:06 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1bb5db14abdso947864fac.0
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 11:03:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690221785; x=1690826585;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=L9EMIHUm5nfLkLEqANloZqutmVTeNZ5m+rmy53s5B7Q=;
-        b=pJs7qhHhEIdBUH6TE15dBmCQy1Xj0CAyfquGTKmzcXVo/e8l1ruZbaFFZOxqTEOfk7
-         3z0g8viWuJFMhkp+Xx2nm3vxJpgjT+53fArT6g5lwTrpWNOjJyW/j9JtSeNJVERrxl1r
-         2A3A8hJhkpOqCZoiytPdbJgvJjpNuk1s8i94rpK6GUbuji4Msp0WKMUEfiyX4LONoDs1
-         hZQPik2D0Slum9B5sYDH0TgAO4rghwIi4kcTyxdclErQSYhlUQuN7gjGJnQMBLVHQ1io
-         WYVpj+VZH2cDpYiidq2aQMkx7IZand5C+fXtSEOAc4+/IZVYMtLSWtZnYL7jCek/iDyn
-         AOSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690221785; x=1690826585;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L9EMIHUm5nfLkLEqANloZqutmVTeNZ5m+rmy53s5B7Q=;
-        b=cwaFKHZYVThn6S4HkjL76D5r4St/CSmaTgxA2qAXEGvNWulu7Dh30/Jg5qyv4mTgcA
-         EiJPVMG4QWPkUWOmjmKbXQSyQMCnBKpmz++iGb6lnpXxd+j1nzFjTagJ2yfG7XtafOvD
-         5PKqweRvPt6hnsF2J0ZwjRRLdFFZ948mQmZVOl5S4OnsKPqth2obC//xjjUSz9Ri9p34
-         M4qBTv1Tvz9lEprXOhrGtCPByRC4GYBPPm2B3Q38mbs++WCDZcKsGLLDxC36pUn5g1tY
-         PiIkaFfPrql2rOFzqFe+IF7G21+TzD0a/RuOoUwNucm/A3UrfNKey+qgc0xtbjqRWOYP
-         jLTQ==
-X-Gm-Message-State: ABy/qLYtuKZ/PqhfFVTHLpag2yct/38k9IqtAMmj08A0aWKZckxqZUKf
-        bJpekMbGZpkojS9W8iByzEw=
-X-Google-Smtp-Source: APBJJlF2hhQDC/n7Yw2uyySM+20YEIySF5G3v8LL5Mn+pFIcvieokVKlmW8QUF9adYBjCTA6ZnkEzA==
-X-Received: by 2002:a05:6870:5ba2:b0:1ba:a410:4c53 with SMTP id em34-20020a0568705ba200b001baa4104c53mr7288191oab.10.1690221785339;
-        Mon, 24 Jul 2023 11:03:05 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id dt27-20020a0568705a9b00b001bb58a346b8sm1901825oab.18.2023.07.24.11.03.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 11:03:04 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <4bd1d468-d512-65b8-7e03-8cf879ce24af@lwfinger.net>
-Date:   Mon, 24 Jul 2023 13:03:04 -0500
+        Mon, 24 Jul 2023 14:12:08 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C55AE73
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 11:12:04 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36OBC9I1013704;
+        Mon, 24 Jul 2023 18:11:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=EKnswQdHDy/KVeHfCsewsEQNTYldae0s7gQsCXqe6Gk=;
+ b=kPfox8bQQm621FOiJwElpFR+KfkjihtjnF+7mtlWFIkwLDfDF5hF0YVe+foJWYtDTr+b
+ u67L2kHiic++lTVO4U5W8+5qIetx6YC7ma1vULEGDuVRW6/fdpGKBXOZA74ahl16I71n
+ fWdzshlMMUk4h3vTosM6tYVPaz75YgacqXqN+uVr1YNPdnbFCOcHuEFH9jDGyFzL4//P
+ KT7jFKXZQvxWkaaAzUUiuXZEs5ES7sMeihNOKarnmI30Ffho9DML04wQTDwzlb1uaPjN
+ vZ99wrgCqvYzUjkeDYZgLkbgJaJ5KYXmrSynagdPjjuFMAQmZ1Zmllke4WDVRVtwVekG Rw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s1pfh9623-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 24 Jul 2023 18:11:55 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36OIBsJF015821
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 24 Jul 2023 18:11:54 GMT
+Received: from [10.227.89.240] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Mon, 24 Jul
+ 2023 11:11:53 -0700
+Message-ID: <67961f9b-1062-88e3-d634-35f015dfbead@quicinc.com>
+Date:   Mon, 24 Jul 2023 11:11:53 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 8/9] MAINTAINERS: wifi: mark b43 as orphan
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v4 04/11] wifi: ath12k: propagate EHT capabilities to
+ userspace
 Content-Language: en-US
 To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-References: <20230724104547.3061709-1-kvalo@kernel.org>
- <20230724104547.3061709-9-kvalo@kernel.org>
- <14cfb9d7-089d-607a-9062-eb9e268ffd67@lwfinger.net>
- <87zg3l19lz.fsf@kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <87zg3l19lz.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        "Pradeep Kumar Chitrapu" <quic_pradeepc@quicinc.com>
+References: <20230602235820.23912-1-quic_alokad@quicinc.com>
+ <20230602235820.23912-5-quic_alokad@quicinc.com> <87pm5xaqp8.fsf@kernel.org>
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+In-Reply-To: <87pm5xaqp8.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: a0AihpJ3akgZB0ID4edEOwkpWkD5cFNN
+X-Proofpoint-GUID: a0AihpJ3akgZB0ID4edEOwkpWkD5cFNN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-24_14,2023-07-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=974 spamscore=0
+ bulkscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ mlxscore=0 priorityscore=1501 phishscore=0 suspectscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307240161
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,21 +81,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/24/23 12:51, Kalle Valo wrote:
-> Larry Finger <Larry.Finger@lwfinger.net> writes:
->> Kalle,
+On 6/15/2023 4:51 AM, Kalle Valo wrote:
+> Aloka Dixit <quic_alokad@quicinc.com> writes:
+> 
+>> Propagate EHT capabilities to the userspace using a new member
+>> 'eht_cap' in structure ieee80211_sband_iftype_data.
 >>
->> Michael Buesch and I have been unofficial maintainers of this driver
->> for years, but your change makes sense.
+>> MCS-NSS capabilities are copied depending on the supported bandwidths
+>> for the given band.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>> Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+>> Signed-off-by: Pradeep Kumar Chitrapu<quic_pradeepc@quicinc.com>
 > 
-> I would be more than happy to add you and/or Michael as b43 maintainers!
-> But I don't want to force anyone, it's not exactly a fun role :) Just
-> let me know what you prefer.
+> [...]
+> 
+>> +static void ath12k_mac_copy_eht_ppet_ru(u32 ppet, u8 ppe_thres[], int ru)
+>> +{
+>> +	int i;
+>> +	u32 val = 0;
+>> +	u8 ppet_size_ru = IEEE80211_EHT_PPE_THRES_INFO_PPET_SIZE * 2;
+>> +	u8 bit = IEEE80211_EHT_PPE_THRES_INFO_HEADER_SIZE;
+>> +
+>> +	u32p_replace_bits(&val, ppet >> (ru * ppet_size_ru),
+>> +			  GENMASK(ppet_size_ru - 1, 0));
+>> +
+>> +	val = ((val >> IEEE80211_EHT_PPE_THRES_INFO_PPET_SIZE) & GENMASK(2, 0)) |
+>> +	      ((val & GENMASK(2, 0)) << IEEE80211_EHT_PPE_THRES_INFO_PPET_SIZE);
+> 
+> This shifting of val looks weird. I didn't check the spec, what does it
+> do? Is there any cleaner way to do this? And should have a define for
+> GENMASK(2, 0)?
 > 
 
-Given my advanced age, I have been busy trying to get rid of responsibilities, 
-not take on new ones. I think making the driver an orphan is OK. As long as I am 
-capable, I will continue to address any bugs that turn up.
+I have a follow-up ready, based on top of the fixes you already made in 
+the master pending branch, which cleans this up.
 
-Larry
+Also noticed that need to use hweight16 instead of hweight8 for 
+IEEE80211_EHT_PPE_THRES_RU_INDEX_BITMASK_MASK. The new version fixes it 
+in this patch as well as in patch #6.
 
+Should I send the next version?
