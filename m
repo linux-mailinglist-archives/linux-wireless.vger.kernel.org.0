@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B3F175F3B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 12:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18B2075F3B6
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 12:45:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232281AbjGXKpz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S232242AbjGXKpz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Mon, 24 Jul 2023 06:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42368 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232242AbjGXKpx (ORCPT
+        with ESMTP id S232256AbjGXKpy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jul 2023 06:45:53 -0400
+        Mon, 24 Jul 2023 06:45:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2717E6
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 03:45:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB189C
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 03:45:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 665BF61073
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 421036106D
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 10:45:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA82C433C9
         for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 10:45:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707E0C433C8
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 10:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690195551;
-        bh=ZJIbpRmHAQ/GRLtdtgPoqwrI+BJlmJv8VBjgsy5ceg8=;
+        s=k20201202; t=1690195552;
+        bh=Pl/SOromHKnceMuxzK7X4u16xrlbYa1B4Axunyq40wo=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=JMKwVYT7dc7YZjVrZwpd7cEqzN9bRAKLOO1Ir8BaywK47421JqmcDUiVf5XVNCsDj
-         tqNGz6pjsiHdUcXCgyj1jpfOx+YqHamUszMI2RtqjRMHrDXR56fytQ9dHMM3YACnrz
-         Tr30Euo/AiEI/kt3jBZIR9ozGKwQXReJJK9k+oEWHl5t3ejpRfOa6Fjegg4Cak36zL
-         H/fycXRff0zvAN3TXqV6+5aCDNUkmxUUCmwGkNf9AYWNDrEGc15CGzN2kd4jX4WXaK
-         fTpVPo6sJNsoq23zfgRFI+5e0tX8+o2FIPPsmzIpySb0BYGgDVJVzX4+2AbfMIwbDS
-         Ar4M3ahmB9Zxw==
+        b=A95gH/9CmBNd/Dsh6Sn8kptRGRaKMmMwLshjG5glkwG1z3F3it98T0Hdk/IJtr1y0
+         IqkQLtWDP3RABS9sTnUyDf6yBH7wh83W6zrkR8NMmdmJvhBLKyC3+n4obCJ6G+GrKp
+         pZVEYMk6ID6TpJyjepU1w8ChXSsWe/f1qZbuVxCmJvbVTORtMhD7cZvTIfda1IluYI
+         mCB9jBUfiHcQamlzD1pKr3peYzx6En3KUPi+8/+wfV8kZ5mCi6NXPhg6dm+W59gNGv
+         KLtQoe95P+w6xjMpOctXdp1UYIz408bHGmNvcXFw/gTNqDqocDa3rwUrPz95262Tfj
+         5Kzh/vTOZCTPw==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 2/9] MAINTAINERS: wifi: atmel: mark as orphan
-Date:   Mon, 24 Jul 2023 13:45:40 +0300
-Message-Id: <20230724104547.3061709-3-kvalo@kernel.org>
+Subject: [PATCH 3/9] MAINTAINERS: wifi: mark cw1200 as orphan
+Date:   Mon, 24 Jul 2023 13:45:41 +0300
+Message-Id: <20230724104547.3061709-4-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230724104547.3061709-1-kvalo@kernel.org>
 References: <20230724104547.3061709-1-kvalo@kernel.org>
@@ -53,7 +53,7 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Last activity from Simon is from 2005 so mark the driver is orphan.
+Last activity from Solomon is from 2013 so mark the driver orphan.
 
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
 ---
@@ -61,20 +61,19 @@ Signed-off-by: Kalle Valo <kvalo@kernel.org>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index b61f43595e8d..ea84170767d5 100644
+index ea84170767d5..b61a50895535 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3260,9 +3260,8 @@ F:	Documentation/devicetree/bindings/input/atmel,maxtouch.yaml
- F:	drivers/input/touchscreen/atmel_mxt_ts.c
+@@ -5451,8 +5451,7 @@ F:	Documentation/devicetree/bindings/net/can/ctu,ctucanfd.yaml
+ F:	drivers/net/can/ctucanfd/
  
- ATMEL WIRELESS DRIVER
--M:	Simon Kelley <simon@thekelleys.org.uk>
- L:	linux-wireless@vger.kernel.org
+ CW1200 WLAN driver
+-M:	Solomon Peachy <pizza@shaftnet.org>
 -S:	Maintained
 +S:	Orphan
- W:	http://www.thekelleys.org.uk/atmel
- W:	http://atmelwlandriver.sourceforge.net/
- F:	drivers/net/wireless/atmel/atmel*
+ F:	drivers/net/wireless/st/cw1200/
+ 
+ CX18 VIDEO4LINUX DRIVER
 -- 
 2.39.2
 
