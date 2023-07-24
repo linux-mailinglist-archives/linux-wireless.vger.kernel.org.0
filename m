@@ -2,99 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A800375F697
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 14:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA32475F8CE
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 15:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230441AbjGXMnI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jul 2023 08:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35144 "EHLO
+        id S229506AbjGXNsG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jul 2023 09:48:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230077AbjGXMnH (ORCPT
+        with ESMTP id S229828AbjGXNrq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jul 2023 08:43:07 -0400
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E3BBE4E
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 05:43:04 -0700 (PDT)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:e908:444e:5a23:b79e])
-        by baptiste.telenet-ops.be with bizsmtp
-        id R0j22A00H26vpYY010j2rR; Mon, 24 Jul 2023 14:43:02 +0200
-Received: from geert (helo=localhost)
-        by ramsan.of.borg with local-esmtp (Exim 4.95)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1qNuty-002O66-6f;
-        Mon, 24 Jul 2023 14:43:02 +0200
-Date:   Mon, 24 Jul 2023 14:43:02 +0200 (CEST)
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     linux-kernel@vger.kernel.org
-cc:     Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.5-rc3
-In-Reply-To: <20230724122626.1701631-1-geert@linux-m68k.org>
-Message-ID: <88f83d73-781d-bdc-126-aa629cb368c@linux-m68k.org>
-References: <CAHk-=wi4Yau-3Bsv2rXYmtXMTLaj3=Wyf4cdM6d89czFvkVsRQ@mail.gmail.com> <20230724122626.1701631-1-geert@linux-m68k.org>
+        Mon, 24 Jul 2023 09:47:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D763C2128;
+        Mon, 24 Jul 2023 06:45:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 121A2611DE;
+        Mon, 24 Jul 2023 13:37:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D375C433C9;
+        Mon, 24 Jul 2023 13:37:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690205867;
+        bh=XPnxWK5iXuMFmrHKJKeJo0Yq9Glo/4xviAz4D9r3qYg=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=AQrFT9qK5bvxE2SdPkvTqntbfl+zjptc4bWvBPnEiJ3KaahyBRVbd41316B9r//dq
+         nCM04qi0ERmUmkw/YFiIStxapFGdGZPXLQCXtgl0X87rKs/3mcLNzTQThj3UWivHKK
+         EH/SgWV3nuqSqhJotS3jyfTAYXm4Am7y/XufRsUhV6OagLOoKpg3tWzXpgrw5jpc2U
+         mp2tNryq2n5j4wf38MHg17i5d4vbbmIwQ6SMkhDMlh0fpLIrckG91ODSzXxjPlEaOy
+         MLsBr1Pa1my88iz+3/Q3CXT6oKq6auRsgjLGrLSsUB0U61bmIk9ablLW9Rdx697Zqk
+         7sUO80MkTLE8w==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: wifi: mt76: mt7615: do not advertise 5 GHz on first phy of
+ MT7615D (DBDC)
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230605073408.8699-1-fercerpav@gmail.com>
+References: <20230605073408.8699-1-fercerpav@gmail.com>
+To:     Paul Fertser <fercerpav@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Paul Fertser <fercerpav@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, Rani Hod <rani.hod@gmail.com>,
+        stable@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169020586134.3064516.1730669435879829563.kvalo@kernel.org>
+Date:   Mon, 24 Jul 2023 13:37:43 +0000 (UTC)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 24 Jul 2023, Geert Uytterhoeven wrote:
-> JFYI, when comparing v6.5-rc3[1] to v6.5-rc2[3], the summaries are:
->  - build errors: +5/-0
+Paul Fertser <fercerpav@gmail.com> wrote:
 
-   + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 583:25, 493:25
+> On DBDC devices the first (internal) phy is only capable of using
+> 2.4 GHz band, and the 5 GHz band is exposed via a separate phy object,
+> so avoid the false advertising.
+> 
+> Reported-by: Rani Hod <rani.hod@gmail.com>
+> Closes: https://github.com/openwrt/openwrt/pull/12361
+> Fixes: 7660a1bd0c22 ("mt76: mt7615: register ext_phy if DBDC is detected")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+> Reviewed-by: Simon Horman <simon.horman@corigine.com>
+> Acked-by: Felix Fietkau <nbd@nbd.name>
 
-mips-gcc13/mips-allmodconfig
+Patch applied to wireless.git, thanks.
 
-Full context:
+421033deb915 wifi: mt76: mt7615: do not advertise 5 GHz on first phy of MT7615D (DBDC)
 
-     In function 'fortify_memset_chk',
- 	inlined from 'memset_io' at /kisskb/src/arch/mips/include/asm/io.h:486:2,
- 	inlined from 'build_auth_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:2697:2:
-     /kisskb/src/include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-       493 |                         __write_overflow_field(p_size_field, size);
- 	  |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     In function 'fortify_memcpy_chk',
- 	inlined from 'memcpy_toio' at /kisskb/src/arch/mips/include/asm/io.h:494:2,
- 	inlined from 'translate_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:955:3,
- 	inlined from 'ray_hw_xmit.constprop' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:912:12:
-     /kisskb/src/include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-       583 |                         __write_overflow_field(p_size_field, size);
- 	  |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20230605073408.8699-1-fercerpav@gmail.com/
 
-Single-element flexible array abuse in drivers/net/wireless/legacy/rayctl.h:tx_msg.var
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-   + error: modpost: ".L856" [drivers/mtd/nand/raw/nand.ko] undefined!:  => N/A
-
-parisc-gcc13/parisc-allmodconfig
-
-   + {standard input}: Error: Missing symbol name in directive:  => 1096
-   + {standard input}: Error: unrecognized symbol type "":  => 1096
-
-sh4-gcc12/sh-allmodconfig (ICE)
-
-   + {standard input}: Error: unknown opcode:  => 1091
-
-sh4-gcc13/sh-allmodconfig (ICE)
-
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/6eaae198076080886b9e7d57f4ae06fa782f90ef/ (all 235 configs)
-> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/fdf0eaf11452d72945af31804e2a1048ee1b574c/ (161 out of 235 configs)
-
-Gr{oetje,eeting}s,
-
- 						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
