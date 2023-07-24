@@ -2,75 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B929875EF54
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 11:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A384675EE65
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 10:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231134AbjGXJoB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jul 2023 05:44:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45310 "EHLO
+        id S231935AbjGXIyQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jul 2023 04:54:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbjGXJoA (ORCPT
+        with ESMTP id S231929AbjGXIyO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jul 2023 05:44:00 -0400
-X-Greylist: delayed 1159 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 24 Jul 2023 02:43:59 PDT
-Received: from fluorez-com.cfd (fluorez-com.cfd [107.174.244.118])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899AD1A1
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 02:43:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=re1; d=fluorez-com.cfd;
- h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:
- Content-Transfer-Encoding; i=info@fluorez-com.cfd;
- bh=LqAKS0rQcqRhfS2AomqosmxOtHjI8TSd2DPxtKmN8Fo=;
- b=jwiMW4IVmX9tJkfRtBfQwcglHXQOSQjcptfGP842OujsaMxlXy6LxXcloKlHbXS0N6NSlqTOSp1r
-   zXJmMNzIB5CF4Ga85MMclEbZ7ZRgCcpxWUPXxXB04J51Lne2H8bpgiduJl3sfKEf6PfmPkfFkXXH
-   yEjd/d6PWkmSIrGzKVWJno82TXw7MkqYYNCB5lcGq/Cp4zfI1yldi4wMxnqYVktRam9a9OsxJl6k
-   7wBUiWSTo09tqcijf1M3KcsEusE4qmCVr9X8+biTzrgCVc8iL2kfy4luYhEB6itoclIZXmDhKzci
-   z6d8Y7n1cT6XJ+PqxYnEW74VD5r35/1U0TOnog==
-Reply-To: info@coinloansupport.online
-From:   Coinloan Support Center <info@fluorez-com.cfd>
-To:     linux-wireless@vger.kernel.org
-Subject: Don't miss out on our low Interest coinloan opportunity
-Date:   24 Jul 2023 10:46:47 +0200
-Message-ID: <20230724104646.F4AAB73058DE0833@fluorez-com.cfd>
+        Mon, 24 Jul 2023 04:54:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86658E3
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 01:54:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23F7F60F14
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 08:54:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E36C433C7;
+        Mon, 24 Jul 2023 08:54:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690188852;
+        bh=+BM74+Fz5d1PX0nu6qHKRZHh4FDuj1PbHqsKjMC2FPc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ccGm22+8gcQlbOMXmommE66ASk5iGRxJTEszTdOkj0aW/PIMBO2/nUb7AZXyKqQbF
+         oKwLpI7SroaKgr5aK0vVFauzPbTDV6+0AauAv3cks0c8q3thAdPs9iEEwl5/ItqY9D
+         Pxm9IRv1mtztvue3SjbGqonntedA2jQFyE2xmVoIr0ufXjV8bQOeFmvuG13aXHyv4k
+         vLQw1asfRfTnAo06JOxZ3MHQHmnQUD3oqDctptL53TSbf1DVuBi2yyjQA/sCVbeuT6
+         ckYCEufffDQOALK4YBrK0AJm+BiOeeSO/hsgQ8IsFdCq+VN5MBoMHifV2/kzqM5e6Y
+         qzp9+eN2jxiUw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Doug Brown <doug@schmorgal.com>, linux-wireless@vger.kernel.org,
+        lvc-project@linuxtesting.org
+Subject: Re: [PATCH 1/4] wifi: libertas: add missing calls to
+ cancel_work_sync()
+References: <20230724084457.64995-1-dmantipov@yandex.ru>
+Date:   Mon, 24 Jul 2023 11:54:09 +0300
+In-Reply-To: <20230724084457.64995-1-dmantipov@yandex.ru> (Dmitry Antipov's
+        message of "Mon, 24 Jul 2023 11:44:40 +0300")
+Message-ID: <87cz0h3d1q.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_FMBLA_NEWDOM28,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L4,
-        RCVD_IN_PSBL,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?107.174.244.118>]
-        *  2.7 RCVD_IN_PSBL RBL: Received via a relay in PSBL
-        *      [107.174.244.118 listed in psbl.surriel.com]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5892]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 RCVD_IN_MSPIKE_L4 RBL: Bad reputation (-4)
-        *      [107.174.244.118 listed in bl.mailspike.net]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.8 FROM_FMBLA_NEWDOM28 From domain was registered in last 14-28
-        *      days
-        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blocklisted
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Are you looking for a loan to either increase your activity or to=20
-carry out a project.=20
-We offer Crypto Loans at 2-7% interest rate with or without a=20
-credit check.
-Please get back to us if you are interested in more details.
+Dmitry Antipov <dmantipov@yandex.ru> writes:
+
+> Add missing 'cancel_work_sync()' in 'if_sdio_remove()'
+> and on error handling path in 'if_sdio_probe()'.
+>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+
+How have you tested these patches?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
