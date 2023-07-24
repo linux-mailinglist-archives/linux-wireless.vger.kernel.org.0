@@ -2,155 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9F0B760113
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 23:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A93E476012C
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 23:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230214AbjGXVUT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jul 2023 17:20:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53688 "EHLO
+        id S230159AbjGXV20 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jul 2023 17:28:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbjGXVUS (ORCPT
+        with ESMTP id S229485AbjGXV2Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jul 2023 17:20:18 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494DF1728
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 14:19:50 -0700 (PDT)
-X-UUID: cfbd76f22a6711ee9cb5633481061a41-20230725
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=NYfQ6g1TEoKH3WqsU8FI6skFXfIJF2pz65Ld7F7sxoE=;
-        b=dE7/MZ5vElwIva5cPqSw5coGi3myWrB3ZP1ypEi62ccDueLifsSFhCqR+EHrM3DlKJ+uMGuxhmmjt8ze0LxchC+DtNdRKKYSKP8yt95m4g4dal6H0LzmiJNxJTaSkEkXg3nFX116ybNGBntDTZtmbZ5qxvCXJEFCX3TT0HkEfCk=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.29,REQID:f6f2070b-3f5e-4f73-8d2e-15432aaf851f,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:e7562a7,CLOUDID:94607aa0-0933-4333-8d4f-6c3c53ebd55b,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-        NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: cfbd76f22a6711ee9cb5633481061a41-20230725
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 206244349; Tue, 25 Jul 2023 05:19:45 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 25 Jul 2023 05:19:43 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 25 Jul 2023 05:19:43 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
-        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <jsiuda@google.com>, <arowa@google.org>,
-        <frankgor@google.com>, <kuabhs@google.com>, <druth@google.com>,
-        <abhishekpandit@google.com>, <shawnku@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 2/2] wifi: mt76: mt7921: fix the wrong rate pickup for the chanctx driver
-Date:   Tue, 25 Jul 2023 05:19:40 +0800
-Message-ID: <7c7c2c1f0584e8dd016bc2bf8de88684fcc7679c.1690232804.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <8fd42ac8e1c97246f6e65225a14fc8a029ac3aaa.1690232804.git.objelf@gmail.com>
-References: <8fd42ac8e1c97246f6e65225a14fc8a029ac3aaa.1690232804.git.objelf@gmail.com>
+        Mon, 24 Jul 2023 17:28:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CBA6D8
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 14:27:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690234060;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yTHtCxiaw+G+3cPIEefGlFo0mE2+5VAcxjsU3N0qfQ0=;
+        b=ScBHTAMGNvoHyf59L0DESCohgin7vhZxMNwUSgyh6Tur0rb2T8hrngcpkR7RHSJJKujxlj
+        oD2AA1pMK/CqI1tiVJnCT4oO0y24VrH1mLSXUH+ODFnnqii3vIGeqQciC7jpFSCsm8rZy0
+        WRxYpTldU1pBXQAspk3MkyWSe8mTJzM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-434-dz3VVKzsOiu2lqeFlIjifQ-1; Mon, 24 Jul 2023 17:27:38 -0400
+X-MC-Unique: dz3VVKzsOiu2lqeFlIjifQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CCC4B185A792;
+        Mon, 24 Jul 2023 21:27:37 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.22.50.11])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2FB3A492C13;
+        Mon, 24 Jul 2023 21:27:36 +0000 (UTC)
+Message-ID: <d7262341b0d3b635403f9d19ff2d381f7a543c2a.camel@redhat.com>
+Subject: Re: [PATCH 1/4] wifi: libertas: add missing calls to
+ cancel_work_sync()
+From:   Dan Williams <dcbw@redhat.com>
+To:     Kalle Valo <kvalo@kernel.org>, Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Doug Brown <doug@schmorgal.com>, linux-wireless@vger.kernel.org,
+        lvc-project@linuxtesting.org
+Date:   Mon, 24 Jul 2023 16:27:35 -0500
+In-Reply-To: <87cz0h3d1q.fsf@kernel.org>
+References: <20230724084457.64995-1-dmantipov@yandex.ru>
+         <87cz0h3d1q.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On Mon, 2023-07-24 at 11:54 +0300, Kalle Valo wrote:
+> Dmitry Antipov <dmantipov@yandex.ru> writes:
+>=20
+> > Add missing 'cancel_work_sync()' in 'if_sdio_remove()'
+> > and on error handling path in 'if_sdio_probe()'.
+> >=20
+> > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+>=20
+> How have you tested these patches?
+>=20
 
-The variable band should be determined by the ieee80211_chanctx_conf when
-the driver is a kind of chanctx one e.g mt7921 and mt7922 driver so we
-added the extension to mt76_connac2_mac_tx_rate_val by distinguishing if
-it can support chanctx to fix the incorrect rate pickup.
+I can try to give the SDIO bits a run this week on an 8686. I don't
+have a SPI setup to test though.
 
-Fixes: 41ac53c899bd ("wifi: mt76: mt7921: introduce chanctx support")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c        | 9 +++++++--
- drivers/net/wireless/mediatek/mt76/mt76.h            | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 7 +++++--
- 3 files changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index c0ff36a98bed..d622a2916c0e 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1698,11 +1698,16 @@ mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
- }
- EXPORT_SYMBOL_GPL(mt76_init_queue);
- 
--u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx)
-+u16 mt76_calculate_default_rate(struct mt76_phy *phy,
-+				struct ieee80211_vif *vif, int rateidx)
- {
-+	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
-+	struct cfg80211_chan_def *chandef = mvif->ctx ?
-+					    &mvif->ctx->def :
-+					    &phy->chandef;
- 	int offset = 0;
- 
--	if (phy->chandef.chan->band != NL80211_BAND_2GHZ)
-+	if (chandef->chan->band != NL80211_BAND_2GHZ)
- 		offset = 4;
- 
- 	/* pick the lowest rate for hidden nodes */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index bf9c781ff48c..a292e15224e1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1100,7 +1100,8 @@ int mt76_get_of_eeprom(struct mt76_dev *dev, void *data, int offset, int len);
- struct mt76_queue *
- mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
- 		int ring_base, u32 flags);
--u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx);
-+u16 mt76_calculate_default_rate(struct mt76_phy *phy,
-+				struct ieee80211_vif *vif, int rateidx);
- static inline int mt76_init_tx_queue(struct mt76_phy *phy, int qid, int idx,
- 				     int n_desc, int ring_base, u32 flags)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index ee5177fd6dde..d91f5548dc02 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -310,7 +310,10 @@ u16 mt76_connac2_mac_tx_rate_val(struct mt76_phy *mphy,
- 				 struct ieee80211_vif *vif,
- 				 bool beacon, bool mcast)
- {
--	u8 nss = 0, mode = 0, band = mphy->chandef.chan->band;
-+	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
-+	struct cfg80211_chan_def *chandef = mvif->ctx ?
-+					    &mvif->ctx->def : &mphy->chandef;
-+	u8 nss = 0, mode = 0, band = chandef->chan->band;
- 	int rateidx = 0, mcast_rate;
- 
- 	if (!vif)
-@@ -343,7 +346,7 @@ u16 mt76_connac2_mac_tx_rate_val(struct mt76_phy *mphy,
- 		rateidx = ffs(vif->bss_conf.basic_rates) - 1;
- 
- legacy:
--	rateidx = mt76_calculate_default_rate(mphy, rateidx);
-+	rateidx = mt76_calculate_default_rate(mphy, vif, rateidx);
- 	mode = rateidx >> 8;
- 	rateidx &= GENMASK(7, 0);
- out:
--- 
-2.25.1
+Dan
 
