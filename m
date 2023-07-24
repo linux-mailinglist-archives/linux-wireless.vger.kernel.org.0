@@ -2,53 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A384675EE65
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 10:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEEBF75EE8A
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 10:57:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231935AbjGXIyQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jul 2023 04:54:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50856 "EHLO
+        id S231860AbjGXI5Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jul 2023 04:57:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231929AbjGXIyO (ORCPT
+        with ESMTP id S231921AbjGXI5W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jul 2023 04:54:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86658E3
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 01:54:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 23F7F60F14
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 08:54:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E36C433C7;
-        Mon, 24 Jul 2023 08:54:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690188852;
-        bh=+BM74+Fz5d1PX0nu6qHKRZHh4FDuj1PbHqsKjMC2FPc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ccGm22+8gcQlbOMXmommE66ASk5iGRxJTEszTdOkj0aW/PIMBO2/nUb7AZXyKqQbF
-         oKwLpI7SroaKgr5aK0vVFauzPbTDV6+0AauAv3cks0c8q3thAdPs9iEEwl5/ItqY9D
-         Pxm9IRv1mtztvue3SjbGqonntedA2jQFyE2xmVoIr0ufXjV8bQOeFmvuG13aXHyv4k
-         vLQw1asfRfTnAo06JOxZ3MHQHmnQUD3oqDctptL53TSbf1DVuBi2yyjQA/sCVbeuT6
-         ckYCEufffDQOALK4YBrK0AJm+BiOeeSO/hsgQ8IsFdCq+VN5MBoMHifV2/kzqM5e6Y
-         qzp9+eN2jxiUw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Doug Brown <doug@schmorgal.com>, linux-wireless@vger.kernel.org,
-        lvc-project@linuxtesting.org
+        Mon, 24 Jul 2023 04:57:22 -0400
+Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B23E7
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 01:57:15 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:3faf:0:640:537b:0])
+        by forward500b.mail.yandex.net (Yandex) with ESMTP id 518725E748;
+        Mon, 24 Jul 2023 11:57:13 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id CvEKCdRWvW20-aYKosYZw;
+        Mon, 24 Jul 2023 11:57:12 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1690189032;
+        bh=/EFQrrjbmw4lsyjn1bSXVPiLEIzh543F/yTao0mOqHs=;
+        h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+        b=p8zwMbKDipCb9V5tftp+0/yrNj3yaX92FidtNvqg61EexO84syctvqt9O2nE+HdDu
+         8aoacUUgQ08tbTUdpK+/ksTTgPgm7sGJcufR+E0BKXoTMmPrlKB99/Q+xNMx6NX4wK
+         +5PS87W2oZSRocGNBp4kjHzntkayNXWXrW4AgBiQ=
+Authentication-Results: mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <ae49815a-c125-5a22-6757-b526d9712103@yandex.ru>
+Date:   Mon, 24 Jul 2023 11:57:12 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
 Subject: Re: [PATCH 1/4] wifi: libertas: add missing calls to
  cancel_work_sync()
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Doug Brown <doug@schmorgal.com>, linux-wireless@vger.kernel.org,
+        lvc-project@linuxtesting.org
 References: <20230724084457.64995-1-dmantipov@yandex.ru>
-Date:   Mon, 24 Jul 2023 11:54:09 +0300
-In-Reply-To: <20230724084457.64995-1-dmantipov@yandex.ru> (Dmitry Antipov's
-        message of "Mon, 24 Jul 2023 11:44:40 +0300")
-Message-ID: <87cz0h3d1q.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+ <87cz0h3d1q.fsf@kernel.org>
+Content-Language: en-US
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+In-Reply-To: <87cz0h3d1q.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,16 +55,13 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+On 7/24/23 11:54, Kalle Valo wrote:
 
-> Add missing 'cancel_work_sync()' in 'if_sdio_remove()'
-> and on error handling path in 'if_sdio_probe()'.
->
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> 
+> How have you tested these patches?
+> 
 
-How have you tested these patches?
+No physical hardware so compile tested only.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Dmitry
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
