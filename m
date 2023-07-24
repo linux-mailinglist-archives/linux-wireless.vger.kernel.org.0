@@ -2,138 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A56575FEFA
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 20:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D00075FF3D
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 20:39:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229974AbjGXSY1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jul 2023 14:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40902 "EHLO
+        id S230139AbjGXSjm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jul 2023 14:39:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbjGXSY0 (ORCPT
+        with ESMTP id S229582AbjGXSjl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jul 2023 14:24:26 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5528DE4D
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 11:24:25 -0700 (PDT)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36OHWjuK003433;
-        Mon, 24 Jul 2023 18:24:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=NHlNKYctdsDtW9Sj16H5Ck6B6KRi5eEDAoockdqhAfU=;
- b=TPhMVSlJV10FYvwqIL/bEk1wWtYAMnyTXN7O+krVIkM65vdzUJZg0l38awsHcogEmI23
- My4xJPSCun2s3uv1jrVhVXaUTxR5lGeQHPdd6xFBYM4et3lx0tg5Q51fMKFwsT8ZQzRt
- lSEtw7QcLXTxjWnOztll8RXBYSHXuQzOGYdD8z33M4BDQsmnw5bsdDR5qtc8XXVc55Wq
- 79i9l03G/xoUhtNQpGWxsnrTNaJSn36Kzg2hMHIS1m47y0QKiirrKWRLfszvTuH7Bagu
- Oi7nIjOloWcwfhQzU9ZODAvyQ5JzhKj9/BFTF5f2E+mJAVcfnniwoVfFUQvK2v9LnrlE 9w== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s1u3t8m6t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 24 Jul 2023 18:24:21 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36OIOL9m031618
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 24 Jul 2023 18:24:21 GMT
-Received: from [10.227.89.240] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Mon, 24 Jul
- 2023 11:24:20 -0700
-Message-ID: <cdfbb85a-f3be-8cdc-7117-7550d3808a13@quicinc.com>
-Date:   Mon, 24 Jul 2023 11:24:19 -0700
+        Mon, 24 Jul 2023 14:39:41 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8926EA6
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 11:39:39 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-1b059dd7c0cso3692109fac.0
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 11:39:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690223979; x=1690828779;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=qHd1OKtKAPdnKEJPGdNA6g7tFSlkH0z/6Si2eMvqB2k=;
+        b=oVO5YgH/SA4UZ7rcGRmAHVaVxI8P91IfG2aI3sQfTkUn+GoUzsX26cNVx05BIpE4/z
+         loKZ4CF7uvzuNgA+SdBGGW6xIQuMuKnDban94S0tKlBQR+WJywgqASBMOqsvoNPeoMDr
+         vi7v9bM5HJEj4SeT1r+nV4MlsoXbQxSiYw1A4Q8mhjUYj3JILJ4u0K6ScRikFm3c4EMw
+         924aSG+t2fYcEh4ev6m7jb3K1qtbiMRQ/aD+JCgrBQ5HZm+xwkHhbKo6DIvn5FvHuHrh
+         C59c6t6YXr/JurYU8zLoVUjQvekBDwtuQG5RIWJ496/PfLca8KIDsbSLGwl+vCeibyB+
+         9dfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690223979; x=1690828779;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qHd1OKtKAPdnKEJPGdNA6g7tFSlkH0z/6Si2eMvqB2k=;
+        b=P+BkeaGGo1UIlwGYnBKIyeRWxgCDICywqNPA38li0RtZG2QMFHx4TfL5oO3xoHxz8c
+         xktsU+L6gayUuhKMJOmGYSJBiMZP5lUCAbS+/z6NGEB/OSB7khBE4ll1+ar2YCN+CnIh
+         KAmKGOQIq9+mRqjnA8wxD8Qox6zvhazGtp7wHUTwZpJmQ/6psohj9BdtJFGCMuCtG7rF
+         f7NfTlH+lZuL5YWbCAy4bJfzBSrQGCtyg0oSbNRUtJpFC3bPZf1gsvM06dvw7HzbSqk3
+         zhCPKOH+r5DHogHSS/oDyJzbmAWH5KuW6UFVf9U+xGspEWdOf/oK6lGy242gv3bOwDff
+         I+Jw==
+X-Gm-Message-State: ABy/qLbzLHpkLmLXEnj4Uc4NFCFzvtBbvAh0aZ/KzhEgukEKFiHQUGpw
+        0B2p/s5N+B+6BOHoag/CCQI=
+X-Google-Smtp-Source: APBJJlHFLcj5ZVfvXRkgj7Dh5J1tE65ck/Szabk9TwYwNDtu+PI+Vm2yFywEtF9MtrzEvd1hbfb5Lw==
+X-Received: by 2002:a05:6870:d609:b0:1bb:5353:336c with SMTP id a9-20020a056870d60900b001bb5353336cmr6270771oaq.48.1690223978693;
+        Mon, 24 Jul 2023 11:39:38 -0700 (PDT)
+Received: from localhost.localdomain ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id e3-20020a056870944300b001b04434d934sm4618036oal.34.2023.07.24.11.39.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jul 2023 11:39:38 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Ping-Ke Shih <pkshih@realtek.com>, Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH] wifi: rtw89: Fix loading of compressed firmware
+Date:   Mon, 24 Jul 2023 13:39:27 -0500
+Message-ID: <20230724183927.28553-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v4 06/11] wifi: ath12k: prepare EHT peer assoc parameters
-To:     Wen Gong <quic_wgong@quicinc.com>, <ath12k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>
-CC:     Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-References: <20230602235820.23912-1-quic_alokad@quicinc.com>
- <20230602235820.23912-7-quic_alokad@quicinc.com>
- <f4515520-1d3b-1b07-6ddd-ae269c12a91f@quicinc.com>
-Content-Language: en-US
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-In-Reply-To: <f4515520-1d3b-1b07-6ddd-ae269c12a91f@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: In2ZJJEhe5Y6ln-e-XA2bzDY27JeNx2g
-X-Proofpoint-ORIG-GUID: In2ZJJEhe5Y6ln-e-XA2bzDY27JeNx2g
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-24_14,2023-07-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- mlxlogscore=866 clxscore=1015 impostorscore=0 suspectscore=0 spamscore=0
- phishscore=0 adultscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307240163
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/24/2023 3:16 AM, Wen Gong wrote:
-> On 6/3/2023 7:58 AM, Aloka Dixit wrote:
->> ...
->> +    default:
->> +        if (arg->peer_phymode == MODE_11BE_EHT20) {
->> +            const struct ieee80211_eht_mcs_nss_supp_20mhz_only *bw_20 =
->> +                    &eht_cap->eht_mcs_nss_supp.only_20mhz;
-> 
-> When ath12k used as station mode, it entered here as well as AP mode.
-> 
-> But remote is AP device for station mode, then remote AP device do not 
-> have the only_20mhz data(EHT-MCS Map (20 MHz-Only Non-AP STA)).
-> 
+When using compressed firmware, the early firmware load feature will fail.
+In most cases, the only downside is that if a device has more than one
+firmware version available, only the last one listed will be loaded.
+In at least two cases, there is no firmware loaded, and the device fails
+initialization. See https://github.com/lwfinger/rtw89/issues/259 and
+https://bugzilla.opensuse.org/show_bug.cgi?id=1212808 for examples of
+the failure.
+  
+When firmware_class.dyndbg=+p" added to the kernel boot parameters, the
+following is found:
 
-What issue are you seeing? Please elaborate.
+finger@localhost:~/rtw89>sudo dmesg -t | grep rtw89
+firmware_class: __allocate_fw_priv: fw-rtw89/rtw8852b_fw-1.bin fw_priv=00000000638862fb
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/5.14.21-150500.53-default/rtw89/rtw8852b_fw-1.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/rtw89/rtw8852b_fw-1.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/5.14.21-150500.53-default/rtw89/rtw8852b_fw-1.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/rtw89/rtw8852b_fw-1.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: Direct firmware load for rtw89/rtw8852b_fw-1.bin failed with error -2
+firmware_class: __free_fw_priv: fw-rtw89/rtw8852b_fw-1.bin fw_priv=00000000638862fb data=00000000307c30c7 size=0
+firmware_class: __allocate_fw_priv: fw-rtw89/rtw8852b_fw.bin fw_priv=00000000638862fb
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/5.14.21-150500.53-default/rtw89/rtw8852b_fw.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/rtw89/rtw8852b_fw.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/5.14.21-150500.53-default/rtw89/rtw8852b_fw.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/rtw89/rtw8852b_fw.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: Direct firmware load for rtw89/rtw8852b_fw.bin failed with error -2
+firmware_class: __free_fw_priv: fw-rtw89/rtw8852b_fw.bin fw_priv=00000000638862fb data=00000000307c30c7 size=0
+rtw89_8852be 0000:02:00.0: failed to early request firmware: -2
+firmware_class: __allocate_fw_priv: fw-rtw89/rtw8852b_fw.bin fw_priv=00000000638862fb
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/5.14.21-150500.53-default/rtw89/rtw8852b_fw.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/rtw89/rtw8852b_fw.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/5.14.21-150500.53-default/rtw89/rtw8852b_fw.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/rtw89/rtw8852b_fw.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/5.14.21-150500.53-default/rtw89/rtw8852b_fw.bin.xz failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/rtw89/rtw8852b_fw.bin.xz failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/5.14.21-150500.53-default/rtw89/rtw8852b_fw.bin.xz failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: Loading firmware from /lib/firmware/rtw89/rtw8852b_fw.bin.xz
+rtw89_8852be 0000:02:00.0: f/w decompressing rtw89/rtw8852b_fw.bin
+firmware_class: fw_set_page_data: fw-rtw89/rtw8852b_fw.bin fw_priv=00000000638862fb data=000000004ed6c2f7 size=1035232
+rtw89_8852be 0000:02:00.0: Firmware version 0.27.32.1, cmd version 0, type 1
+rtw89_8852be 0000:02:00.0: Firmware version 0.27.32.1, cmd version 0, type 3
 
-The default case will be entered for both AP and non-AP STA modes for 
-all bandwidths.
+The key is that firmware version 0.27.32.1 is loaded.
 
-If the device is a 20-MHz-only device, it will skip 320, 160 and 
-directly enter the default case where 'if' condition will be true.
+With this patch, the following is obtained:
 
-If the device is not a 20-MHZ-only device then it will enter the 'else' 
-condition after processing 320 and 160 as applicable.
+firmware_class: __free_fw_priv: fw-rtw89/rtw8852b_fw.bin fw_priv=000000000849addc data=00000000fd3cabe2 size=1035232
+firmware_class: fw_name_devm_release: fw_name-rtw89/rtw8852b_fw.bin devm-000000002d8c3343 released
+firmware_class: __allocate_fw_priv: fw-rtw89/rtw8852b_fw-1.bin fw_priv=000000009e1a6364
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/6.4.3-1-default/rtw89/rtw8852b_fw-1.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/rtw89/rtw8852b_fw-1.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/6.4.3-1-default/rtw89/rtw8852b_fw-1.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/rtw89/rtw8852b_fw-1.bin failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/6.4.3-1-default/rtw89/rtw8852b_fw-1.bin.zst failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/rtw89/rtw8852b_fw-1.bin.zst failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/6.4.3-1-default/rtw89/rtw8852b_fw-1.bin.zst failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/rtw89/rtw8852b_fw-1.bin.zst failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/6.4.3-1-default/rtw89/rtw8852b_fw-1.bin.xz failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/updates/rtw89/rtw8852b_fw-1.bin.xz failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: loading /lib/firmware/6.4.3-1-default/rtw89/rtw8852b_fw-1.bin.xz failed for no such file or directory.
+rtw89_8852be 0000:02:00.0: Loading firmware from /lib/firmware/rtw89/rtw8852b_fw-1.bin.xz
+rtw89_8852be 0000:02:00.0: f/w decompressing rtw89/rtw8852b_fw-1.bin
+firmware_class: fw_set_page_data: fw-rtw89/rtw8852b_fw-1.bin fw_priv=000000009e1a6364 data=00000000fd3cabe2 size=1184992
+rtw89_8852be 0000:02:00.0: Loaded FW: rtw89/rtw8852b_fw-1.bin, sha256: 8539efc75f513f4585cf0cd6e79e6507da47fce87225f2d0de391a03aefe9ac8
+rtw89_8852be 0000:02:00.0: loaded firmware rtw89/rtw8852b_fw-1.bin
+rtw89_8852be 0000:02:00.0: Firmware version 0.29.29.1, cmd version 0, type 5
+rtw89_8852be 0000:02:00.0: Firmware version 0.29.29.1, cmd version 0, type 3
 
-> Also 20 MHz should be same for 5 GHz/6 GHz(MODE_11BE_EHT20) and 2.4 
-> GHz(MODE_11BE_EHT20_2G), right?
-> 
+Now, version 0.29.29.1 is loaded.
 
-Good point, I will add a check for MODE_11BE_EHT20_2G as well here.
+Fixes: ffde7f3476a6 ("wifi: rtw89: add firmware format version to backward compatible with older drivers")
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+ drivers/net/wireless/realtek/rtw89/fw.c | 27 +++----------------------
+ 1 file changed, 3 insertions(+), 24 deletions(-)
 
->> +
->> +            ath12k_mac_set_eht_mcs(bw_20->rx_tx_mcs7_max_nss,
->> +                           bw_20->rx_tx_mcs9_max_nss,
->> +                           bw_20->rx_tx_mcs11_max_nss,
->> +                           bw_20->rx_tx_mcs13_max_nss,
->> +                           &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80],
->> +                           &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80]);
->> +        } else {
->> +            bw = &eht_cap->eht_mcs_nss_supp.bw._80;
->> +            ath12k_mac_set_eht_mcs(bw->rx_tx_mcs9_max_nss,
->> +                           bw->rx_tx_mcs9_max_nss,
->> +                           bw->rx_tx_mcs11_max_nss,
->> +                           bw->rx_tx_mcs13_max_nss,
->> +                           &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80],
->> +                           &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80]);
->> +        }
->> +
->> +        arg->peer_eht_mcs_count++;
->> +        break;
->> +    }
->> +}
->> +
-> 
-> ...
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 9637f5e48d84..d44628a90046 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -312,31 +312,17 @@ rtw89_early_fw_feature_recognize(struct device *device,
+ 				 struct rtw89_fw_info *early_fw,
+ 				 int *used_fw_format)
+ {
+-	union rtw89_compat_fw_hdr buf = {};
+ 	const struct firmware *firmware;
+-	bool full_req = false;
+ 	char fw_name[64];
+ 	int fw_format;
+ 	u32 ver_code;
+ 	int ret;
+ 
+-	/* If SECURITY_LOADPIN_ENFORCE is enabled, reading partial files will
+-	 * be denied (-EPERM). Then, we don't get right firmware things as
+-	 * expected. So, in this case, we have to request full firmware here.
+-	 */
+-	if (IS_ENABLED(CONFIG_SECURITY_LOADPIN_ENFORCE))
+-		full_req = true;
+-
+ 	for (fw_format = chip->fw_format_max; fw_format >= 0; fw_format--) {
+ 		rtw89_fw_get_filename(fw_name, sizeof(fw_name),
+ 				      chip->fw_basename, fw_format);
+ 
+-		if (full_req)
+-			ret = request_firmware(&firmware, fw_name, device);
+-		else
+-			ret = request_partial_firmware_into_buf(&firmware, fw_name,
+-								device, &buf, sizeof(buf),
+-								0);
++		ret = request_firmware(&firmware, fw_name, device);
+ 		if (!ret) {
+ 			dev_info(device, "loaded firmware %s\n", fw_name);
+ 			*used_fw_format = fw_format;
+@@ -349,10 +335,7 @@ rtw89_early_fw_feature_recognize(struct device *device,
+ 		return NULL;
+ 	}
+ 
+-	if (full_req)
+-		ver_code = rtw89_compat_fw_hdr_ver_code(firmware->data);
+-	else
+-		ver_code = rtw89_compat_fw_hdr_ver_code(&buf);
++	ver_code = rtw89_compat_fw_hdr_ver_code(firmware->data);
+ 
+ 	if (!ver_code)
+ 		goto out;
+@@ -360,11 +343,7 @@ rtw89_early_fw_feature_recognize(struct device *device,
+ 	rtw89_fw_iterate_feature_cfg(early_fw, chip, ver_code);
+ 
+ out:
+-	if (full_req)
+-		return firmware;
+-
+-	release_firmware(firmware);
+-	return NULL;
++	return firmware;
+ }
+ 
+ int rtw89_fw_recognize(struct rtw89_dev *rtwdev)
+-- 
+2.41.0
 
