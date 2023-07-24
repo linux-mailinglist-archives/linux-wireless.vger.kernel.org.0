@@ -2,120 +2,232 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8126A75F2F8
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 12:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AAB175F30E
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 12:25:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231764AbjGXKXv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jul 2023 06:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54832 "EHLO
+        id S232515AbjGXKZo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jul 2023 06:25:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233514AbjGXKXK (ORCPT
+        with ESMTP id S231478AbjGXKZY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jul 2023 06:23:10 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD0D49D5
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 03:16:54 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36O6FmuM000883;
-        Mon, 24 Jul 2023 10:16:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=cfewn56TVGilkmEgIByWqsa6Ek2mqMzLIsbNYs2uegI=;
- b=BMi/hewY69T7bB2FJgqpb1r5DleYLGVqj2+zGdAddmTGlHbZahU538M2SS2OQluxmLqL
- ObWANCPAwLfayEE9/+K0TXqHPefaSmHjuV/2DUfKRM7PHpi64cxvNAGaRfe9jR7B3NX0
- JYEz6Ggq4sXi39iky/zFrs9mwUpf0PbClYCMl+v28CRmz/ZaTGcW3qV+ys0qj9maXHRw
- /yROdztBapPu0xDF07Vr+nWw/cBtY3OOnXxii5i4p2mT6BBW/Gw8d/Fscbw6JtdIprpR
- /KcdvUVN2/Gy3ZJoRw0rR2Ahb25o8ru0AB8Jk2Ao8nOJAnvSYdTH4soVVFXROkxd4Tco +g== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s089ttvvp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 24 Jul 2023 10:16:30 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36OAGTiP019896
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 24 Jul 2023 10:16:29 GMT
-Received: from [10.253.76.190] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Mon, 24 Jul
- 2023 03:16:28 -0700
-Message-ID: <f4515520-1d3b-1b07-6ddd-ae269c12a91f@quicinc.com>
-Date:   Mon, 24 Jul 2023 18:16:24 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 06/11] wifi: ath12k: prepare EHT peer assoc parameters
-To:     Aloka Dixit <quic_alokad@quicinc.com>,
-        <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-CC:     Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-References: <20230602235820.23912-1-quic_alokad@quicinc.com>
- <20230602235820.23912-7-quic_alokad@quicinc.com>
+        Mon, 24 Jul 2023 06:25:24 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6002459D5;
+        Mon, 24 Jul 2023 03:20:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690194017; x=1721730017;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=giB25X+MmHmu0JIOwML+Z9z6V/k+3vDE0W5XuKxgdOc=;
+  b=S+wZUcmNgfubHJOYydPJie5USQnQTstvsXXvi6PR59QwWO107BMFLUsm
+   sMiIPMfcwnqz6kK0PjXECx7EZZWroBJZy6eUBGkFwpnR7PnSOKsV8E/GI
+   J4x1AC/MgYGKPuFWxXTqskD1BlJ4lniJ0aHF+k4Mc7c6PnDj75WlhFvjL
+   nnSIiIt0rcAtGParfutmUhFogcWYDtiq8n9UmJe13PwH56hbtlHQJhkDw
+   IHAMne5IUaplWBttGTqP9ExoCKamNoQ3erJp12LmOxv3LqAq6E1nZtkiN
+   syXzwDch/buSA30mE68x81ym8dvV4AYaBwy9/ZnHFwvtKALQ5TuDkH2Qa
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="364865222"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="364865222"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 03:20:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="760743874"
+X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
+   d="scan'208";a="760743874"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga001.jf.intel.com with ESMTP; 24 Jul 2023 03:20:09 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 24 Jul 2023 03:20:09 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Mon, 24 Jul 2023 03:20:09 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.104)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Mon, 24 Jul 2023 03:20:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jx8nEnANOSm3aQ7ZYsbINgocxo5RaQSIapdEWMvKRKyYTQDdrDDYdHf9zIFB6nu6HJcb8FcSi3+26O/KRwufHJxoA523M+9m9uQaIK64US4FRqwTT4dqmy8GNy+EpxFO7YQMyqPZnONeswd7su8YWUg4Bhlqr3A7ptEF/6VtQglZMgWiClu9r/go6arltHqzd8JPtQbINaB7FKX5Cm+Qhl46ezFJWcoFpi6o1eZa8qRYAC4UTuI6npRlD6mGZVqzqJbqQiLcCW5tzdqatNmFI1DTv1fspK5vvQlmIXBvzJsdGfDqLJwkohEGo9/5EIbN9z/4LbexC57hcL0ybAusiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nIj0bm54IZuPLBoLAMJqF4Y6Zc5Js1ItxrM9ncaKQLA=;
+ b=DfZx5QQqGPGW4tFgiSULNFA2L87uLIBFZ6mzAkoZEZnTsEquUniKOJILtOjpQAwO/7Mz9UfZ4k9cQsLMpOFa0MEthN8mNMKVf7X6VG4O+hJfaXvF01HzR22fANnG1pKPRgaPCcuZQasJWW1HW2N9oL0Yg02aNW/ioSA//wJvTt/vFNb2r8MzN3xECNcDKMCfDz8tIWRzSDalVDIBJfX8v6SUCo+QrHtxgjD4MtRmYatzwqzshjaK5IcZEsYGhkEI50G16LvjoDip4Gb1EXq2Yg2Q2T3XEY6iErWWDMqpXNBnkwVcLrRNIWvQP3LKasXlULb7J7TKUeIuqeifB1C+8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM6PR11MB3625.namprd11.prod.outlook.com (2603:10b6:5:13a::21)
+ by MW3PR11MB4602.namprd11.prod.outlook.com (2603:10b6:303:52::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.32; Mon, 24 Jul
+ 2023 10:20:06 +0000
+Received: from DM6PR11MB3625.namprd11.prod.outlook.com
+ ([fe80::44ff:6a5:9aa4:124a]) by DM6PR11MB3625.namprd11.prod.outlook.com
+ ([fe80::44ff:6a5:9aa4:124a%7]) with mapi id 15.20.6609.031; Mon, 24 Jul 2023
+ 10:20:06 +0000
+Message-ID: <b28c02a8-8263-47e3-ffcf-51c992f03d30@intel.com>
+Date:   Mon, 24 Jul 2023 12:18:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH net-next] page_pool: split types and declarations from
+ page_pool.h
 Content-Language: en-US
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <20230602235820.23912-7-quic_alokad@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     Jakub Kicinski <kuba@kernel.org>
+CC:     Yunsheng Lin <linyunsheng@huawei.com>, <davem@davemloft.net>,
+        <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Eric Dumazet <edumazet@google.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        "Subbaraya Sundeep" <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        "Saeed Mahameed" <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        "Alexei Starovoitov" <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "Jesper Dangaard Brouer" <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        "Ryder Lee" <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Sean Wang" <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "Matthias Brugger" <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-rdma@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+References: <20230719121339.63331-1-linyunsheng@huawei.com>
+ <0838ed9e-8b5c-cc93-0175-9d6cbf695dda@intel.com>
+ <7e9c1276-9996-d9dd-c061-b1e66361c48b@huawei.com>
+ <20230720092247.279d65f3@kernel.org>
+ <f5d40062-bb0d-055b-8c02-912cfd020aca@huawei.com>
+ <20230721075615.118acad4@kernel.org>
+ <ccb728be-832c-be93-2023-6a5c78c53e6a@intel.com>
+ <20230721182942.0ca57663@kernel.org>
+From:   Alexander Lobakin <aleksander.lobakin@intel.com>
+In-Reply-To: <20230721182942.0ca57663@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 3riSjrm0_YjQubqt7MbLv5nz8B56jQiO
-X-Proofpoint-ORIG-GUID: 3riSjrm0_YjQubqt7MbLv5nz8B56jQiO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-24_08,2023-07-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=794
- malwarescore=0 lowpriorityscore=0 suspectscore=0 phishscore=0 mlxscore=0
- bulkscore=0 adultscore=0 clxscore=1015 spamscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307240091
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-ClientProxiedBy: DU2PR04CA0251.eurprd04.prod.outlook.com
+ (2603:10a6:10:28e::16) To DM6PR11MB3625.namprd11.prod.outlook.com
+ (2603:10b6:5:13a::21)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR11MB3625:EE_|MW3PR11MB4602:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f7478ff-2e68-479d-d798-08db8c2f8d2f
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: FIC6d87GTbwJ8Jeha9IuwPzZi+4eiTTrPVV2zl+1YEaRZKEG1lw2o3uxffc4e3cZVMVIL4J6R7yELbbT73RnDpFNpEADa/4fRkDFfJQbWRlrc7Qz2begcp2LkjqXrTm9GR4OCOR3zOemqU0AikJE8UNHr1si1/52dgvDynAwl0roTQBv1Z23ROz8K8nfvnzMRoX3padWE4NahmKDnuaJfyndCFECBY9MyVhYR/M+8wRmWA/679x9ZQxG6XlJ+oe22jUTqf1R5aYYpa1N6+PEK5HRlQ3uR6NyyihOsmorOkCaMi65sLZcKN5OlxFYjUthFJA8wNH13nxkVbm7U5kOSBKNlZI2KdSwwo+In6N+RUneT49B9JZ8YXTt4sy3gGuLR5IL6m18OWy5TBvZ8UZ6L8P9a4EcpC9RRPbx54czPtrhvVOVO/g/+el6NkGAONY1JeI6xoC7LCWczB6Fl5U+a9ADycqWpv2QojHHk9R8GBwio6KX8RsjNGiQTHn9ApSjKVzRI4UEjUc9GvQ/lT/1E+ivvxL7sZd1Zy8JNjj8DdJhDD0HVTRU9sWi36MbxPD3CCMSogxX0krLaPD620f5CqVIXPdXCIBy6FVNJaAeM0JCOxB12emHMr591WYC/sYtADTEH87qUs+ytUkQ93USaA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3625.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(136003)(39860400002)(366004)(396003)(376002)(451199021)(38100700002)(66556008)(36756003)(2616005)(7406005)(7416002)(8676002)(8936002)(5660300002)(54906003)(478600001)(66476007)(6916009)(4326008)(316002)(66946007)(41300700001)(186003)(26005)(6506007)(6486002)(6512007)(6666004)(2906002)(4744005)(31686004)(31696002)(86362001)(82960400001)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VHJEeEN4eE14SWUydmJ3RjBzMEdDZUU0VVQxb3A2WG12MWJNZWN2eUN0SHBv?=
+ =?utf-8?B?b2gzSGRtTERHNEROSEpKMTB4c3ZXNEVlcWlGTTB0WnBwQmxYejRrZFBxdmQv?=
+ =?utf-8?B?T2tIbUFVWWY3UXNYR2lrMGROaUsxclFzTzZ3SzVMd1loaytjUTVkUER1Q3Ay?=
+ =?utf-8?B?WEVLakZTNWd0RUQrYjFjM0tvellGRGZWV2dSdjBZT0Q3REVqbVJjTWhKVytQ?=
+ =?utf-8?B?QnVUV3JRY1ptRTdpM1lYVWxLdkwyYTZVRk84V29vMTUrTjd2M2hpbXNtdjJV?=
+ =?utf-8?B?RjdOdHpieVV6bmdDTXBNaVJTQ01QSVlDMVVJZHhQcG03ekNWTytvV0VSRkpi?=
+ =?utf-8?B?N2NoVkd3aVNqWEliQUt3TkJMNC8wTlJtZW5MbkcvU1kzYkEvSzFMZStGYmFi?=
+ =?utf-8?B?Z0Z3cFV5RWxrbTVERWtjdlBtNXgwTVJSa3VSNTdkMWFIYzVkL3Fyd3dNUHFp?=
+ =?utf-8?B?NmdpaUcraXRlTzRMTGNIVC92T0xzdG9udmIvaUdTZ3BTaWNPUzlwaytEZE1R?=
+ =?utf-8?B?dEVNcVhjbWd5enhOc2dyaXRraWlZZEZPS21HTGFFTU5nOTVPREN6cXNRcm1O?=
+ =?utf-8?B?QjVqNXJQU0ViaGU1YXArNHhzamRjV1h1N0gzaEhjQVNOY2JYTWV1ZjJxQUZE?=
+ =?utf-8?B?dlJkbVFwZytGNXFOUXFySnNzcUs0UktjRTRPZWw0dnk1MDB5bUNpOGNFemIv?=
+ =?utf-8?B?bWxNMVdBOGZyNW1VeHV2bDVjaGpLeldEY2xMZUpRakFRSTFsUXF3VHFmSHRF?=
+ =?utf-8?B?TTdZc0dpNW1nUzlzNTlmcml5VXd0Zkp6Rzh2NVdjZitNTnZvM0ROSmM2QU14?=
+ =?utf-8?B?RW8vekluOWNBeWQra2grblpMemNlT2s1blVEWVhDQVljZmdwUkZCaVN2L0ZN?=
+ =?utf-8?B?TGMvOE4zdWQ5MkRJVThnckEwQzFTOHFPc2NPTHVvQ053S2p2TFJSQ1VmL0lF?=
+ =?utf-8?B?a0tQQk1yS3BMOWhaSzBEc3diVkZzZit5cThoNkRIUldrKzQ0RUs0ODZ1V0hL?=
+ =?utf-8?B?RWRCMUFIcHQ3dnAwK0ZWYXNjR3pqOEc3UDMySE1ZVVJWMUlaejlEdlE5VE9G?=
+ =?utf-8?B?b2hiNHdGS2c5bnRqZ0wzTm56RnhLeHlvRUQyNjNiS1E1UXN3aEtDRWcvOVlN?=
+ =?utf-8?B?YUpBTHp6R0g4VytDQjNLa3EzUFlvb01ud3RoSEp3dUoydGc1dmM0c2EycHB2?=
+ =?utf-8?B?RUNwMEdjb1gxODEwd1JwN3Nzdlc2eGkxanJlMEU2U3dHR3MzaTJPaUlDc0NE?=
+ =?utf-8?B?U3dKRUVrZjJZWXdNcjIvdGR4b0h1bFFMckkvcEVWNncvckhVN2xSRElvdVJq?=
+ =?utf-8?B?SjlqekVuUjdEd1grdS9OQVRwWlBHV1UyQnY1ejVUaGp5UkZrd3ZDeXZzdzBS?=
+ =?utf-8?B?OFRKbUwrZUFGaXMvVi8rdnN6TzBmLzBHZGhCREN1SW5hS1lZclllYWVxRVJs?=
+ =?utf-8?B?RFBtSjlrTkFxZVNWUUF6MlltMVh3dXg4czJTdjBWNHJRL2QrTEgyaEg3SnN0?=
+ =?utf-8?B?aVEzbjFvRHdtdkx6dXFjNlo5Q0pZaUdPajBQQkEzSFhOaHVMRG5mMHBvL3k5?=
+ =?utf-8?B?dTRVL25UN1hXTzdYZkdpUmp3Tld1UjVyOStSNjg1a0J1MmNaaU5tZXlUZHpP?=
+ =?utf-8?B?YWNQU1VPZ0hqVHRMMTUzVm9kS09yR2FZY3lRZzA0d3VVcGNCN2x5YjEyT1I0?=
+ =?utf-8?B?M2xCeXI3WURlSGFNZmlscDlUWG9HMzVMdlJsUG14VXRGY3pUVEhoR1VSZnIz?=
+ =?utf-8?B?MkxxZmFyZzAvczZWUDlUK0tMTWMzMk5ZUzkwWnFDeDBkSDc0c0hHS3l3WkU3?=
+ =?utf-8?B?K2NUVm4xNTB4R09waVd3NGw2TVFNUVNyc1JmbExGZG9NQkhHT3BQM3B4Q2RV?=
+ =?utf-8?B?azY4TEs4QWhaTjNCUjdZa2MyaENqSk94OFdIK25yWDFuNm5iU3JaYjNSM0F5?=
+ =?utf-8?B?QzlURi9yaUFwbXdXaDRiQjArMWo4bGt4QWt1RThXR0sybXpIckY2T09TeEVI?=
+ =?utf-8?B?aHYwZEZLYjRzVUxjU2ppelpZTXZDMHhQL1lmWUdQM2hPQVp4NzdZeHJkTktP?=
+ =?utf-8?B?Y0lIZmUvakE4SkozVG9oK0FlRWpkS2NXeUI5Q1kwb2d0VGd0S0syMC9EdFVP?=
+ =?utf-8?B?V1BGaXJVNlFwOFo3VmNrQi9lYVV6MUJIbjFySjlpR09KaHcyMkZxbCtad0Fr?=
+ =?utf-8?B?a0E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f7478ff-2e68-479d-d798-08db8c2f8d2f
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3625.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2023 10:20:06.6307
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +TL2Q7TyOIolAbY79Cl04XWkcrxHCPh+pXCIucwP/RSnfKmHbPXpJeBfqHNIbnfq9WldxPzNpdpjmld6vr5BhWYbiOGEULWQu6ap8yzFBfc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4602
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/3/2023 7:58 AM, Aloka Dixit wrote:
-> ...
-> +	default:
-> +		if (arg->peer_phymode == MODE_11BE_EHT20) {
-> +			const struct ieee80211_eht_mcs_nss_supp_20mhz_only *bw_20 =
-> +					&eht_cap->eht_mcs_nss_supp.only_20mhz;
+From: Jakub Kicinski <kuba@kernel.org>
+Date: Fri, 21 Jul 2023 18:29:42 -0700
 
-When ath12k used as station mode, it entered here as well as AP mode.
+> On Fri, 21 Jul 2023 17:51:17 +0200 Alexander Lobakin wrote:
+>>>> More specificly, yon means the below, right?
+>>>> include/net/page_pool.h
+>>>> include/net/page_pool/types.h  
+>>>
+>>> Yes.  
+>>
+>> What I meant is
+>>
+>> include/net/page_pool/types.h
+>> include/net/page_pool/driver.h
+>>
+>> I'm not insisting, just to be clear :)
+> 
+> I thought we already talked about naming headers after the user :S
+> Unless you're _defining_ a driver in driver.h that's not a good name.
+> types.h, helpers.h, functions.h, dma.h are good names.
 
-But remote is AP device for station mode, then remote AP device do not 
-have the only_20mhz data(EHT-MCS Map (20 MHz-Only Non-AP STA)).
+Ah, sure :) I was mostly talking about
 
-Also 20 MHz should be same for 5 GHz/6 GHz(MODE_11BE_EHT20) and 2.4 
-GHz(MODE_11BE_EHT20_2G), right?
+include/net/page_pool.h
+include/net/page_pool/types.h
 
-> +
-> +			ath12k_mac_set_eht_mcs(bw_20->rx_tx_mcs7_max_nss,
-> +					       bw_20->rx_tx_mcs9_max_nss,
-> +					       bw_20->rx_tx_mcs11_max_nss,
-> +					       bw_20->rx_tx_mcs13_max_nss,
-> +					       &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80],
-> +					       &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80]);
-> +		} else {
-> +			bw = &eht_cap->eht_mcs_nss_supp.bw._80;
-> +			ath12k_mac_set_eht_mcs(bw->rx_tx_mcs9_max_nss,
-> +					       bw->rx_tx_mcs9_max_nss,
-> +					       bw->rx_tx_mcs11_max_nss,
-> +					       bw->rx_tx_mcs13_max_nss,
-> +					       &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80],
-> +					       &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80]);
-> +		}
-> +
-> +		arg->peer_eht_mcs_count++;
-> +		break;
-> +	}
-> +}
-> +
+vs
 
-...
+include/net/page_pool/helpers.h (or functions.h)
+include/net/page_pool/types.h
+
+I.e. whether to have a header with the same name next to the folder or
+place everything in that folder.
+
+Thanks,
+Olek
