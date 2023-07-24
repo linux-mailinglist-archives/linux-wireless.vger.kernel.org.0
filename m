@@ -2,102 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F2F975EF0A
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 11:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3059175F28E
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jul 2023 12:16:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232240AbjGXJXi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Jul 2023 05:23:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39750 "EHLO
+        id S232601AbjGXKQ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Jul 2023 06:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbjGXJXh (ORCPT
+        with ESMTP id S230035AbjGXKQS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Jul 2023 05:23:37 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079D8FD;
-        Mon, 24 Jul 2023 02:23:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=nHwERRNohuUhZsb3fsbGJZNV/wqpb0sJjOXJGxj/gFU=; b=0eTCGmkFvYRanCjqIruUc+gFHD
-        eb0YjlozDEULA37j7v5qY4zn7oNzSJHyKS6Mu3lubDRF2RaMczkF4f0lJh//Gw6lfNr0hipZSgCGS
-        JIWlEQVkw7RyvqjD3Uxd4RuJG7sAceLde0p86r2jFr/kdLPlkftX1hnSBOxxVBlLMicc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qNrmC-0026m1-D4; Mon, 24 Jul 2023 11:22:48 +0200
-Date:   Mon, 24 Jul 2023 11:22:48 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Evan Quan <evan.quan@amd.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, Alexander.Deucher@amd.com,
-        Christian.Koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-        daniel@ffwll.ch, johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
-        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
-        jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH V7 4/9] wifi: mac80211: Add support for ACPI WBRF
-Message-ID: <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
-References: <20230719090020.2716892-1-evan.quan@amd.com>
- <20230719090020.2716892-5-evan.quan@amd.com>
+        Mon, 24 Jul 2023 06:16:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FE7C4C3D
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 03:08:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FF5961004
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 10:08:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22075C433C7
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Jul 2023 10:08:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690193306;
+        bh=m9JYSC+5Rp/ldrharwh/9Y6b7HOGHkKkWSyv7YD8AjY=;
+        h=From:To:Subject:Date:From;
+        b=GyL21Nl0HRlz3ERkvJhKZSjyczfZx9vOJH0DNVMSCdOcTM9L9hUZhd8YUgkFwp/YZ
+         lG4M5tf4IOyrtq7NeoklwargmZKRyfdkI/W6wx0ClYw+vcSPv220ZyJ/rX4jYaKOao
+         uHRCbQo27NjQ+/ylznsrAdCNVv7CpT3azL6Amwl3Ulybp+sEEWAi/x5mlFqeVq2ciX
+         GE/K8n6+FEj/j2e+aAmmQhj1L2eYDeVACFSuuEojivB4OTHf5IQoG5VlRkjxWoG6BT
+         syubY3Cm4CgUdOpdTTUwrbbpKFXVgrZAGa8Kh3OIMk6q7xFyN3IGgZR+recJfbxsZD
+         K6sPZWJkI3Xxw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] Revert "wifi: ath6k: silence false positive -Wno-dangling-pointer warning on GCC 12"
+Date:   Mon, 24 Jul 2023 13:08:23 +0300
+Message-Id: <20230724100823.2948804-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230719090020.2716892-5-evan.quan@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> @@ -1395,6 +1395,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
->  	debugfs_hw_add(local);
->  	rate_control_add_debugfs(local);
->  
-> +	ieee80211_check_wbrf_support(local);
-> +
->  	rtnl_lock();
->  	wiphy_lock(hw->wiphy);
->  
+This reverts commit bd1d129daa3ede265a880e2c6a7f91eab0f4dc62.
 
-> +void ieee80211_check_wbrf_support(struct ieee80211_local *local)
-> +{
-> +	struct wiphy *wiphy = local->hw.wiphy;
-> +	struct device *dev;
-> +
-> +	if (!wiphy)
-> +		return;
-> +
-> +	dev = wiphy->dev.parent;
-> +	if (!dev)
-> +		return;
-> +
-> +	local->wbrf_supported = wbrf_supported_producer(dev);
-> +	dev_dbg(dev, "WBRF is %s supported\n",
-> +		local->wbrf_supported ? "" : "not");
-> +}
+The dangling-pointer warnings were disabled kernel-wide by commit 49beadbd47c2
+("gcc-12: disable '-Wdangling-pointer' warning for now") for v5.19. So this
+hack in ath6kl is not needed anymore.
 
-This seems wrong. wbrf_supported_producer() is about "Should this
-device report the frequencies it is using?" The answer to that depends
-on a combination of: Are there consumers registered with the core, and
-is the policy set so WBRF should take actions.
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+---
+ drivers/net/wireless/ath/ath6kl/Makefile | 5 -----
+ 1 file changed, 5 deletions(-)
 
-The problem here is, you have no idea of the probe order. It could be
-this device probes before others, so wbrf_supported_producer() reports
-false, but a few second later would report true, once other devices
-have probed.
+diff --git a/drivers/net/wireless/ath/ath6kl/Makefile b/drivers/net/wireless/ath/ath6kl/Makefile
+index a75bfa9fd1cf..dc2b3b46781e 100644
+--- a/drivers/net/wireless/ath/ath6kl/Makefile
++++ b/drivers/net/wireless/ath/ath6kl/Makefile
+@@ -36,11 +36,6 @@ ath6kl_core-y += wmi.o
+ ath6kl_core-y += core.o
+ ath6kl_core-y += recovery.o
+ 
+-# FIXME: temporarily silence -Wdangling-pointer on non W=1+ builds
+-ifndef KBUILD_EXTRA_WARN
+-CFLAGS_htc_mbox.o += $(call cc-disable-warning, dangling-pointer)
+-endif
+-
+ ath6kl_core-$(CONFIG_NL80211_TESTMODE) += testmode.o
+ ath6kl_core-$(CONFIG_ATH6KL_TRACING) += trace.o
+ 
 
-It should be an inexpensive call into the core, so can be made every
-time the channel changes. All the core needs to do is check if the
-list of consumers is empty, and if not, check a Boolean policy value.
+base-commit: ac528649f7c63bc233cc0d33cff11f767cc666e3
+-- 
+2.39.2
 
-     Andrew
