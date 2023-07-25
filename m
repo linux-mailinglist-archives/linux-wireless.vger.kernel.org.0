@@ -2,266 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BBF2762219
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jul 2023 21:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DB4D762296
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jul 2023 21:44:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230289AbjGYTPw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jul 2023 15:15:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55712 "EHLO
+        id S230474AbjGYToV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jul 2023 15:44:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjGYTPu (ORCPT
+        with ESMTP id S229470AbjGYToT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jul 2023 15:15:50 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2080.outbound.protection.outlook.com [40.107.237.80])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 248801B8;
-        Tue, 25 Jul 2023 12:15:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JlwXduJJhXm+z1jmBImZlsOgnAHK6bzt86te/+2YvM02KksgLt3/Rv93/NXphWqhj9bfAznn2HLorVk0EdDghbx92vplCmJN3rVBrJLNg/6U+58DnPQkdUOj+V0gtwiIubdi0bTjLj/+0AQpVh20vH28I92TjnOvGW1mI31H04xu48ss7rok4/HlmBd1OofWzIg++4oHQfbzY5MOl0JWBeYlmwNdiqDhzIcX1MuMJOZ1IxMsqmdQw8HCjwImN9eiDrw9R0j3SxFz5mqOkbKE4aYhL/UR8L1UC3e+RifXfFz3rbTcJ9WTOSdwoqsvFy0/s/Jr0kLPYwpzdgZkVl/jRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HCjzoi60bx1RkiMYclYgTdNSzUEYuWh5C7PdD3kS8JU=;
- b=TGV5hbvjrPZOU2uHTEk7ZVy+S248brd8PmkGDIQt3/ox4VwDqq+3DqATzOovEao6Py/WNC7jjtdIdeP4uMHEigS3QlEwJYTK/jB7hBIwcVF55/fCpP7isTGRvXY7O03wmlc2gsZhdInP4PSq7u3jnwnSTquUH2oB+HLm15qiG0qkSEaTA417UNPP8fQK2m7CEMuYBK5EdILWGKiHzb6WSgSf2OQfXSaTbZCrWFTA4YdxpcMtwcESGMw5OJz0oTGt6UEJ/60NpwohyVMwnI+fmJGXvFU8pl4nkrFJRq8WbYOTw5/ZWG2aVr4L5eK9gcFkzlnwNOWgcU19uXT7peDupg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HCjzoi60bx1RkiMYclYgTdNSzUEYuWh5C7PdD3kS8JU=;
- b=jNzgXx0klB60aG1Dy0TjdS8+vLwWTxmXotv23c9VUhoj4pC4HOJYgiJWSPK+SVN1xQuVg5KIB8WBmGhBnDpRsTz/ZESiMXxPiIGo/LOqG5VJ4BorvVfP42b98gaOMn8gMaWeN5hKkMoy6T4mZuCtSmOXjjmSXZMgfxYkXvoJ4hs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by BY5PR12MB4132.namprd12.prod.outlook.com (2603:10b6:a03:209::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33; Tue, 25 Jul
- 2023 19:15:45 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6609.031; Tue, 25 Jul 2023
- 19:15:45 +0000
-Message-ID: <6aa9061b-1702-b8f2-9cb8-982895b9def4@amd.com>
-Date:   Tue, 25 Jul 2023 14:15:41 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH V7 4/9] wifi: mac80211: Add support for ACPI WBRF
-Content-Language: en-US
-To:     Andrew Lunn <andrew@lunn.ch>, "Quan, Evan" <Evan.Quan@amd.com>
-Cc:     "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        "airlied@gmail.com" <airlied@gmail.com>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
-        "maarten.lankhorst@linux.intel.com" 
-        <maarten.lankhorst@linux.intel.com>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
-        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
-        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
-        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
-        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
-        "trix@redhat.com" <trix@redhat.com>,
-        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <20230719090020.2716892-1-evan.quan@amd.com>
- <20230719090020.2716892-5-evan.quan@amd.com>
- <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
- <7d059aed-fac0-cdcd-63d5-58185bb345db@amd.com>
- <DM6PR12MB26196A993B3BA93392AA0FEDE403A@DM6PR12MB2619.namprd12.prod.outlook.com>
- <d4cfbbae-9cd0-4767-8c80-ec09d1dbaf9c@lunn.ch>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <d4cfbbae-9cd0-4767-8c80-ec09d1dbaf9c@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR08CA0010.namprd08.prod.outlook.com
- (2603:10b6:805:66::23) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        Tue, 25 Jul 2023 15:44:19 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 642651FF3
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 12:44:18 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36PJdFen026133;
+        Tue, 25 Jul 2023 19:44:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=PNuRfmOT8KhHU3Wfu3lF2YLZ/va6SuJ2gN7OEqI7FJI=;
+ b=Dla6FG6XiYt5i5TY8cfwfNZFhxELwHXcfxA82efvbrEW4jUN3QuH7bMXhPwOhxPtHsk/
+ d0ebD5Xfrz/Az4B4zM4NQ2QunaPkNaM+StPmznevLBG8Y37c6OfmDIGKPElDhZ7S1UQw
+ I4nDySqqOLnxhlR+A9q0xy1VbhlmBhjCw/gvyOVg+aLBoPW7Edz05ykI9NI2wnuMulpl
+ b0Fs9KXLn4zI3YNeOdwiiUxZUZRdQJE/qddWNiJOsqwW9K842NSZzMUdMqNLWAProQTO
+ E1plN/uKIGJTHvNWlRSvMeWPPPCTUvCBf2D9bV2djMQsI+nfVI6f7mB9PLlfUTzqQBjM Ng== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s29xmhq0c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 25 Jul 2023 19:44:11 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36PJiAOW021188
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 25 Jul 2023 19:44:10 GMT
+Received: from [10.227.89.240] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Tue, 25 Jul
+ 2023 12:44:10 -0700
+Message-ID: <35c86c8e-afdb-adb6-f331-af74c99d3a02@quicinc.com>
+Date:   Tue, 25 Jul 2023 12:44:09 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|BY5PR12MB4132:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f52a4ac-523e-4674-86c3-08db8d438bfc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 14lTPXTSQv7L110tPR0CNsQxASdmuEJZjI23SEiKZlLo2b6yi0Gwy961mFyp65SJJkg5khc74k5ua91seIwLH21S+rDkt28rpYK8B3rOlPGFuVAfYpJJnJxPbuTt0ET9a+gjMcS/T3x5vtuLqnxlX3SOh1AGpLj7TWwbpnUZdotIUK95ntGXDZqRF77o8BfCG8ElPiAW0gQJUPDxgsf7JwTnyJa6eVikpTVcN7rY9CHE/KcTIOy0MJWClW+3LtEgPj4EOJoEif/aMCgSPIvQRAJ4u2mXZELxJJXcNaJ0seWVYYMr8U2UaBDgawVxHBzXBnxYk16NjHo6rWCOdMJyeSWHpLY+GlsdZErGK7tGF8OiwMbt30rNT/6kqUG8YTqY3n2Dud8ACB/Sw2XMxH0evX9aAd/sl2tGDwJ+dcFKj9SauKiC4jlpfwdUwoJW/ZD3cgo7wC8rzILbn17JCeo46WPRZa7ike6qz39RNIw6Pn8U1XFLUNc68/9Y2YVr5LEu6AfgZX1RxIciPqS+Im6L2/CG85j/WFIBz6YLAFQnLkfyuuLuucGR2j7CwaN3aD5zjNR305Y6KJs5Bj3p+CsPO8/NXkg0gweGOEk52YVF9tiQHLygEwEHDwdlIbfjGO/mbwxExOQna5OV7xM7d2IN1Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(396003)(136003)(39860400002)(376002)(346002)(451199021)(54906003)(66946007)(66556008)(66476007)(2616005)(36756003)(83380400001)(86362001)(31696002)(38100700002)(478600001)(110136005)(6506007)(6486002)(26005)(6666004)(53546011)(186003)(6512007)(31686004)(5660300002)(41300700001)(316002)(2906002)(4326008)(6636002)(44832011)(8676002)(8936002)(7416002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d3NHVmNLUEZjdURLb0RuMnErZEt4V3lPQUhkUWRJaTJhZysvdVV1RGtXQUsw?=
- =?utf-8?B?Wi95NnArczJiYjd3cUtpVkxLYXE3b3NjdHFmM3NSQUl0R1pTWHJTQ3daU1Nj?=
- =?utf-8?B?cEMvcXEyTXdwYXFlS1E3TWY0bzl2RmQ3OVplY1FQdGNGb1NmdWU0TXlISnY2?=
- =?utf-8?B?cUoyYjlCVm1EalpBWlQ5Z3Q1b1FrTTNMNkE1NkcxU0ViUFdrU05XaVlCazQ2?=
- =?utf-8?B?SXBrZGFYa2RydTJ5bmFJeVUxbGkvSXplTTQ2aktvcUI1NmFsTWw1dUNVNGtt?=
- =?utf-8?B?bjFPczgvRExyZVVuTDZmOGhYNUU3RWVqLzVCTld3Tkt3eERveUNhdkw5VFFH?=
- =?utf-8?B?amxCWFNuMUdrZTY4Z1IvZEN5c2s1MEFnUHM4YzBqY0hWOE51RGgzb0pIbXBQ?=
- =?utf-8?B?a05ITEgwbElwOWNaajd4TmxJc284bVhWUVZVUytkcTJXRjVVUEVCei9jcGZl?=
- =?utf-8?B?NDI3SVZOUUJSeklrWW0vVkZoY0VVYWtlZWRUc2lBbHVyWjRNTjlPeUx5Nkxn?=
- =?utf-8?B?TUFYNEVmZnhYZE43MCt3TVlmNUEzRk5YS1dXWjc5bnRkWExFMUpzdXl3RHFE?=
- =?utf-8?B?MXQrRDI1UE1qUXlYczQ2NHJ5TjdZbGVFYkZ2aVZIaW8xcVl5RDQxRHhKcC9h?=
- =?utf-8?B?U05oZlB3aFV6SUtUQzhnYlNldVQybnh3cFVqWGdROTIxOHpUZG0xUUV2THdF?=
- =?utf-8?B?bjZUUTBoY1RQWFJBcHM2dnpQTGRVTEFtMUdrQkNJOGhDUlFqSDZtaDRQeFpQ?=
- =?utf-8?B?c2VTZVRmTTJobnNOMDJkM2c5Zzk4L3J4YnVEanVwWEcwdEF6dGszYXRrTUov?=
- =?utf-8?B?SmR0OG9tYzkveUJUSURjOWNqSTZoekNJYXJONk9SVjUxNlZ2V1MwMjZlN2xy?=
- =?utf-8?B?dFBVcGVQUlJFTkdCVzF3VjZHbDlZQmY0cWpwcDJrSkhCaWM4Uk1JbFZSVm12?=
- =?utf-8?B?VUplTGJXaWQrV3JoMXFIV1pTMWdPUmg3VHBFMm0vRjRuTlM5NVllY3dRNXV0?=
- =?utf-8?B?UGNlNHJsamFHSitnUUYxQWkrbXdDM3pvU1htcWhCaUhvVkFDSnB6Q05MUVNS?=
- =?utf-8?B?UE1VbTUyNENTMW5oMUFTYlM0SDVEZVVyT3lMRlhPb0p2RkRNWERKLzNLZHJk?=
- =?utf-8?B?SEwxb0U0WHpPb0EyS1hrWUs5V01yV1ZhcE0zWlFOM2FCYmxzaHRVSnBxOHpJ?=
- =?utf-8?B?VXJFell2NlFzZ09oa2lEYXE2TUUzWWxzL3hNajMxMlJEdnhSSzRiY242aEpR?=
- =?utf-8?B?Z3lUeDE3cFY1bStRa0tURm12czgycGszL2RvcmRYMzFoQUpqQ0tGanVXcThD?=
- =?utf-8?B?aGtwMHk3QXBwc1pMVFhtbk94dzFoTmZ1cWlmVHZtVnI2OTF1Q1F3S1gyOHhB?=
- =?utf-8?B?TEJaNjNlaEg1bFBNRk1lQU5tZ1NCSkZIK1JobGpRRFYzc2xhb25RVmZpelZI?=
- =?utf-8?B?WlRXZERITXk1SnpDRVJKVFRJOGx2K2FDcEhoY2ROZ2dsWG1jMFhyRzZDRTlB?=
- =?utf-8?B?OFdJTGg0OUxxbTNJMHNqTHBJaE9LL3ZPZjVoM21wMndTeXVDYVYrY3VkWWxk?=
- =?utf-8?B?S09ieG9PUXhBbi9lL0o4YzVGVVRuc1FmckFCa1gyRk5PTnRiMnQ1NzNzWW5l?=
- =?utf-8?B?M2o0R0hsZDRKeE9zUUptdHY5cjFnTlVmOW5HNjI1VSttNlZSLzZ4MUxrM29z?=
- =?utf-8?B?bjc1OFBnWkE4bktNRkFhT0JuR0pDLzNtVDBDeEg5bnZ2eU9lU1NnaGQwQld6?=
- =?utf-8?B?c2Y3M2x3Rk1yaHYzL29SMnp4dEpLU2tJZmtVZjZZWkxLK0tqY2JzMGZVWXlV?=
- =?utf-8?B?UUNNaFVsc005RkJwTTRiMjREWWZ4V1JwSWR5QkRvQ2Y3ZmNaOFZJcjdqdTAw?=
- =?utf-8?B?Y1czbCtZS253ZGZnUkNmYzdwbGowYll5WGhGSGNWSnN4TGZxTm9WZ2ZxQzdx?=
- =?utf-8?B?L0lXQVlnQ2tUbW9VSUliako2bzlDS1dEaHlqcEtyZHJoUVVxMUZ3MFB1TDVO?=
- =?utf-8?B?Ym12eFR1U1RnVzV0NEZ0ajY4Yy90REkyMFczWW1NenV5RCs4TzY4cHdrQUxZ?=
- =?utf-8?B?UlBERHRDVS9PVFlhUmR4OFh6dnYrWXZ6c3l6dkk2RlNiUTlxUFFwUm9BREUz?=
- =?utf-8?Q?ZxMp0nNGciiFbj36qpKQXSez9?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f52a4ac-523e-4674-86c3-08db8d438bfc
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2023 19:15:45.6248
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uQpRVuwxXJ8TDqZGYoFd1cP5LyoCeVzIR/i1+KZlqM1Szx1U4iuH/v8Ss+XIvNqK6oHbKP61uSv47sKINapivQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4132
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v4 03/11] wifi: ath12k: WMI support to process EHT
+ capabilities
+Content-Language: en-US
+To:     Wen Gong <quic_wgong@quicinc.com>, Kalle Valo <kvalo@kernel.org>
+CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        "Pradeep Kumar Chitrapu" <quic_pradeepc@quicinc.com>
+References: <20230602235820.23912-1-quic_alokad@quicinc.com>
+ <20230602235820.23912-4-quic_alokad@quicinc.com> <87ttv9aqtn.fsf@kernel.org>
+ <dc0ae263-e5f6-b876-842a-7b598caf68fa@quicinc.com>
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+In-Reply-To: <dc0ae263-e5f6-b876-842a-7b598caf68fa@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: u2y0msoTWnKJhQkGA4I6oPXuwH6V_P-J
+X-Proofpoint-GUID: u2y0msoTWnKJhQkGA4I6oPXuwH6V_P-J
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-25_10,2023-07-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ mlxlogscore=806 impostorscore=0 adultscore=0 mlxscore=0 bulkscore=0
+ phishscore=0 suspectscore=0 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307250168
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/25/2023 13:57, Andrew Lunn wrote:
->>>>> @@ -1395,6 +1395,8 @@ int ieee80211_register_hw(struct
->>> ieee80211_hw *hw)
->>>>>     debugfs_hw_add(local);
->>>>>     rate_control_add_debugfs(local);
->>>>>
->>>>> +  ieee80211_check_wbrf_support(local);
->>>>> +
->>>>>     rtnl_lock();
->>>>>     wiphy_lock(hw->wiphy);
->>>>>
->>>>
->>>>> +void ieee80211_check_wbrf_support(struct ieee80211_local *local) {
->>>>> +  struct wiphy *wiphy = local->hw.wiphy;
->>>>> +  struct device *dev;
->>>>> +
->>>>> +  if (!wiphy)
->>>>> +          return;
->>>>> +
->>>>> +  dev = wiphy->dev.parent;
->>>>> +  if (!dev)
->>>>> +          return;
->>>>> +
->>>>> +  local->wbrf_supported = wbrf_supported_producer(dev);
->>>>> +  dev_dbg(dev, "WBRF is %s supported\n",
->>>>> +          local->wbrf_supported ? "" : "not"); }
->>>>
->>>> This seems wrong. wbrf_supported_producer() is about "Should this
->>>> device report the frequencies it is using?" The answer to that depends
->>>> on a combination of: Are there consumers registered with the core, and
->>>> is the policy set so WBRF should take actions. > The problem here is,
->>>> you have no idea of the probe order. It could be this device probes
->>>> before others, so wbrf_supported_producer() reports false, but a few
->>>> second later would report true, once other devices have probed.
->>>>
->>>> It should be an inexpensive call into the core, so can be made every
->>>> time the channel changes. All the core needs to do is check if the
->>>> list of consumers is empty, and if not, check a Boolean policy value.
->>>>
->>>>        Andrew
->>>
->>> No, it's not a combination of whether consumers are registered with the core.
->>> If a consumer probes later it needs to know the current in use frequencies too.
->>>
->>> The reason is because of this sequence of events:
->>> 1) Producer probes.
->>> 2) Producer selects a frequency.
->>> 3) Consumer probes.
->>> 4) Producer stays at same frequency.
->>>
->>> If the producer doesn't notify the frequency because a consumer isn't yet
->>> loaded then the consumer won't be able to get the current frequency.
->> Yes, exactly.
+On 7/25/2023 3:51 AM, Wen Gong wrote:
+> On 6/15/2023 7:49 PM, Kalle Valo wrote:
+>> Aloka Dixit <quic_alokad@quicinc.com> writes:
+>>
+> [...]
+>> [...]
+>>
+>>> +struct ath12k_fw_pdev {
+>>> +    u32 pdev_id;
+>>> +    u32 phy_id;
+>>> +    u32 supported_bands;
+>>> +};
+>> So we have now two very similar structures, ath12k_pdev and
+>> ath12k_fw_pdev. It would be good to document above the structs their
+>> purpose. Any ideas what I could add?
+> Currently ath12k has single_pdev parameter, it impact the interface 
+> number of wifi.
 > 
-> So now we are back to, what is the point of wbrf_supported_producer()?
+> For single_pdev=ture, ab->num_radios is set to 1 and all capbility of 
+> 2.4 GHz/
+> 5 GHz/6 GHz is saved into ab->pdevs[0] in 
+> ath12k_wmi_ext_soc_hal_reg_caps_parse().
+> ath12k_mac_register() will call only one time into 
+> __ath12k_mac_register(), and
+> ieee80211_register_hw() is called only one time, and only one wifi 
+> interface in
+> the result of "iw dev/ifconfig", the interface support 2.4 GHz/5 GHz/6 
+> GHz. Actually
+> there hare more than one PHY in firmware, firmware maintain the all PHY 
+> data and
+> provide a single pdev/soc interface to ath12k, then ath12k do not need 
+> to consider
+> the PHY info such as channel/BAND<->PHY mapping relationship, it is 
+> convenient for
+> ath12k to support 2.4 GHz/5 GHz/6 GHz.
 > 
-> I'm talking general case here, not your ACPI implementation. All i'm
-> really interested in is the generic API, which is what an Intel CPU,
-> combined with a Radieon GPU and a Qualcomm WiFi device will use. Or an
-> AMD CPU combined with an nvidia GPU and a Mediatek Wifi, etc. The wbrf
-> core should support an combination of produces and consumers in a
-> generic way.
+> For single_pdev=false, ab->num_radios is more than 1, ab->pdevs[] has 
+> muti valid
+> element, each element only support one BAND. Firmware do not provide a 
+> single
+> pdev/soc interface, so ath12k need to maintain the PHY data such as 
+> channel/BAND<->
+> PHY mapping relationship, and ath12k_mac_register() will call muti-time 
+> into
+> __ath12k_mac_register(), and ieee80211_register_hw() is called 
+> muti-time, and muti
+> wifi interface in the result of "iw dev/ifconfig", and each interface 
+> only support
+> one BAND, for example, wlan0 only support 2.4 GHz, wlan1 only support 5 
+> GHz, and
+> wlan2 only support 6 GHz.
 > 
-> If you assume devices can probe in any order, and come and go, it
-> seems like the producers need to always report what frequencies they
-> are using. Otherwise when a noise generator pops into existence, as
-> you say, it has no idea what frequencies the producers are using.
-As the series stands today if the probe order is reversed everything 
-works fine.
+> For single_pdev=ture, ath12k also need to know some info about the PHYs 
+> sush as
+> pdev_id/phy_id/supported_bands in this patch, so ab->fw_pdev is used to 
+> store the
+> PHY data.
 
-1) Consumer probes
-2) Producer probes
-3) Producer selects a frequency
-4) Consumer reacts to frequency.
 
-> 
-> The exception is when policy says there is no need to actually do
-> anything. If we can assume the policy is fixed, then
-> wbrf_supported_producer() could just report the policy which the wbrf
-> core should know about.
-> 
->      Andrew
-> 
+The new struct ath12k_fw_pdev is anyway going to have as many elements 
+as the num_radio, right? Then there must be a way to reuse the common 
+struct ath12k_pdev instead as it done for QCN devices. I understand this 
+it will need changes to all the existing code for the single-pdev where 
+it might have hard-coded pdev[0] for the original structure. Something 
+to think about in a separate patch-set.
 
-This comes back to the point that was mentioned by Johannes - you need 
-to have deep design understanding of the hardware to know whether or not 
-you will have producers that a consumer need to react to.
+For now I will send new version with comments (as far as I understood 
+it) because without this patch WCN devices show a crash during boot-up.
 
-For example the physical location GDDR6 memory and proximity to the 
-hinge where the antenna was routed might play a big factor in whether 
-you need something like this.
-
-If all producers indicate their frequency and all consumers react to it 
-you may have activated mitigations that are unnecessary. The hardware 
-designer may have added extra shielding or done the layout such that 
-they're not needed.
-
-So I don't think we're ever going to be in a situation that the generic 
-implementation should be turned on by default.  It's a "developer knob".
-
-As mentioned in the Kconfig it's intended use is for identifying 
-situations that may benefit from mitigation before support was 
-introduced into the firmware.
-
-If needed these can then be enabled using the AMD ACPI interface, a DT 
-one if one is developed or maybe even an allow-list of SMBIOS strings.
-
+Thanks.
