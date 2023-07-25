@@ -2,197 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90305761E69
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jul 2023 18:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 245C97621E4
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jul 2023 20:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231819AbjGYQYN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jul 2023 12:24:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56306 "EHLO
+        id S231518AbjGYS6r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jul 2023 14:58:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230191AbjGYQYL (ORCPT
+        with ESMTP id S230521AbjGYS6n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jul 2023 12:24:11 -0400
-Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [178.154.239.211])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F2C212A
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 09:24:06 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-54.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-54.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1380:0:640:6985:0])
-        by forward100c.mail.yandex.net (Yandex) with ESMTP id 32710600A9;
-        Tue, 25 Jul 2023 19:24:04 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-54.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 2ONSKkeDVKo0-QnX4HVtl;
-        Tue, 25 Jul 2023 19:24:03 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1690302243;
-        bh=//OSBRL26x5nFYFfZsf6+B6wj2Dp91qSslbgcnyZs44=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=QDHmJab6EsM2PtR1/K0ihZHDfRTejFTMFfu9kHE3QGAeqy+ah+0DIjzVHvsSmhGGm
-         xVG1xOp7yZfoYnsca1U3FrnB9rF3/8SZQ7LlZ9s/acNRKjIiel6vJo6j1YyvU1S1mQ
-         ENu4dlIO0v+AKincTXGOK+fNbbUxuMOHAdY+TR0k=
-Authentication-Results: mail-nwsmtp-smtp-production-main-54.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Tom Rix <trix@redhat.com>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 2/2] wifi: brcmsmac: cleanup SCB-related data types
-Date:   Tue, 25 Jul 2023 19:23:46 +0300
-Message-ID: <20230725162400.192357-2-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725162400.192357-1-dmantipov@yandex.ru>
-References: <20230725162400.192357-1-dmantipov@yandex.ru>
+        Tue, 25 Jul 2023 14:58:43 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D352681;
+        Tue, 25 Jul 2023 11:58:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=X0R22BGbmRjXXZscNgSBbP4wiQyyIcB9qX3GclN3VKQ=; b=pMHzyljz3zocsCU3tG8KLgimld
+        AHsticsdDT5NHdPPBL5+fpo+9omp3YmofR8Zwa317kF/DgNvm/9XPvQuXDpOdnfCslAtEAoLt1+zT
+        AURHv8Doe0j2pA0GGUU5hmZWOkOB8hY8lebFHPL7ZVR8qayQsM1yxoXjSN2ClZWLW/J4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qONEL-002IX2-IB; Tue, 25 Jul 2023 20:57:57 +0200
+Date:   Tue, 25 Jul 2023 20:57:57 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     "Quan, Evan" <Evan.Quan@amd.com>
+Cc:     "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        "airlied@gmail.com" <airlied@gmail.com>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
+        "maarten.lankhorst@linux.intel.com" 
+        <maarten.lankhorst@linux.intel.com>,
+        "tzimmermann@suse.de" <tzimmermann@suse.de>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
+        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
+        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
+        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
+        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
+        "trix@redhat.com" <trix@redhat.com>,
+        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH V7 4/9] wifi: mac80211: Add support for ACPI WBRF
+Message-ID: <d4cfbbae-9cd0-4767-8c80-ec09d1dbaf9c@lunn.ch>
+References: <20230719090020.2716892-1-evan.quan@amd.com>
+ <20230719090020.2716892-5-evan.quan@amd.com>
+ <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
+ <7d059aed-fac0-cdcd-63d5-58185bb345db@amd.com>
+ <DM6PR12MB26196A993B3BA93392AA0FEDE403A@DM6PR12MB2619.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM6PR12MB26196A993B3BA93392AA0FEDE403A@DM6PR12MB2619.namprd12.prod.outlook.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Drop unused and set-but-unused fields of 'struct scb_ampdu_tid_ini',
-'struct scb_ampdu' and 'struct scb', as well as now unused argument
-of 'brcms_c_ampdu_tx_operational()', adjust related code.
+> > >> @@ -1395,6 +1395,8 @@ int ieee80211_register_hw(struct
+> > ieee80211_hw *hw)
+> > >>    debugfs_hw_add(local);
+> > >>    rate_control_add_debugfs(local);
+> > >>
+> > >> +  ieee80211_check_wbrf_support(local);
+> > >> +
+> > >>    rtnl_lock();
+> > >>    wiphy_lock(hw->wiphy);
+> > >>
+> > >
+> > >> +void ieee80211_check_wbrf_support(struct ieee80211_local *local) {
+> > >> +  struct wiphy *wiphy = local->hw.wiphy;
+> > >> +  struct device *dev;
+> > >> +
+> > >> +  if (!wiphy)
+> > >> +          return;
+> > >> +
+> > >> +  dev = wiphy->dev.parent;
+> > >> +  if (!dev)
+> > >> +          return;
+> > >> +
+> > >> +  local->wbrf_supported = wbrf_supported_producer(dev);
+> > >> +  dev_dbg(dev, "WBRF is %s supported\n",
+> > >> +          local->wbrf_supported ? "" : "not"); }
+> > >
+> > > This seems wrong. wbrf_supported_producer() is about "Should this
+> > > device report the frequencies it is using?" The answer to that depends
+> > > on a combination of: Are there consumers registered with the core, and
+> > > is the policy set so WBRF should take actions. > The problem here is,
+> > > you have no idea of the probe order. It could be this device probes
+> > > before others, so wbrf_supported_producer() reports false, but a few
+> > > second later would report true, once other devices have probed.
+> > >
+> > > It should be an inexpensive call into the core, so can be made every
+> > > time the channel changes. All the core needs to do is check if the
+> > > list of consumers is empty, and if not, check a Boolean policy value.
+> > >
+> > >       Andrew
+> >
+> > No, it's not a combination of whether consumers are registered with the core.
+> > If a consumer probes later it needs to know the current in use frequencies too.
+> >
+> > The reason is because of this sequence of events:
+> > 1) Producer probes.
+> > 2) Producer selects a frequency.
+> > 3) Consumer probes.
+> > 4) Producer stays at same frequency.
+> >
+> > If the producer doesn't notify the frequency because a consumer isn't yet
+> > loaded then the consumer won't be able to get the current frequency.
+> Yes, exactly.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- .../wireless/broadcom/brcm80211/brcmsmac/ampdu.c   |  6 ------
- .../broadcom/brcm80211/brcmsmac/mac80211_if.c      |  8 +++-----
- .../wireless/broadcom/brcm80211/brcmsmac/main.c    |  2 --
- .../net/wireless/broadcom/brcm80211/brcmsmac/pub.h |  2 +-
- .../net/wireless/broadcom/brcm80211/brcmsmac/scb.h | 14 --------------
- 5 files changed, 4 insertions(+), 28 deletions(-)
+So now we are back to, what is the point of wbrf_supported_producer()?
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
-index e24228e60027..e859075db716 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
-@@ -476,11 +476,9 @@ static int brcms_c_ffpld_check_txfunfl(struct brcms_c_info *wlc, int fid)
- 
- void
- brcms_c_ampdu_tx_operational(struct brcms_c_info *wlc, u8 tid,
--	u8 ba_wsize,		/* negotiated ba window size (in pdu) */
- 	uint max_rx_ampdu_bytes) /* from ht_cap in beacon */
- {
- 	struct scb_ampdu *scb_ampdu;
--	struct scb_ampdu_tid_ini *ini;
- 	struct ampdu_info *ampdu = wlc->ampdu;
- 	struct scb *scb = &wlc->pri_scb;
- 	scb_ampdu = &scb->scb_ampdu;
-@@ -491,10 +489,6 @@ brcms_c_ampdu_tx_operational(struct brcms_c_info *wlc, u8 tid,
- 		return;
- 	}
- 
--	ini = &scb_ampdu->ini[tid];
--	ini->tid = tid;
--	ini->scb = scb_ampdu->scb;
--	ini->ba_wsize = ba_wsize;
- 	scb_ampdu->max_rx_ampdu_bytes = max_rx_ampdu_bytes;
- }
- 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-index 0bd4e679a359..543e93ec49d2 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-@@ -810,7 +810,6 @@ brcms_ops_sta_add(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	brcms_c_init_scb(scb);
- 
- 	wl->pub->global_ampdu = &(scb->scb_ampdu);
--	wl->pub->global_ampdu->scb = scb;
- 	wl->pub->global_ampdu->max_pdu = 16;
- 
- 	/*
-@@ -831,7 +830,6 @@ brcms_ops_ampdu_action(struct ieee80211_hw *hw,
- 	struct ieee80211_sta *sta = params->sta;
- 	enum ieee80211_ampdu_mlme_action action = params->action;
- 	u16 tid = params->tid;
--	u8 buf_size = params->buf_size;
- 
- 	if (WARN_ON(scb->magic != SCB_MAGIC))
- 		return -EIDRM;
-@@ -863,11 +861,11 @@ brcms_ops_ampdu_action(struct ieee80211_hw *hw,
- 		/*
- 		 * BA window size from ADDBA response ('buf_size') defines how
- 		 * many outstanding MPDUs are allowed for the BA stream by
--		 * recipient and traffic class. 'ampdu_factor' gives maximum
--		 * AMPDU size.
-+		 * recipient and traffic class (this is actually unused by the
-+		 * rest of the driver). 'ampdu_factor' gives maximum AMPDU size.
- 		 */
- 		spin_lock_bh(&wl->lock);
--		brcms_c_ampdu_tx_operational(wl->wlc, tid, buf_size,
-+		brcms_c_ampdu_tx_operational(wl->wlc, tid,
- 			(1 << (IEEE80211_HT_MAX_AMPDU_FACTOR +
- 			 sta->deflink.ht_cap.ampdu_factor)) - 1);
- 		spin_unlock_bh(&wl->lock);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-index 11b33e78127c..b3663c5ef382 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-@@ -3147,10 +3147,8 @@ void brcms_c_init_scb(struct scb *scb)
- 	scb->flags = SCB_WMECAP | SCB_HTCAP;
- 	for (i = 0; i < NUMPRIO; i++) {
- 		scb->seqnum[i] = 0;
--		scb->seqctl[i] = 0xFFFF;
- 	}
- 
--	scb->seqctl_nonqos = 0xFFFF;
- 	scb->magic = SCB_MAGIC;
- }
- 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/pub.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/pub.h
-index 4da38cb4f318..bfc63b2f0537 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/pub.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/pub.h
-@@ -297,7 +297,7 @@ struct brcms_pub *brcms_c_pub(struct brcms_c_info *wlc);
- void brcms_c_ampdu_flush(struct brcms_c_info *wlc, struct ieee80211_sta *sta,
- 			 u16 tid);
- void brcms_c_ampdu_tx_operational(struct brcms_c_info *wlc, u8 tid,
--				  u8 ba_wsize, uint max_rx_ampdu_bytes);
-+				  uint max_rx_ampdu_bytes);
- int brcms_c_module_register(struct brcms_pub *pub, const char *name,
- 			    struct brcms_info *hdl,
- 			    int (*down_fn)(void *handle));
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/scb.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/scb.h
-index 3a3d73699f83..d65561227da0 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/scb.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/scb.h
-@@ -36,19 +36,13 @@
- 
- /* structure to store per-tid state for the ampdu initiator */
- struct scb_ampdu_tid_ini {
--	u8 tid;		  /* initiator tid for easy lookup */
- 	/* tx retry count; indexed by seq modulo */
- 	u8 txretry[AMPDU_TX_BA_MAX_WSIZE];
--	struct scb *scb;  /* backptr for easy lookup */
--	u8 ba_wsize;	  /* negotiated ba window size (in pdu) */
- };
- 
- struct scb_ampdu {
--	struct scb *scb;	/* back pointer for easy reference */
--	u8 mpdu_density;	/* mpdu density */
- 	u8 max_pdu;		/* max pdus allowed in ampdu */
- 	u8 release;		/* # of mpdus released at a time */
--	u16 min_len;		/* min mpdu len to support the density */
- 	u32 max_rx_ampdu_bytes;	/* max ampdu rcv length; 8k, 16k, 32k, 64k */
- 
- 	/*
-@@ -64,15 +58,7 @@ struct scb_ampdu {
- struct scb {
- 	u32 magic;
- 	u32 flags;	/* various bit flags as defined below */
--	u32 flags2;	/* various bit flags2 as defined below */
--	u8 state;	/* current state bitfield of auth/assoc process */
--	u8 ea[ETH_ALEN];	/* station address */
--	uint fragresid[NUMPRIO];/* #bytes unused in frag buffer per prio */
--
- 	u16 seqctl[NUMPRIO];	/* seqctl of last received frame (for dups) */
--	/* seqctl of last received frame (for dups) for non-QoS data and
--	 * management */
--	u16 seqctl_nonqos;
- 	u16 seqnum[NUMPRIO];/* WME: driver maintained sw seqnum per priority */
- 
- 	struct scb_ampdu scb_ampdu;	/* AMPDU state including per tid info */
--- 
-2.41.0
+I'm talking general case here, not your ACPI implementation. All i'm
+really interested in is the generic API, which is what an Intel CPU,
+combined with a Radieon GPU and a Qualcomm WiFi device will use. Or an
+AMD CPU combined with an nvidia GPU and a Mediatek Wifi, etc. The wbrf
+core should support an combination of produces and consumers in a
+generic way.
+
+If you assume devices can probe in any order, and come and go, it
+seems like the producers need to always report what frequencies they
+are using. Otherwise when a noise generator pops into existence, as
+you say, it has no idea what frequencies the producers are using.
+
+The exception is when policy says there is no need to actually do
+anything. If we can assume the policy is fixed, then
+wbrf_supported_producer() could just report the policy which the wbrf
+core should know about.
+
+    Andrew
 
