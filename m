@@ -2,139 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68B9F761191
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jul 2023 12:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E68197613B4
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jul 2023 13:13:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230164AbjGYKxe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jul 2023 06:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59230 "EHLO
+        id S234044AbjGYLNI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jul 2023 07:13:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230409AbjGYKwe (ORCPT
+        with ESMTP id S234041AbjGYLMv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jul 2023 06:52:34 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED59213A
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 03:51:35 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36PAVQ9R011949;
-        Tue, 25 Jul 2023 10:51:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=KBhz6o7gCeuxd/EWDdPOnJCRjVXYn/B/PU+Xq4RR2PU=;
- b=AEM+No4dxJywCWkuyHkGQP7vrJdntIigIuvDIGTuG2p1pBjgjE8ZZSPOYtQk1r7PK/FI
- P7AVSaJ1/REBtxHe2p70KQTu9Vg2PLddejUgMkCUkA917Tw8a9s0DC4pXeOF4zZcXNDu
- MoYeDEUB6Z+95MleVJjLv9SiTbYX8OmAqyJATbYBDbAXCBD+aYeLHV4Ea/JrIFMh/si+
- /SswNH3rFO/lE4+hSL/WlMIPONg0xAYJ7IMC34+Ywn+DLPAitaPbyXReHyYsAzhKHwBo
- VoXOnApXKrNfRuaY6ZmArMEkyFBeJD33Y/rLCrVqO0JN1TH0wPGJXVQZ12YJ2k3G5rb+ SQ== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s1v6ua2hh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Jul 2023 10:51:25 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36PApNR1024678
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Jul 2023 10:51:23 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Tue, 25 Jul
- 2023 03:51:21 -0700
-Message-ID: <dc0ae263-e5f6-b876-842a-7b598caf68fa@quicinc.com>
-Date:   Tue, 25 Jul 2023 18:51:18 +0800
+        Tue, 25 Jul 2023 07:12:51 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2AE430FD
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 04:12:02 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fbc656873eso54351015e9.1
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 04:12:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690283521; x=1690888321;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=E2TkVQOO2dvDhRwA4pB7+VODDjmGBCoGSf6JgGl78WU=;
+        b=saKhX229943c1HQwfP6KJYHV7g6+MTIc8bdP4Wx4fmHKr4EmpNPAybLbBoQKej95O4
+         1kRCDel1n297Sia30oN7JdiDZjoehPJuRgt8yaZtFkMskzThd3+JVVvDsZPpAdVsE2v9
+         IYXNDc8ujGtrKqu2Zx3hvL7dLeFfzuM9OvlyCN6GkzLSPp9uY9Z6+4AMMCx/gWiQCzWf
+         8iN9qU3YcAj5aKPOI6GXtCPJkfzN29ATrI4GY4xummyC6WAdCDZsKDxo69nJMhaKGkGW
+         07TqHMg/4yjexpWh/dnYoskDiQOPVkmQNTdA6P+oPml981C35TE7O0WVjyRP8Ft1o5cm
+         6VMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690283521; x=1690888321;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E2TkVQOO2dvDhRwA4pB7+VODDjmGBCoGSf6JgGl78WU=;
+        b=XwXIC+YanEsRYW7+p+v6TkSfuWCZJUkl7MkLRI8VHohrbXpNhBwl3vq0mNV9WraN44
+         xUpDPyLcLh2KJdloH+c/qCsn/Uz6SNrbb2NUVIT6r0ccYQGrUphWvhK6FiSz/ZxdD0lb
+         5aGD5T0M9QuKiD+qJMjXl8LClgChQVQvlsPu5hZ5Scf/dYz6gLkDiU3NHXl9f1VdnG13
+         dAZUWL5q2GseWrrgav3VozHHVdeG9mqOBaIUjy0UrXu2cJGTmfRhOjb++3j7ZujyNZhx
+         P8aBSl0wQkGOkFJzIgpK8ZfbESBZ8DPBy4eTAPo++QiyKwCJ5jM3YB3SNlIqJAu7CNq9
+         Th2w==
+X-Gm-Message-State: ABy/qLah8aOKQ4ScCBdGo04/JziLZyRkAb0IzS18O12YgHoAOsDTj8Ne
+        1tlOGoVpk9NgGjnol1vTw0RSfQ==
+X-Google-Smtp-Source: APBJJlFtYHDH6CTtEO16m5ro5wjfYDfJjQbh+xQfQtEkhRfEEwHBAFBvVC5XQLWJtskAn75aUWjHLw==
+X-Received: by 2002:a05:600c:234a:b0:3fd:2a34:e867 with SMTP id 10-20020a05600c234a00b003fd2a34e867mr8154570wmq.25.1690283521115;
+        Tue, 25 Jul 2023 04:12:01 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id t10-20020a1c770a000000b003faef96ee78sm15730467wmi.33.2023.07.25.04.12.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Jul 2023 04:12:00 -0700 (PDT)
+Date:   Tue, 25 Jul 2023 14:11:58 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     oe-kbuild@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
+        johannes@sipsolutions.net, ath12k@lists.infradead.org
+Cc:     lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+        linux-wireless@vger.kernel.org, quic_wgong@quicinc.com
+Subject: Re: [PATCH] wifi: mac80211: avoid buffer overflow by adding clear
+ data of VHT Tx power envelope
+Message-ID: <311e08c7-c553-4722-8dd1-1556e8063479@kadam.mountain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 03/11] wifi: ath12k: WMI support to process EHT
- capabilities
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>,
-        Aloka Dixit <quic_alokad@quicinc.com>
-CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        "Pradeep Kumar Chitrapu" <quic_pradeepc@quicinc.com>
-References: <20230602235820.23912-1-quic_alokad@quicinc.com>
- <20230602235820.23912-4-quic_alokad@quicinc.com> <87ttv9aqtn.fsf@kernel.org>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <87ttv9aqtn.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: EuFKZLoFdYVrh2oTZAO98vka9-6RmJh3
-X-Proofpoint-GUID: EuFKZLoFdYVrh2oTZAO98vka9-6RmJh3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-25_06,2023-07-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 suspectscore=0
- priorityscore=1501 mlxlogscore=915 lowpriorityscore=0 impostorscore=0
- mlxscore=0 spamscore=0 adultscore=0 phishscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307250094
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230721055851.20525-1-quic_wgong@quicinc.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/15/2023 7:49 PM, Kalle Valo wrote:
-> Aloka Dixit <quic_alokad@quicinc.com> writes:
->
-[...]
-> [...]
->
->> +struct ath12k_fw_pdev {
->> +	u32 pdev_id;
->> +	u32 phy_id;
->> +	u32 supported_bands;
->> +};
-> So we have now two very similar structures, ath12k_pdev and
-> ath12k_fw_pdev. It would be good to document above the structs their
-> purpose. Any ideas what I could add?
-Currently ath12k has single_pdev parameter, it impact the interface 
-number of wifi.
+Hi Wen,
 
-For single_pdev=ture, ab->num_radios is set to 1 and all capbility of 
-2.4 GHz/
-5 GHz/6 GHz is saved into ab->pdevs[0] in 
-ath12k_wmi_ext_soc_hal_reg_caps_parse().
-ath12k_mac_register() will call only one time into 
-__ath12k_mac_register(), and
-ieee80211_register_hw() is called only one time, and only one wifi 
-interface in
-the result of "iw dev/ifconfig", the interface support 2.4 GHz/5 GHz/6 
-GHz. Actually
-there hare more than one PHY in firmware, firmware maintain the all PHY 
-data and
-provide a single pdev/soc interface to ath12k, then ath12k do not need 
-to consider
-the PHY info such as channel/BAND<->PHY mapping relationship, it is 
-convenient for
-ath12k to support 2.4 GHz/5 GHz/6 GHz.
+kernel test robot noticed the following build warnings:
 
-For single_pdev=false, ab->num_radios is more than 1, ab->pdevs[] has 
-muti valid
-element, each element only support one BAND. Firmware do not provide a 
-single
-pdev/soc interface, so ath12k need to maintain the PHY data such as 
-channel/BAND<->
-PHY mapping relationship, and ath12k_mac_register() will call muti-time 
-into
-__ath12k_mac_register(), and ieee80211_register_hw() is called 
-muti-time, and muti
-wifi interface in the result of "iw dev/ifconfig", and each interface 
-only support
-one BAND, for example, wlan0 only support 2.4 GHz, wlan1 only support 5 
-GHz, and
-wlan2 only support 6 GHz.
+url:    https://github.com/intel-lab-lkp/linux/commits/Wen-Gong/wifi-mac80211-avoid-buffer-overflow-by-adding-clear-data-of-VHT-Tx-power-envelope/20230721-140122
+base:   b21fe5be53eb873c02e7479372726c8aeed171e3
+patch link:    https://lore.kernel.org/r/20230721055851.20525-1-quic_wgong%40quicinc.com
+patch subject: [PATCH] wifi: mac80211: avoid buffer overflow by adding clear data of VHT Tx power envelope
+config: i386-randconfig-m021-20230723 (https://download.01.org/0day-ci/archive/20230725/202307251807.z04UOfqH-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20230725/202307251807.z04UOfqH-lkp@intel.com/reproduce)
 
-For single_pdev=ture, ath12k also need to know some info about the PHYs 
-sush as
-pdev_id/phy_id/supported_bands in this patch, so ab->fw_pdev is used to 
-store the
-PHY data.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202307251807.z04UOfqH-lkp@intel.com/
+
+New smatch warnings:
+net/mac80211/mlme.c:4818 ieee80211_prep_channel() error: we previously assumed 'link' could be null (see line 4792)
+net/mac80211/mlme.c:4890 ieee80211_prep_channel() warn: variable dereferenced before check 'link' (see line 4818)
+
+Old smatch warnings:
+net/mac80211/mlme.c:7073 ieee80211_setup_assoc_link() warn: variable dereferenced before check 'elem' (see line 7071)
+
+vim +/link +4818 net/mac80211/mlme.c
+
+7781f0d81c7a7e6 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4789  	if (!(*conn_flags & IEEE80211_CONN_DISABLE_HE)) {
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4790  		he_oper = elems->he_operation;
+d524215f6cad245 net/mac80211/mlme.c          Felix Fietkau     2010-01-08  4791  
+7781f0d81c7a7e6 net/mac80211/mlme.c          Johannes Berg     2022-07-12 @4792  		if (link && is_6ghz) {
+
+Check for NULL
+
+4df17235d03fd79 net/mac80211/mlme.c          Wen Gong          2023-07-21  4793  			struct ieee80211_bss_conf *bss_conf = link->conf;;
+a607268a0d5532d net/mac80211/ieee80211_sta.c Bruno Randolf     2008-02-18  4794  
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4795  			if (elems->pwr_constr_elem)
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4796  				bss_conf->pwr_reduction = *elems->pwr_constr_elem;
+66e67e418908442 net/mac80211/mlme.c          Johannes Berg     2012-01-20  4797  
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4798  			BUILD_BUG_ON(ARRAY_SIZE(bss_conf->tx_pwr_env) !=
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4799  				     ARRAY_SIZE(elems->tx_pwr_env));
+66e67e418908442 net/mac80211/mlme.c          Johannes Berg     2012-01-20  4800  
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4801  			for (i = 0; i < elems->tx_pwr_env_num; i++) {
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4802  				if (elems->tx_pwr_env_len[i] >
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4803  				    sizeof(bss_conf->tx_pwr_env[j]))
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4804  					continue;
+1d00ce807efaa0e net/mac80211/mlme.c          Thomas Pedersen   2020-09-21  4805  
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4806  				memcpy(&bss_conf->tx_pwr_env[j], elems->tx_pwr_env[i],
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4807  				       elems->tx_pwr_env_len[i]);
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4808  				j++;
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4809  			}
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4810  		}
+66e67e418908442 net/mac80211/mlme.c          Johannes Berg     2012-01-20  4811  
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4812  		if (!ieee80211_verify_peer_he_mcs_support(sdata, ies, he_oper) ||
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4813  		    !ieee80211_verify_sta_he_mcs_support(sdata, sband, he_oper))
+7781f0d81c7a7e6 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4814  			*conn_flags |= IEEE80211_CONN_DISABLE_HE |
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4815  				       IEEE80211_CONN_DISABLE_EHT;
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4816  	}
+1d00ce807efaa0e net/mac80211/mlme.c          Thomas Pedersen   2020-09-21  4817  
+4df17235d03fd79 net/mac80211/mlme.c          Wen Gong          2023-07-21 @4818  	link->conf->tx_pwr_env_num = j;
+                                                                                        ^^^^^^^^^^
+Unchecked dereference
+
+4df17235d03fd79 net/mac80211/mlme.c          Wen Gong          2023-07-21  4819  
+66e67e418908442 net/mac80211/mlme.c          Johannes Berg     2012-01-20  4820  	/*
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4821  	 * EHT requires HE to be supported as well. Specifically for 6 GHz
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4822  	 * channels, the operation channel information can only be deduced from
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4823  	 * both the 6 GHz operation information (from the HE operation IE) and
+61513162aa2d6c1 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4824  	 * EHT operation.
+66e67e418908442 net/mac80211/mlme.c          Johannes Berg     2012-01-20  4825  	 */
+7781f0d81c7a7e6 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4826  	if (!(*conn_flags &
+
+[ snip ]
+
+1ad22fb5bb53ce6 net/mac80211/mlme.c          Tosoni            2018-03-14  4879  
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4880  	*conn_flags |=
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4881  		ieee80211_determine_chantype(sdata, link, *conn_flags,
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4882  					     sband,
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4883  					     cbss->channel,
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4884  					     bss->vht_cap_info,
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4885  					     ht_oper, vht_oper,
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4886  					     he_oper, eht_oper,
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4887  					     s1g_oper,
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4888  					     &chandef, false);
+78ac51f81532c1e net/mac80211/mlme.c          Sara Sharon       2019-01-16  4889  
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12 @4890  	if (link)
+
+More checks for NULL
+
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4891  		link->needed_rx_chains =
+6911458dc4283a7 net/mac80211/mlme.c          Johannes Berg     2022-07-12  4892  			min(ieee80211_max_rx_chains(link, cbss),
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
