@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25E54762738
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 01:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7068E762735
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 01:13:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230500AbjGYXQy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jul 2023 19:16:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34710 "EHLO
+        id S231605AbjGYXNN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jul 2023 19:13:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229923AbjGYXQx (ORCPT
+        with ESMTP id S231379AbjGYXNM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jul 2023 19:16:53 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C93187
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 16:16:52 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36PMV8mX004487;
+        Tue, 25 Jul 2023 19:13:12 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D33DB
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 16:13:10 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36PMemB5004836;
         Tue, 25 Jul 2023 22:40:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=qcppdkim1;
- bh=/d5A0ht59VMf345qa1R9hgIS1GAk9TOXfaBTavQmVzs=;
- b=Z0qpPliZtdmOL3VTUnGWzHFDLsyG9UjT5DoPnen6sSCnLhv6X5bIJyjMKVArMDW5eD61
- McBigyRGJeSrAykTxNBfdknKMOuzwnHnhjoPmzdb2zA33BmLm57LA9cj+HtE9QbbJwiH
- RjeBqdZDCU/HsI6PFL6mPY1Kmh1uSpydtcoQ2Jc31GHJq9ZCn3CdoBNJRTPtWjiGvDdr
- Hec/r5WT1V1plmZal4fjc3xoMGNwu7lfD/JhMnlNW+sCBj5KHqebIPcLbA53zVL/q/dm
- P4nVHjeL5wxMKkWYYbQO+gnVrpS7HbLQYY8UafeubOfUuqcc74uu9ZVZ99MT53YVBALH iA== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s2gp1ru3q-1
+ bh=AXtpyWuQmPtv1Q7qfdtcitqxH0tLmfseeH3RO6nC8TY=;
+ b=aQ+oyK5Xk4s+KgUP8XizvYrgwW0/ynSB57o9rJGJc9x9R4Z+TsbYFf2pNU2MSNLoYl4w
+ ZaZovcLHWO+FuKklMAlDO1sXxBQlU8GIhE7JcfoH3513hvof+Y0cZNOEOeOrzqAP3PQo
+ rHpEu4RaJ+sabKvIynqZhmNVH7oJiJEEhXXegwAZPrEjoRiU46/QPfED1v7cHdrSiaYx
+ TjUV9pvqGZ5uA5v3PzZ1g93/QEcvJwC/qWZNHPCMOKwRF+GpfbnF5789qfP5HCAnYy6D
+ N7IoE8jgoyxwIkjssRNBKrzCbfnFeghe8aME/a5e7EzNLm8xDidbN5CbeU0886lT1h/b 1Q== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s2cf8skv0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
         Tue, 25 Jul 2023 22:40:48 +0000
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36PMelZx024598
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36PMemql028374
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 25 Jul 2023 22:40:47 GMT
+        Tue, 25 Jul 2023 22:40:48 GMT
 Received: from alokad-linux.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Tue, 25 Jul 2023 15:40:46 -0700
+ 15.2.1118.30; Tue, 25 Jul 2023 15:40:47 -0700
 From:   Aloka Dixit <quic_alokad@quicinc.com>
 To:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-CC:     Muna Sinada <quic_msinada@quicinc.com>,
-        Aloka Dixit <quic_alokad@quicinc.com>
-Subject: [PATCH v5 05/11] wifi: ath12k: add EHT PHY modes
-Date:   Tue, 25 Jul 2023 15:40:28 -0700
-Message-ID: <20230725224034.14045-6-quic_alokad@quicinc.com>
+CC:     Aloka Dixit <quic_alokad@quicinc.com>,
+        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+Subject: [PATCH v5 07/11] wifi: ath12k: add WMI support for EHT peer
+Date:   Tue, 25 Jul 2023 15:40:30 -0700
+Message-ID: <20230725224034.14045-8-quic_alokad@quicinc.com>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230725224034.14045-1-quic_alokad@quicinc.com>
 References: <20230725224034.14045-1-quic_alokad@quicinc.com>
@@ -57,232 +57,188 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 7rOf_Uj2zrAgSruu7VDJe9EwXiZu_S0I
-X-Proofpoint-ORIG-GUID: 7rOf_Uj2zrAgSruu7VDJe9EwXiZu_S0I
+X-Proofpoint-ORIG-GUID: loZIP6Nh1VtFCvblYVZ7JRLwzCiBYkAN
+X-Proofpoint-GUID: loZIP6Nh1VtFCvblYVZ7JRLwzCiBYkAN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-25_12,2023-07-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 clxscore=1015 lowpriorityscore=0 bulkscore=0 phishscore=0
- malwarescore=0 spamscore=0 suspectscore=0 impostorscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307250193
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ suspectscore=0 spamscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 phishscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307250193
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Muna Sinada <quic_msinada@quicinc.com>
-
-Add support to retrieve and configure the phy modes supported
-by the hardware.
+Add new WMI tag and pass the EHT parameters for peer association
+to firmware.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
 Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
 ---
 v5: No change from v4.
 v4: No change from v3.
 v3: No change from v2.
 v2: No change from v1.
 
- drivers/net/wireless/ath/ath12k/mac.c | 101 +++++++++++++++++++++-----
- drivers/net/wireless/ath/ath12k/mac.h |   2 +-
- drivers/net/wireless/ath/ath12k/wmi.h |  13 +++-
- 3 files changed, 94 insertions(+), 22 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 40 +++++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/wmi.h | 20 ++++++++++++++
+ 2 files changed, 57 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index fcc24ef4999f..379090ba107f 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -182,32 +182,35 @@ ath12k_phymodes[NUM_NL80211_BANDS][ATH12K_CHAN_WIDTH_NUM] = {
- 	[NL80211_BAND_2GHZ] = {
- 			[NL80211_CHAN_WIDTH_5] = MODE_UNKNOWN,
- 			[NL80211_CHAN_WIDTH_10] = MODE_UNKNOWN,
--			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11AX_HE20_2G,
--			[NL80211_CHAN_WIDTH_20] = MODE_11AX_HE20_2G,
--			[NL80211_CHAN_WIDTH_40] = MODE_11AX_HE40_2G,
--			[NL80211_CHAN_WIDTH_80] = MODE_11AX_HE80_2G,
-+			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11BE_EHT20_2G,
-+			[NL80211_CHAN_WIDTH_20] = MODE_11BE_EHT20_2G,
-+			[NL80211_CHAN_WIDTH_40] = MODE_11BE_EHT40_2G,
-+			[NL80211_CHAN_WIDTH_80] = MODE_UNKNOWN,
- 			[NL80211_CHAN_WIDTH_80P80] = MODE_UNKNOWN,
- 			[NL80211_CHAN_WIDTH_160] = MODE_UNKNOWN,
-+			[NL80211_CHAN_WIDTH_320] = MODE_UNKNOWN,
- 	},
- 	[NL80211_BAND_5GHZ] = {
- 			[NL80211_CHAN_WIDTH_5] = MODE_UNKNOWN,
- 			[NL80211_CHAN_WIDTH_10] = MODE_UNKNOWN,
--			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11AX_HE20,
--			[NL80211_CHAN_WIDTH_20] = MODE_11AX_HE20,
--			[NL80211_CHAN_WIDTH_40] = MODE_11AX_HE40,
--			[NL80211_CHAN_WIDTH_80] = MODE_11AX_HE80,
--			[NL80211_CHAN_WIDTH_160] = MODE_11AX_HE160,
--			[NL80211_CHAN_WIDTH_80P80] = MODE_11AX_HE80_80,
-+			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11BE_EHT20,
-+			[NL80211_CHAN_WIDTH_20] = MODE_11BE_EHT20,
-+			[NL80211_CHAN_WIDTH_40] = MODE_11BE_EHT40,
-+			[NL80211_CHAN_WIDTH_80] = MODE_11BE_EHT80,
-+			[NL80211_CHAN_WIDTH_160] = MODE_11BE_EHT160,
-+			[NL80211_CHAN_WIDTH_80P80] = MODE_11BE_EHT80_80,
-+			[NL80211_CHAN_WIDTH_320] = MODE_11BE_EHT320,
- 	},
- 	[NL80211_BAND_6GHZ] = {
- 			[NL80211_CHAN_WIDTH_5] = MODE_UNKNOWN,
- 			[NL80211_CHAN_WIDTH_10] = MODE_UNKNOWN,
--			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11AX_HE20,
--			[NL80211_CHAN_WIDTH_20] = MODE_11AX_HE20,
--			[NL80211_CHAN_WIDTH_40] = MODE_11AX_HE40,
--			[NL80211_CHAN_WIDTH_80] = MODE_11AX_HE80,
--			[NL80211_CHAN_WIDTH_160] = MODE_11AX_HE160,
--			[NL80211_CHAN_WIDTH_80P80] = MODE_11AX_HE80_80,
-+			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11BE_EHT20,
-+			[NL80211_CHAN_WIDTH_20] = MODE_11BE_EHT20,
-+			[NL80211_CHAN_WIDTH_40] = MODE_11BE_EHT40,
-+			[NL80211_CHAN_WIDTH_80] = MODE_11BE_EHT80,
-+			[NL80211_CHAN_WIDTH_160] = MODE_11BE_EHT160,
-+			[NL80211_CHAN_WIDTH_80P80] = MODE_11BE_EHT80_80,
-+			[NL80211_CHAN_WIDTH_320] = MODE_11BE_EHT320,
- 	},
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 62700a61e084..db1ff376319e 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -1801,6 +1801,7 @@ static void ath12k_wmi_copy_peer_flags(struct wmi_peer_assoc_complete_cmd *cmd,
+ 				       bool hw_crypto_disabled)
+ {
+ 	cmd->peer_flags = 0;
++	cmd->peer_flags_ext = 0;
  
- };
-@@ -292,6 +295,24 @@ static const char *ath12k_mac_phymode_str(enum wmi_phy_mode mode)
- 		return "11ax-he40-2g";
- 	case MODE_11AX_HE80_2G:
- 		return "11ax-he80-2g";
-+	case MODE_11BE_EHT20:
-+		return "11be-eht20";
-+	case MODE_11BE_EHT40:
-+		return "11be-eht40";
-+	case MODE_11BE_EHT80:
-+		return "11be-eht80";
-+	case MODE_11BE_EHT80_80:
-+		return "11be-eht80+80";
-+	case MODE_11BE_EHT160:
-+		return "11be-eht160";
-+	case MODE_11BE_EHT160_160:
-+		return "11be-eht160+160";
-+	case MODE_11BE_EHT320:
-+		return "11be-eht320";
-+	case MODE_11BE_EHT20_2G:
-+		return "11be-eht20-2g";
-+	case MODE_11BE_EHT40_2G:
-+		return "11be-eht40-2g";
- 	case MODE_UNKNOWN:
- 		/* skip */
- 		break;
-@@ -1929,6 +1950,41 @@ static enum wmi_phy_mode ath12k_mac_get_phymode_he(struct ath12k *ar,
- 	return MODE_UNKNOWN;
- }
+ 	if (arg->is_wme_set) {
+ 		if (arg->qos_flag)
+@@ -1842,6 +1843,8 @@ static void ath12k_wmi_copy_peer_flags(struct wmi_peer_assoc_complete_cmd *cmd,
+ 			cmd->peer_flags |= cpu_to_le32(WMI_PEER_TWT_REQ);
+ 		if (arg->twt_responder)
+ 			cmd->peer_flags |= cpu_to_le32(WMI_PEER_TWT_RESP);
++		if (arg->eht_flag)
++			cmd->peer_flags_ext |= cpu_to_le32(WMI_PEER_EXT_EHT);
+ 	}
  
-+static enum wmi_phy_mode ath12k_mac_get_phymode_eht(struct ath12k *ar,
-+						    struct ieee80211_sta *sta)
-+{
-+	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_320)
-+		if (sta->deflink.eht_cap.eht_cap_elem.phy_cap_info[0] &
-+		    IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ)
-+			return MODE_11BE_EHT320;
+ 	/* Suppress authorization for all AUTH modes that need 4-way handshake
+@@ -1886,6 +1889,7 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
+ 	struct wmi_peer_assoc_complete_cmd *cmd;
+ 	struct ath12k_wmi_vht_rate_set_params *mcs;
+ 	struct ath12k_wmi_he_rate_set_params *he_mcs;
++	struct ath12k_wmi_eht_rate_set_params *eht_mcs;
+ 	struct sk_buff *skb;
+ 	struct wmi_tlv *tlv;
+ 	void *ptr;
+@@ -1902,7 +1906,8 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
+ 	      TLV_HDR_SIZE + (peer_legacy_rates_align * sizeof(u8)) +
+ 	      TLV_HDR_SIZE + (peer_ht_rates_align * sizeof(u8)) +
+ 	      sizeof(*mcs) + TLV_HDR_SIZE +
+-	      (sizeof(*he_mcs) * arg->peer_he_mcs_count);
++	      (sizeof(*he_mcs) * arg->peer_he_mcs_count) +
++	      TLV_HDR_SIZE + (sizeof(*eht_mcs) * arg->peer_eht_mcs_count);
+ 
+ 	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, len);
+ 	if (!skb)
+@@ -1949,6 +1954,16 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
+ 		cmd->peer_ppet.ppet16_ppet8_ru3_ru0[i] =
+ 			cpu_to_le32(arg->peer_ppet.ppet16_ppet8_ru3_ru0[i]);
+ 
++	/* Update 11be capabilities */
++	memcpy_and_pad(cmd->peer_eht_cap_mac, sizeof(cmd->peer_eht_cap_mac),
++		       arg->peer_eht_cap_mac, sizeof(arg->peer_eht_cap_mac),
++		       0);
++	memcpy_and_pad(cmd->peer_eht_cap_phy, sizeof(cmd->peer_eht_cap_phy),
++		       arg->peer_eht_cap_phy, sizeof(arg->peer_eht_cap_phy),
++		       0);
++	memcpy_and_pad(&cmd->peer_eht_ppet, sizeof(cmd->peer_eht_ppet),
++		       &arg->peer_eht_ppet, sizeof(arg->peer_eht_ppet), 0);
 +
-+	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_160) {
-+		if (sta->deflink.he_cap.he_cap_elem.phy_cap_info[0] &
-+		    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G)
-+			return MODE_11BE_EHT160;
+ 	/* Update peer legacy rate information */
+ 	ptr += sizeof(*cmd);
+ 
+@@ -2015,8 +2030,24 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
+ 		ptr += sizeof(*he_mcs);
+ 	}
+ 
++	/* Loop through the EHT rate set */
++	len = arg->peer_eht_mcs_count * sizeof(*eht_mcs);
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT, len);
++	ptr += TLV_HDR_SIZE;
 +
-+		if (sta->deflink.he_cap.he_cap_elem.phy_cap_info[0] &
-+			 IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)
-+			return MODE_11BE_EHT80_80;
++	for (i = 0; i < arg->peer_eht_mcs_count; i++) {
++		eht_mcs = ptr;
++		eht_mcs->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_HE_RATE_SET,
++							     sizeof(*eht_mcs));
 +
-+		ath12k_warn(ar->ab, "invalid EHT PHY capability info for 160 Mhz: %d\n",
-+			    sta->deflink.he_cap.he_cap_elem.phy_cap_info[0]);
-+
-+		return MODE_11BE_EHT160;
++		eht_mcs->rx_mcs_set = cpu_to_le32(arg->peer_eht_rx_mcs_set[i]);
++		eht_mcs->tx_mcs_set = cpu_to_le32(arg->peer_eht_tx_mcs_set[i]);
++		ptr += sizeof(*eht_mcs);
 +	}
 +
-+	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
-+		return MODE_11BE_EHT80;
-+
-+	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+		return MODE_11BE_EHT40;
-+
-+	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_20)
-+		return MODE_11BE_EHT20;
-+
-+	return MODE_UNKNOWN;
-+}
-+
- static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
- 					struct ieee80211_vif *vif,
- 					struct ieee80211_sta *sta,
-@@ -1950,7 +2006,12 @@ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
+ 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
+-		   "wmi peer assoc vdev id %d assoc id %d peer mac %pM peer_flags %x rate_caps %x peer_caps %x listen_intval %d ht_caps %x max_mpdu %d nss %d phymode %d peer_mpdu_density %d vht_caps %x he cap_info %x he ops %x he cap_info_ext %x he phy %x %x %x peer_bw_rxnss_override %x\n",
++		   "wmi peer assoc vdev id %d assoc id %d peer mac %pM peer_flags %x rate_caps %x peer_caps %x listen_intval %d ht_caps %x max_mpdu %d nss %d phymode %d peer_mpdu_density %d vht_caps %x he cap_info %x he ops %x he cap_info_ext %x he phy %x %x %x peer_bw_rxnss_override %x peer_flags_ext %x eht mac_cap %x %x eht phy_cap %x %x %x\n",
+ 		   cmd->vdev_id, cmd->peer_associd, arg->peer_mac,
+ 		   cmd->peer_flags, cmd->peer_rate_caps, cmd->peer_caps,
+ 		   cmd->peer_listen_intval, cmd->peer_ht_caps,
+@@ -2026,7 +2057,10 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
+ 		   cmd->peer_he_ops, cmd->peer_he_cap_info_ext,
+ 		   cmd->peer_he_cap_phy[0], cmd->peer_he_cap_phy[1],
+ 		   cmd->peer_he_cap_phy[2],
+-		   cmd->peer_bw_rxnss_override);
++		   cmd->peer_bw_rxnss_override, cmd->peer_flags_ext,
++		   cmd->peer_eht_cap_mac[0], cmd->peer_eht_cap_mac[1],
++		   cmd->peer_eht_cap_phy[0], cmd->peer_eht_cap_phy[1],
++		   cmd->peer_eht_cap_phy[2]);
  
- 	switch (band) {
- 	case NL80211_BAND_2GHZ:
--		if (sta->deflink.he_cap.has_he) {
-+		if (sta->deflink.eht_cap.has_eht) {
-+			if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+				phymode = MODE_11BE_EHT40_2G;
-+			else
-+				phymode = MODE_11BE_EHT20_2G;
-+		} else if (sta->deflink.he_cap.has_he) {
- 			if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
- 				phymode = MODE_11AX_HE80_2G;
- 			else if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-@@ -1977,8 +2038,10 @@ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
- 		break;
- 	case NL80211_BAND_5GHZ:
- 	case NL80211_BAND_6GHZ:
--		/* Check HE first */
--		if (sta->deflink.he_cap.has_he) {
-+		/* Check EHT first */
-+		if (sta->deflink.eht_cap.has_eht) {
-+			phymode = ath12k_mac_get_phymode_eht(ar, sta);
-+		} else if (sta->deflink.he_cap.has_he) {
- 			phymode = ath12k_mac_get_phymode_he(ar, sta);
- 		} else if (sta->deflink.vht_cap.vht_supported &&
- 		    !ath12k_peer_assoc_h_vht_masked(vht_mcs_mask)) {
-diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
-index 57f4295420bb..7b16b70df4fa 100644
---- a/drivers/net/wireless/ath/ath12k/mac.h
-+++ b/drivers/net/wireless/ath/ath12k/mac.h
-@@ -33,7 +33,7 @@ struct ath12k_generic_iter {
- #define IEEE80211_VHT_MCS_SUPPORT_0_11_MASK	GENMASK(23, 16)
- #define IEEE80211_DISABLE_VHT_MCS_SUPPORT_0_11	BIT(24)
- 
--#define ATH12K_CHAN_WIDTH_NUM			8
-+#define ATH12K_CHAN_WIDTH_NUM			14
- 
- #define ATH12K_TX_POWER_MAX_VAL	70
- #define ATH12K_TX_POWER_MIN_VAL	0
+ 	ret = ath12k_wmi_cmd_send(wmi, skb, WMI_PEER_ASSOC_CMDID);
+ 	if (ret) {
 diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 27f9ce4462a9..67604224046b 100644
+index 23cdb3543fc2..780d589268b0 100644
 --- a/drivers/net/wireless/ath/ath12k/wmi.h
 +++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -2796,8 +2796,17 @@ enum wmi_phy_mode {
- 	MODE_11AX_HE20_2G = 21,
- 	MODE_11AX_HE40_2G = 22,
- 	MODE_11AX_HE80_2G = 23,
--	MODE_UNKNOWN = 24,
--	MODE_MAX = 24
-+	MODE_11BE_EHT20 = 24,
-+	MODE_11BE_EHT40 = 25,
-+	MODE_11BE_EHT80 = 26,
-+	MODE_11BE_EHT80_80 = 27,
-+	MODE_11BE_EHT160 = 28,
-+	MODE_11BE_EHT160_160 = 29,
-+	MODE_11BE_EHT320 = 30,
-+	MODE_11BE_EHT20_2G = 31,
-+	MODE_11BE_EHT40_2G = 32,
-+	MODE_UNKNOWN = 33,
-+	MODE_MAX = 33,
+@@ -1167,6 +1167,10 @@ enum wmi_tlv_peer_flags {
+ 
  };
  
- struct wmi_vdev_start_req_arg {
++enum wmi_tlv_peer_flags_ext {
++	WMI_PEER_EXT_EHT = BIT(0),
++};
++
+ /** Enum list of TLV Tags for each parameter structure type. */
+ enum wmi_tlv_tag {
+ 	WMI_TAG_LAST_RESERVED = 15,
+@@ -1924,6 +1928,7 @@ enum wmi_tlv_tag {
+ 	WMI_TAG_MAC_PHY_CAPABILITIES_EXT = 0x36F,
+ 	WMI_TAG_REGULATORY_RULE_EXT_STRUCT = 0x3A9,
+ 	WMI_TAG_REG_CHAN_LIST_CC_EXT_EVENT,
++	WMI_TAG_EHT_RATE_SET = 0x3C4,
+ 	WMI_TAG_MAX
+ };
+ 
+@@ -3613,6 +3618,15 @@ struct wmi_peer_assoc_complete_cmd {
+ 	__le32 peer_he_cap_info_internal;
+ 	__le32 min_data_rate;
+ 	__le32 peer_he_caps_6ghz;
++	__le32 sta_type;
++	__le32 bss_max_idle_option;
++	__le32 auth_mode;
++	__le32 peer_flags_ext;
++	__le32 puncture_20mhz_bitmap;
++	__le32 peer_eht_cap_mac[WMI_MAX_EHTCAP_MAC_SIZE];
++	__le32 peer_eht_cap_phy[WMI_MAX_EHTCAP_PHY_SIZE];
++	__le32 peer_eht_ops;
++	struct ath12k_wmi_ppe_threshold_params peer_eht_ppet;
+ } __packed;
+ 
+ struct wmi_stop_scan_cmd {
+@@ -3840,6 +3854,12 @@ struct ath12k_wmi_he_rate_set_params {
+ 	__le32 tx_mcs_set;
+ } __packed;
+ 
++struct ath12k_wmi_eht_rate_set_params {
++	__le32 tlv_header;
++	__le32 rx_mcs_set;
++	__le32 tx_mcs_set;
++} __packed;
++
+ #define MAX_REG_RULES 10
+ #define REG_ALPHA2_LEN 2
+ #define MAX_6G_REG_RULES 5
 -- 
 2.39.0
 
