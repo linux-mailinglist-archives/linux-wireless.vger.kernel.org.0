@@ -2,72 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36369762D15
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 09:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4157D762D2F
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 09:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231417AbjGZHTJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 03:19:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52776 "EHLO
+        id S232357AbjGZHYP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 03:24:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231347AbjGZHSp (ORCPT
+        with ESMTP id S232915AbjGZHXZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 03:18:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672C33583
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 00:15:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0908616BD
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 07:15:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48132C433C9;
-        Wed, 26 Jul 2023 07:15:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690355739;
-        bh=t8DhHa/ZfFQ4O+NBAyFPpqKY1E9TvtW68eNEjkdnSDY=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Zr4/t27NI3HvWm90vbM1O3JQr7yST05eFidX3B6R4HgZYT4gz4dLfYf7W3Q602k4E
-         SE7Y3+i9x/e2Ip3M5/gCsAVMAOMWORB7+jS1+iMfHSTYGtpoFU0BAwj/T0wkgLmSAG
-         WM7RbiqV6lanSmCSpD1+rvChWHm/exu02c5UZ8Mx/ejAs6IRWgPMZvKl/6EF5gatro
-         vnFpY9itefcg62HioZs0OKBt5AGhHITyvXqsV5Dgp934/XfncanqwT5ZV4qQygc1Yx
-         iYgXCQegfQd4pgniustsALLYMnZMKg7dCG3acEnhujaDn/RCaw/0R4Xn0AFsGnE2T4
-         HLdz79L4xYS2Q==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: MAINTAINERS: add Jeff as ath10k, ath11k and ath12k maintainer
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230725094248.3205486-1-kvalo@kernel.org>
-References: <20230725094248.3205486-1-kvalo@kernel.org>
+        Wed, 26 Jul 2023 03:23:25 -0400
+Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [178.154.239.214])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 795D34203
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 00:21:49 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-36.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-36.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:a497:0:640:fcbf:0])
+        by forward103c.mail.yandex.net (Yandex) with ESMTP id 24D606004B;
+        Wed, 26 Jul 2023 10:21:47 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-36.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kLF1MPmWs8c0-138ylmzN;
+        Wed, 26 Jul 2023 10:21:46 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1690356106;
+        bh=NO40i8OOR61r7KLXzluQn5AjB3Vg8yqt8Yc8yNxfEuQ=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=Hc2OA70IsFhnTxqdBgPIKcmWLBu/MEbaJOd9vmoz8fpIiYzAApZRhhdeOg1AYSPnS
+         IAJ+ZeILo+o1p3udov+FKamPaRDJU620A4ldKuBfBAKjhjQ3yrxYcO12Y/YvT2lX+U
+         A+hSGqq2J8WqYgZDsknJGtV4Ghl7crh8U8cwHATk=
+Authentication-Results: mail-nwsmtp-smtp-production-main-36.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
 To:     Kalle Valo <kvalo@kernel.org>
-Cc:     ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169035573624.3467307.11100400634973948208.kvalo@kernel.org>
-Date:   Wed, 26 Jul 2023 07:15:38 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Cc:     Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/5] wifi: mwifiex: fix memory leak in mwifiex_histogram_read()
+Date:   Wed, 26 Jul 2023 10:20:52 +0300
+Message-ID: <20230726072114.51964-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> wrote:
+Always free the zeroed page on return from 'mwifiex_histogram_read()'.
 
-> Jeff will now start maintaining these drivers together with me.
-> 
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Fixes: cbf6e05527a7 ("mwifiex: add rx histogram statistics support")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+NOTE: this series supersedes all of the previous mwifiex patches not
+yet accepted into wireless-next tree.
+---
+ drivers/net/wireless/marvell/mwifiex/debugfs.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Patch applied to wireless.git, thanks.
-
-456b5e85d8a5 MAINTAINERS: add Jeff as ath10k, ath11k and ath12k maintainer
-
+diff --git a/drivers/net/wireless/marvell/mwifiex/debugfs.c b/drivers/net/wireless/marvell/mwifiex/debugfs.c
+index 52b18f4a774b..0cdd6c50c1c0 100644
+--- a/drivers/net/wireless/marvell/mwifiex/debugfs.c
++++ b/drivers/net/wireless/marvell/mwifiex/debugfs.c
+@@ -253,8 +253,11 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	if (!priv || !priv->hist_data)
+-		return -EFAULT;
++	if (!priv || !priv->hist_data) {
++		ret = -EFAULT;
++		goto free_and_exit;
++	}
++
+ 	phist_data = priv->hist_data;
+ 
+ 	p += sprintf(p, "\n"
+@@ -309,6 +312,8 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
+ 	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
+ 				      (unsigned long)p - page);
+ 
++free_and_exit:
++	free_page(page);
+ 	return ret;
+ }
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230725094248.3205486-1-kvalo@kernel.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.41.0
 
