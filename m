@@ -2,82 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85FCA7631C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 11:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37ED8763209
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 11:29:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230262AbjGZJYF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 05:24:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43584 "EHLO
+        id S232613AbjGZJ3H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 05:29:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232682AbjGZJXf (ORCPT
+        with ESMTP id S232682AbjGZJ2h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 05:23:35 -0400
-Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d103])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E817C1BFF
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 02:21:19 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-10.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-10.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:2481:0:640:e0:0])
-        by forward103c.mail.yandex.net (Yandex) with ESMTP id 6563660043;
-        Wed, 26 Jul 2023 12:21:17 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-10.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id GLH0FV0DRCg0-yw47g0Pz;
-        Wed, 26 Jul 2023 12:21:17 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1690363277;
-        bh=U9IgHL7mNlyyfl12D9f7wkhVJ0J0ccSpDZilKFxxF+I=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=U80GY3XVcnB4j947M5ExY/ZrLwhdElF/4CKvstspq1pc5B2ByMs+EdH0VXSvG3CM2
-         3eUH9E0VfKVsR2Fdxdk8HvW6MwG17tMz106nc6yvwEpYPVmYq/GS8n8Ylu6p6ve3t8
-         NLG7oaeMzdPpCOoCVUTZ4Mr+BJX3fZHP2BesvDoA=
-Authentication-Results: mail-nwsmtp-smtp-production-main-10.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Ziyang Huang <hzyitc@outlook.com>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: ath11k: simplify ath11k_mac_validate_vht_he_fixed_rate_settings()
-Date:   Wed, 26 Jul 2023 12:21:02 +0300
-Message-ID: <20230726092113.78794-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Wed, 26 Jul 2023 05:28:37 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37CC4237
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 02:26:47 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q6bMXw008458;
+        Wed, 26 Jul 2023 09:26:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=oWz8EwbBIUuxVy7ApB8AxGYWCSmyH8C6z9DQBLklzCg=;
+ b=Vo4ioW/E/dVaOL8pEbL1zGd7XW5SNZxRNwRRedWTnAahmDVd0zSgJWAVN8Mom4g8NlVF
+ chnAWwwD4jvpk9PaIlf3nnG5yfyGdeqRm6HmwWd6ag+UAvFFghEeQ+pIX06jIzcoy4v6
+ aRn5wa7xLuBVZWDRPMJlDj5nA6k84TYMkMvm7l9pYJc5IDJ2H1XDVLp4/2O2fC2crm0o
+ wx57abA8MlmoxoXFYdSawbZWLWCozXHlDocnzWnlemXe+v+vKNkct2UurJr73OMJG0iT
+ sURXZsVu+L/Fnl2aAD8StrR4VtmDAGUt623LI1LxOuOd/IUViGtXQIN/IpkIL3aSU1hZ sA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s2v4tghba-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 09:26:41 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36Q9Qeqc013506
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 09:26:40 GMT
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Wed, 26 Jul 2023 02:26:39 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH] ath12k: Fix a NULL pointer dereference in ath12k_mac_op_hw_scan()
+Date:   Wed, 26 Jul 2023 05:26:25 -0400
+Message-ID: <20230726092625.3350-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 5ka9MlkJEtvpgHSGoRPbCNMwTUHC0c-4
+X-Proofpoint-GUID: 5ka9MlkJEtvpgHSGoRPbCNMwTUHC0c-4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-26_03,2023-07-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 mlxscore=0 bulkscore=0 impostorscore=0 spamscore=0
+ lowpriorityscore=0 mlxlogscore=783 malwarescore=0 adultscore=0
+ phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2306200000 definitions=main-2307260083
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In 'ath11k_mac_validate_vht_he_fixed_rate_settings()', 'ar->ab->peers'
-list is not altered so 'list_for_each_entry()' should be safe.
+In ath12k_mac_op_hw_scan(), the return value of kzalloc() is directly
+used in memcpy(), which may lead to a NULL pointer dereference on
+failure of kzalloc().
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Fix this bug by adding a check of arg.extraie.ptr.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 8c77ade49437..2aadf2c387b6 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8255,7 +8255,7 @@ ath11k_mac_validate_vht_he_fixed_rate_settings(struct ath11k *ar, enum nl80211_b
- 					       const struct cfg80211_bitrate_mask *mask)
- {
- 	bool he_fixed_rate = false, vht_fixed_rate = false;
--	struct ath11k_peer *peer, *tmp;
-+	struct ath11k_peer *peer;
- 	const u16 *vht_mcs_mask, *he_mcs_mask;
- 	struct ieee80211_link_sta *deflink;
- 	u8 vht_nss, he_nss;
-@@ -8278,7 +8278,7 @@ ath11k_mac_validate_vht_he_fixed_rate_settings(struct ath11k *ar, enum nl80211_b
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 1bb9802ef569..af46b63bb15b 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -2755,9 +2755,12 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+ 	arg.scan_id = ATH12K_SCAN_ID;
  
- 	rcu_read_lock();
- 	spin_lock_bh(&ar->ab->base_lock);
--	list_for_each_entry_safe(peer, tmp, &ar->ab->peers, list) {
-+	list_for_each_entry(peer, &ar->ab->peers, list) {
- 		if (peer->sta) {
- 			deflink = &peer->sta->deflink;
+ 	if (req->ie_len) {
++		arg.extraie.ptr = kmemdup(req->ie, req->ie_len, GFP_KERNEL);
++		if (!arg.extraie.ptr) {
++			ret = -ENOMEM;
++			goto exit;
++		}
+ 		arg.extraie.len = req->ie_len;
+-		arg.extraie.ptr = kzalloc(req->ie_len, GFP_KERNEL);
+-		memcpy(arg.extraie.ptr, req->ie, req->ie_len);
+ 	}
  
+ 	if (req->n_ssids) {
+
+base-commit: b21fe5be53eb873c02e7479372726c8aeed171e3
 -- 
-2.41.0
+2.40.1
 
