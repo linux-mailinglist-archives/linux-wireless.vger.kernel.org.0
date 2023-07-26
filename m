@@ -2,70 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57915763EA0
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 20:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C312763F00
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 20:51:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231986AbjGZSf0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 14:35:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36974 "EHLO
+        id S229486AbjGZSvp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 14:51:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjGZSfY (ORCPT
+        with ESMTP id S232279AbjGZSvl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 14:35:24 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F6526AE
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 11:35:16 -0700 (PDT)
-X-UUID: 26d1fd602be311ee9cb5633481061a41-20230727
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=dO+r8hlmOrg2/rtj38EIr873Odkj7bMG57ndJFMX2oU=;
-        b=rXCK0NJrcLfvb4S10fkSU+qnD8nsSqEMKTnKzFt5xS53EeSZDp0M16pFLn0UOVgzIQewDMyPcb1ZTBRmtdyy68cn82q9Sk8JuQU0zJ/PMMBPEfXG2hPmpb3LUEYGMTyLc0iRtSua1mmkEnFtFTzgvGvF0p686q84VNSuYQ1r8cI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.29,REQID:4beeeacb-3e52-4c20-ac96-ab873c65ac62,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:95
-X-CID-INFO: VERSION:1.1.29,REQID:4beeeacb-3e52-4c20-ac96-ab873c65ac62,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
-        :quarantine,TS:95
-X-CID-META: VersionHash:e7562a7,CLOUDID:671d7d42-d291-4e62-b539-43d7d78362ba,B
-        ulkID:23072702351292FJJ2YI,BulkQuantity:0,Recheck:0,SF:17|19|48|38|29|28,T
-        C:nil,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
-        L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SDM,TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,
-        TF_CID_SPAM_ULN,TF_CID_SPAM_SNR
-X-UUID: 26d1fd602be311ee9cb5633481061a41-20230727
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 873096743; Thu, 27 Jul 2023 02:35:10 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 27 Jul 2023 02:35:09 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 27 Jul 2023 02:35:09 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Allen Ye <allen.ye@mediatek.com>
-Subject: [PATCH 2/2] wifi: mt76: mt7915: fix power-limits while chan_switch
-Date:   Thu, 27 Jul 2023 02:35:06 +0800
-Message-ID: <92b3a4989462b0270dd52ce739cff6aaced21c7e.1690396305.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <6fa87074b9cce5037af35d870d8670bb29481a53.1690396305.git.ryder.lee@mediatek.com>
-References: <6fa87074b9cce5037af35d870d8670bb29481a53.1690396305.git.ryder.lee@mediatek.com>
+        Wed, 26 Jul 2023 14:51:41 -0400
+Received: from forward101c.mail.yandex.net (forward101c.mail.yandex.net [178.154.239.212])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30B72D44
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 11:51:35 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-31.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-31.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:d315:0:640:bb64:0])
+        by forward101c.mail.yandex.net (Yandex) with ESMTP id F27356004C;
+        Wed, 26 Jul 2023 21:51:32 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-31.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id VpQk7m4WwW20-m87Oaocr;
+        Wed, 26 Jul 2023 21:51:32 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1690397492;
+        bh=daf8wVPTJcZpS8IwYRoxic7CIo498ckpzPyCSdO1160=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=avfKizldQ0d0tr5WQLMQxK9xw/kl+jBeGfDzp5xgDHPTwXZBf1zKoWB4/r/StrODu
+         1VRjlG6H03kUjWYHzXL2Am150k0WcoOeuHWI9Qv9js/Z6GQ1bvuguJAPzg3M5L4gPB
+         bauXKsDpxX0I8oRGJXSHeOUjyiHCYKdoSFNwO9Ng=
+Authentication-Results: mail-nwsmtp-smtp-production-main-31.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: ath9k: consistently use kstrtoX_from_user() functions
+Date:   Wed, 26 Jul 2023 21:50:08 +0300
+Message-ID: <20230726185046.188225-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,37 +49,374 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If user changes the channel without completely disabling the interface the
-txpower_sku values reported track the old channel the device was operating on.
-If user bounces the interface the correct power tables are applied.
+Use 'kstrtoul_from_user()' and 'kstrtobool_from_user()'
+where appropriate and thus avoid some code duplication.
 
-mt7915_sku_group_len array gets updated before the channel switch happens so it
-uses data from the old channel.
-
-Fixes: ecb187a74e18 ("mt76: mt7915: rework the flow of txpower setting")
-Fixes: f1d962369d56 ("mt76: mt7915: implement HE per-rate tx power support")
-Reported-By: Chad Monroe <chad.monroe@smartrg.com>
-Tested-by: Chad Monroe <chad.monroe@smartrg.com>
-Signed-off-by: Allen Ye <allen.ye@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../net/wireless/ath/ath9k/common-spectral.c  |  53 +++------
+ drivers/net/wireless/ath/ath9k/debug.c        | 106 ++++++------------
+ drivers/net/wireless/ath/ath9k/dfs_debug.c    |  14 +--
+ .../net/wireless/ath/ath9k/htc_drv_debug.c    |  13 +--
+ drivers/net/wireless/ath/ath9k/tx99.c         |  14 +--
+ 5 files changed, 61 insertions(+), 139 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index db3fc74f0f49..f8d6323bd42d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -470,7 +470,8 @@ static int mt7915_config(struct ieee80211_hw *hw, u32 changed)
- 		ieee80211_wake_queues(hw);
- 	}
+diff --git a/drivers/net/wireless/ath/ath9k/common-spectral.c b/drivers/net/wireless/ath/ath9k/common-spectral.c
+index e055adfb5361..a5349c72c332 100644
+--- a/drivers/net/wireless/ath/ath9k/common-spectral.c
++++ b/drivers/net/wireless/ath/ath9k/common-spectral.c
+@@ -855,16 +855,11 @@ static ssize_t write_file_spectral_short_repeat(struct file *file,
+ {
+ 	struct ath_spec_scan_priv *spec_priv = file->private_data;
+ 	unsigned long val;
+-	char buf[32];
+-	ssize_t len;
+-
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
++	ssize_t ret;
  
--	if (changed & IEEE80211_CONF_CHANGE_POWER) {
-+	if (changed & (IEEE80211_CONF_CHANGE_POWER |
-+		       IEEE80211_CONF_CHANGE_CHANNEL)) {
- 		ret = mt7915_mcu_set_txpower_sku(phy);
- 		if (ret)
- 			return ret;
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &val))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &val);
++	if (ret)
++		return ret;
+ 
+ 	if (val > 1)
+ 		return -EINVAL;
+@@ -903,17 +898,11 @@ static ssize_t write_file_spectral_count(struct file *file,
+ {
+ 	struct ath_spec_scan_priv *spec_priv = file->private_data;
+ 	unsigned long val;
+-	char buf[32];
+-	ssize_t len;
+-
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
+-
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &val))
+-		return -EINVAL;
++	ssize_t ret;
+ 
++	ret = kstrtoul_from_user(user_buf, count, 0, &val);
++	if (ret)
++		return ret;
+ 	if (val > 255)
+ 		return -EINVAL;
+ 
+@@ -951,16 +940,11 @@ static ssize_t write_file_spectral_period(struct file *file,
+ {
+ 	struct ath_spec_scan_priv *spec_priv = file->private_data;
+ 	unsigned long val;
+-	char buf[32];
+-	ssize_t len;
+-
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
++	ssize_t ret;
+ 
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &val))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &val);
++	if (ret)
++		return ret;
+ 
+ 	if (val > 255)
+ 		return -EINVAL;
+@@ -999,16 +983,11 @@ static ssize_t write_file_spectral_fft_period(struct file *file,
+ {
+ 	struct ath_spec_scan_priv *spec_priv = file->private_data;
+ 	unsigned long val;
+-	char buf[32];
+-	ssize_t len;
+-
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
++	ssize_t ret;
+ 
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &val))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &val);
++	if (ret)
++		return ret;
+ 
+ 	if (val > 15)
+ 		return -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index fb7a2952d0ce..ddf1c3ae0306 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -96,21 +96,16 @@ static ssize_t read_file_debug(struct file *file, char __user *user_buf,
+ }
+ 
+ static ssize_t write_file_debug(struct file *file, const char __user *user_buf,
+-			     size_t count, loff_t *ppos)
++				size_t count, loff_t *ppos)
+ {
+ 	struct ath_softc *sc = file->private_data;
+ 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
+ 	unsigned long mask;
+-	char buf[32];
+-	ssize_t len;
++	ssize_t ret;
+ 
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
+-
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &mask))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &mask);
++	if (ret)
++		return ret;
+ 
+ 	common->debug_mask = mask;
+ 	return count;
+@@ -191,16 +186,11 @@ static ssize_t write_file_ani(struct file *file,
+ 	struct ath_softc *sc = file->private_data;
+ 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
+ 	unsigned long ani;
+-	char buf[32];
+-	ssize_t len;
++	ssize_t ret;
+ 
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
+-
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &ani))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &ani);
++	if (ret)
++		return ret;
+ 
+ 	if (ani > 1)
+ 		return -EINVAL;
+@@ -248,20 +238,15 @@ static ssize_t write_file_bt_ant_diversity(struct file *file,
+ 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
+ 	struct ath9k_hw_capabilities *pCap = &sc->sc_ah->caps;
+ 	unsigned long bt_ant_diversity;
+-	char buf[32];
+-	ssize_t len;
++	ssize_t ret;
+ 
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
++	ret = kstrtoul_from_user(user_buf, count, 0, &bt_ant_diversity);
++	if (ret)
++		return ret;
+ 
+ 	if (!(pCap->hw_caps & ATH9K_HW_CAP_BT_ANT_DIV))
+ 		goto exit;
+ 
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &bt_ant_diversity))
+-		return -EINVAL;
+-
+ 	common->bt_ant_diversity = !!bt_ant_diversity;
+ 	ath9k_ps_wakeup(sc);
+ 	ath9k_hw_set_bt_ant_diversity(sc->sc_ah, common->bt_ant_diversity);
+@@ -792,16 +777,11 @@ static ssize_t write_file_reset(struct file *file,
+ 	struct ath_hw *ah = sc->sc_ah;
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	unsigned long val;
+-	char buf[32];
+-	ssize_t len;
+-
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
++	ssize_t ret;
+ 
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &val))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &val);
++	if (ret)
++		return ret;
+ 
+ 	if (val != 1)
+ 		return -EINVAL;
+@@ -886,16 +866,11 @@ static ssize_t write_file_regidx(struct file *file, const char __user *user_buf,
+ {
+ 	struct ath_softc *sc = file->private_data;
+ 	unsigned long regidx;
+-	char buf[32];
+-	ssize_t len;
++	ssize_t ret;
+ 
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
+-
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &regidx))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &regidx);
++	if (ret)
++		return ret;
+ 
+ 	sc->debug.regidx = regidx;
+ 	return count;
+@@ -931,16 +906,11 @@ static ssize_t write_file_regval(struct file *file, const char __user *user_buf,
+ 	struct ath_softc *sc = file->private_data;
+ 	struct ath_hw *ah = sc->sc_ah;
+ 	unsigned long regval;
+-	char buf[32];
+-	ssize_t len;
+-
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
++	ssize_t ret;
+ 
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &regval))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &regval);
++	if (ret)
++		return ret;
+ 
+ 	ath9k_ps_wakeup(sc);
+ 	REG_WRITE_D(ah, sc->debug.regidx, regval);
+@@ -1128,16 +1098,11 @@ static ssize_t write_file_wow(struct file *file, const char __user *user_buf,
+ {
+ 	struct ath_softc *sc = file->private_data;
+ 	unsigned long val;
+-	char buf[32];
+-	ssize_t len;
+-
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
++	ssize_t ret;
+ 
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &val))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &val);
++	if (ret)
++		return ret;
+ 
+ 	if (val != 1)
+ 		return -EINVAL;
+@@ -1191,17 +1156,12 @@ static ssize_t write_file_tpc(struct file *file, const char __user *user_buf,
+ 	struct ath_softc *sc = file->private_data;
+ 	struct ath_hw *ah = sc->sc_ah;
+ 	unsigned long val;
+-	char buf[32];
+-	ssize_t len;
++	ssize_t ret;
+ 	bool tpc_enabled;
+ 
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
+-
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &val))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &val);
++	if (ret)
++		return ret;
+ 
+ 	if (val > 1)
+ 		return -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath9k/dfs_debug.c b/drivers/net/wireless/ath/ath9k/dfs_debug.c
+index 2a79c2fa8415..8e18e9b4ef48 100644
+--- a/drivers/net/wireless/ath/ath9k/dfs_debug.c
++++ b/drivers/net/wireless/ath/ath9k/dfs_debug.c
+@@ -99,17 +99,11 @@ static ssize_t write_file_dfs(struct file *file, const char __user *user_buf,
+ {
+ 	struct ath_softc *sc = file->private_data;
+ 	unsigned long val;
+-	char buf[32];
+-	ssize_t len;
+-
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
+-
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &val))
+-		return -EINVAL;
++	ssize_t ret;
+ 
++	ret = kstrtoul_from_user(user_buf, count, 0, &val);
++	if (ret)
++		return ret;
+ 	if (val == DFS_STATS_RESET_MAGIC)
+ 		memset(&sc->debug.stats.dfs_stats, 0,
+ 		       sizeof(sc->debug.stats.dfs_stats));
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+index b3ed65e5c4da..1ed2b1216bce 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+@@ -375,16 +375,11 @@ static ssize_t write_file_debug(struct file *file, const char __user *user_buf,
+ 	struct ath9k_htc_priv *priv = file->private_data;
+ 	struct ath_common *common = ath9k_hw_common(priv->ah);
+ 	unsigned long mask;
+-	char buf[32];
+-	ssize_t len;
+-
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
++	ssize_t ret;
+ 
+-	buf[len] = '\0';
+-	if (kstrtoul(buf, 0, &mask))
+-		return -EINVAL;
++	ret = kstrtoul_from_user(user_buf, count, 0, &mask);
++	if (ret)
++		return ret;
+ 
+ 	common->debug_mask = mask;
+ 	return count;
+diff --git a/drivers/net/wireless/ath/ath9k/tx99.c b/drivers/net/wireless/ath/ath9k/tx99.c
+index 8a996ed9a3be..f2144fd39093 100644
+--- a/drivers/net/wireless/ath/ath9k/tx99.c
++++ b/drivers/net/wireless/ath/ath9k/tx99.c
+@@ -172,9 +172,8 @@ static ssize_t write_file_tx99(struct file *file, const char __user *user_buf,
+ {
+ 	struct ath_softc *sc = file->private_data;
+ 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
+-	char buf[32];
+ 	bool start;
+-	ssize_t len;
++	ssize_t ret;
+ 	int r;
+ 
+ 	if (count < 1)
+@@ -183,14 +182,9 @@ static ssize_t write_file_tx99(struct file *file, const char __user *user_buf,
+ 	if (sc->cur_chan->nvifs > 1)
+ 		return -EOPNOTSUPP;
+ 
+-	len = min(count, sizeof(buf) - 1);
+-	if (copy_from_user(buf, user_buf, len))
+-		return -EFAULT;
+-
+-	buf[len] = '\0';
+-
+-	if (kstrtobool(buf, &start))
+-		return -EINVAL;
++	ret = kstrtobool_from_user(user_buf, count, &start);
++	if (ret)
++		return ret;
+ 
+ 	mutex_lock(&sc->mutex);
+ 
 -- 
-2.18.0
+2.41.0
 
