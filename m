@@ -2,75 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40AD0763BE8
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 18:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28D62763C9E
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 18:38:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229963AbjGZQEc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 12:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59870 "EHLO
+        id S229822AbjGZQiP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 12:38:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjGZQEb (ORCPT
+        with ESMTP id S229680AbjGZQiP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 12:04:31 -0400
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CDB219B6;
-        Wed, 26 Jul 2023 09:04:30 -0700 (PDT)
-Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-563de62f861so746691a12.1;
-        Wed, 26 Jul 2023 09:04:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690387470; x=1690992270;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WemSbbi4nmxYWdvYoU1QjodfrKLGaKVRJYiHpPTC3RM=;
-        b=J0uZTtexUewfxyw8NOt1QJaabWMwcKVAmRiNXdw7EIVcafRcbFpmWYJpX070uwkLeK
-         Apemi6nazciA4BoUOE5uFffUn0Fe7lTaMygTPnBYt9xtiqF1RtRUPFXHQez2i3proKBG
-         eQ1aGXhownS9FM/d67rYQXP89cZx7X9o4Q+/B1B2jvXZwFu6M6NdNvb0VVgOhlcsdB6I
-         LRN6wYwinE67cmw7ZY0L7Cx8by++iVSlczDTexCz5jFu9Auc5S5jOTd9Y3xJfng/L/iP
-         IBbmKWmGmkUxQTOX/2qecqjkHl4kFnxlyQAAUB3MWXI/Qp08AGcQhvCoe53NZy9cMbGm
-         6SFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690387470; x=1690992270;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WemSbbi4nmxYWdvYoU1QjodfrKLGaKVRJYiHpPTC3RM=;
-        b=KPUs5lQXfEL5HEbGuKcrDNrd0R6xYs2/OS7H+1zwVkhlNRVwB2oZhh2ahXH4WmBm5t
-         VbqvbOQFQk1NnALikUfWgHnTVp8dufPGO3o8frMPYQFH2sKO//c+oqBNs1pG3mINgV1V
-         vjQfXbMG871GLQWSxLifYmNPYtGJBC7B6cWTnUwcKsOUedmqkbV0Vc3PH+XvCzv+/geR
-         eIi8P+JK4XhD+M0iireoXcQIUc2YlSpWRDLcPg+SFBDvqWQGJt4lonTra8wkW/vM6uQs
-         /AeRp9kGQZ1eXSdFr4W/fkwrTDHu+IRgKcxwHjpQvZx2stj2UZmDvZYHnIbt4+VEldQa
-         JtpA==
-X-Gm-Message-State: ABy/qLYXcJnftDvMNzCUkRTBtGTQpUP1Qj3aS9FUTGr2+ysvOawC2MrK
-        vnKhnpPHyUcpctsmEgGoqL4yTs6/CeZtQsApOjo=
-X-Google-Smtp-Source: APBJJlF3raRu7/V95hjDIqFG7tdPTZZsjE+OlqvOdwQaOS4lGXOjZbMI2nXIx5RVa9d1ARY03sOAeDCNzU7ZCYQjNyM=
-X-Received: by 2002:a17:90b:4018:b0:262:f449:4492 with SMTP id
- ie24-20020a17090b401800b00262f4494492mr1928327pjb.30.1690387469576; Wed, 26
- Jul 2023 09:04:29 -0700 (PDT)
+        Wed, 26 Jul 2023 12:38:15 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67AE12118
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 09:38:14 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36QD0Pj8013350;
+        Wed, 26 Jul 2023 16:38:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=xGKt1zTVOiCFCvRZdLmWEclcAJdPKv3tOfW7w4PDkdM=;
+ b=mosO7Nzyib9GC1fKrqMMdR6pQPShSEk6Uw+Gs6+WVNQfjFpiIqMR9uqH0GUVQWnD5TAw
+ rhO57Oyezi1NlBcGGPqKri0BxgBXkoUxL4jt6ovnVT2vl0aQYVpaWqbjPwT+cew+yWQG
+ 5hl3jM9XM05bIar9rLUz1QbfD0JDIQs7Yz/2NHIv/qWR/rw5Tk8wi2ygaLNI069K6DsB
+ 1UKpWTkssgWW0odx+khzvBGbkf5WyUEmHLQnRk8zm9u8EH1d0GAk+dP0FBhyn4AJKP93
+ 6D+NWXldkeLP5BMKpRud6yjsZE9+aFko6spSGQA2ilvEfb3JZy29QI4hKClDgLXIHQmc 8A== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s2drabe7e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 16:38:09 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36QGc8mK011237
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 16:38:08 GMT
+Received: from [10.110.108.92] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 26 Jul
+ 2023 09:38:08 -0700
+Message-ID: <333fd74a-4178-3cef-5748-62a14ba2da5a@quicinc.com>
+Date:   Wed, 26 Jul 2023 09:38:01 -0700
 MIME-Version: 1.0
-References: <ZK9mXE00xEHZV4fi@makrotopia.org>
-In-Reply-To: <ZK9mXE00xEHZV4fi@makrotopia.org>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 26 Jul 2023 18:04:18 +0200
-Message-ID: <CAOiHx=m5jRYd70ymvX=-9Xh4ZDApJ04G39j9+U0YB18W1QPv7A@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: support per-band MAC addresses from OF child nodes
-To:     Daniel Golle <daniel@makrotopia.org>
-Cc:     linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        John Crispin <john@phrozen.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v5 06/11] wifi: ath12k: prepare EHT peer assoc parameters
+To:     Wen Gong <quic_wgong@quicinc.com>, <ath12k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+CC:     Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+References: <20230725224034.14045-1-quic_alokad@quicinc.com>
+ <20230725224034.14045-7-quic_alokad@quicinc.com>
+ <293dd873-1d9d-afc0-a122-48dfe4bb0fde@quicinc.com>
+Content-Language: en-US
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+In-Reply-To: <293dd873-1d9d-afc0-a122-48dfe4bb0fde@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: VnJ9tw1XStxTmSGMmkX_GpmQl8ZcBOVm
+X-Proofpoint-ORIG-GUID: VnJ9tw1XStxTmSGMmkX_GpmQl8ZcBOVm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-26_07,2023-07-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 mlxscore=0
+ malwarescore=0 priorityscore=1501 clxscore=1015 suspectscore=0
+ phishscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2306200000 definitions=main-2307260148
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,75 +81,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 7/25/2023 8:43 PM, Wen Gong wrote:
+> On 7/26/2023 6:40 AM, Aloka Dixit wrote:
+> [...]
+>> +
+>> +static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
+>> +                    struct ieee80211_vif *vif,
+>> +                    struct ieee80211_sta *sta,
+>> +                    struct ath12k_wmi_peer_assoc_arg *arg)
+>> +{
+>> +    const struct ieee80211_sta_eht_cap *eht_cap = &sta->deflink.eht_cap;
+>> +    const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
+> [...]
+>> +    default:
+>> +        if ((he_cap->he_cap_elem.phy_cap_info[0] &
+>> +             (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
+>> +              
+>> IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
+>> +              IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
+>> +              
+>> IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)) == 0) {
+>> +            const struct ieee80211_eht_mcs_nss_supp_20mhz_only *bw_20 =
+>> +                    &eht_cap->eht_mcs_nss_supp.only_20mhz;
+>> +
+> This is the IEs of my AP below, then it will still entered into this 
+> branch for my ath12k station mode.
+> sta->deflink.eht_cap and sta->deflink.he_cap is copied from peer remote, 
+> for ath12k station mode, peer
+> remote is the AP. The field only_20mhz is only valid when the IEs is 
+> from a station which only support
+> 20 MHz.
+> 
+> I think the flag from_ap should be added here as well as function 
+> ieee80211_eht_mcs_nss_size().
+> 
+> Please correct me if wrong.
+> 
 
-On Thu, 13 Jul 2023 at 04:53, Daniel Golle <daniel@makrotopia.org> wrote:
->
-> With dual-band-dual-congruent front-ends which appear as two independent
-> radios it is desirable to assign a per-band MAC address from device-tree,
-> eg. using nvmem-cells.
-> Support specifying MAC-address related properties in band-specific child
-> nodes, e.g.
->         mt7915@0,0 {
->                 reg = <0x0000 0 0 0 0>;
->                 #addr-cells = <1>;
->                 #size-cells = <0>;
->
->                 band@0 {
->                         /* 2.4 GHz */
->                         reg = <0>;
->                         nvmem-cells = <&macaddr 2>;
->                         nvmem-cell-names = "mac-address";
->                 };
->
->                 band@1 {
->                         /* 5 GHz */
->                         reg = <1>;
->                         nvmem-cells = <&macaddr 3>;
->                         nvmem-cell-names = "mac-address";
->                 };
->         };
->
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> ---
->  drivers/net/wireless/mediatek/mt76/eeprom.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-> index dce851d42e083..90ee138843a55 100644
-> --- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-> +++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-> @@ -106,7 +106,20 @@ void
->  mt76_eeprom_override(struct mt76_phy *phy)
->  {
->         struct mt76_dev *dev = phy->dev;
-> -       struct device_node *np = dev->dev->of_node;
-> +       struct device_node *child_np, *np = dev->dev->of_node;
-> +       u32 reg;
-> +       int ret;
-> +
-> +       for_each_child_of_node(np, child_np) {
-> +               ret = of_property_read_u32(child_np, "reg", &reg);
-> +               if (ret)
-> +                       continue;
-> +
-> +               if (reg == phy->band_idx) {
-> +                       np = child_np;
-> +                       break;
-
-When breaking out of the loop here you still hold an additional
-reference to child_np, so you need to call of_node_put() for it,
-probably after calling of_get_mac_address().
-
-> +               }
-> +       }
->
->         of_get_mac_address(np, phy->macaddr);
->
-
-probably just add a of_node_put(child_np); here, of_node_put() seems
-to be NULL safe.
-
-
-Regards,
-Jonas
+Okay, can you fix this in a follow-up patch?
+I don't have a device to test the station mode to verify a fix.
+Thanks.
