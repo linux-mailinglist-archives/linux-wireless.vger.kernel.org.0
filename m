@@ -2,158 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33373762B70
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 08:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E945762BB3
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 08:41:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230205AbjGZGa6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 02:30:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53050 "EHLO
+        id S231913AbjGZGlv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 02:41:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229993AbjGZGa5 (ORCPT
+        with ESMTP id S231812AbjGZGlt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 02:30:57 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C874D1BC2
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 23:30:54 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q6SimZ029697;
-        Wed, 26 Jul 2023 06:30:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=oPOa//Mz6tsLcfVUiNna+BXRH2ABp9hZJUaMJLoFyOs=;
- b=jqHAVPrRO5WGj6LWWF40QEv4ihppULL8Wws7f3aZm3J6KMyq9jZj/QAVf4hiBrA5w4gk
- z3eby7gXfOoPtfNpMVGLtUCSPNXjKYfcavXrpLANpMIwNYxay5ombQSuDQe4l71FLHz3
- gXf+KIb9D5MoICwHL6brZjoaAeUaYUXnqXxl3gi9h0M2QepTSCsuTLr1WIbOCU1wxupM
- 4C2ap+f69n1ZiD9tIhx+d/vah4l8nyG8C/rXCEfg4rmN7rXPSCbBT5bCo4cyVaAGWUD3
- 4dxBq9xjAl1gbyNXHUctZj+G4LgOi1N/NwpkyYcpkfJOayEqabhVpYbCpIxuMSTiu5zo rw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s2cf8tdbn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 06:30:47 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36Q6UkR6027913
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 06:30:46 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Tue, 25 Jul
- 2023 23:30:45 -0700
-Message-ID: <b5de662d-fd49-7b94-f617-89d4761c175b@quicinc.com>
-Date:   Wed, 26 Jul 2023 14:30:42 +0800
+        Wed, 26 Jul 2023 02:41:49 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D4782132
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 23:41:47 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4fe11652b64so328224e87.0
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 23:41:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690353705; x=1690958505;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=3y/22I2v93+TWa6s1CXf0qTViEqrmWtHnFQP2RiZStM=;
+        b=F03SUx2bWrNf/WDpUhqXyukSjU5FCI5ihDn/7rzZohIgM3+ICxFJ4nM7NmsfA/iT8S
+         Rep8k9bXe8gXhw7P/Q8L4UYgOzBQ9YuGrNoHrTNfoJGwFpPYXbQx7GCbJl12m9Fc7wkp
+         nDfJYhLNz/HqbwkF5DNJXOZop8Kkhz5DBh8CxCywtad+ZwkhFf8aA+M9RM1Rgcd+WOdP
+         2F6D1KAwG4xuYVHiH9+MZfg7RKTSk9Dg2DwT7VR5IHMXEFJ8GdHfbhHzrWbg1mZOv1fn
+         f38V43iuwVPWaYqHXQdaorL0A0TrDPr+AR1SnfyAadXGNs94XWeYYS+G93bvsyr5ILRs
+         QPvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690353705; x=1690958505;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3y/22I2v93+TWa6s1CXf0qTViEqrmWtHnFQP2RiZStM=;
+        b=Se/4igxd3lEOp4D7ik1W9RY9uAyVkdVPmclHGbpD4BymfgLQSFYlEqqZuF48ttlGgM
+         uczPJ4rdsa+mQA+CahWsNQ0mjUtXZz5j722zxkTU6Por/b3+dDJcK7JVrfp5Flq3SUqZ
+         URH8znnSxDwTupkikJD41vsG6gAfwF/wQ8ruHkQ0snrzwJa8JekxuI7zYA1YGH9u+Xe5
+         0BtRNBzuV+3UfSREcOojoNJZ3shb5KXYb9PUTbh36fO0KPoanYiHbAQTzrlrFWBfvCfR
+         IFMPZtTguaU2BbUUP2jYZc1hmPY0z75Ghh361L4ZQ2s9sVVppL2x2/O7TZWuNfXMV0Wp
+         gp+g==
+X-Gm-Message-State: ABy/qLbbB1s/aee0yf3AFPHybL3aio3BFRBCP6VYzjs4hxRzl6dEstD9
+        0+RA6ilk3MsxDzdFKOLUKCnsQva3B2R8S0kXo3moMw==
+X-Google-Smtp-Source: APBJJlGzOjHjb9aiiq9rLMjcCYZohEXYqsGAsfrlAhqhGFGRUC/tHxEDwJrVtT/8u5/kP1c1LDwhAL7CANzQ4WuVjzQ=
+X-Received: by 2002:a2e:7a08:0:b0:2b6:d137:b61c with SMTP id
+ v8-20020a2e7a08000000b002b6d137b61cmr730329ljc.39.1690353705569; Tue, 25 Jul
+ 2023 23:41:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: parsing the multi-link element with STA profile wifi: mac80211:
- support MLO authentication/association with one link
-Content-Language: en-US
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-CC:     <ath11k@lists.infradead.org>
-References: <48715509-62fd-2307-e38f-176234b482c1@quicinc.com>
- <f240b33d507daf898480b0a11eb27d4475e45164.camel@sipsolutions.net>
- <571d8ecf-2ca6-8b7b-6e15-be12c56e9f88@quicinc.com>
- <e40ee96ab2a8d9d079d3a06b7b1c615ab25a2403.camel@sipsolutions.net>
- <2842f57c-e383-fb9e-d994-95336cb65e0d@quicinc.com>
- <6a33a41b5aa6c98d95ff934fbb6a10dfe78e6e6e.camel@sipsolutions.net>
- <2d3a6578-68c5-a0f3-b18b-bce2e67d3fdc@quicinc.com>
-In-Reply-To: <2d3a6578-68c5-a0f3-b18b-bce2e67d3fdc@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: -7wk_xVlqXn2Wo4aCQ6tZd-eXOgfxoNA
-X-Proofpoint-GUID: -7wk_xVlqXn2Wo4aCQ6tZd-eXOgfxoNA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-25_14,2023-07-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
- suspectscore=0 spamscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
- lowpriorityscore=0 malwarescore=0 phishscore=0 clxscore=1015
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307260057
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+References: <20230725131258.31306-1-linyunsheng@huawei.com>
+ <ZL/fVF7WetuLgB0l@hera> <20230725141223.19c1c34c@kernel.org>
+In-Reply-To: <20230725141223.19c1c34c@kernel.org>
+From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date:   Wed, 26 Jul 2023 09:41:09 +0300
+Message-ID: <CAC_iWj+3kDccXSG2ADmu7KDDjN6MuitihwcEjYeyRLqrUbxBjg@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] page_pool: split types and declarations from page_pool.h
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Hi Jakub,
 
-I guess you have already fix it in some patch, right?
+On Wed, 26 Jul 2023 at 00:12, Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> On Tue, 25 Jul 2023 17:42:28 +0300 Ilias Apalodimas wrote:
+> > Apologies for the very late replies, I was on long vacation with limited
+> > internet access.
+> > Yunsheng, since there's been a few mails and I lost track, this is instead of
+> > [0] right? If so, I prefer this approach.  It looks ok on a first quick pass,
+> > I'll have a closer look later.
+> >
+> > [0] https://lore.kernel.org/netdev/20230714170853.866018-2-aleksander.lobakin@intel.com/
+>
+>
+> I prefer the more systematic approach of creating a separate types.h
+> file, so I don't have to keep chasing people or cleaning up the include
+> hell myself. I think it should be adopted more widely going forward,
+> it's not just about the page pool.
 
-On 5/11/2023 7:01 PM, Wen Gong wrote:
-> On 4/18/2023 5:11 PM, Johannes Berg wrote:
->> On Tue, 2023-04-18 at 17:02 +0800, Wen Gong wrote:
->>> On 4/18/2023 4:48 PM, Johannes Berg wrote:
->>>> Hi,
->>>>
->>>>> My case is:
->>>>> When connect with 2 links AP, the cfg80211_hold_bss() is called by
->>>>> cfg80211_mlme_assoc()
->>>>> for each BSS of the 2 links,
->>>>>
->>>>> When asssocResp from AP is not success(such as status_code==1), the
->>>>> ieee80211_link_data of 2nd link(sdata->link[link_id])
->>>>> is NULL because 
->>>>> ieee80211_assoc_success()->ieee80211_vif_update_links()
->>>>> is not called.
->>>>>
->>>>> Then struct cfg80211_rx_assoc_resp resp in 
->>>>> cfg80211_rx_assoc_resp() and
->>>>> struct cfg80211_connect_resp_params cr in __cfg80211_connect_result()
->>>>> will only have the data of
->>>>> the 1st link, and finally cfg80211_connect_result_release_bsses() 
->>>>> only
->>>>> call cfg80211_unhold_bss()
->>>>> for the 1st link, then BSS of the 2nd link will never free because 
->>>>> its
->>>>> hold is awlays > 0 now.
->>>> Hah, yes, ouch.
->>>>
->>>>> I found it is not easy to refine it, so do you have any advise/idea?
->>>>>
->>>>> for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
->>>>>            struct ieee80211_link_data *link;
->>>>>
->>>>>            link = sdata_dereference(sdata->link[link_id], sdata);
->>>>>            if (!link)
->>>>>                continue;
->>>>>
->>>>>            if (!assoc_data->link[link_id].bss)
->>>>>                continue;
->>>>>
->>>>>            resp.links[link_id].bss = assoc_data->link[link_id].bss;
->>>>>            resp.links[link_id].addr = link->conf->addr;
->>>>>            resp.links[link_id].status = 
->>>>> assoc_data->link[link_id].status;
->>>>>
->>>> But is it really so hard? We only need link for link->conf->addr, 
->>>> and we
->>>> can use assoc_data->link[link_id].addr for that instead, no? We 
->>>> need to
->>>> store those locally to avoid a use-after-free, but that's at most 15
->>>> addresses on the stack, which seems acceptable?
->>>>
->>>> Oh and there's the uapsd stuff but that only matters in the success 
->>>> case
->>>> anyway. In fact I'm not even sure the address matters in the
->>>> unsuccessful case but we have it pretty easily.
->>>>
->>>> johannes
->>> OK. So I guess you already have good way to refine it?
->>>
->> No, not really, was just thinking out loud here :)
->>
->> johannes
->
-> Hi Johannes, if you have any patch to fix it, I can download and test.
->
+Right, my bad. We share the same opinion.  What I meant by "this" is
+the split proposed by Yunsheng, but reading my email again that wasn't
+very clear ...
+
+Cheers
+/Ilias
