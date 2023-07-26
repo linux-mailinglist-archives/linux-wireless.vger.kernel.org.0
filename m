@@ -2,111 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B89976389D
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 16:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 781AB763B1A
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 17:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234437AbjGZOMO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 10:12:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35842 "EHLO
+        id S234303AbjGZPbC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 11:31:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232230AbjGZOLr (ORCPT
+        with ESMTP id S233997AbjGZPbA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 10:11:47 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB623AB1
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 07:11:04 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36QCpmWf010039;
-        Wed, 26 Jul 2023 14:11:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=PIq1sGfa2rC9FQr1Tm6qDBqE2KAZFIPCIiKPaj3TQ54=;
- b=Nr4IHZq58vf6hhAMCSyWFCCvsONxgtLze4hUGYuo1fPmYxDXfnja3SDxapuU6DLuGr8E
- hbBpnAnil1O6PPqDAbP+MaUOhPMpgf42V2lzLcqLv0utBQ66cOWgEHoR0OWX+lUMFROC
- sBrcezBRYWgNktqFMGvKtl5Y2kxV7LpKbtqgKxJxoWOSqQxkuTJrEytLxI4qON/WZPi9
- Er1IOLvr1Y8YPD97eDLnvTtBq1jrOAyaqoppdFsngD9apE0BMhPceKw2aL/XBhgZD09D
- PJgKznxHgRKoUuoWg004RBlb4jxRNjvf0nAePZwF+qoUlCdalcBjjejnhxeD91ThlFS/ Iw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s32jn0a4s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 14:10:59 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36QEAw9I005975
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 14:10:59 GMT
-Received: from rajkbhag-linux.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 26 Jul 2023 07:10:57 -0700
-From:   Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Seevalamuthu Mariappan <quic_seevalam@quicinc.com>,
-        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Subject: [PATCH 3/3] wifi: ath11k: Remove cal_done check during probe
-Date:   Wed, 26 Jul 2023 19:40:32 +0530
-Message-ID: <20230726141032.3061-4-quic_rajkbhag@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230726141032.3061-1-quic_rajkbhag@quicinc.com>
-References: <20230726141032.3061-1-quic_rajkbhag@quicinc.com>
+        Wed, 26 Jul 2023 11:31:00 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFEBD2701;
+        Wed, 26 Jul 2023 08:30:54 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-686bd857365so1101499b3a.3;
+        Wed, 26 Jul 2023 08:30:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690385454; x=1690990254;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QIvg9RvPixHqfad2Kamp9kJBh4DIZcFMKZRn7pfOsNE=;
+        b=UvNxr8eLJ9hNPoNo/nmVkgjI4LmuR9ztzcTY+8rMIzSoHv7gwljQlaHHd92gm95UVm
+         nU56pgA2IgpkZ87/1SXR5DOwjHop16+wfwPEV6IS33mO1QlQi6mSJ8FVmwoSi/+kZx4P
+         qanoK+6WcjuZX7MFStjdzc0nrwV3XSiclq3I9Cq47+YLuQmJjCuttPtZTA47gY8Px5VL
+         M0KGCrZjA8PmkcEwyq7+BkhWwhnMHinBdCCuaa+ygSj2WTJ1OO0iLTikgnWKqb83HYA/
+         7qGLhQ84+9qqmlQzBfUs/lur7fuEApadKSY61qyN9KpEKVsfsHhr/QJ2E0h+XppBvQji
+         sYQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690385454; x=1690990254;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QIvg9RvPixHqfad2Kamp9kJBh4DIZcFMKZRn7pfOsNE=;
+        b=RwbvIAEsfrnnAkZp10d5GK2xnJ/PISXCb4hDRbDeoDEAmfqr/c4Ry6lcfXUFfrCNcq
+         /YuhuMlV5YN/35P4vjYhnxHYyM4BmmUDKUTu5/TirswnbZ9XEu5zOFbpWIYFsYTOSH06
+         xXSVVKhkHcEX3IxTQb9HvIVvz41o3dl1jg/0P+BkXFrleILggOmvUXldqNR/Yy4rmDY/
+         P0yx34lN5RE6pu2uVLYN554MMMEu63ERszFVgcobyM4pMxinpMBUuk6fhQPtNZIrvjPt
+         TuTkFx4KMcefaApb59FNLM4lPOOaEDRR/gr/HWit9Jg1XcHv0x1uze8oFF8beD4yzzoH
+         INyg==
+X-Gm-Message-State: ABy/qLaxNMwdkA9M8i8MKjifByrfhN1ISoeOjHYk1hO/kqAgpCx+3V03
+        cXLWMZBv4nW+bJU2y4bHpyqZhuyxoMLZPOtpal4=
+X-Google-Smtp-Source: APBJJlGsYifDPtFqieNjZSRGPJL2WJtbotBq8b23fwCEiS2YFyApRJq7zsSItWWZeZOofGURnKLE/TZxtTf3oC+7O6c=
+X-Received: by 2002:a17:90b:a4e:b0:268:5620:cfc7 with SMTP id
+ gw14-20020a17090b0a4e00b002685620cfc7mr1509855pjb.30.1690385453708; Wed, 26
+ Jul 2023 08:30:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 7t9rbuEhyfOPQcK8-POzam4yEAefwWCZ
-X-Proofpoint-ORIG-GUID: 7t9rbuEhyfOPQcK8-POzam4yEAefwWCZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-26_06,2023-07-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 suspectscore=0 mlxscore=0 phishscore=0 bulkscore=0
- mlxlogscore=999 lowpriorityscore=0 impostorscore=0 adultscore=0
- malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307260126
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230725131258.31306-1-linyunsheng@huawei.com>
+ <94272ffed7636c4c92fcc73ccfc15236dd8e47dc.camel@gmail.com>
+ <16b4ab57-dfb0-2c1d-9be1-57da30dff3c3@intel.com> <22af47fe-1347-3e32-70bf-745d833e88b9@huawei.com>
+In-Reply-To: <22af47fe-1347-3e32-70bf-745d833e88b9@huawei.com>
+From:   Alexander Duyck <alexander.duyck@gmail.com>
+Date:   Wed, 26 Jul 2023 08:30:17 -0700
+Message-ID: <CAKgT0UcU4RJj0SMQiVM8oZu86ZzK+5NjzZ2ELg_yWZyWGr04PA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] page_pool: split types and declarations from page_pool.h
+To:     Yunsheng Lin <linyunsheng@huawei.com>
+Cc:     Alexander Lobakin <aleksander.lobakin@intel.com>,
+        davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Eric Dumazet <edumazet@google.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Seevalamuthu Mariappan <quic_seevalam@quicinc.com>
+On Wed, Jul 26, 2023 at 4:23=E2=80=AFAM Yunsheng Lin <linyunsheng@huawei.co=
+m> wrote:
+>
+> On 2023/7/26 18:43, Alexander Lobakin wrote:
+> > From: Alexander H Duyck <alexander.duyck@gmail.com>
+> > Date: Tue, 25 Jul 2023 08:47:46 -0700
+> >
+> >> On Tue, 2023-07-25 at 21:12 +0800, Yunsheng Lin wrote:
+> >>> Split types and pure function declarations from page_pool.h
+> >>> and add them in page_pool/types.h, so that C sources can
+> >>> include page_pool.h and headers should generally only include
+> >>> page_pool/types.h as suggested by jakub.
+> >>>
+> >>> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+> >>> Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> >>> CC: Alexander Lobakin <aleksander.lobakin@intel.com>
+> >
+> > [...]
+> >
+> >>> +/* Caller must provide appropriate safe context, e.g. NAPI. */
+> >>> +void page_pool_update_nid(struct page_pool *pool, int new_nid);
+> >>> +
+> >>> +#endif /* _NET_PAGE_POOL_H */
+> >>
+> >>
+> >> This seems kind of overkill for what is needed. It seems like the
+> >> general thought process with splitting this was so that you had just
+> >> the minimum of what is needed to support skbuff.h and the functions
+> >> declared there. The rest of this would then be added via the .h to the
+> >> .c files that will actually be calling the functions.
+> >>
+> >> By that logic I think the only thing we really need is the function
+> >> declaration for page_pool_return_skb_page moved into skbuff.h. We coul=
+d
+> >> then just remove page_pool.h from skbuff.h couldn't we?
+> >
+> > This patch is not to drop page_pool.h include from skbuff.h.
+> > This is more future-proof (since I'm dropping this include anyway in my
+> > series) to have includes organized and prevent cases like that one with
+> > skbuff.h from happening. And to save some CPU cycles on preprocessing i=
+f
+> > that makes sense.
+>
+> The suggestion is from below:
+>
+> https://lore.kernel.org/all/20230710113841.482cbeac@kernel.org/
 
-In some race conditions, calibration done QMI message is received even
-before host wait starts for calibration to be done.
-Due to this, resetting firmware was not performed after calibration.
+I get that. But it seemed like your types.h is full of inline
+functions. That is what I was responding to. I would leave the inline
+functions in page_pool.h unless there is some significant need for
+them.
 
-Hence, remove cal_done check in ath11k_qmi_fwreset_from_cold_boot()
-as this is called only from probe.
+> >
+> >>
+> >> Another thing we could consider doing is looking at splitting things u=
+p
+> >> so that we had a include file in net/core/page_pool.h to handle some o=
+f
+> >> the cases where we are just linking the page_pool bits to other core
+> >> file bits such as xdp.c and skbuff.c.
+>
+> I suppose the above suggestion is about splitting or naming by
+> the user as the discussed in the below thread?
+> https://lore.kernel.org/all/20230721182942.0ca57663@kernel.org/
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+Actually my suggestion is more about defining boundaries for what is
+meant to be used by drivers and what isn't. The stuff you could keep
+in net/core/page_pool.h would only be usable by the files in net/core/
+whereas the stuff you are keeping in the include/net/ folder is usable
+by drivers. It is meant to prevent things like what you were
+complaining about with the Mellanox drivers making use of interfaces
+you didn't intend them to use.
 
-Signed-off-by: Seevalamuthu Mariappan <quic_seevalam@quicinc.com>
-Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/qmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index c4eab5d7f..617abb441 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2844,7 +2844,7 @@ int ath11k_qmi_fwreset_from_cold_boot(struct ath11k_base *ab)
- {
- 	int timeout;
- 
--	if (!ath11k_core_coldboot_cal_support(ab) || ab->qmi.cal_done ||
-+	if (!ath11k_core_coldboot_cal_support(ab) ||
- 	    ab->hw_params.cbcal_restart_fw == 0)
- 		return 0;
- 
--- 
-2.17.1
-
+So for example you could pull out functions like
+page_pool_return_skb_page, page_pool_use_xdp_mem,
+page_pool_update_nid, and the like and look at relocating them into
+the net/core/ folder and thereby prevent abuse of those functions by
+drivers.
