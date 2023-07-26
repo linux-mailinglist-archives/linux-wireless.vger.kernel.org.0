@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DDAF762CD3
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 09:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57517762CEB
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 09:15:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232397AbjGZHOJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 03:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48504 "EHLO
+        id S232433AbjGZHPg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 03:15:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231831AbjGZHNi (ORCPT
+        with ESMTP id S232199AbjGZHOn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 03:13:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E75B55A3
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 00:09:50 -0700 (PDT)
+        Wed, 26 Jul 2023 03:14:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AA2430F0
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 00:11:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D867A616EC
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 07:09:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DA0C433C9;
-        Wed, 26 Jul 2023 07:09:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9343F6167E
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 07:11:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745FDC433C8;
+        Wed, 26 Jul 2023 07:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690355389;
-        bh=KRM38bje3pE6V7VFqdPRqxOiEF1hnoO0aocWJGZh2dI=;
+        s=k20201202; t=1690355505;
+        bh=dkzKe3On2YiIVLiOwt41UYCjYzyPDrbI3oPWE6tYnIY=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=E2X3DWcGDhA0sZ9GhpWG793qHFNJBwhvpneFpgasRHGW87RMfo/0kVSIP+LSVFxp9
-         FCAIrSHk05h5fUdJk6yo6AX92ZMPqk30OlFI1i2yTmFFru2BSiaBewW0JBOHRaFOAG
-         GeCvX3po2TSW3c7w8ugSNSw+ILzNqpgeRMQj9RALP+AKhj/g3zo+e7020Ucp6f4gEA
-         9F2TRvuSRMjXw3JlW1Efgq7xOuCSW3XmXqh/h11G9FZdwHr904IXJIDw0F2ESzbJ9/
-         5ycT3UHMZjbzcK2YCEq9/9pFEYNOEKguHS0f3oXhIzsPwCcodf0xz/Lw0e3PvIkmuS
-         Y/6uj7+ogl8Xg==
+        b=dVl4qRCsfA/Ss/ZDGA7C3kIeCiRbHRHPaxNPYgKCAEvyLY1jQ+R0Hs4JZPaVC9R5F
+         Owe613mfM6Ys0t/C37MoLe9zudGV+mLlq1wI7s7COJT70QyUSm9ltE7ZAk7yMTp+Gy
+         0DWTW/pqhUmlp93RhaCMbpIj13gUpIhxhG5o+VZAIG7lJB8D0oLHG8KxRwb7EFQNCf
+         ltGqVTRFOEo3cy45PaWTouzoYouJFNuqaQjo0hO+xXldJgtVAqAjkqZfSsAJ7nZw7o
+         pNqKjn/9qOFkyGUPHHpc4XOqHibhvCc8jRkEN/CigI1gYSbIn9JSqnDSJuoUNBXMAr
+         cqK1fB1hrUR0g==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] Revert "wifi: ath6k: silence false positive
- -Wno-dangling-pointer warning on GCC 12"
+Subject: Re: [PATCH 1/9] MAINTAINERS: wifi: rtw88: change Ping as the
+ maintainer
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230724100823.2948804-1-kvalo@kernel.org>
-References: <20230724100823.2948804-1-kvalo@kernel.org>
+In-Reply-To: <20230724104547.3061709-2-kvalo@kernel.org>
+References: <20230724104547.3061709-2-kvalo@kernel.org>
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169035538684.3467307.15180087182094710165.kvalo@kernel.org>
-Date:   Wed, 26 Jul 2023 07:09:48 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Message-ID: <169035550252.3467307.11742202360657848157.kvalo@kernel.org>
+Date:   Wed, 26 Jul 2023 07:11:44 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,20 +58,26 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Kalle Valo <kvalo@kernel.org> wrote:
 
-> This reverts commit bd1d129daa3ede265a880e2c6a7f91eab0f4dc62.
-> 
-> The dangling-pointer warnings were disabled kernel-wide by commit 49beadbd47c2
-> ("gcc-12: disable '-Wdangling-pointer' warning for now") for v5.19. So this
-> hack in ath6kl is not needed anymore.
+> Yan-Hsuan has been away since 2021 and Ping has been the de facto maintainer
+> the past year, actively reviewing patches and doing all other maintainer
+> duties. So fix the MAINTAINERS file to show the current situation.
 > 
 > Signed-off-by: Kalle Valo <kvalo@kernel.org>
 
-Patch applied to wireless.git, thanks.
+9 patches applied to wireless.git, thanks.
 
-a1ce186db7f0 Revert "wifi: ath6k: silence false positive -Wno-dangling-pointer warning on GCC 12"
+96839282edc2 MAINTAINERS: wifi: rtw88: change Ping as the maintainer
+25700d4916fe MAINTAINERS: wifi: atmel: mark as orphan
+74b81eac2dda MAINTAINERS: wifi: mark cw1200 as orphan
+e76983151dc6 MAINTAINERS: wifi: mark ar5523 as orphan
+bc5dee3ce7c0 MAINTAINERS: wifi: mark rndis_wlan as orphan
+0566ec90515c MAINTAINERS: wifi: mark wl3501 as orphan
+c1e0a70de12d MAINTAINERS: wifi: mark zd1211rw as orphan
+3ccbc99c152f MAINTAINERS: wifi: mark b43 as orphan
+cc326aae03c3 MAINTAINERS: wifi: mark mlw8k as orphan
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230724100823.2948804-1-kvalo@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230724104547.3061709-2-kvalo@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
