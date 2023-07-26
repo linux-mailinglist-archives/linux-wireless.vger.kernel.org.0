@@ -2,183 +2,266 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2517F762966
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 05:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C843762973
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 05:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230258AbjGZDoK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jul 2023 23:44:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
+        id S229483AbjGZDuN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Jul 2023 23:50:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbjGZDoI (ORCPT
+        with ESMTP id S230340AbjGZDuL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jul 2023 23:44:08 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A5EB2695
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 20:44:07 -0700 (PDT)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q1vo3V021485;
-        Wed, 26 Jul 2023 03:43:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=kziEQLUySX2lc5jw48DvsuK1owDpMXOhKodUIh9p+ps=;
- b=Uu+nxm0chhzkKOKiT6AJEjhpUjw2r15VxyROuwmxlK4MnTPvL2E7cQujmLOygg5P0tgm
- wPqOMSxpuOZXZcVCM7yBTd8fd8CbTBhxnmKVq1WTPfke1T0NPeEXJA+HBvBxWbOQ3sd5
- uT0R8L65gwnmve2JBZB8hJ3R+GYTTEZn6DqRYnFM9ZBA7sghmO5CfcqZc1dHSpRT7j0s
- WNH4ckt53PlaE0/VULNyrH0EQmlfev4XsEhSa1uprwQXQNwFyRPrJyrfwCIUilG1XlvL
- C4Z7rL51QpB6ux6ipf/prscfoC3rCAPGb7cPuonfooCKVJm9dffYQi/6b92zE9WFLowF JQ== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s29j5jhuy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 03:43:57 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36Q3hue1029524
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jul 2023 03:43:56 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Tue, 25 Jul
- 2023 20:43:54 -0700
-Message-ID: <293dd873-1d9d-afc0-a122-48dfe4bb0fde@quicinc.com>
-Date:   Wed, 26 Jul 2023 11:43:52 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v5 06/11] wifi: ath12k: prepare EHT peer assoc parameters
-Content-Language: en-US
-To:     Aloka Dixit <quic_alokad@quicinc.com>,
-        <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-CC:     Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-References: <20230725224034.14045-1-quic_alokad@quicinc.com>
- <20230725224034.14045-7-quic_alokad@quicinc.com>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <20230725224034.14045-7-quic_alokad@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: utCmE-8I8qnT2HRhuJRpCsuawR6lWGxq
-X-Proofpoint-GUID: utCmE-8I8qnT2HRhuJRpCsuawR6lWGxq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-25_14,2023-07-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- adultscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 clxscore=1015
- mlxscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307260031
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        Tue, 25 Jul 2023 23:50:11 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B062697
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 20:50:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690343410; x=1721879410;
+  h=date:from:to:cc:subject:message-id;
+  bh=mIJs4SbfVY6LFtfgI0JF22CMoLpqXBUweCeQ/Mr3PhU=;
+  b=QDAROsNgBOvw/eYLEzbtv7mJgEe/fCxqHEOX7NHsoNEhDDsul9B4+nqt
+   EOwLSDtSSlz+sJXS6yyME9q5JzSsYFiZx+fiv23lEAVl8JCyibD/naqZz
+   LR+9kaIzEktLCzshZCNl4FfMWeqKx/+UbyN5FokDsOYBTQxBiCGJLnAJJ
+   bf4TjfZ5enlq8sm2IXWzBIB3AFTSW7X3MvwJN1eZRgk5mw6JH83Ls3mbK
+   9t0trmf0ORCXkQv6EdTURgAUlgtvEvjptgQpqcbLfw2orzEuUEo45T14t
+   OMKUz4z3rKY1k2aguButGr/SxV3JELbbIvAFgE2E9mSpb5TJOz4T2nAaI
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="347514286"
+X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
+   d="scan'208";a="347514286"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 20:50:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="850284016"
+X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
+   d="scan'208";a="850284016"
+Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 25 Jul 2023 20:50:08 -0700
+Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qOVXL-0000c2-2F;
+        Wed, 26 Jul 2023 03:50:07 +0000
+Date:   Wed, 26 Jul 2023 11:49:11 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ b2090d93d4b6f1c72a9793d5a171806b8468b7cb
+Message-ID: <202307261106.7t837KUU-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/26/2023 6:40 AM, Aloka Dixit wrote:
-[...]
-> +
-> +static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
-> +				    struct ieee80211_vif *vif,
-> +				    struct ieee80211_sta *sta,
-> +				    struct ath12k_wmi_peer_assoc_arg *arg)
-> +{
-> +	const struct ieee80211_sta_eht_cap *eht_cap = &sta->deflink.eht_cap;
-> +	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
-[...]
-> +	default:
-> +		if ((he_cap->he_cap_elem.phy_cap_info[0] &
-> +		     (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
-> +		      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
-> +		      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
-> +		      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)) == 0) {
-> +			const struct ieee80211_eht_mcs_nss_supp_20mhz_only *bw_20 =
-> +					&eht_cap->eht_mcs_nss_supp.only_20mhz;
-> +
-This is the IEs of my AP below, then it will still entered into this 
-branch for my ath12k station mode.
-sta->deflink.eht_cap and sta->deflink.he_cap is copied from peer remote, 
-for ath12k station mode, peer
-remote is the AP. The field only_20mhz is only valid when the IEs is 
-from a station which only support
-20 MHz.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: b2090d93d4b6f1c72a9793d5a171806b8468b7cb  wifi: brcmsmac: remove unused data type
 
-I think the flag from_ap should be added here as well as function 
-ieee80211_eht_mcs_nss_size().
+elapsed time: 721m
 
-Please correct me if wrong.
+configs tested: 188
+configs skipped: 12
 
-Ext Tag: HE Capabilities (IEEE Std 802.11ax/D3.0)
-     Tag Number: Element ID Extension (255)
-     Ext Tag length: 29
-     Ext Tag Number: HE Capabilities (IEEE Std 802.11ax/D3.0) (35)
-     HE MAC Capabilities Information: 0x10401a08010d
-     HE Phy Capabilities Information
-         .... ...0 = Reserved: 0x0
-         0000 000. = Channel Width Set: 0x00
-             .... ..0. = 40MHz in 2.4GHz band: Not supported
-             .... .0.. = 40 & 80MHz in the 5GHz or 6GHz band: Not supported
-             .... 0... = 160MHz in the 5GHz or 6GHz band: Not supported
-             ...0 .... = 160/80+80MHz in the 5GHz or 6GHz band: Not 
-supported
-             ..0. .... = 242 tone RUs in the 2.4GHz band: Not supported
-             .0.. .... = 242 tone RUs in the 5GHz or 6GHz band: Not 
-supported
-             0... .... = Reserved: 0x0
-         Bits 8 to 23: 0x4063
-         Bits 24 to 39: 0x1f88
-         Bits 40 to 55: 0x8141
-         Bits 56 to 71: 0x111c
-         Bits 72 to 87: 0x0008
-     Supported HE-MCS and NSS Set
-     PPE Thresholds
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Ext Tag: EHT Capabilities (IEEE Std 802.11be/D2.0)
-     Tag Number: Element ID Extension (255)
-     Ext Tag length: 15
-     Ext Tag Number: EHT Capabilities (IEEE Std 802.11be/D2.0) (108)
-     EHT MAC Capabilities Information: 0x0000
-     EHT PHY Capabilities Information
-     Supported EHT-MCS and NSS Set
-         EHT-MCS Map (BW <= 80MHz): 0x222222
-             .... .... .... .... .... 0010 = Rx Max Nss That Supports 
-EHT-MCS 0-9: 2
-             .... .... .... .... 0010 .... = Tx Max Nss That Supports 
-EHT-MCS 0-9: 2
-             .... .... .... 0010 .... .... = Rx Max Nss That Supports 
-EHT-MCS 10-11: 2
-             .... .... 0010 .... .... .... = Tx Max Nss That Supports 
-EHT-MCS 10-11: 2
-             .... 0010 .... .... .... .... = Rx Max Nss That Supports 
-EHT-MCS 12-13: 2
-             0010 .... .... .... .... .... = Tx Max Nss That Supports 
-EHT-MCS 12-13: 2
-     EHT PPE Thresholds: <MISSING>
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r001-20230725   gcc  
+alpha                randconfig-r002-20230725   gcc  
+alpha                randconfig-r006-20230725   gcc  
+alpha                randconfig-r012-20230725   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r013-20230725   gcc  
+arc                  randconfig-r034-20230725   gcc  
+arc                  randconfig-r043-20230725   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r003-20230725   gcc  
+arm                  randconfig-r046-20230725   clang
+arm                           sunxi_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r003-20230725   clang
+arm64                randconfig-r024-20230725   gcc  
+arm64                randconfig-r035-20230725   clang
+csky                                defconfig   gcc  
+csky                 randconfig-r016-20230725   gcc  
+csky                 randconfig-r023-20230725   gcc  
+hexagon                          alldefconfig   clang
+hexagon              randconfig-r004-20230725   clang
+hexagon              randconfig-r005-20230725   clang
+hexagon              randconfig-r022-20230725   clang
+hexagon              randconfig-r023-20230725   clang
+hexagon              randconfig-r041-20230725   clang
+hexagon              randconfig-r041-20230726   clang
+hexagon              randconfig-r045-20230725   clang
+hexagon              randconfig-r045-20230726   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230725   clang
+i386         buildonly-randconfig-r005-20230725   clang
+i386         buildonly-randconfig-r006-20230725   clang
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230725   clang
+i386                 randconfig-i002-20230725   clang
+i386                 randconfig-i003-20230725   clang
+i386                 randconfig-i004-20230725   clang
+i386                 randconfig-i005-20230725   clang
+i386                 randconfig-i006-20230725   clang
+i386                 randconfig-i011-20230725   gcc  
+i386                 randconfig-i012-20230725   gcc  
+i386                 randconfig-i013-20230725   gcc  
+i386                 randconfig-i014-20230725   gcc  
+i386                 randconfig-i015-20230725   gcc  
+i386                 randconfig-i016-20230725   gcc  
+i386                 randconfig-r001-20230725   clang
+i386                 randconfig-r003-20230725   clang
+i386                 randconfig-r022-20230725   gcc  
+i386                 randconfig-r026-20230725   gcc  
+i386                 randconfig-r036-20230725   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r004-20230725   gcc  
+loongarch            randconfig-r013-20230725   gcc  
+loongarch            randconfig-r015-20230725   gcc  
+loongarch            randconfig-r016-20230725   gcc  
+loongarch            randconfig-r021-20230725   gcc  
+loongarch            randconfig-r024-20230725   gcc  
+loongarch            randconfig-r031-20230725   gcc  
+loongarch            randconfig-r032-20230725   gcc  
+loongarch            randconfig-r034-20230725   gcc  
+m68k                             alldefconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r001-20230725   gcc  
+m68k                 randconfig-r012-20230725   gcc  
+m68k                 randconfig-r021-20230725   gcc  
+m68k                 randconfig-r026-20230725   gcc  
+m68k                 randconfig-r036-20230725   gcc  
+microblaze           randconfig-r002-20230725   gcc  
+microblaze           randconfig-r004-20230725   gcc  
+microblaze           randconfig-r012-20230725   gcc  
+microblaze           randconfig-r025-20230725   gcc  
+microblaze           randconfig-r033-20230725   gcc  
+microblaze           randconfig-r035-20230725   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                      fuloong2e_defconfig   gcc  
+mips                 randconfig-r002-20230725   gcc  
+mips                 randconfig-r024-20230725   clang
+mips                 randconfig-r033-20230725   gcc  
+mips                           xway_defconfig   gcc  
+nios2                         3c120_defconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r021-20230725   gcc  
+nios2                randconfig-r026-20230725   gcc  
+openrisc             randconfig-r001-20230725   gcc  
+openrisc             randconfig-r013-20230725   gcc  
+openrisc             randconfig-r014-20230725   gcc  
+openrisc             randconfig-r015-20230725   gcc  
+openrisc             randconfig-r022-20230725   gcc  
+openrisc             randconfig-r031-20230725   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r013-20230725   gcc  
+parisc               randconfig-r016-20230725   gcc  
+parisc               randconfig-r025-20230725   gcc  
+parisc               randconfig-r035-20230725   gcc  
+parisc               randconfig-r036-20230725   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                      arches_defconfig   gcc  
+powerpc                 linkstation_defconfig   gcc  
+powerpc              randconfig-r006-20230725   clang
+powerpc              randconfig-r023-20230725   gcc  
+powerpc              randconfig-r032-20230725   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r002-20230725   clang
+riscv                randconfig-r024-20230725   gcc  
+riscv                randconfig-r034-20230725   clang
+riscv                randconfig-r042-20230725   gcc  
+riscv                randconfig-r042-20230726   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r005-20230725   clang
+s390                 randconfig-r014-20230725   gcc  
+s390                 randconfig-r031-20230725   clang
+s390                 randconfig-r044-20230725   gcc  
+s390                 randconfig-r044-20230726   clang
+sh                               allmodconfig   gcc  
+sh                          kfr2r09_defconfig   gcc  
+sh                   randconfig-r014-20230725   gcc  
+sh                            shmin_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r001-20230725   gcc  
+sparc                randconfig-r004-20230725   gcc  
+sparc                randconfig-r021-20230725   gcc  
+sparc                randconfig-r023-20230725   gcc  
+sparc64              randconfig-r005-20230725   gcc  
+sparc64              randconfig-r006-20230725   gcc  
+sparc64              randconfig-r014-20230725   gcc  
+sparc64              randconfig-r022-20230725   gcc  
+sparc64              randconfig-r025-20230725   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r032-20230725   gcc  
+um                   randconfig-r034-20230725   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230725   clang
+x86_64       buildonly-randconfig-r002-20230725   clang
+x86_64       buildonly-randconfig-r003-20230725   clang
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r011-20230725   gcc  
+x86_64               randconfig-r015-20230725   gcc  
+x86_64               randconfig-r016-20230725   gcc  
+x86_64               randconfig-r024-20230725   gcc  
+x86_64               randconfig-x001-20230725   gcc  
+x86_64               randconfig-x002-20230725   gcc  
+x86_64               randconfig-x003-20230725   gcc  
+x86_64               randconfig-x004-20230725   gcc  
+x86_64               randconfig-x005-20230725   gcc  
+x86_64               randconfig-x006-20230725   gcc  
+x86_64               randconfig-x011-20230725   clang
+x86_64               randconfig-x012-20230725   clang
+x86_64               randconfig-x013-20230725   clang
+x86_64               randconfig-x014-20230725   clang
+x86_64               randconfig-x015-20230725   clang
+x86_64               randconfig-x016-20230725   clang
+x86_64                           rhel-8.3-bpf   gcc  
+x86_64                          rhel-8.3-func   gcc  
+x86_64                    rhel-8.3-kselftests   gcc  
+x86_64                         rhel-8.3-kunit   gcc  
+x86_64                           rhel-8.3-ltp   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r002-20230725   gcc  
+xtensa                    xip_kc705_defconfig   gcc  
 
-> +			ath12k_mac_set_eht_mcs(bw_20->rx_tx_mcs7_max_nss,
-> +					       bw_20->rx_tx_mcs9_max_nss,
-> +					       bw_20->rx_tx_mcs11_max_nss,
-> +					       bw_20->rx_tx_mcs13_max_nss,
-> +					       &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80],
-> +					       &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80]);
-> +		} else {
-> +			bw = &eht_cap->eht_mcs_nss_supp.bw._80;
-> +			ath12k_mac_set_eht_mcs(bw->rx_tx_mcs9_max_nss,
-> +					       bw->rx_tx_mcs9_max_nss,
-> +					       bw->rx_tx_mcs11_max_nss,
-> +					       bw->rx_tx_mcs13_max_nss,
-> +					       &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80],
-> +					       &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_80]);
-> +		}
-> +
-> +		arg->peer_eht_mcs_count++;
-> +		break;
-> +	}
-> +}
-> +
-[...]
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
