@@ -2,131 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2881A763DCC
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 19:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A7EE763E88
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 20:31:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231460AbjGZRiA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 13:38:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36996 "EHLO
+        id S229480AbjGZSb3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 14:31:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229771AbjGZRh7 (ORCPT
+        with ESMTP id S231890AbjGZSb1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 13:37:59 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D561326A8;
-        Wed, 26 Jul 2023 10:37:52 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-99b9421aaebso535420666b.2;
-        Wed, 26 Jul 2023 10:37:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1690393071; x=1690997871;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wv5Dk5Cs2t8vGqW1kWIEUZviczQZaYvIEDL1axAmeMk=;
-        b=rk+8tyzvL63OTcoXdtca6aCM4lsbR6XUVa5slqnmI4D1TIrNjqKcs+96ceqau5yhfR
-         5orVa/qViux1Re9laiazn0us6rVoirwngrk0WpsLVEGAL1uaJ2lRD3XnyiS17/jaSV7x
-         OvUKyh2GO46bzLcvgACDFXoKxVOU+vUZ8iRmEfDuHmWk/xckyI4W0yfAOd5sfNdKfTFk
-         mfR3IpEas4UDw7NwTmGA8R3jnrk3A4Rh3yimuqOGfBcXVYWm/IVnbltC/nHZZn4HvhmV
-         mPeLcA1APzQRMzH93OBYWZ+f8EtoSM169HmBtRLtsin+qkubYHvioXse2ZNloCE0pLwT
-         KyPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690393071; x=1690997871;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wv5Dk5Cs2t8vGqW1kWIEUZviczQZaYvIEDL1axAmeMk=;
-        b=C89JFy4jVQZzH4xa4c0KolGJdPAYnVHmyp+I9CgbUXEZHM35/Jk/OXJRgxYU2F5PgQ
-         AwPuSj4szyqcCVvY2SVLPKzZtV72oWe+5pyclc7008jYUynh+poR3CPAhMvvxAGQqcL/
-         oeMAkbqRrWWXWb1mfF4AsQBnzCbdqKUQqb5rmi8srQ1snIe7pAQHj5gdAglwFM8Hrwgt
-         rc4dyaQFynOaxEIoiqGotoiKunpWz0VDaw1DkOrDUbYYsRHTls08YGtrmvoVvnS4HKya
-         plKpfbuL/bIra2T+8Y/hi9jV7zAU1leoj4eHOnqviXVla2dDJTI2sC7TJOyyXTPcpufa
-         LzkA==
-X-Gm-Message-State: ABy/qLbODYV/8/IY77vWEkurItcGyvOfKLM/W4LOVyVqeDo/ZMNHUDCH
-        mJprFDSC5gsQQbEnTMQzX780hDfn139jxUYNudg=
-X-Google-Smtp-Source: APBJJlHJ6XtFiwlu/X/4BSNR8GACS8GQh65jLXb5vRy9Qp3zswk6HtU0m7sAWslz1BefbqBOVepHO+5QYHSagjnvtlo=
-X-Received: by 2002:a17:906:18b1:b0:99b:65fa:e309 with SMTP id
- c17-20020a17090618b100b0099b65fae309mr2065351ejf.74.1690393070772; Wed, 26
- Jul 2023 10:37:50 -0700 (PDT)
+        Wed, 26 Jul 2023 14:31:27 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B9C0173F
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 11:31:26 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36QHvBwl017064;
+        Wed, 26 Jul 2023 18:31:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=pFAVev8gmR89CZl3pBdc5/JgsTu1h/9lyPc1TXgYYbc=;
+ b=YTknnVtMvh5PTJMC7q3MSTrZOUZ1ReDQh5ltS1PIJvwSOCezhf64b/farxq0UggaQBOK
+ 1FVshN9O3rzU9DFM67dHTdSrB6JwX32V0G3qZopy0GbXvRfOjNWrUJEP6MGhjJTc2vW6
+ w/nxTnnqbVYma2NMsrkzeIhkfyPWKzxRiKQNwOhLqgJQ0J1V1dRiGoz1rADhD5bB8ggY
+ LuqrxrBbEb8tnxMX2pVRus5hyIN+Qq7jLWQHVY2PkRfqg1a8Y5OS3qx93w4SMz56ULzP
+ UfmhNbfISIh3UloVOJu5IrUe5uBQfUy2hc9Rk0UDOVPLyEmpjDqX/fSigfKIWZbsNnDB cg== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s2daukp18-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 18:31:13 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36QIVDlX004155
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 18:31:13 GMT
+Received: from [10.48.245.247] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 26 Jul
+ 2023 11:31:12 -0700
+Message-ID: <b23c9ebe-b49b-0c8c-5e20-d02fd4134844@quicinc.com>
+Date:   Wed, 26 Jul 2023 11:31:12 -0700
 MIME-Version: 1.0
-References: <20230709195712.603200-1-martin.blumenstingl@googlemail.com>
- <b55cd3172ea7474ba1a67db2d5b39301@realtek.com> <87pm4w3rjp.fsf@mntre.com> <208ee32354b44205bb76a55c0d4bc93b@realtek.com>
-In-Reply-To: <208ee32354b44205bb76a55c0d4bc93b@realtek.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Wed, 26 Jul 2023 19:37:39 +0200
-Message-ID: <CAFBinCDRWJGr1F0vLj_=k7TYQmGOQRWS=3n1DDQwpxr5AYtt9Q@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rtw88: sdio: Honor the host max_req_size in the RX path
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "Lukas F. Hartmann" <lukas@mntre.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: simplify
+ ath11k_mac_validate_vht_he_fixed_rate_settings()
+Content-Language: en-US
+To:     Dmitry Antipov <dmantipov@yandex.ru>, Kalle Valo <kvalo@kernel.org>
+CC:     Ziyang Huang <hzyitc@outlook.com>,
+        <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>
+References: <20230726092113.78794-1-dmantipov@yandex.ru>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230726092113.78794-1-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: waGtP6umHOQ3Gnodt8h6BOcnpXfWcAcW
+X-Proofpoint-ORIG-GUID: waGtP6umHOQ3Gnodt8h6BOcnpXfWcAcW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-26_08,2023-07-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
+ suspectscore=0 lowpriorityscore=0 priorityscore=1501 malwarescore=0
+ spamscore=0 mlxscore=0 phishscore=0 mlxlogscore=871 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307260166
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Ping-Ke,
+On 7/26/2023 2:21 AM, Dmitry Antipov wrote:
+> In 'ath11k_mac_validate_vht_he_fixed_rate_settings()', 'ar->ab->peers'
+> list is not altered so 'list_for_each_entry()' should be safe.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+>   drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+> index 8c77ade49437..2aadf2c387b6 100644
+> --- a/drivers/net/wireless/ath/ath11k/mac.c
+> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+> @@ -8255,7 +8255,7 @@ ath11k_mac_validate_vht_he_fixed_rate_settings(struct ath11k *ar, enum nl80211_b
+>   					       const struct cfg80211_bitrate_mask *mask)
+>   {
+>   	bool he_fixed_rate = false, vht_fixed_rate = false;
+> -	struct ath11k_peer *peer, *tmp;
+> +	struct ath11k_peer *peer;
+>   	const u16 *vht_mcs_mask, *he_mcs_mask;
+>   	struct ieee80211_link_sta *deflink;
+>   	u8 vht_nss, he_nss;
+> @@ -8278,7 +8278,7 @@ ath11k_mac_validate_vht_he_fixed_rate_settings(struct ath11k *ar, enum nl80211_b
+>   
+>   	rcu_read_lock();
+>   	spin_lock_bh(&ar->ab->base_lock);
+> -	list_for_each_entry_safe(peer, tmp, &ar->ab->peers, list) {
+> +	list_for_each_entry(peer, &ar->ab->peers, list) {
+>   		if (peer->sta) {
+>   			deflink = &peer->sta->deflink;
+>   
 
-On Fri, Jul 14, 2023 at 2:34=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
-rote:
-[...]
-> > Here are the errors that lead up to this:
-> > http://dump.mntmn.com/rtw88-failure-1h-dmesg.txt
->
-> Hi Martin,
->
-> The dmesg shows that
-> "rtw_8822cs mmc2:0001:1: Failed to read 1536 byte(s) from SDIO port 0x000=
-000d1"
->
-> Shouldn't we return an error code (with proper error handling) instead of
-> just break the loop? Because 'buf' content isn't usable.
-In my opinion we are properly breaking the loop:
-"ret" will be non-zero so the error code is returned from
-rtw_sdio_read_port() to the caller.
-The (only) caller is rtw_sdio_rxfifo_recv() which sees the non-zero
-return code and aborts processing.
-What do you think?
-
-> I wonder the approach of this patch is still not enough for Lukas' platfo=
-rm.
-On IRC Lukas wrote:
-  funny, i can reproduce skb_panic when opening this page in chromium
-https://embedded.avnet.com/product/msc-sm2s-ryz/
-and:
-  still getting spurious skb_panics, even after disabling rx aggregation.
-
-I haven't had the time to look into this any further yet.
-Unfortunately I also don't have any hardware to reproduce this problem
-either, which unfortunately results in this long ping-pong.
-Lukas, could you please add two more prints:
-- in the rtw_warn with "Failed to read %zu byte(s) from SDIO port":
-please also print the ret variable (with %d) - I'm curious what the
-reported error is (it could be some CRC error which would mean ret is
--EILSEQ)
-- add something like the following at the end of rtw_sdio_read_port()
-(right before "return ret"):
-
-if (!ret && count > 1000) {
-    printk(KERN_INFO "rtw_sdio_read_port() with %zu bytes:", count);
-    print_hex_dump(KERN_INFO, "", DUMP_PREFIX_OFFSET, 16, 1, buf, count, fa=
-lse);
-}
-
-(note: I only compile-tested this)
-The very last output of this (potentially spammy) output will contain
-the full buffer that's causing the problem.
-
-
-Best regards,
-Martin
+In the future please make sure driver-specific mailing lists are 
+included in your patches when they exist in the MAINTAINERS file. Adding 
+ath11k@lists.infradead.org
