@@ -2,124 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E945762BB3
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 08:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF2D8762C19
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 08:58:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231913AbjGZGlv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 02:41:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57004 "EHLO
+        id S232003AbjGZG6H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 02:58:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231812AbjGZGlt (ORCPT
+        with ESMTP id S232149AbjGZG5q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 02:41:49 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D4782132
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 23:41:47 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4fe11652b64so328224e87.0
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 23:41:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690353705; x=1690958505;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3y/22I2v93+TWa6s1CXf0qTViEqrmWtHnFQP2RiZStM=;
-        b=F03SUx2bWrNf/WDpUhqXyukSjU5FCI5ihDn/7rzZohIgM3+ICxFJ4nM7NmsfA/iT8S
-         Rep8k9bXe8gXhw7P/Q8L4UYgOzBQ9YuGrNoHrTNfoJGwFpPYXbQx7GCbJl12m9Fc7wkp
-         nDfJYhLNz/HqbwkF5DNJXOZop8Kkhz5DBh8CxCywtad+ZwkhFf8aA+M9RM1Rgcd+WOdP
-         2F6D1KAwG4xuYVHiH9+MZfg7RKTSk9Dg2DwT7VR5IHMXEFJ8GdHfbhHzrWbg1mZOv1fn
-         f38V43iuwVPWaYqHXQdaorL0A0TrDPr+AR1SnfyAadXGNs94XWeYYS+G93bvsyr5ILRs
-         QPvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690353705; x=1690958505;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3y/22I2v93+TWa6s1CXf0qTViEqrmWtHnFQP2RiZStM=;
-        b=Se/4igxd3lEOp4D7ik1W9RY9uAyVkdVPmclHGbpD4BymfgLQSFYlEqqZuF48ttlGgM
-         uczPJ4rdsa+mQA+CahWsNQ0mjUtXZz5j722zxkTU6Por/b3+dDJcK7JVrfp5Flq3SUqZ
-         URH8znnSxDwTupkikJD41vsG6gAfwF/wQ8ruHkQ0snrzwJa8JekxuI7zYA1YGH9u+Xe5
-         0BtRNBzuV+3UfSREcOojoNJZ3shb5KXYb9PUTbh36fO0KPoanYiHbAQTzrlrFWBfvCfR
-         IFMPZtTguaU2BbUUP2jYZc1hmPY0z75Ghh361L4ZQ2s9sVVppL2x2/O7TZWuNfXMV0Wp
-         gp+g==
-X-Gm-Message-State: ABy/qLbbB1s/aee0yf3AFPHybL3aio3BFRBCP6VYzjs4hxRzl6dEstD9
-        0+RA6ilk3MsxDzdFKOLUKCnsQva3B2R8S0kXo3moMw==
-X-Google-Smtp-Source: APBJJlGzOjHjb9aiiq9rLMjcCYZohEXYqsGAsfrlAhqhGFGRUC/tHxEDwJrVtT/8u5/kP1c1LDwhAL7CANzQ4WuVjzQ=
-X-Received: by 2002:a2e:7a08:0:b0:2b6:d137:b61c with SMTP id
- v8-20020a2e7a08000000b002b6d137b61cmr730329ljc.39.1690353705569; Tue, 25 Jul
- 2023 23:41:45 -0700 (PDT)
+        Wed, 26 Jul 2023 02:57:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB1892700
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 23:57:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C4B96142E
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 06:57:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54865C433C8;
+        Wed, 26 Jul 2023 06:57:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690354636;
+        bh=xHlm5bWMUQRL1QFrdtVePyYirEwMmuuFHBU4VTFFaAs=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=TLXto8tPa+qYK1hudIzzA9cAn3Vl8T7PkUdFfUh8boNtASqEQI2lH2sJl7ky6b6zv
+         9PDqus61KcI8DmMPZV+c40J4CfqS2yb6ni5tV3Jgl0YSYdiuf0b3ogj8IXUwjKztjT
+         omFySydNduyhCi3lPra42a7LHefRmtI9wDf+ZNq9kHZHdtSM9IRBQCGaxnhk3dbW4a
+         n73zHTvmtfFAQg1zd77HkIYHKxF6Y6pLF3UdkRzm/aKSnBNCrkLlo/QeHRcyopwrDt
+         2JIqfDzw44BvxFtMtU9b9eFTZXA5imbNfGmb1tWuEo7gxn1ajnZ0DL9cUsiH3GmiTZ
+         aDa4kPFnYCDQw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230725131258.31306-1-linyunsheng@huawei.com>
- <ZL/fVF7WetuLgB0l@hera> <20230725141223.19c1c34c@kernel.org>
-In-Reply-To: <20230725141223.19c1c34c@kernel.org>
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date:   Wed, 26 Jul 2023 09:41:09 +0300
-Message-ID: <CAC_iWj+3kDccXSG2ADmu7KDDjN6MuitihwcEjYeyRLqrUbxBjg@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] page_pool: split types and declarations from page_pool.h
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Wei Fang <wei.fang@nxp.com>,
-        Shenwei Wang <shenwei.wang@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6.5] Revert "wifi: ath11k: Enable threaded NAPI"
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230720151444.2016637-1-kvalo@kernel.org>
+References: <20230720151444.2016637-1-kvalo@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169035463311.3467307.11151341644167452252.kvalo@kernel.org>
+Date:   Wed, 26 Jul 2023 06:57:15 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jakub,
+Kalle Valo <kvalo@kernel.org> wrote:
 
-On Wed, 26 Jul 2023 at 00:12, Jakub Kicinski <kuba@kernel.org> wrote:
->
-> On Tue, 25 Jul 2023 17:42:28 +0300 Ilias Apalodimas wrote:
-> > Apologies for the very late replies, I was on long vacation with limited
-> > internet access.
-> > Yunsheng, since there's been a few mails and I lost track, this is instead of
-> > [0] right? If so, I prefer this approach.  It looks ok on a first quick pass,
-> > I'll have a closer look later.
-> >
-> > [0] https://lore.kernel.org/netdev/20230714170853.866018-2-aleksander.lobakin@intel.com/
->
->
-> I prefer the more systematic approach of creating a separate types.h
-> file, so I don't have to keep chasing people or cleaning up the include
-> hell myself. I think it should be adopted more widely going forward,
-> it's not just about the page pool.
+> From: Kalle Valo <quic_kvalo@quicinc.com>
+> 
+> This reverts commit 13aa2fb692d3717767303817f35b3e650109add3.
+> 
+> This commit broke QCN9074 initialisation:
+> 
+> [  358.960477] ath11k_pci 0000:04:00.0: ce desc not available for wmi command 36866
+> [  358.960481] ath11k_pci 0000:04:00.0: failed to send WMI_STA_POWERSAVE_PARAM_CMDID
+> [  358.960484] ath11k_pci 0000:04:00.0: could not set uapsd params -105
+> 
+> As there's no fix available let's just revert it to get QCN9074 working again.
+> 
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217536
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Right, my bad. We share the same opinion.  What I meant by "this" is
-the split proposed by Yunsheng, but reading my email again that wasn't
-very clear ...
+Patch applied to wireless.git, thanks.
 
-Cheers
-/Ilias
+d265ebe41c91 Revert "wifi: ath11k: Enable threaded NAPI"
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20230720151444.2016637-1-kvalo@kernel.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
