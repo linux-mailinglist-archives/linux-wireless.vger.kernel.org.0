@@ -2,55 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5504762C4F
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 09:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92D41762CD0
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 09:13:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231654AbjGZHBt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 03:01:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36692 "EHLO
+        id S230460AbjGZHN3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 03:13:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231186AbjGZHAq (ORCPT
+        with ESMTP id S232558AbjGZHM4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 03:00:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B6162D4E
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 23:59:52 -0700 (PDT)
+        Wed, 26 Jul 2023 03:12:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33F244EFD
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 00:09:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 793476165C
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 06:59:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C70C433C7;
-        Wed, 26 Jul 2023 06:59:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C80376171A
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 07:09:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F6EC433C7;
+        Wed, 26 Jul 2023 07:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690354790;
-        bh=Jp6sBhLvRtyYzTRKqoqq/FO5A8YEP3kr/e7NZRg7f6Y=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=qHgaWjz1uAETY6HTbckxwBGcSBqbjObjQ4mLaq3nXcCLW9OyyMvXgh95ZL0ouxUAj
-         IYceL6bFoJCdFe++DKHx9PSu6bBUom+va25syWYxeq3Gm148uM9eUd6/oJK9YLUITQ
-         8iTh79giBZ6+rwEQLI/KNwvA6+dvKP3hDZ0Ycm6Knyne2HDMULS9fTF4ww58vy6F9W
-         pILHmpuIb/ypRuWqSEfmjH1MsGNbjd2vj43i/EGvf2aUqQCdHIJ5qKmoyOU5hreHvk
-         XrVcgrr38RLrT5yAy5oYjpwB0iZU6ymK2nCUSOgwKhL5F3I9Z9P82zmmIekDnG5Q4e
-         iK/mZIj8sfmhQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 8/9] MAINTAINERS: wifi: mark b43 as orphan
-References: <20230724104547.3061709-1-kvalo@kernel.org>
-        <20230724104547.3061709-9-kvalo@kernel.org>
-        <14cfb9d7-089d-607a-9062-eb9e268ffd67@lwfinger.net>
-        <87zg3l19lz.fsf@kernel.org>
-        <4bd1d468-d512-65b8-7e03-8cf879ce24af@lwfinger.net>
-Date:   Wed, 26 Jul 2023 09:59:48 +0300
-In-Reply-To: <4bd1d468-d512-65b8-7e03-8cf879ce24af@lwfinger.net> (Larry
-        Finger's message of "Mon, 24 Jul 2023 13:03:04 -0500")
-Message-ID: <87mszj17kr.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1690355345;
+        bh=NwnoI/eHfBR3fSLAIrmDgyunZibD6RNBhonHwKan8Xo=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=XRqpgTOHWP53S5BfUEkhPBaM6gL7pwj5GasDZl/o+KKllBPPrPZWzlNZ9KmsuAc7n
+         1mZrUyCjlXSbbdLp26Vai6QYUV0GQW0sbvPml+DlzUJITBzdQypSr8A4uYDe2+yfPE
+         mCO4ILsMVgAG1GZZPqoiK240IHEIRnCPwYmFqLAveRRpcAGW5t6thyg4KLJ6qnP2To
+         GvB9Y+kSJqYo7jbWQCri2H2vMo1HL7OG88SsNebfe8ChndMY1tx7e+4scuZ1m262ZS
+         dwa7uPF3M6QeGYjIOVZfMNpgi9wReKNbefi6GkDc6t3uInhA+ZzZRMfqqc/NlY0rnw
+         D0B6PYD8coK+Q==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 7bit
+Subject: Re: [v2] wifi: cfg80211: Fix return value in scan logic
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230723201043.3007430-1-ilan.peer@intel.com>
+References: <20230723201043.3007430-1-ilan.peer@intel.com>
+To:     Ilan Peer <ilan.peer@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169035534220.3467307.604241930680455122.kvalo@kernel.org>
+Date:   Wed, 26 Jul 2023 07:09:04 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,28 +55,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
+Ilan Peer <ilan.peer@intel.com> wrote:
 
-> On 7/24/23 12:51, Kalle Valo wrote:
->> Larry Finger <Larry.Finger@lwfinger.net> writes:
->>> Kalle,
->>>
->>> Michael Buesch and I have been unofficial maintainers of this driver
->>> for years, but your change makes sense.
->> I would be more than happy to add you and/or Michael as b43
->> maintainers!
->> But I don't want to force anyone, it's not exactly a fun role :) Just
->> let me know what you prefer.
->> 
->
-> Given my advanced age, I have been busy trying to get rid of
-> responsibilities, not take on new ones. I think making the driver an
-> orphan is OK. As long as I am capable, I will continue to address any
-> bugs that turn up.
+> The reporter noticed a warning when running iwlwifi:
+> 
+> WARNING: CPU: 8 PID: 659 at mm/page_alloc.c:4453 __alloc_pages+0x329/0x340
+> 
+> As cfg80211_parse_colocated_ap() is not expected to return a negative
+> value return 0 and not a negative value if cfg80211_calc_short_ssid()
+> fails.
+> 
+> Fixes: c8cb5b854b40f ("nl80211/cfg80211: support 6 GHz scanning")
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217675
+> Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 
-Sounds good, thank you for looking after b43. Very much appreciated.
+Patch applied to wireless.git, thanks.
+
+fd7f08d92fcd wifi: cfg80211: Fix return value in scan logic
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230723201043.3007430-1-ilan.peer@intel.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
