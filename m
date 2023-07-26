@@ -2,209 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 965A57635D0
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 14:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1601A76382D
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 15:56:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233224AbjGZMFQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 08:05:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57380 "EHLO
+        id S234275AbjGZN4l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 09:56:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230305AbjGZMFQ (ORCPT
+        with ESMTP id S233169AbjGZN4j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 08:05:16 -0400
-Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F7CAA
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 05:05:14 -0700 (PDT)
-Received: by mail-oo1-xc30.google.com with SMTP id 006d021491bc7-56c4457c82eso7376eaf.0
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 05:05:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690373114; x=1690977914;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BwkCSdirw2IHkC+w6GYdEQWZEAClewkm8At3wmS+W1M=;
-        b=AopCL3oQ866esZyBs6p4uv23opPQfDzNkOa6HxKA4UC/ThnZ/NaQwTn9ku8Ea8octz
-         UUxG0TJnST9ML4OIHMvooLWAPfs2VtgFKLHBV+41I4T8FRxvuPlaoyE4a54K6+R0zFah
-         s2gBUgJoWrKAQYgNAJVUNLI43o4truJB3GctI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690373114; x=1690977914;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BwkCSdirw2IHkC+w6GYdEQWZEAClewkm8At3wmS+W1M=;
-        b=QaY7lu86T6tviVr2VKaqGrGZl6CPbLWaw3cYBmXWhUtECGfzbjVdYQXV2QE6dTtDrg
-         d3pY3i+fEG4gRG1wl9NF6mQBPR+rFUzVHgcRTGXPYzGqspxtTtAZhE7V4O3MV+Y/Q8pn
-         Qmb/QebdDOg0wwSoBIt4BKYbuu0NEVOCeKif+n55pfFn9ddnobdwsPR+PHshLYKfKmrE
-         FjDI+JyuwoDjy5IQ2ldkM30ze3q96SWzzoAk2GirzQhO+huDOS6V2nwId7z464bALJ9C
-         azZPkfBUTnJjFWmIZ+W44QD+hkqYT06wIcLRtCoZZSlhJj0shOlnyuUKIlMW5gJxuPvh
-         82vA==
-X-Gm-Message-State: ABy/qLbglZK7vP9JJ/JkLwWkoUbSWslU7cUgkNiVPJWo5qo1nwzImika
-        XQTN6ChZv96exGcYjR0f2G/Gzs2b1bZQS+78jXNWlYEIoze7GihyfKU=
-X-Google-Smtp-Source: APBJJlE4i1Bb26bq49VLVBd2PbN3jzcPbvq/w2dvCqr5SdtK0LygVRxfxmG6G5jl4F7plvz4MqGIWoXG3fx9FedgAhE=
-X-Received: by 2002:a4a:385d:0:b0:569:ac56:ca98 with SMTP id
- o29-20020a4a385d000000b00569ac56ca98mr1340440oof.3.1690373114111; Wed, 26 Jul
- 2023 05:05:14 -0700 (PDT)
+        Wed, 26 Jul 2023 09:56:39 -0400
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01olkn2039.outbound.protection.outlook.com [40.92.98.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D042697;
+        Wed, 26 Jul 2023 06:55:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ofTNULpIWhGlvJ3bpKR3nc+KISkiGSC+9qYz1ZQiUwkmkYB9UH2Bz/vEBS0gOub6Q+oLmsvlt0JlytyCoH6U8+M/mrfrYdQKr+5UzIx3dfltUhRabBMgNe2HhU3vSha+WV8Lz4s/iiBNSvtRw9YPDMOybVjtbHk1WbNI0D6mTGl3ta5ag0YX+ee6kg3r0UJIqNx1npURWhkwJ87WK9zGOcQue+XnblyN6BNJSOBnTMsd1GInMp0YVA9KdBxsCRIt95xinQRKLnQ7+xoV+Cve0gfUTHlTmJoSs1HqasBydHBlVBVA/EsW8Os06Bu7p+Yu1UmDmkrqexztNSSQZ+Y09A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6cQxaTz7g73oz6xbuuUqbQehs/F3w6onjtnuM/ot98Q=;
+ b=Cdmlmmttniavquykn6gE0kQTEeXeBmTIwPyIqjsLVa9JGLrJHCrhUFbm5kM2xN3SLhK5wGIYEmShYgvyh6tN5h9DJYBswefsPwO+SMT2Ru6hpnKiPdqL/0m5dm0geRLzYyQJfKJwlmBbYePpXxOw3cWsDOxqBBdsvizRZItpgIN0TMTc5FO0+yec7uj1JMx9sDMlCH+6vefMvaPHYwvyKj6xCaY61WR++/v6tBD8ZnGcIlK5Xr2OsfmwIEPkEwxIrH+cNSmPPp4NN6EsTMAoYJEjrmcthpt3PclngfXHH3T6/fcOUxXhwa/SCWz+CWvozNKIBzqRj9b9EAspthCeSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6cQxaTz7g73oz6xbuuUqbQehs/F3w6onjtnuM/ot98Q=;
+ b=n4tY015RC0wf1+nw7BXM8pwfYC4hTnhk6xOlEKz1FAvmv1bHVaWvA9b53iAEJwMEe1pAEL2kyNfp0OTEcURhbXCRxPUpr1bIKywR9W/3jUMTir2w+BCiZng1zncnNU89Z89vhHh35Jc7DIBKahjjnftOYkTEkUHaI5S99mzhdQLXmt5F4TvlmModRHlmi1bnKEiTQSrUKOo7RDBolmUNCsrkrFyWl/99Ic4loiEDdbf8CLSzh0PfcA0BfyK9PqvbwXli/3V5zdqZcRkYDyNyMtubCKatEsvYblo35PlTQvRQDOZHLW250X1eitQ2yelu72kzRRBcKILp9H9GmNSnwg==
+Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM (2603:1096:404:8041::8)
+ by TYCP286MB3724.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:3be::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.29; Wed, 26 Jul
+ 2023 13:55:43 +0000
+Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f4c2:4b38:d074:f1e9]) by TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f4c2:4b38:d074:f1e9%5]) with mapi id 15.20.6631.026; Wed, 26 Jul 2023
+ 13:55:43 +0000
+From:   Shiji Yang <yangshiji66@outlook.com>
+To:     daniel@makrotopia.org
+Cc:     angelogioacchino.delregno@collabora.com, ansuelsmth@gmail.com,
+        john@phrozen.org, kvalo@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
+        lorenzo@kernel.org, matthias.bgg@gmail.com, nbd@nbd.name,
+        ryder.lee@mediatek.com, sean.wang@mediatek.com,
+        shayne.chen@mediatek.com, Shiji Yang <yangshiji66@outlook.com>
+Subject: Re: [PATCH] wifi: mt76: support per-band MAC addresses from OF child nodes
+Date:   Wed, 26 Jul 2023 21:53:07 +0800
+Message-ID: <TYAP286MB03153BE5014AA32BE048B8B7BC00A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <ZK9mXE00xEHZV4fi@makrotopia.org>
+References: <ZK9mXE00xEHZV4fi@makrotopia.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN:  [VZOMPsTcg2+hanBfxJnwfWTavMFmQcSt]
+X-ClientProxiedBy: TYCP286CA0028.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:263::15) To TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:404:8041::8)
+X-Microsoft-Original-Message-ID: <20230726135306.392-1-yangshiji66@outlook.com>
 MIME-Version: 1.0
-References: <20230723070741.1544662-1-pinkperfect2021@gmail.com>
-In-Reply-To: <20230723070741.1544662-1-pinkperfect2021@gmail.com>
-From:   Matthew Wang <matthewmwang@chromium.org>
-Date:   Wed, 26 Jul 2023 14:05:02 +0200
-Message-ID: <CABRiz0pPnnKWH7s5HdmFu55-pHPhXWtytZPFe-NW0RUdv78wpw@mail.gmail.com>
-Subject: Re: [PATCH v7] wifi: mwifiex: Fix OOB and integer underflow when rx packets
-To:     Polaris Pi <pinkperfect2021@gmail.com>
-Cc:     briannorris@chromium.org, kuba@kernel.org, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYAP286MB0315:EE_|TYCP286MB3724:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9721e24b-70dd-4803-5c86-08db8de000cb
+X-MS-Exchange-SLBlob-MailProps: q6Zzr5Fg03EX4MSurZUzZTQFeLZtFhLusQUcZIfjBDe90lTD8R50MthGcPaV5dqFU35tXsWqHVlwVTM0ANrwM6Iqbdmi45YmrInAP6yicjjdYLEVXC69sKhBuLA3yi3RQQ5i8D7VtbZmW6+VJp12oUFbRgK7sskzYyAsk7oQbqwkV+RJQ0BKnHRWEO96Xdtw+1Bep9XfE1zjfecdLfDqAfpbxvHPBk3UIOQwJg+y879QM8DeW/t//JAUeeh/cHpLm+NJbg852U83FqwVCYqhmzOG8Kcn98fjEvt5ye/mTDUoKgpJ60YyNAKKv9PLazNfsQ9ETvB6zqw1gYI4l5yauPSL9o1Kzp6goDVhc1lL36cQ2OW7uhhDmj5Dw1H5tfif9pAytlM9ewYjFGqIvyATox7TDrkDp7M8MFeH4arRkNKA7ab0bVBS7ZUb2xxIFRu4tavSo1rFcavEUGCZ5XBaK/QeK4matE59LJv/uInqEGM5Fu3z5tm4FKBeFp6SYJUyEDywDTWh41WWvgYxZxYe9fBNmB+HVpQXHzXy2Xyad4freQufpuwEZca95xtvPLFbpN8C2eKQJmBs5scyYuA6ncLdOgyUi6mC2RCAkwfyvIrRbJlnIMd2K9wqaBi4zY8eqC4uKx6AgliXoX+/i5TpUkOMnqEvEsHjf6mEpro9fa+0pQdpIWD/+FgXmzUz5N9k
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3OqgMTSItSS7x5NUqolOgRYHAD1sSglvYUQsF+ge6yv/H55fh+Ly26h2/Fpp8mfRAYwa/L2JPCh2D3M5uTNfb8CJLE2SPIxr1Loc7ZvpJk8YasSTb3YezoBLOA34GU0DmMFec0AgLfmGca1H28v2bnmJro1OIhGHIQM37HWhktt1BvMTxqSUMbYF5k2rlWDNUpIosjC8zE8xOztyqp3TKprYcStMYyH+20DmQTd5Moe7LwJ0DlwijZpSyGKQ6hSXYtwrV+UrPzRRaPnA3Zra6UJzHaBwJrRt69DATsH5Pz9pKOZZzwmKQTaqt4JWfxoJZAzTeolwqgpiOfOkGhOY2rr66968kKhlEcDhUu6hB/KbVuWcn8NfjRY6rJvwJBr9ctP/lc3t9oNv2kOVjbqV/Y9+CLEXEjkE7X+y5qtFWZ6gt7SJZEnjnI2VCSF7YvdgBrNWhgABM803BmhnKBIIhIJcatM8ec4EEkP7cqGrQh+GA3trmfqvk5SBUgOBEnCEJvK9P+oINGy3uQY4N09k0OYkG1dZtuJFKRlwMUHufw5ZIwTTc0df+fVxxXKvj1Ue1DYlEiArb98UixrlMDLSStV5lYxq1sbtnHNH2m4UXYuw/3PgiwfwKnFLCpetoPMy
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zL8ygI1k0WnqLDyuLj0WMwBGTjDJZuLTUVPT1IiR9lFql0sjac5FwNBBGBof?=
+ =?us-ascii?Q?h8L47wALCtUaTmDc37eoR4uwVUYg7lB05UGzfHL3K6uD/SivHxqke+5Ey14s?=
+ =?us-ascii?Q?jIk+LRO7HFr84FycByq7iJQbw9njqIgEo7fi+fAdZ9WPdq7l2UqZeeWQVj0q?=
+ =?us-ascii?Q?fY/oJmf4PA//efF4otkp9ixa2RjL0BiOxz638TeErtxBOOWYvp6ZPWpie1FZ?=
+ =?us-ascii?Q?uBcG1jue2YjuU2gZgfLfEYryzGGDOKGEAI9A+V1VbyOQy08tUCfvDzvhmN3R?=
+ =?us-ascii?Q?+oAniqjTZ25jj1EbuDf3xIlpSwLwsAyWeToZePcocq5XQIe/FXv+l6c6XJ2R?=
+ =?us-ascii?Q?XSCclU/mtva3G3YdTkHlH7rv9U6sbvLocSmW7Wl0V73oC5Uz3ZzfgGk6IvPt?=
+ =?us-ascii?Q?SGlIMEWCZByKNVH9EuwKOw9n7DzRm6iT0JRIUfK1vECLkDRK1jxCIKM4/zDN?=
+ =?us-ascii?Q?bbhAFJfY4CODk1WtBxFiIAp/tLPT23bXigcH1dqt8O1DRL986pFOP5SP+X8g?=
+ =?us-ascii?Q?yUGvTGHJcUhDajm70XQqVj8erZAONe0AzkWsLX5mUPT4ecAn/4Dc6hgp/zPZ?=
+ =?us-ascii?Q?ABX/g+r7HnpSW0sqtbA4k0s2PfhTHpYM77ctHgLGCaZB+5SPQU1b6oXxIy4U?=
+ =?us-ascii?Q?d5rNQAfwZwwN1kxMo6jtYLBo7sZABz5MdLJNezCXUdVhnhsA9LRteoXRtjcn?=
+ =?us-ascii?Q?+bshkd7f6n6sW0xisiIDiSNNRYcNhvzMtvNPID06LZGC7gE5ljQ8kuTncbJH?=
+ =?us-ascii?Q?+v249ni9fM6RQY9jSPd+zNK+iMzRA3EmOVBQ6CFD57UC7iTzbxS7e0DkBDC/?=
+ =?us-ascii?Q?O1abUkM6rztolAOKsoRj43dkVq5eA0yCyWlVA2xTO0ynlmeAeKQafkbpOMQk?=
+ =?us-ascii?Q?1EhjxZ0K0ppI2DhUQaXmXQqnG+cpBhcng7UvqfAaQSu8TW2/llNg9bByPTYY?=
+ =?us-ascii?Q?cfGnZ5LJjhBZuw4KKAV3/4iwhSNhYYP6KNm4TZo14qfHqsBT+3lYFt5a7ukj?=
+ =?us-ascii?Q?aV7RWZ0VNGcQ56CBwbnkTJUL3m3alLdp8QT4OP6N1kgRFxqC79wrq/AtoSf6?=
+ =?us-ascii?Q?9/hkfDVbVAbnoGXZq80KROn7ZA73YoBUuuqLDdThCh4EJf1hayWy+M5wL0ut?=
+ =?us-ascii?Q?SELn0ML2FKFKpgM+tO733WG4X1JwluP0oEBmjt9tgnfrX4Eva32odlGWaKf4?=
+ =?us-ascii?Q?CV49+/WW75vEpvCKSpJVjXvwvdlyBUYPnf/iqmWKaw/awy56RBpb3/pY4h8?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9721e24b-70dd-4803-5c86-08db8de000cb
+X-MS-Exchange-CrossTenant-AuthSource: TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2023 13:55:43.2650
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB3724
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
+Thanks.
+Works well on MT7615D and MT7915D.
 
-On Sun, Jul 23, 2023 at 9:07=E2=80=AFAM Polaris Pi <pinkperfect2021@gmail.c=
-om> wrote:
->
-> Make sure mwifiex_process_mgmt_packet,
-> mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
-> mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
-> not out-of-bounds access the skb->data buffer.
->
-> Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80=
-211")
-> Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-> ---
-> V5: Follow chromeos comments: preserve the original flow of mwifiex_proce=
-ss_uap_rx_packet
-> V6: Simplify check in mwifiex_process_uap_rx_packet
-> V7: Fix drop packets issue when auotest V6, now pass manual and auto test=
-s
-> ---
->  drivers/net/wireless/marvell/mwifiex/sta_rx.c | 11 ++++++++++-
->  .../net/wireless/marvell/mwifiex/uap_txrx.c   | 19 +++++++++++++++++++
->  drivers/net/wireless/marvell/mwifiex/util.c   | 10 +++++++---
->  3 files changed, 36 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/=
-wireless/marvell/mwifiex/sta_rx.c
-> index 13659b02ba88..f2899d53a43f 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-> @@ -86,6 +86,14 @@ int mwifiex_process_rx_packet(struct mwifiex_private *=
-priv,
->         rx_pkt_len =3D le16_to_cpu(local_rx_pd->rx_pkt_length);
->         rx_pkt_hdr =3D (void *)local_rx_pd + rx_pkt_off;
->
-> +       if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
-> +               mwifiex_dbg(priv->adapter, ERROR,
-> +                           "wrong rx packet offset: len=3D%d, rx_pkt_off=
-=3D%d\n",
-> +                           skb->len, rx_pkt_off);
-> +               priv->stats.rx_dropped++;
-> +               dev_kfree_skb_any(skb);
-> +       }
-> +
->         if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
->                      sizeof(bridge_tunnel_header))) ||
->             (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-> @@ -194,7 +202,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_priv=
-ate *priv,
->
->         rx_pkt_hdr =3D (void *)local_rx_pd + rx_pkt_offset;
->
-> -       if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
-> +       if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
-> +           sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
->                 mwifiex_dbg(adapter, ERROR,
->                             "wrong rx packet: len=3D%d, rx_pkt_offset=3D%=
-d, rx_pkt_length=3D%d\n",
->                             skb->len, rx_pkt_offset, rx_pkt_length);
-> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/ne=
-t/wireless/marvell/mwifiex/uap_txrx.c
-> index e495f7eaea03..04ff051f5d18 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-> @@ -103,6 +103,15 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwi=
-fiex_private *priv,
->                 return;
->         }
->
-> +       if (sizeof(*rx_pkt_hdr) +
-> +           le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
-> +               mwifiex_dbg(adapter, ERROR,
-> +                           "wrong rx packet offset: len=3D%d,rx_pkt_offs=
-et=3D%d\n",
-> +                           skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offse=
-t));
-> +               priv->stats.rx_dropped++;
-> +               dev_kfree_skb_any(skb);
-> +       }
-> +
->         if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
->                      sizeof(bridge_tunnel_header))) ||
->             (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-> @@ -367,6 +376,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_pri=
-vate *priv,
->         rx_pkt_type =3D le16_to_cpu(uap_rx_pd->rx_pkt_type);
->         rx_pkt_hdr =3D (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_=
-offset);
->
-> +       if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-> +           sizeof(rx_pkt_hdr->eth803_hdr) > skb->len) {
-> +               mwifiex_dbg(adapter, ERROR,
-> +                           "wrong rx packet for struct ethhdr: len=3D%d,=
- offset=3D%d\n",
-> +                           skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offse=
-t));
-> +               priv->stats.rx_dropped++;
-> +               dev_kfree_skb_any(skb);
-> +               return 0;
-> +       }
-> +
->         ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
->
->         if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-> diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wi=
-reless/marvell/mwifiex/util.c
-> index 94c2d219835d..745b1d925b21 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/util.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/util.c
-> @@ -393,11 +393,15 @@ mwifiex_process_mgmt_packet(struct mwifiex_private =
-*priv,
->         }
->
->         rx_pd =3D (struct rxpd *)skb->data;
-> +       pkt_len =3D le16_to_cpu(rx_pd->rx_pkt_length);
-> +       if (pkt_len < sizeof(struct ieee80211_hdr) + sizeof(pkt_len)) {
-> +               mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length"=
-);
-> +               return -1;
-> +       }
->
->         skb_pull(skb, le16_to_cpu(rx_pd->rx_pkt_offset));
->         skb_pull(skb, sizeof(pkt_len));
-> -
-> -       pkt_len =3D le16_to_cpu(rx_pd->rx_pkt_length);
-> +       pkt_len -=3D sizeof(pkt_len);
->
->         ieee_hdr =3D (void *)skb->data;
->         if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
-> @@ -410,7 +414,7 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *p=
-riv,
->                 skb->data + sizeof(struct ieee80211_hdr),
->                 pkt_len - sizeof(struct ieee80211_hdr));
->
-> -       pkt_len -=3D ETH_ALEN + sizeof(pkt_len);
-> +       pkt_len -=3D ETH_ALEN;
->         rx_pd->rx_pkt_length =3D cpu_to_le16(pkt_len);
->
->         cfg80211_rx_mgmt(&priv->wdev, priv->roc_cfg.chan.center_freq,
-> --
-> 2.25.1
->
+Tested-by: Shiji Yang <yangshiji66@outlook.com>
