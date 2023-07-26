@@ -2,89 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B62C8763F72
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 21:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 105C8763F73
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 21:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbjGZTWl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 15:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59232 "EHLO
+        id S229483AbjGZTXE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 15:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjGZTWk (ORCPT
+        with ESMTP id S231183AbjGZTWw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 15:22:40 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC3FC271B
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 12:22:39 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1bbc87ded50so939965ad.1
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 12:22:39 -0700 (PDT)
+        Wed, 26 Jul 2023 15:22:52 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FF61271C
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 12:22:50 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-686e0213c0bso171913b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 12:22:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690399359; x=1691004159;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aHNoA7m9GicaGGa7vYCwwPEzUoHD3BqRxI+RE52+Svk=;
-        b=Eha09UWL24jKcvok2PsCqF7Ep/0Lo50o5lLRef1IazT+sIzjiWVExilAVggAkc6TGU
-         rTEJVXomNsuUJ/Y8JCiRzx9pf58vgUI+egd/rWcRvS2fsXyI3c/CXIx5ygccJ8TwUHnX
-         U8i+qrsl9BLIiyB3klkcDbS8v8h6JSM0pbsZc=
+        d=gmail.com; s=20221208; t=1690399370; x=1691004170;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7CBmR4yWSUiguiE7O6QA/p1IdBkA3XhGpXHwJgerUEQ=;
+        b=l0s2bdogF/ulmv67NAoA2CMWMyKmdrObXgRhPfalZU2+gK6FHVIYSKsyPnZCsktliW
+         iKi4kt37tj2wV9eZC6I7wqXODLvKacOpZJLViqIKPZk8RLiGcQJJJf2uVV+uOPZVPa0Q
+         SiiWfY47HkBt3en9a8qXt5xhkiBilulrYan25xgowSQinCaRuh3xxZzj942U2/XRKCL9
+         O6An4Q/bePxCuvkkHMs3ETLWbV0da3LU5EunV3GHwllxIrWDH73iWsQQ9Xzg1mzw8szR
+         2Wwecqm0PlgQIaTLrin4ggEfCHAhUNCzYHbJ4TewiGMk5iKsZ6Hq2y6PtTskmq24lygL
+         s9Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690399359; x=1691004159;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aHNoA7m9GicaGGa7vYCwwPEzUoHD3BqRxI+RE52+Svk=;
-        b=IcmeJB82nMXKcGaZaVTN9TOvCMo/N7h3umeUMFM2DSvxKEzjNP3sD3/hFUanvORZye
-         u+bw2zUitsizf7p8SwWqt1TIV0Yxi2Ch2DBHGUE10k7vTJ8YfKVlXWUhWgce9kVVE3OM
-         zzfYkV9n4muHPWhgvZ/RTZ2Xs/Vvady6x5GbmBeBZgo/K8qOFQogcD/bhA6RgpDMZA6z
-         5yrYu2ZxyAr/WBH2vdBQmYD1CI5RkmK2HQds+KvTU3xP+lPA8Am6nNwHIErXakh/ttXz
-         Zb7ztNKyssKxNLnDJIzNBezlW/GQZ2jm6/FuDaKh1N6UkWR9Xb6YojUHEOR86PoqgO4j
-         flEg==
-X-Gm-Message-State: ABy/qLb81IaZ4gouzU4+qhx5iACNCsV+KpVs+HhMH7oCRATqlXRDKSsn
-        2DXkvTZed7t9GQDVau4CV0+sGLEV3BuQcFIaAlc=
-X-Google-Smtp-Source: APBJJlE87ckY0ldzwwsMWTs4RhaYLR+ESFD4oC0vTG4nsYMeaQj1+npXDSKQPbpXqQ/9JF3acncatg==
-X-Received: by 2002:a17:902:e5ce:b0:1b8:50a9:6869 with SMTP id u14-20020a170902e5ce00b001b850a96869mr3080804plf.66.1690399359302;
-        Wed, 26 Jul 2023 12:22:39 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:cf94:79ce:7d48:984a])
-        by smtp.gmail.com with ESMTPSA id q7-20020a170902dac700b001b80ed7b66fsm13523362plx.94.2023.07.26.12.22.38
+        d=1e100.net; s=20221208; t=1690399370; x=1691004170;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7CBmR4yWSUiguiE7O6QA/p1IdBkA3XhGpXHwJgerUEQ=;
+        b=JlZUR2DZpkzS8ErfzjOIEiA9SjyCnF92ilpMUj+xi8SAaZkGcHMymNcempTnGmTZRJ
+         f+BdkKfwHnbPqFwAQoSJ1PO3S7K1Nl13mUBK48qajAjtqn7jzi3+C8qfB+6T70Mm7Kdv
+         huTV4kQlOizlfz5HeSnHG/MXA0Uu2wX1Perlujvg+Tz1lwr4KOJQTsAjdEFSvVq9WWBx
+         zEb14AywTpWi3XXUgO2tmAnWr6VBZiK5P4hyIJ19Et6NWGW37x8KHcEdhvYk50U54gcc
+         E9V4eut75SCgIxB7F2lpM2xiAHtf0SIRCL+mvIY/6Iv0DsNsE/shGS1hKaF+0KlXoBLE
+         JS+w==
+X-Gm-Message-State: ABy/qLY3gPRDHAyZTH4vLBJqT+blTcYBE2V97scNP4PNz+hixujotidy
+        /sWKEzSWDm33/AxBuHVlU0R8MkWZkrQ=
+X-Google-Smtp-Source: APBJJlFkxyvb4wouwruXVT5552N9CzHb3E3/7j82WKrtbOlaDjrH1hRRz2ecQoszH+BCOPcK647/hA==
+X-Received: by 2002:a05:6a20:3950:b0:137:3224:16c1 with SMTP id r16-20020a056a20395000b00137322416c1mr2934132pzg.45.1690399369691;
+        Wed, 26 Jul 2023 12:22:49 -0700 (PDT)
+Received: from smtp.gmail.com ([49.205.252.170])
+        by smtp.gmail.com with ESMTPSA id i73-20020a636d4c000000b00553d42a7cb5sm667741pgc.68.2023.07.26.12.22.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jul 2023 12:22:38 -0700 (PDT)
-Date:   Wed, 26 Jul 2023 12:22:36 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        lvc-project@linuxtesting.org
-Subject: Re: [PATCH 2/5] wifi: mwifiex: drop BUG_ON() from TX error handling
-Message-ID: <ZMFyfJrDa5jwI6Ep@google.com>
-References: <20230726072114.51964-1-dmantipov@yandex.ru>
- <20230726072114.51964-2-dmantipov@yandex.ru>
+        Wed, 26 Jul 2023 12:22:49 -0700 (PDT)
+From:   Chaitanya Tata <chaitanya.mgit@gmail.com>
+X-Google-Original-From: Chaitanya Tata <Chaitanya.Tata@nordicsemi.no>
+To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: [PATCH] iw: connect: Fix segfault during open authentication
+Date:   Thu, 27 Jul 2023 00:52:45 +0530
+Message-Id: <20230726192245.100897-1-Chaitanya.Tata@nordicsemi.no>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230726072114.51964-2-dmantipov@yandex.ru>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 26, 2023 at 10:20:53AM +0300, Dmitry Antipov wrote:
-> Remove 'BUG_ON()' from 'mwifiex_process_sta_txpd()' and
-> 'mwifiex_process_uap_txpd()'. In case of insufficient
-> headrom, issue warning and return NULL, which should be
-> gracefully handled in 'mwifiex_process_tx()'. Also mark
-> error handling branches with 'unlikely()' and simplify
-> error messages (there is no need to use formatted output
-> to print the value which is known to be zero).
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+The check for remaining arguments is done after decrement effectively
+bypassing the non-zero check and causes a segfault with below command:
 
-You already sent a version of this patch, and I already gave you
-feedback:
+  "connect <SSID> auth open/shared".
 
-https://lore.kernel.org/all/ZJ3lyIQy7GPbA9YL@google.com/
+Signed-off-by: Chaitanya Tata <Chaitanya.Tata@nordicsemi.no>
+---
+ connect.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-You didn't respond to or integrate that feedback.
+diff --git a/connect.c b/connect.c
+index e5b177f..33e1a5f 100644
+--- a/connect.c
++++ b/connect.c
+@@ -77,6 +77,9 @@ static int iw_conn(struct nl80211_state *state,
+ 	if (argc && strcmp(*argv, "key") != 0 && strcmp(*argv, "keys") != 0)
+ 		return 1;
+ 
++	if (!argc)
++		return 0;
++
+ 	argv++;
+ 	argc--;
+ 
+-- 
+2.34.1
 
-Brian
