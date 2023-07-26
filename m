@@ -2,58 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C843762973
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 05:50:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AC6C762A6A
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 06:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229483AbjGZDuN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Jul 2023 23:50:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
+        id S230204AbjGZEsQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 00:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230340AbjGZDuL (ORCPT
+        with ESMTP id S230486AbjGZEsM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Jul 2023 23:50:11 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B062697
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 20:50:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690343410; x=1721879410;
-  h=date:from:to:cc:subject:message-id;
-  bh=mIJs4SbfVY6LFtfgI0JF22CMoLpqXBUweCeQ/Mr3PhU=;
-  b=QDAROsNgBOvw/eYLEzbtv7mJgEe/fCxqHEOX7NHsoNEhDDsul9B4+nqt
-   EOwLSDtSSlz+sJXS6yyME9q5JzSsYFiZx+fiv23lEAVl8JCyibD/naqZz
-   LR+9kaIzEktLCzshZCNl4FfMWeqKx/+UbyN5FokDsOYBTQxBiCGJLnAJJ
-   bf4TjfZ5enlq8sm2IXWzBIB3AFTSW7X3MvwJN1eZRgk5mw6JH83Ls3mbK
-   9t0trmf0ORCXkQv6EdTURgAUlgtvEvjptgQpqcbLfw2orzEuUEo45T14t
-   OMKUz4z3rKY1k2aguButGr/SxV3JELbbIvAFgE2E9mSpb5TJOz4T2nAaI
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="347514286"
-X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
-   d="scan'208";a="347514286"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 20:50:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="850284016"
-X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
-   d="scan'208";a="850284016"
-Received: from lkp-server02.sh.intel.com (HELO 953e8cd98f7d) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 25 Jul 2023 20:50:08 -0700
-Received: from kbuild by 953e8cd98f7d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qOVXL-0000c2-2F;
-        Wed, 26 Jul 2023 03:50:07 +0000
-Date:   Wed, 26 Jul 2023 11:49:11 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- b2090d93d4b6f1c72a9793d5a171806b8468b7cb
-Message-ID: <202307261106.7t837KUU-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        Wed, 26 Jul 2023 00:48:12 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8423B1BD1
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Jul 2023 21:48:11 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q3dTvT004855;
+        Wed, 26 Jul 2023 04:48:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=bld8BUBROrrRwVCh3Kj5Vv+4piv6m+lvnjbbx2/iHP8=;
+ b=HEZSX0jTx0GWgOA4scVYPGPhCVVTIzdk6yjS0bZF6gqPKQjbCYxcZGdWuOIJnYTc2lYE
+ 8F1hx+moARsZFvbsKMxH997GDN7rg2V6QlyaE1Ok1davaj26KdSS32p5hEHbmU5pZpPs
+ /2t1KBQ1D1mlvKBbQqlOPCILEdZ7eB0xsWICOZFM9Ep3G+wYuYHMoYbue3s2ebLYTTCb
+ 0k4h+W9lQBkI5kC105X1FUaxJ/D2l65iOvWNJS7IFeyRSvNe9PraNFhZKa2vfDYjg/eC
+ Uli9ux96g0p9vsdSVZpmS2S7GFiF7qqMOsR0+v8GLrU2401Kgt8CRwNP5RbXID4YlUVo PA== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s29xmjjqt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 04:48:04 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36Q4m3nS010025
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jul 2023 04:48:03 GMT
+Received: from adisi-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 25 Jul 2023 21:48:01 -0700
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
+Subject: [PATCH] wifi: ath11k: fix band selection for ppdu received in channel 177 of 5 GHz
+Date:   Wed, 26 Jul 2023 10:16:24 +0530
+Message-ID: <20230726044624.20507-1-quic_adisi@quicinc.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: O6_49LwVBg_wUmtaWVtfzVKHEqF8Oh_7
+X-Proofpoint-GUID: O6_49LwVBg_wUmtaWVtfzVKHEqF8Oh_7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-25_14,2023-07-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
+ mlxlogscore=998 impostorscore=0 adultscore=0 mlxscore=0 bulkscore=0
+ phishscore=0 suspectscore=0 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307260040
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,207 +73,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: b2090d93d4b6f1c72a9793d5a171806b8468b7cb  wifi: brcmsmac: remove unused data type
+5 GHz band channel 177 support was added with the commit
+"wifi: ath11k: add channel 177 into 5 GHz channel list". However,
+during processing for the received ppdu in ath11k_dp_rx_h_ppdu(), channel
+number is checked only till 173. This leads to driver code checking for
+channel and then fetching the band from it which is extra effort since
+firmware has already given the channel number in the meta deta.
 
-elapsed time: 721m
+Fix this issue by checking the channel number till 177 since we support
+it now.
 
-configs tested: 188
-configs skipped: 12
+Found via code review. Compile tested only.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Fixes: e5e94d10c856 ("wifi: ath11k: add channel 177 into 5 GHz channel list")
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r001-20230725   gcc  
-alpha                randconfig-r002-20230725   gcc  
-alpha                randconfig-r006-20230725   gcc  
-alpha                randconfig-r012-20230725   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r013-20230725   gcc  
-arc                  randconfig-r034-20230725   gcc  
-arc                  randconfig-r043-20230725   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r003-20230725   gcc  
-arm                  randconfig-r046-20230725   clang
-arm                           sunxi_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r003-20230725   clang
-arm64                randconfig-r024-20230725   gcc  
-arm64                randconfig-r035-20230725   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r016-20230725   gcc  
-csky                 randconfig-r023-20230725   gcc  
-hexagon                          alldefconfig   clang
-hexagon              randconfig-r004-20230725   clang
-hexagon              randconfig-r005-20230725   clang
-hexagon              randconfig-r022-20230725   clang
-hexagon              randconfig-r023-20230725   clang
-hexagon              randconfig-r041-20230725   clang
-hexagon              randconfig-r041-20230726   clang
-hexagon              randconfig-r045-20230725   clang
-hexagon              randconfig-r045-20230726   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230725   clang
-i386         buildonly-randconfig-r005-20230725   clang
-i386         buildonly-randconfig-r006-20230725   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230725   clang
-i386                 randconfig-i002-20230725   clang
-i386                 randconfig-i003-20230725   clang
-i386                 randconfig-i004-20230725   clang
-i386                 randconfig-i005-20230725   clang
-i386                 randconfig-i006-20230725   clang
-i386                 randconfig-i011-20230725   gcc  
-i386                 randconfig-i012-20230725   gcc  
-i386                 randconfig-i013-20230725   gcc  
-i386                 randconfig-i014-20230725   gcc  
-i386                 randconfig-i015-20230725   gcc  
-i386                 randconfig-i016-20230725   gcc  
-i386                 randconfig-r001-20230725   clang
-i386                 randconfig-r003-20230725   clang
-i386                 randconfig-r022-20230725   gcc  
-i386                 randconfig-r026-20230725   gcc  
-i386                 randconfig-r036-20230725   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r004-20230725   gcc  
-loongarch            randconfig-r013-20230725   gcc  
-loongarch            randconfig-r015-20230725   gcc  
-loongarch            randconfig-r016-20230725   gcc  
-loongarch            randconfig-r021-20230725   gcc  
-loongarch            randconfig-r024-20230725   gcc  
-loongarch            randconfig-r031-20230725   gcc  
-loongarch            randconfig-r032-20230725   gcc  
-loongarch            randconfig-r034-20230725   gcc  
-m68k                             alldefconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r001-20230725   gcc  
-m68k                 randconfig-r012-20230725   gcc  
-m68k                 randconfig-r021-20230725   gcc  
-m68k                 randconfig-r026-20230725   gcc  
-m68k                 randconfig-r036-20230725   gcc  
-microblaze           randconfig-r002-20230725   gcc  
-microblaze           randconfig-r004-20230725   gcc  
-microblaze           randconfig-r012-20230725   gcc  
-microblaze           randconfig-r025-20230725   gcc  
-microblaze           randconfig-r033-20230725   gcc  
-microblaze           randconfig-r035-20230725   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      fuloong2e_defconfig   gcc  
-mips                 randconfig-r002-20230725   gcc  
-mips                 randconfig-r024-20230725   clang
-mips                 randconfig-r033-20230725   gcc  
-mips                           xway_defconfig   gcc  
-nios2                         3c120_defconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r021-20230725   gcc  
-nios2                randconfig-r026-20230725   gcc  
-openrisc             randconfig-r001-20230725   gcc  
-openrisc             randconfig-r013-20230725   gcc  
-openrisc             randconfig-r014-20230725   gcc  
-openrisc             randconfig-r015-20230725   gcc  
-openrisc             randconfig-r022-20230725   gcc  
-openrisc             randconfig-r031-20230725   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r013-20230725   gcc  
-parisc               randconfig-r016-20230725   gcc  
-parisc               randconfig-r025-20230725   gcc  
-parisc               randconfig-r035-20230725   gcc  
-parisc               randconfig-r036-20230725   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                      arches_defconfig   gcc  
-powerpc                 linkstation_defconfig   gcc  
-powerpc              randconfig-r006-20230725   clang
-powerpc              randconfig-r023-20230725   gcc  
-powerpc              randconfig-r032-20230725   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r002-20230725   clang
-riscv                randconfig-r024-20230725   gcc  
-riscv                randconfig-r034-20230725   clang
-riscv                randconfig-r042-20230725   gcc  
-riscv                randconfig-r042-20230726   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r005-20230725   clang
-s390                 randconfig-r014-20230725   gcc  
-s390                 randconfig-r031-20230725   clang
-s390                 randconfig-r044-20230725   gcc  
-s390                 randconfig-r044-20230726   clang
-sh                               allmodconfig   gcc  
-sh                          kfr2r09_defconfig   gcc  
-sh                   randconfig-r014-20230725   gcc  
-sh                            shmin_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r001-20230725   gcc  
-sparc                randconfig-r004-20230725   gcc  
-sparc                randconfig-r021-20230725   gcc  
-sparc                randconfig-r023-20230725   gcc  
-sparc64              randconfig-r005-20230725   gcc  
-sparc64              randconfig-r006-20230725   gcc  
-sparc64              randconfig-r014-20230725   gcc  
-sparc64              randconfig-r022-20230725   gcc  
-sparc64              randconfig-r025-20230725   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r032-20230725   gcc  
-um                   randconfig-r034-20230725   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230725   clang
-x86_64       buildonly-randconfig-r002-20230725   clang
-x86_64       buildonly-randconfig-r003-20230725   clang
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r011-20230725   gcc  
-x86_64               randconfig-r015-20230725   gcc  
-x86_64               randconfig-r016-20230725   gcc  
-x86_64               randconfig-r024-20230725   gcc  
-x86_64               randconfig-x001-20230725   gcc  
-x86_64               randconfig-x002-20230725   gcc  
-x86_64               randconfig-x003-20230725   gcc  
-x86_64               randconfig-x004-20230725   gcc  
-x86_64               randconfig-x005-20230725   gcc  
-x86_64               randconfig-x006-20230725   gcc  
-x86_64               randconfig-x011-20230725   clang
-x86_64               randconfig-x012-20230725   clang
-x86_64               randconfig-x013-20230725   clang
-x86_64               randconfig-x014-20230725   clang
-x86_64               randconfig-x015-20230725   clang
-x86_64               randconfig-x016-20230725   clang
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                          rhel-8.3-func   gcc  
-x86_64                    rhel-8.3-kselftests   gcc  
-x86_64                         rhel-8.3-kunit   gcc  
-x86_64                           rhel-8.3-ltp   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r002-20230725   gcc  
-xtensa                    xip_kc705_defconfig   gcc  
-
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 5c76664ba0dd..1e488eed282b 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -2408,7 +2408,7 @@ static void ath11k_dp_rx_h_ppdu(struct ath11k *ar, struct hal_rx_desc *rx_desc,
+ 		rx_status->freq = center_freq;
+ 	} else if (channel_num >= 1 && channel_num <= 14) {
+ 		rx_status->band = NL80211_BAND_2GHZ;
+-	} else if (channel_num >= 36 && channel_num <= 173) {
++	} else if (channel_num >= 36 && channel_num <= 177) {
+ 		rx_status->band = NL80211_BAND_5GHZ;
+ 	} else {
+ 		spin_lock_bh(&ar->data_lock);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.17.1
+
