@@ -2,79 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C6DF765965
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 19:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53E3F765975
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 19:03:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230252AbjG0RCb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jul 2023 13:02:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36878 "EHLO
+        id S231241AbjG0RDe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jul 2023 13:03:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjG0RCa (ORCPT
+        with ESMTP id S229526AbjG0RD1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jul 2023 13:02:30 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CCD6F7
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 10:02:29 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1b8ad8383faso9771585ad.0
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 10:02:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690477349; x=1691082149;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wT/ZsiiDZwcgiQgl4DELrnCzGmHF+3XYDdWiMBrFYvo=;
-        b=K0phnEYk/GVAqF5YbTQkVwMdPv8mpH4CuAkx7IsfmRJ5aLTp4xG8IBBDRxwU3rp18M
-         H3sZi0bD5d69IgZnJX0pGk+67CRDZxTrseYrgwlMhuP5Q9J4PWS82sWweo8TAt9iHOuR
-         rX1q8/lxZ76BFQzEOl67eODr84NVHK31gql9s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690477349; x=1691082149;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wT/ZsiiDZwcgiQgl4DELrnCzGmHF+3XYDdWiMBrFYvo=;
-        b=LJWoFOSO2OasiZd+XejVZmheVUE04yYLbGEWH6itmNcaxndAOyEI8/MTlJo972DZzD
-         swVfSX6IcR/+pSwOdti1QTSZ6amoz1svg7qMIToX5XKSbJErlBXdoWGZrqWeehcVSYjM
-         rn3P1+1nQoeozgTX3OU7BfPV0fRlBUACMkvySmQIjX8HDQ7XlwY04Y7A12JWE03iX/+O
-         dGdg2zHqd1gO2DsAoxjLFnip1Mf6MCUeKmCzO6xvso2pVv13aaPBkq2u89wNO4wvKlWQ
-         /PJ4NmZKfDvnTZP280NEN7jHZJVrkX7vFqjd84jpMROl2StFygHvXYCw0ykn8dGMq+dM
-         AFAA==
-X-Gm-Message-State: ABy/qLZEflZ1sqE+OkOMDFc6mKaHPj2VxP9VGmZm1tzwMSXTljUXiN+O
-        gXXGpjZVzW0pdBCnNFMyioq4zA==
-X-Google-Smtp-Source: APBJJlEJpUVqcSMnFLWNvhMQvBdF6RrGYz2iohHdmUVWppDCrgiBB6p74K9WRtxaVJoGd8oU9n28vw==
-X-Received: by 2002:a17:902:dac4:b0:1bb:cd10:8209 with SMTP id q4-20020a170902dac400b001bbcd108209mr5653824plx.50.1690477348974;
-        Thu, 27 Jul 2023 10:02:28 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id e2-20020a170902d38200b001ac7f583f72sm1879688pld.209.2023.07.27.10.02.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jul 2023 10:02:28 -0700 (PDT)
-Date:   Thu, 27 Jul 2023 10:02:28 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Azeem Shaikh <azeemshaikh38@gmail.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-hardening@vger.kernel.org,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] wifi: mt76: Replace strlcpy with strscpy
-Message-ID: <202307271001.13EA5FB@keescook>
-References: <20230703181256.3712079-1-azeemshaikh38@gmail.com>
- <202307121653.4A9C69C655@keescook>
- <CADmuW3UY=w0p-h1h4qOord7z1nFnvpyCOU3fcCaATm_PvFFUeA@mail.gmail.com>
+        Thu, 27 Jul 2023 13:03:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A46D30CF
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 10:03:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9458561EEC
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 17:03:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DCDC433C7;
+        Thu, 27 Jul 2023 17:03:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690477405;
+        bh=ulOPHPt2ESLg3S9AYD+Q3mhjU2BjGUrZpgQLshsMjCE=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=YaIf8QtxGqZmrVop9laBq3zt1zyEX5GQ4YCfJK+1aGGtdk3n4ZbIeeSTwCa8sJAIB
+         U79y3GPogTyN6PSCj583dtQtj5IzTBQSkOp1rIwNiKGslzVReC2fS8AbPUxraAi/+F
+         zaEDUqXx8gP5SnhXoDInThqfiWjLPo2ZITFANtSKFo4oKZGkcn6NRN/JN5J3B4etZS
+         xxrhT2fDX5rWQVuKo8BDMXOaaT6LVt+81fT1oiGmKx8SO080dJFrpnI/u4xw3oSCnc
+         PyY3StptAPSyJlHogEl2eGcUabEu+HNdX5jcfFz1FQg6FqSYLCoUFveT2+ycASTS7n
+         FOv4XgTtILpRg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADmuW3UY=w0p-h1h4qOord7z1nFnvpyCOU3fcCaATm_PvFFUeA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] wifi: ath12k: trigger station disconnect on hardware
+ restart
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230714092555.2018-1-quic_wgong@quicinc.com>
+References: <20230714092555.2018-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169047740218.3806341.10132470501256281430.kvalo@kernel.org>
+Date:   Thu, 27 Jul 2023 17:03:23 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -83,31 +57,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 18, 2023 at 12:38:37AM -0400, Azeem Shaikh wrote:
-> On Wed, Jul 12, 2023 at 7:54 PM Kees Cook <keescook@chromium.org> wrote:
-> >
-> > On Mon, Jul 03, 2023 at 06:12:56PM +0000, Azeem Shaikh wrote:
-> > > strlcpy() reads the entire source buffer first.
-> > > This read may exceed the destination size limit.
-> > > This is both inefficient and can lead to linear read
-> > > overflows if a source string is not NUL-terminated [1].
-> > > In an effort to remove strlcpy() completely [2], replace
-> > > strlcpy() here with strscpy().
-> > >
-> > > Direct replacement is safe here since DEV_ASSIGN is only used by
-> > > TRACE macros and the return values are ignored.
-> > >
-> > > [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-> > > [2] https://github.com/KSPP/linux/issues/89
-> > >
-> > > Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
-> >
-> > Looks good -- thing is using return values from the macros.
-> 
-> Just to confirm, you mean *not* using return values from the macros?
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-I thought I'd replied to this, but I see it didn't happen: yes, I meant
-"not using return values". Sorry for the confusion!
+> Currently after the hardware restart triggered from the driver, the
+> station interface connection remains intact, since a disconnect
+> trigger is not sent to userspace. This can lead to a problem in
+> targets where the wifi mac sequence is added by the firmware.
+> 
+> After the target restart, its wifi mac sequence number gets reset to
+> zero. Hence AP to which our device is connected will receive frames
+> with a wifi mac sequence number jump to the past, thereby resulting
+> in the AP dropping all these frames, until the frame arrives with a
+> wifi mac sequence number which AP was expecting.
+> 
+> To avoid such frame drops, its better to trigger a station disconnect
+> upon target hardware restart which can be done with API
+> ieee80211_reconfig_disconnect exposed to mac80211.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+
+This added a new warning:
+
+drivers/net/wireless/ath/ath12k/mac.c:6762: networking block comments don't use an empty /* line, use /* Comment...
+
+Please remember to run ath12k-check. I fixed this in the pending branch.
 
 -- 
-Kees Cook
+https://patchwork.kernel.org/project/linux-wireless/patch/20230714092555.2018-1-quic_wgong@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
