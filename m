@@ -2,58 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0961E765837
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 18:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6759765862
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 18:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232918AbjG0QCk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jul 2023 12:02:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57920 "EHLO
+        id S232288AbjG0QNR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jul 2023 12:13:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232021AbjG0QCi (ORCPT
+        with ESMTP id S234385AbjG0QND (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jul 2023 12:02:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CA2E30E8;
-        Thu, 27 Jul 2023 09:02:36 -0700 (PDT)
+        Thu, 27 Jul 2023 12:13:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C122730FC
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 09:12:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D65AE61EBA;
-        Thu, 27 Jul 2023 16:02:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E97BC433C8;
-        Thu, 27 Jul 2023 16:02:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F6B661ECA
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 16:12:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F44C433C8;
+        Thu, 27 Jul 2023 16:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690473755;
-        bh=q5mETferSRGLwrNdOWNUESPMpdTdxLeCdKKRjZZCd+M=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=h1il80scsWCuQ64co6z4Ep9iBudgtmt8tkWPPLDS4ViHeaVpGiJi7OCd+xBOWef8w
-         7PW50yrHVRCdSsXPJDxpX6XsF3KhZdnh8Nq+YDbKfLGxtXxuuriJ9Zth30iETDEVsU
-         9DTSgksTiDLMkAzIm9uSbcWB4YkeQYhQPPM2+CpDVDZAMmG9xP39YYfTfDPkZ5Gwu7
-         pUXPjqkPMsta2gBkR3zokTpPFj6q+SgTlnMBgV9i3ONnQc5vWM2Vihq/CCZMtkJi1R
-         sdEOK8yVhhjOWue6K4qHTn7wx4N56KJPlIxuXNYebnPx8AFIPdyycV2dLeA44Kf0yn
-         +3wGO5c38EQHQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Azeem Shaikh <azeemshaikh38@gmail.com>,
-        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mwifiex: Replace strlcpy with strscpy
-References: <20230710030625.812707-1-azeemshaikh38@gmail.com>
-        <169047317161.2400214.15246406234885315012.b4-ty@chromium.org>
-Date:   Thu, 27 Jul 2023 19:02:31 +0300
-In-Reply-To: <169047317161.2400214.15246406234885315012.b4-ty@chromium.org>
-        (Kees Cook's message of "Thu, 27 Jul 2023 08:52:56 -0700")
-Message-ID: <87pm4dz6js.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1690474378;
+        bh=jTAtuRse9WoT1r13WlIN6o5V4ilv6k2aEiKR7JU7L+Y=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=VWn/wM4Ds25nkp0ZPfuKWD4YiLWPR+n+efF0yFD+H1HSLf6j3svlMZAB7l29IFNAK
+         iZslZEQtul1aODgJxK3hxG88SdkqK4Jb1bFnlcgdVQA1gNEZvZ2CDsMGDKF5nCrUB9
+         ZQnCeL8bvUO15PKsNhpzsf/KZBCFjhtNzNkQK66tswFzuOo2oSIiwGa9di0hVMvxtb
+         Q2vIdvRm5vSqmxTLpjn5I4CAWfXyAZAQQH7Y4EPcJFaEBPDrKxC1AgtVSygT4WWr8A
+         fTrSylUv001DvgGZToN0CSTFX/GHCEMs4zWVMN7O6nKDQp3eTZB2T/VRpBvADTjjqr
+         Yl9rfq7D3UyqQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] wifi: wil6210: fix fortify warnings
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230621093711.80118-1-dmantipov@yandex.ru>
+References: <20230621093711.80118-1-dmantipov@yandex.ru>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169047437544.3669718.17424986344996292041.kvalo@kernel.org>
+Date:   Thu, 27 Jul 2023 16:12:57 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,30 +56,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
+Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> On Mon, 10 Jul 2023 03:06:25 +0000, Azeem Shaikh wrote:
->> strlcpy() reads the entire source buffer first.
->> This read may exceed the destination size limit.
->> This is both inefficient and can lead to linear read
->> overflows if a source string is not NUL-terminated [1].
->> In an effort to remove strlcpy() completely [2], replace
->> strlcpy() here with strscpy().
->> 
->> [...]
->
-> Applied, thanks!
->
-> [1/1] wifi: mwifiex: Replace strlcpy with strscpy
->       https://git.kernel.org/kees/c/5469fb73e96d
+> When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
+> I've noticed the following:
+> 
+> In function ‘fortify_memcpy_chk’,
+>     inlined from ‘wil_rx_crypto_check_edma’ at drivers/net/wireless/ath/wil6210/txrx_edma.c:566:2:
+> ./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+> declared with attribute warning: detected read beyond size of field (2nd parameter);
+> maybe use struct_group()? [-Wattribute-warning]
+>   529 |                         __read_overflow2_field(q_size_field, size);
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> where the compiler complains on:
+> 
+> const u8 *pn;
+> ...
+> pn = (u8 *)&st->ext.pn_15_0;
+> ...
+> memcpy(cc->pn, pn, IEEE80211_GCMP_PN_LEN);
+> 
+> and:
+> 
+> In function ‘fortify_memcpy_chk’,
+>     inlined from ‘wil_rx_crypto_check’ at drivers/net/wireless/ath/wil6210/txrx.c:684:2:
+> ./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+> declared with attribute warning: detected read beyond size of field (2nd parameter);
+> maybe use struct_group()? [-Wattribute-warning]
+>   529 |                         __read_overflow2_field(q_size_field, size);
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> where the compiler complains on:
+> 
+> const u8 *pn = (u8 *)&d->mac.pn_15_0;
+> ...
+> memcpy(cc->pn, pn, IEEE80211_GCMP_PN_LEN);
+> 
+> In both cases, the fortification logic interprets 'memcpy()' as 6-byte
+> overread of 2-byte field 'pn_15_0' of 'struct wil_rx_status_extension'
+> and 'pn_15_0' of 'struct vring_rx_mac', respectively. To silence
+> these warnings, last two fields of the aforementioned structures
+> are grouped using 'struct_group_attr(pn, __packed' quirk.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-And the same question here, why are you taking wifi patches without
-acks? And this already fixed differently in wireless-next so our trees
-conflict now:
+Patch applied to ath-next branch of ath.git, thanks.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?id=caf9ead2c7d06fd7aa4cb48bd569ad61db9a0b4a
+1ad8237e9716 wifi: wil6210: fix fortify warnings
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230621093711.80118-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
