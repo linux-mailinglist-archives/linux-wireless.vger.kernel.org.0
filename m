@@ -2,93 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC6FB764115
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jul 2023 23:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E155764311
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 02:41:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230164AbjGZVXv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 17:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44050 "EHLO
+        id S229982AbjG0Al4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 20:41:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjGZVXs (ORCPT
+        with ESMTP id S229820AbjG0Alz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 17:23:48 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A838926B8
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 14:23:44 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1bb8e45185bso1767365ad.1
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 14:23:44 -0700 (PDT)
+        Wed, 26 Jul 2023 20:41:55 -0400
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF5319BF
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 17:41:54 -0700 (PDT)
+Received: by mail-oi1-x22e.google.com with SMTP id 5614622812f47-3a3b7fafd61so370752b6e.2
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 17:41:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690406624; x=1691011424;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=m6XD8OavGJfHNDlqaTxMVRCQptoHA5mpSAhAL1B9W6w=;
-        b=l4LKKGUHYE5Vnh43DZx4HL1+7pFbh+J2HtBI+e1UTnY+IxoSSpBQZ7N19Sa1S5vCC4
-         k19RqmxqXmtM5cEoF2b46bwBprq96IRR9rt6t7J6iG2/Q21mK+rVfI7ekz6/dScfbE2X
-         CXy3ekOoDvByd/o/LThnjguOnvvOSSVRZS5J4=
+        d=gmail.com; s=20221208; t=1690418513; x=1691023313;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/mqigwr5ia3Ychv8I75g/uyfX3tdE8els6aDl5BRDFA=;
+        b=sFqZ9TjDp3QocGgV7VZ+XvkyHNHSf2voUUQ/pnTegv70r8wTUi4RDDcrifAKCiwGdU
+         X9DDyjkmm4hR7omXv3KvWyCcNvfATJyqcCdSLYZeiJLELW77XcHxcHSf7ehurD+h99zp
+         lfjGs2RPv0gkfx0BMfOaqPviT5LHYFqQ7/gjgHjliksjjrGgWUIFnFe9mX8S8ZdyPsCr
+         iuTzQrPRwYQCnU0/JyVr8w0vRcW98Gdaf01As4nizVctRQZouztPop/O6r3kXSwhHKaB
+         YVcBh05jAHCaycZLjmO/cqjFZzLxVRZAkSeVKJCkbH4fHaujOV4PWCqY7g6MsKaZOOHE
+         c3tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690406624; x=1691011424;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m6XD8OavGJfHNDlqaTxMVRCQptoHA5mpSAhAL1B9W6w=;
-        b=BwBVCW/O1QhtK3nTDxyTwpyA2ooQqUCE+/FeOnQWOHlGf5KaN1WuzdmhNC7S7L24Ts
-         L1VdTY0beXfLw5iiXrBV/vT1MiIoIwFPHxPRXRF6ksShsZzLmU8nXuH0xeQ/wq8NcOtI
-         s46EBVTV2f5pgZdBUFllKgRwx22UMinQ3skf6kuIG+kbdqXZYhTtDuCZY9S+AW9F35VU
-         YrNKhp2oor/XLJ6fi+Vh/YtMfBFIUk99NedMMD2aX/jVWdw0AyUwsM34LfWCLS2opm0m
-         ZTvc4QthV3xOIqHpgxh/imfGuq7/dCqAaxV7Z7qvvaaZWz4RqgBwQNb29QJOqTdadO4v
-         E0og==
-X-Gm-Message-State: ABy/qLbEfNHroeBlJ/uDC3mRLnEusYJabJCVE/oKK2LEtzikIozih39z
-        kGOdqL+6h0fEb7ik1aebPjEtHw==
-X-Google-Smtp-Source: APBJJlE4JPj5NEXjOC3WQoK1cCbtTyPw4joE7tfonopa9fywGe9FntYcnv4qJVz0mHE9mBlVL5+bqQ==
-X-Received: by 2002:a17:902:e54a:b0:1b9:ebf4:5d2 with SMTP id n10-20020a170902e54a00b001b9ebf405d2mr3257553plf.33.1690406624118;
-        Wed, 26 Jul 2023 14:23:44 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:cf94:79ce:7d48:984a])
-        by smtp.gmail.com with ESMTPSA id h12-20020a170902704c00b001bb97e51ab4sm13082plt.98.2023.07.26.14.23.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jul 2023 14:23:43 -0700 (PDT)
-Date:   Wed, 26 Jul 2023 14:23:42 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Polaris Pi <pinkperfect2021@gmail.com>
-Cc:     matthewmwang@chromium.org, kuba@kernel.org, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v7] wifi: mwifiex: Fix OOB and integer underflow when rx
- packets
-Message-ID: <ZMGO3r44oOtMck7S@google.com>
-References: <20230723070741.1544662-1-pinkperfect2021@gmail.com>
+        d=1e100.net; s=20221208; t=1690418513; x=1691023313;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/mqigwr5ia3Ychv8I75g/uyfX3tdE8els6aDl5BRDFA=;
+        b=idBwoB1dIg5WqZza9OtB4Icysea1pNVjpnqd1z9v4P4ll4ZkzmYg7HUNVtjwBfHJSM
+         tj5Jh1q0vc0BehQsPQiIuOjacMt3obSpsfTsu76/aQCMJ2DXxd7D3loq6kFKxIvi47iy
+         msyjbFSAuM3+zdTRSc8sWVFjUHVhEGvF5yZOPWJPp6UbPp0Ha3xCGjjTSO457wHzvqKd
+         q8mbMijVnumYh7OtX3SYm9CEJzjdeeankBV8sH4T/GAQuCsvSMCUMTdfbP8X3y0rNeXq
+         aecM4fcsfoMKxCDr6iP1TZZklMrFEHxu+148nV7Aq4XElCE+eMKpRYMLNjByqTP9QJ1/
+         CTig==
+X-Gm-Message-State: ABy/qLZbr5V8SLUO/3kxg5lj78HFVkvVeYnYei3n/8OeG6+11GLdzL8F
+        qpyxVJxd/0qbXO7QJ17wEOhwBbpKVaI=
+X-Google-Smtp-Source: APBJJlFZR5lozVLk+/92aud713juqgkkhU2L/3IfOrzIC3US2O7W8/jwPY8ov5IrtXw56Qz8cIeafQ==
+X-Received: by 2002:a05:6808:ecc:b0:39e:b58c:13d5 with SMTP id q12-20020a0568080ecc00b0039eb58c13d5mr1225793oiv.17.1690418513440;
+        Wed, 26 Jul 2023 17:41:53 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id 22-20020aca1116000000b003a384aa4c63sm159297oir.52.2023.07.26.17.41.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Jul 2023 17:41:53 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <52233a6e-e880-5160-7042-5a0dcce21b03@lwfinger.net>
+Date:   Wed, 26 Jul 2023 19:41:52 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230723070741.1544662-1-pinkperfect2021@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To:     Pkshih <pkshih@realtek.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Problem with rtw8723ds
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jul 23, 2023 at 07:07:41AM +0000, Polaris Pi wrote:
-> Make sure mwifiex_process_mgmt_packet,
-> mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
-> mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
-> not out-of-bounds access the skb->data buffer.
-> 
-> Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80211")
-> Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-> ---
-> V5: Follow chromeos comments: preserve the original flow of mwifiex_process_uap_rx_packet
-> V6: Simplify check in mwifiex_process_uap_rx_packet
-> V7: Fix drop packets issue when auotest V6, now pass manual and auto tests
+Hi,
 
-"auto tests" isn't clear to anyone not familiar with Chromium stuff.
-It'd be courteous to at least make an attempt to describe what this
-means (even just, "ChromeOS WiFi test suite" or something). For the
-record, I believe that's approximately this?
+I am trying to help a user of rtw8723ds. The original problem was that the 
+vendor driver was causing a spontaneous reboot. As I have no interest in 
+"fixing" that driver, I steered him to my rtw88 repo.
 
-https://chromium.googlesource.com/chromiumos/third_party/autotest/+/HEAD/docs/wificell.md
+The driver loads, and then nothing happens. With the debug mask in rtw_core set 
+to all ones, his log shows the following:
 
-Anyway, I think the patch contents look good:
+[  150.131387] rtw_core: loading out-of-tree module taints kernel.
+[  165.352077] rtw_8723ds mmc1:0001:1: rtw88 SDIO probe: vendor=0x024c 
+device=d723 class=ff
+[  165.359853] rtw_8723ds mmc1:0001:1: Firmware version 48.0.0, H2C version 0
+[  165.818336] rtw_8723ds mmc1:0001:1: hw cap: hci=0x06, bw=0x03, ptcl=0x02, 
+ant_num=2, nss=1
+[  165.818350] rtw_8723ds mmc1:0001:1: use rfe_def[0]
+[  165.820320] rtw_8723ds mmc1:0001:1: use rfe_def[0]
+[  165.820333] rtw_8723ds mmc1:0001:1: phy cond=0x0304f400
+[  165.820412] rtw_8723ds mmc1:0001:1: txpwr regd 3 does not be configured
+[  165.820423] rtw_8723ds mmc1:0001:1: cfg txpwr regd 3 by regd 0 as alternative
+[  165.820438] rtw_8723ds mmc1:0001:1: txpwr regd 4 does not be configured
+[  165.820448] rtw_8723ds mmc1:0001:1: cfg txpwr regd 4 by regd 2 as alternative
+[  165.820462] rtw_8723ds mmc1:0001:1: txpwr regd 5 does not be configured
+[  165.820472] rtw_8723ds mmc1:0001:1: cfg txpwr regd 5 by regd 2 as alternative
+[  165.820485] rtw_8723ds mmc1:0001:1: txpwr regd 6 does not be configured
+[  165.820495] rtw_8723ds mmc1:0001:1: cfg txpwr regd 6 by regd 0 as alternative
+[  165.820508] rtw_8723ds mmc1:0001:1: txpwr regd 7 does not be configured
+[  165.820517] rtw_8723ds mmc1:0001:1: cfg txpwr regd 7 by regd 2 as alternative
+[  165.820531] rtw_8723ds mmc1:0001:1: txpwr regd 8 does not be configured
+[  165.820540] rtw_8723ds mmc1:0001:1: cfg txpwr regd 8 by regd 0 as alternative
+[  165.820554] rtw_8723ds mmc1:0001:1: txpwr regd 9 does not be configured
+[  165.820563] rtw_8723ds mmc1:0001:1: cfg txpwr regd 9 by regd 2 as alternative
+[  165.820755] rtw_8723ds mmc1:0001:1: regd init state 0: apply alpha2 00, regd 
+{10, 10}, dfs_region 0
+[  165.820952] rtw_8723ds mmc1:0001:1: regd state: 0 -> 0
+[  165.820969] rtw_8723ds mmc1:0001:1: get alpha2 00 from initiator 0: apply 
+alpha2 00, regd {10, 10}, dfs_region 0
 
-Reviewed-by: Brian Norris <briannorris@chromium.org>
+There is no more output. I see nothing wrong here, but I have no SDIO 
+experience. Am I missing something?
+
+Thanks,
+
+Larry
