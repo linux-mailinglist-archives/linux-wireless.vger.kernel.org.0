@@ -2,73 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F9CD765863
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 18:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3C367658A2
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 18:29:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231915AbjG0QN6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jul 2023 12:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36292 "EHLO
+        id S234283AbjG0Q3t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jul 2023 12:29:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231656AbjG0QN5 (ORCPT
+        with ESMTP id S234280AbjG0Q3s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jul 2023 12:13:57 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D19310B
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 09:13:56 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-99bdf08860dso119550866b.0
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 09:13:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690474434; x=1691079234;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GAolxS4IusoeO3YfRXX+XbhFutKgmKfmAwH/RTvZy64=;
-        b=Fv4thv+XDhRgj/xBVO7Kekb831rjX3/gAux9itwEq9RzbJAi0eYz+l/hY141jb417b
-         aaDpnCCwQscCyjlonjA62RmE7GRXf1XyJeDkbtdUu+/v38vEyHwsJvxhRh0ffVxt6W6o
-         lvmvdzv9q3o5yp8gAM4X9T0RB6wCp19mOP7h0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690474434; x=1691079234;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GAolxS4IusoeO3YfRXX+XbhFutKgmKfmAwH/RTvZy64=;
-        b=BGaIfebFprnidtR+h5ib0AcLYP6r5dfYnV7Vq9C1glZgE4eQSSKVHW7vhW3A4eGUoO
-         KQfobg9hSmeG6TeICzvG51Mtx0FiwvktZjWJUPfFAbyTGY023QRgxz4xjDw1boXIPmYw
-         qKW5UblOCp3tO6fbfdUOF8DuckOCUfzkRg7OQKr6o407bUizK7/iRmE8O1XysU4mVJ01
-         oBlSHCMsTvGuzYlRcFqEkOhGcKf9gde/KMSxeZAcICo0vmanmrurveyzZvnH0MeRCx3v
-         o0K3RjMIc7vreXeHAwoWB2GDlNRHpxtyEoBZwLT9xKgZrbfljlEakEEZp0Zch1EWcgJV
-         1XPg==
-X-Gm-Message-State: ABy/qLafjyH/inKjdFUaeQO6XyPcqplN3DG+X/0E++oMiINk+TFJ6mRV
-        T+eWp43+BCN11+KzoLG/IDNO7Xr3GhAw4iGsOhXxgA==
-X-Google-Smtp-Source: APBJJlFnezJ+C7Dsdek3MBvDySdahCxk53qPA3mia546+YGfp1xAKnX347Dh7CpR9dFqp6AAxbUaew==
-X-Received: by 2002:a17:907:1b0e:b0:978:2b56:d76e with SMTP id mp14-20020a1709071b0e00b009782b56d76emr2682478ejc.12.1690474434592;
-        Thu, 27 Jul 2023 09:13:54 -0700 (PDT)
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com. [209.85.218.53])
-        by smtp.gmail.com with ESMTPSA id s14-20020a1709064d8e00b0099364d9f0e9sm933439eju.102.2023.07.27.09.13.53
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jul 2023 09:13:54 -0700 (PDT)
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-9891c73e0fbso235840966b.1
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 09:13:53 -0700 (PDT)
-X-Received: by 2002:a17:906:2d2:b0:989:450:e565 with SMTP id
- 18-20020a17090602d200b009890450e565mr3176882ejk.23.1690474433484; Thu, 27 Jul
- 2023 09:13:53 -0700 (PDT)
+        Thu, 27 Jul 2023 12:29:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DAAA30F9
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 09:29:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AE9261E91
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 16:29:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE05C433C7;
+        Thu, 27 Jul 2023 16:29:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690475383;
+        bh=kVFC99jJRlmdXMNhJFcFYfviubIHE7J5Ygi42v1zFfs=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=uvzWOlDcRpwUgAChG0NrvR78czcPDKMVIYWIkfVOVd/zBbHEqZxfkZbSzhRAdL4f+
+         KQktQUMBlR2cPeJr6lOBV5+fktc9/tBdpxw6dTm7obyytz4wPT1tFKmrkQKc1JgdAN
+         J0LmwAa6KvoGqETcJDbREP0szaKzXr+C6VcHAwG4zKm4mOOEZ3SOmOgkFpysUSCFIW
+         fLGWGK2DcNmc/72/mpsgI9Os9rihbzDobK3J2oZU084gcY/TNPOYi75H69WH/uk1Uq
+         5I0GGcwvzGMsnLTMQjOGR+i+35Wcnap1XhkcKz4iU9CUzrJTCKTpdusgFzXels6m7i
+         RbWfQPPcDIL0w==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <johannes@sipsolutions.net>
+Subject: Re: [PATCH 1/3] wifi: cfg80211: export DFS CAC time and usable
+ state helper functions
+References: <20230607124647.27682-1-quic_adisi@quicinc.com>
+        <20230607124647.27682-2-quic_adisi@quicinc.com>
+        <5e45705e-b1d1-a0dc-2c3d-455fb433e93f@quicinc.com>
+Date:   Thu, 27 Jul 2023 19:29:40 +0300
+In-Reply-To: <5e45705e-b1d1-a0dc-2c3d-455fb433e93f@quicinc.com> (Aditya Kumar
+        Singh's message of "Thu, 27 Jul 2023 17:35:28 +0530")
+Message-ID: <87lef1z5aj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230723070741.1544662-1-pinkperfect2021@gmail.com>
- <ZMGO3r44oOtMck7S@google.com> <87ila528c3.fsf@kernel.org>
-In-Reply-To: <87ila528c3.fsf@kernel.org>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 27 Jul 2023 09:13:38 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXO6yTkVfA_GaJZLJYcZo=MU3f1uVm1tZBdS6vTT6x1mOQ@mail.gmail.com>
-Message-ID: <CA+ASDXO6yTkVfA_GaJZLJYcZo=MU3f1uVm1tZBdS6vTT6x1mOQ@mail.gmail.com>
-Subject: Re: [PATCH v7] wifi: mwifiex: Fix OOB and integer underflow when rx packets
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Polaris Pi <pinkperfect2021@gmail.com>, matthewmwang@chromium.org,
-        kuba@kernel.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,20 +59,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 26, 2023 at 11:10=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrot=
-e:
->
-> Brian Norris <briannorris@chromium.org> writes:
-> > Reviewed-by: Brian Norris <briannorris@chromium.org>
->
-> I'm nitpicking but now that you (Brian) are a maintainer I would prefer
-> that you use Acked-by instead of Reviewed-by. Patchwork shows the
-> statistics (A/R/T in the web ui) and then it's easy for me to see that
-> the patch is ready to be applied. This is for the future, no need to
-> change anything here.
+Aditya Kumar Singh <quic_adisi@quicinc.com> writes:
 
-Argh, I knew that's the recommendation, and I thought I did that here,
-but obviously not. Thanks for the reminder. I'm sure I'll fix my
-muscle memory eventually :)
+> On 6/7/2023 18:16, Aditya Kumar Singh wrote:
+>> cfg80211 has cfg80211_chandef_dfs_usable() function to know whether
+>> at least one channel in the chandef is in usable state or not. Also,
+>> cfg80211_chandef_dfs_cac_time() function is there which tells the CAC
+>> time required for the given chandef.
+>> Make these two functions visible to drivers by exporting their
+>> symbol
+>> to global list of kernel symbols.
+>> Lower level drivers can make use of these two functions to be aware
+>> if CAC is required on the given chandef and for how long. For example
+>> drivers which maintains the CAC state internally can make use of these.
+>> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+>> ---
+> Hi Johannes,
+>
+> Do you have any comments for this patch?
 
-Brian
+The wireless trees are closed for July:
+
+https://lore.kernel.org/all/87y1kncuh4.fsf@kernel.org/
+
+Though I changed my plans and came back earlier.
+
+And honestly these kind of emails don't really help. If a maintainer is
+busy (and they usually are) sending more mails will do the opposite. If
+you want to speed up your review help the maintainer somehow, for
+example by reviewing or testing other patches etc which can reduce the
+load of the maintainer.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
