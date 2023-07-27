@@ -2,113 +2,222 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90A7176437E
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 03:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3307764484
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 05:41:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230521AbjG0BoZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 21:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59900 "EHLO
+        id S231253AbjG0Dlo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 23:41:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229957AbjG0BoY (ORCPT
+        with ESMTP id S230379AbjG0Dlm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 21:44:24 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D64E8E61;
-        Wed, 26 Jul 2023 18:44:20 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36R1hn833004771, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36R1hn833004771
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 27 Jul 2023 09:43:49 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 27 Jul 2023 09:44:01 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 27 Jul 2023 09:44:00 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Thu, 27 Jul 2023 09:44:00 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-CC:     "Lukas F. Hartmann" <lukas@mntre.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
-Subject: RE: [PATCH] wifi: rtw88: sdio: Honor the host max_req_size in the RX path
-Thread-Topic: [PATCH] wifi: rtw88: sdio: Honor the host max_req_size in the RX
- path
-Thread-Index: AQHZsp+XbJMjQ56edkCHhTIfjugPgq+yJqHggAT+3gCAAUh3EIATdm2AgAELPyA=
-Date:   Thu, 27 Jul 2023 01:44:00 +0000
-Message-ID: <7738fcc180e6403ba4d0def0ae7ca31a@realtek.com>
-References: <20230709195712.603200-1-martin.blumenstingl@googlemail.com>
- <b55cd3172ea7474ba1a67db2d5b39301@realtek.com> <87pm4w3rjp.fsf@mntre.com>
- <208ee32354b44205bb76a55c0d4bc93b@realtek.com>
- <CAFBinCDRWJGr1F0vLj_=k7TYQmGOQRWS=3n1DDQwpxr5AYtt9Q@mail.gmail.com>
-In-Reply-To: <CAFBinCDRWJGr1F0vLj_=k7TYQmGOQRWS=3n1DDQwpxr5AYtt9Q@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Wed, 26 Jul 2023 23:41:42 -0400
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871FC26A0
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 20:41:40 -0700 (PDT)
+Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-403c653d934so3018771cf.2
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 20:41:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1690429299; x=1691034099;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G8Uw0vNKZE+GaqfQjiuOZc6ei5jBk5/DQtpVKaxsbKU=;
+        b=RrrbR9txvZIVR9wVUunpxqqB7I4Mog+KLqZ3aJYwYz4JSZCgVFulSeYzjeYSOJgKCs
+         78cqBkWHnnorU5tGbuYC+K4R3lI91JfAkB8eB4ppPqz9xZkfUVWUZxxeVerhMreaYLwR
+         oMBW4LVrfb5KruWTVDWQf8Wkl4VJVorC4elC4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690429299; x=1691034099;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G8Uw0vNKZE+GaqfQjiuOZc6ei5jBk5/DQtpVKaxsbKU=;
+        b=QxI1v+F2Pj5HhoLEM5lLCu5FisagoPYbvfLZo5YqzcTsIsIxYggAHSJMQX0HXhbe7F
+         PI86ME0Zk8hXnWQbRJ9BkuX9RAu5OsG0wWW2s+U5w45exAKEk/DOIfi5kugPMZsKD6bl
+         d0TrTtORVeb8OJMOK1c9p7VrbT1dMEcx09YTBgfotf1n8rBNxW0jbUoJYtmoOKqX/S5h
+         iGxJr+A8cB6EBxv6inUUWv3SsED76rLHnzL9ZXL8fDEg57lxWWSnW14s4sYzqMwNsIub
+         hd+i/2e2Wzx11s7ajb7vEvgJVBbQw1ewFSD9FnSWRl6uvnTHfseocfTk5p4BTOWbWG/W
+         vqqw==
+X-Gm-Message-State: ABy/qLaR2f0UgFzJ6T3rIp2vWM9dZ8OhN9+W5ju/RWawJNoqOdgw7tLo
+        5mVbS9dLAzMb7DRqDwjLfxLlq9EXrIF90vEyPUMVbw==
+X-Google-Smtp-Source: APBJJlHhdsw+4kV6dQuqtaCDgKIlVDBJMknGTvNILioBeM9tyEzgr6pO2qYx/HEzM1K3BMWby3jIBA==
+X-Received: by 2002:a05:6214:21ec:b0:63c:f5c0:cd14 with SMTP id p12-20020a05621421ec00b0063cf5c0cd14mr4208587qvj.49.1690429299452;
+        Wed, 26 Jul 2023 20:41:39 -0700 (PDT)
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com. [209.85.160.178])
+        by smtp.gmail.com with ESMTPSA id c3-20020a0ce143000000b0063d32f515bbsm121302qvl.127.2023.07.26.20.41.39
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Jul 2023 20:41:39 -0700 (PDT)
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-403a7066bc8so3109071cf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 20:41:39 -0700 (PDT)
+X-Received: by 2002:a1f:5e43:0:b0:481:68cc:751 with SMTP id
+ s64-20020a1f5e43000000b0048168cc0751mr648348vkb.13.1690429278247; Wed, 26 Jul
+ 2023 20:41:18 -0700 (PDT)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <8fd42ac8e1c97246f6e65225a14fc8a029ac3aaa.1690232804.git.objelf@gmail.com>
+In-Reply-To: <8fd42ac8e1c97246f6e65225a14fc8a029ac3aaa.1690232804.git.objelf@gmail.com>
+From:   David Ruth <druth@chromium.org>
+Date:   Wed, 26 Jul 2023 23:40:41 -0400
+X-Gmail-Original-Message-ID: <CAKHmtrQOouchFx03NRTexru7+zh+MnvAvdRrx5Qz8Jn0EVkZ8A@mail.gmail.com>
+Message-ID: <CAKHmtrQOouchFx03NRTexru7+zh+MnvAvdRrx5Qz8Jn0EVkZ8A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] wifi: mt76: move struct ieee80211_chanctx_conf up to
+ struct mt76_vif
+To:     sean.wang@mediatek.com
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
+        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
+        Deren.Wu@mediatek.com, km.lin@mediatek.com,
+        jenhao.yang@mediatek.com, robin.chiu@mediatek.com,
+        Eddie.Chen@mediatek.com, ch.yeh@mediatek.com,
+        ted.huang@mediatek.com, Stella.Chang@mediatek.com,
+        Tom.Chou@mediatek.com, jsiuda@google.com, arowa@google.org,
+        frankgor@google.com, kuabhs@google.com, abhishekpandit@google.com,
+        shawnku@google.com, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFydGluIEJsdW1lbnN0
-aW5nbCA8bWFydGluLmJsdW1lbnN0aW5nbEBnb29nbGVtYWlsLmNvbT4NCj4gU2VudDogVGh1cnNk
-YXksIEp1bHkgMjcsIDIwMjMgMTozOCBBTQ0KPiBUbzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVh
-bHRlay5jb20+DQo+IENjOiBMdWthcyBGLiBIYXJ0bWFubiA8bHVrYXNAbW50cmUuY29tPjsgbGlu
-dXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3Jn
-Ow0KPiBqZXJuZWouc2tyYWJlY0BnbWFpbC5jb207IHVsZi5oYW5zc29uQGxpbmFyby5vcmc7IGt2
-YWxvQGtlcm5lbC5vcmc7IHRvbnkwNjIwZW1tYUBnbWFpbC5jb20NCj4gU3ViamVjdDogUmU6IFtQ
-QVRDSF0gd2lmaTogcnR3ODg6IHNkaW86IEhvbm9yIHRoZSBob3N0IG1heF9yZXFfc2l6ZSBpbiB0
-aGUgUlggcGF0aA0KPiANCj4gSGVsbG8gUGluZy1LZSwNCj4gDQo+IE9uIEZyaSwgSnVsIDE0LCAy
-MDIzIGF0IDI6MzTigK9BTSBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JvdGU6
-DQo+IFsuLi5dDQo+ID4gPiBIZXJlIGFyZSB0aGUgZXJyb3JzIHRoYXQgbGVhZCB1cCB0byB0aGlz
-Og0KPiA+ID4gaHR0cDovL2R1bXAubW50bW4uY29tL3J0dzg4LWZhaWx1cmUtMWgtZG1lc2cudHh0
-DQo+ID4NCj4gPiBIaSBNYXJ0aW4sDQo+ID4NCj4gPiBUaGUgZG1lc2cgc2hvd3MgdGhhdA0KPiA+
-ICJydHdfODgyMmNzIG1tYzI6MDAwMToxOiBGYWlsZWQgdG8gcmVhZCAxNTM2IGJ5dGUocykgZnJv
-bSBTRElPIHBvcnQgMHgwMDAwMDBkMSINCj4gPg0KPiA+IFNob3VsZG4ndCB3ZSByZXR1cm4gYW4g
-ZXJyb3IgY29kZSAod2l0aCBwcm9wZXIgZXJyb3IgaGFuZGxpbmcpIGluc3RlYWQgb2YNCj4gPiBq
-dXN0IGJyZWFrIHRoZSBsb29wPyBCZWNhdXNlICdidWYnIGNvbnRlbnQgaXNuJ3QgdXNhYmxlLg0K
-PiBJbiBteSBvcGluaW9uIHdlIGFyZSBwcm9wZXJseSBicmVha2luZyB0aGUgbG9vcDoNCj4gInJl
-dCIgd2lsbCBiZSBub24temVybyBzbyB0aGUgZXJyb3IgY29kZSBpcyByZXR1cm5lZCBmcm9tDQo+
-IHJ0d19zZGlvX3JlYWRfcG9ydCgpIHRvIHRoZSBjYWxsZXIuDQo+IFRoZSAob25seSkgY2FsbGVy
-IGlzIHJ0d19zZGlvX3J4Zmlmb19yZWN2KCkgd2hpY2ggc2VlcyB0aGUgbm9uLXplcm8NCj4gcmV0
-dXJuIGNvZGUgYW5kIGFib3J0cyBwcm9jZXNzaW5nLg0KPiBXaGF0IGRvIHlvdSB0aGluaz8NCg0K
-WW91IGFyZSBjb3JyZWN0LiANCg0KSSBjaGVjayB0aGUga2VybmVsIGxvZyBhZ2Fpbi4gSXQgbWln
-aHQgdHJ5IHRvIHJlYWQgdHdvIHRpbWVzIGZvciBhIGxhcmdlIHBhY2tldC4NCg0KRmlyc3QgcmVh
-ZCBpcyAxNTM2IGJ5dGVzLCBidXQgaXQgZmFpbGVkOiANCiAgWyA0MDAyLjA5NjY2NF0gcnR3Xzg4
-MjJjcyBtbWMyOjAwMDE6MTogRmFpbGVkIHRvIHJlYWQgMTUzNiBieXRlKHMpIGZyb20gU0RJTyBw
-b3J0IDB4MDAwMDAwZDENCg0KU2Vjb25kIHJlYWQgaXMgbGVzcyBieXRlLCBhbmQgaXQgc3VjY2Vl
-ZCwgYnV0IHNrYi0+ZGF0YSBjb250ZW50IGlzIGluY29ycmVjdC4gVGhlbiwgDQogIFsgNDAwMi4x
-MDAxNDBdIHJ0d184ODIyY3MgbW1jMjowMDAxOjE6IHVudXNlZCBwaHkgc3RhdHVzIHBhZ2UgKDMp
-DQogIFsgNDAwMi4xMDUwNjVdIHJ0d184ODIyY3MgbW1jMjowMDAxOjE6IHVudXNlZCBwaHkgc3Rh
-dHVzIHBhZ2UgKDIpDQogIFsgNDAwMi4xMTA4NjJdIC0tLS0tLS0tLS0tLVsgY3V0IGhlcmUgXS0t
-LS0tLS0tLS0tLQ0KICBbIDQwMDIuMTEwODY4XSBSYXRlIG1hcmtlZCBhcyBhIFZIVCByYXRlIGJ1
-dCBkYXRhIGlzIGludmFsaWQ6IE1DUzogMCwgTlNTOiAwDQoNClNvLCBzaG93aW5nIHRvdGFsIHNp
-emUgKCdjb3VudCcgYXJndW1lbnQpIG1pZ2h0IGhlbHAgdG8gZmluZCB0aGUgY2F1c2UNCm9yIGEg
-d29ya2Fyb3VuZC4gDQoNClBpbmctS2UNCg0K
+Reviewed-by: David Ruth <druth@chromium.org>
+Tested-by: David Ruth <druth@chromium.org>
+
+
+On Mon, Jul 24, 2023 at 5:20=E2=80=AFPM <sean.wang@mediatek.com> wrote:
+>
+> From: Sean Wang <sean.wang@mediatek.com>
+>
+> Move struct ieee80211_chanctx_conf up to struct mt76_vif to allow the
+> connac2 library can access the struct ieee80211_chanctx_conf * member in
+> struct mt76_vif.
+>
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76.h        |  1 +
+>  drivers/net/wireless/mediatek/mt76/mt7921/main.c | 16 ++++++++--------
+>  .../net/wireless/mediatek/mt76/mt7921/mt7921.h   |  1 -
+>  3 files changed, 9 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
+less/mediatek/mt76/mt76.h
+> index 878087257ea7..bf9c781ff48c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -708,6 +708,7 @@ struct mt76_vif {
+>         u8 basic_rates_idx;
+>         u8 mcast_rates_idx;
+>         u8 beacon_rates_idx;
+> +       struct ieee80211_chanctx_conf *ctx;
+>  };
+>
+>  struct mt76_phy {
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7921/main.c
+> index 87067ac367eb..8987173a83f2 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> @@ -804,7 +804,7 @@ void mt7921_mac_sta_assoc(struct mt76_dev *mdev, stru=
+ct ieee80211_vif *vif,
+>
+>         if (vif->type =3D=3D NL80211_IFTYPE_STATION && !sta->tdls)
+>                 mt76_connac_mcu_uni_add_bss(&dev->mphy, vif, &mvif->sta.w=
+cid,
+> -                                           true, mvif->ctx);
+> +                                           true, mvif->mt76.ctx);
+>
+>         ewma_avg_signal_init(&msta->avg_ack_signal);
+>
+> @@ -839,7 +839,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, str=
+uct ieee80211_vif *vif,
+>                 if (!sta->tdls)
+>                         mt76_connac_mcu_uni_add_bss(&dev->mphy, vif,
+>                                                     &mvif->sta.wcid, fals=
+e,
+> -                                                   mvif->ctx);
+> +                                                   mvif->mt76.ctx);
+>         }
+>
+>         spin_lock_bh(&dev->mt76.sta_poll_lock);
+> @@ -1638,7 +1638,7 @@ mt7921_start_ap(struct ieee80211_hw *hw, struct iee=
+e80211_vif *vif,
+>         mt7921_mutex_acquire(dev);
+>
+>         err =3D mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.wc=
+id,
+> -                                         true, mvif->ctx);
+> +                                         true, mvif->mt76.ctx);
+>         if (err)
+>                 goto out;
+>
+> @@ -1670,7 +1670,7 @@ mt7921_stop_ap(struct ieee80211_hw *hw, struct ieee=
+80211_vif *vif,
+>                 goto out;
+>
+>         mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.wcid, fals=
+e,
+> -                                   mvif->ctx);
+> +                                   mvif->mt76.ctx);
+>
+>  out:
+>         mt7921_mutex_release(dev);
+> @@ -1695,7 +1695,7 @@ static void mt7921_ctx_iter(void *priv, u8 *mac,
+>         struct mt7921_vif *mvif =3D (struct mt7921_vif *)vif->drv_priv;
+>         struct ieee80211_chanctx_conf *ctx =3D priv;
+>
+> -       if (ctx !=3D mvif->ctx)
+> +       if (ctx !=3D mvif->mt76.ctx)
+>                 return;
+>
+>         if (vif->type =3D=3D NL80211_IFTYPE_MONITOR)
+> @@ -1728,7 +1728,7 @@ mt7921_assign_vif_chanctx(struct ieee80211_hw *hw,
+>         struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
+>
+>         mutex_lock(&dev->mt76.mutex);
+> -       mvif->ctx =3D ctx;
+> +       mvif->mt76.ctx =3D ctx;
+>         mutex_unlock(&dev->mt76.mutex);
+>
+>         return 0;
+> @@ -1744,7 +1744,7 @@ mt7921_unassign_vif_chanctx(struct ieee80211_hw *hw=
+,
+>         struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
+>
+>         mutex_lock(&dev->mt76.mutex);
+> -       mvif->ctx =3D NULL;
+> +       mvif->mt76.ctx =3D NULL;
+>         mutex_unlock(&dev->mt76.mutex);
+>  }
+>
+> @@ -1758,7 +1758,7 @@ static void mt7921_mgd_prepare_tx(struct ieee80211_=
+hw *hw,
+>                        jiffies_to_msecs(HZ);
+>
+>         mt7921_mutex_acquire(dev);
+> -       mt7921_set_roc(mvif->phy, mvif, mvif->ctx->def.chan, duration,
+> +       mt7921_set_roc(mvif->phy, mvif, mvif->mt76.ctx->def.chan, duratio=
+n,
+>                        MT7921_ROC_REQ_JOIN);
+>         mt7921_mutex_release(dev);
+>  }
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers=
+/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> index ec9879650174..04a9ce50cff2 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> @@ -173,7 +173,6 @@ struct mt7921_vif {
+>         struct ewma_rssi rssi;
+>
+>         struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
+> -       struct ieee80211_chanctx_conf *ctx;
+>  };
+>
+>  enum {
+> --
+> 2.25.1
+>
