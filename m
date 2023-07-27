@@ -2,66 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3307764484
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 05:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E14CD764486
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 05:44:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231253AbjG0Dlo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Jul 2023 23:41:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45356 "EHLO
+        id S230379AbjG0Do4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Jul 2023 23:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230379AbjG0Dlm (ORCPT
+        with ESMTP id S229459AbjG0Doz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Jul 2023 23:41:42 -0400
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871FC26A0
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 20:41:40 -0700 (PDT)
-Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-403c653d934so3018771cf.2
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 20:41:40 -0700 (PDT)
+        Wed, 26 Jul 2023 23:44:55 -0400
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BC81990
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 20:44:54 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3a412653352so494336b6e.0
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 20:44:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690429299; x=1691034099;
+        d=chromium.org; s=google; t=1690429493; x=1691034293;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G8Uw0vNKZE+GaqfQjiuOZc6ei5jBk5/DQtpVKaxsbKU=;
-        b=RrrbR9txvZIVR9wVUunpxqqB7I4Mog+KLqZ3aJYwYz4JSZCgVFulSeYzjeYSOJgKCs
-         78cqBkWHnnorU5tGbuYC+K4R3lI91JfAkB8eB4ppPqz9xZkfUVWUZxxeVerhMreaYLwR
-         oMBW4LVrfb5KruWTVDWQf8Wkl4VJVorC4elC4=
+        bh=Rl5lGVY7BMmdw8t6AmZWyI2tAs0TkZaYFmG/Yn+zkOE=;
+        b=g38GMFfkuVeYzUqDw9WgNE6W5BCkKI3qxe7fQRGplWYRyiGFSdpQjAE3AeBUDZ+omJ
+         4TF3wbGu9ZZBg53CdKixBgkrp/p7/oaniL7QGpP07BxW5qg/kvhTwKlD6QpY1dhhzd85
+         5lBu4HdGYy1Gbq9q1uRf/os6aDc6vo7vtvqmY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690429299; x=1691034099;
+        d=1e100.net; s=20221208; t=1690429493; x=1691034293;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=G8Uw0vNKZE+GaqfQjiuOZc6ei5jBk5/DQtpVKaxsbKU=;
-        b=QxI1v+F2Pj5HhoLEM5lLCu5FisagoPYbvfLZo5YqzcTsIsIxYggAHSJMQX0HXhbe7F
-         PI86ME0Zk8hXnWQbRJ9BkuX9RAu5OsG0wWW2s+U5w45exAKEk/DOIfi5kugPMZsKD6bl
-         d0TrTtORVeb8OJMOK1c9p7VrbT1dMEcx09YTBgfotf1n8rBNxW0jbUoJYtmoOKqX/S5h
-         iGxJr+A8cB6EBxv6inUUWv3SsED76rLHnzL9ZXL8fDEg57lxWWSnW14s4sYzqMwNsIub
-         hd+i/2e2Wzx11s7ajb7vEvgJVBbQw1ewFSD9FnSWRl6uvnTHfseocfTk5p4BTOWbWG/W
-         vqqw==
-X-Gm-Message-State: ABy/qLaR2f0UgFzJ6T3rIp2vWM9dZ8OhN9+W5ju/RWawJNoqOdgw7tLo
-        5mVbS9dLAzMb7DRqDwjLfxLlq9EXrIF90vEyPUMVbw==
-X-Google-Smtp-Source: APBJJlHhdsw+4kV6dQuqtaCDgKIlVDBJMknGTvNILioBeM9tyEzgr6pO2qYx/HEzM1K3BMWby3jIBA==
-X-Received: by 2002:a05:6214:21ec:b0:63c:f5c0:cd14 with SMTP id p12-20020a05621421ec00b0063cf5c0cd14mr4208587qvj.49.1690429299452;
-        Wed, 26 Jul 2023 20:41:39 -0700 (PDT)
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com. [209.85.160.178])
-        by smtp.gmail.com with ESMTPSA id c3-20020a0ce143000000b0063d32f515bbsm121302qvl.127.2023.07.26.20.41.39
+        bh=Rl5lGVY7BMmdw8t6AmZWyI2tAs0TkZaYFmG/Yn+zkOE=;
+        b=GocaNP2afa19rL2Ns51uFr+jU91hK3YMC8ZXo2KqqosbhIintsw3dc0WXHjnsy5uCv
+         7yEoascWm28b8LnVYhykP9+Un5XS3j4M/rrvNRzIAnkJVdMmRG1TH0tUuA4db6urlqpX
+         0qq6MqROjOlvhKCCy91Re5HPPaJN4hH5rlvd4y5GHvA29fzRQ8yjXOJRr9BTb4eEnqAL
+         VoF86VNIAbsdRrFKGm3hOFI1NeVpLWutjtACDQEg4kkD5rjXxG2RHYHunyUZN++/+MG7
+         6azRebl15NbBkZ0BZY1T9+u3RQCOcQwkbW6iLrC7l7Cn9aP8cRC+SpFajKQi2avYK2fU
+         8u8g==
+X-Gm-Message-State: ABy/qLb+LOO5z6oe3RqYBrAbsZh4ONKSEECuDQJ6ZXsFub7Z4i0jVinh
+        SmQOif6cDx3AkrTBqtLyWovZN+PHjLWlWTKHo3AeNGUO
+X-Google-Smtp-Source: APBJJlEz7De9NmG9aPL5b+iJgiCSjISdfZ+1fOnH0OfyN4ausKtNbmrk92wxK5/BPEZ+MkiXfHs2KQ==
+X-Received: by 2002:a05:6808:13c9:b0:3a0:3495:c8d4 with SMTP id d9-20020a05680813c900b003a03495c8d4mr2100728oiw.28.1690429493337;
+        Wed, 26 Jul 2023 20:44:53 -0700 (PDT)
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com. [209.85.210.46])
+        by smtp.gmail.com with ESMTPSA id p64-20020acaf143000000b003a414415693sm290164oih.44.2023.07.26.20.44.53
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Jul 2023 20:41:39 -0700 (PDT)
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-403a7066bc8so3109071cf.0
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 20:41:39 -0700 (PDT)
-X-Received: by 2002:a1f:5e43:0:b0:481:68cc:751 with SMTP id
- s64-20020a1f5e43000000b0048168cc0751mr648348vkb.13.1690429278247; Wed, 26 Jul
- 2023 20:41:18 -0700 (PDT)
+        Wed, 26 Jul 2023 20:44:53 -0700 (PDT)
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6b9c57c4d12so425538a34.1
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jul 2023 20:44:53 -0700 (PDT)
+X-Received: by 2002:a1f:3d57:0:b0:486:5719:f4e0 with SMTP id
+ k84-20020a1f3d57000000b004865719f4e0mr651152vka.7.1690429472201; Wed, 26 Jul
+ 2023 20:44:32 -0700 (PDT)
 MIME-Version: 1.0
 References: <8fd42ac8e1c97246f6e65225a14fc8a029ac3aaa.1690232804.git.objelf@gmail.com>
-In-Reply-To: <8fd42ac8e1c97246f6e65225a14fc8a029ac3aaa.1690232804.git.objelf@gmail.com>
+ <7c7c2c1f0584e8dd016bc2bf8de88684fcc7679c.1690232804.git.objelf@gmail.com>
+In-Reply-To: <7c7c2c1f0584e8dd016bc2bf8de88684fcc7679c.1690232804.git.objelf@gmail.com>
 From:   David Ruth <druth@chromium.org>
-Date:   Wed, 26 Jul 2023 23:40:41 -0400
-X-Gmail-Original-Message-ID: <CAKHmtrQOouchFx03NRTexru7+zh+MnvAvdRrx5Qz8Jn0EVkZ8A@mail.gmail.com>
-Message-ID: <CAKHmtrQOouchFx03NRTexru7+zh+MnvAvdRrx5Qz8Jn0EVkZ8A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] wifi: mt76: move struct ieee80211_chanctx_conf up to
- struct mt76_vif
+Date:   Wed, 26 Jul 2023 23:43:55 -0400
+X-Gmail-Original-Message-ID: <CAKHmtrQVp9yV1uFagENxW1ra3sVCf-9WP4thpQ97runk3PaXKA@mail.gmail.com>
+Message-ID: <CAKHmtrQVp9yV1uFagENxW1ra3sVCf-9WP4thpQ97runk3PaXKA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] wifi: mt76: mt7921: fix the wrong rate pickup for the
+ chanctx driver
 To:     sean.wang@mediatek.com
 Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
         Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
@@ -88,136 +89,95 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 Reviewed-by: David Ruth <druth@chromium.org>
 Tested-by: David Ruth <druth@chromium.org>
 
-
 On Mon, Jul 24, 2023 at 5:20=E2=80=AFPM <sean.wang@mediatek.com> wrote:
 >
 > From: Sean Wang <sean.wang@mediatek.com>
 >
-> Move struct ieee80211_chanctx_conf up to struct mt76_vif to allow the
-> connac2 library can access the struct ieee80211_chanctx_conf * member in
-> struct mt76_vif.
+> The variable band should be determined by the ieee80211_chanctx_conf when
+> the driver is a kind of chanctx one e.g mt7921 and mt7922 driver so we
+> added the extension to mt76_connac2_mac_tx_rate_val by distinguishing if
+> it can support chanctx to fix the incorrect rate pickup.
 >
+> Fixes: 41ac53c899bd ("wifi: mt76: mt7921: introduce chanctx support")
 > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 > ---
->  drivers/net/wireless/mediatek/mt76/mt76.h        |  1 +
->  drivers/net/wireless/mediatek/mt76/mt7921/main.c | 16 ++++++++--------
->  .../net/wireless/mediatek/mt76/mt7921/mt7921.h   |  1 -
->  3 files changed, 9 insertions(+), 9 deletions(-)
+>  drivers/net/wireless/mediatek/mt76/mac80211.c        | 9 +++++++--
+>  drivers/net/wireless/mediatek/mt76/mt76.h            | 3 ++-
+>  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 7 +++++--
+>  3 files changed, 14 insertions(+), 5 deletions(-)
 >
+> diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/=
+wireless/mediatek/mt76/mac80211.c
+> index c0ff36a98bed..d622a2916c0e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+> @@ -1698,11 +1698,16 @@ mt76_init_queue(struct mt76_dev *dev, int qid, in=
+t idx, int n_desc,
+>  }
+>  EXPORT_SYMBOL_GPL(mt76_init_queue);
+>
+> -u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx)
+> +u16 mt76_calculate_default_rate(struct mt76_phy *phy,
+> +                               struct ieee80211_vif *vif, int rateidx)
+>  {
+> +       struct mt76_vif *mvif =3D (struct mt76_vif *)vif->drv_priv;
+> +       struct cfg80211_chan_def *chandef =3D mvif->ctx ?
+> +                                           &mvif->ctx->def :
+> +                                           &phy->chandef;
+>         int offset =3D 0;
+>
+> -       if (phy->chandef.chan->band !=3D NL80211_BAND_2GHZ)
+> +       if (chandef->chan->band !=3D NL80211_BAND_2GHZ)
+>                 offset =3D 4;
+>
+>         /* pick the lowest rate for hidden nodes */
 > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
 less/mediatek/mt76/mt76.h
-> index 878087257ea7..bf9c781ff48c 100644
+> index bf9c781ff48c..a292e15224e1 100644
 > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
 > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> @@ -708,6 +708,7 @@ struct mt76_vif {
->         u8 basic_rates_idx;
->         u8 mcast_rates_idx;
->         u8 beacon_rates_idx;
-> +       struct ieee80211_chanctx_conf *ctx;
->  };
+> @@ -1100,7 +1100,8 @@ int mt76_get_of_eeprom(struct mt76_dev *dev, void *=
+data, int offset, int len);
+>  struct mt76_queue *
+>  mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
+>                 int ring_base, u32 flags);
+> -u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx);
+> +u16 mt76_calculate_default_rate(struct mt76_phy *phy,
+> +                               struct ieee80211_vif *vif, int rateidx);
+>  static inline int mt76_init_tx_queue(struct mt76_phy *phy, int qid, int =
+idx,
+>                                      int n_desc, int ring_base, u32 flags=
+)
+>  {
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drive=
+rs/net/wireless/mediatek/mt76/mt76_connac_mac.c
+> index ee5177fd6dde..d91f5548dc02 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+> @@ -310,7 +310,10 @@ u16 mt76_connac2_mac_tx_rate_val(struct mt76_phy *mp=
+hy,
+>                                  struct ieee80211_vif *vif,
+>                                  bool beacon, bool mcast)
+>  {
+> -       u8 nss =3D 0, mode =3D 0, band =3D mphy->chandef.chan->band;
+> +       struct mt76_vif *mvif =3D (struct mt76_vif *)vif->drv_priv;
+> +       struct cfg80211_chan_def *chandef =3D mvif->ctx ?
+> +                                           &mvif->ctx->def : &mphy->chan=
+def;
+> +       u8 nss =3D 0, mode =3D 0, band =3D chandef->chan->band;
+>         int rateidx =3D 0, mcast_rate;
 >
->  struct mt76_phy {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/main.c
-> index 87067ac367eb..8987173a83f2 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> @@ -804,7 +804,7 @@ void mt7921_mac_sta_assoc(struct mt76_dev *mdev, stru=
-ct ieee80211_vif *vif,
+>         if (!vif)
+> @@ -343,7 +346,7 @@ u16 mt76_connac2_mac_tx_rate_val(struct mt76_phy *mph=
+y,
+>                 rateidx =3D ffs(vif->bss_conf.basic_rates) - 1;
 >
->         if (vif->type =3D=3D NL80211_IFTYPE_STATION && !sta->tdls)
->                 mt76_connac_mcu_uni_add_bss(&dev->mphy, vif, &mvif->sta.w=
-cid,
-> -                                           true, mvif->ctx);
-> +                                           true, mvif->mt76.ctx);
->
->         ewma_avg_signal_init(&msta->avg_ack_signal);
->
-> @@ -839,7 +839,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, str=
-uct ieee80211_vif *vif,
->                 if (!sta->tdls)
->                         mt76_connac_mcu_uni_add_bss(&dev->mphy, vif,
->                                                     &mvif->sta.wcid, fals=
-e,
-> -                                                   mvif->ctx);
-> +                                                   mvif->mt76.ctx);
->         }
->
->         spin_lock_bh(&dev->mt76.sta_poll_lock);
-> @@ -1638,7 +1638,7 @@ mt7921_start_ap(struct ieee80211_hw *hw, struct iee=
-e80211_vif *vif,
->         mt7921_mutex_acquire(dev);
->
->         err =3D mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.wc=
-id,
-> -                                         true, mvif->ctx);
-> +                                         true, mvif->mt76.ctx);
->         if (err)
->                 goto out;
->
-> @@ -1670,7 +1670,7 @@ mt7921_stop_ap(struct ieee80211_hw *hw, struct ieee=
-80211_vif *vif,
->                 goto out;
->
->         mt76_connac_mcu_uni_add_bss(phy->mt76, vif, &mvif->sta.wcid, fals=
-e,
-> -                                   mvif->ctx);
-> +                                   mvif->mt76.ctx);
->
+>  legacy:
+> -       rateidx =3D mt76_calculate_default_rate(mphy, rateidx);
+> +       rateidx =3D mt76_calculate_default_rate(mphy, vif, rateidx);
+>         mode =3D rateidx >> 8;
+>         rateidx &=3D GENMASK(7, 0);
 >  out:
->         mt7921_mutex_release(dev);
-> @@ -1695,7 +1695,7 @@ static void mt7921_ctx_iter(void *priv, u8 *mac,
->         struct mt7921_vif *mvif =3D (struct mt7921_vif *)vif->drv_priv;
->         struct ieee80211_chanctx_conf *ctx =3D priv;
->
-> -       if (ctx !=3D mvif->ctx)
-> +       if (ctx !=3D mvif->mt76.ctx)
->                 return;
->
->         if (vif->type =3D=3D NL80211_IFTYPE_MONITOR)
-> @@ -1728,7 +1728,7 @@ mt7921_assign_vif_chanctx(struct ieee80211_hw *hw,
->         struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
->
->         mutex_lock(&dev->mt76.mutex);
-> -       mvif->ctx =3D ctx;
-> +       mvif->mt76.ctx =3D ctx;
->         mutex_unlock(&dev->mt76.mutex);
->
->         return 0;
-> @@ -1744,7 +1744,7 @@ mt7921_unassign_vif_chanctx(struct ieee80211_hw *hw=
-,
->         struct mt7921_dev *dev =3D mt7921_hw_dev(hw);
->
->         mutex_lock(&dev->mt76.mutex);
-> -       mvif->ctx =3D NULL;
-> +       mvif->mt76.ctx =3D NULL;
->         mutex_unlock(&dev->mt76.mutex);
->  }
->
-> @@ -1758,7 +1758,7 @@ static void mt7921_mgd_prepare_tx(struct ieee80211_=
-hw *hw,
->                        jiffies_to_msecs(HZ);
->
->         mt7921_mutex_acquire(dev);
-> -       mt7921_set_roc(mvif->phy, mvif, mvif->ctx->def.chan, duration,
-> +       mt7921_set_roc(mvif->phy, mvif, mvif->mt76.ctx->def.chan, duratio=
-n,
->                        MT7921_ROC_REQ_JOIN);
->         mt7921_mutex_release(dev);
->  }
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers=
-/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> index ec9879650174..04a9ce50cff2 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> @@ -173,7 +173,6 @@ struct mt7921_vif {
->         struct ewma_rssi rssi;
->
->         struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
-> -       struct ieee80211_chanctx_conf *ctx;
->  };
->
->  enum {
 > --
 > 2.25.1
 >
