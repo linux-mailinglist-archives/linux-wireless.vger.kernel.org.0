@@ -2,110 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F8C7652D9
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 13:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B76176530F
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 14:00:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233470AbjG0Lru (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jul 2023 07:47:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40474 "EHLO
+        id S232844AbjG0MAr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jul 2023 08:00:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233217AbjG0Lrt (ORCPT
+        with ESMTP id S232288AbjG0MAq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jul 2023 07:47:49 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49231271F;
-        Thu, 27 Jul 2023 04:47:40 -0700 (PDT)
-Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.53])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RBTTT4RSGzLnsJ;
-        Thu, 27 Jul 2023 19:45:01 +0800 (CST)
-Received: from [10.69.30.204] (10.69.30.204) by dggpemm500005.china.huawei.com
- (7.185.36.74) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 27 Jul
- 2023 19:47:37 +0800
-Subject: Re: [PATCH net-next v2] page_pool: split types and declarations from
- page_pool.h
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>
-CC:     Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        <davem@davemloft.net>, <pabeni@redhat.com>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Wei Fang <wei.fang@nxp.com>,
-        Shenwei Wang <shenwei.wang@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        <linux-rdma@vger.kernel.org>, <bpf@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-References: <20230725131258.31306-1-linyunsheng@huawei.com>
- <ZL/fVF7WetuLgB0l@hera> <20230725141223.19c1c34c@kernel.org>
- <a5d91458-d494-6000-7607-0f17c4461b6e@intel.com>
- <20230726084742.7dc67c79@kernel.org>
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <d6dd7cb3-5d06-cc1d-ff0d-6933cb9994b9@huawei.com>
-Date:   Thu, 27 Jul 2023 19:47:23 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+        Thu, 27 Jul 2023 08:00:46 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0290C272A
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 05:00:43 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36R80CXN013108;
+        Thu, 27 Jul 2023 12:00:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=yzBNCFjs3BQDgEnY0hEgRVorqFsbUoUsDcjCM3bB7DU=;
+ b=lfX222ddN2S+MK3kwv5tbY07UMeQil6IzXvQwMytzQk0g4TfbsYDyaLRV/yXE3EywrQj
+ 5Wi9XSnfD6L4RyOYbfXLgFsGHL4SxEgpMH2+5k1aX/wDW5ClCsCl3lvue9edJehGe8J+
+ in+8gMQmzJhAqqbbnYs4Q8hyGcH6ZF4JhEb6eX2opsRmYgFpleJAbCvHUgH4U47MA1mY
+ sDarN5KODqwFCv4MjzY4dVivwghdbDGeu7P4QbT6cCxYBtmu1ZMr+V9gIZcWWRmdTJBT
+ mzpFUik01Judj3SIJ8EjNInfbXE7G1H9T9Jq24jnUyjk3sQJKEl0bDy80F9e2i0SS8tU Pg== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s32jn2r06-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jul 2023 12:00:35 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36RC0YD3018949
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jul 2023 12:00:34 GMT
+Received: from [10.201.207.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 27 Jul
+ 2023 05:00:33 -0700
+Message-ID: <db8afcb0-2297-7748-daeb-625eeb0b1c6c@quicinc.com>
+Date:   Thu, 27 Jul 2023 17:30:25 +0530
 MIME-Version: 1.0
-In-Reply-To: <20230726084742.7dc67c79@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: [PATCH] wifi: ath11k: fix band selection for ppdu received in
+ channel 177 of 5 GHz
+To:     Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20230726044624.20507-1-quic_adisi@quicinc.com>
+ <8fe1a927-14da-445c-4c48-e3f4b4c324d4@quicinc.com>
+ <87bkfx287p.fsf@kernel.org>
 Content-Language: en-US
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <87bkfx287p.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.69.30.204]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500005.china.huawei.com (7.185.36.74)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: gr7Nte_IOz_JsSSWUMzBd_4D0cY1oJ35
+X-Proofpoint-ORIG-GUID: gr7Nte_IOz_JsSSWUMzBd_4D0cY1oJ35
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-27_06,2023-07-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1011 suspectscore=0 mlxscore=0 phishscore=0 bulkscore=0
+ mlxlogscore=834 lowpriorityscore=0 impostorscore=0 adultscore=0
+ malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307270107
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2023/7/26 23:47, Jakub Kicinski wrote:
-> On Wed, 26 Jul 2023 12:48:05 +0200 Alexander Lobakin wrote:
->>> I prefer the more systematic approach of creating a separate types.h
->>> file, so I don't have to keep chasing people or cleaning up the include
->>> hell myself. I think it should be adopted more widely going forward,
->>> it's not just about the page pool.  
+On 7/27/2023 11:42, Kalle Valo wrote:
+> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+> 
+>> On 7/25/2023 9:46 PM, Aditya Kumar Singh wrote:
+>>> 5 GHz band channel 177 support was added with the commit
+>>> "wifi: ath11k: add channel 177 into 5 GHz channel list". However,
 >>
->> I have this patch reworked to introduce
->> include/net/page_pool/{types,helpers}.h in my tree, maybe someone could
->> take a quick look[0] and say if this works while I'm preparing the next
->> version for sending? Not the most MLish way, I know :s
+>> I'd use the same syntax here as in the Fixes tag:
+>> e5e94d10c856 ("wifi: ath11k: add channel 177 into 5 GHz channel list")
 >>
->> [0]
->> https://github.com/alobakin/linux/commit/19741ee072c32eb1d30033cd4fcb236d1c00bfbf
+>>> during processing for the received ppdu in ath11k_dp_rx_h_ppdu(), channel
+>>> number is checked only till 173. This leads to driver code checking for
+>>> channel and then fetching the band from it which is extra effort since
+>>> firmware has already given the channel number in the meta deta.
+>>
+>> nit: s/meta deta/metadata/
 > 
-> LGTM!
+> I can fix these in the pending branch.
+Thanks Kalle.
 
-Hi, Alexander
-It seems you have taken it and adjust it accordingly, do you mind sending
-the next version along with your patchset, so that there is less patch
-conflict for both of us:)
-
-> 
-> .
-> 
