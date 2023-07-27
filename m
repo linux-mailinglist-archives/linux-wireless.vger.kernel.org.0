@@ -2,112 +2,281 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E105C76597B
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 19:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7C07659A0
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jul 2023 19:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231308AbjG0RE0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Jul 2023 13:04:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38462 "EHLO
+        id S231858AbjG0RNB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Jul 2023 13:13:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230338AbjG0REZ (ORCPT
+        with ESMTP id S232081AbjG0RMt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Jul 2023 13:04:25 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE1CE2D4B
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 10:04:23 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-68706b39c4cso320137b3a.2
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 10:04:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690477463; x=1691082263;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IZcV7GGyEaE3OLX7Vopz1HxO7d9e/1e1Zp3uwy/ULrg=;
-        b=iiIuTxt6uVQ4wct3bOeLzxV0BWCxXhaJliBn5ZfltSH6DFUVlrmIUyoNpQaAXqRFnw
-         NvaYTRxu/XHkUGDbjqCd292vQFYnzKTKzlkYd86pmVUYnH65j5ZTAu7Ap8zLqbfXo+XR
-         gCOWjd9R/J2MURdh5WcB50gdoFqHaSMYXy0uU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690477463; x=1691082263;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IZcV7GGyEaE3OLX7Vopz1HxO7d9e/1e1Zp3uwy/ULrg=;
-        b=U3IRKC4rNEZTQ3QUQAN2Lp1Wb/V91ejKt/ZMEgSnO2c3iMVq7xBQaxMBjSzYI5Sx+p
-         +gPZNY+PspVfkyc/wtXzL2vrp/gouwRazDQrZX/2a5WDCUzCSu0KVeiDm2+p4lBFnRLF
-         PyzqwGqqPBXvoQ3XnO4gYsD3gZFkfnidihDIxQKxj5SFlBJ7HrHRPIjfaasdMc5WBU94
-         D8RvEuqlBxeyLKjXrrStJM98kLfAeEKJuz3Q2u0euQ54Nk5PXE9fSv/ToKbL0yZDxgpw
-         9JEqsgWu/oSxze9aieV9qsvQgOLu0mzZSxIMB53maWgL3xyHJHhPfnxkAKNtuhpbVN+K
-         jNzQ==
-X-Gm-Message-State: ABy/qLa0p2+JSIc6jm7pAjvQAezkdKBUdtOkv1jbVAoKZ8QBKPtykp7o
-        WdP82it1qCdPUsXezWWfaDxeDg==
-X-Google-Smtp-Source: APBJJlGg0Pa5pJwOyLvYDxFwV9CR6OjZiGoVvSx+j7lgNrunXLpTzpEeoW/HbZLc5o28d/HAGWeCIg==
-X-Received: by 2002:a05:6a00:190d:b0:66c:6766:7373 with SMTP id y13-20020a056a00190d00b0066c67667373mr6000736pfi.23.1690477463304;
-        Thu, 27 Jul 2023 10:04:23 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id c16-20020a62e810000000b006636c4f57a6sm1725855pfi.27.2023.07.27.10.04.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jul 2023 10:04:22 -0700 (PDT)
-Date:   Thu, 27 Jul 2023 10:04:22 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Azeem Shaikh <azeemshaikh38@gmail.com>,
-        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mwifiex: Replace strlcpy with strscpy
-Message-ID: <202307271003.BCF5F3597@keescook>
-References: <20230710030625.812707-1-azeemshaikh38@gmail.com>
- <169047317161.2400214.15246406234885315012.b4-ty@chromium.org>
- <87pm4dz6js.fsf@kernel.org>
+        Thu, 27 Jul 2023 13:12:49 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1649C2D4B
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jul 2023 10:12:48 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36RFvWpb014295;
+        Thu, 27 Jul 2023 17:12:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=Nx2+b4cIxzfQDEXInfXaRfOmrhT0e1MpXnDAeq5sj0E=;
+ b=nT1XV5jjn7972a/8R8jDY9I5iw3FjHAEY/4Q9wRqhjK77/O+JSCiIUI9yatG/9MlpH1t
+ +G7kltCUQKFa+eXwZud2SZpdjFIqT4H2RIvugRtzNHI+UeZINy1FYL0iKSqFVWp9MvlY
+ oD/1wWc6uJzOp2VAWKcZvref835+Yw89e0VHGEBf6OvhToBbHkDIwLCU7fRbAEiqX0bS
+ zo/FMwzKDXoUm/8aahs6ulTgW1BHlrSLkyh3ZdYC/ZF6SXPRcn2tE1ydFQBbR5V5/wtG
+ 5AVJZSdXGQm7q60VXAaHEqCb/p094RgB8vQEJMEvhLJ8ZAmVIB/WyL3XTMBkkzeXfH4d ZQ== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s34x6k7eq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jul 2023 17:12:29 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36RHCSdv021135
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jul 2023 17:12:28 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 27 Jul
+ 2023 10:12:28 -0700
+Message-ID: <563e8d01-beba-bff2-54e0-7629c462add0@quicinc.com>
+Date:   Thu, 27 Jul 2023 10:12:27 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pm4dz6js.fsf@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] wifi: ath11k: add firmware-2.bin support
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>, <mhi@lists.linux.dev>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20230727100430.3603551-1-kvalo@kernel.org>
+ <20230727100430.3603551-4-kvalo@kernel.org>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230727100430.3603551-4-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: DcC4Z740BAk80ZIvownNTXGVql6nE_Ix
+X-Proofpoint-ORIG-GUID: DcC4Z740BAk80ZIvownNTXGVql6nE_Ix
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-27_07,2023-07-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 adultscore=0 impostorscore=0 mlxscore=0
+ bulkscore=0 spamscore=0 clxscore=1015 phishscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307270155
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 27, 2023 at 07:02:31PM +0300, Kalle Valo wrote:
-> Kees Cook <keescook@chromium.org> writes:
+On 7/27/2023 3:04 AM, Kalle Valo wrote:
+> From: Anilkumar Kolli <quic_akolli@quicinc.com>
 > 
-> > On Mon, 10 Jul 2023 03:06:25 +0000, Azeem Shaikh wrote:
-> >> strlcpy() reads the entire source buffer first.
-> >> This read may exceed the destination size limit.
-> >> This is both inefficient and can lead to linear read
-> >> overflows if a source string is not NUL-terminated [1].
-> >> In an effort to remove strlcpy() completely [2], replace
-> >> strlcpy() here with strscpy().
-> >> 
-> >> [...]
-> >
-> > Applied, thanks!
-> >
-> > [1/1] wifi: mwifiex: Replace strlcpy with strscpy
-> >       https://git.kernel.org/kees/c/5469fb73e96d
+> Firmware IE containers can dynamically provide various information
+> what firmware supports. Also it can embed more than one image so
+> updating firmware is easy, user just needs to update one file in
+> /lib/firmware/.
 > 
-> And the same question here, why are you taking wifi patches without
-> acks? And this already fixed differently in wireless-next so our trees
-> conflict now:
+> The firmware API 2 or higher will use the IE container format, the
+> current API 1 will not use the new format but it still is supported
+> for some time. Firmware API 2 files are named as firmware-2.bin
+> (which contains both amss.bin and m3.bin images) and API 1 files are
+> amss.bin and m3.bin.
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?id=caf9ead2c7d06fd7aa4cb48bd569ad61db9a0b4a
+> Currently ath11k PCI driver provides firmware binary (amss.bin) path to
+> MHI driver, MHI driver reads firmware from filesystem and boots it. Add
+> provision to read firmware files from ath11k driver and provide the amss.bin
+> firmware data and size to MHI using a pointer.
+> 
+> Currently enum ath11k_fw_features is empty, the patches adding features will
+> add the flags.
+> 
+> With AHB devices there's no amss.bin or m3.bin, so no changes in how AHB
+> firmware files are used. But AHB devices can use future additions to the meta
+> data, for example in enum ath11k_fw_features.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
+> 
+> Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: Anilkumar Kolli <quic_akolli@quicinc.com>
+> Co-developed-by: Kalle Valo <quic_kvalo@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> ---
+>   drivers/net/wireless/ath/ath11k/Makefile |   3 +-
+>   drivers/net/wireless/ath/ath11k/core.c   |   8 ++
+>   drivers/net/wireless/ath/ath11k/core.h   |  15 +++
+>   drivers/net/wireless/ath/ath11k/fw.c     | 157 +++++++++++++++++++++++
+>   drivers/net/wireless/ath/ath11k/fw.h     |  27 ++++
+>   drivers/net/wireless/ath/ath11k/mhi.c    |  18 ++-
+>   drivers/net/wireless/ath/ath11k/qmi.c    |  36 ++++--
+>   7 files changed, 247 insertions(+), 17 deletions(-)
+>   create mode 100644 drivers/net/wireless/ath/ath11k/fw.c
+>   create mode 100644 drivers/net/wireless/ath/ath11k/fw.h
+...
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/fw.c b/drivers/net/wireless/ath/ath11k/fw.c
+> new file mode 100644
+> index 000000000000..5423c0be63fa
+> --- /dev/null
+> +++ b/drivers/net/wireless/ath/ath11k/fw.c
+> @@ -0,0 +1,157 @@
+> +// SPDX-License-Identifier: BSD-3-Clause-Clear
+> +/*
+> + * Copyright (c) 2022, Qualcomm Innovation Center, Inc. All rights reserved.
 
-Thanks for pointing that out! I saw no feedback on Azeem's patch, so it
-looked like it was being ignored.
+should the year be updated?
+same question applies to the .h file
 
-For the patch you linked to -- it's okay to have lost the overflow
-detection and warning?
+> + */
+> +
+> +#include "core.h"
+> +
+> +#include "debug.h"
+> +
+> +static int ath11k_fw_request_firmware_api_n(struct ath11k_base *ab,
+> +					    const char *name)
+> +{
+> +	size_t magic_len, len, ie_len;
+> +	int ie_id, i, index, bit, ret;
+> +	struct ath11k_fw_ie *hdr;
+> +	const u8 *data;
+> +	__le32 *timestamp;
+> +
+> +	ab->fw.fw = ath11k_core_firmware_request(ab, name);
+> +	if (IS_ERR(ab->fw.fw)) {
+> +		ret = PTR_ERR(ab->fw.fw);
+> +		ath11k_dbg(ab, ATH11K_DBG_BOOT, "failed to load %s: %d\n", name, ret);
+> +		ab->fw.fw = NULL;
+> +		return ret;
+> +	}
+> +
+> +	data = ab->fw.fw->data;
+> +	len = ab->fw.fw->size;
+> +
+> +	/* magic also includes the null byte, check that as well */
+> +	magic_len = strlen(ATH11K_FIRMWARE_MAGIC) + 1;
+> +
+> +	if (len < magic_len) {
+> +		ath11k_err(ab, "firmware image too small to contain magic: %zu\n",
+> +			   len);
+> +		ret = -EINVAL;
+> +		goto err;
+> +	}
+> +
+> +	if (memcmp(data, ATH11K_FIRMWARE_MAGIC, magic_len) != 0) {
+> +		ath11k_err(ab, "Invalid firmware magic\n");
+> +		ret = -EINVAL;
+> +		goto err;
+> +	}
+> +
+> +	/* jump over the padding */
+> +	magic_len = ALIGN(magic_len, 4);
+> +
+> +	len -= magic_len;
+> +	data += magic_len;
+> +
+> +	/* loop elements */
+> +	while (len > sizeof(struct ath11k_fw_ie)) {
+> +		hdr = (struct ath11k_fw_ie *)data;
+> +
+> +		ie_id = le32_to_cpu(hdr->id);
+> +		ie_len = le32_to_cpu(hdr->len);
+> +
+> +		len -= sizeof(*hdr);
+> +		data += sizeof(*hdr);
+> +
+> +		if (len < ie_len) {
+> +			ath11k_err(ab, "Invalid length for FW IE %d (%zu < %zu)\n",
+> +				   ie_id, len, ie_len);
+> +			ret = -EINVAL;
+> +			goto err;
+> +		}
+> +
+> +		switch (ie_id) {
+> +		case ATH11K_FW_IE_TIMESTAMP:
+> +			if (ie_len != sizeof(u32))
+> +				break;
+> +
+> +			timestamp = (__le32 *)data;
+> +
+> +			ath11k_dbg(ab, ATH11K_DBG_BOOT, "found fw timestamp %d\n",
+> +				   le32_to_cpup(timestamp));
+> +			break;
+> +		case ATH11K_FW_IE_FEATURES:
+> +			ath11k_dbg(ab, ATH11K_DBG_BOOT,
+> +				   "found firmware features ie (%zd B)\n",
+> +				   ie_len);
+> +
+> +			for (i = 0; i < ATH11K_FW_FEATURE_COUNT; i++) {
+> +				index = i / 8;
+> +				bit = i % 8;
+> +
+> +				if (index == ie_len)
+> +					break;
+> +
+> +				if (data[index] & (1 << bit))
+> +					__set_bit(i, ab->fw.fw_features);
+> +			}
+> +
+> +			ath11k_dbg_dump(ab, ATH11K_DBG_BOOT, "features", "",
+> +					ab->fw.fw_features,
+> +					sizeof(ab->fw.fw_features));
+> +			break;
+> +		case ATH11K_FW_IE_AMSS_IMAGE:
+> +			ath11k_dbg(ab, ATH11K_DBG_BOOT,
+> +				   "found fw image ie (%zd B)\n",
+> +				   ie_len);
+> +
+> +			ab->fw.amss_data = data;
+> +			ab->fw.amss_len = ie_len;
+> +			break;
+> +		case ATH11K_FW_IE_M3_IMAGE:
+> +			ath11k_dbg(ab, ATH11K_DBG_BOOT,
+> +				   "found m3 image ie (%zd B)\n",
+> +				   ie_len);
+> +
+> +			ab->fw.m3_data = data;
+> +			ab->fw.m3_len = ie_len;
+> +			break;
+> +		default:
+> +			ath11k_warn(ab, "Unknown FW IE: %u\n", ie_id);
+> +			break;
+> +		}
+> +
+> +		/* jump over the padding */
+> +		ie_len = ALIGN(ie_len, 4);
+> +
+> +		len -= ie_len;
+> +		data += ie_len;
 
-Regardless, I will drop this from my tree.
+is this always safe?
 
--Kees
+can we have a case where the original ie_len was <= len but the aligned 
+ie_len is > len, and hence this will lead to an integer underflow of len 
+(becoming a large unsigned value) and we'll continue looping with a 
+buffer overread?
 
--- 
-Kees Cook
+the same question applies to the code where the magic is checked & skipped
+
+> +	};
+> +
+> +	return 0;
+> +
+> +err:
+> +	release_firmware(ab->fw.fw);
+> +	ab->fw.fw = NULL;
+> +	return ret;
+> +}
+> +
+
+
