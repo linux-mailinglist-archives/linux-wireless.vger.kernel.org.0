@@ -2,68 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E61A9766921
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 11:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6ABC7671C6
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 18:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233906AbjG1Jke (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jul 2023 05:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52526 "EHLO
+        id S229564AbjG1QXV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jul 2023 12:23:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233999AbjG1Jk0 (ORCPT
+        with ESMTP id S229462AbjG1QXU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jul 2023 05:40:26 -0400
-X-Greylist: delayed 634 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 28 Jul 2023 02:40:16 PDT
-Received: from mail03.softline.ru (mail03.softline.ru [185.31.132.229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE4A30DE
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 02:40:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=softline.com;
-        s=relay; t=1690536575;
-        bh=FvUHsBixHeSS1LEuE0dI2GpD9F7jVjH0Rg4ZduGI+F0=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-        b=KrCRvvvEh661brRZxQQ9IPjb6V2LInEd2mpFn0gEABDGzzfcRJrYjuFrAVpZdXkZz
-         Yh8APh21Ze73eKBLM3wu6UUj2DeLj1Iyvz5J1EG+aC4+O3+6lAJfo8+swGvlWFGred
-         9tEbNolSVxT+4PmQaTC4yHLDWdl7qqY1sNHjcNdo5fRPGu8apWxbXmEH/KsD7Wj/Td
-         yFs3z/BSQSBW4Vmc3Jhw3IfpgZ3h1OmF/ALwkQzzMBRgfNBG5atSDGJqusDZnWpqfM
-         iFgKvt+NxdyYWDmlRn/pYyv6k5vBrX9RlUcQ2jQZbqhADBNPU8yFgrMkytNjEuB+/P
-         OLRUnHoQZ34wQ==
-X-AuditID: 0a02150b-b29a1700000026cc-ba-64c38a7e452a
-From:   "Antipov, Dmitriy" <Dmitriy.Antipov@softline.com>
-To:     "dmantipov@yandex.ru" <dmantipov@yandex.ru>,
-        "briannorris@chromium.org" <briannorris@chromium.org>
-CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-Subject: Re: [lvc-project] [PATCH 1/5] wifi: mwifiex: fix memory leak in
- mwifiex_histogram_read()
-Thread-Topic: [lvc-project] [PATCH 1/5] wifi: mwifiex: fix memory leak in
- mwifiex_histogram_read()
-Thread-Index: AQHZv/tvtiGPYAALQk+oENc6jqNL5K/OuceA
-Date:   Fri, 28 Jul 2023 09:29:34 +0000
-Message-ID: <72372d59ccbc70ea322962158d066597c2c9fbe7.camel@softline.com>
-References: <20230726072114.51964-1-dmantipov@yandex.ru>
-         <ZMFzBStAKemf+dLL@google.com>
-In-Reply-To: <ZMFzBStAKemf+dLL@google.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0D33A87592D9CE48825C8963F5382E61@softline.com>
-Content-Transfer-Encoding: base64
+        Fri, 28 Jul 2023 12:23:20 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6B592D60
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 09:23:17 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-992e22c09edso310642666b.2
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 09:23:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1690561396; x=1691166196;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MUijDPBpqLO1eo5480diEsMJwuHY/OnKbfOc5VucfMk=;
+        b=T3l6Qf3NJ2jmmJMEInQ2/aG72ilw/aPg6lhGGoQVD07zsisCQRmRA4+sqi4QLEf4kM
+         fXSmhvHB3+wkgnkxeZ4R6NdeGrfK9HAHr+vCFqnoEfsOwmFM412HHOMCduYTnj6sPCjq
+         4VZE5YscacjkFfrEb4pgVcfFVSdXgDPDGc78s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690561396; x=1691166196;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MUijDPBpqLO1eo5480diEsMJwuHY/OnKbfOc5VucfMk=;
+        b=QBBSmSYrHbocBif2bsG1YyFrsMOM40kqbP1zYH+j/6HsUX822F3o+UdVDLZba85Qrh
+         RR7dIA/TGWda1RMzcYGKtEytntv9ViLAC63i7/QegWk5POlJVi5DKiL6J/eMDjIDK7sy
+         NUFZvuof3Myw2bnXNmotWpz8x9TK4mc2w9lgCydhcVb3QjO1oofojmKkJ1irT1AmhFME
+         5704aRVFPIeZkZgGM4mt5wMBPDaWjX+6usEtagb1JUZJLJ+DI1GzoNZ+aaNbkBEU5idm
+         u0ArVlrcuSk3LR2KMAfpJgmbP/FFI1GCO3IsHxDRoofTI4/xM1ykvzBTwewJmTSXWLmZ
+         u7jQ==
+X-Gm-Message-State: ABy/qLZNSK9GS9iXWQzqQf+WyY5Rxf/q1fepR6WqgLyzZCw4bRTjt8T2
+        /q3FNIVc5w9GxXGhuZ2ZNxHKRkU2e9Z0kN2wCBw=
+X-Google-Smtp-Source: APBJJlFC6bkYLqY8A/LQ1qs9sVCJ5f7iGO0vGpyx7Gqk9RI++EwaEA0tr7d1kVzgQhGAMvSH/TmBHw==
+X-Received: by 2002:a17:906:3f1b:b0:993:e94e:7234 with SMTP id c27-20020a1709063f1b00b00993e94e7234mr2206684ejj.77.1690561396021;
+        Fri, 28 Jul 2023 09:23:16 -0700 (PDT)
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
+        by smtp.gmail.com with ESMTPSA id s13-20020a1709060c0d00b009930042510csm2199621ejf.222.2023.07.28.09.23.15
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Jul 2023 09:23:15 -0700 (PDT)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-9923833737eso311197666b.3
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 09:23:15 -0700 (PDT)
+X-Received: by 2002:a17:906:30c1:b0:98e:16b7:e038 with SMTP id
+ b1-20020a17090630c100b0098e16b7e038mr2853607ejb.23.1690561394846; Fri, 28 Jul
+ 2023 09:23:14 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <PA4PR04MB9638100B3F21D083F386C6D9D106A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+In-Reply-To: <PA4PR04MB9638100B3F21D083F386C6D9D106A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Fri, 28 Jul 2023 09:23:01 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXMx46aLztpKHqtS_Ab_yV_0GvRdWinf4C9o=9zqtTGehQ@mail.gmail.com>
+Message-ID: <CA+ASDXMx46aLztpKHqtS_Ab_yV_0GvRdWinf4C9o=9zqtTGehQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mwifiex: added code to support host mlme.
+To:     David Lin <yu-hao.lin@nxp.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gV2VkLCAyMDIzLTA3LTI2IGF0IDEyOjI0IC0wNzAwLCBCcmlhbiBOb3JyaXMgd3JvdGU6DQoN
-Cg0KPiBJIGhhZCBjb21tZW50cyBmb3IgcGF0Y2ggMi4gUGF0Y2ggMSwgMywgNCwgNSBsb29rIGdv
-b2Q6DQo+IA0KPiBBY2tlZC1ieTogQnJpYW4gTm9ycmlzIDxicmlhbm5vcnJpc0BjaHJvbWl1bS5v
-cmc+DQoNClNob3VsZCBJIGFkZCBBY2tlZC1ieTogPHlvdT4gdG8gYWxsIG9mIHRoZSBhYm92ZSBp
-biBjYXNlDQpvZiByZXNlbmQgd2l0aG91dCBjaGFuZ2VzLCBvciBsZWF2ZSBpdCB0byB0aGUgbWFp
-bnRhaW5lcj8NCg0KRG1pdHJ5DQo=
+Wait, your company can't afford to have anyone respond to maintainer
+mail for years [1], but you can afford to add new features? Crazy.
+
+[1] https://lore.kernel.org/all/87sf9j3wd1.fsf@kernel.org/
+
+On Thu, Jul 27, 2023 at 11:19=E2=80=AFPM David Lin <yu-hao.lin@nxp.com> wro=
+te:
+>
+> 1. For station mode first.
+> 2. This feature is a must for WPA3.
+> 3. The code is tested with IW416. There is no guarantee for other chips.
+
+^^ That's not a good sign.
+
+> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+
+>  drivers/net/wireless/marvell/mwifiex/util.c   |  74 ++++
+>  14 files changed, 558 insertions(+), 13 deletions(-)
+
+> --- a/drivers/net/wireless/marvell/mwifiex/main.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/main.c
+> @@ -28,6 +28,10 @@ module_param(driver_mode, ushort, 0);
+>  MODULE_PARM_DESC(driver_mode,
+>                  "station=3D0x1(default), ap-sta=3D0x3, station-p2p=3D0x5=
+, ap-sta-p2p=3D0x7");
+>
+> +bool host_mlme;
+> +module_param(host_mlme, bool, 0);
+> +MODULE_PARM_DESC(host_mlme, "Host MLME support enable:1, disable:0");
+> +
+
+I hear Kalle doesn't like module parameters like this. They're a cop
+out on properly supporting features (also, see your own commit
+message). I'd have to dig through the archives to find the latest
+advice and rules on this.
+
+Overall, I'm not enthusiastic about this change.
+
+Brian
