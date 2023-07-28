@@ -2,117 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6ABC7671C6
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 18:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19DFC7673B7
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 19:45:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbjG1QXV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jul 2023 12:23:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34776 "EHLO
+        id S233227AbjG1Rpm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jul 2023 13:45:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjG1QXU (ORCPT
+        with ESMTP id S232919AbjG1Rpg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jul 2023 12:23:20 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6B592D60
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 09:23:17 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-992e22c09edso310642666b.2
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 09:23:17 -0700 (PDT)
+        Fri, 28 Jul 2023 13:45:36 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE3F3C22;
+        Fri, 28 Jul 2023 10:45:32 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2b9bd59d465so36014151fa.3;
+        Fri, 28 Jul 2023 10:45:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690561396; x=1691166196;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MUijDPBpqLO1eo5480diEsMJwuHY/OnKbfOc5VucfMk=;
-        b=T3l6Qf3NJ2jmmJMEInQ2/aG72ilw/aPg6lhGGoQVD07zsisCQRmRA4+sqi4QLEf4kM
-         fXSmhvHB3+wkgnkxeZ4R6NdeGrfK9HAHr+vCFqnoEfsOwmFM412HHOMCduYTnj6sPCjq
-         4VZE5YscacjkFfrEb4pgVcfFVSdXgDPDGc78s=
+        d=gmail.com; s=20221208; t=1690566331; x=1691171131;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oHaK57LxhXb0XMcQdqZ+DIRhkGspagwLdLAL4yH6+xQ=;
+        b=FPpH0jTlXyY0Yu3gf/e8IVnqXUgQaFXPMN1WT8RIxByHkBeiuqzGSmJFjEQGD+i8tk
+         SGYpkGguwIiCnqVA7T3m3eWa3sDnGdmzGxb5riTGlnITL/ShbvyqwEeUREbLlM99IJ0j
+         AJas4nYw8Ez3xfUkHeZVK4vzCKfQ86eMxcvUUnT3ifOAcItjzdGlj8AF3iGtQow/84XL
+         SIEmQt3rKt3l19P0kljAusTq/Im6L1rJKZ7a/n6AuDHat5VBTHG4e1obF1QD9093T2Fx
+         WR5i8pQ59Pg6ZPAdLis1VJkj+eXPQ9ff+PnBTaeUuytqjtk7kJcsoePeCy3ZMeAXqHlH
+         q+YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690561396; x=1691166196;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MUijDPBpqLO1eo5480diEsMJwuHY/OnKbfOc5VucfMk=;
-        b=QBBSmSYrHbocBif2bsG1YyFrsMOM40kqbP1zYH+j/6HsUX822F3o+UdVDLZba85Qrh
-         RR7dIA/TGWda1RMzcYGKtEytntv9ViLAC63i7/QegWk5POlJVi5DKiL6J/eMDjIDK7sy
-         NUFZvuof3Myw2bnXNmotWpz8x9TK4mc2w9lgCydhcVb3QjO1oofojmKkJ1irT1AmhFME
-         5704aRVFPIeZkZgGM4mt5wMBPDaWjX+6usEtagb1JUZJLJ+DI1GzoNZ+aaNbkBEU5idm
-         u0ArVlrcuSk3LR2KMAfpJgmbP/FFI1GCO3IsHxDRoofTI4/xM1ykvzBTwewJmTSXWLmZ
-         u7jQ==
-X-Gm-Message-State: ABy/qLZNSK9GS9iXWQzqQf+WyY5Rxf/q1fepR6WqgLyzZCw4bRTjt8T2
-        /q3FNIVc5w9GxXGhuZ2ZNxHKRkU2e9Z0kN2wCBw=
-X-Google-Smtp-Source: APBJJlFC6bkYLqY8A/LQ1qs9sVCJ5f7iGO0vGpyx7Gqk9RI++EwaEA0tr7d1kVzgQhGAMvSH/TmBHw==
-X-Received: by 2002:a17:906:3f1b:b0:993:e94e:7234 with SMTP id c27-20020a1709063f1b00b00993e94e7234mr2206684ejj.77.1690561396021;
-        Fri, 28 Jul 2023 09:23:16 -0700 (PDT)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id s13-20020a1709060c0d00b009930042510csm2199621ejf.222.2023.07.28.09.23.15
-        for <linux-wireless@vger.kernel.org>
+        d=1e100.net; s=20221208; t=1690566331; x=1691171131;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oHaK57LxhXb0XMcQdqZ+DIRhkGspagwLdLAL4yH6+xQ=;
+        b=jzyGoAVQo0EugSE6Eix/4z0TqoLYuwd4in9BpciDpjrwFP9UQ0gxrt+qLpOTszxzPD
+         o7ui2QdcAMmhEDtlmz0bhmMDzqDhqgLlk1HmyY1CZo4EhIQTCGZlS+QULVbvXvJV8vtr
+         uN5xbQLQYRz8A2oRBzXJDjF0fZ16o8O0zV/G1eII0tRSOiJ5URhzIw/kU9BwxExOSZaL
+         8BUoJpiHzCmrG8Xv5Owm687jFbTPFC47A+iG88UqjTyNY5JUusMBSPGISq33FJU5PiMd
+         alS21yz4yRFiv6UqV5WAhj4ZSxz2VZQx3iAgSYolj37y4j8eq6qGFjzhpQdPU3G8ZqY8
+         /tfg==
+X-Gm-Message-State: ABy/qLYCLZP1ciPVE7yL/GAAR4Uk2zj2gPBIxgN3hmv4LCpTcdaxh661
+        BWi6VtMXDiRRZUUGleChQAg=
+X-Google-Smtp-Source: APBJJlGFCZzgHC45HD9Rruz/yfE5TvbPMb8kX13jmBgkKPJxoaeO0akqQ+UAf6aee7iBi6HjVSLnKA==
+X-Received: by 2002:a2e:9587:0:b0:2b9:cd3d:4127 with SMTP id w7-20020a2e9587000000b002b9cd3d4127mr2457636ljh.6.1690566330576;
+        Fri, 28 Jul 2023 10:45:30 -0700 (PDT)
+Received: from [192.168.26.149] (031011218106.poznan.vectranet.pl. [31.11.218.106])
+        by smtp.googlemail.com with ESMTPSA id x11-20020a05651c104b00b002b6e15ccf88sm1047299ljm.135.2023.07.28.10.45.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Jul 2023 09:23:15 -0700 (PDT)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-9923833737eso311197666b.3
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 09:23:15 -0700 (PDT)
-X-Received: by 2002:a17:906:30c1:b0:98e:16b7:e038 with SMTP id
- b1-20020a17090630c100b0098e16b7e038mr2853607ejb.23.1690561394846; Fri, 28 Jul
- 2023 09:23:14 -0700 (PDT)
+        Fri, 28 Jul 2023 10:45:30 -0700 (PDT)
+Message-ID: <659eaf13-e6f6-85cc-2e71-f936b9a23bf5@gmail.com>
+Date:   Fri, 28 Jul 2023 19:45:28 +0200
 MIME-Version: 1.0
-References: <PA4PR04MB9638100B3F21D083F386C6D9D106A@PA4PR04MB9638.eurprd04.prod.outlook.com>
-In-Reply-To: <PA4PR04MB9638100B3F21D083F386C6D9D106A@PA4PR04MB9638.eurprd04.prod.outlook.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Fri, 28 Jul 2023 09:23:01 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXMx46aLztpKHqtS_Ab_yV_0GvRdWinf4C9o=9zqtTGehQ@mail.gmail.com>
-Message-ID: <CA+ASDXMx46aLztpKHqtS_Ab_yV_0GvRdWinf4C9o=9zqtTGehQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mwifiex: added code to support host mlme.
-To:     David Lin <yu-hao.lin@nxp.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/2] wifi: mt76: split get_of_eeprom in subfunction
+To:     Christian Marangi <ansuelsmth@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+References: <20230708182936.24469-1-ansuelsmth@gmail.com>
+Content-Language: en-US
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+In-Reply-To: <20230708182936.24469-1-ansuelsmth@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wait, your company can't afford to have anyone respond to maintainer
-mail for years [1], but you can afford to add new features? Crazy.
+On 8.07.2023 20:29, Christian Marangi wrote:
+> In preparation for NVMEM support, split get_of_eeprom() in subfunction
+> to tidy the code and facilitate the addition of alternative method to
+> get eeprom data. No behaviour change intended.
+> 
+> While at it also drop OF ifdef checks as OF have stubs and calling
+> of_get_property would result in the same error returned.
+> 
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-[1] https://lore.kernel.org/all/87sf9j3wd1.fsf@kernel.org/
-
-On Thu, Jul 27, 2023 at 11:19=E2=80=AFPM David Lin <yu-hao.lin@nxp.com> wro=
-te:
->
-> 1. For station mode first.
-> 2. This feature is a must for WPA3.
-> 3. The code is tested with IW416. There is no guarantee for other chips.
-
-^^ That's not a good sign.
-
-> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-
->  drivers/net/wireless/marvell/mwifiex/util.c   |  74 ++++
->  14 files changed, 558 insertions(+), 13 deletions(-)
-
-> --- a/drivers/net/wireless/marvell/mwifiex/main.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/main.c
-> @@ -28,6 +28,10 @@ module_param(driver_mode, ushort, 0);
->  MODULE_PARM_DESC(driver_mode,
->                  "station=3D0x1(default), ap-sta=3D0x3, station-p2p=3D0x5=
-, ap-sta-p2p=3D0x7");
->
-> +bool host_mlme;
-> +module_param(host_mlme, bool, 0);
-> +MODULE_PARM_DESC(host_mlme, "Host MLME support enable:1, disable:0");
-> +
-
-I hear Kalle doesn't like module parameters like this. They're a cop
-out on properly supporting features (also, see your own commit
-message). I'd have to dig through the archives to find the latest
-advice and rules on this.
-
-Overall, I'm not enthusiastic about this change.
-
-Brian
+Reviewed-by: Rafał Miłecki <rafal@milecki.pl>
