@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA557664B2
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 09:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 127FE7664B3
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 09:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233625AbjG1HDi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jul 2023 03:03:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38614 "EHLO
+        id S233678AbjG1HDk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jul 2023 03:03:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233593AbjG1HDh (ORCPT
+        with ESMTP id S233640AbjG1HDi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jul 2023 03:03:37 -0400
+        Fri, 28 Jul 2023 03:03:38 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 16B4619AF
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 00:03:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8D4D71FFF
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 00:03:37 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36S73HKy8031384, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36S73IdF4031392, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36S73HKy8031384
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36S73IdF4031392
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 28 Jul 2023 15:03:17 +0800
+        Fri, 28 Jul 2023 15:03:18 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 28 Jul 2023 15:03:29 +0800
+ 15.1.2507.17; Fri, 28 Jul 2023 15:03:31 +0800
 Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 28 Jul
- 2023 15:03:28 +0800
+ 2023 15:03:30 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 05/10] wifi: rtw89: add H2C RA command V1 to support WiFi 7 chips
-Date:   Fri, 28 Jul 2023 15:02:47 +0800
-Message-ID: <20230728070252.66525-6-pkshih@realtek.com>
+Subject: [PATCH 06/10] wifi: rtw89: use struct to access firmware C2H event header
+Date:   Fri, 28 Jul 2023 15:02:48 +0800
+Message-ID: <20230728070252.66525-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230728070252.66525-1-pkshih@realtek.com>
 References: <20230728070252.66525-1-pkshih@realtek.com>
@@ -57,98 +57,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-H2C RA V1 command adds two words to support WiFi 7 chips, which can
-possibly support up to 4SS rates. Because current chips have only 2SS
-rates, leave the fields blank for now. The main changes are to set
-extended bits of EHT mode and bandwidth -- add a bit for EHT mode; add a
-bit to enumerate 320MHz channel bandwidth.
+Firmware C2H events contain two-word header which can indicate category,
+class, function and length of received events. Use struct to access them,
+and doesn't change logic at all.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h |  5 +++--
- drivers/net/wireless/realtek/rtw89/fw.c   | 18 +++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/fw.h   | 11 +++++++++++
- 3 files changed, 31 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c |  9 +++++----
+ drivers/net/wireless/realtek/rtw89/fw.h | 17 +++++++++--------
+ 2 files changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 81643a9b4e85f..43e02a28e4cd4 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2700,9 +2700,10 @@ struct rtw89_ra_info {
- 	 * Bit2 : HT
- 	 * Bit3 : VHT
- 	 * Bit4 : HE
-+	 * Bit5 : EHT
- 	 */
--	u8 mode_ctrl:5;
--	u8 bw_cap:2;
-+	u8 mode_ctrl:6;
-+	u8 bw_cap:3; /* enum rtw89_bandwidth */
- 	u8 macid;
- 	u8 dcm_cap:1;
- 	u8 er_cap:1;
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index c2dc5c98c73dc..b27734036fb6d 100644
+index b27734036fb6d..71e8bea6bd76b 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1905,11 +1905,19 @@ int rtw89_fw_h2c_tp_offload(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+@@ -2830,12 +2830,13 @@ void rtw89_fw_free_all_early_h2c(struct rtw89_dev *rtwdev)
  
- int rtw89_fw_h2c_ra(struct rtw89_dev *rtwdev, struct rtw89_ra_info *ra, bool csi)
+ static void rtw89_fw_c2h_parse_attr(struct sk_buff *c2h)
  {
--	struct sk_buff *skb;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	struct rtw89_h2c_ra_v1 *h2c_v1;
- 	struct rtw89_h2c_ra *h2c;
- 	u32 len = sizeof(*h2c);
-+	bool format_v1 = false;
-+	struct sk_buff *skb;
- 	int ret;
++	const struct rtw89_c2h_hdr *hdr = (const struct rtw89_c2h_hdr *)c2h->data;
+ 	struct rtw89_fw_c2h_attr *attr = RTW89_SKB_C2H_CB(c2h);
  
-+	if (chip->chip_gen == RTW89_CHIP_BE) {
-+		len = sizeof(*h2c_v1);
-+		format_v1 = true;
-+	}
-+
- 	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
- 	if (!skb) {
- 		rtw89_err(rtwdev, "failed to alloc skb for h2c join\n");
-@@ -1939,6 +1947,14 @@ int rtw89_fw_h2c_ra(struct rtw89_dev *rtwdev, struct rtw89_ra_info *ra, bool csi
- 	h2c->w3 = le32_encode_bits(ra->fix_giltf_en, RTW89_H2C_RA_W3_FIX_GILTF_EN) |
- 		  le32_encode_bits(ra->fix_giltf, RTW89_H2C_RA_W3_FIX_GILTF);
+-	attr->category = RTW89_GET_C2H_CATEGORY(c2h->data);
+-	attr->class = RTW89_GET_C2H_CLASS(c2h->data);
+-	attr->func = RTW89_GET_C2H_FUNC(c2h->data);
+-	attr->len = RTW89_GET_C2H_LEN(c2h->data);
++	attr->category = le32_get_bits(hdr->w0, RTW89_C2H_HDR_W0_CATEGORY);
++	attr->class = le32_get_bits(hdr->w0, RTW89_C2H_HDR_W0_CLASS);
++	attr->func = le32_get_bits(hdr->w0, RTW89_C2H_HDR_W0_FUNC);
++	attr->len = le32_get_bits(hdr->w1, RTW89_C2H_HDR_W1_LEN);
+ }
  
-+	if (!format_v1)
-+		goto csi;
-+
-+	h2c_v1 = (struct rtw89_h2c_ra_v1 *)h2c;
-+	h2c_v1->w4 = le32_encode_bits(ra->mode_ctrl, RTW89_H2C_RA_V1_W4_MODE_EHT) |
-+		     le32_encode_bits(ra->bw_cap, RTW89_H2C_RA_V1_W4_BW_EHT);
-+
-+csi:
- 	if (!csi)
- 		goto done;
- 
+ static bool rtw89_fw_c2h_chk_atomic(struct rtw89_dev *rtwdev,
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 5e7f528c71e7c..831dbe6023935 100644
+index 831dbe6023935..becd8acce9c1d 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.h
 +++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -327,6 +327,17 @@ struct rtw89_h2c_ra {
- #define RTW89_H2C_RA_W3_FIXED_CSI_GI_LTF GENMASK(28, 26)
- #define RTW89_H2C_RA_W3_FIXED_CSI_BW GENMASK(31, 29)
+@@ -3101,14 +3101,15 @@ inline void RTW89_SET_FWCMD_MCC_SET_DURATION_DURATION_Y(void *cmd, u32 val)
  
-+struct rtw89_h2c_ra_v1 {
-+	struct rtw89_h2c_ra v0;
-+	__le32 w4;
-+	__le32 w5;
+ #define RTW89_C2H_HEADER_LEN 8
+ 
+-#define RTW89_GET_C2H_CATEGORY(c2h) \
+-	le32_get_bits(*((const __le32 *)c2h), GENMASK(1, 0))
+-#define RTW89_GET_C2H_CLASS(c2h) \
+-	le32_get_bits(*((const __le32 *)c2h), GENMASK(7, 2))
+-#define RTW89_GET_C2H_FUNC(c2h) \
+-	le32_get_bits(*((const __le32 *)c2h), GENMASK(15, 8))
+-#define RTW89_GET_C2H_LEN(c2h) \
+-	le32_get_bits(*((const __le32 *)(c2h) + 1), GENMASK(13, 0))
++struct rtw89_c2h_hdr {
++	__le32 w0;
++	__le32 w1;
 +} __packed;
 +
-+#define RTW89_H2C_RA_V1_W4_MODE_EHT GENMASK(6, 0)
-+#define RTW89_H2C_RA_V1_W4_BW_EHT GENMASK(10, 8)
-+#define RTW89_H2C_RA_V1_W4_RAMASK_UHL16 GENMASK(31, 16)
-+#define RTW89_H2C_RA_V1_W5_RAMASK_UHH16 GENMASK(15, 0)
-+
- static inline void RTW89_SET_FWCMD_SEC_IDX(void *cmd, u32 val)
- {
- 	le32p_replace_bits((__le32 *)(cmd) + 0x00, val, GENMASK(7, 0));
++#define RTW89_C2H_HDR_W0_CATEGORY GENMASK(1, 0)
++#define RTW89_C2H_HDR_W0_CLASS GENMASK(7, 2)
++#define RTW89_C2H_HDR_W0_FUNC GENMASK(15, 8)
++#define RTW89_C2H_HDR_W1_LEN GENMASK(13, 0)
+ 
+ struct rtw89_fw_c2h_attr {
+ 	u8 category;
 -- 
 2.25.1
 
