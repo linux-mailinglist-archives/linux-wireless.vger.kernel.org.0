@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC2D07664B7
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 09:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E5097664B4
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 09:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233722AbjG1HEG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jul 2023 03:04:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38938 "EHLO
+        id S233640AbjG1HDp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jul 2023 03:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233719AbjG1HEF (ORCPT
+        with ESMTP id S233647AbjG1HDn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jul 2023 03:04:05 -0400
+        Fri, 28 Jul 2023 03:03:43 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 15F5219AF
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 00:04:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C6D062118
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 00:03:41 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36S73ikgE031479, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36S73ikgE031479
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36S73MVl8031409, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36S73MVl8031409
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 28 Jul 2023 15:03:44 +0800
+        Fri, 28 Jul 2023 15:03:22 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 28 Jul 2023 15:03:33 +0800
+ 15.1.2507.17; Fri, 28 Jul 2023 15:03:35 +0800
 Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 28 Jul
- 2023 15:03:32 +0800
+ 2023 15:03:34 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 08/10] wifi: rtw89: add C2H RA event V1 to support WiFi 7 chips
-Date:   Fri, 28 Jul 2023 15:02:50 +0800
-Message-ID: <20230728070252.66525-9-pkshih@realtek.com>
+Subject: [PATCH 09/10] wifi: rtw89: add to display hardware rates v1 histogram in debugfs
+Date:   Fri, 28 Jul 2023 15:02:51 +0800
+Message-ID: <20230728070252.66525-10-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230728070252.66525-1-pkshih@realtek.com>
 References: <20230728070252.66525-1-pkshih@realtek.com>
@@ -48,153 +48,122 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-WiFi 7 chips have more rate mode (EHT), higher MCS and more bandwidth, so
-define and use reserved bits to carry these information in C2H events.
-Also, the SS/MCS encoded bits of VHT and HE are changed, so define V1 masks
-for them.
+The upcoming WiFi 7 chips support EHT rates, and hardware rate codes are
+changed too, so modify to adapt the changes. (EHT counters are still zeros
+in below example)
+
+RX count:
+   Legacy: [0, 0, 0, 0]
+     OFDM: [0, 0, 0, 0, 0, 0, 0, 0]
+     HT 0: [0, 0, 0, 0, 0, 0, 0, 0]
+     HT 1: [0, 0, 0, 0, 0, 0, 0, 0]
+  VHT 1SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0][0, 0]
+  VHT 2SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0][0, 0]
+   HE 1SS: [0, 0, 42, 0, 43, 90, 75, 0, 26, 20, 260, 7]
+   HE 2SS: [0, 96, 232, 84, 125, 184, 52, 0, 0, 0, 0, 0]
+  EHT 1SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0][0, 0]
+  EHT 2SS: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h |  2 ++
- drivers/net/wireless/realtek/rtw89/fw.h   | 14 +++++++--
- drivers/net/wireless/realtek/rtw89/phy.c  | 35 +++++++++++++++++++----
- 3 files changed, 42 insertions(+), 9 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h  |  1 +
+ drivers/net/wireless/realtek/rtw89/debug.c | 35 +++++++++++++++-------
+ 2 files changed, 25 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 43e02a28e4cd4..24c1097467885 100644
+index 24c1097467885..f3f7abddd3c0b 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -587,6 +587,8 @@ enum rtw89_hw_rate {
+@@ -584,6 +584,7 @@ enum rtw89_hw_rate {
+ 	RTW89_HW_RATE_V1_EHT_NSS4_MCS13	= 0x46D,
+ 
+ 	RTW89_HW_RATE_NR,
++	RTW89_HW_RATE_INVAL,
  
  	RTW89_HW_RATE_MASK_MOD = GENMASK(8, 7),
  	RTW89_HW_RATE_MASK_VAL = GENMASK(6, 0),
-+	RTW89_HW_RATE_V1_MASK_MOD = GENMASK(10, 8),
-+	RTW89_HW_RATE_V1_MASK_VAL = GENMASK(7, 0),
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index ce5a9ac081457..f67af8aa2358f 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -3325,20 +3325,26 @@ rtw89_debug_append_rx_rate(struct seq_file *m, struct rtw89_pkt_stat *pkt_stat,
+ 			   pkt_stat->rx_rate_cnt[first_rate + i]);
+ }
+ 
++#define FIRST_RATE_SAME(rate) {RTW89_HW_RATE_ ## rate, RTW89_HW_RATE_ ## rate}
++#define FIRST_RATE_ENUM(rate) {RTW89_HW_RATE_ ## rate, RTW89_HW_RATE_V1_ ## rate}
++#define FIRST_RATE_GEV1(rate) {RTW89_HW_RATE_INVAL, RTW89_HW_RATE_V1_ ## rate}
++
+ static const struct rtw89_rx_rate_cnt_info {
+-	enum rtw89_hw_rate first_rate;
++	enum rtw89_hw_rate first_rate[RTW89_CHIP_GEN_NUM];
+ 	int len;
+ 	int ext;
+ 	const char *rate_mode;
+ } rtw89_rx_rate_cnt_infos[] = {
+-	{RTW89_HW_RATE_CCK1, 4, 0, "Legacy:"},
+-	{RTW89_HW_RATE_OFDM6, 8, 0, "OFDM:"},
+-	{RTW89_HW_RATE_MCS0, 8, 0, "HT 0:"},
+-	{RTW89_HW_RATE_MCS8, 8, 0, "HT 1:"},
+-	{RTW89_HW_RATE_VHT_NSS1_MCS0, 10, 2, "VHT 1SS:"},
+-	{RTW89_HW_RATE_VHT_NSS2_MCS0, 10, 2, "VHT 2SS:"},
+-	{RTW89_HW_RATE_HE_NSS1_MCS0, 12, 0, "HE 1SS:"},
+-	{RTW89_HW_RATE_HE_NSS2_MCS0, 12, 0, "HE 2ss:"},
++	{FIRST_RATE_SAME(CCK1), 4, 0, "Legacy:"},
++	{FIRST_RATE_SAME(OFDM6), 8, 0, "OFDM:"},
++	{FIRST_RATE_ENUM(MCS0), 8, 0, "HT 0:"},
++	{FIRST_RATE_ENUM(MCS8), 8, 0, "HT 1:"},
++	{FIRST_RATE_ENUM(VHT_NSS1_MCS0), 10, 2, "VHT 1SS:"},
++	{FIRST_RATE_ENUM(VHT_NSS2_MCS0), 10, 2, "VHT 2SS:"},
++	{FIRST_RATE_ENUM(HE_NSS1_MCS0), 12, 0, "HE 1SS:"},
++	{FIRST_RATE_ENUM(HE_NSS2_MCS0), 12, 0, "HE 2SS:"},
++	{FIRST_RATE_GEV1(EHT_NSS1_MCS0), 14, 2, "EHT 1SS:"},
++	{FIRST_RATE_GEV1(EHT_NSS2_MCS0), 14, 0, "EHT 2SS:"},
  };
  
- /* 2G channels,
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 586f9707a5ed7..49ecf070de712 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -3168,16 +3168,24 @@ struct rtw89_c2h_ra_rpt {
- 
- #define RTW89_C2H_RA_RPT_W2_MACID GENMASK(15, 0)
- #define RTW89_C2H_RA_RPT_W2_RETRY_RATIO GENMASK(23, 16)
-+#define RTW89_C2H_RA_RPT_W2_MCSNSS_B7 BIT(31)
- #define RTW89_C2H_RA_RPT_W3_MCSNSS GENMASK(6, 0)
- #define RTW89_C2H_RA_RPT_W3_MD_SEL GENMASK(9, 8)
- #define RTW89_C2H_RA_RPT_W3_GILTF GENMASK(12, 10)
- #define RTW89_C2H_RA_RPT_W3_BW GENMASK(14, 13)
--
--/* VHT, HE, HT-old: [6:4]: NSS, [3:0]: MCS
-- * HT-new: [6:5]: NA, [4:0]: MCS
-+#define RTW89_C2H_RA_RPT_W3_MD_SEL_B2 BIT(15)
-+#define RTW89_C2H_RA_RPT_W3_BW_B2 BIT(16)
-+
-+/* For WiFi 6 chips:
-+ *   VHT, HE, HT-old: [6:4]: NSS, [3:0]: MCS
-+ *   HT-new: [6:5]: NA, [4:0]: MCS
-+ * For WiFi 7 chips (V1):
-+ *   HT, VHT, HE, EHT: [7:5]: NSS, [4:0]: MCS
-  */
- #define RTW89_RA_RATE_MASK_NSS GENMASK(6, 4)
- #define RTW89_RA_RATE_MASK_MCS GENMASK(3, 0)
-+#define RTW89_RA_RATE_MASK_NSS_V1 GENMASK(7, 5)
-+#define RTW89_RA_RATE_MASK_MCS_V1 GENMASK(4, 0)
- #define RTW89_RA_RATE_MASK_HT_MCS GENMASK(4, 0)
- #define RTW89_MK_HT_RATE(nss, mcs) (FIELD_PREP(GENMASK(4, 3), nss) | \
- 				    FIELD_PREP(GENMASK(2, 0), mcs))
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 19a0c7ce0451c..1940f4457677c 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -2247,10 +2247,13 @@ static void rtw89_phy_c2h_ra_rpt_iter(void *data, struct ieee80211_sta *sta)
- 	const struct rtw89_c2h_ra_rpt *c2h =
- 		(const struct rtw89_c2h_ra_rpt *)ra_data->c2h->data;
- 	struct rtw89_ra_report *ra_report = &rtwsta->ra_report;
+ static int rtw89_debug_priv_phy_info_get(struct seq_file *m, void *v)
+@@ -3347,7 +3353,9 @@ static int rtw89_debug_priv_phy_info_get(struct seq_file *m, void *v)
+ 	struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
+ 	struct rtw89_traffic_stats *stats = &rtwdev->stats;
+ 	struct rtw89_pkt_stat *pkt_stat = &rtwdev->phystat.last_pkt_stat;
 +	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	bool format_v1 = chip->chip_gen == RTW89_CHIP_BE;
- 	u8 mode, rate, bw, giltf, mac_id;
- 	u16 legacy_bitrate;
- 	bool valid;
- 	u8 mcs = 0;
-+	u8 t;
+ 	const struct rtw89_rx_rate_cnt_info *info;
++	enum rtw89_hw_rate first_rate;
+ 	int i;
  
- 	mac_id = le32_get_bits(c2h->w2, RTW89_C2H_RA_RPT_W2_MACID);
- 	if (mac_id != rtwsta->mac_id)
-@@ -2261,6 +2264,15 @@ static void rtw89_phy_c2h_ra_rpt_iter(void *data, struct ieee80211_sta *sta)
- 	giltf = le32_get_bits(c2h->w3, RTW89_C2H_RA_RPT_W3_GILTF);
- 	mode = le32_get_bits(c2h->w3, RTW89_C2H_RA_RPT_W3_MD_SEL);
+ 	seq_printf(m, "TP TX: %u [%u] Mbps (lv: %d), RX: %u [%u] Mbps (lv: %d)\n",
+@@ -3359,15 +3367,20 @@ static int rtw89_debug_priv_phy_info_get(struct seq_file *m, void *v)
+ 		   stats->rx_avg_len);
  
-+	if (format_v1) {
-+		t = le32_get_bits(c2h->w2, RTW89_C2H_RA_RPT_W2_MCSNSS_B7);
-+		rate |= u8_encode_bits(t, BIT(7));
-+		t = le32_get_bits(c2h->w3, RTW89_C2H_RA_RPT_W3_BW_B2);
-+		bw |= u8_encode_bits(t, BIT(2));
-+		t = le32_get_bits(c2h->w3, RTW89_C2H_RA_RPT_W3_MD_SEL_B2);
-+		mode |= u8_encode_bits(t, BIT(2));
-+	}
+ 	seq_puts(m, "RX count:\n");
 +
- 	if (mode == RTW89_RA_RPT_MODE_LEGACY) {
- 		valid = rtw89_ra_report_to_bitrate(rtwdev, rate, &legacy_bitrate);
- 		if (!valid)
-@@ -2287,16 +2299,24 @@ static void rtw89_phy_c2h_ra_rpt_iter(void *data, struct ieee80211_sta *sta)
- 		break;
- 	case RTW89_RA_RPT_MODE_VHT:
- 		ra_report->txrate.flags |= RATE_INFO_FLAGS_VHT_MCS;
--		ra_report->txrate.mcs = FIELD_GET(RTW89_RA_RATE_MASK_MCS, rate);
--		ra_report->txrate.nss = FIELD_GET(RTW89_RA_RATE_MASK_NSS, rate) + 1;
-+		ra_report->txrate.mcs = format_v1 ?
-+			u8_get_bits(rate, RTW89_RA_RATE_MASK_MCS_V1) :
-+			u8_get_bits(rate, RTW89_RA_RATE_MASK_MCS);
-+		ra_report->txrate.nss = format_v1 ?
-+			u8_get_bits(rate, RTW89_RA_RATE_MASK_NSS_V1) + 1 :
-+			u8_get_bits(rate, RTW89_RA_RATE_MASK_NSS) + 1;
- 		if (giltf)
- 			ra_report->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
- 		mcs = ra_report->txrate.mcs;
- 		break;
- 	case RTW89_RA_RPT_MODE_HE:
- 		ra_report->txrate.flags |= RATE_INFO_FLAGS_HE_MCS;
--		ra_report->txrate.mcs = FIELD_GET(RTW89_RA_RATE_MASK_MCS, rate);
--		ra_report->txrate.nss = FIELD_GET(RTW89_RA_RATE_MASK_NSS, rate) + 1;
-+		ra_report->txrate.mcs = format_v1 ?
-+			u8_get_bits(rate, RTW89_RA_RATE_MASK_MCS_V1) :
-+			u8_get_bits(rate, RTW89_RA_RATE_MASK_MCS);
-+		ra_report->txrate.nss  = format_v1 ?
-+			u8_get_bits(rate, RTW89_RA_RATE_MASK_NSS_V1) + 1 :
-+			u8_get_bits(rate, RTW89_RA_RATE_MASK_NSS) + 1;
- 		if (giltf == RTW89_GILTF_2XHE08 || giltf == RTW89_GILTF_1XHE08)
- 			ra_report->txrate.he_gi = NL80211_RATE_INFO_HE_GI_0_8;
- 		else if (giltf == RTW89_GILTF_2XHE16 || giltf == RTW89_GILTF_1XHE16)
-@@ -2309,8 +2329,11 @@ static void rtw89_phy_c2h_ra_rpt_iter(void *data, struct ieee80211_sta *sta)
- 
- 	ra_report->txrate.bw = rtw89_hw_to_rate_info_bw(bw);
- 	ra_report->bit_rate = cfg80211_calculate_bitrate(&ra_report->txrate);
--	ra_report->hw_rate = FIELD_PREP(RTW89_HW_RATE_MASK_MOD, mode) |
--			     FIELD_PREP(RTW89_HW_RATE_MASK_VAL, rate);
-+	ra_report->hw_rate = format_v1 ?
-+			     u16_encode_bits(mode, RTW89_HW_RATE_V1_MASK_MOD) |
-+			     u16_encode_bits(rate, RTW89_HW_RATE_V1_MASK_VAL) :
-+			     u16_encode_bits(mode, RTW89_HW_RATE_MASK_MOD) |
-+			     u16_encode_bits(rate, RTW89_HW_RATE_MASK_VAL);
- 	ra_report->might_fallback_legacy = mcs <= 2;
- 	sta->deflink.agg.max_rc_amsdu_len = get_max_amsdu_len(rtwdev, ra_report);
- 	rtwsta->max_agg_wait = sta->deflink.agg.max_rc_amsdu_len / 1500 - 1;
+ 	for (i = 0; i < ARRAY_SIZE(rtw89_rx_rate_cnt_infos); i++) {
+ 		info = &rtw89_rx_rate_cnt_infos[i];
++		first_rate = info->first_rate[chip->chip_gen];
++		if (first_rate >= RTW89_HW_RATE_NR)
++			continue;
++
+ 		seq_printf(m, "%10s [", info->rate_mode);
+ 		rtw89_debug_append_rx_rate(m, pkt_stat,
+-					   info->first_rate, info->len);
++					   first_rate, info->len);
+ 		if (info->ext) {
+ 			seq_puts(m, "][");
+ 			rtw89_debug_append_rx_rate(m, pkt_stat,
+-						   info->first_rate + info->len, info->ext);
++						   first_rate + info->len, info->ext);
+ 		}
+ 		seq_puts(m, "]\n");
+ 	}
 -- 
 2.25.1
 
