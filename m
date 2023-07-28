@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E029F7664AF
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 09:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 187057664B6
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jul 2023 09:04:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233532AbjG1HDf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Jul 2023 03:03:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38604 "EHLO
+        id S233721AbjG1HEF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Jul 2023 03:04:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233162AbjG1HDe (ORCPT
+        with ESMTP id S233654AbjG1HEE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Jul 2023 03:03:34 -0400
+        Fri, 28 Jul 2023 03:04:04 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 752FD1FFF
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 00:03:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 10DD22129
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Jul 2023 00:04:02 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36S73AmA4031347, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36S73AmA4031347
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 36S73ikdE031479, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 36S73ikdE031479
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Fri, 28 Jul 2023 15:03:10 +0800
+        Fri, 28 Jul 2023 15:03:44 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 28 Jul 2023 15:03:22 +0800
+ 15.1.2375.32; Fri, 28 Jul 2023 15:03:25 +0800
 Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 28 Jul
- 2023 15:03:21 +0800
+ 2023 15:03:24 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 01/10] wifi: rtw89: add chip_info::chip_gen to determine chip generation
-Date:   Fri, 28 Jul 2023 15:02:43 +0800
-Message-ID: <20230728070252.66525-2-pkshih@realtek.com>
+Subject: [PATCH 02/10] wifi: rtw89: define hardware rate v1 for WiFi 7 chips
+Date:   Fri, 28 Jul 2023 15:02:44 +0800
+Message-ID: <20230728070252.66525-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230728070252.66525-1-pkshih@realtek.com>
 References: <20230728070252.66525-1-pkshih@realtek.com>
@@ -48,103 +48,227 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The coming WiFi 7 chip is 8922AE which uses different hardware rate and
-register naming rule. Adding a chip_info::chip_gen field can help to
-do things by generations accordingly.
+To support EHT rate, hardware rate v1 is introduced. The CCK and OFDM rates
+are persistent. HT/VHT/HE rates use different rate code from original, and
+add new code for EHT rates.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h     | 9 +++++++++
- drivers/net/wireless/realtek/rtw89/rtw8851b.c | 1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c | 1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c | 1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 1 +
- 5 files changed, 13 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.h | 188 ++++++++++++++++++++++
+ 1 file changed, 188 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index d2c67db97db1a..d44f428d30b45 100644
+index d44f428d30b45..81643a9b4e85f 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -109,6 +109,14 @@ enum rtw89_core_chip_id {
- 	RTL8852B,
- 	RTL8852C,
- 	RTL8851B,
-+	RTL8922A,
-+};
+@@ -395,6 +395,194 @@ enum rtw89_hw_rate {
+ 	RTW89_HW_RATE_HE_NSS4_MCS9	= 0x1B9,
+ 	RTW89_HW_RATE_HE_NSS4_MCS10	= 0x1BA,
+ 	RTW89_HW_RATE_HE_NSS4_MCS11	= 0x1BB,
 +
-+enum rtw89_chip_gen {
-+	RTW89_CHIP_AX,
-+	RTW89_CHIP_BE,
++	RTW89_HW_RATE_V1_MCS0		= 0x100,
++	RTW89_HW_RATE_V1_MCS1		= 0x101,
++	RTW89_HW_RATE_V1_MCS2		= 0x102,
++	RTW89_HW_RATE_V1_MCS3		= 0x103,
++	RTW89_HW_RATE_V1_MCS4		= 0x104,
++	RTW89_HW_RATE_V1_MCS5		= 0x105,
++	RTW89_HW_RATE_V1_MCS6		= 0x106,
++	RTW89_HW_RATE_V1_MCS7		= 0x107,
++	RTW89_HW_RATE_V1_MCS8		= 0x108,
++	RTW89_HW_RATE_V1_MCS9		= 0x109,
++	RTW89_HW_RATE_V1_MCS10		= 0x10A,
++	RTW89_HW_RATE_V1_MCS11		= 0x10B,
++	RTW89_HW_RATE_V1_MCS12		= 0x10C,
++	RTW89_HW_RATE_V1_MCS13		= 0x10D,
++	RTW89_HW_RATE_V1_MCS14		= 0x10E,
++	RTW89_HW_RATE_V1_MCS15		= 0x10F,
++	RTW89_HW_RATE_V1_MCS16		= 0x110,
++	RTW89_HW_RATE_V1_MCS17		= 0x111,
++	RTW89_HW_RATE_V1_MCS18		= 0x112,
++	RTW89_HW_RATE_V1_MCS19		= 0x113,
++	RTW89_HW_RATE_V1_MCS20		= 0x114,
++	RTW89_HW_RATE_V1_MCS21		= 0x115,
++	RTW89_HW_RATE_V1_MCS22		= 0x116,
++	RTW89_HW_RATE_V1_MCS23		= 0x117,
++	RTW89_HW_RATE_V1_MCS24		= 0x118,
++	RTW89_HW_RATE_V1_MCS25		= 0x119,
++	RTW89_HW_RATE_V1_MCS26		= 0x11A,
++	RTW89_HW_RATE_V1_MCS27		= 0x11B,
++	RTW89_HW_RATE_V1_MCS28		= 0x11C,
++	RTW89_HW_RATE_V1_MCS29		= 0x11D,
++	RTW89_HW_RATE_V1_MCS30		= 0x11E,
++	RTW89_HW_RATE_V1_MCS31		= 0x11F,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS0	= 0x200,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS1	= 0x201,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS2	= 0x202,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS3	= 0x203,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS4	= 0x204,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS5	= 0x205,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS6	= 0x206,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS7	= 0x207,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS8	= 0x208,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS9	= 0x209,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS10	= 0x20A,
++	RTW89_HW_RATE_V1_VHT_NSS1_MCS11	= 0x20B,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS0	= 0x220,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS1	= 0x221,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS2	= 0x222,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS3	= 0x223,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS4	= 0x224,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS5	= 0x225,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS6	= 0x226,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS7	= 0x227,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS8	= 0x228,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS9	= 0x229,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS10	= 0x22A,
++	RTW89_HW_RATE_V1_VHT_NSS2_MCS11	= 0x22B,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS0	= 0x240,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS1	= 0x241,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS2	= 0x242,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS3	= 0x243,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS4	= 0x244,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS5	= 0x245,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS6	= 0x246,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS7	= 0x247,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS8	= 0x248,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS9	= 0x249,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS10	= 0x24A,
++	RTW89_HW_RATE_V1_VHT_NSS3_MCS11	= 0x24B,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS0	= 0x260,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS1	= 0x261,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS2	= 0x262,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS3	= 0x263,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS4	= 0x264,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS5	= 0x265,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS6	= 0x266,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS7	= 0x267,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS8	= 0x268,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS9	= 0x269,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS10	= 0x26A,
++	RTW89_HW_RATE_V1_VHT_NSS4_MCS11	= 0x26B,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS0	= 0x300,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS1	= 0x301,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS2	= 0x302,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS3	= 0x303,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS4	= 0x304,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS5	= 0x305,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS6	= 0x306,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS7	= 0x307,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS8	= 0x308,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS9	= 0x309,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS10	= 0x30A,
++	RTW89_HW_RATE_V1_HE_NSS1_MCS11	= 0x30B,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS0	= 0x320,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS1	= 0x321,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS2	= 0x322,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS3	= 0x323,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS4	= 0x324,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS5	= 0x325,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS6	= 0x326,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS7	= 0x327,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS8	= 0x328,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS9	= 0x329,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS10	= 0x32A,
++	RTW89_HW_RATE_V1_HE_NSS2_MCS11	= 0x32B,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS0	= 0x340,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS1	= 0x341,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS2	= 0x342,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS3	= 0x343,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS4	= 0x344,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS5	= 0x345,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS6	= 0x346,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS7	= 0x347,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS8	= 0x348,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS9	= 0x349,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS10	= 0x34A,
++	RTW89_HW_RATE_V1_HE_NSS3_MCS11	= 0x34B,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS0	= 0x360,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS1	= 0x361,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS2	= 0x362,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS3	= 0x363,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS4	= 0x364,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS5	= 0x365,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS6	= 0x366,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS7	= 0x367,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS8	= 0x368,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS9	= 0x369,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS10	= 0x36A,
++	RTW89_HW_RATE_V1_HE_NSS4_MCS11	= 0x36B,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS0	= 0x400,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS1	= 0x401,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS2	= 0x402,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS3	= 0x403,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS4	= 0x404,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS5	= 0x405,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS6	= 0x406,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS7	= 0x407,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS8	= 0x408,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS9	= 0x409,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS10	= 0x40A,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS11	= 0x40B,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS12	= 0x40C,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS13	= 0x40D,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS14	= 0x40E,
++	RTW89_HW_RATE_V1_EHT_NSS1_MCS15	= 0x40F,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS0	= 0x420,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS1	= 0x421,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS2	= 0x422,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS3	= 0x423,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS4	= 0x424,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS5	= 0x425,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS6	= 0x426,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS7	= 0x427,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS8	= 0x428,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS9	= 0x429,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS10	= 0x42A,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS11	= 0x42B,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS12	= 0x42C,
++	RTW89_HW_RATE_V1_EHT_NSS2_MCS13	= 0x42D,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS0	= 0x440,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS1	= 0x441,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS2	= 0x442,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS3	= 0x443,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS4	= 0x444,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS5	= 0x445,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS6	= 0x446,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS7	= 0x447,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS8	= 0x448,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS9	= 0x449,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS10	= 0x44A,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS11	= 0x44B,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS12	= 0x44C,
++	RTW89_HW_RATE_V1_EHT_NSS3_MCS13	= 0x44D,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS0	= 0x460,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS1	= 0x461,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS2	= 0x462,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS3	= 0x463,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS4	= 0x464,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS5	= 0x465,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS6	= 0x466,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS7	= 0x467,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS8	= 0x468,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS9	= 0x469,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS10	= 0x46A,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS11	= 0x46B,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS12	= 0x46C,
++	RTW89_HW_RATE_V1_EHT_NSS4_MCS13	= 0x46D,
 +
-+	RTW89_CHIP_GEN_NUM,
- };
+ 	RTW89_HW_RATE_NR,
  
- enum rtw89_cv {
-@@ -3177,6 +3185,7 @@ struct rtw89_antdiv_info {
- 
- struct rtw89_chip_info {
- 	enum rtw89_core_chip_id chip_id;
-+	enum rtw89_chip_gen chip_gen;
- 	const struct rtw89_chip_ops *ops;
- 	const char *fw_basename;
- 	u8 fw_format_max;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index c3ffcb645ebf7..456b8369fb068 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2334,6 +2334,7 @@ static const struct wiphy_wowlan_support rtw_wowlan_stub_8851b = {
- 
- const struct rtw89_chip_info rtw8851b_chip_info = {
- 	.chip_id		= RTL8851B,
-+	.chip_gen		= RTW89_CHIP_AX,
- 	.ops			= &rtw8851b_chip_ops,
- 	.fw_basename		= RTW8851B_FW_BASENAME,
- 	.fw_format_max		= RTW8851B_FW_FORMAT_MAX,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 6257414a3b4bd..0fc5eb777a4aa 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2071,6 +2071,7 @@ static const struct rtw89_chip_ops rtw8852a_chip_ops = {
- 
- const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.chip_id		= RTL8852A,
-+	.chip_gen		= RTW89_CHIP_AX,
- 	.ops			= &rtw8852a_chip_ops,
- 	.fw_basename		= RTW8852A_FW_BASENAME,
- 	.fw_format_max		= RTW8852A_FW_FORMAT_MAX,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 718f993da62af..d76d74cc867ad 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -2503,6 +2503,7 @@ static const struct wiphy_wowlan_support rtw_wowlan_stub_8852b = {
- 
- const struct rtw89_chip_info rtw8852b_chip_info = {
- 	.chip_id		= RTL8852B,
-+	.chip_gen		= RTW89_CHIP_AX,
- 	.ops			= &rtw8852b_chip_ops,
- 	.fw_basename		= RTW8852B_FW_BASENAME,
- 	.fw_format_max		= RTW8852B_FW_FORMAT_MAX,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 9c7c9812d4f45..f269832b2bc6f 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2802,6 +2802,7 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
- 
- const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.chip_id		= RTL8852C,
-+	.chip_gen		= RTW89_CHIP_AX,
- 	.ops			= &rtw8852c_chip_ops,
- 	.fw_basename		= RTW8852C_FW_BASENAME,
- 	.fw_format_max		= RTW8852C_FW_FORMAT_MAX,
+ 	RTW89_HW_RATE_MASK_MOD = GENMASK(8, 7),
 -- 
 2.25.1
 
