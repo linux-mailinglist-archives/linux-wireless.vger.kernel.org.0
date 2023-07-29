@@ -2,132 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1877767E0A
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Jul 2023 12:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6DF3767F0D
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Jul 2023 14:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230205AbjG2KKx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Jul 2023 06:10:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56484 "EHLO
+        id S231295AbjG2MRR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Jul 2023 08:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229895AbjG2KKw (ORCPT
+        with ESMTP id S229500AbjG2MRQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Jul 2023 06:10:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAD8110C6;
-        Sat, 29 Jul 2023 03:10:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68F4B60A2B;
-        Sat, 29 Jul 2023 10:10:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B231AC433C7;
-        Sat, 29 Jul 2023 10:10:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690625450;
-        bh=0mZQVW2vbt1ay2W0qJ+pcf3lu40KCDjItFHk8MIbO1Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GFxOR42mKmw8/dz0qTeBEjZyEDoGmoHVyaVBqoCdYvsA0GhjakaME9lKMPHELRSVX
-         E50rWRHyEhCfwTmsdopACbX7x7kyYYDU9h0eA+rZRlk9yaZLn62/SPZ0GbUFgWTDZh
-         lul1D9qBYqREZMuzs3f3MJFpen3bNMAY8VYFcqlumy2hRHYqPLsQovy0ioOuUmzgLZ
-         sAVxbaS1cK+DtWb0GowYiPSdsfeIhwDU67nOKEcjkYnCz6OrYHteQe2kECgPqfMzGi
-         9Q4ha0aSN5KHwhXQlpNWY465kXPf1fUuskgvRFVhoC7ispok4497n0MzvA8B0ahPl9
-         N4itIPqXKigZg==
-Date:   Sat, 29 Jul 2023 11:10:44 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Daniel Golle <daniel@makrotopia.org>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: mt76: support setting per-band MAC
- address
-Message-ID: <20230729-stingy-amiss-74bd459e2c59@spud>
-References: <6e9cfac5758dd06429fadf6c1c70c569c86f3a95.1690512516.git.daniel@makrotopia.org>
+        Sat, 29 Jul 2023 08:17:16 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D1212B;
+        Sat, 29 Jul 2023 05:17:13 -0700 (PDT)
+Received: from canpemm500007.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RCk1k5dVSzNmSQ;
+        Sat, 29 Jul 2023 20:13:46 +0800 (CST)
+Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
+ (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Sat, 29 Jul
+ 2023 20:17:10 +0800
+From:   Yue Haibing <yuehaibing@huawei.com>
+To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Yue Haibing <yuehaibing@huawei.com>
+Subject: [PATCH] wifi: nl80211: Remove unused declaration nl80211_pmsr_dump_results()
+Date:   Sat, 29 Jul 2023 20:16:51 +0800
+Message-ID: <20230729121651.36836-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="OVpYLz7Xm1cZxqHs"
-Content-Disposition: inline
-In-Reply-To: <6e9cfac5758dd06429fadf6c1c70c569c86f3a95.1690512516.git.daniel@makrotopia.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ canpemm500007.china.huawei.com (7.192.104.62)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+nl80211_pmsr_dump_results() is never implemented since introducted in
+commit 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
 
---OVpYLz7Xm1cZxqHs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ net/wireless/nl80211.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-On Fri, Jul 28, 2023 at 03:50:47AM +0100, Daniel Golle wrote:
-> Introduce support for setting individual per-band MAC addresses using
-> NVMEM cells by adding a 'bands' object with enumerated child nodes
-> representing the 2.4 GHz, 5 GHz and 6 GHz bands.
->=20
-> In case it is defined, call of_get_mac_address for the per-band child
-> node, otherwise try with of_get_mac_address on the main device node and
-> fall back to a random address like it used to be.
->=20
-> While at it, add MAC address related properties also for the main node
-> and update example to use EEPROM via nvmem-cells instead of deprecated
-> mediatek,mtd-eeprom property.
+diff --git a/net/wireless/nl80211.h b/net/wireless/nl80211.h
+index 0278d817bb02..b4af53f9b227 100644
+--- a/net/wireless/nl80211.h
++++ b/net/wireless/nl80211.h
+@@ -120,6 +120,5 @@ void cfg80211_rdev_free_coalesce(struct cfg80211_registered_device *rdev);
+ 
+ /* peer measurement */
+ int nl80211_pmsr_start(struct sk_buff *skb, struct genl_info *info);
+-int nl80211_pmsr_dump_results(struct sk_buff *skb, struct netlink_callback *cb);
+ 
+ #endif /* __NET_WIRELESS_NL80211_H */
+-- 
+2.34.1
 
-Could you mark that deprecated then please?
-
-> +patternProperties:
-> +  '^band@[0-2]+$':
-> +    type: object
-> +    additionalProperties: false
-> +    properties:
-> +      reg:
-> +        maxItems: 1
-> +
-> +      address: true
-> +      local-mac-address: true
-> +      mac-address: true
-> +
-> +      nvmem-cells:
-> +        description: NVMEM cell with the MAC address
-> +
-> +      nvmem-cell-names:
-> +        items:
-> +          - const: mac-address
-
-You should not need the items list if you only have one item.
-
-0
-
---OVpYLz7Xm1cZxqHs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMTlpAAKCRB4tDGHoIJi
-0vHeAPsH03gK8BH5fVJvQhH6H6InP+CbgNqslVeXnNjQNdJRJAEA/wonPwNJqvjk
-KOAfQUkd5f5Yn8fk376EPvQxAbRotgY=
-=b6/F
------END PGP SIGNATURE-----
-
---OVpYLz7Xm1cZxqHs--
