@@ -2,106 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C021376ADDB
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 11:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D8A976B3DF
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 13:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232427AbjHAJeF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 05:34:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34614 "EHLO
+        id S234417AbjHALwq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 07:52:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231627AbjHAJdr (ORCPT
+        with ESMTP id S234416AbjHALwf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 05:33:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA9F2107
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 02:31:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ED52D61502
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 09:31:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AC7C433C7;
-        Tue,  1 Aug 2023 09:31:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690882297;
-        bh=CVqA5Vht4PuGwAE/9jtG/mG2kDAFYN6aNKTpoaaDIRI=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=QIEcNKYBVeRC2dpJ8xPnKX2OjtMQlMN77jlWqF5jID+27PETFayOGzNMm115182D8
-         GggIev406aUbHE+vfS0SmpBw5n4vQB5+l9kB5GO0GrhhD2Fxzdh5XX8BkEsyu9FSLo
-         sdIW+Z/1BNHyBP+cnqGZYCCpz6THPOELgNz/SIRS3N3F9LRugX8VWqwXe2n5lhtC89
-         MHg3qvRFmuU7KR0ctrBsTuuHOjRP3DWDGP3IWq/IN2oLrrrTH38ZMmzYGWGbJs+wvP
-         k8eoiE8+Q/7yv0rTBuD9Qo9qdzJzLk6cjv4g/25jQ/KHGf8GTA1Y4SgjQHsT+cszZ7
-         up5TolF18LzbA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        linux-wireless@vger.kernel.org,
-        Herton Ronaldo Krzesinski <herton@canonical.com>,
-        Hin-Tak Leung <htl10@users.sourceforge.net>
-Subject: MAINTAINERS: rtl8187 wireless driver
-References: <20230608095051.116702-4-dmantipov@yandex.ru>
-        <168664510862.24637.10587241603155144086.kvalo@kernel.org>
-        <e030e496-b667-b1de-492b-8b0cc04ffe14@yandex.ru>
-        <87h6rad3fp.fsf@kernel.org>
-        <bccf723a-9f57-73a7-37af-badc6c156daa@yandex.ru>
-        <87cz1vbulk.fsf@kernel.org>
-        <2e78d1f5-4dc5-9665-e3a1-ee00dcc41630@yandex.ru>
-        <fe6b1abc-d529-c20f-3fcb-43d891091080@lwfinger.net>
-Date:   Tue, 01 Aug 2023 12:31:34 +0300
-In-Reply-To: <fe6b1abc-d529-c20f-3fcb-43d891091080@lwfinger.net> (Larry
-        Finger's message of "Fri, 16 Jun 2023 11:06:59 -0500")
-Message-ID: <87v8dzxg5l.fsf_-_@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Tue, 1 Aug 2023 07:52:35 -0400
+Received: from mail.cothiafon.pl (mail.cothiafon.pl [217.61.106.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F3CE4C
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 04:52:32 -0700 (PDT)
+Received: by mail.cothiafon.pl (Postfix, from userid 1002)
+        id E909A83CBE; Mon, 31 Jul 2023 10:36:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cothiafon.pl; s=mail;
+        t=1690792650; bh=dwoca0X6C9VXklO/zRgFQCPapTk5LFz4tKaENdvy6Po=;
+        h=Date:From:To:Subject:From;
+        b=b2EUiTKopwUwErEEGhYRHSRb9ZJhG9gZ33gl79BnGh8u7MsCn1uv6YbU5f9BRmLOr
+         fehdQWGZtmOqjHPgBa0ZaoruL2CG6R6jeEOXMxzN0UZMUcKcm5Ixa1iaffgE2861J/
+         6syF4lIJJ0FqIYJYVB5heRJKCBHA4FFbrPGbvG3Yw3CA7+31vqhLaLXP+/4HNtp/Fy
+         kU1DI9NvZAAB9CO1uwUHMoktXyeQakJno7IPShk1tVGULiWJGwH372T1edgiaocCXt
+         7qNiPwtsQK5mqewfBLqwwSVP0XpxetElDpVTHJNPBzlyC0++3Bs5n+gZ4BuNF84uL+
+         550EnGfCBvcqg==
+Received: by mail.cothiafon.pl for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 08:35:48 GMT
+Message-ID: <20230731095940-0.1.28.ony0.0.wb011ritdr@cothiafon.pl>
+Date:   Mon, 31 Jul 2023 08:35:48 GMT
+From:   =?UTF-8?Q? "Rados=C5=82aw_Grabowski" ?= 
+        <radoslaw.grabowski@cothiafon.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.cothiafon.pl
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ Herton, Hin-Tak
+Dzie=C5=84 dobry,
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-> On 6/16/23 05:20, Dmitry Antipov wrote:
->> Note MAINTAINERS marks drivers/net/wireless/realtek/rtl818x/rtl8180 as
->> orphaned but drivers/net/wireless/realtek/rtl818x/rtl8187 as maintained.
->
-> Driver rtl8187 is certainly maintained, not that it gets many bug
-> reports. Devices that support 802.11g are not used very often, but at
-> least once a year I use my device to get online to retrieve the
-> drivers for a fancier wifi card that does not have a driver in Linux
-> or Windows. Drivers for the USB-based 8187A and 8187B have been in
-> Linux since version 2.6.38 (December 2010), and also in Windows 7, if
-> not in older versions.
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
-So this is what we have in MAINTAINERS right now:
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
 
-RTL8187 WIRELESS DRIVER
-M:	Herton Ronaldo Krzesinski <herton@canonical.com>
-M:	Hin-Tak Leung <htl10@users.sourceforge.net>
-M:	Larry Finger <Larry.Finger@lwfinger.net>
-L:	linux-wireless@vger.kernel.org
-S:	Maintained
-W:	https://wireless.wiki.kernel.org/
-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git
-F:	drivers/net/wireless/realtek/rtl818x/rtl8187/
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
 
-In the git history the last activity from Herton is from 2010 so I think
-we should remove him.
 
-Is Hin-Tak still active? The last activity is from 2020.
-
-Also the git tree is outdated so that should be removed.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Pozdrawiam
+Rados=C5=82aw Grabowski
