@@ -2,56 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE02E769278
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 11:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F66B7696B1
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 14:46:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230406AbjGaJ4b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jul 2023 05:56:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40024 "EHLO
+        id S232908AbjGaMqA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jul 2023 08:46:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230023AbjGaJ4L (ORCPT
+        with ESMTP id S232874AbjGaMpk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jul 2023 05:56:11 -0400
-Received: from mail03.softline.ru (mail03.softline.ru [185.31.132.229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 567ED10C7
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 02:55:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=softline.com;
-        s=relay; t=1690797312;
-        bh=F/gXVdASlEbjanF2aJQh2pegyk2hyTfUsZKZmA0Fcho=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-        b=NDa1R44nbLNhllFZ9Z3KqMPCrozCAVaKUuYc1NhLMvdI/ZV2AdDIbPp5Ecu8lJ99/
-         Rcpsrj9lsaSXpLypBYN/5MDnvnTn++ycBnFuqTK+WGnsA/603M3vdh+wpWfCeU6v11
-         KE9YFUTbRg46018Cwavg891yzg/b1aIjr5zEh4whBKY3Ow4W0BI6bpd5ZQGPdJRcR7
-         YTYM+DvBk8kThs2T6ybS9SeeyuAyjRUpl+EZ1hRI4Uy2F6frbr7+yGLmwaStBIgQg4
-         4PzArzcMQMgy4a/48K38UfOhffM/Rpwj6gFvVkun9zs9hGgAdN6gpkcJIHTPMqGhpx
-         YhBiqhANPBAtA==
-X-AuditID: 0a02150b-b29a1700000026cc-d5-64c78500cba1
-From:   "Antipov, Dmitriy" <Dmitriy.Antipov@softline.com>
-To:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "dmantipov@yandex.ru" <dmantipov@yandex.ru>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-        "briannorris@chromium.org" <briannorris@chromium.org>
-Subject: Re: [lvc-project] [PATCH 1/5] [v2] wifi: mwifiex: fix memory leak in
- mwifiex_histogram_read()
-Thread-Topic: [lvc-project] [PATCH 1/5] [v2] wifi: mwifiex: fix memory leak in
- mwifiex_histogram_read()
-Thread-Index: AQHZw5PY7FWnTUFZUEqM5F9Mc0rZ4K/TcL6A
-Date:   Mon, 31 Jul 2023 09:55:11 +0000
-Message-ID: <63e64701d7cece0e34e2bb461c6f2fd98bb2c2af.camel@softline.com>
-References: <ZMFzBStAKemf+dLL@google.com>
-         <20230728084407.101930-1-dmantipov@yandex.ru> <87cz08za5h.fsf@kernel.org>
-In-Reply-To: <87cz08za5h.fsf@kernel.org>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F10D47B504C16A438C2ED592921C2E24@softline.com>
-Content-Transfer-Encoding: base64
+        Mon, 31 Jul 2023 08:45:40 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EB119A1
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 05:45:34 -0700 (PDT)
+Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RDycJ0C7QzrS2Q;
+        Mon, 31 Jul 2023 20:44:32 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 31 Jul
+ 2023 20:45:31 +0800
+From:   Ruan Jinjie <ruanjinjie@huawei.com>
+To:     <toke@toke.dk>, <kvalo@kernel.org>,
+        <linux-wireless@vger.kernel.org>
+CC:     <ruanjinjie@huawei.com>
+Subject: [PATCH -next] ath9k: Remove unnecessary ternary operators
+Date:   Mon, 31 Jul 2023 20:44:55 +0800
+Message-ID: <20230731124455.2039184-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,12 +46,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIzLTA3LTMxIGF0IDEyOjQ2ICswMzAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KDQo+
-ID4gdjI6IGFkanVzdCB0byBtYXRjaCBzZXJpZXMNCj4gDQo+IEkgZG9uJ3Qga25vdyB3aGF0IHRo
-YXQgbWVhbnMuIFBsZWFzZSB0cnkgdG8gYmUgc3BlY2lmaWMgaW4gdGhlDQo+IGNoYW5nZWxvZyBl
-bnRyaWVzLg0KDQpVc3VhbGx5IGl0IG1lYW5zIHRoYXQgaWYgc29tZXRoaW5nIGlzIGNoYW5nZWQg
-aW4gdGhlIG1pZGRsZSBvZiB0aGUNCnNlcmllcywgc3Vycm91bmRpbmcgcGF0Y2hlcyBhcmUgc2xp
-Z2h0bHkgdHdlYWtlZCB0byBlbnN1cmUgdGhhdA0KZXZlcnl0aGluZyBzdGlsbCBhcHBsaWVzIGNs
-ZWFybHkgKGkuZS4gd2l0aG91dCBvZmZzZXRzKS4gSWYgdGhlcmUNCmlzIHNvbWV0aGluZyBtb3Jl
-IHN1YnN0YW50aWFsLCBJJ20gZG9pbmcgbXkgYmVzdCB0byBleHBsaWNpdGx5DQptZW50aW9uIGl0
-Lg0KDQpEbWl0cnkNCg0K
+Ther are a little ternary operators, the true or false judgement
+of which is unnecessary in C language semantics.
+
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+---
+ drivers/net/wireless/ath/ath9k/eeprom_9287.c  | 3 +--
+ drivers/net/wireless/ath/ath9k/hif_usb.c      | 2 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_main.c | 2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom_9287.c b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
+index 3caa149b1013..fd5312c2a7e3 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom_9287.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
+@@ -572,8 +572,7 @@ static void ath9k_hw_set_ar9287_power_per_rate_table(struct ath_hw *ah,
+ 	}
+ 
+ 	for (ctlMode = 0; ctlMode < numCtlModes; ctlMode++) {
+-		bool isHt40CtlMode =
+-			(pCtlMode[ctlMode] == CTL_2GHT40) ? true : false;
++		bool isHt40CtlMode = pCtlMode[ctlMode] == CTL_2GHT40;
+ 
+ 		if (isHt40CtlMode)
+ 			freq = centers.synth_center;
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 27ff1ca2631f..e5414435b141 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1432,7 +1432,7 @@ static void ath9k_hif_usb_disconnect(struct usb_interface *interface)
+ {
+ 	struct usb_device *udev = interface_to_usbdev(interface);
+ 	struct hif_device_usb *hif_dev = usb_get_intfdata(interface);
+-	bool unplugged = (udev->state == USB_STATE_NOTATTACHED) ? true : false;
++	bool unplugged = udev->state == USB_STATE_NOTATTACHED;
+ 
+ 	if (!hif_dev)
+ 		return;
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_main.c b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
+index 51766de5ec3b..44e02cfe2438 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_main.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
+@@ -719,7 +719,7 @@ static int ath9k_htc_tx_aggr_oper(struct ath9k_htc_priv *priv,
+ 
+ 	aggr.sta_index = ista->index;
+ 	aggr.tidno = tid & 0xf;
+-	aggr.aggr_enable = (action == IEEE80211_AMPDU_TX_START) ? true : false;
++	aggr.aggr_enable = action == IEEE80211_AMPDU_TX_START;
+ 
+ 	WMI_CMD_BUF(WMI_TX_AGGR_ENABLE_CMDID, &aggr);
+ 	if (ret)
+-- 
+2.34.1
+
