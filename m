@@ -2,99 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBD5D768A1D
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 04:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4ABF768B02
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 07:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbjGaCqG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Jul 2023 22:46:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42546 "EHLO
+        id S229651AbjGaFUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jul 2023 01:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjGaCqF (ORCPT
+        with ESMTP id S229488AbjGaFUT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Jul 2023 22:46:05 -0400
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F96E45;
-        Sun, 30 Jul 2023 19:46:04 -0700 (PDT)
-Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6b9defb36a2so3687555a34.2;
-        Sun, 30 Jul 2023 19:46:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690771563; x=1691376363;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lLnxhTOK8CR7EOKXVMtGvf6ZSiJOcPXDQqy3TBSI8eI=;
-        b=fBWuJ/VArlePTzAu+Lv1gqnlPm1ITSafKrNAnGpysA0wqm5h+7D28oOsXmzHfQteCo
-         O3gq/1b1LaWqVu0Iq8Z1hBFo97dQQkyf8rPeoYBwT9pCQ+9LSFSCGzTxcIHXmwawqLZ6
-         2jMnKnKGwWltp0uBK1kBYf5TUMDex7bpwzMF9OkbcWZoU4UOHGayozhDgvub93GChaf9
-         2Bc/NesvHzpTquzJev3zGxoYOfP7nrE2w1N+dcFAflHCEDqmxpC9VUc7poptzT9m/2v8
-         +DEnp9f6nM/mZrzjFYzERwxXXJV9WOd1FWxZ5vutlN/TtOTA1O3ofTMYDyILNdEm2/rr
-         OUFA==
+        Mon, 31 Jul 2023 01:20:19 -0400
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4A891AC;
+        Sun, 30 Jul 2023 22:20:17 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-4fe27849e6aso2291124e87.1;
+        Sun, 30 Jul 2023 22:20:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690771563; x=1691376363;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lLnxhTOK8CR7EOKXVMtGvf6ZSiJOcPXDQqy3TBSI8eI=;
-        b=lLq5KnW9eW5Exem717fG0vtMM9zm0u0vfo3wj4ahCN6C1f/imlsH7fzRIlT6/zOmYU
-         VApn/aghctzIQ2OnfzTRaBggMPtjzUl3qmE3M/shRK+EA0HcIxYRAasQZM7IkBbC6rBI
-         wl7ML3ijJ1KGr5HQTbOUqOEfkLcDTehfvCBqNHCyJtcDwJpCaTJ3gpB6+nLAI3RIoKdx
-         AOe3yfZXyuvz+vQfAf6DPkkzZJNbphIT6SiP0VMr/ZXF4ZpsUXMBSbHRJ8gyRnDFq+C2
-         df8sZY/u4huU3Ut0AM7R9b9Hn38OS7g0vr88EYlhmkFBwbCOT3HcWHLV76RuyO9wkZWd
-         j9Bw==
-X-Gm-Message-State: ABy/qLZsov7pHgCd+blEcDVPSjDfz0LTfsl4Bc91gqmfwkKOi7N4wIpS
-        Gd4GNyu2V8Vd2zq1VFagCVaXws2NyrS57hOm
-X-Google-Smtp-Source: APBJJlGX6gf6keMnZy5xVRbtRtp1qIpjbNHpcHhZQJEad9kWQQ8T7vWppcBE7i3cScDh4yAuD2TZIQ==
-X-Received: by 2002:a05:6358:249f:b0:135:515c:38ee with SMTP id m31-20020a056358249f00b00135515c38eemr9782752rwc.25.1690771563460;
-        Sun, 30 Jul 2023 19:46:03 -0700 (PDT)
-Received: from rajgad.hsd1.ca.comcast.net ([2601:204:df00:9cd0:f50b:8f24:acc4:e5c])
-        by smtp.gmail.com with ESMTPSA id q1-20020a63d601000000b0055be951145csm7045301pgg.36.2023.07.30.19.46.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jul 2023 19:46:03 -0700 (PDT)
-From:   Atul Raut <rauji.raut@gmail.com>
-To:     kvalo@kernel.org
+        d=1e100.net; s=20221208; t=1690780815; x=1691385615;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1PCaV7jz4ZhQusEGOkRMQPvD1GkLtKnvc9bqZW1yacw=;
+        b=YYnYrbEVxNRqPGDdLmkffSNKNSqUgMBz2W56nZ+ZvcO90FjsPp2xD6rwT3YFTHEq9F
+         GBxWMbmjVLT3sYpTcz7QJMxuXPgaK52eflphBE3+7tnM6vlgR8Vhc/lubIYR8EBSQXrY
+         36byq++4eBa60p7pLwPWpHCim6YkwvWKIqZpJWc8jfJUIRTLjwmskgDPjtEO7PPiqV68
+         36n3LSkySAZ5zvVZ/XtnDZVTMtepZ6VNPTpMGeO5wy9IwmInLdeSqT8H403QGptc3aOi
+         NEXF7qUPfu7Py0jRT1v5rZ/FfXQs57Dh7i9B9kD58p8rpE9CAxXbaSDVLKCgalFv0QTv
+         d1Yg==
+X-Gm-Message-State: ABy/qLbi3QaLY1n/jdSLNnR55a/5YcJtqt3kS7KJqRegia2edJ7SAlLm
+        jxdC3xShwz63F3O8wi4OznDE9CRPF9E=
+X-Google-Smtp-Source: APBJJlGK6TLfK80q1RYfkwG2/SJEzHxRS0T9UKRwbX9NrS83Sc9RKwlda1+Sn43xdx2oArIubQhClw==
+X-Received: by 2002:a19:8c09:0:b0:4fe:1e74:3f3a with SMTP id o9-20020a198c09000000b004fe1e743f3amr4545975lfd.58.1690780814940;
+        Sun, 30 Jul 2023 22:20:14 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id l22-20020a1c7916000000b003fe22da3bc5sm803508wme.42.2023.07.30.22.20.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 30 Jul 2023 22:20:14 -0700 (PDT)
+Message-ID: <e411e3c4-37ae-f5ea-b50b-4a5c0718c857@kernel.org>
+Date:   Mon, 31 Jul 2023 07:20:13 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ath5k: Fix debugfs_create_dir error checking
+Content-Language: en-US
+To:     Atul Raut <rauji.raut@gmail.com>, mickflemm@gmail.com,
+        mcgrof@kernel.org, kvalo@kernel.org
 Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-kernel-mentees@lists.linuxfoundation.org
-Subject: [PATCH] ath6kl: Fix debugfs_create_dir error checking
-Date:   Sun, 30 Jul 2023 19:45:42 -0700
-Message-Id: <20230731024542.27248-1-rauji.raut@gmail.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230731023820.26571-1-rauji.raut@gmail.com>
+From:   Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <20230731023820.26571-1-rauji.raut@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The debugfs_create_dir function returns ERR_PTR
-in case of error and the correct way to check an
-error is 'IS_ERR' inline function.
-This patch will replace the null-comparison with IS_ERR
+On 31. 07. 23, 4:38, Atul Raut wrote:
+> The debugfs_create_dir function returns ERR_PTR
+> in case of error and the correct way to check an
+> error is 'IS_ERR' inline function.
+> This patch will replace the null-comparison with IS_ERR
+> 
+> This issue was found with the help of Coccinelle.
+> ./drivers/net/wireless/ath/ath5k/debug.c:985:6-12: Wrong debugfs call error processing on line 985
+> 
+> Signed-off-by: Atul Raut <rauji.raut@gmail.com>
+> ---
+>   drivers/net/wireless/ath/ath5k/debug.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath5k/debug.c b/drivers/net/wireless/ath/ath5k/debug.c
+> index 4b41160e5d38..08058b3f7e22 100644
+> --- a/drivers/net/wireless/ath/ath5k/debug.c
+> +++ b/drivers/net/wireless/ath/ath5k/debug.c
+> @@ -982,7 +982,7 @@ ath5k_debug_init_device(struct ath5k_hw *ah)
+>   	ah->debug.level = ath5k_debug;
+>   
+>   	phydir = debugfs_create_dir("ath5k", ah->hw->wiphy->debugfsdir);
+> -	if (!phydir)
+> +	if (IS_ERR(phydir))
 
-This issue was found with the help of Coccinelle.
-./drivers/net/wireless/ath/ath6kl/debug.c:1796:6-21: Wrong debugfs call error processing on line 1796
+Already fixed by:
+https://patchwork.kernel.org/project/linux-wireless/patch/20230714081619.2032-1-duminjie@vivo.com/
 
-Signed-off-by: Atul Raut <rauji.raut@gmail.com>
----
- drivers/net/wireless/ath/ath6kl/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath6kl/debug.c b/drivers/net/wireless/ath/ath6kl/debug.c
-index 433a047f3747..505af195e299 100644
---- a/drivers/net/wireless/ath/ath6kl/debug.c
-+++ b/drivers/net/wireless/ath/ath6kl/debug.c
-@@ -1793,7 +1793,7 @@ int ath6kl_debug_init_fs(struct ath6kl *ar)
- {
- 	ar->debugfs_phy = debugfs_create_dir("ath6kl",
- 					     ar->wiphy->debugfsdir);
--	if (!ar->debugfs_phy)
-+	if (IS_ERR(ar->debugfs_phy))
- 		return -ENOMEM;
- 
- 	debugfs_create_file("tgt_stats", 0400, ar->debugfs_phy, ar,
 -- 
-2.34.1
+js
+suse labs
 
