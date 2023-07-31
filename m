@@ -2,118 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5D80768B83
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 08:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6237768F1E
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 09:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbjGaGGA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jul 2023 02:06:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38612 "EHLO
+        id S229897AbjGaHoT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jul 2023 03:44:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbjGaGF7 (ORCPT
+        with ESMTP id S229766AbjGaHoS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jul 2023 02:05:59 -0400
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 769BE19A;
-        Sun, 30 Jul 2023 23:05:57 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id D81695C0114;
-        Mon, 31 Jul 2023 02:05:56 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Mon, 31 Jul 2023 02:05:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1690783556; x=1690869956; bh=n2
-        wRoW24j0gLnWuzE6UjK8lJLJEmTRp50vltai64yVg=; b=h9Xd/lU1jK78dcBIAL
-        zNwwR1IP3iGnPs+iGlOKE2ryAQ9BbRcrM71HjAgMRuo9lOHsoizmURDU+mThE1O5
-        caa5ScNbLRcGXMvnIMW4o6h1/v9yxtVMqKFDLj1I+9TkaBwoXQI2uhEG9AYPlBJl
-        Q0qrLmm5hzSxXPjD2m+kxkYPkAXNLPQpXKQbY4b9Xz5HhsZjCZBRu8A0yBIx+nIZ
-        3qthTJ9UF1Q2SMNluiw/85eBmO5stBLtbSFe5AFhtKv3H2gf637BOhuvXsvGa8CA
-        tc/Qu1Ktc4prMZjhDNMZ/ujAPnWpp/9jn66yW8OCDH50xrLUrhLTvh7gi6ymEnpU
-        f5cA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1690783556; x=1690869956; bh=n2wRoW24j0gLn
-        WuzE6UjK8lJLJEmTRp50vltai64yVg=; b=kPcuabCPpEFRWBS96eZKgi+DQp1/Y
-        crhFUquo8BHzGW4z8zfIuT7b7/vufTnBGhOdH/XOrf6mHgwznzwV4jSL0LCRTcF8
-        VVj+Vuz1p8zlT3rnP0+xc4z17LWUE5vhAQwJ1XnmPYBGI1TA/Z0+AlNsLLmLRzEP
-        nKm2PArS5X7jLg2gZSrWA7cJYQ7JvqEBjZvW/x5RryRQ/zOqigjD3wFPGjjIn3hK
-        iPVN7TuBbXplL6l/+WDaVwmmaYXmZF7Z5a7N6+liO1himXO6mlXFlYlTzGA6ZKNr
-        /gC+1IHb1G4jMUwxJsxjcGrxCVq16trI63RvV9Dw+C9K23Cyssu7/xzjQ==
-X-ME-Sender: <xms:RE_HZL9MKCCz0CmQ1-QJcAh2kSmMoeSXx0jMfT42RNs5B_vsWKjx2Q>
-    <xme:RE_HZHtjJpAP-rI6quB-LYUG3zlro6sIm_PnNOYuMsqI7p_BjKwDpdsRETsaJZG4E
-    5uZnBfAUHEv-Q>
-X-ME-Received: <xmr:RE_HZJA1fTQzrsdMytRKA-BX8JPbhNBZ3ugFXwlZUBc6uI1_QzIYMlGPyFOz>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjedvgddutdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
-    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:RE_HZHeaEl2SxRzBA6BlogEs0vpV8IMpgYy69KYrRNTw93exNz0Dfg>
-    <xmx:RE_HZANzqisCuUImHxKoybeFLY-za0s0VFRIwSyPuFgyohdjATR-3w>
-    <xmx:RE_HZJlGktx1xbG8sIdCmWfFZU4RO6pydQa9JRSOL2IUBnxwpxHBcA>
-    <xmx:RE_HZBiiJMs5YIxiLlN9H5Pa8Bh-QgFz6ItDn3-vK4HJO-8CamBsYA>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 31 Jul 2023 02:05:56 -0400 (EDT)
-Date:   Mon, 31 Jul 2023 08:05:52 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Atul Raut <rauji.raut@gmail.com>
-Cc:     kvalo@kernel.org, linux-kernel-mentees@lists.linuxfoundation.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ath6kl: Replace zero-length arrays with
- DECLARE_FLEX_ARRAY() helper
-Message-ID: <2023073103-basket-ranking-b6e6@gregkh>
-References: <20230731012941.21875-1-rauji.raut@gmail.com>
+        Mon, 31 Jul 2023 03:44:18 -0400
+Received: from forward102c.mail.yandex.net (forward102c.mail.yandex.net [178.154.239.213])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF9A133
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 00:44:17 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2891:0:640:3c15:0])
+        by forward102c.mail.yandex.net (Yandex) with ESMTP id 0172160045;
+        Mon, 31 Jul 2023 10:44:15 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id EiKcMeeWuqM0-zZYuyZAm;
+        Mon, 31 Jul 2023 10:44:14 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1690789454;
+        bh=niPW9mOlnq+6D62V91CeQPMC9wMt/+kbxTndO37szXg=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=Jk8jCefpji63l1E/p29JwC+pubkVOF6ROAVgU0AjGj0xjCipWj7y1xYpCBCH2EeTy
+         8goKWx+Isnr+YD7ORJs2mQJjndjjyvj1Rrj0M6mkH2RBMm4OQLM77sz7flCHy7xC1c
+         osVyA7/ots4ybxReqOTfiHMtXpIsQSdZovXkcuEk=
+Authentication-Results: mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: mwifiex: fix error recovery in PCIE buffer descriptor management
+Date:   Mon, 31 Jul 2023 10:43:07 +0300
+Message-ID: <20230731074334.56463-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230731012941.21875-1-rauji.raut@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jul 30, 2023 at 06:29:41PM -0700, Atul Raut wrote:
-> Because zero-length arrays are obsolete, replacing them with
-> C99 flexible-array members.
-> Instead of defining a zero-length array, use the new
-> DECLARE_FLEX_ARRAY() auxiliary macro.
-> 
-> This fixes warnings such as:
-> ./drivers/net/wireless/ath/ath6kl/usb.c:109:8-12: WARNING use flexible-array member instead (https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays)
-> 
-> Signed-off-by: Atul Raut <rauji.raut@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath6kl/usb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
-> index 5220809841a6..bb3771a3897c 100644
-> --- a/drivers/net/wireless/ath/ath6kl/usb.c
-> +++ b/drivers/net/wireless/ath/ath6kl/usb.c
-> @@ -106,7 +106,7 @@ struct ath6kl_usb_ctrl_diag_cmd_write {
->  	__le32 cmd;
->  	__le32 address;
->  	__le32 value;
-> -	__le32 _pad[1];
-> +	DECLARE_FLEX_ARRAY(__le32, _pad);
+Add missing 'kfree_skb()' in 'mwifiex_init_rxq_ring()' and never do
+'kfree(card->rxbd_ring_vbase)' because this area is DMAed and should
+be released with 'dma_free_coherent()'. The latter is performed in
+'mwifiex_pcie_delete_rxbd_ring()', which is now called to recover
+from possible errors in 'mwifiex_pcie_create_rxbd_ring()'. Likewise
+for 'mwifiex_pcie_init_evt_ring()', 'kfree(card->evtbd_ring_vbase)'
+'mwifiex_pcie_delete_evtbd_ring()' and 'mwifiex_pcie_create_rxbd_ring()'.
 
-This is not a 0 length array, or a variable array.  Look at the work
-done on the hardening mailing list for more details, I think this is
-wrong.
+Fixes: 0732484b47b5 ("mwifiex: separate ring initialization and ring creation routines")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/marvell/mwifiex/pcie.c | 25 ++++++++++++++-------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-good luck!
+diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
+index 9a698a16a8f3..6697132ecc97 100644
+--- a/drivers/net/wireless/marvell/mwifiex/pcie.c
++++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
+@@ -189,6 +189,8 @@ static int mwifiex_pcie_probe_of(struct device *dev)
+ }
+ 
+ static void mwifiex_pcie_work(struct work_struct *work);
++static int mwifiex_pcie_delete_rxbd_ring(struct mwifiex_adapter *adapter);
++static int mwifiex_pcie_delete_evtbd_ring(struct mwifiex_adapter *adapter);
+ 
+ static int
+ mwifiex_map_pci_memory(struct mwifiex_adapter *adapter, struct sk_buff *skb,
+@@ -792,14 +794,15 @@ static int mwifiex_init_rxq_ring(struct mwifiex_adapter *adapter)
+ 		if (!skb) {
+ 			mwifiex_dbg(adapter, ERROR,
+ 				    "Unable to allocate skb for RX ring.\n");
+-			kfree(card->rxbd_ring_vbase);
+ 			return -ENOMEM;
+ 		}
+ 
+ 		if (mwifiex_map_pci_memory(adapter, skb,
+ 					   MWIFIEX_RX_DATA_BUF_SIZE,
+-					   DMA_FROM_DEVICE))
+-			return -1;
++					   DMA_FROM_DEVICE)) {
++			kfree_skb(skb);
++			return -ENOMEM;
++		}
+ 
+ 		buf_pa = MWIFIEX_SKB_DMA_ADDR(skb);
+ 
+@@ -849,7 +852,6 @@ static int mwifiex_pcie_init_evt_ring(struct mwifiex_adapter *adapter)
+ 		if (!skb) {
+ 			mwifiex_dbg(adapter, ERROR,
+ 				    "Unable to allocate skb for EVENT buf.\n");
+-			kfree(card->evtbd_ring_vbase);
+ 			return -ENOMEM;
+ 		}
+ 		skb_put(skb, MAX_EVENT_SIZE);
+@@ -857,8 +859,7 @@ static int mwifiex_pcie_init_evt_ring(struct mwifiex_adapter *adapter)
+ 		if (mwifiex_map_pci_memory(adapter, skb, MAX_EVENT_SIZE,
+ 					   DMA_FROM_DEVICE)) {
+ 			kfree_skb(skb);
+-			kfree(card->evtbd_ring_vbase);
+-			return -1;
++			return -ENOMEM;
+ 		}
+ 
+ 		buf_pa = MWIFIEX_SKB_DMA_ADDR(skb);
+@@ -1058,6 +1059,7 @@ static int mwifiex_pcie_delete_txbd_ring(struct mwifiex_adapter *adapter)
+  */
+ static int mwifiex_pcie_create_rxbd_ring(struct mwifiex_adapter *adapter)
+ {
++	int ret;
+ 	struct pcie_service_card *card = adapter->card;
+ 	const struct mwifiex_pcie_card_reg *reg = card->pcie.reg;
+ 
+@@ -1096,7 +1098,10 @@ static int mwifiex_pcie_create_rxbd_ring(struct mwifiex_adapter *adapter)
+ 		    (u32)((u64)card->rxbd_ring_pbase >> 32),
+ 		    card->rxbd_ring_size);
+ 
+-	return mwifiex_init_rxq_ring(adapter);
++	ret = mwifiex_init_rxq_ring(adapter);
++	if (ret)
++		mwifiex_pcie_delete_rxbd_ring(adapter);
++	return ret;
+ }
+ 
+ /*
+@@ -1127,6 +1132,7 @@ static int mwifiex_pcie_delete_rxbd_ring(struct mwifiex_adapter *adapter)
+  */
+ static int mwifiex_pcie_create_evtbd_ring(struct mwifiex_adapter *adapter)
+ {
++	int ret;
+ 	struct pcie_service_card *card = adapter->card;
+ 	const struct mwifiex_pcie_card_reg *reg = card->pcie.reg;
+ 
+@@ -1161,7 +1167,10 @@ static int mwifiex_pcie_create_evtbd_ring(struct mwifiex_adapter *adapter)
+ 		    (u32)((u64)card->evtbd_ring_pbase >> 32),
+ 		    card->evtbd_ring_size);
+ 
+-	return mwifiex_pcie_init_evt_ring(adapter);
++	ret = mwifiex_pcie_init_evt_ring(adapter);
++	if (ret)
++		mwifiex_pcie_delete_evtbd_ring(adapter);
++	return ret;
+ }
+ 
+ /*
+-- 
+2.41.0
 
-greg k-h
