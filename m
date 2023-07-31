@@ -2,98 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4ABF768B02
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 07:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7961F768B7B
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 08:02:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbjGaFUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jul 2023 01:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47456 "EHLO
+        id S229916AbjGaGCF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jul 2023 02:02:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbjGaFUT (ORCPT
+        with ESMTP id S229479AbjGaGCE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jul 2023 01:20:19 -0400
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4A891AC;
-        Sun, 30 Jul 2023 22:20:17 -0700 (PDT)
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-4fe27849e6aso2291124e87.1;
-        Sun, 30 Jul 2023 22:20:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690780815; x=1691385615;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1PCaV7jz4ZhQusEGOkRMQPvD1GkLtKnvc9bqZW1yacw=;
-        b=YYnYrbEVxNRqPGDdLmkffSNKNSqUgMBz2W56nZ+ZvcO90FjsPp2xD6rwT3YFTHEq9F
-         GBxWMbmjVLT3sYpTcz7QJMxuXPgaK52eflphBE3+7tnM6vlgR8Vhc/lubIYR8EBSQXrY
-         36byq++4eBa60p7pLwPWpHCim6YkwvWKIqZpJWc8jfJUIRTLjwmskgDPjtEO7PPiqV68
-         36n3LSkySAZ5zvVZ/XtnDZVTMtepZ6VNPTpMGeO5wy9IwmInLdeSqT8H403QGptc3aOi
-         NEXF7qUPfu7Py0jRT1v5rZ/FfXQs57Dh7i9B9kD58p8rpE9CAxXbaSDVLKCgalFv0QTv
-         d1Yg==
-X-Gm-Message-State: ABy/qLbi3QaLY1n/jdSLNnR55a/5YcJtqt3kS7KJqRegia2edJ7SAlLm
-        jxdC3xShwz63F3O8wi4OznDE9CRPF9E=
-X-Google-Smtp-Source: APBJJlGK6TLfK80q1RYfkwG2/SJEzHxRS0T9UKRwbX9NrS83Sc9RKwlda1+Sn43xdx2oArIubQhClw==
-X-Received: by 2002:a19:8c09:0:b0:4fe:1e74:3f3a with SMTP id o9-20020a198c09000000b004fe1e743f3amr4545975lfd.58.1690780814940;
-        Sun, 30 Jul 2023 22:20:14 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id l22-20020a1c7916000000b003fe22da3bc5sm803508wme.42.2023.07.30.22.20.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Jul 2023 22:20:14 -0700 (PDT)
-Message-ID: <e411e3c4-37ae-f5ea-b50b-4a5c0718c857@kernel.org>
-Date:   Mon, 31 Jul 2023 07:20:13 +0200
+        Mon, 31 Jul 2023 02:02:04 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47B59BF;
+        Sun, 30 Jul 2023 23:02:03 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id B18BA5C0108;
+        Mon, 31 Jul 2023 02:02:02 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Mon, 31 Jul 2023 02:02:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1690783322; x=1690869722; bh=sh
+        FjnfGoAytyshPf/JloNkqJqiuNTHMwi4VXx3Cfmkc=; b=TLKicy3o98eJU9lRlm
+        6rh+0FbGi/sZG2SspygPj6L6OSNoik5Wj9k8vOQg9S4DY67vHQsQemuhOREzSCpB
+        q6SHXmEye9XxA9ESyWVFJJUeMP0Of0e9tCsZgzeDGy890c0va1XB24Qtyf9NNEYI
+        BWOHZKrADqhk7W89MZG1iElZBoxZX3YjmHS6Nssr/E0e2pHRyT/n0yVDeUGFZ9+y
+        5rCYoBetKQkScCv75qQFja5ib7p0bQ1ZPTyNvcyubbF6YAngnM5W7R/ucogf6tF9
+        l/UEjvcfOr/b8jVh5MfTUVRnvuBztvpTiKYqHwkmdmKTyUsoVUlSh0FlhRQ1HVMN
+        GJ2g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1690783322; x=1690869722; bh=shFjnfGoAytys
+        hPf/JloNkqJqiuNTHMwi4VXx3Cfmkc=; b=QBIYDec7e1TF0FA+X79c/dUryVYXw
+        cK+f6cEJp3Zam7XidYavRlMg3f6/Smtnw0wqSCz2GzvuaEC5kjA6rvseTaptaphI
+        d4OdN3kMCVbZfwxsW6L5tUtRWyAsBzI+U/9LWCguqlRWdKnfewWsHRsu5XsXeSK4
+        GBqhqZ05Wx1TBGcOkZbhwaCyD/Z8bQvXj6X/WO9RdYv4UzO+ZIeUwwgjyJ5cOLi+
+        HPHLpcjk4AAJvf7r5HThZbI2w80VOxC+KWNfxlu5nqwfCsDdLCBhmiccMKzPz9qT
+        MqONOlZYwyX9nhM/tigewVotgGp/brmx4z0AZpPgw826apcpkYQMDZkdw==
+X-ME-Sender: <xms:Wk7HZJ5-cJxAn29i5bFLwRuKDmUMhc84i5q99gdcJ5fTwompJrYYrg>
+    <xme:Wk7HZG75RbM980csNmRu0_6g9KqwqxuNHdM5EeWbyoJSGbZmoUJG3yLAcSiaSPbz4
+    9jxXAzCyZGpBA>
+X-ME-Received: <xmr:Wk7HZAdgrH-3a6-Atx0UY0o-ymB9Q3TJPVc0Pv-ISJYp6dfc9LdOP29xqYl->
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjedvgddutddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:Wk7HZCKZAhhF7W4ZWWW-N6J-jKZ10kd2VYLk4CHeylhMUSM2w-4jqw>
+    <xmx:Wk7HZNKDS3IHvIVG4wnKQQ_SmhfDrwqAjx9bIj_HbWg3-p63YyrKxA>
+    <xmx:Wk7HZLxoFKUN6b9BcXGRKNoxbU3a6lfn1apU2B0DdaeF1EJ06ZWeSA>
+    <xmx:Wk7HZFILGlc_JerTsYJQqiuSCzsc07ABGdoByGKfy1PM_NjK8f8oPg>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 31 Jul 2023 02:02:01 -0400 (EDT)
+Date:   Mon, 31 Jul 2023 08:01:58 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Atul Raut <rauji.raut@gmail.com>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Kalle Valo <kvalo@kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Wang Ming <machel@vivo.com>, opensource.kernel@vivo.com,
+        LKML <linux-kernel@vger.kernel.org>,
+        Minjie Du <duminjie@vivo.com>
+Subject: Re: [PATCH] ath6kl: Fix debugfs_create_dir error checking
+Message-ID: <2023073148-blurt-pulmonary-bd3f@gregkh>
+References: <20230731024542.27248-1-rauji.raut@gmail.com>
+ <8b6229da-ca60-f352-f374-47f9b6d33862@web.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] ath5k: Fix debugfs_create_dir error checking
-Content-Language: en-US
-To:     Atul Raut <rauji.raut@gmail.com>, mickflemm@gmail.com,
-        mcgrof@kernel.org, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org
-References: <20230731023820.26571-1-rauji.raut@gmail.com>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20230731023820.26571-1-rauji.raut@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8b6229da-ca60-f352-f374-47f9b6d33862@web.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 31. 07. 23, 4:38, Atul Raut wrote:
-> The debugfs_create_dir function returns ERR_PTR
-> in case of error and the correct way to check an
-> error is 'IS_ERR' inline function.
-> This patch will replace the null-comparison with IS_ERR
-> 
-> This issue was found with the help of Coccinelle.
-> ./drivers/net/wireless/ath/ath5k/debug.c:985:6-12: Wrong debugfs call error processing on line 985
-> 
-> Signed-off-by: Atul Raut <rauji.raut@gmail.com>
-> ---
->   drivers/net/wireless/ath/ath5k/debug.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath5k/debug.c b/drivers/net/wireless/ath/ath5k/debug.c
-> index 4b41160e5d38..08058b3f7e22 100644
-> --- a/drivers/net/wireless/ath/ath5k/debug.c
-> +++ b/drivers/net/wireless/ath/ath5k/debug.c
-> @@ -982,7 +982,7 @@ ath5k_debug_init_device(struct ath5k_hw *ah)
->   	ah->debug.level = ath5k_debug;
->   
->   	phydir = debugfs_create_dir("ath5k", ah->hw->wiphy->debugfsdir);
-> -	if (!phydir)
-> +	if (IS_ERR(phydir))
+Hi,
 
-Already fixed by:
-https://patchwork.kernel.org/project/linux-wireless/patch/20230714081619.2032-1-duminjie@vivo.com/
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
 
--- 
-js
-suse labs
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
 
+Patch submitter, please ignore Markus's suggestion; you do not need to
+follow it at all.  The person/bot/AI that sent it is being ignored by
+almost all Linux kernel maintainers for having a persistent pattern of
+behavior of producing distracting and pointless commentary, and
+inability to adapt to feedback.  Please feel free to also ignore emails
+from them.
+
+thanks,
+
+greg k-h's patch email bot
