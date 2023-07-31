@@ -2,100 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F66B7696B1
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 14:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67489769790
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 Jul 2023 15:27:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232908AbjGaMqA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jul 2023 08:46:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
+        id S230479AbjGaN1b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jul 2023 09:27:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232874AbjGaMpk (ORCPT
+        with ESMTP id S232221AbjGaN12 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jul 2023 08:45:40 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EB119A1
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 05:45:34 -0700 (PDT)
-Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RDycJ0C7QzrS2Q;
-        Mon, 31 Jul 2023 20:44:32 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
- (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 31 Jul
- 2023 20:45:31 +0800
-From:   Ruan Jinjie <ruanjinjie@huawei.com>
-To:     <toke@toke.dk>, <kvalo@kernel.org>,
-        <linux-wireless@vger.kernel.org>
-CC:     <ruanjinjie@huawei.com>
-Subject: [PATCH -next] ath9k: Remove unnecessary ternary operators
-Date:   Mon, 31 Jul 2023 20:44:55 +0800
-Message-ID: <20230731124455.2039184-1-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
+        Mon, 31 Jul 2023 09:27:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44A0719A1
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 06:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690809960;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IH7SMZze3utYMvftQj0mT7yLGA+sjq/nHuemyu4/gKg=;
+        b=hoILqnxDEshXyTT03NKnjt5QCioFHZJSmjMtXqTSNKlJayP4UwG+TwhLDVl9QkocOdBaMP
+        jirLGM5yQArZJ1t9xImsVqMScSCP76YbZwxOSIAmvQvZIdH2VtLLUqaPlZ+klYefs1p0pD
+        xhfKlwr6MFgVNY6gI+3G7bKrm8bio3o=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-410-x0swh82JOgm8NNfGY7ReQQ-1; Mon, 31 Jul 2023 09:25:55 -0400
+X-MC-Unique: x0swh82JOgm8NNfGY7ReQQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20DFE81DB6C;
+        Mon, 31 Jul 2023 13:25:55 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.22.48.6])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 46D552017DC6;
+        Mon, 31 Jul 2023 13:25:54 +0000 (UTC)
+Message-ID: <71b912376301abf0cc56ac572a693b4c7adb5660.camel@redhat.com>
+Subject: Re: [PATCH 1/6] [v2] wifi: libertas: add missing calls to
+ cancel_work_sync()
+From:   Dan Williams <dcbw@redhat.com>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        lvc-project@linuxtesting.org
+Date:   Mon, 31 Jul 2023 08:25:53 -0500
+In-Reply-To: <20230725060531.72968-1-dmantipov@yandex.ru>
+References: <d7262341b0d3b635403f9d19ff2d381f7a543c2a.camel@redhat.com>
+         <20230725060531.72968-1-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ther are a little ternary operators, the true or false judgement
-of which is unnecessary in C language semantics.
+On Tue, 2023-07-25 at 09:04 +0300, Dmitry Antipov wrote:
+> Add missing 'cancel_work_sync()' in 'if_sdio_remove()'
+> and on error handling path in 'if_sdio_probe()'.
+>=20
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
----
- drivers/net/wireless/ath/ath9k/eeprom_9287.c  | 3 +--
- drivers/net/wireless/ath/ath9k/hif_usb.c      | 2 +-
- drivers/net/wireless/ath/ath9k/htc_drv_main.c | 2 +-
- 3 files changed, 3 insertions(+), 4 deletions(-)
+For the v2 series:
 
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom_9287.c b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
-index 3caa149b1013..fd5312c2a7e3 100644
---- a/drivers/net/wireless/ath/ath9k/eeprom_9287.c
-+++ b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
-@@ -572,8 +572,7 @@ static void ath9k_hw_set_ar9287_power_per_rate_table(struct ath_hw *ah,
- 	}
- 
- 	for (ctlMode = 0; ctlMode < numCtlModes; ctlMode++) {
--		bool isHt40CtlMode =
--			(pCtlMode[ctlMode] == CTL_2GHT40) ? true : false;
-+		bool isHt40CtlMode = pCtlMode[ctlMode] == CTL_2GHT40;
- 
- 		if (isHt40CtlMode)
- 			freq = centers.synth_center;
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index 27ff1ca2631f..e5414435b141 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -1432,7 +1432,7 @@ static void ath9k_hif_usb_disconnect(struct usb_interface *interface)
- {
- 	struct usb_device *udev = interface_to_usbdev(interface);
- 	struct hif_device_usb *hif_dev = usb_get_intfdata(interface);
--	bool unplugged = (udev->state == USB_STATE_NOTATTACHED) ? true : false;
-+	bool unplugged = udev->state == USB_STATE_NOTATTACHED;
- 
- 	if (!hif_dev)
- 		return;
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_main.c b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
-index 51766de5ec3b..44e02cfe2438 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_main.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
-@@ -719,7 +719,7 @@ static int ath9k_htc_tx_aggr_oper(struct ath9k_htc_priv *priv,
- 
- 	aggr.sta_index = ista->index;
- 	aggr.tidno = tid & 0xf;
--	aggr.aggr_enable = (action == IEEE80211_AMPDU_TX_START) ? true : false;
-+	aggr.aggr_enable = action == IEEE80211_AMPDU_TX_START;
- 
- 	WMI_CMD_BUF(WMI_TX_AGGR_ENABLE_CMDID, &aggr);
- 	if (ret)
--- 
-2.34.1
+Tested-by: Dan Williams <dcbw@redhat.com>
+
+> ---
+> =C2=A0drivers/net/wireless/marvell/libertas/if_sdio.c | 2 ++
+> =C2=A01 file changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/net/wireless/marvell/libertas/if_sdio.c
+> b/drivers/net/wireless/marvell/libertas/if_sdio.c
+> index a63c5e622ee3..a35b33e84670 100644
+> --- a/drivers/net/wireless/marvell/libertas/if_sdio.c
+> +++ b/drivers/net/wireless/marvell/libertas/if_sdio.c
+> @@ -1233,6 +1233,7 @@ static int if_sdio_probe(struct sdio_func
+> *func,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0flush_workqueue(card->wor=
+kqueue);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0lbs_remove_card(priv);
+> =C2=A0free:
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0cancel_work_sync(&card->packet=
+_worker);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0destroy_workqueue(card->w=
+orkqueue);
+> =C2=A0err_queue:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while (card->packets) {
+> @@ -1277,6 +1278,7 @@ static void if_sdio_remove(struct sdio_func
+> *func)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0lbs_stop_card(card->priv)=
+;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0lbs_remove_card(card->pri=
+v);
+> =C2=A0
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0cancel_work_sync(&card->packet=
+_worker);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0destroy_workqueue(card->w=
+orkqueue);
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while (card->packets) {
 
