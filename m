@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 969D676A6CB
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 04:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94E1A76A6D4
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 04:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231518AbjHACMU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jul 2023 22:12:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53582 "EHLO
+        id S231390AbjHACMn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jul 2023 22:12:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbjHACMS (ORCPT
+        with ESMTP id S230189AbjHACMi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jul 2023 22:12:18 -0400
+        Mon, 31 Jul 2023 22:12:38 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 187DC1B2
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 19:12:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 062B41BEA
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 19:12:32 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3712BqA32016485, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3712BqA32016485
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3712CCXC0018143, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3712CCXC0018143
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 1 Aug 2023 10:11:52 +0800
+        Tue, 1 Aug 2023 10:12:12 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Tue, 1 Aug 2023 10:12:06 +0800
+ 15.1.2375.32; Tue, 1 Aug 2023 10:12:07 +0800
 Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 1 Aug 2023
- 10:12:05 +0800
+ 10:12:07 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <timlee@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6/8] wifi: rtw89: introduce infrastructure of firmware elements
-Date:   Tue, 1 Aug 2023 10:11:25 +0800
-Message-ID: <20230801021127.15919-7-pkshih@realtek.com>
+Subject: [PATCH 7/8] wifi: rtw89: add to parse firmware elements of BB and RF tables
+Date:   Tue, 1 Aug 2023 10:11:26 +0800
+Message-ID: <20230801021127.15919-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230801021127.15919-1-pkshih@realtek.com>
 References: <20230801021127.15919-1-pkshih@realtek.com>
@@ -48,6 +48,10 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -57,243 +61,256 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In order to pack more data into firmware file, we introduce firmware
-elements and append BB_MCU firmware first. The first part of new firmware
-file is still unchanged firmware of WiFi CPU, so the new firmware format
-can be backward compatible to old format. The new elements part consists
-of ID and size basically, which can append more elements simply. To avoid
-unaligned access in certain platform and be easy to read, headers of all
-elements start at 16-byte aligned address.
+The tables of BB and RF parameters are pairs of {addr, value}. Load them
+and convert from little-endian to CPU order, and show the version to clear
+which version we are using.
 
- +===========================================+
- |             original firmware             |
- |                             +-------------+
- |                             |   padding   |
- +===========================================+
- | elm ID 1 | elm size |  other header data  |
- +----------+----------+                     |
- |                                           |
- +-------------------------------------------+
- | content (variable length)                 |
- |                             +-------------+
- |                             |   padding   |
- +===========================================+
- | elm ID 2 | elm size |  other header data  |
- +----------+----------+                     |
- |                                           |
- +-------------------------------------------+
- | content (variable length)                 |
- |                   +-----------------------+
- |                   | (no padding for the last one)
- +===================+
+  rtw89_8922ae 0000:03:00.0: Firmware element BB version: 00 04 00 00
+  rtw89_8922ae 0000:03:00.0: Firmware element radio A version: 00 13 00 00
+  rtw89_8922ae 0000:03:00.0: Firmware element NCTL version: 00 05 00 00
 
-More detail of element header is shown below. The additional fields
-'version' and 'element_priv[]' are meta data of elements, so that we can
-know element version easily, and element_priv[] provide specific fields
-for certain element, such as RF path index for RF parameter tables.
-
- +===========================================+
- |  elm ID  | elm size | version  |   rsvd0  |
- +----------+----------+----------+----------+
- |        rsvd1/2      |  element_priv[]     |
- +-------------------------------------------+
+We use tables defined in firmware elements with higher priority than
+original static const tables defined in driver, because WiFi 7 chips will
+not define the tables in driver, and existing chips can possibly migrate to
+the new design one by one.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c |  6 ++
- drivers/net/wireless/realtek/rtw89/fw.c   | 98 +++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.h   | 31 +++++++
- 3 files changed, 135 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.h |  8 ++
+ drivers/net/wireless/realtek/rtw89/fw.c   | 95 +++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/fw.h   |  7 ++
+ drivers/net/wireless/realtek/rtw89/phy.c  | 15 +++-
+ 4 files changed, 121 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 48cfac6e41ffe..ed8119ef2da06 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -3779,6 +3779,12 @@ int rtw89_chip_info_setup(struct rtw89_dev *rtwdev)
- 		return ret;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index a92c027cb2967..b4aa1f9f041b1 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3412,6 +3412,13 @@ struct rtw89_fw_log {
+ 	const char *(*fmts)[];
+ };
  
-+	ret = rtw89_fw_recognize_elements(rtwdev);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to recognize firmware elements\n");
-+		return ret;
-+	}
++struct rtw89_fw_elm_info {
++	struct rtw89_phy_table *bb_tbl;
++	struct rtw89_phy_table *bb_gain;
++	struct rtw89_phy_table *rf_radio[RF_PATH_MAX];
++	struct rtw89_phy_table *rf_nctl;
++};
 +
- 	ret = rtw89_chip_efuse_info_setup(rtwdev);
- 	if (ret)
- 		return ret;
+ struct rtw89_fw_info {
+ 	struct rtw89_fw_req_info req;
+ 	int fw_format;
+@@ -3425,6 +3432,7 @@ struct rtw89_fw_info {
+ 	struct rtw89_fw_suit bbmcu1;
+ 	struct rtw89_fw_log log;
+ 	u32 feature_map;
++	struct rtw89_fw_elm_info elm_info;
+ };
+ 
+ #define RTW89_CHK_FW_FEATURE(_feat, _fw) \
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 61b9af79f91dd..f613a50a747e4 100644
+index f613a50a747e4..be629746b15b0 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -284,6 +284,26 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+@@ -565,6 +565,68 @@ int rtw89_fw_recognize(struct rtw89_dev *rtwdev)
  	return 0;
- }
- 
-+static u32 rtw89_mfw_get_size(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_fw_info *fw_info = &rtwdev->fw;
-+	const struct firmware *firmware = fw_info->req.firmware;
-+	const struct rtw89_mfw_hdr *mfw_hdr =
-+		(const struct rtw89_mfw_hdr *)firmware->data;
-+	const struct rtw89_mfw_info *mfw_info;
-+	u32 size;
-+
-+	if (mfw_hdr->sig != RTW89_MFW_SIG) {
-+		rtw89_warn(rtwdev, "not mfw format\n");
-+		return 0;
-+	}
-+
-+	mfw_info = &mfw_hdr->info[mfw_hdr->fw_nr - 1];
-+	size = le32_to_cpu(mfw_info->shift) + le32_to_cpu(mfw_info->size);
-+
-+	return size;
-+}
-+
- static void rtw89_fw_update_ver_v0(struct rtw89_dev *rtwdev,
- 				   struct rtw89_fw_suit *fw_suit,
- 				   const struct rtw89_fw_hdr *hdr)
-@@ -366,6 +386,21 @@ int __rtw89_fw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
- 	return rtw89_fw_update_ver(rtwdev, type, fw_suit);
  }
  
 +static
-+int __rtw89_fw_recognize_from_elm(struct rtw89_dev *rtwdev,
-+				  const struct rtw89_fw_element_hdr *elm,
-+				  const void *data)
++int rtw89_build_phy_tbl_from_elm(struct rtw89_dev *rtwdev,
++				 const struct rtw89_fw_element_hdr *elm,
++				 const void *data)
 +{
-+	enum rtw89_fw_type type = (enum rtw89_fw_type)data;
-+	struct rtw89_fw_suit *fw_suit;
++	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
++	struct rtw89_phy_table *tbl;
++	struct rtw89_reg2_def *regs;
++	enum rtw89_rf_path rf_path;
++	u32 n_regs, i;
++	u8 idx;
 +
-+	fw_suit = rtw89_fw_suit_get(rtwdev, type);
-+	fw_suit->data = elm->u.common.contents;
-+	fw_suit->size = le32_to_cpu(elm->size);
++	tbl = kzalloc(sizeof(*tbl), GFP_KERNEL);
++	if (!tbl)
++		return -ENOMEM;
 +
-+	return rtw89_fw_update_ver(rtwdev, type, fw_suit);
-+}
++	switch (le32_to_cpu(elm->id)) {
++	case RTW89_FW_ELEMENT_ID_BB_REG:
++		elm_info->bb_tbl = tbl;
++		break;
++	case RTW89_FW_ELEMENT_ID_BB_GAIN:
++		elm_info->bb_gain = tbl;
++		break;
++	case RTW89_FW_ELEMENT_ID_RADIO_A:
++	case RTW89_FW_ELEMENT_ID_RADIO_B:
++	case RTW89_FW_ELEMENT_ID_RADIO_C:
++	case RTW89_FW_ELEMENT_ID_RADIO_D:
++		rf_path = (enum rtw89_rf_path)data;
++		idx = elm->u.reg2.idx;
 +
- #define __DEF_FW_FEAT_COND(__cond, __op) \
- static bool __fw_feat_cond_ ## __cond(u32 suit_ver_code, u32 comp_ver_code) \
- { \
-@@ -530,6 +565,69 @@ int rtw89_fw_recognize(struct rtw89_dev *rtwdev)
- 	return 0;
- }
- 
-+struct rtw89_fw_element_handler {
-+	int (*fn)(struct rtw89_dev *rtwdev,
-+		  const struct rtw89_fw_element_hdr *elm, const void *data);
-+	const void *data;
-+	const char *name;
-+};
-+
-+static const struct rtw89_fw_element_handler __fw_element_handlers[] = {
-+	[RTW89_FW_ELEMENT_ID_BBMCU0] = {__rtw89_fw_recognize_from_elm,
-+					(const void *)RTW89_FW_BBMCU0, NULL},
-+	[RTW89_FW_ELEMENT_ID_BBMCU1] = {__rtw89_fw_recognize_from_elm,
-+					(const void *)RTW89_FW_BBMCU1, NULL},
-+};
-+
-+int rtw89_fw_recognize_elements(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_fw_info *fw_info = &rtwdev->fw;
-+	const struct firmware *firmware = fw_info->req.firmware;
-+	const struct rtw89_fw_element_handler *handler;
-+	const struct rtw89_fw_element_hdr *hdr;
-+	u32 elm_size;
-+	u32 elem_id;
-+	u32 offset;
-+	int ret;
-+
-+	offset = rtw89_mfw_get_size(rtwdev);
-+	offset = ALIGN(offset, RTW89_FW_ELEMENT_ALIGN);
-+	if (offset == 0)
-+		return -EINVAL;
-+
-+	while (offset + sizeof(*hdr) < firmware->size) {
-+		hdr = (const struct rtw89_fw_element_hdr *)(firmware->data + offset);
-+
-+		elm_size = le32_to_cpu(hdr->size);
-+		if (offset + elm_size >= firmware->size) {
-+			rtw89_warn(rtwdev, "firmware element size exceeds\n");
-+			break;
-+		}
-+
-+		elem_id = le32_to_cpu(hdr->id);
-+		if (elem_id >= ARRAY_SIZE(__fw_element_handlers))
-+			goto next;
-+
-+		handler = &__fw_element_handlers[elem_id];
-+		if (!handler->fn)
-+			goto next;
-+
-+		ret = handler->fn(rtwdev, hdr, handler->data);
-+		if (ret)
-+			return ret;
-+
-+		if (handler->name)
-+			rtw89_info(rtwdev, "Firmware element %s version: %4ph\n",
-+				   handler->name, hdr->ver);
-+
-+next:
-+		offset += sizeof(*hdr) + elm_size;
-+		offset = ALIGN(offset, RTW89_FW_ELEMENT_ALIGN);
++		elm_info->rf_radio[idx] = tbl;
++		tbl->rf_path = rf_path;
++		tbl->config = rtw89_phy_config_rf_reg_v1;
++		break;
++	case RTW89_FW_ELEMENT_ID_RF_NCTL:
++		elm_info->rf_nctl = tbl;
++		break;
++	default:
++		kfree(tbl);
++		return -ENOENT;
 +	}
 +
++	n_regs = le32_to_cpu(elm->size) / sizeof(tbl->regs[0]);
++	regs = kcalloc(n_regs, sizeof(tbl->regs[0]), GFP_KERNEL);
++	if (!regs)
++		goto out;
++
++	for (i = 0; i < n_regs; i++) {
++		regs[i].addr = le32_to_cpu(elm->u.reg2.regs[i].addr);
++		regs[i].data = le32_to_cpu(elm->u.reg2.regs[i].data);
++	}
++
++	tbl->n_regs = n_regs;
++	tbl->regs = regs;
++
 +	return 0;
++
++out:
++	kfree(tbl);
++	return -ENOMEM;
 +}
 +
- void rtw89_h2c_pkt_set_hdr(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 			   u8 type, u8 cat, u8 class, u8 func,
- 			   bool rack, bool dack, u32 len)
+ struct rtw89_fw_element_handler {
+ 	int (*fn)(struct rtw89_dev *rtwdev,
+ 		  const struct rtw89_fw_element_hdr *elm, const void *data);
+@@ -577,6 +639,17 @@ static const struct rtw89_fw_element_handler __fw_element_handlers[] = {
+ 					(const void *)RTW89_FW_BBMCU0, NULL},
+ 	[RTW89_FW_ELEMENT_ID_BBMCU1] = {__rtw89_fw_recognize_from_elm,
+ 					(const void *)RTW89_FW_BBMCU1, NULL},
++	[RTW89_FW_ELEMENT_ID_BB_REG] = {rtw89_build_phy_tbl_from_elm, NULL, "BB"},
++	[RTW89_FW_ELEMENT_ID_BB_GAIN] = {rtw89_build_phy_tbl_from_elm, NULL, NULL},
++	[RTW89_FW_ELEMENT_ID_RADIO_A] = {rtw89_build_phy_tbl_from_elm,
++					 (const void *)RF_PATH_A, "radio A"},
++	[RTW89_FW_ELEMENT_ID_RADIO_B] = {rtw89_build_phy_tbl_from_elm,
++					 (const void *)RF_PATH_B, NULL},
++	[RTW89_FW_ELEMENT_ID_RADIO_C] = {rtw89_build_phy_tbl_from_elm,
++					 (const void *)RF_PATH_C, NULL},
++	[RTW89_FW_ELEMENT_ID_RADIO_D] = {rtw89_build_phy_tbl_from_elm,
++					 (const void *)RF_PATH_D, NULL},
++	[RTW89_FW_ELEMENT_ID_RF_NCTL] = {rtw89_build_phy_tbl_from_elm, NULL, "NCTL"},
+ };
+ 
+ int rtw89_fw_recognize_elements(struct rtw89_dev *rtwdev)
+@@ -924,6 +997,27 @@ void rtw89_load_firmware_work(struct work_struct *work)
+ 	rtw89_load_firmware_req(rtwdev, &rtwdev->fw.req, fw_name, false);
+ }
+ 
++static void rtw89_free_phy_tbl_from_elm(struct rtw89_phy_table *tbl)
++{
++	if (!tbl)
++		return;
++
++	kfree(tbl->regs);
++	kfree(tbl);
++}
++
++static void rtw89_unload_firmware_elements(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
++	int i;
++
++	rtw89_free_phy_tbl_from_elm(elm_info->bb_tbl);
++	rtw89_free_phy_tbl_from_elm(elm_info->bb_gain);
++	for (i = 0; i < ARRAY_SIZE(elm_info->rf_radio); i++)
++		rtw89_free_phy_tbl_from_elm(elm_info->rf_radio[i]);
++	rtw89_free_phy_tbl_from_elm(elm_info->rf_nctl);
++}
++
+ void rtw89_unload_firmware(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_fw_info *fw = &rtwdev->fw;
+@@ -940,6 +1034,7 @@ void rtw89_unload_firmware(struct rtw89_dev *rtwdev)
+ 	}
+ 
+ 	kfree(fw->log.fmts);
++	rtw89_unload_firmware_elements(rtwdev);
+ }
+ 
+ static u32 rtw89_fw_log_get_fmt_idx(struct rtw89_dev *rtwdev, u32 fmt_id)
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index eb3300cd9147f..34dc96d949734 100644
+index 34dc96d949734..9eb908122a4bc 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.h
 +++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -3499,6 +3499,36 @@ struct rtw89_fw_logsuit_hdr {
- 	__le32 ids[];
- } __packed;
+@@ -3504,6 +3504,13 @@ struct rtw89_fw_logsuit_hdr {
+ enum rtw89_fw_element_id {
+ 	RTW89_FW_ELEMENT_ID_BBMCU0 = 0,
+ 	RTW89_FW_ELEMENT_ID_BBMCU1 = 1,
++	RTW89_FW_ELEMENT_ID_BB_REG = 2,
++	RTW89_FW_ELEMENT_ID_BB_GAIN = 3,
++	RTW89_FW_ELEMENT_ID_RADIO_A = 4,
++	RTW89_FW_ELEMENT_ID_RADIO_B = 5,
++	RTW89_FW_ELEMENT_ID_RADIO_C = 6,
++	RTW89_FW_ELEMENT_ID_RADIO_D = 7,
++	RTW89_FW_ELEMENT_ID_RF_NCTL = 8,
+ };
  
-+#define RTW89_FW_ELEMENT_ALIGN 16
-+
-+enum rtw89_fw_element_id {
-+	RTW89_FW_ELEMENT_ID_BBMCU0 = 0,
-+	RTW89_FW_ELEMENT_ID_BBMCU1 = 1,
-+};
-+
-+struct rtw89_fw_element_hdr {
-+	__le32 id; /* enum rtw89_fw_element_id */
-+	__le32 size; /* exclude header size */
-+	u8 ver[4];
-+	__le32 rsvd0;
-+	__le32 rsvd1;
-+	__le32 rsvd2;
-+	union {
-+		struct {
-+			u8 priv[8];
-+			u8 contents[];
-+		} __packed common;
-+		struct {
-+			u8 idx;
-+			u8 rsvd[7];
-+			struct {
-+				__le32 addr;
-+				__le32 data;
-+			} __packed regs[];
-+		} __packed reg2;
-+	} __packed u;
-+} __packed;
-+
- struct fwcmd_hdr {
- 	__le32 hdr0;
- 	__le32 hdr1;
-@@ -3680,6 +3710,7 @@ struct rtw89_fw_h2c_rf_get_mccch {
+ struct rtw89_fw_element_hdr {
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index fb15c852fdd48..4003c59579d46 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -1342,12 +1342,16 @@ static void rtw89_phy_init_reg(struct rtw89_dev *rtwdev,
  
- int rtw89_fw_check_rdy(struct rtw89_dev *rtwdev);
- int rtw89_fw_recognize(struct rtw89_dev *rtwdev);
-+int rtw89_fw_recognize_elements(struct rtw89_dev *rtwdev);
- const struct firmware *
- rtw89_early_fw_feature_recognize(struct device *device,
- 				 const struct rtw89_chip_info *chip,
+ void rtw89_phy_init_bb_reg(struct rtw89_dev *rtwdev)
+ {
++	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+-	const struct rtw89_phy_table *bb_table = chip->bb_table;
+-	const struct rtw89_phy_table *bb_gain_table = chip->bb_gain_table;
++	const struct rtw89_phy_table *bb_table;
++	const struct rtw89_phy_table *bb_gain_table;
+ 
++	bb_table = elm_info->bb_tbl ? elm_info->bb_tbl : chip->bb_table;
+ 	rtw89_phy_init_reg(rtwdev, bb_table, rtw89_phy_config_bb_reg, NULL);
+ 	rtw89_chip_init_txpwr_unit(rtwdev, RTW89_PHY_0);
++
++	bb_gain_table = elm_info->bb_gain ? elm_info->bb_gain : chip->bb_gain_table;
+ 	if (bb_gain_table)
+ 		rtw89_phy_init_reg(rtwdev, bb_gain_table,
+ 				   rtw89_phy_config_bb_gain, NULL);
+@@ -1365,6 +1369,7 @@ void rtw89_phy_init_rf_reg(struct rtw89_dev *rtwdev, bool noio)
+ {
+ 	void (*config)(struct rtw89_dev *rtwdev, const struct rtw89_reg2_def *reg,
+ 		       enum rtw89_rf_path rf_path, void *data);
++	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	const struct rtw89_phy_table *rf_table;
+ 	struct rtw89_fw_h2c_rf_reg_info *rf_reg_info;
+@@ -1375,7 +1380,8 @@ void rtw89_phy_init_rf_reg(struct rtw89_dev *rtwdev, bool noio)
+ 		return;
+ 
+ 	for (path = RF_PATH_A; path < chip->rf_path_num; path++) {
+-		rf_table = chip->rf_table[path];
++		rf_table = elm_info->rf_radio[path] ?
++			   elm_info->rf_radio[path] : chip->rf_table[path];
+ 		rf_reg_info->rf_path = rf_table->rf_path;
+ 		if (noio)
+ 			config = rtw89_phy_config_rf_reg_noio;
+@@ -1392,6 +1398,7 @@ void rtw89_phy_init_rf_reg(struct rtw89_dev *rtwdev, bool noio)
+ 
+ static void rtw89_phy_init_rf_nctl(struct rtw89_dev *rtwdev)
+ {
++	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	const struct rtw89_phy_table *nctl_table;
+ 	u32 val;
+@@ -1414,7 +1421,7 @@ static void rtw89_phy_init_rf_nctl(struct rtw89_dev *rtwdev)
+ 	if (ret)
+ 		rtw89_err(rtwdev, "failed to poll nctl block\n");
+ 
+-	nctl_table = chip->nctl_table;
++	nctl_table = elm_info->rf_nctl ? elm_info->rf_nctl : chip->nctl_table;
+ 	rtw89_phy_init_reg(rtwdev, nctl_table, rtw89_phy_config_bb_reg, NULL);
+ 
+ 	if (chip->nctl_post_table)
 -- 
 2.25.1
 
