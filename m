@@ -2,151 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C35A76BB7C
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 19:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F09B476BBBF
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 19:56:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230155AbjHARkG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 13:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43374 "EHLO
+        id S230120AbjHAR4K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 13:56:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230116AbjHARkE (ORCPT
+        with ESMTP id S229485AbjHAR4J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 13:40:04 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DDFDE53
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 10:40:03 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1b8ad356f03so36712475ad.1
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Aug 2023 10:40:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690911602; x=1691516402;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mMncvfrTbUudxjatb8C4ivngCmSho+E5Peq7MMmoG/k=;
-        b=NUPE7f8XFaaWrHoxuppbk+BtdfaIpZpAWvilUXmSHqBnx7qX9mJS3ZsIxOqQjCDpRl
-         op9LZ8BCZHZX1CGFE6QpFJsc5niP+XRqf36kMxyWNuqzSjTvWNmvSiWD5nUkDkHjKOGt
-         WGOXK9MdPzwmwD883wMmcPNnPbDztDF7UJSl0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690911602; x=1691516402;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mMncvfrTbUudxjatb8C4ivngCmSho+E5Peq7MMmoG/k=;
-        b=Lgjz5xsnTxfKeDQoxRmaGQtFamdHttVc21EAWPg1hNQZA3OE+P/Jclq0//Us0gWfbV
-         qkAZja+35S+Icgqt3GNhuWSNMmzsP65gh5i9Yuj57vPYAxNwjs6UgmfyUsJmby2fKcVl
-         tArgZsmEH7uxiNClJ2McBigJnD2p2ec08vvVOVKW2Uavgmx8GYhOP6BBIxerjqeKowN8
-         f37CzedqWLH/TverZ/2GpeF30/vNMVYPmzn8/lwt1GQueBClSfyYOs9M9jRQGyCM9Q1C
-         l32XOR0o5SN47SsjxSYXpXF6hQzXmO4Shg0FcfTN/bLJ/nm0nMIEJtVjswYgZWFtV+/R
-         PbmA==
-X-Gm-Message-State: ABy/qLboanTZZiUs8a12dz8dkItkbLCPJqRYAZXQ3qKvSQEFlzkFhoTL
-        xWtUISWOoMoyhciyLJHG/44m+A==
-X-Google-Smtp-Source: APBJJlE1TvsdzbCCaowhYUcqZmLan/QTov1viF4+KSHEieN6pBG612eAr4RKCfqJlcM1Dyoruwl+tg==
-X-Received: by 2002:a17:902:aa46:b0:1b8:9002:c9ee with SMTP id c6-20020a170902aa4600b001b89002c9eemr11990242plr.1.1690911602533;
-        Tue, 01 Aug 2023 10:40:02 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:1c1f:af3f:7a1e:7fc2])
-        by smtp.gmail.com with ESMTPSA id iz20-20020a170902ef9400b001b9ecee9f81sm10804136plb.129.2023.08.01.10.40.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Aug 2023 10:40:02 -0700 (PDT)
-Date:   Tue, 1 Aug 2023 10:40:00 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     David Lin <yu-hao.lin@nxp.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: Re: [EXT] Re: [PATCH] wifi: mwifiex: added code to support host mlme.
-Message-ID: <ZMlDcG5wJPMNZ8Fo@google.com>
-References: <PA4PR04MB9638100B3F21D083F386C6D9D106A@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <CA+ASDXMx46aLztpKHqtS_Ab_yV_0GvRdWinf4C9o=9zqtTGehQ@mail.gmail.com>
- <PA4PR04MB9638F315ECAE762875B5FEE3D10AA@PA4PR04MB9638.eurprd04.prod.outlook.com>
+        Tue, 1 Aug 2023 13:56:09 -0400
+Received: from frasgout12.his.huawei.com (unknown [14.137.139.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA8191BF6;
+        Tue,  1 Aug 2023 10:56:07 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.227])
+        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4RFj9n5hVsz9xFrn;
+        Wed,  2 Aug 2023 01:42:37 +0800 (CST)
+Received: from [10.81.206.119] (unknown [10.81.206.119])
+        by APP1 (Coremail) with SMTP id LxC2BwAn27oNR8lkleUeAA--.35429S2;
+        Tue, 01 Aug 2023 18:55:42 +0100 (CET)
+Message-ID: <e12fcf9b-d122-7c42-1516-27e03a99270a@huaweicloud.com>
+Date:   Tue, 1 Aug 2023 19:55:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PA4PR04MB9638F315ECAE762875B5FEE3D10AA@PA4PR04MB9638.eurprd04.prod.outlook.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 3/3] wifi: brcm80211: change channel_list to a flexible
+ array
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Ian Lin <ian.lin@infineon.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Hector Martin <marcan@marcan.st>,
+        Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ramesh Rangavittal <ramesh.rangavittal@infineon.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Ryohei Kondo <ryohei.kondo@cypress.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Brian Henriquez <brian.henriquez@cypress.com>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <SHA-cyfmac-dev-list@infineon.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>, petr@tesarici.cz
+References: <cover.1690904067.git.petr.tesarik.ext@huawei.com>
+ <c18a31a293fb5ba5d7a845c4b5052516ff724a9f.1690904067.git.petr.tesarik.ext@huawei.com>
+ <87pm46wtno.fsf@kernel.org>
+From:   Petr Tesarik <petrtesarik@huaweicloud.com>
+In-Reply-To: <87pm46wtno.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: LxC2BwAn27oNR8lkleUeAA--.35429S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxtw4ruF1fuFWrtF18uF1xKrg_yoW7Xw43pa
+        4fJFyUKr4kXr1jqF17JF43tFyrKa1qy3Z8KF4xKryavayUWr1fJF18Gay0kryDA39rt347
+        tryqqryqyF4rAaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvj14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+        6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+        0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+        2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+        W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+        0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+        AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
+        rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+        v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVW8
+        JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26F4UJVW0obIYCTnIWIevJa73UjIFyTuYvjfUoj
+        jgUUUUU
+X-CM-SenderInfo: hshw23xhvd2x3n6k3tpzhluzxrxghudrp/
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
+        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 05:50:03AM +0000, David Lin wrote:
+On 8/1/2023 7:37 PM, Kalle Valo wrote:
+> Petr Tesarik <petrtesarik@huaweicloud.com> writes:
 > 
-> > From: Brian Norris <briannorris@chromium.org>
-> > Wait, your company can't afford to have anyone respond to maintainer mail
-> > for years [1], but you can afford to add new features? Crazy.
-> >
+>> From: Petr Tesarik <petr.tesarik.ext@huawei.com>
+>>
+>> The channel list is in fact a flexible array, but it has a length of 1 to
+>> make sure there is enough room for the special chanspec -1 when the struct
+>> is allocated on stack to abort a scan.
+>>
+>> Move the single array member to newly declared struct brcmf_scan_abort_le
+>> and struct brcmf_scan_abort_v2_le and make channel_list in struct
+>> brcmf_scan_params_le and struct brcmf_scan_params_v2_le a flexible array.
+>>
+>> This fixes this annoying (though harmless) warning when the kernel is built
+>> with CONFIG_FORTIFY_SOURCE=y:
+>>
+>> ------------[ cut here ]------------
+>> memcpy: detected field-spanning write (size 76) of single field
+>> "&params_le->channel_list[0]" at
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size
+>> 2)
+>> WARNING: CPU: 2 PID: 991 at
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072
+>> brcmf_scan_params_v2_to_v1+0xd4/0x118 [brcmfmac]
+>> Modules linked in: qrtr(E) algif_hash(E) aes_neon_bs(E)
+>> aes_neon_blk(E) algif_skcipher(E) af_alg(E) bnep(E) brcmfmac_wcc(E)
+>> bcm2835_v4l2(CE) bcm2835_mmal_vchiq(CE) videobuf2_vmalloc(E)
+>> videobuf2_memops(E) videobuf2_v4l2(E) videodev(E) hci_uart(E)
+>> btsdio(E) videobuf2_common(E) btbcm(E) mc(E) snd_bcm2835(CE)
+>> bluetooth(E) snd_pcm(E) brcmfmac(E) snd_timer(E) cpufreq_dt(E) snd(E)
+>> soundcore(E) cfg80211(E) ecdh_generic(E) brcmutil(E)
+>> raspberrypi_cpufreq(E) rfkill(E) vchiq(CE) bcm2711_thermal(E)
+>> leds_gpio(E) fuse(E) efi_pstore(E) dmi_sysfs(E) ip_tables(E)
+>> x_tables(E) rpcsec_gss_krb5(E) auth_rpcgss(E) nfsv4(E) dns_resolver(E)
+>> nfs(E) lockd(E) grace(E) fscache(E) netfs(E) af_packet(E) mmc_block(E)
+>> xhci_pci(E) xhci_pci_renesas(E) xhci_hcd(E) usbcore(E) usb_common(E)
+>> clk_raspberrypi(E) gpio_raspberrypi_exp(E) bcm2835_dma(E)
+>> crct10dif_ce(E) virt_dma(E) pcie_brcmstb(E) sdhci_iproc(E)
+>> gpio_regulator(E) sdhci_pltfm(E) sdhci(E) mmc_core(E) fixed(E)
+>> nvmem_rmem(E) sunrpc(E) sg(E) dm_multipath(E) dm_mod(E) efivarfs(E)
+>> Unloaded tainted modules: aes_ce_cipher(E):1
+>> CPU: 2 PID: 991 Comm: wpa_supplicant Tainted: G C E
+>> 6.5.0-rc4-dynswiotlb+ #27 2ec0961165cc91fdbec101d9d43b3331ba4f0927
+>> Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.04 04/01/2023
+>> pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>> pc : brcmf_scan_params_v2_to_v1+0xd4/0x118 [brcmfmac]
+>> lr : brcmf_scan_params_v2_to_v1+0xd4/0x118 [brcmfmac]
+>> sp : ffff8000829ab590
+>> x29: ffff8000829ab590 x28: 0000000000000000 x27: 0000000000000001
+>> x26: ffff000105e7e0a4 x25: ffff00010a0bcb48 x24: ffff000101e03800
+>> x23: ffff000105ec8920 x22: ffff000106332980 x21: ffff00010a0bc0c0
+>> x20: ffff00010a0bcb90 x19: ffff00010a0bc108 x18: ffffffffffffffff
+>> x17: 0000000000000000 x16: 0000000000000000 x15: 616f72622f737365
+>> x14: 6c657269772f7465 x13: 616d666d6372622f x12: 31313230386d6372
+>> x11: 00000000ffffdfff x10: ffff800081ad3328 x9 : ffff800080130694
+>> x8 : 000000000002ffe8 x7 : c0000000ffffdfff x6 : 00000000000affa8
+>> x5 : ffff0001fef75e00 x4 : 0000000000000000 x3 : 0000000000000027
+>> x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff00010aa0e000
+>> Call trace:
+>>  brcmf_scan_params_v2_to_v1+0xd4/0x118 [brcmfmac
+>> 38c4a81a3b85b4aff1650c67f95f20bc542d60c1]
+>>  brcmf_run_escan+0x148/0x1a0 [brcmfmac 38c4a81a3b85b4aff1650c67f95f20bc542d60c1]
+>>  brcmf_do_escan+0x74/0xe0 [brcmfmac 38c4a81a3b85b4aff1650c67f95f20bc542d60c1]
+>>  brcmf_cfg80211_scan+0xcc/0x298 [brcmfmac 38c4a81a3b85b4aff1650c67f95f20bc542d60c1]
+>>  rdev_scan+0x38/0x158 [cfg80211 8907673111c49ec56be88af3d38994cc1cf54cb8]
+>>  cfg80211_scan+0x134/0x178 [cfg80211 8907673111c49ec56be88af3d38994cc1cf54cb8]
+>>  nl80211_trigger_scan+0x3e8/0x768 [cfg80211 8907673111c49ec56be88af3d38994cc1cf54cb8]
+>>  genl_family_rcv_msg_doit.isra.0+0xc0/0x130
+>>  genl_rcv_msg+0x1e4/0x278
+>>  netlink_rcv_skb+0x64/0x138
+>>  genl_rcv+0x40/0x60
+>>  netlink_unicast+0x1cc/0x2d8
+>>  netlink_sendmsg+0x1d4/0x448
+>>  sock_sendmsg+0x64/0xc0
+>>  ____sys_sendmsg+0x260/0x2e0
+>>  ___sys_sendmsg+0x88/0xf0
+>>  __sys_sendmsg+0x70/0xd8
+>>  __arm64_sys_sendmsg+0x2c/0x40
+>>  invoke_syscall+0x78/0x100
+>>  el0_svc_common.constprop.0+0x100/0x130
+>>  do_el0_svc+0x40/0xa8
+>>  el0_svc+0x34/0x138
+>>  el0t_64_sync_handler+0x120/0x130
+>>  el0t_64_sync+0x1a8/0x1b0
+>> ---[ end trace 0000000000000000 ]---
+>>
+>> Signed-off-by: Petr Tesarik <petr.tesarik.ext@huawei.com>
 > 
-> This feature is needed for WPA3.
-
-Yeah, I read the description.
-
-> > On Thu, Jul 27, 2023 at 11:19 PM David Lin <yu-hao.lin@nxp.com> wrote:
-> > >
-> > > 1. For station mode first.
-> > > 2. This feature is a must for WPA3.
-> > > 3. The code is tested with IW416. There is no guarantee for other chips.
-> >
-> > ^^ That's not a good sign.
-> >
-> > > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-> >
-> > >  drivers/net/wireless/marvell/mwifiex/util.c   |  74 ++++
-> > >  14 files changed, 558 insertions(+), 13 deletions(-)
-> >
-> > > --- a/drivers/net/wireless/marvell/mwifiex/main.c
-> > > +++ b/drivers/net/wireless/marvell/mwifiex/main.c
-> > > @@ -28,6 +28,10 @@ module_param(driver_mode, ushort, 0);
-> > > MODULE_PARM_DESC(driver_mode,
-> > >                  "station=0x1(default), ap-sta=0x3, station-p2p=0x5,
-> > > ap-sta-p2p=0x7");
-> > >
-> > > +bool host_mlme;
-> > > +module_param(host_mlme, bool, 0);
-> > > +MODULE_PARM_DESC(host_mlme, "Host MLME support enable:1,
-> > disable:0");
-> > > +
-> >
-> > I hear Kalle doesn't like module parameters like this. They're a cop out on
-> > properly supporting features (also, see your own commit message). I'd have to
-> > dig through the archives to find the latest advice and rules on this.
-> >
-> > Overall, I'm not enthusiastic about this change.
+> Is this the same issue as Hans patch fixes?
 > 
-> The parameter 'host_mlme' is added to protect original code. It will be disabled as default.
+> https://patchwork.kernel.org/project/linux-wireless/patch/20230729140500.27892-1-hdegoede@redhat.com/
 
-Right, I read the code too.
+Yes, I wasn't aware of this other patch (I'm not subscribed to
+linux-wireless). I see, Hans approach is less intrusive.
 
-The point is, module parameters (or debugfs files) for controlling core
-protocol functionality are highly discouraged here. See the following,
-for some additional notes about this:
+Petr T
 
-https://lore.kernel.org/linux-wireless/87d09u7tyr.fsf@codeaurora.org/
-Subject: Re: [PATCH] rtw88: disable TX-AMSDU on 2.4G band
-
-I really need to work on writing this up for the wiki...
-
-On a constructive note: why do you want the module parameter at all?
-Because you don't trust the code at all? Because you don't trust it for
-the chips you haven't tested? Because you you don't trust it for the
-firmware version(s) you haven't tested?
-
-If you don't trust the code at all, don't except us to merge your patch.
-
-If you don't trust it for certain chips or firmware versions, then
-detect those at runtime to properly disable the feature. (And, I highly
-suspect that not all firmware versions will support this. Don't make the
-user guess.)
-
-Basically, for the cases you care about enabling a new feature on for
-production use, it shouldn't require playing with module parameters.
-
-Side note: I think you probably shouldn't be advertising things like
-NL80211_FEATURE_SAE with this feature disabled; that'll likely confuse
-user space into thinking it can try WPA3, when it'll just fail as soon
-as they try it.
-
-Brian
