@@ -2,118 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD8276C08D
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 00:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82BA376C0D7
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 01:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231860AbjHAWrT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 18:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49678 "EHLO
+        id S230020AbjHAXZG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 19:25:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231987AbjHAWrO (ORCPT
+        with ESMTP id S229952AbjHAXZF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 18:47:14 -0400
-Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6311FF3;
-        Tue,  1 Aug 2023 15:47:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1690930031;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wjSNp+Fc9Jt5MpoNE1r7E2tP2kQ/WOKZT6GzBaVgttM=;
-        b=lcy/qjy21U7uUH8ft3i6bvD8CxwKsT0RiNOeNR+shWQkcPAZqI0vH9Zdv6p42G2+huThrm
-        sMf/gHIaHmEgjEKcqFqY8q74SQATnsScxxq2uFJ4CwVFr5V3za6fNddmAdGO5ol3qPaOlD
-        y0Jb8ATZqKLKwE0cAqyCFkDXuGNo8gQ=
-From:   Sven Eckelmann <sven@narfation.org>
-Date:   Wed, 02 Aug 2023 00:46:27 +0200
-Subject: [PATCH v2 2/2] ath11k: Cleanup mac80211 references on failure
- during tx_complete
+        Tue, 1 Aug 2023 19:25:05 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE14010A
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 16:25:03 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-686f94328a4so235012b3a.0
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Aug 2023 16:25:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1690932303; x=1691537103;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8DB7NbDsAn8EUrVtRgWQWKrnvDzR5ULizdCe1TRVecI=;
+        b=eSuXH06fGHPWanB/YZ+J2QKDAVJRQkq2fZbLn8T9TVWSkFpCr0Q0uINw6ckgd0a1ec
+         JOnnHLRHaXYOhw/f2OYfBG+9VCIXHlmnSyYbI86SGyBNx1i/L7f/LiIoK743mbr5qgv5
+         0Tbh1FmonkuZeJpnc1Ks81So271DhDQXbfVAI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690932303; x=1691537103;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8DB7NbDsAn8EUrVtRgWQWKrnvDzR5ULizdCe1TRVecI=;
+        b=Cj6uCn6Ct/b8k4sonGu+8bDsQqcE5WZENvsx5B0T+JDHTEuPK0/dO9Kc4DLXywD7y5
+         /CWlToA7ZOtGs+Sywa5xVpDBaozTgaCRGJS84PF6KaI7x+lmdpusbKwIyT5O00pjgBMH
+         1imDrRkopfNwp2TYQJJYTbbjc91fg1vNeAZ+ktQGp0Tcr7gWCRlvavlrmbieVHG6hdvZ
+         A8rc+d6lJji2dywH9c1LWaKkKPjQZmv+2mZWsAfxzhaIKsVpe6i2rWhz1rccv7IbQUjh
+         zmiOk1p3T8GFvSHxrHIPbqFySmOsUdPKczXP48+8+Pcf+MLoNFZaKgiv+CMeT3Bpb8+j
+         x+aw==
+X-Gm-Message-State: ABy/qLYYgKU64aqwGO0eb4q6zpHl4RhkYIDQeQdutzpzrwWHrY1CUeTW
+        juI4ElwSAqD1FhJ450kAVZUTeQ==
+X-Google-Smtp-Source: APBJJlHjQCrnLHz6V1HJoI3U0b00CuliXO6jJnknLdcBbfdeomZRMK4TWzo0biJIxq7OC2cGy15wSQ==
+X-Received: by 2002:a05:6a00:4193:b0:678:11d6:2ad6 with SMTP id ca19-20020a056a00419300b0067811d62ad6mr14678959pfb.9.1690932303240;
+        Tue, 01 Aug 2023 16:25:03 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id v26-20020a62a51a000000b006873aa079a8sm4117645pfm.210.2023.08.01.16.25.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 16:25:02 -0700 (PDT)
+Date:   Tue, 1 Aug 2023 16:25:01 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Justin Stitt <justinstitt@google.com>
+Cc:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] wifi: ipw2x00: replace deprecated strncpy with strscpy
+Message-ID: <202308011602.3CC1C0244C@keescook>
+References: <20230801-drivers-net-wireless-intel-ipw2x00-v1-1-ffd185c91292@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230802-ath11k-ack_status_leak-v2-2-c0af729d6229@narfation.org>
-References: <20230802-ath11k-ack_status_leak-v2-0-c0af729d6229@narfation.org>
-In-Reply-To: <20230802-ath11k-ack_status_leak-v2-0-c0af729d6229@narfation.org>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Cc:     Kalle Valo <quic_kvalo@quicinc.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        Sven Eckelmann <sven@narfation.org>, stable@vger.kernel.org
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1741; i=sven@narfation.org;
- h=from:subject:message-id; bh=V0GmeAeeQt0aCXU2oj7g+5cgKTE+OL2dACM9u/oszNE=;
- b=owEBbQKS/ZANAwAKAV2HCgfBJntGAcsmYgBkyYtPfA2Rq4V9mZUnkITk5Gm63v2GRPrKuBSv6
- 6ajaM6q+F+JAjMEAAEKAB0WIQQXXSuHYSVz3OMy4AJdhwoHwSZ7RgUCZMmLTwAKCRBdhwoHwSZ7
- RvadD/46pI0BWWi3m/aXoJQ8jAZK4ubVCvQ3WEWaNeq9m8r9Pc10Uy514F69GxAZCvlIuAPhNQv
- HXUw+Py6JuM+qXG4tuP5r2n41CAIP3NnP9uIQ9yw83QkL+qXaZoPqWVoFyDyV6RvmSLii1GdotF
- k5sCnHEQ4A6FGpMKSbEdzxVVIgJ6TzSGDYf8+BaCC3M6bWTyq9WbtZe3Yzuym4Nbjrs6KkxbnK/
- sDxmkDoGgAnlMtydM6MFVcxuuSLdVoHvwVOl1AtI+guVY8eQkuxiDxx0UBzG4HtpbkREVEW7Vjs
- QaubdsFrH+9A293KKPkDwR0dxNaGa17ODPQlG0HuWbqrYSCqKr9Lbr9I17dRMLUYj3pxbmwob60
- c8NoT3bHIPIP1izPfofUKysAaQQzYeFnsXxoc0D5gdUxK/l6B3zrxfT4jSm1QvzEjsickcE9qHQ
- 786/m0jICjaZdnYr7gKqrr3csyq3OiC1Ammul0936X9jcYe88Tl1s6xEXXUlqirk/+b8kGxr6O6
- D+3xcGcGEcenMwn86Fo2Of3ZjQ7X6pM4kN8+yf83jQKkxZxQxR2/kRoVDEttKxbD6FgQcSiU2W3
- sqckPRQgLkTaDbTZELhZCyOi6a9dhqbkYQsF2MmHVL5rCJu7Sz8rMo9lqAIQgOwL+WXJDbdhrZe
- Kqk98ePOKEtqcjw==
-X-Developer-Key: i=sven@narfation.org; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230801-drivers-net-wireless-intel-ipw2x00-v1-1-ffd185c91292@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When a function is using functions from mac80211 to free an skb then it
-should do it consistently and not switch to the generic dev_kfree_skb_any
-(or similar functions). Otherwise (like in the error handlers), mac80211
-will will not be aware of the freed skb and thus not clean up related
-information in its internal data structures.
+On Tue, Aug 01, 2023 at 09:53:36PM +0000, Justin Stitt wrote:
+> `strncpy` is deprecated for use on NUL-terminated destination strings [1].
+> 
+> We can massively simplify the implementation by removing the ternary
+> check for the smaller of `count` and `sizeof(buffer) - 1` as `strscpy`
+> guarantees NUL-termination of its destination buffer [2]. This also
+> means we do not need to explicity set the one past-the-last index to
+> zero as `strscpy` handles this.
+> 
+> Furthermore, we can also utilize `strscpy`'s return value to populate
+> `len` and simply pass in `sizeof(buffer)` to the `strscpy` invocation
+> itself.
+> 
+> [1]: www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings
+> [2]: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html
+> 
+> Link: https://github.com/KSPP/linux/issues/90
+> Cc: linux-hardening@vger.kernel.org
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
+> ---
+>  drivers/net/wireless/intel/ipw2x00/ipw2200.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+> index dfe0f74369e6..8f2a834dbe04 100644
+> --- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+> +++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+> @@ -1462,15 +1462,12 @@ static ssize_t scan_age_store(struct device *d, struct device_attribute *attr,
+>  	struct ipw_priv *priv = dev_get_drvdata(d);
+>  	struct net_device *dev = priv->net_dev;
+>  	char buffer[] = "00000000";
+> -	unsigned long len =
+> -	    (sizeof(buffer) - 1) > count ? count : sizeof(buffer) - 1;
+>  	unsigned long val;
+>  	char *p = buffer;
+>  
+>  	IPW_DEBUG_INFO("enter\n");
+>  
+> -	strncpy(buffer, buf, len);
+> -	buffer[len] = 0;
+> +	ssize_t len = strscpy(buffer, buf, sizeof(buffer));
 
-Not doing so lead in the past to filled up structure which then prevented
-new clients to connect.
+This means "len" could become -E2BIG, which changes the behavior of this
+function. The earlier manipulation of "len" seems to be trying to
+explicitly allow for truncation, though. (if buffer could hold more than
+"count", copy "count", otherwise copy less)
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Fixes: 6257c702264c ("wifi: ath11k: fix tx status reporting in encap offload mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
----
- drivers/net/wireless/ath/ath11k/dp_tx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+So it looks like -E2BIG should be ignored here? But since this is a
+sysfs node (static DEVICE_ATTR_RW(scan_age)), I actually think the
+original code may be bugged: it should return how much was read from
+the input... and technically this was true, but it seems the intent
+is to consume the entire buffer and set a result. It's possible "len"
+is entirely unneeded and this should just return "count"?
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index 27c976f52c7a..b85a4a03b37a 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -344,7 +344,7 @@ ath11k_dp_tx_htt_tx_complete_buf(struct ath11k_base *ab,
- 	dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+And, honestly, I think it's likely that most of this entire routine should
+be thrown out in favor of just using kstrtoul() with base 0, as sysfs
+input buffers are always NUL-terminated. (See kernfs_fop_write_iter().)
+
+
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index dfe0f74369e6..780f5613e279 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -1461,25 +1461,11 @@ static ssize_t scan_age_store(struct device *d, struct device_attribute *attr,
+ {
+ 	struct ipw_priv *priv = dev_get_drvdata(d);
+ 	struct net_device *dev = priv->net_dev;
+-	char buffer[] = "00000000";
+-	unsigned long len =
+-	    (sizeof(buffer) - 1) > count ? count : sizeof(buffer) - 1;
+ 	unsigned long val;
+-	char *p = buffer;
  
- 	if (!skb_cb->vif) {
--		dev_kfree_skb_any(msdu);
-+		ieee80211_free_txskb(ar->hw, msdu);
- 		return;
+ 	IPW_DEBUG_INFO("enter\n");
+ 
+-	strncpy(buffer, buf, len);
+-	buffer[len] = 0;
+-
+-	if (p[1] == 'x' || p[1] == 'X' || p[0] == 'x' || p[0] == 'X') {
+-		p++;
+-		if (p[0] == 'x' || p[0] == 'X')
+-			p++;
+-		val = simple_strtoul(p, &p, 16);
+-	} else
+-		val = simple_strtoul(p, &p, 10);
+-	if (p == buffer) {
++	if (kstrtoul(buf, 0, &val)) {
+ 		IPW_DEBUG_INFO("%s: user supplied invalid value.\n", dev->name);
+ 	} else {
+ 		priv->ieee->scan_age = val;
+@@ -1487,7 +1473,7 @@ static ssize_t scan_age_store(struct device *d, struct device_attribute *attr,
  	}
  
-@@ -566,12 +566,12 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
- 	dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+ 	IPW_DEBUG_INFO("exit\n");
+-	return len;
++	return count;
+ }
  
- 	if (unlikely(!rcu_access_pointer(ab->pdevs_active[ar->pdev_idx]))) {
--		dev_kfree_skb_any(msdu);
-+		ieee80211_free_txskb(ar->hw, msdu);
- 		return;
- 	}
- 
- 	if (unlikely(!skb_cb->vif)) {
--		dev_kfree_skb_any(msdu);
-+		ieee80211_free_txskb(ar->hw, msdu);
- 		return;
- 	}
- 
+ static DEVICE_ATTR_RW(scan_age);
+
+
+-Kees
+
+>  
+>  	if (p[1] == 'x' || p[1] == 'X' || p[0] == 'x' || p[0] == 'X') {
+>  		p++;
+> 
+> ---
+> base-commit: 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
+> change-id: 20230801-drivers-net-wireless-intel-ipw2x00-d7ee2dd17032
+> 
+> Best regards,
+> --
+> Justin Stitt <justinstitt@google.com>
+> 
 
 -- 
-2.39.2
-
+Kees Cook
