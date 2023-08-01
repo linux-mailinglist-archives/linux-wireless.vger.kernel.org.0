@@ -2,101 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37DE476B606
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 15:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37BA676B60F
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 15:41:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234393AbjHANje (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 09:39:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45682 "EHLO
+        id S232408AbjHANlW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 09:41:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234389AbjHANjc (ORCPT
+        with ESMTP id S230247AbjHANlV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 09:39:32 -0400
+        Tue, 1 Aug 2023 09:41:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAA61BDB
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 06:39:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1098139;
+        Tue,  1 Aug 2023 06:41:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 327B56158A
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 13:39:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E43CC433C7;
-        Tue,  1 Aug 2023 13:39:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72F5F6158A;
+        Tue,  1 Aug 2023 13:41:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926FBC433C8;
+        Tue,  1 Aug 2023 13:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690897169;
-        bh=9kGsbzX/hI4Xz6O0zEgqDeojgA8+ngAxvzHsSUzt1d0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Ie3j8jUW0b06u3Ro/4D5ZrACxBDRm26lemeICO7Y2DCkajeXaZtWdK3UYhAY7pZq3
-         dgBU+/GgrcOUnuWcHtc3QidiPkwvfG1kWiKoCsfBRpHSHZoyv7FJcxEV8icUJjO2RZ
-         fVBqrYXI2G015/jnnObwYs7bto/q1mGB4WmyGdz+GZPAdTkd5ShT5lR1jzLrzLeFDB
-         qjKFzFdJHexSU+TAcOEFANoyYLao5d2of8BR4be6AwdjNjAyAZ7j/ZDQTXBt3vwWyf
-         zuayySg0AFZITpSrsJlHC6u8oFEQs6YkXi8hl+xe0zqEOY3ZHe/8X8yYStOBNUCG5Y
-         9xcTiX8XvOg4Q==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Doug Brown <doug@schmorgal.com>, linux-wireless@vger.kernel.org,
-        lvc-project@linuxtesting.org
-Subject: Re: [PATCH 1/4] wifi: libertas: add missing calls to
- cancel_work_sync()
-References: <20230724084457.64995-1-dmantipov@yandex.ru>
-        <87cz0h3d1q.fsf@kernel.org>
-        <ae49815a-c125-5a22-6757-b526d9712103@yandex.ru>
-        <87r0onxdra.fsf@kernel.org>
-        <0368ccdc-74f4-6ec1-1b7d-cfb5ebfd479d@yandex.ru>
-Date:   Tue, 01 Aug 2023 16:39:26 +0300
-In-Reply-To: <0368ccdc-74f4-6ec1-1b7d-cfb5ebfd479d@yandex.ru> (Dmitry
-        Antipov's message of "Tue, 1 Aug 2023 14:47:11 +0300")
-Message-ID: <87mszayj8x.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1690897279;
+        bh=NmSicqSVm0Cbv7rIqQBEiDWdhVa0cRCuHmqzlIkqnr4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=AopW2+aT1idkMZZqRRdvYlZTCLEGIc8mNt9tOFiWpEGAMFna3I4tnErNQOLnO8Gvp
+         g4Mgf3weSS9IOwJNoZvQBhZgg/GUhb+Ea+l9Ztm0HHscEObyBLDaNOT+tdGSbGCVOc
+         IPc5PQprhGdw8tm2Nw07m4Z8lJ2fCkUH92wQ5l9336KHFFbdsSgDH9vfUjoujW9N8I
+         lKJUTpZF8z3FViNtoii8EZ8z6V4WQoUzsiaFItu5jlsoJg071jeRGGZhnucmd2Vj8V
+         1FoRcEWxCvdYNGBxnUuSJcDPeGDZI+xgjVpeJ/zeQsJ+zrfW6ctHZATV12qKa2Q3/Q
+         pVltMQPOJHB8g==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] wifi: ray_cs: Replace 1-element array with flexible array
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230728231245.never.309-kees@kernel.org>
+References: <20230728231245.never.309-kees@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169089727636.39272.16037953063224759518.kvalo@kernel.org>
+Date:   Tue,  1 Aug 2023 13:41:18 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+Kees Cook <keescook@chromium.org> wrote:
 
-> On 8/1/23 13:23, Kalle Valo wrote:
->
->> Another problem I see that you don't always reply to review comments and
->> that gives an impression that the comments are ignored. Please always
->> try to reply something to the review comments, even if just a simple
->> "ok" or "I don't agree because...".
->
-> Looking through my e-mails for the previous month, I was unable to find an
-> unanswered review. Could you please provide an example? I'll fix it
-> ASAP.
+> The trailing array member of struct tx_buf was defined as a 1-element
+> array, but used as a flexible array. This was resulting in build warnings:
+> 
+>     In function 'fortify_memset_chk',
+>         inlined from 'memset_io' at /kisskb/src/arch/mips/include/asm/io.h:486:2,
+>         inlined from 'build_auth_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:2697:2:
+>     /kisskb/src/include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning:
+> detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+>       493 |                         __write_overflow_field(p_size_field, size);
+>           |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> Replace it with an actual flexible array. Binary difference comparison
+> shows a single change in output:
+> 
+> │  drivers/net/wireless/legacy/ray_cs.c:883
+> │       lea    0x1c(%rbp),%r13d
+> │ -     cmp    $0x7c3,%r13d
+> │ +     cmp    $0x7c4,%r13d
+> 
+> This is from:
+> 
+>         if (len + TX_HEADER_LENGTH > TX_BUF_SIZE) {
+> 
+> specifically:
+> 
+>  #define TX_BUF_SIZE (2048 - sizeof(struct tx_msg))
+> 
+> This appears to have been originally buggy, so the change is correct.
+> 
+> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Closes: https://lore.kernel.org/all/88f83d73-781d-bdc-126-aa629cb368c@linux-m68k.org
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: linux-wireless@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-You have sent so many patches and I don't have time to start go through
-them. Maybe I noticed that with some of mwifiex patches, not sure. But
-that doesn't matter, I just hope that in the future you reply to
-comments.
+Patch applied to wireless.git, thanks.
 
-> I don't want to speculate around the workflow of others and realize
-> that someone (especially the maintainer) may be overloaded and too
-> busy. OTOH it's not quite clear why the trivial things like
-> https://marc.info/?l=linux-wireless&m=169030215701718&w=2 stalls for
-> almost a week. Should I consider this as "ignored" too?
-
-A delay of week is business as usual, I have patches in queue which are
-from last October:
-
-https://patchwork.kernel.org/project/linux-wireless/list/?series=684424&state=*
-
-Remember that this is not a 24/7 service and we just had a summer break.
-I have 160 patches in patchwork right so expect long delays but you can
-check the status from patchwork yourself:
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#checking_state_of_patches_from_patchwork
+1d7dd5aa3547 wifi: ray_cs: Replace 1-element array with flexible array
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230728231245.never.309-kees@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
