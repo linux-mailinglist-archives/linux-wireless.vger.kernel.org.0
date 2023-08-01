@@ -2,68 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D8A976B3DF
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 13:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D64A76B1BB
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 12:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234417AbjHALwq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 07:52:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46236 "EHLO
+        id S232517AbjHAK0q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 06:26:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234416AbjHALwf (ORCPT
+        with ESMTP id S234319AbjHAK0J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 07:52:35 -0400
-Received: from mail.cothiafon.pl (mail.cothiafon.pl [217.61.106.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F3CE4C
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 04:52:32 -0700 (PDT)
-Received: by mail.cothiafon.pl (Postfix, from userid 1002)
-        id E909A83CBE; Mon, 31 Jul 2023 10:36:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cothiafon.pl; s=mail;
-        t=1690792650; bh=dwoca0X6C9VXklO/zRgFQCPapTk5LFz4tKaENdvy6Po=;
-        h=Date:From:To:Subject:From;
-        b=b2EUiTKopwUwErEEGhYRHSRb9ZJhG9gZ33gl79BnGh8u7MsCn1uv6YbU5f9BRmLOr
-         fehdQWGZtmOqjHPgBa0ZaoruL2CG6R6jeEOXMxzN0UZMUcKcm5Ixa1iaffgE2861J/
-         6syF4lIJJ0FqIYJYVB5heRJKCBHA4FFbrPGbvG3Yw3CA7+31vqhLaLXP+/4HNtp/Fy
-         kU1DI9NvZAAB9CO1uwUHMoktXyeQakJno7IPShk1tVGULiWJGwH372T1edgiaocCXt
-         7qNiPwtsQK5mqewfBLqwwSVP0XpxetElDpVTHJNPBzlyC0++3Bs5n+gZ4BuNF84uL+
-         550EnGfCBvcqg==
-Received: by mail.cothiafon.pl for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 08:35:48 GMT
-Message-ID: <20230731095940-0.1.28.ony0.0.wb011ritdr@cothiafon.pl>
-Date:   Mon, 31 Jul 2023 08:35:48 GMT
-From:   =?UTF-8?Q? "Rados=C5=82aw_Grabowski" ?= 
-        <radoslaw.grabowski@cothiafon.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: W sprawie samochodu
-X-Mailer: mail.cothiafon.pl
+        Tue, 1 Aug 2023 06:26:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E701930EF;
+        Tue,  1 Aug 2023 03:23:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E87EA61539;
+        Tue,  1 Aug 2023 10:17:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33556C433CB;
+        Tue,  1 Aug 2023 10:17:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690885041;
+        bh=uKQHNBewgHF9nEvZqJ3rqmkkqgDwBDK4hB+7/BHEJjI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EIpAm0nEG3Jpp1/Pi6Bswkiqze6qEHlxde0uYIp3NVvJ+KY5i/Zz/oHoiKePWLeYW
+         Z1wB7kkLjYxLz+SMbs3CRU3xMSUmhQn8ggxG3ZgjEhk54UXd4uRYSIpsiZ53Kpu7nd
+         SmG0PHcG0bGy509Jp7KtxNasH1PGeYgaURi092slILzeK1Oyqxg4LT+ZDKtJ7CuE2G
+         Y9rPMor1n1uuAMu7UknoT5EcWkAxncrqVcB53MZl/rVVJE+jFh4G7bWh3LOmzCUrlc
+         QWm38ysQG92kRdspNaszvfyBDOoi8ZRdqtbTM/yFN1yWeaLi1qJiqZwzfSxkMWGGv+
+         +TW6SJngdwyGQ==
+Date:   Tue, 1 Aug 2023 12:17:17 +0200
+From:   Simon Horman <horms@kernel.org>
+To:     Yue Haibing <yuehaibing@huawei.com>
+Cc:     johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        nbd@nbd.name, pagadala.yesu.anjaneyulu@intel.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mac80211: mesh: Remove unused function declaration
+ mesh_ids_set_default()
+Message-ID: <ZMjbrQWaXU+qpEQe@kernel.org>
+References: <20230731140712.1204-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230731140712.1204-1-yuehaibing@huawei.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Mon, Jul 31, 2023 at 10:07:12PM +0800, Yue Haibing wrote:
+> Commit ccf80ddfe492 ("mac80211: mesh function and data structures definitions")
+> introducted this but never implemented.
+> 
+> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
 
-chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
-, je=C5=9Bli chodzi o system monitoringu GPS.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
-e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
-a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
-
-Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
-dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
-szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
-mne znaczenie.
-
-Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
-b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
-
-
-Pozdrawiam
-Rados=C5=82aw Grabowski
