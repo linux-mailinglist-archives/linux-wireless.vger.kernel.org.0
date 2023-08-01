@@ -2,41 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07C8076B7A4
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 16:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CCD376B7A3
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 16:35:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234778AbjHAOfw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 10:35:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55306 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234763AbjHAOfv (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
+        id S234707AbjHAOfv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 1 Aug 2023 10:35:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55276 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231130AbjHAOfu (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 1 Aug 2023 10:35:50 -0400
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713181702
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 07:35:50 -0700 (PDT)
-X-UUID: b1d7a6fa307811ee9cb5633481061a41-20230801
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB3CE9
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 07:35:49 -0700 (PDT)
+X-UUID: b1eb310c307811ee9cb5633481061a41-20230801
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=OhQsN1QHxfD0mrFyOb1zYqkCf1B8R/ejG1MPBioqGHs=;
-        b=Liu+hfzWhf0wCmLgm/XRiLH3a/E71g0cIN/EKUnheEMoXCyhIKDvH257bgpFqlfHOWAyjLLGsG7rojqk3G9y2O3axK8Oe+R474CMkAqX0woLXwidZ7AxjDvNNiNYrikczsmaROc/of37KgaVsyrKvEa3OVGyETwIdL9x0d8xR/0=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=U6xWEjJfYEPkjrJiAUGHjFpogRsfrDeCeUZabD+zTkM=;
+        b=Th0mxJ8asz0ZaeFmN5FFeoifkg41Lg/ig6EasFIJg3kKvDJ4AlhCzhWEiV0Jv/vM1FC7kKrHPAiLQTSHlsOsP73YAHYa4lMZkICK6WVqrW2AhWoZSCKADLuFx/kavWSHq3pvFn3IFlu8Ay3oSrvNteu5I4RBYi6FJuWSmgpDdvM=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.30,REQID:ddbae092-75bd-4428-99f3-db4b631ebe6d,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:1fcc6f8,CLOUDID:d38e91d2-cd77-4e67-bbfd-aa4eaace762f,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
-        DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-O-INFO: VERSION:1.1.30,REQID:b7606f8e-a69d-47cf-aa66-c706a20d8b56,IP:0,U
+        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:90
+X-CID-INFO: VERSION:1.1.30,REQID:b7606f8e-a69d-47cf-aa66-c706a20d8b56,IP:0,URL
+        :0,TC:0,Content:-5,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
+        N:quarantine,TS:90
+X-CID-META: VersionHash:1fcc6f8,CLOUDID:3672b242-d291-4e62-b539-43d7d78362ba,B
+        ulkID:230801223544V6I36SAP,BulkQuantity:0,Recheck:0,SF:17|19|48|38|29|28,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+        ,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
 X-CID-BVR: 0,NGT
 X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: b1d7a6fa307811ee9cb5633481061a41-20230801
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_SDM,TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,
+        TF_CID_SPAM_FSD
+X-UUID: b1eb310c307811ee9cb5633481061a41-20230801
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
         (envelope-from <deren.wu@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 390494108; Tue, 01 Aug 2023 22:35:43 +0800
+        with ESMTP id 1613476431; Tue, 01 Aug 2023 22:35:43 +0800
 Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1118.26; Tue, 1 Aug 2023 22:35:42 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
@@ -50,9 +54,9 @@ CC:     Sean Wang <sean.wang@mediatek.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH 01/17] wifi: mt76: mt7925: add Kconfig
-Date:   Tue, 1 Aug 2023 22:34:17 +0800
-Message-ID: <562eb3e0a4ae65007d59d0101746f505ec18b7e6.1690864199.git.deren.wu@mediatek.com>
+Subject: [PATCH 02/17] wifi: mt76: mt7925: add Makefile
+Date:   Tue, 1 Aug 2023 22:34:18 +0800
+Message-ID: <ab4a185ab4775664c7441e1a6356e9c05cf76239.1690864199.git.deren.wu@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <cover.1690864199.git.deren.wu@mediatek.com>
 References: <cover.1690864199.git.deren.wu@mediatek.com>
@@ -76,46 +80,25 @@ Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 ---
- .../net/wireless/mediatek/mt76/mt7925/Kconfig | 30 +++++++++++++++++++
- 1 file changed, 30 insertions(+)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/Kconfig
+ drivers/net/wireless/mediatek/mt76/mt7925/Makefile | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/Makefile
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7925/Kconfig
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/Makefile b/drivers/net/wireless/mediatek/mt76/mt7925/Makefile
 new file mode 100644
-index 000000000000..5854e95e68a5
+index 000000000000..d321e4ed732f
 --- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/Kconfig
-@@ -0,0 +1,30 @@
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/Makefile
+@@ -0,0 +1,9 @@
 +# SPDX-License-Identifier: ISC
-+config MT7925_COMMON
-+	tristate
-+	select MT792x_LIB
-+	select WANT_DEV_COREDUMP
 +
-+config MT7925E
-+	tristate "MediaTek MT7925E (PCIe) support"
-+	select MT7925_COMMON
-+	depends on MAC80211
-+	depends on PCI
-+	help
-+	  This adds support for MT7925-based wireless PCIe devices,
-+	  which support operation at 6GHz, 5GHz, and 2.4GHz IEEE 802.11be
-+	  2x2:2SS 4096-QAM, 160MHz channels.
++obj-$(CONFIG_MT7925_COMMON) += mt7925-common.o
++obj-$(CONFIG_MT7925E) += mt7925e.o
++obj-$(CONFIG_MT7925U) += mt7925u.o
 +
-+	  To compile this driver as a module, choose M here.
-+
-+config MT7925U
-+	tristate "MediaTek MT7925U (USB) support"
-+	select MT792x_USB
-+	select MT7925_COMMON
-+	depends on MAC80211
-+	depends on USB
-+	help
-+	  This adds support for MT7925-based wireless USB devices,
-+	  which support operation at 6GHz, 5GHz, and 2.4GHz IEEE 802.11be
-+	  2x2:2SS 4096-QAM, 160MHz channels.
-+
-+	  To compile this driver as a module, choose M here.
++mt7925-common-y := mac.o mcu.o main.o init.o debugfs.o
++mt7925e-y := pci.o pci_mac.o pci_mcu.o
++mt7925u-y := usb.o
 -- 
 2.18.0
 
