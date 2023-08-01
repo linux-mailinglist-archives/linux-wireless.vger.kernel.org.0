@@ -2,190 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F09B476BBBF
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 19:56:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD03976BBBE
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 19:55:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230120AbjHAR4K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 13:56:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52054 "EHLO
+        id S230428AbjHARz2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 13:55:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjHAR4J (ORCPT
+        with ESMTP id S231535AbjHARz0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 13:56:09 -0400
-Received: from frasgout12.his.huawei.com (unknown [14.137.139.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA8191BF6;
-        Tue,  1 Aug 2023 10:56:07 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4RFj9n5hVsz9xFrn;
-        Wed,  2 Aug 2023 01:42:37 +0800 (CST)
-Received: from [10.81.206.119] (unknown [10.81.206.119])
-        by APP1 (Coremail) with SMTP id LxC2BwAn27oNR8lkleUeAA--.35429S2;
-        Tue, 01 Aug 2023 18:55:42 +0100 (CET)
-Message-ID: <e12fcf9b-d122-7c42-1516-27e03a99270a@huaweicloud.com>
-Date:   Tue, 1 Aug 2023 19:55:22 +0200
+        Tue, 1 Aug 2023 13:55:26 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B6601BF5
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 10:55:25 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-686d8c8fc65so4234032b3a.0
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Aug 2023 10:55:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1690912525; x=1691517325;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7kvJipiJm4drOxOZm699VKRr56S8cOAzV6/ee/B4/5U=;
+        b=K3zQ7iOXXRY/O6Je5T8A+386W1kh3c/66Brr8SLz3suokfJIGTiKqrpZ+/u7XrvuSc
+         gP/XKxlT1caTxh+sCMljqVy71LYYnldBHXX21UjxC5Wur3vP057R2GcMArnbtf/4u3b9
+         UPq5qGOeXD6CAKwGL0Om5Z5JcOPfpH/Xv3zGI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690912525; x=1691517325;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7kvJipiJm4drOxOZm699VKRr56S8cOAzV6/ee/B4/5U=;
+        b=Keqo8yapRlWhAImzF/bMc6tONoEruPgQXU5ZPYNUZkfMKkcK79JsjscZhzg8h5JNth
+         zLheX79iu+ebFLoMrJEJ3D5d2ku+L6FjK3PHe05ocDN8N3OYNgyMR78hcSe8Gv5OgwCM
+         yRDOJMbaVmcre2r3KjsiXPU03ozZxtEQ8Dawz0MqYdMM43s7b1G5FOvihPlW5WceyDKY
+         S8LGYpLljtHs7vT5KrAIIf96ZMPEZGQbmh1N+pILtCfLXEFf+sFSFOY0P6B/jsW7G9gC
+         SszKhiujZ7OEs6ml6CzT9GUcXpoYj81NS4HWqUv0MgBtCtjm/+1aBNQxuqep/Sh7IJF8
+         O7gw==
+X-Gm-Message-State: ABy/qLZ6I/p93UH7nOcodkUgFkgEQrUCwcs+igNwEmM+HacGRZh0abgE
+        6AOwK17/W7NxHZqhd0CptEsoCg==
+X-Google-Smtp-Source: APBJJlH4uUoy4jCeyD2GTf5NS0k1TNV7pqrr7rKzthP9FicYELRbJaEHlAbNmL3ZuH09H65xzZpzQQ==
+X-Received: by 2002:a05:6a00:2442:b0:686:ec1d:18e5 with SMTP id d2-20020a056a00244200b00686ec1d18e5mr13503945pfj.28.1690912525050;
+        Tue, 01 Aug 2023 10:55:25 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:1c1f:af3f:7a1e:7fc2])
+        by smtp.gmail.com with ESMTPSA id m1-20020aa79001000000b00686940bfb77sm9591858pfo.71.2023.08.01.10.55.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Aug 2023 10:55:24 -0700 (PDT)
+Date:   Tue, 1 Aug 2023 10:55:22 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        lvc-project@linuxtesting.org
+Subject: Re: [PATCH 2/2] [v2] wifi: mwifiex: cleanup TX error handling
+Message-ID: <ZMlHCmjf2ZovExsP@google.com>
+References: <ZMFzBStAKemf+dLL@google.com>
+ <20230728084407.101930-1-dmantipov@yandex.ru>
+ <20230728084407.101930-2-dmantipov@yandex.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/3] wifi: brcm80211: change channel_list to a flexible
- array
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Ian Lin <ian.lin@infineon.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Hector Martin <marcan@marcan.st>,
-        Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ramesh Rangavittal <ramesh.rangavittal@infineon.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Ryohei Kondo <ryohei.kondo@cypress.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Brian Henriquez <brian.henriquez@cypress.com>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <SHA-cyfmac-dev-list@infineon.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        Roberto Sassu <roberto.sassu@huaweicloud.com>, petr@tesarici.cz
-References: <cover.1690904067.git.petr.tesarik.ext@huawei.com>
- <c18a31a293fb5ba5d7a845c4b5052516ff724a9f.1690904067.git.petr.tesarik.ext@huawei.com>
- <87pm46wtno.fsf@kernel.org>
-From:   Petr Tesarik <petrtesarik@huaweicloud.com>
-In-Reply-To: <87pm46wtno.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: LxC2BwAn27oNR8lkleUeAA--.35429S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxtw4ruF1fuFWrtF18uF1xKrg_yoW7Xw43pa
-        4fJFyUKr4kXr1jqF17JF43tFyrKa1qy3Z8KF4xKryavayUWr1fJF18Gay0kryDA39rt347
-        tryqqryqyF4rAaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvj14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-        6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-        0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-        2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-        W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-        0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-        AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
-        rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-        v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVW8
-        JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26F4UJVW0obIYCTnIWIevJa73UjIFyTuYvjfUoj
-        jgUUUUU
-X-CM-SenderInfo: hshw23xhvd2x3n6k3tpzhluzxrxghudrp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,RDNS_DYNAMIC,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230728084407.101930-2-dmantipov@yandex.ru>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/1/2023 7:37 PM, Kalle Valo wrote:
-> Petr Tesarik <petrtesarik@huaweicloud.com> writes:
-> 
->> From: Petr Tesarik <petr.tesarik.ext@huawei.com>
->>
->> The channel list is in fact a flexible array, but it has a length of 1 to
->> make sure there is enough room for the special chanspec -1 when the struct
->> is allocated on stack to abort a scan.
->>
->> Move the single array member to newly declared struct brcmf_scan_abort_le
->> and struct brcmf_scan_abort_v2_le and make channel_list in struct
->> brcmf_scan_params_le and struct brcmf_scan_params_v2_le a flexible array.
->>
->> This fixes this annoying (though harmless) warning when the kernel is built
->> with CONFIG_FORTIFY_SOURCE=y:
->>
->> ------------[ cut here ]------------
->> memcpy: detected field-spanning write (size 76) of single field
->> "&params_le->channel_list[0]" at
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size
->> 2)
->> WARNING: CPU: 2 PID: 991 at
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072
->> brcmf_scan_params_v2_to_v1+0xd4/0x118 [brcmfmac]
->> Modules linked in: qrtr(E) algif_hash(E) aes_neon_bs(E)
->> aes_neon_blk(E) algif_skcipher(E) af_alg(E) bnep(E) brcmfmac_wcc(E)
->> bcm2835_v4l2(CE) bcm2835_mmal_vchiq(CE) videobuf2_vmalloc(E)
->> videobuf2_memops(E) videobuf2_v4l2(E) videodev(E) hci_uart(E)
->> btsdio(E) videobuf2_common(E) btbcm(E) mc(E) snd_bcm2835(CE)
->> bluetooth(E) snd_pcm(E) brcmfmac(E) snd_timer(E) cpufreq_dt(E) snd(E)
->> soundcore(E) cfg80211(E) ecdh_generic(E) brcmutil(E)
->> raspberrypi_cpufreq(E) rfkill(E) vchiq(CE) bcm2711_thermal(E)
->> leds_gpio(E) fuse(E) efi_pstore(E) dmi_sysfs(E) ip_tables(E)
->> x_tables(E) rpcsec_gss_krb5(E) auth_rpcgss(E) nfsv4(E) dns_resolver(E)
->> nfs(E) lockd(E) grace(E) fscache(E) netfs(E) af_packet(E) mmc_block(E)
->> xhci_pci(E) xhci_pci_renesas(E) xhci_hcd(E) usbcore(E) usb_common(E)
->> clk_raspberrypi(E) gpio_raspberrypi_exp(E) bcm2835_dma(E)
->> crct10dif_ce(E) virt_dma(E) pcie_brcmstb(E) sdhci_iproc(E)
->> gpio_regulator(E) sdhci_pltfm(E) sdhci(E) mmc_core(E) fixed(E)
->> nvmem_rmem(E) sunrpc(E) sg(E) dm_multipath(E) dm_mod(E) efivarfs(E)
->> Unloaded tainted modules: aes_ce_cipher(E):1
->> CPU: 2 PID: 991 Comm: wpa_supplicant Tainted: G C E
->> 6.5.0-rc4-dynswiotlb+ #27 2ec0961165cc91fdbec101d9d43b3331ba4f0927
->> Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.04 04/01/2023
->> pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->> pc : brcmf_scan_params_v2_to_v1+0xd4/0x118 [brcmfmac]
->> lr : brcmf_scan_params_v2_to_v1+0xd4/0x118 [brcmfmac]
->> sp : ffff8000829ab590
->> x29: ffff8000829ab590 x28: 0000000000000000 x27: 0000000000000001
->> x26: ffff000105e7e0a4 x25: ffff00010a0bcb48 x24: ffff000101e03800
->> x23: ffff000105ec8920 x22: ffff000106332980 x21: ffff00010a0bc0c0
->> x20: ffff00010a0bcb90 x19: ffff00010a0bc108 x18: ffffffffffffffff
->> x17: 0000000000000000 x16: 0000000000000000 x15: 616f72622f737365
->> x14: 6c657269772f7465 x13: 616d666d6372622f x12: 31313230386d6372
->> x11: 00000000ffffdfff x10: ffff800081ad3328 x9 : ffff800080130694
->> x8 : 000000000002ffe8 x7 : c0000000ffffdfff x6 : 00000000000affa8
->> x5 : ffff0001fef75e00 x4 : 0000000000000000 x3 : 0000000000000027
->> x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff00010aa0e000
->> Call trace:
->>  brcmf_scan_params_v2_to_v1+0xd4/0x118 [brcmfmac
->> 38c4a81a3b85b4aff1650c67f95f20bc542d60c1]
->>  brcmf_run_escan+0x148/0x1a0 [brcmfmac 38c4a81a3b85b4aff1650c67f95f20bc542d60c1]
->>  brcmf_do_escan+0x74/0xe0 [brcmfmac 38c4a81a3b85b4aff1650c67f95f20bc542d60c1]
->>  brcmf_cfg80211_scan+0xcc/0x298 [brcmfmac 38c4a81a3b85b4aff1650c67f95f20bc542d60c1]
->>  rdev_scan+0x38/0x158 [cfg80211 8907673111c49ec56be88af3d38994cc1cf54cb8]
->>  cfg80211_scan+0x134/0x178 [cfg80211 8907673111c49ec56be88af3d38994cc1cf54cb8]
->>  nl80211_trigger_scan+0x3e8/0x768 [cfg80211 8907673111c49ec56be88af3d38994cc1cf54cb8]
->>  genl_family_rcv_msg_doit.isra.0+0xc0/0x130
->>  genl_rcv_msg+0x1e4/0x278
->>  netlink_rcv_skb+0x64/0x138
->>  genl_rcv+0x40/0x60
->>  netlink_unicast+0x1cc/0x2d8
->>  netlink_sendmsg+0x1d4/0x448
->>  sock_sendmsg+0x64/0xc0
->>  ____sys_sendmsg+0x260/0x2e0
->>  ___sys_sendmsg+0x88/0xf0
->>  __sys_sendmsg+0x70/0xd8
->>  __arm64_sys_sendmsg+0x2c/0x40
->>  invoke_syscall+0x78/0x100
->>  el0_svc_common.constprop.0+0x100/0x130
->>  do_el0_svc+0x40/0xa8
->>  el0_svc+0x34/0x138
->>  el0t_64_sync_handler+0x120/0x130
->>  el0t_64_sync+0x1a8/0x1b0
->> ---[ end trace 0000000000000000 ]---
->>
->> Signed-off-by: Petr Tesarik <petr.tesarik.ext@huawei.com>
-> 
-> Is this the same issue as Hans patch fixes?
-> 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20230729140500.27892-1-hdegoede@redhat.com/
+On Fri, Jul 28, 2023 at 11:43:43AM +0300, Dmitry Antipov wrote:
+> Since 'mwifiex_process_tx()' is the only place from where both
+> 'mwifiex_process_sta_txpd()' and 'mwifiex_process_uap_txpd()'
+> are called, these functions may be converted to 'void' after
+> moving skb layout check to the caller, which may be simplified
+> as well. Also adjust somewhat obfuscating error messages and
+> add 'mwifiex_interface_name()' to make them a bit more useful.
 
-Yes, I wasn't aware of this other patch (I'm not subscribed to
-linux-wireless). I see, Hans approach is less intrusive.
+Do you actually run this driver on anything, or are you just compile
+testing / running static analysis? Because IIUC, all these messages are
+perfectly clear when using the mwifiex_dbg() macro, which usually ends
+up in dev_info(), and includes things like "mwifiex_pcie",
+"mwifiex_sdio", and "mwifiex_usb" already. So the
+mwifiex_interface_name() stuff just seems superfluous. I'd suggest
+removing that.
 
-Petr T
+At the same time, it seems like you're working hard on trying *not* to
+get your stuff merged in a timely manner, as you shift the goalposts
+every time you refactor your series. Specifically, you're now violating
+basic guidelines like these:
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#commit_messages
+
+"If you find yourself listing out a number of changes in the commit
+message as a bulleted list or similar, consider splitting up the patch
+into discrete changes that each do one thing. Similarly, if one of the
+additional considerations is refactoring, try to shift that into a
+separate patch."
+
+This started out as "avoid BUG_ON()", which is a great goal on its own.
+But now you haven't even mentioned that in your laundry list of
+refactors. This seems like you have at least two patch candidates here:
+refactoring the error handling, and dropping the BUG_ON(). (If the
+refactoring becomes extremely trivial, maybe this is OK as 1 patch. But
+in its current form, it's not.)
+
+Before you resubmit, please read the patch submission guidelines again.
+I'd also suggest sticking this (as multiple patches) at the end of the
+series, so the other patches (which have been reviewed/ack'd multiple
+times) can land cleanly.
+
+Brian
+
+> Suggested-by: Brian Norris <briannorris@chromium.org>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+> v2: some redesign in attempt to integrate Brian's feedback
+[...]
