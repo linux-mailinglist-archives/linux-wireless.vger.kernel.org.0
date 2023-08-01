@@ -2,76 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96C7776A7D2
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 06:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C99676A81D
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 07:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbjHAEVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 00:21:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60950 "EHLO
+        id S229993AbjHAFAN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 01:00:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjHAEVh (ORCPT
+        with ESMTP id S229461AbjHAFAL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 00:21:37 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13DB8129
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 21:21:35 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3711uRP1000919;
-        Tue, 1 Aug 2023 04:21:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=0RtP2Y3YQXXQfiijFoqpCWqcsbUeRAPKQJssdfDcNFs=;
- b=pnxwmuV4w8VfwVOeT14cieYychGwYFikctTfkzvpMiLMYsFEvSdg0B9Vb/6td9nOL1kf
- eehsLRSFQVs6zm6RFlhD367bYfO2S/33t0s8Om0AB5rFxh2u+tsoO0hgf3z0Ig7KM7Ub
- 0ZWhDX28Zc3Itoc9pThZQRpjy1V7knEu8tOnxTajgMhbxDJwi/36Gv20vmU0vb8El1vs
- lCcd3xDmZl/WK6rLPKGaRBe6UeY7MoSmBhQf8SS5NluacKWrtV39IR5OjkO+ROcF+duz
- RI5g4RR4zqROqwHUMTnb9Po0551zEV7U7MoBEZRtgDb+24kbmmyNg0BTy+VQXbyQpSFG ug== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s6d8gt2fu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 01 Aug 2023 04:21:17 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3714Korw020313
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 1 Aug 2023 04:20:50 GMT
-Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Mon, 31 Jul
- 2023 21:20:49 -0700
-Message-ID: <09c8f5b1-dfa0-9d3f-4164-cfad4d4edc67@quicinc.com>
-Date:   Mon, 31 Jul 2023 22:20:48 -0600
+        Tue, 1 Aug 2023 01:00:11 -0400
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654051FC0
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 22:00:08 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:170e:0:640:d60c:0])
+        by forward102a.mail.yandex.net (Yandex) with ESMTP id CCD7446D44;
+        Tue,  1 Aug 2023 08:00:05 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 40Ji1unDfW20-sjL1kzYh;
+        Tue, 01 Aug 2023 08:00:05 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1690866005;
+        bh=GSsKorbx5RHJKMUhD6krP0e+LaWLX/fDEBFkpcT41kY=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=pitjjJdCXYp1+L3VCuu2u/HU1W9x6ovyToYbq4xa8+/L03n0c8W4ILQ8j3wlI1QB5
+         AULqhbDgog3K2yjD8S/uWEwu/ow407fXaOVCHvvXUuQ69Bi9vtVMxKrn+qLfoO+d89
+         td7OwGiIkJXJA610tq4S9Gd4eiyzA7FN+xhJAU6I=
+Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/4] wifi: mt76: handle possible error returned by sdio_set_host_pm_flags()
+Date:   Tue,  1 Aug 2023 07:57:20 +0300
+Message-ID: <20230801050000.18864-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH v4 1/3] bus: mhi: host: allow MHI client drivers to
- provide the firmware via a pointer
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, <mhi@lists.linux.dev>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20230727100430.3603551-1-kvalo@kernel.org>
- <20230727100430.3603551-2-kvalo@kernel.org>
-From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
-In-Reply-To: <20230727100430.3603551-2-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: DgV7rGZyieAPqpMTFAFGHJnkMVOiCRJ2
-X-Proofpoint-GUID: DgV7rGZyieAPqpMTFAFGHJnkMVOiCRJ2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-31_18,2023-07-31_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0 adultscore=0
- phishscore=0 priorityscore=1501 clxscore=1011 mlxlogscore=793
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308010039
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,20 +48,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/27/2023 4:04 AM, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> Currently MHI loads the firmware image from the path provided by client
-> devices. ath11k needs to support firmware image embedded along with meta data
-> (named as firmware-2.bin). So allow the client driver to request the firmware
-> file from user space on it's own and provide the firmware image data and size
-> to MHI via a pointer struct mhi_controller::fw_data.
-> 
-> This is an optional feature, if fw_data is NULL MHI load the firmware using the
-> name from struct mhi_controller::fw_image string as before.
-> 
-> Tested with ath11k and WCN6855 hw2.0.
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+In 'mt7663s_suspend()', drop nested declaration of 'err' and
+handle possible error returned by 'sdio_set_host_pm_flags()'.
 
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/sdio.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+index fc547a0031ea..6607577d22cf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+@@ -188,14 +188,14 @@ static int mt7663s_suspend(struct device *dev)
+ 
+ 	if (!test_bit(MT76_STATE_SUSPEND, &mdev->mphy.state) &&
+ 	    mt7615_firmware_offload(mdev)) {
+-		int err;
+-
+ 		err = mt76_connac_mcu_set_hif_suspend(&mdev->mt76, true);
+ 		if (err < 0)
+ 			return err;
+ 	}
+ 
+-	sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
++	err = sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
++	if (err)
++		return err;
+ 
+ 	err = mt7615_mcu_set_fw_ctrl(mdev);
+ 	if (err)
+-- 
+2.41.0
+
