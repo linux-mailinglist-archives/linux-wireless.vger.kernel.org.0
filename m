@@ -2,109 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB97D76A479
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 01:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EC7176A6C8
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 04:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230301AbjGaXGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jul 2023 19:06:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32964 "EHLO
+        id S231237AbjHACMS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 Jul 2023 22:12:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbjGaXGP (ORCPT
+        with ESMTP id S229807AbjHACMQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jul 2023 19:06:15 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61420FB
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 16:06:14 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-686f25d045cso3371444b3a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 16:06:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690844774; x=1691449574;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jM8pm+E+CXbfooJNhDR8HGuge+AEaE1NLBAsYmmAzr0=;
-        b=N1hwJWEiqpsml5Bo2TgnS3AB/U40NkvabYIHbcFb5+A5l3504hshHCBqDFCWQ5JAlV
-         +C6LSQyAGjKXpTSgWJU8/HxkWI7bHMv+Pz0BxDwvBYx1NC/VQD/sQgEYUzLKftFhSOA1
-         Vp336OUbiXyy1rEw7UNb8Uff2dnhtUwBnM40s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690844774; x=1691449574;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jM8pm+E+CXbfooJNhDR8HGuge+AEaE1NLBAsYmmAzr0=;
-        b=lH+VZ5Ogx+Vpa4n5mh09H1HwvL7fh/O1MlNAiQO2W1vJm1EUvl0YgVW9jx1TmnIzBD
-         xZe1HB0ivioMUySuimOanjRSQDEWmuRgs4c+qTeqU1iYnkU+3cl8du7dQiM4VDyORgxW
-         vc2jBtC9kkA2zWx2DO2W1uPqncHDpyPcoVNR/L81JBtbC7VKC6pHVgpZlOlrMcBk60iz
-         Q/7HxZ/tnUvtQa6FYRveMA61QZoVOicc5KbzruxCGohmVsuYUDDDH5lFX5oQTVSfrZ36
-         NNUx+0D0r06s6WeVuLxohaCGPrxVJD2pAGIwRhmlrlQtFlKemDUj6vat86N307pW+ETA
-         GmMw==
-X-Gm-Message-State: ABy/qLYqs1otZWP5UML9keK0dcHM4CiyRjcFy6YyuvElwvaPpq1y1jD/
-        NiCSjcMb0lOE4PBk9nIXeWhjpw==
-X-Google-Smtp-Source: APBJJlGjtUSJqd8h+Zb/CE+Xh78UucKPRFisLww89RC6rXJllK8itDyIS7FUg9WY3VrUtNqZvTdvVA==
-X-Received: by 2002:a05:6a20:3d1e:b0:13d:17cc:5bca with SMTP id y30-20020a056a203d1e00b0013d17cc5bcamr9836125pzi.18.1690844773849;
-        Mon, 31 Jul 2023 16:06:13 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id q13-20020a656a8d000000b0053051d50a48sm7858683pgu.79.2023.07.31.16.06.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 16:06:13 -0700 (PDT)
-Date:   Mon, 31 Jul 2023 16:06:12 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Subject: Re: [PATCH] wifi: brcmfmac: Fix field-spanning write in
- brcmf_scan_params_v2_to_v1()
-Message-ID: <202307311605.706EEC44FD@keescook>
-References: <20230729140500.27892-1-hdegoede@redhat.com>
+        Mon, 31 Jul 2023 22:12:16 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 307031BCC
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 19:12:07 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3712BidnE016124, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3712BidnE016124
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 1 Aug 2023 10:11:45 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Tue, 1 Aug 2023 10:11:58 +0800
+Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 1 Aug 2023
+ 10:11:57 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <timlee@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/8] wifi: rtw89: support more formats of firmware file
+Date:   Tue, 1 Aug 2023 10:11:19 +0800
+Message-ID: <20230801021127.15919-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230729140500.27892-1-hdegoede@redhat.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jul 29, 2023 at 04:05:00PM +0200, Hans de Goede wrote:
-> Using brcmfmac with 6.5-rc3 on a brcmfmac43241b4-sdio triggers
-> a backtrace caused by the following field-spanning error:
-> 
-> memcpy: detected field-spanning write (size 120) of single field
->   "&params_le->channel_list[0]" at
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size 2)
-> 
-> Fix this by replacing the channel_list[1] declaration at the end of
-> the struct with a flexible array declaration.
-> 
-> Most users of struct brcmf_scan_params_le calculate the size to alloc
-> using the size of the non flex-array part of the struct + needed extra
-> space, so they do not care about sizeof(struct brcmf_scan_params_le).
-> 
-> brcmf_notify_escan_complete() however uses the struct on the stack,
-> expecting there to be room for at least 1 entry in the channel-list
-> to store the special -1 abort channel-id.
-> 
-> To make this work use an anonymous union with a padding member
-> added + the actual channel_list flexible array.
-> 
-> Cc: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Initially, firmware file contains stuff related to WiFi CPU, and normally
+it contains two firmwares with normal and WoWLAN types.
 
-Looks good to me; it's consistent with how similar 1-element arrays
-with sensitive structure sizes have been updated lately. Thanks for
-the investigation!
+To reduce firmware size, we split debug formatted text into an individual
+part (*1), and driver can decide to use it optionally. When we want to
+debug firmware, turn on firmware log via debugfs, and then firmware sends
+C2H events with log text ID that driver looks up the corresponding format
+text and print out. Add this by patches 1/8 and 8/2.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+  +===========================================+  <------------------------+
+  |      WiFi CPU multi-firmware header       |                           |
+  +-------------------------------------------+                           |
+  |      WiFi CPU firmware (normal type *2) --|----------------------+    |
+  +-------------------------------------------+                      |    |
+  |      WiFi CPU firmware (WoWLAN type)      |                      |    |
+  +-------------------------------------------+                      |    |
+  |      log formatted text (*1)              |                      |    |
+  +===========================================+                      |    |
+                                                                     |    |
+The detail of a Wifi CPU firmware (*2 in above figure) like below.   |    |
+The format is also used new hardware component named BB MCU, so we   |    |
+need more fields to record the information, and then firmware header |    |
+format v1 is introduced by patches 3/8 and 4/8.                      |    |
+                                                                     |    |
+  +---------------------------------------+    <---------------------+    |
+  |      Header                           |                               |
+  +---------------------------------------+                               |
+  |      Section header 1                 |                               |
+  |      Section header 2                 |                               |
+  |      Section header 3                 |                               |
+  |      ...                              |                               |
+  +---------------------------------------+                               |
+  |      Dynamic header (variable length) |                               |
+  +---------------------------------------+                               |
+  |      Data used & pointed by section   |                               |
+  |      ...                              |                               |
+  +---------------------------------------+                               |
+                                                                          |
+In order to move static const tables from driver into firmware file, we   |
+introduce `firmware elements` followed by WiFi CPU multi-firmware.        |
+Since the header of WiFi CPU multi-firmware explicitly points out start   |
+address and length, old driver will still access expected range.          |
+We introduce the infrastructure by patch 6/8.                             |
+                                                                          |
+  +===========================================+                           |
+  |      WiFi CPU multi-firmware   -----------|---------------------------+
+  |                             +-------------+
+  |                             |   padding   |
+  +===========================================+
+  | elm ID 1 | elm size |  other header data  |
+  +----------+----------+                     |
+  |                                           |
+  +-------------------------------------------+
+  | content (variable length)                 |
+  |                             +-------------+
+  |                             |   padding   |
+  +===========================================+
+  | elm ID 2 | elm size |  other header data  |
+  +----------+----------+                     |
+  |                                           |
+  +-------------------------------------------+
+  | content (variable length)                 |
+  |                   +-----------------------+
+  |                   |
+  +===================+
 
--Kees
+Chin-Yen Lee (2):
+  Wifi: rtw89: recognize log format from firmware file
+  wifi: rtw89: support firmware log with formatted text
+
+Ping-Ke Shih (6):
+  wifi: rtw89: introduce v1 format of firmware header
+  wifi: rtw89: add firmware parser for v1 format
+  wifi: rtw89: add firmware suit for BB MCU 0/1
+  wifi: rtw89: introduce infrastructure of firmware elements
+  wifi: rtw89: add to parse firmware elements of BB and RF tables
+  wifi: rtw89: return failure if needed firmware elements are not
+    recognized
+
+ drivers/net/wireless/realtek/rtw89/core.c     |   8 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  41 +-
+ drivers/net/wireless/realtek/rtw89/debug.c    |  14 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       | 537 +++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/fw.h       | 121 +++-
+ drivers/net/wireless/realtek/rtw89/mac.c      |   3 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      |  15 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   1 +
+ 11 files changed, 696 insertions(+), 47 deletions(-)
 
 -- 
-Kees Cook
+2.25.1
+
