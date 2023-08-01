@@ -2,197 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7023276A6CC
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 04:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96C7776A7D2
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 06:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231200AbjHACMV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 Jul 2023 22:12:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53562 "EHLO
+        id S229748AbjHAEVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 00:21:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231174AbjHACMT (ORCPT
+        with ESMTP id S229510AbjHAEVh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 Jul 2023 22:12:19 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id ADFC61B1
-        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 19:12:17 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3712BtQA2016561, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3712BtQA2016561
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 1 Aug 2023 10:11:55 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Tue, 1 Aug 2023 10:12:09 +0800
-Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 1 Aug 2023
- 10:12:08 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <timlee@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 8/8] wifi: rtw89: return failure if needed firmware elements are not recognized
-Date:   Tue, 1 Aug 2023 10:11:27 +0800
-Message-ID: <20230801021127.15919-9-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230801021127.15919-1-pkshih@realtek.com>
-References: <20230801021127.15919-1-pkshih@realtek.com>
+        Tue, 1 Aug 2023 00:21:37 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13DB8129
+        for <linux-wireless@vger.kernel.org>; Mon, 31 Jul 2023 21:21:35 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3711uRP1000919;
+        Tue, 1 Aug 2023 04:21:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=0RtP2Y3YQXXQfiijFoqpCWqcsbUeRAPKQJssdfDcNFs=;
+ b=pnxwmuV4w8VfwVOeT14cieYychGwYFikctTfkzvpMiLMYsFEvSdg0B9Vb/6td9nOL1kf
+ eehsLRSFQVs6zm6RFlhD367bYfO2S/33t0s8Om0AB5rFxh2u+tsoO0hgf3z0Ig7KM7Ub
+ 0ZWhDX28Zc3Itoc9pThZQRpjy1V7knEu8tOnxTajgMhbxDJwi/36Gv20vmU0vb8El1vs
+ lCcd3xDmZl/WK6rLPKGaRBe6UeY7MoSmBhQf8SS5NluacKWrtV39IR5OjkO+ROcF+duz
+ RI5g4RR4zqROqwHUMTnb9Po0551zEV7U7MoBEZRtgDb+24kbmmyNg0BTy+VQXbyQpSFG ug== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s6d8gt2fu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Aug 2023 04:21:17 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3714Korw020313
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 1 Aug 2023 04:20:50 GMT
+Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Mon, 31 Jul
+ 2023 21:20:49 -0700
+Message-ID: <09c8f5b1-dfa0-9d3f-4164-cfad4d4edc67@quicinc.com>
+Date:   Mon, 31 Jul 2023 22:20:48 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH v4 1/3] bus: mhi: host: allow MHI client drivers to
+ provide the firmware via a pointer
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>, <mhi@lists.linux.dev>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20230727100430.3603551-1-kvalo@kernel.org>
+ <20230727100430.3603551-2-kvalo@kernel.org>
+From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
+In-Reply-To: <20230727100430.3603551-2-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: DgV7rGZyieAPqpMTFAFGHJnkMVOiCRJ2
+X-Proofpoint-GUID: DgV7rGZyieAPqpMTFAFGHJnkMVOiCRJ2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-31_18,2023-07-31_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0 adultscore=0
+ phishscore=0 priorityscore=1501 clxscore=1011 mlxlogscore=793
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308010039
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-WiFi 7 chips doesn't have static const tables defined in driver. If tables
-aren't loaded properly from firmware file, driver can get NULL pointer
-access exception. One way is to add the checking statements when trying to
-access these tables, but I choose to check them right after loading
-firmware elements from firmware file, so I don't need to add error handlers
-everywhere.
+On 7/27/2023 4:04 AM, Kalle Valo wrote:
+> From: Kalle Valo <quic_kvalo@quicinc.com>
+> 
+> Currently MHI loads the firmware image from the path provided by client
+> devices. ath11k needs to support firmware image embedded along with meta data
+> (named as firmware-2.bin). So allow the client driver to request the firmware
+> file from user space on it's own and provide the firmware image data and size
+> to MHI via a pointer struct mhi_controller::fw_data.
+> 
+> This is an optional feature, if fw_data is NULL MHI load the firmware using the
+> name from struct mhi_controller::fw_image string as before.
+> 
+> Tested with ath11k and WCN6855 hw2.0.
+> 
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Currently, the needed firmware elements of WiFi 6 chips are all zero, and
-coming WiFi 7 chip will need at least BB MCU, parameters of BB and RF.
-We will add them after 8922AE is verified.
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.h     |  1 +
- drivers/net/wireless/realtek/rtw89/fw.c       | 11 +++++++++++
- drivers/net/wireless/realtek/rtw89/fw.h       |  2 ++
- drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
- 7 files changed, 18 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index b4aa1f9f041b1..468c14d035340 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3181,6 +3181,7 @@ struct rtw89_chip_info {
- 	const char *fw_basename;
- 	u8 fw_format_max;
- 	bool try_ce_fw;
-+	u32 needed_fw_elms;
- 	u32 fifo_size;
- 	bool small_fifo_size;
- 	u32 dle_scc_rsvd_size;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index be629746b15b0..3935646c46678 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -656,6 +656,8 @@ int rtw89_fw_recognize_elements(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_fw_info *fw_info = &rtwdev->fw;
- 	const struct firmware *firmware = fw_info->req.firmware;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	u32 unrecognized_elements = chip->needed_fw_elms;
- 	const struct rtw89_fw_element_handler *handler;
- 	const struct rtw89_fw_element_hdr *hdr;
- 	u32 elm_size;
-@@ -663,6 +665,8 @@ int rtw89_fw_recognize_elements(struct rtw89_dev *rtwdev)
- 	u32 offset;
- 	int ret;
- 
-+	BUILD_BUG_ON(sizeof(chip->needed_fw_elms) * 8 < RTW89_FW_ELEMENT_ID_NUM);
-+
- 	offset = rtw89_mfw_get_size(rtwdev);
- 	offset = ALIGN(offset, RTW89_FW_ELEMENT_ALIGN);
- 	if (offset == 0)
-@@ -693,11 +697,18 @@ int rtw89_fw_recognize_elements(struct rtw89_dev *rtwdev)
- 			rtw89_info(rtwdev, "Firmware element %s version: %4ph\n",
- 				   handler->name, hdr->ver);
- 
-+		unrecognized_elements &= ~BIT(elem_id);
- next:
- 		offset += sizeof(*hdr) + elm_size;
- 		offset = ALIGN(offset, RTW89_FW_ELEMENT_ALIGN);
- 	}
- 
-+	if (unrecognized_elements) {
-+		rtw89_err(rtwdev, "Firmware elements 0x%08x are unrecognized\n",
-+			  unrecognized_elements);
-+		return -ENOENT;
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 9eb908122a4bc..94bdfc6059ba9 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -3511,6 +3511,8 @@ enum rtw89_fw_element_id {
- 	RTW89_FW_ELEMENT_ID_RADIO_C = 6,
- 	RTW89_FW_ELEMENT_ID_RADIO_D = 7,
- 	RTW89_FW_ELEMENT_ID_RF_NCTL = 8,
-+
-+	RTW89_FW_ELEMENT_ID_NUM,
- };
- 
- struct rtw89_fw_element_hdr {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index c3ffcb645ebf7..190297087ede3 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2338,6 +2338,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
- 	.fw_basename		= RTW8851B_FW_BASENAME,
- 	.fw_format_max		= RTW8851B_FW_FORMAT_MAX,
- 	.try_ce_fw		= true,
-+	.needed_fw_elms		= 0,
- 	.fifo_size		= 196608,
- 	.small_fifo_size	= true,
- 	.dle_scc_rsvd_size	= 98304,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 6257414a3b4bd..e157e3435daf0 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2075,6 +2075,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.fw_basename		= RTW8852A_FW_BASENAME,
- 	.fw_format_max		= RTW8852A_FW_FORMAT_MAX,
- 	.try_ce_fw		= false,
-+	.needed_fw_elms		= 0,
- 	.fifo_size		= 458752,
- 	.small_fifo_size	= false,
- 	.dle_scc_rsvd_size	= 0,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 718f993da62af..334b545915085 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -2507,6 +2507,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
- 	.fw_basename		= RTW8852B_FW_BASENAME,
- 	.fw_format_max		= RTW8852B_FW_FORMAT_MAX,
- 	.try_ce_fw		= true,
-+	.needed_fw_elms		= 0,
- 	.fifo_size		= 196608,
- 	.small_fifo_size	= true,
- 	.dle_scc_rsvd_size	= 98304,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 9c7c9812d4f45..208153b664935 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2806,6 +2806,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.fw_basename		= RTW8852C_FW_BASENAME,
- 	.fw_format_max		= RTW8852C_FW_FORMAT_MAX,
- 	.try_ce_fw		= false,
-+	.needed_fw_elms		= 0,
- 	.fifo_size		= 458752,
- 	.small_fifo_size	= false,
- 	.dle_scc_rsvd_size	= 0,
--- 
-2.25.1
-
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
