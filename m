@@ -2,130 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AACDE76BF8D
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 23:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96C3F76C089
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 00:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230471AbjHAVxs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 17:53:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56676 "EHLO
+        id S231789AbjHAWq5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 18:46:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbjHAVxq (ORCPT
+        with ESMTP id S230398AbjHAWq4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 17:53:46 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B7D212C
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 14:53:44 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d05883d850fso6983412276.3
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Aug 2023 14:53:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690926824; x=1691531624;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=0s9Ij9vBA+8Dxn+A8h2tCJt9Mf1v/5GkMWT8RzF9uak=;
-        b=c4Rdjt9h37wWUjU3aTzC1zIQA1StqtAUF+DknKtfESVPoN0s2oyoxUv6TVaFQFNJzZ
-         rES9RGuIUJoQ5lvOAUwhANYn/0TFahVdDwikuos4m4wZWQw2e6Vo4y9ODAhiCpQbUI76
-         muhMT50oXqA6sN/Z9+iEdcaP6zwUBeKCwap/z2xQmFNlMSgMdO/BGM5ChB9Hu28koRNi
-         gRHyb1rPRAp1AdFbIoFcXYsZsenVvQDGDxFIGivsHUe/bGC9wKYSaAxgDB6TspJqbYIh
-         yMwZ1Da2drE2SR8eAAi6drYZZ/RjOt5AQ1orl+HWBF22YTPwu1L7enFcbBzXTxJ0UzPY
-         cHXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690926824; x=1691531624;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0s9Ij9vBA+8Dxn+A8h2tCJt9Mf1v/5GkMWT8RzF9uak=;
-        b=XI00VyqWAvCm9os9jZsRsh9z+n5HNjdEOmpp4X0oC78Xovjng8AP6IhjLy+pe/6zfW
-         +gG2XxjTtC/d8s+wT8CntxytkyG56K8CW0edpHcLW7X56Qm36srYxXksXU/Oq+Yi9IeZ
-         URaBJv9/MB3hhwnS8mC71tsxksSDPp0CST5LemDWLTe2cqw2CjKcdXdJMliwd74DLnLJ
-         ml79WwxLC53NMTpY0JPpT9JiScTTMk7nWr3BU+WSd7GInKno3H5hhp70mbWnjfF8qbPz
-         NpnuVyOHNxye0YGdDyL37mWfn/cwC0Ddkajx4suohsIWW/puL67FphhLIiXdwABZmp35
-         xxFQ==
-X-Gm-Message-State: ABy/qLZgaLhnAOkLKQwo80fbESpsXPKdiw/pn44IYMQv97K0CtpRmAIB
-        AkH3yGplkt2k6wncqKZawmythhvA1Mq8u6WDtA==
-X-Google-Smtp-Source: APBJJlHjR+QqYsFFxi0BqybEHISyS5oTupXYpcQVQD9NnHionwHqGL30J/BHp2LZvr3lgY/z7d6TefUBLOOV5rckWw==
-X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a05:6902:70b:b0:d0f:15a4:5a50 with
- SMTP id k11-20020a056902070b00b00d0f15a45a50mr121648ybt.9.1690926824002; Tue,
- 01 Aug 2023 14:53:44 -0700 (PDT)
-Date:   Tue, 01 Aug 2023 21:53:36 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAN9+yWQC/x3NQQrCQAxG4auUrA1k0kXFq4gLMb8aKGNJSlsov
- XsHl9/mvZ0S4Ui6dTsFFk//1YZy6ej1fdYP2K2ZVLSXqxS28AWRXDHz6oERmex1xsg+rbqJsA2 AmpVBeqUWmgJv3/6T++M4Tpg2XF10AAAA
-X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1690926823; l=1991;
- i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=6A+GJOrwYihb5Nlog/fMcMKwBjFRuYI+dUgwDlopuWg=; b=slqeS/TZUMd+Q0Atno0SF7YjZvgtRWbIWVp/GIfLhcim4px+zeKjRfBmJ9hX8B1cs7iyVJ34l
- 9c6U5ai2U4FCmzfbthB8H46kf7IoAksUa+S8WnxZKfFlXvy4rlMAQMU
-X-Mailer: b4 0.12.3
-Message-ID: <20230801-drivers-net-wireless-intel-ipw2x00-v1-1-ffd185c91292@google.com>
-Subject: [PATCH] wifi: ipw2x00: replace deprecated strncpy with strscpy
-From:   Justin Stitt <justinstitt@google.com>
-To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-hardening@vger.kernel.org,
-        Justin Stitt <justinstitt@google.com>
+        Tue, 1 Aug 2023 18:46:56 -0400
+Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 673B412B;
+        Tue,  1 Aug 2023 15:46:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1690930007;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=tHEfEuheYq1rMmU1IaJm2EFOCvJfmQ3ow7jMNnIxa/M=;
+        b=MSu4DZNa3bvrCP+heR+AOZfSkDu75Iw6kFWS/Dz71v+UIw3G/+MNovPRlwhwQjCu4o/ABp
+        1hPqUKZ5l4uckFZfOoayy8H9OJg7YHVz1mjJ3uSum1AyIZ15FDv7r4bCQw/UQ/LWm3+V3O
+        MftzXTLiFtt9FAUMu7bNzTuqYk6ItI8=
+From:   Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH v2 0/2] ath11k: Don't leak ack_status_frame during
+ tx_complete* processing
+Date:   Wed, 02 Aug 2023 00:46:25 +0200
+Message-Id: <20230802-ath11k-ack_status_leak-v2-0-c0af729d6229@narfation.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEGLyWQC/43OQQqDMBCF4avIrDsliQRrV71HKTLGiQZbI5NUC
+ uLdG3qCLr/F+3k7JJbACa7VDsJbSCEuBeZUgZtoGRnDUAxGmVpdlEbKk9Yzkpu7lCm/U/dkmrF
+ R1FCt2A6thzJehX34/ML3R7GX+MI8CdNfuU2jRlu3rm+Ms7Z3t4XEUy7vzlFGOI4v37F6AboAA
+ AA=
+To:     Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+Cc:     Kalle Valo <quic_kvalo@quicinc.com>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Sven Eckelmann <sven@narfation.org>, stable@vger.kernel.org
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1943; i=sven@narfation.org;
+ h=from:subject:message-id; bh=NCr+XZUPJYsm0GGWvSDiIYvPVRyI2bf72kEgqxdL8a0=;
+ b=owEBbQKS/ZANAwAKAV2HCgfBJntGAcsmYgBkyYtPRPa2MLdnh+gYmkV/WsqI2xv99XWI5nkj3
+ /ts+ZsZvnmJAjMEAAEKAB0WIQQXXSuHYSVz3OMy4AJdhwoHwSZ7RgUCZMmLTwAKCRBdhwoHwSZ7
+ Rg71D/9ZSifsvtEFs6NOoYEqLiMtXYjqpYmYHL4hOfX5PMLrn0HwizkdauD5KbxH6wy15zyMDlK
+ 2OdG1VIP+nWkJlSmdz+XXfO2PnsZ4lOt0TD0/x3DjH1HmsIEl9qgEfnokrTbMLe92kc/4bou4dz
+ 4t6y01LXeGQTud6BnXzAjP9Xgp+sT59VyQluNw5WIP7L60LE2aWbKWxGIK+wNni/TSFT+B7gZAd
+ 7cuLSjvtfPzfrq1fzkYRf7kj0gnELrljReFv9dx8gtrul7CasaPDuO693K6mP/azk44jRayidqV
+ /VyRfCyweUXk3EzFOG8r0fuqRQhazHIhdJXw6p2yyIFhuRsbyU6t8OumRF1g9RO0QQkiRDN+OKI
+ SLdZVUApoYohUzUwNVHukf11oFkywg+gtWWbdcQs3jh+NMAAuvwPA1qbdhgBVdlkEUzi1NFYxTe
+ LqHTrgWAKHNLFkJIUEgLK+bqFZKY5CwkYGDha1Fk2kHbJ1MgMJfyczvIz8Zu4dCzXu3Ykqq0N69
+ CHGiy/NKmLx/rWuexyHT7Y9SiUWeBgdiQrGNoJiiiSk0FZ2EF5YH1jUEk90x9J9a3GeFQCJx8Qs
+ 9J5x0uv5E6hJ/0UbJnbe6q+duCNOI3JCwj5KMJt7FiJn/NfZto8zwzdPNNhiwHCBdoxFH5WKA8T
+ 7mJPGZvU8smMj5Q==
+X-Developer-Key: i=sven@narfation.org; a=openpgp;
+ fpr=522D7163831C73A635D12FE5EC371482956781AF
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-`strncpy` is deprecated for use on NUL-terminated destination strings [1].
+It was noticed that APs stopped to accept clients after a while. With QCA's
+ath11k fork, it even printed some additional information:
 
-We can massively simplify the implementation by removing the ternary
-check for the smaller of `count` and `sizeof(buffer) - 1` as `strscpy`
-guarantees NUL-termination of its destination buffer [2]. This also
-means we do not need to explicity set the one past-the-last index to
-zero as `strscpy` handles this.
+  attach ack fail -28
 
-Furthermore, we can also utilize `strscpy`'s return value to populate
-`len` and simply pass in `sizeof(buffer)` to the `strscpy` invocation
-itself.
+when new clients tried to connect. hostapd was then usually showing a
+message like "deauthenticated due to inactivity (timer DEAUTH/REMOVE)".
 
-[1]: www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings
-[2]: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html
+While debugging this, it was noticed that this happened when a peer was no
+longer known by ath11k but an NL80211_CMD_PROBE_CLIENT triggered TX was
+just "finished" for it. In that case, ath11k was just throwing the skb away
+and left some information in various data structures in mac80211.
 
-Link: https://github.com/KSPP/linux/issues/90
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Justin Stitt <justinstitt@google.com>
+And after Felix pointed out ieee80211_free_txskb(), it is also clear that
+dev_kfree_skb_any() in these functions should also be calls to
+ieee80211_free_txskb() - but for these, I have nothing to trigger this
+error case. Still, a patch is provided as part of this patch series.
+
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
- drivers/net/wireless/intel/ipw2x00/ipw2200.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Changes in v2:
+- Simply switch to ieee80211_free_txskb() as recommended by Felix Fietkau
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-index dfe0f74369e6..8f2a834dbe04 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -1462,15 +1462,12 @@ static ssize_t scan_age_store(struct device *d, struct device_attribute *attr,
- 	struct ipw_priv *priv = dev_get_drvdata(d);
- 	struct net_device *dev = priv->net_dev;
- 	char buffer[] = "00000000";
--	unsigned long len =
--	    (sizeof(buffer) - 1) > count ? count : sizeof(buffer) - 1;
- 	unsigned long val;
- 	char *p = buffer;
- 
- 	IPW_DEBUG_INFO("enter\n");
- 
--	strncpy(buffer, buf, len);
--	buffer[len] = 0;
-+	ssize_t len = strscpy(buffer, buf, sizeof(buffer));
- 
- 	if (p[1] == 'x' || p[1] == 'X' || p[0] == 'x' || p[0] == 'X') {
- 		p++;
+  + ieee80211_free_txskb calls ieee80211_report_used_skb
+  + ieee80211_report_used_skb calls ieee80211_report_ack_skb (when
+    ack_frame_id is set and !IEEE80211_TX_INTFL_MLME_CONN_TX)
+  + ieee80211_report_ack_skb will remove skb from ack_status_frames
+
+- Add second patch which handles similar situations in the previously
+  patched functions
+- Link to v1: https://lore.kernel.org/r/20230801-ath11k-ack_status_leak-v1-1-539cb72c55bc@narfation.org
 
 ---
-base-commit: 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
-change-id: 20230801-drivers-net-wireless-intel-ipw2x00-d7ee2dd17032
+Sven Eckelmann (2):
+      ath11k: Don't drop tx_status when peer cannot be found
+      ath11k: Cleanup mac80211 references on failure during tx_complete
+
+ drivers/net/wireless/ath/ath11k/dp_tx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+---
+base-commit: 1d7dd5aa35474e553b8671b58579e0749b560779
+change-id: 20230801-ath11k-ack_status_leak-70a7a30e5d9f
 
 Best regards,
---
-Justin Stitt <justinstitt@google.com>
+-- 
+Sven Eckelmann <sven@narfation.org>
 
