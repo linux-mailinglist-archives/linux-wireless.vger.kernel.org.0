@@ -2,60 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 680E276AC8D
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 11:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C021376ADDB
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 11:34:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232727AbjHAJM1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 05:12:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42276 "EHLO
+        id S232427AbjHAJeF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 05:34:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232711AbjHAJMI (ORCPT
+        with ESMTP id S231627AbjHAJdr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 05:12:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B31F659F;
-        Tue,  1 Aug 2023 02:09:31 -0700 (PDT)
+        Tue, 1 Aug 2023 05:33:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA9F2107
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 02:31:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1367B614DC;
-        Tue,  1 Aug 2023 09:07:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D507C433CB;
-        Tue,  1 Aug 2023 09:07:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED52D61502
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 09:31:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AC7C433C7;
+        Tue,  1 Aug 2023 09:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690880875;
-        bh=JXpCu7p/CWKp6jZPKSaMbWukxpZFXpkVBsqC2SBekyA=;
+        s=k20201202; t=1690882297;
+        bh=CVqA5Vht4PuGwAE/9jtG/mG2kDAFYN6aNKTpoaaDIRI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=mCPPWfmGfXdKrezEfgf+KOFfVTcNZx0K/TebxxhKsXMzcwSfJxxCb2eJvgc9jx2dh
-         dLZqYaBonuGMqrlq+8DChi8+bStP7esX3VEHg1jTRvK4807qAiMV0MLkczC5FAOrIH
-         +RvIexjcALqhHlm/05+s6E2xowislWYJ7QN+iLKCtARlf0B6ntuQWj9X/otVtMIAVB
-         oBdkXvYMcvFEwAVPdKGVm0pERWFzHLni9h45fkrUdXlBs/Wc2psG98zEEEuew0yywf
-         0En+3hmm6ydDGSWBegsOyUE69SQGYz+vE7Yk7Aj5glDuoxbkbWeG1lOR33oNkretGz
-         hXKpAN9fiN3SQ==
+        b=QIEcNKYBVeRC2dpJ8xPnKX2OjtMQlMN77jlWqF5jID+27PETFayOGzNMm115182D8
+         GggIev406aUbHE+vfS0SmpBw5n4vQB5+l9kB5GO0GrhhD2Fxzdh5XX8BkEsyu9FSLo
+         sdIW+Z/1BNHyBP+cnqGZYCCpz6THPOELgNz/SIRS3N3F9LRugX8VWqwXe2n5lhtC89
+         MHg3qvRFmuU7KR0ctrBsTuuHOjRP3DWDGP3IWq/IN2oLrrrTH38ZMmzYGWGbJs+wvP
+         k8eoiE8+Q/7yv0rTBuD9Qo9qdzJzLk6cjv4g/25jQ/KHGf8GTA1Y4SgjQHsT+cszZ7
+         up5TolF18LzbA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Azeem Shaikh <azeemshaikh38@gmail.com>,
-        linux-hardening@vger.kernel.org,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] wifi: mt76: Replace strlcpy with strscpy
-References: <20230703181256.3712079-1-azeemshaikh38@gmail.com>
-        <169047317159.2400214.7882697833368890001.b4-ty@chromium.org>
-        <87tttpz6ne.fsf@kernel.org> <202307270959.900E3A345E@keescook>
-Date:   Tue, 01 Aug 2023 12:07:50 +0300
-In-Reply-To: <202307270959.900E3A345E@keescook> (Kees Cook's message of "Thu,
-        27 Jul 2023 10:01:37 -0700")
-Message-ID: <87zg3bxh95.fsf@kernel.org>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        linux-wireless@vger.kernel.org,
+        Herton Ronaldo Krzesinski <herton@canonical.com>,
+        Hin-Tak Leung <htl10@users.sourceforge.net>
+Subject: MAINTAINERS: rtl8187 wireless driver
+References: <20230608095051.116702-4-dmantipov@yandex.ru>
+        <168664510862.24637.10587241603155144086.kvalo@kernel.org>
+        <e030e496-b667-b1de-492b-8b0cc04ffe14@yandex.ru>
+        <87h6rad3fp.fsf@kernel.org>
+        <bccf723a-9f57-73a7-37af-badc6c156daa@yandex.ru>
+        <87cz1vbulk.fsf@kernel.org>
+        <2e78d1f5-4dc5-9665-e3a1-ee00dcc41630@yandex.ru>
+        <fe6b1abc-d529-c20f-3fcb-43d891091080@lwfinger.net>
+Date:   Tue, 01 Aug 2023 12:31:34 +0300
+In-Reply-To: <fe6b1abc-d529-c20f-3fcb-43d891091080@lwfinger.net> (Larry
+        Finger's message of "Fri, 16 Jun 2023 11:06:59 -0500")
+Message-ID: <87v8dzxg5l.fsf_-_@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -69,51 +66,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
++ Herton, Hin-Tak
 
-> On Thu, Jul 27, 2023 at 07:00:21PM +0300, Kalle Valo wrote:
->> Kees Cook <keescook@chromium.org> writes:
->> 
->> > On Mon, 03 Jul 2023 18:12:56 +0000, Azeem Shaikh wrote:
->> >> strlcpy() reads the entire source buffer first.
->> >> This read may exceed the destination size limit.
->> >> This is both inefficient and can lead to linear read
->> >> overflows if a source string is not NUL-terminated [1].
->> >> In an effort to remove strlcpy() completely [2], replace
->> >> strlcpy() here with strscpy().
->> >> 
->> >> [...]
->> >
->> > Applied, thanks!
->> >
->> > [1/1] wifi: mt76: Replace strlcpy with strscpy
->> >       https://git.kernel.org/kees/c/535c78cbc0c4
->> 
->> Why did you take this? mt76 is in active development so risk of
->> conflicts is high.
+Larry Finger <Larry.Finger@lwfinger.net> writes:
+
+> On 6/16/23 05:20, Dmitry Antipov wrote:
+>> Note MAINTAINERS marks drivers/net/wireless/realtek/rtl818x/rtl8180 as
+>> orphaned but drivers/net/wireless/realtek/rtl818x/rtl8187 as maintained.
 >
-> There didn't seem to be any further activity for 3 weeks, and it was a
-> relatively mechanical change.
+> Driver rtl8187 is certainly maintained, not that it gets many bug
+> reports. Devices that support 802.11g are not used very often, but at
+> least once a year I use my device to get online to retrieve the
+> drivers for a fancier wifi card that does not have a driver in Linux
+> or Windows. Drivers for the USB-based 8187A and 8187B have been in
+> Linux since version 2.6.38 (December 2010), and also in Windows 7, if
+> not in older versions.
 
-That's because the wireless trees were on a summer break:
+So this is what we have in MAINTAINERS right now:
 
-https://lore.kernel.org/all/87y1kncuh4.fsf@kernel.org/
+RTL8187 WIRELESS DRIVER
+M:	Herton Ronaldo Krzesinski <herton@canonical.com>
+M:	Hin-Tak Leung <htl10@users.sourceforge.net>
+M:	Larry Finger <Larry.Finger@lwfinger.net>
+L:	linux-wireless@vger.kernel.org
+S:	Maintained
+W:	https://wireless.wiki.kernel.org/
+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git
+F:	drivers/net/wireless/realtek/rtl818x/rtl8187/
 
-> I can drop it from my tree.
+In the git history the last activity from Herton is from 2010 so I think
+we should remove him.
 
-Yes, please drop this. And in the future don't take any wireless patches
-unless acked by Johannes or me, I want to minimize the risk of conflicts
-between the trees. If a patch is missed for whatever reason please let
-me know, do not take it to your tree.
+Is Hin-Tak still active? The last activity is from 2020.
 
-> What's needed for it to be picked up through wireless?
-
-I don't know why Felix didn't take this patch but now I assigned it to
-me on patchwork:
-
-https://patchwork.kernel.org/project/linux-wireless/patch/20230703181256.3712079-1-azeemshaikh38@gmail.com/
-
-It should be in wireless-next this week.
+Also the git tree is outdated so that should be removed.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
