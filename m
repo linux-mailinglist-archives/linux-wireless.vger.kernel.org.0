@@ -2,142 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 334E876BF69
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 23:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AACDE76BF8D
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Aug 2023 23:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbjHAVly (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 17:41:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52650 "EHLO
+        id S230471AbjHAVxs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 17:53:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232328AbjHAVlw (ORCPT
+        with ESMTP id S229535AbjHAVxq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 17:41:52 -0400
-Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCF0172B
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 14:41:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1690926106;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=PeuHe0ibwWfeipHJZ12SRhKU9WUjNOeatmosU/WErOA=;
-        b=R4crp2cZXdhurP9rHFku1DlFW6A7l1EO8s25nowqefJg7V1h4C5XcBRdsPLtL+1mDceASr
-        iT98oMUuBEeTBKv0zBdCOsVgzsQ6Zk6ubVq2W7CI1no9WUPXK2xmaCthmTntRFyTiPC1AG
-        g0rRQiOQloFxEWsPF2+WXDyOJPmbrlo=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     Kalle Valo <quic_kvalo@quicinc.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH RFC] ath11k: Don't drop tx_status when peer cannot be found
-Date:   Tue, 01 Aug 2023 23:41:43 +0200
-Message-ID: <4836979.GXAFRqVoOG@sven-l14>
-In-Reply-To: <a8986afb-3e92-8314-d932-3f2bc8ca1936@nbd.name>
-References: <20230801-ath11k-ack_status_leak-v1-1-539cb72c55bc@narfation.org>
- <a8986afb-3e92-8314-d932-3f2bc8ca1936@nbd.name>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1875646.tdWV9SEqCh";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        Tue, 1 Aug 2023 17:53:46 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B7D212C
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 14:53:44 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d05883d850fso6983412276.3
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Aug 2023 14:53:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690926824; x=1691531624;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0s9Ij9vBA+8Dxn+A8h2tCJt9Mf1v/5GkMWT8RzF9uak=;
+        b=c4Rdjt9h37wWUjU3aTzC1zIQA1StqtAUF+DknKtfESVPoN0s2oyoxUv6TVaFQFNJzZ
+         rES9RGuIUJoQ5lvOAUwhANYn/0TFahVdDwikuos4m4wZWQw2e6Vo4y9ODAhiCpQbUI76
+         muhMT50oXqA6sN/Z9+iEdcaP6zwUBeKCwap/z2xQmFNlMSgMdO/BGM5ChB9Hu28koRNi
+         gRHyb1rPRAp1AdFbIoFcXYsZsenVvQDGDxFIGivsHUe/bGC9wKYSaAxgDB6TspJqbYIh
+         yMwZ1Da2drE2SR8eAAi6drYZZ/RjOt5AQ1orl+HWBF22YTPwu1L7enFcbBzXTxJ0UzPY
+         cHXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690926824; x=1691531624;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0s9Ij9vBA+8Dxn+A8h2tCJt9Mf1v/5GkMWT8RzF9uak=;
+        b=XI00VyqWAvCm9os9jZsRsh9z+n5HNjdEOmpp4X0oC78Xovjng8AP6IhjLy+pe/6zfW
+         +gG2XxjTtC/d8s+wT8CntxytkyG56K8CW0edpHcLW7X56Qm36srYxXksXU/Oq+Yi9IeZ
+         URaBJv9/MB3hhwnS8mC71tsxksSDPp0CST5LemDWLTe2cqw2CjKcdXdJMliwd74DLnLJ
+         ml79WwxLC53NMTpY0JPpT9JiScTTMk7nWr3BU+WSd7GInKno3H5hhp70mbWnjfF8qbPz
+         NpnuVyOHNxye0YGdDyL37mWfn/cwC0Ddkajx4suohsIWW/puL67FphhLIiXdwABZmp35
+         xxFQ==
+X-Gm-Message-State: ABy/qLZgaLhnAOkLKQwo80fbESpsXPKdiw/pn44IYMQv97K0CtpRmAIB
+        AkH3yGplkt2k6wncqKZawmythhvA1Mq8u6WDtA==
+X-Google-Smtp-Source: APBJJlHjR+QqYsFFxi0BqybEHISyS5oTupXYpcQVQD9NnHionwHqGL30J/BHp2LZvr3lgY/z7d6TefUBLOOV5rckWw==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a05:6902:70b:b0:d0f:15a4:5a50 with
+ SMTP id k11-20020a056902070b00b00d0f15a45a50mr121648ybt.9.1690926824002; Tue,
+ 01 Aug 2023 14:53:44 -0700 (PDT)
+Date:   Tue, 01 Aug 2023 21:53:36 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAN9+yWQC/x3NQQrCQAxG4auUrA1k0kXFq4gLMb8aKGNJSlsov
+ XsHl9/mvZ0S4Ui6dTsFFk//1YZy6ej1fdYP2K2ZVLSXqxS28AWRXDHz6oERmex1xsg+rbqJsA2 AmpVBeqUWmgJv3/6T++M4Tpg2XF10AAAA
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1690926823; l=1991;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=6A+GJOrwYihb5Nlog/fMcMKwBjFRuYI+dUgwDlopuWg=; b=slqeS/TZUMd+Q0Atno0SF7YjZvgtRWbIWVp/GIfLhcim4px+zeKjRfBmJ9hX8B1cs7iyVJ34l
+ 9c6U5ai2U4FCmzfbthB8H46kf7IoAksUa+S8WnxZKfFlXvy4rlMAQMU
+X-Mailer: b4 0.12.3
+Message-ID: <20230801-drivers-net-wireless-intel-ipw2x00-v1-1-ffd185c91292@google.com>
+Subject: [PATCH] wifi: ipw2x00: replace deprecated strncpy with strscpy
+From:   Justin Stitt <justinstitt@google.com>
+To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-hardening@vger.kernel.org,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart1875646.tdWV9SEqCh
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Date: Tue, 01 Aug 2023 23:41:43 +0200
-Message-ID: <4836979.GXAFRqVoOG@sven-l14>
-In-Reply-To: <a8986afb-3e92-8314-d932-3f2bc8ca1936@nbd.name>
-MIME-Version: 1.0
+`strncpy` is deprecated for use on NUL-terminated destination strings [1].
 
-On Tuesday, 1 August 2023 20:11:51 CEST Felix Fietkau wrote:
-[...]
-> > when new clients try to connect - and connection attempt will obviously
-> > fail. Most likely with an "deauthenticated due to inactivity (timer
-> > DEAUTH/REMOVE)" by hostapd.
-> > 
-> > And the fix (required for both platches) would then be something like:
-> > 
-> >    --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-> >    +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-> >    @@ -629,8 +629,14 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
-> >     			   "dp_tx: failed to find the peer with peer_id %d\n",
-> >     			    ts->peer_id);
-> >     		spin_unlock_bh(&ab->base_lock);
-> >    -		dev_kfree_skb_any(msdu);
-> >    -		goto exit;
-> >    +		rcu_read_unlock();
-> >    +
-> >    +		if (skb_cb->flags & ATH11K_SKB_HW_80211_ENCAP)
-> >    +			ieee80211_tx_status_8023(ar->hw, skb_cb->vif, msdu);
-> >    +		else
-> >    +			ieee80211_tx_status(ar->hw, msdu);
-> >    +
-> >    +		return;
-> >     	}
-> >     	arsta = (struct ath11k_sta *)peer->sta->drv_priv;
-> >     	status.sta = peer->sta;
-> > 
-> > But this is not possible any longer because Felix Fietkau removed
-> > ieee80211_tx_status_8023 in commit 9ae708f00161 ("wifi: mac80211: remove
-> > ieee80211_tx_status_8023") - and the function ieee80211_lookup_ra_sta
-> > (required for this task) is currently not exported. And the sta information
-> > is required to reach the ieee80211_sta_tx_notify code section in
-> > ieee80211_tx_status_ext()
-> 
-> This does not make much sense to me. ieee80211_sta_tx_notify is specific 
-> to interfaces running in client mode, thus unrelated to anything hostapd 
-> is doing. It's a different kind of probing than the one you're looking into.
+We can massively simplify the implementation by removing the ternary
+check for the smaller of `count` and `sizeof(buffer) - 1` as `strscpy`
+guarantees NUL-termination of its destination buffer [2]. This also
+means we do not need to explicity set the one past-the-last index to
+zero as `strscpy` handles this.
 
-Sorry, copied something to my notes and then mixed up basically everything 
-after that. Interesting for the fix was only that it reaches 
-ieee80211_report_ack_skb via ieee80211_report_used_skb. This can either be 
-done via __ieee80211_tx_status/ieee80211_tx_status_ext (which doesn't have any 
-dependency to the sta - which I incorrectly said earlier) or via 
-ieee80211_free_txskb (which I missed earlier)
+Furthermore, we can also utilize `strscpy`'s return value to populate
+`len` and simply pass in `sizeof(buffer)` to the `strscpy` invocation
+itself.
 
-[...]
-> The main bug is the fact that dev_kfree_skb* must not be called for tx 
-> packets passed from mac80211. If you replace it with a call to 
-> ieee80211_free_txskb, the bug goes away.
+[1]: www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings
+[2]: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html
 
-Thanks for the hint. Will submit an actual patch with your recommended
-replacement.
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Kind regards,
-	Sven
---nextPart1875646.tdWV9SEqCh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index dfe0f74369e6..8f2a834dbe04 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -1462,15 +1462,12 @@ static ssize_t scan_age_store(struct device *d, struct device_attribute *attr,
+ 	struct ipw_priv *priv = dev_get_drvdata(d);
+ 	struct net_device *dev = priv->net_dev;
+ 	char buffer[] = "00000000";
+-	unsigned long len =
+-	    (sizeof(buffer) - 1) > count ? count : sizeof(buffer) - 1;
+ 	unsigned long val;
+ 	char *p = buffer;
+ 
+ 	IPW_DEBUG_INFO("enter\n");
+ 
+-	strncpy(buffer, buf, len);
+-	buffer[len] = 0;
++	ssize_t len = strscpy(buffer, buf, sizeof(buffer));
+ 
+ 	if (p[1] == 'x' || p[1] == 'X' || p[0] == 'x' || p[0] == 'X') {
+ 		p++;
 
------BEGIN PGP SIGNATURE-----
+---
+base-commit: 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
+change-id: 20230801-drivers-net-wireless-intel-ipw2x00-d7ee2dd17032
 
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmTJfBcACgkQXYcKB8Em
-e0ZmzBAApeRTlHLHJwpLbJzXVLGL3UViBiSk5+pqp1szpk/KWjraXtj7mnySYS87
-vl98s5ctuBp1foSgMoabET6xzSzKIpY76wohLIRE87NXEF4xc/2eYtRpX8S7Ne/z
-s7h+Li23VjUEtYOfa+4dbEbSXhYSptZ3laCKO5wfqBFFBykFVXU2M0LEECyJDzpU
-T4Nt+jfKKw30Gtd/GU8dYyu/7/9wzaEc2KmKLUiArSZ3RF5rdO2QLxph//ECHLMR
-cQN856y1SrHhg8rVOFUxqII0uG6ARlMnLURkUmzNs3BRSr2OJbtu95yJ3AlKaZEJ
-3vlMHzyIkou0LMp20IYluTyd0jSyR5s3G+zFTQ4LZHtVduryie+XMEQznDaAEga7
-CmB/oEYRTCIa4lTtok2u49RRF0+fM7UK5LRC4+lWQ0XPAslbUEE3mhfXoGd6x6Au
-Wh7ZWkc+aa8TrOAZrgHBbGu3tIyUSmMKcOczAtSI/3DK2O++xYuDBIMZrDAhNHhW
-qtFuFrf48irQuUpVj+oV1RFnUZxZMpFEET9zktiAFKzpkAWoDX/85s9H8wsBWfzj
-LLvuKFzwcfj2MD1/SKrUoBuypkBkLsuEym6RK66rlxRuk7BRmf6qkYqF8veCItXF
-U2QINKL+/2kyX+avMhCAcnWdzb3/FLhzldWZI6OCWKy1TCLF9lM=
-=Pczz
------END PGP SIGNATURE-----
-
---nextPart1875646.tdWV9SEqCh--
-
-
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
 
