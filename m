@@ -2,232 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BAE276C22F
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 03:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F04676C30E
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 04:47:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231201AbjHBB0T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 21:26:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38356 "EHLO
+        id S230316AbjHBCrA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 22:47:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231396AbjHBB0P (ORCPT
+        with ESMTP id S230057AbjHBCq7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 21:26:15 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6593D2D40
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 18:26:10 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-52229f084beso9520529a12.2
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Aug 2023 18:26:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690939569; x=1691544369;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PZp8gGX8VEAsqKDOOD7UUWfIiEopULNUuDVfReWbP/Q=;
-        b=1q71HHUKiqR1FZENTwLvFqYeCIaQLsqKPtWBWBQlMtZsIPkCBvguA2x0lduxepKNNP
-         jjXZzVyRjxa0g9xcACvqNxKbgOd6R9/gMHmR96AqsxCfNC+znhC2mgjByxbic7Js2y2h
-         /q2vFIvQRpSolDisYtzmNCX9BSXsELfv6HQzRjYilUoM6XSQSstVf4k6/U79AgiDqodg
-         o6moxHpljTVDVKduNk65zv/s7VDXwUoGJ7LxUDgBoa3OZohpsZxxnkoY8fLEBCKwuY/H
-         nCiTedISjM2482iRM993JM5Z/vKnEgecyKTm7gmiU+5IL4bMt9POAF3pUCaFOHSMmM8y
-         nShA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690939569; x=1691544369;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PZp8gGX8VEAsqKDOOD7UUWfIiEopULNUuDVfReWbP/Q=;
-        b=RlioKFQWO9q+bC16AWrdSEc1q4g1RFSXIleq95fUMEPYPs2XGJ9YS+H5/9pNO0M7g+
-         o5THbB/GNaIMnwp8maMrbLxo9ZnL7b06VksBi89VHEUNqDMQQxRmAgey9u+B3Eq4/TB5
-         aV5gn+QrYHWDjokHQyVWbDTxXMhSPV9BXaV2/8fFqjX40r9MnbzXUGian9ZSyhvHBt0E
-         xjV0GWZVY2XXSzebxsjMsCwkKf9WsDEGYRVU3SprpNg4uxxmSOJLIoy9Hh/BDPsGp6jU
-         ejKkFa+GJkliH36xoLaQADh0qZK28pHy+L1qMZOcztWi2tbwpvd9HYQYJF4d8OPyWimH
-         a0dA==
-X-Gm-Message-State: ABy/qLZ0tuZQD9Y16BH5LlUNur9UU0SkDUm/bErt8VU6IMYI4k0YFDkr
-        N2rTEPBcwHPlggfkorLr8Ob2Lmb+3NEldGz5jZKgFg==
-X-Google-Smtp-Source: APBJJlHX6nzDbP9qqsrLz+YF4yvOH4d01uCjaHAIWJqFbLcinXF4cXKQKuv0onS3aL19NSNStzx1SNQSLJ8QpYIQAYo=
-X-Received: by 2002:a05:6402:8d5:b0:51d:d4c3:6858 with SMTP id
- d21-20020a05640208d500b0051dd4c36858mr3814153edz.12.1690939568796; Tue, 01
- Aug 2023 18:26:08 -0700 (PDT)
+        Tue, 1 Aug 2023 22:46:59 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B1CF11BFD
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 19:46:55 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3722kWLI1004149, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3722kWLI1004149
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 2 Aug 2023 10:46:32 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Wed, 2 Aug 2023 10:46:21 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Wed, 2 Aug 2023 10:46:21 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Wed, 2 Aug 2023 10:46:21 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Timlee <timlee@realtek.com>
+Subject: pull request: rtw89: 8851b: update firmware to v0.29.41.1
+Thread-Topic: pull request: rtw89: 8851b: update firmware to v0.29.41.1
+Thread-Index: AQHZxOuEIn3qDV6G5ECsRKO/r3tpyg==
+Date:   Wed, 2 Aug 2023 02:46:21 +0000
+Message-ID: <d42463c65334bc1799648b116b9e0daecf57c844.camel@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9F039494D5DBB747B133432C5D54E889@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230802-wifi-ipw2x00-refactor-v1-1-6047659410d4@google.com> <86B2408D-BB52-4B29-BE4A-A6A12A129121@kernel.org>
-In-Reply-To: <86B2408D-BB52-4B29-BE4A-A6A12A129121@kernel.org>
-From:   Justin Stitt <justinstitt@google.com>
-Date:   Tue, 1 Aug 2023 18:25:55 -0700
-Message-ID: <CAFhGd8p9UUXoeA85UsCvB3B3+gF=vUcz+Z_s=hn95XCU8btCNQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ipw2x00: refactor to use kstrtoul
-To:     Kees Cook <kees@kernel.org>
-Cc:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 1, 2023 at 6:16=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
->
-> On August 1, 2023 5:51:59 PM PDT, Justin Stitt <justinstitt@google.com> w=
-rote:
-> >The current implementation seems to reinvent what `kstrtoul` already doe=
-s
-> >in terms of functionality and error handling. Remove uses of `simple_str=
-toul()`
-> >in favor of `kstrtoul()`.
-> >
-> >There is the following note at `lib/vsprintf.c:simple_strtoull()` which
-> >further backs this change:
-> >| * This function has caveats. Please use kstrtoull (or kstrtoul) instea=
-d.
-> >
-> >And here, simple_str* are explicitly deprecated [3].
-> >
-> >This patch also removes an instance of the deprecated `strncpy` which he=
-lps [2].
-> >
-> >Link: https://lore.kernel.org/all/202308011602.3CC1C0244C@keescook/ [1]
-> >Link: https://github.com/KSPP/linux/issues/90 [2]
-> >Link: https://docs.kernel.org/process/deprecated.html#simple-strtol-simp=
-le-strtoll-simple-strtoul-simple-strtoull [3]
-> >Cc: linux-hardening@vger.kernel.org
-> >Suggested-by: Kees Cook <keescook@chromium.org>
-> >Signed-off-by: Justin Stitt <justinstitt@google.com>
-> >---
-> >
-> >
-> >Link: https://lore.kernel.org/all/20230801-drivers-net-wireless-intel-ip=
-w2x00-v1-1-ffd185c91292@google.com/
-> >---
-> > drivers/net/wireless/intel/ipw2x00/ipw2200.c | 43 +++++++++------------=
--------
-> > 1 file changed, 14 insertions(+), 29 deletions(-)
-> >
-> >diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/=
-wireless/intel/ipw2x00/ipw2200.c
-> >index dfe0f74369e6..ac10633f593e 100644
-> >--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-> >+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-> >@@ -1176,23 +1176,20 @@ static ssize_t debug_level_show(struct device_dr=
-iver *d, char *buf)
-> > static ssize_t debug_level_store(struct device_driver *d, const char *b=
-uf,
-> >                                size_t count)
-> > {
-> >-      char *p =3D (char *)buf;
-> >-      u32 val;
-> >+      unsigned long *val =3D NULL;
-> >
-> >-      if (p[1] =3D=3D 'x' || p[1] =3D=3D 'X' || p[0] =3D=3D 'x' || p[0]=
- =3D=3D 'X') {
-> >-              p++;
-> >-              if (p[0] =3D=3D 'x' || p[0] =3D=3D 'X')
-> >-                      p++;
-> >-              val =3D simple_strtoul(p, &p, 16);
-> >-      } else
-> >-              val =3D simple_strtoul(p, &p, 10);
-> >-      if (p =3D=3D buf)
-> >+      int result =3D kstrtoul(buf, 0, val);
->
-> kstrtoul needs somewhere to write the value, so val need to be actually u=
-nsigned long, and a pointer passed to that:
->
-> unsigned long val;
-> ...
-> ... kstrtoul(but, 0, &val);
->
-> But otherwise, yeah, this looks like the right direction to me.
->
-> >+
-> >+      if (result =3D=3D -EINVAL)
-> >               printk(KERN_INFO DRV_NAME
-> >                      ": %s is not in hex or decimal form.\n", buf);
-> >+      else if (result =3D=3D -ERANGE)
-> >+              printk(KERN_INFO DRV_NAME
-> >+                       ": %s has overflowed.\n", buf);
-> >       else
-> >-              ipw_debug_level =3D val;
-> >+              ipw_debug_level =3D *val;
-> >
-> >-      return strnlen(buf, count);
-> >+      return count;.
->
-> It might be worth mentioning this return value change, but I think it's c=
-orrect: we're communicating how much was consumed (we consumed it all). Whe=
-n the return value !=3D count, this function may be called again with the "=
-rest" of the input. As this is a sysfs interface, that kind of behavior is =
-very rare bordering on actively unwanted. :) So, I think these should eithe=
-r return a negative error or count.
->
-> -Kees
->
-> > }
-> > static DRIVER_ATTR_RW(debug_level);
-> >
-> >@@ -1461,33 +1458,21 @@ static ssize_t scan_age_store(struct device *d, =
-struct device_attribute *attr,
-> > {
-> >       struct ipw_priv *priv =3D dev_get_drvdata(d);
-> >       struct net_device *dev =3D priv->net_dev;
-> >-      char buffer[] =3D "00000000";
-> >-      unsigned long len =3D
-> >-          (sizeof(buffer) - 1) > count ? count : sizeof(buffer) - 1;
-> >-      unsigned long val;
-> >-      char *p =3D buffer;
-> >
-> >       IPW_DEBUG_INFO("enter\n");
-> >
-> >-      strncpy(buffer, buf, len);
-> >-      buffer[len] =3D 0;
-> >+      unsigned long *val =3D NULL;
-> >+      int result =3D kstrtoul(buf, 0, val);
-> >
-> >-      if (p[1] =3D=3D 'x' || p[1] =3D=3D 'X' || p[0] =3D=3D 'x' || p[0]=
- =3D=3D 'X') {
-> >-              p++;
-> >-              if (p[0] =3D=3D 'x' || p[0] =3D=3D 'X')
-> >-                      p++;
-> >-              val =3D simple_strtoul(p, &p, 16);
-> >-      } else
-> >-              val =3D simple_strtoul(p, &p, 10);
-> >-      if (p =3D=3D buffer) {
-> >+      if (result =3D=3D -EINVAL || result =3D=3D -ERANGE) {
-> >               IPW_DEBUG_INFO("%s: user supplied invalid value.\n", dev-=
->name);
-> >       } else {
-> >-              priv->ieee->scan_age =3D val;
-> >+              priv->ieee->scan_age =3D *val;
-> >               IPW_DEBUG_INFO("set scan_age =3D %u\n", priv->ieee->scan_=
-age);
-> >       }
-> >
-> >       IPW_DEBUG_INFO("exit\n");
-> >-      return len;
-> >+      return count;
-> > }
-> >
-> > static DEVICE_ATTR_RW(scan_age);
-> >
-> >---
-> >base-commit: 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
-> >change-id: 20230801-wifi-ipw2x00-refactor-fa6deb6c67ea
-> >
-> >Best regards,
-> >--
-> >Justin Stitt <justinstitt@google.com>
-> >
->
->
-> --
-> Kees Cook
-
-Thanks for the feedback. v2 available here:
-https://lore.kernel.org/all/20230802-wifi-ipw2x00-refactor-v2-1-d33f765e9cd=
-5@google.com/
+SGksDQoNClVwZGF0ZSA4ODUxYiBmaXJtd2FyZSBvZiBydHc4OSBkcml2ZXIgdG8gdjAuMjkuNDEu
+MQ0KDQpUaGFuayB5b3UNClBpbmctS2UNCg0KLS0tDQpUaGUgZm9sbG93aW5nIGNoYW5nZXMgc2lu
+Y2UgY29tbWl0IDI1M2NjMTc5ZDg0OWZjODI0ODk3NzNiMmI1NTNhNDk4NThkODcyNWY6DQoNCiAg
+YW1kZ3B1OiBVcGRhdGUgRE1DVUIgZm9yIERDTjMxNCAmIFllbGxvdyBDYXJwICgyMDIzLTA3LTMx
+IDExOjIyOjAyIC0wNDAwKQ0KDQphcmUgYXZhaWxhYmxlIGluIHRoZSBHaXQgcmVwb3NpdG9yeSBh
+dDoNCg0KICBodHRwczovL2dpdGh1Yi5jb20vcGtzaGloL2xpbnV4LWZpcm13YXJlLmdpdCBIRUFE
+DQoNCmZvciB5b3UgdG8gZmV0Y2ggY2hhbmdlcyB1cCB0byAyOWYxODVkNzVjNDVhYjk2NDczYjRl
+ZTA2YmM4MmMwYjNmZjk2NmI1Og0KDQogIHJ0dzg5OiA4ODUxYjogdXBkYXRlIGZpcm13YXJlIHRv
+IHYwLjI5LjQxLjEgKDIwMjMtMDgtMDIgMTA6NDE6NTkgKzA4MDApDQoNCi0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCkNoaW4t
+WWVuIExlZSAoMSk6DQogICAgICBydHc4OTogODg1MWI6IHVwZGF0ZSBmaXJtd2FyZSB0byB2MC4y
+OS40MS4xDQoNCiBydHc4OS9ydHc4ODUxYl9mdy5iaW4gfCBCaW4gMTA5MDU0NCAtPiAxMTYxMDA4
+IGJ5dGVzDQogMSBmaWxlIGNoYW5nZWQsIDAgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkN
+Cg0K
