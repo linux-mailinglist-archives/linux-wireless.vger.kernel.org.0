@@ -2,73 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDC3476C8E3
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 11:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94F8B76C9F2
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 11:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231148AbjHBJAM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 05:00:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56704 "EHLO
+        id S233853AbjHBJ4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 05:56:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232848AbjHBJAL (ORCPT
+        with ESMTP id S233938AbjHBJ4H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 05:00:11 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E4032721
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 02:00:09 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3724MRM9014667;
-        Wed, 2 Aug 2023 09:00:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=Wk4hq+6eu2PlB1HSXuD/GuvakDHvYqsRv33yHeeROKg=;
- b=N6goUYgxiL6ZQd776aXAM1F2f4VO6vGvTqsENTym7Jn7DU2g72qhY3mslsyKEc01u9ro
- pf9dqlqdr4SsfRKOY8uoGfPKYTvnSl4m7Mi4fnaIX2tZCQIA91QDklAoWW0UrcXarSTl
- VzFJC4cZR88J5PH6WfJC8PFbcmmSWrcco28EjwJl9DhVTB+17FgAD2FyX5Wwicv6d76s
- ceKgA51BZPvUYs1Ewrh5qIdzOAJE+i0DE8W6tb3Xj6FIG6snm1RsrhtpYIPlkqarMDNg
- /SymSlLBHP/nZ+mKqX9ImIsyFThlALuczV5eYOWHSaT19JwJeEZKdQjv6FOGsGzmA6Ww IQ== 
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s6rhaun5b-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Aug 2023 09:00:06 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 372905GP015800
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 2 Aug 2023 09:00:05 GMT
-Received: from mdharane-linux.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 2 Aug 2023 02:00:03 -0700
-From:   Manish Dharanenthiran <quic_mdharane@quicinc.com>
-To:     <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Manish Dharanenthiran <quic_mdharane@quicinc.com>
-Subject: [PATCH 2/2] wifi: ath12k: fix radar detection in 160 MHz
-Date:   Wed, 2 Aug 2023 14:28:52 +0530
-Message-ID: <20230802085852.19821-3-quic_mdharane@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230802085852.19821-1-quic_mdharane@quicinc.com>
-References: <20230802085852.19821-1-quic_mdharane@quicinc.com>
+        Wed, 2 Aug 2023 05:56:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D01E1E4C
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 02:56:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D244618EA
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 09:56:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD135C433C8;
+        Wed,  2 Aug 2023 09:56:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690970163;
+        bh=ZIK89UWyE8uYI3zMfIs9N7bzRDJhVXADc/PTpqGlTHE=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=l4efKNQRqyfZ78KA3dAgkvEh6fhOjDB2HzWN/yBCbu7/Rnf2fBQVWRJ5P8u9s/gsH
+         rCWSnAHNreccQ1bTi817XhNl2c3Mu/ZZKNVDuC6NWnoiHmwLwrGDXPEaM6N20C40Qs
+         HfCLduGqMLaxGDLGGxIhQuB9l3zmVdo3RU/o6IwDolNs1lJ4VR9eXlpC5EhBO6piwp
+         YlgOYE8KzvCpi+h0828LzJc95Pdw9J1UXMfytw86B9/fwDHS+BCPTRWSSsS4FOOp0x
+         72asj4tAG7+GarE+9gZnDzyYNUmbmaAh8kGkeFMx/QfxnFOeMswvzIHE8yOZz7nb+G
+         Yq0HGv4/iOPRA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Gk8iFmFdeh5p9nlUn4L9Uf-njCM-eDuq
-X-Proofpoint-ORIG-GUID: Gk8iFmFdeh5p9nlUn4L9Uf-njCM-eDuq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-02_03,2023-08-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 clxscore=1015 impostorscore=0 spamscore=0
- bulkscore=0 phishscore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2308020080
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull request: mt76 2023-07-31
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <7b752ccb-42b0-94ca-5492-f3892a14f6b3@nbd.name>
+References: <7b752ccb-42b0-94ca-5492-f3892a14f6b3@nbd.name>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169097016052.265879.13736690664719653238.kvalo@kernel.org>
+Date:   Wed,  2 Aug 2023 09:56:02 +0000 (UTC)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,118 +55,275 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Radar detection fails in the secondary 80 MHz when the
-the AP's primary 80 MHz is in non-DFS region in 160 MHz.
+Felix Fietkau <nbd@nbd.name> wrote:
 
-This is due to WMI channel flag WMI_CHAN_INFO_DFS_FREQ2 is not set
-properly in case of the primary 80 MHz is in non-DFS region.
-HALPHY detects the radar pulses in the secondary 80 MHz only when
-WMI_CHAN_INFO_DFS_FREQ2 is set.
+> Hi Kalle,
+> 
+> here's my first request for 6.6
+> 
+> - Felix
+> 
+> The following changes since commit b2090d93d4b6f1c72a9793d5a171806b8468b7cb:
+> 
+>    wifi: brcmsmac: remove unused data type (2023-07-25 18:16:03 +0300)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/nbd168/wireless tags/mt76-for-kvalo-2023-07-31
+> 
+> for you to fetch changes up to 6c0570bc21ec2073890aa252c8420ca7bec402e4:
+> 
+>    wifi: mt76: mt7915: fix power-limits while chan_switch (2023-07-31 10:56:28 +0200)
+> 
+> ----------------------------------------------------------------
+> mt76 patches for 6.6
+> 
+> * fixes
+> * preparation for mt7925 support
+> * mt7981 support
+> 
+> ----------------------------------------------------------------
+> Alexander Couzens (1):
+>        wifi: mt76: mt7915: add support for MT7981
+> 
+> Ben Greear (1):
+>        wifi: mt76: mt7921: Support temp sensor
+> 
+> Bo Jiao (2):
+>        wifi: mt76: mt7915: disable WFDMA Tx/Rx during SER recovery
+>        wifi: mt76: mt7996: disable WFDMA Tx/Rx during SER recovery
+> 
+> Christian Marangi (2):
+>        wifi: mt76: split get_of_eeprom in subfunction
+>        wifi: mt76: add support for providing eeprom in nvmem cells
+> 
+> Daniel Golle (1):
+>        dt-bindings: net: wireless: mt76: add bindings for MT7981
+> 
+> Deren Wu (3):
+>        wifi: mt76: mt7921: do not support one stream on secondary antenna only
+>        wifi: mt76: mt7921e: report tx retries/failed counts in tx free event
+>        wifi: mt76: mt7921: fix skb leak by txs missing in AMSDU
+> 
+> Felix Fietkau (4):
+>        wifi: mt76: mt7915: fix capabilities in non-AP mode
+>        wifi: mt76: mt7915: remove VHT160 capability on MT7915
+>        wifi: mt76: mt7603: fix beacon interval after disabling a single vif
+>        wifi: mt76: mt7603: fix tx filter/flush function
+> 
+> Howard Hsu (1):
+>        wifi: mt76: mt7996: increase tx token size
+> 
+> Lin Ma (1):
+>        wifi: mt76: testmode: add nla_policy for MT76_TM_ATTR_TX_LENGTH
+> 
+> Lorenzo Bianconi (49):
+>        wifi: mt76: mt7921: remove macro duplication in regs.h
+>        wifi: mt76: mt7915: move mib_stats structure in mt76.h
+>        wifi: mt76: mt7996: rely on mib_stats shared definition
+>        wifi: mt76: mt7921: rely on mib_stats shared definition
+>        wifi: mt76: mt7921: make mt7921_mac_sta_poll static
+>        mt76: mt7996: rely on mt76_sta_stats in mt76_wcid
+>        wifi: mt76: mt7921: get rid of MT7921_RESET_TIMEOUT marco
+>        wifi: mt76: mt7915: move sta_poll_list and sta_poll_lock in mt76_dev
+>        wifi: mt76: mt7603: rely on shared sta_poll_list and sta_poll_lock
+>        wifi: mt76: mt7615: rely on shared sta_poll_list and sta_poll_lock
+>        wifi: mt76: mt7996: rely on shared sta_poll_list and sta_poll_lock
+>        wifi: mt76: mt7921: rely on shared sta_poll_list and sta_poll_lock
+>        wifi: mt76: mt7915: move poll_list in mt76_wcid
+>        wifi: mt76: mt7603: rely on shared poll_list field
+>        wifi: mt76: mt7615: rely on shared poll_list field
+>        wifi: mt76: mt7996: rely on shared poll_list field
+>        wifi: mt76: mt7921: rely on shared poll_list field
+>        wifi: mt76: move ampdu_state in mt76_wcid
+>        mt76: connac: move more mt7921/mt7915 mac shared code in connac lib
+>        wifi: mt76: move rate info in mt76_vif
+>        wifi: mt76: connac: move connac3 definitions in mt76_connac3_mac.h
+>        wifi: mt76: connac: add connac3 mac library
+>        wifi: mt76: mt7921: move common register definition in mt792x_regs.h
+>        wifi: mt76: mt7921: convert acpisar and clc pointers to void
+>        wifi: mt76: mt7921: rename mt7921_vif in mt792x_vif
+>        wifi: mt76: mt7921: rename mt7921_sta in mt792x_sta
+>        wifi: mt76: mt7921: rename mt7921_phy in mt792x_phy
+>        wifi: mt76: mt7921: rename mt7921_dev in mt792x_dev
+>        wifi: mt76: mt7921: rename mt7921_hif_ops in mt792x_hif_ops
+>        wifi: mt76: mt792x: move shared structure definition in mt792x.h
+>        wifi: mt76: mt7921: move mt792x_mutex_{acquire/release} in mt792x.h
+>        wifi: mt76: mt7921: move mt792x_hw_dev in mt792x.h
+>        wifi: mt76: mt792x: introduce mt792x-lib module
+>        wifi: mt76: mt7921: move mac shared code in mt792x-lib module
+>        wifi: mt76: mt7921: move dma shared code in mt792x-lib module
+>        wifi: mt76: mt7921: move debugfs shared code in mt792x-lib module
+>        wifi: mt76: mt7921: move init shared code in mt792x-lib module
+>        wifi: mt76: mt792x: introduce mt792x_irq_map
+>        wifi: mt76: mt792x: move more dma shared code in mt792x_dma
+>        wifi: mt76: mt7921: move hif_ops macro in mt792x.h
+>        wifi: mt76: mt7921: move shared runtime-pm code on mt792x-lib
+>        wifi: mt76: mt7921: move runtime-pm pci code in mt792x-lib
+>        wifi: mt76: mt7921: move acpi_sar code in mt792x-lib module
+>        wifi: mt76: mt792x: introduce mt792x-usb module
+>        wifi: mt76: mt792x: move mt7921_load_firmware in mt792x-lib module
+>        wifi: mt76: mt76_connac3: move lmac queue enumeration in mt76_connac3_mac.h
+>        wifi: mt76: mt792x: move MT7921_PM_TIMEOUT and MT7921_HW_SCAN_TIMEOUT in common code
+>        wifi: mt76: mt7921: move mt7921_dma_init in pci.c
+>        wifi: mt76: mt7921: move mt7921u_disconnect mt792x-lib
+> 
+> Matt Whitlock (1):
+>        mt76: mt7921: don't assume adequate headroom for SDIO headers
+> 
+> MeiChia Chiu (1):
+>        wifi: mt76: mt7996: add muru support
+> 
+> Ming Yen Hsieh (1):
+>        wifi: mt76: mt7921: fix non-PSC channel scan fail
+> 
+> Peter Chiu (7):
+>        wifi: mt76: mt7915: rework tx packets counting when WED is active
+>        wifi: mt76: mt7915: rework tx bytes counting when WED is active
+>        wifi: mt76: report non-binding skb tx rate when WED is active
+>        wifi: mt76: connac: add support for dsp firmware download
+>        wifi: mt76: mt7996: fix bss wlan_idx when sending bss_info command
+>        wifi: mt76: mt7996: enable VHT extended NSS BW feature
+>        wifi: mt76: connac: add support to set ifs time by mcu command
+> 
+> Rafał Miłecki (1):
+>        dt-bindings: mt76: support pointing to EEPROM using NVMEM cell
+> 
+> Rany Hany (1):
+>        wifi: mt76: mt7915: fix command timeout in AP stop period
+> 
+> Ryder Lee (11):
+>        wifi: mt76: mt7996: fix header translation logic
+>        wifi: mt76: mt7996: enable BSS_CHANGED_MU_GROUPS support
+>        wifi: mt76: mt7615: enable BSS_CHANGED_MU_GROUPS support
+>        wifi: mt76: enable UNII-4 channel 177 support
+>        wifi: mt76: mt7915: report tx retries/failed counts for non-WED path
+>        wifi: mt76: mt7915: drop return in mt7915_sta_statistics
+>        wifi: mt76: mt7996: drop return in mt7996_sta_statistics
+>        wifi: mt76: add tx_nss histogram to ethtool stats
+>        wifi: mt76: mt7915: accumulate mu-mimo ofdma muru stats
+>        wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
+>        wifi: mt76: mt7915: fix power-limits while chan_switch
+> 
+> Shayne Chen (1):
+>        wifi: mt76: mt7996: move radio ctrl commands to proper functions
+> 
+> StanleyYP Wang (3):
+>        wifi: mt76: mt7915: fix background radar event being blocked
+>        wifi: mt76: mt7996: use correct phy for background radar event
+>        wifi: mt76: mt7996: fix WA event ring size
+> 
+> Yuanjun Gong (1):
+>        wifi: mt76: mt76x02: fix return value check in mt76x02_mac_process_rx
+> 
+>   Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml            |  13 +-
+>   drivers/net/wireless/mediatek/mt76/Kconfig                                   |   8 ++
+>   drivers/net/wireless/mediatek/mt76/Makefile                                  |  10 +-
+>   drivers/net/wireless/mediatek/mt76/dma.c                                     |   6 +
+>   drivers/net/wireless/mediatek/mt76/eeprom.c                                  |  87 ++++++++++---
+>   drivers/net/wireless/mediatek/mt76/mac80211.c                                |   6 +
+>   drivers/net/wireless/mediatek/mt76/mt76.h                                    | 106 ++++++++++++++-
+>   drivers/net/wireless/mediatek/mt76/mt7603/beacon.c                           |   3 +-
+>   drivers/net/wireless/mediatek/mt76/mt7603/init.c                             |   2 -
+>   drivers/net/wireless/mediatek/mt76/mt7603/mac.c                              |  43 ++++---
+>   drivers/net/wireless/mediatek/mt76/mt7603/main.c                             |  25 ++--
+>   drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h                           |   6 +-
+>   drivers/net/wireless/mediatek/mt76/mt7603/regs.h                             |   7 +
+>   drivers/net/wireless/mediatek/mt76/mt7615/init.c                             |   4 +-
+>   drivers/net/wireless/mediatek/mt76/mt7615/mac.c                              |  31 ++---
+>   drivers/net/wireless/mediatek/mt76/mt7615/main.c                             |  49 +++++--
+>   drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h                           |   4 -
+>   drivers/net/wireless/mediatek/mt76/mt7615/regs.h                             |   9 ++
+>   drivers/net/wireless/mediatek/mt76/mt76_connac.h                             |  20 ++-
+>   drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h                        |   2 +-
+>   drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c                        | 182 ++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h                        | 339 ++++++++++++++++++++++++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c                         | 106 +++++++++++++--
+>   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h                         |   6 +-
+>   drivers/net/wireless/mediatek/mt76/mt76x02_mac.c                             |   3 +-
+>   drivers/net/wireless/mediatek/mt76/mt7915/Kconfig                            |   6 +-
+>   drivers/net/wireless/mediatek/mt76/mt7915/Makefile                           |   2 +-
+>   drivers/net/wireless/mediatek/mt76/mt7915/coredump.c                         |   7 +-
+>   drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c                          | 128 +++++++++---------
+>   drivers/net/wireless/mediatek/mt76/mt7915/dma.c                              | 152 ++++++++++++----------
+>   drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c                           |   7 +-
+>   drivers/net/wireless/mediatek/mt76/mt7915/init.c                             |  19 ++-
+>   drivers/net/wireless/mediatek/mt76/mt7915/mac.c                              | 194 +++++++++++-----------------
+>   drivers/net/wireless/mediatek/mt76/mt7915/mac.h                              |   7 +-
+>   drivers/net/wireless/mediatek/mt76/mt7915/main.c                             | 233 +++++++++++++++++++++++++--------
+>   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c                              | 151 ++++++++++++++++++----
+>   drivers/net/wireless/mediatek/mt76/mt7915/mmio.c                             |  47 ++-----
+>   drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h                           | 100 ++++----------
+>   drivers/net/wireless/mediatek/mt76/mt7915/regs.h                             |  16 ++-
+>   drivers/net/wireless/mediatek/mt76/mt7915/soc.c                              | 162 ++++++++++++++++-------
+>   drivers/net/wireless/mediatek/mt76/mt7921/Kconfig                            |   4 +-
+>   drivers/net/wireless/mediatek/mt76/mt7921/Makefile                           |   9 +-
+>   drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h                         | 105 ---------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c                          | 228 +++++---------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/init.c                             | 343 +++++++++++-------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/mac.c                              | 554 +++++++++++-------------------------------------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/main.c                             | 806 +++++++++++++++++++++++++----------------------------------------------------------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/mcu.c                              | 230 +++++++++++----------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h                           | 359 +++++++--------------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/pci.c                              | 225 ++++++++++++++++----------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c                          |  34 ++---
+>   drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c                          |  71 +---------
+>   drivers/net/wireless/mediatek/mt76/mt7921/regs.h                             | 465 +-----------------------------------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/sdio.c                             |  32 ++---
+>   drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c                         |   6 +-
+>   drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c                         |  14 +-
+>   drivers/net/wireless/mediatek/mt76/mt7921/testmode.c                         |  10 +-
+>   drivers/net/wireless/mediatek/mt76/mt7921/trace.c                            |  12 --
+>   drivers/net/wireless/mediatek/mt76/mt7921/usb.c                              | 205 ++++++++++++-----------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c                          | 255 ------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt792x.h                                  | 367 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/{mt7921/acpi_sar.c => mt792x_acpi_sar.c}  | 128 +++++++++---------
+>   drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h                         | 105 +++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt792x_core.c                             | 844 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt792x_debugfs.c                          | 168 ++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/{mt7921/dma.c => mt792x_dma.c}            | 336 +++++++++++++++++++++++++----------------------
+>   drivers/net/wireless/mediatek/mt76/mt792x_mac.c                              | 385 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt792x_regs.h                             | 479 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt792x_trace.c                            |  14 ++
+>   drivers/net/wireless/mediatek/mt76/{mt7921/mt7921_trace.h => mt792x_trace.h} |  16 +--
+>   drivers/net/wireless/mediatek/mt76/mt792x_usb.c                              | 309 ++++++++++++++++++++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c                          |   4 +-
+>   drivers/net/wireless/mediatek/mt76/mt7996/dma.c                              |  83 +++++++-----
+>   drivers/net/wireless/mediatek/mt76/mt7996/init.c                             |   5 +-
+>   drivers/net/wireless/mediatek/mt76/mt7996/mac.c                              | 300 ++++++++----------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7996/mac.h                              | 315 +--------------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7996/main.c                             | 114 +++++++++-------
+>   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c                              | 182 ++++++++++++++++++++------
+>   drivers/net/wireless/mediatek/mt76/mt7996/mcu.h                              |  17 +++
+>   drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h                           |  94 ++------------
+>   drivers/net/wireless/mediatek/mt76/mt7996/pci.c                              |   1 +
+>   drivers/net/wireless/mediatek/mt76/mt7996/regs.h                             |  21 ++-
+>   drivers/net/wireless/mediatek/mt76/testmode.c                                |   1 +
+>   drivers/net/wireless/mediatek/mt76/tx.c                                      |  16 ++-
+>   84 files changed, 5752 insertions(+), 4827 deletions(-)
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+>   delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h
+>   delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/trace.c
+>   delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt792x.h
+>   rename drivers/net/wireless/mediatek/mt76/{mt7921/acpi_sar.c => mt792x_acpi_sar.c} (64%)
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt792x_core.c
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt792x_debugfs.c
+>   rename drivers/net/wireless/mediatek/mt76/{mt7921/dma.c => mt792x_dma.c} (55%)
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt792x_mac.c
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt792x_trace.c
+>   rename drivers/net/wireless/mediatek/mt76/{mt7921/mt7921_trace.h => mt792x_trace.h} (68%)
+>   create mode 100644 drivers/net/wireless/mediatek/mt76/mt792x_usb.c
 
-Fix this issue by setting WMI channel flag WMI_CHAN_INFO_DFS_FREQ2
-based on the radar_enabled flag from the channel context.
+Pulled, thanks.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+111d5c4797c0 Merge tag 'mt76-for-kvalo-2023-07-31' of https://github.com/nbd168/wireless
 
-Signed-off-by: Manish Dharanenthiran <quic_mdharane@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 0ab95e138d1d..78177861e38f 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -5450,12 +5450,13 @@ static void ath12k_mac_op_remove_chanctx(struct ieee80211_hw *hw,
- 
- static int
- ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
--			      const struct cfg80211_chan_def *chandef,
-+			      struct ieee80211_chanctx_conf *ctx,
- 			      bool restart)
- {
- 	struct ath12k *ar = arvif->ar;
- 	struct ath12k_base *ab = ar->ab;
- 	struct wmi_vdev_start_req_arg arg = {};
-+	const struct cfg80211_chan_def *chandef = &ctx->def;
- 	int he_support = arvif->vif->bss_conf.he_support;
- 	int ret;
- 
-@@ -5488,6 +5489,8 @@ ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
- 		/* For now allow DFS for AP mode */
- 		arg.chan_radar = !!(chandef->chan->flags & IEEE80211_CHAN_RADAR);
- 
-+		arg.freq2_radar = ctx->radar_enabled;
-+
- 		arg.passive = arg.chan_radar;
- 
- 		spin_lock_bh(&ab->base_lock);
-@@ -5595,15 +5598,15 @@ static int ath12k_mac_vdev_stop(struct ath12k_vif *arvif)
- }
- 
- static int ath12k_mac_vdev_start(struct ath12k_vif *arvif,
--				 const struct cfg80211_chan_def *chandef)
-+				 struct ieee80211_chanctx_conf *ctx)
- {
--	return ath12k_mac_vdev_start_restart(arvif, chandef, false);
-+	return ath12k_mac_vdev_start_restart(arvif, ctx, false);
- }
- 
- static int ath12k_mac_vdev_restart(struct ath12k_vif *arvif,
--				   const struct cfg80211_chan_def *chandef)
-+				   struct ieee80211_chanctx_conf *ctx)
- {
--	return ath12k_mac_vdev_start_restart(arvif, chandef, true);
-+	return ath12k_mac_vdev_start_restart(arvif, ctx, true);
- }
- 
- struct ath12k_mac_change_chanctx_arg {
-@@ -5702,7 +5705,7 @@ ath12k_mac_update_vif_chan(struct ath12k *ar,
- 		 * If vdev is down then it expect vdev_stop->vdev_start.
- 		 */
- 		if (arvif->is_up) {
--			ret = ath12k_mac_vdev_restart(arvif, &vifs[i].new_ctx->def);
-+			ret = ath12k_mac_vdev_restart(arvif, vifs[i].new_ctx);
- 			if (ret) {
- 				ath12k_warn(ab, "failed to restart vdev %d: %d\n",
- 					    arvif->vdev_id, ret);
-@@ -5716,7 +5719,7 @@ ath12k_mac_update_vif_chan(struct ath12k *ar,
- 				continue;
- 			}
- 
--			ret = ath12k_mac_vdev_start(arvif, &vifs[i].new_ctx->def);
-+			ret = ath12k_mac_vdev_start(arvif, vifs[i].new_ctx);
- 			if (ret)
- 				ath12k_warn(ab, "failed to start vdev %d: %d\n",
- 					    arvif->vdev_id, ret);
-@@ -5792,7 +5795,8 @@ static void ath12k_mac_op_change_chanctx(struct ieee80211_hw *hw,
- 	if (WARN_ON(changed & IEEE80211_CHANCTX_CHANGE_CHANNEL))
- 		goto unlock;
- 
--	if (changed & IEEE80211_CHANCTX_CHANGE_WIDTH)
-+	if (changed & IEEE80211_CHANCTX_CHANGE_WIDTH ||
-+	    changed & IEEE80211_CHANCTX_CHANGE_RADAR)
- 		ath12k_mac_update_active_vif_chan(ar, ctx);
- 
- 	/* TODO: Recalc radar detection */
-@@ -5812,7 +5816,7 @@ static int ath12k_start_vdev_delay(struct ieee80211_hw *hw,
- 	if (WARN_ON(arvif->is_started))
- 		return -EBUSY;
- 
--	ret = ath12k_mac_vdev_start(arvif, &arvif->chanctx.def);
-+	ret = ath12k_mac_vdev_start(arvif, &arvif->chanctx);
- 	if (ret) {
- 		ath12k_warn(ab, "failed to start vdev %i addr %pM on freq %d: %d\n",
- 			    arvif->vdev_id, vif->addr,
-@@ -5890,7 +5894,7 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- 		goto out;
- 	}
- 
--	ret = ath12k_mac_vdev_start(arvif, &ctx->def);
-+	ret = ath12k_mac_vdev_start(arvif, ctx);
- 	if (ret) {
- 		ath12k_warn(ab, "failed to start vdev %i addr %pM on freq %d: %d\n",
- 			    arvif->vdev_id, vif->addr,
 -- 
-2.17.1
+https://patchwork.kernel.org/project/linux-wireless/patch/7b752ccb-42b0-94ca-5492-f3892a14f6b3@nbd.name/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
