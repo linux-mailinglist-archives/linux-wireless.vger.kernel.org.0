@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2609E76CBC8
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 13:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61F4676CBDB
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 13:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232126AbjHBLbB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 07:31:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54740 "EHLO
+        id S234162AbjHBLhI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 07:37:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231171AbjHBLbA (ORCPT
+        with ESMTP id S232516AbjHBLhC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 07:31:00 -0400
+        Wed, 2 Aug 2023 07:37:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5138211B
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 04:30:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31AED211E
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 04:37:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9A2E6192E
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 11:30:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD00C433C8;
-        Wed,  2 Aug 2023 11:30:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB7676191C
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 11:37:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F44C433CC;
+        Wed,  2 Aug 2023 11:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690975858;
-        bh=4Vaae40qqGxW8R/6dHIGcwOUOUHcW3fvn7vSPHPAkqg=;
+        s=k20201202; t=1690976220;
+        bh=bQYnWsfeRljqk1mmtmVRAyq5XZ7VtvuLqFh9lbdjcrM=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=nZYg6adai1wgb+4OAIrt7bPJG6g09OiiJpZhAebmbpbxF3wlWhatwVdKow3CN7JJn
-         W8Oy8/IO/VJnI5Z4mEKJggqcQwAOlRfAaHjt0Ffr4aRuckfQdCUwQUKwIEeJYHwo1H
-         2Af95FFJubryYQ9sxFZ2iqXx1oBsaBAnHR7M7DNkCeJePnfQVyRPh6KHQRku3nkVQh
-         Wq3nCU/nM/km4pc9R4BQ9ayb8xNqLVc30tNVpT4cB0xzD9w6IW5zusTIqCFKNuYoZG
-         DDuvwxp7f2DW/3JFyRWh8goe7VnYkVWHv4Nz1/CKbhMc88Qy6qYU9OUWoWhNdSrY3O
-         1Sb9R0FJZpW8w==
+        b=fE/iYIAjau3g+EFehzi2StLIisw1EDqMKbk6mimm41dNcrrqCtwOV7OSgt7qSEFxq
+         H8l95ylXJuimSKNrr5+/QajPHCtbOKVZMazfhmodgNiCG9azn4VN6o++BmcYo7IU53
+         jOf5Mv0LjMyptEcgjept68R9YB4XocdyTgyxCn3jROG1JtHFFdHHERtJ72N2MgUcyz
+         YSZN1AMyo2ySmkwyb3iaodOFW21nc8vtw76fD1gDGSeEqToGafWYhBe7x2AewwWmFs
+         j4Obv/vgdvFem8neYo9RxfFDbNdxeVL+Ft9wkh1DD8o+c40agICoDfkeaSg81ipPK9
+         r/bX6BuUDHJ/A==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Wen Gong <quic_wgong@quicinc.com>
 Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
@@ -40,10 +40,10 @@ Subject: Re: [PATCH v4 2/5] wifi: ath11k: store cur_regulatory_info for each
  radio
 References: <20230607094810.26707-1-quic_wgong@quicinc.com>
         <20230607094810.26707-3-quic_wgong@quicinc.com>
-Date:   Wed, 02 Aug 2023 14:30:55 +0300
+Date:   Wed, 02 Aug 2023 14:36:57 +0300
 In-Reply-To: <20230607094810.26707-3-quic_wgong@quicinc.com> (Wen Gong's
         message of "Wed, 7 Jun 2023 05:48:07 -0400")
-Message-ID: <878ratwuj4.fsf@kernel.org>
+Message-ID: <874jlhwu92.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -70,24 +70,15 @@ Wen Gong <quic_wgong@quicinc.com> writes:
 
 [...]
 
-> +enum wmi_vdev_type ath11k_mac_get_ar_vdev_type(struct ath11k *ar)
-> +{
-> +	struct ath11k_vif *arvif;
-> +
-> +	list_for_each_entry(arvif, &ar->arvifs, list) {
-> +		return arvif->vdev_type;
-> +	}
-> +
-> +	return WMI_VDEV_TYPE_UNSPEC;
-> +}
+> +	ret = ath11k_reg_handle_chan_list(ab, reg_info, IEEE80211_REG_UNSET_AP);
+> +	if (ret) {
+> +		ath11k_dbg(ab, ATH11K_DBG_WMI,
+> +			   "failed to process regulatory info from received event\n");
+> +		goto mem_free;
+>  	}
 
-This function looks odd to me and there are no comments to clarify.
-What's the idea of using list_for_each_entry() and then immediately
-return with the first entry? I guess the assumption here is that every
-arvif has the same type? Can we really trust that? And at least it
-should be documented here.
-
-Also wouldn't list_first_entry_or_null() be more intuitive?
+Why the warning message is using ath11k_dbg()? I think it should be
+ath11k_warn() and also print ret value.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
