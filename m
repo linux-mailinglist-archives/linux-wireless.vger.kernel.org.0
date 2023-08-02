@@ -2,51 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FBCE76CBF7
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 13:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D407376CC03
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 13:49:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234066AbjHBLqy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 07:46:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32994 "EHLO
+        id S234320AbjHBLtV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 07:49:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231765AbjHBLqy (ORCPT
+        with ESMTP id S234071AbjHBLtU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 07:46:54 -0400
+        Wed, 2 Aug 2023 07:49:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF63926A1
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 04:46:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD82E26B0
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 04:49:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5433961938
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 11:46:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03809C433C7;
-        Wed,  2 Aug 2023 11:46:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43ABD61940
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 11:49:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75EAC433C8;
+        Wed,  2 Aug 2023 11:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690976811;
-        bh=5yK34ad/T3Jg2QEHhRuCarIVLq7/ED+M2l6b1OU90f0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=rVYnivjT4a5jGrDPVvdoda7FiLqtamsC2oryPuAmK7tB5kQfigqzWQcEVKax9/LL0
-         /nS9t0kUudVHYHOnRFqFELol2JGTBAE2TM4bw9RDVIfq6cMMIrcPr0Ipbu/17YrkEv
-         BSxs6jjk8DLwTj5nxsh2pvQbJerMv8grHSVLRna4ULXdaHjZszGmXHj9XGKi+nLPWi
-         VWhT+2vpVGx5ByN1LhZSl1q6uLY6eH56fFFSUYBt1VpGXWW5fpFZhB6jbspYWutszT
-         U62an32WfLidcNQQHVSU6PG/t5wleAdkxinwrGxLliUidO+kh4tk4HBOYNmhnZlopx
-         NtHNri4EXDDXA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v4 4/5] wifi: ath11k: update regulatory rules when
- interface added
-References: <20230607094810.26707-1-quic_wgong@quicinc.com>
-        <20230607094810.26707-5-quic_wgong@quicinc.com>
-Date:   Wed, 02 Aug 2023 14:46:49 +0300
-In-Reply-To: <20230607094810.26707-5-quic_wgong@quicinc.com> (Wen Gong's
-        message of "Wed, 7 Jun 2023 05:48:09 -0400")
-Message-ID: <87r0olvf86.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1690976958;
+        bh=vr23ekRDfTSaR0GKV/GudGjbseDbs01M1DzH452Wjcw=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=ZcBh7BC3o39yFMKbUzh3w1ICm+qDb39E2i51g/3VV3ivx9iva1IbfmT3pjNcxmZAt
+         CXLrkaAX7unRC1+oGydabW3M66HwY7++yNx3tsOjpa6Y9pLjyTEDTYNlgZzt4FO3b6
+         58UpM34afPXWzAzUqITuQQ2rV3mRy1+HXGbQL+R8JDcEvtC8Uz9ptRdM5F/tZm/LPa
+         coZmFx3/+cAs2V06iuoyxJGBEJV/Hei7OZIyihcctsZwO63b1W8+w6aFUbs8vHfX5u
+         2AvQQUbDTMmvrt7CcxtMG+lero9BNk7LUb4OxUtVW35+1eeKGX+s4FUQ+NkBhnDWjU
+         wbl3XQcAuf33w==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: ath11k: fix band selection for ppdu received in
+ channel
+ 177 of 5 GHz
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230726044624.20507-1-quic_adisi@quicinc.com>
+References: <20230726044624.20507-1-quic_adisi@quicinc.com>
+To:     Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169097695583.406507.10371419021787807224.kvalo@kernel.org>
+Date:   Wed,  2 Aug 2023 11:49:17 +0000 (UTC)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -57,21 +58,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> writes:
+Aditya Kumar Singh <quic_adisi@quicinc.com> wrote:
 
-> When wlan boot up, WMI_REG_CHAN_LIST_CC_EXT_EVENTID is sent from
-> firmware at an early stage, the interface mode is not decided at
-> this point, then ath11k select reg rules of AP mode as default.
->
-> After interface is created, it is exactly decided AP/station mode,
-> then ath11k need to update reg rules to the exact one.
->
-> Tested-on: WCN6855 hw2.0 PCI
-> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+> 5 GHz band channel 177 support was added with the commit e5e94d10c856 ("wifi:
+> ath11k: add channel 177 into 5 GHz channel list"). However, during processing
+> for the received ppdu in ath11k_dp_rx_h_ppdu(), channel number is checked only
+> till 173. This leads to driver code checking for channel and then fetching the
+> band from it which is extra effort since firmware has already given the channel
+> number in the metadata.
+> 
+> Fix this issue by checking the channel number till 177 since we support
+> it now.
+> 
+> Found via code review. Compile tested only.
+> 
+> Fixes: e5e94d10c856 ("wifi: ath11k: add channel 177 into 5 GHz channel list")
+> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-What about mesh mode? The commit log mentions nothing about that.
+Patch applied to ath-next branch of ath.git, thanks.
+
+72c8caf904ae wifi: ath11k: fix band selection for ppdu received in channel 177 of 5 GHz
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230726044624.20507-1-quic_adisi@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
