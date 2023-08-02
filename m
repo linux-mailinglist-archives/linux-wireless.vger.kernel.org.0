@@ -2,63 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2434676D467
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 18:56:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF9C976D469
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 18:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230182AbjHBQ4I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 12:56:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53900 "EHLO
+        id S229932AbjHBQ6X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 12:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbjHBQ4H (ORCPT
+        with ESMTP id S232853AbjHBQ6I (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 12:56:07 -0400
+        Wed, 2 Aug 2023 12:58:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B7A31706;
-        Wed,  2 Aug 2023 09:56:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D2B31722
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 09:58:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B4D3F61A0D;
-        Wed,  2 Aug 2023 16:56:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FD5C433C8;
-        Wed,  2 Aug 2023 16:56:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A1A561377
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 16:58:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A81C433C8;
+        Wed,  2 Aug 2023 16:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690995365;
-        bh=p1sOEq/Q5nf8WlIzq4mgPmomVrjieac3zXBR6jgM+OU=;
+        s=k20201202; t=1690995486;
+        bh=tDMJ1+pHyzwwwR9rnXV5McJ0yCrErYjLjZesacbe4Zg=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=OvN2f/YWa13qB7U/C1Y1ULILB3AHOJkcW25odca03FJ/yyeEdSMQ6A7kl/s80T1qZ
-         kwCbLAgLc9moV6NqBoANm0Np/D9q5JlFycmREfmKm0AjcyF924bAsJyQiJWz/h06H1
-         YzzkcYNIu3g+po5M7REs+zOGgNlxZtfBwk0pVScvpr2K6Kji4WFtyJvWxDmVL7EglQ
-         LR9UTNKTWxdZF3U7PCWVUxzLH4hl0c3+Esh6gVM+8ys34z2zs13Y6tu3x6ogQX03QA
-         /Q75UwbQanIYD5BelieZVmojpHi5XCrPbw5NbOmOyTleOYyF8MvrSSW5LqNwpaP5OP
-         u5Nwz/NX3n9rA==
+        b=hxg2lrFRjHjv8wAlZgyfbtmVYmRq9tHFWULhicYvlJVOOvLR2UnXBLoTXPiel/xAO
+         Ji+4KlBta2TYhOz1YRhMVJQ2gn2h9F5jZa7U2mwYa8fx6ire1NSN9n2NL+n948nwNj
+         FAFoOgLfBrUpZ1MLA9zNLG3g1ZH5at6Fqc/7J5qspKI9s3nkwFzlqpZTQT643IFA7E
+         6auMyT79ZgmshlDBCGgCdVxrVAfZQATtb3YQgo3fyR7D10XeejO8NlFwdf60hKIu70
+         QregPSmqwlKH0qh7BUcn0QvFQxO8XOkswrGlBISrEd159cyE5WFXc5YFNta18rzwvO
+         R8bn2JfZEezUg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath12k: fix memcpy array overflow in
- ath12k_peer_assoc_h_he
+Subject: Re: [PATCH] wifi: ath12k: avoid array overflow of hw mode for
+ preferred_hw_mode
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230703123737.3420464-1-arnd@kernel.org>
-References: <20230703123737.3420464-1-arnd@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Balamurugan Selvarajan <quic_bselvara@quicinc.com>,
-        P Praneesh <quic_ppranees@quicinc.com>,
-        Baochen Qiang <quic_bqiang@quicinc.com>,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ramya Gnanasekar <quic_rgnanase@quicinc.com>,
-        Wen Gong <quic_wgong@quicinc.com>,
-        Karthik M <quic_karm@quicinc.com>,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        Aishwarya R <quic_aisr@quicinc.com>,
-        Carl Huang <quic_cjhuang@quicinc.com>,
-        ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <20230714072405.28705-1-quic_wgong@quicinc.com>
+References: <20230714072405.28705-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169099536007.463701.11948665209748140465.kvalo@kernel.org>
-Date:   Wed,  2 Aug 2023 16:56:01 +0000 (UTC)
+Message-ID: <169099548389.463701.90643016319296272.kvalo@kernel.org>
+Date:   Wed,  2 Aug 2023 16:58:05 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -69,27 +57,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> wrote:
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-> Two memory copies in this function copy from a short array into a longer one,
-> using the wrong size, which leads to an out-of-bounds access:
+> Currently ath12k define WMI_HOST_HW_MODE_DBS_OR_SBS=5 as max hw mode
+> for enum wmi_host_hw_mode_config_type, it is also same for the array
+> ath12k_hw_mode_pri_map.
 > 
-> include/linux/fortify-string.h:592:4: error: call to '__read_overflow2_field' declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
->                         __read_overflow2_field(q_size_field, size);
->                         ^
-> include/linux/fortify-string.h:592:4: error: call to '__read_overflow2_field' declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-> 2 errors generated.
+> When tested with new version firmware/board data which support new
+> hw mode eMLSR mode with hw mode value 8, it leads overflow usage for
+> array ath12k_hw_mode_pri_map in function ath12k_wmi_hw_mode_caps(),
+> and then lead preferred_hw_mode changed to 8, and finally function
+> ath12k_pull_mac_phy_cap_svc_ready_ext() select the capability of hw
+> mode 8, but the capability of eMLSR mode report from firmware does
+> not support 2.4 GHz band for WCN7850, so finally 2.4 GHz band is
+> disabled.
 > 
-> Fixes: d889913205cf7 ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Skip the hw mode which exceeds WMI_HOST_HW_MODE_MAX in function
+> ath12k_wmi_hw_mode_caps() helps to avoid array overflow, then the 2.4
+> GHz band will not be disabled.
+> 
+> This is to keep compatibility with newer version firmware/board data
+> files, this change is still needed after ath12k add eMLSR hw mode 8 in
+> array ath12k_hw_mode_pri_map and enum wmi_host_hw_mode_config_type,
+> because more hw mode maybe added in next firmware/board data version
+> e.g hw mode 9, then it will also lead new array overflow without this
+> change.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-603cf6c2fcdc wifi: ath12k: fix memcpy array overflow in ath12k_peer_assoc_h_he()
+1e9b1363e2de wifi: ath12k: avoid array overflow of hw mode for preferred_hw_mode
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230703123737.3420464-1-arnd@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230714072405.28705-1-quic_wgong@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
