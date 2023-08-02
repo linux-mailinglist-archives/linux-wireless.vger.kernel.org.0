@@ -2,50 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DF4576CA8C
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 12:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BADD76CA94
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 12:14:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232056AbjHBKNe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 06:13:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39188 "EHLO
+        id S232782AbjHBKOl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 06:14:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231358AbjHBKNd (ORCPT
+        with ESMTP id S232568AbjHBKOj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 06:13:33 -0400
+        Wed, 2 Aug 2023 06:14:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F315132
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 03:13:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEB2A211B
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 03:14:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 037A9618D6
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 10:13:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6BFC433C7;
-        Wed,  2 Aug 2023 10:13:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EE53618FB
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 10:14:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A800AC433C7;
+        Wed,  2 Aug 2023 10:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690971210;
-        bh=fHpgO5NepXbBiqz3bHpeHshYkgx2RRX4BjOLlab2ldM=;
+        s=k20201202; t=1690971272;
+        bh=bM2hEaWYm+37HjuzLyv/h4gnb3TgGWMG/3HKOXA2F4Y=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=aL9viJMOpn4ofEZy+1VVI+4LNR00/3b6Y/tUY0daVevCW9e0QRGazHsC5hNqLoObi
-         V2tRffK/xXfUsI20LyvNNLmzLhAwFT8MdorDa6iPfxrGzmoZoWAHjEliQmEvmabC1o
-         wsGzIB3K+Yj4EqAtrPcnLPVppaCp+PFjO3XKtHxDO4fV5Zljp+1wkpMx77L3RjHBBU
-         Z4gK7lR1g99lp5v9yqB5UrQUJeGGHwn2HC46/z6zSs0iFHxfOzEA9zwXTvcVdknyBJ
-         fg9nNjOhYUMsr4X5/lsX0lPYZTlIqxzJCG4uG6TxMaGbVhXGqqqTwXgq4Sl/MlN+MX
-         yHokae89l0Z+w==
+        b=Bz8NfbDCz9n6ZxsrmbXl1AnSLHDyoDJEnvZzy9NI2bAkNDw12xvMx0807fZfUTsKp
+         tI30819KeAsozKOZWvzDyK3GnjVCaSBrmEbEfu3TrgkCLCrdmeTpoiwjtVE9Red3HQ
+         rfpzb396FOnKEGMcnOEBGhPScJj47kD5fe0B/jqS1OrJN+3AiDHo9kDKzqz9ohkCZN
+         O/4xLKS77/v1m0/b1rJGCrI0uuecfDUKFTPksPgHAdVIWlhtdr2RQS40Yn//7A+qSl
+         Tk4SML8KfBNH+7JZ5qXn71VnYF6P5Ov3bEKGxHjKIqdtN9JzukwAtTb0K9yusUxfJA
+         5yNRyc0U9b77Q==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] wifi: brcmsmac: remove more unused data types
+Subject: Re: wifi: mwifiex: fix error recovery in PCIE buffer descriptor
+ management
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230725162400.192357-1-dmantipov@yandex.ru>
-References: <20230725162400.192357-1-dmantipov@yandex.ru>
+In-Reply-To: <20230731074334.56463-1-dmantipov@yandex.ru>
+References: <20230731074334.56463-1-dmantipov@yandex.ru>
 To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Tom Rix <trix@redhat.com>, linux-wireless@vger.kernel.org,
+Cc:     Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org,
         Dmitry Antipov <dmantipov@yandex.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169097120719.265879.2033564344159564058.kvalo@kernel.org>
-Date:   Wed,  2 Aug 2023 10:13:29 +0000 (UTC)
+Message-ID: <169097126949.265879.7193434194073843607.kvalo@kernel.org>
+Date:   Wed,  2 Aug 2023 10:14:31 +0000 (UTC)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -58,18 +60,24 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> Remove unused 'struct brcmu_iovar' and 'struct tx_inst_power'. This
-> follows commit b2090d93d4b6 ("wifi: brcmsmac: remove unused data type").
+> Add missing 'kfree_skb()' in 'mwifiex_init_rxq_ring()' and never do
+> 'kfree(card->rxbd_ring_vbase)' because this area is DMAed and should
+> be released with 'dma_free_coherent()'. The latter is performed in
+> 'mwifiex_pcie_delete_rxbd_ring()', which is now called to recover
+> from possible errors in 'mwifiex_pcie_create_rxbd_ring()'. Likewise
+> for 'mwifiex_pcie_init_evt_ring()', 'kfree(card->evtbd_ring_vbase)'
+> 'mwifiex_pcie_delete_evtbd_ring()' and 'mwifiex_pcie_create_rxbd_ring()'.
 > 
+> Fixes: d930faee141b ("mwifiex: add support for Marvell pcie8766 chipset")
 > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Acked-by: Brian Norris <briannorris@chromium.org>
 
-2 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-a9477c12ae54 wifi: brcmsmac: remove more unused data types
-0701519fda6f wifi: brcmsmac: cleanup SCB-related data types
+288c63d5cb46 wifi: mwifiex: fix error recovery in PCIE buffer descriptor management
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230725162400.192357-1-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230731074334.56463-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
