@@ -2,64 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBFBB76C143
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 01:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE7E76C15C
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 02:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230144AbjHAXyr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Aug 2023 19:54:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40134 "EHLO
+        id S230441AbjHBAJ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Aug 2023 20:09:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbjHAXyr (ORCPT
+        with ESMTP id S229727AbjHBAJZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Aug 2023 19:54:47 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D99E11BD
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 16:54:45 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-997c4107d62so899022066b.0
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Aug 2023 16:54:45 -0700 (PDT)
+        Tue, 1 Aug 2023 20:09:25 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BEB91FEF
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Aug 2023 17:09:24 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-99bdf08860dso77808266b.0
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Aug 2023 17:09:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1690934084; x=1691538884;
+        d=broadcom.com; s=google; t=1690934962; x=1691539762;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/r8LgqbCQJKDbWog1fhPrLK5zIDLEdgQsq8hyzpcAU=;
-        b=Ssaw0w5j7GctIGiaB9qeIlvtLFEn7dGuxfPOc87Ic+m+wb8ntfkkxemP1jMAhuahSk
-         WpLnRmLocli8h3qPidFfAzLH/aJF2M8CKURoEIWO0lsO+k269AZXYg26MzJHLHZPi4OB
-         vo+60UqLHmsPfrVLYmzgYuKH4Fpnaj/lW52cA=
+        bh=6RtLwAbdU3TSiy9ZgYimTPWMP7RIwfdHa9Mztobk9Cs=;
+        b=bZUUS87DYi2OhISlysQU+PueVN0GreEvIYD4i9NR8FzMFomKJT+5zrx+TPjcGOKgpq
+         Kwn1t3MYtQzkwSddkmVeuqsIZPa0vMd1EZlqt5OxPzqquu5mZrkEeliZSZGVN7NbdO0/
+         X3uXVg8Cuh5rw0R9/eHHgcwJIEPSGacc0L7dw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690934084; x=1691538884;
+        d=1e100.net; s=20221208; t=1690934962; x=1691539762;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Z/r8LgqbCQJKDbWog1fhPrLK5zIDLEdgQsq8hyzpcAU=;
-        b=cO68OxTLc5uvYNeD8lA/T+QaTxtZfjkTUWaf3dkASRh4c8NrXc0SGNfx+YcH22DnkB
-         CM2/dyrmKKZcYICgokdqg4hnJvU0yiIuVp0mvBKTdsCxdXPJdIXTCt/Fmn3Ni6fPj1V4
-         2HfvDUVn52+wuDDwOP7LlF/kU+eckurCiTjLE3+c44ZJXiSuItRg8H18DTcpKte1cvti
-         kY3QNKmhRI20qGJFV9mfUituAMWim2NEIYpXfyPn2xNbc0nVKJElR8AhKrhkAgKyOrrd
-         Ija4/u0eGSKUqNlX8Li2hNbwvrJ26vgRV7Ubup6ap+35F6EOUSTkEUVbXSK6QSgXRslH
-         G+HQ==
-X-Gm-Message-State: ABy/qLbdiaM1IumB/TqLNwKbEsGgAZtNYhoAIK9/XxHCSMZWknMfCLBK
-        BgeLqaA/1BGp85KuStiSSdt7R4W0AQHOEU4kowwxEA==
-X-Google-Smtp-Source: APBJJlEeE47cfBFlMeNB02gDSnbabsI1Qgwn0OEDCcnKtKnL/fyidZHQ1pPwUuFy6zhkAC2iNRr0m1TPFfJei2VvINY=
-X-Received: by 2002:a17:906:3191:b0:99b:4aa3:6480 with SMTP id
- 17-20020a170906319100b0099b4aa36480mr3072499ejy.40.1690934084328; Tue, 01 Aug
- 2023 16:54:44 -0700 (PDT)
+        bh=6RtLwAbdU3TSiy9ZgYimTPWMP7RIwfdHa9Mztobk9Cs=;
+        b=aoV2gEK6o29MZ9xxUU4FeMccU0zRenb4RTMhvgmcV28uUk8ywsddA/gVJLzNg4zLPJ
+         avLh9ZoFlKfCfUEpd9q2wc2t2tlZB/B1GV5vSy7Ekvbz1oF/TfhHNg/aC7Eu8ky2deCu
+         NjGsnWUZcs05N2337ge7stDfT1bvycI5HOoK3FYA+D0qOlY7d+UV4FdOeJX0e0LVUupl
+         Nz0SlhfkJ2cr2qNDTDM212r8h146Kp/DDt6bRnf0Aq0OsY63i7eT5ASFjGDLCID2JSsO
+         oC4uYiCrhVAMXGSySWqVo7rQ9/LxVb6At8nUMx3RDWFn0EtPyP8bSchOt58UgeLQi6mD
+         LH/Q==
+X-Gm-Message-State: ABy/qLYtVVm1/nk/f7BzjDmF0xxkPvJ5dF4rYcq2HI2m20mLkihex1mI
+        ltDTdN9DUPNlfzL5aDxOY/7KMa3X/mdY8hvnwmpsTw==
+X-Google-Smtp-Source: APBJJlHoNL6vK4eTUL0+i9xVrv7+rE0O1PORY92RgRpH/DEBVbz3occcfsy3G2hoWqK+d1pGx2YX7rH9m38neK+L1o8=
+X-Received: by 2002:a17:907:7711:b0:997:e7d0:e26d with SMTP id
+ kw17-20020a170907771100b00997e7d0e26dmr5285711ejc.4.1690934962387; Tue, 01
+ Aug 2023 17:09:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230729140500.27892-1-hdegoede@redhat.com> <169090065747.212423.9892152660352726427.kvalo@kernel.org>
- <57b9d6c8-557f-fbd7-0069-c84691a76ff4@redhat.com> <873512yfqh.fsf@kernel.org>
-In-Reply-To: <873512yfqh.fsf@kernel.org>
+References: <cover.1690904067.git.petr.tesarik.ext@huawei.com>
+ <b94c048c8decefeca41ceac5f826da67a8d727a8.1690904067.git.petr.tesarik.ext@huawei.com>
+ <327159d6-f520-bea1-c6b0-facda7c26699@huaweicloud.com>
+In-Reply-To: <327159d6-f520-bea1-c6b0-facda7c26699@huaweicloud.com>
 From:   Franky Lin <franky.lin@broadcom.com>
-Date:   Tue, 1 Aug 2023 16:54:17 -0700
-Message-ID: <CA+8PC_cpabrqVPWEgPE_+uYA4qCU9cUUb4B6t2dBOr1EVfTJKw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
+Date:   Tue, 1 Aug 2023 17:08:55 -0700
+Message-ID: <CA+8PC_evb-6Y3dKnAN4BN=ODEVxY5-cDb6Lc72u0j1WBtx7p1A@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] wifi: brcm80211: drop struct brcmf_p2p_scan_le
+To:     Petr Tesarik <petrtesarik@huaweicloud.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, Kees Cook <keescook@chromium.org>
+        Kalle Valo <kvalo@kernel.org>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Ian Lin <ian.lin@infineon.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Hector Martin <marcan@marcan.st>,
+        Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ramesh Rangavittal <ramesh.rangavittal@infineon.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Ryohei Kondo <ryohei.kondo@cypress.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Brian Henriquez <brian.henriquez@cypress.com>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <SHA-cyfmac-dev-list@infineon.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>, petr@tesarici.cz
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000007444de0601e545ed"
+        boundary="000000000000ca0f820601e57936"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
@@ -70,51 +92,132 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000007444de0601e545ed
+--000000000000ca0f820601e57936
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 1, 2023 at 7:55=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrote:
+On Tue, Aug 1, 2023 at 10:57=E2=80=AFAM Petr Tesarik
+<petrtesarik@huaweicloud.com> wrote:
 >
-> Hans de Goede <hdegoede@redhat.com> writes:
->
-> > Hi,
+> On 8/1/2023 5:36 PM, Petr Tesarik wrote:
+> > From: Petr Tesarik <petr.tesarik.ext@huawei.com>
 > >
-> > On 8/1/23 16:37, Kalle Valo wrote:
-> >> Hans de Goede <hdegoede@redhat.com> wrote:
-> >>
-> >>> Using brcmfmac with 6.5-rc3 on a brcmfmac43241b4-sdio triggers
-> >>> a backtrace caused by the following field-spanning error:
-> >>>
-> >>> memcpy: detected field-spanning write (size 120) of single field
-> >>>   "&params_le->channel_list[0]" at
-> >>>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (s=
-ize 2)
-> >>>
-> >>> Fix this by replacing the channel_list[1] declaration at the end of
-> >>> the struct with a flexible array declaration.
-> >>>
-> >>> Most users of struct brcmf_scan_params_le calculate the size to alloc
-> >>> using the size of the non flex-array part of the struct + needed extr=
-a
-> >>> space, so they do not care about sizeof(struct brcmf_scan_params_le).
-> >>>
-> >>> brcmf_notify_escan_complete() however uses the struct on the stack,
-> >>> expecting there to be room for at least 1 entry in the channel-list
-> >>> to store the special -1 abort channel-id.
-> >>>
-> >>> To make this work use an anonymous union with a padding member
-> >>> added + the actual channel_list flexible array.
-> >>>
-> >>> Cc: Kees Cook <keescook@chromium.org>
-> >>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> >>> Reviewed-by: Kees Cook <keescook@chromium.org>
+> > The 'S' scan method is not implemented. The type member is always writt=
+en
+> > as 'E' and never read. Consequently, struct brcmf_p2p_scan_le can be
+> > replaced with struct brcmf_escan_params_le.
+>
+> Seeing that Hans has already fixed the actual issue with the flex array,
+> this whole series is not needed.
+>
+> But maybe this simplification has some value on its own?
 
-Looks good to me, thanks for taking care of it.
+I don't think this change would work.
 
-Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+> Petr T
+>
+> > Signed-off-by: Petr Tesarik <petr.tesarik.ext@huawei.com>
+> > ---
+> >  .../broadcom/brcm80211/brcmfmac/p2p.c         | 38 ++++---------------
+> >  1 file changed, 8 insertions(+), 30 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/d=
+rivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> > index d4492d02e4ea..915f95760470 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> > @@ -123,23 +123,6 @@ enum brcmf_p2p_disc_state {
+> >       WL_P2P_DISC_ST_SEARCH
+> >  };
+> >
+> > -/**
+> > - * struct brcmf_p2p_scan_le - P2P specific scan request.
+> > - *
+> > - * @type: type of scan method requested (values: 'E' or 'S').
+> > - * @reserved: reserved (ignored).
+> > - * @eparams: parameters used for type 'E'.
+> > - * @sparams: parameters used for type 'S'.
+> > - */
+> > -struct brcmf_p2p_scan_le {
+> > -     u8 type;
+> > -     u8 reserved[3];
+> > -     union {
+> > -             struct brcmf_escan_params_le eparams;
+> > -             struct brcmf_scan_params_le sparams;
+> > -     };
+> > -};
+> > -
+> >  /**
+> >   * struct brcmf_p2p_pub_act_frame - WiFi P2P Public Action Frame
+> >   *
+> > @@ -646,14 +629,14 @@ static s32 brcmf_p2p_escan(struct brcmf_p2p_info =
+*p2p, u32 num_chans,
+> >  {
+> >       struct brcmf_pub *drvr =3D p2p->cfg->pub;
+> >       s32 ret =3D 0;
+> > -     s32 memsize =3D offsetof(struct brcmf_p2p_scan_le,
+> > -                            eparams.params_le.channel_list);
+> > +     s32 memsize =3D offsetof(struct brcmf_escan_params_le,
+> > +                            params_le.channel_list);
+> >       s32 nprobes;
+> >       s32 active;
+> >       u32 i;
+> >       u8 *memblk;
+> >       struct brcmf_cfg80211_vif *vif;
+> > -     struct brcmf_p2p_scan_le *p2p_params;
+> > +     struct brcmf_escan_params_le *eparams;
+> >       struct brcmf_scan_params_le *sparams;
+> >
+> >       memsize +=3D num_chans * sizeof(__le16);
+> > @@ -667,8 +650,8 @@ static s32 brcmf_p2p_escan(struct brcmf_p2p_info *p=
+2p, u32 num_chans,
+> >               ret =3D -EINVAL;
+> >               goto exit;
+> >       }
+> > -     p2p_params =3D (struct brcmf_p2p_scan_le *)memblk;
+> > -     sparams =3D &p2p_params->eparams.params_le;
+> > +     eparams =3D (struct brcmf_escan_params_le *)memblk;
+> > +     sparams =3D &eparams->params_le;
+> >
+> >       switch (search_state) {
+> >       case WL_P2P_DISC_ST_SEARCH:
+> > @@ -698,11 +681,6 @@ static s32 brcmf_p2p_escan(struct brcmf_p2p_info *=
+p2p, u32 num_chans,
+> >
+> >       brcmf_p2p_set_discover_state(vif->ifp, search_state, 0, 0);
+> >
+> > -     /*
+> > -      * set p2p scan parameters.
+> > -      */
+> > -     p2p_params->type =3D 'E';
+> > -
+> >       /* determine the scan engine parameters */
+> >       sparams->bss_type =3D DOT11_BSSTYPE_ANY;
+> >       sparams->scan_type =3D BRCMF_SCANTYPE_ACTIVE;
+> > @@ -747,9 +725,9 @@ static s32 brcmf_p2p_escan(struct brcmf_p2p_info *p=
+2p, u32 num_chans,
+> >               sparams->channel_list[i] =3D cpu_to_le16(chanspecs[i]);
+> >
+> >       /* set the escan specific parameters */
+> > -     p2p_params->eparams.version =3D cpu_to_le32(BRCMF_ESCAN_REQ_VERSI=
+ON);
+> > -     p2p_params->eparams.action =3D  cpu_to_le16(WL_ESCAN_ACTION_START=
+);
+> > -     p2p_params->eparams.sync_id =3D cpu_to_le16(0x1234);
+> > +     eparams->version =3D cpu_to_le32(BRCMF_ESCAN_REQ_VERSION);
+> > +     eparams->action =3D  cpu_to_le16(WL_ESCAN_ACTION_START);
+> > +     eparams->sync_id =3D cpu_to_le16(0x1234);
+> >       /* perform p2p scan on primary device */
+> >       ret =3D brcmf_fil_bsscfg_data_set(vif->ifp, "p2p_scan", memblk, m=
+emsize);
 
---0000000000007444de0601e545ed
+Firmware is expecting struct brcmf_p2p_scan_le as the parameter for
+"p2p_scan" iovar.
+
+Regards,
+- Franky
+
+--000000000000ca0f820601e57936
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -185,13 +288,13 @@ ATUa+n5ReFZpli4TzcqVHw7i+OaB23TMHCwed4OPFm0H3zcCJgVtgt3z95IPak7bBuYLAGMT2c3K
 Xkdn27MnpydqZw5mnP970DgyUMHXY3Jvj65UAVioJUr4LkNBL7Tsk/6q0FExggJtMIICaQIBATBr
 MFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9i
 YWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxcbvtv+NUbtJoPDWwwDQYJYIZI
-AWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIJWu5T1hSadCvLD9XnxiuhxIoesgrDusTtDxDUiZ
-OlXKMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIzMDgwMTIzNTQ0
-NFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQB
+AWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIBRf1HppcsIWEG3YgHPacs4LAjk40zPPAZM8vyyM
+zcKkMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIzMDgwMjAwMDky
+MlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQB
 AjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkq
-hkiG9w0BAQEFAASCAQChhCaBT6M7NcOdxHWn2I8VBJ5ilX9l7REQxAWqhK5vU9GmbI8uDGVofxCD
-NHUzr13uyxteqqkGfOHbYQqhUVnRD5XHumWiQjisEqAFaop+0uVKzDwGmnqk3sZy0BT5Uq66Su9h
-7X1d7zUrQ49WuQ+HqvaC/gBCEMEmPB9L18FA5/eHNWKw2lY2MIJbSNKU7l37vgj1Alv/Q4JO+jsX
-EbCyV5IYlaoSevHgTIgXnsr5wxOZ2Ged0dmOHJSfemT5mmRDCw4jyRBkSTkhrHhd4TEmnY7EZ1Ez
-lT+6WqPBURKK4NRgzHbcrh+0Br0tdaBkajFOmf0rsyTz9wmQTspEpVP5
---0000000000007444de0601e545ed--
+hkiG9w0BAQEFAASCAQCFoj61E3R2uX5jQoG74WpK/M6LdPuB3oSFbvlI8rfKrnueLAtPxUXI11pG
+FzZJkhGfJtTsHdK/pCl7wjEe+bW9bnh8Na5tYlrXgS5xUgpitqKdcLDP3fwhKNHlc2cKEQ2e78Fs
+ODcKx1qPQyJlKGjVz/ZgdTQiFzZIdb0fxjwKxiy6amY+1FdZJx5exi2+QFiVpM9rTrIcqkijVMI9
+6RJNl3ULnpPWCxnYRw8xyz17hv0QG/8Ga2TSIac1yi1HxT48z28Okl9m7k6QIeG6xWS4jG/W6fhu
+cZt3PbpGmgMMra//oegQLKKb90eefnoudRyB+DlUq91wm0PANzAP4Zpd
+--000000000000ca0f820601e57936--
