@@ -2,211 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6279176C548
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 08:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E89976C82E
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 10:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232181AbjHBGax (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 02:30:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60236 "EHLO
+        id S233283AbjHBIQF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 04:16:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbjHBGav (ORCPT
+        with ESMTP id S231468AbjHBIQF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 02:30:51 -0400
-Received: from bee.tesarici.cz (bee.tesarici.cz [IPv6:2a03:3b40:fe:2d4::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42A3D2701;
-        Tue,  1 Aug 2023 23:30:47 -0700 (PDT)
-Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by bee.tesarici.cz (Postfix) with ESMTPSA id 4366717B488;
-        Wed,  2 Aug 2023 08:30:44 +0200 (CEST)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=none dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tesarici.cz; s=mail;
-        t=1690957844; bh=Kew5VrVJRtBYWMvLbgJeSUgat0b2rneiIFXJZAJVDrU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pUfZcaMQv+8qBr6qUSW0xBC8VSdrM1RWNipTNYyt+qQnBUf/ovuQzqoGp/7kewdIW
-         Cz4NqpgAcoRAieSV3GRh9re6AgqNpTfCJBRtZhsgqLEYOvOHIKGEJX2gMop5usFH+6
-         MWNoDiURoRDPSLdnhbwA8L0o29U/w0C8IU+sC2L91gI+74gQeqsJW82SSH+saQFqDE
-         OiLK2gHSItbwDO0E8mLBB22qONCb7IAY08vnw1QHTOCK6pm/ulyu+c/3bUgrN9GkHI
-         yMxNeC38dHC4NosDCsngPozn6OAU9n6wzN0EbqUYuyqxyh/y6ByHdoLOqldOAlItR5
-         IAgb5RBQxafjA==
-Date:   Wed, 2 Aug 2023 08:30:43 +0200
-From:   Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To:     Franky Lin <franky.lin@broadcom.com>
-Cc:     Petr Tesarik <petrtesarik@huaweicloud.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Ian Lin <ian.lin@infineon.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Hector Martin <marcan@marcan.st>,
-        Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ramesh Rangavittal <ramesh.rangavittal@infineon.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Ryohei Kondo <ryohei.kondo@cypress.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Brian Henriquez <brian.henriquez@cypress.com>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <SHA-cyfmac-dev-list@infineon.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        Roberto Sassu <roberto.sassu@huaweicloud.com>
-Subject: Re: [PATCH v1 1/3] wifi: brcm80211: drop struct brcmf_p2p_scan_le
-Message-ID: <20230802083043.092c2798@meshulam.tesarici.cz>
-In-Reply-To: <CA+8PC_evb-6Y3dKnAN4BN=ODEVxY5-cDb6Lc72u0j1WBtx7p1A@mail.gmail.com>
-References: <cover.1690904067.git.petr.tesarik.ext@huawei.com>
-        <b94c048c8decefeca41ceac5f826da67a8d727a8.1690904067.git.petr.tesarik.ext@huawei.com>
-        <327159d6-f520-bea1-c6b0-facda7c26699@huaweicloud.com>
-        <CA+8PC_evb-6Y3dKnAN4BN=ODEVxY5-cDb6Lc72u0j1WBtx7p1A@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-suse-linux-gnu)
+        Wed, 2 Aug 2023 04:16:05 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CC9019A
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 01:16:03 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4fe426521adso3006057e87.0
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Aug 2023 01:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690964161; x=1691568961;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z1XKoPsX4UORhornaX2uleS8Riwv7Wf5fxSpfuXgQDg=;
+        b=bSPZ7yq66wj72cC1huv59PJSPMCMW0dzLNUr9gtAgTH716mcEjiGsA7MSHGy7BeEPa
+         TmP3PIn3t30vy99dEr+yicUF/73mKAoNzZMeMCfL8cSi178AN1CXbTtRauv7ULdWFZrz
+         LmA2Of7N0X2j4qGi1vfqwWJwLeBmYpTILy4sy82Ue7W6amK4JhJcp1CiEjP4HCwL7kSZ
+         h2ur3EDYTpROkntjwxuBGCMSCQ/pnaVUZFFJ76hzsFeAoz+HktTv4UC5H9mPUSLS25EK
+         JY65jXjNAIiC2on+tt1rSyw3c9HpYJYiehZvCNZkVsKbb8zHK4jgj5WHo7EyDGirgas2
+         ih5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690964161; x=1691568961;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z1XKoPsX4UORhornaX2uleS8Riwv7Wf5fxSpfuXgQDg=;
+        b=Fkj7fWTlHmWKGwEBEpwEno0B99RM+coYm/4KA76kPdr3XX+NxddE89v/mFowP2RYFD
+         rJbtlMhCPq8e20cYgQSmM4wylPZ1QZ8e57M2l6nR90axV1+nI2iXPtjwwLoU/RrahJTv
+         Hh6Z2otE+rncP9/QbOlPequ5D01U//seYtkXIZeSJtSiyHPJiWcPC6YHPcOQR+IgyzeN
+         leMdgT4ANIFWMlniaXVUyZEu5nC+/bfBzZbeSBHwm6ZzzYtZwyC+HKNNxW+gGHX2MNPH
+         EhWgZuwxRhcGP5+FCeJbaD4my1CzBQI2Cw8t8TGL/TOYmdDyhwrwQRTHO8BChzWYduWB
+         ai7w==
+X-Gm-Message-State: ABy/qLZVQvfBFc7bPGqJz8jutd7OL3/00bh/03R+0roR7dpXp52vJymM
+        fP2OQVONoLhJsS0TUe9AW5V05bxlJs3HZuNN2Qk=
+X-Google-Smtp-Source: APBJJlG/YxjoODCy9ypi3OF65XEByNJ855BHvG5T7TdSod2dOKX/4abZA9xLKadj3kKvf9eUn6ltsNTh974Qu0vpuUE=
+X-Received: by 2002:a19:e612:0:b0:4fe:788:d969 with SMTP id
+ d18-20020a19e612000000b004fe0788d969mr3849360lfh.69.1690964160962; Wed, 02
+ Aug 2023 01:16:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:ab3:7814:0:b0:239:e92:2871 with HTTP; Wed, 2 Aug 2023
+ 01:16:00 -0700 (PDT)
+Reply-To: carolynclarke214@gmail.com
+From:   Carolyn Clarke <crftpedals@gmail.com>
+Date:   Wed, 2 Aug 2023 10:16:00 +0200
+Message-ID: <CAGoVmOr3F5GQdgn+Xxu90WMn8-hBzYSqeK6Sf+PBksgQi-SMxw@mail.gmail.com>
+Subject: Re:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 1 Aug 2023 17:08:55 -0700
-Franky Lin <franky.lin@broadcom.com> wrote:
+Good day,
 
-> On Tue, Aug 1, 2023 at 10:57=E2=80=AFAM Petr Tesarik
-> <petrtesarik@huaweicloud.com> wrote:
-> >
-> > On 8/1/2023 5:36 PM, Petr Tesarik wrote: =20
-> > > From: Petr Tesarik <petr.tesarik.ext@huawei.com>
-> > >
-> > > The 'S' scan method is not implemented. The type member is always wri=
-tten
-> > > as 'E' and never read. Consequently, struct brcmf_p2p_scan_le can be
-> > > replaced with struct brcmf_escan_params_le. =20
-> >
-> > Seeing that Hans has already fixed the actual issue with the flex array,
-> > this whole series is not needed.
-> >
-> > But maybe this simplification has some value on its own? =20
->=20
-> I don't think this change would work.
->=20
-> > Petr T
-> > =20
-> > > Signed-off-by: Petr Tesarik <petr.tesarik.ext@huawei.com>
-> > > ---
-> > >  .../broadcom/brcm80211/brcmfmac/p2p.c         | 38 ++++-------------=
---
-> > >  1 file changed, 8 insertions(+), 30 deletions(-)
-> > >
-> > > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b=
-/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> > > index d4492d02e4ea..915f95760470 100644
-> > > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> > > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> > > @@ -123,23 +123,6 @@ enum brcmf_p2p_disc_state {
-> > >       WL_P2P_DISC_ST_SEARCH
-> > >  };
-> > >
-> > > -/**
-> > > - * struct brcmf_p2p_scan_le - P2P specific scan request.
-> > > - *
-> > > - * @type: type of scan method requested (values: 'E' or 'S').
-> > > - * @reserved: reserved (ignored).
-> > > - * @eparams: parameters used for type 'E'.
-> > > - * @sparams: parameters used for type 'S'.
-> > > - */
-> > > -struct brcmf_p2p_scan_le {
-> > > -     u8 type;
-> > > -     u8 reserved[3];
-> > > -     union {
-> > > -             struct brcmf_escan_params_le eparams;
-> > > -             struct brcmf_scan_params_le sparams;
-> > > -     };
-> > > -};
-> > > -
-> > >  /**
-> > >   * struct brcmf_p2p_pub_act_frame - WiFi P2P Public Action Frame
-> > >   *
-> > > @@ -646,14 +629,14 @@ static s32 brcmf_p2p_escan(struct brcmf_p2p_inf=
-o *p2p, u32 num_chans,
-> > >  {
-> > >       struct brcmf_pub *drvr =3D p2p->cfg->pub;
-> > >       s32 ret =3D 0;
-> > > -     s32 memsize =3D offsetof(struct brcmf_p2p_scan_le,
-> > > -                            eparams.params_le.channel_list);
-> > > +     s32 memsize =3D offsetof(struct brcmf_escan_params_le,
-> > > +                            params_le.channel_list);
-> > >       s32 nprobes;
-> > >       s32 active;
-> > >       u32 i;
-> > >       u8 *memblk;
-> > >       struct brcmf_cfg80211_vif *vif;
-> > > -     struct brcmf_p2p_scan_le *p2p_params;
-> > > +     struct brcmf_escan_params_le *eparams;
-> > >       struct brcmf_scan_params_le *sparams;
-> > >
-> > >       memsize +=3D num_chans * sizeof(__le16);
-> > > @@ -667,8 +650,8 @@ static s32 brcmf_p2p_escan(struct brcmf_p2p_info =
-*p2p, u32 num_chans,
-> > >               ret =3D -EINVAL;
-> > >               goto exit;
-> > >       }
-> > > -     p2p_params =3D (struct brcmf_p2p_scan_le *)memblk;
-> > > -     sparams =3D &p2p_params->eparams.params_le;
-> > > +     eparams =3D (struct brcmf_escan_params_le *)memblk;
-> > > +     sparams =3D &eparams->params_le;
-> > >
-> > >       switch (search_state) {
-> > >       case WL_P2P_DISC_ST_SEARCH:
-> > > @@ -698,11 +681,6 @@ static s32 brcmf_p2p_escan(struct brcmf_p2p_info=
- *p2p, u32 num_chans,
-> > >
-> > >       brcmf_p2p_set_discover_state(vif->ifp, search_state, 0, 0);
-> > >
-> > > -     /*
-> > > -      * set p2p scan parameters.
-> > > -      */
-> > > -     p2p_params->type =3D 'E';
-> > > -
-> > >       /* determine the scan engine parameters */
-> > >       sparams->bss_type =3D DOT11_BSSTYPE_ANY;
-> > >       sparams->scan_type =3D BRCMF_SCANTYPE_ACTIVE;
-> > > @@ -747,9 +725,9 @@ static s32 brcmf_p2p_escan(struct brcmf_p2p_info =
-*p2p, u32 num_chans,
-> > >               sparams->channel_list[i] =3D cpu_to_le16(chanspecs[i]);
-> > >
-> > >       /* set the escan specific parameters */
-> > > -     p2p_params->eparams.version =3D cpu_to_le32(BRCMF_ESCAN_REQ_VER=
-SION);
-> > > -     p2p_params->eparams.action =3D  cpu_to_le16(WL_ESCAN_ACTION_STA=
-RT);
-> > > -     p2p_params->eparams.sync_id =3D cpu_to_le16(0x1234);
-> > > +     eparams->version =3D cpu_to_le32(BRCMF_ESCAN_REQ_VERSION);
-> > > +     eparams->action =3D  cpu_to_le16(WL_ESCAN_ACTION_START);
-> > > +     eparams->sync_id =3D cpu_to_le16(0x1234);
-> > >       /* perform p2p scan on primary device */
-> > >       ret =3D brcmf_fil_bsscfg_data_set(vif->ifp, "p2p_scan", memblk,=
- memsize); =20
->=20
-> Firmware is expecting struct brcmf_p2p_scan_le as the parameter for
-> "p2p_scan" iovar.
+Kindly reply back urgently if this email is the most effective way to
+communicate with you, I've a proposal that is in your name,
 
-Ah, you're right, the layout is defined by the firmware protocol, and I
-missed that part.
-
-Sorry for the fuss,
-Petr T
+Carolyn Clarke.
