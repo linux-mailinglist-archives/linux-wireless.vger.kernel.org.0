@@ -2,59 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4407A76DAF2
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 00:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8354776DAF3
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 00:48:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231743AbjHBWsg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 18:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45536 "EHLO
+        id S231859AbjHBWso (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 18:48:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230096AbjHBWsf (ORCPT
+        with ESMTP id S230096AbjHBWsm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 18:48:35 -0400
-Received: from mgamail.intel.com (unknown [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 263E09B
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 15:48:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691016514; x=1722552514;
-  h=date:from:to:cc:subject:message-id;
-  bh=h3Aj3pgdxm0q9x9KW9IXI0PcvFl2KEOg82Tv4IB39jc=;
-  b=G4AVj1c904qflYqjtVDPM8vG14n2X7tBJGzCoR0U8LmOzp6v5acZ0wOs
-   9RRV302S68+tXMHUCxzhfVcjl44ikpimP7jkGWB4kqIx/c0FlO/6PbmSM
-   LTF9QfVqlXw+wUxMGoD8If05Il7GVk5N5rOtxX+PcTxhAkoymwcdURF10
-   o9mL++07FlWScVS0uWlqgqUCodgfP6AN0WNxe6gM7LE3T8K6p10TiPQMz
-   jUb087Km4ZcJqRRpY2otZAuJ3Gkxn1xRIu3nj3t5dMbW570zRC8IHQIyQ
-   6P8ha8KpDdYivKhzAS05BZ6OAhd6zaaBC3vg0Tu10L+/0yfkWpr17ZhTW
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="372451694"
-X-IronPort-AV: E=Sophos;i="6.01,250,1684825200"; 
-   d="scan'208";a="372451694"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 15:48:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="819397748"
-X-IronPort-AV: E=Sophos;i="6.01,250,1684825200"; 
-   d="scan'208";a="819397748"
-Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 02 Aug 2023 15:48:32 -0700
-Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qRKdr-0001YB-1b;
-        Wed, 02 Aug 2023 22:48:31 +0000
-Date:   Thu, 03 Aug 2023 06:48:00 +0800
-From:   kernel test robot <lkp@intel.com>
+        Wed, 2 Aug 2023 18:48:42 -0400
+Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 991031706
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 15:48:41 -0700 (PDT)
+Received: by mail-oo1-xc2e.google.com with SMTP id 006d021491bc7-56cc461f34fso190935eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Aug 2023 15:48:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691016521; x=1691621321;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WIjizju2dZJ80Pa0W/XCfHZ95+sdLcByQyOZRHtAyqw=;
+        b=ctvj3XF6xtqRy3qudrahIkInlA8+UZAv0B+XOi3USHfYhQJkN+EeVuaG/5vdgQA7Tk
+         Vb0O1jn2xz0h8K5LAG8nZdo/dzoudKHOMtjaNnqFoHZ5LRlqUL4Jb0iFAul/yNyp1LDo
+         V95c2kH1K4glbS5aTqOJW2F5LDIfX2c5CQk1P2DEzSVS7RVQUxNxLtz75umG2chVHkzH
+         H0L6cEzZ575s7pSaXveidQTXbzp5Y91KrzdfyPn19qDWM2nT9KupCzq1p9mML5ZeQSZo
+         J61q5KNvf1eux55GUsXoLdhWBXSadAyS+uecRgfEJTmSn9rUBQ8QdCfH7d3cjKiH4ixC
+         vYTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691016521; x=1691621321;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WIjizju2dZJ80Pa0W/XCfHZ95+sdLcByQyOZRHtAyqw=;
+        b=Ye5mmwhlSWnO8W/K3F2aoUwvkgD6HptR68A609XIY8l7A+WtT3oVh6B3BBPwlnGU9m
+         X2GmN+PjWj4K3xxS+A9uhrUVsENMZ9RyI9k4CVdFGrYuhtoPirtz47dDp1swPUZ7JGPg
+         d5nY4OvoH4aEGOZyvqDdyekNAKT1nyK9lJhT304Fg29uyY6pi1Q+h59aaT7hIZbaxChO
+         zV+kW5uVGDFOx0ugjSIyUqTf3a2YEsg3yhp0O/vS+3P3IOnMLrkmqkvqxM41bXhWtbDK
+         LndeVkJhrF3EQpIi0YqVkbj3T+IHjWaVdB/ztngnDhdRkCDPXPFLz2NKyuCONOSYu6Yc
+         8TpA==
+X-Gm-Message-State: ABy/qLb/epS8wtd3eNwVww2NIqw6XDttyXHYh9OwTVp38aiY2UCVYevN
+        3oobKVLl3z8oyLF66GVAO7W2iWZ/rrI/3oHn2Jc=
+X-Google-Smtp-Source: APBJJlGLYEk4ZvbMQ5OJKb9aMHP5nOyMcYUxQ9pM1Tc1hiujtUPOzA0l0nHwGZDf35S1mXla/XsgZ2ZuIX0QOLlGPdc=
+X-Received: by 2002:a4a:3015:0:b0:56c:812a:924c with SMTP id
+ q21-20020a4a3015000000b0056c812a924cmr11343911oof.1.1691016520902; Wed, 02
+ Aug 2023 15:48:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230608095051.116702-4-dmantipov@yandex.ru> <168664510862.24637.10587241603155144086.kvalo@kernel.org>
+ <e030e496-b667-b1de-492b-8b0cc04ffe14@yandex.ru> <87h6rad3fp.fsf@kernel.org>
+ <bccf723a-9f57-73a7-37af-badc6c156daa@yandex.ru> <87cz1vbulk.fsf@kernel.org>
+ <2e78d1f5-4dc5-9665-e3a1-ee00dcc41630@yandex.ru> <fe6b1abc-d529-c20f-3fcb-43d891091080@lwfinger.net>
+ <87v8dzxg5l.fsf_-_@kernel.org> <92233d7c-9595-9223-39e1-6df68b13d474@lwfinger.net>
+ <2131579919.392146.1690979184620@mail.yahoo.com> <87msz9v79k.fsf@kernel.org>
+In-Reply-To: <87msz9v79k.fsf@kernel.org>
+From:   Hin-Tak Leung <hintak.leung@gmail.com>
+Date:   Wed, 2 Aug 2023 23:48:29 +0100
+Message-ID: <CAJMB+NgDZTXau5-C3GTfMDTEtoOJuuR6skpnr-p2rzpoWR3tqA@mail.gmail.com>
+Subject: Re: MAINTAINERS: rtl8187 wireless driver
 To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
+Cc:     Hin-Tak Leung <htl10@users.sourceforge.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Ping-Ke Shih <pkshih@realtek.com>,
         linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 16e455a465fca91907af0108f3d013150386df30
-Message-ID: <202308030658.TPVflaRE-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,165 +75,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 16e455a465fca91907af0108f3d013150386df30  wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
+On Wed, 2 Aug 2023 at 16:10, Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Hin-Tak Leung <htl10@users.sourceforge.net> writes:
+>
+> > On Tuesday, 1 August 2023 at 18:05:08 BST, Larry Finger <larry.finger@lwfinger.net> wrote:
+> >
+> > <snipped>
+> >
+> >> > In the git history the last activity from Herton is from 2010 so I think
+> >> > we should remove him.
+> >>.>
+> >> > Is Hin-Tak still active? The last activity is from 2020.
+> >> >
+> >> > Also the git tree is outdated so that should be removed.
+> >
+> >> Kalle,
+> >
+> >> I removed Herton and Hin-Tak as Maintainers for rtl8187 > and updated the tree
+> >> entries for rtl8187 and rtl8180. Patches are submitted.
+> >
+> > I think I tried to Ack some recent changes a few months ago, but it
+> > didn't go through - my email server insists on sending html-enabled
+> > messages, which gets dropped by the kernel mailing lists. I did have
+> > to jump through some hoops to use git-send-email instead for important
+> > things.
+>
+> Yeah, your reply was in HTML so our lists dropped it. I'm sorry to say
+> but if you are not able to send mails as text/plain you cannot continue
+> as a maintainer, we require that the mails are visible in the list.
+>
 
-elapsed time: 726m
+I should have done this ages ago - can I switch e-mail address, and
+possibly keep the old one? I also have a g-mail address which I use
+less often. So I would like to keep getting e-mails on the sourceforge
+one, but only respond from the gmail one when needed. Is that more
+acceptable?
 
-configs tested: 146
-configs skipped: 6
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r023-20230731   gcc  
-arc                  randconfig-r043-20230801   gcc  
-arc                  randconfig-r043-20230802   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r023-20230731   gcc  
-arm                  randconfig-r046-20230801   gcc  
-arm                  randconfig-r046-20230802   clang
-arm                       versatile_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r033-20230731   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r006-20230801   gcc  
-csky                 randconfig-r026-20230731   gcc  
-hexagon              randconfig-r004-20230801   clang
-hexagon              randconfig-r034-20230731   clang
-hexagon              randconfig-r041-20230801   clang
-hexagon              randconfig-r041-20230802   clang
-hexagon              randconfig-r045-20230801   clang
-hexagon              randconfig-r045-20230802   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230731   gcc  
-i386         buildonly-randconfig-r005-20230731   gcc  
-i386         buildonly-randconfig-r006-20230731   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230731   gcc  
-i386                 randconfig-i001-20230802   clang
-i386                 randconfig-i002-20230731   gcc  
-i386                 randconfig-i002-20230802   clang
-i386                 randconfig-i003-20230731   gcc  
-i386                 randconfig-i003-20230802   clang
-i386                 randconfig-i004-20230731   gcc  
-i386                 randconfig-i004-20230802   clang
-i386                 randconfig-i005-20230731   gcc  
-i386                 randconfig-i005-20230802   clang
-i386                 randconfig-i006-20230731   gcc  
-i386                 randconfig-i006-20230802   clang
-i386                 randconfig-i011-20230731   clang
-i386                 randconfig-i011-20230801   clang
-i386                 randconfig-i012-20230731   clang
-i386                 randconfig-i012-20230801   clang
-i386                 randconfig-i013-20230731   clang
-i386                 randconfig-i013-20230801   clang
-i386                 randconfig-i014-20230731   clang
-i386                 randconfig-i014-20230801   clang
-i386                 randconfig-i015-20230731   clang
-i386                 randconfig-i015-20230801   clang
-i386                 randconfig-i016-20230731   clang
-i386                 randconfig-i016-20230801   clang
-i386                 randconfig-r024-20230731   clang
-i386                 randconfig-r025-20230731   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r013-20230802   gcc  
-loongarch            randconfig-r024-20230731   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        stmark2_defconfig   gcc  
-microblaze           randconfig-r002-20230801   gcc  
-microblaze           randconfig-r005-20230801   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                        bcm47xx_defconfig   gcc  
-mips                 randconfig-r001-20230801   clang
-mips                 randconfig-r005-20230801   clang
-mips                 randconfig-r011-20230802   clang
-mips                 randconfig-r015-20230802   clang
-mips                 randconfig-r032-20230731   clang
-nios2                               defconfig   gcc  
-nios2                randconfig-r012-20230802   gcc  
-nios2                randconfig-r025-20230731   gcc  
-nios2                randconfig-r035-20230731   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r021-20230731   gcc  
-parisc               randconfig-r036-20230731   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r003-20230801   gcc  
-powerpc              randconfig-r014-20230802   gcc  
-powerpc              randconfig-r022-20230731   clang
-powerpc              randconfig-r026-20230731   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r022-20230731   clang
-riscv                randconfig-r031-20230731   gcc  
-riscv                randconfig-r042-20230801   clang
-riscv                randconfig-r042-20230802   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r001-20230801   gcc  
-s390                 randconfig-r044-20230801   clang
-s390                 randconfig-r044-20230802   gcc  
-sh                               allmodconfig   gcc  
-sh                   randconfig-r003-20230801   gcc  
-sh                   randconfig-r035-20230731   gcc  
-sh                   rts7751r2dplus_defconfig   gcc  
-sh                             shx3_defconfig   gcc  
-sh                            titan_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r034-20230731   gcc  
-sparc64              randconfig-r002-20230801   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r032-20230731   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230731   gcc  
-x86_64       buildonly-randconfig-r002-20230731   gcc  
-x86_64       buildonly-randconfig-r003-20230731   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r016-20230802   gcc  
-x86_64               randconfig-r036-20230731   gcc  
-x86_64               randconfig-x001-20230731   clang
-x86_64               randconfig-x002-20230731   clang
-x86_64               randconfig-x003-20230731   clang
-x86_64               randconfig-x004-20230731   clang
-x86_64               randconfig-x005-20230731   clang
-x86_64               randconfig-x006-20230731   clang
-x86_64               randconfig-x011-20230731   gcc  
-x86_64               randconfig-x012-20230731   gcc  
-x86_64               randconfig-x013-20230731   gcc  
-x86_64               randconfig-x014-20230731   gcc  
-x86_64               randconfig-x015-20230731   gcc  
-x86_64               randconfig-x016-20230731   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Hin-Tak
