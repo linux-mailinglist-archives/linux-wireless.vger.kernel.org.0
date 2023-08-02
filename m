@@ -2,114 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E78976D3D5
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 18:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5106276D433
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 18:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234148AbjHBQgP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 12:36:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38862 "EHLO
+        id S233179AbjHBQvD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 12:51:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234203AbjHBQf6 (ORCPT
+        with ESMTP id S232664AbjHBQu5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 12:35:58 -0400
-Received: from frasgout11.his.huawei.com (ecs-14-137-139-23.compute.hwclouds-dns.com [14.137.139.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC9CD30CA;
-        Wed,  2 Aug 2023 09:35:35 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.229])
-        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4RGHNJ4Kykz9xGgQ;
-        Thu,  3 Aug 2023 00:23:44 +0800 (CST)
-Received: from A2101119013HW2.china.huawei.com (unknown [10.81.207.228])
-        by APP1 (Coremail) with SMTP id LxC2BwBXC7uhhcpkkN4sAA--.50378S2;
-        Wed, 02 Aug 2023 17:34:53 +0100 (CET)
-From:   Petr Tesarik <petrtesarik@huaweicloud.com>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Ian Lin <ian.lin@infineon.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Hector Martin <marcan@marcan.st>,
-        Prasanna Kerekoppa <prasanna.kerekoppa@cypress.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ramesh Rangavittal <ramesh.rangavittal@infineon.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-wireless@vger.kernel.org (open list:BROADCOM BRCM80211
-        IEEE802.11n WIRELESS DRIVER),
-        brcm80211-dev-list.pdl@broadcom.com (open list:BROADCOM BRCM80211
-        IEEE802.11n WIRELESS DRIVER),
-        SHA-cyfmac-dev-list@infineon.com (open list:BROADCOM BRCM80211
-        IEEE802.11n WIRELESS DRIVER),
-        linux-kernel@vger.kernel.org (open list)
-Cc:     Roberto Sassu <roberto.sassu@huaweicloud.com>, petr@tesarici.cz
-Subject: [PATCH] wifi: brcm80211: handle params_v1 allocation failure
-Date:   Wed,  2 Aug 2023 18:34:30 +0200
-Message-Id: <20230802163430.1656-1-petrtesarik@huaweicloud.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 2 Aug 2023 12:50:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F01512D64
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 09:50:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 81B7761908
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 16:50:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93B7C433C8;
+        Wed,  2 Aug 2023 16:50:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690995008;
+        bh=GP/jX1Sc2orjtaHf4DKQ/zYrR37BmaILJD+asVNRSZg=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=DLJx4or7kB3H3YokiF8M4w01H51xQW096s4egFvcfnAUehYGWZxUgslORjx5OedwO
+         FoUuAjZDXCm3n5jUsaNPbKztxY2j5qICLK1xYWsaJUgTZf9dUyriuudrhLFBTQNzQv
+         53+Z5YwjC+mEEbamFWaHOFOgBGPAsZPuZeqy/synm03OR22+veECXeeX/rBlApaHHL
+         /ghQsInHSViYJT8co0mfp43zok1g+Tg9UFM+yB1x8110+DfPx6WYVh56xJn0mkTeQl
+         iLRdQIaas7x8+CD1mHpUKmKW5fiMs61q81jtvKD1yxSu/0O04bMEOUxhIoqDxwcEdE
+         u4T14VCXWdF4g==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: LxC2BwBXC7uhhcpkkN4sAA--.50378S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr47Aw4fJF4xAr4ktFWxtFb_yoW8Gw4rp3
-        WxXa4qyr1UWr4a9r4jgrZ7AFyFka17G34qkrWjywn3uFn8Cr18JFy0kFy2krW5C39ay3y2
-        qFyvqrW7Grs3JrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUBv14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-        6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-        0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-        6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
-        0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-        8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkF7I0Ew4C26cxK6c8Ij28IcwCF04k20x
-        vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
-        3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIx
-        AIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF
-        0xvE42xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z2
-        80aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU7GYLUUUUU=
-X-CM-SenderInfo: hshw23xhvd2x3n6k3tpzhluzxrxghudrp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,RDNS_DYNAMIC,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/3] wifi: ath11k: Split coldboot calibration hw_param
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230726141032.3061-2-quic_rajkbhag@quicinc.com>
+References: <20230726141032.3061-2-quic_rajkbhag@quicinc.com>
+To:     Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Seevalamuthu Mariappan <quic_seevalam@quicinc.com>,
+        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169099500560.463701.10291421829844281060.kvalo@kernel.org>
+Date:   Wed,  2 Aug 2023 16:50:07 +0000 (UTC)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Petr Tesarik <petr.tesarik.ext@huawei.com>
+Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> wrote:
 
-Return -ENOMEM from brcmf_run_escan() if kzalloc() fails for v1 params.
+> QCN9074 enables coldboot calibration only in Factory Test Mode (FTM).
+> Hence, split cold_boot_calib to two hw_params for mission and FTM
+> mode.
+> 
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Seevalamuthu Mariappan <quic_seevalam@quicinc.com>
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Fixes: 398ce273d6b1 ("wifi: brcmfmac: cfg80211: Add support for scan params v2")
-Signed-off-by: Petr Tesarik <petr.tesarik.ext@huawei.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 5 +++++
- 1 file changed, 5 insertions(+)
+3 patches applied to ath-next branch of ath.git, thanks.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index de8a2e27f49c..2a90bb24ba77 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -1456,6 +1456,10 @@ brcmf_run_escan(struct brcmf_cfg80211_info *cfg, struct brcmf_if *ifp,
- 		params_size -= BRCMF_SCAN_PARAMS_V2_FIXED_SIZE;
- 		params_size += BRCMF_SCAN_PARAMS_FIXED_SIZE;
- 		params_v1 = kzalloc(params_size, GFP_KERNEL);
-+		if (!params_v1) {
-+			err = -ENOMEM;
-+			goto exit_params;
-+		}
- 		params_v1->version = cpu_to_le32(BRCMF_ESCAN_REQ_VERSION);
- 		brcmf_scan_params_v2_to_v1(&params->params_v2_le, &params_v1->params_le);
- 		kfree(params);
-@@ -1473,6 +1477,7 @@ brcmf_run_escan(struct brcmf_cfg80211_info *cfg, struct brcmf_if *ifp,
- 			bphy_err(drvr, "error (%d)\n", err);
- 	}
- 
-+exit_params:
- 	kfree(params);
- exit:
- 	return err;
+011e5a3052a2 wifi: ath11k: Split coldboot calibration hw_param
+bdfc967bf5fc wifi: ath11k: Add coldboot calibration support for QCN9074
+13329d0cb721 wifi: ath11k: Remove cal_done check during probe
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20230726141032.3061-2-quic_rajkbhag@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
