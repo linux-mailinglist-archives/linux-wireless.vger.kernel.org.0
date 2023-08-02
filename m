@@ -2,61 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D3B776CA83
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 12:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DF4576CA8C
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Aug 2023 12:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232518AbjHBKJ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 06:09:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37196 "EHLO
+        id S232056AbjHBKNe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 06:13:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232417AbjHBKJ4 (ORCPT
+        with ESMTP id S231358AbjHBKNd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 06:09:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A26D22127;
-        Wed,  2 Aug 2023 03:09:54 -0700 (PDT)
+        Wed, 2 Aug 2023 06:13:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F315132
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 03:13:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3155261901;
-        Wed,  2 Aug 2023 10:09:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC9FC433C7;
-        Wed,  2 Aug 2023 10:09:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 037A9618D6
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 10:13:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6BFC433C7;
+        Wed,  2 Aug 2023 10:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690970993;
-        bh=UMEoQRgUVPsC3BWx0IHQ6DCuzr/VvMwJzcj3pFtnNDY=;
+        s=k20201202; t=1690971210;
+        bh=fHpgO5NepXbBiqz3bHpeHshYkgx2RRX4BjOLlab2ldM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ckJG3usI3aMMkX3aNcnX762E4cPBrlRxfoXuMdksMne9WCeFgTPXshhFwBVxJg4hI
-         bZeaFwTzONlhw5JdQYEtq8Hn9Pby/dGr3QWHgDnU+cHepjF/AAmNUI/PJF7ZR5XoZO
-         px7pl/WNWxbl0t1m66w38i2MBhG7NkjvogxkajzCic813Pg6aow6D4pI7ir2w65XX4
-         f8qx/tPR7cFmr+ExSJPWlvBBnxKVyIUJhNLNRHgHMrVPUGgq2RtjKBj6h/eG38FNWC
-         xj+Wo+dJRycHmvaCsNqA2mO/mBui56EdFPOeZbajrjJsodp+lskGmhRiLWEfyFoYEO
-         z/8etGaGCHlUg==
+        b=aL9viJMOpn4ofEZy+1VVI+4LNR00/3b6Y/tUY0daVevCW9e0QRGazHsC5hNqLoObi
+         V2tRffK/xXfUsI20LyvNNLmzLhAwFT8MdorDa6iPfxrGzmoZoWAHjEliQmEvmabC1o
+         wsGzIB3K+Yj4EqAtrPcnLPVppaCp+PFjO3XKtHxDO4fV5Zljp+1wkpMx77L3RjHBBU
+         Z4gK7lR1g99lp5v9yqB5UrQUJeGGHwn2HC46/z6zSs0iFHxfOzEA9zwXTvcVdknyBJ
+         fg9nNjOhYUMsr4X5/lsX0lPYZTlIqxzJCG4uG6TxMaGbVhXGqqqTwXgq4Sl/MlN+MX
+         yHokae89l0Z+w==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: wifi: mt76: Replace strlcpy() with strscpy()
+Subject: Re: [PATCH 1/2] wifi: brcmsmac: remove more unused data types
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230703181256.3712079-1-azeemshaikh38@gmail.com>
-References: <20230703181256.3712079-1-azeemshaikh38@gmail.com>
-To:     Azeem Shaikh <azeemshaikh38@gmail.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-hardening@vger.kernel.org,
-        Azeem Shaikh <azeemshaikh38@gmail.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
+In-Reply-To: <20230725162400.192357-1-dmantipov@yandex.ru>
+References: <20230725162400.192357-1-dmantipov@yandex.ru>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Tom Rix <trix@redhat.com>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169097098854.265879.2537978394359079455.kvalo@kernel.org>
-Date:   Wed,  2 Aug 2023 10:09:50 +0000 (UTC)
+Message-ID: <169097120719.265879.2033564344159564058.kvalo@kernel.org>
+Date:   Wed,  2 Aug 2023 10:13:29 +0000 (UTC)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -67,30 +56,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Azeem Shaikh <azeemshaikh38@gmail.com> wrote:
+Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> strlcpy() reads the entire source buffer first.
-> This read may exceed the destination size limit.
-> This is both inefficient and can lead to linear read
-> overflows if a source string is not NUL-terminated [1].
-> In an effort to remove strlcpy() completely [2], replace
-> strlcpy() here with strscpy().
+> Remove unused 'struct brcmu_iovar' and 'struct tx_inst_power'. This
+> follows commit b2090d93d4b6 ("wifi: brcmsmac: remove unused data type").
 > 
-> Direct replacement is safe here since DEV_ASSIGN is only used by
-> TRACE macros and the return values are ignored.
-> 
-> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-> [2] https://github.com/KSPP/linux/issues/89
-> 
-> Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-Patch applied to wireless-next.git, thanks.
+2 patches applied to wireless-next.git, thanks.
 
-d6b484b5cb2a wifi: mt76: Replace strlcpy() with strscpy()
+a9477c12ae54 wifi: brcmsmac: remove more unused data types
+0701519fda6f wifi: brcmsmac: cleanup SCB-related data types
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230703181256.3712079-1-azeemshaikh38@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230725162400.192357-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
