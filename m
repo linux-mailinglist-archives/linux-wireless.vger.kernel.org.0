@@ -2,149 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26BD376E383
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 10:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FAE576E3CF
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 10:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234846AbjHCIqt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Aug 2023 04:46:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35042 "EHLO
+        id S234096AbjHCI7u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Aug 2023 04:59:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234839AbjHCIqc (ORCPT
+        with ESMTP id S234208AbjHCI7q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Aug 2023 04:46:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C83106
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 01:45:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691052342;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3WTtwxEW9Hl3Gp8FLgTwQrit/9PDxNQU5Gp9J/hakRU=;
-        b=Y+fslikFbKoLfOi76DMFrhvF7HaoROKeDEokTC1kz+mv8+Tn/f0sH0aniQ5XOGxQ2HmNZ4
-        qK1ZyfdCLTeVzNNWhdX7wcI/0icXDs1/jSR2vwftOzBf82z1hPlmErwHFYE25JZOTgsgw2
-        DMgoZCKm4Noq7a2x+vKTWwEH0KRODyw=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-ppZQEppmO-a6r7d84wxi-g-1; Thu, 03 Aug 2023 04:45:41 -0400
-X-MC-Unique: ppZQEppmO-a6r7d84wxi-g-1
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-52227ea05a9so503232a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Aug 2023 01:45:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691052340; x=1691657140;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3WTtwxEW9Hl3Gp8FLgTwQrit/9PDxNQU5Gp9J/hakRU=;
-        b=MV7Q6hBShbkdPCA2Yfklzi5hsnYGxFbJl8buIb0nIIjorlyhkvP0IkQdgM5FNp3E+t
-         vx59JzcQ0gk8jktgOSMZZqF6ZWHuLdhbTHXMfysLP9Gu+zbLliM+7uNIwV4XBQxhUC8B
-         XZxRBNxeaA/SWPv4hQ6cUvaP28fsPhuxR3qnPF06FXpmAFl8GoCoWmlFB4fVOkLW2CCc
-         Tgl0jBY6JDtj1+FJKzI4hO/41DOmNdoOT+dpEHTP7ZmsVYcYEMY/m6Fs8b5tYtvJQAtZ
-         Q4HjUdR0egtCXM8F8HL5JMloOQzD/SvZnwmeLPMCVNVpjzgqUS7kdfwidZDlRUTxkI1C
-         bogA==
-X-Gm-Message-State: ABy/qLbOTbMfRPK+MagkwyfkYyLyr/AIYw4uGPsWso3omBn7y+C/8Bq+
-        htrIVYboR2oZd6wL05cyYx01DQEHdNGWZcUTtLepR0OpHaCgf9aacmL2EV0AoqjPkIgCG3Uamfh
-        59JG4iPnPS8CCzsAsH/rpI/eDEg/EZO8PBYQie6yX/2Y=
-X-Received: by 2002:a05:6402:8cc:b0:522:b86f:a22b with SMTP id d12-20020a05640208cc00b00522b86fa22bmr8253564edz.1.1691052340457;
-        Thu, 03 Aug 2023 01:45:40 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHAjcAMDE6gra8l5ZZAW/6UOYK05QYubSQG3i/aSNHLiaaL17sRRjdSBS7YI4g4TJWlArNp+MzSk5AU/TLJRmI=
-X-Received: by 2002:a05:6402:8cc:b0:522:b86f:a22b with SMTP id
- d12-20020a05640208cc00b00522b86fa22bmr8253549edz.1.1691052340222; Thu, 03 Aug
- 2023 01:45:40 -0700 (PDT)
+        Thu, 3 Aug 2023 04:59:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F3EE53
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 01:59:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B405361CE1
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 08:59:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3C7C433C7;
+        Thu,  3 Aug 2023 08:59:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691053184;
+        bh=FOUSVlS4DmqKvFMq4nd0pwUYJjTJ5rOsM1GI0RE2orc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=fctF0RjbY9Hkwv7bfIm3oJ9/22/8OaasWld4SyX1ghA22QVdk+rii5Lc/Lonhxs5b
+         tfrLikiOTFmKdDnRuhMSZROcLDdJQgfyaLc6jL/1WkiqRw0+UJzBOpk/h//IIptOtX
+         +BGIf8bHQKUbBzx14JQ58TcYLU+ZMYmi5jeI1JcB5S2vR2etu7xo1+ROLLrjQ0J17U
+         roVvrikvzFb6pU7jjp1rgYaXBpfnQMtm+ruwomxklode2q3oVWayNcXSzT8BVCJ9nY
+         IO0hVoGUaeAdN9mKuCZKOvKWXLFMbRyR6ss6pI2cijF2lERphQGB7MP0BMlKHueVFg
+         FNcn7kRjq/w9Q==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Aloka Dixit <quic_alokad@quicinc.com>
+Cc:     Wen Gong <quic_wgong@quicinc.com>, <ath12k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>,
+        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+Subject: Re: [PATCH v5 06/11] wifi: ath12k: prepare EHT peer assoc parameters
+References: <20230725224034.14045-1-quic_alokad@quicinc.com>
+        <20230725224034.14045-7-quic_alokad@quicinc.com>
+        <293dd873-1d9d-afc0-a122-48dfe4bb0fde@quicinc.com>
+        <333fd74a-4178-3cef-5748-62a14ba2da5a@quicinc.com>
+        <47396ec0-a0b3-8275-b29d-9ed72a9922cf@quicinc.com>
+        <eac30246-1360-2854-3f53-28bdf5a24e24@quicinc.com>
+Date:   Thu, 03 Aug 2023 11:59:40 +0300
+In-Reply-To: <eac30246-1360-2854-3f53-28bdf5a24e24@quicinc.com> (Aloka Dixit's
+        message of "Thu, 27 Jul 2023 09:59:14 -0700")
+Message-ID: <87v8dwtsar.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230803023257.9260-1-ltao@redhat.com>
-In-Reply-To: <20230803023257.9260-1-ltao@redhat.com>
-From:   Tao Liu <ltao@redhat.com>
-Date:   Thu, 3 Aug 2023 16:45:04 +0800
-Message-ID: <CAO7dBbV=D3N31L-VPS=2Vtreqc-4drKYHT1xWrKphT3J_G5Ndw@mail.gmail.com>
-Subject: Re: [RFC][PATCH] iwlwifi: Add pci .shutdown() hook for iwlwifi driver
-To:     gregory.greenman@intel.com, kvalo@kernel.org,
-        johannes.berg@intel.com, mukesh.sisodiya@intel.com
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add kexec to the CC list so kexec people can know this.
+Aloka Dixit <quic_alokad@quicinc.com> writes:
 
-On Thu, Aug 3, 2023 at 10:55=E2=80=AFAM Tao Liu <ltao@redhat.com> wrote:
+> On 7/26/2023 10:48 PM, Wen Gong wrote:
 >
-> Previously no .shutdown() hook is implemented for iwlwifi driver, a
-> ETIMEDOUT error will occur during the kexec kernel bootup. As a
-> consequence, wifi is unusable after kexec into the new kernel.
->
-> This issue is observed and patch tested on the following wireless cards:
->
-> 1) Network controller: Intel Corporation Comet Lake PCH-LP CNVi WiFi,
->    Subsystem: Intel Corporation Wi-Fi 6 AX201 160MHz
-> 2) Network controller: Intel Corporation Wireless-AC 9260,
->    Subsystem: Intel Corporation Device e014
->
-> Signed-off-by: Tao Liu <ltao@redhat.com>
-> ---
->
-> Hi folks,
->
-> This is a RFC patch and I'm not sure about the correctness of the code,
-> especially about the pci_clear_master() part. What I want is to stop any
-> ongoing DMA access, in case if the memory overwritting during kexec
-> kernel bootup. But there is already pci_clear_master(pci_dev) in
-> drivers/pci/pci-driver.c:pci_device_shutdown(), so I'm not sure if it is
-> still needed in the driver side. And I only tested the patch against the
-> above 2 wireless cards and worked OK, not sure if it can work for others.
-> Please review the patch, thanks in advance!
->
-> Thanks,
-> Tao Liu
->
-> ---
->  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/=
-wireless/intel/iwlwifi/pcie/drv.c
-> index 73c1fb3c0c5e..24c4c2dd7cb0 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-> @@ -1513,6 +1513,18 @@ static void iwl_pci_remove(struct pci_dev *pdev)
->         iwl_trans_pcie_free(trans);
->  }
->
-> +static void iwl_pci_shutdown(struct pci_dev *pdev)
-> +{
-> +       struct iwl_trans *trans =3D pci_get_drvdata(pdev);
-> +
-> +       if (!trans)
-> +               return;
-> +
-> +       iwl_drv_stop(trans->drv);
-> +
-> +       pci_clear_master(pdev);
-> +}
-> +
->  #ifdef CONFIG_PM_SLEEP
->
->  static int iwl_pci_suspend(struct device *device)
-> @@ -1583,6 +1595,7 @@ static struct pci_driver iwl_pci_driver =3D {
->         .id_table =3D iwl_hw_card_ids,
->         .probe =3D iwl_pci_probe,
->         .remove =3D iwl_pci_remove,
-> +       .shutdown =3D iwl_pci_shutdown,
->         .driver.pm =3D IWL_PM_OPS,
->  };
->
-> --
-> 2.40.1
->
+>> On 7/27/2023 12:38 AM, Aloka Dixit wrote:
+>>> On 7/25/2023 8:43 PM, Wen Gong wrote:
+>>>> On 7/26/2023 6:40 AM, Aloka Dixit wrote:
+>>>> [...]
+>>>>> +
+>>>>> +static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
+>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct ieee80211_vif *vif,
+>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct ieee80211_sta *sta,
+>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct ath12k_wmi_peer_ass=
+oc_arg *arg)
+>>>>> +{
+>>>>> +
+>>>> This is the IEs of my AP below, then it will still entered into
+>>>> this branch for my ath12k station mode.
+>>>> sta->deflink.eht_cap and sta->deflink.he_cap is copied from peer
+>>>> remote, for ath12k station mode, peer
+>>>> remote is the AP. The field only_20mhz is only valid when the IEs
+>>>> is from a station which only support
+>>>> 20 MHz.
+>>>>
+>>>> I think the flag from_ap should be added here as well as function
+>>>> ieee80211_eht_mcs_nss_size().
+>>>>
+>>>> Please correct me if wrong.
+>>>>
+>>>
+>>> Okay, can you fix this in a follow-up patch?
+>>> I don't have a device to test the station mode to verify a fix.
+>>> Thanks.
+>> The fix patch is simple like this (I have verified OK), you can
+>> merge it to your patch.=F0=9F=98=81
+>> It is to not use only_20mhz when ath12k is station mode.
 
+Wen, please submit a follow-up patch which explains the situation
+clearly. The reasoning for your change is not obvious for me. Also
+consider if there should be a comment in the code.
+
+> Every time I re-base the series I have to test, add cover-letter,
+> change-log in 11 patches.
+
+BTW you don't need to add a changelog on every patch. IMHO it's a lot
+easier for everyone if all the changes are listed in the cover letter,
+no need repeat that information in individual patches.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
