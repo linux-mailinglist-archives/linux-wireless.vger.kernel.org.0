@@ -2,116 +2,246 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C161176DB3E
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 01:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E13F276DD11
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 03:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232326AbjHBXEw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Aug 2023 19:04:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53610 "EHLO
+        id S232289AbjHCBSm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Aug 2023 21:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjHBXEv (ORCPT
+        with ESMTP id S230256AbjHCBSk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Aug 2023 19:04:51 -0400
-Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C3291727
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 16:04:49 -0700 (PDT)
-Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-56cb1e602e7so204361eaf.1
-        for <linux-wireless@vger.kernel.org>; Wed, 02 Aug 2023 16:04:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691017489; x=1691622289;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XMcvGoIt0gfQcmV0E7VguKzKodALh7KiIqm1shvRIBU=;
-        b=cQcQZbRqv+CCu4Ha377yyThxHRqwEfT8c7TJ1xGZdtQDX/6FLxyaxV+4kg5UY7Ciht
-         oWVeov1JureUkGsb/njoqvuUQuPdaIqIliZ605n9f7tA+qcH0yaYmFSbIvrktS5Z+5IF
-         7WzlXIB7OjNqU0HWwa1cf3s1GaZrfBmeDnoSePJ2xEfx0BV3em89l9IyphzjxBDmSu+m
-         yAfbSMJPr4QyrcYzi5ppN5Qy8/q7OEYXQRKN+RxvZNJrobsHfHCS7ccCuMRzLK/zqkcE
-         NbeppuJFapP+fOWaiHJN9Vdia4Kl3VFxw807ZEvtGRHf71XX/zfH9NZplBevM63JIASG
-         0hwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691017489; x=1691622289;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XMcvGoIt0gfQcmV0E7VguKzKodALh7KiIqm1shvRIBU=;
-        b=CfLWh+mnyR/qUUmYlROhnhDj7iksBAHqP7jtKaTTZEKjLnvP7sRQUnCBHAiOo4fzmZ
-         2BZcl7rgkEu+KjZWE7SoHiUYb0Iehb4o06+/M/v3WQU4zmP49JF1SrYohJ6EgAG7xUmr
-         gvnpucVOdsE4j3dbo4iEFz8cyQMlb5B0PpodJadI959++Bnjg7y4HmfB9sztGpN83L+M
-         eOupLifo9sSHazET0bffnm7Mkv34w/eHgHVsnC1ZAhiWPwLfsENDXed8tkU2gqcc5yRv
-         D6FtpdY0VlX5DJZIU4PJ+9wczWXniuhQDh4Z2SKrtNnIXSkPAgonmuEmGgQXaggqKag0
-         ncFw==
-X-Gm-Message-State: ABy/qLbKvYz/h+TVErE2qk98SYXppSD0t9paEvuNX56fWEy79ZFFpjyI
-        9gWnaC/U/8zDKme91Pm5Dm+IjpCsmbmuGtl2rz4=
-X-Google-Smtp-Source: APBJJlHjrpk9QqhFEnLrM1bkXgAveS756mEBbYsEmfZdRmX9uXdw6p0BhhxvAbCnGDy5js9jqIu45ZlttVcg8rvGzS8=
-X-Received: by 2002:a4a:91cd:0:b0:566:f5bb:7d40 with SMTP id
- e13-20020a4a91cd000000b00566f5bb7d40mr15136698ooh.6.1691017489235; Wed, 02
- Aug 2023 16:04:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230801170052.6432-1-Larry.Finger@lwfinger.net> <20230801170052.6432-2-Larry.Finger@lwfinger.net>
-In-Reply-To: <20230801170052.6432-2-Larry.Finger@lwfinger.net>
-From:   Hin-Tak Leung <hintak.leung@gmail.com>
-Date:   Thu, 3 Aug 2023 00:04:37 +0100
-Message-ID: <CAJMB+NjFB7T1prmO5xHcp4BGvx19+Qtt5+f5_Z3EDn320ZmoMA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] MAINTAINERS: Update entry for rtl8187
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
+        Wed, 2 Aug 2023 21:18:40 -0400
+Received: from mgamail.intel.com (unknown [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885101BF
+        for <linux-wireless@vger.kernel.org>; Wed,  2 Aug 2023 18:18:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691025519; x=1722561519;
+  h=date:from:to:cc:subject:message-id;
+  bh=TkKWFPbv9ErsE8bCi3z3ukU4ItksmbgHbrkFdtSmgHI=;
+  b=FCqiS7adBeCKAW/CjZrA6RpPu0KO9x5uFno19K+d9HRNnIszKhy7/8HL
+   6Tl+8FjFCWRxrZTf+BEI2M3jWtDENwVkZpPfOazPKX2NAJx+QzUKA4V2b
+   Zk+eaJ2JLtFj8/fyi4xPjzfOtYcCVvYLYUMAGmsgdA/rcbBescp89+y/L
+   vtbwgbWo6JeQylMbvYZvO4FckElZrlvsQdGL8s5uu8WVQ2wyLRe4SX4i7
+   ZaEEDvF5IAKw0Y0U6JXU7p/9Pw7q9XjZFhD40Bjt1wvEaNUAKdqemS0Th
+   VlH6kTUho+A2ITzLcpYfCsbEyg3Xqf+wAxcVnWA0zHPZttk+3HICgfTY9
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="372475617"
+X-IronPort-AV: E=Sophos;i="6.01,250,1684825200"; 
+   d="scan'208";a="372475617"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 18:18:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="819426954"
+X-IronPort-AV: E=Sophos;i="6.01,250,1684825200"; 
+   d="scan'208";a="819426954"
+Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 02 Aug 2023 18:18:35 -0700
+Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qRMz4-0001dT-2F;
+        Thu, 03 Aug 2023 01:18:34 +0000
+Date:   Thu, 03 Aug 2023 09:17:46 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: [wireless-next:main] BUILD SUCCESS
+ 288c63d5cb4667a51a04668b3e2bb0ea499bc5f4
+Message-ID: <202308030935.xO2yxbec-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 1 Aug 2023 at 18:37, Larry Finger <Larry.Finger@lwfinger.net> wrote:
->
-> As Herton Ronaldo Krzesinski and Hin-Tak Leung are no longer active,
-> remove them as maintainers for rtl8187.
->
-> The git tree entry is also updated.
->
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 288c63d5cb4667a51a04668b3e2bb0ea499bc5f4  wifi: mwifiex: fix error recovery in PCIE buffer descriptor management
 
-Nacked-by: Hin-Tak Leung <htl10@users.sourceforge.net>
-Nacked-by: Hin-Tak Leung <hintak.leung@gmail.com>
+elapsed time: 876m
 
-Explained from the other e-mail address - I have technical problems
-(have had that for some years now) of sending pure-text e-mail message
-from it. So I would ideally add this one to the list so I can respond,
-but keep the old one for more frequent reading that doesn't require a
-response. Or, if a single entry is really required, switch to the
-gmail address. Thanks a lot.
+configs tested: 167
+configs skipped: 7
 
-Hin-Tak
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> ---
->  MAINTAINERS | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d0553ad37865..432818a1f9ad 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -18523,13 +18523,11 @@ T:    git git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.g
->  F:     drivers/net/wireless/realtek/rtl818x/rtl8180/
->
->  RTL8187 WIRELESS DRIVER
-> -M:     Herton Ronaldo Krzesinski <herton@canonical.com>
-> -M:     Hin-Tak Leung <htl10@users.sourceforge.net>
->  M:     Larry Finger <Larry.Finger@lwfinger.net>
->  L:     linux-wireless@vger.kernel.org
->  S:     Maintained
-> +T:     git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
->  W:     https://wireless.wiki.kernel.org/
-> -T:     git git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git
->  F:     drivers/net/wireless/realtek/rtl818x/rtl8187/
->
->  RTL8XXXU WIRELESS DRIVER (rtl8xxxu)
-> --
-> 2.41.0
->
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r023-20230731   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                            hsdk_defconfig   gcc  
+arc                  randconfig-r004-20230801   gcc  
+arc                  randconfig-r025-20230731   gcc  
+arc                  randconfig-r026-20230731   gcc  
+arc                  randconfig-r031-20230731   gcc  
+arc                  randconfig-r033-20230731   gcc  
+arc                  randconfig-r043-20230731   gcc  
+arc                  randconfig-r043-20230802   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                         assabet_defconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r005-20230801   clang
+arm                  randconfig-r024-20230731   gcc  
+arm                  randconfig-r032-20230731   clang
+arm                  randconfig-r046-20230731   gcc  
+arm                        realview_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r014-20230731   clang
+arm64                randconfig-r036-20230731   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r006-20230801   gcc  
+hexagon              randconfig-r022-20230731   clang
+hexagon              randconfig-r041-20230731   clang
+hexagon              randconfig-r045-20230731   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230731   gcc  
+i386         buildonly-randconfig-r004-20230801   gcc  
+i386         buildonly-randconfig-r005-20230731   gcc  
+i386         buildonly-randconfig-r005-20230801   gcc  
+i386         buildonly-randconfig-r006-20230731   gcc  
+i386         buildonly-randconfig-r006-20230801   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230731   gcc  
+i386                 randconfig-i001-20230801   gcc  
+i386                 randconfig-i002-20230731   gcc  
+i386                 randconfig-i002-20230801   gcc  
+i386                 randconfig-i003-20230731   gcc  
+i386                 randconfig-i003-20230801   gcc  
+i386                 randconfig-i004-20230731   gcc  
+i386                 randconfig-i004-20230801   gcc  
+i386                 randconfig-i005-20230731   gcc  
+i386                 randconfig-i005-20230801   gcc  
+i386                 randconfig-i006-20230731   gcc  
+i386                 randconfig-i006-20230801   gcc  
+i386                 randconfig-i011-20230731   clang
+i386                 randconfig-i011-20230802   gcc  
+i386                 randconfig-i012-20230731   clang
+i386                 randconfig-i012-20230802   gcc  
+i386                 randconfig-i013-20230731   clang
+i386                 randconfig-i013-20230802   gcc  
+i386                 randconfig-i014-20230731   clang
+i386                 randconfig-i014-20230802   gcc  
+i386                 randconfig-i015-20230731   clang
+i386                 randconfig-i015-20230802   gcc  
+i386                 randconfig-i016-20230731   clang
+i386                 randconfig-i016-20230802   gcc  
+i386                 randconfig-r014-20230731   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r012-20230801   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        m5272c3_defconfig   gcc  
+m68k                 randconfig-r002-20230801   gcc  
+m68k                 randconfig-r006-20230801   gcc  
+m68k                 randconfig-r024-20230731   gcc  
+microblaze           randconfig-r001-20230801   gcc  
+microblaze           randconfig-r003-20230801   gcc  
+microblaze           randconfig-r005-20230801   gcc  
+microblaze           randconfig-r013-20230731   gcc  
+microblaze           randconfig-r023-20230731   gcc  
+microblaze           randconfig-r025-20230731   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                         bigsur_defconfig   gcc  
+mips                      maltaaprp_defconfig   clang
+mips                 randconfig-r001-20230801   clang
+mips                 randconfig-r002-20230801   clang
+mips                 randconfig-r016-20230801   gcc  
+mips                 randconfig-r022-20230731   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r005-20230801   gcc  
+nios2                randconfig-r015-20230731   gcc  
+openrisc             randconfig-r003-20230801   gcc  
+openrisc             randconfig-r012-20230731   gcc  
+openrisc             randconfig-r036-20230731   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r006-20230801   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                     asp8347_defconfig   gcc  
+powerpc                     mpc5200_defconfig   clang
+powerpc                 mpc832x_rdb_defconfig   clang
+powerpc              randconfig-r003-20230801   gcc  
+powerpc              randconfig-r015-20230801   clang
+riscv                            alldefconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r021-20230731   clang
+riscv                randconfig-r034-20230731   gcc  
+riscv                randconfig-r042-20230731   clang
+riscv                randconfig-r042-20230802   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r004-20230801   gcc  
+s390                 randconfig-r011-20230731   clang
+s390                 randconfig-r011-20230801   clang
+s390                 randconfig-r044-20230731   clang
+s390                 randconfig-r044-20230802   gcc  
+sh                               allmodconfig   gcc  
+sh                        apsh4ad0a_defconfig   gcc  
+sh                   randconfig-r011-20230731   gcc  
+sh                   randconfig-r014-20230801   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r002-20230801   gcc  
+sparc64              randconfig-r035-20230731   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r013-20230801   gcc  
+um                   randconfig-r032-20230731   clang
+um                   randconfig-r034-20230731   clang
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230731   gcc  
+x86_64       buildonly-randconfig-r001-20230801   gcc  
+x86_64       buildonly-randconfig-r002-20230731   gcc  
+x86_64       buildonly-randconfig-r002-20230801   gcc  
+x86_64       buildonly-randconfig-r003-20230731   gcc  
+x86_64       buildonly-randconfig-r003-20230801   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r012-20230731   clang
+x86_64               randconfig-x001-20230731   clang
+x86_64               randconfig-x002-20230731   clang
+x86_64               randconfig-x003-20230731   clang
+x86_64               randconfig-x004-20230731   clang
+x86_64               randconfig-x005-20230731   clang
+x86_64               randconfig-x006-20230731   clang
+x86_64               randconfig-x011-20230731   gcc  
+x86_64               randconfig-x012-20230731   gcc  
+x86_64               randconfig-x013-20230731   gcc  
+x86_64               randconfig-x014-20230731   gcc  
+x86_64               randconfig-x015-20230731   gcc  
+x86_64               randconfig-x016-20230731   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r033-20230731   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
