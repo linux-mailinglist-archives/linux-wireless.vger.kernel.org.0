@@ -2,144 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A080476E6AA
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 13:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F43C76E6ED
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 13:32:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234891AbjHCLT2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Aug 2023 07:19:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55910 "EHLO
+        id S234541AbjHCLc3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Aug 2023 07:32:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234597AbjHCLT1 (ORCPT
+        with ESMTP id S234572AbjHCLc1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Aug 2023 07:19:27 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E9B21BF
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 04:19:15 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3739KAM1015034;
-        Thu, 3 Aug 2023 11:19:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=8mz2ihCaUMzYESp5GUdiI/VzVrVVh1vnt+863SOsE+o=;
- b=p5RgS63EEwcdlCf+m4FDhsZzO5WBVFLiLW6Mqz5iiN/ust+sySq1JH3XnAqVuWq0QwjN
- crWbwZc34GtTzmAShEH/pPBvoRZYKg7l+ama7doXnK1eyn4qapnyxdcwuWQHqhX/8lU0
- 7pAXtKdoKKqUvlXCs1aFkw2mT/qrIETZ3Rl5Hkhpn0kCFYiB7/xVizfmTPEoZ6uhInhd
- 8ffJzaXABAwuRGTjHy9l7IpucUG2RAB5lD1TEo/EZe5X5hc8Tj/T53kVodhCzh+iJ6Xn
- wLomH0/elNX/BlJMNgKxc4U/pH9v2mbzk+ajtxME1g68BJ+mzuFlEURa41q6GeZJP1mm pg== 
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s7upp1qjt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 03 Aug 2023 11:19:07 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 373BJ6Mg021183
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 3 Aug 2023 11:19:06 GMT
-Received: from [10.201.204.39] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 3 Aug
- 2023 04:19:05 -0700
-Message-ID: <97ad035b-61b5-fbcf-ba81-aadbe7a0b7c4@quicinc.com>
-Date:   Thu, 3 Aug 2023 16:49:00 +0530
+        Thu, 3 Aug 2023 07:32:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB9F1FCB
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 04:32:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 628F561D29
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 11:32:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F0AC433C8;
+        Thu,  3 Aug 2023 11:32:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691062339;
+        bh=2mgGVC2Dfs7rGuoAE5V9tx/SPrTMRLD/AfsO+GTjpTI=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=HiX0gQleE28pWg1ATJ5Anxo5m1b3U4oe4myCn0Ux9C/9gkdmBTynMVkV//dn3cZjV
+         iQOxHR7vjpGq2wET7Hue9xS/Ot8YklCZCAf3jCBrrP42t179BIM8dKgEv0nyRyNSrQ
+         XcBObVQV33w2opNKEMVWn1VNhTmmUH+GiGQJpNatl5lktysnB+j9Tzl4CSWeNg65SW
+         W6Imemh1QF680itn99b8o9NR7xKObZLGe1NhE3zZUuixKlFdC4FhX12nBnizWqAvA0
+         ff1c5JO4/kUKinxO7fvorrYO6nvQLp01oewOXjdZOyAaWcxfvCbLULh0mrYpcxsOvq
+         88L/C8ycNNQ2A==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] wifi: ath12k: configure RDDM size to MHI for
+ device recovery
+References: <20230721055305.20420-2-quic_wgong@quicinc.com>
+        <169105464227.894438.15435946207134709277.kvalo@kernel.org>
+        <1bbe5e90-1f37-3926-98f7-a685578fef8f@quicinc.com>
+Date:   Thu, 03 Aug 2023 14:32:17 +0300
+In-Reply-To: <1bbe5e90-1f37-3926-98f7-a685578fef8f@quicinc.com> (Wen Gong's
+        message of "Thu, 3 Aug 2023 17:40:39 +0800")
+Message-ID: <87msz8tl8e.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: ath12k: fix WARN_ON during
- ath12k_mac_update_vif_chan
-Content-Language: en-US
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230802085852.19821-1-quic_mdharane@quicinc.com>
- <20230802085852.19821-2-quic_mdharane@quicinc.com>
- <54733de9-db66-f1c4-9ad5-4d1f31529c05@quicinc.com>
-From:   Manish Dharanenthiran <quic_mdharane@quicinc.com>
-In-Reply-To: <54733de9-db66-f1c4-9ad5-4d1f31529c05@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: WZElMT0PaPHcMc7Basak0UMAVKyfLhxF
-X-Proofpoint-ORIG-GUID: WZElMT0PaPHcMc7Basak0UMAVKyfLhxF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-03_09,2023-08-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- malwarescore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=932 bulkscore=0
- impostorscore=0 priorityscore=1501 adultscore=0 mlxscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2308030101
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Wen Gong <quic_wgong@quicinc.com> writes:
 
+> On 8/3/2023 5:24 PM, Kalle Valo wrote:
+>> Wen Gong <quic_wgong@quicinc.com> wrote:
+>>
+>>> RDDM is RAM DUMP DEBUG module, it is used to debug issues when firmware
+>>> encounters an error.
+>>>
+>>> The rddm_size is needed by firmware while MHI enter RDDM state. Add it
+>>> to support device recovery when ath12k receive MHI_CB_EE_RDDM message.
+>>>
+>>> Tested-on: WCN7850 hw2.0 PCI
+>>> WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+>>>
+>>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>> I'm not sure what "support device recovery" means exactly. How does this patch
+>> change functionality from user's point of view?
+>>
+>> No need to resend because of this, I can add that to the commit log.
+> Device recovery means SSR(subsystem restart), when firmware happen
+> crash, ath12k
+> will receive the RDDM event, and then ath12k/mac80211 begin to
+> re-start wifi/firmware,
+> after that, the wifi become normal again.
+>
+> This patch is to let firmware report RDDM event correctly to ath12k.
+> Without this patch,
+> firmware will not report RDDM event to ath12k correctly, then ath12k
+> will not begin SSR
+> process.
+>
+> I think it should be changed like this:
+>
+> The rddm_size is needed by firmware while MHI enter RDDM state. Add it
+> and then firmware will report MHI_CB_EE_RDDM correctly while firmware
+> encounters an error, then ath12k could start the device recovery process.
 
-On 8/2/2023 8:29 PM, Jeff Johnson wrote:
-> On 8/2/2023 1:58 AM, Manish Dharanenthiran wrote:
->> Fix WARN_ON() from ath12k_mac_update_vif_chan() if vdev is not up.
->> Since change_chanctx can be called even before vdev_up.
->>
->> Do vdev stop followed by a vdev start in case of vdev is down.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0-02903-QCAHKSWPL_SILICONZ-1
-> 
-> Has this been tested on WCN7850? My understanding is that firmware may 
-> expect vdev down and then vdev restart
-Hi Jeff,
+How about this:
 
-No, not tested with WCN7850 chip-set. But, we will be sending vdev_down 
-before starting the restart sequence. Let me get help from MCC team to 
-test this patch and update the changes, if needed.
-> 
->>
->> Signed-off-by: Manish Dharanenthiran <quic_mdharane@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath12k/mac.c | 27 +++++++++++++++++++++------
->>   1 file changed, 21 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/mac.c 
->> b/drivers/net/wireless/ath/ath12k/mac.c
->> index 1bb9802ef569..0ab95e138d1d 100644
->> --- a/drivers/net/wireless/ath/ath12k/mac.c
->> +++ b/drivers/net/wireless/ath/ath12k/mac.c
->> @@ -5698,13 +5698,28 @@ ath12k_mac_update_vif_chan(struct ath12k *ar,
->>           if (WARN_ON(!arvif->is_started))
->>               continue;
->> -        if (WARN_ON(!arvif->is_up))
->> -            continue;
->> +        /* Firmware expect vdev_restart only if vdev is up.
->> +         * If vdev is down then it expect vdev_stop->vdev_start.
->> +         */
->> +        if (arvif->is_up) {
->> +            ret = ath12k_mac_vdev_restart(arvif, &vifs[i].new_ctx->def);
->> +            if (ret) {
->> +                ath12k_warn(ab, "failed to restart vdev %d: %d\n",
->> +                        arvif->vdev_id, ret);
->> +                continue;
->> +            }
->> +        } else {
->> +            ret = ath12k_mac_vdev_stop(arvif);
->> +            if (ret) {
->> +                ath12k_warn(ab, "failed to stop vdev %d: %d\n",
->> +                        arvif->vdev_id, ret);
->> +                continue;
->> +            }
->> -        ret = ath12k_mac_vdev_restart(arvif, &vifs[i].new_ctx->def);
->> -        if (ret) {
->> -            ath12k_warn(ab, "failed to restart vdev %d: %d\n",
->> -                    arvif->vdev_id, ret);
->> +            ret = ath12k_mac_vdev_start(arvif, &vifs[i].new_ctx->def);
->> +            if (ret)
->> +                ath12k_warn(ab, "failed to start vdev %d: %d\n",
->> +                        arvif->vdev_id, ret);
->>               continue;
->>           }
-> 
+"RDDM is Ram Dump Debug Module which is used to debug issues when the
+firmware encounters an error. The rddm_size is needed by the firmware
+while MHI goes to the RDDM state. Provide the size to MHI subsystem so
+that the firmware restart works when the firmware crashes."
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
