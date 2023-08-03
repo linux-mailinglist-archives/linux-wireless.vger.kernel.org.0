@@ -2,84 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BA8676E252
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 10:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26BD376E383
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 10:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234309AbjHCIBu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Aug 2023 04:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32894 "EHLO
+        id S234846AbjHCIqt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Aug 2023 04:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234266AbjHCIAq (ORCPT
+        with ESMTP id S234839AbjHCIqc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Aug 2023 04:00:46 -0400
-Received: from mail.nfschina.com (unknown [42.101.60.195])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id E739246AB;
-        Thu,  3 Aug 2023 00:50:16 -0700 (PDT)
-Received: from [172.30.11.106] (unknown [180.167.10.98])
-        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id 608FD6096E8EB;
-        Thu,  3 Aug 2023 15:50:13 +0800 (CST)
-Message-ID: <4d36a3d9-b0bf-5181-e0e5-6bd3ea9de0e9@nfschina.com>
-Date:   Thu, 3 Aug 2023 15:50:12 +0800
+        Thu, 3 Aug 2023 04:46:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C83106
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 01:45:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691052342;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3WTtwxEW9Hl3Gp8FLgTwQrit/9PDxNQU5Gp9J/hakRU=;
+        b=Y+fslikFbKoLfOi76DMFrhvF7HaoROKeDEokTC1kz+mv8+Tn/f0sH0aniQ5XOGxQ2HmNZ4
+        qK1ZyfdCLTeVzNNWhdX7wcI/0icXDs1/jSR2vwftOzBf82z1hPlmErwHFYE25JZOTgsgw2
+        DMgoZCKm4Noq7a2x+vKTWwEH0KRODyw=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-ppZQEppmO-a6r7d84wxi-g-1; Thu, 03 Aug 2023 04:45:41 -0400
+X-MC-Unique: ppZQEppmO-a6r7d84wxi-g-1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-52227ea05a9so503232a12.1
+        for <linux-wireless@vger.kernel.org>; Thu, 03 Aug 2023 01:45:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691052340; x=1691657140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3WTtwxEW9Hl3Gp8FLgTwQrit/9PDxNQU5Gp9J/hakRU=;
+        b=MV7Q6hBShbkdPCA2Yfklzi5hsnYGxFbJl8buIb0nIIjorlyhkvP0IkQdgM5FNp3E+t
+         vx59JzcQ0gk8jktgOSMZZqF6ZWHuLdhbTHXMfysLP9Gu+zbLliM+7uNIwV4XBQxhUC8B
+         XZxRBNxeaA/SWPv4hQ6cUvaP28fsPhuxR3qnPF06FXpmAFl8GoCoWmlFB4fVOkLW2CCc
+         Tgl0jBY6JDtj1+FJKzI4hO/41DOmNdoOT+dpEHTP7ZmsVYcYEMY/m6Fs8b5tYtvJQAtZ
+         Q4HjUdR0egtCXM8F8HL5JMloOQzD/SvZnwmeLPMCVNVpjzgqUS7kdfwidZDlRUTxkI1C
+         bogA==
+X-Gm-Message-State: ABy/qLbOTbMfRPK+MagkwyfkYyLyr/AIYw4uGPsWso3omBn7y+C/8Bq+
+        htrIVYboR2oZd6wL05cyYx01DQEHdNGWZcUTtLepR0OpHaCgf9aacmL2EV0AoqjPkIgCG3Uamfh
+        59JG4iPnPS8CCzsAsH/rpI/eDEg/EZO8PBYQie6yX/2Y=
+X-Received: by 2002:a05:6402:8cc:b0:522:b86f:a22b with SMTP id d12-20020a05640208cc00b00522b86fa22bmr8253564edz.1.1691052340457;
+        Thu, 03 Aug 2023 01:45:40 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHAjcAMDE6gra8l5ZZAW/6UOYK05QYubSQG3i/aSNHLiaaL17sRRjdSBS7YI4g4TJWlArNp+MzSk5AU/TLJRmI=
+X-Received: by 2002:a05:6402:8cc:b0:522:b86f:a22b with SMTP id
+ d12-20020a05640208cc00b00522b86fa22bmr8253549edz.1.1691052340222; Thu, 03 Aug
+ 2023 01:45:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH net-next v2 0/9] wifi: rsi: Remove some unnecessary
- conversions
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     simon.horman@corigine.com, yuancan@huawei.com, marex@denx.de,
-        peter@n8pjl.ca, johannes.berg@intel.com, alexander@wetzel-home.de,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-X-MD-Sfrom: yunchuan@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From:   yunchuan <yunchuan@nfschina.com>
-In-Reply-To: <87zg38tvtn.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+References: <20230803023257.9260-1-ltao@redhat.com>
+In-Reply-To: <20230803023257.9260-1-ltao@redhat.com>
+From:   Tao Liu <ltao@redhat.com>
+Date:   Thu, 3 Aug 2023 16:45:04 +0800
+Message-ID: <CAO7dBbV=D3N31L-VPS=2Vtreqc-4drKYHT1xWrKphT3J_G5Ndw@mail.gmail.com>
+Subject: Re: [RFC][PATCH] iwlwifi: Add pci .shutdown() hook for iwlwifi driver
+To:     gregory.greenman@intel.com, kvalo@kernel.org,
+        johannes.berg@intel.com, mukesh.sisodiya@intel.com
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kexec@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2023/8/3 15:43, Kalle Valo wrote:
-> Wu Yunchuan <yunchuan@nfschina.com> writes:
+Add kexec to the CC list so kexec people can know this.
+
+On Thu, Aug 3, 2023 at 10:55=E2=80=AFAM Tao Liu <ltao@redhat.com> wrote:
 >
->> remove unnecessary (void*) conversions and other unnecessary
->> conversons in the directory drivers/net/wireless/rsi.
->>
->> changes from v2 to v1:
->>   - modify subject lines
->>
->> Wu Yunchuan (9):
->>    wifi: rsi: rsi_91x_coex: Remove unnecessary (void*) conversions
->>    wifi: rsi: rsi_91x_debugfs: Remove unnecessary (void*) conversions
->>    wifi: rsi: rsi_91x_hal: Remove unnecessary conversions
->>    wifi: rsi: rsi_91x_mac80211: Remove unnecessary conversions
->>    wifi: rsi: rsi_91x_main: Remove unnecessary (void*) conversions
->>    wifi: rsi: rsi_91x_sdio: Remove unnecessary (void*) conversions
->>    wifi: rsi: rsi_91x_sdio_ops: Remove unnecessary (void*) conversions
->>    wifi: rsi: rsi_91x_usb: Remove unnecessary (void*) conversions
->>    wifi: rsi: rsi_91x_usb_ops: Remove unnecessary (void*) conversions
->>
->>   drivers/net/wireless/rsi/rsi_91x_coex.c     | 11 +++---
->>   drivers/net/wireless/rsi/rsi_91x_debugfs.c  |  3 +-
->>   drivers/net/wireless/rsi/rsi_91x_hal.c      |  2 +-
->>   drivers/net/wireless/rsi/rsi_91x_mac80211.c |  4 +--
->>   drivers/net/wireless/rsi/rsi_91x_main.c     |  4 +--
->>   drivers/net/wireless/rsi/rsi_91x_sdio.c     | 39 ++++++++-------------
->>   drivers/net/wireless/rsi/rsi_91x_sdio_ops.c | 15 +++-----
->>   drivers/net/wireless/rsi/rsi_91x_usb.c      | 20 +++++------
->>   drivers/net/wireless/rsi/rsi_91x_usb_ops.c  |  2 +-
->>   9 files changed, 40 insertions(+), 60 deletions(-)
-> These patches go to wireless-next, not net-next. No need to resend
-> because of this.
-
-Sorry for the bothering , I know it now.
-
-Wu Yunchuan
+> Previously no .shutdown() hook is implemented for iwlwifi driver, a
+> ETIMEDOUT error will occur during the kexec kernel bootup. As a
+> consequence, wifi is unusable after kexec into the new kernel.
+>
+> This issue is observed and patch tested on the following wireless cards:
+>
+> 1) Network controller: Intel Corporation Comet Lake PCH-LP CNVi WiFi,
+>    Subsystem: Intel Corporation Wi-Fi 6 AX201 160MHz
+> 2) Network controller: Intel Corporation Wireless-AC 9260,
+>    Subsystem: Intel Corporation Device e014
+>
+> Signed-off-by: Tao Liu <ltao@redhat.com>
+> ---
+>
+> Hi folks,
+>
+> This is a RFC patch and I'm not sure about the correctness of the code,
+> especially about the pci_clear_master() part. What I want is to stop any
+> ongoing DMA access, in case if the memory overwritting during kexec
+> kernel bootup. But there is already pci_clear_master(pci_dev) in
+> drivers/pci/pci-driver.c:pci_device_shutdown(), so I'm not sure if it is
+> still needed in the driver side. And I only tested the patch against the
+> above 2 wireless cards and worked OK, not sure if it can work for others.
+> Please review the patch, thanks in advance!
+>
+> Thanks,
+> Tao Liu
+>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/=
+wireless/intel/iwlwifi/pcie/drv.c
+> index 73c1fb3c0c5e..24c4c2dd7cb0 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> @@ -1513,6 +1513,18 @@ static void iwl_pci_remove(struct pci_dev *pdev)
+>         iwl_trans_pcie_free(trans);
+>  }
+>
+> +static void iwl_pci_shutdown(struct pci_dev *pdev)
+> +{
+> +       struct iwl_trans *trans =3D pci_get_drvdata(pdev);
+> +
+> +       if (!trans)
+> +               return;
+> +
+> +       iwl_drv_stop(trans->drv);
+> +
+> +       pci_clear_master(pdev);
+> +}
+> +
+>  #ifdef CONFIG_PM_SLEEP
+>
+>  static int iwl_pci_suspend(struct device *device)
+> @@ -1583,6 +1595,7 @@ static struct pci_driver iwl_pci_driver =3D {
+>         .id_table =3D iwl_hw_card_ids,
+>         .probe =3D iwl_pci_probe,
+>         .remove =3D iwl_pci_remove,
+> +       .shutdown =3D iwl_pci_shutdown,
+>         .driver.pm =3D IWL_PM_OPS,
+>  };
+>
+> --
+> 2.40.1
+>
 
