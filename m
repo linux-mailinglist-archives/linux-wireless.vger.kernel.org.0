@@ -2,114 +2,179 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 236F376E4B2
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 11:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F32276E5EB
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Aug 2023 12:55:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233694AbjHCJlK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Aug 2023 05:41:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36868 "EHLO
+        id S234099AbjHCKzQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Aug 2023 06:55:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232594AbjHCJlJ (ORCPT
+        with ESMTP id S229710AbjHCKzP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Aug 2023 05:41:09 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69472213F
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 02:41:07 -0700 (PDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3736cd0E006446;
-        Thu, 3 Aug 2023 09:41:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=oMFOj4CPTdcUMCz1lZPzPS2D1UbuapHX2+Br3qM+YoM=;
- b=JfyqC8bBbOHSENtv4kgLWqmouGOCyWxi7FGghTBngg/h7FA9L65NP+0IaQcklkf4Udl6
- 66ZbjbBXIDKOufrc8aX7LW7/8ZFHtrgske7E7tBdDrw5id/uhBAp/QLe1vVct2hAQqIH
- nBC/8aB3GNjD/J/fpgHz1jKqTL4XToBudpItInc4oHBVOz5ra3uRrCtxgEJPa9c4h8gJ
- Oogh2XlVjdgwr2OPPDwfNLqgIgij2SsTvDIy/w1wzfo6cC+2urVA8WBdj7HFxRwp9tc+
- pJchoIABHjgR+lMHIVjI1XwmX/OMMwXJJbCVxheNrkhXQMD63rgNtMmBMwveRcBJn3Y8 aQ== 
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s83q0gnp7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 03 Aug 2023 09:41:00 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3739egMr017999
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 3 Aug 2023 09:40:42 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 3 Aug
- 2023 02:40:41 -0700
-Message-ID: <1bbe5e90-1f37-3926-98f7-a685578fef8f@quicinc.com>
-Date:   Thu, 3 Aug 2023 17:40:39 +0800
+        Thu, 3 Aug 2023 06:55:15 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B1D441AB
+        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 03:55:11 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 373AsgSeB011853, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 373AsgSeB011853
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Thu, 3 Aug 2023 18:54:42 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 3 Aug 2023 18:54:56 +0800
+Received: from [127.0.1.1] (172.16.16.139) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 3 Aug 2023
+ 18:54:56 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: regd: update regulatory map to R64-R42
+Date:   Thu, 3 Aug 2023 18:54:30 +0800
+Message-ID: <20230803105430.6985-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/3] wifi: ath12k: configure RDDM size to MHI for
- device recovery
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20230721055305.20420-2-quic_wgong@quicinc.com>
- <169105464227.894438.15435946207134709277.kvalo@kernel.org>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <169105464227.894438.15435946207134709277.kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: cl9LxbwMu0gRTia_nU6i8A79p_SDW18l
-X-Proofpoint-GUID: cl9LxbwMu0gRTia_nU6i8A79p_SDW18l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-03_08,2023-08-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 clxscore=1015 impostorscore=0 malwarescore=0 suspectscore=0
- mlxlogscore=696 priorityscore=1501 mlxscore=0 spamscore=0 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308030086
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.16.139]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/3/2023 5:24 PM, Kalle Valo wrote:
-> Wen Gong <quic_wgong@quicinc.com> wrote:
->
->> RDDM is RAM DUMP DEBUG module, it is used to debug issues when firmware
->> encounters an error.
->>
->> The rddm_size is needed by firmware while MHI enter RDDM state. Add it
->> to support device recovery when ath12k receive MHI_CB_EE_RDDM message.
->>
->> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
->>
->> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
->> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> I'm not sure what "support device recovery" means exactly. How does this patch
-> change functionality from user's point of view?
->
-> No need to resend because of this, I can add that to the commit log.
-Device recovery means SSR(subsystem restart), when firmware happen 
-crash, ath12k
-will receive the RDDM event, and then ath12k/mac80211 begin to re-start 
-wifi/firmware,
-after that, the wifi become normal again.
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-This patch is to let firmware report RDDM event correctly to ath12k. 
-Without this patch,
-firmware will not report RDDM event to ath12k correctly, then ath12k 
-will not begin SSR
-process.
+Update notes:
+sync Realtek Regulatory R42 and Realtek Channel Plan R64
 
-I think it should be changed like this:
-The rddm_size is needed by firmware while MHI enter RDDM state. Add it
-and then firmware will report MHI_CB_EE_RDDM correctly while firmware
-encounters an error, then ath12k could start the device recovery process.
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/regd.c | 26 +++++++++++------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
+index 34c4d40cfa02..b9a62a5dad51 100644
+--- a/drivers/net/wireless/realtek/rtw89/regd.c
++++ b/drivers/net/wireless/realtek/rtw89/regd.c
+@@ -13,10 +13,10 @@
+ 	}
+ 
+ static const struct rtw89_regd rtw89_ww_regd =
+-	COUNTRY_REGD("00", RTW89_WW, RTW89_WW);
++	COUNTRY_REGD("00", RTW89_WW, RTW89_WW, RTW89_WW);
+ 
+ static const struct rtw89_regd rtw89_regd_map[] = {
+-	COUNTRY_REGD("AR", RTW89_MEXICO, RTW89_MEXICO, RTW89_NA),
++	COUNTRY_REGD("AR", RTW89_MEXICO, RTW89_MEXICO, RTW89_FCC),
+ 	COUNTRY_REGD("BO", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+ 	COUNTRY_REGD("BR", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+ 	COUNTRY_REGD("CL", RTW89_CHILE, RTW89_CHILE, RTW89_CHILE),
+@@ -26,7 +26,7 @@ static const struct rtw89_regd rtw89_regd_map[] = {
+ 	COUNTRY_REGD("SV", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+ 	COUNTRY_REGD("GT", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+ 	COUNTRY_REGD("HN", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("MX", RTW89_MEXICO, RTW89_MEXICO, RTW89_NA),
++	COUNTRY_REGD("MX", RTW89_MEXICO, RTW89_MEXICO, RTW89_FCC),
+ 	COUNTRY_REGD("NI", RTW89_FCC, RTW89_FCC, RTW89_NA),
+ 	COUNTRY_REGD("PA", RTW89_FCC, RTW89_FCC, RTW89_NA),
+ 	COUNTRY_REGD("PY", RTW89_FCC, RTW89_FCC, RTW89_NA),
+@@ -81,7 +81,7 @@ static const struct rtw89_regd rtw89_regd_map[] = {
+ 	COUNTRY_REGD("KE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("KW", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("KG", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("LB", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
++	COUNTRY_REGD("LB", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("LS", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("MK", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("MA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+@@ -96,7 +96,7 @@ static const struct rtw89_regd rtw89_regd_map[] = {
+ 	COUNTRY_REGD("SN", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("RS", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("ME", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("ZA", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
++	COUNTRY_REGD("ZA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("TR", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("UA", RTW89_UKRAINE, RTW89_UKRAINE, RTW89_UKRAINE),
+ 	COUNTRY_REGD("AE", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+@@ -115,7 +115,7 @@ static const struct rtw89_regd rtw89_regd_map[] = {
+ 	COUNTRY_REGD("SG", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("LK", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("TW", RTW89_FCC, RTW89_FCC, RTW89_NA),
+-	COUNTRY_REGD("TH", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
++	COUNTRY_REGD("TH", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("VN", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("AU", RTW89_ACMA, RTW89_ACMA, RTW89_ACMA),
+ 	COUNTRY_REGD("NZ", RTW89_ACMA, RTW89_ACMA, RTW89_ACMA),
+@@ -148,7 +148,7 @@ static const struct rtw89_regd rtw89_regd_map[] = {
+ 	COUNTRY_REGD("IO", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("VG", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+ 	COUNTRY_REGD("BN", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("BF", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
++	COUNTRY_REGD("BF", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("MM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("BI", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("CM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+@@ -164,7 +164,7 @@ static const struct rtw89_regd rtw89_regd_map[] = {
+ 	COUNTRY_REGD("CK", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("CI", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("DJ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("DM", RTW89_FCC, RTW89_FCC, RTW89_FCC),
++	COUNTRY_REGD("DM", RTW89_FCC, RTW89_FCC, RTW89_NA),
+ 	COUNTRY_REGD("GQ", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("ER", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("ET", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+@@ -179,20 +179,20 @@ static const struct rtw89_regd rtw89_regd_map[] = {
+ 	COUNTRY_REGD("GE", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("GI", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("GL", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("GD", RTW89_FCC, RTW89_FCC, RTW89_FCC),
++	COUNTRY_REGD("GD", RTW89_FCC, RTW89_FCC, RTW89_NA),
+ 	COUNTRY_REGD("GP", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("GU", RTW89_FCC, RTW89_FCC, RTW89_NA),
+ 	COUNTRY_REGD("GG", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("GN", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("GW", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("GY", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+-	COUNTRY_REGD("HT", RTW89_FCC, RTW89_FCC, RTW89_NA),
++	COUNTRY_REGD("GY", RTW89_FCC, RTW89_FCC, RTW89_NA),
++	COUNTRY_REGD("HT", RTW89_FCC, RTW89_FCC, RTW89_FCC),
+ 	COUNTRY_REGD("HM", RTW89_ACMA, RTW89_ACMA, RTW89_NA),
+ 	COUNTRY_REGD("VA", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("IM", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("JE", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("KI", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-	COUNTRY_REGD("LA", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
++	COUNTRY_REGD("LA", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("LR", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("LY", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("MO", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+@@ -207,7 +207,7 @@ static const struct rtw89_regd rtw89_regd_map[] = {
+ 	COUNTRY_REGD("YT", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("FM", RTW89_FCC, RTW89_FCC, RTW89_NA),
+ 	COUNTRY_REGD("MD", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+-	COUNTRY_REGD("MN", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
++	COUNTRY_REGD("MN", RTW89_ETSI, RTW89_ETSI, RTW89_ETSI),
+ 	COUNTRY_REGD("MS", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("NR", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+ 	COUNTRY_REGD("NP", RTW89_ETSI, RTW89_ETSI, RTW89_NA),
+-- 
+2.25.1
+
