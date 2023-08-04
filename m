@@ -2,84 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FEA07701F2
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Aug 2023 15:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A03FE770715
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Aug 2023 19:29:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbjHDNiU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Aug 2023 09:38:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47964 "EHLO
+        id S230258AbjHDR3Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Aug 2023 13:29:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231411AbjHDNiF (ORCPT
+        with ESMTP id S230238AbjHDR3Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Aug 2023 09:38:05 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96AFF46B1;
-        Fri,  4 Aug 2023 06:37:43 -0700 (PDT)
-Received: from canpemm500007.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RHRVQ4MDWzGpn3;
-        Fri,  4 Aug 2023 21:33:02 +0800 (CST)
-Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
- (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 4 Aug
- 2023 21:36:29 +0800
-From:   Yue Haibing <yuehaibing@huawei.com>
-To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <yuehaibing@huawei.com>, <horms@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: [PATCH v2] wifi: iw_handler.h: Remove unused declaration dev_get_wireless_info()
-Date:   Fri, 4 Aug 2023 21:36:17 +0800
-Message-ID: <20230804133617.43564-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        Fri, 4 Aug 2023 13:29:24 -0400
+Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6812F3C25
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Aug 2023 10:29:22 -0700 (PDT)
+Received: by mail-vs1-xe29.google.com with SMTP id ada2fe7eead31-44756c21105so1556195137.1
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Aug 2023 10:29:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1691170161; x=1691774961;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y31ynTvWmeTHL1NTsgINzt9HXeX/OdVZuEC9OyRT55g=;
+        b=tiYBsu6sxtSdFgY74ewQ923H5gr9rklrbV6uN4qg2hdXDlDuujAxBT50vPKhA1Sunf
+         4U6T9JXnH9ImmSLbDkyIRZ4Z6csqysBNXH15cL5JXjDBCPzgoIQzatOsxOb+CJOQ94+/
+         q3mBZE2OuH+tBJU6l8zy0yfzD/OtFgenxELyp6lsBIBU+BeusN5HRh1NWdcVBr/1h1un
+         nq+Mo+lUE94VYn3mgvgm2VVTzFqGmc9FdEPuQ5C7mHnBmbxIrpwjPPc9vZJGXtzXruB1
+         cR1XaLC9Xt7F3FjMg8sXt8xyhGHB5YSW7zNgBpQv2oKLPLvDGFO0jUL7ZYpZ/M7OGygr
+         9pVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691170161; x=1691774961;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y31ynTvWmeTHL1NTsgINzt9HXeX/OdVZuEC9OyRT55g=;
+        b=VvVXLyonjbBVJLCutDF1MM6rD7/2hZuc9uClnJhIYS45kmJnfSqKIIofJ3wDmmJ6YT
+         oizj8u4RMUVKEjBY9Nh67KxQC+TAVV3II5rmXzW6b7qQTXaxG5fi0AUvbyRwDpPnU0tK
+         Ya3VMKvEmomNKSunhq44kjetv2ssAsJBIIi2CYUa2hj6lzYOq2RnI6ykylAoxek4qLhQ
+         jkvzdZkRGd0hAqR8TzRt5JeZDCRA6/aZumrNkd8lyzScxtpDIkkkfSzLfwVWCUCx+Ivg
+         C+RJZ5CREAZMAde3qD4PwAU1au7uc5EduH5Cb3OWvUXklE2PoGPpmQHSYTycVoCR3OkD
+         irKg==
+X-Gm-Message-State: AOJu0YzzeY/zQD0AAp3+8zqY1Op1TSjtGm9mKwnrruceyjm85UsaZ81C
+        I6Nutv6ldQfOhn80cLFSnUWck4sZTZks+G1FSNu53X7N5pd6squdZ9Y6yA==
+X-Google-Smtp-Source: AGHT+IGHYdas3iBtL1R/DE2NpyhS3QZpegBBEIpBXvUlaIV37cBpO0dPI3TrdCAcPZ+0urGSvQccCAniT5/V4T2ArS4=
+X-Received: by 2002:a05:6102:3127:b0:447:c2f5:ee09 with SMTP id
+ f7-20020a056102312700b00447c2f5ee09mr197906vsh.2.1691170160918; Fri, 04 Aug
+ 2023 10:29:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- canpemm500007.china.huawei.com (7.192.104.62)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230602225751.164525-1-kglund@google.com> <8545d75827ff8d85fece58542539db6c9930d3b6.camel@sipsolutions.net>
+In-Reply-To: <8545d75827ff8d85fece58542539db6c9930d3b6.camel@sipsolutions.net>
+From:   Kevin Lund <kglund@google.com>
+Date:   Fri, 4 Aug 2023 11:29:09 -0600
+Message-ID: <CADgzm_mvnoETW3y4hvhqdUSC1ByNEjy2BsQUqq_Va-YEaGzULg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] wifi: cfg80211: Reject (re-)association to the same BSSID
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 556829657397 ("[NL80211]: add netlink interface to cfg80211")
-declared but never implemented this, remove it.
+Thanks for the response. I'm still a little bit confused because
+AFAICT, over on the userspace SME side of things there are two
+similar checks that reject both authentication [1] and association
+[2] to a BSSID which we are already connected to. Wouldn't that
+break the 11be flow which you're referring to?
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
-v2: fix comment
----
- include/net/iw_handler.h | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+In any case I'm ok with abandoning this patch. I'll resubmit the
+other patch in this series [3] on its own.
 
-diff --git a/include/net/iw_handler.h b/include/net/iw_handler.h
-index d2ea5863eedc..b2cf243ebe44 100644
---- a/include/net/iw_handler.h
-+++ b/include/net/iw_handler.h
-@@ -426,17 +426,10 @@ struct iw_public_data {
- 
- /**************************** PROTOTYPES ****************************/
- /*
-- * Functions part of the Wireless Extensions (defined in net/core/wireless.c).
-- * Those may be called only within the kernel.
-+ * Functions part of the Wireless Extensions (defined in net/wireless/wext-core.c).
-+ * Those may be called by driver modules.
-  */
- 
--/* First : function strictly used inside the kernel */
--
--/* Handle /proc/net/wireless, called in net/code/dev.c */
--int dev_get_wireless_info(char *buffer, char **start, off_t offset, int length);
--
--/* Second : functions that may be called by driver modules */
--
- /* Send a single event to user space */
- void wireless_send_event(struct net_device *dev, unsigned int cmd,
- 			 union iwreq_data *wrqu, const char *extra);
--- 
-2.34.1
+[1] https://github.com/torvalds/linux/blob/master/net/wireless/mlme.c#L281
+[2] https://github.com/torvalds/linux/blob/master/net/wireless/mlme.c#L342
+[3] https://patchwork.kernel.org/project/linux-wireless/patch/2023060222575=
+1.164525-2-kglund@google.com/
 
+Thanks, and apologies for my late reply,
+Kevin
+
+On Mon, Jun 5, 2023 at 10:42=E2=80=AFAM Johannes Berg <johannes@sipsolution=
+s.net> wrote:
+>
+> On Fri, 2023-06-02 at 16:57 -0600, Kevin Lund wrote:
+> > Within cfg80211_connect, reject the (re-)association request if we are
+> > already connected to the exact BSSID which is being requested. This
+> > prevents an unnecessary attempt to connect which in the best case
+> > leaves us back where we started.
+> >
+> > There is precedent for behaving this way over on the userspace SME side
+> > of things in cfg80211_mlme_auth. Further, cfg80211_connect already make=
+s
+> > several basic checks to ensure the connection attempt is reasonable, so
+> > this fits in that context.
+> >
+>
+> I don't think this is right - we should be able to reassoc back to the
+> same AP in some cases, for example in 11be this comes up when you want
+> to change the negotiated links.
+>
+> johannes
