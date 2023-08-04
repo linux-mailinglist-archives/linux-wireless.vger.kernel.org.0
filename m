@@ -2,230 +2,211 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B55E876FA4A
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Aug 2023 08:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE0776FA97
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Aug 2023 09:01:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233650AbjHDGld (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Aug 2023 02:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40564 "EHLO
+        id S231372AbjHDHBO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Aug 2023 03:01:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233764AbjHDGlJ (ORCPT
+        with ESMTP id S233948AbjHDHBL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Aug 2023 02:41:09 -0400
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF884697
-        for <linux-wireless@vger.kernel.org>; Thu,  3 Aug 2023 23:41:00 -0700 (PDT)
-Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-54290603887so971248a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Aug 2023 23:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691131260; x=1691736060;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=uTvrtGm9omTNndYE3JOrnTDMBnw5b0qfWu1gksrG4sA=;
-        b=bi7VaxN6DhwhtQXB/TUpFTkTl/gRFZNdenaA1nos0nIyhzVvWqdrCXIf8JnqyCM+54
-         zliSb7mshRlVtYLM3aNiPlxjGICBivz6AQG8HZzoD6qQJZY9QM1mhXmWtzXnze0RSSuo
-         Q2U76NLVfTSFoeKq9o+l7B2HYlFJraukN68XFfwK63rAz4MqdHeGba4JPQqSNbyblkHt
-         ibC0/HTZ/Zq/o4uoN+6bNaC8E2IoFXTAxcfrRxjm/hZS8nglIdQST/Ku1DCclKsiskNZ
-         dPeqiDTYFI6AQ+YAGDCD9NpepafmJbljY0upahkUafdVxgsKPT5h2TiqaEYXOiKT1mey
-         Rqaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691131260; x=1691736060;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uTvrtGm9omTNndYE3JOrnTDMBnw5b0qfWu1gksrG4sA=;
-        b=DtenvhWsFj1x2UEMth3o46cHTQb6PVIYWZUazz4cNZumj32NYdU/EZzIpuFKI1ewYo
-         FWM2szUVqYvfbngxvfGOuXX2xhL/CwY43pUAdrqJW+lwjMQ1k5G2I13ywJr4JfxKq1vF
-         7s3K767UkqFwywtV+fXRhYMaNCQJicEGpZDQNMt5yxFjuRJ06bjzR2Yj+LRfJB5Q04gN
-         qlDMKfaGSmslk3AVW3mqmbZjECNE0h9vIV8avF0UGO3/4InwSDgbvMLgQ+hdIiY9kex5
-         rh5mH8MOCxFLKid7CEAtoQYEKvUiQvBjUse3h6od3SSyJpKFRnQidEviNIGOUaf7tF/c
-         pW4Q==
-X-Gm-Message-State: AOJu0YwCHf/n1+HBHUoqzWdAjpjt4jvksDMVTR7GrjBPqC8TG8qnNmyZ
-        DkaEDWxKVCa+oFP4SpdkhNxbiz9RMYEROP0mwA==
-X-Google-Smtp-Source: AGHT+IHc+yUaZUEKBeCJBB+ETgv1hAlQDqN5i4J03Rw8pg812GZIs+szUUub60VQdRC6HXKVjM+SNQ==
-X-Received: by 2002:a17:902:b70e:b0:1b8:a812:7bc2 with SMTP id d14-20020a170902b70e00b001b8a8127bc2mr745947pls.8.1691131260198;
-        Thu, 03 Aug 2023 23:41:00 -0700 (PDT)
-Received: from thinkpad ([103.28.246.156])
-        by smtp.gmail.com with ESMTPSA id j3-20020a170902c3c300b001b9cf6342e2sm936473plj.42.2023.08.03.23.40.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 23:40:59 -0700 (PDT)
-Date:   Fri, 4 Aug 2023 12:10:56 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+        Fri, 4 Aug 2023 03:01:11 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 392591734
+        for <linux-wireless@vger.kernel.org>; Fri,  4 Aug 2023 00:01:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691132470; x=1722668470;
+  h=date:from:to:cc:subject:message-id;
+  bh=SEp+3K+GkVY8Y2e4fruIXCrFqchWfLPKY70eK2YQ1EY=;
+  b=gKW6sthllMb/ZU9gFAjDE8PhWQqBsvxNmC64FkAnwAST4RBK3UBHyGTJ
+   MqiTwDXmVbRL26VZX1ZfxI47JcUPauIC9eRRJGegtd6gBMiqkmfFtAh08
+   q1Skha2DgWycXr12a2BjUCIlIB3KEhqGz8TpsR1xy63k3fPcNjdyNOqot
+   7djLrOM64ZJyvwi1qubrjQCW0YZgZMGjd/l398aEDvf3w4ClMhmEWHCbJ
+   evujR47+VgdKQheEak4Gi5Hp0cfd98V98JVzqGuNS5qHscKb2NZkenmLk
+   pmv8MgIhY+oEaEHudBKiDzpTosr7ppxKPWNtMFjNbw9IhgutDxPnJgZbE
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="433936603"
+X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; 
+   d="scan'208";a="433936603"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2023 00:01:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="799907650"
+X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; 
+   d="scan'208";a="799907650"
+Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 04 Aug 2023 00:01:08 -0700
+Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qRoo7-0002hH-0Y;
+        Fri, 04 Aug 2023 07:01:07 +0000
+Date:   Fri, 04 Aug 2023 15:01:03 +0800
+From:   kernel test robot <lkp@intel.com>
 To:     Kalle Valo <kvalo@kernel.org>
-Cc:     mhi@lists.linux.dev, ath11k@lists.infradead.org,
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] bus: mhi: host: allow MHI client drivers to
- provide the firmware via a pointer
-Message-ID: <20230804064056.GA24883@thinkpad>
-References: <20230727100430.3603551-1-kvalo@kernel.org>
- <20230727100430.3603551-2-kvalo@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230727100430.3603551-2-kvalo@kernel.org>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_SBL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+Subject: [wireless-next:main] BUILD SUCCESS
+ 904b102f1ebb67b91f1e90783a480fc473c986dd
+Message-ID: <202308041501.vmpvGlp0-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 27, 2023 at 01:04:28PM +0300, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> Currently MHI loads the firmware image from the path provided by client
-> devices. ath11k needs to support firmware image embedded along with meta data
-> (named as firmware-2.bin). So allow the client driver to request the firmware
-> file from user space on it's own and provide the firmware image data and size
-> to MHI via a pointer struct mhi_controller::fw_data.
-> 
-> This is an optional feature, if fw_data is NULL MHI load the firmware using the
-> name from struct mhi_controller::fw_image string as before.
-> 
-> Tested with ath11k and WCN6855 hw2.0.
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 904b102f1ebb67b91f1e90783a480fc473c986dd  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
 
-Applied to mhi-next!
+elapsed time: 725m
 
-- Mani
+configs tested: 133
+configs skipped: 8
 
-> ---
->  drivers/bus/mhi/host/boot.c | 34 +++++++++++++++++++++++++---------
->  include/linux/mhi.h         |  6 ++++++
->  2 files changed, 31 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/bus/mhi/host/boot.c b/drivers/bus/mhi/host/boot.c
-> index d2a19b07ccb8..edc0ec5a0933 100644
-> --- a/drivers/bus/mhi/host/boot.c
-> +++ b/drivers/bus/mhi/host/boot.c
-> @@ -365,12 +365,10 @@ int mhi_alloc_bhie_table(struct mhi_controller *mhi_cntrl,
->  }
->  
->  static void mhi_firmware_copy(struct mhi_controller *mhi_cntrl,
-> -			      const struct firmware *firmware,
-> +			      const u8 *buf, size_t remainder,
->  			      struct image_info *img_info)
->  {
-> -	size_t remainder = firmware->size;
->  	size_t to_cpy;
-> -	const u8 *buf = firmware->data;
->  	struct mhi_buf *mhi_buf = img_info->mhi_buf;
->  	struct bhi_vec_entry *bhi_vec = img_info->bhi_vec;
->  
-> @@ -393,9 +391,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	struct device *dev = &mhi_cntrl->mhi_dev->dev;
->  	enum mhi_pm_state new_state;
->  	const char *fw_name;
-> +	const u8 *fw_data;
->  	void *buf;
->  	dma_addr_t dma_addr;
-> -	size_t size;
-> +	size_t size, fw_sz;
->  	int i, ret;
->  
->  	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)) {
-> @@ -425,6 +424,20 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	fw_name = (mhi_cntrl->ee == MHI_EE_EDL) ?
->  		mhi_cntrl->edl_image : mhi_cntrl->fw_image;
->  
-> +	/* check if the driver has already provided the firmware data */
-> +	if (!fw_name && mhi_cntrl->fbc_download &&
-> +	    mhi_cntrl->fw_data && mhi_cntrl->fw_sz) {
-> +		if (!mhi_cntrl->sbl_size) {
-> +			dev_err(dev, "fw_data provided but no sbl_size\n");
-> +			goto error_fw_load;
-> +		}
-> +
-> +		size = mhi_cntrl->sbl_size;
-> +		fw_data = mhi_cntrl->fw_data;
-> +		fw_sz = mhi_cntrl->fw_sz;
-> +		goto skip_req_fw;
-> +	}
-> +
->  	if (!fw_name || (mhi_cntrl->fbc_download && (!mhi_cntrl->sbl_size ||
->  						     !mhi_cntrl->seg_len))) {
->  		dev_err(dev,
-> @@ -444,6 +457,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	if (size > firmware->size)
->  		size = firmware->size;
->  
-> +	fw_data = firmware->data;
-> +	fw_sz = firmware->size;
-> +
-> +skip_req_fw:
->  	buf = dma_alloc_coherent(mhi_cntrl->cntrl_dev, size, &dma_addr,
->  				 GFP_KERNEL);
->  	if (!buf) {
-> @@ -452,7 +469,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	}
->  
->  	/* Download image using BHI */
-> -	memcpy(buf, firmware->data, size);
-> +	memcpy(buf, fw_data, size);
->  	ret = mhi_fw_load_bhi(mhi_cntrl, dma_addr, size);
->  	dma_free_coherent(mhi_cntrl->cntrl_dev, size, buf, dma_addr);
->  
-> @@ -464,7 +481,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	}
->  
->  	/* Wait for ready since EDL image was loaded */
-> -	if (fw_name == mhi_cntrl->edl_image) {
-> +	if (fw_name && fw_name == mhi_cntrl->edl_image) {
->  		release_firmware(firmware);
->  		goto fw_load_ready_state;
->  	}
-> @@ -478,15 +495,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	 * device transitioning into MHI READY state
->  	 */
->  	if (mhi_cntrl->fbc_download) {
-> -		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image,
-> -					   firmware->size);
-> +		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image, fw_sz);
->  		if (ret) {
->  			release_firmware(firmware);
->  			goto error_fw_load;
->  		}
->  
->  		/* Load the firmware into BHIE vec table */
-> -		mhi_firmware_copy(mhi_cntrl, firmware, mhi_cntrl->fbc_image);
-> +		mhi_firmware_copy(mhi_cntrl, fw_data, fw_sz, mhi_cntrl->fbc_image);
->  	}
->  
->  	release_firmware(firmware);
-> diff --git a/include/linux/mhi.h b/include/linux/mhi.h
-> index f6de4b6ecfc7..039943ec4d4e 100644
-> --- a/include/linux/mhi.h
-> +++ b/include/linux/mhi.h
-> @@ -299,6 +299,10 @@ struct mhi_controller_config {
->   * @iova_start: IOMMU starting address for data (required)
->   * @iova_stop: IOMMU stop address for data (required)
->   * @fw_image: Firmware image name for normal booting (optional)
-> + * @fw_data: Firmware image data content for normal booting, used only
-> + *           if fw_image is NULL and fbc_download is true (optional)
-> + * @fw_sz: Firmware image data size for normal booting, used only if fw_image
-> + *         is NULL and fbc_download is true (optional)
->   * @edl_image: Firmware image name for emergency download mode (optional)
->   * @rddm_size: RAM dump size that host should allocate for debugging purpose
->   * @sbl_size: SBL image size downloaded through BHIe (optional)
-> @@ -384,6 +388,8 @@ struct mhi_controller {
->  	dma_addr_t iova_start;
->  	dma_addr_t iova_stop;
->  	const char *fw_image;
-> +	const u8 *fw_data;
-> +	size_t fw_sz;
->  	const char *edl_image;
->  	size_t rddm_size;
->  	size_t sbl_size;
-> -- 
-> 2.39.2
-> 
-> 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r024-20230731   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r002-20230801   gcc  
+arc                  randconfig-r025-20230731   gcc  
+arc                  randconfig-r026-20230731   gcc  
+arc                  randconfig-r033-20230731   gcc  
+arc                  randconfig-r043-20230731   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r004-20230801   clang
+arm                  randconfig-r013-20230731   gcc  
+arm                  randconfig-r032-20230801   clang
+arm                  randconfig-r046-20230731   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r034-20230801   gcc  
+hexagon              randconfig-r022-20230731   clang
+hexagon              randconfig-r041-20230731   clang
+hexagon              randconfig-r045-20230731   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230731   gcc  
+i386         buildonly-randconfig-r005-20230731   gcc  
+i386         buildonly-randconfig-r006-20230731   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230731   gcc  
+i386                 randconfig-i002-20230731   gcc  
+i386                 randconfig-i003-20230731   gcc  
+i386                 randconfig-i004-20230731   gcc  
+i386                 randconfig-i005-20230731   gcc  
+i386                 randconfig-i006-20230731   gcc  
+i386                 randconfig-i011-20230731   clang
+i386                 randconfig-i012-20230731   clang
+i386                 randconfig-i013-20230731   clang
+i386                 randconfig-i014-20230731   clang
+i386                 randconfig-i015-20230731   clang
+i386                 randconfig-i016-20230731   clang
+i386                 randconfig-r005-20230801   gcc  
+i386                 randconfig-r033-20230801   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r014-20230731   gcc  
+m68k                 randconfig-r024-20230731   gcc  
+microblaze           randconfig-r005-20230801   gcc  
+microblaze           randconfig-r022-20230731   gcc  
+microblaze           randconfig-r023-20230731   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r001-20230801   gcc  
+nios2                randconfig-r035-20230731   gcc  
+nios2                randconfig-r036-20230731   gcc  
+openrisc             randconfig-r025-20230731   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r026-20230731   gcc  
+parisc               randconfig-r031-20230731   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc              randconfig-r036-20230801   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r004-20230801   gcc  
+riscv                randconfig-r013-20230731   clang
+riscv                randconfig-r042-20230731   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r001-20230801   gcc  
+s390                 randconfig-r012-20230731   clang
+s390                 randconfig-r034-20230731   gcc  
+s390                 randconfig-r035-20230801   gcc  
+s390                 randconfig-r044-20230731   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r003-20230801   gcc  
+sh                   randconfig-r006-20230801   gcc  
+sh                   randconfig-r014-20230731   gcc  
+sh                   randconfig-r031-20230801   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r003-20230801   gcc  
+sparc                randconfig-r011-20230731   gcc  
+sparc                randconfig-r012-20230731   gcc  
+sparc                randconfig-r015-20230731   gcc  
+sparc64              randconfig-r015-20230731   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230731   gcc  
+x86_64       buildonly-randconfig-r002-20230731   gcc  
+x86_64       buildonly-randconfig-r003-20230731   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r006-20230801   gcc  
+x86_64               randconfig-r016-20230731   clang
+x86_64               randconfig-r021-20230731   clang
+x86_64               randconfig-x001-20230731   clang
+x86_64               randconfig-x001-20230801   clang
+x86_64               randconfig-x002-20230731   clang
+x86_64               randconfig-x002-20230801   clang
+x86_64               randconfig-x003-20230731   clang
+x86_64               randconfig-x003-20230801   clang
+x86_64               randconfig-x004-20230731   clang
+x86_64               randconfig-x004-20230801   clang
+x86_64               randconfig-x005-20230731   clang
+x86_64               randconfig-x005-20230801   clang
+x86_64               randconfig-x006-20230731   clang
+x86_64               randconfig-x006-20230801   clang
+x86_64               randconfig-x011-20230731   gcc  
+x86_64               randconfig-x012-20230731   gcc  
+x86_64               randconfig-x013-20230731   gcc  
+x86_64               randconfig-x014-20230731   gcc  
+x86_64               randconfig-x015-20230731   gcc  
+x86_64               randconfig-x016-20230731   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
 
 -- 
-மணிவண்ணன் சதாசிவம்
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
