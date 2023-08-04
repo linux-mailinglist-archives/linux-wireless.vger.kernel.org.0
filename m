@@ -2,102 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6F8676FEA3
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Aug 2023 12:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAA8176FF41
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Aug 2023 13:12:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230459AbjHDKmG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Aug 2023 06:42:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45538 "EHLO
+        id S229846AbjHDLMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 4 Aug 2023 07:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229725AbjHDKmE (ORCPT
+        with ESMTP id S229877AbjHDLMI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Aug 2023 06:42:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C39C46B2;
-        Fri,  4 Aug 2023 03:42:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E42061F8B;
-        Fri,  4 Aug 2023 10:42:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D32C433C8;
-        Fri,  4 Aug 2023 10:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691145723;
-        bh=59hgmRJD8zAuTk3rh1tJHpF7TPUjRvw1kVL7rArnwGQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Ib/jpO1V7eA3W0EcATFyIw5XWVOQES+fu5HayAcWEThHr4QaMwvffcSMQWS9Xknl0
-         kRMIRlN/gV4bS1CR9W6ZGVYksBb0tffEcSpQ6Mef0oDHQQ9z/W645gG9802NA2wqax
-         Vke1W5cmN410suItALn8vbFgiBqW6QTsnauQhsgc=
-Date:   Fri, 4 Aug 2023 12:42:00 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ashwin Dayanand Kamat <kashwindayan@vmware.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Wen Gong <wgong@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>,
-        Johannes Berg <johannes.berg@intel.com>, davem@davemloft.net,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, akaher@vmware.com, vsirnapalli@vmware.com,
-        tkundu@vmware.com, namit@vmware.com
-Subject: Re: [PATCH v4.19.y] ath10k: Fix TKIP Michael MIC verification for
- PCIe
-Message-ID: <2023080431-cobweb-fidgeting-e4de@gregkh>
-References: <1690971733-22270-1-git-send-email-kashwindayan@vmware.com>
- <2023080408-squad-pony-2638@gregkh>
+        Fri, 4 Aug 2023 07:12:08 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 624AAEA;
+        Fri,  4 Aug 2023 04:12:07 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 374AonmqF007376, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 374AonmqF007376
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Fri, 4 Aug 2023 18:50:49 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Fri, 4 Aug 2023 18:50:50 +0800
+Received: from [127.0.1.1] (172.16.16.139) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 4 Aug 2023
+ 18:50:49 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <Stable@vger.kernel.org>, <bronecki.damian@gmail.com>,
+        <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: fix 8852AE disconnection caused by RX full flags
+Date:   Fri, 4 Aug 2023 18:50:02 +0800
+Message-ID: <20230804105002.5781-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023080408-squad-pony-2638@gregkh>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.16.139]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 04, 2023 at 12:28:18PM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Aug 02, 2023 at 03:52:13PM +0530, Ashwin Dayanand Kamat wrote:
-> > From: Wen Gong <wgong@codeaurora.org>
-> > 
-> > commit 0dc267b13f3a7e8424a898815dd357211b737330 upstream.
-> > 
-> > TKIP Michael MIC was not verified properly for PCIe cases since the
-> > validation steps in ieee80211_rx_h_michael_mic_verify() in mac80211 did
-> > not get fully executed due to unexpected flag values in
-> > ieee80211_rx_status.
-> > 
-> > Fix this by setting the flags property to meet mac80211 expectations for
-> > performing Michael MIC validation there. This fixes CVE-2020-26141. It
-> > does the same as ath10k_htt_rx_proc_rx_ind_hl() for SDIO which passed
-> > MIC verification case. This applies only to QCA6174/QCA9377 PCIe.
-> > 
-> > Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
-> > 
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Wen Gong <wgong@codeaurora.org>
-> > Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
-> > Link: https://lore.kernel.org/r/20210511200110.c3f1d42c6746.I795593fcaae941c471425b8c7d5f7bb185d29142@changeid
-> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> > Signed-off-by: Ashwin Dayanand Kamat <kashwindayan@vmware.com>
-> > ---
-> >  drivers/net/wireless/ath/ath10k/htt_rx.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> > 
-> 
-> Now queued up, thanks.
+RX full flags are raised if certain types of RX FIFO are full, and then
+drop all following MSDU of APMDU. In order to resume to receive MSDU
+when RX FIFO becomes available, we clear the regitster bits by the
+commit a0d99ebb3ecd ("wifi: rtw89: initialize DMA of CMAC"). But, 8852AE
+needs more settings to support this. To quickly fix disconnection problem,
+revert the behavior as before.
 
-Nope, breaks the build, how did you test this:
+Fixes: a0d99ebb3ecd ("wifi: rtw89: initialize DMA of CMAC")
+Reported-by: Damian B <bronecki.damian@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217710
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  CC [M]  drivers/net/wireless/ath/ath10k/htt_rx.o
-drivers/net/wireless/ath/ath10k/htt_rx.c: In function ‘ath10k_htt_rx_h_mpdu’:
-drivers/net/wireless/ath/ath10k/htt_rx.c:1649:21: error: ‘frag’ undeclared (first use in this function)
- 1649 |                 if (frag && !fill_crypt_header &&
-      |                     ^~~~
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 1efa4da3cebc..cebefa3b1db3 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -2524,7 +2524,7 @@ static int cmac_dma_init(struct rtw89_dev *rtwdev, u8 mac_idx)
+ 	u32 reg;
+ 	int ret;
+ 
+-	if (chip_id != RTL8852A && chip_id != RTL8852B)
++	if (chip_id != RTL8852B)
+ 		return 0;
+ 
+ 	ret = rtw89_mac_check_mac_en(rtwdev, mac_idx, RTW89_CMAC_SEL);
+-- 
+2.25.1
 
-> 
-> greg k-h
