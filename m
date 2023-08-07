@@ -2,141 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A6F87717F7
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Aug 2023 03:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD9C7718A7
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Aug 2023 04:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbjHGBqA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Aug 2023 21:46:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59150 "EHLO
+        id S229469AbjHGC6U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Aug 2023 22:58:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjHGBp7 (ORCPT
+        with ESMTP id S229509AbjHGC6T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Aug 2023 21:45:59 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5DFFC19AF;
-        Sun,  6 Aug 2023 18:45:39 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3771hFiC5030517, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3771hFiC5030517
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Mon, 7 Aug 2023 09:43:15 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Mon, 7 Aug 2023 09:42:43 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 7 Aug 2023 09:42:43 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Mon, 7 Aug 2023 09:42:43 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Ruan Jinjie <ruanjinjie@huawei.com>,
-        "sgoutham@marvell.com" <sgoutham@marvell.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "jesse.brandeburg@intel.com" <jesse.brandeburg@intel.com>,
-        "anthony.l.nguyen@intel.com" <anthony.l.nguyen@intel.com>,
-        "tariqt@nvidia.com" <tariqt@nvidia.com>,
-        "s.shtylyov@omp.ru" <s.shtylyov@omp.ru>,
-        "aspriel@gmail.com" <aspriel@gmail.com>,
-        "franky.lin@broadcom.com" <franky.lin@broadcom.com>,
-        "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "richardcochran@gmail.com" <richardcochran@gmail.com>,
-        "yoshihiro.shimoda.uh@renesas.com" <yoshihiro.shimoda.uh@renesas.com>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "mkl@pengutronix.de" <mkl@pengutronix.de>,
-        "lee@kernel.org" <lee@kernel.org>,
-        "set_pte_at@outlook.com" <set_pte_at@outlook.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>
-Subject: RE: [PATCH -next 6/6] brcm80211: Remove an unnecessary ternary operator
-Thread-Topic: [PATCH -next 6/6] brcm80211: Remove an unnecessary ternary
- operator
-Thread-Index: AQHZxodyLvV38Vq6lUarMSYN6WoMea/eE5fw
-Date:   Mon, 7 Aug 2023 01:42:43 +0000
-Message-ID: <f72991b36d6a449ea5cf476d438bcd1d@realtek.com>
-References: <20230804035346.2879318-1-ruanjinjie@huawei.com>
- <20230804035346.2879318-7-ruanjinjie@huawei.com>
-In-Reply-To: <20230804035346.2879318-7-ruanjinjie@huawei.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Sun, 6 Aug 2023 22:58:19 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 160811BCE
+        for <linux-wireless@vger.kernel.org>; Sun,  6 Aug 2023 19:57:39 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3771gqsu021787;
+        Mon, 7 Aug 2023 02:56:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=FKw1svoSZ+oIO2/i4JhRj7Tru9ZeZtNo1ovahurHt/s=;
+ b=goE52STz5/ZWUIfXbv73vmhZ17XGHuG/4YOwfNlLbm1Ktt+CgE5DD2mUfiXetdaNDX7N
+ IkT5Z/0WhHYvT1dbGnykG5xCkLa7w9HbUgl+bA/8U1ji8VdGdbxcj9adVEbvc4DCwTpn
+ SRdIo1Kakf0oB7uNv9phJKLYpdg8q4tiLD/pVUbdA5CGOgo7L3vYvmH3sLlUohOBreKg
+ hNhN05I4WEcNWpszPcolI/NPG28S3HHrJq0BUNr/H3nBLJw529/yT1ukrSWFpLt6bc9n
+ 8oemwC/5LDehwKFsjZKMszeh3fnmEXvlit6zve81PekBW+p+gt0XpXHrx0dASdU+/0qR CQ== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s9e16tdvm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Aug 2023 02:56:17 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3772uGVO008127
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 7 Aug 2023 02:56:16 GMT
+Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Sun, 6 Aug
+ 2023 19:56:15 -0700
+Message-ID: <afac3a79-d4b0-967c-ef04-f8fdbd123eaa@quicinc.com>
+Date:   Mon, 7 Aug 2023 10:56:12 +0800
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v2 1/3] wifi: ath12k: configure RDDM size to MHI for
+ device recovery
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20230721055305.20420-2-quic_wgong@quicinc.com>
+ <169105464227.894438.15435946207134709277.kvalo@kernel.org>
+ <1bbe5e90-1f37-3926-98f7-a685578fef8f@quicinc.com>
+ <87msz8tl8e.fsf@kernel.org>
+Content-Language: en-US
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <87msz8tl8e.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: i1en1LnM91vzXvdAPUpxJ69dJD9Avhvm
+X-Proofpoint-ORIG-GUID: i1en1LnM91vzXvdAPUpxJ69dJD9Avhvm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-06_24,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=711
+ phishscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0 bulkscore=0
+ clxscore=1015 suspectscore=0 priorityscore=1501 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2308070025
+X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 8/3/2023 7:32 PM, Kalle Valo wrote:
+> Wen Gong <quic_wgong@quicinc.com> writes:
+>
+>> On 8/3/2023 5:24 PM, Kalle Valo wrote:
+>>> Wen Gong <quic_wgong@quicinc.com> wrote:
+>>>
+>>>> RDDM is RAM DUMP DEBUG module, it is used to debug issues when firmware
+>>>> encounters an error.
+>>>>
+>>>> The rddm_size is needed by firmware while MHI enter RDDM state. Add it
+>>>> to support device recovery when ath12k receive MHI_CB_EE_RDDM message.
+>>>>
+>>>> Tested-on: WCN7850 hw2.0 PCI
+>>>> WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+>>>>
+>>>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+>>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>>> I'm not sure what "support device recovery" means exactly. How does this patch
+>>> change functionality from user's point of view?
+>>>
+>>> No need to resend because of this, I can add that to the commit log.
+>> Device recovery means SSR(subsystem restart), when firmware happen
+>> crash, ath12k
+>> will receive the RDDM event, and then ath12k/mac80211 begin to
+>> re-start wifi/firmware,
+>> after that, the wifi become normal again.
+>>
+>> This patch is to let firmware report RDDM event correctly to ath12k.
+>> Without this patch,
+>> firmware will not report RDDM event to ath12k correctly, then ath12k
+>> will not begin SSR
+>> process.
+>>
+>> I think it should be changed like this:
+>>
+>> The rddm_size is needed by firmware while MHI enter RDDM state. Add it
+>> and then firmware will report MHI_CB_EE_RDDM correctly while firmware
+>> encounters an error, then ath12k could start the device recovery process.
+> How about this:
+>
+> "RDDM is Ram Dump Debug Module which is used to debug issues when the
+> firmware encounters an error. The rddm_size is needed by the firmware
+> while MHI goes to the RDDM state. Provide the size to MHI subsystem so
+> that the firmware restart works when the firmware crashes."
 
+Thanks.
 
-> -----Original Message-----
-> From: Ruan Jinjie <ruanjinjie@huawei.com>
-> Sent: Friday, August 4, 2023 11:54 AM
-> To: sgoutham@marvell.com; davem@davemloft.net; edumazet@google.com; kuba@kernel.org; pabeni@redhat.com;
-> jesse.brandeburg@intel.com; anthony.l.nguyen@intel.com; tariqt@nvidia.com; s.shtylyov@omp.ru;
-> aspriel@gmail.com; franky.lin@broadcom.com; hante.meuleman@broadcom.com; kvalo@kernel.org;
-> richardcochran@gmail.com; yoshihiro.shimoda.uh@renesas.com; ruanjinjie@huawei.com;
-> u.kleine-koenig@pengutronix.de; mkl@pengutronix.de; lee@kernel.org; set_pte_at@outlook.com;
-> linux-arm-kernel@lists.infradead.org; netdev@vger.kernel.org; intel-wired-lan@lists.osuosl.org;
-> linux-rdma@vger.kernel.org; linux-renesas-soc@vger.kernel.org; linux-wireless@vger.kernel.org;
-> brcm80211-dev-list.pdl@broadcom.com; SHA-cyfmac-dev-list@infineon.com
-> Subject: [PATCH -next 6/6] brcm80211: Remove an unnecessary ternary operator
-> 
-> There is a ternary operator, the true or false judgement of which
-> is unnecessary in C language semantics.
-> 
-> Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-> ---
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-> b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-> index 8580a2754789..8328b22829c5 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-> @@ -27351,8 +27351,7 @@ static int wlc_phy_cal_rxiq_nphy_rev3(struct brcms_phy *pi,
-> 
->         for (rx_core = 0; rx_core < pi->pubpi.phy_corenum; rx_core++) {
-> 
-> -               skip_rxiqcal =
-> -                       ((rxcore_state & (1 << rx_core)) == 0) ? true : false;
-> +               skip_rxiqcal = (rxcore_state & (1 << rx_core)) == 0;
+Yes, it is OK for me.
 
-skip_rxiqcal = !(rxcore_state & (1 << rx_core));
-
-> 
->                 wlc_phy_rxcal_physetup_nphy(pi, rx_core);
-> 
-> --
-> 2.34.1
-> 
-> 
-> ------Please consider the environment before printing this e-mail.
