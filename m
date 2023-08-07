@@ -2,97 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A66C7716A4
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Aug 2023 21:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5981E771784
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Aug 2023 02:41:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjHFTqK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Aug 2023 15:46:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57356 "EHLO
+        id S230107AbjHGAlt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Aug 2023 20:41:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbjHFTqJ (ORCPT
+        with ESMTP id S229436AbjHGAls (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Aug 2023 15:46:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50044CF
-        for <linux-wireless@vger.kernel.org>; Sun,  6 Aug 2023 12:46:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E06AA6124E
-        for <linux-wireless@vger.kernel.org>; Sun,  6 Aug 2023 19:46:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703E8C433C7;
-        Sun,  6 Aug 2023 19:46:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691351167;
-        bh=TDJUetIfQcwJA+iDgDBpACqiiqFqkpNv89uYxLEA+tk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MAcIgKNrq46/nluizDztZ4flghx9/W2RnL8hrSZATKsBLcU97RtxSMx15tT8hJHAL
-         mZEbe0M4IMjjidIpd3qrJTrHAJffNM3uVc/83lN0S2KFx0WeDm+hc5NEAaM9wGEyJ6
-         cJ2l1JI7LG4GzC6bu+tafFLsvswd12AzZ5YjdjxC9/M9Bw8jZ18+cBKbeyl2NU4v56
-         wmvBZS/W40JtxzAhUvyvFSw7vocAnV3ylZwqayxNqjlNwHKjxxJsS0lVjIHw305GNq
-         Q2IQg46iT3u08J49iMXKgJaEUiYIMHGKsQXlOXiHE1uygM598efxt+7CLH52p5CNJC
-         eD4DjVYhe2KQA==
-Date:   Sun, 6 Aug 2023 21:46:01 +0200
-From:   Simon Horman <horms@kernel.org>
-To:     Yue Haibing <yuehaibing@huawei.com>
-Cc:     Simon Horman <horms@kernel.org>, johannes@sipsolutions.net,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: iw_handler.h: Remove unused declaration
- dev_get_wireless_info()
-Message-ID: <ZM/4eUvFj7CnIUJi@vergenet.net>
-References: <20230804133617.43564-1-yuehaibing@huawei.com>
- <ZM3/+pY9Fovc5AC9@vergenet.net>
- <e19091f1-497a-b673-9010-2e0a48d5942e@huawei.com>
+        Sun, 6 Aug 2023 20:41:48 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C9942170E;
+        Sun,  6 Aug 2023 17:41:44 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3770f2MC1027837, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3770f2MC1027837
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 7 Aug 2023 08:41:02 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Mon, 7 Aug 2023 08:41:02 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Mon, 7 Aug 2023 08:41:01 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Mon, 7 Aug 2023 08:41:01 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "Lukas F . Hartmann" <lukas@mntre.com>
+Subject: RE: [PATCH v2] wifi: rtw88: sdio: Honor the host max_req_size in the RX path
+Thread-Topic: [PATCH v2] wifi: rtw88: sdio: Honor the host max_req_size in the
+ RX path
+Thread-Index: AQHZyJJBxKp6wAKI9k2D+NDrSHNiaq/d+wnA
+Date:   Mon, 7 Aug 2023 00:41:01 +0000
+Message-ID: <42e6d455aaa34c68ba8d50ec22a17b79@realtek.com>
+References: <20230806181656.2072792-1-martin.blumenstingl@googlemail.com>
+In-Reply-To: <20230806181656.2072792-1-martin.blumenstingl@googlemail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e19091f1-497a-b673-9010-2e0a48d5942e@huawei.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Aug 05, 2023 at 04:24:04PM +0800, Yue Haibing wrote:
-> On 2023/8/5 15:53, Simon Horman wrote:
-> > On Fri, Aug 04, 2023 at 09:36:17PM +0800, Yue Haibing wrote:
-> >> Commit 556829657397 ("[NL80211]: add netlink interface to cfg80211")
-> >> declared but never implemented this, remove it.
-> >>
-> >> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-> >> ---
-> >> v2: fix comment
-> >> ---
-> >>  include/net/iw_handler.h | 11 ++---------
-> >>  1 file changed, 2 insertions(+), 9 deletions(-)
-> >>
-> >> diff --git a/include/net/iw_handler.h b/include/net/iw_handler.h
-> >> index d2ea5863eedc..b2cf243ebe44 100644
-> >> --- a/include/net/iw_handler.h
-> >> +++ b/include/net/iw_handler.h
-> >> @@ -426,17 +426,10 @@ struct iw_public_data {
-> >>  
-> >>  /**************************** PROTOTYPES ****************************/
-> >>  /*
-> >> - * Functions part of the Wireless Extensions (defined in net/core/wireless.c).
-> >> - * Those may be called only within the kernel.
-> >> + * Functions part of the Wireless Extensions (defined in net/wireless/wext-core.c).
-> > 
-> > Can I confirm that the wireless.c -> wext-core.c change is intentional?
-> > It doesn't seem strictly related to the patch description.
+
+
+> -----Original Message-----
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Sent: Monday, August 7, 2023 2:17 AM
+> To: linux-wireless@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org; jernej.skrabec@gmail.com; Ping-Ke Shih <pkshih@realtek.com>;
+> ulf.hansson@linaro.org; kvalo@kernel.org; tony0620emma@gmail.com; Martin Blumenstingl
+> <martin.blumenstingl@googlemail.com>; Lukas F . Hartmann <lukas@mntre.com>
+> Subject: [PATCH v2] wifi: rtw88: sdio: Honor the host max_req_size in the RX path
 > 
-> Commit 11433ee450eb ("[WEXT]: Move to net/wireless") rename  net/core/wireless.c to net/wireless/wext.c
-> then commit 3d23e349d807 ("wext: refactor") refactor wext.c to wext-core.c
-> The wext functions now sits in net/wireless/wext-core.c
-> This may need describe in patch description.
 
-Thanks, I think that would be best
+[...]
 
-...
+> 
+> 
+>  drivers/net/wireless/realtek/rtw88/sdio.c | 30 +++++++++++++++++------
+>  1 file changed, 23 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+> index 2c1fb2dabd40..553b7e68ca3b 100644
+> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
+> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+> @@ -500,19 +500,35 @@ static u32 rtw_sdio_get_tx_addr(struct rtw_dev *rtwdev, size_t size,
+>  static int rtw_sdio_read_port(struct rtw_dev *rtwdev, u8 *buf, size_t count)
+>  {
+>         struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
+> +       struct mmc_host *host = rtwsdio->sdio_func->card->host;
+>         bool bus_claim = rtw_sdio_bus_claim_needed(rtwsdio);
+>         u32 rxaddr = rtwsdio->rx_addr++;
+> -       int ret;
+> +       int ret = 0, err = 0;
+
+nit: no need initializer of 'err'
+
+> +       size_t bytes;
+> 
+>         if (bus_claim)
+>                 sdio_claim_host(rtwsdio->sdio_func);
+> 
+> -       ret = sdio_memcpy_fromio(rtwsdio->sdio_func, buf,
+> -                                RTW_SDIO_ADDR_RX_RX0FF_GEN(rxaddr), count);
+> -       if (ret)
+> -               rtw_warn(rtwdev,
+> -                        "Failed to read %zu byte(s) from SDIO port 0x%08x",
+> -                        count, rxaddr);
+> +       while (count > 0) {
+> +               bytes = min_t(size_t, host->max_req_size, count);
+> +
+> +               err = sdio_memcpy_fromio(rtwsdio->sdio_func, buf,
+> +                                        RTW_SDIO_ADDR_RX_RX0FF_GEN(rxaddr),
+> +                                        bytes);
+> +               if (err) {
+> +                       rtw_warn(rtwdev,
+> +                                "Failed to read %zu byte(s) from SDIO port 0x%08x: %d",
+> +                                bytes, rxaddr, err);
+> +                       ret = err;
+
+I think this intends to return an error to callers if one error presents among
+N times read. Would you like to point out this in comment as well? Because I want
+to say we don't need 'err' at first glance, but this is indeed needed. 
+
+> +                       /* Don't stop here - instead drain the remaining data
+> +                        * from the card's buffer, else the card will return
+> +                        * corrupt data for the next rtw_sdio_read_port() call.
+> +                        */
+> +               }
+> +
+> +               count -= bytes;
+> +               buf += bytes;
+> +       }
+> 
+>         if (bus_claim)
+>                 sdio_release_host(rtwsdio->sdio_func);
+> --
+> 2.41.0
+
