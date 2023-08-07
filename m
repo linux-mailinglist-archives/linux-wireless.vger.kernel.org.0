@@ -2,163 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CED177728E2
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Aug 2023 17:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3610C772937
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Aug 2023 17:29:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229500AbjHGPRZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Aug 2023 11:17:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45886 "EHLO
+        id S230196AbjHGP35 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Aug 2023 11:29:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjHGPRY (ORCPT
+        with ESMTP id S229554AbjHGP34 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Aug 2023 11:17:24 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F4D310DE;
-        Mon,  7 Aug 2023 08:17:23 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1bba48b0bd2so29399615ad.3;
-        Mon, 07 Aug 2023 08:17:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691421443; x=1692026243;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8+9F0mm26547YwGdsOYT/6OgcExXxmjtiA50SQtPXRg=;
-        b=JljrwEsM1fFtKPnszTzIISBcoRaaj7fBrx95Wccvs2g6MsC921pQR/6GbKbfooj9cC
-         MNRSGq7fAbsYu+5r4It5zyJFFwXQYy2GI2q9HuaS9fTGzot+l2YzegkF4eeI9RXOiQu3
-         ixmB3kf29LycmnoopQPqhEBFhm1BrrkwWtLsIZxbkQEHBu3PmQpu/ZCZZUVAyWZVJPpX
-         RiraItHyTa5KIWZNwqTJqDDPp7Et0O4PmzRCmFYQ/5pWsNSLtoVqClVi0ne6ZJFaBzKL
-         5xO3C5kI0lNCRa9XifcBTOeLBYxZ5Wpms8J/9B9vNcqNdZEH3ga77/FmZP5eybZXdSCM
-         jPaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691421443; x=1692026243;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8+9F0mm26547YwGdsOYT/6OgcExXxmjtiA50SQtPXRg=;
-        b=C8ghGh3ajlpWh1cJ0BjhVfkJfBoGcRyQntf9FRFoCt6h5S+CeEIqOiBIMwLK919dUf
-         /obUI8K/2qGLZ1hQkg4Bp3/6K6hSMI8bjeDSSNVc4qtQ3QZ5raAg0n2hlTSmeiip5ud0
-         hGfVP1mfomO3/gl4E9VZ3IY+sxbzXCfRUZtPjpquCN1eqmCEDI0fbjbwwyc9xN0fyUYa
-         88HW/QReYtLg7JMr9ARd6gb7n6SQCUN1oQlKwcpzL+OgDYv9TRjw46lT8GdHv6PNxyko
-         RjDvroANf5xdhsCdcIOdx6JcY1OFT4S8tUnGtvTggFm5UKcsTOjDBejytgE9jp02xbMt
-         AwdQ==
-X-Gm-Message-State: AOJu0YyGtL8tM1Kz+9JxDObhaPH1IUkz2mttzlD2XMPr/avzeUsYe8R5
-        aU+e3neLQ2M/FZRLdpSWk+s=
-X-Google-Smtp-Source: AGHT+IEdWab8M45OJVYq6HKxCC/BIo1O8CXS+FMGJY+gu/L2pr/OZXQIAidO7BK76Zxz5T74hNQUEQ==
-X-Received: by 2002:a17:903:191:b0:1bb:a056:2c5f with SMTP id z17-20020a170903019100b001bba0562c5fmr9832821plg.7.1691421442901;
-        Mon, 07 Aug 2023 08:17:22 -0700 (PDT)
-Received: from rajgad ([2601:204:df00:9cd0:b50f:ee2a:c29c:a732])
-        by smtp.gmail.com with ESMTPSA id q5-20020a170902bd8500b001b89b1b99fasm7018101pls.243.2023.08.07.08.17.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Aug 2023 08:17:22 -0700 (PDT)
-Date:   Mon, 7 Aug 2023 08:17:21 -0700
-From:   Atul Raut <rauji.raut@gmail.com>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     gregkh@linuxfoundation.org, kvalo@kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] ath6kl: replace one-element array with flexible-array
- member
-Message-ID: <20230807151721.qasrym5x5lqoqjgd@rajgad>
-References: <20230804045554.6934-1-rauji.raut@gmail.com>
- <2023080433-patio-staining-2cfe@gregkh>
- <87sf8zs2oi.fsf@kernel.org>
- <2023080410-unadorned-vertigo-c0b8@gregkh>
- <47f1a06b-8bfe-911a-3a05-da7d522b588f@quicinc.com>
+        Mon, 7 Aug 2023 11:29:56 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FBFD83
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Aug 2023 08:29:55 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 377CcRT9016019;
+        Mon, 7 Aug 2023 15:29:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=XDVp4yIS6H3DU/PdHXRnE7iJfZoWc07EmXG/X+6WIhM=;
+ b=as6Q3TCKWsmDLPKs+5ds8vsLJxel/vxK1T1Nzfb+KOvW0YtetaxW3QIGvKtcEOo/zdU6
+ uXsvgoFNZfYdCHS5kQUzPeO2VjpgrtDQ0gLyAepDFLOEl04GeVGu/L8kWJuC1tFPkeqM
+ 12YiQK99b3XKrGDETJlndEDzwPtaTzaOHkq2rFBvV6Kt0wi6Z2uz2q4wUcbpo1q4SUuW
+ eaVlLE4JqePEJp3EeWicICSwIDh49iqSzECZP9yKAapsrEcMkvvk0uvXVYwJGOU0Ayyu
+ P3Fjhu9tWWA4ah153XTVduJ8QYo1DIAiuE7fwZkqKPdAUZOtyZjM1iAW/irsU+L8Op+p Xw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s9f6pkqbb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Aug 2023 15:29:50 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 377FTThM022322
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 7 Aug 2023 15:29:29 GMT
+Received: from [10.111.180.219] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Mon, 7 Aug
+ 2023 08:29:29 -0700
+Message-ID: <fcb783b4-95e9-24d8-a656-b273a79598a0@quicinc.com>
+Date:   Mon, 7 Aug 2023 08:29:28 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="rcfpwov7x5kwjhxg"
-Content-Disposition: inline
-In-Reply-To: <47f1a06b-8bfe-911a-3a05-da7d522b588f@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: fix boot failure with one MSI vector
+Content-Language: en-US
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+        Baochen Qiang <quic_bqiang@quicinc.com>,
+        Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20230601033840.2997-1-quic_bqiang@quicinc.com>
+ <87fs70hlel.fsf@kernel.org>
+ <545cc8e8-481d-85b2-5692-43580936b48d@quicinc.com>
+ <897b61ea-36d2-1ab4-9c60-9bdfd2d9cad7@quicinc.com>
+ <fa70ca5e-001b-3c6b-dbc2-2853f8fc2f72@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <fa70ca5e-001b-3c6b-dbc2-2853f8fc2f72@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: B2ZlFzsALB1gEz0fHcVJFuAm0JQojY3B
+X-Proofpoint-GUID: B2ZlFzsALB1gEz0fHcVJFuAm0JQojY3B
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-07_16,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ mlxscore=0 impostorscore=0 suspectscore=0 phishscore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 mlxlogscore=685 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308070143
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 8/7/2023 3:16 AM, Manikanta Pubbisetty wrote:
+> No impact on WCN6750.
+> 
+> Tested-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 
---rcfpwov7x5kwjhxg
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Description: I appreciate the comments. Will refrain from altering this or any other submitted patches, as advised.
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Can you provide a Tested-on: flag that Kalle can add to the commit text?
 
-On Mon, Aug 07, 2023 at 07:13:20AM -0700, Jeff Johnson wrote:
->On 8/4/2023 2:30 AM, Greg KH wrote:
->>On Fri, Aug 04, 2023 at 10:10:37AM +0300, Kalle Valo wrote:
->>>Greg KH <gregkh@linuxfoundation.org> writes:
->>>
->>>>On Thu, Aug 03, 2023 at 09:55:54PM -0700, Atul Raut wrote:
->>>>
->>>>>One-element arrays are no longer relevant, and their
->>>>>place has been taken by flexible array members thus,
->>>>>use a flexible-array member to replace the one-element
->>>>>array in struct ath6kl_usb_ctrl_diag_cmd_write
->>>>>
->>>>>This fixes warnings such as:
->>>>>./drivers/net/wireless/ath/ath6kl/usb.c:109:8-12: WARNING use flexible=
--array member instead (https://www.kernel.org/doc/html/latest/process/depre=
-cated.html#zero-length-and-one-element-arrays)
->>>>>
->>>>>Signed-off-by: Atul Raut <rauji.raut@gmail.com>
->>>>>---
->>>>>  drivers/net/wireless/ath/ath6kl/usb.c | 2 +-
->>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>>diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wirel=
-ess/ath/ath6kl/usb.c
->>>>>index 5220809841a6..c8ecc9e85897 100644
->>>>>--- a/drivers/net/wireless/ath/ath6kl/usb.c
->>>>>+++ b/drivers/net/wireless/ath/ath6kl/usb.c
->>>>>@@ -106,7 +106,7 @@ struct ath6kl_usb_ctrl_diag_cmd_write {
->>>>>  	__le32 cmd;
->>>>>  	__le32 address;
->>>>>  	__le32 value;
->>>>>-	__le32 _pad[1];
->>>>>+	__le32 _pad[];
->>>>
->>>>Are you sure this is actually a variable length array?
->>>
->>>It's not, it's just padding. We both told this in v1:
->>>
->>>https://patchwork.kernel.org/project/linux-wireless/patch/20230731012941=
-=2E21875-1-rauji.raut@gmail.com/
->>
->>Hey, I'm consistent, nice!  :)
->>
->>But Atul, that's not good to ignore our review comments.  Usually that
->>ends up meaning that everyone will then just ignore your submissions,
->>generally a not-good resolution.
->>
->>thanks,
->>
->>greg k-h
->
->Since the 'pad' field is never directly accessed, suggest the author=20
->respin this this to use simply:
->	__le32 _pad;
->
->That will prevent others from trying to "fix" this actual one-element=20
->array in the future.
+> 
+> 
+> Thanks,
+> Manikanta
 
---rcfpwov7x5kwjhxg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEEk+Uz5/8aTg0U2TbgUdAfNFxksqcFAmTRCv0ACgkQUdAfNFxk
-sqfOrQwAptc9XDlqik1wPWhDQR3FcwX0d30+AQUk9qPg47CfXTjoY0Wk2eN/f8H2
-MSVv4UYFw4vePh83nPkdZMtmaMgck3TWCJ522khoWVM1Auj6y4piuOu7SyYnraPT
-CHBxkeBHHOpicHCgCjtojdiaNRFxtCsAmr5dzpI+uKhLZqmUtXcU+CP73xmxcO+i
-mMaWrHDvBAha9d1IIFCTcuO0wH+kvz+LJ5UcO9WGgbTjkpLYOwRpekDvHfvgeLPT
-4bu/kUExrYnZ20ur34sujn+eBs2ISqAVvpniNrufGDCrUjpjIVHauxEQZgRbGrdF
-vQnN992f/hw4+5LQHoVK1IC55GVL6WPw3Q9RIboEgJu5YxASKlSF4Tho1GLDs+Sm
-lo+pyxL54zSALszhIjUdXiVSRiW8Oos062rrSfIqTwc0CD3SSdlbUeP4mAMgHkSp
-P2P5Tgmevc723Kx05qCaSUa3DAYU4tXvf/YJRSmK4FkGejgdtIEYlDHxXFodPece
-1TAGz34i
-=Y0V4
------END PGP SIGNATURE-----
-
---rcfpwov7x5kwjhxg--
