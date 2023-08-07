@@ -2,138 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C87771E17
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Aug 2023 12:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 945B07722E9
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Aug 2023 13:42:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231640AbjHGKa2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Aug 2023 06:30:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54974 "EHLO
+        id S233070AbjHGLmL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Aug 2023 07:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231251AbjHGKaY (ORCPT
+        with ESMTP id S233065AbjHGLl4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Aug 2023 06:30:24 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3635198C
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Aug 2023 03:30:13 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3778rRxp003033;
-        Mon, 7 Aug 2023 10:29:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=clwewc+nJxrHkjPRvPrTNgsGN0ILNCRQDIsqjggFwOc=;
- b=TDf8yXYcKrpYl1qQJfkD02z8g4xXEPBT9Vq2mgEtU84DViwAEFrvjN8Wes5uXOBD85sp
- 7K7jBNsQGNGTFNGFsjTup2x+nIDAOXbwA2T0aHpvaUEXSP95sSsl9qRDMWXYbNqIyyrc
- SOwzrcmSwTuoJIJmX11hNZCTLIPul+aXzmtqdGSA4YEBBKM86WV7g2Q4U/MPXOAAoFqF
- EMEyHy9nDa8ANotmd2ZWGGpVcJkfZw0OXgSIRh3IU2EWdFSe3gSd37C2qeaIh8mFFrzZ
- +uM7gocIKcMuQ+Kyzlj0110L7ur9xbT7wrYTgJCD8h8eztKLyxd4zQm39+Pt0Zyv6zyS UQ== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s9fkuk49s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 07 Aug 2023 10:29:52 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 377ATaq9008553
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 7 Aug 2023 10:29:36 GMT
-Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Mon, 7 Aug
- 2023 03:29:35 -0700
-Message-ID: <d53c68b6-8883-a34c-4656-d4c3e622056b@quicinc.com>
-Date:   Mon, 7 Aug 2023 18:29:32 +0800
+        Mon, 7 Aug 2023 07:41:56 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1895D2705
+        for <linux-wireless@vger.kernel.org>; Mon,  7 Aug 2023 04:39:19 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3fe32ec7201so97315e9.1
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Aug 2023 04:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1691408299; x=1692013099;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8W+bofDGJlB4M5uPfge6sirfCHYwbUhgLAeHUFoaWIs=;
+        b=oK6l60z3Y/5Wy8fWWjBLc/gvsatLjg8OEhPFkO7kO+u77JF6wUsxpXgdPSy9a5bo7W
+         zKkWWxjj/9Wt3AGNzGGGSE3JL0YqxAwmng2sHl6++BVkQa6MRVUZ0pTuMkqhonqp7cVL
+         ooxMdgywEpg3u69CuhN/PSltoIPqWxsH2dKODl/IJ+j0Qibff4MoI0VZG2s5MSIOLiMm
+         Hv7xGb8InonKy5qRRtaVSo6bIJGE7CxKsH+pICSO4LHQ08tIoAyhjOS8H3uEcQsel7wS
+         XV+KpClkKXgOdMvNiCEBdnDJNddhHbV9f0w3sYEdSkPRTNAEZZbjDntaHS60Jembj3gk
+         6f5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691408299; x=1692013099;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8W+bofDGJlB4M5uPfge6sirfCHYwbUhgLAeHUFoaWIs=;
+        b=SDHRuQcFejNtiH5fKfVtw+aKVKoJy7fIEtUnsjNnbEjmhylVAc6MB87i4S28QVIO1H
+         kcQFkqMJO6rTdcC7X05lzZ/wPvnjFmsM4IwmjH9zIRezuSCm3p7PKZSlbYjUafiZ4Xy4
+         VW7CEf5C4W+wPDSBuIuqHANyf1QAy0j6B/a1c/nYBvqU/QqCGUseYR+dmSAn2P5eRjw/
+         FFvoR5AZhrbXzsO4u9ULakt56RfJiV3FVILv19W6OAwST4a4InUtFyH9nKn3YzxUX/mr
+         7QRGXTQwOhkJjefJcFrKpQkb3CtBrkZsjcvA+bNMshG+wdnO8uMnH+cD5cNGFcxqpB84
+         1Zcg==
+X-Gm-Message-State: AOJu0Yx/eOAgc8UE4EZ8Gq0tXrnXR8HSHw2rZq5MFtVX4N8S9H7Ie8zH
+        v9UcFUr0ZyVHDLLf07alpGSt/r8LJ4YDBPJaNPa+fQ==
+X-Google-Smtp-Source: AGHT+IGmhutOzq3fC03uoNya0cqOJh4UT8fO+Jie4zzFpBH4+HCUPwSHATUE0aSXieDtSvPS6NpGxhP3oVmADaOnfiE=
+X-Received: by 2002:a05:600c:1d13:b0:3fe:b38:5596 with SMTP id
+ l19-20020a05600c1d1300b003fe0b385596mr143015wms.6.1691408299251; Mon, 07 Aug
+ 2023 04:38:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] wifi: ath11k: fix boot failure with one MSI vector
-Content-Language: en-US
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-        Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20230601033840.2997-1-quic_bqiang@quicinc.com>
- <87fs70hlel.fsf@kernel.org>
- <545cc8e8-481d-85b2-5692-43580936b48d@quicinc.com>
- <897b61ea-36d2-1ab4-9c60-9bdfd2d9cad7@quicinc.com>
- <fa70ca5e-001b-3c6b-dbc2-2853f8fc2f72@quicinc.com>
-From:   Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <fa70ca5e-001b-3c6b-dbc2-2853f8fc2f72@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: d7dMd1m4GFtiZkVCQZqpeGIo5DLuscsx
-X-Proofpoint-GUID: d7dMd1m4GFtiZkVCQZqpeGIo5DLuscsx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-07_09,2023-08-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 priorityscore=1501 phishscore=0 mlxlogscore=999 clxscore=1015
- impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308070097
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <0000000000005003fe05a8af2231@google.com> <000000000000597f580602464669@google.com>
+In-Reply-To: <000000000000597f580602464669@google.com>
+From:   Aleksandr Nogikh <nogikh@google.com>
+Date:   Mon, 7 Aug 2023 13:38:07 +0200
+Message-ID: <CANp29Y7srmhGbKYB_6Y5KvijXrgHtzU9NqKcBcnit0wLmvbdCA@mail.gmail.com>
+Subject: Re: [syzbot] [wireless?] INFO: trying to register non-static key in skb_queue_tail
+To:     syzbot <syzbot+743547b2a7fd655ffb6d@syzkaller.appspotmail.com>
+Cc:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
+        brookebasile@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        kvalo@codeaurora.org, kvalo@kernel.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, pchelkin@ispras.ru, quic_kvalo@quicinc.com,
+        syzkaller-bugs@googlegroups.com, toke@toke.dk
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-On 8/7/2023 6:16 PM, Manikanta Pubbisetty wrote:
-> On 8/7/2023 12:53 PM, Manikanta Pubbisetty wrote:
->> On 8/7/2023 12:44 PM, Baochen Qiang wrote:
->>>
->>> On 6/9/2023 8:26 PM, Kalle Valo wrote:
->>>> Baochen Qiang <quic_bqiang@quicinc.com> writes:
->>>>
->>>>> Commit 5b32b6dd96633 ("ath11k: Remove core PCI references from
->>>>> PCI common code") breaks with one MSI vector because it moves
->>>>> affinity setting after IRQ request, see below log:
->>>>>
->>>>> [ 1417.278835] ath11k_pci 0000:02:00.0: failed to receive control 
->>>>> response completion, polling..
->>>>> [ 1418.302829] ath11k_pci 0000:02:00.0: Service connect timeout
->>>>> [ 1418.302833] ath11k_pci 0000:02:00.0: failed to connect to HTT: 
->>>>> -110
->>>>> [ 1418.303669] ath11k_pci 0000:02:00.0: failed to start core: -110
->>>>>
->>>>> The detail is, if do affinity request after IRQ activated,
->>>>> which is done in request_irq(), kernel caches that request and
->>>>> returns success directly. Later when a subsequent MHI interrupt is
->>>>> fired, kernel will do the real affinity setting work, as a result,
->>>>> changs the MSI vector. However at that time host has configured
->>>>> old vector to hardware, so host never receives CE or DP interrupts.
->>>>>
->>>>> Fix it by setting affinity before registering MHI controller
->>>>> where host is, for the first time, doing IRQ request.
->>>>>
->>>>> Tested-on: WCN6855 hw2.0 PCI 
->>>>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
->>>>>
->>>>> Fixes: 5b32b6dd9663 ("ath11k: Remove core PCI references from PCI 
->>>>> common code")
->>>>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
->>>> I'm worried if this breaks WCN6750 support. Manikanta, would able to
->>>> test this patch on WCN6750 and let us know if breaks anything?
->>> Hi Manikanta, could you help test this patch on WCN6750?
->>
->> Sure, we will test and update this here.
->>
+On Sun, Aug 6, 2023 at 9:38=E2=80=AFPM syzbot
+<syzbot+743547b2a7fd655ffb6d@syzkaller.appspotmail.com> wrote:
 >
-> No impact on WCN6750.
+> syzbot suspects this issue was fixed by commit:
 >
-> Tested-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+> commit 061b0cb9327b80d7a0f63a33e7c3e2a91a71f142
+> Author: Fedor Pchelkin <pchelkin@ispras.ru>
+> Date:   Wed May 17 15:03:17 2023 +0000
 >
+>     wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
 >
-> Thanks,
-> Manikanta
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D1243d549a8=
+0000
+> start commit:   559089e0a93d vmalloc: replace VM_NO_HUGE_VMAP with VM_ALL=
+O..
+> git tree:       upstream
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Ddd7c9a79dfcfa=
+205
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3D743547b2a7fd655=
+ffb6d
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D15d5d7f4f00=
+000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D106ff834f0000=
+0
+>
+> If the result looks correct, please mark the issue as fixed by replying w=
+ith:
+>
+> #syz fix: wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
 
-Thanks Mani.
+Seems reasonable.
 
-Hi Kalle, any more comments?
+#syz fix: wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
 
+>
+> For information about bisection process see: https://goo.gl/tpsmEJ#bisect=
+ion
+>
+> --
+> You received this message because you are subscribed to the Google Groups=
+ "syzkaller-bugs" group.
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to syzkaller-bugs+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgi=
+d/syzkaller-bugs/000000000000597f580602464669%40google.com.
