@@ -2,87 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7C1D7743D5
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 20:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 836567747C6
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 21:19:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235384AbjHHSKs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Aug 2023 14:10:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35386 "EHLO
+        id S236008AbjHHTT2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Aug 2023 15:19:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235347AbjHHSKW (ORCPT
+        with ESMTP id S233097AbjHHTTJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Aug 2023 14:10:22 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78001160AE9;
-        Tue,  8 Aug 2023 10:13:12 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1691503677; bh=JCNxuh7snRK2UxJGDtGrIxZbmzWs6fAjEgbNbIIekR8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=wizfIvOD0Xel224akMYsYN2NAFu/z8AWfHMpuPb6xqrHKSjejQhOalNbVLjtbrCvP
-         c/aGldFz6MmxcsAfpne4d1lPZMY5f4Q/fjdw8DbX+hZDhU6PMxEAVGjU+8EELiNb8G
-         I22pBkwsDBQra2XKcWihEUdCelKCVxrhBya0JIT8K2CM0+E5qkPWTo10SgRv+kQCxl
-         MDGnO7O3lTfIiw+QV4cPlUNCkLrwxLBLw6mEuH1EYp3yJostPLnyrgB0V9IoJIC4Lv
-         WlBoU3ytvhzutDC9N8uf9oLhudBBgN9xbctm9hlvPHkcylTGWurHQbxeXMHo1Ixzn/
-         fHNcREXn8JrUg==
-To:     Fedor Pchelkin <pchelkin@ispras.ru>, Kalle Vallo <kvalo@kernel.org>
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Senthil Balasubramanian <senthilkumar@atheros.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
-        Sujith <Sujith.Manoharan@atheros.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org,
-        syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com,
-        Hillf Danton <hdanton@sina.com>
-Subject: Re: [PATCH v3 2/2] wifi: ath9k: protect WMI command response buffer
- replacement with a lock
-In-Reply-To: <20230425192607.18015-2-pchelkin@ispras.ru>
-References: <20230425192607.18015-1-pchelkin@ispras.ru>
- <20230425192607.18015-2-pchelkin@ispras.ru>
-Date:   Tue, 08 Aug 2023 16:07:57 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87bkfhbpaa.fsf@toke.dk>
+        Tue, 8 Aug 2023 15:19:09 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B93815CB6;
+        Tue,  8 Aug 2023 09:42:17 -0700 (PDT)
+Received: from canpemm500007.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RKxWZ6Xy0zVk7m;
+        Tue,  8 Aug 2023 23:12:42 +0800 (CST)
+Received: from [10.174.179.215] (10.174.179.215) by
+ canpemm500007.china.huawei.com (7.192.104.62) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 8 Aug 2023 23:14:36 +0800
+Subject: Re: [PATCH] mac80211: mesh: Remove unused function declaration
+ mesh_ids_set_default()
+To:     Johannes Berg <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <nbd@nbd.name>, <pagadala.yesu.anjaneyulu@intel.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20230731140712.1204-1-yuehaibing@huawei.com>
+ <cdf75cdfeb3640e7096940b3f15a8cd86bf5451e.camel@sipsolutions.net>
+From:   Yue Haibing <yuehaibing@huawei.com>
+Message-ID: <6c95c1e8-67f2-0da4-b853-c306f67926cc@huawei.com>
+Date:   Tue, 8 Aug 2023 23:14:35 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <cdf75cdfeb3640e7096940b3f15a8cd86bf5451e.camel@sipsolutions.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ canpemm500007.china.huawei.com (7.192.104.62)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fedor Pchelkin <pchelkin@ispras.ru> writes:
+On 2023/8/8 16:24, Johannes Berg wrote:
+> On Mon, 2023-07-31 at 22:07 +0800, Yue Haibing wrote:
+>> Commit ccf80ddfe492 ("mac80211: mesh function and data structures definitions")
+>> introducted this but never implemented.
+>>
+> 
+> Btw, are you detecting these with some kind of tool? Having the tool
+> would probably be more useful than you sending all these patches all the
+> time ...
+> 
+Just use grep to check like below
 
-> If ath9k_wmi_cmd() has exited with a timeout, it is possible that during
-> next ath9k_wmi_cmd() call the wmi_rsp callback for previous wmi command
-> writes to new wmi->cmd_rsp_buf and makes a completion. This results in an
-> invalid ath9k_wmi_cmd() return value.
->
-> Move the replacement of WMI command response buffer and length under
-> wmi_lock. Note that last_seq_id value is updated there, too.
->
-> Thus, the buffer cannot be written to by a belated wmi_rsp callback
-> because that path is properly rejected by the last_seq_id check.
->
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
->
-> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+grep -rP --include=*.c '^(?:\w+\s+){1,3}\*{0,3}\s{0,3}\w+[\t]*\(' * |grep -P -oh '\w+\s*\('|sort| uniq -c| sort -n| grep -P '^\s+1\b'|sed -r -e 's/^\s+1\s+//' -e 's/\(//'|while read line ;
+ do
+        IS=`git grep -w $line |wc -l` ;
+        if [ $IS -eq 1 ];then
+                git grep -wn $line
+        fi
+done
 
-Given that the previous patch resets the last_seq_id to 0 on timeout
-under the lock, I don't think this patch is strictly necessary anymore.
-However, it doesn't hurt either, and I actually think moving the update
-of the rsp buf into ath9k_wmi_cmd_issue() aids readability, so:
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+> johannes
+> .
+> 
