@@ -2,106 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B86567735CE
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 03:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EED9773BED
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 17:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230332AbjHHBWx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Aug 2023 21:22:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57278 "EHLO
+        id S231246AbjHHP6b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Aug 2023 11:58:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230206AbjHHBWw (ORCPT
+        with ESMTP id S231271AbjHHP5C (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Aug 2023 21:22:52 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3339410CF
-        for <linux-wireless@vger.kernel.org>; Mon,  7 Aug 2023 18:22:50 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3781LdnqE019428, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3781LdnqE019428
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Tue, 8 Aug 2023 09:21:39 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Tue, 8 Aug 2023 09:21:55 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Tue, 8 Aug 2023 09:21:55 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Tue, 8 Aug 2023 09:21:55 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "kvalo@kernel.org" <kvalo@kernel.org>
-Subject: RE: [PATCH -next] wifi: rtlwifi: use eth_broadcast_addr() to assign broadcast address
-Thread-Topic: [PATCH -next] wifi: rtlwifi: use eth_broadcast_addr() to assign
- broadcast address
-Thread-Index: AQHZxrKkROrQy+8xeESt6N5eKljAR6/fn/Jw
-Date:   Tue, 8 Aug 2023 01:21:55 +0000
-Message-ID: <79c02ca0927442419c091bcbc36cac08@realtek.com>
-References: <20230804090120.1332091-1-yangyingliang@huawei.com>
-In-Reply-To: <20230804090120.1332091-1-yangyingliang@huawei.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Tue, 8 Aug 2023 11:57:02 -0400
+Received: from forward203a.mail.yandex.net (forward203a.mail.yandex.net [178.154.239.90])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B776B5B95
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Aug 2023 08:43:54 -0700 (PDT)
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d100])
+        by forward203a.mail.yandex.net (Yandex) with ESMTP id 3605748754
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Aug 2023 18:27:03 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net [IPv6:2a02:6b8:c18:3c99:0:640:7c39:0])
+        by forward100a.mail.yandex.net (Yandex) with ESMTP id 98BEA46CF3;
+        Tue,  8 Aug 2023 18:26:46 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id jQaGdD4DR0U0-3aoxAOA1;
+        Tue, 08 Aug 2023 18:26:46 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1691508406;
+        bh=HzciPL0UHcDSko7HoMRoD6OUrboLAVfN1ZdHJ8vTpHI=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=foz7XxK+1I4FGZZAtpJTxJV4hc5y6m0JmmHiHopwDnrswJ81M/zBfreoYn2OtB511
+         nSubwrMDlvTCbO9d9R81Kf2Z5DYG9nlTbqaCw32Wk1Tk+8axzMbSOmE50dcqXwuiRw
+         vV6GuvJPiIawDy3zxSoV41gHim7JSKn5atRofTeI=
+Authentication-Results: mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/2] wifi: ath10k: do not ignore value returned by ath10k_wmi_peer_set_param()
+Date:   Tue,  8 Aug 2023 18:25:35 +0300
+Message-ID: <20230808152542.91117-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Do not ignore value returned by 'ath10k_wmi_peer_set_param()' but
+rather propagate it as the return value of the 'ath10k_set_key()'.
 
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-> -----Original Message-----
-> From: Yang Yingliang <yangyingliang@huawei.com>
-> Sent: Friday, August 4, 2023 5:01 PM
-> To: linux-wireless@vger.kernel.org
-> Cc: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org; yangyingliang@huawei.com
-> Subject: [PATCH -next] wifi: rtlwifi: use eth_broadcast_addr() to assign broadcast address
-> 
-> Use eth_broadcast_addr() to assign broadcast address instead
-> of memcpy().
-> 
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Fixes: 9cdd00575029 ("ath10k: fix TDLS peer TX data failure issue on encryped AP")
+Fixes: 382e51c139ef ("ath10k: set WMI_PEER_AUTHORIZE after a firmware crash")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/ath/ath10k/mac.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 03e7bc5b6c0b..22e5ee151c49 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -6663,12 +6663,14 @@ static int ath10k_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	spin_unlock_bh(&ar->data_lock);
+ 
+ 	if (sta && sta->tdls)
+-		ath10k_wmi_peer_set_param(ar, arvif->vdev_id, sta->addr,
+-					  ar->wmi.peer_param->authorize, 1);
+-	else if (sta && cmd == SET_KEY && (key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+-		ath10k_wmi_peer_set_param(ar, arvif->vdev_id, peer_addr,
+-					  ar->wmi.peer_param->authorize, 1);
+-
++		ret = ath10k_wmi_peer_set_param(ar, arvif->vdev_id, sta->addr,
++						ar->wmi.peer_param->authorize,
++						1);
++	else if (sta && cmd == SET_KEY &&
++		 (key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
++		ret = ath10k_wmi_peer_set_param(ar, arvif->vdev_id, peer_addr,
++						ar->wmi.peer_param->authorize,
++						1);
+ exit:
+ 	mutex_unlock(&ar->conf_mutex);
+ 	return ret;
+-- 
+2.41.0
 
-
-> ---
->  drivers/net/wireless/realtek/rtlwifi/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/core.c b/drivers/net/wireless/realtek/rtlwifi/core.c
-> index 4fb16f5f6f83..3835b639d453 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/core.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/core.c
-> @@ -1656,7 +1656,7 @@ static int rtl_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->                         memcpy(rtlpriv->sec.key_buf[key_idx],
->                                key->key, key->keylen);
->                         rtlpriv->sec.key_len[key_idx] = key->keylen;
-> -                       memcpy(mac_addr, bcast_addr, ETH_ALEN);
-> +                       eth_broadcast_addr(mac_addr);
->                 } else {        /* pairwise key */
->                         rtl_dbg(rtlpriv, COMP_SEC, DBG_DMESG,
->                                 "set pairwise key\n");
-> --
-> 2.25.1
-> 
-> 
-> ------Please consider the environment before printing this e-mail.
