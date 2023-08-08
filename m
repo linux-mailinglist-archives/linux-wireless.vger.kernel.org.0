@@ -2,80 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A8E97744B3
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 20:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C6797745AE
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 20:45:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbjHHS1U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Aug 2023 14:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39460 "EHLO
+        id S231847AbjHHSpC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Aug 2023 14:45:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235673AbjHHS0m (ORCPT
+        with ESMTP id S232409AbjHHSoZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Aug 2023 14:26:42 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F0819BE
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Aug 2023 10:40:50 -0700 (PDT)
-Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RKm5b1vnhz1hwFd;
-        Tue,  8 Aug 2023 16:08:03 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
- (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 8 Aug
- 2023 16:10:51 +0800
-From:   Ruan Jinjie <ruanjinjie@huawei.com>
-To:     <briannorris@chromium.org>, <kvalo@kernel.org>,
-        <christophe.jaillet@wanadoo.fr>, <simon.horman@corigine.com>,
-        <linux-wireless@vger.kernel.org>
-CC:     <ruanjinjie@huawei.com>
-Subject: [PATCH -next RESEND] wifi: mwifiex: use is_zero_ether_addr() instead of ether_addr_equal()
-Date:   Tue, 8 Aug 2023 16:10:23 +0800
-Message-ID: <20230808081023.2303423-1-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
+        Tue, 8 Aug 2023 14:44:25 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05D1A3D1A7;
+        Tue,  8 Aug 2023 09:41:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=8W7ui4/ArngIuKAXYPl2b6CpuAAumlmrDpsvogYUsJU=;
+        t=1691512888; x=1692722488; b=VqHkCl1ozxULWVA3NeNtibulfF/v8/0ZJ4d8FbBCzmZrndj
+        QuU6ZxSQNzyaNHCKkC+9bqzTppTjUs/gA/DTwFH3Chyelyx0Mup2YtSq0NoCJpy247wVeDtbV6YiF
+        8pBcVUOHDa3dHVhrxwehEzNJT3/ZeJTSShsvRetlkwDP+t/UTyU/ZO/TeG/psnCwm1DGqrL3BwAJK
+        beH/W7GdiIa7r3Tk80xl/aKU1ffWrTF6DlOo+r2u8J4rloxkuUPRP7D+nvjhlnfYMmZYGlmyO2kdx
+        Z/KkXLstdRkVZ2L5ncH/6j6kp5Df3wGaa8eehvR8ZR6lxZabqZGBikzlkpxdfOcg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qTI0x-00CQmg-1I;
+        Tue, 08 Aug 2023 10:24:27 +0200
+Message-ID: <cdf75cdfeb3640e7096940b3f15a8cd86bf5451e.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: mesh: Remove unused function declaration
+ mesh_ids_set_default()
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Yue Haibing <yuehaibing@huawei.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        nbd@nbd.name, pagadala.yesu.anjaneyulu@intel.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 08 Aug 2023 10:24:26 +0200
+In-Reply-To: <20230731140712.1204-1-yuehaibing@huawei.com>
+References: <20230731140712.1204-1-yuehaibing@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use is_zero_ether_addr() instead of ether_addr_equal()
-to check if the ethernet address is all zeros.
+On Mon, 2023-07-31 at 22:07 +0800, Yue Haibing wrote:
+> Commit ccf80ddfe492 ("mac80211: mesh function and data structures definit=
+ions")
+> introducted this but never implemented.
+>=20
 
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
----
- drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Btw, are you detecting these with some kind of tool? Having the tool
+would probably be more useful than you sending all these patches all the
+time ...
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index 644b1e134b01..fb3105a76337 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -828,7 +828,6 @@ mwifiex_config_scan(struct mwifiex_private *priv,
- 	u8 ssid_filter;
- 	struct mwifiex_ie_types_htcap *ht_cap;
- 	struct mwifiex_ie_types_bss_mode *bss_mode;
--	const u8 zero_mac[6] = {0, 0, 0, 0, 0, 0};
- 
- 	/* The tlv_buf_len is calculated for each scan command.  The TLVs added
- 	   in this routine will be preserved since the routine that sends the
-@@ -966,7 +965,7 @@ mwifiex_config_scan(struct mwifiex_private *priv,
- 				  sizeof(struct mwifiex_ie_types_scan_chan_gap);
- 		}
- 
--		if (!ether_addr_equal(user_scan_in->random_mac, zero_mac)) {
-+		if (!is_zero_ether_addr(user_scan_in->random_mac)) {
- 			random_mac_tlv = (void *)tlv_pos;
- 			random_mac_tlv->header.type =
- 					 cpu_to_le16(TLV_TYPE_RANDOM_MAC);
--- 
-2.34.1
-
+johannes
