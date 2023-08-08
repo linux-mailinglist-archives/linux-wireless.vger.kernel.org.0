@@ -2,41 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62680773FD3
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 18:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 145EF774200
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 19:32:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233700AbjHHQyP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Aug 2023 12:54:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59280 "EHLO
+        id S230287AbjHHRcM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Aug 2023 13:32:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233635AbjHHQxj (ORCPT
+        with ESMTP id S231972AbjHHRbn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Aug 2023 12:53:39 -0400
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D76C41BCA;
-        Tue,  8 Aug 2023 08:58:43 -0700 (PDT)
+        Tue, 8 Aug 2023 13:31:43 -0400
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FC7221E58
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Aug 2023 09:13:44 -0700 (PDT)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1691501451; bh=W8bIdKD5mKfiWkoL5WEwoDR8rszq9h4WfvWk0o4CimM=;
+        t=1691502151; bh=LmHioS78WpREkDZ5AvTzfIhe8IBROYGP7LCaFFjvJEM=;
         h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=i5Z71LN/lvQ2zoqudzblM2/X+CDt2dGrNBtDre3AbjhZmrDVM35zu9hOBluw1Cc54
-         Zzity4WezzAge7NaoLls0TbZHh08eUaj9HnI6b7IfddaC9IetR99lbd0C08GdYaiyJ
-         oCSchCv01+ldPW/pRAxuFa0eSb1Q+PeebetEfWnziEQW/tGJfyym6038uCjKJGX+Z3
-         tMEGsZXo/7iWewS4ZOlBN/8Ti6LuAul+6BJLDmNyMiif6SWAs0J4Rg0v9UKRiB+F2V
-         3Cv2l8il6eKbdP6xyh8I5nbi4/DDlvthHSf+v86PPvdQ0NuPaHsLe5NGniiuz4SF7f
-         935hT9WEWpTlg==
-To:     Minjie Du <duminjie@vivo.com>, Kalle Valo <kvalo@kernel.org>,
-        "open list:QUALCOMM ATHEROS ATH9K WIRELESS DRIVER" 
-        <linux-wireless@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Cc:     opensource.kernel@vivo.com, Minjie Du <duminjie@vivo.com>
-Subject: Re: [PATCH v1] net: wireless: ath9k: fix parameter check in
- ath9k_init_debug()
-In-Reply-To: <20230712114740.13226-1-duminjie@vivo.com>
-References: <20230712114740.13226-1-duminjie@vivo.com>
-Date:   Tue, 08 Aug 2023 15:30:51 +0200
+        b=HpxwCbV+mwjNCIlupg9JVcQp1NPwOy5KTNn6WbCWo5azM+FPu7+RJDD9OWvJ9Kuvb
+         A01AZ1POAxp53nv6FXKsEkBGRHAL78FzV0PJB8uxQJMWBfglKA21R2Ez1Qb+i1Wo6U
+         Jtd8B+mM+S/sFBP2KM7ocz8laBgi2NMHxRehxd1W0yLgGHK9wiYKi2YGa/RHyk121K
+         LUMUJ+Dw4kDgG/sykPWWujzseuquYKN6bdU7QFpPx0q8dt8j24vn+5AMJK024kgUXO
+         Hq/O4PNi2Ecb3p3HKiCofcQBT+AXQdCuqkKh+fMUvBLeB5WE7HPGqjdXpd5MjJ20B6
+         uIlSLSJmc4vrA==
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: Re: [PATCH] wifi: ath9k: consistently use kstrtoX_from_user()
+ functions
+In-Reply-To: <20230726185046.188225-1-dmantipov@yandex.ru>
+References: <20230726185046.188225-1-dmantipov@yandex.ru>
+Date:   Tue, 08 Aug 2023 15:42:31 +0200
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87msz1br04.fsf@toke.dk>
+Message-ID: <87jzu5bqgo.fsf@toke.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -50,11 +48,11 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Minjie Du <duminjie@vivo.com> writes:
+Dmitry Antipov <dmantipov@yandex.ru> writes:
 
-> Make IS_ERR() judge the debugfs_create_dir() function return
-> in ath9k_init_debug()
+> Use 'kstrtoul_from_user()' and 'kstrtobool_from_user()'
+> where appropriate and thus avoid some code duplication.
 >
-> Signed-off-by: Minjie Du <duminjie@vivo.com>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
 Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
