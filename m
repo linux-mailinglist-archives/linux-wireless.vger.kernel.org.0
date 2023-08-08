@@ -2,64 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A3F8774AB7
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 22:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C47A774CA4
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Aug 2023 23:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbjHHUd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Aug 2023 16:33:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52230 "EHLO
+        id S236113AbjHHVNZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Aug 2023 17:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232467AbjHHUdg (ORCPT
+        with ESMTP id S236192AbjHHVNO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Aug 2023 16:33:36 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95CCE1B320
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Aug 2023 12:58:13 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1bc6535027aso25435845ad.2
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Aug 2023 12:58:13 -0700 (PDT)
+        Tue, 8 Aug 2023 17:13:14 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07331A5E3
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Aug 2023 13:11:30 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1bbc87ded50so40202555ad.1
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Aug 2023 13:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1691524693; x=1692129493;
+        d=chromium.org; s=google; t=1691525489; x=1692130289;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xswoMLpcFoDTReNDe+HwH8oM5DQUMUC8+U79Zzosbf8=;
-        b=GhvaRN9JoattUmbHokJ5Uz196iXQ5Xzg13QWi4JBIc/H77Q83JpHVCItq+jH1aE2fL
-         euCUUhvVD+L2FSfr3XT7fAT0Ni/cUqjNW513Y6K0ESIxc5+y/ljMLbmPGJjjvMQUbhak
-         pWkhZIM760TwI4LkFh5n7EVZSRDNVTCEXsW0g=
+        bh=AUKpE+oNE0/h0QGs7zyymgJyrDlWJCUBg0EB3+1xZK0=;
+        b=Q6iqfmiOrpTlN0MVMyg/J93jDJK62XjmqC1jPntTS3deq+9DqQOJK5OfwbRI9m++ld
+         sS1kkZJQb0KZMvsfY8ytGzqDPd2xMeo6jYkIfoa2AsWUK1vafRQG83USTHTgtTkCk9j+
+         o3+sxX4S6R2+w/yWmkZUPHKuM4d0Z9faggDJ4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691524693; x=1692129493;
+        d=1e100.net; s=20221208; t=1691525489; x=1692130289;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xswoMLpcFoDTReNDe+HwH8oM5DQUMUC8+U79Zzosbf8=;
-        b=JHeDsdN4NR1B65bpEi4hJzsFH1vuIkcRmayU2HowNlOm8Vguu/vZrOQdWUG3kRMN2O
-         zUteL4wMEiqwk1tmR8/9VB7tUK2IFLfNmQ4zujyDjZHFYeVRUuTxKerBpozgeaPxRnKG
-         OoeQx4Yt/Nid0I+JyNltoJUs8nzftvEodwSQ4uRykuVdlfbAOVbgDY9iID3k1UdKHdVa
-         Va90h5ri9YS/8KJ55QWay7WJDqkE3GA8idzKR6kj6HjsS6PYymJt+pGm8reegjO3pWU3
-         yafJmWUxy034OWR0P9x2YjwuU9/dGyJ+wk3YzyyxFrl/ftdZQ6DdTJZtDNgHtQ9cWevV
-         x1fA==
-X-Gm-Message-State: AOJu0YyEelYjL+LzgqF6YW3ed6ZSkFyzFTL8d9OWhxxe/0brU54OY5Bd
-        kyUuNuscw+9qPkjNmwIWmRaMw6rBkCf/71R7ebg=
-X-Google-Smtp-Source: AGHT+IHDzUXYIxBNPaaCARpuoUI/sn1yXaKimrtNyLgSjd9xIPluKRLxuPJt94Y7Kfe1p+kx1/bT7A==
-X-Received: by 2002:a17:902:e545:b0:1bc:73bf:303b with SMTP id n5-20020a170902e54500b001bc73bf303bmr784178plf.33.1691524693060;
-        Tue, 08 Aug 2023 12:58:13 -0700 (PDT)
+        bh=AUKpE+oNE0/h0QGs7zyymgJyrDlWJCUBg0EB3+1xZK0=;
+        b=NWYmzzJrNjUk3HT8kssDWesWwBkHkWM1D3w8icEK7AQ9gaa4FSm5S+Af0r+hBLGkCa
+         hHgd6NO+rdKPMdUhv1pgBLZXIy+1lSVGuwWMX+Mxx1QYQws0UPtOPnitOft7WzUq6QWZ
+         i7lyM9U+zQ7QyZuvzhE4/No/H9AvUJuCAmRMgYgM7TUbGcxQv/HRSbM/SKgQQIidZdJP
+         9f0Pf5eOcuX2UOK9I0DZ9EQQUNexsvYOfJy9tp/Zdy/F34M6sFfFkFL5L6zVAbTcM+So
+         vAl6y6yRwpdjCPfQ3map1xXQ1VYg3XYpqmQn2zK3BR24yFcnfFa3Bn6Of826svXEOmoM
+         ATkw==
+X-Gm-Message-State: AOJu0Yyb27+pnNdDLZaMmDSl1JevUD6JFi1aYxxEho8DQoqTbn4Isceb
+        DDoE9V9rSrHDQr2VUsElVhvGkQ==
+X-Google-Smtp-Source: AGHT+IFze8kIjj2VOwIZt1iaTBcw0BoCZzkRwjmFv+hEQfOOvj//qiCIl17bad80r4aT2/Lx5j/o9A==
+X-Received: by 2002:a17:902:f7cd:b0:1bc:2c58:ad97 with SMTP id h13-20020a170902f7cd00b001bc2c58ad97mr685047plw.22.1691525489554;
+        Tue, 08 Aug 2023 13:11:29 -0700 (PDT)
 Received: from google.com ([2620:15c:9d:2:800e:831a:c5f6:2dd0])
-        by smtp.gmail.com with ESMTPSA id n12-20020a170902d2cc00b001bb97e51ab4sm7255191plc.98.2023.08.08.12.58.12
+        by smtp.gmail.com with ESMTPSA id d4-20020a170903230400b001b531e8a000sm9435065plh.157.2023.08.08.13.11.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Aug 2023 12:58:12 -0700 (PDT)
-Date:   Tue, 8 Aug 2023 12:58:10 -0700
+        Tue, 08 Aug 2023 13:11:29 -0700 (PDT)
+Date:   Tue, 8 Aug 2023 13:11:27 -0700
 From:   Brian Norris <briannorris@chromium.org>
 To:     Dmitry Antipov <dmantipov@yandex.ru>
 Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
         lvc-project@linuxtesting.org
-Subject: Re: [PATCH 5/5] [v3] wifi: mwifiex: drop BUG_ON from TX paths
-Message-ID: <ZNKeUpjZT13uWkgj@google.com>
-References: <ZMlHCmjf2ZovExsP@google.com>
- <20230802160726.85545-1-dmantipov@yandex.ru>
- <20230802160726.85545-5-dmantipov@yandex.ru>
+Subject: Re: [PATCH] wifi: mwifiex: avoid possible NULL skb pointer
+ dereference
+Message-ID: <ZNKhb2lgSmfEqqsW@google.com>
+References: <20230808084431.43548-1-dmantipov@yandex.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230802160726.85545-5-dmantipov@yandex.ru>
+In-Reply-To: <20230808084431.43548-1-dmantipov@yandex.ru>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
@@ -70,23 +69,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 02, 2023 at 07:07:19PM +0300, Dmitry Antipov wrote:
-> In 'mwifiex_process_sta_txpd()' and 'mwifiex_process_uap_txpd()',
-> replace 'BUG_ON()' with runtime check, and move all these checks
-> to 'mwifiex_process_tx()'. This way, both callees may be converted
-> to 'void', and the caller may be simplified as well.
+On Tue, Aug 08, 2023 at 11:44:27AM +0300, Dmitry Antipov wrote:
+> In 'mwifiex_handle_uap_rx_forward()', always check the value
+> returned by 'skb_copy()' to avoid potential NULL pointer
+> dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
+> original skb in case of copying failure.
 > 
-> Suggested-by: Brian Norris <briannorris@chromium.org>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
 > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 > ---
-> v3: drop some overengineered bits, fix a few nits reported by
-> checkpatch.pl, and reorder series by making this patch the last
-> one, thus hopefully simplify the landing
+>  drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+> index 04ff051f5d18..454d1c11d39b 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+> @@ -252,7 +252,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
+>  
+>  	if (is_multicast_ether_addr(ra)) {
+>  		skb_uap = skb_copy(skb, GFP_ATOMIC);
+> -		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
+> +		if (likely(skb_uap)) {
+> +			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
+> +		} else {
+> +			mwifiex_dbg(adapter, ERROR,
+> +				    "failed to copy skb for uAP\n");
+> +			priv->stats.tx_dropped++;
 
-Thanks, I think this version is pretty clear, concise, and an overall
-improvement.
+This feels like it should be 'rx_dropped', since we're dropping it
+before we done any real "RX" (let alone getting to any forward/outbound
+operation). I doubt it makes a big difference overall, but it seems like
+the right thing to do.
 
-For the whole series (though you rightly carried my Acked-by on the
-others already):
+Otherwise, this looks good; feel free to carry this to a next revision
+if you're just changing tx_dropped to rx_dropped:
 
 Acked-by: Brian Norris <briannorris@chromium.org>
+
+> +			dev_kfree_skb_any(skb);
+> +			return -1;
+> +		}
+>  	} else {
+>  		if (mwifiex_get_sta_entry(priv, ra)) {
+>  			/* Requeue Intra-BSS packet */
+> -- 
+> 2.41.0
+> 
