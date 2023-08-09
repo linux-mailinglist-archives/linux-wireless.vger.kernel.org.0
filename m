@@ -2,120 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63689775732
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 12:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C545B775EAA
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 14:17:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231171AbjHIKku (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Aug 2023 06:40:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34298 "EHLO
+        id S231178AbjHIMQ4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Aug 2023 08:16:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjHIKkt (ORCPT
+        with ESMTP id S229612AbjHIMQz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Aug 2023 06:40:49 -0400
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAD7010F3;
-        Wed,  9 Aug 2023 03:40:48 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5234f2c6c1dso1141296a12.1;
-        Wed, 09 Aug 2023 03:40:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691577647; x=1692182447;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EvuJQXSSe40cX5NGFg9VHgGjEbwnqu6g+etQ9ZRA9zE=;
-        b=HFiLVz/iAPrHEIm40lp1jz1+bWBSE6w3pT6iiH/C3Z7SuL2bYA0cGQVPNeY0ZJ/Z6W
-         LawW1ox7MK1bwF9a3BKJOIBbCQJPtd3YS+/kLEhh8lyuioIhsd5rfKryda0kf8XxA0ib
-         0zlnnl+GKiBtvTFdx1eXEknnp7R9GwdDEDvv58PwB20vlt7jXIoXwzck2p+Y5wDZXYbu
-         3gnZ+hN+zkk4UHBz2FAFF+V0/ghN7NUoyPioJTfLAMw7ALk0szotupdFrgBw0AFK+i0w
-         m6FUedPL7rOPdb+g8CAtdNruRmDPBZbNhD9zHu4z8mnl43+cPJzDFGFqGbOkPoEzBgaf
-         cyfw==
-X-Gm-Message-State: AOJu0Yz02eHor9G5qfhvT/LE5eJXl94psdHijJMIBbL0bblsoJotmfK1
-        zr8+GET/wC1sfhbJY1bRrUI=
-X-Google-Smtp-Source: AGHT+IGDSDK5w8O5A3SdecdKs9LGC7ETkSOUvMv8G6a5/4GTAq45utbrK+TufQQoNAicLfDDzLJG+A==
-X-Received: by 2002:aa7:c0da:0:b0:522:2b24:cf6 with SMTP id j26-20020aa7c0da000000b005222b240cf6mr1437954edp.42.1691577646894;
-        Wed, 09 Aug 2023 03:40:46 -0700 (PDT)
-Received: from [192.168.1.58] (185-219-167-24-static.vivo.cz. [185.219.167.24])
-        by smtp.gmail.com with ESMTPSA id y5-20020a056402134500b005233647bc4csm4580155edw.59.2023.08.09.03.40.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Aug 2023 03:40:46 -0700 (PDT)
-Message-ID: <83f73eda-829d-2657-9f10-8ccf78522e5a@kernel.org>
-Date:   Wed, 9 Aug 2023 12:40:44 +0200
+        Wed, 9 Aug 2023 08:16:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A04D2DF;
+        Wed,  9 Aug 2023 05:16:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D22963834;
+        Wed,  9 Aug 2023 12:16:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A486C433C8;
+        Wed,  9 Aug 2023 12:16:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691583410;
+        bh=fhlCDOO7YuFkzPjnTCoHyb9IK82UtrqsMxIb95H7Xv4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gpgT9uOnkBuyZhTSRICFZ96AajV0o2W3kbp1aw6iQd0BBoWDMPc46Lvx0InOvAHp6
+         HQjPlNjD465TJSGMRgVgN/uAycgZXIue+eJZaN4UZOkyn8CL3gaCHkqfFRfVPSL50g
+         xEVEiU6yNCGBWfwQn05gJyVXWFKtunUb/u3gDzcU=
+Date:   Wed, 9 Aug 2023 14:16:48 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     USB mailing list <linux-usb@vger.kernel.org>,
+        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] Fix nomenclature for USB and PCI wireless devices
+Message-ID: <2023080940-overhand-fondly-7ef7@gregkh>
+References: <57da7c80-0e48-41b5-8427-884a02648f55@rowland.harvard.edu>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Content-Language: en-US
-To:     mickflemm@gmail.com, mcgrof@kernel.org, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org
-References: <20230807201057.340371-1-mahmoudmatook.mm@gmail.com>
- <92a26f67-1b24-ea35-2f39-7c0b75027617@kernel.org>
- <20230808194258.ocxnmqwzqlr6jpe4@mmaatuq-HP-Laptop-15-dy2xxx>
-From:   Jiri Slaby <jirislaby@kernel.org>
-Subject: Re: [PATCH] ath5k: fix WARNING opportunity for swap.
-In-Reply-To: <20230808194258.ocxnmqwzqlr6jpe4@mmaatuq-HP-Laptop-15-dy2xxx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <57da7c80-0e48-41b5-8427-884a02648f55@rowland.harvard.edu>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 08. 08. 23, 21:42, Mahmoud Matook wrote:
-> On 08/08, Jiri Slaby wrote:
+On Tue, Aug 08, 2023 at 08:44:48PM -0400, Alan Stern wrote:
+> A mouse that uses a USB connection is called a "USB mouse" device (or
+> "USB mouse" for short), not a "mouse USB" device.  By analogy, a WiFi
+> adapter that connects to the host computer via USB is a "USB wireless"
+> device, not a "wireless USB" device.  (The latter term more properly
+> refers to a defunct Wireless USB specification, which described a
+> technology for sending USB protocol messages over an ultra wideband
+> radio link.)
 > 
->> On 07. 08. 23, 22:10, Mahmoud Maatuq wrote:
->>> coccinielle reported the following:
->>> ./drivers/net/wireless/ath/ath5k/phy.c:1573:25-26: WARNING opportunity for swap()
->>
->>
->> OK, once again:
->> https://lore.kernel.org/all/0c3acbd4-6ab2-5cc5-6293-54e30093cce2@kernel.org/
+> Similarly for a WiFi adapter card that plugs into a PCIe slot: It is a
+> "PCIe wireless" device, not a "wireless PCIe" device.
 > 
+> Rephrase the text in the kernel source where the word ordering is
+> wrong.
 > 
-> I had a look at the commit history, to see why the original developer
-> didn't use sort() function, and name the array variable sort but found
-> nothing.
-> I have some doubts that he might did that intentionally, so not to call
-> sort() function for such small array
+> Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
 
-It happens once in 10 s and in a work. No worries about that.
-
-> and avoid the cost of context switching.
-
-What context switching?
-
->>> diff --git a/drivers/net/wireless/ath/ath5k/phy.c b/drivers/net/wireless/ath/ath5k/phy.c
->>> index 5797ef9c73d7..f87eb684f223 100644
->>> --- a/drivers/net/wireless/ath/ath5k/phy.c
->>> +++ b/drivers/net/wireless/ath/ath5k/phy.c
->>> @@ -1562,16 +1562,13 @@ static s16
->>>    ath5k_hw_get_median_noise_floor(struct ath5k_hw *ah)
->>>    {
->>>    	s16 sort[ATH5K_NF_CAL_HIST_MAX];
->>> -	s16 tmp;
->>>    	int i, j;
->>>    	memcpy(sort, ah->ah_nfcal_hist.nfval, sizeof(sort));
->>>    	for (i = 0; i < ATH5K_NF_CAL_HIST_MAX - 1; i++) {
->>>    		for (j = 1; j < ATH5K_NF_CAL_HIST_MAX - i; j++) {
->>>    			if (sort[j] > sort[j - 1]) {
->>> -				tmp = sort[j];
->>> -				sort[j] = sort[j - 1];
->>> -				sort[j - 1] = tmp;
->>> +				swap(sort[j], sort[j - 1]);
->>>    			}
->>>    		}
->>>    	}
->>
->> -- 
->> js
->> suse labs
-
--- 
-js
-suse labs
-
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
