@@ -2,72 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BE62775051
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 03:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBF5D77516C
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 05:32:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229839AbjHIB0b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Aug 2023 21:26:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39134 "EHLO
+        id S229814AbjHIDcQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Aug 2023 23:32:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjHIB03 (ORCPT
+        with ESMTP id S229548AbjHIDcP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Aug 2023 21:26:29 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7CCC19A8
-        for <linux-wireless@vger.kernel.org>; Tue,  8 Aug 2023 18:26:28 -0700 (PDT)
-Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RLC4T1GDPz1hwLH;
-        Wed,  9 Aug 2023 09:23:37 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Wed, 9 Aug 2023 09:26:26 +0800
-Message-ID: <0d3642cb-e455-dfdf-d0a3-235f3182a22e@huawei.com>
-Date:   Wed, 9 Aug 2023 09:26:25 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH -next RESEND] wifi: mwifiex: use is_zero_ether_addr()
- instead of ether_addr_equal()
-Content-Language: en-US
-To:     Brian Norris <briannorris@chromium.org>
-CC:     <kvalo@kernel.org>, <christophe.jaillet@wanadoo.fr>,
-        <simon.horman@corigine.com>, <linux-wireless@vger.kernel.org>
-References: <20230808081023.2303423-1-ruanjinjie@huawei.com>
- <ZNKiBE3GIi/wQXLB@google.com>
-From:   Ruan Jinjie <ruanjinjie@huawei.com>
-In-Reply-To: <ZNKiBE3GIi/wQXLB@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Tue, 8 Aug 2023 23:32:15 -0400
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D3B86E0;
+        Tue,  8 Aug 2023 20:32:13 -0700 (PDT)
+Received: from localhost.localdomain (unknown [39.174.92.167])
+        by mail-app3 (Coremail) with SMTP id cC_KCgC3vRmvCNNkUbCEDA--.19833S4;
+        Wed, 09 Aug 2023 11:31:59 +0800 (CST)
+From:   Lin Ma <linma@zju.edu.cn>
+To:     johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        avraham.stern@intel.com, luciano.coelho@intel.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Lin Ma <linma@zju.edu.cn>
+Subject: [PATCH net v2] nl80211/cfg80211: add forgetten nla_policy for BSS color attribute
+Date:   Wed,  9 Aug 2023 11:31:51 +0800
+Message-Id: <20230809033151.768910-1-linma@zju.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: cC_KCgC3vRmvCNNkUbCEDA--.19833S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7tF1rZF47Jry7CFy8Ww4xXrb_yoW8Jw1kpr
+        W8CryUK3W3GrnrJrZ5Cw48ua47WanrG34rCa17ur13uan0q3WfJ34YgFy3tr4kZr48J393
+        ZFnYqr4ayF1Yq37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+        JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+        CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+        2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+        Y2ka0xkIwI1lc2xSY4AK67AK6r48MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+        1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+        b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+        vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+        cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
+        nxnUUI43ZEXa7VUjCtC7UUUUU==
+X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The previous commit dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to
+NDP ranging parameters") adds a parameter for NDP ranging by introducing
+a new attribute type named NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR.
 
+However, the author forgot to also describe the nla_policy at
+nl80211_pmsr_ftm_req_attr_policy (net/wireless/nl80211.c). Just
+complement it to avoid malformed attribute that causes out-of-attribute
+access.
 
-On 2023/8/9 4:13, Brian Norris wrote:
-> On Tue, Aug 08, 2023 at 04:10:23PM +0800, Ruan Jinjie wrote:
->> Use is_zero_ether_addr() instead of ether_addr_equal()
->> to check if the ethernet address is all zeros.
->>
->> Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-> 
-> Usually you should provide some explanation for a RESEND of a
-> seemingly-identical patch. Seemingly you just updated the address list?
+Fixes: dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to NDP ranging parameters")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+---
+v1 -> v2: resent due to the last version failed to reach public mail
+          list.
 
-Sorry, the git email tocmd has a problem, the original address lists
-which parsed from get_maintainer.pl cmd is incomplete, so I resend it.
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
-> Anyway, looks fine:
-> 
-> Acked-by: Brian Norris <briannorris@chromium.org>
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 0da2e6a2a7ea..f729dba1cb5b 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -323,6 +323,7 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+ 	[NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
+ 	[NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
+ 	[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK] = { .type = NLA_FLAG },
++	[NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR] = { .type = NLA_U8 },
+ };
+ 
+ static const struct nla_policy
+-- 
+2.17.1
+
