@@ -2,124 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA716775AE9
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 13:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63689775732
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 12:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233335AbjHILMg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Aug 2023 07:12:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54326 "EHLO
+        id S231171AbjHIKku (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Aug 2023 06:40:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233320AbjHILMg (ORCPT
+        with ESMTP id S229457AbjHIKkt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Aug 2023 07:12:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A57210F3;
-        Wed,  9 Aug 2023 04:12:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 380D463155;
-        Wed,  9 Aug 2023 11:12:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4D2C433C7;
-        Wed,  9 Aug 2023 11:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579554;
-        bh=EooU9pkdh78sepSZ+YKbrwYOxqe0XEKeQ1A7NibNZ6g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W9feNP2uvndRXRpmTNU2pU5gN2uUWXiOppMLGHGUvxCAGgw9qfGpMR1DmdVbadCSG
-         BIKcOTkFKC//QdEzVb7IA7MqPZGTOytFKxJjcp1N47YUOTYzUG5MxoNJbJbLd6qMwh
-         BMT8nyjEeTAkpFAYHT4s/x+QdlnTYplVKEFHGT5k=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Fox Chen <mhchen@golf.ccl.itri.org.tw>,
-        de Melo <acme@conectiva.com.br>,
-        Gustavo Niemeyer <niemeyer@conectiva.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 032/323] wl3501_cs: Fix misspelling and provide missing documentation
-Date:   Wed,  9 Aug 2023 12:37:50 +0200
-Message-ID: <20230809103659.588179963@linuxfoundation.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
-User-Agent: quilt/0.67
+        Wed, 9 Aug 2023 06:40:49 -0400
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAD7010F3;
+        Wed,  9 Aug 2023 03:40:48 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5234f2c6c1dso1141296a12.1;
+        Wed, 09 Aug 2023 03:40:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691577647; x=1692182447;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EvuJQXSSe40cX5NGFg9VHgGjEbwnqu6g+etQ9ZRA9zE=;
+        b=HFiLVz/iAPrHEIm40lp1jz1+bWBSE6w3pT6iiH/C3Z7SuL2bYA0cGQVPNeY0ZJ/Z6W
+         LawW1ox7MK1bwF9a3BKJOIBbCQJPtd3YS+/kLEhh8lyuioIhsd5rfKryda0kf8XxA0ib
+         0zlnnl+GKiBtvTFdx1eXEknnp7R9GwdDEDvv58PwB20vlt7jXIoXwzck2p+Y5wDZXYbu
+         3gnZ+hN+zkk4UHBz2FAFF+V0/ghN7NUoyPioJTfLAMw7ALk0szotupdFrgBw0AFK+i0w
+         m6FUedPL7rOPdb+g8CAtdNruRmDPBZbNhD9zHu4z8mnl43+cPJzDFGFqGbOkPoEzBgaf
+         cyfw==
+X-Gm-Message-State: AOJu0Yz02eHor9G5qfhvT/LE5eJXl94psdHijJMIBbL0bblsoJotmfK1
+        zr8+GET/wC1sfhbJY1bRrUI=
+X-Google-Smtp-Source: AGHT+IGDSDK5w8O5A3SdecdKs9LGC7ETkSOUvMv8G6a5/4GTAq45utbrK+TufQQoNAicLfDDzLJG+A==
+X-Received: by 2002:aa7:c0da:0:b0:522:2b24:cf6 with SMTP id j26-20020aa7c0da000000b005222b240cf6mr1437954edp.42.1691577646894;
+        Wed, 09 Aug 2023 03:40:46 -0700 (PDT)
+Received: from [192.168.1.58] (185-219-167-24-static.vivo.cz. [185.219.167.24])
+        by smtp.gmail.com with ESMTPSA id y5-20020a056402134500b005233647bc4csm4580155edw.59.2023.08.09.03.40.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Aug 2023 03:40:46 -0700 (PDT)
+Message-ID: <83f73eda-829d-2657-9f10-8ccf78522e5a@kernel.org>
+Date:   Wed, 9 Aug 2023 12:40:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.1
+Content-Language: en-US
+To:     mickflemm@gmail.com, mcgrof@kernel.org, kvalo@kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org
+References: <20230807201057.340371-1-mahmoudmatook.mm@gmail.com>
+ <92a26f67-1b24-ea35-2f39-7c0b75027617@kernel.org>
+ <20230808194258.ocxnmqwzqlr6jpe4@mmaatuq-HP-Laptop-15-dy2xxx>
+From:   Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH] ath5k: fix WARNING opportunity for swap.
+In-Reply-To: <20230808194258.ocxnmqwzqlr6jpe4@mmaatuq-HP-Laptop-15-dy2xxx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lee Jones <lee.jones@linaro.org>
+On 08. 08. 23, 21:42, Mahmoud Matook wrote:
+> On 08/08, Jiri Slaby wrote:
+> 
+>> On 07. 08. 23, 22:10, Mahmoud Maatuq wrote:
+>>> coccinielle reported the following:
+>>> ./drivers/net/wireless/ath/ath5k/phy.c:1573:25-26: WARNING opportunity for swap()
+>>
+>>
+>> OK, once again:
+>> https://lore.kernel.org/all/0c3acbd4-6ab2-5cc5-6293-54e30093cce2@kernel.org/
+> 
+> 
+> I had a look at the commit history, to see why the original developer
+> didn't use sort() function, and name the array variable sort but found
+> nothing.
+> I have some doubts that he might did that intentionally, so not to call
+> sort() function for such small array
 
-[ Upstream commit 8b8a6f8c3b50193d161c598a6784e721128d6dc3 ]
+It happens once in 10 s and in a work. No worries about that.
 
-Fixes the following W=1 kernel build warning(s):
+> and avoid the cost of context switching.
 
- In file included from drivers/net/wireless/wl3501_cs.c:57:
- drivers/net/wireless/wl3501_cs.c:143: warning: Function parameter or member 'reg_domain' not described in 'iw_valid_channel'
- drivers/net/wireless/wl3501_cs.c:143: warning: Excess function parameter 'reg_comain' description in 'iw_valid_channel'
- drivers/net/wireless/wl3501_cs.c:469: warning: Function parameter or member 'data' not described in 'wl3501_send_pkt'
- drivers/net/wireless/wl3501_cs.c:469: warning: Function parameter or member 'len' not described in 'wl3501_send_pkt'
+What context switching?
 
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Fox Chen <mhchen@golf.ccl.itri.org.tw>
-Cc: de Melo <acme@conectiva.com.br>
-Cc: Gustavo Niemeyer <niemeyer@conectiva.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20201102112410.1049272-25-lee.jones@linaro.org
-Stable-dep-of: 391af06a02e7 ("wifi: wl3501_cs: Fix an error handling path in wl3501_probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/wl3501_cs.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+>>> diff --git a/drivers/net/wireless/ath/ath5k/phy.c b/drivers/net/wireless/ath/ath5k/phy.c
+>>> index 5797ef9c73d7..f87eb684f223 100644
+>>> --- a/drivers/net/wireless/ath/ath5k/phy.c
+>>> +++ b/drivers/net/wireless/ath/ath5k/phy.c
+>>> @@ -1562,16 +1562,13 @@ static s16
+>>>    ath5k_hw_get_median_noise_floor(struct ath5k_hw *ah)
+>>>    {
+>>>    	s16 sort[ATH5K_NF_CAL_HIST_MAX];
+>>> -	s16 tmp;
+>>>    	int i, j;
+>>>    	memcpy(sort, ah->ah_nfcal_hist.nfval, sizeof(sort));
+>>>    	for (i = 0; i < ATH5K_NF_CAL_HIST_MAX - 1; i++) {
+>>>    		for (j = 1; j < ATH5K_NF_CAL_HIST_MAX - i; j++) {
+>>>    			if (sort[j] > sort[j - 1]) {
+>>> -				tmp = sort[j];
+>>> -				sort[j] = sort[j - 1];
+>>> -				sort[j - 1] = tmp;
+>>> +				swap(sort[j], sort[j - 1]);
+>>>    			}
+>>>    		}
+>>>    	}
+>>
+>> -- 
+>> js
+>> suse labs
 
-diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
-index 5b2383270627c..c6d1a320e244f 100644
---- a/drivers/net/wireless/wl3501_cs.c
-+++ b/drivers/net/wireless/wl3501_cs.c
-@@ -133,7 +133,7 @@ static const struct {
- 
- /**
-  * iw_valid_channel - validate channel in regulatory domain
-- * @reg_comain: regulatory domain
-+ * @reg_domain: regulatory domain
-  * @channel: channel to validate
-  *
-  * Returns 0 if invalid in the specified regulatory domain, non-zero if valid.
-@@ -457,11 +457,9 @@ static int wl3501_pwr_mgmt(struct wl3501_card *this, int suspend)
- /**
-  * wl3501_send_pkt - Send a packet.
-  * @this: Card
-- *
-- * Send a packet.
-- *
-- * data = Ethernet raw frame.  (e.g. data[0] - data[5] is Dest MAC Addr,
-+ * @data: Ethernet raw frame.  (e.g. data[0] - data[5] is Dest MAC Addr,
-  *                                   data[6] - data[11] is Src MAC Addr)
-+ * @len: Packet length
-  * Ref: IEEE 802.11
-  */
- static int wl3501_send_pkt(struct wl3501_card *this, u8 *data, u16 len)
 -- 
-2.39.2
-
-
+js
+suse labs
 
