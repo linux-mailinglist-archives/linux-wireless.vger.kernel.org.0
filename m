@@ -2,105 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3D80776A0C
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 22:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1537B776B50
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 23:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234446AbjHIUcy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Aug 2023 16:32:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34894 "EHLO
+        id S232858AbjHIV6k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Aug 2023 17:58:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234451AbjHIUcv (ORCPT
+        with ESMTP id S229623AbjHIV6j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Aug 2023 16:32:51 -0400
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3535B2123
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Aug 2023 13:32:48 -0700 (PDT)
-Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so207932a12.1
-        for <linux-wireless@vger.kernel.org>; Wed, 09 Aug 2023 13:32:48 -0700 (PDT)
+        Wed, 9 Aug 2023 17:58:39 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06936FE
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Aug 2023 14:58:39 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-686f94328a4so212882b3a.0
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Aug 2023 14:58:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1691613167; x=1692217967;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IbtGAppGkgkkcepdIWwjEf7iWCCTLoC4KdX3LkZb6Hk=;
-        b=QwF6yfJJw+u9lU723E3kfvee/A3ez31/xIOxHs6dBY3mu3tmOAItCxGz9wqYq9RNwO
-         HiawLiiaemIALEflV1d0kpS6JtVQYdyoCuFq/HbofCypNAEdkINxQUGS6WtTXDxh/GRU
-         KnooJvE9a6IkZXUY/+IE/1w3YBf+NqovqUM1Q=
+        d=gmail.com; s=20221208; t=1691618318; x=1692223118;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jnz6T5JaO9ndxPNG1QR0YwZEj2HeY50+n2mvPDGxhv4=;
+        b=O/7xXLEv6i2Ef9MRCdt5kfPj99SSR/LFfnwD059ombOD0RtYg2jz7Opa1EvJO5dJEV
+         kiuSyyoYcweH9EvspBCuzk7ml2wE/3JaTo1Y1Ul7qFIsiChxDg6etkj2mNfSHhZcghZl
+         up0/oq9VOEh58d6bY8/wnt+w3Yw0xhMuZmKZPNF46AoB8L7bdseF9rvaEiCq7XitklvK
+         Z4lCKaolQ8L6CkufcBQ5M8+TAwJFRwB0rJXD7EWSjyS5AeUSMB5AlkThetubfC9Nrc1C
+         8VhXmQYUvjDWou40lQSoYI5H8dLQ/oWBNdVaRb1QRnRrm9YMT7hBN6Rgdkvc/NsKOMv0
+         7CTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691613167; x=1692217967;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IbtGAppGkgkkcepdIWwjEf7iWCCTLoC4KdX3LkZb6Hk=;
-        b=RDetIfX5GaAXae3NOw4RnPT9LSrsT1x7WT9+nZcvTXfLdNx5YqjGjRZ8ye1Gt0wsgU
-         wA7qmQVm7kdn4dCCeJE25afne73SkSVRwId5Fbezr94KPHsQWiCQNDGC3xlcSXpr/csg
-         23002umQbdbum4S6vIBSac4MioOqUYRk4dZM4ohE/5PNlPUlftqLYldGev2kNMURZdOF
-         J7srdVOTjp31KrztzknHLhfWbc5kA9/ze2jMkqx+/GkZu3uwP8k1iAiXiB0bsUwZNb2I
-         MUV5eGGt4H73xSNooWFs1DEiMMyV9W5CgfQnKXWG7Okf/8c8RXO+W0BqBnkrtNMFTvu4
-         wyZA==
-X-Gm-Message-State: AOJu0YxyLCeum6Zi6ARWK5lZMyaqT6tVEzTfQQhbv06b91HeI173Y+Ay
-        u78Ns2ReN53mk78vyWttPGRXEw==
-X-Google-Smtp-Source: AGHT+IHLlLUAzZw7E26xJCWEPQyi1lpGYJxVIHTNvTJn6qpA6YVnnBUiyo+59/aT02FevpBa1otQrw==
-X-Received: by 2002:a17:90b:234f:b0:268:1e51:3496 with SMTP id ms15-20020a17090b234f00b002681e513496mr350579pjb.21.1691613167654;
-        Wed, 09 Aug 2023 13:32:47 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:6cbc:9b4c:cfc0:e406])
-        by smtp.gmail.com with ESMTPSA id 28-20020a17090a019c00b002636dfcc6f5sm10063pjc.3.2023.08.09.13.32.46
+        d=1e100.net; s=20221208; t=1691618318; x=1692223118;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jnz6T5JaO9ndxPNG1QR0YwZEj2HeY50+n2mvPDGxhv4=;
+        b=SlMlmvogds/RYiYjm6yiES6fBs+8tzwbHxIs5JS6BXjavMBC69IXMfQxRcDqYa8CcN
+         f0ZspgVBiT5IK+zVC7MyChpKnCMrJGur/mqLRybhQAIM2TUFWJLkRrmLqFKfJeBOoT/5
+         uDhc/nLr6U8BBlDKhy0Je65hc6n9NNCfD/c8aKx40n7M/tD+Un0qpDuS/wOON4tTveUT
+         brEpBuGoIU/HkcItcjtPYmIxxhRrAQqY252202ArjSnNUTR7WtbRUSQ1SB25gERYmqXj
+         9wczvAA8FMrlcV98J4TSLTZzJ75t0SW7RKy1ocjaBiZpEjz4vxjHCA9gRf6DZu3LMF+c
+         3Sng==
+X-Gm-Message-State: AOJu0YwbDR8579fbBKf1JRHp1wi+MMqrmZ5X9rQCpEXRqmTnUWq/GZRQ
+        yJUr33CPf/3eEFXkzvuVM+3gbffPGjeTPK/L
+X-Google-Smtp-Source: AGHT+IGKt2BZP2irdrUle5NAgRT0ugdR5jL6hcPETpxgSk4ewkHyn5PRY6FerGYfyzG5Vs1OgSqNnA==
+X-Received: by 2002:a05:6a20:9187:b0:140:d536:d434 with SMTP id v7-20020a056a20918700b00140d536d434mr233800pzd.10.1691618317830;
+        Wed, 09 Aug 2023 14:58:37 -0700 (PDT)
+Received: from localhost.localdomain ([221.231.189.234])
+        by smtp.gmail.com with ESMTPSA id s24-20020aa78298000000b00666b3706be6sm71401pfm.107.2023.08.09.14.58.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 13:32:47 -0700 (PDT)
-Date:   Wed, 9 Aug 2023 13:32:45 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Dmitry Antipov <dmantipov@yandex.ru>,
-        Polaris Pi <pinkperfect2021@gmail.com>,
-        Matthew Wang <matthewmwang@chromium.org>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        lvc-project@linuxtesting.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: Bug in commit 119585281617 wifi: mwifiex: Fix OOB and integer
- underflow when rx packets
-Message-ID: <ZNP37WfcNfCWB1yX@google.com>
-References: <20230808084431.43548-1-dmantipov@yandex.ru>
- <ZNKhb2lgSmfEqqsW@google.com>
- <9ad63828-3c85-fcc4-a91d-58e1d16b60b7@yandex.ru>
+        Wed, 09 Aug 2023 14:58:37 -0700 (PDT)
+From:   Polaris Pi <pinkperfect2021@gmail.com>
+To:     matthewmwang@chromium.org, briannorris@chromium.org,
+        kuba@kernel.org, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org,
+        Polaris Pi <pinkperfect2021@gmail.com>
+Subject: [PATCH v8] wifi: mwifiex: Fix OOB and integer underflow when rx packets
+Date:   Wed,  9 Aug 2023 21:58:17 +0000
+Message-Id: <20230809215817.3080280-1-pinkperfect2021@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9ad63828-3c85-fcc4-a91d-58e1d16b60b7@yandex.ru>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 12:35:37PM +0300, Dmitry Antipov wrote:
-> And I have some doubts on 119585281617 ("wifi: mwifiex: Fix OOB and integer
-> underflow when rx packets"). Looking through 'mwifiex_uap_queue_bridged_pkt()'
-> again, it seems that 'return' is missing:
-> 
-> 	if (sizeof(*rx_pkt_hdr) +
-> 	    le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
-> 		mwifiex_dbg(adapter, ERROR,
-> 			    "wrong rx packet offset: len=%d,rx_pkt_offset=%d\n",
-> 			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-> 		priv->stats.rx_dropped++;
-> 		dev_kfree_skb_any(skb);
->                /* HERE */
-> 	}
-> 
-> 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-> 
-> because 'rx_pkt_hdr' points to 'skb->data' plus some offset (see above),
-> so reading freed memory with 'memcmp()' causes an undefined behavior.
-> And likewise for 'mwifiex_process_rx_packet()' (but not for
-> 'mwifiex_process_uap_rx_packet()' where 'return 0' looks correct).
+Make sure mwifiex_process_mgmt_packet,
+mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
+mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
+not out-of-bounds access the skb->data buffer.
 
-That's...completely unrelated to the post in question, so changing the
-subject. But it's also an excellent (and terrible) catch.
+Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80211")
+Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
+---
+V5: Follow chromeos comments: preserve the original flow of mwifiex_process_uap_rx_packet
+V6: Simplify check in mwifiex_process_uap_rx_packet
+V7: Fix drop packets issue when auotest V6, now pass manual and auto tests
+V8: Fix missing return after free skb
+---
+ drivers/net/wireless/marvell/mwifiex/sta_rx.c | 12 ++++++++++-
+ .../net/wireless/marvell/mwifiex/uap_txrx.c   | 20 +++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/util.c   | 10 +++++++---
+ 3 files changed, 38 insertions(+), 4 deletions(-)
 
-Polars or Matthew, can you fix that up in a new patch ASAP?
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+index 13659b02ba88..65420ad67416 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+@@ -86,6 +86,15 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
+ 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
+ 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
+ 
++	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
++		mwifiex_dbg(priv->adapter, ERROR,
++			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
++			    skb->len, rx_pkt_off);
++		priv->stats.rx_dropped++;
++		dev_kfree_skb_any(skb);
++		return -1;
++	}
++
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+ 		     sizeof(bridge_tunnel_header))) ||
+ 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+@@ -194,7 +203,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_private *priv,
+ 
+ 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
+ 
+-	if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
++	if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
++	    sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
+ 		mwifiex_dbg(adapter, ERROR,
+ 			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
+ 			    skb->len, rx_pkt_offset, rx_pkt_length);
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index e495f7eaea03..c1b8d41dd753 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -103,6 +103,16 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
+ 		return;
+ 	}
+ 
++	if (sizeof(*rx_pkt_hdr) +
++	    le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
++		mwifiex_dbg(adapter, ERROR,
++			    "wrong rx packet offset: len=%d,rx_pkt_offset=%d\n",
++			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
++		priv->stats.rx_dropped++;
++		dev_kfree_skb_any(skb);
++		return;
++	}
++
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+ 		     sizeof(bridge_tunnel_header))) ||
+ 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+@@ -367,6 +377,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_private *priv,
+ 	rx_pkt_type = le16_to_cpu(uap_rx_pd->rx_pkt_type);
+ 	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
+ 
++	if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
++	    sizeof(rx_pkt_hdr->eth803_hdr) > skb->len) {
++		mwifiex_dbg(adapter, ERROR,
++			    "wrong rx packet for struct ethhdr: len=%d, offset=%d\n",
++			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
++		priv->stats.rx_dropped++;
++		dev_kfree_skb_any(skb);
++		return 0;
++	}
++
+ 	ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
+ 
+ 	if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
+diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+index 94c2d219835d..745b1d925b21 100644
+--- a/drivers/net/wireless/marvell/mwifiex/util.c
++++ b/drivers/net/wireless/marvell/mwifiex/util.c
+@@ -393,11 +393,15 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+ 	}
+ 
+ 	rx_pd = (struct rxpd *)skb->data;
++	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
++	if (pkt_len < sizeof(struct ieee80211_hdr) + sizeof(pkt_len)) {
++		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
++		return -1;
++	}
+ 
+ 	skb_pull(skb, le16_to_cpu(rx_pd->rx_pkt_offset));
+ 	skb_pull(skb, sizeof(pkt_len));
+-
+-	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
++	pkt_len -= sizeof(pkt_len);
+ 
+ 	ieee_hdr = (void *)skb->data;
+ 	if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
+@@ -410,7 +414,7 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+ 		skb->data + sizeof(struct ieee80211_hdr),
+ 		pkt_len - sizeof(struct ieee80211_hdr));
+ 
+-	pkt_len -= ETH_ALEN + sizeof(pkt_len);
++	pkt_len -= ETH_ALEN;
+ 	rx_pd->rx_pkt_length = cpu_to_le16(pkt_len);
+ 
+ 	cfg80211_rx_mgmt(&priv->wdev, priv->roc_cfg.chan.center_freq,
+-- 
+2.25.1
 
-CC Johannes, in case this patch is going places any time soon.
-
-Brian
