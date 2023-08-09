@@ -2,68 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B1877542C
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 09:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AAB077543A
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 09:34:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229742AbjHIHcO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Aug 2023 03:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48106 "EHLO
+        id S230363AbjHIHex (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Aug 2023 03:34:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231811AbjHIHby (ORCPT
+        with ESMTP id S229650AbjHIHew (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Aug 2023 03:31:54 -0400
-Received: from mail.venturelinkbiz.com (mail.venturelinkbiz.com [51.195.119.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7C0A2D7D
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Aug 2023 00:31:06 -0700 (PDT)
-Received: by mail.venturelinkbiz.com (Postfix, from userid 1002)
-        id A58CD44881; Wed,  9 Aug 2023 07:30:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkbiz.com;
-        s=mail; t=1691566264;
-        bh=Mjfq+hZZ0+rPTC06HjjASvlnsTMgj1yAndWxi/OAu2M=;
-        h=Date:From:To:Subject:From;
-        b=ZweGm97uvEsnfNe7kW6q2Ffwx34vToHGCR9AxAGg/Fm8ExWRDFx58TaiiXRMPKWbB
-         FsDxyZk7oGHxb58UROJ2jmwAktt/4ji2oS1yFH+mhhfd23Qxb3GCNe/1mrdmLPEz0C
-         W71SBoK3Qg6Yv0K7uAQZ9m+1038jiP4gJYU+IPs9SucrMmKo947k3rq6vqUhQQZex+
-         7okvgN9qyb0riDenY9yEIYXn0B99RxrvlTLKq/Odp25PumSncpbWDqd5kUdaDMN0Wx
-         QdRdX3G+XQ8TcH5r+IbSX7EfHZznHQeMN9DG8K3Wi7zxIRTtJsPG8r31mRtfUmkq99
-         HIRVkg7Kbwf5w==
-Received: by mail.venturelinkbiz.com for <linux-wireless@vger.kernel.org>; Wed,  9 Aug 2023 07:30:51 GMT
-Message-ID: <20230809064500-0.1.1p.4cwa.0.104jjw5p73@venturelinkbiz.com>
-Date:   Wed,  9 Aug 2023 07:30:51 GMT
-From:   "Michal Rmoutil" <michal.rmoutil@venturelinkbiz.com>
-To:     <linux-wireless@vger.kernel.org>
-Subject: =?UTF-8?Q?Syst=C3=A9m_sledov=C3=A1n=C3=AD_a_optimalizace_v=C3=BDroby?=
-X-Mailer: mail.venturelinkbiz.com
+        Wed, 9 Aug 2023 03:34:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C8F610C6;
+        Wed,  9 Aug 2023 00:34:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5E9762FE2;
+        Wed,  9 Aug 2023 07:34:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A0FC433C7;
+        Wed,  9 Aug 2023 07:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691566491;
+        bh=60Y6J4I0j3xXL5Nco312J593o+/GGtthikOgUobZJYo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KLYbVGAPMTOE6TBQhJigf7VgNNYfcES5L5qJFBKGt1lX4B7ZhbYwkwLo2SVmkKUlx
+         jLl4q13qQfGDIX1SSZwBVsqxJc37jScOg/DEQEqi8jus0qQ1rn2aAQrhB9XYMWaYG5
+         ZWaScln3FVt0MBewvBUzRQGa0MXJ1u13QtJCL33XV2CAqaVCSVUKzz9dKAyBtpy+0B
+         1+lJCA0TmNshW026Cs1LL23QCTwDn/nAsHmDaVMIcDNtoi2BXG4FBp0fLHMHbS+/nG
+         tPJTtOzmnErHWYsC7yCsAUxdnkIwyvJDCq2tPtgG4aEsyoNevVUF5LDSiR3NO78poY
+         ry76Tm+3uD1Xw==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1qTdiS-00016I-1p;
+        Wed, 09 Aug 2023 09:34:48 +0200
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH] Revert "Revert "wifi: ath11k: Enable threaded NAPI""
+Date:   Wed,  9 Aug 2023 09:34:32 +0200
+Message-ID: <20230809073432.4193-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,
-        URIBL_DBL_SPAM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dobr=C3=A9 r=C3=A1no
+This reverts commit d265ebe41c911314bd273c218a37088835959fa1.
 
-Zn=C3=A1te syst=C3=A9m, kter=C3=BD nejen hl=C3=ADd=C3=A1, ale i optimaliz=
-uje v=C3=BDrobu a p=C5=99in=C3=A1=C5=A1=C3=AD st=C3=A1l=C3=BD p=C5=99=C3=AD=
-jem?
+Disabling threaded NAPI causes the Lenovo ThinkPad X13s to hang (e.g. no
+more interrupts received) almost immediately during RX.
 
-D=C3=ADky nejnov=C4=9Bj=C5=A1=C3=ADm technologi=C3=ADm a anal=C3=BDze dat=
- na=C5=A1e =C5=99e=C5=A1en=C3=AD identifikuje oblasti optimalizace, zv=C3=
-=BD=C5=A1en=C3=AD efektivity a sn=C3=AD=C5=BEen=C3=AD n=C3=A1klad=C5=AF. =
-Na=C5=A1i klienti zaznamenali n=C3=A1r=C5=AFst p=C5=99=C3=ADjm=C5=AF v pr=
-=C5=AFm=C4=9Bru o 20 % a dnes si to m=C5=AF=C5=BEete vyzkou=C5=A1et na 60=
- dn=C3=AD zdarma.
+Apparently something broke since commit 13aa2fb692d3 ("wifi: ath11k:
+Enable threaded NAPI") so that a simple revert is no longer possible.
 
-Pokud chcete dal=C5=A1=C3=AD podrobnosti, odpov=C4=9Bzte pros=C3=ADm na k=
-ontaktn=C3=AD =C4=8D=C3=ADslo.
+As commit d265ebe41c91 ("Revert "wifi: ath11k: Enable threaded NAPI"")
+does not address the underlying issue reported with QCN9074, it seems we
+need to reenable threaded NAPI before fixing both bugs properly.
+
+Fixes: d265ebe41c91 ("Revert "wifi: ath11k: Enable threaded NAPI"")
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+
+Hi Kalle,
+
+Disabling threaded NAPI caused a severe regression in 6.5-rc5 by making
+the X13s completely unusable (e.g. no keyboard input, I've seen an RCU
+splat once).
+
+I'm supposed to be on holiday this week, but thanks to the rain I gave
+rc5 a try and ran into this.
+
+I've added Bjorn, Mani and Konrad on CC who may be able to help with
+debugging this further if needed while I'm out-of-office.
+
+Johan
 
 
-Pozdravy
-Michal Rmoutil
+ drivers/net/wireless/ath/ath11k/ahb.c  | 1 +
+ drivers/net/wireless/ath/ath11k/pcic.c | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 139da578831a..1cebba7889d7 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -376,6 +376,7 @@ static void ath11k_ahb_ext_irq_enable(struct ath11k_base *ab)
+ 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 
+ 		if (!irq_grp->napi_enabled) {
++			dev_set_threaded(&irq_grp->napi_ndev, true);
+ 			napi_enable(&irq_grp->napi);
+ 			irq_grp->napi_enabled = true;
+ 		}
+diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
+index c63083633b37..c899616fbee4 100644
+--- a/drivers/net/wireless/ath/ath11k/pcic.c
++++ b/drivers/net/wireless/ath/ath11k/pcic.c
+@@ -466,6 +466,7 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
+ 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 
+ 		if (!irq_grp->napi_enabled) {
++			dev_set_threaded(&irq_grp->napi_ndev, true);
+ 			napi_enable(&irq_grp->napi);
+ 			irq_grp->napi_enabled = true;
+ 		}
+-- 
+2.41.0
+
