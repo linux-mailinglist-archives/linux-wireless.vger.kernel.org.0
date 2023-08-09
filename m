@@ -2,157 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 702597756C7
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 12:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15D2A775AE5
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 13:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbjHIKBs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Aug 2023 06:01:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40092 "EHLO
+        id S233309AbjHILMc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Aug 2023 07:12:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229830AbjHIKBr (ORCPT
+        with ESMTP id S233312AbjHILMa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Aug 2023 06:01:47 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE7701BFA
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Aug 2023 03:01:45 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37990WSO019997;
-        Wed, 9 Aug 2023 10:01:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=vI1aY3JzQww22/wS+uU5xHrAvFK1ei7tQ9BLwzT2GZg=;
- b=nH6kp7HUL/GwQnTz6j0i5V3iWTX+qXhGy356T8qS+MRzzqLb0BbmcTalzB7GVbYq7q5R
- xd/msWdgswk6kjrnmWeV8cKjm+lb9V2qTQBOOfUY9vX6ZeUrApHJUB/UbevwpxLkSBBh
- GBlIwXQ0ybE4wQffrm86edSRaI4YltgYxIpBsR8Z5XfP2KS+QZifXwxR4S7bPPYORpad
- DstXms1ZSptfPbpJsrMe9KobyZtbDdbULE6ahHCYG5kwyU91IWX3QENvNAlojVfR67YU
- 4W6w4FgSmVUnc5ND/CkOhTahoBVDhYLGjMfEfGoMYF9F1BOiuMOao2oapsCPI9aL9Suy aA== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sbpqs27rv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 09 Aug 2023 10:01:39 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 379A1c4u029319
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 9 Aug 2023 10:01:38 GMT
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 9 Aug 2023 03:01:37 -0700
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH] wifi: ath12k: enable 320 MHz bandwidth for 6 GHz band in EHT PHY capbility for WCN7850
-Date:   Wed, 9 Aug 2023 06:01:24 -0400
-Message-ID: <20230809100124.14732-1-quic_wgong@quicinc.com>
-X-Mailer: git-send-email 2.40.1
+        Wed, 9 Aug 2023 07:12:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7708ED;
+        Wed,  9 Aug 2023 04:12:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8536E63154;
+        Wed,  9 Aug 2023 11:12:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3D1C433CA;
+        Wed,  9 Aug 2023 11:12:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691579549;
+        bh=yNkkAd/TOLhU/L4JhK0RzFlNx/oiY0ALWPBkXaq1tWQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=NT9EGW6YsFRhe/GSMAnorHibIXn7vT28h2e3uI8mzkuToo7sqTQ0C3II8my3i+K7o
+         FkPf9Gau2viFev/kAh3DchLvpo0arXuo28CRM/6HAWh2DTx6ziBHVrXJfMC5IzKnEg
+         pv9zF6iZTpZv7i/2lNWTSOP1wpZYPWf6+kdyStPE=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Fox Chen <mhchen@golf.ccl.itri.org.tw>,
+        de Melo <acme@conectiva.com.br>,
+        Gustavo Niemeyer <niemeyer@conectiva.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Lee Jones <lee.jones@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 030/323] wl3501_cs: Fix a bunch of formatting issues related to function docs
+Date:   Wed,  9 Aug 2023 12:37:48 +0200
+Message-ID: <20230809103659.504968914@linuxfoundation.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 1prMQt1mh-ejlcCsvoXczmPBm6LMUkP8
-X-Proofpoint-ORIG-GUID: 1prMQt1mh-ejlcCsvoXczmPBm6LMUkP8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-09_09,2023-08-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 mlxscore=0 bulkscore=0 mlxlogscore=932 malwarescore=0
- clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308090088
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-320 MHz bandwidth is reported only for single PHY mode for WCN7850, get it
-from WMI_HOST_HW_MODE_SINGLE ath12k_wmi_caps_ext_params and report it for
-6 GHz band.
+From: Lee Jones <lee.jones@linaro.org>
 
-After this patch, "iw list" show 320MHz support for WCN7850:
-EHT Iftypes: managed
-        EHT PHY Capabilities: (0xe26f090010768800):
-                320MHz in 6GHz Supported
-        EHT bw=320 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
-        EHT bw=320 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
-        EHT bw=320 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
+[ Upstream commit 2307d0bc9d8b60299f255d1771ce0d997162a957 ]
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+Fixes the following W=1 kernel build warning(s):
 
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+ In file included from drivers/net/wireless/wl3501_cs.c:57:
+ drivers/net/wireless/wl3501_cs.c:143: warning: Function parameter or member 'reg_domain' not described in 'iw_valid_channel'
+ drivers/net/wireless/wl3501_cs.c:143: warning: Function parameter or member 'channel' not described in 'iw_valid_channel'
+ drivers/net/wireless/wl3501_cs.c:162: warning: Function parameter or member 'reg_domain' not described in 'iw_default_channel'
+ drivers/net/wireless/wl3501_cs.c:248: warning: Function parameter or member 'this' not described in 'wl3501_set_to_wla'
+ drivers/net/wireless/wl3501_cs.c:270: warning: Function parameter or member 'this' not described in 'wl3501_get_from_wla'
+ drivers/net/wireless/wl3501_cs.c:467: warning: Function parameter or member 'this' not described in 'wl3501_send_pkt'
+ drivers/net/wireless/wl3501_cs.c:467: warning: Function parameter or member 'data' not described in 'wl3501_send_pkt'
+ drivers/net/wireless/wl3501_cs.c:467: warning: Function parameter or member 'len' not described in 'wl3501_send_pkt'
+ drivers/net/wireless/wl3501_cs.c:729: warning: Function parameter or member 'this' not described in 'wl3501_block_interrupt'
+ drivers/net/wireless/wl3501_cs.c:746: warning: Function parameter or member 'this' not described in 'wl3501_unblock_interrupt'
+ drivers/net/wireless/wl3501_cs.c:1124: warning: Function parameter or member 'irq' not described in 'wl3501_interrupt'
+ drivers/net/wireless/wl3501_cs.c:1124: warning: Function parameter or member 'dev_id' not described in 'wl3501_interrupt'
+ drivers/net/wireless/wl3501_cs.c:1257: warning: Function parameter or member 'dev' not described in 'wl3501_reset'
+ drivers/net/wireless/wl3501_cs.c:1420: warning: Function parameter or member 'link' not described in 'wl3501_detach'
+
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Fox Chen <mhchen@golf.ccl.itri.org.tw>
+Cc: de Melo <acme@conectiva.com.br>
+Cc: Gustavo Niemeyer <niemeyer@conectiva.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20200826093401.1458456-21-lee.jones@linaro.org
+Stable-dep-of: 391af06a02e7 ("wifi: wl3501_cs: Fix an error handling path in wl3501_probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/net/wireless/wl3501_cs.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 9ed33e2d6da0..8b6f11fce884 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -4148,7 +4148,11 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
- 				       __le32 cap_info_internal)
- {
- 	struct ath12k_band_cap *cap_band = &pdev->cap.band[band];
--	u8 i;
-+	u8 i, support_320mhz;
-+
-+	if (band == NL80211_BAND_6GHZ)
-+		support_320mhz = cap_band->eht_cap_phy_info[0] &
-+					IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
+diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
+index cfde9b94b4b60..78c89e6421f97 100644
+--- a/drivers/net/wireless/wl3501_cs.c
++++ b/drivers/net/wireless/wl3501_cs.c
+@@ -133,8 +133,8 @@ static const struct {
  
- 	for (i = 0; i < WMI_MAX_EHTCAP_MAC_SIZE; i++)
- 		cap_band->eht_cap_mac_info[i] = le32_to_cpu(cap_mac_info[i]);
-@@ -4156,6 +4160,9 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
- 	for (i = 0; i < WMI_MAX_EHTCAP_PHY_SIZE; i++)
- 		cap_band->eht_cap_phy_info[i] = le32_to_cpu(cap_phy_info[i]);
+ /**
+  * iw_valid_channel - validate channel in regulatory domain
+- * @reg_comain - regulatory domain
+- * @channel - channel to validate
++ * @reg_comain: regulatory domain
++ * @channel: channel to validate
+  *
+  * Returns 0 if invalid in the specified regulatory domain, non-zero if valid.
+  */
+@@ -153,7 +153,7 @@ static int iw_valid_channel(int reg_domain, int channel)
  
-+	if (band == NL80211_BAND_6GHZ)
-+		cap_band->eht_cap_phy_info[0] |= support_320mhz;
-+
- 	cap_band->eht_mcs_20_only = le32_to_cpu(supp_mcs[0]);
- 	cap_band->eht_mcs_80 = le32_to_cpu(supp_mcs[1]);
- 	if (band != NL80211_BAND_2GHZ) {
-@@ -4177,10 +4184,20 @@ ath12k_wmi_tlv_mac_phy_caps_ext_parse(struct ath12k_base *ab,
- 				      const struct ath12k_wmi_caps_ext_params *caps,
- 				      struct ath12k_pdev *pdev)
- {
-+	struct ath12k_band_cap *cap_band;
- 	u32 bands;
- 	int i;
-+	u8 support_320mhz;
+ /**
+  * iw_default_channel - get default channel for a regulatory domain
+- * @reg_comain - regulatory domain
++ * @reg_domain: regulatory domain
+  *
+  * Returns the default channel for a regulatory domain
+  */
+@@ -236,6 +236,7 @@ static int wl3501_get_flash_mac_addr(struct wl3501_card *this)
  
- 	if (ab->hw_params->single_pdev_only) {
-+		if (caps->hw_mode_id == WMI_HOST_HW_MODE_SINGLE) {
-+			support_320mhz = caps->eht_cap_phy_info_5G[0] &
-+				IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
-+			cap_band = &pdev->cap.band[NL80211_BAND_6GHZ];
-+			cap_band->eht_cap_phy_info[0] |= support_320mhz;
-+			return 0;
-+		}
-+
- 		for (i = 0; i < ab->fw_pdev_count; i++) {
- 			struct ath12k_fw_pdev *fw_pdev = &ab->fw_pdev[i];
+ /**
+  * wl3501_set_to_wla - Move 'size' bytes from PC to card
++ * @this: Card
+  * @dest: Card addressing space
+  * @src: PC addressing space
+  * @size: Bytes to move
+@@ -258,6 +259,7 @@ static void wl3501_set_to_wla(struct wl3501_card *this, u16 dest, void *src,
  
-@@ -4236,7 +4253,8 @@ static int ath12k_wmi_tlv_mac_phy_caps_ext(struct ath12k_base *ab, u16 tag,
- 		return -EPROTO;
+ /**
+  * wl3501_get_from_wla - Move 'size' bytes from card to PC
++ * @this: Card
+  * @src: Card addressing space
+  * @dest: PC addressing space
+  * @size: Bytes to move
+@@ -454,7 +456,7 @@ static int wl3501_pwr_mgmt(struct wl3501_card *this, int suspend)
  
- 	if (ab->hw_params->single_pdev_only) {
--		if (ab->wmi_ab.preferred_hw_mode != le32_to_cpu(caps->hw_mode_id))
-+		if (ab->wmi_ab.preferred_hw_mode != le32_to_cpu(caps->hw_mode_id) &&
-+		    caps->hw_mode_id != WMI_HOST_HW_MODE_SINGLE)
- 			return 0;
- 	} else {
- 		for (i = 0; i < ab->num_radios; i++) {
-
-base-commit: 3f257461ab0ab19806bae2bfde4c3cd88dbf050e
+ /**
+  * wl3501_send_pkt - Send a packet.
+- * @this - card
++ * @this: Card
+  *
+  * Send a packet.
+  *
+@@ -722,7 +724,7 @@ static void wl3501_mgmt_scan_confirm(struct wl3501_card *this, u16 addr)
+ 
+ /**
+  * wl3501_block_interrupt - Mask interrupt from SUTRO
+- * @this - card
++ * @this: Card
+  *
+  * Mask interrupt from SUTRO. (i.e. SUTRO cannot interrupt the HOST)
+  * Return: 1 if interrupt is originally enabled
+@@ -739,7 +741,7 @@ static int wl3501_block_interrupt(struct wl3501_card *this)
+ 
+ /**
+  * wl3501_unblock_interrupt - Enable interrupt from SUTRO
+- * @this - card
++ * @this: Card
+  *
+  * Enable interrupt from SUTRO. (i.e. SUTRO can interrupt the HOST)
+  * Return: 1 if interrupt is originally enabled
+@@ -1113,8 +1115,8 @@ static inline void wl3501_ack_interrupt(struct wl3501_card *this)
+ 
+ /**
+  * wl3501_interrupt - Hardware interrupt from card.
+- * @irq - Interrupt number
+- * @dev_id - net_device
++ * @irq: Interrupt number
++ * @dev_id: net_device
+  *
+  * We must acknowledge the interrupt as soon as possible, and block the
+  * interrupt from the same card immediately to prevent re-entry.
+@@ -1252,7 +1254,7 @@ static int wl3501_close(struct net_device *dev)
+ 
+ /**
+  * wl3501_reset - Reset the SUTRO.
+- * @dev - network device
++ * @dev: network device
+  *
+  * It is almost the same as wl3501_open(). In fact, we may just wl3501_close()
+  * and wl3501_open() again, but I wouldn't like to free_irq() when the driver
+@@ -1415,7 +1417,7 @@ static struct iw_statistics *wl3501_get_wireless_stats(struct net_device *dev)
+ 
+ /**
+  * wl3501_detach - deletes a driver "instance"
+- * @link - FILL_IN
++ * @link: FILL_IN
+  *
+  * This deletes a driver "instance". The device is de-registered with Card
+  * Services. If it has been released, all local data structures are freed.
 -- 
-2.40.1
+2.39.2
+
+
 
