@@ -2,53 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBF5D77516C
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 05:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD06C77516F
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 05:35:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229814AbjHIDcQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Aug 2023 23:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35788 "EHLO
+        id S229667AbjHIDfn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Aug 2023 23:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjHIDcP (ORCPT
+        with ESMTP id S229512AbjHIDfm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Aug 2023 23:32:15 -0400
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D3B86E0;
-        Tue,  8 Aug 2023 20:32:13 -0700 (PDT)
-Received: from localhost.localdomain (unknown [39.174.92.167])
-        by mail-app3 (Coremail) with SMTP id cC_KCgC3vRmvCNNkUbCEDA--.19833S4;
-        Wed, 09 Aug 2023 11:31:59 +0800 (CST)
-From:   Lin Ma <linma@zju.edu.cn>
-To:     johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        avraham.stern@intel.com, luciano.coelho@intel.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Lin Ma <linma@zju.edu.cn>
-Subject: [PATCH net v2] nl80211/cfg80211: add forgetten nla_policy for BSS color attribute
-Date:   Wed,  9 Aug 2023 11:31:51 +0800
-Message-Id: <20230809033151.768910-1-linma@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: cC_KCgC3vRmvCNNkUbCEDA--.19833S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF1rZF47Jry7CFy8Ww4xXrb_yoW8Jw1kpr
-        W8CryUK3W3GrnrJrZ5Cw48ua47WanrG34rCa17ur13uan0q3WfJ34YgFy3tr4kZr48J393
-        ZFnYqr4ayF1Yq37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-        JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-        CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-        2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-        Y2ka0xkIwI1lc2xSY4AK67AK6r48MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-        1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-        b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-        vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-        cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-        nxnUUI43ZEXa7VUjCtC7UUUUU==
-X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        Tue, 8 Aug 2023 23:35:42 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13CF910CF
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Aug 2023 20:35:42 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3792qAPT028530;
+        Wed, 9 Aug 2023 03:35:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=MUrn6L2oeAg1kKZjfSAiMGnJSbsi3v8N7jpAl/UNG8o=;
+ b=CCV2VY3BnJT7m/pJpSUvbgVPnaTG24ltdg17USJJkcFg5tx56YSL/fNE9vhMdC/jXKU4
+ mStu/lgQNYVCpWeFp0KjzajoC6lUwj5FXHLFtnVB4YeyXbPlnVprbgPZyUpLtyG9/BhL
+ gCcElTcE+ZWYhYB4KeSx/mch1TI4ayLnGfjuhOAp9sF9SWq/pJKIyoyUKe565gpSuoJO
+ +kgz9hrF46a407dMyuci9s7PP9pUDqhefqpU0WTZDJiDxPqI3RATeNY/GN1Q0OwB8hB/
+ 5sq9rQlohBRdxzQuUVQbAk+jHLbANHteylJpznC0PAvNsKq3JBIrJZfpwjJuPPbQtlOf Vw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sbppchfy6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 09 Aug 2023 03:35:32 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3793ZVII027896
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 9 Aug 2023 03:35:32 GMT
+Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Tue, 8 Aug
+ 2023 20:35:30 -0700
+Message-ID: <4b53807c-cbe6-dbd6-0ff6-b0342abe7198@quicinc.com>
+Date:   Wed, 9 Aug 2023 11:35:28 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] wifi: ath12k: Fix buffer overflow when scanning with
+ extraie
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20230807030806.9345-1-quic_wgong@quicinc.com>
+ <6ccf4549011f0efa67523d1c171b23694122ec6c.camel@sipsolutions.net>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <6ccf4549011f0efa67523d1c171b23694122ec6c.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: klIfva6_s9-dMxyTC5KMZiE5Gb-V3ktg
+X-Proofpoint-GUID: klIfva6_s9-dMxyTC5KMZiE5Gb-V3ktg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-08_24,2023-08-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 mlxscore=0 spamscore=0 adultscore=0
+ malwarescore=0 phishscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ mlxlogscore=876 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308090031
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,36 +81,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The previous commit dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to
-NDP ranging parameters") adds a parameter for NDP ranging by introducing
-a new attribute type named NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR.
-
-However, the author forgot to also describe the nla_policy at
-nl80211_pmsr_ftm_req_attr_policy (net/wireless/nl80211.c). Just
-complement it to avoid malformed attribute that causes out-of-attribute
-access.
-
-Fixes: dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to NDP ranging parameters")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
----
-v1 -> v2: resent due to the last version failed to reach public mail
-          list.
-
- net/wireless/nl80211.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 0da2e6a2a7ea..f729dba1cb5b 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -323,6 +323,7 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK] = { .type = NLA_FLAG },
-+	[NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR] = { .type = NLA_U8 },
- };
- 
- static const struct nla_policy
--- 
-2.17.1
-
+On 8/8/2023 6:55 PM, Johannes Berg wrote:
+> Hi,
+>
+> Since I'm covering for Kalle right now ...
+>
+> On Sun, 2023-08-06 at 23:08 -0400, Wen Gong wrote:
+[...]
+> I feel these are two separate issues. Having a large enough TLV that the
+> firmware cannot parse it is highly unlikely to happen, and not really an
+> issue here.
+>
+> Please split this into two patches, and fix *just* the buffer overflow
+> in a patch titled "Fix buffer overflow". I believe simply changing the
+> variable type is sufficient for this, as the code is otherwise
+> equivalent. That's a patch I'd take to wireless at this stage (rc5), but
+> probably not the entire bigger change.
+>
+> johannes
+Yes, let me send the 2 patch separately .
