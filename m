@@ -2,123 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 518467754D6
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 10:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DECB3775533
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Aug 2023 10:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231815AbjHIINF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Aug 2023 04:13:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59902 "EHLO
+        id S231282AbjHII3M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Aug 2023 04:29:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231804AbjHIINE (ORCPT
+        with ESMTP id S230227AbjHII3J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Aug 2023 04:13:04 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9EF91986
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Aug 2023 01:13:00 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3794bQ0k023884;
-        Wed, 9 Aug 2023 08:12:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=gDSpu8sk6T6WZQ5BWUBLmk+h2mrrdSK5/drneC3ck0k=;
- b=heyLDr2IUrXHI1AHoGNIKsHa1ZcfuMue1mBotrEmh6PKj82MM7Htz6XjJsphzIv06OK/
- 6H+Pf5vzJQ8J1vhqXId98Cr8udGTiHsyoQ5jaAzctTTBO01mADm5x5PCKMrdHcZDEnm3
- r/ImPB6GhdraYu168XFGsCh5dtEP+dgYKVnuuZd/HqGRmBrEzx9hZ17LiIwyJ6gn91o7
- dvJoWXLm0EDb5e+axsty6UP8hSFGH1j8tSis6VIqU7xbAFPW4xRhXiRJyJDtTJ2SpWCV
- WJecALzZu289r+H6Q6hg5GVZbAxAoMmfj7uMUsmQ+zLUzK5pRx8KUEJMUpnA4l/JWzGl SQ== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sbcacu5w3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 09 Aug 2023 08:12:56 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3798Ctor021442
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 9 Aug 2023 08:12:55 GMT
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 9 Aug 2023 01:12:53 -0700
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH v2] wifi: ath12k: Fix buffer overflow when scanning with extraie
-Date:   Wed, 9 Aug 2023 04:12:41 -0400
-Message-ID: <20230809081241.32765-1-quic_wgong@quicinc.com>
-X-Mailer: git-send-email 2.40.1
+        Wed, 9 Aug 2023 04:29:09 -0400
+X-Greylist: delayed 580 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Aug 2023 01:29:09 PDT
+Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F35171E
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Aug 2023 01:29:08 -0700 (PDT)
+Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
+        id 6AF304D9AB; Wed,  9 Aug 2023 08:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
+        s=mail; t=1691569030;
+        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
+        h=Date:From:To:Subject:From;
+        b=R+AlNv0MQZGnAer/nwCCTW98M7eC25AeLz2BLFIvfE8Td+aB9JdOrZwe33KgWiZFZ
+         vK+lq84Oz29MpA+k72nnBqZEMyHfw+wmbQv5+0DGAx/nIHdw4PzfXqbF6gl79aOudD
+         mKvaWcsUXXuAEzWtd99jF5O4rv8ZCTHKocUJNQLDCNVGYRUNuhVFy03mizbwOwEuyt
+         bKTgSqVt/7jgJ7xrH/rGJ/nP1l11I3EzU6keFzTMSbYzunWsY5DY9xVPX6fGEmxHkV
+         tcUAAXrm3jZ0Y9LWqnTQ5fI9ux4O+ja139NRlB2VBHjt2Gu/F6PzyWOSfQ2DLJGD6v
+         +WPI9JGJ5kWAQ==
+Received: by mail.profitpathwaygo.com for <linux-wireless@vger.kernel.org>; Wed,  9 Aug 2023 08:16:11 GMT
+Message-ID: <20230809064500-0.1.10.4sgd.0.3due9ja5wm@profitpathwaygo.com>
+Date:   Wed,  9 Aug 2023 08:16:11 GMT
+From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
+X-Mailer: mail.profitpathwaygo.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 8-2i9UXMESzSziI8z18lwDnNuo2dbaOR
-X-Proofpoint-ORIG-GUID: 8-2i9UXMESzSziI8z18lwDnNuo2dbaOR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-09_06,2023-08-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 mlxscore=0 adultscore=0 malwarescore=0
- mlxlogscore=999 bulkscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2308090071
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If cfg80211 is providing extraie's for a scanning process then ath12k will
-copy that over to the firmware. The extraie.len is a 32 bit value in struct
-element_info and describes the amount of bytes for the vendor information
-elements.
+Dzie=C5=84 dobry,
 
-The problem is the allocation of the buffer. It has to align the TLV
-sections by 4 bytes. But the code was using an u8 to store the newly
-calculated length of this section (with alignment). And the new
-calculated length was then used to allocate the skbuff. But the actual
-code to copy in the data is using the extraie.len and not the calculated
-"aligned" length.
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-The length of extraie with IEEE80211_HW_SINGLE_SCAN_ON_ALL_BANDS enabled
-was 264 bytes during tests with a wifi card. But it only allocated 8
-bytes (264 bytes % 256) for it. As consequence, the code to memcpy the
-extraie into the skb was then just overwriting data after skb->end. Things
-like shinfo were therefore corrupted. This could usually be seen by a crash
-in skb_zcopy_clear which tried to call a ubuf_info callback (using a bogus
-address).
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
----
-v2: seperate to another patch per johannes.
 
- drivers/net/wireless/ath/ath12k/wmi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 9ed33e2d6da0..cc9a377c06fd 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -2221,8 +2221,7 @@ int ath12k_wmi_send_scan_start_cmd(struct ath12k *ar,
- 	struct wmi_tlv *tlv;
- 	void *ptr;
- 	int i, ret, len;
--	u32 *tmp_ptr;
--	u8 extraie_len_with_pad = 0;
-+	u32 *tmp_ptr, extraie_len_with_pad = 0;
- 	struct ath12k_wmi_hint_short_ssid_arg *s_ssid = NULL;
- 	struct ath12k_wmi_hint_bssid_arg *hint_bssid = NULL;
- 
-
-base-commit: 3f257461ab0ab19806bae2bfde4c3cd88dbf050e
--- 
-2.40.1
-
+Pozdrawiam serdecznie
+Adam Charachuta
