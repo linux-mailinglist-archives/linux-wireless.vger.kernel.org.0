@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A788C77725A
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 10:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F33F77725C
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 10:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232196AbjHJILo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Aug 2023 04:11:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38624 "EHLO
+        id S231994AbjHJILq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Aug 2023 04:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231994AbjHJILo (ORCPT
+        with ESMTP id S231809AbjHJILp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Aug 2023 04:11:44 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D82D72106;
-        Thu, 10 Aug 2023 01:11:42 -0700 (PDT)
-Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RM00p1pRhztSDr;
-        Thu, 10 Aug 2023 16:08:10 +0800 (CST)
+        Thu, 10 Aug 2023 04:11:45 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE9FD1BCF;
+        Thu, 10 Aug 2023 01:11:44 -0700 (PDT)
+Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RM00s13t9zJsbJ;
+        Thu, 10 Aug 2023 16:08:13 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 10 Aug
- 2023 16:11:39 +0800
+ 2023 16:11:41 +0800
 From:   Ruan Jinjie <ruanjinjie@huawei.com>
 To:     <linus.walleij@linaro.org>, <alsi@bang-olufsen.dk>,
         <andrew@lunn.ch>, <f.fainelli@gmail.com>, <olteanv@gmail.com>,
@@ -36,9 +36,9 @@ To:     <linus.walleij@linaro.org>, <alsi@bang-olufsen.dk>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-wireless@vger.kernel.org>
 CC:     <ruanjinjie@huawei.com>
-Subject: [patch net-next 1/5] net: dsa: realtek: Remove redundant of_match_ptr()
-Date:   Thu, 10 Aug 2023 16:10:58 +0800
-Message-ID: <20230810081102.2981505-2-ruanjinjie@huawei.com>
+Subject: [patch net-next 2/5] net: dsa: rzn1-a5psw: Remove redundant of_match_ptr()
+Date:   Thu, 10 Aug 2023 16:10:59 +0800
+Message-ID: <20230810081102.2981505-3-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230810081102.2981505-1-ruanjinjie@huawei.com>
 References: <20230810081102.2981505-1-ruanjinjie@huawei.com>
@@ -63,36 +63,22 @@ of_match_ptr() here.
 
 Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
 ---
- drivers/net/dsa/realtek/realtek-mdio.c | 2 +-
- drivers/net/dsa/realtek/realtek-smi.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/rzn1_a5psw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/realtek/realtek-mdio.c b/drivers/net/dsa/realtek/realtek-mdio.c
-index 4310e7793e58..292e6d087e8b 100644
---- a/drivers/net/dsa/realtek/realtek-mdio.c
-+++ b/drivers/net/dsa/realtek/realtek-mdio.c
-@@ -276,7 +276,7 @@ MODULE_DEVICE_TABLE(of, realtek_mdio_of_match);
- static struct mdio_driver realtek_mdio_driver = {
- 	.mdiodrv.driver = {
- 		.name = "realtek-mdio",
--		.of_match_table = of_match_ptr(realtek_mdio_of_match),
-+		.of_match_table = realtek_mdio_of_match,
- 	},
- 	.probe  = realtek_mdio_probe,
- 	.remove = realtek_mdio_remove,
-diff --git a/drivers/net/dsa/realtek/realtek-smi.c b/drivers/net/dsa/realtek/realtek-smi.c
-index c2bd8bb6c9c2..ff13563059c5 100644
---- a/drivers/net/dsa/realtek/realtek-smi.c
-+++ b/drivers/net/dsa/realtek/realtek-smi.c
-@@ -556,7 +556,7 @@ MODULE_DEVICE_TABLE(of, realtek_smi_of_match);
- static struct platform_driver realtek_smi_driver = {
+diff --git a/drivers/net/dsa/rzn1_a5psw.c b/drivers/net/dsa/rzn1_a5psw.c
+index c37d2e537230..b31ae8845b58 100644
+--- a/drivers/net/dsa/rzn1_a5psw.c
++++ b/drivers/net/dsa/rzn1_a5psw.c
+@@ -1090,7 +1090,7 @@ MODULE_DEVICE_TABLE(of, a5psw_of_mtable);
+ static struct platform_driver a5psw_driver = {
  	.driver = {
- 		.name = "realtek-smi",
--		.of_match_table = of_match_ptr(realtek_smi_of_match),
-+		.of_match_table = realtek_smi_of_match,
+ 		.name	 = "rzn1_a5psw",
+-		.of_match_table = of_match_ptr(a5psw_of_mtable),
++		.of_match_table = a5psw_of_mtable,
  	},
- 	.probe  = realtek_smi_probe,
- 	.remove = realtek_smi_remove,
+ 	.probe = a5psw_probe,
+ 	.remove = a5psw_remove,
 -- 
 2.34.1
 
