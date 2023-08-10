@@ -2,78 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9853D777A4E
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 16:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 645AF777AAB
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 16:25:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235025AbjHJOSf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Aug 2023 10:18:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52524 "EHLO
+        id S235738AbjHJOZe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Aug 2023 10:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233590AbjHJOSe (ORCPT
+        with ESMTP id S235745AbjHJOZW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Aug 2023 10:18:34 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CBC125;
-        Thu, 10 Aug 2023 07:18:34 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-26814e27a9eso565752a91.0;
-        Thu, 10 Aug 2023 07:18:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691677113; x=1692281913;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/Ton7upj4EzEtC/CGoqmP056/FRqWJ9mTnKI+9e40N0=;
-        b=GIWQhvnGaYPZU+xnO6aSJfNOCRLLSq5PfjzuP9TILvtPpIzXRYXFwG8NiX/2OkXNKH
-         zJsit8J2dTgTI6MWKSiJJx5MaxKqo0mw+fPfkiAbDmz/sOKSICZmEmYjCyA6992qz/oP
-         8J3AFz+q7IBSn2FXzmFK/1te+gufNAX4aGsnya/DFsml6paMUNpwt6XkECEfzaM4yh5A
-         lu26j+JtAmWMLOOd/gFrR/7cd7PEGzgpIMZ51ZcZBafkB/2tz1gn6xohBkLfQ9vzUN2C
-         kFCodbC/qxSJTKWTrg3Pr8HHKRB5yUJR1G04Psfrd55/A+62bpDlFxBXsCNVWMcV+ahM
-         TOeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691677113; x=1692281913;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Ton7upj4EzEtC/CGoqmP056/FRqWJ9mTnKI+9e40N0=;
-        b=JTdPNIimeZHUWHG4GcWSW9m+ymQ74xWJ7q2C5hqr0vhRrEFQtasgERL2e6MrLcEfEq
-         UzcGfL0A+an43lmfsLHlhl+7S0MeFtc7XP9mhg++lNN3CEPuU+jQ2+FYtkazuiL3ML6v
-         02uBExUGqO/Jkf5g1AC0ZPOZG1Q27Yg+ERjkXa/FCDkQbFYAavAHdqwqkdKdBE7BL6Tz
-         WjZNwobDuMsPsAj9VB8nKIf+Xpn5HEMBn4/tJjm3nhTrkMHUym0t4ODrSmMNRWK0LAum
-         1cVVf9AvBe2Zaygk1U+Mjx7fbnkR/nsl2dOAKmrhmobRgfAF7ICKAUGKIUFvDnwQNn5q
-         No/g==
-X-Gm-Message-State: AOJu0YxUEefaVhp0wjXk+MpXFneUONOTfj9qn47+7PBaqWJcyv5NRgEh
-        pE/o9Dq0jWnkZLJ6yQH+dR4=
-X-Google-Smtp-Source: AGHT+IGSFVwzenWIyUpQ6JUC6obtbwujmz8qQ8dA/9VsWzrZJBbF+I3FTqNyNZiaDRB2r2hHbw5DPQ==
-X-Received: by 2002:a17:90a:7609:b0:268:c569:f2af with SMTP id s9-20020a17090a760900b00268c569f2afmr1916988pjk.7.1691677113287;
-        Thu, 10 Aug 2023 07:18:33 -0700 (PDT)
-Received: from [192.168.0.105] ([103.124.138.83])
-        by smtp.gmail.com with ESMTPSA id ji22-20020a170903325600b001b830d8bc40sm1822713plb.74.2023.08.10.07.18.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Aug 2023 07:18:32 -0700 (PDT)
-Message-ID: <6bff248f-64ae-2512-ccbd-661ccdfe6542@gmail.com>
-Date:   Thu, 10 Aug 2023 21:18:28 +0700
+        Thu, 10 Aug 2023 10:25:22 -0400
+Received: from mail11.truemail.it (mail11.truemail.it [IPv6:2001:4b7e:0:8::81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C4192D72
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Aug 2023 07:24:57 -0700 (PDT)
+Received: from francesco-nb.int.toradex.com (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+        by mail11.truemail.it (Postfix) with ESMTPA id 27255207DB;
+        Thu, 10 Aug 2023 16:24:55 +0200 (CEST)
+Date:   Thu, 10 Aug 2023 16:24:50 +0200
+From:   Francesco Dolcini <francesco@dolcini.it>
+To:     David Lin <yu-hao.lin@nxp.com>
+Cc:     Francesco Dolcini <francesco@dolcini.it>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v3] wifi: mwifiex: added code to support host
+ mlme.
+Message-ID: <ZNTzMrjfauSJN1ym@francesco-nb.int.toradex.com>
+References: <DU0PR04MB963607ADBFC49C7AB713092DD113A@DU0PR04MB9636.eurprd04.prod.outlook.com>
+ <ZNSrYEJ9m0jO/WU9@francesco-nb.int.toradex.com>
+ <PA4PR04MB9638C1DB606524BD57AB59CED113A@PA4PR04MB9638.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] net: wireless: ralink: rt2x00: "foo* bar" should be "foo
- *bar"
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>, stf_xl@wp.pl,
-        helmut.schaa@googlemail.com, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <tencent_316424AFC531C5F050C0203FDBA08E84F907@qq.com>
- <18520fa625b8a901314c65bb8e557091@208suo.com>
- <36e36d94e81da4342283aac471fb5a7bd3eb9f65.camel@sipsolutions.net>
- <bed853f70773496902b5676e568922edbf487dfb.camel@sipsolutions.net>
- <ZNRHCBbvEPtq-cE7@debian.me>
- <5fcffcebca2ef9b8c276e5f4b4464d888649a70b.camel@sipsolutions.net>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <5fcffcebca2ef9b8c276e5f4b4464d888649a70b.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PA4PR04MB9638C1DB606524BD57AB59CED113A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,41 +44,16 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/08/2023 13:53, Johannes Berg wrote:
-> On Thu, 2023-08-10 at 09:10 +0700, Bagas Sanjaya wrote:
->>> And the email address doesn't even work, only about two weeks after you
->>> sent this patch?
->>>
->>>   hanyu001@208suo.com
->>>     host mx1.qiye.aliyun.com [47.246.146.58]
->>>     SMTP error from remote mail server after RCPT TO:<hanyu001@208suo.com>:
->>>     554 RCPT (hanyu001@208suo.com) dosn't exist
->>>
->>
->> No wonder why @208suo.com people ignore reviews from mailing list - their
->> addresses are send-only without real mailboxes...
->>
->> BTW, how can you get above error message? I'm curious.
-> 
-> That was just the error message I got back from my mail server,
-> presumably now that you actually tried emailing them, you also got one.
-> 
+On Thu, Aug 10, 2023 at 10:51:36AM +0000, David Lin wrote:
+> > From: Francesco Dolcini <francesco@dolcini.it>
+> > On Thu, Aug 10, 2023 at 02:39:21AM +0000, David Lin wrote:
+> > > 3. Firmware version 2 is needed for this feature.
+> > That would mean that we could just enable it for other Wi-Fi chip variant that
+> > has firmware version 2, after testing it?
+> Yes. But I only tested with IW416.
 
-Ack, I also got above delivery failure notification, hence removing
-Yu Han from address list.
+Can/should we probe the firmware version at runtime, instead of hard-coding
+this?
 
-> I'm beginning to think we should just block that whole domain until
-> someone there is actually willing to _interact_, not just throw
-> (garbage!) patches over the fence.
-> 
-
-Ack too! I'm leaning towards blocking for sanity of myself and
-mailing lists. IMO, we should have done the same against @cdjrlc.com
-addresses when they sent spelling fixes that are 50-50 correct but
-they also ignored change-requested reviews.
-
-Thanks!
-
--- 
-An old man doll... just what I always wanted! - Clara
+Francesco
 
