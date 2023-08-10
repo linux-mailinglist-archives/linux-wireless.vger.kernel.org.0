@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9F63776F1C
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 06:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CCC7776F2C
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 06:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231384AbjHJEeN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Aug 2023 00:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
+        id S232062AbjHJErA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Aug 2023 00:47:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230007AbjHJEeM (ORCPT
+        with ESMTP id S229665AbjHJEq7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Aug 2023 00:34:12 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E11CD1BFB;
-        Wed,  9 Aug 2023 21:34:11 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37A40uxx003109;
-        Thu, 10 Aug 2023 04:34:03 GMT
+        Thu, 10 Aug 2023 00:46:59 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA101982;
+        Wed,  9 Aug 2023 21:46:58 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37A4ctEM024311;
+        Thu, 10 Aug 2023 04:46:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=S6kR75ySZnvGmsxssLy9ggxyIjSq4gTPXGHsEqsypTo=;
- b=SdGDsP5o2Kxip8zQe7WQB4ZQ8ADs7jLyzeSnrajFIZi1D0ky8UsUOLv1wZmy7RC7vmNY
- PBn0BOJuztbiI4udlNPnzP9CM3QXMPCAgE2rJ5hb4IYpmdFp6SUlKw27m98n/7+gC1eF
- Ykp6Yyoxo73WJMw6c/QhbT0Fn2VLLKwxjngQBhWSqAg8yaZ39mVfd0nzZl9q8p9wUvWL
- xGPEifx2zZ5izvB9gvcuPJx4Vh6x+qRarqlLrM364Xls4u0XmZtqV28IdogUSpujIUHC
- svla3pCyjT3psHBBSG9Yhn17Ugd+tlyJ0p5p1yc8Zv2yVVSoEJVLR9HlVFffguduRp73 bQ== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3scbcghhe8-1
+ bh=80TgkSOn3r8Pny1tEgsCx24DCuBgp5vRLONNgzfdUJE=;
+ b=dGUG1FK6QHlB1hVKPrL2nMv4sz7ugd8isqMYG4jGoLshN79e2gtM8k+z85pyTY9BhX7b
+ Qie1oFqb3CssrW0vZD6UJuYrLotTLAQ38wJkkVXATp56UsWTpsuZMMYtac90qyouxVWI
+ YS27ttZDBWIepDjqV+jVzzDVlXt4IfQQ3CYxS8WK4joKZ5tsWdU4J8Iui0B/bQxt7/Zk
+ x6TCRg3rF8Ao6s3n+nnC4i5cZmOL5di4xEE9OPVrXEFtijqhP5CfiDE1555J925cjuUi
+ M7e42CAPbBVTdo4O4y21Y74Z8vVyPmaDr8nKKCMC3tegkyEElOD435Tr3lNKKe0+N55r eQ== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sc1ny2upu-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 10 Aug 2023 04:34:02 +0000
+        Thu, 10 Aug 2023 04:46:28 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37A4Y1Vf003711
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37A4kSqf028319
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 10 Aug 2023 04:34:01 GMT
+        Thu, 10 Aug 2023 04:46:28 GMT
 Received: from [10.204.118.225] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 9 Aug
- 2023 21:33:58 -0700
-Message-ID: <85d7c7a3-7a11-bae0-6f37-5da9280792aa@quicinc.com>
-Date:   Thu, 10 Aug 2023 10:03:55 +0530
+ 2023 21:46:24 -0700
+Message-ID: <25b778d4-81dc-506b-47f1-e9f16d49682f@quicinc.com>
+Date:   Thu, 10 Aug 2023 10:16:21 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
@@ -63,20 +63,20 @@ In-Reply-To: <ZNNZVsFb3_Dt_NMb@hovoldconsulting.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 3OdR80ellf5Zx3VsXgJtm23VYCn5uN1W
-X-Proofpoint-ORIG-GUID: 3OdR80ellf5Zx3VsXgJtm23VYCn5uN1W
+X-Proofpoint-GUID: 6nDj2Hu3oNy2GWeh8iYUNTmCTdfnVwCk
+X-Proofpoint-ORIG-GUID: 6nDj2Hu3oNy2GWeh8iYUNTmCTdfnVwCk
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-10_02,2023-08-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- adultscore=0 phishscore=0 mlxlogscore=805 mlxscore=0 spamscore=0
- priorityscore=1501 suspectscore=0 impostorscore=0 clxscore=1011
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308100038
+ definitions=2023-08-10_03,2023-08-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ spamscore=0 bulkscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
+ impostorscore=0 malwarescore=0 mlxlogscore=470 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308100041
 X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -86,6 +86,8 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
+
+
 
 On 8/9/2023 2:46 PM, Johan Hovold wrote:
 > On Wed, Aug 09, 2023 at 02:32:37PM +0530, Manikanta Pubbisetty wrote:
@@ -131,13 +133,10 @@ On 8/9/2023 2:46 PM, Johan Hovold wrote:
 > It's a WCN6855 (QCNFA765).
 > 
 
-WCN6855 & QCN9074 share the same driver code base since both being PCIe 
-devices. One working and another not working seems to be surprising. Do 
-you have a dmesg log when this problem occurred?
-
-We are working on to root cause the original problem. The hindrance as 
-of today is that we are not able to repro this so far in Qualcomm. We 
-are planning to work with the reporter to get more logs.
+Also it is worth to give a try with this patch here 
+https://patchwork.kernel.org/project/linux-wireless/patch/20230601033840.2997-1-quic_bqiang@quicinc.com/ 
+. This seems to be fixing some known interrupt issue on WCN6855. Could 
+you pls give a try?
 
 Thanks,
 Manikanta
