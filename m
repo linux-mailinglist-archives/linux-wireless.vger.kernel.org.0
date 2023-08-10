@@ -2,75 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8679B776DE7
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 04:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C681776DFA
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 04:23:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230162AbjHJCKZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Aug 2023 22:10:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44992 "EHLO
+        id S230304AbjHJCXm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Aug 2023 22:23:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229543AbjHJCKY (ORCPT
+        with ESMTP id S229501AbjHJCXl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Aug 2023 22:10:24 -0400
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D732E1994;
-        Wed,  9 Aug 2023 19:10:19 -0700 (PDT)
-Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-565439b6b3fso334357a12.2;
-        Wed, 09 Aug 2023 19:10:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691633419; x=1692238219;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X4+peB+2E26RUHjOzSdDJ9QSAl1pkJkFX0L3VTxCIpI=;
-        b=IPfwYKYO1K83Clbsut5Pz/7TTqiDddJ9B6rG+eNqcd17Wdj6UiviOnWouFSBdLPIps
-         i9Jz8FJcvlL0EZ1jL5WisfdfDZIWHhwhhyqk2vjfVBw1kNzJg5XiAZQDlbA0UlLfNXJA
-         uxFu3QBnvQ5ZnSNvZ6KjFib8oNTwZCaEpOfrVMOy3MA1hmRpuWK/Vn8fRwfVLW7LqYrt
-         jxfK7mWM+6C9nLcYrmseFYnVFs01MF1QANvgb+UBdESORk3nsLzIk3fGHs3LuYWG3ATA
-         eDrso9z5x6ityh9mlfvmQwb2keGxIvh9iaAgmUsi8xy+FADmFoB52JArGJZl4F3tvJCN
-         VS3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691633419; x=1692238219;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X4+peB+2E26RUHjOzSdDJ9QSAl1pkJkFX0L3VTxCIpI=;
-        b=IveBvDNODYi1VaTIXHt4+EYnVtakmLKgnvjXhOb4YeCxaHi3a0DB7OsbAnFXbwlKuo
-         Qu34eplNB/EcN9R2l8hajh1oINKs3PZzYjjynOs/AHh4XPdS7KRayXVYGuiWsSaIrRIy
-         IlLjIXclPhnRiv6lg8IujZ7SQwl5rdV/aE9rQ+SUIKcNYSuH1syAiPnqWc/NmaTd/US+
-         77Zps9/3+k6qBe+T8vhWo6gSRVXmzEGKfL3vItClnaGb9SIve7vbppdYpGYw2Fm2c+W7
-         jLh3If44jbwAWs3ZBQTK/+FqgKQRfAhJN4SkusyYf3A4DtE+yx+aMIGN4DGFDhao41QX
-         AAaQ==
-X-Gm-Message-State: AOJu0YwAybJOFhchskoXHFQuY1r/IQUJC/i9ZlLsJ49iy/iSUhKWZZnl
-        bSG2e/KKYydioq3pqjLJ7aI=
-X-Google-Smtp-Source: AGHT+IF40gJgHXn/kRlHmgnx8Ed0rlDr5VjB2KHJbqHBVoKDDeiqcETBRtfOOny/DfuIGlXUOFoxVw==
-X-Received: by 2002:a05:6a21:2799:b0:13b:79db:e222 with SMTP id rn25-20020a056a21279900b0013b79dbe222mr985681pzb.53.1691633419286;
-        Wed, 09 Aug 2023 19:10:19 -0700 (PDT)
-Received: from debian.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id w20-20020a1709029a9400b001b7ffca7dbcsm243691plp.148.2023.08.09.19.10.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 19:10:18 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 42BDCA66B350; Thu, 10 Aug 2023 09:10:16 +0700 (WIB)
-Date:   Thu, 10 Aug 2023 09:10:16 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>, hanyu001@208suo.com,
-        stf_xl@wp.pl, helmut.schaa@googlemail.com, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: wireless: ralink: rt2x00: "foo* bar" should be "foo
- *bar"
-Message-ID: <ZNRHCBbvEPtq-cE7@debian.me>
-References: <tencent_316424AFC531C5F050C0203FDBA08E84F907@qq.com>
- <18520fa625b8a901314c65bb8e557091@208suo.com>
- <36e36d94e81da4342283aac471fb5a7bd3eb9f65.camel@sipsolutions.net>
- <bed853f70773496902b5676e568922edbf487dfb.camel@sipsolutions.net>
+        Wed, 9 Aug 2023 22:23:41 -0400
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2047.outbound.protection.outlook.com [40.107.8.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F51619A1
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Aug 2023 19:23:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dZmQDJvFK/KAlUh6mpv0UEX1AvImHEfxJq9ikE6DJZQNgnvlIWXhP6ELZ17WQGqdPN5ALrEzxVWl9NZxaw1326K0ZEGN1LDSWSVi4iGJz+UbryP1ndwX7FFUKB+tczEaZLboldHeOlKPGTlCIg2+GxSr6iUlRIXaI93OiJ363EWB2AWaegxva43giSngmJNZOqFfmkgv6QuYYycCmPplBmLzuE5MzDxM9WMFXwlOxPRM2jmPX3TQIoY9uYNWfBZ1Q11iMJlX5pgxkg+TBbsCCYTxFabRZMPZU3gMZ32JgtK4+5j58Xn2efgg06OKVi4zdZCY0rVjozaOL54AtMFNwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zfi66QYsdtcjCJBqn/TIePFRaajUBqma++dwN2ah0Pw=;
+ b=jW8RTM2ZEAwyLHNXbm2eCgxS+0+Wu5OW9iADinF/MJVTgJVlOhsjuvuKxZBb+9WWuqrbswlCVkeaezSVkgSimcLitj9h8HwIpq1MM9hsirhLKOxkhWgZboHEJGtHdYcEq/jPG0k1STNK4GNY/qsUJE8ZzaQNGm9q42a9tHqVHmQN7bvX3keOCaltQWuRgm3KzLg1WbMB/TsmS8ziuQkHw6bX8tNvqkyjVForS4285TI/lol+QXCGyrGffAfLPanIV7CqO3CrdcSEfQeloU6buJRZe1/VXGjtFs2TQkkjVQ2rulC/KThm5TppAJweRcmvIwP8+M/DStzSylYHfewKFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zfi66QYsdtcjCJBqn/TIePFRaajUBqma++dwN2ah0Pw=;
+ b=OVRoxnqTDgfjpld3Uc+7c/oAYrDyc6HZTx86LFMDTvD553PDtruOTLI7t6fqROzuOdI5vYMCHelXTQIjog61AdsqnQ05e767FYmYqeceyaZKoEv5Dv5jjCQmIBnKTNuWAyg418dZ+QljRPwjWX7K7xi6QKMqs3zXZymUbmi608w=
+Received: from DU0PR04MB9636.eurprd04.prod.outlook.com (2603:10a6:10:320::21)
+ by PAXPR04MB8560.eurprd04.prod.outlook.com (2603:10a6:102:217::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Thu, 10 Aug
+ 2023 02:23:37 +0000
+Received: from DU0PR04MB9636.eurprd04.prod.outlook.com
+ ([fe80::5db6:ba53:768:f057]) by DU0PR04MB9636.eurprd04.prod.outlook.com
+ ([fe80::5db6:ba53:768:f057%5]) with mapi id 15.20.6652.029; Thu, 10 Aug 2023
+ 02:23:37 +0000
+From:   David Lin <yu-hao.lin@nxp.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: RE: [EXT] Re: [PATCH v2] wifi: mwifiex: added code to support host
+ mlme.
+Thread-Topic: [EXT] Re: [PATCH v2] wifi: mwifiex: added code to support host
+ mlme.
+Thread-Index: AdnKdwWMgAI8idR0S3aBP+we4161gwARUUkAAB0u9HA=
+Date:   Thu, 10 Aug 2023 02:23:37 +0000
+Message-ID: <DU0PR04MB963625D3534FFA6677CD9356D113A@DU0PR04MB9636.eurprd04.prod.outlook.com>
+References: <PA4PR04MB9638FE710460BC44BA290470D112A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <e78119dc1ae2e22ea84b6528492aeba1ab6bfcec.camel@sipsolutions.net>
+In-Reply-To: <e78119dc1ae2e22ea84b6528492aeba1ab6bfcec.camel@sipsolutions.net>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR04MB9636:EE_|PAXPR04MB8560:EE_
+x-ms-office365-filtering-correlation-id: a360ca06-7039-451a-c71d-08db9948cdc8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Dy5f09XwRjnzntvxQ9VNRlYanG50kYcCfXonng2SX3hDOuM3SGanfzw7kXtFL5f7JG3mhs/f8jUEWMQCNAZXA0KL6B/tRP5F/oMKPg876Xf5PNAEGQfz2qDkhhnxAiGJCD4hh+ywyvOwWg7ZMuiiZeuIm78ntVoNuzYDzZ8Lz9iDfh0w1lYZGHi4CxP+lYGvkF1ZO0gNV27NThxXpmSMCT+1y99RY9z/1JQw0M+Wva3iihbBhZ4z3CvUvMhUr5gVVetxEHTrzWM7rXNxgwY3vFlEmAK1MXPsML+WI40o/1OSrESOnYLGTzmPnCy9pEF0blORwVHnAvnkPN+DzFmEj69SzsvyRNwrkmQQ4eafW12lUBFRw67rge3cZOAHHLYLHU5R+c/23CIiVa05efkWAcjeaOt7zllnd7KfBgU8r+VfksfLV1w1qQbMwV7tatVCsIwa4Mno6npymGtmQMvDUgBD91R8GsKv4R3Sf23foRz3TfDdEWMJfw/ILFjU/TCFl7DDljKFUlRHdQ31UPR0kxh42DAzI3oDLD6BHvv+NRgxvtLGvLjRgl8XSakZAOgCXtEeOq38Ixlkt+gDmTFo3n6p1vfnUdW+89koWDoxFeExt+1hwnDxk5CfskYRppQV
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(39860400002)(376002)(366004)(396003)(346002)(1800799006)(186006)(451199021)(33656002)(71200400001)(478600001)(45080400002)(66446008)(76116006)(66946007)(66556008)(66476007)(64756008)(54906003)(6506007)(110136005)(53546011)(966005)(7696005)(9686003)(4326008)(2906002)(41300700001)(316002)(8676002)(5660300002)(122000001)(52536014)(8936002)(38100700002)(38070700005)(86362001)(83380400001)(55016003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?S7qafGeKJjoy4klpIKeG2rv0gp1+y0zyoue7iJWxycNOTt0GUbTjp/piRlz4?=
+ =?us-ascii?Q?cgVw9Rud3H56fGlxDU1M9d2sk6WRl4b6/Df7Eg58tR1Sums+RGCqJDDk5YAz?=
+ =?us-ascii?Q?bNyeaDLwrJP3WbFlhF4wtA19LmjrpRQlaLI1m7WdHcUf3RGrGxyG/5WDiEmm?=
+ =?us-ascii?Q?Roxe9TDMHtDYtQsMbsajR0ZAOFT2AvXzAySlK5C2gHyBhxLXdMiHFX9VV1Fj?=
+ =?us-ascii?Q?kDHrB6BskrQ7EsfWc1Eb7d6HlOf7QlY9Cnz8jdN2DnnX4Vf6HIboNteov+fU?=
+ =?us-ascii?Q?+RxkUgN1HP9Bn44Ps08mVgaOAByCoXiOK5JuqIOI4MlSH5rWdoLmIPmpB1e5?=
+ =?us-ascii?Q?x0+BfTVj5G+/lUYtx5XsMkH2+rhMpE/dDbV3ps8rtMi+TehqHPrIhCNQxpHG?=
+ =?us-ascii?Q?zs1m0oNT5Ebhzu80PmUq5Oa6Zs/hVYmAMwvJXxGiSDbSWAdTkLbmrWGhIAiF?=
+ =?us-ascii?Q?tZCvR1xYMlRpTA70iPuM+Ep5taz/99DdRX0xar1MNikoke1FND1FwEGsQ0Ms?=
+ =?us-ascii?Q?bazip913P6ZUFsAt0PWNw68jVGhG4DNLSvvUSkhE8WVxnvky113pAs5BX+r/?=
+ =?us-ascii?Q?CXOjujoD8C+0WW8yQc+pki5/khqOOeGgYN5dpeGKPvfDyaOUY5xLuB3BzRKZ?=
+ =?us-ascii?Q?vMQHUUJgsHa6lJbzYeAKnAqOdVRS4UuQRbQgPTm+QpUAGLj1lmmsNI2Xg9in?=
+ =?us-ascii?Q?XBE+ySWfabdD96KFeMvgyDR3DlbeCAWrJyiqEM5Q3aAK3lCC+fdCfiURLHYj?=
+ =?us-ascii?Q?nuUUv/0HFCbXkszD5NOprFirvK7zMcAWQ5aBs5tmqU/cKnc/AckUU2/O5d1q?=
+ =?us-ascii?Q?C173CR8R94QCACdTdbD6hPi7fpcPSjukNS2na9HTd6Bvi1uT8zAEQROUqyiS?=
+ =?us-ascii?Q?yu9epSs5mm9KpSCdXr3g6swtW7ABWsBf1rS3EUxYOuta75nPOjIMrF2zagpy?=
+ =?us-ascii?Q?DldzVMe8iEvwfjCVPwCIZgLYQCMQr914DLDtt3S2zTneppqmYPGLruMbEJd3?=
+ =?us-ascii?Q?jkjglSoQ4wqFk+MdNDbemrtJvO4CAbBIuuU9szhjPvFgac79WiqajcID6WCO?=
+ =?us-ascii?Q?PtSEYXlgkLC3Be37mE0vHpPR0d7VzV3E32dbIQrzTiEfaVGZk+iEtPlHd52U?=
+ =?us-ascii?Q?Zn4axS0vod+CmwHE1A0LlVWhDtftoKfTSO0Njn+Pigmf3IwtGLjMQ3EvfWM+?=
+ =?us-ascii?Q?WaIiyHAPfrQWb88T9PEZsNwgl4hUlIlg9zOsJxcMkJJXCsfBOXOKwvQaEZwV?=
+ =?us-ascii?Q?WFFKmA+Xy4RXIv90v1MN4hsWMAmMXuGgY0qqNxgcU6wgeOHmNWCd+G9JeCPF?=
+ =?us-ascii?Q?PpVLIQXHF25ZAye0DGJNYiM/X2w7sNXB8HXBKu2nwgGUc+PXD+H6rekRUA4e?=
+ =?us-ascii?Q?/RxOBtD9stt0nOgf/vagsl74THfaUCr2tMumad2lMme1bKM3jqZBZz8tEisj?=
+ =?us-ascii?Q?gcYuadK8HMzQ7hTKC5ET6hiOb7dUSIq+n8xTYMoMXqtDHqcn5HnxlIz6TSzy?=
+ =?us-ascii?Q?iF8qqKE5SbvrDEOucmEisG4kTViyicPE13kz44d8K5NIbK60K7Q0EC6qmQ?=
+ =?us-ascii?Q?=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="WpA8IGdgWEPzHWb0"
-Content-Disposition: inline
-In-Reply-To: <bed853f70773496902b5676e568922edbf487dfb.camel@sipsolutions.net>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9636.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a360ca06-7039-451a-c71d-08db9948cdc8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2023 02:23:37.2052
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ruQ3CMxTkJZ8IPbx6fU7JRMMZVsiDQUh3iwX5M/j9Wl/p2dXOvoOQK00Ey6iPm35vbEasF20Wmx0XYaCPlghqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8560
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,64 +119,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+> From: Johannes Berg <johannes@sipsolutions.net>
+> Sent: Wednesday, August 9, 2023 8:23 PM
+> To: David Lin <yu-hao.lin@nxp.com>; linux-wireless@vger.kernel.org
+> Cc: Sharvari Harisangam <sharvari.harisangam@nxp.com>; Pete Hsieh
+> <tsung-hsien.hsieh@nxp.com>
+> Subject: [EXT] Re: [PATCH v2] wifi: mwifiex: added code to support host m=
+lme.
+>=20
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report
+> this email' button
+>=20
+>=20
+> Please see
+>=20
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwirel=
+ess.
+> wiki.kernel.org%2Fen%2Fdevelopers%2Fdocumentation%2Fsubmittingpatches
+> %23commit_messages&data=3D05%7C01%7Cyu-hao.lin%40nxp.com%7C92701a7
+> 62acb49fb977608db98d36f73%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0
+> %7C0%7C638271806093535337%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4
+> wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C
+> %7C%7C&sdata=3D9eVhKVmr%2F6NAKODF7zYH5Dvm9bDvdrzJOcZ0FpmGVWI%3
+> D&reserved=3D0
+>=20
+> > 3. The code is enabled and tested with IW416.
+> >    There is no guarantee for other chips.
+>=20
+> That seems misleading - it's not even enabled for other chips, is it?
+>=20
+> Or are you saying that there are multiple variants of sd8979, and only on=
+e of
+> them is supported?! In that case you need to detect it.
+>=20
+> Also, it seems like you likely need to detect the firmware version that h=
+as the
+> support, not just the hardware?
+>
 
---WpA8IGdgWEPzHWb0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Aug 08, 2023 at 10:40:53AM +0200, Johannes Berg wrote:
-> On Tue, 2023-08-08 at 10:34 +0200, Johannes Berg wrote:
-> > On Fri, 2023-07-21 at 14:34 +0800, hanyu001@208suo.com wrote:
-> > > Fix checkpatch warnings:
-> > >=20
-> > > ./drivers/net/wireless/ralink/rt2x00/rt2x00.h:386: ERROR: "foo* bar"=
+Sorry. Only enable for IW416. Yes, it needs firmware version 2 to support t=
+his feature.
 =20
-> > > should be "foo *bar"
-> > > ./drivers/net/wireless/ralink/rt2x00/rt2x00.h:513: ERROR: "foo* bar"=
-=20
-> > > should be "foo *bar"
-> > >=20
-> > > Signed-off-by: Yu Han <hanyu001@208suo.com>
-> >=20
-> > This patch is broken. I'll just point you to what I wrote before:
-> >=20
-> > https://lore.kernel.org/all/058dd31ef48495f8641f5b66839aaea039af0f08.ca=
-mel@sipsolutions.net/
-> >=20
-> > What _are_ you trying to achieve?!
-> >=20
-> > Currently all you're achieving is annoying everyone with broken (and
-> > pointless submissions).
-> >=20
 >=20
-> And the email address doesn't even work, only about two weeks after you
-> sent this patch?
+> > +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+> > @@ -331,6 +331,7 @@ static const struct mwifiex_sdio_device
+> mwifiex_sdio_sd8786 =3D {
+> >       .can_dump_fw =3D false,
+> >       .can_auto_tdls =3D false,
+> >       .can_ext_scan =3D false,
+> > +     .host_mlme =3D false,
 >=20
->   hanyu001@208suo.com
->     host mx1.qiye.aliyun.com [47.246.146.58]
->     SMTP error from remote mail server after RCPT TO:<hanyu001@208suo.com=
->:
->     554 RCPT (hanyu001@208suo.com) dosn't exist
+> probably better to not have all the =3Dfalse lines that are default anywa=
+y?
 >=20
 
-No wonder why @208suo.com people ignore reviews from mailing list - their
-addresses are send-only without real mailboxes...
+I followed original code. I will keep this in mind when we create new cfg80=
+211 driver.
 
-BTW, how can you get above error message? I'm curious.
+> This is the only one enabling it afaict:
+>=20
+> >  static const struct mwifiex_sdio_device mwifiex_sdio_sd8978 =3D { @@
+> > -408,6 +413,7 @@ static const struct mwifiex_sdio_device
+> mwifiex_sdio_sd8978 =3D {
+> >       .fw_dump_enh =3D true,
+> >       .can_auto_tdls =3D false,
+> >       .can_ext_scan =3D true,
+> > +     .host_mlme =3D true,
+> >  };
+>=20
 
---=20
-An old man doll... just what I always wanted! - Clara
+Yes.
 
---WpA8IGdgWEPzHWb0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZNRHAwAKCRD2uYlJVVFO
-o6inAQC1qI8SMVRHoX5sycRsS65nRVKFoGnBhaL3dY9cEHLC+QEA6POgGHLgyDkM
-Jxidj+uFqYU/Kokh/jH4B3ZFYj52WwQ=
-=c3ZP
------END PGP SIGNATURE-----
-
---WpA8IGdgWEPzHWb0--
+> johannes
