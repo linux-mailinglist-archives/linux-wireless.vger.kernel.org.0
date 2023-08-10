@@ -2,74 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62027777A4D
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 16:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9853D777A4E
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 16:18:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231319AbjHJOSL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Aug 2023 10:18:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45964 "EHLO
+        id S235025AbjHJOSf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Aug 2023 10:18:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234901AbjHJOSI (ORCPT
+        with ESMTP id S233590AbjHJOSe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Aug 2023 10:18:08 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACFB42698
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Aug 2023 07:18:07 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99cdb0fd093so143821366b.1
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Aug 2023 07:18:07 -0700 (PDT)
+        Thu, 10 Aug 2023 10:18:34 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CBC125;
+        Thu, 10 Aug 2023 07:18:34 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-26814e27a9eso565752a91.0;
+        Thu, 10 Aug 2023 07:18:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691677086; x=1692281886;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z+xxpcQfMin3SNH/T3dTg0vW3LUNswBGoqGNUiUTGuI=;
-        b=oZexG6pnBxXl2+gZQbmdKMJ1KTxcgjUj/5luwNUR9WZwqofIWXE54gkZenNfEVGWmC
-         Q2wggulYKUyGKiHiiqXQqk2x0bYVf5FClR21B74nrpdxUqCJDgm7Bqdfdmplcod5zNBK
-         r6cvl/FpNmMVmS7GYFluxmNCt3pUgKtAMs86wqA3M1vbElU6tGXRt8IQtovL/fwT2DCt
-         eaW/y4/16Hmswx8SW2L3kjR9dxZSxyKGPGsKrLvi1Djax5N+zgrHMflvd7TfYn2RJnqB
-         NDRLfvHR+Df8H+b4TbUbna9Jv+o4u5jYczOKMg1kE6UkTJ5Ydcb3Gfr6ScbM65NmbqDg
-         Q2Lw==
+        d=gmail.com; s=20221208; t=1691677113; x=1692281913;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Ton7upj4EzEtC/CGoqmP056/FRqWJ9mTnKI+9e40N0=;
+        b=GIWQhvnGaYPZU+xnO6aSJfNOCRLLSq5PfjzuP9TILvtPpIzXRYXFwG8NiX/2OkXNKH
+         zJsit8J2dTgTI6MWKSiJJx5MaxKqo0mw+fPfkiAbDmz/sOKSICZmEmYjCyA6992qz/oP
+         8J3AFz+q7IBSn2FXzmFK/1te+gufNAX4aGsnya/DFsml6paMUNpwt6XkECEfzaM4yh5A
+         lu26j+JtAmWMLOOd/gFrR/7cd7PEGzgpIMZ51ZcZBafkB/2tz1gn6xohBkLfQ9vzUN2C
+         kFCodbC/qxSJTKWTrg3Pr8HHKRB5yUJR1G04Psfrd55/A+62bpDlFxBXsCNVWMcV+ahM
+         TOeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691677086; x=1692281886;
-        h=to:subject:message-id:date:from:reply-to:mime-version
+        d=1e100.net; s=20221208; t=1691677113; x=1692281913;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z+xxpcQfMin3SNH/T3dTg0vW3LUNswBGoqGNUiUTGuI=;
-        b=en8Y14XJunuAoYJs6Aay5BInPA4TgQGI6pIyUcyQK604hgfyCi9A34NjhAuJc7JFHC
-         bVcpqbg+QFw97TJvZFnGv8Kz6ja1BBaVsj12/RF9cJKvzanQN0fBaMnVX4xp+o7CsYRX
-         ym2i5lE8y58POsQ7dQZ98rjXdSn9qwtQsg3RMn8iIfn5HEtD1turQgngCqzqdBl6uwQi
-         5VwJ+oI8cdEFDrmRIvvge0IRISvrVJLXvqfo8YsjBGV5CN8E1/pv7c7n/+Qh8ZUVZ6zz
-         RFbaEebIWm5/QSNYEP50MTbYzYjdcbxBhOAIhSuM9IC+XRNGKS+TiZ8JCejuQWpVTZml
-         6Qvw==
-X-Gm-Message-State: AOJu0YxIggqFp1jCE/cTDckUBW6SSGYFTRXZku8ydd2dtvgDiZKvpcyC
-        vSRj0HOwhWcXSq00xSCYBJkgGndo+7Eff+lXrMU=
-X-Google-Smtp-Source: AGHT+IFdijumpMXUZonMxyOWJECBht9WwInlH7/H91H147oVxA370wYeKspOFMVlv2f4KSYo0CFB7X9RHBp4obk/A2Q=
-X-Received: by 2002:a17:907:78c6:b0:992:a9c3:244f with SMTP id
- kv6-20020a17090778c600b00992a9c3244fmr2177051ejc.4.1691677085830; Thu, 10 Aug
- 2023 07:18:05 -0700 (PDT)
+        bh=/Ton7upj4EzEtC/CGoqmP056/FRqWJ9mTnKI+9e40N0=;
+        b=JTdPNIimeZHUWHG4GcWSW9m+ymQ74xWJ7q2C5hqr0vhRrEFQtasgERL2e6MrLcEfEq
+         UzcGfL0A+an43lmfsLHlhl+7S0MeFtc7XP9mhg++lNN3CEPuU+jQ2+FYtkazuiL3ML6v
+         02uBExUGqO/Jkf5g1AC0ZPOZG1Q27Yg+ERjkXa/FCDkQbFYAavAHdqwqkdKdBE7BL6Tz
+         WjZNwobDuMsPsAj9VB8nKIf+Xpn5HEMBn4/tJjm3nhTrkMHUym0t4ODrSmMNRWK0LAum
+         1cVVf9AvBe2Zaygk1U+Mjx7fbnkR/nsl2dOAKmrhmobRgfAF7ICKAUGKIUFvDnwQNn5q
+         No/g==
+X-Gm-Message-State: AOJu0YxUEefaVhp0wjXk+MpXFneUONOTfj9qn47+7PBaqWJcyv5NRgEh
+        pE/o9Dq0jWnkZLJ6yQH+dR4=
+X-Google-Smtp-Source: AGHT+IGSFVwzenWIyUpQ6JUC6obtbwujmz8qQ8dA/9VsWzrZJBbF+I3FTqNyNZiaDRB2r2hHbw5DPQ==
+X-Received: by 2002:a17:90a:7609:b0:268:c569:f2af with SMTP id s9-20020a17090a760900b00268c569f2afmr1916988pjk.7.1691677113287;
+        Thu, 10 Aug 2023 07:18:33 -0700 (PDT)
+Received: from [192.168.0.105] ([103.124.138.83])
+        by smtp.gmail.com with ESMTPSA id ji22-20020a170903325600b001b830d8bc40sm1822713plb.74.2023.08.10.07.18.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Aug 2023 07:18:32 -0700 (PDT)
+Message-ID: <6bff248f-64ae-2512-ccbd-661ccdfe6542@gmail.com>
+Date:   Thu, 10 Aug 2023 21:18:28 +0700
 MIME-Version: 1.0
-Received: by 2002:a17:907:d1a:b0:997:eab4:9306 with HTTP; Thu, 10 Aug 2023
- 07:18:05 -0700 (PDT)
-Reply-To: illuminatiinitiationcenter56@gmail.com
-From:   Garry Lee <mutungiyosia@gmail.com>
-Date:   Thu, 10 Aug 2023 07:18:05 -0700
-Message-ID: <CAGtaE0DjML6QrdKwb8h9V1Um4O37z4Pyog_Aowj8mbRGWXf6aQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_FILL_THIS_FORM_SHORT,UNDISC_FREEM,UPPERCASE_50_75 autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] net: wireless: ralink: rt2x00: "foo* bar" should be "foo
+ *bar"
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>, stf_xl@wp.pl,
+        helmut.schaa@googlemail.com, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <tencent_316424AFC531C5F050C0203FDBA08E84F907@qq.com>
+ <18520fa625b8a901314c65bb8e557091@208suo.com>
+ <36e36d94e81da4342283aac471fb5a7bd3eb9f65.camel@sipsolutions.net>
+ <bed853f70773496902b5676e568922edbf487dfb.camel@sipsolutions.net>
+ <ZNRHCBbvEPtq-cE7@debian.me>
+ <5fcffcebca2ef9b8c276e5f4b4464d888649a70b.camel@sipsolutions.net>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <5fcffcebca2ef9b8c276e5f4b4464d888649a70b.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
+On 10/08/2023 13:53, Johannes Berg wrote:
+> On Thu, 2023-08-10 at 09:10 +0700, Bagas Sanjaya wrote:
+>>> And the email address doesn't even work, only about two weeks after you
+>>> sent this patch?
+>>>
+>>>   hanyu001@208suo.com
+>>>     host mx1.qiye.aliyun.com [47.246.146.58]
+>>>     SMTP error from remote mail server after RCPT TO:<hanyu001@208suo.com>:
+>>>     554 RCPT (hanyu001@208suo.com) dosn't exist
+>>>
+>>
+>> No wonder why @208suo.com people ignore reviews from mailing list - their
+>> addresses are send-only without real mailboxes...
+>>
+>> BTW, how can you get above error message? I'm curious.
+> 
+> That was just the error message I got back from my mail server,
+> presumably now that you actually tried emailing them, you also got one.
+> 
 
-DO YOU WANT TO BE RICH AND FAMOUS? JOIN THE GREAT ILLUMINATI ORDER OF
-RICHES, POWER/FAME NOW AND ACHIEVE ALL YOUR DREAMS? IF YES SEND DOWN
-YOUR FULL NAME: YOUR PHONE NUMBER: COUNTRY: All reply should be copied
-and sent to: illuminatiinitiationcenter56@gmail.com
+Ack, I also got above delivery failure notification, hence removing
+Yu Han from address list.
+
+> I'm beginning to think we should just block that whole domain until
+> someone there is actually willing to _interact_, not just throw
+> (garbage!) patches over the fence.
+> 
+
+Ack too! I'm leaning towards blocking for sanity of myself and
+mailing lists. IMO, we should have done the same against @cdjrlc.com
+addresses when they sent spelling fixes that are 50-50 correct but
+they also ignored change-requested reviews.
+
+Thanks!
+
+-- 
+An old man doll... just what I always wanted! - Clara
+
