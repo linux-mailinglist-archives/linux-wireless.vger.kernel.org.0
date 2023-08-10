@@ -2,96 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0553B777C76
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 17:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E3B777E2F
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Aug 2023 18:26:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236185AbjHJPlq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Aug 2023 11:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41852 "EHLO
+        id S235472AbjHJQ0d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Aug 2023 12:26:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233659AbjHJPlp (ORCPT
+        with ESMTP id S235446AbjHJQ0c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Aug 2023 11:41:45 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E862125;
-        Thu, 10 Aug 2023 08:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=LZZwhU2q9tKRTuT4LMGtkLl/YytlWdJV5ADQ7yyf884=; b=nzCVWxdZKZwPPVrpb79vDihKKN
-        YQMNeNih7Df6L+pZOvTjw50y9FCJs6aH8rL8h5X2REST5vdC3Wq9YdRoE5xnf6hw68vx0zt8985/4
-        +9cDPaBlKuKeAHsCvu3wOh/4f+NA8FgH2SNngUajJxMQhE16KsGIQEWgQG79GUlXunzjgzLhpAOr+
-        SYDCVy0iFP1vRNzRSbC+T0oIVVz6F2RvcjiMZYX3czR+nm5oLvCNzwtupO+DnMacrLMCIbCpZMS31
-        kUka0xfiEZR78ZR0A8ZecYiCVpTdwXhUWyz2kMWRbBUeMIq9zHuWNHz7b8W60+R7DbtqAwg0Ryp6u
-        XrPT05iA==;
-Received: from [2601:1c2:980:9ec0::2764]
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qU7mf-0084NA-10;
-        Thu, 10 Aug 2023 15:41:09 +0000
-Message-ID: <efb2d30c-3945-a63d-9a3f-7cf39124f76a@infradead.org>
-Date:   Thu, 10 Aug 2023 08:41:07 -0700
+        Thu, 10 Aug 2023 12:26:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B682103;
+        Thu, 10 Aug 2023 09:26:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 18FEA659FF;
+        Thu, 10 Aug 2023 16:26:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB52C433C7;
+        Thu, 10 Aug 2023 16:26:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691684791;
+        bh=PLPnIFk3ITvkeqRC6SfEJPLCPJ/y0ZeEHIWOWpjo5dk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=QemTnpP0JmToWpYcZxplHbiGYvfYs4gybItzpa4gzs3eNSO3s2gDEWx+arnKQPgz3
+         QJVZTTXuwONIoRucWygOE9x4wahbOuFqVX0mBjMb6D3rIzKqB6kg+dPL2EZH3PKRSG
+         B+pr00mqquRjUR+sHHlgS6ravXh9nfKr5lM/ZODwCqi8bnVuQCDJNz7wUm/em+DF6b
+         4a2ruuvveKre6aG8bZfAPol/F0LJUHiRDnyg9aaZN//b08Lb/wbp9wkUdx/pqNSqjT
+         Mjj+BsF5xwlS8a/+vwUGNxDweJmVN0F7AOl3lj/Me/qApLvSQSYQARM5iOyY+Gh/LN
+         5W+KwsBCntQCA==
+Date:   Thu, 10 Aug 2023 09:26:29 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Ruan Jinjie <ruanjinjie@huawei.com>
+Cc:     <linus.walleij@linaro.org>, <alsi@bang-olufsen.dk>,
+        <andrew@lunn.ch>, <f.fainelli@gmail.com>, <olteanv@gmail.com>,
+        <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+        <clement.leger@bootlin.com>, <ulli.kroll@googlemail.com>,
+        <kvalo@kernel.org>, <bhupesh.sharma@linaro.org>, <robh@kernel.org>,
+        <elder@linaro.org>, <wei.fang@nxp.com>,
+        <nicolas.ferre@microchip.com>, <simon.horman@corigine.com>,
+        <romieu@fr.zoreil.com>, <dmitry.torokhov@gmail.com>,
+        <netdev@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH net-next v2 0/5] net: Remove redundant of_match_ptr()
+ macro
+Message-ID: <20230810092629.47d47537@kernel.org>
+In-Reply-To: <20230810081656.2981965-1-ruanjinjie@huawei.com>
+References: <20230810081656.2981965-1-ruanjinjie@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH V8 1/9] drivers core: Add support for Wifi band RF
- mitigations
-Content-Language: en-US
-To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
-        Alexander.Deucher@amd.com, Christian.Koenig@amd.com,
-        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
-        johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        Mario.Limonciello@amd.com, mdaenzer@redhat.com,
-        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-        hdegoede@redhat.com, jingyuwang_vip@163.com, Lijo.Lazar@amd.com,
-        jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de, andrew@lunn.ch
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20230810073803.1643451-1-evan.quan@amd.com>
- <20230810073803.1643451-2-evan.quan@amd.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230810073803.1643451-2-evan.quan@amd.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Thu, 10 Aug 2023 16:16:51 +0800 Ruan Jinjie wrote:
+> Changes in v2:
+> - Correct the subject prefix: patch -> PATCH 
+
+Cool, now Linus replies to v1 with his acks and you've wasted everyone's
+time. If only we didn't have rules about reposting.. oh wait:
+
+Quoting documentation:
+
+  Resending after review
+  ~~~~~~~~~~~~~~~~~~~~~~
+  
+  Allow at least 24 hours to pass between postings. This will ensure reviewers
+  from all geographical locations have a chance to chime in. Do not wait
+  too long (weeks) between postings either as it will make it harder for reviewers
+  to recall all the context.
+  
+  Make sure you address all the feedback in your new posting. Do not post a new
+  version of the code if the discussion about the previous version is still
+  ongoing, unless directly instructed by a reviewer.
+  
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#resending-after-review
 
 
-On 8/10/23 00:37, Evan Quan wrote:
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index a1457995fd41..21f73a0bbd0b 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -7152,3 +7152,12 @@
->  				xmon commands.
->  			off	xmon is disabled.
->  
-> +	wbrf=		[KNL]
-> +			Format: { on | auto | off }
-> +			Controls if WBRF features should be enabled or disabled
-> +			forcely. Default is auto.
-
-"forcely" is not a word. "forcedly" is a word, but it's not used very much
-AFAIK.
-I would probably write "Controls if WBRF features should be forced on or off."
-
-> +			on	Force enable the WBRF features.
-> +			auto	Up to the system to do proper checks to
-> +				determine the WBRF features should be enabled
-> +				or not.
-> +			off	Force disable the WBRF features.
-
+I'm throwing your series out.
+Resend next week with all the tags included.
 -- 
-~Randy
+pw-bot: cr
