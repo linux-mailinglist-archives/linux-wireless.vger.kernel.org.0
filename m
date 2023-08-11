@@ -2,102 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E757787A2
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Aug 2023 08:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A3F778830
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Aug 2023 09:30:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230304AbjHKGrz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Aug 2023 02:47:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45210 "EHLO
+        id S233087AbjHKHaZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Aug 2023 03:30:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjHKGry (ORCPT
+        with ESMTP id S229677AbjHKHaY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Aug 2023 02:47:54 -0400
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2100.outbound.protection.outlook.com [40.92.99.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111332717
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Aug 2023 23:47:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RHqTbX8xfCKnnmys0E8yuW3KvIjYKzeTUp30gkXpBtKpJAKZJX66ZVARm1sMT1g9gkpnZyG+DAYDUxtDfAmx1T15RfF8TgnJBGDLiOsioePwjnAHJwAcxGUacui72eo4NnXCQBNAJCsYhtwYW/9hd2aus63gTwc9tTD42yRARpSKuDyhUHNLqySJp5qJ2DQng3ybzjfk8+CHKTPS9Y2G5yhC4wkUrv+4uQELxh3FSJ2L/ppHKS6LcuEPDM9b4+19GokAtOtkNpCAjwd2KpJlQXwoXHJBXPhFeT3vcAFI6CwyfO05bMyzNVpYrqxLmZZ6qo6Y8GBPhAfqFqk0w9dIwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JfGbB5iRYPA83IuYwVs6fLhI0N84cFefdCg4JIEk6aA=;
- b=FDidJvi2sZgRKnONtCmbFf1wEpVeO1kgfHlvF1NekBJEuI1Q8bRz7YNDcNQgTOQIJEEJhiHUtVzvi2yg1a6AVkMb7NKCtDAxZG891HkbBccjE9Q4S8q4c+lJ4b+LZfUTG44WUTfGOiqv6dd49Up9G/muisABRT6GNbc0WQrup2d/5aDjNdmH5zqvQBN5FMDpcnXTpowbx7pa6LS4xUZD2ZbF8wgjpWtEuCK7qEukhtJORSsSuppkMHj/sb9riiGy9Z7jZ/1jjeUOmJBmHevAu+I8+AIwlsVtgZWWU6sPy8jpQLyCLx+2fgZM9Cjs0x6XMBFC+cMJgUdMcryJrzXAOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JfGbB5iRYPA83IuYwVs6fLhI0N84cFefdCg4JIEk6aA=;
- b=BmrZDKEQk2TMAq4YmLmmDOSzYXSanr7w5zcSox+6YHdMQnr1wRzwL9a/uSbJ+byJvi03HS1A0tUULxBAcxmUe+AChZP0MlsxjPJMnYPoTqoGmq5PCdLl1MiGDGhHGPELpUBdxUC2Jg7FnF+YanBWxSvUyQJEiFKk7tfM/o2ogKhRQblckvNiY3bKK8lEzIwca2eIsD6hwoo2hDTCoxd4dG0z6GqmxGymGJtKVK/jS3n6kU6kHWt/Pt1mY1jQBGo24S1gaUiUB4SBQFU+yd6Zt5KyYXdpSoChMm1iKROGDFvrEIYTyISIqIQ5MK+epkztbRqdhWFU+U0lTjr8qbnRPQ==
-Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM (2603:1096:404:8041::8)
- by TYYP286MB1500.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:118::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Fri, 11 Aug
- 2023 06:47:51 +0000
-Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
- ([fe80::f4c2:4b38:d074:f1e9]) by TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
- ([fe80::f4c2:4b38:d074:f1e9%5]) with mapi id 15.20.6678.019; Fri, 11 Aug 2023
- 06:47:51 +0000
-From:   Shiji Yang <yangshiji66@outlook.com>
-To:     stf_xl@wp.pl
-Cc:     helmut.schaa@googlemail.com, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: rt2x00: limit MT7620 TX power based on eeprom calibration
-Date:   Fri, 11 Aug 2023 14:47:39 +0800
-Message-ID: <TYAP286MB03151DE75F87A100A9FFA53ABC10A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230806082701.GA361202@wp.pl>
-References: <20230806082701.GA361202@wp.pl>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN:  [ufN61GV/Zp2/5byCezAy3ZTnL7/+VuWP]
-X-ClientProxiedBy: TYCP301CA0037.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:400:380::9) To TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:404:8041::8)
-X-Microsoft-Original-Message-ID: <20230811064739.24399-1-yangshiji66@outlook.com>
+        Fri, 11 Aug 2023 03:30:24 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50B0526AB;
+        Fri, 11 Aug 2023 00:30:23 -0700 (PDT)
+Received: from [192.168.151.20] ([217.224.112.34]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MOzjW-1q9QVQ25xE-00PMc5; Fri, 11 Aug 2023 09:30:08 +0200
+Message-ID: <eb944f1f-8d7c-5057-35f2-34812907e4d1@online.de>
+Date:   Fri, 11 Aug 2023 09:30:07 +0200
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYAP286MB0315:EE_|TYYP286MB1500:EE_
-X-MS-Office365-Filtering-Correlation-Id: a71368f3-54fd-4145-4c2c-08db9a36e1a7
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gIICoQRL2hTniQnITBlRyMCd4Nbyo6g90xNp9OESs+56aXmZwMTfUnQg+pC7fhSVq2I9zQUsyFOfUB17MgZ2Y2J7LpMTPdmeNPZv8LsPzG3I+rg13MOmx6Yd2Dg+Mo3vlCa4otgAxLnpLqoUVzfjtfO08I8nR0eEIa9SNNtSlP8VPzM4eJFXzvkxec6nftKKd9NOKVebnN1nLb7Rq5Tafwfu4g04rYBmcuRBogJ6R5KbOrUVFu0TK5u6A4+3Rka6FZCdkD5A4iYvZtzqjzgBJTkjzesPZ4guVlruW7thWro45Sy0DWFRlOUXEK9wNaHvSHt3NXA7WgxLgzSArNR2nfyBSMUf+rVHC0SuBvfK0cu1kHMbn/WYvDvUzfKhDTAMkhK09dZTSSbf9rhLhlfXy5OeRortvCeyNZ0Y2qxz4ZWpu1HP4CAee1UhugXGK4BeDXxwFc/R9MeArnwd9QVdsqrQHmFAoj33I84BPO0n+WgEoXH1sFGnfmiblbBreGtpssoXPoe0IaYtraX8lvjPqOnc3iRFZhme+k9doBnat0Jkiz6cDHATnu/5OAUT88uJ
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?It9m9sBlvkpILsLAAtf/m5/9bIrycktCoMFIGeGOhqYRJTaahft+1kMF3VPQ?=
- =?us-ascii?Q?hZt54ZCjBJAVUnkgNpxxa3UDNip6J1OOCRsCi9e6sNHH9c8OM+3sknj6XIfo?=
- =?us-ascii?Q?inQuxKinIgse1gHL3oBbFcPYMrQgHDMZdb8naWrW0y5M0jDgn5CLsW7pLwd/?=
- =?us-ascii?Q?fl03mwDPYODo+yH3HebD1RAdSLqD2nx1a71bsF6WcUty97ixq/NHY1eWa3Se?=
- =?us-ascii?Q?ioEn43wSoMDPRGs3J4RCQcJrqqzqoO6OZ4ki0d2mar679S67+Mq36iw0JxPI?=
- =?us-ascii?Q?aFgbmxOVOgKItKLxiqogFpd/NIRTZyYM0N7bhgNEb8nDfb2YjgaNFvjdlgt1?=
- =?us-ascii?Q?8dwlm5xdfpWhBoUMyUIwgIsAgHNpfaktDbQRQLnDPKShd5jz+QDRejiFiJfi?=
- =?us-ascii?Q?JQWNupWgqL4UNMdCikykgve3blMzJQGjAHbKOLziA6KXeSmeU0RnNT81fNFM?=
- =?us-ascii?Q?BQGAXKTX7UJUBMDbuFQw/vXTcSt2NRTKai49HQJfg1Ua+fvDWstkDaL9KmaC?=
- =?us-ascii?Q?jkwWlBdhnDkGRVeJw5vgBlgltHuzUQ7bVhc4p6k8ookPdSYbo0Y3wYw4DhmV?=
- =?us-ascii?Q?VMqu2RE/p5qesmfjMegOYbDWJzLtvej5vyDX+AHEZvCAYFCe6ytYvTsDYX+a?=
- =?us-ascii?Q?S42mPlvN06WcSEYgiV15Ns/TNfjTCdwCe1j/QoI8b9lHi/PFn+qXVyLi8vLW?=
- =?us-ascii?Q?pNQRA64D1vj1dpBTRnL0lJJ67E8/MI4DBkTgNQrB3TKQtARReJyoy5ik9PMp?=
- =?us-ascii?Q?ifs3I7j6Vt9RiBC3cGigiXmzdngDXYq/k93ZwZXjyvhbAlH4tO6By1BQhFkE?=
- =?us-ascii?Q?6j9kX72Zkx3eI+0Ct2N573POJobz0GElcxc/KGlhvN4DdDZjGqeacFjH3zLe?=
- =?us-ascii?Q?48VB1YyXQbmpSsZuhiDbgitGWVR8UwT4Q8tM3kyEZ5Va6zhULnx5Le1JziqB?=
- =?us-ascii?Q?cAcBZweaeRXicpaft/3pkf3jYuq+uiMCtmhPOtgbF2c/bBCSTzIjdvE970BJ?=
- =?us-ascii?Q?FZGc/118LMkdpPJrPSH7rvNPhSGeq29MiQSWY6NXUeufbVpUotD9I7JZZZEZ?=
- =?us-ascii?Q?6U2fXPRAvcvDVo+0O/CfNYtccMAOp3kI4SfEukoxUfvOKa4l70O6HHzV0pR4?=
- =?us-ascii?Q?PaO1ma7wjhsPiQ6v7JTeOJXkcBzNSnHIxr0Y+t/XdZvtqa6Tb5WeSoNxn3uR?=
- =?us-ascii?Q?RERxcQKliEw05bB/4F6xqq2K303SqbDrtDBp0Dsi4yq1KMjlQLuKyn96YAY?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a71368f3-54fd-4145-4c2c-08db9a36e1a7
-X-MS-Exchange-CrossTenant-AuthSource: TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2023 06:47:51.1542
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYP286MB1500
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: [PATCH] wifi: nl80211: avoid NULL-ptr deref after
+ cfg80211_cqm_rssi_update
+Content-Language: en-US
+From:   Max Schulze <max.schulze@online.de>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
+References: <ac96309a-8d8d-4435-36e6-6d152eb31876@online.de>
+ <bc3bf8f6-7ad7-bf69-9227-f972dac4e66b@online.de>
+In-Reply-To: <bc3bf8f6-7ad7-bf69-9227-f972dac4e66b@online.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:do9exluVpxUqgCt14zbZFktqXqM74KvMmw9JlvSUr2uKLtoAPX3
+ N2OkaV/BZGEdsGgWom5xHsnDcACvU3RTGlUPbTE1jDZBaG3G6V1C2U8vmET7Y5MWWsThp6l
+ TMwl6Z3R1948qfW/gIDiW/q/j3LM1Pf37Jft9btsuMQzzUwBsZl21P6yBuvpLe0iveZCTRd
+ QdWzNFQc/oInYCgSpFdJg==
+UI-OutboundReport: notjunk:1;M01:P0:qoKBlb1hWbY=;I8se9gl3J3siyiJt+4w5ZliESsM
+ sXtxqImP0kvTeLjsPZTCUDVxVdLgKNjWITvCijBx04HNLiBliNGoKrbBdwZhNlpTLpsr/d0Se
+ jbHZjrFG6/PKcJAEaGlFzllWVdZc79SZVyjReVRVelgo8owI5EttvUvZLQc4ik+I6FdHSxdNS
+ F2jwS3FAX6t/mVZ9r+ntGqBOTQyzFizlpAiMu99sAliVIJQS2weN+iFY26ZpPMFRqvVhI8Imj
+ 2SIugS6DrRxlfI2BeOBexrOCFEw/QV07oJ3loqoP51uAy5aXsCP6fnwQP9G//lV2B8d+DeTpS
+ UubAPBgQDYvfeEFriC2kyiaip1z8rgx9VT0xJTBYQ894f+Cxj9Nt2E0BiKgbK//yv1D1EbknX
+ kKg8JNmYGNmcuk/Oqds4yf07ScXnPKMhNfQK3+DQk90QdA1nMJ+3Yby+xRCo12LqnPEixhAjH
+ u5zEmC+ItpQySdk+YAGA6PS2E1BIK8WQ49+rNfakn2BnKk2cuOor0eCFoCVOA38zgy5izR+zx
+ IL5r94HlEAWwuhiD435jYp2qecsf7CIYOxC3PBYmhCZSOAWU0ZZWLtHc85pU+y5+18bniS4Sv
+ IRK2xWkzH8IPg+t5KuMdFmnt1XEttP9KAO4PmhCJuO2D+PcHmVofTgEADgaID0U1uGrL35MQY
+ W4SIk2mm2Exk2bOHgjQY9wB1jdC94v12n9QUQG2+92toi85a3L/xDBjX+2Iw2tyF6CZIGE/Dd
+ mfHVUDLfXOatpv70Duxe4SJ9aorQGu3qXbmamsCagz8a3koP5sBjW+moZeftYUuVwYXmmOWPx
+ rp6o/fuINosg5wglXY2SkAHl/7VGrlXg+hox+NL4naO0o4y4kWJVxe6yfXdKagYrX55ZUGilv
+ 8aZFrY7/CSuO6sQ==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -105,34 +70,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi! Thanks for your review.
+In cfg80211_cqm_rssi_notify, when calling cfg80211_cqm_rssi_update, this might free
+the wdev->cqm_config . Check for this when it returns.
 
-On Sun, 6 Aug 2023 10:27:01 +0200, Stanislaw Gruszka wrote:
+This has been observed on brcmfmac, when a RSSI event is generated just right
+after disconnecting from AP. Then probing for STA details returns nothing, as
+evidenced i.e. by
+"ieee80211 phy0: brcmf_cfg80211_get_station: GET STA INFO failed, -52".
 
-> > -	max_power = chan->max_power * 2;
-> > -	if (max_power > 0x2f)
-> > -		max_power = 0x2f;
-> > +	power_group[0] = rt2800_eeprom_addr(rt2x00dev, EEPROM_TXPOWER_BG1);
-> > +	power_group[1] = rt2800_eeprom_addr(rt2x00dev, EEPROM_TXPOWER_BG2);
-> > +	for (cnt = 0; cnt < 2; cnt++) {
-> > +		chan_power = power_group[cnt][rt2x00dev->rf_channel - 1];
-> 
-> I whould add
-> 
-> if (WARN_ON(rt2x00dev->rf_channel not in proper range))
-> 	return;
-> 
-> just to be on safe side. This can be done in separate patch, if you think
-> it is appropriate.
-> 
-> The change overall looks ok to me.
-> 
-> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
-I add the channel check in V2 patch [1]. MT7620 only support WiFi4 2GHz
-band, so I limit it to [1, 14].
+Signed-off-by: Max Schulze <max.schulze@online.de>
+Tested-by: Max Schulze <max.schulze@online.de>
+Link: https://lore.kernel.org/linux-wireless/bc3bf8f6-7ad7-bf69-9227-f972dac4e66b@online.de/
+---
 
-[1] https://lore.kernel.org/all/TYAP286MB03159090ED14044215E59FD6BC10A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM/
+I have deployed this to 22 systems without issues and eliminating those null-ptr deref.
 
-Regards
-Shiji Yang
+Example Trace from Problem:
+
+wpa_supplicant[332]: wlan0: CTRL-EVENT-DISCONNECTED bssid=XX:XX:XX:XX:74:1f reason=3 locally_generated=1
+brcmfmac: brcmf_rx_event Enter: mmc1:0001:1: rxp=0000000017163222
+brcmfmac: brcmf_fweh_event_worker event LINK (16) ifidx 0 bsscfg 0 addr xx:xx:xx:xx:74:1f
+brcmfmac: brcmf_fweh_event_worker   version 2 flags 0 status 0 reason 2
+brcmutil: event payload, len=0
+brcmfmac: brcmf_is_linkdown Processing link down
+brcmfmac: brcmf_notify_connect_status Linkdown
+brcmfmac: brcmf_rx_event Enter: mmc1:0001:1: rxp=00000000dcf7c0c0
+brcmfmac: brcmf_fweh_event_worker event RSSI (56) ifidx 0 bsscfg 0 addr 00:00:xx:xx:00:50
+brcmfmac: brcmf_fweh_event_worker   version 2 flags 0 status 0 reason 0
+brcmutil: event payload, len=12
+00000000: 00 00 00 00 00 00 00 00 00 00 00 00              ............
+brcmfmac: brcmf_notify_rssi LOW rssi=0
+brcmfmac: brcmf_cfg80211_del_key key index (0)
+brcmfmac: brcmf_cfg80211_del_key Ignore clearing of (never configured) key
+brcmfmac: brcmf_fil_cmd_data Firmware error: BCME_NOTFOUND (-30)
+brcmfmac: brcmf_fil_iovar_data_get ifidx=0, name=tdls_sta_info, len=296, err=-52
+brcmfmac: brcmf_fil_cmd_data Firmware error: BCME_BADADDR (-21)
+brcmfmac: brcmf_fil_iovar_data_get ifidx=0, name=sta_info, len=296, err=-52
+ieee80211 phy0: brcmf_cfg80211_get_station: GET STA INFO failed, -52
+==================================================================
+BUG: KASAN: null-ptr-deref in cfg80211_cqm_rssi_notify (/home/r/linux/net/wireless/nl80211.c:19089) cfg80211
+
+
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 8bcf8e293..b12424382 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -19088,7 +19088,7 @@ void cfg80211_cqm_rssi_notify(struct net_device *dev,
+ 
+ 		cfg80211_cqm_rssi_update(rdev, dev);
+ 
+-		if (rssi_level == 0)
++		if (rssi_level == 0 && wdev->cqm_config)
+ 			rssi_level = wdev->cqm_config->last_rssi_event_value;
+ 	}
+ 
+-- 
+2.39.1
+
