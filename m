@@ -2,94 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4350B7789AC
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Aug 2023 11:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3883E778A04
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Aug 2023 11:34:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234500AbjHKJ1n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Aug 2023 05:27:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48260 "EHLO
+        id S232548AbjHKJee (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Aug 2023 05:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233925AbjHKJ1l (ORCPT
+        with ESMTP id S230478AbjHKJed (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Aug 2023 05:27:41 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 195992D5B
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Aug 2023 02:27:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=zmfVfOKd0cmYZ9LiURywzOadDhZw5drhnkJZBl9fPMM=;
-        t=1691746061; x=1692955661; b=PsqAhDoLlhYmoPeXOEHopP5L1pXllLIMHQZc31lU2ENk3Wi
-        NkmNuxCLWG32LtLVaFemi2iiqVLLdImI58fioWlOGSKZOok0L8aSJndEM+0o2kNvp8AntL9mSW/GY
-        FsX67o5iRoqJkA4nTrrOrHKLFBjVI7Qzto8AiQMc6ZCIcRf2M6tMVWrwsrLR4nDX44k8RaSreyTeg
-        K7/HTCWKtafUCqU/4Z6/StJBfbVdQUGD02qPAAE1YrUt0z6utbwavWSpWjk8TUASVtKSS/pl2/ISN
-        LT0Qvir3/DF9OUV1rnyVphHJmZ5qUnU+9MBznW9fDa9Ce6ARRKm3oWOflbVedfGQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qUOQk-000pjM-0I;
-        Fri, 11 Aug 2023 11:27:38 +0200
-Message-ID: <1ec93eca79a7bc96c1498b771c3b6ea2ebc78d95.camel@sipsolutions.net>
-Subject: Re: [PATCH 61/76] wifi: nl80211: add EML/MLD capabilities to
- per-iftype capabilities
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
-Cc:     ath12k@lists.infradead.org, quic_rkaliapp@quicinc.com
-Date:   Fri, 11 Aug 2023 11:27:37 +0200
-In-Reply-To: <29ab2b41-0adf-3a04-6eb9-3d5666253eb9@quicinc.com>
-References: <20220713094502.163926-1-johannes@sipsolutions.net>
-         <20220713114426.4dfc9ebd0461.Ice7b841051cfeb23da17bb2caa0e45191b34c4db@changeid>
-         <d2f17799-6d90-9d72-a389-565163d723d2@quicinc.com>
-         <f577425e2d4fd6141c29bcbfbea919565da9326d.camel@sipsolutions.net>
-         <cc6b83eb-ac30-34fc-4827-290a9ae25378@quicinc.com>
-         <8627bb8a3dddc33be7f1f97f30fc0f716328ff81.camel@sipsolutions.net>
-         <29ab2b41-0adf-3a04-6eb9-3d5666253eb9@quicinc.com>
+        Fri, 11 Aug 2023 05:34:33 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9037526A6
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Aug 2023 02:34:32 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d63457dd8b8so1623519276.1
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Aug 2023 02:34:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691746472; x=1692351272;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=smN+SCWW2lKTSARYfwTP+xuBJ9NW+4x7+X95r/DL53w=;
+        b=K282RvNdEnW7n5QERUHuFNXOJydN1zwNIvZe/Cpivm5a5uRi4o+lZ/cAvgJQ/926R9
+         wL+afDgiAQZxh/vPgwU6rwTMvAFg6DBHzj5qpuzWbjGIXBKkV4qI0AdhCNCWLul8GnwV
+         Aedm0zoyHDYdb9S96BgdM3G1PV2xoATPSa2EERgQfXN8Dlq5azOYi6nfkj5gMxx484KD
+         FCZ4Kh1QlyKbtQWq9EUvsbYhi1D+eYDx4cFNr29YZTlwMDdodUOp0G7qU3Dg+/M/YacN
+         DE8t9ZWDGvf2xfctOURuH8+LO+WgLw0+QTaks2WuhljncCsDme/szqTPDdaIQCsi8yjo
+         mEqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691746472; x=1692351272;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=smN+SCWW2lKTSARYfwTP+xuBJ9NW+4x7+X95r/DL53w=;
+        b=VD6E2fkyKBtw7PaXokHGbvBRGnJ6axVyNGCUzDCWGZ4p9yuVZaQ+ntbxUL3nSYyTSJ
+         eIp6PYhvWCJsiW8ixA2fcpOXnpiaBaC3nLpJkoqSE/KWGYHD+yx7NcvViX1euFMdNQG0
+         ++MPjdhIlfxmudMVvUGJrE8mGLm+Ec4tJ/+QJMKYv4YHzSwBr1PTf1wbDlTktUZfv9EF
+         4ijBq/yK0PcJX7i9SIsWAoq1DsMHiAP6696tBo7J0aeGwXqNmgdzsYdz2rpBZZFsGRLV
+         iaGHZJlHK9dQlgTOcdJkCN3LUOd6CiyVTLVLQ0Wnk8qd8RuIpaVwupMJjxOjNY+b/uVg
+         KZMg==
+X-Gm-Message-State: AOJu0Ywe/3qCO+shHXL0rMeSuPwFS0yYNe71lJA5A0awqR2KC7bv0mvQ
+        1y+M+OaydOVqNUpRB/eNfZzcHnSu3r889YYRCWryHg==
+X-Google-Smtp-Source: AGHT+IGjowQEzSv7PVwIHlKiu413nF9rlr3/ZMr5eI0rYZsr7D7PvUEmpj08JdXt4Jpa2UlmUQgdfaJzQGcTaYVim0Q=
+X-Received: by 2002:a05:6902:565:b0:ce7:919f:38f8 with SMTP id
+ a5-20020a056902056500b00ce7919f38f8mr1190723ybt.52.1691746471825; Fri, 11 Aug
+ 2023 02:34:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230810081656.2981965-1-ruanjinjie@huawei.com> <20230810081656.2981965-2-ruanjinjie@huawei.com>
+In-Reply-To: <20230810081656.2981965-2-ruanjinjie@huawei.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 11 Aug 2023 11:34:20 +0200
+Message-ID: <CACRpkdb+LMN=WRzLXGwWb_U5KhKpUVmcjNsvHk-3eb-PzbLYbQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/5] net: dsa: realtek: Remove redundant of_match_ptr()
+To:     Ruan Jinjie <ruanjinjie@huawei.com>
+Cc:     alsi@bang-olufsen.dk, andrew@lunn.ch, f.fainelli@gmail.com,
+        olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, clement.leger@bootlin.com,
+        ulli.kroll@googlemail.com, kvalo@kernel.org,
+        bhupesh.sharma@linaro.org, robh@kernel.org, elder@linaro.org,
+        wei.fang@nxp.com, nicolas.ferre@microchip.com,
+        simon.horman@corigine.com, romieu@fr.zoreil.com,
+        dmitry.torokhov@gmail.com, netdev@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-08-11 at 17:24 +0800, Wen Gong wrote:
-> >=20
-> > And again, what would you do with it? Not advertise EML when you have
-> > selected links that are not in the map? And if the links change
-> > dynamically in the future? You'd probably need a bunch of validation fo=
-r
-> > that.
-> For example, for station, NOT support EML on 2 GHz, support EML on 5=20
-> GHz/6 GHz.
->=20
-> When connect to 2/3 links AP, then EML should NOT add in assoc req while=
-=20
-> connect to AP which is 2 GHz+5 GHz or 2 GHz+6 GHz or 2 GHz+5 GHz+6 GHz.
->=20
-> EML should add in assoc req while connect to AP which is 5 GHz+6 GHz.
+On Thu, Aug 10, 2023 at 10:17=E2=80=AFAM Ruan Jinjie <ruanjinjie@huawei.com=
+> wrote:
 
-OK, at least that answers the question what you'd want to do with it :)
+> The driver depends on CONFIG_OF, it is not necessary to use
+> of_match_ptr() here.
+>
+> Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
 
-> For dynamic link change, it is another new topic, so I have not good advi=
-se
-> for that.=F0=9F=98=81
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-But everyone's looking at that?
-
-Honestly I'm not even sure - and you might know better - what the EML
-capabilities matter for if you never enable EML.
-
-So almost feels like if you never send the EML OMN frame (thanks for the
-name!) the AP wouldn't really care, and that's something you could do
-very easily without changing it, i.e. you pretend that your 2.4 GHz
-actually has EML, you just never enable it in case 2.4 GHz is active?
-
-johannes
+Yours,
+Linus Walleij
