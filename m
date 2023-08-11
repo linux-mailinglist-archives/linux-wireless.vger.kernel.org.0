@@ -2,55 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCCA5778A66
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Aug 2023 11:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 401D2778A89
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Aug 2023 12:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234396AbjHKJy3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Aug 2023 05:54:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60940 "EHLO
+        id S233556AbjHKKCU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Aug 2023 06:02:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234924AbjHKJy3 (ORCPT
+        with ESMTP id S232046AbjHKKCT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Aug 2023 05:54:29 -0400
+        Fri, 11 Aug 2023 06:02:19 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A3C82723;
-        Fri, 11 Aug 2023 02:54:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0032723
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Aug 2023 03:02:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=JqIVzqe3zsZkySYk3QDj5cazXjSDkcgsZQVLFuNqkEQ=;
-        t=1691747668; x=1692957268; b=ntewn/KSpK1idGWMgrbAqfcl+eBXczYCc5c6/6vXkpYgQcR
-        iF61TF99IcLqeIVoj2YO2+yK786feDodhAeYiU/+ZxpVa3jRLYbleY+a9l7hFEzs3C2R9aS1AYC7Y
-        N825GPqf7u8F4McGxpV5ttpMxZubsTBN5ANNVS1qWB7HLmN0L2t17tLgmBcN0wXI7y7ZtpnW5LPx6
-        EK2hkMJW82v1N+2i29QcVnEI0N5l8j4su6UOogsSEsSdwQGNyvJgynIQKqoTTBwxah1T7yOS+zEKL
-        eMjCRTh7YxvXzaxlCq2eIlSLYn+ymXx1gkFzB5ENo7L8KGCypr0MW8ZieE8Ixi1A==;
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=sFnYbfoX8sDJndsar1nb384O4i3Hyi1qGT2KuRLKEEE=;
+        t=1691748139; x=1692957739; b=W2RyH1hG0BKpZYgqcZ7b73W6gVqoGirO8/yPmqUMhyIjtEJ
+        /sqzljw0Iom4ibEhrXow3oYDSqmjwOdrFBd9O5ArYNl4ZAg2hCvHQXqLI2bQfHZN4MUx7G7jzJHbk
+        W/hIw1wDc2BBXgglhpiu8AqjZUW4StLCuYVFVhebbxh2uA+c2aLJcWAFuLv6o4kHX1Xoq5zaqqOX0
+        Namhx4B8Zj13bII0VAOr29BytnnOCNCrrkoDMdnh7rRSwJTFXJAN2O47lUWddtilxwAXkonRacSb7
+        33rUE6R4v22zCbxYvkUoSgjQva9Qluzi8GcZVFmLTw/aFgtN0KE4KP2IeF6+mjBA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qUOqX-000rKw-2M;
-        Fri, 11 Aug 2023 11:54:17 +0200
-Message-ID: <55a6644c62e7c955d6dacd9a10f945a199f47277.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: nl80211: avoid NULL-ptr deref after
- cfg80211_cqm_rssi_update
+        id 1qUOyF-000rml-2d;
+        Fri, 11 Aug 2023 12:02:16 +0200
+Message-ID: <107da8d2ff2610d14cae36124d24fd55eaee469b.camel@sipsolutions.net>
+Subject: Re: [PATCH v8] wifi: mwifiex: Fix OOB and integer underflow when rx
+ packets
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Max Schulze <max.schulze@online.de>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
-Date:   Fri, 11 Aug 2023 11:54:15 +0200
-In-Reply-To: <eb944f1f-8d7c-5057-35f2-34812907e4d1@online.de>
-References: <ac96309a-8d8d-4435-36e6-6d152eb31876@online.de>
-         <bc3bf8f6-7ad7-bf69-9227-f972dac4e66b@online.de>
-         <eb944f1f-8d7c-5057-35f2-34812907e4d1@online.de>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Polaris Pi <pinkperfect2021@gmail.com>, matthewmwang@chromium.org,
+        kuba@kernel.org, kvalo@kernel.org, linux-wireless@vger.kernel.org
+Date:   Fri, 11 Aug 2023 12:02:14 +0200
+In-Reply-To: <ZNV4piNiozRcGRYo@google.com>
+References: <20230809215817.3080280-1-pinkperfect2021@gmail.com>
+         <4933455600e633c8cbafc0fc3180a7023894f8c9.camel@sipsolutions.net>
+         <ZNV4piNiozRcGRYo@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -65,40 +56,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-08-11 at 09:30 +0200, Max Schulze wrote:
-> In cfg80211_cqm_rssi_notify, when calling cfg80211_cqm_rssi_update, this =
-might free
-> the wdev->cqm_config . Check for this when it returns.
-
-That doesn't seem right? How does cfg80211_cqm_rssi_update() free it?
-
-> This has been observed on brcmfmac, when a RSSI event is generated just r=
-ight
-> after disconnecting from AP. Then probing for STA details returns nothing=
-, as
-> evidenced i.e. by
-> "ieee80211 phy0: brcmf_cfg80211_get_station: GET STA INFO failed, -52".
-
-I think the issue then isn't that this frees it but rather than a free
-of it races with the reporting?
-
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -19088,7 +19088,7 @@ void cfg80211_cqm_rssi_notify(struct net_device *=
-dev,
-> =20
->  		cfg80211_cqm_rssi_update(rdev, dev);
-> =20
-> -		if (rssi_level =3D=3D 0)
-> +		if (rssi_level =3D=3D 0 && wdev->cqm_config)
->  			rssi_level =3D wdev->cqm_config->last_rssi_event_value;
+On Thu, 2023-08-10 at 16:54 -0700, Brian Norris wrote:
+> On Thu, Aug 10, 2023 at 09:32:57AM +0200, Johannes Berg wrote:
+> > On Wed, 2023-08-09 at 21:58 +0000, Polaris Pi wrote:
+> > > Make sure mwifiex_process_mgmt_packet,
+> > > mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
+> > > mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
+> > > not out-of-bounds access the skb->data buffer.
+> > >=20
+> > > Fixes: 2dbaf751b1de ("mwifiex: report received management frames to c=
+fg80211")
+> > > Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
+> > > ---
+> > > V5: Follow chromeos comments: preserve the original flow of mwifiex_p=
+rocess_uap_rx_packet
+> > > V6: Simplify check in mwifiex_process_uap_rx_packet
+> > > V7: Fix drop packets issue when auotest V6, now pass manual and auto =
+tests
+> > > V8: Fix missing return after free skb
+> > >=20
+> >=20
+> > Arguably, as Brian also said, that missing return is completely
+> > unrelated and should perhaps be a separate commit?
+>=20
+> I think the key here is that Polaris's buggy patch has already been
+> applied, so this v8 doesn't really work. He has since submitted a proper
+> fixup patch that applies appropriately, and I've Ack'd that.
 >=20
 
-But if it's a race, then this isn't actually going to really fix the
-issue, rather it just makes it (much) less likely.
+Right, sorry, I missed that, was looking only at wireless, not wireless-
+next.
 
-Since we can probably neither lock the wdev here nor require calls to
-this function with wdev lock held, it looks like we need to protect the
-pointer with RCU instead?
+Thanks all, I'll leave the -next patches for Kalle though :)
 
 johannes
