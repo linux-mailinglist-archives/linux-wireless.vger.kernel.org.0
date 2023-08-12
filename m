@@ -2,155 +2,252 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A88A1779E3E
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Aug 2023 10:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 743E6779E88
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Aug 2023 11:24:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230427AbjHLImK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Aug 2023 04:42:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56852 "EHLO
+        id S233713AbjHLJY1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Aug 2023 05:24:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjHLImI (ORCPT
+        with ESMTP id S229497AbjHLJY0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Aug 2023 04:42:08 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A4E2684
-        for <linux-wireless@vger.kernel.org>; Sat, 12 Aug 2023 01:42:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691829730; x=1723365730;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pQKF6xXJnW38bRdKHnATqtBgpYbclGlvHTbo9KWLmsk=;
-  b=QwuDEAlsimQqgbUmEdV6R2sNnFOr+yibJMFCDIiNVb+c8iOae6BrWreL
-   9GOX2pZDdKLc73F5YeuEuinS2dmM+mHp3H7arEOxDSadviUoe90D7KkR9
-   loB6yeAUIiQTbcVQSHbPGVB3VRRv0EAvf+hs3SEwstelGr6G0oXoGSnIs
-   Rm35LZia4jBTExrTc3NAx034VxbXk7Ff83i9yTgPocKFBWW3eVllofo2D
-   TkpqjLRXucp+HhlJELr2a4xUIGUQtrCH+1om7oV4ZDnSEbC1MKvikx8uN
-   dmbGNxWwPSC0n5GNlCriU1OyFpgqJPphqXIrJo6wtEy8tGk64yZwsg78b
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10799"; a="402795721"
-X-IronPort-AV: E=Sophos;i="6.01,167,1684825200"; 
-   d="scan'208";a="402795721"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2023 01:42:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10799"; a="979443397"
-X-IronPort-AV: E=Sophos;i="6.01,167,1684825200"; 
-   d="scan'208";a="979443397"
-Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 12 Aug 2023 01:42:08 -0700
-Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qUkCF-0008QO-1g;
-        Sat, 12 Aug 2023 08:42:07 +0000
-Date:   Sat, 12 Aug 2023 16:41:30 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Prasurjya.Rohansaikia@microchip.com, linux-wireless@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Ajay.Kathat@microchip.com,
-        claudiu.beznea@microchip.com
-Subject: Re: [PATCH] wifi: wilc1000: Added back-off algorithm to balance tx
- queue packets.
-Message-ID: <202308121630.OJIJ2i9a-lkp@intel.com>
-References: <20230810184633.94338-1-prasurjya.rohansaikia@microchip.com>
+        Sat, 12 Aug 2023 05:24:26 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E8691BE6;
+        Sat, 12 Aug 2023 02:24:25 -0700 (PDT)
+Received: from [192.168.151.20] ([217.224.112.34]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MKbc2-1qEArt0VeW-00L14a; Sat, 12 Aug 2023 11:23:53 +0200
+Message-ID: <f6cb4b81-e574-5562-0394-88798ef3cd31@online.de>
+Date:   Sat, 12 Aug 2023 11:23:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230810184633.94338-1-prasurjya.rohansaikia@microchip.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: BCM43455: brcmf_notify_rssi / cfg80211_cqm_rssi_notify : Unable
+ to handle kernel NULL pointer dereference (RSSI notification after station
+ disconnect?)
+Content-Language: en-US
+From:   Max Schulze <max.schulze@online.de>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        johannes@sipsolutions.net
+References: <ac96309a-8d8d-4435-36e6-6d152eb31876@online.de>
+ <bc3bf8f6-7ad7-bf69-9227-f972dac4e66b@online.de>
+In-Reply-To: <bc3bf8f6-7ad7-bf69-9227-f972dac4e66b@online.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Tf9S75SrkoTx9fgLQqpCqbvp+JEvsueVB21Au4GgoL9PMH4sthl
+ ckrUa60SFXQj/kQI/MCzynyW26Bt40lcBnMLhQ6nvzMSQ7PZl6D5sGH5nBQSocASQsNIcmj
+ eIGougxssfSmaXMjTZUjIgs/7WYwDO2xY6BSxcE8QkT4JlKvtYBlimULD/Ds4bM/ClxsObP
+ dsma3z2N1cG5vNjnQLovg==
+UI-OutboundReport: notjunk:1;M01:P0:88HNXA7p2/U=;NqEbqDB5LFsV36lcTGYtREYru3/
+ hmdWIgGZQ/cwNV9aPuHQIXWI9vUGvlzCjdRyUi3LHIbh9O2+7A8rFbJijcBchfjrRiKGW6Gag
+ 4PNHPy/wsGkIlcc5Si+2T3wGGpiOYkekKqMajEJdwCH2Hk1aTs+nB6LVdHrPycyTiof23qrKi
+ wl4Z+oyOw8p1oKNe2/nKwW74jgSWAUfh8ZglT9j8ymWvW0qRG9uuI1FNn9uAyb7heZ3DMW80G
+ 1tSm/cXTz+W3PQ8g04CUK+MNpv8tSlBNyWCg4EH7RNZV1KK2ihVNBeMweQBM4SDwmQmojKsUb
+ l4fQW3HuE6fIHo5Y5+0Qa0lREEA9KVZ7NnnTs52wjCyTbpyWAuOrgqZdJbzF7/ru1v4Ab+OHq
+ +iGd32KOhETXAbJ7tgEN/4wgi4y7XK9SwgioaPtfk+s+Gg70c2H79VAyDpgS6gbibQuSj1T8n
+ uLGEqcG5uL4tWVodaz+CM8KhQm10zVUSsVGPmhNfPqvWqOwp927R9WLwYZAVQIr988p3hmonk
+ sk3qtPi6tUq3roo250DOreZwMo+Kug6/wHcLBUushTlAK+OXiEpXRWgiynMm4shqWuHA5fCOS
+ RvvlTFjdJXUNxiMCU8HPRQlDMtMulZFkbkFGXnVLZHwoqQDe7VeR+z/uc0jJHThG3lVlVcsi3
+ nNGfPzysqMChy/hXIUEb1JukbUaIIXj1h6jHYT/HvBk6pqsa2AZRUl8moL2W4HGOSunyYqb7+
+ 3TSdf0Vtl3VMoL/b/wUzM08XwXf36X1NNkbQ9c/uT5V+b4fK5iaf1ZU4hTBGUwRnyIwSQL4Gp
+ TTqCMPcNs1sCLRhXCJGxB09/djoad77VI6OdXjgL6H4xuk2g0PLFkGS8B1JDY6PadQWtlfK0A
+ lBkGv9IVOEn0lQ/fy1aP8iNflb5A18Ku0ndI=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Johannes pointed out that I have no clear link demonstrating that cfg80211_cqm_config_free is being called from cfg80211_cqm_rssi_notify.
 
-kernel test robot noticed the following build warnings:
+Fair enough. So I compiled with
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.5-rc5 next-20230809]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Prasurjya-Rohansaikia-microchip-com/wifi-wilc1000-Added-back-off-algorithm-to-balance-tx-queue-packets/20230811-024902
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20230810184633.94338-1-prasurjya.rohansaikia%40microchip.com
-patch subject: [PATCH] wifi: wilc1000: Added back-off algorithm to balance tx queue packets.
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20230812/202308121630.OJIJ2i9a-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 12.3.0
-reproduce: (https://download.01.org/0day-ci/archive/20230812/202308121630.OJIJ2i9a-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308121630.OJIJ2i9a-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/net/wireless/microchip/wilc1000/netdev.c: In function 'wilc_txq_task':
->> drivers/net/wireless/microchip/wilc1000/netdev.c:147:21: warning: variable 'timeout' set but not used [-Wunused-but-set-variable]
-     147 |         signed long timeout;
-         |                     ^~~~~~~
+>  void cfg80211_cqm_config_free(struct wireless_dev *wdev)
+>  {
+> +       pr_err("someone freeing the cqm_config");
+> +       dump_stack();
+>         kfree(wdev->cqm_config);
+>         wdev->cqm_config = NULL;
+>  }
 
 
-vim +/timeout +147 drivers/net/wireless/microchip/wilc1000/netdev.c
+And get the attached output.
 
-   142	
-   143	static int wilc_txq_task(void *vp)
-   144	{
-   145		int ret;
-   146		u32 txq_count;
- > 147		signed long timeout;
-   148		struct wilc *wl = vp;
-   149	
-   150		complete(&wl->txq_thread_started);
-   151		while (1) {
-   152			if (wait_for_completion_interruptible(&wl->txq_event))
-   153				continue;
-   154			if (wl->close) {
-   155				complete(&wl->txq_thread_started);
-   156	
-   157				while (!kthread_should_stop())
-   158					schedule();
-   159				break;
-   160			}
-   161			do {
-   162				ret = wilc_wlan_handle_txq(wl, &txq_count);
-   163				if (txq_count < FLOW_CONTROL_LOWER_THRESHOLD) {
-   164					int srcu_idx;
-   165					struct wilc_vif *ifc;
-   166	
-   167					srcu_idx = srcu_read_lock(&wl->srcu);
-   168					list_for_each_entry_rcu(ifc, &wl->vif_list,
-   169								list) {
-   170						if (ifc->mac_opened &&
-   171						    netif_queue_stopped(ifc->ndev))
-   172							netif_wake_queue(ifc->ndev);
-   173					}
-   174					srcu_read_unlock(&wl->srcu, srcu_idx);
-   175				}
-   176				if (ret != WILC_VMM_ENTRY_FULL_RETRY)
-   177					break;
-   178				/* Back off from sending packets for some time.
-   179				 * schedule_timeout will allow RX task to run and free
-   180				 * buffers. Setting state to TASK_INTERRUPTIBLE will
-   181				 * put the thread back to CPU running queue when it's
-   182				 * signaled even if 'timeout' isn't elapsed. This gives
-   183				 * faster chance for reserved SK buffers to be freed
-   184				 */
-   185				set_current_state(TASK_INTERRUPTIBLE);
-   186				timeout = schedule_timeout(msecs_to_jiffies(TX_BACKOFF_WEIGHT_MS));
-   187			} while (ret == WILC_VMM_ENTRY_FULL_RETRY && !wl->close);
-   188		}
-   189		return 0;
-   190	}
-   191	
+Now I am out of ideas. This to me clearly looks like some kind of race. Freeing the cqm as part of netlink_sendmsg?
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Maybe cfg80211_cqm_rssi_notify could just exit() when there currently is no station connected and thus avoid the null-ptr deref?
+
+
+
+brcmfmac: brcmf_fil_cmd_data_set ifidx=0, cmd=52, len=12
+brcmutil: data
+00000000: 03 00 00 00 34 2c c4 3a 74 1f 37 da              ....4,.:t.7.
+brcmfmac: brcmf_rx_event Enter: mmc1:0001:1: rxp=ffffff8040227240
+brcmfmac: brcmf_rx_event Enter: mmc1:0001:1: rxp=ffffff8040226340
+brcmfmac: brcmf_fweh_event_worker event LINK (16) ifidx 0 bsscfg 0 addr xx:xx:xx:xx:74:1f
+brcmfmac: brcmf_fweh_event_worker   version 2 flags 0 status 0 reason 2
+brcmutil: event payload, len=0
+brcmfmac: brcmf_is_linkdown Processing link down
+brcmfmac: brcmf_notify_connect_status Linkdown
+brcmfmac: brcmf_fweh_event_worker event RSSI (56) ifidx 0 bsscfg 0 addr xx:xx:xx:xx:00:50
+brcmfmac: brcmf_fweh_event_worker   version 2 flags 0 status 0 reason 0
+brcmutil: event payload, len=12
+00000000: 00 00 00 00 00 00 00 00 00 00 00 00              ............
+brcmfmac: brcmf_notify_rssi LOW rssi=0
+brcmfmac: brcmf_cfg80211_del_key key index (0)
+brcmfmac: brcmf_cfg80211_del_key Ignore clearing of (never configured) key
+brcmfmac: brcmf_cfg80211_del_key key index (1)
+brcmfmac: brcmf_cfg80211_del_key Ignore clearing of (never configured) key
+brcmfmac: brcmf_cfg80211_del_key key index (2)
+brcmfmac: brcmf_cfg80211_del_key Ignore clearing of (never configured) key
+brcmfmac: brcmf_cfg80211_del_key key index (3)
+brcmfmac: brcmf_cfg80211_del_key Ignore clearing of (never configured) key
+brcmfmac: brcmf_cfg80211_del_key key index (4)
+brcmfmac: brcmf_cfg80211_del_key Ignore clearing of (never configured) key
+brcmfmac: brcmf_cfg80211_del_key key index (5)
+brcmfmac: brcmf_cfg80211_del_key Ignore clearing of (never configured) key
+brcmfmac: brcmf_fil_iovar_data_get ifidx=0, name=country, len=12, err=0
+brcmutil: data
+00000000: 44 45 00 00 00 00 00 00 44 45 00 41              DE......DE.A
+cfg80211: someone freeing the cqm_config
+CPU: 0 PID: 335 Comm: wpa_supplicant Tainted: G         C         6.5.0-rc5-v8-gd9595c9a4f6d-dirty #7
+Hardware name: Raspberry Pi Compute Module 4 Rev 1.0 (DT)
+Call trace:
+dump_backtrace (/home/r/linux/arch/arm64/kernel/stacktrace.c:235) 
+show_stack (/home/r/linux/arch/arm64/kernel/stacktrace.c:242) 
+dump_stack_lvl (/home/r/linux/lib/dump_stack.c:107) 
+dump_stack (/home/r/linux/lib/dump_stack.c:114) 
+cfg80211_cqm_config_free (/home/r/linux/net/wireless/core.c:1188) cfg80211
+nl80211_set_cqm (/home/r/linux/net/wireless/core.h:239 /home/r/linux/net/wireless/nl80211.c:12883 /home/r/linux/net/wireless/nl80211.c:12955) cfg80211
+genl_family_rcv_msg_doit.isra.0 (/home/r/linux/net/netlink/genetlink.c:970) 
+genl_rcv_msg (/home/r/linux/net/netlink/genetlink.c:1050 /home/r/linux/net/netlink/genetlink.c:1067) 
+netlink_rcv_skb (/home/r/linux/net/netlink/af_netlink.c:2549) 
+genl_rcv (/home/r/linux/net/netlink/genetlink.c:1079) 
+netlink_unicast (/home/r/linux/net/netlink/af_netlink.c:1340 /home/r/linux/net/netlink/af_netlink.c:1365) 
+netlink_sendmsg (/home/r/linux/net/netlink/af_netlink.c:1914) 
+sock_sendmsg (/home/r/linux/net/socket.c:725 /home/r/linux/net/socket.c:748) 
+____sys_sendmsg (/home/r/linux/net/socket.c:2494) 
+___sys_sendmsg (/home/r/linux/net/socket.c:2548) 
+__sys_sendmsg (/home/r/linux/./include/linux/file.h:32 /home/r/linux/net/socket.c:2579) 
+__arm64_sys_sendmsg (/home/r/linux/net/socket.c:2584) 
+invoke_syscall (/home/r/linux/arch/arm64/kernel/syscall.c:38 /home/r/linux/arch/arm64/kernel/syscall.c:52) 
+el0_svc_common.constprop.0 (/home/r/linux/./include/linux/thread_info.h:127 /home/r/linux/arch/arm64/kernel/syscall.c:147) 
+do_el0_svc (/home/r/linux/arch/arm64/kernel/syscall.c:189) 
+el0_svc (/home/r/linux/arch/arm64/kernel/entry-common.c:133 /home/r/linux/arch/arm64/kernel/entry-common.c:144 /home/r/linux/arch/arm64/kernel/entry-common.c:648) 
+el0t_64_sync_handler (/home/r/linux/arch/arm64/kernel/entry-common.c:666) 
+el0t_64_sync (/home/r/linux/arch/arm64/kernel/entry.S:591) 
+brcmfmac: brcmf_fil_cmd_data Firmware error: BCME_NOTFOUND (-30)
+brcmfmac: brcmf_fil_iovar_data_get ifidx=0, name=tdls_sta_info, len=296, err=-52
+brcmutil: data
+00000000: 34 2c c4 3a 74 1f 00 00 00 00 00 00 00 00 00 00  4,.:t...........
+00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+brcmfmac: brcmf_fil_cmd_data Firmware error: BCME_BADADDR (-21)
+brcmfmac: brcmf_fil_iovar_data_get ifidx=0, name=sta_info, len=296, err=-52
+brcmutil: data
+00000000: 34 2c c4 3a 74 1f 00 00 00 00 00 00 00 00 00 00  4,.:t...........
+00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+ieee80211 phy0: brcmf_cfg80211_get_station: GET STA INFO failed, -52
+==================================================================
+BUG: KASAN: null-ptr-deref in cfg80211_cqm_rssi_notify (/home/r/linux/net/wireless/nl80211.c:19089) cfg80211
+Read of size 4 at addr 0000000000000004 by task kworker/0:2/38
+Aug 12 09:28:20 hlcm4 kernel:
+CPU: 0 PID: 38 Comm: kworker/0:2 Tainted: G         C         6.5.0-rc5-v8-gd9595c9a4f6d-dirty #7
+Hardware name: Raspberry Pi Compute Module 4 Rev 1.0 (DT)
+Workqueue: events brcmf_fweh_event_worker [brcmfmac]
+Call trace:
+dump_backtrace (/home/r/linux/arch/arm64/kernel/stacktrace.c:235) 
+show_stack (/home/r/linux/arch/arm64/kernel/stacktrace.c:242) 
+dump_stack_lvl (/home/r/linux/lib/dump_stack.c:107) 
+kasan_report (/home/r/linux/mm/kasan/report.c:590) 
+__asan_load4 (/home/r/linux/mm/kasan/generic.c:259) 
+cfg80211_cqm_rssi_notify (/home/r/linux/net/wireless/nl80211.c:19089) cfg80211
+brcmf_notify_rssi (/home/r/linux/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6651) brcmfmac
+brcmf_fweh_call_event_handler (/home/r/linux/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c:109) brcmfmac
+brcmf_fweh_event_worker (/home/r/linux/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c:268) brcmfmac
+process_one_work (/home/r/linux/./arch/arm64/include/asm/jump_label.h:21 /home/r/linux/./include/linux/jump_label.h:207 /home/r/linux/./include/trace/events/workqueue.h:108 /home/r/linux/kernel/workqueue.c:2602) 
+worker_thread (/home/r/linux/./include/linux/list.h:292 /home/r/linux/kernel/workqueue.c:2749) 
+kthread (/home/r/linux/kernel/kthread.c:389) 
+ret_from_fork (/home/r/linux/arch/arm64/kernel/entry.S:854) 
+==================================================================
+Disabling lock debugging due to kernel taint
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000004
+Mem abort info:
+  ESR = 0x0000000096000005
+  EC = 0x25: DABT (current EL), IL = 32 bits
+   SET = 0, FnV = 0
+   EA = 0, S1PTW = 0
+   FSC = 0x05: level 1 translation fault
+ Data abort info:
+   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+ user pgtable: 4k pages, 39-bit VAs, pgdp=000000004c5c2000
+ brcmfmac: brcmf_fil_iovar_data_set ifidx=0, name=rssi_event, len=16
+ [0000000000000004] pgd=0000000000000000
+ brcmutil: data
+ , p4d=0000000000000000, pud=0000000000000000
+ 00000000: 00 00 00 00 03 00 00 7f 00 00 00 00 00 00 00 00  ................
+
+ Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+ Modules linked in: brcmfmac_wcc brcmfmac cfg80211 rpivid_hevc(C) bcm2835_isp(C) rtc_pcf85063 bcm2835_mmal_vchiq(C) regmap_i2c xt_tcpudp nft_compat videobuf2_dma_contig v3d videobuf2_memops nf_tables v4l2_mem2mem videobuf2_v4l2 videodev nfnetlink drm_shmem_helper gpu_sched i2c_mux_pinctrl gpio_keys i2c_mux hid_microsoft raspberrypi_hwmon videobuf2_common joydev ff_memless rfkill brcmutil i2c_brcmstb i2c_bcm2835 vc_sm_cma(C) mc uio_pdrv_genirq nvmem_rmem uio drm fuse drm_panel_orientation_quirks backlight ip_tables x_tables ipv6
+ CPU: 0 PID: 38 Comm: kworker/0:2 Tainted: G    B    C         6.5.0-rc5-v8-gd9595c9a4f6d-dirty #7
+ Hardware name: Raspberry Pi Compute Module 4 Rev 1.0 (DT)
+ Workqueue: events brcmf_fweh_event_worker [brcmfmac]
+ pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : cfg80211_cqm_rssi_notify (/home/r/linux/net/wireless/nl80211.c:19089) cfg80211
+ lr : cfg80211_cqm_rssi_notify (/home/r/linux/net/wireless/nl80211.c:19089) cfg80211
+ sp : ffffffc0805c7a10
+ x29: ffffffc0805c7a10 x28: 0000000000000001 x27: ffffff804743a368
+ x26: ffffff80428883c0 x25: 1ffffff8100b8f4e x24: ffffff804c1496d0
+ x23: 0000000000000cc0 x22: 0000000000000000 x21: ffffff804743a008
+ x20: 0000000000000000 x19: ffffff804c0ac000 x18: 0000000000000000
+ x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+ x14: 0000000000000000 x13: 746e696174206c65 x12: ffffffbde8d1dc29
+ x11: 1ffffffde8d1dc28 x10: ffffffbde8d1dc28 x9 : dfffffc000000000
+ x8 : 00000042172e23d8 x7 : ffffffef468ee147 x6 : 0000000000000001
+ x5 : ffffffef468ee140 x4 : ffffffbde8d1dc29 x3 : ffffffef440c0924
+ x2 : 0000000000000000 x1 : ffffff8040b6a0c0 x0 : 0000000000000001
+ Call trace:
+ cfg80211_cqm_rssi_notify (/home/r/linux/net/wireless/nl80211.c:19089) cfg80211
+ brcmf_notify_rssi (/home/r/linux/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6651) brcmfmac
+ brcmf_fweh_call_event_handler (/home/r/linux/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c:109) brcmfmac
+ brcmf_fweh_event_worker (/home/r/linux/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c:268) brcmfmac
+ process_one_work (/home/r/linux/./arch/arm64/include/asm/jump_label.h:21 /home/r/linux/./include/linux/jump_label.h:207 /home/r/linux/./include/trace/events/workqueue.h:108 /home/r/linux/kernel/workqueue.c:2602) 
+ worker_thread (/home/r/linux/./include/linux/list.h:292 /home/r/linux/kernel/workqueue.c:2749) 
+ kthread (/home/r/linux/kernel/kthread.c:389) 
+ ret_from_fork (/home/r/linux/arch/arm64/kernel/entry.S:854) 
+ Code: 9401bd4d f941b2b4 91001280 9401bd44 (b9400694)
+All code
+========
+   0:	9401bd4d 	bl	0x6f534
+   4:	f941b2b4 	ldr	x20, [x21, #864]
+   8:	91001280 	add	x0, x20, #0x4
+   c:	9401bd44 	bl	0x6f51c
+  10:*	b9400694 	ldr	w20, [x20, #4]		<-- trapping instruction
+
+Code starting with the faulting instruction
+===========================================
+   0:	b9400694 	ldr	w20, [x20, #4]
+ ---[ end trace 0000000000000000 ]---
+ brcmfmac: brcmf_fil_iovar_data_get ifidx=0, name=qtxpower, len=4, err=0
+ brcmutil: data
+ 00000000: 7f 00 00 00                                      ....
+ brcmfmac: brcmf_fil_iovar_data_set ifidx=0, name=mcast_list, len=22
