@@ -2,295 +2,185 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2559E77A67D
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Aug 2023 15:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A78D377A774
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Aug 2023 17:28:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbjHMNSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Aug 2023 09:18:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58934 "EHLO
+        id S229862AbjHMP2F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Aug 2023 11:28:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjHMNSg (ORCPT
+        with ESMTP id S229635AbjHMP2E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Aug 2023 09:18:36 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE171710
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Aug 2023 06:18:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=d5JxrpP3T4gcioEHFfxL6P5ePFJmovjPjvz8UnyKSlo=;
-        t=1691932718; x=1693142318; b=Enh3hi4zTNnbs9ZQrSgAjJclgagwmWOX8ZkzavviPmsQKYJ
-        x+lZrmEdyGMqI+Zshe61lBPeyDinLy5ymB9Ijwu0AGkFnUrHrbfkOS/kbJfZpKo3iak7iZxCoIWsd
-        wAtYQyGShHEr1XRKB9k7FlXC/0UzJ0CM08vxqERauZ9EPOyuukqUihalbrFUP42S4oEoS6se/cPGs
-        gOXTl8dkTuk0R75hF4LVAxeJ8XxZQ1qtWrTDS3rmgYUYsUDPY0nYqgW3wW7P/M6Fzx32gTf1uLAGi
-        myQ02HC/OtIQyB/j9A5sHA+BRx3e1KMJB4bYSOV5ORfIBX+TQ8V3sN2OuJY9frBQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qVAzK-004tIE-2H;
-        Sun, 13 Aug 2023 15:18:34 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [RFC PATCH] wifi: cfg80211: fix cqm_config access race
-Date:   Sun, 13 Aug 2023 15:18:29 +0200
-Message-ID: <20230813151828.ef56f5624c62.I1a1bb102329fc88e4712eaf394cba3025ada0dc7@changeid>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <ac96309a-8d8d-4435-36e6-6d152eb31876@online.de>
-References: <ac96309a-8d8d-4435-36e6-6d152eb31876@online.de>
+        Sun, 13 Aug 2023 11:28:04 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F07851BD5;
+        Sun, 13 Aug 2023 08:27:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691940464; x=1723476464;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=m4jWBsy84dU6PpFNmwMovZAUhi8Ox2Bcy3wlBZCZ6YU=;
+  b=davGhaN7+DjlD0G9IiMKEkiwEzU9+fjOhTq+R9W5UXJDb5d3qjSgHo54
+   jLBPyHPL1qBdyFHP9ljQXO+Lohj8As0t3cJCkMZYRI/PAx8wStkIl/FmD
+   vG7wjjsbnidB8RUS9TMHNSw7NYWZ+D11FGXSHigjk/5Y3DJ48VkuA3MLw
+   OVTGJvGbrdOrVw7BI+4L+3F0jEVJeDIuiw6u+cnNMMMNTuohhH842BGOO
+   o8gmHH83FgIH2JZHaUlsDgLj5wGkKvWIpJIIgFpj+GXogiX/Ae5HhI/VD
+   //TH8fOZq65WULSm/Amn2iBAIngY1uO+rwOs8f7w86e2ID760fV6e+wGS
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="369376760"
+X-IronPort-AV: E=Sophos;i="6.01,170,1684825200"; 
+   d="scan'208";a="369376760"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 08:27:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="856813556"
+X-IronPort-AV: E=Sophos;i="6.01,170,1684825200"; 
+   d="scan'208";a="856813556"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga004.jf.intel.com with ESMTP; 13 Aug 2023 08:27:40 -0700
+Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Sun, 13 Aug 2023 08:27:40 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Sun, 13 Aug 2023 08:27:40 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.102)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Sun, 13 Aug 2023 08:27:40 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=arUPeQ9D+wwFTLcXOKlT5dQF7eQ3Acxm0PXIA6mx1SinU7YsAy/GXOJ2rr9NRpONrQAts4peAM6RTMQpgH2YKaG+o9WAvNAEuVjN7EOMHUB1VVoh6ic3/CkwvSLyYu0smaKIzFYFJpIamU0fvtMhjv1FdytDSrbjU/Yy8FrTZRn8wlZcYx5pkVDGxzRAMkOwEcat549oj1zWkKYtjLy/HQD3mDZjIfS3IccKrig9efj4IxdRHShlLwyJD5fYvfvzfJm6UEOWbj8dCaF6/0XlbkuKGWGqCmzUpamwzuVR8bBpyBkQxlreVOwekyhjS+gPORqc+H9zROHHnH04WkeJeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m4jWBsy84dU6PpFNmwMovZAUhi8Ox2Bcy3wlBZCZ6YU=;
+ b=l6L4bVEiJPDHmQ1pteZrktA+WBlJ35cIhbGh/0Ee5qt7ZY9RsZGZcKdYLLgiGJO+JoSAtc/A0keiw2K7s+3oOFVqz2ORXm4tGE0iZJntVYXT7jJ8VWR6c2tPLqv5Ye9++d+hITmFLPG5Hvc4glcY1ChhRjjgWWpJohwIP+5DL829qkd7oLIIVmybl83fY2vhPS4C1yNftkvELQnobeg5+8w/JH7O8LlaaPoZr0LOEIPKzhUY0ERu2vnWg2PSa9HUmhRBQ4NDFPmb6nrmG6293i4ldiuDBuIPO7uOSKc0/fjiZNB3A8hMXMpSmSUJsbgzvrArW/qv6ftrhYkF20r8Tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5987.namprd11.prod.outlook.com (2603:10b6:208:372::8)
+ by DM4PR11MB6285.namprd11.prod.outlook.com (2603:10b6:8:a8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.24; Sun, 13 Aug
+ 2023 15:27:38 +0000
+Received: from MN0PR11MB5987.namprd11.prod.outlook.com
+ ([fe80::c733:b6c6:fe0d:d4c4]) by MN0PR11MB5987.namprd11.prod.outlook.com
+ ([fe80::c733:b6c6:fe0d:d4c4%7]) with mapi id 15.20.6678.022; Sun, 13 Aug 2023
+ 15:27:38 +0000
+From:   "Greenman, Gregory" <gregory.greenman@intel.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "duminjie@vivo.com" <duminjie@vivo.com>,
+        "sfr@canb.auug.org.au" <sfr@canb.auug.org.au>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "opensource.kernel@vivo.com" <opensource.kernel@vivo.com>
+Subject: Re: [PATCH v1] drivers/net: intel: iwlwifi: fix two parameters check
+ in iwl_mei_dbgfs_register()
+Thread-Topic: [PATCH v1] drivers/net: intel: iwlwifi: fix two parameters check
+ in iwl_mei_dbgfs_register()
+Thread-Index: AQHZtMLRVoJ87y2jl0aO71GWgfE8CK/oi9oA
+Date:   Sun, 13 Aug 2023 15:27:38 +0000
+Message-ID: <7860d8cbac1eb699de033210c8256afaa8f7b35b.camel@intel.com>
+References: <20230712131407.16462-1-duminjie@vivo.com>
+In-Reply-To: <20230712131407.16462-1-duminjie@vivo.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5987:EE_|DM4PR11MB6285:EE_
+x-ms-office365-filtering-correlation-id: e61a2064-56a7-476f-6ffc-08db9c11d394
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: PGby3HbjNBi2WSep8KsmJyqUIRnWbJjwgMImDeqliyVlDxcb3SppHJYAeRplNI2xgBcA7Prog285hWAGzRmnuZESFUkO6s+fk9j4bMstJDIZPpFsG6WQXM2zzCpT80M8avq72unBRLQldJzK5k1Pdw0m+GJr7/0jvNfm30fROG+yfUPphnhbvMaEL+vZormbhsx5GIm61fdHzASkbkOpr38zXzLke45ELlNrQ8HKRXpbq+iMjJujXgqapZnjEDDM89E4nl0VjBcIvEl4c6KZ7VYToI7LdmSSNoM1j0T+a9PKaSKFJcIG2eEdBXhb6Q4typ5bXGYbPFXGND6c94UQ3D/dK8yb2DykjC6b8daelqyrJ0uOZdkBvKwxWUhAOlzUX8ax6/hukPXp69IthBkZQCSRlnbvJjokH6x8OybuAI73YSNnfRMkFFhZW6kdo/2hpIswjOmh0QXIZDsphZwA64yn95GA4DG7sSNE6SkNXqKMMFYwrdCeKxnU0PxGMFqP45FteEtxDAM1Q2nYavveTZZ9QHm0rI0iCpVIqDhcEBrnkiArsQ3okJJfLl2q6Mdzj1U0zkTIAqyt1GBy5R3YPfwa0V8jFM3z6yocCxX/acNPBxd7j0dNpFGY2cBlMv5P
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5987.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(39860400002)(376002)(136003)(396003)(366004)(1800799006)(186006)(451199021)(71200400001)(6506007)(6486002)(6512007)(478600001)(83380400001)(2616005)(26005)(2906002)(4744005)(64756008)(41300700001)(66556008)(66446008)(316002)(110136005)(66946007)(76116006)(91956017)(66476007)(5660300002)(4326008)(8936002)(8676002)(86362001)(38070700005)(38100700002)(36756003)(122000001)(82960400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZzA5WGtjMXBRU1ZJdGFKbXdpL29mUEdPYTB1RmZTMG93VzIrYTlTUHJWM002?=
+ =?utf-8?B?UUNCZGhlM1l1L1FQakoybjJRVE0yVnZabnFmMnV4VFFSM0tXRnkyOEQ4d1hx?=
+ =?utf-8?B?NWc1dGtsS1Mvd0tUS04rUE9sU05WUU9PM0Y2Z3ZiVFJ0NTBpTWJtdUFUb3M1?=
+ =?utf-8?B?VEd6a3VENmVtb2U4R3UrTEhLUWVudHplWXVTblpHUWpjWHdVd1pQTHhwN2ZH?=
+ =?utf-8?B?OHVtdFhjTHBRUnFwdExFR2ZQbjRsVFVjYkFFQm1PQWpvc3ROeWorTXAxV3FD?=
+ =?utf-8?B?eHFsL2xPd0NqT25uSWZiTXo3SUlkc2QzKy9GanBHMk5ZekpJV2pORWhmVEJk?=
+ =?utf-8?B?MHkrUWx3aTVSSWZqZGJFa0hTMUtqZkcvMEp4Wk11cnV4NEJscmhzdFphb2pK?=
+ =?utf-8?B?b21TSjdhMW5vb3gzZjd2ZTc0dnNDY0NnZzFvek5CQXQxd0RLOEhwYVNXTzdW?=
+ =?utf-8?B?eGtjVVFENDZjVDE2MThqYTJvekVDUURHUjFCWEo5ZUI2dWFQQ1Q2LzQyeGhy?=
+ =?utf-8?B?SFhuVEVBQWt6SzByUTFIOHl3cFJIdGRHU1dZNlpIMWRaY3A1UFBQQnZvWkR1?=
+ =?utf-8?B?dzBRc3o4WEdlN21vRStLVlFvL2o4Z3ptUlFsQWxwUVIxbVhJT29leVU4VlNo?=
+ =?utf-8?B?WXBEMmRrWXZmcjN3TGNjUXdZenhkNkJJTExtNFhoSnFlTmtJWTB1UjRtUHdn?=
+ =?utf-8?B?bTBhakVWZ3AvOXJLUVFYUy9Vays5QWphYWRGVkR6aUk4enV1ZjhUT25SRXFX?=
+ =?utf-8?B?SkdsTXdmYmM4VGdwaDFkR1FCV0xPczZQTUpGR0gzckxCMUNZQituTTB1T3oz?=
+ =?utf-8?B?QmgyRFVoTGR1V2tXcUNNeVdvY3NBcWtYdzcyZVpTSEdieWtTQ1hjM2djaXl0?=
+ =?utf-8?B?Mk5yaEZ6SGtUb1BSR3Bkb0w0N1JWQ3BLMjFKZEpnQXpROGppTTJiZVZtNk4y?=
+ =?utf-8?B?Tm95QUVCakJLMUFSR0lCNWJvVjF6UWlXckN0TlBpSDhkdDlDeExhOHlXaW9V?=
+ =?utf-8?B?WnlabVVpbEVpRkxXVjc3T1cybEZ6MzdKaEpGM29va0NYcEdRNitGKzJtbC83?=
+ =?utf-8?B?WXljM0UxaDdnK2U5ZXRRWEwvcVBSbE96ejhnT3IzMllpZ0JIYm5yYWVyR3d3?=
+ =?utf-8?B?K2ZHdzQxS1BKd01Ud0RZZGhWZUZLS0NCemJoSDdwMlArb3FCNHdZbW0yVzhX?=
+ =?utf-8?B?Y0dJZlhOTmdvUWxKQkZ4S0d2bTZwUXlDRnZLVTAxd1ZIb1ZyRjVlRFVqK3dQ?=
+ =?utf-8?B?UlBoVUJPZ3pRdDY4WXQzNHN3bUFiWG9LS0NrU3ZsN0hpa0dWZ1lIUk9HcmxT?=
+ =?utf-8?B?VExYdjRSa3hTc29YUnJuSWd6bkVWcEMwRHV2NVZCbmtWOXowZGdkeFZncExy?=
+ =?utf-8?B?cTNKcjB4OUdTWDYxQnVIcHdqVjhVRVZWM1dhVmtPeVBtbHlETlhpRERZaG1U?=
+ =?utf-8?B?K29hR1FhQml5UVpNZG15alpWUStqQkE2WFRZcThZUjZuSmRERlBCRXpGUlh4?=
+ =?utf-8?B?NW5qb0tmS3huTmRiZmxCYVNra2xZTmVianZpbURXT1QweGhNNnVBUk1Vdk5s?=
+ =?utf-8?B?b2ViNTN2OTJKazNQS1NUU285b2ExM2VaYnlVbFRzMVdFVE1mZUJKSjZUaVMy?=
+ =?utf-8?B?eFZSanQvTHlPWHRSQk1zMnBjSWV1SzhZRGpDeW1IalduNFd0TVBTZkZCYXFP?=
+ =?utf-8?B?MEJhWXNwUzI0MjdUOEx3MDZSOElhWFNQa0dQazVMdm03a0xGdEt5Y0ZzcXdU?=
+ =?utf-8?B?TElHOW9YdUQ3ZFB0dGtCVGtsYXg3MGhGYU9iZDZOWFRMaEtGaVJ0VFVFVkhV?=
+ =?utf-8?B?UnlNV2UzRHN5RUxxc1BDSXpnNmc0UE1qT1MyeHlpMG5RV2QyWXhIZmxVa0tY?=
+ =?utf-8?B?NXdWNFZibms1NHg4eHJWOElXR01ESVNRajJGeHdRcVg4VVFpdGF6cm45eURQ?=
+ =?utf-8?B?aE40MUVuaDJkbjhhdzlOVmZhN0NZSVIzZHh6SUZ5YnM3Um03b2VZOEI2ekxz?=
+ =?utf-8?B?bk5iQUVNRC9FQjY3OXBvNjV2RGNlU00vZnpMUkN5SFEzbDQ2NU93a084MklD?=
+ =?utf-8?B?NXNwQ0h6SlRwYkpXNGlGSHVzMTNtaE1rbkpZNWYyNUpiWEdBZDloYmdxdnFP?=
+ =?utf-8?B?Vm5FOFZURFBTTkhEWWFKelk3a0ZHMWcvVGZGUDIzL1lBazc3UWJFQlluWlpF?=
+ =?utf-8?Q?+Zjy7+xsJdcEA4MonUu4hx0=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E6C8FC0582643B4EB7C92ADF4E68A6FD@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5987.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e61a2064-56a7-476f-6ffc-08db9c11d394
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Aug 2023 15:27:38.0949
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DscFFd6BaRaxD+K6ghHwU7JXX/q4AH1xYgroi4LRW+pY/doDdE8BcPZbvhhNS4CWWqq36eMWL93ljk9N25Bz1YdP65oPn8DweT2FMTC7/Ag=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6285
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
-
-Max Schulze reports crashes with brcmfmac. The reason seems
-to be a race between userspace removing the CQM config and
-the driver calling cfg80211_cqm_rssi_notify(), where if the
-data is freed while cfg80211_cqm_rssi_notify() runs it will
-crash since it assumes wdev->cqm_config is set. This can't
-be fixed with a simple non-NULL check since there's nothing
-we can do for locking easily, so use RCU instead to protect
-the pointer.
-
-Since we need to change the free anyway, also change it to
-go back to the old settings if changing the settings fails.
-
-Fixes: 4a4b8169501b ("cfg80211: Accept multiple RSSI thresholds for CQM")
-Closes: https://lore.kernel.org/r/ac96309a-8d8d-4435-36e6-6d152eb31876@online.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/net/cfg80211.h |  2 +-
- net/wireless/core.c    | 11 ++++-----
- net/wireless/core.h    |  3 +--
- net/wireless/nl80211.c | 52 ++++++++++++++++++++++++------------------
- 4 files changed, 36 insertions(+), 32 deletions(-)
-
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index d6fa7c8767ad..8de6e5c8c85e 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -6014,7 +6014,7 @@ struct wireless_dev {
- 	} wext;
- #endif
- 
--	struct cfg80211_cqm_config *cqm_config;
-+	struct cfg80211_cqm_config __rcu *cqm_config;
- 
- 	struct list_head pmsr_list;
- 	spinlock_t pmsr_lock;
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 25bc2e50a061..598da9451f0e 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1181,16 +1181,11 @@ void wiphy_rfkill_set_hw_state_reason(struct wiphy *wiphy, bool blocked,
- }
- EXPORT_SYMBOL(wiphy_rfkill_set_hw_state_reason);
- 
--void cfg80211_cqm_config_free(struct wireless_dev *wdev)
--{
--	kfree(wdev->cqm_config);
--	wdev->cqm_config = NULL;
--}
--
- static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
- 				      bool unregister_netdev)
- {
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
-+	struct cfg80211_cqm_config *cqm_config;
- 	unsigned int link_id;
- 
- 	ASSERT_RTNL();
-@@ -1227,7 +1222,9 @@ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
- 	kfree_sensitive(wdev->wext.keys);
- 	wdev->wext.keys = NULL;
- #endif
--	cfg80211_cqm_config_free(wdev);
-+	/* deleted from the list, so can't be found from nl80211 any more */
-+	cqm_config = rcu_access_pointer(wdev->cqm_config);
-+	kfree_rcu(cqm_config, rcu_head);
- 
- 	/*
- 	 * Ensure that all events have been processed and
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index 8a807b609ef7..62a91aa694a7 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -295,6 +295,7 @@ struct cfg80211_beacon_registration {
- };
- 
- struct cfg80211_cqm_config {
-+	struct rcu_head rcu_head;
- 	u32 rssi_hyst;
- 	s32 last_rssi_event_value;
- 	int n_rssi_thresholds;
-@@ -566,8 +567,6 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- #define CFG80211_DEV_WARN_ON(cond)	({bool __r = (cond); __r; })
- #endif
- 
--void cfg80211_cqm_config_free(struct wireless_dev *wdev);
--
- void cfg80211_release_pmsr(struct wireless_dev *wdev, u32 portid);
- void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev);
- void cfg80211_pmsr_free_wk(struct work_struct *work);
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 8bcf8e293308..4f79c3543aed 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12796,7 +12796,8 @@ static int nl80211_set_cqm_txe(struct genl_info *info,
- }
- 
- static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
--				    struct net_device *dev)
-+				    struct net_device *dev,
-+				    struct cfg80211_cqm_config *cqm_config)
- {
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
- 	s32 last, low, high;
-@@ -12805,7 +12806,7 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
- 	int err;
- 
- 	/* RSSI reporting disabled? */
--	if (!wdev->cqm_config)
-+	if (!cqm_config)
- 		return rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
- 
- 	/*
-@@ -12814,7 +12815,7 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
- 	 * connection is established and enough beacons received to calculate
- 	 * the average.
- 	 */
--	if (!wdev->cqm_config->last_rssi_event_value &&
-+	if (!cqm_config->last_rssi_event_value &&
- 	    wdev->links[0].client.current_bss &&
- 	    rdev->ops->get_station) {
- 		struct station_info sinfo = {};
-@@ -12828,30 +12829,30 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
- 
- 		cfg80211_sinfo_release_content(&sinfo);
- 		if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_BEACON_SIGNAL_AVG))
--			wdev->cqm_config->last_rssi_event_value =
-+			cqm_config->last_rssi_event_value =
- 				(s8) sinfo.rx_beacon_signal_avg;
- 	}
- 
--	last = wdev->cqm_config->last_rssi_event_value;
--	hyst = wdev->cqm_config->rssi_hyst;
--	n = wdev->cqm_config->n_rssi_thresholds;
-+	last = cqm_config->last_rssi_event_value;
-+	hyst = cqm_config->rssi_hyst;
-+	n = cqm_config->n_rssi_thresholds;
- 
- 	for (i = 0; i < n; i++) {
- 		i = array_index_nospec(i, n);
--		if (last < wdev->cqm_config->rssi_thresholds[i])
-+		if (last < cqm_config->rssi_thresholds[i])
- 			break;
- 	}
- 
- 	low_index = i - 1;
- 	if (low_index >= 0) {
- 		low_index = array_index_nospec(low_index, n);
--		low = wdev->cqm_config->rssi_thresholds[low_index] - hyst;
-+		low = cqm_config->rssi_thresholds[low_index] - hyst;
- 	} else {
- 		low = S32_MIN;
- 	}
- 	if (i < n) {
- 		i = array_index_nospec(i, n);
--		high = wdev->cqm_config->rssi_thresholds[i] + hyst - 1;
-+		high = cqm_config->rssi_thresholds[i] + hyst - 1;
- 	} else {
- 		high = S32_MAX;
- 	}
-@@ -12864,6 +12865,7 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
- 				u32 hysteresis)
- {
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct cfg80211_cqm_config *cqm_config = NULL, *old;
- 	struct net_device *dev = info->user_ptr[1];
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
- 	int i, err;
-@@ -12881,10 +12883,6 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
- 	    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT)
- 		return -EOPNOTSUPP;
- 
--	wdev_lock(wdev);
--	cfg80211_cqm_config_free(wdev);
--	wdev_unlock(wdev);
--
- 	if (n_thresholds <= 1 && rdev->ops->set_cqm_rssi_config) {
- 		if (n_thresholds == 0 || thresholds[0] == 0) /* Disabling */
- 			return rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
-@@ -12901,9 +12899,9 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
- 		n_thresholds = 0;
- 
- 	wdev_lock(wdev);
-+	old = rcu_dereference_protected(wdev->cqm_config,
-+					lockdep_is_held(&wdev->mtx));
- 	if (n_thresholds) {
--		struct cfg80211_cqm_config *cqm_config;
--
- 		cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
- 						 n_thresholds),
- 				     GFP_KERNEL);
-@@ -12918,10 +12916,16 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
- 		       flex_array_size(cqm_config, rssi_thresholds,
- 				       n_thresholds));
- 
--		wdev->cqm_config = cqm_config;
-+		rcu_assign_pointer(wdev->cqm_config, cqm_config);
- 	}
- 
--	err = cfg80211_cqm_rssi_update(rdev, dev);
-+	err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
-+	if (err) {
-+		rcu_assign_pointer(wdev->cqm_config, old);
-+		kfree(cqm_config);
-+	} else {
-+		kfree_rcu(old, rcu_head);
-+	}
- 
- unlock:
- 	wdev_unlock(wdev);
-@@ -19076,6 +19080,7 @@ void cfg80211_cqm_rssi_notify(struct net_device *dev,
- 	struct sk_buff *msg;
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
-+	struct cfg80211_cqm_config *cqm_config;
- 
- 	trace_cfg80211_cqm_rssi_notify(dev, rssi_event, rssi_level);
- 
-@@ -19083,14 +19088,17 @@ void cfg80211_cqm_rssi_notify(struct net_device *dev,
- 		    rssi_event != NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH))
- 		return;
- 
--	if (wdev->cqm_config) {
--		wdev->cqm_config->last_rssi_event_value = rssi_level;
-+	rcu_read_lock();
-+	cqm_config = rcu_dereference(wdev->cqm_config);
-+	if (cqm_config) {
-+		cqm_config->last_rssi_event_value = rssi_level;
- 
--		cfg80211_cqm_rssi_update(rdev, dev);
-+		cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
- 
- 		if (rssi_level == 0)
--			rssi_level = wdev->cqm_config->last_rssi_event_value;
-+			rssi_level = cqm_config->last_rssi_event_value;
- 	}
-+	rcu_read_unlock();
- 
- 	msg = cfg80211_prepare_cqm(dev, NULL, gfp);
- 	if (!msg)
--- 
-2.41.0
-
+SGksDQoNCk9uIFdlZCwgMjAyMy0wNy0xMiBhdCAyMToxNCArMDgwMCwgTWluamllIER1IHdyb3Rl
+Og0KPiBNYWtlIElTX0VSUigpIGp1ZGdlIHRoZSBkZWJ1Z2ZzX2NyZWF0ZV9kaXIoKSBmdW5jdGlv
+biByZXR1cm4NCj4gaW4gaXdsX21laV9kYmdmc19yZWdpc3RlcigpLg0KPiANCj4gU2lnbmVkLW9m
+Zi1ieTogTWluamllIER1IDxkdW1pbmppZUB2aXZvLmNvbT4NCj4gLS0tDQo+IMKgZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9tZWkvbWFpbi5jIHwgMiArLQ0KPiDCoDEgZmlsZSBj
+aGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvbWVpL21haW4uYyBiL2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvbWVpL21haW4uYw0KPiBpbmRleCA1NDQ0NWYzOWYu
+LmU1ZDIwM2E2MiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXds
+d2lmaS9tZWkvbWFpbi5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdp
+ZmkvbWVpL21haW4uYw0KPiBAQCAtMTg4OCw3ICsxODg4LDcgQEAgc3RhdGljIHZvaWQgaXdsX21l
+aV9kYmdmc19yZWdpc3RlcihzdHJ1Y3QgaXdsX21laSAqbWVpKQ0KPiDCoHsNCj4gwqDCoMKgwqDC
+oMKgwqDCoG1laS0+ZGJnZnNfZGlyID0gZGVidWdmc19jcmVhdGVfZGlyKEtCVUlMRF9NT0ROQU1F
+LCBOVUxMKTsNCj4gwqANCj4gLcKgwqDCoMKgwqDCoMKgaWYgKCFtZWktPmRiZ2ZzX2RpcikNCj4g
+K8KgwqDCoMKgwqDCoMKgaWYgKElTX0VSUihtZWktPmRiZ2ZzX2RpcikpDQo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuOw0KPiDCoA0KPiDCoMKgwqDCoMKgwqDCoMKgZGVi
+dWdmc19jcmVhdGVfdWxvbmcoInN0YXR1cyIsIFNfSVJVU1IsDQoNClRoZSB0aXRsZSBzaG91bGQg
+YmU6DQoNCndpZmk6IGl3bHdpZmk6IG1laTogLi4uDQoNCkFsc28sIHdoeSB0d28gcGFyYW1ldGVy
+cz8gSXQgb25seSBmaXhlcyBkYmdmc19kaXI/DQo=
