@@ -2,138 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44BE877C041
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 21:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C844D77C0E4
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 21:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231804AbjHNTBL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Aug 2023 15:01:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51512 "EHLO
+        id S229929AbjHNTiS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Aug 2023 15:38:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231920AbjHNTA4 (ORCPT
+        with ESMTP id S231233AbjHNTh7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Aug 2023 15:00:56 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1161701
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 12:00:54 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1bdcb800594so10963615ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 12:00:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1692039654; x=1692644454;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gKTJbYyHwGU/Pavfa3Pni61Jgqd+CWSu3/z3hiS2FZk=;
-        b=HLQl75aDvj2mEnVYovaIHU/OOGwgRtjHAT3BetsxMzFRe6RXIWRmCMYKUVj2Mu9Mdl
-         d2IbKwWkNjw3pocpmU1XmO6+RmPLRa68vlKwfk2y/ciQk/k7dfiSIL9qbC/wkf2pj4+W
-         d/ah7C/qdg5kc7tdACd3HKs8HaDGCfk13BTHc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692039654; x=1692644454;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gKTJbYyHwGU/Pavfa3Pni61Jgqd+CWSu3/z3hiS2FZk=;
-        b=LqhVSmh626/UZR6E5INmKWU9DIe48mtehfgQdXk/M8cozO47h6WQRIUbk1cTPwDFtv
-         yFZgvlZR1lCAWUT34l624+VUjoIEu4GbNB5GxZmaf11X74HEyLNDhKR5vMVt5XIvAl4B
-         lbzqjL5/eTLwPfC9xyQQC+WZxfUOs1uNGLLp4gbHIYjgne8NZrEe8Y0nA4S7ZsobTus7
-         mzN86PapyTj/6Okw+/YJk95pWH45p3bGlqK1l4BTrW1EdB9tuwZdM+RDYVPPtypg2GVX
-         E12sF7ZH+8yWQ4iHx5J4HXKEku1NBZLvALGk1KzSKKYmYC+q0cd4iL4wC/k5/b5UcMj5
-         hqOQ==
-X-Gm-Message-State: AOJu0Yz/bhSwASlqJYoGmwTWtBYwUkniwaBGb/W+pMq+j2rRivMPm0Y1
-        MytkTDEwHGWaDckBavtWTHLFLQ==
-X-Google-Smtp-Source: AGHT+IFdxlyUb3opfqP0LZm8yaMzbRYT5aUM9s1n5GnCFd9QkjKQiIIeuTRrDisx8zwdDnVwz0WSPw==
-X-Received: by 2002:a17:902:968f:b0:1bc:4f64:e2fc with SMTP id n15-20020a170902968f00b001bc4f64e2fcmr8552937plp.27.1692039654159;
-        Mon, 14 Aug 2023 12:00:54 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id u18-20020a170903125200b001b53953f306sm9813816plh.178.2023.08.14.12.00.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Aug 2023 12:00:52 -0700 (PDT)
-Date:   Mon, 14 Aug 2023 12:00:51 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.5-rc3
-Message-ID: <202308141159.9E4C2332@keescook>
-References: <CAHk-=wi4Yau-3Bsv2rXYmtXMTLaj3=Wyf4cdM6d89czFvkVsRQ@mail.gmail.com>
- <20230724122626.1701631-1-geert@linux-m68k.org>
- <88f83d73-781d-bdc-126-aa629cb368c@linux-m68k.org>
- <202307281551.D894AA39@keescook>
- <CAMuHMdXRiacSxqDzYmakWAQB99kYvY0Bi9zALP9ZnC9Xs_xO5g@mail.gmail.com>
+        Mon, 14 Aug 2023 15:37:59 -0400
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7F8BB;
+        Mon, 14 Aug 2023 12:37:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:References:Cc:To:From:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=H3/XY/jv4icK4NgBoiigxpPa2AsF3Mqwv5r97vJFS/w=; b=pOr8bcG6l/kfke8Nee4BbrwhDN
+        A2s7rzPErfg+NVwgfSWisFIPVQH8cUmi9poBS1F1nB4w0UNXGjbNEK6bNA/ENONh546s78g4R1edz
+        WAuBCj2wUx0j5lG1e9keu4qCMaxo35Zlae00gOpVVmuNUq5yHF6GbNIAizv/Ly7lH+ud3UzJKq/iE
+        9PPEPCWlZ40lnWip20o8IyQj3PlXFdkIZziRyF1CKarFaKT2LOy1L195COrXoJbtVWRluBGdKwI2x
+        yX8yOtm+eAo3yEBl/j9XgHpxa8a++yujMymBpgH1ERG+rbzqQZR4Wj7/rfbvbPsUZA4i5FRL1cJ0L
+        zm2L6yhw==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1qVdNw-000Kkk-B7; Mon, 14 Aug 2023 21:37:52 +0200
+Received: from [85.1.206.226] (helo=pc-102.home)
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1qVdNw-0002wv-35; Mon, 14 Aug 2023 21:37:52 +0200
+Subject: LPC 2023 Networking and BPF Track CFP (Reminder)
+From:   Daniel Borkmann <daniel@iogearbox.net>
+To:     netdev@vger.kernel.org, bpf@vger.kernel.org
+Cc:     xdp-newbies@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netfilter-devel@vger.kernel.org
+References: <1515db2c-f517-76da-8aad-127a67da802f@iogearbox.net>
+Message-ID: <db3003d6-733b-099f-ef73-abce750d66c6@iogearbox.net>
+Date:   Mon, 14 Aug 2023 21:37:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMuHMdXRiacSxqDzYmakWAQB99kYvY0Bi9zALP9ZnC9Xs_xO5g@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <1515db2c-f517-76da-8aad-127a67da802f@iogearbox.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.8/27000/Mon Aug 14 09:37:02 2023)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 06:20:59PM +0200, Geert Uytterhoeven wrote:
-> Hi Kees,
-> 
-> On Sat, Jul 29, 2023 at 12:57 AM Kees Cook <keescook@chromium.org> wrote:
-> > On Mon, Jul 24, 2023 at 02:43:02PM +0200, Geert Uytterhoeven wrote:
-> > > On Mon, 24 Jul 2023, Geert Uytterhoeven wrote:
-> > > > JFYI, when comparing v6.5-rc3[1] to v6.5-rc2[3], the summaries are:
-> > > >  - build errors: +5/-0
-> > >
-> > >   + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 583:25, 493:25
-> > >
-> > > mips-gcc13/mips-allmodconfig
-> > >
-> > > Full context:
-> > >
-> > >     In function 'fortify_memset_chk',
-> > >       inlined from 'memset_io' at /kisskb/src/arch/mips/include/asm/io.h:486:2,
-> > >       inlined from 'build_auth_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:2697:2:
-> > >     /kisskb/src/include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-> > >       493 |                         __write_overflow_field(p_size_field, size);
-> > >         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > >     In function 'fortify_memcpy_chk',
-> > >       inlined from 'memcpy_toio' at /kisskb/src/arch/mips/include/asm/io.h:494:2,
-> > >       inlined from 'translate_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:955:3,
-> > >       inlined from 'ray_hw_xmit.constprop' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:912:12:
-> > >     /kisskb/src/include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-> > >       583 |                         __write_overflow_field(p_size_field, size);
-> > >         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > >
-> > > Single-element flexible array abuse in drivers/net/wireless/legacy/rayctl.h:tx_msg.var
-> >
-> > ^^^^
-> > is this line from you or is there a tool outputting this? Because, yes,
-> 
-> It is a line from me.
-> 
-> (should I take it as a compliment that I start sounding like a tool? ;-)
+This is a reminder for the Call for Proposals (CFP) for the Networking and
+BPF track at the 2023 edition of the Linux Plumbers Conference (LPC) which is
+taking place in Richmond, VA, United States, on November 13th - 15th, 2023.
 
-Heh. It was so declaratory. :) I think I was hoping there was some
-analyzer that could save us the pain of manually examining these
-warnings.
+Note that the conference is planned to be both in person and remote (hybrid).
+CFP submitters should ideally be able to give their presentation in person to
+minimize technical issues, although presenting remotely will also be possible.
 
-> 
-> > very true:
-> >
-> > struct tx_msg {
-> >     struct tib_structure tib;
-> >     struct phy_header phy;
-> >     struct mac_header mac;
-> >     UCHAR  var[1];
-> > };
-> >
-> > I'll send a patch.
-> 
-> Thanks, I noticed you took care while I was enjoying summer holidays ;-)
+The Networking and BPF track technical committee consists of:
 
-Awesome! Thanks for the report. :)
+     David S. Miller <davem@davemloft.net>
+     Jakub Kicinski <kuba@kernel.org>
+     Paolo Abeni <pabeni@redhat.com>
+     Eric Dumazet <edumazet@google.com>
+     Alexei Starovoitov <ast@kernel.org>
+     Daniel Borkmann <daniel@iogearbox.net>
+     Andrii Nakryiko <andrii@kernel.org>
+     Martin Lau <martin.lau@linux.dev>
 
--- 
-Kees Cook
+We are seeking proposals of 30 minutes in length (including Q&A discussion). Any
+kind of advanced Linux networking and/or BPF related topic will be considered.
+
+Please submit your proposals through the official LPC website at:
+
+     https://lpc.events/event/17/abstracts/
+
+Make sure to select "eBPF & Networking Track" in the track pull-down menu.
+
+Proposals must be submitted by September 27th, and submitters will be notified
+of acceptance by October 2nd. Final slides (as PDF) are due on the first day of
+the conference.
+
+We are very much looking forward to a great conference and seeing you all!
