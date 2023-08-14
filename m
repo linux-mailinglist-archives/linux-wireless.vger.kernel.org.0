@@ -2,209 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7133C77B930
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 15:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA9577BB09
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 16:10:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbjHNNAK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Aug 2023 09:00:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
+        id S229575AbjHNOKI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Aug 2023 10:10:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231179AbjHNM7o (ORCPT
+        with ESMTP id S231259AbjHNOJr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Aug 2023 08:59:44 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9865B5;
-        Mon, 14 Aug 2023 05:59:42 -0700 (PDT)
-Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RPZCx6123z2BdQM;
-        Mon, 14 Aug 2023 20:56:45 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 14 Aug 2023 20:59:41 +0800
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-To:     <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Yunsheng Lin <linyunsheng@huawei.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Alexander Duyck <alexander.duyck@gmail.com>,
-        Liang Chen <liangchen.linux@gmail.com>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>, Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH net-next v6 3/6] page_pool: remove PP_FLAG_PAGE_FRAG
-Date:   Mon, 14 Aug 2023 20:56:40 +0800
-Message-ID: <20230814125643.59334-4-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20230814125643.59334-1-linyunsheng@huawei.com>
-References: <20230814125643.59334-1-linyunsheng@huawei.com>
+        Mon, 14 Aug 2023 10:09:47 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1117E3;
+        Mon, 14 Aug 2023 07:09:45 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37EBlj6E029566;
+        Mon, 14 Aug 2023 14:09:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=eRtRcSeLyPTUnI5TkxluVlX8y1YmXchwUnzvT+HnUh4=;
+ b=K0akEjTTyi4xti+J8sqst6laRm0+MNRLo7vFD4BgBd7srYQUngWFa5iOPzUQNs7xf5ji
+ qADzTy3xLqPFMHTeCSpCJv971Sn6bZ7X9s3pnHxdIpihcYPp45I6sOOnQ3gtiOS0ovo2
+ PQoQJrDnVIZCxbkph26ggxReESvNZWxP8LLl4MxGnhWg9AUbp438wUqcu2Wb8jH7eudl
+ ptrdJ3SMhu7s97u3ssUq+RwE1VSZEqzJYepdUrhyawa+3hjH0tNcrRmxX2Q1fEbY70aV
+ YPrP5r11fdtpiDaoXtTy/Aa8j58bV5f2xU/WIcsLNrxuKl3oT8F25N1IYgFsAYnrlSMi 1w== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3se3tym02r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Aug 2023 14:09:03 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37EE92ol001402
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Aug 2023 14:09:02 GMT
+Received: from [10.48.240.144] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 14 Aug
+ 2023 07:09:01 -0700
+Message-ID: <6529ca77-6ce4-d930-38a4-5ee2f9671bdd@quicinc.com>
+Date:   Mon, 14 Aug 2023 07:09:00 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.69.192.56]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500005.china.huawei.com (7.185.36.74)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wireless: ath: remove unused-but-set parameter
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        "Luis Chamberlain" <mcgrof@kernel.org>,
+        =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rg?= =?UTF-8?Q?ensen?= 
+        <toke@toke.dk>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        "Nick Desaulniers" <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Aloka Dixit <quic_alokad@quicinc.com>,
+        Wen Gong <quic_wgong@quicinc.com>,
+        "Ramya Gnanasekar" <quic_rgnanase@quicinc.com>,
+        Karthik M <quic_karm@quicinc.com>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        Muna Sinada <quic_msinada@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <llvm@lists.linux.dev>
+References: <20230814073255.1065242-1-arnd@kernel.org>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230814073255.1065242-1-arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: uLjaxiIgc9QlrycbadpGy8PPMY6alyV3
+X-Proofpoint-ORIG-GUID: uLjaxiIgc9QlrycbadpGy8PPMY6alyV3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-14_10,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=820 mlxscore=0
+ lowpriorityscore=0 impostorscore=0 suspectscore=0 phishscore=0
+ adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308140130
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PP_FLAG_PAGE_FRAG is not really needed after pp_frag_count
-handling is unified and page_pool_alloc_frag() is supported
-in 32-bit arch with 64-bit DMA, so remove it.
+On 8/14/2023 12:32 AM, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> This has never been used since the driver was merged, but it now causes
+> a W=1 warning in recent clang versions
+> 
+> drivers/net/wireless/ath/ath9k/main.c:1566:21: error: parameter 'changed_flags' set but not used [-Werror,-Wunused-but-set-parameter]
+> drivers/net/wireless/ath/ath9k/htc_drv_main.c:1258:25: error: parameter 'changed_flags' set but not used [-Werror,-Wunused-but-set-parameter]
+> drivers/net/wireless/ath/ath5k/mac80211-ops.c:367:62: error: parameter 'changed_flags' set but not used [-Werror,-Wunused-but-set-parameter]
+> 
+> Remove the bit manipulation on the otherwise unused parameter.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-CC: Lorenzo Bianconi <lorenzo@kernel.org>
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-CC: Liang Chen <liangchen.linux@gmail.com>
-CC: Alexander Lobakin <aleksander.lobakin@intel.com>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c                | 2 --
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c          | 3 +--
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mac80211.c            | 2 +-
- include/net/page_pool/types.h                            | 8 ++------
- net/core/page_pool.c                                     | 3 ---
- net/core/skbuff.c                                        | 2 +-
- 7 files changed, 6 insertions(+), 16 deletions(-)
+I'm wondering if the ath12k change should be separated into its own 
+patch because 1) it is the most current driver with a dedicated list, 
+and 2) it actually doesn't generate a warning because changed_flags is 
+used, just not in a meaningful way. But I'll let Kalle make the call on 
+that when he returns from holiday.
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 7be917a8da48..60b699be0d9b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -3249,8 +3249,6 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
- 	pp.napi = &rxr->bnapi->napi;
- 	pp.dev = &bp->pdev->dev;
- 	pp.dma_dir = DMA_BIDIRECTIONAL;
--	if (PAGE_SIZE > BNXT_RX_PAGE_SIZE)
--		pp.flags |= PP_FLAG_PAGE_FRAG;
- 
- 	rxr->page_pool = page_pool_create(&pp);
- 	if (IS_ERR(rxr->page_pool)) {
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index eac2d0573241..ff0c219365f1 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -4926,8 +4926,7 @@ static void hns3_put_ring_config(struct hns3_nic_priv *priv)
- static void hns3_alloc_page_pool(struct hns3_enet_ring *ring)
- {
- 	struct page_pool_params pp_params = {
--		.flags = PP_FLAG_DMA_MAP | PP_FLAG_PAGE_FRAG |
--				PP_FLAG_DMA_SYNC_DEV,
-+		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
- 		.order = hns3_page_order(ring),
- 		.pool_size = ring->desc_num * hns3_buf_size(ring) /
- 				(PAGE_SIZE << hns3_page_order(ring)),
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index dce3cea00032..edc6acebf369 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -1433,7 +1433,7 @@ int otx2_pool_init(struct otx2_nic *pfvf, u16 pool_id,
- 		return 0;
- 	}
- 
--	pp_params.flags = PP_FLAG_PAGE_FRAG | PP_FLAG_DMA_MAP;
-+	pp_params.flags = PP_FLAG_DMA_MAP;
- 	pp_params.pool_size = numptrs;
- 	pp_params.nid = NUMA_NO_NODE;
- 	pp_params.dev = pfvf->dev;
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index d158320bc15d..fe7cc67b7ee2 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -566,7 +566,7 @@ int mt76_create_page_pool(struct mt76_dev *dev, struct mt76_queue *q)
- {
- 	struct page_pool_params pp_params = {
- 		.order = 0,
--		.flags = PP_FLAG_PAGE_FRAG,
-+		.flags = 0,
- 		.nid = NUMA_NO_NODE,
- 		.dev = dev->dma_dev,
- 	};
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index 079337c42aa6..4775cf95edb7 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -15,19 +15,15 @@
-  */
- #define PP_FLAG_DMA_SYNC_DEV		BIT(1)
- 
--/* for page frag feature */
--#define PP_FLAG_PAGE_FRAG		BIT(2)
--
- /* If set driver will do the page splitting itself. This is used to fail the
-  * page_pool creation because there is overlap issue between pp_frag_count and
-  * dma_addr_upper in 'struct page' for some arches with
-  * PAGE_POOL_DMA_USE_PP_FRAG_COUNT being true.
-  */
--#define PP_FLAG_PAGE_SPLIT_IN_DRIVER	BIT(3)
-+#define PP_FLAG_PAGE_SPLIT_IN_DRIVER	BIT(2)
- 
- #define PP_FLAG_ALL		(PP_FLAG_DMA_MAP |\
- 				 PP_FLAG_DMA_SYNC_DEV |\
--				 PP_FLAG_PAGE_FRAG |\
- 				 PP_FLAG_PAGE_SPLIT_IN_DRIVER)
- 
- /*
-@@ -53,7 +49,7 @@ struct pp_alloc_cache {
- 
- /**
-  * struct page_pool_params - page pool parameters
-- * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV, PP_FLAG_PAGE_FRAG,
-+ * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV,
-  *		PP_FLAG_PAGE_SPLIT_IN_DRIVER
-  * @order:	2^order pages on allocation
-  * @pool_size:	size of the ptr_ring
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 653263fb5c85..d3b8efe98d5e 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -751,9 +751,6 @@ struct page *__page_pool_alloc_frag(struct page_pool *pool,
- 	unsigned int max_size = PAGE_SIZE << pool->p.order;
- 	struct page *page = pool->frag_page;
- 
--	if (WARN_ON(!(pool->p.flags & PP_FLAG_PAGE_FRAG))
--		return NULL;
--
- 	*offset = pool->frag_offset;
- 
- 	if (page && *offset + size > max_size) {
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 33fdf04d4334..4b90b6ed10b2 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5709,7 +5709,7 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
- 	/* In general, avoid mixing page_pool and non-page_pool allocated
- 	 * pages within the same SKB. Additionally avoid dealing with clones
- 	 * with page_pool pages, in case the SKB is using page_pool fragment
--	 * references (PP_FLAG_PAGE_FRAG). Since we only take full page
-+	 * references (page_pool_alloc_frag()). Since we only take full page
- 	 * references for cloned SKBs at the moment that would result in
- 	 * inconsistent reference counts.
- 	 * In theory we could take full references if @from is cloned and
--- 
-2.33.0
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
 
