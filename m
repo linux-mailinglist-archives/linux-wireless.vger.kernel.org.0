@@ -2,103 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65EAA77BBBB
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 16:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBF5677BBDC
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 16:41:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230218AbjHNOcX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Aug 2023 10:32:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48120 "EHLO
+        id S232296AbjHNOk6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Aug 2023 10:40:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230338AbjHNOcA (ORCPT
+        with ESMTP id S232554AbjHNOkZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Aug 2023 10:32:00 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AC6E4;
-        Mon, 14 Aug 2023 07:31:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=Ay1rTroirnmemG/EOx5vN4q0IrGCDWTLQUSvpOgdtJo=; b=gvoMcqWgknrjch0StNOzR22eoc
-        rL8ccmeUSrYG/x608Pjw/5lP2XxAvBxTwZ8uXmK/W/1W8Mej5fBsRZ3aS267AlICcgWpM1rauvUEj
-        wutv3fkRlWb5EtvxzHRmQybXu0FiOkXC1pdOj60c/ARgBD6Q782QqHAjuMbT34UQ1G9M=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qVYbK-0043O3-CL; Mon, 14 Aug 2023 16:31:22 +0200
-Date:   Mon, 14 Aug 2023 16:31:22 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     "Quan, Evan" <Evan.Quan@amd.com>
-Cc:     "Limonciello, Mario" <Mario.Limonciello@amd.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        "airlied@gmail.com" <airlied@gmail.com>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
-        "maarten.lankhorst@linux.intel.com" 
-        <maarten.lankhorst@linux.intel.com>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
-        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
-        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
-        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
-        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
-        "trix@redhat.com" <trix@redhat.com>,
-        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH V7 4/9] wifi: mac80211: Add support for ACPI WBRF
-Message-ID: <b30be221-783e-4e56-a9b3-d4df885cdd00@lunn.ch>
-References: <20230719090020.2716892-1-evan.quan@amd.com>
- <20230719090020.2716892-5-evan.quan@amd.com>
- <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
- <7d059aed-fac0-cdcd-63d5-58185bb345db@amd.com>
- <DM6PR12MB26196A993B3BA93392AA0FEDE403A@DM6PR12MB2619.namprd12.prod.outlook.com>
- <d4cfbbae-9cd0-4767-8c80-ec09d1dbaf9c@lunn.ch>
- <6aa9061b-1702-b8f2-9cb8-982895b9def4@amd.com>
- <5e92b45a-d99b-4a8a-9987-46c75a5fcb3c@lunn.ch>
- <DM6PR12MB26196A508D4B3523E38C0761E417A@DM6PR12MB2619.namprd12.prod.outlook.com>
+        Mon, 14 Aug 2023 10:40:25 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B2FF5
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 07:40:24 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37ECrCue032286;
+        Mon, 14 Aug 2023 14:40:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=Awq0VCTn7hOYLbV3Lp5RBFBDxM8X8dv8HQfrBsnccAE=;
+ b=E0tVhc9TNbwLuV6Vx29o9UbPF6J7vGCgBg7O0REb4LE+GL4YcLKYhM5WtiTqarEfjXDz
+ JMsESnImOMiIvtzZEOPEHVLsDzK8fX0GmOVoVqq5R2Tfc1TA5ZIAks2ykIQoIDpLlVLD
+ gSTwSs/SnGCQ6y78yO4Z27WeW3FP9eZIN4inhOpo59APX1buLHhe2euNrUK3eBZTcf4G
+ VpZjHWhEstFfiA9Vk1uOcihn5NaGqBjO5NXjdlAUgP28dOVe9874AJWU0UubojqiXTev
+ y3G7idIqupxZH0RgNYGU3hwFCIu1y+KlyNgCB8uYpz5dMSUkGxfDtJl5OOP7P37CJngs Nw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3se3tym24q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Aug 2023 14:40:07 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37EEe6M3006816
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Aug 2023 14:40:06 GMT
+Received: from [10.48.240.144] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 14 Aug
+ 2023 07:40:05 -0700
+Message-ID: <f54ac1e5-4a3d-780a-0e83-5a26b472c17f@quicinc.com>
+Date:   Mon, 14 Aug 2023 07:40:04 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM6PR12MB26196A508D4B3523E38C0761E417A@DM6PR12MB2619.namprd12.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/2] wifi: ath: Use is_multicast_ether_addr() to
+ check multicast Ether address
+Content-Language: en-US
+To:     Ruan Jinjie <ruanjinjie@huawei.com>, <kvalo@kernel.org>,
+        <briannorris@chromium.org>, <johannes.berg@intel.com>,
+        <Jason@zx2c4.com>, <toke@toke.dk>, <tj@kernel.org>,
+        <mukesh.sisodiya@intel.com>, <quic_vjakkam@quicinc.com>,
+        <johannes.wiesboeck@aisec.fraunhofer.de>,
+        <linux-wireless@vger.kernel.org>
+References: <20230814124212.302738-1-ruanjinjie@huawei.com>
+ <20230814124212.302738-2-ruanjinjie@huawei.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230814124212.302738-2-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: _fvsNocpzA0W04cSxZDcIvFskF92STOU
+X-Proofpoint-ORIG-GUID: _fvsNocpzA0W04cSxZDcIvFskF92STOU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-14_10,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 impostorscore=0 suspectscore=0 phishscore=0
+ adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308140135
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 09:50:49AM +0000, Quan, Evan wrote:
-> [AMD Official Use Only - General]
+On 8/14/2023 5:42 AM, Ruan Jinjie wrote:
+> Use is_multicast_ether_addr() to perform the Checking.
 > 
-> Hi Andrew,
+> Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+> ---
+>   drivers/net/wireless/ath/key.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> I sent out a new V8 series last week.
-> A kernel parameter `wbrf` was introduced there to decide the policy.
-> Please help to check whether that makes sense to you.
-> Please share your insights there.
+> diff --git a/drivers/net/wireless/ath/key.c b/drivers/net/wireless/ath/key.c
+> index b7b61d4f02ba..21a93fec284d 100644
+> --- a/drivers/net/wireless/ath/key.c
+> +++ b/drivers/net/wireless/ath/key.c
+> @@ -104,7 +104,7 @@ bool ath_hw_keysetmac(struct ath_common *common, u16 entry, const u8 *mac)
+>   		 * Not setting this bit allows the hardware to use the key
+>   		 * for multicast frame decryption.
+>   		 */
+> -		if (mac[0] & 0x01)
+> +		if (is_multicast_ether_addr(mac))
+>   			unicast_flag = 0;
+>   
+>   		macLo = get_unaligned_le32(mac);
 
-netdev has a pretty strong policy of not adding new kernel
-parameters. It is a really painful interface to use, and there are
-generally better configuration interfaces within netdev.
-
-However, as far as i can see, it is outside of netdev, so this policy
-does not necessarily apply.
-
-     Andrew
