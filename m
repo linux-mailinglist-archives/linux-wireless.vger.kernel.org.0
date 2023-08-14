@@ -2,65 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC5DB77B8E5
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 14:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7133C77B930
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 15:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229592AbjHNMpI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Aug 2023 08:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60414 "EHLO
+        id S230232AbjHNNAK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Aug 2023 09:00:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbjHNMoi (ORCPT
+        with ESMTP id S231179AbjHNM7o (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Aug 2023 08:44:38 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2A935E5B
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 05:44:35 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37ECiDX41031223, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37ECiDX41031223
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 14 Aug 2023 20:44:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+        Mon, 14 Aug 2023 08:59:44 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9865B5;
+        Mon, 14 Aug 2023 05:59:42 -0700 (PDT)
+Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.57])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RPZCx6123z2BdQM;
+        Mon, 14 Aug 2023 20:56:45 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.56) by
+ dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 14 Aug 2023 20:44:32 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 14 Aug 2023 20:44:31 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Mon, 14 Aug 2023 20:44:31 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "emmanuel.mazurier@gmail.com" <emmanuel.mazurier@gmail.com>
-Subject: Re: rtw89_8852ae : failed to recognize firmware elements
-Thread-Topic: rtw89_8852ae : failed to recognize firmware elements
-Thread-Index: AQHZzpU1V36L2dqrSEeM3aqDGrDKcK/pMAEAgAAGtAA=
-Date:   Mon, 14 Aug 2023 12:44:30 +0000
-Message-ID: <2c5dda769ab25b819128eafca8701870ffeee443.camel@realtek.com>
-References: <CAOc87ak7jOQDR5njcM-qTn6XFq_w6p64uVaiXpNtBhLp-_NGeg@mail.gmail.com>
-         <ba862f2103d7321484af73f55f31643570625c08.camel@realtek.com>
-In-Reply-To: <ba862f2103d7321484af73f55f31643570625c08.camel@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.16.16.65]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F6953AB12B3B1848988671EA7A1A20B2@realtek.com>
-Content-Transfer-Encoding: base64
+ 15.1.2507.31; Mon, 14 Aug 2023 20:59:41 +0800
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+To:     <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Yunsheng Lin <linyunsheng@huawei.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Alexander Duyck <alexander.duyck@gmail.com>,
+        Liang Chen <liangchen.linux@gmail.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>, Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH net-next v6 3/6] page_pool: remove PP_FLAG_PAGE_FRAG
+Date:   Mon, 14 Aug 2023 20:56:40 +0800
+Message-ID: <20230814125643.59334-4-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20230814125643.59334-1-linyunsheng@huawei.com>
+References: <20230814125643.59334-1-linyunsheng@huawei.com>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.69.192.56]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500005.china.huawei.com (7.185.36.74)
+X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
@@ -70,40 +72,139 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIzLTA4LTE0IGF0IDEyOjIwICswMDAwLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+
-IE9uIE1vbiwgMjAyMy0wOC0xNCBhdCAxMTo1MiArMDIwMCwgRW1tYW51ZWwgTWF6dXJpZXIgd3Jv
-dGU6DQo+ID4gSGVsbG8sDQo+ID4gQWZ0ZXIgYSBEZWJpYW4gMTEgdXBkYXRlLCBuZXcgaGVhZGVy
-IHdhcyBpbnN0YWxsZWQgOiA1LjEwLjAtMjQtYW1kNjQsDQo+ID4gYW5kIGFmdGVyIHVwZ3JhZGlu
-ZyBydHc4OSBmaXJtd2FyZSwgdGhlIGRyaXZlciB3YXMgbm90IHJlY29nbml6ZWQgYnkNCj4gPiB0
-aGUgc3lzdGVtLg0KPiA+IA0KPiA+IERtZXNnIGVycm9yIDoNCj4gPiBydHc4OWNvcmU6IGxvYWRp
-bmcgb3V0LW9mLXRyZWUgbW9kdWxlIHRhaW50cyBrZXJuZWwuDQo+ID4gcnR3ODlfODg1MmFlIDAw
-MDA6MDk6MDAuMDogbm90IG1mdyBmb3JtYXQNCj4gPiBydHc4OV84ODUyYWUgMDAwMDowOTowMC4w
-OiBmYWlsZWQgdG8gcmVjb2duaXplIGZpcm13YXJlIGVsZW1lbnRzDQo+IA0KPiBXaXRoIHRoZXNl
-IGVycm9ycywgaXQgc2VlbXMgbGlrZSB5b3UgaW5zdGFsbGVkIHRoZSBsYXRlc3Qgd2lyZWxlc3Mt
-bmV4dCANCj4ga2VybmVsIChha2Ega2VybmVsIDYuNi1yYyksIGJ1dCB5b3VyIGZpcm13YXJlIGlz
-IHRoZSBvbGRlc3QgZmlybXdhcmUNCj4gdGhhdCB3ZSB1c2VkIGl0IGluIGRldmVsb3BtZW50IHN0
-YWdlLiANCj4gDQo+IFBsZWFzZSBwcm92aWRlIGJlbG93IGluZm9ybWF0aW9uIHRvIGRpYWdub3Nl
-IHRoaXMgcHJvYmxlbS4NCj4gDQo+IDEuIGtlcm5lbCB2ZXJzaW9uIHlvdSBhcmUgdXNpbmcNCj4g
-JCB1bmFtZSAtYSANCj4gDQo+IDIuIGZpcm13YXJlIHlvdSBhcmUgdXNpbmcNCj4gJCBscyAtYWwg
-L2xpYi9maXJtd2FyZS9ydHc4OS9ydHc4ODUyYV9mdy5iaW4NCj4gJCBtZDVzdW0gL2xpYi9maXJt
-d2FyZS9ydHc4OS9ydHc4ODUyYV9mdy5iaW4NCj4gDQo+ID4gcnR3ODlfODg1MmFlIDAwMDA6MDk6
-MDAuMDogZmFpbGVkIHRvIHNldHVwIGNoaXAgaW5mb3JtYXRpb24NCj4gPiBydHc4OV84ODUyYWU6
-IHByb2JlIG9mIDAwMDA6MDk6MDAuMCBmYWlsZWQgd2l0aCBlcnJvciAtMjINCj4gPiANCj4gPiBJ
-IGhhdmUgaW5zdGFsbGVkIHRoZSBmaXJtd2FyZS1yZWFsdGVrIHBhY2thZ2UgdG9vLg0KPiA+IA0K
-PiA+IERvIHlvdSBoYXZlIGFueSBpZGVhIGFib3V0IHRoZSBwcm9ibGVtID8gSSBjYW4ndCB1c2Ug
-d2lmaSBmb3IgdGhlIG1vbWVudC4NCj4gDQo+IEEgcG9zc2libGUgZml4IGlzIHRvIHVwZGF0ZSBm
-aXJtd2FyZSB0byB0aGUgbGF0ZXN0IHRoYXQgeW91IGNhbiBkb3dubG9hZA0KPiBpdCB2aWE6DQo+
-IGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L2Zpcm13YXJl
-L2xpbnV4LWZpcm13YXJlLmdpdC90cmVlL3J0dzg5L3J0dzg4NTJhX2Z3LmJpbg0KPiANCj4gSSB3
-aWxsIGFsc28gc2VuZCBhIHBhdGNoIHRvIGJlIGJhY2t3YXJkIGNvbXBhdGlibGUgd2l0aCB0aGUg
-b2xkIGZpcm13YXJlDQo+IGlmIHRoaXMgcHJvYmxlbSBpcyByZXNvbHZlZC4gDQo+IA0KDQpQbGVh
-c2UgYWxzbyBjYXB0dXJlIGxvZyB3aGVuIGl0IGZhaWxlZCB0byBsb2FkIGZpcm13YXJlLCBhbmQg
-c2VlIGlmIHRoZQ0KZmlybXdhcmUgdmVyc2lvbiBsaWtlOiANCg0KcnR3ODlfODg1MmFlIDAwMDA6
-MDM6MDAuMDogbG9hZGVkIGZpcm13YXJlIHJ0dzg5L3J0dzg4NTJhX2Z3LmJpbg0KcnR3ODlfODg1
-MmFlIDAwMDA6MDM6MDAuMDogZW5hYmxpbmcgZGV2aWNlICgwMTAwIC0+IDAxMDMpDQpydHc4OV84
-ODUyYWUgMDAwMDowMzowMC4wOiBGaXJtd2FyZSB2ZXJzaW9uIDAuOS4xMi4yIChhNmEwYzQyNSks
-IGNtZCB2ZXJzaW9uIDAsIHR5cGUgMQ0KcnR3ODlfODg1MmFlIDAwMDA6MDM6MDAuMDogbm90IG1m
-dyBmb3JtYXQNCnJ0dzg5Xzg4NTJhZSAwMDAwOjAzOjAwLjA6IGZhaWxlZCB0byByZWNvZ25pemUg
-ZmlybXdhcmUgZWxlbWVudHMNCnJ0dzg5Xzg4NTJhZSAwMDAwOjAzOjAwLjA6IGZhaWxlZCB0byBz
-ZXR1cCBjaGlwIGluZm9ybWF0aW9uDQpydHc4OV84ODUyYWU6IHByb2JlIG9mIDAwMDA6MDM6MDAu
-MCBmYWlsZWQgd2l0aCBlcnJvciAtMjINCg0KUGluZy1LZQ0KDQoNCg==
+PP_FLAG_PAGE_FRAG is not really needed after pp_frag_count
+handling is unified and page_pool_alloc_frag() is supported
+in 32-bit arch with 64-bit DMA, so remove it.
+
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+CC: Lorenzo Bianconi <lorenzo@kernel.org>
+CC: Alexander Duyck <alexander.duyck@gmail.com>
+CC: Liang Chen <liangchen.linux@gmail.com>
+CC: Alexander Lobakin <aleksander.lobakin@intel.com>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c                | 2 --
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c          | 3 +--
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c            | 2 +-
+ include/net/page_pool/types.h                            | 8 ++------
+ net/core/page_pool.c                                     | 3 ---
+ net/core/skbuff.c                                        | 2 +-
+ 7 files changed, 6 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 7be917a8da48..60b699be0d9b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -3249,8 +3249,6 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
+ 	pp.napi = &rxr->bnapi->napi;
+ 	pp.dev = &bp->pdev->dev;
+ 	pp.dma_dir = DMA_BIDIRECTIONAL;
+-	if (PAGE_SIZE > BNXT_RX_PAGE_SIZE)
+-		pp.flags |= PP_FLAG_PAGE_FRAG;
+ 
+ 	rxr->page_pool = page_pool_create(&pp);
+ 	if (IS_ERR(rxr->page_pool)) {
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index eac2d0573241..ff0c219365f1 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -4926,8 +4926,7 @@ static void hns3_put_ring_config(struct hns3_nic_priv *priv)
+ static void hns3_alloc_page_pool(struct hns3_enet_ring *ring)
+ {
+ 	struct page_pool_params pp_params = {
+-		.flags = PP_FLAG_DMA_MAP | PP_FLAG_PAGE_FRAG |
+-				PP_FLAG_DMA_SYNC_DEV,
++		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+ 		.order = hns3_page_order(ring),
+ 		.pool_size = ring->desc_num * hns3_buf_size(ring) /
+ 				(PAGE_SIZE << hns3_page_order(ring)),
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index dce3cea00032..edc6acebf369 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1433,7 +1433,7 @@ int otx2_pool_init(struct otx2_nic *pfvf, u16 pool_id,
+ 		return 0;
+ 	}
+ 
+-	pp_params.flags = PP_FLAG_PAGE_FRAG | PP_FLAG_DMA_MAP;
++	pp_params.flags = PP_FLAG_DMA_MAP;
+ 	pp_params.pool_size = numptrs;
+ 	pp_params.nid = NUMA_NO_NODE;
+ 	pp_params.dev = pfvf->dev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index d158320bc15d..fe7cc67b7ee2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -566,7 +566,7 @@ int mt76_create_page_pool(struct mt76_dev *dev, struct mt76_queue *q)
+ {
+ 	struct page_pool_params pp_params = {
+ 		.order = 0,
+-		.flags = PP_FLAG_PAGE_FRAG,
++		.flags = 0,
+ 		.nid = NUMA_NO_NODE,
+ 		.dev = dev->dma_dev,
+ 	};
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index 079337c42aa6..4775cf95edb7 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -15,19 +15,15 @@
+  */
+ #define PP_FLAG_DMA_SYNC_DEV		BIT(1)
+ 
+-/* for page frag feature */
+-#define PP_FLAG_PAGE_FRAG		BIT(2)
+-
+ /* If set driver will do the page splitting itself. This is used to fail the
+  * page_pool creation because there is overlap issue between pp_frag_count and
+  * dma_addr_upper in 'struct page' for some arches with
+  * PAGE_POOL_DMA_USE_PP_FRAG_COUNT being true.
+  */
+-#define PP_FLAG_PAGE_SPLIT_IN_DRIVER	BIT(3)
++#define PP_FLAG_PAGE_SPLIT_IN_DRIVER	BIT(2)
+ 
+ #define PP_FLAG_ALL		(PP_FLAG_DMA_MAP |\
+ 				 PP_FLAG_DMA_SYNC_DEV |\
+-				 PP_FLAG_PAGE_FRAG |\
+ 				 PP_FLAG_PAGE_SPLIT_IN_DRIVER)
+ 
+ /*
+@@ -53,7 +49,7 @@ struct pp_alloc_cache {
+ 
+ /**
+  * struct page_pool_params - page pool parameters
+- * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV, PP_FLAG_PAGE_FRAG,
++ * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV,
+  *		PP_FLAG_PAGE_SPLIT_IN_DRIVER
+  * @order:	2^order pages on allocation
+  * @pool_size:	size of the ptr_ring
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 653263fb5c85..d3b8efe98d5e 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -751,9 +751,6 @@ struct page *__page_pool_alloc_frag(struct page_pool *pool,
+ 	unsigned int max_size = PAGE_SIZE << pool->p.order;
+ 	struct page *page = pool->frag_page;
+ 
+-	if (WARN_ON(!(pool->p.flags & PP_FLAG_PAGE_FRAG))
+-		return NULL;
+-
+ 	*offset = pool->frag_offset;
+ 
+ 	if (page && *offset + size > max_size) {
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 33fdf04d4334..4b90b6ed10b2 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5709,7 +5709,7 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
+ 	/* In general, avoid mixing page_pool and non-page_pool allocated
+ 	 * pages within the same SKB. Additionally avoid dealing with clones
+ 	 * with page_pool pages, in case the SKB is using page_pool fragment
+-	 * references (PP_FLAG_PAGE_FRAG). Since we only take full page
++	 * references (page_pool_alloc_frag()). Since we only take full page
+ 	 * references for cloned SKBs at the moment that would result in
+ 	 * inconsistent reference counts.
+ 	 * In theory we could take full references if @from is cloned and
+-- 
+2.33.0
+
