@@ -2,104 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B1E377B5EA
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 12:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BE5F77B6AB
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 12:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235006AbjHNKD2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Aug 2023 06:03:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60268 "EHLO
+        id S233167AbjHNK2H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Aug 2023 06:28:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235135AbjHNKDL (ORCPT
+        with ESMTP id S231184AbjHNK1f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Aug 2023 06:03:11 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26713D8;
-        Mon, 14 Aug 2023 03:03:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=J2KANedUadXaYMFYELF3QAJcmMwnPhF0mdoeDT4tKH0=;
-        t=1692007389; x=1693216989; b=hHkReWAbt42IF9MXIeAefNGCuOXVvNDK4LSEmciBDTE4Ibk
-        ckDvGhPxakp2EOkDMSYS2LR40erpszugfpCu4pju+N8+Clm9irU4AKb77iucaLr0oOVdk63io9HIj
-        X/qKrpXi7nDiC3pc2cqiAEtnEdwa/49R827X+jrrRlajHzdM7HePOWabNcFl2145CoTbbTrjbAgTl
-        MTIwbzDFO08U6yYDgJl5p+eKWswcMt1nHVAoJiD5CEyGgm+C7YikaMVlJX77+qxban0J9oWPjr9xs
-        vnrcMm4xfzpdDycj+Tafj+OfwhCgazJJcs1wSJFB5MOjixCK6t67MXyxobio2ADg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qVUP9-006dCg-23;
-        Mon, 14 Aug 2023 12:02:31 +0200
-Message-ID: <cabc7d0326e1169570eafdecef8df56369b4300b.camel@sipsolutions.net>
-Subject: Re: [PATCH V7 4/9] wifi: mac80211: Add support for ACPI WBRF
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Quan, Evan" <Evan.Quan@amd.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        "airlied@gmail.com" <airlied@gmail.com>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "mdaenzer@redhat.com" <mdaenzer@redhat.com>,
-        "maarten.lankhorst@linux.intel.com" 
-        <maarten.lankhorst@linux.intel.com>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "jingyuwang_vip@163.com" <jingyuwang_vip@163.com>,
-        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
-        "jim.cromie@gmail.com" <jim.cromie@gmail.com>,
-        "bellosilicio@gmail.com" <bellosilicio@gmail.com>,
-        "andrealmeid@igalia.com" <andrealmeid@igalia.com>,
-        "trix@redhat.com" <trix@redhat.com>,
-        "jsg@jsg.id.au" <jsg@jsg.id.au>, "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        Mon, 14 Aug 2023 06:27:35 -0400
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B64E3
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 03:27:31 -0700 (PDT)
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+        by mail11.truemail.it (Postfix) with ESMTPA id 4AF301F83F;
+        Mon, 14 Aug 2023 12:27:29 +0200 (CEST)
+Received: from livingston (unknown [192.168.42.11])
+        by gaggiata.pivistrello.it (Postfix) with ESMTP id E93767FCF2;
+        Mon, 14 Aug 2023 12:27:28 +0200 (CEST)
+Received: from pivi by livingston with local (Exim 4.96)
+        (envelope-from <francesco@dolcini.it>)
+        id 1qVUnI-0000rJ-2c;
+        Mon, 14 Aug 2023 12:27:28 +0200
+Date:   Mon, 14 Aug 2023 12:27:28 +0200
+From:   Francesco Dolcini <francesco@dolcini.it>
+To:     David Lin <yu-hao.lin@nxp.com>
+Cc:     Francesco Dolcini <francesco@dolcini.it>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Date:   Mon, 14 Aug 2023 12:02:29 +0200
-In-Reply-To: <5e92b45a-d99b-4a8a-9987-46c75a5fcb3c@lunn.ch>
-References: <20230719090020.2716892-1-evan.quan@amd.com>
-         <20230719090020.2716892-5-evan.quan@amd.com>
-         <9b1f45f9-02a3-4c03-b9d5-cc3b9ab3a058@lunn.ch>
-         <7d059aed-fac0-cdcd-63d5-58185bb345db@amd.com>
-         <DM6PR12MB26196A993B3BA93392AA0FEDE403A@DM6PR12MB2619.namprd12.prod.outlook.com>
-         <d4cfbbae-9cd0-4767-8c80-ec09d1dbaf9c@lunn.ch>
-         <6aa9061b-1702-b8f2-9cb8-982895b9def4@amd.com>
-         <5e92b45a-d99b-4a8a-9987-46c75a5fcb3c@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: Re: [PATCH v3] wifi: mwifiex: added code to support host mlme.
+Message-ID: <ZNoBkF12PCZARO76@livingston.pivistrello.it>
+References: <DU0PR04MB963607ADBFC49C7AB713092DD113A@DU0PR04MB9636.eurprd04.prod.outlook.com>
+ <ZNSrYEJ9m0jO/WU9@francesco-nb.int.toradex.com>
+ <PA4PR04MB9638C1DB606524BD57AB59CED113A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZNTzMrjfauSJN1ym@francesco-nb.int.toradex.com>
+ <PA4PR04MB9638C81BE986779C9512E262D110A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZNXqt62xMQFQh16o@francesco-nb.int.toradex.com>
+ <PA4PR04MB9638F951BC7895315274BC79D117A@PA4PR04MB9638.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PA4PR04MB9638F951BC7895315274BC79D117A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-07-25 at 22:09 +0200, Andrew Lunn wrote:
->=20
->=20
-> It could well be that AMD based machine has a different ACPI extension
-> to indicate this policy to what Intel machine has. As far as i
-> understand it, you have not submitted this yet for formal approval,
-> this is all vendor specific, so Intel could do it completely
-> differently.
+On Mon, Aug 14, 2023 at 02:21:51AM +0000, David Lin wrote:
+> > From: Francesco Dolcini <francesco@dolcini.it>
+> > Sent: Friday, August 11, 2023 4:01 PM
+> > To: David Lin <yu-hao.lin@nxp.com>
+> > Cc: Francesco Dolcini <francesco@dolcini.it>; linux-wireless@vger.kernel.org;
+> > Sharvari Harisangam <sharvari.harisangam@nxp.com>; Pete Hsieh
+> > <tsung-hsien.hsieh@nxp.com>
+> > Subject: Re: [EXT] Re: [PATCH v3] wifi: mwifiex: added code to support host
+> > mlme.
+> > On Fri, Aug 11, 2023 at 02:13:43AM +0000, David Lin wrote:
+> > > > From: Francesco Dolcini <francesco@dolcini.it>
+> > > > Sent: Thursday, August 10, 2023 10:25 PM
+> > > > To: David Lin <yu-hao.lin@nxp.com>
+> > > > Cc: Francesco Dolcini <francesco@dolcini.it>;
+> > > > linux-wireless@vger.kernel.org; Sharvari Harisangam
+> > > > <sharvari.harisangam@nxp.com>; Pete Hsieh
+> > > > <tsung-hsien.hsieh@nxp.com>
+> > > > Subject: Re: [EXT] Re: [PATCH v3] wifi: mwifiex: added code to
+> > > > support host mlme.
+> > > >
+> > > > Caution: This is an external email. Please take care when clicking
+> > > > links or opening attachments. When in doubt, report the message
+> > > > using the 'Report this email' button
+> > > >
+> > > >
+> > > > On Thu, Aug 10, 2023 at 10:51:36AM +0000, David Lin wrote:
+> > > > > > From: Francesco Dolcini <francesco@dolcini.it> On Thu, Aug 10,
+> > > > > > 2023 at 02:39:21AM +0000, David Lin wrote:
+> > > > > > > 3. Firmware version 2 is needed for this feature.
+> > > > > > That would mean that we could just enable it for other Wi-Fi
+> > > > > > chip variant that has firmware version 2, after testing it?
+> > > > > Yes. But I only tested with IW416.
+> > > >
+> > > > Can/should we probe the firmware version at runtime, instead of
+> > > > hard-coding this?
+> > >
+> > > Firmware version is reported by firmware after firmware is downloaded.
+> > What's the problem with that? You cannot really do anything till the
+> > firmware is loaded?
+> > 
+> > If I understand correctly the possibility to use this feature requires its
+> > counterpart to be available on the device firmware, this should be the
+> > criteria to use to decide if this functionality should be enabled or not.
+> > Hard-coding this depending on the actual device does not look correct to
+> > me.
+> > 
+> 
+> If firmware is old and supports firmware v1, you should not enable host mlme
+> for the firmware. Firmware version is detected at runtime when firmware is
+> loaded.
 
-Already do, without the host software being involved in the same way.
-There, I believe the ACPI tables just indicate what's needed and the
-WiFi firmware sorts out the rest.
+What I am trying to say is that in mwifiex we should just decide to enable or
+not host mlme at runtime after we know if the firmware support this
+functionality.
 
-johannes
+Francesco
+
