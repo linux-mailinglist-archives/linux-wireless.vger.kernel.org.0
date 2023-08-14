@@ -2,54 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50EC277AF0F
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 02:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 724DD77AF81
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 04:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230443AbjHNAtO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Aug 2023 20:49:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58190 "EHLO
+        id S230072AbjHNCWI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Aug 2023 22:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231358AbjHNAst (ORCPT
+        with ESMTP id S232437AbjHNCVz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Aug 2023 20:48:49 -0400
-Received: from mail-pl1-f206.google.com (mail-pl1-f206.google.com [209.85.214.206])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05433E6E
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Aug 2023 17:48:48 -0700 (PDT)
-Received: by mail-pl1-f206.google.com with SMTP id d9443c01a7336-1bc394829b8so45982435ad.0
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Aug 2023 17:48:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691974127; x=1692578927;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ffSiHmXmKvWjGufuXWAkAV+GTFU4ol0O8toxVI2rWJk=;
-        b=GvWlVgXhvyjJKG1SrC5j9nOcGoFIeM0QZk5x/1NybTROGCj0wMVcTC8m0kckBxISF4
-         VAHotO/5wRMV7xCDCEg91asL0cHItZ7Qic1DtQAUFFwag7vwSZhEG/6H06Fwey+U1fLD
-         aUW9nQbdm+zwHm9ldU/bx5MjiI9PjNlLkl4BVsoCh3GUkAqbTV6/kztiYG6in7LYe5hJ
-         8dU4UVI8Vu63ZJwZ7C4TJ9n7i9cm9YY7gm2eDLJDYDsIsHaRIwFk7dpNlCKgZ7LRAIQ2
-         DDhp4+Ltc/xL8BmPLERDUwVWXcu5rElyiirG+XOZ4lAIGhE/a3ZcSxzn6YaNn/A4hBT+
-         mbew==
-X-Gm-Message-State: AOJu0YxTMbRlJs42pv1lAiW3d8LxaHw7U5YIZUztwH3IiV2SZg915SMB
-        9hXatzHa/Gh/cq5QaOBINxbnT+Iz6Lms8x61R023xRp1mBTE
-X-Google-Smtp-Source: AGHT+IGPgJJXdVh8mbvUoK5oesGeh9HjctSCCkMz4+0xqO4BQKMhfhx6Y1y1iuqFPeayyQFbPlzkZFTSzh8oVKrIKjkLtS9ZJD9H
+        Sun, 13 Aug 2023 22:21:55 -0400
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2064.outbound.protection.outlook.com [40.107.20.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF23A8
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Aug 2023 19:21:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SDdVnC5/S+a/7Cy5NCWhT6JQ/MlSZGcwGhdrMkudPbV4nHqj3lbtjGYepFZi4hmH0zTUARCM5GAWPOkVIl3A5BZq772ZmH/cDxnAF7CTrs5u/yz9xHv3pQgFpdwNjMNJpNxIMe3euXLMJjbcLJ1UYuL9+0PrBYJHTzFKDn0a1BF4JVEJWN8Z733NPt5AM3vWy9E7s9McT4QTySWaiuVTTdSN5kPVcN6FYCifzkI4KIpPKgMOB8cUMjiksqqCJCNCqNf2aBfzBgR63VA8/eB4jgUgCDhQum6pJ0SP4bUArxUaZsejimPd2JciidV5krE7bI+aAHsKmV5tSkiMwhv5Kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ij+5OJSghLePD9yELWLzSafmR3xBFiMjb/SJY82Hs28=;
+ b=UEeXtio/lTedL4sEDY9hvAknULAdJIPYyTx9QJm0HDzfKsVJTSUBaPgv6aRqJwGNWUsQs0Sl55TPAk4BDv/gIcwNJeHQSO+wkFVIgEZeqsjRZO4/BK1yZUBcjLVuyYmaFMxdB3VpgJeS6NcwX+w0DzmXbVDecFOM0nUyVp/9BDzdwu8f/vYRoHjAwR5vTp/vOddw5wb1NKqQ0gnL7M83g03PjifY0dHexI3c/ZNVGnwudvnQawlo9AAOciMfUt0DpsD4d4lz9ht1ow3m8Vu2jSPSS+vlHSPDYODZt2ULYFaLzIbJFQbmXDMHqnHWN8qTJjitnNvkzFvjniQMEl1Gcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ij+5OJSghLePD9yELWLzSafmR3xBFiMjb/SJY82Hs28=;
+ b=MaWpmt3KOCOeBjwAdKPjdz76cuXBc8c/on/7LANVQGzfk5K70KshSyxgTUrbzzw+rlUZrZgDBvTbO+zsYyaczqRPi0rq29q0ZkFunBor01GeDQe7sC5L238pQo+TjDEAVSERv1QELEVsIVeM/VDOoI0j8j1g5N9w+QoR8jyEH6I=
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
+ by DBAPR04MB7367.eurprd04.prod.outlook.com (2603:10a6:10:1aa::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.24; Mon, 14 Aug
+ 2023 02:21:51 +0000
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::693d:8782:eae1:2460]) by PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::693d:8782:eae1:2460%4]) with mapi id 15.20.6678.022; Mon, 14 Aug 2023
+ 02:21:51 +0000
+From:   David Lin <yu-hao.lin@nxp.com>
+To:     Francesco Dolcini <francesco@dolcini.it>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: RE: [EXT] Re: [PATCH v3] wifi: mwifiex: added code to support host
+ mlme.
+Thread-Topic: [EXT] Re: [PATCH v3] wifi: mwifiex: added code to support host
+ mlme.
+Thread-Index: AdnLM9yJ3sHx+trUShG5sDbPtsfBhgAN8B0AAAMu0UAAB4TpAAAYtp9AAAwrgIAAivjV8A==
+Date:   Mon, 14 Aug 2023 02:21:51 +0000
+Message-ID: <PA4PR04MB9638F951BC7895315274BC79D117A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <DU0PR04MB963607ADBFC49C7AB713092DD113A@DU0PR04MB9636.eurprd04.prod.outlook.com>
+ <ZNSrYEJ9m0jO/WU9@francesco-nb.int.toradex.com>
+ <PA4PR04MB9638C1DB606524BD57AB59CED113A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZNTzMrjfauSJN1ym@francesco-nb.int.toradex.com>
+ <PA4PR04MB9638C81BE986779C9512E262D110A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZNXqt62xMQFQh16o@francesco-nb.int.toradex.com>
+In-Reply-To: <ZNXqt62xMQFQh16o@francesco-nb.int.toradex.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|DBAPR04MB7367:EE_
+x-ms-office365-filtering-correlation-id: 224822b4-187e-419c-aa8f-08db9c6d3848
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Wwb/H/5CES1m93c8LEvhQ9E3qFdyDyKazHX8Tt4lQ6OpUJaghblx0zr8bylM/KsBnkYyR6Qv/DBKdswwugeRolPJ26hP4oraS6zVvFjxVt7Lj3LBG+0T/MOcCLukwUncZ0w6U1Xzx1lhRXjSAgTMW349QE/gDe2TsLlWeGwDYeABH1svvZgPQLUADzEGcXBKow37Xj73MbSd5xEzq1v1zQThMwMCNUCasQPjVKGVNqg8gXCUIvFM0KEMHeIChb+/p1DEDBTYM6j7YZ/DyPVH2Mm8kaCKl81zk2jccOUkWb5p9pmu8V3shxvjWDGmqRjKDxYAWTkNoBsd3uUBxFPsToNl3ml1oXskcvUBQvMn/9ip/UgAiIH2ZuX8BoZL1cLr/pxeRh6pb+e872kTrwwXd7uHmIKIitlajAgRgNoBNYNURrQWOTcj3lDha91dckco+JrocL5oTb3CkVYOXIQhr8hCI/YGrRiWB/Nvp5Wsb2m/qVYh2f6HNDMBSuZlJUm4peuzzFR6U3gzYH15W8Y7OA935NUV71RRDPXO2BtEsI4iOjooGuPNcdR/fat7dXBVi55OVZHy3HE2mIKCvKFeAkEIoNa91+7eiWXX/1zEciXxIHA3wotP5JfagJU3fTVH
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39850400004)(346002)(376002)(136003)(396003)(366004)(186006)(1800799006)(451199021)(7696005)(9686003)(33656002)(71200400001)(86362001)(38070700005)(38100700002)(83380400001)(122000001)(26005)(6506007)(2906002)(55016003)(54906003)(478600001)(53546011)(64756008)(8676002)(66556008)(66476007)(8936002)(52536014)(5660300002)(41300700001)(66446008)(66946007)(316002)(4326008)(6916009)(76116006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?AAJYzYbwblyuP7PUhiqzQ/gcJ5UiYO4h42EB+KqQZcIpjMKSXr76oOAjNNTL?=
+ =?us-ascii?Q?lEU85kP98KgJOcs6EoNrWHkF9DSUcXfTgBc1UaMYeW0ttj9Qv8FUI7mSyluj?=
+ =?us-ascii?Q?p1UMjTQ2QoVLaKaducKJWfILX9YeLWcfYypD64XRAaKyiSyZxSeVgXe3R3vN?=
+ =?us-ascii?Q?JttLy2LQ+jhv6XeMmXoo0qwG4kAvlGk+5pu+ZSQu+7/wzKUxxPeZRVm19qrD?=
+ =?us-ascii?Q?y41XLVsME/EbhYybmK4AgaDmiWnHEzaW1a4TZFHh3OMPxL/zCgzTWhu2s/VR?=
+ =?us-ascii?Q?J2K7Qznu4HJVuPgYHFvO+HiKGolgZykIUnO8k6243jzsXEIDWPJNemXTrk8B?=
+ =?us-ascii?Q?LT0Ity94j7tJ9PAE71KitOVLKVv0QaEWb2Qb1V5zar07YhMJWwkP2mQU+Hrf?=
+ =?us-ascii?Q?D3BI0bldDxsAfRvjGAsGIXWyVghNcAAW9F/9svbnfKji3YOG8mNKizgf91cY?=
+ =?us-ascii?Q?MjOZJQSf7de2u578LUICVMTflwLJeQK7kbF95TLgdnz1Z2681iRUSgQ/c1l6?=
+ =?us-ascii?Q?YjAqiASKl3LkAxJDKZB5nshY/1AlUN/qMmXGVTjpEwdLMBdKYjA5UstQbPPy?=
+ =?us-ascii?Q?y+dUbXbc+R6ieqbXFabRfMjBbXjbbfGSOGWNu2VCyrE0R8n1IHlZbJFoBH14?=
+ =?us-ascii?Q?OCVqmHXojhIESy8aEmKz92JuENz+JdcxVAsh4G/hkx4Q/dzrYlDtEacfmN9m?=
+ =?us-ascii?Q?l6oNkGGLXLjhSen9l0I7Prx2eGGgD34JhSrfBm14bkjcNeWSiomM25gvm7Zf?=
+ =?us-ascii?Q?y3k49QumZY/er2lzHtBeYmU7WsJ3uK/Yp5wh8HIXY32oIICH0Vw8MU3X+HiC?=
+ =?us-ascii?Q?y9Ko4DhDdnBDTST1+5uCnJseQ3+QKM/dS/uhAgrBXvoSlyBXoAdbR0iyJ9to?=
+ =?us-ascii?Q?dROruVqxBxXwtpqLjymJzvNMUJgriqyCJ3pcRr/8iCiUN6qIDgG2xyZCikUJ?=
+ =?us-ascii?Q?p1WgIlTSbbwpMvwC49OuuBIAwUoDZo73WMBPjIb+sSjXWHK/7pxDD1qMXi9H?=
+ =?us-ascii?Q?MydPYvfxDDPJlVp6JW8STHD2XIvoMPa+mvxwgaacjv0wQCcVsVID9C84DAGB?=
+ =?us-ascii?Q?vzHYphDvgtUHn8TzqfJtbH8dwLZQ9NHKvEsTSyGW5Ab5wLgeirFsrXsZ6iSQ?=
+ =?us-ascii?Q?oYUj832qGDx26oIKcJsJlhhTHsVfQMTpUq59357n+cH/Tl6nVJFbazK3C6C+?=
+ =?us-ascii?Q?zXE4/YIv5KUMHTPJIEIpaXKEM2BU2tnEpLRxr86UbzTeOWYc3hVol24LpJTS?=
+ =?us-ascii?Q?+XfVNB/auewymTcBUIKuS8hvr+06Au3ipvj13OAHWiX/5bwSQr9rkEOWYZz9?=
+ =?us-ascii?Q?uGvLaLjB5/cB3dLbzTU9l/pFc+YXzz1UuU6bZw85KLesgVxn7yicxPqyk61N?=
+ =?us-ascii?Q?qJYC8AOCbe/OiTeFheBpeb8VzwCdyMVUzziyHPDCrf/dZs17WbhuGcQoSD91?=
+ =?us-ascii?Q?lT7RytUmuGOF9z7UyfNKA+D7Jh+ygtbKVCeEXP5K/I5CkC68tL7p7yE1v3g5?=
+ =?us-ascii?Q?/EiR+H0AptKwzdgqwP/8Ig/o5MbrLyRtnk3h4KTO/7KSSTdLzq+7bh4jB2Mq?=
+ =?us-ascii?Q?CNnfLDe5ecEpgx95jPBfn+xymKBncB025/vY+24w?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Received: by 2002:a17:902:ce84:b0:1b2:436b:931d with SMTP id
- f4-20020a170902ce8400b001b2436b931dmr3390972plg.2.1691974127528; Sun, 13 Aug
- 2023 17:48:47 -0700 (PDT)
-Date:   Sun, 13 Aug 2023 17:48:47 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000d730410602d76cf6@google.com>
-Subject: [syzbot] [net?] [wireless?] INFO: rcu detected stall in cfg80211_wiphy_work
-From:   syzbot <syzbot+b904439e05f11f81ac62@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com, jiri@nvidia.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 224822b4-187e-419c-aa8f-08db9c6d3848
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Aug 2023 02:21:51.2464
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +ctvQD4Xg09tN+mBfiwjxfl7dFoj+ZnwXmOxfN89xSkqaPBBcxsvSNHo94iIP235K3BvDHYGZ6IIU0mF/T9U+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7367
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,122 +123,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+> From: Francesco Dolcini <francesco@dolcini.it>
+> Sent: Friday, August 11, 2023 4:01 PM
+> To: David Lin <yu-hao.lin@nxp.com>
+> Cc: Francesco Dolcini <francesco@dolcini.it>; linux-wireless@vger.kernel.=
+org;
+> Sharvari Harisangam <sharvari.harisangam@nxp.com>; Pete Hsieh
+> <tsung-hsien.hsieh@nxp.com>
+> Subject: Re: [EXT] Re: [PATCH v3] wifi: mwifiex: added code to support ho=
+st
+> mlme.
+>=20
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report
+> this email' button
+>=20
+>=20
+> On Fri, Aug 11, 2023 at 02:13:43AM +0000, David Lin wrote:
+> > > From: Francesco Dolcini <francesco@dolcini.it>
+> > > Sent: Thursday, August 10, 2023 10:25 PM
+> > > To: David Lin <yu-hao.lin@nxp.com>
+> > > Cc: Francesco Dolcini <francesco@dolcini.it>;
+> > > linux-wireless@vger.kernel.org; Sharvari Harisangam
+> > > <sharvari.harisangam@nxp.com>; Pete Hsieh
+> > > <tsung-hsien.hsieh@nxp.com>
+> > > Subject: Re: [EXT] Re: [PATCH v3] wifi: mwifiex: added code to
+> > > support host mlme.
+> > >
+> > > Caution: This is an external email. Please take care when clicking
+> > > links or opening attachments. When in doubt, report the message
+> > > using the 'Report this email' button
+> > >
+> > >
+> > > On Thu, Aug 10, 2023 at 10:51:36AM +0000, David Lin wrote:
+> > > > > From: Francesco Dolcini <francesco@dolcini.it> On Thu, Aug 10,
+> > > > > 2023 at 02:39:21AM +0000, David Lin wrote:
+> > > > > > 3. Firmware version 2 is needed for this feature.
+> > > > > That would mean that we could just enable it for other Wi-Fi
+> > > > > chip variant that has firmware version 2, after testing it?
+> > > > Yes. But I only tested with IW416.
+> > >
+> > > Can/should we probe the firmware version at runtime, instead of
+> > > hard-coding this?
+> >
+> > Firmware version is reported by firmware after firmware is downloaded.
+> What's the problem with that? You cannot really do anything till the
+> firmware is loaded?
+>=20
+> If I understand correctly the possibility to use this feature requires it=
+s
+> counterpart to be available on the device firmware, this should be the
+> criteria to use to decide if this functionality should be enabled or not.
+> Hard-coding this depending on the actual device does not look correct to
+> me.
+>=20
 
-syzbot found the following issue on:
+If firmware is old and supports firmware v1, you should not enable host mlm=
+e for the firmware. Firmware version is detected at runtime when firmware i=
+s loaded.
 
-HEAD commit:    cacc6e22932f tpm: Add a helper for checking hwrng enabled
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=13b0b5c7a80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3e670757e16affb
-dashboard link: https://syzkaller.appspot.com/bug?extid=b904439e05f11f81ac62
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14a49fcda80000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=136f8679a80000
+> Francesco
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/c18b40f6d56d/disk-cacc6e22.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/b270ef22b038/vmlinux-cacc6e22.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/aae3a8e7d564/bzImage-cacc6e22.xz
-
-The issue was bisected to:
-
-commit c2368b19807affd7621f7c4638cd2e17fec13021
-Author: Jiri Pirko <jiri@nvidia.com>
-Date:   Fri Jul 29 07:10:35 2022 +0000
-
-    net: devlink: introduce "unregistering" mark and use it during devlinks iteration
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=123267c3a80000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=113267c3a80000
-console output: https://syzkaller.appspot.com/x/log.txt?x=163267c3a80000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+b904439e05f11f81ac62@syzkaller.appspotmail.com
-Fixes: c2368b19807a ("net: devlink: introduce "unregistering" mark and use it during devlinks iteration")
-
-rcu: INFO: rcu_preempt self-detected stall on CPU
-rcu: 	1-....: (10490 ticks this GP) idle=5a24/1/0x4000000000000000 softirq=8393/8393 fqs=5242
-rcu: 	         hardirqs   softirqs   csw/system
-rcu: 	 number:        0          0            0
-rcu: 	cputime:    25922      26566          195   ==> 52500(ms)
-rcu: 	(t=10502 jiffies g=5333 q=584 ncpus=2)
-CPU: 1 PID: 5054 Comm: kworker/1:4 Not tainted 6.5.0-rc5-syzkaller-00056-gcacc6e22932f #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-Workqueue: events cfg80211_wiphy_work
-RIP: 0010:taprio_dequeue_tc_priority+0x266/0x4b0 net/sched/sch_taprio.c:798
-Code: 10 89 ef 44 89 f6 e8 39 b5 2c f9 44 39 f5 0f 84 40 ff ff ff e8 3b ba 2c f9 49 83 ff 0f 0f 87 e1 01 00 00 48 8b 04 24 0f b6 00 <38> 44 24 36 7c 08 84 c0 0f 85 bf 01 00 00 8b 33 8b 4c 24 30 48 8b
-RSP: 0018:ffffc900001e0d60 EFLAGS: 00000293
-RAX: 0000000000000000 RBX: ffff88802b8e7394 RCX: 0000000000000100
-RDX: ffff888076ac0000 RSI: ffffffff88594e65 RDI: 0000000000000004
-RBP: 0000000000000008 R08: 0000000000000004 R09: 0000000000000008
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000010
-R13: ffff88807af8ab60 R14: 0000000000000000 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000600 CR3: 0000000022134000 CR4: 0000000000350ee0
-Call Trace:
- <IRQ>
- taprio_dequeue+0x12e/0x5f0 net/sched/sch_taprio.c:868
- dequeue_skb net/sched/sch_generic.c:292 [inline]
- qdisc_restart net/sched/sch_generic.c:397 [inline]
- __qdisc_run+0x1c4/0x19d0 net/sched/sch_generic.c:415
- qdisc_run include/net/pkt_sched.h:125 [inline]
- qdisc_run include/net/pkt_sched.h:122 [inline]
- net_tx_action+0x71e/0xc80 net/core/dev.c:5049
- __do_softirq+0x218/0x965 kernel/softirq.c:553
- invoke_softirq kernel/softirq.c:427 [inline]
- __irq_exit_rcu kernel/softirq.c:632 [inline]
- irq_exit_rcu+0xb7/0x120 kernel/softirq.c:644
- sysvec_apic_timer_interrupt+0x93/0xc0 arch/x86/kernel/apic/apic.c:1109
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
-RIP: 0010:__ieee80211_link_release_channel+0x2/0x450 net/mac80211/chan.c:1778
-Code: 89 f7 e8 81 1f 21 f8 e9 44 e0 ff ff 4c 89 f7 e8 74 1f 21 f8 e9 fe fb ff ff 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 41 57 <41> 56 41 55 41 54 55 53 48 89 fb e8 3e 15 cd f7 48 89 da 48 b8 00
-RSP: 0018:ffffc90003cff768 EFLAGS: 00000293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff888076ac0000 RSI: ffffffff89b909f5 RDI: ffff8880677463a8
-RBP: ffff8880677463a8 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: ffff888067744c80
-R13: ffffc90003cff890 R14: ffff888066980e20 R15: ffff888067746c82
- ieee80211_link_use_channel+0x2dd/0x750 net/mac80211/chan.c:1849
- __ieee80211_sta_join_ibss+0x5f3/0x17e0 net/mac80211/ibss.c:303
- ieee80211_sta_create_ibss+0x206/0x410 net/mac80211/ibss.c:1352
- ieee80211_sta_find_ibss net/mac80211/ibss.c:1482 [inline]
- ieee80211_ibss_work+0xc19/0x15a0 net/mac80211/ibss.c:1709
- ieee80211_iface_work+0xbb8/0xd40 net/mac80211/iface.c:1680
- cfg80211_wiphy_work+0x24e/0x330 net/wireless/core.c:435
- process_one_work+0xaa2/0x16f0 kernel/workqueue.c:2600
- worker_thread+0x687/0x1110 kernel/workqueue.c:2751
- kthread+0x33a/0x430 kernel/kthread.c:389
- ret_from_fork+0x2c/0x70 arch/x86/kernel/process.c:145
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-
-If the bug is already fixed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to change bug's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the bug is a duplicate of another bug, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
