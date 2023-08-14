@@ -2,84 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8952A77BB6D
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 16:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D62CD77BB77
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 16:24:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231128AbjHNOWN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Aug 2023 10:22:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57998 "EHLO
+        id S231697AbjHNOYW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Aug 2023 10:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232365AbjHNOVl (ORCPT
+        with ESMTP id S231658AbjHNOYH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Aug 2023 10:21:41 -0400
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BA6BE3
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 07:21:40 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:5faf:0:640:dd1b:0])
-        by forward103b.mail.yandex.net (Yandex) with ESMTP id 1935E600D1;
-        Mon, 14 Aug 2023 17:21:08 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 5LfxSnYWveA0-Kx2pdKdg;
-        Mon, 14 Aug 2023 17:21:07 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1692022867;
-        bh=KVS4EIzNHnZBTAHE6j93OB/rR3iVMcFpONad5nDuO+Q=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=i5WjbhwE0bZcqDkKG9fCr8wy0O1fMspM37e8/ZdqyJOBhjnC1aA9SWQ1k0JuXTKwj
-         HB8SJmZF/J9LxM3VPURyUpaSxrovuVZqsDdqX11xa8AkGB2Nmd2ccImtCKTU+NitDa
-         MrJP1OQrQRDutM4eiZHv2QiQnsVWGnwUK2tunB7g=
-Authentication-Results: mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 2/2] wifi: mwifiex: fix comment typos in SDIO module
-Date:   Mon, 14 Aug 2023 17:19:05 +0300
-Message-ID: <20230814142101.60308-2-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230814142101.60308-1-dmantipov@yandex.ru>
-References: <20230814142101.60308-1-dmantipov@yandex.ru>
+        Mon, 14 Aug 2023 10:24:07 -0400
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC4DAB2;
+        Mon, 14 Aug 2023 07:24:03 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1692023040; bh=8SoUg7FO+B5ltN+g6mc/GlWomKwJReuVjx+WDxr4fG0=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Q7kRvaONx8fu6n6qI38VDGpzAWdZEDVoe1g+DoBmUZtrq0Fn5eI2ui186O6rxbt/Y
+         W8vwFlb2SGysuamOxs99cfHh6jlzfvdfjk3LkKtxJeqJR7T4U22IDSszXrc6tgPJy9
+         FieoOMY3S4Qa1zykwR5wTnoXLmUzCQarLx3+Mq/04aTOxHA13Jkyfao9XbNFtFZ27h
+         f8VptPi3zogfbPgb9CUSoyc7+njnL7+3Fq5yS2XD5eM4SgF7ziYxj3WdKlgL6lbWK2
+         a5HyqElzaFH/TI1EGlpEEksDpnsQ3fnt8tT2kB12mM6LkR+LV7gfOgW2gxRxuWWaun
+         WtClH1slP7r1A==
+To:     Arnd Bergmann <arnd@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Aloka Dixit <quic_alokad@quicinc.com>,
+        Wen Gong <quic_wgong@quicinc.com>,
+        Ramya Gnanasekar <quic_rgnanase@quicinc.com>,
+        Karthik M <quic_karm@quicinc.com>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        Muna Sinada <quic_msinada@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] wireless: ath: remove unused-but-set parameter
+In-Reply-To: <20230814073255.1065242-1-arnd@kernel.org>
+References: <20230814073255.1065242-1-arnd@kernel.org>
+Date:   Mon, 14 Aug 2023 16:23:59 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87zg2tem80.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix comment typos around ' mwifiex_deaggr_sdio_pkt()'
-and 'mwifiex_host_to_card_mp_aggr()'.
+Arnd Bergmann <arnd@kernel.org> writes:
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/marvell/mwifiex/sdio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> This has never been used since the driver was merged, but it now causes
+> a W=3D1 warning in recent clang versions
+>
+> drivers/net/wireless/ath/ath9k/main.c:1566:21: error: parameter 'changed_=
+flags' set but not used [-Werror,-Wunused-but-set-parameter]
+> drivers/net/wireless/ath/ath9k/htc_drv_main.c:1258:25: error: parameter '=
+changed_flags' set but not used [-Werror,-Wunused-but-set-parameter]
+> drivers/net/wireless/ath/ath5k/mac80211-ops.c:367:62: error: parameter 'c=
+hanged_flags' set but not used [-Werror,-Wunused-but-set-parameter]
+>
+> Remove the bit manipulation on the otherwise unused parameter.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-index a24bd40dd41a..38aff45b56f6 100644
---- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-@@ -1556,7 +1556,7 @@ static int mwifiex_prog_fw_w_helper(struct mwifiex_adapter *adapter,
- }
- 
- /*
-- * This function decode sdio aggreation pkt.
-+ * This function decodes sdio aggregation pkt.
-  *
-  * Based on the data block size and pkt_len,
-  * skb data will be decoded to few packets.
-@@ -2266,7 +2266,7 @@ static int mwifiex_host_to_card_mp_aggr(struct mwifiex_adapter *adapter,
- 		ret = mwifiex_write_data_to_card(adapter, card->mpa_tx.buf,
- 						 card->mpa_tx.buf_len, mport);
- 
--		/* Save the last multi port tx aggreagation info to debug log */
-+		/* Save the last multi port tx aggregation info to debug log. */
- 		index = adapter->dbg.last_sdio_mp_index;
- 		index = (index + 1) % MWIFIEX_DBG_SDIO_MP_NUM;
- 		adapter->dbg.last_sdio_mp_index = index;
--- 
-2.41.0
-
+For ath9k:
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
