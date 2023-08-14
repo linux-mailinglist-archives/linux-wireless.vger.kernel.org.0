@@ -2,65 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0049D77C139
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 22:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D11AC77C1AD
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 22:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229966AbjHNUDw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Aug 2023 16:03:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51260 "EHLO
+        id S229916AbjHNUqH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Aug 2023 16:46:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231612AbjHNUDd (ORCPT
+        with ESMTP id S231334AbjHNUqG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Aug 2023 16:03:33 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D666610F0;
-        Mon, 14 Aug 2023 13:03:28 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-31965c94001so2399984f8f.3;
-        Mon, 14 Aug 2023 13:03:28 -0700 (PDT)
+        Mon, 14 Aug 2023 16:46:06 -0400
+Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com [IPv6:2607:f8b0:4864:20::c2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F110D1
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 13:46:05 -0700 (PDT)
+Received: by mail-oo1-xc2c.google.com with SMTP id 006d021491bc7-5633b7e5f90so3450691eaf.1
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 13:46:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692043407; x=1692648207;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5fiXIeSxGU6C12/rcvOiLEQl7A8RO3MC5S0NrAZgA48=;
-        b=R1zZbbSBgKNzu8Ux7wLr6E7apfwzcRfyA2+cBDttLJOkCC/s9/IAzJvwJ4pAMFxB4G
-         8EEQo+h0B5MuO3JKzc1dj3fdx/uRf3PUFyEYOd81VTkIE2D6GK5itNQnjGzGSZUtuPwN
-         UnEsi3N7H/YbxHGFm1AB+a3vpuaSFqIUpFypDDc5miqMth+ku5FdETHayi4Juz3/kj4Y
-         3qx5quWLJRvMO/S50jFyMSMDOnikqA7jOCZCKb0wtS3/zSf8/D427vEQMkBKqKCkfPbz
-         32yoKjo/oosQ4N1aVk7XcFdkufhJ0jYE4ZNAzZpCwkCb18Oudfgli4nE4KJCrWc+3wd7
-         6h0w==
+        d=gmail.com; s=20221208; t=1692045965; x=1692650765;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=60kCd4I5U6yzx9+Qb2B62bu9EUOqliaFCx5IKGWLsK8=;
+        b=aKhEjrzNALJ+RrNtiArKyrAD5yeEaCLac8ATUM/aNsd4KoAVxuTA2hb892y+XaTKs0
+         M0+47IQR/4CeOl+mOerTc3tUbi/UH2ddxOu/rErMMPM83ejYwcS153H/C9McqFaWIXa2
+         KejBPxwi9OISF7n0nJUn18OzvcPXIyBNj0CrMIpN/R/iSPHhBHgLJ4r3x9wqlzPahgEK
+         wDRPUwnuo9poKkVYiw9sW6OpieRFI7iSYd6c+u7fOokPW/WtSiFp/tKthNVjQeO9fWAM
+         uRmug23bN0pLwxsg7u+RVTJ9MeG1NFtKivVqlK1OSXFLXODGb/RkQgyx+wFifBzy/xa2
+         6N6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692043407; x=1692648207;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5fiXIeSxGU6C12/rcvOiLEQl7A8RO3MC5S0NrAZgA48=;
-        b=OKpFa9j/0SU10WRGriA9wzc30qLaxTg1WosThFfOo8eASIrUxis+oziFajcRcAPqHV
-         YJYEc0EtJwBCX0SU5OmsvWIUJyNIifLmksxKPU5syVTuirrfgRrDKXOXVOLaT/rOsmbZ
-         y9ckVM/fF7ZMNMgkzfBew/sLESIN4bFGOqB99gHpvXe8LAJ5JCDHRAd7EcSCjgvVfEJN
-         tbSy97W9MRvm6J6uq59VZHGhVLMEgqdOpWfLsa7N4hT3BvvGTwwo7d/His+BP8DZR9vl
-         lfPMWQtVReVA1QIkqWyQ/jm9608tYLpmOi/5ib4gOm4BXRfzomoWw/aW9LkZR0LvYsPD
-         rAnw==
-X-Gm-Message-State: AOJu0YynvofeRA7X7mSYaL62H4xG5441iPon5C1KtHI3xVlf5TG0DKiu
-        jjfy2v+KZC2U6CSYB3cSl48=
-X-Google-Smtp-Source: AGHT+IEEzqFJCrvsKy+RvX2zA7EyrgcHCWnPkZR0870P2/bZGQTchnccaPU3JR3ahoetHACFF4e1ig==
-X-Received: by 2002:adf:f4c6:0:b0:317:5399:bb5b with SMTP id h6-20020adff4c6000000b003175399bb5bmr7436110wrp.25.1692043406977;
-        Mon, 14 Aug 2023 13:03:26 -0700 (PDT)
-Received: from mmaatuq-HP-Laptop-15-dy2xxx.. ([2001:8f8:1163:806e:5eb8:ff79:bda:b103])
-        by smtp.gmail.com with ESMTPSA id o13-20020a05600c378d00b003fe2de3f94fsm15225777wmr.12.2023.08.14.13.03.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Aug 2023 13:03:26 -0700 (PDT)
-From:   Mahmoud Maatuq <mahmoudmatook.mm@gmail.com>
-To:     jirislaby@kernel.org, mickflemm@gmail.com, mcgrof@kernel.org,
-        kvalo@kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     linux-kernel-mentees@lists.linuxfoundation.org,
-        Mahmoud Maatuq <mahmoudmatook.mm@gmail.com>
-Subject: [PATCH v1] ath5k: fix WARNING opportunity for swap.
-Date:   Tue, 15 Aug 2023 00:02:34 +0400
-Message-Id: <20230814200234.637583-1-mahmoudmatook.mm@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20221208; t=1692045965; x=1692650765;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=60kCd4I5U6yzx9+Qb2B62bu9EUOqliaFCx5IKGWLsK8=;
+        b=diVwIK8WG7gRN75xZ6GcAnn9dDqiS3Hg7Cp3RxIKeh93tg3GgZ5aBJx0h7hiczAvRC
+         gUF0JyaYXLe7q7btkkVl+z4okyrkRtc9GmXVpObnWLLk1vwXh03R5BoKJASxCo+Ewboq
+         t9G8gWeoLrGrxb4KudkIFiRTVndxkFLi4bsvDMc7hvnIHtHa31G5FpsBi5OxmFjEN2mS
+         zd1uSYPIEklbP+Cs+8zdnK89Sel4GW+veVlRHfm4AXnCjLnIiO3PLgY2W38ttr+oihp7
+         CFrTbJR+nz/MJ8izIBkF+1bYgSqVz0VKkFUsVI2rzukbugOf2CMllAuFCz4xlIXTpgCh
+         W7vA==
+X-Gm-Message-State: AOJu0YysEz5ZCWiYl2VC2Hj7z4GKrIufTu1x50cEBcL7uKh0tmjNNhT3
+        y+zN4yq5wYjO0owVX5Wcd3+gejnO9JrW73jILSy5D1qb
+X-Google-Smtp-Source: AGHT+IH5u7fiutup6tdOh07LEXb/ehDW7F1Fj3FfSUcDXWdLh0+wDK0K6+MFUZzSajhhcW6vfMvcYVddOVoTF/2uEnw=
+X-Received: by 2002:a05:6870:d0c4:b0:1bf:1a38:283b with SMTP id
+ k4-20020a056870d0c400b001bf1a38283bmr10512210oaa.9.1692045964768; Mon, 14 Aug
+ 2023 13:46:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230719194039.16179-1-Chaitanya.Tata@nordicsemi.no>
+ <2307e1741e9d32e8f1ffc4e83c73b63a4e32512b.camel@sipsolutions.net>
+ <CABPxzYJvAtgbrr_v6cMuKwFjzRjYOCDota+koYp-iogtJS75HQ@mail.gmail.com>
+ <CABPxzY+_2DEK-wfAr1V9z1iHZky-7vF24mQx2yFgtFUoTdWgmw@mail.gmail.com>
+ <e3d7cb8b891d1a54ffea60b5f8257208e03129d3.camel@sipsolutions.net>
+ <CABPxzYLp++vabPm9GZheg_UjofkJjm+kQZDRr9HXbX54bxptBQ@mail.gmail.com> <a998334c11f8cd2d2f3d4d6b6883f9c0f699cd2c.camel@sipsolutions.net>
+In-Reply-To: <a998334c11f8cd2d2f3d4d6b6883f9c0f699cd2c.camel@sipsolutions.net>
+From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Date:   Tue, 15 Aug 2023 02:15:45 +0530
+Message-ID: <CABPxzYKBQuYzeRKjsNPTkmtLauGEyY1jg+T_dt2SK2u_BMB1qA@mail.gmail.com>
+Subject: Re: [PATCH] wifi: Add support for sending BSSMaxIdle in association request
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -71,75 +73,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-coccinielle reported the following:
-./drivers/net/wireless/ath/ath5k/phy.c:1573:25-26: WARNING opportunity for swap()
+On Mon, Aug 14, 2023 at 2:28=E2=80=AFPM Johannes Berg <johannes@sipsolution=
+s.net> wrote:
+>
+> On Mon, 2023-08-14 at 01:56 +0530, Krishna Chaitanya wrote:
+> > >
+> > > > Just remembered why I had to implement this in kernel, the associat=
+e/connect
+> > > > data structure in wpa_s `wpa_driver_associate_params` doesn't have =
+any
+> > > > ies/extra_ies, it only gives wpa_ie and rest all are parameters for=
+ mac80211
+> > > > to use. So, had just extended this as well, do you think we should =
+add
+> > > > this ies/extra_ies
+> > > > to the association like we do for scan? Or as MLME is in mac80211,
+> > > > just use this patch as is?
+> > >
+> > > Not sure I follow all that reasoning - is that something internal to
+> > > wpa_supplicant? Fundamentally with my cfg/mac hat on I'm not sure I c=
+are
+> > > so much about wpa_s internal data structures?
+> > >
+> > > Things like extended capabilities are also added to the "extra IEs" b=
+y
+> > > wpa_s, so surely this would work too?
+> >
+> > I was only pointing out that AFAIK there is no mechanism to pass "ies" =
+in
+> > the associate command from userspace, except for WPA IE.
+>
+> Oh you're talking about the associate command? You never mentioned that,
+> and in fact most of your patch is concerned with mac80211 ...
+>
+> Would it kill the implementation you have to add "extra elements" rather
+> than all these individual settings? Does this thing affect the local
+> firmware implementation? I guess in a sense it must?
+>
+> I don't know ... and I have no way of ever finding out! So again this is
+> one of those things where we're never going to see an upstream driver
+> using it, right? I'm getting really close to just giving up on that.
+> Since Jouni is happy to add vendor commands for settings left and right
+> in wpa_supplicant, I pretty much think this stuff has failed. We're
+> littering the nl80211 API with things that don't really get used
+> upstream, or like here, do get used but in a way that's
+>   (a) pretty useless since it doesn't do anything but add an element
+>       wpa_s could have added itself, and
+>   (b) looks like just a fig-leaf for this exact reason? Shouldn't
+>       something be configured here to the NIC too? NIC should support
+>       it, etc.? What's even the purpose of this in mac80211?
+I agree that this IE should be populated by wpa_s as it needs user
+input, I had looked at other information in cmd_associate where it's passed
+to mac80211 using nl80211, so, had followed this approach. I will try and
+add this to wpa_s itself, thanks.
 
-Signed-off-by: Mahmoud Maatuq <mahmoudmatook.mm@gmail.com>
----
-changes in v1:
-- replace the entire double loop with sort()
-  as suggested by Jiri Slaby <jirislaby@kernel.org>
----
- drivers/net/wireless/ath/ath5k/phy.c | 29 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath5k/phy.c b/drivers/net/wireless/ath/ath5k/phy.c
-index 5797ef9c73d7..7ee4e1616f45 100644
---- a/drivers/net/wireless/ath/ath5k/phy.c
-+++ b/drivers/net/wireless/ath/ath5k/phy.c
-@@ -26,6 +26,7 @@
- 
- #include <linux/delay.h>
- #include <linux/slab.h>
-+#include <linux/sort.h>
- #include <asm/unaligned.h>
- 
- #include "ath5k.h"
-@@ -1554,6 +1555,11 @@ static void ath5k_hw_update_nfcal_hist(struct ath5k_hw *ah, s16 noise_floor)
- 	hist->nfval[hist->index] = noise_floor;
- }
- 
-+static int cmps16(const void *a, const void *b)
-+{
-+	return *(s16 *)a - *(s16 *)b;
-+}
-+
- /**
-  * ath5k_hw_get_median_noise_floor() - Get median NF from history buffer
-  * @ah: The &struct ath5k_hw
-@@ -1561,25 +1567,16 @@ static void ath5k_hw_update_nfcal_hist(struct ath5k_hw *ah, s16 noise_floor)
- static s16
- ath5k_hw_get_median_noise_floor(struct ath5k_hw *ah)
- {
--	s16 sort[ATH5K_NF_CAL_HIST_MAX];
--	s16 tmp;
--	int i, j;
--
--	memcpy(sort, ah->ah_nfcal_hist.nfval, sizeof(sort));
--	for (i = 0; i < ATH5K_NF_CAL_HIST_MAX - 1; i++) {
--		for (j = 1; j < ATH5K_NF_CAL_HIST_MAX - i; j++) {
--			if (sort[j] > sort[j - 1]) {
--				tmp = sort[j];
--				sort[j] = sort[j - 1];
--				sort[j - 1] = tmp;
--			}
--		}
--	}
-+	s16 sorted_nfval[ATH5K_NF_CAL_HIST_MAX];
-+	int i;
-+
-+	memcpy(sorted_nfval, ah->ah_nfcal_hist.nfval, sizeof(sorted_nfval));
-+	sort(sorted_nfval, ATH5K_NF_CAL_HIST_MAX, sizeof(s16), cmps16, NULL);
- 	for (i = 0; i < ATH5K_NF_CAL_HIST_MAX; i++) {
- 		ATH5K_DBG(ah, ATH5K_DEBUG_CALIBRATE,
--			"cal %d:%d\n", i, sort[i]);
-+			"cal %d:%d\n", i, sorted_nfval[i]);
- 	}
--	return sort[(ATH5K_NF_CAL_HIST_MAX - 1) / 2];
-+	return sorted_nfval[(ATH5K_NF_CAL_HIST_MAX - 1) / 2];
- }
- 
- /**
--- 
-2.34.1
-
+NIC isn't involved here directly (unless keepalive for connection is offloa=
+ded),
+this is about conveying a user preference to AP to avoid AP prematurely
+disassociating the client.
