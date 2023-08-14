@@ -2,70 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC9E077BFCE
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 20:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44BE877C041
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Aug 2023 21:01:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231433AbjHNS2n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Aug 2023 14:28:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51030 "EHLO
+        id S231804AbjHNTBL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Aug 2023 15:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231526AbjHNS2R (ORCPT
+        with ESMTP id S231920AbjHNTA4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Aug 2023 14:28:17 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4243F171B;
-        Mon, 14 Aug 2023 11:28:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=FgCusAeBpy6xluPe2GxBfabcialAIc5NfedwcMC+0Dc=;
-        t=1692037696; x=1693247296; b=bwLiQmJm4xufPLlvsz18C8z9H+KgzuckeDum54esgYBL5al
-        Z9UTDkcXvVN4BL//zTpu3LM68P7B4JPFFdbNV+7SIuuXvTUUfv/OQfMBQcGicUwZX+1kfPDXPSota
-        TDWxaqbhg03EMuHhfWQFWaM8zPrcg2l2+2Ups4LWPCO2wxtuFWf1Rq7Am3tc61IJzQexrmnYZZhhu
-        RrnXPBC1RUfllLt13uYREY6NJm6BL7jABs9okyKoV7WpDzEgUZH160S1gUaKPYU5Ok1+e0+SfOxLx
-        LSgj7dijxLep7lE7XwltIiamO2uZxJlUYi90t8q6Rh2gxd0g7IvukpW1cacCN9Kg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qVcIR-007B24-0c;
-        Mon, 14 Aug 2023 20:28:07 +0200
-Message-ID: <9a6b2c18b599e5c2e7cea99fec84a4ecb5092da5.camel@sipsolutions.net>
-Subject: Re: [PATCH] iwlwifi: dbg_ini: fix structure packing
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 14 Aug 2023 20:28:06 +0200
-In-Reply-To: <20230616090343.2454061-1-arnd@kernel.org>
-References: <20230616090343.2454061-1-arnd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Mon, 14 Aug 2023 15:00:56 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1161701
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 12:00:54 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1bdcb800594so10963615ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 12:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1692039654; x=1692644454;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=gKTJbYyHwGU/Pavfa3Pni61Jgqd+CWSu3/z3hiS2FZk=;
+        b=HLQl75aDvj2mEnVYovaIHU/OOGwgRtjHAT3BetsxMzFRe6RXIWRmCMYKUVj2Mu9Mdl
+         d2IbKwWkNjw3pocpmU1XmO6+RmPLRa68vlKwfk2y/ciQk/k7dfiSIL9qbC/wkf2pj4+W
+         d/ah7C/qdg5kc7tdACd3HKs8HaDGCfk13BTHc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692039654; x=1692644454;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gKTJbYyHwGU/Pavfa3Pni61Jgqd+CWSu3/z3hiS2FZk=;
+        b=LqhVSmh626/UZR6E5INmKWU9DIe48mtehfgQdXk/M8cozO47h6WQRIUbk1cTPwDFtv
+         yFZgvlZR1lCAWUT34l624+VUjoIEu4GbNB5GxZmaf11X74HEyLNDhKR5vMVt5XIvAl4B
+         lbzqjL5/eTLwPfC9xyQQC+WZxfUOs1uNGLLp4gbHIYjgne8NZrEe8Y0nA4S7ZsobTus7
+         mzN86PapyTj/6Okw+/YJk95pWH45p3bGlqK1l4BTrW1EdB9tuwZdM+RDYVPPtypg2GVX
+         E12sF7ZH+8yWQ4iHx5J4HXKEku1NBZLvALGk1KzSKKYmYC+q0cd4iL4wC/k5/b5UcMj5
+         hqOQ==
+X-Gm-Message-State: AOJu0Yz/bhSwASlqJYoGmwTWtBYwUkniwaBGb/W+pMq+j2rRivMPm0Y1
+        MytkTDEwHGWaDckBavtWTHLFLQ==
+X-Google-Smtp-Source: AGHT+IFdxlyUb3opfqP0LZm8yaMzbRYT5aUM9s1n5GnCFd9QkjKQiIIeuTRrDisx8zwdDnVwz0WSPw==
+X-Received: by 2002:a17:902:968f:b0:1bc:4f64:e2fc with SMTP id n15-20020a170902968f00b001bc4f64e2fcmr8552937plp.27.1692039654159;
+        Mon, 14 Aug 2023 12:00:54 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id u18-20020a170903125200b001b53953f306sm9813816plh.178.2023.08.14.12.00.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Aug 2023 12:00:52 -0700 (PDT)
+Date:   Mon, 14 Aug 2023 12:00:51 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org
+Subject: Re: Build regressions/improvements in v6.5-rc3
+Message-ID: <202308141159.9E4C2332@keescook>
+References: <CAHk-=wi4Yau-3Bsv2rXYmtXMTLaj3=Wyf4cdM6d89czFvkVsRQ@mail.gmail.com>
+ <20230724122626.1701631-1-geert@linux-m68k.org>
+ <88f83d73-781d-bdc-126-aa629cb368c@linux-m68k.org>
+ <202307281551.D894AA39@keescook>
+ <CAMuHMdXRiacSxqDzYmakWAQB99kYvY0Bi9zALP9ZnC9Xs_xO5g@mail.gmail.com>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMuHMdXRiacSxqDzYmakWAQB99kYvY0Bi9zALP9ZnC9Xs_xO5g@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-06-16 at 11:03 +0200, Arnd Bergmann wrote:
->=20
-> As the original intention was apparently to make the entire structure
-> unaligned, mark the innermost members the same way so the union
-> becomes packed as well.
+On Mon, Aug 14, 2023 at 06:20:59PM +0200, Geert Uytterhoeven wrote:
+> Hi Kees,
+> 
+> On Sat, Jul 29, 2023 at 12:57 AM Kees Cook <keescook@chromium.org> wrote:
+> > On Mon, Jul 24, 2023 at 02:43:02PM +0200, Geert Uytterhoeven wrote:
+> > > On Mon, 24 Jul 2023, Geert Uytterhoeven wrote:
+> > > > JFYI, when comparing v6.5-rc3[1] to v6.5-rc2[3], the summaries are:
+> > > >  - build errors: +5/-0
+> > >
+> > >   + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 583:25, 493:25
+> > >
+> > > mips-gcc13/mips-allmodconfig
+> > >
+> > > Full context:
+> > >
+> > >     In function 'fortify_memset_chk',
+> > >       inlined from 'memset_io' at /kisskb/src/arch/mips/include/asm/io.h:486:2,
+> > >       inlined from 'build_auth_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:2697:2:
+> > >     /kisskb/src/include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+> > >       493 |                         __write_overflow_field(p_size_field, size);
+> > >         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >     In function 'fortify_memcpy_chk',
+> > >       inlined from 'memcpy_toio' at /kisskb/src/arch/mips/include/asm/io.h:494:2,
+> > >       inlined from 'translate_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:955:3,
+> > >       inlined from 'ray_hw_xmit.constprop' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:912:12:
+> > >     /kisskb/src/include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+> > >       583 |                         __write_overflow_field(p_size_field, size);
+> > >         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >
+> > > Single-element flexible array abuse in drivers/net/wireless/legacy/rayctl.h:tx_msg.var
+> >
+> > ^^^^
+> > is this line from you or is there a tool outputting this? Because, yes,
+> 
+> It is a line from me.
+> 
+> (should I take it as a compliment that I start sounding like a tool? ;-)
 
-Hm. Not sure exactly what you mean by that, but shouldn't we make that
-"union { ... } __packed"?
+Heh. It was so declaratory. :) I think I was hoping there was some
+analyzer that could save us the pain of manually examining these
+warnings.
 
-johannes
+> 
+> > very true:
+> >
+> > struct tx_msg {
+> >     struct tib_structure tib;
+> >     struct phy_header phy;
+> >     struct mac_header mac;
+> >     UCHAR  var[1];
+> > };
+> >
+> > I'll send a patch.
+> 
+> Thanks, I noticed you took care while I was enjoying summer holidays ;-)
 
+Awesome! Thanks for the report. :)
+
+-- 
+Kees Cook
