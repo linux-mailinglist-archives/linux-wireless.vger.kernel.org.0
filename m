@@ -2,122 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E386877D1A8
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Aug 2023 20:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2F577D360
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Aug 2023 21:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237221AbjHOSVV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Aug 2023 14:21:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33106 "EHLO
+        id S239584AbjHOT0a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Aug 2023 15:26:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239046AbjHOSU4 (ORCPT
+        with ESMTP id S239871AbjHOT0F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Aug 2023 14:20:56 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 448C119AF
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 11:20:54 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37FFIMxr023941;
-        Tue, 15 Aug 2023 18:20:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=qf+SFlzKgLF9CCdcywg6jtjPYARwSI6SrXbbqEpiVMg=;
- b=UFLnsw+MosmUQk/7cCUIPgXQRSNgWb58pxpPSrshPLbrLn8Q5qsJkXyVHas8TVQPVQl6
- YOQc///Jw+0PTxdQQV7mxJiplQlf6PsIWC6c26LA8eyWOiQs9bwh1+ZspuAJM1hFW4zB
- /MuX6/Hx7GmTgtpj/7FKVVSK4aoPnITYXbkXC63KXMg/KrmDRnCN4MRNz8pz5GJTlzRn
- Je1ZGfOEPkrXsYSn5PU5OpcJuecEihvH88b/fHA3yejvq0tnhYIF8eq77ZQpt8jyokbY
- PEniqS1XUpdo4g6jmfzuqYIw0L8AI+vqVnZjacy/E2Zbxx9yN8lPF+IZABEdyKmdG74i 9g== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sfqp2tegy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 15 Aug 2023 18:20:45 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37FIKjuw010334
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 15 Aug 2023 18:20:45 GMT
-Received: from [10.48.240.144] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 15 Aug
- 2023 11:20:44 -0700
-Message-ID: <07997950-0f1b-cc05-6ba4-1378dc35eec8@quicinc.com>
-Date:   Tue, 15 Aug 2023 11:20:43 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+        Tue, 15 Aug 2023 15:26:05 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EFB22132
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 12:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=EMT+7of2Cg19pT8Ih/2kBAX5Btr6IHTfd6+SWvnf85U=;
+        t=1692127526; x=1693337126; b=OEqave6zxoAvdyFtydPpYI8QTS/VTLFcn5mM0WBU4AHayY/
+        vhCnKHbuGI+rKVV/iCJecpayeYT7N4RRLJkPufZRrLkxwAs/xVc5Fdcbi6uNWoT5zoI0NaBNDVvZ3
+        VfMc98vu761vA0Oskei84EwmfcrStUR2KBl5uO6wYoyaA3bu0hkvVCrZk080+JYNph/fx9BxLq+Es
+        c0Rp04gnUDeeN6ce1hH64aJBYv9wY2fLc6DRMkiL+xXERHXln7mKAdyjiWGvUoD57IpBi2weSojwq
+        6bzkhN7Y6NmLNucl6s7c95GD+rJMCOb2Aq56hlHJiksfUjYQrWeHEQNfsTRj3eZA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qVzfL-009DmT-1J;
+        Tue, 15 Aug 2023 21:25:19 +0200
+Message-ID: <56f4cee915bd816c61f9fbef10f1a2c10768dbdd.camel@sipsolutions.net>
 Subject: Re: [PATCH] wifi: mac80211_hwsim: drop short frames
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     Johannes Berg <johannes.berg@intel.com>,
-        <syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com>
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        linux-wireless@vger.kernel.org
+Cc:     syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com
+Date:   Tue, 15 Aug 2023 21:25:18 +0200
+In-Reply-To: <07997950-0f1b-cc05-6ba4-1378dc35eec8@quicinc.com>
 References: <20230815181603.f576bd983875.I1efbeef082c3f7094037882f213202d760848eb7@changeid>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230815181603.f576bd983875.I1efbeef082c3f7094037882f213202d760848eb7@changeid>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: onQgE8N7xEXsnEv471gGgj3be80pogNv
-X-Proofpoint-ORIG-GUID: onQgE8N7xEXsnEv471gGgj3be80pogNv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-15_16,2023-08-15_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 impostorscore=0 phishscore=0 adultscore=0
- mlxlogscore=965 clxscore=1011 spamscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308150165
+         <07997950-0f1b-cc05-6ba4-1378dc35eec8@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/15/2023 9:16 AM, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Frames that don't even have addr1 are clearly not valid,
-> drop those early in the netlink/wmediumd path here.
-> 
-> Reported-by: syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
->   drivers/net/wireless/virtual/mac80211_hwsim.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-> index f446fd0e8cd0..8f1e4420ed1e 100644
-> --- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-> +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-> @@ -5626,14 +5626,15 @@ static int hwsim_cloned_frame_received_nl(struct sk_buff *skb_2,
->   	frame_data_len = nla_len(info->attrs[HWSIM_ATTR_FRAME]);
->   	frame_data = (void *)nla_data(info->attrs[HWSIM_ATTR_FRAME]);
->   
-> +	if (frame_data_len < offsetofend(typeof(*hdr), addr1) ||
+On Tue, 2023-08-15 at 11:20 -0700, Jeff Johnson wrote:
+> On 8/15/2023 9:16 AM, Johannes Berg wrote:
+> > From: Johannes Berg <johannes.berg@intel.com>
+> >=20
+> > Frames that don't even have addr1 are clearly not valid,
+> > drop those early in the netlink/wmediumd path here.
+> >=20
+> > Reported-by: syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com
+> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> > ---
+> >   drivers/net/wireless/virtual/mac80211_hwsim.c | 7 ++++---
+> >   1 file changed, 4 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/ne=
+t/wireless/virtual/mac80211_hwsim.c
+> > index f446fd0e8cd0..8f1e4420ed1e 100644
+> > --- a/drivers/net/wireless/virtual/mac80211_hwsim.c
+> > +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+> > @@ -5626,14 +5626,15 @@ static int hwsim_cloned_frame_received_nl(struc=
+t sk_buff *skb_2,
+> >   	frame_data_len =3D nla_len(info->attrs[HWSIM_ATTR_FRAME]);
+> >   	frame_data =3D (void *)nla_data(info->attrs[HWSIM_ATTR_FRAME]);
+> >  =20
+> > +	if (frame_data_len < offsetofend(typeof(*hdr), addr1) ||
+>=20
+> curious why addr1.
+>=20
 
-curious why addr1. if the frame ends after addr1 then don't you have a 
-problem in mac80211_hwsim_rx() when it passes hdr->addr2 to 
-ieee80211_find_sta_by_link_addrs()?
+I figured that was the shortest legal 802.11 frame, e.g. an ACK frame.
 
+> if the frame ends after addr1 then don't you have a=20
+> problem in mac80211_hwsim_rx() when it passes hdr->addr2 to=20
+> ieee80211_find_sta_by_link_addrs()?
 
-> +	    frame_data_len > IEEE80211_MAX_DATA_LEN)
-> +		goto err;
-> +
->   	/* Allocate new skb here */
->   	skb = alloc_skb(frame_data_len, GFP_KERNEL);
->   	if (skb == NULL)
->   		goto err;
->   
-> -	if (frame_data_len > IEEE80211_MAX_DATA_LEN)
-> -		goto err;
-> -
->   	/* Copy the data */
->   	skb_put_data(skb, frame_data, frame_data_len);
->   
+But of course you're right about that, so we should just make sure we
+have at least the full struct ieee80211_hdr_3addr here, I guess.
 
+johannes
