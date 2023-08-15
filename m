@@ -2,48 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 242FF77CD51
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Aug 2023 15:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFB0877CD5E
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Aug 2023 15:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237394AbjHONZq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Aug 2023 09:25:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60652 "EHLO
+        id S237248AbjHONiW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Aug 2023 09:38:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237493AbjHONZm (ORCPT
+        with ESMTP id S237224AbjHONhw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Aug 2023 09:25:42 -0400
+        Tue, 15 Aug 2023 09:37:52 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 909D2113
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 06:25:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B399B12E
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 06:37:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=XaawGspZjz3UoHeskUzCZtbz2YnONIYVnfJ7tc4lq7o=;
-        t=1692105941; x=1693315541; b=UZub9l+iWJaE2+JfuPJRSiA2abBqUMASHlLs/PEBsyuIOnF
-        wj0bvxpoAhM5Svv6B/SzwuY6GYhfIL4z8XOh8Q8JojFx+MpJ5GpeWoF+kYepplMAYpwsLFtT5so1m
-        Nzq0PTIp6MOoFP0MhhN4cJBxzgAp//H0mVh11xdx0xmmC4EXiIRRw2Dg9Do3jVEXymtqaQ7lC60EA
-        kg0xdt7Z3ns9qpd+BF8nejUzAiJ3k5mVXI0V4Zrx/i/SqESb+/3WXjtRSbMdA8SmKeX3j8hchnlQi
-        eOWbQr+E97v4oJLg3aRDQC4bYDOB0/m1mXihMx6rHEo2wzSQboRXbcJiHKw7dzlw==;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=N8Ki3RFpW17qaNnld3MfMzJeLTpB/QiX7bUXWZtE0+k=;
+        t=1692106668; x=1693316268; b=cHi5j7bbjFZ72qPm+xXkTbbJHw+27pYCktT3UAUMcU5qHvt
+        5y7YyB58ALnqa0ZrU0scvoq1gnfLUcjGOW0IBHfDpI3wVjOlBLh6WUEmxArpLMm1Xm4eMDPGjh4zq
+        3liZz1O9UEUyDoq8itM/r9yBxnvkykOOT+Owfsksx6wf6sRu8ocACyuXlu0wfjIHvDtfntxG3QOnd
+        T1qNMrPF9kXxicFQx+7YkfKm7M+O3P1+F7AeS58z/n2wZoWYzEwOW+dtnMWC1lTe1uNwwczFS3iw4
+        QmQsSfwLGwfRj62Mz9kHQNv1fzR0L2mKErsZ2sj+bSbuAAtKBjBTEcB7Az2C69dg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qVu3G-008r1w-2C;
-        Tue, 15 Aug 2023 15:25:38 +0200
-Message-ID: <a4edd8695f8a722c088c76496efc12069bd277ae.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH v2] wifi: cfg80211: fix cqm_config access race
+        id 1qVuF0-008rk2-0w;
+        Tue, 15 Aug 2023 15:37:46 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Max Schulze <max.schulze@online.de>, linux-wireless@vger.kernel.org
-Date:   Tue, 15 Aug 2023 15:25:37 +0200
-In-Reply-To: <c8b69649-ab22-a984-1767-527b73c88c7e@online.de>
-References: <ac96309a-8d8d-4435-36e6-6d152eb31876@online.de>
-         <20230815134247.4b4bd52ea708.I1a1bb102329fc88e4712eaf394cba3025ada0dc7@changeid>
-         <c8b69649-ab22-a984-1767-527b73c88c7e@online.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Max Schulze <max.schulze@online.de>
+Subject: [RFC PATCH v2 6.1] wifi: cfg80211: fix cqm_config access race
+Date:   Tue, 15 Aug 2023 15:37:42 +0200
+Message-ID: <20230815153741.cc51cb52a296.I1a1bb102329fc88e4712eaf394cba3025ada0dc7@changeid>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230815134247.4b4bd52ea708.I1a1bb102329fc88e4712eaf394cba3025ada0dc7@changeid>
+References: <20230815134247.4b4bd52ea708.I1a1bb102329fc88e4712eaf394cba3025ada0dc7@changeid>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
@@ -53,15 +51,316 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-08-15 at 15:24 +0200, Max Schulze wrote:
-> Thanks again. I have to back-port it to 6.1.45 manually and will do testi=
-ng.
->=20
+From: Johannes Berg <johannes.berg@intel.com>
 
-Ah, you can't port this to 6.1 series, it depends on commit a3ee4dc84c4e
-("wifi: cfg80211: add a work abstraction with special semantics") which
-is only in 6.5-rc...
+Max Schulze reports crashes with brcmfmac. The reason seems
+to be a race between userspace removing the CQM config and
+the driver calling cfg80211_cqm_rssi_notify(), where if the
+data is freed while cfg80211_cqm_rssi_notify() runs it will
+crash since it assumes wdev->cqm_config is set. This can't
+be fixed with a simple non-NULL check since there's nothing
+we can do for locking easily, so use RCU instead to protect
+the pointer, but that requires pulling the updates out into
+an asynchronous worker so they can sleep and call back into
+the driver.
 
-Maybe you can cherry-pick that patch too.
+Since we need to change the free anyway, also change it to
+go back to the old settings if changing the settings fails.
 
-johannes
+Reported-by: Max Schulze <max.schulze@online.de>
+Closes: https://lore.kernel.org/r/ac96309a-8d8d-4435-36e6-6d152eb31876@online.de
+Fixes: 4a4b8169501b ("cfg80211: Accept multiple RSSI thresholds for CQM")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ include/net/cfg80211.h |  3 +-
+ net/wireless/core.c    | 14 +++----
+ net/wireless/core.h    |  6 ++-
+ net/wireless/nl80211.c | 84 ++++++++++++++++++++++++++++--------------
+ 4 files changed, 69 insertions(+), 38 deletions(-)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index e09ff87146c1..0970eb47cb55 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -5787,7 +5787,8 @@ struct wireless_dev {
+ 	} wext;
+ #endif
+ 
+-	struct cfg80211_cqm_config *cqm_config;
++	struct work_struct cqm_rssi_work;
++	struct cfg80211_cqm_config __rcu *cqm_config;
+ 
+ 	struct list_head pmsr_list;
+ 	spinlock_t pmsr_lock;
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 609b79fe4a74..a86e3819dfd6 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1114,16 +1114,11 @@ void wiphy_rfkill_set_hw_state_reason(struct wiphy *wiphy, bool blocked,
+ }
+ EXPORT_SYMBOL(wiphy_rfkill_set_hw_state_reason);
+ 
+-void cfg80211_cqm_config_free(struct wireless_dev *wdev)
+-{
+-	kfree(wdev->cqm_config);
+-	wdev->cqm_config = NULL;
+-}
+-
+ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
+ 				      bool unregister_netdev)
+ {
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
++	struct cfg80211_cqm_config *cqm_config;
+ 	unsigned int link_id;
+ 
+ 	ASSERT_RTNL();
+@@ -1166,7 +1161,10 @@ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
+ 	if (wdev->netdev)
+ 		flush_work(&wdev->disconnect_wk);
+ 
+-	cfg80211_cqm_config_free(wdev);
++	cancel_work_sync(&wdev->cqm_rssi_work);
++	/* deleted from the list, so can't be found from nl80211 any more */
++	cqm_config = rcu_access_pointer(wdev->cqm_config);
++	kfree_rcu(cqm_config, rcu_head);
+ 
+ 	/*
+ 	 * Ensure that all events have been processed and
+@@ -1318,6 +1316,8 @@ void cfg80211_init_wdev(struct wireless_dev *wdev)
+ 	wdev->wext.connect.auth_type = NL80211_AUTHTYPE_AUTOMATIC;
+ #endif
+ 
++	INIT_WORK(&wdev->cqm_rssi_work, cfg80211_cqm_rssi_notify_work);
++
+ 	if (wdev->wiphy->flags & WIPHY_FLAG_PS_ON_BY_DEFAULT)
+ 		wdev->ps = true;
+ 	else
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 775e16cb99ed..bd63419fa8f8 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -287,12 +287,16 @@ struct cfg80211_beacon_registration {
+ };
+ 
+ struct cfg80211_cqm_config {
++	struct rcu_head rcu_head;
+ 	u32 rssi_hyst;
+ 	s32 last_rssi_event_value;
++	enum nl80211_cqm_rssi_threshold_event last_rssi_event_type;
+ 	int n_rssi_thresholds;
+ 	s32 rssi_thresholds[];
+ };
+ 
++void cfg80211_cqm_rssi_notify_work(struct work_struct *work);
++
+ void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev);
+ 
+ /* free object */
+@@ -556,8 +560,6 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ #define CFG80211_DEV_WARN_ON(cond)	({bool __r = (cond); __r; })
+ #endif
+ 
+-void cfg80211_cqm_config_free(struct wireless_dev *wdev);
+-
+ void cfg80211_release_pmsr(struct wireless_dev *wdev, u32 portid);
+ void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev);
+ void cfg80211_pmsr_free_wk(struct work_struct *work);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 087c0c442e23..6ab534f058d0 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12561,7 +12561,8 @@ static int nl80211_set_cqm_txe(struct genl_info *info,
+ }
+ 
+ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+-				    struct net_device *dev)
++				    struct net_device *dev,
++				    struct cfg80211_cqm_config *cqm_config)
+ {
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+ 	s32 last, low, high;
+@@ -12570,7 +12571,7 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+ 	int err;
+ 
+ 	/* RSSI reporting disabled? */
+-	if (!wdev->cqm_config)
++	if (!cqm_config)
+ 		return rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
+ 
+ 	/*
+@@ -12579,7 +12580,7 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+ 	 * connection is established and enough beacons received to calculate
+ 	 * the average.
+ 	 */
+-	if (!wdev->cqm_config->last_rssi_event_value &&
++	if (!cqm_config->last_rssi_event_value &&
+ 	    wdev->links[0].client.current_bss &&
+ 	    rdev->ops->get_station) {
+ 		struct station_info sinfo = {};
+@@ -12593,30 +12594,30 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+ 
+ 		cfg80211_sinfo_release_content(&sinfo);
+ 		if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_BEACON_SIGNAL_AVG))
+-			wdev->cqm_config->last_rssi_event_value =
++			cqm_config->last_rssi_event_value =
+ 				(s8) sinfo.rx_beacon_signal_avg;
+ 	}
+ 
+-	last = wdev->cqm_config->last_rssi_event_value;
+-	hyst = wdev->cqm_config->rssi_hyst;
+-	n = wdev->cqm_config->n_rssi_thresholds;
++	last = cqm_config->last_rssi_event_value;
++	hyst = cqm_config->rssi_hyst;
++	n = cqm_config->n_rssi_thresholds;
+ 
+ 	for (i = 0; i < n; i++) {
+ 		i = array_index_nospec(i, n);
+-		if (last < wdev->cqm_config->rssi_thresholds[i])
++		if (last < cqm_config->rssi_thresholds[i])
+ 			break;
+ 	}
+ 
+ 	low_index = i - 1;
+ 	if (low_index >= 0) {
+ 		low_index = array_index_nospec(low_index, n);
+-		low = wdev->cqm_config->rssi_thresholds[low_index] - hyst;
++		low = cqm_config->rssi_thresholds[low_index] - hyst;
+ 	} else {
+ 		low = S32_MIN;
+ 	}
+ 	if (i < n) {
+ 		i = array_index_nospec(i, n);
+-		high = wdev->cqm_config->rssi_thresholds[i] + hyst - 1;
++		high = cqm_config->rssi_thresholds[i] + hyst - 1;
+ 	} else {
+ 		high = S32_MAX;
+ 	}
+@@ -12629,6 +12630,7 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 				u32 hysteresis)
+ {
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
++	struct cfg80211_cqm_config *cqm_config = NULL, *old;
+ 	struct net_device *dev = info->user_ptr[1];
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+ 	int i, err;
+@@ -12646,10 +12648,6 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 	    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT)
+ 		return -EOPNOTSUPP;
+ 
+-	wdev_lock(wdev);
+-	cfg80211_cqm_config_free(wdev);
+-	wdev_unlock(wdev);
+-
+ 	if (n_thresholds <= 1 && rdev->ops->set_cqm_rssi_config) {
+ 		if (n_thresholds == 0 || thresholds[0] == 0) /* Disabling */
+ 			return rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
+@@ -12666,9 +12664,9 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 		n_thresholds = 0;
+ 
+ 	wdev_lock(wdev);
++	old = rcu_dereference_protected(wdev->cqm_config,
++					lockdep_is_held(&wdev->mtx));
+ 	if (n_thresholds) {
+-		struct cfg80211_cqm_config *cqm_config;
+-
+ 		cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
+ 						 n_thresholds),
+ 				     GFP_KERNEL);
+@@ -12683,10 +12681,16 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 		       flex_array_size(cqm_config, rssi_thresholds,
+ 				       n_thresholds));
+ 
+-		wdev->cqm_config = cqm_config;
++		rcu_assign_pointer(wdev->cqm_config, cqm_config);
+ 	}
+ 
+-	err = cfg80211_cqm_rssi_update(rdev, dev);
++	err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
++	if (err) {
++		rcu_assign_pointer(wdev->cqm_config, old);
++		kfree(cqm_config);
++	} else {
++		kfree_rcu(old, rcu_head);
++	}
+ 
+ unlock:
+ 	wdev_unlock(wdev);
+@@ -18715,9 +18719,8 @@ void cfg80211_cqm_rssi_notify(struct net_device *dev,
+ 			      enum nl80211_cqm_rssi_threshold_event rssi_event,
+ 			      s32 rssi_level, gfp_t gfp)
+ {
+-	struct sk_buff *msg;
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+-	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
++	struct cfg80211_cqm_config *cqm_config;
+ 
+ 	trace_cfg80211_cqm_rssi_notify(dev, rssi_event, rssi_level);
+ 
+@@ -18725,16 +18728,42 @@ void cfg80211_cqm_rssi_notify(struct net_device *dev,
+ 		    rssi_event != NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH))
+ 		return;
+ 
+-	if (wdev->cqm_config) {
+-		wdev->cqm_config->last_rssi_event_value = rssi_level;
++	rcu_read_lock();
++	cqm_config = rcu_dereference(wdev->cqm_config);
++	if (cqm_config) {
++		cqm_config->last_rssi_event_value = rssi_level;
++		cqm_config->last_rssi_event_type = rssi_event;
++		schedule_work(&wdev->cqm_rssi_work);
++	}
++	rcu_read_unlock();
++}
++EXPORT_SYMBOL(cfg80211_cqm_rssi_notify);
+ 
+-		cfg80211_cqm_rssi_update(rdev, dev);
++void cfg80211_cqm_rssi_notify_work(struct work_struct *work)
++{
++	struct wireless_dev *wdev = container_of(work, struct wireless_dev,
++						 cqm_rssi_work);
++	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
++	enum nl80211_cqm_rssi_threshold_event rssi_event;
++	struct cfg80211_cqm_config *cqm_config;
++	struct sk_buff *msg;
++	s32 rssi_level;
+ 
+-		if (rssi_level == 0)
+-			rssi_level = wdev->cqm_config->last_rssi_event_value;
++	wdev_lock(wdev);
++	cqm_config = rcu_dereference_protected(wdev->cqm_config,
++					       lockdep_is_held(&wdev->mtx));
++	if (!wdev->cqm_config) {
++		wdev_unlock(wdev);
++		return;
+ 	}
+ 
+-	msg = cfg80211_prepare_cqm(dev, NULL, gfp);
++	cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
++
++	rssi_level = cqm_config->last_rssi_event_value;
++	rssi_event = cqm_config->last_rssi_event_type;
++	wdev_unlock(wdev);
++
++	msg = cfg80211_prepare_cqm(wdev->netdev, NULL, GFP_KERNEL);
+ 	if (!msg)
+ 		return;
+ 
+@@ -18746,14 +18775,13 @@ void cfg80211_cqm_rssi_notify(struct net_device *dev,
+ 				      rssi_level))
+ 		goto nla_put_failure;
+ 
+-	cfg80211_send_cqm(msg, gfp);
++	cfg80211_send_cqm(msg, GFP_KERNEL);
+ 
+ 	return;
+ 
+  nla_put_failure:
+ 	nlmsg_free(msg);
+ }
+-EXPORT_SYMBOL(cfg80211_cqm_rssi_notify);
+ 
+ void cfg80211_cqm_txe_notify(struct net_device *dev,
+ 			     const u8 *peer, u32 num_packets,
+-- 
+2.41.0
+
