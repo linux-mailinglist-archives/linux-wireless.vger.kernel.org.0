@@ -2,122 +2,307 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9150D77D605
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 00:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47BE077D6BD
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 01:41:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240337AbjHOWay (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Aug 2023 18:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49594 "EHLO
+        id S240685AbjHOXks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Aug 2023 19:40:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240391AbjHOWav (ORCPT
+        with ESMTP id S240692AbjHOXkU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Aug 2023 18:30:51 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 026481FF3
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 15:30:49 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37FMT3DD031407;
-        Tue, 15 Aug 2023 22:30:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=E3KW2IksLgN2GlXDP6Hi7rHMQYVuWWdWHMgJueJwXSI=;
- b=SSGiZ9vEP4VAnRN2ll3GuI0+on5+sc56szrg3w8NoCCLgfUSsVMJkKLT1AxlRlDSfxqo
- bOseoXcDMeJbTk4t16nXDeEmYkubHldbKFiG+92629m6x/RGAd6a8S3oGLfHOcUUWRR4
- b8BxAcDtVrTZb86pzMBJplBmaOgO7blLSpZoPWmyjcJvkKt4zK0dYBIHGydQ7rGdrG8f
- IANdmZf1HvrM43AhpoJTdZ35yWNhoUZW2netqSl5cLHHoEDMUZhpf9dIp/y8MhBP8ELk
- y2m+nBqNQTJQHw7ZEqQ6UfO2gV8J59SBiPiqMDmCS5p9rFY4qgv79VjQAjSMd66bRleZ 1g== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sfuj8jcgn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 15 Aug 2023 22:30:39 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37FMUcAT002534
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 15 Aug 2023 22:30:38 GMT
-Received: from [10.48.240.144] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 15 Aug
- 2023 15:30:37 -0700
-Message-ID: <993dc9f6-d956-35ba-d691-7200fb6503d9@quicinc.com>
-Date:   Tue, 15 Aug 2023 15:30:37 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: mac80211_hwsim: drop short frames
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     Johannes Berg <johannes.berg@intel.com>,
-        <syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com>
-References: <20230815212800.d849938fdc9f.I1efbeef082c3f7094037882f213202d760848eb7@changeid>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230815212800.d849938fdc9f.I1efbeef082c3f7094037882f213202d760848eb7@changeid>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: XW-qjJKaDThx2rNtICCwHyBu0_0OxTTM
-X-Proofpoint-GUID: XW-qjJKaDThx2rNtICCwHyBu0_0OxTTM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-15_19,2023-08-15_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- lowpriorityscore=0 mlxlogscore=999 bulkscore=0 impostorscore=0
- clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308150202
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        Tue, 15 Aug 2023 19:40:20 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007F4211C
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 16:39:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692142790; x=1723678790;
+  h=date:from:to:cc:subject:message-id;
+  bh=pW6OejIDkb4fVM7Yp2sS3fQqU61cIWsBXeOzo4g5bSE=;
+  b=avW+YcguYJIEvAMqVmh9X2ZQFc6D4MAo1nnjPQdtxUhjysnS1SB22ULZ
+   psea+8X6yWqAo0FLeRzug5WJTMvQZLwN8b2juTrjvd2hFl49x58qWSqpD
+   uh4aSYKNnSHGW4ltNxLNFXB2TOe3Xb2+SI1X6hFdKoiQ632l9alWvGc7v
+   YOTf1a2Vp2viBdymu5CqerGAhvWF77tb0krXiNlHAJUaWZpCZlJUCivFb
+   exKXZgUgoBxAgcOGSYO31sklpshNxptunm5HrC4qvVU5M0nij53V5vCEw
+   1v94h/f141oBlV+OLQEa5aEfeC0le2g3lLS51mrqgWPrmujUX+y8cF46e
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="372399218"
+X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
+   d="scan'208";a="372399218"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 16:39:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="727540372"
+X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
+   d="scan'208";a="727540372"
+Received: from lkp-server02.sh.intel.com (HELO b5fb8d9e1ffc) ([10.239.97.151])
+  by orsmga007.jf.intel.com with ESMTP; 15 Aug 2023 16:39:13 -0700
+Received: from kbuild by b5fb8d9e1ffc with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qW3d2-0001Jn-2t;
+        Tue, 15 Aug 2023 23:39:12 +0000
+Date:   Wed, 16 Aug 2023 07:38:36 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ 609a1bcd7bebac90a1b443e9fed47fd48dac5799
+Message-ID: <202308160735.EhApRj2E-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/15/2023 12:28 PM, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> While technically some control frames like ACK are shorter and
-> end after Address 1, such frames shouldn't be forwarded through
-> wmediumd or similar userspace, so require the full 3-address
-> header to avoid accessing invalid memory if shorter frames are
-> passed in.
-> 
-> Reported-by: syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 609a1bcd7bebac90a1b443e9fed47fd48dac5799  wifi: iwlwifi: mvm: add dependency for PTP clock
 
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+elapsed time: 721m
 
-> ---
->   drivers/net/wireless/virtual/mac80211_hwsim.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-> index f446fd0e8cd0..dd516cec4197 100644
-> --- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-> +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-> @@ -5626,14 +5626,15 @@ static int hwsim_cloned_frame_received_nl(struct sk_buff *skb_2,
->   	frame_data_len = nla_len(info->attrs[HWSIM_ATTR_FRAME]);
->   	frame_data = (void *)nla_data(info->attrs[HWSIM_ATTR_FRAME]);
->   
-> +	if (frame_data_len < sizeof(struct ieee80211_hdr_3addr) ||
-> +	    frame_data_len > IEEE80211_MAX_DATA_LEN)
-> +		goto err;
-> +
->   	/* Allocate new skb here */
->   	skb = alloc_skb(frame_data_len, GFP_KERNEL);
->   	if (skb == NULL)
->   		goto err;
->   
-> -	if (frame_data_len > IEEE80211_MAX_DATA_LEN)
-> -		goto err;
-> -
->   	/* Copy the data */
->   	skb_put_data(skb, frame_data, frame_data_len);
->   
+configs tested: 228
+configs skipped: 19
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r005-20230815   gcc  
+alpha                randconfig-r013-20230815   gcc  
+alpha                randconfig-r033-20230816   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                     haps_hs_smp_defconfig   gcc  
+arc                 nsimosci_hs_smp_defconfig   gcc  
+arc                  randconfig-r035-20230815   gcc  
+arc                  randconfig-r043-20230815   gcc  
+arm                              alldefconfig   clang
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                           imxrt_defconfig   gcc  
+arm                       multi_v4t_defconfig   gcc  
+arm                          pxa168_defconfig   clang
+arm                  randconfig-r004-20230815   gcc  
+arm                  randconfig-r031-20230815   gcc  
+arm                  randconfig-r032-20230815   gcc  
+arm                  randconfig-r046-20230815   clang
+arm                         socfpga_defconfig   clang
+arm                        vexpress_defconfig   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r004-20230815   clang
+csky                                defconfig   gcc  
+csky                 randconfig-r025-20230816   gcc  
+csky                 randconfig-r026-20230816   gcc  
+csky                 randconfig-r032-20230816   gcc  
+hexagon              randconfig-r016-20230816   clang
+hexagon              randconfig-r036-20230815   clang
+hexagon              randconfig-r041-20230815   clang
+hexagon              randconfig-r041-20230816   clang
+hexagon              randconfig-r045-20230815   clang
+hexagon              randconfig-r045-20230816   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230815   clang
+i386         buildonly-randconfig-r004-20230816   gcc  
+i386         buildonly-randconfig-r005-20230815   clang
+i386         buildonly-randconfig-r005-20230816   gcc  
+i386         buildonly-randconfig-r006-20230815   clang
+i386         buildonly-randconfig-r006-20230816   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230815   clang
+i386                 randconfig-i001-20230816   gcc  
+i386                 randconfig-i002-20230815   clang
+i386                 randconfig-i002-20230816   gcc  
+i386                 randconfig-i003-20230815   clang
+i386                 randconfig-i003-20230816   gcc  
+i386                 randconfig-i004-20230815   clang
+i386                 randconfig-i004-20230816   gcc  
+i386                 randconfig-i005-20230815   clang
+i386                 randconfig-i005-20230816   gcc  
+i386                 randconfig-i006-20230815   clang
+i386                 randconfig-i006-20230816   gcc  
+i386                 randconfig-i011-20230815   gcc  
+i386                 randconfig-i011-20230816   clang
+i386                 randconfig-i012-20230815   gcc  
+i386                 randconfig-i012-20230816   clang
+i386                 randconfig-i013-20230815   gcc  
+i386                 randconfig-i013-20230816   clang
+i386                 randconfig-i014-20230815   gcc  
+i386                 randconfig-i014-20230816   clang
+i386                 randconfig-i015-20230815   gcc  
+i386                 randconfig-i015-20230816   clang
+i386                 randconfig-i016-20230815   gcc  
+i386                 randconfig-i016-20230816   clang
+i386                 randconfig-r003-20230815   clang
+i386                 randconfig-r011-20230815   gcc  
+i386                 randconfig-r034-20230815   clang
+i386                 randconfig-r036-20230815   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r023-20230815   gcc  
+m68k                             alldefconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                          atari_defconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r015-20230815   gcc  
+m68k                 randconfig-r021-20230816   gcc  
+m68k                 randconfig-r026-20230815   gcc  
+microblaze           randconfig-r021-20230815   gcc  
+microblaze           randconfig-r022-20230816   gcc  
+microblaze           randconfig-r034-20230816   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                  cavium_octeon_defconfig   clang
+mips                           ci20_defconfig   gcc  
+mips                         cobalt_defconfig   gcc  
+mips                        qi_lb60_defconfig   clang
+mips                        qi_lb60_defconfig   gcc  
+mips                 randconfig-r004-20230816   clang
+mips                 randconfig-r006-20230815   gcc  
+mips                 randconfig-r035-20230815   gcc  
+mips                         rt305x_defconfig   gcc  
+nios2                            alldefconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r011-20230815   gcc  
+nios2                randconfig-r012-20230815   gcc  
+nios2                randconfig-r024-20230815   gcc  
+nios2                randconfig-r026-20230816   gcc  
+nios2                randconfig-r031-20230815   gcc  
+nios2                randconfig-r031-20230816   gcc  
+nios2                randconfig-r032-20230816   gcc  
+openrisc             randconfig-r012-20230815   gcc  
+openrisc             randconfig-r014-20230815   gcc  
+openrisc             randconfig-r015-20230815   gcc  
+openrisc             randconfig-r021-20230815   gcc  
+openrisc             randconfig-r022-20230815   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                generic-64bit_defconfig   gcc  
+parisc               randconfig-r023-20230816   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                   bluestone_defconfig   clang
+powerpc                     ksi8560_defconfig   clang
+powerpc                       maple_defconfig   gcc  
+powerpc                 mpc834x_itx_defconfig   gcc  
+powerpc                      pmac32_defconfig   clang
+powerpc                     powernv_defconfig   clang
+powerpc              randconfig-r001-20230815   clang
+powerpc              randconfig-r013-20230815   gcc  
+powerpc              randconfig-r024-20230815   gcc  
+powerpc                  storcenter_defconfig   gcc  
+powerpc                      tqm8xx_defconfig   gcc  
+powerpc                 xes_mpc85xx_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r012-20230816   clang
+riscv                randconfig-r014-20230816   clang
+riscv                randconfig-r042-20230815   gcc  
+riscv                randconfig-r042-20230816   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r002-20230815   clang
+s390                 randconfig-r015-20230816   clang
+s390                 randconfig-r044-20230815   gcc  
+s390                 randconfig-r044-20230816   clang
+s390                       zfcpdump_defconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                               j2_defconfig   gcc  
+sh                          lboxre2_defconfig   gcc  
+sh                   randconfig-r016-20230815   gcc  
+sh                   randconfig-r021-20230816   gcc  
+sh                  sh7785lcr_32bit_defconfig   gcc  
+sh                              ul2_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r003-20230815   gcc  
+sparc                randconfig-r024-20230816   gcc  
+sparc64              randconfig-r005-20230815   gcc  
+sparc64              randconfig-r006-20230815   gcc  
+sparc64              randconfig-r011-20230815   gcc  
+sparc64              randconfig-r016-20230815   gcc  
+sparc64              randconfig-r024-20230816   gcc  
+sparc64              randconfig-r034-20230815   gcc  
+sparc64              randconfig-r034-20230816   gcc  
+sparc64              randconfig-r035-20230816   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r001-20230816   clang
+um                   randconfig-r025-20230815   clang
+um                   randconfig-r026-20230815   clang
+um                   randconfig-r031-20230815   gcc  
+um                   randconfig-r033-20230815   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230815   clang
+x86_64       buildonly-randconfig-r001-20230816   gcc  
+x86_64       buildonly-randconfig-r002-20230815   clang
+x86_64       buildonly-randconfig-r002-20230816   gcc  
+x86_64       buildonly-randconfig-r003-20230815   clang
+x86_64       buildonly-randconfig-r003-20230816   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r002-20230815   clang
+x86_64               randconfig-r014-20230815   gcc  
+x86_64               randconfig-r016-20230815   gcc  
+x86_64               randconfig-r023-20230815   gcc  
+x86_64               randconfig-r025-20230815   gcc  
+x86_64               randconfig-r035-20230816   gcc  
+x86_64               randconfig-x001-20230815   gcc  
+x86_64               randconfig-x001-20230816   clang
+x86_64               randconfig-x002-20230815   gcc  
+x86_64               randconfig-x002-20230816   clang
+x86_64               randconfig-x003-20230815   gcc  
+x86_64               randconfig-x003-20230816   clang
+x86_64               randconfig-x004-20230815   gcc  
+x86_64               randconfig-x004-20230816   clang
+x86_64               randconfig-x005-20230815   gcc  
+x86_64               randconfig-x005-20230816   clang
+x86_64               randconfig-x006-20230815   gcc  
+x86_64               randconfig-x006-20230816   clang
+x86_64               randconfig-x011-20230815   clang
+x86_64               randconfig-x011-20230816   gcc  
+x86_64               randconfig-x012-20230815   clang
+x86_64               randconfig-x012-20230816   gcc  
+x86_64               randconfig-x013-20230815   clang
+x86_64               randconfig-x013-20230816   gcc  
+x86_64               randconfig-x014-20230815   clang
+x86_64               randconfig-x014-20230816   gcc  
+x86_64               randconfig-x015-20230815   clang
+x86_64               randconfig-x015-20230816   gcc  
+x86_64               randconfig-x016-20230815   clang
+x86_64               randconfig-x016-20230816   gcc  
+x86_64                           rhel-8.3-bpf   gcc  
+x86_64                          rhel-8.3-func   gcc  
+x86_64                    rhel-8.3-kselftests   gcc  
+x86_64                         rhel-8.3-kunit   gcc  
+x86_64                           rhel-8.3-ltp   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                       common_defconfig   gcc  
+xtensa               randconfig-r033-20230815   gcc  
+xtensa               randconfig-r036-20230815   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
