@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D35C277CFFE
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Aug 2023 18:17:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFD0177D029
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Aug 2023 18:33:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238491AbjHOQQj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Aug 2023 12:16:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36800 "EHLO
+        id S238503AbjHOQcd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Aug 2023 12:32:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238496AbjHOQQN (ORCPT
+        with ESMTP id S238512AbjHOQcL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Aug 2023 12:16:13 -0400
+        Tue, 15 Aug 2023 12:32:11 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6E4C110
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 09:16:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B447810D1
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 09:32:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
         Resent-Message-ID:In-Reply-To:References;
-        bh=MawKX8R/FbJdHQC1xDrhBMUkYV/2zIZgjTXKTJvufVg=; t=1692116168; x=1693325768; 
-        b=RdVR8yd7wzCQFRAApV2OFNS25EuF6AlU0CL5nmz+qUXHWeDcJ4hGX0vnwegh2a83XjXfaTkTT8t
-        ONQsLrdP6HSM5mi8hVS6JNx+epz/86CKGv8vC+Dq0jR7TlOv9rWTDtqwuKtQrlXQRBtk0C/7+I4Si
-        6R8BlNAfMH077aNwCf9ariYeRO3V0eQKk5d3a26zvxcYc5u1DmrszO2JTH0g1oPXWlTFyfQ4FRuAm
-        JfLwfK2UjrQbgQtYsohgkGusJ1Yb1Zj9TV67d1Xsm8XUvUVTXOTPNLNOfVwSvbWsfWdL0pufiH23/
-        MCveCT1T1Iir8iuFLt6Sk/pufOdlfbZ9fJpg==;
+        bh=uBupoDaF73Sg5Uqn83H/egRMNvp5BHIxja7HEen3/54=; t=1692117130; x=1693326730; 
+        b=DVQyr8JEttETX5oK8UCBqbm3ZzoC06hwEW+4yKv9IfNqIU7Bo88h6SZU7QuZwh2VfLvz/97i7+f
+        B24EJdjlQ2kppiAqUOkkYzYEXddS1L3HjV9IGcvVvUPSAf4amgzNif8LTYS9bXqeeEudsTLfksqI5
+        oG09cL5f+28Glwmak7OyvS5+H66TbgGoy4v2xyqxHqRMCTs5ZVy9enmLA5TkiIdUrmIwp3xfI7Y36
+        R/dT0H2StS/ZqZexgfMpNGhhcCmi9aqTJdnt9spWkszMOc0Qzaes0ma+QLHORCitDE/FwIFK6NVYg
+        drWolsiDzahMhcMA4ap7QIhLRl7TgOOisq2w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qVwiE-0091r0-0Z;
-        Tue, 15 Aug 2023 18:16:06 +0200
+        id 1qVwxj-0092pv-33;
+        Tue, 15 Aug 2023 18:32:08 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>,
-        syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com
-Subject: [PATCH] wifi: mac80211_hwsim: drop short frames
-Date:   Tue, 15 Aug 2023 18:16:04 +0200
-Message-ID: <20230815181603.f576bd983875.I1efbeef082c3f7094037882f213202d760848eb7@changeid>
+        syzbot+09d1cd2f71e6dd3bfd2c@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: cfg80211: ocb: don't leave if not joined
+Date:   Tue, 15 Aug 2023 18:32:03 +0200
+Message-ID: <20230815183202.f5edf5ebc737.I3cbb49aa52aed2bace903a019f7300c66c61ea83@changeid>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -53,38 +53,30 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Frames that don't even have addr1 are clearly not valid,
-drop those early in the netlink/wmediumd path here.
+If there's no OCB state, don't ask the driver/mac80211 to
+leave, since that's just confusing. Since set/clear the
+chandef state, that's a simple check.
 
-Reported-by: syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com
+Reported-by: syzbot+09d1cd2f71e6dd3bfd2c@syzkaller.appspotmail.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/wireless/ocb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index f446fd0e8cd0..8f1e4420ed1e 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -5626,14 +5626,15 @@ static int hwsim_cloned_frame_received_nl(struct sk_buff *skb_2,
- 	frame_data_len = nla_len(info->attrs[HWSIM_ATTR_FRAME]);
- 	frame_data = (void *)nla_data(info->attrs[HWSIM_ATTR_FRAME]);
+diff --git a/net/wireless/ocb.c b/net/wireless/ocb.c
+index 27a1732264f9..29afaf3da54f 100644
+--- a/net/wireless/ocb.c
++++ b/net/wireless/ocb.c
+@@ -68,6 +68,9 @@ int __cfg80211_leave_ocb(struct cfg80211_registered_device *rdev,
+ 	if (!rdev->ops->leave_ocb)
+ 		return -EOPNOTSUPP;
  
-+	if (frame_data_len < offsetofend(typeof(*hdr), addr1) ||
-+	    frame_data_len > IEEE80211_MAX_DATA_LEN)
-+		goto err;
++	if (!wdev->u.ocb.chandef.chan)
++		return -ENOTCONN;
 +
- 	/* Allocate new skb here */
- 	skb = alloc_skb(frame_data_len, GFP_KERNEL);
- 	if (skb == NULL)
- 		goto err;
- 
--	if (frame_data_len > IEEE80211_MAX_DATA_LEN)
--		goto err;
--
- 	/* Copy the data */
- 	skb_put_data(skb, frame_data, frame_data_len);
- 
+ 	err = rdev_leave_ocb(rdev, dev);
+ 	if (!err)
+ 		memset(&wdev->u.ocb.chandef, 0, sizeof(wdev->u.ocb.chandef));
 -- 
 2.41.0
 
