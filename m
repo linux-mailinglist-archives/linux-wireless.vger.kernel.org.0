@@ -2,63 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4898177C476
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Aug 2023 02:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DBB977C6A7
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Aug 2023 06:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233332AbjHOAcj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Aug 2023 20:32:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41514 "EHLO
+        id S234328AbjHOENh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Aug 2023 00:13:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233749AbjHOAcg (ORCPT
+        with ESMTP id S233883AbjHOELZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Aug 2023 20:32:36 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A716D1703
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Aug 2023 17:32:35 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37F0WCngC004811, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37F0WCngC004811
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 15 Aug 2023 08:32:12 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Tue, 15 Aug 2023 08:31:33 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 15 Aug 2023 08:31:32 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Tue, 15 Aug 2023 08:31:32 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "emmanuel.mazurier@gmail.com" <emmanuel.mazurier@gmail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: rtw89_8852ae : failed to recognize firmware elements
-Thread-Topic: rtw89_8852ae : failed to recognize firmware elements
-Thread-Index: AQHZzpU1V36L2dqrSEeM3aqDGrDKcK/pMAEAgAAjkoCAAKitAA==
-Date:   Tue, 15 Aug 2023 00:31:32 +0000
-Message-ID: <542c8efb431a4ad4b64c5d6be6a41d4e7cb61b56.camel@realtek.com>
-References: <CAOc87ak7jOQDR5njcM-qTn6XFq_w6p64uVaiXpNtBhLp-_NGeg@mail.gmail.com>
-         <ba862f2103d7321484af73f55f31643570625c08.camel@realtek.com>
-         <CAOc87an-E=zmZcMhkaKTV7hmr4PagFq0weR=n3hzjJ9wENaPwg@mail.gmail.com>
-In-Reply-To: <CAOc87an-E=zmZcMhkaKTV7hmr4PagFq0weR=n3hzjJ9wENaPwg@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <025A58B3BC5B6A4BB9F32FA40F5BF9BD@realtek.com>
-Content-Transfer-Encoding: base64
+        Tue, 15 Aug 2023 00:11:25 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A0A2688;
+        Mon, 14 Aug 2023 21:08:29 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fe8242fc4dso41966035e9.1;
+        Mon, 14 Aug 2023 21:08:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692072507; x=1692677307;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=anT8jKhSoDVocUIDbiLfqy7dD2AOUweYjEowk202rTE=;
+        b=pXh3wdDuavmAXAWIopZ2tsVh81/1AfndoZfZCz6/vScMlf2CL0WH/iRhg39OnJbi96
+         Mi6oLJlMJ/nsCF54S1G09ZWjPd9vznFlZ3Zry6G3nn00GLfg2bHUu4RH1Ak6x3s8NDZL
+         pf4GLkgmBssOJX8mm7Tlwfi8nYngQz3TT6luj14EsoxJPXmMSHTyhvcg4kzCyG1aDN31
+         moOXSAe0JMwiawhxdNx3ZXSLwp2MFZ5kGCL3gFB4al8mQvJuPYMHOjWIBILFSIB+kKxr
+         6xFm04W11jT9eob7hbPxd4mV+/bqzsVLXYK1JUbcUmavyOY1wvPj+fcf8D06MyLRFmtl
+         YTfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692072507; x=1692677307;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=anT8jKhSoDVocUIDbiLfqy7dD2AOUweYjEowk202rTE=;
+        b=S0kBKxA78RHSAtVQQngTxN6IQzhkSChBPlZ8TAbUNq6F9w6dDnL+bGG5jcSE0rFsvP
+         M3vQ7dh8A4ETBMMlaYPhQDpUS2lXjHrsSdLTi6S5UzAB3GaU3dVaa6opLWugtAbPX7rp
+         E8MHT6vO/hG1gTxc3eALgHN9AarYGpx/h5OaUPAntkUzrurIrWsPUbdsS9ssxucVy1hK
+         YHbbPPSh+DfYVEh6RHh7+9t4qZcMHl6bcVZunIgf+9UDtWwFRlPBFiOotJpdiYp94AaN
+         2NTG3rQRtaDk6GpK+XJjvZwwz+D10B9ynV3bYDCH20jdUpSMAlTvhlgBb+P9rM5XEx/E
+         q+gw==
+X-Gm-Message-State: AOJu0YwhQDrdJapOUUnMo3t3nxNAqutWbGU0wHvImd6k676vZqN50UXd
+        e8T+3P61ED+JCwoq+kl+M+75xKfkHmmlpleeZugHkg==
+X-Google-Smtp-Source: AGHT+IGqJCddhtqQ3on45c/KeSIusPEi1z8qJoVUzy5BtApUx75l6r8iKgX+6HNVY9FMuRS0MrcGLw==
+X-Received: by 2002:a7b:cc8d:0:b0:3f4:d18f:b2fb with SMTP id p13-20020a7bcc8d000000b003f4d18fb2fbmr9080082wma.8.1692072507328;
+        Mon, 14 Aug 2023 21:08:27 -0700 (PDT)
+Received: from mmaatuq-HP-Laptop-15-dy2xxx.. ([2001:8f8:1163:806e:5eb8:ff79:bda:b103])
+        by smtp.gmail.com with ESMTPSA id p1-20020adfcc81000000b003179b3fd837sm16375286wrj.33.2023.08.14.21.08.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Aug 2023 21:08:26 -0700 (PDT)
+From:   Mahmoud Maatuq <mahmoudmatook.mm@gmail.com>
+To:     jirislaby@kernel.org, mickflemm@gmail.com, mcgrof@kernel.org,
+        kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     linux-kernel-mentees@lists.linuxfoundation.org,
+        Mahmoud Maatuq <mahmoudmatook.mm@gmail.com>
+Subject: [PATCH v2] ath5k: fix WARNING opportunity for swap.
+Date:   Tue, 15 Aug 2023 08:08:19 +0400
+Message-Id: <20230815040819.649455-1-mahmoudmatook.mm@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,20 +71,89 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIzLTA4LTE0IGF0IDE2OjI3ICswMjAwLCBFbW1hbnVlbCBNYXp1cmllciB3cm90
-ZToNCj4gDQo+IA0KPiBIZXJlIGFyZSB0aGUgb3RoZXIgaW5mb21hdGlvbnMgKGJlZm9yZSB0aGUg
-dXBkYXRlKSA6DQo+IA0KPiA+IFBsZWFzZSBwcm92aWRlIGJlbG93IGluZm9ybWF0aW9uIHRvIGRp
-YWdub3NlIHRoaXMgcHJvYmxlbS4NCj4gPiANCj4gPiAxLiBrZXJuZWwgdmVyc2lvbiB5b3UgYXJl
-IHVzaW5nDQo+ID4gJCB1bmFtZSAtYQ0KPiANCj4gTGludXggbWFudS1kZWJpYW4gNS4xMC4wLTI0
-LWFtZDY0ICMxIFNNUCBEZWJpYW4gNS4xMC4xNzktNQ0KPiAoMjAyMy0wOC0wOCkgeDg2XzY0IEdO
-VS9MaW51eA0KDQpTbywgeW91IGluc3RhbGxlZCBkcml2ZXIgZnJvbSBodHRwczovL2dpdGh1Yi5j
-b20vbHdmaW5nZXIvcnR3ODkgPw0KDQoNCj4gPiAyLiBmaXJtd2FyZSB5b3UgYXJlIHVzaW5nDQo+
-ID4gJCBscyAtYWwgL2xpYi9maXJtd2FyZS9ydHc4OS9ydHc4ODUyYV9mdy5iaW4NCj4gPiAkIG1k
-NXN1bSAvbGliL2Zpcm13YXJlL3J0dzg5L3J0dzg4NTJhX2Z3LmJpbg0KPiANCj4gTm8gZmlsZSB3
-YXMgZm91bmQNCj4gDQoNCg0KQ2FuIHlvdSByZXByb2R1Y2UgYmVsb3cgc3ltcHRvbSBhcyB5b3Vy
-IGluaXRpYWwgcG9zdD8gSWYgc28sIHBsZWFzZSBzaGFyZQ0KZmlybXdhcmUgc2l6ZSBhbmQgaXRz
-IG1kNXN1bS4gDQoNCiAgcnR3ODlfODg1MmFlIDAwMDA6MDk6MDAuMDogbm90IG1mdyBmb3JtYXQN
-CiAgcnR3ODlfODg1MmFlIDAwMDA6MDk6MDAuMDogZmFpbGVkIHRvIHJlY29nbml6ZSBmaXJtd2Fy
-ZSBlbGVtZW50cw0KDQpUaGVzZSBtZXNzYWdlcyB0b2xkIG1lIHRoYXQgYSBmaXJtd2FyZSBpcyBs
-b2FkZWQgYnV0IGl0cyBmb3JtYXQgaXMgdW5leHBlY3RlZC4gDQpJIG1lYW4gaXQgc2hvdWxkIG5v
-dCBubyBmaWxlIGV4aXN0cy4gDQoNClBpbmctS2UNCg0KDQo=
+coccinielle reported the following:
+./drivers/net/wireless/ath/ath5k/phy.c:1573:25-26: WARNING opportunity for swap()
+
+while trying to fix the above warning, it reveals that ath5k_hw_get_median_noise_floor() 
+had open-coded sort() functionality. Since ath5k_hw_get_median_noise_floor() only
+executes once every 10 seconds, any extra overhead due to sort() calling
+its "compare" and "swap" functions can be ignored, so replace the
+existing logic with a call to sort().
+
+Signed-off-by: Mahmoud Maatuq <mahmoudmatook.mm@gmail.com>
+Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+---
+changes in v2:
+- update the commit message explaining why open-coded sort()
+  functionality is replaced with a call to sort().
+
+- this part of updating the commit message is suggested by
+   Jeff Johnson <quic_jjohnson@quicinc.com>
+
+changes in v1:
+- replace the entire double loop with sort()
+  as suggested by Jiri Slaby <jirislaby@kernel.org>
+---
+ drivers/net/wireless/ath/ath5k/phy.c | 29 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath5k/phy.c b/drivers/net/wireless/ath/ath5k/phy.c
+index 5797ef9c73d7..7ee4e1616f45 100644
+--- a/drivers/net/wireless/ath/ath5k/phy.c
++++ b/drivers/net/wireless/ath/ath5k/phy.c
+@@ -26,6 +26,7 @@
+ 
+ #include <linux/delay.h>
+ #include <linux/slab.h>
++#include <linux/sort.h>
+ #include <asm/unaligned.h>
+ 
+ #include "ath5k.h"
+@@ -1554,6 +1555,11 @@ static void ath5k_hw_update_nfcal_hist(struct ath5k_hw *ah, s16 noise_floor)
+ 	hist->nfval[hist->index] = noise_floor;
+ }
+ 
++static int cmps16(const void *a, const void *b)
++{
++	return *(s16 *)a - *(s16 *)b;
++}
++
+ /**
+  * ath5k_hw_get_median_noise_floor() - Get median NF from history buffer
+  * @ah: The &struct ath5k_hw
+@@ -1561,25 +1567,16 @@ static void ath5k_hw_update_nfcal_hist(struct ath5k_hw *ah, s16 noise_floor)
+ static s16
+ ath5k_hw_get_median_noise_floor(struct ath5k_hw *ah)
+ {
+-	s16 sort[ATH5K_NF_CAL_HIST_MAX];
+-	s16 tmp;
+-	int i, j;
+-
+-	memcpy(sort, ah->ah_nfcal_hist.nfval, sizeof(sort));
+-	for (i = 0; i < ATH5K_NF_CAL_HIST_MAX - 1; i++) {
+-		for (j = 1; j < ATH5K_NF_CAL_HIST_MAX - i; j++) {
+-			if (sort[j] > sort[j - 1]) {
+-				tmp = sort[j];
+-				sort[j] = sort[j - 1];
+-				sort[j - 1] = tmp;
+-			}
+-		}
+-	}
++	s16 sorted_nfval[ATH5K_NF_CAL_HIST_MAX];
++	int i;
++
++	memcpy(sorted_nfval, ah->ah_nfcal_hist.nfval, sizeof(sorted_nfval));
++	sort(sorted_nfval, ATH5K_NF_CAL_HIST_MAX, sizeof(s16), cmps16, NULL);
+ 	for (i = 0; i < ATH5K_NF_CAL_HIST_MAX; i++) {
+ 		ATH5K_DBG(ah, ATH5K_DEBUG_CALIBRATE,
+-			"cal %d:%d\n", i, sort[i]);
++			"cal %d:%d\n", i, sorted_nfval[i]);
+ 	}
+-	return sort[(ATH5K_NF_CAL_HIST_MAX - 1) / 2];
++	return sorted_nfval[(ATH5K_NF_CAL_HIST_MAX - 1) / 2];
+ }
+ 
+ /**
+-- 
+2.34.1
+
