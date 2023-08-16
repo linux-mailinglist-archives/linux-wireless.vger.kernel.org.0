@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EF9077DDD3
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 11:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1688777DDC9
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 11:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243485AbjHPJu4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Aug 2023 05:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58538 "EHLO
+        id S243463AbjHPJuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Aug 2023 05:50:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243591AbjHPJub (ORCPT
+        with ESMTP id S243665AbjHPJuT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Aug 2023 05:50:31 -0400
+        Wed, 16 Aug 2023 05:50:19 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655E2DF
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Aug 2023 02:50:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 166BADF
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Aug 2023 02:50:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692179430; x=1723715430;
+  t=1692179418; x=1723715418;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=rf0/pTVAoaLULd5AVF5L2kQpqytC+cgzNCE0oPYfZg4=;
-  b=iDAZ9j2xP1/kxxfxL66vXrg5TS+R3TfoeqHNAz1lBC5CzLzoYsjuBMJ2
-   xGahLrPM6wAlGvN+Vbj9O4cPbrRn1S5WdrARUABB1Yz/KMe6yiJY1vMIK
-   Bz+BFgtbmCor4SfcRtC/bUfvrqJ70mAUAX6KNH+LNmv0p2Gj+Ip7Keplf
-   PT5gnmEeU7qukmtFVJ7aiibwXXLbAZiU+h3JrdNiKPdOKb4yD52nACkL5
-   sEqzzK1v/xDbTegzca5DAKB4/axfGtgyvIy3bdYjWr3P0vNervIlBQHnO
-   NtglXk93FG85rJ4RBVJUThpObvjO5R32fr8IoQ2IYREvCW0BuBF/x9TOx
+  bh=oWi75NojLSLKlx4YxL2ARuRq66wAnt6OUzej2OG3Tqo=;
+  b=kZWX+R1ta+j0jpZqsRuDMeEdVpEFIpe1H1uTEaqgstRb4etFKycL+8ek
+   0vVHEch3MeIBsBTwBYuuSEHPgfdbVgByGXoUL9Hd08ccZChWxz+rjOb2k
+   0YxSiSz5f1UAncrJ2zk72wgwGzTIFCtuWQGZdI0Upqk3GTCIx92uIg9wR
+   YF8NViLedRX1PuuOTvfBF5UhPoDgIZIC401qEWOMEGyXQktBrKeIKZyVQ
+   1rywkXAMu2uqGdQaEk+lEId4zGBFXHZ6gr88RapCX8MHOKMw08IlQ2+cc
+   OmJOIK35XJURf8P+BGo/AnJJVlq8jYhwb7i9i8SmXL/K6LrMGd8v1V/DI
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="458842107"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="458842070"
 X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
-   d="scan'208";a="458842107"
+   d="scan'208";a="458842070"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 02:50:30 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 02:50:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="769128561"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="769128511"
 X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
-   d="scan'208";a="769128561"
+   d="scan'208";a="769128511"
 Received: from lkp-server02.sh.intel.com (HELO a9caf1a0cf30) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 16 Aug 2023 02:50:28 -0700
+  by orsmga001.jf.intel.com with ESMTP; 16 Aug 2023 02:50:15 -0700
 Received: from kbuild by a9caf1a0cf30 with local (Exim 4.96)
         (envelope-from <lkp@intel.com>)
-        id 1qWDAM-0000Ch-2p;
-        Wed, 16 Aug 2023 09:50:19 +0000
+        id 1qWDAD-0000Cf-0G;
+        Wed, 16 Aug 2023 09:50:07 +0000
 Date:   Wed, 16 Aug 2023 17:49:07 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev,
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
         Aloka Dixit <quic_alokad@quicinc.com>,
         Johannes Berg <johannes.berg@intel.com>
 Subject: Re: [PATCH v2] wifi: mac80211: fix puncturing bitmap handling in CSA
-Message-ID: <202308161717.SIA9osj9-lkp@intel.com>
+Message-ID: <202308161727.hK0qYLAL-lkp@intel.com>
 References: <20230816101108.9a2a011e3670.I062e026efafb59b026ab72fc7f7fce54f43dd29b@changeid>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -81,26 +81,33 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Johannes-Berg/wifi-mac802
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
 patch link:    https://lore.kernel.org/r/20230816101108.9a2a011e3670.I062e026efafb59b026ab72fc7f7fce54f43dd29b%40changeid
 patch subject: [PATCH v2] wifi: mac80211: fix puncturing bitmap handling in CSA
-config: nios2-randconfig-r016-20230816 (https://download.01.org/0day-ci/archive/20230816/202308161717.SIA9osj9-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 12.3.0
-reproduce: (https://download.01.org/0day-ci/archive/20230816/202308161717.SIA9osj9-lkp@intel.com/reproduce)
+config: riscv-randconfig-r012-20230816 (https://download.01.org/0day-ci/archive/20230816/202308161727.hK0qYLAL-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
+reproduce: (https://download.01.org/0day-ci/archive/20230816/202308161727.hK0qYLAL-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308161717.SIA9osj9-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202308161727.hK0qYLAL-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   net/mac80211/cfg.c: In function '__ieee80211_csa_finalize':
->> net/mac80211/cfg.c:3680:13: error: 'link_data' undeclared (first use in this function); did you mean 'irq_data'?
+>> net/mac80211/cfg.c:3680:6: error: use of undeclared identifier 'link_data'
     3680 |         if (link_data->conf->eht_puncturing != link_data->conf->csa_punct_bitmap) {
-         |             ^~~~~~~~~
-         |             irq_data
-   net/mac80211/cfg.c:3680:13: note: each undeclared identifier is reported only once for each function it appears in
+         |             ^
+   net/mac80211/cfg.c:3680:41: error: use of undeclared identifier 'link_data'
+    3680 |         if (link_data->conf->eht_puncturing != link_data->conf->csa_punct_bitmap) {
+         |                                                ^
+   net/mac80211/cfg.c:3681:3: error: use of undeclared identifier 'link_data'
+    3681 |                 link_data->conf->eht_puncturing =
+         |                 ^
+   net/mac80211/cfg.c:3682:6: error: use of undeclared identifier 'link_data'
+    3682 |                                         link_data->conf->csa_punct_bitmap;
+         |                                         ^
+   4 errors generated.
 
 
-vim +3680 net/mac80211/cfg.c
+vim +/link_data +3680 net/mac80211/cfg.c
 
   3640	
   3641	static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
