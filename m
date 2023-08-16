@@ -2,96 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 361EC77DBDC
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 10:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4080477DBD0
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 10:12:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242798AbjHPIMH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Aug 2023 04:12:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34866 "EHLO
+        id S242773AbjHPILj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Aug 2023 04:11:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242765AbjHPILg (ORCPT
+        with ESMTP id S242798AbjHPILQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Aug 2023 04:11:36 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3F5AB
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Aug 2023 01:11:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692173495; x=1723709495;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4oiDeWzlYXMPNyeUFldUFsgr5xfDMHCf3/3GDBlsUoU=;
-  b=bQEneyQZg8vrRBb3xzbR2uwJV+qkNHhjXrY/J3UUQTFkiGhuyfmCPDVi
-   WV4qJKXRwM5B9fLUMbOJ3aMU4FsPqZr2c5syjIXuHOakO266HRAyMlXxl
-   OjnRMhtvs36z/ON678Jz/BkpeU+QTtLYwe8BXS1NkRV9E10gESy8UTOKV
-   Q7KIEgrgQjrz4I9GpPiIcE8ug1ftxqoR9UH3uCXA11xiPL9hIAJfkKOHn
-   XY+rw1ryw7NZMkkPyzP3LIKQTWmWTxXPKn0iWEH0Cd92BaffTYLIuHtnU
-   RHU1WA6ArqZlT8p/7cPVq+n3p2iVMRMF4JiSeMzLmd9MXe+EqjSQgzTVd
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="357447886"
-X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
-   d="scan'208";a="357447886"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 01:11:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="769098873"
-X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
-   d="scan'208";a="769098873"
-Received: from mamir-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.226.187])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 01:11:34 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 12/12] wifi: iwlwifi: remove memory check for LMAC error address
-Date:   Wed, 16 Aug 2023 11:10:54 +0300
-Message-Id: <20230816104355.08ab1497904d.I270d4c5bcc23c5ecd0b7db475501032c450852ad@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230816081054.245480-1-gregory.greenman@intel.com>
-References: <20230816081054.245480-1-gregory.greenman@intel.com>
+        Wed, 16 Aug 2023 04:11:16 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3373B13E
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Aug 2023 01:11:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=lNgneGpTaj/bLyLMWq3uOLNeRNdL445hGJRAiuKWeCE=; t=1692173475; x=1693383075; 
+        b=EC2PRZjvYrrYkNJ5yEwMR/m/lo/T28Kt3IHKVVjMAmagBBnrDr5s6s2lL1dsq9maV66jb3QVRk2
+        +hKKs+ESDifkQzJZD+N+6izEUnz61SvAJdVSPzAvS6EPaurIUPM4btb09O68MEpanYEtFA7K5SkEk
+        0jrI6pj4xuRxqP9B0QbtntDPjLQM78Kxv14fgi2AO/oBmB0hXqtMAuMa3pF4jFrGY8RuPj6C944XR
+        l44gtEAJTeM8U8AWielvZ9P7XoBFzkbcqSmIX4YBxIjQwnptm/G+TGlXJxi/6QLw21Df/9h/rdQpn
+        KaWnDGoElhPn+4DWzbsixBuoUrM463GwZzlA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qWBcW-00Abvh-0M;
+        Wed, 16 Aug 2023 10:11:12 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Aloka Dixit <quic_alokad@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH v2] wifi: mac80211: fix puncturing bitmap handling in CSA
+Date:   Wed, 16 Aug 2023 10:11:09 +0200
+Message-ID: <20230816101108.9a2a011e3670.I062e026efafb59b026ab72fc7f7fce54f43dd29b@changeid>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-LMAC error table address was checked against UMAC
-error table minimum address defined. Because of that,
-the LMAC error table was not read, since both addresses
-belong to different ranges. As addresses are updated from
-FW alive message and should be correct, this check is not
-needed.
+Code inspection reveals that we switch the puncturing bitmap
+before the real channel switch, since that happens only in
+the second round of the worker after the channel context is
+switched by ieee80211_link_use_reserved_context().
 
-Still keep the check for address 0 to avoid NULL address read.
+While at it, switch the code to using the link access to the
+data instead of the default bss_conf, even if not all of it
+is multi-link capable yet.
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Fixes: 2cc25e4b2a04 ("wifi: mac80211: configure puncturing bitmap")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dump.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mac80211/cfg.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dump.c b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-index 5876f917e536..8f107ceec407 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-@@ -182,8 +182,7 @@ static void iwl_fwrt_dump_lmac_error_log(struct iwl_fw_runtime *fwrt, u8 lmac_nu
- 			base = fwrt->fw->inst_errlog_ptr;
- 	}
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index e7ac24603892..1657ff09a83a 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3648,12 +3648,6 @@ static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
+ 	lockdep_assert_held(&local->mtx);
+ 	lockdep_assert_held(&local->chanctx_mtx);
  
--	if ((fwrt->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ && !base) ||
--	    (fwrt->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_BZ && base < 0x400000)) {
-+	if (!base) {
- 		IWL_ERR(fwrt,
- 			"Not valid error log pointer 0x%08X for %s uCode\n",
- 			base,
+-	if (sdata->vif.bss_conf.eht_puncturing != sdata->vif.bss_conf.csa_punct_bitmap) {
+-		sdata->vif.bss_conf.eht_puncturing =
+-					sdata->vif.bss_conf.csa_punct_bitmap;
+-		changed |= BSS_CHANGED_EHT_PUNCTURING;
+-	}
+-
+ 	/*
+ 	 * using reservation isn't immediate as it may be deferred until later
+ 	 * with multi-vif. once reservation is complete it will re-schedule the
+@@ -3683,6 +3677,12 @@ static int __ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
+ 	if (err)
+ 		return err;
+ 
++	if (link_data->conf->eht_puncturing != link_data->conf->csa_punct_bitmap) {
++		link_data->conf->eht_puncturing =
++					link_data->conf->csa_punct_bitmap;
++		changed |= BSS_CHANGED_EHT_PUNCTURING;
++	}
++
+ 	ieee80211_link_info_change_notify(sdata, &sdata->deflink, changed);
+ 
+ 	if (sdata->deflink.csa_block_tx) {
 -- 
-2.38.1
+2.41.0
 
