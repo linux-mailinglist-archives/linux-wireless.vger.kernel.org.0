@@ -2,307 +2,200 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47BE077D6BD
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 01:41:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E687B77D73D
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 02:53:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240685AbjHOXks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Aug 2023 19:40:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60088 "EHLO
+        id S238380AbjHPAwp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Aug 2023 20:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240692AbjHOXkU (ORCPT
+        with ESMTP id S240906AbjHPAwg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Aug 2023 19:40:20 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007F4211C
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 16:39:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692142790; x=1723678790;
-  h=date:from:to:cc:subject:message-id;
-  bh=pW6OejIDkb4fVM7Yp2sS3fQqU61cIWsBXeOzo4g5bSE=;
-  b=avW+YcguYJIEvAMqVmh9X2ZQFc6D4MAo1nnjPQdtxUhjysnS1SB22ULZ
-   psea+8X6yWqAo0FLeRzug5WJTMvQZLwN8b2juTrjvd2hFl49x58qWSqpD
-   uh4aSYKNnSHGW4ltNxLNFXB2TOe3Xb2+SI1X6hFdKoiQ632l9alWvGc7v
-   YOTf1a2Vp2viBdymu5CqerGAhvWF77tb0krXiNlHAJUaWZpCZlJUCivFb
-   exKXZgUgoBxAgcOGSYO31sklpshNxptunm5HrC4qvVU5M0nij53V5vCEw
-   1v94h/f141oBlV+OLQEa5aEfeC0le2g3lLS51mrqgWPrmujUX+y8cF46e
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="372399218"
-X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="372399218"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 16:39:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="727540372"
-X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="727540372"
-Received: from lkp-server02.sh.intel.com (HELO b5fb8d9e1ffc) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 15 Aug 2023 16:39:13 -0700
-Received: from kbuild by b5fb8d9e1ffc with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qW3d2-0001Jn-2t;
-        Tue, 15 Aug 2023 23:39:12 +0000
-Date:   Wed, 16 Aug 2023 07:38:36 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 609a1bcd7bebac90a1b443e9fed47fd48dac5799
-Message-ID: <202308160735.EhApRj2E-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        Tue, 15 Aug 2023 20:52:36 -0400
+X-Greylist: delayed 90 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 15 Aug 2023 17:52:35 PDT
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898D62112
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Aug 2023 17:52:35 -0700 (PDT)
+Received: from eig-obgw-5008a.ext.cloudfilter.net ([10.0.29.246])
+        by cmsmtp with ESMTP
+        id W0kzqRB2FEoVsW4kaqK1ix; Wed, 16 Aug 2023 00:51:04 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id W4kZqKnR1ZeaYW4kZqIIAu; Wed, 16 Aug 2023 00:51:04 +0000
+X-Authority-Analysis: v=2.4 cv=eO8AMVl1 c=1 sm=1 tr=0 ts=64dc1d78
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=CGo6wCm4IADRok0f:21 a=IkcTkHD0fZMA:10 a=UttIx32zK-AA:10 a=wYkD_t78qR0A:10
+ a=z8Z5iky-Q3P00n-VfiYA:9 a=QEXdDO2ut3YA:10 a=tNK2v2ls7fuFGmW9SST8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:Subject
+        :From:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ymVDh2vVYAFrzF7WLvlKXgvKijVcMrrqDbKZfN/hxtI=; b=pyiUu4GK8H7pB0uHxbs4Eevl0k
+        Jot9BuhrT1A6Y3NQAcz81wAh/v/lLw6/ML2bX4kEHY/rAlzwFAT4z6RzN8zK3IeNlV/bf2i7y75KJ
+        Ur3O/5KhgPvpGxP4HOnFgBbm6nCGblOdY5qSFX94Zsml0ITF974XKlyHtW2jB75kQwJ6DE8AryIXt
+        r6lywhCLb6m1kmDULn19IrEHbBTN+yMHI+lRoyAJd8CKVwPlkzhncujHn/jIj4SPVg+K2e3+IIg55
+        X2LVgTXHSq/ww3qYr6UFGLqWaEeZ5eY8kR06bSWSKNRqcCRKXN5eSo27OGYDIN0x/JOhTLPuRafRv
+        FyAPYb7g==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:43022 helo=[192.168.15.8])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1qW4kY-001ica-34;
+        Tue, 15 Aug 2023 19:51:02 -0500
+Message-ID: <6e3fddfe-2d31-72fa-ac2b-3b7fa4e6fe08@embeddedor.com>
+Date:   Tue, 15 Aug 2023 18:52:06 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To:     Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [RFC] wifi: mwifiex: Asking for some light on this, please :)
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1qW4kY-001ica-34
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.8]) [187.162.21.192]:43022
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfOdZwS3OlFRvKygbxpXd+LwVPmgZsHsEo7Pb28INpnEafNpAoyc26hJ+hDa42bhGwnnrBl/oa33TT3hyJJXH6Gb5QQIAVDAaZ0L0UCTOZzI+ga6tKsq4
+ rxNIPLaYEESTesQmV+CTo4q9vqs3ygd2eYFUl2XnvrtfQxAdi9ib2S/unnG7CymzQueGrXDdUDnxVRA9duQ094um/YmUBTAuN6/cpP9fXV9zEgX519vxb41m
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 609a1bcd7bebac90a1b443e9fed47fd48dac5799  wifi: iwlwifi: mvm: add dependency for PTP clock
+Hi all,
 
-elapsed time: 721m
+While working on flex-array transformations I ran into the following
+implementation:
 
-configs tested: 228
-configs skipped: 19
+drivers/net/wireless/marvell/mwifiex/fw.h:775:
+struct mwifiex_ie_types_rxba_sync {
+	struct mwifiex_ie_types_header header;
+	u8 mac[ETH_ALEN];
+	u8 tid;
+	u8 reserved;
+	__le16 seq_num;
+	__le16 bitmap_len;
+	u8 bitmap[1];
+} __packed;
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+`bitmap` is currently being used as a fake-flex array and we should
+transform it into a proper flexible-array member.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r005-20230815   gcc  
-alpha                randconfig-r013-20230815   gcc  
-alpha                randconfig-r033-20230816   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                 nsimosci_hs_smp_defconfig   gcc  
-arc                  randconfig-r035-20230815   gcc  
-arc                  randconfig-r043-20230815   gcc  
-arm                              alldefconfig   clang
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                           imxrt_defconfig   gcc  
-arm                       multi_v4t_defconfig   gcc  
-arm                          pxa168_defconfig   clang
-arm                  randconfig-r004-20230815   gcc  
-arm                  randconfig-r031-20230815   gcc  
-arm                  randconfig-r032-20230815   gcc  
-arm                  randconfig-r046-20230815   clang
-arm                         socfpga_defconfig   clang
-arm                        vexpress_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r004-20230815   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r025-20230816   gcc  
-csky                 randconfig-r026-20230816   gcc  
-csky                 randconfig-r032-20230816   gcc  
-hexagon              randconfig-r016-20230816   clang
-hexagon              randconfig-r036-20230815   clang
-hexagon              randconfig-r041-20230815   clang
-hexagon              randconfig-r041-20230816   clang
-hexagon              randconfig-r045-20230815   clang
-hexagon              randconfig-r045-20230816   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230815   clang
-i386         buildonly-randconfig-r004-20230816   gcc  
-i386         buildonly-randconfig-r005-20230815   clang
-i386         buildonly-randconfig-r005-20230816   gcc  
-i386         buildonly-randconfig-r006-20230815   clang
-i386         buildonly-randconfig-r006-20230816   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230815   clang
-i386                 randconfig-i001-20230816   gcc  
-i386                 randconfig-i002-20230815   clang
-i386                 randconfig-i002-20230816   gcc  
-i386                 randconfig-i003-20230815   clang
-i386                 randconfig-i003-20230816   gcc  
-i386                 randconfig-i004-20230815   clang
-i386                 randconfig-i004-20230816   gcc  
-i386                 randconfig-i005-20230815   clang
-i386                 randconfig-i005-20230816   gcc  
-i386                 randconfig-i006-20230815   clang
-i386                 randconfig-i006-20230816   gcc  
-i386                 randconfig-i011-20230815   gcc  
-i386                 randconfig-i011-20230816   clang
-i386                 randconfig-i012-20230815   gcc  
-i386                 randconfig-i012-20230816   clang
-i386                 randconfig-i013-20230815   gcc  
-i386                 randconfig-i013-20230816   clang
-i386                 randconfig-i014-20230815   gcc  
-i386                 randconfig-i014-20230816   clang
-i386                 randconfig-i015-20230815   gcc  
-i386                 randconfig-i015-20230816   clang
-i386                 randconfig-i016-20230815   gcc  
-i386                 randconfig-i016-20230816   clang
-i386                 randconfig-r003-20230815   clang
-i386                 randconfig-r011-20230815   gcc  
-i386                 randconfig-r034-20230815   clang
-i386                 randconfig-r036-20230815   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r023-20230815   gcc  
-m68k                             alldefconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                          atari_defconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r015-20230815   gcc  
-m68k                 randconfig-r021-20230816   gcc  
-m68k                 randconfig-r026-20230815   gcc  
-microblaze           randconfig-r021-20230815   gcc  
-microblaze           randconfig-r022-20230816   gcc  
-microblaze           randconfig-r034-20230816   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                  cavium_octeon_defconfig   clang
-mips                           ci20_defconfig   gcc  
-mips                         cobalt_defconfig   gcc  
-mips                        qi_lb60_defconfig   clang
-mips                        qi_lb60_defconfig   gcc  
-mips                 randconfig-r004-20230816   clang
-mips                 randconfig-r006-20230815   gcc  
-mips                 randconfig-r035-20230815   gcc  
-mips                         rt305x_defconfig   gcc  
-nios2                            alldefconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r011-20230815   gcc  
-nios2                randconfig-r012-20230815   gcc  
-nios2                randconfig-r024-20230815   gcc  
-nios2                randconfig-r026-20230816   gcc  
-nios2                randconfig-r031-20230815   gcc  
-nios2                randconfig-r031-20230816   gcc  
-nios2                randconfig-r032-20230816   gcc  
-openrisc             randconfig-r012-20230815   gcc  
-openrisc             randconfig-r014-20230815   gcc  
-openrisc             randconfig-r015-20230815   gcc  
-openrisc             randconfig-r021-20230815   gcc  
-openrisc             randconfig-r022-20230815   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                generic-64bit_defconfig   gcc  
-parisc               randconfig-r023-20230816   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                   bluestone_defconfig   clang
-powerpc                     ksi8560_defconfig   clang
-powerpc                       maple_defconfig   gcc  
-powerpc                 mpc834x_itx_defconfig   gcc  
-powerpc                      pmac32_defconfig   clang
-powerpc                     powernv_defconfig   clang
-powerpc              randconfig-r001-20230815   clang
-powerpc              randconfig-r013-20230815   gcc  
-powerpc              randconfig-r024-20230815   gcc  
-powerpc                  storcenter_defconfig   gcc  
-powerpc                      tqm8xx_defconfig   gcc  
-powerpc                 xes_mpc85xx_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r012-20230816   clang
-riscv                randconfig-r014-20230816   clang
-riscv                randconfig-r042-20230815   gcc  
-riscv                randconfig-r042-20230816   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r002-20230815   clang
-s390                 randconfig-r015-20230816   clang
-s390                 randconfig-r044-20230815   gcc  
-s390                 randconfig-r044-20230816   clang
-s390                       zfcpdump_defconfig   gcc  
-sh                               allmodconfig   gcc  
-sh                               j2_defconfig   gcc  
-sh                          lboxre2_defconfig   gcc  
-sh                   randconfig-r016-20230815   gcc  
-sh                   randconfig-r021-20230816   gcc  
-sh                  sh7785lcr_32bit_defconfig   gcc  
-sh                              ul2_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r003-20230815   gcc  
-sparc                randconfig-r024-20230816   gcc  
-sparc64              randconfig-r005-20230815   gcc  
-sparc64              randconfig-r006-20230815   gcc  
-sparc64              randconfig-r011-20230815   gcc  
-sparc64              randconfig-r016-20230815   gcc  
-sparc64              randconfig-r024-20230816   gcc  
-sparc64              randconfig-r034-20230815   gcc  
-sparc64              randconfig-r034-20230816   gcc  
-sparc64              randconfig-r035-20230816   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r001-20230816   clang
-um                   randconfig-r025-20230815   clang
-um                   randconfig-r026-20230815   clang
-um                   randconfig-r031-20230815   gcc  
-um                   randconfig-r033-20230815   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230815   clang
-x86_64       buildonly-randconfig-r001-20230816   gcc  
-x86_64       buildonly-randconfig-r002-20230815   clang
-x86_64       buildonly-randconfig-r002-20230816   gcc  
-x86_64       buildonly-randconfig-r003-20230815   clang
-x86_64       buildonly-randconfig-r003-20230816   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r002-20230815   clang
-x86_64               randconfig-r014-20230815   gcc  
-x86_64               randconfig-r016-20230815   gcc  
-x86_64               randconfig-r023-20230815   gcc  
-x86_64               randconfig-r025-20230815   gcc  
-x86_64               randconfig-r035-20230816   gcc  
-x86_64               randconfig-x001-20230815   gcc  
-x86_64               randconfig-x001-20230816   clang
-x86_64               randconfig-x002-20230815   gcc  
-x86_64               randconfig-x002-20230816   clang
-x86_64               randconfig-x003-20230815   gcc  
-x86_64               randconfig-x003-20230816   clang
-x86_64               randconfig-x004-20230815   gcc  
-x86_64               randconfig-x004-20230816   clang
-x86_64               randconfig-x005-20230815   gcc  
-x86_64               randconfig-x005-20230816   clang
-x86_64               randconfig-x006-20230815   gcc  
-x86_64               randconfig-x006-20230816   clang
-x86_64               randconfig-x011-20230815   clang
-x86_64               randconfig-x011-20230816   gcc  
-x86_64               randconfig-x012-20230815   clang
-x86_64               randconfig-x012-20230816   gcc  
-x86_64               randconfig-x013-20230815   clang
-x86_64               randconfig-x013-20230816   gcc  
-x86_64               randconfig-x014-20230815   clang
-x86_64               randconfig-x014-20230816   gcc  
-x86_64               randconfig-x015-20230815   clang
-x86_64               randconfig-x015-20230816   gcc  
-x86_64               randconfig-x016-20230815   clang
-x86_64               randconfig-x016-20230816   gcc  
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                          rhel-8.3-func   gcc  
-x86_64                    rhel-8.3-kselftests   gcc  
-x86_64                         rhel-8.3-kunit   gcc  
-x86_64                           rhel-8.3-ltp   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                       common_defconfig   gcc  
-xtensa               randconfig-r033-20230815   gcc  
-xtensa               randconfig-r036-20230815   gcc  
+However, while doing that, I noticed something in the following function
+that's not clear to me and I wanted to ask you for feedback:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:907:
+void mwifiex_11n_rxba_sync_event(struct mwifiex_private *priv,
+				 u8 *event_buf, u16 len)
+{
+	struct mwifiex_ie_types_rxba_sync *tlv_rxba = (void *)event_buf;
+	u16 tlv_type, tlv_len;
+	struct mwifiex_rx_reorder_tbl *rx_reor_tbl_ptr;
+	u8 i, j;
+	u16 seq_num, tlv_seq_num, tlv_bitmap_len;
+	int tlv_buf_left = len;
+	int ret;
+	u8 *tmp;
+
+	mwifiex_dbg_dump(priv->adapter, EVT_D, "RXBA_SYNC event:",
+			 event_buf, len);
+	while (tlv_buf_left >= sizeof(*tlv_rxba)) {
+		tlv_type = le16_to_cpu(tlv_rxba->header.type);
+		tlv_len  = le16_to_cpu(tlv_rxba->header.len);
+		if (tlv_type != TLV_TYPE_RXBA_SYNC) {
+			mwifiex_dbg(priv->adapter, ERROR,
+				    "Wrong TLV id=0x%x\n", tlv_type);
+			return;
+		}
+
+		tlv_seq_num = le16_to_cpu(tlv_rxba->seq_num);
+		tlv_bitmap_len = le16_to_cpu(tlv_rxba->bitmap_len);
+		mwifiex_dbg(priv->adapter, INFO,
+			    "%pM tid=%d seq_num=%d bitmap_len=%d\n",
+			    tlv_rxba->mac, tlv_rxba->tid, tlv_seq_num,
+			    tlv_bitmap_len);
+
+		rx_reor_tbl_ptr =
+			mwifiex_11n_get_rx_reorder_tbl(priv, tlv_rxba->tid,
+						       tlv_rxba->mac);
+		if (!rx_reor_tbl_ptr) {
+			mwifiex_dbg(priv->adapter, ERROR,
+				    "Can not find rx_reorder_tbl!");
+			return;
+		}
+
+		for (i = 0; i < tlv_bitmap_len; i++) {
+			for (j = 0 ; j < 8; j++) {
+				if (tlv_rxba->bitmap[i] & (1 << j)) {
+					seq_num = (MAX_TID_VALUE - 1) &
+						(tlv_seq_num + i * 8 + j);
+
+					mwifiex_dbg(priv->adapter, ERROR,
+						    "drop packet,seq=%d\n",
+						    seq_num);
+
+					ret = mwifiex_11n_rx_reorder_pkt
+					(priv, seq_num, tlv_rxba->tid,
+					 tlv_rxba->mac, 0, NULL);
+
+					if (ret)
+						mwifiex_dbg(priv->adapter,
+							    ERROR,
+							    "Fail to drop packet");
+				}
+			}
+		}
+
+		tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+		tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
+		
+What's the relation between tlv_len, sizeof(*tlv_rxba) and tlv_bitmap_len?
+
+Isn't `sizeof(*tlv_rxba) + tlv_len` and `tlv_len + sizeof(*tlv_rxba)`
+double-counting some fields in `struct mwifiex_ie_types_rxba_sync`?
+
+Shouldn't this be something like this, instead (before the flex-array
+transformation, of course):
+
+-               tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+-               tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
++               tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_bitmap_len - 1);
++               tmp = (u8 *)tlv_rxba + tlv_bitmap_len + sizeof(*tlv_rxba - 1);
+
+
+		tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
+	}
+}
+
+Thanks in advance for any feedback!
+
+--
+Gustavo
