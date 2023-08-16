@@ -2,40 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4667F77DC15
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 10:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A0A277DC11
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 10:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242870AbjHPIWx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Aug 2023 04:22:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55984 "EHLO
+        id S242858AbjHPIWw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Aug 2023 04:22:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242868AbjHPIW2 (ORCPT
+        with ESMTP id S242872AbjHPIW3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Aug 2023 04:22:28 -0400
+        Wed, 16 Aug 2023 04:22:29 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 45B901FF9
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Aug 2023 01:22:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AA0FD1FD0
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Aug 2023 01:22:27 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37G8LvVN2001128, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37G8LvVN2001128
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37G8Lx4T2001143, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37G8Lx4T2001143
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Aug 2023 16:21:57 +0800
+        Wed, 16 Aug 2023 16:21:59 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 16 Aug 2023 16:22:17 +0800
+ 15.1.2507.17; Wed, 16 Aug 2023 16:22:18 +0800
 Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 16 Aug
- 2023 16:22:16 +0800
+ 2023 16:22:18 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 0/6] wifi: rtw89: preparation of TDMA-based MCC (STA+P2P)
-Date:   Wed, 16 Aug 2023 16:21:27 +0800
-Message-ID: <20230816082133.57474-1-pkshih@realtek.com>
+Subject: [PATCH 1/6] wifi: rtw89: add function prototype for coex request duration
+Date:   Wed, 16 Aug 2023 16:21:28 +0800
+Message-ID: <20230816082133.57474-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230816082133.57474-1-pkshih@realtek.com>
+References: <20230816082133.57474-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -43,10 +45,6 @@ X-Originating-IP: [172.21.69.188]
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -59,57 +57,106 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-TDMA-based MCC (STA+P2P) is a kind of multiple interfaces concurrence.
-Basically, driver is to calculate timeslot pattern and firmware follows
-the pattern to switch channels. Since BT-coexistence is also a TDMA-based
-mechanism, also consider BT timeslot into pattern if BT devices present.
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
+
+The request duration comes from coex mechanism, indicating the
+length of time that should be reserved for BT in each time division.
+It is required to handle update notification when channel concurrency
+processes. Since it will involve in both coex and wifi code flow, this
+commit ahead adds the prototype for required function interfaces to
+split the implementation of coex and wifi in the following.
+
+The follow-up are expected be add afterwards.
+1. coex mechanism call rtw89_core_ntfy_btc_event() once bt req len changes
+2. channel concurrency flow updates related stuffs when notified
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/coex.h |  9 +++++++++
+ drivers/net/wireless/realtek/rtw89/core.c | 21 +++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h | 12 ++++++++++++
+ 3 files changed, 42 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.h b/drivers/net/wireless/realtek/rtw89/coex.h
+index f16421cb30ef..e76153709793 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.h
++++ b/drivers/net/wireless/realtek/rtw89/coex.h
+@@ -193,4 +193,13 @@ static inline u8 rtw89_btc_path_phymap(struct rtw89_dev *rtwdev,
+ 	return rtw89_btc_phymap(rtwdev, phy_idx, BIT(path));
+ }
  
-To easier to review these 20+ patches, I summary basic purpose of these
-patches below by group, and submit them by small patchset one by one.
++/* return bt req len in TU */
++static inline u16 rtw89_coex_query_bt_req_len(struct rtw89_dev *rtwdev,
++					      enum rtw89_phy_idx phy_idx)
++{
++	struct rtw89_btc *btc = &rtwdev->btc;
++
++	return btc->bt_req_len;
++}
++
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 71eb9cfd4896..a338b0a97910 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3464,6 +3464,27 @@ void rtw89_complete_cond(struct rtw89_wait_info *wait, unsigned int cond,
+ 	complete(&wait->completion);
+ }
  
-Group 1. get BT timeslot from coex mechanism
-Group 2. adjust some stuff related to driver channel context
-Group 3. P2P NoA infrastructure to add the IE to beacon when playing GO
-Group 4. adjust driver to support 2 channel context
-Group 5. calculate timeslot patterns and trigger firmware to switch
-         channels followed the patterns
-Group 6. disable some dynamic tracking mechanism of RF calibration when
-         MCC is running.
-Group 7. monitor states and adjust timeslot patterns. For example, if
-         BT device leaves, we can reassign the slot to WiFi.
-Group 8. Remain-on-channel and hardware scan are related to channel
-         context, so need some treatments to work with MCC properly.
-Group 9. Finally, we declare 8852C to support MCC
-
-This patchset includes groups 1-4 above, and depends on another patch
-"wifi: rtw89: Introduce Time Averaged SAR (TAS) feature"
-because both modify the same file, not functional dependency. 
-
-Zong-Zhe Yang (6):
-  wifi: rtw89: add function prototype for coex request duration
-  wifi: rtw89: refine rtw89_correct_cck_chan() by
-    rtw89_hw_to_nl80211_band()
-  wifi: rtw89: sar: let caller decide the center frequency to query
-  wifi: rtw89: call rtw89_chan_get() by vif chanctx if aware of vif
-  wifi: rtw89: provide functions to configure NoA for beacon update
-  wifi: rtw89: initialize multi-channel handling
-
- drivers/net/wireless/realtek/rtw89/chan.c     | 124 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/chan.h     |   5 +
- drivers/net/wireless/realtek/rtw89/coex.c     |   3 +-
- drivers/net/wireless/realtek/rtw89/coex.h     |   9 ++
- drivers/net/wireless/realtek/rtw89/core.c     | 114 +++++++++++-----
- drivers/net/wireless/realtek/rtw89/core.h     |  78 +++++++++++
- drivers/net/wireless/realtek/rtw89/debug.c    |  10 +-
- drivers/net/wireless/realtek/rtw89/fw.c       |  16 ++-
- drivers/net/wireless/realtek/rtw89/mac80211.c |   7 +-
- drivers/net/wireless/realtek/rtw89/phy.c      |  29 ++--
- drivers/net/wireless/realtek/rtw89/ps.c       |  75 ++++++++++-
- drivers/net/wireless/realtek/rtw89/ps.h       |   4 +
- drivers/net/wireless/realtek/rtw89/sar.c      |  24 ++--
- drivers/net/wireless/realtek/rtw89/sar.h      |   6 +-
- 14 files changed, 436 insertions(+), 68 deletions(-)
-
++void rtw89_core_ntfy_btc_event(struct rtw89_dev *rtwdev, enum rtw89_btc_hmsg event)
++{
++	u16 bt_req_len;
++
++	switch (event) {
++	case RTW89_BTC_HMSG_SET_BT_REQ_SLOT:
++		bt_req_len = rtw89_coex_query_bt_req_len(rtwdev, RTW89_PHY_0);
++		rtw89_debug(rtwdev, RTW89_DBG_BTC,
++			    "coex updates BT req len to %d TU\n", bt_req_len);
++		break;
++	default:
++		if (event < NUM_OF_RTW89_BTC_HMSG)
++			rtw89_debug(rtwdev, RTW89_DBG_BTC,
++				    "unhandled BTC HMSG event: %d\n", event);
++		else
++			rtw89_warn(rtwdev,
++				   "unrecognized BTC HMSG event: %d\n", event);
++		break;
++	}
++}
++
+ int rtw89_core_start(struct rtw89_dev *rtwdev)
+ {
+ 	int ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index b5a08f90f5bd..5b60bc72b4a5 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2656,6 +2656,17 @@ struct rtw89_btc {
+ 	bool lps;
+ };
+ 
++enum rtw89_btc_hmsg {
++	RTW89_BTC_HMSG_TMR_EN = 0x0,
++	RTW89_BTC_HMSG_BT_REG_READBACK = 0x1,
++	RTW89_BTC_HMSG_SET_BT_REQ_SLOT = 0x2,
++	RTW89_BTC_HMSG_FW_EV = 0x3,
++	RTW89_BTC_HMSG_BT_LINK_CHG = 0x4,
++	RTW89_BTC_HMSG_SET_BT_REQ_STBC = 0x5,
++
++	NUM_OF_RTW89_BTC_HMSG,
++};
++
+ enum rtw89_ra_mode {
+ 	RTW89_RA_MODE_CCK = BIT(0),
+ 	RTW89_RA_MODE_OFDM = BIT(1),
+@@ -5325,5 +5336,6 @@ void rtw89_core_scan_complete(struct rtw89_dev *rtwdev,
+ 			      struct ieee80211_vif *vif, bool hw_scan);
+ void rtw89_reg_6ghz_power_recalc(struct rtw89_dev *rtwdev,
+ 				 struct rtw89_vif *rtwvif, bool active);
++void rtw89_core_ntfy_btc_event(struct rtw89_dev *rtwdev, enum rtw89_btc_hmsg event);
+ 
+ #endif
 -- 
 2.25.1
 
