@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D573277DBD2
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 10:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3464277DBD3
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Aug 2023 10:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242779AbjHPILl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Aug 2023 04:11:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57850 "EHLO
+        id S242782AbjHPILn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Aug 2023 04:11:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242807AbjHPILV (ORCPT
+        with ESMTP id S242810AbjHPILY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Aug 2023 04:11:21 -0400
+        Wed, 16 Aug 2023 04:11:24 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32749109
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Aug 2023 01:11:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A557109
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Aug 2023 01:11:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692173480; x=1723709480;
+  t=1692173482; x=1723709482;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=KsnNHkKgbYMDxgy15zkYwLWa314cMjrf9JwIjtHiY3I=;
-  b=A/FrJ0gSNN1blO845cKQFQcQqG9ldaL0nMEA+7q1Rw3eIaFnJ8Jr5OXT
-   fm3v+9i70JKhlMZU20DqtPe3l5sybQDl4hI1SZLgYYdjf6/5BM9iXbXM8
-   P9CAzLvhfhrN+JdAY1xVv7vF4H58nLnTZy4BRfM5fu54n+z+qOfKWZllc
-   uU5NUsAQ89TukimrAe4pVnrBEAG4RVQRutrDzlVWLEUqVx+Xb8ZvnDFz+
-   xXSDaQJRD28lQyp7IhjcXPxcCA2p8Q+JwPEe3pHxooVq+VvMw11XkWw0Y
-   RW4AaTLG1ogZPVLcmJLhuZzwAWJhJ5r+UBtkmbCtEDc/SVEq0fS4I3H3Z
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="357447819"
+  bh=ytXRl4fBc5KLKfsz+OoHHDhdToAVwwDLYGwh4fZQ4XM=;
+  b=BaZgjG4cp7IXGu8XyR8cZLTss/wPq/YtZ3SDHW0EB/Vg5zodp0bgWHQR
+   ELf1isuorwzjbq4TbBZXGFo9trx3ualMUzf8yo4gRAhKIXLX0KzM/LkSt
+   GQrmoI5raRuysfNQ3yNk44DCGW7zIUOWHteeu/86/64nYyFRK+Ur86owp
+   ueJGtG0GNN0NF7UYF9ME7rLYkmhIDWpy0zhAx+uZaymrksDhQ+r5/SQHG
+   AcIz2Ic8UzMUQFEg/BilRmMzhJoNA3rT0qOqRFtEaCPQ5pJ+UlMJLz22s
+   7iRLSqu0LFYyIl+0YVvBQ0IsQLHaqqYf7r9OZEv6y5YbxSd9dXATT08av
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="357447830"
 X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
-   d="scan'208";a="357447819"
+   d="scan'208";a="357447830"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 01:11:20 -0700
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 01:11:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="769098799"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="769098820"
 X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
-   d="scan'208";a="769098799"
+   d="scan'208";a="769098820"
 Received: from mamir-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.226.187])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 01:11:18 -0700
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 01:11:20 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 05/12] wifi: iwlwifi: remove 'def_rx_queue' struct member
-Date:   Wed, 16 Aug 2023 11:10:47 +0300
-Message-Id: <20230816104355.e0c6fa57c162.I907bbb428cf99725f06a348c8dbce5d3dd877136@changeid>
+Subject: [PATCH 06/12] wifi: iwlwifi: pcie: move gen1 TB handling to header
+Date:   Wed, 16 Aug 2023 11:10:48 +0300
+Message-Id: <20230816104355.52b6f66de219.Ic8403fd098c187fac067977808c0129d96514c91@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230816081054.245480-1-gregory.greenman@intel.com>
 References: <20230816081054.245480-1-gregory.greenman@intel.com>
@@ -63,85 +63,78 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This is only ever initialized to zero, use a new define
-for the default RX queue instead.
+We will need this in another place soon in reclaim and init,
+so add this function to the queue header file instead.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-fh.h        | 2 ++
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h | 4 +---
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c       | 2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    | 2 --
- 4 files changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 18 +-----------------
+ drivers/net/wireless/intel/iwlwifi/queue/tx.h | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-fh.h b/drivers/net/wireless/intel/iwlwifi/iwl-fh.h
-index 4e4a60ddf9b2..41ab5a6e2dd3 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-fh.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-fh.h
-@@ -565,6 +565,8 @@ static inline unsigned int FH_MEM_CBBC_QUEUE(struct iwl_trans *trans,
- #define RX_QUEUE_MASK                         255
- #define RX_QUEUE_SIZE_LOG                     8
- 
-+#define IWL_DEFAULT_RX_QUEUE			0
-+
- /**
-  * struct iwl_rb_status - reserve buffer status
-  * 	host memory mapped FH registers
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-index 0adcf0e13e85..0f6493dab8cb 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2003-2015, 2018-2022 Intel Corporation
-+ * Copyright (C) 2003-2015, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -315,7 +315,6 @@ enum iwl_pcie_imr_status {
-  * @ucode_write_complete: indicates that the ucode has been copied.
-  * @ucode_write_waitq: wait queue for uCode load
-  * @cmd_queue - command queue number
-- * @def_rx_queue - default rx queue number
-  * @rx_buf_size: Rx buffer size
-  * @scd_set_active: should the transport configure the SCD for HCMD queue
-  * @rx_page_order: page order for receive buffer size
-@@ -398,7 +397,6 @@ struct iwl_trans_pcie {
- 	wait_queue_head_t ucode_write_waitq;
- 	wait_queue_head_t sx_waitq;
- 
--	u8 def_rx_queue;
- 	u8 n_no_reclaim_cmds;
- 	u8 no_reclaim_cmds[MAX_NO_RECLAIM_CMDS];
- 	u16 num_rx_bufs;
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index f87b28edc267..4614acee9f7b 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1373,7 +1373,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
- 			}
- 		}
- 
--		if (rxq->id == trans_pcie->def_rx_queue)
-+		if (rxq->id == IWL_DEFAULT_RX_QUEUE)
- 			iwl_op_mode_rx(trans->op_mode, &rxq->napi,
- 				       &rxcb);
- 		else
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 3e988da44973..2096f7158728 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -3617,8 +3617,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
- 				       PCIE_LINK_STATE_CLKPM);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 9ab1b2590dd2..2f39b639c43f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -132,22 +132,6 @@ void iwl_pcie_txq_check_wrptrs(struct iwl_trans *trans)
  	}
+ }
  
--	trans_pcie->def_rx_queue = 0;
+-static inline void iwl_pcie_tfd_set_tb(struct iwl_trans *trans, void *tfd,
+-				       u8 idx, dma_addr_t addr, u16 len)
+-{
+-	struct iwl_tfd *tfd_fh = (void *)tfd;
+-	struct iwl_tfd_tb *tb = &tfd_fh->tbs[idx];
 -
- 	pci_set_master(pdev);
+-	u16 hi_n_len = len << 4;
+-
+-	put_unaligned_le32(addr, &tb->lo);
+-	hi_n_len |= iwl_get_dma_hi_addr(addr);
+-
+-	tb->hi_n_len = cpu_to_le16(hi_n_len);
+-
+-	tfd_fh->num_tbs = idx + 1;
+-}
+-
+ static int iwl_pcie_txq_build_tfd(struct iwl_trans *trans, struct iwl_txq *txq,
+ 				  dma_addr_t addr, u16 len, bool reset)
+ {
+@@ -172,7 +156,7 @@ static int iwl_pcie_txq_build_tfd(struct iwl_trans *trans, struct iwl_txq *txq,
+ 		 "Unaligned address = %llx\n", (unsigned long long)addr))
+ 		return -EINVAL;
  
- 	addr_size = trans->txqs.tfd.addr_size;
+-	iwl_pcie_tfd_set_tb(trans, tfd, num_tbs, addr, len);
++	iwl_pcie_gen1_tfd_set_tb(trans, tfd, num_tbs, addr, len);
+ 
+ 	return num_tbs;
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.h b/drivers/net/wireless/intel/iwlwifi/queue/tx.h
+index 15b3edce56e0..b7d3808588bf 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.h
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.h
+@@ -155,6 +155,21 @@ static inline u16 iwl_txq_gen1_tfd_tb_get_len(struct iwl_trans *trans,
+ 	return le16_to_cpu(tb->hi_n_len) >> 4;
+ }
+ 
++static inline void iwl_pcie_gen1_tfd_set_tb(struct iwl_trans *trans,
++					    struct iwl_tfd *tfd,
++					    u8 idx, dma_addr_t addr, u16 len)
++{
++	struct iwl_tfd_tb *tb = &tfd->tbs[idx];
++	u16 hi_n_len = len << 4;
++
++	put_unaligned_le32(addr, &tb->lo);
++	hi_n_len |= iwl_get_dma_hi_addr(addr);
++
++	tb->hi_n_len = cpu_to_le16(hi_n_len);
++
++	tfd->num_tbs = idx + 1;
++}
++
+ void iwl_txq_gen1_tfd_unmap(struct iwl_trans *trans,
+ 			    struct iwl_cmd_meta *meta,
+ 			    struct iwl_txq *txq, int index);
 -- 
 2.38.1
 
