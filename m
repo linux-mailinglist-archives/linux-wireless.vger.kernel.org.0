@@ -2,141 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D1B177F4D8
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 13:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49D5177F4EB
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 13:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350177AbjHQLPa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Aug 2023 07:15:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34144 "EHLO
+        id S1350208AbjHQLUY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Aug 2023 07:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350206AbjHQLPW (ORCPT
+        with ESMTP id S1350240AbjHQLUD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Aug 2023 07:15:22 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E4132D71
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 04:15:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=IYxrqtsKA9dKJqqqz/fFTZrzX3qJxLM9OdKFr+jqdRM=;
-        t=1692270921; x=1693480521; b=u9lEhbvKMoX8JiLTtTFMxOzyJwUGJ/bvU4tS9PcbwJgqtRj
-        yaLEWm6tzf11XevhMUkEaRbLid/NQCW9wUScaWdp724aUt9Q2k+m40euRgh74od0Oz4Oqew7jZi01
-        No5sHC/L3jdVosdCcfpdFBR90Y3EZ/GoRSBA1N3OwtSmwDEGozdprZQ97LMz3UZ7rzj9vE7S7Nvvx
-        8MExSq9tbad9cVOq8ae080TaYfqTtajIicQhGCUA/tMHOolgv/jYptvTgn6duUK0KWXg9y0SNXXho
-        Nuu7RD0+HYB9Jds+pdaFpbVrED8+GySNpvgXOzd1fasbMbdpD0qT7svVUHALqbyA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qWayC-00CpU3-2d;
-        Thu, 17 Aug 2023 13:15:17 +0200
-Message-ID: <0cfced7eae055fe0f0831b830af16b4d19dabaab.camel@sipsolutions.net>
-Subject: Re: WARNING in __ieee80211_beacon_get
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aleksandr Nogikh <nogikh@google.com>
-Cc:     syzbot <syzbot+18c783c5cf6a781e3e2c@syzkaller.appspotmail.com>,
-        linux-wireless@vger.kernel.org, ramonreisfontes@gmail.com,
-        syzkaller-bugs@googlegroups.com
-Date:   Thu, 17 Aug 2023 13:15:15 +0200
-In-Reply-To: <3e34b44f06a7b21a6148bec8750ebc3d4e78b284.camel@sipsolutions.net>
-References: <000000000000bf21d705b0e8674c@google.com>
-         <4d51d5ec9f1a86b099900934661e1bbdefa269c7.camel@sipsolutions.net>
-         <CANp29Y7MS5q=HVRuz-eXx4=9FxpuFJr3GkikG6MrKegxH6cO2A@mail.gmail.com>
-         <bd2427a1c4ea30682c45c22c5f452e3dd8e674fb.camel@sipsolutions.net>
-         <CANp29Y7TVNRFpcN1qSSurwWAtbBn90z_eUet3UdOcdDdUZ7zrg@mail.gmail.com>
-         <3e34b44f06a7b21a6148bec8750ebc3d4e78b284.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Thu, 17 Aug 2023 07:20:03 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB7A130D5
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 04:19:58 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37H6cjMx026030;
+        Thu, 17 Aug 2023 11:19:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=SK7j2M0Db6YTZvZ0j6QJ6HhlAUzA+QZB8EXikkrit9Q=;
+ b=B6hkafeMxJViTyosHAQLjnHMqH973DSltc6g+PcyMkoOIGP3HcgaKp81E40ncr9Ub7Bs
+ DtYvn+CKk9BpRbkYVLsRQz7ocDSItLNbWujXIRF4YsOTy9WNuKAfXBNBeNLzznhA3oJ5
+ 7RZ0rReetmp0DmyYFHfqDXvB+VRaI9wE9f6nwJqE+U/Eyw5xW+QwTvf73dFxqqHzoaI7
+ Qsxrv0KMJGzvtNFTgjlYxt/VY71Dustw5TPCLKktbp+yQuDNsm2Qo+svKKGD9WhrpFOP
+ wuUv7nZ7a3ZWKLRBK7OKpgZg5laq7E8su5P4G6gGVFTEBfiTq6VDfhwWhRjUZJW2XkPF 7w== 
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sh3xx9njh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Aug 2023 11:19:52 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37HBJpx5015504
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Aug 2023 11:19:51 GMT
+Received: from [10.201.204.39] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 17 Aug
+ 2023 04:19:49 -0700
+Message-ID: <7297c2ba-64d8-c403-6d3a-7b0f20f64c6a@quicinc.com>
+Date:   Thu, 17 Aug 2023 16:49:45 +0530
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: ath12k: fix WARN_ON during
+ ath12k_mac_update_vif_chan
+Content-Language: en-US
+To:     Wen Gong <quic_wgong@quicinc.com>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20230802085852.19821-1-quic_mdharane@quicinc.com>
+ <20230802085852.19821-2-quic_mdharane@quicinc.com>
+ <54733de9-db66-f1c4-9ad5-4d1f31529c05@quicinc.com>
+ <40034bde-5512-8df5-a19d-48487102c003@quicinc.com>
+From:   Manish Dharanenthiran <quic_mdharane@quicinc.com>
+In-Reply-To: <40034bde-5512-8df5-a19d-48487102c003@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: MD5JXbNnyBOEhNtdHPEr7uwR-lZi1_hA
+X-Proofpoint-ORIG-GUID: MD5JXbNnyBOEhNtdHPEr7uwR-lZi1_hA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-17_03,2023-08-17_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
+ bulkscore=0 mlxlogscore=670 clxscore=1015 priorityscore=1501
+ impostorscore=0 adultscore=0 phishscore=0 suspectscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308170102
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-08-16 at 23:04 +0200, Johannes Berg wrote:
-> Then I had to leave for a while so I only got to try it now, and indeed
-> I can reproduce it with a kernel built/booted that way, so I can make
-> changes for debugging.
 
-But wow, this is complicated, even creating the same interface names in
-different network namespaces ...
+On 8/8/2023 3:56 PM, Wen Gong wrote:
+> On 8/2/2023 10:59 PM, Jeff Johnson wrote:
+>> On 8/2/2023 1:58 AM, Manish Dharanenthiran wrote:
+>>> Fix WARN_ON() from ath12k_mac_update_vif_chan() if vdev is not up.
+>>> Since change_chanctx can be called even before vdev_up.
+>>>
+>>> Do vdev stop followed by a vdev start in case of vdev is down.
+>>>
+>>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0-02903-QCAHKSWPL_SILICONZ-1
+>>
+>> Has this been tested on WCN7850? My understanding is that firmware may 
+>> expect vdev down and then vdev restart
+>>
+> For WCN7850, firmware do not expect vdev down for station vdev type here.
+> 
+> And this patch only take effect when arvif->is_up is not set,
+> 
+> it is hard to happen that for MCC station mode.
+> 
+> Because this function is entered for channel switch for MCC station mode,
+> 
+> it means station is connected to the AP, then arvif->is_up is set, then 
+> this patch not take effect.
+> 
+> [...]
+> 
+>>
+Thanks Wen for checking this change!
 
-This is what I got from debug:
+Hi Jeff,
 
-[   49.036423][    C0] [ffff88801a9c1d00] wlan1: __ieee80211_beacon_update_=
-cntdwn:5010: counter in ffff88801cd6d800 now 1
-[   49.040155][    C0] [ffff88801a9c1d00] wlan1: ieee80211_csa_finish:3589:=
- queue csa_finalize_work
+Kindly review the changes and provide your comments.
 
-That's fine, what it should be - although I don't see why there are 4ms
-between those two lines.
-
-[   49.042665][    C1] [ffff88804ad0ba00] wlan1: __ieee80211_beacon_get:541=
-5
-
-unrelated wlan1 in a different network namespaces (the [pointer] is the
-network namespace pointer). I'll skip these for the rest of the log.
-
-[   49.082269][   T11] [ffff88801a9c1d00] wlan1: ieee80211_csa_finalize_wor=
-k:3732
-[   49.084809][   T11] [ffff88801a9c1d00] wlan1: ieee80211_csa_finalize_wor=
-k:3740
-[   49.086646][   T11] [ffff88801a9c1d00] wlan1: ieee80211_csa_finalize_wor=
-k:3744
-[   49.088336][   T11] [ffff88801a9c1d00] wlan1: ieee80211_csa_finalize:371=
-7
-[   49.089932][   T11] [ffff88801a9c1d00] wlan1: __ieee80211_csa_finalize:3=
-651
-[   49.091642][   T11] [ffff88801a9c1d00] wlan1: __ieee80211_csa_finalize:3=
-670
-[   49.093661][   T11] [ffff88801a9c1d00] wlan1: __ieee80211_csa_finalize:3=
-679
-[   49.097030][   T11] [ffff88801a9c1d00] wlan1: ieee80211_link_chanctx_res=
-ervation_complete:1211: queue csa_finalize_work
-
-That continues running as it should, but ... it took forever! By now,
-just to go through a few function calls, it took 57ms?
-
-[   49.130990][   T11] [ffff88801a9c1d00] wlan1: ieee80211_csa_finalize_wor=
-k:3732
-[   49.132892][   T11] [ffff88801a9c1d00] wlan1: ieee80211_csa_finalize_wor=
-k:3740
-
-and another 33ms to actually start the worker again
-
-[   49.137404][    C0] [ffff88801a9c1d00] wlan1: __ieee80211_beacon_get:541=
-5
-[   49.137462][    C1] [ffff88804ad09d00] wlan1: ieee80211_beacon_cntdwn_is=
-_complete:5111
-[   49.138897][    C0] [ffff88801a9c1d00] wlan1: __ieee80211_beacon_update_=
-cntdwn:5010: counter in ffff88801cd6d800 now 0
-[   49.139480][    C0] ------------[ cut here ]------------
-[   49.142567][    C0] WARNING: CPU: 0 PID: 5215 at net/mac80211/tx.c:5013 =
-__ieee80211_beacon_get+0x1604/0x1a10
-
-And the worker doesn't finish fast enough, so we get to 0, warn and
-crash.
-
-So what I said before about scheduling still seems like it could be the
-case.
-
-I'm not sure what we could do here - we can't delay the beacon, so if
-the update work didn't run ... and in general, I think we _do_ want this
-reported to see that something is broken, just that maybe with the
-single-core setup (two threads) and so much happening in the system, we
-don't get this running fast enough?
-
-Maybe we need to make our workqueue high priority? Testing ... no,
-doesn't even help.
-
-So not sure. Seems in reality this won't really happen since you have
-usually 100ms or so to execute the thing, and only a single (or handful
-maybe) interface(s).
-
-johannes
+Regards
+Manish Dharanenthiran
