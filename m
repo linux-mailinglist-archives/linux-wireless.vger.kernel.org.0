@@ -2,68 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A175177F1B1
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 10:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B23377F34B
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 11:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346313AbjHQICb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Aug 2023 04:02:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51396 "EHLO
+        id S1349649AbjHQJaM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Aug 2023 05:30:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348722AbjHQICX (ORCPT
+        with ESMTP id S1349622AbjHQJ3r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Aug 2023 04:02:23 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3539A2D57
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 01:02:17 -0700 (PDT)
-X-UUID: 5fd36a163cd411eeb20a276fd37b9834-20230817
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=35RsuwsRgKIMIZu+oVUCnueoPyLNnhvnHPtjk0veQVg=;
-        b=o30remYyR5+awzWoDWxFjjqOAIK9JSnKmwIS6YJ6/dD7zhl5cJe/bnGmN/UR0NBc08zXXMvLU3n5EOVtt2k84Dry4mayWp8j4NeO3l7EBfm5m5A+PqlWx6rJlDlqU6aikh3NQA5wvuEeodne7B6t2/Vrue6trtlnWBBfhTVRT44=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.31,REQID:0bf9091e-3c27-43f3-a8c3-d77aaf2d9b9c,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:0ad78a4,CLOUDID:164ddf12-4929-4845-9571-38c601e9c3c9,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-        NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 5fd36a163cd411eeb20a276fd37b9834-20230817
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 29763282; Thu, 17 Aug 2023 16:02:13 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 17 Aug 2023 16:02:12 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 17 Aug 2023 16:02:12 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <Bo.Jiao@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Jen-Hao Cheng <jen-hao.cheng@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 9/9] wifi: mt76: mt7996: support per-band LED control
-Date:   Thu, 17 Aug 2023 16:01:54 +0800
-Message-ID: <20230817080154.16475-9-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20230817080154.16475-1-shayne.chen@mediatek.com>
-References: <20230817080154.16475-1-shayne.chen@mediatek.com>
+        Thu, 17 Aug 2023 05:29:47 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 158432724
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 02:29:44 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fe426b86a8so70378715e9.3
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 02:29:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20221208.gappssmtp.com; s=20221208; t=1692264582; x=1692869382;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FqFTb7bjaxSxxbV34DaYmzS3F1LQba4HnHTfmT7YMxs=;
+        b=b2ymlfv86YgJssmBOR3NXsAECAlZI8cEPPp6UP18R52kftCyu9sOk0wSBSKGHqhpFz
+         lh7wZcTR/Zds2hEvZ6c4celbtzqiN9efXPE5sxvrH6Jw1hZFDu3ymp1mZnNJ8UzrZZfJ
+         6xvRuumaWXVyU8Mve4VcDlXpkIRDLajSX8o1DJGoCvdg14f9wZZ8y8Q8QsJ+/9qSG9Fp
+         TQjgOhfFgq7Jaz2x0oyF7k3venwkyB2WflitHOM96iFmlbhmQbw9xWx4zb3Ivif3SFsx
+         3/sHb74Vmkx3Ojt0z4qUo7XbYa8rMm4Zhhs470Da+DkDf3RnfogbdrKNydYlTXy+EgSV
+         G0kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692264582; x=1692869382;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FqFTb7bjaxSxxbV34DaYmzS3F1LQba4HnHTfmT7YMxs=;
+        b=bH28r4O/UTexiu7vY3NSE6DeNi11ohA5Xqaz1nvVIG2Q+nE/DQuwu2/YhD6CwGqCF+
+         X0UMVeCK/gtixAdP6KQEX+QebZJv6gsrqf9GHkw+Ckumt+Kzd33xWY4A13MJCskx0X3w
+         ErZLjREkxONrhgWYukukrHDjVfi/QyOuzr+N1xGsu/uYgMN6AKc1HL7ZHF9mKu18I7EU
+         k4LAsaWI3isjY56s2MP8Cc3+/uU2iEVtZmRjQgJu5CB2EPUv9J1/Oo8wWIoPCztNFo/Q
+         sjYq/2wDH1yQQUjdlnkp6is4OHmgLZdf8A10gjH0K/EFchLlT3lA5svlzS6ZF6wSwI0D
+         elwg==
+X-Gm-Message-State: AOJu0YwedGTX2B6I/QrckL+QNJ8XSW5vj7LXG5X4HeZGP6BbvRZ6m+wc
+        Y2466mZ7LBfTNzcoWVeTijsvtA==
+X-Google-Smtp-Source: AGHT+IFyHq5Qa53CbVGOPJpj/iFzAxwqr6i90GP+5YeVYhNsAKvkTriebitw0VKy0brjP0GiYox9JA==
+X-Received: by 2002:a05:600c:20c4:b0:3fc:a5:2c3a with SMTP id y4-20020a05600c20c400b003fc00a52c3amr3495163wmm.41.1692264582429;
+        Thu, 17 Aug 2023 02:29:42 -0700 (PDT)
+Received: from hyang-ThinkStation-P620.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id f25-20020a7bcd19000000b003fe2f3a89d4sm2343042wmj.7.2023.08.17.02.29.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Aug 2023 02:29:42 -0700 (PDT)
+From:   Hancheng Yang <hyang@freebox.fr>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, Hancheng Yang <hyang@freebox.fr>
+Subject: [PATCH] ath9k: reset survey of current channel after a scan started
+Date:   Thu, 17 Aug 2023 11:29:01 +0200
+Message-Id: <20230817092900.361270-1-hyang@freebox.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
-        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,98 +67,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Jen-Hao Cheng <jen-hao.cheng@mediatek.com>
+In the `ath_set_channel()` function, we only reset surveys that are not from the current channel.
+This leads to the accumulation of survey data for the current channel indefinitely.
+Log of hostapd:
+[2023-08-17 11:21:51] ACS: Survey analysis for channel 1 (2412 MHz)
+[2023-08-17 11:21:51] ACS: 1: min_nf=-90 interference_factor=0.569833 nf=-89 time=36194 busy=20908 rx=16200
+[2023-08-17 11:21:51] ACS: 2: min_nf=-90 interference_factor=0.572018 nf=-89 time=36539 busy=21183 rx=16425
+[2023-08-17 11:21:51] ACS: 3: min_nf=-90 interference_factor=0.574311 nf=-90 time=36885 busy=21464 rx=16659
+[2023-08-17 11:21:51] ACS: 4: min_nf=-90 interference_factor=0.5773 nf=-89 time=37231 busy=21772 rx=16924
+[2023-08-17 11:21:51] ACS: 5: min_nf=-90 interference_factor=0.580108 nf=-89 time=37578 busy=22076 rx=17189
 
-Extend settings of LED registers to support per-band configuration.
 
-Signed-off-by: Jen-Hao Cheng <jen-hao.cheng@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+This may not be the most optimal approach, as we want the ACS to rely on the most recent survey.
+So, reset the survey data for the current channel at the start of each scan.
+
+Or there's better approach?
+
+Signed-off-by: Hancheng Yang <hyang@freebox.fr>
 ---
- .../net/wireless/mediatek/mt76/mt7996/init.c  | 34 ++++++++++++-------
- .../net/wireless/mediatek/mt76/mt7996/regs.h  |  1 +
- 2 files changed, 22 insertions(+), 13 deletions(-)
+ drivers/net/wireless/ath/ath9k/main.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index de090416c19d..f16f738e30db 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -53,23 +53,31 @@ static void mt7996_led_set_config(struct led_classdev *led_cdev,
- 	dev = container_of(mphy->dev, struct mt7996_dev, mt76);
- 
- 	/* select TX blink mode, 2: only data frames */
--	mt76_rmw_field(dev, MT_TMAC_TCR0(0), MT_TMAC_TCR0_TX_BLINK, 2);
-+	mt76_rmw_field(dev, MT_TMAC_TCR0(mphy->band_idx), MT_TMAC_TCR0_TX_BLINK, 2);
- 
- 	/* enable LED */
--	mt76_wr(dev, MT_LED_EN(0), 1);
-+	mt76_wr(dev, MT_LED_EN(mphy->band_idx), 1);
- 
- 	/* set LED Tx blink on/off time */
- 	val = FIELD_PREP(MT_LED_TX_BLINK_ON_MASK, delay_on) |
- 	      FIELD_PREP(MT_LED_TX_BLINK_OFF_MASK, delay_off);
--	mt76_wr(dev, MT_LED_TX_BLINK(0), val);
-+	mt76_wr(dev, MT_LED_TX_BLINK(mphy->band_idx), val);
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index fa5a87f021e2..3e4a711c96bb 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -2382,7 +2382,22 @@ static void ath9k_sw_scan_start(struct ieee80211_hw *hw,
+ {
+ 	struct ath_softc *sc = hw->priv;
+ 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
++	struct cfg80211_chan_def *chandef = &sc->cur_chan->chandef;
++	struct ieee80211_channel *chan = chandef->chan;
++	int pos = chan->hw_value;
+ 	set_bit(ATH_OP_SCANNING, &common->op_flags);
 +
-+	/* turn LED off */
-+	if (delay_off == 0xff && delay_on == 0x0) {
-+		val = MT_LED_CTRL_POLARITY | MT_LED_CTRL_KICK;
-+	} else {
-+		/* control LED */
-+		val = MT_LED_CTRL_BLINK_MODE | MT_LED_CTRL_KICK;
-+		if (mphy->band_idx == MT_BAND1)
-+			val |= MT_LED_CTRL_BLINK_BAND_SEL;
++	/* Reset current survey */
++	if (!sc->cur_chan->offchannel) {
++		if (sc->cur_survey != &sc->survey[pos]) {
++			if (sc->cur_survey)
++				sc->cur_survey->filled &= ~SURVEY_INFO_IN_USE;
++			sc->cur_survey = &sc->survey[pos];
++		}
++
++		memset(sc->cur_survey, 0, sizeof(struct survey_info));
++		sc->cur_survey->filled |= SURVEY_INFO_IN_USE;
 +	}
- 
--	/* control LED */
--	val = MT_LED_CTRL_BLINK_MODE | MT_LED_CTRL_KICK;
- 	if (mphy->leds.al)
- 		val |= MT_LED_CTRL_POLARITY;
- 
--	mt76_wr(dev, MT_LED_CTRL(0), val);
--	mt76_clear(dev, MT_LED_CTRL(0), MT_LED_CTRL_KICK);
-+	mt76_wr(dev, MT_LED_CTRL(mphy->band_idx), val);
-+	mt76_clear(dev, MT_LED_CTRL(mphy->band_idx), MT_LED_CTRL_KICK);
  }
  
- static int mt7996_led_set_blink(struct led_classdev *led_cdev,
-@@ -222,6 +230,12 @@ mt7996_init_wiphy(struct ieee80211_hw *hw)
- 		ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
- 	}
- 
-+	/* init led callbacks */
-+	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
-+		phy->mt76->leds.cdev.brightness_set = mt7996_led_set_brightness;
-+		phy->mt76->leds.cdev.blink_set = mt7996_led_set_blink;
-+	}
-+
- 	mt76_set_stream_caps(phy->mt76, true);
- 	mt7996_set_stream_vht_txbf_caps(phy);
- 	mt7996_set_stream_he_eht_caps(phy);
-@@ -870,12 +884,6 @@ int mt7996_register_device(struct mt7996_dev *dev)
- 
- 	mt7996_init_wiphy(hw);
- 
--	/* init led callbacks */
--	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
--		dev->mphy.leds.cdev.brightness_set = mt7996_led_set_brightness;
--		dev->mphy.leds.cdev.blink_set = mt7996_led_set_blink;
--	}
--
- 	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
- 				   ARRAY_SIZE(mt76_rates));
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-index 97beab924517..57022906216c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-@@ -509,6 +509,7 @@ enum base_rev {
- 
- #define MT_LED_CTRL(_n)				MT_LED_PHYS(0x00 + ((_n) * 4))
- #define MT_LED_CTRL_KICK			BIT(7)
-+#define MT_LED_CTRL_BLINK_BAND_SEL		BIT(4)
- #define MT_LED_CTRL_BLINK_MODE			BIT(2)
- #define MT_LED_CTRL_POLARITY			BIT(1)
- 
+ static void ath9k_sw_scan_complete(struct ieee80211_hw *hw,
 -- 
-2.39.2
+2.34.1
 
