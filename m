@@ -2,129 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5487477F0DC
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 09:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9B5677F1B5
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 10:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348365AbjHQHDa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Aug 2023 03:03:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41676 "EHLO
+        id S1348699AbjHQICf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Aug 2023 04:02:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348364AbjHQHDP (ORCPT
+        with ESMTP id S1348731AbjHQIC3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Aug 2023 03:03:15 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C4C91FE3
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 00:03:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=T2+FxTWwdi5RWVxM8+ao989FXfaywpiJgxLj/0bsE7k=;
-        t=1692255793; x=1693465393; b=qXYq/x7KmmlGyoP5YeoUpe7k9s6wr834iGN2BwNBiiggdZ8
-        /flCU3s5qtUdTjKidXYWMOYnpUbv7IWTCxjMS4dY38iI7UAB7pL/A1fhTlVfNlmQaJbKedx0yG/Vn
-        fxAJcqoqihqwP5k4z3n+w7VuexmAMiM19wmhCzvh3g+ZKYHgZ9IliLt4/cT1kfINJieW5bg2x4jTQ
-        sMn1JC0hSOImLyGtrKhr/VkNMsEpVoUQ5gy2GxYz/oZEvYH4mgA9stOJjyHytqz+Cpu+uwIE/0Weo
-        TvYCIdaPFeX6CEVR0T82j4rllmcfdzdeLHDrHgg/VkUsLXT1OGcbhR7oABQ0/eLw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qWX28-00Cabg-2q;
-        Thu, 17 Aug 2023 09:03:05 +0200
-Message-ID: <d55de56e2cc69031f1588fc1db981f5bed640348.camel@sipsolutions.net>
-Subject: Re: [RFC] wifi: mac80211: fix UBSAN warning caused by
- reorder_buf_filtered bits shift-out-of-bounds
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     gregory.greenman@intel.com, linux-wireless@vger.kernel.org
-Date:   Thu, 17 Aug 2023 09:03:03 +0200
-In-Reply-To: <20230817053215.51636-1-pkshih@realtek.com>
-References: <20230817053215.51636-1-pkshih@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Thu, 17 Aug 2023 04:02:29 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E662D78
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 01:02:20 -0700 (PDT)
+X-UUID: 5e9338703cd411eeb20a276fd37b9834-20230817
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=9ATIZpJ2w3N3sucx0S1V3QUJsvXOXomP4YLguTKBHGM=;
+        b=D0BSsREPppvg0gEZzrOEGqrtVvx4Kxr7Yc3ZGg5WtzkSPS26nS6tmZLxzoIxEmj++LFl+UWsqIT2g9EnM5MsYMgFgltM1HbBVs6OdDFGwe+u+9f8oj8NqNT3So34tbuUgJ4HDwpaxw4VOHvDwjpzejWBDfUbVl06/4gonO0jfFM=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.31,REQID:fd5ce1a8-e584-4269-af19-a024ad827077,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:95
+X-CID-INFO: VERSION:1.1.31,REQID:fd5ce1a8-e584-4269-af19-a024ad827077,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
+        :quarantine,TS:95
+X-CID-META: VersionHash:0ad78a4,CLOUDID:e14cdf12-4929-4845-9571-38c601e9c3c9,B
+        ulkID:230817160211GDCU45EO,BulkQuantity:0,Recheck:0,SF:29|28|17|19|48,TC:n
+        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OS
+        I:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,
+        TF_CID_SPAM_SDM
+X-UUID: 5e9338703cd411eeb20a276fd37b9834-20230817
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 314671696; Thu, 17 Aug 2023 16:02:11 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 17 Aug 2023 16:02:10 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 17 Aug 2023 16:02:10 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>,
+        Michael-CY Lee <michael-cy.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH 1/9] wifi: mt76: mt7996: set correct wcid in txp
+Date:   Thu, 17 Aug 2023 16:01:46 +0800
+Message-ID: <20230817080154.16475-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
+        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-> I mark this as RFC, because I'm not sure if iwlwifi needs to extend
-> ieee80211_mark_rx_ba_filtered_frames() to support mew hardware that
-> hw.max_rx_aggregation_subframes is larger than 64.
+Set correct wcid in txp to let the SDO hw module look into the correct
+wtbl, otherwise the tx descriptor may be wrongly fiiled. This patch also
+fixed the issue that driver could not correctly report sta statistics,
+especially in WDS mode, which misled AQL.
 
-Oh, good catch and question, but no. This firmware notification cannot
-appear in newer devices, and in fact we don't use mac80211 reordering at
-all for a long time (since RSS was introduced, basically) and should
-probably prevent handling of this notification.
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Co-developed-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
+Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c       | 8 +++-----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-> If not, we can just
-> add some conditions to avoid UBSAN warning like this patch. Otherwise,
-> this RFC can't entirely resolve the problem.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+index 68ca0844cbbf..87bfa441a937 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+@@ -257,6 +257,8 @@ enum tx_mgnt_type {
+ #define MT_TXD7_UDP_TCP_SUM		BIT(15)
+ #define MT_TXD7_TX_TIME			GENMASK(9, 0)
+ 
++#define MT_TXD9_WLAN_IDX		GENMASK(23, 8)
++
+ #define MT_TX_RATE_STBC			BIT(14)
+ #define MT_TX_RATE_NSS			GENMASK(13, 10)
+ #define MT_TX_RATE_MODE			GENMASK(9, 6)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index ac8759febe48..9e866ee13c85 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -991,10 +991,8 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	}
+ 
+ 	txp->fw.token = cpu_to_le16(id);
+-	if (test_bit(MT_WCID_FLAG_4ADDR, &wcid->flags))
+-		txp->fw.rept_wds_wcid = cpu_to_le16(wcid->idx);
+-	else
+-		txp->fw.rept_wds_wcid = cpu_to_le16(0xfff);
++	txp->fw.rept_wds_wcid = cpu_to_le16(sta ? wcid->idx : 0xfff);
++
+ 	tx_info->skb = DMA_DUMMY_DATA;
+ 
+ 	/* pass partial skb header to fw */
+@@ -1051,7 +1049,7 @@ mt7996_txwi_free(struct mt7996_dev *dev, struct mt76_txwi_cache *t,
+ 		if (likely(t->skb->protocol != cpu_to_be16(ETH_P_PAE)))
+ 			mt7996_tx_check_aggr(sta, txwi);
+ 	} else {
+-		wcid_idx = le32_get_bits(txwi[1], MT_TXD1_WLAN_IDX);
++		wcid_idx = le32_get_bits(txwi[9], MT_TXD9_WLAN_IDX);
+ 	}
+ 
+ 	__mt76_tx_complete_skb(mdev, wcid_idx, t->skb, free_list);
+-- 
+2.39.2
 
-Seems fine. I'd kind of probably not word it as "fix UBSAN" since really
-it's just more along the lines of "warn if API is misused"? :)
-
-> Since only old hardware with 64 or less RX aggregation frames uses
-> ieee80211_mark_rx_ba_filtered_frames(), add a WARN_ONCE() and comment to
-> note to avoid using this function if hardware capability is not suitable.
->=20
-> Cc: <Stable@vger.kernel.org>
-
-I don't really think this is stable material - if there's a driver
-that's calling this when >64 frames is supported then it's a driver bug
-that should be fixed, and if not then there's no bug?
-
-> +++ b/net/mac80211/rx.c
-> @@ -1083,7 +1083,8 @@ static inline bool ieee80211_rx_reorder_ready(struc=
-t tid_ampdu_rx *tid_agg_rx,
->  	struct sk_buff *tail =3D skb_peek_tail(frames);
->  	struct ieee80211_rx_status *status;
-> =20
-> -	if (tid_agg_rx->reorder_buf_filtered & BIT_ULL(index))
-> +	if (tid_agg_rx->reorder_buf_filtered &&
-> +	    tid_agg_rx->reorder_buf_filtered & BIT_ULL(index))
->  		return true;
-
-Or maybe no - this part is what you think should be=20
-
-> =20
->  	if (!tail)
-> @@ -1124,7 +1125,8 @@ static void ieee80211_release_reorder_frame(struct =
-ieee80211_sub_if_data *sdata,
->  	}
-> =20
->  no_frame:
-> -	tid_agg_rx->reorder_buf_filtered &=3D ~BIT_ULL(index);
-> +	if (tid_agg_rx->reorder_buf_filtered)
-> +		tid_agg_rx->reorder_buf_filtered &=3D ~BIT_ULL(index);
-
-And this.
-
-> @@ -4281,6 +4284,11 @@ void ieee80211_mark_rx_ba_filtered_frames(struct i=
-eee80211_sta *pubsta, u8 tid,
-> =20
->  	sta =3D container_of(pubsta, struct sta_info, sta);
-> =20
-> +	local =3D sta->sdata->local;
-> +	WARN_ONCE(local->hw.max_rx_aggregation_subframes > 64,
-> +		  "RX BA marker can't support max_rx_aggregation_subframes %u > 64\n",
-> +		  local->hw.max_rx_aggregation_subframes);
-> +
-
-From your description I was only thinking about this.
-
-
-So yeah I guess it does make some sense to actually call it a fix - for
-the parts about using the filtered value with >64 subframes supported
-...
-
-Looks fine to me then!
-
-johannes
