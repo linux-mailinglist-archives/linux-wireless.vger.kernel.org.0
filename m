@@ -2,86 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E93677F7A2
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 15:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8E6377F7A5
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 15:27:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351402AbjHQNXA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Aug 2023 09:23:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48698 "EHLO
+        id S1351406AbjHQN0u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Aug 2023 09:26:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351446AbjHQNWj (ORCPT
+        with ESMTP id S1351422AbjHQN0U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Aug 2023 09:22:39 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 15C8235A8
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 06:22:09 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37HDLCxF4013231, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37HDLCxF4013231
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 17 Aug 2023 21:21:12 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 17 Aug 2023 21:21:32 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 17 Aug 2023 21:21:32 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Thu, 17 Aug 2023 21:21:32 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "gregory.greenman@intel.com" <gregory.greenman@intel.com>
-Subject: Re: [RFC] wifi: mac80211: fix UBSAN warning caused by reorder_buf_filtered bits shift-out-of-bounds
-Thread-Topic: [RFC] wifi: mac80211: fix UBSAN warning caused by
- reorder_buf_filtered bits shift-out-of-bounds
-Thread-Index: AQHZ0Mx0fntfUGBm7E6lIBAm7nSdWa/tigWAgABUmICAAAbBAIAADjqA
-Date:   Thu, 17 Aug 2023 13:21:32 +0000
-Message-ID: <3db092ea0aa6b758e23df577f415f142e82776a2.camel@realtek.com>
-References: <20230817053215.51636-1-pkshih@realtek.com>
-         <d55de56e2cc69031f1588fc1db981f5bed640348.camel@sipsolutions.net>
-         <408e1ca10cb4daabdad0e2760f69a9b03fbeedd3.camel@realtek.com>
-         <dda4148bb980f7f92b8092854be140e6a79e8c4a.camel@sipsolutions.net>
-In-Reply-To: <dda4148bb980f7f92b8092854be140e6a79e8c4a.camel@sipsolutions.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [125.224.88.175]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E4F3399BE78E774A87EF92E199BD7773@realtek.com>
-Content-Transfer-Encoding: base64
+        Thu, 17 Aug 2023 09:26:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D07DE3592
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 06:26:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BD90635AD
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 13:26:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C91C433C9;
+        Thu, 17 Aug 2023 13:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692278773;
+        bh=zPL9A637QF5Wd8e59X1OAPd8um+Jt2zJrIZquyDtTww=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=LHNOHx8pYTfXP27O5G8PL5iGo77tYxZJRoPzGgzhTNqADxCYOTt098BfnYUrN/UXY
+         wJayX43q50RsRilmNVD5IWLOaBjN8VlxSQCL+7Kh8y7esCFOFdlC4R1WsGo8Lzoko+
+         OYdfIo+DK+PmNSpZ7c5Nj7HGoCi56UGWCqVUdv6YoPCv55bnf8sG71TH9tuDltUWbT
+         mmU9g5eyvO5HFATjl0zvcpdubHTi3V/olbIXS1A9TtlBjSwJLgrd9+2vjicvWE1qnY
+         2M6z5WSsFDoEzdUuXPBnXutD+SLZw2v+tpN20Lir0X0P8J9T6Yw62EGE67gFXP5bRb
+         d/Zbmu8J9f9lg==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 09B4BD3C2B8; Thu, 17 Aug 2023 15:26:04 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+To:     Hancheng Yang <hyang@freebox.fr>, kvalo@codeaurora.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jouni Malinen <j@w1.fi>
+Cc:     linux-wireless@vger.kernel.org, Hancheng Yang <hyang@freebox.fr>
+Subject: Re: [PATCH] ath9k: reset survey of current channel after a scan
+ started
+In-Reply-To: <20230817092900.361270-1-hyang@freebox.fr>
+References: <20230817092900.361270-1-hyang@freebox.fr>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Thu, 17 Aug 2023 15:26:03 +0200
+Message-ID: <87wmxtby1g.fsf@toke.dk>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVGh1LCAyMDIzLTA4LTE3IGF0IDE0OjMwICswMjAwLCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0K
-PiANCj4gPiA+IEkgZG9uJ3QgcmVhbGx5IHRoaW5rIHRoaXMgaXMgc3RhYmxlIG1hdGVyaWFsIC0g
-aWYgdGhlcmUncyBhIGRyaXZlcg0KPiA+ID4gdGhhdCdzIGNhbGxpbmcgdGhpcyB3aGVuID42NCBm
-cmFtZXMgaXMgc3VwcG9ydGVkIHRoZW4gaXQncyBhIGRyaXZlciBidWcNCj4gPiA+IHRoYXQgc2hv
-dWxkIGJlIGZpeGVkLCBhbmQgaWYgbm90IHRoZW4gdGhlcmUncyBubyBidWc/DQo+ID4gDQo+ID4g
-SSdsbCByZW1vdmUgdGhpcy4NCj4gDQo+IEFjdHVhbGx5IEkgZG9uJ3Qga25vdyAtIGRvIHlvdSBo
-YXZlIGEgZHJpdmVyIHRoYXQncyBhY3R1YWxseSBzdXBwb3J0aW5nDQo+ID4gNjQgQmxvY2tBY2sg
-b24gc3RhYmxlPw0KDQpJIGRvbid0IGhhdmUgdGhhdCBvbmUuIA0KDQpBY3R1YWxseSB0aGUgY29k
-ZSBjYW4gd29yayB3ZWxsLCBldmVuIHRob3VnaCBpdCBoYXMgZHJhd2JhY2sgZm91bmQgYnkgVUJT
-QU4uIA0KU28sIEkgdGhvdWdodCBtYXliZSBzb21lIGRyaXZlcnMgd29yayB1bmRlciB0aGF0IHNp
-dHVhdGlvbi4gDQoNCj4gDQo+IEp1c3Qgc2VuZCB0aGUgcGF0Y2ggYXMgaXQgd2FzPw0KPiANCg0K
-SSB3aWxsLiANCg0KUGluZy1LZQ0KDQoNCg==
+Hancheng Yang <hyang@freebox.fr> writes:
+
+> In the `ath_set_channel()` function, we only reset surveys that are not from the current channel.
+> This leads to the accumulation of survey data for the current channel indefinitely.
+> Log of hostapd:
+> [2023-08-17 11:21:51] ACS: Survey analysis for channel 1 (2412 MHz)
+> [2023-08-17 11:21:51] ACS: 1: min_nf=-90 interference_factor=0.569833 nf=-89 time=36194 busy=20908 rx=16200
+> [2023-08-17 11:21:51] ACS: 2: min_nf=-90 interference_factor=0.572018 nf=-89 time=36539 busy=21183 rx=16425
+> [2023-08-17 11:21:51] ACS: 3: min_nf=-90 interference_factor=0.574311 nf=-90 time=36885 busy=21464 rx=16659
+> [2023-08-17 11:21:51] ACS: 4: min_nf=-90 interference_factor=0.5773 nf=-89 time=37231 busy=21772 rx=16924
+> [2023-08-17 11:21:51] ACS: 5: min_nf=-90 interference_factor=0.580108 nf=-89 time=37578 busy=22076 rx=17189
+>
+>
+> This may not be the most optimal approach, as we want the ACS to rely on the most recent survey.
+> So, reset the survey data for the current channel at the start of each scan.
+>
+> Or there's better approach?
+
+Johannes, Jouni, any thoughts? :)
+
+-Toke
+
+>
+> Signed-off-by: Hancheng Yang <hyang@freebox.fr>
+> ---
+>  drivers/net/wireless/ath/ath9k/main.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+> index fa5a87f021e2..3e4a711c96bb 100644
+> --- a/drivers/net/wireless/ath/ath9k/main.c
+> +++ b/drivers/net/wireless/ath/ath9k/main.c
+> @@ -2382,7 +2382,22 @@ static void ath9k_sw_scan_start(struct ieee80211_hw *hw,
+>  {
+>  	struct ath_softc *sc = hw->priv;
+>  	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
+> +	struct cfg80211_chan_def *chandef = &sc->cur_chan->chandef;
+> +	struct ieee80211_channel *chan = chandef->chan;
+> +	int pos = chan->hw_value;
+>  	set_bit(ATH_OP_SCANNING, &common->op_flags);
+> +
+> +	/* Reset current survey */
+> +	if (!sc->cur_chan->offchannel) {
+> +		if (sc->cur_survey != &sc->survey[pos]) {
+> +			if (sc->cur_survey)
+> +				sc->cur_survey->filled &= ~SURVEY_INFO_IN_USE;
+> +			sc->cur_survey = &sc->survey[pos];
+> +		}
+> +
+> +		memset(sc->cur_survey, 0, sizeof(struct survey_info));
+> +		sc->cur_survey->filled |= SURVEY_INFO_IN_USE;
+> +	}
+>  }
+>  
+>  static void ath9k_sw_scan_complete(struct ieee80211_hw *hw,
+> -- 
+> 2.34.1
