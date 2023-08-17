@@ -2,18 +2,18 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B04977FB39
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 17:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4BBA77FB40
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Aug 2023 17:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353364AbjHQPx0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Aug 2023 11:53:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60806 "EHLO
+        id S1353372AbjHQPx1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Aug 2023 11:53:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353349AbjHQPxH (ORCPT
+        with ESMTP id S1353354AbjHQPxI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Aug 2023 11:53:07 -0400
+        Thu, 17 Aug 2023 11:53:08 -0400
 Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C4B1FE
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCC530C6
         for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 08:53:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -21,20 +21,20 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=cNhxQn7AZUkzFiPqdRKQU1fgE61UHPHbS8E/a7TtUrc=; b=jVCU6fs2jmKRcj6x7yYYk+Aml/
-        Pajh5OVC1me/fR3gN3iKhUlZCTwa//BcwFcm1PrEq4eAr90ZUyw039z9lqKcKkzVGt4NeQ0XXUkvl
-        2DyeqC3CYrkZEuV9+PVB/XygEAEkubgSnun+6bR+7i+eWMJBcYxVJImcLV4tKxLZCKfA=;
+        bh=VxuMiLESlxD/eircJaV3C6BGo2rJ4Tnp6brldfuFYQc=; b=QYEeGgwzrl/6pzn2Q99zO2w+jy
+        PtmhD4N7MQYfG98PCrKZGK007mGbWechIv7TPNjcfDFQs5ouDOlC8xe9M1tIOANMJzKlGdrm/zxWJ
+        SLmfZiykTVV15/pf5uSLBqdvSjfwec8uaxb1BpQCgxsESOQyrY4qsTvXkZ6xIsRKu3qk=;
 Received: from 134.101.185.184.dynamic-pppoe.dt.ipv4.wtnet.de ([134.101.185.184] helo=Maecks.fritz.box)
         by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
         (Exim 4.94.2)
         (envelope-from <nbd@nbd.name>)
-        id 1qWfJ2-00AmKH-08
+        id 1qWfJ2-00AmKH-6o
         for linux-wireless@vger.kernel.org; Thu, 17 Aug 2023 17:53:04 +0200
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 2/5] wifi: mt76: mt7603: improve watchdog reset reliablity
-Date:   Thu, 17 Aug 2023 17:52:55 +0200
-Message-ID: <20230817155258.62636-2-nbd@nbd.name>
+Subject: [PATCH 3/5] wifi: mt76: mt7603: improve stuck beacon handling
+Date:   Thu, 17 Aug 2023 17:52:56 +0200
+Message-ID: <20230817155258.62636-3-nbd@nbd.name>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230817155258.62636-1-nbd@nbd.name>
 References: <20230817155258.62636-1-nbd@nbd.name>
@@ -49,77 +49,170 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Only trigger PSE reset if PSE was stuck, otherwise it can cause DMA issues.
-Trigger the PSE reset while DMA is fully stopped in order to improve
-reliabilty.
+Before preparing the new beacon, check the queue status, flush out all
+previous beacons and buffered multicast packets, then (if necessary)
+try to recover more gracefully from a stuck beacon condition by making a
+less invasive attempt at getting the MAC un-stuck.
 
 Fixes: c8846e101502 ("mt76: add driver for MT7603E and MT7628/7688")
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- .../net/wireless/mediatek/mt76/mt7603/mac.c   | 29 ++++++++-----------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ .../wireless/mediatek/mt76/mt7603/beacon.c    | 76 ++++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7603/regs.h  |  5 ++
+ 2 files changed, 60 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index 7a506a0c46e2..cf21d06257e5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -1441,15 +1441,6 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c b/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
+index 888678732f29..c223f7c19e6d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
+@@ -9,6 +9,23 @@ struct beacon_bc_data {
+ 	int count[MT7603_MAX_INTERFACES];
+ };
  
- 	mt7603_beacon_set_timer(dev, -1, 0);
- 
--	if (dev->reset_cause[RESET_CAUSE_RESET_FAILED] ||
--	    dev->cur_reset_cause == RESET_CAUSE_RX_PSE_BUSY ||
--	    dev->cur_reset_cause == RESET_CAUSE_BEACON_STUCK ||
--	    dev->cur_reset_cause == RESET_CAUSE_TX_HANG)
--		mt7603_pse_reset(dev);
--
--	if (dev->reset_cause[RESET_CAUSE_RESET_FAILED])
--		goto skip_dma_reset;
--
- 	mt7603_mac_stop(dev);
- 
- 	mt76_clear(dev, MT_WPDMA_GLO_CFG,
-@@ -1459,28 +1450,32 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
- 
- 	mt7603_irq_disable(dev, mask);
- 
--	mt76_set(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_FORCE_TX_EOF);
--
- 	mt7603_pse_client_reset(dev);
- 
- 	mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[MT_MCUQ_WM], true);
- 	for (i = 0; i < __MT_TXQ_MAX; i++)
- 		mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[i], true);
- 
-+	mt7603_dma_sched_reset(dev);
++static void
++mt7603_mac_stuck_beacon_recovery(struct mt7603_dev *dev)
++{
++	if (dev->beacon_check % 5 != 4)
++		return;
 +
-+	mt76_tx_status_check(&dev->mt76, true);
++	mt76_clear(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_TX_DMA_EN);
++	mt76_set(dev, MT_SCH_4, MT_SCH_4_RESET);
++	mt76_clear(dev, MT_SCH_4, MT_SCH_4_RESET);
++	mt76_set(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_TX_DMA_EN);
 +
- 	mt76_for_each_q_rx(&dev->mt76, i) {
- 		mt76_queue_rx_reset(dev, i);
- 	}
++	mt76_set(dev, MT_WF_CFG_OFF_WOCCR, MT_WF_CFG_OFF_WOCCR_TMAC_GC_DIS);
++	mt76_set(dev, MT_ARB_SCR, MT_ARB_SCR_TX_DISABLE);
++	mt76_clear(dev, MT_ARB_SCR, MT_ARB_SCR_TX_DISABLE);
++	mt76_clear(dev, MT_WF_CFG_OFF_WOCCR, MT_WF_CFG_OFF_WOCCR_TMAC_GC_DIS);
++}
++
+ static void
+ mt7603_update_beacon_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ {
+@@ -16,6 +33,8 @@ mt7603_update_beacon_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	struct mt76_dev *mdev = &dev->mt76;
+ 	struct mt7603_vif *mvif = (struct mt7603_vif *)vif->drv_priv;
+ 	struct sk_buff *skb = NULL;
++	u32 om_idx = mvif->idx;
++	u32 val;
  
--	mt76_tx_status_check(&dev->mt76, true);
-+	if (dev->reset_cause[RESET_CAUSE_RESET_FAILED] ||
-+	    dev->cur_reset_cause == RESET_CAUSE_RX_PSE_BUSY)
-+		mt7603_pse_reset(dev);
+ 	if (!(mdev->beacon_mask & BIT(mvif->idx)))
+ 		return;
+@@ -24,20 +43,33 @@ mt7603_update_beacon_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	if (!skb)
+ 		return;
  
--	mt7603_dma_sched_reset(dev);
-+	if (!dev->reset_cause[RESET_CAUSE_RESET_FAILED]) {
-+		mt7603_mac_dma_start(dev);
+-	mt76_tx_queue_skb(dev, dev->mphy.q_tx[MT_TXQ_BEACON],
+-			  MT_TXQ_BEACON, skb, &mvif->sta.wcid, NULL);
++	if (om_idx)
++		om_idx |= 0x10;
++	val = MT_DMA_FQCR0_BUSY | MT_DMA_FQCR0_MODE |
++		FIELD_PREP(MT_DMA_FQCR0_TARGET_BSS, om_idx) |
++		FIELD_PREP(MT_DMA_FQCR0_DEST_PORT_ID, 3) |
++		FIELD_PREP(MT_DMA_FQCR0_DEST_QUEUE_ID, 8);
  
--	mt7603_mac_dma_start(dev);
-+		mt7603_irq_enable(dev, mask);
+ 	spin_lock_bh(&dev->ps_lock);
+-	mt76_wr(dev, MT_DMA_FQCR0, MT_DMA_FQCR0_BUSY |
+-		FIELD_PREP(MT_DMA_FQCR0_TARGET_WCID, mvif->sta.wcid.idx) |
+-		FIELD_PREP(MT_DMA_FQCR0_TARGET_QID,
+-			   dev->mphy.q_tx[MT_TXQ_CAB]->hw_idx) |
+-		FIELD_PREP(MT_DMA_FQCR0_DEST_PORT_ID, 3) |
+-		FIELD_PREP(MT_DMA_FQCR0_DEST_QUEUE_ID, 8));
  
--	mt7603_irq_enable(dev, mask);
-+		clear_bit(MT76_RESET, &dev->mphy.state);
+-	if (!mt76_poll(dev, MT_DMA_FQCR0, MT_DMA_FQCR0_BUSY, 0, 5000))
++	mt76_wr(dev, MT_DMA_FQCR0, val |
++		FIELD_PREP(MT_DMA_FQCR0_TARGET_QID, MT_TX_HW_QUEUE_BCN));
++	if (!mt76_poll(dev, MT_DMA_FQCR0, MT_DMA_FQCR0_BUSY, 0, 5000)) {
+ 		dev->beacon_check = MT7603_WATCHDOG_TIMEOUT;
++		goto out;
++	}
++
++	mt76_wr(dev, MT_DMA_FQCR0, val |
++		FIELD_PREP(MT_DMA_FQCR0_TARGET_QID, MT_TX_HW_QUEUE_BMC));
++	if (!mt76_poll(dev, MT_DMA_FQCR0, MT_DMA_FQCR0_BUSY, 0, 5000)) {
++		dev->beacon_check = MT7603_WATCHDOG_TIMEOUT;
++		goto out;
 +	}
  
--skip_dma_reset:
--	clear_bit(MT76_RESET, &dev->mphy.state);
- 	mutex_unlock(&dev->mt76.mutex);
++	mt76_tx_queue_skb(dev, dev->mphy.q_tx[MT_TXQ_BEACON],
++			  MT_TXQ_BEACON, skb, &mvif->sta.wcid, NULL);
++
++out:
+ 	spin_unlock_bh(&dev->ps_lock);
+ }
  
- 	mt76_worker_enable(&dev->mt76.tx_worker);
+@@ -81,6 +113,18 @@ void mt7603_pre_tbtt_tasklet(struct tasklet_struct *t)
+ 	data.dev = dev;
+ 	__skb_queue_head_init(&data.q);
+ 
++	/* Flush all previous CAB queue packets and beacons */
++	mt76_wr(dev, MT_WF_ARB_CAB_FLUSH, GENMASK(30, 16) | BIT(0));
++
++	mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[MT_TXQ_CAB], false);
++	mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[MT_TXQ_BEACON], false);
++
++	if (dev->mphy.q_tx[MT_TXQ_BEACON]->queued > 0)
++		dev->beacon_check++;
++	else
++		dev->beacon_check = 0;
++	mt7603_mac_stuck_beacon_recovery(dev);
++
+ 	q = dev->mphy.q_tx[MT_TXQ_BEACON];
+ 	spin_lock(&q->lock);
+ 	ieee80211_iterate_active_interfaces_atomic(mt76_hw(dev),
+@@ -89,14 +133,9 @@ void mt7603_pre_tbtt_tasklet(struct tasklet_struct *t)
+ 	mt76_queue_kick(dev, q);
+ 	spin_unlock(&q->lock);
+ 
+-	/* Flush all previous CAB queue packets */
+-	mt76_wr(dev, MT_WF_ARB_CAB_FLUSH, GENMASK(30, 16) | BIT(0));
+-
+-	mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[MT_TXQ_CAB], false);
+-
+ 	mt76_csa_check(mdev);
+ 	if (mdev->csa_complete)
+-		goto out;
++		return;
+ 
+ 	q = dev->mphy.q_tx[MT_TXQ_CAB];
+ 	do {
+@@ -108,7 +147,7 @@ void mt7603_pre_tbtt_tasklet(struct tasklet_struct *t)
+ 		 skb_queue_len(&data.q) < 8);
+ 
+ 	if (skb_queue_empty(&data.q))
+-		goto out;
++		return;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(data.tail); i++) {
+ 		if (!data.tail[i])
+@@ -136,11 +175,6 @@ void mt7603_pre_tbtt_tasklet(struct tasklet_struct *t)
+ 		MT_WF_ARB_CAB_START_BSSn(0) |
+ 		(MT_WF_ARB_CAB_START_BSS0n(1) *
+ 		 ((1 << (MT7603_MAX_INTERFACES - 1)) - 1)));
+-
+-out:
+-	mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[MT_TXQ_BEACON], false);
+-	if (dev->mphy.q_tx[MT_TXQ_BEACON]->queued > hweight8(mdev->beacon_mask))
+-		dev->beacon_check++;
+ }
+ 
+ void mt7603_beacon_set_timer(struct mt7603_dev *dev, int idx, int intval)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/regs.h b/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
+index a39c9a0fcb1c..524bceb8e958 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
+@@ -469,6 +469,11 @@ enum {
+ #define MT_WF_SEC_BASE			0x21a00
+ #define MT_WF_SEC(ofs)			(MT_WF_SEC_BASE + (ofs))
+ 
++#define MT_WF_CFG_OFF_BASE		0x21e00
++#define MT_WF_CFG_OFF(ofs)		(MT_WF_CFG_OFF_BASE + (ofs))
++#define MT_WF_CFG_OFF_WOCCR		MT_WF_CFG_OFF(0x004)
++#define MT_WF_CFG_OFF_WOCCR_TMAC_GC_DIS	BIT(4)
++
+ #define MT_SEC_SCR			MT_WF_SEC(0x004)
+ #define MT_SEC_SCR_MASK_ORDER		GENMASK(1, 0)
+ 
 -- 
 2.41.0
 
