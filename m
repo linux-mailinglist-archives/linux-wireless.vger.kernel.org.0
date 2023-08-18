@@ -2,56 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E33780374
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Aug 2023 03:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95ECC78045D
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Aug 2023 05:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354892AbjHRBlR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Aug 2023 21:41:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59562 "EHLO
+        id S1357521AbjHRDYG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Aug 2023 23:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357147AbjHRBlC (ORCPT
+        with ESMTP id S1357602AbjHRDX7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Aug 2023 21:41:02 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 878D23A9A
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 18:40:56 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37I1eLppD021016, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37I1eLppD021016
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 18 Aug 2023 09:40:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+        Thu, 17 Aug 2023 23:23:59 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7BEC3C0E
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Aug 2023 20:23:47 -0700 (PDT)
+Received: from canpemm500007.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4RRnFV061PzFqjS;
+        Fri, 18 Aug 2023 11:20:46 +0800 (CST)
+Received: from [10.174.179.215] (10.174.179.215) by
+ canpemm500007.china.huawei.com (7.192.104.62) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 18 Aug 2023 09:40:41 +0800
-Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 18 Aug
- 2023 09:40:41 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <johannes@sipsolutions.net>
-CC:     <gregory.greenman@intel.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: mac80211: limit reorder_buf_filtered <=64 to avoid shift-out-of-bounds UBSAN warning
-Date:   Fri, 18 Aug 2023 09:40:04 +0800
-Message-ID: <20230818014004.16177-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+ 15.1.2507.31; Fri, 18 Aug 2023 11:23:45 +0800
+Subject: Re: [PATCH] wifi: ath12k: Remove unused declarations
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>, <kvalo@kernel.org>
+CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20230816130550.50896-1-yuehaibing@huawei.com>
+ <e8b1cbce-3139-a922-85ee-970756027d87@quicinc.com>
+From:   Yue Haibing <yuehaibing@huawei.com>
+Message-ID: <9200f152-8443-5c86-97f3-41e722ab7f1f@huawei.com>
+Date:   Fri, 18 Aug 2023 11:23:44 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+In-Reply-To: <e8b1cbce-3139-a922-85ee-970756027d87@quicinc.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ canpemm500007.china.huawei.com (7.192.104.62)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,98 +50,100 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The commit 06470f7468c8 ("mac80211: add API to allow filtering frames in BA sessions")
-adds reorder_buf_filtered to mark frames filtered by firmware, and it can
-only work correctly if hw.max_rx_aggregation_subframes <= 64 because
-maximum BlockAck is 64 at that moment.
+On 2023/8/16 22:31, Jeff Johnson wrote:
+> On 8/16/2023 6:05 AM, Yue Haibing wrote:
+>> Commit d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+>> declared but never implemented these, remove it.
+> 
+> Note that the ath12k driver is under active development, and due to the manner in which this driver was originally upstreamed (staring with just core functionality) it is very possible that prototypes are present in the current upstream code that are not currently being used, but which will be used in the future.
+> 
+> However, since there are currently no implementations, it seems logical to remove them for now. They can always be added back when the implementations are provided.
+> 
+> And for four of these ath11k also has unused prototypes, so feel free to submit a patch for those.
 
-However, new HE or EHT devices can support BlockAck number up to 256 or
-1024, and leads UBSAN warning:
+Thanks, this is done in https://patchwork.kernel.org/project/linux-wireless/patch/20230811104413.33668-1-yuehaibing@huawei.com
 
- UBSAN: shift-out-of-bounds in net/mac80211/rx.c:1129:39
- shift exponent 215 is too large for 64-bit type 'long long unsigned int'
- Call Trace:
-  <IRQ>
-  dump_stack_lvl+0x48/0x70
-  dump_stack+0x10/0x20
-  __ubsan_handle_shift_out_of_bounds+0x1ac/0x360
-  ieee80211_release_reorder_frame.constprop.0.cold+0x64/0x69 [mac80211]
-  ieee80211_sta_reorder_release+0x9c/0x400 [mac80211]
-  ieee80211_prepare_and_rx_handle+0x1234/0x1420 [mac80211]
-  ? __pfx_jhash+0x10/0x10
-  ? rht_key_get_hash.isra.0+0x19/0x30 [mac80211]
-  ieee80211_rx_list+0xaef/0xf60 [mac80211]
-  ? kfree_skbmem+0x58/0xb0
-  ? rtw89_vif_rx_stats_iter+0x2bb/0x2e1 [rtw89_core]
-  ieee80211_rx_napi+0x53/0xd0 [mac80211]
-
-Since only old hardware that supports <=64 BlockAck uses
-ieee80211_mark_rx_ba_filtered_frames(), limit the use as it is, so add a
-WARN_ONCE() and comment to note to avoid using this function if hardware
-capability is not suitable.
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- include/net/mac80211.h |  1 +
- net/mac80211/rx.c      | 12 ++++++++++--
- 2 files changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 3a8a2d2c58c3..2a55ae932c56 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -6612,6 +6612,7 @@ void ieee80211_stop_rx_ba_session(struct ieee80211_vif *vif, u16 ba_rx_bitmap,
-  * marks frames marked in the bitmap as having been filtered. Afterwards, it
-  * checks if any frames in the window starting from @ssn can now be released
-  * (in case they were only waiting for frames that were filtered.)
-+ * (Only work correctly if @max_rx_aggregation_subframes <= 64 frames)
-  */
- void ieee80211_mark_rx_ba_filtered_frames(struct ieee80211_sta *pubsta, u8 tid,
- 					  u16 ssn, u64 filtered,
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 4f707d2a160f..0af2599c17e8 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -1083,7 +1083,8 @@ static inline bool ieee80211_rx_reorder_ready(struct tid_ampdu_rx *tid_agg_rx,
- 	struct sk_buff *tail = skb_peek_tail(frames);
- 	struct ieee80211_rx_status *status;
- 
--	if (tid_agg_rx->reorder_buf_filtered & BIT_ULL(index))
-+	if (tid_agg_rx->reorder_buf_filtered &&
-+	    tid_agg_rx->reorder_buf_filtered & BIT_ULL(index))
- 		return true;
- 
- 	if (!tail)
-@@ -1124,7 +1125,8 @@ static void ieee80211_release_reorder_frame(struct ieee80211_sub_if_data *sdata,
- 	}
- 
- no_frame:
--	tid_agg_rx->reorder_buf_filtered &= ~BIT_ULL(index);
-+	if (tid_agg_rx->reorder_buf_filtered)
-+		tid_agg_rx->reorder_buf_filtered &= ~BIT_ULL(index);
- 	tid_agg_rx->head_seq_num = ieee80211_sn_inc(tid_agg_rx->head_seq_num);
- }
- 
-@@ -4264,6 +4266,7 @@ void ieee80211_mark_rx_ba_filtered_frames(struct ieee80211_sta *pubsta, u8 tid,
- 					  u16 ssn, u64 filtered,
- 					  u16 received_mpdus)
- {
-+	struct ieee80211_local *local;
- 	struct sta_info *sta;
- 	struct tid_ampdu_rx *tid_agg_rx;
- 	struct sk_buff_head frames;
-@@ -4281,6 +4284,11 @@ void ieee80211_mark_rx_ba_filtered_frames(struct ieee80211_sta *pubsta, u8 tid,
- 
- 	sta = container_of(pubsta, struct sta_info, sta);
- 
-+	local = sta->sdata->local;
-+	WARN_ONCE(local->hw.max_rx_aggregation_subframes > 64,
-+		  "RX BA marker can't support max_rx_aggregation_subframes %u > 64\n",
-+		  local->hw.max_rx_aggregation_subframes);
-+
- 	if (!ieee80211_rx_data_set_sta(&rx, sta, -1))
- 		return;
- 
--- 
-2.25.1
-
+> 
+> Further details below
+> 
+>>
+>> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+> 
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> 
+>> ---
+>>   drivers/net/wireless/ath/ath12k/ce.h   | 3 ---
+>>   drivers/net/wireless/ath/ath12k/core.h | 1 -
+>>   drivers/net/wireless/ath/ath12k/qmi.h  | 2 --
+>>   drivers/net/wireless/ath/ath12k/wmi.h  | 2 --
+>>   4 files changed, 8 deletions(-)
+> 
+> 
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/ce.h b/drivers/net/wireless/ath/ath12k/ce.h
+>> index 17cf16235e0b..79af3b6159f1 100644
+>> --- a/drivers/net/wireless/ath/ath12k/ce.h
+>> +++ b/drivers/net/wireless/ath/ath12k/ce.h
+>> @@ -176,9 +176,6 @@ int ath12k_ce_alloc_pipes(struct ath12k_base *ab);
+>>   void ath12k_ce_free_pipes(struct ath12k_base *ab);
+>>   int ath12k_ce_get_attr_flags(struct ath12k_base *ab, int ce_id);
+>>   void ath12k_ce_poll_send_completed(struct ath12k_base *ab, u8 pipe_id);
+>> -int ath12k_ce_map_service_to_pipe(struct ath12k_base *ab, u16 service_id,
+>> -                  u8 *ul_pipe, u8 *dl_pipe);
+>> -int ath12k_ce_attr_attach(struct ath12k_base *ab);
+> 
+> These were inherited from ath11k, and are unused there as well. These can go. Also feel free to submit a similar patch for ath11k
+> 
+>>   void ath12k_ce_get_shadow_config(struct ath12k_base *ab,
+>>                    u32 **shadow_cfg, u32 *shadow_cfg_len);
+>>   #endif
+>> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+>> index 4389ff40b49d..d873b573dac6 100644
+>> --- a/drivers/net/wireless/ath/ath12k/core.h
+>> +++ b/drivers/net/wireless/ath/ath12k/core.h
+>> @@ -788,7 +788,6 @@ int ath12k_core_fetch_board_data_api_1(struct ath12k_base *ab,
+>>   int ath12k_core_fetch_bdf(struct ath12k_base *ath12k,
+>>                 struct ath12k_board_data *bd);
+>>   void ath12k_core_free_bdf(struct ath12k_base *ab, struct ath12k_board_data *bd);
+>> -int ath12k_core_check_dt(struct ath12k_base *ath12k);
+> 
+> This was inherited from ath11k, and it is in use there.
+> I'm not sure if the underlying functionality will be required on ath12k, but if so, the prototype can be added back when the function implementation is added. So this can be removed
+> 
+>>     void ath12k_core_halt(struct ath12k *ar);
+>>   int ath12k_core_resume(struct ath12k_base *ab);
+>> diff --git a/drivers/net/wireless/ath/ath12k/qmi.h b/drivers/net/wireless/ath/ath12k/qmi.h
+>> index df76149c49f5..15944f5f33ab 100644
+>> --- a/drivers/net/wireless/ath/ath12k/qmi.h
+>> +++ b/drivers/net/wireless/ath/ath12k/qmi.h
+>> @@ -562,8 +562,6 @@ struct qmi_wlanfw_wlan_cfg_resp_msg_v01 {
+>>   int ath12k_qmi_firmware_start(struct ath12k_base *ab,
+>>                     u32 mode);
+>>   void ath12k_qmi_firmware_stop(struct ath12k_base *ab);
+>> -void ath12k_qmi_event_work(struct work_struct *work);
+>> -void ath12k_qmi_msg_recv_work(struct work_struct *work);
+> 
+> These were inherited from ath11k, and are unused there as well. These can go. Also feel free to submit a similar patch for ath11k
+> 
+>>   void ath12k_qmi_deinit_service(struct ath12k_base *ab);
+>>   int ath12k_qmi_init_service(struct ath12k_base *ab);
+>>   diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+>> index 8c047a9623f9..c75a6fa1f7e0 100644
+>> --- a/drivers/net/wireless/ath/ath12k/wmi.h
+>> +++ b/drivers/net/wireless/ath/ath12k/wmi.h
+>> @@ -4855,8 +4855,6 @@ int ath12k_wmi_vdev_install_key(struct ath12k *ar,
+>>                   struct wmi_vdev_install_key_arg *arg);
+>>   int ath12k_wmi_pdev_bss_chan_info_request(struct ath12k *ar,
+>>                         enum wmi_bss_chan_info_req_type type);
+>> -int ath12k_wmi_send_stats_request_cmd(struct ath12k *ar, u32 stats_id,
+>> -                      u32 vdev_id, u32 pdev_id);
+> 
+> This was inherited from ath11k, and it is in use there.
+> I expect this API will be implemented in the future since it is used by the DebugFS code which is not yet present. That said, the prototype can be added back when the function implementation is added. So this can be removed
+> 
+> 
+>>   int ath12k_wmi_send_pdev_temperature_cmd(struct ath12k *ar);
+>>   int ath12k_wmi_send_peer_flush_tids_cmd(struct ath12k *ar,
+>>                       u8 peer_addr[ETH_ALEN],
+> 
+> .
