@@ -2,87 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8ABC781901
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Aug 2023 12:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACF2978191C
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Aug 2023 12:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231587AbjHSKmp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Aug 2023 06:42:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36396 "EHLO
+        id S231322AbjHSKw3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Aug 2023 06:52:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231295AbjHSKmS (ORCPT
+        with ESMTP id S230371AbjHSKwW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Aug 2023 06:42:18 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1F2B459F2
-        for <linux-wireless@vger.kernel.org>; Sat, 19 Aug 2023 03:21:17 -0700 (PDT)
-Received: from canpemm500007.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RSZS551b7zNm5Z;
-        Sat, 19 Aug 2023 18:17:41 +0800 (CST)
-Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
- (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Sat, 19 Aug
- 2023 18:21:14 +0800
-From:   Yue Haibing <yuehaibing@huawei.com>
-To:     <ajay.kathat@microchip.com>, <claudiu.beznea@tuxon.dev>,
-        <kvalo@kernel.org>, <yuehaibing@huawei.com>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: wilc1000: Remove unused declarations
-Date:   Sat, 19 Aug 2023 18:21:00 +0800
-Message-ID: <20230819102100.13720-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        Sat, 19 Aug 2023 06:52:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C698F5246;
+        Sat, 19 Aug 2023 03:50:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5826E6222E;
+        Sat, 19 Aug 2023 10:50:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AB7C433C8;
+        Sat, 19 Aug 2023 10:50:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692442210;
+        bh=UOf0VrNbj7jijgQLUEJOQOBTWQ8bE2tlLoIK1cWZfF4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Kei/cEnCzd9vylrM81C/pPpoNImWO9ct/BfmNbABJtoIAiUdlMrA6QirCewN8nGsl
+         E+/EyT5QuE5r/CU3d6rHBMKoRtj1M4beqjlpX4igDLY31/WCHuJE9cep162hACy+zA
+         MkHvny2Q8i8kBUce3Avd2yXp9bzBiQ31Ho3RWg+I=
+Date:   Sat, 19 Aug 2023 12:50:07 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     Evan Quan <evan.quan@amd.com>, Andrew Lunn <andrew@lunn.ch>,
+        rafael@kernel.org, lenb@kernel.org, johannes@sipsolutions.net,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alexander.deucher@amd.com,
+        rdunlap@infradead.org, quic_jjohnson@quicinc.com, horms@kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [V9 1/9] drivers core: Add support for Wifi band RF mitigations
+Message-ID: <2023081919-mockup-bootleg-bdb9@gregkh>
+References: <20230818032619.3341234-1-evan.quan@amd.com>
+ <20230818032619.3341234-2-evan.quan@amd.com>
+ <2023081806-rounding-distract-b695@gregkh>
+ <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- canpemm500007.china.huawei.com (7.192.104.62)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 8399918f3056 ("staging: wilc1000: use RCU list to maintain vif interfaces list")
-removed wilc_get_interface() but not its declaration.
-Commit 9bc061e88054 ("staging: wilc1000: added support to dynamically add/remove interfaces")
-declared but never implemented wilc_cfg_alloc() and wilc_netdev_interface().
+On Fri, Aug 18, 2023 at 05:49:14PM -0500, Limonciello, Mario wrote:
+> 
+> 
+> On 8/18/2023 4:24 PM, Greg KH wrote:
+> > On Fri, Aug 18, 2023 at 11:26:11AM +0800, Evan Quan wrote:
+> > >   drivers/base/Makefile                         |   1 +
+> > >   drivers/base/wbrf.c                           | 280 ++++++++++++++++++
+> > 
+> > Why is a wifi-specific thing going into drivers/base/?
+> > 
+> > confused,
+> > 
+> > greg k-h
+> 
+> The original problem statement was at a high level 'there can be
+> interference between different devices operating at high frequencies'. The
+> original patches introduced some ACPI library code that enabled a mitigated
+> for this interference between mac80211 devices and amdgpu devices.
+> 
+> Andrew Lunn wanted to see something more generic, so the series has morphed
+> into base code for things to advertise frequencies in use and other things
+> to listen to frequencies in use and react.
+> 
+> The idea is supposed to be that if the platform knows that these mitigations
+> are needed then the producers send the frequencies in use, consumers react
+> to them.  The AMD implementation of getting this info from the platform
+> plugs into the base code (patch 2).
+> 
+> If users don't want this behavior they can turn it off on kernel command
+> line.
+> 
+> If the platform doesn't know mitigations are needed but user wants to turn
+> them on anyway they can turn it on kernel command line.
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/microchip/wilc1000/cfg80211.h | 4 ----
- 1 file changed, 4 deletions(-)
+That's all fine, I don't object to that at all.  But bus/device-specific
+stuff should NOT be in drivers/base/ if at all possible (yes, we do have
+some exceptions with hypervisor.c and memory and cpu stuff) but for a
+frequency thing like this, why can't it live with the other
+wifi/frequency code in drivers/net/wireless/?
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.h b/drivers/net/wireless/microchip/wilc1000/cfg80211.h
-index 37b294cb3b37..8c65951cfaf9 100644
---- a/drivers/net/wireless/microchip/wilc1000/cfg80211.h
-+++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.h
-@@ -8,15 +8,12 @@
- #define WILC_CFG80211_H
- #include "netdev.h"
- 
--struct wiphy *wilc_cfg_alloc(void);
- int wilc_cfg80211_init(struct wilc **wilc, struct device *dev, int io_type,
- 		       const struct wilc_hif_func *ops);
- struct wilc *wilc_create_wiphy(struct device *dev);
- void wilc_deinit_host_int(struct net_device *net);
- int wilc_init_host_int(struct net_device *net);
- void wilc_wfi_monitor_rx(struct net_device *mon_dev, u8 *buff, u32 size);
--struct wilc_vif *wilc_netdev_interface(struct wilc *wl, const char *name,
--				       enum nl80211_iftype type);
- void wilc_wfi_deinit_mon_interface(struct wilc *wl, bool rtnl_locked);
- struct net_device *wilc_wfi_init_mon_interface(struct wilc *wl,
- 					       const char *name,
-@@ -24,7 +21,6 @@ struct net_device *wilc_wfi_init_mon_interface(struct wilc *wl,
- void wilc_update_mgmt_frame_registrations(struct wiphy *wiphy,
- 					  struct wireless_dev *wdev,
- 					  struct mgmt_frame_regs *upd);
--struct wilc_vif *wilc_get_interface(struct wilc *wl);
- struct wilc_vif *wilc_get_wl_to_vif(struct wilc *wl);
- void wlan_deinit_locks(struct wilc *wilc);
- #endif
--- 
-2.34.1
+In other words, what's the benefit to having me be the maintainer of
+this, someone who knows nothing about this subsystem, other than you
+passing off that work to me?  :)
 
+thanks,
+
+greg k-h
