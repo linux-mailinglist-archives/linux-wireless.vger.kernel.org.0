@@ -2,109 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACF2978191C
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Aug 2023 12:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EECE67823D0
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 08:42:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231322AbjHSKw3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Aug 2023 06:52:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47164 "EHLO
+        id S232382AbjHUGmu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Aug 2023 02:42:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230371AbjHSKwW (ORCPT
+        with ESMTP id S231597AbjHUGmu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Aug 2023 06:52:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C698F5246;
-        Sat, 19 Aug 2023 03:50:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5826E6222E;
-        Sat, 19 Aug 2023 10:50:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AB7C433C8;
-        Sat, 19 Aug 2023 10:50:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692442210;
-        bh=UOf0VrNbj7jijgQLUEJOQOBTWQ8bE2tlLoIK1cWZfF4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Kei/cEnCzd9vylrM81C/pPpoNImWO9ct/BfmNbABJtoIAiUdlMrA6QirCewN8nGsl
-         E+/EyT5QuE5r/CU3d6rHBMKoRtj1M4beqjlpX4igDLY31/WCHuJE9cep162hACy+zA
-         MkHvny2Q8i8kBUce3Avd2yXp9bzBiQ31Ho3RWg+I=
-Date:   Sat, 19 Aug 2023 12:50:07 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Evan Quan <evan.quan@amd.com>, Andrew Lunn <andrew@lunn.ch>,
-        rafael@kernel.org, lenb@kernel.org, johannes@sipsolutions.net,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, alexander.deucher@amd.com,
-        rdunlap@infradead.org, quic_jjohnson@quicinc.com, horms@kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [V9 1/9] drivers core: Add support for Wifi band RF mitigations
-Message-ID: <2023081919-mockup-bootleg-bdb9@gregkh>
-References: <20230818032619.3341234-1-evan.quan@amd.com>
- <20230818032619.3341234-2-evan.quan@amd.com>
- <2023081806-rounding-distract-b695@gregkh>
- <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
+        Mon, 21 Aug 2023 02:42:50 -0400
+Received: from smart3-pmg.ufmg.br (smart3-01-pmg.ufmg.br [150.164.64.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C72F5AB
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Aug 2023 23:42:48 -0700 (PDT)
+Received: from smart3-pmg.ufmg.br (localhost.localdomain [127.0.0.1])
+        by smart3-pmg.ufmg.br (Proxmox) with ESMTP id 26D865A98F3
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Aug 2023 14:25:26 -0300 (-03)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ufmg.br; h=cc
+        :content-transfer-encoding:content-type:content-type:date:from
+        :from:message-id:mime-version:reply-to:reply-to:subject:subject
+        :to:to; s=mail; bh=aB6phz2CCV0fOdUx+FEpXbqcMS5qcYYIVmsV4Zzs0ug=; b=
+        ch9jNBAOPQfIZWFKk6r46fEWrNfKLm/Yo0AnI2pBH2cdlMztXn+sWxc5PLfE1F8p
+        bTmRslYsZjOReQLoSxEqtQjIvEaNdagH4t9S5xf1WzbSccr0Q7fYb6IoHNvGEjig
+        WJi8Q96ydjfAo3mkOx5pADTM7yR0K/XWkC+qLGoXvRQLW0on3WBjoX1bk/UF4/9f
+        R7EbBnwnsSSx2DU7TWi0xiWi83/QzzvY26qYrQ3bYfrOSfHKPwmQ1bTx+6yzEqWh
+        LNGbI+kSKcEeOS5cszFLGcs0G8nlUzMZSGQfsVidse2oeNLNRTgcFevXjnmBhpYC
+        qOIimjXH1tJ7exa3zwDIcg==
+Received: from bambu.grude.ufmg.br (bambu.grude.ufmg.br [150.164.64.35])
+        by smart3-pmg.ufmg.br (Proxmox) with ESMTP id 4B7C8589935
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Aug 2023 14:23:39 -0300 (-03)
+Received: from ufmg.br ([98.159.234.166])
+          by bambu.grude.ufmg.br (IBM Domino Release 10.0.1FP3)
+          with ESMTP id 2023082014150904-1085697 ;
+          Sun, 20 Aug 2023 14:15:09 -0300 
+Reply-To: "Kristine Wellenstein" <inform@calfd.org>
+From:   "Kristine Wellenstein" <luanacsg@ufmg.br>
+To:     linux-wireless@vger.kernel.org
+Subject: [RE]: RE:
+Date:   20 Aug 2023 13:15:08 -0400
+Message-ID: <20230820131507.972E8F2E3FA47886@ufmg.br>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-MIMETrack: Itemize by SMTP Server on bambu/UFMG(Release 10.0.1FP3|August 09, 2019) at
+ 20-08-2023 14:15:09,
+        Serialize by Router on bambu/UFMG(Release 10.0.1FP3|August 09, 2019) at 20-08-2023
+ 14:23:39,
+        Serialize complete at 20-08-2023 14:23:39
+X-TNEFEvaluated: 1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+        charset="utf-8"
+X-Spam-Status: No, score=4.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LOTS_OF_MONEY,RCVD_IN_SBL,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 05:49:14PM -0500, Limonciello, Mario wrote:
-> 
-> 
-> On 8/18/2023 4:24 PM, Greg KH wrote:
-> > On Fri, Aug 18, 2023 at 11:26:11AM +0800, Evan Quan wrote:
-> > >   drivers/base/Makefile                         |   1 +
-> > >   drivers/base/wbrf.c                           | 280 ++++++++++++++++++
-> > 
-> > Why is a wifi-specific thing going into drivers/base/?
-> > 
-> > confused,
-> > 
-> > greg k-h
-> 
-> The original problem statement was at a high level 'there can be
-> interference between different devices operating at high frequencies'. The
-> original patches introduced some ACPI library code that enabled a mitigated
-> for this interference between mac80211 devices and amdgpu devices.
-> 
-> Andrew Lunn wanted to see something more generic, so the series has morphed
-> into base code for things to advertise frequencies in use and other things
-> to listen to frequencies in use and react.
-> 
-> The idea is supposed to be that if the platform knows that these mitigations
-> are needed then the producers send the frequencies in use, consumers react
-> to them.  The AMD implementation of getting this info from the platform
-> plugs into the base code (patch 2).
-> 
-> If users don't want this behavior they can turn it off on kernel command
-> line.
-> 
-> If the platform doesn't know mitigations are needed but user wants to turn
-> them on anyway they can turn it on kernel command line.
+Sehr geehrter Beg=C3=BCnstigter,
 
-That's all fine, I don't object to that at all.  But bus/device-specific
-stuff should NOT be in drivers/base/ if at all possible (yes, we do have
-some exceptions with hypervisor.c and memory and cpu stuff) but for a
-frequency thing like this, why can't it live with the other
-wifi/frequency code in drivers/net/wireless/?
+Die EmilyWells Foundation ermutigt Menschen, sich ehrenamtlich f=C3=BCr soz=
+iale oder wohlt=C3=A4tige Zwecke zu engagieren und den weniger Gl=C3=BCckli=
+chen zu helfen. Lasst uns alle die wichtige Botschaft dieses gro=C3=9Fartig=
+en Tages verbreiten und uns f=C3=BCr das bedanken, was wir haben.
 
-In other words, what's the benefit to having me be the maintainer of
-this, someone who knows nothing about this subsystem, other than you
-passing off that work to me?  :)
+Ich bin Kristine Wellenstein, die Gewinnerin des Mega Millions-Jackpots in =
+H=C3=B6he von 426 Millionen US-Dollar am 28. Januar. Ich gebe offiziell bek=
+annt, dass Sie als einer von f=C3=BCnf Empf=C3=A4ngern einer Spende in H=C3=
+=B6he von 2.300.000 ausgew=C3=A4hlt wurden. Dollar von der Emily Wells Foun=
+dation.
 
-thanks,
+Diese Spende ist im Gedenken an meinen verstorbenen Enkel, der gerade einen=
+ Tag gelebt hat.
+F=C3=BCr weitere Informationen antworten Sie bitte auf diese E-Mail.
 
-greg k-h
+Beste gr=C3=BC=C3=9Fe:
+
+Kristine Wellenstein
+Gr=C3=BCnderin/Vorsitzende: EmilyWells. Stiftung, Schenkung
+
+
