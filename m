@@ -2,97 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED2157827D3
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 13:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D913D782802
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 13:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232022AbjHULYF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Aug 2023 07:24:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56162 "EHLO
+        id S232125AbjHULep (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Aug 2023 07:34:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231625AbjHULYF (ORCPT
+        with ESMTP id S232736AbjHULep (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Aug 2023 07:24:05 -0400
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53DCDE2
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Aug 2023 04:24:00 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:279e:0:640:5630:0])
-        by forward102b.mail.yandex.net (Yandex) with ESMTP id B543D60055;
-        Mon, 21 Aug 2023 14:23:56 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id tNGi4AeDdqM0-wnwM81ge;
-        Mon, 21 Aug 2023 14:23:56 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1692617036;
-        bh=1WDAslT8rRRAK/dQtkvBWwgXY2DNl9gcbKZlKp0iYDM=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=haLDETK17K/20a3pZOvb4W57jizJlHQzfVuZXJb3xZF7sKA5+oP5uPD9kYfO1Kn7T
-         yrXm1WRiZROvWIJAOQ3RECecGbxTBpL9oUoPryupfRzPzPHua211wlnvaIVy3gvpXv
-         A8P51UWZ9SRGXqzjwEGNZoY0oyVbRb9HG6FRbswU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Franky Lin <franky.lin@broadcom.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: brcmfmac: always check the value returned by brcmf_chip_add_core()
-Date:   Mon, 21 Aug 2023 14:22:49 +0300
-Message-ID: <20230821112337.160974-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Mon, 21 Aug 2023 07:34:45 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C24DC
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Aug 2023 04:34:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=10j7nSi0oES0gzYMMnw/ATUF+5EK7anVMHuFrw42oUc=;
+        t=1692617683; x=1693827283; b=F+YiRAET+DZtoIKgcp9j4hohVVrAWG7fFEEksXgj1R6LkHF
+        m/fZSCzkfsg+V/+UyTph8DvZXJSwvzfx8rI1c1YI/tGDmLmJoDob9Vav7bDN0qizXX1AiUlIEXdCV
+        qQWYzlt+7Xzgcot7c8SyYfWiAqfVCNXE6J+NYf0fNVKf/JwetD43E9oOxX6m9RQySxaDG6OmHQJm4
+        yR6k1PBuvOuT7dEbMihy5hXCOVvbi0AoQAVx7j1VMPh6bt2i1ommzB+5wPA9XaPvN6ukfjKY0RATM
+        puc/IyDdKvSIwwlYm7Crn6xD0DkA9ReMubivEVDZV9914ZibBnhlVe5UZDkYOOag==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qY3BA-0034V5-2g;
+        Mon, 21 Aug 2023 13:34:41 +0200
+Message-ID: <0f34540e71e7ba63a3d38e85aefec74350384a33.camel@sipsolutions.net>
+Subject: Re: [PATCH] Revert "mac80211: add parse regulatory info in 6 GHz
+ operation information"
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
+Date:   Mon, 21 Aug 2023 13:34:39 +0200
+In-Reply-To: <6adeb7be-9c7a-c122-71be-cc0143115fe6@quicinc.com>
+References: <20230821105903.7482379cde47.Ib72645d02fadc24b520db118abd82e861c87316e@changeid>
+         <f28ee65621bd52ad59cae891e81431ef83eeaf2e.camel@sipsolutions.net>
+         <9ce54e8e-556b-976c-06d9-145b747705db@quicinc.com>
+         <714fd7374225db9e8d8225197931c5183f12e534.camel@sipsolutions.net>
+         <6adeb7be-9c7a-c122-71be-cc0143115fe6@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In 'brcmf_chip_recognition()', always check the value returned by
-'brcmf_chip_add_core()' with 'IS_ERR()' and return convenient
-'PTR_ERR()' in case of error.
+On Mon, 2023-08-21 at 19:11 +0800, Wen Gong wrote:
+> On 8/21/2023 6:57 PM, Johannes Berg wrote:
+> > On Mon, 2023-08-21 at 18:36 +0800, Wen Gong wrote:
+> > > On 8/21/2023 5:06 PM, Johannes Berg wrote:
+> > > > On Mon, 2023-08-21 at 10:59 +0200, Johannes Berg wrote:
+> > > > > From: Johannes Berg <johannes.berg@intel.com>
+> > > > >=20
+> > > > > This reverts commit cb751b7a57e5 ("mac80211: add parse regulatory=
+ info
+> > > > > in 6 GHz operation information") which added a station type bss_c=
+onf
+> > > > > assignment in a parsing helper function, which will corrupt mesh =
+data.
+> > > > >=20
+> > > > Ah crap this won't work, rtw89 already uses this.
+> > > >=20
+> > > > Wen please send a fix for this ASAP.
+> > > >=20
+> > > > johannes
+> > > Hi Johannes,
+> > >=20
+> > > I looked the patch some times, but I do not know how it corrupt mesh =
+data,
+> > >=20
+> > > Is there any clue for me?
+> > Hah, no, I'm wrong ... I looked at it and for some reason thought of
+> > u.mgd instead of vif.bss_conf. Sorry!
+> >=20
+> > Still it's not correct though to write to vif.bss_conf in this function
+> > because it's called from mesh_matches_local() to see if it's even
+> > compatible, for example, so the mere calling a "give me the 6 GHz
+> > chandef" function doesn't indicate we actually are going to use it now.
+>=20
+> Do you mean mesh_matches_local() is only a try to call=20
+> ieee80211_chandef_he_6ghz_oper(),
+>=20
+> NOT real use the 6 GHz chandef?
 
-Fixes: cb7cf7be9eba ("brcmfmac: make chip related functions host interface independent")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- .../net/wireless/broadcom/brcm80211/brcmfmac/chip.c    | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Yes, I believe so.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-index 2ef92ef25517..6a1b593eeff6 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-@@ -1006,18 +1006,28 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
- 
- 		core = brcmf_chip_add_core(ci, BCMA_CORE_CHIPCOMMON,
- 					   SI_ENUM_BASE_DEFAULT, 0);
-+		if (IS_ERR(core))
-+			return PTR_ERR(core);
- 		brcmf_chip_sb_corerev(ci, core);
- 		core = brcmf_chip_add_core(ci, BCMA_CORE_SDIO_DEV,
- 					   BCM4329_CORE_BUS_BASE, 0);
-+		if (IS_ERR(core))
-+			return PTR_ERR(core);
- 		brcmf_chip_sb_corerev(ci, core);
- 		core = brcmf_chip_add_core(ci, BCMA_CORE_INTERNAL_MEM,
- 					   BCM4329_CORE_SOCRAM_BASE, 0);
-+		if (IS_ERR(core))
-+			return PTR_ERR(core);
- 		brcmf_chip_sb_corerev(ci, core);
- 		core = brcmf_chip_add_core(ci, BCMA_CORE_ARM_CM3,
- 					   BCM4329_CORE_ARM_BASE, 0);
-+		if (IS_ERR(core))
-+			return PTR_ERR(core);
- 		brcmf_chip_sb_corerev(ci, core);
- 
- 		core = brcmf_chip_add_core(ci, BCMA_CORE_80211, 0x18001000, 0);
-+		if (IS_ERR(core))
-+			return PTR_ERR(core);
- 		brcmf_chip_sb_corerev(ci, core);
- 	} else if (socitype == SOCI_AI) {
- 		ci->iscoreup = brcmf_chip_ai_iscoreup;
--- 
-2.41.0
+Anyway it would seem better for a utility function to have clearer
+defined output, I think?
 
+johannes
