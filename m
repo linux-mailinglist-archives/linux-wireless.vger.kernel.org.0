@@ -2,123 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DE2A7824D9
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 09:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59C4F7824E8
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 09:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233844AbjHUHsQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Aug 2023 03:48:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33640 "EHLO
+        id S233862AbjHUHwp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Aug 2023 03:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231994AbjHUHsP (ORCPT
+        with ESMTP id S232007AbjHUHwp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Aug 2023 03:48:15 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08CCD92
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Aug 2023 00:48:14 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37L7RVNu022354;
-        Mon, 21 Aug 2023 07:48:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=NXI2/SUbqvE8w14U/0XCRbpJsK9Wr2dkwOZ72ISoBjM=;
- b=dJe3IXV4QtSXxRa4vYAivNVJ1Yvt/kbA2Ak3WXbNlOXDcnx4LsR/ujNmHp7jba9NMYKF
- NEJsnQWnlTFGqHMrpw2LDcbKZ2xRftx53tt+aF3uE6DUWb3x1Za7enkUsfm1KTnsB2xG
- P/u5VPM22oG2V0IHug4UjQLyacKPxgy7+PKCFXUUTUAjx6hPlbXeG7MPdCmeKyl+aaYR
- 43yq0V2i1RtaZ8v0Jx/hsmwluDPQgUrfUozKtkNw/dc6+/XHj/ABZ7fyp1N9tKvPYfom
- TMyPervcY+Tvv5R2Pb9jTqVunbgF1BNuQNw7YuK/hcM4diR22wA2GDGc0AOR/K01tO6A 5Q== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sjny935xk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 21 Aug 2023 07:48:08 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37L7m77X024510
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 21 Aug 2023 07:48:07 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 21 Aug
- 2023 00:48:06 -0700
-Message-ID: <0a264e30-af70-a6ff-eb2b-c3862540ee1b@quicinc.com>
-Date:   Mon, 21 Aug 2023 15:48:04 +0800
+        Mon, 21 Aug 2023 03:52:45 -0400
+Received: from mail.durme.pl (mail.durme.pl [217.182.69.186])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6DDDBC
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Aug 2023 00:52:39 -0700 (PDT)
+Received: by mail.durme.pl (Postfix, from userid 1002)
+        id 961CD48DF3; Mon, 21 Aug 2023 07:51:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=durme.pl; s=mail;
+        t=1692604358; bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
+        h=Date:From:To:Subject:From;
+        b=pDEZhzN5EWpa9cr0dugGrhOpIGat5hLFAG16eryRGf7SEUjdVKzpQoGz+ENG3LqCQ
+         ozHLGsAwOydxhEGfmLdb+5JFsRh4V9oEkwu45y3RhVbvXWXj5UUt4YVo0FBTqgTwv4
+         i5Cn5IWKjoViQVBwh9KKLoUAJOdFbgSFTzbpJjy5wcpNC9wkZj2Pjpn4BgeUPgLJ1D
+         eiijxEn55nuTnNSi0e6mT2GOTecfH4kai4VzWFD+Vuh0qiq7ysh/MYHLAW0XqaYDe1
+         02rq7anW2AAsDH4yNXSIVngR6pLFPFbWF/76eWuIdL5nBXPC4pA4EEZY1rLOWrruMQ
+         5H/4nPczFCgFg==
+Received: by mail.durme.pl for <linux-wireless@vger.kernel.org>; Mon, 21 Aug 2023 07:51:20 GMT
+Message-ID: <20230821064500-0.1.3s.clvb.0.b804cc6ii2@durme.pl>
+Date:   Mon, 21 Aug 2023 07:51:20 GMT
+From:   "Krystian Wieczorek" <krystian.wieczorek@durme.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.durme.pl
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] wifi: mac80211: fix cfg80211_bss always hold when assoc
- response fail for MLO connection
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230821061355.18168-1-quic_wgong@quicinc.com>
- <5c072b0a45ad29dc03b989fbd9a9fd974ae0c23d.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <5c072b0a45ad29dc03b989fbd9a9fd974ae0c23d.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: NtxixyU_oKjlGNGN1ANlOlxmSRsGvWlY
-X-Proofpoint-GUID: NtxixyU_oKjlGNGN1ANlOlxmSRsGvWlY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-20_15,2023-08-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- malwarescore=0 mlxlogscore=999 clxscore=1015 adultscore=0 mlxscore=0
- impostorscore=0 priorityscore=1501 phishscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308210070
-X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/21/2023 3:40 PM, Johannes Berg wrote:
-> On Mon, 2023-08-21 at 02:13 -0400, Wen Gong wrote:
->> +++ b/net/mac80211/mlme.c
->> @@ -5429,17 +5429,22 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
->>   	for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
->>   		struct ieee80211_link_data *link;
->>   
->> -		link = sdata_dereference(sdata->link[link_id], sdata);
->> -		if (!link)
->> -			continue;
->> -
->>   		if (!assoc_data->link[link_id].bss)
->>   			continue;
->>   
->>   		resp.links[link_id].bss = assoc_data->link[link_id].bss;
->> -		resp.links[link_id].addr = link->conf->addr;
->>   		resp.links[link_id].status = assoc_data->link[link_id].status;
->>   
->> +		link = sdata_dereference(sdata->link[link_id], sdata);
->> +
->> +		if (!link) {
->> +			/* use the addr of assoc_data link which is set in ieee80211_mgd_assoc() */
->> +			resp.links[link_id].addr = assoc_data->link[link_id].addr;
-> As I mentioned before, this cannot be done - it introduces use-after-
-> free since assoc_data is freed after the loop, and the
-> cfg80211_rx_assoc_resp() is after that.
+Dzie=C5=84 dobry,
 
-So I want to change the "const u8 *addr" to "u8 addr[ETH_ALEN] 
-__aligned(2);" of struct
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-cfg80211_rx_assoc_resp and copy the value, then no use-after-free, is it OK?
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
->> +			continue;
->> +		}
->> +
->> +		resp.links[link_id].addr = link->conf->addr;
->>
-> Also, I don't see that we need to use two different assignments for the
-> two cases.
-Then I will change to both use "assoc_data->link[link_id].addr", is it OK?
-> johannes
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
+
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
+
+
+Pozdrawiam
+Krystian Wieczorek
