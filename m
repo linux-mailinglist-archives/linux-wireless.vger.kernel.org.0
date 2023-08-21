@@ -2,101 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D913D782802
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 13:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3772D782842
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 13:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232125AbjHULep (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Aug 2023 07:34:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33390 "EHLO
+        id S233575AbjHULxp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Aug 2023 07:53:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232736AbjHULep (ORCPT
+        with ESMTP id S231792AbjHULxo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Aug 2023 07:34:45 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C24DC
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Aug 2023 04:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=10j7nSi0oES0gzYMMnw/ATUF+5EK7anVMHuFrw42oUc=;
-        t=1692617683; x=1693827283; b=F+YiRAET+DZtoIKgcp9j4hohVVrAWG7fFEEksXgj1R6LkHF
-        m/fZSCzkfsg+V/+UyTph8DvZXJSwvzfx8rI1c1YI/tGDmLmJoDob9Vav7bDN0qizXX1AiUlIEXdCV
-        qQWYzlt+7Xzgcot7c8SyYfWiAqfVCNXE6J+NYf0fNVKf/JwetD43E9oOxX6m9RQySxaDG6OmHQJm4
-        yR6k1PBuvOuT7dEbMihy5hXCOVvbi0AoQAVx7j1VMPh6bt2i1ommzB+5wPA9XaPvN6ukfjKY0RATM
-        puc/IyDdKvSIwwlYm7Crn6xD0DkA9ReMubivEVDZV9914ZibBnhlVe5UZDkYOOag==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qY3BA-0034V5-2g;
-        Mon, 21 Aug 2023 13:34:41 +0200
-Message-ID: <0f34540e71e7ba63a3d38e85aefec74350384a33.camel@sipsolutions.net>
-Subject: Re: [PATCH] Revert "mac80211: add parse regulatory info in 6 GHz
- operation information"
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
-Date:   Mon, 21 Aug 2023 13:34:39 +0200
-In-Reply-To: <6adeb7be-9c7a-c122-71be-cc0143115fe6@quicinc.com>
-References: <20230821105903.7482379cde47.Ib72645d02fadc24b520db118abd82e861c87316e@changeid>
-         <f28ee65621bd52ad59cae891e81431ef83eeaf2e.camel@sipsolutions.net>
-         <9ce54e8e-556b-976c-06d9-145b747705db@quicinc.com>
-         <714fd7374225db9e8d8225197931c5183f12e534.camel@sipsolutions.net>
-         <6adeb7be-9c7a-c122-71be-cc0143115fe6@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Mon, 21 Aug 2023 07:53:44 -0400
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D62CC
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Aug 2023 04:53:42 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net [IPv6:2a02:6b8:c18:3b87:0:640:4625:0])
+        by forward102a.mail.yandex.net (Yandex) with ESMTP id 5E85F463B9;
+        Mon, 21 Aug 2023 14:53:39 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id crGqrg1W0Gk0-G2ctmIIW;
+        Mon, 21 Aug 2023 14:53:39 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1692618819;
+        bh=i6BydlDb2XDUniJEwIhG83pQBLeUg35Xb9KRH54aC7Y=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=PRR65eRiwW7i0aOkyjYwNmwiZFSKYnQgTmFLnyllSWOeh1vywx7mQl1ysNnsJNeXf
+         XrxMzmDIOAR4D/C0YdA65ryZL2xzxqX3UAeHxaT17oV4wxyU8CS7ds2X5fan+zqtPW
+         Y/w1bs33ujgp836vSfAeYI8KoMqKNhtd7+S88APY=
+Authentication-Results: mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: mwifiex: cleanup struct mwifiex_sdio_mpa_rx
+Date:   Mon, 21 Aug 2023 14:52:50 +0300
+Message-ID: <20230821115254.167552-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-08-21 at 19:11 +0800, Wen Gong wrote:
-> On 8/21/2023 6:57 PM, Johannes Berg wrote:
-> > On Mon, 2023-08-21 at 18:36 +0800, Wen Gong wrote:
-> > > On 8/21/2023 5:06 PM, Johannes Berg wrote:
-> > > > On Mon, 2023-08-21 at 10:59 +0200, Johannes Berg wrote:
-> > > > > From: Johannes Berg <johannes.berg@intel.com>
-> > > > >=20
-> > > > > This reverts commit cb751b7a57e5 ("mac80211: add parse regulatory=
- info
-> > > > > in 6 GHz operation information") which added a station type bss_c=
-onf
-> > > > > assignment in a parsing helper function, which will corrupt mesh =
-data.
-> > > > >=20
-> > > > Ah crap this won't work, rtw89 already uses this.
-> > > >=20
-> > > > Wen please send a fix for this ASAP.
-> > > >=20
-> > > > johannes
-> > > Hi Johannes,
-> > >=20
-> > > I looked the patch some times, but I do not know how it corrupt mesh =
-data,
-> > >=20
-> > > Is there any clue for me?
-> > Hah, no, I'm wrong ... I looked at it and for some reason thought of
-> > u.mgd instead of vif.bss_conf. Sorry!
-> >=20
-> > Still it's not correct though to write to vif.bss_conf in this function
-> > because it's called from mesh_matches_local() to see if it's even
-> > compatible, for example, so the mere calling a "give me the 6 GHz
-> > chandef" function doesn't indicate we actually are going to use it now.
->=20
-> Do you mean mesh_matches_local() is only a try to call=20
-> ieee80211_chandef_he_6ghz_oper(),
->=20
-> NOT real use the 6 GHz chandef?
+Drop filled with NULL pointers but otherwise unused 'skb_arr'
+array of 'struct mwifiex_sdio_mpa_rx', adjust related code.
 
-Yes, I believe so.
+Fixes: 960d6d08e395 ("mwifiex: delay skb allocation for RX until cmd53 over")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 10 ----------
+ drivers/net/wireless/marvell/mwifiex/sdio.h |  4 ----
+ 2 files changed, 14 deletions(-)
 
-Anyway it would seem better for a utility function to have clearer
-defined output, I think?
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index a24bd40dd41a..daf2078420af 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -2554,20 +2554,11 @@ static int mwifiex_init_sdio(struct mwifiex_adapter *adapter)
+ 	if (!card->mp_regs)
+ 		return -ENOMEM;
+ 
+-	/* Allocate skb pointer buffers */
+-	card->mpa_rx.skb_arr = kcalloc(card->mp_agg_pkt_limit, sizeof(void *),
+-				       GFP_KERNEL);
+-	if (!card->mpa_rx.skb_arr) {
+-		kfree(card->mp_regs);
+-		return -ENOMEM;
+-	}
+-
+ 	card->mpa_rx.len_arr = kcalloc(card->mp_agg_pkt_limit,
+ 				       sizeof(*card->mpa_rx.len_arr),
+ 				       GFP_KERNEL);
+ 	if (!card->mpa_rx.len_arr) {
+ 		kfree(card->mp_regs);
+-		kfree(card->mpa_rx.skb_arr);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -2622,7 +2613,6 @@ static void mwifiex_cleanup_sdio(struct mwifiex_adapter *adapter)
+ 	cancel_work_sync(&card->work);
+ 
+ 	kfree(card->mp_regs);
+-	kfree(card->mpa_rx.skb_arr);
+ 	kfree(card->mpa_rx.len_arr);
+ 	kfree(card->mpa_tx.buf);
+ 	kfree(card->mpa_rx.buf);
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.h b/drivers/net/wireless/marvell/mwifiex/sdio.h
+index ae94c172310f..b86a9263a6a8 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.h
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.h
+@@ -164,10 +164,7 @@ struct mwifiex_sdio_mpa_rx {
+ 	u32 pkt_cnt;
+ 	u32 ports;
+ 	u16 start_port;
+-
+-	struct sk_buff **skb_arr;
+ 	u32 *len_arr;
+-
+ 	u8 enabled;
+ 	u32 buf_size;
+ 	u32 pkt_aggr_limit;
+@@ -372,7 +369,6 @@ static inline void mp_rx_aggr_setup(struct sdio_mmc_card *card,
+ 		else
+ 			card->mpa_rx.ports |= 1 << (card->mpa_rx.pkt_cnt + 1);
+ 	}
+-	card->mpa_rx.skb_arr[card->mpa_rx.pkt_cnt] = NULL;
+ 	card->mpa_rx.len_arr[card->mpa_rx.pkt_cnt] = rx_len;
+ 	card->mpa_rx.pkt_cnt++;
+ }
+-- 
+2.41.0
 
-johannes
