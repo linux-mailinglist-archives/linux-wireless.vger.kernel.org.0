@@ -2,113 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FC36782674
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 11:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB6F782730
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 12:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234452AbjHUJot (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Aug 2023 05:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52894 "EHLO
+        id S233022AbjHUKge (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Aug 2023 06:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230107AbjHUJos (ORCPT
+        with ESMTP id S231324AbjHUKgd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Aug 2023 05:44:48 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEC5A1;
-        Mon, 21 Aug 2023 02:44:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=d9AC3Y3wKvLhTCxarPAnq2BCxnL4Toqn/q0Gu3hZcq0=;
-        t=1692611087; x=1693820687; b=pce1bbcqzid6XJBsSrkqYv/RaOqYOpF/w4Kfw+fB1fv6kM+
-        UeGMP5K2y7zfNElskru7tulx+03dzI35U65rtGZbQuVWMFeaxJs2Y58Pbcbr2x7cLUG6CozHXjO3Y
-        URpdVZzUhXnbjQ/uXx2S56oD/25Wzw89AOHUBylrEcsdYOAp9TyOLNG4Xc8EJvWxLRF1jVWOF8fPJ
-        ZGCBzmqnkYWVNW+9O4ec7a7FVzDwhRkRPE4MNvFt+rp6MlmrJUnXqqH9QqtJmb2bHpFh1RQOZSd0a
-        BbokVvvEfOuVkGYAXzsr+FLDAqX6k0M/j7dy0bBZ+1r/5EzbN9/10LkASrDN8FaQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qY1SZ-002xnF-2J;
-        Mon, 21 Aug 2023 11:44:31 +0200
-Message-ID: <e167e97797a90d3d6ea09840ac909325537d6034.camel@sipsolutions.net>
-Subject: Re: [V9 4/9] wifi: mac80211: Add support for WBRF features
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Evan Quan <evan.quan@amd.com>, gregkh@linuxfoundation.org,
-        rafael@kernel.org, lenb@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        alexander.deucher@amd.com, andrew@lunn.ch, rdunlap@infradead.org,
-        quic_jjohnson@quicinc.com, horms@kernel.org
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Mario Limonciello <mario.limonciello@amd.com>
-Date:   Mon, 21 Aug 2023 11:44:29 +0200
-In-Reply-To: <20230818032619.3341234-5-evan.quan@amd.com>
-References: <20230818032619.3341234-1-evan.quan@amd.com>
-         <20230818032619.3341234-5-evan.quan@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Mon, 21 Aug 2023 06:36:33 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B99CF
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Aug 2023 03:36:32 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37LAa2mP029437;
+        Mon, 21 Aug 2023 10:36:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=M9LrFDGtirBDe4qaL6Pz4lsB7+9h7xdTOhN3vR5Q2tw=;
+ b=cBMnOYosQYL4SYAYGTnUKXWLK6bEATyn3OFz0OD2QZEEMZdaVEyOU9d9iMiNjQAI18CZ
+ UhlwdrRkBk5ONn1JyMxV530H6cFLNdvucbyIsusJ8n4iDc6KDztfo576cOlgjNvb5FIp
+ qo8cSQYOeZml8oCgtZ9kuIFBDmcZHABg4RdQ7oia7rBituYSbG/Fx42Xd38cgdqdyvSF
+ bUQ3UV9zkwmA5jWnr/pQ7l9hkjWpIcsNlwz5ZLdGlQg52Rs2ax5DVdpgCNtGk6yq/3r/
+ M0JpKbp+ZYQzk6zpW+nOqGEoQtZGxGqOILaiwPTWu5IkXokTmizGw2HAA4mWn6WR2XC3 Xw== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sjk3tkgdk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 21 Aug 2023 10:36:28 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37LAaR5X021382
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 21 Aug 2023 10:36:27 GMT
+Received: from [10.253.75.126] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 21 Aug
+ 2023 03:36:26 -0700
+Message-ID: <9ce54e8e-556b-976c-06d9-145b747705db@quicinc.com>
+Date:   Mon, 21 Aug 2023 18:36:24 +0800
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] Revert "mac80211: add parse regulatory info in 6 GHz
+ operation information"
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20230821105903.7482379cde47.Ib72645d02fadc24b520db118abd82e861c87316e@changeid>
+ <f28ee65621bd52ad59cae891e81431ef83eeaf2e.camel@sipsolutions.net>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <f28ee65621bd52ad59cae891e81431ef83eeaf2e.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: QJApxRS6cBBydsEfN47gBfYQ09lqMWT5
+X-Proofpoint-ORIG-GUID: QJApxRS6cBBydsEfN47gBfYQ09lqMWT5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-21_01,2023-08-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 adultscore=0 priorityscore=1501
+ suspectscore=0 phishscore=0 clxscore=1015 mlxscore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2306200000 definitions=main-2308210097
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-08-18 at 11:26 +0800, Evan Quan wrote:
-> To support the WBRF mechanism, Wifi adapters utilized in the system must
-> register the frequencies in use(or unregister those frequencies no longer
-> used) via the dedicated calls. So that, other drivers responding to the
-> frequencies can take proper actions to mitigate possible interference.
->=20
-> Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> Co-developed-by: Evan Quan <evan.quan@amd.com>
-> Signed-off-by: Evan Quan <evan.quan@amd.com>
+On 8/21/2023 5:06 PM, Johannes Berg wrote:
+> On Mon, 2023-08-21 at 10:59 +0200, Johannes Berg wrote:
+>> From: Johannes Berg <johannes.berg@intel.com>
+>>
+>> This reverts commit cb751b7a57e5 ("mac80211: add parse regulatory info
+>> in 6 GHz operation information") which added a station type bss_conf
+>> assignment in a parsing helper function, which will corrupt mesh data.
+>>
+> Ah crap this won't work, rtw89 already uses this.
+>
+> Wen please send a fix for this ASAP.
+>
+> johannes
 
-From WiFi POV, this looks _almost_ fine to me.
+Hi Johannes,
 
-> +static void wbrf_get_ranges_from_chandef(struct cfg80211_chan_def *chand=
-ef,
-> +					 struct wbrf_ranges_in *ranges_in)
-> +{
-> +	u64 start_freq1, end_freq1;
-> +	u64 start_freq2, end_freq2;
-> +	int bandwidth;
-> +
-> +	bandwidth =3D nl80211_chan_width_to_mhz(chandef->width);
-> +
-> +	get_chan_freq_boundary(chandef->center_freq1,
-> +			       bandwidth,
-> +			       &start_freq1,
-> +			       &end_freq1);
-> +
-> +	ranges_in->band_list[0].start =3D start_freq1;
-> +	ranges_in->band_list[0].end =3D end_freq1;
-> +
-> +	if (chandef->width =3D=3D NL80211_CHAN_WIDTH_80P80) {
-> +		get_chan_freq_boundary(chandef->center_freq2,
-> +				       bandwidth,
-> +				       &start_freq2,
-> +				       &end_freq2);
-> +
-> +		ranges_in->band_list[1].start =3D start_freq2;
-> +		ranges_in->band_list[1].end =3D end_freq2;
-> +	}
-> +}
+I looked the patch some times, but I do not know how it corrupt mesh data,
 
-This has to setup ranges_in->num_of_ranges, no?
-(Also no real good reason for num_of_ranges to be a u64, btw, since it
-can only go up to 11)
-
-With that fixed, you can add
-
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-
-johannes
+Is there any clue for me?
 
