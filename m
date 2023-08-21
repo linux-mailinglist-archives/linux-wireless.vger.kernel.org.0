@@ -2,116 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F46E782938
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 14:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B635178294B
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Aug 2023 14:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234940AbjHUMfi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Aug 2023 08:35:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56724 "EHLO
+        id S235009AbjHUMjl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Aug 2023 08:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232271AbjHUMfh (ORCPT
+        with ESMTP id S232895AbjHUMjk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Aug 2023 08:35:37 -0400
-X-Greylist: delayed 464 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 21 Aug 2023 05:35:36 PDT
-Received: from mail.8bytes.org (mail.8bytes.org [IPv6:2a01:238:42d9:3f00:e505:6202:4f0c:f051])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 05E8991;
-        Mon, 21 Aug 2023 05:35:35 -0700 (PDT)
-Received: from 8bytes.org (pd9fe95be.dip0.t-ipconnect.de [217.254.149.190])
+        Mon, 21 Aug 2023 08:39:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6093691;
+        Mon, 21 Aug 2023 05:39:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.8bytes.org (Postfix) with ESMTPSA id 14D6D28194F;
-        Mon, 21 Aug 2023 14:27:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-        s=default; t=1692620870;
-        bh=FixGPDbY1JGUzoXJGnGCpBH8LX7vfPyc85NTwmVIvZk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=1GNfM2qXUHu69LlGLcBH8KY7o7o7XmY+SCrGkW/UUIs2KGTpDHXZZbMpPGz6QSYZs
-         UPnFUxDcsVEY3pjS1DruthDw9f83ySojUQCSB+rWg+GUD0/AhHwU/y7CvGp4ChZNfv
-         PF0U1t4Yrw0S3cKVt3Z1VBJMi6C4Yubn+JBgQ0h8akaCgHt2/SoukE6zqp52PyQtal
-         mSBFlaAtIaUSfX6biqD/5UJPh1qGAUoCalqefQ1b2bqiPcVjHwugqG0e+YrG5Eef+K
-         UDBnBPokoAbTS28F+RA/gZgu4I/tGuWG+hC4PlSSGwOqv9iwEYEE1WLsVZflD78r+Z
-         CJt+ubMPFXzmw==
-Date:   Mon, 21 Aug 2023 14:27:47 +0200
-From:   Joerg Roedel <joro@8bytes.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
-        David Airlie <airlied@gmail.com>, alsa-devel@alsa-project.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        Mark Brown <broonie@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Christian Gmeiner <christian.gmeiner@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>, devicetree@vger.kernel.org,
-        dmaengine@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        dri-devel@lists.freedesktop.org, Emma Anholt <emma@anholt.net>,
-        etnaviv@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        Frank Rowand <frowand.list@gmail.com>, iommu@lists.linux.dev,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Russell King <linux+etnaviv@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Sinan Kaya <okaya@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Samuel Holland <samuel@sholland.org>,
-        Sean Paul <sean@poorly.run>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Takashi Iwai <tiwai@suse.com>, Vinod Koul <vkoul@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>, Will Deacon <will@kernel.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <jroedel@suse.de>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Chen-Yu Tsai <wenst@chromium.org>
-Subject: Re: [PATCH] iommu: Remove the device_lock_assert() from
- __iommu_probe_device()
-Message-ID: <ZONYQyMSG17YMc_b@8bytes.org>
-References: <0-v1-98d20e768c66+7-of_dma_lock_jgg@nvidia.com>
- <78114fd6-9b83-92ba-418f-6cc7bda9df9b@arm.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE664634F1;
+        Mon, 21 Aug 2023 12:39:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09506C433CA;
+        Mon, 21 Aug 2023 12:39:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692621578;
+        bh=ThGC/sO87bFD4nt487A9IwSHUaAlcl9JdU8fg5K3Fto=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bIurPu1Wn3olYaKOjKCX+lIRmK8mh5l4nMcSMomSkdW8nnFEII2l83oyeprKZGEmK
+         csW748HHGT2dwwZAyBH2habc6NdjSzo9wj7isP2HL0bCHR0TUMeAmfN6DXMUu/nDaf
+         eunEaslNKPocssSfi7qtnzg4hNU13xeulBJ5A3js8p7FZ+t6fnZufnR6uaE+1dheTV
+         UkktQRTNh/bQR/dRVvVZyrxGMubkN45/l8qp6g4t2GW5h3ryqWeO0q8IDhZA8MP6Mh
+         W2tf5QKSTdiUZ3BtIwjORd/vf6NCoMyNURRpoZL6GEv3xS8ELnMDGRq80fDt2xQP4c
+         pwlLxYjTeKxAQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     Wang Ming <machel@vivo.com>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, opensource.kernel@vivo.com
+Subject: Re: [PATCH net-next v3] wifi: ath9k: Remove error checking for
+ debugfs_create_dir()
+References: <20230726110750.3925-1-machel@vivo.com> <87sf8tbr3a.fsf@toke.dk>
+Date:   Mon, 21 Aug 2023 15:39:34 +0300
+In-Reply-To: <87sf8tbr3a.fsf@toke.dk> ("Toke =?utf-8?Q?H=C3=B8iland-J?=
+ =?utf-8?Q?=C3=B8rgensen=22's?= message of
+        "Tue, 08 Aug 2023 15:28:57 +0200")
+Message-ID: <87bkf0k1rt.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78114fd6-9b83-92ba-418f-6cc7bda9df9b@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Aug 21, 2023 at 12:06:40PM +0100, Robin Murphy wrote:
-> The solution is to drop those locking patches entirely and rethink the whole
-> thing.
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
 
-Agreed, that was exactly what I thought when looking at this patch.
+> Wang Ming <machel@vivo.com> writes:
+>
+>> It is expected that most callers should _ignore_ the errors
+>> return by debugfs_create_dir() in ath9k_htc_init_debug().
+>>
+>> Signed-off-by: Wang Ming <machel@vivo.com>
+>> ---
+>>  drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 --
+>>  1 file changed, 2 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/ne=
+t/wireless/ath/ath9k/htc_drv_debug.c
+>> index b3ed65e5c4da..85ad45771b44 100644
+>> --- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+>> +++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+>> @@ -491,8 +491,6 @@ int ath9k_htc_init_debug(struct ath_hw *ah)
+>>=20=20
+>>  	priv->debug.debugfs_phy =3D debugfs_create_dir(KBUILD_MODNAME,
+>>  					     priv->hw->wiphy->debugfsdir);
+>> -	if (!priv->debug.debugfs_phy)
+>> -		return -ENOMEM;
+>
+> Hmm, so it's true that all the debugfs_create* functions deal correctly
+> with the dir pointer being an error pointer, which means that it's
+> possible to just ignore the return value of debugfs_create_dir() without
+> anything breaking.
 
-I dropped the original 10 patches and the 4 fixes on-top from the IOMMU
-tree. This needs more investigation and adaption of the actual API users
-before it can be reconsidered.
+The comment in debugfs_create_dir() states:
 
-Regards,
+ * NOTE: it's expected that most callers should _ignore_ the errors returned
+ * by this function. Other debugfs functions handle the fact that the "dent=
+ry"
+ * passed to them could be an error and they don't crash in that case.
+ * Drivers should generally work fine even if debugfs fails to init anyway.
 
-	Joerg
+> However, it also seems kinda pointless to have all those calls if we
+> know they're going to fail, so I prefer v1 of this patch that just
+> fixed the IS_ERR check. No need to resend, we can just apply v1
+> instead...
 
+Because of the comment I'm leaning towards v3.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
