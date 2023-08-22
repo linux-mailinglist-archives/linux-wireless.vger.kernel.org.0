@@ -2,58 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DC3C783EDE
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBB79783EF2
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:32:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234813AbjHVLb5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 07:31:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40248 "EHLO
+        id S234851AbjHVLcU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 07:32:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234812AbjHVLb4 (ORCPT
+        with ESMTP id S234678AbjHVLcU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 07:31:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CCD8E58;
-        Tue, 22 Aug 2023 04:31:28 -0700 (PDT)
+        Tue, 22 Aug 2023 07:32:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3720E66;
+        Tue, 22 Aug 2023 04:32:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EDC26526E;
-        Tue, 22 Aug 2023 11:31:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23605C4339A;
-        Tue, 22 Aug 2023 11:31:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3700D65265;
+        Tue, 22 Aug 2023 11:31:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A441C433CA;
+        Tue, 22 Aug 2023 11:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692703884;
-        bh=XlJfA9ySG52e4Ctt0JGVhhaPUI4zJcZCI8VS+UElmJw=;
+        s=k20201202; t=1692703896;
+        bh=QkC640psDqZzHVrH2pj1SLaMBwAO0XRqN6ukHG1V6ZE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rlo/JbQ7/L7HPoa5812KUTTLr8WuRJtS4benojgMofSmW7wiQZGU5Kpr2qFa8P64L
-         mRdZe9NR9QeU5POrcWpS3orzbL3snn/8X6IGyKhbXApIERB2LhcASKsuyvumCK4rH/
-         DCn1GwpWK5To1OM7+nNKL9WBKQbV/l+bnkClA33aEhJBJGHZcgHb3L7/XdL7LA3RDB
-         LgKS4bveg9sIh5YTYsiE3wainfVkn3EmIwajCOVVZKrSqJnLG1WqQdGcn8fr3upF/1
-         5ic4zUmo4dv+2g6jub9lthlqpfhRNX0On2MPg01fKid//Yjo8huk8XKt3aqPB5UPNX
-         WQjgR4tLB63JA==
+        b=Zia2jntrOru3nmrVkXTk3r2b1V+L4sDABlDSp3bKDJhNooHAP81otgxiJjv28Mpvq
+         5cG/WZ7gimdp6VyO/HjSLC/uXAo3y6TObzNy4r0khQhGDMC+hbaHrpv1U18V5QQdlE
+         OyBxeIi6CJESqZ8l6v2xxEjhQSswadwPucCe5i3tUSahaZC0aT0XAMnAidjIk0qw/Z
+         nNgHILI78/XBM8ELiQxZ6xFhxQC6Zq3yzsqzusdGlGyuSW3M50OOQDreqWvbTxEdR4
+         3OQ7oc1IV8NdBpWMwozRRSE/+UQjiHZPjW6zIPtQ01iciRuDSbfhz+UWx8+JciEwpn
+         D9WSNIggZ2moA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        aspriel@gmail.com, hante.meuleman@broadcom.com,
-        linus.walleij@linaro.org, marcan@marcan.st, gustavoars@kernel.org,
-        ryohei.kondo@cypress.com, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Subject: [PATCH AUTOSEL 6.4 08/10] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
-Date:   Tue, 22 Aug 2023 07:30:58 -0400
-Message-Id: <20230822113101.3549915-8-sashal@kernel.org>
+Cc:     Kalle Valo <quic_kvalo@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, quic_jjohnson@quicinc.com,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 3/9] Revert "wifi: ath11k: Enable threaded NAPI"
+Date:   Tue, 22 Aug 2023 07:31:24 -0400
+Message-Id: <20230822113130.3550050-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230822113101.3549915-1-sashal@kernel.org>
-References: <20230822113101.3549915-1-sashal@kernel.org>
+In-Reply-To: <20230822113130.3550050-1-sashal@kernel.org>
+References: <20230822113130.3550050-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.4.11
+X-stable-base: Linux 6.1.46
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -65,63 +59,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-[ Upstream commit 16e455a465fca91907af0108f3d013150386df30 ]
+[ Upstream commit d265ebe41c911314bd273c218a37088835959fa1 ]
 
-Using brcmfmac with 6.5-rc3 on a brcmfmac43241b4-sdio triggers
-a backtrace caused by the following field-spanning warning:
+This reverts commit 13aa2fb692d3717767303817f35b3e650109add3.
 
-memcpy: detected field-spanning write (size 120) of single field
-  "&params_le->channel_list[0]" at
-  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size 2)
+This commit broke QCN9074 initialisation:
 
-The driver still works after this warning. The warning was introduced by the
-new field-spanning write checks which were enabled recently.
+[  358.960477] ath11k_pci 0000:04:00.0: ce desc not available for wmi command 36866
+[  358.960481] ath11k_pci 0000:04:00.0: failed to send WMI_STA_POWERSAVE_PARAM_CMDID
+[  358.960484] ath11k_pci 0000:04:00.0: could not set uapsd params -105
 
-Fix this by replacing the channel_list[1] declaration at the end of
-the struct with a flexible array declaration.
+As there's no fix available let's just revert it to get QCN9074 working again.
 
-Most users of struct brcmf_scan_params_le calculate the size to alloc
-using the size of the non flex-array part of the struct + needed extra
-space, so they do not care about sizeof(struct brcmf_scan_params_le).
-
-brcmf_notify_escan_complete() however uses the struct on the stack,
-expecting there to be room for at least 1 entry in the channel-list
-to store the special -1 abort channel-id.
-
-To make this work use an anonymous union with a padding member
-added + the actual channel_list flexible array.
-
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217536
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230729140500.27892-1-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20230720151444.2016637-1-kvalo@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h  | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/ahb.c  | 1 -
+ drivers/net/wireless/ath/ath11k/pcic.c | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-index 792adaf880b44..bece26741d3a3 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-@@ -398,7 +398,12 @@ struct brcmf_scan_params_le {
- 				 * fixed parameter portion is assumed, otherwise
- 				 * ssid in the fixed portion is ignored
- 				 */
--	__le16 channel_list[1];	/* list of chanspecs */
-+	union {
-+		__le16 padding;	/* Reserve space for at least 1 entry for abort
-+				 * which uses an on stack brcmf_scan_params_le
-+				 */
-+		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-+	};
- };
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 76f275ca53e9c..ff8c0274dde8c 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -361,7 +361,6 @@ static void ath11k_ahb_ext_irq_enable(struct ath11k_base *ab)
+ 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
  
- struct brcmf_scan_params_v2_le {
+ 		if (!irq_grp->napi_enabled) {
+-			dev_set_threaded(&irq_grp->napi_ndev, true);
+ 			napi_enable(&irq_grp->napi);
+ 			irq_grp->napi_enabled = true;
+ 		}
+diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
+index 380f9d37b6449..3c095f986f4dd 100644
+--- a/drivers/net/wireless/ath/ath11k/pcic.c
++++ b/drivers/net/wireless/ath/ath11k/pcic.c
+@@ -459,7 +459,6 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
+ 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 
+ 		if (!irq_grp->napi_enabled) {
+-			dev_set_threaded(&irq_grp->napi_ndev, true);
+ 			napi_enable(&irq_grp->napi);
+ 			irq_grp->napi_enabled = true;
+ 		}
 -- 
 2.40.1
 
