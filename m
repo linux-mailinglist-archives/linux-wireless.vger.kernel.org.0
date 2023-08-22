@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 780F8784167
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 14:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E8B784168
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 14:59:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235923AbjHVM7Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 08:59:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39710 "EHLO
+        id S235927AbjHVM71 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 08:59:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235926AbjHVM7Y (ORCPT
+        with ESMTP id S235925AbjHVM70 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 08:59:24 -0400
+        Tue, 22 Aug 2023 08:59:26 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6E904CD0
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 05:59:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E63EACE3
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 05:59:23 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37MCwqXhB022565, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37MCwrTxB022573, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37MCwqXhB022565
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37MCwrTxB022573
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Aug 2023 20:58:52 +0800
+        Tue, 22 Aug 2023 20:58:53 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 22 Aug 2023 20:59:14 +0800
+ 15.1.2375.32; Tue, 22 Aug 2023 20:59:15 +0800
 Received: from [127.0.1.1] (172.16.23.216) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 22 Aug
- 2023 20:59:13 +0800
+ 2023 20:59:15 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <cj.hsieh@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/6] wifi: rtw89: mac: generalize code to indirectly access WiFi internal memory
-Date:   Tue, 22 Aug 2023 20:58:18 +0800
-Message-ID: <20230822125822.23817-3-pkshih@realtek.com>
+Subject: [PATCH 3/6] wifi: rtw89: mac: define internal memory address for WiFi 7 chip
+Date:   Tue, 22 Aug 2023 20:58:19 +0800
+Message-ID: <20230822125822.23817-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230822125822.23817-1-pkshih@realtek.com>
 References: <20230822125822.23817-1-pkshih@realtek.com>
@@ -60,212 +60,121 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To diagnose abnormal behavior, we need to dump certain internal memory.
-For example, dump security CAM when debugging encryption/decryption
-problems, or dump BA CAM when debugging abnormal BlockAck.
-
-Since the indirect address and internal memory base address are different
-between WiFi 6 and 7 chips, add fields to reuse codes.
-
-Also, only WiFi 6 chips initialize DMAC and CMAC tables via this indirect
-interface, so no need to change the constant register address, and
-new firmware will help to initialize these tables.
+Define base address of WiFi 7 internal memory according to design to
+provide the same functions as existing WiFi 6 chips.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/debug.c | 13 ++++++-----
- drivers/net/wireless/realtek/rtw89/mac.c   | 25 ++++++++++++++++------
- drivers/net/wireless/realtek/rtw89/mac.h   |  5 +++--
- drivers/net/wireless/realtek/rtw89/ser.c   | 20 +++++++++++------
- 4 files changed, 42 insertions(+), 21 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac.h    | 27 +++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/mac_be.c | 27 +++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h    |  2 ++
+ 3 files changed, 56 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index f6f1e90c3934..13b5937e918f 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -793,6 +793,9 @@ static void rtw89_debug_dump_mac_mem(struct seq_file *m,
- 				     struct rtw89_dev *rtwdev,
- 				     u8 sel, u32 start_addr, u32 len)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+	u32 filter_model_addr = mac->filter_model_addr;
-+	u32 indir_access_addr = mac->indir_access_addr;
- 	u32 base_addr, start_page, residue;
- 	u32 i, j, p, pages;
- 	u32 dump_len, remain;
-@@ -802,17 +805,17 @@ static void rtw89_debug_dump_mac_mem(struct seq_file *m,
- 	pages = len / MAC_MEM_DUMP_PAGE_SIZE + 1;
- 	start_page = start_addr / MAC_MEM_DUMP_PAGE_SIZE;
- 	residue = start_addr % MAC_MEM_DUMP_PAGE_SIZE;
--	base_addr = rtw89_mac_mem_base_addrs[sel];
-+	base_addr = mac->mem_base_addrs[sel];
- 	base_addr += start_page * MAC_MEM_DUMP_PAGE_SIZE;
- 
- 	for (p = 0; p < pages; p++) {
- 		dump_len = min_t(u32, remain, MAC_MEM_DUMP_PAGE_SIZE);
--		rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, base_addr);
--		for (i = R_AX_INDIR_ACCESS_ENTRY + residue;
--		     i < R_AX_INDIR_ACCESS_ENTRY + dump_len;) {
-+		rtw89_write32(rtwdev, filter_model_addr, base_addr);
-+		for (i = indir_access_addr + residue;
-+		     i < indir_access_addr + dump_len;) {
- 			seq_printf(m, "%08xh:", i);
- 			for (j = 0;
--			     j < 4 && i < R_AX_INDIR_ACCESS_ENTRY + dump_len;
-+			     j < 4 && i < indir_access_addr + dump_len;
- 			     j++, i += 4) {
- 				val = rtw89_read32(rtwdev, i);
- 				seq_printf(m, "  %08x", val);
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index edfa1a2e677a..e0925a21a096 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -12,7 +12,7 @@
- #include "reg.h"
- #include "util.h"
- 
--const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_NUM] = {
-+static const u32 rtw89_mac_mem_base_addrs_ax[RTW89_MAC_MEM_NUM] = {
- 	[RTW89_MAC_MEM_AXIDMA]	        = AXIDMA_BASE_ADDR,
- 	[RTW89_MAC_MEM_SHARED_BUF]	= SHARED_BUF_BASE_ADDR,
- 	[RTW89_MAC_MEM_DMAC_TBL]	= DMAC_TBL_BASE_ADDR,
-@@ -39,19 +39,21 @@ const u32 rtw89_mac_mem_base_addrs[RTW89_MAC_MEM_NUM] = {
- static void rtw89_mac_mem_write(struct rtw89_dev *rtwdev, u32 offset,
- 				u32 val, enum rtw89_mac_mem_sel sel)
- {
--	u32 addr = rtw89_mac_mem_base_addrs[sel] + offset;
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+	u32 addr = mac->mem_base_addrs[sel] + offset;
- 
--	rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, addr);
--	rtw89_write32(rtwdev, R_AX_INDIR_ACCESS_ENTRY, val);
-+	rtw89_write32(rtwdev, mac->filter_model_addr, addr);
-+	rtw89_write32(rtwdev, mac->indir_access_addr, val);
- }
- 
- static u32 rtw89_mac_mem_read(struct rtw89_dev *rtwdev, u32 offset,
- 			      enum rtw89_mac_mem_sel sel)
- {
--	u32 addr = rtw89_mac_mem_base_addrs[sel] + offset;
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+	u32 addr = mac->mem_base_addrs[sel] + offset;
- 
--	rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, addr);
--	return rtw89_read32(rtwdev, R_AX_INDIR_ACCESS_ENTRY);
-+	rtw89_write32(rtwdev, mac->filter_model_addr, addr);
-+	return rtw89_read32(rtwdev, mac->indir_access_addr);
- }
- 
- int rtw89_mac_check_mac_en(struct rtw89_dev *rtwdev, u8 mac_idx,
-@@ -3661,6 +3663,9 @@ static void rtw89_mac_dmac_tbl_init(struct rtw89_dev *rtwdev, u8 macid)
- {
- 	u8 i;
- 
-+	if (rtwdev->chip->chip_gen != RTW89_CHIP_AX)
-+		return;
-+
- 	for (i = 0; i < 4; i++) {
- 		rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR,
- 			      DMAC_TBL_BASE_ADDR + (macid << 4) + (i << 2));
-@@ -3670,6 +3675,9 @@ static void rtw89_mac_dmac_tbl_init(struct rtw89_dev *rtwdev, u8 macid)
- 
- static void rtw89_mac_cmac_tbl_init(struct rtw89_dev *rtwdev, u8 macid)
- {
-+	if (rtwdev->chip->chip_gen != RTW89_CHIP_AX)
-+		return;
-+
- 	rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR,
- 		      CMAC_TBL_BASE_ADDR + macid * CCTL_INFO_SIZE);
- 	rtw89_write32(rtwdev, R_AX_INDIR_ACCESS_ENTRY, 0x4);
-@@ -5678,5 +5686,8 @@ int rtw89_mac_ptk_drop_by_band_and_wait(struct rtw89_dev *rtwdev,
- 
- const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
- 	.band1_offset = RTW89_MAC_AX_BAND_REG_OFFSET,
-+	.filter_model_addr = R_AX_FILTER_MODEL_ADDR,
-+	.indir_access_addr = R_AX_INDIR_ACCESS_ENTRY,
-+	.mem_base_addrs = rtw89_mac_mem_base_addrs_ax,
- };
- EXPORT_SYMBOL(rtw89_mac_gen_ax);
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 26a89130fa48..b31c78ca27da 100644
+index b31c78ca27da..7c7940093480 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.h
 +++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -327,8 +327,6 @@ enum rtw89_mac_mem_sel {
+@@ -275,6 +275,7 @@ enum rtw89_mac_dbg_port_sel {
+ 
+ /* SRAM mem dump */
+ #define R_AX_INDIR_ACCESS_ENTRY 0x40000
++#define R_BE_INDIR_ACCESS_ENTRY 0x80000
+ 
+ #define	AXIDMA_BASE_ADDR		0x18006000
+ #define	STA_SCHED_BASE_ADDR		0x18808000
+@@ -298,6 +299,31 @@ enum rtw89_mac_dbg_port_sel {
+ #define	TXDATA_FIFO_1_BASE_ADDR		0x188A1000
+ #define	CPU_LOCAL_BASE_ADDR		0x18003000
+ 
++#define WD_PAGE_BASE_ADDR_BE		0x0
++#define CPU_LOCAL_BASE_ADDR_BE		0x18003000
++#define AXIDMA_BASE_ADDR_BE		0x18006000
++#define SHARED_BUF_BASE_ADDR_BE		0x18700000
++#define DMAC_TBL_BASE_ADDR_BE		0x18800000
++#define SHCUT_MACHDR_BASE_ADDR_BE	0x18800800
++#define STA_SCHED_BASE_ADDR_BE		0x18818000
++#define NAT25_CAM_BASE_ADDR_BE		0x18820000
++#define RXPLD_FLTR_CAM_BASE_ADDR_BE	0x18823000
++#define SEC_CAM_BASE_ADDR_BE		0x18824000
++#define WOW_CAM_BASE_ADDR_BE		0x18828000
++#define MLD_TBL_BASE_ADDR_BE		0x18829000
++#define RX_CLSF_CAM_BASE_ADDR_BE	0x1882A000
++#define CMAC_TBL_BASE_ADDR_BE		0x18840000
++#define ADDR_CAM_BASE_ADDR_BE		0x18850000
++#define BSSID_CAM_BASE_ADDR_BE		0x18858000
++#define BA_CAM_BASE_ADDR_BE		0x18859000
++#define BCN_IE_CAM0_BASE_ADDR_BE	0x18860000
++#define TXDATA_FIFO_0_BASE_ADDR_BE	0x18861000
++#define TXD_FIFO_0_BASE_ADDR_BE		0x18862000
++#define BCN_IE_CAM1_BASE_ADDR_BE	0x18880000
++#define TXDATA_FIFO_1_BASE_ADDR_BE	0x18881000
++#define TXD_FIFO_1_BASE_ADDR_BE		0x18881800
++#define DCPU_LOCAL_BASE_ADDR_BE		0x19C02000
++
+ #define CCTL_INFO_SIZE		32
+ 
+ enum rtw89_mac_mem_sel {
+@@ -322,6 +348,7 @@ enum rtw89_mac_mem_sel {
+ 	RTW89_MAC_MEM_BSSID_CAM,
+ 	RTW89_MAC_MEM_TXD_FIFO_0_V1,
+ 	RTW89_MAC_MEM_TXD_FIFO_1_V1,
++	RTW89_MAC_MEM_WD_PAGE,
+ 
+ 	/* keep last */
  	RTW89_MAC_MEM_NUM,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
+index 05bb8efaad23..ec920978195e 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac_be.c
++++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
+@@ -3,8 +3,35 @@
+  */
+ 
+ #include "mac.h"
++#include "reg.h"
++
++static const u32 rtw89_mac_mem_base_addrs_be[RTW89_MAC_MEM_NUM] = {
++	[RTW89_MAC_MEM_AXIDMA]	        = AXIDMA_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_SHARED_BUF]	= SHARED_BUF_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_DMAC_TBL]	= DMAC_TBL_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_SHCUT_MACHDR]	= SHCUT_MACHDR_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_STA_SCHED]	= STA_SCHED_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_RXPLD_FLTR_CAM]	= RXPLD_FLTR_CAM_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_SECURITY_CAM]	= SEC_CAM_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_WOW_CAM]		= WOW_CAM_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_CMAC_TBL]	= CMAC_TBL_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_ADDR_CAM]	= ADDR_CAM_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_BA_CAM]		= BA_CAM_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_BCN_IE_CAM0]	= BCN_IE_CAM0_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_BCN_IE_CAM1]	= BCN_IE_CAM1_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_TXD_FIFO_0]	= TXD_FIFO_0_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_TXD_FIFO_1]	= TXD_FIFO_1_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_TXDATA_FIFO_0]	= TXDATA_FIFO_0_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_CPU_LOCAL]	= CPU_LOCAL_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_BSSID_CAM]	= BSSID_CAM_BASE_ADDR_BE,
++	[RTW89_MAC_MEM_WD_PAGE]		= WD_PAGE_BASE_ADDR_BE,
++};
+ 
+ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
+ 	.band1_offset = RTW89_MAC_BE_BAND_REG_OFFSET,
++	.filter_model_addr = R_BE_FILTER_MODEL_ADDR,
++	.indir_access_addr = R_BE_INDIR_ACCESS_ENTRY,
++	.mem_base_addrs = rtw89_mac_mem_base_addrs_be,
  };
+ EXPORT_SYMBOL(rtw89_mac_gen_be);
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 2d34b43cda3a..cab07cc993f0 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -3625,6 +3625,8 @@
+ #define B_AX_GNT_BT_TX_SW_VAL BIT(1)
+ #define B_AX_GNT_BT_TX_SW_CTRL BIT(0)
  
--extern const u32 rtw89_mac_mem_base_addrs[];
--
- enum rtw89_rpwm_req_pwr_state {
- 	RTW89_MAC_RPWM_REQ_PWR_STATE_ACTIVE = 0,
- 	RTW89_MAC_RPWM_REQ_PWR_STATE_BAND0_RFON = 1,
-@@ -829,6 +827,9 @@ extern const struct rtw89_mac_size_set rtw89_mac_size;
- 
- struct rtw89_mac_gen_def {
- 	u32 band1_offset;
-+	u32 filter_model_addr;
-+	u32 indir_access_addr;
-+	const u32 *mem_base_addrs;
- };
- 
- extern const struct rtw89_mac_gen_def rtw89_mac_gen_ax;
-diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
-index 0462ba693f6f..c1644353053f 100644
---- a/drivers/net/wireless/realtek/rtw89/ser.c
-+++ b/drivers/net/wireless/realtek/rtw89/ser.c
-@@ -529,6 +529,9 @@ static void ser_do_hci_st_hdl(struct rtw89_ser *ser, u8 evt)
- static void ser_mac_mem_dump(struct rtw89_dev *rtwdev, u8 *buf,
- 			     u8 sel, u32 start_addr, u32 len)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+	u32 filter_model_addr = mac->filter_model_addr;
-+	u32 indir_access_addr = mac->indir_access_addr;
- 	u32 *ptr = (u32 *)buf;
- 	u32 base_addr, start_page, residue;
- 	u32 cnt = 0;
-@@ -536,14 +539,14 @@ static void ser_mac_mem_dump(struct rtw89_dev *rtwdev, u8 *buf,
- 
- 	start_page = start_addr / MAC_MEM_DUMP_PAGE_SIZE;
- 	residue = start_addr % MAC_MEM_DUMP_PAGE_SIZE;
--	base_addr = rtw89_mac_mem_base_addrs[sel];
-+	base_addr = mac->mem_base_addrs[sel];
- 	base_addr += start_page * MAC_MEM_DUMP_PAGE_SIZE;
- 
- 	while (cnt < len) {
--		rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, base_addr);
-+		rtw89_write32(rtwdev, filter_model_addr, base_addr);
- 
--		for (i = R_AX_INDIR_ACCESS_ENTRY + residue;
--		     i < R_AX_INDIR_ACCESS_ENTRY + MAC_MEM_DUMP_PAGE_SIZE;
-+		for (i = indir_access_addr + residue;
-+		     i < indir_access_addr + MAC_MEM_DUMP_PAGE_SIZE;
- 		     i += 4, ptr++) {
- 			*ptr = rtw89_read32(rtwdev, i);
- 			cnt += 4;
-@@ -585,6 +588,9 @@ static int rtw89_ser_fw_backtrace_dump(struct rtw89_dev *rtwdev, u8 *buf,
- 				       const struct __fw_backtrace_entry *ent)
- {
- 	struct __fw_backtrace_info *ptr = (struct __fw_backtrace_info *)buf;
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+	u32 filter_model_addr = mac->filter_model_addr;
-+	u32 indir_access_addr = mac->indir_access_addr;
- 	u32 fwbt_addr = ent->wcpu_addr & RTW89_WCPU_BASE_MASK;
- 	u32 fwbt_size = ent->size;
- 	u32 fwbt_key = ent->key;
-@@ -610,10 +616,10 @@ static int rtw89_ser_fw_backtrace_dump(struct rtw89_dev *rtwdev, u8 *buf,
- 	}
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_SER, "dump fw backtrace start\n");
--	rtw89_write32(rtwdev, R_AX_FILTER_MODEL_ADDR, fwbt_addr);
-+	rtw89_write32(rtwdev, filter_model_addr, fwbt_addr);
- 
--	for (i = R_AX_INDIR_ACCESS_ENTRY;
--	     i < R_AX_INDIR_ACCESS_ENTRY + fwbt_size;
-+	for (i = indir_access_addr;
-+	     i < indir_access_addr + fwbt_size;
- 	     i += RTW89_FW_BACKTRACE_INFO_SIZE, ptr++) {
- 		*ptr = (struct __fw_backtrace_info){
- 			.ra = rtw89_read32(rtwdev, i),
++#define R_BE_FILTER_MODEL_ADDR 0x0C04
++
+ #define RR_MOD 0x00
+ #define RR_MOD_V1 0x10000
+ #define RR_MOD_IQK GENMASK(19, 4)
 -- 
 2.25.1
 
