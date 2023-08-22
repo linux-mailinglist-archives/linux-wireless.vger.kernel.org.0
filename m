@@ -2,118 +2,200 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23CF97847E5
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 18:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1428978481B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 19:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237723AbjHVQnY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 12:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42282 "EHLO
+        id S237961AbjHVRBI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 13:01:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237633AbjHVQnY (ORCPT
+        with ESMTP id S229893AbjHVRBI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 12:43:24 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D9219A;
-        Tue, 22 Aug 2023 09:43:22 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37MDeZZM031343;
-        Tue, 22 Aug 2023 16:43:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=mlSWk71yM9xUaZnpXT/Q1N2oMgLN+cIe0+IPoVD9dmY=;
- b=ikQ9bKCpG8/xCp3W/IQQhoagLGd/zpsAWWKfqwIyEr/JxUyCmYeUyOOTfqMpLHTzjhWS
- Y51p6vG3yiPU5AlSUahQ2c6Fdy5hNCQ/yuKMth4gFb9Kp0L4MacrvjmORsR5yhkLkwCT
- Rw9Alxz5REG2fQX1tj27pwqhfKXkiqdPP+oMQKkoFHRCXKlyAJwQuO5vHQdfjAUdRRCP
- Rq/oKfNM9Kf9qZG6XfTlqNtH9slxyUilXse7DxmygppfgZoOI1CI1imQoWu32Hx9pYNR
- 3XZJntd5e4rIjLp2616z8edpMdIGFx6KJWGaL7CIGD9t3eLkyYA3mtLdmZ8d1slVqDZ8 zg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3smx300jgv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 22 Aug 2023 16:43:12 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37MGhA2a014995
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 22 Aug 2023 16:43:10 GMT
-Received: from [10.48.244.52] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 22 Aug
- 2023 09:43:10 -0700
-Message-ID: <1a9f7b7b-6e99-4cbb-a2e1-c76ed6b90a1d@quicinc.com>
-Date:   Tue, 22 Aug 2023 09:43:08 -0700
+        Tue, 22 Aug 2023 13:01:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B41DFD7
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 10:00:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1692723624;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=EC7QzeS5YIEVRAiRvU/kWl5xuWgV2otiD46TjhCIWcs=;
+        b=I7vkZ1DcEC503E99tKffLHNMZLUVkRjv/Cn4maPeBiXna4G4af2aqprqcaodVYLwNSxbRD
+        qgBA482XoDP0Wt/6JTfFpoRGmoym64glc72eUT6HmpQdlRQwTge9PunZpi22k0JXUPmz8J
+        vnmo+RWG5dndc9dGYLNU1kC1K8lNph8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-116-RrpXte3TMme6FeXGtQnB5Q-1; Tue, 22 Aug 2023 13:00:20 -0400
+X-MC-Unique: RrpXte3TMme6FeXGtQnB5Q-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A9E8D8022E4;
+        Tue, 22 Aug 2023 17:00:19 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.22.50.3])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 364AD492C14;
+        Tue, 22 Aug 2023 17:00:17 +0000 (UTC)
+Message-ID: <abc9d7abface4b9f651fc354ebaaf30ecf6e2783.camel@redhat.com>
+Subject: Re: [RFC] wifi: mwifiex: Asking for some light on this, please :)
+From:   Dan Williams <dcbw@redhat.com>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+Date:   Tue, 22 Aug 2023 12:00:17 -0500
+In-Reply-To: <6e3fddfe-2d31-72fa-ac2b-3b7fa4e6fe08@embeddedor.com>
+References: <6e3fddfe-2d31-72fa-ac2b-3b7fa4e6fe08@embeddedor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] wifi: ath12k: Fix a few spelling errors
-Content-Language: en-US
-To:     Randy Dunlap <rdunlap@infradead.org>, Kalle Valo <kvalo@kernel.org>
-CC:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <ath12k@lists.infradead.org>
-References: <20230822-ath_spelling-v1-0-8e2698759564@quicinc.com>
- <20230822-ath_spelling-v1-3-8e2698759564@quicinc.com>
- <768de9a1-b186-c296-e9b9-d83cee1997a6@infradead.org>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <768de9a1-b186-c296-e9b9-d83cee1997a6@infradead.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Al7zSsMj33klfJC2fkVgf9Z78bHZT7-I
-X-Proofpoint-GUID: Al7zSsMj33klfJC2fkVgf9Z78bHZT7-I
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-22_13,2023-08-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
- adultscore=0 mlxlogscore=999 priorityscore=1501 impostorscore=0 mlxscore=0
- phishscore=0 suspectscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2308220131
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/22/2023 9:18 AM, Randy Dunlap wrote:
-> Hi--
-> 
-> On 8/22/23 07:50, Jeff Johnson wrote:
->> Fix a few issues flagged by 'codespell'.
->>
->> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath12k/dp.h      | 2 +-
->>   drivers/net/wireless/ath/ath12k/dp_rx.c   | 2 +-
->>   drivers/net/wireless/ath/ath12k/dp_tx.c   | 2 +-
->>   drivers/net/wireless/ath/ath12k/mac.c     | 2 +-
->>   drivers/net/wireless/ath/ath12k/rx_desc.h | 2 +-
->>   5 files changed, 5 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
->> index 0f2af2f14ef7..dbaf033c2527 100644
->> --- a/drivers/net/wireless/ath/ath12k/mac.c
->> +++ b/drivers/net/wireless/ath/ath12k/mac.c
->> @@ -6771,7 +6771,7 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
->>   			/* After trigger disconnect, then upper layer will
->>   			 * trigger connect again, then the PN number of
->>   			 * upper layer will be reset to keep up with AP
->> -			 * side, hence PN number mis-match will not happened.
->> +			 * side, hence PN number mismatch will not happened.
-> 
-> The fix is good, but preferably also s/happened/happen/.
+T24gVHVlLCAyMDIzLTA4LTE1IGF0IDE4OjUyIC0wNjAwLCBHdXN0YXZvIEEuIFIuIFNpbHZhIHdy
+b3RlOgo+IEhpIGFsbCwKPiAKPiBXaGlsZSB3b3JraW5nIG9uIGZsZXgtYXJyYXkgdHJhbnNmb3Jt
+YXRpb25zIEkgcmFuIGludG8gdGhlIGZvbGxvd2luZwo+IGltcGxlbWVudGF0aW9uOgo+IAo+IGRy
+aXZlcnMvbmV0L3dpcmVsZXNzL21hcnZlbGwvbXdpZmlleC9mdy5oOjc3NToKPiBzdHJ1Y3QgbXdp
+ZmlleF9pZV90eXBlc19yeGJhX3N5bmMgewo+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgbXdpZmll
+eF9pZV90eXBlc19oZWFkZXIgaGVhZGVyOwo+IMKgwqDCoMKgwqDCoMKgwqB1OCBtYWNbRVRIX0FM
+RU5dOwo+IMKgwqDCoMKgwqDCoMKgwqB1OCB0aWQ7Cj4gwqDCoMKgwqDCoMKgwqDCoHU4IHJlc2Vy
+dmVkOwo+IMKgwqDCoMKgwqDCoMKgwqBfX2xlMTYgc2VxX251bTsKPiDCoMKgwqDCoMKgwqDCoMKg
+X19sZTE2IGJpdG1hcF9sZW47Cj4gwqDCoMKgwqDCoMKgwqDCoHU4IGJpdG1hcFsxXTsKPiB9IF9f
+cGFja2VkOwo+IAo+IGBiaXRtYXBgIGlzIGN1cnJlbnRseSBiZWluZyB1c2VkIGFzIGEgZmFrZS1m
+bGV4IGFycmF5IGFuZCB3ZSBzaG91bGQKPiB0cmFuc2Zvcm0gaXQgaW50byBhIHByb3BlciBmbGV4
+aWJsZS1hcnJheSBtZW1iZXIuCj4gCj4gSG93ZXZlciwgd2hpbGUgZG9pbmcgdGhhdCwgSSBub3Rp
+Y2VkIHNvbWV0aGluZyBpbiB0aGUgZm9sbG93aW5nIGZ1bmN0aW9uCj4gdGhhdCdzIG5vdCBjbGVh
+ciB0byBtZSBhbmQgSSB3YW50ZWQgdG8gYXNrIHlvdSBmb3IgZmVlZGJhY2s6Cj4gCj4gZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvbWFydmVsbC9td2lmaWV4LzExbl9yeHJlb3JkZXIuYzo5MDc6Cj4gdm9p
+ZCBtd2lmaWV4XzExbl9yeGJhX3N5bmNfZXZlbnQoc3RydWN0IG13aWZpZXhfcHJpdmF0ZSAqcHJp
+diwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIHU4ICpldmVudF9idWYsIHUxNiBsZW4pCj4gewo+IMKgwqDCoMKgwqDCoMKg
+wqBzdHJ1Y3QgbXdpZmlleF9pZV90eXBlc19yeGJhX3N5bmMgKnRsdl9yeGJhID0gKHZvaWQgKill
+dmVudF9idWY7Cj4gwqDCoMKgwqDCoMKgwqDCoHUxNiB0bHZfdHlwZSwgdGx2X2xlbjsKPiDCoMKg
+wqDCoMKgwqDCoMKgc3RydWN0IG13aWZpZXhfcnhfcmVvcmRlcl90YmwgKnJ4X3Jlb3JfdGJsX3B0
+cjsKPiDCoMKgwqDCoMKgwqDCoMKgdTggaSwgajsKPiDCoMKgwqDCoMKgwqDCoMKgdTE2IHNlcV9u
+dW0sIHRsdl9zZXFfbnVtLCB0bHZfYml0bWFwX2xlbjsKPiDCoMKgwqDCoMKgwqDCoMKgaW50IHRs
+dl9idWZfbGVmdCA9IGxlbjsKPiDCoMKgwqDCoMKgwqDCoMKgaW50IHJldDsKPiDCoMKgwqDCoMKg
+wqDCoMKgdTggKnRtcDsKPiAKPiDCoMKgwqDCoMKgwqDCoMKgbXdpZmlleF9kYmdfZHVtcChwcml2
+LT5hZGFwdGVyLCBFVlRfRCwgIlJYQkFfU1lOQyBldmVudDoiLAo+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBldmVudF9idWYsIGxlbik7Cj4gwqDCoMKg
+wqDCoMKgwqDCoHdoaWxlICh0bHZfYnVmX2xlZnQgPj0gc2l6ZW9mKCp0bHZfcnhiYSkpIHsKCj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0bHZfdHlwZSA9IGxlMTZfdG9fY3B1KHRs
+dl9yeGJhLT5oZWFkZXIudHlwZSk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0
+bHZfbGVuwqAgPSBsZTE2X3RvX2NwdSh0bHZfcnhiYS0+aGVhZGVyLmxlbik7Cgo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKHRsdl90eXBlICE9IFRMVl9UWVBFX1JYQkFfU1lO
+Qykgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoG13
+aWZpZXhfZGJnKHByaXYtPmFkYXB0ZXIsIEVSUk9SLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIldyb25nIFRM
+ViBpZD0weCV4XG4iLCB0bHZfdHlwZSk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgfQo+IAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGx2X3NlcV9udW0gPSBs
+ZTE2X3RvX2NwdSh0bHZfcnhiYS0+c2VxX251bSk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqB0bHZfYml0bWFwX2xlbiA9IGxlMTZfdG9fY3B1KHRsdl9yeGJhLT5iaXRtYXBfbGVu
+KTsKClRoaXMgc2VlbXMgc3VwZXJmbHVvdXMgc2luY2UgY291bGRuJ3QgdGhlIGJpdG1hcF9sZW4g
+YmUgY2FsY3VsYXRlZCBmcm9tCnRoZSB0bHZfbGVuIGFuZCBzaXplb2YoKnRsdl9yeGJhKT8gQnV0
+IHdoYXRldmVyLCBzdXJlLgoKU2VlbXMgbGlrZSB0aGVyZSBzaG91bGQgYmUgc29tZSBpbnB1dCB2
+YWxpZGF0aW9uIGhlcmUgdG8gZW5zdXJlIHRoYXQKdGx2X2JpdG1hcF9sZW4gYW5kIHRsdl9sZW4g
+ZG9uJ3Qgb3ZlcnJ1biBldmVudF9idWYncyBtZW1vcnkgdGhvdWdoLCBpZgp0aGUgZmlybXdhcmUg
+aXMgaG9zZWQgb3IgbWFsaWNpb3VzLgoKQnV0IHRoYXQncyBub3QgeW91ciBwcm9ibGVtIHNpbmNl
+IHlvdSdyZSBub3QgdG91Y2hpbmcgdGhpcyBjb2RlLgoKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoG13aWZpZXhfZGJnKHByaXYtPmFkYXB0ZXIsIElORk8sCj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICIlcE0gdGlkPSVkIHNl
+cV9udW09JWQgYml0bWFwX2xlbj0lZFxuIiwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGx2X3J4YmEtPm1hYywgdGx2X3J4YmEtPnRpZCwg
+dGx2X3NlcV9udW0sCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIHRsdl9iaXRtYXBfbGVuKTsKPiAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoHJ4X3Jlb3JfdGJsX3B0ciA9Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgbXdpZmlleF8xMW5fZ2V0X3J4X3Jlb3JkZXJfdGJsKHByaXYs
+IHRsdl9yeGJhLT50aWQsCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIHRsdl9yeGJhLT5tYWMpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgaWYgKCFyeF9yZW9yX3RibF9wdHIpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBtd2lmaWV4X2RiZyhwcml2LT5hZGFwdGVyLCBFUlJPUiwK
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgICJDYW4gbm90IGZpbmQgcnhfcmVvcmRlcl90YmwhIik7Cj4gwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuOwo+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+IAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgZm9yIChpID0gMDsgaSA8IHRsdl9iaXRtYXBfbGVuOyBpKyspIHsKPiDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3IgKGogPSAwIDsgaiA8
+IDg7IGorKykgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAodGx2X3J4YmEtPmJpdG1hcFtpXSAmICgxIDw8IGopKSB7
+Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzZXFfbnVtID0gKE1BWF9USURfVkFMVUUgLSAxKSAm
+Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgKHRsdl9zZXFfbnVtICsg
+aSAqIDggKyBqKTsKPiAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoG13aWZpZXhfZGJnKHByaXYt
+PmFkYXB0ZXIsIEVSUk9SLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCAiZHJvcCBwYWNrZXQsc2VxPSVkXG4iLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzZXFfbnVtKTsKPiAKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoHJldCA9IG13aWZpZXhfMTFuX3J4X3Jlb3JkZXJfcGt0Cj4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAocHJpdiwgc2VxX251bSwgdGx2X3J4YmEtPnRpZCwKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCB0bHZfcnhiYS0+bWFjLCAwLCBOVUxMKTsKPiAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGlmIChyZXQpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbXdpZmll
+eF9kYmcocHJpdi0+YWRhcHRlciwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIEVSUk9SLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIkZhaWwgdG8gZHJvcCBw
+YWNrZXQiKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiAKPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRsdl9idWZfbGVmdCAtPSAoc2l6ZW9mKCp0
+bHZfcnhiYSkgKyB0bHZfbGVuKTsKCk5vdyB3ZSBoYXZlIHRvIHN1YnRyYWN0IHRoZSBzaXplIG9m
+IHRoZSB3aG9sZSBUTFYgKGluY2x1ZGluZyB0aGUgaGVhZGVyCmFuZCBmbGV4YXJyYXkpIGZyb20g
+dGhlIHJlbWFpbmluZyBieXRlcyBpbiBldmVudF9idWYuCgpCdXQgdGhpcyBsb29rcyBwcmV0dHkg
+c2tldGNoeS4gTWFydmVsbCBUTFZzIGhhdmUgYSBoZWFkZXIgKHRoZSBUTCBvZgp0aGUgVExWKSBh
+bmQgaGVhZGVyLT5sZW4gc2F5cyBob3cgbG9uZyB0aGUgViBpcy4gTW9zdCBNYXJ2ZWxsIGtlcm5l
+bApkcml2ZXIgY29kZSAobXdpZmlleCwgbGliZXJ0YXMsIGV0YykgZG9lcyBzb21ldGhpbmcgbGlr
+ZSB0aGlzOgoKCXBvcyArPSBzc2lkX3Rsdi0+aGVhZGVyICsgc3NpZF90bHYtPmhlYWRlci5sZW47
+CgpidXQgdGx2X3J4YmEgaXMgbXVjaCBtb3JlIHRoYW4ganVzdCB0aGUgaGVhZGVyOyBJIHRoaW5r
+IHRoaXMgY29kZSBpcwpnb2luZyB0byAqb3ZlciogY291bnQgaG93IG1hbnkgYnl0ZXMgd2VyZSBq
+dXN0IGNvbnN1bWVkLgoKSSdtIG5vdCB0aGUgb25seSBvbmUgdGhpbmtpbmcgaXQncyBza2V0Y2h5
+OgoKaHR0cHM6Ly93d3cuc3Bpbmljcy5uZXQvbGlzdHMvbGludXgtd2lyZWxlc3MvbXNnMTc0MjMx
+Lmh0bWwKCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0bXAgPSAodTggKil0bHZf
+cnhiYSArIHRsdl9sZW4gKyBzaXplb2YoKnRsdl9yeGJhKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoAo+IFdoYXQncyB0aGUgcmVsYXRpb24gYmV0d2VlbiB0bHZfbGVuLCBzaXpl
+b2YoKnRsdl9yeGJhKSBhbmQgdGx2X2JpdG1hcF9sZW4/Cj4gCj4gSXNuJ3QgYHNpemVvZigqdGx2
+X3J4YmEpICsgdGx2X2xlbmAgYW5kIGB0bHZfbGVuICsgc2l6ZW9mKCp0bHZfcnhiYSlgCj4gZG91
+YmxlLWNvdW50aW5nIHNvbWUgZmllbGRzIGluIGBzdHJ1Y3QgbXdpZmlleF9pZV90eXBlc19yeGJh
+X3N5bmNgPwo+IAo+IFNob3VsZG4ndCB0aGlzIGJlIHNvbWV0aGluZyBsaWtlIHRoaXMsIGluc3Rl
+YWQgKGJlZm9yZSB0aGUgZmxleC1hcnJheQo+IHRyYW5zZm9ybWF0aW9uLCBvZiBjb3Vyc2UpOgo+
+IAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHRsdl9idWZfbGVmdCAtPSAoc2l6ZW9m
+KCp0bHZfcnhiYSkgKyB0bHZfbGVuKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB0
+bXAgPSAodTggKil0bHZfcnhiYSArIHRsdl9sZW4gKyBzaXplb2YoKnRsdl9yeGJhKTsKPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB0bHZfYnVmX2xlZnQgLT0gKHNpemVvZigqdGx2X3J4
+YmEpICsgdGx2X2JpdG1hcF9sZW4gLSAxKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCB0bXAgPSAodTggKil0bHZfcnhiYSArIHRsdl9iaXRtYXBfbGVuICsgc2l6ZW9mKCp0bHZfcnhi
+YSAtIDEpOwoKSWYgbXkgYXNzZXJ0aW9uIGFib3V0IHRsdi0+aGVhZGVyLmxlbiBpcyBjb3JyZWN0
+IHRoZW4gd2UgY2FuIGRvOgoKdGx2X2J1Zl9sZWZ0IC09IHNpemVvZih0bHZfcnhiYS0+aGVhZGVy
+KSArIHRsdl9sZW47CnRtcCA9ICh1OCAqKXRsdl9yeGJhICsgc2l6ZW9mKHRsdl9yeGJhLT5oZWFk
+ZXIpICsgdGx2X2xlbjsKCj4gCj4gCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0
+bHZfcnhiYSA9IChzdHJ1Y3QgbXdpZmlleF9pZV90eXBlc19yeGJhX3N5bmMgKil0bXA7CgpUaGlz
+IGlzIHNpbGx5OyBpbnN0ZWFkIG9mIHRtcCB3ZSBjb3VsZCBkbzoKCnUxNiBieXRlc191c2VkOwoK
+Li4uCgpieXRlc191c2VkID0gc2l6ZW9mKHRsdl9yeGJhLT5oZWFkZXIpICsgdGx2X2xlbjsKdGx2
+X2J1Zl9sZWZ0IC09IGJ5dGVzX3VzZWQ7CnRsdl9yeGJhICs9IGJ5dGVzX3VzZWQ7Cgood2l0aCBh
+cHByb3ByaWF0ZSBjYXN0aW5nKS4KCkRhbgoKPiDCoMKgwqDCoMKgwqDCoMKgfQo+IH0KPiAKPiBU
+aGFua3MgaW4gYWR2YW5jZSBmb3IgYW55IGZlZWRiYWNrIQo+IAo+IC0tCj4gR3VzdGF2bwo+IAoK
 
-Kalle, can you apply that when it goes to -pending?
-
-> 
->>   			 */
->>   			if (arvif->is_up &&
->>   			    arvif->vdev_type == WMI_VDEV_TYPE_STA &&
-> 
 
