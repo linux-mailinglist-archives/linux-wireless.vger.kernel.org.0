@@ -2,104 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D051478465F
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 17:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A026784676
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 18:02:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232272AbjHVP4l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 11:56:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35704 "EHLO
+        id S237436AbjHVQCl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 12:02:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237442AbjHVP4k (ORCPT
+        with ESMTP id S237510AbjHVQCj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 11:56:40 -0400
-Received: from forward101c.mail.yandex.net (forward101c.mail.yandex.net [178.154.239.212])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B48CE6
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 08:56:17 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:1d9d:0:640:49d1:0])
-        by forward101c.mail.yandex.net (Yandex) with ESMTP id 8141860080;
-        Tue, 22 Aug 2023 18:56:09 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 4uL3vjKWqKo0-Nx2X9gnO;
-        Tue, 22 Aug 2023 18:56:08 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1692719768;
-        bh=rVXkd8OYRs+EPlwMCcIMTR9cyotrLl0sPBMwsp7sYvw=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=Vhr0MN4ORiARkkPlP3ddijC7m5TutfSgd62hj+OYfuNxXZclSBY3+uWuT1+L+zsLn
-         2SfR+cKU46I138UqwwujEfe+qihRfF550mZCHc/mCogrU/rikNY0js3b89G55TiHw2
-         gf9OsXPHRArNZW3YlVd7nSK2tHq2uGZDRjJbNz8Q=
-Authentication-Results: mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 3/3] wifi: ath10k: simplify ath10k_pci_pm_suspend()
-Date:   Tue, 22 Aug 2023 18:54:26 +0300
-Message-ID: <20230822155532.95983-3-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230822155532.95983-1-dmantipov@yandex.ru>
-References: <20230822155532.95983-1-dmantipov@yandex.ru>
+        Tue, 22 Aug 2023 12:02:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE00512C;
+        Tue, 22 Aug 2023 09:02:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D44063589;
+        Tue, 22 Aug 2023 16:02:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5A5C433C8;
+        Tue, 22 Aug 2023 16:02:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692720156;
+        bh=B4dVX7JomV77pBcVqtD0PNTGXOQTdjWiq/Ji2vFROpM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kmxPkkTwYCQZnR4ofNmuKm7gv2uiQDKusaOVm4+AvZ6IaaGd8xX75E8iqHzAfVUw5
+         WllJU/8IG1KKWLe9HO7xE4RyAubCZPuh2861jQMReIEjT/jwsULtwHAzWnK2sflFHx
+         BWGx+sXx0R63DjB2YbS4DY4RkP7rvaI6Ct0+T+AmYQXo//IzyuvK3erHkxLrST2aBp
+         6wDaYVitItaDSb6yLzD86wcSYz89JYn/a96LwoLfqyzx8jGTsOeTKen2XN+Bavk8iy
+         f64BmIsFGJ3zcYPeD/A4gfz345Nz8ho1wOhRIte5vdAcWyH2GI188wKcS34cx44Rmu
+         O37NQ2ZTMJ/0w==
+Received: from johan by theta with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qYTpw-00015s-0B;
+        Tue, 22 Aug 2023 18:02:32 +0200
+Date:   Tue, 22 Aug 2023 18:02:32 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Kalle Valo <kvalo@kernel.org>, quic_jjohnson@quicinc.com,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.4 03/10] Revert "wifi: ath11k: Enable threaded
+ NAPI"
+Message-ID: <ZOTcGEfqsBkWugAa@hovoldconsulting.com>
+References: <20230822113101.3549915-1-sashal@kernel.org>
+ <20230822113101.3549915-3-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230822113101.3549915-3-sashal@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since 'ath10k_pci_suspend()' always returns 0, it may be converted to
-'void' and 'ath10k_pci_pm_suspend()' may be simplified accordingly.
+On Tue, Aug 22, 2023 at 07:30:53AM -0400, Sasha Levin wrote:
+> From: Kalle Valo <quic_kvalo@quicinc.com>
+> 
+> [ Upstream commit d265ebe41c911314bd273c218a37088835959fa1 ]
+> 
+> This reverts commit 13aa2fb692d3717767303817f35b3e650109add3.
+> 
+> This commit broke QCN9074 initialisation:
+> 
+> [  358.960477] ath11k_pci 0000:04:00.0: ce desc not available for wmi command 36866
+> [  358.960481] ath11k_pci 0000:04:00.0: failed to send WMI_STA_POWERSAVE_PARAM_CMDID
+> [  358.960484] ath11k_pci 0000:04:00.0: could not set uapsd params -105
+> 
+> As there's no fix available let's just revert it to get QCN9074 working again.
+> 
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217536
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> Signed-off-by: Kalle Valo <kvalo@kernel.org>
+> Link: https://lore.kernel.org/r/20230720151444.2016637-1-kvalo@kernel.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This commit break machines like the Lenovo ThinkPad X13s so please do
+not backport until this has been resolved:
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/ath/ath10k/pci.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+	https://lore.kernel.org/lkml/20230809073432.4193-1-johan+linaro@kernel.org
 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index f6988075cd83..16037e77264b 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -2871,7 +2871,7 @@ static int ath10k_pci_hif_suspend(struct ath10k *ar)
- 	return 0;
- }
- 
--static int ath10k_pci_suspend(struct ath10k *ar)
-+static void ath10k_pci_suspend(struct ath10k *ar)
- {
- 	/* The grace timer can still be counting down and ar->ps_awake be true.
- 	 * It is known that the device may be asleep after resuming regardless
-@@ -2879,8 +2879,6 @@ static int ath10k_pci_suspend(struct ath10k *ar)
- 	 * device is asleep before proceeding.
- 	 */
- 	ath10k_pci_sleep_sync(ar);
--
--	return 0;
- }
- 
- static int ath10k_pci_hif_resume(struct ath10k *ar)
-@@ -3734,13 +3732,9 @@ MODULE_DEVICE_TABLE(pci, ath10k_pci_id_table);
- static __maybe_unused int ath10k_pci_pm_suspend(struct device *dev)
- {
- 	struct ath10k *ar = dev_get_drvdata(dev);
--	int ret;
- 
--	ret = ath10k_pci_suspend(ar);
--	if (ret)
--		ath10k_warn(ar, "failed to suspend hif: %d\n", ret);
--
--	return ret;
-+	ath10k_pci_suspend(ar);
-+	return 0;
- }
- 
- static __maybe_unused int ath10k_pci_pm_resume(struct device *dev)
--- 
-2.41.0
-
+Johan
