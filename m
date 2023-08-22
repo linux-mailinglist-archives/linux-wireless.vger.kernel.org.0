@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F50A783F2C
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41FB4783F13
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234963AbjHVLdt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 07:33:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60116 "EHLO
+        id S233861AbjHVLdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 07:33:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234965AbjHVLds (ORCPT
+        with ESMTP id S232354AbjHVLdN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 07:33:48 -0400
+        Tue, 22 Aug 2023 07:33:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B867CC6;
-        Tue, 22 Aug 2023 04:33:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7247FE55;
+        Tue, 22 Aug 2023 04:32:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 256BB652E5;
-        Tue, 22 Aug 2023 11:32:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7351C433A9;
-        Tue, 22 Aug 2023 11:32:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D3CC652F5;
+        Tue, 22 Aug 2023 11:32:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DC7C433C8;
+        Tue, 22 Aug 2023 11:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692703955;
-        bh=+AKusttd6bUEorXUSKWazWFJEFpJ0E9Z13O4C9XdEO4=;
+        s=k20201202; t=1692703963;
+        bh=MAgeVFiQ/GLoFOhlmi6vWUoGiAmhRDDsCJPJF1xdZb0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LAvlCCixDhC7NVdKNaN7tKZP1wWDNO/sHWdBnuuMUSnp0raqFqmm2QDbko5WCQnnw
-         slPbM74Q7aUyzWUzPLiQD4rCYn93c++ccnClm01+6oiTwKcaxSHtcw5m51YGGs6S0j
-         dIxIuudDQ0511p3BcwUqOODa/c0ULj0F4Ht0uOKtw8U2IfXTmogV1gnr5lDVvgafTk
-         iPJk6CQ7ETBCXwYx+W0XpDsxB0/A8Eo18Ydrm+ZNMKhexPmwAmzUP+2KHOZy13yNKb
-         bJydbQOY5ZP0827uW9oxJ/3kdfCOClYuQdVUigWQLFUWak5UMIisGCmRDQU0V4uE4j
-         7XKJHeGbxzb+Q==
+        b=LKMMx60/y7bhsu7B293vJrWUyg3cW66w+K5oLdEKN3y0MAT0zikb3NhAVYuSAnQjP
+         TKM0vB3SZH4Ik/V5hjBHNq8xxMZgFYUO/Y4WJr78mE7U7t2RW9AKNTe5YYP+fubdNz
+         nZrT0ierubE1tT2KjOdxda7Y0Hit6z1ETXkPsJQxxx7bygycs+OQUcvBh/YbsfY5+s
+         hYUaIMaXdjkPoHCSoVxzLIz0nQPnnoV0a1CCL8nJO21tRXlQUhatsLVI+SR/6VM1VN
+         ieNQcC3wZS0oTN8CP6Nfks1ybc9grIQNRKMGcK49kaltGQ9szL7zxc4BPDC95hNsJ3
+         m4oYUJT9oEZfA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
@@ -44,16 +44,16 @@ Cc:     Hans de Goede <hdegoede@redhat.com>,
         ryohei.kondo@cypress.com, linux-wireless@vger.kernel.org,
         brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
-Subject: [PATCH AUTOSEL 4.19 2/2] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
-Date:   Tue, 22 Aug 2023 07:32:28 -0400
-Message-Id: <20230822113228.3550367-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 2/2] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
+Date:   Tue, 22 Aug 2023 07:32:35 -0400
+Message-Id: <20230822113236.3550450-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230822113228.3550367-1-sashal@kernel.org>
-References: <20230822113228.3550367-1-sashal@kernel.org>
+In-Reply-To: <20230822113236.3550450-1-sashal@kernel.org>
+References: <20230822113236.3550450-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.292
+X-stable-base: Linux 4.14.323
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -105,10 +105,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-index 9d2367133c7c6..de18cd1f838ca 100644
+index 05bd636011ec9..58338b6443f8d 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-@@ -390,7 +390,12 @@ struct brcmf_scan_params_le {
+@@ -354,7 +354,12 @@ struct brcmf_scan_params_le {
  				 * fixed parameter portion is assumed, otherwise
  				 * ssid in the fixed portion is ignored
  				 */
