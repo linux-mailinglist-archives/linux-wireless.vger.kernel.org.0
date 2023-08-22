@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8DA678416A
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 14:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 891D478416B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 14:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235929AbjHVM73 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 08:59:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39850 "EHLO
+        id S235928AbjHVM7c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 08:59:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235930AbjHVM72 (ORCPT
+        with ESMTP id S235932AbjHVM7b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 08:59:28 -0400
+        Tue, 22 Aug 2023 08:59:31 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BEC3BCD0
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 05:59:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A4B0CCEF
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 05:59:27 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37MCwt8S3022590, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37MCwvotF022605, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37MCwt8S3022590
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37MCwvotF022605
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Aug 2023 20:58:55 +0800
+        Tue, 22 Aug 2023 20:58:57 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 22 Aug 2023 20:59:17 +0800
+ 15.1.2375.32; Tue, 22 Aug 2023 20:59:19 +0800
 Received: from [127.0.1.1] (172.16.23.216) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 22 Aug
- 2023 20:59:16 +0800
+ 2023 20:59:18 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <cj.hsieh@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 4/6] wifi: rtw89: mac: define register address of rx_filter to generalize code
-Date:   Tue, 22 Aug 2023 20:58:20 +0800
-Message-ID: <20230822125822.23817-5-pkshih@realtek.com>
+Subject: [PATCH 5/6] wifi: rtw89: phy: add phy_gen_def::cr_base to support WiFi 7 chips
+Date:   Tue, 22 Aug 2023 20:58:21 +0800
+Message-ID: <20230822125822.23817-6-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230822125822.23817-1-pkshih@realtek.com>
 References: <20230822125822.23817-1-pkshih@realtek.com>
@@ -60,213 +60,246 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-rx_filter is used to decide which kind of packets are received to driver,
-or just dropped by MAC layer to reduce bus traffic.
+cr_base is base address of PHY control register. The base of WiFi 6 and 7
+chips are 0x1_0000 and 0x2_0000 respectively, so define them accordingly.
+For example, if PHY address is 0x1330, absolute address is 0x1_1330 for
+WiFi 6 chips, and 0x2_1330 for WiFi 7 chips.
 
-The bit definitions of old and new chips are the sames, but only address
-is changed, so define a field to generalize usage.
+Meanwhile, there are two copies of PHY hardware named PHY0 and PHY1. The
+offset between them is 0x2_0000, so the base address of PHY0 and PHY1 are
+0x2_0000 and 0x4_0000 respectively.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c     |  6 ++++--
- drivers/net/wireless/realtek/rtw89/fw.c       |  6 ++++--
- drivers/net/wireless/realtek/rtw89/mac.c      |  1 +
- drivers/net/wireless/realtek/rtw89/mac.h      |  1 +
- drivers/net/wireless/realtek/rtw89/mac80211.c |  5 +++--
- drivers/net/wireless/realtek/rtw89/mac_be.c   |  1 +
- drivers/net/wireless/realtek/rtw89/reg.h      | 19 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/wow.c      |  3 ++-
- 8 files changed, 35 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     |  2 +
+ drivers/net/wireless/realtek/rtw89/phy.c      |  8 ++++
+ drivers/net/wireless/realtek/rtw89/phy.h      | 48 ++++++++++++++-----
+ drivers/net/wireless/realtek/rtw89/phy_be.c   | 10 ++++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
+ 8 files changed, 61 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/phy_be.c
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 2f6db0658a73..818fb8cf465a 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2451,6 +2451,7 @@ static int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 98e6d6ade6c0..c49a1ab53f09 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -15,6 +15,7 @@
+ struct rtw89_dev;
+ struct rtw89_pci_info;
+ struct rtw89_mac_gen_def;
++struct rtw89_phy_gen_def;
  
- void rtw89_roc_start(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	struct ieee80211_hw *hw = rtwdev->hw;
- 	struct rtw89_roc *roc = &rtwvif->roc;
- 	struct cfg80211_chan_def roc_chan;
-@@ -2478,7 +2479,7 @@ void rtw89_roc_start(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- 	rtw89_config_roc_chandef(rtwdev, rtwvif->sub_entity_idx, &roc_chan);
- 	rtw89_set_channel(rtwdev);
- 	rtw89_write32_clr(rtwdev,
--			  rtw89_mac_reg_by_idx(rtwdev, R_AX_RX_FLTR_OPT, RTW89_MAC_0),
-+			  rtw89_mac_reg_by_idx(rtwdev, mac->rx_fltr, RTW89_MAC_0),
- 			  B_AX_A_UC_CAM_MATCH | B_AX_A_BC_CAM_MATCH);
+ extern const struct ieee80211_ops rtw89_ops;
  
- 	ieee80211_ready_on_channel(hw);
-@@ -2486,6 +2487,7 @@ void rtw89_roc_start(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+@@ -3381,6 +3382,7 @@ struct rtw89_chip_info {
+ 	enum rtw89_chip_gen chip_gen;
+ 	const struct rtw89_chip_ops *ops;
+ 	const struct rtw89_mac_gen_def *mac_def;
++	const struct rtw89_phy_gen_def *phy_def;
+ 	const char *fw_basename;
+ 	u8 fw_format_max;
+ 	bool try_ce_fw;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index fa37d7d06093..9dc444934125 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -1446,6 +1446,9 @@ static u32 rtw89_phy0_phy1_offset(struct rtw89_dev *rtwdev, u32 addr)
+ 	u32 phy_page = addr >> 8;
+ 	u32 ofst = 0;
  
- void rtw89_roc_end(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	struct ieee80211_hw *hw = rtwdev->hw;
- 	struct rtw89_roc *roc = &rtwvif->roc;
- 	struct rtw89_vif *tmp;
-@@ -2499,7 +2501,7 @@ void rtw89_roc_end(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- 	rtw89_leave_lps(rtwdev);
- 
- 	rtw89_write32_mask(rtwdev,
--			   rtw89_mac_reg_by_idx(rtwdev, R_AX_RX_FLTR_OPT, RTW89_MAC_0),
-+			   rtw89_mac_reg_by_idx(rtwdev, mac->rx_fltr, RTW89_MAC_0),
- 			   B_AX_RX_FLTR_CFG_MASK,
- 			   rtwdev->hal.rx_fltr);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index c8b47b6fbafa..752dba4d5a10 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -3851,6 +3851,7 @@ void rtw89_hw_scan_start(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 			 struct ieee80211_scan_request *scan_req)
- {
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	struct cfg80211_scan_request *req = &scan_req->req;
- 	u32 rx_fltr = rtwdev->hal.rx_fltr;
- 	u8 mac_addr[ETH_ALEN];
-@@ -3873,7 +3874,7 @@ void rtw89_hw_scan_start(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 	rx_fltr &= ~B_AX_A_BC;
- 	rx_fltr &= ~B_AX_A_A1_MATCH;
- 	rtw89_write32_mask(rtwdev,
--			   rtw89_mac_reg_by_idx(rtwdev, R_AX_RX_FLTR_OPT, RTW89_MAC_0),
-+			   rtw89_mac_reg_by_idx(rtwdev, mac->rx_fltr, RTW89_MAC_0),
- 			   B_AX_RX_FLTR_CFG_MASK,
- 			   rx_fltr);
- }
-@@ -3881,6 +3882,7 @@ void rtw89_hw_scan_start(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 			    bool aborted)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	struct rtw89_hw_scan_info *scan_info = &rtwdev->scan_info;
- 	struct cfg80211_scan_info info = {
- 		.aborted = aborted,
-@@ -3891,7 +3893,7 @@ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 		return;
- 
- 	rtw89_write32_mask(rtwdev,
--			   rtw89_mac_reg_by_idx(rtwdev, R_AX_RX_FLTR_OPT, RTW89_MAC_0),
-+			   rtw89_mac_reg_by_idx(rtwdev, mac->rx_fltr, RTW89_MAC_0),
- 			   B_AX_RX_FLTR_CFG_MASK,
- 			   rtwdev->hal.rx_fltr);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index e0925a21a096..fab9f5004a75 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -5689,5 +5689,6 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
- 	.filter_model_addr = R_AX_FILTER_MODEL_ADDR,
- 	.indir_access_addr = R_AX_INDIR_ACCESS_ENTRY,
- 	.mem_base_addrs = rtw89_mac_mem_base_addrs_ax,
-+	.rx_fltr = R_AX_RX_FLTR_OPT,
- };
- EXPORT_SYMBOL(rtw89_mac_gen_ax);
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 7c7940093480..7cf34137c0bc 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -857,6 +857,7 @@ struct rtw89_mac_gen_def {
- 	u32 filter_model_addr;
- 	u32 indir_access_addr;
- 	const u32 *mem_base_addrs;
-+	u32 rx_fltr;
- };
- 
- extern const struct rtw89_mac_gen_def rtw89_mac_gen_ax;
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index c5c714a3de44..33af7add2d4e 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -224,6 +224,7 @@ static void rtw89_ops_configure_filter(struct ieee80211_hw *hw,
- 				       u64 multicast)
- {
- 	struct rtw89_dev *rtwdev = hw->priv;
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 
- 	mutex_lock(&rtwdev->mutex);
- 	rtw89_leave_ps_mode(rtwdev);
-@@ -271,13 +272,13 @@ static void rtw89_ops_configure_filter(struct ieee80211_hw *hw,
- 	}
- 
- 	rtw89_write32_mask(rtwdev,
--			   rtw89_mac_reg_by_idx(rtwdev, R_AX_RX_FLTR_OPT, RTW89_MAC_0),
-+			   rtw89_mac_reg_by_idx(rtwdev, mac->rx_fltr, RTW89_MAC_0),
- 			   B_AX_RX_FLTR_CFG_MASK,
- 			   rtwdev->hal.rx_fltr);
- 	if (!rtwdev->dbcc_en)
- 		goto out;
- 	rtw89_write32_mask(rtwdev,
--			   rtw89_mac_reg_by_idx(rtwdev, R_AX_RX_FLTR_OPT, RTW89_MAC_1),
-+			   rtw89_mac_reg_by_idx(rtwdev, mac->rx_fltr, RTW89_MAC_1),
- 			   B_AX_RX_FLTR_CFG_MASK,
- 			   rtwdev->hal.rx_fltr);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index ec920978195e..9a63fb35e867 100644
---- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -33,5 +33,6 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
- 	.filter_model_addr = R_BE_FILTER_MODEL_ADDR,
- 	.indir_access_addr = R_BE_INDIR_ACCESS_ENTRY,
- 	.mem_base_addrs = rtw89_mac_mem_base_addrs_be,
-+	.rx_fltr = R_BE_RX_FLTR_OPT,
- };
- EXPORT_SYMBOL(rtw89_mac_gen_be);
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index cab07cc993f0..eab26039242a 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -3627,6 +3627,25 @@
- 
- #define R_BE_FILTER_MODEL_ADDR 0x0C04
- 
-+#define R_BE_RX_FLTR_OPT 0x11420
-+#define R_BE_RX_FLTR_OPT_C1 0x15420
-+#define B_BE_UID_FILTER_MASK GENMASK(31, 24)
-+#define B_BE_UNSPT_TYPE BIT(22)
-+#define B_BE_RX_MPDU_MAX_LEN_MASK GENMASK(21, 16)
-+#define B_BE_A_FTM_REQ BIT(14)
-+#define B_BE_A_ERR_PKT BIT(13)
-+#define B_BE_A_UNSUP_PKT BIT(12)
-+#define B_BE_A_CRC32_ERR BIT(11)
-+#define B_BE_A_BCN_CHK_RULE_MASK GENMASK(9, 8)
-+#define B_BE_A_BCN_CHK_EN BIT(7)
-+#define B_BE_A_MC_LIST_CAM_MATCH BIT(6)
-+#define B_BE_A_BC_CAM_MATCH BIT(5)
-+#define B_BE_A_UC_CAM_MATCH BIT(4)
-+#define B_BE_A_MC BIT(3)
-+#define B_BE_A_BC BIT(2)
-+#define B_BE_A_A1_MATCH BIT(1)
-+#define B_BE_SNIFFER_MODE BIT(0)
++	if (rtwdev->chip->chip_gen == RTW89_CHIP_BE)
++		return addr < 0x10000 ? 0x20000 : 0;
 +
- #define RR_MOD 0x00
- #define RR_MOD_V1 0x10000
- #define RR_MOD_IQK GENMASK(19, 4)
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 364e54622150..aa9efca04025 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -40,6 +40,7 @@ static void rtw89_wow_leave_lps(struct rtw89_dev *rtwdev)
+ 	switch (phy_page) {
+ 	case 0x6:
+ 	case 0x7:
+@@ -4725,3 +4728,8 @@ void rtw89_phy_config_edcca(struct rtw89_dev *rtwdev, bool scan)
+ 		rtw89_phy_write32(rtwdev, reg, hal->edcca_bak);
+ 	}
+ }
++
++const struct rtw89_phy_gen_def rtw89_phy_gen_ax = {
++	.cr_base = 0x10000,
++};
++EXPORT_SYMBOL(rtw89_phy_gen_ax);
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index ab174a0ba488..36a24676b2fe 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -7,7 +7,6 @@
  
- static int rtw89_wow_config_mac(struct rtw89_dev *rtwdev, bool enable_wow)
+ #include "core.h"
+ 
+-#define RTW89_PHY_ADDR_OFFSET	0x10000
+ #define RTW89_RF_ADDR_ADSEL_MASK  BIT(16)
+ 
+ #define get_phy_headline(addr)		FIELD_GET(GENMASK(31, 28), addr)
+@@ -337,61 +336,88 @@ struct rtw89_nbi_reg_def {
+ 	struct rtw89_reg_def notch2_en;
+ };
+ 
++struct rtw89_phy_gen_def {
++	u32 cr_base;
++};
++
++extern const struct rtw89_phy_gen_def rtw89_phy_gen_ax;
++extern const struct rtw89_phy_gen_def rtw89_phy_gen_be;
++
+ static inline void rtw89_phy_write8(struct rtw89_dev *rtwdev,
+ 				    u32 addr, u8 data)
  {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	int ret;
+-	rtw89_write8(rtwdev, addr | RTW89_PHY_ADDR_OFFSET, data);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	rtw89_write8(rtwdev, addr + phy->cr_base, data);
+ }
  
- 	if (enable_wow) {
-@@ -49,7 +50,7 @@ static int rtw89_wow_config_mac(struct rtw89_dev *rtwdev, bool enable_wow)
- 			return ret;
- 		}
- 		rtw89_write32_set(rtwdev, R_AX_RX_FUNCTION_STOP, B_AX_HDR_RX_STOP);
--		rtw89_write32_clr(rtwdev, R_AX_RX_FLTR_OPT, B_AX_SNIFFER_MODE);
-+		rtw89_write32_clr(rtwdev, mac->rx_fltr, B_AX_SNIFFER_MODE);
- 		rtw89_mac_cfg_ppdu_status(rtwdev, RTW89_MAC_0, false);
- 		rtw89_write32(rtwdev, R_AX_ACTION_FWD0, 0);
- 		rtw89_write32(rtwdev, R_AX_ACTION_FWD1, 0);
+ static inline void rtw89_phy_write16(struct rtw89_dev *rtwdev,
+ 				     u32 addr, u16 data)
+ {
+-	rtw89_write16(rtwdev, addr | RTW89_PHY_ADDR_OFFSET, data);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	rtw89_write16(rtwdev, addr + phy->cr_base, data);
+ }
+ 
+ static inline void rtw89_phy_write32(struct rtw89_dev *rtwdev,
+ 				     u32 addr, u32 data)
+ {
+-	rtw89_write32(rtwdev, addr | RTW89_PHY_ADDR_OFFSET, data);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	rtw89_write32(rtwdev, addr + phy->cr_base, data);
+ }
+ 
+ static inline void rtw89_phy_write32_set(struct rtw89_dev *rtwdev,
+ 					 u32 addr, u32 bits)
+ {
+-	rtw89_write32_set(rtwdev, addr | RTW89_PHY_ADDR_OFFSET, bits);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	rtw89_write32_set(rtwdev, addr + phy->cr_base, bits);
+ }
+ 
+ static inline void rtw89_phy_write32_clr(struct rtw89_dev *rtwdev,
+ 					 u32 addr, u32 bits)
+ {
+-	rtw89_write32_clr(rtwdev, addr | RTW89_PHY_ADDR_OFFSET, bits);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	rtw89_write32_clr(rtwdev, addr + phy->cr_base, bits);
+ }
+ 
+ static inline void rtw89_phy_write32_mask(struct rtw89_dev *rtwdev,
+ 					  u32 addr, u32 mask, u32 data)
+ {
+-	rtw89_write32_mask(rtwdev, addr | RTW89_PHY_ADDR_OFFSET, mask, data);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	rtw89_write32_mask(rtwdev, addr + phy->cr_base, mask, data);
+ }
+ 
+ static inline u8 rtw89_phy_read8(struct rtw89_dev *rtwdev, u32 addr)
+ {
+-	return rtw89_read8(rtwdev, addr | RTW89_PHY_ADDR_OFFSET);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	return rtw89_read8(rtwdev, addr + phy->cr_base);
+ }
+ 
+ static inline u16 rtw89_phy_read16(struct rtw89_dev *rtwdev, u32 addr)
+ {
+-	return rtw89_read16(rtwdev, addr | RTW89_PHY_ADDR_OFFSET);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	return rtw89_read16(rtwdev, addr + phy->cr_base);
+ }
+ 
+ static inline u32 rtw89_phy_read32(struct rtw89_dev *rtwdev, u32 addr)
+ {
+-	return rtw89_read32(rtwdev, addr | RTW89_PHY_ADDR_OFFSET);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	return rtw89_read32(rtwdev, addr + phy->cr_base);
+ }
+ 
+ static inline u32 rtw89_phy_read32_mask(struct rtw89_dev *rtwdev,
+ 					u32 addr, u32 mask)
+ {
+-	return rtw89_read32_mask(rtwdev, addr | RTW89_PHY_ADDR_OFFSET, mask);
++	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
++
++	return rtw89_read32_mask(rtwdev, addr + phy->cr_base, mask);
+ }
+ 
+ static inline
+diff --git a/drivers/net/wireless/realtek/rtw89/phy_be.c b/drivers/net/wireless/realtek/rtw89/phy_be.c
+new file mode 100644
+index 000000000000..143f900d29a6
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtw89/phy_be.c
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/* Copyright(c) 2023  Realtek Corporation
++ */
++
++#include "phy.h"
++
++const struct rtw89_phy_gen_def rtw89_phy_gen_be = {
++	.cr_base = 0x20000,
++};
++EXPORT_SYMBOL(rtw89_phy_gen_be);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+index ccf96c963bb4..52eb7030fd0b 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+@@ -2337,6 +2337,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
+ 	.chip_gen		= RTW89_CHIP_AX,
+ 	.ops			= &rtw8851b_chip_ops,
+ 	.mac_def		= &rtw89_mac_gen_ax,
++	.phy_def		= &rtw89_phy_gen_ax,
+ 	.fw_basename		= RTW8851B_FW_BASENAME,
+ 	.fw_format_max		= RTW8851B_FW_FORMAT_MAX,
+ 	.try_ce_fw		= true,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index aefc72f24cf2..eb6aad3bbb85 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -2073,6 +2073,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
+ 	.chip_gen		= RTW89_CHIP_AX,
+ 	.ops			= &rtw8852a_chip_ops,
+ 	.mac_def		= &rtw89_mac_gen_ax,
++	.phy_def		= &rtw89_phy_gen_ax,
+ 	.fw_basename		= RTW8852A_FW_BASENAME,
+ 	.fw_format_max		= RTW8852A_FW_FORMAT_MAX,
+ 	.try_ce_fw		= false,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index cd1863e7e6d4..49664cc44f36 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -2506,6 +2506,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
+ 	.chip_gen		= RTW89_CHIP_AX,
+ 	.ops			= &rtw8852b_chip_ops,
+ 	.mac_def		= &rtw89_mac_gen_ax,
++	.phy_def		= &rtw89_phy_gen_ax,
+ 	.fw_basename		= RTW8852B_FW_BASENAME,
+ 	.fw_format_max		= RTW8852B_FW_FORMAT_MAX,
+ 	.try_ce_fw		= true,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 4e936e0ba407..abd01e808d83 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -2803,6 +2803,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
+ 	.chip_gen		= RTW89_CHIP_AX,
+ 	.ops			= &rtw8852c_chip_ops,
+ 	.mac_def		= &rtw89_mac_gen_ax,
++	.phy_def		= &rtw89_phy_gen_ax,
+ 	.fw_basename		= RTW8852C_FW_BASENAME,
+ 	.fw_format_max		= RTW8852C_FW_FORMAT_MAX,
+ 	.try_ce_fw		= false,
 -- 
 2.25.1
 
