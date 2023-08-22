@@ -2,60 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE982783B00
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 09:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07F51783B5E
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 10:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233454AbjHVHdr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 03:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54428 "EHLO
+        id S233697AbjHVIDP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 04:03:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233440AbjHVHdq (ORCPT
+        with ESMTP id S233679AbjHVIBp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 03:33:46 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2245B116
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 00:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692689625; x=1724225625;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3gji1PxgrICfMKQDKodZUKQhikp1aYIErIL66+6KOZo=;
-  b=ajCWd3MFLguFsiXTkiXcK7BNKzLqVqxAb6OwsdtSrsZ+heQmLnrWgQY9
-   XJbxI3MMVnalU+7dEyBJtHVyo7Po9AcXcGr6GK6q+rFd7JbdOMblbZmYS
-   enmjaF8y46ZM5MupcABa9ZmNgPxd0vgV8llTgCkOmXExtokOop38X3Rvd
-   jlPwYkKmC+ICrjyyjiRnMBkw1B9MBTuVSzS1jVplMaV6rAl+xjkKPTg8b
-   I7mFMBZjgSUIURDy2eiRQXm8qybzgDFI015CUgmdIJvT15gTFoauzRqos
-   px2BeDhS1HSDD/b8vjPDqHEIAma2xIO1NxpgEBPvdLRA9e7FBGV84teCz
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="363968776"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
-   d="scan'208";a="363968776"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 00:33:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="826229619"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
-   d="scan'208";a="826229619"
-Received: from msharshe-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.209.35])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 00:33:43 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Avraham Stern <avraham.stern@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 5/5] wifi: iwlmei: don't send nic info with invalid mac address
-Date:   Tue, 22 Aug 2023 10:33:19 +0300
-Message-Id: <20230822103048.a49436bed387.I0ca88d72456e6e9f939bbc2e0c52ffb173fbc97e@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230822073319.466640-1-gregory.greenman@intel.com>
-References: <20230822073319.466640-1-gregory.greenman@intel.com>
+        Tue, 22 Aug 2023 04:01:45 -0400
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83174CCD;
+        Tue, 22 Aug 2023 01:01:42 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1692691301; bh=9oCDfmDLw5jBELC0tO4ITWMFvzvL2YA0yg2G4v+jawM=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=tvAVYFiF/9bJ8BnpdYZ9Qg1HEbA3dnakPTjvwzQSFa8GJmrff4Xh6DCa56MC86gje
+         +ujfxowfzuxcZGCXZodR3GQ2x1lRMQocCo1zuIUQYrAtw5yPUbles3Yn0fcsBvTQtD
+         W2yOcx+JCSGLFYHusnaO49eL3kkMG8gapyYgO8kyAtGCZy87WabDLh/aBYnYc3Kdsf
+         C2lNNfEpIPNqFuCe+zPzGv+/7KY2joilGzzw1h79p6BOgjSntadyfBMW+xp1RcqIoO
+         GsC4AmGBrWukJACsO44YVhQ3QT0TGaadNtDGQpcwp9fwufoQAaPgKPvrbPClXeVtzY
+         Mxr6SkitSj2WA==
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Wang Ming <machel@vivo.com>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, opensource.kernel@vivo.com
+Subject: Re: [PATCH net-next v3] wifi: ath9k: Remove error checking for
+ debugfs_create_dir()
+In-Reply-To: <87lee3ws02.fsf@kernel.org>
+References: <20230726110750.3925-1-machel@vivo.com> <87sf8tbr3a.fsf@toke.dk>
+ <87bkf0k1rt.fsf@kernel.org> <87350cbiv9.fsf@toke.dk>
+ <87lee3ws02.fsf@kernel.org>
+Date:   Tue, 22 Aug 2023 10:01:40 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87zg2ja4kb.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,41 +50,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+Kalle Valo <kvalo@kernel.org> writes:
 
-In case the SAP connection is established before the interface is
-added, the mac address is still not set. Don't send the nic info
-SAP message in this case since it will result in sending an invalid
-mac address. The nic info message will be sent with a valid mac
-address when the interface is added.
+> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+>
+>> Kalle Valo <kvalo@kernel.org> writes:
+>>
+>>> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+>>>
+>>>> Wang Ming <machel@vivo.com> writes:
+>>>>
+>>>>> It is expected that most callers should _ignore_ the errors
+>>>>> return by debugfs_create_dir() in ath9k_htc_init_debug().
+>>>>>
+>>>>> Signed-off-by: Wang Ming <machel@vivo.com>
+>>>>> ---
+>>>>>  drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 --
+>>>>>  1 file changed, 2 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers=
+/net/wireless/ath/ath9k/htc_drv_debug.c
+>>>>> index b3ed65e5c4da..85ad45771b44 100644
+>>>>> --- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+>>>>> +++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+>>>>> @@ -491,8 +491,6 @@ int ath9k_htc_init_debug(struct ath_hw *ah)
+>>>>>=20=20
+>>>>>  	priv->debug.debugfs_phy =3D debugfs_create_dir(KBUILD_MODNAME,
+>>>>>  					     priv->hw->wiphy->debugfsdir);
+>>>>> -	if (!priv->debug.debugfs_phy)
+>>>>> -		return -ENOMEM;
+>>>>
+>>>> Hmm, so it's true that all the debugfs_create* functions deal correctly
+>>>> with the dir pointer being an error pointer, which means that it's
+>>>> possible to just ignore the return value of debugfs_create_dir() witho=
+ut
+>>>> anything breaking.
+>>>
+>>> The comment in debugfs_create_dir() states:
+>>>
+>>>  * NOTE: it's expected that most callers should _ignore_ the errors ret=
+urned
+>>>  * by this function. Other debugfs functions handle the fact that the "=
+dentry"
+>>>  * passed to them could be an error and they don't crash in that case.
+>>>  * Drivers should generally work fine even if debugfs fails to init any=
+way.
+>>>
+>>>> However, it also seems kinda pointless to have all those calls if we
+>>>> know they're going to fail, so I prefer v1 of this patch that just
+>>>> fixed the IS_ERR check. No need to resend, we can just apply v1
+>>>> instead...
+>>>
+>>> Because of the comment I'm leaning towards v3.
+>>
+>> Well, the comment says "most callers" :)
+>>
+>> I think having an early return like this is perfectly valid
+>> optimisation, even if it doesn't really make any performance difference.
+>> I don't feel incredibly strongly about it (given that the current check
+>> is broken I guess the early return has never actually worked), so if you
+>> feel like overriding your submaintainer on this, feel free ;)
+>
+> No no, I don't want to override anything :) Just making sure you were
+> aware of the comment. v1 is in my pending branch right now.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mei/main.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Alright, cool :)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mei/main.c b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-index 78b78a772f54..1dd9106c6513 100644
---- a/drivers/net/wireless/intel/iwlwifi/mei/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-@@ -774,9 +774,13 @@ static void iwl_mei_set_init_conf(struct iwl_mei *mei)
- 		iwl_mei_send_sap_msg_payload(mei->cldev, &sar_msg.hdr);
- 	}
- 
--	ether_addr_copy(nic_info_msg.mac_address, iwl_mei_cache.mac_address);
--	ether_addr_copy(nic_info_msg.nvm_address, iwl_mei_cache.nvm_address);
--	iwl_mei_send_sap_msg_payload(mei->cldev, &nic_info_msg.hdr);
-+	if (is_valid_ether_addr(iwl_mei_cache.mac_address)) {
-+		ether_addr_copy(nic_info_msg.mac_address,
-+				iwl_mei_cache.mac_address);
-+		ether_addr_copy(nic_info_msg.nvm_address,
-+				iwl_mei_cache.nvm_address);
-+		iwl_mei_send_sap_msg_payload(mei->cldev, &nic_info_msg.hdr);
-+	}
- 
- 	iwl_mei_send_sap_msg_payload(mei->cldev, &rfkill_msg.hdr);
- }
--- 
-2.38.1
-
+-Toke
