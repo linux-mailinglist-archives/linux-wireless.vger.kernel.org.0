@@ -2,44 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C077783ED4
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DC3C783EDE
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:31:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234775AbjHVLbX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 07:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54196 "EHLO
+        id S234813AbjHVLb5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 07:31:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234757AbjHVLbX (ORCPT
+        with ESMTP id S234812AbjHVLb4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 07:31:23 -0400
+        Tue, 22 Aug 2023 07:31:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84D4EE4C;
-        Tue, 22 Aug 2023 04:31:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CCD8E58;
+        Tue, 22 Aug 2023 04:31:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 072F86361C;
-        Tue, 22 Aug 2023 11:31:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81B1C433C8;
-        Tue, 22 Aug 2023 11:31:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EDC26526E;
+        Tue, 22 Aug 2023 11:31:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23605C4339A;
+        Tue, 22 Aug 2023 11:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692703872;
-        bh=BrBQtiNIqOrM7b9cP7Tksks7Q1e/7X1t5PRWBq99mHc=;
+        s=k20201202; t=1692703884;
+        bh=XlJfA9ySG52e4Ctt0JGVhhaPUI4zJcZCI8VS+UElmJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vg4gXAVQ56Yc+BCCqHC55kN7kJ0yPEDJuHIMcy4MtAzm/EmYNOn2dCDJwjjKE0Ezq
-         dWlwfgKGmQH0xGohzJvMGXjhmmu5I6am8I2jYKGovUS0P33qEJrnP9vM17peSNXW/T
-         tJ6ImLTn4s4IG3vYJDxQg4WyZn38Eipt8JHzg+2LmqOpUo6+f8TprM3X7S+BguyKdl
-         LenPkwnvGlrh37M/0BqW8O8DFlWVJJ40AVrw4Vw4kl1owqqvxZQXchHtP2loi05oQG
-         RhRNebMswloJlGjqAqUOK8LPjaNalPzUqFsxaOnGkvT14mzAed04CtHCDfq85j9hb7
-         zMEf2gV4ZYPmg==
+        b=Rlo/JbQ7/L7HPoa5812KUTTLr8WuRJtS4benojgMofSmW7wiQZGU5Kpr2qFa8P64L
+         mRdZe9NR9QeU5POrcWpS3orzbL3snn/8X6IGyKhbXApIERB2LhcASKsuyvumCK4rH/
+         DCn1GwpWK5To1OM7+nNKL9WBKQbV/l+bnkClA33aEhJBJGHZcgHb3L7/XdL7LA3RDB
+         LgKS4bveg9sIh5YTYsiE3wainfVkn3EmIwajCOVVZKrSqJnLG1WqQdGcn8fr3upF/1
+         5ic4zUmo4dv+2g6jub9lthlqpfhRNX0On2MPg01fKid//Yjo8huk8XKt3aqPB5UPNX
+         WQjgR4tLB63JA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.4 04/10] Revert "wifi: ath6k: silence false positive -Wno-dangling-pointer warning on GCC 12"
-Date:   Tue, 22 Aug 2023 07:30:54 -0400
-Message-Id: <20230822113101.3549915-4-sashal@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        aspriel@gmail.com, hante.meuleman@broadcom.com,
+        linus.walleij@linaro.org, marcan@marcan.st, gustavoars@kernel.org,
+        ryohei.kondo@cypress.com, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: [PATCH AUTOSEL 6.4 08/10] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
+Date:   Tue, 22 Aug 2023 07:30:58 -0400
+Message-Id: <20230822113101.3549915-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230822113101.3549915-1-sashal@kernel.org>
 References: <20230822113101.3549915-1-sashal@kernel.org>
@@ -58,39 +65,63 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kalle Valo <kvalo@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit a1ce186db7f0e449f35d12fb55ae0da2a1b400e2 ]
+[ Upstream commit 16e455a465fca91907af0108f3d013150386df30 ]
 
-This reverts commit bd1d129daa3ede265a880e2c6a7f91eab0f4dc62.
+Using brcmfmac with 6.5-rc3 on a brcmfmac43241b4-sdio triggers
+a backtrace caused by the following field-spanning warning:
 
-The dangling-pointer warnings were disabled kernel-wide by commit 49beadbd47c2
-("gcc-12: disable '-Wdangling-pointer' warning for now") for v5.19. So this
-hack in ath6kl is not needed anymore.
+memcpy: detected field-spanning write (size 120) of single field
+  "&params_le->channel_list[0]" at
+  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size 2)
 
+The driver still works after this warning. The warning was introduced by the
+new field-spanning write checks which were enabled recently.
+
+Fix this by replacing the channel_list[1] declaration at the end of
+the struct with a flexible array declaration.
+
+Most users of struct brcmf_scan_params_le calculate the size to alloc
+using the size of the non flex-array part of the struct + needed extra
+space, so they do not care about sizeof(struct brcmf_scan_params_le).
+
+brcmf_notify_escan_complete() however uses the struct on the stack,
+expecting there to be room for at least 1 entry in the channel-list
+to store the special -1 abort channel-id.
+
+To make this work use an anonymous union with a padding member
+added + the actual channel_list flexible array.
+
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Franky Lin <franky.lin@broadcom.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230724100823.2948804-1-kvalo@kernel.org
+Link: https://lore.kernel.org/r/20230729140500.27892-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath6kl/Makefile | 5 -----
- 1 file changed, 5 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h  | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/Makefile b/drivers/net/wireless/ath/ath6kl/Makefile
-index a75bfa9fd1cfd..dc2b3b46781e1 100644
---- a/drivers/net/wireless/ath/ath6kl/Makefile
-+++ b/drivers/net/wireless/ath/ath6kl/Makefile
-@@ -36,11 +36,6 @@ ath6kl_core-y += wmi.o
- ath6kl_core-y += core.o
- ath6kl_core-y += recovery.o
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+index 792adaf880b44..bece26741d3a3 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+@@ -398,7 +398,12 @@ struct brcmf_scan_params_le {
+ 				 * fixed parameter portion is assumed, otherwise
+ 				 * ssid in the fixed portion is ignored
+ 				 */
+-	__le16 channel_list[1];	/* list of chanspecs */
++	union {
++		__le16 padding;	/* Reserve space for at least 1 entry for abort
++				 * which uses an on stack brcmf_scan_params_le
++				 */
++		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
++	};
+ };
  
--# FIXME: temporarily silence -Wdangling-pointer on non W=1+ builds
--ifndef KBUILD_EXTRA_WARN
--CFLAGS_htc_mbox.o += $(call cc-disable-warning, dangling-pointer)
--endif
--
- ath6kl_core-$(CONFIG_NL80211_TESTMODE) += testmode.o
- ath6kl_core-$(CONFIG_ATH6KL_TRACING) += trace.o
- 
+ struct brcmf_scan_params_v2_le {
 -- 
 2.40.1
 
