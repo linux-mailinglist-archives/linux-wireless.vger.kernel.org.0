@@ -2,61 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41FB4783F13
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB099784025
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233861AbjHVLdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 07:33:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
+        id S235498AbjHVLyT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 07:54:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232354AbjHVLdN (ORCPT
+        with ESMTP id S235103AbjHVLyS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 07:33:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7247FE55;
-        Tue, 22 Aug 2023 04:32:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D3CC652F5;
-        Tue, 22 Aug 2023 11:32:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DC7C433C8;
-        Tue, 22 Aug 2023 11:32:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692703963;
-        bh=MAgeVFiQ/GLoFOhlmi6vWUoGiAmhRDDsCJPJF1xdZb0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LKMMx60/y7bhsu7B293vJrWUyg3cW66w+K5oLdEKN3y0MAT0zikb3NhAVYuSAnQjP
-         TKM0vB3SZH4Ik/V5hjBHNq8xxMZgFYUO/Y4WJr78mE7U7t2RW9AKNTe5YYP+fubdNz
-         nZrT0ierubE1tT2KjOdxda7Y0Hit6z1ETXkPsJQxxx7bygycs+OQUcvBh/YbsfY5+s
-         hYUaIMaXdjkPoHCSoVxzLIz0nQPnnoV0a1CCL8nJO21tRXlQUhatsLVI+SR/6VM1VN
-         ieNQcC3wZS0oTN8CP6Nfks1ybc9grIQNRKMGcK49kaltGQ9szL7zxc4BPDC95hNsJ3
-         m4oYUJT9oEZfA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        aspriel@gmail.com, hante.meuleman@broadcom.com,
-        linus.walleij@linaro.org, marcan@marcan.st, gustavoars@kernel.org,
-        ryohei.kondo@cypress.com, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Subject: [PATCH AUTOSEL 4.14 2/2] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
-Date:   Tue, 22 Aug 2023 07:32:35 -0400
-Message-Id: <20230822113236.3550450-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230822113236.3550450-1-sashal@kernel.org>
-References: <20230822113236.3550450-1-sashal@kernel.org>
+        Tue, 22 Aug 2023 07:54:18 -0400
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC52CE9;
+        Tue, 22 Aug 2023 04:53:59 -0700 (PDT)
+Received: from local
+        by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+         (Exim 4.96)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1qYPg5-0006wL-27;
+        Tue, 22 Aug 2023 11:36:06 +0000
+Date:   Tue, 22 Aug 2023 12:35:47 +0100
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next v3 1/2] dt-bindings: mt76: support setting
+ per-band MAC address
+Message-ID: <ZOSdk6LyTlCayG4i@makrotopia.org>
+References: <d3130584b64309da28a04826100643ff6239f9ca.1690841657.git.daniel@makrotopia.org>
+ <20230811190944.GA3730441-robh@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.323
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230811190944.GA3730441-robh@kernel.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,63 +61,189 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+On Fri, Aug 11, 2023 at 01:09:44PM -0600, Rob Herring wrote:
+> On Mon, Jul 31, 2023 at 11:23:16PM +0100, Daniel Golle wrote:
+> > Introduce support for setting individual per-band MAC addresses using
+> > NVMEM cells by adding a 'bands' object with enumerated child nodes
+> > representing the 2.4 GHz, 5 GHz and 6 GHz bands.
+> > 
+> > In case it is defined, call of_get_mac_address for the per-band child
+> > node, otherwise try with of_get_mac_address on the main device node and
+> > fall back to a random address like it used to be.
+> > 
+> > While at it, add MAC address related properties also for the main node.
+> > 
+> > Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+> > ---
+> > Changes since v2:
+> >  * drop items list with only a single item
+> > 
+> > Changes since v1:
+> >  * add dt-bindings
+> > 
+> >  .../bindings/net/wireless/mediatek,mt76.yaml  | 58 ++++++++++++++++++-
+> >  1 file changed, 57 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> > index 252207adbc54c..7eafed53da1de 100644
+> > --- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> > +++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> > @@ -37,6 +37,12 @@ properties:
+> >      description:
+> >        MT7986 should contain 3 regions consys, dcm, and sku, in this order.
+> >  
+> > +  '#address-cells':
+> > +    const: 1
+> > +
+> > +  '#size-cells':
+> > +    const: 0
+> > +
+> >    interrupts:
+> >      maxItems: 1
+> >  
+> > @@ -72,13 +78,23 @@ properties:
+> >  
+> >    ieee80211-freq-limit: true
+> >  
+> > +  address: true
+> 
+> What's this? Not a documented property.
 
-[ Upstream commit 16e455a465fca91907af0108f3d013150386df30 ]
+Maybe it should be documented then...?
+See
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/core/of_net.c#n140
 
-Using brcmfmac with 6.5-rc3 on a brcmfmac43241b4-sdio triggers
-a backtrace caused by the following field-spanning warning:
+```
+int of_get_mac_address(struct device_node *np, u8 *addr)
+{
+	int ret;
 
-memcpy: detected field-spanning write (size 120) of single field
-  "&params_le->channel_list[0]" at
-  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size 2)
+	if (!np)
+		return -ENODEV;
 
-The driver still works after this warning. The warning was introduced by the
-new field-spanning write checks which were enabled recently.
+	ret = of_get_mac_addr(np, "mac-address", addr);
+	if (!ret)
+		return 0;
 
-Fix this by replacing the channel_list[1] declaration at the end of
-the struct with a flexible array declaration.
+	ret = of_get_mac_addr(np, "local-mac-address", addr);
+	if (!ret)
+		return 0;
 
-Most users of struct brcmf_scan_params_le calculate the size to alloc
-using the size of the non flex-array part of the struct + needed extra
-space, so they do not care about sizeof(struct brcmf_scan_params_le).
+	ret = of_get_mac_addr(np, "address", addr);
+	if (!ret)
+		return 0;
 
-brcmf_notify_escan_complete() however uses the struct on the stack,
-expecting there to be room for at least 1 entry in the channel-list
-to store the special -1 abort channel-id.
+	return of_get_mac_address_nvmem(np, addr);
+}
+EXPORT_SYMBOL(of_get_mac_address);
+```
 
-To make this work use an anonymous union with a padding member
-added + the actual channel_list flexible array.
+> 
+> 
+> > +
+> > +  local-mac-address: true
+> > +
+> > +  mac-address: true
+> 
+> You really need a ref to the schema defining these. But first we need to 
+> split them out from ethernet-controller.yaml. Which I think there were 
+> patches for, but it stalled out.
+> 
 
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Franky Lin <franky.lin@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230729140500.27892-1-hdegoede@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h  | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+I understand, so have a schema to include whenever of_net.c is used to
+assign a MAC address, and then use that for ethernet-controller.yaml and
+in places such as here.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-index 05bd636011ec9..58338b6443f8d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-@@ -354,7 +354,12 @@ struct brcmf_scan_params_le {
- 				 * fixed parameter portion is assumed, otherwise
- 				 * ssid in the fixed portion is ignored
- 				 */
--	__le16 channel_list[1];	/* list of chanspecs */
-+	union {
-+		__le16 padding;	/* Reserve space for at least 1 entry for abort
-+				 * which uses an on stack brcmf_scan_params_le
-+				 */
-+		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-+	};
- };
- 
- struct brcmf_scan_results {
--- 
-2.40.1
+If you point me to the existing patches I can pick them up and address
+whatever needs to be addressed to get them merged.
 
+> Anyways, it's fine for now if you're not up for that.
+
+So just remove the (supposedly deprecated) "address: true" for now and
+then create an of_net MAC-address related schema and move things there
+after that?
+
+> 
+> > +
+> >    nvmem-cells:
+> > +    minItems: 1
+> >      items:
+> >        - description: NVMEM cell with EEPROM
+> > +      - description: NVMEM cell with the MAC address
+> >  
+> >    nvmem-cell-names:
+> > +    minItems: 1
+> >      items:
+> >        - const: eeprom
+> > +      - const: mac-address
+> >  
+> >    mediatek,eeprom-data:
+> >      $ref: /schemas/types.yaml#/definitions/uint32-array
+> > @@ -213,6 +229,29 @@ properties:
+> >                      description:
+> >                        Half-dBm power delta for different numbers of antennas
+> >  
+> > +patternProperties:
+> > +  '^band@[0-2]+$':
+> > +    type: object
+> > +    additionalProperties: false
+> > +    properties:
+> > +      reg:
+> > +        maxItems: 1
+> > +
+> > +      address: true
+> > +      local-mac-address: true
+> > +      mac-address: true
+> > +
+> > +      nvmem-cells:
+> > +        description: NVMEM cell with the MAC address
+> > +
+> > +      nvmem-cell-names:
+> > +        const: mac-address
+> > +
+> > +    required:
+> > +      - reg
+> > +
+> > +    unevaluatedProperties: false
+> > +
+> >  required:
+> >    - compatible
+> >    - reg
+> > @@ -225,10 +264,13 @@ examples:
+> >        #address-cells = <3>;
+> >        #size-cells = <2>;
+> >        wifi@0,0 {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> >          compatible = "mediatek,mt76";
+> >          reg = <0x0000 0 0 0 0>;
+> >          ieee80211-freq-limit = <5000000 6000000>;
+> > -        mediatek,mtd-eeprom = <&factory 0x8000>;
+> > +        nvmem-cells = <&factory_eeprom>;
+> > +        nvmem-cell-names = "eeprom";
+> >          big-endian;
+> >  
+> >          led {
+> > @@ -257,6 +299,20 @@ examples:
+> >               };
+> >            };
+> >          };
+> > +
+> > +        band@0 {
+> > +          /* 2.4 GHz */
+> > +          reg = <0>;
+> > +          nvmem-cells = <&macaddr 0x4>;
+> > +          nvmem-cell-names = "mac-address";
+> > +        };
+> > +
+> > +        band@1 {
+> > +          /* 5 GHz */
+> > +          reg = <1>;
+> > +          nvmem-cells = <&macaddr 0xa>;
+> > +          nvmem-cell-names = "mac-address";
+> > +        };
+> >        };
+> >      };
+> >  
+> > -- 
+> > 2.41.0
