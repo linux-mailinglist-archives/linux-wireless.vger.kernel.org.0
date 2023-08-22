@@ -2,95 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2CCC78410D
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 14:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F3B784133
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 14:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235761AbjHVMnU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 08:43:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40824 "EHLO
+        id S233196AbjHVMud (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 08:50:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233446AbjHVMnT (ORCPT
+        with ESMTP id S231901AbjHVMud (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 08:43:19 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04381196;
-        Tue, 22 Aug 2023 05:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=PY+bsAgi3bDuH7vUp2hqTbQFPyW1J5EqPhjyCuqe+Uk=; t=1692708198; x=1693917798; 
-        b=Huk+b/+skwKWpLJlQAwBw5MA+nHSPE1CuFDMTwDXXtMSHcL39BnbUJAZTBivhBR5Xs9b6waRb9T
-        /S85GSRZPA7VHLkS/FCaQ9VwilVrCjBuLBAp16T/3FkDruBMADjdPRUabujGFymI9M70WCLxrzsch
-        79wU3tSP+mrWJeiWIhfF5yOyhzAZPQTcUxZJNNN6LDCF5C4lQL176PjMCqWglIXY732AsmLOX+CYH
-        9YPJNg0G4P3lWL7JDoBXW8epRH9G7hP4i6+g9d6LMscH6eLMK0J1jgYw/8tm+KY0XvLl+GdsS0gW0
-        O8Ait0Eyy3yrSOkXRcw4rngX+n9sZF4m5dqg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qYQj5-0058Y2-2B;
-        Tue, 22 Aug 2023 14:43:16 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: wireless-2023-08-22
-Date:   Tue, 22 Aug 2023 14:42:07 +0200
-Message-ID: <20230822124206.43926-2-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.41.0
+        Tue, 22 Aug 2023 08:50:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ADCB1BE
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 05:50:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AFEC61338
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 12:50:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D380C433C7;
+        Tue, 22 Aug 2023 12:50:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692708630;
+        bh=VOj/H3WFw6eAeJRXThByUZWJHDAa+HeOqkE4Tbwj1es=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=GxQ+f4GfMdjxe14JaXdnUgyeqnvdIT+79tKy8RPl00B3ETu6V3mU0hS4Wb9nvuskx
+         zNvxG2l1h9POMod6OcEwMlgS1Cl3agHi5hJtyY3NGJSfZXUeOrDJM83SNs39kAdc1m
+         n5gsU3+5HJh9HYMIlvy5uNGBYQan2WRjhrAgCBk7ne3ziBhzBZ1sGnXf6EeQXuP3Ns
+         7LOMJwy57X703vLSS7ZTt71gz+VIh5/jxfJl/RyRL1lRuurfOImFkEiZ0piq7koQKf
+         ljbbFr1lM274WU+YH0Z33N5QzsycC/NMVOZNymY8PVCfX2qYSWS+HyWVjNHqRuab8+
+         Rtm5mU+eHOEPg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Baochen Qiang <quic_bqiang@quicinc.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath11k: fix boot failure with one MSI vector
+References: <20230601033840.2997-1-quic_bqiang@quicinc.com>
+        <87fs70hlel.fsf@kernel.org>
+        <545cc8e8-481d-85b2-5692-43580936b48d@quicinc.com>
+        <897b61ea-36d2-1ab4-9c60-9bdfd2d9cad7@quicinc.com>
+        <fa70ca5e-001b-3c6b-dbc2-2853f8fc2f72@quicinc.com>
+        <fcb783b4-95e9-24d8-a656-b273a79598a0@quicinc.com>
+        <4720b820-523a-477a-436c-72fceb4a6a12@quicinc.com>
+Date:   Tue, 22 Aug 2023 15:50:27 +0300
+In-Reply-To: <4720b820-523a-477a-436c-72fceb4a6a12@quicinc.com> (Manikanta
+        Pubbisetty's message of "Tue, 8 Aug 2023 10:37:47 +0530")
+Message-ID: <87sf8bi6lo.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 
-We have two more fixes - one stack and one driver - for the
-current cycle. I think the Kconfig fix would be appreciated
-more than the other, but if anyone runs with UBSAN they may
-find this problem as well.
+> On 8/7/2023 8:59 PM, Jeff Johnson wrote:
+>> On 8/7/2023 3:16 AM, Manikanta Pubbisetty wrote:
+>>> No impact on WCN6750.
+>>>
+>>> Tested-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+>> Can you provide a Tested-on: flag that Kalle can add to the commit
+>> text?
+>> 
+>
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-01160-QCAMSLSWPLZ-1
 
-Please pull and let me know if there's any problem.
+Excellent, thanks. The more Tested-on tags I see on the patch the more
+confidence I have for the patch.
 
-Thanks,
-johannes
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
-
-The following changes since commit 06f2ab86a5b6ed55f013258de4be9319841853ea:
-
-  wifi: ath12k: Fix buffer overflow when scanning with extraie (2023-08-09 14:44:14 +0200)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2023-08-22
-
-for you to fetch changes up to b98c16107cc1647242abbd11f234c05a3a5864f6:
-
-  wifi: mac80211: limit reorder_buf_filtered to avoid UBSAN warning (2023-08-21 09:49:54 +0200)
-
-----------------------------------------------------------------
-Two fixes:
- * reorder buffer filter checks can cause bad shift/UBSAN
-   warning with newer HW, avoid the check (mac80211)
- * add Kconfig dependency for iwlwifi for PTP clock usage
-
-----------------------------------------------------------------
-Ping-Ke Shih (1):
-      wifi: mac80211: limit reorder_buf_filtered to avoid UBSAN warning
-
-Randy Dunlap (1):
-      wifi: iwlwifi: mvm: add dependency for PTP clock
-
- drivers/net/wireless/intel/iwlwifi/Kconfig |  1 +
- include/net/mac80211.h                     |  1 +
- net/mac80211/rx.c                          | 12 ++++++++++--
- 3 files changed, 12 insertions(+), 2 deletions(-)
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
