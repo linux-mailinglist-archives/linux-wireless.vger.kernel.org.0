@@ -2,126 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB4BB78396E
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 07:43:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A73EF783973
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 07:47:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232858AbjHVFng (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 01:43:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42428 "EHLO
+        id S232868AbjHVFrP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 01:47:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232523AbjHVFnf (ORCPT
+        with ESMTP id S231657AbjHVFrN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 01:43:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57A68133;
-        Mon, 21 Aug 2023 22:43:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7DBD61F5D;
-        Tue, 22 Aug 2023 05:43:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC6DC433C9;
-        Tue, 22 Aug 2023 05:43:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692683012;
-        bh=MlkDt4lSwRLkNkwyY2fyqOrEpkJm8+YSKKaLzasKkek=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=o5eDhnoYUR6MC0uhXLUEzzr8DYAZ0ei3bSVg57wqinm3UUaeQ0Wdv7X50n0jwp34t
-         uV3Mu9SfiKmT+h+UALoxPSDtmrLYoCqpcSIxUkJwh028sjRoca/6mJ+DPr8PFCRCq5
-         iLQIEJsAKpzDDSrw60lXU36CyB+NfmKPa7BFLWhjIixXnSRcdFHgVvQc2fX0Lz5k2i
-         /JEmZZAyspOrP6ce6fz+JQ1YAR8Y6ZRZhLAC9Pptj9BGkAgv0MWRhg5UHJGBIA90SU
-         kXDxdiDxjf2G/G8ZaiDMgi6yWAwSLXmHlInK98qBkSZGUEubqoyXXWJQFgRsbkilJd
-         1Nn0sqnuZ7ilw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc:     Wang Ming <machel@vivo.com>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, opensource.kernel@vivo.com
-Subject: Re: [PATCH net-next v3] wifi: ath9k: Remove error checking for
- debugfs_create_dir()
-References: <20230726110750.3925-1-machel@vivo.com> <87sf8tbr3a.fsf@toke.dk>
-        <87bkf0k1rt.fsf@kernel.org> <87350cbiv9.fsf@toke.dk>
-Date:   Tue, 22 Aug 2023 08:44:29 +0300
-In-Reply-To: <87350cbiv9.fsf@toke.dk> ("Toke =?utf-8?Q?H=C3=B8iland-J?=
- =?utf-8?Q?=C3=B8rgensen=22's?= message of
-        "Mon, 21 Aug 2023 15:55:06 +0200")
-Message-ID: <87lee3ws02.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Tue, 22 Aug 2023 01:47:13 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B4C68133;
+        Mon, 21 Aug 2023 22:47:10 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37M5kWoaD025861, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37M5kWoaD025861
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 22 Aug 2023 13:46:32 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Tue, 22 Aug 2023 13:46:54 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Tue, 22 Aug 2023 13:46:53 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Tue, 22 Aug 2023 13:46:53 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     Sergey Korolev <korolev.sergey@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: PROBLEM: kernel warns about voluntary context switch within RCU critical section in rtw88_usb
+Thread-Topic: PROBLEM: kernel warns about voluntary context switch within RCU
+ critical section in rtw88_usb
+Thread-Index: AQHZ1Du6L7NM3D3q6kaezl/cutgsbq/1i5bggABCY6yAAACHgA==
+Date:   Tue, 22 Aug 2023 05:46:53 +0000
+Message-ID: <cf3ca98d6c18482eb63e3713f67e44e6@realtek.com>
+References: <CA+QjRnJ+YMdOM0OzwG+Pz8-mTPo5nZVioCjbz1xY0jVSGXBk7w@mail.gmail.com>
+        <bfaa8714467a4954a045475e062f78b1@realtek.com> <87pm3fws4m.fsf@kernel.org>
+In-Reply-To: <87pm3fws4m.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
-
-> Kalle Valo <kvalo@kernel.org> writes:
->
->> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
->>
->>> Wang Ming <machel@vivo.com> writes:
->>>
->>>> It is expected that most callers should _ignore_ the errors
->>>> return by debugfs_create_dir() in ath9k_htc_init_debug().
->>>>
->>>> Signed-off-by: Wang Ming <machel@vivo.com>
->>>> ---
->>>>  drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 --
->>>>  1 file changed, 2 deletions(-)
->>>>
->>>> diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/=
-net/wireless/ath/ath9k/htc_drv_debug.c
->>>> index b3ed65e5c4da..85ad45771b44 100644
->>>> --- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
->>>> +++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
->>>> @@ -491,8 +491,6 @@ int ath9k_htc_init_debug(struct ath_hw *ah)
->>>>=20=20
->>>>  	priv->debug.debugfs_phy =3D debugfs_create_dir(KBUILD_MODNAME,
->>>>  					     priv->hw->wiphy->debugfsdir);
->>>> -	if (!priv->debug.debugfs_phy)
->>>> -		return -ENOMEM;
->>>
->>> Hmm, so it's true that all the debugfs_create* functions deal correctly
->>> with the dir pointer being an error pointer, which means that it's
->>> possible to just ignore the return value of debugfs_create_dir() without
->>> anything breaking.
->>
->> The comment in debugfs_create_dir() states:
->>
->>  * NOTE: it's expected that most callers should _ignore_ the errors retu=
-rned
->>  * by this function. Other debugfs functions handle the fact that the "d=
-entry"
->>  * passed to them could be an error and they don't crash in that case.
->>  * Drivers should generally work fine even if debugfs fails to init anyw=
-ay.
->>
->>> However, it also seems kinda pointless to have all those calls if we
->>> know they're going to fail, so I prefer v1 of this patch that just
->>> fixed the IS_ERR check. No need to resend, we can just apply v1
->>> instead...
->>
->> Because of the comment I'm leaning towards v3.
->
-> Well, the comment says "most callers" :)
->
-> I think having an early return like this is perfectly valid
-> optimisation, even if it doesn't really make any performance difference.
-> I don't feel incredibly strongly about it (given that the current check
-> is broken I guess the early return has never actually worked), so if you
-> feel like overriding your submaintainer on this, feel free ;)
-
-No no, I don't want to override anything :) Just making sure you were
-aware of the comment. v1 is in my pending branch right now.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FsbGUgVmFsbyA8a3Zh
+bG9Aa2VybmVsLm9yZz4NCj4gU2VudDogVHVlc2RheSwgQXVndXN0IDIyLCAyMDIzIDE6NDIgUE0N
+Cj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiBDYzogU2VyZ2V5IEtv
+cm9sZXYgPGtvcm9sZXYuc2VyZ2V5QGdtYWlsLmNvbT47IGxpbnV4LXdpcmVsZXNzQHZnZXIua2Vy
+bmVsLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTog
+UFJPQkxFTToga2VybmVsIHdhcm5zIGFib3V0IHZvbHVudGFyeSBjb250ZXh0IHN3aXRjaCB3aXRo
+aW4gUkNVIGNyaXRpY2FsIHNlY3Rpb24gaW4gcnR3ODhfdXNiDQo+IA0KPiBQaW5nLUtlIFNoaWgg
+PHBrc2hpaEByZWFsdGVrLmNvbT4gd3JpdGVzOg0KPiANCj4gPiBGcm9tOiBTZXJnZXkgS29yb2xl
+diA8a29yb2xldi5zZXJnZXlAZ21haWwuY29tPg0KPiA+IFNlbnQ6IE1vbmRheSwgQXVndXN0IDIx
+LCAyMDIzIDEwOjI4IFBNDQo+ID4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29t
+PjsgS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz47IGxpbnV4LXdpcmVsZXNzQHZnZXIua2Vy
+bmVsLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiA+IFN1YmplY3Q6IFBS
+T0JMRU06IGtlcm5lbCB3YXJucyBhYm91dCB2b2x1bnRhcnkgY29udGV4dCBzd2l0Y2ggd2l0aGlu
+IFJDVSBjcml0aWNhbCBzZWN0aW9uIGluIHJ0dzg4X3VzYg0KPiA+Pg0KPiA+PiBQbGVhc2Ugbm90
+ZSBJIHVzZSBhbiB1bm1vZGlmaWVkIGRyaXZlciBmcm9tIHRoZSB1cHN0cmVhbSAyOGMxMWMyOTQ5
+NGYxYjM0ZTM5NjQxZWVhZDljNjBhOGJkMjYxNzBkDQo+ID4+ICgid2lmaTogcnR3ODg6IGZpeCBu
+b3QgZW50ZXJpbmcgUFMgbW9kZSBhZnRlciBBUCBzdG9wcyIpIGJ1aWxkIGZvciA2LjIga2VybmVs
+IChVYnVudHUgMjMuMDQpLg0KPiA+DQo+ID4gSSBmZWVsIE1hcnRpbiBoYXMgYmVlbiBhZGRyZXNz
+ZWQgdGhpcyBwcm9ibGVtIGR1cmluZyBkZXZlbG9wbWVudCBvZiBTRElPIGFuZCBVU0INCj4gPiBi
+eSA4YTFlMmZkOGUyZGEgKCJ3aWZpOiBydHc4ODogTW92ZSByZWdpc3RlciBhY2Nlc3MgZnJvbSBy
+dHdfYmZfYXNzb2MoKSBvdXRzaWRlIHRoZSBSQ1UiKQ0KPiA+IFBsZWFzZSB0YWtlIGEgbG9vayBp
+ZiB0aGlzIHBhdGNoIGlzIGV4aXN0aW5nIGluIHlvdXIgc291cmNlLg0KPiANCj4gQ29tbWl0IDhh
+MWUyZmQ4ZTJkYSB3YXMgbWVyZ2VkIHRvIHY2LjMtcmMxIHNvIHY2LjIgd29uJ3QgaGF2ZSBpdC4N
+Cj4gDQoNClNlcmdleSBzYWlkIGhlIHVzZXMgZHJpdmVyIGZyb20gMjhjMTFjMjk0OTRmIHRoYXQg
+aXMgdjYuNC1yYzUgb3IgdjYuNSwgc28NCnNlZW1pbmdseSBpdCBzaG91bGQgaW5jbHVkZSBNYXJ0
+aW4ncyBwYXRjaC4gTm90IHN1cmUgd2hhdCBpcyB3cm9uZy4NCg0KUGluZy1LZQ0KDQo=
