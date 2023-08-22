@@ -2,84 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56A8D783EA2
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B605E783ECE
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 13:31:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234610AbjHVLQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 07:16:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42306 "EHLO
+        id S234758AbjHVLbN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 07:31:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233448AbjHVLQd (ORCPT
+        with ESMTP id S234757AbjHVLbM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 07:16:33 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7C6CCA
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 04:16:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=mkW7mf7IDVG5Od3Z5Q/f49ZooKwzTbwmE/yQzEcHPI8=;
-        t=1692702992; x=1693912592; b=khAL6s5V3QRGAdyN5HVxeC3NBmNc+G1vI/tA0SRukU25YUa
-        HVBOYU7FE+WAcyiSp/Xx5qZiNZZRMfekeHrvsD+KjSMRIF3+c5MO1tcrT5Oq9Ep+Z5PpUKyb9OSoB
-        QvMAlgUOgu4pOiByT2sDMD8DzAtb1V42U1SqnbpNhZr6RSvT53c7PEoyIGsU2nyX46/o0kdeJ2/1i
-        QGwQ0E9iQvOx2A+DWy48RHMIwLMPGpTeUKjrBplmjdjbRDI8ERROfeBZECgMTX3rMF4DAQDMWtFEO
-        sKA3AUDtwvQbB7131P02zPaWv/hn3l131NGNrn1IAIFrSglBmu2omA3h4eb5Zm0w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qYPN4-00536j-23;
-        Tue, 22 Aug 2023 13:16:26 +0200
-Message-ID: <c4d2c8987f929f29da96154e0fc6c9e94882310e.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: mac80211: fix cfg80211_bss always hold when
- assoc response fail for MLO connection
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>, ath12k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 22 Aug 2023 13:16:25 +0200
-In-Reply-To: <20230822100409.1242-1-quic_wgong@quicinc.com>
-References: <20230822100409.1242-1-quic_wgong@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Tue, 22 Aug 2023 07:31:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74906CF1;
+        Tue, 22 Aug 2023 04:31:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0224F633D7;
+        Tue, 22 Aug 2023 11:31:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503CDC433C9;
+        Tue, 22 Aug 2023 11:31:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692703867;
+        bh=ClUbNh5Ba5Ijk1bbKYM7eB7v7clusIUN0C4gBbPZPDg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Gfp9XaCwnP76zzJNmcmmEERnOZp5wb7aUyJ4dCINIpwE6aC1QlTiujZao070najm0
+         es9nk1ttwJNWAonWlA+2jDhTiD8QctUCMRM0TqlhlzOv2IQs0aHloxl4jRgBmd7F11
+         nOFjSqkdpRw/J4zaK3ob4u5L9LaM9gCxUjv54KCAq5noTVsdsEeGuL/EQfsV1kxQr1
+         5ZcVnzD0EjySmNup2+WEucpJTij+4xrc+RTgVYS5Rbx+Dqa0hJK6qBRJx5guFiGhqL
+         IEqV6afVquJSeIQKU9FIziWcW4dnU5/pG0CQE+Fr7OXUqp8pMZYsw9l+AW1a38nSYE
+         ES2QnTbFQeKJQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Kalle Valo <quic_kvalo@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, quic_jjohnson@quicinc.com,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.4 03/10] Revert "wifi: ath11k: Enable threaded NAPI"
+Date:   Tue, 22 Aug 2023 07:30:53 -0400
+Message-Id: <20230822113101.3549915-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230822113101.3549915-1-sashal@kernel.org>
+References: <20230822113101.3549915-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.4.11
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-08-22 at 06:04 -0400, Wen Gong wrote:
->=20
-> It is 100% ratio to reproduce the issue with this change.
-> Add "mgmt->u.assoc_resp.status_code =3D 1" in ieee80211_rx_mgmt_assoc_res=
-p().
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-Don't think that adds any value, but I guess I can always remove it.
+[ Upstream commit d265ebe41c911314bd273c218a37088835959fa1 ]
 
-> +		/* use the addr of assoc_data link which is set in ieee80211_mgd_assoc=
-() */
+This reverts commit 13aa2fb692d3717767303817f35b3e650109add3.
 
-not sure that's so useful? but anyway
+This commit broke QCN9074 initialisation:
 
-The reason I'm even writing this message is that you didn't think this
-change through:
+[  358.960477] ath11k_pci 0000:04:00.0: ce desc not available for wmi command 36866
+[  358.960481] ath11k_pci 0000:04:00.0: failed to send WMI_STA_POWERSAVE_PARAM_CMDID
+[  358.960484] ath11k_pci 0000:04:00.0: could not set uapsd params -105
 
-> -		const u8 *addr;
-> +		u8 addr[ETH_ALEN] __aligned(2);
+As there's no fix available let's just revert it to get QCN9074 working again.
 
-That has some other consequences you need to adapt to, in particular
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217536
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230720151444.2016637-1-kvalo@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath11k/ahb.c  | 1 -
+ drivers/net/wireless/ath/ath11k/pcic.c | 1 -
+ 2 files changed, 2 deletions(-)
 
-                /* need to have local link addresses for MLO connections */
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 396548e57022f..88aeb36ab2e79 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -376,7 +376,6 @@ static void ath11k_ahb_ext_irq_enable(struct ath11k_base *ab)
+ 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 
+ 		if (!irq_grp->napi_enabled) {
+-			dev_set_threaded(&irq_grp->napi_ndev, true);
+ 			napi_enable(&irq_grp->napi);
+ 			irq_grp->napi_enabled = true;
+ 		}
+diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
+index 30d66147223f4..a8bcffcf2e813 100644
+--- a/drivers/net/wireless/ath/ath11k/pcic.c
++++ b/drivers/net/wireless/ath/ath11k/pcic.c
+@@ -466,7 +466,6 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
+ 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 
+ 		if (!irq_grp->napi_enabled) {
+-			dev_set_threaded(&irq_grp->napi_ndev, true);
+ 			napi_enable(&irq_grp->napi);
+ 			irq_grp->napi_enabled = true;
+ 		}
+-- 
+2.40.1
 
-                WARN_ON(cr.ap_mld_addr && !cr.links[link_id].addr);
-
-makes no sense anymore. Not sure if that's the only one.
-
-
-johannes
