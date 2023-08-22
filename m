@@ -2,97 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A73EF783973
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 07:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 562D17839D2
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Aug 2023 08:17:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232868AbjHVFrP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 01:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48470 "EHLO
+        id S232967AbjHVGR1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 02:17:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231657AbjHVFrN (ORCPT
+        with ESMTP id S230116AbjHVGR0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 01:47:13 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B4C68133;
-        Mon, 21 Aug 2023 22:47:10 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37M5kWoaD025861, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37M5kWoaD025861
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Aug 2023 13:46:32 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 22 Aug 2023 13:46:54 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Tue, 22 Aug 2023 13:46:53 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Tue, 22 Aug 2023 13:46:53 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     Sergey Korolev <korolev.sergey@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: PROBLEM: kernel warns about voluntary context switch within RCU critical section in rtw88_usb
-Thread-Topic: PROBLEM: kernel warns about voluntary context switch within RCU
- critical section in rtw88_usb
-Thread-Index: AQHZ1Du6L7NM3D3q6kaezl/cutgsbq/1i5bggABCY6yAAACHgA==
-Date:   Tue, 22 Aug 2023 05:46:53 +0000
-Message-ID: <cf3ca98d6c18482eb63e3713f67e44e6@realtek.com>
-References: <CA+QjRnJ+YMdOM0OzwG+Pz8-mTPo5nZVioCjbz1xY0jVSGXBk7w@mail.gmail.com>
-        <bfaa8714467a4954a045475e062f78b1@realtek.com> <87pm3fws4m.fsf@kernel.org>
-In-Reply-To: <87pm3fws4m.fsf@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 22 Aug 2023 02:17:26 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2AF11C
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Aug 2023 23:17:24 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37M5s4hx012332;
+        Tue, 22 Aug 2023 06:17:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=3RxpdlHfWyHj7vPr3U2RYb7ILp/F3TSdWusFcL5zx0Q=;
+ b=D95DvkwwFQmsIY97NBwW8UROUmvRAGCqhiP5sla+VCaS4XQ0bkjC8GIs+emE56RqTba8
+ jr3cE4uE4FRNI+q7qgG74VJCQoZbeZF4EGYKn8fjKA3EbYbbH7M5LDF6Ylg/mFsGRcXJ
+ w9LEyY5OGp4TJZ1A9sNEe3I/3tzS0uZhCEJZm85CC0JDdWHveYYw68yHvNTRzZ/wRwy1
+ qV/W/Rzz9XQeuXEX0gH7bhX2mdaHBMMZCDehkl3QNscLo2+A459hCEXc02s3cBDTUECa
+ GtNvvCvRWLA5CBA/79se7Dsr+zHKOyb40UWMo/lmBQ81LQ76C7JCzciQVva45CqpmOOD +A== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sm5mct8va-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 22 Aug 2023 06:17:20 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37M6HKF6011708
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 22 Aug 2023 06:17:20 GMT
+Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 21 Aug
+ 2023 23:17:19 -0700
+Message-ID: <ee8b37a1-0a5e-cc2f-8b88-a1263ee1b761@quicinc.com>
+Date:   Tue, 22 Aug 2023 14:17:16 +0800
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] Revert "mac80211: add parse regulatory info in 6 GHz
+ operation information"
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20230821105903.7482379cde47.Ib72645d02fadc24b520db118abd82e861c87316e@changeid>
+ <f28ee65621bd52ad59cae891e81431ef83eeaf2e.camel@sipsolutions.net>
+ <9ce54e8e-556b-976c-06d9-145b747705db@quicinc.com>
+ <714fd7374225db9e8d8225197931c5183f12e534.camel@sipsolutions.net>
+ <6adeb7be-9c7a-c122-71be-cc0143115fe6@quicinc.com>
+ <0f34540e71e7ba63a3d38e85aefec74350384a33.camel@sipsolutions.net>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <0f34540e71e7ba63a3d38e85aefec74350384a33.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: zLD8ul9WAM55S3nG5UbguyZM4jxGLtcS
+X-Proofpoint-ORIG-GUID: zLD8ul9WAM55S3nG5UbguyZM4jxGLtcS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-22_04,2023-08-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=999
+ malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0 bulkscore=0
+ mlxscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2308220050
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FsbGUgVmFsbyA8a3Zh
-bG9Aa2VybmVsLm9yZz4NCj4gU2VudDogVHVlc2RheSwgQXVndXN0IDIyLCAyMDIzIDE6NDIgUE0N
-Cj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiBDYzogU2VyZ2V5IEtv
-cm9sZXYgPGtvcm9sZXYuc2VyZ2V5QGdtYWlsLmNvbT47IGxpbnV4LXdpcmVsZXNzQHZnZXIua2Vy
-bmVsLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTog
-UFJPQkxFTToga2VybmVsIHdhcm5zIGFib3V0IHZvbHVudGFyeSBjb250ZXh0IHN3aXRjaCB3aXRo
-aW4gUkNVIGNyaXRpY2FsIHNlY3Rpb24gaW4gcnR3ODhfdXNiDQo+IA0KPiBQaW5nLUtlIFNoaWgg
-PHBrc2hpaEByZWFsdGVrLmNvbT4gd3JpdGVzOg0KPiANCj4gPiBGcm9tOiBTZXJnZXkgS29yb2xl
-diA8a29yb2xldi5zZXJnZXlAZ21haWwuY29tPg0KPiA+IFNlbnQ6IE1vbmRheSwgQXVndXN0IDIx
-LCAyMDIzIDEwOjI4IFBNDQo+ID4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29t
-PjsgS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz47IGxpbnV4LXdpcmVsZXNzQHZnZXIua2Vy
-bmVsLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiA+IFN1YmplY3Q6IFBS
-T0JMRU06IGtlcm5lbCB3YXJucyBhYm91dCB2b2x1bnRhcnkgY29udGV4dCBzd2l0Y2ggd2l0aGlu
-IFJDVSBjcml0aWNhbCBzZWN0aW9uIGluIHJ0dzg4X3VzYg0KPiA+Pg0KPiA+PiBQbGVhc2Ugbm90
-ZSBJIHVzZSBhbiB1bm1vZGlmaWVkIGRyaXZlciBmcm9tIHRoZSB1cHN0cmVhbSAyOGMxMWMyOTQ5
-NGYxYjM0ZTM5NjQxZWVhZDljNjBhOGJkMjYxNzBkDQo+ID4+ICgid2lmaTogcnR3ODg6IGZpeCBu
-b3QgZW50ZXJpbmcgUFMgbW9kZSBhZnRlciBBUCBzdG9wcyIpIGJ1aWxkIGZvciA2LjIga2VybmVs
-IChVYnVudHUgMjMuMDQpLg0KPiA+DQo+ID4gSSBmZWVsIE1hcnRpbiBoYXMgYmVlbiBhZGRyZXNz
-ZWQgdGhpcyBwcm9ibGVtIGR1cmluZyBkZXZlbG9wbWVudCBvZiBTRElPIGFuZCBVU0INCj4gPiBi
-eSA4YTFlMmZkOGUyZGEgKCJ3aWZpOiBydHc4ODogTW92ZSByZWdpc3RlciBhY2Nlc3MgZnJvbSBy
-dHdfYmZfYXNzb2MoKSBvdXRzaWRlIHRoZSBSQ1UiKQ0KPiA+IFBsZWFzZSB0YWtlIGEgbG9vayBp
-ZiB0aGlzIHBhdGNoIGlzIGV4aXN0aW5nIGluIHlvdXIgc291cmNlLg0KPiANCj4gQ29tbWl0IDhh
-MWUyZmQ4ZTJkYSB3YXMgbWVyZ2VkIHRvIHY2LjMtcmMxIHNvIHY2LjIgd29uJ3QgaGF2ZSBpdC4N
-Cj4gDQoNClNlcmdleSBzYWlkIGhlIHVzZXMgZHJpdmVyIGZyb20gMjhjMTFjMjk0OTRmIHRoYXQg
-aXMgdjYuNC1yYzUgb3IgdjYuNSwgc28NCnNlZW1pbmdseSBpdCBzaG91bGQgaW5jbHVkZSBNYXJ0
-aW4ncyBwYXRjaC4gTm90IHN1cmUgd2hhdCBpcyB3cm9uZy4NCg0KUGluZy1LZQ0KDQo=
+On 8/21/2023 7:34 PM, Johannes Berg wrote:
+> On Mon, 2023-08-21 at 19:11 +0800, Wen Gong wrote:
+>> On 8/21/2023 6:57 PM, Johannes Berg wrote:
+>>> On Mon, 2023-08-21 at 18:36 +0800, Wen Gong wrote:
+>>>> On 8/21/2023 5:06 PM, Johannes Berg wrote:
+>>>>> On Mon, 2023-08-21 at 10:59 +0200, Johannes Berg wrote:
+>>>>>> From: Johannes Berg <johannes.berg@intel.com>
+>>>>>>
+>>>>>> This reverts commit cb751b7a57e5 ("mac80211: add parse regulatory info
+>>>>>> in 6 GHz operation information") which added a station type bss_conf
+>>>>>> assignment in a parsing helper function, which will corrupt mesh data.
+>>>>>>
+>>>>> Ah crap this won't work, rtw89 already uses this.
+>>>>>
+>>>>> Wen please send a fix for this ASAP.
+>>>>>
+>>>>> johannes
+>>>> Hi Johannes,
+>>>>
+>>>> I looked the patch some times, but I do not know how it corrupt mesh data,
+>>>>
+>>>> Is there any clue for me?
+>>> Hah, no, I'm wrong ... I looked at it and for some reason thought of
+>>> u.mgd instead of vif.bss_conf. Sorry!
+>>>
+>>> Still it's not correct though to write to vif.bss_conf in this function
+>>> because it's called from mesh_matches_local() to see if it's even
+>>> compatible, for example, so the mere calling a "give me the 6 GHz
+>>> chandef" function doesn't indicate we actually are going to use it now.
+>> Do you mean mesh_matches_local() is only a try to call
+>> ieee80211_chandef_he_6ghz_oper(),
+>>
+>> NOT real use the 6 GHz chandef?
+> Yes, I believe so.
+>
+> Anyway it would seem better for a utility function to have clearer
+> defined output, I think?
+>
+> johannes
+
+Do you mean move the logic of set bss_conf->power_type to another new 
+function from
+
+ieee80211_chandef_he_6ghz_oper()?
+
