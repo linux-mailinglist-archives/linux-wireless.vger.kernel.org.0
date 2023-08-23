@@ -2,133 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50C407860EC
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 21:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B871786101
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 21:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238374AbjHWTpc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Aug 2023 15:45:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57898 "EHLO
+        id S238382AbjHWTts (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Aug 2023 15:49:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238406AbjHWTpN (ORCPT
+        with ESMTP id S238412AbjHWTtr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Aug 2023 15:45:13 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B184AE57
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 12:45:11 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37NIYf4t020118;
-        Wed, 23 Aug 2023 19:45:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=eUZb1aknFmMOtsFYwxRic9f1vtjnmWehMd1EvYS3ods=;
- b=WzAcQ1ha5c0Z9BFv/ZaCfA/Z1r+E0ryRKqOSZ+wxMydiNojtFoL4LsV09/EaLZKLIfVN
- cL/KweGn7e6RGfAKeBqWd4yRBURzKqYvIFQEL0iUQFonrIOjGPG8hSEME+jd0JB+D+ig
- hdZC4gzYIafw9kD9N3GF4lJuw9pgv3upzYG0hTAfgDfyFz5afpz4R2h121y/9YEOYsYG
- 5aaUg23ME5gCJqJsFGb6pkXymnM/dE1Rwtli+EGYjxnjR37RpEBorcmg8a/MNFUc/w/Y
- te08bvXOnvj6z3wiNP38hkRJaOst9XLdt7jVMTM1Q5UtcpX885efn6ZSYw8fHj+La3dj Pw== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3snqg3g59d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Aug 2023 19:45:05 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37NJj4TR015519
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Aug 2023 19:45:04 GMT
-Received: from [10.48.244.52] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 23 Aug
- 2023 12:45:03 -0700
-Message-ID: <8e7e8299-c9a2-48ff-ac31-830665827798@quicinc.com>
-Date:   Wed, 23 Aug 2023 12:45:03 -0700
+        Wed, 23 Aug 2023 15:49:47 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 718B8E67
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 12:49:45 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4ff91f2d7e2so8684081e87.0
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 12:49:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1692820183; x=1693424983;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R4WSprjBGosihTJ3FnjKhpL7H8uWI7MD97EU3sDPTuI=;
+        b=NRlisAwQNvj+Fer9/CBiJBqwnEPeDfYZp9ytGw+L3N4ca1HMrtw5lNrSLg/Yx/HyS1
+         9juaxd0oLemhIx9HNfOO1eVjnLK6+zSEjeBUW5Rq+rIu7IdIrf6yq5+Tw0JMVmZZpVbl
+         EDW3Way00EPjjPz9tVmPDPwKfoMXuEKA8mImQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692820183; x=1693424983;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R4WSprjBGosihTJ3FnjKhpL7H8uWI7MD97EU3sDPTuI=;
+        b=VHxguins0J68u2XKRcgxQrRP33tNlZ6dgh+FS2qH8YH4g9uZP4LXxOmrfD/+ljaI3n
+         HCq/7I4SSOiCWKOQ9c50/ExyISqFL99587vTuPKNkiHkpPnAZkXebWPhpfC6CUOKgX7h
+         QFMXruCxLpw/HK2H3FyU3jWb8PNxxRMru1JAKlgrMMjtOUBQqd962zPVJB126fiJwrh9
+         5aVmjSEpLBL6/te9BWhwtEB5Lu+eO3LujpBdifL7SLfH9Vr4n36aKbHBM6X3ESojEEmD
+         t0fipYDjAofQ+37u8oYCDXJixV76KrmN/CzR8gCmT23asHBI8WbvQzml9i4PS1/YPXZ+
+         29tQ==
+X-Gm-Message-State: AOJu0Yx1WHduZMwotFT/ihKl3FR/zDyWMQNO6T9u2NSiAwpu+YwOM/Oe
+        eekcOeRvrLq5DFm38lLgi8sKDoSBBh5MbFaiB+M=
+X-Google-Smtp-Source: AGHT+IEX6YluBCtCUSRPQQ4hbnDo/MxxJ5wHpVvDiIVitTdbpwJAhRdSpd276HQqLAr45shAmX0CMg==
+X-Received: by 2002:a19:4f0d:0:b0:500:7c2a:30da with SMTP id d13-20020a194f0d000000b005007c2a30damr6750591lfb.60.1692820183144;
+        Wed, 23 Aug 2023 12:49:43 -0700 (PDT)
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
+        by smtp.gmail.com with ESMTPSA id y17-20020ac24e71000000b005007fc9cccasm1637297lfs.94.2023.08.23.12.49.42
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Aug 2023 12:49:42 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2bcb89b476bso63402331fa.1
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 12:49:42 -0700 (PDT)
+X-Received: by 2002:a2e:958e:0:b0:2b7:4169:fcf5 with SMTP id
+ w14-20020a2e958e000000b002b74169fcf5mr9893140ljh.37.1692820181518; Wed, 23
+ Aug 2023 12:49:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wifi: ath9k: use u32 for txgain indexes
-Content-Language: en-US
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <lvc-project@linuxtesting.org>
-References: <574813ed-b9aa-458f-9758-29662eb60689@quicinc.com>
- <20230823182401.196270-1-dmantipov@yandex.ru>
- <20230823182401.196270-2-dmantipov@yandex.ru>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230823182401.196270-2-dmantipov@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: P0l5yOJhMrRCy6OJvM82qJe_WsJj7OMC
-X-Proofpoint-GUID: P0l5yOJhMrRCy6OJvM82qJe_WsJj7OMC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-23_14,2023-08-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 suspectscore=0 phishscore=0 mlxlogscore=741 spamscore=0
- bulkscore=0 priorityscore=1501 impostorscore=0 adultscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308230180
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230802161049.89326-1-dmantipov@yandex.ru> <169278633096.1133515.976396654998983133.kvalo@kernel.org>
+In-Reply-To: <169278633096.1133515.976396654998983133.kvalo@kernel.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 23 Aug 2023 12:49:28 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXOTyRtMgNc47v=Qy28Y+grCh=xwL31qZM9YXVjkbwGC0Q@mail.gmail.com>
+Message-ID: <CA+ASDXOTyRtMgNc47v=Qy28Y+grCh=xwL31qZM9YXVjkbwGC0Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] wifi: mwifiex: simplify PCIE DMA mapping management
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/23/2023 11:23 AM, Dmitry Antipov wrote:
-> Since both 'ar9550_hw_get_modes_txgain_index()' and
-> 'ar9561_hw_get_modes_txgain_index()' never returns
-> negative values, prefer 'u32' over 'int' and adjust
-> 'ar9003_hw_process_ini()' accordingly.
-> 
-> Suggested-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+On Wed, Aug 23, 2023 at 3:25=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrote=
+:
+>
+> Dmitry Antipov <dmantipov@yandex.ru> wrote:
+>
+> > Simplify PCIE DMA mapping management by eliminating extra copies
+> > of {address, size} pairs to/from temporary data structures. Map
+> > and unmap operations may use skb fields directly via introduced
+> > 'MWIFIEX_SKB_DMA_ADDR()' and 'MWIFIEX_SKB_DMA_SIZE()' macros.
+> >
+> > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+>
+> I assume these patches are compile tested only so I'm very reluctant
+> take these.
+>
+> 2 patches set to Changes Requested.
 
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+That's fair IMO. These kinds of patches put a much larger burden on
+the reviewer to make sure they make sense. Thus, I had this in a
+backlog to review, and haven't gotten around to it.
 
-> ---
->   drivers/net/wireless/ath/ath9k/ar9003_phy.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.c b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-> index 4731e6618209..6274d1624261 100644
-> --- a/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-> +++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-> @@ -766,10 +766,10 @@ static void ar9003_hw_prog_ini(struct ath_hw *ah,
->   	}
->   }
->   
-> -static int ar9550_hw_get_modes_txgain_index(struct ath_hw *ah,
-> +static u32 ar9550_hw_get_modes_txgain_index(struct ath_hw *ah,
->   					    struct ath9k_channel *chan)
->   {
-> -	int ret;
-> +	u32 ret;
->   
->   	if (IS_CHAN_2GHZ(chan)) {
->   		if (IS_CHAN_HT40(chan))
-> @@ -791,7 +791,7 @@ static int ar9550_hw_get_modes_txgain_index(struct ath_hw *ah,
->   	return ret;
->   }
->   
-> -static int ar9561_hw_get_modes_txgain_index(struct ath_hw *ah,
-> +static u32 ar9561_hw_get_modes_txgain_index(struct ath_hw *ah,
->   					    struct ath9k_channel *chan)
->   {
->   	if (IS_CHAN_2GHZ(chan)) {
-> @@ -916,7 +916,7 @@ static int ar9003_hw_process_ini(struct ath_hw *ah,
->   	 * TXGAIN initvals.
->   	 */
->   	if (AR_SREV_9550(ah) || AR_SREV_9531(ah) || AR_SREV_9561(ah)) {
-> -		int modes_txgain_index = 1;
-> +		u32 modes_txgain_index = 1;
->   
->   		if (AR_SREV_9550(ah))
->   			modes_txgain_index = ar9550_hw_get_modes_txgain_index(ah, chan);
+If Dmitry can prove out some proper testing, maybe the status can
+change [1]. Or maybe I'll feel charitable and look/test them more
+closely.
 
+Brian
+
+[1] Although, I don't think I have permission to change the Patchwork
+status, so it still might be lost to /dev/null without a RESEND.
