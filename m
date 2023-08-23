@@ -2,82 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8CB5785A38
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 16:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40484785A3E
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 16:18:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234974AbjHWOQq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Aug 2023 10:16:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58460 "EHLO
+        id S234129AbjHWOSG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Aug 2023 10:18:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235135AbjHWOQq (ORCPT
+        with ESMTP id S235020AbjHWOSF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Aug 2023 10:16:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 933B110D5;
-        Wed, 23 Aug 2023 07:16:27 -0700 (PDT)
+        Wed, 23 Aug 2023 10:18:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C846E62
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 07:18:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0380D66029;
-        Wed, 23 Aug 2023 14:16:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B95C433C8;
-        Wed, 23 Aug 2023 14:16:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B89BF66308
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 14:18:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C22CC433C7;
+        Wed, 23 Aug 2023 14:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692800186;
-        bh=DwblRXD6m9eIyN8zoYD7uuOYKE0IACRN+MXuDnwh9FM=;
+        s=k20201202; t=1692800282;
+        bh=GMdH5vkLU5RgLDl3GYq0LoKq9cbkTrF9yoz4tusx7m0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=O/7IdDqg83TzmzT2Xyv8WFenhvoYt95gTfhv7jrSe4hrMFQpZRh9cRbZOya4N2Nrn
-         6k+vDISw6wis98y8w9azDrmV1DgtjwYD9/LgywIQ68iSeAB7N2M2syj/u94lvVJDzH
-         89A3zMDaLDpO3lqHUtMUctIEItctTBratk4onh744T593Gi6N6sQLi+epV2ZgU/mR+
-         GVgwM2jOPTUXdgzy9FxTB10mnMvIYkR2iBH1k8SVQtrMhhAv7BnP2kMzN6vZrzNsxi
-         oliTIGa/ZnXVDwgwJ3pVEp5zXSRkH6xxa7PdzkmR0U3cackoxwoNPJh0qccH/mBYF+
-         pdzlHkbdxWDHA==
+        b=C9mN4hJ1z2zQIpWY5e8AYfKGxW5FAdoWlPG3nLWdVprvBHJ+yLIzvANk8qeXBGaqW
+         WtNjOgPkmkjFgDsrbnA2Zfk7AEb9uW6uCup+e7mPGbP+kqY5/t9yYJUa5mytvQ6jG6
+         UenRPxQl/odyS544yGUuoUROTqYnqA0rZ9GbO3d18PvaN/jViTXGxJAJh/uwScD3jX
+         tz9kY+5X1Yzjz2BWsIxS5rM1A9bcH7iH13SmG7jXpfl24ih2XbTY+8TsUfrRB+UG4+
+         xfH+JSQMrJ+T8+GEuXBoK2vgUfMuii8TUwwgYonfti19+iCfxNacy5ZdQO99Shr/X+
+         5kztToDGRZIkQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] ath5k: fix WARNING opportunity for swap.
+Subject: Re: [PATCH] wifi: ath12k: Fix memory leak in rx_desc and tx_desc
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230815040819.649455-1-mahmoudmatook.mm@gmail.com>
-References: <20230815040819.649455-1-mahmoudmatook.mm@gmail.com>
-To:     Mahmoud Maatuq <mahmoudmatook.mm@gmail.com>
-Cc:     jirislaby@kernel.org, mickflemm@gmail.com, mcgrof@kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Mahmoud Maatuq <mahmoudmatook.mm@gmail.com>
+In-Reply-To: <20230718053510.30894-1-quic_rajson@quicinc.com>
+References: <20230718053510.30894-1-quic_rajson@quicinc.com>
+To:     Rajat Soni <quic_rajson@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Rajat Soni <quic_rajson@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169280018252.1336947.9195494625523438821.kvalo@kernel.org>
-Date:   Wed, 23 Aug 2023 14:16:24 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <169280027919.1336947.4721639851626095486.kvalo@kernel.org>
+Date:   Wed, 23 Aug 2023 14:18:00 +0000 (UTC)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Mahmoud Maatuq <mahmoudmatook.mm@gmail.com> wrote:
+Rajat Soni <quic_rajson@quicinc.com> wrote:
 
-> coccinielle reported the following:
-> ./drivers/net/wireless/ath/ath5k/phy.c:1573:25-26: WARNING opportunity for swap()
+> Currently when ath12k_dp_cc_desc_init() is called we allocate
+> memory to rx_descs and tx_descs. In ath12k_dp_cc_cleanup(), during
+> descriptor cleanup rx_descs and tx_descs memory is not freed.
 > 
-> while trying to fix the above warning, it reveals that ath5k_hw_get_median_noise_floor()
-> had open-coded sort() functionality. Since ath5k_hw_get_median_noise_floor() only
-> executes once every 10 seconds, any extra overhead due to sort() calling
-> its "compare" and "swap" functions can be ignored, so replace the
-> existing logic with a call to sort().
+> This is cause of memory leak. These allocated memory should be
+> freed in ath12k_dp_cc_cleanup.
 > 
-> Signed-off-by: Mahmoud Maatuq <mahmoudmatook.mm@gmail.com>
-> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+> In ath12k_dp_cc_desc_init(), we can save base address of rx_descs
+> and tx_descs. In ath12k_dp_cc_cleanup(), we can free rx_descs and
+> tx_descs memory using their base address.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-e10ec6ea612c wifi: ath5k: ath5k_hw_get_median_noise_floor(): use swap()
+afb522b36e76 wifi: ath12k: Fix memory leak in rx_desc and tx_desc
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230815040819.649455-1-mahmoudmatook.mm@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230718053510.30894-1-quic_rajson@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
