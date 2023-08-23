@@ -2,114 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA928785B91
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 17:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CC26785CB7
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 17:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236835AbjHWPLK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Aug 2023 11:11:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53062 "EHLO
+        id S237338AbjHWPyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Aug 2023 11:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231163AbjHWPLJ (ORCPT
+        with ESMTP id S233338AbjHWPyf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Aug 2023 11:11:09 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7660FDF
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 08:11:06 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37NEHY5d011079;
-        Wed, 23 Aug 2023 15:10:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=k9mRQS0tC2jSj+fN8d7oyf79wDvyfgBNlJqTkBvZ16M=;
- b=At9HtYELOpR/dh7pZ/pOC98t4qIDK+fsRY6cR4SWPnhG7ANLQKB7P8NRlLMLCozBMIjv
- XXstx76ZDWmEqQo8w20kh9nT3lDV5bkKPwlapErVQa/58/xglIgxJNXpOifUKCfNknG2
- QzwRN9QBi/0fYnAtuuAkjaraSKmPWCrYWtJS8p8a/X+Ojg5M58JlTVxFgb0X1vhkGjr3
- 5W7AxKyxoZj40tg1jCbuWZvoWwBj1zhtUKxKCBDZVIO8BVYtfQVV0iVLljKpKYvE1DUj
- 7bPBYp+rMWhRf+sv8eHAPaJ/+EzStqyxHZ2QsiVEM2Nw5Lo9wyrdvCyibbxaGcagPvtX fQ== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sn2cm29pn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Aug 2023 15:10:58 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37NFAvkr028698
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Aug 2023 15:10:57 GMT
-Received: from [10.48.244.52] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 23 Aug
- 2023 08:10:57 -0700
-Message-ID: <574813ed-b9aa-458f-9758-29662eb60689@quicinc.com>
-Date:   Wed, 23 Aug 2023 08:10:56 -0700
+        Wed, 23 Aug 2023 11:54:35 -0400
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08497E5F;
+        Wed, 23 Aug 2023 08:54:33 -0700 (PDT)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-1ccd5b1b9d0so248582fac.1;
+        Wed, 23 Aug 2023 08:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692806072; x=1693410872;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=2VDLlTrw+KZAlR49NajxO5L4C9/jMnmujffHvdDJcQs=;
+        b=TWPitcP3YEZUukBZVunu8PzCPZoXcWsM3TV5NpvSYmWBc5Q4V6dH5euWfnbPlNUwM8
+         0nmbAAI16t5gbAkcMdIVZ/sqI0DwwQNHeokEs3kB0gi6u2VuwS0bc4K4KhPccpYM7/h9
+         CQc00tM3fzAIad7IHy28H9jMyW0oNLTJqIdk5vNzIdK70Ej+kstomGCF1/D7gYsVUI75
+         Rr9G/yPdaJiMTgYBVDspcUwfaIKo1lQKbqdM06R3vN1hswZT+mbTqlGlothZ9rToLdKo
+         OrtCqh54LQD3p9fTfkMS9EqvxnqCh9jFwyC156WolI8aDK9d7YIF0lkQqpEMWPXAK07p
+         /ixA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692806072; x=1693410872;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2VDLlTrw+KZAlR49NajxO5L4C9/jMnmujffHvdDJcQs=;
+        b=Mggkhln3+gSmITcB3r7S7dJltXf/LP7SEWQeUkHMTa4OoDBl+ydI9jZsECoxjCJLb2
+         BGMnlgW9h4IbZqdb0DqwGe6svGfofMhoE7Xcs1o8ll4UVHSHTLIAG+Lc3SVc9Bqc9o+o
+         girjs/zxT/zc1bErHlFVhHoXpvqCdq2B+DdnxtMJP3BNl+6E9WONstEbzu517Y8vz4DY
+         FzQfshJ6fKKtnfOJEMfe1CPFqLmmMan0Doecj2xgBOH6vDkqfPgiSOfBugFJDZmGOT0/
+         VT0VD9PCZIjTl/i+Qg5eqJpAO1GqDztGhEATO6xz41/bYmmN1WH7VKsbuKy/tw/4436a
+         aL4g==
+X-Gm-Message-State: AOJu0Yxm2/v+tOMDz7y/pNfML7SalZcRcTGlidniNLWUB6/yNuuFYsc3
+        50G1ezQU02GCT1wL4gX4zpM=
+X-Google-Smtp-Source: AGHT+IF61HSy033UpFh/6+Ke2kdywsHMIGweM8p3uBkmXG7/0UnB78wpgxYLgPqQ/ckE32rss1aOhw==
+X-Received: by 2002:a05:6870:e2d1:b0:1b7:4655:2ac9 with SMTP id w17-20020a056870e2d100b001b746552ac9mr16134185oad.6.1692806072168;
+        Wed, 23 Aug 2023 08:54:32 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id r7-20020a056870734700b001c0e840ebcfsm7059351oal.35.2023.08.23.08.54.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Aug 2023 08:54:31 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <ffe7cc73-d2c7-d6d7-69e8-438a4a2f7be6@lwfinger.net>
+Date:   Wed, 23 Aug 2023 10:54:30 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath9k: simplify ar9003_hw_process_ini()
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] wifi: rtw88: usb: kill and free rx urbs on probe failure
 Content-Language: en-US
-To:     Dmitry Antipov <dmantipov@yandex.ru>,
-        =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-CC:     Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <lvc-project@linuxtesting.org>
-References: <20230823125217.72483-1-dmantipov@yandex.ru>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230823125217.72483-1-dmantipov@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: bPG7FFRLBpbIJHSpGLcJo_yXkzwpRIJL
-X-Proofpoint-GUID: bPG7FFRLBpbIJHSpGLcJo_yXkzwpRIJL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-23_09,2023-08-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
- clxscore=1015 mlxlogscore=494 adultscore=0 priorityscore=1501 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308230137
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+To:     Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-wireless@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        =?UTF-8?Q?Ilgaz_=c3=96cal?= <ilgaz@ilgaz.gen.tr>,
+        kernel@pengutronix.de
+References: <20230823075021.588596-1-s.hauer@pengutronix.de>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20230823075021.588596-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/23/2023 5:52 AM, Dmitry Antipov wrote:
-> Since commit 8896934c1684 ("ath9k_hw: remove direct accesses to channel
-> mode flags") changes 'ar9550_hw_get_modes_txgain_index()' so it never
-> returns -EINVAL, and 'ar9561_hw_get_modes_txgain_index()' never returns
-> negative value too, an extra check in 'ar9003_hw_process_ini()' may be
-> dropped.
-
-Can you change the return type of those two functions from int to u32 to 
-further signify that they always return a valid index and never return a 
-negative errno
-
+On 8/23/23 02:50, Sascha Hauer wrote:
+> After rtw_usb_alloc_rx_bufs() has been called rx urbs have been
+> allocated and must be freed in the error path. After rtw_usb_init_rx()
+> has been called they are submitted, so they also must be killed.
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> Add these forgotten steps to the probe error path.
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Besides the lost memory this also fixes a problem when the driver
+> fails to download the firmware in rtw_chip_info_setup(). In this
+> case it can happen that the completion of the rx urbs handler runs
+> at a time when we already freed our data structures resulting in
+> a kernel crash.
+> 
+> fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
+> Cc: stable@vger.kernel.org
+> Reported-by: Ilgaz Öcal <ilgaz@ilgaz.gen.tr>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->   drivers/net/wireless/ath/ath9k/ar9003_phy.c | 3 ---
->   1 file changed, 3 deletions(-)
+>   drivers/net/wireless/realtek/rtw88/usb.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.c b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-> index a29c11f944a5..4731e6618209 100644
-> --- a/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-> +++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-> @@ -925,9 +925,6 @@ static int ar9003_hw_process_ini(struct ath_hw *ah,
->   			modes_txgain_index =
->   				ar9561_hw_get_modes_txgain_index(ah, chan);
+> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+> index 4a57efdba97bb..875a61c9c80d4 100644
+> --- a/drivers/net/wireless/realtek/rtw88/usb.c
+> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+> @@ -844,7 +844,7 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
 >   
-> -		if (modes_txgain_index < 0)
-> -			return -EINVAL;
-> -
->   		REG_WRITE_ARRAY(&ah->iniModesTxGain, modes_txgain_index,
->   				regWrites);
->   	} else {
+>   	ret = rtw_core_init(rtwdev);
+>   	if (ret)
+> -		goto err_release_hw;
+> +		goto err_free_rx_bufs;
+>   
+>   	ret = rtw_usb_intf_init(rtwdev, intf);
+>   	if (ret) {
+> @@ -890,6 +890,9 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
+>   err_deinit_core:
+>   	rtw_core_deinit(rtwdev);
+>   
+> +err_free_rx_bufs:
+> +	rtw_usb_free_rx_bufs(rtwusb);
+> +
+>   err_release_hw:
+>   	ieee80211_free_hw(hw);
+>   
+
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
+
+Thanks Sasha,
+
+Larry
 
