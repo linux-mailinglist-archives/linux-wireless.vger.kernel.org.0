@@ -2,84 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B620E785516
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 12:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 869A8785551
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 12:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232626AbjHWKO1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Aug 2023 06:14:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36246 "EHLO
+        id S232047AbjHWKZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Aug 2023 06:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233118AbjHWKOS (ORCPT
+        with ESMTP id S233546AbjHWKZp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Aug 2023 06:14:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293B4E62;
-        Wed, 23 Aug 2023 03:14:15 -0700 (PDT)
+        Wed, 23 Aug 2023 06:25:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19767E51
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 03:25:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B440265EE8;
-        Wed, 23 Aug 2023 10:14:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E8CC433C8;
-        Wed, 23 Aug 2023 10:14:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B204A62239
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 10:25:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19245C433C8;
+        Wed, 23 Aug 2023 10:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692785653;
-        bh=T1mQJXJIX5ikkwJQ9CV0e3ioAe53oBJdQkfOUjV1+tE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ugCFy6PHgpeno5INSU/6PDZ3XoZaejkHEVAJUYH01I3+f4URBO6hMYuKqlbtajBw9
-         3IWCo7sqHGjo1cj0afHmJuh2XeSpOOvaoFGkQzQS9Ex2AljH8zdEoUPotHXgIoDVpz
-         HABoyuQSiL6m3dOLg1a73/jgvFfsFjDAg+9/4pmRZUWHTalg77/1gNwJeskRaKbY/q
-         0L7/dg3+4Gjl4Toz7wl0j2YdiYpTYLJ4ldhDTujPlwGn3i3eh5ZC/JETKHFqMwifdv
-         Hr9kNbqtgpvhbmqvU3CyfnGCzMTdlGH+bB2ZoLNlKbBBls6K8ih4raemrHwbP9+HpQ
-         0YlvbqgvTbaHQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Sascha Hauer <s.hauer@pengutronix.de>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Ilgaz =?utf-8?Q?=C3=96cal?= <ilgaz@ilgaz.gen.tr>,
-        kernel@pengutronix.de
-Subject: Re: [PATCH] wifi: rtw88: usb: kill and free rx urbs on probe failure
-References: <20230823075021.588596-1-s.hauer@pengutronix.de>
-Date:   Wed, 23 Aug 2023 13:14:10 +0300
-In-Reply-To: <20230823075021.588596-1-s.hauer@pengutronix.de> (Sascha Hauer's
-        message of "Wed, 23 Aug 2023 09:50:21 +0200")
-Message-ID: <87ttsqgj65.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1692786334;
+        bh=vwqZ9zKjv6zkK9coGPnf8p57PfSY7qU/AJ2u7uJzmho=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=cAghFAvSZoHwI3VoV/YD6r0fge+nwIsofZxMpSeRuy206sThDmYlrRt/RLTmsqcoP
+         u7RlUPw1LqWeQpndjDJvF6eYDF0b2e2kaEhA8xMn3yiwkUBlf+E/FYyRlWRjwnkRPQ
+         lm8Ef2KhgXDpABJLRGXbshTmRzx+GpJoMIxYGXYQ/xDTKT/xjSPYPDkroO5mKcX6Gm
+         646ZE33B9xwsqsel6BHnJoFzh+RQcJP3iRXzIhSeIAxFgzL/QyHPHqPZ4V3yOjgNV2
+         iw2OAPaMKLtRsdmLMru6jmqUPL0rjdlKglZRRBKw3y1jC24hskgWJuXYrN+osyEOrU
+         eBm2DpRdY2FWg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] wifi: mwifiex: simplify PCIE DMA mapping management
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230802161049.89326-1-dmantipov@yandex.ru>
+References: <20230802161049.89326-1-dmantipov@yandex.ru>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169278633096.1133515.976396654998983133.kvalo@kernel.org>
+Date:   Wed, 23 Aug 2023 10:25:32 +0000 (UTC)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> After rtw_usb_alloc_rx_bufs() has been called rx urbs have been
-> allocated and must be freed in the error path. After rtw_usb_init_rx()
-> has been called they are submitted, so they also must be killed.
->
-> Add these forgotten steps to the probe error path.
->
-> Besides the lost memory this also fixes a problem when the driver
-> fails to download the firmware in rtw_chip_info_setup(). In this
-> case it can happen that the completion of the rx urbs handler runs
-> at a time when we already freed our data structures resulting in
-> a kernel crash.
->
-> fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
+> Simplify PCIE DMA mapping management by eliminating extra copies
+> of {address, size} pairs to/from temporary data structures. Map
+> and unmap operations may use skb fields directly via introduced
+> 'MWIFIEX_SKB_DMA_ADDR()' and 'MWIFIEX_SKB_DMA_SIZE()' macros.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-This should be:
+I assume these patches are compile tested only so I'm very reluctant
+take these.
 
-Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
+2 patches set to Changes Requested.
 
-I can fix that, no need to resend because of this.
+13338499 [1/2] wifi: mwifiex: simplify PCIE DMA mapping management
+13338500 [2/2] wifi: mwifiex: avoid indirection in PCIE buffer descriptor management
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230802161049.89326-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
