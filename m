@@ -2,49 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FAAF7851F9
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 09:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1536B785204
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 09:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233593AbjHWHu2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Aug 2023 03:50:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48988 "EHLO
+        id S233613AbjHWHwu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Aug 2023 03:52:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231819AbjHWHu1 (ORCPT
+        with ESMTP id S229886AbjHWHwt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Aug 2023 03:50:27 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A77CDCD0
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 00:50:25 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qYidD-0003sv-Lu; Wed, 23 Aug 2023 09:50:23 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qYidC-000zf6-4f; Wed, 23 Aug 2023 09:50:22 +0200
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qYidB-002T7g-Dw; Wed, 23 Aug 2023 09:50:21 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     linux-wireless@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        =?UTF-8?q?Ilgaz=20=C3=96cal?= <ilgaz@ilgaz.gen.tr>,
-        kernel@pengutronix.de
-Subject: [PATCH] wifi: rtw88: usb: kill and free rx urbs on probe failure
-Date:   Wed, 23 Aug 2023 09:50:21 +0200
-Message-Id: <20230823075021.588596-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+        Wed, 23 Aug 2023 03:52:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CD581BE;
+        Wed, 23 Aug 2023 00:52:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F45561A24;
+        Wed, 23 Aug 2023 07:52:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88C7C433C8;
+        Wed, 23 Aug 2023 07:52:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692777167;
+        bh=n9oUBtOY4v6iN8QeG3ySrjb2E4LovnG5A5s20mkNAwU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=o4dbetyVcKe/463jEhmKakZIdv0sfO0FZftM7FIZ0vH45iTEYSZ26GGVWIhKi3lbQ
+         zFnsbnvIxUzEA4WO47amELVI87xNbsAXaQ3D/tkafCpFg3ijjBTtXG0PMIckt1Ru1W
+         ZZLZYu0A5xJ5e3VB+gMs+8QqvUQYmsSYFleqIdk/6vnr6Cw3QjyHn8IWjZmg06zNDV
+         wwhthvluYf3IPZyrZpNseQjzG9VAszAw2uu9xSffsAcVyQurCPrj6k5vAImuK9HqfY
+         AHNfHsQIkDlfYADV7Fbu0VvVutb9QW1W8II0gR4sIeEwBNYjUrBGRT6wJwiH9+CQue
+         mgYgplV8zyurw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Evan Quan <evan.quan@amd.com>, Andrew Lunn <andrew@lunn.ch>,
+        rafael@kernel.org, lenb@kernel.org, johannes@sipsolutions.net,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alexander.deucher@amd.com,
+        rdunlap@infradead.org, quic_jjohnson@quicinc.com, horms@kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [V9 1/9] drivers core: Add support for Wifi band RF mitigations
+References: <20230818032619.3341234-1-evan.quan@amd.com>
+        <20230818032619.3341234-2-evan.quan@amd.com>
+        <2023081806-rounding-distract-b695@gregkh>
+        <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
+        <2023081919-mockup-bootleg-bdb9@gregkh>
+        <e5d153ed-df8a-4d6f-8222-18dfd97f6371@amd.com>
+        <2023082247-synthesis-revenge-470d@gregkh>
+Date:   Wed, 23 Aug 2023 10:53:43 +0300
+In-Reply-To: <2023082247-synthesis-revenge-470d@gregkh> (Greg KH's message of
+        "Tue, 22 Aug 2023 08:39:00 +0200")
+Message-ID: <87a5uiw5x4.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,49 +69,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-After rtw_usb_alloc_rx_bufs() has been called rx urbs have been
-allocated and must be freed in the error path. After rtw_usb_init_rx()
-has been called they are submitted, so they also must be killed.
+Greg KH <gregkh@linuxfoundation.org> writes:
 
-Add these forgotten steps to the probe error path.
+> On Mon, Aug 21, 2023 at 10:13:45PM -0500, Limonciello, Mario wrote:
+>> So I wonder if the right answer is to put it in drivers/net/wireless
+>> initially and if we come up with a need later for non wifi producers we can
+>> discuss moving it at that time.
+>
+> Please do so.
 
-Besides the lost memory this also fixes a problem when the driver
-fails to download the firmware in rtw_chip_info_setup(). In this
-case it can happen that the completion of the rx urbs handler runs
-at a time when we already freed our data structures resulting in
-a kernel crash.
+Sorry, I haven't been able to follow the discussion in detail but just a
+quick comment: if there's supposed to be code which is shared with
+different wifi drivers then drivers/net/wireless sounds wrong,
+net/wireless or net/mac80211 would be more approriate location.
 
-fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
-Cc: stable@vger.kernel.org
-Reported-by: Ilgaz Öcal <ilgaz@ilgaz.gen.tr>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/wireless/realtek/rtw88/usb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index 4a57efdba97bb..875a61c9c80d4 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -844,7 +844,7 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- 
- 	ret = rtw_core_init(rtwdev);
- 	if (ret)
--		goto err_release_hw;
-+		goto err_free_rx_bufs;
- 
- 	ret = rtw_usb_intf_init(rtwdev, intf);
- 	if (ret) {
-@@ -890,6 +890,9 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- err_deinit_core:
- 	rtw_core_deinit(rtwdev);
- 
-+err_free_rx_bufs:
-+	rtw_usb_free_rx_bufs(rtwusb);
-+
- err_release_hw:
- 	ieee80211_free_hw(hw);
- 
 -- 
-2.39.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
