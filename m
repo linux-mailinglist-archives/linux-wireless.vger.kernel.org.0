@@ -2,109 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 461AB784E56
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 03:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D206784E5B
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 03:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232069AbjHWBnL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Aug 2023 21:43:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47866 "EHLO
+        id S232076AbjHWBos (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Aug 2023 21:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230403AbjHWBnJ (ORCPT
+        with ESMTP id S232073AbjHWBos (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Aug 2023 21:43:09 -0400
-X-Greylist: delayed 903 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Aug 2023 18:43:07 PDT
-Received: from symantec4.comsats.net.pk (symantec4.comsats.net.pk [203.124.41.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA4310D
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 18:43:07 -0700 (PDT)
-X-AuditID: cb7c291e-055ff70000002aeb-4a-64e54bbc1487
-Received: from iesco.comsatshosting.com (iesco.comsatshosting.com [210.56.28.11])
-        (using TLS with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        by symantec4.comsats.net.pk (Symantec Messaging Gateway) with SMTP id 8A.FB.10987.CBB45E46; Wed, 23 Aug 2023 04:58:52 +0500 (PKT)
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns;
-        d=iesco.com.pk; s=default;
-        h=received:content-type:mime-version:content-transfer-encoding
-          :content-description:subject:to:from:date:reply-to;
-        b=Iv3XUMQX6Ac0PK7RZ0i8XFxafWwbcxYEr30FPsAO80kZzTA76gZ6JoiWmAygJKgUk
-          Nl866WloF7VaFtwKLJyl9Kq3MiWPnqc9IDYbB09tz4hUY6AaWtm0H9ygR6HsvoBtS
-          11lQUPZqJYCLkiMTSPUpfWZhh/7iuSN/0rx2v5xJk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=iesco.com.pk; s=default;
-        h=reply-to:date:from:to:subject:content-description
-          :content-transfer-encoding:mime-version:content-type;
-        bh=GMzYzcyTxDsE6wX/XHG6MHqAdAiHrhqbmmLQ/TZ1QnQ=;
-        b=iLwG9Ifq1ssJ9R0jWdo7ZGR6y/5vEY6w4bVSObakxw1SokyAsT83JlVT1mS2yFwRG
-          SPlpv71Y8x1i5BC1WLrBZfmZpEqo1DsgLjdjnsMee32yQJ6AS33u4GRle+1lQIO4e
-          Y53/aCrpFLeU1MpxAMSjiJsJkwodL7PgUFncFqLCY=
-Received: from [94.156.6.90] (UnknownHost [94.156.6.90]) by iesco.comsatshosting.com with SMTP;
-   Wed, 23 Aug 2023 04:31:09 +0500
-Message-ID: <8A.FB.10987.CBB45E46@symantec4.comsats.net.pk>
-Content-Type: text/plain; charset="iso-8859-1"
+        Tue, 22 Aug 2023 21:44:48 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 298E310D
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Aug 2023 18:44:45 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37N1hwlmF032733, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37N1hwlmF032733
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 23 Aug 2023 09:43:58 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 23 Aug 2023 09:44:20 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 23 Aug 2023 09:44:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Wed, 23 Aug 2023 09:44:19 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Nathan Chancellor <nathan@kernel.org>,
+        "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "ndesaulniers@google.com" <ndesaulniers@google.com>,
+        "trix@redhat.com" <trix@redhat.com>,
+        Damon Chen <damon.chen@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "patches@lists.linux.dev" <patches@lists.linux.dev>,
+        "llvm@lists.linux.dev" <llvm@lists.linux.dev>
+Subject: RE: [PATCH] wifi: rtw89: Fix clang -Wimplicit-fallthrough in rtw89_query_sar()
+Thread-Topic: [PATCH] wifi: rtw89: Fix clang -Wimplicit-fallthrough in
+ rtw89_query_sar()
+Thread-Index: AQHZ1Q0rICwq3rdb4kKeSJtfSCPujK/3HGqw
+Date:   Wed, 23 Aug 2023 01:44:19 +0000
+Message-ID: <c1feebe0159348d2a0e50f58f0e278e6@realtek.com>
+References: <20230822-rtw89-tas-clang-implicit-fallthrough-v1-1-5cb73f0fa976@kernel.org>
+In-Reply-To: <20230822-rtw89-tas-clang-implicit-fallthrough-v1-1-5cb73f0fa976@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Re; Interest,
-To:     linux-wireless@vger.kernel.org
-From:   "Chen Yun" <pso.chairmanbod@iesco.com.pk>
-Date:   Tue, 22 Aug 2023 16:31:23 -0700
-Reply-To: chnyne@gmail.com
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNLMWRmVeSWpSXmKPExsVyyUKGW3eP99MUg+PvxC3erLjD7sDo8XmT
-        XABjFJdNSmpOZllqkb5dAlfGknUXWAp2M1e09S9iaWB8zNTFyMEhIWAisXhhUhcjF4eQwB4m
-        iRsfJ7GAOCwCq5kllrTtYoVwHjJLTLn7AaiDE6ismVHi/FEzEJtXwFri0pJTrCA2s4CexI2p
-        U9gg4oISJ2c+YYGIa0ssW/iaGWQbs4CaxNeuEpCwsICYxKdpy9hBbBEBJYneC6uYQWw2AX2J
-        FV+bGUFsFgFViccHd7NArJWS2HhlPdsERv5ZSLbNQrJtFpJtsxC2LWBkWcUoUVyZmwgMtGQT
-        veT83OLEkmK9vNQSvYLsTYzAIDxdoym3g3HppcRDjAIcjEo8vD/XPUkRYk0sA+o6xCjBwawk
-        wiv9/WGKEG9KYmVValF+fFFpTmrxIUZpDhYlcV5boWfJQgLpiSWp2ampBalFMFkmDk6pBsZA
-        6R6dx3Eb1831OCD8uMJS/J9K6hTp2GksVl0b3TvOX5cPYnwu9eb3o/amA4LH7NQMXjWlCaiv
-        e35LluGIDdOVHWl33y3epNirocf+NNzMytBjs7dd9eNMg/QXfq+cngSVBGpqFf7pc7XnYleJ
-        jn6bMC05/eR5decX4Us/HLh2L2TW7fuiIUosxRmJhlrMRcWJAMCYjZg+AgAA
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_SBL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
-        *      blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [URIs: iesco.com.pk]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [94.156.6.90 listed in zen.spamhaus.org]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        * -0.7 RCVD_IN_DNSWL_LOW RBL: Sender listed at https://www.dnswl.org/,
-        *       low trust
-        *      [203.124.41.30 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Re; Interest,
-
-I am interested in discussing the Investment proposal as I explained
-in my previous mail. May you let me know your interest and the
-possibility of a cooperation aimed for mutual interest.
-
-Looking forward to your mail for further discussion.
-
-Regards
-
-------
-Chen Yun - Chairman of CREC
-China Railway Engineering Corporation - CRECG
-China Railway Plaza, No.69 Fuxing Road, Haidian District, Beijing, P.R.
-China
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTmF0aGFuIENoYW5jZWxs
+b3IgPG5hdGhhbkBrZXJuZWwub3JnPg0KPiBTZW50OiBUdWVzZGF5LCBBdWd1c3QgMjIsIDIwMjMg
+MTE6MjcgUE0NCj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsga3ZhbG9A
+a2VybmVsLm9yZw0KPiBDYzogbmRlc2F1bG5pZXJzQGdvb2dsZS5jb207IHRyaXhAcmVkaGF0LmNv
+bTsgRGFtb24gQ2hlbiA8ZGFtb24uY2hlbkByZWFsdGVrLmNvbT47DQo+IGxpbnV4LXdpcmVsZXNz
+QHZnZXIua2VybmVsLm9yZzsgcGF0Y2hlc0BsaXN0cy5saW51eC5kZXY7IGxsdm1AbGlzdHMubGlu
+dXguZGV2OyBOYXRoYW4gQ2hhbmNlbGxvcg0KPiA8bmF0aGFuQGtlcm5lbC5vcmc+DQo+IFN1Ympl
+Y3Q6IFtQQVRDSF0gd2lmaTogcnR3ODk6IEZpeCBjbGFuZyAtV2ltcGxpY2l0LWZhbGx0aHJvdWdo
+IGluIHJ0dzg5X3F1ZXJ5X3NhcigpDQo+IA0KPiBjbGFuZyB3YXJucyAob3IgZXJyb3JzIHdpdGgg
+Q09ORklHX1dFUlJPUj15KToNCj4gDQo+ICAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
+dHc4OS9zYXIuYzoyMTY6MzogZXJyb3I6IHVuYW5ub3RhdGVkIGZhbGwtdGhyb3VnaCBiZXR3ZWVu
+IHN3aXRjaCBsYWJlbHMNCj4gWy1XZXJyb3IsLVdpbXBsaWNpdC1mYWxsdGhyb3VnaF0NCj4gICAg
+IDIxNiB8ICAgICAgICAgICAgICAgICBjYXNlIFJUVzg5X1RBU19TVEFURV9EUFJfRk9SQklEOg0K
+PiAgICAgICAgIHwgICAgICAgICAgICAgICAgIF4NCj4gICBkcml2ZXJzL25ldC93aXJlbGVzcy9y
+ZWFsdGVrL3J0dzg5L3Nhci5jOjIxNjozOiBub3RlOiBpbnNlcnQgJ2JyZWFrOycgdG8gYXZvaWQg
+ZmFsbC10aHJvdWdoDQo+ICAgICAyMTYgfCAgICAgICAgICAgICAgICAgY2FzZSBSVFc4OV9UQVNf
+U1RBVEVfRFBSX0ZPUkJJRDoNCj4gICAgICAgICB8ICAgICAgICAgICAgICAgICBeDQo+ICAgICAg
+ICAgfCAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ICAgMSBlcnJvciBnZW5lcmF0ZWQuDQo+IA0K
+PiBDbGFuZyBpcyBhIGxpdHRsZSBtb3JlIHBlZGFudGljIHRoYW4gR0NDLCB3aGljaCBkb2VzIG5v
+dCB3YXJuIHdoZW4NCj4gZmFsbGluZyB0aHJvdWdoIHRvIGEgY2FzZSB0aGF0IGlzIGp1c3QgYnJl
+YWsgb3IgcmV0dXJuLiBDbGFuZydzIHZlcnNpb24NCj4gaXMgbW9yZSBpbiBsaW5lIHdpdGggdGhl
+IGtlcm5lbCdzIG93biBzdGFuY2UgaW4gZGVwcmVjYXRlZC5yc3QsIHdoaWNoDQo+IHN0YXRlcyB0
+aGF0IGFsbCBzd2l0Y2gvY2FzZSBibG9ja3MgbXVzdCBlbmQgaW4gZWl0aGVyIGJyZWFrLA0KPiBm
+YWxsdGhyb3VnaCwgY29udGludWUsIGdvdG8sIG9yIHJldHVybi4gQWRkIHRoZSBtaXNzaW5nIGJy
+ZWFrIHRvIHNpbGVuY2UNCj4gdGhlIHdhcm5pbmcuDQo+IA0KPiBDbG9zZXM6IGh0dHBzOi8vZ2l0
+aHViLmNvbS9DbGFuZ0J1aWx0TGludXgvbGludXgvaXNzdWVzLzE5MjENCj4gRml4ZXM6IGViMjYy
+NGY1NWFkMSAoIndpZmk6IHJ0dzg5OiBJbnRyb2R1Y2UgVGltZSBBdmVyYWdlZCBTQVIgKFRBUykg
+ZmVhdHVyZSIpDQo+IFNpZ25lZC1vZmYtYnk6IE5hdGhhbiBDaGFuY2VsbG9yIDxuYXRoYW5Aa2Vy
+bmVsLm9yZz4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0K
+DQoNCg==
