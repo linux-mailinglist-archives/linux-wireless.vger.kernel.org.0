@@ -2,87 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D67C785501
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 12:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0607C78550E
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 12:14:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232447AbjHWKLh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Aug 2023 06:11:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59936 "EHLO
+        id S233966AbjHWKN4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Aug 2023 06:13:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234558AbjHWIVZ (ORCPT
+        with ESMTP id S233445AbjHWKNb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Aug 2023 04:21:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00D9A1707;
-        Wed, 23 Aug 2023 01:15:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF9E96214F;
-        Wed, 23 Aug 2023 08:15:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C03C433C8;
-        Wed, 23 Aug 2023 08:15:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692778548;
-        bh=f7/tnL/CYJkwKNLcLrlquf8W0oqouUPAZbxzQF2xWrg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=K29YbCvSIvPIqrCKyzF6IAffEdlYbhbCNNjtIERAkM39WOwz/obWYbhEcPuC8WYTw
-         IRvra7Xt1BozBNGXoyiLEp4yBZFEMiH4plosQCODwPjZApgakAChJ4c9p2Hu+sI5VE
-         JP8V0gaTauWxvLnx2Ti8GdmxbTFgmQMdp8kAW7RQ=
-Date:   Wed, 23 Aug 2023 10:15:45 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Evan Quan <evan.quan@amd.com>, Andrew Lunn <andrew@lunn.ch>,
-        rafael@kernel.org, lenb@kernel.org, johannes@sipsolutions.net,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, alexander.deucher@amd.com,
-        rdunlap@infradead.org, quic_jjohnson@quicinc.com, horms@kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [V9 1/9] drivers core: Add support for Wifi band RF mitigations
-Message-ID: <2023082333-unruly-explode-9ee8@gregkh>
-References: <20230818032619.3341234-1-evan.quan@amd.com>
- <20230818032619.3341234-2-evan.quan@amd.com>
- <2023081806-rounding-distract-b695@gregkh>
- <2328cf53-849d-46a1-87e6-436e3a1f5fd8@amd.com>
- <2023081919-mockup-bootleg-bdb9@gregkh>
- <e5d153ed-df8a-4d6f-8222-18dfd97f6371@amd.com>
- <2023082247-synthesis-revenge-470d@gregkh>
- <87a5uiw5x4.fsf@kernel.org>
+        Wed, 23 Aug 2023 06:13:31 -0400
+Received: from mail03.softline.ru (mail03.softline.ru [185.31.132.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F55199C
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 03:13:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=softline.com;
+        s=relay; t=1692785582;
+        bh=ho5GwbroPrqdyAO5X5qAzdsCtznJL8BYTYk6DLlts2k=;
+        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+        b=TwsS13qUU9otzSgJvjCs9MyQ5/ZNEdS5k5D9AprS5dR7fkxEfOMfPQHizjOteUHa/
+         1qKPI1uWrKqWvlN443F/F1wp1ODB0yX2OjDAyvZ8rQPAMjvsxDwT0Wip0Ms68GD2lq
+         3Vfb/t1Hq8EOUOn4Hx1/+puZCPHK97riwLuIr/3NdIP1uRYFjNsE/WTFhMJVLZLudH
+         Bm4SoZn9kfiZPchsPxCaGQLUWtkRkk7eroGvTIam9/dMjFph21r2IT7zXfywvnTbdO
+         JJodgg6Y28MraATGEBfahagVTaZnKCkAtmFBI2/8DJH75g/jhgjoYGThF2z+s4icgw
+         O+rLm5yPh+UTw==
+X-AuditID: 0a02150b-b29a1700000026cc-28-64e5dbaecb73
+From:   "Antipov, Dmitriy" <Dmitriy.Antipov@softline.com>
+To:     "khoroshilov@ispras.ru" <khoroshilov@ispras.ru>,
+        "dmantipov@yandex.ru" <dmantipov@yandex.ru>,
+        "quic_jjohnson@quicinc.com" <quic_jjohnson@quicinc.com>
+CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>,
+        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+Subject: Re: [lvc-project] [PATCH] [v2] wifi: ath10k: cleanup CE
+ initialization
+Thread-Topic: [lvc-project] [PATCH] [v2] wifi: ath10k: cleanup CE
+ initialization
+Thread-Index: AQHZ1ac/rdoMqZkRDE2ght1O8khBXK/3dGaAgAACzIA=
+Date:   Wed, 23 Aug 2023 10:13:01 +0000
+Message-ID: <0eed7a68c03555cc815959b9fa32b37657f8aeda.camel@softline.com>
+References: <20230823095008.50515-1-dmantipov@yandex.ru>
+         <fb14be76-c3af-8ede-38aa-8b88f3cea7b7@ispras.ru>
+In-Reply-To: <fb14be76-c3af-8ede-38aa-8b88f3cea7b7@ispras.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A1B4236430DD94448C63B917F4606D6D@softline.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a5uiw5x4.fsf@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 10:53:43AM +0300, Kalle Valo wrote:
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> 
-> > On Mon, Aug 21, 2023 at 10:13:45PM -0500, Limonciello, Mario wrote:
-> >> So I wonder if the right answer is to put it in drivers/net/wireless
-> >> initially and if we come up with a need later for non wifi producers we can
-> >> discuss moving it at that time.
-> >
-> > Please do so.
-> 
-> Sorry, I haven't been able to follow the discussion in detail but just a
-> quick comment: if there's supposed to be code which is shared with
-> different wifi drivers then drivers/net/wireless sounds wrong,
-> net/wireless or net/mac80211 would be more approriate location.
-
-That's fine with me as well, just not drivers/core/ please :)
-
-thanks,
-
-greg k-h
+T24gV2VkLCAyMDIzLTA4LTIzIGF0IDEzOjAzICswMzAwLCBBbGV4ZXkgS2hvcm9zaGlsb3Ygd3Jv
+dGU6DQoNCj4gPiB2MjogYWRqdXN0IHRvIG1hdGNoIHNlcmllcw0KPiANCj4gRG8gbWVhbiB0aGF0
+IG5vdGhpbmcgaGFzIGJlZW4gY2hhbmdlZCBpbiB0aGUgcGF0Y2ggcmVnYXJkaW5nIHRoZQ0KPiBw
+cmV2aW91cyB2ZXJzaW9uPw0KDQpVc3VhbGx5IGl0IGlzLCBpbmNsdWRpbmcgdGhlIGNhc2VzIHdo
+ZXJlIHNvbWUgcGF0Y2ggb2YgdGhlIHNlcmllcw0KaXMgY2hhbmdlZCBzbyB0aGUgZm9sbG93aW5n
+IG9uZXMgYXJlIGFwcGxpZWQgd2l0aCBvZmZzZXRzIGFuZCB0aHVzDQpiZXR0ZXIgdG8gYmUgcmVn
+ZW5lcmF0ZWQuDQoNCkFuZCBzaG91bGQgc2F5IHNvcnJ5IGZvciBhbiBpbmNvbnNpc3RlbnQgdGl0
+bGUgb2YgdGhlIGZpcnN0IG9uZS4NCg0KRG1pdHJ5DQoNCg==
