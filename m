@@ -2,80 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 869A8785551
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 12:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EBB7785564
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Aug 2023 12:31:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232047AbjHWKZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Aug 2023 06:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51568 "EHLO
+        id S233797AbjHWKb5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Aug 2023 06:31:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233546AbjHWKZp (ORCPT
+        with ESMTP id S230372AbjHWKb4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Aug 2023 06:25:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19767E51
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 03:25:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B204A62239
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 10:25:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19245C433C8;
-        Wed, 23 Aug 2023 10:25:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692786334;
-        bh=vwqZ9zKjv6zkK9coGPnf8p57PfSY7qU/AJ2u7uJzmho=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=cAghFAvSZoHwI3VoV/YD6r0fge+nwIsofZxMpSeRuy206sThDmYlrRt/RLTmsqcoP
-         u7RlUPw1LqWeQpndjDJvF6eYDF0b2e2kaEhA8xMn3yiwkUBlf+E/FYyRlWRjwnkRPQ
-         lm8Ef2KhgXDpABJLRGXbshTmRzx+GpJoMIxYGXYQ/xDTKT/xjSPYPDkroO5mKcX6Gm
-         646ZE33B9xwsqsel6BHnJoFzh+RQcJP3iRXzIhSeIAxFgzL/QyHPHqPZ4V3yOjgNV2
-         iw2OAPaMKLtRsdmLMru6jmqUPL0rjdlKglZRRBKw3y1jC24hskgWJuXYrN+osyEOrU
-         eBm2DpRdY2FWg==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] wifi: mwifiex: simplify PCIE DMA mapping management
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230802161049.89326-1-dmantipov@yandex.ru>
-References: <20230802161049.89326-1-dmantipov@yandex.ru>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Brian Norris <briannorris@chromium.org>,
+        Wed, 23 Aug 2023 06:31:56 -0400
+Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B49CD1;
+        Wed, 23 Aug 2023 03:31:52 -0700 (PDT)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1qYl8V-006v6F-7y; Wed, 23 Aug 2023 18:30:52 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 23 Aug 2023 18:30:52 +0800
+Date:   Wed, 23 Aug 2023 18:30:52 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        "Theodore Y. Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        linux-fscrypt@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        linux-bluetooth@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>,
+        Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
+        ceph-devel@vger.kernel.org,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169278633096.1133515.976396654998983133.kvalo@kernel.org>
-Date:   Wed, 23 Aug 2023 10:25:32 +0000 (UTC)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Mat Martineau <martineau@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Neil Brown <neilb@suse.de>, linux-nfs@vger.kernel.org,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        linux-integrity@vger.kernel.org,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Ayush Sawal <ayush.sawal@chelsio.com>
+Subject: [PATCH 0/12] Do not include crypto/algapi.h
+Message-ID: <ZOXf3JTIqhRLbn5j@gondor.apana.org.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR2,
+        PDS_RDNS_DYNAMIC_FP,RCVD_IN_DNSWL_BLOCKED,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_PASS,TVD_RCVD_IP,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+Hi:
 
-> Simplify PCIE DMA mapping management by eliminating extra copies
-> of {address, size} pairs to/from temporary data structures. Map
-> and unmap operations may use skb fields directly via introduced
-> 'MWIFIEX_SKB_DMA_ADDR()' and 'MWIFIEX_SKB_DMA_SIZE()' macros.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+The header file crypto/algapi.h is for internal use only.  There is
+no reason to use it outside of the Crypto API.  Most uses of it
+outside of the API should use crypto/utils.h instead.
 
-I assume these patches are compile tested only so I'm very reluctant
-take these.
+Feel free to apply this patch to your tree directly.  Just send me
+a reply and I'll drop it from my patch queue.
 
-2 patches set to Changes Requested.
-
-13338499 [1/2] wifi: mwifiex: simplify PCIE DMA mapping management
-13338500 [2/2] wifi: mwifiex: avoid indirection in PCIE buffer descriptor management
-
+Thanks,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230802161049.89326-1-dmantipov@yandex.ru/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
