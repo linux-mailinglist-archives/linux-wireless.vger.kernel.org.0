@@ -2,67 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 601FA7867FF
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 09:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340CD78680E
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 09:04:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240280AbjHXHAM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Aug 2023 03:00:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35934 "EHLO
+        id S238616AbjHXHEB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Aug 2023 03:04:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231968AbjHXG7l (ORCPT
+        with ESMTP id S236524AbjHXHDd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Aug 2023 02:59:41 -0400
+        Thu, 24 Aug 2023 03:03:33 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A64911AD;
-        Wed, 23 Aug 2023 23:59:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63E8E172A
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Aug 2023 00:03:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=HMhvBcrp05+CiarwI8trcnBfG30fJaYkCg7iyfQbXOI=;
-        t=1692860379; x=1694069979; b=b4q1VMhOQPp6dEcnGgonLJd9oflbReuCoEepd8EJxBoAayb
-        IuzdviKM/KZ3OojaY2a8QA3pOr1ZPmKRPgcRl1iORVAnUIbpC5LPVG8gpuz1ydzskdY2/Ccf4cWWC
-        lhqP3ScgVtLauXNJ8UF+xN6PRz7PuwEuWurb12wLPj31Z0G/CvQlYPZUQk9hrS2M/haKHxmx/vPF5
-        bPk75cuF5hmkjShpyOLYpDyHg7s9iANSfT/7vLUWoFOVIBsL+ipjS6rSM2J7a6lgmWHzQs/cELKpT
-        HaxIZjIVinwhXmZMtWzcGn+1+zO2nwNeVB5oEakvsZmQLvwkENpQTm4Vg/nUMnHw==;
+        Resent-Cc:Resent-Message-ID; bh=zALOp5VktsXUoujeClhjSu442pyiTs4hvdJBxkxufGw=;
+        t=1692860590; x=1694070190; b=xYtlc6r/RKBlOazwBsgNyPIVtiKa55HW5gAMMh83UG/z84b
+        ZgzxgNR4xJndwo7IFmFAsLW3oeNt9GEHR15VLfw3M2bU0DF8cbZr1y0pYMK42Rg10YzzZmaqYXB2L
+        mXmbH5C/XCPVq1QwluK7G9xmwUXXH5CoRbl9IJITvIeUVO5bQs85XaIjD6Hj2IqIDAwFDAKOOUVHX
+        Dx6INOtThaOKJGaCO7KWPuJmaLAQLOYHlj+u2Ql3wUt0YoehX/vxJE++DjEIKEah9qwBJkTxUVxWG
+        /iwAwL6nrfklM+9PaIq4a9JzQMNRzHTZEgQgOb6Hc4UvrgkYRvjjPLnRi8d9Frwg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qZ4JB-008ia3-2s;
-        Thu, 24 Aug 2023 08:59:10 +0200
-Message-ID: <dbbd230e26245274d5a05c64c553c42574f15d4b.camel@sipsolutions.net>
-Subject: Re: [PATCH 6/12] wifi: mac80211: Do not include crypto/algapi.h
+        id 1qZ4My-008ioQ-3C;
+        Thu, 24 Aug 2023 09:03:05 +0200
+Message-ID: <b050f2633da4a81ba7cd70ef58c8e95d011e840d.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: mac80211: fix cfg80211_bss always hold when
+ assoc response fail for MLO connection
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        "Theodore Y.Ts'o" <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        linux-fscrypt@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        linux-bluetooth@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>,
-        Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
-        ceph-devel@vger.kernel.org,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Mat Martineau <martineau@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Neil Brown <neilb@suse.de>, linux-nfs@vger.kernel.org,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-integrity@vger.kernel.org,
-        "Jason A.Donenfeld" <Jason@zx2c4.com>,
-        Ayush Sawal <ayush.sawal@chelsio.com>
-Date:   Thu, 24 Aug 2023 08:59:08 +0200
-In-Reply-To: <ZObmLqztZ4vMFKnI@gondor.apana.org.au>
-References: <ZOXf3JTIqhRLbn5j@gondor.apana.org.au>
-         <E1qYlA0-006vFr-Ts@formenos.hmeau.com>
-         <d776152a79c9604f4f0743fe8d4ab16efd517926.camel@sipsolutions.net>
-         <ZObmLqztZ4vMFKnI@gondor.apana.org.au>
+To:     Wen Gong <quic_wgong@quicinc.com>, ath12k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 24 Aug 2023 09:03:04 +0200
+In-Reply-To: <1a193edc-23a8-6631-5beb-2020de489934@quicinc.com>
+References: <20230822100409.1242-1-quic_wgong@quicinc.com>
+         <c4d2c8987f929f29da96154e0fc6c9e94882310e.camel@sipsolutions.net>
+         <bcf65017-0dbc-e957-f382-98c6dc406346@quicinc.com>
+         <941b1bdb6852f20722fa3a5b01f546f054f9e8a8.camel@sipsolutions.net>
+         <1a193edc-23a8-6631-5beb-2020de489934@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -77,26 +57,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-08-24 at 13:10 +0800, Herbert Xu wrote:
-> On Wed, Aug 23, 2023 at 12:34:35PM +0200, Johannes Berg wrote:
+On Thu, 2023-08-24 at 10:26 +0800, Wen Gong wrote:
+> On 8/23/2023 2:34 PM, Johannes Berg wrote:
+> > On Wed, 2023-08-23 at 10:28 +0800, Wen Gong wrote:
+> > > >                   /* need to have local link addresses for MLO conn=
+ections */
+> > > >=20
+> > > >                   WARN_ON(cr.ap_mld_addr && !cr.links[link_id].addr=
+);
+> > > >=20
+> > > > makes no sense anymore. Not sure if that's the only one.
+> > > After this patch, the cr.links[link_id].addr will be a valid local li=
+nk
+> > > address from
+> > >=20
+> > > struct cfg80211_rx_assoc_resp, so I think it is not needed remove now=
+.
+> > You don't understand.
 > >=20
-> > No objection, of course, but I don't think it's necessarily clear that
-> > it "is for internal use only", it literally says:
+> > The issue is that it's set the line above.
 > >=20
-> >  * Cryptographic API for algorithms (i.e., low-level API).
-> >=20
-> > which really isn't the same as "don't use this file".
-> >=20
-> > Might want to clarify that, or even move it into crypto/ from
-> > include/crypto/ or something?
+> > >                  cr.links[link_id].addr =3D data->links[link_id].addr=
+;
+> > >                  /* need to have local link addresses for MLO connect=
+ions */
+> > >                  WARN_ON(cr.ap_mld_addr && !cr.links[link_id].addr);
+> > But look at that! What values can cr.links[link_id].addr get? Note how
+> > it's a pointer - assigned from an array.
 >=20
-> Yes it should be in include/crypto/internal.  Once the churn gets
-> small enough I'll move it there.
+> Oh, I know it now. the cr.links[link_id].addr will always NOT 0 because=
+=20
+> it is pointer
+>=20
+> to an array "u8 addr[ETH_ALEN]" of struct cfg80211_rx_assoc_resp.
+
+Yep.
+
+> So maybe we can choose one of the 2 things to do:
+>=20
+> 1. remove the "WARN_ON(cr.ap_mld_addr && !cr.links[link_id].addr);"
+>=20
+> 2. change like this:
+>=20
+> WARN_ON(cr.ap_mld_addr && !is_valid_ether_addr(cr.links[link_id].addr));
 >=20
 
-Sounds good :)
-
-I was kind of waiting to see - but now that others have applied some
-patches to their tree I've done the same.
+I think we should check that it's valid, because if you don't fill it,
+it'll (hopefully) point to zeroed data somewhere.
 
 johannes
