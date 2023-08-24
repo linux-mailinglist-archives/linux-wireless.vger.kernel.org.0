@@ -2,85 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 632F9786704
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 07:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA9F78673E
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 07:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239684AbjHXFLv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Aug 2023 01:11:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41388 "EHLO
+        id S239894AbjHXFyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Aug 2023 01:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239177AbjHXFLJ (ORCPT
+        with ESMTP id S239878AbjHXFyO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Aug 2023 01:11:09 -0400
-Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DBC810F9;
-        Wed, 23 Aug 2023 22:11:06 -0700 (PDT)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1qZ2bd-007EU6-EA; Thu, 24 Aug 2023 13:10:06 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 24 Aug 2023 13:10:06 +0800
-Date:   Thu, 24 Aug 2023 13:10:06 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        "Theodore Y.Ts'o" <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        linux-fscrypt@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        linux-bluetooth@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>,
-        Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
-        ceph-devel@vger.kernel.org,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Mat Martineau <martineau@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Neil Brown <neilb@suse.de>, linux-nfs@vger.kernel.org,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-integrity@vger.kernel.org,
-        "Jason A.Donenfeld" <Jason@zx2c4.com>,
-        Ayush Sawal <ayush.sawal@chelsio.com>
-Subject: Re: [PATCH 6/12] wifi: mac80211: Do not include crypto/algapi.h
-Message-ID: <ZObmLqztZ4vMFKnI@gondor.apana.org.au>
-References: <ZOXf3JTIqhRLbn5j@gondor.apana.org.au>
- <E1qYlA0-006vFr-Ts@formenos.hmeau.com>
- <d776152a79c9604f4f0743fe8d4ab16efd517926.camel@sipsolutions.net>
+        Thu, 24 Aug 2023 01:54:14 -0400
+Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C9C10E0
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 22:54:07 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:287:0:640:7dd6:0])
+        by forward100c.mail.yandex.net (Yandex) with ESMTP id 46AE0600C2;
+        Thu, 24 Aug 2023 08:54:05 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3sDNeg0WnqM0-akqvJSOX;
+        Thu, 24 Aug 2023 08:54:04 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1692856444;
+        bh=ViNyuKby6APPsFdcPz/t0WI7uk0vYoOjhkTYc2bDucE=;
+        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+        b=ePc5tJz+bKJY1GRLGp7Yz35q3j+ea/ffvEN75K9PYBfEm4BjbhIUmMhjlXXoPDFzF
+         rqyckpUrE7XWL5fmpRWZx4mL2GcUyY7xEUwkC/RihcELzuVJGvy9203KR4R+VYG5nK
+         S4gZ4Q/vuo+BBNW+unj6LhPv/s67bczTOr5KOVNg=
+Authentication-Results: mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        lvc-project@linuxtesting.org, ath10k@lists.infradead.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/6] [v3] wifi: ath10k: cleanup CE ring initialization
+Date:   Thu, 24 Aug 2023 08:51:06 +0300
+Message-ID: <20230824055117.42309-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <997f4b09-7087-4788-aa2a-ef835ce6ebb3@quicinc.com>
+References: <997f4b09-7087-4788-aa2a-ef835ce6ebb3@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d776152a79c9604f4f0743fe8d4ab16efd517926.camel@sipsolutions.net>
-X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR2,
-        PDS_RDNS_DYNAMIC_FP,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,TVD_RCVD_IP
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 12:34:35PM +0200, Johannes Berg wrote:
-> 
-> No objection, of course, but I don't think it's necessarily clear that
-> it "is for internal use only", it literally says:
-> 
->  * Cryptographic API for algorithms (i.e., low-level API).
-> 
-> which really isn't the same as "don't use this file".
-> 
-> Might want to clarify that, or even move it into crypto/ from
-> include/crypto/ or something?
+Commit 25d0dbcbd5c7 ("ath10k: split ce initialization and allocation")
+changes 'ath10k_ce_init_src_ring()' and 'ath10k_ce_init_dest_ring()'
+so these functions can't return -ENOMEM but always returns 0. This way
+both of them may be converted to 'void', and 'ath10k_ce_init_pipe()'
+may be simplified accordingly.
 
-Yes it should be in include/crypto/internal.  Once the churn gets
-small enough I'll move it there.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Thanks,
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v3: split to smaller units per Jeff's suggestion
+v2: change 'ath10k_ce_alloc_rri()' to return -ENOMEM in case
+of 'dma_alloc_coherent()' failure and fix error handling in
+'ath10k_snoc_hif_power_up()'
+---
+ drivers/net/wireless/ath/ath10k/ce.c | 38 ++++++++--------------------
+ 1 file changed, 10 insertions(+), 28 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
+index c27b8204718a..ace92c636733 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -1352,9 +1352,9 @@ void ath10k_ce_enable_interrupts(struct ath10k *ar)
+ }
+ EXPORT_SYMBOL(ath10k_ce_enable_interrupts);
+ 
+-static int ath10k_ce_init_src_ring(struct ath10k *ar,
+-				   unsigned int ce_id,
+-				   const struct ce_attr *attr)
++static void ath10k_ce_init_src_ring(struct ath10k *ar,
++				    unsigned int ce_id,
++				    const struct ce_attr *attr)
+ {
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 	struct ath10k_ce_pipe *ce_state = &ce->ce_states[ce_id];
+@@ -1389,13 +1389,11 @@ static int ath10k_ce_init_src_ring(struct ath10k *ar,
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT,
+ 		   "boot init ce src ring id %d entries %d base_addr %pK\n",
+ 		   ce_id, nentries, src_ring->base_addr_owner_space);
+-
+-	return 0;
+ }
+ 
+-static int ath10k_ce_init_dest_ring(struct ath10k *ar,
+-				    unsigned int ce_id,
+-				    const struct ce_attr *attr)
++static void ath10k_ce_init_dest_ring(struct ath10k *ar,
++				     unsigned int ce_id,
++				     const struct ce_attr *attr)
+ {
+ 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
+ 	struct ath10k_ce_pipe *ce_state = &ce->ce_states[ce_id];
+@@ -1427,8 +1425,6 @@ static int ath10k_ce_init_dest_ring(struct ath10k *ar,
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT,
+ 		   "boot ce dest ring id %d entries %d base_addr %pK\n",
+ 		   ce_id, nentries, dest_ring->base_addr_owner_space);
+-
+-	return 0;
+ }
+ 
+ static int ath10k_ce_alloc_shadow_base(struct ath10k *ar,
+@@ -1662,25 +1658,11 @@ ath10k_ce_alloc_dest_ring_64(struct ath10k *ar, unsigned int ce_id,
+ int ath10k_ce_init_pipe(struct ath10k *ar, unsigned int ce_id,
+ 			const struct ce_attr *attr)
+ {
+-	int ret;
+-
+-	if (attr->src_nentries) {
+-		ret = ath10k_ce_init_src_ring(ar, ce_id, attr);
+-		if (ret) {
+-			ath10k_err(ar, "Failed to initialize CE src ring for ID: %d (%d)\n",
+-				   ce_id, ret);
+-			return ret;
+-		}
+-	}
++	if (attr->src_nentries)
++		ath10k_ce_init_src_ring(ar, ce_id, attr);
+ 
+-	if (attr->dest_nentries) {
+-		ret = ath10k_ce_init_dest_ring(ar, ce_id, attr);
+-		if (ret) {
+-			ath10k_err(ar, "Failed to initialize CE dest ring for ID: %d (%d)\n",
+-				   ce_id, ret);
+-			return ret;
+-		}
+-	}
++	if (attr->dest_nentries)
++		ath10k_ce_init_dest_ring(ar, ce_id, attr);
+ 
+ 	return 0;
+ }
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.41.0
+
