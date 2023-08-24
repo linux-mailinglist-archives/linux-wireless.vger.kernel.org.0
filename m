@@ -2,84 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C23D7866A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 06:23:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 632F9786704
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 07:13:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234290AbjHXEXQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Aug 2023 00:23:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50808 "EHLO
+        id S239684AbjHXFLv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Aug 2023 01:11:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240153AbjHXEWr (ORCPT
+        with ESMTP id S239177AbjHXFLJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Aug 2023 00:22:47 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A438DCE
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 21:22:45 -0700 (PDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37O325Nc012263;
-        Thu, 24 Aug 2023 04:22:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=/CZOywEz+mWvUXFGFOzI5YGSli17Ewawcs0aLcbDr6Y=;
- b=JdkhjL6lPqcnNcue+9c3UZk4vwIkecfLyYzGoYNBqjFu270N68Qgo2nVKbS1HckAYKUz
- xEylcaxGOAPBLz1KPRyjfHUPc6Lb3pYvvMSS4FBsii8JWjeKMnCAwVSlUKM3oqCwS6w6
- y76su3nJIVU/G4srNidwNxTc2h21872IkJweVMjdxbBOLb8+jP4Qw2l7t5gUKmSpniWR
- W5JEPRAqUYtP1aiqybJT8Ot/FJS8XfcGDseu0s/sOpXYHYQBt1VLUVhisnrtngnXxa6a
- HVcGa5l9AV2gaFwknAL2dg+sDoRr+lk7MhD0mxxH14x3FxcRw+hv8klfX9nMvoUwqV22 IQ== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3snwkjr7mk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 24 Aug 2023 04:22:36 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37O4MZmw002932
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 24 Aug 2023 04:22:35 GMT
-Received: from [10.48.247.99] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 23 Aug
- 2023 21:22:35 -0700
-Message-ID: <e544defa-ba43-4497-8f43-c109f0c8156b@quicinc.com>
-Date:   Wed, 23 Aug 2023 21:22:34 -0700
+        Thu, 24 Aug 2023 01:11:09 -0400
+Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DBC810F9;
+        Wed, 23 Aug 2023 22:11:06 -0700 (PDT)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1qZ2bd-007EU6-EA; Thu, 24 Aug 2023 13:10:06 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 24 Aug 2023 13:10:06 +0800
+Date:   Thu, 24 Aug 2023 13:10:06 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        "Theodore Y.Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        linux-fscrypt@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        linux-bluetooth@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>,
+        Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
+        ceph-devel@vger.kernel.org,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Mat Martineau <martineau@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Neil Brown <neilb@suse.de>, linux-nfs@vger.kernel.org,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        linux-integrity@vger.kernel.org,
+        "Jason A.Donenfeld" <Jason@zx2c4.com>,
+        Ayush Sawal <ayush.sawal@chelsio.com>
+Subject: Re: [PATCH 6/12] wifi: mac80211: Do not include crypto/algapi.h
+Message-ID: <ZObmLqztZ4vMFKnI@gondor.apana.org.au>
+References: <ZOXf3JTIqhRLbn5j@gondor.apana.org.au>
+ <E1qYlA0-006vFr-Ts@formenos.hmeau.com>
+ <d776152a79c9604f4f0743fe8d4ab16efd517926.camel@sipsolutions.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath12k: enable 320 MHz bandwidth for 6 GHz band
- in EHT PHY capbility for WCN7850
-Content-Language: en-US
-To:     Wen Gong <quic_wgong@quicinc.com>, <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230824025432.19406-1-quic_wgong@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230824025432.19406-1-quic_wgong@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: n7zm4ZLXuFhsE67YI7cS5wMYsDdf-UYP
-X-Proofpoint-ORIG-GUID: n7zm4ZLXuFhsE67YI7cS5wMYsDdf-UYP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-24_01,2023-08-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=666 mlxscore=0 clxscore=1015 malwarescore=0
- impostorscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2308240035
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d776152a79c9604f4f0743fe8d4ab16efd517926.camel@sipsolutions.net>
+X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR2,
+        PDS_RDNS_DYNAMIC_FP,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,TVD_RCVD_IP
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
- > wifi: ath12k: enable 320 MHz bandwidth for 6 GHz band in EHT PHY 
-capbility for WCN7850
+On Wed, Aug 23, 2023 at 12:34:35PM +0200, Johannes Berg wrote:
+> 
+> No objection, of course, but I don't think it's necessarily clear that
+> it "is for internal use only", it literally says:
+> 
+>  * Cryptographic API for algorithms (i.e., low-level API).
+> 
+> which really isn't the same as "don't use this file".
+> 
+> Might want to clarify that, or even move it into crypto/ from
+> include/crypto/ or something?
 
-s/capbility/capability/
+Yes it should be in include/crypto/internal.  Once the churn gets
+small enough I'll move it there.
 
-Kalle can make that change when he submits to -pending
+Thanks,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
