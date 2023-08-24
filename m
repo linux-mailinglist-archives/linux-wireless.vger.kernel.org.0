@@ -2,116 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17AAE787436
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 17:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF484787660
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 19:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238628AbjHXPaZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Aug 2023 11:30:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38962 "EHLO
+        id S242445AbjHXRJS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Aug 2023 13:09:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241958AbjHXPaT (ORCPT
+        with ESMTP id S242855AbjHXRIx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Aug 2023 11:30:19 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 364E119BC
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Aug 2023 08:30:17 -0700 (PDT)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37OEWkv1006960;
-        Thu, 24 Aug 2023 15:30:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=v1ftzoKOgQHzAHqnOzcWmrhBWZ3pDMZ0yLpmUn8k44w=;
- b=lH5WrAtMHCaHqnD2C2HKbTkBgMeAknaZNfu07+axeIO2GaVVif64TDXA+iVYSkwugN9V
- a1xxYf4wfOjlqgzaouJdx301pEldQMIGCcwyBxBxAk3skFg5nGfv2Axqhz23wWEntrIB
- QBl1b2SPQGwHQQMu6vMoIMX+WpjxFrHGpNT2kSfm0GobPYP1M5y9HkL4kDrJ2nEPWqW8
- JirlEIhW2hUOqmnpPI8tnQchIE20yVot6VMZb4iC9RqgvlyBPprNlOuZeldFoIv/3d2L
- SLu9RS0PYvXuWxnaviU9XefBxrNIgMa3JemwXWhA2MsZFAVY9tADcmSd5rG0uwVThP3f Tw== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sp1k9hf6e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 24 Aug 2023 15:30:09 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37OFU8M7025989
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 24 Aug 2023 15:30:08 GMT
-Received: from [10.48.247.99] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 24 Aug
- 2023 08:30:08 -0700
-Message-ID: <3aded344-1ba0-405d-9541-aefc293f4ba2@quicinc.com>
-Date:   Thu, 24 Aug 2023 08:30:07 -0700
+        Thu, 24 Aug 2023 13:08:53 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 915C919A3
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Aug 2023 10:08:45 -0700 (PDT)
+X-UUID: df04490a42a011ee9cb5633481061a41-20230825
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ATrXCM7+qSOheR+SJgfPJ9Nees7z4bkd7+kSh3wvmIE=;
+        b=QBwSREAKif2TGXY/DJDuAcHsgOxxB2Md/Bioo7/JUezqWe0p29tkfQUQKaOIe4AhAfEFmW4zS3Jbd8NXkTkcVAcjaGJ5R6pmgC32Rbirr/v4uYdgrYgIH+B5lFUURuHd1AK0Bw8EpejJCRJzygUBmdOQfpkYgMCzjatxfks1WIQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.31,REQID:4d0ac132-426f-4a90-b3e2-521c42baa2d6,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:0ad78a4,CLOUDID:06102713-4929-4845-9571-38c601e9c3c9,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+        NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: df04490a42a011ee9cb5633481061a41-20230825
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 53636015; Fri, 25 Aug 2023 01:08:39 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Fri, 25 Aug 2023 01:08:38 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Fri, 25 Aug 2023 01:08:38 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Alexey D . Filimonov" <alexey@filimonic.net>
+Subject: [PATCH] wifi: mt76: add ability to explicitly forbid LED registration with DT
+Date:   Fri, 25 Aug 2023 01:08:37 +0800
+Message-ID: <b08ef4d7c91c54e273c61784272e5c6f70c3c137.1692896654.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] wifi: ath11k: drop redundant check in
- ath11k_dp_rx_mon_dest_process()
-Content-Language: en-US
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     Kalle Valo <kvalo@kernel.org>, Tom Rix <trix@redhat.com>,
-        <linux-wireless@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-        <ath11k@lists.infradead.org>
-References: <20230824075121.121144-1-dmantipov@yandex.ru>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230824075121.121144-1-dmantipov@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 1E6o_mfAXAnz5nO1IR0D_vRrdXeLpQEu
-X-Proofpoint-ORIG-GUID: 1E6o_mfAXAnz5nO1IR0D_vRrdXeLpQEu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-24_12,2023-08-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 spamscore=0 mlxlogscore=420
- impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2308240130
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,MAY_BE_FORGED,SPF_HELO_PASS,T_SPF_TEMPERROR,
+        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/24/2023 12:50 AM, Dmitry Antipov wrote:
-> In 'ath11k_dp_rx_mon_dest_process()', 'mon_dst_srng' points to
-> a member of 'srng_list', which is a fixed-size array inside
-> 'struct ath11k_hal'. This way, if 'ring_id' is valid (i. e.
-> between 0 and HAL_SRNG_RING_ID_MAX - 1 inclusive), 'mon_dst_srng'
-> can't be NULL and so relevant check may be dropped.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Add ability to explicitly forbid LED registration using DT led\status = "disabled".
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Tested-by: Alexey D. Filimonov <alexey@filimonic.net>
+Signed-off-by: Alexey D. Filimonov <alexey@filimonic.net>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 39 ++++++++++++-------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-> ---
->   drivers/net/wireless/ath/ath11k/dp_rx.c | 7 -------
->   1 file changed, 7 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> index 1e488eed282b..3f315547878a 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> @@ -5097,13 +5097,6 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
->   
->   	mon_dst_srng = &ar->ab->hal.srng_list[ring_id];
->   
-> -	if (!mon_dst_srng) {
-> -		ath11k_warn(ar->ab,
-> -			    "HAL Monitor Destination Ring Init Failed -- %p",
-> -			    mon_dst_srng);
-> -		return;
-> -	}
-> -
->   	spin_lock_bh(&pmon->mon_lock);
->   
->   	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index c0ff36a98bed..f768d9aed456 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -198,10 +198,33 @@ static int mt76_led_init(struct mt76_phy *phy)
+ {
+ 	struct mt76_dev *dev = phy->dev;
+ 	struct ieee80211_hw *hw = phy->hw;
++	struct device_node *np = dev->dev->of_node;
+ 
+ 	if (!phy->leds.cdev.brightness_set && !phy->leds.cdev.blink_set)
+ 		return 0;
+ 
++	np = of_get_child_by_name(np, "led");
++	if (np) {
++		if (!of_device_is_available(np)) {
++			of_node_put(np);
++			dev_info(dev->dev,
++				"led registration was explicitly disabled by dts\n");
++			return 0;
++		}
++
++		if (phy == &dev->phy) {
++			int led_pin;
++
++			if (!of_property_read_u32(np, "led-sources", &led_pin))
++				phy->leds.pin = led_pin;
++
++			phy->leds.al =
++				of_property_read_bool(np, "led-active-low");
++		}
++
++		of_node_put(np);
++	}
++
+ 	snprintf(phy->leds.name, sizeof(phy->leds.name), "mt76-%s",
+ 		 wiphy_name(hw->wiphy));
+ 
+@@ -212,20 +235,8 @@ static int mt76_led_init(struct mt76_phy *phy)
+ 					mt76_tpt_blink,
+ 					ARRAY_SIZE(mt76_tpt_blink));
+ 
+-	if (phy == &dev->phy) {
+-		struct device_node *np = dev->dev->of_node;
+-
+-		np = of_get_child_by_name(np, "led");
+-		if (np) {
+-			int led_pin;
+-
+-			if (!of_property_read_u32(np, "led-sources", &led_pin))
+-				phy->leds.pin = led_pin;
+-			phy->leds.al = of_property_read_bool(np,
+-							     "led-active-low");
+-			of_node_put(np);
+-		}
+-	}
++	dev_info(dev->dev,
++		"registering led '%s'\n", phy->leds.name);
+ 
+ 	return led_classdev_register(dev->dev, &phy->leds.cdev);
+ }
+-- 
+2.18.0
 
