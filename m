@@ -2,145 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68E1C786912
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 09:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6D6F786A89
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 10:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235895AbjHXHz6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Aug 2023 03:55:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54552 "EHLO
+        id S231773AbjHXIqr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Aug 2023 04:46:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236838AbjHXHz1 (ORCPT
+        with ESMTP id S240665AbjHXIqL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Aug 2023 03:55:27 -0400
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCB5F1709
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Aug 2023 00:55:25 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1e2b:0:640:94b5:0])
-        by forward103b.mail.yandex.net (Yandex) with ESMTP id B236360021;
-        Thu, 24 Aug 2023 10:54:53 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id nsFdET9WwmI0-vGuxbnum;
-        Thu, 24 Aug 2023 10:54:53 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1692863693;
-        bh=t8sVbi/v2uwfYixKvm61hfDLATHIxHUnHyobe5AgHLw=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=K1LAwCOjdjvrzVCuEoLpzlWiN0bVe/9cyzWGSfeCC99J0pOeoMdjWXAa1bMoqvrPc
-         8mqPTroRt4HyekdyXGDwMoqqvr1tvId3aGe8anQioOOMt5S1DFa31jO3QbnvnUzkAc
-         ZAzUvlxHxnj3Ha0VS5ltQEjkYQId4XenM5TC2jkw=
-Authentication-Results: mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, Tom Rix <trix@redhat.com>,
-        linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
-        ath11k@lists.infradead.org, Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 5/5] wifi: ath11k: fix stack usage of ath11k_mac_op_remain_on_channel()
-Date:   Thu, 24 Aug 2023 10:50:48 +0300
-Message-ID: <20230824075121.121144-5-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230824075121.121144-1-dmantipov@yandex.ru>
-References: <20230824075121.121144-1-dmantipov@yandex.ru>
+        Thu, 24 Aug 2023 04:46:11 -0400
+Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC631BF8;
+        Thu, 24 Aug 2023 01:45:50 -0700 (PDT)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1qZ5xc-007Hxa-Bb; Thu, 24 Aug 2023 16:45:01 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 24 Aug 2023 16:45:01 +0800
+Date:   Thu, 24 Aug 2023 16:45:01 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        "Theodore Y.Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        linux-fscrypt@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        linux-bluetooth@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>,
+        Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
+        ceph-devel@vger.kernel.org,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Mat Martineau <martineau@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Neil Brown <neilb@suse.de>, linux-nfs@vger.kernel.org,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        linux-integrity@vger.kernel.org,
+        "Jason A.Donenfeld" <Jason@zx2c4.com>,
+        Ayush Sawal <ayush.sawal@chelsio.com>
+Subject: Re: [PATCH 6/12] wifi: mac80211: Do not include crypto/algapi.h
+Message-ID: <ZOcYjQ1JasrF+L4N@gondor.apana.org.au>
+References: <ZOXf3JTIqhRLbn5j@gondor.apana.org.au>
+ <E1qYlA0-006vFr-Ts@formenos.hmeau.com>
+ <d776152a79c9604f4f0743fe8d4ab16efd517926.camel@sipsolutions.net>
+ <ZObmLqztZ4vMFKnI@gondor.apana.org.au>
+ <dbbd230e26245274d5a05c64c553c42574f15d4b.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dbbd230e26245274d5a05c64c553c42574f15d4b.camel@sipsolutions.net>
+X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR2,
+        PDS_RDNS_DYNAMIC_FP,RCVD_IN_DNSWL_BLOCKED,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_PASS,TVD_RCVD_IP autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When compiling with clang 16.0.6, I've noticed the following:
+On Thu, Aug 24, 2023 at 08:59:08AM +0200, Johannes Berg wrote:
+>
+> I was kind of waiting to see - but now that others have applied some
+> patches to their tree I've done the same.
 
-drivers/net/wireless/ath/ath11k/mac.c:8900:12: warning: stack frame
-size (1032) exceeds limit (1024) in 'ath11k_mac_op_remain_on_channel'
-[-Wframe-larger-than]
-static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
-           ^
-68/1032 (6.59%) spills, 964/1032 (93.41%) variables
-
-So switch to kzalloc()'ed instance of 'struct scan_req_params' and
-adjust the function in subject accordingly.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/ath/ath11k/mac.c | 44 +++++++++++++++------------
- 1 file changed, 25 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 2aadf2c387b6..3e2983d30a5a 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8905,7 +8905,7 @@ static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- {
- 	struct ath11k *ar = hw->priv;
- 	struct ath11k_vif *arvif = (void *)vif->drv_priv;
--	struct scan_req_params arg;
-+	struct scan_req_params *arg;
- 	int ret;
- 	u32 scan_time_msec;
- 
-@@ -8937,27 +8937,31 @@ static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 
- 	scan_time_msec = ar->hw->wiphy->max_remain_on_channel_duration * 2;
- 
--	memset(&arg, 0, sizeof(arg));
--	ath11k_wmi_start_scan_init(ar, &arg);
--	arg.num_chan = 1;
--	arg.chan_list = kcalloc(arg.num_chan, sizeof(*arg.chan_list),
--				GFP_KERNEL);
--	if (!arg.chan_list) {
-+	arg = kzalloc(sizeof(*arg), GFP_KERNEL);
-+	if (!arg) {
- 		ret = -ENOMEM;
- 		goto exit;
- 	}
-+	ath11k_wmi_start_scan_init(ar, arg);
-+	arg->num_chan = 1;
-+	arg->chan_list = kcalloc(arg->num_chan, sizeof(*arg->chan_list),
-+				 GFP_KERNEL);
-+	if (!arg->chan_list) {
-+		ret = -ENOMEM;
-+		goto free_arg;
-+	}
- 
--	arg.vdev_id = arvif->vdev_id;
--	arg.scan_id = ATH11K_SCAN_ID;
--	arg.chan_list[0] = chan->center_freq;
--	arg.dwell_time_active = scan_time_msec;
--	arg.dwell_time_passive = scan_time_msec;
--	arg.max_scan_time = scan_time_msec;
--	arg.scan_flags |= WMI_SCAN_FLAG_PASSIVE;
--	arg.scan_flags |= WMI_SCAN_FILTER_PROBE_REQ;
--	arg.burst_duration = duration;
--
--	ret = ath11k_start_scan(ar, &arg);
-+	arg->vdev_id = arvif->vdev_id;
-+	arg->scan_id = ATH11K_SCAN_ID;
-+	arg->chan_list[0] = chan->center_freq;
-+	arg->dwell_time_active = scan_time_msec;
-+	arg->dwell_time_passive = scan_time_msec;
-+	arg->max_scan_time = scan_time_msec;
-+	arg->scan_flags |= WMI_SCAN_FLAG_PASSIVE;
-+	arg->scan_flags |= WMI_SCAN_FILTER_PROBE_REQ;
-+	arg->burst_duration = duration;
-+
-+	ret = ath11k_start_scan(ar, arg);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to start roc scan: %d\n", ret);
- 
-@@ -8983,7 +8987,9 @@ static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 	ret = 0;
- 
- free_chan_list:
--	kfree(arg.chan_list);
-+	kfree(arg->chan_list);
-+free_arg:
-+	kfree(arg);
- exit:
- 	mutex_unlock(&ar->conf_mutex);
- 	return ret;
+Noted.  Thanks!
 -- 
-2.41.0
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
