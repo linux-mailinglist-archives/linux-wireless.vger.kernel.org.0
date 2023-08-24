@@ -2,140 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF484787660
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 19:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D0FD787739
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 19:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242445AbjHXRJS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Aug 2023 13:09:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52046 "EHLO
+        id S240221AbjHXRka (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Aug 2023 13:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242855AbjHXRIx (ORCPT
+        with ESMTP id S242649AbjHXRkH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Aug 2023 13:08:53 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 915C919A3
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Aug 2023 10:08:45 -0700 (PDT)
-X-UUID: df04490a42a011ee9cb5633481061a41-20230825
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ATrXCM7+qSOheR+SJgfPJ9Nees7z4bkd7+kSh3wvmIE=;
-        b=QBwSREAKif2TGXY/DJDuAcHsgOxxB2Md/Bioo7/JUezqWe0p29tkfQUQKaOIe4AhAfEFmW4zS3Jbd8NXkTkcVAcjaGJ5R6pmgC32Rbirr/v4uYdgrYgIH+B5lFUURuHd1AK0Bw8EpejJCRJzygUBmdOQfpkYgMCzjatxfks1WIQ=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.31,REQID:4d0ac132-426f-4a90-b3e2-521c42baa2d6,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:0ad78a4,CLOUDID:06102713-4929-4845-9571-38c601e9c3c9,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-        NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: df04490a42a011ee9cb5633481061a41-20230825
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 53636015; Fri, 25 Aug 2023 01:08:39 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 25 Aug 2023 01:08:38 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 25 Aug 2023 01:08:38 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        "Alexey D . Filimonov" <alexey@filimonic.net>
-Subject: [PATCH] wifi: mt76: add ability to explicitly forbid LED registration with DT
-Date:   Fri, 25 Aug 2023 01:08:37 +0800
-Message-ID: <b08ef4d7c91c54e273c61784272e5c6f70c3c137.1692896654.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Thu, 24 Aug 2023 13:40:07 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB4B1BD3
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Aug 2023 10:40:04 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37OGei8C022321;
+        Thu, 24 Aug 2023 17:39:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=9kggua4fcM4O5jlNv2h34XjgP/XDwv/jlGIegfCJEac=;
+ b=C1IY4fzMea4ptNlYRCLyK+kG8d5sRG3YaIqrBp2tKkk4/A0B4WEjQgptmrLJEvZPwE8j
+ 5uOTDL2s+IEMLU8DqEJoeMSFdJFbJXgW7euAjRZ0vgOnY1/Z0l1weWbrsviO8su7lpSy
+ SbsciQsdaavz01XKL74WDxsR0DnJ1UAZaP45M3b7pMjm/QL4hCwzH0yrzkS68ckm6Mpj
+ ib/anA3IVS42YqZiQJE1X3DwsDth8UUvglfdQ32DU+E20KT9goiD1XqRQTTWLygS8uUL
+ 8kVfiyPrzmNcLpXr+igbfkP0vz94gC5yLVzOHeZ3dXGM36HkACLQNNRLwZjgIWbdUHOS Ug== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3snvuwac8g-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 24 Aug 2023 17:39:53 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37OHdrSP021010
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 24 Aug 2023 17:39:53 GMT
+Received: from [10.48.247.99] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 24 Aug
+ 2023 10:39:52 -0700
+Message-ID: <8933f6a1-cfe0-467d-bc52-5f784ce95840@quicinc.com>
+Date:   Thu, 24 Aug 2023 10:39:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,MAY_BE_FORGED,SPF_HELO_PASS,T_SPF_TEMPERROR,
-        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] wifi: ath11k: simplify spectral pull functions
+Content-Language: en-US
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     Kalle Valo <kvalo@kernel.org>, Tom Rix <trix@redhat.com>,
+        <linux-wireless@vger.kernel.org>, <lvc-project@linuxtesting.org>,
+        <ath11k@lists.infradead.org>
+References: <20230824075121.121144-1-dmantipov@yandex.ru>
+ <20230824075121.121144-3-dmantipov@yandex.ru>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230824075121.121144-3-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: HOmWUsTwKgT25RB8F6QZ4LcdyZJS9j1H
+X-Proofpoint-ORIG-GUID: HOmWUsTwKgT25RB8F6QZ4LcdyZJS9j1H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-24_14,2023-08-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ adultscore=0 impostorscore=0 phishscore=0 clxscore=1015 suspectscore=0
+ mlxlogscore=845 spamscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308240151
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add ability to explicitly forbid LED registration using DT led\status = "disabled".
+On 8/24/2023 12:50 AM, Dmitry Antipov wrote:
+> Since 'ath11k_spectral_pull_summary()' and 'ath11k_spectral_pull_search()'
+> always returns 0, both of them may be converted to 'void' and
+> 'ath11k_spectral_process_fft()' may be simplified accordingly.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-Tested-by: Alexey D. Filimonov <alexey@filimonic.net>
-Signed-off-by: Alexey D. Filimonov <alexey@filimonic.net>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 39 ++++++++++++-------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index c0ff36a98bed..f768d9aed456 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -198,10 +198,33 @@ static int mt76_led_init(struct mt76_phy *phy)
- {
- 	struct mt76_dev *dev = phy->dev;
- 	struct ieee80211_hw *hw = phy->hw;
-+	struct device_node *np = dev->dev->of_node;
- 
- 	if (!phy->leds.cdev.brightness_set && !phy->leds.cdev.blink_set)
- 		return 0;
- 
-+	np = of_get_child_by_name(np, "led");
-+	if (np) {
-+		if (!of_device_is_available(np)) {
-+			of_node_put(np);
-+			dev_info(dev->dev,
-+				"led registration was explicitly disabled by dts\n");
-+			return 0;
-+		}
-+
-+		if (phy == &dev->phy) {
-+			int led_pin;
-+
-+			if (!of_property_read_u32(np, "led-sources", &led_pin))
-+				phy->leds.pin = led_pin;
-+
-+			phy->leds.al =
-+				of_property_read_bool(np, "led-active-low");
-+		}
-+
-+		of_node_put(np);
-+	}
-+
- 	snprintf(phy->leds.name, sizeof(phy->leds.name), "mt76-%s",
- 		 wiphy_name(hw->wiphy));
- 
-@@ -212,20 +235,8 @@ static int mt76_led_init(struct mt76_phy *phy)
- 					mt76_tpt_blink,
- 					ARRAY_SIZE(mt76_tpt_blink));
- 
--	if (phy == &dev->phy) {
--		struct device_node *np = dev->dev->of_node;
--
--		np = of_get_child_by_name(np, "led");
--		if (np) {
--			int led_pin;
--
--			if (!of_property_read_u32(np, "led-sources", &led_pin))
--				phy->leds.pin = led_pin;
--			phy->leds.al = of_property_read_bool(np,
--							     "led-active-low");
--			of_node_put(np);
--		}
--	}
-+	dev_info(dev->dev,
-+		"registering led '%s'\n", phy->leds.name);
- 
- 	return led_classdev_register(dev->dev, &phy->leds.cdev);
- }
--- 
-2.18.0
+> ---
+>   drivers/net/wireless/ath/ath11k/spectral.c | 24 ++++++++--------------
+>   1 file changed, 8 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
+> index 705868198df4..97eb2a457685 100644
+> --- a/drivers/net/wireless/ath/ath11k/spectral.c
+> +++ b/drivers/net/wireless/ath/ath11k/spectral.c
+> @@ -470,10 +470,10 @@ static const struct file_operations fops_scan_bins = {
+>   	.llseek = default_llseek,
+>   };
+>   
+> -static int ath11k_spectral_pull_summary(struct ath11k *ar,
+> -					struct wmi_dma_buf_release_meta_data *meta,
+> -					struct spectral_summary_fft_report *summary,
+> -					struct ath11k_spectral_summary_report *report)
+> +static void ath11k_spectral_pull_summary(struct ath11k *ar,
+> +					 struct wmi_dma_buf_release_meta_data *meta,
+> +					 struct spectral_summary_fft_report *summary,
+> +					 struct ath11k_spectral_summary_report *report)
+>   {
+>   	report->timestamp = __le32_to_cpu(summary->timestamp);
+>   	report->agc_total_gain = FIELD_GET(SPECTRAL_SUMMARY_INFO0_AGC_TOTAL_GAIN,
+> @@ -500,13 +500,11 @@ static int ath11k_spectral_pull_summary(struct ath11k *ar,
+>   					__le32_to_cpu(summary->info2));
+>   
+>   	memcpy(&report->meta, meta, sizeof(*meta));
+> -
+> -	return 0;
+>   }
+>   
+> -static int ath11k_spectral_pull_search(struct ath11k *ar,
+> -				       struct spectral_search_fft_report *search,
+> -				       struct ath11k_spectral_search_report *report)
+> +static void ath11k_spectral_pull_search(struct ath11k *ar,
+> +					struct spectral_search_fft_report *search,
+> +					struct ath11k_spectral_search_report *report)
+>   {
+>   	report->timestamp = __le32_to_cpu(search->timestamp);
+>   	report->detector_id = FIELD_GET(SPECTRAL_FFT_REPORT_INFO0_DETECTOR_ID,
+> @@ -531,8 +529,6 @@ static int ath11k_spectral_pull_search(struct ath11k *ar,
+>   				       __le32_to_cpu(search->info2));
+>   	report->rel_pwr_db = FIELD_GET(SPECTRAL_FFT_REPORT_INFO2_REL_PWR_DB,
+>   				       __le32_to_cpu(search->info2));
+> -
+> -	return 0;
+>   }
+>   
+>   static u8 ath11k_spectral_get_max_exp(s8 max_index, u8 max_magnitude,
+> @@ -629,11 +625,7 @@ int ath11k_spectral_process_fft(struct ath11k *ar,
+>   		return ret;
+>   	}
+>   
+> -	ret = ath11k_spectral_pull_search(ar, data, &search);
+> -	if (ret) {
+> -		ath11k_warn(ab, "failed to pull search report %d\n", ret);
+> -		return ret;
+> -	}
+> +	ath11k_spectral_pull_search(ar, data, &search);
+>   
+>   	chan_width_mhz = summary->meta.ch_width;
+>   
 
