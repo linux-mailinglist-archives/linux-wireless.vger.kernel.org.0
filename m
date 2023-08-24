@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C759478673C
+	by mail.lfdr.de (Postfix) with ESMTP id 7E43878673B
 	for <lists+linux-wireless@lfdr.de>; Thu, 24 Aug 2023 07:55:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239893AbjHXFye (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Aug 2023 01:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59368 "EHLO
+        id S239896AbjHXFyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Aug 2023 01:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239863AbjHXFyO (ORCPT
+        with ESMTP id S239882AbjHXFyO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 24 Aug 2023 01:54:14 -0400
-Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [178.154.239.214])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6108710F9
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 22:54:09 -0700 (PDT)
+Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C7C10DD
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Aug 2023 22:54:10 -0700 (PDT)
 Received: from mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:287:0:640:7dd6:0])
-        by forward103c.mail.yandex.net (Yandex) with ESMTP id 04E0F60063;
+        by forward103c.mail.yandex.net (Yandex) with ESMTP id B6CBB60107;
         Thu, 24 Aug 2023 08:54:08 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3sDNeg0WnqM0-xGsbjdQd;
-        Thu, 24 Aug 2023 08:54:07 +0300
+Received: by mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3sDNeg0WnqM0-VgsQLmOo;
+        Thu, 24 Aug 2023 08:54:08 +0300
 X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1692856447;
-        bh=oh9W3M7y187CgNixsmZzPqmL/X2eyKM3vT2RWq4pKSs=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1692856448;
+        bh=xoUbqj1D8Su3iquJKrMFs64XhXmtbFkrY6+lI/LR/dI=;
         h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=op8PSicThLMUl5cZdH/QKdjJwPi3ixcCK5DkGXYKqjN86Cg2eZlziAkHJ/sHbs0LS
-         JWaQbGh4lbZjEE3Swe7PPXLk5rnfZ3iyRZSRVD7l9kiL8LtJYXzyU32ib5Ca15r61x
-         ZUiwzxNRJtpsjoGlZh/Ufcp7ziOQszyZO2bT2qR0=
+        b=VNVXv6lhqxai90mGB2uor/eEaMx8zErNuMdRprRcWqosVwcRBROgCbOAA/8z3Ul7G
+         MGFS0B9Y1ulgo8ijFMvShKvIBCpN8Vtd8nbeM7CL8oph+7+y6uMH0tjlBK3GbjVPRC
+         Uf8OIV+GZAZgo3kq83IJenjQ+eoFxOZqrTL/OVxc=
 Authentication-Results: mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From:   Dmitry Antipov <dmantipov@yandex.ru>
 To:     Jeff Johnson <quic_jjohnson@quicinc.com>
 Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
         lvc-project@linuxtesting.org, ath10k@lists.infradead.org,
         Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 4/6] [v3] wifi: ath10k: do not ignore possible dma_alloc_coherent() error
-Date:   Thu, 24 Aug 2023 08:51:09 +0300
-Message-ID: <20230824055117.42309-4-dmantipov@yandex.ru>
+Subject: [PATCH 5/6] [v3] wifi: ath10k: simplify ath10k_peer_assoc_h_vht()
+Date:   Thu, 24 Aug 2023 08:51:10 +0300
+Message-ID: <20230824055117.42309-5-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230824055117.42309-1-dmantipov@yandex.ru>
 References: <997f4b09-7087-4788-aa2a-ef835ce6ebb3@quicinc.com>
@@ -52,86 +52,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Change 'ath10k_ce_alloc_rri()' to return -ENOMEM in case
-of 'dma_alloc_coherent()' failure and fix error handling in
-'ath10k_snoc_hif_power_up()'.
+Commit 3db24065c2c8 ("ath10k: enable VHT160 and VHT80+80 modes")
+introduces 'get_160mhz_nss_from_maxrate()' which never returns 0,
+which means that 'ath10k_peer_assoc_h_vht()' may be simplified.
 
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-v3: split from the larger v2 patch
+v3: add Acked-by: otherwise unchanged
+v2: adjust to match series
 ---
- drivers/net/wireless/ath/ath10k/ce.c   | 6 ++++--
- drivers/net/wireless/ath/ath10k/ce.h   | 2 +-
- drivers/net/wireless/ath/ath10k/snoc.c | 9 ++++++++-
- 3 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
-index 73aa3632b23c..d7275dcc1f99 100644
---- a/drivers/net/wireless/ath/ath10k/ce.c
-+++ b/drivers/net/wireless/ath/ath10k/ce.c
-@@ -1906,7 +1906,7 @@ int ath10k_ce_alloc_pipe(struct ath10k *ar, int ce_id,
- }
- EXPORT_SYMBOL(ath10k_ce_alloc_pipe);
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 03e7bc5b6c0b..148d0fab4418 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -2631,12 +2631,8 @@ static void ath10k_peer_assoc_h_vht(struct ath10k *ar,
+ 		u32 max_rate;
  
--void ath10k_ce_alloc_rri(struct ath10k *ar)
-+int ath10k_ce_alloc_rri(struct ath10k *ar)
- {
- 	int i;
- 	u32 value;
-@@ -1919,7 +1919,7 @@ void ath10k_ce_alloc_rri(struct ath10k *ar)
- 					   &ce->paddr_rri, GFP_KERNEL);
+ 		max_rate = arg->peer_vht_rates.rx_max_rate;
+-		rx_nss = get_160mhz_nss_from_maxrate(max_rate);
+-
+-		if (rx_nss == 0)
+-			rx_nss = arg->peer_num_spatial_streams;
+-		else
+-			rx_nss = min(arg->peer_num_spatial_streams, rx_nss);
++		rx_nss = min(arg->peer_num_spatial_streams,
++			     get_160mhz_nss_from_maxrate(max_rate));
  
- 	if (!ce->vaddr_rri)
--		return;
-+		return -ENOMEM;
- 
- 	ath10k_ce_write32(ar, ar->hw_ce_regs->ce_rri_low,
- 			  lower_32_bits(ce->paddr_rri));
-@@ -1934,6 +1934,8 @@ void ath10k_ce_alloc_rri(struct ath10k *ar)
- 		value |= ar->hw_ce_regs->upd->mask;
- 		ath10k_ce_write32(ar, ce_base_addr + ctrl1_regs, value);
- 	}
-+
-+	return 0;
- }
- EXPORT_SYMBOL(ath10k_ce_alloc_rri);
- 
-diff --git a/drivers/net/wireless/ath/ath10k/ce.h b/drivers/net/wireless/ath/ath10k/ce.h
-index a0b408176f7f..c90c00316356 100644
---- a/drivers/net/wireless/ath/ath10k/ce.h
-+++ b/drivers/net/wireless/ath/ath10k/ce.h
-@@ -262,7 +262,7 @@ void ath10k_ce_enable_interrupts(struct ath10k *ar);
- void ath10k_ce_dump_registers(struct ath10k *ar,
- 			      struct ath10k_fw_crash_data *crash_data);
- 
--void ath10k_ce_alloc_rri(struct ath10k *ar);
-+int ath10k_ce_alloc_rri(struct ath10k *ar);
- void ath10k_ce_free_rri(struct ath10k *ar);
- 
- /* ce_attr.flags values */
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 815df15f58fb..b3acb6ad6f45 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1074,10 +1074,17 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
- 		goto err_hw_power_off;
- 	}
- 
--	ath10k_ce_alloc_rri(ar);
-+	ret = ath10k_ce_alloc_rri(ar);
-+	if (ret)
-+		goto err_snoc_wlan_disable;
- 
- 	ath10k_snoc_init_pipes(ar);
- 
-+	return 0;
-+
-+err_snoc_wlan_disable:
-+	ath10k_snoc_wlan_disable(ar);
-+
- err_hw_power_off:
- 	ath10k_hw_power_off(ar);
- 
+ 		max_rate = hw->vht160_mcs_tx_highest;
+ 		rx_nss = min(rx_nss, get_160mhz_nss_from_maxrate(max_rate));
 -- 
 2.41.0
 
