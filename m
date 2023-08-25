@@ -2,431 +2,512 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8C47788866
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 15:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E67B788B38
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 16:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244157AbjHYNWn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 09:22:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47990 "EHLO
+        id S239700AbjHYOLU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 10:11:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245109AbjHYNWf (ORCPT
+        with ESMTP id S1343667AbjHYOK7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 09:22:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A712115
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 06:22:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECA9860C22
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 13:22:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0833C433C8;
-        Fri, 25 Aug 2023 13:22:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692969751;
-        bh=azTuqycw6ZYic62e7PFa7FJ758KJ8woNxVTFsfGG0Es=;
-        h=From:Subject:To:Cc:Date:From;
-        b=mMPrmp+cia4erl9cx5M66Ru3KF4qTbowsnTOSAkHIl8INV0XL5SismXdxbycVWeV1
-         ZhjT1LZ0SImnVTqMSLTCIkWe80Z7OpuG1IuSYi1myzDNvDhzW0eDKCpfOaz4jLQTFo
-         /4Np/muPXsq6dv34iNR+e59gpULrBzbqbQXLe9s/6LvGswBJEk4OpYeO8udOpRXB6S
-         DrmY9UCvq6o1zzwZulWCjKA2DhCrpb4ywJrNTkgT95SNAwSCgt6RkluYc/NkatWoxM
-         oSSKmryAnYrkuvSykTMEO7kadWMtwVOTfiqTAdAglDQQ7Vql1OlMiPOvm7fpvEWiR6
-         g4zchwDs+Raiw==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 25 Aug 2023 10:10:59 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20607.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e89::607])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F4BCEE;
+        Fri, 25 Aug 2023 07:10:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AKTgqMsKSUtF5FVXzhcmoYDoa8iCTOZWdVJJ+tPiUV8veE/oMFjUSzh5VuLnEFeqLOyPNjfisxBWMOqd438Dv7WpxYwvKAOC9/uWnUvsNYJp24hkgFK4TJFNhreC5BeAumI+tm69ps3ISBJ74SUmMy6QqhH2cR/r+flhkmXdSGIT8hBDgDaPh5R/cm6XMnR/FGHbSXIQRMbyDMMfm/f6k5xXLE4QObyztP0OvYXy5LAMAcLzGg2JeR08Tvs0Ic97LwO6zYtRIh+Sp1QIH0JXvG4LqpmOfNJaWLoGc44Z1DVUmCINRNCDunATvSCSkQaCkWKS6lrod3CdkQ4MStm1LA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Mh+8XZRaRgCFIeFaHu7Zltl46ANdrngSRB9lncFfTXI=;
+ b=WzN46zlLUv5P3vZYtg22xYqMhpU4LI17/ZpFUlON7Z8I108wODIL00CYGwsmVjm5bzAuEwBj6NDbyLh07OQnJG5O9AJiNg+ED+whXd+DAYv8I7gleLZ6yia0t3M6Hsq/xTHpaDk5vu7WFV+WOrmnucqjOY4A5rhaFExz2cftIzjridaLhRmnXI3gnNZQy/0bo0cyNC7wVkYNYa/adX2aivwLYUimmJslLd4kERSDfr1X4oa3QMWWSd9H6ENIzP6XgNDhw5vdUFH3vYtsYXBZ/Oa8qJ8CeSXWBuVFVUW+3uQb+fd3Q81ccvuw3lXQCGMbRpvpT2aiZzIv9vvipLZN7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Mh+8XZRaRgCFIeFaHu7Zltl46ANdrngSRB9lncFfTXI=;
+ b=q1ByyV4zgIFrdWtXJSesndxmLG0VyS+Olun1BtMgGrcZRjEBj6glDGaK3jznz7cmVNc/pVx5+LXjrLY2OKuyIdhcnyjNqplfRFhOjHhqeDK093vECNHCLPWTSfoO+9EVtvTZJy71Rc32pI3sp+TXcBp7QmNY7Ua67uGMhSWCGbE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BYAPR12MB4614.namprd12.prod.outlook.com (2603:10b6:a03:a6::22)
+ by PH7PR12MB7428.namprd12.prod.outlook.com (2603:10b6:510:203::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Fri, 25 Aug
+ 2023 14:09:17 +0000
+Received: from BYAPR12MB4614.namprd12.prod.outlook.com
+ ([fe80::af11:a0ea:b4e4:d1e0]) by BYAPR12MB4614.namprd12.prod.outlook.com
+ ([fe80::af11:a0ea:b4e4:d1e0%5]) with mapi id 15.20.6699.028; Fri, 25 Aug 2023
+ 14:09:17 +0000
+Message-ID: <a45c6e51-0dbf-af27-1723-fb1477e6155d@amd.com>
+Date:   Fri, 25 Aug 2023 19:39:03 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [V10 5/8] drm/amd/pm: setup the framework to support Wifi RFI
+ mitigation feature
+Content-Language: en-US
+To:     Evan Quan <evan.quan@amd.com>, lenb@kernel.org,
+        johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        alexander.deucher@amd.com, rafael@kernel.org,
+        mario.limonciello@amd.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20230825083846.4001973-1-evan.quan@amd.com>
+ <20230825083846.4001973-6-evan.quan@amd.com>
+From:   "Lazar, Lijo" <lijo.lazar@amd.com>
+In-Reply-To: <20230825083846.4001973-6-evan.quan@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN3PR01CA0120.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:96::15) To BYAPR12MB4614.namprd12.prod.outlook.com
+ (2603:10b6:a03:a6::22)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@kernel.org>
-Subject: pull-request: wireless-next-2023-08-25
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20230825132230.A0833C433C8@smtp.kernel.org>
-Date:   Fri, 25 Aug 2023 13:22:30 +0000 (UTC)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR12MB4614:EE_|PH7PR12MB7428:EE_
+X-MS-Office365-Filtering-Correlation-Id: de7f382f-06f1-40e5-5d31-08dba574de8d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7+zbppUqbT2IR+hcexwBP/ENR5CJ5g7Xl97GYm3WE1IgV+vSFaYsqdLr5ZbbePLPEZjHmjo+RYho5VkgFwCWswsbPAhE8i39WL4oRDEO4H2mMra0gNLENAq6/lfEB92rpHtzXaZ3u5xXm5f9a3+Fo1pj9rxEFLsXc361BMhyC25pSnXlLEUWnCuJiDR9n/xWaHU5Bp8vCi39xkGY0CWFMWzWRwBMcYcZcKFvlS9+Mmax331whmSrc3PiHoAtcYKl72zrB23Tdzrc7/aH0a3PHDT+f4OB8ZpyNXTRXotsv+A6SI/k0Cyc48+nzFkYPsm6KskXhAGekZG1R0WNWIEI9jdbKzgH4N1/MekF0Ig1tLpAQ8/cDRh/JCZoNij2ggkFaSfxxJlkfcu9bcplyQAF9ZRYLB9f4EwBMa13JbPJ/rfYkkn6l9whNbRzeuCJ3UbiqVGLrbeJxRNoFY87ozqeE0w/QSTB680rvVHELlX3gpbzp3ObNXCD5w/UfZPaXUqpgyWxz1j3NcYybDX7woC6EPPmRDJ2fXrZS3otvAAlTgaM5DZL/U4R2uKi/mfVQWEtP93BECwrx528TY9RapJJWA18OcGPj/FDq1dUzkxDY45QeNoMUmGZBiE7xYnQrxdfYvSAEcrWjq717xR879z+O3SEmkU/i9wtp6qz9okH2AG999xuMryO5QJkCCUN+kAS
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB4614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(39860400002)(376002)(136003)(396003)(451199024)(186009)(1800799009)(38100700002)(2906002)(30864003)(7416002)(53546011)(6486002)(5660300002)(83380400001)(26005)(6506007)(31686004)(31696002)(86362001)(8676002)(8936002)(2616005)(4326008)(66946007)(316002)(6512007)(66556008)(66476007)(6636002)(478600001)(921005)(6666004)(36756003)(41300700001)(45980500001)(43740500002)(309714004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q3RQcDhLNWxIMnZxVTB1aXJJUTRPUnIyWVg1bmZJSXZVd0VoUFU4R3c5Z3N2?=
+ =?utf-8?B?UG9WcCtMZkc2ZzlQK1FEdW9NWTFLekExQXkzKzBkSTdMREltcXAzUFN0L3V5?=
+ =?utf-8?B?MzkxelhsUkVUMUtEZjFJZElJb0xuQk9PSHR0b2EwQ0djcmY0bWlLbTBNckls?=
+ =?utf-8?B?YzZhV2YvTTNBbGN6VzZkalVjK245R1lnUGw0blNPL3lXME1kM0VqM24rYVh1?=
+ =?utf-8?B?cStzU0srcytNWGVNc1dBKzRhK28xQTNFTkR3RTZBbTRzYnJyalVjZUFHYVo2?=
+ =?utf-8?B?RUhXYnMzUlh6dGRJWnh6R0RESkdWVXZSbVF3V2NDUGtnY1RYT0hhc1hTVEYz?=
+ =?utf-8?B?T1hXaHBsRmNYVC85WjJ3Sm1US0VMd05xTmcvL1ZqTjZySTZnQ3B0N2NoVzRD?=
+ =?utf-8?B?QlJ0T0FtNFlzT1B6Q2Vmb0lGMnl0RUtMMkxYSG5pYk1XcXBDYzlZazJFTGZr?=
+ =?utf-8?B?MWc1dGZuUmRPWHVUOVRnUkhSeUdtN3JXL1VrUlhUT0JkMkhQZGxHOVJ1bFJw?=
+ =?utf-8?B?eHpxRUdIUC9uN1BoL1Q4K2pEVklpWTdnb2plT2c0dHJNb3FlSUdlZkloWG5n?=
+ =?utf-8?B?am9mdi9SdEUrWGlyeVdndVo2aG51Z0VJdlBZM0ZTUC80RnNwVGk3ejZ2eDRR?=
+ =?utf-8?B?ZGtDajh2ekdqQzA3SXZnRmYyeEVqdWlicGlzQ3l1cEVXaFdHNlhOcFZXTEU4?=
+ =?utf-8?B?VHpRQ1F1Q1FRdFlvTU9oZHNma2dLZUdoKzFiek4xbjlXMEpWN2s3UnNBM0RH?=
+ =?utf-8?B?YnpOTHVYMU1nYzhQekdHSlk2dzFoTXlqRHZ0Y0V1MEtEQVlpRExVcVY3akhG?=
+ =?utf-8?B?S1UyOERCR2Qyb3pPZ1BVZmExWWNueTJRY3Rnc05FZ1FWMEFhd0JpbU5hQmwr?=
+ =?utf-8?B?NGtOZFdyaHkwVUlBeis0dktNR1VjODR3Wmo0cDZ6SDlueE5pMUZROW5rTEtH?=
+ =?utf-8?B?Q3BId0RlRGhUcFYxTTFUd1BWdFZqb0NKeUFmanBRK2pBVGUrTUdPZ2pxVWdG?=
+ =?utf-8?B?bGluNDkwSUJvTVh5ZHIvVDJBWUZUaFdqcVVaTUJNMEtwT0FRMzVRbkNrMVp0?=
+ =?utf-8?B?S210OE1FN0t1eEZ3MFMvaTVsRzd3WHlyU2hiZ3ozY1NiMUpnL2tPeWZ6bjZy?=
+ =?utf-8?B?aVFZeTJPS2w1ZlM4YnFRZENuVmxqS1UyVFYzZVhoNW9hNlMzUmt1aWY1dWdY?=
+ =?utf-8?B?WnhJV2ZrU3ZpcThiK011VlJXbGEwMFAvYmdpYVNFWk5KcEkyM3JlUjE2blQ5?=
+ =?utf-8?B?cEZGdVQvWTc0endWVjNTczlrSUl1QjhrU0JvVXVOdW8vMERVdUw3bmErQWQ4?=
+ =?utf-8?B?T0QveFRYVTJxTXNnVVI0UnBFak9JZUlUY292NGNCR1NQMkJCbDg2bUdBNkI4?=
+ =?utf-8?B?MmszRGc1ZUc5bVJUM3lidTgzWkZXRmR1QlhXbDR0QnpvcmpHVVgvbW5YNVc0?=
+ =?utf-8?B?Uk4zQktHaS9UWjV0UXpRQUxaeGtaUDB4bUNWWDdrSk81Q01YSDF0SVNidGxk?=
+ =?utf-8?B?T0VTTzJkMFRPR2tWanMvL3AyUkJwc0FScTh2ZTlYWVhIZ0JhMFpjUVh2T1Zo?=
+ =?utf-8?B?WnEwZ2p1SG1tbzM0eGgvanNKZzNpeHJXNHcxOVVVcnFGQUluWVFmbG5RWi8y?=
+ =?utf-8?B?cWNPa3pXTmRxNkZQUVRiMG1JVjJwK3hlMVpPZU9mb1psc1NDMnB4RjFLWXpu?=
+ =?utf-8?B?T0tLR0x0UzhxZUQrKzdXd2s1ZUd4clpNUlVuMTJLb3RQeGFkNExlbVNpbFVR?=
+ =?utf-8?B?SUdoMkUxZGY3aWlJcnRFWDU1cDAyR3BKSmtRU3U3c25wekNrcmw5ZjdEc205?=
+ =?utf-8?B?VnRjRHFKQTdNdGUxTndDai9oT1huYjFwSHNnSmZKaStLMFVpOTBXMlJPcnM4?=
+ =?utf-8?B?V3pZYzVQQnpyODlBZS93S0JnaDRNVjh3V2lteWYyOUsySHRyRmNDQkRGSkYx?=
+ =?utf-8?B?REtWbkg1ODRhZDJ1L21zUDFab3dLaUdCTnpBU01Ha1dhdU0ycFp0ajMzZUh4?=
+ =?utf-8?B?a2hoR3ZndUlqS3c2VXNHeG10WThDTzNXNzBwS28zUW9VYWtZakhXQTl6RzZ3?=
+ =?utf-8?B?MVdrUm94MlJPL3JRbHVQaUE0N2E3eTFhK3NHdDB0RnlnakZCczJoOGwvUm9y?=
+ =?utf-8?Q?cq/tv65RykalUCeRURlu7dAfI?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: de7f382f-06f1-40e5-5d31-08dba574de8d
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB4614.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2023 14:09:17.6397
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qXVMiSNySvbUR3yVOnojpOMOwyxBd/AJZzM/jGTOiMTSZqv7LAP5hPMjxlTVgIjQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7428
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
 
-here's a pull request to net-next tree, more info below. Please let me know if
-there are any problems.
 
-Kalle
+On 8/25/2023 2:08 PM, Evan Quan wrote:
+> With WBRF feature supported, as a driver responding to the frequencies,
+> amdgpu driver is able to do shadow pstate switching to mitigate possible
+> interference(between its (G-)DDR memory clocks and local radio module
+> frequency bands used by Wifi 6/6e/7).
+> 
+> Signed-off-by: Evan Quan <evan.quan@amd.com>
+> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> --
+> v1->v2:
+>    - update the prompt for feature support(Lijo)
+> v8->v9:
+>    - update parameter document for smu_wbrf_event_handler(Simon)
+> v9->v10:
+>   - correct the logics for wbrf range sorting(Lijo)
+> ---
+>   drivers/gpu/drm/amd/amdgpu/amdgpu.h           |   2 +
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c       |  17 ++
+>   drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 195 ++++++++++++++++++
+>   drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  23 +++
+>   drivers/gpu/drm/amd/pm/swsmu/smu_internal.h   |   3 +
+>   5 files changed, 240 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+> index a3b86b86dc47..2bfc9111ab00 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+> @@ -247,6 +247,8 @@ extern int amdgpu_sg_display;
+>   
+>   extern int amdgpu_user_partt_mode;
+>   
+> +extern int amdgpu_wbrf;
+> +
+>   #define AMDGPU_VM_MAX_NUM_CTX			4096
+>   #define AMDGPU_SG_THRESHOLD			(256*1024*1024)
+>   #define AMDGPU_WAIT_IDLE_TIMEOUT_IN_MS	        3000
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+> index 0593ef8fe0a6..1c574bd3b60d 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+> @@ -195,6 +195,7 @@ int amdgpu_use_xgmi_p2p = 1;
+>   int amdgpu_vcnfw_log;
+>   int amdgpu_sg_display = -1; /* auto */
+>   int amdgpu_user_partt_mode = AMDGPU_AUTO_COMPUTE_PARTITION_MODE;
+> +int amdgpu_wbrf = -1;
+>   
+>   static void amdgpu_drv_delayed_reset_work_handler(struct work_struct *work);
+>   
+> @@ -981,6 +982,22 @@ module_param_named(user_partt_mode, amdgpu_user_partt_mode, uint, 0444);
+>   module_param(enforce_isolation, bool, 0444);
+>   MODULE_PARM_DESC(enforce_isolation, "enforce process isolation between graphics and compute . enforce_isolation = on");
+>   
+> +/**
+> + * DOC: wbrf (int)
+> + * Enable Wifi RFI interference mitigation feature.
+> + * Due to electrical and mechanical constraints there may be likely interference of
+> + * relatively high-powered harmonics of the (G-)DDR memory clocks with local radio
+> + * module frequency bands used by Wifi 6/6e/7. To mitigate the possible RFI interference,
+> + * with this feature enabled, PMFW will use either “shadowed P-State” or “P-State” based
+> + * on active list of frequencies in-use (to be avoided) as part of initial setting or
+> + * P-state transition. However, there may be potential performance impact with this
+> + * feature enabled.
+> + * (0 = disabled, 1 = enabled, -1 = auto (default setting, will be enabled if supported))
+> + */
+> +MODULE_PARM_DESC(wbrf,
+> +	"Enable Wifi RFI interference mitigation (0 = disabled, 1 = enabled, -1 = auto(default)");
+> +module_param_named(wbrf, amdgpu_wbrf, int, 0444);
+> +
+>   /* These devices are not supported by amdgpu.
+>    * They are supported by the mach64, r128, radeon drivers
+>    */
+> diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+> index ce41a8309582..bdfd234d1558 100644
+> --- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+> +++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+> @@ -1228,6 +1228,174 @@ static int smu_get_thermal_temperature_range(struct smu_context *smu)
+>   	return ret;
+>   }
+>   
+> +/**
+> + * smu_wbrf_handle_exclusion_ranges - consume the wbrf exclusion ranges
+> + *
+> + * @smu: smu_context pointer
+> + *
+> + * Retrieve the wbrf exclusion ranges and send them to PMFW for proper handling.
+> + * Returns 0 on success, error on failure.
+> + */
+> +static int smu_wbrf_handle_exclusion_ranges(struct smu_context *smu)
+> +{
+> +	struct wbrf_ranges_in_out wbrf_exclusion = {0};
+> +	struct exclusion_range *wifi_bands = wbrf_exclusion.band_list;
+> +	struct amdgpu_device *adev = smu->adev;
+> +	uint32_t num_of_wbrf_ranges = MAX_NUM_OF_WBRF_RANGES;
+> +	uint64_t start, end;
+> +	int ret, i, j;
+> +
+> +	ret = acpi_amd_wbrf_retrieve_exclusions(adev->dev, &wbrf_exclusion);
+> +	if (ret) {
+> +		dev_err(adev->dev, "Failed to retrieve exclusion ranges!\n");
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * The exclusion ranges array we got might be filled with holes and duplicate
+> +	 * entries. For example:
+> +	 * {(2400, 2500), (0, 0), (6882, 6962), (2400, 2500), (0, 0), (6117, 6189), (0, 0)...}
+> +	 * We need to do some sortups to eliminate those holes and duplicate entries.
+> +	 * Expected output: {(2400, 2500), (6117, 6189), (6882, 6962), (0, 0)...}
+> +	 */
+> +	for (i = 0; i < num_of_wbrf_ranges; i++) {
+> +		start = wifi_bands[i].start;
+> +		end = wifi_bands[i].end;
+> +
+> +		/* get the last valid entry to fill the intermediate hole */
+> +		if (!start && !end) {
+> +			for (j = num_of_wbrf_ranges - 1; j > i; j--)
+> +				if (wifi_bands[j].start &&
+> +				    wifi_bands[j].end)
+> +					break;
+> +
+> +			/* no valid entry left */
+> +			if (j <= i)
+> +				break;
+> +
+> +			wifi_bands[i].start = wifi_bands[j].start;
+> +			wifi_bands[i].end = wifi_bands[j].end;
 
-The following changes since commit cb39c35783f26892bb1a72b1115c94fa2e77f4c5:
+start/end variables remain 0. Thus it won't have any effect on the loop 
+below which looks for duplicates. start/end need to be reassigned here.
 
-  pds_core: Fix some kernel-doc comments (2023-08-21 07:48:34 +0100)
+> +			wifi_bands[j].start = 0;
+> +			wifi_bands[j].end = 0;
+> +			num_of_wbrf_ranges--;
 
-are available in the Git repository at:
+Instead of decrementing by 1, this can be kept equal to j - 1 as jth 
+entry is 0 now.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2023-08-25
+Thanks,
+Lijo
 
-for you to fetch changes up to 4dddbad8907bc2ecda6e3714de3ea0a27b90a7d3:
-
-  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git (2023-08-25 13:15:26 +0300)
-
-----------------------------------------------------------------
-wireless-next patches for v6.6
-
-The second pull request for v6.6, this time with both stack and driver
-changes. Unusually we have only one major new feature but lots of
-small cleanup all over, I guess this is due to people have been on
-vacation the last month.
-
-Major changes:
-
-rtw89
-
-* Introduce Time Averaged SAR (TAS) support
-
-----------------------------------------------------------------
-Alan Stern (1):
-      Fix nomenclature for USB and PCI wireless devices
-
-Arnd Bergmann (2):
-      mac80211: make ieee80211_tx_info padding explicit
-      wifi: ath: remove unused-but-set parameter
-
-Avraham Stern (5):
-      wifi: iwlwifi: pcie: avoid a warning in case prepare card failed
-      wifi: iwlmei: don't send SAP messages if AMT is disabled
-      wifi: iwlmei: send HOST_GOES_DOWN message even if wiamt is disabled
-      wifi: iwlmei: send driver down SAP message only if wiamt is enabled
-      wifi: iwlmei: don't send nic info with invalid mac address
-
-Cheng-Chieh Hsieh (1):
-      wifi: rtw89: phy: modify register setting of ENV_MNTR, PHYSTS and DIG
-
-Dan Carpenter (1):
-      wifi: rtw89: fix a width vs precision bug
-
-Dmitry Antipov (10):
-      wifi: mwifiex: fix memory leak in mwifiex_histogram_read()
-      wifi: mwifiex: cleanup private data structures
-      wifi: mwifiex: handle possible sscanf() errors
-      wifi: mwifiex: handle possible mwifiex_write_reg() errors
-      wifi: mwifiex: drop BUG_ON from TX paths
-      wifi: mwifiex: cleanup adapter data
-      wifi: mwifiex: fix comment typos in SDIO module
-      wifi: ath9k: consistently use kstrtoX_from_user() functions
-      wifi: cfg80211: improve documentation for flag fields
-      wifi: mwifiex: avoid possible NULL skb pointer dereference
-
-EN-WEI WU (1):
-      wifi: mac80211_hwsim: avoid calling nlmsg_free() in IRQ or IRQ disabled
-
-Fedor Pchelkin (2):
-      wifi: ath9k: fix races between ath9k_wmi_cmd and ath9k_wmi_ctrl_rx
-      wifi: ath9k: protect WMI command response buffer replacement with a lock
-
-Gregory Greenman (1):
-      wifi: iwlwifi: add Razer to ppag approved list
-
-Herbert Xu (1):
-      wifi: mac80211: Do not include crypto/algapi.h
-
-Jeff Johnson (5):
-      wifi: Fix ieee80211.h kernel-doc issues
-      wifi: ath11k: Consistently use ath11k_vif_to_arvif()
-      wifi: ath10k: Fix a few spelling errors
-      wifi: ath11k: Fix a few spelling errors
-      wifi: ath12k: Fix a few spelling errors
-
-Jinjie Ruan (1):
-      wifi: rtlwifi: rtl8723: Remove unused function rtl8723_cmd_send_packet()
-
-Johannes Berg (17):
-      wifi: iwlwifi: mvm: advertise MLO only if EHT is enabled
-      wifi: iwlwifi: api: fix a small upper/lower-case typo
-      wifi: iwlwifi: remove WARN from read_mem32()
-      wifi: iwlwifi: pcie: clean up gen1/gen2 TFD unmap
-      wifi: iwlwifi: remove 'def_rx_queue' struct member
-      wifi: iwlwifi: pcie: move gen1 TB handling to header
-      wifi: iwlwifi: queue: move iwl_txq_gen2_set_tb() up
-      wifi: iwlwifi: pcie: point invalid TFDs to invalid data
-      wifi: iwlwifi: mvm: enable HE TX/RX <242 tone RU on new RFs
-      wifi: iwlwifi: mvm: support flush on AP interfaces
-      wifi: mac80211: check S1G action frame size
-      wifi: cfg80211: reject auth/assoc to AP with our address
-      wifi: cfg80211: ocb: don't leave if not joined
-      wifi: mac80211: check for station first in client probe
-      wifi: mac80211_hwsim: drop short frames
-      wifi: mac80211: fix puncturing bitmap handling in CSA
-      Revert "wifi: mac80211_hwsim: check the return value of nla_put_u32"
-
-Justin Stitt (1):
-      wifi: ipw2x00: refactor to use kstrtoul
-
-Kalle Valo (1):
-      Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
-
-Kees Cook (7):
-      wifi: cfg80211: Annotate struct cfg80211_acl_data with __counted_by
-      wifi: cfg80211: Annotate struct cfg80211_cqm_config with __counted_by
-      wifi: cfg80211: Annotate struct cfg80211_mbssid_elems with __counted_by
-      wifi: cfg80211: Annotate struct cfg80211_pmsr_request with __counted_by
-      wifi: cfg80211: Annotate struct cfg80211_rnr_elems with __counted_by
-      wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by
-      wifi: cfg80211: Annotate struct cfg80211_tid_config with __counted_by
-
-Krzysztof Kozlowski (2):
-      wifi: ath11k: fix Wvoid-pointer-to-enum-cast warning
-      wifi: ath10k: fix Wvoid-pointer-to-enum-cast warning
-
-Kuan-Chung Chen (1):
-      wifi: rtw89: Introduce Time Averaged SAR (TAS) feature
-
-Li Zetao (2):
-      wifi: wfx: Use devm_kmemdup to replace devm_kmalloc + memcpy
-      wifi: wlcore: sdio: Use module_sdio_driver macro to simplify the code
-
-Lin Ma (1):
-      wifi: nl80211/cfg80211: add forgotten nla_policy for BSS color attribute
-
-Mahmoud Maatuq (1):
-      wifi: ath5k: ath5k_hw_get_median_noise_floor(): use swap()
-
-Minjie Du (1):
-      wifi: ath9k: fix parameter check in ath9k_init_debug()
-
-Mukesh Sisodiya (1):
-      wifi: iwlwifi: remove memory check for LMAC error address
-
-Nathan Chancellor (1):
-      wifi: rtw89: Fix clang -Wimplicit-fallthrough in rtw89_query_sar()
-
-Ping-Ke Shih (6):
-      wifi: rtw89: 8852b: rfk: fine tune IQK parameters to improve performance on 2GHz band
-      wifi: rtw89: mac: add mac_gen_def::band1_offset to map MAC band1 register address
-      wifi: rtw89: mac: generalize code to indirectly access WiFi internal memory
-      wifi: rtw89: mac: define internal memory address for WiFi 7 chip
-      wifi: rtw89: mac: define register address of rx_filter to generalize code
-      wifi: rtw89: phy: add phy_gen_def::cr_base to support WiFi 7 chips
-
-Polaris Pi (1):
-      wifi: mwifiex: Fix missed return in oob checks failed path
-
-Rajat Soni (1):
-      wifi: ath12k: Fix memory leak in rx_desc and tx_desc
-
-Randy Dunlap (3):
-      wifi: cfg80211: remove dead/unused enum value
-      wifi: radiotap: fix kernel-doc notation warnings
-      wifi: mac80211: fix kernel-doc notation warning
-
-Ruan Jinjie (4):
-      wifi: mwifiex: use is_zero_ether_addr() instead of ether_addr_equal()
-      wifi: ath5k: Remove redundant dev_err()
-      wifi: ath9k: Remove unnecessary ternary operators
-      wifi: ath: Use is_multicast_ether_addr() to check multicast Ether address
-
-Sascha Hauer (1):
-      wifi: rtw88: usb: kill and free rx urbs on probe failure
-
-Shiji Yang (2):
-      wifi: rt2x00: correct MAC_SYS_CTRL register RX mask in R-Calibration
-      wifi: rt2x00: limit MT7620 TX power based on eeprom calibration
-
-Sven Eckelmann (2):
-      wifi: ath11k: Don't drop tx_status when peer cannot be found
-      wifi: ath11k: Cleanup mac80211 references on failure during tx_complete
-
-Wang Ming (1):
-      wifi: ath9k: use IS_ERR() with debugfs_create_dir()
-
-Wen Gong (1):
-      wifi: ath12k: add check max message length while scanning with extraie
-
-Wu Yunchuan (9):
-      wifi: rsi: rsi_91x_coex: Remove unnecessary (void*) conversions
-      wifi: rsi: rsi_91x_debugfs: Remove unnecessary (void*) conversions
-      wifi: rsi: rsi_91x_hal: Remove unnecessary conversions
-      wifi: rsi: rsi_91x_mac80211: Remove unnecessary conversions
-      wifi: rsi: rsi_91x_main: Remove unnecessary (void*) conversions
-      wifi: rsi: rsi_91x_sdio: Remove unnecessary (void*) conversions
-      wifi: rsi: rsi_91x_sdio_ops: Remove unnecessary (void*) conversions
-      wifi: rsi: rsi_91x_usb: Remove unnecessary (void*) conversions
-      wifi: rsi: rsi_91x_usb_ops: Remove unnecessary (void*) conversions
-
-Yang Yingliang (2):
-      wifi: rtlwifi: use eth_broadcast_addr() to assign broadcast address
-      wifi: ath11k: simplify the code with module_platform_driver
-
-Yue Haibing (8):
-      wifi: ath9k: Remove unused declarations
-      wifi: wext: Remove unused declaration dev_get_wireless_info()
-      wifi: mac80211: Remove unused function declarations
-      wifi: mac80211: mesh: Remove unused function declaration mesh_ids_set_default()
-      wifi: nl80211: Remove unused declaration nl80211_pmsr_dump_results()
-      wifi: wilc1000: Remove unused declarations
-      wifi: ath11k: Remove unused declarations
-      wifi: ath12k: Remove unused declarations
-
-Zong-Zhe Yang (7):
-      wifi: rtw89: regd: update regulatory map to R64-R43
-      wifi: rtw89: add function prototype for coex request duration
-      wifi: rtw89: refine rtw89_correct_cck_chan() by rtw89_hw_to_nl80211_band()
-      wifi: rtw89: sar: let caller decide the center frequency to query
-      wifi: rtw89: call rtw89_chan_get() by vif chanctx if aware of vif
-      wifi: rtw89: provide functions to configure NoA for beacon update
-      wifi: rtw89: initialize multi-channel handling
-
- drivers/net/wireless/ath/ath10k/ahb.c              |   2 +-
- drivers/net/wireless/ath/ath10k/htt.h              |   4 +-
- drivers/net/wireless/ath/ath10k/pci.c              |   4 +-
- drivers/net/wireless/ath/ath10k/sdio.c             |   2 +-
- drivers/net/wireless/ath/ath10k/usb.c              |   2 +-
- drivers/net/wireless/ath/ath10k/wmi.h              |   8 +-
- drivers/net/wireless/ath/ath11k/ahb.c              |  14 +-
- drivers/net/wireless/ath/ath11k/ce.h               |   3 -
- drivers/net/wireless/ath/ath11k/dp.h               |   2 +-
- drivers/net/wireless/ath/ath11k/dp_rx.c            |   2 +-
- drivers/net/wireless/ath/ath11k/dp_tx.c            |  12 +-
- drivers/net/wireless/ath/ath11k/mac.c              |  64 ++---
- drivers/net/wireless/ath/ath11k/pci.c              |   2 +-
- drivers/net/wireless/ath/ath11k/qmi.h              |   2 -
- drivers/net/wireless/ath/ath11k/testmode.c         |   2 +-
- drivers/net/wireless/ath/ath12k/ce.h               |   3 -
- drivers/net/wireless/ath/ath12k/core.h             |   1 -
- drivers/net/wireless/ath/ath12k/dp.c               |  30 ++-
- drivers/net/wireless/ath/ath12k/dp.h               |   4 +-
- drivers/net/wireless/ath/ath12k/dp_rx.c            |   2 +-
- drivers/net/wireless/ath/ath12k/dp_tx.c            |   2 +-
- drivers/net/wireless/ath/ath12k/mac.c              |   7 +-
- drivers/net/wireless/ath/ath12k/pci.c              |   2 +-
- drivers/net/wireless/ath/ath12k/qmi.h              |   2 -
- drivers/net/wireless/ath/ath12k/rx_desc.h          |   2 +-
- drivers/net/wireless/ath/ath12k/wmi.c              |  20 +-
- drivers/net/wireless/ath/ath12k/wmi.h              |   2 -
- drivers/net/wireless/ath/ath5k/ahb.c               |   1 -
- drivers/net/wireless/ath/ath5k/mac80211-ops.c      |   1 -
- drivers/net/wireless/ath/ath5k/phy.c               |  27 +--
- drivers/net/wireless/ath/ath9k/ath9k.h             |   1 -
- drivers/net/wireless/ath/ath9k/common-spectral.c   |  53 ++--
- drivers/net/wireless/ath/ath9k/common.h            |   2 -
- drivers/net/wireless/ath/ath9k/debug.c             | 108 +++------
- drivers/net/wireless/ath/ath9k/dfs_debug.c         |  14 +-
- drivers/net/wireless/ath/ath9k/eeprom_9287.c       |   3 +-
- drivers/net/wireless/ath/ath9k/hif_usb.c           |   2 +-
- drivers/net/wireless/ath/ath9k/htc_drv_debug.c     |  15 +-
- drivers/net/wireless/ath/ath9k/htc_drv_main.c      |   3 +-
- drivers/net/wireless/ath/ath9k/main.c              |   1 -
- drivers/net/wireless/ath/ath9k/tx99.c              |  14 +-
- drivers/net/wireless/ath/ath9k/wmi.c               |  20 +-
- drivers/net/wireless/ath/key.c                     |   2 +-
- drivers/net/wireless/atmel/at76c50x-usb.c          |   8 +-
- drivers/net/wireless/intel/ipw2x00/ipw2200.c       |  39 +--
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c       |   5 +
- drivers/net/wireless/intel/iwlwifi/fw/api/debug.h  |   9 +-
- drivers/net/wireless/intel/iwlwifi/fw/dump.c       |   3 +-
- drivers/net/wireless/intel/iwlwifi/iwl-fh.h        |   2 +
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c |   2 +
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |   7 +-
- drivers/net/wireless/intel/iwlwifi/mei/main.c      |  70 +++---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |  11 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c      |  11 +-
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h |   4 +-
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c       |   2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  31 ++-
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c       |  24 +-
- drivers/net/wireless/intel/iwlwifi/queue/tx.c      | 142 ++++++-----
- drivers/net/wireless/intel/iwlwifi/queue/tx.h      |  26 +-
- .../net/wireless/intersil/orinoco/orinoco_usb.c    |  12 +-
- drivers/net/wireless/legacy/rndis_wlan.c           |   2 +-
- drivers/net/wireless/marvell/mwifiex/debugfs.c     |  19 +-
- drivers/net/wireless/marvell/mwifiex/decl.h        |   1 -
- drivers/net/wireless/marvell/mwifiex/init.c        |   2 -
- drivers/net/wireless/marvell/mwifiex/main.h        |  20 +-
- drivers/net/wireless/marvell/mwifiex/scan.c        |   7 +-
- drivers/net/wireless/marvell/mwifiex/sdio.c        |  26 +-
- drivers/net/wireless/marvell/mwifiex/sta_rx.c      |   1 +
- drivers/net/wireless/marvell/mwifiex/sta_tx.c      |  15 +-
- drivers/net/wireless/marvell/mwifiex/txrx.c        |  44 ++--
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c    |  26 +-
- drivers/net/wireless/mediatek/mt76/mt7603/Kconfig  |   2 +-
- drivers/net/wireless/mediatek/mt76/mt7615/Kconfig  |   2 +-
- drivers/net/wireless/mediatek/mt76/mt76x0/Kconfig  |   4 +-
- drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig  |   4 +-
- drivers/net/wireless/mediatek/mt76/mt7915/Kconfig  |   2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/Kconfig  |   2 +-
- drivers/net/wireless/mediatek/mt7601u/Kconfig      |   2 +-
- drivers/net/wireless/microchip/wilc1000/cfg80211.h |   4 -
- drivers/net/wireless/purelifi/plfxlc/Kconfig       |   2 +-
- drivers/net/wireless/ralink/rt2x00/Kconfig         |   2 +-
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c     |  59 +++--
- drivers/net/wireless/realtek/rtlwifi/core.c        |   2 +-
- .../realtek/rtlwifi/rtl8723com/fw_common.c         |  28 ---
- .../realtek/rtlwifi/rtl8723com/fw_common.h         |   2 -
- drivers/net/wireless/realtek/rtw88/pci.c           |   2 +-
- drivers/net/wireless/realtek/rtw88/usb.c           |   7 +-
- drivers/net/wireless/realtek/rtw89/chan.c          | 124 ++++++++++
- drivers/net/wireless/realtek/rtw89/chan.h          |   5 +
- drivers/net/wireless/realtek/rtw89/coex.c          |   3 +-
- drivers/net/wireless/realtek/rtw89/coex.h          |   9 +
- drivers/net/wireless/realtek/rtw89/core.c          | 124 +++++++---
- drivers/net/wireless/realtek/rtw89/core.h          | 104 ++++++++
- drivers/net/wireless/realtek/rtw89/debug.c         |  26 +-
- drivers/net/wireless/realtek/rtw89/fw.c            |  24 +-
- drivers/net/wireless/realtek/rtw89/mac.c           | 197 ++++++++-------
- drivers/net/wireless/realtek/rtw89/mac.h           |  69 ++++--
- drivers/net/wireless/realtek/rtw89/mac80211.c      |  14 +-
- drivers/net/wireless/realtek/rtw89/mac_be.c        |  38 +++
- drivers/net/wireless/realtek/rtw89/pci.c           |   2 +-
- drivers/net/wireless/realtek/rtw89/phy.c           | 266 +++++++++++++++------
- drivers/net/wireless/realtek/rtw89/phy.h           | 114 ++++++++-
- drivers/net/wireless/realtek/rtw89/phy_be.c        |  77 ++++++
- drivers/net/wireless/realtek/rtw89/ps.c            |  75 +++++-
- drivers/net/wireless/realtek/rtw89/ps.h            |   4 +
- drivers/net/wireless/realtek/rtw89/reg.h           |  38 +++
- drivers/net/wireless/realtek/rtw89/regd.c          |  27 ++-
- drivers/net/wireless/realtek/rtw89/rtw8851b.c      |  18 +-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c      |  19 +-
- drivers/net/wireless/realtek/rtw89/rtw8852b.c      |  18 +-
- drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c  |   4 +-
- drivers/net/wireless/realtek/rtw89/rtw8852c.c      |  24 +-
- drivers/net/wireless/realtek/rtw89/sar.c           | 220 ++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/sar.h           |  10 +-
- drivers/net/wireless/realtek/rtw89/ser.c           |  20 +-
- drivers/net/wireless/realtek/rtw89/wow.c           |   3 +-
- drivers/net/wireless/rsi/rsi_91x_coex.c            |  11 +-
- drivers/net/wireless/rsi/rsi_91x_debugfs.c         |   3 +-
- drivers/net/wireless/rsi/rsi_91x_hal.c             |   2 +-
- drivers/net/wireless/rsi/rsi_91x_mac80211.c        |   4 +-
- drivers/net/wireless/rsi/rsi_91x_main.c            |   4 +-
- drivers/net/wireless/rsi/rsi_91x_sdio.c            |  39 ++-
- drivers/net/wireless/rsi/rsi_91x_sdio_ops.c        |  15 +-
- drivers/net/wireless/rsi/rsi_91x_usb.c             |  20 +-
- drivers/net/wireless/rsi/rsi_91x_usb_ops.c         |   2 +-
- drivers/net/wireless/silabs/wfx/main.c             |   7 +-
- drivers/net/wireless/ti/wlcore/sdio.c              |  13 +-
- drivers/net/wireless/virtual/mac80211_hwsim.c      |  18 +-
- drivers/net/wireless/zydas/zd1201.c                |   6 +-
- drivers/platform/x86/eeepc-laptop.c                |   2 +-
- drivers/staging/wlan-ng/prism2usb.c                |  48 ++--
- include/linux/ieee80211.h                          | 235 +++++++++++++-----
- include/net/cfg80211.h                             |  25 +-
- include/net/ieee80211_radiotap.h                   |   3 +-
- include/net/iw_handler.h                           |  11 +-
- include/net/mac80211.h                             |   5 +-
- net/mac80211/cfg.c                                 |  27 ++-
- net/mac80211/fils_aead.c                           |   2 +-
- net/mac80211/ieee80211_i.h                         |   2 -
- net/mac80211/key.c                                 |   2 +-
- net/mac80211/mesh.h                                |   1 -
- net/mac80211/rx.c                                  |   4 +
- net/mac80211/wpa.c                                 |   2 +-
- net/wireless/core.h                                |   2 +-
- net/wireless/mlme.c                                |  13 +
- net/wireless/nl80211.c                             |   8 +-
- net/wireless/nl80211.h                             |   1 -
- net/wireless/ocb.c                                 |   3 +
- net/wireless/pmsr.c                                |   3 +-
- 150 files changed, 2231 insertions(+), 1154 deletions(-)
- create mode 100644 drivers/net/wireless/realtek/rtw89/mac_be.c
- create mode 100644 drivers/net/wireless/realtek/rtw89/phy_be.c
+> +		}
+> +
+> +		/* eliminate duplicate entries */
+> +		for (j = i + 1; j < num_of_wbrf_ranges; j++) {
+> +			if ((wifi_bands[j].start == start) &&
+> +			     (wifi_bands[j].end == end)) {
+> +				wifi_bands[j].start = 0;
+> +				wifi_bands[j].end = 0;
+> +			}
+> +		}
+> +	}
+> +
+> +	/* Send the sorted wifi_bands to PMFW */
+> +	ret = smu_set_wbrf_exclusion_ranges(smu, wifi_bands);
+> +	/* Give it another chance */
+> +	if (unlikely(ret == -EBUSY)) {
+> +		mdelay(5);
+> +		ret = smu_set_wbrf_exclusion_ranges(smu, wifi_bands);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * smu_wbrf_event_handler - handle notify events
+> + *
+> + * @nb: notifier block
+> + * @action: event type
+> + * @_arg: event data
+> + *
+> + * Calls relevant amdgpu function in response to wbrf event
+> + * notification from kernel.
+> + */
+> +static int smu_wbrf_event_handler(struct notifier_block *nb,
+> +				  unsigned long action, void *_arg)
+> +{
+> +	struct smu_context *smu = container_of(nb, struct smu_context,
+> +					       wbrf_notifier);
+> +
+> +	switch (action) {
+> +	case WBRF_CHANGED:
+> +		smu_wbrf_handle_exclusion_ranges(smu);
+> +		break;
+> +	default:
+> +		return NOTIFY_DONE;
+> +	};
+> +
+> +	return NOTIFY_OK;
+> +}
+> +
+> +/**
+> + * smu_wbrf_support_check - check wbrf support
+> + *
+> + * @smu: smu_context pointer
+> + *
+> + * Verifies the ACPI interface whether wbrf is supported.
+> + */
+> +static void smu_wbrf_support_check(struct smu_context *smu)
+> +{
+> +	struct amdgpu_device *adev = smu->adev;
+> +
+> +	smu->wbrf_supported = smu_is_asic_wbrf_supported(smu) &&
+> +			      !!amdgpu_wbrf &&
+> +			      acpi_amd_wbrf_supported_consumer(adev->dev);
+> +
+> +	if (smu->wbrf_supported)
+> +		dev_info(adev->dev, "RF interference mitigation is supported\n");
+> +}
+> +
+> +/**
+> + * smu_wbrf_init - init driver wbrf support
+> + *
+> + * @smu: smu_context pointer
+> + *
+> + * Verifies the AMD ACPI interfaces and registers with the wbrf
+> + * notifier chain if wbrf feature is supported.
+> + * Returns 0 on success, error on failure.
+> + */
+> +static int smu_wbrf_init(struct smu_context *smu)
+> +{
+> +	struct amdgpu_device *adev = smu->adev;
+> +	int ret;
+> +
+> +	if (!smu->wbrf_supported)
+> +		return 0;
+> +
+> +	smu->wbrf_notifier.notifier_call = smu_wbrf_event_handler;
+> +	ret = acpi_amd_wbrf_register_notifier(&smu->wbrf_notifier);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * Some wifiband exclusion ranges may be already there
+> +	 * before our driver loaded. To make sure our driver
+> +	 * is awared of those exclusion ranges.
+> +	 */
+> +	ret = smu_wbrf_handle_exclusion_ranges(smu);
+> +	if (ret)
+> +		dev_err(adev->dev, "Failed to handle wbrf exclusion ranges\n");
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * smu_wbrf_fini - tear down driver wbrf support
+> + *
+> + * @smu: smu_context pointer
+> + *
+> + * Unregisters with the wbrf notifier chain.
+> + */
+> +static void smu_wbrf_fini(struct smu_context *smu)
+> +{
+> +	if (!smu->wbrf_supported)
+> +		return;
+> +
+> +	acpi_amd_wbrf_unregister_notifier(&smu->wbrf_notifier);
+> +}
+> +
+>   static int smu_smc_hw_setup(struct smu_context *smu)
+>   {
+>   	struct smu_feature *feature = &smu->smu_feature;
+> @@ -1320,6 +1488,15 @@ static int smu_smc_hw_setup(struct smu_context *smu)
+>   	if (ret)
+>   		return ret;
+>   
+> +	/* Enable UclkShadow on wbrf supported */
+> +	if (smu->wbrf_supported) {
+> +		ret = smu_enable_uclk_shadow(smu, true);
+> +		if (ret) {
+> +			dev_err(adev->dev, "Failed to enable UclkShadow feature to support wbrf!\n");
+> +			return ret;
+> +		}
+> +	}
+> +
+>   	/*
+>   	 * With SCPM enabled, these actions(and relevant messages) are
+>   	 * not needed and permitted.
+> @@ -1416,6 +1593,15 @@ static int smu_smc_hw_setup(struct smu_context *smu)
+>   	 */
+>   	ret = smu_set_min_dcef_deep_sleep(smu,
+>   					  smu->smu_table.boot_values.dcefclk / 100);
+> +	if (ret) {
+> +		dev_err(adev->dev, "Error setting min deepsleep dcefclk\n");
+> +		return ret;
+> +	}
+> +
+> +	/* Init wbrf support. Properly setup the notifier */
+> +	ret = smu_wbrf_init(smu);
+> +	if (ret)
+> +		dev_err(adev->dev, "Error during wbrf init call\n");
+>   
+>   	return ret;
+>   }
+> @@ -1471,6 +1657,13 @@ static int smu_hw_init(void *handle)
+>   		return ret;
+>   	}
+>   
+> +	/*
+> +	 * Check whether wbrf is supported. This needs to be done
+> +	 * before SMU setup starts since part of SMU configuration
+> +	 * relies on this.
+> +	 */
+> +	smu_wbrf_support_check(smu);
+> +
+>   	if (smu->is_apu) {
+>   		ret = smu_set_gfx_imu_enable(smu);
+>   		if (ret)
+> @@ -1623,6 +1816,8 @@ static int smu_smc_hw_cleanup(struct smu_context *smu)
+>   	struct amdgpu_device *adev = smu->adev;
+>   	int ret = 0;
+>   
+> +	smu_wbrf_fini(smu);
+> +
+>   	cancel_work_sync(&smu->throttling_logging_work);
+>   	cancel_work_sync(&smu->interrupt_work);
+>   
+> diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+> index 6e2069dcb6b9..3eb1c72a76f1 100644
+> --- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+> +++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+> @@ -22,6 +22,8 @@
+>   #ifndef __AMDGPU_SMU_H__
+>   #define __AMDGPU_SMU_H__
+>   
+> +#include <linux/acpi_amd_wbrf.h>
+> +
+>   #include "amdgpu.h"
+>   #include "kgd_pp_interface.h"
+>   #include "dm_pp_interface.h"
+> @@ -575,6 +577,10 @@ struct smu_context
+>   	u32 debug_resp_reg;
+>   
+>   	struct delayed_work		swctf_delayed_work;
+> +
+> +	/* data structures for wbrf feature support */
+> +	bool				wbrf_supported;
+> +	struct notifier_block		wbrf_notifier;
+>   };
+>   
+>   struct i2c_adapter;
+> @@ -1356,6 +1362,23 @@ struct pptable_funcs {
+>   	 * @init_pptable_microcode: Prepare the pptable microcode to upload via PSP
+>   	 */
+>   	int (*init_pptable_microcode)(struct smu_context *smu);
+> +
+> +	/**
+> +	 * @is_asic_wbrf_supported: check whether PMFW supports the wbrf feature
+> +	 */
+> +	bool (*is_asic_wbrf_supported)(struct smu_context *smu);
+> +
+> +	/**
+> +	 * @enable_uclk_shadow: Enable the uclk shadow feature on wbrf supported
+> +	 */
+> +	int (*enable_uclk_shadow)(struct smu_context *smu,
+> +				  bool enablement);
+> +
+> +	/**
+> +	 * @set_wbrf_exclusion_ranges: notify SMU the wifi bands occupied
+> +	 */
+> +	int (*set_wbrf_exclusion_ranges)(struct smu_context *smu,
+> +					 struct exclusion_range *exclusion_ranges);
+>   };
+>   
+>   typedef enum {
+> diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu_internal.h b/drivers/gpu/drm/amd/pm/swsmu/smu_internal.h
+> index ceb13c838067..67d7495ab49e 100644
+> --- a/drivers/gpu/drm/amd/pm/swsmu/smu_internal.h
+> +++ b/drivers/gpu/drm/amd/pm/swsmu/smu_internal.h
+> @@ -97,6 +97,9 @@
+>   #define smu_get_default_config_table_settings(smu, config_table)	smu_ppt_funcs(get_default_config_table_settings, -EOPNOTSUPP, smu, config_table)
+>   #define smu_set_config_table(smu, config_table)				smu_ppt_funcs(set_config_table, -EOPNOTSUPP, smu, config_table)
+>   #define smu_init_pptable_microcode(smu)					smu_ppt_funcs(init_pptable_microcode, 0, smu)
+> +#define smu_is_asic_wbrf_supported(smu)					smu_ppt_funcs(is_asic_wbrf_supported, false, smu)
+> +#define smu_enable_uclk_shadow(smu, enablement)				smu_ppt_funcs(enable_uclk_shadow, 0, smu, enablement)
+> +#define smu_set_wbrf_exclusion_ranges(smu, exclusion_ranges)		smu_ppt_funcs(set_wbrf_exclusion_ranges, -EOPNOTSUPP, smu, exclusion_ranges)
+>   
+>   #endif
+>   #endif
