@@ -2,47 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4494C787FC7
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 08:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC73788001
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 08:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233074AbjHYGZM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 02:25:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51990 "EHLO
+        id S234714AbjHYGhA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 02:37:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234315AbjHYGZF (ORCPT
+        with ESMTP id S241759AbjHYGgg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 02:25:05 -0400
+        Fri, 25 Aug 2023 02:36:36 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F09851BDB
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Aug 2023 23:24:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 62CE51BDB
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Aug 2023 23:36:34 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37P6OPSU0023129, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37P6OPSU0023129
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37P6a2J31013971, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37P6a2J31013971
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 25 Aug 2023 14:24:25 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+        Fri, 25 Aug 2023 14:36:02 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 25 Aug 2023 14:24:48 +0800
-Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 25 Aug
- 2023 14:24:47 +0800
+ 15.1.2375.32; Fri, 25 Aug 2023 14:36:12 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 25 Aug 2023 14:36:12 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Fri, 25 Aug 2023 14:36:12 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw88: fix typo rtw8822cu_probe
-Date:   Fri, 25 Aug 2023 14:24:04 +0800
-Message-ID: <20230825062404.50813-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Timlee <timlee@realtek.com>
+Subject: pull request: rtw89: update 8851b and 8852b firmware to v0.29.41.2 and v0.29.29.3 respectively
+Thread-Topic: pull request: rtw89: update 8851b and 8852b firmware to
+ v0.29.41.2 and v0.29.29.3 respectively
+Thread-Index: AQHZ1x5woak1hwseR0qFQRMbZI3uZA==
+Date:   Fri, 25 Aug 2023 06:36:11 +0000
+Message-ID: <65ae8880b5ed2ed726256c8954bb0e457e75b950.camel@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9E9C6D06FA808440B780A25FAC2F980B@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -55,39 +69,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
-
-The probe function of 8822cu is misplaced to 8822bu, so we fix it.
-
-Fixes: 07cef03b8d44 ("wifi: rtw88: Add rtw8822cu chipset support")
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/rtw8822cu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822cu.c b/drivers/net/wireless/realtek/rtw88/rtw8822cu.c
-index af28ca09d41f..157d5102a4b1 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822cu.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822cu.c
-@@ -25,7 +25,7 @@ static const struct usb_device_id rtw_8822cu_id_table[] = {
- };
- MODULE_DEVICE_TABLE(usb, rtw_8822cu_id_table);
- 
--static int rtw8822bu_probe(struct usb_interface *intf,
-+static int rtw8822cu_probe(struct usb_interface *intf,
- 			   const struct usb_device_id *id)
- {
- 	return rtw_usb_probe(intf, id);
-@@ -34,7 +34,7 @@ static int rtw8822bu_probe(struct usb_interface *intf,
- static struct usb_driver rtw_8822cu_driver = {
- 	.name = "rtw_8822cu",
- 	.id_table = rtw_8822cu_id_table,
--	.probe = rtw8822bu_probe,
-+	.probe = rtw8822cu_probe,
- 	.disconnect = rtw_usb_disconnect,
- };
- module_usb_driver(rtw_8822cu_driver);
--- 
-2.25.1
-
+SGksDQoNCk1CU1NJRCBudW1iZXIgY291bGQgcG90ZW50aWFsbHkgZXhjZWVkIGFycmF5IHNpemUs
+IHNvIHVwZGF0ZSBmaXJtd2FyZSB0bw0KZml4IHRoZSBwcm9ibGVtIGZvciA4ODUxYiBhbmQgODg1
+MmIuDQoNClRoYW5rIHlvdQ0KUGluZy1LZQ0KDQotLS0NClRoZSBmb2xsb3dpbmcgY2hhbmdlcyBz
+aW5jZSBjb21taXQgMGUwNDhiMDYxYmRlNzlhZDczNWM3YjdiNTE2MWVlMWJkMzQwMDE1MDoNCg0K
+ICBNZXJnZSBicmFuY2ggJ2Zvci11cHN0cmVhbScgb2YgaHR0cHM6Ly9naXRodWIuY29tL0NpcnJ1
+c0xvZ2ljL2xpbnV4LWZpcm13YXJlICgyMDIzLTA4LTE0IDEzOjAzOjQxDQotMDQwMCkNCg0KYXJl
+IGF2YWlsYWJsZSBpbiB0aGUgR2l0IHJlcG9zaXRvcnkgYXQ6DQoNCiAgaHR0cHM6Ly9naXRodWIu
+Y29tL3Brc2hpaC9saW51eC1maXJtd2FyZS5naXQgSEVBRA0KDQpmb3IgeW91IHRvIGZldGNoIGNo
+YW5nZXMgdXAgdG8gZWY0MWFlOGY2NTNjMzAyZjcxYWUxMDBmODY0NjMwYTNiNjYxMDUxMjoNCg0K
+ICBydHc4OTogODg1MmI6IHVwZGF0ZSBmdyB0byB2MC4yOS4yOS4zICgyMDIzLTA4LTI1IDE0OjI5
+OjUyICswODAwKQ0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tDQpDaGluLVllbiBMZWUgKDIpOg0KICAgICAgcnR3ODk6IDg4
+NTFiOiB1cGRhdGUgZncgdG8gdjAuMjkuNDEuMg0KICAgICAgcnR3ODk6IDg4NTJiOiB1cGRhdGUg
+ZncgdG8gdjAuMjkuMjkuMw0KDQogcnR3ODkvcnR3ODg1MWJfZncuYmluICAgfCBCaW4gMTE2MTAw
+OCAtPiAxMTYwOTg0IGJ5dGVzDQogcnR3ODkvcnR3ODg1MmJfZnctMS5iaW4gfCBCaW4gMTE4NDk5
+MiAtPiAxMjM3NzA0IGJ5dGVzDQogMiBmaWxlcyBjaGFuZ2VkLCAwIGluc2VydGlvbnMoKyksIDAg
+ZGVsZXRpb25zKC0pDQoNCg==
