@@ -2,84 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB9957880F1
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 09:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 553DA78811A
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 09:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241794AbjHYHgB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 03:36:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46374 "EHLO
+        id S243158AbjHYHjs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 03:39:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243245AbjHYHfx (ORCPT
+        with ESMTP id S243239AbjHYHjc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 03:35:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F6052109;
-        Fri, 25 Aug 2023 00:35:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA75A614B3;
-        Fri, 25 Aug 2023 07:35:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545EAC433C7;
-        Fri, 25 Aug 2023 07:35:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692948940;
-        bh=XPNtAfyvKj/g+y5Rpwes+9pS9wajftJiM2gsLqx24fc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=UHWYhGuVuMmm4aqV+hto3J1sYBnTWnIolq8A5PUKDau/MfCY53auUc8nnT0aiG27z
-         SN2vXKbFq56z6V4zJMYRM0nPF5M8H6NSqyKQ5bMwiApCpW82t6CM8b5mvOaMHMNjxG
-         o3AEHtDvgnXypMQmp7Y4PBt5NDmLW6HWPp8vVb//QBlLez+BZwu9AITBDl0FYWIBHt
-         fcl4Eaaa+V5sNEA40/15msmV4qXhRF1j2s3mC/51CBN95vkX9iQ8V+H/EivLGuj39P
-         OOHDh+AbIuYOQJG9n7IYnla8KF4/B9Xxf15z9ne+277CBbBMbOJPk4NLziAlGoYw+Q
-         wldoIfBQ0gxpA==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 25 Aug 2023 03:39:32 -0400
+Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAFA81FCA
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 00:39:30 -0700 (PDT)
+Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
+        id 9C6AF4D5C0; Fri, 25 Aug 2023 07:37:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
+        s=mail; t=1692949091;
+        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
+        h=Date:From:To:Subject:From;
+        b=OPfyzfLnVSGqb3O3Cv1dnxuQoCEt9KDC5vBU9hIhgpV6y9AGixgUbFQK6ifbu3enm
+         uoMxMv9mwQgu2FFJ4ykFxdBlXKlDnrGDhvvZZAfPG9AR6vWCaVeb5UWr26pDH5WUHo
+         nLjZHICrnrj0JAuQWmWGPsPdmREcPOfdy0QwLVRn6pyBWuzJ6YOVHENyKu75/q5TaR
+         7dRUoO4gpSpZYQMTmp3WXV6iYgp7laWY1tm4EnltQhia11CtYPVivVpKlNpunH7WvF
+         ptpyBri7MZpYcSp1CXi3fiR4xSnL/7MjCm2InXofEF5wAfc3MH9r2Pjbck7vNjRwzh
+         68S6ohyIg3O4Q==
+Received: by mail.profitpathwaygo.com for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 07:36:10 GMT
+Message-ID: <20230825064500-0.1.1d.cr20.0.o3rpb46ay9@profitpathwaygo.com>
+Date:   Fri, 25 Aug 2023 07:36:10 GMT
+From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
+X-Mailer: mail.profitpathwaygo.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v1] net:wireless:Fix an NULL vs IS_ERR() bug for
- debugfs_create_dir()
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230713030358.12379-1-machel@vivo.com>
-References: <20230713030358.12379-1-machel@vivo.com>
-To:     Wang Ming <machel@vivo.com>
-Cc:     =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Rajkumar Manoharan <rmanoharan@atheros.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Sujith Manoharan <Sujith.Manoharan@atheros.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        opensource.kernel@vivo.com, Wang Ming <machel@vivo.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169294893610.1674223.1208799816873106062.kvalo@kernel.org>
-Date:   Fri, 25 Aug 2023 07:35:38 +0000 (UTC)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wang Ming <machel@vivo.com> wrote:
+Dzie=C5=84 dobry,
 
-> The debugfs_create_dir() function returns error pointers,
-> it never returns NULL. Most incorrect error checks were fixed,
-> but the one in ath9k_htc_init_debug() was forgotten.
-> 
-> Fix the remaining error check.
-> 
-> Fixes: e5facc75fa91 ("ath9k_htc: Cleanup HTC debugfs")
-> Signed-off-by: Wang Ming <machel@vivo.com>
-> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-Patch applied to ath-next branch of ath.git, thanks.
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-1e4134610d93 wifi: ath9k: use IS_ERR() with debugfs_create_dir()
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230713030358.12379-1-machel@vivo.com/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Pozdrawiam serdecznie
+Adam Charachuta
