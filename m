@@ -2,108 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75505788FD4
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 22:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C431A789028
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 23:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231202AbjHYU0n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 16:26:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56784 "EHLO
+        id S231326AbjHYVJn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 17:09:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231199AbjHYU0R (ORCPT
+        with ESMTP id S231330AbjHYVJd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 16:26:17 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 498181BE6
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 13:26:15 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-5009d4a4897so1997994e87.0
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 13:26:15 -0700 (PDT)
+        Fri, 25 Aug 2023 17:09:33 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6312211E
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 14:09:31 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-269304c135aso857613a91.3
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 14:09:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692995173; x=1693599973;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xaM+n+aR2UDKZm7iUT7Gwvf5Tkj3K+ENTupiFy9EIRM=;
-        b=d+6hXyfJgp8FYokh0gN/o+8H/Ee5pknYUTber0r6DT528COCq9eOW9kcWGXq+nzMhp
-         Ww/cKDdjj5io9Q+Y9ycxvOXRDW4tIOwHe5CzrKtvSJKhmiM5s7JDe4b1LU+UnnL/x0wf
-         7iRGGWJHUrE9aEQjBu+nivWQQH2UioGGvqlxFeyaYPtQXEg386jCSgOzz0FpgiXNeXu7
-         uLRF49iYzhYRPOZ9dAaWo/OulR7XPo+EoSHzzbeouFZi/wa1VGuD29WB3JyX/EitOaVU
-         20+XJ5R+/9p0874Wsao8RxXhCrBsF/rAaIeXtYoTl5zFGCB2vBntt1Frtml9Ai+Heqfh
-         k2GQ==
+        d=chromium.org; s=google; t=1692997770; x=1693602570;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xQKGwwST1RthAffY/CRFRLeYHHtXZCpUg2hQhGIx4VE=;
+        b=TSZcbdThXszeLvs0Zj6M3SwxWft124El5SKYDwCciFgIwZ2ee0tZ1iXcboFpF36IMv
+         Hdo0lgI16M5kW6ZJSO8AuM4AcTVaUUy4mzzi60OWhuyLvJ6Fkc3fby4YaOdxHPl/BfKg
+         bRgNJg7iMfmVyiyd+Z/EMeG/Umc+vZsK5/L5Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692995173; x=1693599973;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xaM+n+aR2UDKZm7iUT7Gwvf5Tkj3K+ENTupiFy9EIRM=;
-        b=Th9KQXflEdt+aDhY+MxXT9hQJFUcCYEvykZL3JtO7hAhkivzw6g9TRespnSHYw5T/q
-         yE9vikUV0S4blG6OASoneWa2Ej+uDItsVJdVh71HLG3QG423ua4bmaHR67Idbe6lt8Y6
-         4HQa+MhXWkbkvnlQPn5Y1N9giDI7m7zl+BbXV/Gnqmy8hGA2ZcgFM30OkGGsUA1lu8q2
-         nhn1AqmIeltQDymczdcpq7oh0fMXYc/K3/reqaXg9seCjxkpTpE+pp/HPddiHZCspC6F
-         4fOGM+rU4bmX0bMALXUMbba6sV4Q/l/NeSAM41t8EgDzIzo+/UnUhPB0mI9owFOT2qDw
-         VDVg==
-X-Gm-Message-State: AOJu0YxoAuctgrtXtXrZrcM0R2rJSdDISxF8MN5jBosMmyyRaGKcZftI
-        If85ecJ7E2Lqi/S3phVx9CoVtg==
-X-Google-Smtp-Source: AGHT+IHZWQsa/eM+b5ORUmm3jdem8a1l1zQoP4lM0kndRlNsDKQy0J1qYugkxq0XETuiLLIQcirrIw==
-X-Received: by 2002:a05:6512:10d6:b0:4fb:744e:17db with SMTP id k22-20020a05651210d600b004fb744e17dbmr16923065lfg.1.1692995172974;
-        Fri, 25 Aug 2023 13:26:12 -0700 (PDT)
-Received: from umbar.unikie.fi ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id eq8-20020a056512488800b004fe4aef5b18sm410359lfb.164.2023.08.25.13.26.11
+        d=1e100.net; s=20221208; t=1692997770; x=1693602570;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xQKGwwST1RthAffY/CRFRLeYHHtXZCpUg2hQhGIx4VE=;
+        b=lsYdPkgJpDLm8FymitDPA80XDUx1YhpiWzavDkD6IlWfDUfBvHBzD+Att4otrz+u4H
+         XK7EMcvb0x5DtL4yURSJJx6H5ygau6WtKD3PWIxqez+g0mROmbg+9rTNWkcAX+Ej0ESm
+         eWFagnNzp9cyQsQaRluyDQH+7tXn8hZEhFIdNTRJPUwemAK8jdR+p4YIhbddY2UvwHZD
+         mV67f68KlAENBWqRDAvfzBWXORppTkydPL2OffAHCjEWKcro0Re+TS7ueNhUKA6Aopsf
+         ZL6DT0dvlHNpmyuZ5XFjf8LPzJiQjsSUUOmJEgRvZkccWMqUTzPZL/pOdtuW1SroBl/j
+         k8Cg==
+X-Gm-Message-State: AOJu0Ywl4v0rrwxYdFU5Ji1r+vGJ0Qp+nTdtMJZaKTV9bgKN8Rh815Ia
+        iltlv7kyPa6zU7bAgMkesH+zBg==
+X-Google-Smtp-Source: AGHT+IGERcG56t83TTPVFatMxLLRcshSDdcsSXUxSZuSNShX74kT+RE54AoLlFIm3zuPsumzwFyZGA==
+X-Received: by 2002:a17:90a:8a95:b0:268:b7a2:62e8 with SMTP id x21-20020a17090a8a9500b00268b7a262e8mr18640814pjn.7.1692997770466;
+        Fri, 25 Aug 2023 14:09:30 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id f5-20020a170902ce8500b001b89891bfc4sm2178997plg.199.2023.08.25.14.09.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Aug 2023 13:26:11 -0700 (PDT)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: [PATCH] wifi: ath10k: Default to board.bin for legacy board data file
-Date:   Fri, 25 Aug 2023 23:26:10 +0300
-Message-Id: <20230825202610.1580132-1-dmitry.baryshkov@linaro.org>
-X-Mailer: git-send-email 2.39.2
+        Fri, 25 Aug 2023 14:09:29 -0700 (PDT)
+Date:   Fri, 25 Aug 2023 14:09:28 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Amitkumar Karwar <akarwar@marvell.com>,
+        Xinming Hu <huxm@marvell.com>, Dan Williams <dcbw@redhat.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] wifi: mwifiex: Fix tlv_buf_left calculation
+Message-ID: <202308251409.D62880A8@keescook>
+References: <cover.1692931954.git.gustavoars@kernel.org>
+ <06668edd68e7a26bbfeebd1201ae077a2a7a8bce.1692931954.git.gustavoars@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <06668edd68e7a26bbfeebd1201ae077a2a7a8bce.1692931954.git.gustavoars@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Default to 'board.bin' for the legacy board data file, in case the
-hw_params array doesn't list hw-specific board data file name (e.g. for
-WCN3990).
+On Thu, Aug 24, 2023 at 09:06:51PM -0600, Gustavo A. R. Silva wrote:
+> In a TLV encoding scheme, the Length part represents the length after
+> the header containing the values for type and length. In this case,
+> `tlv_len` should be:
+> 
+> tlv_len == (sizeof(*tlv_rxba) - 1) - sizeof(tlv_rxba->header) + tlv_bitmap_len
+> 
+> Notice that the `- 1` accounts for the one-element array `bitmap`, which
+> 1-byte size is already included in `sizeof(*tlv_rxba)`.
+> 
+> So, if the above is correct, there is a double-counting of some members
+> in `struct mwifiex_ie_types_rxba_sync`, when `tlv_buf_left` and `tmp`
+> are calculated:
+> 
+> 968                 tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+> 969                 tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
+> 
+> in specific, members:
+> 
+> drivers/net/wireless/marvell/mwifiex/fw.h:777
+>  777         u8 mac[ETH_ALEN];
+>  778         u8 tid;
+>  779         u8 reserved;
+>  780         __le16 seq_num;
+>  781         __le16 bitmap_len;
+> 
+> This is clearly wrong, and affects the subsequent decoding of data in
+> `event_buf` through `tlv_rxba`:
+> 
+> 970                 tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
+> 
+> Fix this by using `sizeof(tlv_rxba->header)` instead of `sizeof(*tlv_rxba)`
+> in the calculation of `tlv_buf_left` and `tmp`.
+> 
+> This results in the following binary differences before/after changes:
+> 
+> | drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+> | @@ -4698,11 +4698,11 @@
+> |  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:968
+> |                 tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
+> | -    1da7:      lea    -0x11(%rbx),%edx
+> | +    1da7:      lea    -0x4(%rbx),%edx
+> |      1daa:      movzwl %bp,%eax
+> |  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:969
+> |                 tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
+> | -    1dad:      lea    0x11(%r15,%rbp,1),%r15
+> | +    1dad:      lea    0x4(%r15,%rbp,1),%r15
+> 
+> The above reflects the desired change: avoid counting 13 too many bytes;
+> which is the total size of the double-counted members in
+> `struct mwifiex_ie_types_rxba_sync`:
+> 
+> $ pahole -C mwifiex_ie_types_rxba_sync drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+> struct mwifiex_ie_types_rxba_sync {
+> 	struct mwifiex_ie_types_header header;           /*     0     4 */
+> 
+>      |-----------------------------------------------------------------------
+>      |  u8                         mac[6];               /*     4     6 */  |
+>      |	u8                         tid;                  /*    10     1 */  |
+>      |  u8                         reserved;             /*    11     1 */  |
+>      | 	__le16                     seq_num;              /*    12     2 */  |
+>      | 	__le16                     bitmap_len;           /*    14     2 */  |
+>      |  u8                         bitmap[1];            /*    16     1 */  |
+>      |----------------------------------------------------------------------|
+> 								  | 13 bytes|
+> 								  -----------
+> 
+> 	/* size: 17, cachelines: 1, members: 7 */
+> 	/* last cacheline: 17 bytes */
+> } __attribute__((__packed__));
+> 
+> Fixes: 99ffe72cdae4 ("mwifiex: process rxba_sync event")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- drivers/net/wireless/ath/ath10k/core.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Excellent commit log!
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 6cdb225b7eac..806e5968e0ef 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -1271,11 +1271,6 @@ static int ath10k_core_fetch_board_data_api_1(struct ath10k *ar, int bd_ie_type)
- 	char boardname[100];
- 
- 	if (bd_ie_type == ATH10K_BD_IE_BOARD) {
--		if (!ar->hw_params.fw.board) {
--			ath10k_err(ar, "failed to find board file fw entry\n");
--			return -EINVAL;
--		}
--
- 		scnprintf(boardname, sizeof(boardname), "board-%s-%s.bin",
- 			  ath10k_bus_str(ar->hif.bus), dev_name(ar->dev));
- 
-@@ -1285,7 +1280,8 @@ static int ath10k_core_fetch_board_data_api_1(struct ath10k *ar, int bd_ie_type)
- 		if (IS_ERR(ar->normal_mode_fw.board)) {
- 			fw = ath10k_fetch_fw_file(ar,
- 						  ar->hw_params.fw.dir,
--						  ar->hw_params.fw.board);
-+						  ar->hw_params.fw.board ?:
-+						  "board.bin");
- 			ar->normal_mode_fw.board = fw;
- 		}
- 
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
 -- 
-2.39.2
-
+Kees Cook
