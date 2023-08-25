@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5FE788DFA
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 19:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 969AF788DFF
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 19:48:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238022AbjHYRsD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S238744AbjHYRsD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 25 Aug 2023 13:48:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36240 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237627AbjHYRri (ORCPT
+        with ESMTP id S237889AbjHYRrk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 13:47:38 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ACA91BF0
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 10:47:34 -0700 (PDT)
-X-UUID: 757130b4436f11eeb20a276fd37b9834-20230826
+        Fri, 25 Aug 2023 13:47:40 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D5601BF0
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 10:47:38 -0700 (PDT)
+X-UUID: 77558600436f11ee9cb5633481061a41-20230826
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
         h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=0VVH//pGmVRKMA5Gdd+iwu1PDBmKKjfZrzLiMf175fA=;
-        b=RWGTGcJmhV0THTr0FmTSowAL6f74pjqV7NA00WoCwyIS5QokMEfUuR5T1/clCxt1G2L3gUVMoeMU0wMEqMHVH4ivaSep5DKzgajy3gIQdkAnty8iQcdZPVJXWqZpB531WwILyjR+UBCiN+tP5LtL1k4gUeTyujgg1+n4SJ/HG2A=;
+        b=CaLFzejp+93Jv9dF0tbTplzebWdB2NBbRdX+uLUeYkesa7H01W2S4eTmVxp0wizkePKQgZ7eMIOGoFKDpo5j7wv1ZTrHW1BxV26CGWVSc3c/Qw/minkwLazRMGQGaQNtKqzdq0WwHAWNB/L8gp5zhpgwoybogNrRjCaOsiKzxwk=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.31,REQID:becbc584-1c85-4e72-a1b2-8c56536303ba,IP:0,U
+X-CID-O-INFO: VERSION:1.1.31,REQID:c619af61-a8de-44ad-8ba7-88a3f06cca08,IP:0,U
         RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
         :release,TS:95
-X-CID-INFO: VERSION:1.1.31,REQID:becbc584-1c85-4e72-a1b2-8c56536303ba,IP:0,URL
+X-CID-INFO: VERSION:1.1.31,REQID:c619af61-a8de-44ad-8ba7-88a3f06cca08,IP:0,URL
         :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
         :quarantine,TS:95
-X-CID-META: VersionHash:0ad78a4,CLOUDID:e24148c2-1e57-4345-9d31-31ad9818b39f,B
-        ulkID:23082601472963LQX1KA,BulkQuantity:0,Recheck:0,SF:48|38|29|28|17|19,T
-        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-        ,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-META: VersionHash:0ad78a4,CLOUDID:baf83113-4929-4845-9571-38c601e9c3c9,B
+        ulkID:23082601472963LQX1KA,BulkQuantity:1,Recheck:0,SF:48|38|29|28|17|19,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:41,QS:nil,BEC:nil,COL:0,
+        OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_SDM,TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,
         TF_CID_SPAM_FSD
-X-UUID: 757130b4436f11eeb20a276fd37b9834-20230826
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+X-UUID: 77558600436f11ee9cb5633481061a41-20230826
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
         (envelope-from <yi-chia.hsieh@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 543879381; Sat, 26 Aug 2023 01:47:28 +0800
+        with ESMTP id 1774950472; Sat, 26 Aug 2023 01:47:31 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Sat, 26 Aug 2023 01:47:27 +0800
+ 15.2.1118.26; Sat, 26 Aug 2023 01:47:30 +0800
 Received: from mussdccf250.mussds.eus.mediatek.inc (10.73.250.250) by
  mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Sat, 26 Aug 2023 01:47:25 +0800
+ 15.2.1118.26 via Frontend Transport; Sat, 26 Aug 2023 01:47:28 +0800
 From:   Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>,
         Johannes Berg <johannes.berg@intel.com>
@@ -59,18 +59,17 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
         Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
-Subject: [PATCH 5/6] mac80211: export ieee80211_tpt_led_trig_tx/rx for driver
-Date:   Fri, 25 Aug 2023 10:47:07 -0700
-Message-ID: <57cbeffc86f0cd03374feb061436771f16e5a225.1692924589.git.yi-chia.hsieh@mediatek.com>
+Subject: [PATCH 5/6] wifi: mac80211: export ieee80211_tpt_led_trig_tx/rx for driver
+Date:   Fri, 25 Aug 2023 10:47:08 -0700
+Message-ID: <8d18b7ac7fc394c310c0f2730da9ee7e955a9860.1692983967.git.yi-chia.hsieh@mediatek.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <09f0cb7f314a08eddb77298411d965ad30a847bb.1692924589.git.yi-chia.hsieh@mediatek.com>
-References: <09f0cb7f314a08eddb77298411d965ad30a847bb.1692924589.git.yi-chia.hsieh@mediatek.com>
+In-Reply-To: <09f0cb7f314a08eddb77298411d965ad30a847bb.1692983967.git.yi-chia.hsieh@mediatek.com>
+References: <09f0cb7f314a08eddb77298411d965ad30a847bb.1692983967.git.yi-chia.hsieh@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
