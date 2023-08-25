@@ -2,54 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5577C788110
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 09:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A289E788131
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 09:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241493AbjHYHjs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 03:39:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37812 "EHLO
+        id S238390AbjHYHrR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 03:47:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243276AbjHYHjl (ORCPT
+        with ESMTP id S243269AbjHYHrH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 03:39:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 799021FDD
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 00:39:39 -0700 (PDT)
+        Fri, 25 Aug 2023 03:47:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F70C1FCA
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 00:47:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B49C6632E
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 07:39:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B030C433C8;
-        Fri, 25 Aug 2023 07:39:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0552961567
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 07:47:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D856EC433C7;
+        Fri, 25 Aug 2023 07:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692949178;
-        bh=FcgVVWIaaMGjkWRZsa9rqhRNzHzscCG/+Ymzj0BEfvs=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=p+XrHrOulAUWDDHX0td/HNe0svAjiDAdKf1h46w00jhI+VxzXTLKCpJdPyPzrL5Ug
-         n2TxQwkkMKmRO+0gUU7yTfBSjHyVH/+noxckn7xLNHIbVWsUAcMoJ8MAK7sox4O6EU
-         dLbwJV7OMOzSmUwu8VGA6/3rtI4qN+Evgfjvvwmkm8jlLXV2+CVFMW6xLvOZG1ZAa6
-         tMmuXp7C/sGBLO0JX3/P/ZxaTmXGW6kSZlZD0cfjKnWIRh84EBFcRk3SNBkdDD2fr1
-         SnlV3KK7Zs7DqWyEwJ1R8Bq4GHvOGjatcloFAE6jg88W5Xh2gJELa974ccR5/OwyJP
-         bdZxXNuxZztOw==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next 1/2] wifi: ath: Use is_multicast_ether_addr() to
- check multicast Ether address
+        s=k20201202; t=1692949624;
+        bh=vpWMNFFp37Wpc/BeG4cbX3GZ7yuXUNsmebR40KDAuQE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ZGvUD6VGqiJ/BD7tjRLo1958ecnJZ7TskDnxXNTE6kaDO+3U64RtsJkJs1jACIAkN
+         x8CwsfPGtR3ZhtqORzfatpuFtzrtrJje6pkkmLP0jL3+D7jmfKsISDxmI6OLFRwoL4
+         /tDP1bzxIqJ40xRYTyzDYcsEfTZgY9eaoMsMbBrU3wJHmWBOzUfskHtRxsLUFdHKK9
+         UdurmTi2H4xenoyQOWYn/qoEgn9RXDIDhlq8Ck/KuKNX+UDyRFK+1cun30DzKEn9Eu
+         B5qevSkF1wLsYHKhQ2nm4/xzoCiQ6UzcjMpOOkazvFlxzN9mrKJ1D1p6JZL2h2kIKx
+         2ibaX6NcIvS7Q==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230814124212.302738-2-ruanjinjie@huawei.com>
-References: <20230814124212.302738-2-ruanjinjie@huawei.com>
-To:     Ruan Jinjie <ruanjinjie@huawei.com>
-Cc:     <briannorris@chromium.org>, <johannes.berg@intel.com>,
-        <Jason@zx2c4.com>, <toke@toke.dk>, <tj@kernel.org>,
-        <mukesh.sisodiya@intel.com>, <quic_vjakkam@quicinc.com>,
-        <johannes.wiesboeck@aisec.fraunhofer.de>,
-        <linux-wireless@vger.kernel.org>, <ruanjinjie@huawei.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169294917411.1674223.16902367414818975262.kvalo@kernel.org>
-Date:   Fri, 25 Aug 2023 07:39:35 +0000 (UTC)
+To:     "Antipov, Dmitriy" <Dmitriy.Antipov@softline.com>
+Cc:     "khoroshilov@ispras.ru" <khoroshilov@ispras.ru>,
+        "dmantipov@yandex.ru" <dmantipov@yandex.ru>,
+        "quic_jjohnson@quicinc.com" <quic_jjohnson@quicinc.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>,
+        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+Subject: Re: [lvc-project] [PATCH] [v2] wifi: ath10k: cleanup CE initialization
+References: <20230823095008.50515-1-dmantipov@yandex.ru>
+        <fb14be76-c3af-8ede-38aa-8b88f3cea7b7@ispras.ru>
+        <0eed7a68c03555cc815959b9fa32b37657f8aeda.camel@softline.com>
+Date:   Fri, 25 Aug 2023 10:47:00 +0300
+In-Reply-To: <0eed7a68c03555cc815959b9fa32b37657f8aeda.camel@softline.com>
+        (Dmitriy Antipov's message of "Wed, 23 Aug 2023 10:13:01 +0000")
+Message-ID: <877cpjh8cr.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -60,20 +62,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ruan Jinjie <ruanjinjie@huawei.com> wrote:
+"Antipov, Dmitriy" <Dmitriy.Antipov@softline.com> writes:
 
-> Use is_multicast_ether_addr() to perform the Checking.
-> 
-> Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> On Wed, 2023-08-23 at 13:03 +0300, Alexey Khoroshilov wrote:
+>
+>> > v2: adjust to match series
+>> 
+>> Do mean that nothing has been changed in the patch regarding the
+>> previous version?
+>
+> Usually it is, including the cases where some patch of the series
+> is changed so the following ones are applied with offsets and thus
+> better to be regenerated.
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-4c2964ef553b wifi: ath: Use is_multicast_ether_addr() to check multicast Ether address
+Saying something like "no changes" or "rebased only" would be more
+understandable. It is assumed that when sending a new version of the
+patchset that offsets can change so saying "no changes" is good enough.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230814124212.302738-2-ruanjinjie@huawei.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
