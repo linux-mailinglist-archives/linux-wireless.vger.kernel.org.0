@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F5B3788DFD
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 19:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62832788E35
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 20:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238774AbjHYRsE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 13:48:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41556 "EHLO
+        id S230100AbjHYSJI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 14:09:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237902AbjHYRrn (ORCPT
+        with ESMTP id S230270AbjHYSIm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 13:47:43 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D0B1BF0
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 10:47:40 -0700 (PDT)
-X-UUID: 790cec7c436f11eeb20a276fd37b9834-20230826
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=0S1E7xlsWymcxOZrInyHy703KhMNzR3Qwo0utAtB1Xc=;
-        b=dP79w3rYN76UXoExoUYAamWU2KsmCI3q3U6aF6CMu6MxBm3g9IaMeQzNHaCIJ2wnfsFf0+w3uGVQa3upzbp1p8hZia9Gs00YvRs7+cHWvuLgd00DP/AWM/sDjFebscS9nfLXTISemEfGuaTN22ZLkxepi8+skNfDxXCbOeDg+tI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.31,REQID:a643d924-606f-470f-8a97-6eaf4608018e,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:95
-X-CID-INFO: VERSION:1.1.31,REQID:a643d924-606f-470f-8a97-6eaf4608018e,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
-        :quarantine,TS:95
-X-CID-META: VersionHash:0ad78a4,CLOUDID:913bf4ee-9a6e-4c39-b73e-f2bc08ca3dc5,B
-        ulkID:230825084146EXQ3GMBN,BulkQuantity:1,Recheck:0,SF:48|38|29|28|17|19,T
-        C:nil,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:40,QS:nil,BEC:nil,COL
-        :0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_SDM,TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,
-        TF_CID_SPAM_FSD,TF_CID_SPAM_ULN
-X-UUID: 790cec7c436f11eeb20a276fd37b9834-20230826
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-        (envelope-from <yi-chia.hsieh@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1742621596; Sat, 26 Aug 2023 01:47:34 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Sat, 26 Aug 2023 01:47:33 +0800
-Received: from mussdccf250.mussds.eus.mediatek.inc (10.73.250.250) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Sat, 26 Aug 2023 01:47:31 +0800
-From:   Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
+        Fri, 25 Aug 2023 14:08:42 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E7081BF1
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 11:08:40 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37PCOFEh022806;
+        Fri, 25 Aug 2023 18:08:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=iHLeDC1m8DLWKuV+osfpRI9zBnwrLabWLAMJV/ih81A=;
+ b=gOAPaNsuZfR1tgXelpsaNKjo4+bZwJppu5Ubb82WSkN5zV+bemkWxD0hVjM/+s9RYu0E
+ /mWE8PqayRmwxY2TzwwNa2E16JKvRO9daBWPUXY9eHNlAeKwj63QD20HSVloMtJUJ8/G
+ viRixrYunDknGj0JZEZM7eScrdRxLcxAWuYeWacl2N3e3f5ZuRYtDHNkEy1mX/azSc6w
+ TD/6+pC83ZQNNNhA2pjtobwrNlAiuCOjcoNVu2TkW5bE1UEx32cZTlk2ktKVJHnqu6AK
+ F+oloPMYZiKBZvHeM66xDjH4/6f3FQ3p41+ioYj5odhDtwPQdcw17sUgdJ++PRLxlRpx cQ== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3spmtxsjfe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 25 Aug 2023 18:08:12 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37PI8BG9011710
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 25 Aug 2023 18:08:11 GMT
+Received: from [10.48.247.99] (10.49.16.6) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 25 Aug
+ 2023 11:08:10 -0700
+Message-ID: <e94f5d18-ced0-458d-8e2c-b94a4196c442@quicinc.com>
+Date:   Fri, 25 Aug 2023 11:08:09 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] wifi: mac80211: export ieee80211_tpt_led_trig_tx/rx
+ for driver
+Content-Language: en-US
+To:     Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>,
         Johannes Berg <johannes.berg@intel.com>
 CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Ryder Lee <ryder.lee@mediatek.com>,
@@ -57,117 +57,193 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Peter Chiu <chui-hao.chiu@mediatek.com>,
         Benjamin Lin <benjamin-jw.lin@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
-Subject: [PATCH 6/6] wifi: mt76: report per-phy tx and rx byte to tpt_led
-Date:   Fri, 25 Aug 2023 10:47:09 -0700
-Message-ID: <2f35b3920391a747069588717ecbadac82c1caa5.1692983967.git.yi-chia.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <09f0cb7f314a08eddb77298411d965ad30a847bb.1692983967.git.yi-chia.hsieh@mediatek.com>
+        <linux-mediatek@lists.infradead.org>
 References: <09f0cb7f314a08eddb77298411d965ad30a847bb.1692983967.git.yi-chia.hsieh@mediatek.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
-        version=3.4.6
+ <8d18b7ac7fc394c310c0f2730da9ee7e955a9860.1692983967.git.yi-chia.hsieh@mediatek.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <8d18b7ac7fc394c310c0f2730da9ee7e955a9860.1692983967.git.yi-chia.hsieh@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: ksw7ild0_Q2i6DqlOvjdeIeQm3t1iOpM
+X-Proofpoint-GUID: ksw7ild0_Q2i6DqlOvjdeIeQm3t1iOpM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-25_16,2023-08-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 malwarescore=0 spamscore=0 adultscore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308250162
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the issue where the tx and rx byte count is not reported to mac80211
-when H/W path is binded.
+On 8/25/2023 10:47 AM, Yi-Chia Hsieh wrote:
+> Whenever the H/W path is enabled and traffic is in the binding state,
+> mac80211 is not aware of the traffic. Consequently, the LED does not
+> blink for that reason.
+> 
+> The ieee80211_tpt_led_trig_tx/rx functions are exported for the driver
+> so that we can report the tx and rx bytes from the driver when
+> the H/W path is being used.
+> 
+> Signed-off-by: Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
+> ---
+>   include/net/mac80211.h | 17 +++++++++++++++++
+>   net/mac80211/led.c     | 18 ++++++++++++++++++
+>   net/mac80211/led.h     | 18 ------------------
+>   net/mac80211/rx.c      |  2 +-
+>   net/mac80211/tx.c      |  4 ++--
+>   5 files changed, 38 insertions(+), 21 deletions(-)
+> 
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index 3a8a2d2c58c3..53804822dc8d 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -4729,6 +4729,8 @@ __ieee80211_create_tpt_led_trigger(struct ieee80211_hw *hw,
+>   				   unsigned int flags,
+>   				   const struct ieee80211_tpt_blink *blink_table,
+>   				   unsigned int blink_table_len);
+> +void __ieee80211_tpt_led_trig_tx(struct ieee80211_hw *hw, int bytes);
+> +void __ieee80211_tpt_led_trig_rx(struct ieee80211_hw *hw, int bytes);
 
-Signed-off-by: Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt76_connac_mac.c  | 10 ++++++----
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c  |  5 +++++
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c   | 15 +++++++++++----
- 3 files changed, 22 insertions(+), 8 deletions(-)
+suggest these should be in led.h since they are local to mac80211 and 
+should not be directly invoked by clients of mac80211
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index ee5177fd6dde..ff3cefadaa7c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -608,9 +608,15 @@ bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 
- 	txs = le32_to_cpu(txs_data[0]);
- 
-+	mphy = mt76_dev_phy(dev, wcid->phy_idx);
-+
- 	/* PPDU based reporting */
- 	if (mtk_wed_device_active(&dev->mmio.wed) &&
- 	    FIELD_GET(MT_TXS0_TXS_FORMAT, txs) > 1) {
-+		ieee80211_tpt_led_trig_tx(mphy->hw,
-+			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE) -
-+			le32_get_bits(txs_data[7], MT_TXS7_MPDU_RETRY_BYTE));
-+
- 		stats->tx_bytes +=
- 			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE) -
- 			le32_get_bits(txs_data[7], MT_TXS7_MPDU_RETRY_BYTE);
-@@ -651,10 +657,6 @@ bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 		cck = true;
- 		fallthrough;
- 	case MT_PHY_TYPE_OFDM:
--		mphy = &dev->phy;
--		if (wcid->phy_idx == MT_BAND1 && dev->phys[MT_BAND1])
--			mphy = dev->phys[MT_BAND1];
--
- 		if (mphy->chandef.chan->band == NL80211_BAND_5GHZ)
- 			sband = &mphy->sband_5g.sband;
- 		else if (mphy->chandef.chan->band == NL80211_BAND_6GHZ)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index fc7ace638ce8..c1ed6aa5cc3b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -657,6 +657,11 @@ static void mt7915_mmio_wed_update_rx_stats(struct mtk_wed_device *wed,
- 
- 	wcid = rcu_dereference(dev->mt76.wcid[idx]);
- 	if (wcid) {
-+		struct mt76_phy *mphy = mt76_dev_phy(&dev->mt76, wcid->phy_idx);
-+
-+		ieee80211_tpt_led_trig_rx(mphy->hw,
-+					  le32_to_cpu(stats->rx_byte_cnt));
-+
- 		wcid->stats.rx_bytes += le32_to_cpu(stats->rx_byte_cnt);
- 		wcid->stats.rx_packets += le32_to_cpu(stats->rx_pkt_cnt);
- 		wcid->stats.rx_errors += le32_to_cpu(stats->rx_err_cnt);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 923e6f006cee..4222343de2f8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -461,6 +461,8 @@ mt7996_mcu_rx_all_sta_info_event(struct mt7996_dev *dev, struct sk_buff *skb)
- 		u8 ac;
- 		u16 wlan_idx;
- 		struct mt76_wcid *wcid;
-+		struct mt76_phy *mphy;
-+		u32 tx_bytes, rx_bytes;
- 
- 		switch (le16_to_cpu(res->tag)) {
- 		case UNI_ALL_STA_TXRX_ADM_STAT:
-@@ -470,11 +472,16 @@ mt7996_mcu_rx_all_sta_info_event(struct mt7996_dev *dev, struct sk_buff *skb)
- 			if (!wcid)
- 				break;
- 
-+			mphy = mt76_dev_phy(&dev->mt76, wcid->phy_idx);
- 			for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
--				wcid->stats.tx_bytes +=
--					le32_to_cpu(res->adm_stat[i].tx_bytes[ac]);
--				wcid->stats.rx_bytes +=
--					le32_to_cpu(res->adm_stat[i].rx_bytes[ac]);
-+				tx_bytes = le32_to_cpu(res->adm_stat[i].tx_bytes[ac]);
-+				rx_bytes = le32_to_cpu(res->adm_stat[i].rx_bytes[ac]);
-+
-+				wcid->stats.tx_bytes += tx_bytes;
-+				wcid->stats.rx_bytes += rx_bytes;
-+
-+				ieee80211_tpt_led_trig_tx(mphy->hw, tx_bytes);
-+				ieee80211_tpt_led_trig_rx(mphy->hw, rx_bytes);
- 			}
- 			break;
- 		case UNI_ALL_STA_TXRX_MSDU_COUNT:
--- 
-2.39.0
+>   #endif
+>   /**
+>    * ieee80211_get_tx_led_name - get name of TX LED
+> @@ -4839,6 +4841,21 @@ ieee80211_create_tpt_led_trigger(struct ieee80211_hw *hw, unsigned int flags,
+>   #endif
+>   }
+>   
+> +static inline void
+> +ieee80211_tpt_led_trig_tx(struct ieee80211_hw *hw, int bytes)
+> +{
+> +#ifdef CPTCFG_MAC80211_LEDS
+
+why isn't this using CONFIG_MAC80211_LEDS??
+
+> +	__ieee80211_tpt_led_trig_tx(hw, bytes);
+> +#endif
+> +}
+> +
+> +static inline void
+> +ieee80211_tpt_led_trig_rx(struct ieee80211_hw *hw, int bytes)
+> +{
+> +#ifdef CPTCFG_MAC80211_LEDS
+> +	__ieee80211_tpt_led_trig_rx(hw, bytes);
+> +#endif
+> +}
+>   /**
+>    * ieee80211_unregister_hw - Unregister a hardware device
+>    *
+> diff --git a/net/mac80211/led.c b/net/mac80211/led.c
+> index 2dc732147e85..af03a2ef5c6a 100644
+> --- a/net/mac80211/led.c
+> +++ b/net/mac80211/led.c
+> @@ -319,6 +319,24 @@ __ieee80211_create_tpt_led_trigger(struct ieee80211_hw *hw,
+>   }
+>   EXPORT_SYMBOL(__ieee80211_create_tpt_led_trigger);
+>   
+> +void __ieee80211_tpt_led_trig_tx(struct ieee80211_hw *hw, int bytes)
+> +{
+> +	struct ieee80211_local *local = hw_to_local(hw);
+> +
+> +	if (atomic_read(&local->tpt_led_active))
+> +		local->tpt_led_trigger->tx_bytes += bytes;
+> +}
+> +EXPORT_SYMBOL(__ieee80211_tpt_led_trig_tx);
+> +
+> +void __ieee80211_tpt_led_trig_rx(struct ieee80211_hw *hw, int bytes)
+> +{
+> +	struct ieee80211_local *local = hw_to_local(hw);
+> +
+> +	if (atomic_read(&local->tpt_led_active))
+> +		local->tpt_led_trigger->rx_bytes += bytes;
+> +}
+> +EXPORT_SYMBOL(__ieee80211_tpt_led_trig_rx);
+> +
+
+why are you making these exported implementations instead of keeping 
+them as inline in led.h?
+
+>   static void ieee80211_start_tpt_led_trig(struct ieee80211_local *local)
+>   {
+>   	struct tpt_led_trigger *tpt_trig = local->tpt_led_trigger;
+> diff --git a/net/mac80211/led.h b/net/mac80211/led.h
+> index d25f13346b82..98db4356d0de 100644
+> --- a/net/mac80211/led.h
+> +++ b/net/mac80211/led.h
+> @@ -66,21 +66,3 @@ static inline void ieee80211_mod_tpt_led_trig(struct ieee80211_local *local,
+>   {
+>   }
+>   #endif
+> -
+> -static inline void
+> -ieee80211_tpt_led_trig_tx(struct ieee80211_local *local, int bytes)
+> -{
+> -#ifdef CONFIG_MAC80211_LEDS
+> -	if (atomic_read(&local->tpt_led_active))
+> -		local->tpt_led_trigger->tx_bytes += bytes;
+> -#endif
+> -}
+> -
+> -static inline void
+> -ieee80211_tpt_led_trig_rx(struct ieee80211_local *local, int bytes)
+> -{
+> -#ifdef CONFIG_MAC80211_LEDS
+> -	if (atomic_read(&local->tpt_led_active))
+> -		local->tpt_led_trigger->rx_bytes += bytes;
+> -#endif
+> -}
+> diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+> index 4f707d2a160f..5747d7dac4d7 100644
+> --- a/net/mac80211/rx.c
+> +++ b/net/mac80211/rx.c
+> @@ -5375,7 +5375,7 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+>   	if (skb) {
+>   		if ((status->flag & RX_FLAG_8023) ||
+>   			ieee80211_is_data_present(hdr->frame_control))
+> -			ieee80211_tpt_led_trig_rx(local, skb->len);
+> +			ieee80211_tpt_led_trig_rx(&local->hw, skb->len);
+
+what is the rationale for changing the signature, especially given that 
+the first thing the implementations do is local = hw_to_local(hw)
+
+>   
+>   		if (status->flag & RX_FLAG_8023)
+>   			__ieee80211_rx_handle_8023(hw, pubsta, skb, list);
+> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> index 7fe7280e8437..234de8d3b8bb 100644
+> --- a/net/mac80211/tx.c
+> +++ b/net/mac80211/tx.c
+> @@ -4320,7 +4320,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+>   	len = 0;
+>    out:
+>   	if (len)
+> -		ieee80211_tpt_led_trig_tx(local, len);
+> +		ieee80211_tpt_led_trig_tx(&local->hw, len);
+>   	rcu_read_unlock();
+>   }
+>   
+> @@ -4646,7 +4646,7 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+>   	sta->deflink.tx_stats.packets[queue] += skbs;
+>   	sta->deflink.tx_stats.bytes[queue] += len;
+>   
+> -	ieee80211_tpt_led_trig_tx(local, len);
+> +	ieee80211_tpt_led_trig_tx(&local->hw, len);
+>   
+>   	ieee80211_tx_8023(sdata, skb, sta, false);
+>   
 
