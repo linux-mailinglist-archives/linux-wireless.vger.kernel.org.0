@@ -2,320 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72D3A788B67
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 16:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E78CE788DF8
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 19:48:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343604AbjHYOPp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 10:15:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43880 "EHLO
+        id S233707AbjHYRsB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 13:48:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233864AbjHYOPL (ORCPT
+        with ESMTP id S233646AbjHYRra (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 10:15:11 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2051.outbound.protection.outlook.com [40.107.94.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDC242686;
-        Fri, 25 Aug 2023 07:14:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dO1G/bi5xYj0B40xXFMJhctQU5LdPuZ3ORWJDA5OuNm/lyMCTB67ToKhGKYo5pwOdqAZmyFQ2J0VDCITgpgWRW+oBSvyGAkR1tTbPM/taESOpXC0IIFWSHoUt2Q/y34dkbFCrnREFmOLJnZnRcySlmATT/fNgbk/L2NBs7Z6FH+vL69yaUWcsgiYVd0hC4TPYPZC84m+n4x4KgeindKQllirxUIanchSpnXvzwDLkrzb1c9voQtflPsiY0cySHSs9HgecVhI/J7/wfjKGCnI3HGL4IrPtG6+hCIlOdjGRqzO8pDK5kWc9RmxQQhHRhE1LFJIB8Xb91i2M16QRpaGLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pICmLEfuEwWVa7p4Z4jXQG86PZAMDweXo3uM/Nf9iSc=;
- b=Nn+pin2Ea+kunhfgyi8k5BcUVtDYBXRoqaV2Aoq7ugPPScdG5DNdHwryXIpB2DHvnnTGjOUSi84rIpwiU/iQ84AiYnN1zm47h3B1dXkXVlolIQbqSFTOsD2UNrG4jLw4QxfAVRNkEJl8al2bOLkfVcmRGq/XpQfwWDoe0BZ+K+TimvaUPnc6DcYsz84cq4gCqcInnPdozb8WW9XH/nDipH+TRtiJmwY5DENJVw2YmiY3iO06SwVyfZvHblBqBahr65+nc/Z+dNOQ4+sbr2VLSCII7Oc91uoDjAdCsiDvUHlrT/D+oeN8vKAlEAkh20ZkXvM8nBVLlbXbW3onxx8Hwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pICmLEfuEwWVa7p4Z4jXQG86PZAMDweXo3uM/Nf9iSc=;
- b=emGypeZFOWqdtSVDpezt8SH9bdw3Suz9cdlciN+pAsJR6NQKdTpQg3lpKWerfSZiKeaWZR1QM8uotyi7oCpZxU9qR9MIjJNP6CftjG7+F/jr5eYQFnJYLJfZEWB6MrpAM9Yd4NuB8JBRAs3hSuLZOyxTPlyNyImNR66fVLxq9XE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BYAPR12MB4614.namprd12.prod.outlook.com (2603:10b6:a03:a6::22)
- by DM4PR12MB6400.namprd12.prod.outlook.com (2603:10b6:8:b9::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6699.29; Fri, 25 Aug 2023 14:13:42 +0000
-Received: from BYAPR12MB4614.namprd12.prod.outlook.com
- ([fe80::af11:a0ea:b4e4:d1e0]) by BYAPR12MB4614.namprd12.prod.outlook.com
- ([fe80::af11:a0ea:b4e4:d1e0%5]) with mapi id 15.20.6699.028; Fri, 25 Aug 2023
- 14:13:42 +0000
-Message-ID: <40f50d25-6b12-7195-e459-1abd552c04a8@amd.com>
-Date:   Fri, 25 Aug 2023 19:43:26 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [V10 7/8] drm/amd/pm: enable Wifi RFI mitigation feature support
- for SMU13.0.0
-Content-Language: en-US
-To:     Evan Quan <evan.quan@amd.com>, lenb@kernel.org,
-        johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        alexander.deucher@amd.com, rafael@kernel.org,
-        mario.limonciello@amd.com
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20230825083846.4001973-1-evan.quan@amd.com>
- <20230825083846.4001973-8-evan.quan@amd.com>
-From:   "Lazar, Lijo" <lijo.lazar@amd.com>
-In-Reply-To: <20230825083846.4001973-8-evan.quan@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN2PR01CA0103.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:27::18) To BYAPR12MB4614.namprd12.prod.outlook.com
- (2603:10b6:a03:a6::22)
+        Fri, 25 Aug 2023 13:47:30 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B11D212B
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 10:47:25 -0700 (PDT)
+X-UUID: 6d9fc350436f11eeb20a276fd37b9834-20230826
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=NdiWEmaBm07XJozVZFSJii/JVou2Djnru9WP4B+8F+0=;
+        b=oFmXbwepJvZHFj33wcqpXTSKtPu9IJSFy4K7hB7OKtIPTAordKyxwnQklX+GwZP/lJuePZv/+UkxYbMtWOb5ubyPKlY/vRrIl6KmlBWP1xtzXBa5mZHmuAO9kETbYMQ4t147ZsbJEnrSZDVa/p0dbhOqFbWzffUJz3BqDw7RNZs=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.31,REQID:3f79d73d-57f5-4a05-b0cd-31575c61773a,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:95
+X-CID-INFO: VERSION:1.1.31,REQID:3f79d73d-57f5-4a05-b0cd-31575c61773a,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
+        :quarantine,TS:95
+X-CID-META: VersionHash:0ad78a4,CLOUDID:50d5c11f-33fd-4aaa-bb43-d3fd68d9d5ae,B
+        ulkID:230826014717VTYZ1TZR,BulkQuantity:0,Recheck:0,SF:38|29|28|17|19|48,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+        ,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_ASC,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,
+        TF_CID_SPAM_SDM
+X-UUID: 6d9fc350436f11eeb20a276fd37b9834-20230826
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+        (envelope-from <yi-chia.hsieh@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1466951857; Sat, 26 Aug 2023 01:47:15 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Sat, 26 Aug 2023 01:47:14 +0800
+Received: from mussdccf250.mussds.eus.mediatek.inc (10.73.250.250) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Sat, 26 Aug 2023 01:47:12 +0800
+From:   Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Money Wang <money.wang@mediatek.com>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>,
+        Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
+Subject: [PATCH 1/6] wifi: mt76: mt7996: get tx_retries and tx_failed from txfree
+Date:   Fri, 25 Aug 2023 10:47:03 -0700
+Message-ID: <09f0cb7f314a08eddb77298411d965ad30a847bb.1692983967.git.yi-chia.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR12MB4614:EE_|DM4PR12MB6400:EE_
-X-MS-Office365-Filtering-Correlation-Id: e50866e3-c48d-4737-8312-08dba5757c61
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: IqcyhWkhDTMw3dugNDb2SI8n5aoOKIRsn13PYJWx+n+YFJoO7P+NrD8i2p9b3KLDI8fzNUtbtWbjxDXFoHSWLJvWWOusFMFWCMcRMPp4TE1y2/ZOQ5hTGhqGFkyTDGD9Drub1Htz5RlkW2Wv17ZGDkCI9WL2ICbCGI42oABTtLHJtFi/E3DaUlwwXBAU8jK5rNyCBdWxY3MfHqK3ipXfcIKb9X66hqRFDsRDCm0enbo8yaTkZWLk59kHtK6hsP0ZiutQ//BFYn6hAh3HsB+dwLSlBkBgH6JhnVORMESaoCIvQocNF5MWlsBjt+9Y+hvh3ktvsEr8ruMSxTclBld/G6hP3Ikac7fjueNSNgELi2rg/Rvl+9B0Pens5qAwR93/xWgd9EpM0Uqvu0Fr5RqSywBPlwWXDN7tp9W8Tk6RBH0Py/Pmti9uWH9iaIZA6n7bbKiCDzdsLRxyP8MvW2L72v7Sq7plki51gZ0xXKGvSIzRooBxuDWDRHJCrVUdBZJn+pZx7q81yeckMNg/0ITdrtbrzrQ8U8VnFvMmGpK4ky5ESXo1zAixi0qgv+D+Bc5qNc6beZysXhzf4rupMp1tDjefLn8YbUA+j+jbXitxJvxbyI8aqQf4t5RX5Ui4hK4qEz/AeCxM6ZTU1o/ywCp8H3RbLFi/20Ei0KcIXh2gOSM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB4614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(39860400002)(346002)(366004)(396003)(136003)(451199024)(1800799009)(186009)(38100700002)(921005)(8676002)(4326008)(8936002)(31696002)(41300700001)(316002)(6486002)(6506007)(53546011)(6666004)(36756003)(66946007)(66556008)(66476007)(6636002)(86362001)(6512007)(7416002)(26005)(478600001)(83380400001)(31686004)(2906002)(2616005)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eTl1QkdReHpkVjF6WE5jUFVGamZqS2lhaEZQeS95RUd0VEVHR3o1OXE4d09V?=
- =?utf-8?B?dDRLRllsZVh4WDNBNG5WalFRZDJnYTg0K1o1MXRYWDVJRjJrdVc1WFNJSjB4?=
- =?utf-8?B?RVNHWUxJTjI2eFFaYzdPUitTaFI4b1pEd2JKaFBXK3pBL3paT3J1bWxNUUhI?=
- =?utf-8?B?N2VwZTdrYWNtMVFueTRZeHBxY2lueXBXRmxETnRRUk9HTHBMUWpIbXMxdjZE?=
- =?utf-8?B?WFhtM255dUNtRUtFZDhHVjhlQ3RJTm5hcHRETk1qN0oydFlkdkgxa2FVZFZa?=
- =?utf-8?B?R0Zyby9KYUhkTUFFdnVmMGE5cEpJZHhhZnNiK3F0cTRhYkJuVnRVV1hvdlha?=
- =?utf-8?B?eG96Ukxtaml0b0dWTUlUNUhDWHI5c0RTcTY1UjVvalNUL3BrV3lwc1grQ1Js?=
- =?utf-8?B?REZ5dUhReG13UVZscGcycE00Rll6QTYyd2d3c0tnN0lKek1zdXlBdXYwOEcr?=
- =?utf-8?B?RGV2ZkUyaVg0NmJkRkpEbFljclUxV1Iyclo2YkxyVTgrT1NxdXVmSU16cGRE?=
- =?utf-8?B?MjBpcTVScG9SNDhHbjNRZVBTdWhpKzlTSmlwY2l0R1VIRTd4VTM3Q3hYQjRz?=
- =?utf-8?B?UnZ1R2tlZEZRcVRKL2NxcU01UHplZVFkZ00yUjZTbksxUGxTSmY3K05uMEdy?=
- =?utf-8?B?cmJpWVFxTXVsNlFZWHBBWVlNNWVHVmVIbjRvazdCT2g5ZWpwRDgwWDRDcDJ6?=
- =?utf-8?B?Q0NsU2NhR0xHZGxLMFhRakZuQ0tabjJ4ejJnd09vUHZmd1R1bVFxdFp3RU1S?=
- =?utf-8?B?aUtaN0JtKzFOTHlDS3hQY2dnK216YmJjaUt6dmJ0VEQwMzN1VlhPeUNDWDRu?=
- =?utf-8?B?Wi96dVo3a0NaSllSQ25DUzEwVXhaNmNiRmhreWJmU2hSZnU2QlczT2pOaEY3?=
- =?utf-8?B?eEJLdWgvVVNMU2ZRV3FocWU2aDVJM25OelVJdHc1TzlWNjhoWGVkNUlQcm5E?=
- =?utf-8?B?VGVWalJ5SGpjV2ZjSlNTQzZlRE83MlVvNVNzV3NsS1dMN2I4UTR3blNIZ1VG?=
- =?utf-8?B?c2JpcUV2Mlg4eWFzYUUzUUZUTHRYbUhYRWVuYUxzU25INllaeS9mYk9XTXZM?=
- =?utf-8?B?RTd2LzFaNWU2ZHRWcFBkSFErQytCWGdMaG1QTGt0cFZ2OUVCVUpJSDg4VVBu?=
- =?utf-8?B?aktLR0g2cXVoT3lUNSs5WjNXb1BicVJnUTc2b0tUS3ZVb2p4a1JFZ3JoZCtO?=
- =?utf-8?B?TjUzbnZPaVlzYVdFZkZ2ZWpMYTBaSG5raksxK0RwSUtNM3F3VjA4UkEwcWpZ?=
- =?utf-8?B?SXNOQ0QvcUp2S1pmYy9vYnBDMkdMZDFqaFpnYlc0S2hhV3pHV1ZQWXJpY2pj?=
- =?utf-8?B?dk1FVjdkc3RjWGpjb2s4ZTJpNkRHanREM2NuZXNLUGd0MUMrZFZqdi9JRHV4?=
- =?utf-8?B?WWhseHR5dnIvYUZaekt1TUJHVUxFeDl0K1duN1BzS3psSExzU2pHUDB5NEkr?=
- =?utf-8?B?djgrQVZObUJXTy9YbXVSZE1MTlExZ3NDVXhGK1JFc1M4bVc2WTRacDdiaU1P?=
- =?utf-8?B?d3daWnFHNTM0ejJqeWRDRXMyOUROSElyczkyK0xmU3pmMW54RXpJdjJBZHM0?=
- =?utf-8?B?MSs5eGxkMTByeVBsODN1Mk5GWjlQYUZiMTVTRWpEL3pOckVFb3NRY2U1aVho?=
- =?utf-8?B?WDB2dHpQUTZ0WU5oTXIrUExLQ0FUMXowbmxvL0NPbG12VkxGbHFXLy83R0xM?=
- =?utf-8?B?OHJwS0N0OXBSSVd1bU1QQ1VNMGVTT0RRRHJxald2Y1hIOHBMRW9Ua2w4ZGZQ?=
- =?utf-8?B?bVRqVjRDMGFIeHUwcURQM0p4RExkSEJwQnd2L25jZ3BOcTZXQmhKZTEycTlD?=
- =?utf-8?B?RUpEMExqUWhNVk5FTkttUTlxdDdkd05aS0FSbk0veksvZEZDK0R3N3plcEFj?=
- =?utf-8?B?S1dtU0cxV1cvZVJ6K1R2aG9ZcFdINFhkRFYvY2x1TE1iUGd5MFZkKzB2UGxp?=
- =?utf-8?B?bmlmV0piTHh0QU5pWGVBNFZ0d2k5K0pGQ0pKQ1U0dHRMWXZqaUpRNnExYmV4?=
- =?utf-8?B?bTVnMitPem5iNnF6eWtudFlVZVFCVXh0YitPelVMb2J4bVBCQkUxREZNREZZ?=
- =?utf-8?B?N09oclNOUit4cVErNEl3eHpOaXBvcXl2YUQzT0V5S1czY0dwYlhJK1lJSTJB?=
- =?utf-8?Q?I1VE35z1jB+qvn0pEgOR0qRst?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e50866e3-c48d-4737-8312-08dba5757c61
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB4614.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2023 14:13:42.3483
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tt66WDvl6F9wqF5z96AiepVyHH/797G48c5choxASrmM1pibPk3KqxmkwV3QZ7Ay
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6400
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Retrieve tx retries/failed counts from 'txfree done' events and report
+them via mt7996_sta_statistics().
 
+Signed-off-by: Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt76_connac3_mac.h |  4 ++--
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 21 ++++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  6 ++++++
+ 3 files changed, 24 insertions(+), 7 deletions(-)
 
-On 8/25/2023 2:08 PM, Evan Quan wrote:
-> Fulfill the SMU13.0.0 support for Wifi RFI mitigation feature.
-> 
-> Signed-off-by: Evan Quan <evan.quan@amd.com>
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->   drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  3 +
->   drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h  |  3 +-
->   drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h  |  3 +
->   .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c    |  9 +++
->   .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  | 60 +++++++++++++++++++
->   5 files changed, 77 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
-> index 60d595344c45..a081e6bb27c4 100644
-> --- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
-> +++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
-> @@ -325,6 +325,7 @@ enum smu_table_id
->   	SMU_TABLE_PACE,
->   	SMU_TABLE_ECCINFO,
->   	SMU_TABLE_COMBO_PPTABLE,
-> +	SMU_TABLE_WIFIBAND,
->   	SMU_TABLE_COUNT,
->   };
->   
-> @@ -1501,6 +1502,8 @@ enum smu_baco_seq {
->   			 __dst_size);					   \
->   })
->   
-> +#define HZ_IN_MHZ		1000000U
-> +
->   #if !defined(SWSMU_CODE_LAYER_L2) && !defined(SWSMU_CODE_LAYER_L3) && !defined(SWSMU_CODE_LAYER_L4)
->   int smu_get_power_limit(void *handle,
->   			uint32_t *limit,
-> diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h
-> index 297b70b9388f..5bbb60289a79 100644
-> --- a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h
-> +++ b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h
-> @@ -245,7 +245,8 @@
->   	__SMU_DUMMY_MAP(AllowGpo),	\
->   	__SMU_DUMMY_MAP(Mode2Reset),	\
->   	__SMU_DUMMY_MAP(RequestI2cTransaction), \
-> -	__SMU_DUMMY_MAP(GetMetricsTable),
-> +	__SMU_DUMMY_MAP(GetMetricsTable), \
-> +	__SMU_DUMMY_MAP(EnableUCLKShadow),
->   
->   #undef __SMU_DUMMY_MAP
->   #define __SMU_DUMMY_MAP(type)	SMU_MSG_##type
-> diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
-> index 355c156d871a..dd70b56aa71e 100644
-> --- a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
-> +++ b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
-> @@ -299,5 +299,8 @@ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
->   				     uint32_t pcie_gen_cap,
->   				     uint32_t pcie_width_cap);
->   
-> +int smu_v13_0_enable_uclk_shadow(struct smu_context *smu,
-> +				 bool enablement);
-> +
->   #endif
->   #endif
-> diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-> index 9b62b45ebb7f..6a5cb582aa92 100644
-> --- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-> +++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-> @@ -2472,3 +2472,12 @@ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
->   
->   	return 0;
->   }
-> +
-> +int smu_v13_0_enable_uclk_shadow(struct smu_context *smu,
-> +				 bool enablement)
-> +{
-> +	return smu_cmn_send_smc_msg_with_param(smu,
-> +					       SMU_MSG_EnableUCLKShadow,
-> +					       enablement,
-> +					       NULL);
-> +}
-> diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-> index 3d188616ba24..fd3ac18653ed 100644
-> --- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-> +++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-> @@ -154,6 +154,7 @@ static struct cmn2asic_msg_mapping smu_v13_0_0_message_map[SMU_MSG_MAX_COUNT] =
->   	MSG_MAP(AllowGpo,			PPSMC_MSG_SetGpoAllow,           0),
->   	MSG_MAP(AllowIHHostInterrupt,		PPSMC_MSG_AllowIHHostInterrupt,       0),
->   	MSG_MAP(ReenableAcDcInterrupt,		PPSMC_MSG_ReenableAcDcInterrupt,       0),
-> +	MSG_MAP(EnableUCLKShadow,		PPSMC_MSG_EnableUCLKShadow,            0),
->   };
->   
->   static struct cmn2asic_mapping smu_v13_0_0_clk_map[SMU_CLK_COUNT] = {
-> @@ -237,6 +238,7 @@ static struct cmn2asic_mapping smu_v13_0_0_table_map[SMU_TABLE_COUNT] = {
->   	TAB_MAP(I2C_COMMANDS),
->   	TAB_MAP(ECCINFO),
->   	TAB_MAP(OVERDRIVE),
-> +	TAB_MAP(WIFIBAND),
->   };
->   
->   static struct cmn2asic_mapping smu_v13_0_0_pwr_src_map[SMU_POWER_SOURCE_COUNT] = {
-> @@ -481,6 +483,9 @@ static int smu_v13_0_0_tables_init(struct smu_context *smu)
->   			PAGE_SIZE, AMDGPU_GEM_DOMAIN_VRAM);
->   	SMU_TABLE_INIT(tables, SMU_TABLE_ECCINFO, sizeof(EccInfoTable_t),
->   			PAGE_SIZE, AMDGPU_GEM_DOMAIN_VRAM);
-> +	SMU_TABLE_INIT(tables, SMU_TABLE_WIFIBAND,
-> +		       sizeof(WifiBandEntryTable_t), PAGE_SIZE,
-> +		       AMDGPU_GEM_DOMAIN_VRAM);
->   
->   	smu_table->metrics_table = kzalloc(sizeof(SmuMetricsExternal_t), GFP_KERNEL);
->   	if (!smu_table->metrics_table)
-> @@ -2593,6 +2598,58 @@ static ssize_t smu_v13_0_0_get_ecc_info(struct smu_context *smu,
->   	return ret;
->   }
->   
-> +static bool smu_v13_0_0_wbrf_support_check(struct smu_context *smu)
-> +{
-> +	struct amdgpu_device *adev = smu->adev;
-> +
-> +	switch (adev->ip_versions[MP1_HWIP][0]) {
-> +	case IP_VERSION(13, 0, 0):
-> +		return smu->smc_fw_version >= 0x004e6300;
-> +	case IP_VERSION(13, 0, 10):
-> +		return smu->smc_fw_version >= 0x00503300;
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
-> +static int smu_v13_0_0_set_wbrf_exclusion_ranges(struct smu_context *smu,
-> +						 struct exclusion_range *exclusion_ranges)
-> +{
-> +	WifiBandEntryTable_t wifi_bands;
-> +	int valid_entries = 0;
-> +	int ret, i;
-> +
-> +	memset(&wifi_bands, 0, sizeof(wifi_bands));
-> +	for (i = 0; i < ARRAY_SIZE(wifi_bands.WifiBandEntry); i++) {
-> +		if (!exclusion_ranges[i].start &&
-> +		    !exclusion_ranges[i].end)
-> +			break;
-> +
-> +		/* PMFW expects the inputs to be in Mhz unit */
-> +		wifi_bands.WifiBandEntry[valid_entries].LowFreq =
-> +			DIV_ROUND_DOWN_ULL(exclusion_ranges[i].start, HZ_IN_MHZ);
-> +		wifi_bands.WifiBandEntry[valid_entries++].HighFreq =
-> +			DIV_ROUND_UP_ULL(exclusion_ranges[i].end, HZ_IN_MHZ);
-> +	}
-> +	wifi_bands.WifiBandEntryNum = valid_entries;
-> +
-> +	/*
-> +	 * Per confirm with PMFW team, WifiBandEntryNum = 0
-> +	 * is a valid setting. So, there should be no direct
-> +	 * return on that.
-> +	 */
-> +
-> +	ret = smu_cmn_update_table(smu,
-> +				   SMU_TABLE_WIFIBAND,
-> +				   0,
-> +				   (void *)(&wifi_bands),
-> +				   true);
-> +	if (ret)
-> +		dev_err(smu->adev->dev, "Failed to set wifiband!");
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+index 68ca0844cbbf..e0354f1ffcc3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+@@ -269,11 +269,11 @@ enum tx_mgnt_type {
+ #define MT_TXFREE0_MSDU_CNT		GENMASK(25, 16)
+ #define MT_TXFREE0_RX_BYTE		GENMASK(15, 0)
+ 
+-#define MT_TXFREE1_VER			GENMASK(18, 16)
++#define MT_TXFREE1_VER			GENMASK(19, 16)
+ 
+ #define MT_TXFREE_INFO_PAIR		BIT(31)
+ #define MT_TXFREE_INFO_HEADER		BIT(30)
+-#define MT_TXFREE_INFO_WLAN_ID		GENMASK(23, 12)
++#define MT_TXFREE_INFO_MLD_ID		GENMASK(23, 12)
+ #define MT_TXFREE_INFO_MSDU_ID		GENMASK(14, 0)
+ #define MT_TXFREE_INFO_COUNT		GENMASK(27, 24)
+ #define MT_TXFREE_INFO_STAT		GENMASK(29, 28)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index ac8759febe48..0bdb5533847b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1070,6 +1070,7 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 	struct mt76_phy *phy3 = mdev->phys[MT_BAND2];
+ 	struct mt76_txwi_cache *txwi;
+ 	struct ieee80211_sta *sta = NULL;
++	struct mt76_wcid *wcid;
+ 	LIST_HEAD(free_list);
+ 	struct sk_buff *skb, *tmp;
+ 	void *end = data + len;
+@@ -1088,7 +1089,7 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 		mt76_queue_tx_cleanup(dev, phy3->q_tx[MT_TXQ_BE], false);
+ 	}
+ 
+-	if (WARN_ON_ONCE(le32_get_bits(tx_free[1], MT_TXFREE1_VER) < 4))
++	if (WARN_ON_ONCE(le32_get_bits(tx_free[1], MT_TXFREE1_VER) < 5))
+ 		return;
+ 
+ 	total = le32_get_bits(tx_free[0], MT_TXFREE0_MSDU_CNT);
+@@ -1104,10 +1105,9 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 		info = le32_to_cpu(*cur_info);
+ 		if (info & MT_TXFREE_INFO_PAIR) {
+ 			struct mt7996_sta *msta;
+-			struct mt76_wcid *wcid;
+ 			u16 idx;
+ 
+-			idx = FIELD_GET(MT_TXFREE_INFO_WLAN_ID, info);
++			idx = FIELD_GET(MT_TXFREE_INFO_MLD_ID, info);
+ 			wcid = rcu_dereference(dev->mt76.wcid[idx]);
+ 			sta = wcid_to_sta(wcid);
+ 			if (!sta)
+@@ -1120,10 +1120,21 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 					      &mdev->sta_poll_list);
+ 			spin_unlock_bh(&mdev->sta_poll_lock);
+ 			continue;
+-		}
++		} else if (info & MT_TXFREE_INFO_HEADER) {
++			u32 tx_retries = 0, tx_failed = 0;
++
++			if (!wcid)
++				continue;
++
++			tx_retries =
++				FIELD_GET(MT_TXFREE_INFO_COUNT, info) - 1;
++			tx_failed = tx_retries +
++				!!FIELD_GET(MT_TXFREE_INFO_STAT, info);
+ 
+-		if (info & MT_TXFREE_INFO_HEADER)
++			wcid->stats.tx_retries += tx_retries;
++			wcid->stats.tx_failed += tx_failed;
+ 			continue;
++		}
+ 
+ 		for (i = 0; i < 2; i++) {
+ 			msdu = (info >> (15 * i)) & MT_TXFREE_INFO_MSDU_ID;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index c3a479dc3f53..07c13fcc187a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -992,6 +992,12 @@ static void mt7996_sta_statistics(struct ieee80211_hw *hw,
+ 	sinfo->txrate.flags = txrate->flags;
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
+ 
++	sinfo->tx_failed = msta->wcid.stats.tx_failed;
++	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
++
++	sinfo->tx_retries = msta->wcid.stats.tx_retries;
++	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
++
+ 	sinfo->ack_signal = (s8)msta->ack_signal;
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_ACK_SIGNAL);
+ 
+-- 
+2.39.0
 
-As mentioned earlier, this doesn't look like a candidate for ERR level. 
-For ex: the system will continue to work fine if the last request is for 
-removal of certain bands (a device got disconnected). Even otherwise, 
-there is a chance that the bands used by newly added device may not 
-cause any interference. Same goes for patch 8.
-
-Thanks,
-Lijo
-
-> +
-> +	return ret;
-> +}
-> +
->   static const struct pptable_funcs smu_v13_0_0_ppt_funcs = {
->   	.get_allowed_feature_mask = smu_v13_0_0_get_allowed_feature_mask,
->   	.set_default_dpm_table = smu_v13_0_0_set_default_dpm_table,
-> @@ -2672,6 +2729,9 @@ static const struct pptable_funcs smu_v13_0_0_ppt_funcs = {
->   	.send_hbm_bad_channel_flag = smu_v13_0_0_send_bad_mem_channel_flag,
->   	.gpo_control = smu_v13_0_gpo_control,
->   	.get_ecc_info = smu_v13_0_0_get_ecc_info,
-> +	.is_asic_wbrf_supported = smu_v13_0_0_wbrf_support_check,
-> +	.enable_uclk_shadow = smu_v13_0_enable_uclk_shadow,
-> +	.set_wbrf_exclusion_ranges = smu_v13_0_0_set_wbrf_exclusion_ranges,
->   };
->   
->   void smu_v13_0_0_set_ppt_funcs(struct smu_context *smu)
