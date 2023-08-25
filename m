@@ -2,61 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EFDC787D4A
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 03:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F95787E35
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 05:03:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238620AbjHYBkK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Aug 2023 21:40:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35242 "EHLO
+        id S230076AbjHYDCr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Aug 2023 23:02:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240350AbjHYBjz (ORCPT
+        with ESMTP id S231543AbjHYDC0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Aug 2023 21:39:55 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EA7C51FD5
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Aug 2023 18:39:23 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37P1FYYV0020678, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37P1FYYV0020678
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 25 Aug 2023 09:15:34 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 25 Aug 2023 09:15:57 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 25 Aug 2023 09:15:57 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Fri, 25 Aug 2023 09:15:57 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Jinjie Ruan <ruanjinjie@huawei.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: RE: [PATCH] rtlwifi: rtl8723: Remove unused function rtl8723_cmd_send_packet()
-Thread-Topic: [PATCH] rtlwifi: rtl8723: Remove unused function
- rtl8723_cmd_send_packet()
-Thread-Index: AQHZ1lOWkAjsez9OlkeRjFbEIjyFWK/6NmIA
-Date:   Fri, 25 Aug 2023 01:15:57 +0000
-Message-ID: <725d733226e642a88b7745b1e7f96542@realtek.com>
-References: <20230824062339.1885385-1-ruanjinjie@huawei.com>
-In-Reply-To: <20230824062339.1885385-1-ruanjinjie@huawei.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 24 Aug 2023 23:02:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9317C10F;
+        Thu, 24 Aug 2023 20:02:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2964061229;
+        Fri, 25 Aug 2023 03:02:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B2DC433C7;
+        Fri, 25 Aug 2023 03:02:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692932543;
+        bh=HW5dSZhX9VZiRlRSRJ7BXfW7fZFYK1O4sOa9OoGG01w=;
+        h=Date:From:To:Cc:Subject:From;
+        b=Laa3jipZpRB7Xvuhy4QMYH04BQex5B6UDBjxrInGnE8S4AZks7bpf9aXUfO5OA4GV
+         d2pSJQtTkwwn1nPJJ1KNgj8bv8c25CoII1Z+SyT9/ZRZj9IzPZYG0MVgRYR3EDkNv8
+         Sq5WtL3fwLIxcfKS9U5Pju8kkrBzyqPt/K1q6khyo0lU6kseqeTqlHxn+1D4l7jBE7
+         myIzheh/wPw7hkb9VvidhU7DKEucM95fKcBfEsEWGwWX74MHH+25X3RilygNFGyZAp
+         gXTnZPrSEi0ifdMLbmWni1DozHvJqhyzI8dLtisjTvqsNSt5TgWaRCm26gsTCGLEHv
+         bcYkDwUR2iuzw==
+Date:   Thu, 24 Aug 2023 21:03:22 -0600
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Amitkumar Karwar <akarwar@marvell.com>,
+        Xinming Hu <huxm@marvell.com>, Dan Williams <dcbw@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH v2 0/3] wifi: mwifiex: Fix tlv_buf_left calculation and
+ replace one-element array
+Message-ID: <cover.1692931954.git.gustavoars@kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,24 +58,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi all!
 
+This small series is aimed at fixing a bug in the tlv_buf_left
+calculation, doing a flexible-array transformation, and adding
+a couple of sanity checks.
 
-> -----Original Message-----
-> From: Jinjie Ruan <ruanjinjie@huawei.com>
-> Sent: Thursday, August 24, 2023 2:24 PM
-> To: linux-wireless@vger.kernel.org; Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>
-> Cc: ruanjinjie@huawei.com
-> Subject: [PATCH] rtlwifi: rtl8723: Remove unused function rtl8723_cmd_send_packet()
+Thanks
 
-Subject should be "wifi: ...."
+Changes in v2:
+ - Fix format specifier in patch 3/3: %ld -> %zu
+ - Update warning messages to explicitly mention that TLV size is
+   greater than tlv_buf_len in patch 3/3.
 
-> 
-> The function rtl8723_cmd_send_packet() is not used anywhere, so remove it.
-> 
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+v1:
+ - Link: https://lore.kernel.org/linux-hardening/cover.1692829410.git.gustavoars@kernel.org/
 
-Others look good to me. 
+Gustavo A. R. Silva (3):
+  wifi: mwifiex: Fix tlv_buf_left calculation
+  wifi: mwifiex: Replace one-element array with flexible-array member in
+    struct mwifiex_ie_types_rxba_sync
+  wifi: mwifiex: Sanity check tlv_len and tlv_bitmap_len
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+ .../wireless/marvell/mwifiex/11n_rxreorder.c  | 22 ++++++++++++++++---
+ drivers/net/wireless/marvell/mwifiex/fw.h     |  2 +-
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
+-- 
+2.34.1
 
