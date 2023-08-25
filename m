@@ -2,55 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB08678814C
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 09:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 648BE78821F
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 10:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234294AbjHYHyR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 03:54:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44948 "EHLO
+        id S237552AbjHYIei (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 04:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243313AbjHYHxt (ORCPT
+        with ESMTP id S237312AbjHYIeV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 03:53:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0B1CF1
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 00:53:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F86E62E69
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 07:53:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0ECC433C7;
-        Fri, 25 Aug 2023 07:53:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692950026;
-        bh=KOzRnaC44+Xlhg47OtXM9sPc7szh93iPq2k6FzlXDMI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=mXhm/f1FO8Tc7xtH021mtnaY7iM//JOkkg/jY194PRLKCjVar6RkJwMRGXfWXVO/a
-         Ky4ot7sM/jn2dzIxdvApbK+dzO4D4Rwz5WM14Q9yZO4pb+qaOI4rniLhqYnyLPEO+1
-         vyOndbP2p/6jWVgcqDujuW+gbR2S7TDelFnK7R0nBx7apYNlD4sLySfKRkVk3Mg9T5
-         YYnm8GMX8nuvutG2FuyiWRmS6DdNxVDDDeByp2ckML1dK6glcA4VhyMCYpajtXzE1y
-         QppNiHpWJkXNa8xOJdUjzmZgGLZrCH5hCgQ3hmOdC4DY0pzVMBtFwA/LW6HfoQzTvX
-         aiUK60dmJ49Eg==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 25 Aug 2023 04:34:21 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5EB919AC;
+        Fri, 25 Aug 2023 01:34:19 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-68a4bcf8a97so546858b3a.1;
+        Fri, 25 Aug 2023 01:34:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692952459; x=1693557259;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jgzx8F63rBkw8Acwc9kphpz+DGZxrgaRRBPshml8yTg=;
+        b=ieSSJr0YvynmqFt60dA0myx0kj/odAJccDa2J8M+ix1CgG6IdjCUQg20+yRT8To5tg
+         wosiFi/b/0lZmytgeOkUuzorWqxW973Mlhr+5vAT/ioRH4wTqESGd/S2O+LKwleKHkWz
+         vIsvRCHk6MhdDabYdiK2bLfIangpg/CW82zKkNA6cqPB3VRto1YLnM1PZ9Bd+LzqFnjQ
+         fSeEki7zPDNZhp8SEYpx+XIfU5QJZKtDJx2g14r9riGGrs1gE0efc2V+JTeDUSsWVDRn
+         3A5SdwKA9dkcFGBVF6FkUS8fY0rfey4tymIdGcNcw5qWhw8+rX7xJysZaZv39NHBbrPD
+         802Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692952459; x=1693557259;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jgzx8F63rBkw8Acwc9kphpz+DGZxrgaRRBPshml8yTg=;
+        b=a3S4W5r0np+STlM/DCpiZEITwwMXd/ZkddK6MauEf+EFT8I9lNNBa3P8AxiorGNrC0
+         uUlOcS57oJo4IMZ1UH1OBYQnYnbDgL7kYbjAQbEOcuuqB47ABJIXxZdd45uUMx1F6WxC
+         hEcI3C4m43/Rmy+Nq+1f+HHG8gW4Xs5Z3Q8DBm4uaINeh78GNL8wkNk9yLmZVHh8nNh1
+         h7Z+PHn76fGu0SjYuGvKpIGaMBH2/8UFqfS4WzsCmW9IhOY2EU6dg0TnMioNgqxuTg1P
+         KFoib6hzZbzTa2wIIWI6whAMXTcFuX52MmfVLr6Ee5QEjI6jkPUjP+hE7rI24UlsT/0/
+         zMNg==
+X-Gm-Message-State: AOJu0Yw3R4m2XiofXX16u+OBR/RgMUo0PcWxbfHq3RuNrtLQg/wfKqb9
+        hoBU8/OvnDAcVOiyLgn+LGehO0wxrWMlFD6qDD3Qr/ih
+X-Google-Smtp-Source: AGHT+IGL5czZRDEgJVI+NbUpVz6KWCPLF+mPtS8hx3jiiW6slIrXgTe6zfz2x/eEAeRw8Y33oQaT/did5z6vyACPVBg=
+X-Received: by 2002:a17:90a:3fc6:b0:269:13f0:4b9a with SMTP id
+ u6-20020a17090a3fc600b0026913f04b9amr14447281pjm.7.1692952459024; Fri, 25 Aug
+ 2023 01:34:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ath12k: enable 320 MHz bandwidth for 6 GHz band
- in
- EHT PHY capbility for WCN7850
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230824025432.19406-1-quic_wgong@quicinc.com>
-References: <20230824025432.19406-1-quic_wgong@quicinc.com>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <quic_wgong@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169295002356.1753110.7150166655358699685.kvalo@kernel.org>
-Date:   Fri, 25 Aug 2023 07:53:45 +0000 (UTC)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <CAOiHx==NiPG2GdZNrJn5hPEdi70Spe9Kc9CHO5NjnATAjCgUsg@mail.gmail.com>
+ <20230814093621.289754-1-artem.chernyshev@red-soft.ru>
+In-Reply-To: <20230814093621.289754-1-artem.chernyshev@red-soft.ru>
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+Date:   Fri, 25 Aug 2023 10:34:07 +0200
+Message-ID: <CAOiHx=nU7POAE8SFD833inLm59CMiNmQpE28XWLjVcHS5a5zHA@mail.gmail.com>
+Subject: Re: [PATCH v2] brcm80211: brcmsmac: phy: Remove unreachable code
+To:     Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        lvc-project@linuxtesting.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,35 +73,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> wrote:
+Hi,
 
-> 320 MHz bandwidth is reported only for single PHY mode for WCN7850, get it
-> from WMI_HOST_HW_MODE_SINGLE ath12k_wmi_caps_ext_params and report it for
-> 6 GHz band.
-> 
-> After this patch, "iw list" show 320MHz support for WCN7850:
-> EHT Iftypes: managed
->         EHT PHY Capabilities: (0xe26f090010768800):
->                 320MHz in 6GHz Supported
->         EHT bw=320 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
->         EHT bw=320 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
->         EHT bw=320 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+On Mon, 14 Aug 2023 at 11:36, Artem Chernyshev
+<artem.chernyshev@red-soft.ru> wrote:
+>
+> wlc_phy_txpwr_srom_read_nphy() in wlc_phy_attach_nphy() can not
+> return false, so it's impossible to get true value in this
+> if-statement. Also change those functions return types to void
+> since no one using it.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-New warning:
+Since Broadcom seems to be on vacation or so, have a
 
-drivers/net/wireless/ath/ath12k/wmi.c:4199:69: warning: restricted __le32 degrades to integer
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
 
-Remember to ALWAYS run ath12k-check.
+to have at least some feedback.
 
-Patch set to Changes Requested.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230824025432.19406-1-quic_wgong@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Regards,
+Jonas
