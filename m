@@ -2,65 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 553DA78811A
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 09:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF6BB7880FD
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 09:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243158AbjHYHjs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 03:39:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47186 "EHLO
+        id S230446AbjHYHhk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 03:37:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243239AbjHYHjc (ORCPT
+        with ESMTP id S243251AbjHYHhP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 03:39:32 -0400
-Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAFA81FCA
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 00:39:30 -0700 (PDT)
-Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
-        id 9C6AF4D5C0; Fri, 25 Aug 2023 07:37:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
-        s=mail; t=1692949091;
-        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
-        h=Date:From:To:Subject:From;
-        b=OPfyzfLnVSGqb3O3Cv1dnxuQoCEt9KDC5vBU9hIhgpV6y9AGixgUbFQK6ifbu3enm
-         uoMxMv9mwQgu2FFJ4ykFxdBlXKlDnrGDhvvZZAfPG9AR6vWCaVeb5UWr26pDH5WUHo
-         nLjZHICrnrj0JAuQWmWGPsPdmREcPOfdy0QwLVRn6pyBWuzJ6YOVHENyKu75/q5TaR
-         7dRUoO4gpSpZYQMTmp3WXV6iYgp7laWY1tm4EnltQhia11CtYPVivVpKlNpunH7WvF
-         ptpyBri7MZpYcSp1CXi3fiR4xSnL/7MjCm2InXofEF5wAfc3MH9r2Pjbck7vNjRwzh
-         68S6ohyIg3O4Q==
-Received: by mail.profitpathwaygo.com for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 07:36:10 GMT
-Message-ID: <20230825064500-0.1.1d.cr20.0.o3rpb46ay9@profitpathwaygo.com>
-Date:   Fri, 25 Aug 2023 07:36:10 GMT
-From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
-To:     <linux-wireless@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
-X-Mailer: mail.profitpathwaygo.com
+        Fri, 25 Aug 2023 03:37:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF9F2115
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 00:37:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 477DE6194B
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 07:37:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F92C433C7;
+        Fri, 25 Aug 2023 07:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692949029;
+        bh=hN0YbyiYrl8AjNUF/1t/u5T7kx0yqD0TeUUlrQE2plg=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Nrg6nBDrMmxqXdYF5fepANNakZ7UkIAotoNtbwc/ZYvUo3ge0Z4xybUE97XE40+bh
+         l/wsMOPQnsr3Yt2FpX6xz3aDvrAL0c3W/WNb/E/jyY0VFyDwlJUbD9gtsP9QNM6Bi+
+         98huwsfWDrVMTg/Hkiot6TUdq3TpqfOost/R8noAqYVO8q6k/KBuzyBAqY3oM+C3Dt
+         /xR25VLENxo5AvVBfDo3TrNIOLyzdvseW3b1fEDrF8/qKiDN/8pBPMsnAKDO3rL+UD
+         W1TxSYV9jUYwcTXZW48LrAHu6fdv84dhhr93wqHo3KJApgSxHrJCIVsmf0PeBjIUD0
+         iSGzIdeAVh17A==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] wifi: ath12k: add check max message length while
+ scanning
+ with extraie
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230809081657.13858-1-quic_wgong@quicinc.com>
+References: <20230809081657.13858-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169294902664.1674223.5798401346278788819.kvalo@kernel.org>
+Date:   Fri, 25 Aug 2023 07:37:08 +0000 (UTC)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+> Currently the extraie length is directly used to allocate skb buffer. When
+> the length of skb is greater than the max message length which firmware
+> supports, error will happen in firmware side.
+> 
+> Hence add check for the skb length and drop extraie when overflow and
+> print a message.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+2f5124e86ae7 wifi: ath12k: add check max message length while scanning with extraie
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20230809081657.13858-1-quic_wgong@quicinc.com/
 
-Pozdrawiam serdecznie
-Adam Charachuta
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
