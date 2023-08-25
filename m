@@ -2,87 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1674578905D
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Aug 2023 23:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9218A789279
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Aug 2023 01:40:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231401AbjHYVY1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Aug 2023 17:24:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51022 "EHLO
+        id S229997AbjHYXj5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Aug 2023 19:39:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231378AbjHYVYV (ORCPT
+        with ESMTP id S231497AbjHYXjk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Aug 2023 17:24:21 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBD62126;
-        Fri, 25 Aug 2023 14:24:19 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4ffa01fc987so2832285e87.1;
-        Fri, 25 Aug 2023 14:24:19 -0700 (PDT)
+        Fri, 25 Aug 2023 19:39:40 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3381F2736
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 16:39:14 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-52a4b62c2f5so1995515a12.1
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 16:39:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692998658; x=1693603458;
+        d=chromium.org; s=google; t=1693006749; x=1693611549;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uAvdxGRJNm0KAatLMLcV87iYXC997rK/9oVNl8An31I=;
-        b=EdMzk7VFFK7sU2Y8cOGJylYOBJtZc6DglyLy7WW2MlfE7KVNX9+kVA627Mjg2S1nuv
-         /++QYreB9pzooxNgrPmLz0D4qTr4xfyetYa8o7FCBLpxku1BVIcc3G2f56qVKM5eX6vM
-         OkVV40XTUyIuUNc71aE1XrLbt/Sm/1aXm/RN9AOW4ErRuPrioYpCwPfrDdmiYf9Ho15s
-         DrhF8dNYjVUBZljEv4qDjIspMdNS4ZkeuV2SAd+hnzBVQ9lisOmwCHZPmNuq+xsM0ES9
-         DEVQr9aSC3pkPkhcP/nrEweep1kIndWvUkb8BSX8vIewgHwIroDsnlNkugvCz9lx2WmJ
-         vMtg==
+        bh=ARAkvhj7ZJCGS7HKCILL6B4n+8Rbnyk4X5Sfz208Kk0=;
+        b=QVGmFqsF4/K5NVoJoJF+dUyFvy7vxGVJw/2VXZ+2uZidyZ4CawnajEyf4nSeJ43ACl
+         zsm3vqdDdSaMDQDB8amtxmHw3u+uXWhKayeIGMmRXZoMlA7C18saeGyS87eVkzoPloL3
+         R7KuHQ7vtbPQRhiN+GormH5u385wcE4qcpoNY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692998658; x=1693603458;
+        d=1e100.net; s=20221208; t=1693006749; x=1693611549;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uAvdxGRJNm0KAatLMLcV87iYXC997rK/9oVNl8An31I=;
-        b=ZqJIBSwN9flWPhIp/MrxZZ4DfivzmuGxv97/+gBCZIFY4HRPAqsI8dbk/xU/D+lh/c
-         eFZMojh6vjG4hOcFePs41IEZhbnt7VQZCQvu9W9k7Dn+W3Zsg+nuXxY4GrpPkZjg5Pky
-         CkOiT/FEa49rfmahdmL320uDu9rK+ColzxbT5NF8S9HMWAf82jvRtb7s5pZ8LKqMJY33
-         ILyvqkUaPf9mTvCCKzD245puxEnmHTtLFrFMszd6ljU8OGfJNzH3KboIXhxmJlEe6K9f
-         ta0kjk/7L/XE88IYv5u+lUUMMRJl9mch1YQsPlfVdoX7QV5RwdXQDZSuhlJt6o4Ss+5n
-         b6/Q==
-X-Gm-Message-State: AOJu0YzRbZXUPTdrmtB1XQHYRYBOIruM3pDYejujdFpxREQxrgztz7NK
-        ttnPyMwXDZjInI5ajQPoHhRg6W+LGKokVAHd7bA=
-X-Google-Smtp-Source: AGHT+IHEqh8MOurQUl5UbtkJsmWLglp5EXFvNEKnNoXqGh9kjzmi4K5f8CCnMUOsiOKpYf8vQe8dZwJgtyakodQk8aE=
-X-Received: by 2002:a05:6512:ba7:b0:500:8676:aa7f with SMTP id
- b39-20020a0565120ba700b005008676aa7fmr5726857lfv.23.1692998657716; Fri, 25
- Aug 2023 14:24:17 -0700 (PDT)
+        bh=ARAkvhj7ZJCGS7HKCILL6B4n+8Rbnyk4X5Sfz208Kk0=;
+        b=j1DJaAPkeNJihftgbei0LZXdBnFn4vKhR/VuzaJe0myQUoqnDLr6st8iv2XbinRk1y
+         tBTxsw3OgX5CEMyxThIkyuGnhPYh+Jmd3/EArNugFtR9S7u4d6Pz3dF0viYRq8LVQzBe
+         IQojLAiuNExHaxM+rtWlSDyHJR5NfjaH3M+/upMY7iVjKBJotGOhnJvNvML0BnnlthZR
+         4qir5EEXh7p86ZHSIkd/8/Q/i8fqKSRQjjLAChUc4eRyJflrH298mXn6l72zuuQkzqqL
+         zsJiZrSxZdMbcuVIAWH5rYnGkFNl6+8kjcjH1WIJf3/EBCzI145I0hqHB88MmngPKZiE
+         J19Q==
+X-Gm-Message-State: AOJu0YxFwvovnYt7K1qfORx6lJhTCzP304NaQsGvX/7eZv05svTX2DkU
+        xzsc4BnHAXAwd3xS1jSF4Wy/bCIE/8xexmNgj2w=
+X-Google-Smtp-Source: AGHT+IHALzM8Twq+HAMnRlCcpUfWzKbWRglJf8Nx/Bm2hcF/NOk7qWxJudU9CJZUO27YoQIJYoPX7g==
+X-Received: by 2002:aa7:d502:0:b0:527:3552:7504 with SMTP id y2-20020aa7d502000000b0052735527504mr15468418edq.32.1693006749605;
+        Fri, 25 Aug 2023 16:39:09 -0700 (PDT)
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
+        by smtp.gmail.com with ESMTPSA id k8-20020a05640212c800b0052a3b212157sm1483949edx.63.2023.08.25.16.39.08
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Aug 2023 16:39:08 -0700 (PDT)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-986d8332f50so182463066b.0
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Aug 2023 16:39:08 -0700 (PDT)
+X-Received: by 2002:a17:906:59:b0:9a4:88af:b82 with SMTP id
+ 25-20020a170906005900b009a488af0b82mr2214834ejg.77.1693006747785; Fri, 25 Aug
+ 2023 16:39:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <ZOXf3JTIqhRLbn5j@gondor.apana.org.au> <E1qYl9u-006vE6-L2@formenos.hmeau.com>
-In-Reply-To: <E1qYl9u-006vE6-L2@formenos.hmeau.com>
-From:   Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date:   Fri, 25 Aug 2023 14:23:00 -0700
-Message-ID: <CABBYNZKM+pHzU7_6x4_25mZ5nb-hAJWahVZh6oac+G8=9Q07Hg@mail.gmail.com>
-Subject: Re: [PATCH 3/12] Bluetooth: Do not include crypto/algapi.h
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        "Theodore Y. Ts'o" <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        linux-fscrypt@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        linux-bluetooth@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>,
-        Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
-        ceph-devel@vger.kernel.org,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Mat Martineau <martineau@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Neil Brown <neilb@suse.de>, linux-nfs@vger.kernel.org,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-integrity@vger.kernel.org,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Ayush Sawal <ayush.sawal@chelsio.com>
+References: <cover.1692931954.git.gustavoars@kernel.org> <d4f8780527d551552ee96f17a0229e02e1c200d1.1692931954.git.gustavoars@kernel.org>
+ <202308251410.8DAA6AC5E@keescook>
+In-Reply-To: <202308251410.8DAA6AC5E@keescook>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Fri, 25 Aug 2023 16:38:56 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXNxYZsxFcF2iiKidBr4znsS5ejjmQKU_pdNpsrAqyeXEg@mail.gmail.com>
+Message-ID: <CA+ASDXNxYZsxFcF2iiKidBr4znsS5ejjmQKU_pdNpsrAqyeXEg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] wifi: mwifiex: Sanity check tlv_len and tlv_bitmap_len
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Amitkumar Karwar <akarwar@marvell.com>,
+        Xinming Hu <huxm@marvell.com>, Dan Williams <dcbw@redhat.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,39 +81,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Herbert,
+On Fri, Aug 25, 2023 at 2:10=E2=80=AFPM Kees Cook <keescook@chromium.org> w=
+rote:
+> On Thu, Aug 24, 2023 at 09:10:45PM -0600, Gustavo A. R. Silva wrote:
+> > +                     mwifiex_dbg(priv->adapter, WARN,
+> > +                                 "TLV size (%zu) overflows event_buf b=
+uf_left=3D%d\n",
+> > +                                 size_add(sizeof(tlv_rxba->header), tl=
+v_len),
+> > +                                 tlv_buf_left);
+>
+> With the suggested change to make this a warning and not dbg:
 
-On Wed, Aug 23, 2023 at 3:32=E2=80=AFAM Herbert Xu <herbert@gondor.apana.or=
-g.au> wrote:
->
-> The header file crypto/algapi.h is for internal use only.  Use the
-> header file crypto/utils.h instead.
->
-> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-> ---
->
->  net/bluetooth/smp.c |    3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-> index f1a9fc0012f0..5f2f97de295e 100644
-> --- a/net/bluetooth/smp.c
-> +++ b/net/bluetooth/smp.c
-> @@ -22,11 +22,10 @@
->
->  #include <linux/debugfs.h>
->  #include <linux/scatterlist.h>
-> -#include <linux/crypto.h>
->  #include <crypto/aes.h>
-> -#include <crypto/algapi.h>
->  #include <crypto/hash.h>
->  #include <crypto/kpp.h>
-> +#include <crypto/utils.h>
->
->  #include <net/bluetooth/bluetooth.h>
->  #include <net/bluetooth/hci_core.h>
+mwifiex_dbg(..., WARN, ...) *is* a warning, not a debug message. Or at
+least, that's how it's used throughout this driver, even though it
+actually yields a dev_info()-level message, regardless of the 'mask'
+arg:
 
-Acked-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-
---=20
-Luiz Augusto von Dentz
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dri=
+vers/net/wireless/marvell/mwifiex/main.c?id=3Dv6.4#n1811
