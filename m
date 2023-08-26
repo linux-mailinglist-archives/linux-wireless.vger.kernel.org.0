@@ -2,64 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F1878970A
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Aug 2023 15:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98F587897DF
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Aug 2023 17:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbjHZN5X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Aug 2023 09:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41004 "EHLO
+        id S229695AbjHZPxb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Aug 2023 11:53:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232183AbjHZN45 (ORCPT
+        with ESMTP id S229776AbjHZPxS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Aug 2023 09:56:57 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 586CE1991
-        for <linux-wireless@vger.kernel.org>; Sat, 26 Aug 2023 06:56:55 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d77f614243aso1765119276.0
-        for <linux-wireless@vger.kernel.org>; Sat, 26 Aug 2023 06:56:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693058214; x=1693663014;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UIk3Ss+Jl+QQzMUaKkMUyViIyvPKScuq86cEEqHGusE=;
-        b=pF6IfdIC2LkR3KDGmGGrGxTW1+eUnx4ikbUOn77tIRl0qFZABWvzSIAIqLJjGMIwxN
-         BUTpJublL9H0IFm9wgfzF4U52AfgcNtUxJmoZlXOJWiUmPafyUK2tbo67hWCV5hooi0w
-         jwBRETfr0m41OiX4/BXQm48GxIiBl/HbnnSXWA8BgfNk5YIm80jQbJRGu7uFwo/RZ8MM
-         e4m7Rua64LJUjX5M6y21ENxPbi0P60T99PYACJYcIf9ouKTY/9O+jtEOz5ZAsZGNGK2d
-         ebU+Dz5MQU9R2k8RVvFYknOyXL1tI/XRo8IqLrm7DHp79gRwD/u3GuvPD/pZZCfWAUrq
-         0P8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693058214; x=1693663014;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UIk3Ss+Jl+QQzMUaKkMUyViIyvPKScuq86cEEqHGusE=;
-        b=jwpziXrZ3vs48ktHNnh2xK8xXcJB80pdefGCJCTgt1ek920AtE4pTSE9pEJJYv7wND
-         dVD36Szy+zPUFqMVECf1quUoexN20VQmQoXDIl+1LrQtBDdARU42EVRMzvvPVyawSKIb
-         BHBXh4t9NErHINAik9fBaeqLbz9Fl4M1yi6wJiFNYZNYoarrJURPN70D52Uv7TA6TjE+
-         dC7zEOnyo/g9as59ttzdlU/K9j2j9e8Ha/ucDMTI1znBieswcoh/4m99Hn4fIxAZuga7
-         LIBAZDX7zjHkSf5/yfLc9+YGxMO+xoCFSxX7V74V6y+YakyAKFAG2uWJRJsO4dJBJRlH
-         k5hw==
-X-Gm-Message-State: AOJu0YxScIN+fOZdPA2ASo38boiUQLj5qPn9Z0KrYsrFcg9sf9ZD2lST
-        if72Rjoz4YVrfMDZkgOHztCO7YobOkDdAi0E5C30uw==
-X-Google-Smtp-Source: AGHT+IG47fSKGFN3TIP1Ic8FLulbn7bmOtvFuvS8F3UvcPCC212ktImUAKfUM5AqVL2axxJ7JyvAM+CJK5JQB7eErVc=
-X-Received: by 2002:a25:c5c6:0:b0:d7a:def7:b96a with SMTP id
- v189-20020a25c5c6000000b00d7adef7b96amr493222ybe.53.1693058214578; Sat, 26
- Aug 2023 06:56:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230825202610.1580132-1-dmitry.baryshkov@linaro.org> <87pm3afjda.fsf@kernel.org>
-In-Reply-To: <87pm3afjda.fsf@kernel.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Sat, 26 Aug 2023 16:56:43 +0300
-Message-ID: <CAA8EJprZvCtCKoV4J=21=2+fDM1gTfJBOThj13J3sE0w5AqpPw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ath10k: Default to board.bin for legacy board data file
+        Sat, 26 Aug 2023 11:53:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D121BCC;
+        Sat, 26 Aug 2023 08:53:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D3F360A1D;
+        Sat, 26 Aug 2023 15:53:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8408FC433C7;
+        Sat, 26 Aug 2023 15:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693065195;
+        bh=jRp5J5zfBMQENdgSowokFSlTIvvrIvYSssKqh8Hw7C0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oWeC7YdLlOfWmW9hf4SWWtktwWX8R7IW/D5JH/PvI7Yd51paYleLvUIvzA2QCIUbW
+         06Z5bcXAFTj3y8Ur04h4ew+JcDSB7hrkVZv8RT+vlWPiaxEKGyUPghLlCjahtQRD6K
+         SHEDpNidSXNPPR8vP2zIkX2CIj+esuy/SMsoXlLyZ3ofuteWHh3Re10WJmOQd3e4Ym
+         LXAalMWJFXf4OM95urH+pJDtYhugleVYvBu+LI4WHLutS0koLb7uPJlImSMrs1Nqib
+         nU9yLCDLkX5nD+Sp0ARk/tRvwuF8jQ2Wk7vE4HlcdGFVxUpQRozb/mH9lkmAjEeLt0
+         oVXq9iHyNQG1A==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qZvbA-0000QB-0P;
+        Sat, 26 Aug 2023 17:53:16 +0200
+Date:   Sat, 26 Aug 2023 17:53:16 +0200
+From:   Johan Hovold <johan@kernel.org>
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "Revert "wifi: ath11k: Enable threaded NAPI""
+Message-ID: <ZOof7EE0tXAt0YN7@hovoldconsulting.com>
+References: <20230809073432.4193-1-johan+linaro@kernel.org>
+ <ZONpkVU1ORHj-zFH@hovoldconsulting.com>
+ <87o7izi6br.fsf@kernel.org>
+ <ZOS7zdWNaqmfCHet@hovoldconsulting.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZOS7zdWNaqmfCHet@hovoldconsulting.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,32 +66,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 26 Aug 2023 at 08:44, Kalle Valo <kvalo@kernel.org> wrote:
->
-> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
->
-> > Default to 'board.bin' for the legacy board data file, in case the
-> > hw_params array doesn't list hw-specific board data file name (e.g. for
-> > WCN3990).
-> >
-> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->
-> Could you provide more background _why_ this is needed. What are you
-> trying to fix?
+On Tue, Aug 22, 2023 at 03:44:45PM +0200, Johan Hovold wrote:
+> On Tue, Aug 22, 2023 at 03:56:24PM +0300, Kalle Valo wrote:
+> > Johan Hovold <johan@kernel.org> writes:
+> > > On Wed, Aug 09, 2023 at 09:34:32AM +0200, Johan Hovold wrote:
+> > >
+> > >> Disabling threaded NAPI caused a severe regression in 6.5-rc5 by making
+> > >> the X13s completely unusable (e.g. no keyboard input, I've seen an RCU
+> > >> splat once).
+> 
+> > > Any chance we can get the offending commit reverted before 6.5 is
+> > > released? 
+> > 
+> > The problem here is that would break QCN9074 again so there is no good
+> > solution. I suspect we have a fundamental issue in ath11k which we just
+> > haven't discovered yet. I would prefer to get to the bottom of this
+> > before reverting anything.
+> 
+> Sure, ideally we can find and fix the underlying issues these next few
+> days, but since this regression was introduced in rc5 in an attempt to
+> address the QCN9074 issue which has been there since 6.1 I think we
+> need to revert otherwise. 
 
-Sure. For wcn3990 we do not have the
-`ath10k_hw_params_list[].fw.board' set. So if the board data is not
-present in `board-2.bin', the driver will skip looking into
-`board.bin' and will error out.
+I've managed to track down what causes the hang on the X13s after
+disabling threaded NAPI. Turns out to be a severe regression in the
+genirq code that causes the software resend tasklet to loop
+indefinitely.
 
-I had two options: either to set the `.fw.board' in
-`ath10k_hw_params_list', or to provide this default. Granted that the
-check for `fw.board' also prevents the `board-%s-%s.bin' lookup, I
-opted for the second option.
+I've just sent a fix here:
 
-Maybe I should just set the .fw.board to "board.bin" and
-.fw.board_size to 26328 (?)
+	https://lore.kernel.org/lkml/20230826154004.1417-1-johan+linaro@kernel.org/
 
--- 
-With best wishes
-Dmitry
+I've also made some progress on the QCN9074 hang, but keeping the
+threaded NAPI revert for now is indeed the right thing to do.
+
+Johan
