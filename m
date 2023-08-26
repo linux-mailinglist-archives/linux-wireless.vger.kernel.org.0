@@ -2,120 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15A967898E6
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Aug 2023 22:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 949077898F0
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Aug 2023 22:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229631AbjHZUDq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Aug 2023 16:03:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37208 "EHLO
+        id S229695AbjHZUJq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Aug 2023 16:09:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjHZUDa (ORCPT
+        with ESMTP id S229559AbjHZUJd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Aug 2023 16:03:30 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3072C2;
-        Sat, 26 Aug 2023 13:03:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1693080194; x=1693684994; i=lundril@gmx.de;
- bh=VKmid4DgGwdhkduyFFOwkjxOAZ+7/XvDyZOOaVvaafk=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
- b=Z/Wz3DSv2iGqskTDMScoquO/B+5EmamBn4A3EA6zRRUOF61rXDTs+K1QLiXghL/Ym4NK467
- m1FN/dRyaz42ZXRBDO/CD2R2l/wHQT6HepEC6i5BssEz+rRvPh+DtzM6CXdlbo2qHOksNu9Mh
- lrPY8YwrcD6A75YBvfuX0h1TYXL04cXnMMTcVmDVImFe6dwImrMREgjOHr3+WjK3IlC6ZF55K
- Ax8LKB6msoTwiE3APxdWiyCwnAW7Egpcnu1AITaGPpBQ+CAsWbK2s9usz/SWekZnTW3fSTYBS
- BAuqCVSW+RjpdqidEMWyiA2P3OKRdPFjyZFIiVWKTcYCh37PPNFw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from flatline.fritz.box ([82.135.64.125]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MsYqv-1pgmJl1trX-00ty7C; Sat, 26
- Aug 2023 22:03:14 +0200
-From:   Ingo Rohloff <lundril@gmx.de>
-To:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>
-Cc:     linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-pci@vger.kernel.org, Ingo Rohloff <lundril@gmx.de>
-Subject: [PATCH v2] wifi: mt76: mt7921e: Support MT7992 IP in Xiaomi Redmibook 15 Pro (2023)
-Date:   Sat, 26 Aug 2023 22:02:41 +0200
-Message-Id: <20230826200241.5077-1-lundril@gmx.de>
-X-Mailer: git-send-email 2.30.2
+        Sat, 26 Aug 2023 16:09:33 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC78A1AD
+        for <linux-wireless@vger.kernel.org>; Sat, 26 Aug 2023 13:09:31 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-54290603887so933171a12.1
+        for <linux-wireless@vger.kernel.org>; Sat, 26 Aug 2023 13:09:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693080571; x=1693685371;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2K0i+q1vtQDNkHEHlsAOOOf/oRQws8UMp1W1FTBoOrQ=;
+        b=Ttm3Oq55mNfcleZmjc0pa0BeVVqCB692mdzWykwAv13oww2LtLWynq7VmvsLAEjV73
+         4HmEQO4xMGxrEAvwL1bLiXM6/cX2CJvqHfTK8RaabKl3DDbOO4xQHtftNe3ngHH7F/l/
+         xALdQVyHP8xC2oR690zLR/5nZacrgodJdX/sayZxZO8oKiF+N63xSDZwFDDpsVf7PScA
+         R7Z6C5wAwGRmzRa0zehTtaytudSH9pG3YqxZ89gIPrKuKvz08Km82dnxnRrEwHWkFisl
+         qqKOkGpyQZQA03a57BLVQ2IgByCcjWWExzHxv2ddGuCIY5Ymp+bOhM8QpbNyC4pXNB0W
+         wTIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693080571; x=1693685371;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2K0i+q1vtQDNkHEHlsAOOOf/oRQws8UMp1W1FTBoOrQ=;
+        b=GIhk3o+SjVYY8RF8QxPhp/VeISYWQU3oBzb3tsbgUJ/tdVuHUdMr7NjjC/0oZTyOXi
+         gWF3oFjw8VFnlBRKlK5hXugc3oXhxjhSmCMaWYAh3Aox3sW9O9twfRfwjJYvwwuyrM7F
+         2id8hpCVvwYeyp9Y0xcdT/X83uhg6W8pdxXwgxU8Y8joIrQPlxiVKhMJ5BVqwXJo9a2H
+         NJlfxv/f3IZU1bGYgi+qYezs23IXYPY68I+B8OvztIRCXfInx5PYjxTOIJ+Z6uMkeUwA
+         vEu0RPEEsyroOK3qbzaeiE08pUHqC+4TolJFBYLCy0yr5XezzjsUMkGhpsXpdv0u0Scm
+         cppw==
+X-Gm-Message-State: AOJu0YyxfkiG8ZcDaztD821z0uZOxew7eld+Ob6GOt4fHZ+9sp+nrqf8
+        lYrR5cbVlofVS43gGK2IY6ifRrVuGAhxWg==
+X-Google-Smtp-Source: AGHT+IEZjuC/o/R5Fv/jWOv2zECxTG8UDWttlbWILZ7O6s4j7uszeITkuMWt5ZLL67V/Q7TMksPH3A==
+X-Received: by 2002:a17:902:6b0c:b0:1b7:f64b:378a with SMTP id o12-20020a1709026b0c00b001b7f64b378amr16415480plk.16.1693080570924;
+        Sat, 26 Aug 2023 13:09:30 -0700 (PDT)
+Received: from ryzen.lan ([2601:648:8600:e71::a86])
+        by smtp.gmail.com with ESMTPSA id f5-20020a170902ce8500b001b04c2023e3sm4119718plg.218.2023.08.26.13.09.30
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Aug 2023 13:09:30 -0700 (PDT)
+From:   Rosen Penev <rosenp@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/2] wifi: ath9k_htc: use module_usb_driver
+Date:   Sat, 26 Aug 2023 13:09:05 -0700
+Message-ID: <20230826200929.9756-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6HXsIeaGdaVYxWnfks5S8gUzsa+W+nEDtWV4ESWV1Ns7HZie/7y
- RpEWLjRSlhjQLc5jDfIKxqgEMvuSG9lJvR5qt4Ni9LpkmdEZ5WdiOSJmsTG4InPFt8bKcoh
- peqjtoUPRk5c8g4WzVD6srTLsv8HlaWO/6r1Zc3xhu4vSmgrNTBQNF3S92ZxpchPMHTQ9dL
- qheb1QOi0prZEbnhAR8xA==
-UI-OutboundReport: notjunk:1;M01:P0:d7mXSTQLF/U=;lEF8NTLf8pBeUbRM8C2BfCfesw7
- iA5qu7oEgHBFpEIAztmJW7rDLG0+k00WMqzalLJXj3XLF7XbNPtv7l5qACmEKdsnWkOHTbUtZ
- kieytIjW7kt58XPd2tA0HEzuUU4uicwgI61IE5VxJYFMrig+eNkafxJXfVEKoDfXE+g9e9lRz
- 4ijDHkeHLFflhFJpKLHUXJ36knSC3MumOVftRAzlevkLTF5nSOcwYv1i9Ms5NUiwd6hH+kGXs
- 2y5qWZ9pGI4nCmtA+mrYdCYqvFSimdDTDKZ7wMnSWwq678lzkNyt2QNGsb2qSrrppJwdKuYuv
- ikmgarYDKhGb5qj40tHjzY0IJwzHeuUDylFXFktSUep0qv8wsb07iPSLzAA884Qwlwcjk1xwT
- 7gLtfe0CZ2zQy57Y35uWv8PyKuITJGlLkgblnV+wd0wJC6mlfDEOKikkZkqryoNDi9f9Wxhld
- I87xlld9iIyr5TFpQI5pd3w+M8b2OXTmhz/PbhxckdZhHWYBiOhgUPA5HiOysOR9t+b8BDzBE
- vX4SiFxYPZi5eK9kf4PidaRtSWXxJca8F9sUGNhjEYjpapsXX9qoOXfc8FjiTVNtOwKtNlKIy
- cGRjfMR4g1hXOp4k0pRSmgtDX9YwVhjs8sBf/kpEYTZSoE35o8lZltHIZCw3RVBvMmXG2mxyn
- mOnlHGxvvvJ8QzSLd9K8LKU4XSk4ICBhTW5gUeVjcbKWUwaUCuVm/hIFoTgDZg2YLMlrLS4Q3
- GFVKl5gyUL4EAqv+PECahvY3qge62ZQINLkdvMt2fsGsKUH+995H0ShRV2VPzxxjSV04eosLh
- /YpxqsMDre0fopVx/m/jHvYA+AEqKOm3B7S8axuLoHqWlcNCGGr/MFwhEI/v1kuPQ1JUJZhrU
- u31nSDfr92i4o2dPsOIUPPHCgvmAjzhuStVebgddWUkGinZSfle9WT6ivEem8+Of54pdrgDzW
- 2PI0x080g1BKgXRJ7kpU78UX14M=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In the Xiaomi Redmibook 15 Pro (2023) laptop I have got, a wifi chip is
-used, which according to its PCI Vendor ID is from "ITTIM Technology".
+This follows the pattern with other USB Wifi drivers. There is nothing
+special being done in the _init and _exit functions here. Simplifies and
+saves some lines of code.
 
-This chip works flawlessly with the mt7921e module.  The driver doesn't
-bind to this PCI device, because the Vendor ID from "ITTIM Technology" is
-not recognized.
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/hif_usb.c      | 10 ----------
+ drivers/net/wireless/ath/ath9k/hif_usb.h      |  2 --
+ drivers/net/wireless/ath/ath9k/htc_drv_init.c | 18 +-----------------
+ 3 files changed, 1 insertion(+), 29 deletions(-)
 
-This patch adds the PCI Vendor ID from "ITTIM Technology" to the list of
-PCI Vendor IDs and lets the mt7921e driver bind to the mentioned wifi
-chip.
-
-Signed-off-by: Ingo Rohloff <lundril@gmx.de>
-=2D--
-Changes in v2:
-As requested, move the definition of the PCI Vendor ID for
-ITTIM Technology to the (hopefully) right place in pci_ids.h
-=2D--
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 2 ++
- include/linux/pci_ids.h                         | 2 ++
- 2 files changed, 4 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net=
-/wireless/mediatek/mt76/mt7921/pci.c
-index 95610a117d2f..ed5a220763ce 100644
-=2D-- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -17,6 +17,8 @@ static const struct pci_device_id mt7921_pci_device_tabl=
-e[] =3D {
- 		.driver_data =3D (kernel_ulong_t)MT7921_FIRMWARE_WM },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7922),
- 		.driver_data =3D (kernel_ulong_t)MT7922_FIRMWARE_WM },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_ITTIM, 0x7922),
-+		.driver_data =3D (kernel_ulong_t)MT7922_FIRMWARE_WM },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x0608),
- 		.driver_data =3D (kernel_ulong_t)MT7921_FIRMWARE_WM },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x0616),
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 2dc75df1437f..6ae1803bcd2f 100644
-=2D-- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -180,6 +180,8 @@
- #define PCI_DEVICE_ID_BERKOM_A4T		0xffa4
- #define PCI_DEVICE_ID_BERKOM_SCITEL_QUADRO	0xffa8
-
-+#define PCI_VENDOR_ID_ITTIM		0x0b48
-+
- #define PCI_VENDOR_ID_COMPAQ		0x0e11
- #define PCI_DEVICE_ID_COMPAQ_TOKENRING	0x0508
- #define PCI_DEVICE_ID_COMPAQ_TACHYON	0xa0fc
-=2D-
-2.30.2
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 27ff1ca2631f..e261e4258f0a 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1535,13 +1535,3 @@ static struct usb_driver ath9k_hif_usb_driver = {
+ 	.soft_unbind = 1,
+ 	.disable_hub_initiated_lpm = 1,
+ };
+-
+-int ath9k_hif_usb_init(void)
+-{
+-	return usb_register(&ath9k_hif_usb_driver);
+-}
+-
+-void ath9k_hif_usb_exit(void)
+-{
+-	usb_deregister(&ath9k_hif_usb_driver);
+-}
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.h b/drivers/net/wireless/ath/ath9k/hif_usb.h
+index 5985aa15ca93..6a7da71c9da6 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.h
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.h
+@@ -136,8 +136,6 @@ struct hif_device_usb {
+ 	u8 flags; /* HIF_USB_* */
+ };
+ 
+-int ath9k_hif_usb_init(void);
+-void ath9k_hif_usb_exit(void);
+ void ath9k_hif_usb_dealloc_urbs(struct hif_device_usb *hif_dev);
+ 
+ #endif /* HTC_USB_H */
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_init.c b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+index dae3d9c7b640..beaaa31f32a5 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_init.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+@@ -1018,20 +1018,4 @@ int ath9k_htc_resume(struct htc_target *htc_handle)
+ }
+ #endif
+ 
+-static int __init ath9k_htc_init(void)
+-{
+-	if (ath9k_hif_usb_init() < 0) {
+-		pr_err("No USB devices found, driver not installed\n");
+-		return -ENODEV;
+-	}
+-
+-	return 0;
+-}
+-module_init(ath9k_htc_init);
+-
+-static void __exit ath9k_htc_exit(void)
+-{
+-	ath9k_hif_usb_exit();
+-	pr_info("Driver unloaded\n");
+-}
+-module_exit(ath9k_htc_exit);
++module_usb_driver(ath9k_hif_usb_driver)
+-- 
+2.41.0
 
