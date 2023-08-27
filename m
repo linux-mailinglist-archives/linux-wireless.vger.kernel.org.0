@@ -2,50 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79D31789D27
+	by mail.lfdr.de (Postfix) with ESMTP id 2D296789D26
 	for <lists+linux-wireless@lfdr.de>; Sun, 27 Aug 2023 13:07:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229713AbjH0LGh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Aug 2023 07:06:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50726 "EHLO
+        id S229723AbjH0LGi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Aug 2023 07:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229730AbjH0LGQ (ORCPT
+        with ESMTP id S229733AbjH0LGS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Aug 2023 07:06:16 -0400
+        Sun, 27 Aug 2023 07:06:18 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD1C0109
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Aug 2023 04:06:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0FFF109
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Aug 2023 04:06:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693134374; x=1724670374;
+  t=1693134376; x=1724670376;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=kL8Ogp+A8HWMXAf4b4oBK6TLktgvUAS8VtguVS/qzj8=;
-  b=G+KYVOv5ERsGLSQxtBCOrrWLWENQ0wmAnBpDK8N3qMkyaQhHQYPgrhBh
-   yZadejiPPRMHedWCfKf+V+TFHDWMSGPimdhPc1pt0jXJf1cdiT+1qgwaZ
-   aLWxk524F0SK0cA/JHsO3Ye9MeCNtTZkmPYSsk8+EFENKX+wyIE3qgoDV
-   oIZrLOyysqLKJ2WWngutJxkbpdxPB7w4U/5o9XQUoPWdvJUmJsy70MUon
-   V6wCO0jtzekyzQpnI0r7RKYJ+VoiPKFj+JaqIAgaiortVTWdrUSPSOuov
-   aVXXUOVuxIVnq+ENEc79yDdtcEI/56l4SolcGzZIZ2axEX/fwSW/zuu08
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10814"; a="461301581"
+  bh=/5mbHPLet29vZdL75trvdVix6T0yQW33GidCyXzhSig=;
+  b=KvlNUVeqFinlOZk2S+kNGlTfDBCNWitWCwrIU4Ntt9kzYTl+J0i40VAR
+   9lLbjD2H3rA8Q5yx4hy57prJVjAr4Grica52wECqm2QCQw3XfmS2VUZK9
+   0FdhKOGxi3hR/36xyNqmm14sPV8Ux5Lbmd2S9upT8bygdqe545UYY8zZA
+   ErZVWToghHMXt0bJ85qROJN3Rm4PKmkc+HWtLQQFoUuOxPgnWlXq0bIVE
+   Y8v07bDa+zxvLFIdSesNsxscMjQGOZLKO5CnrbnoUe3i/SH+RcsKXWXDt
+   HYQtxMrVSzDx56CCijgDfi/9Ya1R+UnoH4Ojs4DGnQSWreYdroAmBSQCo
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10814"; a="461301588"
 X-IronPort-AV: E=Sophos;i="6.02,205,1688454000"; 
-   d="scan'208";a="461301581"
+   d="scan'208";a="461301588"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2023 04:06:14 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2023 04:06:16 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="881633014"
+   d="scan'208";a="881633023"
 Received: from ishamsi-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.186.7])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2023 04:06:18 -0700
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2023 04:06:20 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 13/15] wifi: mac80211: take MBSSID/EHT data also from probe resp
-Date:   Sun, 27 Aug 2023 14:05:30 +0300
-Message-Id: <20230827135854.3c7e52d49482.Iba6b672f6dc74b45bba26bc497e953e27da43ef9@changeid>
+Subject: [PATCH 14/15] wifi: mac80211: Do not force off-channel for management Tx with MLO
+Date:   Sun, 27 Aug 2023 14:05:31 +0300
+Message-Id: <20230827135854.73c8efce252f.Ie4b0a842debb24ef25c5e6cb2ad69b9f46bc4b2a@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230827110532.348304-1-gregory.greenman@intel.com>
 References: <20230827110532.348304-1-gregory.greenman@intel.com>
@@ -61,95 +60,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-The code that sets up the assoc link will currently take the BSS
-element data from the beacon only. This is correct for some of
-the data, notably the timing and the "have_beacon", but all the
-data about MBSSID and EHT really doesn't need to be taken from
-there, and if the EHT puncturing is misconfigured on the AP but
-we didn't receive a beacon yet, this causes us to connect but
-immediately disconnect upon receiving the first beacon, rather
-than connecting without EHT in the first place.
+When user space transmits a management frame it is expected to use
+the MLD addresses if the connection is an MLD one. Thus, in case
+the management Tx is using the MLD address and no channel is configured
+off-channel should not be used (as one of the active links would be used).
 
-Change the code to take MBSSID and EHT data also from the probe
-response, for a better picture of what the BSS capabilities are
-and to avoid that EHT puncturing problem.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/mlme.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ net/mac80211/offchannel.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index a93fbed69a70..8abd4301f278 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7262,7 +7262,7 @@ ieee80211_setup_assoc_link(struct ieee80211_sub_if_data *sdata,
- 			   unsigned int link_id)
- {
- 	struct ieee80211_local *local = sdata->local;
--	const struct cfg80211_bss_ies *beacon_ies;
-+	const struct cfg80211_bss_ies *bss_ies;
- 	struct ieee80211_supported_band *sband;
- 	const struct element *ht_elem, *vht_elem;
- 	struct ieee80211_link_data *link;
-@@ -7337,32 +7337,37 @@ ieee80211_setup_assoc_link(struct ieee80211_sub_if_data *sdata,
- 	link->conf->eht_puncturing = 0;
- 
- 	rcu_read_lock();
--	beacon_ies = rcu_dereference(cbss->beacon_ies);
--	if (beacon_ies) {
--		const struct ieee80211_eht_operation *eht_oper;
--		const struct element *elem;
-+	bss_ies = rcu_dereference(cbss->beacon_ies);
-+	if (bss_ies) {
- 		u8 dtim_count = 0;
- 
--		ieee80211_get_dtim(beacon_ies, &dtim_count,
-+		ieee80211_get_dtim(bss_ies, &dtim_count,
- 				   &link->u.mgd.dtim_period);
- 
- 		sdata->deflink.u.mgd.have_beacon = true;
- 
- 		if (ieee80211_hw_check(&local->hw, TIMING_BEACON_ONLY)) {
--			link->conf->sync_tsf = beacon_ies->tsf;
-+			link->conf->sync_tsf = bss_ies->tsf;
- 			link->conf->sync_device_ts = bss->device_ts_beacon;
- 			link->conf->sync_dtim_count = dtim_count;
- 		}
-+	} else {
-+		bss_ies = rcu_dereference(cbss->ies);
-+	}
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index cdf991e74ab9..18fc984f1b82 100644
+--- a/net/mac80211/offchannel.c
++++ b/net/mac80211/offchannel.c
+@@ -837,8 +837,14 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		if (!sdata->u.mgd.associated ||
+ 		    (params->offchan && params->wait &&
+ 		     local->ops->remain_on_channel &&
+-		     memcmp(sdata->vif.cfg.ap_addr, mgmt->bssid, ETH_ALEN)))
++		     memcmp(sdata->vif.cfg.ap_addr, mgmt->bssid, ETH_ALEN))) {
+ 			need_offchan = true;
++		} else if (sdata->u.mgd.associated &&
++			   ether_addr_equal(sdata->vif.cfg.ap_addr, mgmt->da)) {
++			sta = sta_info_get_bss(sdata, mgmt->da);
++			mlo_sta = sta && sta->sta.mlo;
++		}
 +
-+	if (bss_ies) {
-+		const struct ieee80211_eht_operation *eht_oper;
-+		const struct element *elem;
- 
- 		elem = cfg80211_find_ext_elem(WLAN_EID_EXT_MULTIPLE_BSSID_CONFIGURATION,
--					      beacon_ies->data, beacon_ies->len);
-+					      bss_ies->data, bss_ies->len);
- 		if (elem && elem->datalen >= 3)
- 			link->conf->profile_periodicity = elem->data[2];
- 		else
- 			link->conf->profile_periodicity = 0;
- 
- 		elem = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
--					  beacon_ies->data, beacon_ies->len);
-+					  bss_ies->data, bss_ies->len);
- 		if (elem && elem->datalen >= 11 &&
- 		    (elem->data[10] & WLAN_EXT_CAPA11_EMA_SUPPORT))
- 			link->conf->ema_ap = true;
-@@ -7370,7 +7375,7 @@ ieee80211_setup_assoc_link(struct ieee80211_sub_if_data *sdata,
- 			link->conf->ema_ap = false;
- 
- 		elem = cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_OPERATION,
--					      beacon_ies->data, beacon_ies->len);
-+					      bss_ies->data, bss_ies->len);
- 		eht_oper = (const void *)(elem->data + 1);
- 
- 		if (elem &&
+ 		sdata_unlock(sdata);
+ 		break;
+ 	case NL80211_IFTYPE_P2P_DEVICE:
 -- 
 2.38.1
 
