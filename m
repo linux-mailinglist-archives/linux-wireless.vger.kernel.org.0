@@ -2,136 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0DDF789AD9
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Aug 2023 03:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D73789B03
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Aug 2023 04:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230012AbjH0Blz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Aug 2023 21:41:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40600 "EHLO
+        id S229755AbjH0Chg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Aug 2023 22:37:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbjH0Blp (ORCPT
+        with ESMTP id S229786AbjH0Chb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Aug 2023 21:41:45 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 420171BB;
-        Sat, 26 Aug 2023 18:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693100503; x=1724636503;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SwkzD2XXqz25xBQj7+Qw+0ndFDroxkcAVZksTk/82zE=;
-  b=dC08DkCT5x6B4IiQYJ7xM+AD2ZEvTUFtJH9zUGz/RqG1IKhp+75SSKOY
-   Am/WMICCgWn2lnJ6DGSaTSF5LlcBmI/l5DhOgcAVYmhcwbKrPWm9fzqST
-   Izl00RydOTdX8y6bIzPcxJ9HELeJDiBKqjbP8Q75oZ86ok8oiKTvdB0wQ
-   oUwoxkX6lET291AIK+s0dC7yXXK45/1t76fGwbgddUbeUpOVin6h4PVeJ
-   EEOLC58is3gpdwBaq8h9pkgMAF7Z6e5j7l8R9uHat7VPlJUMdM5F6QI99
-   1BYEmEn3dpAl9WFs2L76QZmGD/b6fwruJ5dTWZR22GyZrZVSlXWH9u4Pa
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10814"; a="373790138"
-X-IronPort-AV: E=Sophos;i="6.02,204,1688454000"; 
-   d="scan'208";a="373790138"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2023 18:41:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10814"; a="687707446"
-X-IronPort-AV: E=Sophos;i="6.02,204,1688454000"; 
-   d="scan'208";a="687707446"
-Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 26 Aug 2023 18:41:34 -0700
-Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qa4mT-0005GT-2s;
-        Sun, 27 Aug 2023 01:41:33 +0000
-Date:   Sun, 27 Aug 2023 09:40:48 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        "Theodore Y.Ts'o" <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        linux-fscrypt@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-        linux-mtd@lists.infradead.org,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        linux-bluetooth@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>,
-        Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
-        ceph-devel@vger.kernel.org,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Mat Martineau <martineau@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Neil Brown <neilb@suse.de>, linux-nfs@vger.kernel.org,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        linux-inte@web.codeaurora.org, grity@vger.kernel.org,
-        "Jason A.Donenfeld" <Jason@zx2c4.com>,
-        Ayush Sawal <ayush.sawal@chelsio.com>
-Cc:     oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH 2/12] ubifs: Do not include crypto/algapi.h
-Message-ID: <202308270908.Go1QPOZ7-lkp@intel.com>
-References: <E1qYl9s-006vDm-IW@formenos.hmeau.com>
+        Sat, 26 Aug 2023 22:37:31 -0400
+Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com [IPv6:2607:f8b0:4864:20::c2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9248C18E;
+        Sat, 26 Aug 2023 19:37:27 -0700 (PDT)
+Received: by mail-oo1-xc2f.google.com with SMTP id 006d021491bc7-57355a16941so944084eaf.2;
+        Sat, 26 Aug 2023 19:37:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693103847; x=1693708647;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VZGOqorazSp+I1MKjY1gVz7xYjbzwYMSJxTzcyCljzo=;
+        b=OPBaC6TiPZ50X9Puq1TDuSWAMR9dhpAx1Jd9KmmBXToJBmzhB0F/i4qOQtOVSA7VI8
+         CMoT/MpVFa83wr0JQAwnB0wd3yz0gB+1iJIBOq00TULCQlx4SdPrnmEj88Fts4+48jt5
+         qrTlydjGQeXamK3TD1xNdJKoAq690hZnY0oRsCcNcAvgC2wCCd2dX9OfwxlYb3PxzTJx
+         Yqbkbab5fH4pj1qO4gszaH28eNgUpPk1QiLZ/DA2T7jz2yiUgaj5BTWPYzjft97643po
+         PPX2/b3058RdlpwALuhoU1mMByGccPCCKVJgbVOe9O9OMJhiIH1PZJHKvnpqH4lIdfGQ
+         240Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693103847; x=1693708647;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=VZGOqorazSp+I1MKjY1gVz7xYjbzwYMSJxTzcyCljzo=;
+        b=jePAtAqEyajjAHWi/AearJge6PEWqDdZo0ISwYlPurNI3QB9tHWG39QTNGxB0RXTI0
+         0ERcVLo2dgfitcA3vR7U1rnwHiFfpPVdYpR+CE+dOSKL/T2E7DT3/vHAcptfJ1Be8kvT
+         fcsZtF1YcwgIYcKyx+fB0s/fbsJyMr9cXzwoi5hNV7QFDLBjIZ/m7oKqv+EJyrqCh5hz
+         kA08zh87VMMqXUx/en4rzm4I6oAjg8kwPGpSx8/IaxuSuokY3U5dIRJkZfD9p2KAucdU
+         3vOWwYDkf1gOGmu9ypjFqCNhqzvvzNx0x5l2666b24p4ty+wgTllhHdEHxXITfp6+tfJ
+         UOqw==
+X-Gm-Message-State: AOJu0Yx2gRiJ0ZOfnOZJP9PbTZhgsbZ13lxjpg9t7xLLUrcftmjG2NZo
+        bOi4rLes+RtrfmYdu3w2LzIWQVCUSDc=
+X-Google-Smtp-Source: AGHT+IGeYO4GsiwQZbi7GrBe/9XKREJ4gAcr0G77cOje1bpL7RoMtD7mVFJvF/YYCfNxLS9ldun1bw==
+X-Received: by 2002:a05:6358:949f:b0:134:c4dc:9e28 with SMTP id i31-20020a056358949f00b00134c4dc9e28mr25951691rwb.17.1693103846781;
+        Sat, 26 Aug 2023 19:37:26 -0700 (PDT)
+Received: from [192.168.0.105] ([103.124.138.83])
+        by smtp.gmail.com with ESMTPSA id t9-20020a170902e84900b001b5656b0bf9sm4421249plg.286.2023.08.26.19.37.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 26 Aug 2023 19:37:26 -0700 (PDT)
+Message-ID: <5a7f2a6e-46a4-a5c8-fe6a-c2581496b5cd@gmail.com>
+Date:   Sun, 27 Aug 2023 09:37:21 +0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1qYl9s-006vDm-IW@formenos.hmeau.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Content-Language: en-US
+To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+        Brett Hassall <brett.hassall@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Fwd: 5c8a79e8e12b ("wifi: rtw88: correct PS calculation for
+ SUPPORTS_DYNAMIC_PS", 2023-05-27) increases CPU usage usage for irq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Herbert,
+Hi,
 
-kernel test robot noticed the following build errors:
+I notice a regression report on Bugzilla [1]. Quoting from it:
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master rw-ubifs/next rw-ubifs/fixes v6.5-rc7 next-20230825]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> This commit improves power saving - it enables the kernel to achieve package C8. To achieve package C8, 3 Ubuntu VMD commits must be applied as well. The combined patch for the 3 Ubuntu VMD commits is attached (just in case). Package C8 lowers power usage on the laptop from 5.6W to 2.6W.
+> 
+> However, a side-effect of this commit is that CPU usage for irq/155-rtw88_pci has increased noticeably. This commit was introduced in 6.4-rc6. To confirm this commit is the cause, a branch was created from 6.4-rc5. This commit and the 3 Ubuntu VMD commits were applied. The resulting kernel was built and tested - it can achieve package C8 and exhibits the increased CPU usage on irq/155-rtw88_pci.
+> 
+> Booting and running top for 30 min with the system otherwise idle, gives these results for CPU on irq/155-rtw88_pci:
+> 6.4-rc5     - 00:02.9, mostly   0% and 0.3% displayed
+> patched rc5 - 00:13.4, mostly 0.7% and 1.0% displayed
+> By comparison, an 8th Gen Dell with an Intel WIFI has CPU usage of 00:01.7 under the same conditions.
+> 
+> Laptop is a HP 15s-fq4011TU 11th Gen (Tiger Lake) Intel with (from lspci) Realtek Semiconductor Co., Ltd. RTL8822CE 802.11ac PCIe Wireless Network Adapter and Intel Corporation Volume Management Device NVMe RAID Controller.
+> 
+> Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/linux-hwe-6.2/+bug/2025040 provides further background.
+> 
+> Please advise if I can assist with further testing.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Herbert-Xu/fscrypt-Do-not-include-crypto-algapi-h/20230823-183716
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/E1qYl9s-006vDm-IW%40formenos.hmeau.com
-patch subject: [PATCH 2/12] ubifs: Do not include crypto/algapi.h
-config: x86_64-randconfig-r016-20230823 (https://download.01.org/0day-ci/archive/20230827/202308270908.Go1QPOZ7-lkp@intel.com/config)
-compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
-reproduce: (https://download.01.org/0day-ci/archive/20230827/202308270908.Go1QPOZ7-lkp@intel.com/reproduce)
+See Bugzilla for the full thread and attached proposed patch(es) that fix
+this regression.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308270908.Go1QPOZ7-lkp@intel.com/
+Anyway, I'm adding this regression to be tracked by regzbot:
 
-All errors (new ones prefixed by >>):
+#regzbot introduced: 26a125f550a3bf https://bugzilla.kernel.org/show_bug.cgi?id=217828
+#regzbot title: correcting SUPPORTS_DYNAMIC_PS calculation for rtw88 increases CPU utilization
+#regzbot link: https://bugs.launchpad.net/ubuntu/+source/linux-hwe-6.2/+bug/2025040
 
-   In file included from fs/ubifs/auth.c:12:0:
-   include/linux/verification.h: In function 'system_keyring_id_check':
->> include/linux/verification.h:23:11: error: 'EINVAL' undeclared (first use in this function)
-      return -EINVAL;
-              ^~~~~~
-   include/linux/verification.h:23:11: note: each undeclared identifier is reported only once for each function it appears in
+Thanks.
 
-
-vim +/EINVAL +23 include/linux/verification.h
-
-817aef260037f3 Yannik Sembritzki 2018-08-16  19  
-f3cf4134c5c6c4 Roberto Sassu     2022-09-20  20  static inline int system_keyring_id_check(u64 id)
-f3cf4134c5c6c4 Roberto Sassu     2022-09-20  21  {
-f3cf4134c5c6c4 Roberto Sassu     2022-09-20  22  	if (id > (unsigned long)VERIFY_USE_PLATFORM_KEYRING)
-f3cf4134c5c6c4 Roberto Sassu     2022-09-20 @23  		return -EINVAL;
-f3cf4134c5c6c4 Roberto Sassu     2022-09-20  24  
-f3cf4134c5c6c4 Roberto Sassu     2022-09-20  25  	return 0;
-f3cf4134c5c6c4 Roberto Sassu     2022-09-20  26  }
-f3cf4134c5c6c4 Roberto Sassu     2022-09-20  27  
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217828
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+An old man doll... just what I always wanted! - Clara
