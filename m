@@ -2,73 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32D73789B03
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Aug 2023 04:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10A82789D19
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Aug 2023 13:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbjH0Chg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Aug 2023 22:37:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55688 "EHLO
+        id S229631AbjH0LF7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Aug 2023 07:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229786AbjH0Chb (ORCPT
+        with ESMTP id S229740AbjH0LFt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Aug 2023 22:37:31 -0400
-Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com [IPv6:2607:f8b0:4864:20::c2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9248C18E;
-        Sat, 26 Aug 2023 19:37:27 -0700 (PDT)
-Received: by mail-oo1-xc2f.google.com with SMTP id 006d021491bc7-57355a16941so944084eaf.2;
-        Sat, 26 Aug 2023 19:37:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693103847; x=1693708647;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VZGOqorazSp+I1MKjY1gVz7xYjbzwYMSJxTzcyCljzo=;
-        b=OPBaC6TiPZ50X9Puq1TDuSWAMR9dhpAx1Jd9KmmBXToJBmzhB0F/i4qOQtOVSA7VI8
-         CMoT/MpVFa83wr0JQAwnB0wd3yz0gB+1iJIBOq00TULCQlx4SdPrnmEj88Fts4+48jt5
-         qrTlydjGQeXamK3TD1xNdJKoAq690hZnY0oRsCcNcAvgC2wCCd2dX9OfwxlYb3PxzTJx
-         Yqbkbab5fH4pj1qO4gszaH28eNgUpPk1QiLZ/DA2T7jz2yiUgaj5BTWPYzjft97643po
-         PPX2/b3058RdlpwALuhoU1mMByGccPCCKVJgbVOe9O9OMJhiIH1PZJHKvnpqH4lIdfGQ
-         240Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693103847; x=1693708647;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=VZGOqorazSp+I1MKjY1gVz7xYjbzwYMSJxTzcyCljzo=;
-        b=jePAtAqEyajjAHWi/AearJge6PEWqDdZo0ISwYlPurNI3QB9tHWG39QTNGxB0RXTI0
-         0ERcVLo2dgfitcA3vR7U1rnwHiFfpPVdYpR+CE+dOSKL/T2E7DT3/vHAcptfJ1Be8kvT
-         fcsZtF1YcwgIYcKyx+fB0s/fbsJyMr9cXzwoi5hNV7QFDLBjIZ/m7oKqv+EJyrqCh5hz
-         kA08zh87VMMqXUx/en4rzm4I6oAjg8kwPGpSx8/IaxuSuokY3U5dIRJkZfD9p2KAucdU
-         3vOWwYDkf1gOGmu9ypjFqCNhqzvvzNx0x5l2666b24p4ty+wgTllhHdEHxXITfp6+tfJ
-         UOqw==
-X-Gm-Message-State: AOJu0Yx2gRiJ0ZOfnOZJP9PbTZhgsbZ13lxjpg9t7xLLUrcftmjG2NZo
-        bOi4rLes+RtrfmYdu3w2LzIWQVCUSDc=
-X-Google-Smtp-Source: AGHT+IGeYO4GsiwQZbi7GrBe/9XKREJ4gAcr0G77cOje1bpL7RoMtD7mVFJvF/YYCfNxLS9ldun1bw==
-X-Received: by 2002:a05:6358:949f:b0:134:c4dc:9e28 with SMTP id i31-20020a056358949f00b00134c4dc9e28mr25951691rwb.17.1693103846781;
-        Sat, 26 Aug 2023 19:37:26 -0700 (PDT)
-Received: from [192.168.0.105] ([103.124.138.83])
-        by smtp.gmail.com with ESMTPSA id t9-20020a170902e84900b001b5656b0bf9sm4421249plg.286.2023.08.26.19.37.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Aug 2023 19:37:26 -0700 (PDT)
-Message-ID: <5a7f2a6e-46a4-a5c8-fe6a-c2581496b5cd@gmail.com>
-Date:   Sun, 27 Aug 2023 09:37:21 +0700
+        Sun, 27 Aug 2023 07:05:49 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14AB1180
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Aug 2023 04:05:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693134346; x=1724670346;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=c61SiZptGY7pFDWvAAHkIMrFJhwmJqMuDwE2b9Z247M=;
+  b=Z3xWUAqs6/Kgye39SiuVAMcxjFfGTNrbFFmBbNYPOiGvRyXSFTp6VQAj
+   TPIYvxJsRVh0tHbXPl/HF0vBk7m3altv2i7Y+FNxFXDHkViU0AXcD8FKh
+   FwXBL4MGLyARpq/mQYC3tS7TA39knw+3dsnSUGp/v4njsoEvUaOILOqot
+   uAQMGf9H8Ctno9K27yYRm09wkR8oRr8htMvhyN+93J5cSFR8fTgFjIKJ8
+   QGFkjxW/ochGaPTUg9BHOL0TT0EfTkeN7GjSgk7hmF3NKvTm4Ehcq3XHu
+   16e7Qk1Cz7/V9cORVnT0Q4eV6WRgfJafHZ/nrhJsqFjYEZPlTsEzyP+UT
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10814"; a="461301529"
+X-IronPort-AV: E=Sophos;i="6.02,205,1688454000"; 
+   d="scan'208";a="461301529"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2023 04:05:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
+   d="scan'208";a="881632939"
+Received: from ishamsi-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.186.7])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2023 04:05:49 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/15] cfg80211/mac80211 patches from our internal tree 2023-08-27 
+Date:   Sun, 27 Aug 2023 14:05:17 +0300
+Message-Id: <20230827110532.348304-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Content-Language: en-US
-To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        Brett Hassall <brett.hassall@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: 5c8a79e8e12b ("wifi: rtw88: correct PS calculation for
- SUPPORTS_DYNAMIC_PS", 2023-05-27) increases CPU usage usage for irq
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,37 +58,81 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Gregory Greenman <gregory.greenman@intel.com>
+
 Hi,
 
-I notice a regression report on Bugzilla [1]. Quoting from it:
+A bunch of patches from our internal tree with mac80211 and
+cfg80211 changes. It's the usual developement, cleanups and
+bugfixes.
 
-> This commit improves power saving - it enables the kernel to achieve package C8. To achieve package C8, 3 Ubuntu VMD commits must be applied as well. The combined patch for the 3 Ubuntu VMD commits is attached (just in case). Package C8 lowers power usage on the laptop from 5.6W to 2.6W.
-> 
-> However, a side-effect of this commit is that CPU usage for irq/155-rtw88_pci has increased noticeably. This commit was introduced in 6.4-rc6. To confirm this commit is the cause, a branch was created from 6.4-rc5. This commit and the 3 Ubuntu VMD commits were applied. The resulting kernel was built and tested - it can achieve package C8 and exhibits the increased CPU usage on irq/155-rtw88_pci.
-> 
-> Booting and running top for 30 min with the system otherwise idle, gives these results for CPU on irq/155-rtw88_pci:
-> 6.4-rc5     - 00:02.9, mostly   0% and 0.3% displayed
-> patched rc5 - 00:13.4, mostly 0.7% and 1.0% displayed
-> By comparison, an 8th Gen Dell with an Intel WIFI has CPU usage of 00:01.7 under the same conditions.
-> 
-> Laptop is a HP 15s-fq4011TU 11th Gen (Tiger Lake) Intel with (from lspci) Realtek Semiconductor Co., Ltd. RTL8822CE 802.11ac PCIe Wireless Network Adapter and Intel Corporation Volume Management Device NVMe RAID Controller.
-> 
-> Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/linux-hwe-6.2/+bug/2025040 provides further background.
-> 
-> Please advise if I can assist with further testing.
+Thanks,
+Gregory
 
-See Bugzilla for the full thread and attached proposed patch(es) that fix
-this regression.
+Benjamin Berg (2):
+  wifi: cfg80211: add ieee80211_fragment_element to public API
+  wifi: mac80211: add more warnings about inserting sta info
 
-Anyway, I'm adding this regression to be tracked by regzbot:
+Emmanuel Grumbach (1):
+  wifi: mac80211: add support for mld in ieee80211_chswitch_done
 
-#regzbot introduced: 26a125f550a3bf https://bugzilla.kernel.org/show_bug.cgi?id=217828
-#regzbot title: correcting SUPPORTS_DYNAMIC_PS calculation for rtw88 increases CPU utilization
-#regzbot link: https://bugs.launchpad.net/ubuntu/+source/linux-hwe-6.2/+bug/2025040
+Ilan Peer (2):
+  wifi: mac80211: Print local link address during authentication
+  wifi: mac80211: Do not force off-channel for management Tx with MLO
 
-Thanks.
+Johannes Berg (10):
+  wifi: cfg80211: fix off-by-one in element defrag
+  wifi: cfg80211: add first kunit tests, for element defrag
+  wifi: mac80211: add an element parsing unit test
+  wifi: mac80211: remove unnecessary struct forward declaration
+  wifi: mac80211: fix various kernel-doc issues
+  wifi: cfg80211: reg: fix various kernel-doc issues
+  wifi: mac80211_hwsim: clean up kernel-doc
+  wifi: mac80211: fix # of MSDU in A-MSDU calculation
+  wifi: mac80211: take MBSSID/EHT data also from probe resp
+  wifi: mac80211: fix channel switch link data
 
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217828
+ .../net/wireless/intel/iwlegacy/4965-mac.c    |   2 +-
+ drivers/net/wireless/intel/iwlegacy/common.c  |   2 +-
+ .../net/wireless/intel/iwlwifi/dvm/mac80211.c |   6 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |   2 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  10 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   3 +-
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |   2 +-
+ drivers/net/wireless/ti/wlcore/event.c        |   2 +-
+ drivers/net/wireless/ti/wlcore/main.c         |   6 +-
+ drivers/net/wireless/virtual/mac80211_hwsim.h |  19 +--
+ include/net/cfg80211.h                        |  12 ++
+ include/net/mac80211.h                        |   8 +-
+ net/mac80211/Kconfig                          |  11 ++
+ net/mac80211/Makefile                         |   2 +
+ net/mac80211/cfg.c                            |  42 ++---
+ net/mac80211/driver-ops.h                     |   6 +-
+ net/mac80211/ieee80211_i.h                    |  21 +--
+ net/mac80211/mlme.c                           |  73 +++++---
+ net/mac80211/offchannel.c                     |   8 +-
+ net/mac80211/sta_info.c                       |  10 +-
+ net/mac80211/sta_info.h                       |   4 +-
+ net/mac80211/tests/Makefile                   |   3 +
+ net/mac80211/tests/elems.c                    | 101 +++++++++++
+ net/mac80211/tests/module.c                   |  10 ++
+ net/mac80211/util.c                           |  30 +---
+ net/wireless/Kconfig                          |  11 ++
+ net/wireless/Makefile                         |   1 +
+ net/wireless/reg.h                            |  16 +-
+ net/wireless/scan.c                           |   4 +-
+ net/wireless/tests/Makefile                   |   3 +
+ net/wireless/tests/fragmentation.c            | 157 ++++++++++++++++++
+ net/wireless/tests/module.c                   |  10 ++
+ net/wireless/util.c                           |  29 ++++
+ 33 files changed, 500 insertions(+), 126 deletions(-)
+ create mode 100644 net/mac80211/tests/Makefile
+ create mode 100644 net/mac80211/tests/elems.c
+ create mode 100644 net/mac80211/tests/module.c
+ create mode 100644 net/wireless/tests/Makefile
+ create mode 100644 net/wireless/tests/fragmentation.c
+ create mode 100644 net/wireless/tests/module.c
 
 -- 
-An old man doll... just what I always wanted! - Clara
+2.38.1
+
