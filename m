@@ -2,134 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C4F78AA31
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 12:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D010978AC2D
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 12:38:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229563AbjH1KUF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Aug 2023 06:20:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57998 "EHLO
+        id S231621AbjH1Kht (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Aug 2023 06:37:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230460AbjH1KTn (ORCPT
+        with ESMTP id S231641AbjH1KhV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Aug 2023 06:19:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562A7122;
-        Mon, 28 Aug 2023 03:19:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F235863829;
-        Mon, 28 Aug 2023 10:19:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5FAC433C7;
-        Mon, 28 Aug 2023 10:19:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217944;
-        bh=EJ+2FRpR64R9HkOHWigcvnITZ7Gh2+h4XI0tdaeTp7w=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0f24V8eHxBu/CUCHrpDw+I0tVx7Nx2Dk2R39xGzDdwAPt17w82A6tnCpAzn35U7X7
-         rLaoWFoBELRwhQaJYccj6gBAfOz8Z86gwcnvLVYtYO620mkRESmdPKNJFA+zylPtjk
-         svITJUDb1v/cFrZFolK+M5G6tcGNAYOFM82aqnt4=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Krishnanand Prabhu <krishnanand.prabhu@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Simon Horman <horms@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 010/129] wifi: iwlwifi: mvm: add dependency for PTP clock
-Date:   Mon, 28 Aug 2023 12:11:29 +0200
-Message-ID: <20230828101157.719066172@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+        Mon, 28 Aug 2023 06:37:21 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7669BAB
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 03:37:19 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37S8eD5X020144;
+        Mon, 28 Aug 2023 10:37:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=3YviArF8KzsiOoLsdvbrpEFgVXuSIBYlTeOVplZXqcA=;
+ b=MXxZ+IAi0MosuNOu8ioYwMZQ8G3ZtkFvVAJ5EDBmEzRpJU0/CZvo4aU80+SKsu+6KeEv
+ PjcqwVc1jAYFacDEKS1a6AIYe5jtzN4yER2QFzXmDnY7UT/VtCKtwonnOIaLWXHlTG6r
+ 0QGCjh97VHU0zpEczeTSGk6e8Il4e9nKk0aCXZWUKgSPzlKJA1LW2DAUY8w4+toFPmWJ
+ tjDXFUbLW4j42vXQFPWgLhMdtmXG1CLPVxqRpwjqkm/Y7UvnWf9J4TedMnD7Wyrq8jvd
+ YFSp8DdDPevjOX5YDVzyjzCKtn8sE9qFTf32jc+gEx0Rn+gS66IoAgQIdEZnssWNepZ1 YA== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sq9m8ucap-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 28 Aug 2023 10:37:14 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37SAbEG9019001
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 28 Aug 2023 10:37:14 GMT
+Received: from [10.231.195.204] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 28 Aug
+ 2023 03:37:12 -0700
+Message-ID: <07d48f1e-88ee-85d5-b920-ec75ffb4ef8d@quicinc.com>
+Date:   Mon, 28 Aug 2023 18:37:10 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 12/15] wifi: mac80211: Print local link address during
+ authentication
+Content-Language: en-US
+To:     <gregory.greenman@intel.com>, <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, Ilan Peer <ilan.peer@intel.com>
+References: <20230827110532.348304-1-gregory.greenman@intel.com>
+ <20230827135854.9c08605e2691.I0032e9d6e01325862189e4a20b02ddbe8f2f5e75@changeid>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <20230827135854.9c08605e2691.I0032e9d6e01325862189e4a20b02ddbe8f2f5e75@changeid>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: sahtvI0HRzFd5yp44XuyYoW8myGxyjqy
+X-Proofpoint-GUID: sahtvI0HRzFd5yp44XuyYoW8myGxyjqy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-28_07,2023-08-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ bulkscore=0 clxscore=1011 mlxscore=0 adultscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=774
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308280095
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+On 8/27/2023 7:05 PM, gregory.greenman@intel.com wrote:
+[...]
+> @@ -7218,6 +7217,19 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+>   	if (err)
+>   		goto err_clear;
+>   
+> +	if (req->link_id > 0)
+> +		link = sdata_dereference(sdata->link[req->link_id], sdata);
+> +	else
+> +		link = sdata_dereference(sdata->link[0], sdata);
+> +
 
-------------------
+req->link_id >= 0 means MLD.
+For non-MLD, req->link_id < 0, is it better to use sdata->deflink for non-MLD?
+Is sdata->link[0] always pointer to sdata->deflink for non-MLD?
 
-From: Randy Dunlap <rdunlap@infradead.org>
+It has a comment for deflink of struct ieee80211_sta, but no comment for deflink
+  of struct ieee80211_sub_if_data.
 
-[ Upstream commit 609a1bcd7bebac90a1b443e9fed47fd48dac5799 ]
-
-When the code to use the PTP HW clock was added, it didn't update
-the Kconfig entry for the PTP dependency, leading to build errors,
-so update the Kconfig entry to depend on PTP_1588_CLOCK_OPTIONAL.
-
-aarch64-linux-ld: drivers/net/wireless/intel/iwlwifi/mvm/ptp.o: in function `iwl_mvm_ptp_init':
-drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:294: undefined reference to `ptp_clock_register'
-drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:294:(.text+0xce8): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `ptp_clock_register'
-aarch64-linux-ld: drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:301: undefined reference to `ptp_clock_index'
-drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:301:(.text+0xd18): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `ptp_clock_index'
-aarch64-linux-ld: drivers/net/wireless/intel/iwlwifi/mvm/ptp.o: in function `iwl_mvm_ptp_remove':
-drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:315: undefined reference to `ptp_clock_index'
-drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:315:(.text+0xe80): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `ptp_clock_index'
-aarch64-linux-ld: drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:319: undefined reference to `ptp_clock_unregister'
-drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:319:(.text+0xeac): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `ptp_clock_unregister'
-
-Fixes: 1595ecce1cf3 ("wifi: iwlwifi: mvm: add support for PTP HW clock (PHC)")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/all/202308110447.4QSJHmFH-lkp@intel.com/
-Cc: Krishnanand Prabhu <krishnanand.prabhu@intel.com>
-Cc: Luca Coelho <luciano.coelho@intel.com>
-Cc: Gregory Greenman <gregory.greenman@intel.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Acked-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230812052947.22913-1-rdunlap@infradead.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/intel/iwlwifi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
-index b20409f8c13ab..20971304fdef4 100644
---- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-+++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-@@ -66,6 +66,7 @@ config IWLMVM
- 	tristate "Intel Wireless WiFi MVM Firmware support"
- 	select WANT_DEV_COREDUMP
- 	depends on MAC80211
-+	depends on PTP_1588_CLOCK_OPTIONAL
- 	help
- 	  This is the driver that supports the MVM firmware. The list
- 	  of the devices that use this firmware is available here:
--- 
-2.40.1
-
-
-
+> +	if (WARN_ON(!link)) {
+> +		err = -ENOLINK;
+> +		goto err_clear;
+> +	}
+> +
+> +	sdata_info(sdata, "authenticate with %pM (local address=%pM)\n",
+> +		   auth_data->ap_addr, link->conf->addr);
+> +
+>   	err = ieee80211_auth(sdata);
+>   	if (err) {
+>   		sta_info_destroy_addr(sdata, auth_data->ap_addr);
