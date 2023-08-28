@@ -2,601 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CDA778A6D9
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 09:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97FA878A8F2
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 11:30:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbjH1Hy6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Aug 2023 03:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48900 "EHLO
+        id S229941AbjH1JaQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Aug 2023 05:30:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229949AbjH1Hyw (ORCPT
+        with ESMTP id S230182AbjH1JaN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Aug 2023 03:54:52 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64AF8115
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 00:54:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=j3iyK8f11zr/CKrvaxsMJPih7UwdmYTvXoHoCtsEM6U=; t=1693209286; x=1694418886; 
-        b=a98ZeFw+MwUEUzDkPFLEwR1xTEH+w1Uy80a7hBzAeIepYT4GIuFsCwfbNQkdAPKwKaPvOQn2XbN
-        zgFHTbQVzoSW2cEFu6/0XwczPCI1IdO1dTjS6Mv8OcwU/VxwgGiAUX0cfKqf9HxPDCT1d1styhzRi
-        4TWUzdDO4fVQjhRVnCry8WlO3G6VSMAwAXE1c0VJoNK9hnMDawVfYadXs+8ELverBqs7oMMiPos4O
-        zjFrqemZT5rKh5yYu0nDlceg3+y6kDpvtBONUng4IirlUxaW0ro9yiKnA6spV4YvYvyrU76ZmUuDW
-        rNfrVpjYb02ToBMFT2bRWUBRrhcRJNnq+oyw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qaX59-00GV9i-0w;
-        Mon, 28 Aug 2023 09:54:43 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: cfg80211: annotate iftype_data pointer with sparse
-Date:   Mon, 28 Aug 2023 09:54:39 +0200
-Message-ID: <20230828095438.498745967c5e.I769379d32d239247a3ad80e26b14f16aba348bd2@changeid>
-X-Mailer: git-send-email 2.41.0
+        Mon, 28 Aug 2023 05:30:13 -0400
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2054.outbound.protection.outlook.com [40.107.247.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1243E9E;
+        Mon, 28 Aug 2023 02:30:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Mf5NUjzMpJP/OEhvsu7cHD4JHzNQaNFlfkdz7Y96c1iVXEUPzpqR/E+7+Fu+KO1+H8FNDLoDg3usHNuE5UBK7vFEDKinmcufwhg5WuAluS7L2+x4NVtcJG0OTBpHzm+uRaqn9Ha+BJAJ3UaJ6aZ8xtTfVINvTQMMZP85hd3K6SLFXZAVOKyGyl+OFuPq5/Ib426nL0ScY3XZaYoyAdyFKifQrEEb7bYXzkaFVHJxx4LHvF2e0kFHBMlc5KYTTLg276pe3Y0RyK+qFLA2vQWx8GXjGn+4bbUnqt65IA2/yvfAyRFEk6RooijIb7Bc1Pw9et7fDZoLt5GGLhSqDjQCng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X0urg889G0v0xLfARmQZrZbCuUska/u5v0fbbqVG5U0=;
+ b=TUStj8ilRjl47fiqN29keBzkU2xnaSLocuS0lH1OB6pnLapaKNA1F9+d4l5AQ2qW8oqoZmviMf6siy7lBONYiF0GfpYP4jevXmyX+nE/rjewwiAqif/B8DGQGf7ADiCVrPqpgBYcmfylhc4nbo+1lnj+iWJxIiKgKrztI4pKP3eAeF/IXpapD0DA94WpN1PaH/Bs6fMVQlDn1eCvP0+r1SpD0T0YuRhxvxGRO0iQQax/WWBAnG0zcuqLTuuA/Y7cwzBsFJZ8eFdNZByfJEQnEWyXsF1KvhPEc8rMKgf76+AZaYQdEYdkysAqlk+zSj52fWe8UDxNrTDCpNcavfxZaQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X0urg889G0v0xLfARmQZrZbCuUska/u5v0fbbqVG5U0=;
+ b=XTP/zI68l0IMT43TOhmbSiUaJjKsdiFeUr8atTgmU8E2aELultfa06YVq5zB4/LasjhHYrnuqDM2FlFAyzkmYzRMWbFpWUle9wpB1gchW4Q54HoQVnGzoGLfPXN0wfDtxhAOUFZ3lP2BwpB2iPmNUaiyv/idf37vB3e62XQsKcY=
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
+ by DB9PR04MB9498.eurprd04.prod.outlook.com (2603:10a6:10:360::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Mon, 28 Aug
+ 2023 09:30:08 +0000
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::693d:8782:eae1:2460]) by PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::693d:8782:eae1:2460%4]) with mapi id 15.20.6699.034; Mon, 28 Aug 2023
+ 09:30:08 +0000
+From:   David Lin <yu-hao.lin@nxp.com>
+To:     Francesco Dolcini <francesco@dolcini.it>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "amitkarwar@gmail.com" <amitkarwar@gmail.com>,
+        "ganapathi017@gmail.com" <ganapathi017@gmail.com>,
+        "huxinming820@gmail.com" <huxinming820@gmail.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>
+Subject: RE: [EXT] Re: [PATCH v4 1/1] wifi: mwifiex: added code to support
+ host mlme.
+Thread-Topic: [EXT] Re: [PATCH v4 1/1] wifi: mwifiex: added code to support
+ host mlme.
+Thread-Index: AdnPR2mvHOQJHhM/R5inuXZ0d62ZCgH9B74AAJU/fRA=
+Date:   Mon, 28 Aug 2023 09:30:08 +0000
+Message-ID: <PA4PR04MB9638EAED5E4361F0429A796CD1E0A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <PA4PR04MB96386B2937FE0F7BD0BFAEB3D114A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZOh8deIyeJMZAs7u@francesco-nb.int.toradex.com>
+In-Reply-To: <ZOh8deIyeJMZAs7u@francesco-nb.int.toradex.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|DB9PR04MB9498:EE_
+x-ms-office365-filtering-correlation-id: 3f6302f6-1e01-44f0-7c40-08dba7a95e99
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 89NNG0FMaxMPS5T3THz4NSgktnN6tLGDLWbzK7hwCTPg60MOzDgWTm+ZV8+JVjKd300BIithZEBtfId41WaKPU9CV1Wg+Mai5uTobg/vbJml7nBCpeuTHP2EWc1W7+kqkVU0Jnp0RpP8v7blaxXMG5U3dshqh/d5wXpCs3VkGXsyW2PB76iM9tBw9lURy2Io+OoByEEKudRmEm0AfGWricceXHDCZCC5EOJWsYIci5a+8Y7p2TQDz9KygJTmlRrkfDn5XY70PBijcd9jpv6lxYiUAwRTR1JLBGZcc1nRjE2wtW0VJAdnDgZ4AW1boHK1HoVq3nQOIzUuMjcRAgJ6bw9zkjNIJdlyCJVynv0o4AGJRZrlOR5KF3OYq0K7p2pJN2ih4I0RQugYOewDmAs2GFhNTKNEJ3NP43xQZ65sAJkbgJL+qbn+MFkNXbLo2drXSIYLvAiyS3PDwDQK4eeYmjzYlkZ0cmqseEEOG/NKCGOgL42HB6h7fWglQKwGQ4ObfSh02fDUOD/SlTfrygku8Cl+eiHIkMkXMFXQ9EFPZAbYGV4UqR1rEPm0JdvGFiVoWs03sJ9TxWPdkPZ2zVKZbwxAszBfVb5xcFoGQWrBN0I=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(396003)(366004)(376002)(136003)(1800799009)(451199024)(186009)(8676002)(8936002)(4326008)(2906002)(6916009)(54906003)(66946007)(66556008)(316002)(66476007)(33656002)(66446008)(64756008)(76116006)(5660300002)(52536014)(7416002)(41300700001)(6506007)(7696005)(9686003)(55016003)(53546011)(38070700005)(45080400002)(122000001)(38100700002)(478600001)(966005)(71200400001)(83380400001)(86362001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ow8mjo9kQv/cKRQbooiODsQtzv3qXamfwr1s2gJh4EBW0pDeT0TzEC2IQCUO?=
+ =?us-ascii?Q?GUB3spYord/v3e3LEQV0lz5HUBMy6KxgmnX9kZiTNfJZrPgsu1ewHy9fG+Vs?=
+ =?us-ascii?Q?SAIgEy3d2NY35vOA+sfCpMnw950pb2mbe86hYcJvAeqphYrQ7KljlwfD+8nx?=
+ =?us-ascii?Q?0PgxpV/ELDquDWlK9QlproJzRey7HE7O95wtRcJVIg6HLLq1IKfupHn2Qt44?=
+ =?us-ascii?Q?elX+fjxoO7CUTgwIgrBcUqDMZoFCplIt8ftTkOaRM2+/RGtNyGrfbdkXclX7?=
+ =?us-ascii?Q?7Jikc1bq+jdHM/tW3Kp5Oqys84jNOROPR5gesp9ihf+zgW4G6FnHnB9Foz3/?=
+ =?us-ascii?Q?VjyRVVzwWt2i4iJHtTo1hSKOIBtDhh6agUbJgVbC8e8xsyz5pnFc2k0ZY8ec?=
+ =?us-ascii?Q?Av9/8brhhyypACvwJfqKTSAbRCN+aDIEa4JdbToK/jDgXgSoqYPocs/oA2vJ?=
+ =?us-ascii?Q?EoyVbnjjcVY+9x0JlUJ5/SlHcr+8/jDA10yDIdkZg6czWRq+/sgcdsc5l/lg?=
+ =?us-ascii?Q?tWGqGp2G83oNNBrUnlHgwXNYnIcTZv3lGVbr8gUiaw85YcsCr+bY9YF0lcez?=
+ =?us-ascii?Q?nvr+xGSz+KYqqopgKUQbsJkAcU9qGHdpABU+IysD9KE1xUluGSy17tXT1sJt?=
+ =?us-ascii?Q?3pgL+DxbM5WQzxld70idit5I/PVSkXXOJVi3HKrOYFzfJJa0mIHzW4yTv9OS?=
+ =?us-ascii?Q?whcNenKO2d9WAtwbGQiBfeDhEKHJfRLgGHzhSaAPd5l8Sbyr0eA6f9V71wGd?=
+ =?us-ascii?Q?Tn7DK0t5aNSWeD5GEXHB9Nbl2b1ieUHnJMXMrEphjJMn70J8SGytBkD+vNDt?=
+ =?us-ascii?Q?LFHWY/hO4F/hXM8bcyFEB/5Fm48IAnn2WfqPOLwogo/ipO3MzIGDyK0g1P1t?=
+ =?us-ascii?Q?fK9F7Askm4To/L49JLo7GpkUtWNJaKOfCx4T/A94+n+BP65RwhG16cCx5Uyc?=
+ =?us-ascii?Q?W8lrPb+Cpf3+0L9VexkQR4D8oK9lHjVp6bek51PDJzywOIJ34McbVLwPJytI?=
+ =?us-ascii?Q?kM5WACOToh0BVY45e6h6WIqXt3aIzGwjUcHCa33ofOzGIMxIjQy6CuVO73IP?=
+ =?us-ascii?Q?cscWNBBH23Full34IlKgh6tlL+hDp58hylvXskwX0FxGByqiu/mtygLReox9?=
+ =?us-ascii?Q?OW3BLqLYNh1O89dLdIKOplifhYGmZFunhf02abbxGacswmnGUmUgXjGZvTK+?=
+ =?us-ascii?Q?cKlXcZqLLNoeBNxbJPo+yqjaYDe56ZcuqsDCSCz7z5Ho7mwvOllv/qCtanJ1?=
+ =?us-ascii?Q?b7OarJLpt6xN8sjwYk2Lnoy5dL/EG7DuFhJ4yxMKsoyruP4wPplISbvBhrF8?=
+ =?us-ascii?Q?e63EVkwqYm/8SS0VAOVHgNzYsrJlBmDZYsMjnwhPsx1mn5bkEIPDp/fhFTar?=
+ =?us-ascii?Q?SXBxDE7LzfMOqulM3yYqYoKPjUJVsl0aivUPu9w1cXqqY75YJ2qL9qTJOwlg?=
+ =?us-ascii?Q?CpTFyLtn/Cgzf0Qdi3tW4+jGwrtQAWsXmFiEotqGhdedi+8antJkCzE4sSM9?=
+ =?us-ascii?Q?3ivYXOsOCDcTOtKUOTmaSA5zcoPpVSD5le4VHG+/KjSrYBjjkVROs0L2UA?=
+ =?us-ascii?Q?=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f6302f6-1e01-44f0-7c40-08dba7a95e99
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2023 09:30:08.1073
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: bSgoLFn8Lx93xdhIunnpbQWqIVnacs9N7Icm0PEctH8VmApjVwcY5mIZuGi8qSDDwpKv6XI+NvY7nLoQph+u1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9498
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+> From: Francesco Dolcini <francesco@dolcini.it>
+> Sent: Friday, August 25, 2023 6:04 PM
+> To: David Lin <yu-hao.lin@nxp.com>
+> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org; Sharvar=
+i
+> Harisangam <sharvari.harisangam@nxp.com>; Pete Hsieh
+> <tsung-hsien.hsieh@nxp.com>; kvalo@kernel.org; amitkarwar@gmail.com;
+> ganapathi017@gmail.com; huxinming820@gmail.com;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com
+> Subject: [EXT] Re: [PATCH v4 1/1] wifi: mwifiex: added code to support ho=
+st
+> mlme.
+>=20
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report
+> this email' button
+>=20
+>=20
+> Hello David,
+> thanks for your patch.
+>=20
+> On Tue, Aug 15, 2023 at 07:09:25AM +0000, David Lin wrote:
+> > 1. For station mode first.
+> > 2. This feature is a must for WPA3.
+> > 3. Firmware key api version 2 is needed for this feature.
+> > 4. The code is only enabled and tested with IW416.
+> > 5. This feature is disabled for other chips.
+> >
+> > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+>=20
+> I think you are missing a few of the comments you received so far.
+>=20
+>  - verify the recipient list, the list here was likely generated with an
+>    old kernel tree using an outdated MAINTAINERS file
 
-There were are a number of cases in mac80211 and iwlwifi (at
-least) that used the sband->iftype_data pointer directly,
-instead of using the accessors to find the right array entry
-to use.
+I followed your suggestion and issued the command on latest wireless test r=
+epository.
 
-Make sparse warn when such a thing is done.
+>  - you need to provide a changelog in your patch, otherwise is not
+>    possible for other to review
 
-To not have a lot of casts, add two helper functions/macros
+Yes, one the cover page.
 
- - ieee80211_set_sband_iftype_data()
- - for_each_sband_iftype_data()
+>  - some concern were raised on the fact that this is tested only with
+>    IW416, we should have some confidence this is not creating regressions=
+.
+>=20
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/ath/ath11k/mac.c         | 15 +++--
- drivers/net/wireless/ath/ath12k/mac.c         | 12 ++--
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  4 +-
- .../net/wireless/mediatek/mt76/mt7915/init.c  |  9 +--
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  9 +--
- .../net/wireless/mediatek/mt76/mt7996/init.c  |  3 +-
- .../net/wireless/quantenna/qtnfmac/commands.c |  5 +-
- drivers/net/wireless/quantenna/qtnfmac/core.c |  2 +-
- drivers/net/wireless/realtek/rtw89/core.c     | 15 +++--
- drivers/net/wireless/realtek/rtw89/regd.c     |  2 +-
- drivers/net/wireless/virtual/mac80211_hwsim.c | 30 ++++------
- include/net/cfg80211.h                        | 59 +++++++++++++++++--
- net/mac80211/main.c                           |  7 +--
- net/wireless/chan.c                           |  5 +-
- net/wireless/core.c                           |  8 +--
- net/wireless/nl80211.c                        |  6 +-
- 16 files changed, 112 insertions(+), 79 deletions(-)
+I had tested IW416 without host mlme enabled, it can work without issues.
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index c071bf5841af..6ed036b51dba 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -5893,8 +5893,9 @@ static void ath11k_mac_setup_he_cap(struct ath11k *ar,
- 					       ar->mac.iftype[NL80211_BAND_2GHZ],
- 					       NL80211_BAND_2GHZ);
- 		band = &ar->mac.sbands[NL80211_BAND_2GHZ];
--		band->iftype_data = ar->mac.iftype[NL80211_BAND_2GHZ];
--		band->n_iftype_data = count;
-+		_ieee80211_set_sband_iftype_data(band,
-+						 ar->mac.iftype[NL80211_BAND_2GHZ],
-+						 count);
- 	}
- 
- 	if (cap->supported_bands & WMI_HOST_WLAN_5G_CAP) {
-@@ -5902,8 +5903,9 @@ static void ath11k_mac_setup_he_cap(struct ath11k *ar,
- 					       ar->mac.iftype[NL80211_BAND_5GHZ],
- 					       NL80211_BAND_5GHZ);
- 		band = &ar->mac.sbands[NL80211_BAND_5GHZ];
--		band->iftype_data = ar->mac.iftype[NL80211_BAND_5GHZ];
--		band->n_iftype_data = count;
-+		_ieee80211_set_sband_iftype_data(band,
-+						 ar->mac.iftype[NL80211_BAND_5GHZ],
-+						 count);
- 	}
- 
- 	if (cap->supported_bands & WMI_HOST_WLAN_5G_CAP &&
-@@ -5912,8 +5914,9 @@ static void ath11k_mac_setup_he_cap(struct ath11k *ar,
- 					       ar->mac.iftype[NL80211_BAND_6GHZ],
- 					       NL80211_BAND_6GHZ);
- 		band = &ar->mac.sbands[NL80211_BAND_6GHZ];
--		band->iftype_data = ar->mac.iftype[NL80211_BAND_6GHZ];
--		band->n_iftype_data = count;
-+		_ieee80211_set_sband_iftype_data(band,
-+						 ar->mac.iftype[NL80211_BAND_6GHZ],
-+						 count);
- 	}
- }
- 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 88346e66bb75..24113709972d 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4647,8 +4647,8 @@ static void ath12k_mac_setup_sband_iftype_data(struct ath12k *ar,
- 							  ar->mac.iftype[band],
- 							  band);
- 		sband = &ar->mac.sbands[band];
--		sband->iftype_data = ar->mac.iftype[band];
--		sband->n_iftype_data = count;
-+		_ieee80211_set_sband_iftype_data(sband, ar->mac.iftype[band],
-+						 count);
- 	}
- 
- 	if (cap->supported_bands & WMI_HOST_WLAN_5G_CAP) {
-@@ -4657,8 +4657,8 @@ static void ath12k_mac_setup_sband_iftype_data(struct ath12k *ar,
- 							  ar->mac.iftype[band],
- 							  band);
- 		sband = &ar->mac.sbands[band];
--		sband->iftype_data = ar->mac.iftype[band];
--		sband->n_iftype_data = count;
-+		_ieee80211_set_sband_iftype_data(sband, ar->mac.iftype[band],
-+						 count);
- 	}
- 
- 	if (cap->supported_bands & WMI_HOST_WLAN_5G_CAP &&
-@@ -4668,8 +4668,8 @@ static void ath12k_mac_setup_sband_iftype_data(struct ath12k *ar,
- 							  ar->mac.iftype[band],
- 							  band);
- 		sband = &ar->mac.sbands[band];
--		sband->iftype_data = ar->mac.iftype[band];
--		sband->n_iftype_data = count;
-+		_ieee80211_set_sband_iftype_data(sband, ar->mac.iftype[band],
-+						 count);
- 	}
- }
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 31176897b746..cff1f97536e3 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -1077,8 +1077,8 @@ static void iwl_init_he_hw_capab(struct iwl_trans *trans,
- 
- 	memcpy(iftype_data, iwl_he_eht_capa, sizeof(iwl_he_eht_capa));
- 
--	sband->iftype_data = iftype_data;
--	sband->n_iftype_data = ARRAY_SIZE(iwl_he_eht_capa);
-+	_ieee80211_set_sband_iftype_data(sband, iftype_data,
-+					 ARRAY_SIZE(iwl_he_eht_capa));
- 
- 	for (i = 0; i < sband->n_iftype_data; i++)
- 		iwl_nvm_fixup_sband_iftd(trans, data, sband, &iftype_data[i],
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 35fdf4f98d80..b27d04e02aba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -1127,8 +1127,7 @@ void mt7915_set_stream_he_caps(struct mt7915_phy *phy)
- 		n = mt7915_init_he_caps(phy, NL80211_BAND_2GHZ, data);
- 
- 		band = &phy->mt76->sband_2g.sband;
--		band->iftype_data = data;
--		band->n_iftype_data = n;
-+		_ieee80211_set_sband_iftype_data(band, data, n);
- 	}
- 
- 	if (phy->mt76->cap.has_5ghz) {
-@@ -1136,8 +1135,7 @@ void mt7915_set_stream_he_caps(struct mt7915_phy *phy)
- 		n = mt7915_init_he_caps(phy, NL80211_BAND_5GHZ, data);
- 
- 		band = &phy->mt76->sband_5g.sband;
--		band->iftype_data = data;
--		band->n_iftype_data = n;
-+		_ieee80211_set_sband_iftype_data(band, data, n);
- 	}
- 
- 	if (phy->mt76->cap.has_6ghz) {
-@@ -1145,8 +1143,7 @@ void mt7915_set_stream_he_caps(struct mt7915_phy *phy)
- 		n = mt7915_init_he_caps(phy, NL80211_BAND_6GHZ, data);
- 
- 		band = &phy->mt76->sband_6g.sband;
--		band->iftype_data = data;
--		band->n_iftype_data = n;
-+		_ieee80211_set_sband_iftype_data(band, data, n);
- 	}
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 0844d28b3223..62e6da1386aa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -196,8 +196,7 @@ void mt7921_set_stream_he_caps(struct mt792x_phy *phy)
- 		n = mt7921_init_he_caps(phy, NL80211_BAND_2GHZ, data);
- 
- 		band = &phy->mt76->sband_2g.sband;
--		band->iftype_data = data;
--		band->n_iftype_data = n;
-+		_ieee80211_set_sband_iftype_data(band, data, n);
- 	}
- 
- 	if (phy->mt76->cap.has_5ghz) {
-@@ -205,16 +204,14 @@ void mt7921_set_stream_he_caps(struct mt792x_phy *phy)
- 		n = mt7921_init_he_caps(phy, NL80211_BAND_5GHZ, data);
- 
- 		band = &phy->mt76->sband_5g.sband;
--		band->iftype_data = data;
--		band->n_iftype_data = n;
-+		_ieee80211_set_sband_iftype_data(band, data, n);
- 
- 		if (phy->mt76->cap.has_6ghz) {
- 			data = phy->iftype[NL80211_BAND_6GHZ];
- 			n = mt7921_init_he_caps(phy, NL80211_BAND_6GHZ, data);
- 
- 			band = &phy->mt76->sband_6g.sband;
--			band->iftype_data = data;
--			band->n_iftype_data = n;
-+			_ieee80211_set_sband_iftype_data(band, data, n);
- 		}
- 	}
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 26e03b28935f..0d6cc214ce10 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -827,8 +827,7 @@ __mt7996_set_stream_he_eht_caps(struct mt7996_phy *phy,
- 		n++;
- 	}
- 
--	sband->iftype_data = data;
--	sband->n_iftype_data = n;
-+	_ieee80211_set_sband_iftype_data(sband, data, n);
- }
- 
- void mt7996_set_stream_he_eht_caps(struct mt7996_phy *phy)
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/commands.c b/drivers/net/wireless/quantenna/qtnfmac/commands.c
-index 68ae9c7ea95a..9540ad6196d7 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/commands.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/commands.c
-@@ -1335,7 +1335,7 @@ static int qtnf_cmd_band_fill_iftype(const u8 *data,
- 		return -EINVAL;
- 	}
- 
--	kfree(band->iftype_data);
-+	kfree((__force void *)band->iftype_data);
- 	band->iftype_data = NULL;
- 	band->n_iftype_data = tlv->n_iftype_data;
- 	if (band->n_iftype_data == 0)
-@@ -1347,7 +1347,8 @@ static int qtnf_cmd_band_fill_iftype(const u8 *data,
- 		band->n_iftype_data = 0;
- 		return -ENOMEM;
- 	}
--	band->iftype_data = iftype_data;
-+
-+	_ieee80211_set_sband_iftype_data(band, iftype_data, tlv->n_iftype_data);
- 
- 	for (i = 0; i < band->n_iftype_data; i++)
- 		qtnf_cmd_conv_iftype(iftype_data++, &tlv->iftype_data[i]);
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/core.c b/drivers/net/wireless/quantenna/qtnfmac/core.c
-index 2a63ffdc4b2c..677bac835330 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/core.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/core.c
-@@ -535,7 +535,7 @@ static void qtnf_core_mac_detach(struct qtnf_bus *bus, unsigned int macid)
- 		if (!wiphy->bands[band])
- 			continue;
- 
--		kfree(wiphy->bands[band]->iftype_data);
-+		kfree((__force void *)wiphy->bands[band]->iftype_data);
- 		wiphy->bands[band]->n_iftype_data = 0;
- 
- 		kfree(wiphy->bands[band]->channels);
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 133bf289bacb..e3145660a685 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -3359,8 +3359,7 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
- 		idx++;
- 	}
- 
--	sband->iftype_data = iftype_data;
--	sband->n_iftype_data = idx;
-+	_ieee80211_set_sband_iftype_data(sband, iftype_data, idx);
- }
- 
- static int rtw89_core_set_supported_band(struct rtw89_dev *rtwdev)
-@@ -3405,11 +3404,11 @@ static int rtw89_core_set_supported_band(struct rtw89_dev *rtwdev)
- 	hw->wiphy->bands[NL80211_BAND_5GHZ] = NULL;
- 	hw->wiphy->bands[NL80211_BAND_6GHZ] = NULL;
- 	if (sband_2ghz)
--		kfree(sband_2ghz->iftype_data);
-+		kfree((__force void *)sband_2ghz->iftype_data);
- 	if (sband_5ghz)
--		kfree(sband_5ghz->iftype_data);
-+		kfree((__force void *)sband_5ghz->iftype_data);
- 	if (sband_6ghz)
--		kfree(sband_6ghz->iftype_data);
-+		kfree((__force void *)sband_6ghz->iftype_data);
- 	kfree(sband_2ghz);
- 	kfree(sband_5ghz);
- 	kfree(sband_6ghz);
-@@ -3421,11 +3420,11 @@ static void rtw89_core_clr_supported_band(struct rtw89_dev *rtwdev)
- 	struct ieee80211_hw *hw = rtwdev->hw;
- 
- 	if (hw->wiphy->bands[NL80211_BAND_2GHZ])
--		kfree(hw->wiphy->bands[NL80211_BAND_2GHZ]->iftype_data);
-+		kfree((__force void *)hw->wiphy->bands[NL80211_BAND_2GHZ]->iftype_data);
- 	if (hw->wiphy->bands[NL80211_BAND_5GHZ])
--		kfree(hw->wiphy->bands[NL80211_BAND_5GHZ]->iftype_data);
-+		kfree((__force void *)hw->wiphy->bands[NL80211_BAND_5GHZ]->iftype_data);
- 	if (hw->wiphy->bands[NL80211_BAND_6GHZ])
--		kfree(hw->wiphy->bands[NL80211_BAND_6GHZ]->iftype_data);
-+		kfree((__force void *)hw->wiphy->bands[NL80211_BAND_6GHZ]->iftype_data);
- 	kfree(hw->wiphy->bands[NL80211_BAND_2GHZ]);
- 	kfree(hw->wiphy->bands[NL80211_BAND_5GHZ]);
- 	kfree(hw->wiphy->bands[NL80211_BAND_6GHZ]);
-diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
-index 9e2328db1865..c956a8b971c6 100644
---- a/drivers/net/wireless/realtek/rtw89/regd.c
-+++ b/drivers/net/wireless/realtek/rtw89/regd.c
-@@ -377,7 +377,7 @@ static void rtw89_regd_setup_6ghz(struct rtw89_dev *rtwdev, struct wiphy *wiphy)
- 		return;
- 
- 	wiphy->bands[NL80211_BAND_6GHZ] = NULL;
--	kfree(sband->iftype_data);
-+	kfree((__force void *)sband->iftype_data);
- 	kfree(sband);
- }
- 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 1f524030b186..b6a53341f1c3 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -4899,25 +4899,19 @@ static const struct ieee80211_sband_iftype_data sband_capa_6ghz[] = {
- 
- static void mac80211_hwsim_sband_capab(struct ieee80211_supported_band *sband)
- {
--	u16 n_iftype_data;
--
--	if (sband->band == NL80211_BAND_2GHZ) {
--		n_iftype_data = ARRAY_SIZE(sband_capa_2ghz);
--		sband->iftype_data =
--			(struct ieee80211_sband_iftype_data *)sband_capa_2ghz;
--	} else if (sband->band == NL80211_BAND_5GHZ) {
--		n_iftype_data = ARRAY_SIZE(sband_capa_5ghz);
--		sband->iftype_data =
--			(struct ieee80211_sband_iftype_data *)sband_capa_5ghz;
--	} else if (sband->band == NL80211_BAND_6GHZ) {
--		n_iftype_data = ARRAY_SIZE(sband_capa_6ghz);
--		sband->iftype_data =
--			(struct ieee80211_sband_iftype_data *)sband_capa_6ghz;
--	} else {
--		return;
-+	switch (sband->band) {
-+	case NL80211_BAND_2GHZ:
-+		ieee80211_set_sband_iftype_data(sband, sband_capa_2ghz);
-+		break;
-+	case NL80211_BAND_5GHZ:
-+		ieee80211_set_sband_iftype_data(sband, sband_capa_5ghz);
-+		break;
-+	case NL80211_BAND_6GHZ:
-+		ieee80211_set_sband_iftype_data(sband, sband_capa_6ghz);
-+		break;
-+	default:
-+		break;
- 	}
--
--	sband->n_iftype_data = n_iftype_data;
- }
- 
- #ifdef CONFIG_MAC80211_MESH
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 3a4b684f89bf..bf666c76f12c 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -410,6 +410,19 @@ struct ieee80211_sta_eht_cap {
- 	u8 eht_ppe_thres[IEEE80211_EHT_PPE_THRES_MAX_LEN];
- };
- 
-+/* sparse defines __CHECKER__; see Documentation/dev-tools/sparse.rst */
-+#ifdef __CHECKER__
-+/*
-+ * This is used to mark the sband->iftype_data pointer which is supposed
-+ * to be an array with special access semantics (per iftype), but a lot
-+ * of code got it wrong in the past, so with this marking sparse will be
-+ * noisy when the pointer is used directly.
-+ */
-+# define __iftd		__attribute__((noderef, address_space(__iftype_data)))
-+#else
-+# define __iftd
-+#endif /* __CHECKER__ */
-+
- /**
-  * struct ieee80211_sband_iftype_data - sband data per interface type
-  *
-@@ -543,9 +556,47 @@ struct ieee80211_supported_band {
- 	struct ieee80211_sta_s1g_cap s1g_cap;
- 	struct ieee80211_edmg edmg_cap;
- 	u16 n_iftype_data;
--	const struct ieee80211_sband_iftype_data *iftype_data;
-+	const struct ieee80211_sband_iftype_data __iftd *iftype_data;
- };
- 
-+/**
-+ * _ieee80211_set_sband_iftype_data - set sband iftype data array
-+ * @sband: the sband to initialize
-+ * @iftd: the iftype data array pointer
-+ * @n_iftd: the length of the iftype data array
-+ *
-+ * Set the sband iftype data array; use this where the length cannot
-+ * be derived from the ARRAY_SIZE() of the argument, but prefer
-+ * ieee80211_set_sband_iftype_data() where it can be used.
-+ */
-+static inline void
-+_ieee80211_set_sband_iftype_data(struct ieee80211_supported_band *sband,
-+				 const struct ieee80211_sband_iftype_data *iftd,
-+				 u16 n_iftd)
-+{
-+	sband->iftype_data = (const void __iftd __force *)iftd;
-+	sband->n_iftype_data = n_iftd;
-+}
-+
-+/**
-+ * ieee80211_set_sband_iftype_data - set sband iftype data array
-+ * @sband: the sband to initialize
-+ * @iftd: the iftype data array
-+ */
-+#define ieee80211_set_sband_iftype_data(sband, iftd)	\
-+	_ieee80211_set_sband_iftype_data(sband, iftd, ARRAY_SIZE(iftd))
-+
-+/**
-+ * for_each_sband_iftype_data - iterate sband iftype data entries
-+ * @sband: the sband whose iftype_data array to iterate
-+ * @i: iterator counter
-+ * @iftd: iftype data pointer to set
-+ */
-+#define for_each_sband_iftype_data(sband, i, iftd)				\
-+	for (i = 0, iftd = (const void __force *)&(sband)->iftype_data[i];	\
-+	     i < (sband)->n_iftype_data;					\
-+	     i++, iftd = (const void __force *)&(sband)->iftype_data[i])
-+
- /**
-  * ieee80211_get_sband_iftype_data - return sband data for a given iftype
-  * @sband: the sband to search for the STA on
-@@ -557,6 +608,7 @@ static inline const struct ieee80211_sband_iftype_data *
- ieee80211_get_sband_iftype_data(const struct ieee80211_supported_band *sband,
- 				u8 iftype)
- {
-+	const struct ieee80211_sband_iftype_data *data;
- 	int i;
- 
- 	if (WARN_ON(iftype >= NL80211_IFTYPE_MAX))
-@@ -565,10 +617,7 @@ ieee80211_get_sband_iftype_data(const struct ieee80211_supported_band *sband,
- 	if (iftype == NL80211_IFTYPE_AP_VLAN)
- 		iftype = NL80211_IFTYPE_AP;
- 
--	for (i = 0; i < sband->n_iftype_data; i++)  {
--		const struct ieee80211_sband_iftype_data *data =
--			&sband->iftype_data[i];
--
-+	for_each_sband_iftype_data(sband, i, data) {
- 		if (data->types_mask & BIT(iftype))
- 			return data;
- 	}
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 24315d7b3126..0da72a7c10cf 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1055,6 +1055,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	supp_he = false;
- 	supp_eht = false;
- 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
-+		const struct ieee80211_sband_iftype_data *iftd;
- 		struct ieee80211_supported_band *sband;
- 
- 		sband = local->hw.wiphy->bands[band];
-@@ -1101,11 +1102,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 		supp_ht = supp_ht || sband->ht_cap.ht_supported;
- 		supp_vht = supp_vht || sband->vht_cap.vht_supported;
- 
--		for (i = 0; i < sband->n_iftype_data; i++) {
--			const struct ieee80211_sband_iftype_data *iftd;
--
--			iftd = &sband->iftype_data[i];
--
-+		for_each_sband_iftype_data(sband, i, iftd) {
- 			supp_he = supp_he || iftd->he_cap.has_he;
- 			supp_eht = supp_eht || iftd->eht_cap.has_eht;
- 		}
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 0b7e81db383d..81e0155ec7c6 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -6,7 +6,7 @@
-  *
-  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-- * Copyright 2018-2022	Intel Corporation
-+ * Copyright 2018-2023	Intel Corporation
-  */
- 
- #include <linux/export.h>
-@@ -1162,8 +1162,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 		if (!sband)
- 			return false;
- 
--		for (i = 0; i < sband->n_iftype_data; i++) {
--			iftd = &sband->iftype_data[i];
-+		for_each_sband_iftype_data(sband, i, iftd) {
- 			if (!iftd->eht_cap.has_eht)
- 				continue;
- 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 25bc2e50a061..7a40056702b7 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -5,7 +5,7 @@
-  * Copyright 2006-2010		Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright 2015-2017	Intel Deutschland GmbH
-- * Copyright (C) 2018-2022 Intel Corporation
-+ * Copyright (C) 2018-2023 Intel Corporation
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -821,6 +821,7 @@ int wiphy_register(struct wiphy *wiphy)
- 
- 	/* sanity check supported bands/channels */
- 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
-+		const struct ieee80211_sband_iftype_data *iftd;
- 		u16 types = 0;
- 		bool have_he = false;
- 
-@@ -877,14 +878,11 @@ int wiphy_register(struct wiphy *wiphy)
- 				return -EINVAL;
- 		}
- 
--		for (i = 0; i < sband->n_iftype_data; i++) {
--			const struct ieee80211_sband_iftype_data *iftd;
-+		for_each_sband_iftype_data(sband, i, iftd) {
- 			bool has_ap, has_non_ap;
- 			u32 ap_bits = BIT(NL80211_IFTYPE_AP) |
- 				      BIT(NL80211_IFTYPE_P2P_GO);
- 
--			iftd = &sband->iftype_data[i];
--
- 			if (WARN_ON(!iftd->types_mask))
- 				return -EINVAL;
- 			if (WARN_ON(types & iftd->types_mask))
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index de47838aca4f..0d96f55a0d55 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1913,20 +1913,20 @@ static int nl80211_send_band_rateinfo(struct sk_buff *msg,
- 		struct nlattr *nl_iftype_data =
- 			nla_nest_start_noflag(msg,
- 					      NL80211_BAND_ATTR_IFTYPE_DATA);
-+		const struct ieee80211_sband_iftype_data *iftd;
- 		int err;
- 
- 		if (!nl_iftype_data)
- 			return -ENOBUFS;
- 
--		for (i = 0; i < sband->n_iftype_data; i++) {
-+		for_each_sband_iftype_data(sband, i, iftd) {
- 			struct nlattr *iftdata;
- 
- 			iftdata = nla_nest_start_noflag(msg, i + 1);
- 			if (!iftdata)
- 				return -ENOBUFS;
- 
--			err = nl80211_send_iftype_data(msg, sband,
--						       &sband->iftype_data[i]);
-+			err = nl80211_send_iftype_data(msg, sband, iftd);
- 			if (err)
- 				return err;
- 
--- 
-2.41.0
+BTW, The state of PATCH v4 is changed to "Defered".
+Link to latest PATCH v4:
+https://patchwork.kernel.org/project/linux-wireless/patch/PA4PR04MB963838F1=
+2BADC1B9FD377CB7D114A@PA4PR04MB9638.eurprd04.prod.outlook.com/
+
+Press "expand" of Series, you can find <v4 0/1> which is the cover letter w=
+ith change history of PATCH v2 to v4.
+>=20
+> Francesco
 
