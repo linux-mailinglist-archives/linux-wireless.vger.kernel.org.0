@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9953778AF7F
+	by mail.lfdr.de (Postfix) with ESMTP id 48D5B78AF7E
 	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 14:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232582AbjH1MFm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Aug 2023 08:05:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45376 "EHLO
+        id S232575AbjH1MFl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Aug 2023 08:05:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232272AbjH1MF1 (ORCPT
+        with ESMTP id S232320AbjH1MF3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Aug 2023 08:05:27 -0400
+        Mon, 28 Aug 2023 08:05:29 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FE1C123
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 05:05:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A3BF124
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 05:05:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=M4jvdZ1w6AnYwUxT/H6fvVN++4nTWWAzPXI6CBIiKKs=;
-        t=1693224325; x=1694433925; b=Th/cffEzm74lenxRECwII0cv4WTSvbSQqqAG+ErfTbvpc0y
-        76wAW17F+sPjZNo+t6QtraeDYGLUB+8s0JRtx4xn7mXj8zm68qCxhDvZCO60QUkeRV61pr5oE9N38
-        kIIZypfZ2uZJ0ybvHB+7CKtJS1+KUQr/B5m23Hlckv857QQAxFPYetBrsDi3NPEYz4L8KwIMqK8Gm
-        +U0/qvNdjvsKMKqHEYjTVUQ283G5QNp1UCTEvnVaUHsp4ZFNEjUhT4q4qXZUu2TlnOXdPsanqc6HO
-        yJ8/5DF3zFqIjzEWoAiQQRjqQPpaIcENGTQjFJMV4CObhlR2iLl5Z51SKUSGBdyw==;
+        Resent-Cc:Resent-Message-ID; bh=SXtLs+t64i1AZ3knU9VTOC+DO4gtHDaMn74inbRwfwA=;
+        t=1693224326; x=1694433926; b=uPnG/dfjRhOP77iOjjeVhIrsIr0vKBh6MfzSjvtVeEN4nK8
+        VqLRwg+ul0qgDnpXGA316vXQSzosvrntQTVWL5+VnBR5ejCxmYH3IMRYuR2ESoyeP8mfIbTBw/w4u
+        5YpIPkE3B6eqWgB6G+r/xijrU4b+twEMxfw0QkVfPiJt8nqqnZxeRO7bzauo8t7F40jbRy9lnzFta
+        sfr+0S1EYz15BzGUETbKoemhZB3L8ymAewrpeCXu1aOOZiOvIkhHQ5bGssbu+7FE3evc4f0Nd4DRX
+        3FINK06VmBeeSDRVIREGpsL1kY/og8kiYclHehkLM6+GnDFpsutGjNc4CuSrTfXg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qaazj-00Gjgt-0d;
-        Mon, 28 Aug 2023 14:05:23 +0200
+        id 1qaazk-00Gjgt-04;
+        Mon, 28 Aug 2023 14:05:24 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 08/40] wifi: mac80211: add more ops assertions
-Date:   Mon, 28 Aug 2023 13:59:36 +0200
-Message-ID: <20230828135927.c6d213b259ee.I63b73b2f3cdd145573d3c1f5ea90074f3561912a@changeid>
+Subject: [PATCH 09/40] wifi: mac80211: move DFS CAC work to wiphy work
+Date:   Mon, 28 Aug 2023 13:59:37 +0200
+Message-ID: <20230828135927.a9c110ef1f3e.I1f9981043d28fc80e96de07db97e6b1e337fb5bb@changeid>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828115927.116700-41-johannes@sipsolutions.net>
 References: <20230828115927.116700-41-johannes@sipsolutions.net>
@@ -53,182 +53,140 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Add more might_sleep() checks and check sdata-in-driver
-for one additional place.
-
-type=feature
-ticket=jira:WIFI-314309
+Move the DFS CAC work over to hold the wiphy lock
+there without worry about work cancellation.
 
 Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/driver-ops.c |  2 ++
- net/mac80211/driver-ops.h | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
+ net/mac80211/cfg.c         | 10 +++++-----
+ net/mac80211/ieee80211_i.h |  4 ++--
+ net/mac80211/iface.c       |  3 ++-
+ net/mac80211/link.c        |  4 ++--
+ net/mac80211/mlme.c        |  7 +++----
+ net/mac80211/util.c        |  3 ++-
+ 6 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
-index 30cd0c905a24..376dae58b5a6 100644
---- a/net/mac80211/driver-ops.c
-+++ b/net/mac80211/driver-ops.c
-@@ -285,6 +285,8 @@ int drv_assign_vif_chanctx(struct ieee80211_local *local,
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index a2d0820e5e3c..e81e712448b2 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1643,7 +1643,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 	if (sdata->wdev.cac_started) {
+ 		chandef = link_conf->chandef;
+-		cancel_delayed_work_sync(&link->dfs_cac_timer_work);
++		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
+ 		cfg80211_cac_event(sdata->dev, &chandef,
+ 				   NL80211_RADAR_CAC_ABORTED,
+ 				   GFP_KERNEL);
+@@ -3421,9 +3421,8 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
+ 	if (err)
+ 		goto out_unlock;
+ 
+-	ieee80211_queue_delayed_work(&sdata->local->hw,
+-				     &sdata->deflink.dfs_cac_timer_work,
+-				     msecs_to_jiffies(cac_time_ms));
++	wiphy_delayed_work_queue(wiphy, &sdata->deflink.dfs_cac_timer_work,
++				 msecs_to_jiffies(cac_time_ms));
+ 
+  out_unlock:
+ 	mutex_unlock(&local->mtx);
+@@ -3442,7 +3441,8 @@ static void ieee80211_end_cac(struct wiphy *wiphy,
+ 		 * by the time it gets it, sdata->wdev.cac_started
+ 		 * will no longer be true
+ 		 */
+-		cancel_delayed_work(&sdata->deflink.dfs_cac_timer_work);
++		wiphy_delayed_work_cancel(wiphy,
++					  &sdata->deflink.dfs_cac_timer_work);
+ 
+ 		if (sdata->wdev.cac_started) {
+ 			ieee80211_link_release_channel(&sdata->deflink);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 7604e43a441c..0d9aff6a4fc8 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1014,7 +1014,7 @@ struct ieee80211_link_data {
+ 	int ap_power_level; /* in dBm */
+ 
+ 	bool radar_required;
+-	struct delayed_work dfs_cac_timer_work;
++	struct wiphy_delayed_work dfs_cac_timer_work;
+ 
+ 	union {
+ 		struct ieee80211_link_data_managed mgd;
+@@ -2569,7 +2569,7 @@ void ieee80211_recalc_chanctx_min_def(struct ieee80211_local *local,
+ 				      struct ieee80211_link_data *rsvd_for);
+ bool ieee80211_is_radar_required(struct ieee80211_local *local);
+ 
+-void ieee80211_dfs_cac_timer_work(struct work_struct *work);
++void ieee80211_dfs_cac_timer_work(struct wiphy *wiphy, struct wiphy_work *work);
+ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local);
+ void ieee80211_dfs_radar_detected_work(struct work_struct *work);
+ int ieee80211_send_action_csa(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 4beab027e0f9..a8c08424c015 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -538,7 +538,8 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+ 	cancel_work_sync(&sdata->deflink.csa_finalize_work);
+ 	cancel_work_sync(&sdata->deflink.color_change_finalize_work);
+ 
+-	cancel_delayed_work_sync(&sdata->deflink.dfs_cac_timer_work);
++	wiphy_delayed_work_cancel(local->hw.wiphy,
++				  &sdata->deflink.dfs_cac_timer_work);
+ 
+ 	if (sdata->wdev.cac_started) {
+ 		chandef = sdata->vif.bss_conf.chandef;
+diff --git a/net/mac80211/link.c b/net/mac80211/link.c
+index 6148208b320e..748d222e8d3d 100644
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -45,8 +45,8 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
+ 			  ieee80211_color_collision_detection_work);
+ 	INIT_LIST_HEAD(&link->assigned_chanctx_list);
+ 	INIT_LIST_HEAD(&link->reserved_chanctx_list);
+-	INIT_DELAYED_WORK(&link->dfs_cac_timer_work,
+-			  ieee80211_dfs_cac_timer_work);
++	wiphy_delayed_work_init(&link->dfs_cac_timer_work,
++				ieee80211_dfs_cac_timer_work);
+ 
+ 	if (!deflink) {
+ 		switch (sdata->vif.type) {
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 65d3e167132c..5644e25ec5fe 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2401,12 +2401,11 @@ void ieee80211_dynamic_ps_timer(struct timer_list *t)
+ 	ieee80211_queue_work(&local->hw, &local->dynamic_ps_enable_work);
+ }
+ 
+-void ieee80211_dfs_cac_timer_work(struct work_struct *work)
++void ieee80211_dfs_cac_timer_work(struct wiphy *wiphy, struct wiphy_work *work)
  {
- 	int ret = 0;
+-	struct delayed_work *delayed_work = to_delayed_work(work);
+ 	struct ieee80211_link_data *link =
+-		container_of(delayed_work, struct ieee80211_link_data,
+-			     dfs_cac_timer_work);
++		container_of(work, struct ieee80211_link_data,
++			     dfs_cac_timer_work.work);
+ 	struct cfg80211_chan_def chandef = link->conf->chandef;
+ 	struct ieee80211_sub_if_data *sdata = link->sdata;
  
-+	might_sleep();
-+
- 	drv_verify_link_exists(sdata, link_conf);
- 	if (!check_sdata_in_driver(sdata))
- 		return -EIO;
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index c4505593ba7a..d95ff2282f54 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -40,6 +40,8 @@ static inline void drv_tx(struct ieee80211_local *local,
- static inline void drv_sync_rx_queues(struct ieee80211_local *local,
- 				      struct sta_info *sta)
- {
-+	might_sleep();
-+
- 	if (local->ops->sync_rx_queues) {
- 		trace_drv_sync_rx_queues(local, sta->sdata, &sta->sta);
- 		local->ops->sync_rx_queues(&local->hw);
-@@ -569,6 +571,8 @@ static inline void drv_sta_statistics(struct ieee80211_local *local,
- 				      struct ieee80211_sta *sta,
- 				      struct station_info *sinfo)
- {
-+	might_sleep();
-+
- 	sdata = get_bss_sdata(sdata);
- 	if (!check_sdata_in_driver(sdata))
- 		return;
-@@ -616,6 +620,8 @@ static inline int drv_get_survey(struct ieee80211_local *local, int idx,
- {
- 	int ret = -EOPNOTSUPP;
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 6d8b73796dc5..ff99aee46656 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -4343,7 +4343,8 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
+ 		 * by the time it gets it, sdata->wdev.cac_started
+ 		 * will no longer be true
+ 		 */
+-		cancel_delayed_work(&sdata->deflink.dfs_cac_timer_work);
++		wiphy_delayed_work_cancel(local->hw.wiphy,
++					  &sdata->deflink.dfs_cac_timer_work);
  
-+	might_sleep();
-+
- 	trace_drv_get_survey(local, idx, survey);
- 
- 	if (local->ops->get_survey)
-@@ -797,6 +803,8 @@ static inline void drv_set_rekey_data(struct ieee80211_local *local,
- 				      struct ieee80211_sub_if_data *sdata,
- 				      struct cfg80211_gtk_rekey_data *data)
- {
-+	might_sleep();
-+
- 	if (!check_sdata_in_driver(sdata))
- 		return;
- 
-@@ -987,6 +995,8 @@ static inline void drv_stop_ap(struct ieee80211_local *local,
- 			       struct ieee80211_sub_if_data *sdata,
- 			       struct ieee80211_bss_conf *link_conf)
- {
-+	might_sleep();
-+
- 	/* make sure link_conf is protected */
- 	drv_verify_link_exists(sdata, link_conf);
- 
-@@ -1016,6 +1026,8 @@ drv_set_default_unicast_key(struct ieee80211_local *local,
- 			    struct ieee80211_sub_if_data *sdata,
- 			    int key_idx)
- {
-+	might_sleep();
-+
- 	if (!check_sdata_in_driver(sdata))
- 		return;
- 
-@@ -1046,6 +1058,8 @@ drv_channel_switch_beacon(struct ieee80211_sub_if_data *sdata,
- {
- 	struct ieee80211_local *local = sdata->local;
- 
-+	might_sleep();
-+
- 	if (local->ops->channel_switch_beacon) {
- 		trace_drv_channel_switch_beacon(local, sdata, chandef);
- 		local->ops->channel_switch_beacon(&local->hw, &sdata->vif,
-@@ -1060,6 +1074,8 @@ drv_pre_channel_switch(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_local *local = sdata->local;
- 	int ret = 0;
- 
-+	might_sleep();
-+
- 	if (!check_sdata_in_driver(sdata))
- 		return -EIO;
- 
-@@ -1077,6 +1093,8 @@ drv_post_channel_switch(struct ieee80211_sub_if_data *sdata)
- 	struct ieee80211_local *local = sdata->local;
- 	int ret = 0;
- 
-+	might_sleep();
-+
- 	if (!check_sdata_in_driver(sdata))
- 		return -EIO;
- 
-@@ -1092,6 +1110,8 @@ drv_abort_channel_switch(struct ieee80211_sub_if_data *sdata)
- {
- 	struct ieee80211_local *local = sdata->local;
- 
-+	might_sleep();
-+
- 	if (!check_sdata_in_driver(sdata))
- 		return;
- 
-@@ -1107,6 +1127,8 @@ drv_channel_switch_rx_beacon(struct ieee80211_sub_if_data *sdata,
- {
- 	struct ieee80211_local *local = sdata->local;
- 
-+	might_sleep();
-+
- 	if (!check_sdata_in_driver(sdata))
- 		return;
- 
-@@ -1163,6 +1185,8 @@ static inline int drv_get_txpower(struct ieee80211_local *local,
- {
- 	int ret;
- 
-+	might_sleep();
-+
- 	if (!local->ops->get_txpower)
- 		return -EOPNOTSUPP;
- 
-@@ -1267,6 +1291,10 @@ drv_get_ftm_responder_stats(struct ieee80211_local *local,
- {
- 	u32 ret = -EOPNOTSUPP;
- 
-+	might_sleep();
-+	if (!check_sdata_in_driver(sdata))
-+		return -EIO;
-+
- 	if (local->ops->get_ftm_responder_stats)
- 		ret = local->ops->get_ftm_responder_stats(&local->hw,
- 							 &sdata->vif,
-@@ -1436,6 +1464,8 @@ static inline void drv_sta_set_4addr(struct ieee80211_local *local,
- 				     struct ieee80211_sta *sta, bool enabled)
- {
- 	sdata = get_bss_sdata(sdata);
-+
-+	might_sleep();
- 	if (!check_sdata_in_driver(sdata))
- 		return;
- 
-@@ -1451,6 +1481,8 @@ static inline void drv_sta_set_decap_offload(struct ieee80211_local *local,
- 					     bool enabled)
- {
- 	sdata = get_bss_sdata(sdata);
-+
-+	might_sleep();
- 	if (!check_sdata_in_driver(sdata))
- 		return;
- 
-@@ -1526,6 +1558,8 @@ static inline int drv_net_setup_tc(struct ieee80211_local *local,
- {
- 	int ret = -EOPNOTSUPP;
- 
-+	might_sleep();
-+
- 	sdata = get_bss_sdata(sdata);
- 	trace_drv_net_setup_tc(local, sdata, type);
- 	if (local->ops->net_setup_tc)
+ 		if (sdata->wdev.cac_started) {
+ 			chandef = sdata->vif.bss_conf.chandef;
 -- 
 2.41.0
 
