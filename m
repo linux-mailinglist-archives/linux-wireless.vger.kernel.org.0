@@ -2,217 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F05978A484
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 04:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3806278A4E0
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 06:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjH1CNW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Aug 2023 22:13:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34438 "EHLO
+        id S229508AbjH1EFR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Aug 2023 00:05:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230261AbjH1CM6 (ORCPT
+        with ESMTP id S229455AbjH1EEn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Aug 2023 22:12:58 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2047.outbound.protection.outlook.com [40.107.243.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1880B189;
-        Sun, 27 Aug 2023 19:12:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CX9R1kxdUj+y52cUQTFACZQW2a8MqOXqK0LNtAhEoTrR3OmFANv0wKhQiWdveSW810QrzennddnwxpXUpxHBYoLtGHBXYh+ZdsuIaWuZSpv/Nyb0sdl3GT3NVkJmo6ITcDe5ngdC8gcFrqYzgrwZXxn7mj75z4WTa1xl0iSDP+JlytNlEmCrqBSsFm+YWQuJHol5wE8j9gkbAb2Eyye4Z3NtT2c7cJ7FyHS+Pz2060qBmOAes5F6bK6LKtInm3RKSTNLzru84fc4hxh+T/lDl531g90dw5M00z6ElS/fiB7Pyfnx6lZpL6P6+eXacQOY2zCN9QA27tzWzmDLk/9+1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gX3y5OrJiX/FX8YjMnFUOuqfTjqAPks9TA4vK2pp7MY=;
- b=hgcZJJtSCrmisz4dTsANq6n9F1w1JpcoycOwf9J4h6HJ0L01A0UvCT832p22qV2FgSzkedzRrXjGAVjdtpjxUCOh8zNsrSFLkLS3OZl8pFrt9HpnxXf80dP9rXmIaslPV7H8F3Cr6LxybQJcRZVDhxuIokUfU3ZHVH1wo2MNP3RP9Uv9je8NbXEd8343335T0YZ3GHYiM8u3eKCfX4C3TDqCug/nW6deEMD0vUfp96V6Q3lBC4jWf0uD+132zxx2xeP4752dkEVb/N6Fvzg2NZUOSApiZ2cjOLRxrSePvr1PesHQLSe8rMtqym6KHsD7fNoejsoI+WsEhvVNH9Mb6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gX3y5OrJiX/FX8YjMnFUOuqfTjqAPks9TA4vK2pp7MY=;
- b=JCiElC4GNf4KMa4G3DNe7jtGNXHVlJ44dd/88uwABpyKPvcAxjTsVrzH/OyKjjFKSwz4GIf0LX7kTX7fwefstIbTKkm/SLk5Q5Jhxf3hfyHqza0J3c266h/25yavHqzTRyVM5ZIHmspwAMrLgAy2oh7r5jCuWhR1UoRGL7uFHqA=
-Received: from DM6PR12MB2619.namprd12.prod.outlook.com (2603:10b6:5:45::18) by
- SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.29; Mon, 28 Aug
- 2023 02:11:28 +0000
-Received: from DM6PR12MB2619.namprd12.prod.outlook.com
- ([fe80::56a5:d451:bf62:2b06]) by DM6PR12MB2619.namprd12.prod.outlook.com
- ([fe80::56a5:d451:bf62:2b06%7]) with mapi id 15.20.6699.034; Mon, 28 Aug 2023
- 02:11:28 +0000
-From:   "Quan, Evan" <Evan.Quan@amd.com>
-To:     Simon Horman <horms@kernel.org>
-CC:     "lenb@kernel.org" <lenb@kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "Lazar, Lijo" <Lijo.Lazar@amd.com>,
-        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [V10 1/8] ACPI: Add support for AMD ACPI based Wifi band RFI
- mitigation feature
-Thread-Topic: [V10 1/8] ACPI: Add support for AMD ACPI based Wifi band RFI
- mitigation feature
-Thread-Index: AQHZ1y/QeOXojhql1U2XgrjLS9EoQa/+S/8AgACvUpA=
-Date:   Mon, 28 Aug 2023 02:11:27 +0000
-Message-ID: <DM6PR12MB2619013F8683DFBBADC68502E4E0A@DM6PR12MB2619.namprd12.prod.outlook.com>
-References: <20230825083846.4001973-1-evan.quan@amd.com>
- <20230825083846.4001973-2-evan.quan@amd.com>
- <20230827154312.GT3523530@kernel.org>
-In-Reply-To: <20230827154312.GT3523530@kernel.org>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=f0bf4386-1b7f-4740-98a7-61ea3ff406eb;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=0;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2023-08-28T02:10:42Z;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR12MB2619:EE_|SA1PR12MB7199:EE_
-x-ms-office365-filtering-correlation-id: f223e4e2-019f-4610-ae61-08dba76c1697
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: XsdTRD2MV74vUAn0Lwz6Srt8DthvQSXiskNue7wbY9/1MuHJW8cULeEqzqeBIJO3facRC/VDzs0Kua22dJcKwbpSMHH2cw7U6F6TXambVtg2qgKV3c0vgl8x4nOCxa48z+nqgj8RAdqwX0W53nsl61sdzGy2P0V/JKMW9b4PTcFE+mqYJtcM4k7mO6WZRw95+4dhxXcTkKHN0X/qg+lnWDN82zgZWFj/1A5Lv6SldakWK8VaTkVlpEXsRQO+cdkr/jFv0623J6y9eyujwzw/LdB8LXXfEXTvf1Ba6IcP/gv51swp/AROVOH287412EA0+y4Djz14bLpWGCFBuduTG1/tLrzftBe1OsmIRo04IkBRgRUFTLKC7NbzLDXC1tInK/4QEWRzw906ASzQx/l9yYEJDD/dbwQpWl87UAKlcBdLdXZP3A5Be962NdFhBEbd8tJKRjp/I4t8R4B5sMwxNcTWY7RHGcOAPbEmEQthFitKnu06s28L6y/PuKWNZAtOw6fxo+uc/p02oxXgIyab3RVauQjlJLh3TKfWFsgy8F4btyv01LuZETR2yEK/bY4u7wJJAY6TZBdq9uLFueyaB26fDPyN412z9g+71GBecJY56mLKH4CsPOIEUn9li2AP
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2619.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(346002)(376002)(39860400002)(136003)(1800799009)(186009)(451199024)(7416002)(83380400001)(55016003)(9686003)(478600001)(26005)(5660300002)(2906002)(52536014)(8676002)(4326008)(8936002)(122000001)(38100700002)(38070700005)(64756008)(6916009)(66946007)(66556008)(76116006)(86362001)(71200400001)(41300700001)(53546011)(7696005)(54906003)(316002)(66446008)(33656002)(6506007)(66476007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?p3g7/WfUJyAdpkxoi4IOESjTqFBZ8vasW5wsyXOY++hAtsA7yGxhYUtsp9XZ?=
- =?us-ascii?Q?TmA9m44S4zQPQ7ai5FZCL/wQYStPWh3Ovft9390s8+ilaG2hwwWtEzR1OU3R?=
- =?us-ascii?Q?pqwtpDjc8HU631jEVz9GRBUMfCGAlhkuwjTfJ5L8IA6yJoPXAZgs6YwtfuUW?=
- =?us-ascii?Q?H9KUhwT9VOSewdQAjR6fY9MDgA31vlBpVu/Dd1sctMa4WXvqY8IqZjTT4LEf?=
- =?us-ascii?Q?XsFNZZbEexhR2vkes71dz4hnoImYS3B/hicGwB0NMDvB+jAQewLoIM71m2jm?=
- =?us-ascii?Q?RnBfzvMR913WuwGIvdD5zKDHy75QVaufF3n/JteOKV1wtJp1oHWL7P0QE6lV?=
- =?us-ascii?Q?E7+3XTHszEYYn6vIf6OmVAI/cJvxT+lfaQnT/ABL+34aIVvCwlXW3ud/BTkU?=
- =?us-ascii?Q?V+TOWWMhv0xEXvenA48YqRzvzpfsJEplHXiTJWznHC1V5TVNdFrIDIsQ0D6q?=
- =?us-ascii?Q?QvUnaJqOdV4ZpcO0Pu56uhPOCq6J3Zc5+CJ9a3YVxPiYlOwtkBWG68RvpTgm?=
- =?us-ascii?Q?OZvmapdTb96JpXSRinoCBSFClWfQbXvyF9kHYhpx9156dDYj/wm7GY+Rg0za?=
- =?us-ascii?Q?O+ULwAAzwgMRAGxJuQCOZqMAmIzOsx3RytC6waHHtI64c7ljZmZ9HsYDHBu8?=
- =?us-ascii?Q?egIa6zWoYwo3ZYNohddp71dF1LcRuMwhAyKqMllqcITxSDxg/czzFJrM3ATP?=
- =?us-ascii?Q?vCY9yGdYntHroJZD0qTUksvsB2UqmnUyoyEC5ufZX/SUfkhDHOUdJovZvS7v?=
- =?us-ascii?Q?3YNy3n7CQhh3g0PlqPNiNf1cpX707/UpM8oHIo/oyibGJB91KvFWD0D56Nzt?=
- =?us-ascii?Q?BeDj5DbIXOqFormJ8+Na8AhGwK1/kCtfBSf4qhJzKNe641kOR6qBE2JoSbrR?=
- =?us-ascii?Q?vwlWuFS6ZTCG4arbMkQkSlzoF+vILyLjPXCo/mzBp2Lrf9ExmZP3YL15zu8T?=
- =?us-ascii?Q?aj8JsdiK0HPRQazZl+SKd21U09e6T/VaFghDEcO6m13m8eCgpEXhLPSDHqYg?=
- =?us-ascii?Q?s2NPwJeE6EEZnHywHN51Hm0iUa2euOKQdupDUq6frIPXZNBKL3hLutJl/moS?=
- =?us-ascii?Q?vG7PvaPxysCZV4Dq3LjsTCWGxcoYekPwnwz+PTT4mFUBkPyiUbiDh9WP5XIa?=
- =?us-ascii?Q?q5fl5ISw+j+INpTqaPBKAk4y9FejNqLTi07oIZnQzHobgRtM37+63Lf/FtSh?=
- =?us-ascii?Q?lg3zSEJOGAusyCPIVa5S9u8ZM3Q5OOkCwxtDsA2ISObdif4awTRuQ4Db45oh?=
- =?us-ascii?Q?pGmSRvXFwqmgijnQEUKmKJ47MwiRdZJMVuT2uwyL4DlIuSJBqHmYfXscd1Fj?=
- =?us-ascii?Q?+/8aXZWgaWxHXQhQWLR3V4jE3JOWkrkTeejfBF4nAWHvBrKN4e7KgTxmPDG5?=
- =?us-ascii?Q?l8p4ZN+0sk1nJ0v5Q3wycChi9kUde+cAKiFvPU4UpJ648nb4S3yGoK+uOtBc?=
- =?us-ascii?Q?MQgWes2gSiwtriphWC3NPJnhPWQVtFHf7jv4ieNVkkgTeyWD5PpPzxMIYN83?=
- =?us-ascii?Q?AUajgl3dk/9jFiObKSRzqzAtd/1b9wdjbr5nZdPlSj4hVWI05kFWOA1EMAGe?=
- =?us-ascii?Q?cUVUC4nDL89P5k7fJnY=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Mon, 28 Aug 2023 00:04:43 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5DAF129
+        for <linux-wireless@vger.kernel.org>; Sun, 27 Aug 2023 21:04:40 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37S2Ft3t032171;
+        Mon, 28 Aug 2023 04:04:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=TQZJduRiEPKORw7CY1DYbG/gkyyeEliGePL7Ijut9XQ=;
+ b=OsLs39ByhFQfOpH1r2wVSApecaNcyjNgo66ooztMfChbCZhIfRaK/j14KITaLsy4smeB
+ ipDe//J5tJi3jZCW1M86lzZTYG9HctSiPKDJGvFyJ1NelmZsdI1wKJS0QSYREEzMTR4o
+ pUsVRjA+jWKoVEk91+YPZ/SdlCgpWe7LY2wN7BSlJmMJUpmQIHU4oVeBkrLz91I/f84a
+ P+mGcUxFki/N1/1284PAITJk7GMvOjo1KC2O4f10pPCn8H8MvMg/gFhqnNPwBWEhOYO7
+ ltZw0/JWP4nRvAlf+XQPQgaLcWv9ukMaOcI4h7QSC4mR53AX/OSqvMaZnXEjZkdWVtr8 0g== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sq6ruaqce-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 28 Aug 2023 04:04:35 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37S44Ya6016276
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 28 Aug 2023 04:04:34 GMT
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Sun, 27 Aug 2023 21:04:33 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v3] wifi: ath12k: enable 320 MHz bandwidth for 6 GHz band in EHT PHY capability for WCN7850
+Date:   Mon, 28 Aug 2023 00:04:20 -0400
+Message-ID: <20230828040420.2165-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2619.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f223e4e2-019f-4610-ae61-08dba76c1697
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2023 02:11:27.9947
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uPa9os8XPcWkTITB0HIdmqIsQHa4FQtnZF+h1hFZ3g+DJsPqwmAKnIDWU0jZPWPz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7199
-X-Spam-Status: No, score=-0.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: uiFrn0f3hQc9ftXvADkUxs8f7A0mQ45b
+X-Proofpoint-GUID: uiFrn0f3hQc9ftXvADkUxs8f7A0mQ45b
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-27_22,2023-08-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ adultscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
+ mlxlogscore=999 suspectscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2308280036
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[AMD Official Use Only - General]
+320 MHz bandwidth is reported only for single PHY mode for WCN7850, get it
+from WMI_HOST_HW_MODE_SINGLE ath12k_wmi_caps_ext_params and report it for
+6 GHz band.
 
-> -----Original Message-----
-> From: Simon Horman <horms@kernel.org>
-> Sent: Sunday, August 27, 2023 11:43 PM
-> To: Quan, Evan <Evan.Quan@amd.com>
-> Cc: lenb@kernel.org; johannes@sipsolutions.net; davem@davemloft.net;
-> edumazet@google.com; kuba@kernel.org; pabeni@redhat.com; Deucher,
-> Alexander <Alexander.Deucher@amd.com>; rafael@kernel.org; Lazar, Lijo
-> <Lijo.Lazar@amd.com>; Limonciello, Mario <Mario.Limonciello@amd.com>;
-> linux-kernel@vger.kernel.org; linux-acpi@vger.kernel.org; amd-
-> gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org; linux-
-> wireless@vger.kernel.org; netdev@vger.kernel.org
-> Subject: Re: [V10 1/8] ACPI: Add support for AMD ACPI based Wifi band RFI
-> mitigation feature
->
-> On Fri, Aug 25, 2023 at 04:38:39PM +0800, Evan Quan wrote:
-> > Due to electrical and mechanical constraints in certain platform
-> > designs there may be likely interference of relatively high-powered
-> > harmonics of the (G-)DDR memory clocks with local radio module
-> > frequency bands used by Wifi 6/6e/7.
-> >
-> > To mitigate this, AMD has introduced a mechanism that devices can use
-> > to notify active use of particular frequencies so that other devices
-> > can make relative internal adjustments as necessary to avoid this reson=
-ance.
-> >
-> > Signed-off-by: Evan Quan <evan.quan@amd.com>
->
-> ...
->
-> > diff --git a/drivers/acpi/amd_wbrf.c b/drivers/acpi/amd_wbrf.c
->
-> ...
->
-> > +/**
-> > + * acpi_amd_wbrf_add_exclusion - broadcast the frequency band the
-> device
-> > + *                               is using
-> > + *
-> > + * @dev: device pointer
-> > + * @in: input structure containing the frequency band the device is
-> > +using
-> > + *
-> > + * Broadcast to other consumers the frequency band the device starts
-> > + * to use. Underneath the surface the information is cached into an
-> > + * internal buffer first. Then a notification is sent to all those
-> > + * registered consumers. So then they can retrieve that buffer to
-> > + * know the latest active frequency bands. The benifit with such
-> > +design
->
-> nit: ./checkpatch.pl --codespell suggests benifit -> benefit.
-Thanks, will fix that.
+After this patch, "iw list" show 320MHz support for WCN7850:
+EHT Iftypes: managed
+        EHT PHY Capabilities: (0xe26f090010768800):
+                320MHz in 6GHz Supported
+        EHT bw=320 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
+        EHT bw=320 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
+        EHT bw=320 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
 
-Evan
->
-> > + * is for those consumers which have not been registered yet, they
-> > +can
-> > + * still have a chance to retrieve such information later.
-> > + */
-> > +int acpi_amd_wbrf_add_exclusion(struct device *dev,
-> > +                           struct wbrf_ranges_in_out *in)
-> > +{
-> > +   struct acpi_device *adev =3D ACPI_COMPANION(dev);
-> > +   int ret;
-> > +
-> > +   if (!adev)
-> > +           return -ENODEV;
-> > +
-> > +   ret =3D wbrf_record(adev, WBRF_RECORD_ADD, in);
-> > +   if (ret)
-> > +           return ret;
-> > +
-> > +   blocking_notifier_call_chain(&wbrf_chain_head,
-> > +                                WBRF_CHANGED,
-> > +                                NULL);
-> > +
-> > +   return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(acpi_amd_wbrf_add_exclusion);
->
-> ...
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+---
+v3:
+   1. fix "wmi.c:4199:69: warning: restricted __le32 degrades to integer"
+   2. s/capbility/capability/
+   3. change "u8 support_320mhz" to "u32 support_320mhz"
+
+v2: change eht_cap_phy_info_5G to eht_cap_phy_info_5ghz.
+
+ drivers/net/wireless/ath/ath12k/wmi.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 9ed33e2d6da0..5f46259cfa2a 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -4148,14 +4148,22 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
+ 				       __le32 cap_info_internal)
+ {
+ 	struct ath12k_band_cap *cap_band = &pdev->cap.band[band];
++	u32 support_320mhz;
+ 	u8 i;
+ 
++	if (band == NL80211_BAND_6GHZ)
++		support_320mhz = cap_band->eht_cap_phy_info[0] &
++					IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
++
+ 	for (i = 0; i < WMI_MAX_EHTCAP_MAC_SIZE; i++)
+ 		cap_band->eht_cap_mac_info[i] = le32_to_cpu(cap_mac_info[i]);
+ 
+ 	for (i = 0; i < WMI_MAX_EHTCAP_PHY_SIZE; i++)
+ 		cap_band->eht_cap_phy_info[i] = le32_to_cpu(cap_phy_info[i]);
+ 
++	if (band == NL80211_BAND_6GHZ)
++		cap_band->eht_cap_phy_info[0] |= support_320mhz;
++
+ 	cap_band->eht_mcs_20_only = le32_to_cpu(supp_mcs[0]);
+ 	cap_band->eht_mcs_80 = le32_to_cpu(supp_mcs[1]);
+ 	if (band != NL80211_BAND_2GHZ) {
+@@ -4177,10 +4185,19 @@ ath12k_wmi_tlv_mac_phy_caps_ext_parse(struct ath12k_base *ab,
+ 				      const struct ath12k_wmi_caps_ext_params *caps,
+ 				      struct ath12k_pdev *pdev)
+ {
+-	u32 bands;
++	struct ath12k_band_cap *cap_band;
++	u32 bands, support_320mhz;
+ 	int i;
+ 
+ 	if (ab->hw_params->single_pdev_only) {
++		if (caps->hw_mode_id == WMI_HOST_HW_MODE_SINGLE) {
++			support_320mhz = le32_to_cpu(caps->eht_cap_phy_info_5ghz[0]) &
++				IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
++			cap_band = &pdev->cap.band[NL80211_BAND_6GHZ];
++			cap_band->eht_cap_phy_info[0] |= support_320mhz;
++			return 0;
++		}
++
+ 		for (i = 0; i < ab->fw_pdev_count; i++) {
+ 			struct ath12k_fw_pdev *fw_pdev = &ab->fw_pdev[i];
+ 
+@@ -4236,7 +4253,8 @@ static int ath12k_wmi_tlv_mac_phy_caps_ext(struct ath12k_base *ab, u16 tag,
+ 		return -EPROTO;
+ 
+ 	if (ab->hw_params->single_pdev_only) {
+-		if (ab->wmi_ab.preferred_hw_mode != le32_to_cpu(caps->hw_mode_id))
++		if (ab->wmi_ab.preferred_hw_mode != le32_to_cpu(caps->hw_mode_id) &&
++		    caps->hw_mode_id != WMI_HOST_HW_MODE_SINGLE)
+ 			return 0;
+ 	} else {
+ 		for (i = 0; i < ab->num_radios; i++) {
+
+base-commit: 3f257461ab0ab19806bae2bfde4c3cd88dbf050e
+-- 
+2.40.1
+
