@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 440AF78AF95
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 14:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FE5378AF97
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 14:06:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232194AbjH1MGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Aug 2023 08:06:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40462 "EHLO
+        id S232303AbjH1MGP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Aug 2023 08:06:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232591AbjH1MFn (ORCPT
+        with ESMTP id S232599AbjH1MFp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Aug 2023 08:05:43 -0400
+        Mon, 28 Aug 2023 08:05:45 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94425120
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 05:05:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B5212E
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 05:05:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=56XQM4dEM1GE0kwQYQKubDx9yaIAQllo/2nubNvSSxY=;
-        t=1693224339; x=1694433939; b=muwgjZ61GeEkLxpPntotV4vEA0Rf+t2sNoS5n67A4r0y/sY
-        WQk1z0p+fivaCfs+YDVSnZKJbZ9mOLbtwKLNDIiqHkjjDH9XkSLwHl471Tpl/qaRX0lJLq3MhqzZJ
-        enTfhvlOsKc3zLAcZHt42NmF9l3oVCWn34U4Kq946ZdBZhL8QvJfZrr67u9p0eBOj6pkoR5cn/hfB
-        HiTg359dvBhwO0wgJ7J9xmsVMcGfXpUStoLOK7MNWooNCG6MxtSrDAbs+1cg/Z/JCLsUBhkzcBa42
-        XwpYF2g3Gf2r/rFL1kuL07LXsrTko8FcPeOPv5bY4QgRJvbXBAgp5MkrSvXnmomw==;
+        Resent-Cc:Resent-Message-ID; bh=265FR2E3S24pGK6dopwqDUavAr//An1rP7QRVpC6IGo=;
+        t=1693224340; x=1694433940; b=HFS4w0XR4y+zxvJ07IWg3bhiU/HI8kl7jMBtlDekSrcDvJ+
+        oRf7SiQSMTgOol5btWoaZtv2hlloQ87BKr/BBdJEUvyIDscoylaNr5zsJwAN3ghIZRK+DQrCqxJB3
+        lxAiSYWgsZvKQlN43a3BBXmHKn6SjO3apGBiJlvPXy7G6fKmxpXAr6/lBucGcTfqtRk7T+Xef5W9E
+        w+j4d3mLcnzmYRrdYNBSJd/hbM2zoEagsfTmaLdMQvZD4N6Ay2AZZNewlhY+qpHEKDB2mHA5oUBF0
+        SWmOFITsvgLYtKGhjNdCobftc7Yv6UwWLsnNib5sOO20Rn/K2/gUYqUqlUOpbj5w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qaazx-00Gjgt-2H;
-        Mon, 28 Aug 2023 14:05:37 +0200
+        id 1qaazy-00Gjgt-12;
+        Mon, 28 Aug 2023 14:05:38 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 22/40] wifi: mac80211: move CSA finalize to wiphy work
-Date:   Mon, 28 Aug 2023 13:59:50 +0200
-Message-ID: <20230828135928.a80777a10e97.I8aeffbe95cda6a796f34c6985c19163946595007@changeid>
+Subject: [PATCH 23/40] wifi: mac80211: move color change finalize to wiphy work
+Date:   Mon, 28 Aug 2023 13:59:51 +0200
+Message-ID: <20230828135928.bbe8f464c752.Icc6035f9732d73c7b91e36d2518866be10627782@changeid>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230828115927.116700-41-johannes@sipsolutions.net>
 References: <20230828115927.116700-41-johannes@sipsolutions.net>
@@ -53,115 +53,97 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This work should be made per link as well, and then
-will have cancellation issues. Moving it to a wiphy
-work already fixes those beforehand.
+Again this should be per link and will get cancellation
+issues, move it to a wiphy work.
 
 Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/cfg.c         | 8 ++++----
- net/mac80211/chan.c        | 4 ++--
- net/mac80211/ieee80211_i.h | 4 ++--
- net/mac80211/iface.c       | 2 +-
+ net/mac80211/cfg.c         | 7 ++++---
+ net/mac80211/ieee80211_i.h | 5 +++--
+ net/mac80211/iface.c       | 4 ++--
  net/mac80211/link.c        | 4 ++--
- 5 files changed, 11 insertions(+), 11 deletions(-)
+ 4 files changed, 11 insertions(+), 9 deletions(-)
 
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index e81e712448b2..8c7e6f637a1e 100644
+index 8c7e6f637a1e..d3fc6a2d1454 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -3581,11 +3581,11 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif)
- 			if (iter == sdata || iter->vif.mbssid_tx_vif != vif)
- 				continue;
- 
--			ieee80211_queue_work(&iter->local->hw,
--					     &iter->deflink.csa_finalize_work);
-+			wiphy_work_queue(iter->local->hw.wiphy,
-+					 &iter->deflink.csa_finalize_work);
- 		}
- 	}
--	ieee80211_queue_work(&local->hw, &sdata->deflink.csa_finalize_work);
-+	wiphy_work_queue(local->hw.wiphy, &sdata->deflink.csa_finalize_work);
- 
- 	rcu_read_unlock();
- }
-@@ -3713,7 +3713,7 @@ static void ieee80211_csa_finalize(struct ieee80211_sub_if_data *sdata)
- 	}
+@@ -4742,7 +4742,8 @@ static int ieee80211_color_change_finalize(struct ieee80211_sub_if_data *sdata)
+ 	return 0;
  }
  
--void ieee80211_csa_finalize_work(struct work_struct *work)
-+void ieee80211_csa_finalize_work(struct wiphy *wiphy, struct wiphy_work *work)
+-void ieee80211_color_change_finalize_work(struct work_struct *work)
++void ieee80211_color_change_finalize_work(struct wiphy *wiphy,
++					  struct wiphy_work *work)
  {
  	struct ieee80211_sub_if_data *sdata =
  		container_of(work, struct ieee80211_sub_if_data,
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 68952752b599..f967ed9d2a3a 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -1206,8 +1206,8 @@ ieee80211_link_chanctx_reservation_complete(struct ieee80211_link_data *link)
- 	case NL80211_IFTYPE_AP:
- 	case NL80211_IFTYPE_MESH_POINT:
- 	case NL80211_IFTYPE_OCB:
--		ieee80211_queue_work(&sdata->local->hw,
--				     &link->csa_finalize_work);
-+		wiphy_work_queue(sdata->local->hw.wiphy,
-+				 &link->csa_finalize_work);
- 		break;
- 	case NL80211_IFTYPE_STATION:
- 		wiphy_delayed_work_queue(sdata->local->hw.wiphy,
+@@ -4783,8 +4784,8 @@ void ieee80211_color_change_finish(struct ieee80211_vif *vif)
+ {
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
+ 
+-	ieee80211_queue_work(&sdata->local->hw,
+-			     &sdata->deflink.color_change_finalize_work);
++	wiphy_work_queue(sdata->local->hw.wiphy,
++			 &sdata->deflink.color_change_finalize_work);
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_color_change_finish);
+ 
 diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index a5569f9bb83f..8d9ced518087 100644
+index 8d9ced518087..8d53ab9732f9 100644
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -990,7 +990,7 @@ struct ieee80211_link_data {
- 	struct ieee80211_key __rcu *default_mgmt_key;
- 	struct ieee80211_key __rcu *default_beacon_key;
+@@ -997,7 +997,7 @@ struct ieee80211_link_data {
  
--	struct work_struct csa_finalize_work;
-+	struct wiphy_work csa_finalize_work;
- 	bool csa_block_tx; /* write-protected by sdata_lock and local->mtx */
+ 	struct cfg80211_chan_def csa_chandef;
  
- 	bool operating_11g_mode;
-@@ -1989,7 +1989,7 @@ int ieee80211_mgmt_tx_cancel_wait(struct wiphy *wiphy,
- 				  struct wireless_dev *wdev, u64 cookie);
+-	struct work_struct color_change_finalize_work;
++	struct wiphy_work color_change_finalize_work;
+ 	struct delayed_work color_collision_detect_work;
+ 	u64 color_bitmap;
  
- /* channel switch handling */
--void ieee80211_csa_finalize_work(struct work_struct *work);
-+void ieee80211_csa_finalize_work(struct wiphy *wiphy, struct wiphy_work *work);
- int ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+@@ -1994,7 +1994,8 @@ int ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
  			     struct cfg80211_csa_settings *params);
  
+ /* color change handling */
+-void ieee80211_color_change_finalize_work(struct work_struct *work);
++void ieee80211_color_change_finalize_work(struct wiphy *wiphy,
++					  struct wiphy_work *work);
+ void ieee80211_color_collision_detection_work(struct work_struct *work);
+ 
+ /* interface handling */
 diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 82bb340ef4be..3b419af7720c 100644
+index 3b419af7720c..e09fec1507a6 100644
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
 @@ -535,9 +535,9 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
  	mutex_unlock(&local->mtx);
  	sdata_unlock(sdata);
  
--	cancel_work_sync(&sdata->deflink.csa_finalize_work);
- 	cancel_work_sync(&sdata->deflink.color_change_finalize_work);
- 
-+	wiphy_work_cancel(local->hw.wiphy, &sdata->deflink.csa_finalize_work);
+-	cancel_work_sync(&sdata->deflink.color_change_finalize_work);
+-
+ 	wiphy_work_cancel(local->hw.wiphy, &sdata->deflink.csa_finalize_work);
++	wiphy_work_cancel(local->hw.wiphy,
++			  &sdata->deflink.color_change_finalize_work);
  	wiphy_delayed_work_cancel(local->hw.wiphy,
  				  &sdata->deflink.dfs_cac_timer_work);
  
 diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index bcff8a909405..2f7e2fc60be3 100644
+index 2f7e2fc60be3..72b5000502a5 100644
 --- a/net/mac80211/link.c
 +++ b/net/mac80211/link.c
-@@ -37,8 +37,8 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
- 	link_conf->link_id = link_id;
- 	link_conf->vif = &sdata->vif;
+@@ -39,8 +39,8 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
  
--	INIT_WORK(&link->csa_finalize_work,
--		  ieee80211_csa_finalize_work);
-+	wiphy_work_init(&link->csa_finalize_work,
-+			ieee80211_csa_finalize_work);
- 	INIT_WORK(&link->color_change_finalize_work,
- 		  ieee80211_color_change_finalize_work);
+ 	wiphy_work_init(&link->csa_finalize_work,
+ 			ieee80211_csa_finalize_work);
+-	INIT_WORK(&link->color_change_finalize_work,
+-		  ieee80211_color_change_finalize_work);
++	wiphy_work_init(&link->color_change_finalize_work,
++			ieee80211_color_change_finalize_work);
  	INIT_DELAYED_WORK(&link->color_collision_detect_work,
+ 			  ieee80211_color_collision_detection_work);
+ 	INIT_LIST_HEAD(&link->assigned_chanctx_list);
 -- 
 2.41.0
 
