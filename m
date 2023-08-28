@@ -2,42 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB3878AF83
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 14:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DA4378AF85
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 14:06:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232607AbjH1MFr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Aug 2023 08:05:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45304 "EHLO
+        id S232613AbjH1MFs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Aug 2023 08:05:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231602AbjH1MFW (ORCPT
+        with ESMTP id S231897AbjH1MFX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Aug 2023 08:05:22 -0400
+        Mon, 28 Aug 2023 08:05:23 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE31911A
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 05:05:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12198120
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 05:05:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-ID:Date:Subject:To:From:Content-Type:Sender:Reply-To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=3IM/xQxCNmMb+roBoyf++Go/ZcPS4Yk17bmSlUeSEJw=; t=1693224319; x=1694433919; 
-        b=tN8QFIh9CSARwlbuuh7gvMfHsJHi3TFsPREzwmtQdcomkuDMrxPFsiu6gqjnQdA62xIW1enZOSx
-        P6mAp5eObeI5X2tjM/W+SMraaxhMkL6bbGBfI96lECGeKkyqW1i1fYXMrAJ6YNyUqn1w2sRWpz9js
-        DdyV9mmuiVF7f5Ph930R9LWOwBBUvrsjyTNnSgYZYUTJyDUdbJ0oxHIfLKx/187/pgS3zqcmqzzd+
-        ScSSBi6AEL7/NoJdId7AQtArA1rO1y1QvT0OUMZXjzyKGC8dKla7cBDEXhHlD7h/Lw9zoG6ZV6FAD
-        IQ0p1yvHFi+RYf+SnL3WrerE2s6QLX1uuQlw==;
+        References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=B9yFwEoCBehB4dLooscTUlovsmWKsW6kU8fX1j6bUlM=;
+        t=1693224321; x=1694433921; b=boM9qEQyUgd231+2Z4LlKGy3RfLttkJu+fx6rn/RZlrCoYs
+        amQTRNJrcoKa2BwA+bUttTx+s4tBd9RSVq+SduUr0WxMWT1xC4ceLefiv6V0ZXnct8amP7UMv/9ds
+        BBJmf5Jf75LOsZrrSFs+aoQm/1FSJR1FiwV0GE7lQzv1dIvog/3mHNK49n6URSGBuD3mB8irHqubJ
+        9bL7VsV03o6utQcCVf6666PRgmcp7He9WQo+i0WVsW1ow7UqoO9yNgjFvLFepky7t/QMwvXq6pHTP
+        HPmqBY26rdw2IJK4uhHR5+SCOSk+JDid2yRRavxRPlJPl53Ism/jm9ZqPGMWXttA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qaazd-00Gjgt-23
-        for linux-wireless@vger.kernel.org;
-        Mon, 28 Aug 2023 14:05:17 +0200
+        id 1qaaze-00Gjgt-0l;
+        Mon, 28 Aug 2023 14:05:18 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 00/40] wifi: cfg80211/mac80211: locking cleanups
-Date:   Mon, 28 Aug 2023 13:59:28 +0200
-Message-ID: <20230828115927.116700-41-johannes@sipsolutions.net>
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 01/40] wifi: mac80211: debugfs: lock wiphy instead of RTNL
+Date:   Mon, 28 Aug 2023 13:59:29 +0200
+Message-ID: <20230828135927.e1069157fc33.I734dc816376001f38cdc7e17078d397207c96674@changeid>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230828115927.116700-41-johannes@sipsolutions.net>
+References: <20230828115927.116700-41-johannes@sipsolutions.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -49,29 +50,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Johannes Berg <johannes.berg@intel.com>
 
-So ... I mentioned a few months ago this was the direction I was
-going in, and now here I have it. We've been running with it for
-a while, and it looks good.
+Since we no longer really use the RTNL, there's no point
+in locking it here. Most drivers don't really need to
+have any locks here anyway, and the rest are probably
+completely broken, but it's a debugfs-only callback so
+it really doesn't matter much.
 
-There's a kind of pointless commit in there that adds some wiphy
-locking assertions to the wdev as an intermediate step, I can
-remove that if you think that's better. We ran with it at that
-intermediate stage for a while to test things.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/debugfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-As you can see in the list of patches, mutexes are removed:
-
- * in mac80211: sta_mtx, key_mtx, chanctx_mtx, ampdu_mlme.mtx,
-                local->mtx, and iflist_mtx is reduced to just
-                a driver helper mutex basically
- * in cfg80211, and was used by mac80211, the wdev mutex
-
-This also fixes a number of potential deadlocks lockdep would
-report in multi-link scenarios, but generally of course radically
-simplifies locking, no more worries about dependencies between
-the different mutexes in mac80211, etc.
-
-johannes
-
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index 207f772bd8ce..2efc6ccbfcf6 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -4,7 +4,7 @@
+  *
+  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+- * Copyright (C) 2018 - 2019, 2021-2022 Intel Corporation
++ * Copyright (C) 2018 - 2019, 2021-2023 Intel Corporation
+  */
+ 
+ #include <linux/debugfs.h>
+@@ -594,9 +594,9 @@ static ssize_t format_devstat_counter(struct ieee80211_local *local,
+ 	char buf[20];
+ 	int res;
+ 
+-	rtnl_lock();
++	wiphy_lock(local->hw.wiphy);
+ 	res = drv_get_stats(local, &stats);
+-	rtnl_unlock();
++	wiphy_unlock(local->hw.wiphy);
+ 	if (res)
+ 		return res;
+ 	res = printvalue(&stats, buf, sizeof(buf));
+-- 
+2.41.0
 
