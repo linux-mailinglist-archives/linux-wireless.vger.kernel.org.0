@@ -2,172 +2,179 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87A8378B386
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 16:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D510478B43C
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 17:19:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231909AbjH1Or7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Aug 2023 10:47:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56028 "EHLO
+        id S229818AbjH1PSn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Aug 2023 11:18:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231989AbjH1Orj (ORCPT
+        with ESMTP id S232396AbjH1PSj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Aug 2023 10:47:39 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3E2DA
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 07:47:26 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37SB6ROK011221;
-        Mon, 28 Aug 2023 14:47:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=LtEJ+DfcSuwg7tQh+ZeetnkwhEqUUalCmlNBAxHeNOA=;
- b=lsxr3gmI/tQQB3ozrD1aTbSuhbCGATZl1ha08SdYZhluOuK0eLNjrShXjS+1a7fDE1uM
- nMbzC/XEEDoua5zs5PYJ5N7skBLtyjtcr/FuaLeTHwA1MxbCGtqHr2cuk2xc8SjURvm+
- KChHcru7rY0wYCQNXUn353JCI4f5epIPB8gz2awCWutYgxhWLzcQesnBXRp2hAgKEhTu
- Pbx4x6RL39RS+9MV7uQqraL5cevtNloMLthQj6WN0IKW2suSL3hPNa+w3WWFaUs99JhH
- +ocAos+vrcTOs01W+I6/n5pxHGWn5GFYGx1J0bnpJmQmFZ4L5JvrLnRI3zvl82MniUri 5w== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sqapfktta-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 28 Aug 2023 14:47:22 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37SElMS4008074
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 28 Aug 2023 14:47:22 GMT
-Received: from [10.48.245.159] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 28 Aug
- 2023 07:47:21 -0700
-Message-ID: <dd1b11ee-696e-46f2-ad53-b80f4d0d9256@quicinc.com>
-Date:   Mon, 28 Aug 2023 07:47:20 -0700
+        Mon, 28 Aug 2023 11:18:39 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F32E8
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 08:18:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=9IPrJVU2rUS55tRMmqR/w+e/4oSZ7HJRGOkowaLH0wE=; t=1693235916; x=1694445516; 
+        b=OS3gvq34G0nO9p7OZ45jzaP5dwMHSieV0KbASijtygFtRFUrZ1GqS9s8QsVZfceWCiCGEtEFXki
+        1hBuPaB7K8aCXSFyFfyMNDj3p286KE2rJh4FVtpHSzxtcJ69dgSImQWvsPOPDntQggwIV+/ANzBAH
+        aZYrInPVd0kNhnZ+n3y9btEVd7Qes4AvqjtPY7lN5AJRSZx33GwKc4rJvZvzSXm0BN6Gb2WRJTSgJ
+        llklpdqHcDA4QeRtB0XanXtUTGA+ErafU6YhdahMgVkp7+qxN6MsNjzmTzrWTLUR++PbYCkZdZQbv
+        j4CSjIhdsu/ipK/d9zjjqU8Q4amygvlWLtJw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qae0f-00GwEC-1X;
+        Mon, 28 Aug 2023 17:18:33 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [RFC PATCH] wifi: mt76: use atomic iface iteration for pre-TBTT work
+Date:   Mon, 28 Aug 2023 17:18:31 +0200
+Message-ID: <20230828171830.580585e35fa7.I77619fb2d0ccdc1b25bf9c3a26014a3a21583909@changeid>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] wifi: ath12k: enable 320 MHz bandwidth for 6 GHz band
- in EHT PHY capability for WCN7850
-Content-Language: en-US
-To:     Wen Gong <quic_wgong@quicinc.com>, <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230828040420.2165-1-quic_wgong@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230828040420.2165-1-quic_wgong@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: svM0Z4S_HjJjFoJCj0yDiWJ8exzf0Uc_
-X-Proofpoint-GUID: svM0Z4S_HjJjFoJCj0yDiWJ8exzf0Uc_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-28_12,2023-08-28_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 clxscore=1015 impostorscore=0 mlxscore=0 malwarescore=0
- mlxlogscore=999 phishscore=0 adultscore=0 spamscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308280130
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/27/2023 9:04 PM, Wen Gong wrote:
-> 320 MHz bandwidth is reported only for single PHY mode for WCN7850, get it
-> from WMI_HOST_HW_MODE_SINGLE ath12k_wmi_caps_ext_params and report it for
-> 6 GHz band.
-> 
-> After this patch, "iw list" show 320MHz support for WCN7850:
+From: Johannes Berg <johannes.berg@intel.com>
 
-nit: s/320MHz/320 MHz/ to conform to SI
+In addition to the previous series I posted, over time I'd
+also like to get rid of the iflist_mtx in mac80211. That
+isn't easy now since lots of places use iteration and would
+have to be audited, but even a cursory look suggests that
+mt76 might be more problematic than most since holding the
+wiphy lock for the latency-sensitive pre-TBTT work could be
+an issue.
 
-> EHT Iftypes: managed
->          EHT PHY Capabilities: (0xe26f090010768800):
->                  320MHz in 6GHz Supported
+Convert the pre-TBTT work to use atomic iteration and then
+sending the device commands outside of it.
 
-unfortunate that 'iw' doesn't conform to SI representation
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c |  8 +++-----
+ drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c   | 11 +++++++++--
+ .../net/wireless/mediatek/mt76/mt76x02_usb_core.c   | 13 ++++++++++---
+ 3 files changed, 22 insertions(+), 10 deletions(-)
 
->          EHT bw=320 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
->          EHT bw=320 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
->          EHT bw=320 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> ---
-> v3:
->     1. fix "wmi.c:4199:69: warning: restricted __le32 degrades to integer"
->     2. s/capbility/capability/
->     3. change "u8 support_320mhz" to "u32 support_320mhz"
-> 
-> v2: change eht_cap_phy_info_5G to eht_cap_phy_info_5ghz.
-> 
->   drivers/net/wireless/ath/ath12k/wmi.c | 22 ++++++++++++++++++++--
->   1 file changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-> index 9ed33e2d6da0..5f46259cfa2a 100644
-> --- a/drivers/net/wireless/ath/ath12k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
-> @@ -4148,14 +4148,22 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
->   				       __le32 cap_info_internal)
->   {
->   	struct ath12k_band_cap *cap_band = &pdev->cap.band[band];
-> +	u32 support_320mhz;
->   	u8 i;
->   
-> +	if (band == NL80211_BAND_6GHZ)
-> +		support_320mhz = cap_band->eht_cap_phy_info[0] &
-> +					IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
-> +
->   	for (i = 0; i < WMI_MAX_EHTCAP_MAC_SIZE; i++)
->   		cap_band->eht_cap_mac_info[i] = le32_to_cpu(cap_mac_info[i]);
->   
->   	for (i = 0; i < WMI_MAX_EHTCAP_PHY_SIZE; i++)
->   		cap_band->eht_cap_phy_info[i] = le32_to_cpu(cap_phy_info[i]);
->   
-> +	if (band == NL80211_BAND_6GHZ)
-> +		cap_band->eht_cap_phy_info[0] |= support_320mhz;
-> +
->   	cap_band->eht_mcs_20_only = le32_to_cpu(supp_mcs[0]);
->   	cap_band->eht_mcs_80 = le32_to_cpu(supp_mcs[1]);
->   	if (band != NL80211_BAND_2GHZ) {
-> @@ -4177,10 +4185,19 @@ ath12k_wmi_tlv_mac_phy_caps_ext_parse(struct ath12k_base *ab,
->   				      const struct ath12k_wmi_caps_ext_params *caps,
->   				      struct ath12k_pdev *pdev)
->   {
-> -	u32 bands;
-> +	struct ath12k_band_cap *cap_band;
-> +	u32 bands, support_320mhz;
->   	int i;
->   
->   	if (ab->hw_params->single_pdev_only) {
-> +		if (caps->hw_mode_id == WMI_HOST_HW_MODE_SINGLE) {
-> +			support_320mhz = le32_to_cpu(caps->eht_cap_phy_info_5ghz[0]) &
-> +				IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
-> +			cap_band = &pdev->cap.band[NL80211_BAND_6GHZ];
-> +			cap_band->eht_cap_phy_info[0] |= support_320mhz;
-> +			return 0;
-> +		}
-> +
->   		for (i = 0; i < ab->fw_pdev_count; i++) {
->   			struct ath12k_fw_pdev *fw_pdev = &ab->fw_pdev[i];
->   
-> @@ -4236,7 +4253,8 @@ static int ath12k_wmi_tlv_mac_phy_caps_ext(struct ath12k_base *ab, u16 tag,
->   		return -EPROTO;
->   
->   	if (ab->hw_params->single_pdev_only) {
-> -		if (ab->wmi_ab.preferred_hw_mode != le32_to_cpu(caps->hw_mode_id))
-> +		if (ab->wmi_ab.preferred_hw_mode != le32_to_cpu(caps->hw_mode_id) &&
-> +		    caps->hw_mode_id != WMI_HOST_HW_MODE_SINGLE)
->   			return 0;
->   	} else {
->   		for (i = 0; i < ab->num_radios; i++) {
-> 
-> base-commit: 3f257461ab0ab19806bae2bfde4c3cd88dbf050e
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+index ad4dc8e17b58..d570b99bccb9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+@@ -136,7 +136,8 @@ EXPORT_SYMBOL_GPL(mt76x02_resync_beacon_timer);
+ void
+ mt76x02_update_beacon_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ {
+-	struct mt76x02_dev *dev = (struct mt76x02_dev *)priv;
++	struct beacon_bc_data *data = priv;
++	struct mt76x02_dev *dev = data->dev;
+ 	struct mt76x02_vif *mvif = (struct mt76x02_vif *)vif->drv_priv;
+ 	struct sk_buff *skb = NULL;
+ 
+@@ -147,7 +148,7 @@ mt76x02_update_beacon_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	if (!skb)
+ 		return;
+ 
+-	mt76x02_mac_set_beacon(dev, skb);
++	__skb_queue_tail(&data->q, skb);
+ }
+ EXPORT_SYMBOL_GPL(mt76x02_update_beacon_iter);
+ 
+@@ -182,9 +183,6 @@ mt76x02_enqueue_buffered_bc(struct mt76x02_dev *dev,
+ {
+ 	int i, nframes;
+ 
+-	data->dev = dev;
+-	__skb_queue_head_init(&data->q);
+-
+ 	do {
+ 		nframes = skb_queue_len(&data->q);
+ 		ieee80211_iterate_active_interfaces_atomic(mt76_hw(dev),
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+index e9c5e85ec07c..9b5e3fb7b0df 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+@@ -16,13 +16,17 @@ static void mt76x02_pre_tbtt_tasklet(struct tasklet_struct *t)
+ 	struct mt76x02_dev *dev = from_tasklet(dev, t, mt76.pre_tbtt_tasklet);
+ 	struct mt76_dev *mdev = &dev->mt76;
+ 	struct mt76_queue *q = dev->mphy.q_tx[MT_TXQ_PSD];
+-	struct beacon_bc_data data = {};
++	struct beacon_bc_data data = {
++		.dev = dev,
++	};
+ 	struct sk_buff *skb;
+ 	int i;
+ 
+ 	if (mt76_hw(dev)->conf.flags & IEEE80211_CONF_OFFCHANNEL)
+ 		return;
+ 
++	__skb_queue_head_init(&data.q);
++
+ 	mt76x02_resync_beacon_timer(dev);
+ 
+ 	/* Prevent corrupt transmissions during update */
+@@ -31,7 +35,10 @@ static void mt76x02_pre_tbtt_tasklet(struct tasklet_struct *t)
+ 
+ 	ieee80211_iterate_active_interfaces_atomic(mt76_hw(dev),
+ 		IEEE80211_IFACE_ITER_RESUME_ALL,
+-		mt76x02_update_beacon_iter, dev);
++		mt76x02_update_beacon_iter, &data);
++
++	while ((skb = __skb_dequeue(&data.q)) != NULL)
++		mt76x02_mac_set_beacon(dev, skb);
+ 
+ 	mt76_wr(dev, MT_BCN_BYPASS_MASK,
+ 		0xff00 | ~(0xff00 >> dev->beacon_data_count));
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
+index 2c6c03809b20..85a78dea4085 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
+@@ -182,7 +182,9 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
+ {
+ 	struct mt76x02_dev *dev =
+ 		container_of(work, struct mt76x02_dev, pre_tbtt_work);
+-	struct beacon_bc_data data = {};
++	struct beacon_bc_data data = {
++		.dev = dev,
++	};
+ 	struct sk_buff *skb;
+ 	int nbeacons;
+ 
+@@ -192,15 +194,20 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
+ 	if (mt76_hw(dev)->conf.flags & IEEE80211_CONF_OFFCHANNEL)
+ 		return;
+ 
++	__skb_queue_head_init(&data.q);
++
+ 	mt76x02_resync_beacon_timer(dev);
+ 
+ 	/* Prevent corrupt transmissions during update */
+ 	mt76_set(dev, MT_BCN_BYPASS_MASK, 0xffff);
+ 	dev->beacon_data_count = 0;
+ 
+-	ieee80211_iterate_active_interfaces(mt76_hw(dev),
++	ieee80211_iterate_active_interfaces_atomic(mt76_hw(dev),
+ 		IEEE80211_IFACE_ITER_RESUME_ALL,
+-		mt76x02_update_beacon_iter, dev);
++		mt76x02_update_beacon_iter, &data);
++
++	while ((skb = __skb_dequeue(&data.q)) != NULL)
++		mt76x02_mac_set_beacon(dev, skb);
+ 
+ 	mt76_csa_check(&dev->mt76);
+ 
+-- 
+2.41.0
 
