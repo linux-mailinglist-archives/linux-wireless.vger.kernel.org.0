@@ -2,338 +2,400 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E03778B15C
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 15:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB9A378B174
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Aug 2023 15:17:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231133AbjH1NJm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Aug 2023 09:09:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48958 "EHLO
+        id S231128AbjH1NQj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Aug 2023 09:16:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230195AbjH1NJe (ORCPT
+        with ESMTP id S232018AbjH1NQf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Aug 2023 09:09:34 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7209210C
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 06:09:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=AGij+/tdP1W0xDMsPVAbgLBhzGNQpIN2FNrFsUevKUc=;
-        t=1693228171; x=1694437771; b=hhsjk3o56aHs27Do5NUyVchzX+yU8nCxOWwFpCjunUV1bOA
-        ulTnmB5DelsNAHKiFieLmaFp4fnPl89jQ6HkCrBhxc/7MWhOM3rTCrDDRVmI5xH4zvtq7NehTvMuQ
-        UCDV8vpZmoARSpv+Ag17eUqvqQyON85cEdpaxw2DSs7iwM41fXvGR9xYB+kmBWsKmnY39TyW/JIez
-        rg59FJZA6krfd91Jik78e2qz/MUsYRSg2At+rEWAL2zdgspNhjW4j9JDWoc+StF8YEdC4xWNlUjiB
-        iwzC9KodJtz7WM6TYFe08udAnFCiMdlEaTnCt1GUz/tEkkVZ9/GCQxG1bwVkYolw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qabzl-00Go8O-0l;
-        Mon, 28 Aug 2023 15:09:29 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
+        Mon, 28 Aug 2023 09:16:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF41B11C
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 06:16:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E3C8614A0
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 13:16:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD71C433C8;
+        Mon, 28 Aug 2023 13:16:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693228590;
+        bh=LYP4rBQ66Xy5TSzeKFabKVFvqe7x0P/nWfBDsa7BNuQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UMbB5g6Lu0tHN5MpY6+XXRPSIgeIl3OsQfSOd+01+sxxh+4/RE47X2COVblqclVsC
+         +42t8EySkhtSWMXSojUuoKupemBPs8U2pmALoz9/9eUlByUU533xoY+YvOAMYhMrqn
+         Pvm76RB85ifRgufusPkYVNIRdvNNkRr1onE2h7m8h5ggMsBYxHxDGjXvW42a04m4zw
+         /Arz2S4icIOOBqHdyinJw7eHd88e7c3Z4u9S6nRbaxT/ZTO4zhJscRd8rG1FoccfTO
+         IBMXjOkC0MoxKmY9ZSeIitRM4F1zLHpYtMxiW5tpkYtWDxu+PpvUPmjEDckrmdn/ll
+         HtLrip2Haw58Q==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 4/4] wifi: mac80211: fix SMPS status handling
-Date:   Mon, 28 Aug 2023 15:09:26 +0200
-Message-ID: <20230828150922.86e74f4f47da.If8330b2c9441b5cb28f64d4814182207e89c5de2@changeid>
+Cc:     nbd@nbd.name, kvalo@kernel.org, daniel@makrotopia.org,
+        lorenzo.bianconi@redhat.com
+Subject: [PATCH wireless] mt76: fix lock dependency problem for wed_lock
+Date:   Mon, 28 Aug 2023 15:16:11 +0200
+Message-ID: <ee80be41c2a8d8749d83c6950a272a5e77aadd45.1693228333.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230828150922.c5182ba79e0f.I5efd1399be8e6dedc1e48982b7f20c531ff37616@changeid>
-References: <20230828150922.c5182ba79e0f.I5efd1399be8e6dedc1e48982b7f20c531ff37616@changeid>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Fix the following kernel depency lock holding wed_lock with BH disabled.
 
-The current SMPS status handling isn't per link, so we only
-ever change the deflink, which is obviously wrong, it's not
-even used for multi-link connections, but the request API
-actually includes the link ID.
+[   40.579696] mt798x-wmac 18000000.wifi: attaching wed device 0 version 2
+[   40.604648] platform 15010000.wed: MTK WED WO Firmware Version: DEV_000000, Build Time: 20221208202138
+[   40.613972] platform 15010000.wed: MTK WED WO Chip ID 00 Region 3
+[   40.943617]
+[   40.945118] ========================================================
+[   40.951457] WARNING: possible irq lock inversion dependency detected
+[   40.957797] 5.15.127 #0 Not tainted
+[   40.961276] --------------------------------------------------------
+[   40.967614] insmod/2329 just changed the state of lock:
+[   40.972827] ffffff8004003b08 (&dev->wed_lock){+.+.}-{2:2}, at: mt76_get_rxwi+0x1c/0xac [mt76]
+[   40.981387] but this lock was taken by another, SOFTIRQ-safe lock in the past:
+[   40.988592]  (&q->lock){+.-.}-{2:2}
+[   40.988602]
+[   40.988602]
+[   40.988602] and interrupts could create inverse lock ordering between them.
+[   40.988602]
+[   41.003445]
+[   41.003445] other info that might help us debug this:
+[   41.009957]  Possible interrupt unsafe locking scenario:
+[   41.009957]
+[   41.016729]        CPU0                    CPU1
+[   41.021245]        ----                    ----
+[   41.025761]   lock(&dev->wed_lock);
+[   41.029241]                                local_irq_disable();
+[   41.035145]                                lock(&q->lock);
+[   41.040620]                                lock(&dev->wed_lock);
+[   41.046616]   <Interrupt>
+[   41.049223]     lock(&q->lock);
+[   41.052356]
+[   41.052356]  *** DEADLOCK ***
+[   41.052356]
+[   41.058260] 1 lock held by insmod/2329:
+[   41.062085]  #0: ffffff80003b9988 (&dev->mutex){....}-{3:3}, at: __driver_attach+0x88/0x190
+[   41.070442]
+[   41.070442] the shortest dependencies between 2nd lock and 1st lock:
+[   41.078257]  -> (&q->lock){+.-.}-{2:2} {
+[   41.082177]     HARDIRQ-ON-W at:
+[   41.085396]                       lock_acquire+0xfc/0x2c0
+[   41.090787]                       _raw_spin_lock_bh+0x84/0xa0
+[   41.096525]                       mt76_dma_cleanup+0x24c/0x650 [mt76]
+[   41.102977]                       mt76_dma_cleanup+0x614/0x650 [mt76]
+[   41.109428]                       mt7915_eeprom_get_power_delta+0x1168/0x2464 [mt7915e]
+[   41.117435]                       mt7915_eeprom_init+0x40/0x340 [mt7915e]
+[   41.124222]                       cleanup_module+0x94/0xb28 [mt7915e]
+[   41.130662]                       platform_probe+0x64/0xbc
+[   41.136139]                       really_probe.part.0+0x98/0x2f4
+[   41.142134]                       __driver_probe_device+0x94/0x16c
+[   41.148303]                       driver_probe_device+0x40/0x120
+[   41.154299]                       __driver_attach+0x94/0x190
+[   41.159947]                       bus_for_each_dev+0x5c/0x94
+[   41.165594]                       driver_attach+0x20/0x30
+[   41.170983]                       bus_add_driver+0x104/0x1f4
+[   41.176631]                       driver_register+0x74/0x120
+[   41.182280]                       __platform_driver_register+0x24/0x30
+[   41.188797]                       0xffffffc000cb1074
+[   41.193754]                       do_one_initcall+0x70/0x2cc
+[   41.199403]                       do_init_module+0x44/0x240
+[   41.204968]                       load_module+0x1f5c/0x2874
+[   41.210532]                       __do_sys_init_module+0x1d8/0x2ac
+[   41.216702]                       __arm64_sys_init_module+0x18/0x20
+[   41.222958]                       invoke_syscall.constprop.0+0x4c/0xe0
+[   41.229474]                       do_el0_svc+0x50/0xf0
+[   41.234602]                       el0_svc+0x4c/0xcc
+[   41.239471]                       el0t_64_sync_handler+0xe0/0x110
+[   41.245556]                       el0t_64_sync+0x15c/0x160
+[   41.251029]     IN-SOFTIRQ-W at:
+[   41.254249]                       lock_acquire+0xfc/0x2c0
+[   41.259638]                       _raw_spin_lock_bh+0x84/0xa0
+[   41.265372]                       mt76_queue_tx_complete+0x34/0x70 [mt76]
+[   41.272170]                       mt76_free_pending_rxwi+0x36c/0x5d0 [mt76]
+[   41.279140]                       mt76_free_pending_rxwi+0x5c0/0x5d0 [mt76]
+[   41.286111]                       mt7915_eeprom_get_power_delta+0x620/0x2464 [mt7915e]
+[   41.294026]                       __napi_poll.constprop.0+0x5c/0x230
+[   41.300372]                       net_rx_action+0xe4/0x294
+[   41.305847]                       _stext+0x154/0x4cc
+[   41.310801]                       do_softirq+0xa4/0xbc
+[   41.315930]                       __local_bh_enable_ip+0x168/0x174
+[   41.322097]                       napi_threaded_poll+0xbc/0x140
+[   41.328007]                       kthread+0x13c/0x150
+[   41.333049]                       ret_from_fork+0x10/0x20
+[   41.338437]     INITIAL USE at:
+[   41.341568]                      lock_acquire+0xfc/0x2c0
+[   41.346869]                      _raw_spin_lock_bh+0x84/0xa0
+[   41.352519]                      mt76_dma_cleanup+0x24c/0x650 [mt76]
+[   41.358882]                      mt76_dma_cleanup+0x614/0x650 [mt76]
+[   41.365245]                      mt7915_eeprom_get_power_delta+0x1168/0x2464 [mt7915e]
+[   41.373160]                      mt7915_eeprom_init+0x40/0x340 [mt7915e]
+[   41.379860]                      cleanup_module+0x94/0xb28 [mt7915e]
+[   41.386213]                      platform_probe+0x64/0xbc
+[   41.391602]                      really_probe.part.0+0x98/0x2f4
+[   41.397511]                      __driver_probe_device+0x94/0x16c
+[   41.403594]                      driver_probe_device+0x40/0x120
+[   41.409502]                      __driver_attach+0x94/0x190
+[   41.415063]                      bus_for_each_dev+0x5c/0x94
+[   41.420625]                      driver_attach+0x20/0x30
+[   41.425926]                      bus_add_driver+0x104/0x1f4
+[   41.431487]                      driver_register+0x74/0x120
+[   41.437049]                      __platform_driver_register+0x24/0x30
+[   41.443479]                      0xffffffc000cb1074
+[   41.448346]                      do_one_initcall+0x70/0x2cc
+[   41.453907]                      do_init_module+0x44/0x240
+[   41.459383]                      load_module+0x1f5c/0x2874
+[   41.464860]                      __do_sys_init_module+0x1d8/0x2ac
+[   41.470944]                      __arm64_sys_init_module+0x18/0x20
+[   41.477113]                      invoke_syscall.constprop.0+0x4c/0xe0
+[   41.483542]                      do_el0_svc+0x50/0xf0
+[   41.488582]                      el0_svc+0x4c/0xcc
+[   41.493364]                      el0t_64_sync_handler+0xe0/0x110
+[   41.499361]                      el0t_64_sync+0x15c/0x160
+[   41.504748]   }
+[   41.506489]   ... key      at: [<ffffffc000c65ba0>] __this_module+0x3e0/0xffffffffffffa840 [mt76]
+[   41.515371]   ... acquired at:
+[   41.518413]    _raw_spin_lock+0x60/0x74
+[   41.522240]    mt76_get_rxwi+0x1c/0xac [mt76]
+[   41.526608]    mt76_dma_cleanup+0x3e0/0x650 [mt76]
+[   41.531410]    mt76_dma_cleanup+0x614/0x650 [mt76]
+[   41.536211]    mt7915_dma_init+0x408/0x7b0 [mt7915e]
+[   41.541177]    mt7915_register_device+0x310/0x620 [mt7915e]
+[   41.546749]    mt7915_mmio_probe+0xcec/0x1d44 [mt7915e]
+[   41.551973]    platform_probe+0x64/0xbc
+[   41.555802]    really_probe.part.0+0x98/0x2f4
+[   41.560149]    __driver_probe_device+0x94/0x16c
+[   41.564670]    driver_probe_device+0x40/0x120
+[   41.569017]    __driver_attach+0x94/0x190
+[   41.573019]    bus_for_each_dev+0x5c/0x94
+[   41.577018]    driver_attach+0x20/0x30
+[   41.580758]    bus_add_driver+0x104/0x1f4
+[   41.584758]    driver_register+0x74/0x120
+[   41.588759]    __platform_driver_register+0x24/0x30
+[   41.593628]    init_module+0x74/0x1000 [mt7915e]
+[   41.598248]    do_one_initcall+0x70/0x2cc
+[   41.602248]    do_init_module+0x44/0x240
+[   41.606162]    load_module+0x1f5c/0x2874
+[   41.610078]    __do_sys_init_module+0x1d8/0x2ac
+[   41.614600]    __arm64_sys_init_module+0x18/0x20
+[   41.619209]    invoke_syscall.constprop.0+0x4c/0xe0
+[   41.624076]    do_el0_svc+0x50/0xf0
+[   41.627555]    el0_svc+0x4c/0xcc
+[   41.630776]    el0t_64_sync_handler+0xe0/0x110
+[   41.635211]    el0t_64_sync+0x15c/0x160
+[   41.639037]
+[   41.640517] -> (&dev->wed_lock){+.+.}-{2:2} {
+[   41.644872]    HARDIRQ-ON-W at:
+[   41.648003]                     lock_acquire+0xfc/0x2c0
+[   41.653219]                     _raw_spin_lock+0x60/0x74
+[   41.658520]                     mt76_free_pending_rxwi+0xc0/0x5d0 [mt76]
+[   41.665232]                     mt76_dma_cleanup+0x1dc/0x650 [mt76]
+[   41.671508]                     mt7915_eeprom_get_power_delta+0x1830/0x2464 [mt7915e]
+[   41.679336]                     mt7915_unregister_device+0x5b4/0x910 [mt7915e]
+[   41.686555]                     mt7915_eeprom_get_target_power+0xb8/0x230 [mt7915e]
+[   41.694209]                     mt7986_wmac_enable+0xc30/0xcd0 [mt7915e]
+[   41.700909]                     platform_remove+0x4c/0x64
+[   41.706298]                     __device_release_driver+0x194/0x240
+[   41.712554]                     driver_detach+0xc0/0x100
+[   41.717857]                     bus_remove_driver+0x54/0xac
+[   41.723418]                     driver_unregister+0x2c/0x54
+[   41.728980]                     platform_driver_unregister+0x10/0x20
+[   41.735323]                     mt7915_ops+0x244/0xffffffffffffed58 [mt7915e]
+[   41.742457]                     __arm64_sys_delete_module+0x170/0x23c
+[   41.748887]                     invoke_syscall.constprop.0+0x4c/0xe0
+[   41.755229]                     do_el0_svc+0x50/0xf0
+[   41.760183]                     el0_svc+0x4c/0xcc
+[   41.764878]                     el0t_64_sync_handler+0xe0/0x110
+[   41.770788]                     el0t_64_sync+0x15c/0x160
+[   41.776088]    SOFTIRQ-ON-W at:
+[   41.779220]                     lock_acquire+0xfc/0x2c0
+[   41.784435]                     _raw_spin_lock+0x60/0x74
+[   41.789737]                     mt76_get_rxwi+0x1c/0xac [mt76]
+[   41.795580]                     mt7915_debugfs_rx_log+0x804/0xb74 [mt7915e]
+[   41.802540]                     mtk_wed_start+0x970/0xaa0
+[   41.807929]                     mt7915_dma_start+0x26c/0x630 [mt7915e]
+[   41.814455]                     mt7915_dma_start+0x5a4/0x630 [mt7915e]
+[   41.820981]                     mt7915_dma_init+0x45c/0x7b0 [mt7915e]
+[   41.827420]                     mt7915_register_device+0x310/0x620 [mt7915e]
+[   41.834467]                     mt7915_mmio_probe+0xcec/0x1d44 [mt7915e]
+[   41.841167]                     platform_probe+0x64/0xbc
+[   41.846469]                     really_probe.part.0+0x98/0x2f4
+[   41.852291]                     __driver_probe_device+0x94/0x16c
+[   41.858286]                     driver_probe_device+0x40/0x120
+[   41.864107]                     __driver_attach+0x94/0x190
+[   41.869582]                     bus_for_each_dev+0x5c/0x94
+[   41.875056]                     driver_attach+0x20/0x30
+[   41.880270]                     bus_add_driver+0x104/0x1f4
+[   41.885745]                     driver_register+0x74/0x120
+[   41.891221]                     __platform_driver_register+0x24/0x30
+[   41.897564]                     init_module+0x74/0x1000 [mt7915e]
+[   41.903657]                     do_one_initcall+0x70/0x2cc
+[   41.909130]                     do_init_module+0x44/0x240
+[   41.914520]                     load_module+0x1f5c/0x2874
+[   41.919909]                     __do_sys_init_module+0x1d8/0x2ac
+[   41.925905]                     __arm64_sys_init_module+0x18/0x20
+[   41.931989]                     invoke_syscall.constprop.0+0x4c/0xe0
+[   41.938331]                     do_el0_svc+0x50/0xf0
+[   41.943285]                     el0_svc+0x4c/0xcc
+[   41.947981]                     el0t_64_sync_handler+0xe0/0x110
+[   41.953892]                     el0t_64_sync+0x15c/0x160
+[   41.959192]    INITIAL USE at:
+[   41.962238]                    lock_acquire+0xfc/0x2c0
+[   41.967365]                    _raw_spin_lock+0x60/0x74
+[   41.972580]                    mt76_free_pending_rxwi+0xc0/0x5d0 [mt76]
+[   41.979206]                    mt76_dma_cleanup+0x1dc/0x650 [mt76]
+[   41.985395]                    mt7915_eeprom_get_power_delta+0x1830/0x2464 [mt7915e]
+[   41.993137]                    mt7915_unregister_device+0x5b4/0x910 [mt7915e]
+[   42.000270]                    mt7915_eeprom_get_target_power+0xb8/0x230 [mt7915e]
+[   42.007837]                    mt7986_wmac_enable+0xc30/0xcd0 [mt7915e]
+[   42.014450]                    platform_remove+0x4c/0x64
+[   42.019753]                    __device_release_driver+0x194/0x240
+[   42.025922]                    driver_detach+0xc0/0x100
+[   42.031137]                    bus_remove_driver+0x54/0xac
+[   42.036612]                    driver_unregister+0x2c/0x54
+[   42.042087]                    platform_driver_unregister+0x10/0x20
+[   42.048344]                    mt7915_ops+0x244/0xffffffffffffed58 [mt7915e]
+[   42.055391]                    __arm64_sys_delete_module+0x170/0x23c
+[   42.061735]                    invoke_syscall.constprop.0+0x4c/0xe0
+[   42.067990]                    do_el0_svc+0x50/0xf0
+[   42.072857]                    el0_svc+0x4c/0xcc
+[   42.077466]                    el0t_64_sync_handler+0xe0/0x110
+[   42.083289]                    el0t_64_sync+0x15c/0x160
+[   42.088503]  }
+[   42.090157]  ... key      at: [<ffffffc000c65c10>] __this_module+0x450/0xffffffffffffa840 [mt76]
+[   42.098951]  ... acquired at:
+[   42.101907]    __lock_acquire+0x718/0x1df0
+[   42.105994]    lock_acquire+0xfc/0x2c0
+[   42.109734]    _raw_spin_lock+0x60/0x74
+[   42.113561]    mt76_get_rxwi+0x1c/0xac [mt76]
+[   42.117929]    mt7915_debugfs_rx_log+0x804/0xb74 [mt7915e]
+[   42.123415]    mtk_wed_start+0x970/0xaa0
+[   42.127328]    mt7915_dma_start+0x26c/0x630 [mt7915e]
+[   42.132379]    mt7915_dma_start+0x5a4/0x630 [mt7915e]
+[   42.137430]    mt7915_dma_init+0x45c/0x7b0 [mt7915e]
+[   42.142395]    mt7915_register_device+0x310/0x620 [mt7915e]
+[   42.147967]    mt7915_mmio_probe+0xcec/0x1d44 [mt7915e]
+[   42.153192]    platform_probe+0x64/0xbc
+[   42.157019]    really_probe.part.0+0x98/0x2f4
+[   42.161367]    __driver_probe_device+0x94/0x16c
+[   42.165887]    driver_probe_device+0x40/0x120
+[   42.170234]    __driver_attach+0x94/0x190
+[   42.174235]    bus_for_each_dev+0x5c/0x94
+[   42.178235]    driver_attach+0x20/0x30
+[   42.181974]    bus_add_driver+0x104/0x1f4
+[   42.185974]    driver_register+0x74/0x120
+[   42.189974]    __platform_driver_register+0x24/0x30
+[   42.194842]    init_module+0x74/0x1000 [mt7915e]
+[   42.199460]    do_one_initcall+0x70/0x2cc
+[   42.203460]    do_init_module+0x44/0x240
+[   42.207376]    load_module+0x1f5c/0x2874
+[   42.211290]    __do_sys_init_module+0x1d8/0x2ac
+[   42.215813]    __arm64_sys_init_module+0x18/0x20
+[   42.220421]    invoke_syscall.constprop.0+0x4c/0xe0
+[   42.225288]    do_el0_svc+0x50/0xf0
+[   42.228768]    el0_svc+0x4c/0xcc
+[   42.231989]    el0t_64_sync_handler+0xe0/0x110
+[   42.236424]    el0t_64_sync+0x15c/0x160
+[   42.240249]
+[   42.241730]
+[   42.241730] stack backtrace:
+[   42.246074] CPU: 1 PID: 2329 Comm: insmod Not tainted 5.15.127 #0
+[   42.252157] Hardware name: GainStrong Oolite-MT7981B V1 Dev Board (NAND boot) (DT)
+[   42.259712] Call trace:
+[   42.262147]  dump_backtrace+0x0/0x174
+[   42.265802]  show_stack+0x14/0x20
+[   42.269108]  dump_stack_lvl+0x84/0xac
+[   42.272761]  dump_stack+0x14/0x2c
+[   42.276066]  print_irq_inversion_bug.part.0+0x1b0/0x1c4
+[   42.281285]  mark_lock+0x8b8/0x8bc
+[   42.284678]  __lock_acquire+0x718/0x1df0
+[   42.288592]  lock_acquire+0xfc/0x2c0
+[   42.292158]  _raw_spin_lock+0x60/0x74
+[   42.295811]  mt76_get_rxwi+0x1c/0xac [mt76]
+[   42.300008]  mt7915_debugfs_rx_log+0x804/0xb74 [mt7915e]
+[   42.305320]  mtk_wed_start+0x970/0xaa0
+[   42.309059]  mt7915_dma_start+0x26c/0x630 [mt7915e]
+[   42.313937]  mt7915_dma_start+0x5a4/0x630 [mt7915e]
+[   42.318815]  mt7915_dma_init+0x45c/0x7b0 [mt7915e]
+[   42.323606]  mt7915_register_device+0x310/0x620 [mt7915e]
+[   42.329005]  mt7915_mmio_probe+0xcec/0x1d44 [mt7915e]
+[   42.334056]  platform_probe+0x64/0xbc
+[   42.337711]  really_probe.part.0+0x98/0x2f4
+[   42.341885]  __driver_probe_device+0x94/0x16c
+[   42.346232]  driver_probe_device+0x40/0x120
+[   42.350407]  __driver_attach+0x94/0x190
+[   42.354234]  bus_for_each_dev+0x5c/0x94
+[   42.358061]  driver_attach+0x20/0x30
+[   42.361627]  bus_add_driver+0x104/0x1f4
+[   42.365454]  driver_register+0x74/0x120
+[   42.369282]  __platform_driver_register+0x24/0x30
+[   42.373977]  init_module+0x74/0x1000 [mt7915e]
+[   42.378423]  do_one_initcall+0x70/0x2cc
+[   42.382249]  do_init_module+0x44/0x240
+[   42.385990]  load_module+0x1f5c/0x2874
+[   42.389733]  __do_sys_init_module+0x1d8/0x2ac
+[   42.394082]  __arm64_sys_init_module+0x18/0x20
+[   42.398518]  invoke_syscall.constprop.0+0x4c/0xe0
+[   42.403211]  do_el0_svc+0x50/0xf0
+[   42.406517]  el0_svc+0x4c/0xcc
+[   42.409565]  el0t_64_sync_handler+0xe0/0x110
+[   42.413827]  el0t_64_sync+0x15c/0x160
+[   42.674858] mt798x-wmac 18000000.wifi: HW/SW Version: 0x8a108a10, Build Time: 20221208201745a
+[   42.674858]
+[   42.692078] mt798x-wmac 18000000.wifi: WM Firmware Version: ____000000, Build Time: 20221208201806
+[   42.735606] mt798x-wmac 18000000.wifi: WA Firmware Version: DEV_000000, Build Time: 20221208202048
 
-Use the new status_data changes to move the handling to the
-right link, this also saves parsing the frame again on the
-status report, instead we can now check only if it was an
-SMPS frame.
-
-Of course, move the worker to be a wiphy work so that we're
-able to cancel it safely for the link.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Fixes: 2666bece0905 ("wifi: mt76: introduce rxwi and rx token utility routines")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- net/mac80211/ht.c          | 10 ++++-
- net/mac80211/ieee80211_i.h |  7 ++--
- net/mac80211/iface.c       | 11 -----
- net/mac80211/mlme.c        | 14 +++++++
- net/mac80211/status.c      | 86 ++++++++++++++++++++++----------------
- 5 files changed, 78 insertions(+), 50 deletions(-)
+ drivers/net/wireless/mediatek/mt76/dma.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
-index 802b0e738696..05f98f0a91a8 100644
---- a/net/mac80211/ht.c
-+++ b/net/mac80211/ht.c
-@@ -543,6 +543,8 @@ int ieee80211_send_smps_action(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_local *local = sdata->local;
- 	struct sk_buff *skb;
- 	struct ieee80211_mgmt *action_frame;
-+	struct ieee80211_tx_info *info;
-+	u8 status_link_id = link_id < 0 ? 0 : link_id;
- 
- 	/* 27 = header + category + action + smps mode */
- 	skb = dev_alloc_skb(27 + local->hw.extra_tx_headroom);
-@@ -562,6 +564,7 @@ int ieee80211_send_smps_action(struct ieee80211_sub_if_data *sdata,
- 	case IEEE80211_SMPS_AUTOMATIC:
- 	case IEEE80211_SMPS_NUM_MODES:
- 		WARN_ON(1);
-+		smps = IEEE80211_SMPS_OFF;
- 		fallthrough;
- 	case IEEE80211_SMPS_OFF:
- 		action_frame->u.action.u.ht_smps.smps_control =
-@@ -578,7 +581,12 @@ int ieee80211_send_smps_action(struct ieee80211_sub_if_data *sdata,
- 	}
- 
- 	/* we'll do more on status of this frame */
--	IEEE80211_SKB_CB(skb)->flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
-+	info = IEEE80211_SKB_CB(skb);
-+	info->flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
-+	/* we have 12 bits, and need 6: link_id 4, smps 2 */
-+	info->status_data = IEEE80211_STATUS_TYPE_SMPS |
-+			    u16_encode_bits(status_link_id << 2 | smps,
-+					    IEEE80211_STATUS_SUBDATA_MASK);
- 	ieee80211_tx_skb_tid(sdata, skb, 7, link_id);
- 
- 	return 0;
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 1df2101d8eeb..338ab9e6e6b1 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -88,6 +88,7 @@ extern const u8 ieee80211_ac_to_qos_mask[IEEE80211_NUM_ACS];
- enum ieee80211_status_data {
- 	IEEE80211_STATUS_TYPE_MASK	= 0x00f,
- 	IEEE80211_STATUS_TYPE_INVALID	= 0,
-+	IEEE80211_STATUS_TYPE_SMPS	= 1,
- 	IEEE80211_STATUS_SUBDATA_MASK	= 0xff0,
- };
- 
-@@ -931,6 +932,9 @@ struct ieee80211_link_data_managed {
- 	struct wiphy_delayed_work chswitch_work;
- 
- 	struct wiphy_work request_smps_work;
-+	/* used to reconfigure hardware SM PS */
-+	struct wiphy_work recalc_smps;
-+
- 	bool beacon_crc_valid;
- 	u32 beacon_crc;
- 	struct ewma_beacon_signal ave_beacon_signal;
-@@ -1069,9 +1073,6 @@ struct ieee80211_sub_if_data {
- 	atomic_t num_tx_queued;
- 	struct mac80211_qos_map __rcu *qos_map;
- 
--	/* used to reconfigure hardware SM PS */
--	struct work_struct recalc_smps;
--
- 	struct wiphy_work work;
- 	struct sk_buff_head skb_queue;
- 	struct sk_buff_head status_queue;
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index be586bc0b5b7..4beab027e0f9 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -518,8 +518,6 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	del_timer_sync(&local->dynamic_ps_timer);
- 	cancel_work_sync(&local->dynamic_ps_enable_work);
- 
--	cancel_work_sync(&sdata->recalc_smps);
--
- 	sdata_lock(sdata);
- 	WARN(ieee80211_vif_is_mld(&sdata->vif),
- 	     "destroying interface with valid links 0x%04x\n",
-@@ -1692,14 +1690,6 @@ static void ieee80211_iface_work(struct wiphy *wiphy, struct wiphy_work *work)
- 	}
- }
- 
--static void ieee80211_recalc_smps_work(struct work_struct *work)
--{
--	struct ieee80211_sub_if_data *sdata =
--		container_of(work, struct ieee80211_sub_if_data, recalc_smps);
--
--	ieee80211_recalc_smps(sdata, &sdata->deflink);
--}
--
- static void ieee80211_activate_links_work(struct work_struct *work)
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 465190ebaf1c..f539913aadf8 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -93,13 +93,13 @@ __mt76_get_rxwi(struct mt76_dev *dev)
  {
- 	struct ieee80211_sub_if_data *sdata =
-@@ -1745,7 +1735,6 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
- 	skb_queue_head_init(&sdata->skb_queue);
- 	skb_queue_head_init(&sdata->status_queue);
- 	wiphy_work_init(&sdata->work, ieee80211_iface_work);
--	INIT_WORK(&sdata->recalc_smps, ieee80211_recalc_smps_work);
- 	INIT_WORK(&sdata->activate_links_work, ieee80211_activate_links_work);
+ 	struct mt76_txwi_cache *t = NULL;
  
- 	switch (type) {
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index f93eb38ae0b8..65d3e167132c 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -6847,6 +6847,16 @@ void ieee80211_sta_setup_sdata(struct ieee80211_sub_if_data *sdata)
- 	ifmgd->orig_teardown_skb = NULL;
- }
- 
-+static void ieee80211_recalc_smps_work(struct wiphy *wiphy,
-+				       struct wiphy_work *work)
-+{
-+	struct ieee80211_link_data *link =
-+		container_of(work, struct ieee80211_link_data,
-+			     u.mgd.recalc_smps);
-+
-+	ieee80211_recalc_smps(link->sdata, link);
-+}
-+
- void ieee80211_mgd_setup_link(struct ieee80211_link_data *link)
- {
- 	struct ieee80211_sub_if_data *sdata = link->sdata;
-@@ -6859,6 +6869,8 @@ void ieee80211_mgd_setup_link(struct ieee80211_link_data *link)
- 
- 	wiphy_work_init(&link->u.mgd.request_smps_work,
- 			ieee80211_request_smps_mgd_work);
-+	wiphy_work_init(&link->u.mgd.recalc_smps,
-+			ieee80211_recalc_smps_work);
- 	if (local->hw.wiphy->features & NL80211_FEATURE_DYNAMIC_SMPS)
- 		link->u.mgd.req_smps = IEEE80211_SMPS_AUTOMATIC;
- 	else
-@@ -7824,6 +7836,8 @@ void ieee80211_mgd_stop_link(struct ieee80211_link_data *link)
- {
- 	wiphy_work_cancel(link->sdata->local->hw.wiphy,
- 			  &link->u.mgd.request_smps_work);
-+	wiphy_work_cancel(link->sdata->local->hw.wiphy,
-+			  &link->u.mgd.recalc_smps);
- 	wiphy_delayed_work_cancel(link->sdata->local->hw.wiphy,
- 				  &link->u.mgd.chswitch_work);
- }
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index f24aceb59db0..3355e66d96d8 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -184,8 +184,6 @@ static void ieee80211_check_pending_bar(struct sta_info *sta, u8 *addr, u8 tid)
- static void ieee80211_frame_acked(struct sta_info *sta, struct sk_buff *skb)
- {
- 	struct ieee80211_mgmt *mgmt = (void *) skb->data;
--	struct ieee80211_local *local = sta->local;
--	struct ieee80211_sub_if_data *sdata = sta->sdata;
- 
- 	if (ieee80211_is_data_qos(mgmt->frame_control)) {
- 		struct ieee80211_hdr *hdr = (void *) skb->data;
-@@ -194,39 +192,6 @@ static void ieee80211_frame_acked(struct sta_info *sta, struct sk_buff *skb)
- 
- 		ieee80211_check_pending_bar(sta, hdr->addr1, tid);
+-	spin_lock(&dev->wed_lock);
++	spin_lock_bh(&dev->wed_lock);
+ 	if (!list_empty(&dev->rxwi_cache)) {
+ 		t = list_first_entry(&dev->rxwi_cache, struct mt76_txwi_cache,
+ 				     list);
+ 		list_del(&t->list);
  	}
--
--	if (ieee80211_is_action(mgmt->frame_control) &&
--	    !ieee80211_has_protected(mgmt->frame_control) &&
--	    mgmt->u.action.category == WLAN_CATEGORY_HT &&
--	    mgmt->u.action.u.ht_smps.action == WLAN_HT_ACTION_SMPS &&
--	    ieee80211_sdata_running(sdata)) {
--		enum ieee80211_smps_mode smps_mode;
--
--		switch (mgmt->u.action.u.ht_smps.smps_control) {
--		case WLAN_HT_SMPS_CONTROL_DYNAMIC:
--			smps_mode = IEEE80211_SMPS_DYNAMIC;
--			break;
--		case WLAN_HT_SMPS_CONTROL_STATIC:
--			smps_mode = IEEE80211_SMPS_STATIC;
--			break;
--		case WLAN_HT_SMPS_CONTROL_DISABLED:
--		default: /* shouldn't happen since we don't send that */
--			smps_mode = IEEE80211_SMPS_OFF;
--			break;
--		}
--
--		if (sdata->vif.type == NL80211_IFTYPE_STATION) {
--			/*
--			 * This update looks racy, but isn't -- if we come
--			 * here we've definitely got a station that we're
--			 * talking to, and on a managed interface that can
--			 * only be the AP. And the only other place updating
--			 * this variable in managed mode is before association.
--			 */
--			sdata->deflink.smps_mode = smps_mode;
--			ieee80211_queue_work(&local->hw, &sdata->recalc_smps);
--		}
--	}
+-	spin_unlock(&dev->wed_lock);
++	spin_unlock_bh(&dev->wed_lock);
+ 
+ 	return t;
  }
+@@ -145,9 +145,9 @@ mt76_put_rxwi(struct mt76_dev *dev, struct mt76_txwi_cache *t)
+ 	if (!t)
+ 		return;
  
- static void ieee80211_set_bar_pending(struct sta_info *sta, u8 tid, u16 ssn)
-@@ -695,6 +660,42 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
- 	}
+-	spin_lock(&dev->wed_lock);
++	spin_lock_bh(&dev->wed_lock);
+ 	list_add(&t->list, &dev->rxwi_cache);
+-	spin_unlock(&dev->wed_lock);
++	spin_unlock_bh(&dev->wed_lock);
  }
+ EXPORT_SYMBOL_GPL(mt76_put_rxwi);
  
-+static void ieee80211_handle_smps_status(struct ieee80211_sub_if_data *sdata,
-+					 bool acked, u16 status_data)
-+{
-+	u16 sub_data = u16_get_bits(status_data, IEEE80211_STATUS_SUBDATA_MASK);
-+	enum ieee80211_smps_mode smps_mode = sub_data & 3;
-+	int link_id = (sub_data >> 2);
-+	struct ieee80211_link_data *link;
-+
-+	if (!sdata || !ieee80211_sdata_running(sdata))
-+		return;
-+
-+	if (!acked)
-+		return;
-+
-+	if (sdata->vif.type != NL80211_IFTYPE_STATION)
-+		return;
-+
-+	if (WARN(link_id >= ARRAY_SIZE(sdata->link),
-+		 "bad SMPS status link: %d\n", link_id))
-+		return;
-+
-+	link = rcu_dereference(sdata->link[link_id]);
-+	if (!link)
-+		return;
-+
-+	/*
-+	 * This update looks racy, but isn't, the only other place
-+	 * updating this variable is in managed mode before assoc,
-+	 * and we have to be associated to have a status from the
-+	 * action frame TX, since we cannot send it while we're not
-+	 * associated yet.
-+	 */
-+	link->smps_mode = smps_mode;
-+	wiphy_work_queue(sdata->local->hw.wiphy, &link->u.mgd.recalc_smps);
-+}
-+
- static void ieee80211_report_used_skb(struct ieee80211_local *local,
- 				      struct sk_buff *skb, bool dropped,
- 				      ktime_t ack_hwtstamp)
-@@ -762,6 +763,21 @@ static void ieee80211_report_used_skb(struct ieee80211_local *local,
- 	} else if (info->status_data_idr) {
- 		ieee80211_report_ack_skb(local, skb, acked, dropped,
- 					 ack_hwtstamp);
-+	} else if (info->status_data) {
-+		struct ieee80211_sub_if_data *sdata;
-+
-+		rcu_read_lock();
-+
-+		sdata = ieee80211_sdata_from_skb(local, skb);
-+
-+		switch (u16_get_bits(info->status_data,
-+				     IEEE80211_STATUS_TYPE_MASK)) {
-+		case IEEE80211_STATUS_TYPE_SMPS:
-+			ieee80211_handle_smps_status(sdata, acked,
-+						     info->status_data);
-+			break;
-+		}
-+		rcu_read_unlock();
- 	}
- 
- 	if (!dropped && skb->destructor) {
 -- 
 2.41.0
 
