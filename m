@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F025778BCC1
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 04:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A8BE78BCC6
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 04:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233502AbjH2CU6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Aug 2023 22:20:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56800 "EHLO
+        id S235366AbjH2CVB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Aug 2023 22:21:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233880AbjH2CUb (ORCPT
+        with ESMTP id S235224AbjH2CUg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Aug 2023 22:20:31 -0400
+        Mon, 28 Aug 2023 22:20:36 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 79E971A2
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 19:20:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C6580124
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 19:20:32 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37T2JvdoE019028, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37T2JvdoE019028
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37T2JwdvE019032, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37T2JwdvE019032
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 29 Aug 2023 10:19:57 +0800
+        Tue, 29 Aug 2023 10:19:58 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 29 Aug 2023 10:20:22 +0800
+ 15.1.2507.17; Tue, 29 Aug 2023 10:20:22 +0800
 Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 29 Aug
- 2023 10:20:20 +0800
+ 2023 10:20:22 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/6] wifi: rtw89: fix typo of rtw89_fw_h2c_mcc_macid_bitmap()
-Date:   Tue, 29 Aug 2023 10:19:17 +0800
-Message-ID: <20230829021918.14599-6-pkshih@realtek.com>
+Subject: [PATCH 6/6] wifi: rtw89: mcc: trigger FW to start/stop MCC
+Date:   Tue, 29 Aug 2023 10:19:18 +0800
+Message-ID: <20230829021918.14599-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230829021918.14599-1-pkshih@realtek.com>
 References: <20230829021918.14599-1-pkshih@realtek.com>
@@ -45,10 +45,6 @@ X-Originating-IP: [172.21.69.25]
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -63,42 +59,215 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Fix a typo where `bitamp` should be `bitmap`. Don't change functionality
-at all.
+According to Wi-Fi/BT roles' settings, we fill corresponding H2Cs (host
+to chip packets). Then, following MCC (multi-channel concurrency) pattern,
+we send these H2Cs as planned. Eventually, the trigger H2Cs will be sent
+to tell FW to really start/stop MCC.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 2 +-
- drivers/net/wireless/realtek/rtw89/fw.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/chan.c | 173 ++++++++++++++++++++++
+ 1 file changed, 173 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index df1dc2f43c86..763872d3b7c7 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -4520,7 +4520,7 @@ int rtw89_fw_h2c_mcc_req_tsf(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index c609a252ef12..2ae5b461ddb7 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -1217,6 +1217,159 @@ static int rtw89_mcc_fill_config(struct rtw89_dev *rtwdev)
+ 	return rtw89_mcc_fill_start_tsf(rtwdev);
  }
  
- #define H2C_MCC_MACID_BITMAP_DSC_LEN 4
--int rtw89_fw_h2c_mcc_macid_bitamp(struct rtw89_dev *rtwdev, u8 group, u8 macid,
-+int rtw89_fw_h2c_mcc_macid_bitmap(struct rtw89_dev *rtwdev, u8 group, u8 macid,
- 				  u8 *bitmap)
++static int __mcc_fw_add_role(struct rtw89_dev *rtwdev, struct rtw89_mcc_role *role)
++{
++	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
++	struct rtw89_mcc_config *config = &mcc->config;
++	struct rtw89_mcc_pattern *pattern = &config->pattern;
++	struct rtw89_mcc_courtesy *courtesy = &pattern->courtesy;
++	struct rtw89_mcc_policy *policy = &role->policy;
++	struct rtw89_fw_mcc_add_req req = {};
++	const struct rtw89_chan *chan;
++	int ret;
++
++	chan = rtw89_chan_get(rtwdev, role->rtwvif->sub_entity_idx);
++	req.central_ch_seg0 = chan->channel;
++	req.primary_ch = chan->primary_channel;
++	req.bandwidth = chan->band_width;
++	req.ch_band_type = chan->band_type;
++
++	req.macid = role->rtwvif->mac_id;
++	req.group = mcc->group;
++	req.c2h_rpt = policy->c2h_rpt;
++	req.tx_null_early = policy->tx_null_early;
++	req.dis_tx_null = policy->dis_tx_null;
++	req.in_curr_ch = policy->in_curr_ch;
++	req.sw_retry_count = policy->sw_retry_count;
++	req.dis_sw_retry = policy->dis_sw_retry;
++	req.duration = role->duration;
++	req.btc_in_2g = false;
++
++	if (courtesy->enable && courtesy->macid_src == req.macid) {
++		req.courtesy_target = courtesy->macid_tgt;
++		req.courtesy_num = courtesy->slot_num;
++		req.courtesy_en = true;
++	}
++
++	ret = rtw89_fw_h2c_add_mcc(rtwdev, &req);
++	if (ret) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC h2c failed to add wifi role: %d\n", ret);
++		return ret;
++	}
++
++	ret = rtw89_fw_h2c_mcc_macid_bitmap(rtwdev, mcc->group,
++					    role->rtwvif->mac_id,
++					    role->macid_bitmap);
++	if (ret) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC h2c failed to set macid bitmap: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int __mcc_fw_add_bt_role(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
++	struct rtw89_mcc_bt_role *bt_role = &mcc->bt_role;
++	struct rtw89_fw_mcc_add_req req = {};
++	int ret;
++
++	req.group = mcc->group;
++	req.duration = bt_role->duration;
++	req.btc_in_2g = true;
++
++	ret = rtw89_fw_h2c_add_mcc(rtwdev, &req);
++	if (ret) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC h2c failed to add bt role: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int __mcc_fw_start(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
++	struct rtw89_mcc_role *ref = &mcc->role_ref;
++	struct rtw89_mcc_role *aux = &mcc->role_aux;
++	struct rtw89_mcc_config *config = &mcc->config;
++	struct rtw89_mcc_pattern *pattern = &config->pattern;
++	struct rtw89_mcc_sync *sync = &config->sync;
++	struct rtw89_fw_mcc_start_req req = {};
++	int ret;
++
++	req.group = mcc->group;
++
++	switch (pattern->plan) {
++	case RTW89_MCC_PLAN_TAIL_BT:
++		ret = __mcc_fw_add_role(rtwdev, ref);
++		if (ret)
++			return ret;
++		ret = __mcc_fw_add_role(rtwdev, aux);
++		if (ret)
++			return ret;
++		ret = __mcc_fw_add_bt_role(rtwdev);
++		if (ret)
++			return ret;
++
++		req.btc_in_group = true;
++		break;
++	case RTW89_MCC_PLAN_MID_BT:
++		ret = __mcc_fw_add_role(rtwdev, ref);
++		if (ret)
++			return ret;
++		ret = __mcc_fw_add_bt_role(rtwdev);
++		if (ret)
++			return ret;
++		ret = __mcc_fw_add_role(rtwdev, aux);
++		if (ret)
++			return ret;
++
++		req.btc_in_group = true;
++		break;
++	case RTW89_MCC_PLAN_NO_BT:
++		ret = __mcc_fw_add_role(rtwdev, ref);
++		if (ret)
++			return ret;
++		ret = __mcc_fw_add_role(rtwdev, aux);
++		if (ret)
++			return ret;
++
++		req.btc_in_group = false;
++		break;
++	default:
++		rtw89_warn(rtwdev, "MCC unknown plan: %d\n", pattern->plan);
++		return -EFAULT;
++	}
++
++	if (sync->enable) {
++		ret = rtw89_fw_h2c_mcc_sync(rtwdev, req.group, sync->macid_src,
++					    sync->macid_tgt, sync->offset);
++		if (ret) {
++			rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++				    "MCC h2c failed to trigger sync: %d\n", ret);
++			return ret;
++		}
++	}
++
++	req.macid = ref->rtwvif->mac_id;
++	req.tsf_high = config->start_tsf >> 32;
++	req.tsf_low = config->start_tsf;
++
++	ret = rtw89_fw_h2c_start_mcc(rtwdev, &req);
++	if (ret) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC h2c failed to trigger start: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
+ static int rtw89_mcc_start(struct rtw89_dev *rtwdev)
  {
- 	struct rtw89_wait_info *wait = &rtwdev->mcc.wait;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 775f4e8fbda4..156d09dfca45 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -3755,7 +3755,7 @@ int rtw89_fw_h2c_reset_mcc_group(struct rtw89_dev *rtwdev, u8 group);
- int rtw89_fw_h2c_mcc_req_tsf(struct rtw89_dev *rtwdev,
- 			     const struct rtw89_fw_mcc_tsf_req *req,
- 			     struct rtw89_mac_mcc_tsf_rpt *rpt);
--int rtw89_fw_h2c_mcc_macid_bitamp(struct rtw89_dev *rtwdev, u8 group, u8 macid,
-+int rtw89_fw_h2c_mcc_macid_bitmap(struct rtw89_dev *rtwdev, u8 group, u8 macid,
- 				  u8 *bitmap);
- int rtw89_fw_h2c_mcc_sync(struct rtw89_dev *rtwdev, u8 group, u8 source,
- 			  u8 target, u8 offset);
+ 	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
+@@ -1248,13 +1401,33 @@ static int rtw89_mcc_start(struct rtw89_dev *rtwdev)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = __mcc_fw_start(rtwdev);
++	if (ret)
++		return ret;
++
+ 	rtw89_chanctx_notify(rtwdev, RTW89_CHANCTX_STATE_MCC_START);
+ 	return 0;
+ }
+ 
+ static void rtw89_mcc_stop(struct rtw89_dev *rtwdev)
+ {
++	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
++	struct rtw89_mcc_role *ref = &mcc->role_ref;
++	int ret;
++
+ 	rtw89_debug(rtwdev, RTW89_DBG_CHAN, "MCC stop\n");
++
++	ret = rtw89_fw_h2c_stop_mcc(rtwdev, mcc->group,
++				    ref->rtwvif->mac_id, true);
++	if (ret)
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC h2c failed to trigger stop: %d\n", ret);
++
++	ret = rtw89_fw_h2c_del_mcc_group(rtwdev, mcc->group, true);
++	if (ret)
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC h2c failed to delete group: %d\n", ret);
++
+ 	rtw89_chanctx_notify(rtwdev, RTW89_CHANCTX_STATE_MCC_STOP);
+ }
+ 
 -- 
 2.25.1
 
