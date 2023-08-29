@@ -2,101 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C8D978C83E
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 17:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A92F178C852
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 17:11:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236940AbjH2PDs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Aug 2023 11:03:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55534 "EHLO
+        id S235876AbjH2PLS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Aug 2023 11:11:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237267AbjH2PDs (ORCPT
+        with ESMTP id S237172AbjH2PLS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Aug 2023 11:03:48 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F1BBCD6;
-        Tue, 29 Aug 2023 08:03:39 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37TEI44D016856;
-        Tue, 29 Aug 2023 15:03:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : date :
- subject : mime-version : content-type : content-transfer-encoding :
- message-id : to : cc; s=qcppdkim1;
- bh=Pbq2qERGO+nLC19TWRCJXsINUbgJX/x606S2q8/ClPo=;
- b=bPNU3Kj+bylG5NGOXVuyFvPRaiEckhrhIsblK+kOJiyY1xRWZ0StFg2KXvAPtYdW5SMX
- 3SQeBP/9H3XDqJ2eWjVMp5wbuYso3/mHp2iSdnCzMWW4ten/VJJ8i+Dp5v29UuF1ckIn
- U5O4TfZqxhij284LzOntiJAZFykE0kukGvmq2wg+bd+L3uURyBzZNmSsyLALvSsbWxly
- kOnwtU15ayl2W34F5XZz+gCGWGTueu9Q+Bzq2wYc3t6e4s106PrEn8VagRyffkzlwUwQ
- 8rsjwKE+GsV3gDWK3OAKrFbA8pmZeLxiev6a+F66p2Nq45BRdgYJSUuPzZ0PdGRJ86kA Fw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ss3fr23yd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Aug 2023 15:03:38 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37TF3bag029721
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Aug 2023 15:03:37 GMT
-Received: from hu-jjohnson-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Tue, 29 Aug 2023 08:03:37 -0700
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-Date:   Tue, 29 Aug 2023 08:03:33 -0700
-Subject: [PATCH] MAINTAINERS: wifi: ath12k: add wiki link
+        Tue, 29 Aug 2023 11:11:18 -0400
+X-Greylist: delayed 433 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 29 Aug 2023 08:11:10 PDT
+Received: from forward501b.mail.yandex.net (forward501b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d501])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90609B5
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 08:11:10 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:542b:0:640:97a7:0])
+        by forward501b.mail.yandex.net (Yandex) with ESMTP id A88D75EC71;
+        Tue, 29 Aug 2023 18:03:52 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id o3SX2WDDY4Y0-6J6TcNPr;
+        Tue, 29 Aug 2023 18:03:52 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=filimonic.net; s=mail; t=1693321432;
+        bh=MBf4911WHoOIemy4BRbylsaQiFKI7AASD9DHXoJdoY8=;
+        h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+        b=F/m23RXsvbogd5EMZyFLm3KDuowi3Tk5sW4leleDYuQL5iVzmSKY4BS3E3r32yIRZ
+         69okdPxh6Lgoo7nM5XaFlr/LVilHvy0rgq6gAcZVRMZENUQQOa/YJvaJxsaq8E6w0Z
+         WNPttdksjKxblS1AhuQam2xS6Pv6TfWrvOwYVo+8=
+Authentication-Results: mail-nwsmtp-smtp-production-main-23.myt.yp-c.yandex.net; dkim=pass header.i=@filimonic.net
+Message-ID: <58cbe52d-0093-eef7-fa9f-4d5b2fc904c5@filimonic.net>
+Date:   Tue, 29 Aug 2023 18:03:49 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] wifi: mt76: add ability to explicitly forbid LED
+ registration with DT
+To:     Kalle Valo <kvalo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek@lists.infradead.org
+References: <b08ef4d7c91c54e273c61784272e5c6f70c3c137.1692896654.git.ryder.lee@mediatek.com>
+ <87edjmtkr0.fsf@kernel.org>
+Content-Language: en-US
+From:   Alexey <alexey@filimonic.net>
+In-Reply-To: <87edjmtkr0.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-ID: <20230829-ath12kwiki-v1-1-df37127527a1@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAMQI7mQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2MDCyMj3cSSDEOj7PLM7Exdy1QTY8OkVCOjFEtDJaCGgqLUtMwKsGHRsbW
- 1AKOFOVBcAAAA
-To:     <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>
-CC:     Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.12.3
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: wOi3xHM6Pw__XqnpSHK-yA2yfNhzc_qW
-X-Proofpoint-ORIG-GUID: wOi3xHM6Pw__XqnpSHK-yA2yfNhzc_qW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-29_13,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- adultscore=0 spamscore=0 phishscore=0 bulkscore=0 mlxlogscore=687
- impostorscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308290130
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The ath12k wireless driver now has a wiki, so advertise it.
+DT specification 4.0, section "2.3 Standard Properties":
+ > DTSpec specifies a set of standard properties for device nodes
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+DT specification 4.0, paragraph "2.3.4 status":
+ > The status property indicates the operational status of a device.
+ > The lack of a status property should be treated as if the property 
+existed with the value of "okay".
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d613b549c7a4..cde457a17a4d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17475,6 +17475,7 @@ M:	Kalle Valo <kvalo@kernel.org>
- M:	Jeff Johnson <quic_jjohnson@quicinc.com>
- L:	ath12k@lists.infradead.org
- S:	Supported
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath12k
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
- F:	drivers/net/wireless/ath/ath12k/
- 
-
----
-base-commit: 1ad27e0f35db54b6804b8b2dbbe7e35eb4bbe67f
-change-id: 20230822-ath12kwiki-9e431be22d91
-
+On 2023-08-29 09:39, Kalle Valo wrote:
+> Ryder Lee <ryder.lee@mediatek.com> writes:
+>
+>> Add ability to explicitly forbid LED registration using DT led\status = "disabled".
+>>
+>> Tested-by: Alexey D. Filimonov <alexey@filimonic.net>
+>> Signed-off-by: Alexey D. Filimonov <alexey@filimonic.net>
+>> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+> Is this a generic Device Tree feature and already documented in DT
+> bindings?
+>
