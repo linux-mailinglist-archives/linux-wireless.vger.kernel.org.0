@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E2EF78BCC5
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 04:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1450F78BCC4
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 04:21:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235337AbjH2CVA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S235355AbjH2CVA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Mon, 28 Aug 2023 22:21:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33244 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235162AbjH2CUb (ORCPT
+        with ESMTP id S235223AbjH2CUd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Aug 2023 22:20:31 -0400
+        Mon, 28 Aug 2023 22:20:33 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0A8B019B
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 19:20:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6C02919F
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Aug 2023 19:20:28 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37T2JsLfA019010, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37T2JsLfA019010
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37T2Jt9yA019018, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37T2Jt9yA019018
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 29 Aug 2023 10:19:54 +0800
+        Tue, 29 Aug 2023 10:19:55 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 29 Aug 2023 10:20:19 +0800
+ 15.1.2507.17; Tue, 29 Aug 2023 10:20:20 +0800
 Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 29 Aug
- 2023 10:20:18 +0800
+ 2023 10:20:19 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/6] wifi: rtw89: mcc: consider and determine BT duration
-Date:   Tue, 29 Aug 2023 10:19:15 +0800
-Message-ID: <20230829021918.14599-4-pkshih@realtek.com>
+Subject: [PATCH 4/6] wifi: rtw89: mcc: decide pattern and calculate parameters
+Date:   Tue, 29 Aug 2023 10:19:16 +0800
+Message-ID: <20230829021918.14599-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230829021918.14599-1-pkshih@realtek.com>
 References: <20230829021918.14599-1-pkshih@realtek.com>
@@ -45,10 +45,6 @@ X-Originating-IP: [172.21.69.25]
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -63,219 +59,315 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Before calculating MCC pattern, we have to determine whether to handle BT
-duration in it or not. The decision will depend on the channels that Wi-Fi
-roles use. And, we have three cases shown below.
-1. non-2GHz + non-2GHz
-2. non-2GHz + 2GHz (different band)
-3. 2GHz + 2GHz (dual 2GHz)
+After the previous works, we can now expand and display the MCC pattern
+in more detail, as shown below.
 
-For case (1), we don't care BT duration in MCC pattern. For case (2), we
-still don't care BT duration in MCC pattern. Instead, we try to satisfy it
-by modifying duration of Wi-Fi role on non-2GHz channel. For case (3), we
-need to modify Wi-Fi durations and also need to handle BT duration in MCC
-pattern.
+|<                              MCC interval                            >|
+|<   duration ref    >| (if mid bt) |<   duration aux    >| (if tail bt) |
+|<tob ref >|< toa ref>|     ...     |<tob aux >|< toa aux>|     ...      |
+           V                                   V
+       tbtt ref                            tbtt aux
+           |<          beacon offset          >|
+
+(where tob means `time offset behind` and toa means `time offset ahead`)
+
+There are two key points.
+1. decide position of BT slot if MCC pattern needs to handle BT duration.
+2. calculate all parameters related to tob and toa in MCC pattern.
+
+For point (1), when BT duration needs to be handled, BT position will
+rely on beacon offset, either middle or tail. For point (2), to ensure
+durations of the Wi-Fi roles cover their beacons, we have to calculate
+tob and toa for them according to their TBTT.
+
+And, there are two strategies to calculate parameters, strict and loose.
+In strict pattern, all parameters take HW time into account as limitation.
+But, the strict calculation are not always successful. In loose pattern,
+it only tries to give positive parameters to reference role and doesn't
+care much about auxiliary role. If unfortunately auxiliary role gets
+negative parameters in loose pattern, FW will be notified and then deal
+with it. So, the loose calculation won't fail. In general, we always try
+strict pattern cases before using a loose pattern.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/chan.c | 169 ++++++++++++++++++++++
- 1 file changed, 169 insertions(+)
+ drivers/net/wireless/realtek/rtw89/chan.c | 233 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h |   2 +
+ 2 files changed, 235 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index c2fb91678bd6..0d93427e0122 100644
+index 0d93427e0122..c609a252ef12 100644
 --- a/drivers/net/wireless/realtek/rtw89/chan.c
 +++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -700,6 +700,171 @@ static void rtw89_mcc_set_duration_gc_sta(struct rtw89_dev *rtwdev)
- 	aux->duration = dur_aux;
+@@ -622,6 +622,232 @@ static void rtw89_mcc_assign_pattern(struct rtw89_dev *rtwdev,
+ 		    pattern->courtesy.slot_num);
  }
  
-+struct rtw89_mcc_mod_dur_data {
-+	u16 available;
-+	struct {
-+		u16 dur;
-+		u16 room;
-+	} parm[NUM_OF_RTW89_MCC_ROLES];
-+};
-+
-+static int rtw89_mcc_mod_dur_get_iterator(struct rtw89_dev *rtwdev,
-+					  struct rtw89_mcc_role *mcc_role,
-+					  unsigned int ordered_idx,
-+					  void *data)
-+{
-+	struct rtw89_mcc_mod_dur_data *p = data;
-+	u16 min;
-+
-+	p->parm[ordered_idx].dur = mcc_role->duration;
-+
-+	if (mcc_role->is_go)
-+		min = RTW89_MCC_MIN_GO_DURATION;
-+	else
-+		min = RTW89_MCC_MIN_STA_DURATION;
-+
-+	p->parm[ordered_idx].room = max_t(s32, p->parm[ordered_idx].dur - min, 0);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+		    "MCC mod dur: chk role[%u]: dur %u, min %u, room %u\n",
-+		    ordered_idx, p->parm[ordered_idx].dur, min,
-+		    p->parm[ordered_idx].room);
-+
-+	p->available += p->parm[ordered_idx].room;
-+	return 0;
-+}
-+
-+static int rtw89_mcc_mod_dur_put_iterator(struct rtw89_dev *rtwdev,
-+					  struct rtw89_mcc_role *mcc_role,
-+					  unsigned int ordered_idx,
-+					  void *data)
-+{
-+	struct rtw89_mcc_mod_dur_data *p = data;
-+
-+	mcc_role->duration = p->parm[ordered_idx].dur;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+		    "MCC mod dur: set role[%u]: dur %u\n",
-+		    ordered_idx, p->parm[ordered_idx].dur);
-+	return 0;
-+}
-+
-+static void rtw89_mcc_mod_duration_dual_2ghz_with_bt(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
-+	struct rtw89_mcc_config *config = &mcc->config;
-+	struct rtw89_mcc_mod_dur_data data = {};
-+	u16 mcc_intvl = config->mcc_interval;
-+	u16 bt_dur = mcc->bt_role.duration;
-+	u16 wifi_dur;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+		    "MCC mod dur (dual 2ghz): mcc_intvl %u, raw bt_dur %u\n",
-+		    mcc_intvl, bt_dur);
-+
-+	rtw89_iterate_mcc_roles(rtwdev, rtw89_mcc_mod_dur_get_iterator, &data);
-+
-+	bt_dur = clamp_t(u16, bt_dur, 1, data.available / 3);
-+	wifi_dur = mcc_intvl - bt_dur;
-+
-+	if (data.parm[0].room <= data.parm[1].room) {
-+		data.parm[0].dur -= min_t(u16, bt_dur / 2, data.parm[0].room);
-+		data.parm[1].dur = wifi_dur - data.parm[0].dur;
-+	} else {
-+		data.parm[1].dur -= min_t(u16, bt_dur / 2, data.parm[1].room);
-+		data.parm[0].dur = wifi_dur - data.parm[1].dur;
-+	}
-+
-+	rtw89_iterate_mcc_roles(rtwdev, rtw89_mcc_mod_dur_put_iterator, &data);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN, "MCC mod dur: set bt: dur %u\n", bt_dur);
-+	mcc->bt_role.duration = bt_dur;
-+}
-+
-+static
-+void rtw89_mcc_mod_duration_diff_band_with_bt(struct rtw89_dev *rtwdev,
-+					      struct rtw89_mcc_role *role_2ghz,
-+					      struct rtw89_mcc_role *role_non_2ghz)
-+{
-+	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
-+	struct rtw89_mcc_config *config = &mcc->config;
-+	u16 dur_2ghz, dur_non_2ghz;
-+	u16 bt_dur, mcc_intvl;
-+
-+	dur_2ghz = role_2ghz->duration;
-+	dur_non_2ghz = role_non_2ghz->duration;
-+	mcc_intvl = config->mcc_interval;
-+	bt_dur = mcc->bt_role.duration;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+		    "MCC mod dur (diff band): mcc_intvl %u, bt_dur %u\n",
-+		    mcc_intvl, bt_dur);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+		    "MCC mod dur: check dur_2ghz %u, dur_non_2ghz %u\n",
-+		    dur_2ghz, dur_non_2ghz);
-+
-+	if (dur_non_2ghz >= bt_dur) {
-+		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+			    "MCC mod dur: dur_non_2ghz is enough for bt\n");
-+		return;
-+	}
-+
-+	dur_non_2ghz = bt_dur;
-+	dur_2ghz = mcc_intvl - dur_non_2ghz;
-+
-+	if (role_non_2ghz->limit.enable) {
-+		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+			    "MCC mod dur: dur_non_2ghz is limited with max %u\n",
-+			    role_non_2ghz->limit.max_dur);
-+
-+		dur_non_2ghz = min(dur_non_2ghz, role_non_2ghz->limit.max_dur);
-+		dur_2ghz = mcc_intvl - dur_non_2ghz;
-+	}
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+		    "MCC mod dur: set dur_2ghz %u, dur_non_2ghz %u\n",
-+		    dur_2ghz, dur_non_2ghz);
-+
-+	role_2ghz->duration = dur_2ghz;
-+	role_non_2ghz->duration = dur_non_2ghz;
-+}
-+
-+static bool rtw89_mcc_duration_decision_on_bt(struct rtw89_dev *rtwdev)
++/* The follow-up roughly shows the relationship between the parameters
++ * for pattern calculation.
++ *
++ * |<    duration ref     >| (if mid bt) |<    duration aux     >|
++ * |< tob ref >|< toa ref >|     ...     |< tob aux >|< toa aux >|
++ *             V                                     V
++ *         tbtt ref                              tbtt aux
++ *             |<           beacon offset           >|
++ *
++ * In loose pattern calculation, we only ensure at least tob_ref and
++ * toa_ref have positive results. If tob_aux or toa_aux is negative
++ * unfortunately, FW will be notified to handle it with courtesy
++ * mechanism.
++ */
++static void __rtw89_mcc_calc_pattern_loose(struct rtw89_dev *rtwdev,
++					   struct rtw89_mcc_pattern *ptrn,
++					   bool hdl_bt)
 +{
 +	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
 +	struct rtw89_mcc_role *ref = &mcc->role_ref;
 +	struct rtw89_mcc_role *aux = &mcc->role_aux;
-+	struct rtw89_mcc_bt_role *bt_role = &mcc->bt_role;
++	struct rtw89_mcc_config *config = &mcc->config;
++	u16 bcn_ofst = config->beacon_offset;
++	u16 bt_dur_in_mid = 0;
++	u16 max_bcn_ofst;
++	s16 upper, lower;
++	u16 res;
 +
-+	if (!bt_role->duration)
-+		return false;
++	*ptrn = (typeof(*ptrn)){
++		.plan = hdl_bt ? RTW89_MCC_PLAN_TAIL_BT : RTW89_MCC_PLAN_NO_BT,
++	};
 +
-+	if (ref->is_2ghz && aux->is_2ghz) {
-+		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+			    "MCC dual roles are on 2GHz; consider BT duration\n");
++	if (!hdl_bt)
++		goto calc;
 +
-+		rtw89_mcc_mod_duration_dual_2ghz_with_bt(rtwdev);
-+		return true;
++	max_bcn_ofst = ref->duration + aux->duration;
++	if (ref->limit.enable)
++		max_bcn_ofst = min_t(u16, max_bcn_ofst,
++				     ref->limit.max_toa + aux->duration);
++	else if (aux->limit.enable)
++		max_bcn_ofst = min_t(u16, max_bcn_ofst,
++				     ref->duration + aux->limit.max_tob);
++
++	if (bcn_ofst > max_bcn_ofst && bcn_ofst >= mcc->bt_role.duration) {
++		bt_dur_in_mid = mcc->bt_role.duration;
++		ptrn->plan = RTW89_MCC_PLAN_MID_BT;
 +	}
 +
-+	if (!ref->is_2ghz && !aux->is_2ghz) {
-+		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+			    "MCC dual roles are not on 2GHz; ignore BT duration\n");
-+		return false;
-+	}
-+
++calc:
 +	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
-+		    "MCC one role is on 2GHz; modify another for BT duration\n");
++		    "MCC calc ptrn_ls: plan %d, bcn_ofst %d\n",
++		    ptrn->plan, bcn_ofst);
 +
-+	if (ref->is_2ghz)
-+		rtw89_mcc_mod_duration_diff_band_with_bt(rtwdev, ref, aux);
++	res = bcn_ofst - bt_dur_in_mid;
++	upper = min_t(s16, ref->duration, res);
++	lower = 0;
++
++	if (ref->limit.enable) {
++		upper = min_t(s16, upper, ref->limit.max_toa);
++		lower = max_t(s16, lower, ref->duration - ref->limit.max_tob);
++	} else if (aux->limit.enable) {
++		upper = min_t(s16, upper,
++			      res - (aux->duration - aux->limit.max_toa));
++		lower = max_t(s16, lower, res - aux->limit.max_tob);
++	}
++
++	if (lower < upper)
++		ptrn->toa_ref = (upper + lower) / 2;
 +	else
-+		rtw89_mcc_mod_duration_diff_band_with_bt(rtwdev, aux, ref);
++		ptrn->toa_ref = lower;
 +
-+	return false;
++	ptrn->tob_ref = ref->duration - ptrn->toa_ref;
++	ptrn->tob_aux = res - ptrn->toa_ref;
++	ptrn->toa_aux = aux->duration - ptrn->tob_aux;
 +}
 +
- static void rtw89_mcc_sync_tbtt(struct rtw89_dev *rtwdev,
- 				struct rtw89_mcc_role *tgt,
- 				struct rtw89_mcc_role *src,
-@@ -785,6 +950,7 @@ static int rtw89_mcc_fill_config(struct rtw89_dev *rtwdev)
- 	struct rtw89_mcc_role *ref = &mcc->role_ref;
++/* In strict pattern calculation, we consider timing that might need
++ * for HW stuffs, i.e. min_tob and min_toa.
++ */
++static int __rtw89_mcc_calc_pattern_strict(struct rtw89_dev *rtwdev,
++					   struct rtw89_mcc_pattern *ptrn)
++{
++	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
++	struct rtw89_mcc_role *ref = &mcc->role_ref;
++	struct rtw89_mcc_role *aux = &mcc->role_aux;
++	struct rtw89_mcc_config *config = &mcc->config;
++	u16 min_tob = RTW89_MCC_EARLY_RX_BCN_TIME;
++	u16 min_toa = RTW89_MCC_MIN_RX_BCN_TIME;
++	u16 bcn_ofst = config->beacon_offset;
++	s16 upper_toa_ref, lower_toa_ref;
++	s16 upper_tob_aux, lower_tob_aux;
++	u16 bt_dur_in_mid;
++	s16 res;
++
++	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++		    "MCC calc ptrn_st: plan %d, bcn_ofst %d\n",
++		    ptrn->plan, bcn_ofst);
++
++	if (ptrn->plan == RTW89_MCC_PLAN_MID_BT)
++		bt_dur_in_mid = mcc->bt_role.duration;
++	else
++		bt_dur_in_mid = 0;
++
++	if (ref->duration < min_tob + min_toa) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC calc ptrn_st: not meet ref dur cond\n");
++		return -EINVAL;
++	}
++
++	if (aux->duration < min_tob + min_toa) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC calc ptrn_st: not meet aux dur cond\n");
++		return -EINVAL;
++	}
++
++	res = bcn_ofst - min_toa - min_tob - bt_dur_in_mid;
++	if (res < 0) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC calc ptrn_st: not meet bcn_ofst cond\n");
++		return -EINVAL;
++	}
++
++	upper_toa_ref = min_t(s16, min_toa + res, ref->duration - min_tob);
++	lower_toa_ref = min_toa;
++	upper_tob_aux = min_t(s16, min_tob + res, aux->duration - min_toa);
++	lower_tob_aux = min_tob;
++
++	if (ref->limit.enable) {
++		if (min_tob > ref->limit.max_tob || min_toa > ref->limit.max_toa) {
++			rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++				    "MCC calc ptrn_st: conflict ref limit\n");
++			return -EINVAL;
++		}
++
++		upper_toa_ref = min_t(s16, upper_toa_ref, ref->limit.max_toa);
++		lower_toa_ref = max_t(s16, lower_toa_ref,
++				      ref->duration - ref->limit.max_tob);
++	} else if (aux->limit.enable) {
++		if (min_tob > aux->limit.max_tob || min_toa > aux->limit.max_toa) {
++			rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++				    "MCC calc ptrn_st: conflict aux limit\n");
++			return -EINVAL;
++		}
++
++		upper_tob_aux = min_t(s16, upper_tob_aux, aux->limit.max_tob);
++		lower_tob_aux = max_t(s16, lower_tob_aux,
++				      aux->duration - aux->limit.max_toa);
++	}
++
++	upper_toa_ref = min_t(s16, upper_toa_ref,
++			      bcn_ofst - bt_dur_in_mid - lower_tob_aux);
++	lower_toa_ref = max_t(s16, lower_toa_ref,
++			      bcn_ofst - bt_dur_in_mid - upper_tob_aux);
++	if (lower_toa_ref > upper_toa_ref) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC calc ptrn_st: conflict boundary\n");
++		return -EINVAL;
++	}
++
++	ptrn->toa_ref = (upper_toa_ref + lower_toa_ref) / 2;
++	ptrn->tob_ref = ref->duration - ptrn->toa_ref;
++	ptrn->tob_aux = bcn_ofst - ptrn->toa_ref - bt_dur_in_mid;
++	ptrn->toa_aux = aux->duration - ptrn->tob_aux;
++	return 0;
++}
++
++static int rtw89_mcc_calc_pattern(struct rtw89_dev *rtwdev, bool hdl_bt)
++{
++	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
++	struct rtw89_mcc_role *ref = &mcc->role_ref;
++	struct rtw89_mcc_role *aux = &mcc->role_aux;
++	bool sel_plan[NUM_OF_RTW89_MCC_PLAN] = {};
++	struct rtw89_mcc_pattern ptrn;
++	int ret;
++	int i;
++
++	if (ref->limit.enable && aux->limit.enable) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC calc ptrn: not support dual limited roles\n");
++		return -EINVAL;
++	}
++
++	if (ref->limit.enable &&
++	    ref->duration > ref->limit.max_tob + ref->limit.max_toa) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC calc ptrn: not fit ref limit\n");
++		return -EINVAL;
++	}
++
++	if (aux->limit.enable &&
++	    aux->duration > aux->limit.max_tob + aux->limit.max_toa) {
++		rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++			    "MCC calc ptrn: not fit aux limit\n");
++		return -EINVAL;
++	}
++
++	if (hdl_bt) {
++		sel_plan[RTW89_MCC_PLAN_TAIL_BT] = true;
++		sel_plan[RTW89_MCC_PLAN_MID_BT] = true;
++	} else {
++		sel_plan[RTW89_MCC_PLAN_NO_BT] = true;
++	}
++
++	for (i = 0; i < NUM_OF_RTW89_MCC_PLAN; i++) {
++		if (!sel_plan[i])
++			continue;
++
++		ptrn = (typeof(ptrn)){
++			.plan = i,
++		};
++
++		ret = __rtw89_mcc_calc_pattern_strict(rtwdev, &ptrn);
++		if (ret)
++			rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++				    "MCC calc ptrn_st with plan %d: fail\n", i);
++		else
++			goto done;
++	}
++
++	__rtw89_mcc_calc_pattern_loose(rtwdev, &ptrn, hdl_bt);
++
++done:
++	rtw89_mcc_assign_pattern(rtwdev, &ptrn);
++	return 0;
++}
++
+ static void rtw89_mcc_set_default_pattern(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_mcc_info *mcc = &rtwdev->mcc;
+@@ -951,6 +1177,7 @@ static int rtw89_mcc_fill_config(struct rtw89_dev *rtwdev)
  	struct rtw89_mcc_role *aux = &mcc->role_aux;
  	struct rtw89_mcc_config *config = &mcc->config;
-+	bool hdl_bt;
+ 	bool hdl_bt;
++	int ret;
  
  	memset(config, 0, sizeof(*config));
  
-@@ -811,6 +977,9 @@ static int rtw89_mcc_fill_config(struct rtw89_dev *rtwdev)
- 		return -EFAULT;
- 	}
+@@ -980,7 +1207,13 @@ static int rtw89_mcc_fill_config(struct rtw89_dev *rtwdev)
+ 	hdl_bt = rtw89_mcc_duration_decision_on_bt(rtwdev);
+ 	rtw89_debug(rtwdev, RTW89_DBG_CHAN, "MCC handle bt: %d\n", hdl_bt);
  
-+	hdl_bt = rtw89_mcc_duration_decision_on_bt(rtwdev);
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN, "MCC handle bt: %d\n", hdl_bt);
++	ret = rtw89_mcc_calc_pattern(rtwdev, hdl_bt);
++	if (!ret)
++		goto bottom;
 +
  	rtw89_mcc_set_default_pattern(rtwdev);
++
++bottom:
  	return rtw89_mcc_fill_start_tsf(rtwdev);
  }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 4775fb490034..d782dc8397e0 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -4403,6 +4403,8 @@ enum rtw89_mcc_plan {
+ 	RTW89_MCC_PLAN_TAIL_BT,
+ 	RTW89_MCC_PLAN_MID_BT,
+ 	RTW89_MCC_PLAN_NO_BT,
++
++	NUM_OF_RTW89_MCC_PLAN,
+ };
+ 
+ struct rtw89_mcc_pattern {
 -- 
 2.25.1
 
