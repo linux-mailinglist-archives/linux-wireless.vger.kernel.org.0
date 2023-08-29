@@ -2,100 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 475A778C045
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 10:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C73A178C165
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 11:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234061AbjH2Ia2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Aug 2023 04:30:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46530 "EHLO
+        id S229822AbjH2J1J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Aug 2023 05:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234146AbjH2IaR (ORCPT
+        with ESMTP id S234653AbjH2J0r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Aug 2023 04:30:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E2AEA4;
-        Tue, 29 Aug 2023 01:30:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F001663408;
-        Tue, 29 Aug 2023 08:30:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE6CC433C7;
-        Tue, 29 Aug 2023 08:30:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693297812;
-        bh=3esHotHL2UZQIGFXwPHNiHq2AYICfZNGQboed3/La+0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Ebk4Oqp3T/3PwRIzhPLKQSPhbKdSmH5wEldN4Qi/Yqt8XKD6E1dpOXbbgronnv2Dc
-         oPzjB+8CYi3cb7/R4VuDR/DCDvE4iV0CqX1RB3bsTaX2zRDMtGASiFIRQs0WiSds87
-         0TWH+4G/0GaztGnYgj3fMasJ6FLoqsUFAranwIQGMcEskJrnJcOWyxUZ19Q0qZ82xp
-         ekItrONmLmyyJL1O1mT7mFfKL/eNBdUEkQ2qWmkurAFGlzAfhB/B+LeSmf6I7Nc5SU
-         0IpD0YMnAHSTFuztcFJVsyZZ85QhBswtVt447baDJIZC06oaqIBeQQsRFLBu5gRFjt
-         T8uKLhbjy4igw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     kernel test robot <lkp@intel.com>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: drivers/net/wireless/microchip/wilc1000/cfg80211.c:361:42:
- sparse: sparse: incorrect type in assignment (different base types)
-References: <202308290615.lUTIgqUl-lkp@intel.com> <877cpev0pn.fsf@kernel.org>
-Date:   Tue, 29 Aug 2023 11:31:22 +0300
-In-Reply-To: <877cpev0pn.fsf@kernel.org> (Kalle Valo's message of "Tue, 29 Aug
-        2023 09:09:40 +0300")
-Message-ID: <87a5uatfl1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Tue, 29 Aug 2023 05:26:47 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF7BE62
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 02:26:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=tUNrWcUAQLNEbzibUIyu1Nq8RRHNNYXfJ7ogebN5tfs=; t=1693301179; x=1694510779; 
+        b=bAXh/80FpcPxUhcAtmQopQCd6AviB+NanpfJYXon38Qhv12VCHzRqj2uv/LSR+heMQ1B8oUTed9
+        HjsqVsy8kAQAd5cIPxXiMuhq0BVuIpLWaMb0MIXL8WIZUOkgkrN8dCFPxsg9TS2TaOvrlRBRxq9oD
+        omKm8HBGtvV80kSrnLuf76+hXbeeSiFsxqwcUT1kHO87LKtNGIhxka25H/lxH0+t3mHLX3W8PJlDL
+        i2VJHF1G/BiMf47jt0KCJa5f8Y4PtEe+6UvdKsGrdbgBuVpw0eFpH0KXVf0jDdiztWgSFrxkIcy+v
+        Wv8hUFkBsYZ3GoHEqRhOam/SaxjqKwpUxNIQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qauyu-000wq5-30;
+        Tue, 29 Aug 2023 11:25:53 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Zhengchao Shao <shaozhengchao@huawei.com>
+Subject: [PATCH] wifi: mac80211: fix TXQ error path and cleanup
+Date:   Tue, 29 Aug 2023 11:25:50 +0200
+Message-ID: <20230829112549.e59574974cf9.I45c44136c03e941ee6d2c391eb45d61154278a7a@changeid>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> kernel test robot <lkp@intel.com> writes:
->
->> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
->> head:   727dbda16b83600379061c4ca8270ef3e2f51922
->> commit: c5b331d4f550fb78bf1a553b2517616a5ea913d6 wifi: wilc1000: add WPA3 SAE support
->> date:   1 year, 3 months ago
->> config: i386-randconfig-063-20230829 (https://download.01.org/0day-ci/archive/20230829/202308290615.lUTIgqUl-lkp@intel.com/config)
->> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
->> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230829/202308290615.lUTIgqUl-lkp@intel.com/reproduce)
->>
->> If you fix the issue in a separate patch/commit (i.e. not just a new version of
->> the same patch/commit), kindly add following tags
->> | Reported-by: kernel test robot <lkp@intel.com>
->> | Closes: https://lore.kernel.org/oe-kbuild-all/202308290615.lUTIgqUl-lkp@intel.com/
->>
->> sparse warnings: (new ones prefixed by >>)
->>>> drivers/net/wireless/microchip/wilc1000/cfg80211.c:361:42: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int key_mgmt_suite @@     got restricted __be32 [usertype] @@
->>    drivers/net/wireless/microchip/wilc1000/cfg80211.c:361:42: sparse:     expected unsigned int key_mgmt_suite
->>    drivers/net/wireless/microchip/wilc1000/cfg80211.c:361:42: sparse:     got restricted __be32 [usertype]
->
-> Yeah, this is an old issue but we really should try to fix this,
-> especially so as I would like to make wireless code sparse warning free
-> in the near future. IIRC there were some problems with nl80211 interface
-> as well so this might not be simple fix still.
+We currently call ieee80211_txq_teardown_flows() as part
+of ieee80211_remove_interfaces(), but that's not really
+right in case of HW registration failures, specifically
+rate control. Call it separately to fix that issue.
 
-For reference here's the old discussion:
+Reported-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/iface.c | 2 --
+ net/mac80211/main.c  | 3 +++
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-https://patchwork.kernel.org/project/linux-wireless/patch/20220720160302.231516-1-ajay.kathat@microchip.com/
-
-Any volunteers to help fix this? I would prefers fixes for issues like
-this compared to questionable random cleanups we always get.
-
-Maybe we should come up with a todo list somewhere and advocate the
-"cleaners" to work on those items instead?
-
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 7e3acf670f0f..510f8aead4f9 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -2255,8 +2255,6 @@ void ieee80211_remove_interfaces(struct ieee80211_local *local)
+ 	WARN(local->open_count, "%s: open count remains %d\n",
+ 	     wiphy_name(local->hw.wiphy), local->open_count);
+ 
+-	ieee80211_txq_teardown_flows(local);
+-
+ 	mutex_lock(&local->iflist_mtx);
+ 	list_splice_init(&local->interfaces, &unreg_list);
+ 	mutex_unlock(&local->iflist_mtx);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 0ab603850a85..eabf6c1bf3ff 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1457,6 +1457,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	ieee80211_remove_interfaces(local);
+ 	rtnl_unlock();
+  fail_rate:
++	ieee80211_txq_teardown_flows(local);
+  fail_flows:
+ 	ieee80211_led_exit(local);
+ 	destroy_workqueue(local->workqueue);
+@@ -1493,6 +1494,8 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
+ 	 */
+ 	ieee80211_remove_interfaces(local);
+ 
++	ieee80211_txq_teardown_flows(local);
++
+ 	wiphy_lock(local->hw.wiphy);
+ 	wiphy_delayed_work_cancel(local->hw.wiphy, &local->roc_work);
+ 	wiphy_work_cancel(local->hw.wiphy, &local->reconfig_filter);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.41.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
