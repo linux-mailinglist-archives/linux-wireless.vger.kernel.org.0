@@ -2,49 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6376378CB94
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 19:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DAEE78CBE6
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 20:17:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238027AbjH2Rw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Aug 2023 13:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34432 "EHLO
+        id S232406AbjH2SQn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Aug 2023 14:16:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238025AbjH2Rv6 (ORCPT
+        with ESMTP id S229482AbjH2SQT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Aug 2023 13:51:58 -0400
+        Tue, 29 Aug 2023 14:16:19 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A2B1E9
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 10:51:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86026BE
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 11:16:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=CJ2v8S/1ryLAOPOChAyE7RA+AtxjatbuAELG+GRkPik=;
-        t=1693331516; x=1694541116; b=b1KSG4G5iOTsmgkcHfJzpfPhw34lA/sb7qovlxOdEqTmL3H
-        4Q9vdTKo8a5ZJyLcxau51npH5gY4AO0joOJWszX2SmU58XcBHxGCLxxZNXEfB8vxvo63UAlXDfnTF
-        PGSj8HQGsf2niJhdBm72lMhBcpSHuUtGcDlv5TwxSb+urUHdZwJk4hqdoyO4D0pcrgsMNTRHekyGy
-        FoRY09v6zUcxe7rCPaifdtmm3mu/ZWkYgadQr6gUEp9WsPO6Uge9qr4EmlH1b8ftK/fZGWQEVU6oC
-        PjQvys0A4Sl7dAlVmQ6K75m+IuiZiTFE098HI2w6xN9GdqUvk9doejY48dNAFrBw==;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=/14W8/eZeYzNeWOcUSufGs779e64uaLkoPWHiIsC4z8=; t=1693332976; x=1694542576; 
+        b=ZWloKthCaszqcxh3C1oWRgpKe2MF0ZrzXnxtb+fAnpsfZkpYFXFxDEu7LZy39hwfGnY2X8OcscG
+        SNdxVEFE6u/rZzhnneTxF3YJGyG2I6KZsWqc4AUdC4k5LMJZwy8xYvb/paVS/Qvbs+nSd2xRJtG+S
+        lEg7h3zDKFo0injekBIdVXXWYWJ7WIPQxInyOvqG2RlBOFKkhf927LO64A2eqMMll6vtd7DGGRcKq
+        3kjn0ty5DlkE8M7alHNzDtVeDohmJy65D/sgh0fLup1LFcPARBDhJ+Sp7aCHwV3+v/ThRcAyiCDk9
+        4+S8vV34FEhRXh+FEaQ3hyA+vqnHx6PIN8/w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qb2sb-001Qjq-2M;
-        Tue, 29 Aug 2023 19:51:53 +0200
-Message-ID: <59e2364e9085f725c03d05e3f720f8fae7b336ce.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 4/9] wifi: cfg80211: add NL command to set 6 GHz
- power mode
+        id 1qb3G9-001SAJ-1U;
+        Tue, 29 Aug 2023 20:16:13 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aditya Kumar Singh <quic_adisi@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 29 Aug 2023 19:51:52 +0200
-In-Reply-To: <20230315132904.31779-5-quic_adisi@quicinc.com>
-References: <20230315132904.31779-1-quic_adisi@quicinc.com>
-         <20230315132904.31779-5-quic_adisi@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+To:     linux-wireless@vger.kernel.org
+Cc:     Alexander Wetzel <alexander@wetzel-home.de>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: mac80211: fix BA session teardown race
+Date:   Tue, 29 Aug 2023 20:16:11 +0200
+Message-ID: <20230829201610.cc648236f434.I205a557b06a27f58afe3880f4db43d554210c88d@changeid>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -54,36 +50,108 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-03-15 at 18:58 +0530, Aditya Kumar Singh wrote:
->=20
-> +	{
-> +		.cmd =3D NL80211_CMD_SET_6GHZ_POWER_MODE,
-> +		.validate =3D GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-> +		.doit =3D nl80211_set_6ghz_power_mode,
-> +		.flags =3D GENL_UNS_ADMIN_PERM,
-> +		.internal_flags =3D IFLAGS(NL80211_FLAG_NEED_NETDEV |
-> +					 NL80211_FLAG_MLO_VALID_LINK_ID),
-> +	},
+From: Johannes Berg <johannes.berg@intel.com>
 
-Why is this even a new command, rather than a parameter to start AP or
-similar?
+As previously reported by Alexander, whose commit 69403bad97aa
+("wifi: mac80211: sdata can be NULL during AMPDU start") I'm
+reverting as part of this commit, there's a race between station
+destruction and aggregation setup, where the aggregation setup
+can happen while the station is being removed and queue the work
+after ieee80211_sta_tear_down_BA_sessions() has already run in
+__sta_info_destroy_part1(), and thus the worker will run with a
+now freed station. In his case, this manifested in a NULL sdata
+pointer, but really there's no guarantee whatsoever.
 
-Why do we even set it in client mode from userspace?
+The real issue seems to be that it's possible at all to have a
+situation where this occurs - we want to stop the BA sessions
+when doing _part1, but we cannot be sure, and WLAN_STA_BLOCK_BA
+isn't necessarily effective since we don't know that the setup
+isn't concurrently running and already got past the check.
 
->  static struct genl_family nl80211_fam __ro_after_init =3D {
-> @@ -17409,7 +17473,7 @@ static struct genl_family nl80211_fam __ro_after_=
-init =3D {
->  	.n_ops =3D ARRAY_SIZE(nl80211_ops),
->  	.small_ops =3D nl80211_small_ops,
->  	.n_small_ops =3D ARRAY_SIZE(nl80211_small_ops),
-> -	.resv_start_op =3D NL80211_CMD_REMOVE_LINK_STA + 1,
-> +	.resv_start_op =3D NL80211_CMD_SET_6GHZ_POWER_MODE + 1,
->=20
+Simply call ieee80211_sta_tear_down_BA_sessions() again in the
+second part of station destruction, since at that point really
+nothing else can hold a reference to the station any more.
 
-Obviously, this should not be done.
+Also revert the sdata checks since those are just misleading at
+this point.
 
-But in any case, I don't think there's a lot of value in doing a
-detailed review of the code if we haven't gotten a good grasp of the
-semantics that you want.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/agg-tx.c     |  6 +-----
+ net/mac80211/driver-ops.c |  3 ---
+ net/mac80211/sta_info.c   | 14 ++++++++++++++
+ 3 files changed, 15 insertions(+), 8 deletions(-)
 
-johannes
+diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
+index 0627abb09f0e..b8a278355e18 100644
+--- a/net/mac80211/agg-tx.c
++++ b/net/mac80211/agg-tx.c
+@@ -497,7 +497,7 @@ void ieee80211_tx_ba_session_handle_start(struct sta_info *sta, int tid)
+ {
+ 	struct tid_ampdu_tx *tid_tx;
+ 	struct ieee80211_local *local = sta->local;
+-	struct ieee80211_sub_if_data *sdata;
++	struct ieee80211_sub_if_data *sdata = sta->sdata;
+ 	struct ieee80211_ampdu_params params = {
+ 		.sta = &sta->sta,
+ 		.action = IEEE80211_AMPDU_TX_START,
+@@ -525,7 +525,6 @@ void ieee80211_tx_ba_session_handle_start(struct sta_info *sta, int tid)
+ 	 */
+ 	synchronize_net();
+ 
+-	sdata = sta->sdata;
+ 	params.ssn = sta->tid_seq[tid] >> 4;
+ 	ret = drv_ampdu_action(local, sdata, &params);
+ 	tid_tx->ssn = params.ssn;
+@@ -539,9 +538,6 @@ void ieee80211_tx_ba_session_handle_start(struct sta_info *sta, int tid)
+ 		 */
+ 		set_bit(HT_AGG_STATE_DRV_READY, &tid_tx->state);
+ 	} else if (ret) {
+-		if (!sdata)
+-			return;
+-
+ 		ht_dbg(sdata,
+ 		       "BA request denied - HW unavailable for %pM tid %d\n",
+ 		       sta->sta.addr, tid);
+diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
+index 919300750527..169dbbca54b6 100644
+--- a/net/mac80211/driver-ops.c
++++ b/net/mac80211/driver-ops.c
+@@ -409,9 +409,6 @@ int drv_ampdu_action(struct ieee80211_local *local,
+ 	might_sleep();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
+-	if (!sdata)
+-		return -EIO;
+-
+ 	sdata = get_bss_sdata(sdata);
+ 	if (!check_sdata_in_driver(sdata))
+ 		return -EIO;
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index abcc280acd38..2a61269a4b54 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1385,6 +1385,20 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
+ 	 *	 after _part1 and before _part2!
+ 	 */
+ 
++	/*
++	 * There's a potential race in _part1 where we set WLAN_STA_BLOCK_BA
++	 * but someone might have just gotten past a check, and not yet into
++	 * queuing the work/creating the data/etc.
++	 *
++	 * Do another round of destruction so that the worker is certainly
++	 * canceled before we later free the station.
++	 *
++	 * Since this is after synchronize_rcu()/synchronize_net() we're now
++	 * certain that nobody can actually hold a reference to the STA and
++	 * be calling e.g. ieee80211_start_tx_ba_session().
++	 */
++	ieee80211_sta_tear_down_BA_sessions(sta, AGG_STOP_DESTROY_STA);
++
+ 	might_sleep();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
+-- 
+2.41.0
+
