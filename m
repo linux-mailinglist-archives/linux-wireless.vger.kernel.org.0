@@ -2,57 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8721578C775
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 16:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C8D978C83E
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 17:04:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231894AbjH2OY3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Aug 2023 10:24:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36854 "EHLO
+        id S236940AbjH2PDs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Aug 2023 11:03:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236960AbjH2OYS (ORCPT
+        with ESMTP id S237267AbjH2PDs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Aug 2023 10:24:18 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8169ECF2
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 07:23:55 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id ffacd0b85a97d-3175e1bb38cso338880f8f.1
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 07:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=healthydataprovider.com; s=google; t=1693319034; x=1693923834;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kXIiYcuE32QPLGc8I5pGOsLZACAZ4/p0//J3WyS1ouI=;
-        b=D4VrhOLb90bhG400igJXujuvGm3M1d3/EMIiczaCdV/h+8+Xouvl/AerFdqEtwa6nc
-         PUhsgawh7HSvqyVYTOJySI+A7/0f+uT0s5Gu/KTBdenUyVTz/ZqD7xQowjDWF7ewxG5S
-         8Eg7MbxWpk5ww+AoQ27wx3M5hj/w5ykSS7ZFDGQPA5xwn/jLuYg2A4rOqK3I28aprndP
-         2leoxC9vf3nb1Xup8m7y76JMowUBCMbdEPvTNKrO5uYjhxP39cveBXLu7SFDXUNxSii+
-         rQJD5V09m+ZWw2Kc45JrkKjeaTxKEiWspKgDaqWL0M3dcqwmQaSZLyR0pbjSrGoONL9Y
-         CYaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693319034; x=1693923834;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kXIiYcuE32QPLGc8I5pGOsLZACAZ4/p0//J3WyS1ouI=;
-        b=Hsn3m/Katxekzou0627OLoDibngNoBH3N3CrOfAwmCBAFogRQQ3CS4/Jq4RhUuR4Ig
-         S4t4JMd0rR3p8UXUCIFfY2Vt96PYbMrk2OxbNSCKG4LVoyj60825d0N/VAPmj6STNGy2
-         TnKtPSHlJr8T+WEii5WG7G2i8Q647v7ECYiTmY0QjPHpLPuruReffUyionViT1NH1bGM
-         5u9uoW3YsLpBKvNeEd30NYMsxfZ15Ih2tJDBrLJ7lsJHqMFjm6XA3quuFY1iM3t5oJ4U
-         3z4LF4akTf5UL23rZFky1kYc6yRuSLzmv/0r4AZF1GMWx/augITy+HJNF548fE1y9APR
-         Jdjg==
-X-Gm-Message-State: AOJu0YwlRDhBW7pj3hApcEfynz3CS4wWUq4FvZbv2R0GcVa6btEs9WvS
-        J4xdT8SPP9xWXYrFVxyH7hinLxpwJn4U5tugmyJeVw==
-X-Google-Smtp-Source: AGHT+IF7ohBH27Z9jH4n5aznFxGSbSjynB30OJD6HCEH8g8hmlDB7WwSbQ0sjHK+QouPhPU6ELXd92BWVas5gMOQxFY=
-X-Received: by 2002:adf:f9c4:0:b0:319:7624:4ca2 with SMTP id
- w4-20020adff9c4000000b0031976244ca2mr21499164wrr.0.1693319034062; Tue, 29 Aug
- 2023 07:23:54 -0700 (PDT)
+        Tue, 29 Aug 2023 11:03:48 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F1BBCD6;
+        Tue, 29 Aug 2023 08:03:39 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37TEI44D016856;
+        Tue, 29 Aug 2023 15:03:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : date :
+ subject : mime-version : content-type : content-transfer-encoding :
+ message-id : to : cc; s=qcppdkim1;
+ bh=Pbq2qERGO+nLC19TWRCJXsINUbgJX/x606S2q8/ClPo=;
+ b=bPNU3Kj+bylG5NGOXVuyFvPRaiEckhrhIsblK+kOJiyY1xRWZ0StFg2KXvAPtYdW5SMX
+ 3SQeBP/9H3XDqJ2eWjVMp5wbuYso3/mHp2iSdnCzMWW4ten/VJJ8i+Dp5v29UuF1ckIn
+ U5O4TfZqxhij284LzOntiJAZFykE0kukGvmq2wg+bd+L3uURyBzZNmSsyLALvSsbWxly
+ kOnwtU15ayl2W34F5XZz+gCGWGTueu9Q+Bzq2wYc3t6e4s106PrEn8VagRyffkzlwUwQ
+ 8rsjwKE+GsV3gDWK3OAKrFbA8pmZeLxiev6a+F66p2Nq45BRdgYJSUuPzZ0PdGRJ86kA Fw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ss3fr23yd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Aug 2023 15:03:38 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37TF3bag029721
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Aug 2023 15:03:37 GMT
+Received: from hu-jjohnson-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Tue, 29 Aug 2023 08:03:37 -0700
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+Date:   Tue, 29 Aug 2023 08:03:33 -0700
+Subject: [PATCH] MAINTAINERS: wifi: ath12k: add wiki link
 MIME-Version: 1.0
-From:   Kathleen Miller <kathleen@healthydataprovider.com>
-Date:   Tue, 29 Aug 2023 09:23:42 -0500
-Message-ID: <CAF0eVau_0eoxc285XcrvGHR3O+opJvegzKQLpQw0RR2YZxw+Lg@mail.gmail.com>
-Subject: RE: Money20/20 | Fintech Events and Conferences Attendees Data-List 2023
-To:     Kathleen Miller <kathleen@healthydataprovider.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20230829-ath12kwiki-v1-1-df37127527a1@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAMQI7mQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2MDCyMj3cSSDEOj7PLM7Exdy1QTY8OkVCOjFEtDJaCGgqLUtMwKsGHRsbW
+ 1AKOFOVBcAAAA
+To:     <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>
+CC:     Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.12.3
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: wOi3xHM6Pw__XqnpSHK-yA2yfNhzc_qW
+X-Proofpoint-ORIG-GUID: wOi3xHM6Pw__XqnpSHK-yA2yfNhzc_qW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-29_13,2023-08-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ adultscore=0 spamscore=0 phishscore=0 bulkscore=0 mlxlogscore=687
+ impostorscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308290130
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,15 +76,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+The ath12k wireless driver now has a wiki, so advertise it.
 
-Would you be interested in acquiring Money20/20 Attendees Email List?
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-Number of Contacts: 11,198
-Cost: $ 1,617
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d613b549c7a4..cde457a17a4d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17475,6 +17475,7 @@ M:	Kalle Valo <kvalo@kernel.org>
+ M:	Jeff Johnson <quic_jjohnson@quicinc.com>
+ L:	ath12k@lists.infradead.org
+ S:	Supported
++W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath12k
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+ F:	drivers/net/wireless/ath/ath12k/
+ 
 
-Interested? Email me back; I would love to provide more information on the list.
+---
+base-commit: 1ad27e0f35db54b6804b8b2dbbe7e35eb4bbe67f
+change-id: 20230822-ath12kwiki-9e431be22d91
 
-Kind Regards,
-Kathleen Miller
-Marketing Coordinator
