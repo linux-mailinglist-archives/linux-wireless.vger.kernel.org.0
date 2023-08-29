@@ -2,55 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44FEC78C394
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 13:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ABD078C3B3
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 13:54:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232240AbjH2Lr5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Aug 2023 07:47:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40376 "EHLO
+        id S233034AbjH2LyX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Aug 2023 07:54:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232167AbjH2Lrf (ORCPT
+        with ESMTP id S232516AbjH2Lxw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Aug 2023 07:47:35 -0400
+        Tue, 29 Aug 2023 07:53:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABBA2109;
-        Tue, 29 Aug 2023 04:47:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E13E194
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 04:53:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48FB560B70;
-        Tue, 29 Aug 2023 11:47:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42DAC433C7;
-        Tue, 29 Aug 2023 11:47:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D10BE65306
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 11:53:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8236EC433C8;
+        Tue, 29 Aug 2023 11:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693309651;
-        bh=2JIypwUK6FhIZ3QHAhrbsLajiBfjZ62lgJwSgVYXJYg=;
+        s=k20201202; t=1693310029;
+        bh=awCMTnDtvvGRTd8dGFD1IkkYqZZrzBBX9jyzuOvu4Mw=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=WpoxyfT96RrgWmxmpt0PCKw3+0p9AMvKZBdy3TXUdL05NbfuKsxK77tiGyJnGNJpR
-         gCGygjGrcu2CfbwyEtnC3unyQWxnfWRPgPW2rcGvRqZOPr5ZCLr66H480QkVADumGf
-         InSYuRL8On+eG8q/1uYOyJTBCfDVCb2KlPilpds3+dHyBMuhNysqkxgc+wxr1GlmVL
-         iXwL1UMc3X0KoIZljIw6IO1+ivfZ3oug14DW5RYpHh3LxbR9m0yUy7nLEpRxa8wCxJ
-         7VAMZeaEio82tcD6cbFptCLSLvY0SNF0whvzjsjTrm62OguXDmgW43D8ZdJG9fxxZY
-         xeuuLZ623t+QQ==
+        b=agFtrIaz1YjzBj7XhxU4BIT6GF03xbYREjgBbWoY4enl1ZbCUnQ+s9XD7jSb4DCZA
+         XwYSOAIfpoKghEM+R/qcVCILrwUG8skQGKzDVvpog6Gn0JWfQy00JLeqKYqBC3ERVz
+         HYBtVOEYaco6FmaW1/3H0HbKb2ofuFjsoWkYmjeddmFTkFLKpXyuh/EZmk5FWfsV73
+         6rBwrJe1sZGZp8wTlb5O+0W2qImUqkxTUsfevQZSxzmPQsfURXL7oQoXw7TO3GgtD5
+         HesYxkhtR5WiY3mN8uQXJx85pjVVTYC4Z4jUkWR4REI2tyqQjvhMxRM4ttHo433QCR
+         HfqJ7iuXa7Xtw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Revert "Revert "wifi: ath11k: Enable threaded NAPI""
-References: <20230809073432.4193-1-johan+linaro@kernel.org>
-        <ZONpkVU1ORHj-zFH@hovoldconsulting.com> <87o7izi6br.fsf@kernel.org>
-        <ZOS7zdWNaqmfCHet@hovoldconsulting.com>
-        <ZOof7EE0tXAt0YN7@hovoldconsulting.com>
-Date:   Tue, 29 Aug 2023 14:47:27 +0300
-In-Reply-To: <ZOof7EE0tXAt0YN7@hovoldconsulting.com> (Johan Hovold's message
-        of "Sat, 26 Aug 2023 17:53:16 +0200")
-Message-ID: <87leduf4ts.fsf@kernel.org>
+To:     Arowa Suliman <arowa@chromium.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [v4] wifi: ath11k: Add crash logging
+References: <20230714001126.463127-1-arowa@chromium.org>
+Date:   Tue, 29 Aug 2023 14:53:46 +0300
+In-Reply-To: <20230714001126.463127-1-arowa@chromium.org> (Arowa Suliman's
+        message of "Thu, 13 Jul 2023 17:10:54 -0700")
+Message-ID: <87h6oif4j9.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,47 +54,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johan Hovold <johan@kernel.org> writes:
+Arowa Suliman <arowa@chromium.org> writes:
 
-> On Tue, Aug 22, 2023 at 03:44:45PM +0200, Johan Hovold wrote:
->> On Tue, Aug 22, 2023 at 03:56:24PM +0300, Kalle Valo wrote:
->> > Johan Hovold <johan@kernel.org> writes:
->> > > On Wed, Aug 09, 2023 at 09:34:32AM +0200, Johan Hovold wrote:
->> > >
->> > >> Disabling threaded NAPI caused a severe regression in 6.5-rc5 by making
->> > >> the X13s completely unusable (e.g. no keyboard input, I've seen an RCU
->> > >> splat once).
->> 
->> > > Any chance we can get the offending commit reverted before 6.5 is
->> > > released? 
->> > 
->> > The problem here is that would break QCN9074 again so there is no good
->> > solution. I suspect we have a fundamental issue in ath11k which we just
->> > haven't discovered yet. I would prefer to get to the bottom of this
->> > before reverting anything.
->> 
->> Sure, ideally we can find and fix the underlying issues these next few
->> days, but since this regression was introduced in rc5 in an attempt to
->> address the QCN9074 issue which has been there since 6.1 I think we
->> need to revert otherwise. 
+> Currently, the ath11k driver does not print a crash signature when a
+> crash happens. Checked by triggering a simulated crash using the command
+> [1] and checking dmesg for logs.
 >
-> I've managed to track down what causes the hang on the X13s after
-> disabling threaded NAPI. Turns out to be a severe regression in the
-> genirq code that causes the software resend tasklet to loop
-> indefinitely.
+> [1] echo assert > /sys/kernel/debug/ath11k/../simulate_fw_crash
 >
-> I've just sent a fix here:
+> Change the crash logging from debug to informational and add a warning
+> when firmware crash MHI_CB_EE_RDDM happens.
 >
-> 	https://lore.kernel.org/lkml/20230826154004.1417-1-johan+linaro@kernel.org/
+> Tested-on: WCN6855 hw2.0 PCI
+> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+>
+> Signed-off-by: Arowa Suliman <arowa@chromium.org>
 
-Oh wow, that's a tricky bug :o I'm sure it was not easy to find.
+I did some cosmetic cleanup to the commit log.
 
-> I've also made some progress on the QCN9074 hang, but keeping the
-> threaded NAPI revert for now is indeed the right thing to do.
+> --- a/drivers/net/wireless/ath/ath11k/mhi.c
+> +++ b/drivers/net/wireless/ath/ath11k/mhi.c
+> @@ -325,14 +325,15 @@ static void ath11k_mhi_op_status_cb(struct mhi_controller *mhi_cntrl,
+>  {
+>  	struct ath11k_base *ab = dev_get_drvdata(mhi_cntrl->cntrl_dev);
+>  
+> -	ath11k_dbg(ab, ATH11K_DBG_BOOT, "notify status reason %s\n",
+> -		   ath11k_mhi_op_callback_to_str(cb));
+> +	ath11k_info(ab, "notify status reason %s\n",
+> +		    ath11k_mhi_op_callback_to_str(cb));
 
-Ok, thanks for the update and looking at also this problem. Very much
-appreciated! I'm sure we have a major bug lurking somewhere in ath11k,
-would be so good to fix that.
+In my view info, warning and error messages need to be at least somewhat
+understandable to the user. I think this message is not understandable
+and it should remain as a debug message. So I removed this change.
+
+Please check my changes in the pending branch:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=f9325b14e830f3e8b5a557352e7c65f321bb7b05
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
