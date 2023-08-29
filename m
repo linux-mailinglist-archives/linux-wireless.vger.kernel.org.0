@@ -2,102 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C73A178C165
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 11:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A40A78C19A
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 11:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229822AbjH2J1J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Aug 2023 05:27:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37604 "EHLO
+        id S233549AbjH2JhZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Aug 2023 05:37:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234653AbjH2J0r (ORCPT
+        with ESMTP id S233820AbjH2JhM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Aug 2023 05:26:47 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF7BE62
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 02:26:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=tUNrWcUAQLNEbzibUIyu1Nq8RRHNNYXfJ7ogebN5tfs=; t=1693301179; x=1694510779; 
-        b=bAXh/80FpcPxUhcAtmQopQCd6AviB+NanpfJYXon38Qhv12VCHzRqj2uv/LSR+heMQ1B8oUTed9
-        HjsqVsy8kAQAd5cIPxXiMuhq0BVuIpLWaMb0MIXL8WIZUOkgkrN8dCFPxsg9TS2TaOvrlRBRxq9oD
-        omKm8HBGtvV80kSrnLuf76+hXbeeSiFsxqwcUT1kHO87LKtNGIhxka25H/lxH0+t3mHLX3W8PJlDL
-        i2VJHF1G/BiMf47jt0KCJa5f8Y4PtEe+6UvdKsGrdbgBuVpw0eFpH0KXVf0jDdiztWgSFrxkIcy+v
-        Wv8hUFkBsYZ3GoHEqRhOam/SaxjqKwpUxNIQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qauyu-000wq5-30;
-        Tue, 29 Aug 2023 11:25:53 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Zhengchao Shao <shaozhengchao@huawei.com>
-Subject: [PATCH] wifi: mac80211: fix TXQ error path and cleanup
-Date:   Tue, 29 Aug 2023 11:25:50 +0200
-Message-ID: <20230829112549.e59574974cf9.I45c44136c03e941ee6d2c391eb45d61154278a7a@changeid>
+        Tue, 29 Aug 2023 05:37:12 -0400
+Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3CEF9E
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 02:37:04 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:2c95:0:640:f90:0])
+        by forward103a.mail.yandex.net (Yandex) with ESMTP id CB87E463C2;
+        Tue, 29 Aug 2023 12:37:00 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id xaMvVGCDgKo0-vhI78Y0m;
+        Tue, 29 Aug 2023 12:37:00 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1693301820;
+        bh=cxuK7kPgPe2FrszecR1C47CcaHQJoWD59EcmhO+Bru8=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=JQ8d4dFjT+zS3yeduEqg+plYllLYSuiyIwl183Hrv1MIgRdyWKSmgp7Lp21GMVhbn
+         CJmxSru2HMbrwnP2+zEncNVYQaAYaeHritJPpKioyJBqZvBTpMdY5y2p3gGrJF2nm3
+         9i+IXUsxT9QGfdbdkc+nYyaUZ710a/SGE1spQNsA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: ath10k: fix clang-specific fortify warning
+Date:   Tue, 29 Aug 2023 12:36:02 +0300
+Message-ID: <20230829093652.234537-1-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
 
-We currently call ieee80211_txq_teardown_flows() as part
-of ieee80211_remove_interfaces(), but that's not really
-right in case of HW registration failures, specifically
-rate control. Call it separately to fix that issue.
+In file included from drivers/net/wireless/ath/ath10k/debug.c:8:
+In file included from ./include/linux/module.h:13:
+In file included from ./include/linux/stat.h:19:
+In file included from ./include/linux/time.h:60:
+In file included from ./include/linux/time32.h:13:
+In file included from ./include/linux/timex.h:67:
+In file included from ./arch/x86/include/asm/timex.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
 
-Reported-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The compiler actually complains on 'ath10k_debug_get_et_strings()' where
+fortification logic inteprets call to 'memcpy()' as an attempt to copy
+the whole 'ath10k_gstrings_stats' array from it's first member and so
+issues an overread warning. This warning may be silenced by passing
+an address of the whole array and not the first member to 'memcpy()'.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- net/mac80211/iface.c | 2 --
- net/mac80211/main.c  | 3 +++
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath10k/debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 7e3acf670f0f..510f8aead4f9 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -2255,8 +2255,6 @@ void ieee80211_remove_interfaces(struct ieee80211_local *local)
- 	WARN(local->open_count, "%s: open count remains %d\n",
- 	     wiphy_name(local->hw.wiphy), local->open_count);
+diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
+index f9518e1c9903..fe89bc61e531 100644
+--- a/drivers/net/wireless/ath/ath10k/debug.c
++++ b/drivers/net/wireless/ath/ath10k/debug.c
+@@ -1140,7 +1140,7 @@ void ath10k_debug_get_et_strings(struct ieee80211_hw *hw,
+ 				 u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *ath10k_gstrings_stats,
++		memcpy(data, ath10k_gstrings_stats,
+ 		       sizeof(ath10k_gstrings_stats));
+ }
  
--	ieee80211_txq_teardown_flows(local);
--
- 	mutex_lock(&local->iflist_mtx);
- 	list_splice_init(&local->interfaces, &unreg_list);
- 	mutex_unlock(&local->iflist_mtx);
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 0ab603850a85..eabf6c1bf3ff 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1457,6 +1457,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	ieee80211_remove_interfaces(local);
- 	rtnl_unlock();
-  fail_rate:
-+	ieee80211_txq_teardown_flows(local);
-  fail_flows:
- 	ieee80211_led_exit(local);
- 	destroy_workqueue(local->workqueue);
-@@ -1493,6 +1494,8 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
- 	 */
- 	ieee80211_remove_interfaces(local);
- 
-+	ieee80211_txq_teardown_flows(local);
-+
- 	wiphy_lock(local->hw.wiphy);
- 	wiphy_delayed_work_cancel(local->hw.wiphy, &local->roc_work);
- 	wiphy_work_cancel(local->hw.wiphy, &local->reconfig_filter);
 -- 
 2.41.0
 
