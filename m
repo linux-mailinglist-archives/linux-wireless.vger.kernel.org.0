@@ -2,88 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 512B778C9B8
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 18:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 497A278CB90
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Aug 2023 19:51:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237467AbjH2Qe0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Aug 2023 12:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48954 "EHLO
+        id S238141AbjH2Ruy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Aug 2023 13:50:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237483AbjH2QeL (ORCPT
+        with ESMTP id S238117AbjH2RuX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Aug 2023 12:34:11 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8820CA6
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 09:34:09 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37TEtmpu017337;
-        Tue, 29 Aug 2023 16:34:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=OP7dzRttNOotf5WAsYPhCwIDPNx4eW6fztZX/8LyXEQ=;
- b=ZvabagHtZT7ChDpDsuv8wa83TimjMDnp1Vj6sa39ukSdTLGw2Qpx7+aOkoeXLtr8S46N
- 8YDBeitJ3TlhscQUD1oXOVDNbKuvV3OFNfSWQtHblwnNE45uNOUY14r70lRldANsRxiQ
- /F93YrTkbGPtULcm0bEVGBDp7BH+pyIEw9aPsu/BFIiyhTWR9Ccxjf/tpNyqJhonoAfa
- quhnwZMjju4R1GcroTyTyHn+Jz9zTQkjusYmdcrTo5+O+/lNbGvzPrMMzlKVp3a6O1Yi
- 79AMxQ0+REOgI0+w3sCyN0J5ixFohgW67o60tL+8TNPjKf27F42OgfYcAj4VncK7FaUf dA== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ssjvb08d0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Aug 2023 16:34:06 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37TGY5Eu009471
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Aug 2023 16:34:05 GMT
-Received: from [10.48.245.159] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 29 Aug
- 2023 09:34:05 -0700
-Message-ID: <256e3c4b-672f-4687-a3b9-4176dbcce3c2@quicinc.com>
-Date:   Tue, 29 Aug 2023 09:34:04 -0700
+        Tue, 29 Aug 2023 13:50:23 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA080F4
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Aug 2023 10:50:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=J9TuUtqJG2UbjpSxmyRA25dEzoXFGer3upQ/oiRgJrQ=;
+        t=1693331420; x=1694541020; b=Y5tBbcZoF/qmLLhKKTD14v0s3RqHKvVtQqu69P0rR9E4EtH
+        JzhoC3gLl+ERqlOT9uVBYnQ3YZboQSc1L9TcArEeaB6oo3uICQeGBdLowVV9C9yZFIIy2QI/K9dig
+        QLfbTQ+owQd7zu2i9IeWRyV1qxRU1H3sK5gOZFI6UulxYFnfJWFe7BB2yRik2irFhcLtDiLxFkdjF
+        wczg5xXoOjwgWEIGpmTeBHwhAuIX447mjO4Ks+5L5sceGi2z94R36axGD6uchmJftqPOUWZbJJau7
+        7KRUSmYsnnWQU8k4taCjqPXOJ1NZLNYvSUdHH2uHcIupzJeIz6fJYmKu5oRs5M5g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qb2r3-001Qdf-37;
+        Tue, 29 Aug 2023 19:50:18 +0200
+Message-ID: <319ecb67faac8a2e50408f2bfa28f2431a6e6b9a.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 0/9] wifi: cfg80211/mac80211: extend 6 GHz support
+ for all power modes
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 29 Aug 2023 19:50:16 +0200
+In-Reply-To: <20230315132904.31779-1-quic_adisi@quicinc.com>
+References: <20230315132904.31779-1-quic_adisi@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: cfg80211: remove scan_width support
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     Xinyue Ling <quic_xinyling@quicinc.com>
-References: <20230829121742.634a0631eaf3.I38b5dcce8b130f93743a2d43ab9d89269b937b5d@changeid>
- <5b809506-7fea-4598-b6ae-39ea94cc2849@quicinc.com>
- <50d2dd83079d01e1c260590cd5470e3a534b4a66.camel@sipsolutions.net>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <50d2dd83079d01e1c260590cd5470e3a534b4a66.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: dY56uLqMOF9B3-GUB6YmLsa7H52JuP8d
-X-Proofpoint-GUID: dY56uLqMOF9B3-GUB6YmLsa7H52JuP8d
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-29_13,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- spamscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 malwarescore=0
- mlxlogscore=683 priorityscore=1501 clxscore=1015 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308290143
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/29/2023 9:24 AM, Johannes Berg wrote:
-> If we even decide to go that route, because honestly, I'm getting pretty
-> upset about the whole Qualcomm adding various APIs that we never see any
-> users for, then not maintaining it, _and_ complaining that we don't fix
-> things upstream quickly enough.
+Hi,
 
-Part of my new role within Qualcomm is to address this.
+So ... yeah. I shied away from even reviewing this because it's such a
+messy topic and we've had so many threads about this. Sorry about that.
 
+
+On Wed, 2023-03-15 at 18:58 +0530, Aditya Kumar Singh wrote:
+> 6 GHz introduces various power modes of operation. Currently, based
+> on the power mode, channel's Power Spectral Density (PSD) value,
+> Regulatory power value, as well as channel disabled flag can change.
+> For single interface, current implementation works just fine. But for
+> multi-interfaces, for example AP-STA concurrency, two different channel
+> context needs to be maintained. This is because, STA power mode also
+> depends on the AP's power mode it is going to associate with. Hence,
+> PSD value, regulatory power value and channel disabled flag might vary.
+> In this case, same channel context cannot be used for both AP and STA.
+>=20
+> Therefore, to support multiple channel space for each power mode, the
+> 6 GHz channels needs a separate storage space in data structure
+> ieee80211_supported_band. Because of this, the existing APIs to get the
+> channel/frequency from frequency/channel will not work for 6 GHz band.
+>=20
+> Add support to store all possible 6 GHz channel pools according to the
+> power mode as well as add API support for getting channel/frequency info
+> from the new struct ieee80211_6ghz_channel.
+>=20
+>=20
+> Why different channel pools and not array of varying member in the same c=
+hannel?:
+
+
+I really don't understand.
+
+Why do you even need to set *from userspace* the power mode for a
+client? That ... doesn't make that much sense?
+
+I mean, you're explaining here the mechanics, which is all fine, but
+what's the "theory of operation"? Yes, I get that 6 GHz spectrum use
+introduced power modes, but why do we even need to handle it this way?
+None of this or the patches actually introduce any rationale?
+
+Also, I'll note that the patch subjects with "cfg80211" or "mac80211"
+are _really_ unclear. Sometimes you have "cfg80211" patches that mostly
+change mac80211, etc. It'd make reviewing easier if you actually did
+limit cfg80211 patches to touching cfg80211 only (with the exception of
+necessary API updates, of course), and mac80211 patches to implementing
+the new cfg80211 APIs. The first patch is probably neither, you can mark
+it as ieee80211.
+
+And then trivial things like - don't introduce a bug only to fix it in
+the next patch! I mean, really?
+
+I _still_ don't like "(A)" operation with different channel pointers -
+you talk about introducing bugs with (B) but at least those would be
+bugs in the new parts; (A) is almost certainly introducing bugs in
+existing code that compares pointers and you never even know about it.
+
+Also, related to that, is kind of a fundamental question - should we
+really think that two *channels* are different because you use different
+(TX) power control/scheme on them? That seems a bit strange, and you've
+not gotten into that at all, from a semantic POV, only from a code POV.
+I actually currently don't think that makes sense, but convince me
+otherwise?
+
+For a chandef, _maybe_? But also see the discussion around puncturing,
+I'm not sure that's actually the right solution either.
+
+johannes
