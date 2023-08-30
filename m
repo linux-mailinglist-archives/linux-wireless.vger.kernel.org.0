@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F91C78D9CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Aug 2023 20:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 791E878D9E7
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Aug 2023 20:35:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236320AbjH3SeI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Aug 2023 14:34:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41138 "EHLO
+        id S232997AbjH3Se2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Aug 2023 14:34:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242430AbjH3IbZ (ORCPT
+        with ESMTP id S242431AbjH3Ib2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Aug 2023 04:31:25 -0400
+        Wed, 30 Aug 2023 04:31:28 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86D041A4
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 01:31:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B29A1A4
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 01:31:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693384283; x=1724920283;
+  t=1693384285; x=1724920285;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZAvWmqAftpBWLkzzPpUsQWm/unBswqzR5+sZEdBqg/E=;
-  b=KcDy0iELgmnafwtrhpRGjyQKjeZPdQ3UDU3xLdImiNK5UjVLNoph04aI
-   5RXhIqnwIKuCspjv+DYB8jelxVOdv4u8F6ntchTn4VCOykf26QPFYVHI1
-   1kZRqiNwWKdMlO0b3MLwlId4TY1rZMCeTR0TWw5wWMPo3prqhTb3PAlXk
-   Bi/5J5HuVfGKDbABQZtPhQnk2wAzEaeNZsDtfCBHFtDCB9npacND3gTrW
-   Uan2lPbhWMBU0IxP9Ux1HQDSCnPKajV7FxJi5HUU31D378XCSBrle2/54
-   xOlB3MbyyG8nZccknyvgZBju+zZXKJH0G31mZEtPPMyShSpg4ING/nnTY
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="461958837"
+  bh=jJ9PtvbQAlR80Gua0c2WoVmnIhEQZ61659ukoiNhL4s=;
+  b=C1hPerp31MZjW+5p8m7wmXTq7DYxnWhWUZpU2CCocBZgb4N4u6Vn5ITc
+   Vq7TnpwGvU9pzhu84WIAvbKnCEKjPWACAERQybpX4YPsNAm2G96UlQVmt
+   dOxK50NSKrgznuPcvMgHQ2UFhLIUwZ1zsCN2EGKk34abWV/Haud61u502
+   WF547sX2ycmTlrIUDC35UfFy3Xp3DOZZcTdtML2ymREoUi8Q0rFr4vmUa
+   HQBMxn4q/NbvlpE4+eqZ8988fP1J3rbLhlajdZeBxNfzfrpwLZB3PeU3e
+   e0cOlSnOFZiTonTgd+P5zOyC7YNMJVjYrIeG3rypcimJ58DpIlCmc8CMb
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="461958847"
 X-IronPort-AV: E=Sophos;i="6.02,213,1688454000"; 
-   d="scan'208";a="461958837"
+   d="scan'208";a="461958847"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2023 01:31:23 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2023 01:31:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="829151998"
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="829152008"
 X-IronPort-AV: E=Sophos;i="6.02,213,1688454000"; 
-   d="scan'208";a="829151998"
+   d="scan'208";a="829152008"
 Received: from oweil1-mobl3.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.210.69])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2023 01:31:21 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2023 01:31:23 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 01/16] wifi: iwlwifi: mvm: support CSA with MLD
-Date:   Wed, 30 Aug 2023 11:30:49 +0300
-Message-Id: <20230830112059.19470584fa51.Iad38b5369bededaa126b3eb3cff79f23d61bd783@changeid>
+Subject: [PATCH 02/16] wifi: iwlwifi: mvm: increase session protection after CSA
+Date:   Wed, 30 Aug 2023 11:30:50 +0300
+Message-Id: <20230830112059.a74176bac37c.I029a2ebcd1b5012327c728ffa1d33fac19cfdf4b@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230830083104.546619-1-gregory.greenman@intel.com>
 References: <20230830083104.546619-1-gregory.greenman@intel.com>
@@ -62,66 +62,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Pass the right link_id to ieee80211_chswitch_done.
-Use the link_conf parameter passed to post_channel_switch() to get the
-right ap_sta_id.
+In the spec, CSA is defined roughly as follows:
+ - TBTT x:     beacon with CSA, count=n   (old channel)
+ - TBTT x+1:   beacon with CSA, count=n-1 (old channel)
+ - TBTT x+n-1: beacon with CSA, count=1   (old channel)
+ "A Channel Switch Count field set to 1 indicates that the switch
+  occurs immediately before the next TBTT.
+ - TBTT x+n:   beacon without CSA         (new channel)
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+When we detect it, we currently schedule the CSA event to
+be at 10 TUs before TBTT x+n-1, for a beacon interval, to
+give us quiet time.
+
+When this event *starts*, we currently notify mac80211
+that the channel switch happened, which causes us to add
+a session protection event to listen for the first beacon
+(and enable TX etc. when that arrives).
+
+We don't even ask for a notification when this event ends
+so the code that handles that is effectively dead code.
+
+The session protection duration is 3 beacon intervals,
+scheduled at 10 TU before TBTT x+n-1. It will thus end
+just before TBTT x+n+2.
+
+Unfortunately, if the AP doesn't transmit or we miss just
+the first two beacons on the new channel, then this will
+cause us to disconnect. Or even just one, if the AP isn't
+quite aligned with the TBTT after the switch.
+
+However, listening to the _end_ of the time event isn't
+what we want either, because we want all the new PHY and
+other config that needs to come from mac80211 to start
+early, so we have a head-start for the new channel, since
+we're not going to use the old one anyway for this time.
+
+So since we don't really have anything better to do at
+this time, and this is relatively rare, just make the
+session protection use 5x the beacon interval instead of
+just 3x, so it's more likely we catch a beacon even if
+the AP neglected to send it, or we just miss it.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 4 +++-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index b28d998c65c5..b97b805d3486 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1761,6 +1761,7 @@ void iwl_mvm_channel_switch_start_notif(struct iwl_mvm *mvm,
- 	u32 id_n_color, csa_id;
- 	/* save mac_id or link_id to use later to cancel csa if needed */
- 	u32 id;
-+	u32 mac_link_id = 0;
- 	u8 notif_ver = iwl_fw_lookup_notif_ver(mvm->fw, MAC_CONF_GROUP,
- 					       CHANNEL_SWITCH_START_NOTIF, 0);
- 	bool csa_active;
-@@ -1790,6 +1791,7 @@ void iwl_mvm_channel_switch_start_notif(struct iwl_mvm *mvm,
- 			goto out_unlock;
- 
- 		id = link_id;
-+		mac_link_id = bss_conf->link_id;
- 		vif = bss_conf->vif;
- 		csa_active = bss_conf->csa_active;
- 	}
-@@ -1839,7 +1841,7 @@ void iwl_mvm_channel_switch_start_notif(struct iwl_mvm *mvm,
- 
- 		iwl_mvm_csa_client_absent(mvm, vif);
- 		cancel_delayed_work(&mvmvif->csa_work);
--		ieee80211_chswitch_done(vif, true, 0);
-+		ieee80211_chswitch_done(vif, true, mac_link_id);
- 		break;
- 	default:
- 		/* should never happen */
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 921f72dcddac..4b3d84213466 100644
+index 4b3d84213466..6bb3b1f51913 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1381,10 +1381,11 @@ int iwl_mvm_post_channel_switch(struct ieee80211_hw *hw,
+@@ -4953,7 +4953,7 @@ static int __iwl_mvm_assign_vif_chanctx(struct iwl_mvm *mvm,
  
- 	if (vif->type == NL80211_IFTYPE_STATION) {
- 		struct iwl_mvm_sta *mvmsta;
-+		unsigned int link_id = link_conf->link_id;
-+		u8 ap_sta_id = mvmvif->link[link_id]->ap_sta_id;
+ 		if (!fw_has_capa(&mvm->fw->ucode_capa,
+ 				 IWL_UCODE_TLV_CAPA_CHANNEL_SWITCH_CMD)) {
+-			u32 duration = 3 * vif->bss_conf.beacon_int;
++			u32 duration = 5 * vif->bss_conf.beacon_int;
  
- 		mvmvif->csa_bcn_pending = false;
--		mvmsta = iwl_mvm_sta_from_staid_protected(mvm,
--							  mvmvif->deflink.ap_sta_id);
-+		mvmsta = iwl_mvm_sta_from_staid_protected(mvm, ap_sta_id);
- 
- 		if (WARN_ON(!mvmsta)) {
- 			ret = -EIO;
+ 			/* Protect the session to make sure we hear the first
+ 			 * beacon on the new channel.
 -- 
 2.38.1
 
