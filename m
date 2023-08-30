@@ -2,126 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 695F678D9E4
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Aug 2023 20:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 427B378D9B6
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Aug 2023 20:34:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233438AbjH3Se0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Aug 2023 14:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52956 "EHLO
+        id S237121AbjH3Sdx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Aug 2023 14:33:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242317AbjH3IAj (ORCPT
+        with ESMTP id S242367AbjH3IQR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Aug 2023 04:00:39 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCB7ACD8
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 01:00:36 -0700 (PDT)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37U7x93o002118;
-        Wed, 30 Aug 2023 08:00:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=8RZdUtZmXv/klRTPQ3Ec+nUJbjlbfxEwgoCRLy7pPiQ=;
- b=pNlBHh1aqW7m1CIth8zxoAQCW1LIPML4/D/DWBiUo36xm0ZuMiqqzlqzvcTcWkhX20Ru
- TEdOorAzI/YtO7W4AVkHYEWU0ErI7csHO85daL83TJ8LLJDKRM7aVwQquGP+6akppcIo
- FN92UiqbiVuFm0qqZnTX5FM8G819fQciI2d1UqtpbtJjpcwI8vZVy2RgAAuE6AzP97zi
- n/zKiuGwv3m7V2J+gQ0MU1P44CQ6IpweUs6GaGIjTaaCs6d2yLj2xX+4NOPcz7NGXEO+
- FrXVm8l9YDkfO62LSJTPLeHht88FCJsN32WZtqLy4SxCee1m1uVzXOaWc7YnGGSFMJmA Sw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ss0523x61-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Aug 2023 08:00:32 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37U80Clu015295
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Aug 2023 08:00:12 GMT
-Received: from [10.201.207.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 30 Aug
- 2023 01:00:11 -0700
-Message-ID: <8dfb323b-1bb2-c586-c29f-2af9c598ceb7@quicinc.com>
-Date:   Wed, 30 Aug 2023 13:30:08 +0530
+        Wed, 30 Aug 2023 04:16:17 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50E7113
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 01:16:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=7ZGIkWYtLAfN7ngsmiHjLJnMDejwN1pq/NeKM7qFqKk=;
+        t=1693383374; x=1694592974; b=WvIn0RLoaqXUQTYMJHWxteTQpMmhag4WrRMWcimAs82Qcbf
+        Q25ghYRHwgFzdebYMg6STJepyh0EAsmpdSmiQscjAB2j2V1wHPF9owqlHRxGZCpotVe0NbOfsQ1am
+        hJkAu6iltS4Jy8TSWGHHfdC9KbQ1wvVsBHjLboEfWG9UxlAdI5ryofa4rnpVKy/F8n7mAjJfbMxNr
+        Wy75uhP+0lh8KbEPXhL9/yUvCYCimFsATsN8ensQ0LfjmjJH4NUKblJzI7y365JkZZE4cftA3P3o9
+        lc+audRLOq3E28g55/YVJYeWclvJ+i9oWr1ZVYzqnUgqvJPmCC/ZSmt8ym0wdvkA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qbGN2-002q93-2Z;
+        Wed, 30 Aug 2023 10:16:13 +0200
+Message-ID: <c59ef59389630656fc5d2b6ac65cc1fab590b893.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: fix BA session teardown race
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Koen Vandeputte <koen.vandeputte@citymesh.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Alexander Wetzel <alexander@wetzel-home.de>
+Date:   Wed, 30 Aug 2023 10:16:11 +0200
+In-Reply-To: <CAPh3n808FmLxYzvp2=iNX5RAfdGKe57O2yGSXS9zKhSz_bPhhw@mail.gmail.com>
+References: <20230829201610.cc648236f434.I205a557b06a27f58afe3880f4db43d554210c88d@changeid>
+         <CAPh3n808FmLxYzvp2=iNX5RAfdGKe57O2yGSXS9zKhSz_bPhhw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: [PATCH v3 0/9] wifi: cfg80211/mac80211: extend 6 GHz support for
- all power modes
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230315132904.31779-1-quic_adisi@quicinc.com>
- <319ecb67faac8a2e50408f2bfa28f2431a6e6b9a.camel@sipsolutions.net>
- <afd7a85c-e1ce-6a6e-a29e-74ccc0d8bd08@quicinc.com>
- <6390d2b539b7da5fe2e0d891de26917654a6aa1a.camel@sipsolutions.net>
-From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <6390d2b539b7da5fe2e0d891de26917654a6aa1a.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: DV98Ln4geHqRqlc9uqHfCjM07yZkfJ9a
-X-Proofpoint-GUID: DV98Ln4geHqRqlc9uqHfCjM07yZkfJ9a
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-29_16,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- spamscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0
- priorityscore=1501 malwarescore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2308300074
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/30/23 13:14, Johannes Berg wrote:
-> On Wed, 2023-08-30 at 10:43 +0530, Aditya Kumar Singh wrote:
->>>
->>> Why do you even need to set *from userspace* the power mode for a
->>> client? That ... doesn't make that much sense?
-> 
-> Oh so you addressed that here, sorry.
-> 
->> Because there are two possibilities? Default client and also connect to
->> Low Power Indoor AP as well as sub-ordinate client. So to let the kernel
->> know which mode originally the client is in, the command was introduced.
->>
->> I do understand the concern here about possible misuse for the command
->> from the user space, I would re-visit this area and try to cover the
->> loop holes if any. But don't you think it should be the case? Basically
->> same like how we tell via user space the SSID, keys/suite info. freq
->> list and all for a client, in a similar way tell the power mode.
-> 
-> I just don't understand how userspace would possibly know what to do.
-> You can't really expect the _user_ to select this. So how does
-> wpa_supplicant know what to do? How does it know better than the driver?
-> Where does it get the information from?
-> 
-The power mode selection for client purely depends on how much tx power 
-the user wants for the client. In short, subordinate mode type client 
-can operate on more tx-power when compared to Default mode type client.
-For example, let's assume they are going to connect to LPI AP. PSD for 
-Default client should be -1 dBm/MHz or less and for sub-ordinate client 
-should be 5 dBM/MHz or less​ (US regulatory). Technically, the power 
-mode of client affects the PSD which has indirect relation with the 
-Tx-power.
+On Wed, 2023-08-30 at 09:06 +0200, Koen Vandeputte wrote:
+> Hi Johannes,
+>=20
+> I'm running OpenWRT on an AP device and noticed following splat when a
+> fair amount of clients was connected to it (roughly 20)
+> Do you think this one is affiliated with this patch?
 
-So if user wants more PSD, in supplicant, it can be configured with 
-Subordinate or else default type.
+Did you pull this patch in? It's not applied _anywhere_ yet, unless you
+did?
 
-Reg your other question:
- > Anyway you're tied to what the AP is doing, no?
-Yeah since for AP the command was introduced, leveraged the same for 
-client to. But now since we have option to leverage from update beacon 
-infra, something similar for client need to explore.
+Or are you asking if this could be _fixed_ by this patch?
 
-> johannes
+> [   45.032441] WARNING: CPU: 2 PID: 1654 at
+> backports-6.1.24/net/mac80211/driver-ops.h:611
+> __ieee80211_flush_queues+0x168/0x16c [mac80211]
+> [   45.036137] wlan1.sta4: Failed check-sdata-in-driver check, flags: 0x1
+[...]
+>    45.141905] CPU: 2 PID: 1654 Comm: hostapd Not tainted 5.15.127 #0
+> [   45.147557] Hardware name: Generic DT based system
+> [   45.153753] [<c030d480>] (unwind_backtrace) from [<c0309848>] (show_st=
+ack+0x10/0x14)
+> [   45.158523] [<c0309848>] (show_stack) from [<c05dd924>] (dump_stack_lv=
+l+0x40/0x4c)
+> [   45.166414] [<c05dd924>] (dump_stack_lvl) from [<c0322540>] (__warn+0x=
+8c/0x100)
+> [   45.173792] [<c0322540>] (__warn) from [<c032261c>] (warn_slowpath_fmt=
++0x68/0x78)
+> [   45.180996] [<c032261c>] (warn_slowpath_fmt) from [<bf25b63c>] (__ieee=
+80211_flush_queues+0x168/0x16c [mac80211])
+> [   45.188780] [<bf25b63c>] (__ieee80211_flush_queues [mac80211]) from [<=
+bf228ec8>] (sta_set_sinfo+0xd44/0xe64 [mac80211])
+> [   45.198951] [<bf228ec8>] (sta_set_sinfo [mac80211]) from [<bf229230>] =
+(sta_info_destroy_addr_bss+0x44/0x5c [mac80211])
+> [   45.209456] [<bf229230>] (sta_info_destroy_addr_bss [mac80211]) from [=
+<bf1a5000>] (nl80211_del_station+0xe0/0x2b4 [cfg80211])
+> [   45.220271] [<bf1a5000>] (nl80211_del_station [cfg80211]) from [<c080a=
+818>] (genl_rcv_msg+0x154/0x340)
+> [   45.231538] [<c080a818>] (genl_rcv_msg) from [<c08098e8>] (netlink_rcv=
+_skb+0xb8/0x11c)
+> [   45.240718] [<c08098e8>] (netlink_rcv_skb) from [<c0809f24>] (genl_rcv=
++0x28/0x34)
+> [   45.248619] [<c0809f24>] (genl_rcv) from [<c0808fb0>] (netlink_unicast=
++0x174/0x26c)
+> [   45.256170] [<c0808fb0>] (netlink_unicast) from [<c0809284>] (netlink_=
+sendmsg+0x1dc/0x440)
+> [   45.263641] [<c0809284>] (netlink_sendmsg) from [<c0782878>] (____sys_=
+sendmsg+0x1d0/0x224)
+> [   45.271974] [<c0782878>] (____sys_sendmsg) from [<c0784308>] (___sys_s=
+endmsg+0xa4/0xdc)
+> [   45.280220] [<c0784308>] (___sys_sendmsg) from [<c0784470>] (sys_sendm=
+sg+0x44/0x74)
+> [   45.288110] [<c0784470>] (sys_sendmsg) from [<c0300040>] (ret_fast_sys=
+call+0x0/0x48)
 
+That stack doesn't look quite right - __ieee80211_flush_queues() isn't
+called from - or what looks like inlined into - sta_set_sinfo()?
+
+So I think I don't believe the part about __ieee80211_flush_queues(), it
+makes more sense for sta_set_sinfo() to call drv_sta_statistics() which
+would also make more sense with the line number (611) which is at least
+in my version close to the line there. Not sure what wifi code you're
+using, so can't check the exact line, I guess.
+
+But either way, I wouldn't think it could be fixed or broken by this
+patch.
+
+johannes
