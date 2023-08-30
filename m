@@ -2,77 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99BD478D9E1
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Aug 2023 20:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3D178D9C7
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Aug 2023 20:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235163AbjH3SeV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Aug 2023 14:34:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50108 "EHLO
+        id S237310AbjH3SeE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Aug 2023 14:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242216AbjH3H3l (ORCPT
+        with ESMTP id S242257AbjH3Hlk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Aug 2023 03:29:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2149CC9
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 00:29:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B81860B3F
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 07:29:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A78C433C7;
-        Wed, 30 Aug 2023 07:29:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693380576;
-        bh=ZeJ1BwB7KYij36PHxFK2U1Xz4mZAx/yEcPnFn0t3l/o=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=IP/Xf+Jti9LTA6m8LlnmX2OjaWLNUBdSXugPabPX7MFuLnR/Xeoex0fKZ6WHIUm0V
-         bHD6rS7V495MnUIn5lHmvHLvp/vDkzfn6ybJBp1eyzKXQQ4kCdKty8mh1l1eJ9zR/m
-         FY3CtOs8p8wlPNY5WRlq1DkwjkZBqV4F5muT8XB3YgQu4UdvmKIzz1E90B6rF/OsD2
-         71VbZEWIY1/UqCWjiVea+I+L2uMNKKFFWdpt99xtSJP/w9kY81NHpsbH7i5q/ip3qv
-         +EwHlHAyr7UvBBCb7EHxWLlDfsh1CN16kQhFAU2zEsTcCTqCmoqsr/Y1zFykkk9DH5
-         rurdfDXOKIlJg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH] wifi: ath11k: add chip id board name while searching
- board-2.bin for WCN6855
-References: <20230830060226.18664-1-quic_wgong@quicinc.com>
-Date:   Wed, 30 Aug 2023 10:29:33 +0300
-In-Reply-To: <20230830060226.18664-1-quic_wgong@quicinc.com> (Wen Gong's
-        message of "Wed, 30 Aug 2023 02:02:26 -0400")
-Message-ID: <87cyz5f0o2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Wed, 30 Aug 2023 03:41:40 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 371A6CD8
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 00:41:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=Wjxbsf3a/dlWEaU6hBd96eOkhzJ1ChDslhr8mQExZKY=;
+        t=1693381296; x=1694590896; b=Ummz8TTKizS3kf+l0A2et8x/XSE2Upmrb72IjFeEyyR3iXL
+        fEi+oZf8sjWEqa8xWrY5CTjpis9FDWhrywYsZbsdbnn/eIhfeNTIM2hty/n9TiUIwrKe7rYPKezxF
+        zXW7YlxwQqYZ6gZ85GOh6yk4+Zo3N2UloWVrUWSGzsD/Bl4T3kUG6RFbkH8EvqJY4oWOr2lyQcvIN
+        HxssvWmhlr/FwOOi3i9XhfYjKNHWQmGUV8uLzVwONy4vnnadJqj4IZfCU1oNBsKvargCLIuYrLTZr
+        g01uBbZOtX02C9Epudcl8dYPrxJvOb/s7V/Rtja9tcDqDw0wJygQUL3o/GeTTZPg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qbFpV-002o1g-0R;
+        Wed, 30 Aug 2023 09:41:33 +0200
+Message-ID: <321872041974a787db71bbbf660adeb40c494d71.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 4/9] wifi: cfg80211: add NL command to set 6 GHz
+ power mode
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 30 Aug 2023 09:41:32 +0200
+In-Reply-To: <d3740fa2-a59e-d6e2-394c-9b289564b832@quicinc.com>
+References: <20230315132904.31779-1-quic_adisi@quicinc.com>
+         <20230315132904.31779-5-quic_adisi@quicinc.com>
+         <59e2364e9085f725c03d05e3f720f8fae7b336ce.camel@sipsolutions.net>
+         <d3740fa2-a59e-d6e2-394c-9b289564b832@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> writes:
+On Wed, 2023-08-30 at 10:35 +0530, Aditya Kumar Singh wrote:
+> On 8/29/23 23:21, Johannes Berg wrote:
+> > On Wed, 2023-03-15 at 18:58 +0530, Aditya Kumar Singh wrote:
+> > >=20
+> > > +	{
+> > > +		.cmd =3D NL80211_CMD_SET_6GHZ_POWER_MODE,
+> > > +		.validate =3D GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+> > > +		.doit =3D nl80211_set_6ghz_power_mode,
+> > > +		.flags =3D GENL_UNS_ADMIN_PERM,
+> > > +		.internal_flags =3D IFLAGS(NL80211_FLAG_NEED_NETDEV |
+> > > +					 NL80211_FLAG_MLO_VALID_LINK_ID),
+> > > +	},
+> >=20
+> > Why is this even a new command, rather than a parameter to start AP or
+> > similar?
+> >=20
+> A new command was introduced because to give user space a knob to change=
+=20
+> power mode as and when required. Let's suppose AFC response has not yet=
+=20
+> arrived, AP could be started in Low Power mode. Now once AFC rules are=
+=20
+> applied (not going in detail here how that will happen) and user space
+> knows about it, it can send command to switch to Standard Power Mode righ=
+t?
 
-> Sometimes board-2.bin does not have the board data which matched the
-> parameters such as bus type, vendor, device, subsystem-vendor,
-> subsystem-device, qmi-chip-id and qmi-board-id, then wlan will load fail.
->
-> Hence add another type which only matches the bus type and qmi-chip-id,
-> then the ratio of missing board data reduced.
->
-> Tested-on: WCN6855 hw2.0 PCI
-> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
->
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+At least for AP that could also be a beacon update, like most other
+operational parameters. You have to update the beacon _anyway_ since you
+indicate in the beacon what you're doing.
 
-Wrong list, adding also ath11k list.
+So that by itself doesn't really introduce the requirement to have a
+separate command.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+> > Why do we even set it in client mode from userspace?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+And you didn't comment on this - what userspace do you expect to use it
+in client mode? I can see hostapd in AP mode, I guess, but in client
+mode I don't see how this could be used? Anyway you're tied to what the
+AP is doing, no?
+
+> > >   static struct genl_family nl80211_fam __ro_after_init =3D {
+> > > @@ -17409,7 +17473,7 @@ static struct genl_family nl80211_fam __ro_af=
+ter_init =3D {
+> > >   	.n_ops =3D ARRAY_SIZE(nl80211_ops),
+> > >   	.small_ops =3D nl80211_small_ops,
+> > >   	.n_small_ops =3D ARRAY_SIZE(nl80211_small_ops),
+> > > -	.resv_start_op =3D NL80211_CMD_REMOVE_LINK_STA + 1,
+> > > +	.resv_start_op =3D NL80211_CMD_SET_6GHZ_POWER_MODE + 1,
+> > >=20
+> >=20
+> > Obviously, this should not be done.
+> If this hunk is not there, the command was not going through. Upon=20
+> digging further found out that the number of commands declared in the=20
+> array and the count provided here has some relation. And that too with=
+=20
+> the last element added. Since a new element was added, modified it=20
+> accordingly.
+
+No no, that wasn't a discussion. I'm telling you, this is wrong, and I
+will not apply a patch that does this. If you needed it, you did
+something wrong in userspace.
+
+johannes
