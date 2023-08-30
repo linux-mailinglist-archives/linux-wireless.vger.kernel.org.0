@@ -2,58 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AAA878D9D2
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Aug 2023 20:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48FC078D9C0
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Aug 2023 20:35:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237433AbjH3SeL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Aug 2023 14:34:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46078 "EHLO
+        id S236910AbjH3SeC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Aug 2023 14:34:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242747AbjH3JaF (ORCPT
+        with ESMTP id S243167AbjH3KN6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Aug 2023 05:30:05 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 08648CCF
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 02:30:01 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37U9TLHw8014808, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37U9TLHw8014808
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 30 Aug 2023 17:29:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 30 Aug 2023 17:29:46 +0800
-Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 30 Aug
- 2023 17:29:46 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <damon.chen@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/2] wifi: rtw89: 8852c: Fix TSSI causes transmit power inaccuracy
-Date:   Wed, 30 Aug 2023 17:28:49 +0800
-Message-ID: <20230830092849.153251-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230830092849.153251-1-pkshih@realtek.com>
-References: <20230830092849.153251-1-pkshih@realtek.com>
+        Wed, 30 Aug 2023 06:13:58 -0400
+Received: from mail-pj1-f80.google.com (mail-pj1-f80.google.com [209.85.216.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A786CCB
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 03:13:53 -0700 (PDT)
+Received: by mail-pj1-f80.google.com with SMTP id 98e67ed59e1d1-26d43d10ce5so6224773a91.3
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 03:13:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693390433; x=1693995233;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=m3Qza2QmkIc+BI/YstCDtC90QrYZHsfYuMQhNOBLYRU=;
+        b=aOGnop2zXrCCQ0do2PhwQGfX9R9buSV9bT3idqPLKUi1ORr1lqfe4WZNxiWtSQtgT3
+         6Elx7hF5xSLTKypTHOtLjkoxnSJApqA+kiRodqSxMI75PM80oxUW07yZ61Y22jjl1d+4
+         2HMoBPOUk0Syn7+MyOWf8zBqWdxRhf4NYqV7ahhPO8m3Z0+494SvskAIeBwSUegJ7+tF
+         roio5X3DpXZHw2kc3CoRJJJXcBPvQiExCEsrDlW4yplZObChDCf3jH04FElSVSDbGtEt
+         B4zfPg/fNZfSTvADT9w8GSkshth2Ny4gESJqSCO7oV1xYi18Re6jTKM31C1AWzksbPjr
+         ueAw==
+X-Gm-Message-State: AOJu0Ywri2p/6Xfqrzq9VDS44hmVl3ogiG43+hBk6iMf2/hT/4nzN6+R
+        FOGSGsmSzJKi2CZEFZLG56klJtkkpAAM3xppRGjqOYC6HiK/
+X-Google-Smtp-Source: AGHT+IHM/Vw54IX+vEGvHjDUVX4CtvKF+9RewV7RT1f05sLZyWr+8W3r3PrOYJC4LcroLQs0aun5XqZC4lvnwJD6GeNlKQVNfwLu
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.25]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Received: by 2002:a17:90a:fe8b:b0:26b:4c47:eeae with SMTP id
+ co11-20020a17090afe8b00b0026b4c47eeaemr439553pjb.5.1693390432891; Wed, 30 Aug
+ 2023 03:13:52 -0700 (PDT)
+Date:   Wed, 30 Aug 2023 03:13:52 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000037f8720604212f9c@google.com>
+Subject: [syzbot] [net?] [wireless?] INFO: rcu detected stall in
+ request_firmware_work_func (2)
+From:   syzbot <syzbot+1425ba65f01a5682a1a2@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,201 +58,178 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+Hello,
 
-Modify TSSI ADC FIFO Clock follow RX ADC Clock can avoid
-transmit power inaccuracy.
+syzbot found the following issue on:
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+HEAD commit:    382d4cd18475 lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() ..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=14b7dfcfa80000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1e4a882f77ed77bd
+dashboard link: https://syzkaller.appspot.com/bug?extid=1425ba65f01a5682a1a2
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14bd9bcfa80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=148070dba80000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/8f77bf610e28/disk-382d4cd1.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/63cde1098a7f/vmlinux-382d4cd1.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/aa910d4c94be/bzImage-382d4cd1.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1425ba65f01a5682a1a2@syzkaller.appspotmail.com
+
+rcu: INFO: rcu_preempt self-detected stall on CPU
+rcu: 	1-...!: (1 GPs behind) idle=6dac/0/0x3 softirq=8535/8539 fqs=0
+rcu: 	(t=10500 jiffies g=5401 q=100 ncpus=2)
+rcu: rcu_preempt kthread starved for 10500 jiffies! g5401 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
+rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:R  running task     stack:29008 pid:16    ppid:2      flags:0x00004000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5381 [inline]
+ __schedule+0xee1/0x59f0 kernel/sched/core.c:6710
+ schedule+0xe7/0x1b0 kernel/sched/core.c:6786
+ schedule_timeout+0x157/0x2c0 kernel/time/timer.c:2167
+ rcu_gp_fqs_loop+0x1ec/0xa50 kernel/rcu/tree.c:1609
+ rcu_gp_kthread+0x249/0x380 kernel/rcu/tree.c:1808
+ kthread+0x33a/0x430 kernel/kthread.c:389
+ ret_from_fork+0x2c/0x70 arch/x86/kernel/process.c:145
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+ </TASK>
+rcu: Stack dump where RCU GP kthread last ran:
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 PID: 7 Comm: kworker/0:0 Not tainted 6.5.0-rc7-syzkaller-00164-g382d4cd18475 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+Workqueue: events request_firmware_work_func
+RIP: 0010:write_comp_data+0x7/0x90 kernel/kcov.c:230
+Code: 81 e2 00 01 ff 00 75 10 65 48 8b 04 25 80 b9 03 00 48 8b 80 f8 15 00 00 c3 66 2e 0f 1f 84 00 00 00 00 00 65 8b 05 c1 b6 7d 7e <49> 89 f1 89 c6 49 89 d2 81 e6 00 01 00 00 49 89 f8 65 48 8b 14 25
+RSP: 0018:ffffc90000007bb8 EFLAGS: 00000246
+RAX: 0000000000000102 RBX: ffffc9000e151ea0 RCX: ffffffff88587d2c
+RDX: 0000000000000000 RSI: 0019999999999998 RDI: 0000000000000007
+RBP: ffff88807d071b00 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 00000015798ee228
+R13: 0000000000000000 R14: 0000000225c17d04 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055555640eca8 CR3: 0000000027cca000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <NMI>
+ </NMI>
+ <IRQ>
+ pie_calculate_probability+0x1fc/0x850 net/sched/sch_pie.c:340
+ fq_pie_timer+0x1da/0x4f0 net/sched/sch_fq_pie.c:387
+ call_timer_fn+0x1a0/0x580 kernel/time/timer.c:1700
+ expire_timers kernel/time/timer.c:1751 [inline]
+ __run_timers+0x764/0xb10 kernel/time/timer.c:2022
+ run_timer_softirq+0x58/0xd0 kernel/time/timer.c:2035
+ __do_softirq+0x218/0x965 kernel/softirq.c:553
+ invoke_softirq kernel/softirq.c:427 [inline]
+ __irq_exit_rcu kernel/softirq.c:632 [inline]
+ irq_exit_rcu+0xb7/0x120 kernel/softirq.c:644
+ sysvec_apic_timer_interrupt+0x93/0xc0 arch/x86/kernel/apic/apic.c:1109
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
+RIP: 0010:console_flush_all+0x9b6/0xf50 kernel/printk/printk.c:2939
+Code: 90 1b 23 00 9c 5b 81 e3 00 02 00 00 31 ff 48 89 de e8 8e 66 1c 00 48 85 db 0f 85 94 03 00 00 e8 f0 6a 1c 00 fb 48 8b 44 24 08 <48> 8b 14 24 0f b6 00 83 e2 07 38 d0 7f 08 84 c0 0f 85 9d 04 00 00
+RSP: 0018:ffffc900000c7920 EFLAGS: 00000293
+RAX: fffff52000018f4f RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff88801664bb80 RSI: ffffffff81699db0 RDI: 0000000000000007
+RBP: ffffffff8d4cb1a0 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000000000000 R11: 205d375420202020 R12: 0000000000000001
+R13: ffffffff8d4cb1f8 R14: dffffc0000000000 R15: 0000000000000001
+ console_unlock+0xc6/0x1f0 kernel/printk/printk.c:3007
+ vprintk_emit+0x1c5/0x640 kernel/printk/printk.c:2307
+ vprintk+0x89/0xa0 kernel/printk/printk_safe.c:50
+ _printk+0xc8/0x100 kernel/printk/printk.c:2328
+ regdb_fw_cb+0x155/0x270 net/wireless/reg.c:1008
+ request_firmware_work_func+0x13a/0x240 drivers/base/firmware_loader/main.c:1162
+ process_one_work+0xaa2/0x16f0 kernel/workqueue.c:2600
+ worker_thread+0x687/0x1110 kernel/workqueue.c:2751
+ kthread+0x33a/0x430 kernel/kthread.c:389
+ ret_from_fork+0x2c/0x70 arch/x86/kernel/process.c:145
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+ </TASK>
+INFO: NMI handler (nmi_cpu_backtrace_handler) took too long to run: 2.097 msecs
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.5.0-rc7-syzkaller-00164-g382d4cd18475 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+RIP: 0010:check_kcov_mode kernel/kcov.c:173 [inline]
+RIP: 0010:write_comp_data+0x32/0x90 kernel/kcov.c:236
+Code: 89 f1 89 c6 49 89 d2 81 e6 00 01 00 00 49 89 f8 65 48 8b 14 25 80 b9 03 00 a9 00 01 ff 00 74 0e 85 f6 74 59 8b 82 04 16 00 00 <85> c0 74 4f 8b 82 e0 15 00 00 83 f8 03 75 44 48 8b 82 e8 15 00 00
+RSP: 0018:ffffc900001e0bb8 EFLAGS: 00000206
+RAX: 0000000000000000 RBX: 0000000000abcc77 RCX: ffffffff88587ddd
+RDX: ffff888017261dc0 RSI: 0000000000000100 RDI: 0000000000000005
+RBP: 00000010c6f7a0b5 R08: 0000000000000005 R09: 00000000000f4240
+R10: 00000000000f4240 R11: 0000000000000000 R12: 00000000000f4240
+R13: 0000000000000002 R14: 0000000000112e0b R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000080 CR3: 0000000020b50000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ pie_calculate_probability+0x2ad/0x850 net/sched/sch_pie.c:345
+ fq_pie_timer+0x1da/0x4f0 net/sched/sch_fq_pie.c:387
+ call_timer_fn+0x1a0/0x580 kernel/time/timer.c:1700
+ expire_timers kernel/time/timer.c:1751 [inline]
+ __run_timers+0x764/0xb10 kernel/time/timer.c:2022
+ run_timer_softirq+0x58/0xd0 kernel/time/timer.c:2035
+ __do_softirq+0x218/0x965 kernel/softirq.c:553
+ invoke_softirq kernel/softirq.c:427 [inline]
+ __irq_exit_rcu kernel/softirq.c:632 [inline]
+ irq_exit_rcu+0xb7/0x120 kernel/softirq.c:644
+ sysvec_apic_timer_interrupt+0x93/0xc0 arch/x86/kernel/apic/apic.c:1109
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
+RIP: 0010:native_irq_disable arch/x86/include/asm/irqflags.h:37 [inline]
+RIP: 0010:arch_local_irq_disable arch/x86/include/asm/irqflags.h:72 [inline]
+RIP: 0010:acpi_safe_halt+0x1b/0x20 drivers/acpi/processor_idle.c:113
+Code: ed c3 66 66 2e 0f 1f 84 00 00 00 00 00 66 90 65 48 8b 04 25 80 b9 03 00 48 8b 00 a8 08 75 0c 66 90 0f 00 2d 97 a6 a0 00 fb f4 <fa> c3 0f 1f 00 0f b6 47 08 3c 01 74 0b 3c 02 74 05 8b 7f 04 eb 9f
+RSP: 0018:ffffc90000177d60 EFLAGS: 00000246
+RAX: 0000000000004000 RBX: 0000000000000001 RCX: ffffffff8a328aae
+RDX: 0000000000000001 RSI: ffff888145e5c000 RDI: ffff888145e5c064
+RBP: ffff888145e5c064 R08: 0000000000000001 R09: ffffed1017326d9d
+R10: ffff8880b9936ceb R11: 0000000000000000 R12: ffff888013727000
+R13: ffffffff8d4509c0 R14: 0000000000000001 R15: 0000000000000000
+ acpi_idle_enter+0xc5/0x160 drivers/acpi/processor_idle.c:707
+ cpuidle_enter_state+0x82/0x500 drivers/cpuidle/cpuidle.c:267
+ cpuidle_enter+0x4e/0xa0 drivers/cpuidle/cpuidle.c:388
+ cpuidle_idle_call kernel/sched/idle.c:215 [inline]
+ do_idle+0x315/0x3f0 kernel/sched/idle.c:282
+ cpu_startup_entry+0x18/0x20 kernel/sched/idle.c:379
+ start_secondary+0x200/0x290 arch/x86/kernel/smpboot.c:326
+ secondary_startup_64_no_verify+0x167/0x16b
+ </TASK>
+
+
 ---
- drivers/net/wireless/realtek/rtw89/reg.h      |  4 ++
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.c | 23 +++++++++-
- .../realtek/rtw89/rtw8852c_rfk_table.c        | 42 +++++++++----------
- 3 files changed, 46 insertions(+), 23 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index f9b15a1cc790..7d25b76d90f5 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -4539,6 +4539,8 @@
- #define B_P0_TSSI_ALIM2 GENMASK(29, 0)
- #define R_P0_TSSI_ALIM4 0x5640
- #define R_TSSI_PA_K8 0x5644
-+#define R_P0_TSSI_ADC_CLK 0x566c
-+#define B_P0_TSSI_ADC_CLK GENMASK(17, 16)
- #define R_UPD_CLK 0x5670
- #define B_DAC_VAL BIT(31)
- #define B_ACK_VAL GENMASK(30, 29)
-@@ -4651,6 +4653,8 @@
- #define B_P1_TSSI_ALIM31 GENMASK(9, 0)
- #define R_P1_TSSI_ALIM2 0x763c
- #define B_P1_TSSI_ALIM2 GENMASK(29, 0)
-+#define R_P1_TSSI_ADC_CLK 0x766c
-+#define B_P1_TSSI_ADC_CLK GENMASK(17, 16)
- #define R_P1_TSSIC 0x7814
- #define B_P1_TSSIC_BYPASS BIT(11)
- #define R_P1_TMETER 0x7810
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-index de7714f871d5..7636368c8659 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-@@ -2893,18 +2893,37 @@ static void _tssi_set_sys(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 			  enum rtw89_rf_path path)
- {
- 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	enum rtw89_bandwidth bw = chan->band_width;
- 	enum rtw89_band band = chan->band_type;
-+	u32 clk = 0x0;
- 
- 	rtw89_rfk_parser(rtwdev, &rtw8852c_tssi_sys_defs_tbl);
- 
--	if (path == RF_PATH_A)
-+	switch (bw) {
-+	case RTW89_CHANNEL_WIDTH_80:
-+		clk = 0x1;
-+		break;
-+	case RTW89_CHANNEL_WIDTH_80_80:
-+	case RTW89_CHANNEL_WIDTH_160:
-+		clk = 0x2;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	if (path == RF_PATH_A) {
-+		rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_ADC_CLK,
-+				       B_P0_TSSI_ADC_CLK, clk);
- 		rtw89_rfk_parser_by_cond(rtwdev, band == RTW89_BAND_2G,
- 					 &rtw8852c_tssi_sys_defs_2g_a_tbl,
- 					 &rtw8852c_tssi_sys_defs_5g_a_tbl);
--	else
-+	} else {
-+		rtw89_phy_write32_mask(rtwdev, R_P1_TSSI_ADC_CLK,
-+				       B_P1_TSSI_ADC_CLK, clk);
- 		rtw89_rfk_parser_by_cond(rtwdev, band == RTW89_BAND_2G,
- 					 &rtw8852c_tssi_sys_defs_2g_b_tbl,
- 					 &rtw8852c_tssi_sys_defs_5g_b_tbl);
-+	}
- }
- 
- static void _tssi_ini_txpwr_ctrl_bb(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk_table.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk_table.c
-index d727d528b365..e5b0c2a686f0 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk_table.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk_table.c
-@@ -165,11 +165,11 @@ static const struct rtw89_reg5_def rtw8852c_tssi_sys_defs[] = {
- 	RTW89_DECL_RFK_WM(0x12bc, 0x000ffff0, 0xb5b5),
- 	RTW89_DECL_RFK_WM(0x32bc, 0x000ffff0, 0xb5b5),
- 	RTW89_DECL_RFK_WM(0x0300, 0xff000000, 0x16),
--	RTW89_DECL_RFK_WM(0x0304, 0x0000ffff, 0x1f19),
--	RTW89_DECL_RFK_WM(0x0308, 0xff000000, 0x1c),
-+	RTW89_DECL_RFK_WM(0x0304, 0x0000ffff, 0x1313),
-+	RTW89_DECL_RFK_WM(0x0308, 0xff000000, 0x13),
- 	RTW89_DECL_RFK_WM(0x0314, 0xffff0000, 0x2041),
--	RTW89_DECL_RFK_WM(0x0318, 0xffffffff, 0x20012041),
--	RTW89_DECL_RFK_WM(0x0324, 0xffff0000, 0x2001),
-+	RTW89_DECL_RFK_WM(0x0318, 0xffffffff, 0x00410041),
-+	RTW89_DECL_RFK_WM(0x0324, 0xffff0000, 0x0041),
- 	RTW89_DECL_RFK_WM(0x0020, 0x00006000, 0x3),
- 	RTW89_DECL_RFK_WM(0x0024, 0x00006000, 0x3),
- 	RTW89_DECL_RFK_WM(0x0704, 0xffff0000, 0x601e),
-@@ -222,7 +222,7 @@ static const struct rtw89_reg5_def rtw8852c_tssi_txpwr_ctrl_bb_defs_a[] = {
- 	RTW89_DECL_RFK_WM(0x5810, 0xffffffff, 0x59010000),
- 	RTW89_DECL_RFK_WM(0x5814, 0x01ffffff, 0x026d000),
- 	RTW89_DECL_RFK_WM(0x5814, 0xf8000000, 0x00),
--	RTW89_DECL_RFK_WM(0x5818, 0xffffffff, 0x002c1800),
-+	RTW89_DECL_RFK_WM(0x5818, 0xffffffff, 0x002c18e8),
- 	RTW89_DECL_RFK_WM(0x581c, 0x3fffffff, 0x3dc80280),
- 	RTW89_DECL_RFK_WM(0x5820, 0xffffffff, 0x00000080),
- 	RTW89_DECL_RFK_WM(0x58e8, 0x0000003f, 0x03),
-@@ -251,7 +251,7 @@ static const struct rtw89_reg5_def rtw8852c_tssi_txpwr_ctrl_bb_defs_a[] = {
- 	RTW89_DECL_RFK_WM(0x58d4, 0x07fc0000, 0x100),
- 	RTW89_DECL_RFK_WM(0x58d8, 0xffffffff, 0x8008016c),
- 	RTW89_DECL_RFK_WM(0x58dc, 0x0001ffff, 0x0807f),
--	RTW89_DECL_RFK_WM(0x58dc, 0xfff00000, 0x800),
-+	RTW89_DECL_RFK_WM(0x58dc, 0xfff00000, 0xc00),
- 	RTW89_DECL_RFK_WM(0x58f0, 0x0003ffff, 0x001ff),
- 	RTW89_DECL_RFK_WM(0x58f4, 0x000fffff, 0x000),
- 	RTW89_DECL_RFK_WM(0x58f8, 0x000fffff, 0x000),
-@@ -260,14 +260,14 @@ static const struct rtw89_reg5_def rtw8852c_tssi_txpwr_ctrl_bb_defs_a[] = {
- RTW89_DECLARE_RFK_TBL(rtw8852c_tssi_txpwr_ctrl_bb_defs_a);
- 
- static const struct rtw89_reg5_def rtw8852c_tssi_txpwr_ctrl_bb_defs_b[] = {
--	RTW89_DECL_RFK_WM(0x566c, 0x00001000, 0x0),
-+	RTW89_DECL_RFK_WM(0x766c, 0x00001000, 0x0),
- 	RTW89_DECL_RFK_WM(0x7800, 0xffffffff, 0x003f807f),
- 	RTW89_DECL_RFK_WM(0x780c, 0x0000007f, 0x40),
- 	RTW89_DECL_RFK_WM(0x780c, 0x0fffff00, 0x00040),
- 	RTW89_DECL_RFK_WM(0x7810, 0xffffffff, 0x59010000),
- 	RTW89_DECL_RFK_WM(0x7814, 0x01ffffff, 0x026d000),
- 	RTW89_DECL_RFK_WM(0x7814, 0xf8000000, 0x00),
--	RTW89_DECL_RFK_WM(0x7818, 0xffffffff, 0x002c1800),
-+	RTW89_DECL_RFK_WM(0x7818, 0xffffffff, 0x002c18e8),
- 	RTW89_DECL_RFK_WM(0x781c, 0x3fffffff, 0x3dc80280),
- 	RTW89_DECL_RFK_WM(0x7820, 0xffffffff, 0x00000080),
- 	RTW89_DECL_RFK_WM(0x78e8, 0x0000003f, 0x03),
-@@ -296,7 +296,7 @@ static const struct rtw89_reg5_def rtw8852c_tssi_txpwr_ctrl_bb_defs_b[] = {
- 	RTW89_DECL_RFK_WM(0x78d4, 0x07fc0000, 0x100),
- 	RTW89_DECL_RFK_WM(0x78d8, 0xffffffff, 0x8008016c),
- 	RTW89_DECL_RFK_WM(0x78dc, 0x0001ffff, 0x0807f),
--	RTW89_DECL_RFK_WM(0x78dc, 0xfff00000, 0x800),
-+	RTW89_DECL_RFK_WM(0x78dc, 0xfff00000, 0xc00),
- 	RTW89_DECL_RFK_WM(0x78f0, 0x0003ffff, 0x001ff),
- 	RTW89_DECL_RFK_WM(0x78f4, 0x000fffff, 0x000),
- 	RTW89_DECL_RFK_WM(0x78f8, 0x000fffff, 0x000),
-@@ -511,9 +511,9 @@ static const struct rtw89_reg5_def rtw8852c_tssi_set_aligk_default_defs_5g_a[] =
- 	RTW89_DECL_RFK_WM(0x563c, 0x3fffffff, 0x00000000),
- 	RTW89_DECL_RFK_WM(0x5640, 0x000003ff, 0x000),
- 	RTW89_DECL_RFK_WM(0x5640, 0x000ffc00, 0x000),
--	RTW89_DECL_RFK_WM(0x5640, 0x3ff00000, 0x000),
--	RTW89_DECL_RFK_WM(0x5644, 0x000003ff, 0x000),
--	RTW89_DECL_RFK_WM(0x5644, 0x000ffc00, 0x000),
-+	RTW89_DECL_RFK_WM(0x5640, 0x3ff00000, 0x3e9),
-+	RTW89_DECL_RFK_WM(0x5644, 0x000003ff, 0x039),
-+	RTW89_DECL_RFK_WM(0x5644, 0x000ffc00, 0x07d),
- };
- 
- RTW89_DECLARE_RFK_TBL(rtw8852c_tssi_set_aligk_default_defs_5g_a);
-@@ -531,9 +531,9 @@ static const struct rtw89_reg5_def rtw8852c_tssi_set_aligk_default_defs_5g_b[] =
- 	RTW89_DECL_RFK_WM(0x763c, 0x3fffffff, 0x00000000),
- 	RTW89_DECL_RFK_WM(0x7640, 0x000003ff, 0x000),
- 	RTW89_DECL_RFK_WM(0x7640, 0x000ffc00, 0x000),
--	RTW89_DECL_RFK_WM(0x7640, 0x3ff00000, 0x000),
--	RTW89_DECL_RFK_WM(0x7644, 0x000003ff, 0x000),
--	RTW89_DECL_RFK_WM(0x7644, 0x000ffc00, 0x000),
-+	RTW89_DECL_RFK_WM(0x7640, 0x3ff00000, 0x3e9),
-+	RTW89_DECL_RFK_WM(0x7644, 0x000003ff, 0x039),
-+	RTW89_DECL_RFK_WM(0x7644, 0x000ffc00, 0x07d),
- };
- 
- RTW89_DECLARE_RFK_TBL(rtw8852c_tssi_set_aligk_default_defs_5g_b);
-@@ -551,9 +551,9 @@ static const struct rtw89_reg5_def rtw8852c_tssi_set_aligk_default_defs_6g_a[] =
- 	RTW89_DECL_RFK_WM(0x563c, 0x3fffffff, 0x00000000),
- 	RTW89_DECL_RFK_WM(0x5640, 0x000003ff, 0x000),
- 	RTW89_DECL_RFK_WM(0x5640, 0x000ffc00, 0x000),
--	RTW89_DECL_RFK_WM(0x5640, 0x3ff00000, 0x000),
--	RTW89_DECL_RFK_WM(0x5644, 0x000003ff, 0x000),
--	RTW89_DECL_RFK_WM(0x5644, 0x000ffc00, 0x000),
-+	RTW89_DECL_RFK_WM(0x5640, 0x3ff00000, 0x3e9),
-+	RTW89_DECL_RFK_WM(0x5644, 0x000003ff, 0x039),
-+	RTW89_DECL_RFK_WM(0x5644, 0x000ffc00, 0x080),
- };
- 
- RTW89_DECLARE_RFK_TBL(rtw8852c_tssi_set_aligk_default_defs_6g_a);
-@@ -571,9 +571,9 @@ static const struct rtw89_reg5_def rtw8852c_tssi_set_aligk_default_defs_6g_b[] =
- 	RTW89_DECL_RFK_WM(0x763c, 0x3fffffff, 0x00000000),
- 	RTW89_DECL_RFK_WM(0x7640, 0x000003ff, 0x000),
- 	RTW89_DECL_RFK_WM(0x7640, 0x000ffc00, 0x000),
--	RTW89_DECL_RFK_WM(0x7640, 0x3ff00000, 0x000),
--	RTW89_DECL_RFK_WM(0x7644, 0x000003ff, 0x000),
--	RTW89_DECL_RFK_WM(0x7644, 0x000ffc00, 0x000),
-+	RTW89_DECL_RFK_WM(0x7640, 0x3ff00000, 0x3e9),
-+	RTW89_DECL_RFK_WM(0x7644, 0x000003ff, 0x039),
-+	RTW89_DECL_RFK_WM(0x7644, 0x000ffc00, 0x080),
- };
- 
- RTW89_DECLARE_RFK_TBL(rtw8852c_tssi_set_aligk_default_defs_6g_b);
--- 
-2.25.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the bug is already fixed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite bug's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the bug is a duplicate of another bug, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
