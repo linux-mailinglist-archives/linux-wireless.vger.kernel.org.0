@@ -2,77 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 603D078EEF1
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Aug 2023 15:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDF2778EF5E
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Aug 2023 16:14:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234753AbjHaNrs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Aug 2023 09:47:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43336 "EHLO
+        id S233711AbjHaOOR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Aug 2023 10:14:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229909AbjHaNrs (ORCPT
+        with ESMTP id S1346435AbjHaOOP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Aug 2023 09:47:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D8E71A4;
-        Thu, 31 Aug 2023 06:47:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1C3B6B82292;
-        Thu, 31 Aug 2023 13:47:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F242C433C8;
-        Thu, 31 Aug 2023 13:47:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693489662;
-        bh=yi0fQ9YqnX6rx7PGPf8STQH7i5wvSQI+xOSkrpzGj3g=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=iILd6VrngAFL+ANsICTW7Mjzeqv5qxHtvFbjuXy7Ob941VbWvJCwJeF1Rds+foVM7
-         EQZWPdT6LX3J378qz50WNqhTBK/LJ+T+Mdos7TNCH2Phb7c1LVlntH1V86fmGDtlzJ
-         gU6LSVIqJeudAs9C0SV5jZIQF7ZlSKtCNIVQSgY5Gos0ruX9qaN1MztdPmSgo2p5b8
-         hhjxsSTY2Atktoi5p80k85IEIMRxF+tuuQBRjOKkn1UGS4lMeGVDFw7OIc+xLAt+0s
-         grHSS6OjVp5d6mloG8eDLNldJSNw/ScL05DM7WBbICaq94lIJVFAk7OkZ1pfkyVj21
-         LDnH3qBnKY/eA==
-Message-ID: <6dad0aa6-b1bd-96ff-4c88-89a59783331b@kernel.org>
-Date:   Thu, 31 Aug 2023 15:47:39 +0200
+        Thu, 31 Aug 2023 10:14:15 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC80C10C2
+        for <linux-wireless@vger.kernel.org>; Thu, 31 Aug 2023 07:13:59 -0700 (PDT)
+Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Rc32y5KCGzNn4G;
+        Thu, 31 Aug 2023 22:10:18 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 31 Aug
+ 2023 22:13:55 +0800
+From:   Jinjie Ruan <ruanjinjie@huawei.com>
+To:     <gregory.greenman@intel.com>, <kvalo@kernel.org>,
+        <briannorris@chromium.org>, <nbd@nbd.name>, <lorenzo@kernel.org>,
+        <ryder.lee@mediatek.com>, <shayne.chen@mediatek.com>,
+        <sean.wang@mediatek.com>, <matthias.bgg@gmail.com>,
+        <angelogioacchino.delregno@collabora.com>,
+        <avraham.stern@intel.com>, <johannes.berg@intel.com>,
+        <emmanuel.grumbach@intel.com>, <trix@redhat.com>,
+        <dmantipov@yandex.ru>, <christophe.jaillet@wanadoo.fr>,
+        <yangyang@marvell.com>, <linville@tuxdriver.com>,
+        <rramesh@marvell.com>, <akarwar@marvell.com>,
+        <nishants@marvell.com>, <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+CC:     <ruanjinjie@huawei.com>
+Subject: [PATCH net 0/3] wifi: Fix the NULL vs IS_ERR() bugs for debugfs_create_dir()
+Date:   Thu, 31 Aug 2023 22:13:44 +0800
+Message-ID: <20230831141347.3166988-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] ssb-main: Fix division by zero in ssb_calc_clock_rate()
-Content-Language: en-US
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Rand Deeb <deeb.rand@confident.ru>, Michael Buesch <m@bues.ch>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     lvc-project@linuxtesting.org, voskresenski.stanislav@confident.ru
-References: <20230830082759.23336-1-deeb.rand@confident.ru>
- <4c6d01bf-1a0f-27de-54e1-4afdcf4bc8d5@lwfinger.net>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <4c6d01bf-1a0f-27de-54e1-4afdcf4bc8d5@lwfinger.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 30/08/2023 21:50, Larry Finger wrote:
-> 
->   /* Calculate the speed the backplane would run at a given set of clockcontrol 
-> values */
-> 
-> Your patch has some technical problems as well. The subject should be "ssb: Fix 
-> division ..." In addition, note that all your if statements have an extraneous 
-> "3D" as in "(m1 !=3D 0)". To me, that indicates that your mailer is not sending 
-> plain text.
+Since debugfs_create_dir() returns ERR_PTR and never return NULL, So use
+IS_ERR() to check it instead of checking NULL.
 
-It's sending everything as quoted-printable. Nothing improved here from
-their previous version.
+Jinjie Ruan (3):
+  wifi: iwlwifi: mei: Fix the NULL vs IS_ERR() bug for
+    debugfs_create_dir()
+  mwifiex: debugfs: Fix the NULL vs IS_ERR() bug for
+    debugfs_create_dir()
+  wifi: mt76: Fix the NULL vs IS_ERR() bug for debugfs_create_dir()
 
-Best regards,
-Krzysztof
+ drivers/net/wireless/intel/iwlwifi/mei/main.c  | 2 +-
+ drivers/net/wireless/marvell/mwifiex/debugfs.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/debugfs.c   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+-- 
+2.34.1
 
