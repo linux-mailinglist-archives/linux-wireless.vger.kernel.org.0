@@ -2,144 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7131B78F283
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Aug 2023 20:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8892A78F330
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Aug 2023 21:18:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243873AbjHaSXg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Aug 2023 14:23:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50924 "EHLO
+        id S1344941AbjHaTSe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Aug 2023 15:18:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347010AbjHaSXd (ORCPT
+        with ESMTP id S230245AbjHaTSd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Aug 2023 14:23:33 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89283E76;
-        Thu, 31 Aug 2023 11:23:29 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37VGqv1Z015308;
-        Thu, 31 Aug 2023 18:23:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : date :
- subject : mime-version : content-type : content-transfer-encoding :
- message-id : references : in-reply-to : to : cc; s=qcppdkim1;
- bh=IJf8Pu/6BU2lt6uAstwMsRX3afks4d+RjDyGbuNxntM=;
- b=fBYT15YZO6AMbOnu1/qLdxKB2X2MFnkjzIThppqv/8IJq7O9/JaeD5T8V6Fajlms/Woo
- 5tSg2dt9GyCm8VoyBOguey6cNLUm1YKE1yyXvXDFooePOH0T9MQjnLqLMj2XtowNz0fY
- 3wTW2w00REwuJszpG/uDxt6Sp2hX+aWqHsbQLkjDb+27YIT4Ea2x2bnMrFy4KWe1U92j
- Dj1RQgX5OHCgs8FQcFjU0+V0d5nyY0BdMDRk+O5WBxBKDcpfxbJadrRE73OO9tmKft2a
- ODIps2c8RBOedzbIilKoSa5c/rcl6rVyzWp6uXCBUYERz4lTTpFAmsSc6z0DkpzEblgr 8g== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3stxru071s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 31 Aug 2023 18:23:04 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37VIN3BS000964
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 31 Aug 2023 18:23:03 GMT
-Received: from hu-jjohnson-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Thu, 31 Aug 2023 11:23:00 -0700
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-Date:   Thu, 31 Aug 2023 11:22:58 -0700
-Subject: [PATCH v3 2/2] mac80211: Use flexible array in struct
- ieee80211_tim_ie
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20230831-ieee80211_tim_ie-v3-2-e10ff584ab5d@quicinc.com>
-References: <20230831-ieee80211_tim_ie-v3-0-e10ff584ab5d@quicinc.com>
-In-Reply-To: <20230831-ieee80211_tim_ie-v3-0-e10ff584ab5d@quicinc.com>
-To:     <kernel@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
-        =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        "Christian Lamparter" <chunkeey@googlemail.com>,
+        Thu, 31 Aug 2023 15:18:33 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F1151BF
+        for <linux-wireless@vger.kernel.org>; Thu, 31 Aug 2023 12:18:31 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1bf092a16c9so9544015ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 31 Aug 2023 12:18:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1693509511; x=1694114311; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GsqiH/F0uiLsgZIOirUAxv8nRkz7x6zqX7vHcWml97w=;
+        b=c6Z1i7tbOl0pBGpw7EAB3G5WmSTikIg6ZqDWf/YIHaVKo8BRqj0K5M9bGo7GnBZPOZ
+         F8hQGw+1tQPmhlJmajGIqg6VgSIKa3s+ETXKfrP87Fj8GaWmkQ7p/UzIQmNZEjXreHU7
+         Dsly0nsqDp1M66pziR+EQCiwhCU7kVP6CBz54=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693509511; x=1694114311;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GsqiH/F0uiLsgZIOirUAxv8nRkz7x6zqX7vHcWml97w=;
+        b=KV8nCsme1likULygil0pZHjBL2XWoF8InTjnRz+BbJAAXQ6bf3Wqek2WtNzoWELVlc
+         VaYeCLgr1kbDVXGPja/O5fC0bmxHpSmdOKH0bh3VZY2nxgBKs4k40SEPjosX9HFcmXoZ
+         1WAZVFw7Dp7dKvwwOSene1nMGcm+5WkjJpvjuh1fdnzS64rlxg5XmzKJIfGY9G8PK4/l
+         53TW7IJDv663EG+WyMJAg+te2y+xQ3Tf+s5PxXLFRYJdjDJfM5rZJxuofR1PkhozvCvo
+         WyL7wGC0glNJoCMdRh5As+8/l4YXR5MSIUryVyjjSnis4ZSst520DBbyWL9/s5jgfSEe
+         JTgQ==
+X-Gm-Message-State: AOJu0Yw/ZYihfcFhVeyolSkPNzYvTpxjrV0sZ+iqn/cUiuDwErpxqFLo
+        YnYGTS2xvEvAA+G1V1pEvx6MRw==
+X-Google-Smtp-Source: AGHT+IHAB09QJKFbJyJ6Mj/J8+vjv8IjfbkJCAe02z4bfIN2Qk8IUL2743Wr0Yrhw/3xqxR3apNxNg==
+X-Received: by 2002:a17:903:26d4:b0:1c0:aa04:dc2f with SMTP id jg20-20020a17090326d400b001c0aa04dc2fmr632850plb.11.1693509510884;
+        Thu, 31 Aug 2023 12:18:30 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id jf13-20020a170903268d00b001b8b07bc600sm1573727plb.186.2023.08.31.12.18.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Aug 2023 12:18:30 -0700 (PDT)
+Date:   Thu, 31 Aug 2023 12:18:29 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     kernel@quicinc.com, Kalle Valo <kvalo@kernel.org>,
+        Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        Christian Lamparter <chunkeey@googlemail.com>,
         Stanislaw Gruszka <stf_xl@wp.pl>,
-        "Helmut Schaa" <helmut.schaa@googlemail.com>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
         Ping-Ke Shih <pkshih@realtek.com>,
         Johannes Berg <johannes@sipsolutions.net>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Kees Cook <keescook@chromium.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.12.3
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: LiCqdd0xbcioSUS6eezCocJY3MUEpGaz
-X-Proofpoint-ORIG-GUID: LiCqdd0xbcioSUS6eezCocJY3MUEpGaz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-31_16,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- clxscore=1015 malwarescore=0 adultscore=0 priorityscore=1501
- impostorscore=0 suspectscore=0 mlxlogscore=538 mlxscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308310164
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] mac80211: Use flexible array in struct
+ ieee80211_tim_ie
+Message-ID: <202308311218.D82D90A@keescook>
+References: <20230831-ieee80211_tim_ie-v3-0-e10ff584ab5d@quicinc.com>
+ <20230831-ieee80211_tim_ie-v3-2-e10ff584ab5d@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230831-ieee80211_tim_ie-v3-2-e10ff584ab5d@quicinc.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently struct ieee80211_tim_ie defines:
-	u8 virtual_map[1];
+On Thu, Aug 31, 2023 at 11:22:58AM -0700, Jeff Johnson wrote:
+> Currently struct ieee80211_tim_ie defines:
+> 	u8 virtual_map[1];
+> 
+> Per the guidance in [1] change this to be a flexible array.
+> 
+> Per the discussion in [2] wrap the virtual_map in a union with a u8
+> item in order to preserve the existing expectation that the
+> virtual_map must contain at least one octet (at least when used in a
+> non-S1G PPDU). This means that no driver changes are required.
+> 
+> [1] https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
+> [2] https://lore.kernel.org/linux-wireless/202308301529.AC90A9EF98@keescook/
+> 
+> Suggested-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Per the guidance in [1] change this to be a flexible array.
+Looks good to me! Thanks for the conversion. :)
 
-Per the discussion in [2] wrap the virtual_map in a union with a u8
-item in order to preserve the existing expectation that the
-virtual_map must contain at least one octet (at least when used in a
-non-S1G PPDU). This means that no driver changes are required.
-
-[1] https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
-[2] https://lore.kernel.org/linux-wireless/202308301529.AC90A9EF98@keescook/
-
-Suggested-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- include/linux/ieee80211.h | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index bd2f6e19c357..340d7e0f6bf7 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -951,17 +951,24 @@ struct ieee80211_wide_bw_chansw_ie {
-  * @dtim_count: DTIM Count
-  * @dtim_period: DTIM Period
-  * @bitmap_ctrl: Bitmap Control
-+ * @required_octet: "Syntatic sugar" to force the struct size to the
-+ *                  minimum valid size when carried in a non-S1G PPDU
-  * @virtual_map: Partial Virtual Bitmap
-  *
-  * This structure represents the payload of the "TIM element" as
-- * described in IEEE Std 802.11-2020 section 9.4.2.5.
-+ * described in IEEE Std 802.11-2020 section 9.4.2.5. Note that this
-+ * definition is only applicable when the element is carried in a
-+ * non-S1G PPDU. When the TIM is carried in an S1G PPDU, the Bitmap
-+ * Control and Partial Virtual Bitmap may not be present.
-  */
- struct ieee80211_tim_ie {
- 	u8 dtim_count;
- 	u8 dtim_period;
- 	u8 bitmap_ctrl;
--	/* variable size: 1 - 251 bytes */
--	u8 virtual_map[1];
-+	union {
-+		u8 required_octet;
-+		DECLARE_FLEX_ARRAY(u8, virtual_map);
-+	};
- } __packed;
- 
- /**
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
 -- 
-2.42.0
-
+Kees Cook
