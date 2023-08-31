@@ -2,75 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A94378E523
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Aug 2023 05:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD7CD78E5C0
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Aug 2023 07:33:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345928AbjHaDtp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Aug 2023 23:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44412 "EHLO
+        id S1345396AbjHaFcx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Aug 2023 01:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345918AbjHaDtn (ORCPT
+        with ESMTP id S245132AbjHaFcu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Aug 2023 23:49:43 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E925CE0
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 20:49:40 -0700 (PDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37V3T6hk010219;
-        Thu, 31 Aug 2023 03:49:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=S5a+p5gZ9WGY6cPpibnn508ey6Pe9M/v0/ucEDU3wzw=;
- b=hLK5Z4R+4gr3UnxZWI/3J1gRBQ/Pma9Mm+tiw4ldSlfwglnZtIUn9F7FoptOYH2ySpBC
- H+wPWUt9g2VgB9BXzgFpYyhk+TtVIerW6F9ay0Cwo3OjnUxqFb/vqIFWJMe+rpdWEWpQ
- yQ2O0nxiBdV6AGXyI5Ca4Oc4+WbD1iYfJyJGt5iDoYW+X1RYPxRiJx29wl5FsD7M/BtB
- qX0mN1mWsbVzcs+GUBipliAYNhYqTy+Yi+HwA8tDA2+++SMO3Znbr6DHZYmCl1ITDB8B
- WqTtx2pRIozYLA0M2hCsiBm4qVgz4rkneEZo/UHsa1cL4V3aGVcOHLUo7Ijol8zDPLZC Mw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ssmcvba8k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 31 Aug 2023 03:49:35 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37V3nYJ9001476
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 31 Aug 2023 03:49:35 GMT
-Received: from [10.201.207.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 30 Aug
- 2023 20:49:33 -0700
-Message-ID: <d4ea2c1b-a142-1ce6-9566-7f501a30f533@quicinc.com>
-Date:   Thu, 31 Aug 2023 09:19:30 +0530
+        Thu, 31 Aug 2023 01:32:50 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 74FE5E0
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Aug 2023 22:32:41 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 37V5W62A0020409, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 37V5W62A0020409
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 31 Aug 2023 13:32:06 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Thu, 31 Aug 2023 13:32:31 +0800
+Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 31 Aug
+ 2023 13:32:32 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2 0/6] wifi: rtw89: prepare timeslot and trigger firmware for MCC
+Date:   Thu, 31 Aug 2023 13:31:27 +0800
+Message-ID: <20230831053133.24015-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: [PATCH] wifi: ath12k: Set default beacon mode to burst mode
-Content-Language: en-US
-To:     Sidhanta Sahu <quic_sidhanta@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230830194617.26400-1-quic_sidhanta@quicinc.com>
-From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <20230830194617.26400-1-quic_sidhanta@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 86A2kBCTxcumMdbK4HzuZV-gMxTYF29H
-X-Proofpoint-GUID: 86A2kBCTxcumMdbK4HzuZV-gMxTYF29H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-31_01,2023-08-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 phishscore=0 suspectscore=0 priorityscore=1501 clxscore=1011
- mlxlogscore=999 spamscore=0 malwarescore=0 mlxscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308310033
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.25]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -79,40 +55,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/31/23 01:16, Sidhanta Sahu wrote:
-> Currently, firmware does not like when beacon mode is set as staggered
-> mode for more than one beaconing vifs. Beacon mode for multiple
-> beaconing (transmitted) vifs are expected to be in burst mode. So set
-> beacon mode to burst mode by default.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Sidhanta Sahu <quic_sidhanta@quicinc.com>
-> ---
->   drivers/net/wireless/ath/ath12k/mac.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 1bb9802ef569..b16cbc3c906d 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -2314,7 +2314,7 @@ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
->   
->   	if (changed & BSS_CHANGED_BEACON) {
->   		param_id = WMI_PDEV_PARAM_BEACON_TX_MODE;
-> -		param_value = WMI_BEACON_STAGGERED_MODE;
-> +		param_value = WMI_BEACON_BURST_MODE;
->   		ret = ath12k_wmi_pdev_set_param(ar, param_id,
->   						param_value, ar->pdev->pdev_id);
->   		if (ret)
-In else part, we have a debug print. IMHO that should be changed too. 
-Please check once.
+This is second patchset to prepare more materials for MCC. It includes
+group 5 patch below that is to calculate timeslot assignment (or named
+pattern) for various combinations, such as use cases with/without BT
+devices connected.
 
-		else
-			ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
-				   "Set staggered beacon mode for VDEV: %d\n",
-				   arvif->vdev_id);
+Since the detail calculation of timeslot is complicated, we split them
+into several patches. Each of them calculates timeslot from
+'coarse-grained' to 'fine-grained'. Then, use H2C command to notify
+firmware to start MCC work that follows these timeslot patterns to
+switch channels with protocols of 802.11 PS and NoA.
 
-Could you check once?
+v2:
+  - fix unfined '__umoddi3' issue found by 0-DAY CI Kernel Test Service
 
-Aditya
+<<< Below commit message is kept as first patchset for reference >>>
+
+TDMA-based MCC (STA+P2P) is a kind of multiple interfaces concurrence.
+Basically, driver is to calculate timeslot pattern and firmware follows
+the pattern to switch channels. Since BT-coexistence is also a TDMA-based
+mechanism, also consider BT timeslot into pattern if BT devices present.
+ 
+To easier to review these 20+ patches, I summary basic purpose of these
+patches below by group, and submit them by small patchset one by one.
+ 
+Group 1. [DONE] get BT timeslot from coex mechanism
+Group 2. [DONE] adjust some stuff related to driver channel context
+Group 3. [DONE] P2P NoA infrastructure to add the IE to beacon when playing GO
+Group 4. [DONE] adjust driver to support 2 channel context
+Group 5. [CURRENT] calculate timeslot patterns and trigger firmware to switch
+                   channels followed the patterns
+Group 6. disable some dynamic tracking mechanism of RF calibration when
+         MCC is running.
+Group 7. monitor states and adjust timeslot patterns. For example, if
+         BT device leaves, we can reassign the slot to WiFi.
+Group 8. Remain-on-channel and hardware scan are related to channel
+         context, so need some treatments to work with MCC properly.
+Group 9. Finally, we declare 8852C to support MCC
+
+Zong-Zhe Yang (6):
+  wifi: rtw89: mcc: initialize start flow
+  wifi: rtw89: mcc: fill fundamental configurations
+  wifi: rtw89: mcc: consider and determine BT duration
+  wifi: rtw89: mcc: decide pattern and calculate parameters
+  wifi: rtw89: fix typo of rtw89_fw_h2c_mcc_macid_bitmap()
+  wifi: rtw89: mcc: trigger FW to start/stop MCC
+
+ drivers/net/wireless/realtek/rtw89/chan.c | 1155 +++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/chan.h |   20 +
+ drivers/net/wireless/realtek/rtw89/core.c |    4 +
+ drivers/net/wireless/realtek/rtw89/core.h |   87 ++
+ drivers/net/wireless/realtek/rtw89/fw.c   |    2 +-
+ drivers/net/wireless/realtek/rtw89/fw.h   |    2 +-
+ 6 files changed, 1268 insertions(+), 2 deletions(-)
+
+-- 
+2.25.1
+
