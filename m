@@ -2,55 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AF3878EEE9
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Aug 2023 15:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F12878EEEF
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Aug 2023 15:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235472AbjHaNpn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Aug 2023 09:45:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52760 "EHLO
+        id S242265AbjHaNqz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Aug 2023 09:46:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235662AbjHaNpl (ORCPT
+        with ESMTP id S229944AbjHaNqx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Aug 2023 09:45:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B359B10E0;
-        Thu, 31 Aug 2023 06:45:26 -0700 (PDT)
+        Thu, 31 Aug 2023 09:46:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31536CEB;
+        Thu, 31 Aug 2023 06:46:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B1A5664109;
-        Thu, 31 Aug 2023 13:45:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC69DC433C8;
-        Thu, 31 Aug 2023 13:45:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE2EA631A5;
+        Thu, 31 Aug 2023 13:46:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A289FC433C7;
+        Thu, 31 Aug 2023 13:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693489520;
-        bh=yPxUUb8SdJT2EZzVca/ZY039E10NMFAwKrDGPLTkGrY=;
+        s=k20201202; t=1693489610;
+        bh=xn/Mj2gBv64WVvBC6jpiD9eAcJ5g1bnlmQ/5B7GK/J4=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=mGa4irl1m+svZf4EspWl30Nqwd4NR6RnPBSqxL64cjj9qdpzFSKLu7J+gas7OXmKS
-         486Xp6IsqmwY8H7feW88F6mov+rkJZ6VYIghiZ+7pPWMEZAMUrERsbXhuGLDrnNoZ/
-         ZphgHpEfpnzNB3aUMyhvwR5NRoORO61JKr18I3cGGOfa8K2nZ+oyulH/Pp8eHAWTDO
-         HfAzl+/0tu6x1BhRzfJVMZ+DMfYc1Zgp2Zs0MRfgfcSGReEKiabpE+6z5FFqvI3tD2
-         JqBGbOUVJ+qowR0bTgWsWy0M1Wcgd2neJTKadbtV5ixC0L1m6wbG3XsaZBGCVpBkfb
-         uBHNJSqrtbS0g==
-Message-ID: <ac040329-25a9-121b-b2b4-843b6a8d2a29@kernel.org>
-Date:   Thu, 31 Aug 2023 15:45:15 +0200
+        b=KkbYvqBJ8ixQFWkG9OzDbY30MyWE2KmTw7xYsoMo4U6KeWqNcGsmQtwpJtD5NU77h
+         9v1X2+KFA98Nq1ekGndOF6cgVbDQwbxJi3yvM5ixXeCEAg96zDl3axO9pDjLEAF8KN
+         JZVQbkaKD6QrbyQ63cJlt0tmjYf3qI0twFyRjR8C5xcVtgO5zHewy9d8kDEzL5S2u5
+         Q6tpYRoYxjBmA76wzv803ckXC0DiXdqsTBMKlJ1HF7/sHqlTYqQA/EHSVoNN/lV5o5
+         SFz/Kifb2LQoDgwpEm/2TIaYRpfcqZuYr2IcHuMJ9z8p2Fy691v65ATCQn62AERxPY
+         f+mHbRNRM9EWQ==
+Message-ID: <49ef6d93-eebd-7200-cd1b-ecd4d6fedeba@kernel.org>
+Date:   Thu, 31 Aug 2023 15:46:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
 Subject: Re: [PATCH] ssb-main: Fix division by zero in ssb_calc_clock_rate()
-To:     Rand Deeb <deeb.rand@confident.ru>, Michael Buesch <m@bues.ch>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     lvc-project@linuxtesting.org, voskresenski.stanislav@confident.ru
-References: <20230830082759.23336-1-deeb.rand@confident.ru>
 Content-Language: en-US
+To:     =?UTF-8?B?0KDQsNC90LQg0JTQtdC10LE=?= <deeb.rand@confident.ru>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     lvc-project@linuxtesting.org,
+        =?UTF-8?B?0JLQvtGB0LrRgNC10YHQtdC90YHQutC40Lkg0KHRgtCw0L3QuNGB0LvQsNCyINCY?=
+         =?UTF-8?B?0LPQvtGA0LXQstC40Yc=?= 
+        <voskresenski.stanislav@confident.ru>
+References: <20230830082759.23336-1-deeb.rand@confident.ru>
+ <4c6d01bf-1a0f-27de-54e1-4afdcf4bc8d5@lwfinger.net>
+ <531722477.1139813.1693465653233.JavaMail.zimbra@confident.ru>
 From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20230830082759.23336-1-deeb.rand@confident.ru>
+In-Reply-To: <531722477.1139813.1693465653233.JavaMail.zimbra@confident.ru>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-10.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,41 +65,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 30/08/2023 10:27, Rand Deeb wrote:
-> In ssb_calc_clock_rate(), the value of m1 may be zero because it is
-> initialized using clkfactor_f6_resolv(). This function could return
-> zero, so there is a possibility of dividing by zero, we fixed it by
-> checking the values before dividing.
+On 31/08/2023 09:07, Ранд Дееб wrote:
+> Dear Larry, 
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 1- Yes, I agree that your solution is simpler, and I thought about it, but 
+> I thought that the one who set the value zero put it for some reason, so I 
+> did not want to change it.
 
-Version your patches and provide changelog after --- .
+Don't top -pots.
 
-> 
-> Signed-off-by: Rand Deeb <deeb.rand@confident.ru>
-> ---
->  drivers/ssb/main.c | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-> index 0a26984acb2c..e0776a16d04d 100644
-> --- a/drivers/ssb/main.c
-> +++ b/drivers/ssb/main.c
-> @@ -903,13 +903,21 @@ u32 ssb_calc_clock_rate(u32 plltype, u32 n, u32 m)
->  		case SSB_CHIPCO_CLK_MC_BYPASS:
->  			return clock;
->  		case SSB_CHIPCO_CLK_MC_M1:
-> -			return (clock / m1);
-> +			if (m1 !=3D 0)
+> 2- It's first time to send using this mailer, but we tested it by sending 
+> the patch to our personal emails (gmail, etc..) and it works perfectly! I 
 
-Nothing improved here.
+Really? No, it does not work perfectly. Look at your email - you send it
+non-standard way.
 
-Don't send patches as quoted-printable via some weird mailers.
-Recommendation is to use standard tool - git send-email.
+> don't know why this encryption appears only when we get a response from 
+> you, but we're still investigating. We will fix it, and follow all the 
+> recommendations in the future.
 
-As you can easily see on the web - it is re-formatted for quoted-printable:
-
-https://lore.kernel.org/all/20230830082759.23336-1-deeb.rand@confident.ru/raw
+What encryption? You mean encoding? Encryption is something entirely
+else and if you enable PGP or whatever, you must disable it. It's public
+work.
 
 Best regards,
 Krzysztof
