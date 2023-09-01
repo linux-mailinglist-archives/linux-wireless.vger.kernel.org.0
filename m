@@ -2,84 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8066578F94D
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 09:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E719978F985
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 10:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238012AbjIAHnC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Sep 2023 03:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33536 "EHLO
+        id S242406AbjIAIJu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Sep 2023 04:09:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230215AbjIAHnB (ORCPT
+        with ESMTP id S231522AbjIAIJu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Sep 2023 03:43:01 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 75148E7F
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Sep 2023 00:42:57 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3817gP5m9007838, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3817gP5m9007838
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 1 Sep 2023 15:42:25 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 1 Sep 2023 15:42:51 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Fri, 1 Sep 2023 15:42:51 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
- RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
- 15.01.2375.007; Fri, 1 Sep 2023 15:42:50 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 0/8] wifi: rtw89: generalize download firmware flow to support WiFi 7 chips
-Thread-Topic: [PATCH 0/8] wifi: rtw89: generalize download firmware flow to
- support WiFi 7 chips
-Thread-Index: AQHZ3JvVz4UlhLr2PECd3dgaau2MObAFlivQ
-Date:   Fri, 1 Sep 2023 07:42:50 +0000
-Message-ID: <6b30326507974478a1ca975e21e26cec@realtek.com>
-References: <20230901061507.34312-1-pkshih@realtek.com>
-In-Reply-To: <20230901061507.34312-1-pkshih@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.25]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 1 Sep 2023 04:09:50 -0400
+Received: from hust.edu.cn (unknown [202.114.0.240])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D539CC;
+        Fri,  1 Sep 2023 01:09:47 -0700 (PDT)
+Received: from localhost.localdomain ([172.16.0.254])
+        (user=dzm91@hust.edu.cn mech=LOGIN bits=0)
+        by mx1.hust.edu.cn  with ESMTP id 381875mt005504-381875mu005504
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+        Fri, 1 Sep 2023 16:07:10 +0800
+From:   Dongliang Mu <dzm91@hust.edu.cn>
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sujith Manoharan <c_manoha@qca.qualcomm.com>,
+        "John W. Linville" <linville@tuxdriver.com>
+Cc:     hust-os-kernel-patches@googlegroups.com,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ath9k: fix null-ptr-deref in ath_chanctx_event
+Date:   Fri,  1 Sep 2023 16:07:00 +0800
+Message-Id: <20230901080701.1705649-1-dzm91@hust.edu.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
+X-FEAS-AUTH-USER: dzm91@hust.edu.cn
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Smatch reports:
 
-> -----Original Message-----
-> From: Ping-Ke Shih <pkshih@realtek.com>
-> Sent: Friday, September 1, 2023 2:15 PM
-> To: kvalo@kernel.org
-> Cc: linux-wireless@vger.kernel.org
-> Subject: [PATCH 0/8] wifi: rtw89: generalize download firmware flow to support WiFi 7 chips
-> 
+ath_chanctx_event() error: we previously assumed 'vif' could be null
 
-I miss a change from internal commit, so please ignore this patchset, and jump to v2.
+The function ath_chanctx_event can be called with vif argument as NULL.
+If vif is NULL, ath_dbg can trigger a null pointer dereference.
 
-Ping-Ke
+Fix this by adding a null pointer check.
+
+Fixes: 878066e745b5 ("ath9k: Add more debug statements for channel context")
+Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+---
+ drivers/net/wireless/ath/ath9k/channel.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
+index 571062f2e82a..e343c8962d14 100644
+--- a/drivers/net/wireless/ath/ath9k/channel.c
++++ b/drivers/net/wireless/ath/ath9k/channel.c
+@@ -576,7 +576,9 @@ void ath_chanctx_event(struct ath_softc *sc, struct ieee80211_vif *vif,
+ 		if (sc->sched.state != ATH_CHANCTX_STATE_WAIT_FOR_BEACON)
+ 			break;
+ 
+-		ath_dbg(common, CHAN_CTX, "Preparing beacon for vif: %pM\n", vif->addr);
++		if (vif)
++			ath_dbg(common, CHAN_CTX,
++				"Preparing beacon for vif: %pM\n", vif->addr);
+ 
+ 		sc->sched.beacon_pending = true;
+ 		sc->sched.next_tbtt = REG_READ(ah, AR_NEXT_TBTT_TIMER);
+-- 
+2.39.2
 
