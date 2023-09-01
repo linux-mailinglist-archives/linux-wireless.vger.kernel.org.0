@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA5C78F940
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 09:41:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 130F378F941
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 09:41:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348523AbjIAHlL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Sep 2023 03:41:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37894 "EHLO
+        id S1348524AbjIAHlM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Sep 2023 03:41:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348520AbjIAHlK (ORCPT
+        with ESMTP id S1348522AbjIAHlL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Sep 2023 03:41:10 -0400
+        Fri, 1 Sep 2023 03:41:11 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A94A110D7
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Sep 2023 00:41:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E3366E7F
+        for <linux-wireless@vger.kernel.org>; Fri,  1 Sep 2023 00:41:08 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3817eZ8s9006911, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3817eaIgB006924, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3817eZ8s9006911
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3817eaIgB006924
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 1 Sep 2023 15:40:35 +0800
+        Fri, 1 Sep 2023 15:40:36 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 1 Sep 2023 15:41:01 +0800
+ 15.1.2507.17; Fri, 1 Sep 2023 15:41:02 +0800
 Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 1 Sep 2023
- 15:41:01 +0800
+ 15:41:02 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 7/8] wifi: rtw89: fw: refine download flow to support variant firmware suits
-Date:   Fri, 1 Sep 2023 15:39:55 +0800
-Message-ID: <20230901073956.54203-8-pkshih@realtek.com>
+Subject: [PATCH v2 8/8] wifi: rtw89: 8922a: set memory heap address for secure firmware
+Date:   Fri, 1 Sep 2023 15:39:56 +0800
+Message-ID: <20230901073956.54203-9-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230901073956.54203-1-pkshih@realtek.com>
 References: <20230901073956.54203-1-pkshih@realtek.com>
@@ -57,153 +57,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To support download more than one firmware, adjust flow to download
-firmware by unit of firmware suit. Then, flow becomes
-
- 1. initial setup - disable/enable_wcpu
- 2. for all firmware suits
- 2.1. download WiFi CPU, and check ready
- 2.2. download BB MCU, and check ready
- 3. check status code to make sure all ready
+Secure firmware is protected by public/private key cryptography. To help
+firmware self verify integrity, configure a heap address for these
+data before downloading firmware.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
 v2: no change
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 84 +++++++++++++++++++------
- 1 file changed, 65 insertions(+), 19 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c  | 4 ++++
+ drivers/net/wireless/realtek/rtw89/reg.h | 2 ++
+ 2 files changed, 6 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 2878954abe1f..b27d3cb6f1d9 100644
+index b27d3cb6f1d9..c5dff61c8ebd 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -823,10 +823,27 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
- 	return ret;
- }
- 
--static int rtw89_fw_download_main(struct rtw89_dev *rtwdev, const u8 *fw,
-+static enum rtw89_fwdl_check_type
-+rtw89_fw_get_fwdl_chk_type_from_suit(struct rtw89_dev *rtwdev,
-+				     const struct rtw89_fw_suit *fw_suit)
-+{
-+	switch (fw_suit->type) {
-+	case RTW89_FW_BBMCU0:
-+		return RTW89_FWDL_CHECK_BB0_FWDL_DONE;
-+	case RTW89_FW_BBMCU1:
-+		return RTW89_FWDL_CHECK_BB1_FWDL_DONE;
-+	default:
-+		return RTW89_FWDL_CHECK_WCPU_FWDL_DONE;
-+	}
-+}
-+
-+static int rtw89_fw_download_main(struct rtw89_dev *rtwdev,
-+				  const struct rtw89_fw_suit *fw_suit,
- 				  struct rtw89_fw_bin_info *info)
- {
- 	struct rtw89_fw_hdr_section_info *section_info = info->section_info;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	enum rtw89_fwdl_check_type chk_type;
- 	u8 section_num = info->section_num;
- 	int ret;
- 
-@@ -837,6 +854,16 @@ static int rtw89_fw_download_main(struct rtw89_dev *rtwdev, const u8 *fw,
- 		section_info++;
+@@ -912,6 +912,10 @@ static int rtw89_fw_download_suit(struct rtw89_dev *rtwdev,
+ 		return ret;
  	}
  
-+	if (chip->chip_gen == RTW89_CHIP_AX)
-+		return 0;
++	if (rtwdev->chip->chip_id == RTL8922A &&
++	    (fw_suit->type == RTW89_FW_NORMAL || fw_suit->type == RTW89_FW_WOWLAN))
++		rtw89_write32(rtwdev, R_BE_SECURE_BOOT_MALLOC_INFO, 0x20248000);
 +
-+	chk_type = rtw89_fw_get_fwdl_chk_type_from_suit(rtwdev, fw_suit);
-+	ret = rtw89_fw_check_rdy(rtwdev, chk_type);
-+	if (ret) {
-+		rtw89_warn(rtwdev, "failed to download firmware type %u\n",
-+			   fw_suit->type);
-+		return ret;
-+	}
- 
- 	return 0;
- }
-@@ -872,43 +899,62 @@ static void rtw89_fw_dl_fail_dump(struct rtw89_dev *rtwdev)
- 	rtw89_fw_prog_cnt_dump(rtwdev);
- }
- 
--int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
--		      bool include_bb)
-+static int rtw89_fw_download_suit(struct rtw89_dev *rtwdev,
-+				  struct rtw89_fw_suit *fw_suit)
- {
- 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
--	struct rtw89_fw_info *fw_info = &rtwdev->fw;
--	struct rtw89_fw_suit *fw_suit = rtw89_fw_suit_get(rtwdev, type);
- 	struct rtw89_fw_bin_info info;
- 	int ret;
- 
--	mac->disable_cpu(rtwdev);
--	ret = mac->fwdl_enable_wcpu(rtwdev, 0, true, include_bb);
--	if (ret)
--		return ret;
--
- 	ret = rtw89_fw_hdr_parser(rtwdev, fw_suit, &info);
- 	if (ret) {
- 		rtw89_err(rtwdev, "parse fw header fail\n");
--		goto fwdl_err;
-+		return ret;
- 	}
- 
  	ret = mac->fwdl_check_path_ready(rtwdev, true);
  	if (ret) {
  		rtw89_err(rtwdev, "[ERR]H2C path ready\n");
--		goto fwdl_err;
-+		return ret;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 7798866d20c6..d37bb8273ff5 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -3670,6 +3670,8 @@
+ #define B_BE_LPS_STATUS BIT(3)
+ #define B_BE_HCI_TXDMA_BUSY BIT(2)
  
- 	ret = rtw89_fw_download_hdr(rtwdev, fw_suit->data, info.hdr_len -
- 							   info.dynamic_hdr_len);
--	if (ret) {
--		ret = -EBUSY;
--		goto fwdl_err;
--	}
-+	if (ret)
-+		return ret;
- 
--	ret = rtw89_fw_download_main(rtwdev, fw_suit->data, &info);
--	if (ret) {
--		ret = -EBUSY;
-+	ret = rtw89_fw_download_main(rtwdev, fw_suit, &info);
-+	if (ret)
-+		return ret;
++#define R_BE_SECURE_BOOT_MALLOC_INFO 0x0184
 +
-+	return 0;
-+}
-+
-+int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
-+		      bool include_bb)
-+{
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+	struct rtw89_fw_info *fw_info = &rtwdev->fw;
-+	struct rtw89_fw_suit *fw_suit = rtw89_fw_suit_get(rtwdev, type);
-+	u8 bbmcu_nr = rtwdev->chip->bbmcu_nr;
-+	int ret;
-+	int i;
-+
-+	mac->disable_cpu(rtwdev);
-+	ret = mac->fwdl_enable_wcpu(rtwdev, 0, true, include_bb);
-+	if (ret)
-+		return ret;
-+
-+	ret = rtw89_fw_download_suit(rtwdev, fw_suit);
-+	if (ret)
- 		goto fwdl_err;
-+
-+	for (i = 0; i < bbmcu_nr && include_bb; i++) {
-+		fw_suit = rtw89_fw_suit_get(rtwdev, RTW89_FW_BBMCU0 + i);
-+
-+		ret = rtw89_fw_download_suit(rtwdev, fw_suit);
-+		if (ret)
-+			goto fwdl_err;
- 	}
- 
- 	fw_info->h2c_seq = 0;
+ #define R_BE_WCPU_FW_CTRL 0x01E0
+ #define B_BE_RUN_ENV_MASK GENMASK(31, 30)
+ #define B_BE_WCPU_FWDL_STATUS_MASK GENMASK(29, 26)
 -- 
 2.25.1
 
