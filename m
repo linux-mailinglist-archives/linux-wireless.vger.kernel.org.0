@@ -2,136 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C06F178F77C
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 05:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0375B78F785
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 05:49:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348238AbjIADkz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Aug 2023 23:40:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37082 "EHLO
+        id S1345947AbjIADta (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Aug 2023 23:49:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229759AbjIADkv (ORCPT
+        with ESMTP id S229573AbjIADt3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Aug 2023 23:40:51 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5696718C
-        for <linux-wireless@vger.kernel.org>; Thu, 31 Aug 2023 20:40:48 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3813PIOv019655;
-        Fri, 1 Sep 2023 03:40:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=b/djOISPbbNKu9e3Cy/GHYQgzJiRTjmdrBcMv1U3+WQ=;
- b=Ey3AMZT2mFd4wWgGCUpI3A7jUh0xtp0h4b2QFBKeFhnt9/4jOFRi+iI8/bnVfbpVml3P
- XCz5mEGURQ4rxWSXpfnZTJ5Hcrh4/Fw8UeawvIbaxBkfahhdN6bP69+ItxKN2QvpN1OD
- kjzpfkoGHtmjQRx4wZt8pgFBcJLaKPUT+6ynLyJj1QcKQ5/PC2Uz9Bw8pTRefKlQylFn
- hctllL8H/m1yPL7bjtUFFp6sVejCmHWceOcw3Ksjps9P4ZDoK+78W4cJYhEVb8Ihg/MO
- m2YAKmImpWb8qzM1ZYjjl9Yr95dW4FpiCsxSwlsf/0M0ALoYJUq/x1ZOsZx25V0rFSa6 MQ== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3stxru15ax-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 01 Sep 2023 03:40:43 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3813eg2u011445
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 1 Sep 2023 03:40:42 GMT
-Received: from [10.111.179.211] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 31 Aug
- 2023 20:40:41 -0700
-Message-ID: <3188a89a-7d8f-49e2-abb6-7cefcde4cc1a@quicinc.com>
-Date:   Thu, 31 Aug 2023 20:40:41 -0700
+        Thu, 31 Aug 2023 23:49:29 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C60AD18C;
+        Thu, 31 Aug 2023 20:49:26 -0700 (PDT)
+Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RcP9C49CYzTjf6;
+        Fri,  1 Sep 2023 11:46:55 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
+ (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 1 Sep
+ 2023 11:49:24 +0800
+From:   Zhengchao Shao <shaozhengchao@huawei.com>
+To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>,
+        <shaozhengchao@huawei.com>
+Subject: [PATCH net,v2] wifi: mac80211: fix WARNING in ieee80211_link_info_change_notify()
+Date:   Fri, 1 Sep 2023 11:53:01 +0800
+Message-ID: <20230901035301.3473463-1-shaozhengchao@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: fix possible out-of-bound read in
- ath12k_htt_pull_ppdu_stats()
-Content-Language: en-US
-To:     Baochen Qiang <quic_bqiang@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230901015602.45112-1-quic_bqiang@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230901015602.45112-1-quic_bqiang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Q0aapyQDZB_rO4_rSqCfRJlHjdlFDguK
-X-Proofpoint-ORIG-GUID: Q0aapyQDZB_rO4_rSqCfRJlHjdlFDguK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-01_01,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- clxscore=1015 malwarescore=0 adultscore=0 priorityscore=1501
- impostorscore=0 suspectscore=0 mlxlogscore=996 mlxscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309010033
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500026.china.huawei.com (7.185.36.106)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/31/2023 6:56 PM, Baochen Qiang wrote:
-> len is extracted from HTT message and could be an unexpected value in
-> case errors happen, so add validation before using to avoid possible
-> out-of-bound read in the following message iteration and parsing.
-> 
-> The same issue also applies to ppdu_info->ppdu_stats.common.num_users,
-> so validate it before using too.
-> 
-> These are found during code review.
-> 
-> Compile test only.
-> 
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Syz reports the following WARNING:
+wlan0: Failed check-sdata-in-driver check, flags: 0x0
+WARNING: CPU: 3 PID: 5384 at net/mac80211/main.c:287
+ieee80211_link_info_change_notify+0x1c2/0x230
+Modules linked in:
+RIP: 0010:ieee80211_link_info_change_notify+0x1c2/0x230
+Call Trace:
+<TASK>
+ieee80211_set_mcast_rate+0x3e/0x50
+nl80211_set_mcast_rate+0x316/0x650
+genl_family_rcv_msg_doit+0x20b/0x300
+genl_rcv_msg+0x39f/0x6a0
+netlink_rcv_skb+0x13b/0x3b0
+genl_rcv+0x24/0x40
+netlink_unicast+0x4a2/0x740
+netlink_sendmsg+0x83e/0xce0
+sock_sendmsg+0xc5/0x100
+____sys_sendmsg+0x583/0x690
+___sys_sendmsg+0xe8/0x160
+__sys_sendmsg+0xbf/0x160
+do_syscall_64+0x35/0x80
+entry_SYSCALL_64_after_hwframe+0x46/0xb0
+</TASK>
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+The execution process is as follows:
+Thread A:
+ieee80211_open()
+    ieee80211_do_open()
+        drv_add_interface()     //set IEEE80211_SDATA_IN_DRIVER flag
+...
+rtnl_newlink
+    do_setlink
+	dev_change_flags
+            ...
+            __dev_close_many
+                ieee80211_stop()
+                    ieee80211_do_stop()
+                        drv_remove_interface() //clear flag
+...
+nl80211_set_mcast_rate()
+    ieee80211_set_mcast_rate()
+        ieee80211_link_info_change_notify()
+            check_sdata_in_driver() //WARNING because flag is cleared
 
-> ---
->   drivers/net/wireless/ath/ath12k/dp_rx.c | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-> index e6e64d437c47..5189a0690d44 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-> @@ -1555,6 +1555,13 @@ static int ath12k_htt_pull_ppdu_stats(struct ath12k_base *ab,
->   
->   	msg = (struct ath12k_htt_ppdu_stats_msg *)skb->data;
->   	len = le32_get_bits(msg->info, HTT_T2H_PPDU_STATS_INFO_PAYLOAD_SIZE);
-> +	if (len > (skb->len - struct_size(msg, data, 0))) {
-> +		ath12k_warn(ab,
-> +			    "HTT PPDU STATS event has unexpected payload size %u, should be smaller than %u\n",
-> +			    len, skb->len);
-> +		return -EINVAL;
-> +	}
-> +
->   	pdev_id = le32_get_bits(msg->info, HTT_T2H_PPDU_STATS_INFO_PDEV_ID);
->   	ppdu_id = le32_to_cpu(msg->ppdu_id);
->   
-> @@ -1583,6 +1590,15 @@ static int ath12k_htt_pull_ppdu_stats(struct ath12k_base *ab,
->   		goto exit;
->   	}
->   
-> +	if (ppdu_info->ppdu_stats.common.num_users >= HTT_PPDU_STATS_MAX_USERS) {
-> +		spin_unlock_bh(&ar->data_lock);
-> +		ath12k_warn(ab,
-> +			    "HTT PPDU STATS event has unexpected num_users %u, should be smaller than %u\n",
-> +			    ppdu_info->ppdu_stats.common.num_users, HTT_PPDU_STATS_MAX_USERS);
-> +		ret = -EINVAL;
-> +		goto exit;
-> +	}
-> +
->   	/* back up data rate tlv for all peers */
->   	if (ppdu_info->frame_type == HTT_STATS_PPDU_FTYPE_DATA &&
->   	    (ppdu_info->tlv_bitmap & (1 << HTT_PPDU_STATS_TAG_USR_COMMON)) &&
-> 
-> base-commit: a62b0aeb556839fb6abb9835874443b08fe95598
+When the wlan device stops, the IEEE80211_SDATA_IN_ DRIVER flag is cleared.
+And then after the set mcast rate command is executed, WARNING is generated
+because the flag bit has been already cleared.
+
+Fixes: 591e73ee3f73 ("wifi: mac80211: properly skip link info driver update")
+Reported-by: syzbot+bce2ca140cc00578ed07@syzkaller.appspotmail.com
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+---
+v2: modify commit info
+---
+ net/mac80211/main.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 24315d7b3126..f79e2343dddd 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -285,6 +285,9 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 	if (!changed || sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		return;
+ 
++	if (!ieee80211_sdata_running(sdata))
++		return;
++
+ 	if (!check_sdata_in_driver(sdata))
+ 		return;
+ 
+-- 
+2.34.1
 
