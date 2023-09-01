@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BC5F78F93C
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 09:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2382678F93E
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 09:41:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348515AbjIAHlI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Sep 2023 03:41:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37856 "EHLO
+        id S1348516AbjIAHlJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Sep 2023 03:41:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348505AbjIAHlH (ORCPT
+        with ESMTP id S1348513AbjIAHlI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Sep 2023 03:41:07 -0400
+        Fri, 1 Sep 2023 03:41:08 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 73F8810D7
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BB6EF10DA
         for <linux-wireless@vger.kernel.org>; Fri,  1 Sep 2023 00:41:04 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3817eVdcD006879, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3817eVdcD006879
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3817eV6c9006883, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3817eV6c9006883
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
         Fri, 1 Sep 2023 15:40:31 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 1 Sep 2023 15:40:57 +0800
+ 15.1.2375.32; Fri, 1 Sep 2023 15:40:57 +0800
 Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 1 Sep 2023
- 15:40:55 +0800
+ 15:40:57 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 2/8] wifi: rtw89: fw: generalize download firmware flow by mac_gen pointers
-Date:   Fri, 1 Sep 2023 15:39:50 +0800
-Message-ID: <20230901073956.54203-3-pkshih@realtek.com>
+Subject: [PATCH v2 3/8] wifi: rtw89: fw: implement supported functions of download firmware for WiFi 7 chips
+Date:   Fri, 1 Sep 2023 15:39:51 +0800
+Message-ID: <20230901073956.54203-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230901073956.54203-1-pkshih@realtek.com>
 References: <20230901073956.54203-1-pkshih@realtek.com>
@@ -48,6 +48,10 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
@@ -57,177 +61,293 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In order to reuse the flow to download firmware, define some mac_gen::ops
-to implement them for WiFi 6 and 7 chips individually. This doesn't change
-logic at all.
+To work with generalized flow of download firmware, implement WiFi 7
+specific functions to support it. These functions include disable/enable
+WiFi CPU, status of path ready, and status of firmware.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-v2: no change
+v2:
+  - correct settings I miss from internal commit
 ---
- drivers/net/wireless/realtek/rtw89/fw.c  | 21 +++++++++------------
- drivers/net/wireless/realtek/rtw89/mac.c | 17 +++++++++++++++--
- drivers/net/wireless/realtek/rtw89/mac.h |  9 +++++----
- 3 files changed, 29 insertions(+), 18 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac_be.c | 131 ++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h    | 107 ++++++++++++++++
+ 2 files changed, 238 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 7c2fa732db18..459597c28bc9 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -47,19 +47,13 @@ struct sk_buff *rtw89_fw_h2c_alloc_skb_no_hdr(struct rtw89_dev *rtwdev, u32 len)
- 	return rtw89_fw_h2c_alloc_skb(rtwdev, len, false);
- }
+diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
+index 9a63fb35e867..0b389eb656ac 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac_be.c
++++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
+@@ -2,6 +2,8 @@
+ /* Copyright(c) 2019-2020  Realtek Corporation
+  */
  
--static u8 _fw_get_rdy(struct rtw89_dev *rtwdev)
--{
--	u8 val = rtw89_read8(rtwdev, R_AX_WCPU_FW_CTRL);
--
--	return FIELD_GET(B_AX_WCPU_FWDL_STS_MASK, val);
--}
--
- int rtw89_fw_check_rdy(struct rtw89_dev *rtwdev)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	u8 val;
- 	int ret;
++#include "debug.h"
++#include "fw.h"
+ #include "mac.h"
+ #include "reg.h"
  
--	ret = read_poll_timeout_atomic(_fw_get_rdy, val,
-+	ret = read_poll_timeout_atomic(mac->fwdl_get_status, val,
- 				       val == RTW89_FWDL_WCPU_FW_INIT_RDY,
- 				       1, FWDL_WAIT_CNT, false, rtwdev);
- 	if (ret) {
-@@ -77,6 +71,7 @@ int rtw89_fw_check_rdy(struct rtw89_dev *rtwdev)
- 			return -EINVAL;
+@@ -28,11 +30,140 @@ static const u32 rtw89_mac_mem_base_addrs_be[RTW89_MAC_MEM_NUM] = {
+ 	[RTW89_MAC_MEM_WD_PAGE]		= WD_PAGE_BASE_ADDR_BE,
+ };
  
- 		default:
-+			rtw89_err(rtwdev, "fw unexpected status %d\n", val);
- 			return -EBUSY;
- 		}
- 	}
-@@ -767,6 +762,7 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 l
- 
- static int rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 len)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	int ret;
- 
- 	ret = __rtw89_fw_download_hdr(rtwdev, fw, len);
-@@ -775,7 +771,7 @@ static int rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 len
- 		return ret;
- 	}
- 
--	ret = rtw89_fwdl_check_path_ready_ax(rtwdev, false);
-+	ret = mac->fwdl_check_path_ready(rtwdev, false);
- 	if (ret) {
- 		rtw89_err(rtwdev, "[ERR]FWDL path ready\n");
- 		return ret;
-@@ -885,13 +881,14 @@ static void rtw89_fw_dl_fail_dump(struct rtw89_dev *rtwdev)
- 
- int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	struct rtw89_fw_info *fw_info = &rtwdev->fw;
- 	struct rtw89_fw_suit *fw_suit = rtw89_fw_suit_get(rtwdev, type);
- 	struct rtw89_fw_bin_info info;
- 	int ret;
- 
--	rtw89_mac_disable_cpu(rtwdev);
--	ret = rtw89_mac_enable_cpu(rtwdev, 0, true);
-+	mac->disable_cpu(rtwdev);
-+	ret = mac->fwdl_enable_wcpu(rtwdev, 0, true);
- 	if (ret)
- 		return ret;
- 
-@@ -901,7 +898,7 @@ int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type)
- 		goto fwdl_err;
- 	}
- 
--	ret = rtw89_fwdl_check_path_ready_ax(rtwdev, true);
-+	ret = mac->fwdl_check_path_ready(rtwdev, true);
- 	if (ret) {
- 		rtw89_err(rtwdev, "[ERR]H2C path ready\n");
- 		goto fwdl_err;
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 013114fd9d19..fe8dbb2fe8e1 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3452,7 +3452,7 @@ static void rtw89_disable_fw_watchdog(struct rtw89_dev *rtwdev)
- 	rtw89_mac_mem_write(rtwdev, R_AX_WDT_STATUS, val32, RTW89_MAC_MEM_CPU_LOCAL);
- }
- 
--void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev)
-+static void rtw89_mac_disable_cpu_ax(struct rtw89_dev *rtwdev)
- {
- 	clear_bit(RTW89_FLAG_FW_RDY, rtwdev->flags);
- 
-@@ -3467,7 +3467,7 @@ void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev)
- 	rtw89_write32_set(rtwdev, R_AX_PLATFORM_ENABLE, B_AX_PLATFORM_EN);
- }
- 
--int rtw89_mac_enable_cpu(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw)
-+static int rtw89_mac_enable_cpu_ax(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw)
- {
- 	u32 val;
- 	int ret;
-@@ -5684,6 +5684,14 @@ int rtw89_mac_ptk_drop_by_band_and_wait(struct rtw89_dev *rtwdev,
- 	return ret;
- }
- 
-+static u8 rtw89_fw_get_rdy_ax(struct rtw89_dev *rtwdev)
++static void rtw89_mac_disable_cpu_be(struct rtw89_dev *rtwdev)
 +{
-+	u8 val = rtw89_read8(rtwdev, R_AX_WCPU_FW_CTRL);
++	u32 val32;
 +
-+	return FIELD_GET(B_AX_WCPU_FWDL_STS_MASK, val);
++	clear_bit(RTW89_FLAG_FW_RDY, rtwdev->flags);
++
++	rtw89_write32_clr(rtwdev, R_BE_PLATFORM_ENABLE, B_BE_WCPU_EN);
++	rtw89_write32_set(rtwdev, R_BE_PLATFORM_ENABLE, B_BE_HOLD_AFTER_RESET);
++	rtw89_write32_set(rtwdev, R_BE_PLATFORM_ENABLE, B_BE_WCPU_EN);
++
++	val32 = rtw89_read32(rtwdev, R_BE_WCPU_FW_CTRL);
++	val32 &= B_BE_RUN_ENV_MASK;
++	rtw89_write32(rtwdev, R_BE_WCPU_FW_CTRL, val32);
++
++	rtw89_write32_set(rtwdev, R_BE_DCPU_PLATFORM_ENABLE, B_BE_DCPU_PLATFORM_EN);
++
++	rtw89_write32(rtwdev, R_BE_UDM0, 0);
++	rtw89_write32(rtwdev, R_BE_HALT_C2H, 0);
++	rtw89_write32(rtwdev, R_BE_UDM2, 0);
 +}
 +
-+static
- int rtw89_fwdl_check_path_ready_ax(struct rtw89_dev *rtwdev,
- 				   bool h2c_or_fwdl)
- {
-@@ -5701,5 +5709,10 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
- 	.indir_access_addr = R_AX_INDIR_ACCESS_ENTRY,
- 	.mem_base_addrs = rtw89_mac_mem_base_addrs_ax,
- 	.rx_fltr = R_AX_RX_FLTR_OPT,
++static void set_cpu_en(struct rtw89_dev *rtwdev)
++{
++	u32 set = B_BE_WLANCPU_FWDL_EN;
 +
-+	.disable_cpu = rtw89_mac_disable_cpu_ax,
-+	.fwdl_enable_wcpu = rtw89_mac_enable_cpu_ax,
-+	.fwdl_get_status = rtw89_fw_get_rdy_ax,
-+	.fwdl_check_path_ready = rtw89_fwdl_check_path_ready_ax,
- };
- EXPORT_SYMBOL(rtw89_mac_gen_ax);
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index a9a571df3a77..ecf143a671c6 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -858,6 +858,11 @@ struct rtw89_mac_gen_def {
- 	u32 indir_access_addr;
- 	const u32 *mem_base_addrs;
- 	u32 rx_fltr;
++	rtw89_write32_set(rtwdev, R_BE_WCPU_FW_CTRL, set);
++}
 +
-+	void (*disable_cpu)(struct rtw89_dev *rtwdev);
-+	int (*fwdl_enable_wcpu)(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw);
-+	u8 (*fwdl_get_status)(struct rtw89_dev *rtwdev);
-+	int (*fwdl_check_path_ready)(struct rtw89_dev *rtwdev, bool h2c_or_fwdl);
++static int wcpu_on(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw)
++{
++	u32 val32;
++	int ret;
++
++	rtw89_write32_set(rtwdev, R_BE_UDM0, B_BE_UDM0_DBG_MODE_CTRL);
++
++	val32 = rtw89_read32(rtwdev, R_BE_HALT_C2H);
++	if (val32) {
++		rtw89_warn(rtwdev, "[SER] AON L2 Debug register not empty before Boot.\n");
++		rtw89_warn(rtwdev, "[SER] %s: R_BE_HALT_C2H = 0x%x\n", __func__, val32);
++	}
++	val32 = rtw89_read32(rtwdev, R_BE_UDM1);
++	if (val32) {
++		rtw89_warn(rtwdev, "[SER] AON L2 Debug register not empty before Boot.\n");
++		rtw89_warn(rtwdev, "[SER] %s: R_BE_UDM1 = 0x%x\n", __func__, val32);
++	}
++	val32 = rtw89_read32(rtwdev, R_BE_UDM2);
++	if (val32) {
++		rtw89_warn(rtwdev, "[SER] AON L2 Debug register not empty before Boot.\n");
++		rtw89_warn(rtwdev, "[SER] %s: R_BE_UDM2 = 0x%x\n", __func__, val32);
++	}
++
++	rtw89_write32(rtwdev, R_BE_UDM1, 0);
++	rtw89_write32(rtwdev, R_BE_UDM2, 0);
++	rtw89_write32(rtwdev, R_BE_HALT_H2C, 0);
++	rtw89_write32(rtwdev, R_BE_HALT_C2H, 0);
++	rtw89_write32(rtwdev, R_BE_HALT_H2C_CTRL, 0);
++	rtw89_write32(rtwdev, R_BE_HALT_C2H_CTRL, 0);
++
++	rtw89_write32_set(rtwdev, R_BE_SYS_CLK_CTRL, B_BE_CPU_CLK_EN);
++	rtw89_write32_clr(rtwdev, R_BE_SYS_CFG5,
++			  B_BE_WDT_WAKE_PCIE_EN | B_BE_WDT_WAKE_USB_EN);
++	rtw89_write32_clr(rtwdev, R_BE_WCPU_FW_CTRL,
++			  B_BE_WDT_PLT_RST_EN | B_BE_WCPU_ROM_CUT_GET);
++
++	rtw89_write16_mask(rtwdev, R_BE_BOOT_REASON, B_BE_BOOT_REASON_MASK, boot_reason);
++	rtw89_write32_clr(rtwdev, R_BE_PLATFORM_ENABLE, B_BE_WCPU_EN);
++	rtw89_write32_clr(rtwdev, R_BE_PLATFORM_ENABLE, B_BE_HOLD_AFTER_RESET);
++	rtw89_write32_set(rtwdev, R_BE_PLATFORM_ENABLE, B_BE_WCPU_EN);
++
++	if (!dlfw) {
++		ret = rtw89_fw_check_rdy(rtwdev);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static int rtw89_mac_fwdl_enable_wcpu_be(struct rtw89_dev *rtwdev,
++					 u8 boot_reason, bool dlfw)
++{
++	set_cpu_en(rtwdev);
++
++	return wcpu_on(rtwdev, boot_reason, dlfw);
++}
++
++static const u8 fwdl_status_map[] = {
++	[0] = RTW89_FWDL_INITIAL_STATE,
++	[1] = RTW89_FWDL_FWDL_ONGOING,
++	[4] = RTW89_FWDL_CHECKSUM_FAIL,
++	[5] = RTW89_FWDL_SECURITY_FAIL,
++	[6] = RTW89_FWDL_SECURITY_FAIL,
++	[7] = RTW89_FWDL_CV_NOT_MATCH,
++	[8] = RTW89_FWDL_RSVD0,
++	[2] = RTW89_FWDL_WCPU_FWDL_RDY,
++	[3] = RTW89_FWDL_WCPU_FW_INIT_RDY,
++	[9] = RTW89_FWDL_RSVD0,
++};
++
++static u8 fwdl_get_status_be(struct rtw89_dev *rtwdev)
++{
++	u32 val32;
++	u8 st;
++
++	val32 = rtw89_read32(rtwdev, R_BE_WCPU_FW_CTRL);
++
++	st = u32_get_bits(val32, B_BE_WCPU_FWDL_STATUS_MASK);
++	if (st < ARRAY_SIZE(fwdl_status_map))
++		return fwdl_status_map[st];
++
++	return st;
++}
++
++static int rtw89_fwdl_check_path_ready_be(struct rtw89_dev *rtwdev,
++					  bool h2c_or_fwdl)
++{
++	u32 check = h2c_or_fwdl ? B_BE_H2C_PATH_RDY : B_BE_DLFW_PATH_RDY;
++	u32 val;
++
++	return read_poll_timeout_atomic(rtw89_read32, val, val & check,
++					1, 1000000, false,
++					rtwdev, R_BE_WCPU_FW_CTRL);
++}
++
+ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
+ 	.band1_offset = RTW89_MAC_BE_BAND_REG_OFFSET,
+ 	.filter_model_addr = R_BE_FILTER_MODEL_ADDR,
+ 	.indir_access_addr = R_BE_INDIR_ACCESS_ENTRY,
+ 	.mem_base_addrs = rtw89_mac_mem_base_addrs_be,
+ 	.rx_fltr = R_BE_RX_FLTR_OPT,
++
++	.disable_cpu = rtw89_mac_disable_cpu_be,
++	.fwdl_enable_wcpu = rtw89_mac_fwdl_enable_wcpu_be,
++	.fwdl_get_status = fwdl_get_status_be,
++	.fwdl_check_path_ready = rtw89_fwdl_check_path_ready_be,
  };
+ EXPORT_SYMBOL(rtw89_mac_gen_be);
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index c0aac4d3678a..7798866d20c6 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -3625,8 +3625,115 @@
+ #define B_AX_GNT_BT_TX_SW_VAL BIT(1)
+ #define B_AX_GNT_BT_TX_SW_CTRL BIT(0)
  
- extern const struct rtw89_mac_gen_def rtw89_mac_gen_ax;
-@@ -975,8 +980,6 @@ void rtw89_mac_set_he_obss_narrow_bw_ru(struct rtw89_dev *rtwdev,
- 					struct ieee80211_vif *vif);
- void rtw89_mac_stop_ap(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif);
- int rtw89_mac_remove_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *vif);
--void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev);
--int rtw89_mac_enable_cpu(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw);
- int rtw89_mac_enable_bb_rf(struct rtw89_dev *rtwdev);
- int rtw89_mac_disable_bb_rf(struct rtw89_dev *rtwdev);
++#define R_BE_SYS_CLK_CTRL 0x0008
++#define B_BE_CPU_CLK_EN BIT(14)
++#define B_BE_SYMR_BE_CLK_EN BIT(13)
++#define B_BE_MAC_CLK_EN BIT(11)
++#define B_BE_EXT_32K_EN BIT(8)
++#define B_BE_WL_CLK_TEST BIT(7)
++#define B_BE_LOADER_CLK_EN BIT(5)
++#define B_BE_ANA_CLK_DIVISION_2 BIT(1)
++#define B_BE_CNTD16V_EN BIT(0)
++
++#define R_BE_PLATFORM_ENABLE 0x0088
++#define B_BE_HOLD_AFTER_RESET BIT(11)
++#define B_BE_SYM_WLPLT_MEM_MUX_EN BIT(10)
++#define B_BE_WCPU_WARM_EN BIT(9)
++#define B_BE_SPIC_EN BIT(8)
++#define B_BE_UART_EN BIT(7)
++#define B_BE_IDDMA_EN BIT(6)
++#define B_BE_IPSEC_EN BIT(5)
++#define B_BE_HIOE_EN BIT(4)
++#define B_BE_APB_WRAP_EN BIT(2)
++#define B_BE_WCPU_EN BIT(1)
++#define B_BE_PLATFORM_EN BIT(0)
++
++#define R_BE_HALT_H2C_CTRL 0x0160
++#define B_BE_HALT_H2C_TRIGGER BIT(0)
++
++#define R_BE_HALT_C2H_CTRL 0x0164
++#define B_BE_HALT_C2H_TRIGGER BIT(0)
++
++#define R_BE_HALT_H2C 0x0168
++#define B_BE_HALT_H2C_MASK GENMASK(31, 0)
++
++#define R_BE_HALT_C2H 0x016C
++#define B_BE_HALT_C2H_ERROR_SENARIO_MASK GENMASK(31, 28)
++#define B_BE_ERROR_CODE_MASK GENMASK(15, 0)
++
++#define R_BE_SYS_CFG5 0x0170
++#define B_BE_WDT_DATACPU_WAKE_PCIE_EN BIT(12)
++#define B_BE_WDT_DATACPU_WAKE_USB_EN BIT(11)
++#define B_BE_WDT_WAKE_PCIE_EN BIT(10)
++#define B_BE_WDT_WAKE_USB_EN BIT(9)
++#define B_BE_SYM_DIS_HC_ACCESS_MAC BIT(8)
++#define B_BE_LPS_STATUS BIT(3)
++#define B_BE_HCI_TXDMA_BUSY BIT(2)
++
++#define R_BE_WCPU_FW_CTRL 0x01E0
++#define B_BE_RUN_ENV_MASK GENMASK(31, 30)
++#define B_BE_WCPU_FWDL_STATUS_MASK GENMASK(29, 26)
++#define B_BE_WDT_PLT_RST_EN BIT(17)
++#define B_BE_FW_SEC_AUTH_DONE BIT(14)
++#define B_BE_FW_CPU_UTIL_STS_EN BIT(13)
++#define B_BE_BBMCU1_FWDL_EN BIT(12)
++#define B_BE_BBMCU0_FWDL_EN BIT(11)
++#define B_BE_DATACPU_FWDL_EN BIT(10)
++#define B_BE_WLANCPU_FWDL_EN BIT(9)
++#define B_BE_WCPU_ROM_CUT_GET BIT(8)
++#define B_BE_WCPU_ROM_CUT_VAL_MASK GENMASK(7, 4)
++#define B_BE_FW_BOOT_MODE_MASK GENMASK(3, 2)
++#define B_BE_H2C_PATH_RDY BIT(1)
++#define B_BE_DLFW_PATH_RDY BIT(0)
++
++#define R_BE_BOOT_REASON 0x01E6
++#define B_BE_BOOT_REASON_MASK GENMASK(2, 0)
++
++#define R_BE_LDM 0x01E8
++#define B_BE_EN_32K BIT(31)
++#define B_BE_LDM_MASK GENMASK(30, 0)
++
++#define R_BE_UDM0 0x01F0
++#define B_BE_UDM0_SEND2RA_CNT_MASK GENMASK(31, 28)
++#define B_BE_UDM0_TX_RPT_CNT_MASK GENMASK(27, 24)
++#define B_BE_UDM0_FS_CODE_MASK GENMASK(23, 8)
++#define B_BE_NULL_POINTER_INDC BIT(7)
++#define B_BE_ROM_ASSERT_INDC BIT(6)
++#define B_BE_RAM_ASSERT_INDC BIT(5)
++#define B_BE_FW_IMAGE_TYPE BIT(4)
++#define B_BE_UDM0_TRAP_LOOP_CTRL BIT(2)
++#define B_BE_UDM0_SEND_HALTC2H_CTRL BIT(1)
++#define B_BE_UDM0_DBG_MODE_CTRL BIT(0)
++
++#define R_BE_UDM1 0x01F4
++#define B_BE_UDM1_ERROR_ADDR_MASK GENMASK(31, 16)
++#define B_BE_UDM1_HALMAC_C2H_ENQ_CNT_MASK GENMASK(15, 12)
++#define B_BE_UDM1_HALMAC_H2C_DEQ_CNT_MASK GENMASK(11, 8)
++#define B_BE_UDM1_WCPU_C2H_ENQ_CNT_MASK GENMASK(7, 4)
++#define B_BE_UDM1_WCPU_H2C_DEQ_CNT_MASK GENMASK(3, 0)
++
++#define R_BE_UDM2 0x01F8
++#define B_BE_UDM2_EPC_RA_MASK GENMASK(31, 0)
++
++#define R_BE_DCPU_PLATFORM_ENABLE 0x0888
++#define B_BE_DCPU_SYM_DPLT_MEM_MUX_EN BIT(10)
++#define B_BE_DCPU_WARM_EN BIT(9)
++#define B_BE_DCPU_UART_EN BIT(7)
++#define B_BE_DCPU_IDDMA_EN BIT(6)
++#define B_BE_DCPU_APB_WRAP_EN BIT(2)
++#define B_BE_DCPU_EN BIT(1)
++#define B_BE_DCPU_PLATFORM_EN BIT(0)
++
+ #define R_BE_FILTER_MODEL_ADDR 0x0C04
  
-@@ -1207,7 +1210,5 @@ int rtw89_mac_resize_ple_rx_quota(struct rtw89_dev *rtwdev, bool wow);
- int rtw89_mac_ptk_drop_by_band_and_wait(struct rtw89_dev *rtwdev,
- 					enum rtw89_mac_idx band);
- void rtw89_mac_hw_mgnt_sec(struct rtw89_dev *rtwdev, bool wow);
--int rtw89_fwdl_check_path_ready_ax(struct rtw89_dev *rtwdev,
--				   bool h2c_or_fwdl);
- 
- #endif
++#define R_BE_PLE_DBG_FUN_INTF_CTL 0x9110
++#define B_BE_PLE_DFI_ACTIVE BIT(31)
++#define B_BE_PLE_DFI_TRGSEL_MASK GENMASK(19, 16)
++#define B_BE_PLE_DFI_ADDR_MASK GENMASK(15, 0)
++
++#define R_BE_PLE_DBG_FUN_INTF_DATA 0x9114
++#define B_BE_PLE_DFI_DATA_MASK GENMASK(31, 0)
++
+ #define R_BE_RX_FLTR_OPT 0x11420
+ #define R_BE_RX_FLTR_OPT_C1 0x15420
+ #define B_BE_UID_FILTER_MASK GENMASK(31, 24)
 -- 
 2.25.1
 
