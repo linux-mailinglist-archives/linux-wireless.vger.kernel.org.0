@@ -2,105 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4155C78FC06
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 13:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 864CB78FC2D
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Sep 2023 13:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241444AbjIALBu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Sep 2023 07:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36762 "EHLO
+        id S239466AbjIALQS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Sep 2023 07:16:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232230AbjIALBt (ORCPT
+        with ESMTP id S232235AbjIALQR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Sep 2023 07:01:49 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D41E10D5
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Sep 2023 04:01:46 -0700 (PDT)
+        Fri, 1 Sep 2023 07:16:17 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DFF61712;
+        Fri,  1 Sep 2023 04:16:02 -0700 (PDT)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1693566104; bh=1WQne8zuae/eWhLZP5alO9Rk6xUCNACmkxspWqiFgZQ=;
+        t=1693566960; bh=T+txIrUdis2VQuaKTmAsVCwl57HbeVvkrd6dlVMj4qI=;
         h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=RhNQ8t2Whmybv9Op9unzIp0qzNMKa9ihVDo6T7OSj5zPWmgbGLcIuUoPnHu4J5/De
-         n1KxLOo05vDq+tbMQdRdt4b/vN02Bywv7KhtjjgamV9SLl0LUcHcB+ty3VOAd1clwO
-         DZktY7ILVJ9Va/wAhLjtW9RuXcxOQZUKlpcJT+MKPeboEH/H+BazEgTFs4wFpoLpXf
-         2G9FGIs4hk2UaXlVIqRWKTjmBd4gFLUX+dvXeqsYEpmRASvN4TqjH64yv3W9uJWwxQ
-         8puU+2qjZHLk7uByWaSTBPQKCUd4I7IuRSqWaExeKpaWAPYyv3Pt8XKt7XZMY6YCnB
-         8EtIoQleOPDeA==
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: Re: [PATCH] wifi: ath9k: fix clang-specific fortify warnings
-In-Reply-To: <20230829093856.234584-1-dmantipov@yandex.ru>
-References: <20230829093856.234584-1-dmantipov@yandex.ru>
-Date:   Fri, 01 Sep 2023 13:01:44 +0200
+        b=HCByNKMsWeM2A/2Usbc2IGbZp3Y9aE9cUk0ES3A7E4APbgcvj9fjMxfmTdx90Zxf/
+         Bon8Cx/94DgPLT7/MnhQeFqJ5eL42o5lZq4EjKF5B2gePjlkzoAXH84LPOPCsR9fZN
+         AonH1hSqOPviJn2hNsGSqZjgHeOoABx31xEcoV31IPgn/N6Ofr4I9i0yrMvZrGADYd
+         td6zM1eDTIEQj/swZ30+QYdJSORNE+zXy/f892BnQPahY1a2U6cbjUqOLlyTXV6bZJ
+         2qGSSAwR7IATcHBfA/jhkQXTi1ZTYAXi1Zpaf7JtETnB2GCqdndzAUULQ6RgsivMxO
+         vuIbkIaqW2lCg==
+To:     Dongliang Mu <dzm91@hust.edu.cn>, Kalle Valo <kvalo@kernel.org>,
+        Sujith Manoharan <c_manoha@qca.qualcomm.com>,
+        "John W. Linville" <linville@tuxdriver.com>
+Cc:     hust-os-kernel-patches@googlegroups.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath9k: fix null-ptr-deref in ath_chanctx_event
+In-Reply-To: <317b9482-d750-9093-e891-21f73feeac0c@hust.edu.cn>
+References: <20230901080701.1705649-1-dzm91@hust.edu.cn>
+ <87y1hqtbtu.fsf@toke.dk>
+ <317b9482-d750-9093-e891-21f73feeac0c@hust.edu.cn>
+Date:   Fri, 01 Sep 2023 13:16:00 +0200
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87ledqtaw7.fsf@toke.dk>
+Message-ID: <87il8uta8f.fsf@toke.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+Dongliang Mu <dzm91@hust.edu.cn> writes:
 
-> When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=3Dy, I've
-> noticed the following (somewhat confusing due to absence of an actual
-> source code location):
+> On 2023/9/1 18:41, 'Toke H=C3=B8iland-J=C3=B8rgensen' via HUST OS Kernel=
+=20
+> Contribution wrote:
+>> Dongliang Mu <dzm91@hust.edu.cn> writes:
+>>
+>>> Smatch reports:
+>>>
+>>> ath_chanctx_event() error: we previously assumed 'vif' could be null
+>>>
+>>> The function ath_chanctx_event can be called with vif argument as NULL.
+>>> If vif is NULL, ath_dbg can trigger a null pointer dereference.
+>>>
+>>> Fix this by adding a null pointer check.
+>>>
+>>> Fixes: 878066e745b5 ("ath9k: Add more debug statements for channel cont=
+ext")
+>>> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+>>> ---
+>>>   drivers/net/wireless/ath/ath9k/channel.c | 4 +++-
+>>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wir=
+eless/ath/ath9k/channel.c
+>>> index 571062f2e82a..e343c8962d14 100644
+>>> --- a/drivers/net/wireless/ath/ath9k/channel.c
+>>> +++ b/drivers/net/wireless/ath/ath9k/channel.c
+>>> @@ -576,7 +576,9 @@ void ath_chanctx_event(struct ath_softc *sc, struct=
+ ieee80211_vif *vif,
+>>>   		if (sc->sched.state !=3D ATH_CHANCTX_STATE_WAIT_FOR_BEACON)
+>>>   			break;
+>>>=20=20=20
+>>> -		ath_dbg(common, CHAN_CTX, "Preparing beacon for vif: %pM\n", vif->ad=
+dr);
+>>> +		if (vif)
+>>> +			ath_dbg(common, CHAN_CTX,
+>>> +				"Preparing beacon for vif: %pM\n", vif->addr);
+>> Please don't send patches for static checker errors without actually
+>> checking if there is a valid bug. Which there isn't in this case.
 >
-> In file included from drivers/net/wireless/ath/ath9k/debug.c:17:
-> In file included from ./include/linux/slab.h:16:
-> In file included from ./include/linux/gfp.h:7:
-> In file included from ./include/linux/mmzone.h:8:
-> In file included from ./include/linux/spinlock.h:56:
-> In file included from ./include/linux/preempt.h:79:
-> In file included from ./arch/x86/include/asm/preempt.h:9:
-> In file included from ./include/linux/thread_info.h:60:
-> In file included from ./arch/x86/include/asm/thread_info.h:53:
-> In file included from ./arch/x86/include/asm/cpufeature.h:5:
-> In file included from ./arch/x86/include/asm/processor.h:23:
-> In file included from ./arch/x86/include/asm/msr.h:11:
-> In file included from ./arch/x86/include/asm/cpumask.h:5:
-> In file included from ./include/linux/cpumask.h:12:
-> In file included from ./include/linux/bitmap.h:11:
-> In file included from ./include/linux/string.h:254:
-> ./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow=
-2_field'
-> declared with 'warning' attribute: detected read beyond size of field (2nd
-> parameter); maybe use struct_group()? [-Wattribute-warning]
->                         __read_overflow2_field(q_size_field, size);
+> Before sending this patch, I searched in the code, there are many call=20
+> sites of ath_chanctx_event with argument vif as NULL.
 >
-> In file included from drivers/net/wireless/ath/ath9k/htc_drv_debug.c:17:
-> In file included from drivers/net/wireless/ath/ath9k/htc.h:20:
-> In file included from ./include/linux/module.h:13:
-> In file included from ./include/linux/stat.h:19:
-> In file included from ./include/linux/time.h:60:
-> In file included from ./include/linux/time32.h:13:
-> In file included from ./include/linux/timex.h:67:
-> In file included from ./arch/x86/include/asm/timex.h:5:
-> In file included from ./arch/x86/include/asm/processor.h:23:
-> In file included from ./arch/x86/include/asm/msr.h:11:
-> In file included from ./arch/x86/include/asm/cpumask.h:5:
-> In file included from ./include/linux/cpumask.h:12:
-> In file included from ./include/linux/bitmap.h:11:
-> In file included from ./include/linux/string.h:254:
-> ./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow=
-2_field'
-> declared with 'warning' attribute: detected read beyond size of field (2nd
-> parameter); maybe use struct_group()? [-Wattribute-warning]
->                         __read_overflow2_field(q_size_field, size);
+> Functions calling this function: ath_chanctx_event
 >
-> The compiler actually complains on 'ath9k_get_et_strings()' and
-> 'ath9k_htc_get_et_strings()' due to the same reason: fortification logic
-> inteprets call to 'memcpy()' as an attempt to copy the whole array from
-> it's first member and so issues an overread warning. These warnings may
-> be silenced by passing an address of the whole array and not the first
-> member to 'memcpy()'.
->
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+>  =C2=A0 File=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Function=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 Line
+> 0 beacon.c=C2=A0 ath9k_beacon_tasklet=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 459 ath_chanctx_event(sc, vif,=20
+> ATH_CHANCTX_EVENT_BEACON_PREPARE);
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+But only this one has ATH_CHANCTX_EVENT_BEACON_PREPARE as an argument,
+which is required to hit the code path you are changing.
+
+> 1 channel.c ath_chanctx_check_active=C2=A0=C2=A0=C2=A0 321 ath_chanctx_ev=
+ent(sc, NULL,
+> 2 channel.c ath_chanctx_beacon_sent_ev=C2=A0 781 ath_chanctx_event(sc, NU=
+LL, ev);
+> 3 channel.c ath_chanctx_beacon_recv_ev=C2=A0 787 ath_chanctx_event(sc, NU=
+LL, ev);
+> 4 channel.c ath_chanctx_timer=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 1054 ath_chanctx_event(sc, NULL,=20
+> ATH_CHANCTX_EVENT_TSF_TIMER);
+> 5 channel.c ath_chanctx_set_next=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1321=
+ ath_chanctx_event(sc, NULL,=20
+> ATH_CHANCTX_EVENT_SWITCH);
+> 6 channel.c ath9k_p2p_ps_timer=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 1566 ath_chanctx_event(sc, NULL,=20
+> ATH_CHANCTX_EVENT_TSF_TIMER);
+> 7 main.c=C2=A0=C2=A0=C2=A0 ath9k_sta_state=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1671 ath_chanctx_event(sc, vif,
+> 8 main.c=C2=A0=C2=A0=C2=A0 ath9k_remove_chanctx=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 2577 ath_chanctx_event(sc, NULL,=20
+> ATH_CHANCTX_EVENT_UNASSIGN);
+> 9 xmit.c=C2=A0=C2=A0=C2=A0 ath_tx_edma_tasklet=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 2749 ath_chanctx_event(sc, NULL,
+>
+> This NULL parameters would cause some abnormal behaviors.
+>
+>> Specifically, that branch of the switch statement dereferences the avp
+>> pointer, which will be NULL if 'vif' is. Meaning we will have crashed
+>> way before reaching this statement if vif is indeed NULL.
+> Yeah, you are right. However, no matter where or which variable causing=20
+> the null-ptr-def crash, the crash is there.
+
+There is no crash, see above.
+
+-Toke
