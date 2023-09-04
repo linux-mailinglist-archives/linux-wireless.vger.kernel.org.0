@@ -2,77 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 987957910F3
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Sep 2023 07:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A5A07911B1
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Sep 2023 08:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236465AbjIDFgU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Sep 2023 01:36:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43602 "EHLO
+        id S1348454AbjIDG5Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Sep 2023 02:57:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232830AbjIDFgS (ORCPT
+        with ESMTP id S1345038AbjIDG5Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Sep 2023 01:36:18 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7CD4FB6
-        for <linux-wireless@vger.kernel.org>; Sun,  3 Sep 2023 22:36:15 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3845Zia36028740, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3845Zia36028740
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 4 Sep 2023 13:35:44 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Mon, 4 Sep 2023 13:36:11 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 4 Sep 2023 13:36:10 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
- RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
- 15.01.2375.007; Mon, 4 Sep 2023 13:36:10 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "shubhisroking@gmail.com" <shubhisroking@gmail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: rtlwifi: Fix spelling mistake "nerver" -> "never"
-Thread-Topic: [PATCH] wifi: rtlwifi: Fix spelling mistake "nerver" -> "never"
-Thread-Index: AQHZ3X0MiJxICAqZA0+oCnRLrtY4OLAJ5EgA//+z2YCAAAn4AA==
-Date:   Mon, 4 Sep 2023 05:36:10 +0000
-Message-ID: <12daa0f4654b407b0a79007f7432a3e7535793d7.camel@realtek.com>
-References: <20230902090808.67926-1-shubhisroking@gmail.com>
-         <53577222509340228cd27847e4d7f999@realtek.com>
-         <CADMyVtz6DbxwNMRJMzS6RTG9z5GyjizHWgWC4xHQgczDHZLMOg@mail.gmail.com>
-In-Reply-To: <CADMyVtz6DbxwNMRJMzS6RTG9z5GyjizHWgWC4xHQgczDHZLMOg@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.21.69.25]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <160EA34499C58D4CBF953CDE5DF91313@realtek.com>
-Content-Transfer-Encoding: base64
+        Mon, 4 Sep 2023 02:57:24 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA64E11A;
+        Sun,  3 Sep 2023 23:57:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=ML3nN0Bovw/HBwQG6YVdv3gL++y5/3rFGx6GGczGCis=;
+        t=1693810640; x=1695020240; b=P1ZLi6DGpReD2zSdvNT7Q/UeDBrHqldsWHtVX4tGtN4n5z5
+        xDI5U3AOwTKGZ8MbdJ1cduLYBTiOZQXpdVskQIZU6VoCB6HDmJe2b/YPjWXwKG6IH+pwraa9ywl7N
+        2cx/wfVw+pN4fLFpzvBNCukokACNy7Z9/Y7rci4fAz/EPa+REWJRVsdPYWgNICRoiCL+lFbeUNwAa
+        CDfI5YXCIE3A1wSg/HZhqus3pmuaLvZobldb0qzPltexpDYnenLlsBQtbQRPLtH0pF8a5L3lZu6T+
+        LipEn74Sp/nbC3bcd0IV+N+5lhzwFtmVYqOkbGUSbk0d1zND+Sgye/25IX/KzN0A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qd3WL-00ChVX-20;
+        Mon, 04 Sep 2023 08:57:13 +0200
+Message-ID: <cf6ab60c42705625a7b1d71e53db0edb78fe6e2d.camel@sipsolutions.net>
+Subject: Re: [syzbot] [wireless?] WARNING in ieee80211_link_release_channel
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     syzbot <syzbot+9817a610349542589c42@syzkaller.appspotmail.com>,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Date:   Mon, 04 Sep 2023 08:57:11 +0200
+In-Reply-To: <000000000000bcd80b06046a98ac@google.com>
+References: <000000000000bcd80b06046a98ac@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SORTED_RECIPS,SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIzLTA5LTA0IGF0IDEwOjI5ICswNTMwLCBTaHViaCB3cm90ZToNCj4gDQo+IFNv
-LCBpcyBpdCBhY2NlcHRlZCwgcmlnaHQ/IEFsc28sIHdoYXQgZG8geW91IG1lYW4gYnkgJ0kgdGhp
-bmsgYW55IHBhdGNoIG5lZWRzIGEgY29tbWl0IG1lc3NhZ2UsDQo+IGV2ZW4gYSBzaW1wbGUgcGF0
-Y2ggbGlrZSB0aGlzJz8gQW0gSSBtaXNzaW5nIHNvbWV0aGluZz8gTGlrZSwgSSBkaWRuJ3QgaW5j
-bHVkZSBhIGNvbW1pdCBtZXNzYWdlPw0KPiBCZWNhdXNlIGFzIEkgY2FuIHNlZSwgSSBoYXZlIGNv
-bW1pdCBtZXNzYWdlIGluIHRoZSBzdWJqZWN0IG9mIHRoZSBlbWFpbC4gUGxlYXNlIGZlZWwgZnJl
-ZSB0bw0KPiBjb3JyZWN0IG1lLg0KPiANCg0KTm90IG9ubHkgaW5jbHVkZSBhIHN1YmplY3QgYnV0
-IHNvbWUgZGVzY3JpcHRpb24gdGhhdCBJIG1lYW50IGJlZm9yZS4gDQoNCkJ5IHRoZSB3YXksIG5v
-IHRvcCBwb3N0aW5nIGFuZCBzaG91bGQgcmVwbHkgaW4gcGxhaW4gdGV4dCBtb2RlLg0KDQoNCg==
+On Sat, 2023-09-02 at 18:48 -0700, syzbot wrote:
+>=20
+> WARNING: CPU: 0 PID: 7597 at net/mac80211/chan.c:2021 ieee80211_link_rele=
+ase_channel+0x19f/0x200 net/mac80211/chan.c:2021
+>=20
+
+That's a lockdep warning, so it's kind of a known issue. I don't know if
+I've yet encountered this specific way to get the locking checks
+screaming, but generally we knew for a while that the locking was a bit
+messy and possibly to some extent broken (*).
+
+Anyway, point is - this is basically the reason I did this series:
+https://lore.kernel.org/linux-wireless/20230828115927.116700-41-johannes@si=
+psolutions.net/
+
+so this should go away - though sadly only in -next. Per the footnote, I
+believe that the issue in the current kernel is mostly not an issue, and
+it should only happen with multi-link in the first place. There may be
+an issue in what syzbot found, processing a multi-link response or
+something though.
+
+johannes
+
+(*) in many cases it's not _actually_ broken because we hold some common
+outer lock anyway, so no data races are possible
