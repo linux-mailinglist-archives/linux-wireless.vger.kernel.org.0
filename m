@@ -2,109 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69024791CAC
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Sep 2023 20:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FA5791FAA
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Sep 2023 01:24:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238915AbjIDSRG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Sep 2023 14:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56282 "EHLO
+        id S241525AbjIDXYQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Sep 2023 19:24:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237538AbjIDSRF (ORCPT
+        with ESMTP id S241824AbjIDXYP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Sep 2023 14:17:05 -0400
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA61E19B
-        for <linux-wireless@vger.kernel.org>; Mon,  4 Sep 2023 11:16:58 -0700 (PDT)
-Received: from eig-obgw-6005a.ext.cloudfilter.net ([10.0.30.201])
-        by cmsmtp with ESMTP
-        id dCvnqr10VQFHRdE8AqNXgE; Mon, 04 Sep 2023 18:16:58 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with ESMTPS
-        id dE89qt63si7GOdE89qPLYg; Mon, 04 Sep 2023 18:16:57 +0000
-X-Authority-Analysis: v=2.4 cv=fonP2X0f c=1 sm=1 tr=0 ts=64f61f19
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=wYkD_t78qR0A:10
- a=bRdHEh57seZ_zvvW85sA:9 a=QEXdDO2ut3YA:10
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=fp0gGJutDvvqPrc/IeMPV4i3FiQlzr/L5X+L2PJVi7w=; b=H6Q6IGMbDMnt49NLKY5YKcW6++
-        1ab9OGOS1JbVE/fi8YpVaRUuw3eCsKZBQuEdRZjrTlakRvNL9dmkQUuZkFhHgsSdciwPkqy85xKUI
-        prO5X2m9wutCplPjC3gW9D4hnn5ZK+n0+I9G4byNnuCkNBipgSc+SA7iOGKNM1qmY6ZOszQDXolcQ
-        2HL0Pk0lfDTeu7MNYHsJywJSvHk49XA42toIAaCePkQryejmj4/nLlUKwhLSVHaUGoVX7abThZ0Vs
-        9gsruAGt87y+SX/IkMvDM2ItzBQfrJtbwAxLHj75l9aWMhKzYR6gvTW0KUtCb0NuGBtFXIgWHcRpZ
-        t2t1jt2A==;
-Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:50842 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1qdE88-001uk4-1P;
-        Mon, 04 Sep 2023 13:16:56 -0500
-Message-ID: <16805a62-8c8d-2a83-2ea0-da0f1a33a625@embeddedor.com>
-Date:   Mon, 4 Sep 2023 12:17:51 -0600
+        Mon, 4 Sep 2023 19:24:15 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C929DB4;
+        Mon,  4 Sep 2023 16:24:11 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2bccda76fb1so31226941fa.2;
+        Mon, 04 Sep 2023 16:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693869850; x=1694474650; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=89D7o49G0wQ/V5O0EAZttNXedphXx9AjufFjeiwpyRE=;
+        b=TDbKyjMfIIYy3JHwDPJp00B4mtNd08NcRKe/4ZogvK94u5zdVJKcOcFvOEQGorAlap
+         6sVcaBMfP0fzwazhNvq893FQKW87sU3tW5x6x9I6F8di1g2qAi1XSWF6MLPplfm0DuHL
+         YCFoRyZufp1euOHeFGY/poKZWzpv2njzRLTHJ9ELQHKMFeK3+pPwfnECwwJ8X86z/G8I
+         6hkY1H+8FGQco4TTV0kztpBcP+YliwWP7srmUVX0Gb4/3qiCY/pdONsrjcAwWGlIcDSU
+         Am02uepkoPuyMQmM0osmdr5izc0AO5Pz0kSTWKQMbQ69VqrnvvF+nNrFgAT/vCGuAGEf
+         7UcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693869850; x=1694474650;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=89D7o49G0wQ/V5O0EAZttNXedphXx9AjufFjeiwpyRE=;
+        b=L7sj4OMc4PZWSRo0jtGlEpyq50/Sh0sRIc0U8/JZo/Bpo51gkrKsAlKits+8UDeBn0
+         E4BeVuG940G9mIMW8uUhtg7rnl4gpZz50ZUPwEWbRSfz9ep/nWveLLzVvQh+l/tN1Pyw
+         I2pKhL29iQq+xP6oFU60E4zg7k9sOpESPmIH86AlB5lmyrwmrM6OB4ANxKkOexUce5ev
+         Qv5zdUdjVHdZFpZ2eH0IvAT2jLmW75JIe3owt3wXajASi7VOz0EsbNxZgYrhVU54v9kh
+         6A0fxhrHj0Cnw4WtR1qAuAcT0irgzfjyHpgdvIJGTLL8RUuz34+H/8YCzyqR+B5vDdzs
+         zi4A==
+X-Gm-Message-State: AOJu0YxBItSrGi1mGB6MSxXv8XLsYT+8DIUx7o7YXaJUXBa6Wy3BWucD
+        7X5btKJnYG7ipRCRI4DzNTI=
+X-Google-Smtp-Source: AGHT+IEgH8SxwAw88XY34uc0352kFy2PHj4W/6vYs4wixrnKxM+40/ezYlU1pVx9TzD7Y4B81q6Hmg==
+X-Received: by 2002:a2e:7015:0:b0:2b9:e24d:21f6 with SMTP id l21-20020a2e7015000000b002b9e24d21f6mr8852412ljc.20.1693869849844;
+        Mon, 04 Sep 2023 16:24:09 -0700 (PDT)
+Received: from rand-ubuntu-development.dl.local (mail.confident.ru. [85.114.29.218])
+        by smtp.gmail.com with ESMTPSA id q25-20020a2e9699000000b002b6f1afd00esm2372543lji.107.2023.09.04.16.24.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Sep 2023 16:24:09 -0700 (PDT)
+From:   Rand Deeb <rand.sec96@gmail.com>
+To:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     deeb.rand@confident.ru, lvc-project@linuxtesting.org,
+        voskresenski.stanislav@confident.ru,
+        Rand Deeb <rand.sec96@gmail.com>
+Subject: [PATCH v2] ssb: Fix division by zero issue in ssb_calc_clock_rate
+Date:   Tue,  5 Sep 2023 02:23:46 +0300
+Message-Id: <20230904232346.34991-1-rand.sec96@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/3] wifi: mwifiex: Fix tlv_buf_left calculation
-To:     Kalle Valo <kvalo@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <akarwar@marvell.com>,
-        Xinming Hu <huxm@marvell.com>, Dan Williams <dcbw@redhat.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-References: <06668edd68e7a26bbfeebd1201ae077a2a7a8bce.1692931954.git.gustavoars@kernel.org>
- <169384778670.3420994.16227760665746324390.kvalo@kernel.org>
-Content-Language: en-US
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <169384778670.3420994.16227760665746324390.kvalo@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.21.192
-X-Source-L: No
-X-Exim-ID: 1qdE88-001uk4-1P
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.8]) [187.162.21.192]:50842
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org:  HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfDLRlYAelGq8y/Qpz2zZ+LkGNaHoOyuKUz4PIYIDxcZva2L63pdd60xl3O+t5PJErL/4QV9ltj22loGkP4tDiLuiukqCkUPnyRUkAEiDYc4gW+BR53s3
- igRVvx43yhCXitng0tCTZZT2ZjiNqWd/S0dA/WHma/ysxHV2G7haNWNTmzQMe6RkQ2dvZrcLmiRNxh8/dS0mGz2rVRhx/lbBv7inmHqzqmiMsZVaArtgJB3Y
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+In ssb_calc_clock_rate(), there is a potential issue where the value of
+m1 could be zero due to initialization using clkfactor_f6_resolv(). This
+situation raised concerns about the possibility of a division by zero
+error.
 
-> 3 patches applied to wireless.git, thanks.
+We fixed it by following the suggestions provided by Larry Finger
+<Larry.Finger@lwfinger.net> and Michael Büsch <m@bues.ch>. The fix
+involves returning a value of 1 instead of 0 in clkfactor_f6_resolv().
+This modification ensures the proper functioning of the code and
+eliminates the risk of division by zero errors.
 
-Awesome. :)
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+---
+ drivers/ssb/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> eec679e4ac5f wifi: mwifiex: Fix tlv_buf_left calculation
-> c7847241de28 wifi: mwifiex: Replace one-element array with flexible-array member in struct mwifiex_ie_types_rxba_sync
-> d5a93b7d2877 wifi: mwifiex: Sanity check tlv_len and tlv_bitmap_len
-> 
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index 0a26984acb2c..9e54bc7eec66 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -835,7 +835,7 @@ static u32 clkfactor_f6_resolve(u32 v)
+ 	case SSB_CHIPCO_CLK_F6_7:
+ 		return 7;
+ 	}
+-	return 0;
++	return 1;
+ }
+ 
+ /* Calculate the speed the backplane would run at a given set of clockcontrol values */
+-- 
+2.34.1
 
-Thanks!
---
-Gustavo
