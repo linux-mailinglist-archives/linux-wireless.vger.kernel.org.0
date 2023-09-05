@@ -2,114 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E08BF79252C
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Sep 2023 18:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22AE1792537
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Sep 2023 18:02:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235020AbjIEQBn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Sep 2023 12:01:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48704 "EHLO
+        id S235106AbjIEQBw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Sep 2023 12:01:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243767AbjIEA7J (ORCPT
+        with ESMTP id S1343751AbjIECtc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Sep 2023 20:59:09 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02BB11B8;
-        Mon,  4 Sep 2023 17:59:06 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1ccb6a69b13so1698007fac.2;
-        Mon, 04 Sep 2023 17:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693875545; x=1694480345; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=dLrGwF7Q9t7xxwB/U+vDJLJpUVQoRU/i+CxEAvmTOTw=;
-        b=E2u9KhGcAfvxrF2r7sV2sWj7iamEWCvTwcHpTJzlVImae9Rnj8wmCF1dc2wic0zzUz
-         KTpPgqvrTZPCvtqJkSgWmt/3KGnkezcwgoHpobDUrpfIIG73JleFSsVMN+UjbGRqysN/
-         EEH4bFvswOt9FA1PcvD7nH9dpANWb/CDegG7hQuVXAZ2qFlFNzel3pWTBgsALgaIAO45
-         Y+RUu8hLQkOxx2FkVamep22T0IdN0vFAEilXXnJCy2k0bQISgzneeCsLa1iHYm/EDTG5
-         inbtkF4+iXn2WfRXJDvWmGtAKwq5tbQrfopNuLpaaeFu+/rDmDtPo2LCOKHXDDMvqWUg
-         kVVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693875545; x=1694480345;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dLrGwF7Q9t7xxwB/U+vDJLJpUVQoRU/i+CxEAvmTOTw=;
-        b=QklooEgy0ikG0R3la6oelBcHzr7fVPjyysVlUOtGGisJ0bPgqQd4Atgv207IzeTbTq
-         zkmB4dGnUl0kbYmPrNNgV3u75UbQ9+ctf8uRLJzLmiXVjz40ca53dMYhRJ/ImgS1jfTs
-         p/l12RrbIWpJKtXoLU8CiJKTsa98iYJY4Ke6shuoUm5f+p/ALKGuKX2K84DTAwwzKxiA
-         fGzhccqG13zEl7QCRIL3BCFjjlhTHoek9meYAXtXQ+db5HfT/rXWFO25J1Vqr2csyL+7
-         2xNQf5/BCl73PY1X9XoK2BP7Gs99PUdhY5tr/s9GvpaQNpsILcM3BghhX4BaDkn7d+TQ
-         14pg==
-X-Gm-Message-State: AOJu0YzhruR7hbf95T4e2sBf9sb0zYkGHbomDqd+udTwgJPjf1XQ/5+p
-        d72YRlra/TQH7p2ftZk0VQc=
-X-Google-Smtp-Source: AGHT+IECbTnQOZgaDbcCVxBK4jnwwMyne108aX195E7LvljvfjUH31XW+BzLrh9JNzRTvDoQM844Ag==
-X-Received: by 2002:a05:6870:220b:b0:1cd:249a:690c with SMTP id i11-20020a056870220b00b001cd249a690cmr14771662oaf.20.1693875545135;
-        Mon, 04 Sep 2023 17:59:05 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id t9-20020a4aadc9000000b0055975f57993sm4965632oon.42.2023.09.04.17.59.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Sep 2023 17:59:04 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <96eb9ff2-a687-bbd5-9cb1-4b044f7deae3@lwfinger.net>
-Date:   Mon, 4 Sep 2023 19:59:03 -0500
+        Mon, 4 Sep 2023 22:49:32 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58DBACC6
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Sep 2023 19:49:29 -0700 (PDT)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3852cthN015634;
+        Tue, 5 Sep 2023 02:49:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=BlYZhb3/x6RRjj8vpg+hnY/lia7kF8GXhwQmu7xaw3A=;
+ b=hQKtBOD2GWmf7hNnIJY1+pi0f7tkvmpLIL/EVrjstAxKP9JNDMHeIOJTJwd4Tq44/E/6
+ qystDK1Mo4imvaCXuDrxpaYHNy2GnCymLQ1AFT93sogIl67q0/Qn+HmgoYKouY4Ex550
+ Ho+0BRmIrZHYO5nrXK9WcK1d5b6aABxQu5YiKgjjyRVmcheOzAssLO2VSWF9ytoCb/r4
+ elBh7c1LcuBPD/VkwVn5ozjIwPclJP+hXsIuO2zp5eSV6H4CcYyoZWktCjbjVi5X113O
+ 27XsiQvkjG4hWnarPqOSgfBkSH4hKJfJOzApKrQhA3JQ7gvEiRvr1FALhgNlca2XvDMN gg== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sweb51afp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 05 Sep 2023 02:49:24 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3852nNL3030599
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 5 Sep 2023 02:49:23 GMT
+Received: from lingbok-HP-EliteBook-8460p.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Mon, 4 Sep 2023 19:49:22 -0700
+From:   Lingbo Kong <quic_lingbok@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
+Subject: [PATCH 0/4] wifi: ath12k: implement some functionalities through reading ACPI Table
+Date:   Tue, 5 Sep 2023 10:49:00 +0800
+Message-ID: <20230905024904.3882-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v2] ssb: Fix division by zero issue in ssb_calc_clock_rate
-To:     Rand Deeb <rand.sec96@gmail.com>, Michael Buesch <m@bues.ch>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     deeb.rand@confident.ru, lvc-project@linuxtesting.org,
-        voskresenski.stanislav@confident.ru
-References: <20230904232346.34991-1-rand.sec96@gmail.com>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20230904232346.34991-1-rand.sec96@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 7snSh6PO_4vGF8XIv4olqO5rSwQI9XP7
+X-Proofpoint-GUID: 7snSh6PO_4vGF8XIv4olqO5rSwQI9XP7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-05_01,2023-08-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ lowpriorityscore=0 mlxscore=0 priorityscore=1501 clxscore=1011
+ mlxlogscore=631 bulkscore=0 phishscore=0 malwarescore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309050022
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/4/23 18:23, Rand Deeb wrote:
-> In ssb_calc_clock_rate(), there is a potential issue where the value of
-> m1 could be zero due to initialization using clkfactor_f6_resolv(). This
-> situation raised concerns about the possibility of a division by zero
-> error.
-> 
-> We fixed it by following the suggestions provided by Larry Finger
-> <Larry.Finger@lwfinger.net> and Michael Büsch <m@bues.ch>. The fix
-> involves returning a value of 1 instead of 0 in clkfactor_f6_resolv().
-> This modification ensures the proper functioning of the code and
-> eliminates the risk of division by zero errors.
-> 
-> Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-> ---
->   drivers/ssb/main.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-> index 0a26984acb2c..9e54bc7eec66 100644
-> --- a/drivers/ssb/main.c
-> +++ b/drivers/ssb/main.c
-> @@ -835,7 +835,7 @@ static u32 clkfactor_f6_resolve(u32 v)
->   	case SSB_CHIPCO_CLK_F6_7:
->   		return 7;
->   	}
-> -	return 0;
-> +	return 1;
->   }
-Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
+Through reading ACPI table, implement Time-Average-SAR(TAS), BIOS SAR,
+configuration of CCA threshold and band edge channel power functionalities.
 
-Larry
+Lingbo Kong (4):
+  wifi: ath12k: add TAS capability for WCN7850
+  wifi: ath12k: add BIOS SAR capability for WCN7850
+  wifi: ath12k: adjust configuration of CCA threshold value
+  wifi: ath12k: add band edge channel power for WCN7850
 
->   
->   /* Calculate the speed the backplane would run at a given set of clockcontrol values */
+ drivers/net/wireless/ath/ath12k/Makefile |   3 +-
+ drivers/net/wireless/ath/ath12k/acpi.c   | 365 +++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/acpi.h   |  55 ++++
+ drivers/net/wireless/ath/ath12k/core.c   |   6 +
+ drivers/net/wireless/ath/ath12k/core.h   |  13 +
+ drivers/net/wireless/ath/ath12k/hw.c     |  10 +
+ drivers/net/wireless/ath/ath12k/hw.h     |   4 +-
+ drivers/net/wireless/ath/ath12k/pci.c    |   6 +
+ drivers/net/wireless/ath/ath12k/wmi.c    | 258 ++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h    |  47 ++-
+ 10 files changed, 764 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/acpi.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/acpi.h
+
+
+base-commit: 4d4739971f44150b3dcb75f188a1a3cbc22889a3
+-- 
+2.34.1
 
