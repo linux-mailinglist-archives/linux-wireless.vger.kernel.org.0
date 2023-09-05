@@ -2,54 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F92D7927D4
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Sep 2023 18:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF9D1792B05
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Sep 2023 19:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235565AbjIEQCU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Sep 2023 12:02:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53112 "EHLO
+        id S237105AbjIEQqP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Sep 2023 12:46:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354673AbjIEN07 (ORCPT
+        with ESMTP id S1353985AbjIEQ3R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Sep 2023 09:26:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F9D12A
-        for <linux-wireless@vger.kernel.org>; Tue,  5 Sep 2023 06:26:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E65B2608D5
-        for <linux-wireless@vger.kernel.org>; Tue,  5 Sep 2023 13:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60620C433C8;
-        Tue,  5 Sep 2023 13:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693920415;
-        bh=nYwFMATp/Xv5PYiiX2QDNP7K3dchpHCAjLpN24WxQGc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=GQmgTiu6wrrRFXqICJpsFftcxLlb5MXLKyijTpg11pIibfO+inyFyHGGdbFoqmsZy
-         FGeABNYmGRK729Ncbh2/0Sgp0GIKlttf7aQTxqb6bTxNNmloNixWNrXRgf/bI01g7F
-         Emskw0Z52zdq4T60squ6dHKml7pj8fIYaza0dKrGXPGpZHdpOuzEXv1EDoz7dM1hmn
-         1NAQs/2Hz7ufzjOu9EdVa78Dz7qtjPccQU5i63GWkDEzUOeaVM/ch6hPVfAOl6RQxt
-         gGMdMbQQKptFo2lnAYfG8ZwbsrYQqvLI2SXBmV2zXaRVY0PxheB6JhBnIHAugMKLSL
-         v+80OWF9sjseA==
-Content-Type: text/plain; charset="utf-8"
+        Tue, 5 Sep 2023 12:29:17 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADCE72695
+        for <linux-wireless@vger.kernel.org>; Tue,  5 Sep 2023 09:20:26 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 385DNQwt015259;
+        Tue, 5 Sep 2023 16:18:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=dWtSZECRAQNDXD2BYo7D6dQk+9YJCH2S95YE/NRwCyE=;
+ b=ERoLp7rKi5Pw9h0xXTS2jP7BAW5SmaMb+UhjzVkGcIoNM3o6TmqJg/penKanwk4Uj2s4
+ STmG28Z6Ttjm1h8Lq9GKp+PPf69X3gclIlzFdoR6NUHOEUblywWjhNFiQhZfM2oT7qQl
+ +VH3Ak51K48O8Ez+IQNKEWMuEl8GOIQlh1FCTEuSBBRg8oho5WA+1mt+AOlJ1cnt2WuQ
+ aT6VwVxztKd4AtpRCQHtj8RQ/I4+lH6/D8UdMBsfvHQK8WBF6lA3GoJfnmWfRiNn3pVY
+ TWWJIVek15OspSpPvLAoxfX814rE+YwKqf5F2VibwehAYQBKOelNWmXbN7PjLLjKbS8a 0A== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3swtynhrba-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 05 Sep 2023 16:18:46 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 385GIkIc028067
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 5 Sep 2023 16:18:46 GMT
+Received: from [10.111.180.119] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 5 Sep
+ 2023 09:18:45 -0700
+Message-ID: <80f6ccde-d873-4191-962d-585dc59e1f3d@quicinc.com>
+Date:   Tue, 5 Sep 2023 09:18:44 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: cfg80211: validate AP phy operation before starting
+ it
+Content-Language: en-US
+To:     Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        <linux-wireless@vger.kernel.org>
+CC:     <johannes@sipsolutions.net>
+References: <20230905064857.1503-1-quic_adisi@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230905064857.1503-1-quic_adisi@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/2] wifi: ath12k: Ignore fragments from uninitialized
- peer
- in  dp
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230821130343.29495-2-quic_hprem@quicinc.com>
-References: <20230821130343.29495-2-quic_hprem@quicinc.com>
-To:     Harshitha Prem <quic_hprem@quicinc.com>
-Cc:     ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Harshitha Prem <quic_hprem@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169392041226.3610046.3872550352211944428.kvalo@kernel.org>
-Date:   Tue,  5 Sep 2023 13:26:54 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: cB83n6MedB3Xgw3iZFHYTPoIVpEP-Ps5
+X-Proofpoint-ORIG-GUID: cB83n6MedB3Xgw3iZFHYTPoIVpEP-Ps5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-05_10,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 mlxscore=0 adultscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2309050142
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,55 +78,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Harshitha Prem <quic_hprem@quicinc.com> wrote:
-
-> When max virtual ap interfaces are configured in all the bands with
-> ACS and hostapd restart is done every 60s, a crash is observed at
-> random times.
+On 9/4/2023 11:48 PM, Aditya Kumar Singh wrote:
+> Many regulatories can have HE/EHT Operation as not permitted. In such
+> cases, AP should not be allowed to start if it is using a channel
+> having the no operation flag set. However, currently there is no such
+> check in place.
 > 
-> In the above scenario, a fragmented packet is received for self peer,
-> for which rx_tid and rx_frags are not initialized in datapath.
-> While handling this fragment, crash is observed as the rx_frag list
-> is uninitialized and when we walk in ath12k_dp_rx_h_sort_frags,
-> skb null leads to exception.
+> Fix this issue by validating such IEs sent during start AP against the
+> channel flags.
 > 
-> To address this, before processing received fragments we check
-> dp_setup_done flag is set to ensure that peer has completed its
-> dp peer setup for fragment queue, else ignore processing the
-> fragments.
+> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+> ---
+>   net/wireless/nl80211.c | 19 +++++++++++++++++++
+>   1 file changed, 19 insertions(+)
 > 
-> Call trace:
->     PC points to "ath12k_dp_process_rx_err+0x4e8/0xfcc [ath12k]"
->     LR points to "ath12k_dp_process_rx_err+0x480/0xfcc [ath12k]".
->     The Backtrace obtained is as follows:
->     ath12k_dp_process_rx_err+0x4e8/0xfcc [ath12k]
->     ath12k_dp_service_srng+0x78/0x260 [ath12k]
->     ath12k_pci_write32+0x990/0xb0c [ath12k]
->     __napi_poll+0x30/0xa4
->     net_rx_action+0x118/0x270
->     __do_softirq+0x10c/0x244
->     irq_exit+0x64/0xb4
->     __handle_domain_irq+0x88/0xac
->     gic_handle_irq+0x74/0xbc
->     el1_irq+0xf0/0x1c0
->     arch_cpu_idle+0x10/0x18
->     do_idle+0x104/0x248
->     cpu_startup_entry+0x20/0x64
->     rest_init+0xd0/0xdc
->     arch_call_rest_init+0xc/0x14
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index de47838aca4f..0c989a839e56 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -5909,6 +5909,21 @@ static void nl80211_send_ap_started(struct wireless_dev *wdev,
+>   	nlmsg_free(msg);
+>   }
+>   
+> +static int nl80211_validate_ap_phy_operation(struct cfg80211_ap_settings *params)
+> +{
+> +	struct ieee80211_channel *channel = params->chandef.chan;
+> +
+> +	if ((params->he_cap ||  params->he_oper) &&
+> +	    (channel->flags & IEEE80211_CHAN_NO_HE))
+> +		return -EOPNOTSUPP;
+> +
+> +	if ((params->eht_cap || params->eht_oper) &&
+> +	    (channel->flags & IEEE80211_CHAN_NO_EHT))
+> +		return -EOPNOTSUPP;
+> +
+> +	return 0;
+> +}
+> +
+>   static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+>   {
+>   	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+> @@ -6178,6 +6193,10 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+>   	if (err)
+>   		goto out_unlock;
+>   
+> +	err = nl80211_validate_ap_phy_operation(params);
+> +	if (err)
+> +		goto out_unlock;
+> +
+>   	if (info->attrs[NL80211_ATTR_AP_SETTINGS_FLAGS])
+>   		params->flags = nla_get_u32(
+>   			info->attrs[NL80211_ATTR_AP_SETTINGS_FLAGS]);
 > 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-
-2 patches applied to ath-next branch of ath.git, thanks.
-
-bbc86757ca62 wifi: ath12k: Ignore fragments from uninitialized peer in  dp
-d48f55e773dc wifi: ath12k: fix undefined behavior with __fls in dp
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230821130343.29495-2-quic_hprem@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> base-commit: dae4464939025d38940a6bc6b80734adad0ff944
 
