@@ -2,119 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17DF47939E3
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Sep 2023 12:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE637939FC
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Sep 2023 12:35:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239140AbjIFK3v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Sep 2023 06:29:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42630 "EHLO
+        id S239173AbjIFKf0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Sep 2023 06:35:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239118AbjIFK3v (ORCPT
+        with ESMTP id S229927AbjIFKfZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Sep 2023 06:29:51 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70C7CF2
-        for <linux-wireless@vger.kernel.org>; Wed,  6 Sep 2023 03:29:46 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-68a3cae6d94so3057137b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Sep 2023 03:29:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1693996186; x=1694600986; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E+owG17nq22VwtZZibnF77JmIyluppq/Dc52KA5d+8I=;
-        b=j32XOsCh0pD3fRx60/Mx/+SODKxTetWFfYDJhFOGhXociHcmd+hF0gwAxcMZGnoLRE
-         8BO9ud2BCLN5pDy9G3bhJTbER2K4G101+EExw4M1TiWibp9A9Khe/87s/MkVC96RrT8I
-         LInEx8PpQgWYVJSrb1kanpyFIVp43UKWR+H8Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693996186; x=1694600986;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E+owG17nq22VwtZZibnF77JmIyluppq/Dc52KA5d+8I=;
-        b=dRoVj1OHl58tBKmb8ke1/zk/FTsg7A18zTRLZtwJZgzTetMrxSTMKG1BXnXVk4K53P
-         sLc83LBkJ7Fz8sOPwS5RB93AKukeKTJPxuRT81QZgyisXBRdtscFV5WR8fZZjFucVgWB
-         lNtdPYeguFKG9yYzNgJg/zlw6nSpHWqXoIWJ9KWZstxs7XLD/9N0tEnbTYUtTAE6800v
-         6Glz4LfWGmY3ieAmfdvSIp4QRwqDJJ1BZQU7bK3Uam1OdRVgPo3snL1+BE29Yj2cM7Xb
-         8YZ+lbrAuvon0XG2qFp2qWBlr2Em7MnFpbrQduvtok0RwamJmx5O0DunvMbhoxeH3zTF
-         GcjA==
-X-Gm-Message-State: AOJu0YxIAt+gFWaXJ/jU46AraPMx/e67O9J9vrgecs1PpTorT0E2Z33e
-        H5wWwwgezElsWFLQhdjZKPNaM3hZiburmdvr7lY=
-X-Google-Smtp-Source: AGHT+IGxD4+nr/PrDHnNRmR0yvKtaPrz6EN00Tkrjtb4CAgW7P0eDpvJJO7ouRTXhlj9xWfxx5GXVQ==
-X-Received: by 2002:a05:6a00:2281:b0:68c:70:d175 with SMTP id f1-20020a056a00228100b0068c0070d175mr19113640pfe.13.1693996186143;
-        Wed, 06 Sep 2023 03:29:46 -0700 (PDT)
-Received: from treapking.tpe.corp.google.com ([2401:fa00:1:10:56d0:a851:8f06:9964])
-        by smtp.gmail.com with ESMTPSA id s18-20020a63af52000000b00528da88275bsm10938511pgo.47.2023.09.06.03.29.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Sep 2023 03:29:45 -0700 (PDT)
-From:   Pin-yen Lin <treapking@chromium.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Polaris Pi <pinkperfect2021@gmail.com>,
-        Matthew Wang <matthewmwang@chromium.org>,
-        Pin-yen Lin <treapking@chromium.org>,
-        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH] wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
-Date:   Wed,  6 Sep 2023 18:29:12 +0800
-Message-ID: <20230906102940.1120269-1-treapking@chromium.org>
-X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
+        Wed, 6 Sep 2023 06:35:25 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CC43CE2
+        for <linux-wireless@vger.kernel.org>; Wed,  6 Sep 2023 03:35:21 -0700 (PDT)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3867J85I006022;
+        Wed, 6 Sep 2023 10:35:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=6x6AGspnHuDuxZLjKxPbmmN6vd+DuLBpY9FOhXhZ28s=;
+ b=aZU6rK1v8IbJHsh2Lfn7CT++sLyNLuoUrEt9Zkll+JX7xwfhquH/KpfD6RNCHNvtINge
+ 2W+3GeWtfjkKgpMK3UA9iuwNXXgb5dKv3iYQ0x40vD13kL2EB4i3JKTOttV1gM/pEzGB
+ 1qGmYSc0E2Wq74b8NCHU3jaGKI4dp/O66TpaUjTRuAt7ScL9fsqtSYBwuLHNWJj7LbyC
+ r/0w1MABejSdGAIT6QLJAOzqNf/aACb0OiP3tWguMbjBmBJHCVvcJ+IdrRq0sS8kemJD
+ RaBbi2quDBNv65d1VuoCDcyn2oGQlf8C8f2ekYIVuzUVCqFk/PnzaWYqr9uTUPB6GwWe zQ== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sxfrkh609-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Sep 2023 10:35:15 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 386AZDqj029305
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 6 Sep 2023 10:35:13 GMT
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Wed, 6 Sep 2023 03:35:12 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <johannes@sipsolutions.net>, <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH 0/3] wifi: mac80211: change to match driver to support MLO connection
+Date:   Wed, 6 Sep 2023 06:34:55 -0400
+Message-ID: <20230906103458.24092-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 2O8OCoCjQtzVvvSxYAthHARFxcvJ3jr8
+X-Proofpoint-ORIG-GUID: 2O8OCoCjQtzVvvSxYAthHARFxcvJ3jr8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-06_03,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 clxscore=1015 adultscore=0
+ phishscore=0 mlxlogscore=858 mlxscore=0 spamscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309060089
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Only skip the code path trying to access the rfc1042 headers when the
-buffer is too small, so the driver can still process packets without
-rfc1042 headers.
+Currently mac80211 use its default settings, it does not meet requirement
+of some driver such as ath12k. So extend its interface to driver for MLO 
+connection.
 
-Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+The default settings in mac80211 are:
+1. all link address are random for station
+2. active link is only for primary link for station.
 
----
+primary link: the link used by the latest exchange of successful
+(Re)Association Request/Response frames.
 
- drivers/net/wireless/marvell/mwifiex/sta_rx.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+Wen Gong (3):
+  wifi: mac80211: add support to allow driver to generate local link
+    address for station
+  wifi: mac80211: add support to allow driver to set active link while
+    connection for station
+  wifi: mac80211: update link RX NSS by ieee80211_sta_set_rx_nss() in
+    ieee80211_assoc_config_link()
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index 65420ad67416..ebb65f3c086c 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -86,7 +86,8 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
- 
--	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
-+	if (sizeof(rx_pkt_hdr->eth803_hdr) + sizeof(rfc1042_header) +
-+	    rx_pkt_off > skb->len) {
- 		mwifiex_dbg(priv->adapter, ERROR,
- 			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
- 			    skb->len, rx_pkt_off);
-@@ -95,12 +96,13 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 		return -1;
- 	}
- 
--	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
--		     sizeof(bridge_tunnel_header))) ||
--	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
--		     sizeof(rfc1042_header)) &&
--	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
--	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX)) {
-+	if (sizeof(rx_pkt_hdr) + rx_pkt_off <= skb->len &&
-+	    ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-+		      sizeof(bridge_tunnel_header))) ||
-+	     (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-+		      sizeof(rfc1042_header)) &&
-+	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
-+	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX))) {
- 		/*
- 		 *  Replace the 803 header and rfc1042 header (llc/snap) with an
- 		 *    EthernetII header, keep the src/dst and snap_type
+ include/net/mac80211.h    | 17 +++++++++++++
+ net/mac80211/driver-ops.h | 42 ++++++++++++++++++++++++++++++++
+ net/mac80211/link.c       |  8 +++++++
+ net/mac80211/mlme.c       | 26 +++++++++++++++-----
+ net/mac80211/trace.h      | 50 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 137 insertions(+), 6 deletions(-)
+
+
+base-commit: 3f257461ab0ab19806bae2bfde4c3cd88dbf050e
 -- 
-2.42.0.283.g2d96d420d3-goog
+2.40.1
 
