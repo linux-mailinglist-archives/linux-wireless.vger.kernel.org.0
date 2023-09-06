@@ -2,90 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FBF879400A
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Sep 2023 17:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53293794188
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Sep 2023 18:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240731AbjIFPM4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Sep 2023 11:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49190 "EHLO
+        id S237851AbjIFQ3o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Sep 2023 12:29:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbjIFPMz (ORCPT
+        with ESMTP id S234172AbjIFQ3m (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Sep 2023 11:12:55 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18A4AE64
-        for <linux-wireless@vger.kernel.org>; Wed,  6 Sep 2023 08:12:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58642C433C8;
-        Wed,  6 Sep 2023 15:12:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694013170;
-        bh=ff+H75uDTdhbM2dFlEGFYvMNpQvwcLgyYJIPzFO8uuA=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Zaxt3vIpZK0oFbeMlXILxWhb7y/cJwp/k1J7R6kHN8PSKAGbtkfl8BSY4y+1k+OK4
-         K5NGJzHunNXJV+GHi8Iv7LCn6Nxpn0tGY4BrC+VVNTYpOhmfPYv4CJR+UhgtIcCbrW
-         GR+2kNXtF70YB4ZezZFovd3BNBpxgkNuxXmBqWZooONryXdnQuWT80o3DFJ50RVXdl
-         /xE7b7ZxCpCCS125FYNViP5FPzTSxjYUiJt+Rn4e6QzUP9e6YeAnkDgKyqFJTFPBNt
-         JtS0IyarCH1SUpwvyzAkflnIE2m1oo0raboUx0rBlVCO3kBHYzCcQ2Wv3JyRU5L/uY
-         C4UX2cfvAH7kg==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 6 Sep 2023 12:29:42 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C378B4
+        for <linux-wireless@vger.kernel.org>; Wed,  6 Sep 2023 09:29:38 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 386EfZ6f030020;
+        Wed, 6 Sep 2023 16:29:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=/QuYDb4WZqLH0LbzObSwSiBNYxHo6RIhSFOqhSJ6hxY=;
+ b=omtw91nIIJCm3R66uDsusTUvSOKfPqk6aEmJmla9UM80D7MzZXS+zcX21SmZj/U3Lw9/
+ hwyx5Bfp48HHlLJv6Y2rTY+2a+38Pr1RoMeukziXF10vPsdFVaZ99CqXUQt0WxEHoyj4
+ jHwA88/z61g+7W2xPDU1iELs4lOnFPAguYwI2NlhPZoXj4VjAXg6BWN/sRIvD5woXrFD
+ yifWcQy5wQZN3d06hJEZufgbCHD+1h32A5TIzJx/vjgW8i7EBUgl59veMCAti6a+gZtH
+ SnYsiEKtqF8t5kjXuu3vKP0tbRiCGoOXbcdKyU77h9GESCRKw/kQc0g+tLyq6Zm2Esm1 vg== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sxpt016g9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Sep 2023 16:29:27 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 386GTRs6004408
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 6 Sep 2023 16:29:27 GMT
+Received: from [10.111.180.119] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 6 Sep
+ 2023 09:29:26 -0700
+Message-ID: <1bc2ee72-be09-4787-964d-908c85e4b6fd@quicinc.com>
+Date:   Wed, 6 Sep 2023 09:29:24 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: drop NULL pointer check in
+ ath11k_update_per_peer_tx_stats()
+Content-Language: en-US
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <lvc-project@linuxtesting.org>, <ath11k@lists.infradead.org>
+References: <20230906093704.14001-1-dmantipov@yandex.ru>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230906093704.14001-1-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: fix boot failure with one MSI vector
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230601033840.2997-1-quic_bqiang@quicinc.com>
-References: <20230601033840.2997-1-quic_bqiang@quicinc.com>
-To:     Baochen Qiang <quic_bqiang@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169401316702.3891753.7206466024669177368.kvalo@kernel.org>
-Date:   Wed,  6 Sep 2023 15:12:49 +0000 (UTC)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: w-khF0DznUQPgbCQstRrElgS62-MeVex
+X-Proofpoint-GUID: w-khF0DznUQPgbCQstRrElgS62-MeVex
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-06_06,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
+ mlxscore=0 phishscore=0 impostorscore=0 suspectscore=0 mlxlogscore=790
+ adultscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309060144
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
-
-> Commit 5b32b6dd96633 ("ath11k: Remove core PCI references from
-> PCI common code") breaks with one MSI vector because it moves
-> affinity setting after IRQ request, see below log:
+On 9/6/2023 2:36 AM, Dmitry Antipov wrote:
+> Since 'user_stats' is a fixed-size array of 'struct htt_ppdu_user_stats'
+> in 'struct htt_ppdu_stats', any of its member can't be NULL and so
+> relevant check may be dropped.
 > 
-> [ 1417.278835] ath11k_pci 0000:02:00.0: failed to receive control response completion, polling..
-> [ 1418.302829] ath11k_pci 0000:02:00.0: Service connect timeout
-> [ 1418.302833] ath11k_pci 0000:02:00.0: failed to connect to HTT: -110
-> [ 1418.303669] ath11k_pci 0000:02:00.0: failed to start core: -110
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
 > 
-> The detail is, if do affinity request after IRQ activated,
-> which is done in request_irq(), kernel caches that request and
-> returns success directly. Later when a subsequent MHI interrupt is
-> fired, kernel will do the real affinity setting work, as a result,
-> changs the MSI vector. However at that time host has configured
-> old vector to hardware, so host never receives CE or DP interrupts.
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+> ---
+>   drivers/net/wireless/ath/ath11k/dp_rx.c | 3 ---
+>   1 file changed, 3 deletions(-)
 > 
-> Fix it by setting affinity before registering MHI controller
-> where host is, for the first time, doing IRQ request.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
-> 
-> Fixes: 5b32b6dd9663 ("ath11k: Remove core PCI references from PCI common code")
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> Tested-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-
-Fails to apply, please rebase.
-
-error: patch failed: drivers/net/wireless/ath/ath11k/pci.c:888
-error: drivers/net/wireless/ath/ath11k/pci.c: patch does not apply
-stg import: Diff does not apply cleanly
-
-Patch set to Changes Requested.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230601033840.2997-1-quic_bqiang@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> index 62bc98852f0f..146201d8dba2 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> @@ -1388,9 +1388,6 @@ ath11k_update_per_peer_tx_stats(struct ath11k *ar,
+>   	u8 tid = HTT_PPDU_STATS_NON_QOS_TID;
+>   	bool is_ampdu = false;
+>   
+> -	if (!usr_stats)
+> -		return;
+> -
+>   	if (!(usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_RATE)))
+>   		return;
+>   
 
