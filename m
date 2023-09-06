@@ -2,438 +2,461 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AECCC794413
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Sep 2023 21:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF4C794480
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Sep 2023 22:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240855AbjIFT6M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Sep 2023 15:58:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58264 "EHLO
+        id S244465AbjIFU22 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Sep 2023 16:28:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234333AbjIFT6L (ORCPT
+        with ESMTP id S244444AbjIFU2Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Sep 2023 15:58:11 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2043.outbound.protection.outlook.com [40.107.243.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAEC2173B;
-        Wed,  6 Sep 2023 12:58:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BhIFQuXaL9/e9tIDM0yxKsXOGLV7YoJpUd1vGDED+a+hVJ/B1+01v2YKyFB+zrB0WR9URAKlVcAfcVl26If7O6wJYKRyoCgarZ2GA54eYXOd3Rqf8FzCIGGjtONQZEpYDnY3tVQU+yg/gzAjlBomg5g/iqX69+WTvB4LHEYWTbxbahSoflmPTfb9jVe+wm6hNdZAtlassd8NXNOmIlPwWEcLReSx6avY61uJDK9jVM5LDf8VEOJGwvwjQWCO9pa5MjLwQnPC0Iz6SOx8C5J1cGqJpD64tsHxSzOVhU3wiHfs6VLWEMIUdiE6gYD/oj1nloY/DZ6rlD/Dp5+kbhnuzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s6VgZ0VakzPk85/RZqTEap1Au+pM8wZVStirYHfOrEA=;
- b=HVxHoEAapF5ir+cHPpmJAU4AHgEEoC/6m3gpxrzNLH0DduBIwqiReKbXQpNadF7zGQY7MfrE8lU18Er0DB1yGg52DK5DbluTvklizHrfgNIM9S3WSg2bIvQ/JGIR8uZCAgiOALzaTSMAsBRbWYVW5LI01uZZD+cbmd2IFv/ih1ikSHilDL31TJR+esNbBdc9yv1foKaGIHg7k3Zr8fzrQb/6wn5AGTmvObtHZNV+ma1T2FEaYN45TMjA9Ks5Ng8n2rIG/nTSlGSNjF+DNR5fT2aeFFBNWnlCZ7kiiCzKpMk/0jX601+ojQR1WEHq+ldTAN1Xvi/AF62LtOVT/Wot7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s6VgZ0VakzPk85/RZqTEap1Au+pM8wZVStirYHfOrEA=;
- b=Ga+QkiueWl8V0pUI18OGPpHnFECcB8Bm4MGjNfHvGwuTGC/ymy+J9v8uVYmLpoqmVACNhsWdwSEcrgMvhIwipwBdl1WUrX3A40b+/gltcSLz/vseNRf9HjAma6sRyu71QaUEwcymyZsOThaRkz3LXdgoLDmqgFO5Ds9I2s+4AQo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by LV8PR12MB9133.namprd12.prod.outlook.com (2603:10b6:408:188::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.32; Wed, 6 Sep
- 2023 19:58:04 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6745.034; Wed, 6 Sep 2023
- 19:58:04 +0000
-Message-ID: <83068c44-a4a7-41b9-84e2-b751deb1e093@amd.com>
-Date:   Wed, 6 Sep 2023 14:57:59 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [V11 3/8] wifi: mac80211: Add support for WBRF features
-Content-Language: en-US
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Evan Quan <evan.quan@amd.com>, lenb@kernel.org,
-        johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        alexander.deucher@amd.com, rafael@kernel.org, Lijo.Lazar@amd.com
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20230831062031.1014799-1-evan.quan@amd.com>
- <20230831062031.1014799-4-evan.quan@amd.com>
- <ed695b0d-fb98-4a46-8689-101a3d3f9819@quicinc.com>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <ed695b0d-fb98-4a46-8689-101a3d3f9819@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1P222CA0071.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:2c1::18) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        Wed, 6 Sep 2023 16:28:25 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE4C71BC3
+        for <linux-wireless@vger.kernel.org>; Wed,  6 Sep 2023 13:28:17 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 386Il5if005513;
+        Wed, 6 Sep 2023 20:28:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=qJ20tXCXMmQS6XbnqCS57bvhmwSMKuiwRPxGm7Diqys=;
+ b=ZVbEdPmFlh4WN/+Q+tBt+geKM/3BpNrgU6iFUjoJUW9iQ+7lgDN/jyqhuR9XOh52SXJg
+ FjjFb0jEc+rXHmsma1mNctChnXF7le3mr3ua66S1HheJlv5X5gg4XaajQpQYSCUWj6gR
+ 2gYJqWqtq9epO+t9PHYHvlYeb4eqT1G7ISKlwCI94dDyjY2/cGCAudTdFP7sgMKSs1I7
+ mm5jwCMvfKv9a71Bv2E5+UL2fiiCq22sEvvJYKgrCGJ0+EcKw099QCydCbOTPdZOkASa
+ B9kLOxXne5YJR9rnlVQSmIxNKZeQGqa+sqJqIToCS5SzbWVtutcfqf4CPspTDNMU96yk 8w== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sxha32jh2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 06 Sep 2023 20:28:11 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 386KSAHt002040
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 6 Sep 2023 20:28:10 GMT
+Received: from [10.111.180.119] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 6 Sep
+ 2023 13:28:09 -0700
+Message-ID: <fd32429f-7a33-4c94-a95d-03efd5283b3a@quicinc.com>
+Date:   Wed, 6 Sep 2023 13:28:06 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|LV8PR12MB9133:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f91b14c-dc4a-47f9-bec4-08dbaf1394b6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MDUaycexte93asHXO63FN4AneHl58yT27mbPrFNRWmYnKBaHAT2n1iV3IOUylgKPbNbJmYPMofIjX1+DYT2TItnfYI5ZmdJfN5Fg5rk1n7iJ9J6sJF4zth2NVvmTKRgboTPoDGnMAIiBX6L/U6j+/K4Kqzp/gSZS8VIekO4ihZViUQ6lTa5feOXvACzihbYhNrQQNb23iPE20RjLx1BnV3kioi/lfxllds2Ke3ug5zqsozSOcOMAB3RlL/DlPL2crmLSEW+Pn9YRtHsbuAqFKCtHXUAr7JnfzT0gvTbAlkCjl719Lml2VLwWNuhkWONW9JP6Nx6D2sKc9s1KMxrFKESHp26rrpWy3Jy+OVAl3zifD+MQttey+z2gOf+KoC/GLolSU/OdWa7KxNPfa4tKI9cyxc1/ou6xcQBHdFavCXIarb+LmkfSQObP/0W4bPXj9JrgDH1n4jO85U39HXKJ3EzT1NIwYsN1BXoV2f+1IfiocSR0c1TIZICHbccXy/f/tUZ634S9ExIulqMc2VuOOccR7zlafGKqn+QO4ooC/tTccf0mV0H/qMBeCj/c6WnJ6uh/ef9PGKRyx10s6sPyeb7pdbeC/zQOZQZaRgGMVA9mouyGPK+kzJjTXRXvFRd9stEFFexSc668iANHhx208O3wqveJ6CPrTACC3q3jx1U=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(376002)(136003)(346002)(39860400002)(366004)(186009)(1800799009)(451199024)(26005)(6506007)(53546011)(6486002)(6512007)(38100700002)(86362001)(31696002)(36756003)(921005)(2616005)(83380400001)(44832011)(30864003)(7416002)(8936002)(41300700001)(6636002)(316002)(110136005)(4326008)(66476007)(66556008)(66946007)(5660300002)(478600001)(8676002)(31686004)(2906002)(6666004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VWlHTTFkSy9iQVdPTFNzaFRBRkFZQWFCRE9lWE5nWkQxaGZ1SFhtWjJqNms2?=
- =?utf-8?B?QmM3bjhTWkRYczJzczk4aWFmek8vYTY5QXRCWTZadW43UzJ6YW5lclBsMnlm?=
- =?utf-8?B?OWR6enh6QTR1U3hDYW9qWjlKVEttSUdYcWVtTXMwWjdpamVOZGpwTFBxalUy?=
- =?utf-8?B?c1QxV1NiU1JJUy83cDhqT1h0cC9tdHZSUlIxUnBjRU1tZVRwZnFhZk5BYkJN?=
- =?utf-8?B?MlhNOXJXVDRLTENVUUIxRUJNdElCamRTcUFSR2J4dUV6bjU2ejJ3YWpUR1Qv?=
- =?utf-8?B?MlJoNnk5ZHorWFI4QThwUFlCMC9reTZ1Q3AwY0prRElQaDE5SXdjcFU2U1ZU?=
- =?utf-8?B?NXQ5TmxKN0Y4M2F0VFU1OVVSLzRVWDJiZS9KVlNza21PYkNRV3E4cTladTZE?=
- =?utf-8?B?S2FUVlB0R0d6OTFOK2R2ZEExQWtIYkxuSjI3RHRPeHk2c3VoUjIvV0l0TjEv?=
- =?utf-8?B?N2ZSWTNPZUdHY1JZZ21lcG1UK0ZFQXVLcEJzblR0Vksya2puK2xuU0FOdXdo?=
- =?utf-8?B?STl5MjZGTnlMdll4ZUNJYmFxU0o2bzF0Q1AwbmVjYkVXVkcrVWxuWlVDckZN?=
- =?utf-8?B?TTVDbVVmRmxndVkyNzlRbThDRVNDVWdIT28vemJiUW5DUHc1U3huVVBYVDgy?=
- =?utf-8?B?Nlc4ZG4zbHZmejFjL3ZRTEc0bGk3Ykhud1FWWDFpMHVMWDFNUjU4UnpFSW5H?=
- =?utf-8?B?cVZ4em8wRzhGZGVCc2RjYStuaXN6MnFYYUpIdk5uSTV2aHZheFVhWHFzOEZY?=
- =?utf-8?B?TkFReDlYakJhMUMwcUdUbkJqTEpqWnR4TytzOHhsUFQwOE5zOWFGODJRbk1p?=
- =?utf-8?B?ZHk2eDNVUkI3T2FVSGN6ajZreVlsemNqT2VpU3FWWjhCYkNPVWluOVZBWjVE?=
- =?utf-8?B?QUx2UVhtVHdsUFh4UmlsNUFFa2UzeGxCWTkyOWc4OHRxNTEzVW80Nkw0amJC?=
- =?utf-8?B?OFdHNjNSRnFFRUlNK25Xa241UWN3SWxUQkwwQmNXK0xZV1YzbmV4SCtNSHpl?=
- =?utf-8?B?ZFhuWU1nTXZ5U1pxOXlJckcvckdyQ2hoR2NhVEVnRWM5bXpveWJXZG1SemdD?=
- =?utf-8?B?ZUlzeFI2ZlFCeVVpc3lTT0F3UGhWY2NJTGxhcFJRVjZvVFJ6Z3NFT2ZURzEy?=
- =?utf-8?B?TFFQVTdKb0lHaXVYYXVSRGJTa2NPcDVHRUI5TmZTVzc5bVR5NHRhQzU0bis1?=
- =?utf-8?B?U2MvMDhHaktxZ2MxRDZxb1N3QWdXMXNmTWtndlAxVlZuMXo2TGJ5ZUlzRVZL?=
- =?utf-8?B?cnl2L2hiZVExWElDZnB5SFlOWDNwK25jZHBvMWtXSmZVeDhWK3F2L0tnWEFZ?=
- =?utf-8?B?ME03Q0lDd25SQ0ZJMnRyYUc5bzc1aDh4VDBlbXBFenhlMXVIOVVNdXRnbW40?=
- =?utf-8?B?WGg0SHlsKzg3WUw0VTRnZmxtTUJLbzBuSU1RY3BMc0tzbGQxUlI3ZzV0dkQ3?=
- =?utf-8?B?R25IYVZBL0VZTWpEMzRubDJEYmdPTFFwQXFDcVV0TzVMTnkyQXBqWW9vQmxP?=
- =?utf-8?B?VXNJYlBObDVrZDlhRlh1VmlBWnRpS3ErcENKOWJ2TW9JT1hLNnE1MVo4QXdK?=
- =?utf-8?B?a2IvSnBLN0d0UmtqZEtrbkVVOFlZcTJvK2ZoU1YwUFIyREFTVEdhMkphQk4y?=
- =?utf-8?B?UmJiLy9KdUM3OFVscnk3ZWNad2RDckd4YzM4R0tNbXhxdTVsUk96R1c3TFJL?=
- =?utf-8?B?eXpCN3V4ZmQvRXM0S01ZSXpBa0N3UHkwOGcydysxYzZFdmgram1QOFQ4QytM?=
- =?utf-8?B?bnd2a1dBRkl4MlAzYjJReCttbmJUaDR2MkdJZnIyRTN3dDZvYnptcE41dndp?=
- =?utf-8?B?elNvY3U2ams0VXo0Yk92dGNlZXhTZ24xM0xXb0N2SWh2cmFsc3hrUGwwRHlS?=
- =?utf-8?B?VlBwMWRxRDZwZTI4dTRHbmlhL3RsSG5KR1NmZ3RyeE1xN0JOQ2t2YktrWXph?=
- =?utf-8?B?by9Eck9sR3JoR2M3WnBzTVRzZE5oTVdnMmd3ZzJiM3FrVDlxb2dkUWR5VDVZ?=
- =?utf-8?B?T2hXN3BxZGZ0MTY4aWk3VCs2MmdWM1JDSmkzWXpuK3NGZHZLaWRCemxNOE83?=
- =?utf-8?B?c2c4T2tacFc4MVZEZFN1STlkR3MyWTE5ZERCNS9yWWowT1l2S1I4ZkdOeitY?=
- =?utf-8?Q?zapaOhUL0t5Wr6Eus3gZbS9Z1?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f91b14c-dc4a-47f9-bec4-08dbaf1394b6
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 19:58:04.1387
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sTjlI+prRngxhA/1/cizSkUPjjG45MmThAZQpMGG1GHBDTLE869AdcPuQ7Hs57+YBPKIb7pkUuKBNRVcm5buKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9133
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] wifi: ath12k: add BIOS SAR capability for WCN7850
+Content-Language: en-US
+To:     Lingbo Kong <quic_lingbok@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20230905024904.3882-1-quic_lingbok@quicinc.com>
+ <20230905024904.3882-3-quic_lingbok@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230905024904.3882-3-quic_lingbok@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: smvmJ_xEMeEyo5P_XndJKoV-r7Jt0j2h
+X-Proofpoint-GUID: smvmJ_xEMeEyo5P_XndJKoV-r7Jt0j2h
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-06_06,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ mlxlogscore=999 impostorscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0
+ suspectscore=0 adultscore=0 priorityscore=1501 clxscore=1015 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309060177
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/1/2023 09:32, Jeff Johnson wrote:
-> On 8/30/2023 11:20 PM, Evan Quan wrote:
->> To support the WBRF mechanism, Wifi adapters utilized in the system must
+On 9/4/2023 7:49 PM, Lingbo Kong wrote:
+> ath12k get the latest BIOS SAR power table by using ACPI _DSM method, then
+> pass this table to the firmware.ath12k register a notification callback for
+> ACPI event so ACPI can notify ath12k to get the latest BIOS SAR table.
 > 
-> Since this is the first mention of WBRF in the core wireless code IMO 
-> you should indicate what this is an acronym for and briefly describe it
-> (or add a lore link).
-
-A lot of information is captured in the cover letter and earlier 
-commits.  I think you raise a good point that 10 years from now someone 
-looking at random commits will have a hard time understanding what 
-exactly WBRF stands for.
-
-How about if we introduce a wbrf.rst somewhere in Documentation/ that 
-explains the basic principles of how/why for it.  This Documentation 
-patch could be the first in the series and then the commit message for 
-wireless subsystem can tell people to look at that path for more 
-information.
-
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 > 
-> I'm wondering if WBRF is just a special case of frequency avoidance, and 
-> that more generic naming/terminology should be used in core wireless.
-> For example, I know there are vendor-specific solutions which allow 
-> Wi-Fi to avoid using channels which may conflict with cellular or 
-> BlueTooth, and those may benefit from a more generic
->
-
-It seems to me that most vendor solutions that exist don't operate in 
-the kernel code but usually in firmware based solutions, right?
-
-I think to come up with a generic solution we need to first have a 
-vendor that "wants" to participate in a generic solution to design it 
-properly.
-
->> register the frequencies in use(or unregister those frequencies no longer
->> used) via the dedicated calls. So that, other drivers responding to the
->> frequencies can take proper actions to mitigate possible interference.
->>
->> Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->> Co-developed-by: Evan Quan <evan.quan@amd.com>
->> Signed-off-by: Evan Quan <evan.quan@amd.com>
->> -- 
->> v1->v2:
->>    - place the new added member(`wbrf_supported`) in
->>      ieee80211_local(Johannes)
->>    - handle chandefs change scenario properly(Johannes)
->>    - some minor fixes around code sharing and possible invalid input
->>      checks(Johannes)
->> v2->v3:
->>    - drop unnecessary input checks and intermediate APIs(Mario)
->>    - Separate some mac80211 common code(Mario, Johannes)
->> v3->v4:
->>    - some minor fixes around return values(Johannes)
->> v9->v10:
->>    - get ranges_in->num_of_ranges set and passed in(Johannes)
->> ---
->>   include/linux/ieee80211.h  |   1 +
->>   net/mac80211/Makefile      |   2 +
->>   net/mac80211/chan.c        |   9 ++++
->>   net/mac80211/ieee80211_i.h |   9 ++++
->>   net/mac80211/main.c        |   2 +
->>   net/mac80211/wbrf.c        | 105 +++++++++++++++++++++++++++++++++++++
->>   6 files changed, 128 insertions(+)
->>   create mode 100644 net/mac80211/wbrf.c
->>
->> diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
->> index 4b998090898e..f995d06da87f 100644
->> --- a/include/linux/ieee80211.h
->> +++ b/include/linux/ieee80211.h
->> @@ -4335,6 +4335,7 @@ static inline int 
->> ieee80211_get_tdls_action(struct sk_buff *skb, u32 hdr_size)
->>   /* convert frequencies */
->>   #define MHZ_TO_KHZ(freq) ((freq) * 1000)
->>   #define KHZ_TO_MHZ(freq) ((freq) / 1000)
->> +#define KHZ_TO_HZ(freq)  ((freq) * 1000)
->>   #define PR_KHZ(f) KHZ_TO_MHZ(f), f % 1000
->>   #define KHZ_F "%d.%03d"
->> diff --git a/net/mac80211/Makefile b/net/mac80211/Makefile
->> index b8de44da1fb8..d46c36f55fd3 100644
->> --- a/net/mac80211/Makefile
->> +++ b/net/mac80211/Makefile
->> @@ -65,4 +65,6 @@ rc80211_minstrel-$(CONFIG_MAC80211_DEBUGFS) += \
->>   mac80211-$(CONFIG_MAC80211_RC_MINSTREL) += $(rc80211_minstrel-y)
->> +mac80211-y += wbrf.o
->> +
->>   ccflags-y += -DDEBUG
->> diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
->> index 68952752b599..458469c224ae 100644
->> --- a/net/mac80211/chan.c
->> +++ b/net/mac80211/chan.c
->> @@ -506,11 +506,16 @@ static void _ieee80211_change_chanctx(struct 
->> ieee80211_local *local,
->>       WARN_ON(!cfg80211_chandef_compatible(&ctx->conf.def, chandef));
->> +    ieee80211_remove_wbrf(local, &ctx->conf.def);
->> +
->>       ctx->conf.def = *chandef;
->>       /* check if min chanctx also changed */
->>       changed = IEEE80211_CHANCTX_CHANGE_WIDTH |
->>             _ieee80211_recalc_chanctx_min_def(local, ctx, rsvd_for);
->> +
->> +    ieee80211_add_wbrf(local, &ctx->conf.def);
->> +
->>       drv_change_chanctx(local, ctx, changed);
->>       if (!local->use_chanctx) {
->> @@ -668,6 +673,8 @@ static int ieee80211_add_chanctx(struct 
->> ieee80211_local *local,
->>       lockdep_assert_held(&local->mtx);
->>       lockdep_assert_held(&local->chanctx_mtx);
->> +    ieee80211_add_wbrf(local, &ctx->conf.def);
->> +
->>       if (!local->use_chanctx)
->>           local->hw.conf.radar_enabled = ctx->conf.radar_enabled;
->> @@ -748,6 +755,8 @@ static void ieee80211_del_chanctx(struct 
->> ieee80211_local *local,
->>       }
->>       ieee80211_recalc_idle(local);
->> +
->> +    ieee80211_remove_wbrf(local, &ctx->conf.def);
->>   }
->>   static void ieee80211_free_chanctx(struct ieee80211_local *local,
->> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
->> index 91633a0b723e..719f2c892132 100644
->> --- a/net/mac80211/ieee80211_i.h
->> +++ b/net/mac80211/ieee80211_i.h
->> @@ -1600,6 +1600,8 @@ struct ieee80211_local {
->>       /* extended capabilities provided by mac80211 */
->>       u8 ext_capa[8];
->> +
->> +    bool wbrf_supported;
->>   };
->>   static inline struct ieee80211_sub_if_data *
->> @@ -2638,4 +2640,11 @@ ieee80211_eht_cap_ie_to_sta_eht_cap(struct 
->> ieee80211_sub_if_data *sdata,
->>                       const struct ieee80211_eht_cap_elem 
->> *eht_cap_ie_elem,
->>                       u8 eht_cap_len,
->>                       struct link_sta_info *link_sta);
->> +
->> +void ieee80211_check_wbrf_support(struct ieee80211_local *local);
->> +void ieee80211_add_wbrf(struct ieee80211_local *local,
->> +            struct cfg80211_chan_def *chandef);
->> +void ieee80211_remove_wbrf(struct ieee80211_local *local,
->> +               struct cfg80211_chan_def *chandef);
->> +
->>   #endif /* IEEE80211_I_H */
->> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
->> index 24315d7b3126..b20bdaac84db 100644
->> --- a/net/mac80211/main.c
->> +++ b/net/mac80211/main.c
->> @@ -1396,6 +1396,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
->>       debugfs_hw_add(local);
->>       rate_control_add_debugfs(local);
->> +    ieee80211_check_wbrf_support(local);
->> +
->>       rtnl_lock();
->>       wiphy_lock(hw->wiphy);
->> diff --git a/net/mac80211/wbrf.c b/net/mac80211/wbrf.c
->> new file mode 100644
->> index 000000000000..63978c7d2bcb
->> --- /dev/null
->> +++ b/net/mac80211/wbrf.c
->> @@ -0,0 +1,105 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Wifi Band Exclusion Interface for WWAN
->> + * Copyright (C) 2023 Advanced Micro Devices
->> + *
->> + */
->> +
->> +#include <linux/acpi_amd_wbrf.h>
->> +#include <net/cfg80211.h>
->> +#include "ieee80211_i.h"
->> +
->> +void ieee80211_check_wbrf_support(struct ieee80211_local *local)
->> +{
->> +    struct wiphy *wiphy = local->hw.wiphy;
->> +    struct device *dev;
->> +
->> +    if (!wiphy)
->> +        return;
->> +
->> +    dev = wiphy->dev.parent;
->> +    if (!dev)
->> +        return;
->> +
->> +    local->wbrf_supported = acpi_amd_wbrf_supported_producer(dev);
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+> ---
+>   drivers/net/wireless/ath/ath12k/acpi.c | 103 +++++++++++++++++++++++++
+>   drivers/net/wireless/ath/ath12k/acpi.h |  15 ++++
+>   drivers/net/wireless/ath/ath12k/core.h |   3 +
+>   drivers/net/wireless/ath/ath12k/wmi.c  |  94 ++++++++++++++++++++++
+>   drivers/net/wireless/ath/ath12k/wmi.h  |  21 +++++
+>   5 files changed, 236 insertions(+)
 > 
-> 
-> I haven't been looking at this series closely so perhaps this has 
-> already been answered, but is this layered correctly? I'm surprised to 
-> see core wireless code directly invoking a vendor-specific API.
-> Instead should there be a registration mechanism with associated callbacks?
-> 
-> As I mentioned above I could envision multiple registrants for such an 
-> interface.
+> diff --git a/drivers/net/wireless/ath/ath12k/acpi.c b/drivers/net/wireless/ath/ath12k/acpi.c
+> index 384e01748b32..ae1ce7b99d2d 100644
+> --- a/drivers/net/wireless/ath/ath12k/acpi.c
+> +++ b/drivers/net/wireless/ath/ath12k/acpi.c
+> @@ -52,6 +52,26 @@ static int ath12k_acpi_dsm_get_data(struct ath12k_base *ab, int func)
+>   			memcpy(&ab->acdata->tas_sar_power_table, obj->buffer.pointer,
+>   			       obj->buffer.length);
+>   			break;
+> +		case ATH12K_ACPI_DSM_FUNC_INDEX_BIOS_SAR:
+> +			if (obj->buffer.length != ATH12K_ACPI_DSM_BIOS_SAR_DATA_SIZE) {
+> +				ath12k_err(ab, "Invalid BIOS SAR data size %d\n",
+> +					   obj->buffer.length);
+> +				ret = -EINVAL;
+> +				goto out;
+> +			}
+> +			memcpy(&ab->acdata->bios_sar_data, obj->buffer.pointer,
+> +			       obj->buffer.length);
+> +			break;
+> +		case ATH12K_ACPI_DSM_FUNC_INDEX_GEO_OFFSET:
+> +			if (obj->buffer.length != ATH12K_ACPI_DSM_GEO_OFFSET_DATA_SIZE) {
+> +				ath12k_err(ab, "Invalid GEO OFFSET data size %d\n",
+> +					   obj->buffer.length);
+> +				ret = -EINVAL;
+> +				goto out;
+> +			}
+> +			memcpy(&ab->acdata->geo_offset_data, obj->buffer.pointer,
+> +			       obj->buffer.length);
+> +			break;
+>   		}
+>   	} else {
+>   		ath12k_err(ab,
+> @@ -83,6 +103,24 @@ static int ath12k_set_tas_power_limit_data(struct ath12k_base *ab)
+>   	return ret;
+>   }
+>   
+> +static int ath12k_set_bios_sar_power_limit_data(struct ath12k_base *ab)
+> +{
+> +	int ret;
+> +
+> +	if (ab->acdata->bios_sar_data[0] == ATH12K_ACPI_POWER_LIMIT_VERSION &&
+> +	    ab->acdata->bios_sar_data[1] == ATH12K_ACPI_POWER_LIMIT_ENABLE_FLAG) {
+> +		ret = ath12k_wmi_pdev_set_bios_sar_table_param(ab,
+> +							       ab->acdata->bios_sar_data);
+> +		if (ret)
+> +			ath12k_err(ab, "failed to pass bios sar table %d\n", ret);
+> +	} else {
+> +		ath12k_err(ab, "the latest bios sar data is invalid\n");
+> +		ret = -EINVAL;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>   void acpi_dsm_notify(acpi_handle handle, u32 event, void *data)
+>   {
+>   	int ret;
+> @@ -101,6 +139,20 @@ void acpi_dsm_notify(acpi_handle handle, u32 event, void *data)
+>   			if (ret)
+>   				return;
+>   		}
+> +
+> +		if (ab->acdata->acpi_bios_sar_enable) {
+> +			ret = ath12k_acpi_dsm_get_data(ab,
+> +						       ATH12K_ACPI_DSM_FUNC_INDEX_BIOS_SAR);
+> +			if (ret) {
+> +				ath12k_err(ab, "failed to update bios sar %d\n", ret);
+> +				return;
+> +			}
+> +
+> +			ret = ath12k_set_bios_sar_power_limit_data(ab);
+> +			if (ret)
+> +				return;
+> +		}
+> +
+>   	} else {
+>   		ath12k_err(ab, "unknown acpi notify %u\n", event);
+>   	}
+> @@ -113,6 +165,27 @@ void ath12k_acpi_remove_notify(struct ath12k_base *ab)
+>   				   acpi_dsm_notify);
+>   }
+>   
+> +static int ath12k_pass_acpi_bios_sar_and_geo_to_fw(struct ath12k_base *ab)
+> +{
+> +	int ret;
+> +
+> +	ret = ath12k_wmi_pdev_set_bios_sar_table_param(ab,
+> +						       ab->acdata->bios_sar_data);
+> +
+> +	if (ret) {
+> +		ath12k_err(ab, "failed to pass bios sar table to fw %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = ath12k_wmi_pdev_set_bios_geo_table_param(ab,
+> +						       ab->acdata->geo_offset_data);
+> +
+> +	if (ret)
+> +		ath12k_err(ab, "failed to pass bios geo table to fw %d\n", ret);
+> +
+> +	return ret;
+> +}
+> +
+>   static int ath12k_pass_acpi_cfg_and_data_to_fw(struct ath12k_base *ab)
+>   {
+>   	int ret;
+> @@ -172,12 +245,42 @@ int ath12k_get_acpi_all_data(struct ath12k_base *ab)
+>   			ab->acdata->acpi_tas_enable = true;
+>   	}
+>   
+> +	if (ATH12K_ACPI_FUNC_BIT_VALID(ab->acdata, ATH12K_ACPI_FUNC_BIT_BIOS_SAR)) {
+> +		ret = ath12k_acpi_dsm_get_data(ab,
+> +					       ATH12K_ACPI_DSM_FUNC_INDEX_BIOS_SAR);
+> +		if (ret) {
+> +			ath12k_err(ab, "failed to get bios sar data %d\n", ret);
+> +			goto err_free_acdata;
+> +		}
+> +	}
+> +
+> +	if (ATH12K_ACPI_FUNC_BIT_VALID(ab->acdata, ATH12K_ACPI_FUNC_BIT_GEO_OFFSET)) {
+> +		ret = ath12k_acpi_dsm_get_data(ab,
+> +					       ATH12K_ACPI_DSM_FUNC_INDEX_GEO_OFFSET);
+> +		if (ret) {
+> +			ath12k_err(ab, "failed to get geo offset data %d\n", ret);
+> +			goto err_free_acdata;
+> +		}
+> +
+> +		if (ATH12K_ACPI_FUNC_BIT_VALID(ab->acdata, ATH12K_ACPI_FUNC_BIT_BIOS_SAR) &&
+> +		    ab->acdata->bios_sar_data[0] == ATH12K_ACPI_POWER_LIMIT_VERSION &&
+> +		    ab->acdata->bios_sar_data[1] == ATH12K_ACPI_POWER_LIMIT_ENABLE_FLAG &&
+> +		    !ab->acdata->acpi_tas_enable)
+> +			ab->acdata->acpi_bios_sar_enable = true;
+> +	}
+> +
+>   	if (ab->acdata->acpi_tas_enable) {
+>   		ret = ath12k_pass_acpi_cfg_and_data_to_fw(ab);
+>   		if (ret)
+>   			goto err_free_acdata;
+>   	}
+>   
+> +	if (ab->acdata->acpi_bios_sar_enable) {
+> +		ret = ath12k_pass_acpi_bios_sar_and_geo_to_fw(ab);
+> +		if (ret)
+> +			goto err_free_acdata;
+> +	}
+> +
+>   	status = acpi_install_notify_handler(ACPI_HANDLE(ab->dev),
+>   					     ACPI_DEVICE_NOTIFY,
+>   					     acpi_dsm_notify, ab);
+> diff --git a/drivers/net/wireless/ath/ath12k/acpi.h b/drivers/net/wireless/ath/ath12k/acpi.h
+> index cf742958a623..59f87cb258c6 100644
+> --- a/drivers/net/wireless/ath/ath12k/acpi.h
+> +++ b/drivers/net/wireless/ath/ath12k/acpi.h
+> @@ -11,9 +11,16 @@
+>   #define ATH12K_ACPI_DSM_FUNC_INDEX_SUPPORT_FUNCS	0
+>   #define ATH12K_ACPI_DSM_FUNC_INDEX_TAS_CFG		8
+>   #define ATH12K_ACPI_DSM_FUNC_INDEX_TAS_DATA		9
+> +#define ATH12K_ACPI_DSM_FUNC_INDEX_BIOS_SAR		4
+> +#define ATH12K_ACPI_DSM_FUNC_INDEX_GEO_OFFSET		5
 
-This feedback was previously shared and earlier versions of the series 
-had added another layer to make it generic.
+can we have the above in some logical order, either numerical order or 
+alphabetic order?
 
-The major complexity is that the semantics of how such a registration 
-and notification would work are highly implementation specific.  So the 
-generic solution just guessed at how it could work generically and fit 
-the ACPI one into it.
+>   
+>   #define ATH12K_ACPI_DSM_TAS_CFG_SIZE			108
+>   #define ATH12K_ACPI_DSM_TAS_DATA_SIZE			69
+> +#define ATH12K_ACPI_DSM_BIOS_SAR_DATA_SIZE		34
+> +#define ATH12K_ACPI_DSM_GEO_OFFSET_DATA_SIZE		19
+> +
+> +#define ATH12K_ACPI_FUNC_BIT_BIOS_SAR			BIT(3)
+> +#define ATH12K_ACPI_FUNC_BIT_GEO_OFFSET			BIT(4)
+>   #define ATH12K_ACPI_FUNC_BIT_TAS_CFG			BIT(7)
+>   #define ATH12K_ACPI_FUNC_BIT_TAS_DATA			BIT(8)
+>   
+> @@ -22,6 +29,14 @@
+>   
+>   #define ATH12K_ACPI_TAS_DATA_VERSION		0x1
+>   #define ATH12K_ACPI_TAS_DATA_ENABLE_FLAG	0x1
+> +#define ATH12K_ACPI_BIOS_SAR_TABLE_LEN		22
+> +#define ATH12K_ACPI_BIOS_SAR_DBS_BACKOFF_LEN	10
+> +#define ATH12K_ACPI_POWER_LIMIT_DATAOFFSET	12
+> +#define ATH12K_ACPI_DBS_BACKOFF_DATAOFFSET	2
+> +#define ATH12K_ACPI_POWER_LIMIT_VERSION		0x1
+> +#define ATH12K_ACPI_POWER_LIMIT_ENABLE_FLAG	0x1
+> +#define ATH12K_ACPI_GEO_OFFSET_DATA_OFFSET	1
+> +#define ATH12K_ACPI_BIOS_SAR_GEO_OFFSET_LEN	18
+>   
+>   int ath12k_get_acpi_all_data(struct ath12k_base *ab);
+>   void acpi_dsm_notify(acpi_handle handle, u32 event, void *data);
+> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+> index cba4f176c018..6fe4f0ddee4a 100644
+> --- a/drivers/net/wireless/ath/ath12k/core.h
+> +++ b/drivers/net/wireless/ath/ath12k/core.h
+> @@ -775,8 +775,11 @@ struct ath12k_base {
+>   	struct {
+>   		u32 func_bit;
+>   		bool acpi_tas_enable;
+> +		bool acpi_bios_sar_enable;
+>   		u8 tas_cfg[ATH12K_ACPI_DSM_TAS_CFG_SIZE];
+>   		u8 tas_sar_power_table[ATH12K_ACPI_DSM_TAS_DATA_SIZE];
+> +		u8 bios_sar_data[ATH12K_ACPI_DSM_BIOS_SAR_DATA_SIZE];
+> +		u8 geo_offset_data[ATH12K_ACPI_DSM_GEO_OFFSET_DATA_SIZE];
+>   	} *acdata;
+>   
+>   	/* must be last */
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+> index 2d501993b197..f090ccea5f64 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
+> @@ -6978,3 +6978,97 @@ int ath12k_wmi_pdev_set_tas_data_table_param(struct ath12k_base *ab,
+>   
+>   	return ret;
+>   }
+> +
+> +int ath12k_wmi_pdev_set_bios_sar_table_param(struct ath12k_base *ab,
+> +					     u8 *psar_table)
+> +{
+> +	struct ath12k_wmi_base *wmi_ab = &ab->wmi_ab;
+> +	struct wmi_pdev_set_bios_sar_table_cmd *cmd;
+> +	struct wmi_tlv *tlv;
+> +	struct sk_buff *skb;
+> +	int ret;
+> +	u8 *buf_ptr;
+> +	u32 len, sar_table_len_aligned, sar_dbs_backoff_len_aligned;
+> +	u8 *psar_value = psar_table + ATH12K_ACPI_POWER_LIMIT_DATAOFFSET;
+> +	u8 *pdbs_value = psar_table + ATH12K_ACPI_DBS_BACKOFF_DATAOFFSET;
+> +
+> +	sar_table_len_aligned = roundup(ATH12K_ACPI_BIOS_SAR_TABLE_LEN, sizeof(u32));
+> +	sar_dbs_backoff_len_aligned = roundup(ATH12K_ACPI_BIOS_SAR_DBS_BACKOFF_LEN, sizeof(u32));
+> +	len = sizeof(*cmd) + TLV_HDR_SIZE + sar_table_len_aligned +
+> +		TLV_HDR_SIZE + sar_dbs_backoff_len_aligned;
+> +
+> +	skb = ath12k_wmi_alloc_skb(wmi_ab, len);
+> +	if (!skb)
+> +		return -ENOMEM;
+> +
+> +	cmd = (struct wmi_pdev_set_bios_sar_table_cmd *)skb->data;
+> +	cmd->tlv_header =
+> +		cpu_to_le32(ath12k_wmi_tlv_cmd_hdr(WMI_TAG_PDEV_SET_BIOS_SAR_TABLE_CMD_PARAMS,
+> +						   sizeof(*cmd)));
 
-The key tenants for a generic solution are:
-1) Knowing that you need to notify frequencies
-2) Knowing that you need to know about frequencies
-3) Knowing which devices in the specific hardware design can be problematic.
+cpu_to_le32() is incorrect here. ath12k_wmi_tlv_cmd_hdr() already 
+returns a __le32 header
 
-It's a lot of complexity that you need deep knowledge of the design to 
-do properly.  When this generic concept was brought to drivers/base 
-however there was no interest in a generic layer at that time.
+> +	cmd->pdev_id = cpu_to_le32(WMI_PDEV_ID_SOC);
+> +	cmd->sar_len = cpu_to_le32(ATH12K_ACPI_BIOS_SAR_TABLE_LEN);
+> +	cmd->dbs_backoff_len = cpu_to_le32(ATH12K_ACPI_BIOS_SAR_DBS_BACKOFF_LEN);
+> +
+> +	buf_ptr = skb->data + sizeof(*cmd);
+> +	tlv = (struct wmi_tlv *)buf_ptr;
+> +	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_BYTE,
+> +					 sar_table_len_aligned);
+> +	buf_ptr += TLV_HDR_SIZE;
+> +	memcpy(buf_ptr, psar_value, ATH12K_ACPI_BIOS_SAR_TABLE_LEN);
+> +
+> +	buf_ptr += sar_table_len_aligned;
+> +	tlv = (struct wmi_tlv *)buf_ptr;
+> +	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_BYTE,
+> +					 sar_dbs_backoff_len_aligned);
+> +	buf_ptr += TLV_HDR_SIZE;
+> +	memcpy(buf_ptr, pdbs_value, ATH12K_ACPI_BIOS_SAR_DBS_BACKOFF_LEN);
+> +
+> +	ret = ath12k_wmi_cmd_send(&wmi_ab->wmi[0], skb, WMI_PDEV_SET_BIOS_SAR_TABLE_CMDID);
+> +	if (ret) {
+> +		ath12k_warn(ab, "failed to send WMI_PDEV_SET_BIOS_INTERFACE_CMDID %d\n", ret);
+> +		dev_kfree_skb(skb);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +int ath12k_wmi_pdev_set_bios_geo_table_param(struct ath12k_base *ab,
+> +					     u8 *pgeo_table)
+> +{
+> +	struct ath12k_wmi_base *wmi_ab = &ab->wmi_ab;
+> +	struct wmi_pdev_set_bios_geo_table_cmd *cmd;
+> +	struct wmi_tlv *tlv;
+> +	struct sk_buff *skb;
+> +	int ret;
+> +	u8 *buf_ptr;
+> +	u32 len, sar_geo_len_aligned;
+> +	u8 *pgeo_value = pgeo_table + ATH12K_ACPI_GEO_OFFSET_DATA_OFFSET;
+> +
+> +	sar_geo_len_aligned = roundup(ATH12K_ACPI_BIOS_SAR_GEO_OFFSET_LEN, sizeof(u32));
+> +	len = sizeof(*cmd) + TLV_HDR_SIZE + sar_geo_len_aligned;
+> +
+> +	skb = ath12k_wmi_alloc_skb(wmi_ab, len);
+> +	if (!skb)
+> +		return -ENOMEM;
+> +
+> +	cmd = (struct wmi_pdev_set_bios_geo_table_cmd *)skb->data;
+> +	cmd->tlv_header =
+> +		cpu_to_le32(ath12k_wmi_tlv_cmd_hdr(WMI_TAG_PDEV_SET_BIOS_GEO_TABLE_CMD_PARAMS,
 
-So this version of the series returns back to only introducing the AMD 
-implementation.  The idea being if another implementation is proposed we 
-can look at the overlap between how the two work and could jointly 
-introduce a new generic layer.
+cpu_to_le32() is incorrect here, ath12k_wmi_tlv_cmd_hdr() already 
+returns a __le32 header
 
-Hope that explains it well.  As products that need this solution are 
-entering the marketplace and can benefit from this kernel work, I hope 
-this can be reviewed again soon.
-
-> 
->> +    dev_dbg(dev, "WBRF is %s supported\n",
->> +        local->wbrf_supported ? "" : "not");
->> +}
->> +
->> +static void get_chan_freq_boundary(u32 center_freq,
->> +                   u32 bandwidth,
->> +                   u64 *start,
->> +                   u64 *end)
->> +{
->> +    bandwidth = MHZ_TO_KHZ(bandwidth);
->> +    center_freq = MHZ_TO_KHZ(center_freq);
->> +
->> +    *start = center_freq - bandwidth / 2;
->> +    *end = center_freq + bandwidth / 2;
->> +
->> +    /* Frequency in HZ is expected */
->> +    *start = KHZ_TO_HZ(*start);
->> +    *end = KHZ_TO_HZ(*end);
->> +}
->> +
->> +static void get_ranges_from_chandef(struct cfg80211_chan_def *chandef,
->> +                    struct wbrf_ranges_in_out *ranges_in)
->> +{
->> +    u64 start_freq1, end_freq1;
->> +    u64 start_freq2, end_freq2;
->> +    int bandwidth;
->> +
->> +    bandwidth = nl80211_chan_width_to_mhz(chandef->width);
->> +
->> +    get_chan_freq_boundary(chandef->center_freq1,
->> +                   bandwidth,
->> +                   &start_freq1,
->> +                   &end_freq1);
->> +
->> +    ranges_in->band_list[0].start = start_freq1;
->> +    ranges_in->band_list[0].end = end_freq1;
->> +    ranges_in->num_of_ranges = 1;
->> +
->> +    if (chandef->width == NL80211_CHAN_WIDTH_80P80) {
->> +        get_chan_freq_boundary(chandef->center_freq2,
->> +                       bandwidth,
->> +                       &start_freq2,
->> +                       &end_freq2);
->> +
->> +        ranges_in->band_list[1].start = start_freq2;
->> +        ranges_in->band_list[1].end = end_freq2;
->> +        ranges_in->num_of_ranges++;
->> +    }
->> +}
->> +
->> +void ieee80211_add_wbrf(struct ieee80211_local *local,
->> +            struct cfg80211_chan_def *chandef)
->> +{
->> +    struct wbrf_ranges_in_out ranges_in = {0};
->> +    struct device *dev;
->> +
->> +    if (!local->wbrf_supported)
->> +        return;
->> +
->> +    dev = local->hw.wiphy->dev.parent;
->> +
->> +    get_ranges_from_chandef(chandef, &ranges_in);
->> +
->> +    acpi_amd_wbrf_add_exclusion(dev, &ranges_in);
->> +}
->> +
->> +void ieee80211_remove_wbrf(struct ieee80211_local *local,
->> +               struct cfg80211_chan_def *chandef)
->> +{
->> +    struct wbrf_ranges_in_out ranges_in = {0};
->> +    struct device *dev;
->> +
->> +    if (!local->wbrf_supported)
->> +        return;
->> +
->> +    dev = local->hw.wiphy->dev.parent;
->> +
->> +    get_ranges_from_chandef(chandef, &ranges_in);
->> +
->> +    acpi_amd_wbrf_remove_exclusion(dev, &ranges_in);
->> +}
-> 
+> +						   sizeof(*cmd)));
+> +	cmd->pdev_id = cpu_to_le32(WMI_PDEV_ID_SOC);
+> +	cmd->geo_len = cpu_to_le32(ATH12K_ACPI_BIOS_SAR_GEO_OFFSET_LEN);
+> +
+> +	buf_ptr = skb->data + sizeof(*cmd);
+> +	tlv = (struct wmi_tlv *)buf_ptr;
+> +	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_BYTE, sar_geo_len_aligned);
+> +	buf_ptr += TLV_HDR_SIZE;
+> +	memcpy(buf_ptr, pgeo_value, ATH12K_ACPI_BIOS_SAR_GEO_OFFSET_LEN);
+> +
+> +	ret = ath12k_wmi_cmd_send(&wmi_ab->wmi[0], skb, WMI_PDEV_SET_BIOS_GEO_TABLE_CMDID);
+> +	if (ret) {
+> +		ath12k_warn(ab, "failed to send WMI_PDEV_SET_BIOS_GEO_TABLE_CMDID %d\n", ret);
+> +		dev_kfree_skb(skb);
+> +	}
+> +
+> +	return ret;
+> +}
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+> index 38bbf59fc6b7..8a774655fe9f 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.h
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.h
+> @@ -361,6 +361,8 @@ enum wmi_tlv_cmd_id {
+>   	WMI_PDEV_DMA_RING_CFG_REQ_CMDID,
+>   	WMI_PDEV_HE_TB_ACTION_FRM_CMDID,
+>   	WMI_PDEV_PKTLOG_FILTER_CMDID,
+> +	WMI_PDEV_SET_BIOS_SAR_TABLE_CMDID = 0x4044,
+> +	WMI_PDEV_SET_BIOS_GEO_TABLE_CMDID = 0x4045,
+>   	WMI_PDEV_SET_BIOS_INTERFACE_CMDID = 0x404A,
+>   	WMI_VDEV_CREATE_CMDID = WMI_TLV_CMD(WMI_GRP_VDEV),
+>   	WMI_VDEV_DELETE_CMDID,
+> @@ -1932,6 +1934,8 @@ enum wmi_tlv_tag {
+>   	WMI_TAG_REGULATORY_RULE_EXT_STRUCT = 0x3A9,
+>   	WMI_TAG_REG_CHAN_LIST_CC_EXT_EVENT,
+>   	WMI_TAG_EHT_RATE_SET = 0x3C4,
+> +	WMI_TAG_PDEV_SET_BIOS_SAR_TABLE_CMD_PARAMS = 0x3D8,
+> +	WMI_TAG_PDEV_SET_BIOS_GEO_TABLE_CMD_PARAMS = 0x3D9,
+>   	WMI_TAG_PDEV_SET_BIOS_INTERFACE_CMD_PARAMS = 0x3FB,
+>   	WMI_TAG_MAX
+>   };
+> @@ -4806,6 +4810,19 @@ enum bios_param_type {
+>   	WMI_BIOS_PARAM_TYPE_MAX,
+>   };
+>   
+> +struct wmi_pdev_set_bios_sar_table_cmd {
+> +	__le32 tlv_header;
+> +	__le32 pdev_id;
+> +	__le32 sar_len;
+> +	__le32 dbs_backoff_len;
+> +} __packed;
+> +
+> +struct wmi_pdev_set_bios_geo_table_cmd {
+> +	__le32 tlv_header;
+> +	__le32 pdev_id;
+> +	__le32 geo_len;
+> +} __packed;
+> +
+>   #define ATH12K_FW_STATS_BUF_SIZE (1024 * 1024)
+>   
+>   void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
+> @@ -4931,4 +4948,8 @@ int ath12k_wmi_pdev_set_tas_cfg_table_param(struct ath12k_base *ab,
+>   					    const u8 *ptas_cfg);
+>   int ath12k_wmi_pdev_set_tas_data_table_param(struct ath12k_base *ab,
+>   					     const u8 *ptas_data);
+> +int ath12k_wmi_pdev_set_bios_sar_table_param(struct ath12k_base *ab,
+> +					     u8 *psar_table);
+> +int ath12k_wmi_pdev_set_bios_geo_table_param(struct ath12k_base *ab,
+> +					     u8 *pgeo_table);
+>   #endif
 
