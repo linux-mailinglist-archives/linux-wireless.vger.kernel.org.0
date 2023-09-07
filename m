@@ -2,461 +2,223 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F6D17976C7
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Sep 2023 18:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55D43797AD3
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Sep 2023 19:50:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237699AbjIGQQ2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Sep 2023 12:16:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36904 "EHLO
+        id S240692AbjIGRuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Sep 2023 13:50:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239586AbjIGQQA (ORCPT
+        with ESMTP id S234912AbjIGRuP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Sep 2023 12:16:00 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 804C99ED4
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 09:14:25 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 387C4C5q027023;
-        Thu, 7 Sep 2023 16:13:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=HFqo0ej5abGoQJTZpWZL5b1e1gaxt37JhZB+srh9uPk=;
- b=fQzsH5pnkfm9ZUkbmLBDz4T71aZMXJmFa4Y26IiX3OT59UAd3O4W4rPz2JS23vQJpxrD
- xdlsVkUOUQ2txL4vZwghhc9MOxcz9hCjrbhPH66S2e59iuc29V7eK1R+h03VbvnLv+Hy
- hbASXlVj+tETSWjo6eX0117Q3xwbffS03HRB8GTe9Cn/MJ/GRK+hzKFQ9DRFT/Y7gOMC
- 0xhaX/oAAZK3no5lYY9NaaSh88K5tgT6/0fqkrq+koJY1kuIGLw5bfkloq2ABW9aUQkx
- lYq+HiYbxZWfXlD7W71QLmiETQ3DP+CAmOoewNHFGWsy6zlTacWOxT1nNhkkQGODcXw6 Aw== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sxqha3hwb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 07 Sep 2023 16:13:00 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 387GCVt6013242
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 7 Sep 2023 16:12:31 GMT
-Received: from [10.111.180.119] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 7 Sep
- 2023 09:12:30 -0700
-Message-ID: <d93aa6f3-e6a2-47d8-a4c4-55994ed79b12@quicinc.com>
-Date:   Thu, 7 Sep 2023 09:12:29 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath12k: add support for hardware rfkill for
- WCN7850
+        Thu, 7 Sep 2023 13:50:15 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2682133
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 10:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1694108992; x=1725644992;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=Go1uEwOSwEu8HwadXnApTBjc0WZnXT2nT+MDhG1O3og=;
+  b=Rb4OM4Qd24mFeDLBe0d1ngLxiO/+584eXVV2fqLpRIL6ljN+5TDF8Htr
+   V/sZBTUtqR1p+5yBzz21Io4Q0utluHnA84mw2GIgbcXAFO0A4NnqPZefe
+   JHjCkiyHGaeanOb2JiN1HAwPlbI3Jjw0bQ6/Nnnrn8qHf0baoNipzVuI4
+   JKPjvzeudwo04PKNINzGQj4tZsCsl4lEYprut+j9ib3ytzGStJ2k0vo33
+   LBhIfT5sihey6fVK1dN4ZsTc6bRugNRdTZOs1JXE3YPMlhzds2Z+IbRMW
+   SNzBXWC4FYQT6KS5EtwIJg4wV/ByUdkrnenhfWFq/5v831UhZea8Y77zY
+   A==;
+X-CSE-ConnectionGUID: 2ciiRttiTXKiKJj5P8oZrg==
+X-CSE-MsgGUID: LJnGp1biQqyu6SQ/5LMPqw==
+X-ThreatScanner-Verdict: Negative
+X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
+   d="scan'208";a="3477518"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Sep 2023 10:08:57 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Thu, 7 Sep 2023 10:08:56 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Thu, 7 Sep 2023 10:08:56 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Adz18sjNM6KxoDMP8IUY8dAsoOVLnSKE0mCDXm1dtTMi6ET5YutMJuY3OV+1KZyLJWwTp3CvMJ4NlKowCDmqCYfQ3NLS26mHLDv6dhDyAa8EYP1B2wNrkkA9eHzCl5bowKGeNufNo+Mk6KyW01qzqzOOkjakx+zVqgGpYTVAREeHFRvGInJoLh0SadwY6J7eqvWeWTdfiu3Kmb6/KHinbSfyO0L853PJdr0PSaSAgiwgD+fUGBOK7iupNSKfMAHvcdsrU39NZg6FkV9r1Z9Zn24qGZESFQ30AT/zNQ2mtX/+x/PY6zSil0bb5IYJCAXY+gtADceaqCL+F7Ji7AGLUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K2NoFgKl9Y7xJhIkeS3MzmuGrEWuccq/x6WJGZ5Q6Qs=;
+ b=WHCgCk4gMzKcxrCI8hE+ydopu51jdpjitoXHMdjW5HBMWtvuYXfitNh3viZAwvt5JzOcvgzJr+NdP4z4W8n83BOzIzsuvHwly7x4aHZwqdZQ1059ghpJ8FI1HPMeBc4WewsE5hblqQt/bYmXbNYn1pHutyIgyewzPgWpn48LNLruvMz0hcu3S/sK/RRxrpdhIIdvZi6XCsfSld7W5ReZvXeDDvIun5lByNima4xcKz414fihUSfi/68NbTRimputsOtD/FM59LB7wdEWoqMrLzhZv2H09TlI+yUyf7gH+leyBBnhBYp8UbALR+oRurAFJU2VGb8BL35pvpN7k1TClA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K2NoFgKl9Y7xJhIkeS3MzmuGrEWuccq/x6WJGZ5Q6Qs=;
+ b=KC5CqrpUNyu9hTd/fQvXn4fR5Wo6wuAb2XuUzwKsrlaQHp+jWRgjEV1QVftXJ+oYwXKn3i7+onf77bLGPqB1SeaspWe+b9F9LlSyQQWrE9QhDrqhSuMtnAbErnq4YliCO5dq6bTxoksW8/7KXPPihX14n1aP1Jpcf/zWQCAFG0M=
+Received: from DM4PR11MB6336.namprd11.prod.outlook.com (2603:10b6:8:b9::7) by
+ DS7PR11MB6198.namprd11.prod.outlook.com (2603:10b6:8:9a::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6745.34; Thu, 7 Sep 2023 17:08:53 +0000
+Received: from DM4PR11MB6336.namprd11.prod.outlook.com
+ ([fe80::b62f:9d90:a95:7d2]) by DM4PR11MB6336.namprd11.prod.outlook.com
+ ([fe80::b62f:9d90:a95:7d2%3]) with mapi id 15.20.6745.034; Thu, 7 Sep 2023
+ 17:08:53 +0000
+From:   <Prasurjya.Rohansaikia@microchip.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <Ajay.Kathat@microchip.com>, <claudiu.beznea@microchip.com>
+Subject: [PATCH v3] wifi: wilc1000: Added back-off algorithm to balance tx
+ queue packets.
+Thread-Topic: [PATCH v3] wifi: wilc1000: Added back-off algorithm to balance
+ tx queue packets.
+Thread-Index: AQHZ4a36H8g8Ibgqk0++EZxK8R8Jfw==
+Date:   Thu, 7 Sep 2023 17:08:53 +0000
+Message-ID: <20230907170851.178834-1-prasurjya.rohansaikia@microchip.com>
+Accept-Language: en-US
 Content-Language: en-US
-To:     Lingbo Kong <quic_lingbok@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230906110412.182176-1-quic_lingbok@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230906110412.182176-1-quic_lingbok@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: DGHfJuRztFBjp-TZOZag_SlmHxjrwxL9
-X-Proofpoint-GUID: DGHfJuRztFBjp-TZOZag_SlmHxjrwxL9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-07_08,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- impostorscore=0 adultscore=0 phishscore=0 suspectscore=0
- priorityscore=1501 clxscore=1015 lowpriorityscore=0 mlxscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309070144
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6336:EE_|DS7PR11MB6198:EE_
+x-ms-office365-filtering-correlation-id: ccd0ea1d-6389-495d-639e-08dbafc51d4d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: getnzcTOb9QIQcb5zZFj5tjla4lemDaiFjYTlS/VZ+E9PADZ5lZtoLVQBwKgbzokhbSrKbnNh944+hus/unZosDjrgzmJ3Zv0qx8wgPYM6OD2ErXrDBerqhFtinumqwyP5+kzPAMOBnFq0/tpRKtU7LIBhhv0DfyDH8wFiKvFr6ZsIU/hnn+HO/lAzMvbc6Ye2qPUqbDpYgg0QcudtVzFV3HpOVgh0Zqe+V6qmZIMEvqTjEtNSPAX1Hf0y20nyVHeeIYY1fLLW0xVW3KNkgTPuLirYXXdKQ4R00utX82ZJOVTvD9MMDoCqvG8wbPUmejS1sLvPHoYd6GtuG4u6br0LfCHB9+1oH41s2HMNHGhCK77JCp0hXOdDsQxzvW9VwHMWh2dAf7/fuoHkZ4WC1eZeXrBs7RlabJurmwEJkNdh8A/iOI65AWczGR4zyruTzjL1FDeZUzLHAIZ6Rc16GYP6o3dRndebgx9sx0P8Kl/1dbFBKaS7fOjMjbOJn3Ce4Mwwl4D3qfAsNYPqbCYMlM8z1W2gPJoRarAM2fJhpAYsmYei4rj2VZi/W/WNAghc0IFFNC/8ov1aDmajyySMCxsoTY2+Qh/GUrxhoKrLd2gdh4OHspfGGmUTFiPPrSLxI3
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6336.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(346002)(396003)(136003)(366004)(39860400002)(451199024)(186009)(1800799009)(6486002)(71200400001)(6506007)(6512007)(83380400001)(2616005)(26005)(2906002)(107886003)(91956017)(76116006)(54906003)(316002)(66446008)(6916009)(64756008)(66946007)(8936002)(8676002)(66556008)(66476007)(5660300002)(4326008)(478600001)(38100700002)(1076003)(38070700005)(36756003)(86362001)(122000001)(41300700001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?cnkLWlDNbOjz30pArsm0H4fgq6hKvyfK24QevVTOL5NgaTjWwyzAuNJWRB?=
+ =?iso-8859-1?Q?V3kzvys53C9QvI/vvwBNC238gOTZc3a4TxTAE5ym1xskN2nTEm9Cobhgee?=
+ =?iso-8859-1?Q?nAtS+4Ekb0jYgHuPOcRPn4Dx3JTyJL5667zlwrouQ1ElxJaBbK3GX+vabI?=
+ =?iso-8859-1?Q?OlZuzhxBsVrdiLI3W+CLIYjRebfv9V45CfmXSOnpTtx1z7JcXwfxkFp0JS?=
+ =?iso-8859-1?Q?6s38idT7i9ee5K+RrOz2vurMvsogQ+4q11ZO5QS2+uMZMdk1gdEoIyyDaz?=
+ =?iso-8859-1?Q?Oj0dtlz2oIjPNOckbOO4YIzcQXwzjRcpQsExXjgTUTq/zJ6FGyVxlme3hL?=
+ =?iso-8859-1?Q?taPPadixyzeI/c908lskG8PvrPfgEekuy9iWbNOi4uBfb/pPh/pYZXEPDd?=
+ =?iso-8859-1?Q?b6Thq3ZAmR9qU8krxONYu9UWb6c3Ovz4JKT/d6xdolL/uijuS+4kkBb5cg?=
+ =?iso-8859-1?Q?PemNqoFYDmAaKQ5DKMthsHRBiCBEyZwewbfj3b8WqyOb1B0wkWKt1pfQtn?=
+ =?iso-8859-1?Q?VrWuIdBqsE2Q8wqAQOKwdpxNSvsvQhdoeoze7K8r9kIz6RnGRelJtNlkXI?=
+ =?iso-8859-1?Q?t0jPKx6XlpY2I4L9H2WVZBX14Wo6mtPIs+LIwAB78jRWE+sJjmmkUiK491?=
+ =?iso-8859-1?Q?qJTXGtvZw3e2P5LRuUvImp5CooR247K25N2iPdSrr5PwUYCFSvsU1EANo0?=
+ =?iso-8859-1?Q?bCHXEyKsKeR75UEdpMh0B6D2XWfJycPx8hEyi9UeBfgD2LftiUiPrlKSZG?=
+ =?iso-8859-1?Q?ia/JLFH7LU0K/gwckzF4SpIpUJDfnAYLax2Tsz0crupt1iIvZz6HMUSRgT?=
+ =?iso-8859-1?Q?J7foW0XSQ8GbS8b7OuzC11pEyFJWlpaTsUY0jHDxjbiKhAzjUlFn1GD9c5?=
+ =?iso-8859-1?Q?d/rCf0l7gufB/bBMsUmxUGAykFeQea13fIVcTlp3V9qCB5Mbzwjq8OLufY?=
+ =?iso-8859-1?Q?uNKjU3Xpk+1uiW5VpYWxW0bnWU/ykPi/oCjk3F88XpTIMX/WBXDlnP57y3?=
+ =?iso-8859-1?Q?gwX3c5bNNdSgNbsZwOreWfM5zBHYwHLKE/AWc4QZtcFqDtchEPLczHMcEv?=
+ =?iso-8859-1?Q?IBiKwtNo1pwn6Ke59yj/GVRj+pdWK+u1GhUmpTjy8yf1YkhwdnbxV1DZ5S?=
+ =?iso-8859-1?Q?GM+yPj+OGRnsVpywfujpOex//4Pl2ecUyzJ6p7JR14eIMDHZnKGM8S9XKg?=
+ =?iso-8859-1?Q?Fmt9Vep3iA3mcd7r1FUo2/d+4Pvvx6Xa7YXq+k5tcq4GUSuB5MRqpRJQlk?=
+ =?iso-8859-1?Q?UpRiPidrO2jpyK/qqyYUe/Z1+ApJSZs12r+6cpIPSoGhRsFCfuonQ0ZOmw?=
+ =?iso-8859-1?Q?UKFVuHIVAkrHJnIFPhTuObujPujs98mNs++NJsARkk1POQ1o8gTcJZm3e2?=
+ =?iso-8859-1?Q?MxaqmnKDem8btlZYYjQpwL136n1ruaCuEeyi9YdrpkdAS4/F5/sLZ7iz3r?=
+ =?iso-8859-1?Q?HZ6RgntOE43rdNKBAsEgOM8JGNykC75JQRNOPbYh/ZoPDTeBmOYFD1Q9Xt?=
+ =?iso-8859-1?Q?TxVJ7nulM3W8cAXIjpFfKfjJMqO1cotDeNYdgOt8VaHLVa+Zny775jw0Wq?=
+ =?iso-8859-1?Q?gaLunzQAuRVr1FJKt9GG8s07ogd1nTYfpPYrY3mtI2yUAGzkCG5JNVdFyq?=
+ =?iso-8859-1?Q?oHAHcI97pJA8/eioWB7c0acSDmdRNTr0S6xb3Py0jU5fVCbGILZ18tZ1Te?=
+ =?iso-8859-1?Q?+PlCh8cD9n/J4P5V4c4=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6336.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ccd0ea1d-6389-495d-639e-08dbafc51d4d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2023 17:08:53.7553
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: yOu0oN75EztOVP5Obj07yQtKzsh346foGfwkLNCmQNk2Rk3mSWZcOADGkFI+RqwljXYh27FNy61AB/fJGnpT2YfXYK+S5n7LRldKzib6lYxQpOKO6a1giSy7ezb5F+Zj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6198
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/6/2023 4:04 AM, Lingbo Kong wrote:
-> When hardware rfkill is enabled in the firmware, it will report the
-> capability using WMI_SYS_CAP_INFO_RFKILL bit in the WMI_SERVICE_READY event
-> to the host. Currently ath12k does not process this service capability. In
-> order to support this, update ath12k to check if the capability is enabled,
-> if so, send the GPIO information to firmware. When the firmware detects
-> hardware rfkill is enabled by the user, it will report it using
-> WMI_RFKILL_STATE_CHANGE_EVENTID. When ath12k receive the event, it will set
-> the value of rfkill_radio_on based on whether radio_state is equal to
-> WMI_RFKILL_RADIO_STATE_ON, then send WMI_PDEV_PARAM_RFKILL_ENABLE to
-> firmware.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+From: Prasurjya Rohan Saikia <prasurjya.rohansaikia@microchip.com>
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Added an algorithm to backoff the Tx Task when low memory scenario is
+triggered at firmware. During high data transfer from host, the firmware
+runs out of VMM memory, which is used to hold the frames from the host.
+So added flow control to delay the transmit from host side when there is
+not enough space to accomodate frames in firmware side.
 
-> ---
-> v2:
-> 1.s/via//
-> 2.modify commit log
-> 3.use an endian-conversion macro
-> 
->   drivers/net/wireless/ath/ath12k/core.c | 52 +++++++++++++++++++++++
->   drivers/net/wireless/ath/ath12k/core.h |  4 ++
->   drivers/net/wireless/ath/ath12k/hw.c   | 12 ++++++
->   drivers/net/wireless/ath/ath12k/hw.h   |  4 ++
->   drivers/net/wireless/ath/ath12k/mac.c  | 58 ++++++++++++++++++++++++++
->   drivers/net/wireless/ath/ath12k/mac.h  |  2 +
->   drivers/net/wireless/ath/ath12k/wmi.c  | 39 +++++++++++++++++
->   drivers/net/wireless/ath/ath12k/wmi.h  | 25 +++++++++++
->   8 files changed, 196 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-> index 39f938fafa81..c6fb1e435d86 100644
-> --- a/drivers/net/wireless/ath/ath12k/core.c
-> +++ b/drivers/net/wireless/ath/ath12k/core.c
-> @@ -19,6 +19,27 @@ unsigned int ath12k_debug_mask;
->   module_param_named(debug_mask, ath12k_debug_mask, uint, 0644);
->   MODULE_PARM_DESC(debug_mask, "Debugging mask");
->   
-> +static int ath12k_core_rfkill_config(struct ath12k_base *ab)
-> +{
-> +	struct ath12k *ar;
-> +	int ret = 0, i;
-> +
-> +	if (!(ab->target_caps.sys_cap_info & WMI_SYS_CAP_INFO_RFKILL))
-> +		return 0;
-> +
-> +	for (i = 0; i < ab->num_radios; i++) {
-> +		ar = ab->pdevs[i].ar;
-> +
-> +		ret = ath12k_mac_rfkill_config(ar);
-> +		if (ret && ret != -EOPNOTSUPP) {
-> +			ath12k_warn(ab, "failed to configure rfkill: %d", ret);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->   int ath12k_core_suspend(struct ath12k_base *ab)
->   {
->   	int ret;
-> @@ -603,6 +624,13 @@ int ath12k_core_qmi_firmware_ready(struct ath12k_base *ab)
->   		goto err_core_stop;
->   	}
->   	ath12k_hif_irq_enable(ab);
-> +
-> +	ret = ath12k_core_rfkill_config(ab);
-> +	if (ret && ret != -EOPNOTSUPP) {
-> +		ath12k_err(ab, "failed to config rfkill: %d\n", ret);
-> +		goto err_core_stop;
-> +	}
-> +
->   	mutex_unlock(&ab->core_lock);
->   
->   	return 0;
-> @@ -655,6 +683,27 @@ static int ath12k_core_reconfigure_on_crash(struct ath12k_base *ab)
->   	return ret;
->   }
->   
-> +static void ath12k_rfkill_work(struct work_struct *work)
-> +{
-> +	struct ath12k_base *ab = container_of(work, struct ath12k_base, rfkill_work);
-> +	struct ath12k *ar;
-> +	bool rfkill_radio_on;
-> +	int i;
-> +
-> +	spin_lock_bh(&ab->base_lock);
-> +	rfkill_radio_on = ab->rfkill_radio_on;
-> +	spin_unlock_bh(&ab->base_lock);
-> +
-> +	for (i = 0; i < ab->num_radios; i++) {
-> +		ar = ab->pdevs[i].ar;
-> +		if (!ar)
-> +			continue;
-> +
-> +		ath12k_mac_rfkill_enable_radio(ar, rfkill_radio_on);
-> +		wiphy_rfkill_set_hw_state(ar->hw->wiphy, !rfkill_radio_on);
-> +	}
-> +}
-> +
->   void ath12k_core_halt(struct ath12k *ar)
->   {
->   	struct ath12k_base *ab = ar->ab;
-> @@ -668,6 +717,7 @@ void ath12k_core_halt(struct ath12k *ar)
->   	ath12k_mac_peer_cleanup_all(ar);
->   	cancel_delayed_work_sync(&ar->scan.timeout);
->   	cancel_work_sync(&ar->regd_update_work);
-> +	cancel_work_sync(&ab->rfkill_work);
->   
->   	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx], NULL);
->   	synchronize_rcu();
-> @@ -921,6 +971,8 @@ struct ath12k_base *ath12k_core_alloc(struct device *dev, size_t priv_size,
->   	init_waitqueue_head(&ab->wmi_ab.tx_credits_wq);
->   	INIT_WORK(&ab->restart_work, ath12k_core_restart);
->   	INIT_WORK(&ab->reset_work, ath12k_core_reset);
-> +	INIT_WORK(&ab->rfkill_work, ath12k_rfkill_work);
-> +
->   	timer_setup(&ab->rx_replenish_retry, ath12k_ce_rx_replenish_retry, 0);
->   	init_completion(&ab->htc_suspend);
->   
-> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-> index d873b573dac6..3f5f0471f640 100644
-> --- a/drivers/net/wireless/ath/ath12k/core.h
-> +++ b/drivers/net/wireless/ath/ath12k/core.h
-> @@ -771,6 +771,10 @@ struct ath12k_base {
->   	u64 fw_soc_drop_count;
->   	bool static_window_map;
->   
-> +	struct work_struct rfkill_work;
-> +	/* true means radio is on */
-> +	bool rfkill_radio_on;
-> +
->   	/* must be last */
->   	u8 drv_priv[] __aligned(sizeof(void *));
->   };
-> diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-> index 5991cc91cd00..f69649f58e82 100644
-> --- a/drivers/net/wireless/ath/ath12k/hw.c
-> +++ b/drivers/net/wireless/ath/ath12k/hw.c
-> @@ -907,6 +907,10 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
->   		.hal_ops = &hal_qcn9274_ops,
->   
->   		.qmi_cnss_feature_bitmap = BIT(CNSS_QDSS_CFG_MISS_V01),
-> +
-> +		.rfkill_pin = 0,
-> +		.rfkill_cfg = 0,
-> +		.rfkill_on_level = 0,
->   	},
->   	{
->   		.name = "wcn7850 hw2.0",
-> @@ -964,6 +968,10 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
->   
->   		.qmi_cnss_feature_bitmap = BIT(CNSS_QDSS_CFG_MISS_V01) |
->   					   BIT(CNSS_PCIE_PERST_NO_PULL_V01),
-> +
-> +		.rfkill_pin = 48,
-> +		.rfkill_cfg = 0,
-> +		.rfkill_on_level = 1,
->   	},
->   	{
->   		.name = "qcn9274 hw2.0",
-> @@ -1019,6 +1027,10 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
->   		.hal_ops = &hal_qcn9274_ops,
->   
->   		.qmi_cnss_feature_bitmap = BIT(CNSS_QDSS_CFG_MISS_V01),
-> +
-> +		.rfkill_pin = 0,
-> +		.rfkill_cfg = 0,
-> +		.rfkill_on_level = 0,
->   	},
->   };
->   
-> diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-> index e6c4223c283c..1b4912bf57ad 100644
-> --- a/drivers/net/wireless/ath/ath12k/hw.h
-> +++ b/drivers/net/wireless/ath/ath12k/hw.h
-> @@ -186,6 +186,10 @@ struct ath12k_hw_params {
->   	const struct hal_ops *hal_ops;
->   
->   	u64 qmi_cnss_feature_bitmap;
-> +
-> +	u32 rfkill_pin;
-> +	u32 rfkill_cfg;
-> +	u32 rfkill_on_level;
->   };
->   
->   struct ath12k_hw_ops {
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 8cc9ae2204b8..bfba9ad18776 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -5108,6 +5108,63 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
->   	return ret;
->   }
->   
-> +int ath12k_mac_rfkill_config(struct ath12k *ar)
-> +{
-> +	struct ath12k_base *ab = ar->ab;
-> +	u32 param;
-> +	int ret;
-> +
-> +	if (ab->hw_params->rfkill_pin == 0)
-> +		return -EOPNOTSUPP;
-> +
-> +	ath12k_dbg(ab, ATH12K_DBG_MAC,
-> +		   "mac rfkill_pin %d rfkill_cfg %d rfkill_on_level %d",
-> +		   ab->hw_params->rfkill_pin, ab->hw_params->rfkill_cfg,
-> +		   ab->hw_params->rfkill_on_level);
-> +
-> +	param = u32_encode_bits(ab->hw_params->rfkill_on_level,
-> +				WMI_RFKILL_CFG_RADIO_LEVEL) |
-> +		u32_encode_bits(ab->hw_params->rfkill_pin,
-> +				WMI_RFKILL_CFG_GPIO_PIN_NUM) |
-> +		u32_encode_bits(ab->hw_params->rfkill_cfg,
-> +				WMI_RFKILL_CFG_PIN_AS_GPIO);
-> +
-> +	ret = ath12k_wmi_pdev_set_param(ar, WMI_PDEV_PARAM_HW_RFKILL_CONFIG,
-> +					param, ar->pdev->pdev_id);
-> +	if (ret) {
-> +		ath12k_warn(ab,
-> +			    "failed to set rfkill config 0x%x: %d\n",
-> +			    param, ret);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +int ath12k_mac_rfkill_enable_radio(struct ath12k *ar, bool enable)
-> +{
-> +	enum wmi_rfkill_enable_radio param;
-> +	int ret;
-> +
-> +	if (enable)
-> +		param = WMI_RFKILL_ENABLE_RADIO_ON;
-> +	else
-> +		param = WMI_RFKILL_ENABLE_RADIO_OFF;
-> +
-> +	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac %d rfkill enable %d",
-> +		   ar->pdev_idx, param);
-> +
-> +	ret = ath12k_wmi_pdev_set_param(ar, WMI_PDEV_PARAM_RFKILL_ENABLE,
-> +					param, ar->pdev->pdev_id);
-> +	if (ret) {
-> +		ath12k_warn(ar->ab, "failed to set rfkill enable param %d: %d\n",
-> +			    param, ret);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->   static void ath12k_mac_op_stop(struct ieee80211_hw *hw)
->   {
->   	struct ath12k *ar = hw->priv;
-> @@ -5128,6 +5185,7 @@ static void ath12k_mac_op_stop(struct ieee80211_hw *hw)
->   
->   	cancel_delayed_work_sync(&ar->scan.timeout);
->   	cancel_work_sync(&ar->regd_update_work);
-> +	cancel_work_sync(&ar->ab->rfkill_work);
->   
->   	spin_lock_bh(&ar->data_lock);
->   	list_for_each_entry_safe(ppdu_stats, tmp, &ar->ppdu_stats_info, list) {
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
-> index 7b16b70df4fa..59b4e8f5eee0 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.h
-> +++ b/drivers/net/wireless/ath/ath12k/mac.h
-> @@ -73,4 +73,6 @@ int ath12k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx);
->   enum rate_info_bw ath12k_mac_bw_to_mac80211_bw(enum ath12k_supported_bw bw);
->   enum ath12k_supported_bw ath12k_mac_mac80211_bw_to_ath12k_bw(enum rate_info_bw bw);
->   enum hal_encrypt_type ath12k_dp_tx_get_encrypt_type(u32 cipher);
-> +int ath12k_mac_rfkill_enable_radio(struct ath12k *ar, bool enable);
-> +int ath12k_mac_rfkill_config(struct ath12k *ar);
->   #endif
-> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-> index f48ab69e256a..5bd357ea8a75 100644
-> --- a/drivers/net/wireless/ath/ath12k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
-> @@ -152,6 +152,8 @@ static const struct ath12k_wmi_tlv_policy ath12k_wmi_tlv_policies[] = {
->   		.min_len = sizeof(struct wmi_service_available_event) },
->   	[WMI_TAG_PEER_ASSOC_CONF_EVENT] = {
->   		.min_len = sizeof(struct wmi_peer_assoc_conf_event) },
-> +	[WMI_TAG_RFKILL_EVENT] = {
-> +		.min_len = sizeof(struct wmi_rfkill_state_change_event) },
->   	[WMI_TAG_PDEV_CTL_FAILSAFE_CHECK_EVENT] = {
->   		.min_len = sizeof(struct wmi_pdev_ctl_failsafe_chk_event) },
->   	[WMI_TAG_HOST_SWFDA_EVENT] = {
-> @@ -6602,6 +6604,40 @@ static void ath12k_probe_resp_tx_status_event(struct ath12k_base *ab,
->   	kfree(tb);
->   }
->   
-> +static void ath12k_rfkill_state_change_event(struct ath12k_base *ab,
-> +					     struct sk_buff *skb)
-> +{
-> +	const struct wmi_rfkill_state_change_event *ev;
-> +	const void **tb;
-> +	int ret;
-> +
-> +	tb = ath12k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-> +	if (IS_ERR(tb)) {
-> +		ret = PTR_ERR(tb);
-> +		ath12k_warn(ab, "failed to parse tlv: %d\n", ret);
-> +		return;
-> +	}
-> +
-> +	ev = tb[WMI_TAG_RFKILL_EVENT];
-> +	if (!ev) {
-> +		kfree(tb);
-> +		return;
-> +	}
-> +
-> +	ath12k_dbg(ab, ATH12K_DBG_MAC,
-> +		   "wmi tlv rfkill state change gpio %d type %d radio_state %d\n",
-> +		   le32_to_cpu(ev->gpio_pin_num),
-> +		   le32_to_cpu(ev->int_type),
-> +		   le32_to_cpu(ev->radio_state));
-> +
-> +	spin_lock_bh(&ab->base_lock);
-> +	ab->rfkill_radio_on = (ev->radio_state == cpu_to_le32(WMI_RFKILL_RADIO_STATE_ON));
-> +	spin_unlock_bh(&ab->base_lock);
-> +
-> +	queue_work(ab->workqueue, &ab->rfkill_work);
-> +	kfree(tb);
-> +}
-> +
->   static void ath12k_wmi_op_rx(struct ath12k_base *ab, struct sk_buff *skb)
->   {
->   	struct wmi_cmd_hdr *cmd_hdr;
-> @@ -6694,6 +6730,9 @@ static void ath12k_wmi_op_rx(struct ath12k_base *ab, struct sk_buff *skb)
->   	case WMI_OFFLOAD_PROB_RESP_TX_STATUS_EVENTID:
->   		ath12k_probe_resp_tx_status_event(ab, skb);
->   		break;
-> +	case WMI_RFKILL_STATE_CHANGE_EVENTID:
-> +		ath12k_rfkill_state_change_event(ab, skb);
-> +		break;
->   	/* add Unsupported events here */
->   	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
->   	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
-> diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-> index c75a6fa1f7e0..965755b4cbfd 100644
-> --- a/drivers/net/wireless/ath/ath12k/wmi.h
-> +++ b/drivers/net/wireless/ath/ath12k/wmi.h
-> @@ -4793,6 +4793,31 @@ struct ath12k_wmi_base {
->   
->   #define ATH12K_FW_STATS_BUF_SIZE (1024 * 1024)
->   
-> +enum wmi_sys_cap_info_flags {
-> +	WMI_SYS_CAP_INFO_RXTX_LED	= BIT(0),
-> +	WMI_SYS_CAP_INFO_RFKILL		= BIT(1),
-> +};
-> +
-> +#define WMI_RFKILL_CFG_GPIO_PIN_NUM		GENMASK(5, 0)
-> +#define WMI_RFKILL_CFG_RADIO_LEVEL		BIT(6)
-> +#define WMI_RFKILL_CFG_PIN_AS_GPIO		GENMASK(10, 7)
-> +
-> +enum wmi_rfkill_enable_radio {
-> +	WMI_RFKILL_ENABLE_RADIO_ON	= 0,
-> +	WMI_RFKILL_ENABLE_RADIO_OFF	= 1,
-> +};
-> +
-> +enum wmi_rfkill_radio_state {
-> +	WMI_RFKILL_RADIO_STATE_OFF	= 1,
-> +	WMI_RFKILL_RADIO_STATE_ON	= 2,
-> +};
-> +
-> +struct wmi_rfkill_state_change_event {
-> +	__le32 gpio_pin_num;
-> +	__le32 int_type;
-> +	__le32 radio_state;
-> +} __packed;
-> +
->   void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
->   			     struct ath12k_wmi_resource_config_arg *config);
->   void ath12k_wmi_init_wcn7850(struct ath12k_base *ab,
-> 
-> base-commit: 1b5b69a51bb4909844e4003920af09ca1cc6bb0e
+Signed-off-by: Prasurjya Rohan Saikia <prasurjya.rohansaikia@microchip.com>
+---
+v1 -> v2: Removed the unused `timeout` variable.
+v2 -> v3: Replaced schedule_timeout() by schedule_timeout_interruptible().
+---
+ .../net/wireless/microchip/wilc1000/netdev.c  | 21 +++++++++++++++----
+ .../net/wireless/microchip/wilc1000/netdev.h  |  2 ++
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net=
+/wireless/microchip/wilc1000/netdev.c
+index e9f59de31b0b..f6bec17bfd0f 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+@@ -148,8 +148,8 @@ static int wilc_txq_task(void *vp)
+=20
+ 	complete(&wl->txq_thread_started);
+ 	while (1) {
+-		wait_for_completion(&wl->txq_event);
+-
++		if (wait_for_completion_interruptible(&wl->txq_event))
++			continue;
+ 		if (wl->close) {
+ 			complete(&wl->txq_thread_started);
+=20
+@@ -166,12 +166,25 @@ static int wilc_txq_task(void *vp)
+ 				srcu_idx =3D srcu_read_lock(&wl->srcu);
+ 				list_for_each_entry_rcu(ifc, &wl->vif_list,
+ 							list) {
+-					if (ifc->mac_opened && ifc->ndev)
++					if (ifc->mac_opened &&
++					    netif_queue_stopped(ifc->ndev))
+ 						netif_wake_queue(ifc->ndev);
+ 				}
+ 				srcu_read_unlock(&wl->srcu, srcu_idx);
+ 			}
+-		} while (ret =3D=3D WILC_VMM_ENTRY_FULL_RETRY && !wl->close);
++			if (ret !=3D WILC_VMM_ENTRY_FULL_RETRY)
++				break;
++			/* Back off TX task from sending packets for some time.
++			 * schedule_timeout_interruptible will allow RX task
++			 * to run and free buffers. TX task will be in
++			 * TASK_INTERRUPTIBLE state which will put the thread
++			 * back to CPU running queue when it's signaled even
++			 * if the timeout isn't elapsed. This gives faster chance
++			 * for reserved SK buffers to be freed
++			 */
++			schedule_timeout_interruptible(msecs_to_jiffies
++						       (TX_BACKOFF_WEIGHT_MS));
++		} while (!wl->close);
+ 	}
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net=
+/wireless/microchip/wilc1000/netdev.h
+index bb1a315a7b7e..aafe3dc44ac6 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.h
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
+@@ -27,6 +27,8 @@
+ #define TCP_ACK_FILTER_LINK_SPEED_THRESH	54
+ #define DEFAULT_LINK_SPEED			72
+=20
++#define TX_BACKOFF_WEIGHT_MS			1
++
+ struct wilc_wfi_stats {
+ 	unsigned long rx_packets;
+ 	unsigned long tx_packets;
+--=20
+2.34.1
