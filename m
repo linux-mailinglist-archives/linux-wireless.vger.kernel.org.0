@@ -2,94 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AAAE79747B
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Sep 2023 17:39:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A55E9797483
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Sep 2023 17:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231513AbjIGPi5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Sep 2023 11:38:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49712 "EHLO
+        id S231357AbjIGPjV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Sep 2023 11:39:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235119AbjIGPW5 (ORCPT
+        with ESMTP id S245191AbjIGP1Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Sep 2023 11:22:57 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D7E8199A
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 08:22:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6129C433C9;
-        Thu,  7 Sep 2023 05:56:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694066162;
-        bh=DVymOMuNgk0G/TAzChbZfMrI8zsbqJjpGKm/pdQcne8=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=OeBGaDpGBC2c5FVZGmhvsHG8UcJ7wOVOQ7UKzqecIpwHtGld1XDG1U8OaTTR3HM/S
-         05RHgbE/Q0ubE/Njx1unyU2hp0HR0qcJnzAdiZ+6VPNIgmG3AnSU1ERaIUiaTmO8nq
-         41/od47k0tJCQ8Syuh4OpKGTHHLex4IozEEmb0GPMn63xEvvA4RCGPv/98fIHloJ34
-         tpVcVtOLib+6qe3CNFQurSiOpM5VEf0G8gTvDC0u0bA78Ro5Bs4KjPZCAvZg20ERTF
-         0ZKdywUO1wMunt1DZpCsCbG6AAprYcqLtg8HLI7RepATPtcsU5ewmDLSh5FSVrkLsi
-         +4HEBH1LQulDQ==
-Content-Type: text/plain; charset="utf-8"
+        Thu, 7 Sep 2023 11:27:16 -0400
+Received: from mail-yw1-f207.google.com (mail-yw1-f207.google.com [209.85.128.207])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F6201BF1
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 08:26:48 -0700 (PDT)
+Received: by mail-yw1-f207.google.com with SMTP id 00721157ae682-58e4d2b7d16so12850707b3.0
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Sep 2023 08:26:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694100342; x=1694705142;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zW5qhnjQmXuAaFU5fKwA/lEli7GsBu/PGJfxRXG3SHY=;
+        b=T2DwjBBmsDgCdOehbD/2C3xY9IVC4wf6T0vrUMpitHOEMO20zefIVcRwzbCeWBnUaN
+         z7OkC2ASDm3VlRMTRgVhqmHRIpJG6a5EBFZVW8+I1MJwkyWSATOVj/j9L5It/2eAF/Oj
+         kti9D19uUS3SCtAiYvpS5iPuj2rwDOnbZ+oQ/qTHhYGNz6y/AlPVWK2JXB4+RKPZ1q2Y
+         awmNTNVP3ufdPyiBmp5Q1IU07kkLkrWPCQ7KaghUJ7DKv9b+MGDN3gIdRwuOuoSITd/l
+         Jrxlx8Nui7Ix9QzL+Z4KFNx1uf0e9ndJElIGn6oJJZWnqJ4N91R3iwOTyc0DZ3xEQ9X+
+         viWg==
+X-Gm-Message-State: AOJu0YwIR5GbbY1cGBhxNllhggnw7WKlVvLy6I5rQmX+teY0FRUIy9WQ
+        g2rG6cGW47ox3ystIlq87mmsIKLkYOhtThIla1L+1H0dSQQi
+X-Google-Smtp-Source: AGHT+IG5wTTGmmZiHOULSKMs/aQJzNoUO7ZR1DHaaynqV/kIsxBQ60kNClLJ4OvCsCznerNQ8nbBG5G2Y/WjgpejAQ1X+NCllgum
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/6] wifi: rtw89: mcc: initialize start flow
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230831053133.24015-2-pkshih@realtek.com>
-References: <20230831053133.24015-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169406615977.3946078.1397128890019703880.kvalo@kernel.org>
-Date:   Thu,  7 Sep 2023 05:56:01 +0000 (UTC)
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+X-Received: by 2002:a63:7d03:0:b0:569:356c:f365 with SMTP id
+ y3-20020a637d03000000b00569356cf365mr3738671pgc.12.1694075041155; Thu, 07 Sep
+ 2023 01:24:01 -0700 (PDT)
+Date:   Thu, 07 Sep 2023 01:24:01 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000000d1dbf0604c09577@google.com>
+Subject: [syzbot] [wireless?] [net?] memory leak in restore_regulatory_settings
+From:   syzbot <syzbot+68849d5e4a6e74f32c06@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.4 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        FROM_LOCAL_HEX,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Hello,
 
-> From: Zong-Zhe Yang <kevin_yang@realtek.com>
-> 
-> We prepare to support TDMA-based MCC (multi-channel concurrency)
-> which allows two kinds of modes below.
-> * P2P GO + normal STA
-> * P2P GC + normal STA
-> 
-> Each mode has two vif and two chanctx. Then, each vif binds one
-> separate chanctx and becomes one MCC role. We name the two MCC
-> roles as follows.
-> * MCC role - reference (ref)
-> 	We calculate the baseline of our TDMA things accodring
-> 	to its info, e.g. TBTT. In normal case, it will be put
-> 	at the first slot of TDMA.
-> * MCC role - auxiliary (aux)
-> 
-> MCC state machine will be running in FW eventually, but before that,
-> we have to fill and calculate things that are needed by FW. We fill
-> the information of MCC role according to its vif and its chanctx.
-> Then, we calculate the start time for MCC.
-> 
-> Note that the parameters used in the calculation now is assigned by
-> default rules. The precise parameters for better MCC behavior will be
-> derived in the following.
-> 
-> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+syzbot found the following issue on:
 
-6 patches applied to wireless-next.git, thanks.
+HEAD commit:    92901222f83d Merge tag 'f2fs-for-6-6-rc1' of git://git.ker..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17c340b8680000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3544ee7492950dd3
+dashboard link: https://syzkaller.appspot.com/bug?extid=68849d5e4a6e74f32c06
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13fe378fa80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11bf6f7ba80000
 
-b09df09b55fb wifi: rtw89: mcc: initialize start flow
-4dc25ef19163 wifi: rtw89: mcc: fill fundamental configurations
-7d1704640aad wifi: rtw89: mcc: consider and determine BT duration
-17aa2c332689 wifi: rtw89: mcc: decide pattern and calculate parameters
-980d4215f94e wifi: rtw89: fix typo of rtw89_fw_h2c_mcc_macid_bitmap()
-6fa25e768df4 wifi: rtw89: mcc: trigger FW to start/stop MCC
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/7b5db23b3ecc/disk-92901222.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/135d82cfd540/vmlinux-92901222.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6e1b0da81493/bzImage-92901222.xz
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230831053133.24015-2-pkshih@realtek.com/
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+68849d5e4a6e74f32c06@syzkaller.appspotmail.com
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+write to /proc/sys/kernel/softlockup_all_cpu_backtrace failed: No such file or directory
+BUG: memory leak
+unreferenced object 0xffff88810f8a4e80 (size 64):
+  comm "kworker/0:1", pid 9, jiffies 4294945857 (age 8.050s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    ff ff ff ff 00 00 00 00 00 00 00 00 30 30 00 00  ............00..
+  backtrace:
+    [<ffffffff815739f5>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
+    [<ffffffff84739940>] kmalloc include/linux/slab.h:599 [inline]
+    [<ffffffff84739940>] kzalloc include/linux/slab.h:720 [inline]
+    [<ffffffff84739940>] regulatory_hint_core net/wireless/reg.c:3218 [inline]
+    [<ffffffff84739940>] restore_regulatory_settings+0x820/0xa80 net/wireless/reg.c:3552
+    [<ffffffff84739d71>] crda_timeout_work+0x21/0x30 net/wireless/reg.c:540
+    [<ffffffff812c8f1d>] process_one_work+0x23d/0x530 kernel/workqueue.c:2630
+    [<ffffffff812c9ac7>] process_scheduled_works kernel/workqueue.c:2703 [inline]
+    [<ffffffff812c9ac7>] worker_thread+0x327/0x590 kernel/workqueue.c:2784
+    [<ffffffff812d6f9b>] kthread+0x12b/0x170 kernel/kthread.c:388
+    [<ffffffff81149875>] ret_from_fork+0x45/0x50 arch/x86/kernel/process.c:147
+    [<ffffffff81002be1>] ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
 
+write to /proc/sys/kernel/hung_task_check_interval_secs failed: No such file or directory
+write to /proc/sys/kernel/softlockup_all_cpu_backtrace failed: No such file or directory
+write to /proc/sys/kernel/hung_task_check_interval_secs failed: No such file or directory
+write to /proc/sys/kernel/softlockup_all_cpu_backtrace failed: No such file or directory
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the bug is already fixed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite bug's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the bug is a duplicate of another bug, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
