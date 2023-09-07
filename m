@@ -2,49 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F928797770
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Sep 2023 18:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FF7A797A04
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Sep 2023 19:28:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237231AbjIGQ0S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Sep 2023 12:26:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37110 "EHLO
+        id S243609AbjIGR2P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Sep 2023 13:28:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238949AbjIGQ0J (ORCPT
+        with ESMTP id S239127AbjIGR2N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Sep 2023 12:26:09 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D41DF6A74;
-        Thu,  7 Sep 2023 09:22:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A618C433CB;
-        Thu,  7 Sep 2023 06:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694066417;
-        bh=k6m1FrHgokNhY1DM/EuEPwGTEKfRg8usrhPLJuc9oiY=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=rJ9eA+LQqXNJL/vMKBoi1qHHT7dufrHijo19qqi6yEa7+C7YYpL/huaJ3k7rW2pvr
-         3xdzybrxI0sXHNXn2P+qTjfe/r66AD0BMF6utFe8qrrLBvdo9eOZhulT1Qwl6NWfRE
-         gJQPd0QZXY80BVgHXN9Eb/eCc+wDdxNF4LBv33Goviyp/JiDBp6QgDUmWes3iv9Q02
-         UVwor99VEG4S64jFyz48PxuFiGJigaFIyhI238CJc1yWQvL+0hVNkFKTguMusTRf1H
-         slk6NZJc8JE+KRQ8Te792ig4masRNmknJhXKhuv4Z4c/UsCRo4Js/qZIPwKT8pnID/
-         eJ8cAsAt1v/vg==
-Content-Type: text/plain; charset="utf-8"
+        Thu, 7 Sep 2023 13:28:13 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409B61FD5
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 10:27:45 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qe9FQ-0000ZU-O2; Thu, 07 Sep 2023 09:16:16 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qe9FP-004bJn-BK; Thu, 07 Sep 2023 09:16:15 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qe9FO-008Wiy-D4; Thu, 07 Sep 2023 09:16:14 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     linux-wireless@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Yanik Fuchs <Yanik.fuchs@mbv.ch>
+Subject: [PATCH] wifi: rtw88: rtw8723d: Fix MAC address offset in EEPROM
+Date:   Thu,  7 Sep 2023 09:16:14 +0200
+Message-Id: <20230907071614.2032404-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] ssb: Fix division by zero issue in ssb_calc_clock_rate
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230904232346.34991-1-rand.sec96@gmail.com>
-References: <20230904232346.34991-1-rand.sec96@gmail.com>
-To:     Rand Deeb <rand.sec96@gmail.com>
-Cc:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, deeb.rand@confident.ru,
-        lvc-project@linuxtesting.org, voskresenski.stanislav@confident.ru,
-        Rand Deeb <rand.sec96@gmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169406641403.3946078.14931132240535951245.kvalo@kernel.org>
-Date:   Thu,  7 Sep 2023 06:00:15 +0000 (UTC)
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,29 +51,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rand Deeb <rand.sec96@gmail.com> wrote:
+The MAC address is stored at offset 0x107 in the EEPROM, like correctly
+stated in the comment. Add a two bytes reserved field right before the
+MAC address to shift it from offset 0x105 to 0x107.
 
-> In ssb_calc_clock_rate(), there is a potential issue where the value of
-> m1 could be zero due to initialization using clkfactor_f6_resolv(). This
-> situation raised concerns about the possibility of a division by zero
-> error.
-> 
-> We fixed it by following the suggestions provided by Larry Finger
-> <Larry.Finger@lwfinger.net> and Michael Büsch <m@bues.ch>. The fix
-> involves returning a value of 1 instead of 0 in clkfactor_f6_resolv().
-> This modification ensures the proper functioning of the code and
-> eliminates the risk of division by zero errors.
-> 
-> Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-> Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Acked-by: Michael Büsch <m@bues.ch>
+With this the MAC address returned from my RTL8723du wifi stick can be
+correctly decoded as "Shenzhen Four Seas Global Link Network Technology
+Co., Ltd."
 
-Patch applied to wireless-next.git, thanks.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reported-by: Yanik Fuchs <Yanik.fuchs@mbv.ch>
+Cc: stable@vger.kernel.org
+---
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-e0b5127fa134 ssb: Fix division by zero issue in ssb_calc_clock_rate
-
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+index 3642a2c7f80c9..2434e2480cbe2 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+@@ -46,6 +46,7 @@ struct rtw8723du_efuse {
+ 	u8 vender_id[2];                /* 0x100 */
+ 	u8 product_id[2];               /* 0x102 */
+ 	u8 usb_option;                  /* 0x104 */
++	u8 res5[2];			/* 0x105 */
+ 	u8 mac_addr[ETH_ALEN];          /* 0x107 */
+ };
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230904232346.34991-1-rand.sec96@gmail.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.39.2
 
