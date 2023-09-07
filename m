@@ -2,49 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5C3B797486
+	by mail.lfdr.de (Postfix) with ESMTP id 98E9E797485
 	for <lists+linux-wireless@lfdr.de>; Thu,  7 Sep 2023 17:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234019AbjIGPjZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Sep 2023 11:39:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59658 "EHLO
+        id S232691AbjIGPjX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Sep 2023 11:39:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234962AbjIGPXj (ORCPT
+        with ESMTP id S243918AbjIGPZe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Sep 2023 11:23:39 -0400
-Received: from forward201b.mail.yandex.net (forward201b.mail.yandex.net [178.154.239.156])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54C56CF
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 08:23:28 -0700 (PDT)
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d100])
-        by forward201b.mail.yandex.net (Yandex) with ESMTP id 8AAB34D93D
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 11:40:01 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:440b:0:640:fa3a:0])
-        by forward100b.mail.yandex.net (Yandex) with ESMTP id 49EDF600F1;
-        Thu,  7 Sep 2023 11:39:01 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id xcUAm5CDg0U0-FaGNTqKz;
-        Thu, 07 Sep 2023 11:39:00 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1694075940; bh=9FbNb2hLEj+l+n3nB2/nkJfvnnk4vB2t5rmfg+pfk6A=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=k6xHiEX5h6bpjINRmBzThT6OJ828aE4kgDuAm1lz4Ow29UEZT82ei8lDX/mARY1lS
-         huw4YYovRAeaWm0lZjghFGeZhRshS9sxoQReigP1ixPRpOb13y+D1ixqvnAlGicpnX
-         MigZ4fSKidTOXQ183PpikA8Y+WFFo+JY8UdS0tkg=
-Authentication-Results: mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        lvc-project@linuxtesting.org, ath11k@lists.infradead.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: ath11k: drop NULL pointer check in ath11k_dp_rx_mon_dest_process()
-Date:   Thu,  7 Sep 2023 11:38:38 +0300
-Message-ID: <20230907083852.10775-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Thu, 7 Sep 2023 11:25:34 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB0611BEF
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 08:25:15 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-64c1d487e72so6805126d6.0
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Sep 2023 08:25:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1694100312; x=1694705112; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aycCTyJOheIDKo1ZgbnwW6zsxD+FQHxnfjQ1uwRRryI=;
+        b=V4MvRtaAR2DyJfa3MYY14uOOv9cCujVC8hdQBPwZtG9vZzVuhk+tLy2lOhAYJP7gx7
+         roUOCtbZzHU4uoMfTcpIk/6AvoLR4842IJLtUO8nVLlQ+rZUUh9o86Vv6p4hQcXgMXzO
+         XZbvhm4GgwR/93b5dAfaYOB6JT/12ioS3i5AY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694100312; x=1694705112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aycCTyJOheIDKo1ZgbnwW6zsxD+FQHxnfjQ1uwRRryI=;
+        b=WnE3ZeRN7WDQI+tHSVDalteG5+TSGJC8FeZ768F+MZzM2+66OZMaKyiII1bCGdvBY8
+         q7xe0dja855N0rNMw7+uFHfoJpJInvdxlm5R9TtYQdMCQqoRbEPVZpQLT0Fu4Icp/o9q
+         IVfbqLyqcCiwkc+ZIuNOPO0RVXPKugm1xlzQQnRWWKBJ3Mna5abJsUMzSlZnhbOgxLWK
+         xxdTAn483bNGldVJvO3M8za5vQJyAsVDMxzTJdGvuthjBzq8ZTt6lraOPpVCvzesfJuc
+         vjtww7rOXL8lBD+Wcb3lnd8tVoUt+mNBQOseNUkfwTnRU90g99DSv3VeP4lm4wqXInUq
+         6ukA==
+X-Gm-Message-State: AOJu0YwfZuZVoeBDsezpbZvq7rj4Xl0DHSr/6VF9WRDj9yb9pmuzg5Yc
+        w352uWcLhb9OpogJeb7BTHDarxCaXFl/5shZwHra3D7kLzknzbC2
+X-Google-Smtp-Source: AGHT+IFj2FlIKXoMOrdA8m6h1SxwqJEdWc5x6fTQOPsL29IpibzHq4rNR/U1JI7AAj1ZLriuWigLzvMPJRO0C0GjGD0=
+X-Received: by 2002:a92:cc82:0:b0:34d:f026:7aa1 with SMTP id
+ x2-20020a92cc82000000b0034df0267aa1mr18419028ilo.26.1694078781179; Thu, 07
+ Sep 2023 02:26:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20230906102940.1120269-1-treapking@chromium.org> <CABRiz0r8qHgx-4b7QdCj6iz9FDsyChznEHOn5eByVoUYuLa-PQ@mail.gmail.com>
+In-Reply-To: <CABRiz0r8qHgx-4b7QdCj6iz9FDsyChznEHOn5eByVoUYuLa-PQ@mail.gmail.com>
+From:   Pin-yen Lin <treapking@chromium.org>
+Date:   Thu, 7 Sep 2023 17:26:10 +0800
+Message-ID: <CAEXTbpdqhxWVMSHz-8+=50_qd1UViKvD5YZY08=RFMBu5E6b2A@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
+To:     Matthew Wang <matthewmwang@chromium.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Brian Norris <briannorris@chromium.org>,
+        Polaris Pi <pinkperfect2021@gmail.com>,
+        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,35 +68,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since 'srng_list' is a fixed-size array of 'struct hal_srng'
-in 'struct ath11_hal', any of its member can't be NULL and
-so relevant check may be dropped.
+Hi Matthew,
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+On Thu, Sep 7, 2023 at 5:10=E2=80=AFPM Matthew Wang <matthewmwang@chromium.=
+org> wrote:
+>
+> > -       if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+> > -                    sizeof(bridge_tunnel_header))) ||
+> > -           (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+> > -                    sizeof(rfc1042_header)) &&
+> > -            ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) !=3D ETH_P_AARP &=
+&
+> > -            ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) !=3D ETH_P_IPX)) =
+{
+> > +       if (sizeof(rx_pkt_hdr) + rx_pkt_off <=3D skb->len &&
+>
+> sizeof(*rx_pkt_hdr)?
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/ath/ath11k/dp_rx.c | 7 -------
- 1 file changed, 7 deletions(-)
+Thanks for catching this. I'll upload a v2 for this.
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 146201d8dba2..4463e308968c 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -5094,13 +5094,6 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
- 
- 	mon_dst_srng = &ar->ab->hal.srng_list[ring_id];
- 
--	if (!mon_dst_srng) {
--		ath11k_warn(ar->ab,
--			    "HAL Monitor Destination Ring Init Failed -- %p",
--			    mon_dst_srng);
--		return;
--	}
--
- 	spin_lock_bh(&pmon->mon_lock);
- 
- 	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
--- 
-2.41.0
-
+Best,
+Pin-yen
