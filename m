@@ -2,90 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98E9E797485
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Sep 2023 17:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2891E7975C1
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Sep 2023 17:54:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232691AbjIGPjX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Sep 2023 11:39:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53986 "EHLO
+        id S231734AbjIGPyl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Sep 2023 11:54:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243918AbjIGPZe (ORCPT
+        with ESMTP id S1343710AbjIGPvc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Sep 2023 11:25:34 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB0611BEF
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 08:25:15 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-64c1d487e72so6805126d6.0
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Sep 2023 08:25:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1694100312; x=1694705112; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aycCTyJOheIDKo1ZgbnwW6zsxD+FQHxnfjQ1uwRRryI=;
-        b=V4MvRtaAR2DyJfa3MYY14uOOv9cCujVC8hdQBPwZtG9vZzVuhk+tLy2lOhAYJP7gx7
-         roUOCtbZzHU4uoMfTcpIk/6AvoLR4842IJLtUO8nVLlQ+rZUUh9o86Vv6p4hQcXgMXzO
-         XZbvhm4GgwR/93b5dAfaYOB6JT/12ioS3i5AY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694100312; x=1694705112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aycCTyJOheIDKo1ZgbnwW6zsxD+FQHxnfjQ1uwRRryI=;
-        b=WnE3ZeRN7WDQI+tHSVDalteG5+TSGJC8FeZ768F+MZzM2+66OZMaKyiII1bCGdvBY8
-         q7xe0dja855N0rNMw7+uFHfoJpJInvdxlm5R9TtYQdMCQqoRbEPVZpQLT0Fu4Icp/o9q
-         IVfbqLyqcCiwkc+ZIuNOPO0RVXPKugm1xlzQQnRWWKBJ3Mna5abJsUMzSlZnhbOgxLWK
-         xxdTAn483bNGldVJvO3M8za5vQJyAsVDMxzTJdGvuthjBzq8ZTt6lraOPpVCvzesfJuc
-         vjtww7rOXL8lBD+Wcb3lnd8tVoUt+mNBQOseNUkfwTnRU90g99DSv3VeP4lm4wqXInUq
-         6ukA==
-X-Gm-Message-State: AOJu0YwfZuZVoeBDsezpbZvq7rj4Xl0DHSr/6VF9WRDj9yb9pmuzg5Yc
-        w352uWcLhb9OpogJeb7BTHDarxCaXFl/5shZwHra3D7kLzknzbC2
-X-Google-Smtp-Source: AGHT+IFj2FlIKXoMOrdA8m6h1SxwqJEdWc5x6fTQOPsL29IpibzHq4rNR/U1JI7AAj1ZLriuWigLzvMPJRO0C0GjGD0=
-X-Received: by 2002:a92:cc82:0:b0:34d:f026:7aa1 with SMTP id
- x2-20020a92cc82000000b0034df0267aa1mr18419028ilo.26.1694078781179; Thu, 07
- Sep 2023 02:26:21 -0700 (PDT)
+        Thu, 7 Sep 2023 11:51:32 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FA537AA8
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 08:43:07 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3876JD0Z014394;
+        Thu, 7 Sep 2023 10:17:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=AdlDmOEBuRa4Hwuvsc3dr1uXNZoh5NpbgU+E6HaYgm8=;
+ b=ObSev8+mP5t9LZle81ynmNdRkmmAYplhPfUPEtkyGX7VIyXtVXprA/gpi2UsKkPM+UMi
+ KYulYSIAlYDURYLlwZYmvCgsNzd7u88jf4ciRn6FpP064dZuX0Jp5k8X7SWMRdYni8Eu
+ USkrfoOEpxct8S01M1PHc71JGWnH9HtOPMBuYQUg+FnwOf7f4tzNkeP5zBsc5DyvLXf8
+ zuFwgnZPEXg1Sbxq8tJxX9sQPnnCbWwEH/XYffbBR4Kn1Z43xRdm5myGywC/WmmfkZmN
+ 9FPZbOHfmWnMlecQ97qDKzc4FlJWSSFOboK/LT17Rjp+3FkRG6aioI+pRgEzzs6ZlxWQ Jw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sy951gfqw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 07 Sep 2023 10:17:48 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 387AHmA0021495
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 7 Sep 2023 10:17:48 GMT
+Received: from lingbok-HP-EliteBook-8460p.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Thu, 7 Sep 2023 03:17:46 -0700
+From:   Lingbo Kong <quic_lingbok@quicinc.com>
+To:     <ath12k@lists.infradead.org>, <quic_jjohnson@quicinc.com>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v3 0/4] wifi: ath12k: implement some functionalities through reading ACPI Table
+Date:   Thu, 7 Sep 2023 18:17:06 +0800
+Message-ID: <20230907101710.11659-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230906102940.1120269-1-treapking@chromium.org> <CABRiz0r8qHgx-4b7QdCj6iz9FDsyChznEHOn5eByVoUYuLa-PQ@mail.gmail.com>
-In-Reply-To: <CABRiz0r8qHgx-4b7QdCj6iz9FDsyChznEHOn5eByVoUYuLa-PQ@mail.gmail.com>
-From:   Pin-yen Lin <treapking@chromium.org>
-Date:   Thu, 7 Sep 2023 17:26:10 +0800
-Message-ID: <CAEXTbpdqhxWVMSHz-8+=50_qd1UViKvD5YZY08=RFMBu5E6b2A@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
-To:     Matthew Wang <matthewmwang@chromium.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Brian Norris <briannorris@chromium.org>,
-        Polaris Pi <pinkperfect2021@gmail.com>,
-        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: -dqbUkv1w9DKmPIupvcnTfb95tIS6rF8
+X-Proofpoint-ORIG-GUID: -dqbUkv1w9DKmPIupvcnTfb95tIS6rF8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-07_02,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ adultscore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
+ suspectscore=0 mlxscore=0 mlxlogscore=653 priorityscore=1501 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309070091
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Matthew,
+Through reading ACPI table, implement Time-Average-SAR(TAS), BIOS SAR,
+configuration of CCA threshold and band edge channel power functionalities.
 
-On Thu, Sep 7, 2023 at 5:10=E2=80=AFPM Matthew Wang <matthewmwang@chromium.=
-org> wrote:
->
-> > -       if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-> > -                    sizeof(bridge_tunnel_header))) ||
-> > -           (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-> > -                    sizeof(rfc1042_header)) &&
-> > -            ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) !=3D ETH_P_AARP &=
-&
-> > -            ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) !=3D ETH_P_IPX)) =
-{
-> > +       if (sizeof(rx_pkt_hdr) + rx_pkt_off <=3D skb->len &&
->
-> sizeof(*rx_pkt_hdr)?
+v3:
+1.remove unnecessary cpu_to_le32()
+2.adjust the order of the macros
+3.apply jeff's advice
 
-Thanks for catching this. I'll upload a v2 for this.
+v2:
+1.put <linux/acpi.h> in the include guard
 
-Best,
-Pin-yen
+Lingbo Kong (4):
+  wifi: ath12k: add TAS capability for WCN7850
+  wifi: ath12k: add BIOS SAR capability for WCN7850
+  wifi: ath12k: adjust configuration of CCA threshold value
+  wifi: ath12k: add band edge channel power for WCN7850
+
+ drivers/net/wireless/ath/ath12k/Makefile |   3 +-
+ drivers/net/wireless/ath/ath12k/acpi.c   | 365 +++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/acpi.h   |  60 ++++
+ drivers/net/wireless/ath/ath12k/core.c   |   6 +
+ drivers/net/wireless/ath/ath12k/core.h   |  13 +
+ drivers/net/wireless/ath/ath12k/hw.c     |  10 +
+ drivers/net/wireless/ath/ath12k/hw.h     |   4 +-
+ drivers/net/wireless/ath/ath12k/pci.c    |   6 +
+ drivers/net/wireless/ath/ath12k/wmi.c    | 252 ++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h    |  47 ++-
+ 10 files changed, 763 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/acpi.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/acpi.h
+
+
+base-commit: 1b5b69a51bb4909844e4003920af09ca1cc6bb0e
+-- 
+2.34.1
+
