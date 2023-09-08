@@ -2,48 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 583A2798E29
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 20:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E03E4798DE3
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 20:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234148AbjIHSbK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Sep 2023 14:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51668 "EHLO
+        id S243832AbjIHSZZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Sep 2023 14:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233933AbjIHSbG (ORCPT
+        with ESMTP id S242317AbjIHSYs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Sep 2023 14:31:06 -0400
+        Fri, 8 Sep 2023 14:24:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E2A83C3D;
-        Fri,  8 Sep 2023 11:21:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11008C116A6;
-        Fri,  8 Sep 2023 18:21:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53214C23;
+        Fri,  8 Sep 2023 11:21:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D176FC116AA;
+        Fri,  8 Sep 2023 18:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694197265;
-        bh=k3moEPGR0BOFaRMofyY+Z9IPG8m7Wu+N491Qu/QXPIA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VkBV9jwVr6WuQVQdZXsKAXBs8xPaVcdwgsNVtzncZJ7vxvGPXKjwmlPgCSNWix2DU
-         wSqPMM9LhHTAdDofHxQWFzI3m0vcaj8OM8vxI+Aig7OeJD3Yz196Z4nelMwE88zd7T
-         XElxp6+wDjhd8AloiUT80ePKxZr9w8+nUWnsGd6AJDSwH6FhoV4qQn0zhgT/UCpapm
-         X9nrvwd1Nwz+nI3LBg4bBmg9XlpO5jfAjr+H3BhbmstsHx4oANbRIEVSCCfUxQU5+A
-         j8DQV5Li4SThPSFGmu2u6qp0f3v2HmyyYswMSbGMDgsGXurwO34Wtcn9nYSsf0203L
-         fONQ7Q3cr1paQ==
+        s=k20201202; t=1694197272;
+        bh=+z5kRoqwbA4HHPdQ3FhMBZMph7m6bbl7JeZquZZown4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qLcexUpOaHN03wjTy6tDZMrnk+8ut7T8PLjvxYGWMEsQgafWVaMRiIgovcJxRW3pt
+         eA93uuNquuaAGRLbrv+1RMdWXboZoBQ5DvaGe9KeECHgo4eQBib3yEwvuL2zt4ROvS
+         8KU0kUMqMhd/4FOLGHNo2f8v1Si7b9450USlFhPITkdthZja2XmIDgsLP6md532e76
+         yZUd+ei+d3jWJALtj6HPO6IKoWpDnvDsJdA1DfZ+TIFhVqRL3LGEY3jaheDXeGxapo
+         aQOe3zgI0aq2zMXZfzvpYO3e5SAVkToK84efpQz0SKw1gxQgJaqBwG4BWlCuCfGsVk
+         xBNWC1yBLu4HQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
+Cc:     Dongliang Mu <dzm91@hust.edu.cn>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
         linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 08/10] wifi: mac80211_hwsim: drop short frames
-Date:   Fri,  8 Sep 2023 14:20:42 -0400
-Message-Id: <20230908182046.3460968-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 1/7] wifi: ath9k: fix printk specifier
+Date:   Fri,  8 Sep 2023 14:21:03 -0400
+Message-Id: <20230908182109.3461101-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230908182046.3460968-1-sashal@kernel.org>
-References: <20230908182046.3460968-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.256
+X-stable-base: Linux 4.19.294
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,46 +53,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Dongliang Mu <dzm91@hust.edu.cn>
 
-[ Upstream commit fba360a047d5eeeb9d4b7c3a9b1c8308980ce9a6 ]
+[ Upstream commit 061115fbfb2ce5870c9a004d68dc63138c07c782 ]
 
-While technically some control frames like ACK are shorter and
-end after Address 1, such frames shouldn't be forwarded through
-wmediumd or similar userspace, so require the full 3-address
-header to avoid accessing invalid memory if shorter frames are
-passed in.
+Smatch reports:
 
-Reported-by: syzbot+b2645b5bf1512b81fa22@syzkaller.appspotmail.com
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
+ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
+
+Fix it by modifying %lx to %p in the printk format string.
+
+Note that with this change, the pointer address will be printed as a
+hashed value by default. This is appropriate because the kernel
+should not leak kernel pointers to user space in an informational
+message. If someone wants to see the real address for debugging
+purposes, this can be achieved with the no_hash_pointers kernel option.
+
+Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230723040403.296723-1-dzm91@hust.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mac80211_hwsim.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/ahb.c | 4 ++--
+ drivers/net/wireless/ath/ath9k/pci.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index f80b1d57d6c38..a21739b2f44e6 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -3367,14 +3367,15 @@ static int hwsim_cloned_frame_received_nl(struct sk_buff *skb_2,
- 	frame_data_len = nla_len(info->attrs[HWSIM_ATTR_FRAME]);
- 	frame_data = (void *)nla_data(info->attrs[HWSIM_ATTR_FRAME]);
+diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
+index 63019c3de034d..26023e3b4b9df 100644
+--- a/drivers/net/wireless/ath/ath9k/ahb.c
++++ b/drivers/net/wireless/ath/ath9k/ahb.c
+@@ -136,8 +136,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
  
-+	if (frame_data_len < sizeof(struct ieee80211_hdr_3addr) ||
-+	    frame_data_len > IEEE80211_MAX_DATA_LEN)
-+		goto err;
-+
- 	/* Allocate new skb here */
- 	skb = alloc_skb(frame_data_len, GFP_KERNEL);
- 	if (skb == NULL)
- 		goto err;
+ 	ah = sc->sc_ah;
+ 	ath9k_hw_name(ah, hw_name, sizeof(hw_name));
+-	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
+-		   hw_name, (unsigned long)mem, irq);
++	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
++		   hw_name, mem, irq);
  
--	if (frame_data_len > IEEE80211_MAX_DATA_LEN)
--		goto err;
--
- 	/* Copy the data */
- 	skb_put_data(skb, frame_data, frame_data_len);
+ 	return 0;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
+index 92b2dd396436a..cb3318bd3cad2 100644
+--- a/drivers/net/wireless/ath/ath9k/pci.c
++++ b/drivers/net/wireless/ath/ath9k/pci.c
+@@ -993,8 +993,8 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	sc->sc_ah->msi_reg = 0;
+ 
+ 	ath9k_hw_name(sc->sc_ah, hw_name, sizeof(hw_name));
+-	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
+-		   hw_name, (unsigned long)sc->mem, pdev->irq);
++	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
++		   hw_name, sc->mem, pdev->irq);
+ 
+ 	return 0;
  
 -- 
 2.40.1
