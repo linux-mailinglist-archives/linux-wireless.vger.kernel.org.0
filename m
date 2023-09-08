@@ -2,99 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23D54798680
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 13:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17C357987C5
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 15:25:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236339AbjIHLhF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Sep 2023 07:37:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56876 "EHLO
+        id S243515AbjIHNZQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Sep 2023 09:25:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbjIHLhE (ORCPT
+        with ESMTP id S243544AbjIHNZO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Sep 2023 07:37:04 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E84351BE7
-        for <linux-wireless@vger.kernel.org>; Fri,  8 Sep 2023 04:36:58 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qeZnF-0007tr-F7; Fri, 08 Sep 2023 13:36:57 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qeZnE-004rrl-2v; Fri, 08 Sep 2023 13:36:56 +0200
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qeZnD-003K9l-Gt; Fri, 08 Sep 2023 13:36:55 +0200
-Date:   Fri, 8 Sep 2023 13:36:55 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Fri, 8 Sep 2023 09:25:14 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24ECB1BF0;
+        Fri,  8 Sep 2023 06:25:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92464C433C7;
+        Fri,  8 Sep 2023 13:25:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694179510;
+        bh=9ndHr7tfUjp4mVv9z+x8c5QATDVhJpJXez+DnQJHD4Y=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=LSuiyWgqfqI/+cwgkgQLy7meh9HOXIGWKWHt9NZ32wVrLp9fCDtsfb574ghdFXdPu
+         Zw3gg+1SHOnmVrOUARCkrAZvHvncOQITDoTnrF65nNkg9B/jhCuP1UHmNJo4VgFTjI
+         C1MVc+RLSKoQ1vDHhEOXxpDVM0hCfhnqBVP9gd4jjo9c/ZLuAy//gpVcq2Ftn6hmj1
+         VZt3bAC5XcUEll4IxmWx4XLS85aQgUegnmRRVuY9kHelRE9DoE53bGEWAbkXca19U3
+         /EibWgc1NagVVJTX7q4jD+Ji6br27ko5GSH/dpAJTlV6hNms0Ieyq5X32szxSDXvUU
+         p4KzYY7Ve+pzA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, Yanik Fuchs <Yanik.fuchs@mbv.ch>
+        Yanik Fuchs <Yanik.fuchs@mbv.ch>
 Subject: Re: [PATCH] wifi: rtw88: rtw8723d: Fix MAC address offset in EEPROM
-Message-ID: <20230908113655.GF637806@pengutronix.de>
 References: <20230907071614.2032404-1-s.hauer@pengutronix.de>
- <bed0e0cacc44476582fc58180d77519c@realtek.com>
+        <bed0e0cacc44476582fc58180d77519c@realtek.com>
+        <20230908113655.GF637806@pengutronix.de>
+Date:   Fri, 08 Sep 2023 16:26:38 +0300
+In-Reply-To: <20230908113655.GF637806@pengutronix.de> (Sascha Hauer's message
+        of "Fri, 8 Sep 2023 13:36:55 +0200")
+Message-ID: <878r9gn6cx.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bed0e0cacc44476582fc58180d77519c@realtek.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Sep 08, 2023 at 12:23:13AM +0000, Ping-Ke Shih wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Sent: Thursday, September 7, 2023 3:16 PM
-> > To: linux-wireless@vger.kernel.org
-> > Cc: linux-kernel@vger.kernel.org; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih <pkshih@realtek.com>; Yanik
-> > Fuchs <Yanik.fuchs@mbv.ch>
-> > Subject: [PATCH] wifi: rtw88: rtw8723d: Fix MAC address offset in EEPROM
-> > 
-> > The MAC address is stored at offset 0x107 in the EEPROM, like correctly
-> > stated in the comment. Add a two bytes reserved field right before the
-> > MAC address to shift it from offset 0x105 to 0x107.
-> > 
-> > With this the MAC address returned from my RTL8723du wifi stick can be
-> > correctly decoded as "Shenzhen Four Seas Global Link Network Technology
-> > Co., Ltd."
-> 
-> With this correctness, my stick can be recognized as: 
-> " Bus 003 Device 010: ID 0bda:d723 Realtek Semiconductor Corp. 802.11n WLAN Adapter"
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-It should be recognized like this also without this patch, but with this
-patch the MAC address should be read correctly.
+>> Should it add a Fixes tag? 
+>> Fixes: 87caeef032fc ("wifi: rtw88: Add rtw8723du chipset support")
+>
+> Yes, I forgot this. Kalle, can you add it once again while applying?
 
-> 
-> Should it add a Fixes tag? 
-> Fixes: 87caeef032fc ("wifi: rtw88: Add rtw8723du chipset support")
-
-Yes, I forgot this. Kalle, can you add it once again while applying?
-
-Sascha
+Yes, I'll add it. I guess it would be good to apply this to wireless
+tree?
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
