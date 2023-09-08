@@ -2,77 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48C28799160
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 23:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3CB6799189
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 23:32:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242358AbjIHVHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Sep 2023 17:07:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44906 "EHLO
+        id S245643AbjIHVcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Sep 2023 17:32:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240882AbjIHVHS (ORCPT
+        with ESMTP id S229891AbjIHVcD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Sep 2023 17:07:18 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 458FC19B6
-        for <linux-wireless@vger.kernel.org>; Fri,  8 Sep 2023 14:07:14 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3ab29af398aso1760139b6e.1
-        for <linux-wireless@vger.kernel.org>; Fri, 08 Sep 2023 14:07:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fortunewebnetworks-com.20230601.gappssmtp.com; s=20230601; t=1694207233; x=1694812033; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lWSOOTCDXcWLt+hpkQtfiADbPF+nA5H+PcCI5nxKBLM=;
-        b=DW1ex57TjJQS7gzdco/bXTEIu/cax0emVLApR88mXcQCZF+JJFM9OaUSBO4Re/tu6i
-         hu9m9ghb3geFAQ84Xh0uqE/gaj50qXXAH8zxYwTkxENoofW7wmdHJhYqu+9hM32Rb8U+
-         ItiB74T0/3qSzaUTlYn4V6aPgGsWOfjP/Az1J2WyCa+yX4ivW1eycgeJcRhGakVvznSH
-         Uhq1jK3KGL9nmHzgCwPghA66ECBzKLga6qY5S3it7DXnb9qsedlG3FsySQ7PVmbPC6g0
-         AB3oZ+tfYiQn0T4ZQ1SaTdezo9LXbzJw+oj95vovJP0LqWxd+BTVDmBzibCUNH0mp168
-         zVGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694207233; x=1694812033;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lWSOOTCDXcWLt+hpkQtfiADbPF+nA5H+PcCI5nxKBLM=;
-        b=s2lCEluYMFC/OJr1UfwIJYJXxWdD7/2HfarL9ptlE/JNzaGCFboN1V4D+18EEjxOej
-         gGC2i2nYZZGuWPwMhw5W6WAATvH+urZwnPvMzyVxAEyxDB8ieeEMNTzV+9dsRUmthCSQ
-         igOqtqAVRHOh5roFoGJbGqD1Nmyvr+xAhAJDCQRklEUYJ/fpkupKC1NX/tW2WFXDfwcU
-         ygUDJgVvZaAFki5Ru2W09t3vgy1T2WJBU5TXmLgBQPDHpztczV6Rdes6oLlneedDCUIY
-         DqdldAVI8V3AP1WuC8RJ7uUZc/slsxf0cXNbkXkshAsIVyKVF3Nx4ON/B/k590Jonqe+
-         EIEg==
-X-Gm-Message-State: AOJu0YwdOpgLhwEGzeVhLEUnp5Updc9tXP3EXR7uWEUNK0sU6uQPNFdJ
-        16DzE8doEdBWUNW21ceSwXlyJmmRyJ2A7d6FJ00gSA==
-X-Google-Smtp-Source: AGHT+IEDV5dRRxAbUxHF+XnQCGAiURCPHmu1SB2J2/xNgYCwvJczxaBanAsbo/HFVW9ks/VvlQTVf8Q2jl6WZK1ROAY=
-X-Received: by 2002:a05:6808:181c:b0:3a7:1e86:e83f with SMTP id
- bh28-20020a056808181c00b003a71e86e83fmr4771241oib.51.1694207233538; Fri, 08
- Sep 2023 14:07:13 -0700 (PDT)
+        Fri, 8 Sep 2023 17:32:03 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BA3719B6;
+        Fri,  8 Sep 2023 14:31:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F758C433C7;
+        Fri,  8 Sep 2023 21:31:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694208718;
+        bh=jnZW3kJ1q2GcV2pxAvLRxz+0IUuoJxM+MtHeCLvaV3k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rL/hXl1JmyCN2+NX3XFRjO3IBjzj3gm/vyTf/yQM/ms1fYHZLLheiBdkAscyPD4ig
+         xEJBQ/sHZdVG/iM0p8OjYq7bcd79OWbtESi4cnpza8CsO0AlxstTVZg+crAliB0M+u
+         sMtzHFoNhDRydKXF6ghbQDeG3lQZH7cQseD/hGy4=
+Date:   Fri, 8 Sep 2023 22:31:55 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        quic_jjohnson@quicinc.com, nbd@nbd.name, lorenzo@kernel.org,
+        ryder.lee@mediatek.com, matthias.bgg@gmail.com, kuba@kernel.org,
+        srini.raju@purelifi.com, stf_xl@wp.pl, helmut.schaa@googlemail.com,
+        pkshih@realtek.com, corentin.chary@gmail.com, hdegoede@redhat.com,
+        markgross@kernel.org, johannes.berg@intel.com,
+        alexander@wetzel-home.de, error27@gmail.com,
+        szymon.heidrich@gmail.com, gustavoars@kernel.org, lynxis@fe80.eu,
+        daniel@makrotopia.org, arnd@arndb.de, shayne.chen@mediatek.com,
+        keescook@chromium.org, tglx@linutronix.de, pabeni@redhat.com,
+        rostedt@goodmis.org, jacob.e.keller@intel.com,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        acpi4asus-user@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org, linux-staging@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.5 43/45] Fix nomenclature for USB and PCI
+ wireless devices
+Message-ID: <2023090838-slurp-tilt-c7c4@gregkh>
+References: <20230908181327.3459042-1-sashal@kernel.org>
+ <20230908181327.3459042-43-sashal@kernel.org>
+ <0d2ddf90-2334-4d0c-9f63-018c150e06a9@rowland.harvard.edu>
 MIME-Version: 1.0
-From:   Janet Miller <janet@fortunewebnetworks.com>
-Date:   Fri, 8 Sep 2023 16:07:03 -0500
-Message-ID: <CACjHo35YGBg=6yMVpjQOahr35qoSMXzzh+AtB1YS43vBJPS16Q@mail.gmail.com>
-Subject: RE: AWS re:Invent Attendees Email list- 2023
-To:     Janet Miller <janet@fortunewebnetworks.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=2.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,FILL_THIS_FORM,FILL_THIS_FORM_LONG,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d2ddf90-2334-4d0c-9f63-018c150e06a9@rowland.harvard.edu>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Fri, Sep 08, 2023 at 03:12:26PM -0400, Alan Stern wrote:
+> On Fri, Sep 08, 2023 at 02:13:24PM -0400, Sasha Levin wrote:
+> > From: Alan Stern <stern@rowland.harvard.edu>
+> > 
+> > [ Upstream commit 5d7cf67f72ae34d38e090bdfa673da4aefe4048e ]
+> > 
+> > A mouse that uses a USB connection is called a "USB mouse" device (or
+> > "USB mouse" for short), not a "mouse USB" device.  By analogy, a WiFi
+> > adapter that connects to the host computer via USB is a "USB wireless"
+> > device, not a "wireless USB" device.  (The latter term more properly
+> > refers to a defunct Wireless USB specification, which described a
+> > technology for sending USB protocol messages over an ultra wideband
+> > radio link.)
+> > 
+> > Similarly for a WiFi adapter card that plugs into a PCIe slot: It is a
+> > "PCIe wireless" device, not a "wireless PCIe" device.
+> > 
+> > Rephrase the text in the kernel source where the word ordering is
+> > wrong.
+> > 
+> > Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Signed-off-by: Kalle Valo <kvalo@kernel.org>
+> > Link: https://lore.kernel.org/r/57da7c80-0e48-41b5-8427-884a02648f55@rowland.harvard.edu
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> 
+> Is there any real reason to apply this commit to the -stable kernels?
+> I did not mark it that way when it was submitted, and it doesn't fix
+> any bugs.  In fact, aside from updating some module and device
+> description strings, all it does is change a bunch of comments.
+> 
+> Does that really fall under the -stable rules for acceptance?
 
-Would you be interested in acquiring AWS re:Invent Attendees Data List 2023?
+Not really, this is just documentation, it should be dropped from the
+autosel queues.
 
-List contains: Company Name, Contact Name, First Name, Middle Name,
-Last Name, Title, Address, Street, City, Zip code, State, Country,
-Telephone, Email address and more,
+thanks,
 
-No of Contacts: - 40,777
-Cost: $1,977
-
-Kind Regards,
-Janet Miller
-Marketing Coordinator
+greg k-h
