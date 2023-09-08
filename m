@@ -2,88 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B46E798DE8
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 20:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E3A799059
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 21:43:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344425AbjIHSZc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Sep 2023 14:25:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44898 "EHLO
+        id S231698AbjIHTnj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Sep 2023 15:43:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242891AbjIHSZM (ORCPT
+        with ESMTP id S1344546AbjIHTMp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Sep 2023 14:25:12 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 844354C3F;
-        Fri,  8 Sep 2023 11:22:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F395C116B7;
-        Fri,  8 Sep 2023 18:21:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694197307;
-        bh=M1SEUboSPYiiB6UY60gtnV2aLHbrgmGINt3ZwQqz7ZQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F23b9N5pv1BeU5L0ik6+jGfZ6m57KDPnFN8epT7kOi/mIUiohNrENHAcnhyPmcOrf
-         dCweQcncmMckUzEnWaPDNhS3exb+0yP+AL5CxV3C7NQir3gv4Lbab9zQJ72EfNCETr
-         wbptpzfe+7a8MdgBpctoL8ZZFWefqV7z8YItwOnTN3mJN9Gynk0VUXbfHxZGJ5ZsEw
-         ssyiw0HRu/z6RPEnwEeQ4gfmrzW6kvWqLl8Lgzl8gJiicbTXqYsHFmJGGe/4S9dOBY
-         +oJ7vt5vLxfFlprploOgm4uayV0/BINkyJCr/vOkExLfHaBmNjVpi86aj+llPXJd/3
-         PScrCV4AzCS4A==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        syzbot+09d1cd2f71e6dd3bfd2c@syzkaller.appspotmail.com,
-        Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 7/8] wifi: cfg80211: ocb: don't leave if not joined
-Date:   Fri,  8 Sep 2023 14:21:26 -0400
-Message-Id: <20230908182127.3461199-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230908182127.3461199-1-sashal@kernel.org>
-References: <20230908182127.3461199-1-sashal@kernel.org>
+        Fri, 8 Sep 2023 15:12:45 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 25DAC12C
+        for <linux-wireless@vger.kernel.org>; Fri,  8 Sep 2023 12:12:31 -0700 (PDT)
+Received: (qmail 792929 invoked by uid 1000); 8 Sep 2023 15:12:26 -0400
+Date:   Fri, 8 Sep 2023 15:12:26 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kalle Valo <kvalo@kernel.org>, quic_jjohnson@quicinc.com,
+        nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+        matthias.bgg@gmail.com, kuba@kernel.org, srini.raju@purelifi.com,
+        stf_xl@wp.pl, helmut.schaa@googlemail.com, pkshih@realtek.com,
+        corentin.chary@gmail.com, hdegoede@redhat.com,
+        markgross@kernel.org, johannes.berg@intel.com,
+        alexander@wetzel-home.de, error27@gmail.com,
+        szymon.heidrich@gmail.com, gustavoars@kernel.org, lynxis@fe80.eu,
+        daniel@makrotopia.org, arnd@arndb.de, shayne.chen@mediatek.com,
+        keescook@chromium.org, tglx@linutronix.de, pabeni@redhat.com,
+        rostedt@goodmis.org, jacob.e.keller@intel.com,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        acpi4asus-user@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org, linux-staging@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.5 43/45] Fix nomenclature for USB and PCI
+ wireless devices
+Message-ID: <0d2ddf90-2334-4d0c-9f63-018c150e06a9@rowland.harvard.edu>
+References: <20230908181327.3459042-1-sashal@kernel.org>
+ <20230908181327.3459042-43-sashal@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.325
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230908181327.3459042-43-sashal@kernel.org>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Fri, Sep 08, 2023 at 02:13:24PM -0400, Sasha Levin wrote:
+> From: Alan Stern <stern@rowland.harvard.edu>
+> 
+> [ Upstream commit 5d7cf67f72ae34d38e090bdfa673da4aefe4048e ]
+> 
+> A mouse that uses a USB connection is called a "USB mouse" device (or
+> "USB mouse" for short), not a "mouse USB" device.  By analogy, a WiFi
+> adapter that connects to the host computer via USB is a "USB wireless"
+> device, not a "wireless USB" device.  (The latter term more properly
+> refers to a defunct Wireless USB specification, which described a
+> technology for sending USB protocol messages over an ultra wideband
+> radio link.)
+> 
+> Similarly for a WiFi adapter card that plugs into a PCIe slot: It is a
+> "PCIe wireless" device, not a "wireless PCIe" device.
+> 
+> Rephrase the text in the kernel source where the word ordering is
+> wrong.
+> 
+> Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Kalle Valo <kvalo@kernel.org>
+> Link: https://lore.kernel.org/r/57da7c80-0e48-41b5-8427-884a02648f55@rowland.harvard.edu
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-[ Upstream commit abc76cf552e13cfa88a204b362a86b0e08e95228 ]
 
-If there's no OCB state, don't ask the driver/mac80211 to
-leave, since that's just confusing. Since set/clear the
-chandef state, that's a simple check.
+Is there any real reason to apply this commit to the -stable kernels?
+I did not mark it that way when it was submitted, and it doesn't fix
+any bugs.  In fact, aside from updating some module and device
+description strings, all it does is change a bunch of comments.
 
-Reported-by: syzbot+09d1cd2f71e6dd3bfd2c@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/wireless/ocb.c | 3 +++
- 1 file changed, 3 insertions(+)
+Does that really fall under the -stable rules for acceptance?
 
-diff --git a/net/wireless/ocb.c b/net/wireless/ocb.c
-index e64dbf16330c4..73dd44e77a1a3 100644
---- a/net/wireless/ocb.c
-+++ b/net/wireless/ocb.c
-@@ -70,6 +70,9 @@ int __cfg80211_leave_ocb(struct cfg80211_registered_device *rdev,
- 	if (!rdev->ops->leave_ocb)
- 		return -EOPNOTSUPP;
- 
-+	if (!wdev->u.ocb.chandef.chan)
-+		return -ENOTCONN;
-+
- 	err = rdev_leave_ocb(rdev, dev);
- 	if (!err)
- 		memset(&wdev->chandef, 0, sizeof(wdev->chandef));
--- 
-2.40.1
-
+Alan Stern
