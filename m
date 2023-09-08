@@ -2,99 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7135A7983DD
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 10:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3925E7985CB
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 12:25:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232883AbjIHIRU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Sep 2023 04:17:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51852 "EHLO
+        id S243146AbjIHKZP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Sep 2023 06:25:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbjIHIRU (ORCPT
+        with ESMTP id S243165AbjIHKZN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Sep 2023 04:17:20 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AEF81BF5
-        for <linux-wireless@vger.kernel.org>; Fri,  8 Sep 2023 01:17:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25AE4C433C7;
-        Fri,  8 Sep 2023 08:17:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694161035;
-        bh=GIIukkGXSJUknYtMPc52M2adeSs4PcfC3iR01K7fLLs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=LvDZyAZSpYPU+uCUdaNrCl++dDO4xatgjj9wsj1lEwArZb3tQxraX1+wyg/PCuCk6
-         /T0+EfBh95dgxYPDKN6lLHbmhFPsdqtJ7Jp0JIu/85lgsE8/oEK3H/EyLncciBE+R0
-         5cAQ/+ynaDD4Wi3tGahnNF7arkb2m2mcO9Zc3sLYBHXJqy7A9yp4mh7Q5MqEcm/P4S
-         C+nCRvGS2ipTqkNMne50XmQQt+Sbusk/2kItMHBKTbjGfRWtFcKbQxye81KyqcAwsT
-         W3YZNHEASo4cCJ8Xr0hfasvEGPccSKRyE3Y6yzVjAnhBC4vFpNufTcNsUhSlAda3YA
-         aAZfq+2xxxpJw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     <Prasurjya.Rohansaikia@microchip.com>
-Cc:     <linux-wireless@vger.kernel.org>, <Ajay.Kathat@microchip.com>,
-        <claudiu.beznea@microchip.com>
-Subject: Re: [PATCH v2] wifi: wilc1000: Added back-off algorithm to balance
- tx queue packets.
-References: <20230816162259.33342-1-prasurjya.rohansaikia@microchip.com>
-        <871qfuvwzd.fsf@kernel.org>
-        <DM4PR11MB633677755A94860F2E1B6449F4EEA@DM4PR11MB6336.namprd11.prod.outlook.com>
-Date:   Fri, 08 Sep 2023 11:18:42 +0300
-In-Reply-To: <DM4PR11MB633677755A94860F2E1B6449F4EEA@DM4PR11MB6336.namprd11.prod.outlook.com>
-        (Prasurjya Rohansaikia's message of "Thu, 7 Sep 2023 17:01:35 +0000")
-Message-ID: <87cyytm61p.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Fri, 8 Sep 2023 06:25:13 -0400
+Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E7F1FC6
+        for <linux-wireless@vger.kernel.org>; Fri,  8 Sep 2023 03:24:44 -0700 (PDT)
+Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-573429f5874so1049284eaf.0
+        for <linux-wireless@vger.kernel.org>; Fri, 08 Sep 2023 03:24:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1694168629; x=1694773429; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DfAHPe/yZCXK6Ipx6KCp+2nRJ597fetZ8tOP8x/Y3eI=;
+        b=RW7hdYqGQpjDkk3wX60XLgI92w6fqhyAw1bNRxHxw5FyMsCk2J+lGsjonR12jhoSqf
+         RlAdCCf6zxYoWProgfHvAcYasA/IEV9FyY0vdYAUU/jaMfSYr5v11IDWf48fzZnze9ke
+         MnLeFiFdd+QXLRwYnRwVV72mJ46oSqUm0eaLg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694168629; x=1694773429;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DfAHPe/yZCXK6Ipx6KCp+2nRJ597fetZ8tOP8x/Y3eI=;
+        b=By46TWkgKiwS6flWztLbweBCv6iWmVAZQ/ttSAJKDEHQ/C0oIvefmFzdH9z1ITf/x/
+         g0hc8e/uM6dqXg9stRp8jGl2vCXh/uGX+L3Lr3Zsu1NSWl70YbQmVDB5zbTvupmSQfgh
+         eZP94/N396qPKFJQ2tNPqAOCrHCdMIeYNFQhtIysC3qT5bZbEeL5+GMN8LykM64CE8Qr
+         By2dSU9FjBb/9CNvDB2PVzuvy674ZIhWONrgykAnlN+AQQ5NeKWM6MK0S0+FgB6dwdVc
+         CFXjUhKLDqxxO9lUGczzpsi0CFmjxXkmfDjeS5M7HIs6UH6R+eGK0ho9A63DKim340zg
+         /QCQ==
+X-Gm-Message-State: AOJu0YzAKXlB2hF9zq8lMUE1huCTC3bXQwYsW8HPl2seaXUNZIrwSTAQ
+        vyi2PjCiYUJAMIVfnyQF/K3+hRLSiN1hXgppiG9oRA==
+X-Google-Smtp-Source: AGHT+IEcsmWOaMN0sex/8VHBoGvhpIIwF11+aTivlfQzaWl3/Ih0CLNR8jF84J+DLODiKgcCnMCvalnsR/9BmpX0bTQ=
+X-Received: by 2002:a05:6820:2296:b0:56e:a1d3:747e with SMTP id
+ ck22-20020a056820229600b0056ea1d3747emr997434oob.6.1694168628939; Fri, 08 Sep
+ 2023 03:23:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20230907093927.400634-1-treapking@chromium.org>
+In-Reply-To: <20230907093927.400634-1-treapking@chromium.org>
+From:   Matthew Wang <matthewmwang@chromium.org>
+Date:   Fri, 8 Sep 2023 12:23:38 +0200
+Message-ID: <CABRiz0q9TjryfNs8m6czuExWRCpXiVYw0K7kW62r+jstBAm2Lw@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kalle Valo <kvalo@kernel.org>,
+        Polaris Pi <pinkperfect2021@gmail.com>,
+        Brian Norris <briannorris@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<Prasurjya.Rohansaikia@microchip.com> writes:
+> +       if (sizeof(rx_pkt_hdr) + rx_pkt_off <= skb->len &&
 
-> <Prasurjya.Rohansaikia@microchip.com> writes:
->
->> From: Prasurjya Rohan Saikia <prasurjya.rohansaikia@microchip.com>
->>
->> Added an algorithm to backoff the Tx Task when low memory scenario is
->> triggered at firmware. During high data transfer from host, the firmware
->> runs out of VMM memory, which is used to hold the frames from the host.
->> So added flow control to delay the transmit from host side when there is
->> not enough space to accomodate frames in firmware side.
->>
->> Signed-off-by: Prasurjya Rohan Saikia <prasurjya.rohansaikia@microchip.com>
->
-> [...]
->
->> -             } while (ret == WILC_VMM_ENTRY_FULL_RETRY && !wl->close);
->> +                     if (ret != WILC_VMM_ENTRY_FULL_RETRY)
->> +                             break;
->> +                     /* Back off from sending packets for some time.
->> +                      * schedule_timeout will allow RX task to run and free
->> +                      * buffers. Setting state to TASK_INTERRUPTIBLE will
->> +                      * put the thread back to CPU running queue when it's
->> +                      * signaled even if 'timeout' isn't elapsed. This gives
->> +                      * faster chance for reserved SK buffers to be freed
->> +                      */
->> +                     set_current_state(TASK_INTERRUPTIBLE);
->> +                     schedule_timeout(msecs_to_jiffies
->> +                                      (TX_BACKOFF_WEIGHT_MS));
->> +             } while (!wl->close);
->
-> Why not msleep_interruptible()?
->
-> Thanks you for your suggestion. However, I decided to proceed with
-> schedule_timeout_interruptible() after testing and I will resubmit the patch. 
-
-You need to provide more information than that.
-
-Please quote your emails properly and don't send HTML emails, our lists
-automaticall drop all HTML mail.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Not fixed. Did you accidentally resend the same patch?
