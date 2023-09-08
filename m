@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3FC2798D86
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 20:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E510B798D91
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 20:22:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344389AbjIHSWR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Sep 2023 14:22:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57254 "EHLO
+        id S235834AbjIHSW1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Sep 2023 14:22:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244518AbjIHSVX (ORCPT
+        with ESMTP id S1344181AbjIHSVX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 8 Sep 2023 14:21:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A50230D4;
-        Fri,  8 Sep 2023 11:19:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6219EC43397;
-        Fri,  8 Sep 2023 18:19:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7FC2127;
+        Fri,  8 Sep 2023 11:19:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BDEC4339A;
+        Fri,  8 Sep 2023 18:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694197143;
-        bh=H+t5+9GD/ikDTM+ovHHOvZiQjjd5x0i/Y0udP52tLYI=;
+        s=k20201202; t=1694197149;
+        bh=KbOkRZBJWdPdvM1++c8dlbDo15VKmvAQvE2M+aTA8Sk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E70w1a/TJo6YQ48799LpDiPlYqIG3ZnDvJocyLBmE9qBnfcLKhQdqJROvPka4KXNG
-         WLNVD0ekwNBlR7BD0Qid58oHXs3I5i9uuJ6SK5i0+ratDSkl+t/XZ5/L+MBnxrkabr
-         Mefq5/C0g3gJ3wtV+QI6j9DdS6n1otoojlrb6LdipQr58NZtzFpX9v8oMfFU6KNhrJ
-         DMn9fezpF/oyN5WLzNk30TKX3mVHv40cjwXpOh6VfxZUOrM1xFEnOuJUZgT/TkJN1e
-         cKtsMsqV0T/Ay2RVjv7xrPrgOGGPeZRy41y4G5gXdnB1ocVjaMW3Mhk5hD4NQ+q8OO
-         x9EaSvPtKWR9Q==
+        b=csA/El9QbffXUTIFnAhPcJAQTBo8IF7vgHCFf9+ENSze2GzFaG4eoOVa2QRKaK7wg
+         zf0XaIvr6BDQTc7xLgINW6ZDcmvcl+KnZAygJ2tDbCqdJwr2esN8DHy57U4ADBZIB5
+         GdDeNKq+HQt/yrcHBbBMqOnimV9kJwcP1oNbSZRlMf2WJLlMk2VPvzvFgydO6O3itK
+         WyS9R8XDUIZcXsbndNPhRXLt/C3ecxXBpjIULURn92z70PuQRtwXm18tapkSfWZMsF
+         LrxwR3q0yyIdznLMVCLTvfVJtxjysy/FeC1qI1lGmrEYUlTqT5Spcaxn4xiyW+GLc9
+         lMdrSSfikSKGQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>,
-        syzbot+be9c824e6f269d608288@syzkaller.appspotmail.com,
+        syzbot+2676771ed06a6df166ad@syzkaller.appspotmail.com,
         Sasha Levin <sashal@kernel.org>, johannes@sipsolutions.net,
         davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
         pabeni@redhat.com, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 19/26] wifi: mac80211: check S1G action frame size
-Date:   Fri,  8 Sep 2023 14:17:57 -0400
-Message-Id: <20230908181806.3460164-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 21/26] wifi: cfg80211: reject auth/assoc to AP with our address
+Date:   Fri,  8 Sep 2023 14:17:59 -0400
+Message-Id: <20230908181806.3460164-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230908181806.3460164-1-sashal@kernel.org>
 References: <20230908181806.3460164-1-sashal@kernel.org>
@@ -57,33 +57,57 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 19e4a47ee74718a22e963e8a647c8c3bfe8bb05c ]
+[ Upstream commit 5d4e04bf3a0f098bd9033de3a5291810fa14c7a6 ]
 
-Before checking the action code, check that it even
-exists in the frame.
+If the AP uses our own address as its MLD address or BSSID, then
+clearly something's wrong. Reject such connections so we don't
+try and fail later.
 
-Reported-by: syzbot+be9c824e6f269d608288@syzkaller.appspotmail.com
+Reported-by: syzbot+2676771ed06a6df166ad@syzkaller.appspotmail.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/wireless/mlme.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 0f81492da0b46..3bebf28ea7464 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3623,6 +3623,10 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
- 			break;
- 		goto queue;
- 	case WLAN_CATEGORY_S1G:
-+		if (len < offsetofend(typeof(*mgmt),
-+				      u.action.u.s1g.action_code))
-+			break;
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 581df7f4c5240..e7fa0608341d8 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -277,6 +277,11 @@ int cfg80211_mlme_auth(struct cfg80211_registered_device *rdev,
+ 	    ether_addr_equal(req->bss->bssid, wdev->u.client.connected_addr))
+ 		return -EALREADY;
+ 
++	if (ether_addr_equal(req->bss->bssid, dev->dev_addr) ||
++	    (req->link_id >= 0 &&
++	     ether_addr_equal(req->ap_mld_addr, dev->dev_addr)))
++		return -EINVAL;
 +
- 		switch (mgmt->u.action.u.s1g.action_code) {
- 		case WLAN_S1G_TWT_SETUP:
- 		case WLAN_S1G_TWT_TEARDOWN:
+ 	return rdev_auth(rdev, dev, req);
+ }
+ 
+@@ -331,6 +336,9 @@ int cfg80211_mlme_assoc(struct cfg80211_registered_device *rdev,
+ 			if (req->links[i].bss == req->links[j].bss)
+ 				return -EINVAL;
+ 		}
++
++		if (ether_addr_equal(req->links[i].bss->bssid, dev->dev_addr))
++			return -EINVAL;
+ 	}
+ 
+ 	if (wdev->connected &&
+@@ -338,6 +346,11 @@ int cfg80211_mlme_assoc(struct cfg80211_registered_device *rdev,
+ 	     !ether_addr_equal(wdev->u.client.connected_addr, req->prev_bssid)))
+ 		return -EALREADY;
+ 
++	if ((req->bss && ether_addr_equal(req->bss->bssid, dev->dev_addr)) ||
++	    (req->link_id >= 0 &&
++	     ether_addr_equal(req->ap_mld_addr, dev->dev_addr)))
++		return -EINVAL;
++
+ 	cfg80211_oper_and_ht_capa(&req->ht_capa_mask,
+ 				  rdev->wiphy.ht_capa_mod_mask);
+ 	cfg80211_oper_and_vht_capa(&req->vht_capa_mask,
 -- 
 2.40.1
 
