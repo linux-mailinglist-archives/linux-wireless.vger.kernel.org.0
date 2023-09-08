@@ -2,117 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 185D0797F9D
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 02:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1132779806B
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 04:13:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235443AbjIHAXo convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Sep 2023 20:23:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54402 "EHLO
+        id S232719AbjIHCDA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Sep 2023 22:03:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233455AbjIHAXo (ORCPT
+        with ESMTP id S230436AbjIHCDA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Sep 2023 20:23:44 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7381BCD;
-        Thu,  7 Sep 2023 17:23:39 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3880NDSd81157082, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 3880NDSd81157082
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 8 Sep 2023 08:23:14 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 8 Sep 2023 08:23:14 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Fri, 8 Sep 2023 08:23:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
- RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
- 15.01.2375.007; Fri, 8 Sep 2023 08:23:13 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Sascha Hauer <s.hauer@pengutronix.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, Yanik Fuchs <Yanik.fuchs@mbv.ch>
-Subject: RE: [PATCH] wifi: rtw88: rtw8723d: Fix MAC address offset in EEPROM
-Thread-Topic: [PATCH] wifi: rtw88: rtw8723d: Fix MAC address offset in EEPROM
-Thread-Index: AQHZ4bCywrxD8v2r7U+cPGPqL7npbrAQEGKw
-Date:   Fri, 8 Sep 2023 00:23:13 +0000
-Message-ID: <bed0e0cacc44476582fc58180d77519c@realtek.com>
-References: <20230907071614.2032404-1-s.hauer@pengutronix.de>
-In-Reply-To: <20230907071614.2032404-1-s.hauer@pengutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.25]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 7 Sep 2023 22:03:00 -0400
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD9F1BD7
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Sep 2023 19:02:56 -0700 (PDT)
+Received: by mail-vs1-xe2f.google.com with SMTP id ada2fe7eead31-45070739316so630992137.1
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Sep 2023 19:02:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1694138575; x=1694743375; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9nCNK53rTjLnVysfgXoglxvrQ8+xq11LiIZcoNznmu8=;
+        b=f5eyIIxd3AMpaxoLRsYl4V8eOkfTfw12fJZozOjo7CPPm9CI9L9jCD0hdEFAdXvwKM
+         3bL3mJToI3Co5HpeQli+rM6ki+hYj+Wr/cYTr82029F/ntbzdcSHLrGff5TDv+Oucc1x
+         rcMJpdmcnPY2kCSq9zIEclAP8i3h2+zhVJWio=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694138575; x=1694743375;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9nCNK53rTjLnVysfgXoglxvrQ8+xq11LiIZcoNznmu8=;
+        b=VdL3AfXJ2Q5LmD0xEVNtj6+OWAYh1qj9zPwCiNRINRaVVCmoScIJz4QBu7HNDtDxP0
+         N09FuTf2Y8DXK9zN5clFVvWnhNKvjAlLB74Bwt0mw7Sikvs64mCeDqyQEz1sgTKsnuMp
+         84HXf8D0qtHfsN3Nq+ZFb1i/ofimcPGT3TFXTbJ+gJ7bJDau4EclC5/YjsjzMzAtXi+y
+         eBA9+Qlta8cFz8BwDckAJYZ9tE7mgFlTFLbc1AzjHbqhMfI5qJ8gJOALzRN+lAUf9eNp
+         jWFC6ZxscjwbldF5Lt+v0kwffI+xcMVAiHj8fARV9RWaOC0rgFv5Gq65ttmTqZRKV8cs
+         4nwg==
+X-Gm-Message-State: AOJu0YwIiopb8etUuUd6j1cXuCcG4KCsUYdCEQN3q7+YJd4O/Vw5Crj2
+        rm447mPZD4gkQp7tBUIMNR6Y2MR/rI6S6dGReSnZdA==
+X-Google-Smtp-Source: AGHT+IHyI1+UjDzAz/EZqFtxqoQ3AvK6alN6pBhvAa3cuwihyqW9mDq6z/mA+rQoOxBUQabMw7vHgg==
+X-Received: by 2002:a05:6102:e4e:b0:44d:5718:d72a with SMTP id p14-20020a0561020e4e00b0044d5718d72amr1623519vst.11.1694138575052;
+        Thu, 07 Sep 2023 19:02:55 -0700 (PDT)
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com. [209.85.217.43])
+        by smtp.gmail.com with ESMTPSA id m6-20020a67e0c6000000b0044d4e63aa03sm146695vsl.25.2023.09.07.19.02.54
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Sep 2023 19:02:54 -0700 (PDT)
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-44e8d9e6ca0so630494137.3
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Sep 2023 19:02:54 -0700 (PDT)
+X-Received: by 2002:a67:fc05:0:b0:44d:3bc0:f1ba with SMTP id
+ o5-20020a67fc05000000b0044d3bc0f1bamr1510797vsq.26.1694138574367; Thu, 07 Sep
+ 2023 19:02:54 -0700 (PDT)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <4b2ee1382896dd7ff27ecbef6e1ad496edccd3ad.1694129223.git.objelf@gmail.com>
+In-Reply-To: <4b2ee1382896dd7ff27ecbef6e1ad496edccd3ad.1694129223.git.objelf@gmail.com>
+From:   David Ruth <druth@chromium.org>
+Date:   Thu, 7 Sep 2023 22:02:18 -0400
+X-Gmail-Original-Message-ID: <CAKHmtrSRoAWa9bErAdE9dRcFk37L=LZW7T5bpOpF9aC_REiw1w@mail.gmail.com>
+Message-ID: <CAKHmtrSRoAWa9bErAdE9dRcFk37L=LZW7T5bpOpF9aC_REiw1w@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mt76: mt7921: fix the wrong rate selected in fw for
+ the chanctx driver
+To:     sean.wang@mediatek.com
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
+        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
+        Deren.Wu@mediatek.com, km.lin@mediatek.com,
+        robin.chiu@mediatek.com, Eddie.Chen@mediatek.com,
+        jsiuda@google.com, arowa@google.org, frankgor@google.com,
+        kuabhs@google.com, abhishekpandit@google.com, shawnku@google.com,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Sent: Thursday, September 7, 2023 3:16 PM
-> To: linux-wireless@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih <pkshih@realtek.com>; Yanik
-> Fuchs <Yanik.fuchs@mbv.ch>
-> Subject: [PATCH] wifi: rtw88: rtw8723d: Fix MAC address offset in EEPROM
-> 
-> The MAC address is stored at offset 0x107 in the EEPROM, like correctly
-> stated in the comment. Add a two bytes reserved field right before the
-> MAC address to shift it from offset 0x105 to 0x107.
-> 
-> With this the MAC address returned from my RTL8723du wifi stick can be
-> correctly decoded as "Shenzhen Four Seas Global Link Network Technology
-> Co., Ltd."
-
-With this correctness, my stick can be recognized as: 
-" Bus 003 Device 010: ID 0bda:d723 Realtek Semiconductor Corp. 802.11n WLAN Adapter"
-
-Should it add a Fixes tag? 
-Fixes: 87caeef032fc ("wifi: rtw88: Add rtw8723du chipset support")
-
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Reported-by: Yanik Fuchs <Yanik.fuchs@mbv.ch>
-> Cc: stable@vger.kernel.org
-
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-
-By the way, this patch should be 'v2' that seems to add more people in
-To or Cc fields.
-
-> ---
->  drivers/net/wireless/realtek/rtw88/rtw8723d.h | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-> b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-> index 3642a2c7f80c9..2434e2480cbe2 100644
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-> @@ -46,6 +46,7 @@ struct rtw8723du_efuse {
->         u8 vender_id[2];                /* 0x100 */
->         u8 product_id[2];               /* 0x102 */
->         u8 usb_option;                  /* 0x104 */
-> +       u8 res5[2];                     /* 0x105 */
->         u8 mac_addr[ETH_ALEN];          /* 0x107 */
->  };
-> 
-> --
-> 2.39.2
-
+Tested-by: David Ruth <druth@chromium.org>
