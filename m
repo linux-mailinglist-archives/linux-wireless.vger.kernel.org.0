@@ -2,61 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3CB6799189
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Sep 2023 23:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36BC7799C2E
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Sep 2023 02:22:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245643AbjIHVcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Sep 2023 17:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50998 "EHLO
+        id S239525AbjIJAVF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Sep 2023 20:21:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229891AbjIHVcD (ORCPT
+        with ESMTP id S232480AbjIJAVE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Sep 2023 17:32:03 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BA3719B6;
-        Fri,  8 Sep 2023 14:31:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F758C433C7;
-        Fri,  8 Sep 2023 21:31:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694208718;
-        bh=jnZW3kJ1q2GcV2pxAvLRxz+0IUuoJxM+MtHeCLvaV3k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rL/hXl1JmyCN2+NX3XFRjO3IBjzj3gm/vyTf/yQM/ms1fYHZLLheiBdkAscyPD4ig
-         xEJBQ/sHZdVG/iM0p8OjYq7bcd79OWbtESi4cnpza8CsO0AlxstTVZg+crAliB0M+u
-         sMtzHFoNhDRydKXF6ghbQDeG3lQZH7cQseD/hGy4=
-Date:   Fri, 8 Sep 2023 22:31:55 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        quic_jjohnson@quicinc.com, nbd@nbd.name, lorenzo@kernel.org,
-        ryder.lee@mediatek.com, matthias.bgg@gmail.com, kuba@kernel.org,
-        srini.raju@purelifi.com, stf_xl@wp.pl, helmut.schaa@googlemail.com,
-        pkshih@realtek.com, corentin.chary@gmail.com, hdegoede@redhat.com,
-        markgross@kernel.org, johannes.berg@intel.com,
-        alexander@wetzel-home.de, error27@gmail.com,
-        szymon.heidrich@gmail.com, gustavoars@kernel.org, lynxis@fe80.eu,
-        daniel@makrotopia.org, arnd@arndb.de, shayne.chen@mediatek.com,
-        keescook@chromium.org, tglx@linutronix.de, pabeni@redhat.com,
-        rostedt@goodmis.org, jacob.e.keller@intel.com,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        acpi4asus-user@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org, linux-staging@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 6.5 43/45] Fix nomenclature for USB and PCI
- wireless devices
-Message-ID: <2023090838-slurp-tilt-c7c4@gregkh>
-References: <20230908181327.3459042-1-sashal@kernel.org>
- <20230908181327.3459042-43-sashal@kernel.org>
- <0d2ddf90-2334-4d0c-9f63-018c150e06a9@rowland.harvard.edu>
+        Sat, 9 Sep 2023 20:21:04 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83FA11BD;
+        Sat,  9 Sep 2023 17:21:00 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1c1f8aaab9aso28276555ad.1;
+        Sat, 09 Sep 2023 17:21:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694305260; x=1694910060; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8yNWeS5XoD0V76y9jaPQRQ2qI+OqmwzE1Ju3S23Gapc=;
+        b=HKU7KxpAGNFsmDPNLw7bRTbupuRfM/2n6P9i8D6Lv6dAkjwFAKsks3zdfnMafr3hhx
+         ZVeUunuzeJPDc+iZz10VJTx32rTVLwsxeWGfzfz8ciwMAfSpVANm1ryjm7Nof4p8WzQy
+         whPsdoEjwmLQOvyrC2BVqUe7UVwUzK7Fsg3+ugb6HS0OwUc5NYPpgwZHaCIsYDNR3/V1
+         COZAYgj86o2pTwIj1rW/mstwpI2rW2syFD4Ky0S/VcSh8z2Z6lcBNbclCBsqr6Rfpkez
+         VOm+3Jqak/o1gbo6tqMgqEuB8wJcRAEFWLScGpItsDU3ob5lL/Z1SPJE+ISWxA4Mg93K
+         oUAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694305260; x=1694910060;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8yNWeS5XoD0V76y9jaPQRQ2qI+OqmwzE1Ju3S23Gapc=;
+        b=M5rRAxxzONAx+cOpmjwXavhLb28uILVtR3IxVZanYIac/k+AsrtkzKTkOYoMIUA48w
+         I8ACchzIDjO/IDFIFRvOsXr7EI01wKJcy6PqeEdBKb7ihVGUg0xhdUuhDNdZLTPPHyfI
+         /gYEmJZL8p/+nZo5qzAReNZ8eUk3vf7cQhnITQmp/0CwVMu9OTTBf/KLNsc2uwsrAUcr
+         OHtWbhPACLx34q8wUPNCx5xAfeQo+LrI7KOoaV+ttBy0MzgcqzYTididZoHMRly27zz+
+         j/zL89JvtU13YpNSUg08N29psrPwxqgXyIJ+C32AIpGRoWcPwWYyb6i0+wlKtYrwnfVj
+         r6GA==
+X-Gm-Message-State: AOJu0YyyFlJkpul6G03T2JJ+f211dXpqHt/u6ISgW0BCAFN4KOSiY/o1
+        8O0lu5PIs3C8sruwZov33RaPN+Dz0LaT5a0E
+X-Google-Smtp-Source: AGHT+IEtlLRtmg2gODlfoWvns5ANrN7Dep1WJAIpThoN5CM2H0IXuU/yaZXA3FAIcI81nO65BiPPNg==
+X-Received: by 2002:a17:902:ec88:b0:1c0:d19a:9829 with SMTP id x8-20020a170902ec8800b001c0d19a9829mr6605933plg.25.1694305259688;
+        Sat, 09 Sep 2023 17:20:59 -0700 (PDT)
+Received: from localhost.localdomain (220-133-92-232.hinet-ip.hinet.net. [220.133.92.232])
+        by smtp.googlemail.com with ESMTPSA id e10-20020a170902744a00b001b8943b37a5sm1964790plt.24.2023.09.09.17.20.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Sep 2023 17:20:59 -0700 (PDT)
+From:   Zenm Chen <zenmchen@gmail.com>
+To:     Jes.Sorensen@gmail.com
+Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rtl8821cerfe2@gmail.com,
+        pkshih@realtek.com, Zenm Chen <zenmchen@gmail.com>
+Subject: [PATCH] wifi: rtl8xxxu: fix LED control code of RTL8192FU
+Date:   Sun, 10 Sep 2023 08:20:38 +0800
+Message-ID: <20230910002038.56362-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d2ddf90-2334-4d0c-9f63-018c150e06a9@rowland.harvard.edu>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,43 +70,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Sep 08, 2023 at 03:12:26PM -0400, Alan Stern wrote:
-> On Fri, Sep 08, 2023 at 02:13:24PM -0400, Sasha Levin wrote:
-> > From: Alan Stern <stern@rowland.harvard.edu>
-> > 
-> > [ Upstream commit 5d7cf67f72ae34d38e090bdfa673da4aefe4048e ]
-> > 
-> > A mouse that uses a USB connection is called a "USB mouse" device (or
-> > "USB mouse" for short), not a "mouse USB" device.  By analogy, a WiFi
-> > adapter that connects to the host computer via USB is a "USB wireless"
-> > device, not a "wireless USB" device.  (The latter term more properly
-> > refers to a defunct Wireless USB specification, which described a
-> > technology for sending USB protocol messages over an ultra wideband
-> > radio link.)
-> > 
-> > Similarly for a WiFi adapter card that plugs into a PCIe slot: It is a
-> > "PCIe wireless" device, not a "wireless PCIe" device.
-> > 
-> > Rephrase the text in the kernel source where the word ordering is
-> > wrong.
-> > 
-> > Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> > Link: https://lore.kernel.org/r/57da7c80-0e48-41b5-8427-884a02648f55@rowland.harvard.edu
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> 
-> Is there any real reason to apply this commit to the -stable kernels?
-> I did not mark it that way when it was submitted, and it doesn't fix
-> any bugs.  In fact, aside from updating some module and device
-> description strings, all it does is change a bunch of comments.
-> 
-> Does that really fall under the -stable rules for acceptance?
+ASUS USB-N13 C1 is a wifi adapter based on a RTL8192FU chip and its LED
+doesn't blink with the rtl8xxxu driver. This patch fix this via writing
+the correct value to the register "REG_LEDCFG0".
 
-Not really, this is just documentation, it should be dropped from the
-autosel queues.
+This was tested with these two wifi adapters:
+ASUS USB-N13 C1	(vid=0x0b05, pid=0x18f1, rfe_type=0x1)
+MERCURY MW310UH	(vid=0x0bda, pid=0xf192, rfe_type=0x5)
 
-thanks,
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+---
+ .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 24 ++++++++-----------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-greg k-h
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+index 28e93835e05a..ab6d4e4e228e 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+@@ -2014,26 +2014,22 @@ static int rtl8192fu_led_brightness_set(struct led_classdev *led_cdev,
+ 	struct rtl8xxxu_priv *priv = container_of(led_cdev,
+ 						  struct rtl8xxxu_priv,
+ 						  led_cdev);
+-	u16 ledcfg;
++	u32 ledcfg;
+ 
+ 	/* Values obtained by observing the USB traffic from the Windows driver. */
+ 	rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_0, 0x20080);
+ 	rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_1, 0x1b0000);
+ 
+-	ledcfg = rtl8xxxu_read16(priv, REG_LEDCFG0);
+-
+-	if (brightness == LED_OFF) {
+-		/* Value obtained like above. */
+-		ledcfg = BIT(1) | BIT(7);
+-	} else if (brightness == LED_ON) {
+-		/* Value obtained like above. */
+-		ledcfg = BIT(1) | BIT(7) | BIT(11);
+-	} else if (brightness == RTL8XXXU_HW_LED_CONTROL) {
+-		/* Value obtained by brute force. */
+-		ledcfg = BIT(8) | BIT(9);
+-	}
++	/* Enable LED0 GPIO and turn LED0/LED1 off. */
++	ledcfg = (rtl8xxxu_read32(priv, REG_LEDCFG0) | BIT(21)) & ~0xffff;
++
++	/* Values obtained by brute force. */
++	if (brightness == LED_ON)
++		ledcfg |= BIT(3) | BIT(11);
++	else if (brightness == RTL8XXXU_HW_LED_CONTROL)
++		ledcfg |= BIT(0) | BIT(1) | BIT(8) | BIT(9);
+ 
+-	rtl8xxxu_write16(priv, REG_LEDCFG0, ledcfg);
++	rtl8xxxu_write32(priv, REG_LEDCFG0, ledcfg);
+ 
+ 	return 0;
+ }
+-- 
+2.42.0
+
