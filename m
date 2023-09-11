@@ -2,66 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A13AD79A1F7
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Sep 2023 05:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A69479A5EA
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Sep 2023 10:22:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231686AbjIKDp4 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 10 Sep 2023 23:45:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45436 "EHLO
+        id S229501AbjIKIWO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Sep 2023 04:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjIKDp4 (ORCPT
+        with ESMTP id S233870AbjIKIWN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 10 Sep 2023 23:45:56 -0400
+        Mon, 11 Sep 2023 04:22:13 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7B319C;
-        Sun, 10 Sep 2023 20:45:47 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38B3jayK7720369, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38B3jayK7720369
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A95D7DC
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Sep 2023 01:22:08 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38B8LwWF21002935, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38B8LwWF21002935
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 11 Sep 2023 11:45:36 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 11 Sep 2023 11:45:36 +0800
+        Mon, 11 Sep 2023 16:21:58 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Mon, 11 Sep 2023 11:45:36 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
- RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
- 15.01.2375.007; Mon, 11 Sep 2023 11:45:36 +0800
+ 15.1.2507.17; Mon, 11 Sep 2023 16:21:59 +0800
+Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 11 Sep
+ 2023 16:21:58 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Zenm Chen <zenmchen@gmail.com>,
-        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
-CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-Subject: RE: [PATCH] wifi: rtl8xxxu: fix LED control code of RTL8192FU
-Thread-Topic: [PATCH] wifi: rtl8xxxu: fix LED control code of RTL8192FU
-Thread-Index: AQHZ43yy3RGPFV4ndke0IFI7dh9WYrAU6yYA
-Date:   Mon, 11 Sep 2023 03:45:36 +0000
-Message-ID: <f4891f71e1f44e7891d20a67b5db9523@realtek.com>
-References: <20230910002038.56362-1-zenmchen@gmail.com>
-In-Reply-To: <20230910002038.56362-1-zenmchen@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.25]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/6] wifi: rtw89: add TX/RX descriptor v2 and mac port registers for WiFi 7 chips
+Date:   Mon, 11 Sep 2023 16:20:43 +0800
+Message-ID: <20230911082049.33541-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.25]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_PASS,T_SPF_HELO_TEMPERROR autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,91 +54,55 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+WiFi 7 chips use different TX/RX descriptors and mac port registers, but
+logic is similar or the same as before, so implment them and reuse the
+existing code.
 
+Three descriptors types:
+ - RX descriptor or RXWD (RX WiFi Descriptor) for short
+   That is meta data of received packet, such as MAC_ID, security CAM
+   index and etc.
+ - TX descriptor or TXWD (TX WiFi Descriptor) for short
+   That is meta data of sending packet. Similar to RX descriptor, it
+   contains MAC_ID, security key ID and etc.
+ - TX descriptor for firmware command
+   To send firmware command or download firmware is via a special path, and
+   use different descriptor from normal TX packets. Because it doesn't need
+   much meta data to assist, we choose short form RXWD to reduce overhead.
 
-> -----Original Message-----
-> From: Zenm Chen <zenmchen@gmail.com>
-> Sent: Sunday, September 10, 2023 8:21 AM
-> To: Jes.Sorensen@gmail.com
-> Cc: kvalo@kernel.org; linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
-> rtl8821cerfe2@gmail.com; Ping-Ke Shih <pkshih@realtek.com>; Zenm Chen <zenmchen@gmail.com>
-> Subject: [PATCH] wifi: rtl8xxxu: fix LED control code of RTL8192FU
-> 
-> ASUS USB-N13 C1 is a wifi adapter based on a RTL8192FU chip and its LED
-> doesn't blink with the rtl8xxxu driver. This patch fix this via writing
-> the correct value to the register "REG_LEDCFG0".
-> 
-> This was tested with these two wifi adapters:
-> ASUS USB-N13 C1 (vid=0x0b05, pid=0x18f1, rfe_type=0x1)
-> MERCURY MW310UH (vid=0x0bda, pid=0xf192, rfe_type=0x5)
+About TXWD body and info:
+   TXWD body is hard required, but TXWD info can be skipped to reduce
+   overhead. A bit defined in TXWD body to indicate if TXWD info presents.
+   For this driver, we always fill both.
 
-Did you ever try Linux vendor driver for software and hardware LED? 
-Seemingly, the vendor driver is different from yours, but I'm pretty 
-sure which one is correct because I don't have a RTL8192FU stick. 
+About RXWD short and long forms:
+   Similarly, RXWD can be short or long forms. For driver, it must handle
+   both though.
 
-> 
-> Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-> ---
->  .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 24 ++++++++-----------
->  1 file changed, 10 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-> index 28e93835e05a..ab6d4e4e228e 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-> @@ -2014,26 +2014,22 @@ static int rtl8192fu_led_brightness_set(struct led_classdev *led_cdev,
->         struct rtl8xxxu_priv *priv = container_of(led_cdev,
->                                                   struct rtl8xxxu_priv,
->                                                   led_cdev);
-> -       u16 ledcfg;
-> +       u32 ledcfg;
-> 
->         /* Values obtained by observing the USB traffic from the Windows driver. */
->         rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_0, 0x20080);
->         rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_1, 0x1b0000);
-> 
-> -       ledcfg = rtl8xxxu_read16(priv, REG_LEDCFG0);
-> -
-> -       if (brightness == LED_OFF) {
-> -               /* Value obtained like above. */
-> -               ledcfg = BIT(1) | BIT(7);
-> -       } else if (brightness == LED_ON) {
-> -               /* Value obtained like above. */
-> -               ledcfg = BIT(1) | BIT(7) | BIT(11);
-> -       } else if (brightness == RTL8XXXU_HW_LED_CONTROL) {
-> -               /* Value obtained by brute force. */
-> -               ledcfg = BIT(8) | BIT(9);
-> -       }
+This patchset doesn't change logic for existing chpis.
 
-The definitions are used by this driver: 
+Ping-Ke Shih (6):
+  wifi: rtw89: add to query RX descriptor format v2
+  wifi: rtw89: add to fill TX descriptor for firmware command v2
+  wifi: rtw89: add to fill TX descriptor v2
+  wifi: rtw89: add chip_info::txwd_info size to generalize TX WD submit
+  wifi: rtw89: consolidate registers of mac port to struct
+  wifi: rtw89: add mac_gen pointer to access mac port registers
 
-#define BIT_LED2EN BIT(21)
-#define BIT_LED1SV BIT(11) // the same definition with BIT_LED0SV
-#define BIT_LED1CM GENMASK(10, 8) // use the same value of BIT_LED0CM
-#define BIT_LED0SV BIT(3)
-#define BIT_LED0CM GENMASK(2, 0)
-#define LED_MODE_TX_OR_RX_EVENTS 3
-#define LED_MODE_SW_CTRL 0
+ drivers/net/wireless/realtek/rtw89/core.c     | 215 ++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h     |  62 ++++
+ drivers/net/wireless/realtek/rtw89/mac.c      |  94 ++++--
+ drivers/net/wireless/realtek/rtw89/mac.h      |   1 +
+ drivers/net/wireless/realtek/rtw89/mac_be.c   |  27 ++
+ drivers/net/wireless/realtek/rtw89/pci.c      |   3 +-
+ drivers/net/wireless/realtek/rtw89/reg.h      | 147 ++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   1 +
+ drivers/net/wireless/realtek/rtw89/txrx.h     | 271 ++++++++++++++++++
+ 12 files changed, 791 insertions(+), 33 deletions(-)
 
-
-> +       /* Enable LED0 GPIO and turn LED0/LED1 off. */
-> +       ledcfg = (rtl8xxxu_read32(priv, REG_LEDCFG0) | BIT(21)) & ~0xffff;
-
-Split this statement into multiple lines and use definitions I provide above.
-
-> +
-> +       /* Values obtained by brute force. */
-> +       if (brightness == LED_ON)
-> +               ledcfg |= BIT(3) | BIT(11);
-> +       else if (brightness == RTL8XXXU_HW_LED_CONTROL)
-> +               ledcfg |= BIT(0) | BIT(1) | BIT(8) | BIT(9);
-> 
-> -       rtl8xxxu_write16(priv, REG_LEDCFG0, ledcfg);
-> +       rtl8xxxu_write32(priv, REG_LEDCFG0, ledcfg);
-> 
->         return 0;
->  }
-> --
-> 2.42.0
+-- 
+2.25.1
 
