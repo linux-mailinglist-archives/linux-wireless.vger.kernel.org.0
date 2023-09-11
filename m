@@ -2,42 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D86479B9BB
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 02:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D751479BC86
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 02:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241435AbjIKVs3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55324 "EHLO
+        id S244043AbjIKVsk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243998AbjIKSiq (ORCPT
+        with ESMTP id S244017AbjIKSlz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Sep 2023 14:38:46 -0400
+        Mon, 11 Sep 2023 14:41:55 -0400
 Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26C751AB
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Sep 2023 11:38:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F07D1A7
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Sep 2023 11:41:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-        s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-ID:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+        To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=eAcOTaZvHF4QuJj6wJNpdOVVeuYWcUAcVJa8WDVm+8s=; b=f4nBOL5A+gTrD3tZ4uzlK4VkNM
-        /bbL1i67/knuLjPHRQhzAOt5JD5n3cqVtQbs+7qWb03KXoibZcpjB1fKD+trn1uqh0SiNco8nu/l/
-        E0yPb3ITJkiIF3Ld80rLqJbGCK5BVHNERQGFvj2UXt7Ctx17TZjsWVgnR280QSH2S+O4=;
+        bh=WkXdiO68jJnbJQUnBoaimxKLTbA37DUiHPaNYaTfp9U=; b=IU51y0mu0Hugru/Q3iiqQskEyY
+        85PzTU7y2kL0VwKNe2JI9wO+AS5KJJQXKgoPD9gqo4AlbhRPChDuUmdAI5S7BNzMB5EtRxC8tc5hd
+        nv62psKlU5hMtUl7LiaYv1rb2XojtJRkYYZ8/6u2iDwPnLk+9GPJczCVLy0BR24TthdU=;
 Received: from p4ff13705.dip0.t-ipconnect.de ([79.241.55.5] helo=localhost.localdomain)
         by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
         (Exim 4.94.2)
         (envelope-from <nbd@nbd.name>)
-        id 1qflny-000t0P-GF
-        for linux-wireless@vger.kernel.org; Mon, 11 Sep 2023 20:38:38 +0200
+        id 1qflr2-000t2k-FV
+        for linux-wireless@vger.kernel.org; Mon, 11 Sep 2023 20:41:48 +0200
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 2/2] wifi: mt76: remove unused error path in mt76_connac_tx_complete_skb
-Date:   Mon, 11 Sep 2023 20:38:37 +0200
-Message-ID: <20230911183837.51601-2-nbd@nbd.name>
+Subject: [PATCH] wifi: mt76: mt7915: fix monitor mode issues
+Date:   Mon, 11 Sep 2023 20:41:48 +0200
+Message-ID: <20230911184148.51854-1-nbd@nbd.name>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230911183837.51601-1-nbd@nbd.name>
-References: <20230911183837.51601-1-nbd@nbd.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -49,114 +47,96 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The error handling code was added in order to allow tx enqueue to fail after
-calling .tx_prepare_skb. Since this can no longer happen, the error handling
-code is unused.
+Enable receiving other-unicast packets
+Disable RX header translation in order to proprerly receive data packets.
+Fixes warnings and missed packets when rx decap offload is enabled
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c        |  3 ---
- .../net/wireless/mediatek/mt76/mt7615/pci_mac.c |  2 +-
- .../wireless/mediatek/mt76/mt76_connac_mac.c    | 17 -----------------
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/pci_mac.c |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c |  2 +-
- 6 files changed, 4 insertions(+), 24 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 24 ++++++++++++++-----
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 ++
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  |  1 +
+ 3 files changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index 05d9ab3ce819..6a6af1d3d687 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -330,9 +330,6 @@ mt76_dma_tx_cleanup_idx(struct mt76_dev *dev, struct mt76_queue *q, int idx,
- 	if (e->txwi == DMA_DUMMY_DATA)
- 		e->txwi = NULL;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 55809d9f7a7b..240483154faa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -483,16 +483,22 @@ static int mt7915_config(struct ieee80211_hw *hw, u32 changed)
+ 	if (changed & IEEE80211_CONF_CHANGE_MONITOR) {
+ 		bool enabled = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
+ 		bool band = phy->mt76->band_idx;
++		u32 rxfilter = phy->rxfilter;
  
--	if (e->skb == DMA_DUMMY_DATA)
--		e->skb = NULL;
--
- 	*prev_e = *e;
- 	memset(e, 0, sizeof(*e));
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-index 0019890fdb78..fbb1181c58ff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-@@ -106,7 +106,7 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	else
- 		mt76_connac_write_hw_txp(mdev, tx_info, txp, id);
+-		if (!enabled)
+-			phy->rxfilter |= MT_WF_RFCR_DROP_OTHER_UC;
+-		else
+-			phy->rxfilter &= ~MT_WF_RFCR_DROP_OTHER_UC;
++		if (!enabled) {
++			rxfilter |= MT_WF_RFCR_DROP_OTHER_UC;
++			dev->monitor_mask &= ~BIT(band);
++		} else {
++			rxfilter &= ~MT_WF_RFCR_DROP_OTHER_UC;
++			dev->monitor_mask |= BIT(band);
++		}
  
--	tx_info->skb = DMA_DUMMY_DATA;
-+	tx_info->skb = NULL;
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index ee5177fd6dde..73db9e14db06 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -151,23 +151,6 @@ void mt76_connac_tx_complete_skb(struct mt76_dev *mdev,
- 		return;
+ 		mt76_rmw_field(dev, MT_DMA_DCR0(band), MT_DMA_DCR0_RXD_G5_EN,
+ 			       enabled);
++		mt76_rmw_field(dev, MT_DMA_DCR0(band), MT_MDP_DCR0_RX_HDR_TRANS_EN,
++			       !dev->monitor_mask);
+ 		mt76_testmode_reset(phy->mt76, true);
+-		mt76_wr(dev, MT_WF_RFCR(band), phy->rxfilter);
++		mt76_wr(dev, MT_WF_RFCR(band), rxfilter);
  	}
  
--	/* error path */
--	if (e->skb == DMA_DUMMY_DATA) {
--		struct mt76_connac_txp_common *txp;
--		struct mt76_txwi_cache *t;
--		u16 token;
--
--		txp = mt76_connac_txwi_to_txp(mdev, e->txwi);
--		if (is_mt76_fw_txp(mdev))
--			token = le16_to_cpu(txp->fw.token);
--		else
--			token = le16_to_cpu(txp->hw.msdu_id[0]) &
--				~MT_MSDU_ID_VALID;
--
--		t = mt76_token_put(mdev, token);
--		e->skb = t ? t->skb : NULL;
--	}
--
- 	if (e->skb)
- 		mt76_tx_complete_skb(mdev, e->wcid, e->skb);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index b8b0c0fda752..2222fb9aa103 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -809,7 +809,7 @@ int mt7915_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 		txp->rept_wds_wcid = cpu_to_le16(wcid->idx);
- 	else
- 		txp->rept_wds_wcid = cpu_to_le16(0x3ff);
--	tx_info->skb = DMA_DUMMY_DATA;
-+	tx_info->skb = NULL;
+ 	mutex_unlock(&dev->mt76.mutex);
+@@ -527,6 +533,7 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
+ 			MT_WF_RFCR1_DROP_BA |
+ 			MT_WF_RFCR1_DROP_CFEND |
+ 			MT_WF_RFCR1_DROP_CFACK;
++	u32 rxfilter;
+ 	u32 flags = 0;
  
- 	/* pass partial skb header to fw */
- 	tx_info->buf[1].len = MT_CT_PARSE_LEN;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index e7a995e7e70a..c866144ff061 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -48,7 +48,7 @@ int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	memset(txp, 0, sizeof(struct mt76_connac_hw_txp));
- 	mt76_connac_write_hw_txp(mdev, tx_info, txp, id);
+ #define MT76_FILTER(_flag, _hw) do {					\
+@@ -561,7 +568,12 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
+ 			     MT_WF_RFCR_DROP_NDPA);
  
--	tx_info->skb = DMA_DUMMY_DATA;
-+	tx_info->skb = NULL;
+ 	*total_flags = flags;
+-	mt76_wr(dev, MT_WF_RFCR(band), phy->rxfilter);
++	rxfilter = phy->rxfilter;
++	if (hw->conf.flags & IEEE80211_CONF_MONITOR)
++		rxfilter &= ~MT_WF_RFCR_DROP_OTHER_UC;
++	else
++		rxfilter |= MT_WF_RFCR_DROP_OTHER_UC;
++	mt76_wr(dev, MT_WF_RFCR(band), rxfilter);
  
- 	return 0;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index ac8759febe48..0eebf915df26 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -995,7 +995,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 		txp->fw.rept_wds_wcid = cpu_to_le16(wcid->idx);
- 	else
- 		txp->fw.rept_wds_wcid = cpu_to_le16(0xfff);
--	tx_info->skb = DMA_DUMMY_DATA;
-+	tx_info->skb = NULL;
+ 	if (*total_flags & FIF_CONTROL)
+ 		mt76_clear(dev, MT_WF_RFCR1(band), ctl_flags);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 0456e56f6348..795c3e6f80ca 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -295,6 +295,8 @@ struct mt7915_dev {
+ 	bool muru_debug;
+ 	bool ibf;
  
- 	/* pass partial skb header to fw */
- 	tx_info->buf[1].len = MT_CT_PARSE_LEN;
++	u8 monitor_mask;
++
+ 	struct dentry *debugfs_dir;
+ 	struct rchan *relay_fwlog;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index 588cd87e24e9..89ac8e6707b8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -172,6 +172,7 @@ enum offs_rev {
+ 
+ #define MT_MDP_DCR0			MT_MDP(0x000)
+ #define MT_MDP_DCR0_DAMSDU_EN		BIT(15)
++#define MT_MDP_DCR0_RX_HDR_TRANS_EN	BIT(19)
+ 
+ #define MT_MDP_DCR1			MT_MDP(0x004)
+ #define MT_MDP_DCR1_MAX_RX_LEN		GENMASK(15, 3)
 -- 
 2.41.0
 
