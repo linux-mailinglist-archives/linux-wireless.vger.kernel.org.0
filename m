@@ -2,99 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81E6E79B860
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 02:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6FA279BB52
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 02:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352104AbjIKVso (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41850 "EHLO
+        id S235924AbjIKVs5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240345AbjIKOmJ (ORCPT
+        with ESMTP id S242828AbjIKQXe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Sep 2023 10:42:09 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B771012A;
-        Mon, 11 Sep 2023 07:42:01 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1bdf4752c3cso30794045ad.2;
-        Mon, 11 Sep 2023 07:42:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694443321; x=1695048121; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V9mEfdNRBv36Id6cA4R/qaRT3o+SLZtHn5FXKarxxl0=;
-        b=eWaY4oWEtOSQLEjmOIoh68uWloyti+GLsFACOlDTqFssjAefpC5xbWk81KW8iEfpa5
-         nGE9VL4lHxrrPVnZjSxOlvmmnDw/QDQLYAeg3R+Y4DhrfQf+8aSo2n5taTJaLvwQxSMk
-         J0XSZhh+7k4/oe2efkIRmscoJE5zpTdrdSRuTXEJv1Ob4xTQMdrGXCJmMIUv4IwSH85x
-         0GXoDYlPWMQY2HQNsgoizzPaU9T3V8W+OQyppWVfxxCbPGdw7daG+/yhoFPoNgceci53
-         rWrBG5eTWq+uVm+Z2MZU8rOkZCZMBSF3Edegb9GPRpX57deFLEJubTO2m6gju6xVYnrm
-         0EeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694443321; x=1695048121;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V9mEfdNRBv36Id6cA4R/qaRT3o+SLZtHn5FXKarxxl0=;
-        b=xNOhNokChhKu5uF34vFDhA3WfTAD7OEX0A7j2t9Hx4HGIjwqRFq6p3+7aPc6GDBF9R
-         8ftuZ66tasg/9+VPwWbFao8oW3c1+CadNN77zpsc19CmV83mGp/kkoxinr69wVwYH68U
-         WRUVQM4ZEpilsEs7f/Sq2IgsmrQLAz30uTJPkNcCHncr0XZ6h3Rz/gScLJLmciwrR7Qt
-         QGELEpgf991A7QinrsWJXXWGS7iZO9MaWnI9b2DXWGYnrxN5U0hIN9Z4VGmGxqEyx+JF
-         19ELhhLinThJXQFrKJleToUzEaZMaZ0T+WD5j/jHmHUNw2eDSG3Ui7rhoXNHEYgQuFXh
-         MTKg==
-X-Gm-Message-State: AOJu0YyIH0oyfvHJUAc3bBbH0+pscfcjHHWQDAW8C16RE/ZTK2O0RkrB
-        QJZcfav9ZQjlcQHI23Y7agQ=
-X-Google-Smtp-Source: AGHT+IHerRZcuoZ5Ogx/usT5Z5o59ZjgUHMFuEAUjJXNeU3xg03bZYLFnT5ZxjM6OQ/cK0kZZ9R6vg==
-X-Received: by 2002:a17:902:d4c6:b0:1c3:8464:cad1 with SMTP id o6-20020a170902d4c600b001c38464cad1mr9611340plg.26.1694443320803;
-        Mon, 11 Sep 2023 07:42:00 -0700 (PDT)
-Received: from localhost.localdomain (220-133-92-232.hinet-ip.hinet.net. [220.133.92.232])
-        by smtp.googlemail.com with ESMTPSA id kb14-20020a170903338e00b001b8a2edab6asm6594337plb.244.2023.09.11.07.41.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Sep 2023 07:42:00 -0700 (PDT)
-From:   xx777 <zenmchen@gmail.com>
-To:     zenmchen@gmail.com
-Cc:     Jes.Sorensen@gmail.com, kvalo@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        pkshih@realtek.com, rtl8821cerfe2@gmail.com
-Subject: Re: [PATCH] wifi: rtl8xxxu: fix LED control code of RTL8192FU
-Date:   Mon, 11 Sep 2023 22:41:45 +0800
-Message-ID: <20230911144155.5871-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230910002038.56362-1-zenmchen@gmail.com>
-References: <20230910002038.56362-1-zenmchen@gmail.com>
+        Mon, 11 Sep 2023 12:23:34 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6595ECCA
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Sep 2023 09:23:29 -0700 (PDT)
+Received: from [192.168.151.20] ([217.224.116.76]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MWRZt-1q7v733c43-00XqTb; Mon, 11 Sep 2023 18:23:22 +0200
+Message-ID: <e1dd75d4-a7f5-6aa1-556e-1d288e46c55b@online.de>
+Date:   Mon, 11 Sep 2023 18:23:22 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+From:   Max Schulze <max.schulze@online.de>
+Subject: Re: [RFC PATCH v4 6.1] wifi: cfg80211: fix cqm_config access race
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+References: <ac96309a-8d8d-4435-36e6-6d152eb31876@online.de>
+ <20230816153803.b53dd297eacc.I1a1bb102329fc88e4712eaf394cba3025ada0dc7@changeid>
+Content-Language: en-US
+In-Reply-To: <20230816153803.b53dd297eacc.I1a1bb102329fc88e4712eaf394cba3025ada0dc7@changeid>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:lEpyrNpzpO0YErxdKTxgaB7e0m8m+Bjqq21ndAd6xSzWcbK3jEH
+ MLJz50aHyI4L50AFyR38xUTHQnUXOeZOHTu4CpUQRE7kn+5gDUu6DUWRHZZESZSY7d/pqdG
+ e0MCGfnwpGOCfQaGxtAQJ8v9AP9ldfEo6em68LgMwMqZFDkaF2HT7zT27bMnPQ8ZGgxoNfr
+ BVfuAFphtzQJOxXKYieRg==
+UI-OutboundReport: notjunk:1;M01:P0:OGPp+lkkUB4=;WzflhvCPTUp2i5r9AgC840858X3
+ qHZrZ+bYDrPC2dYwHa/iQcuxN8GZraQBDEpmtscyvZ9aswiWOYDEpXJM7bUp3NK55mS50QBya
+ skgh04Ee6H0nH2FnlDz3yUWYhSsSkwj145KyZUC6by8qdmoLSuzUFq+BnUIedY65CodOoXme5
+ e0Vb7twMdibA+F/pF5PKVGBhcMAv6R/vm0xkSKAckhSfeFNAeqq2MW82p5SWEPyd/rnC+klyr
+ OX8op4cXb6PBHKBpbytX2aZtGdkowZv2p5IF09gXbeVXETMrvlIF/364hkY4pGgZD5kpv3qQb
+ NncZckqqccAt3y2+UiDiu33Yd/PxmiJs3+BGxwGcsBtKD7+EBNphmXue8dE9i5Ruiohith8ue
+ m111e8qJYEa0KW/IujuyRaj65TJvWTsknsMXjuzWZSnLWNrWUzRLk6AJB3+crPkH8pTlzF3VA
+ ch6l819HH4+8ZKpBk9vOtVJCRproyvdPEh0a6QKQ6n7A+ntOj1TcjTienkQwZRT1Xqv69pV9b
+ Q7rnAM3sFErH7C7qK4MCjN9iHLzGbsM89FwR+vKnMtNwQZ9Nr5casCY/nt2U8VO9aGJ0IMtXr
+ QQcaQ1jxsNyYHKQQ2UKbwqGpuFnM6qGEgc840qkL5Nzi3ZkrMhcEea79nDDA5gGXdAFDi1d9c
+ JmT7XewYHQZdR3kwHfFvDb0mGQ0Dmjk6AhnMoCyAbetKWjtJEE82QAccJ+GecypELG63NjcF9
+ uVmxwVZPWjzCWZrXIu5yaojVydSXOkGby5lY7ACCA2chTM+uitJzbHYWsMr2mhOR8eAe3bGwz
+ YnDZl7b+wPjA4nENfjQMX5anVoQVuoyIxD4ZX2s+gOaqeb53M9Z5wVigkZ4OTEgBMmCrZXJkW
+ nPLJvIjLOAGRK2VnumsprRW+Zamvy5+hg79w=
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote：
->
-> Can you explain in the commit message why you changed the
-> LED_ON and LED_OFF branches? It's not obvious to me and they
-> don't have anything to do with the hardware-controlled blinking.
->
+This has been running for two weeks on multiple systems.
+It fixes the bug and does not show any other effects.
 
-Hi,
+So, offering a
 
-Sorry that I didn't explain this clearly.
-After some researches these days, I came to some conclusions:
+Tested-by: Max Schulze <max.schulze@online.de>
 
-1. The LED of MERCURY MW310UH and COMFAST CF-826F seems to be controlled by
-   REG_LEDCFG1, and currently rtl8xxxu controls the LED through writing
-   some suitable values to this register, so MW310UH and CF-826F work fine
-   with rtl8xxxu.
 
-2. The LED of ASUS USB-N13 C1 seems to be controlled by another register 
-   "REG_LEDCFG0" for unknown reason, so when I write 1 or 2 to 
-   /sys/class/leds/rtl8xxxu-usbX-Y/brightness, the LED doesn't turn on 
-   or blink because the register "REG_LEDCFG0" is not filled with a suitable 
-   value, This is why I changed the LED_ON and LED_OFF branches.
+Thanks!
 
-I will modify the commit message in the next version of patch, thanks.
