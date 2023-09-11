@@ -2,74 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09DE279A0CD
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Sep 2023 02:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A13AD79A1F7
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Sep 2023 05:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231849AbjIKAnB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 10 Sep 2023 20:43:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49838 "EHLO
+        id S231686AbjIKDp4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 10 Sep 2023 23:45:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbjIKAnA (ORCPT
+        with ESMTP id S229512AbjIKDp4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 10 Sep 2023 20:43:00 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E72C0194;
-        Sun, 10 Sep 2023 17:42:55 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-68fac16ee5fso671105b3a.1;
-        Sun, 10 Sep 2023 17:42:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694392975; x=1694997775; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y51wbrzEwejYx5+FDlSD7203yaJ7hGL9WN8KLP+gjDI=;
-        b=fV4KSGLojSZnRABTHf64LZvwSrtArvKzf1ZL72KZYT3eNeg7aHsLZRpnt1xQEx3mNn
-         LE323TO2yOv3fwEzKukLjcQ+p4+/YShBUTXdULVkq8wrSNiNYj2Kd4JQaVolB2cK30HH
-         tOD4QN01qUPJZ4kH+tDEZxbzRqm8FWB7xBgsoTtA53Rka5DjtRRtbVg+blJQiOaIHVWX
-         IJdY3ot3puJrXzKwdvzxc23+sUTefvLjy9b+z/sy+0+Iy+YgJyIV+pN/s8V3WKL7RK1x
-         8dLewEy/9S5dPNeybpv4LvYhr5vMZ7LcAqhhnPS82QwF4W5LM4JYGxlU7hd0W7wKPPed
-         Vy+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694392975; x=1694997775;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=y51wbrzEwejYx5+FDlSD7203yaJ7hGL9WN8KLP+gjDI=;
-        b=fAOdHQIJNjOC188iNYh8/yAA/cG4EXuQfd+S+/H6v08JIJ0MrUMWKaVh95avKqf1nN
-         PkiETe4r9hLftJdifs2jjxxKaxeAApdKURyj+eyMSG/d6vmbUTOMFohS4Q8mBxmyXeP2
-         oTd/QzH8/wUQaZab88Y7EN2IFNJydUDShy2IHqs9Kwr2bdSAtVvxQ0ngFg9N6+7pHjBF
-         qxFjBMdc9BuDwoqADRG+s7RtIqZBUtLjSOzK8Pvg0MCc9OYrWPE4n1zWqb/1vI5yoWdK
-         L7KEriu0wyIPzxptipqd9kjFvAHC3pHiPpu3PVJrTyubtL4CXA9FpL1gUMK0d02MuE89
-         /Cxg==
-X-Gm-Message-State: AOJu0YwLx3W41AaNshdmaymr0u6CnEcZK0ma+sWfilFZxs2B6PqPityk
-        GpBzsh6sNy5i7n2Zh3dOzJ23nn+jIJM=
-X-Google-Smtp-Source: AGHT+IHI2ZZ7QHtExuD/eqB1Ya6GPgmn7FLcxaygVbL1JZcEnVaUGonn6AGT6uiu9PeW05vkmgA2PA==
-X-Received: by 2002:a05:6a00:150e:b0:68a:4dc3:dbb9 with SMTP id q14-20020a056a00150e00b0068a4dc3dbb9mr7961082pfu.28.1694392975150;
-        Sun, 10 Sep 2023 17:42:55 -0700 (PDT)
-Received: from [192.168.0.106] ([103.124.138.83])
-        by smtp.gmail.com with ESMTPSA id e22-20020aa78256000000b0068c61848785sm4344634pfn.208.2023.09.10.17.42.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Sep 2023 17:42:54 -0700 (PDT)
-Message-ID: <c64ce498-7c06-3726-47d5-0a74471f027b@gmail.com>
-Date:   Mon, 11 Sep 2023 07:42:48 +0700
+        Sun, 10 Sep 2023 23:45:56 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7B319C;
+        Sun, 10 Sep 2023 20:45:47 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38B3jayK7720369, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38B3jayK7720369
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 11 Sep 2023 11:45:36 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Mon, 11 Sep 2023 11:45:36 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Mon, 11 Sep 2023 11:45:36 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
+ RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
+ 15.01.2375.007; Mon, 11 Sep 2023 11:45:36 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Zenm Chen <zenmchen@gmail.com>,
+        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
+CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
+Subject: RE: [PATCH] wifi: rtl8xxxu: fix LED control code of RTL8192FU
+Thread-Topic: [PATCH] wifi: rtl8xxxu: fix LED control code of RTL8192FU
+Thread-Index: AQHZ43yy3RGPFV4ndke0IFI7dh9WYrAU6yYA
+Date:   Mon, 11 Sep 2023 03:45:36 +0000
+Message-ID: <f4891f71e1f44e7891d20a67b5db9523@realtek.com>
+References: <20230910002038.56362-1-zenmchen@gmail.com>
+In-Reply-To: <20230910002038.56362-1-zenmchen@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-originating-ip: [172.21.69.25]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Content-Language: en-US
-To:     Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Ronan Pigott <ronan@rjp.ie>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Wireless <linux-wireless@vger.kernel.org>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: iwlwifi: AX210 Timeout waiting for hardware access (CSR_GP_CNTRL
- 0xffffffff)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_PASS,T_SPF_HELO_TEMPERROR autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,94 +69,91 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
 
-I notice a regression report on Bugzilla [1]. Quoting from it:
 
-> In linux 6.5.2, loading firmware version 83 on AX210 device appears to fail (repeatedly) with a timeout. Reverting to linux 6.4.12 successfully loads firmware 78.
+> -----Original Message-----
+> From: Zenm Chen <zenmchen@gmail.com>
+> Sent: Sunday, September 10, 2023 8:21 AM
+> To: Jes.Sorensen@gmail.com
+> Cc: kvalo@kernel.org; linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> rtl8821cerfe2@gmail.com; Ping-Ke Shih <pkshih@realtek.com>; Zenm Chen <zenmchen@gmail.com>
+> Subject: [PATCH] wifi: rtl8xxxu: fix LED control code of RTL8192FU
 > 
-> My nic:
-> $ lspci -kd::280
-> 08:00.0 Network controller: Intel Corporation Wi-Fi 6 AX210/AX211/AX411 160MHz (rev 1a)
-> 	Subsystem: Rivet Networks Wi-Fi 6 AX210/AX211/AX411 160MHz
-> 	Kernel driver in use: iwlwifi
-> 	Kernel modules: iwlwifi
+> ASUS USB-N13 C1 is a wifi adapter based on a RTL8192FU chip and its LED
+> doesn't blink with the rtl8xxxu driver. This patch fix this via writing
+> the correct value to the register "REG_LEDCFG0".
 > 
-> The failing kernel:
-> $ pacman -Qp /var/cache/pacman/pkg/linux-6.5.2.arch1-1-x86_64.pkg.tar.zst 
-> linux 6.5.2.arch1-1
-> 
-> The error:
-> $ journalctl -b -1 _KERNEL_DEVICE=+pci:${$(lspci -Dd::280)[(w)1]} + _TRANSPORT=kernel > dmesg65.log
-> 
-> [..attached..]
-> 
-> The interesting bit:
-> Sep 09 20:30:28 kernel: iwlwifi 0000:08:00.0: WRT: Invalid buffer destination
-> Sep 09 20:30:29 kernel: ------------[ cut here ]------------
-> Sep 09 20:30:29 kernel: Timeout waiting for hardware access (CSR_GP_CNTRL 0xffffffff)
-> Sep 09 20:30:29 kernel: WARNING: CPU: 13 PID: 679 at drivers/net/wireless/intel/iwlwifi/pcie/trans.c:2190 __iwl_trans_pcie_gr>
-> Sep 09 20:30:29 kernel: Modules linked in: iwlmvm(+) snd_sof_pci_intel_tgl snd_sof_intel_hda_common soundwire_intel snd_sof_i>
-> Sep 09 20:30:29 kernel:  snd_hwdep intel_rapl_msr dell_smm_hwmon processor_thermal_rfim i2c_i801 realtek btmtk alienware_wmi >
-> Sep 09 20:30:29 kernel: CPU: 13 PID: 679 Comm: modprobe Not tainted 6.5.2-arch1-1 #1 d2912f929551bc8e9b95af790b8285a77c25fa29
-> Sep 09 20:30:29 kernel: Hardware name: Dell Inc. XPS 8950/0R6PCT, BIOS 1.2.1 03/25/2022
-> [...]
-> Sep 09 20:30:29 kernel: Call Trace:
-> Sep 09 20:30:29 kernel:  <TASK>
-> Sep 09 20:30:29 kernel:  ? __iwl_trans_pcie_grab_nic_access+0x14a/0x150 [iwlwifi 25a8da985d322177fdc2dbc451d4271c449a7a6f]
-> Sep 09 20:30:29 kernel:  ? __warn+0x81/0x130
-> Sep 09 20:30:29 kernel:  ? __iwl_trans_pcie_grab_nic_access+0x14a/0x150 [iwlwifi 25a8da985d322177fdc2dbc451d4271c449a7a6f]
-> Sep 09 20:30:29 kernel:  ? report_bug+0x171/0x1a0
-> Sep 09 20:30:29 kernel:  ? prb_read_valid+0x1b/0x30
-> Sep 09 20:30:29 kernel:  ? handle_bug+0x3c/0x80
-> Sep 09 20:30:29 kernel:  ? exc_invalid_op+0x17/0x70
-> Sep 09 20:30:29 kernel:  ? asm_exc_invalid_op+0x1a/0x20
-> Sep 09 20:30:29 kernel:  ? __iwl_trans_pcie_grab_nic_access+0x14a/0x150 [iwlwifi 25a8da985d322177fdc2dbc451d4271c449a7a6f]
-> Sep 09 20:30:29 kernel:  iwl_trans_pcie_grab_nic_access+0x1a/0x40 [iwlwifi 25a8da985d322177fdc2dbc451d4271c449a7a6f]
-> Sep 09 20:30:29 kernel:  iwl_read_prph+0x1d/0x60 [iwlwifi 25a8da985d322177fdc2dbc451d4271c449a7a6f]
-> Sep 09 20:30:29 kernel:  iwl_mvm_load_ucode_wait_alive+0x2d9/0x620 [iwlmvm 7d9113127caff2df016f1a19aad637aa20200412]
-> [...]
-> Sep 09 20:30:29 kernel: ---[ end trace 0000000000000000 ]---
-> Sep 09 20:30:29 kernel: iwlwifi 0000:08:00.0: iwlwifi transaction failed, dumping registers
-> [...]
-> 
-> See attachment for full log.
-> 
-> Boot after revert to 6.4.12 with working firmware:
-> $ journalctl --no-hostname -b _KERNEL_DEVICE=+pci:${$(lspci -Dd::280)[(w)1]} + _TRANSPORT=kernel > dmesg64.log
-> 
-> [..attached..]
-> 
-> The interesting bit:
-> Sep 09 20:48:23 kernel: iwlwifi 0000:08:00.0: loaded firmware version 78.3bfdc55f.0 ty-a0-gf-a0-78.ucode op_mode iwlmvm
-> 
-> 
-> $ pacman -Ql linux-firmware | grep ty.a0.gf.a0                            
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-59.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-66.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-72.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-73.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-74.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-77.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-78.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-79.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-81.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0-83.ucode.zst
-> linux-firmware /usr/lib/firmware/iwlwifi-ty-a0-gf-a0.pnvm.zst
-> 
+> This was tested with these two wifi adapters:
+> ASUS USB-N13 C1 (vid=0x0b05, pid=0x18f1, rfe_type=0x1)
+> MERCURY MW310UH (vid=0x0bda, pid=0xf192, rfe_type=0x5)
 
-See Bugzilla for the full thread and attached journal logs.
+Did you ever try Linux vendor driver for software and hardware LED? 
+Seemingly, the vendor driver is different from yours, but I'm pretty 
+sure which one is correct because I don't have a RTL8192FU stick. 
 
-On BZ, I have asked the reporter (Cc'ed) to test the mainline.
+> 
+> Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+> ---
+>  .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 24 ++++++++-----------
+>  1 file changed, 10 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+> index 28e93835e05a..ab6d4e4e228e 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+> @@ -2014,26 +2014,22 @@ static int rtl8192fu_led_brightness_set(struct led_classdev *led_cdev,
+>         struct rtl8xxxu_priv *priv = container_of(led_cdev,
+>                                                   struct rtl8xxxu_priv,
+>                                                   led_cdev);
+> -       u16 ledcfg;
+> +       u32 ledcfg;
+> 
+>         /* Values obtained by observing the USB traffic from the Windows driver. */
+>         rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_0, 0x20080);
+>         rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_1, 0x1b0000);
+> 
+> -       ledcfg = rtl8xxxu_read16(priv, REG_LEDCFG0);
+> -
+> -       if (brightness == LED_OFF) {
+> -               /* Value obtained like above. */
+> -               ledcfg = BIT(1) | BIT(7);
+> -       } else if (brightness == LED_ON) {
+> -               /* Value obtained like above. */
+> -               ledcfg = BIT(1) | BIT(7) | BIT(11);
+> -       } else if (brightness == RTL8XXXU_HW_LED_CONTROL) {
+> -               /* Value obtained by brute force. */
+> -               ledcfg = BIT(8) | BIT(9);
+> -       }
 
-Anyway, I'm adding this regression to regzbot:
+The definitions are used by this driver: 
 
-#regzbot introduced: 399762de769c4e https://bugzilla.kernel.org/show_bug.cgi?id=217894
-#regzbot title: CSR_GP_CNTRL hardware access timeout due to firmware API bump
+#define BIT_LED2EN BIT(21)
+#define BIT_LED1SV BIT(11) // the same definition with BIT_LED0SV
+#define BIT_LED1CM GENMASK(10, 8) // use the same value of BIT_LED0CM
+#define BIT_LED0SV BIT(3)
+#define BIT_LED0CM GENMASK(2, 0)
+#define LED_MODE_TX_OR_RX_EVENTS 3
+#define LED_MODE_SW_CTRL 0
 
-Thanks.
 
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217894
+> +       /* Enable LED0 GPIO and turn LED0/LED1 off. */
+> +       ledcfg = (rtl8xxxu_read32(priv, REG_LEDCFG0) | BIT(21)) & ~0xffff;
 
--- 
-An old man doll... just what I always wanted! - Clara
+Split this statement into multiple lines and use definitions I provide above.
+
+> +
+> +       /* Values obtained by brute force. */
+> +       if (brightness == LED_ON)
+> +               ledcfg |= BIT(3) | BIT(11);
+> +       else if (brightness == RTL8XXXU_HW_LED_CONTROL)
+> +               ledcfg |= BIT(0) | BIT(1) | BIT(8) | BIT(9);
+> 
+> -       rtl8xxxu_write16(priv, REG_LEDCFG0, ledcfg);
+> +       rtl8xxxu_write32(priv, REG_LEDCFG0, ledcfg);
+> 
+>         return 0;
+>  }
+> --
+> 2.42.0
+
