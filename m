@@ -2,232 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C234179CE72
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 12:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AB6279CFDC
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 13:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234210AbjILKgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Sep 2023 06:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57700 "EHLO
+        id S231389AbjILL2U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Sep 2023 07:28:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234362AbjILKe7 (ORCPT
+        with ESMTP id S234666AbjILL1b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Sep 2023 06:34:59 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F303C10EA
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Sep 2023 03:34:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694514865; x=1726050865;
-  h=date:from:to:cc:subject:message-id;
-  bh=8tRCBdBpvLrkH/sfp6R0UNQg9fogKYoJc8I9ujSVSak=;
-  b=lqrfnTRKZzpc7GP7kSyS7hWw9xcwqnUVb8PP8fG5nKLBF5recdtW7j0Y
-   T0wVmLD9v/Cle23F6D6PGl9ySwgm+bXX4VrRHhNQr9iF2RfCfRM3UUp2E
-   n8Qvm0zzRcWqDCnuX5BdeYillOChKApDjTQpVIm100cdq9t4fbpVRo1Dc
-   IBCvEKEyZ/4p3weeQd/TZsJ/0QUL7I5RtSMF9IEg4WDUeN8K6lsdNr27F
-   PYgepPl50cedrlHbZocm0mMN1PtfQLfnRVSQvQ4/C05gvlU5GcsRu8SnX
-   0kpcVxD//tGNMPYzpm/DZ3oCSM4UUncEK6ggJ3gtf2HaZHNZNf9DTkrsa
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="363367500"
-X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
-   d="scan'208";a="363367500"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 03:34:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="858748208"
-X-IronPort-AV: E=Sophos;i="6.02,139,1688454000"; 
-   d="scan'208";a="858748208"
-Received: from lkp-server02.sh.intel.com (HELO 1e56c5165d33) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 12 Sep 2023 03:34:24 -0700
-Received: from kbuild by 1e56c5165d33 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qg0is-0000Gi-1f;
-        Tue, 12 Sep 2023 10:34:22 +0000
-Date:   Tue, 12 Sep 2023 18:33:45 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:merge-2023-09-11] BUILD SUCCESS
- 7da89fb58c59511e062a930e7b47e0d5bea565f4
-Message-ID: <202309121843.Rit7qPiv-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+        Tue, 12 Sep 2023 07:27:31 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 199621713;
+        Tue, 12 Sep 2023 04:27:17 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-273527a8fdeso3664111a91.2;
+        Tue, 12 Sep 2023 04:27:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694518036; x=1695122836; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aFGY1HOJLcFKtWSz4ftiIPAjki9c8ROSkcinsliHSOw=;
+        b=VQYY5gfKxFAE1uw9WZKonwiOyTX2W/AjQGbZuE7PabU2kn955IHdU4iJY3+Otr4Lvr
+         RRc/z+QPKSMARaUdZTSkvl/MKicorow3aAvT+bxYV3fsvpoMHX6eVzj6o+1JaiQpWttH
+         HGElsgw/vFuA138sjTlgLvbY7f+PzSgsiBoU5lsmbL6S3oIy4p0ZSEFl0Prmq40PrJJs
+         ntRwu1diqVbWPI+71+X6EI8W9R7qpy/d0LI3svZ/gT5RGikBPQC2JuBSgq32yQUuqXP5
+         IRr1yTdrLSPbk6Z35FpOW1lxZV24r0WMXLh+w7Um0YOjuKj4JLA5LMRkqJZYOCptqZl2
+         zVAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694518036; x=1695122836;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aFGY1HOJLcFKtWSz4ftiIPAjki9c8ROSkcinsliHSOw=;
+        b=OjN4DozjOl8mOLNwRxKSBnr0czoIAgXU0G6lGlW59fVyDJuyX9CmBSTNBYjMNAscGJ
+         vnDMRkF7kCHMQLpu8Nsi5XVbT0BQByiKtZr46enJQ9W8fDoDy4/XVTOTbh7aoq5DTkki
+         gmhRYDnno977hyhxgLo7i0AYWNui1kG+BhTN0jBZ8OorJG/k7XlEf+kDUCBjAQ0rZ7/t
+         VvWrL6EXUVSNeD1eA7jzG2lhOyMSS8/5PwGMmY4vwqo9jW1vh0xNS9+1vI2C7EkU+PrX
+         SMAIAirmGtlmbm7K+DljdjXlFhv6oPZDCAsHxHyjYxYdRss+P0OYBW/2lE58WlY5HKzF
+         socw==
+X-Gm-Message-State: AOJu0YxT8Id815yZuUNkkl9SBoX0PD68rABE5clEOQ60jsjMj4nVqTiF
+        PjFh7tfAgoSyM4USQtosxifYBVFQxPqLpE4u
+X-Google-Smtp-Source: AGHT+IF6fUzyH8IoexQtnIolvXM8MLMPU/gtnwSH0NhMk5guIoN7iMzgxg0T/dWdGT3zMj25pIFKsQ==
+X-Received: by 2002:a17:90a:c918:b0:273:ec96:b6f9 with SMTP id v24-20020a17090ac91800b00273ec96b6f9mr7351387pjt.25.1694518036038;
+        Tue, 12 Sep 2023 04:27:16 -0700 (PDT)
+Received: from localhost.localdomain (220-133-92-232.hinet-ip.hinet.net. [220.133.92.232])
+        by smtp.googlemail.com with ESMTPSA id fv23-20020a17090b0e9700b0026d6ad176c6sm1155618pjb.0.2023.09.12.04.27.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Sep 2023 04:27:15 -0700 (PDT)
+From:   Zenm Chen <zenmchen@gmail.com>
+To:     Jes.Sorensen@gmail.com
+Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rtl8821cerfe2@gmail.com,
+        pkshih@realtek.com, Zenm Chen <zenmchen@gmail.com>
+Subject: [PATCH v2] wifi: rtl8xxxu: fix LED control code of RTL8192FU
+Date:   Tue, 12 Sep 2023 19:27:09 +0800
+Message-ID: <20230912112709.22456-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git merge-2023-09-11
-branch HEAD: 7da89fb58c59511e062a930e7b47e0d5bea565f4  Merge remote-tracking branch 'wireless-next/main' into wireless
+Some of the RTL8192FU-based wifi adapters use the register "REG_LEDCFG1"
+to control the LED, and some of them use the register "REG_LEDCFG0"
+instead. Currently rtl8xxxu controls the LED via writing the values
+to the register "REG_LEDCFG1" only. This caused a few RTL8192FU-based wifi
+adapters's LED don't blink according to the network activity. This patch
+will make rtl8xxxu write the correct values to the both register
+"REG_LEDCFG0" and "REG_LEDCFG1" to fix this issue.
 
-elapsed time: 885m
+This was tested with these two wifi adapters:
+ASUS USB-N13 C1	(vid=0x0b05, pid=0x18f1, rfe_type=0x1)
+MERCURY MW310UH	(vid=0x0bda, pid=0xf192, rfe_type=0x5)
 
-configs tested: 161
-configs skipped: 2
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+---
+v2:
+ - Explain why to fix the issue in this way in the commit message.
+ - Split a long statement into short ones.
+ - Use some of the definitions suggested by Ping-Ke Shih.
+---
+ .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 26 ++++++++++++-------
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |  3 +++
+ 2 files changed, 20 insertions(+), 9 deletions(-)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20230912   gcc  
-arc                  randconfig-r011-20230912   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                   randconfig-001-20230912   clang
-arm                  randconfig-r014-20230912   clang
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r005-20230912   clang
-arm64                randconfig-r013-20230912   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r002-20230912   gcc  
-csky                 randconfig-r034-20230912   gcc  
-hexagon               randconfig-001-20230912   clang
-hexagon               randconfig-002-20230912   clang
-hexagon              randconfig-r021-20230912   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20230912   clang
-i386         buildonly-randconfig-002-20230912   clang
-i386         buildonly-randconfig-003-20230912   clang
-i386         buildonly-randconfig-004-20230912   clang
-i386         buildonly-randconfig-005-20230912   clang
-i386         buildonly-randconfig-006-20230912   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20230912   clang
-i386                  randconfig-002-20230912   clang
-i386                  randconfig-003-20230912   clang
-i386                  randconfig-004-20230912   clang
-i386                  randconfig-005-20230912   clang
-i386                  randconfig-006-20230912   clang
-i386                  randconfig-011-20230912   gcc  
-i386                  randconfig-012-20230912   gcc  
-i386                  randconfig-013-20230912   gcc  
-i386                  randconfig-014-20230912   gcc  
-i386                  randconfig-015-20230912   gcc  
-i386                  randconfig-016-20230912   gcc  
-i386                 randconfig-r003-20230912   clang
-i386                 randconfig-r015-20230912   gcc  
-i386                 randconfig-r024-20230912   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20230912   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r012-20230912   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-microblaze           randconfig-r016-20230912   gcc  
-microblaze           randconfig-r036-20230912   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r035-20230912   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r006-20230912   gcc  
-nios2                randconfig-r031-20230912   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc             randconfig-r026-20230912   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r001-20230912   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20230912   clang
-riscv                randconfig-r022-20230912   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20230912   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                   randconfig-r004-20230912   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r023-20230912   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20230912   clang
-x86_64       buildonly-randconfig-002-20230912   clang
-x86_64       buildonly-randconfig-003-20230912   clang
-x86_64       buildonly-randconfig-004-20230912   clang
-x86_64       buildonly-randconfig-005-20230912   clang
-x86_64       buildonly-randconfig-006-20230912   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20230912   gcc  
-x86_64                randconfig-002-20230912   gcc  
-x86_64                randconfig-003-20230912   gcc  
-x86_64                randconfig-004-20230912   gcc  
-x86_64                randconfig-005-20230912   gcc  
-x86_64                randconfig-006-20230912   gcc  
-x86_64                randconfig-011-20230912   clang
-x86_64                randconfig-012-20230912   clang
-x86_64                randconfig-013-20230912   clang
-x86_64                randconfig-014-20230912   clang
-x86_64                randconfig-015-20230912   clang
-x86_64                randconfig-016-20230912   clang
-x86_64                randconfig-071-20230912   clang
-x86_64                randconfig-072-20230912   clang
-x86_64                randconfig-073-20230912   clang
-x86_64                randconfig-074-20230912   clang
-x86_64                randconfig-075-20230912   clang
-x86_64                randconfig-076-20230912   clang
-x86_64               randconfig-r025-20230912   gcc  
-x86_64               randconfig-r032-20230912   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa               randconfig-r033-20230912   gcc  
-
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+index 28e93835e05a..779f93afc22b 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+@@ -2014,26 +2014,34 @@ static int rtl8192fu_led_brightness_set(struct led_classdev *led_cdev,
+ 	struct rtl8xxxu_priv *priv = container_of(led_cdev,
+ 						  struct rtl8xxxu_priv,
+ 						  led_cdev);
+-	u16 ledcfg;
++	u32 ledcfg;
+ 
+ 	/* Values obtained by observing the USB traffic from the Windows driver. */
+ 	rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_0, 0x20080);
+ 	rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_1, 0x1b0000);
+ 
+-	ledcfg = rtl8xxxu_read16(priv, REG_LEDCFG0);
++	ledcfg = rtl8xxxu_read32(priv, REG_LEDCFG0);
++
++	/* Set LED0 GPIO enabled */
++	ledcfg |= LEDCFG0_LED0_GPIO_ENABLE;
+ 
+ 	if (brightness == LED_OFF) {
+-		/* Value obtained like above. */
+-		ledcfg = BIT(1) | BIT(7);
++		/* Setting REG_LEDCFG0[15:0] to 0x0000 turns LED0/LED1 off. */
++		ledcfg &= ~GENMASK(15, 0);
+ 	} else if (brightness == LED_ON) {
+-		/* Value obtained like above. */
+-		ledcfg = BIT(1) | BIT(7) | BIT(11);
++		/* Setting REG_LEDCFG0[15:0] to 0x0808 turns LED0/LED1 on. */
++		ledcfg &= ~GENMASK(15, 0);
++		ledcfg |= LEDCFG0_LED1SV | LEDCFG0_LED0SV;
+ 	} else if (brightness == RTL8XXXU_HW_LED_CONTROL) {
+-		/* Value obtained by brute force. */
+-		ledcfg = BIT(8) | BIT(9);
++		/* Setting REG_LEDCFG0[15:0] to 0x0303 enables
++		 * hardware-controlled blinking for LED0/LED1.
++		 * The value 0x0303 is obtained by brute force.
++		 */
++		ledcfg &= ~GENMASK(15, 0);
++		ledcfg |= BIT(9) | BIT(8) | BIT(1) | BIT(0);
+ 	}
+ 
+-	rtl8xxxu_write16(priv, REG_LEDCFG0, ledcfg);
++	rtl8xxxu_write32(priv, REG_LEDCFG0, ledcfg);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+index 920ee50e2115..5ce845f1d069 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+@@ -146,6 +146,9 @@
+ #define  GPIO_INTM_EDGE_TRIG_IRQ	BIT(9)
+ 
+ #define REG_LEDCFG0			0x004c
++#define  LEDCFG0_LED0SV			BIT(3)
++#define  LEDCFG0_LED1SV			BIT(11)
++#define  LEDCFG0_LED0_GPIO_ENABLE	BIT(21)
+ #define  LEDCFG0_DPDT_SELECT		BIT(23)
+ #define REG_LEDCFG1			0x004d
+ #define  LEDCFG1_HW_LED_CONTROL		BIT(1)
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.42.0
+
