@@ -2,85 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5412579C632
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 07:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF65979C636
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 07:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230306AbjILFNM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Sep 2023 01:13:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40186 "EHLO
+        id S230377AbjILFTk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Sep 2023 01:19:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229798AbjILFNM (ORCPT
+        with ESMTP id S229798AbjILFTk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Sep 2023 01:13:12 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6212BE5A;
-        Mon, 11 Sep 2023 22:13:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1694495587;
-        bh=HfiZAz+w66EKMAZj2PZeFB26LwsjBHKhBlPSW4GHYJo=;
-        h=Date:From:To:Cc:Subject:From;
-        b=Z7MWMTGO1utR7qSZPh+Oc/c29u0uzy66l4813nnYH35S9aDx1mc1ZdGefXzG3LtB8
-         9nQ/Hu45SqBAxhmzpHaqLeoe65AYXSUuq69m9QGq3zKbChqV2Ljh06p3xGoBitDQkB
-         aXpAHerfhw03XdYW4llkYF0e0MQRz6jvSZ6p9+KVHWSc/Lm9yRaDL/AXX2+yDys8z2
-         LrYzRlfiPuzJbmIIN2dCsXtzHqee3KZovIoK7eaTtbQaHGUmIvH74sXOUQvyXFNCFE
-         wQCS5ss1WhOSgaI25JrrKWLlihAFhYKR2S/u0/XZ9Uzp5XL0ljKr2jQqsMGITgnn7h
-         JkBTtfpnZF11w==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4RlBYb09nJz4wxQ;
-        Tue, 12 Sep 2023 15:13:06 +1000 (AEST)
-Date:   Tue, 12 Sep 2023 15:13:06 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: build warning after merge of the wireless tree
-Message-ID: <20230912151306.51ee11ea@canb.auug.org.au>
+        Tue, 12 Sep 2023 01:19:40 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D807AA
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Sep 2023 22:19:36 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38C4QOkW028316;
+        Tue, 12 Sep 2023 05:19:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=TJbAoEQqo6+uWPfCRClZYQfwe1JwyrzoVgw97CEUR+Q=;
+ b=MDMl3Dv2xD1x0T5MpcIPYPompHgyvu11xDQLt1BbrmAdRdIZAkFZraRIod35y2Cp+4XD
+ MGSqUa77Z+GeFi51FA2gN5uLQsm6wvh9qUvck735OXdiJtMX9xBCywuoKZbx+/yFpWSi
+ ZDdhVWOnBzisuUDs2wFWEeYe8Pf4tqKLiCtIXf/L377bY4gq/B9dsa0ykxLYgCyyfIFD
+ F5T7YI0e08hlaTDdPW+I/B03YfpRriKaV1s11xuRf5twIYyIkce8DD6ABxXikHwcMuU6
+ mixjR+KO4Zxz8pCm+4IJdAQ1ZCgSu5q8RuItKLhYWDBH0SdaE0kXGjOC3qDne0vzu/Tk Sg== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t2f3yr8s6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 Sep 2023 05:19:28 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38C5JRRI030837
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 Sep 2023 05:19:27 GMT
+Received: from adisi-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Mon, 11 Sep 2023 22:19:25 -0700
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <johannes@sipsolutions.net>,
+        "Aditya Kumar Singh" <quic_adisi@quicinc.com>
+Subject: [PATCH v2 0/3] wifi: ath11k: fix CAC running state
+Date:   Tue, 12 Sep 2023 10:48:54 +0530
+Message-ID: <20230912051857.2284-1-quic_adisi@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/9w2Asq+r+R6SZqQn.btwC=z";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Qv9nUkGH93U-HRKFt-bnTEB2s4D5ZxLy
+X-Proofpoint-ORIG-GUID: Qv9nUkGH93U-HRKFt-bnTEB2s4D5ZxLy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-12_02,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
+ priorityscore=1501 phishscore=0 bulkscore=0 adultscore=0 mlxlogscore=862
+ impostorscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309120043
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/9w2Asq+r+R6SZqQn.btwC=z
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Currently CAC running flag in ath11k is not set if DFS radar is required in
+secondary channel. This is due to the fact that only primary channel's DFS
+state and CAC time is being checked before setting the flag.
 
-Hi all,
+Fix this issue by checking the DFS state of all the sub-channels inside a
+channel definition and not just the primary channel.
 
-After merging the wireless tree, today's linux-next build (htmldocs)
-produced this warning:
+Also, make minor change in debug prints to show the CAC time
 
-include/net/cfg80211.h:6134: warning: Function parameter or member 'cqm_rss=
-i_work' not described in 'wireless_dev'
+Aditya Kumar Singh (3):
+  wifi: cfg80211: export DFS CAC time and usable state helper functions
+  wifi: ath11k: fix CAC running state during virtual interface start
+  wifi: ath11k: fix Tx power value during active CAC
+---
+v2: rebased on ToT
 
-Introduced by commit
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 27 +++++++++++++++++++--------
+ include/net/cfg80211.h                | 24 ++++++++++++++++++++++++
+ net/wireless/chan.c                   |  2 ++
+ net/wireless/core.h                   | 17 -----------------
+ 4 files changed, 45 insertions(+), 25 deletions(-)
 
-  37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
 
---=20
-Cheers,
-Stephen Rothwell
+base-commit: 0263687f4441d5a5eab8074d56b4693c8f0acf85
+-- 
+2.17.1
 
---Sig_/9w2Asq+r+R6SZqQn.btwC=z
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmT/82IACgkQAVBC80lX
-0GyxRAf/YmPvXZYQ/Mg9AlKop5rNle6grhU2XhZ8l7PXZS96WcnMpd2AVXVm2E+T
-mT70/SIr8C3M0MfTaZo2OHAWXeNGw3iOktu8en5rqWHDGinCw2mdJvM3S8BfMb43
-RQwLEmOPAq3brgAtRNhzgOHdJrP268VvBjeHv+Xb53+BvQQC09c3h5FFwGB1JgFG
-pFOLwNLyvbF6wCKkTFy16ma1ntcgDVGHwwq+EvcDYdDhCHPo+rTjyzdWQX6N2INO
-UsMmGCtyT0qcDQZyC+ilqoht18Yn+yUEe9SxIXt/v2GKme5o6e4AAYGF4cqN50sZ
-wJCZ4suMsNbFRFcwTrvwwE4OwIcilA==
-=zm0O
------END PGP SIGNATURE-----
-
---Sig_/9w2Asq+r+R6SZqQn.btwC=z--
