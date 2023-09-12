@@ -2,231 +2,246 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1269579C2B2
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 04:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C20279C3D7
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 05:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbjILCYq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Sep 2023 22:24:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32812 "EHLO
+        id S241936AbjILDPk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Sep 2023 23:15:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237685AbjILCYe (ORCPT
+        with ESMTP id S242025AbjILDP0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Sep 2023 22:24:34 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B8A11BA4B
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Sep 2023 18:48:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694483303; x=1726019303;
-  h=date:from:to:cc:subject:message-id;
-  bh=ZydBq2MFq/6KDDncgYHx6McUm4s5Ilwmm4tLqc9w918=;
-  b=LxzEgNfz77O5NAy+/pVyT7f9UHcv3LHwzAjm9UzarqgOnU27ERjiARIc
-   gLDynNxbkS9QlOe37q6EkSCCk0Rhmnr1ybUd97Udg9zBWH6i9rnene1IE
-   CPvF+z8+xLKIe/R1H1ptIFxYAH0L8yJm4vvNax6YmhQaIPnb8Kzxc+w5O
-   NijPhjDjX5b4ubrdkfArD8iHmraWWVDcUyuWbc7QdiGeLxSkKv7/OEscE
-   CEBGkR47sZCYbYE/HNLZZRZt7as2nIwgUgFxJjQrkRDE4OIBrYa+Mmzie
-   KnXl8S9Iic55jWHRg5aL/n2P0bH9bC45lBL0cK256Hk6LmlvGL5xhbyXY
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="409209027"
-X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
-   d="scan'208";a="409209027"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 18:48:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="833717639"
-X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
-   d="scan'208";a="833717639"
-Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 11 Sep 2023 18:48:07 -0700
-Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qfsVZ-000763-0q;
-        Tue, 12 Sep 2023 01:48:05 +0000
-Date:   Tue, 12 Sep 2023 09:47:37 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 2cf254c1e24fa8f01f42f5a8c77617e56bf50b86
-Message-ID: <202309120935.NMaKRvKa-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+        Mon, 11 Sep 2023 23:15:26 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250926CD7;
+        Mon, 11 Sep 2023 19:46:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1694486786;
+        bh=9w8N1w65eM3j1HplfovIWdoaEqkHF1YpWPFz5tjpCFo=;
+        h=Date:From:To:Cc:Subject:From;
+        b=naIlmKO7lUSHzKh3udlfvGQAyEBpEO6uHF4815s40RKckMzEJAizrivmQ/FhSlhOb
+         G8M6UGG9lYS9LFgrsuwa+zgk2k3X2OjKSWczolx31ctq1GKJebXMx2I2BTTzz/CCwW
+         ikOShORCXJgH5ZRZLx9cUL/NfgOvsf12vuw7q5ZN9kIO8FTptXQ359QQI0NCu6gkLF
+         dn3MzwOGVskGP5zFN6Jli0nqWgrT6EiKs8QOa5dc2GlCxTtd+LhZldZ152pXGSn7Cl
+         +/yy0eYtelhaE2jCRG1Lk0J0AIGIYsVdUz2XrhWe5Nj9pindOZ6Y5LIbq3kh+0BaHK
+         24pVpuzDswEPg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rl7JJ4Pfgz4x3C;
+        Tue, 12 Sep 2023 12:46:24 +1000 (AEST)
+Date:   Tue, 12 Sep 2023 12:46:23 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the wireless-next tree with the
+ wireless tree
+Message-ID: <20230912124623.6591edd4@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/EtIg2kmiN+NByGDtODittXt";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 2cf254c1e24fa8f01f42f5a8c77617e56bf50b86  wifi: iwlwifi: increase number of RX buffers for EHT devices
+--Sig_/EtIg2kmiN+NByGDtODittXt
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-elapsed time: 798m
+Hi all,
 
-configs tested: 160
-configs skipped: 2
+Today's linux-next merge of the wireless-next tree got a conflict in:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+  net/wireless/nl80211.c
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r012-20230912   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20230912   gcc  
-arc                  randconfig-r002-20230912   gcc  
-arc                  randconfig-r006-20230912   gcc  
-arc                  randconfig-r016-20230912   gcc  
-arc                  randconfig-r031-20230912   gcc  
-arc                  randconfig-r034-20230912   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                   randconfig-001-20230912   clang
-arm                  randconfig-r025-20230912   clang
-arm                  randconfig-r036-20230912   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r005-20230912   clang
-arm64                randconfig-r011-20230912   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r002-20230912   gcc  
-csky                 randconfig-r013-20230912   gcc  
-csky                 randconfig-r015-20230912   gcc  
-csky                 randconfig-r022-20230912   gcc  
-hexagon               randconfig-001-20230912   clang
-hexagon               randconfig-002-20230912   clang
-hexagon              randconfig-r024-20230912   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20230912   clang
-i386         buildonly-randconfig-002-20230912   clang
-i386         buildonly-randconfig-003-20230912   clang
-i386         buildonly-randconfig-004-20230912   clang
-i386         buildonly-randconfig-005-20230912   clang
-i386         buildonly-randconfig-006-20230912   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-006-20230912   clang
-i386                  randconfig-011-20230912   gcc  
-i386                  randconfig-012-20230912   gcc  
-i386                  randconfig-013-20230912   gcc  
-i386                  randconfig-014-20230912   gcc  
-i386                  randconfig-015-20230912   gcc  
-i386                  randconfig-016-20230912   gcc  
-i386                 randconfig-r003-20230912   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20230911   gcc  
-loongarch             randconfig-001-20230912   gcc  
-loongarch            randconfig-r011-20230912   gcc  
-loongarch            randconfig-r033-20230912   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r026-20230912   gcc  
-m68k                 randconfig-r032-20230912   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r023-20230912   clang
-mips                 randconfig-r035-20230912   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r006-20230912   gcc  
-nios2                randconfig-r023-20230912   gcc  
-nios2                randconfig-r034-20230912   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc             randconfig-r015-20230912   gcc  
-openrisc             randconfig-r026-20230912   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r001-20230912   gcc  
-parisc               randconfig-r022-20230912   gcc  
-parisc               randconfig-r035-20230912   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc              randconfig-r005-20230912   clang
-powerpc              randconfig-r024-20230912   gcc  
-powerpc64            randconfig-r013-20230912   gcc  
-powerpc64            randconfig-r033-20230912   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20230912   clang
-riscv                randconfig-r031-20230912   clang
-riscv                randconfig-r036-20230912   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20230912   gcc  
-s390                 randconfig-r012-20230912   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                   randconfig-r001-20230912   gcc  
-sh                   randconfig-r004-20230912   gcc  
-sh                   randconfig-r021-20230912   gcc  
-sh                   randconfig-r032-20230912   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-006-20230912   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20230912   gcc  
-x86_64                randconfig-002-20230912   gcc  
-x86_64                randconfig-003-20230912   gcc  
-x86_64                randconfig-004-20230912   gcc  
-x86_64                randconfig-005-20230912   gcc  
-x86_64                randconfig-016-20230912   clang
-x86_64               randconfig-r025-20230912   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa               randconfig-r003-20230912   gcc  
-xtensa               randconfig-r014-20230912   gcc  
+between commit:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+  37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+
+from the wireless tree and commit:
+
+  076fc8775daf ("wifi: cfg80211: remove wdev mutex")
+
+from the wireless-next tree.
+
+I fixed it up (I used a supplied resolution from Johannes - see below)
+and can carry the fix as necessary. This is now fixed as far as
+linux-next is concerned, but any non trivial conflicts should be
+mentioned to your upstream maintainer when your tree is submitted for
+merging.  You may also want to consider cooperating with the maintainer
+of the conflicting tree to minimise any particularly complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc net/wireless/nl80211.c
+index 7a88361b3414,ab0aea7dca7d..fe06c238d4ef
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@@ -6191,12 -6135,8 +6150,12 @@@ static int nl80211_start_ap(struct sk_b
+ =20
+  	err =3D nl80211_calculate_ap_params(params);
+  	if (err)
+- 		goto out_unlock;
++ 		goto out;
+ =20
+ +	err =3D nl80211_validate_ap_phy_operation(params);
+ +	if (err)
+- 		goto out_unlock;
+++		goto out;
+ +
+  	if (info->attrs[NL80211_ATTR_AP_SETTINGS_FLAGS])
+  		params->flags =3D nla_get_u32(
+  			info->attrs[NL80211_ATTR_AP_SETTINGS_FLAGS]);
+@@@ -12884,11 -12747,10 +12767,11 @@@ static int nl80211_set_cqm_rssi(struc=
+t=20
+  				u32 hysteresis)
+  {
+  	struct cfg80211_registered_device *rdev =3D info->user_ptr[0];
+ +	struct cfg80211_cqm_config *cqm_config =3D NULL, *old;
+  	struct net_device *dev =3D info->user_ptr[1];
+  	struct wireless_dev *wdev =3D dev->ieee80211_ptr;
+- 	int i, err;
+  	s32 prev =3D S32_MIN;
+ -	int i;
+++	int i, err;
+ =20
+  	/* Check all values negative and sorted */
+  	for (i =3D 0; i < n_thresholds; i++) {
+@@@ -12917,11 -12781,9 +12800,9 @@@
+  	if (n_thresholds =3D=3D 1 && thresholds[0] =3D=3D 0) /* Disabling */
+  		n_thresholds =3D 0;
+ =20
+- 	wdev_lock(wdev);
+- 	old =3D rcu_dereference_protected(wdev->cqm_config,
+- 					lockdep_is_held(&wdev->mtx));
+ -	if (n_thresholds) {
+ -		struct cfg80211_cqm_config *cqm_config;
+++	old =3D wiphy_dereference(wdev->wiphy, wdev->cqm_config);
+ =20
+ +	if (n_thresholds) {
+  		cqm_config =3D kzalloc(struct_size(cqm_config, rssi_thresholds,
+  						 n_thresholds),
+  				     GFP_KERNEL);
+@@@ -12936,22 -12796,10 +12815,20 @@@
+  		       flex_array_size(cqm_config, rssi_thresholds,
+  				       n_thresholds));
+ =20
+ -		wdev->cqm_config =3D cqm_config;
+ +		rcu_assign_pointer(wdev->cqm_config, cqm_config);
+ +	} else {
+ +		RCU_INIT_POINTER(wdev->cqm_config, NULL);
+  	}
+ =20
+ -	return cfg80211_cqm_rssi_update(rdev, dev);
+ +	err =3D cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
+ +	if (err) {
+ +		rcu_assign_pointer(wdev->cqm_config, old);
+ +		kfree_rcu(cqm_config, rcu_head);
+ +	} else {
+ +		kfree_rcu(old, rcu_head);
+ +	}
+- unlock:
+- 	wdev_unlock(wdev);
+ +
+ +	return err;
+  }
+ =20
+  static int nl80211_set_cqm(struct sk_buff *skb, struct genl_info *info)
+@@@ -19107,41 -18879,18 +18907,39 @@@ void cfg80211_cqm_rssi_notify(struct =
+ne
+  		    rssi_event !=3D NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH))
+  		return;
+ =20
+ -	if (wdev->cqm_config) {
+ -		wdev->cqm_config->last_rssi_event_value =3D rssi_level;
+ +	rcu_read_lock();
+ +	cqm_config =3D rcu_dereference(wdev->cqm_config);
+ +	if (cqm_config) {
+ +		cqm_config->last_rssi_event_value =3D rssi_level;
+ +		cqm_config->last_rssi_event_type =3D rssi_event;
+ +		wiphy_work_queue(wdev->wiphy, &wdev->cqm_rssi_work);
+ +	}
+ +	rcu_read_unlock();
+ +}
+ +EXPORT_SYMBOL(cfg80211_cqm_rssi_notify);
+ +
+ +void cfg80211_cqm_rssi_notify_work(struct wiphy *wiphy, struct wiphy_work=
+ *work)
+ +{
+ +	struct wireless_dev *wdev =3D container_of(work, struct wireless_dev,
+ +						 cqm_rssi_work);
+ +	struct cfg80211_registered_device *rdev =3D wiphy_to_rdev(wiphy);
+ +	enum nl80211_cqm_rssi_threshold_event rssi_event;
+ +	struct cfg80211_cqm_config *cqm_config;
+ +	struct sk_buff *msg;
+ +	s32 rssi_level;
+ +
+- 	wdev_lock(wdev);
+- 	cqm_config =3D rcu_dereference_protected(wdev->cqm_config,
+- 					       lockdep_is_held(&wdev->mtx));
+++	cqm_config =3D wiphy_dereference(wdev->wiphy, wdev->cqm_config);
+ +	if (!wdev->cqm_config)
+- 		goto unlock;
+++		return;
+ =20
+ -		cfg80211_cqm_rssi_update(rdev, dev);
+ +	cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
+ =20
+ -		if (rssi_level =3D=3D 0)
+ -			rssi_level =3D wdev->cqm_config->last_rssi_event_value;
+ -	}
+ +	rssi_level =3D cqm_config->last_rssi_event_value;
+ +	rssi_event =3D cqm_config->last_rssi_event_type;
+ =20
+ -	msg =3D cfg80211_prepare_cqm(dev, NULL, gfp);
+ +	msg =3D cfg80211_prepare_cqm(wdev->netdev, NULL, GFP_KERNEL);
+  	if (!msg)
+- 		goto unlock;
++ 		return;
+ =20
+  	if (nla_put_u32(msg, NL80211_ATTR_CQM_RSSI_THRESHOLD_EVENT,
+  			rssi_event))
+@@@ -19151,15 -18900,14 +18949,13 @@@
+  				      rssi_level))
+  		goto nla_put_failure;
+ =20
+ -	cfg80211_send_cqm(msg, gfp);
+ +	cfg80211_send_cqm(msg, GFP_KERNEL);
+ =20
+- 	goto unlock;
++ 	return;
+ =20
+   nla_put_failure:
+  	nlmsg_free(msg);
+-  unlock:
+- 	wdev_unlock(wdev);
+  }
+ -EXPORT_SYMBOL(cfg80211_cqm_rssi_notify);
+ =20
+  void cfg80211_cqm_txe_notify(struct net_device *dev,
+  			     const u8 *peer, u32 num_packets,
+
+--Sig_/EtIg2kmiN+NByGDtODittXt
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmT/0P8ACgkQAVBC80lX
+0GxmKAgAhFwTkAlObU0Rl4d/XxvO2r6z01TP1U6Ga1NwuhFQfOYh0TPd5ybS30X6
+Cgz3tDgyj/KzL7j/FejSdE1cDaFv3HB6OUOcTy8jrEFpLGk8P9ERuI13fsZZeTDi
+uCI9SEhM7ZpPjvyysCPsf0lyAfAEDSh6DMWmgyOgwM6O9TV01mQxYF2jFeTA7xWB
+BWRdLo/0t6rgew+ygEjMEggmNt/QWjVU5Mn1TseurpFoyZXGuCjXJwPjubv1noKw
+n12OwGNQssLKRDKbFI9o7SCia/twSHEKvA/FmGeIn7/48aPsceUR0/u1VhKOjMAO
+naFqbuZmU/Nz2ozw2kdvzqlbzgqQPw==
+=ZBWJ
+-----END PGP SIGNATURE-----
+
+--Sig_/EtIg2kmiN+NByGDtODittXt--
