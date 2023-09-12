@@ -2,153 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB6279CFDC
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 13:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2982879D753
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 19:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231389AbjILL2U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Sep 2023 07:28:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38964 "EHLO
+        id S235087AbjILRNY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Sep 2023 13:13:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234666AbjILL1b (ORCPT
+        with ESMTP id S236969AbjILRNX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Sep 2023 07:27:31 -0400
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 199621713;
-        Tue, 12 Sep 2023 04:27:17 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-273527a8fdeso3664111a91.2;
-        Tue, 12 Sep 2023 04:27:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694518036; x=1695122836; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aFGY1HOJLcFKtWSz4ftiIPAjki9c8ROSkcinsliHSOw=;
-        b=VQYY5gfKxFAE1uw9WZKonwiOyTX2W/AjQGbZuE7PabU2kn955IHdU4iJY3+Otr4Lvr
-         RRc/z+QPKSMARaUdZTSkvl/MKicorow3aAvT+bxYV3fsvpoMHX6eVzj6o+1JaiQpWttH
-         HGElsgw/vFuA138sjTlgLvbY7f+PzSgsiBoU5lsmbL6S3oIy4p0ZSEFl0Prmq40PrJJs
-         ntRwu1diqVbWPI+71+X6EI8W9R7qpy/d0LI3svZ/gT5RGikBPQC2JuBSgq32yQUuqXP5
-         IRr1yTdrLSPbk6Z35FpOW1lxZV24r0WMXLh+w7Um0YOjuKj4JLA5LMRkqJZYOCptqZl2
-         zVAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694518036; x=1695122836;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aFGY1HOJLcFKtWSz4ftiIPAjki9c8ROSkcinsliHSOw=;
-        b=OjN4DozjOl8mOLNwRxKSBnr0czoIAgXU0G6lGlW59fVyDJuyX9CmBSTNBYjMNAscGJ
-         vnDMRkF7kCHMQLpu8Nsi5XVbT0BQByiKtZr46enJQ9W8fDoDy4/XVTOTbh7aoq5DTkki
-         gmhRYDnno977hyhxgLo7i0AYWNui1kG+BhTN0jBZ8OorJG/k7XlEf+kDUCBjAQ0rZ7/t
-         VvWrL6EXUVSNeD1eA7jzG2lhOyMSS8/5PwGMmY4vwqo9jW1vh0xNS9+1vI2C7EkU+PrX
-         SMAIAirmGtlmbm7K+DljdjXlFhv6oPZDCAsHxHyjYxYdRss+P0OYBW/2lE58WlY5HKzF
-         socw==
-X-Gm-Message-State: AOJu0YxT8Id815yZuUNkkl9SBoX0PD68rABE5clEOQ60jsjMj4nVqTiF
-        PjFh7tfAgoSyM4USQtosxifYBVFQxPqLpE4u
-X-Google-Smtp-Source: AGHT+IF6fUzyH8IoexQtnIolvXM8MLMPU/gtnwSH0NhMk5guIoN7iMzgxg0T/dWdGT3zMj25pIFKsQ==
-X-Received: by 2002:a17:90a:c918:b0:273:ec96:b6f9 with SMTP id v24-20020a17090ac91800b00273ec96b6f9mr7351387pjt.25.1694518036038;
-        Tue, 12 Sep 2023 04:27:16 -0700 (PDT)
-Received: from localhost.localdomain (220-133-92-232.hinet-ip.hinet.net. [220.133.92.232])
-        by smtp.googlemail.com with ESMTPSA id fv23-20020a17090b0e9700b0026d6ad176c6sm1155618pjb.0.2023.09.12.04.27.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 04:27:15 -0700 (PDT)
-From:   Zenm Chen <zenmchen@gmail.com>
-To:     Jes.Sorensen@gmail.com
-Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rtl8821cerfe2@gmail.com,
-        pkshih@realtek.com, Zenm Chen <zenmchen@gmail.com>
-Subject: [PATCH v2] wifi: rtl8xxxu: fix LED control code of RTL8192FU
-Date:   Tue, 12 Sep 2023 19:27:09 +0800
-Message-ID: <20230912112709.22456-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.42.0
+        Tue, 12 Sep 2023 13:13:23 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE7A10F9
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Sep 2023 10:13:19 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qg6wv-0001mI-Kg; Tue, 12 Sep 2023 19:13:17 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qg6wv-005pIg-1P; Tue, 12 Sep 2023 19:13:17 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qg6wu-00189l-89; Tue, 12 Sep 2023 19:13:16 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, kernel@pengutronix.de
+Subject: [PATCH net-next] wifi: ti/wlcore: Convert to platform remove callback returning void
+Date:   Tue, 12 Sep 2023 19:12:49 +0200
+Message-Id: <20230912171249.755901-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4229; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=Imx0MK8ZkfI1XAlqsm/tTH4erfDJiHYF4Nk5YdLdNzI=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlAJwQ8GPnpA+nl0nXY9M3fRQYZ2RIuo19HyIJG kOUj0nS1M+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZQCcEAAKCRCPgPtYfRL+ TtOaB/wPGde9qpTBK5MqAMT61GD3EwYQ1jaQAjGf4/8lQCfZ2LooXDbhXniCWBQ+wXnPyPovIrv AxGjsze6iEfT3HWx6JAxkheVs8jp5YAMK7g+ZiFhTbb1qamKupUXKq1gA0SfZgj+0NGoIPc3LyA D/9cBXrZ3YVCTq/BafoGfj8DIxhyKYSSQYm2Ws/3Tq+PGOuZBR41BnuWmt/oyaZsWIfyJvwrn4Q +DsWpSuABgJ5/vPNGDEIOUwmH86SRPUQq2UsfYP5Xlt2c1WdaXfvYtN9nus6vM25bSM4FlsMwvz Qb6t+0CQgt+L6kWI5IiquyM4r5OLhHNrMDtpXZ9vnNVZql2F
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some of the RTL8192FU-based wifi adapters use the register "REG_LEDCFG1"
-to control the LED, and some of them use the register "REG_LEDCFG0"
-instead. Currently rtl8xxxu controls the LED via writing the values
-to the register "REG_LEDCFG1" only. This caused a few RTL8192FU-based wifi
-adapters's LED don't blink according to the network activity. This patch
-will make rtl8xxxu write the correct values to the both register
-"REG_LEDCFG0" and "REG_LEDCFG1" to fix this issue.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code.  However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-This was tested with these two wifi adapters:
-ASUS USB-N13 C1	(vid=0x0b05, pid=0x18f1, rfe_type=0x1)
-MERCURY MW310UH	(vid=0x0bda, pid=0xf192, rfe_type=0x5)
+wlcore_remove() returned zero unconditionally. With that converted to
+return void instead, the wl12xx and wl18xx driver can be converted to
+.remove_new trivially.
 
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
-v2:
- - Explain why to fix the issue in this way in the commit message.
- - Split a long statement into short ones.
- - Use some of the definitions suggested by Ping-Ke Shih.
----
- .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 26 ++++++++++++-------
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |  3 +++
- 2 files changed, 20 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ti/wl12xx/main.c   | 6 +++---
+ drivers/net/wireless/ti/wl18xx/main.c   | 2 +-
+ drivers/net/wireless/ti/wlcore/main.c   | 6 ++----
+ drivers/net/wireless/ti/wlcore/wlcore.h | 2 +-
+ 4 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-index 28e93835e05a..779f93afc22b 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-@@ -2014,26 +2014,34 @@ static int rtl8192fu_led_brightness_set(struct led_classdev *led_cdev,
- 	struct rtl8xxxu_priv *priv = container_of(led_cdev,
- 						  struct rtl8xxxu_priv,
- 						  led_cdev);
--	u16 ledcfg;
-+	u32 ledcfg;
- 
- 	/* Values obtained by observing the USB traffic from the Windows driver. */
- 	rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_0, 0x20080);
- 	rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_1, 0x1b0000);
- 
--	ledcfg = rtl8xxxu_read16(priv, REG_LEDCFG0);
-+	ledcfg = rtl8xxxu_read32(priv, REG_LEDCFG0);
-+
-+	/* Set LED0 GPIO enabled */
-+	ledcfg |= LEDCFG0_LED0_GPIO_ENABLE;
- 
- 	if (brightness == LED_OFF) {
--		/* Value obtained like above. */
--		ledcfg = BIT(1) | BIT(7);
-+		/* Setting REG_LEDCFG0[15:0] to 0x0000 turns LED0/LED1 off. */
-+		ledcfg &= ~GENMASK(15, 0);
- 	} else if (brightness == LED_ON) {
--		/* Value obtained like above. */
--		ledcfg = BIT(1) | BIT(7) | BIT(11);
-+		/* Setting REG_LEDCFG0[15:0] to 0x0808 turns LED0/LED1 on. */
-+		ledcfg &= ~GENMASK(15, 0);
-+		ledcfg |= LEDCFG0_LED1SV | LEDCFG0_LED0SV;
- 	} else if (brightness == RTL8XXXU_HW_LED_CONTROL) {
--		/* Value obtained by brute force. */
--		ledcfg = BIT(8) | BIT(9);
-+		/* Setting REG_LEDCFG0[15:0] to 0x0303 enables
-+		 * hardware-controlled blinking for LED0/LED1.
-+		 * The value 0x0303 is obtained by brute force.
-+		 */
-+		ledcfg &= ~GENMASK(15, 0);
-+		ledcfg |= BIT(9) | BIT(8) | BIT(1) | BIT(0);
- 	}
- 
--	rtl8xxxu_write16(priv, REG_LEDCFG0, ledcfg);
-+	rtl8xxxu_write32(priv, REG_LEDCFG0, ledcfg);
- 
- 	return 0;
+diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/ti/wl12xx/main.c
+index d06a2c419447..de045fe4ca1e 100644
+--- a/drivers/net/wireless/ti/wl12xx/main.c
++++ b/drivers/net/wireless/ti/wl12xx/main.c
+@@ -1919,7 +1919,7 @@ static int wl12xx_probe(struct platform_device *pdev)
+ 	return ret;
  }
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-index 920ee50e2115..5ce845f1d069 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-@@ -146,6 +146,9 @@
- #define  GPIO_INTM_EDGE_TRIG_IRQ	BIT(9)
  
- #define REG_LEDCFG0			0x004c
-+#define  LEDCFG0_LED0SV			BIT(3)
-+#define  LEDCFG0_LED1SV			BIT(11)
-+#define  LEDCFG0_LED0_GPIO_ENABLE	BIT(21)
- #define  LEDCFG0_DPDT_SELECT		BIT(23)
- #define REG_LEDCFG1			0x004d
- #define  LEDCFG1_HW_LED_CONTROL		BIT(1)
+-static int wl12xx_remove(struct platform_device *pdev)
++static void wl12xx_remove(struct platform_device *pdev)
+ {
+ 	struct wl1271 *wl = platform_get_drvdata(pdev);
+ 	struct wl12xx_priv *priv;
+@@ -1928,7 +1928,7 @@ static int wl12xx_remove(struct platform_device *pdev)
+ 
+ 	kfree(priv->rx_mem_addr);
+ 
+-	return wlcore_remove(pdev);
++	wlcore_remove(pdev);
+ }
+ 
+ static const struct platform_device_id wl12xx_id_table[] = {
+@@ -1939,7 +1939,7 @@ MODULE_DEVICE_TABLE(platform, wl12xx_id_table);
+ 
+ static struct platform_driver wl12xx_driver = {
+ 	.probe		= wl12xx_probe,
+-	.remove		= wl12xx_remove,
++	.remove_new	= wl12xx_remove,
+ 	.id_table	= wl12xx_id_table,
+ 	.driver = {
+ 		.name	= "wl12xx_driver",
+diff --git a/drivers/net/wireless/ti/wl18xx/main.c b/drivers/net/wireless/ti/wl18xx/main.c
+index 0b3cf8477c6c..d4a89401f2c4 100644
+--- a/drivers/net/wireless/ti/wl18xx/main.c
++++ b/drivers/net/wireless/ti/wl18xx/main.c
+@@ -2033,7 +2033,7 @@ MODULE_DEVICE_TABLE(platform, wl18xx_id_table);
+ 
+ static struct platform_driver wl18xx_driver = {
+ 	.probe		= wl18xx_probe,
+-	.remove		= wlcore_remove,
++	.remove_new	= wlcore_remove,
+ 	.id_table	= wl18xx_id_table,
+ 	.driver = {
+ 		.name	= "wl18xx_driver",
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index bf21611872a3..9dfd832b1d06 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -6737,7 +6737,7 @@ int wlcore_probe(struct wl1271 *wl, struct platform_device *pdev)
+ }
+ EXPORT_SYMBOL_GPL(wlcore_probe);
+ 
+-int wlcore_remove(struct platform_device *pdev)
++void wlcore_remove(struct platform_device *pdev)
+ {
+ 	struct wlcore_platdev_data *pdev_data = dev_get_platdata(&pdev->dev);
+ 	struct wl1271 *wl = platform_get_drvdata(pdev);
+@@ -6752,7 +6752,7 @@ int wlcore_remove(struct platform_device *pdev)
+ 	if (pdev_data->family && pdev_data->family->nvs_name)
+ 		wait_for_completion(&wl->nvs_loading_complete);
+ 	if (!wl->initialized)
+-		return 0;
++		return;
+ 
+ 	if (wl->wakeirq >= 0) {
+ 		dev_pm_clear_wake_irq(wl->dev);
+@@ -6772,8 +6772,6 @@ int wlcore_remove(struct platform_device *pdev)
+ 
+ 	free_irq(wl->irq, wl);
+ 	wlcore_free_hw(wl);
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(wlcore_remove);
+ 
+diff --git a/drivers/net/wireless/ti/wlcore/wlcore.h b/drivers/net/wireless/ti/wlcore/wlcore.h
+index 81c94d390623..1f8511bf9bb3 100644
+--- a/drivers/net/wireless/ti/wlcore/wlcore.h
++++ b/drivers/net/wireless/ti/wlcore/wlcore.h
+@@ -497,7 +497,7 @@ struct wl1271 {
+ };
+ 
+ int wlcore_probe(struct wl1271 *wl, struct platform_device *pdev);
+-int wlcore_remove(struct platform_device *pdev);
++void wlcore_remove(struct platform_device *pdev);
+ struct ieee80211_hw *wlcore_alloc_hw(size_t priv_size, u32 aggr_buf_size,
+ 				     u32 mbox_size);
+ int wlcore_free_hw(struct wl1271 *wl);
+
+base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
 -- 
-2.42.0
+2.40.1
 
