@@ -2,92 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1472279D93A
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 20:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F93B79D95A
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 21:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235173AbjILSzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Sep 2023 14:55:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60770 "EHLO
+        id S231142AbjILTLA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Sep 2023 15:11:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231477AbjILSzk (ORCPT
+        with ESMTP id S229946AbjILTK7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Sep 2023 14:55:40 -0400
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0ADB125;
-        Tue, 12 Sep 2023 11:55:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:References:Cc:To:From:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=H3/XY/jv4icK4NgBoiigxpPa2AsF3Mqwv5r97vJFS/w=; b=RA/wx0tUm3Vp9scFBNIDz5aBad
-        57SO6Le9cPhQkKGGqL0nuOWzThcfhm/53JrwETkK8H/mmRCQ0ZrhvuD7f+ydRQcrPNZH6SWygJGf3
-        8STCqlopXi0x3/sePJEWe0YZiQ6luUOP89ZHecuzQQfMdlpdNHFCdtgv2F+XEw9hKwIvMnXiYUpal
-        sQDaWolmVS4DnMULSTLViflt+VJXZKjtKQgA5++MOrXm4tfD4ids5GZQVvi41ZmaowzFaCjhGr09r
-        9GYGDGgQ4R2OHXpmQT1XdfKzrDs1nWBMvk17ipTFo2pTenXGGcFs4UcPHC3n5bbBM0pyXPbrEQdo0
-        34HuguIQ==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qg8Xp-000FQs-8e; Tue, 12 Sep 2023 20:55:29 +0200
-Received: from [194.230.161.182] (helo=localhost.localdomain)
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qg8Xo-00041T-OO; Tue, 12 Sep 2023 20:55:29 +0200
-Subject: LPC 2023 Networking and BPF Track CFP (Reminder)
-From:   Daniel Borkmann <daniel@iogearbox.net>
-To:     netdev@vger.kernel.org, bpf@vger.kernel.org
-Cc:     xdp-newbies@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netfilter-devel@vger.kernel.org
-References: <1515db2c-f517-76da-8aad-127a67da802f@iogearbox.net>
- <db3003d6-733b-099f-ef73-abce750d66c6@iogearbox.net>
-Message-ID: <5c9482c9-1f61-2886-4137-a2e2679b2662@iogearbox.net>
-Date:   Tue, 12 Sep 2023 20:55:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        Tue, 12 Sep 2023 15:10:59 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815A7E6
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Sep 2023 12:10:55 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38CIvJ7w004967;
+        Tue, 12 Sep 2023 19:10:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=/ViKI81sMDZ9CnC4/RwnDeLcn4YCJ55f9/RuhH5LDYc=;
+ b=l+KK4s2Kr1nPlztdl2FS0iGJ7sKaacZC7Z0PI5akAmK4h3kLcNwmcwc+HkXEEEBjRfo4
+ 4uLpPDeVsW67eiJQKKnhSzI84ftmyXtzLey/r9B75XG0G//pq9ovCL/13rFfnJFDVJ5a
+ 3D7dyBIfqU1s2Vf5o7pe4tQl5ZVVfHxfJkStlS1/kTB410LI7n6B/ltdNHouvr1JZOBj
+ iSQxIY/uvLuwmQZmuHzbjnPoaeAAEEYWwfrG54XXCr1+kZC7UYhQuV7ofZ/KWesf1UFo
+ 5piGylbm3U/1LUJU4DYtGUQD2xq37cmS2lQwzXiQUxOjQpLCsAQrqdiWHiYfuKia16Tt BA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t268fkk8w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 Sep 2023 19:10:46 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38CJAjbl026913
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 12 Sep 2023 19:10:45 GMT
+Received: from [10.111.183.71] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 12 Sep
+ 2023 12:10:45 -0700
+Message-ID: <4f4cc727-4210-47d7-a635-a8cd14a04064@quicinc.com>
+Date:   Tue, 12 Sep 2023 12:10:44 -0700
 MIME-Version: 1.0
-In-Reply-To: <db3003d6-733b-099f-ef73-abce750d66c6@iogearbox.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/4] wifi: ath12k: implement some functionalities
+ through reading ACPI Table
 Content-Language: en-US
+To:     Lingbo Kong <quic_lingbok@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20230910082802.9198-1-quic_lingbok@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230910082802.9198-1-quic_lingbok@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.8/27029/Tue Sep 12 09:38:51 2023)
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: lC_YGj8nbD-kivQqHw70mGdGmQVHVAUt
+X-Proofpoint-ORIG-GUID: lC_YGj8nbD-kivQqHw70mGdGmQVHVAUt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-12_18,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
+ clxscore=1015 mlxlogscore=727 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2309120161
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a reminder for the Call for Proposals (CFP) for the Networking and
-BPF track at the 2023 edition of the Linux Plumbers Conference (LPC) which is
-taking place in Richmond, VA, United States, on November 13th - 15th, 2023.
+On 9/10/2023 1:27 AM, Lingbo Kong wrote:
+> Through reading ACPI table, implement Time-Average-SAR(TAS), BIOS SAR,
+> configuration of CCA threshold and band edge channel power functionalities.
+> 
+> v4:
+> 1.revise commit log using imperative voice
+> 2.delete guid_is_null()
+> 
+> v3:
+> 1.remove unnecessary cpu_to_le32()
+> 2.adjust the order of the macros
+> 3.apply jeff's advice
+> 
+> v2:
+> 1.put <linux/acpi.h> in the include guard
+> 
+> Lingbo Kong (4):
+>    wifi: ath12k: add TAS capability for WCN7850
+>    wifi: ath12k: add BIOS SAR capability for WCN7850
+>    wifi: ath12k: add adjust configuration of CCA threshold value for
+>      WCN7850
+>    wifi: ath12k: add set band edge channel power for WCN7850
+> 
+>   drivers/net/wireless/ath/ath12k/Makefile |   3 +-
+>   drivers/net/wireless/ath/ath12k/acpi.c   | 365 +++++++++++++++++++++++
+>   drivers/net/wireless/ath/ath12k/acpi.h   |  60 ++++
+>   drivers/net/wireless/ath/ath12k/core.c   |   6 +
+>   drivers/net/wireless/ath/ath12k/core.h   |  13 +
+>   drivers/net/wireless/ath/ath12k/hw.c     |  10 +
+>   drivers/net/wireless/ath/ath12k/hw.h     |   4 +-
+>   drivers/net/wireless/ath/ath12k/pci.c    |   6 +
+>   drivers/net/wireless/ath/ath12k/wmi.c    | 252 ++++++++++++++++
+>   drivers/net/wireless/ath/ath12k/wmi.h    |  47 ++-
+>   10 files changed, 763 insertions(+), 3 deletions(-)
+>   create mode 100644 drivers/net/wireless/ath/ath12k/acpi.c
+>   create mode 100644 drivers/net/wireless/ath/ath12k/acpi.h
+> 
+> 
+> base-commit: 1b5b69a51bb4909844e4003920af09ca1cc6bb0e
+For the series
 
-Note that the conference is planned to be both in person and remote (hybrid).
-CFP submitters should ideally be able to give their presentation in person to
-minimize technical issues, although presenting remotely will also be possible.
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-The Networking and BPF track technical committee consists of:
-
-     David S. Miller <davem@davemloft.net>
-     Jakub Kicinski <kuba@kernel.org>
-     Paolo Abeni <pabeni@redhat.com>
-     Eric Dumazet <edumazet@google.com>
-     Alexei Starovoitov <ast@kernel.org>
-     Daniel Borkmann <daniel@iogearbox.net>
-     Andrii Nakryiko <andrii@kernel.org>
-     Martin Lau <martin.lau@linux.dev>
-
-We are seeking proposals of 30 minutes in length (including Q&A discussion). Any
-kind of advanced Linux networking and/or BPF related topic will be considered.
-
-Please submit your proposals through the official LPC website at:
-
-     https://lpc.events/event/17/abstracts/
-
-Make sure to select "eBPF & Networking Track" in the track pull-down menu.
-
-Proposals must be submitted by September 27th, and submitters will be notified
-of acceptance by October 2nd. Final slides (as PDF) are due on the first day of
-the conference.
-
-We are very much looking forward to a great conference and seeing you all!
