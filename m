@@ -2,105 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF2CE79E74C
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 13:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3993E79E74F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 13:57:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240518AbjIML4d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 07:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37632 "EHLO
+        id S240530AbjIML5K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 07:57:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231334AbjIML4d (ORCPT
+        with ESMTP id S231334AbjIML5I (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Sep 2023 07:56:33 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB3A1996
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 04:56:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=TJXbv58nZXH9xs0idbIKM4PwT3gIhgk7a+ziFWpPZk0=;
-        t=1694606189; x=1695815789; b=DxWj+iSP0ff/w7GLeIULoFG0bBgmx+6xJQHsvwfDVtZJEjz
-        1KTM4Ic6u2fMrLRDAPdy2DAI5VHWlcQ2DyL1ReCj4UFcpH178ffZM4UL2/FPynSacw5+Ifipjc0xZ
-        vYmUeO9l2zd5Y/ld4d6A13TmKO9TXpzaHEkJypCo7dVOsseWfQRpwZNCe64y5Nkva+yeELLSBxk+j
-        4fpdIveQAnPHpzhAX/z1VfLvc9XyOCNdOKC/BRClVdFP5oZua/dk1+7GtnOV9gfOLlKtUmfNQYHe6
-        eQ8tqHTZUBlefMtjz1e1fYVbPxneXgpmt08ONh+f/WS7K/iw94ANSy5rbgpSKwjw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qgOTq-00EsIh-3C;
-        Wed, 13 Sep 2023 13:56:27 +0200
-Message-ID: <7f049725302e06040194e0aa76a8c34d6ecc024c.camel@sipsolutions.net>
-Subject: Re: [PATCH v7 2/2] wifi: mac80211: S1G beacon/short beacon support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Bassem Dawood <bassem@morsemicro.com>,
-        linux-wireless@vger.kernel.org
-Cc:     Kieran Frewen <kieran.frewen@morsemicro.com>,
-        Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
-Date:   Wed, 13 Sep 2023 13:56:25 +0200
-In-Reply-To: <20230810093556.33800-2-bassem@morsemicro.com>
-References: <20230810093556.33800-1-bassem@morsemicro.com>
-         <20230810093556.33800-2-bassem@morsemicro.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Wed, 13 Sep 2023 07:57:08 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00D321996
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 04:57:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694606224; x=1726142224;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TGmBPL+GaM78eowuKPOClQpc/piH2zT1TIV6+Rewbbc=;
+  b=bSBEVGfwPTsrWQq3pOAGC53+DQ71lM/QxKGd4hRvR7FFTPXxAod4om60
+   +jWjLjclc6t6+Jk44Fit956FCJW4vNB2pm3puwuWtGMK55D4oyhvndPos
+   YzWqeV2pCfn/ZVyWTjLvBzZ2EFoJ2tmics4s+azWbuY5lW6SFm7sMCVfS
+   jMvBDDMH2lR5Gww6okCZbMC+5tpDl7iRUv1cb223uVb7pLkNsubJ0KtNB
+   jj2hN6PSUGwZFl00mEmRH6UwJLdpnuemHZIu8yi/0yewZQfumYXsX1Krb
+   +pTti2jTYK2GC0XDnYQZbYkKpjduH7lcPGN+pHfNWGdlTzAreerqh8c5v
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="368902955"
+X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
+   d="scan'208";a="368902955"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="737470911"
+X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
+   d="scan'208";a="737470911"
+Received: from ggreenma-mobl2.jer.intel.com ([10.13.17.40])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:02 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/15] wifi: iwlwifi: updates - 2023-09-13 
+Date:   Wed, 13 Sep 2023 14:56:36 +0300
+Message-Id: <20230913115651.190558-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-08-10 at 19:35 +1000, Bassem Dawood wrote:
-> From: Kieran Frewen <kieran.frewen@morsemicro.com>
->=20
-> With the kernel able to send both short and long S1G beacons, include
-> the ability for setting the short beacon period. If configured, use
-> the S1G short beacon format. The S1G short beacon format includes a
-> limited set of information elements. It also adds the support for
-> distinguish short beacon head and tail.
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-Also here, I think that could be more elaborate.
+Hi,
 
-And we like to also have commit logs in imperative voice.
+This patch set includes iwlwifi patches intended for v6.7.
 
-> +++ b/net/mac80211/ieee80211_i.h
-> @@ -259,10 +259,13 @@ struct ieee80211_color_change_settings {
-> =20
->  struct beacon_data {
->  	u8 *head, *tail;
-> +	u8 *short_head, *short_tail;
->  	int head_len, tail_len;
-> +	int short_head_len, short_tail_len;
->  	struct ieee80211_meshconf_ie *meshconf;
->  	u16 cntdwn_counter_offsets[IEEE80211_MAX_CNTDWN_COUNTERS_NUM];
->  	u8 cntdwn_current_counter;
-> +	u8 long_beacon_count;
+* a few small features (like adding support to set_antenna() and
+  disabling power save during dransition to d3)
+* error handling and recovery enhancements
+* cleanups
 
-I don't understand why this is called long_beacon_count?
+Thanks,
+Gregory
 
-> +++ b/net/mac80211/tx.c
-> @@ -5260,6 +5260,18 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
->  	struct sk_buff *skb =3D NULL;
->  	u16 csa_off_base =3D 0;
->  	int mbssid_len;
-> +	bool is_short =3D false;
-> +
-> +	if (vif->cfg.s1g) {
-> +		if (beacon->long_beacon_count =3D=3D 0) {
-> +			is_short =3D false;
-> +			beacon->long_beacon_count =3D
-> +				vif->bss_conf.short_beacon_period - 1;
-> +		} else {
-> +			is_short =3D true;
-> +			beacon->long_beacon_count--;
+Emmanuel Grumbach (4):
+  wifi: iwlwifi: mvm: log dropped frames
+  wifi: iwlwifi: mvm: fix recovery flow in CSA
+  wifi: iwlwifi: mvm: support set_antenna()
+  wifi: iwlwifi: mvm: add a debug print when we get a BAR
 
-It's decremented for every _short_ beacon, and then you get a long one
-when it reaches 0 ... so it's surely not counting long beacons?
+Gregory Greenman (1):
+  wifi: iwlwifi: fw: disable firmware debug asserts
 
+Johannes Berg (6):
+  wifi: iwlwifi: pcie: rescan bus if no parent
+  wifi: iwlwifi: pcie: give up mem read if HW is dead
+  wifi: iwlwifi: pcie: enable TOP fatal error interrupt
+  wifi: iwlwifi: mvm: make "pldr_sync" mode effective
+  wifi: iwlwifi: update context info structure definitions
+  wifi: iwlwifi: mvm: move listen interval to constants
 
-Seems like is_short now needs to be taken into account for the beacon
-skb allocation, nowhere did you actually ensure that the short beacon is
-indeed shorter than the long beacon ... you don't want to let userspace
-crash us with that.
+Miri Korenblit (3):
+  wifi: iwlwifi: remove dead-code
+  wifi: iwlwifi: Use FW rate for non-data frames
+  wifi: iwlwifi: no power save during transition to D3
 
-johannes
+Shaul Triebitz (1):
+  wifi: iwlwifi: mvm: enable FILS DF Tx on non-PSC channel
+
+ .../net/wireless/intel/iwlwifi/fw/api/debug.h | 22 ++++++
+ .../net/wireless/intel/iwlwifi/fw/api/power.h |  7 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 25 ++++++
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h   |  1 +
+ drivers/net/wireless/intel/iwlwifi/fw/rs.c    |  1 -
+ .../intel/iwlwifi/iwl-context-info-gen3.h     |  6 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |  1 +
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |  2 +
+ .../wireless/intel/iwlwifi/iwl-eeprom-parse.c |  5 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 76 ++++++++++++++++---
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.h    | 19 +++--
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  2 +
+ .../wireless/intel/iwlwifi/mvm/constants.h    |  1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 24 ++++--
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 16 +++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 56 +++++++++-----
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 32 ++++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  | 12 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  8 +-
+ .../net/wireless/intel/iwlwifi/mvm/power.c    |  5 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  9 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 14 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  6 ++
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 21 ++++-
+ 25 files changed, 307 insertions(+), 65 deletions(-)
+
+-- 
+2.38.1
+
