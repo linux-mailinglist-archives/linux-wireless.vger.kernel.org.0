@@ -2,88 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB44E79EFF2
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 19:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFFDF79F2E2
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 22:31:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230396AbjIMRJs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 13:09:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33790 "EHLO
+        id S232291AbjIMUbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 16:31:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231512AbjIMRJf (ORCPT
+        with ESMTP id S231195AbjIMUbS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Sep 2023 13:09:35 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91A75268E
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 10:09:06 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-502defbb0c3so34837e87.0
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 10:09:06 -0700 (PDT)
+        Wed, 13 Sep 2023 16:31:18 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D3F3170F
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 13:31:14 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-68fac16ee5fso192162b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 13:31:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694624944; x=1695229744; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vZ9kAZehe6uRUddqEUoKwMQrCUGUj3DIHCxJ6+5D8sA=;
-        b=BcZJbYAF6iuS+yGNln587jNH9Uskr7iZD6gPUF0jOJ7WSjKtyJ6ATxnbR8vItbHfFp
-         SX6ooDtLpYwvR3YlTyAxIdChSIisF8LL7zE1clLrlzTJuhblzOR4bKqM4dqMHux1bHm5
-         athaeqTATUA3N4o8pvCQYA6VisFH9QUk/uIDorl4V7STvrnJnd462UU8BygrHKlvDo+4
-         ieoewP5OBX2AKX1LLBjTC0GVb4KGULUg/J9sU2PqWCkB8A2E5SejM/3vhQQZsY8WOODW
-         EtJKY81LgmxUIbQros6utqThzy82nH4HQqm+MHdfbpOJXIuT9vowEUxl0NjA9N2ISKOb
-         yqlA==
+        d=chromium.org; s=google; t=1694637074; x=1695241874; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9IruvCp7wp5R92eQW4msrJwWXirSuqIhpelb+f6ev20=;
+        b=J0Q3GPfe8b6G9voiwpbTdO9J/pjvGr2ecJAJAqrGN/ALTXrq0FyeIz0JJ2kMgMJGRM
+         9y3EMU2kMVdx8W4YZm0Bl67Ke0QPkpZD07E9IMsRlhEHQeYPKbUZqsxaUZDspas39BPg
+         F74FrxFOfmHBCcf/AH7fl0iMefbXMNvxL5gMU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694624944; x=1695229744;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vZ9kAZehe6uRUddqEUoKwMQrCUGUj3DIHCxJ6+5D8sA=;
-        b=RIolmqL3/wCOgPzu4nLoMF9hdWgSH+Tdj9YcSNvUTtS2xUql09ixANSdZhRaiWbpb7
-         qn44CaWBDOUsEMBocYVlzWsBvS0eakrlJH1n7JkIppE7qFpg/GLLaFOd8DQhVnik/p06
-         Ms2vC79OOE2Mhph4z/iLrQJbf1aQYRNUcDwKbFBrcNePrGv27YuFdx7VvI/X5fg6vwkT
-         ARbHW3Il/Ed8vgtHTO8nxd/fAtYajBnco5YksaMLp+XUBDG+IDgagBt7W5tjNj7MoNuu
-         qWy6fYV5N7A+YJcxBm+gH+JkSJB4RXuXvwZwQ3R2oQk7iAmwMLuY8E2lwIUe+oE2FjGp
-         t9XA==
-X-Gm-Message-State: AOJu0YwGbMLW+3QsTCEfbtREWNYmb9J4KAdOsWaJRSz74xi9O7as/FUV
-        6aZtXUmZIQm5kcAroejHLA4ySbqDpim6BZI1fWlisq5nayho1g==
-X-Google-Smtp-Source: AGHT+IE9ecne3TTQL60K7Fw5v99QnVw+cOiOih8BOM75o1lCiATusT3ESCFnQhDIa07iJiYepwEQNF71qT4jFDo+hOk=
-X-Received: by 2002:a05:6512:328c:b0:4ff:9bd9:f69a with SMTP id
- p12-20020a056512328c00b004ff9bd9f69amr2667306lfe.65.1694624944453; Wed, 13
- Sep 2023 10:09:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694637074; x=1695241874;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9IruvCp7wp5R92eQW4msrJwWXirSuqIhpelb+f6ev20=;
+        b=hyWNSlI7/VJP2FNu/LQvEDEHKeH7sIvDuZqy8L4Vm0H+j/NrZ5wIt5FnLmYN5gWPtG
+         qpw+0KebgyocHIBKQ+ZDJmPY2vvmMJu1vdP8QFRtZFy2Iv5wR9jkfPvFUPZ9MGCGRfO+
+         9OV1/wZifYkAbsPqg3HhwYgz8LIBs1XN52CYF+lZN7lzPGXgBlC5dfG0CtGzAGgvkQoC
+         w3Gt9zfTwFhAYjlgrpnUn8LRMMrPVv9F89bmdM3bnd7S32sKxrL+dxn0v9QIDSBQ4YYZ
+         HfVL2zAjG9J6zRc6Xkh2qsLjhoRuy8F01f/g4C+MSDhKGBT3a2cj4bySqVIfH0w6BNQ7
+         /MHg==
+X-Gm-Message-State: AOJu0YxeGrMLwb2lmGPn96ic59UsmsPzVmhNm3Is08EUmgEP7YOS+Mw3
+        EBKSPMY0m5dLNZGaBauw8NMljw==
+X-Google-Smtp-Source: AGHT+IGrroCbvJyS5XOoog5UqhUAoS6N1655uh0h/DoAeMUPZp6oAQ5Kb2ogXIIDTyk15/OMj6C0ig==
+X-Received: by 2002:a05:6a21:789c:b0:153:39d9:56fe with SMTP id bf28-20020a056a21789c00b0015339d956femr4244092pzc.47.1694637073727;
+        Wed, 13 Sep 2023 13:31:13 -0700 (PDT)
+Received: from localhost ([2620:15c:9d:2:93b7:d435:bb08:332b])
+        by smtp.gmail.com with UTF8SMTPSA id i2-20020a170902c94200b001b81a97860asm38860pla.27.2023.09.13.13.31.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Sep 2023 13:31:12 -0700 (PDT)
+Date:   Wed, 13 Sep 2023 13:31:09 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Pin-yen Lin <treapking@chromium.org>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Polaris Pi <pinkperfect2021@gmail.com>,
+        Matthew Wang <matthewmwang@chromium.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] wifi: mwifiex: Fix oob check condition in
+ mwifiex_process_rx_packet
+Message-ID: <ZQIcDWKrmgoPkwlN@google.com>
+References: <20230908104308.1546501-1-treapking@chromium.org>
 MIME-Version: 1.0
-From:   Rusty Howell <rustyhowell@gmail.com>
-Date:   Wed, 13 Sep 2023 11:08:48 -0600
-Message-ID: <CAE+BM3=Neb_g3QPMiGjpmkkpUK6wupM1FX06DyZOtDnQgBz_YA@mail.gmail.com>
-Subject: Add extra check in regdb scripts
-To:     linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230908104308.1546501-1-treapking@chromium.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From 434588b8f06f78a3188909c298a6f6671dab7b3f Mon Sep 17 00:00:00 2001
-From: Rusty Howell <rhowell@control4.com>
-Date: Thu, 7 Sep 2023 12:56:47 -0600
-Subject: [PATCH] Add same check that kernel uses to check reg domain
+On Fri, Sep 08, 2023 at 06:41:12PM +0800, Pin-yen Lin wrote:
+> Only skip the code path trying to access the rfc1042 headers when the
+> buffer is too small, so the driver can still process packets without
+> rfc1042 headers.
+> 
+> Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
+> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
 
-The kernel will reject a regulatory domain if the max bandwidth is greater than
-the span from start to end. We should catch this error when compiling the
-regulatory database.
----
- dbparse.py | 3 +++
- 1 file changed, 3 insertions(+)
+I'd appreciate another review/test from one of the others here
+(Matthew?), even though I know y'all are already working together.
 
-diff --git a/dbparse.py b/dbparse.py
-index 5f7e082..1e87813 100755
---- a/dbparse.py
-+++ b/dbparse.py
-@@ -218,6 +218,9 @@ class DBParser(object):
-                 self._syntax_error("Inverted freq range (%d - %d)" %
-(start, end))
-             if start == end:
-                 self._syntax_error("Start and end freqs are equal
-(%d)" % start)
-+            if bw > (end - start):
-+                self._syntax_error("Max bandwidth must not exceed the
-range from start to end")
-+
-         except ValueError:
-             self._syntax_error("band must have frequency range")
+> ---
+> 
+> Changes in v3:
+> - Really apply the sizeof call fix as it was missed in the previous patch
+> 
+> Changes in v2:
+> - Fix sizeof call (sizeof(rx_pkt_hdr) --> sizeof(*rx_pkt_hdr))
+> 
+>  drivers/net/wireless/marvell/mwifiex/sta_rx.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+> index 65420ad67416..257737137cd7 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+> @@ -86,7 +86,8 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
+>  	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
+>  	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
+>  
+> -	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
+> +	if (sizeof(rx_pkt_hdr->eth803_hdr) + sizeof(rfc1042_header) +
+> +	    rx_pkt_off > skb->len) {
+>  		mwifiex_dbg(priv->adapter, ERROR,
+>  			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
+>  			    skb->len, rx_pkt_off);
+> @@ -95,12 +96,13 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
+>  		return -1;
+>  	}
+>  
+> -	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+> -		     sizeof(bridge_tunnel_header))) ||
+> -	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+> -		     sizeof(rfc1042_header)) &&
+> -	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
+> -	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX)) {
+> +	if (sizeof(*rx_pkt_hdr) + rx_pkt_off <= skb->len &&
 
--- 
-2.25.1
+Are you sure you want this length check to fall back to the non-802.3
+codepath? Isn't it an error to look like an 802.3 frame but to be too
+small? I'd think we want to drop such packets, not process them as-is.
+
+If I'm correct, then this check should move inside the 'if' branch of
+this if/else.
+
+Brian
+
+> +	    ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+> +		      sizeof(bridge_tunnel_header))) ||
+> +	     (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+> +		      sizeof(rfc1042_header)) &&
+> +	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
+> +	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX))) {
+>  		/*
+>  		 *  Replace the 803 header and rfc1042 header (llc/snap) with an
+>  		 *    EthernetII header, keep the src/dst and snap_type
+> -- 
+> 2.42.0.283.g2d96d420d3-goog
+> 
