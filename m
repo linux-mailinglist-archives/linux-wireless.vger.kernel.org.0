@@ -2,95 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9248779E2B2
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 10:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B0E379E2BF
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 10:56:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239109AbjIMIzM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 04:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58242 "EHLO
+        id S239148AbjIMI4g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 04:56:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230267AbjIMIzM (ORCPT
+        with ESMTP id S239144AbjIMI4g (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Sep 2023 04:55:12 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7CED196
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 01:55:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=jqnDKez6df2YW11yiROlt1j6XBsPX2hqwFtKpg//+FI=;
-        t=1694595307; x=1695804907; b=jbVnBr1DaZAikl1cE/Y/t1lgjV8t12juMm2CjGWiPZBRzZ8
-        4aHmSqgQsc2B7h249gDwyUMtvWNzOaza9cML75TNMJqlOeaHZ4/0FvgajcdjUFvPGB7luua3FEo6X
-        nQHK3TYsrIRk5ZCfRUa0zyB2Bl0SucTaUbDYDggk6PL/P+lLYRG9T5QljXC04vmS/FkSvKPfTR3or
-        cELiXYVKp9IjokmEzMJtjcQ94YVo64B9azPM62T7aHdh2ytJPhpASwcIhiHhnoPvv4XpCiyh2yuue
-        CxELsRWRTyN3yPMlV1UDy73n7I8TM4nUWytRTkeaNENk9KF7As1ZQ+8dYKO7q7nw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qgLeH-00EhXj-2E;
-        Wed, 13 Sep 2023 10:55:01 +0200
-Message-ID: <cd762f33b1c15566237c85f1e265ee8a00006f5c.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/3] wifi: mac80211: add support to allow driver to
- generate local link address for station
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>, ath12k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 13 Sep 2023 10:55:00 +0200
-In-Reply-To: <20230906103458.24092-2-quic_wgong@quicinc.com>
-References: <20230906103458.24092-1-quic_wgong@quicinc.com>
-         <20230906103458.24092-2-quic_wgong@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Wed, 13 Sep 2023 04:56:36 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F548196;
+        Wed, 13 Sep 2023 01:56:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653BCC433C8;
+        Wed, 13 Sep 2023 08:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694595392;
+        bh=Y1yF1JdFEipuLJy5XAg3taX2OJcsThXzbTWKAi9GM7A=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=BYKmIMGtAducsE7GoVP9h6mT5cBvkFzI7Bnc3M+pD3ZA082kYg+PiYKPAdKrLhqEg
+         YgHE7RGP9ZWXEKsPcte9uykWkElvhA5bHgCgCQPQRgTKJIEFzBtjhjfgtGBsdwnXNs
+         MwsazLQyneXwK0j1if2CQ/0b+o3npFT+n8Y5pwAF1/TA/I7Npd+LjLmJm+V5HpnRYh
+         ujl7zLsemZOYAbDdH664hTXOh8TlbiSSYkZMxj6t6eLSDXpYWFE/whcL9fhF7ewjqZ
+         2NikhTrhkLD4bwY3B1SI3G2wZ01onhBfG1TY/gxgRiimA7tH8otpoOTY0Ct7guif+k
+         zqt5cZxk3Cpmw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Juerg Haefliger <juerg.haefliger@canonical.com>
+Cc:     aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        linus.walleij@linaro.org, marcan@marcan.st, keescook@chromium.org,
+        gustavoars@kernel.org, hdegoede@redhat.com,
+        ryohei.kondo@cypress.com
+Subject: Re: [PATCH] wifi: brcmfmac: Replace 1-element arrays with flexible
+ arrays
+References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
+Date:   Wed, 13 Sep 2023 11:58:07 +0300
+In-Reply-To: <20230913065421.12615-1-juerg.haefliger@canonical.com> (Juerg
+        Haefliger's message of "Wed, 13 Sep 2023 08:54:21 +0200")
+Message-ID: <87msxqlaao.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-09-06 at 06:34 -0400, Wen Gong wrote:
-> Currently the local link address of all links is random generated by
-> eth_random_addr() in mac80211 while connecting to a MLO AP for station
-> mode. The MAC address of link is not passed from NL command. The 1st
-> link address is generated while authenticate with AP, the other links'
-> addresses are generated after assoc success with AP.
->=20
-> It is not convenient for some driver, reason is, for station mode,
-> the interface with its mac address is already created in driver after
-> wlan load, it is used for hw scan and non-MLO connection.
->=20
-> When connecting to MLO AP, driver reuse the interface as the 1st link of
-> MLO. If the mac address of the 1st link changed to a new value, then
-> driver need to change the mac address and do many synchronous operation
-> with firmware. Thus the operation become complex. After MLO disconnect,
-> driver need to restore the old mac address, it is also another complex
-> operation.
->=20
-> The hw scan maybe happen through the MLO connection/disconnection. And
-> the hw scan uses the 1st link address while MLO connected and uses the
-> interface address while MLO is disconnected, this leads hw scan complex.
->=20
-> Hence add this interface to allow driver to generate the address of each
-> link while MLO connection. Then driver could provide the same mac address
-> for the 1st link, thus hw scan/NON-MLO connection/1st link of MLO will us=
-e
-> the same mac address, then operation become easy.
+Juerg Haefliger <juerg.haefliger@canonical.com> writes:
 
-Maybe after all this explanation, all we need is a flag "reuse MLD
-address for assoc link"?
+> Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
+> UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
+> 'element' and 'channel_list' will trigger warnings, so make them proper
+> flexible arrays.
+>
+> False positive warnings were:
+>
+>   UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
+>   index 1 is out of range for type '__le32 [1]'
+>
+>   UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
+>   index 1 is out of range for type '__le16 [1]'
+>
+> for these lines of code:
+>
+>   6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
+>
+>   1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
+>
+> Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
 
+Should this be queued for v6.6?
 
-> +		ret =3D drv_generate_link_addr(sdata->local, sdata,
-> +					     link_id, link->conf->addr);
-> +		if (ret)
-> +			eth_random_addr(link->conf->addr);
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-should probably refactor this into a separate function though.
-
-I'm also not sure how the driver even knows that a link it's being asked
-to get the address for *is* the assoc link? Do you want to rely on that
-being the first address handed out?
-
-johannes
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
