@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3071B79E754
+	by mail.lfdr.de (Postfix) with ESMTP id D3BC979E756
 	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 13:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240574AbjIML5a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 07:57:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49188 "EHLO
+        id S240586AbjIML5c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 07:57:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240569AbjIML52 (ORCPT
+        with ESMTP id S240569AbjIML5b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Sep 2023 07:57:28 -0400
+        Wed, 13 Sep 2023 07:57:31 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CC561996
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 04:57:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A66C1996
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 04:57:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694606245; x=1726142245;
+  t=1694606247; x=1726142247;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3IbK+NHECKuiCqmsqBlma+RcigcZLxmypRF41ZalybI=;
-  b=MOasZ0Awb3pdyQgbVGktKANarp1h0LlbTxdcJRI7XjrzFf2QMa9JghOn
-   cs5msO82Y3zVvUr6xgjzKzcdTGi0TQ+Cz2BANjL/SuG2wmeWVS+n80KIK
-   vRZnQpRKTHG5WAJeMjoGlRCKz/9ZwzZCJDq71/Myav+wNzvq/uyd2hk4e
-   6FXnBXVh3vXOj/y/cTf8jBVTf/bUFaLdlmZ7lHOHWsJselUtW8brpIAxk
-   qty55BMAH9Dd763CKbZxP1pNxGp9xK0AIKxbYgnZ7L3a1/fhTqXr5cZ4h
-   pPFyoqZZc4qeRynuMZCnRk9LMsw0+aWwzmrT783Ggohp2EqsdMWKAXqyg
+  bh=TNJkuB4Gzu+/EDrY/P2yFm3LeG8VbW95ZBtAAcEjF7s=;
+  b=mSy+3/en9Oeze9H1LAHXg2/BPMm9v2qLJzXoJ6R7qFb/Gha3VnVY1+HD
+   5eN2rJqBkawihgmQjf4usdtxqV5E6nSPNwVqBmRBhhyGbQAj5JE4/twdx
+   QaoWToEMQ66kVl7FumCmHLK5PJNTKTAxMdnwoxZD9xeiSca344oGOeX0T
+   TOtA2qYZtMuTaklB8i4SOCT9/zEcQh2cjbM0/CI8hR5bNiRTX1Pd5JUMX
+   eIQDYPFkmP/cX4jLpC8OExesintUGRwfaJcvtJWFDdMPyYsn67RNGpe0h
+   wSFgm9FjgDPKxT1uyCsLW7Cffx2FMkY5iB2DbvjUnOu629xKPERB1qzMo
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="368903048"
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="368903064"
 X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
-   d="scan'208";a="368903048"
+   d="scan'208";a="368903064"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:24 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:27 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="737470952"
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="737470957"
 X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
-   d="scan'208";a="737470952"
+   d="scan'208";a="737470957"
 Received: from ggreenma-mobl2.jer.intel.com ([10.13.17.40])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:23 -0700
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:25 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
+        Shaul Triebitz <shaul.triebitz@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 07/15] wifi: iwlwifi: mvm: make "pldr_sync" mode effective
-Date:   Wed, 13 Sep 2023 14:56:43 +0300
-Message-Id: <20230913145231.45a94d480e56.Id9277f1df6a63ab0dfca0d0c0f448c759e1b8e73@changeid>
+Subject: [PATCH 08/15] wifi: iwlwifi: mvm: enable FILS DF Tx on non-PSC channel
+Date:   Wed, 13 Sep 2023 14:56:44 +0300
+Message-Id: <20230913145231.83b9a76fc6c4.I6703111cc6befcd0e9cd9adf3cb127a648dbb7b1@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230913115651.190558-1-gregory.greenman@intel.com>
 References: <20230913115651.190558-1-gregory.greenman@intel.com>
@@ -56,123 +56,101 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Shaul Triebitz <shaul.triebitz@intel.com>
 
-If the device initialized with ME active, this would indeed
-work, since the NVM information would be obtained from ME.
-However, in the much more likely case that ME isn't active
-and the firmware takes actions requiring the sync, this was
-not working correctly when the firmware is only run at init
-to obtain NVM data, since mac80211 isn't even initialized.
+If the channel bandwidth is greater or equal than 80MHz,
+enable FILS DF transmittion, even if the control channel is non-PSC.
+That's because that in 80MHz there must be a sub 20MHz PSC
+channel, and since the FILS DF is duplicated on all sub 20MHz
+channels, within the 80MHz (hence it will be sent on a PSC channel).
 
-Fix this by moving the 'pldr_sync' handling to a different
-place.
+Also, if FILS DF Tx is enabled, always configure the firmware
+with the actual channel bandwidth, even before there is a connected
+client (rather than the minimum bandwidth e.g. 20MHz), since FILS
+DF transmission on a PSC channel take presedent over power
+consumption.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Shaul Triebitz <shaul.triebitz@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 20 +++++++++++++------
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 12 +----------
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  3 +++
- 3 files changed, 18 insertions(+), 17 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c    | 16 ++++++++++++++--
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c    | 10 ++++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h     |  2 ++
+ 3 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index f682c9067abb..567b02754a43 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -583,6 +583,7 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm)
- 	static const u16 init_complete[] = {
- 		INIT_COMPLETE_NOTIF,
- 	};
-+	u32 sb_cfg;
- 	int ret;
- 
- 	if (mvm->trans->cfg->tx_with_siso_diversity)
-@@ -592,6 +593,12 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm)
- 
- 	mvm->rfkill_safe_init_done = false;
- 
-+	sb_cfg = iwl_read_umac_prph(mvm->trans, SB_MODIFY_CFG_FLAG);
-+	/* if needed, we'll reset this on our way out later */
-+	mvm->pldr_sync = !(sb_cfg & SB_CFG_RESIDES_IN_OTP_MASK);
-+	if (mvm->pldr_sync && iwl_mei_pldr_req())
-+		return -EBUSY;
-+
- 	iwl_init_notification_wait(&mvm->notif_wait,
- 				   &init_wait,
- 				   init_complete,
-@@ -605,6 +612,13 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm)
- 	ret = iwl_mvm_load_ucode_wait_alive(mvm, IWL_UCODE_REGULAR);
- 	if (ret) {
- 		IWL_ERR(mvm, "Failed to start RT ucode: %d\n", ret);
-+
-+		/* if we needed reset then fail here, but notify and remove */
-+		if (mvm->pldr_sync) {
-+			iwl_mei_alive_notif(false);
-+			iwl_trans_pcie_remove(mvm->trans, true);
-+		}
-+
- 		goto error;
- 	}
- 	iwl_dbg_tlv_time_point(&mvm->fwrt, IWL_FW_INI_TIME_POINT_AFTER_ALIVE,
-@@ -1502,7 +1516,6 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 	struct ieee80211_channel *chan;
- 	struct cfg80211_chan_def chandef;
- 	struct ieee80211_supported_band *sband = NULL;
--	u32 sb_cfg;
- 
- 	lockdep_assert_held(&mvm->mutex);
- 
-@@ -1510,11 +1523,6 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 	if (ret)
- 		return ret;
- 
--	sb_cfg = iwl_read_umac_prph(mvm->trans, SB_MODIFY_CFG_FLAG);
--	mvm->pldr_sync = !(sb_cfg & SB_CFG_RESIDES_IN_OTP_MASK);
--	if (mvm->pldr_sync && iwl_mei_pldr_req())
--		return -EBUSY;
--
- 	ret = iwl_mvm_load_rt_fw(mvm);
- 	if (ret) {
- 		IWL_ERR(mvm, "Failed to start RT ucode: %d\n", ret);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index a4ac178d76b3..93223f8c07b4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1169,18 +1169,8 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
- 
- 	for (retry = 0; retry <= max_retry; retry++) {
- 		ret = __iwl_mvm_mac_start(mvm);
--		if (!ret)
--			break;
--
--		/*
--		 * In PLDR sync PCI re-enumeration is needed. no point to retry
--		 * mac start before that.
--		 */
--		if (mvm->pldr_sync) {
--			iwl_mei_alive_notif(false);
--			iwl_trans_pcie_remove(mvm->trans, true);
-+		if (!ret || mvm->pldr_sync)
- 			break;
--		}
- 
- 		IWL_ERR(mvm, "mac start retry %d\n", retry);
- 	}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index d4983abd9f97..1c21a313f8f1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -790,6 +790,9 @@ static int iwl_mvm_start_get_nvm(struct iwl_mvm *mvm)
- 	if (ret)
- 		IWL_ERR(mvm, "Failed to run INIT ucode: %d\n", ret);
- 
-+	/* no longer need this regardless of failure or not */
-+	mvm->pldr_sync = false;
-+
- 	return ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index b97b805d3486..06bbd6212df0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -1083,6 +1083,19 @@ static int iwl_mvm_mac_ctxt_send_beacon_v7(struct iwl_mvm *mvm,
+ 						sizeof(beacon_cmd));
  }
  
++bool iwl_mvm_enable_fils(struct iwl_mvm *mvm,
++			 struct ieee80211_chanctx_conf *ctx)
++{
++	if (IWL_MVM_DISABLE_AP_FILS)
++		return false;
++
++	if (cfg80211_channel_is_psc(ctx->def.chan))
++		return true;
++
++	return (ctx->def.chan->band == NL80211_BAND_6GHZ &&
++		ctx->def.width >= NL80211_CHAN_WIDTH_80);
++}
++
+ static int iwl_mvm_mac_ctxt_send_beacon_v9(struct iwl_mvm *mvm,
+ 					   struct ieee80211_vif *vif,
+ 					   struct sk_buff *beacon,
+@@ -1102,8 +1115,7 @@ static int iwl_mvm_mac_ctxt_send_beacon_v9(struct iwl_mvm *mvm,
+ 	ctx = rcu_dereference(link_conf->chanctx_conf);
+ 	channel = ieee80211_frequency_to_channel(ctx->def.chan->center_freq);
+ 	WARN_ON(channel == 0);
+-	if (cfg80211_channel_is_psc(ctx->def.chan) &&
+-	    !IWL_MVM_DISABLE_AP_FILS) {
++	if (iwl_mvm_enable_fils(mvm, ctx)) {
+ 		flags |= iwl_fw_lookup_cmd_ver(mvm->fw, BEACON_TEMPLATE_CMD,
+ 					       0) > 10 ?
+ 			IWL_MAC_BEACON_FILS :
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 93223f8c07b4..2fb5fb41f508 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4736,8 +4736,9 @@ static int __iwl_mvm_add_chanctx(struct iwl_mvm *mvm,
+ {
+ 	u16 *phy_ctxt_id = (u16 *)ctx->drv_priv;
+ 	struct iwl_mvm_phy_ctxt *phy_ctxt;
+-	bool responder = iwl_mvm_is_ftm_responder_chanctx(mvm, ctx);
+-	struct cfg80211_chan_def *def = responder ? &ctx->def : &ctx->min_def;
++	bool use_def = iwl_mvm_is_ftm_responder_chanctx(mvm, ctx) ||
++		iwl_mvm_enable_fils(mvm, ctx);
++	struct cfg80211_chan_def *def = use_def ? &ctx->def : &ctx->min_def;
+ 	int ret;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+@@ -4804,8 +4805,9 @@ void iwl_mvm_change_chanctx(struct ieee80211_hw *hw,
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	u16 *phy_ctxt_id = (u16 *)ctx->drv_priv;
+ 	struct iwl_mvm_phy_ctxt *phy_ctxt = &mvm->phy_ctxts[*phy_ctxt_id];
+-	bool responder = iwl_mvm_is_ftm_responder_chanctx(mvm, ctx);
+-	struct cfg80211_chan_def *def = responder ? &ctx->def : &ctx->min_def;
++	bool use_def = iwl_mvm_is_ftm_responder_chanctx(mvm, ctx) ||
++		iwl_mvm_enable_fils(mvm, ctx);
++	struct cfg80211_chan_def *def = use_def ? &ctx->def : &ctx->min_def;
+ 
+ 	if (WARN_ONCE((phy_ctxt->ref > 1) &&
+ 		      (changed & ~(IEEE80211_CHANCTX_CHANGE_WIDTH |
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index bbc552170c9f..afb6584daefe 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -2740,4 +2740,6 @@ int iwl_mvm_set_hw_timestamp(struct ieee80211_hw *hw,
+ 			     struct ieee80211_vif *vif,
+ 			     struct cfg80211_set_hw_timestamp *hwts);
+ int iwl_mvm_update_mu_groups(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
++bool iwl_mvm_enable_fils(struct iwl_mvm *mvm,
++			 struct ieee80211_chanctx_conf *ctx);
+ #endif /* __IWL_MVM_H__ */
 -- 
 2.38.1
 
