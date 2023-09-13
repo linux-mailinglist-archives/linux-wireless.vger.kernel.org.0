@@ -2,57 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC96479E21E
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 10:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9248779E2B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 10:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238884AbjIMIay convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 04:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36640 "EHLO
+        id S239109AbjIMIzM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 04:55:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229708AbjIMIay (ORCPT
+        with ESMTP id S230267AbjIMIzM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Sep 2023 04:30:54 -0400
-Received: from jamoutsourcing.in (unknown [202.149.222.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E737010C0;
-        Wed, 13 Sep 2023 01:30:49 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by jamoutsourcing.in (Postfix) with ESMTP id CA0793018CB01;
-        Wed, 13 Sep 2023 04:49:29 +0000 (UTC)
-Received: from jamoutsourcing.in ([127.0.0.1])
-        by localhost (jamoutsourcing.in [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id YFJmrcX9o7fs; Wed, 13 Sep 2023 04:49:29 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by jamoutsourcing.in (Postfix) with ESMTP id 2CFF5306C0B13;
-        Wed, 13 Sep 2023 04:43:46 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at jamoutsourcing.in
-Received: from jamoutsourcing.in ([127.0.0.1])
-        by localhost (jamoutsourcing.in [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 49bszqEo2_4m; Wed, 13 Sep 2023 04:43:46 +0000 (UTC)
-Received: from [185.225.73.120] (_gateway [192.168.1.1])
-        by jamoutsourcing.in (Postfix) with ESMTP id 1DC173018CB17;
-        Wed, 13 Sep 2023 04:36:54 +0000 (UTC)
-Content-Type: text/plain; charset="iso-8859-1"
+        Wed, 13 Sep 2023 04:55:12 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7CED196
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 01:55:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=jqnDKez6df2YW11yiROlt1j6XBsPX2hqwFtKpg//+FI=;
+        t=1694595307; x=1695804907; b=jbVnBr1DaZAikl1cE/Y/t1lgjV8t12juMm2CjGWiPZBRzZ8
+        4aHmSqgQsc2B7h249gDwyUMtvWNzOaza9cML75TNMJqlOeaHZ4/0FvgajcdjUFvPGB7luua3FEo6X
+        nQHK3TYsrIRk5ZCfRUa0zyB2Bl0SucTaUbDYDggk6PL/P+lLYRG9T5QljXC04vmS/FkSvKPfTR3or
+        cELiXYVKp9IjokmEzMJtjcQ94YVo64B9azPM62T7aHdh2ytJPhpASwcIhiHhnoPvv4XpCiyh2yuue
+        CxELsRWRTyN3yPMlV1UDy73n7I8TM4nUWytRTkeaNENk9KF7As1ZQ+8dYKO7q7nw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qgLeH-00EhXj-2E;
+        Wed, 13 Sep 2023 10:55:01 +0200
+Message-ID: <cd762f33b1c15566237c85f1e265ee8a00006f5c.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/3] wifi: mac80211: add support to allow driver to
+ generate local link address for station
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, ath12k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 13 Sep 2023 10:55:00 +0200
+In-Reply-To: <20230906103458.24092-2-quic_wgong@quicinc.com>
+References: <20230906103458.24092-1-quic_wgong@quicinc.com>
+         <20230906103458.24092-2-quic_wgong@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: my offer
-To:     Recipients <test@test.com>
-From:   "Mr. mohd" <test@test.com>
-Date:   Tue, 12 Sep 2023 21:36:52 -0700
-Reply-To: mohamedsafiah47@gmail.com
-Message-Id: <20230913043655.1DC173018CB17@jamoutsourcing.in>
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, 2023-09-06 at 06:34 -0400, Wen Gong wrote:
+> Currently the local link address of all links is random generated by
+> eth_random_addr() in mac80211 while connecting to a MLO AP for station
+> mode. The MAC address of link is not passed from NL command. The 1st
+> link address is generated while authenticate with AP, the other links'
+> addresses are generated after assoc success with AP.
+>=20
+> It is not convenient for some driver, reason is, for station mode,
+> the interface with its mac address is already created in driver after
+> wlan load, it is used for hw scan and non-MLO connection.
+>=20
+> When connecting to MLO AP, driver reuse the interface as the 1st link of
+> MLO. If the mac address of the 1st link changed to a new value, then
+> driver need to change the mac address and do many synchronous operation
+> with firmware. Thus the operation become complex. After MLO disconnect,
+> driver need to restore the old mac address, it is also another complex
+> operation.
+>=20
+> The hw scan maybe happen through the MLO connection/disconnection. And
+> the hw scan uses the 1st link address while MLO connected and uses the
+> interface address while MLO is disconnected, this leads hw scan complex.
+>=20
+> Hence add this interface to allow driver to generate the address of each
+> link while MLO connection. Then driver could provide the same mac address
+> for the 1st link, thus hw scan/NON-MLO connection/1st link of MLO will us=
+e
+> the same mac address, then operation become easy.
 
-Dear
-My name is Mohamed Abdul I have the capacity to inject a considerable
-amount of capital in any viable project 
-1,cell phone number what-sap
-2,full name
+Maybe after all this explanation, all we need is a flag "reuse MLD
+address for assoc link"?
 
 
-yours truly
-Mohamed Abdul Ahmed
+> +		ret =3D drv_generate_link_addr(sdata->local, sdata,
+> +					     link_id, link->conf->addr);
+> +		if (ret)
+> +			eth_random_addr(link->conf->addr);
+
+should probably refactor this into a separate function though.
+
+I'm also not sure how the driver even knows that a link it's being asked
+to get the address for *is* the assoc link? Do you want to rely on that
+being the first address handed out?
+
+johannes
+
