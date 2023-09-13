@@ -2,102 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A518D79E48D
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 12:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D96ED79E4AB
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 12:17:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239553AbjIMKGT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 06:06:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53650 "EHLO
+        id S239633AbjIMKRL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 06:17:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239652AbjIMKGS (ORCPT
+        with ESMTP id S239615AbjIMKRK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Sep 2023 06:06:18 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFDF19B3
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 03:06:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=E5/3EokUL9b/oTCtDJRyvfxwFJp1yaX0dODpevqohlw=;
-        t=1694599574; x=1695809174; b=aMkIcOypvvHxRlpO8WISmdpbiiYyCRYYh7AisIh6frMmr+R
-        h4XXsnmzZavEcx49dGBiP/WC5FTTPS/7LsTuw5wajR9IUUJF8/9259sX4xZ04LkUegTXHSMXWdPBC
-        VVc7CrQLiHbDyyvNPe3TsSr4BIP1L+qFIGpdee0FhiyGgVAD3CfvXboSSzHXNlnh2/t7xWV9zEjvq
-        6wDzK9xwUW90SmzTykncpRgkIB/jQq6sv1RvDn0sLUDGl7buM7ZJ/QMq2+WVB8766kTR1x/axEe3s
-        ok3hmWtinaqSmFIXXoHl25Ylxj6zjFKzpjK0GjtE0eiRbIkhhmQVeIa3u8q4puKg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qgMl2-00Elhu-29;
-        Wed, 13 Sep 2023 12:06:04 +0200
-Message-ID: <31eb0df432f813453b487ae8fdc26a9402c448fa.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: mac80211: export ieee80211_tpt_led_trig_tx/rx
- for driver
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Money Wang <money.wang@mediatek.com>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>,
-        Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Date:   Wed, 13 Sep 2023 12:06:01 +0200
-In-Reply-To: <a887a7bb660837cbb3466e183d1714364d8ba9fe.1693549288.git.yi-chia.hsieh@mediatek.com>
-References: <a887a7bb660837cbb3466e183d1714364d8ba9fe.1693549288.git.yi-chia.hsieh@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Wed, 13 Sep 2023 06:17:10 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBA0B1996
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 03:17:06 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38D9ldBA012425;
+        Wed, 13 Sep 2023 10:16:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=HKEQrBNFyvJI/zD44cJ2pqhpQw50EUobihvK3AaXJUg=;
+ b=GLak9UzSLx5lQs6gxyB6WTUzZITi9bd8D3Ob/62kkfG97iN9z3JxmJC8OB5nDjsd/9hG
+ 89ThziDuzOcf9bRiT2hlBvkGQM8l72rYquB9jN+lo/jjqPwBhZzH5YMwtUfvwPKOZg/R
+ +2igqyeKlzeo+U649lKCx+2Vu/J2cuc9qcOy2KWwzvkJLNTKMD3TpHczXkw7qecxEN6u
+ mf5rT+7I7+sbAdE+VzM7r04NzyJj6brxZCfQXMUMnZz1abX+jdZo39LJma4aMQ3spiQA
+ f6RoPJyTybnGAcK4pguhOP0GxWOL19j4dp9vLVeWxNw5zRZ7W6hLTA6M+iHjThGht8b7 Vw== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t3ar3g2bw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 13 Sep 2023 10:16:57 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38DAGu9W007622
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 13 Sep 2023 10:16:56 GMT
+Received: from [10.50.29.197] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 13 Sep
+ 2023 03:16:54 -0700
+Message-ID: <511f23be-7b7b-42d9-9c3e-25edfa5d7323@quicinc.com>
+Date:   Wed, 13 Sep 2023 15:46:45 +0530
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] wifi: cfg80211: export DFS CAC time and usable
+ state helper functions
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+References: <20230912051857.2284-1-quic_adisi@quicinc.com>
+ <20230912051857.2284-2-quic_adisi@quicinc.com>
+ <f436ea028da7b016241f307348286be6cfe7df65.camel@sipsolutions.net>
+Content-Language: en-US
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <f436ea028da7b016241f307348286be6cfe7df65.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: LT7zZJggEuwtyh_hu58Y1mBPjY6zVH0z
+X-Proofpoint-ORIG-GUID: LT7zZJggEuwtyh_hu58Y1mBPjY6zVH0z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-13_04,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=699
+ spamscore=0 clxscore=1015 priorityscore=1501 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309130080
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 9/13/23 14:58, Johannes Berg wrote:
+> On Tue, 2023-09-12 at 10:48 +0530, Aditya Kumar Singh wrote:
+>> cfg80211 has cfg80211_chandef_dfs_usable() function to know whether
+>> at least one channel in the chandef is in usable state or not. Also,
+>> cfg80211_chandef_dfs_cac_time() function is there which tells the CAC
+>> time required for the given chandef.
+>>
+> 
+> Should we really export the time function just for a debug messages?
+> That seems like a waste of space?
+>
+Yes absolutely. But actually as a follow up of this patch, we have 
+Background DFS patch in pipeline which requires us to send the CAC time 
+to firmware. So its actually needed there. And may be once we do this, 
+other drivers also may start using this?
 
-> +++ b/net/mac80211/led.c
-> @@ -319,6 +319,24 @@ __ieee80211_create_tpt_led_trigger(struct ieee80211_=
-hw *hw,
->  }
->  EXPORT_SYMBOL(__ieee80211_create_tpt_led_trigger);
-> =20
-> +void __ieee80211_tpt_led_trig_tx(struct ieee80211_hw *hw, int bytes)
-> +{
-> +	struct ieee80211_local *local =3D hw_to_local(hw);
-> +
-> +	if (atomic_read(&local->tpt_led_active))
-> +		local->tpt_led_trigger->tx_bytes +=3D bytes;
-> +}
-> +EXPORT_SYMBOL(__ieee80211_tpt_led_trig_tx);
-> +
-> +void __ieee80211_tpt_led_trig_rx(struct ieee80211_hw *hw, int bytes)
-> +{
-> +	struct ieee80211_local *local =3D hw_to_local(hw);
-> +
-> +	if (atomic_read(&local->tpt_led_active))
-> +		local->tpt_led_trigger->rx_bytes +=3D bytes;
-> +}
-> +EXPORT_SYMBOL(__ieee80211_tpt_led_trig_rx);
->=20
-
-It feels a bit wasteful to export not one but even two functions for
-this ...
-
-The trigger only really cares about the sum of the two, so maybe we
-shouldn't really care too much, even in mac80211? I think the only
-reason we currently separate RX and TX is that they can run
-concurrently, but the truth is that it already can race anyway, at least
-if you have multiple interfaces ...
-
-So maybe we should just switch to a single counter, and accept that we
-may sometimes lose an update?
-
-Also this seems wasteful for mac80211 internals, so maybe instead add
-triple-underscore versions that are still inline and called from the
-double-underscore versions as well as the existing mac80211 callers.
-
-What do you think?
-
-johannes
