@@ -2,74 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E04B579EBD2
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 16:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FD1C79EDD6
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 18:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234029AbjIMO64 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 10:58:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48224 "EHLO
+        id S230231AbjIMQBz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 12:01:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230471AbjIMO6z (ORCPT
+        with ESMTP id S230143AbjIMQBy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Sep 2023 10:58:55 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8498B3
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 07:58:51 -0700 (PDT)
+        Wed, 13 Sep 2023 12:01:54 -0400
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CBDC90
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 09:01:50 -0700 (PDT)
+Received: from eig-obgw-6009a.ext.cloudfilter.net ([10.0.30.184])
+        by cmsmtp with ESMTP
+        id gOk6q7ljgEoVsgSJJquL1Z; Wed, 13 Sep 2023 16:01:49 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id gSJIqxnmu4G7BgSJJqhbGr; Wed, 13 Sep 2023 16:01:49 +0000
+X-Authority-Analysis: v=2.4 cv=UMrOoQTy c=1 sm=1 tr=0 ts=6501dced
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=wYkD_t78qR0A:10 a=DfNHnWVPAAAA:8
+ a=anKBZ9voxICiHcaguvcA:9 a=QEXdDO2ut3YA:10 a=rjTVMONInIDnV1a_A2c_:22
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=L8c85DCnO4azoBI+4LVfXkV94X/8ki+QpERiYVq3FmA=;
-        t=1694617131; x=1695826731; b=ZTCT7feQYMV+pLquNKH6UjaMYwr/31N9xTjYT8NVkWVyOsK
-        4EZ4nDONY6dr0YeFH2R+U8QsFNXhiRKcQxeFkqLDLKy4ioJj5vE+C7LYq/ytANngXtV7SknBzAwSU
-        qV2Mm6gt2lsNgQsVi1W0gl4z5fDCXhThiDpvHboaaGYmsQLR9xwUHsoXmY0/9KdRPFDyQLrdU41Sp
-        L2PScbIDswLl00Mtm/HjLFzZWobRFoCXkyVlwegT13E9ht6RpJVhr6Rs8kQen+Oz0yobtU2SKxXxa
-        TQGMSAA6lpaaw6IU5eRf/CxFbTj/uacMacCNLRUg8e/b1pRD8UXwH71B+xgY6S9A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=R837XQEgWoCavH2lMvfa99lqFuQSwQUEWgTQ96SgsPs=; b=MtlZDsH3OMzoszs7u5ZRDLgaCn
+        8fwpn3tyX+48w4vwHJ044zrS6ZwzCqnIiDNSuF9XYbSatiVrxiUWwJ93QEU6NBSpMN6RJtB3NpOrs
+        1lBnnhXd2hoS8qZa5mLIRlYBcDjGje5OpgnrImtiXCgxMINo/NO2h2gE8bU6+zE+OU4HNGsAoABUz
+        Z4nXWa3OTZy34XpZQVUnPTrwNIaB6pT/w3qdplNK13z19G6I8I+dCU2rzTdQC6zyDhl9sIYhzzyxh
+        TdEnqWCk/XsbF/Q+8tyy/y6Rn3qvow8RHOnI9m/tx5WPxwRUXJ+BNJKzh9PFUrnmBGKjzEE0ucQOU
+        OflkQp6A==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:36608 helo=[192.168.15.8])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qgRKL-00F3YB-13;
-        Wed, 13 Sep 2023 16:58:49 +0200
-Message-ID: <4cb3e92530d3f4db3b414e2a7536a0f01b765c4d.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 2/9] wifi: cfg80211: save Power Spectral Density
- (PSD) of the regulatory rule
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aditya Kumar Singh <quic_adisi@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org, Wen Gong <quic_wgong@quicinc.com>
-Date:   Wed, 13 Sep 2023 16:58:48 +0200
-In-Reply-To: <20230315132904.31779-3-quic_adisi@quicinc.com>
-References: <20230315132904.31779-1-quic_adisi@quicinc.com>
-         <20230315132904.31779-3-quic_adisi@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1qgSJH-000RUx-2w;
+        Wed, 13 Sep 2023 11:01:47 -0500
+Message-ID: <0f23e4a2-b11b-98bd-c419-d9a9fb7ddb4e@embeddedor.com>
+Date:   Wed, 13 Sep 2023 10:02:12 -0600
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] wifi: brcmfmac: Replace 1-element arrays with flexible
+ arrays
+To:     Juerg Haefliger <juerg.haefliger@canonical.com>, aspriel@gmail.com,
+        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Cc:     linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
+        marcan@marcan.st, keescook@chromium.org, gustavoars@kernel.org,
+        hdegoede@redhat.com, ryohei.kondo@cypress.com
+References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
+Content-Language: en-US
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20230913065421.12615-1-juerg.haefliger@canonical.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1qgSJH-000RUx-2w
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.8]) [187.162.21.192]:36608
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 10
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfLKiUR3x4qp8yX6xX+CMpboFL94Fpm1ul3lBEiWioVW/PP+cs9bYw8WksE2CsR7sxWtTc/nmH44uOG5VrrdyXFg+Iu9dZgNdfvs4yJa/QeSUDdwSqbee
+ c6LRZ267XVa4Bxrugq76m8ClCcjWpDARDgQg9bspWzhqtUesC6PVludN4OpiCwjMXHGxHhijI7iyyF3WBkNZCrZMKvs5r6rzXW1vv/dqG94CVUDCSCExRHkw
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-03-15 at 18:58 +0530, Aditya Kumar Singh wrote:
 
-> @@ -8650,6 +8660,14 @@ static int parse_reg_rule(struct nlattr *tb[],
-> =20
->  	reg_rule->flags =3D nla_get_u32(tb[NL80211_ATTR_REG_RULE_FLAGS]);
-> =20
-> +	if (reg_rule->flags & NL80211_RRF_PSD) {
-> +		if (!tb[NL80211_ATTR_POWER_RULE_PSD])
-> +			return -EINVAL;
-> +
-> +		reg_rule->psd =3D
-> +			nla_get_s8(tb[NL80211_ATTR_POWER_RULE_PSD]);
-> +	}
 
-Wait ... I'm not sure why we've been adding stuff to this recently, but
-anyway, this part should only be used by CRDA which is deprecated
-anyway?
+On 9/13/23 00:54, Juerg Haefliger wrote:
+> Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
+> UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
+> 'element' and 'channel_list' will trigger warnings, so make them proper
+> flexible arrays.
+> 
+> False positive warnings were:
+> 
+>    UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
+>    index 1 is out of range for type '__le32 [1]'
+> 
+>    UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
+>    index 1 is out of range for type '__le16 [1]'
+> 
+> for these lines of code:
+> 
+>    6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
+> 
+>    1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
+> 
+> Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+> ---
+>   .../wireless/broadcom/brcm80211/brcmfmac/fwil_types.h    | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+> index bece26741d3a..ed723a5b5d54 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+> @@ -442,7 +442,12 @@ struct brcmf_scan_params_v2_le {
+>   				 * fixed parameter portion is assumed, otherwise
+>   				 * ssid in the fixed portion is ignored
+>   				 */
+> -	__le16 channel_list[1];	/* list of chanspecs */
+> +	union {
+> +		__le16 padding;	/* Reserve space for at least 1 entry for abort
+> +				 * which uses an on stack brcmf_scan_params_v2_le
+> +				 */
+> +		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
+> +	};
+>   };
+>   
+>   struct brcmf_scan_results {
+> @@ -702,7 +707,7 @@ struct brcmf_sta_info_le {
+>   
+>   struct brcmf_chanspec_list {
+>   	__le32	count;		/* # of entries */
+> -	__le32	element[1];	/* variable length uint32 list */
+> +	DECLARE_FLEX_ARRAY(__le32, element);	/* variable length uint32 list */
 
-So I'd say we shouldn't touch any of the code under #ifdef
-CONFIG_CFG80211_CRDA_SUPPORT any more since CRDA will not continue to
-developed with any updates here.
+If no padding is needed, as in the other case, then DFA() is not necessary.
+Just remove the 1 from the array declaration:
 
-johannes
+  struct brcmf_chanspec_list {
+         __le32  count;          /* # of entries */
+-       __le32  element[1];     /* variable length uint32 list */
++       __le32  element[];      /* variable length uint32 list */
+  };
 
+--
+Gustavo
+
+>   };
+>   
+>   /*
