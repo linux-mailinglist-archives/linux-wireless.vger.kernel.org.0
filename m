@@ -2,51 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EE5079E760
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 13:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70BFA79E75C
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 13:58:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240615AbjIML6L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 07:58:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38134 "EHLO
+        id S240617AbjIML6M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 07:58:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240593AbjIML6J (ORCPT
+        with ESMTP id S240613AbjIML6J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 13 Sep 2023 07:58:09 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BA711999
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF8619B0
         for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 04:58:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1694606285; x=1726142285;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=YovdqokO0OVG5kO8q1IJBjGfaSLG+7U8NAL7bR7ldGU=;
-  b=ZU/HqYiw/Cl4j7Rhw/TaQhjUVE78tYAZfTtCQmVgVe+5wC2uJ/wt1KWK
-   bgcq1nmJemeHsayWmwhTgxr1WuYp450Bzsbn+6caNURp6iK7JzUWdjNWp
-   RlXIIzchv7laUa9jJREfBiCZKTa/29EQ6LfSY/auIp4eFKZVFzVVLt/Zk
-   Dh0uzO83r9B+Vds02ign336cwIRecV/1AZla7Ay24b661iraTptqTqI//
-   qEvMXE750Bu9CEsPC5pdwEz1UvcCDgpiT4nOYJBeTRqJpk4+or0M4iQkh
-   7WOzL4f0qLJN/FPZMuXyVvXqIiumvak9G3olZpe6lgJXdzJ/tDNq1AJBi
+  bh=l98Tu666efBe+j2hFqTyfB7lv0sy5qdalGKla7Nwh3c=;
+  b=Jr6adnlhexc2YZJ/ukUHfWwBYKsuBb0moauPnA+YoVx1bgOvKbBVw8jT
+   OAxn6yv87vxcKA/VEpu0kXAGjV5N5AbWpuJA02O/jGrsfT+2U8rZnziDu
+   icrdG1K+O3rteYeO9OBpoSeHsU+2GV1NiEPndOVc52J6aGYMsRHzb4Wo+
+   lPGiwQhdl7hIUlyULLbzZYqTTk5Vtqlf2cfhdT+VGGlxolDOdv6RaxyBQ
+   Pn+2Jvs3SgZ6y6oZF17CyirPVXs4pIBGBRkW/gtMI2mNw7rGzp/OK8tcQ
+   MXnztW5qImrCLWSnzkramk+KKdPJT4wgYsF4Y+mqywxgNE91KossZTWTo
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="368903091"
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="368903098"
 X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
-   d="scan'208";a="368903091"
+   d="scan'208";a="368903098"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:36 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="737470978"
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="737470983"
 X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
-   d="scan'208";a="737470978"
+   d="scan'208";a="737470983"
 Received: from ggreenma-mobl2.jer.intel.com ([10.13.17.40])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:35 -0700
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 04:57:37 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Ben Greear <greearb@candelatech.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 12/15] wifi: iwlwifi: no power save during transition to D3
-Date:   Wed, 13 Sep 2023 14:56:48 +0300
-Message-Id: <20230913145231.ced036106507.Ib5ed5a47ee35f624902bd8882dde3e559285965b@changeid>
+Subject: [PATCH 13/15] wifi: iwlwifi: mvm: support set_antenna()
+Date:   Wed, 13 Sep 2023 14:56:49 +0300
+Message-Id: <20230913145231.02f330def55b.I9473da818cbeeb51b2f89dcc59b00019113e7f55@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230913115651.190558-1-gregory.greenman@intel.com>
 References: <20230913115651.190558-1-gregory.greenman@intel.com>
@@ -56,74 +57,433 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Transition to d3 is much faster if there is no power save during the
-transition. Therefore a new flag was added to the device power cmd to
-indicate the power save isn't allowed until the transition is completed.
-Set this flag in _iwl_mvm_suspend, when the transition begins.
+set_antenna() is supported only when the device is not started in
+mac80211 which translates to the firmware not being loaded in iwlwifi.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+The tricky part is that iwlwifi populates the sband data during its boot
+and doesn't touch this data afterwards, but if the antenna settings
+forbid MIMO, we need to update the sband data.
+
+Rework the nvm parsing code to allow to get an existing nvm_data and
+modify the sband with additional constraints (tx / rx chains masks).
+
+Suggested-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/power.h | 7 +++++--
- drivers/net/wireless/intel/iwlwifi/mvm/power.c    | 5 +++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ .../wireless/intel/iwlwifi/iwl-eeprom-parse.c |  5 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 76 ++++++++++++++++---
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.h    | 19 +++--
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  3 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 25 ++++++
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 29 +++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  | 12 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  5 +-
+ 9 files changed, 148 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-index 85d89f559f6c..040d83fa5424 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.c
+index d7a7835b935c..5aab64c63a13 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2005-2014, 2018-2020 Intel Corporation
++ * Copyright (C) 2005-2014, 2018-2021, 2023 Intel Corporation
+  * Copyright (C) 2015 Intel Mobile Communications GmbH
+  */
+ #include <linux/types.h>
+@@ -721,6 +721,9 @@ void iwl_init_ht_hw_capab(struct iwl_trans *trans,
+ 	ht_info->ampdu_density = IEEE80211_HT_MPDU_DENSITY_4;
+ 
+ 	ht_info->mcs.rx_mask[0] = 0xFF;
++	ht_info->mcs.rx_mask[1] = 0x00;
++	ht_info->mcs.rx_mask[2] = 0x00;
++
+ 	if (rx_chains >= 2)
+ 		ht_info->mcs.rx_mask[1] = 0xFF;
+ 	if (rx_chains >= 3)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index cff1f97536e3..512af3605a2c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -962,6 +962,9 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ 			}
+ 		}
+ 	} else {
++		struct ieee80211_he_mcs_nss_supp *he_mcs_nss_supp =
++			&iftype_data->he_cap.he_mcs_nss_supp;
++
+ 		if (iftype_data->eht_cap.has_eht) {
+ 			struct ieee80211_eht_mcs_nss_supp *mcs_nss =
+ 				&iftype_data->eht_cap.eht_mcs_nss_supp;
+@@ -980,6 +983,19 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ 			iftype_data->he_cap.he_cap_elem.phy_cap_info[7] |=
+ 				IEEE80211_HE_PHY_CAP7_MAX_NC_1;
+ 		}
++
++		he_mcs_nss_supp->rx_mcs_80 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		he_mcs_nss_supp->tx_mcs_80 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		he_mcs_nss_supp->rx_mcs_160 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		he_mcs_nss_supp->tx_mcs_160 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		he_mcs_nss_supp->rx_mcs_80p80 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		he_mcs_nss_supp->tx_mcs_80p80 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
+ 	}
+ 
+ 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210 && !is_ap)
+@@ -1052,10 +1068,6 @@ static void iwl_init_he_hw_capab(struct iwl_trans *trans,
+ 	struct ieee80211_sband_iftype_data *iftype_data;
+ 	int i;
+ 
+-	/* should only initialize once */
+-	if (WARN_ON(sband->iftype_data))
+-		return;
+-
+ 	BUILD_BUG_ON(sizeof(data->iftd.low) != sizeof(iwl_he_eht_capa));
+ 	BUILD_BUG_ON(sizeof(data->iftd.high) != sizeof(iwl_he_eht_capa));
+ 	BUILD_BUG_ON(sizeof(data->iftd.uhb) != sizeof(iwl_he_eht_capa));
+@@ -1087,6 +1099,37 @@ static void iwl_init_he_hw_capab(struct iwl_trans *trans,
+ 	iwl_init_he_6ghz_capa(trans, data, sband, tx_chains, rx_chains);
+ }
+ 
++void iwl_reinit_cab(struct iwl_trans *trans, struct iwl_nvm_data *data,
++		    u8 tx_chains, u8 rx_chains, const struct iwl_fw *fw)
++{
++	struct ieee80211_supported_band *sband;
++
++	sband = &data->bands[NL80211_BAND_2GHZ];
++	iwl_init_ht_hw_capab(trans, data, &sband->ht_cap, NL80211_BAND_2GHZ,
++			     tx_chains, rx_chains);
++
++	if (data->sku_cap_11ax_enable && !iwlwifi_mod_params.disable_11ax)
++		iwl_init_he_hw_capab(trans, data, sband, tx_chains, rx_chains,
++				     fw);
++
++	sband = &data->bands[NL80211_BAND_5GHZ];
++	iwl_init_ht_hw_capab(trans, data, &sband->ht_cap, NL80211_BAND_5GHZ,
++			     tx_chains, rx_chains);
++	if (data->sku_cap_11ac_enable && !iwlwifi_mod_params.disable_11ac)
++		iwl_init_vht_hw_capab(trans, data, &sband->vht_cap,
++				      tx_chains, rx_chains);
++
++	if (data->sku_cap_11ax_enable && !iwlwifi_mod_params.disable_11ax)
++		iwl_init_he_hw_capab(trans, data, sband, tx_chains, rx_chains,
++				     fw);
++
++	sband = &data->bands[NL80211_BAND_6GHZ];
++	if (data->sku_cap_11ax_enable && !iwlwifi_mod_params.disable_11ax)
++		iwl_init_he_hw_capab(trans, data, sband, tx_chains, rx_chains,
++				     fw);
++}
++IWL_EXPORT_SYMBOL(iwl_reinit_cab);
++
+ static void iwl_init_sbands(struct iwl_trans *trans,
+ 			    struct iwl_nvm_data *data,
+ 			    const void *nvm_ch_flags, u8 tx_chains,
+@@ -1365,7 +1408,7 @@ iwl_nvm_no_wide_in_5ghz(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ struct iwl_nvm_data *
+ iwl_parse_mei_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 		       const struct iwl_mei_nvm *mei_nvm,
+-		       const struct iwl_fw *fw)
++		       const struct iwl_fw *fw, u8 tx_ant, u8 rx_ant)
+ {
+ 	struct iwl_nvm_data *data;
+ 	u32 sbands_flags = 0;
+@@ -1392,6 +1435,10 @@ iwl_parse_mei_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 		tx_chains &= data->valid_tx_ant;
+ 	if (data->valid_rx_ant)
+ 		rx_chains &= data->valid_rx_ant;
++	if (tx_ant)
++		tx_chains &= tx_ant;
++	if (rx_ant)
++		rx_chains &= rx_ant;
+ 
+ 	data->sku_cap_mimo_disabled = false;
+ 	data->sku_cap_band_24ghz_enable = true;
+@@ -1957,7 +2004,8 @@ int iwl_read_external_nvm(struct iwl_trans *trans,
+ IWL_EXPORT_SYMBOL(iwl_read_external_nvm);
+ 
+ struct iwl_nvm_data *iwl_get_nvm(struct iwl_trans *trans,
+-				 const struct iwl_fw *fw)
++				 const struct iwl_fw *fw,
++				 u8 set_tx_ant, u8 set_rx_ant)
+ {
+ 	struct iwl_nvm_get_info cmd = {};
+ 	struct iwl_nvm_data *nvm;
+@@ -1971,6 +2019,9 @@ struct iwl_nvm_data *iwl_get_nvm(struct iwl_trans *trans,
+ 	bool empty_otp;
+ 	u32 mac_flags;
+ 	u32 sbands_flags = 0;
++	u8 tx_ant;
++	u8 rx_ant;
++
+ 	/*
+ 	 * All the values in iwl_nvm_get_info_rsp v4 are the same as
+ 	 * in v3, except for the channel profile part of the
+@@ -2058,10 +2109,15 @@ struct iwl_nvm_data *iwl_get_nvm(struct iwl_trans *trans,
+ 	channel_profile = v4 ? (void *)rsp->regulatory.channel_profile :
+ 			  (void *)rsp_v3->regulatory.channel_profile;
+ 
+-	iwl_init_sbands(trans, nvm,
+-			channel_profile,
+-			nvm->valid_tx_ant & fw->valid_tx_ant,
+-			nvm->valid_rx_ant & fw->valid_rx_ant,
++	tx_ant = nvm->valid_tx_ant & fw->valid_tx_ant;
++	rx_ant = nvm->valid_rx_ant & fw->valid_rx_ant;
++
++	if (set_tx_ant)
++		tx_ant &= set_tx_ant;
++	if (set_rx_ant)
++		rx_ant &= set_rx_ant;
++
++	iwl_init_sbands(trans, nvm, channel_profile, tx_ant, rx_ant,
+ 			sbands_flags, v4, fw);
+ 
+ 	iwl_free_resp(&hcmd);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
+index c79f72d54482..651ed25b683b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
 @@ -1,6 +1,6 @@
  /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
  /*
-- * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+- * Copyright (C) 2005-2015, 2018-2022 Intel Corporation
++ * Copyright (C) 2005-2015, 2018-2023 Intel Corporation
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
   */
-@@ -144,6 +144,8 @@ struct iwl_powertable_cmd {
-  *	receiver and transmitter. '0' - does not allow.
-  * @DEVICE_POWER_FLAGS_ALLOW_MEM_RETENTION_MSK:
-  *	Device Retention indication, '1' indicate retention is enabled.
-+ * @DEVICE_POWER_FLAGS_NO_SLEEP_TILL_D3_MSK:
-+ *	Prevent power save until entering d3 is completed.
-  * @DEVICE_POWER_FLAGS_32K_CLK_VALID_MSK:
-  *	32Khz external slow clock valid indication, '1' indicate cloack is
-  *	valid.
-@@ -151,6 +153,7 @@ struct iwl_powertable_cmd {
- enum iwl_device_power_flags {
- 	DEVICE_POWER_FLAGS_POWER_SAVE_ENA_MSK		= BIT(0),
- 	DEVICE_POWER_FLAGS_ALLOW_MEM_RETENTION_MSK	= BIT(1),
-+	DEVICE_POWER_FLAGS_NO_SLEEP_TILL_D3_MSK		= BIT(7),
- 	DEVICE_POWER_FLAGS_32K_CLK_VALID_MSK		= BIT(12),
+ #ifndef __iwl_nvm_parse_h__
+@@ -21,7 +21,7 @@ enum iwl_nvm_sbands_flags {
+ 	IWL_NVM_SBANDS_FLAGS_NO_WIDE_IN_5GHZ	= BIT(1),
  };
  
-@@ -162,7 +165,7 @@ enum iwl_device_power_flags {
-  * @reserved: reserved (padding)
-  */
- struct iwl_device_power_cmd {
--	/* PM_POWER_TABLE_CMD_API_S_VER_6 */
-+	/* PM_POWER_TABLE_CMD_API_S_VER_7 */
- 	__le16 flags;
- 	__le16 reserved;
- } __packed;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/power.c b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-index 9131b5f1bc76..1b9b06e0443f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-@@ -489,6 +489,11 @@ int iwl_mvm_power_update_device(struct iwl_mvm *mvm)
- 	if (mvm->ext_clock_valid)
- 		cmd.flags |= cpu_to_le16(DEVICE_POWER_FLAGS_32K_CLK_VALID_MSK);
+-/**
++/*
+  * iwl_parse_nvm_data - parse NVM data and return values
+  *
+  * This function parses all NVM values we need and then
+@@ -73,21 +73,28 @@ int iwl_read_external_nvm(struct iwl_trans *trans,
+ void iwl_nvm_fixups(u32 hw_id, unsigned int section, u8 *data,
+ 		    unsigned int len);
  
-+	if (iwl_fw_lookup_cmd_ver(mvm->fw, POWER_TABLE_CMD, 0) >= 7 &&
-+	    test_bit(IWL_MVM_STATUS_IN_D3, &mvm->status))
-+		cmd.flags |=
-+			cpu_to_le16(DEVICE_POWER_FLAGS_NO_SLEEP_TILL_D3_MSK);
+-/**
++/*
+  * iwl_get_nvm - retrieve NVM data from firmware
+  *
+  * Allocates a new iwl_nvm_data structure, fills it with
+  * NVM data, and returns it to caller.
+  */
+ struct iwl_nvm_data *iwl_get_nvm(struct iwl_trans *trans,
+-				 const struct iwl_fw *fw);
++				 const struct iwl_fw *fw,
++				 u8 set_tx_ant, u8 set_rx_ant);
+ 
+-/**
++/*
+  * iwl_parse_mei_nvm_data - parse the mei_nvm_data and get an iwl_nvm_data
+  */
+ struct iwl_nvm_data *
+ iwl_parse_mei_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 		       const struct iwl_mei_nvm *mei_nvm,
+-		       const struct iwl_fw *fw);
++		       const struct iwl_fw *fw, u8 set_tx_ant, u8 set_rx_ant);
 +
- 	IWL_DEBUG_POWER(mvm,
- 			"Sending device power command with flags = 0x%X\n",
- 			cmd.flags);
++/*
++ * iwl_reinit_cab - to be called when the tx_chains or rx_chains are modified
++ */
++void iwl_reinit_cab(struct iwl_trans *trans, struct iwl_nvm_data *data,
++		    u8 tx_chains, u8 rx_chains, const struct iwl_fw *fw);
+ 
+ #endif /* __iwl_nvm_parse_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 567b02754a43..6e5c0f81e041 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -681,7 +681,8 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm)
+ 
+ 	/* Read the NVM only at driver load time, no need to do this twice */
+ 	if (!IWL_MVM_PARSE_NVM && !mvm->nvm_data) {
+-		mvm->nvm_data = iwl_get_nvm(mvm->trans, mvm->fw);
++		mvm->nvm_data = iwl_get_nvm(mvm->trans, mvm->fw,
++					    mvm->set_tx_ant, mvm->set_rx_ant);
+ 		if (IS_ERR(mvm->nvm_data)) {
+ 			ret = PTR_ERR(mvm->nvm_data);
+ 			mvm->nvm_data = NULL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 98172da346fb..c7e31a60d9df 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -279,6 +279,30 @@ int iwl_mvm_op_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant)
+ 	return 0;
+ }
+ 
++int iwl_mvm_op_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
++{
++	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
++
++	/* This has been tested on those devices only */
++	if (mvm->trans->trans_cfg->device_family != IWL_DEVICE_FAMILY_9000 &&
++	    mvm->trans->trans_cfg->device_family != IWL_DEVICE_FAMILY_22000)
++		return -ENOTSUPP;
++
++	if (!mvm->nvm_data)
++		return -EBUSY;
++
++	/* mac80211 ensures the device is not started,
++	 * so the firmware cannot be running
++	 */
++
++	mvm->set_tx_ant = tx_ant;
++	mvm->set_rx_ant = rx_ant;
++
++	iwl_reinit_cab(mvm->trans, mvm->nvm_data, tx_ant, rx_ant, mvm->fw);
++
++	return 0;
++}
++
+ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ {
+ 	struct ieee80211_hw *hw = mvm->hw;
+@@ -6202,6 +6226,7 @@ const struct ieee80211_ops iwl_mvm_hw_ops = {
+ 	.wake_tx_queue = iwl_mvm_mac_wake_tx_queue,
+ 	.ampdu_action = iwl_mvm_mac_ampdu_action,
+ 	.get_antenna = iwl_mvm_op_get_antenna,
++	.set_antenna = iwl_mvm_op_set_antenna,
+ 	.start = iwl_mvm_mac_start,
+ 	.reconfig_complete = iwl_mvm_mac_reconfig_complete,
+ 	.stop = iwl_mvm_mac_stop,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 9615bfff7f7d..5449deb3c2d6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -1121,6 +1121,7 @@ const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
+ 	.wake_tx_queue = iwl_mvm_mac_wake_tx_queue,
+ 	.ampdu_action = iwl_mvm_mac_ampdu_action,
+ 	.get_antenna = iwl_mvm_op_get_antenna,
++	.set_antenna = iwl_mvm_op_set_antenna,
+ 	.start = iwl_mvm_mac_start,
+ 	.reconfig_complete = iwl_mvm_mac_reconfig_complete,
+ 	.stop = iwl_mvm_mac_stop,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index afb6584daefe..a68d9f7a5547 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -981,6 +981,9 @@ struct iwl_mvm {
+ 	u8 scan_last_antenna_idx; /* to toggle TX between antennas */
+ 	u8 mgmt_last_antenna_idx;
+ 
++	u8 set_tx_ant;
++	u8 set_rx_ant;
++
+ 	/* last smart fifo state that was successfully sent to firmware */
+ 	enum iwl_sf_state sf_state;
+ 
+@@ -1716,16 +1719,29 @@ int iwl_mvm_load_nvm_to_nic(struct iwl_mvm *mvm);
+ 
+ static inline u8 iwl_mvm_get_valid_tx_ant(struct iwl_mvm *mvm)
+ {
+-	return mvm->nvm_data && mvm->nvm_data->valid_tx_ant ?
+-	       mvm->fw->valid_tx_ant & mvm->nvm_data->valid_tx_ant :
+-	       mvm->fw->valid_tx_ant;
++	u8 tx_ant = mvm->fw->valid_tx_ant;
++
++	if (mvm->nvm_data && mvm->nvm_data->valid_tx_ant)
++		tx_ant &= mvm->nvm_data->valid_tx_ant;
++
++	if (mvm->set_tx_ant)
++		tx_ant &= mvm->set_tx_ant;
++
++	return tx_ant;
+ }
+ 
+ static inline u8 iwl_mvm_get_valid_rx_ant(struct iwl_mvm *mvm)
+ {
+-	return mvm->nvm_data && mvm->nvm_data->valid_rx_ant ?
+-	       mvm->fw->valid_rx_ant & mvm->nvm_data->valid_rx_ant :
+-	       mvm->fw->valid_rx_ant;
++	u8 rx_ant = mvm->fw->valid_tx_ant;
++
++	if (mvm->nvm_data && mvm->nvm_data->valid_rx_ant)
++		rx_ant &= mvm->nvm_data->valid_tx_ant;
++
++	if (mvm->set_rx_ant)
++		rx_ant &= mvm->set_tx_ant;
++
++	return rx_ant;
++
+ }
+ 
+ static inline void iwl_mvm_toggle_tx_ant(struct iwl_mvm *mvm, u8 *ant)
+@@ -2626,6 +2642,7 @@ int iwl_mvm_mac_ampdu_action(struct ieee80211_hw *hw,
+ 			     struct ieee80211_vif *vif,
+ 			     struct ieee80211_ampdu_params *params);
+ int iwl_mvm_op_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant);
++int iwl_mvm_op_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant);
+ int iwl_mvm_mac_start(struct ieee80211_hw *hw);
+ void iwl_mvm_mac_reconfig_complete(struct ieee80211_hw *hw,
+ 				   enum ieee80211_reconfig_type reconfig_type);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+index f67ab8ee18c2..17a1e5717dde 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2019, 2021 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2019, 2021-2023 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -220,6 +220,8 @@ iwl_parse_nvm_sections(struct iwl_mvm *mvm)
+ 	struct iwl_nvm_section *sections = mvm->nvm_sections;
+ 	const __be16 *hw;
+ 	const __le16 *sw, *calib, *regulatory, *mac_override, *phy_sku;
++	u8 tx_ant = mvm->fw->valid_tx_ant;
++	u8 rx_ant = mvm->fw->valid_rx_ant;
+ 	int regulatory_type;
+ 
+ 	/* Checking for required sections */
+@@ -270,9 +272,15 @@ iwl_parse_nvm_sections(struct iwl_mvm *mvm)
+ 		(const __le16 *)sections[NVM_SECTION_TYPE_REGULATORY_SDP].data :
+ 		(const __le16 *)sections[NVM_SECTION_TYPE_REGULATORY].data;
+ 
++	if (mvm->set_tx_ant)
++		tx_ant &= mvm->set_tx_ant;
++
++	if (mvm->set_rx_ant)
++		rx_ant &= mvm->set_rx_ant;
++
+ 	return iwl_parse_nvm_data(mvm->trans, mvm->cfg, mvm->fw, hw, sw, calib,
+ 				  regulatory, mac_override, phy_sku,
+-				  mvm->fw->valid_tx_ant, mvm->fw->valid_rx_ant);
++				  tx_ant, rx_ant);
+ }
+ 
+ /* Loads the NVM data stored in mvm->nvm_sections into the NIC */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 1c21a313f8f1..465090f67aaf 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -751,7 +751,10 @@ static int iwl_mvm_start_get_nvm(struct iwl_mvm *mvm)
+ 			 */
+ 			mvm->nvm_data =
+ 				iwl_parse_mei_nvm_data(trans, trans->cfg,
+-						       mvm->mei_nvm_data, mvm->fw);
++						       mvm->mei_nvm_data,
++						       mvm->fw,
++						       mvm->set_tx_ant,
++						       mvm->set_rx_ant);
+ 			return 0;
+ 		}
+ 
 -- 
 2.38.1
 
