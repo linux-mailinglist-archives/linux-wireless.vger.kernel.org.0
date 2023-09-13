@@ -2,157 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FD1C79EDD6
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 18:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB44E79EFF2
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 19:09:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230231AbjIMQBz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 12:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60400 "EHLO
+        id S230396AbjIMRJs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 13:09:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230143AbjIMQBy (ORCPT
+        with ESMTP id S231512AbjIMRJf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Sep 2023 12:01:54 -0400
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CBDC90
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 09:01:50 -0700 (PDT)
-Received: from eig-obgw-6009a.ext.cloudfilter.net ([10.0.30.184])
-        by cmsmtp with ESMTP
-        id gOk6q7ljgEoVsgSJJquL1Z; Wed, 13 Sep 2023 16:01:49 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with ESMTPS
-        id gSJIqxnmu4G7BgSJJqhbGr; Wed, 13 Sep 2023 16:01:49 +0000
-X-Authority-Analysis: v=2.4 cv=UMrOoQTy c=1 sm=1 tr=0 ts=6501dced
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=wYkD_t78qR0A:10 a=DfNHnWVPAAAA:8
- a=anKBZ9voxICiHcaguvcA:9 a=QEXdDO2ut3YA:10 a=rjTVMONInIDnV1a_A2c_:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=R837XQEgWoCavH2lMvfa99lqFuQSwQUEWgTQ96SgsPs=; b=MtlZDsH3OMzoszs7u5ZRDLgaCn
-        8fwpn3tyX+48w4vwHJ044zrS6ZwzCqnIiDNSuF9XYbSatiVrxiUWwJ93QEU6NBSpMN6RJtB3NpOrs
-        1lBnnhXd2hoS8qZa5mLIRlYBcDjGje5OpgnrImtiXCgxMINo/NO2h2gE8bU6+zE+OU4HNGsAoABUz
-        Z4nXWa3OTZy34XpZQVUnPTrwNIaB6pT/w3qdplNK13z19G6I8I+dCU2rzTdQC6zyDhl9sIYhzzyxh
-        TdEnqWCk/XsbF/Q+8tyy/y6Rn3qvow8RHOnI9m/tx5WPxwRUXJ+BNJKzh9PFUrnmBGKjzEE0ucQOU
-        OflkQp6A==;
-Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:36608 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1qgSJH-000RUx-2w;
-        Wed, 13 Sep 2023 11:01:47 -0500
-Message-ID: <0f23e4a2-b11b-98bd-c419-d9a9fb7ddb4e@embeddedor.com>
-Date:   Wed, 13 Sep 2023 10:02:12 -0600
+        Wed, 13 Sep 2023 13:09:35 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91A75268E
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 10:09:06 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-502defbb0c3so34837e87.0
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 10:09:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694624944; x=1695229744; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vZ9kAZehe6uRUddqEUoKwMQrCUGUj3DIHCxJ6+5D8sA=;
+        b=BcZJbYAF6iuS+yGNln587jNH9Uskr7iZD6gPUF0jOJ7WSjKtyJ6ATxnbR8vItbHfFp
+         SX6ooDtLpYwvR3YlTyAxIdChSIisF8LL7zE1clLrlzTJuhblzOR4bKqM4dqMHux1bHm5
+         athaeqTATUA3N4o8pvCQYA6VisFH9QUk/uIDorl4V7STvrnJnd462UU8BygrHKlvDo+4
+         ieoewP5OBX2AKX1LLBjTC0GVb4KGULUg/J9sU2PqWCkB8A2E5SejM/3vhQQZsY8WOODW
+         EtJKY81LgmxUIbQros6utqThzy82nH4HQqm+MHdfbpOJXIuT9vowEUxl0NjA9N2ISKOb
+         yqlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694624944; x=1695229744;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vZ9kAZehe6uRUddqEUoKwMQrCUGUj3DIHCxJ6+5D8sA=;
+        b=RIolmqL3/wCOgPzu4nLoMF9hdWgSH+Tdj9YcSNvUTtS2xUql09ixANSdZhRaiWbpb7
+         qn44CaWBDOUsEMBocYVlzWsBvS0eakrlJH1n7JkIppE7qFpg/GLLaFOd8DQhVnik/p06
+         Ms2vC79OOE2Mhph4z/iLrQJbf1aQYRNUcDwKbFBrcNePrGv27YuFdx7VvI/X5fg6vwkT
+         ARbHW3Il/Ed8vgtHTO8nxd/fAtYajBnco5YksaMLp+XUBDG+IDgagBt7W5tjNj7MoNuu
+         qWy6fYV5N7A+YJcxBm+gH+JkSJB4RXuXvwZwQ3R2oQk7iAmwMLuY8E2lwIUe+oE2FjGp
+         t9XA==
+X-Gm-Message-State: AOJu0YwGbMLW+3QsTCEfbtREWNYmb9J4KAdOsWaJRSz74xi9O7as/FUV
+        6aZtXUmZIQm5kcAroejHLA4ySbqDpim6BZI1fWlisq5nayho1g==
+X-Google-Smtp-Source: AGHT+IE9ecne3TTQL60K7Fw5v99QnVw+cOiOih8BOM75o1lCiATusT3ESCFnQhDIa07iJiYepwEQNF71qT4jFDo+hOk=
+X-Received: by 2002:a05:6512:328c:b0:4ff:9bd9:f69a with SMTP id
+ p12-20020a056512328c00b004ff9bd9f69amr2667306lfe.65.1694624944453; Wed, 13
+ Sep 2023 10:09:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] wifi: brcmfmac: Replace 1-element arrays with flexible
- arrays
-To:     Juerg Haefliger <juerg.haefliger@canonical.com>, aspriel@gmail.com,
-        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        kvalo@kernel.org, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Cc:     linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
-        marcan@marcan.st, keescook@chromium.org, gustavoars@kernel.org,
-        hdegoede@redhat.com, ryohei.kondo@cypress.com
-References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
-Content-Language: en-US
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20230913065421.12615-1-juerg.haefliger@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.21.192
-X-Source-L: No
-X-Exim-ID: 1qgSJH-000RUx-2w
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.8]) [187.162.21.192]:36608
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 10
-X-Org:  HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfLKiUR3x4qp8yX6xX+CMpboFL94Fpm1ul3lBEiWioVW/PP+cs9bYw8WksE2CsR7sxWtTc/nmH44uOG5VrrdyXFg+Iu9dZgNdfvs4yJa/QeSUDdwSqbee
- c6LRZ267XVa4Bxrugq76m8ClCcjWpDARDgQg9bspWzhqtUesC6PVludN4OpiCwjMXHGxHhijI7iyyF3WBkNZCrZMKvs5r6rzXW1vv/dqG94CVUDCSCExRHkw
+From:   Rusty Howell <rustyhowell@gmail.com>
+Date:   Wed, 13 Sep 2023 11:08:48 -0600
+Message-ID: <CAE+BM3=Neb_g3QPMiGjpmkkpUK6wupM1FX06DyZOtDnQgBz_YA@mail.gmail.com>
+Subject: Add extra check in regdb scripts
+To:     linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From 434588b8f06f78a3188909c298a6f6671dab7b3f Mon Sep 17 00:00:00 2001
+From: Rusty Howell <rhowell@control4.com>
+Date: Thu, 7 Sep 2023 12:56:47 -0600
+Subject: [PATCH] Add same check that kernel uses to check reg domain
 
+The kernel will reject a regulatory domain if the max bandwidth is greater than
+the span from start to end. We should catch this error when compiling the
+regulatory database.
+---
+ dbparse.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
-On 9/13/23 00:54, Juerg Haefliger wrote:
-> Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
-> UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
-> 'element' and 'channel_list' will trigger warnings, so make them proper
-> flexible arrays.
-> 
-> False positive warnings were:
-> 
->    UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
->    index 1 is out of range for type '__le32 [1]'
-> 
->    UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
->    index 1 is out of range for type '__le16 [1]'
-> 
-> for these lines of code:
-> 
->    6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
-> 
->    1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
-> 
-> Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-> ---
->   .../wireless/broadcom/brcm80211/brcmfmac/fwil_types.h    | 9 +++++++--
->   1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> index bece26741d3a..ed723a5b5d54 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> @@ -442,7 +442,12 @@ struct brcmf_scan_params_v2_le {
->   				 * fixed parameter portion is assumed, otherwise
->   				 * ssid in the fixed portion is ignored
->   				 */
-> -	__le16 channel_list[1];	/* list of chanspecs */
-> +	union {
-> +		__le16 padding;	/* Reserve space for at least 1 entry for abort
-> +				 * which uses an on stack brcmf_scan_params_v2_le
-> +				 */
-> +		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-> +	};
->   };
->   
->   struct brcmf_scan_results {
-> @@ -702,7 +707,7 @@ struct brcmf_sta_info_le {
->   
->   struct brcmf_chanspec_list {
->   	__le32	count;		/* # of entries */
-> -	__le32	element[1];	/* variable length uint32 list */
-> +	DECLARE_FLEX_ARRAY(__le32, element);	/* variable length uint32 list */
+diff --git a/dbparse.py b/dbparse.py
+index 5f7e082..1e87813 100755
+--- a/dbparse.py
++++ b/dbparse.py
+@@ -218,6 +218,9 @@ class DBParser(object):
+                 self._syntax_error("Inverted freq range (%d - %d)" %
+(start, end))
+             if start == end:
+                 self._syntax_error("Start and end freqs are equal
+(%d)" % start)
++            if bw > (end - start):
++                self._syntax_error("Max bandwidth must not exceed the
+range from start to end")
++
+         except ValueError:
+             self._syntax_error("band must have frequency range")
 
-If no padding is needed, as in the other case, then DFA() is not necessary.
-Just remove the 1 from the array declaration:
-
-  struct brcmf_chanspec_list {
-         __le32  count;          /* # of entries */
--       __le32  element[1];     /* variable length uint32 list */
-+       __le32  element[];      /* variable length uint32 list */
-  };
-
---
-Gustavo
-
->   };
->   
->   /*
+-- 
+2.25.1
