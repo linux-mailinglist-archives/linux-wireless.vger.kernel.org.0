@@ -2,112 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF0679D9D9
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Sep 2023 22:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9F8179DD3B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 02:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236120AbjILUBZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Sep 2023 16:01:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43460 "EHLO
+        id S232414AbjIMArC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Sep 2023 20:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjILUBY (ORCPT
+        with ESMTP id S229890AbjIMArB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Sep 2023 16:01:24 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F87FE4B
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Sep 2023 13:01:20 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qg9ZW-0007RT-PH; Tue, 12 Sep 2023 22:01:18 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qg9ZW-005qVs-9g; Tue, 12 Sep 2023 22:01:18 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qg9ZV-0019cq-MS; Tue, 12 Sep 2023 22:01:17 +0200
-Date:   Tue, 12 Sep 2023 22:01:17 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH net-next] wifi: ti/wlcore: Convert to platform remove
- callback returning void
-Message-ID: <20230912200117.5ygpaucixihppg65@pengutronix.de>
-References: <20230912171249.755901-1-u.kleine-koenig@pengutronix.de>
- <87sf7jcnll.fsf@kernel.org>
+        Tue, 12 Sep 2023 20:47:01 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A1C54CF3;
+        Tue, 12 Sep 2023 17:46:56 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38D0khalF3256447, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38D0khalF3256447
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 13 Sep 2023 08:46:43 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Wed, 13 Sep 2023 08:46:37 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 13 Sep 2023 08:46:36 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
+ RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
+ 15.01.2375.007; Wed, 13 Sep 2023 08:46:36 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Zenm Chen <zenmchen@gmail.com>,
+        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
+CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
+Subject: RE: [PATCH v2] wifi: rtl8xxxu: fix LED control code of RTL8192FU
+Thread-Topic: [PATCH v2] wifi: rtl8xxxu: fix LED control code of RTL8192FU
+Thread-Index: AQHZ5WwYvP5lze30skyDvzKTfg2eG7AX5lFQ
+Date:   Wed, 13 Sep 2023 00:46:36 +0000
+Message-ID: <1cf3a01b90e74a528c884246b9fbf531@realtek.com>
+References: <20230912112709.22456-1-zenmchen@gmail.com>
+In-Reply-To: <20230912112709.22456-1-zenmchen@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-originating-ip: [172.21.69.25]
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ebwt7imbll6jyb7y"
-Content-Disposition: inline
-In-Reply-To: <87sf7jcnll.fsf@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---ebwt7imbll6jyb7y
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hello,
+> -----Original Message-----
+> From: Zenm Chen <zenmchen@gmail.com>
+> Sent: Tuesday, September 12, 2023 7:27 PM
+> To: Jes.Sorensen@gmail.com
+> Cc: kvalo@kernel.org; linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> rtl8821cerfe2@gmail.com; Ping-Ke Shih <pkshih@realtek.com>; Zenm Chen <zenmchen@gmail.com>
+> Subject: [PATCH v2] wifi: rtl8xxxu: fix LED control code of RTL8192FU
+> 
+> Some of the RTL8192FU-based wifi adapters use the register "REG_LEDCFG1"
+> to control the LED, and some of them use the register "REG_LEDCFG0"
+> instead. Currently rtl8xxxu controls the LED via writing the values
+> to the register "REG_LEDCFG1" only. This caused a few RTL8192FU-based wifi
+> adapters's LED don't blink according to the network activity. This patch
+> will make rtl8xxxu write the correct values to the both register
+> "REG_LEDCFG0" and "REG_LEDCFG1" to fix this issue.
+> 
+> This was tested with these two wifi adapters:
+> ASUS USB-N13 C1 (vid=0x0b05, pid=0x18f1, rfe_type=0x1)
+> MERCURY MW310UH (vid=0x0bda, pid=0xf192, rfe_type=0x5)
+> 
+> Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+> ---
+> v2:
+>  - Explain why to fix the issue in this way in the commit message.
+>  - Split a long statement into short ones.
+>  - Use some of the definitions suggested by Ping-Ke Shih.
+> ---
+>  .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 26 ++++++++++++-------
+>  .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |  3 +++
+>  2 files changed, 20 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+> index 28e93835e05a..779f93afc22b 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+> @@ -2014,26 +2014,34 @@ static int rtl8192fu_led_brightness_set(struct led_classdev *led_cdev,
+>         struct rtl8xxxu_priv *priv = container_of(led_cdev,
+>                                                   struct rtl8xxxu_priv,
+>                                                   led_cdev);
+> -       u16 ledcfg;
+> +       u32 ledcfg;
+> 
+>         /* Values obtained by observing the USB traffic from the Windows driver. */
+>         rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_0, 0x20080);
+>         rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_1, 0x1b0000);
+> 
+> -       ledcfg = rtl8xxxu_read16(priv, REG_LEDCFG0);
+> +       ledcfg = rtl8xxxu_read32(priv, REG_LEDCFG0);
+> +
+> +       /* Set LED0 GPIO enabled */
+> +       ledcfg |= LEDCFG0_LED0_GPIO_ENABLE;
+> 
+>         if (brightness == LED_OFF) {
+> -               /* Value obtained like above. */
+> -               ledcfg = BIT(1) | BIT(7);
+> +               /* Setting REG_LEDCFG0[15:0] to 0x0000 turns LED0/LED1 off. */
+> +               ledcfg &= ~GENMASK(15, 0);
+>         } else if (brightness == LED_ON) {
+> -               /* Value obtained like above. */
+> -               ledcfg = BIT(1) | BIT(7) | BIT(11);
+> +               /* Setting REG_LEDCFG0[15:0] to 0x0808 turns LED0/LED1 on. */
+> +               ledcfg &= ~GENMASK(15, 0);
+> +               ledcfg |= LEDCFG0_LED1SV | LEDCFG0_LED0SV;
+>         } else if (brightness == RTL8XXXU_HW_LED_CONTROL) {
+> -               /* Value obtained by brute force. */
+> -               ledcfg = BIT(8) | BIT(9);
+> +               /* Setting REG_LEDCFG0[15:0] to 0x0303 enables
+> +                * hardware-controlled blinking for LED0/LED1.
+> +                * The value 0x0303 is obtained by brute force.
 
-On Tue, Sep 12, 2023 at 08:23:18PM +0300, Kalle Valo wrote:
-> Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> writes:
->=20
-> > The .remove() callback for a platform driver returns an int which makes
-> > many driver authors wrongly assume it's possible to do error handling by
-> > returning an error code.  However the value returned is (mostly) ignored
-> > and this typically results in resource leaks. To improve here there is a
-> > quest to make the remove callback return void. In the first step of this
-> > quest all drivers are converted to .remove_new() which already returns
-> > void.
-> >
-> > wlcore_remove() returned zero unconditionally. With that converted to
-> > return void instead, the wl12xx and wl18xx driver can be converted to
-> > .remove_new trivially.
-> >
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> >  drivers/net/wireless/ti/wl12xx/main.c   | 6 +++---
-> >  drivers/net/wireless/ti/wl18xx/main.c   | 2 +-
-> >  drivers/net/wireless/ti/wlcore/main.c   | 6 ++----
-> >  drivers/net/wireless/ti/wlcore/wlcore.h | 2 +-
-> >  4 files changed, 7 insertions(+), 9 deletions(-)
->=20
-> wireless patches go to wireless-next, not net-next. But no need to
-> resend because of this.
+I suppose this would not be a brute force if you can use register definitions
+I provided by v1. 
 
-So for the next patch to drivers/net/wireless: I should write "[PATCH
-wireless-next]" in the Subject? Do the other special rules for net-next
-apply to wireless-next, too? (E.g. that I must not send patches for
--next during the merge window and the rules about comments.)
+> +                */
+> +               ledcfg &= ~GENMASK(15, 0);
+> +               ledcfg |= BIT(9) | BIT(8) | BIT(1) | BIT(0);
+>         }
+> 
+> -       rtl8xxxu_write16(priv, REG_LEDCFG0, ledcfg);
+> +       rtl8xxxu_write32(priv, REG_LEDCFG0, ledcfg);
+> 
+>         return 0;
+>  }
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+> index 920ee50e2115..5ce845f1d069 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+> @@ -146,6 +146,9 @@
+>  #define  GPIO_INTM_EDGE_TRIG_IRQ       BIT(9)
+> 
+>  #define REG_LEDCFG0                    0x004c
+> +#define  LEDCFG0_LED0SV                        BIT(3)
+> +#define  LEDCFG0_LED1SV                        BIT(11)
+> +#define  LEDCFG0_LED0_GPIO_ENABLE      BIT(21)
+>  #define  LEDCFG0_DPDT_SELECT           BIT(23)
+>  #define REG_LEDCFG1                    0x004d
+>  #define  LEDCFG1_HW_LED_CONTROL                BIT(1)
+> --
+> 2.42.0
 
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ebwt7imbll6jyb7y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmUAw4wACgkQj4D7WH0S
-/k7zQwgAj3eUZ0jf3+FFz8zPoIlE9CSdX0aoTeRvhCunDnnVQTQrAwxfUZbNin7p
-A7qPEwr6CFh8V0HtOY9X2vOuqIqRkBeL9HoSzgb/AlJbKpgs89yWZjeVkp2jutTc
-zBVGWBA/LyX5ihs095B6BnoDPqMtCmycQJmX2ofceG7DjEzvL33lHrflMF5Bb9Eu
-pAd03c5lJ7blUZbVlIexih20TWBDGpzxW7SzWr/G34ua+FjCQoLDbw+Zd9JFOABW
-eotxl73BbFSobXoyUDhVHNdGAcxbt0Xb0mZfPloImXj79bN62kBRlCXtLXF43ytm
-s5W5ABjH20Y8nxmPklwyA9LPYc7pfQ==
-=otqT
------END PGP SIGNATURE-----
-
---ebwt7imbll6jyb7y--
