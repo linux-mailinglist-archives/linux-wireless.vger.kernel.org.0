@@ -2,120 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5302D79E4DD
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 12:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A7579E50E
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Sep 2023 12:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239687AbjIMK1B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Sep 2023 06:27:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49286 "EHLO
+        id S239681AbjIMKgV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Sep 2023 06:36:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234757AbjIMK1A (ORCPT
+        with ESMTP id S238013AbjIMKgN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Sep 2023 06:27:00 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18AA0D3
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 03:26:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=D4AFccfNPL1or7tuTclNn+d+NrnVo1gsq80w14w3bZw=;
-        t=1694600816; x=1695810416; b=SoDsJIXWlJ/zNbuo8ZZ9Wn1Yw5umV61dWn341sWRSDujyQQ
-        gLGnh+bYlGIn92U1G9yIiJdfCXs1hf8Vt5snM05dBJleuBMjtFvHP+l/GuQJ8lxPuSTRPIChKipkr
-        l+WMKH1sNxd8XKNNvDDsBIaqHCzw20rzErpCAfw6aBPjILuRBSCRQEHXFUFkKVC4PP7ct0TK0HyId
-        9RzCLrJQmmKa0ZjmJtKPVmY4ey+coIqFukMK/QlT20dMGlw2RDgoD/T+rNuWmAfNgYxFeKXBo50nl
-        Y1E0AQ+MgJSin24Cnvs/Jf0nWoZiHsxUh9Zin6Q6EMP9n/xGF8Yj7eBtpviNB7Cg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qgN5B-00EmwK-2Z;
-        Wed, 13 Sep 2023 12:26:54 +0200
-Message-ID: <1912863dcd17aa50b09d1ddfc889478eb323f901.camel@sipsolutions.net>
-Subject: Re: [PATCH v8 0/5] Additional processing in beacon updates (v8)
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aloka Dixit <quic_alokad@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Date:   Wed, 13 Sep 2023 12:26:52 +0200
-In-Reply-To: <6e680b33-55f5-2c49-3458-6baa4d8cff52@quicinc.com>
-References: <20230727174100.11721-1-quic_alokad@quicinc.com>
-         <46340c48-285e-4e2a-b6e9-802f922f0c2c@quicinc.com>
-         <759fb125-7bfc-7d85-5c71-0a134030a9b9@quicinc.com>
-         <6e680b33-55f5-2c49-3458-6baa4d8cff52@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Wed, 13 Sep 2023 06:36:13 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA3F9C3
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 03:36:09 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38D9kTol010097;
+        Wed, 13 Sep 2023 10:36:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=yohfgTcIExRjRE9ZgBt6JPA1Vyt1kbY2Dup+/vsSSLM=;
+ b=V1yasZhyg94WY/vJ9KiRL2wSYSpNEuNbURUENxcxqhASInA5HLcnMzAeLlfVfw5boLOn
+ ILM/LrOAVaPFl+b25OBPNpLZkOrXXdstiJ6ot0NXwwpph9p2jk/981KfjeRnDbn8khYH
+ S7bZzOWe0IAMDhXNmV9SKQ6oXlLusQ2v/I7zLE3piixlwy94t52E3lzx7ko03lP17Fec
+ R1nw8J0jVKPG5iQtDeNz7fa7kcfTd/vOInoiHPmFKbV7LquwJ5tlZ2wIqzxwpqIRoIyt
+ xmXiH0cZ7i5SohskSkL9HnmcKEIBxMR9Txaqfk6jU24/h2qo9Sr0YQkZr6/5ZZOYnCvj /Q== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t3ar3g3pa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 13 Sep 2023 10:36:05 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38DAa46w007727
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 13 Sep 2023 10:36:04 GMT
+Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 13 Sep
+ 2023 03:36:03 -0700
+Message-ID: <efa43e0a-9ef1-4989-0a45-dc6425d9b96b@quicinc.com>
+Date:   Wed, 13 Sep 2023 18:35:57 +0800
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v3 0/9] wifi: cfg80211/mac80211: extend 6 GHz support for
+ all power modes
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20230315132904.31779-1-quic_adisi@quicinc.com>
+ <319ecb67faac8a2e50408f2bfa28f2431a6e6b9a.camel@sipsolutions.net>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <319ecb67faac8a2e50408f2bfa28f2431a6e6b9a.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: zHn8y2OaMA7Uf5I48tCVuSDw0oNZdMRH
+X-Proofpoint-ORIG-GUID: zHn8y2OaMA7Uf5I48tCVuSDw0oNZdMRH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-13_04,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=399
+ spamscore=0 clxscore=1015 priorityscore=1501 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309130083
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Aloka,
+On 8/30/2023 1:50 AM, Johannes Berg wrote:
+[...]
+> johannes
+This patch "[PATCH v3 2/9] wifi: cfg80211: save Power Spectral Density
+(PSD) of the regulatory rule" does not have relation with concurrency.
+Because it only add a field "s8 psd" into struct ieee80211_reg_rule
+and ieee80211_channel. The psd value is same with other field such as
+max_reg_power.
 
-> Please review this series.
+max_reg_power is also different value for AP and station mode in db.txt 
+here:
+for example:
+"country TW: DFS-FCC" and "country US: DFS-FCC"
+# 5.15 ~ 5.25 GHz: 30 dBm for master mode, 23 dBm for clients
+https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/tree/db.txt#n1785
 
-Yes, sorry for the delay.
-
-> I know this version is too late to recollect the context of earlier=20
-> patches but hopefully following is helpful.
->=20
-> Versions 1 to 7 tried to fix this issue - FILS discovery transmission=20
-> stops after CSA. I had tried to fix it in mac80211 which did not set=20
-> BSS_CHANGED_FILS_DISCOVERY unless new parameters were sent by user-space.
->=20
-> For v7, you mentioned that while the flag=3D0 indicates that FILS=20
-> configurations did not change, it does not indicate that it got deleted=
-=20
-> so the driver should decide depending on the existing configuration and
-> not depend only on the flag. I have already validated this ath12k patch=
-=20
-> which fixes the above issue, without cfg80211 and mac80211 patches in=20
-> this series:=20
-> https://patchwork.kernel.org/project/linux-wireless/patch/20230905174324.=
-25296-1-quic_alokad@quicinc.com/
->=20
-> And I have changed this series to let the user-space give 'interval=3D0'=
-=20
-> as the parameter which was basically a no-op earlier. This way the=20
-> transmission can be stopped explicitly and include the additional=20
-> processing in the change_beacon from the previous versions which was=20
-> anyway required.
->=20
-
-Yep, thanks a lot!
-
-I've applied the series since I was rebasing it on the current tree with
-the locking changes and while that wasn't hard, I didn't want to
-needlessly double the work and have you do it for a resend as well.
-
-I've made some small tweaks and fixes, so please take a look at it, I
-hope I didn't mess anything up.
-
-Also, I'd like you to send a follow-up patch that updates the
-documentation: now that we pass the whole settings to change_beacon(), I
-think we need to document - perhaps as part of the kernel-doc for struct
-cfg80211_ap_settings - which of the parameters are actually changing
-there. Right now given your patches, it's clear that only beacon,
-unsol_bcast_probe_resp and fils_discovery are (currently) allowed to
-change.
-
-
-Alternatively, maybe we should indeed change the prototype again and
-introduce a new struct cfg80211_ap_update that contains only the
-parameters that change?
-
-That feels a bit harder, but really it isn't by that much - in mac80211
-ieee80211_set_fils_discovery() etc. already take the sub-parameters
-(&params->fils_discovery), so not a problem there, and in nl80211 we
-could as well pass struct cfg80211_fils_discovery directly to
-nl80211_parse_fils_discovery() rather than the entire struct
-cfg80211_ap_settings, which wouldn't be a massive change.
-
-
-I think maybe I even prefer the latter if I'm looking at it now, but I'm
-not sure I'm not missing something from earlier discussions on this.
-
-What do you think?
-
-johannes
+So could you merge the "[PATCH v3 2/9] wifi: cfg80211: save Power Spectral
+Density (PSD) of the regulatory rule" firstly?
