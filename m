@@ -2,140 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45EC679FCB5
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 09:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DAB579FCD5
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 09:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233607AbjINHDe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 03:03:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60330 "EHLO
+        id S235798AbjINHKD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Sep 2023 03:10:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232119AbjINHDc (ORCPT
+        with ESMTP id S232122AbjINHKD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 03:03:32 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA81BB
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 00:03:28 -0700 (PDT)
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 406893F674
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 07:03:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1694675005;
-        bh=goSxu7HgsxTeodjXmJUH/TuD0k0hgtAzYq7xYOspA+4=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version;
-        b=K0aBtka673VpyAuiYVkgPVMD5JAD1EfEH46ClQ23GVL7i+2TV8EUIY68cFifMBcUJ
-         TsX3HuH2LwiIaYFPAOfej005mR/SHfefx3WA3k7a6j9mQPZvfMO+iNqrsGpw6HanTF
-         8nEMnRrqO6BLPPexytZVPLyiFZc5UEyXRMqccbkMVXQqxGetp+In1Y6LvbzYjARl7E
-         3SPoibEsWmo2/1nLTZA4ngy4H9aoop4wdkwZ9h3FdkvaV1sXkUMG5RupDZl+8LpY4A
-         c4+e7vgP/0ulGlhUXOPJnQmOyYN09B1uh+1U2SGPmv2BqVQ+DS9L6GYSmEQsBs31b0
-         7MOn0ghNH99BA==
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2bcc2fd542bso7648741fa.3
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 00:03:25 -0700 (PDT)
+        Thu, 14 Sep 2023 03:10:03 -0400
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE20CE5
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 00:09:59 -0700 (PDT)
+Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-34ccedcc584so1840915ab.0
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 00:09:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1694675398; x=1695280198; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nXGAZ78A/w9CJ0c+P/nZnXrFyXcvdwQOenfrsg4vU14=;
+        b=jpD77JK0s6aZuDQ7YPA1IS1ITLzh1MB/Bm4pyjRw8Ypn8gydfMsTWuKbL5I7ieYSh9
+         Jq6BhDpSUefPVurEUle+fpbT0nOlA7L9o/0mJwjNbT7AFtVLQfvLWEvKsZrg+zfsBzKL
+         iYivg8iEMsNUdyCV7fuxPBgHNDPInwrdS2xAw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694675001; x=1695279801;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1694675398; x=1695280198;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=goSxu7HgsxTeodjXmJUH/TuD0k0hgtAzYq7xYOspA+4=;
-        b=kuj5SGt+R67YK8OC4gsvLYaHIlsdJAmihHM1w6bX0uZx+Rrq9sWyhr42wF0Y49byb4
-         kFLs3C84JwJGukjKy4wQHt8rXk2fL1XY7yK9PO3xRpGd32wRPG94jW/LOBNB8Tye2EtA
-         Do5xvUWIhxhNn9qBb/fkagRNLq1a38v7Y4sYvZ/auxWLVG6pSVlc9Esg7amxxShYHYaK
-         bRfH75Od+NDucuZbuCrjrLCs1jCRDe9W4x5ZOLVOm3uLbyKaoXgNd6jMvnFontOHcXzR
-         BAHH6yAOzUt9dO1AI9qxgIrG7/b3m0G+ipg6Gwn1p5nwLroerQTeslsvu60LLyQ5gM+v
-         8ysA==
-X-Gm-Message-State: AOJu0YxlDwdagDgCiE8FTDwbfAQGM4/gxMGTLgWptQ5xp4CkbY+F6jPN
-        u0k3nHsYghosAII8BojpyJyS1iIvcudqLqSctCh0VZZsKVBplKrCsn5zU9qb7Vx8BTH3r5IUcQN
-        sSRd5jyzX/bzc+7uhat7keeHdUsf61/dYf0WGXKojn/3a
-X-Received: by 2002:a2e:9ed9:0:b0:2bc:e32f:6fb0 with SMTP id h25-20020a2e9ed9000000b002bce32f6fb0mr4263134ljk.9.1694675000781;
-        Thu, 14 Sep 2023 00:03:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2lvudBipBhYKFL0V/AUGrG/NPYxifvLzmEnbyiurqOzZt4iA6jNQCUaoQ+l2QV7FAleBBwA==
-X-Received: by 2002:a2e:9ed9:0:b0:2bc:e32f:6fb0 with SMTP id h25-20020a2e9ed9000000b002bce32f6fb0mr4263113ljk.9.1694675000394;
-        Thu, 14 Sep 2023 00:03:20 -0700 (PDT)
-Received: from localhost ([194.191.244.86])
-        by smtp.gmail.com with ESMTPSA id y14-20020a7bcd8e000000b004030e8ff964sm3981698wmj.34.2023.09.14.00.03.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 00:03:19 -0700 (PDT)
-From:   Juerg Haefliger <juerg.haefliger@canonical.com>
-To:     juerg.haefliger@canonical.com
-Cc:     SHA-cyfmac-dev-list@infineon.com, aspriel@gmail.com,
-        brcm80211-dev-list.pdl@broadcom.com, franky.lin@broadcom.com,
-        gustavoars@kernel.org, hante.meuleman@broadcom.com,
-        hdegoede@redhat.com, keescook@chromium.org, kvalo@kernel.org,
-        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, marcan@marcan.st,
-        ryohei.kondo@cypress.com, stable@vger.kernel.org
-Subject: [PATCH v2] wifi: brcmfmac: Replace 1-element arrays with flexible arrays
-Date:   Thu, 14 Sep 2023 09:02:27 +0200
-Message-Id: <20230914070227.12028-1-juerg.haefliger@canonical.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230913065421.12615-1-juerg.haefliger@canonical.com>
-References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
+        bh=nXGAZ78A/w9CJ0c+P/nZnXrFyXcvdwQOenfrsg4vU14=;
+        b=gPHXL6cl7lVYn172S5KJLPA+f8kCC/x2XmI2vSof/UIxPPxn49jRWigp4A3eCT7HZu
+         r+OfdxmPDd1cTQ7j6Gn98wMOMj4tGwmbmxQCCXpqiya4OU6BhbuwY8u27lYDcAH83fDZ
+         SQ0US+GM+ryeGXxkc+l38A/nBLci8NY4ONO3ih6U0p07MRTSqJ+Sr6wShfoQVqz1gupM
+         IrE2ANtSO1O1gHU+QV5X2OHVZ6iOLi34Iysj6Tj8+jT6Eyqn1YjSkZBdZeeEXSrm92yu
+         I3uXod2hBD8L7QM9ON8s1NlplYMAKVUQtbbmEqgMkxme5EdVahj45oOPk840d/Z2Npgk
+         naCQ==
+X-Gm-Message-State: AOJu0YzDuXquP2MCP9ZWM2d70XsOnF0q2Cy9aZf0morUpQPgi7uvHN9g
+        uyZ/jvBbIbNSoKc393YIx77lj9GYMhR9NaI4UTrVCA==
+X-Google-Smtp-Source: AGHT+IHtPPjx8XHPgcJbUbC4PGXpftwQyQQvUJiU6i/Q6nSsofftIBt36ifhVhnxUWEnjQpiBfmFonGczgh5uqvp1wQ=
+X-Received: by 2002:a05:6e02:1645:b0:34f:7e2f:b837 with SMTP id
+ v5-20020a056e02164500b0034f7e2fb837mr1291009ilu.2.1694675398363; Thu, 14 Sep
+ 2023 00:09:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230908104308.1546501-1-treapking@chromium.org> <ZQIcDWKrmgoPkwlN@google.com>
+In-Reply-To: <ZQIcDWKrmgoPkwlN@google.com>
+From:   Pin-yen Lin <treapking@chromium.org>
+Date:   Thu, 14 Sep 2023 15:09:47 +0800
+Message-ID: <CAEXTbpc=QC6wC-W2VZCaRCp6rSpyNSsq5M6cxNcqAQxciNj0vg@mail.gmail.com>
+Subject: Re: [PATCH v3] wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Polaris Pi <pinkperfect2021@gmail.com>,
+        Matthew Wang <matthewmwang@chromium.org>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
-UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
-'element' and 'channel_list' will trigger warnings, so make them proper
-flexible arrays.
+Hi Brian,
 
-False positive warnings were:
+Thanks for the review.
 
-  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
-  index 1 is out of range for type '__le32 [1]'
+On Thu, Sep 14, 2023 at 4:31=E2=80=AFAM Brian Norris <briannorris@chromium.=
+org> wrote:
+>
+> On Fri, Sep 08, 2023 at 06:41:12PM +0800, Pin-yen Lin wrote:
+> > Only skip the code path trying to access the rfc1042 headers when the
+> > buffer is too small, so the driver can still process packets without
+> > rfc1042 headers.
+> >
+> > Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when=
+ rx packets")
+> > Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+>
+> I'd appreciate another review/test from one of the others here
+> (Matthew?), even though I know y'all are already working together.
+>
+> > ---
+> >
+> > Changes in v3:
+> > - Really apply the sizeof call fix as it was missed in the previous pat=
+ch
+> >
+> > Changes in v2:
+> > - Fix sizeof call (sizeof(rx_pkt_hdr) --> sizeof(*rx_pkt_hdr))
+> >
+> >  drivers/net/wireless/marvell/mwifiex/sta_rx.c | 16 +++++++++-------
+> >  1 file changed, 9 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/ne=
+t/wireless/marvell/mwifiex/sta_rx.c
+> > index 65420ad67416..257737137cd7 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+> > @@ -86,7 +86,8 @@ int mwifiex_process_rx_packet(struct mwifiex_private =
+*priv,
+> >       rx_pkt_len =3D le16_to_cpu(local_rx_pd->rx_pkt_length);
+> >       rx_pkt_hdr =3D (void *)local_rx_pd + rx_pkt_off;
+> >
+> > -     if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
+> > +     if (sizeof(rx_pkt_hdr->eth803_hdr) + sizeof(rfc1042_header) +
+> > +         rx_pkt_off > skb->len) {
+> >               mwifiex_dbg(priv->adapter, ERROR,
+> >                           "wrong rx packet offset: len=3D%d, rx_pkt_off=
+=3D%d\n",
+> >                           skb->len, rx_pkt_off);
+> > @@ -95,12 +96,13 @@ int mwifiex_process_rx_packet(struct mwifiex_privat=
+e *priv,
+> >               return -1;
+> >       }
+> >
+> > -     if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+> > -                  sizeof(bridge_tunnel_header))) ||
+> > -         (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+> > -                  sizeof(rfc1042_header)) &&
+> > -          ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) !=3D ETH_P_AARP &&
+> > -          ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) !=3D ETH_P_IPX)) {
+> > +     if (sizeof(*rx_pkt_hdr) + rx_pkt_off <=3D skb->len &&
+>
+> Are you sure you want this length check to fall back to the non-802.3
+> codepath? Isn't it an error to look like an 802.3 frame but to be too
+> small? I'd think we want to drop such packets, not process them as-is.
 
-  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
-  index 1 is out of range for type '__le16 [1]'
+I did that because I saw other drivers (e.g., [1], [2]) use similar
+approaches, and I assumed that the rest of the pipeline will
+eventually drop it if the packet cannot be recognized. But, yes, we
+can just drop the packet here if it doesn't look good.
 
-for these lines of code:
+[1]: https://elixir.bootlin.com/linux/latest/source/drivers/net/wireless/in=
+tersil/hostap/hostap_80211_rx.c#L1035
+[2]: https://elixir.bootlin.com/linux/latest/source/drivers/net/wireless/in=
+tel/ipw2x00/libipw_rx.c#L735
+>
+> If I'm correct, then this check should move inside the 'if' branch of
+> this if/else.
 
-  6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
+We can't simply move the check inside the if branch because the
+condition also checks rx_pkt_hdr->rfc1042_hdr.snap_type. Though, of
+course, it is doable by adding another `if` conditions.
+>
+> Brian
+>
 
-  1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
+Regards,
+Pin-yen
 
-Cc: stable@vger.kernel.org # 6.5+
-Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-
----
-v2:
-  - Use element[] instead of DFA() in brcmf_chanspec_list.
-  - Add Cc: stable tag
----
- .../wireless/broadcom/brcm80211/brcmfmac/fwil_types.h    | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-index bece26741d3a..611d1a6aabb9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-@@ -442,7 +442,12 @@ struct brcmf_scan_params_v2_le {
- 				 * fixed parameter portion is assumed, otherwise
- 				 * ssid in the fixed portion is ignored
- 				 */
--	__le16 channel_list[1];	/* list of chanspecs */
-+	union {
-+		__le16 padding;	/* Reserve space for at least 1 entry for abort
-+				 * which uses an on stack brcmf_scan_params_v2_le
-+				 */
-+		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-+	};
- };
- 
- struct brcmf_scan_results {
-@@ -702,7 +707,7 @@ struct brcmf_sta_info_le {
- 
- struct brcmf_chanspec_list {
- 	__le32	count;		/* # of entries */
--	__le32	element[1];	/* variable length uint32 list */
-+	__le32  element[];	/* variable length uint32 list */
- };
- 
- /*
--- 
-2.39.2
-
+> > +         ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+> > +                   sizeof(bridge_tunnel_header))) ||
+> > +          (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+> > +                   sizeof(rfc1042_header)) &&
+> > +           ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) !=3D ETH_P_AARP &&
+> > +           ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) !=3D ETH_P_IPX))) =
+{
+> >               /*
+> >                *  Replace the 803 header and rfc1042 header (llc/snap) =
+with an
+> >                *    EthernetII header, keep the src/dst and snap_type
+> > --
+> > 2.42.0.283.g2d96d420d3-goog
+> >
