@@ -2,148 +2,289 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59BE479FFAC
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 11:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27D227A019E
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 12:24:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237065AbjINJJO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 05:09:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51166 "EHLO
+        id S236376AbjINKYx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Sep 2023 06:24:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236691AbjINJJC (ORCPT
+        with ESMTP id S230444AbjINKYw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 05:09:02 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7EE1FC9
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 02:08:19 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38E39vRg014441;
-        Thu, 14 Sep 2023 09:08:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=TyAJ7tqD+DaNWhmQstEJkOBpILLg2Nq1lcUBXfCWB6E=;
- b=OOa6ZQyhM8SzuUcKDY4RTdsS7slNB9lOfpZBUSKxces1hVfNtfvvpVSseopcPoNYBBx9
- iCdcjNlxtfvjMx4nrFzSAaFkcWxLf9whyxxjyDun7r0iIUzuIAdngsbIyew/NsecEO4G
- jcoHWGhCRc7uRiuk1asdfQgLolK3JFMeFvubiIvNf68Dl+NzZy+jvyTrQzYAvoI4+jP1
- 8Ow4FiH0eKN3RItPZju5BhxmBpC2kxjYJkPx0tM9sCX+5HgPXJgADf71VGvQyvGTBReQ
- NgWVpXmEoJeWqmD2zG0SSYjZ4DNRsmkx3O7jhQlEb8VK6FzD41fiaO9KrPKatDhodhfH Tw== 
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t3dj8ajf4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Sep 2023 09:08:14 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38E98Dds006433
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Sep 2023 09:08:13 GMT
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Thu, 14 Sep 2023 02:08:11 -0700
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <kvalo@kernel.org>,
-        <quic_jjohnson@quicinc.com>, <quic_wgong@quicinc.com>
-Subject: [PATCH v2 4/4] wifi: ath12k: store and send country code to firmware after recovery
-Date:   Thu, 14 Sep 2023 05:07:46 -0400
-Message-ID: <20230914090746.23560-5-quic_wgong@quicinc.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230914090746.23560-1-quic_wgong@quicinc.com>
-References: <20230914090746.23560-1-quic_wgong@quicinc.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: wzXSHHCws9Afed0FLiCzBhLYo3uXJLT5
-X-Proofpoint-ORIG-GUID: wzXSHHCws9Afed0FLiCzBhLYo3uXJLT5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-14_07,2023-09-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 adultscore=0 spamscore=0
- impostorscore=0 malwarescore=0 bulkscore=0 phishscore=0 suspectscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309140078
+        Thu, 14 Sep 2023 06:24:52 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945161BEB
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 03:24:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694687088; x=1726223088;
+  h=date:from:to:cc:subject:message-id;
+  bh=6f1ifAuG++jDmefx2IcBf7u+bR+a26D0NtxTAanX+yI=;
+  b=GIUyS9nsx5RZ8FEApEK1+OTnG2yahsKCBmtIg8TMvYqY/K0SRwp8r9aH
+   TUVxvqCHydjTAs88mkV+715DOI6P0ectwtDOfvR4ld0P1bB6RHe8cU4eE
+   Qzw1hVX6RFEhXsLz/GCZERJFqLEHlmuEFllIvaMb3GReNld/D0bv5ZELN
+   B+1f1/DndFZRC+IJP+QiFznGX85fV4dNwmx6doCFuk+TCZOodinVqjSPU
+   a4uEjQ3Pbes2swRQh2TP6Ssyy6KK+D390GwKF4GGVwEkYlU6F4BZyCKfN
+   SGRql5r8V7Ep+q8eQ/hKVVwrqWIPAjjqgRDdAqMwNcloNjfLotzkY+4gz
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="363950115"
+X-IronPort-AV: E=Sophos;i="6.02,145,1688454000"; 
+   d="scan'208";a="363950115"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 03:24:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="744486683"
+X-IronPort-AV: E=Sophos;i="6.02,145,1688454000"; 
+   d="scan'208";a="744486683"
+Received: from lkp-server02.sh.intel.com (HELO 9ef86b2655e5) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 14 Sep 2023 03:24:44 -0700
+Received: from kbuild by 9ef86b2655e5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qgjWc-0001UD-2O;
+        Thu, 14 Sep 2023 10:24:42 +0000
+Date:   Thu, 14 Sep 2023 18:24:24 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ 6e48ebffc2db5419b3a51cfc509bde442252b356
+Message-ID: <202309141822.Y58Ismh6-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently ath12k does not send the country code to firmware after device
-recovery. As a result the regdomain info is reported from firmware by
-default. Regdomain info is important, so ath12k also need to restore
-it to the value which was used before recovery.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 6e48ebffc2db5419b3a51cfc509bde442252b356  wifi: mac80211: fix mesh id corruption on 32 bit systems
 
-This is only needed for platforms which support the current_cc_support
-hardware parameter.
+elapsed time: 1480m
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+configs tested: 218
+configs skipped: 2
 
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.c | 1 +
- drivers/net/wireless/ath/ath12k/core.h | 1 +
- drivers/net/wireless/ath/ath12k/mac.c  | 8 ++++++++
- drivers/net/wireless/ath/ath12k/reg.c  | 1 +
- 4 files changed, 11 insertions(+)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 71450dc1f48d..4433d7701c67 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -696,6 +696,7 @@ static void ath12k_update_11d(struct work_struct *work)
- 		pdev = &ab->pdevs[i];
- 		ar = pdev->ar;
- 
-+		memcpy(&ar->alpha2, &set_current_param.alpha2, 2);
- 		ret = ath12k_wmi_send_set_current_country_cmd(ar, &set_current_param);
- 		if (ret)
- 			ath12k_warn(ar->ab,
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index e739869ded73..63586cc12a2e 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -582,6 +582,7 @@ struct ath12k {
- 	struct completion completed_11d_scan;
- 	enum ath12k_11d_state state_11d;
- 	bool regdom_set_by_user;
-+	u8 alpha2[REG_ALPHA2_LEN];
- };
- 
- struct ath12k_band_cap {
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 740e8045a6f1..0df154c34f8f 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -6908,6 +6908,14 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
- 		ar->state = ATH12K_STATE_ON;
- 		ieee80211_wake_queues(ar->hw);
- 
-+		if (ar->ab->hw_params->current_cc_support &&
-+		    ar->alpha2[0] != 0 && ar->alpha2[1] != 0) {
-+			struct wmi_set_current_country_params set_current_param = {};
-+
-+			memcpy(&set_current_param.alpha2, ar->alpha2, 2);
-+			ath12k_wmi_send_set_current_country_cmd(ar, &set_current_param);
-+		}
-+
- 		if (ab->is_reset) {
- 			recovery_count = atomic_inc_return(&ab->recovery_count);
- 			ath12k_dbg(ab, ATH12K_DBG_BOOT, "recovery count %d\n",
-diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
-index 97c93a4901e6..eb46bfc2b2b9 100644
---- a/drivers/net/wireless/ath/ath12k/reg.c
-+++ b/drivers/net/wireless/ath/ath12k/reg.c
-@@ -82,6 +82,7 @@ ath12k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
- 	 */
- 	if (ar->ab->hw_params->current_cc_support) {
- 		memcpy(&set_current_param.alpha2, request->alpha2, 2);
-+		memcpy(&ar->alpha2, &set_current_param.alpha2, 2);
- 
- 		ret = ath12k_wmi_send_set_current_country_cmd(ar, &set_current_param);
- 		if (ret)
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r015-20230913   gcc  
+alpha                randconfig-r021-20230913   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20230913   gcc  
+arc                  randconfig-r005-20230913   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20230913   gcc  
+arm                   randconfig-001-20230914   gcc  
+arm                  randconfig-r004-20230913   clang
+arm                  randconfig-r032-20230913   clang
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r032-20230913   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r011-20230913   gcc  
+csky                 randconfig-r021-20230913   gcc  
+csky                 randconfig-r022-20230913   gcc  
+hexagon               randconfig-001-20230913   clang
+hexagon               randconfig-002-20230913   clang
+hexagon              randconfig-r025-20230913   clang
+hexagon              randconfig-r035-20230913   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20230914   gcc  
+i386         buildonly-randconfig-002-20230914   gcc  
+i386         buildonly-randconfig-003-20230913   gcc  
+i386         buildonly-randconfig-003-20230914   gcc  
+i386         buildonly-randconfig-004-20230914   gcc  
+i386         buildonly-randconfig-005-20230914   gcc  
+i386         buildonly-randconfig-006-20230914   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20230913   gcc  
+i386                  randconfig-001-20230914   gcc  
+i386                  randconfig-002-20230913   gcc  
+i386                  randconfig-002-20230914   gcc  
+i386                  randconfig-003-20230914   gcc  
+i386                  randconfig-004-20230913   gcc  
+i386                  randconfig-004-20230914   gcc  
+i386                  randconfig-005-20230913   gcc  
+i386                  randconfig-005-20230914   gcc  
+i386                  randconfig-006-20230914   gcc  
+i386                  randconfig-011-20230913   gcc  
+i386                  randconfig-011-20230914   gcc  
+i386                  randconfig-012-20230913   gcc  
+i386                  randconfig-012-20230914   gcc  
+i386                  randconfig-013-20230913   gcc  
+i386                  randconfig-013-20230914   gcc  
+i386                  randconfig-014-20230913   gcc  
+i386                  randconfig-014-20230914   gcc  
+i386                  randconfig-015-20230913   gcc  
+i386                  randconfig-015-20230914   gcc  
+i386                  randconfig-016-20230914   gcc  
+i386                 randconfig-r023-20230913   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20230913   gcc  
+loongarch            randconfig-r001-20230913   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r022-20230913   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+microblaze           randconfig-r013-20230913   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r025-20230913   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r006-20230913   gcc  
+nios2                randconfig-r023-20230913   gcc  
+nios2                randconfig-r033-20230913   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+openrisc             randconfig-r001-20230913   gcc  
+openrisc             randconfig-r004-20230913   gcc  
+openrisc             randconfig-r016-20230913   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r012-20230913   gcc  
+parisc               randconfig-r024-20230913   gcc  
+parisc               randconfig-r035-20230913   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc              randconfig-r003-20230913   gcc  
+powerpc              randconfig-r006-20230913   gcc  
+powerpc              randconfig-r015-20230913   clang
+powerpc64            randconfig-r005-20230913   gcc  
+powerpc64            randconfig-r031-20230913   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20230913   gcc  
+riscv                randconfig-r036-20230913   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20230913   clang
+s390                 randconfig-r013-20230913   clang
+s390                 randconfig-r014-20230913   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                   randconfig-r011-20230913   gcc  
+sh                   randconfig-r034-20230913   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20230914   gcc  
+sparc                randconfig-r031-20230913   gcc  
+sparc                randconfig-r036-20230913   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64              randconfig-r012-20230913   gcc  
+sparc64              randconfig-r014-20230913   gcc  
+sparc64              randconfig-r024-20230913   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r002-20230913   clang
+um                   randconfig-r003-20230913   clang
+um                   randconfig-r026-20230913   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20230913   gcc  
+x86_64       buildonly-randconfig-001-20230914   gcc  
+x86_64       buildonly-randconfig-002-20230913   gcc  
+x86_64       buildonly-randconfig-002-20230914   gcc  
+x86_64       buildonly-randconfig-003-20230913   gcc  
+x86_64       buildonly-randconfig-003-20230914   gcc  
+x86_64       buildonly-randconfig-004-20230913   gcc  
+x86_64       buildonly-randconfig-004-20230914   gcc  
+x86_64       buildonly-randconfig-005-20230913   gcc  
+x86_64       buildonly-randconfig-005-20230914   gcc  
+x86_64       buildonly-randconfig-006-20230913   gcc  
+x86_64       buildonly-randconfig-006-20230914   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20230913   gcc  
+x86_64                randconfig-001-20230914   gcc  
+x86_64                randconfig-002-20230913   gcc  
+x86_64                randconfig-002-20230914   gcc  
+x86_64                randconfig-003-20230913   gcc  
+x86_64                randconfig-003-20230914   gcc  
+x86_64                randconfig-004-20230914   gcc  
+x86_64                randconfig-005-20230914   gcc  
+x86_64                randconfig-006-20230914   gcc  
+x86_64                randconfig-011-20230913   gcc  
+x86_64                randconfig-011-20230914   gcc  
+x86_64                randconfig-012-20230913   gcc  
+x86_64                randconfig-012-20230914   gcc  
+x86_64                randconfig-013-20230913   gcc  
+x86_64                randconfig-013-20230914   gcc  
+x86_64                randconfig-014-20230913   gcc  
+x86_64                randconfig-014-20230914   gcc  
+x86_64                randconfig-015-20230913   gcc  
+x86_64                randconfig-015-20230914   gcc  
+x86_64                randconfig-016-20230913   gcc  
+x86_64                randconfig-016-20230914   gcc  
+x86_64                randconfig-071-20230913   gcc  
+x86_64                randconfig-071-20230914   gcc  
+x86_64                randconfig-072-20230913   gcc  
+x86_64                randconfig-072-20230914   gcc  
+x86_64                randconfig-073-20230913   gcc  
+x86_64                randconfig-073-20230914   gcc  
+x86_64                randconfig-074-20230913   gcc  
+x86_64                randconfig-074-20230914   gcc  
+x86_64                randconfig-075-20230913   gcc  
+x86_64                randconfig-075-20230914   gcc  
+x86_64                randconfig-076-20230913   gcc  
+x86_64                randconfig-076-20230914   gcc  
+x86_64               randconfig-r016-20230913   clang
+x86_64               randconfig-r026-20230913   clang
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa               randconfig-r002-20230913   gcc  
+xtensa               randconfig-r033-20230913   gcc  
+xtensa               randconfig-r034-20230913   gcc  
+
 -- 
-2.40.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
