@@ -2,96 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B747A0B06
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 18:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6373C7A0B42
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 19:07:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229592AbjINQwp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 12:52:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49752 "EHLO
+        id S238709AbjINRHL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Sep 2023 13:07:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230502AbjINQwo (ORCPT
+        with ESMTP id S232000AbjINRHK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 12:52:44 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 352341FDE
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 09:52:40 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c0db66af1bso8971225ad.2
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 09:52:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1694710359; x=1695315159; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r0PIFkgAKbrMcVoY24lLipEKJInCl7seVpo3l//wznQ=;
-        b=BJ461dA1fUKAUWLqaFfkW0wq1mkuVcAUOnYtQPQKpOIwfQu8JJaxnj1TQkL0q5OzKm
-         iME5BxFhF3vXxnarUfr+Bnvih7Y66Sw1N0m4rUPLtKaO+C+jYtSTP9+8cwoHgEsexlSq
-         4xnkP3phPTDF+rLbES56cGhdm5Iuq7ubd4Kqk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694710359; x=1695315159;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r0PIFkgAKbrMcVoY24lLipEKJInCl7seVpo3l//wznQ=;
-        b=r8v7ajYjyWzojWryJCkVTKegPGXmmEag0vvgS2ZqXzOvd+yqFr4KVWyCBp5hFlsXo2
-         LPL2iLxNqdwx+EAmLUDfZAJd9DEL94+xt7LFgKUC9ifxB5sxaHsx2xjoatMZuPjOhmnB
-         5KK+aMdRX8vWxpZbImGTh2Ve9iRoCKatcs7ORRTTjyCEDIkeceHr4uZsAQ5yPXCCdlgT
-         o+P48CLjGSR/Dd4iN+2xke6WX/JN6QdIK1HLGXQfHxgSS/Pl4o/bi0mJxk3evoe9kKTw
-         SuHMbZkCPREsCzzs/LGfBexwEDLj3aQ49oM518nPAjtWUe00YV0t51JtXQqWzc/VdUbH
-         PXEQ==
-X-Gm-Message-State: AOJu0YxUM1bfJEbKEZQgk7f0TcWduOeNa6lSlZQGMZ3EIn3rORGNDed5
-        eERe3lpNoeDu3m9o75QMqEBtzQ==
-X-Google-Smtp-Source: AGHT+IH334ra+z6TaPT2K2le+CKl26jjaRaWR5gBvgujVzunOvDx1yIYuftdJvAeTfi6FAe4UebEgQ==
-X-Received: by 2002:a17:902:b281:b0:1b8:7fd7:e022 with SMTP id u1-20020a170902b28100b001b87fd7e022mr6178845plr.28.1694710359638;
-        Thu, 14 Sep 2023 09:52:39 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id f24-20020a170902ab9800b001bb3beb2bc6sm1820038plr.65.2023.09.14.09.52.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 09:52:38 -0700 (PDT)
-Date:   Thu, 14 Sep 2023 09:52:38 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Juerg Haefliger <juerg.haefliger@canonical.com>
-Cc:     SHA-cyfmac-dev-list@infineon.com, aspriel@gmail.com,
-        brcm80211-dev-list.pdl@broadcom.com, franky.lin@broadcom.com,
-        gustavoars@kernel.org, hante.meuleman@broadcom.com,
-        hdegoede@redhat.com, kvalo@kernel.org, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        marcan@marcan.st, ryohei.kondo@cypress.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: brcmfmac: Replace 1-element arrays with
- flexible arrays
-Message-ID: <202309140952.98489A964@keescook>
-References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
- <20230914070227.12028-1-juerg.haefliger@canonical.com>
+        Thu, 14 Sep 2023 13:07:10 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E36D11FE1;
+        Thu, 14 Sep 2023 10:07:05 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38EFEPat026692;
+        Thu, 14 Sep 2023 17:06:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=VS5omclDy3oniz92XfXL1gqbRojQdj9K/4l/+LddOJ0=;
+ b=QAyD27Tfoq3ApMqGseXEJMgkHjxE4aLrzxF91opPn4+NvyscQ7HHOkzBCay457yTYnVc
+ aRs8IqLAbp8P8pVOhhRVjtyoFRZbWYe0ox+W16SzQPOt5nPYMge+Em0dnwxZjOAEu8a4
+ YEkGRcO8GJBLteYJRskkvyw6qGVk/kg+2R6JH5ElZ/BQ/HXcLmYBw6KFEZOVNoezZFC/
+ Gdgl9yQ9LT3tLk6vaWQOEoGPizwhDhsmiYECWZBTk4ZVqLvLRgeYa7pDSK6Zexr7kgUH
+ P2IzbMraTe+EvPTi1st8uWD6kF7uVSD5Nn0mBWQ8U0+BdD87NBLJRXVxlBgNhOL46Kis Jg== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t3wx19kps-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 14 Sep 2023 17:06:53 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38EH6qdc004174
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 14 Sep 2023 17:06:52 GMT
+Received: from [10.111.183.186] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 14 Sep
+ 2023 10:06:52 -0700
+Message-ID: <7427d5aa-902a-4013-8aa9-f986bb5218a4@quicinc.com>
+Date:   Thu, 14 Sep 2023 10:06:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230914070227.12028-1-juerg.haefliger@canonical.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next 7/9] wifi: ath12k: Remove unnecessary
+ (void*) conversions
+Content-Language: en-US
+To:     Wu Yunchuan <yunchuan@nfschina.com>, <kvalo@kernel.org>
+CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+References: <20230914040525.1170102-1-yunchuan@nfschina.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230914040525.1170102-1-yunchuan@nfschina.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Q1UfUiFg-rmx_-W3ymAyC5ujLujnkhDE
+X-Proofpoint-ORIG-GUID: Q1UfUiFg-rmx_-W3ymAyC5ujLujnkhDE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-14_09,2023-09-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 mlxscore=0 bulkscore=0 adultscore=0 clxscore=1015
+ phishscore=0 mlxlogscore=999 impostorscore=0 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309140148
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 14, 2023 at 09:02:27AM +0200, Juerg Haefliger wrote:
-> Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
-> UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
-> 'element' and 'channel_list' will trigger warnings, so make them proper
-> flexible arrays.
+On 9/13/2023 9:05 PM, Wu Yunchuan wrote:
+> No need cast (void*) to (struct hal_rx_ppdu_end_user_stats *),
+> (struct ath12k_rx_desc_info *) or (struct hal_tx_msdu_ext_desc *).
 > 
-> False positive warnings were:
+> Signed-off-by: Wu Yunchuan <yunchuan@nfschina.com>
+> ---
+>   drivers/net/wireless/ath/ath12k/dp_mon.c | 6 ++----
+>   drivers/net/wireless/ath/ath12k/dp_rx.c  | 2 +-
+>   drivers/net/wireless/ath/ath12k/dp_tx.c  | 2 +-
+>   3 files changed, 4 insertions(+), 6 deletions(-)
 > 
->   UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
->   index 1 is out of range for type '__le32 [1]'
-> 
->   UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
->   index 1 is out of range for type '__le16 [1]'
-> 
-> for these lines of code:
-> 
->   6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
-> 
->   1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
-> 
-> Cc: stable@vger.kernel.org # 6.5+
-> Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+> index f1e57e98bdc6..41cfe7bd865f 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+> @@ -13,8 +13,7 @@
+>   static void ath12k_dp_mon_rx_handle_ofdma_info(void *rx_tlv,
+>   					       struct hal_rx_user_status *rx_user_status)
+>   {
+> -	struct hal_rx_ppdu_end_user_stats *ppdu_end_user =
+> -				(struct hal_rx_ppdu_end_user_stats *)rx_tlv;
+> +	struct hal_rx_ppdu_end_user_stats *ppdu_end_user = rx_tlv;
+>   
+>   	rx_user_status->ul_ofdma_user_v0_word0 =
+>   		__le32_to_cpu(ppdu_end_user->usr_resp_ref);
+> @@ -26,8 +25,7 @@ static void
+>   ath12k_dp_mon_rx_populate_byte_count(void *rx_tlv, void *ppduinfo,
+>   				     struct hal_rx_user_status *rx_user_status)
+>   {
+> -	struct hal_rx_ppdu_end_user_stats *ppdu_end_user =
+> -		(struct hal_rx_ppdu_end_user_stats *)rx_tlv;
+> +	struct hal_rx_ppdu_end_user_stats *ppdu_end_user = rx_tlv;
+>   	u32 mpdu_ok_byte_count = __le32_to_cpu(ppdu_end_user->mpdu_ok_cnt);
+>   	u32 mpdu_err_byte_count = __le32_to_cpu(ppdu_end_user->mpdu_err_cnt);
+>   
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+for both of the above IMO the better solution is to change the prototype 
+to replace void *rx_tlv with struct hal_rx_ppdu_end_user_stats 
+*ppdu_end_user and to remove the local variable
 
--- 
-Kees Cook
+further, I think you can add const to that since the TLV is only read, 
+not written
+
+this better describes that the function requires a specific flavor of RX 
+TLV rather than handling any RX TLV
+
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> index e6e64d437c47..ff5f66ca7783 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> @@ -3730,7 +3730,7 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
+>   			continue;
+>   		}
+>   
+> -		desc_info = (struct ath12k_rx_desc_info *)err_info.rx_desc;
+> +		desc_info = err_info.rx_desc;
+
+this is ok
+
+>   
+>   		/* retry manual desc retrieval if hw cc is not done */
+>   		if (!desc_info) {
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+> index 8874c815d7fa..98ddf46b3bb9 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_tx.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+> @@ -109,7 +109,7 @@ static struct ath12k_tx_desc_info *ath12k_dp_tx_assign_buffer(struct ath12k_dp *
+>   static void ath12k_hal_tx_cmd_ext_desc_setup(struct ath12k_base *ab, void *cmd,
+
+This function is only called from one place, and it is already passing a 
+variable that is of type struct hal_tx_msdu_ext_desc *
+so IMO a better solution is to change the prototype to replace void *cmd 
+with struct hal_tx_msdu_ext_desc *tcl_ext_desc and remove the local variable
+
+again this better describes that the function requires a specific 
+payload rather than a generic opaque payload
+
+as a general rule, use void * when the payload has some level of 
+opaqueness and use a specific struct * when the payload must be of a 
+specific type
+
+>   					     struct hal_tx_info *ti)
+>   {
+> -	struct hal_tx_msdu_ext_desc *tcl_ext_cmd = (struct hal_tx_msdu_ext_desc *)cmd;
+> +	struct hal_tx_msdu_ext_desc *tcl_ext_cmd = cmd;
+>   
+>   	tcl_ext_cmd->info0 = le32_encode_bits(ti->paddr,
+>   					      HAL_TX_MSDU_EXT_INFO0_BUF_PTR_LO);
+
