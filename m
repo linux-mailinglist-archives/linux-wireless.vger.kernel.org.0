@@ -2,160 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 681137A0B68
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 19:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55D767A0D83
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 20:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239277AbjINRSz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 13:18:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33256 "EHLO
+        id S241773AbjINSwJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Sep 2023 14:52:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239167AbjINRSy (ORCPT
+        with ESMTP id S242304AbjINSv3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 13:18:54 -0400
-Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 608581FF2
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 10:18:50 -0700 (PDT)
-Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
-        by cmsmtp with ESMTP
-        id gYwEqRbGVez0Cgpz1q0leC; Thu, 14 Sep 2023 17:18:27 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with ESMTPS
-        id gpzMqDX8bXfVegpzNqotbk; Thu, 14 Sep 2023 17:18:49 +0000
-X-Authority-Analysis: v=2.4 cv=VrIwvs6n c=1 sm=1 tr=0 ts=65034079
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
- a=DfNHnWVPAAAA:8 a=anKBZ9voxICiHcaguvcA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=rjTVMONInIDnV1a_A2c_:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=SpbGtZlfHa2aXlFwM4Mq2v6Rd5H4+ybNfEh7tydENP4=; b=VhI8S/jFowxp/xikWbla/xBwMp
-        GEBcsFwpAF/ud20r9OjWu9cFvPetEksfHRHjktrenp9DMvsmTPBBiIxQm1Ol8T8RbbfCLQPW/pfhq
-        fobo49xMhL0R2LagynwPdiLOdUJfJRyPObeawcWbs+8iSs2zJ6yKEI/dxdbYrV++e6qoXJjr3fGDA
-        WHtkOCkg1SGQdqDhBiL4vwB+Az7UObqN0loSCA4QW1fwOmI7fBIMMkNuOeMZdR6jJWK0ub+9YOQTR
-        yEE54WxFJaSNGfG3Iww2nPqSH6LbHd+9WzjRb+x1BvzvX84LfjJabOKS0q68WGTN8R4/wvO5vaJ/A
-        u1DSwA2Q==;
-Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:48748 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1qgpzK-000Vfy-0q;
-        Thu, 14 Sep 2023 12:18:46 -0500
-Message-ID: <60903bfb-fe91-ed19-1d77-8fb44cef858c@embeddedor.com>
-Date:   Thu, 14 Sep 2023 11:19:07 -0600
+        Thu, 14 Sep 2023 14:51:29 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC31C2701
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 11:48:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694717313; x=1726253313;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VOW6+wzY9U19900s+xswFo4gUDKK7qGm6cwQXh1atuw=;
+  b=H5bjHvdMdTdNaoUSqN4qZn8tVlmihiaxYERBP5V88IUzu73uWDhhDpLX
+   t09t/zj8s6YHjA9JeH9BCrC8/72PcIUFoJSoEFx7a0BkWwCSQwzAEzgmt
+   tuPzSrqH5QIUdg4Ss5vbmX6EYxlXPDz6rlA/9rLSSiN4UADykoxjhUair
+   HB+0z7lk2EYq1b74wwZtK7+py1op2adTyt1LmkYuYncbrir72ra7lhMt6
+   VfEaAhARgVspFR1Yfw07trCkQd0h3Zi6jyRi19YSWjBDOVYbUvBpRQkWC
+   utUdLrk1tgsDz275SMwpbZhbi97TzBc+cN5GpmxmvsmW1+ZJZ/+QsSIgT
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="358458621"
+X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
+   d="scan'208";a="358458621"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 11:48:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="918339549"
+X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
+   d="scan'208";a="918339549"
+Received: from lkp-server02.sh.intel.com (HELO 9ef86b2655e5) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 14 Sep 2023 11:48:31 -0700
+Received: from kbuild by 9ef86b2655e5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qgrO7-0001xF-2V;
+        Thu, 14 Sep 2023 18:48:28 +0000
+Date:   Fri, 15 Sep 2023 02:47:45 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH v2] rfkill: sync before userspace visibility/changes
+Message-ID: <202309150223.e6DfafFk-lkp@intel.com>
+References: <20230914153604.9d1ce0f43ac8.If977317d8f6a0f557090defcd6aef67628f62ff7@changeid>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] wifi: brcmfmac: Replace 1-element arrays with flexible
- arrays
-To:     Juerg Haefliger <juerg.haefliger@canonical.com>
-Cc:     SHA-cyfmac-dev-list@infineon.com, aspriel@gmail.com,
-        brcm80211-dev-list.pdl@broadcom.com, franky.lin@broadcom.com,
-        gustavoars@kernel.org, hante.meuleman@broadcom.com,
-        hdegoede@redhat.com, keescook@chromium.org, kvalo@kernel.org,
-        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, marcan@marcan.st,
-        ryohei.kondo@cypress.com, stable@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
- <20230914070227.12028-1-juerg.haefliger@canonical.com>
-Content-Language: en-US
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20230914070227.12028-1-juerg.haefliger@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.21.192
-X-Source-L: No
-X-Exim-ID: 1qgpzK-000Vfy-0q
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.8]) [187.162.21.192]:48748
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 5
-X-Org:  HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfAB5Xw/s1iczC8Iubiq2m8iuT0kNxLFsfa++VGg741iH+akkeHEpVIGbmnGAeqByW+SB3W52Vz+u5n0XK4nLU7bAbl7kRYL3c/5yzhVdBtyoHSY32JRc
- 1vCNUV+FuBuzilOZFw62+erPCLc7gA40H9N2Sp/gn4GgXdX+F/bhjhrhbE9izXE5OCMQKhuH8fqs5c7uGv0IGrdMo/PpoLmdnCpYmcqlURMD4LjK/PBXYX7f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230914153604.9d1ce0f43ac8.If977317d8f6a0f557090defcd6aef67628f62ff7@changeid>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi Johannes,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v6.6-rc1 next-20230914]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Johannes-Berg/rfkill-sync-before-userspace-visibility-changes/20230914-221103
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20230914153604.9d1ce0f43ac8.If977317d8f6a0f557090defcd6aef67628f62ff7%40changeid
+patch subject: [PATCH v2] rfkill: sync before userspace visibility/changes
+config: i386-buildonly-randconfig-003-20230915 (https://download.01.org/0day-ci/archive/20230915/202309150223.e6DfafFk-lkp@intel.com/config)
+compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230915/202309150223.e6DfafFk-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309150223.e6DfafFk-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   net/rfkill/core.c: In function 'soft_show':
+   net/rfkill/core.c:735:2: error: implicit declaration of function 'rfkill_sync'; did you mean 'rfkill_event'? [-Werror=implicit-function-declaration]
+     735 |  rfkill_sync(rfkill);
+         |  ^~~~~~~~~~~
+         |  rfkill_event
+   net/rfkill/core.c: At top level:
+>> net/rfkill/core.c:1044:13: warning: conflicting types for 'rfkill_sync'
+    1044 | static void rfkill_sync(struct rfkill *rfkill)
+         |             ^~~~~~~~~~~
+   net/rfkill/core.c:1044:13: error: static declaration of 'rfkill_sync' follows non-static declaration
+   net/rfkill/core.c:735:2: note: previous implicit declaration of 'rfkill_sync' was here
+     735 |  rfkill_sync(rfkill);
+         |  ^~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
 
-On 9/14/23 01:02, Juerg Haefliger wrote:
-> Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
-> UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
-> 'element' and 'channel_list' will trigger warnings, so make them proper
-> flexible arrays.
-> 
-> False positive warnings were:
-> 
->    UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
->    index 1 is out of range for type '__le32 [1]'
-> 
->    UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
->    index 1 is out of range for type '__le16 [1]'
-> 
-> for these lines of code:
-> 
->    6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
-> 
->    1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
-> 
-> Cc: stable@vger.kernel.org # 6.5+
-> Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+vim +/rfkill_sync +1044 net/rfkill/core.c
 
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+  1043	
+> 1044	static void rfkill_sync(struct rfkill *rfkill)
+  1045	{
+  1046		lockdep_assert_held(&rfkill_global_mutex);
+  1047	
+  1048		if (!rfkill->need_sync)
+  1049			return;
+  1050	
+  1051		rfkill_set_block(rfkill, rfkill_global_states[rfkill->type].cur);
+  1052		rfkill->need_sync = false;
+  1053	}
+  1054	
 
-Thanks
---
-Gustavo
-
-> 
-> ---
-> v2:
->    - Use element[] instead of DFA() in brcmf_chanspec_list.
->    - Add Cc: stable tag
-> ---
->   .../wireless/broadcom/brcm80211/brcmfmac/fwil_types.h    | 9 +++++++--
->   1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> index bece26741d3a..611d1a6aabb9 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> @@ -442,7 +442,12 @@ struct brcmf_scan_params_v2_le {
->   				 * fixed parameter portion is assumed, otherwise
->   				 * ssid in the fixed portion is ignored
->   				 */
-> -	__le16 channel_list[1];	/* list of chanspecs */
-> +	union {
-> +		__le16 padding;	/* Reserve space for at least 1 entry for abort
-> +				 * which uses an on stack brcmf_scan_params_v2_le
-> +				 */
-> +		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-> +	};
->   };
->   
->   struct brcmf_scan_results {
-> @@ -702,7 +707,7 @@ struct brcmf_sta_info_le {
->   
->   struct brcmf_chanspec_list {
->   	__le32	count;		/* # of entries */
-> -	__le32	element[1];	/* variable length uint32 list */
-> +	__le32  element[];	/* variable length uint32 list */
->   };
->   
->   /*
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
