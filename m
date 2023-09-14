@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94A1A7A0576
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 15:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F54F7A0659
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 15:46:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238847AbjINNWl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 09:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
+        id S239684AbjINNq1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Sep 2023 09:46:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238587AbjINNWl (ORCPT
+        with ESMTP id S239833AbjINNqQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 09:22:41 -0400
+        Thu, 14 Sep 2023 09:46:16 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E81281BEB
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 06:22:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6EA06A7F
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 06:36:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
         Resent-Message-ID:In-Reply-To:References;
-        bh=l49bBYdIX7UBV79jCbeZC5HIASmhSBVM++QOaOZTCog=; t=1694697757; x=1695907357; 
-        b=tcpl7emTu0RtaSN0iu/uX4M4LhsU7msxXa9t26hzsgSWHCNPNFH31PRTIS6ikwIn8fcxgfgwok5
-        Wgizq+hdgeokzztW1HZz7pMW6U8mLk3c86FS5Zfz93JpEllGkzNc834LfO6cNYYbkCuBgSIXP0BeO
-        JEiDW4XQCfVtTX3XQEfbEEJ/W8iSfMC7Q/xgh6ba9iqL8myS+DU8q1UMLd4iaNbotZZbzH5LrTg/4
-        kBLreEPjD+FsUxQESaO0oAU/uXlXx0VEGJCA8cl/UnBhKd8rFH54lMwCiMbIIshW9alpGr3888lIK
-        tn1PoGuXPY4yHWJQMuqY3V28lrMWgwXDV7qw==;
+        bh=SewlRH4BqfyY6DtRr5maopqw1DFzhsDYOp+ZdKr9Dl8=; t=1694698569; x=1695908169; 
+        b=EfSkfUga0wpk4LMGAsmjSfnIkR431hC4yeXTU/SQyDJz8ZWjJIjbRQ7PreXqCoBy9tfdeWEA8tL
+        D5HTWWyW3g0XqLVrBsjP2rTWqEswvDhEZAUYRIrcrCHu3CP2NlcUbn+ohysHNZs12woyvk3YYEaU1
+        yyZx7jWDLrviUK2mA+GLTpHzBNxL4xUPD1VzXjwClrv/TEjrehbi79Zu+/v0N1rYY2OCga8ejhHfC
+        TSuBp7IHkyknKYgeE/Not9IFOUYHqj9ACIa1TVpU4bA4U/BFLWvyeK3Wu5aJ7GlC/KDIR+iGwwp5A
+        gfFoeCYJhzhnWKLUqNjswkJyRx5QmBtgK7Qw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qgmIj-00H4Pa-1t;
-        Thu, 14 Sep 2023 15:22:33 +0200
+        id 1qgmVr-00H5B8-1Y;
+        Thu, 14 Sep 2023 15:36:07 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] rfkill: sync before userspace visibility/changes
-Date:   Thu, 14 Sep 2023 15:22:31 +0200
-Message-ID: <20230914152230.6b194e7b9807.If977317d8f6a0f557090defcd6aef67628f62ff7@changeid>
+Subject: [PATCH v2] rfkill: sync before userspace visibility/changes
+Date:   Thu, 14 Sep 2023 15:36:05 +0200
+Message-ID: <20230914153604.9d1ce0f43ac8.If977317d8f6a0f557090defcd6aef67628f62ff7@changeid>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -57,11 +57,13 @@ just for /dev/rfkill but also for sysfs.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/rfkill/core.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ v2: add lockdep assert
+---
+ net/rfkill/core.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
 diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index 01fca7a10b4b..c253e9a27369 100644
+index 01fca7a10b4b..2768decb6cda 100644
 --- a/net/rfkill/core.c
 +++ b/net/rfkill/core.c
 @@ -48,6 +48,7 @@ struct rfkill {
@@ -110,12 +112,14 @@ index 01fca7a10b4b..c253e9a27369 100644
  	rfkill_set_block(rfkill, state == RFKILL_USER_STATE_SOFT_BLOCKED);
  	mutex_unlock(&rfkill_global_mutex);
  
-@@ -1030,16 +1041,21 @@ static void rfkill_uevent_work(struct work_struct *work)
+@@ -1030,16 +1041,23 @@ static void rfkill_uevent_work(struct work_struct *work)
  	mutex_unlock(&rfkill_global_mutex);
  }
  
 +static void rfkill_sync(struct rfkill *rfkill)
 +{
++	lockdep_assert_held(&rfkill_global_mutex);
++
 +	if (!rfkill->need_sync)
 +		return;
 +
@@ -138,7 +142,7 @@ index 01fca7a10b4b..c253e9a27369 100644
  	mutex_unlock(&rfkill_global_mutex);
  }
  
-@@ -1087,6 +1103,7 @@ int __must_check rfkill_register(struct rfkill *rfkill)
+@@ -1087,6 +1105,7 @@ int __must_check rfkill_register(struct rfkill *rfkill)
  			round_jiffies_relative(POLL_INTERVAL));
  
  	if (!rfkill->persistent || rfkill_epo_lock_active) {
@@ -146,7 +150,7 @@ index 01fca7a10b4b..c253e9a27369 100644
  		schedule_work(&rfkill->sync_work);
  	} else {
  #ifdef CONFIG_RFKILL_INPUT
-@@ -1171,6 +1188,7 @@ static int rfkill_fop_open(struct inode *inode, struct file *file)
+@@ -1171,6 +1190,7 @@ static int rfkill_fop_open(struct inode *inode, struct file *file)
  		ev = kzalloc(sizeof(*ev), GFP_KERNEL);
  		if (!ev)
  			goto free;
