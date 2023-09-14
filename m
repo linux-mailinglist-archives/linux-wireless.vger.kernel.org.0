@@ -2,42 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B0B79F953
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 06:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEF6979F94A
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 06:04:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234610AbjINEFH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 00:05:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56394 "EHLO
+        id S234316AbjINEEm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Sep 2023 00:04:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234596AbjINEFD (ORCPT
+        with ESMTP id S233285AbjINEEl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 00:05:03 -0400
+        Thu, 14 Sep 2023 00:04:41 -0400
 Received: from mail.nfschina.com (unknown [42.101.60.195])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id EAEA31BEB;
-        Wed, 13 Sep 2023 21:04:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 6DF3CE4B;
+        Wed, 13 Sep 2023 21:04:36 -0700 (PDT)
 Received: from localhost.localdomain (unknown [180.167.10.98])
-        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPA id 2ED14606080E2;
-        Thu, 14 Sep 2023 12:04:17 +0800 (CST)
+        by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPA id 8D438606080EF;
+        Thu, 14 Sep 2023 12:04:32 +0800 (CST)
 X-MD-Sfrom: yunchuan@nfschina.com
 X-MD-SrcIP: 180.167.10.98
 From:   Wu Yunchuan <yunchuan@nfschina.com>
-To:     kvalo@kernel.org, quic_jjohnson@quicinc.com, jirislaby@kernel.org,
-        mickflemm@gmail.com, mcgrof@kernel.org, toke@toke.dk,
-        afaerber@suse.de, mani@kernel.org, chunkeey@googlemail.com,
-        loic.poulain@linaro.org, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com
-Cc:     johannes.berg@intel.com, syoshida@redhat.com,
-        alexander@wetzel-home.de, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-actions@lists.infradead.org, wcn36xx@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        kernel-janitors@vger.kernel.org,
+To:     kvalo@kernel.org
+Cc:     syoshida@redhat.com, alexander@wetzel-home.de,
+        johannes.berg@intel.com, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Wu Yunchuan <yunchuan@nfschina.com>
-Subject: [PATCH wireless-next 0/9] Remove unnecessary (void*) conversions
-Date:   Thu, 14 Sep 2023 12:03:16 +0800
-Message-Id: <20230914040315.1169121-1-yunchuan@nfschina.com>
+Subject: [PATCH wireless-next 1/9] wifi: ar5523: Remove unnecessary (void*) conversions
+Date:   Thu, 14 Sep 2023 12:04:26 +0800
+Message-Id: <20230914040425.1169493-1-yunchuan@nfschina.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -45,53 +36,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove all unnecessary (void*) conversions under the directory drivers/net/wireless/ath.
+No need cast (void*) to (struct ar5523_cmd_hdr *).
 
-Wu Yunchuan (9):
-  wifi: ar5523: Remove unnecessary (void*) conversions
-  carl9170: remove unnecessary (void*) conversions
-  wifi: wcn36xx: remove unnecessary (void*) conversions
-  wifi: ath5k: remove unnecessary (void*) conversions
-  ath6kl: remove unnecessary (void*) conversions
-  wifi: ath10k: Remove unnecessary (void*) conversions
-  wifi: ath12k: Remove unnecessary (void*) conversions
-  wifi: ath11k: remove unnecessary (void*) conversions
-  wifi: ath9k: Remove unnecessary (void*) conversions
+Signed-off-by: Wu Yunchuan <yunchuan@nfschina.com>
+---
+ drivers/net/wireless/ath/ar5523/ar5523.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/net/wireless/ath/ar5523/ar5523.c      |  2 +-
- drivers/net/wireless/ath/ath10k/htt_tx.c      |  6 ++--
- drivers/net/wireless/ath/ath11k/dp.c          |  2 +-
- drivers/net/wireless/ath/ath11k/dp_rx.c       | 13 +++----
- drivers/net/wireless/ath/ath11k/hal.c         |  8 ++---
- drivers/net/wireless/ath/ath11k/hal_rx.c      | 17 ++++-----
- drivers/net/wireless/ath/ath11k/hal_tx.c      |  2 +-
- drivers/net/wireless/ath/ath11k/mac.c         |  4 +--
- drivers/net/wireless/ath/ath11k/spectral.c    |  2 +-
- drivers/net/wireless/ath/ath11k/wmi.c         |  6 ++--
- drivers/net/wireless/ath/ath12k/dp_mon.c      |  6 ++--
- drivers/net/wireless/ath/ath12k/dp_rx.c       |  2 +-
- drivers/net/wireless/ath/ath12k/dp_tx.c       |  2 +-
- drivers/net/wireless/ath/ath5k/base.c         |  4 +--
- drivers/net/wireless/ath/ath5k/pci.c          |  4 +--
- drivers/net/wireless/ath/ath6kl/main.c        |  4 +--
- drivers/net/wireless/ath/ath6kl/txrx.c        |  2 +-
- .../wireless/ath/ath9k/ath9k_pci_owl_loader.c |  2 +-
- drivers/net/wireless/ath/ath9k/common-init.c  |  2 +-
- .../net/wireless/ath/ath9k/common-spectral.c  |  2 +-
- drivers/net/wireless/ath/ath9k/debug.c        |  2 +-
- drivers/net/wireless/ath/ath9k/hif_usb.c      | 10 +++---
- .../net/wireless/ath/ath9k/htc_drv_debug.c    |  2 +-
- drivers/net/wireless/ath/ath9k/htc_drv_init.c | 36 +++++++++----------
- drivers/net/wireless/ath/ath9k/htc_hst.c      |  2 +-
- drivers/net/wireless/ath/ath9k/init.c         | 12 +++----
- drivers/net/wireless/ath/ath9k/link.c         |  2 +-
- drivers/net/wireless/ath/ath9k/pci.c          |  6 ++--
- drivers/net/wireless/ath/carl9170/usb.c       | 10 +++---
- drivers/net/wireless/ath/wcn36xx/dxe.c        |  6 ++--
- drivers/net/wireless/ath/wcn36xx/smd.c        | 20 +++++------
- drivers/net/wireless/ath/wcn36xx/testmode.c   |  2 +-
- 32 files changed, 95 insertions(+), 107 deletions(-)
-
+diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
+index 19f61225a708..43e0db78d42b 100644
+--- a/drivers/net/wireless/ath/ar5523/ar5523.c
++++ b/drivers/net/wireless/ath/ar5523/ar5523.c
+@@ -256,7 +256,7 @@ static int ar5523_cmd(struct ar5523 *ar, u32 code, const void *idata,
+ 	/* always bulk-out a multiple of 4 bytes */
+ 	xferlen = (sizeof(struct ar5523_cmd_hdr) + ilen + 3) & ~3;
+ 
+-	hdr = (struct ar5523_cmd_hdr *)cmd->buf_tx;
++	hdr = cmd->buf_tx;
+ 	memset(hdr, 0, sizeof(struct ar5523_cmd_hdr));
+ 	hdr->len  = cpu_to_be32(xferlen);
+ 	hdr->code = cpu_to_be32(code);
 -- 
 2.30.2
 
