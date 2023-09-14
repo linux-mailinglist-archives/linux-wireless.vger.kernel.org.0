@@ -2,191 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67B0679FC51
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 08:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45EC679FCB5
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 09:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230064AbjINGxV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 02:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55620 "EHLO
+        id S233607AbjINHDe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Sep 2023 03:03:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbjINGxU (ORCPT
+        with ESMTP id S232119AbjINHDc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 02:53:20 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09935CCD
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 23:53:16 -0700 (PDT)
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+        Thu, 14 Sep 2023 03:03:32 -0400
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA81BB
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 00:03:28 -0700 (PDT)
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id DE1D43F66B
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 06:53:13 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 406893F674
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 07:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1694674393;
-        bh=HiHG2jt50W9HCzIxwUn2Z5ZHOh1f4Ny/paadoyMnaSk=;
-        h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-         MIME-Version:Content-Type;
-        b=t7h+2zUv8vLTH8LRFKSoZXMmDb+yvTnk690n1yV3H5Tkru8d9AZtc7jLgeCgpL2uK
-         az/FVsWNJIHZOE2oNsrLTqbUwRr/Z5EADyex7DsCxgpuYp/j2655knmaalqx4RB7kh
-         hXJ8PolLkk8bNcK0hmk6S3VW6VXZv8taliPI7lX5QBD8JMXSGTa6GKAvjf/MMuIgR+
-         dj7Qr6cJHQ8cXW+jDGHWSBmWKvVVBfh4ML45ChDCBpgN+rPRfa92PbacVs5cxDUWtu
-         oijZR7NYiUCRGvx785Bo2KLIZGWt35IbZGw/KTEmnrRmkZxqoC/HSIxoxLYYHmbXF2
-         z/PL490+0y1EQ==
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-31f8e062cadso430521f8f.2
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Sep 2023 23:53:13 -0700 (PDT)
+        s=20210705; t=1694675005;
+        bh=goSxu7HgsxTeodjXmJUH/TuD0k0hgtAzYq7xYOspA+4=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+         MIME-Version;
+        b=K0aBtka673VpyAuiYVkgPVMD5JAD1EfEH46ClQ23GVL7i+2TV8EUIY68cFifMBcUJ
+         TsX3HuH2LwiIaYFPAOfej005mR/SHfefx3WA3k7a6j9mQPZvfMO+iNqrsGpw6HanTF
+         8nEMnRrqO6BLPPexytZVPLyiFZc5UEyXRMqccbkMVXQqxGetp+In1Y6LvbzYjARl7E
+         3SPoibEsWmo2/1nLTZA4ngy4H9aoop4wdkwZ9h3FdkvaV1sXkUMG5RupDZl+8LpY4A
+         c4+e7vgP/0ulGlhUXOPJnQmOyYN09B1uh+1U2SGPmv2BqVQ+DS9L6GYSmEQsBs31b0
+         7MOn0ghNH99BA==
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2bcc2fd542bso7648741fa.3
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 00:03:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694674393; x=1695279193;
-        h=mime-version:organization:references:in-reply-to:message-id:subject
-         :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HiHG2jt50W9HCzIxwUn2Z5ZHOh1f4Ny/paadoyMnaSk=;
-        b=X8r2YzcXApH5yHOfxBiqtlOdrUHfA974B9GVmV8XcYtLE5l7N/mChm+McErO8gG1bI
-         aeVjIl8sWM9dayt6Dbql0blH7CS6Jf/sdM0hD3qYpkG1Eu+WHCKNp9iO8M+Oo9DVNKHq
-         iLhR2D6WkEkrV2pWIVFDaZY7l7Bm+STsktRaQ0/mzv1Uhgb/KC39BZsOgPLcyMw9lMW6
-         LyxPQvd6L7SvFKJQ4/InarSZaQ6Qy292cO0Lz75CBWZsE/TxkjQIP2jc/b//bKPlwvFg
-         pr/ZE51ZOy8tEQP3zX89nGi4Zicv5+r3lRqfAVMXQCxKrF1WdxOP2CwaQfkl0/hCetvG
-         ayoQ==
-X-Gm-Message-State: AOJu0YzEIv9bJ6pdWeymtxb2r14W9NRZkWr94LWO5ZbdGbc8/6Xv9jRh
-        1hPJroGTLaR+pjza2YBN3/Y0N2gaOrhlEUeeqVlSvz6VmYRllfA6w8MjhmDk06OPgBGHZh/jAro
-        TrKjC94+16KSbMkOjDPIAgzvSfNHIpplguJrlepncTk31
-X-Received: by 2002:a5d:5985:0:b0:31f:e2b9:de1f with SMTP id n5-20020a5d5985000000b0031fe2b9de1fmr525033wri.24.1694674393536;
-        Wed, 13 Sep 2023 23:53:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHpdWk/K3M8ecFkXkPMJyw76oX3Q9tBYVnSnX+gjm/uUsFWyOCaJRPfYeiT9dtQzLd6vakkxQ==
-X-Received: by 2002:a5d:5985:0:b0:31f:e2b9:de1f with SMTP id n5-20020a5d5985000000b0031fe2b9de1fmr525021wri.24.1694674393196;
-        Wed, 13 Sep 2023 23:53:13 -0700 (PDT)
-Received: from smeagol ([194.191.244.86])
-        by smtp.gmail.com with ESMTPSA id a12-20020a056000100c00b0031ae2a7adb5sm857727wrx.85.2023.09.13.23.53.12
+        d=1e100.net; s=20230601; t=1694675001; x=1695279801;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=goSxu7HgsxTeodjXmJUH/TuD0k0hgtAzYq7xYOspA+4=;
+        b=kuj5SGt+R67YK8OC4gsvLYaHIlsdJAmihHM1w6bX0uZx+Rrq9sWyhr42wF0Y49byb4
+         kFLs3C84JwJGukjKy4wQHt8rXk2fL1XY7yK9PO3xRpGd32wRPG94jW/LOBNB8Tye2EtA
+         Do5xvUWIhxhNn9qBb/fkagRNLq1a38v7Y4sYvZ/auxWLVG6pSVlc9Esg7amxxShYHYaK
+         bRfH75Od+NDucuZbuCrjrLCs1jCRDe9W4x5ZOLVOm3uLbyKaoXgNd6jMvnFontOHcXzR
+         BAHH6yAOzUt9dO1AI9qxgIrG7/b3m0G+ipg6Gwn1p5nwLroerQTeslsvu60LLyQ5gM+v
+         8ysA==
+X-Gm-Message-State: AOJu0YxlDwdagDgCiE8FTDwbfAQGM4/gxMGTLgWptQ5xp4CkbY+F6jPN
+        u0k3nHsYghosAII8BojpyJyS1iIvcudqLqSctCh0VZZsKVBplKrCsn5zU9qb7Vx8BTH3r5IUcQN
+        sSRd5jyzX/bzc+7uhat7keeHdUsf61/dYf0WGXKojn/3a
+X-Received: by 2002:a2e:9ed9:0:b0:2bc:e32f:6fb0 with SMTP id h25-20020a2e9ed9000000b002bce32f6fb0mr4263134ljk.9.1694675000781;
+        Thu, 14 Sep 2023 00:03:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2lvudBipBhYKFL0V/AUGrG/NPYxifvLzmEnbyiurqOzZt4iA6jNQCUaoQ+l2QV7FAleBBwA==
+X-Received: by 2002:a2e:9ed9:0:b0:2bc:e32f:6fb0 with SMTP id h25-20020a2e9ed9000000b002bce32f6fb0mr4263113ljk.9.1694675000394;
+        Thu, 14 Sep 2023 00:03:20 -0700 (PDT)
+Received: from localhost ([194.191.244.86])
+        by smtp.gmail.com with ESMTPSA id y14-20020a7bcd8e000000b004030e8ff964sm3981698wmj.34.2023.09.14.00.03.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Sep 2023 23:53:12 -0700 (PDT)
-Date:   Thu, 14 Sep 2023 08:53:10 +0200
+        Thu, 14 Sep 2023 00:03:19 -0700 (PDT)
 From:   Juerg Haefliger <juerg.haefliger@canonical.com>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        linus.walleij@linaro.org, marcan@marcan.st, keescook@chromium.org,
-        gustavoars@kernel.org, hdegoede@redhat.com,
-        ryohei.kondo@cypress.com
-Subject: Re: [PATCH] wifi: brcmfmac: Replace 1-element arrays with flexible
- arrays
-Message-ID: <20230914085310.334e4c09@smeagol>
-In-Reply-To: <0f23e4a2-b11b-98bd-c419-d9a9fb7ddb4e@embeddedor.com>
+To:     juerg.haefliger@canonical.com
+Cc:     SHA-cyfmac-dev-list@infineon.com, aspriel@gmail.com,
+        brcm80211-dev-list.pdl@broadcom.com, franky.lin@broadcom.com,
+        gustavoars@kernel.org, hante.meuleman@broadcom.com,
+        hdegoede@redhat.com, keescook@chromium.org, kvalo@kernel.org,
+        linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, marcan@marcan.st,
+        ryohei.kondo@cypress.com, stable@vger.kernel.org
+Subject: [PATCH v2] wifi: brcmfmac: Replace 1-element arrays with flexible arrays
+Date:   Thu, 14 Sep 2023 09:02:27 +0200
+Message-Id: <20230914070227.12028-1-juerg.haefliger@canonical.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230913065421.12615-1-juerg.haefliger@canonical.com>
 References: <20230913065421.12615-1-juerg.haefliger@canonical.com>
-        <0f23e4a2-b11b-98bd-c419-d9a9fb7ddb4e@embeddedor.com>
-Organization: Canonical Ltd
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/SB99e06DGpk4FarBJmna.kW";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/SB99e06DGpk4FarBJmna.kW
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
+UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
+'element' and 'channel_list' will trigger warnings, so make them proper
+flexible arrays.
 
-On Wed, 13 Sep 2023 10:02:12 -0600
-"Gustavo A. R. Silva" <gustavo@embeddedor.com> wrote:
+False positive warnings were:
 
-> On 9/13/23 00:54, Juerg Haefliger wrote:
-> > Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
-> > UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
-> > 'element' and 'channel_list' will trigger warnings, so make them proper
-> > flexible arrays.
-> >=20
-> > False positive warnings were:
-> >=20
-> >    UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/br=
-cm80211/brcmfmac/cfg80211.c:6984:20
-> >    index 1 is out of range for type '__le32 [1]'
-> >=20
-> >    UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/br=
-cm80211/brcmfmac/cfg80211.c:1126:27
-> >    index 1 is out of range for type '__le16 [1]'
-> >=20
-> > for these lines of code:
-> >=20
-> >    6884  ch.chspec =3D (u16)le32_to_cpu(list->element[i]);
-> >=20
-> >    1126  params_le->channel_list[i] =3D cpu_to_le16(chanspec);
-> >=20
-> > Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-> > ---
-> >   .../wireless/broadcom/brcm80211/brcmfmac/fwil_types.h    | 9 +++++++--
-> >   1 file changed, 7 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_type=
-s.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> > index bece26741d3a..ed723a5b5d54 100644
-> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> > @@ -442,7 +442,12 @@ struct brcmf_scan_params_v2_le {
-> >   				 * fixed parameter portion is assumed, otherwise
-> >   				 * ssid in the fixed portion is ignored
-> >   				 */
-> > -	__le16 channel_list[1];	/* list of chanspecs */
-> > +	union {
-> > +		__le16 padding;	/* Reserve space for at least 1 entry for abort
-> > +				 * which uses an on stack brcmf_scan_params_v2_le
-> > +				 */
-> > +		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-> > +	};
-> >   };
-> >  =20
-> >   struct brcmf_scan_results {
-> > @@ -702,7 +707,7 @@ struct brcmf_sta_info_le {
-> >  =20
-> >   struct brcmf_chanspec_list {
-> >   	__le32	count;		/* # of entries */
-> > -	__le32	element[1];	/* variable length uint32 list */
-> > +	DECLARE_FLEX_ARRAY(__le32, element);	/* variable length uint32 list *=
-/ =20
->=20
-> If no padding is needed, as in the other case, then DFA() is not necessar=
-y.
-> Just remove the 1 from the array declaration:
->=20
->   struct brcmf_chanspec_list {
->          __le32  count;          /* # of entries */
-> -       __le32  element[1];     /* variable length uint32 list */
-> +       __le32  element[];      /* variable length uint32 list */
->   };
+  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
+  index 1 is out of range for type '__le32 [1]'
 
-Ah, I wasn't sure if that is still acceptable. Will send a v2.
+  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
+  index 1 is out of range for type '__le16 [1]'
 
-...Juerg
+for these lines of code:
 
-=20
-> --
-> Gustavo
->=20
-> >   };
-> >  =20
-> >   /* =20
+  6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
 
+  1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
 
---Sig_/SB99e06DGpk4FarBJmna.kW
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Cc: stable@vger.kernel.org # 6.5+
+Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
 
------BEGIN PGP SIGNATURE-----
+---
+v2:
+  - Use element[] instead of DFA() in brcmf_chanspec_list.
+  - Add Cc: stable tag
+---
+ .../wireless/broadcom/brcm80211/brcmfmac/fwil_types.h    | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-iQIzBAEBCgAdFiEEhZfU96IuprviLdeLD9OLCQumQrcFAmUCrdYACgkQD9OLCQum
-QreEhg/8C6JzNKkwPCXJ14Nhx2JA/oY9A5EkPWKnZNJvJkKRINnnPsYwOL02fkkR
-AlhjKGuPP5kpqq80ybANO6ke1CLqNJ1qHvmHpIK4M8BX6fQofLPPrszRiFF2K5Ny
-WNmdMmn8cV8Yu/xkkTPHT8EsWN1/5HNrG1aHV8im4OV3v3Dw1+0JQuhdYvQU1Ogu
-FWECYLscSYiwkeSaJ7khVhMakS9brskZh5OpvNRkmJQu3EKvp7HpEWmaAIiBjyWt
-7+MeC9W/yY037Wksh3kmLCAYEXh3037WyZ+sGjHigGl5h8ygUyCJO8TW83ALpaaS
-3WDG4cRNNjR3BgnoBeBWpjiR3PRc7JMlRYzG0a+7WGgcybJMTvf/W/RooLFuMDZ+
-KvQlQs+9lIrl8XKtUEhoqWCbkSKgf4ZWQ9vH76sT4Wv9qqx3A5MJ06bPWWY/A72v
-6TL4H+0d/kvpQ+qZwBg6t16it3hm7U+bJo9KFtbRgtmcIgWYjpK5QXQoiPOpVVec
-RP/p9SUy6iseTLMIevQ9fvNN5e/rwqRVEAq8dzyADXmg8FhC7lCnXOMmJMdTbMNj
-Cb6px7h+Yexa+5g5ZzN6Xv3cJEWplKHe+Uml0XtnWuk7SLLZzu6EgUN4cwyOEFwd
-gROXMdp/2OHpSU1xUYtI4kezz8aSz/EqJtxGH/xtUe4l4RUJkgE=
-=pv6c
------END PGP SIGNATURE-----
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+index bece26741d3a..611d1a6aabb9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+@@ -442,7 +442,12 @@ struct brcmf_scan_params_v2_le {
+ 				 * fixed parameter portion is assumed, otherwise
+ 				 * ssid in the fixed portion is ignored
+ 				 */
+-	__le16 channel_list[1];	/* list of chanspecs */
++	union {
++		__le16 padding;	/* Reserve space for at least 1 entry for abort
++				 * which uses an on stack brcmf_scan_params_v2_le
++				 */
++		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
++	};
+ };
+ 
+ struct brcmf_scan_results {
+@@ -702,7 +707,7 @@ struct brcmf_sta_info_le {
+ 
+ struct brcmf_chanspec_list {
+ 	__le32	count;		/* # of entries */
+-	__le32	element[1];	/* variable length uint32 list */
++	__le32  element[];	/* variable length uint32 list */
+ };
+ 
+ /*
+-- 
+2.39.2
 
---Sig_/SB99e06DGpk4FarBJmna.kW--
