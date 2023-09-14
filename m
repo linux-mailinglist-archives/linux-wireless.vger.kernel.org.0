@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C6B79FFAD
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 11:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59BE479FFAC
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Sep 2023 11:09:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237113AbjINJJP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 05:09:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54210 "EHLO
+        id S237065AbjINJJO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Sep 2023 05:09:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237120AbjINJJF (ORCPT
+        with ESMTP id S236691AbjINJJC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 05:09:05 -0400
+        Thu, 14 Sep 2023 05:09:02 -0400
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D4E21FFA
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 02:08:23 -0700 (PDT)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38E6CcaZ032548;
-        Thu, 14 Sep 2023 09:08:12 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7EE1FC9
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 02:08:19 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38E39vRg014441;
+        Thu, 14 Sep 2023 09:08:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=qcppdkim1;
- bh=HkERTn2eEuq05UoX01AQweRf69Kn94kcdYhZj2C5NEU=;
- b=lR+JvmSQqaL/fRLceGb/t48jiYQJMEer2R1IsDFIivef3F29hBj6zPVaRNRDLlhS7qBh
- KzwPAoJCFyk3SzhHI8LMamK+/cKi9YJAlJbUykdA/ube3ZecWoAHw4b5cpFw/4Ixkguy
- haTTDV8hSzVF+OWBcoivn4cEBp5pKRlignAcpqtd1mDukuzXNi+npyEnGqKirxmBWocT
- 756ATrdkOTnCvEz6/X/alVGIi3MSDw4v6mz7twAQ/e4V+JsccyWiAPGMBcKprcQJMbMJ
- YTs9AtwGwwIcuzhIE8/09l+LOp+eyLrKR8UTF6etmAx4/CQkUERAnxXlHRkJ24g03ADS Sw== 
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t3r15s1na-1
+ bh=TyAJ7tqD+DaNWhmQstEJkOBpILLg2Nq1lcUBXfCWB6E=;
+ b=OOa6ZQyhM8SzuUcKDY4RTdsS7slNB9lOfpZBUSKxces1hVfNtfvvpVSseopcPoNYBBx9
+ iCdcjNlxtfvjMx4nrFzSAaFkcWxLf9whyxxjyDun7r0iIUzuIAdngsbIyew/NsecEO4G
+ jcoHWGhCRc7uRiuk1asdfQgLolK3JFMeFvubiIvNf68Dl+NzZy+jvyTrQzYAvoI4+jP1
+ 8Ow4FiH0eKN3RItPZju5BhxmBpC2kxjYJkPx0tM9sCX+5HgPXJgADf71VGvQyvGTBReQ
+ NgWVpXmEoJeWqmD2zG0SSYjZ4DNRsmkx3O7jhQlEb8VK6FzD41fiaO9KrPKatDhodhfH Tw== 
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t3dj8ajf4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Sep 2023 09:08:12 +0000
+        Thu, 14 Sep 2023 09:08:14 +0000
 Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38E98BTZ029918
+        by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38E98Dds006433
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Sep 2023 09:08:11 GMT
+        Thu, 14 Sep 2023 09:08:13 GMT
 Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
  nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Thu, 14 Sep 2023 02:08:09 -0700
+ 15.2.1118.36; Thu, 14 Sep 2023 02:08:11 -0700
 From:   Wen Gong <quic_wgong@quicinc.com>
 To:     <ath12k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>, <kvalo@kernel.org>,
         <quic_jjohnson@quicinc.com>, <quic_wgong@quicinc.com>
-Subject: [PATCH v2 3/4] wifi: ath12k: avoid firmware crash when reg set for WCN7850
-Date:   Thu, 14 Sep 2023 05:07:45 -0400
-Message-ID: <20230914090746.23560-4-quic_wgong@quicinc.com>
+Subject: [PATCH v2 4/4] wifi: ath12k: store and send country code to firmware after recovery
+Date:   Thu, 14 Sep 2023 05:07:46 -0400
+Message-ID: <20230914090746.23560-5-quic_wgong@quicinc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230914090746.23560-1-quic_wgong@quicinc.com>
 References: <20230914090746.23560-1-quic_wgong@quicinc.com>
@@ -57,131 +57,93 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nasanex01a.na.qualcomm.com (10.52.223.231)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: n-wYn_13XSjCrdcOj0VVeh0euXNccWYY
-X-Proofpoint-ORIG-GUID: n-wYn_13XSjCrdcOj0VVeh0euXNccWYY
+X-Proofpoint-GUID: wzXSHHCws9Afed0FLiCzBhLYo3uXJLT5
+X-Proofpoint-ORIG-GUID: wzXSHHCws9Afed0FLiCzBhLYo3uXJLT5
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-09-14_07,2023-09-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- malwarescore=0 adultscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
- phishscore=0 priorityscore=1501 mlxlogscore=999 bulkscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309140078
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 adultscore=0 spamscore=0
+ impostorscore=0 malwarescore=0 bulkscore=0 phishscore=0 suspectscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309140078
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For the NL80211_REGDOM_SET_BY_USER hint from cfg80211, it set the new
-alpha2 code to ath12k, then ath12k send WMI_SET_INIT_COUNTRY_CMDID to
-firmware for all chips currently. When test with WCN7850 chips,
-this WMI CMD leads firmware crash.
+Currently ath12k does not send the country code to firmware after device
+recovery. As a result the regdomain info is reported from firmware by
+default. Regdomain info is important, so ath12k also need to restore
+it to the value which was used before recovery.
 
-For AP based chips(QCN92xx), WMI_SET_INIT_COUNTRY_CMDID is the correct
-command use. However, for STATION based chips(WCN7850), it need to use
-another WMI CMD, WMI_SET_CURRENT_COUNTRY_CMDID.
-
-Add flag current_cc_support in hardware parameters. It is used to
-distinguish AP/STA platform. After that, the firmware will work
-normal and the regulatory feature works well for WCN7850.
+This is only needed for platforms which support the current_cc_support
+hardware parameter.
 
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 
 Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/hw.c  |  3 +++
- drivers/net/wireless/ath/ath12k/hw.h  |  1 +
- drivers/net/wireless/ath/ath12k/reg.c | 29 ++++++++++++++++++---------
- 3 files changed, 23 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c | 1 +
+ drivers/net/wireless/ath/ath12k/core.h | 1 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 8 ++++++++
+ drivers/net/wireless/ath/ath12k/reg.c  | 1 +
+ 4 files changed, 11 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index 5991cc91cd00..c9ed4c0e0da5 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -907,6 +907,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.hal_ops = &hal_qcn9274_ops,
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 71450dc1f48d..4433d7701c67 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -696,6 +696,7 @@ static void ath12k_update_11d(struct work_struct *work)
+ 		pdev = &ab->pdevs[i];
+ 		ar = pdev->ar;
  
- 		.qmi_cnss_feature_bitmap = BIT(CNSS_QDSS_CFG_MISS_V01),
-+		.current_cc_support = false,
- 	},
- 	{
- 		.name = "wcn7850 hw2.0",
-@@ -964,6 +965,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 
- 		.qmi_cnss_feature_bitmap = BIT(CNSS_QDSS_CFG_MISS_V01) |
- 					   BIT(CNSS_PCIE_PERST_NO_PULL_V01),
-+		.current_cc_support = true,
- 	},
- 	{
- 		.name = "qcn9274 hw2.0",
-@@ -1019,6 +1021,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.hal_ops = &hal_qcn9274_ops,
- 
- 		.qmi_cnss_feature_bitmap = BIT(CNSS_QDSS_CFG_MISS_V01),
-+		.current_cc_support = false,
- 	},
++		memcpy(&ar->alpha2, &set_current_param.alpha2, 2);
+ 		ret = ath12k_wmi_send_set_current_country_cmd(ar, &set_current_param);
+ 		if (ret)
+ 			ath12k_warn(ar->ab,
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index e739869ded73..63586cc12a2e 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -582,6 +582,7 @@ struct ath12k {
+ 	struct completion completed_11d_scan;
+ 	enum ath12k_11d_state state_11d;
+ 	bool regdom_set_by_user;
++	u8 alpha2[REG_ALPHA2_LEN];
  };
  
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index e6c4223c283c..292c07bb1a8b 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -173,6 +173,7 @@ struct ath12k_hw_params {
- 	bool tcl_ring_retry:1;
- 	bool reoq_lut_support:1;
- 	bool supports_shadow_regs:1;
-+	bool current_cc_support:1;
+ struct ath12k_band_cap {
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 740e8045a6f1..0df154c34f8f 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -6908,6 +6908,14 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
+ 		ar->state = ATH12K_STATE_ON;
+ 		ieee80211_wake_queues(ar->hw);
  
- 	u32 hal_desc_sz;
- 	u32 num_tcl_banks;
++		if (ar->ab->hw_params->current_cc_support &&
++		    ar->alpha2[0] != 0 && ar->alpha2[1] != 0) {
++			struct wmi_set_current_country_params set_current_param = {};
++
++			memcpy(&set_current_param.alpha2, ar->alpha2, 2);
++			ath12k_wmi_send_set_current_country_cmd(ar, &set_current_param);
++		}
++
+ 		if (ab->is_reset) {
+ 			recovery_count = atomic_inc_return(&ab->recovery_count);
+ 			ath12k_dbg(ab, ATH12K_DBG_BOOT, "recovery count %d\n",
 diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
-index c2f2fcce9fb1..97c93a4901e6 100644
+index 97c93a4901e6..eb46bfc2b2b9 100644
 --- a/drivers/net/wireless/ath/ath12k/reg.c
 +++ b/drivers/net/wireless/ath/ath12k/reg.c
-@@ -48,6 +48,7 @@ ath12k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
- {
- 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
- 	struct ath12k_wmi_init_country_arg arg;
-+	struct wmi_set_current_country_params set_current_param = {};
- 	struct ath12k *ar = hw->priv;
- 	int ret;
- 
-@@ -76,18 +77,26 @@ ath12k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
- 		return;
- 	}
- 
--	/* Set the country code to the firmware and wait for
--	 * the WMI_REG_CHAN_LIST_CC EVENT for updating the
--	 * reg info
-+	/* Set the country code to the firmware. ath12k will subsequently receive
-+	 * the WMI_REG_CHAN_LIST_CC EVENT for updating the regulatory info.
+@@ -82,6 +82,7 @@ ath12k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
  	 */
--	arg.flags = ALPHA_IS_SET;
--	memcpy(&arg.cc_info.alpha2, request->alpha2, 2);
--	arg.cc_info.alpha2[2] = 0;
-+	if (ar->ab->hw_params->current_cc_support) {
-+		memcpy(&set_current_param.alpha2, request->alpha2, 2);
+ 	if (ar->ab->hw_params->current_cc_support) {
+ 		memcpy(&set_current_param.alpha2, request->alpha2, 2);
++		memcpy(&ar->alpha2, &set_current_param.alpha2, 2);
  
--	ret = ath12k_wmi_send_init_country_cmd(ar, &arg);
--	if (ret)
--		ath12k_warn(ar->ab,
--			    "INIT Country code set to fw failed : %d\n", ret);
-+		ret = ath12k_wmi_send_set_current_country_cmd(ar, &set_current_param);
-+		if (ret)
-+			ath12k_warn(ar->ab,
-+				    "failed set current country code: %d\n", ret);
-+	} else {
-+		arg.flags = ALPHA_IS_SET;
-+		memcpy(&arg.cc_info.alpha2, request->alpha2, 2);
-+		arg.cc_info.alpha2[2] = 0;
-+
-+		ret = ath12k_wmi_send_init_country_cmd(ar, &arg);
-+		if (ret)
-+			ath12k_warn(ar->ab,
-+				    "INIT Country code set to fw failed : %d\n", ret);
-+	}
- 
- 	ath12k_mac_11d_scan_stop(ar);
- 	ar->regdom_set_by_user = true;
+ 		ret = ath12k_wmi_send_set_current_country_cmd(ar, &set_current_param);
+ 		if (ret)
 -- 
 2.40.1
 
