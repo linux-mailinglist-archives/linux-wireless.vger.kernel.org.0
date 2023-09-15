@@ -2,120 +2,324 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B0E57A1385
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Sep 2023 04:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72DE27A154B
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Sep 2023 07:18:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbjIOCDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 22:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49480 "EHLO
+        id S232084AbjIOFSJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Sep 2023 01:18:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231220AbjIOCDq (ORCPT
+        with ESMTP id S232082AbjIOFSI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 22:03:46 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 485421AE
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 19:03:42 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38F22uE821916782, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38F22uE821916782
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 15 Sep 2023 10:02:56 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 15 Sep 2023 10:02:55 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 15 Sep 2023 10:02:55 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
- RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
- 15.01.2375.007; Fri, 15 Sep 2023 10:02:55 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "pagadala.yesu.anjaneyulu@intel.com" 
-        <pagadala.yesu.anjaneyulu@intel.com>,
-        =?utf-8?B?VGhvbWFzIEjDvGhu?= <thomas.huehn@hs-nordhausen.de>
-Subject: RE: [PATCH wireless] wifi: mac80211: fix mesh id corruption on 32 bit systems
-Thread-Topic: [PATCH wireless] wifi: mac80211: fix mesh id corruption on 32
- bit systems
-Thread-Index: AQHZ5f9l3dLA861qLUuiEWPplpm2dbAbIkOg
-Date:   Fri, 15 Sep 2023 02:02:55 +0000
-Message-ID: <7e241b77171741a99dfb68ded905492e@realtek.com>
-References: <20230913050134.53536-1-nbd@nbd.name>
-In-Reply-To: <20230913050134.53536-1-nbd@nbd.name>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.25]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Fri, 15 Sep 2023 01:18:08 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EACFA269D
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 22:17:54 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-573f722b86eso1329641a12.1
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 22:17:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1694755074; x=1695359874; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6sz9eyH4Kut3VGBTh9JgkCW2mi1/anZQ6Ev8xGqmvf8=;
+        b=OeWZloulBlsPCKJR/c20BGNhme4jD19/r22Eq2zZf3ifHea19gfxhmRzaDnse8z6oE
+         Ll6I9sJ4cw4+7qEnQXiamQSaL88vSfGusg2LZfD/VU3wkYytODvEQV4DVYIG4MIG8zFX
+         +d8fQYy7Y/+nwBQ6gCHUOZVw5UaRp16z/4HA8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694755074; x=1695359874;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6sz9eyH4Kut3VGBTh9JgkCW2mi1/anZQ6Ev8xGqmvf8=;
+        b=c0x3oOazW6xEStJ0w4Pk2muZ+peWcH8Yg26SilXoJpQDxy/Zy49QOfDPmgEQJVv+Cc
+         nz4mg2ls6qCEPS2V9fzaoQfniE7CZ2nz/ymlY/+D76xVWjaMLIgZSblfjPzjgZpTyDGc
+         9S4vAOV3R3yeXSazJtgilZX771zy82W5//DGZpIGY48/Hxa5yxPFlil5rnWxTtMJLmRu
+         qZhHxvkXciANKlMaUhKy9hpc+NpiULYC21Cyz43//NCJ1Le/nfwhqzHSzAXa8vHg9/LI
+         XI2/1ivGcstfxcabFLrHMczNQPM08xBQV5X05VF9ZjvD9lBN1TvvuVe1KsNWzIM0mKxt
+         thnA==
+X-Gm-Message-State: AOJu0YzERgt0fwalDVs+wLjh/ZhX9Dkk40eSBmGgrCzSlOhD5cCIvSae
+        eAimnDgu7y7UEC9OUmIWzl+4TjddUwTaKmfmtEk=
+X-Google-Smtp-Source: AGHT+IFoUDDNa+MoKJk2AvFrXQ8paai7wgHZ5rrDHAzQqhUiB+IgWOTrhVuSU2Xcf6vMyuqDELo4OA==
+X-Received: by 2002:a05:6a21:7189:b0:153:39d9:56fe with SMTP id wq9-20020a056a21718900b0015339d956femr820780pzb.47.1694755074332;
+        Thu, 14 Sep 2023 22:17:54 -0700 (PDT)
+Received: from ibnvda0196.ibn.broadcom.net ([192.19.252.250])
+        by smtp.gmail.com with ESMTPSA id 29-20020a17090a195d00b0026d533216e5sm2550056pjh.46.2023.09.14.22.17.52
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 14 Sep 2023 22:17:53 -0700 (PDT)
+From:   Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, jithu.jance@broadcom.com,
+        Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+Subject: [PATCH v2 1/1] cfg80211: Allow AP/P2PGO to indicate port authorization to peer STA/P2PClient
+Date:   Fri, 15 Sep 2023 10:47:47 +0530
+Message-Id: <d19fc849488e63cf367029b614289c324f531ae8.1694751711.git.vinayak.yadawad@broadcom.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="00000000000035a02606055eeacd"
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_NO_TEXT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRmVsaXggRmlldGthdSA8
-bmJkQG5iZC5uYW1lPg0KPiBTZW50OiBXZWRuZXNkYXksIFNlcHRlbWJlciAxMywgMjAyMyAxOjAy
-IFBNDQo+IFRvOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IGpvaGFubmVz
-QHNpcHNvbHV0aW9ucy5uZXQ7IHBhZ2FkYWxhLnllc3UuYW5qYW5leXVsdUBpbnRlbC5jb207IFRo
-b21hcyBIw7xobg0KPiA8dGhvbWFzLmh1ZWhuQGhzLW5vcmRoYXVzZW4uZGU+DQo+IFN1YmplY3Q6
-IFtQQVRDSCB3aXJlbGVzc10gd2lmaTogbWFjODAyMTE6IGZpeCBtZXNoIGlkIGNvcnJ1cHRpb24g
-b24gMzIgYml0IHN5c3RlbXMNCj4gDQo+IFNpbmNlIHRoZSBjaGFuZ2VkIGZpZWxkIHNpemUgd2Fz
-IGluY3JlYXNlZCB0byB1NjQsIG1lc2hfYnNzX2luZm9fY2hhbmdlZA0KPiBwdWxscyBpbnZhbGlk
-IGJpdHMgZnJvbSB0aGUgZmlyc3QgMyBieXRlcyBvZiB0aGUgbWVzaCBpZCwgY2xlYXJzIHRoZW0s
-IGFuZA0KPiBwYXNzZXMgdGhlbSBvbiB0byBpZWVlODAyMTFfbGlua19pbmZvX2NoYW5nZV9ub3Rp
-ZnksIGJlY2F1c2UNCj4gaWZtc2gtPm1ic3NfY2hhbmdlZCB3YXMgbm90IHVwZGF0ZWQgdG8gbWF0
-Y2ggaXRzIHNpemUuDQo+IEZpeCB0aGlzIGJ5IHR1cm5pbmcgaW50byBpZm1zaC0+bWJzc19jaGFu
-Z2VkIGludG8gYW4gdW5zaWduZWQgbG9uZyBhcnJheSB3aXRoDQo+IDY0IGJpdCBzaXplLg0KPiAN
-Cj4gRml4ZXM6IDE1ZGRiYTVmNDMxMSAoIndpZmk6IG1hYzgwMjExOiBjb25zaXN0ZW50bHkgdXNl
-IHU2NCBmb3IgQlNTIGNoYW5nZXMiKQ0KPiBSZXBvcnRlZC1ieTogVGhvbWFzIEjDvGhuIDx0aG9t
-YXMuaHVlaG5AaHMtbm9yZGhhdXNlbi5kZT4NCj4gU2lnbmVkLW9mZi1ieTogRmVsaXggRmlldGth
-dSA8bmJkQG5iZC5uYW1lPg0KPiAtLS0NCj4gIG5ldC9tYWM4MDIxMS9pZWVlODAyMTFfaS5oIHwg
-MiArLQ0KPiAgbmV0L21hYzgwMjExL21lc2guYyAgICAgICAgfCA4ICsrKystLS0tDQo+ICAyIGZp
-bGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYg
-LS1naXQgYS9uZXQvbWFjODAyMTEvaWVlZTgwMjExX2kuaCBiL25ldC9tYWM4MDIxMS9pZWVlODAy
-MTFfaS5oDQo+IGluZGV4IGI4NDY1ZDIwNTA3Ni4uM2M1ZGJmOTU2ODVkIDEwMDY0NA0KPiAtLS0g
-YS9uZXQvbWFjODAyMTEvaWVlZTgwMjExX2kuaA0KPiArKysgYi9uZXQvbWFjODAyMTEvaWVlZTgw
-MjExX2kuaA0KPiBAQCAtNjgyLDcgKzY4Miw3IEBAIHN0cnVjdCBpZWVlODAyMTFfaWZfbWVzaCB7
-DQo+ICAgICAgICAgc3RydWN0IHRpbWVyX2xpc3QgbWVzaF9wYXRoX3Jvb3RfdGltZXI7DQo+IA0K
-PiAgICAgICAgIHVuc2lnbmVkIGxvbmcgd3JrcV9mbGFnczsNCj4gLSAgICAgICB1bnNpZ25lZCBs
-b25nIG1ic3NfY2hhbmdlZDsNCj4gKyAgICAgICB1bnNpZ25lZCBsb25nIG1ic3NfY2hhbmdlZFs2
-NCAvIEJJVFNfUEVSX0xPTkddOw0KDQptYnNzX2NoYW5nZWQgaXMgYSBiaXRtYXAsIHNvDQoNCkRF
-Q0xBUkVfQklUTUFQKG1ic3NfY2hhbmdlZCwgNjQpOw0KDQo+IA0KPiAgICAgICAgIGJvb2wgdXNl
-cnNwYWNlX2hhbmRsZXNfZGZzOw0KPiANCj4gZGlmZiAtLWdpdCBhL25ldC9tYWM4MDIxMS9tZXNo
-LmMgYi9uZXQvbWFjODAyMTEvbWVzaC5jDQo+IGluZGV4IDBkMGZiYWU1MWI2MS4uMDkyYTFkYzcz
-MTRkIDEwMDY0NA0KPiAtLS0gYS9uZXQvbWFjODAyMTEvbWVzaC5jDQo+ICsrKyBiL25ldC9tYWM4
-MDIxMS9tZXNoLmMNCj4gQEAgLTExNzUsNyArMTE3NSw3IEBAIHZvaWQgaWVlZTgwMjExX21ic3Nf
-aW5mb19jaGFuZ2Vfbm90aWZ5KHN0cnVjdCBpZWVlODAyMTFfc3ViX2lmX2RhdGEgKnNkYXRhLA0K
-PiANCj4gICAgICAgICAvKiBpZiB3ZSByYWNlIHdpdGggcnVubmluZyB3b3JrLCB3b3JzdCBjYXNl
-IHRoaXMgd29yayBiZWNvbWVzIGEgbm9vcCAqLw0KPiAgICAgICAgIGZvcl9lYWNoX3NldF9iaXQo
-Yml0LCAmYml0cywgc2l6ZW9mKGNoYW5nZWQpICogQklUU19QRVJfQllURSkNCj4gLSAgICAgICAg
-ICAgICAgIHNldF9iaXQoYml0LCAmaWZtc2gtPm1ic3NfY2hhbmdlZCk7DQo+ICsgICAgICAgICAg
-ICAgICBzZXRfYml0KGJpdCwgaWZtc2gtPm1ic3NfY2hhbmdlZCk7DQo+ICAgICAgICAgc2V0X2Jp
-dChNRVNIX1dPUktfTUJTU19DSEFOR0VELCAmaWZtc2gtPndya3FfZmxhZ3MpOw0KPiAgICAgICAg
-IHdpcGh5X3dvcmtfcXVldWUoc2RhdGEtPmxvY2FsLT5ody53aXBoeSwgJnNkYXRhLT53b3JrKTsN
-Cj4gIH0NCj4gQEAgLTEyNTcsNyArMTI1Nyw3IEBAIHZvaWQgaWVlZTgwMjExX3N0b3BfbWVzaChz
-dHJ1Y3QgaWVlZTgwMjExX3N1Yl9pZl9kYXRhICpzZGF0YSkNCj4gDQo+ICAgICAgICAgLyogY2xl
-YXIgYW55IG1lc2ggd29yayAoZm9yIG5leHQgam9pbikgd2UgbWF5IGhhdmUgYWNjcnVlZCAqLw0K
-PiAgICAgICAgIGlmbXNoLT53cmtxX2ZsYWdzID0gMDsNCj4gLSAgICAgICBpZm1zaC0+bWJzc19j
-aGFuZ2VkID0gMDsNCj4gKyAgICAgICBtZW1zZXQoaWZtc2gtPm1ic3NfY2hhbmdlZCwgMCwgc2l6
-ZW9mKGlmbXNoLT5tYnNzX2NoYW5nZWQpKTsNCg0KYml0bWFwX3plcm8oaWZtc2gtPm1ic3NfY2hh
-bmdlZCwgNjQpOw0KDQpiaXRtYXBfemVybygpIGNhbiBjaG9vc2UganVzdCAnPTAnIG9yIG1lbXNl
-dCgwKSBhY2NvcmRpbmcgdG8gQklUU19QRVJfTE9ORy4gDQoNCj4gDQo+ICAgICAgICAgbG9jYWwt
-PmZpZl9vdGhlcl9ic3MtLTsNCj4gICAgICAgICBhdG9taWNfZGVjKCZsb2NhbC0+aWZmX2FsbG11
-bHRpcyk7DQo+IEBAIC0xNzIyLDkgKzE3MjIsOSBAQCBzdGF0aWMgdm9pZCBtZXNoX2Jzc19pbmZv
-X2NoYW5nZWQoc3RydWN0IGllZWU4MDIxMV9zdWJfaWZfZGF0YSAqc2RhdGEpDQo+ICAgICAgICAg
-dTMyIGJpdDsNCj4gICAgICAgICB1NjQgY2hhbmdlZCA9IDA7DQo+IA0KPiAtICAgICAgIGZvcl9l
-YWNoX3NldF9iaXQoYml0LCAmaWZtc2gtPm1ic3NfY2hhbmdlZCwNCj4gKyAgICAgICBmb3JfZWFj
-aF9zZXRfYml0KGJpdCwgaWZtc2gtPm1ic3NfY2hhbmdlZCwNCj4gICAgICAgICAgICAgICAgICAg
-ICAgICAgIHNpemVvZihjaGFuZ2VkKSAqIEJJVFNfUEVSX0JZVEUpIHsNCj4gLSAgICAgICAgICAg
-ICAgIGNsZWFyX2JpdChiaXQsICZpZm1zaC0+bWJzc19jaGFuZ2VkKTsNCj4gKyAgICAgICAgICAg
-ICAgIGNsZWFyX2JpdChiaXQsIGlmbXNoLT5tYnNzX2NoYW5nZWQpOw0KPiAgICAgICAgICAgICAg
-ICAgY2hhbmdlZCB8PSBCSVQoYml0KTsNCj4gICAgICAgICB9DQo+IA0KPiAtLQ0KPiAyLjQxLjAN
-Cg0K
+--00000000000035a02606055eeacd
+Content-Transfer-Encoding: 8bit
+
+In 4way handshake offload, cfg80211_port_authorized enables driver
+to indicate successful 4way handshake to cfg80211 layer. Currently
+this path of port authorization is restricted to interface type
+NL80211_IFTYPE_STATION and NL80211_IFTYPE_P2P_CLIENT. This patch
+extends the support for NL80211_IFTYPE_AP and NL80211_IFTYPE_P2P_GO
+interfaces to authorize peer STA/P2P_CLIENT, whenever authentication
+is offloaded on the AP/P2P_GO interface.
+
+Signed-off-by: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+---
+ include/net/cfg80211.h |  8 ++++++--
+ net/wireless/core.h    |  2 +-
+ net/wireless/nl80211.c |  4 ++--
+ net/wireless/nl80211.h |  5 ++++-
+ net/wireless/sme.c     | 23 ++++++++++++++---------
+ net/wireless/util.c    |  2 +-
+ 6 files changed, 28 insertions(+), 16 deletions(-)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 3a4b684f89bf..54f09ad2692b 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -7967,7 +7967,8 @@ void cfg80211_roamed(struct net_device *dev, struct cfg80211_roam_info *info,
+  * cfg80211_port_authorized - notify cfg80211 of successful security association
+  *
+  * @dev: network device
+- * @bssid: the BSSID of the AP
++ * @peer_addr: BSSID of the AP/P2P GO in case of STA/GC or STA/GC MAC address
++ * in case of AP/P2P GO
+  * @td_bitmap: transition disable policy
+  * @td_bitmap_len: Length of transition disable policy
+  * @gfp: allocation flags
+@@ -7978,8 +7979,11 @@ void cfg80211_roamed(struct net_device *dev, struct cfg80211_roam_info *info,
+  * should be preceded with a call to cfg80211_connect_result(),
+  * cfg80211_connect_done(), cfg80211_connect_bss() or cfg80211_roamed() to
+  * indicate the 802.11 association.
++ * This function can also be called by AP/P2P GO driver that supports
++ * authentication offload. In this case the peer_mac passed is that of
++ * associated STA/GC.
+  */
+-void cfg80211_port_authorized(struct net_device *dev, const u8 *bssid,
++void cfg80211_port_authorized(struct net_device *dev, const u8 *peer_addr,
+ 			      const u8* td_bitmap, u8 td_bitmap_len, gfp_t gfp);
+ 
+ /**
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 507d184b8b40..678aba05e78b 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -276,7 +276,7 @@ struct cfg80211_event {
+ 			struct ieee80211_channel *channel;
+ 		} ij;
+ 		struct {
+-			u8 bssid[ETH_ALEN];
++			u8 peer_addr[ETH_ALEN];
+ 			const u8 *td_bitmap;
+ 			u8 td_bitmap_len;
+ 		} pa;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index de47838aca4f..af4878df118e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -18219,7 +18219,7 @@ void nl80211_send_roamed(struct cfg80211_registered_device *rdev,
+ }
+ 
+ void nl80211_send_port_authorized(struct cfg80211_registered_device *rdev,
+-				  struct net_device *netdev, const u8 *bssid,
++				  struct net_device *netdev, const u8 *peer_addr,
+ 				  const u8 *td_bitmap, u8 td_bitmap_len)
+ {
+ 	struct sk_buff *msg;
+@@ -18237,7 +18237,7 @@ void nl80211_send_port_authorized(struct cfg80211_registered_device *rdev,
+ 
+ 	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
+ 	    nla_put_u32(msg, NL80211_ATTR_IFINDEX, netdev->ifindex) ||
+-	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, bssid))
++	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, peer_addr))
+ 		goto nla_put_failure;
+ 
+ 	if ((td_bitmap_len > 0) && td_bitmap)
+diff --git a/net/wireless/nl80211.h b/net/wireless/nl80211.h
+index b4af53f9b227..d3cabf358696 100644
+--- a/net/wireless/nl80211.h
++++ b/net/wireless/nl80211.h
+@@ -82,8 +82,11 @@ void nl80211_send_connect_result(struct cfg80211_registered_device *rdev,
+ void nl80211_send_roamed(struct cfg80211_registered_device *rdev,
+ 			 struct net_device *netdev,
+ 			 struct cfg80211_roam_info *info, gfp_t gfp);
++/* For STA/GC, indicate port authorized with AP/GO bssid.
++ * For GO/AP, use peer GC/STA mac_addr.
++ */
+ void nl80211_send_port_authorized(struct cfg80211_registered_device *rdev,
+-				  struct net_device *netdev, const u8 *bssid,
++				  struct net_device *netdev, const u8 *peer_addr,
+ 				  const u8 *td_bitmap, u8 td_bitmap_len);
+ void nl80211_send_disconnected(struct cfg80211_registered_device *rdev,
+ 			       struct net_device *netdev, u16 reason,
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 9bba233b5a6e..59f1e9936c29 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -1294,24 +1294,29 @@ void cfg80211_roamed(struct net_device *dev, struct cfg80211_roam_info *info,
+ }
+ EXPORT_SYMBOL(cfg80211_roamed);
+ 
+-void __cfg80211_port_authorized(struct wireless_dev *wdev, const u8 *bssid,
++void __cfg80211_port_authorized(struct wireless_dev *wdev, const u8 *peer_addr,
+ 					const u8 *td_bitmap, u8 td_bitmap_len)
+ {
+ 	ASSERT_WDEV_LOCK(wdev);
+ 
+ 	if (WARN_ON(wdev->iftype != NL80211_IFTYPE_STATION &&
+-		    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT))
++		wdev->iftype != NL80211_IFTYPE_P2P_CLIENT &&
++		wdev->iftype != NL80211_IFTYPE_AP &&
++		wdev->iftype != NL80211_IFTYPE_P2P_GO))
+ 		return;
+ 
+-	if (WARN_ON(!wdev->connected) ||
+-	    WARN_ON(!ether_addr_equal(wdev->u.client.connected_addr, bssid)))
+-		return;
++	if (wdev->iftype == NL80211_IFTYPE_STATION ||
++		wdev->iftype == NL80211_IFTYPE_P2P_CLIENT) {
++		if (WARN_ON(!wdev->connected) ||
++			WARN_ON(!ether_addr_equal(wdev->u.client.connected_addr, peer_addr)))
++			return;
++	}
+ 
+ 	nl80211_send_port_authorized(wiphy_to_rdev(wdev->wiphy), wdev->netdev,
+-				     bssid, td_bitmap, td_bitmap_len);
++				     peer_addr, td_bitmap, td_bitmap_len);
+ }
+ 
+-void cfg80211_port_authorized(struct net_device *dev, const u8 *bssid,
++void cfg80211_port_authorized(struct net_device *dev, const u8 *peer_addr,
+ 			      const u8 *td_bitmap, u8 td_bitmap_len, gfp_t gfp)
+ {
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+@@ -1319,7 +1324,7 @@ void cfg80211_port_authorized(struct net_device *dev, const u8 *bssid,
+ 	struct cfg80211_event *ev;
+ 	unsigned long flags;
+ 
+-	if (WARN_ON(!bssid))
++	if (WARN_ON(!peer_addr))
+ 		return;
+ 
+ 	ev = kzalloc(sizeof(*ev) + td_bitmap_len, gfp);
+@@ -1327,7 +1332,7 @@ void cfg80211_port_authorized(struct net_device *dev, const u8 *bssid,
+ 		return;
+ 
+ 	ev->type = EVENT_PORT_AUTHORIZED;
+-	memcpy(ev->pa.bssid, bssid, ETH_ALEN);
++	memcpy(ev->pa.peer_addr, peer_addr, ETH_ALEN);
+ 	ev->pa.td_bitmap = ((u8 *)ev) + sizeof(*ev);
+ 	ev->pa.td_bitmap_len = td_bitmap_len;
+ 	memcpy((void *)ev->pa.td_bitmap, td_bitmap, td_bitmap_len);
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 1783ab9d57a3..e9e2f0a7ea11 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1069,7 +1069,7 @@ void cfg80211_process_wdev_events(struct wireless_dev *wdev)
+ 			__cfg80211_leave(wiphy_to_rdev(wdev->wiphy), wdev);
+ 			break;
+ 		case EVENT_PORT_AUTHORIZED:
+-			__cfg80211_port_authorized(wdev, ev->pa.bssid,
++			__cfg80211_port_authorized(wdev, ev->pa.peer_addr,
+ 						   ev->pa.td_bitmap,
+ 						   ev->pa.td_bitmap_len);
+ 			break;
+-- 
+2.32.0
+
+
+--00000000000035a02606055eeacd
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+RY30ttFfLGgUxOvRzd7UPGXmjiRyV20Vv+kGag5aTueKGHUv49TWypHgJc4PX8L9y3VouEhbWmGb
+bwuQjKELfovabHM5PWUVRda3t72kGFVMkIZ65u6DCdyjPFCUGnMCAwEAAaOCAd0wggHZMA4GA1Ud
+DwEB/wQEAwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9zZWN1cmUu
+Z2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNydDBBBggr
+BgEFBQcwAYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJj
+YTIwMjAwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3
+Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4
+aHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcmww
+JwYDVR0RBCAwHoEcdmluYXlhay55YWRhd2FkQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEF
+BQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQUS9fHYxc9qAJz
+gfBKun+P2LFASWAwDQYJKoZIhvcNAQELBQADggEBABiMQNJRdQCxXwqwqb49w0ZXCxsSrs3gS4NA
+G3H9oJuvzJ8ml5Z9l9p9PGPHcrmc/BdFjIIu/wQftGETAf1+W6AvxXqYmA2flaogebRueqCMQJiy
+xbJlOSry64AGOzHYULvI70tt9woEYgSx3I703b7c8o7eWCiU267y/WNzH+MpZ12h9q0Jwhw8uH9S
+BTl38q8FNdCLAiM1OD+blhu7LqMLVaAEEeoUGhRxdNkvMGss1Z7/ZefenAfm9IpiaGR0PQhBwI7c
+spqD/wIJUULcXiaj0eatDUjsrx3QN9OZOh3iubCt0uBoxCQUGuvxqd3Qz4FVKMSzEIzs8v/hwR+T
+nTkxggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNh
+MTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxIxd7r
+XtHLz48aMtQwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIB/x1hcWj3OIoncYPD33
+UFnO3EIJBmgS4rTbgNWOWzjkMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
+MQ8XDTIzMDkxNTA1MTc1NFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUD
+BAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsG
+CWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQB9fIC7kNlQeQZz4hS+B5vX9CO1VWyp3+G/rttq
+UPACecPX9Slafei8C6Pv5sheN50pBk/PHrMdedVEE8VsNrZe5+/MMNS8GrTDCDOrZlVPmclobAfu
+4eoV5lc2TvFuvbV7/UNZOOfaDCj4HtfZbyo/pPPm0ptdNM0E81kkkMA7sdenhgo38voER2dWbPoq
+sZ3tr50hWsjnC8EqLiTq7YeGLGF4vTIr80fsZSxOC2VlIwfjqvFl/4gAmWhCpoI/ojyFvMBZZqvw
+An45VytPg8tsOPHPokcp5BAa+fbPq82e1pSUV10/RTQkVr3t3lorF1vYGZahChO+bPD+rvAaIbrZ
+--00000000000035a02606055eeacd--
