@@ -2,139 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9536B7A2938
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Sep 2023 23:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3447B7A2ADB
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Sep 2023 01:07:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237481AbjIOVTE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Sep 2023 17:19:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40784 "EHLO
+        id S237925AbjIOXFE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Sep 2023 19:05:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237521AbjIOVSt (ORCPT
+        with ESMTP id S237930AbjIOXEi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Sep 2023 17:18:49 -0400
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68EF2A1
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Sep 2023 14:18:43 -0700 (PDT)
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-        by cmsmtp with ESMTP
-        id hFjoqZSM0yYOwhGD1q17BU; Fri, 15 Sep 2023 21:18:40 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with ESMTPS
-        id hGD1qiBp1axkBhGD1qmSBv; Fri, 15 Sep 2023 21:18:39 +0000
-X-Authority-Analysis: v=2.4 cv=BumOfKb5 c=1 sm=1 tr=0 ts=6504ca2f
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=wYkD_t78qR0A:10 a=NEAV23lmAAAA:8
- a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=JfrnYn6hAAAA:8 a=cm27Pg_UAAAA:8
- a=HvF037n1xESchLcPDVoA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
- a=TjNXssC_j7lpFel5tvFf:22 a=1CNFftbPRP8L7MoqJWF3:22 a=xmb-EsYY8bH0VWELuYED:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=CXlqlVJ2RnzYBwdo5oCwVhnF8JLWfHkjHPjJ0VvcV1w=; b=aLBYatBt5iYb4xj6Pn/c9wMvEZ
-        /HxBtzx6jwiRBqbGYYsX564tIlBz3kFBagXbWnwtSt0IMy0XyKmg6JCK7yy5JFg95QXK8lpYxN9kE
-        kKt7WNA7o017D0OxRYiHftQI4wuvKmZwiM1xAAu5RyA0Wn4S+Ylfe+PKdV8c4HCU8QOT9FfA03z5z
-        JloX3i4mtdWE9Uo6cS6ltEWPptP2YxEIn3eaizObNk8UhsXJGAVbXUfOF6xae85EQSf6tmByY8the
-        TO9ac7JDzVtioDfII4XGBo1vFx7oq+Xf3M0ztckuLxEsBEk0XijlzQO6D08Am8FXQeoG3MKboqV5t
-        Yg7IrYbg==;
-Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:55304 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1qhGD0-0036gT-12;
-        Fri, 15 Sep 2023 16:18:38 -0500
-Message-ID: <8d28f285-1a92-2635-f0f3-8a46b8f0c8d0@embeddedor.com>
-Date:   Fri, 15 Sep 2023 15:19:34 -0600
+        Fri, 15 Sep 2023 19:04:38 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50E810D;
+        Fri, 15 Sep 2023 16:04:32 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-52a4737a08fso3052718a12.3;
+        Fri, 15 Sep 2023 16:04:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1694819071; x=1695423871; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/dxG2q7F6Mkp+vlHGfUkxcAXUqWVC7Xr/x4rCnTi+nw=;
+        b=SMm+JuF0yEka5ORuNsj5M0Yjdn1k+3uWkXuNE7OzcG0hQP3GC9rFQDYk1/3/FepVk+
+         Sg50Z0tknh8dhFzU3JEifqKjDR8l8vWA7BDYwyer/Lk1stt56R7pJiFksRRlyC5wtIp4
+         enENXb6EExj1JzR6c1p96tcxIpUn6nZuYoJ4ph70tgzK8sx2RTIyJjXYdiAykzHs16JN
+         SJgirZeJXkY+UHItpJpRnmIQpY9CWUZZ0U/QIUVdw9jfRFJKv7GR5C4E5sUG2V0aw0Fz
+         oM8HPliJayynl/Q8VD2XXLIlg7rwtMB4yTE99/6rxAVq6d/9Z3cX7ZziDDsZcARYVuqr
+         I0+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694819071; x=1695423871;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/dxG2q7F6Mkp+vlHGfUkxcAXUqWVC7Xr/x4rCnTi+nw=;
+        b=OLl9PNVF+IMJuuIv1DS0qx6lJAZPdg41iQtmpEynkS7YS1uxu/wgXtYRnCBE+yPVRw
+         L3uVBHobuiUVylH2cLzzq8wDQhlFHj/ZKBAeVA2q3hi7HK6rDABJ0tyIjx03F9mr66v+
+         7Nbc+M9QhliBv54uKtNUVYA6kY4aS8VYt89mvQbN5RIgek8GU+3sG5DfA3YS5WbIoVx2
+         c1UloiLo8wk296+s6w+jMfIB05nnuxz8pToxiQJl0OB2Gid8LHFzgsUNEbaGH+LUV4gg
+         n7xCqDF6w4P5P6uakeZmEjFFJeT0FCO5dKvmRBA1neHD73GBxAEU5Tpn4+GkLyyiX66R
+         jIdQ==
+X-Gm-Message-State: AOJu0YyZAq8y8CuD7PFlWZWpW9V1dLA08o2lsR9vZp2Fe7GwXIKsohKf
+        CvKdPXHRZNdOC2j7ku98l7dh3MJOHMYOdW/9usdhNd8fb4s=
+X-Google-Smtp-Source: AGHT+IFk/4QQIsJh5pUlO7CGZk+/3wXfyCvaMWmuJ3//r/dMlCJwaGmfCc9vG36qHgaiFk9OzPuixZAzv6zA93Qcl9c=
+X-Received: by 2002:a05:6402:344e:b0:525:6772:1595 with SMTP id
+ l14-20020a056402344e00b0052567721595mr2291463edc.6.1694819071151; Fri, 15 Sep
+ 2023 16:04:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] wifi: ath10k: Annotate struct ath10k_ce_ring with
- __counted_by
-Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>, Kalle Valo <kvalo@kernel.org>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, linux-hardening@vger.kernel.org
-References: <20230915200636.never.762-kees@kernel.org>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20230915200636.never.762-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.21.192
-X-Source-L: No
-X-Exim-ID: 1qhGD0-0036gT-12
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.8]) [187.162.21.192]:55304
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 7
-X-Org:  HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHl4/BD7jXdBoLEu2J6M0Wye1UKe3HQOOBcb3qc5DQJd076qWVnBnBPc0ACce71ae735/XewZfHDplfsQw/oQAq+JPcM1OnY+c0X+GVu5ZEumOogoU2Y
- 6N+j8LkEYAa7VmghVPRyBl5Y5PGyVRizdeAxSsriWaDyD6lsrbjDZ9Kdd7oHYABX8kOPcyZU6eWsO8tS4eJ6dshc2p6BTeGln5F2uIKxVrfNmDHWbt68QiPV
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <5a7f2a6e-46a4-a5c8-fe6a-c2581496b5cd@gmail.com> <c7e70f54-9696-4b39-aa17-576987ffce85@leemhuis.info>
+In-Reply-To: <c7e70f54-9696-4b39-aa17-576987ffce85@leemhuis.info>
+From:   brett hassall <brett.hassall@gmail.com>
+Date:   Sat, 16 Sep 2023 09:04:19 +1000
+Message-ID: <CANiJ1U80VNiLGKEmgYpGjUQ2poREN9uGnv2QXM_GtzjgBtUSWQ@mail.gmail.com>
+Subject: Re: Fwd: 5c8a79e8e12b ("wifi: rtw88: correct PS calculation for
+ SUPPORTS_DYNAMIC_PS", 2023-05-27) increases CPU usage usage for irq
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi
+
+I'd suggest that there are actually 2 regressions
+(https://bugzilla.kernel.org/show_bug.cgi?id=217841 and this bug). Bug
+217841 masks this bug as it prevents the laptop reaching package C8
+and I'm assuming this bug shows when in C8. The patch for 21784 only
+affects devices connected to a VMD controller so I wouldn't expect it
+to affect the 8822CE.
+
+Options that I can see are:
+1. Park this bug until 217841 is resolved
+2. Try to test on a laptop with a Realtek 8822CE but not a VMD
+controller. I have access to 5 different laptop models but none meet
+those criteria.
 
 
-On 9/15/23 14:06, Kees Cook wrote:
-> Prepare for the coming implementation by GCC and Clang of the __counted_by
-> attribute. Flexible array members annotated with __counted_by can have
-> their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
-> (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-> functions).
-> 
-> As found with Coccinelle[1], add __counted_by for struct ath10k_ce_ring.
-> 
-> [1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
-> 
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Cc: ath10k@lists.infradead.org
-> Cc: linux-wireless@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+Thanks for the reply
+Brett
 
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-
-Thanks
--- 
-Gustavo
-
-> ---
->   drivers/net/wireless/ath/ath10k/ce.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/ce.h b/drivers/net/wireless/ath/ath10k/ce.h
-> index 666ce384a1d8..27367bd64e95 100644
-> --- a/drivers/net/wireless/ath/ath10k/ce.h
-> +++ b/drivers/net/wireless/ath/ath10k/ce.h
-> @@ -110,7 +110,7 @@ struct ath10k_ce_ring {
->   	struct ce_desc_64 *shadow_base;
->   
->   	/* keep last */
-> -	void *per_transfer_context[];
-> +	void *per_transfer_context[] __counted_by(nentries);
->   };
->   
->   struct ath10k_ce_pipe {
+On Mon, 11 Sept 2023 at 23:29, Linux regression tracking (Thorsten
+Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> On 27.08.23 04:37, Bagas Sanjaya wrote:
+> >
+> > I notice a regression report on Bugzilla [1]. Quoting from it:
+> >
+> >> This commit improves power saving - it enables the kernel to
+> >> achieve package C8. To achieve package C8, 3 Ubuntu VMD commits
+> >> must be applied as well. [...]
+>
+> To me that sounds like there is no upstream problem, hence this
+> shouldn't be tracked as a regression. Please correct me if I'm wrong.
+>
+> > #regzbot introduced: 26a125f550a3bf
+> > https://bugzilla.kernel.org/show_bug.cgi?id=217828 #regzbot title:
+> > correcting SUPPORTS_DYNAMIC_PS calculation for rtw88 increases CPU
+> > utilization #regzbot link:
+> > https://bugs.launchpad.net/ubuntu/+source/linux-hwe-6.2/+bug/2025040
+> >
+> > Thanks.
+> >
+> > [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217828
+>
+> #regzbot resolved: invalid: seems to only be a problem with a patched kernel
+> #regzbot ignore-activity
+>
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+>
+>
