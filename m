@@ -2,111 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BCDC7A180A
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Sep 2023 10:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4D267A18DA
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Sep 2023 10:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232822AbjIOIMD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Sep 2023 04:12:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34276 "EHLO
+        id S233005AbjIOIaX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Sep 2023 04:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232291AbjIOIMC (ORCPT
+        with ESMTP id S232195AbjIOIaS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Sep 2023 04:12:02 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C9B2113
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Sep 2023 01:11:56 -0700 (PDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38F7nV4f006696;
-        Fri, 15 Sep 2023 08:11:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=lm+neKL92MNlp8Cl0UtHhTwvNZwu5/uptBOf0Uts3mA=;
- b=OwdPlyVOLcAyinv9x/4r7IxBO1DPoYS74EMoD6xrAsSMAqfqAKhSLjuto+jTfyjG0PXq
- +zVkaUeIMm3PnOD8BsGu1v+1byc1wbyGzU+VgYdHjcb7oRbDJ7k55AGg+foQsU8mBrjR
- 6PZmsoGlfpqFYPaHq9HbhwmU9NAmICRTpi/IREuNZp1YoQBdedLX4YRhngJBBEangKHI
- 1jA4j/bkZOoS/qV2bKFWckSQouhTSg/JUXQp3MxB5xDz024Vqi1BKveFyXGal76/1TJX
- pdmvsriiKEC1WneaI8d4fkb2GwGClY2SHPzFCFFG7OeaRGfC7FZizkMNtJA+ktQclFlj Ig== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t4g3gre9x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 15 Sep 2023 08:11:50 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38F8BaC3004554
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 15 Sep 2023 08:11:36 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 15 Sep
- 2023 01:11:35 -0700
-Message-ID: <d23b617e-5ca0-e721-0c2a-fcca8942efef@quicinc.com>
-Date:   Fri, 15 Sep 2023 16:11:32 +0800
+        Fri, 15 Sep 2023 04:30:18 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8BCFE7E
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Sep 2023 01:29:35 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-401b0d97850so19186945e9.2
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Sep 2023 01:29:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694766574; x=1695371374; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wPnaOK9X13JDSk44+hj7zKjHWfxilVpyWkw4Bt4nUf8=;
+        b=zks+HvYr3hSPQAsePCietKGcqAmQtcf2dEWb+h5gOZQhB2PTRjk4dKWHaW45Oj+Ymj
+         BpRwHIc+hJT49KBAtMPeBsFyMUZ9w8QsGpvl+E8w4aBcG3s9qhGVJ1itYtmq7sPSBfyh
+         XWRAYS8mgYysEH3psXQ25Aaxa0g3+Wihfa6EWA0YLmZ++xWU1aDVwiWB4HDJnpFa6tAY
+         W/aMh/wjaWAh9tyTEZBwhI6om2tzT8d7VYWjEU8apUn8jHJL9zRYkNJ6kZDt8TyYgzl5
+         tTQ5bX12094LaFDMo8wV+12X40/OlH242bXjMfFN4M1PopI/W+epiRukmoy7pFG73V2u
+         xeEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694766574; x=1695371374;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wPnaOK9X13JDSk44+hj7zKjHWfxilVpyWkw4Bt4nUf8=;
+        b=aiQADmqWY2m2Sd9fIm4xREVt7Qx74YiYfRklaaKeZex8uRt99P9e9M/3fXORWaOMBo
+         ++k6KA1KJ5QPTqNzH3AozsvH0ZcYZjF5v+JgaEimnGVCwLfIHz7N/N1AbBHSDBe8C5TR
+         nYSwMv64zAv2NutlHN9EIPDXGlC6a3cA+OCER9d5uUHAORIeXKiUwCNThRPp58EIfDmp
+         zranO2eRzQiawGF0X92xLrhsCmKbay/NtU1ksBl/fN0x5Y8ja/uRcPQlVm4G09gxHbWV
+         4yXXYNEI/6BYkr3upvTTJEHiqdrrqvTQTLf9PxBkhggzdCs3kcleYnIoRMjhy8jcTsNU
+         aNWQ==
+X-Gm-Message-State: AOJu0YzTzIpygeY+mG+WQzmq1GJ8LzxT2pS6yi1rszOcuHDum60P4P47
+        d9+oCWIzzH1DYkbmZgoX6bXkRQ==
+X-Google-Smtp-Source: AGHT+IHj1TFHQb0m0RBwQMxstJzquzfOLYrNuiKiggEBMK+r1HS47p8gMoWerqn/MudnzcGm/bKKNA==
+X-Received: by 2002:a1c:6a0a:0:b0:404:7462:1f6f with SMTP id f10-20020a1c6a0a000000b0040474621f6fmr868938wmc.8.1694766574117;
+        Fri, 15 Sep 2023 01:29:34 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id v13-20020a05600c214d00b003fc16ee2864sm3969752wml.48.2023.09.15.01.29.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Sep 2023 01:29:33 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 11:29:30 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     johannes.berg@intel.com
+Cc:     linux-wireless@vger.kernel.org
+Subject: [bug report] mac80211: accept key reinstall without changing anything
+Message-ID: <220d9f82-c010-4c57-82ec-60bdedc5efcd@moroto.mountain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 1/3] wifi: mac80211: add support to allow driver to
- generate local link address for station
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230906103458.24092-1-quic_wgong@quicinc.com>
- <20230906103458.24092-2-quic_wgong@quicinc.com>
- <cd762f33b1c15566237c85f1e265ee8a00006f5c.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <cd762f33b1c15566237c85f1e265ee8a00006f5c.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: fj56FaH3fHiOiXc9NZlUeBlc3nOk8cm-
-X-Proofpoint-ORIG-GUID: fj56FaH3fHiOiXc9NZlUeBlc3nOk8cm-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-15_05,2023-09-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- mlxlogscore=548 phishscore=0 impostorscore=0 suspectscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 spamscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309150071
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/13/2023 4:55 PM, Johannes Berg wrote:
-> On Wed, 2023-09-06 at 06:34 -0400, Wen Gong wrote:
-[...]
-> Maybe after all this explanation, all we need is a flag "reuse MLD
-> address for assoc link"?
+Hello Johannes Berg,
 
-yes. It is similar as I said before here:
+The patch fdf7cb4185b6: "mac80211: accept key reinstall without
+changing anything" from Sep 5, 2017 (linux-next), leads to the
+following Smatch static checker warning:
 
-https://lore.kernel.org/linux-wireless/b9c6d022-12c3-a696-c4b9-cb14a6d30a45@quicinc.com/
+	net/mac80211/key.c:1385 ieee80211_gtk_rekey_add()
+	warn: 'key' was already freed.
 
->
->
->> +		ret = drv_generate_link_addr(sdata->local, sdata,
->> +					     link_id, link->conf->addr);
->> +		if (ret)
->> +			eth_random_addr(link->conf->addr);
-> should probably refactor this into a separate function though.
-OK.
->
-> I'm also not sure how the driver even knows that a link it's being asked
-> to get the address for *is* the assoc link? Do you want to rely on that
-> being the first address handed out?
-Current I used (vif->valid_links==0) check for assoc link. When
-drv_generate_link_addr() called for the assoc link, vif->valid_links
-is 0, and it is not 0 for other links.
->
-> johannes
->
+net/mac80211/key.c
+   899  
+   900          /*
+   901           * Silently accept key re-installation without really installing the
+   902           * new version of the key to avoid nonce reuse or replay issues.
+   903           */
+   904          if (ieee80211_key_identical(sdata, old_key, key)) {
+   905                  ieee80211_key_free_unused(key);
+                                                  ^^^
+key is freed here.
+
+   906                  return 0;
+   907          }
+   908  
+
+net/mac80211/key.c
+    1375                 return ERR_CAST(key);
+    1376 
+    1377         if (sdata->u.mgd.mfp != IEEE80211_MFP_DISABLED)
+    1378                 key->conf.flags |= IEEE80211_KEY_FLAG_RX_MGMT;
+    1379 
+    1380         /* FIXME: this function needs to get a link ID */
+    1381         err = ieee80211_key_link(key, &sdata->deflink, NULL);
+    1382         if (err)
+    1383                 return ERR_PTR(err);
+    1384 
+--> 1385         return &key->conf;
+                        ^^^^^^^^^^
+Use after free.
+
+    1386 }
+
+regards,
+dan carpenter
