@@ -2,108 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E6B7A12EB
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Sep 2023 03:28:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B0E57A1385
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Sep 2023 04:03:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230340AbjIOB24 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Sep 2023 21:28:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47692 "EHLO
+        id S231269AbjIOCDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Sep 2023 22:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230193AbjIOB2z (ORCPT
+        with ESMTP id S231220AbjIOCDq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Sep 2023 21:28:55 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02D2A268F
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 18:28:51 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-502b0d23f28so2702717e87.2
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 18:28:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1694741328; x=1695346128; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fBGNOe9gI9NaJRPLZ/Vx8tqTgrMHNSFjAjNWZOJ75IE=;
-        b=Rr27jgz8dPVH1USNBqahqqKWCNA3PkYZ7vrKkBuk6VgBRo6od8DZy982nAK4s74AJZ
-         ljH+r9WTPFT17s8sgUwNXKKwpuFytM9nOhut1LPr8DP94+VMjpwIgk4mSCh6l1cx3fhy
-         ahlNzJIqoX21W/8hH4Bd5GcqBNz51TfUZUI24=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694741328; x=1695346128;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fBGNOe9gI9NaJRPLZ/Vx8tqTgrMHNSFjAjNWZOJ75IE=;
-        b=BscyT52ScGdml9/bvQEugxb9WzyKgU3YE3rfrj2InDdii08pSzHZ1D458nkS27AWPt
-         pvcSQH5Y3vkDJzan2VmgroA2Vu+f4T5Qv9q1zVvK/v07we2FMyHj3gL85xmrl66zZbiy
-         7lnls22je3tylDUlC6OIo74WAnJYIJkJVP5OG+4uxO1rfaD4tHrf7jpICWqp77pWAtaw
-         /5XSTf7WXNO01rT/73qSVb4sDuWLke0B18Sx72uSg7+wbT8asBBfIW5Usi1elSf97/eb
-         LU5fxAD3gPwISBnjvYm4MF9Pe4jFD7oE8fbzbr0pldF/07Na8k1+0ySPCxVgvHR3YncT
-         Ve7A==
-X-Gm-Message-State: AOJu0YxlqxAFmB5Ra5GkuPXV5drskDmLbdeBIX4YooT9qonKpMrGrols
-        OypIyZ2K39vEfvlXOXo4uopFbKNEMl0SgcZajhY=
-X-Google-Smtp-Source: AGHT+IHD+fSj04mVDZzTiyO1sIs5ARDT8bN/p7bpEwVywaeFyhCtIvsvjFTdr/IzYGHNBQNRsGY8LA==
-X-Received: by 2002:a05:6512:3c95:b0:500:acf1:b42f with SMTP id h21-20020a0565123c9500b00500acf1b42fmr322088lfv.53.1694741328035;
-        Thu, 14 Sep 2023 18:28:48 -0700 (PDT)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
-        by smtp.gmail.com with ESMTPSA id w7-20020aa7da47000000b0052e9b50dafdsm1575836eds.33.2023.09.14.18.28.46
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Sep 2023 18:28:46 -0700 (PDT)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-98377c5d53eso204399866b.0
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 18:28:46 -0700 (PDT)
-X-Received: by 2002:a17:906:3191:b0:9a5:d899:cc36 with SMTP id
- 17-20020a170906319100b009a5d899cc36mr143392ejy.2.1694741326159; Thu, 14 Sep
- 2023 18:28:46 -0700 (PDT)
+        Thu, 14 Sep 2023 22:03:46 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 485421AE
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Sep 2023 19:03:42 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38F22uE821916782, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38F22uE821916782
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 15 Sep 2023 10:02:56 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Fri, 15 Sep 2023 10:02:55 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 15 Sep 2023 10:02:55 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
+ RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
+ 15.01.2375.007; Fri, 15 Sep 2023 10:02:55 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "pagadala.yesu.anjaneyulu@intel.com" 
+        <pagadala.yesu.anjaneyulu@intel.com>,
+        =?utf-8?B?VGhvbWFzIEjDvGhu?= <thomas.huehn@hs-nordhausen.de>
+Subject: RE: [PATCH wireless] wifi: mac80211: fix mesh id corruption on 32 bit systems
+Thread-Topic: [PATCH wireless] wifi: mac80211: fix mesh id corruption on 32
+ bit systems
+Thread-Index: AQHZ5f9l3dLA861qLUuiEWPplpm2dbAbIkOg
+Date:   Fri, 15 Sep 2023 02:02:55 +0000
+Message-ID: <7e241b77171741a99dfb68ded905492e@realtek.com>
+References: <20230913050134.53536-1-nbd@nbd.name>
+In-Reply-To: <20230913050134.53536-1-nbd@nbd.name>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-originating-ip: [172.21.69.25]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <PA4PR04MB9638B8753EFD81E174E55BC3D114A@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <PA4PR04MB96381E2BC08BD1B636067413D1F7A@PA4PR04MB9638.eurprd04.prod.outlook.com>
-In-Reply-To: <PA4PR04MB96381E2BC08BD1B636067413D1F7A@PA4PR04MB9638.eurprd04.prod.outlook.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 14 Sep 2023 18:28:31 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXP9rytcdS1Ao4RbfEULU2kwm4fRiu1MC1H59HABWGPdEg@mail.gmail.com>
-Message-ID: <CA+ASDXP9rytcdS1Ao4RbfEULU2kwm4fRiu1MC1H59HABWGPdEg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/1] Patch History
-To:     David Lin <yu-hao.lin@nxp.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "amitkarwar@gmail.com" <amitkarwar@gmail.com>,
-        "ganapathi017@gmail.com" <ganapathi017@gmail.com>,
-        "huxinming820@gmail.com" <huxinming820@gmail.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        Francesco Dolcini <francesco@dolcini.it>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KSE-AntiSpam-Interceptor-Info: fallback
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 11:42=E2=80=AFPM David Lin <yu-hao.lin@nxp.com> wro=
-te:
->
-> Hi Kalle,
->
->         Patch v4 (https://patchwork.kernel.org/project/linux-wireless/pat=
-ch/PA4PR04MB963838F12BADC1B9FD377CB7D114A@PA4PR04MB9638.eurprd04.prod.outlo=
-ok.com/) for host mlme had been submitted for a while.
->
->         Current state of this patch is "Deferred". I wonder when can this=
- patch be reviewed and merged.
->
->         Is there anything I can do to speed up the acceptance of this pat=
-ch by upstream?
-
-You still haven't sent this to the correct maintainers (i.e., me) for
-one. I also thought there were outstanding unaddressed comments from
-Francesco. And given how much Francesco looked, I'd appreciate getting
-his Reviewed-by when he's actually happy with it.
-
-(Like I said earlier, I'm not exactly happy that y'all are failing to
-maintain this driver, but then insisting the community review and
-accept new features. At least if your paying customers will help out
-this process, the bargain is less-bad...)
-
-Brian
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRmVsaXggRmlldGthdSA8
+bmJkQG5iZC5uYW1lPg0KPiBTZW50OiBXZWRuZXNkYXksIFNlcHRlbWJlciAxMywgMjAyMyAxOjAy
+IFBNDQo+IFRvOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IGpvaGFubmVz
+QHNpcHNvbHV0aW9ucy5uZXQ7IHBhZ2FkYWxhLnllc3UuYW5qYW5leXVsdUBpbnRlbC5jb207IFRo
+b21hcyBIw7xobg0KPiA8dGhvbWFzLmh1ZWhuQGhzLW5vcmRoYXVzZW4uZGU+DQo+IFN1YmplY3Q6
+IFtQQVRDSCB3aXJlbGVzc10gd2lmaTogbWFjODAyMTE6IGZpeCBtZXNoIGlkIGNvcnJ1cHRpb24g
+b24gMzIgYml0IHN5c3RlbXMNCj4gDQo+IFNpbmNlIHRoZSBjaGFuZ2VkIGZpZWxkIHNpemUgd2Fz
+IGluY3JlYXNlZCB0byB1NjQsIG1lc2hfYnNzX2luZm9fY2hhbmdlZA0KPiBwdWxscyBpbnZhbGlk
+IGJpdHMgZnJvbSB0aGUgZmlyc3QgMyBieXRlcyBvZiB0aGUgbWVzaCBpZCwgY2xlYXJzIHRoZW0s
+IGFuZA0KPiBwYXNzZXMgdGhlbSBvbiB0byBpZWVlODAyMTFfbGlua19pbmZvX2NoYW5nZV9ub3Rp
+ZnksIGJlY2F1c2UNCj4gaWZtc2gtPm1ic3NfY2hhbmdlZCB3YXMgbm90IHVwZGF0ZWQgdG8gbWF0
+Y2ggaXRzIHNpemUuDQo+IEZpeCB0aGlzIGJ5IHR1cm5pbmcgaW50byBpZm1zaC0+bWJzc19jaGFu
+Z2VkIGludG8gYW4gdW5zaWduZWQgbG9uZyBhcnJheSB3aXRoDQo+IDY0IGJpdCBzaXplLg0KPiAN
+Cj4gRml4ZXM6IDE1ZGRiYTVmNDMxMSAoIndpZmk6IG1hYzgwMjExOiBjb25zaXN0ZW50bHkgdXNl
+IHU2NCBmb3IgQlNTIGNoYW5nZXMiKQ0KPiBSZXBvcnRlZC1ieTogVGhvbWFzIEjDvGhuIDx0aG9t
+YXMuaHVlaG5AaHMtbm9yZGhhdXNlbi5kZT4NCj4gU2lnbmVkLW9mZi1ieTogRmVsaXggRmlldGth
+dSA8bmJkQG5iZC5uYW1lPg0KPiAtLS0NCj4gIG5ldC9tYWM4MDIxMS9pZWVlODAyMTFfaS5oIHwg
+MiArLQ0KPiAgbmV0L21hYzgwMjExL21lc2guYyAgICAgICAgfCA4ICsrKystLS0tDQo+ICAyIGZp
+bGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYg
+LS1naXQgYS9uZXQvbWFjODAyMTEvaWVlZTgwMjExX2kuaCBiL25ldC9tYWM4MDIxMS9pZWVlODAy
+MTFfaS5oDQo+IGluZGV4IGI4NDY1ZDIwNTA3Ni4uM2M1ZGJmOTU2ODVkIDEwMDY0NA0KPiAtLS0g
+YS9uZXQvbWFjODAyMTEvaWVlZTgwMjExX2kuaA0KPiArKysgYi9uZXQvbWFjODAyMTEvaWVlZTgw
+MjExX2kuaA0KPiBAQCAtNjgyLDcgKzY4Miw3IEBAIHN0cnVjdCBpZWVlODAyMTFfaWZfbWVzaCB7
+DQo+ICAgICAgICAgc3RydWN0IHRpbWVyX2xpc3QgbWVzaF9wYXRoX3Jvb3RfdGltZXI7DQo+IA0K
+PiAgICAgICAgIHVuc2lnbmVkIGxvbmcgd3JrcV9mbGFnczsNCj4gLSAgICAgICB1bnNpZ25lZCBs
+b25nIG1ic3NfY2hhbmdlZDsNCj4gKyAgICAgICB1bnNpZ25lZCBsb25nIG1ic3NfY2hhbmdlZFs2
+NCAvIEJJVFNfUEVSX0xPTkddOw0KDQptYnNzX2NoYW5nZWQgaXMgYSBiaXRtYXAsIHNvDQoNCkRF
+Q0xBUkVfQklUTUFQKG1ic3NfY2hhbmdlZCwgNjQpOw0KDQo+IA0KPiAgICAgICAgIGJvb2wgdXNl
+cnNwYWNlX2hhbmRsZXNfZGZzOw0KPiANCj4gZGlmZiAtLWdpdCBhL25ldC9tYWM4MDIxMS9tZXNo
+LmMgYi9uZXQvbWFjODAyMTEvbWVzaC5jDQo+IGluZGV4IDBkMGZiYWU1MWI2MS4uMDkyYTFkYzcz
+MTRkIDEwMDY0NA0KPiAtLS0gYS9uZXQvbWFjODAyMTEvbWVzaC5jDQo+ICsrKyBiL25ldC9tYWM4
+MDIxMS9tZXNoLmMNCj4gQEAgLTExNzUsNyArMTE3NSw3IEBAIHZvaWQgaWVlZTgwMjExX21ic3Nf
+aW5mb19jaGFuZ2Vfbm90aWZ5KHN0cnVjdCBpZWVlODAyMTFfc3ViX2lmX2RhdGEgKnNkYXRhLA0K
+PiANCj4gICAgICAgICAvKiBpZiB3ZSByYWNlIHdpdGggcnVubmluZyB3b3JrLCB3b3JzdCBjYXNl
+IHRoaXMgd29yayBiZWNvbWVzIGEgbm9vcCAqLw0KPiAgICAgICAgIGZvcl9lYWNoX3NldF9iaXQo
+Yml0LCAmYml0cywgc2l6ZW9mKGNoYW5nZWQpICogQklUU19QRVJfQllURSkNCj4gLSAgICAgICAg
+ICAgICAgIHNldF9iaXQoYml0LCAmaWZtc2gtPm1ic3NfY2hhbmdlZCk7DQo+ICsgICAgICAgICAg
+ICAgICBzZXRfYml0KGJpdCwgaWZtc2gtPm1ic3NfY2hhbmdlZCk7DQo+ICAgICAgICAgc2V0X2Jp
+dChNRVNIX1dPUktfTUJTU19DSEFOR0VELCAmaWZtc2gtPndya3FfZmxhZ3MpOw0KPiAgICAgICAg
+IHdpcGh5X3dvcmtfcXVldWUoc2RhdGEtPmxvY2FsLT5ody53aXBoeSwgJnNkYXRhLT53b3JrKTsN
+Cj4gIH0NCj4gQEAgLTEyNTcsNyArMTI1Nyw3IEBAIHZvaWQgaWVlZTgwMjExX3N0b3BfbWVzaChz
+dHJ1Y3QgaWVlZTgwMjExX3N1Yl9pZl9kYXRhICpzZGF0YSkNCj4gDQo+ICAgICAgICAgLyogY2xl
+YXIgYW55IG1lc2ggd29yayAoZm9yIG5leHQgam9pbikgd2UgbWF5IGhhdmUgYWNjcnVlZCAqLw0K
+PiAgICAgICAgIGlmbXNoLT53cmtxX2ZsYWdzID0gMDsNCj4gLSAgICAgICBpZm1zaC0+bWJzc19j
+aGFuZ2VkID0gMDsNCj4gKyAgICAgICBtZW1zZXQoaWZtc2gtPm1ic3NfY2hhbmdlZCwgMCwgc2l6
+ZW9mKGlmbXNoLT5tYnNzX2NoYW5nZWQpKTsNCg0KYml0bWFwX3plcm8oaWZtc2gtPm1ic3NfY2hh
+bmdlZCwgNjQpOw0KDQpiaXRtYXBfemVybygpIGNhbiBjaG9vc2UganVzdCAnPTAnIG9yIG1lbXNl
+dCgwKSBhY2NvcmRpbmcgdG8gQklUU19QRVJfTE9ORy4gDQoNCj4gDQo+ICAgICAgICAgbG9jYWwt
+PmZpZl9vdGhlcl9ic3MtLTsNCj4gICAgICAgICBhdG9taWNfZGVjKCZsb2NhbC0+aWZmX2FsbG11
+bHRpcyk7DQo+IEBAIC0xNzIyLDkgKzE3MjIsOSBAQCBzdGF0aWMgdm9pZCBtZXNoX2Jzc19pbmZv
+X2NoYW5nZWQoc3RydWN0IGllZWU4MDIxMV9zdWJfaWZfZGF0YSAqc2RhdGEpDQo+ICAgICAgICAg
+dTMyIGJpdDsNCj4gICAgICAgICB1NjQgY2hhbmdlZCA9IDA7DQo+IA0KPiAtICAgICAgIGZvcl9l
+YWNoX3NldF9iaXQoYml0LCAmaWZtc2gtPm1ic3NfY2hhbmdlZCwNCj4gKyAgICAgICBmb3JfZWFj
+aF9zZXRfYml0KGJpdCwgaWZtc2gtPm1ic3NfY2hhbmdlZCwNCj4gICAgICAgICAgICAgICAgICAg
+ICAgICAgIHNpemVvZihjaGFuZ2VkKSAqIEJJVFNfUEVSX0JZVEUpIHsNCj4gLSAgICAgICAgICAg
+ICAgIGNsZWFyX2JpdChiaXQsICZpZm1zaC0+bWJzc19jaGFuZ2VkKTsNCj4gKyAgICAgICAgICAg
+ICAgIGNsZWFyX2JpdChiaXQsIGlmbXNoLT5tYnNzX2NoYW5nZWQpOw0KPiAgICAgICAgICAgICAg
+ICAgY2hhbmdlZCB8PSBCSVQoYml0KTsNCj4gICAgICAgICB9DQo+IA0KPiAtLQ0KPiAyLjQxLjAN
+Cg0K
