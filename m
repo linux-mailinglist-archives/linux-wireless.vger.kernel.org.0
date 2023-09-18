@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 247BB7A480B
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Sep 2023 13:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E9677A4814
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Sep 2023 13:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239751AbjIRLLq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Sep 2023 07:11:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36954 "EHLO
+        id S241392AbjIRLMY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Sep 2023 07:12:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241525AbjIRLLe (ORCPT
+        with ESMTP id S241171AbjIRLLr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Sep 2023 07:11:34 -0400
+        Mon, 18 Sep 2023 07:11:47 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA22399
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Sep 2023 04:11:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 805E7C3
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Sep 2023 04:11:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695035488; x=1726571488;
+  t=1695035501; x=1726571501;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=J1bBLce+jGNc+E6bmMNdLb8a/41nDF9Tww7XllDfufM=;
-  b=XEHahJo0/b6/8LZ5eFko+lOZ5rxhrdNtbN7HrBGJRuYFwaC444rTUI+H
-   A34HR4OofZW8IYN+g3vY+PHnEWcQCFi/PjezsEAY38VT21JfTRBK0l/6D
-   LVA/pugjmZyMcFlm2Xqyni47bKikIZ1IQXHrFtBYDrMGuOolLqv5DL3Mu
-   msNBSS+eFK81dSbk+m2pm/eJUtcY/cDDOc1NQpJqPedDvDvtG9I9Bm/UG
-   irFeT3gNOejSzkkV/umVQ6oz7yvJNI78JePPWsf74BdL3FVQglRu2KxLu
-   SBketZeM2ig4GM/euwcs9T15EPgFzsfl3Ym7tfMXaJ6VZhuRsHo02NYwK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="378535700"
+  bh=53pYuu+MEOeCHl72WU349izM3mAA9KUXodCVH992Q5U=;
+  b=iCNGEbSUyUmGdaVFbp5nayQjOQrp+v++ExcbiwLnGbZA1ek34w8kANfB
+   mDJOVuTbTU5xwQrZpkmxoUbqIsPCjIHh9W5ANhgX62Hna8yp7k35k2oR3
+   4AJx9bUqzjyIbQjKqkZWxjkIuBkwnEslK7VgSxNlhqm7DgtswZ5kOqAE4
+   9WNZK0vQdbCiV+3CojQaV3EWYVz846VionGm4HDe+EO50OLPzKryqrd0B
+   ZoBxfAjrDW+MbSTycVs03nQ9eX+hIeJDh4rg9oWfeRa2m37F9jm6PZVZK
+   0qTTxdRzeLoXq4/QUzEqAs4AszLjJA4fRFbT05bW0EpKDaB4WqgxTbHVy
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="378535741"
 X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
-   d="scan'208";a="378535700"
+   d="scan'208";a="378535741"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:11:25 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:11:32 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="861025235"
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="861025257"
 X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
-   d="scan'208";a="861025235"
+   d="scan'208";a="861025257"
 Received: from guyarad-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.215.14])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:11:20 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:11:25 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Ayala Beker <ayala.beker@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 02/18] wifi: mac80211: update the rx_chains after set_antenna()
-Date:   Mon, 18 Sep 2023 14:10:47 +0300
-Message-Id: <20230918140607.d7373054dc25.I904223c868c77cf2ba132a3088fe6506fcbb443b@changeid>
+Subject: [PATCH 03/18] wifi: mac80211: don't connect to an AP while it's in a CSA process
+Date:   Mon, 18 Sep 2023 14:10:48 +0300
+Message-Id: <20230918140607.dca69ce27501.I9745c695f3403b259ad000ce94110588a836c04a@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230918111103.435195-1-gregory.greenman@intel.com>
 References: <20230918111103.435195-1-gregory.greenman@intel.com>
@@ -62,44 +62,85 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Ayala Beker <ayala.beker@intel.com>
 
-rx_chains was set only upon registration and it we rely on it for the
-active chains upon SMPS configuration after association.
+Connection to an AP that is running a CSA flow may end up with a
+failure as the AP might change its channel during the connection
+flow while we do not track the channel change yet.
+Avoid that by rejecting a connection to such an AP.
 
-When we use the set_antenna() API to limit the rx_chains from 2 to 1,
-this caused issues with iwlwifi since we still had 2 active_chains
-requested.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Ayala Beker <ayala.beker@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/cfg.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/mac80211/mlme.c | 34 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index e751d4eba8f5..6b3ccb55aae5 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4044,11 +4044,17 @@ ieee80211_update_mgmt_frame_registrations(struct wiphy *wiphy,
- static int ieee80211_set_antenna(struct wiphy *wiphy, u32 tx_ant, u32 rx_ant)
- {
- 	struct ieee80211_local *local = wiphy_priv(wiphy);
-+	int ret;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index a211f594f25a..a85873f305bf 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7015,6 +7015,7 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	struct ieee80211_mgd_auth_data *auth_data;
+ 	struct ieee80211_link_data *link;
++	const struct element *csa_elem, *ecsa_elem;
+ 	u16 auth_alg;
+ 	int err;
+ 	bool cont_auth;
+@@ -7057,6 +7058,22 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 	if (ifmgd->assoc_data)
+ 		return -EBUSY;
  
- 	if (local->started)
- 		return -EOPNOTSUPP;
- 
--	return drv_set_antenna(local, tx_ant, rx_ant);
-+	ret = drv_set_antenna(local, tx_ant, rx_ant);
-+	if (ret)
-+		return ret;
++	rcu_read_lock();
++	csa_elem = ieee80211_bss_get_elem(req->bss, WLAN_EID_CHANNEL_SWITCH);
++	ecsa_elem = ieee80211_bss_get_elem(req->bss,
++					   WLAN_EID_EXT_CHANSWITCH_ANN);
++	if ((csa_elem &&
++	     csa_elem->datalen == sizeof(struct ieee80211_channel_sw_ie) &&
++	     ((struct ieee80211_channel_sw_ie *)csa_elem->data)->count != 0) ||
++	    (ecsa_elem &&
++	     ecsa_elem->datalen == sizeof(struct ieee80211_ext_chansw_ie) &&
++	     ((struct ieee80211_ext_chansw_ie *)ecsa_elem->data)->count != 0)) {
++		rcu_read_unlock();
++		sdata_info(sdata, "AP is in CSA process, reject auth\n");
++		return -EINVAL;
++	}
++	rcu_read_unlock();
 +
-+	local->rx_chains = hweight8(rx_ant);
-+	return 0;
- }
- 
- static int ieee80211_get_antenna(struct wiphy *wiphy, u32 *tx_ant, u32 *rx_ant)
+ 	auth_data = kzalloc(sizeof(*auth_data) + req->auth_data_len +
+ 			    req->ie_len, GFP_KERNEL);
+ 	if (!auth_data)
+@@ -7364,7 +7381,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	struct ieee80211_mgd_assoc_data *assoc_data;
+-	const struct element *ssid_elem;
++	const struct element *ssid_elem, *csa_elem, *ecsa_elem;
+ 	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
+ 	ieee80211_conn_flags_t conn_flags = 0;
+ 	struct ieee80211_link_data *link;
+@@ -7394,6 +7411,21 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 		kfree(assoc_data);
+ 		return -EINVAL;
+ 	}
++
++	csa_elem = ieee80211_bss_get_elem(cbss, WLAN_EID_CHANNEL_SWITCH);
++	ecsa_elem = ieee80211_bss_get_elem(cbss, WLAN_EID_EXT_CHANSWITCH_ANN);
++	if ((csa_elem &&
++	     csa_elem->datalen == sizeof(struct ieee80211_channel_sw_ie) &&
++	     ((struct ieee80211_channel_sw_ie *)csa_elem->data)->count != 0) ||
++	    (ecsa_elem &&
++	     ecsa_elem->datalen == sizeof(struct ieee80211_ext_chansw_ie) &&
++	     ((struct ieee80211_ext_chansw_ie *)ecsa_elem->data)->count != 0)) {
++		sdata_info(sdata, "AP is in CSA process, reject assoc\n");
++		rcu_read_unlock();
++		kfree(assoc_data);
++		return -EINVAL;
++	}
++
+ 	memcpy(assoc_data->ssid, ssid_elem->data, ssid_elem->datalen);
+ 	assoc_data->ssid_len = ssid_elem->datalen;
+ 	memcpy(vif_cfg->ssid, assoc_data->ssid, assoc_data->ssid_len);
 -- 
 2.38.1
 
