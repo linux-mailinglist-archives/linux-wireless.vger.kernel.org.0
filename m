@@ -2,51 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC0F27A480D
+	by mail.lfdr.de (Postfix) with ESMTP id 702D47A480C
 	for <lists+linux-wireless@lfdr.de>; Mon, 18 Sep 2023 13:12:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241243AbjIRLLt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Sep 2023 07:11:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36956 "EHLO
+        id S241262AbjIRLLs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Sep 2023 07:11:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241512AbjIRLLd (ORCPT
+        with ESMTP id S241513AbjIRLLd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 18 Sep 2023 07:11:33 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3DAAE6
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Sep 2023 04:11:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 404AE94
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Sep 2023 04:11:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1695035487; x=1726571487;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Z7ZkAsYv6A3V4CbXA0U2r76lZE2XwcMiq0/pRHTY7wA=;
-  b=YB0RPAdwr9kiF7PKOs+4kKSUHQHT1adsML4ZHAEqfypKjcuRrVK0TXXN
-   0qHEFBzjoCYVn6xUrVH4uTaXZqZuva5FX84oWFz7gHTTa0CC618a/p0WS
-   Eal4be5/O5QRvyy/Jtm8dR7TrXPWwZ4X4vYhXbJzKXDnDZb5CBhxy3of2
-   UlAFEYK+TkHk73dcfqsmYmyv2+RQu5X1W+mhV1CLh2GA4qTbTtfh5OBGm
-   pqkt2xX9/siEhGd1pwuJq+PIq+3QnsGK0+9VaxdOq+9WZaxoYMhAwL0m+
-   bxOxDdFNcOfmABXJ4jiBx2s+KQeDF99esp1B8BpNGPQreZA7z6XYZjiw+
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="378535675"
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=WopwXsPnkq4XMKFk+nQchi1Eh758KJdpLt5PxrzLPI0=;
+  b=kEZ8YpMCO4p+Yn51ORg6sg3xBwMTOPseo5wgkD/r+oa/+dNv9E9Q+ym+
+   +5gcoJWS1+UWq1+3MMuanJ139Gk0OygwWzzjcP+MdJgateXrkGaewhp7X
+   l58/LYerynF+7eJIjCwQvIUyI6WaNhM7wHGA8H5m23QPPLOqNsyOee+Rj
+   YxCG6t8+U/rEYs0FYb8B+98ECNWyj8mLw0thm5+0nfig89jRqz0NMA4qq
+   Bm7cXm83Sb4jUMVPxzakd6XOu6yQX6XB7BYGRVNWTY7LCLCqJzRGwnrh0
+   KJGtN/BOsSMrvrORuNCsYUfjgDmc6Fzn2TW8HUgMY6YIJl/bbasnW4suS
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="378535686"
 X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
-   d="scan'208";a="378535675"
+   d="scan'208";a="378535686"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:11:17 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:11:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="861025177"
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="861025202"
 X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
-   d="scan'208";a="861025177"
+   d="scan'208";a="861025202"
 Received: from guyarad-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.215.14])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:11:15 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:11:18 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 00/18] cfg80211/mac80211 patches from our internal tree 2023-09-18 
-Date:   Mon, 18 Sep 2023 14:10:45 +0300
-Message-Id: <20230918111103.435195-1-gregory.greenman@intel.com>
+Subject: [PATCH 01/18] wifi: mac80211: use bandwidth indication element for CSA
+Date:   Mon, 18 Sep 2023 14:10:46 +0300
+Message-Id: <20230918140607.1006d1b6e920.If4f24a61cd634ab1e50eba43899b9e992bf25602@changeid>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230918111103.435195-1-gregory.greenman@intel.com>
+References: <20230918111103.435195-1-gregory.greenman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -59,72 +62,240 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Hi,
+In CSA, parse the (EHT) bandwidth indication element and
+use it (in fact prefer it if present).
 
-A bunch of patches from our internal tree with mac80211 and
-cfg80211 changes. It's the usual developement, cleanups and
-bugfixes.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+---
+ include/linux/ieee80211.h  | 23 +++++++++++++++++++++
+ net/mac80211/ieee80211_i.h |  3 ++-
+ net/mac80211/mlme.c        |  5 +++--
+ net/mac80211/spectmgmt.c   | 13 ++++++++++--
+ net/mac80211/util.c        | 42 ++++++++++++++++++++++++++------------
+ 5 files changed, 68 insertions(+), 18 deletions(-)
 
-The changes are:
-
-* add implementation for set_antenna API
-* CSA fixes
-* initial support for TID to link mapping
-* MLO improvements
-* fixes and cleanups
-
-Thanks,
-Gregory
-
-Ayala Beker (3):
-  wifi: mac80211: don't connect to an AP while it's in a CSA process
-  wifi: mac80211: add support for parsing TID to Link mapping element
-  wifi: mac80211: support handling of advertised TID-to-link mapping
-
-Benjamin Berg (3):
-  wifi: cfg80211: report per-link errors during association
-  wifi: mac80211: report per-link error during association
-  wifi: mac80211: reject MLO channel configuration if not supported
-
-Emmanuel Grumbach (1):
-  wifi: mac80211: update the rx_chains after set_antenna()
-
-Ilan Peer (3):
-  wifi: cfg80211: Fix 6GHz scan configuration
-  wifi: mac80211: Notify the low level driver on change in MLO valid links
-  wifi: mac80211_hwsim: Handle BSS_CHANGED_VALID_LINKS
-
-Johannes Berg (8):
-  wifi: mac80211: use bandwidth indication element for CSA
-  wifi: mac80211: relax RCU check in for_each_vif_active_link()
-  wifi: mac80211: allow for_each_sta_active_link() under RCU
-  wifi: cfg80211: reg: describe return values in kernel-doc
-  wifi: mac80211: describe return values in kernel-doc
-  wifi: mac80211_hwsim: move kernel-doc description
-  wifi: mac80211: work around Cisco AP 9115 VHT MPDU length
-  wifi: mac80211: support antenna control in injection
-
- drivers/net/wireless/virtual/mac80211_hwsim.c |  26 +-
- include/linux/ieee80211.h                     |  76 +++++
- include/net/cfg80211.h                        |   3 +
- include/net/mac80211.h                        |  12 +-
- net/mac80211/cfg.c                            |  11 +-
- net/mac80211/ibss.c                           |   2 +-
- net/mac80211/ieee80211_i.h                    |  22 +-
- net/mac80211/main.c                           |   3 +-
- net/mac80211/mesh_plink.c                     |   2 +-
- net/mac80211/mlme.c                           | 284 +++++++++++++++++-
- net/mac80211/spectmgmt.c                      |  13 +-
- net/mac80211/tx.c                             |  16 +
- net/mac80211/util.c                           |  52 +++-
- net/mac80211/vht.c                            |  16 +-
- net/wireless/nl80211.c                        |  50 ++-
- net/wireless/reg.c                            |  16 +-
- net/wireless/scan.c                           |   4 +
- 17 files changed, 555 insertions(+), 53 deletions(-)
-
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 340d7e0f6bf7..f11b7022d9eb 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -3139,6 +3139,28 @@ ieee80211_eht_oper_size_ok(const u8 *data, u8 len)
+ 	return len >= needed;
+ }
+ 
++#define IEEE80211_BW_IND_DIS_SUBCH_PRESENT	BIT(1)
++
++struct ieee80211_bandwidth_indication {
++	u8 params;
++	struct ieee80211_eht_operation_info info;
++} __packed;
++
++static inline bool
++ieee80211_bandwidth_indication_size_ok(const u8 *data, u8 len)
++{
++	const struct ieee80211_bandwidth_indication *bwi = (const void *)data;
++
++	if (len < sizeof(*bwi))
++		return false;
++
++	if (bwi->params & IEEE80211_BW_IND_DIS_SUBCH_PRESENT &&
++	    len < sizeof(*bwi) + 2)
++		return false;
++
++	return true;
++}
++
+ #define LISTEN_INT_USF	GENMASK(15, 14)
+ #define LISTEN_INT_UI	GENMASK(13, 0)
+ 
+@@ -3596,6 +3618,7 @@ enum ieee80211_eid_ext {
+ 	WLAN_EID_EXT_EHT_OPERATION = 106,
+ 	WLAN_EID_EXT_EHT_MULTI_LINK = 107,
+ 	WLAN_EID_EXT_EHT_CAPABILITY = 108,
++	WLAN_EID_EXT_BANDWIDTH_INDICATION = 135,
+ };
+ 
+ /* Action category code */
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index d5c5f865323c..e7856336b5c6 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1677,6 +1677,7 @@ struct ieee802_11_elems {
+ 	const struct ieee80211_eht_operation *eht_operation;
+ 	const struct ieee80211_multi_link_elem *ml_basic;
+ 	const struct ieee80211_multi_link_elem *ml_reconf;
++	const struct ieee80211_bandwidth_indication *bandwidth_indication;
+ 
+ 	/* length of them, respectively */
+ 	u8 ext_capab_len;
+@@ -2463,7 +2464,7 @@ bool ieee80211_chandef_vht_oper(struct ieee80211_hw *hw, u32 vht_cap_info,
+ 				const struct ieee80211_vht_operation *oper,
+ 				const struct ieee80211_ht_operation *htop,
+ 				struct cfg80211_chan_def *chandef);
+-void ieee80211_chandef_eht_oper(const struct ieee80211_eht_operation *eht_oper,
++void ieee80211_chandef_eht_oper(const struct ieee80211_eht_operation_info *info,
+ 				bool support_160, bool support_320,
+ 				struct cfg80211_chan_def *chandef);
+ bool ieee80211_chandef_he_6ghz_oper(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index e8f16ed235c3..a211f594f25a 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -109,7 +109,8 @@ ieee80211_extract_dis_subch_bmap(const struct ieee80211_eht_operation *eht_oper,
+ 		return 0;
+ 
+ 	/* set 160/320 supported to get the full AP definition */
+-	ieee80211_chandef_eht_oper(eht_oper, true, true, &ap_chandef);
++	ieee80211_chandef_eht_oper((const void *)eht_oper->optional,
++				   true, true, &ap_chandef);
+ 	ap_center_freq = ap_chandef.center_freq1;
+ 	ap_bw = 20 * BIT(u8_get_bits(info->control,
+ 				     IEEE80211_EHT_OPER_CHAN_WIDTH));
+@@ -387,7 +388,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 	if (eht_oper && (eht_oper->params & IEEE80211_EHT_OPER_INFO_PRESENT)) {
+ 		struct cfg80211_chan_def eht_chandef = *chandef;
+ 
+-		ieee80211_chandef_eht_oper(eht_oper,
++		ieee80211_chandef_eht_oper((const void *)eht_oper->optional,
+ 					   eht_chandef.width ==
+ 					   NL80211_CHAN_WIDTH_160,
+ 					   false, &eht_chandef);
+diff --git a/net/mac80211/spectmgmt.c b/net/mac80211/spectmgmt.c
+index 871cdac2d0f4..55959b0b24c5 100644
+--- a/net/mac80211/spectmgmt.c
++++ b/net/mac80211/spectmgmt.c
+@@ -9,7 +9,7 @@
+  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+  * Copyright 2007-2008, Intel Corporation
+  * Copyright 2008, Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2018, 2020, 2022 Intel Corporation
++ * Copyright (C) 2018, 2020, 2022-2023 Intel Corporation
+  */
+ 
+ #include <linux/ieee80211.h>
+@@ -33,12 +33,14 @@ int ieee80211_parse_ch_switch_ie(struct ieee80211_sub_if_data *sdata,
+ 	struct cfg80211_chan_def new_vht_chandef = {};
+ 	const struct ieee80211_sec_chan_offs_ie *sec_chan_offs;
+ 	const struct ieee80211_wide_bw_chansw_ie *wide_bw_chansw_ie;
++	const struct ieee80211_bandwidth_indication *bwi;
+ 	int secondary_channel_offset = -1;
+ 
+ 	memset(csa_ie, 0, sizeof(*csa_ie));
+ 
+ 	sec_chan_offs = elems->sec_chan_offs;
+ 	wide_bw_chansw_ie = elems->wide_bw_chansw_ie;
++	bwi = elems->bandwidth_indication;
+ 
+ 	if (conn_flags & (IEEE80211_CONN_DISABLE_HT |
+ 			  IEEE80211_CONN_DISABLE_40MHZ)) {
+@@ -132,7 +134,14 @@ int ieee80211_parse_ch_switch_ie(struct ieee80211_sub_if_data *sdata,
+ 		break;
+ 	}
+ 
+-	if (wide_bw_chansw_ie) {
++	if (bwi) {
++		/* start with the CSA one */
++		new_vht_chandef = csa_ie->chandef;
++		/* and update the width accordingly */
++		/* FIXME: support 160/320 */
++		ieee80211_chandef_eht_oper(&bwi->info, true, true,
++					   &new_vht_chandef);
++	} else if (wide_bw_chansw_ie) {
+ 		u8 new_seg1 = wide_bw_chansw_ie->new_center_freq_seg1;
+ 		struct ieee80211_vht_operation vht_oper = {
+ 			.chan_width =
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 88f714a75862..a1e18938ce52 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -990,6 +990,11 @@ ieee80211_parse_extension_element(u32 *crc,
+ 			}
+ 		}
+ 		break;
++	case WLAN_EID_EXT_BANDWIDTH_INDICATION:
++		if (ieee80211_bandwidth_indication_size_ok(data, len))
++			elems->bandwidth_indication = data;
++		calc_crc = true;
++		break;
+ 	}
+ 
+ 	if (crc && calc_crc)
+@@ -1005,11 +1010,11 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
+ 	bool calc_crc = params->filter != 0;
+ 	DECLARE_BITMAP(seen_elems, 256);
+ 	u32 crc = params->crc;
+-	const u8 *ie;
+ 
+ 	bitmap_zero(seen_elems, 256);
+ 
+ 	for_each_element(elem, params->start, params->len) {
++		const struct element *subelem;
+ 		bool elem_parse_failed;
+ 		u8 id = elem->id;
+ 		u8 elen = elem->datalen;
+@@ -1267,15 +1272,27 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
+ 			}
+ 			/*
+ 			 * This is a bit tricky, but as we only care about
+-			 * the wide bandwidth channel switch element, so
+-			 * just parse it out manually.
++			 * a few elements, parse them out manually.
+ 			 */
+-			ie = cfg80211_find_ie(WLAN_EID_WIDE_BW_CHANNEL_SWITCH,
+-					      pos, elen);
+-			if (ie) {
+-				if (ie[1] >= sizeof(*elems->wide_bw_chansw_ie))
++			subelem = cfg80211_find_elem(WLAN_EID_WIDE_BW_CHANNEL_SWITCH,
++						     pos, elen);
++			if (subelem) {
++				if (subelem->datalen >= sizeof(*elems->wide_bw_chansw_ie))
+ 					elems->wide_bw_chansw_ie =
+-						(void *)(ie + 2);
++						(void *)subelem->data;
++				else
++					elem_parse_failed = true;
++			}
++
++			subelem = cfg80211_find_ext_elem(WLAN_EID_EXT_BANDWIDTH_INDICATION,
++							 pos, elen);
++			if (subelem) {
++				const void *edata = subelem->data + 1;
++				u8 edatalen = subelem->datalen - 1;
++
++				if (ieee80211_bandwidth_indication_size_ok(edata,
++									   edatalen))
++					elems->bandwidth_indication = edata;
+ 				else
+ 					elem_parse_failed = true;
+ 			}
+@@ -3746,12 +3763,10 @@ bool ieee80211_chandef_vht_oper(struct ieee80211_hw *hw, u32 vht_cap_info,
+ 	return true;
+ }
+ 
+-void ieee80211_chandef_eht_oper(const struct ieee80211_eht_operation *eht_oper,
++void ieee80211_chandef_eht_oper(const struct ieee80211_eht_operation_info *info,
+ 				bool support_160, bool support_320,
+ 				struct cfg80211_chan_def *chandef)
+ {
+-	struct ieee80211_eht_operation_info *info = (void *)eht_oper->optional;
+-
+ 	chandef->center_freq1 =
+ 		ieee80211_channel_to_frequency(info->ccfs0,
+ 					       chandef->chan->band);
+@@ -3920,8 +3935,9 @@ bool ieee80211_chandef_he_6ghz_oper(struct ieee80211_sub_if_data *sdata,
+ 		support_320 =
+ 			eht_phy_cap & IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
+ 
+-		ieee80211_chandef_eht_oper(eht_oper, support_160,
+-					   support_320, &he_chandef);
++		ieee80211_chandef_eht_oper((const void *)eht_oper->optional,
++					   support_160, support_320,
++					   &he_chandef);
+ 	}
+ 
+ 	if (!cfg80211_chandef_valid(&he_chandef)) {
 -- 
 2.38.1
 
