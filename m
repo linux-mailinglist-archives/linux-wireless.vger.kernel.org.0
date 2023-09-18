@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 848F47A4825
+	by mail.lfdr.de (Postfix) with ESMTP id D96057A4826
 	for <lists+linux-wireless@lfdr.de>; Mon, 18 Sep 2023 13:13:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237146AbjIRLNV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Sep 2023 07:13:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42030 "EHLO
+        id S241345AbjIRLNW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Sep 2023 07:13:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241433AbjIRLMf (ORCPT
+        with ESMTP id S241470AbjIRLMl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Sep 2023 07:12:35 -0400
+        Mon, 18 Sep 2023 07:12:41 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E47C910D
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Sep 2023 04:12:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B16812D
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Sep 2023 04:12:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695035535; x=1726571535;
+  t=1695035538; x=1726571538;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nk9yaiE40tY3rG0eHhncncPn4QSdtadwzRmF+nkFgJg=;
-  b=gy3k/UBNYSmSpHTISkJz5kYfrg5hAMbQnDIR4dcr/faLH2AzvIHsvxTP
-   MJITdAxDEfMOPIh23qjjxmKk5bwDsKiDZ4saN/TTmWHIzH2qVW+Exgg+s
-   ME8hSrXY+86nZxqnWm8DHNwj/auNJ0UUGxzlrDVwDiA9Mj0+qxJa1ExfK
-   vVZYcF8c22r6VCT80iawLpATqLswgpW7N+oZd8RkWbGGLOiLGsyx5Q65q
-   NS0gXgLLbUuVeEdW1nun9/dI4WRjMohZhid0iG13jpuirzZzHQ4vWrIGw
-   t4WNs3mcCUYcvaMAbr17xdYT+LEzbpilf6uNKUnYnLh9vcNlpsI4uVgGD
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="378535969"
+  bh=NFilMmbnn7Vd6N15dlNaVBm9ojE3sYiSH1o2VqK/saY=;
+  b=Loe6bch22O1H2D6fE47HqaJivfNB43lDo1XSTnNtHtHGGIJCRhTaf31T
+   Tp5BdJQ/rWOSvt+LeTklplsQWkwWTrP9D2gNytNUWjpA1ZvQwPUT6UsZA
+   UkDjOICu03RnV3INBZRGpV78iqgKCRn6vyPgbWOyEA2n8LysG8pfkeIa5
+   6CicUAoNui6wkhsscxbvwL+yXyLmSqpsVukgdsNp1NWxmnMhRM6r72WT9
+   QBBmPPGK7wk5pC/jJI8FyopNATeWtux0575XV7NEfY54d/ts99Wt3MT6d
+   6DmwYLeYmCjsGMTp6kMv4EZ75zfm+NgcES4eMlWYjp746vuK+n419bjpF
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="378535986"
 X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
-   d="scan'208";a="378535969"
+   d="scan'208";a="378535986"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:12:15 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:12:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="861025559"
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="861025581"
 X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; 
-   d="scan'208";a="861025559"
+   d="scan'208";a="861025581"
 Received: from guyarad-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.215.14])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:12:14 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 04:12:16 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Benjamin Berg <benjamin.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 16/18] wifi: cfg80211: report per-link errors during association
-Date:   Mon, 18 Sep 2023 14:11:01 +0300
-Message-Id: <20230918140607.164cd0ae846c.I40799998f02bf987acee1501a2522dc98bb6eb5a@changeid>
+Subject: [PATCH 17/18] wifi: mac80211: report per-link error during association
+Date:   Mon, 18 Sep 2023 14:11:02 +0300
+Message-Id: <20230918140607.043589fb2a4d.I8086c0fdbbf92537d6a8b8e80b33387fcfd5553d@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230918111103.435195-1-gregory.greenman@intel.com>
 References: <20230918111103.435195-1-gregory.greenman@intel.com>
@@ -64,153 +64,32 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-When one of the links (other than the assoc_link) is misconfigured
-and cannot work the association will fail. However, userspace was not
-able to tell that the operation only failed because of a problem with
-one of the links. Fix this, by allowing the driver to set a per-link
-error code and reporting the (first) offending link by setting the
-bad_attr accordingly.
-
-This only allows us to report the first error, but that is sufficient
-for userspace to e.g. remove the offending link and retry.
+With this cfg80211 can report the link that caused the error to
+userspace which is then able to react to it by e.g. removing the link
+from the association and retrying.
 
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- include/net/cfg80211.h |  3 +++
- net/wireless/nl80211.c | 50 +++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 47 insertions(+), 6 deletions(-)
+ net/mac80211/mlme.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 9af714431b22..0115fd9bf33a 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -2964,12 +2964,15 @@ struct cfg80211_auth_request {
-  * @elems_len: length of the elements
-  * @disabled: If set this link should be included during association etc. but it
-  *	should not be used until enabled by the AP MLD.
-+ * @error: per-link error code, must be <= 0. If there is an error, then the
-+ *	operation as a whole must fail.
-  */
- struct cfg80211_assoc_link {
- 	struct cfg80211_bss *bss;
- 	const u8 *elems;
- 	size_t elems_len;
- 	bool disabled;
-+	int error;
- };
- 
- /**
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index e64bf2a58b36..74eaf74f153a 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -10942,8 +10942,9 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 
- 		if (cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
- 					   req.ie, req.ie_len)) {
--			GENL_SET_ERR_MSG(info,
--					 "non-inheritance makes no sense");
-+			NL_SET_ERR_MSG_ATTR(info->extack,
-+					    info->attrs[NL80211_ATTR_IE],
-+					    "non-inheritance makes no sense");
- 			return -EINVAL;
- 		}
- 	}
-@@ -11068,6 +11069,7 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 
- 			if (!attrs[NL80211_ATTR_MLO_LINK_ID]) {
- 				err = -EINVAL;
-+				NL_SET_BAD_ATTR(info->extack, link);
- 				goto free;
- 			}
- 
-@@ -11075,6 +11077,7 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 			/* cannot use the same link ID again */
- 			if (req.links[link_id].bss) {
- 				err = -EINVAL;
-+				NL_SET_BAD_ATTR(info->extack, link);
- 				goto free;
- 			}
- 			req.links[link_id].bss =
-@@ -11082,6 +11085,8 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 			if (IS_ERR(req.links[link_id].bss)) {
- 				err = PTR_ERR(req.links[link_id].bss);
- 				req.links[link_id].bss = NULL;
-+				NL_SET_ERR_MSG_ATTR(info->extack,
-+						    link, "Error fetching BSS for link");
- 				goto free;
- 			}
- 
-@@ -11094,8 +11099,9 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 				if (cfg80211_find_elem(WLAN_EID_FRAGMENT,
- 						       req.links[link_id].elems,
- 						       req.links[link_id].elems_len)) {
--					GENL_SET_ERR_MSG(info,
--							 "cannot deal with fragmentation");
-+					NL_SET_ERR_MSG_ATTR(info->extack,
-+							    attrs[NL80211_ATTR_IE],
-+							    "cannot deal with fragmentation");
- 					err = -EINVAL;
- 					goto free;
- 				}
-@@ -11103,8 +11109,9 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 				if (cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
- 							   req.links[link_id].elems,
- 							   req.links[link_id].elems_len)) {
--					GENL_SET_ERR_MSG(info,
--							 "cannot deal with non-inheritance");
-+					NL_SET_ERR_MSG_ATTR(info->extack,
-+							    attrs[NL80211_ATTR_IE],
-+							    "cannot deal with non-inheritance");
- 					err = -EINVAL;
- 					goto free;
- 				}
-@@ -11147,6 +11154,9 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 
- 	err = nl80211_crypto_settings(rdev, info, &req.crypto, 1);
- 	if (!err) {
-+		struct nlattr *link;
-+		int rem = 0;
-+
- 		err = cfg80211_mlme_assoc(rdev, dev, &req);
- 
- 		if (!err && info->attrs[NL80211_ATTR_SOCKET_OWNER]) {
-@@ -11155,6 +11165,34 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 			memcpy(dev->ieee80211_ptr->disconnect_bssid,
- 			       ap_addr, ETH_ALEN);
- 		}
-+
-+		/* Report error from first problematic link */
-+		if (info->attrs[NL80211_ATTR_MLO_LINKS]) {
-+			nla_for_each_nested(link,
-+					    info->attrs[NL80211_ATTR_MLO_LINKS],
-+					    rem) {
-+				struct nlattr *link_id_attr =
-+					nla_find_nested(link, NL80211_ATTR_MLO_LINK_ID);
-+
-+				if (!link_id_attr)
-+					continue;
-+
-+				link_id = nla_get_u8(link_id_attr);
-+
-+				if (link_id == req.link_id)
-+					continue;
-+
-+				if (!req.links[link_id].error ||
-+				    WARN_ON(req.links[link_id].error > 0))
-+					continue;
-+
-+				WARN_ON(err >= 0);
-+
-+				NL_SET_BAD_ATTR(info->extack, link);
-+				err = req.links[link_id].error;
-+				break;
-+			}
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 7d69fd2713a8..10a762816146 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7889,8 +7889,10 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 		/* only calculate the flags, hence link == NULL */
+ 		err = ieee80211_prep_channel(sdata, NULL, assoc_data->link[i].bss,
+ 					     &assoc_data->link[i].conn_flags);
+-		if (err)
++		if (err) {
++			req->links[i].error = err;
+ 			goto err_clear;
 +		}
  	}
  
- free:
+ 	/* needed for transmitting the assoc frames properly */
 -- 
 2.38.1
 
