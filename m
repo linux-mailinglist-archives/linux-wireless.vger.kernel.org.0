@@ -2,87 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D597A5E56
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Sep 2023 11:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 970EC7A5E99
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Sep 2023 11:52:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231622AbjISJlM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Sep 2023 05:41:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58562 "EHLO
+        id S231577AbjISJwQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Sep 2023 05:52:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231517AbjISJlK (ORCPT
+        with ESMTP id S231488AbjISJwO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Sep 2023 05:41:10 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 811B0DA;
-        Tue, 19 Sep 2023 02:41:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA312C433C8;
-        Tue, 19 Sep 2023 09:40:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695116462;
-        bh=m+3hur1NYakFhwVVM9QubHkOlW+nEYeKslg6uKnJKmU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=CML037E+zpEE3oZZc6aRLXqmea6pNid/66KYalApNxJSjydgAg0WstMAoFXN+hJt1
-         I4xt00gNzk3Qs290qAspY0vBXL2okCcTREoiXyFqeb4w1okB2ISdofz3iZS2abZOi/
-         siE9o8KPpUQfhz5/DuJ2gIDlrC1ONtdyfjpy3JU9vIFH5zWwSOhwWtLNz50zCrdeIM
-         ZtOaUscuX6VwtJjEyUmovQxRjGYtisMfGH4dXBoGxZGdkEiYTgdv+nF9l0Y4CtuIBc
-         9Wnkbpsu0I7bev8qa0W0yXdxbSZwOtM1rRCXioy1HFeq3udvFr1hpMc6v4rdqTu+6Q
-         P0yXf7kKd4jXQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-kernel@vger.kernel.org,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        intel-wired-lan@lists.osuosl.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v2 11/13] wifi: ath12k: Use pci_disable/enable_link_state()
-References: <20230918131103.24119-1-ilpo.jarvinen@linux.intel.com>
-        <20230918131103.24119-12-ilpo.jarvinen@linux.intel.com>
-Date:   Tue, 19 Sep 2023 12:40:55 +0300
-In-Reply-To: <20230918131103.24119-12-ilpo.jarvinen@linux.intel.com> ("Ilpo
-        =?utf-8?Q?J=C3=A4rvinen=22's?= message of "Mon, 18 Sep 2023 16:11:01
- +0300")
-Message-ID: <87ediubivs.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Tue, 19 Sep 2023 05:52:14 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2278F1;
+        Tue, 19 Sep 2023 02:52:08 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-31fe3426a61so4484106f8f.1;
+        Tue, 19 Sep 2023 02:52:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695117127; x=1695721927; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=i9GTFmeV/EvnfETMNwPDcGK8R8Ka2xMUzQavnbL/9JU=;
+        b=FuMsnxRRP/EEVypsxJxsP6lUWTSCp4NqTiQJ2nfj65eWMMh2i4rfQyVQAqYBWPNSIr
+         rL0z5wxU2dBoGmVIN+bki+Sov0EengJVhOqnkpSXTzn5yc7cG/tteVzghIBlAtGdg8Vn
+         qx2sUuseeait4HoEcqex5Wq96TjA0YVI8BVO9CNsQnt13MKjz6zwmoxjis3GWzx/Pnwq
+         eyposhUbg3K8hjpExR/B1uO54qImTmpSxUGjJMHPuix0Utynbh0/QyTy+xS/Ih7NYO+E
+         fkOe3xgtIRlQJQTIoDz24OWrVPIloD40ReOFoSTcUScAT7t9vrxLp/xwB5amadqq7emA
+         f2zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695117127; x=1695721927;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i9GTFmeV/EvnfETMNwPDcGK8R8Ka2xMUzQavnbL/9JU=;
+        b=Th8FEnqjyLjFev+bCXwoC2gGHNdAuNsdgXj0PX7xAYUgVpoteD+vXhZVyJDPXRWLbg
+         hGvkdF0CwRYrK6Nf8kPUizwOeRQsHDM5GoT8CgJidM+5pOI3XDA1JiLV8wQMkPufP153
+         MIcKDm4Yk46gx2eG7rHpttNjrYUW7cXikFJTqGStPYW0gkB75mgdu31/lpU/nCDmvrX2
+         N4C9RcFQWWm1vbdUppSs5ZASKaMvTDztxhh27ztttnZ/AvpERY/JA+iOsex71J4Az3PG
+         hgfp+C/Gwhd7K6sRVXbDLBwED7JzCX7B4lmlGRZANvRy3Q8tLVlhxxGkDB6DOMryG/RK
+         Ng8Q==
+X-Gm-Message-State: AOJu0Yxug0uIRG+Cmdip7MBL4jQQAsgHreZUwmaicbEOAXVO9qwGhCdx
+        OPq7r0js7oQXw05ic9a0VgidbVVc/XsMphjZ
+X-Google-Smtp-Source: AGHT+IE1EeLCPjpp+AXIFpbF/nRxGjd1pR3+gE3AJcM2Glipz4CkCgE5tGRL+MdphG6QCcqPday1FQ==
+X-Received: by 2002:a5d:678f:0:b0:31c:6697:6947 with SMTP id v15-20020a5d678f000000b0031c66976947mr10470011wru.69.1695117126737;
+        Tue, 19 Sep 2023 02:52:06 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id h18-20020a5d5052000000b0031ad5470f89sm10335659wrt.18.2023.09.19.02.52.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Sep 2023 02:52:06 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] wifi: cfg80211: make read-only array centers_80mhz static const
+Date:   Tue, 19 Sep 2023 10:52:05 +0100
+Message-Id: <20230919095205.24949-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com> writes:
+Don't populate the read-only array lanes on the stack, instead make
+it static const.
 
-> ath12k driver adjusts ASPM state itself which leaves ASPM service
-> driver in PCI core unaware of the link state changes the driver
-> implemented.
->
-> Call pci_disable_link_state() and pci_enable_link_state() instead of
-> adjusting ASPMC field in LNKCTL directly in the driver and let PCI core
-> handle the ASPM state management.
->
-> Signed-off-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ net/mac80211/tdls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index ba14f570cda7..f3fd66d30b84 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -309,7 +309,7 @@ ieee80211_tdls_chandef_vht_upgrade(struct ieee80211_sub_if_data *sdata,
+ 				   struct sta_info *sta)
+ {
+ 	/* IEEE802.11ac-2013 Table E-4 */
+-	u16 centers_80mhz[] = { 5210, 5290, 5530, 5610, 5690, 5775 };
++	static const u16 centers_80mhz[] = { 5210, 5290, 5530, 5610, 5690, 5775 };
+ 	struct cfg80211_chan_def uc = sta->tdls_chandef;
+ 	enum nl80211_chan_width max_width =
+ 		ieee80211_sta_cap_chan_bw(&sta->deflink);
+-- 
+2.39.2
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
