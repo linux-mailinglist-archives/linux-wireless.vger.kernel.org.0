@@ -2,39 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD1BD7A611B
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Sep 2023 13:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E944B7A617A
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Sep 2023 13:39:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229534AbjISLYv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Sep 2023 07:24:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54196 "EHLO
+        id S229690AbjISLj6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Sep 2023 07:39:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjISLYu (ORCPT
+        with ESMTP id S229988AbjISLj5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Sep 2023 07:24:50 -0400
+        Tue, 19 Sep 2023 07:39:57 -0400
 Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E15B8
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Sep 2023 04:24:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B346ABA
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Sep 2023 04:39:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-        s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=nz9zy64piDIMjKVico5bSyWsHNkVnY1RNGYYRHL51Zw=; b=aNOOktZO6O52E/flwiUp8tEJ3G
-        T0tQrqe6oLZvU4zr71v11Q/up3KwcImcNhA2pBcb73A4M+Rlsy6SOsGhmzci/9Ib6wQ/Ojf2xFled
-        xT+DLiTs/SONj8r/ugk3r+6B0UUc1NoQ3ybis6VDRWnGY1WPr0784Ybax6WE3gR0tGg4=;
+        s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+        Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=cMsL4MK7I6/ZD1+C0QicbTcb5pPFl1P9ecu8LYF0cKU=; b=avUdFm+0GqxWrxJ/9Pb7v93YFQ
+        DVyVUWA1kNJfhcCM5yfpZVUgd+sZvDEoS2HFbFQzQi4xRawfwO5QAR5NiaO+PUozXU1ydmyVqMOkn
+        7bEkSW2cHPJ5AAPEAxMbJK27tasdJo4yoRhPeDw9NIhIEAglrQsL8CY+x+Y9Yg99Hfgs=;
 Received: from p54ae986d.dip0.t-ipconnect.de ([84.174.152.109] helo=nf.local)
         by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.94.2)
         (envelope-from <nbd@nbd.name>)
-        id 1qiYqP-004Ocv-IP; Tue, 19 Sep 2023 13:24:41 +0200
-Message-ID: <8af6de3f-0248-4f86-82fb-bd437f00c61c@nbd.name>
-Date:   Tue, 19 Sep 2023 13:24:41 +0200
+        id 1qiZ52-004Oq0-Rn; Tue, 19 Sep 2023 13:39:48 +0200
+Message-ID: <9ca15b75-390f-4647-bc70-3f2f8994db27@nbd.name>
+Date:   Tue, 19 Sep 2023 13:39:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] wifi: mt76: mt76x02: correct external LNA gain
 Content-Language: en-US
+From:   Felix Fietkau <nbd@nbd.name>
 To:     Shiji Yang <yangshiji66@outlook.com>,
         linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@kernel.org>,
@@ -43,7 +44,7 @@ Cc:     Kalle Valo <kvalo@kernel.org>,
         Shayne Chen <shayne.chen@mediatek.com>,
         Sean Wang <sean.wang@mediatek.com>
 References: <TYAP286MB0315A2BAF9E9E74B2377EE4CBCFAA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
-From:   Felix Fietkau <nbd@nbd.name>
+ <8af6de3f-0248-4f86-82fb-bd437f00c61c@nbd.name>
 Autocrypt: addr=nbd@nbd.name; keydata=
  xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
  ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
@@ -67,7 +68,7 @@ Autocrypt: addr=nbd@nbd.name; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
  cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <TYAP286MB0315A2BAF9E9E74B2377EE4CBCFAA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+In-Reply-To: <8af6de3f-0248-4f86-82fb-bd437f00c61c@nbd.name>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -79,45 +80,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 19.09.23 06:48, Shiji Yang wrote:
-> Referring to the MT761{0,2} EEPROM content, setting the corresponding
-> EEPROM control bit means enabling external LNA. In this case, we
-> should use the EEMROM LNA gain instead of 0.
+On 19.09.23 13:24, Felix Fietkau wrote:
+> On 19.09.23 06:48, Shiji Yang wrote:
+>> Referring to the MT761{0,2} EEPROM content, setting the corresponding
+>> EEPROM control bit means enabling external LNA. In this case, we
+>> should use the EEMROM LNA gain instead of 0.
+>> 
+>> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+>> ---
+>>   drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
+>> index 0acabba2d..a0b95509a 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
+>> @@ -135,9 +135,9 @@ u8 mt76x02_get_lna_gain(struct mt76x02_dev *dev,
+>>   	u8 lna;
+>>   
+>>   	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
+>> -	if (val & MT_EE_NIC_CONF_1_LNA_EXT_2G)
+>> +	if (!(val & MT_EE_NIC_CONF_1_LNA_EXT_2G))
+>>   		*lna_2g = 0;
+>> -	if (val & MT_EE_NIC_CONF_1_LNA_EXT_5G)
+>> +	if (!(val & MT_EE_NIC_CONF_1_LNA_EXT_5G))
+>>   		memset(lna_5g, 0, sizeof(s8) * 3);
+>>   
+>>   	if (chan->band == NL80211_BAND_2GHZ)
 > 
-> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-> ---
->   drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> I took a closer look at the interpretation of these flags and how they
+> are handled in the vendor driver. From what I can tell, on MT76x2 LNA
+> gain should only be used as part of the RSSI calculation for internal
+> LNA devices. In the MT76x0 code, I see no such checks, so the LNA gain
+> should be used unconditionally.
+> What do you think about this patch?
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
-> index 0acabba2d..a0b95509a 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
-> @@ -135,9 +135,9 @@ u8 mt76x02_get_lna_gain(struct mt76x02_dev *dev,
->   	u8 lna;
->   
->   	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
-> -	if (val & MT_EE_NIC_CONF_1_LNA_EXT_2G)
-> +	if (!(val & MT_EE_NIC_CONF_1_LNA_EXT_2G))
->   		*lna_2g = 0;
-> -	if (val & MT_EE_NIC_CONF_1_LNA_EXT_5G)
-> +	if (!(val & MT_EE_NIC_CONF_1_LNA_EXT_5G))
->   		memset(lna_5g, 0, sizeof(s8) * 3);
->   
->   	if (chan->band == NL80211_BAND_2GHZ)
+> Thanks,
+> 
+> - Felix
 
-I took a closer look at the interpretation of these flags and how they
-are handled in the vendor driver. From what I can tell, on MT76x2 LNA
-gain should only be used as part of the RSSI calculation for internal
-LNA devices. In the MT76x0 code, I see no such checks, so the LNA gain
-should be used unconditionally.
-What do you think about this patch?
+Sorry, there was a missing line in the last patch. Here is the right
+version:
 
-Thanks,
-
-- Felix
-
----
 --- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
 @@ -131,15 +131,8 @@ u8 mt76x02_get_lna_gain(struct mt76x02_dev *dev,
@@ -148,11 +152,12 @@ Thanks,
   	u16 val;
   
   	if (chan->band == NL80211_BAND_2GHZ)
-@@ -275,7 +276,14 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
+@@ -275,7 +276,15 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
   	dev->cal.rx.mcu_gain |= (lna_5g[1] & 0xff) << 16;
   	dev->cal.rx.mcu_gain |= (lna_5g[2] & 0xff) << 24;
   
 -	lna = mt76x02_get_lna_gain(dev, &lna_2g, lna_5g, chan);
++	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
 +	if (chan->band == NL80211_BAND_2GHZ)
 +		use_lna = !(val & MT_EE_NIC_CONF_1_LNA_EXT_2G);
 +	else
