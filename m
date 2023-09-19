@@ -2,125 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 623537A6552
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Sep 2023 15:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB3A77A670E
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Sep 2023 16:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232399AbjISNgl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Sep 2023 09:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60266 "EHLO
+        id S232910AbjISOnc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Sep 2023 10:43:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231960AbjISNgk (ORCPT
+        with ESMTP id S232970AbjISOnM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Sep 2023 09:36:40 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E43FF9;
-        Tue, 19 Sep 2023 06:36:34 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id 0A3D15C00A5;
-        Tue, 19 Sep 2023 09:36:34 -0400 (EDT)
-Received: from imap47 ([10.202.2.97])
-  by compute5.internal (MEProxy); Tue, 19 Sep 2023 09:36:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
-         h=cc:cc:content-transfer-encoding:content-type:content-type
-        :date:date:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to;
-         s=fm2; t=1695130594; x=1695216994; bh=G3Kkrzt0AGrrY/tjL0EyntUuI
-        Bb8mCCGj+mtTnmx+Q8=; b=UnODe/CFFm/fKyGaSWbPPfJGyccMgh1Fl4ql7J8B2
-        9jTTCbW7SBL9mmZVXktU9NHHOKE59vNmIt0/3PhYLyfB2ct9PpB2TtdW2GrTNk0N
-        p54KxQZhj60LKixvUfYSDQa4v3EbvN8Xt+LCAGQGVQ26IZGNwzMCGuce3Gghezi+
-        NDemRIJWikj5y3YJh93ZKtlx/6vlOGJnSRujwbi6RlScOarSzktohPxAwVVayDgE
-        wc1G63LzMMrc7gbgXgfjjE3fjf+QuIdkFrVuooWiII9CtYxJ0KGYCqtctLBBxlXB
-        a0MaGet4EcXXzcNEDj0hlAAITshodNu2ZUQSCM82e95IQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1695130594; x=1695216994; bh=G3Kkrzt0AGrrY/tjL0EyntUuIBb8mCCGj+m
-        tTnmx+Q8=; b=Ki98uDeNfz0jsUIT+QrBfvj6hR3UdAj0JGP0Kk0m3is6XGITVnc
-        DitfO8Z+GtWWohKTB22DWPAWKANFWZvwpnHoOdj68y6C4Z7ADQwwOPv0cl9n2b+x
-        ySjituYs4vc8wTr6657lSCf6nuZlPaevwRT+ZlC5EloYB2OJvQKrFkiBrlsDjKms
-        R/4JDdefME8w8YDPy5+wnxG2+Fya9/liDAL5qCMMKpXum+43+FmCAvT5DhfpQlfI
-        HT3jt59lJiwFge+hvLDqbVFgQ4bt7cNR/bPeevGW7CpYG9z9TksRHzzWy5ZpkhSc
-        +qvxWapAs7q7hQNor2DKBFbtWnh42FwH2mg==
-X-ME-Sender: <xms:4KMJZbW9LbqWPcHkGh_DlPuxCBkGLtv3JnsYlVzXjKzSIeeti7RIhg>
-    <xme:4KMJZTmAvH4L7z_nGaP5KdfIvqOZiks__CHr-LlmDmPx7zd2plYewMvSEyaWyUHFk
-    jKbOhCbS2QMQUW6WgU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudekuddgfeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdfu
-    vhgvnhcurfgvthgvrhdfuceoshhvvghnsehsvhgvnhhpvghtvghrrdguvghvqeenucggtf
-    frrghtthgvrhhnpeevhedthffgffelhedujefgueduudeutdefleevvdetudelhfeihfdv
-    ffelteeuudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehsvhgvnhesshhvvghnphgvthgvrhdruggvvh
-X-ME-Proxy: <xmx:4KMJZXYmYuvL3nH0_SgD_kNdsC7XHLClfVBAmruidR-V60B6y3P-MQ>
-    <xmx:4KMJZWXQA3WzRBb5zCu-QYvcA4iZm-q-O5n5rA4kxuHe43SgaGHuSg>
-    <xmx:4KMJZVk9Oi99N4mk7qm3lIUI4afyU90X7PI_XuVzNp7f82_pACbMKw>
-    <xmx:4qMJZdNsFBGmk6guzMsje_BoEdpEh-d6HrZzup8N865hs4SPZgsPDA>
-Feedback-ID: i51094778:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 0378AA60077; Tue, 19 Sep 2023 09:36:31 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-761-gece9e40c48-fm-20230913.001-gece9e40c
+        Tue, 19 Sep 2023 10:43:12 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA33F135
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Sep 2023 07:43:04 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38JDphdP017577;
+        Tue, 19 Sep 2023 14:42:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=FB+Wv0z8e8vpyK7yXtnE9x4fXf6Rr6Oxu6k/fddRaXI=;
+ b=WGruaA/zvrV5PfiPz5EfDRnXZux4bASKgTvi1ciFKiaYmH3n1DFoCdKbpdDjtf6NtToh
+ cYNqOsbNtgqTlzrxYPlO97xCipX1WaS8k9VFCfnBzu+jDx/q5Lu67K4g1kxm+tFvQli3
+ AL7dHWfYlQ4kwkdRndvUSJanPFZnpXu1KQ4IBpidqGxg5FZA5I8GcmuqkgKV4sWVd2FZ
+ /t4tDXliOr2agP3jfcy5oFiJpQ7EHQwxMbb3pTi8Oykj+uILY6s4OSnsjxh6zJ7uu9cy
+ zH3wrODYIHTyaIJakXiHh2AMSa/qi97Ba3fv7qiLkkrXd1fpLR3+tYRkImyrRFSR8G3d Dw== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t78upgku8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 19 Sep 2023 14:42:56 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38JEguhB002542
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 19 Sep 2023 14:42:56 GMT
+Received: from [10.48.245.144] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 19 Sep
+ 2023 07:42:55 -0700
+Message-ID: <812fef01-6b13-4a5f-bbf3-311991f74a71@quicinc.com>
+Date:   Tue, 19 Sep 2023 07:42:55 -0700
 MIME-Version: 1.0
-Message-Id: <aabaa49f-8988-42c0-bf8e-2266005e2155@app.fastmail.com>
-In-Reply-To: <20230918131103.24119-7-ilpo.jarvinen@linux.intel.com>
-References: <20230918131103.24119-1-ilpo.jarvinen@linux.intel.com>
- <20230918131103.24119-7-ilpo.jarvinen@linux.intel.com>
-Date:   Tue, 19 Sep 2023 15:36:10 +0200
-From:   "Sven Peter" <sven@svenpeter.dev>
-To:     =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        linux-pci@vger.kernel.org, "Bjorn Helgaas" <helgaas@kernel.org>,
-        "Lorenzo Pieralisi" <lorenzo.pieralisi@arm.com>,
-        "Rob Herring" <robh@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        "Lukas Wunner" <lukas@wunner.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Heiner Kallweit" <hkallweit1@gmail.com>,
-        "Emmanuel Grumbach" <emmanuel.grumbach@intel.com>,
-        linux-kernel@vger.kernel.org, "Hector Martin" <marcan@marcan.st>,
-        "Alyssa Rosenzweig" <alyssa@rosenzweig.io>,
-        "Marcel Holtmann" <marcel@holtmann.org>,
-        "Johan Hedberg" <johan.hedberg@gmail.com>,
-        "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>,
-        "Bjorn Helgaas" <bhelgaas@google.com>, asahi@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org
-Cc:     ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
-        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 06/13] Bluetooth: hci_bcm4377: Convert aspm disable to quirk
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath10k: simplify SDIO async handling
+Content-Language: en-US
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <ath10k@lists.infradead.org>
+References: <20230918143718.78259-1-dmantipov@yandex.ru>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230918143718.78259-1-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ugwIaHwBT5CbchiRQ71rrYwjT23r5T73
+X-Proofpoint-ORIG-GUID: ugwIaHwBT5CbchiRQ71rrYwjT23r5T73
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-19_06,2023-09-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 phishscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
+ spamscore=0 clxscore=1015 adultscore=0 priorityscore=1501 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309190126
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 9/18/2023 7:37 AM, Dmitry Antipov wrote:
+> This is an initial attempt to fix TODO found in SDIO bus support
+> code. As original comment says, an idea is to store SDIO-specific
+> 'struct ath10k_sdio_bus_request' data within skb control buffer
+> instead of managing (a relatively large, 1024-items for now) free
+> list of the aforementioned structures.
+> 
+> Compile tested only so TESTERS WANTED.
 
-On Mon, Sep 18, 2023, at 15:10, Ilpo J=C3=A4rvinen wrote:
-> pci_disable_link_state() was made reliable regardless of ASPM CONFIG
-> and OS being disallowed to change ASPM states to allow drivers to rely
-> on pci_disable_link_state() working.
->
-> Remove driver working around unreliable pci_disable_link_state() from
-> hci_bcm4377 driver and add a PCI quirk to disable ASPM.
->
-> Signed-off-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-> ---
+While the maintainers like code to be as clean as possible, there is 
+also the "if it isn't broke, don't fix it" mantra. This is especially 
+true for older drivers that are in pure maintenance mode.
 
-Acked-by: Sven Peter <sven@svenpeter.dev>
+So unless you can show you are fixing a problem and you can actually 
+test your patches (or recruit someone to do so), any patches to ath10k, 
+especially to SDIO, won't be accepted.
 
+Your team is doing some nice work, but I suggest you focus on drivers 
+that are under active development, and preferably ones where you 
+actually have the hardware to test.
 
-Thanks,
-
-Sven
+/jeff
