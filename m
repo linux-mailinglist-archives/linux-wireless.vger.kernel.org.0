@@ -2,122 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46CF67A5A0F
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Sep 2023 08:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 338D57A5AAE
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Sep 2023 09:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbjISGlJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Sep 2023 02:41:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60024 "EHLO
+        id S231623AbjISHRm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Sep 2023 03:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjISGlI (ORCPT
+        with ESMTP id S231613AbjISHRl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Sep 2023 02:41:08 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05DC1116
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Sep 2023 23:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=nuOFkwXcHMlONqrxvS6YnEruBw2TgS/r6GuSmCj8Q+Q=; t=1695105658; x=1696315258; 
-        b=nOyW8fTU6uBYVUk+nepO7cufqWL/myzenfZ6vVaSk6KwY0yP6PNacFFQHx8YJgukryhk71AzzHM
-        C++PqgCURmwKMpDBxzgeaH6p42UFftk2wJvHEuwqUEUdSwnqgWYUTcnhTxF+xv3dNZxltohJWDaKI
-        OzAHLDZf0zVfWaRn3hoZ432kQVLHIfIdR0qc/swqQkm9Q+imwTTSxkrLXFn5Cwy/keIFYv1IuASNz
-        mFJgFMNvVdW0Yi9v2TmrkuiTRLrrJLAkUpaSulO3nGgnl1EDW/46YiVPefdMMiSQTeP1QKhf4F09D
-        PvvvENlyRbKwSKUbrJT3uH3ghrPmEYtq35lA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qiUPm-008uK6-1g;
-        Tue, 19 Sep 2023 08:40:54 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        syzbot+c12a771b218dcbba32e1@syzkaller.appspotmail.com
-Subject: [PATCH] wifi: mac80211: ethtool: always hold wiphy mutex
-Date:   Tue, 19 Sep 2023 08:40:52 +0200
-Message-ID: <20230919084051.942b0bbde0ce.I7215d6cd3bcb4bb8631ddf872356408dd69477fe@changeid>
-X-Mailer: git-send-email 2.41.0
+        Tue, 19 Sep 2023 03:17:41 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED2D7100
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Sep 2023 00:17:35 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38J6UY2Q014285;
+        Tue, 19 Sep 2023 07:17:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=qcppdkim1;
+ bh=oBpPyqi89bKXy+pYu6EOwvxIC/OrkZ4+wMykF+vqSZI=;
+ b=mS7FpZyu8eXdUM44p5aH/R4klIY7rT5xexwp9lh0zo/du4n+VWUHhHvajlca7tkhLxs7
+ oQr3GBnVlI18ABTQuxlHA21k5rGdogQI0TfPTwr/HzcOTEjcQ8MS0KAvddzsi34bQbJI
+ y0yQQC8hgXRgMDzCVM3hXgouB2KlAmaPqItc8jUUy9yUmj4WoFCtCBb/KSHU+eW+scD0
+ 0gXLJVd4pGwznPKj/PsPTIqiz/4ZocRUWX/U4DOLf8Ocl4/ZpyamjM3ZZF/eQw9/1TZ2
+ qcnNWrkRVAF7h63wrBHHV9MQStPn0BxGRkho+7dAUvAsyryQLNX7l+1Gvz9GSm0DvRHZ mg== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t72pf8dyr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 19 Sep 2023 07:17:30 +0000
+Received: from pps.filterd (NASANPPMTA01.qualcomm.com [127.0.0.1])
+        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 38J76CSP002071;
+        Tue, 19 Sep 2023 07:17:29 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by NASANPPMTA01.qualcomm.com (PPS) with ESMTP id 3t74xehgc8-1;
+        Tue, 19 Sep 2023 07:17:29 +0000
+Received: from NASANPPMTA01.qualcomm.com (NASANPPMTA01.qualcomm.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J7HTxY024301;
+        Tue, 19 Sep 2023 07:17:29 GMT
+Received: from aisr-linux.qualcomm.com (aisr-linux.qualcomm.com [10.201.124.194])
+        by NASANPPMTA01.qualcomm.com (PPS) with ESMTP id 38J7HSUr024281;
+        Tue, 19 Sep 2023 07:17:29 +0000
+Received: by aisr-linux.qualcomm.com (Postfix, from userid 4090849)
+        id 90E78E020C5; Tue, 19 Sep 2023 12:47:27 +0530 (IST)
+From:   Aishwarya R <quic_aisr@quicinc.com>
+To:     ath12k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Aishwarya R <quic_aisr@quicinc.com>
+Subject: [PATCH 0/7] wifi: ath12k: add support for 6 GHz AP for various power modes
+Date:   Tue, 19 Sep 2023 12:47:17 +0530
+Message-Id: <20230919071724.15505-1-quic_aisr@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: v1quxEglaB6xVI_OL3qAMZZxByB-U-eq
+X-Proofpoint-ORIG-GUID: v1quxEglaB6xVI_OL3qAMZZxByB-U-eq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-19_01,2023-09-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ spamscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ clxscore=1011 impostorscore=0 lowpriorityscore=0 mlxlogscore=813
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309190060
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Add support for 6 GHz for various modes. Supports various power type of
+AP(STANDARD_POWER_AP, INDOOR_AP, VERY_LOW_POWER_AP), power type of
+STATION(DEFAULT_CLIENT, SUBORDINATE_CLIENT) and Power Spectral Density(PSD).
 
-Drivers should really be able to rely on the wiphy mutex
-being held all the time, unless otherwise documented. For
-ethtool, that wasn't quite right. Fix and clarify this in
-both code and documentation.
+Implement the new rules for 6 GHz band in ath12k.
+ath12k parse the transmit power envelope element in beacon of AP
+and then set new wmi cmd WMI_VDEV_SET_TPC_POWER_CMDID to firmware
+when connect to 6 GHz AP, also support backward compatibility with
+firmware which not support new wmi cmd WMI_VDEV_SET_TPC_POWER_CMDID.
 
-Reported-by: syzbot+c12a771b218dcbba32e1@syzkaller.appspotmail.com
-Fixes: 0e8185ce1dde ("wifi: mac80211: check wiphy mutex in ops")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/net/mac80211.h | 4 ++++
- net/mac80211/ethtool.c | 9 ++++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+Aishwarya R (7):
+  wifi: ath12k: add support to select 6 GHz Regulatory type
+  wifi: ath12k: build 6 GHz regd based on vdev type and 6 GHz power type
+  wifi: ath12k: get 6 GHz power type from HE operation element
+  wifi: ath12k: save power spectral density(PSD) of regulatory rule
+  wifi: ath12k: add parse of transmit power envelope element
+  wifi: ath12k: fill parameters for vdev_set_tpc_power wmi command
+  wifi: ath12k: send TPC power to firmware for 6 GHz VDEV
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 8d993f6ab919..c8bc36821b54 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -4067,11 +4067,15 @@ struct ieee80211_prep_tx_info {
-  *	This callback must be atomic.
-  *
-  * @get_et_sset_count:  Ethtool API to get string-set count.
-+ *	Note: the wiphy mutex is not held for this callback since it's
-+ *	expected to return a static value.
-  *
-  * @get_et_stats:  Ethtool API to get a set of u64 stats.
-  *
-  * @get_et_strings:  Ethtool API to get a set of strings to describe stats
-  *	and perhaps other supported types of ethtool data-sets.
-+ *	Note: the wiphy mutex is not held for this callback since it's
-+ *	expected to return a static value.
-  *
-  * @mgd_prepare_tx: Prepare for transmitting a management frame for association
-  *	before associated. In multi-channel scenarios, a virtual interface is
-diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
-index 9894d2024470..f2e8c2eff25f 100644
---- a/net/mac80211/ethtool.c
-+++ b/net/mac80211/ethtool.c
-@@ -19,11 +19,16 @@ static int ieee80211_set_ringparam(struct net_device *dev,
- 				   struct netlink_ext_ack *extack)
- {
- 	struct ieee80211_local *local = wiphy_priv(dev->ieee80211_ptr->wiphy);
-+	int ret;
- 
- 	if (rp->rx_mini_pending != 0 || rp->rx_jumbo_pending != 0)
- 		return -EINVAL;
- 
--	return drv_set_ringparam(local, rp->tx_pending, rp->rx_pending);
-+	wiphy_lock(sdata->local->hw.wiphy);
-+	ret = drv_set_ringparam(local, rp->tx_pending, rp->rx_pending);
-+	wiphy_unlock(sdata->local->hw.wiphy);
-+
-+	return ret;
- }
- 
- static void ieee80211_get_ringparam(struct net_device *dev,
-@@ -35,8 +40,10 @@ static void ieee80211_get_ringparam(struct net_device *dev,
- 
- 	memset(rp, 0, sizeof(*rp));
- 
-+	wiphy_lock(sdata->local->hw.wiphy);
- 	drv_get_ringparam(local, &rp->tx_pending, &rp->tx_max_pending,
- 			  &rp->rx_pending, &rp->rx_max_pending);
-+	wiphy_unlock(sdata->local->hw.wiphy);
- }
- 
- static const char ieee80211_gstrings_sta_stats[][ETH_GSTRING_LEN] = {
+ drivers/net/wireless/ath/ath12k/core.h |  39 ++
+ drivers/net/wireless/ath/ath12k/mac.c  | 515 ++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/mac.h  |   4 +
+ drivers/net/wireless/ath/ath12k/reg.c  |  79 +++-
+ drivers/net/wireless/ath/ath12k/reg.h  |   6 +-
+ drivers/net/wireless/ath/ath12k/wmi.c  | 320 +++++++++++++--
+ drivers/net/wireless/ath/ath12k/wmi.h  |  94 ++++-
+ 7 files changed, 1003 insertions(+), 54 deletions(-)
+
 -- 
-2.41.0
+2.17.1
 
