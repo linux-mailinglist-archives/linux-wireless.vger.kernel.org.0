@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16ED47A8337
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 15:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CF3A7A833D
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 15:24:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234696AbjITNX0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Sep 2023 09:23:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44930 "EHLO
+        id S234723AbjITNYt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Sep 2023 09:24:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233952AbjITNXZ (ORCPT
+        with ESMTP id S235572AbjITNYq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Sep 2023 09:23:25 -0400
+        Wed, 20 Sep 2023 09:24:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FC4AA9
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Sep 2023 06:23:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186B1C433C8;
-        Wed, 20 Sep 2023 13:23:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5584CAC
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Sep 2023 06:24:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90ADC433C9;
+        Wed, 20 Sep 2023 13:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695216199;
-        bh=2Et11YtI8kBzyLko0A2MfjzkF+6hxxDNxXxX0g0Jl8U=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Ss+Tkz3brJULw9FCZUQKqAVU1bZUmIQwcTwz4OWfH34VkeBVKeLhkD4oWKx/Wi5Ls
-         fV3pQTEPTWElBbIpv2Qdzb46X4t+0/UYjbX9AIx9F0RYLQ2aK9juSSLVJBdPzB4OYE
-         +nnsazloGFtngv/0VazOi9uALgY5xrlwKviBQB5Wvqnxk8bnD9iPxQMDlWLNSLLUjA
-         pqJcRz4LDSexgY/it52oJm7B+oHSfcYsG9hOZ6zKbCTrortk2+DgvpiO20uzzibuZo
-         NKawn6d6io7WKg2Pgnb2pbWOU69tgCuPfKofqIyamSpe9HbyyOmvdJdSzNmuQIBp3D
-         BmOpBkZwqJpgQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH 1/6] [v3] wifi: ath10k: cleanup CE ring initialization
-References: <997f4b09-7087-4788-aa2a-ef835ce6ebb3@quicinc.com>
-        <20230824055117.42309-1-dmantipov@yandex.ru>
-Date:   Wed, 20 Sep 2023 16:23:16 +0300
-In-Reply-To: <20230824055117.42309-1-dmantipov@yandex.ru> (Dmitry Antipov's
-        message of "Thu, 24 Aug 2023 08:51:06 +0300")
-Message-ID: <874jjpashn.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1695216279;
+        bh=RwL3dL2/nzqtTW9xS47chqHQeFCLtHtSkPRtK73J8UI=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=eRDoAeClGwjnXpGQTpftuBnk/x61KsR8isNBmuwdC78r2e6QRu/MTa1L2n599MYCN
+         jHW/gy2U3zlOQ3wKYw7863hcGnKa8IkUVVscgTYoF8PTcUFCmO3fbLNlOk5nFwIui8
+         U10S77ytegjjPXJvgg1586thw2fGgiLgTcCqx775p5cg+/KgwqA43kznnTqSvrSez/
+         7mn8Dt9VXtOSqmCt39wPn0orq/Mt00EGCWFfKgyQ1PaecyTAHf1WR8EmbzrGu0nXJj
+         zDgZAi9Yot2XG5uB2BtEvZ690BR5qrHOV/OBJEeWLtqXHQkyp6LftqC1BimVsfRJkv
+         6YyYLnRJnjaUA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3] wifi: ath12k: enable 320 MHz bandwidth for 6 GHz band
+ in
+ EHT PHY capability for WCN7850
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230828040420.2165-1-quic_wgong@quicinc.com>
+References: <20230828040420.2165-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169521627689.1118199.8777112577980679434.kvalo@kernel.org>
+Date:   Wed, 20 Sep 2023 13:24:38 +0000 (UTC)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -52,42 +52,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-> Commit 25d0dbcbd5c7 ("ath10k: split ce initialization and allocation")
-> changes 'ath10k_ce_init_src_ring()' and 'ath10k_ce_init_dest_ring()'
-> so these functions can't return -ENOMEM but always returns 0. This way
-> both of them may be converted to 'void', and 'ath10k_ce_init_pipe()'
-> may be simplified accordingly.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
-> v3: split to smaller units per Jeff's suggestion
-> v2: change 'ath10k_ce_alloc_rri()' to return -ENOMEM in case
-> of 'dma_alloc_coherent()' failure and fix error handling in
-> 'ath10k_snoc_hif_power_up()'
+> 320 MHz bandwidth is reported only for single PHY mode for WCN7850, get it
+> from WMI_HOST_HW_MODE_SINGLE ath12k_wmi_caps_ext_params and report it for
+> 6 GHz band.
+> 
+> After this patch, "iw list" shows 320 MHz support for WCN7850:
+> 
+> EHT Iftypes: managed
+>         EHT PHY Capabilities: (0xe26f090010768800):
+>                 320MHz in 6GHz Supported
+>         EHT bw=320 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
+>         EHT bw=320 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
+>         EHT bw=320 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-[...]
+Patch applied to ath-next branch of ath.git, thanks.
 
-> -static int ath10k_ce_init_src_ring(struct ath10k *ar,
-> -				   unsigned int ce_id,
-> -				   const struct ce_attr *attr)
-> +static void ath10k_ce_init_src_ring(struct ath10k *ar,
-> +				    unsigned int ce_id,
-> +				    const struct ce_attr *attr)
-
-I have on purpose avoided to use void functions in ath10k/ath11k/ath12k.
-The problem is that if some of the functions return void and some of the
-functions return int it's much harder to review the code. If most/all of
-the functions return the same error value type as int it makes a lot
-easier to read the code.
-
-Is there a benefit from function returning void? Why do this in the
-first place?
+d4e244c85e45 wifi: ath12k: enable 320 MHz bandwidth for 6 GHz band in EHT PHY capability for WCN7850
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230828040420.2165-1-quic_wgong@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
