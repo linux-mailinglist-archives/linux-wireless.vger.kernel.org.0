@@ -2,44 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84B217A76FF
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 11:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 532E47A79E5
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 13:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229534AbjITJOp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Sep 2023 05:14:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35208 "EHLO
+        id S234234AbjITLAb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Sep 2023 07:00:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233907AbjITJOo (ORCPT
+        with ESMTP id S232327AbjITLAa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Sep 2023 05:14:44 -0400
-X-Greylist: delayed 548 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 20 Sep 2023 02:14:38 PDT
-Received: from mail.digitalsynergy.pl (mail.digitalsynergy.pl [217.61.56.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3C4BB9
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Sep 2023 02:14:38 -0700 (PDT)
-Received: by mail.digitalsynergy.pl (Postfix, from userid 1003)
-        id 253F283239; Wed, 20 Sep 2023 11:04:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digitalsynergy.pl;
-        s=mail; t=1695200719;
-        bh=oZTeICgx2X9EeHQQOCJSHYKJVJOCiOs1n/VaxwVhO9Y=;
-        h=Date:From:To:Subject:From;
-        b=zAEAzxpnqFNJTG4PzAKN/6mDGkWTE5yj94xcBm0P9Pj6NxbClFYpLwH4XuwA7f+P2
-         MgfBAfSLZ+70BhxOC1CKBApLdmqp4m/h7LImXv3jC6EAuXffg3AiiE1lQBoIginLxx
-         ThpQpWMIU3PSrRo93Gpke1G+i/ha19RIOqN8qRC/yN9OgYIDG8UpNa9TNzdrHcnNK/
-         o+duL2meCXZ6LW/xhjFMveTrFmX185U4Qg92Y5D84BBCzgenA90qywtXP/LLsxK/YW
-         wMpedVHLaNF5AHrgGXGRG9/1Mxc28G1Oo8ZoIUEkT0jHFjowKbqtg/ktkAPQLNSBre
-         EyRz1Dg9jB72g==
-Received: by mail.digitalsynergy.pl for <linux-wireless@vger.kernel.org>; Wed, 20 Sep 2023 09:04:32 GMT
-Message-ID: <20230920105410-0.1.6.63a.0.xatmisj3si@digitalsynergy.pl>
-Date:   Wed, 20 Sep 2023 09:04:32 GMT
-From:   "Marcin Wojciechowski" <marcin.wojciechowski@digitalsynergy.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: =?UTF-8?Q?Prosz=C4=99_o_kontakt?=
-X-Mailer: mail.digitalsynergy.pl
+        Wed, 20 Sep 2023 07:00:30 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 486FC97;
+        Wed, 20 Sep 2023 04:00:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E498FC433CD;
+        Wed, 20 Sep 2023 11:00:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695207623;
+        bh=rPiOUM5aaPiWdfVsIO/cyE3yqhenjHG0uI9o5H+GhkU=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=c4uykEEPwEbr8zdbbSliJKEUBvRYSJjrN5AghndhxVSToOBFQbQXaXWS/acoVkMh0
+         1dGt0z+PYTgMdyaAFwh1eoyXuLRgoYxThzE7aGUJW66AXvMczPNaiIkaRgT+Ww0Thu
+         PwyQr0UbEgfGcJbdz0xOw8WjRQq/EtkoDDOiaaBuuwxGduEmHByahc12iHhz+/tZRx
+         Zd6Ng/kWGjsx7G0SxGY2LZJFNMCF0SDfZivVx/0wls4ctLTwGQclXzsNtkJLz6tO0n
+         kgb7lBM+ZE7UjMXEo89/L+EsZqO6ychFHcQdGSMhcJxTPNzGo60joUiXY3hvPhEomB
+         5FsAlUa2dTfuA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CFDF7C41671;
+        Wed, 20 Sep 2023 11:00:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.2 required=5.0 tests=BAYES_40,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH][next] wifi: cfg80211: make read-only array centers_80mhz
+ static const
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169520762384.31903.1385774049535484165.git-patchwork-notify@kernel.org>
+Date:   Wed, 20 Sep 2023 11:00:23 +0000
+References: <20230919095205.24949-1-colin.i.king@gmail.com>
+In-Reply-To: <20230919095205.24949-1-colin.i.king@gmail.com>
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,18 +55,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hello:
 
-Czy jest mo=C5=BCliwo=C5=9B=C4=87 nawi=C4=85zania wsp=C3=B3=C5=82pracy z =
-Pa=C5=84stwem?
+This patch was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-Z ch=C4=99ci=C4=85 porozmawiam z osob=C4=85 zajmuj=C4=85c=C4=85 si=C4=99 =
-dzia=C5=82aniami zwi=C4=85zanymi ze sprzeda=C5=BC=C4=85.
+On Tue, 19 Sep 2023 10:52:05 +0100 you wrote:
+> Don't populate the read-only array lanes on the stack, instead make
+> it static const.
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> ---
+>  net/mac80211/tdls.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Pomagamy skutecznie pozyskiwa=C4=87 nowych klient=C3=B3w.
+Here is the summary with links:
+  - [next] wifi: cfg80211: make read-only array centers_80mhz static const
+    https://git.kernel.org/netdev/net-next/c/6c0da8406382
 
-Zapraszam do kontaktu.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Pozdrawiam
-Marcin Wojciechowski
