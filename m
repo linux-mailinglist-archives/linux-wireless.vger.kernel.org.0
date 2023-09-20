@@ -2,87 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB397A8CEA
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 21:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC2FA7A8FB9
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 01:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230261AbjITTa3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Sep 2023 15:30:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48942 "EHLO
+        id S229497AbjITXH7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Sep 2023 19:07:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbjITTaV (ORCPT
+        with ESMTP id S229478AbjITXH7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Sep 2023 15:30:21 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC59118F;
-        Wed, 20 Sep 2023 12:29:51 -0700 (PDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38KJOsab031106;
-        Wed, 20 Sep 2023 19:29:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=f9M2cPom+8uzIHRKEFk/J7faMo4xsq8DtVTD+om7VMw=;
- b=Zl+3OEBi73ct+/2c+QwcHcaixTS4klPhGJjhkH87k8pVAJWI9xtX3977xVpH5Mn1uMIS
- vc14a/phGyPTNSJ2JCdF0HRsP7GODaUc9CCnk5fHYPqiqpmfTNtqXpX3n9VsMCaEjHto
- DhPVmdArgchTFFYgkxf2MNgTh4tjFzeY3hN5y8Lb3Ip/6DsagJePOM8pHqAFZRhd/EZ1
- efNP0RwB5jgDpUiTLsmaVpffljIRasrSGzE5rgbzggxj51T7FBfDRK0a5EGUEz0ArcM3
- WawOlYa1TpD9FQqcCaqda0TJ1k7vmPBecsyXtmoWnqpOySGdgLXxttjv9hut2z8scQyN 7Q== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t7qujj376-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 20 Sep 2023 19:29:41 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38KJTeSF024325
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 20 Sep 2023 19:29:40 GMT
-Received: from [10.48.245.144] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 20 Sep
- 2023 12:29:40 -0700
-Message-ID: <47c0e19e-5f79-4b91-8110-9df835434cfd@quicinc.com>
-Date:   Wed, 20 Sep 2023 12:29:39 -0700
+        Wed, 20 Sep 2023 19:07:59 -0400
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81677A3
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Sep 2023 16:07:53 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1d6b5292aebso193194fac.1
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Sep 2023 16:07:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1695251272; x=1695856072; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GGwpZPVEORkxfW1VbT3l7BERzQg7QGbMxJQ8TdJTA+4=;
+        b=AcWrhqJQ47NG3xJ3uRrti7+2vmjcakOlhxH6xBQlNGWhgmVxjplxO0z7kPOxCIChph
+         a8vvoG63muPZS0RXtTveeB9kBbpWsRrwkR4WCZjsmek0bNHXtPXL+5CY/G8HjQ+6Of+F
+         mpaHBythwbocXczY1zJv6RCT7b1zQkkzpilZk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695251272; x=1695856072;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GGwpZPVEORkxfW1VbT3l7BERzQg7QGbMxJQ8TdJTA+4=;
+        b=BCC+Hqn9pc4rH/qyOCLruDWCCqWGO34jZkdmsR3H3/FxyWg73ka6dI1MmPIMr/+t3u
+         SfdNr/pAGk8IH0s+hoHmK5xkvsjcAKodDNh1HA6JrYDDkZJRSqT5rJOY4zrp1WSV7FQL
+         fgvA33Rnk7KJPSxG0ZFMVrx/TYJHSLKvKX1UyH2K/43xFcVuOQu1J3NUyQzZmzQVkdS+
+         eZTI0efmHFEhMBJBLfN0sJdRQ7cKDV8JL/vGIOk7pMGrS7COnx7fWcFmxUVC44Fnm4Mi
+         tCgj/uaM13UmOk3VVYVEelH2Z8+783dsJwguDdbjSAMCYIXs53nxhwDoZRlbLQ5r54/+
+         +hbg==
+X-Gm-Message-State: AOJu0YyGMZ1wc2pEawbr5NBgTx60eyR7NIMTFlxW6HhLtnUvLZe/hJmb
+        ujNg4zgeWHOSdxc/NEsdl2LAGFoYyBh0hrxTqNaCGw==
+X-Google-Smtp-Source: AGHT+IEssm67PP+7GPig2eLjq79CN2xbNLkm4Zvxrq1N4ay5HbaNCMAPnRH9T75pxLMhMzjZXg5kTQ==
+X-Received: by 2002:a05:6871:49cc:b0:1dc:723d:b8d0 with SMTP id ty12-20020a05687149cc00b001dc723db8d0mr364311oab.27.1695251272340;
+        Wed, 20 Sep 2023 16:07:52 -0700 (PDT)
+Received: from localhost ([2620:15c:9d:2:23d5:c394:2c98:ffcf])
+        by smtp.gmail.com with UTF8SMTPSA id d12-20020aa7814c000000b0066a2e8431a0sm57254pfn.183.2023.09.20.16.07.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Sep 2023 16:07:51 -0700 (PDT)
+Date:   Wed, 20 Sep 2023 16:07:49 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     =?iso-8859-1?Q?V=EDctor?= Gonzalo 
+        <victor.gonzalo@anddroptable.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: use MODULE_FIRMWARE to add firmware files
+ metadata
+Message-ID: <ZQt7RS+FdOtkH0c6@google.com>
+References: <20230914211938.28395-1-victor.gonzalo@anddroptable.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 wireless-next 8/9] wifi: ath11k: remove unnecessary
- (void*) conversions
-Content-Language: en-US
-To:     Wu Yunchuan <yunchuan@nfschina.com>, <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20230919045150.524304-1-yunchuan@nfschina.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230919045150.524304-1-yunchuan@nfschina.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: vCCQPVBNwDbx0ZSqzURi7wLIjz9qGuIt
-X-Proofpoint-ORIG-GUID: vCCQPVBNwDbx0ZSqzURi7wLIjz9qGuIt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-20_09,2023-09-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- mlxscore=0 clxscore=1015 priorityscore=1501 mlxlogscore=668
- impostorscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0
- adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309200161
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230914211938.28395-1-victor.gonzalo@anddroptable.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/18/2023 9:51 PM, Wu Yunchuan wrote:
-> No need cast (void *) to (struct ath11k_base *),
-> struct hal_rx_msdu_link *), (struct ath11k_buffer_addr *) or
-> other types.
+On Fri, Sep 15, 2023 at 12:19:38AM +0300, Víctor Gonzalo wrote:
+> The mwifiex_pcie driver is missing the MODULE_FIRMWARE macro to
+> add the firmware files needed to the module metadata.
 > 
-> Signed-off-by: Wu Yunchuan <yunchuan@nfschina.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/pcie.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
+FWIW, when reviewing the other sub-drivers, I noticed sdio.c is missing
+an entry for SD8801_DEFAULT_FW_NAME. Mind sending a patch?
+
+For this:
+
+Acked-by: Brian Norris <briannorris@chromium.org>
