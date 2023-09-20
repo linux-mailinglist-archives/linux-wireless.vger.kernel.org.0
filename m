@@ -2,49 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 532E47A79E5
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 13:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C52E77A7A31
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 13:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234234AbjITLAb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Sep 2023 07:00:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51188 "EHLO
+        id S234343AbjITLOf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Sep 2023 07:14:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232327AbjITLAa (ORCPT
+        with ESMTP id S233970AbjITLOe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Sep 2023 07:00:30 -0400
+        Wed, 20 Sep 2023 07:14:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 486FC97;
-        Wed, 20 Sep 2023 04:00:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E498FC433CD;
-        Wed, 20 Sep 2023 11:00:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8CB7B4;
+        Wed, 20 Sep 2023 04:14:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11D0C433C8;
+        Wed, 20 Sep 2023 11:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695207623;
-        bh=rPiOUM5aaPiWdfVsIO/cyE3yqhenjHG0uI9o5H+GhkU=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=c4uykEEPwEbr8zdbbSliJKEUBvRYSJjrN5AghndhxVSToOBFQbQXaXWS/acoVkMh0
-         1dGt0z+PYTgMdyaAFwh1eoyXuLRgoYxThzE7aGUJW66AXvMczPNaiIkaRgT+Ww0Thu
-         PwyQr0UbEgfGcJbdz0xOw8WjRQq/EtkoDDOiaaBuuwxGduEmHByahc12iHhz+/tZRx
-         Zd6Ng/kWGjsx7G0SxGY2LZJFNMCF0SDfZivVx/0wls4ctLTwGQclXzsNtkJLz6tO0n
-         kgb7lBM+ZE7UjMXEo89/L+EsZqO6ychFHcQdGSMhcJxTPNzGo60joUiXY3hvPhEomB
-         5FsAlUa2dTfuA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CFDF7C41671;
-        Wed, 20 Sep 2023 11:00:23 +0000 (UTC)
+        s=k20201202; t=1695208468;
+        bh=4ohIM+PR0LkQKum0byuzz3ycyYgyXeMylliHgM3EBoQ=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=ijaRBULS666AbH3P/pJ1eLSNRJVlcFLP2EhIlkqKmf67PK3VEk0FGPCGvEuEQDmS7
+         j1aCPJ66Nitqle4/qWtja+jVqxH2qBTrvVvTWPAMlK74IvnTkUNAzuSIhvdakto8VV
+         7NNJCtv0QZLkosnal/BdrOVmbQAIvb2TGVVOUd3E6oZbxU8+oSwwktwz/Io2brXEQE
+         e1vd39tAiQkcBu2zMneGhhamjGIlwU57BCfvYreadbW3zg6RkfMXtR5oQSzsh/ikRx
+         bLfGnluPZKjQ2kpMKSOdr4HuUgpvLexkddvsXwOf5eIQsaHg4WOa2UXIUHSAdebaxJ
+         IojSj22oBbFBw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH][next] wifi: cfg80211: make read-only array centers_80mhz
- static const
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169520762384.31903.1385774049535484165.git-patchwork-notify@kernel.org>
-Date:   Wed, 20 Sep 2023 11:00:23 +0000
-References: <20230919095205.24949-1-colin.i.king@gmail.com>
-In-Reply-To: <20230919095205.24949-1-colin.i.king@gmail.com>
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: brcmfmac: Annotate struct brcmf_gscan_config with
+ __counted_by
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230915200542.never.417-kees@kernel.org>
+References: <20230915200542.never.417-kees@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Hector Martin <marcan@marcan.st>,
+        Ryohei Kondo <ryohei.kondo@cypress.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        linux-hardening@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169520846255.991705.4120611293307630241.kvalo@kernel.org>
+Date:   Wed, 20 Sep 2023 11:14:24 +0000 (UTC)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -55,27 +66,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+Kees Cook <keescook@chromium.org> wrote:
 
-This patch was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Tue, 19 Sep 2023 10:52:05 +0100 you wrote:
-> Don't populate the read-only array lanes on the stack, instead make
-> it static const.
+> Prepare for the coming implementation by GCC and Clang of the __counted_by
+> attribute. Flexible array members annotated with __counted_by can have
+> their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
+> (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+> functions).
 > 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  net/mac80211/tdls.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> As found with Coccinelle[1], add __counted_by for struct brcmf_gscan_config.
+> 
+> [1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
+> 
+> Cc: Arend van Spriel <aspriel@gmail.com>
+> Cc: Franky Lin <franky.lin@broadcom.com>
+> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+> Cc: Hector Martin <marcan@marcan.st>
+> Cc: Ryohei Kondo <ryohei.kondo@cypress.com>
+> Cc: Hans de Goede <hdegoede@redhat.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: brcm80211-dev-list.pdl@broadcom.com
+> Cc: SHA-cyfmac-dev-list@infineon.com
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Here is the summary with links:
-  - [next] wifi: cfg80211: make read-only array centers_80mhz static const
-    https://git.kernel.org/netdev/net-next/c/6c0da8406382
+Patch applied to wireless-next.git, thanks.
 
-You are awesome, thank you!
+cf74cdc6e581 wifi: brcmfmac: Annotate struct brcmf_gscan_config with __counted_by
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+https://patchwork.kernel.org/project/linux-wireless/patch/20230915200542.never.417-kees@kernel.org/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
