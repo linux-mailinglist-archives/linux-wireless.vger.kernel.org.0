@@ -2,185 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8968D7A7391
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 09:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 873947A7496
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 09:45:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233422AbjITHB3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Sep 2023 03:01:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44450 "EHLO
+        id S234012AbjITHpK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Sep 2023 03:45:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232245AbjITHB1 (ORCPT
+        with ESMTP id S233897AbjITHoz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Sep 2023 03:01:27 -0400
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2043.outbound.protection.outlook.com [40.107.22.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF5AEB9;
-        Wed, 20 Sep 2023 00:01:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kIFWpwCehvJrJB43shcv1Np2Ck5HALOD3MdUOGGQIk8A/DQkJJctm4XT8ZUX8XGnywBmX4tqGn+fgdjUjqNZXOYBHvNd0BCdnddBKfS57oqmtTDlLq832dzgM3ReU5U9OaqNwKhpNFtXOfp+c8aqsj9cHUNqfL6pk6TPS6fgWTG+IOBEA3n6WicVDxknGoX2UiYTwNUvF8sAaIYHYuLwCeR9PrwTHQnY0qaWLQHMuWIhFCalHMVgA7YFfaJ8K3f9TpiS/jDA90iWLSbkT+focqff0iLm6BnKIjIhkQw/xR+t+uCX1y50yJ/+pl94ObCOh7eLtlWK61N4pl2pR3rCPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hTsZWd9GSe6iYlYmqnhZ63IGCRGjiwaV7XEWxztu/3w=;
- b=Te+1/j8fZ2DERLekPt6HVBghp2R455oWDGU7ZT3jI+EkUHOQ7iuXltDwQI/vT1Pa2wimpA15Mj02Wy85DHCwVZy9CPpfLASsyU2zCx+sAfJG3L4njcdfcu6Ri/84SjUyvgYTh0Un5fRsuhqbnSkqotQoL/WweFFDp3zsyVqkeB9Y6DyAe14gDTBWsNlenlEQUmv9NOpqgXrqt1BkDd22C70T2RtbgwiAGk8r4tHE6MYs87J0xzwq2bTgAByWSWVL4qm5ZxzWwS9y1w9I6UlCzgiYUcAOgAA5Dq05Fkzaq2Nx98PWEbLQiIJEqRCZHAodwMJPzTB0qMKWAQWG4ty6Fw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hTsZWd9GSe6iYlYmqnhZ63IGCRGjiwaV7XEWxztu/3w=;
- b=DyNJvlo9EbHtePmEO4KpSY3uCNEgOowyZ6wSJ3XCKNdfaujiZwAyxQ/mQpf9rxD/EsNCWoqHqEqKQFSkkrygXLer0cP4U2mkrf9k1O3Rebs1QELtoB6ewNNeNyOP8E1gamLFAYAnowsOdI8nhEe7aBAvMvaibbCVSzXMc3nqoL3jnsOgTjpep/8V3OROUThgx+RW1NPcZa3BBxZXr/rv9NQGeXfNVP8yqW8QbLg5vTiDB5jlURWfaOphs1Xd+AcH28BHUjgjnNuaAyVn5sMOUEn5JGVudlxWw95ZdOrkphrbPuZBBvDkDs8F959+RPyPyhnEQKu7jp8B923X1iSGAA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=suse.com;
-Received: from VE1PR04MB6432.eurprd04.prod.outlook.com (2603:10a6:803:122::21)
- by AS8PR04MB7927.eurprd04.prod.outlook.com (2603:10a6:20b:2ad::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28; Wed, 20 Sep
- 2023 07:01:17 +0000
-Received: from VE1PR04MB6432.eurprd04.prod.outlook.com
- ([fe80::8066:2981:a2d7:e654]) by VE1PR04MB6432.eurprd04.prod.outlook.com
- ([fe80::8066:2981:a2d7:e654%5]) with mapi id 15.20.6792.026; Wed, 20 Sep 2023
- 07:01:17 +0000
-Message-ID: <3698c731-34fe-b6bf-46be-15146ae209bb@suse.com>
-Date:   Wed, 20 Sep 2023 09:01:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] wifi: brcmfmac: firmware: Annotate struct
- brcmf_fw_request with __counted_by
-Content-Language: en-US, ca-ES, es-ES
-To:     Kees Cook <keescook@chromium.org>,
-        Arend van Spriel <aspriel@gmail.com>
-Cc:     Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Hector Martin <marcan@marcan.st>,
-        =?UTF-8?Q?Alvin_=c5=a0ipraga?= <alsi@bang-olufsen.dk>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        linux-hardening@vger.kernel.org
-References: <20230915200552.never.642-kees@kernel.org>
-From:   Matthias Brugger <mbrugger@suse.com>
-In-Reply-To: <20230915200552.never.642-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR3P281CA0198.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a5::20) To VE1PR04MB6432.eurprd04.prod.outlook.com
- (2603:10a6:803:122::21)
+        Wed, 20 Sep 2023 03:44:55 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E9BFD8
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Sep 2023 00:44:48 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38K7iYgtD802820, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38K7iYgtD802820
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 20 Sep 2023 15:44:34 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 20 Sep 2023 15:44:34 +0800
+Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 20 Sep
+ 2023 15:44:33 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/7] wifi: rtw89: support to load TX power tables from firmware file
+Date:   Wed, 20 Sep 2023 15:43:15 +0800
+Message-ID: <20230920074322.42898-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB6432:EE_|AS8PR04MB7927:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca4aea40-514e-4af7-cc9b-08dbb9a76277
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: oP5Jm8bOrLzdh7oz3CH8Uqy1EX75i3frelX8Yrcq61lPkhk/qDJ0oEbuEzugTbmC52e2I1sAffrY3WFT0Oakge0GRy4XR7VbKej56izIT4aj6vm9m3sgtlcImrhWfs1H4cKY2hiCRIKvxLP4ePKktI01Cdc9oIh9rHj6jRpAcNQiBpT11NJtuMA5uz1k3NYqCPtcu9nOJbfdiE9TmvPqOjxg6NxjH1zsLLKLMqGNZEGHLfFMTLDJS0gC22cQbP8OdbdknUcl8Y/KlzYpim56O/7eSG47bDQMiXjX2u0zUiVXUgaR8tcp66WxJdesHscZNO2oo2coPKF/SdG8lp8xRFr8qHBUV/AGyJeNCpvKsfGXmdgW6tv1TS+zgV+sRNY6SvcabONmKUu+2cuP5gmoBJAzvXLxmoSA3gOYucNKr8fB/VlMk7u/hE/ZOFtbrO99ciFz53Q2php23qPO5vHcBp48/VddaFdn/2EerqXR/0cERORpVs2Y3vokFUIwzisrY88gNgysi97zmsXaUxMIsL6ksPfnkn9teeijY8svOFCwkn6aSuPPg1Ikh0ObFLi1DnDhiyYorpzUWfxdMQgRVQDDQ9epiQn7cPlSefPDiUKzkrgk5oVgae7U3TIvGCUk
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6432.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(346002)(136003)(396003)(366004)(39860400002)(451199024)(1800799009)(186009)(26005)(2616005)(31686004)(83380400001)(66574015)(5660300002)(110136005)(66946007)(66476007)(66556008)(31696002)(8936002)(7416002)(316002)(41300700001)(8676002)(2906002)(4326008)(86362001)(38100700002)(478600001)(966005)(36756003)(54906003)(6486002)(6506007)(53546011)(6512007)(6666004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZE9oY3FTQUowZ1dObkxza2o5aUI4SXJJWVlQRk5PRW9SOWtRY1lPWG9lUWt1?=
- =?utf-8?B?MHNaM1VRQUUwMjRCamN3RG5oUER6MHI3blcrS1NPV2RhVllQZ2FhRWVybm8x?=
- =?utf-8?B?WlBuMGYzaGdiMkU1R09rOXlHR0hUMVdRUGJ0U29aL2d0T2FybkR5T3Vrd2hK?=
- =?utf-8?B?am52S3ZmOTRFOUthM2paVFNHd2RDb1ppdHhkbFZyL3lxTjlJaWk1azFhVGgy?=
- =?utf-8?B?WFBpNHFwbWR1VUF1TEZpQ0tRQ3Bpcnp3MHczQmFCK3lQZjVDSFoxQzVtVkVh?=
- =?utf-8?B?R2VyU0lrOHpvdDNCQndCbWlRU3hKN01wYkl6c2ZyNzFDczNDbXd3SjZtYTU4?=
- =?utf-8?B?Y0hUVGRnMUhLMVNoSUlhSnVTaERtL3gvaHBNc1M4eTlPbU9XZmZkSmhIZENL?=
- =?utf-8?B?b1FHUE8xMjdnWWtXc0lDS05HNnFVK2N4RlFGZ01UbEF1TGxiS2NHVC9WN0ht?=
- =?utf-8?B?ek40S1I2NjhLUDlJZ2hUV2JhY01Ncjh3c0c5dXBjeStGMElzU2hCc0ZJZmN2?=
- =?utf-8?B?MlR2U0hxc2RTdHlqQ29SQ3ZsNkxUYms5M0l1cU5vRUZsV0tPU05McFhOZ3ZE?=
- =?utf-8?B?eVBTQzZ3NER3V2ZkSVFFcGIxeHQxVkdWSGJZZ0RiRzdrSy9jL2djZU8rRTIz?=
- =?utf-8?B?MERCSG5DMGNEQktCNWtEWGcvRlR0YlNITkVsZjd6U0NrYzRPNXNXZmZHZlBQ?=
- =?utf-8?B?V1NhWS9VMmIrUEZqTDJwbVBrNDFHenVhWmV6dVVzbHdxVkN6N2NzcSs1Y3h2?=
- =?utf-8?B?c0FQaThOKysyNFhjZzlqM2l1OC8zeUlpWHVWenY0azkrdUZ5SWRlSEZ1aGty?=
- =?utf-8?B?VlFuTnNyN0w2VEpwOWkzeEFPQU9qM0xHNXJteFYwVXl6MTNyNlR1eXpOZm00?=
- =?utf-8?B?WitDdTNkRGNWTS9DSEUwcjc3aTh3QStQaFZhanJuNHJsQ3l3dWxnaUQrUWgy?=
- =?utf-8?B?cVkyUDZvejQ2eGhnZzlRelEvbWJQNW9BZVZmNFZGd285ZGU5MmJsK3h5dDZy?=
- =?utf-8?B?R3ZrWklYL3hsZXByQjhNcWNvb0NCbkROdDBsMFBoQ2hVUU42V2NORmlQdFJr?=
- =?utf-8?B?WEJMK3FhQzNMKzFNTDNjb1R2UlhLajR1NWxiN0dCc0ZVL0NvU2o3QWRBMEZv?=
- =?utf-8?B?M2R1SDAxaGdFUXV3emNNNXhiYTNzVDBFQ01TUUlMTjVJT3VoQm44MGNka0lC?=
- =?utf-8?B?VHAycFZVazd6dHR2a0Q2eW12aCsxaDkzZWd6c0ZNTmNQM0hUUU9VZ0Z4bFJB?=
- =?utf-8?B?RGN0WTRoOFN0cTNsSWtNelYxeHJuZTBaK1NjblB6bTY4cEViaERqenp6cCt0?=
- =?utf-8?B?eWdKMFdBUllEa0l4UUwxV0FkNkRnYTd0dXdTZnNlZjNzWTYybVprVlp3S0Y0?=
- =?utf-8?B?MmtjZkduKzc0Nk5qdlpxMjJodk1JVEZIUDc0UDdZQ0VkOWpXWXNheUhGeTVV?=
- =?utf-8?B?N2ZVMU4xTFR0NFFid05KQURVQ1N1NUJiVTVSbzlZTlUraTNBRGwrRldRV0JS?=
- =?utf-8?B?c2d2MWxvY1pZNzE3M2VpdVpMcVlIUlUrN0lwei9FTEo0ZVRDOG8xakZ5VUdl?=
- =?utf-8?B?M1dSZWhvK2hnUkhDakpjbWJtTjVHNko3LzlZdXcvUEJEcUY2TlRrOHQzcXlF?=
- =?utf-8?B?eHJxWTk1QjZ2elIyT0M3VXR5MG1XdE10N3VXLzBWTlhSYnNUMTl4c3VNVXRM?=
- =?utf-8?B?RzNoaTJoeURZZzd0LzFYSHBpQUVobm9vTm9Tcll0S2kxT3JodWJOd3k4UTFF?=
- =?utf-8?B?ZmpaOFQ0Z2Nyazd4anI2cVN4SzVFL2hKTGNtNUZSV2xnREpEQ0wwN3VpTlVR?=
- =?utf-8?B?WkRrM2NiK05UNjF6WHM5d2QzQm92QVdNTEptL3NQcXI3V0xoN2xYRFMwQVdV?=
- =?utf-8?B?bjVKSjNLRXFBcXVhMDhJWUJCeXdLMnhPSVlqZGpCbXdHbmwwSE40S1pQcGZi?=
- =?utf-8?B?c2tPU0k2Qy9SY3pLOExQWmN4eHAvQkhTb2tSM2FTdEgvTGJEYlMxaVdvRDla?=
- =?utf-8?B?RHVIMDVaam8rcVMzaTBabWRQd094NGlMczJmd2ZiK1NDZzNDT1RsKzJvVksr?=
- =?utf-8?B?WVhlV1l3TWUwYmhxeW1wS2xMS0ZRRmV1TmlGcHM4aUltNW5QbE1VSDQ1M1dU?=
- =?utf-8?Q?Yw9YUXEZlOikG/ExwDt2IgfH6?=
-X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca4aea40-514e-4af7-cc9b-08dbb9a76277
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB6432.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 07:01:17.0019
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lF4MSzCSHkXBFMaSVDJ7x7ZYuMuPH4pK8U//EUpWps3Wzp5P49eeCf4LPN9RMd0k/7vkGGzjMMzfbGtQ3Vkb0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7927
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.25]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+We proposed firmware elements to have PHY parameters that are simple tuple
+of {addr, value}, and this patchset is to add nine kinds of TX power tables
+to firmware elements. Since TX power tables can be possibly increasing
+dimension or value range in the future, it is much complicated than
+parameter tables.
 
+We keep existing WiFi 6 chips use tables built-in arrays in drivers, but
+preserve rooms to make it possible to move arrays into firmware file
+as well. So, patches in this patchset adjust struct also for this purpose.
 
-On 15/09/2023 22:05, Kees Cook wrote:
-> Prepare for the coming implementation by GCC and Clang of the __counted_by
-> attribute. Flexible array members annotated with __counted_by can have
-> their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
-> (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-> functions).
-> 
-> As found with Coccinelle[1], add __counted_by for struct brcmf_fw_request.
-> 
-> [1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
-> 
-> Cc: Arend van Spriel <aspriel@gmail.com>
-> Cc: Franky Lin <franky.lin@broadcom.com>
-> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Matthias Brugger <mbrugger@suse.com>
-> Cc: Hector Martin <marcan@marcan.st>
-> Cc: "Alvin Šipraga" <alsi@bang-olufsen.dk>
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: brcm80211-dev-list.pdl@broadcom.com
-> Cc: SHA-cyfmac-dev-list@infineon.com
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+About backward/forward compatibility:
+This is the most important and complicated stuff of this patchset. The
+method basically to achieve compatibility is to pad zeros.
 
-Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+1. encode scheme
+   Consider a TX power value in driver
+     power[x][y] = a
+   The indices part are also encoded into firmware file
+     x, y, a
+   For example,
+     power[5][6] = 9      --> 05 06 09
 
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
-> index 1266cbaee072..4002d326fd21 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
-> @@ -69,7 +69,7 @@ struct brcmf_fw_request {
->   	u16 bus_nr;
->   	u32 n_items;
->   	const char *board_types[BRCMF_FW_MAX_BOARD_TYPES];
-> -	struct brcmf_fw_item items[];
-> +	struct brcmf_fw_item items[] __counted_by(n_items);
->   };
->   
->   struct brcmf_fw_name {
+2. compatibility
+   When array dimension is increasing, it could become something like
+     power[x][y][z] = b
+   For example,
+     power[5][6][4] = 9   --> 05 06 09 04
+                                       ^^
+     (note: the new dimension must be encoded as the last digit)
+
+   (I explain further based on these examples)
+
+2.1. driver backward compatibility (new driver + old firmware)
+   From driver point of view, a tuple from firmware is 3 digits, so it
+   allocates a expected 4-digit tuple array first, and copy 3 digits into
+   the array. Base on above example, tuple in old firmware is recognized as
+   05 06 09 00  --> power[5][6][0] = 9
+            ^^ This pending zero is existing in firmware, but driver adds it
+
+2.2. driver forward compatibility (old driver + new firmware)
+   Like above example, old driver allocates 3-digit tuple array first, and
+   only copy 3-digits into the array if remaining digits are zeros. For
+   example,
+   05 06 09 04 --> only for new driver; don't recognize
+   05 06 09 00 --> power[5][6] = 9
+            ^^ remaining digits must be zeros
+
+   Summarize the flow:
+   1. pre-condition
+      n = tuple size in firmware
+      m = tuple size expected by driver
+   2.1. n == m
+        - copy n digits into array
+   2.2. n < m (new driver + old firmware)
+        - allocate/zero m digits tuple array
+        - copy n digits into array
+   2.3. n > m (old driver + new firmware)
+        - if m + 1 ~ n digits aren't all zeros, ignore this tuple
+        - copy m digits into array
+   3. from tuple to regular C array.
+
+Patch 1/7~6/7 are to adjust enum and struct, and patch 7/7 is to load
+TX power from firmware. The remaining patches in hand are to set TX power
+to WiFi 7 chips. I will submit them later.
+
+Firmware elements layout for reference:
+
+  +===========================================+
+  |      WiFi CPU multi-firmware              |
+  |                             +-------------+
+  |                             |   padding   |
+  +===========================================+
+  | elm ID 1 | elm size |  other header data  |
+  +----------+----------+                     |
+  |                                           |
+  +-------------------------------------------+
+  | content (variable length)                 |
+  |                             +-------------+
+  |                             |   padding   |
+  +===========================================+
+  | elm ID 2 | elm size |  other header data  |
+  +----------+----------+                     |
+  |                                           |
+  +-------------------------------------------+
+  | content (variable length)                 |
+  |                   +-----------------------+
+  |                   |
+  +===================+
+
+Element header:
+
+ +===========================================+
+ |  elm ID  | elm size | version  |   rsvd0  |
+ +----------+----------+----------+----------+
+ |        rsvd1/2      |  element_priv[]     |
+ +-------------------------------------------+
+
+Ping-Ke Shih (1):
+  wifi: rtw89: add subband index of primary channel to struct rtw89_chan
+
+Zong-Zhe Yang (6):
+  wifi: rtw89: indicate TX shape table inside RFE parameter
+  wifi: rtw89: indicate TX power by rate table inside RFE parameter
+  wifi: rtw89: phy: refine helpers used for raw TX power
+  wifi: rtw89: load TX power by rate when RFE parms setup
+  wifi: rtw89: phy: extend TX power common stuffs for Wi-Fi 7 chips
+  wifi: rtw89: load TX power related tables from FW elements
+
+ drivers/net/wireless/realtek/rtw89/chan.c     |  15 +
+ drivers/net/wireless/realtek/rtw89/core.c     |  25 +-
+ drivers/net/wireless/realtek/rtw89/core.h     | 152 ++++-
+ drivers/net/wireless/realtek/rtw89/fw.c       | 530 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/fw.h       | 130 +++++
+ drivers/net/wireless/realtek/rtw89/phy.c      |  97 ++--
+ drivers/net/wireless/realtek/rtw89/phy.h      |   3 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   6 +-
+ .../wireless/realtek/rtw89/rtw8851b_table.c   |   6 +
+ .../wireless/realtek/rtw89/rtw8851b_table.h   |   3 -
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 -
+ .../wireless/realtek/rtw89/rtw8852a_table.c   |   2 +
+ .../wireless/realtek/rtw89/rtw8852a_table.h   |   1 -
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   6 +-
+ .../wireless/realtek/rtw89/rtw8852b_table.c   |   4 +
+ .../wireless/realtek/rtw89/rtw8852b_table.h   |   3 -
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   6 +-
+ .../wireless/realtek/rtw89/rtw8852c_table.c   |   4 +
+ .../wireless/realtek/rtw89/rtw8852c_table.h   |   3 -
+ 19 files changed, 910 insertions(+), 87 deletions(-)
+
+-- 
+2.25.1
+
