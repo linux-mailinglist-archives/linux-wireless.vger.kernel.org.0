@@ -2,50 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BAE87A75C6
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 10:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8E237A75C8
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Sep 2023 10:24:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232934AbjITIYY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Sep 2023 04:24:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45866 "EHLO
+        id S233313AbjITIY0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Sep 2023 04:24:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231347AbjITIYX (ORCPT
+        with ESMTP id S232799AbjITIYY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Sep 2023 04:24:23 -0400
+        Wed, 20 Sep 2023 04:24:24 -0400
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51319E
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Sep 2023 01:24:16 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38K6MnU0007530;
-        Wed, 20 Sep 2023 08:24:11 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40C2BA3
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Sep 2023 01:24:18 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38K5wMfF001769;
+        Wed, 20 Sep 2023 08:24:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=qcppdkim1;
- bh=PJpNz55DGXG1CMJkODAR6HFBFfnwWcmOOMePQ8i041I=;
- b=Y0lfmGbJ/Rfsf4uNrMaBmLp16KKhJflI+5YQxdJ+7NiamP+ZEzVcOLyaRu2kLKugFedw
- xT+TZAcBriXin4T+DtsTAxy5+4gEc/V5vlUbMJ4nPgX9pmmEwXhAbZWinmVfHPCRfJuH
- mqIvzcrVyajxiPFUQQSLdr6WRsIbY+Ehij+fNDmykALk/tLj/yUtLtCO8i2gqV+7K8T0
- PxDOS2wF8EiQBOZunIAp/xZz10BvvUNoG6igtaZve/H/2wyrAbDkuVZAjwJsoFGxQTMn
- F7Oyce+arpQX7aSGbCD0ambX9BKQXIXfW7S7F1B4Eoqj+muKfMTgmiaoi0/IwdGTVkaJ vQ== 
+ bh=l+suyGsoe41ErzmRfO+VlfYJ9OlO3qrQAsgpsbKpqkI=;
+ b=QMM3PHPPbMWQV8n97CEKphdkZpNzAFOf1WA5QJBo6cKVdNlsqLv6Vcl0vLomsIwNKOnR
+ eIDS7bROXENshgwGUE3SEhwIKNuGVwxOxuncCTYqQKccryZ8CW7SR7Tq5Q5YF88zwBSW
+ oY0lvdlhLGvE7fqdoObvdfdrUGTjnZj/+ojqd/2H9o9MpSMJSNTvuTh5PuQ2AME/HRds
+ 0rVOVvMqu5Z884Yl4D7/7dbQMwM2ahl08HIj+Q+LauIPloE9s9GpKHGJbht+PATWwAab
+ biOBb9vruJFickY0JfTBggCaYRmrJkQlcK7G3NkHFVZZegXl8w3bkaD5ndHAsEHwNnlC RA== 
 Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t6v2dkrv6-1
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t746g2w1b-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 20 Sep 2023 08:24:11 +0000
+        Wed, 20 Sep 2023 08:24:13 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38K8OA1n006043
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38K8OCnE006322
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 20 Sep 2023 08:24:10 GMT
+        Wed, 20 Sep 2023 08:24:12 GMT
 Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Wed, 20 Sep 2023 01:24:08 -0700
+ 15.2.1118.36; Wed, 20 Sep 2023 01:24:10 -0700
 From:   Wen Gong <quic_wgong@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>, <kvalo@kernel.org>,
-        <quic_jjohnson@quicinc.com>, <quic_wgong@quicinc.com>
-Subject: [PATCH v6 02/13] wifi: ath11k: store cur_regulatory_info for each radio
-Date:   Wed, 20 Sep 2023 04:23:38 -0400
-Message-ID: <20230920082349.29111-3-quic_wgong@quicinc.com>
+        <quic_jjohnson@quicinc.com>, <quic_wgong@quicinc.com>,
+        Baochen Qiang <quic_bqiang@quicinc.com>
+Subject: [PATCH v6 03/13] wifi: ath11k: fix a possible dead lock caused by ab->base_lock
+Date:   Wed, 20 Sep 2023 04:23:39 -0400
+Message-ID: <20230920082349.29111-4-quic_wgong@quicinc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230920082349.29111-1-quic_wgong@quicinc.com>
 References: <20230920082349.29111-1-quic_wgong@quicinc.com>
@@ -57,16 +58,16 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: cuZNtoQ1gseDj_49dXghq_gdBux4lOQp
-X-Proofpoint-GUID: cuZNtoQ1gseDj_49dXghq_gdBux4lOQp
+X-Proofpoint-ORIG-GUID: -HjQfpGhSpit8-Y95QKsNhU6aNUf7HBM
+X-Proofpoint-GUID: -HjQfpGhSpit8-Y95QKsNhU6aNUf7HBM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-09-20_02,2023-09-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- suspectscore=0 priorityscore=1501 bulkscore=0 malwarescore=0 phishscore=0
- impostorscore=0 clxscore=1015 mlxscore=0 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309200067
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ lowpriorityscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ spamscore=0 mlxlogscore=919 impostorscore=0 adultscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309200067
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -76,304 +77,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The regulatory info of WMI_REG_CHAN_LIST_CC_EXT_EVENTID is not saved
-in ath11k now, the info should be saved in ath11k. Save the info for
-each radio and support switch regulatory rules dynamically.
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+
+spin_lock/spin_unlock are used in ath11k_reg_chan_list_event to
+acquire/release ab->base_lock, for now this is safe because that
+function is only called in soft IRQ context.
+
+But ath11k_reg_chan_list_event() will be called from process
+context in an upcoming patch, and this can result in a deadlock if
+ab->base_lock is acquired in process context and then soft IRQ occurs
+on the same CPU and tries to acquire that lock.
+
+Fix it by using spin_lock_bh and spin_unlock_bh instead.
 
 Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
 
+Fixes: 69a0fcf8a9f2 ("ath11k: Avoid reg rules update during firmware recovery")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/core.h |   1 +
- drivers/net/wireless/ath/ath11k/mac.h  |   1 -
- drivers/net/wireless/ath/ath11k/reg.c  |   6 ++
- drivers/net/wireless/ath/ath11k/wmi.c  | 141 ++++++++++++++++++-------
- drivers/net/wireless/ath/ath11k/wmi.h  |   5 +
- 5 files changed, 113 insertions(+), 41 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index b04447762483..9fbe4f67218c 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -923,6 +923,7 @@ struct ath11k_base {
- 	 * This may or may not be used during the runtime
- 	 */
- 	struct ieee80211_regdomain *new_regd[MAX_RADIOS];
-+	struct cur_regulatory_info *reg_info_store;
- 
- 	/* Current DFS Regulatory */
- 	enum ath11k_dfs_region dfs_region;
-diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
-index 0231783ad754..e4835e0b7998 100644
---- a/drivers/net/wireless/ath/ath11k/mac.h
-+++ b/drivers/net/wireless/ath/ath11k/mac.h
-@@ -158,7 +158,6 @@ struct ath11k_vif *ath11k_mac_get_vif_up(struct ath11k_base *ab);
- 
- struct ath11k *ath11k_mac_get_ar_by_vdev_id(struct ath11k_base *ab, u32 vdev_id);
- struct ath11k *ath11k_mac_get_ar_by_pdev_id(struct ath11k_base *ab, u32 pdev_id);
--
- void ath11k_mac_drain_tx(struct ath11k *ar);
- void ath11k_mac_peer_cleanup_all(struct ath11k *ar);
- int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx);
-diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
-index 2a3edb60c08f..0535ab8a28fa 100644
---- a/drivers/net/wireless/ath/ath11k/reg.c
-+++ b/drivers/net/wireless/ath/ath11k/reg.c
-@@ -809,6 +809,12 @@ void ath11k_reg_free(struct ath11k_base *ab)
- {
- 	int i;
- 
-+	for (i = 0; i < ab->num_radios; i++)
-+		ath11k_reg_reset_info(&ab->reg_info_store[i]);
-+
-+	kfree(ab->reg_info_store);
-+	ab->reg_info_store = NULL;
-+
- 	for (i = 0; i < ab->hw_params.max_radios; i++) {
- 		kfree(ab->default_regd[i]);
- 		kfree(ab->new_regd[i]);
 diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 5a6578865b25..1fb445106872 100644
+index 1fb445106872..c427299b7202 100644
 --- a/drivers/net/wireless/ath/ath11k/wmi.c
 +++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -4749,6 +4749,11 @@ static int ath11k_wmi_tlv_ext_soc_hal_reg_caps_parse(struct ath11k_base *soc,
- 		soc->pdevs[0].pdev_id = 0;
- 	}
- 
-+	if (!soc->reg_info_store)
-+		soc->reg_info_store = kcalloc(soc->num_radios,
-+					      sizeof(*soc->reg_info_store),
-+					      GFP_ATOMIC);
-+
- 	return 0;
- }
- 
-@@ -7070,33 +7075,54 @@ static bool ath11k_reg_is_world_alpha(char *alpha)
- 	return false;
- }
- 
--static int ath11k_reg_chan_list_event(struct ath11k_base *ab,
--				      struct sk_buff *skb,
--				      enum wmi_reg_chan_list_cmd_type id)
-+void ath11k_reg_reset_info(struct cur_regulatory_info *reg_info)
- {
--	struct cur_regulatory_info *reg_info = NULL;
--	struct ieee80211_regdomain *regd = NULL;
--	bool intersect = false;
--	int ret = 0, pdev_idx, i, j;
--	struct ath11k *ar;
-+	int i, j;
- 
--	reg_info = kzalloc(sizeof(*reg_info), GFP_ATOMIC);
--	if (!reg_info) {
--		ret = -ENOMEM;
--		goto fallback;
--	}
-+	if (reg_info) {
-+		kfree(reg_info->reg_rules_2ghz_ptr);
- 
--	if (id == WMI_REG_CHAN_LIST_CC_ID)
--		ret = ath11k_pull_reg_chan_list_update_ev(ab, skb, reg_info);
--	else
--		ret = ath11k_pull_reg_chan_list_ext_update_ev(ab, skb, reg_info);
-+		kfree(reg_info->reg_rules_5ghz_ptr);
- 
--	if (ret) {
--		ath11k_warn(ab, "failed to extract regulatory info from received event\n");
--		goto fallback;
-+		for (i = 0; i < WMI_REG_CURRENT_MAX_AP_TYPE; i++) {
-+			kfree(reg_info->reg_rules_6ghz_ap_ptr[i]);
-+			for (j = 0; j < WMI_REG_MAX_CLIENT_TYPE; j++)
-+				kfree(reg_info->reg_rules_6ghz_client_ptr[i][j]);
-+		}
-+
-+		memset(reg_info, 0, sizeof(*reg_info));
- 	}
-+}
-+
-+static
-+enum wmi_vdev_type ath11k_reg_get_ar_vdev_type(struct ath11k *ar)
-+{
-+	struct ath11k_vif *arvif;
-+
-+	/* Currently each struct ath11k maps to one struct ieee80211_hw/wiphy
-+	 * and one struct ieee80211_regdomain, so it could only store one group
-+	 * reg rules. It means muti-interface concurrency in the same ath11k is
-+	 * not support for the regdomain. So get the vdev type of the first entry
-+	 * now. After concurrency support for the regdomain, this should change.
-+	 */
-+	arvif = list_first_entry_or_null(&ar->arvifs, struct ath11k_vif, list);
-+	if (arvif)
-+		return arvif->vdev_type;
-+
-+	return WMI_VDEV_TYPE_UNSPEC;
-+}
- 
--	ath11k_dbg(ab, ATH11K_DBG_WMI, "event reg chan list id %d", id);
-+int ath11k_reg_handle_chan_list(struct ath11k_base *ab,
-+				struct cur_regulatory_info *reg_info,
-+				enum ieee80211_ap_reg_power power_type)
-+{
-+	struct ieee80211_regdomain *regd;
-+	bool intersect = false;
-+	int pdev_idx;
-+	struct ath11k *ar;
-+	enum wmi_vdev_type vdev_type;
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI, "event reg handle chan list");
- 
- 	if (reg_info->status_code != REG_SET_CC_STATUS_PASS) {
- 		/* In case of failure to set the requested ctry,
-@@ -7104,7 +7130,7 @@ static int ath11k_reg_chan_list_event(struct ath11k_base *ab,
- 		 * and return from here.
- 		 */
- 		ath11k_warn(ab, "Failed to set the requested Country regulatory setting\n");
--		goto mem_free;
-+		return -EINVAL;
- 	}
- 
- 	pdev_idx = reg_info->phy_id;
-@@ -7116,7 +7142,7 @@ static int ath11k_reg_chan_list_event(struct ath11k_base *ab,
+@@ -7138,13 +7138,13 @@ int ath11k_reg_handle_chan_list(struct ath11k_base *ab,
+ 	/* Avoid default reg rule updates sent during FW recovery if
+ 	 * it is already available
+ 	 */
+-	spin_lock(&ab->base_lock);
++	spin_lock_bh(&ab->base_lock);
  	if (test_bit(ATH11K_FLAG_RECOVERY, &ab->dev_flags) &&
  	    ab->default_regd[pdev_idx]) {
- 		spin_unlock(&ab->base_lock);
--		goto mem_free;
-+		goto retfail;
+-		spin_unlock(&ab->base_lock);
++		spin_unlock_bh(&ab->base_lock);
+ 		goto retfail;
  	}
- 	spin_unlock(&ab->base_lock);
+-	spin_unlock(&ab->base_lock);
++	spin_unlock_bh(&ab->base_lock);
  
-@@ -7127,7 +7153,7 @@ static int ath11k_reg_chan_list_event(struct ath11k_base *ab,
- 		 */
- 		if (ab->hw_params.single_pdev_only &&
- 		    pdev_idx < ab->hw_params.num_rxmda_per_pdev)
--			goto mem_free;
-+			return 0;
- 		else
- 			goto fallback;
- 	}
-@@ -7138,7 +7164,7 @@ static int ath11k_reg_chan_list_event(struct ath11k_base *ab,
- 	if (ab->default_regd[pdev_idx] && !ab->new_regd[pdev_idx] &&
- 	    !memcmp((char *)ab->default_regd[pdev_idx]->alpha2,
- 		    (char *)reg_info->alpha2, 2))
--		goto mem_free;
-+		goto retfail;
- 
- 	/* Intersect new rules with default regd if a new country setting was
- 	 * requested, i.e a default regd was already set during initialization
-@@ -7150,13 +7176,24 @@ static int ath11k_reg_chan_list_event(struct ath11k_base *ab,
- 	    !ath11k_reg_is_world_alpha((char *)reg_info->alpha2))
- 		intersect = true;
- 
--	regd = ath11k_reg_build_regd(ab, reg_info, intersect,
--				     WMI_VDEV_TYPE_AP, IEEE80211_REG_LPI_AP);
-+	ar = ab->pdevs[pdev_idx].ar;
-+	vdev_type = ath11k_reg_get_ar_vdev_type(ar);
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI,
-+		   "wmi handle chan list power type %d vdev type %d intersect %d\n",
-+		   power_type, vdev_type, intersect);
-+
-+	regd = ath11k_reg_build_regd(ab, reg_info, intersect, vdev_type, power_type);
- 	if (!regd) {
- 		ath11k_warn(ab, "failed to build regd from reg_info\n");
- 		goto fallback;
+ 	if (pdev_idx >= ab->num_radios) {
+ 		/* Process the event for phy0 only if single_pdev_only
+@@ -7194,7 +7194,7 @@ int ath11k_reg_handle_chan_list(struct ath11k_base *ab,
+ 		ab->reg_info_store[pdev_idx] = *reg_info;
  	}
  
-+	if (power_type == IEEE80211_REG_UNSET_AP) {
-+		ath11k_reg_reset_info(&ab->reg_info_store[pdev_idx]);
-+		ab->reg_info_store[pdev_idx] = *reg_info;
-+	}
-+
- 	spin_lock(&ab->base_lock);
+-	spin_lock(&ab->base_lock);
++	spin_lock_bh(&ab->base_lock);
  	if (ab->default_regd[pdev_idx]) {
  		/* The initial rules from FW after WMI Init is to build
-@@ -7179,7 +7216,7 @@ static int ath11k_reg_chan_list_event(struct ath11k_base *ab,
- 	ab->dfs_region = reg_info->dfs_region;
- 	spin_unlock(&ab->base_lock);
- 
--	goto mem_free;
-+	return 0;
- 
- fallback:
- 	/* Fallback to older reg (by sending previous country setting
-@@ -7191,20 +7228,44 @@ static int ath11k_reg_chan_list_event(struct ath11k_base *ab,
- 	 */
- 	/* TODO: This is rare, but still should also be handled */
- 	WARN_ON(1);
--mem_free:
--	if (reg_info) {
--		kfree(reg_info->reg_rules_2ghz_ptr);
--		kfree(reg_info->reg_rules_5ghz_ptr);
--		if (reg_info->is_ext_reg_event) {
--			for (i = 0; i < WMI_REG_CURRENT_MAX_AP_TYPE; i++)
--				kfree(reg_info->reg_rules_6ghz_ap_ptr[i]);
- 
--			for (j = 0; j < WMI_REG_CURRENT_MAX_AP_TYPE; j++)
--				for (i = 0; i < WMI_REG_MAX_CLIENT_TYPE; i++)
--					kfree(reg_info->reg_rules_6ghz_client_ptr[j][i]);
--		}
--		kfree(reg_info);
-+retfail:
-+
-+	return -EINVAL;
-+}
-+
-+static int ath11k_reg_chan_list_event(struct ath11k_base *ab, struct sk_buff *skb,
-+				      enum wmi_reg_chan_list_cmd_type id)
-+{
-+	struct cur_regulatory_info *reg_info;
-+	int ret;
-+
-+	reg_info = kzalloc(sizeof(*reg_info), GFP_ATOMIC);
-+	if (!reg_info)
-+		return -ENOMEM;
-+
-+	if (id == WMI_REG_CHAN_LIST_CC_ID)
-+		ret = ath11k_pull_reg_chan_list_update_ev(ab, skb, reg_info);
-+	else
-+		ret = ath11k_pull_reg_chan_list_ext_update_ev(ab, skb, reg_info);
-+
-+	if (ret) {
-+		ath11k_warn(ab, "failed to extract regulatory info\n");
-+		goto mem_free;
+ 		 * the default regd. From then on, any rules updated for
+@@ -7214,7 +7214,7 @@ int ath11k_reg_handle_chan_list(struct ath11k_base *ab,
+ 		ab->default_regd[pdev_idx] = regd;
  	}
-+
-+	ret = ath11k_reg_handle_chan_list(ab, reg_info, IEEE80211_REG_UNSET_AP);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to process regulatory info %d\n", ret);
-+		goto mem_free;
-+	}
-+
-+	kfree(reg_info);
-+	return 0;
-+
-+mem_free:
-+	ath11k_reg_reset_info(reg_info);
-+	kfree(reg_info);
- 	return ret;
- }
+ 	ab->dfs_region = reg_info->dfs_region;
+-	spin_unlock(&ab->base_lock);
++	spin_unlock_bh(&ab->base_lock);
  
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 100bb816b592..a34a04bd4612 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -4975,6 +4975,7 @@ struct ath11k_targ_cap {
- };
+ 	return 0;
  
- enum wmi_vdev_type {
-+	WMI_VDEV_TYPE_UNSPEC =  0,
- 	WMI_VDEV_TYPE_AP      = 1,
- 	WMI_VDEV_TYPE_STA     = 2,
- 	WMI_VDEV_TYPE_IBSS    = 3,
-@@ -6505,4 +6506,8 @@ int ath11k_wmi_pdev_set_bios_geo_table_param(struct ath11k *ar);
- int ath11k_wmi_sta_keepalive(struct ath11k *ar,
- 			     const struct wmi_sta_keepalive_arg *arg);
- 
-+void ath11k_reg_reset_info(struct cur_regulatory_info *reg_info);
-+int ath11k_reg_handle_chan_list(struct ath11k_base *ab,
-+				struct cur_regulatory_info *reg_info,
-+				enum ieee80211_ap_reg_power power_type);
- #endif
 -- 
 2.40.1
 
