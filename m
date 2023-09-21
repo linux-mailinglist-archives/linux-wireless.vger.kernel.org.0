@@ -2,77 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 871047A9626
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 19:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63AEB7A977E
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 19:24:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229712AbjIUQ6x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 12:58:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42224 "EHLO
+        id S229861AbjIURYk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 13:24:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbjIUQ6w (ORCPT
+        with ESMTP id S229845AbjIURYU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 12:58:52 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3DAE1BD6
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 09:58:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACEBC4E66D;
-        Thu, 21 Sep 2023 12:12:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695298346;
-        bh=0oOKV5dd8K+N8q0nDh5k3SZD+WjqZu42p4J1UFU6oR8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=UGiiGfV3KJCu3NO3o4MsPbiX5YZgKfLI/tQle52lRMMwVmDtELeCb8l6h7lIjZMOw
-         6HLVSfV9O+ncaAW7KnDdwNrOfwaeGf/i07i5pe9MP2mX3VlAjtyRMvJ9Kchb5ETAsi
-         m6/9hvXB9SrVUxkamEVzEN7e2QkwwKSvycR6qNETwnNhc2p4IS2Xnq/80CVucxOcR2
-         LEQ21mAGwqFzNGAWVq6NdavWFQVLJDXlaPZPJGfeZNIQn4+kLqXuZB1+Sl6/SfYk3g
-         5TozBzk/GtEoxsRukE32bUuF3YS74j/P6FV8tclPSmG0pbPzBKs+pEjdgQ6bgo/wkM
-         HBdJ7Jnzmfybw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org
-Subject: Re: [PATCH] wifi: mwifiex: fix SDIO firmware dump wait
-References: <20230920112259.18656-1-dmantipov@yandex.ru>
-        <ZQt89BPMN6Fg3H6z@google.com>
-        <cc57fb2f-1eca-f366-bec3-d4cdbb2c39ec@yandex.ru>
-Date:   Thu, 21 Sep 2023 15:12:23 +0300
-In-Reply-To: <cc57fb2f-1eca-f366-bec3-d4cdbb2c39ec@yandex.ru> (Dmitry
-        Antipov's message of "Thu, 21 Sep 2023 12:22:59 +0300")
-Message-ID: <87o7hvafo8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Thu, 21 Sep 2023 13:24:20 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC6A5FF9;
+        Thu, 21 Sep 2023 10:09:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=0AQbnpGz46/mpizmCCyRAg/7hwEOBwjnI7rzkRejNrw=;
+        t=1695316146; x=1696525746; b=G2QMVjnzufFtmb5P7z6Q3J/+ZBHqtVk0szWK9vtGuV0QGOG
+        Rl2rp3sat3NFCzXUBLcGFGt33bdeHBFGA4bM9k+W4y2dNeMRzqjcEyZ+JG+y0YABFh+DboCzqNl82
+        SSMff83SGx7kk711+kx9sw+/iTFRWuSmGmk9VPX06ga5nXFE8TxcW9DEzDcAlMtSrlRlCEFm8JJLB
+        wILgcdynH9Vgm4bY6l9cYzwtCl79qf3FYGesV+dEl/Z0LmN5uoZS9jFf9xvqvYpSoCCT3j2Ovr6Zp
+        1GWlEMXZDI/QQ0SP7ttzPlvuPSo/5FOG5G9PY5i+0MrtTqalVT6AexQGW4+hNc8Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qjLQQ-00DReL-34;
+        Thu, 21 Sep 2023 17:17:07 +0200
+Message-ID: <73ddab4151160d4d30aa83fb24ba6c976125da4a.camel@sipsolutions.net>
+Subject: Re: [RFC PATCH 1/4] tracing: add __print_sym() to replace
+ __print_symbolic()
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc:     "linux-trace-kernel@vger.kernel.org" 
+        <linux-trace-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Thu, 21 Sep 2023 17:17:06 +0200
+In-Reply-To: <20230921105129.cd040deee13e.I9bd2617499f0d170df58471bc51379742190f92d@changeid>
+References: <20230921085129.261556-5-johannes@sipsolutions.net>
+         <20230921105129.cd040deee13e.I9bd2617499f0d170df58471bc51379742190f92d@changeid>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+On Thu, 2023-09-21 at 08:51 +0000, Johannes Berg wrote:
+>=20
+>  - Is it correct that we can assume RCU critical section when in
+>    the lookup function? The SKB code currently does, but I may
+>    not ever have actually run this code yet.
 
-> On 9/21/23 02:15, Brian Norris wrote:
->
->> Have you tested this patch? You've certainly caught a logic bug, but
->> that doesn't mean the seemingly obvious solution actually works.
->
-> Unfortunately by eyes only :-(. IIUC there should be a weird hardware
-> stall to trigger an execution of the branch in subject, so I'm not sure
-> how to actually test it even if I would have an access to the hardware.
+Well, I could easily answer that myself, and no, it's incorrect.
 
-I don't know about Brian but for me testing for regressions is the most
-important part. If the patch is only compile tested it could break the
-whole driver without anyone noticing. And then it's in a release and too
-late.
+It'd be really useful though for these lookups to be able to do them
+under RCU, so I think I'll fold this?
 
-That's why I have been asking you to add "Compile tested only" to the
-commit log so that it's obvious to everyone that your patches have
-received zero testing but you don't seem to care.
+--- a/include/linux/tracepoint.h
++++ b/include/linux/tracepoint.h
+@@ -34,7 +34,7 @@ struct trace_eval_map {
+ struct trace_sym_def {
+ 	const char		*system;
+ 	const char		*symbol_id;
+-	/* may return NULL */
++	/* may return NULL, called under rcu_read_lock() */
+ 	const char *		(*lookup)(unsigned long long);
+ 	/*
+ 	 * Must print the list: ', { val, "name"}, ...'
+--- a/kernel/trace/trace_output.c
++++ b/kernel/trace/trace_output.c
+@@ -155,11 +155,13 @@ trace_print_sym_seq(struct trace_seq *p, unsigned
+long long val,
+ 	const char *ret =3D trace_seq_buffer_ptr(p);
+ 	const char *name;
+=20
++	rcu_read_lock();
+ 	name =3D lookup(val);
+ 	if (name)
+ 		trace_seq_puts(p, name);
+ 	else
+ 		trace_seq_printf(p, "0x%llx", val);
++	rcu_read_unlock();
+=20
+ 	trace_seq_putc(p, 0);
+=20
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
+
