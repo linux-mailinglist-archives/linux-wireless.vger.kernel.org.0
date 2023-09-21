@@ -2,45 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85DAA7AA142
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 23:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 109757AA1A1
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 23:04:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232018AbjIUU75 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 16:59:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37716 "EHLO
+        id S232457AbjIUVEW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 17:04:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232397AbjIUU7l (ORCPT
+        with ESMTP id S229745AbjIUVDo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 16:59:41 -0400
+        Thu, 21 Sep 2023 17:03:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7137C83F4C
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 10:37:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D205FC116B5;
-        Thu, 21 Sep 2023 08:11:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82EC83F58
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 10:37:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DA5C116B2;
+        Thu, 21 Sep 2023 08:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695283868;
-        bh=BF5T2JUpulkKw7ZaTHQ7jYNUb96c3nyDhbUTrlFhR+k=;
+        s=k20201202; t=1695283941;
+        bh=T9axprIpl0XduYk3n2EqzXInDwp6YLqpLyjrX8stzrw=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=AH8XaTC3X8eulTN2GAW+nx+kJTnDVN5Lk13e29I4hCbVQO/2hKx3Y0x38XlWGzXom
-         UEs587qrjFgh9oeW7JmL41081t+ik76ock2lq2FRLOhEJ6WLug16rm8UPDuGv1b1qr
-         HdTJ4wgXNgWpiGSNhb2k3j5RZ85lTA3YDjA7USSqYilFhqIwh/EtIYkVAcQcQxa3i/
-         rrQrnyHofwJeNR1psysby/ju2tLfqZo17S8//7kHRv1t3I4FIgvGI7JZ2utXMgmARR
-         h0smcRAe8lRjfWQ2jgrmkzsBpqDn3ilj70PM+hVSLwT9CoSw68lRZr6fJB/EN6ukcJ
-         jgQqTcq/XQR0g==
+        b=maVjgWzQpzPgDxayY1N1p0/7EJ+tKT+bbOcaL1VNcdxV83qItOQNXXz68oraB3o4j
+         Z3GPQXWxLIJHh56KAPiyIG59Clc+WE351I2w6klhy44GMIqMzUkaPhxp4cAWA3jJEy
+         dMUWHmouIRsxcATDpaA/sikt23/4TQEhTlzBQ9gDWeTgQDJezUpX7kVm+RpvmskGTc
+         WMDj3B6Y0BS/XSdisIP8m7s8K+XFcQLzqPW/ba0tHH2qlHxnts/KWvj6sLUnTHQJH3
+         MibcbD23NpF9e3WnOTtzyyk7e4roXRprIIpHSfFAbzevlw7KZ/H8EBCnj1/IReCjZm
+         a5TrvxpxLS5Qg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath10k: drop HTT_DATA_TX_STATUS_DOWNLOAD_FAIL
+Subject: Re: [PATCH v2] wifi: ath11k: fix boot failure with one MSI vector
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230914160744.155903-1-dmantipov@yandex.ru>
-References: <20230914160744.155903-1-dmantipov@yandex.ru>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
-        ath10k@lists.infradead.org, Dmitry Antipov <dmantipov@yandex.ru>
+In-Reply-To: <20230907015606.16297-1-quic_bqiang@quicinc.com>
+References: <20230907015606.16297-1-quic_bqiang@quicinc.com>
+To:     Baochen Qiang <quic_bqiang@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169528386511.1539628.17402529453391015773.kvalo@kernel.org>
-Date:   Thu, 21 Sep 2023 08:11:06 +0000 (UTC)
+Message-ID: <169528393922.1539628.7842522127045869453.kvalo@kernel.org>
+Date:   Thu, 21 Sep 2023 08:12:20 +0000 (UTC)
 X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
@@ -51,26 +49,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+Baochen Qiang <quic_bqiang@quicinc.com> wrote:
 
-> According to Jeff, 'HTT_DATA_TX_STATUS_DOWNLOAD_FAIL' from
-> 'enum htt_data_tx_status' is never actually used by the
-> firmware code and so may be dropped, with the related
-> adjustment to 'ath10k_htt_rx_tx_compl_ind()'.
+> Commit 5b32b6dd96633 ("ath11k: Remove core PCI references from
+> PCI common code") breaks with one MSI vector because it moves
+> affinity setting after IRQ request, see below log:
 > 
-> Suggested-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> [ 1417.278835] ath11k_pci 0000:02:00.0: failed to receive control response completion, polling..
+> [ 1418.302829] ath11k_pci 0000:02:00.0: Service connect timeout
+> [ 1418.302833] ath11k_pci 0000:02:00.0: failed to connect to HTT: -110
+> [ 1418.303669] ath11k_pci 0000:02:00.0: failed to start core: -110
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> The detail is, if do affinity request after IRQ activated,
+> which is done in request_irq(), kernel caches that request and
+> returns success directly. Later when a subsequent MHI interrupt is
+> fired, kernel will do the real affinity setting work, as a result,
+> changs the MSI vector. However at that time host has configured
+> old vector to hardware, so host never receives CE or DP interrupts.
+> 
+> Fix it by setting affinity before registering MHI controller
+> where host is, for the first time, doing IRQ request.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-01160-QCAMSLSWPLZ-1
+> 
+> Fixes: 5b32b6dd9663 ("ath11k: Remove core PCI references from PCI common code")
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-30e7099a6dc9 wifi: ath10k: drop HTT_DATA_TX_STATUS_DOWNLOAD_FAIL
+39564b475ac5 wifi: ath11k: fix boot failure with one MSI vector
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230914160744.155903-1-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230907015606.16297-1-quic_bqiang@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
