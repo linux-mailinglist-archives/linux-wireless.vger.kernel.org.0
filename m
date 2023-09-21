@@ -2,173 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5320A7AA126
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 22:58:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A93B7A9F95
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 22:24:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230456AbjIUU6V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 16:58:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35788 "EHLO
+        id S231278AbjIUUYT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 16:24:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjIUU6B (ORCPT
+        with ESMTP id S230387AbjIUUYB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 16:58:01 -0400
-Received: from vulcan.natalenko.name (vulcan.natalenko.name [104.207.131.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A794B0A0C;
-        Thu, 21 Sep 2023 11:09:04 -0700 (PDT)
-Received: from spock.localnet (unknown [94.142.239.106])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id 5B08E150B9B2;
-        Thu, 21 Sep 2023 18:03:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1695312216;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=QxsO6UkNvxMnaFNUASnMsSuKlQTdxo+O3u8ycIHVlUc=;
-        b=oaQWT3Kzb4K5+aOUjPKPbiQf6IWki7Osf4bE/fWdYLN5HY9SsjuVaXG2jYRHSz1/q9wpVG
-        0tkVCbGHHmiNN5zGTlbWeUZZykzTP9L3ZMsNG78SDMHxl+9Law0Clmpr+5ydPUzqzKJP50
-        yg8Nm0Do/mnojCQeQBnhZW61Vq32naU=
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on MT7915
-Date:   Thu, 21 Sep 2023 18:03:23 +0200
-Message-ID: <4862789.31r3eYUQgx@natalenko.name>
-In-Reply-To: <2023092145-luxury-fender-d5b9@gregkh>
-References: <20230726091704.25795-1-nbd@nbd.name> <12289744.O9o76ZdvQC@natalenko.name>
- <2023092145-luxury-fender-d5b9@gregkh>
+        Thu, 21 Sep 2023 16:24:01 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16FE62A108
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 12:52:04 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38LIWLNN006500;
+        Thu, 21 Sep 2023 19:51:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=pVmbu6PzUwx6aeObZb5mxob5K7CgHjrEnsX1MTfilVk=;
+ b=BkRs+xJE4GE+uW4SF/gi+ZN3ngOez6pTTglvfImHeIghaIafgktLmK98hxY7o2aBQxNP
+ ozhLSUQUkGRS6LBdFnBZVvCxVlGurlhuqfj9MhxMP5fzcoSEFzBFe29Y214REqCu715Q
+ 1X3UnPQ/RV4Amy+3BmORuG8/aFgaWCn4xkPo5rxTvN3AIOBQ8VsU/rsnJR1lgXtqLOLz
+ KmS+OB/OWnTiI/PR6M1X1AqTVKyo2uW+w+sBoQvfZbdrwxr/FEEqWjrmKH62dfEIkcLO
+ FBF1bOFr99WyBscbb9TyFGcjmuV991DmIXDO4X6thkP9mxURWM4H3S7CQuLhxfVqtk2X iw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t8u6rr536-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 21 Sep 2023 19:51:48 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38LJplli006195
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 21 Sep 2023 19:51:47 GMT
+Received: from [10.48.245.144] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 21 Sep
+ 2023 12:51:47 -0700
+Message-ID: <89ee7eff-08d2-4e12-b4d7-3712c16cc933@quicinc.com>
+Date:   Thu, 21 Sep 2023 12:51:46 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4513970.LvFx2qVVIh";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 02/13] wifi: ath11k: store cur_regulatory_info for each
+ radio
+Content-Language: en-US
+To:     Wen Gong <quic_wgong@quicinc.com>, <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <kvalo@kernel.org>
+References: <20230920082349.29111-1-quic_wgong@quicinc.com>
+ <20230920082349.29111-3-quic_wgong@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20230920082349.29111-3-quic_wgong@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: S6uLL7r2v3qMYQRvhuLRzp9cLpJA92CP
+X-Proofpoint-ORIG-GUID: S6uLL7r2v3qMYQRvhuLRzp9cLpJA92CP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-21_17,2023-09-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 mlxlogscore=649 impostorscore=0
+ malwarescore=0 mlxscore=0 spamscore=0 bulkscore=0 phishscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2309180000 definitions=main-2309210170
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart4513970.LvFx2qVVIh
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Date: Thu, 21 Sep 2023 18:03:23 +0200
-Message-ID: <4862789.31r3eYUQgx@natalenko.name>
-In-Reply-To: <2023092145-luxury-fender-d5b9@gregkh>
-MIME-Version: 1.0
+On 9/20/2023 1:23 AM, Wen Gong wrote:
+> The regulatory info of WMI_REG_CHAN_LIST_CC_EXT_EVENTID is not saved
+> in ath11k now, the info should be saved in ath11k. Save the info for
+> each radio and support switch regulatory rules dynamically
 
-Hello.
+Kalle, can you add hard stop when you apply to pending?
 
-On =C4=8Dtvrtek 21. z=C3=A1=C5=99=C3=AD 2023 9:19:58 CEST Greg Kroah-Hartma=
-n wrote:
-> On Thu, Sep 21, 2023 at 07:02:41AM +0200, Oleksandr Natalenko wrote:
-> > Hello Felix.
-> >=20
-> > On st=C5=99eda 26. =C4=8Dervence 2023 11:17:02 CEST Felix Fietkau wrote:
-> > > The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for =
-half-NSS
-> > > 160 MHz support, so it is wrong to also advertise full 160 MHz suppor=
-t.
-> > >=20
-> > > Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel wid=
-th support for MT7915")
-> > > Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> > > ---
-> > >  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
-> > >  1 file changed, 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drive=
-rs/net/wireless/mediatek/mt76/mt7915/init.c
-> > > index ee976657bfc3..78552f10b377 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> > > @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
-> > >  			if (!dev->dbdc_support)
-> > >  				vht_cap->cap |=3D
-> > >  					IEEE80211_VHT_CAP_SHORT_GI_160 |
-> > > -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
-> > >  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
-> > >  		} else {
-> > >  			vht_cap->cap |=3D
-> > >=20
-> >=20
-> > For some reason this got backported into the stable kernel:
-> >=20
-> > ```
-> > $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt7=
-6/mt7915/
-> > c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
-> > edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan=
-_mib_info
-> > 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
-> > 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
-> > 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
-> > 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is =
-active
-> > feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED i=
-s active
-> > 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being bloc=
-ked
-> > ```
-> >=20
-> > and this broke my mt7915-based AP.
-> >=20
-> > However, if I remove `[VT160]` capability from the hostapd config, thin=
-gs go back to normal. It does seem that 160 MHz still works even.
-> >=20
-> > Is this expected?
->=20
-> Is your device also broken in 6.6-rc2?
-
-Yes, the same behaviour is observed with v6.6-rc2:
-
-```
-hostapd[1316]: Configured VHT capability [VHT_CAP_SUPP_CHAN_WIDTH_MASK] exc=
-eeds max value supported by the driver (1 > 0)
-```
-
-while having `[VT160]` in `vht_capab=3D`.
-
-Thanks.
-
-> thanks,
->=20
-> greg k-h
->=20
-
-
-=2D-=20
-Oleksandr Natalenko (post-factum)
---nextPart4513970.LvFx2qVVIh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmUMaUsACgkQil/iNcg8
-M0vq2BAAuqUjADQGA+kGleFQ3VOqGsfXScI5KLV6AdTLuLpWqs9aFt/DsrE8hj+B
-lUkTpEdWJvWRcMrWluTVp4wM+DVmrIid0+nY7yLJ9YwQEW2IzCIhrQrmoSrP09+6
-MFmtvwolHlnAB6Mfat+uEPY6Bj6x6AY6BwHuqOpZVhI6mYZ/AUfVl0nmnuHRfiNw
-ztpYDirxtQiG+zeEfegFzgRsYh3icFXo5G7R4nGmJrJWtr8DXd4NqObMFFtCLufH
-vzNzk+isp/tA++kPE5gHwSXAJGjKWzecNdKuZNrr9X+FaF69yo6sCsF0scq1lvz5
-i2zOzi6/jU6NMDJZbRsPLIrXKKZxj9DS3UEypFTI39oHgqHmqaWGMRutb5G9PeyQ
-yhNj0ozWPOJxsSUfDQWs9plYwoHSvDc3L1T0NsjNojlDdkn8jJEaezV4RlcvJ5xU
-iDVzTDru1jiCUnJ+RZyh9bLj9XdoR8l80w90DFnQ+BTbX2fUVARzub/4CJPfoTGy
-1llvYYCi4sOrDMKuhxvgzVllwWy9exd2P4yMKifoYXjKhZeSgndSvhjF1f6TS6VQ
-DWGYK4GWAwYUkTHpgdQSL/Mpo7Uz2yGLLKuoKorEMVtHA6HuMd83Mk7ABNsk6Nha
-bNyC27xssOgbzCQPQOwIzouEE+Gnj2OfCko0DoDxzrvHreRGZY0=
-=NwXY
------END PGP SIGNATURE-----
-
---nextPart4513970.LvFx2qVVIh--
-
-
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
