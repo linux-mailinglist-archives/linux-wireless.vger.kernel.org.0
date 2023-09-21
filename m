@@ -2,75 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0D1D7A9D2F
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 21:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C1E57A9980
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 20:15:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230123AbjIUT31 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 15:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48784 "EHLO
+        id S229693AbjIUSPc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 14:15:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230394AbjIUT3J (ORCPT
+        with ESMTP id S230172AbjIUSPK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 15:29:09 -0400
+        Thu, 21 Sep 2023 14:15:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E6EBA9EF
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 10:07:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080BEC43391;
-        Thu, 21 Sep 2023 06:30:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695277821;
-        bh=dKmYQDeeA+4tWlPl/hXjWoF4/bbTVRwllO7onRmJL+0=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=eLzh8Ig4u72Uj2sGFguKUGAtHu4czACt/T77ipE49xeulYAOZPm08CiOeJqqgYU07
-         k/OoczkUaVyS/hdwVPjD+7c6r+kauadhqLQZeVdyPoL7jGTKD9vBDHF9l3500IzDvT
-         +wi54E72bHId0TJRH07mY/p2n/t1BAJcfk0VomMbTG0dMMIhjYYtE3Cl5UilW4le9J
-         cIz34FohzW77hacdkZu2YO4xZ1Y7jZsnrORmYLXV5onzVjesm6anyWXbGUtoVtNbko
-         Lu8aIezMtKcDtzUddL6kNOeL9LZ1z73xvNHsLKY6NZJ9xuio7b6Ys0clE0Av9Gkl/1
-         a/Zq5kywfpZFg==
-Content-Type: text/plain; charset="utf-8"
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C3087B47F;
+        Thu, 21 Sep 2023 10:37:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CE9C433BB;
+        Thu, 21 Sep 2023 07:19:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1695280798;
+        bh=qjFbYo5tJqw3sNctQO007tji3a55xgbw4igevqYkDao=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rpVULoBZ3MGrvhXQQ7B685n9CQgbFp3mhxjiWvBfGdqG8ZaLxO+6F/+PEjeI+4uc+
+         r9l9pr1hId5qrpT7zz72u3DxjEwzXFvOBjvz/9ZGA75g/kDT5oZIHiOEsv6Zw2vtTS
+         oIHeI+YHXxyAH/dj3ja2bPp2frXGlGfqPJVfCoJE=
+Date:   Thu, 21 Sep 2023 09:19:58 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on
+ MT7915
+Message-ID: <2023092145-luxury-fender-d5b9@gregkh>
+References: <20230726091704.25795-1-nbd@nbd.name>
+ <12289744.O9o76ZdvQC@natalenko.name>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4] wifi: wilc1000: add back-off algorithm to balance tx
- queue
- packets
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230915175946.4361-1-prasurjya.rohansaikia@microchip.com>
-References: <20230915175946.4361-1-prasurjya.rohansaikia@microchip.com>
-To:     <Prasurjya.Rohansaikia@microchip.com>
-Cc:     <linux-wireless@vger.kernel.org>, <Ajay.Kathat@microchip.com>,
-        <claudiu.beznea@microchip.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169527781889.1469888.3059237937183223820.kvalo@kernel.org>
-Date:   Thu, 21 Sep 2023 06:30:20 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <12289744.O9o76ZdvQC@natalenko.name>
 X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<Prasurjya.Rohansaikia@microchip.com> wrote:
-
-> From: Prasurjya Rohan Saikia <prasurjya.rohansaikia@microchip.com>
+On Thu, Sep 21, 2023 at 07:02:41AM +0200, Oleksandr Natalenko wrote:
+> Hello Felix.
 > 
-> Add an algorithm to backoff the Tx Task when low memory scenario is
-> triggered at firmware. During high data transfer from host, the firmware
-> runs out of VMM memory, which is used to hold the frames from the host.
-> So, adding the flow control delays the transmit from host side when
-> there is not enough space to accommodate frames in firmware side.
+> On středa 26. července 2023 11:17:02 CEST Felix Fietkau wrote:
+> > The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half-NSS
+> > 160 MHz support, so it is wrong to also advertise full 160 MHz support.
+> > 
+> > Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width support for MT7915")
+> > Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> > ---
+> >  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
+> >  1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> > index ee976657bfc3..78552f10b377 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> > @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+> >  			if (!dev->dbdc_support)
+> >  				vht_cap->cap |=
+> >  					IEEE80211_VHT_CAP_SHORT_GI_160 |
+> > -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+> >  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
+> >  		} else {
+> >  			vht_cap->cap |=
+> > 
 > 
-> Signed-off-by: Prasurjya Rohan Saikia <prasurjya.rohansaikia@microchip.com>
-> Acked-by: Ajay Singh <ajay.kathat@microchip.com>
+> For some reason this got backported into the stable kernel:
+> 
+> ```
+> $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt7915/
+> c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
+> edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
+> 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
+> 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
+> 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
+> 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is active
+> feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is active
+> 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
+> ```
+> 
+> and this broke my mt7915-based AP.
+> 
+> However, if I remove `[VT160]` capability from the hostapd config, things go back to normal. It does seem that 160 MHz still works even.
+> 
+> Is this expected?
 
-Patch applied to wireless-next.git, thanks.
+Is your device also broken in 6.6-rc2?
 
-a08bb28f6eb6 wifi: wilc1000: add back-off algorithm to balance tx queue packets
+thanks,
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230915175946.4361-1-prasurjya.rohansaikia@microchip.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+greg k-h
