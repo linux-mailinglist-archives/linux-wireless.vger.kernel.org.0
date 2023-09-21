@@ -2,103 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C1E57A9980
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 20:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10FC57A9B89
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 21:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbjIUSPc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 14:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41594 "EHLO
+        id S230044AbjIUTCV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 15:02:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230172AbjIUSPK (ORCPT
+        with ESMTP id S230018AbjIUTCI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 14:15:10 -0400
+        Thu, 21 Sep 2023 15:02:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C3087B47F;
-        Thu, 21 Sep 2023 10:37:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CE9C433BB;
-        Thu, 21 Sep 2023 07:19:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695280798;
-        bh=qjFbYo5tJqw3sNctQO007tji3a55xgbw4igevqYkDao=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rpVULoBZ3MGrvhXQQ7B685n9CQgbFp3mhxjiWvBfGdqG8ZaLxO+6F/+PEjeI+4uc+
-         r9l9pr1hId5qrpT7zz72u3DxjEwzXFvOBjvz/9ZGA75g/kDT5oZIHiOEsv6Zw2vtTS
-         oIHeI+YHXxyAH/dj3ja2bPp2frXGlGfqPJVfCoJE=
-Date:   Thu, 21 Sep 2023 09:19:58 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on
- MT7915
-Message-ID: <2023092145-luxury-fender-d5b9@gregkh>
-References: <20230726091704.25795-1-nbd@nbd.name>
- <12289744.O9o76ZdvQC@natalenko.name>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30C1E80FBE;
+        Thu, 21 Sep 2023 10:36:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7765CC116B3;
+        Thu, 21 Sep 2023 08:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695283446;
+        bh=ikVEGvz/AoDXxl7OJz8v3M6JEuj84GWYAzbM3pSuSfs=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Q0AAb/hTsyZsWcttt+LH9287e9g6+ilMDd07ifknyZdtsttuFD/C7e8WN86RofEdm
+         UVMgUWeJlRHX1OVx0DTpFzJzn/OV51Ppg+FiMaRtZ55XYp0MY90NMR/KifyziH12cN
+         fY+4NSCJBY8omAlRFugv8mJ87l5UCi4RvZbpHJeyOcekfqgcDsGWuLI0hHWm4hpO3u
+         ixqDd/UTnuHp1aDa0bDudiQM+yPoqEahXZhOI1AvRrVtWpm1NSqqQ90jomTQdCDwVS
+         b1x+bH8jl7UBlk3Wxfu0SY+aur5ipB2vp+GmJgZGgehROHGImkqJ7iBSKcv+IT4mjc
+         81QyDj+54D/BA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <12289744.O9o76ZdvQC@natalenko.name>
+Subject: Re: [PATCH v2] ath9k: clean up function ath9k_hif_usb_resume
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230905013556.2595854-1-dzm91@hust.edu.cn>
+References: <20230905013556.2595854-1-dzm91@hust.edu.cn>
+To:     Dongliang Mu <dzm91@hust.edu.cn>
+Cc:     =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        hust-os-kernel-patches@googlegroups.com,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169528344376.1539628.7025381317587339647.kvalo@kernel.org>
+Date:   Thu, 21 Sep 2023 08:04:05 +0000 (UTC)
 X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 07:02:41AM +0200, Oleksandr Natalenko wrote:
-> Hello Felix.
-> 
-> On středa 26. července 2023 11:17:02 CEST Felix Fietkau wrote:
-> > The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half-NSS
-> > 160 MHz support, so it is wrong to also advertise full 160 MHz support.
-> > 
-> > Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width support for MT7915")
-> > Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> > index ee976657bfc3..78552f10b377 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> > @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
-> >  			if (!dev->dbdc_support)
-> >  				vht_cap->cap |=
-> >  					IEEE80211_VHT_CAP_SHORT_GI_160 |
-> > -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
-> >  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
-> >  		} else {
-> >  			vht_cap->cap |=
-> > 
-> 
-> For some reason this got backported into the stable kernel:
-> 
-> ```
-> $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt7915/
-> c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
-> edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
-> 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
-> 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
-> 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
-> 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is active
-> feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is active
-> 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
-> ```
-> 
-> and this broke my mt7915-based AP.
-> 
-> However, if I remove `[VT160]` capability from the hostapd config, things go back to normal. It does seem that 160 MHz still works even.
-> 
-> Is this expected?
+Dongliang Mu <dzm91@hust.edu.cn> wrote:
 
-Is your device also broken in 6.6-rc2?
+> In ath9k_hif_usb_resume, the error handling code calls
+> ath9k_hif_usb_dealloc_urbs twice in different paths.
+> 
+> To unify the error handling code, we move the else branch before
+> the if branch and drop one level of indentation of the if branch.
+> 
+> In addition, move the ret variable at the end of variable declarations
+> to be reverse x-mas tree order.
+> 
+> Note that this patch does not incur any functionability change.
+> 
+> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+> Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-thanks,
+Patch applied to ath-next branch of ath.git, thanks.
 
-greg k-h
+dc73b2059354 wifi: ath9k: clean up function ath9k_hif_usb_resume
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20230905013556.2595854-1-dzm91@hust.edu.cn/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
