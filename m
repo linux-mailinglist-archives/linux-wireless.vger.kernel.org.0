@@ -2,43 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 060037AA0AC
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 22:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FB027AA1A7
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 23:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232334AbjIUUqW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 16:46:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53506 "EHLO
+        id S229972AbjIUVFn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 17:05:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232122AbjIUUqO (ORCPT
+        with ESMTP id S232597AbjIUVEk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 16:46:14 -0400
+        Thu, 21 Sep 2023 17:04:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C08780FA2
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 10:36:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C98C116A9;
-        Thu, 21 Sep 2023 08:02:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C14527B957;
+        Thu, 21 Sep 2023 10:37:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288E2C116AF;
+        Thu, 21 Sep 2023 08:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695283376;
-        bh=IOdNZNubT9aIKkrAuzJC/mLMct1EI8QHVI/pL/hli6Q=;
+        s=k20201202; t=1695283781;
+        bh=CRChqGGo4RR2euNwhsDyCD/AoeyKktzzjOKjh37j308=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Yrfq946hPwnkGTVSaqo00WtrSsQR6WYrjwOYpxTcuW55WmhTsfyf2usR/CG1c2g8z
-         g5u55R+5BWMI33pC1C3rRf4lIb/h+RWUSotdn+Ac9L20pMNEEujkXFLHaA/3IldEMS
-         AXet4R2lDMMejOt6LrAK6LU1jyT7QbryeFri3UsnOObWMUwl0YCgAPMrNLqaZFuy6q
-         To1gNw0nn5VXYqCXVemoLwIiUDZoxKbHCeQOEbnzhN60IVRz/45zhqSaTlBsZc525Y
-         fn+1YfBXtHSRFIYIoAtSkfRKhX/eMWBxSLI5EnevQHBFYPeKNf7R5olAr5BhAvAvw7
-         3p8fdfccf40PA==
+        b=U6NPZ+8WyNsZOrY2Ac+ioT6/gPDw2ATD5O9tV01TxCmDZ6+hXu1KPDEIz3a3Gtwqx
+         tKsvCJSSNEHimX8QPbVZQJ4UTZG4trO9kwulY4CGG1iwMP3qdSH0L3z5X/N9NfDFTs
+         2lCfQEvwcgBc8JcV3rpcBvh779jTDhW9ZYVktRfLINCxVbeWSUqjqeqr1H7Y3KaCi9
+         5FHGysRq9RRBkxkT+7NXxvkZBnHbVe7pX4kVgVqaQ4ADoRTodYgJTD/8oPWCJZVggu
+         hFQIs+fghTAVHf54bge5tZrM34SrNJyWsXFComQWwYojGcRYn9khtN5vaM4m88eMX0
+         /wYF0Fl26L6Og==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: fix DMA unmap warning on NULL DMA address
+Subject: Re: [PATCH] wifi: wcn36xx: Annotate struct wcn36xx_hal_ind_msg with
+ __counted_by
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230830021131.5610-1-quic_bqiang@quicinc.com>
-References: <20230830021131.5610-1-quic_bqiang@quicinc.com>
-To:     Baochen Qiang <quic_bqiang@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+In-Reply-To: <20230915200622.never.820-kees@kernel.org>
+References: <20230915200622.never.820-kees@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Loic Poulain <loic.poulain@linaro.org>,
+        Kees Cook <keescook@chromium.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, linux-hardening@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169528337320.1539628.12793449694122971146.kvalo@kernel.org>
-Date:   Thu, 21 Sep 2023 08:02:55 +0000 (UTC)
+Message-ID: <169528377712.1539628.6973937251769266180.kvalo@kernel.org>
+Date:   Thu, 21 Sep 2023 08:09:38 +0000 (UTC)
 X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
@@ -49,30 +56,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
+Kees Cook <keescook@chromium.org> wrote:
 
-> In ath12k_dp_tx(), if we reach fail_dma_unmap due to some errors,
-> current code does DMA unmap unconditionally on skb_cb->paddr_ext_desc.
-> However, skb_cb->paddr_ext_desc may be NULL and thus we get below
-> warning:
+> Prepare for the coming implementation by GCC and Clang of the __counted_by
+> attribute. Flexible array members annotated with __counted_by can have
+> their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
+> (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+> functions).
 > 
-> kernel: [ 8887.076212] WARNING: CPU: 3 PID: 0 at drivers/iommu/dma-iommu.c:1077 iommu_dma_unmap_page+0x79/0x90
+> As found with Coccinelle[1], add __counted_by for struct wcn36xx_hal_ind_msg.
 > 
-> Fix it by checking skb_cb->paddr_ext_desc before unmap it.
+> [1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
 > 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Cc: Loic Poulain <loic.poulain@linaro.org>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: wcn36xx@lists.infradead.org
+> Cc: linux-wireless@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-9ae8c496d211 wifi: ath12k: fix DMA unmap warning on NULL DMA address
+f8cbbb224b11 wifi: wcn36xx: Annotate struct wcn36xx_hal_ind_msg with __counted_by
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230830021131.5610-1-quic_bqiang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230915200622.never.820-kees@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
