@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E5DF7AA3C3
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 23:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9BE7AA2C6
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 23:34:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233009AbjIUV5l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 17:57:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51826 "EHLO
+        id S230088AbjIUV3i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 17:29:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233131AbjIUV53 (ORCPT
+        with ESMTP id S231130AbjIUV3V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 17:57:29 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E323741C6
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 14:04:24 -0700 (PDT)
-X-UUID: 6e4f9bf058c211eea33bb35ae8d461a2-20230922
+        Thu, 21 Sep 2023 17:29:21 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F0191F39
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 14:04:27 -0700 (PDT)
+X-UUID: 6f6b8dbe58c211ee8051498923ad61e6-20230922
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Vwyy3Yxmaicnbmda91e2YwqDKMMX0W2HPT33lkRcdI8=;
-        b=aS/5Vfzh6d+zWWnyi1Mz+a/Vcdlh7VOzaDjK4D85Yd5MtYMC6jAE6piMYYkKcenxlYm0EwG0nPxFlnOJA6XYWGn9NA9aqYlYuX6gCC0Cg9QcWg3Gqzo+5sBRjlekc3Ci8pjTVyfN5OdhLVw+Hkc0IGoFWPfBoCNq1Yrm87w1+wA=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=JEmBur8IrWF7H3eaG1P6OqGIJv6H+pdRVpteKFJh99M=;
+        b=oyfGmZc3r46lg+EoUC3HFxW2FtNuG/+Oc8Onr21k+0oTFM25VFbstNWfo6JGzuItashSpAO0HxzsDOrR/aE0p9hakO65S/kbSJV0QQ4YBtl3My1rH1aH1WRxEgMtdewpdEd0BND8shH1I90N8RF0vRoJ/cOJhaf6axQqVi6UN1M=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.32,REQID:bea7ddf6-8e70-4758-8d4a-4de829b0b17b,IP:0,U
+X-CID-O-INFO: VERSION:1.1.32,REQID:7d1e2a46-c096-4f08-84fb-2f47429eeae1,IP:0,U
         RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
         release,TS:0
-X-CID-META: VersionHash:5f78ec9,CLOUDID:db8e3814-4929-4845-9571-38c601e9c3c9,B
+X-CID-META: VersionHash:5f78ec9,CLOUDID:15324fc3-1e57-4345-9d31-31ad9818b39f,B
         ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
         RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
         NO,DKR:0,DKP:0,BRR:0,BRE:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 6e4f9bf058c211eea33bb35ae8d461a2-20230922
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+X-UUID: 6f6b8dbe58c211ee8051498923ad61e6-20230922
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
         (envelope-from <yi-chia.hsieh@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1981583647; Fri, 22 Sep 2023 05:04:19 +0800
+        with ESMTP id 420651810; Fri, 22 Sep 2023 05:04:21 +0800
 Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 22 Sep 2023 05:04:17 +0800
+ 15.2.1118.26; Fri, 22 Sep 2023 05:04:19 +0800
 Received: from mussdccf250.mussds.eus.mediatek.inc (10.73.250.250) by
  mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 22 Sep 2023 05:04:14 +0800
+ 15.2.1118.26 via Frontend Transport; Fri, 22 Sep 2023 05:04:17 +0800
 From:   Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>,
         Johannes Berg <johannes.berg@intel.com>
@@ -56,38 +56,27 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         <linux-mediatek@lists.infradead.org>,
         Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>,
         Money Wang <Money.Wang@mediatek.com>
-Subject: [PATCH v3 1/4] wifi: mt76: mt7996: get tx_retries and tx_failed from txfree
-Date:   Thu, 21 Sep 2023 14:04:00 -0700
-Message-ID: <d698600dc16fc3880e75dd24e2338ac21d51a45a.1695329286.git.yi-chia.hsieh@mediatek.com>
+Subject: [PATCH v3 2/4] wifi: mt76: mt7996: Add mcu commands for getting sta tx statistic
+Date:   Thu, 21 Sep 2023 14:04:01 -0700
+Message-ID: <058e5e4daa9c89c52ce119825343ac3bd7b70a15.1695329286.git.yi-chia.hsieh@mediatek.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <d698600dc16fc3880e75dd24e2338ac21d51a45a.1695329286.git.yi-chia.hsieh@mediatek.com>
+References: <d698600dc16fc3880e75dd24e2338ac21d51a45a.1695329286.git.yi-chia.hsieh@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--2.436100-8.000000
-X-TMASE-MatchedRID: hBPcN6g5NxXi9mOUjCQGLxUuRQtxMyQBUK80YYUAl4sXdhT0BAdFznf6
-        Lj8RU1GvgfONumQ1QfdfxhAzc2dPJhLmJd2F/yFu9UVHiwLx0/JPn74Ug5EKECz+5QCTrE/svkE
-        SpfBKzZSd+hadbvZSHMh3ymsKdHdu0ywZEqbRuQSiAZ3zAhQYglmLvTysL4PPTUobVis5Bb91V+
-        LIUmKTyHmd/bhGlF1I3m2M6A2xWxxPXYdz0WFWNeKXavbHY/C1zjhG4bTm6hKbKItl61J/yZ+in
-        TK0bC9eKrauXd3MZDX371moSn0VOIS0P2RhP4PyO4AtpkPwvvzVg50E4H/jkQtPWsP8JaiDzxJp
-        yqZmdl9b4ZZQJ/B3fGcbgAb+RLrnXprqe3vYrk55HCv4Lr/VGRdGg+ZY7eN6THB2Q+oKru8MTI3
-        4nyF36MJL1aANdU8Knqg/VrSZEiM=
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--2.436100-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: 58813013783525298B8935956AF9C4D1A45164F07018A8C25A34BB870F6FA4B22000:8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
+        SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Retrieve tx retries/failed counts from 'txfree done' events and report
-them via mt7996_sta_statistics().
+Per peer Tx/Rx statistic can only be obtained by querying WM when WED is
+on. This patch switches to periodic event reporting in the case of WED
+being enabled.
 
 Signed-off-by: Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
 Signed-off-by: Money Wang <Money.Wang@mediatek.com>
@@ -97,105 +86,244 @@ Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
 v2: split series
 ---
-v3: rebase and update Signed-off-by
+v3: rebase and fix "build error: flexible array member in union"
 ---
- .../wireless/mediatek/mt76/mt76_connac3_mac.h |  4 ++--
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 21 ++++++++++++++-----
- .../net/wireless/mediatek/mt76/mt7996/main.c  |  6 ++++++
- 3 files changed, 24 insertions(+), 7 deletions(-)
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 15 ++++
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   |  5 ++
+ .../net/wireless/mediatek/mt76/mt7996/main.c  | 15 ++++
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 68 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7996/mcu.h   | 26 +++++++
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |  1 +
+ 6 files changed, 130 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-index 87bfa441a937..d49fe24851be 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-@@ -271,11 +271,11 @@ enum tx_mgnt_type {
- #define MT_TXFREE0_MSDU_CNT		GENMASK(25, 16)
- #define MT_TXFREE0_RX_BYTE		GENMASK(15, 0)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 9bc97a35fc1d..e97adaf9976c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1022,6 +1022,8 @@ enum {
+ 	MCU_UNI_EVENT_ROC = 0x27,
+ 	MCU_UNI_EVENT_TX_DONE = 0x2d,
+ 	MCU_UNI_EVENT_NIC_CAPAB = 0x43,
++	MCU_UNI_EVENT_PER_STA_INFO = 0x6d,
++	MCU_UNI_EVENT_ALL_STA_INFO = 0x6e,
+ };
  
--#define MT_TXFREE1_VER			GENMASK(18, 16)
-+#define MT_TXFREE1_VER			GENMASK(19, 16)
+ #define MCU_UNI_CMD_EVENT			BIT(1)
+@@ -1240,6 +1242,8 @@ enum {
+ 	MCU_UNI_CMD_VOW = 0x37,
+ 	MCU_UNI_CMD_RRO = 0x57,
+ 	MCU_UNI_CMD_OFFCH_SCAN_CTRL = 0x58,
++	MCU_UNI_CMD_PER_STA_INFO = 0x6d,
++	MCU_UNI_CMD_ALL_STA_INFO = 0x6e,
+ 	MCU_UNI_CMD_ASSERT_DUMP = 0x6f,
+ };
  
- #define MT_TXFREE_INFO_PAIR		BIT(31)
- #define MT_TXFREE_INFO_HEADER		BIT(30)
--#define MT_TXFREE_INFO_WLAN_ID		GENMASK(23, 12)
-+#define MT_TXFREE_INFO_MLD_ID		GENMASK(23, 12)
- #define MT_TXFREE_INFO_MSDU_ID		GENMASK(14, 0)
- #define MT_TXFREE_INFO_COUNT		GENMASK(27, 24)
- #define MT_TXFREE_INFO_STAT		GENMASK(29, 28)
+@@ -1320,6 +1324,17 @@ enum {
+ 	UNI_OFFLOAD_OFFLOAD_BMC_RPY_DETECT,
+ };
+ 
++enum UNI_ALL_STA_INFO_TAG {
++	UNI_ALL_STA_TX_RATE,
++	UNI_ALL_STA_TX_STAT,
++	UNI_ALL_STA_TXRX_ADM_STAT,
++	UNI_ALL_STA_TXRX_AIR_TIME,
++	UNI_ALL_STA_DATA_TX_RETRY_COUNT,
++	UNI_ALL_STA_GI_MODE,
++	UNI_ALL_STA_TXRX_MSDU_COUNT,
++	UNI_ALL_STA_MAX_NUM
++};
++
+ enum {
+ 	MT_NIC_CAP_TX_RESOURCE,
+ 	MT_NIC_CAP_TX_EFUSE_ADDR,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index c43839a20508..d442746c8d96 100644
+index d442746c8d96..c792b5e0f6f8 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1070,6 +1070,7 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
- 	struct mt76_phy *phy3 = mdev->phys[MT_BAND2];
- 	struct mt76_txwi_cache *txwi;
- 	struct ieee80211_sta *sta = NULL;
-+	struct mt76_wcid *wcid;
- 	LIST_HEAD(free_list);
- 	struct sk_buff *skb, *tmp;
- 	void *end = data + len;
-@@ -1088,7 +1089,7 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
- 		mt76_queue_tx_cleanup(dev, phy3->q_tx[MT_TXQ_BE], false);
+@@ -2202,6 +2202,11 @@ void mt7996_mac_work(struct work_struct *work)
+ 		mphy->mac_work_count = 0;
+ 
+ 		mt7996_mac_update_stats(phy);
++
++		if (mtk_wed_device_active(&phy->dev->mt76.mmio.wed)) {
++			mt7996_mcu_get_all_sta_info(phy, UNI_ALL_STA_TXRX_ADM_STAT);
++			mt7996_mcu_get_all_sta_info(phy, UNI_ALL_STA_TXRX_MSDU_COUNT);
++		}
  	}
  
--	if (WARN_ON_ONCE(le32_get_bits(tx_free[1], MT_TXFREE1_VER) < 4))
-+	if (WARN_ON_ONCE(le32_get_bits(tx_free[1], MT_TXFREE1_VER) < 5))
- 		return;
- 
- 	total = le32_get_bits(tx_free[0], MT_TXFREE0_MSDU_CNT);
-@@ -1104,10 +1105,9 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
- 		info = le32_to_cpu(*cur_info);
- 		if (info & MT_TXFREE_INFO_PAIR) {
- 			struct mt7996_sta *msta;
--			struct mt76_wcid *wcid;
- 			u16 idx;
- 
--			idx = FIELD_GET(MT_TXFREE_INFO_WLAN_ID, info);
-+			idx = FIELD_GET(MT_TXFREE_INFO_MLD_ID, info);
- 			wcid = rcu_dereference(dev->mt76.wcid[idx]);
- 			sta = wcid_to_sta(wcid);
- 			if (!sta)
-@@ -1120,10 +1120,21 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
- 					      &mdev->sta_poll_list);
- 			spin_unlock_bh(&mdev->sta_poll_lock);
- 			continue;
--		}
-+		} else if (info & MT_TXFREE_INFO_HEADER) {
-+			u32 tx_retries = 0, tx_failed = 0;
-+
-+			if (!wcid)
-+				continue;
-+
-+			tx_retries =
-+				FIELD_GET(MT_TXFREE_INFO_COUNT, info) - 1;
-+			tx_failed = tx_retries +
-+				!!FIELD_GET(MT_TXFREE_INFO_STAT, info);
- 
--		if (info & MT_TXFREE_INFO_HEADER)
-+			wcid->stats.tx_retries += tx_retries;
-+			wcid->stats.tx_failed += tx_failed;
- 			continue;
-+		}
- 
- 		for (i = 0; i < 2; i++) {
- 			msdu = (info >> (15 * i)) & MT_TXFREE_INFO_MSDU_ID;
+ 	mutex_unlock(&mphy->dev->mutex);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index a2ab668a3b0f..0072809ae617 100644
+index 0072809ae617..ce16637b45ce 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -989,6 +989,12 @@ static void mt7996_sta_statistics(struct ieee80211_hw *hw,
- 	sinfo->txrate.flags = txrate->flags;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
+@@ -969,6 +969,7 @@ static void mt7996_sta_statistics(struct ieee80211_hw *hw,
+ 				  struct ieee80211_sta *sta,
+ 				  struct station_info *sinfo)
+ {
++	struct mt7996_phy *phy = mt7996_hw_phy(hw);
+ 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
+ 	struct rate_info *txrate = &msta->wcid.rate;
  
-+	sinfo->tx_failed = msta->wcid.stats.tx_failed;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
-+
-+	sinfo->tx_retries = msta->wcid.stats.tx_retries;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
-+
- 	sinfo->ack_signal = (s8)msta->ack_signal;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_ACK_SIGNAL);
+@@ -1000,6 +1001,20 @@ static void mt7996_sta_statistics(struct ieee80211_hw *hw,
  
+ 	sinfo->avg_ack_signal = -(s8)ewma_avg_signal_read(&msta->avg_ack_signal);
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_ACK_SIGNAL_AVG);
++
++	if (mtk_wed_device_active(&phy->dev->mt76.mmio.wed)) {
++		sinfo->tx_bytes = msta->wcid.stats.tx_bytes;
++		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BYTES64);
++
++		sinfo->rx_bytes = msta->wcid.stats.rx_bytes;
++		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BYTES64);
++
++		sinfo->tx_packets = msta->wcid.stats.tx_packets;
++		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
++
++		sinfo->rx_packets = msta->wcid.stats.rx_packets;
++		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_PACKETS);
++	}
+ }
+ 
+ static void mt7996_sta_rc_work(void *data, struct ieee80211_sta *sta)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 12bf4e5038b5..bf917beb9439 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -449,6 +449,54 @@ mt7996_mcu_ie_countdown(struct mt7996_dev *dev, struct sk_buff *skb)
+ 	}
+ }
+ 
++static void
++mt7996_mcu_rx_all_sta_info_event(struct mt7996_dev *dev, struct sk_buff *skb)
++{
++	struct mt7996_mcu_all_sta_info_event *res;
++	u16 i;
++
++	skb_pull(skb, sizeof(struct mt7996_mcu_rxd));
++
++	res = (struct mt7996_mcu_all_sta_info_event *)skb->data;
++
++	for (i = 0; i < le16_to_cpu(res->sta_num); i++) {
++		u8 ac;
++		u16 wlan_idx;
++		struct mt76_wcid *wcid;
++
++		switch (le16_to_cpu(res->tag)) {
++		case UNI_ALL_STA_TXRX_ADM_STAT:
++			wlan_idx = le16_to_cpu(res->adm_stat[i].wlan_idx);
++			wcid = rcu_dereference(dev->mt76.wcid[wlan_idx]);
++
++			if (!wcid)
++				break;
++
++			for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
++				wcid->stats.tx_bytes +=
++					le32_to_cpu(res->adm_stat[i].tx_bytes[ac]);
++				wcid->stats.rx_bytes +=
++					le32_to_cpu(res->adm_stat[i].rx_bytes[ac]);
++			}
++			break;
++		case UNI_ALL_STA_TXRX_MSDU_COUNT:
++			wlan_idx = le16_to_cpu(res->msdu_cnt[i].wlan_idx);
++			wcid = rcu_dereference(dev->mt76.wcid[wlan_idx]);
++
++			if (!wcid)
++				break;
++
++			wcid->stats.tx_packets +=
++				le32_to_cpu(res->msdu_cnt[i].tx_msdu_cnt);
++			wcid->stats.rx_packets +=
++				le32_to_cpu(res->msdu_cnt[i].rx_msdu_cnt);
++			break;
++		default:
++			break;
++		}
++	}
++}
++
+ static void
+ mt7996_mcu_rx_ext_event(struct mt7996_dev *dev, struct sk_buff *skb)
+ {
+@@ -493,6 +541,9 @@ mt7996_mcu_uni_rx_unsolicited_event(struct mt7996_dev *dev, struct sk_buff *skb)
+ 	case MCU_UNI_EVENT_RDD_REPORT:
+ 		mt7996_mcu_rx_radar_detected(dev, skb);
+ 		break;
++	case MCU_UNI_EVENT_ALL_STA_INFO:
++		mt7996_mcu_rx_all_sta_info_event(dev, skb);
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -4013,3 +4064,20 @@ int mt7996_mcu_set_rro(struct mt7996_dev *dev, u16 tag, u8 val)
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_WM_UNI_CMD(RRO), &req,
+ 				 sizeof(req), true);
+ }
++
++int mt7996_mcu_get_all_sta_info(struct mt7996_phy *phy, u16 tag)
++{
++	struct mt7996_dev *dev = phy->dev;
++	struct {
++		u8 _rsv[4];
++
++		__le16 tag;
++		__le16 len;
++	} __packed req = {
++		.tag = cpu_to_le16(tag),
++		.len = cpu_to_le16(sizeof(req) - 4),
++	};
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_WM_UNI_CMD(ALL_STA_INFO),
++				 &req, sizeof(req), false);
++}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index e4b31228ba0d..a88f6af323da 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -153,6 +153,32 @@ struct mt7996_mcu_mib {
+ 	__le64 data;
+ } __packed;
+ 
++struct mt7996_mcu_all_sta_info_event {
++	u8 rsv[4];
++	__le16 tag;
++	__le16 len;
++	u8 more;
++	u8 rsv2;
++	__le16 sta_num;
++	u8 rsv3[2];
++
++	union {
++		struct {
++			__le16 wlan_idx;
++			u8 rsv[2];
++			__le32 tx_bytes[IEEE80211_NUM_ACS];
++			__le32 rx_bytes[IEEE80211_NUM_ACS];
++		} adm_stat[0];
++
++		struct {
++			__le16 wlan_idx;
++			u8 rsv[2];
++			__le32 tx_msdu_cnt;
++			__le32 rx_msdu_cnt;
++		} msdu_cnt[0];
++	};
++} __packed;
++
+ enum mt7996_chan_mib_offs {
+ 	UNI_MIB_OBSS_AIRTIME = 26,
+ 	UNI_MIB_NON_WIFI_TIME = 27,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 7354e5cf8e67..cb67a2d4c6d4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -402,6 +402,7 @@ int mt7996_mcu_fw_dbg_ctrl(struct mt7996_dev *dev, u32 module, u8 level);
+ int mt7996_mcu_trigger_assert(struct mt7996_dev *dev);
+ void mt7996_mcu_rx_event(struct mt7996_dev *dev, struct sk_buff *skb);
+ void mt7996_mcu_exit(struct mt7996_dev *dev);
++int mt7996_mcu_get_all_sta_info(struct mt7996_phy *phy, u16 tag);
+ 
+ static inline u8 mt7996_max_interface_num(struct mt7996_dev *dev)
+ {
 -- 
 2.39.0
 
