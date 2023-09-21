@@ -2,175 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36CCC7AA41D
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 00:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B1047AA4F0
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 00:26:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbjIUWAe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 18:00:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60968 "EHLO
+        id S233335AbjIUW0O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 18:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232494AbjIUV7i (ORCPT
+        with ESMTP id S233059AbjIUWZg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 17:59:38 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6EAB2A11D
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 14:05:46 -0700 (PDT)
-X-UUID: 9f009e2058c211ee8051498923ad61e6-20230922
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=P0k2mEz6t9FYg1LBmxvu4t0PXlfcW4oJPKCQILk24hs=;
-        b=WzhjLVdfS4FLJfKZSnmXYaUTDpuWXoGLgw+j0P7q49rs8+rBkGKCrTcCfTTwRQIl4JFnXdbLrbHdfMJfo+ujIE5zZeI0jvfqebeRM2IRp27Fvo/PAWjtAvjt7t+lGNzIq2iIkzOwKUQ/etFPIsi4VycYgDCUzZbB7G8wLrBrI48=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.32,REQID:482b4275-a9d1-4c76-bc20-c9d9fb79494b,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:5f78ec9,CLOUDID:b25f1ebf-14cc-44ca-b657-2d2783296e72,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-        NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 9f009e2058c211ee8051498923ad61e6-20230922
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-        (envelope-from <yi-chia.hsieh@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1822867764; Fri, 22 Sep 2023 05:05:40 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 22 Sep 2023 05:05:39 +0800
-Received: from mussdccf250.mussds.eus.mediatek.inc (10.73.250.250) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 22 Sep 2023 05:05:37 +0800
-From:   Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Johannes Berg <johannes.berg@intel.com>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Money Wang <money.wang@mediatek.com>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>,
-        Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>,
-        Money Wang <Money.Wang@mediatek.com>
-Subject: [PATCH v3] wifi: mt76: connac: report per-phy tx and rx byte to tpt_led
-Date:   Thu, 21 Sep 2023 14:05:35 -0700
-Message-ID: <2614f84d8216414692296570d2fd6ac50c3409cf.1695329294.git.yi-chia.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.17.1
+        Thu, 21 Sep 2023 18:25:36 -0400
+X-Greylist: delayed 3334 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 21 Sep 2023 10:59:07 PDT
+Received: from vulcan.natalenko.name (vulcan.natalenko.name [104.207.131.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90313A59C5;
+        Thu, 21 Sep 2023 10:59:06 -0700 (PDT)
+Received: from spock.localnet (unknown [94.142.239.106])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id 206D3150AC2D;
+        Thu, 21 Sep 2023 07:02:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1695272574;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=CBBr2jfDzLMCIhDU0Px248rD/FOXEfErM7/x99M3aDM=;
+        b=GLaqSqG4vq2RFzSGUNB2nPqN50JbIQHga5A+ZnDQ/pAvQdCnf1TdR4oZPjneXPUjbkJssh
+        NewB0E7ctuCiZaYC0f+Mvif8TAXhgY7vzca3GrvyUJrzFGCXj0rSgdp1M/dhyYwQerXSyJ
+        dqRjguWNaJQwTrl8VyJBhSwjfIudnJs=
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on MT7915
+Date:   Thu, 21 Sep 2023 07:02:41 +0200
+Message-ID: <12289744.O9o76ZdvQC@natalenko.name>
+In-Reply-To: <20230726091704.25795-1-nbd@nbd.name>
+References: <20230726091704.25795-1-nbd@nbd.name>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
-        SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="nextPart5713149.DvuYhMxLoT";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the issue where the tx and rx byte count is not reported to mac80211
-when H/W path is binded.
+--nextPart5713149.DvuYhMxLoT
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: linux-wireless@vger.kernel.org
+Date: Thu, 21 Sep 2023 07:02:41 +0200
+Message-ID: <12289744.O9o76ZdvQC@natalenko.name>
+In-Reply-To: <20230726091704.25795-1-nbd@nbd.name>
+References: <20230726091704.25795-1-nbd@nbd.name>
+MIME-Version: 1.0
 
-Signed-off-by: Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
-Signed-off-by: Money Wang <Money.Wang@mediatek.com>
-Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-v2: split series
----
-This patch is based on "wifi: mac80211: add exported tpt_led_trig function for softmac driver"
-v3: rebase and update Signed-off-by
----
- .../net/wireless/mediatek/mt76/mt76_connac_mac.c  | 10 ++++++----
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c  |  5 +++++
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c   | 15 +++++++++++----
- 3 files changed, 22 insertions(+), 8 deletions(-)
+Hello Felix.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 93402d2c2538..158df5340d59 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -594,9 +594,15 @@ bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 
- 	txs = le32_to_cpu(txs_data[0]);
- 
-+	mphy = mt76_dev_phy(dev, wcid->phy_idx);
-+
- 	/* PPDU based reporting */
- 	if (mtk_wed_device_active(&dev->mmio.wed) &&
- 	    FIELD_GET(MT_TXS0_TXS_FORMAT, txs) > 1) {
-+		__ieee80211_tpt_led_trig_trx(mphy->hw,
-+			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE) -
-+			le32_get_bits(txs_data[7], MT_TXS7_MPDU_RETRY_BYTE), 0);
-+
- 		stats->tx_bytes +=
- 			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE) -
- 			le32_get_bits(txs_data[7], MT_TXS7_MPDU_RETRY_BYTE);
-@@ -637,10 +643,6 @@ bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 		cck = true;
- 		fallthrough;
- 	case MT_PHY_TYPE_OFDM:
--		mphy = &dev->phy;
--		if (wcid->phy_idx == MT_BAND1 && dev->phys[MT_BAND1])
--			mphy = dev->phys[MT_BAND1];
--
- 		if (mphy->chandef.chan->band == NL80211_BAND_5GHZ)
- 			sband = &mphy->sband_5g.sband;
- 		else if (mphy->chandef.chan->band == NL80211_BAND_6GHZ)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index fc7ace638ce8..acb71c4293ea 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -657,6 +657,11 @@ static void mt7915_mmio_wed_update_rx_stats(struct mtk_wed_device *wed,
- 
- 	wcid = rcu_dereference(dev->mt76.wcid[idx]);
- 	if (wcid) {
-+		struct mt76_phy *mphy = mt76_dev_phy(&dev->mt76, wcid->phy_idx);
-+
-+		__ieee80211_tpt_led_trig_trx(mphy->hw, 0
-+					     le32_to_cpu(stats->rx_byte_cnt));
-+
- 		wcid->stats.rx_bytes += le32_to_cpu(stats->rx_byte_cnt);
- 		wcid->stats.rx_packets += le32_to_cpu(stats->rx_pkt_cnt);
- 		wcid->stats.rx_errors += le32_to_cpu(stats->rx_err_cnt);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index bf917beb9439..974795dae1bd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -463,6 +463,8 @@ mt7996_mcu_rx_all_sta_info_event(struct mt7996_dev *dev, struct sk_buff *skb)
- 		u8 ac;
- 		u16 wlan_idx;
- 		struct mt76_wcid *wcid;
-+		struct mt76_phy *mphy;
-+		u32 tx_bytes, rx_bytes;
- 
- 		switch (le16_to_cpu(res->tag)) {
- 		case UNI_ALL_STA_TXRX_ADM_STAT:
-@@ -472,11 +474,16 @@ mt7996_mcu_rx_all_sta_info_event(struct mt7996_dev *dev, struct sk_buff *skb)
- 			if (!wcid)
- 				break;
- 
-+			mphy = mt76_dev_phy(&dev->mt76, wcid->phy_idx);
- 			for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
--				wcid->stats.tx_bytes +=
--					le32_to_cpu(res->adm_stat[i].tx_bytes[ac]);
--				wcid->stats.rx_bytes +=
--					le32_to_cpu(res->adm_stat[i].rx_bytes[ac]);
-+				tx_bytes = le32_to_cpu(res->adm_stat[i].tx_bytes[ac]);
-+				rx_bytes = le32_to_cpu(res->adm_stat[i].rx_bytes[ac]);
-+
-+				wcid->stats.tx_bytes += tx_bytes;
-+				wcid->stats.rx_bytes += rx_bytes;
-+
-+				__ieee80211_tpt_led_trig_trx(mphy->hw,
-+							     tx_bytes, rx_bytes);
- 			}
- 			break;
- 		case UNI_ALL_STA_TXRX_MSDU_COUNT:
--- 
-2.39.0
+On st=C5=99eda 26. =C4=8Dervence 2023 11:17:02 CEST Felix Fietkau wrote:
+> The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half=
+=2DNSS
+> 160 MHz support, so it is wrong to also advertise full 160 MHz support.
+>=20
+> Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width s=
+upport for MT7915")
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7915/init.c
+> index ee976657bfc3..78552f10b377 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+>  			if (!dev->dbdc_support)
+>  				vht_cap->cap |=3D
+>  					IEEE80211_VHT_CAP_SHORT_GI_160 |
+> -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+>  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
+>  		} else {
+>  			vht_cap->cap |=3D
+>=20
+
+=46or some reason this got backported into the stable kernel:
+
+```
+$ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt=
+7915/
+c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
+edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib=
+_info
+9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
+0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
+6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
+7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is acti=
+ve
+feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is ac=
+tive
+70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
+```
+
+and this broke my mt7915-based AP.
+
+However, if I remove `[VT160]` capability from the hostapd config, things g=
+o back to normal. It does seem that 160 MHz still works even.
+
+Is this expected?
+
+Please check.
+
+Thanks.
+
+=2D-=20
+Oleksandr Natalenko (post-factum)
+--nextPart5713149.DvuYhMxLoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmULznEACgkQil/iNcg8
+M0vrVxAAr2A2S5y3K3KZCf6eC4XHPkTxvLb/VNZfY4NVE+mHkgFZU9lFxYIw5D6y
+XxfukONRVtusbi5M2gHCGPQEpNCAeSr2P9P/v8KRaYOoT54lrOvQquyliuoujuYC
+jeO2XtIJUWxIpz5+BoXYrroD7z5k9sHIXf/xDuAmHa2IGy/bpU6yYb1V+dwEvzbi
+43QoscmGzjAbZvrZiufetU3hUq4/oyZycwdUDK0/9cbEliQ8NkM6JiTFBQylgnmP
+NI2iy0SZlHVcf/AWgps6TZwx3Frb12OvNAmnGWga2axpkXRm5pPkFEjxOreLteps
+uSFcV12ZmTEsaHsAQOd+demq75/H3f9tJPMy1gz06oixO/3k9tUpdxVNiFgOuyg9
+iKGUWTb5ETjufpJe6dpnnuhpHU2i+npAgs0tf8gVux/DZncvYbaYxb6iEIefwfXk
+yUENnOzfud2aEFM/WJ8W9B8X+qGzsJD17YKV0VYKi0M6BQRdGFKP82EWAoTizTPj
+0oSswygE9pf9ApswpOm0kq+3/iywejIchCNNjNFxvlrIMZCTtUSBeoUdNGitzcjE
+7qOtBUpB5TikczCJt5ut4R9i51xCRrRi681XGx89zepc42DwpSj5qkORYOkGtWap
+e8C01yUtMwdenAIJBYikBhNLtilZYg6epSuf7HhpGcn7fQDXwTM=
+=VAkp
+-----END PGP SIGNATURE-----
+
+--nextPart5713149.DvuYhMxLoT--
+
+
 
