@@ -2,46 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10FC57A9B89
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 21:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BB937A9985
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 20:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230044AbjIUTCV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 15:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42760 "EHLO
+        id S230169AbjIUSPf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 14:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230018AbjIUTCI (ORCPT
+        with ESMTP id S230062AbjIUSPK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 15:02:08 -0400
+        Thu, 21 Sep 2023 14:15:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30C1E80FBE;
-        Thu, 21 Sep 2023 10:36:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7765CC116B3;
-        Thu, 21 Sep 2023 08:04:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3103583F43;
+        Thu, 21 Sep 2023 10:37:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8419C116AE;
+        Thu, 21 Sep 2023 08:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695283446;
-        bh=ikVEGvz/AoDXxl7OJz8v3M6JEuj84GWYAzbM3pSuSfs=;
+        s=k20201202; t=1695283729;
+        bh=nJaYB8uCoRYXDXO2rEMYKSZU2AEtKUxZKZjNBbP5yx0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Q0AAb/hTsyZsWcttt+LH9287e9g6+ilMDd07ifknyZdtsttuFD/C7e8WN86RofEdm
-         UVMgUWeJlRHX1OVx0DTpFzJzn/OV51Ppg+FiMaRtZ55XYp0MY90NMR/KifyziH12cN
-         fY+4NSCJBY8omAlRFugv8mJ87l5UCi4RvZbpHJeyOcekfqgcDsGWuLI0hHWm4hpO3u
-         ixqDd/UTnuHp1aDa0bDudiQM+yPoqEahXZhOI1AvRrVtWpm1NSqqQ90jomTQdCDwVS
-         b1x+bH8jl7UBlk3Wxfu0SY+aur5ipB2vp+GmJgZGgehROHGImkqJ7iBSKcv+IT4mjc
-         81QyDj+54D/BA==
+        b=q7U3o4KOKAt6ddMSu4iMCNpdJ0lygN6aVaZkka9VdPOMVGPBdrl62qR1kwBKNhfDJ
+         rB9wXuFzUj0pBLmQzotRCXgD5wuDo7nqMxV9t4ex7J7BLKUVp2E2AxC3S7vMsa/3fU
+         +aDkez0WG6bHzw+WEl/8GLIMqY4HW4l6+81YgSDgbnuFXhHySdvf3UATYPqf4OCStT
+         J/rRvQEWibsp6/+zk9tBe2cCCg0CRiAN9h2lrStdBz3H7fGjuzFMu7fVJyie3MxG4R
+         tBz/5MAT6Bs6rLxi9q2+OC7oTPAh3N7+CkZs7M8fTKi9G6L+Gf3NRuvnxFlmnCsq9e
+         iCZdtvr/8coFQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] ath9k: clean up function ath9k_hif_usb_resume
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 wireless-next 1/9] wifi: ar5523: Remove unnecessary
+ (void*)
+ conversions
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230905013556.2595854-1-dzm91@hust.edu.cn>
-References: <20230905013556.2595854-1-dzm91@hust.edu.cn>
-To:     Dongliang Mu <dzm91@hust.edu.cn>
-Cc:     =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        hust-os-kernel-patches@googlegroups.com,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230919044906.523189-1-yunchuan@nfschina.com>
+References: <20230919044906.523189-1-yunchuan@nfschina.com>
+To:     Wu Yunchuan <yunchuan@nfschina.com>
+Cc:     syoshida@redhat.com, johannes.berg@intel.com,
+        alexander@wetzel-home.de, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Wu Yunchuan <yunchuan@nfschina.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169528344376.1539628.7025381317587339647.kvalo@kernel.org>
-Date:   Thu, 21 Sep 2023 08:04:05 +0000 (UTC)
+Message-ID: <169528372582.1539628.14233908546139336293.kvalo@kernel.org>
+Date:   Thu, 21 Sep 2023 08:08:47 +0000 (UTC)
 X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
@@ -52,30 +54,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dongliang Mu <dzm91@hust.edu.cn> wrote:
+Wu Yunchuan <yunchuan@nfschina.com> wrote:
 
-> In ath9k_hif_usb_resume, the error handling code calls
-> ath9k_hif_usb_dealloc_urbs twice in different paths.
+> No need cast (void*) to (struct ar5523_cmd_hdr *).
 > 
-> To unify the error handling code, we move the else branch before
-> the if branch and drop one level of indentation of the if branch.
-> 
-> In addition, move the ret variable at the end of variable declarations
-> to be reverse x-mas tree order.
-> 
-> Note that this patch does not incur any functionability change.
-> 
-> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-> Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+> Signed-off-by: Wu Yunchuan <yunchuan@nfschina.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+6 patches applied to ath-next branch of ath.git, thanks.
 
-dc73b2059354 wifi: ath9k: clean up function ath9k_hif_usb_resume
+37c113e94fa0 wifi: ar5523: Remove unnecessary (void*) conversions
+9705103f8e8e wifi: wcn36xx: remove unnecessary (void*) conversions
+4bd0f7d0f311 wifi: ath5k: remove unnecessary (void*) conversions
+779163fa1a37 wifi: ath6kl: remove unnecessary (void*) conversions
+16e972d5767a wifi: ath10k: Remove unnecessary (void*) conversions
+e5e8b38f0c05 wifi: ath12k: Remove unnecessary (void*) conversions
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230905013556.2595854-1-dzm91@hust.edu.cn/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230919044906.523189-1-yunchuan@nfschina.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
