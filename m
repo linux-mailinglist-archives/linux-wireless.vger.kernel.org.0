@@ -2,99 +2,200 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E22D77AA1FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 23:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E5DF7AA3C3
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 23:57:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231591AbjIUVLD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 17:11:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33808 "EHLO
+        id S233009AbjIUV5l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 17:57:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232967AbjIUVKK (ORCPT
+        with ESMTP id S233131AbjIUV53 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 17:10:10 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 316A832EAE
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 13:38:50 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38LKO0jk030532;
-        Thu, 21 Sep 2023 20:38:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=z2VIJcORkGlcuCfmFQrCGRVHfX/7S4x0N3z2O/ndP0I=;
- b=EmfcH/WZGHi5hwAKZfzuw+1oOq1PiSKhJkM/g5RLUy4/hx/lrC9Dq3vb9pfIZfNKYp3B
- lSBKSacjLvX963v0yZSTS/TnKJqx35VI2QVijE5F2qe55jSiWGSBdfiGlKmH9QpU1kJy
- fxDkng3L1+9EbuceGKoA/szrPFmuXm0MEw6Ir84YGOaCwHJEoED8a6Luc3/sx8eZNsTu
- lWb3FqU9deb58REYo3QsD2Tn9/RywTKZwLK9VQrOe1Zd0k2vE1X2Nwj5LvxUw7ED5dZ1
- 8IW61kOK9fNJMYkvB8EVTfPMjR7QN9mmuh5iToYuGn6YxikV/hAnFZglkbUPt+rKt60J xQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t8u9h87cu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 21 Sep 2023 20:38:43 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38LKcg2x019026
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 21 Sep 2023 20:38:42 GMT
-Received: from [10.48.245.144] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 21 Sep
- 2023 13:38:42 -0700
-Message-ID: <dd770693-b090-434c-921d-f1c171a0c28e@quicinc.com>
-Date:   Thu, 21 Sep 2023 13:38:42 -0700
+        Thu, 21 Sep 2023 17:57:29 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E323741C6
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 14:04:24 -0700 (PDT)
+X-UUID: 6e4f9bf058c211eea33bb35ae8d461a2-20230922
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Vwyy3Yxmaicnbmda91e2YwqDKMMX0W2HPT33lkRcdI8=;
+        b=aS/5Vfzh6d+zWWnyi1Mz+a/Vcdlh7VOzaDjK4D85Yd5MtYMC6jAE6piMYYkKcenxlYm0EwG0nPxFlnOJA6XYWGn9NA9aqYlYuX6gCC0Cg9QcWg3Gqzo+5sBRjlekc3Ci8pjTVyfN5OdhLVw+Hkc0IGoFWPfBoCNq1Yrm87w1+wA=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.32,REQID:bea7ddf6-8e70-4758-8d4a-4de829b0b17b,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:5f78ec9,CLOUDID:db8e3814-4929-4845-9571-38c601e9c3c9,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+        NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 6e4f9bf058c211eea33bb35ae8d461a2-20230922
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        (envelope-from <yi-chia.hsieh@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1981583647; Fri, 22 Sep 2023 05:04:19 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Fri, 22 Sep 2023 05:04:17 +0800
+Received: from mussdccf250.mussds.eus.mediatek.inc (10.73.250.250) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Fri, 22 Sep 2023 05:04:14 +0800
+From:   Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Money Wang <money.wang@mediatek.com>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>,
+        Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>,
+        Money Wang <Money.Wang@mediatek.com>
+Subject: [PATCH v3 1/4] wifi: mt76: mt7996: get tx_retries and tx_failed from txfree
+Date:   Thu, 21 Sep 2023 14:04:00 -0700
+Message-ID: <d698600dc16fc3880e75dd24e2338ac21d51a45a.1695329286.git.yi-chia.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 13/13] wifi: ath11k: send TPC power to firmware for 6
- GHz station
-Content-Language: en-US
-To:     Wen Gong <quic_wgong@quicinc.com>, <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <kvalo@kernel.org>
-References: <20230920082349.29111-1-quic_wgong@quicinc.com>
- <20230920082349.29111-14-quic_wgong@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230920082349.29111-14-quic_wgong@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 83R6LyjDsvzfZ4lb-XPm0IaIIbCeqIVd
-X-Proofpoint-ORIG-GUID: 83R6LyjDsvzfZ4lb-XPm0IaIIbCeqIVd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-21_18,2023-09-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 bulkscore=0 spamscore=0 priorityscore=1501 phishscore=0
- suspectscore=0 malwarescore=0 clxscore=1015 mlxlogscore=950 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309210177
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--2.436100-8.000000
+X-TMASE-MatchedRID: hBPcN6g5NxXi9mOUjCQGLxUuRQtxMyQBUK80YYUAl4sXdhT0BAdFznf6
+        Lj8RU1GvgfONumQ1QfdfxhAzc2dPJhLmJd2F/yFu9UVHiwLx0/JPn74Ug5EKECz+5QCTrE/svkE
+        SpfBKzZSd+hadbvZSHMh3ymsKdHdu0ywZEqbRuQSiAZ3zAhQYglmLvTysL4PPTUobVis5Bb91V+
+        LIUmKTyHmd/bhGlF1I3m2M6A2xWxxPXYdz0WFWNeKXavbHY/C1zjhG4bTm6hKbKItl61J/yZ+in
+        TK0bC9eKrauXd3MZDX371moSn0VOIS0P2RhP4PyO4AtpkPwvvzVg50E4H/jkQtPWsP8JaiDzxJp
+        yqZmdl9b4ZZQJ/B3fGcbgAb+RLrnXprqe3vYrk55HCv4Lr/VGRdGg+ZY7eN6THB2Q+oKru8MTI3
+        4nyF36MJL1aANdU8Knqg/VrSZEiM=
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--2.436100-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: 58813013783525298B8935956AF9C4D1A45164F07018A8C25A34BB870F6FA4B22000:8
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/20/2023 1:23 AM, Wen Gong wrote:
-> When station is connected to a 6 GHz AP, it has 2 way to configure
-> the power limit to firmware. The first way is to send 2 wmi command
-> WMI_PDEV_PARAM_TXPOWER_LIMIT2G/WMI_PDEV_PARAM_TXPOWER_LIMIT5G to
-> firmware, the second way is to send WMI_VDEV_SET_TPC_POWER_CMDID to
-> firmware which include more parameters for power control.
-> 
-> The first way is disabled in previous patch
-> "ath11k: discard BSS_CHANGED_TXPOWER when EXT_TPC_REG_SUPPORT for 6 GHz".
-> 
-> Prepare the parameter for wmi command WMI_VDEV_SET_TPC_POWER_CMDID and
-> send the firmware after vdev start response success from firmware, it
-> is for the second way of power control.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-> 
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Retrieve tx retries/failed counts from 'txfree done' events and report
+them via mt7996_sta_statistics().
 
-As previously mentioned I'd squash this with patch 11
+Signed-off-by: Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
+Signed-off-by: Money Wang <Money.Wang@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+v2: split series
+---
+v3: rebase and update Signed-off-by
+---
+ .../wireless/mediatek/mt76/mt76_connac3_mac.h |  4 ++--
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 21 ++++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  6 ++++++
+ 3 files changed, 24 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+index 87bfa441a937..d49fe24851be 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+@@ -271,11 +271,11 @@ enum tx_mgnt_type {
+ #define MT_TXFREE0_MSDU_CNT		GENMASK(25, 16)
+ #define MT_TXFREE0_RX_BYTE		GENMASK(15, 0)
+ 
+-#define MT_TXFREE1_VER			GENMASK(18, 16)
++#define MT_TXFREE1_VER			GENMASK(19, 16)
+ 
+ #define MT_TXFREE_INFO_PAIR		BIT(31)
+ #define MT_TXFREE_INFO_HEADER		BIT(30)
+-#define MT_TXFREE_INFO_WLAN_ID		GENMASK(23, 12)
++#define MT_TXFREE_INFO_MLD_ID		GENMASK(23, 12)
+ #define MT_TXFREE_INFO_MSDU_ID		GENMASK(14, 0)
+ #define MT_TXFREE_INFO_COUNT		GENMASK(27, 24)
+ #define MT_TXFREE_INFO_STAT		GENMASK(29, 28)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index c43839a20508..d442746c8d96 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1070,6 +1070,7 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 	struct mt76_phy *phy3 = mdev->phys[MT_BAND2];
+ 	struct mt76_txwi_cache *txwi;
+ 	struct ieee80211_sta *sta = NULL;
++	struct mt76_wcid *wcid;
+ 	LIST_HEAD(free_list);
+ 	struct sk_buff *skb, *tmp;
+ 	void *end = data + len;
+@@ -1088,7 +1089,7 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 		mt76_queue_tx_cleanup(dev, phy3->q_tx[MT_TXQ_BE], false);
+ 	}
+ 
+-	if (WARN_ON_ONCE(le32_get_bits(tx_free[1], MT_TXFREE1_VER) < 4))
++	if (WARN_ON_ONCE(le32_get_bits(tx_free[1], MT_TXFREE1_VER) < 5))
+ 		return;
+ 
+ 	total = le32_get_bits(tx_free[0], MT_TXFREE0_MSDU_CNT);
+@@ -1104,10 +1105,9 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 		info = le32_to_cpu(*cur_info);
+ 		if (info & MT_TXFREE_INFO_PAIR) {
+ 			struct mt7996_sta *msta;
+-			struct mt76_wcid *wcid;
+ 			u16 idx;
+ 
+-			idx = FIELD_GET(MT_TXFREE_INFO_WLAN_ID, info);
++			idx = FIELD_GET(MT_TXFREE_INFO_MLD_ID, info);
+ 			wcid = rcu_dereference(dev->mt76.wcid[idx]);
+ 			sta = wcid_to_sta(wcid);
+ 			if (!sta)
+@@ -1120,10 +1120,21 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 					      &mdev->sta_poll_list);
+ 			spin_unlock_bh(&mdev->sta_poll_lock);
+ 			continue;
+-		}
++		} else if (info & MT_TXFREE_INFO_HEADER) {
++			u32 tx_retries = 0, tx_failed = 0;
++
++			if (!wcid)
++				continue;
++
++			tx_retries =
++				FIELD_GET(MT_TXFREE_INFO_COUNT, info) - 1;
++			tx_failed = tx_retries +
++				!!FIELD_GET(MT_TXFREE_INFO_STAT, info);
+ 
+-		if (info & MT_TXFREE_INFO_HEADER)
++			wcid->stats.tx_retries += tx_retries;
++			wcid->stats.tx_failed += tx_failed;
+ 			continue;
++		}
+ 
+ 		for (i = 0; i < 2; i++) {
+ 			msdu = (info >> (15 * i)) & MT_TXFREE_INFO_MSDU_ID;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index a2ab668a3b0f..0072809ae617 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -989,6 +989,12 @@ static void mt7996_sta_statistics(struct ieee80211_hw *hw,
+ 	sinfo->txrate.flags = txrate->flags;
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
+ 
++	sinfo->tx_failed = msta->wcid.stats.tx_failed;
++	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
++
++	sinfo->tx_retries = msta->wcid.stats.tx_retries;
++	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
++
+ 	sinfo->ack_signal = (s8)msta->ack_signal;
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_ACK_SIGNAL);
+ 
+-- 
+2.39.0
 
