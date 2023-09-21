@@ -2,183 +2,223 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 312537AA25B
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 23:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B4AF7AA29C
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Sep 2023 23:23:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232672AbjIUVQI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Sep 2023 17:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
+        id S230004AbjIUVXv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Sep 2023 17:23:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233238AbjIUVP3 (ORCPT
+        with ESMTP id S232282AbjIUVXi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Sep 2023 17:15:29 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D76DAE3A4;
-        Thu, 21 Sep 2023 10:08:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=KcbEGqZWRjDRIS84NcPwJ70wJrRePDMy7FnnB2l/XTc=;
-        t=1695316084; x=1696525684; b=IQW96roGNxzONuN9PjcFsaqTedRIWrD2bO14nXq8M2es3l8
-        bnZzAgnlNO6iaNG8dZUfCxVtzGQIk7LmP08aymBYLKrVBRpBMA070wDeZbXvgFBJtc1e8tMHt8hE+
-        HKYHvfTAa1XJVyjEPdBJT4NVHQBbX1kiKr8XZxsNK7qVjLpfa5rJn2wsMYeuoqj24HR603rRzp0vx
-        WeVqVWhCvy2IAjHVj0dFk4AEnkppQMzs3yUq0/1LQMyGb16wbeJ7NDcibUv1pgYG0IUANitDQPVCU
-        kgDCgNuXOBRi7p5RKLqVnYBNBe/V6nNAB9yQWy0R4gQT+O6ZIiv44a76jalixKbA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qjFPm-00D3lb-0E;
-        Thu, 21 Sep 2023 10:52:02 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [RFC PATCH 2/4] net: dropreason: use new __print_sym() in tracing
-Date:   Thu, 21 Sep 2023 10:51:32 +0200
-Message-ID: <20230921105129.2f2774a87760.I075de1ac698b47710b94c631afdfb328f07be961@changeid>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230921085129.261556-5-johannes@sipsolutions.net>
-References: <20230921085129.261556-5-johannes@sipsolutions.net>
+        Thu, 21 Sep 2023 17:23:38 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86664780E6
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Sep 2023 10:50:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695318630; x=1726854630;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=zGZMClw6x2oz7yykgZP8h3q/8qu6Sk32wpUuqTdnzR0=;
+  b=f+5xdX5VvRCEVhrW2xRhRgcYNNQ2g5j/GmnQNsiDJVGmbbIJTNunZjLV
+   WvdyG++fEA5x+3yanpbPV5weTQqumsBXXey1H+p9RfQoqC1rgMOuU9k/f
+   9VyywPjbbyRR5vjBCeMCIlbFM+MDsZcwZogQpliGCsKY794wJS4UYKqdD
+   A9QXXYxlyRMRKtvDoNAulbkWdiKRco9ivD7aV/Uh9WcJGsllYVXYTWCay
+   /0tB+ooF2v2DOsYJrZxYiUbmua57RQ6PwKR4P9DkD4JhMBjuerqiOhjE9
+   QDS8LoSoOnnb9qIuzk42hlszJP0i8FpeHlQEVwhBjP28vntilXbYjCVvq
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="384305319"
+X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
+   d="scan'208";a="384305319"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 01:58:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="740545533"
+X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
+   d="scan'208";a="740545533"
+Received: from rchuwer-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.229.163])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 01:58:51 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 04/12] wifi: iwlwifi: implement enable/disable for China 2022 regulatory
+Date:   Thu, 21 Sep 2023 11:58:02 +0300
+Message-Id: <20230921110726.ba7cb3003e53.If5a180a59ee85ed4a4c9146cfeff841c25b81066@changeid>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230921085810.693048-1-gregory.greenman@intel.com>
+References: <20230921085810.693048-1-gregory.greenman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-The __print_symbolic() could only ever print the core
-drop reasons, since that's the way the infrastructure
-works. Now that we have __print_sym() with all the
-advantages mentioned in that commit, convert to that
-and get all the drop reasons from all subsystems. As
-we already have a list of them, that's really easy.
+China 2022 regulations are enabled by default. Disable only when
+disabled in BIOS or the firmware don't support this capability. If the
+firmware has this capability, read BIOS configuration data in
+function 4 using ACPI API and send GRP_REGULATORY_LARI_CONFIG_CHANGE_CMD
+to the firmware. Any error while reading BIOS data results in enablement
+of china 2022 regulations.
 
-This is a little bit of .text (~100 bytes in my build)
-and saves a lot of .data (~17k).
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- include/net/dropreason.h   |  5 +++++
- include/trace/events/skb.h | 16 +++-----------
- net/core/skbuff.c          | 43 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 51 insertions(+), 13 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c   | 18 ++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h   |  5 +++++
+ .../wireless/intel/iwlwifi/fw/api/nvm-reg.h    |  6 ++++--
+ .../net/wireless/intel/iwlwifi/fw/debugfs.c    |  8 +++++++-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h   |  3 ++-
+ 5 files changed, 36 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/dropreason.h b/include/net/dropreason.h
-index 56cb7be92244..c157070b5303 100644
---- a/include/net/dropreason.h
-+++ b/include/net/dropreason.h
-@@ -42,6 +42,11 @@ struct drop_reason_list {
- extern const struct drop_reason_list __rcu *
- drop_reasons_by_subsys[SKB_DROP_REASON_SUBSYS_NUM];
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index b26f90e52256..e83ce797a68b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -1011,6 +1011,7 @@ __le32 iwl_acpi_get_lari_config_bitmap(struct iwl_fw_runtime *fwrt)
+ {
+ 	int ret;
+ 	u8 value;
++	u32 val;
+ 	__le32 config_bitmap = 0;
  
-+#ifdef CONFIG_TRACEPOINTS
-+const char *drop_reason_lookup(unsigned long long value);
-+void drop_reason_show(struct seq_file *m);
-+#endif
-+
- void drop_reasons_register_subsys(enum skb_drop_reason_subsys subsys,
- 				  const struct drop_reason_list *list);
- void drop_reasons_unregister_subsys(enum skb_drop_reason_subsys subsys);
-diff --git a/include/trace/events/skb.h b/include/trace/events/skb.h
-index 07e0715628ec..8a1a63f9e796 100644
---- a/include/trace/events/skb.h
-+++ b/include/trace/events/skb.h
-@@ -8,15 +8,9 @@
- #include <linux/skbuff.h>
- #include <linux/netdevice.h>
- #include <linux/tracepoint.h>
-+#include <net/dropreason.h>
+ 	/*
+@@ -1039,6 +1040,23 @@ __le32 iwl_acpi_get_lari_config_bitmap(struct iwl_fw_runtime *fwrt)
+ 				cpu_to_le32(LARI_CONFIG_CHANGE_ETSI_TO_DISABLED_MSK);
+ 	}
  
--#undef FN
--#define FN(reason)	TRACE_DEFINE_ENUM(SKB_DROP_REASON_##reason);
--DEFINE_DROP_REASON(FN, FN)
--
--#undef FN
--#undef FNe
--#define FN(reason)	{ SKB_DROP_REASON_##reason, #reason },
--#define FNe(reason)	{ SKB_DROP_REASON_##reason, #reason }
-+TRACE_DEFINE_SYM_FNS(drop_reason, drop_reason_lookup, drop_reason_show);
- 
- /*
-  * Tracepoint for free an sk_buff:
-@@ -44,13 +38,9 @@ TRACE_EVENT(kfree_skb,
- 
- 	TP_printk("skbaddr=%p protocol=%u location=%pS reason: %s",
- 		  __entry->skbaddr, __entry->protocol, __entry->location,
--		  __print_symbolic(__entry->reason,
--				   DEFINE_DROP_REASON(FN, FNe)))
-+		  __print_sym(__entry->reason, drop_reason ))
- );
- 
--#undef FN
--#undef FNe
--
- TRACE_EVENT(consume_skb,
- 
- 	TP_PROTO(struct sk_buff *skb, void *location),
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 4eaf7ed0d1f4..415329b76921 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -132,6 +132,49 @@ drop_reasons_by_subsys[SKB_DROP_REASON_SUBSYS_NUM] = {
- };
- EXPORT_SYMBOL(drop_reasons_by_subsys);
- 
-+#ifdef CONFIG_TRACEPOINTS
-+const char *drop_reason_lookup(unsigned long long value)
-+{
-+	unsigned long long subsys_id = value >> SKB_DROP_REASON_SUBSYS_SHIFT;
-+	u32 reason = value & ~SKB_DROP_REASON_SUBSYS_MASK;
-+	const struct drop_reason_list *subsys;
-+
-+	if (subsys_id >= SKB_DROP_REASON_SUBSYS_NUM)
-+		return NULL;
-+
-+	subsys = rcu_dereference(drop_reasons_by_subsys[subsys_id]);
-+	if (!subsys)
-+		return NULL;
-+	if (reason >= subsys->n_reasons)
-+		return NULL;
-+	return subsys->reasons[reason];
-+}
-+
-+void drop_reason_show(struct seq_file *m)
-+{
-+	u32 subsys_id;
-+
-+	rcu_read_lock();
-+	for (subsys_id = 0; subsys_id < SKB_DROP_REASON_SUBSYS_NUM; subsys_id++) {
-+		const struct drop_reason_list *subsys;
-+		u32 i;
-+
-+		subsys = rcu_dereference(drop_reasons_by_subsys[subsys_id]);
-+		if (!subsys)
-+			continue;
-+
-+		for (i = 0; i < subsys->n_reasons; i++) {
-+			if (!subsys->reasons[i])
-+				continue;
-+			seq_printf(m, ", { %u, \"%s\" }",
-+				   (subsys_id << SKB_DROP_REASON_SUBSYS_SHIFT) | i,
-+				   subsys->reasons[i]);
-+		}
++	if (fw_has_capa(&fwrt->fw->ucode_capa,
++			IWL_UCODE_TLV_CAPA_CHINA_22_REG_SUPPORT)) {
++		/*
++		 ** Evaluate func 'DSM_FUNC_REGULATORY_CONFIG'
++		 */
++		ret = iwl_acpi_get_dsm_u32(fwrt->dev, 0,
++					   DSM_FUNC_REGULATORY_CONFIG,
++					   &iwl_guid, &val);
++		/*
++		 * China 2022 enable if the BIOS object does not exist or
++		 * if it is enabled in BIOS.
++		 */
++		if (ret < 0 || val & DSM_MASK_CHINA_22_REG)
++			config_bitmap |=
++				cpu_to_le32(LARI_CONFIG_ENABLE_CHINA_22_REG_SUPPORT_MSK);
 +	}
-+	rcu_read_unlock();
-+}
-+#endif
 +
+ 	return config_bitmap;
+ }
+ IWL_EXPORT_SYMBOL(iwl_acpi_get_lari_config_bitmap);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+index c36c62d6414d..d129fc66d8bb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+@@ -134,6 +134,7 @@ enum iwl_dsm_funcs_rev_0 {
+ 	DSM_FUNC_DISABLE_SRD = 1,
+ 	DSM_FUNC_ENABLE_INDONESIA_5G2 = 2,
+ 	DSM_FUNC_ENABLE_6E = 3,
++	DSM_FUNC_REGULATORY_CONFIG = 4,
+ 	DSM_FUNC_11AX_ENABLEMENT = 6,
+ 	DSM_FUNC_ENABLE_UNII4_CHAN = 7,
+ 	DSM_FUNC_ACTIVATE_CHANNEL = 8,
+@@ -164,6 +165,10 @@ enum iwl_dsm_values_rfi {
+ 	DSM_VALUE_RFI_MAX
+ };
+ 
++enum iwl_dsm_masks_reg {
++	DSM_MASK_CHINA_22_REG = BIT(2)
++};
++
+ #ifdef CONFIG_ACPI
+ 
+ struct iwl_fw_runtime;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
+index 28bfabb399b2..c4577219c501 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -480,18 +480,20 @@ union iwl_tas_config_cmd {
+ 	struct iwl_tas_config_cmd_v4 v4;
+ };
  /**
-  * drop_reasons_register_subsys - register another drop reason subsystem
-  * @subsys: the subsystem to register, must not be the core
+- * enum iwl_lari_configs - bit masks for the various LARI config operations
++ * enum iwl_lari_config_masks - bit masks for the various LARI config operations
+  * @LARI_CONFIG_DISABLE_11AC_UKRAINE_MSK: disable 11ac in ukraine
+  * @LARI_CONFIG_CHANGE_ETSI_TO_PASSIVE_MSK: ETSI 5.8GHz SRD passive scan
+  * @LARI_CONFIG_CHANGE_ETSI_TO_DISABLED_MSK: ETSI 5.8GHz SRD disabled
+  * @LARI_CONFIG_ENABLE_5G2_IN_INDONESIA_MSK: enable 5.15/5.35GHz bands in
+  * 	Indonesia
++ * @LARI_CONFIG_ENABLE_CHINA_22_REG_SUPPORT_MSK: enable 2022 china regulatory
+  */
+ enum iwl_lari_config_masks {
+ 	LARI_CONFIG_DISABLE_11AC_UKRAINE_MSK		= BIT(0),
+ 	LARI_CONFIG_CHANGE_ETSI_TO_PASSIVE_MSK		= BIT(1),
+ 	LARI_CONFIG_CHANGE_ETSI_TO_DISABLED_MSK		= BIT(2),
+ 	LARI_CONFIG_ENABLE_5G2_IN_INDONESIA_MSK		= BIT(3),
++	LARI_CONFIG_ENABLE_CHINA_22_REG_SUPPORT_MSK	= BIT(7),
+ };
+ 
+ #define IWL_11AX_UKRAINE_MASK 3
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index 3cdbc6ac7ae5..b8d4a4d571e7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2020 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -342,6 +342,12 @@ static int iwl_dbgfs_fw_info_seq_show(struct seq_file *seq, void *v)
+ 			   "    %d: %d\n",
+ 			   IWL_UCODE_TLV_CAPA_PPAG_CHINA_BIOS_SUPPORT,
+ 			   has_capa);
++		has_capa = fw_has_capa(&fw->ucode_capa,
++				       IWL_UCODE_TLV_CAPA_CHINA_22_REG_SUPPORT) ? 1 : 0;
++		seq_printf(seq,
++			   "    %d: %d\n",
++			   IWL_UCODE_TLV_CAPA_CHINA_22_REG_SUPPORT,
++			   has_capa);
+ 		seq_puts(seq, "fw_api_ver:\n");
+ 	}
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+index 41841524f983..7e0894ea1005 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2008-2014, 2018-2021 Intel Corporation
++ * Copyright (C) 2008-2014, 2018-2023 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -472,6 +472,7 @@ enum iwl_ucode_tlv_capa {
+ 	IWL_UCODE_TLV_CAPA_OFFLOAD_BTM_SUPPORT		= (__force iwl_ucode_tlv_capa_t)113,
+ 	IWL_UCODE_TLV_CAPA_STA_EXP_MFP_SUPPORT		= (__force iwl_ucode_tlv_capa_t)114,
+ 	IWL_UCODE_TLV_CAPA_SNIFF_VALIDATE_SUPPORT	= (__force iwl_ucode_tlv_capa_t)116,
++	IWL_UCODE_TLV_CAPA_CHINA_22_REG_SUPPORT		= (__force iwl_ucode_tlv_capa_t)117,
+ 
+ 	NUM_IWL_UCODE_TLV_CAPA
+ /*
 -- 
-2.41.0
+2.38.1
 
