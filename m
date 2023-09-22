@@ -2,97 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E72287AACAD
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 10:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52F197AAD5B
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 11:04:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232330AbjIVIb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 04:31:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53716 "EHLO
+        id S232719AbjIVJFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Sep 2023 05:05:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjIVIb1 (ORCPT
+        with ESMTP id S232812AbjIVJE6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 04:31:27 -0400
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A686E83;
-        Fri, 22 Sep 2023 01:31:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:To:References:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=O6U42eOE2ldK54dJpZcJGeTJkJVss+9hSeHi3irefeI=; b=HiCSWfTcg+iIBgtsk1jYShiEHQ
-        POSA2MirU470UqUCpTA9DeWFAWYEhTWWggCYnj8OuzxRFDWRWC/lAfScpTrxEx0zl3ixMW+2pmHhK
-        xhKEHElrBU1ROrUuh9zzkudoR+WkA0B0fEvWHknIEXE3ncFqhf1uHw0wTPItkKTAAGJQDMX8Fqkfh
-        cmRmyBzcrU1ikxPERV94lddOhYuDNfHvjD8EGxY1026O53GO3wb6I7JsvRbVirr3StunrYSbcsToN
-        CC9cLxDS6zDg7+dTXqJj8lu018165X53+DfQgUqougF2i1ZMOCyzuGFcy4q4wowVkU1INe1UxZoR0
-        YFHnm5OA==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qjbZG-0008eK-0n; Fri, 22 Sep 2023 10:31:18 +0200
-Received: from [109.164.249.201] (helo=localhost.localdomain)
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qjbZF-000CbV-QO; Fri, 22 Sep 2023 10:31:17 +0200
-Subject: LPC 2023 Networking and BPF Track CFP (Final Reminder)
-References: <5c9482c9-1f61-2886-4137-a2e2679b2662@iogearbox.net>
-To:     netdev@vger.kernel.org, bpf@vger.kernel.org
-Cc:     xdp-newbies@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netfilter-devel@vger.kernel.org
-From:   Daniel Borkmann <daniel@iogearbox.net>
-X-Forwarded-Message-Id: <5c9482c9-1f61-2886-4137-a2e2679b2662@iogearbox.net>
-Message-ID: <96d6e492-5e00-3bc7-ce5b-83347e8628a7@iogearbox.net>
-Date:   Fri, 22 Sep 2023 10:31:17 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        Fri, 22 Sep 2023 05:04:58 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6760CCF
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 02:04:52 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38M6qrnl022431;
+        Fri, 22 Sep 2023 09:04:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=bewMMnqBnCdNIT4yW8o4o38X35WCo1vUlQhyYH1Yn9A=;
+ b=Koa7hxwOQv+sAVuLOEZUAwH8JN1Lr/yBfFqdzot5/VlYOCTbkVwmTOAWNv0d+L1VFb99
+ 8jzXdi8uIoxuWLtJIvTXG+dJ8sypsAR0MAWK76pmtSWIYcOi0d0dImo/iNLDo5ULzA9E
+ yKvencSXQFt7qxfwTdaxx7S7MQn7RtWoF5Sk307jZYmWQwDGzgUwt+djZ2dRI1g3EK3m
+ jilgFV5oYyjBYDdjePUzAtE0TI6uJrI2TsRRUJyYatuOPXTrKAfxdTi+thhkMAdif9Mv
+ sYBweJqjFE48zTcqpMOC4cCPx1Gb30gziOokOx5tVidmQGc/aGorYOPnmSgAXXXA5co8 ew== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t8u0s1f80-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 22 Sep 2023 09:04:44 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38M94hYd001307
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 22 Sep 2023 09:04:43 GMT
+Received: from [10.216.13.153] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 22 Sep
+ 2023 02:04:40 -0700
+Message-ID: <4e4024eb-b518-4a36-b230-3c413c3a06e8@quicinc.com>
+Date:   Fri, 22 Sep 2023 14:34:32 +0530
 MIME-Version: 1.0
-In-Reply-To: <5c9482c9-1f61-2886-4137-a2e2679b2662@iogearbox.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 11/13] wifi: ath11k: discard BSS_CHANGED_TXPOWER when
+ EXT_TPC_REG_SUPPORT for 6 GHz
+To:     Wen Gong <quic_wgong@quicinc.com>, <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <kvalo@kernel.org>,
+        <quic_jjohnson@quicinc.com>
+References: <20230920082349.29111-1-quic_wgong@quicinc.com>
+ <20230920082349.29111-12-quic_wgong@quicinc.com>
 Content-Language: en-US
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <20230920082349.29111-12-quic_wgong@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27038/Thu Sep 21 09:39:42 2023)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: rWOoh66CShe4RfN21tAv8Y2yDpykiw3w
+X-Proofpoint-ORIG-GUID: rWOoh66CShe4RfN21tAv8Y2yDpykiw3w
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-22_06,2023-09-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 phishscore=0 suspectscore=0
+ adultscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501 clxscore=1015
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309220075
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is the final reminder for the Call for Proposals (CFP) for the Networking
-and BPF track at the 2023 edition of the Linux Plumbers Conference (LPC) which
-is taking place in Richmond, VA, United States, on November 13th - 15th, 2023.
+On 9/20/23 13:53, Wen Gong wrote:
+> When station is connected to a 6 GHz AP, it has 2 way to configure
+> the power limit to firmware. The first way is to send 2 wmi command
+> WMI_PDEV_PARAM_TXPOWER_LIMIT2G/WMI_PDEV_PARAM_TXPOWER_LIMIT5G to
+> firmware, the second way is to send WMI_VDEV_SET_TPC_POWER_CMDID to
+> firmware which include more parameters for power control.
+> 
+> When firmware support SERVICE_EXT_TPC_REG, it means firmware support
+> the second way for WMI_VDEV_SET_TPC_POWER_CMDID, then ath11k discard
+> BSS_CHANGED_TXPOWER flag from mac80211 which is used to the first way
+> for 6 GHz band in this patch and select the second way in the subsequent
+> patch.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> ---
+>   drivers/net/wireless/ath/ath11k/mac.c | 22 +++++++++++++++++++---
+>   1 file changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+> index f05d66913abd..a8ae281d2635 100644
+> --- a/drivers/net/wireless/ath/ath11k/mac.c
+> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+> @@ -3396,6 +3396,18 @@ static int ath11k_mac_config_obss_pd(struct ath11k *ar,
+>   	return 0;
+>   }
+>   
+> +static bool ath11k_mac_supports_station_tpc(struct ath11k *ar,
+> +					    struct ath11k_vif *arvif,
+> +					    const struct cfg80211_chan_def *chandef)
+> +{
+> +	return ath11k_mac_supports_6ghz_cc_ext(ar) &&
+> +		test_bit(WMI_TLV_SERVICE_EXT_TPC_REG_SUPPORT, ar->ab->wmi_ab.svc_map) &&
+> +		arvif->vdev_type == WMI_VDEV_TYPE_STA &&
+> +		arvif->vdev_subtype == WMI_VDEV_SUBTYPE_NONE &&
+> +		chandef->chan &&
+> +		chandef->chan->band == NL80211_BAND_6GHZ;
+> +}
+> +
+>   static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+>   					   struct ieee80211_vif *vif,
+>   					   struct ieee80211_bss_conf *info,
+> @@ -3595,9 +3607,13 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+>   	if (changed & BSS_CHANGED_TXPOWER) {
+>   		ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "vdev_id %i txpower %d\n",
+>   			   arvif->vdev_id, info->txpower);
+> -
+> -		arvif->txpower = info->txpower;
+> -		ath11k_mac_txpower_recalc(ar);
+> +		if (ath11k_mac_supports_station_tpc(ar, arvif, &info->chandef)) {
+So even if user wants to operate in low power value, we won't be 
+allowing to do that in case of 6 GHz station mode? Only TPC power is valid?
 
-Note that the conference is planned to be both in person and remote (hybrid).
-CFP submitters should ideally be able to give their presentation in person to
-minimize technical issues, although presenting remotely will also be possible.
+> +			ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
+> +				   "discard tx power, change to set TPC power\n");
+> +		} else {
+> +			arvif->txpower = info->txpower;
+> +			ath11k_mac_txpower_recalc(ar);
+> +		}
+>   	}
+>   
+>   	if (changed & BSS_CHANGED_PS &&
 
-The Networking and BPF track technical committee consists of:
 
-     David S. Miller <davem@davemloft.net>
-     Jakub Kicinski <kuba@kernel.org>
-     Paolo Abeni <pabeni@redhat.com>
-     Eric Dumazet <edumazet@google.com>
-     Alexei Starovoitov <ast@kernel.org>
-     Daniel Borkmann <daniel@iogearbox.net>
-     Andrii Nakryiko <andrii@kernel.org>
-     Martin Lau <martin.lau@linux.dev>
-
-We are seeking proposals of 30 minutes in length (including Q&A discussion). Any
-kind of advanced Linux networking and/or BPF related topic will be considered.
-
-Please submit your proposals through the official LPC website at:
-
-     https://lpc.events/event/17/abstracts/
-
-Make sure to select "eBPF & Networking Track" in the track pull-down menu.
-
-Proposals must be submitted by September 27th, and submitters will be notified
-of acceptance by October 2nd. Final slides (as PDF) are due on the first day of
-the conference.
-
-We are very much looking forward to a great conference and seeing you all!
