@@ -2,151 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7D557AAF39
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 12:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 948D77AB042
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 13:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233080AbjIVKMc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 06:12:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39192 "EHLO
+        id S233512AbjIVLNP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Sep 2023 07:13:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233277AbjIVKM3 (ORCPT
+        with ESMTP id S229800AbjIVLNO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 06:12:29 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B34518F
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 03:12:21 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38M9teFK032009;
-        Fri, 22 Sep 2023 10:12:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=fLVl/z53WaGW7KIB0FMieYrhjsDggvHqtk4DZbD+HUE=;
- b=nVQRKIDBtWoBcc9Nghigvm6os8QvgbE66WoizEyfRoALb57VB+UFs6+ZVfMD9ZjQM8DF
- 1MRpyHgF/14rIAkFje9rAYChqhRkhRur+VOTpwjj65FsyZr8TvCioAsHD9HYKCKr8mO5
- e7GrBofgN4+iBOJoP5fLjdJie3etQ6OH8m+jE93kH5fej9ZtRaGWV+t6fWQfF3OlYLXQ
- gSGpxvTFzms9Fr2+ednbZ2HcBeBN9qyp5KmNl2SrJiDBCO0kX5SdkJZ0MyxOExqE/OA5
- f+LixeQEApV9q0lVwZ6FQ+NiYglTSVtY5qx6jcbytDIIn7E7Ml+NFZT0RfYUM7E1BiC9 Pw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t8txg9kf8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Sep 2023 10:12:17 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38MACG70029327
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Sep 2023 10:12:16 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 22 Sep
- 2023 03:12:13 -0700
-Message-ID: <fbad2af6-9c3f-c241-b820-7820b4200bf4@quicinc.com>
-Date:   Fri, 22 Sep 2023 18:12:11 +0800
+        Fri, 22 Sep 2023 07:13:14 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CEC0180;
+        Fri, 22 Sep 2023 04:13:07 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-31f7638be6eso1890521f8f.3;
+        Fri, 22 Sep 2023 04:13:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695381186; x=1695985986; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mo60L/CqsBXTZMp9OSNBO8agQpgsikCTWPBLj8xU0z8=;
+        b=iYIerVfY1NbBVwujHou3raRdNzAq/EF0Qk2tI0vUChm7hYMLIcfWAF7yTChKMbt/xu
+         tGecAjAF8gDIPCM1bgDJzItbEE5gVYhkVGwH51UOo7HsgntvJKsbNIKwmIuKUIL0vU3S
+         dTru+vzXt5DoHzxDZGIjkpPiofTOc+n+W9U3m9XWvb5oFFc3ZW84uskbwnP8RYnEP+/c
+         s5mFOyC3Wy7PZguQUg+WRixmBShv0+jQc/F3Oic2ZDnNCq7MfNRCV05OpKg7SnApAA/b
+         GQIjcc+Yc0PWThaAiWl5SifhxBBgwhXk2wA/g4xMNCMHOTcZTT9t4EApNcxX40Am0yzW
+         olOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695381186; x=1695985986;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Mo60L/CqsBXTZMp9OSNBO8agQpgsikCTWPBLj8xU0z8=;
+        b=ntKLU+7hRv+7pCDyEnjlTpVnnJC42DN+6XLjuXJSzGE9r/vGMxn0JEAsPcXhZDkmPW
+         h4qdZvql9YyXofpq/AhKfxsedcBObDFeFKVf49jo3XHHweFyXZRDEr68RUFBOUi19dPJ
+         91Y2od2rIYEvMzJIrOm5b+QdnQFgKnnmE030dceZK+2ZaPPUfJQoHlIQqLnq/Gx6kmBc
+         1fGWGKp5A0lXFU6UhKuausSOI27O919xRNOO+bKjDqz3vK53rYWRaFfmQ6qaeQpmiijI
+         JrOZ2brA0rpjjmHPrJrFibRKiRQawKPWsR8AJei1r5oBfXf1bykgE1RLCuIRiIpVM8UW
+         OeFw==
+X-Gm-Message-State: AOJu0YzleksLRo03lHq3nQN6pm60xD2kmiwpNvTnuVafcPYniqe0T9y/
+        GSn+94I1DiSrrQHAbaqEtJw=
+X-Google-Smtp-Source: AGHT+IH7mPXmlPp61fOS1UbXVt881rz7wfseEorF4MkXdznkIZPNZgazS5rBLuHv+qOU+uGgsaXdlQ==
+X-Received: by 2002:a5d:694d:0:b0:314:12c:4322 with SMTP id r13-20020a5d694d000000b00314012c4322mr7281735wrw.4.1695381185667;
+        Fri, 22 Sep 2023 04:13:05 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id g10-20020adffc8a000000b003176c6e87b1sm4191765wrr.81.2023.09.22.04.13.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Sep 2023 04:13:04 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc:     Christian Marangi <ansuelsmth@gmail.com>
+Subject: [net-next PATCH 1/3] net: introduce napi_is_scheduled helper
+Date:   Fri, 22 Sep 2023 13:12:45 +0200
+Message-Id: <20230922111247.497-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v6 13/13] wifi: ath11k: send TPC power to firmware for 6
- GHz station
-Content-Language: en-US
-To:     Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <kvalo@kernel.org>,
-        <quic_jjohnson@quicinc.com>
-References: <20230920082349.29111-1-quic_wgong@quicinc.com>
- <20230920082349.29111-14-quic_wgong@quicinc.com>
- <eb08e0f2-c932-4d79-b2ee-813c2999d1a5@quicinc.com>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <eb08e0f2-c932-4d79-b2ee-813c2999d1a5@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 4G5xzwNmCXqlaJEng_Ge8w0elfJ50qb1
-X-Proofpoint-GUID: 4G5xzwNmCXqlaJEng_Ge8w0elfJ50qb1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-22_07,2023-09-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 bulkscore=0 spamscore=0 malwarescore=0 adultscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309220085
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/22/2023 5:24 PM, Aditya Kumar Singh wrote:
-> On 9/20/23 13:53, Wen Gong wrote:
->> When station is connected to a 6 GHz AP, it has 2 way to configure
->> the power limit to firmware. The first way is to send 2 wmi command
->> WMI_PDEV_PARAM_TXPOWER_LIMIT2G/WMI_PDEV_PARAM_TXPOWER_LIMIT5G to
->> firmware, the second way is to send WMI_VDEV_SET_TPC_POWER_CMDID to
->> firmware which include more parameters for power control.
->>
->> The first way is disabled in previous patch
->> "ath11k: discard BSS_CHANGED_TXPOWER when EXT_TPC_REG_SUPPORT for 6 
->> GHz".
->>
->> Prepare the parameter for wmi command WMI_VDEV_SET_TPC_POWER_CMDID and
->> send the firmware after vdev start response success from firmware, it
->> is for the second way of power control.
->>
->> Tested-on: WCN6855 hw2.0 PCI 
->> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
->>
->> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath11k/mac.c | 8 +++++++-
->>   1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath11k/mac.c 
->> b/drivers/net/wireless/ath/ath11k/mac.c
->> index a8ae281d2635..f8b907a758b1 100644
->> --- a/drivers/net/wireless/ath/ath11k/mac.c
->> +++ b/drivers/net/wireless/ath/ath11k/mac.c
->> @@ -7296,6 +7296,12 @@ ath11k_mac_vdev_start_restart(struct 
->> ath11k_vif *arvif,
->>           return ret;
->>       }
->>   +    if (ath11k_mac_supports_station_tpc(ar, arvif, chandef)) {
->> +        ath11k_mac_fill_reg_tpc_info(ar, arvif->vif, &arvif->chanctx);
-> So we are passing local copy of channel context stored in 
-> arvif->chanctx. Do we need to update it when channel changes?
->
-> I see that during assignment time, we are copying/updating it and 
-> accordingly the command will be sent to firmware, but what about when 
-> STA moves channel? arvif->chanctx should be updated and tpc command 
-> should be sent again in that case?
+We currently have napi_if_scheduled_mark_missed that can be used to
+check if napi is scheduled but that does more thing than simply checking
+it and return a bool. Some driver already implement custom function to
+check if napi is scheduled.
 
-This has been discussed before here per question of Johannes:"Could this 
-information change? Should we track it in beacons?":
+Drop these custom function and introduce napi_is_scheduled that simply
+check if napi is scheduled atomically.
 
-[PATCH 9/9] mac80211: save transmit power envelope element and power 
-constraint
+Update any driver and code that implement a similar check and instead
+use this new helper.
 
-https://lore.kernel.org/linux-wireless/38e7d9d2eebafa7245a36a0a0396094526eb3efd.camel@sipsolutions.net/
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/ethernet/chelsio/cxgb3/sge.c  | 8 --------
+ drivers/net/wireless/realtek/rtw89/core.c | 2 +-
+ include/linux/netdevice.h                 | 5 +++++
+ net/core/dev.c                            | 2 +-
+ 4 files changed, 7 insertions(+), 10 deletions(-)
 
->
->> + ath11k_wmi_send_vdev_set_tpc_power(ar, arvif->vdev_id,
->> +                           &arvif->reg_tpc_info);
->> +    }
->> +
->>       if (!restart)
->>           ar->num_started_vdevs++;
->>   @@ -8108,7 +8114,7 @@ ath11k_mac_op_assign_vif_chanctx(struct 
->> ieee80211_hw *hw,
->>           if (power_type == IEEE80211_REG_UNSET_AP)
->>               power_type = IEEE80211_REG_LPI_AP;
->>           ath11k_reg_handle_chan_list(ab, reg_info, power_type);
->> -
->> +        arvif->chanctx = *ctx;
->>           ath11k_mac_parse_tx_pwr_env(ar, vif, ctx);
->>       }
+diff --git a/drivers/net/ethernet/chelsio/cxgb3/sge.c b/drivers/net/ethernet/chelsio/cxgb3/sge.c
+index 2e9a74fe0970..71fa2dc19034 100644
+--- a/drivers/net/ethernet/chelsio/cxgb3/sge.c
++++ b/drivers/net/ethernet/chelsio/cxgb3/sge.c
+@@ -2501,14 +2501,6 @@ static int napi_rx_handler(struct napi_struct *napi, int budget)
+ 	return work_done;
+ }
+ 
+-/*
+- * Returns true if the device is already scheduled for polling.
+- */
+-static inline int napi_is_scheduled(struct napi_struct *napi)
+-{
+-	return test_bit(NAPI_STATE_SCHED, &napi->state);
+-}
+-
+ /**
+  *	process_pure_responses - process pure responses from a response queue
+  *	@adap: the adapter
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 133bf289bacb..bbf4ea3639d4 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1744,7 +1744,7 @@ static void rtw89_core_rx_to_mac80211(struct rtw89_dev *rtwdev,
+ 	struct napi_struct *napi = &rtwdev->napi;
+ 
+ 	/* In low power mode, napi isn't scheduled. Receive it to netif. */
+-	if (unlikely(!test_bit(NAPI_STATE_SCHED, &napi->state)))
++	if (unlikely(!napi_is_scheduled(napi)))
+ 		napi = NULL;
+ 
+ 	rtw89_core_hw_to_sband_rate(rx_status);
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index db3d8429d50d..8eac00cd3b92 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -482,6 +482,11 @@ static inline bool napi_prefer_busy_poll(struct napi_struct *n)
+ 	return test_bit(NAPI_STATE_PREFER_BUSY_POLL, &n->state);
+ }
+ 
++static inline bool napi_is_scheduled(struct napi_struct *n)
++{
++	return test_bit(NAPI_STATE_SCHED, &n->state);
++}
++
+ bool napi_schedule_prep(struct napi_struct *n);
+ 
+ /**
+diff --git a/net/core/dev.c b/net/core/dev.c
+index cc03a5758d2d..32ba8002f65a 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -6523,7 +6523,7 @@ static int __napi_poll(struct napi_struct *n, bool *repoll)
+ 	 * accidentally calling ->poll() when NAPI is not scheduled.
+ 	 */
+ 	work = 0;
+-	if (test_bit(NAPI_STATE_SCHED, &n->state)) {
++	if (napi_is_scheduled(n)) {
+ 		work = n->poll(n, weight);
+ 		trace_napi_poll(n, work, weight);
+ 	}
+-- 
+2.40.1
+
