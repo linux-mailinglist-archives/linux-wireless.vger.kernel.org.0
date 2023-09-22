@@ -2,126 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F4D17AB085
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 13:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A677AB18A
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 14:01:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233637AbjIVLWn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 07:22:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56198 "EHLO
+        id S233916AbjIVMBV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Sep 2023 08:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233551AbjIVLWn (ORCPT
+        with ESMTP id S229644AbjIVMBV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 07:22:43 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CCC28F;
-        Fri, 22 Sep 2023 04:22:36 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qjeF0-0001kI-Kc; Fri, 22 Sep 2023 13:22:34 +0200
-Message-ID: <b5e822ff-4b7c-4617-96c8-5b132df814ab@leemhuis.info>
-Date:   Fri, 22 Sep 2023 13:22:33 +0200
+        Fri, 22 Sep 2023 08:01:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 064F799
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 05:00:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695384045;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=4cy021/toY323+D3zOQB5/xvXNwICCVgZEWVintFSi0=;
+        b=hVCS3mkfBzfNd7XisxydI/V9ubB6YvGb68Sdork0awcwKae2DIy6m7gKO8fuuMd2W9yBiT
+        V9SnPhvqup49gdnig2wiUYJsntg+nNgjhOG232B6mBas2ynk4BT74wT/1zZYjXrnyAVc1w
+        rrjnyi8rN3+PZxdsEi9VhLh7yLU+d8o=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-613-STLtHhTrNj653BGVMwqeow-1; Fri, 22 Sep 2023 08:00:43 -0400
+X-MC-Unique: STLtHhTrNj653BGVMwqeow-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0E9763816C82;
+        Fri, 22 Sep 2023 12:00:43 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.193.54])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 72615492C37;
+        Fri, 22 Sep 2023 12:00:41 +0000 (UTC)
+From:   Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To:     kvalo@kernel.org, quic_jjohnson@quicinc.com,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     jtornosm@redhat.com
+Subject: [bug] mhi: ath11k: resume after hibernation is not working
+Date:   Fri, 22 Sep 2023 14:00:16 +0200
+Message-ID: <20230922120040.15460-1-jtornosm@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on
- MT7915
-Content-Language: en-US, de-DE
-To:     Oleksandr Natalenko <oleksandr@natalenko.name>,
-        linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20230726091704.25795-1-nbd@nbd.name>
- <12289744.O9o76ZdvQC@natalenko.name>
-From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <12289744.O9o76ZdvQC@natalenko.name>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695381756;a2ff28c2;
-X-HE-SMSGID: 1qjeF0-0001kI-Kc
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[TLDR: I'm adding this report to the list of tracked Linux kernel
-regressions; the text you find below is based on a few templates
-paragraphs you might have encountered already in similar form.
-See link in footer if these mails annoy you.]
+Hello,
 
-On 21.09.23 07:02, Oleksandr Natalenko wrote:
-> 
-> On středa 26. července 2023 11:17:02 CEST Felix Fietkau wrote:
->> The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half-NSS
->> 160 MHz support, so it is wrong to also advertise full 160 MHz support.
->>
->> Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width support for MT7915")
->> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->> ---
->>  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->> index ee976657bfc3..78552f10b377 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->> @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
->>  			if (!dev->dbdc_support)
->>  				vht_cap->cap |=
->>  					IEEE80211_VHT_CAP_SHORT_GI_160 |
->> -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
->>  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
->>  		} else {
->>  			vht_cap->cap |=
->>
-> 
-> For some reason this got backported into the stable kernel:
-> 
-> ```
-> $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt7915/
-> c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
-> edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
-> 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
-> 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
-> 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
-> 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is active
-> feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is active
-> 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
-> ```
-> 
-> and this broke my mt7915-based AP.
-> 
-> However, if I remove `[VT160]` capability from the hostapd config, things go back to normal. It does seem that 160 MHz still works even.
-> 
-> Is this expected?
+We have several machines with QCNFA765 wireless card (WCN6856) and with
+the same behavior: although hibernation seems to work, post resume is not
+working due to the wireless card (if the wireless card is disabled or ath11k
+driver is blacklisted, everything is working).
 
-Thanks for the report. To be sure the issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-tracking bot:
+After hibernation, when we resume (power on), we get the following related
+logs:
+...
+[    9.631426] ath11k_pci 0000:03:00.0: wcn6855 hw2.1
+[   10.673834] ath11k_pci 0000:03:00.0: chip_id 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
+[   10.683137] ath11k_pci 0000:03:00.0: fw_version 0x110b196e fw_build_timestamp 2022-12-22 12:54 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+...
+[  123.323689] mhi mhi0: Did not enter M0 state, MHI state: M3, PM state: M3->M0
+[  123.323693] ath11k_pci 0000:03:00.0: failed to resume mhi: -5
+[  123.323695] ath11k_pci 0000:03:00.0: failed to resume hif during resume: -5
+[  123.323696] ath11k_pci 0000:03:00.0: failed to resume core: -5
+[  123.323696] ath11k_pci 0000:03:00.0: PM: dpm_run_callback(): pci_pm_restore+0x0/0xe0 returns -5
+[  123.323702] ath11k_pci 0000:03:00.0: PM: failed to restore async: error -5
+[  126.331726] ath11k_pci 0000:03:00.0: wmi command 16387 timeout
+[  126.331730] ath11k_pci 0000:03:00.0: failed to send WMI_PDEV_SET_PARAM cmd
+[  126.331732] ath11k_pci 0000:03:00.0: failed to enable dynamic bw: -11
+[  126.331734] ------------[ cut here ]------------
+[  126.331734] Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.
+[  126.331749] WARNING: CPU: 4 PID: 1967 at net/mac80211/util.c:2568 ieee80211_reconfig+0xa9/0x1660 [mac80211]
+...
+Linux kernel version: 6.6.0_rc2
 
-#regzbot ^introduced 3ec5ac12ac8a4e..fe0ea395f0a351
-#regzbot title wifi: mt76: mt7915: removal of VHT160 capability broke hostap
-#regzbot ignore-activity
+Could you help me to fix this?
+Why is M3->M0 transition not working? Could it be an issue with the firmware?
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply and tell me -- ideally
-while also telling regzbot about it, as explained by the page listed in
-the footer of this mail.
+Thanks
 
-Developers: When fixing the issue, remember to add 'Link:' tags pointing
-to the report (the parent of this mail). See page linked in footer for
-details.
+Best regards
+José Ignacio
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
