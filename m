@@ -2,126 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 007267AB051
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 13:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F4D17AB085
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 13:22:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233539AbjIVLNV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 07:13:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33592 "EHLO
+        id S233637AbjIVLWn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Sep 2023 07:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233540AbjIVLNR (ORCPT
+        with ESMTP id S233551AbjIVLWn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 07:13:17 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82A6D114;
-        Fri, 22 Sep 2023 04:13:10 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-4053db20d03so6060525e9.2;
-        Fri, 22 Sep 2023 04:13:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695381189; x=1695985989; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/ijlwZ6JRdK1U0SnHerxGcEJGjK9VRf4PRp/VeOrzMQ=;
-        b=Ui54MJAW4B/VxxzITX2OiWb98Jy5pJ7NHhxjB+lfMtvygA44FuyaWuBSmeiVF77qR+
-         P8GX72ChlT8RsA454fmSjj9RH6PMLFVmRyYhWt3xKCpAFP/hrK06HigE1MnOQSyfaU9t
-         ws9sQKJuegRYhQacMuFu9YMCfGtJGeQR68VO5X3tpiJmXljCJjxjftbhSmQ0/l5TDLeU
-         yA5S54fyVyDpFWi7nveLTxOo0GrJ+l/dcuWBKHx+2D42Rp+5sibILDLV9Kcz1UoU2CPN
-         DkCtMUhx9p1x11JFcx22kUOY1f8oUXTceZINFfn+sujZ5CtJU05vUIP4gZuSWVUfxDRC
-         syqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695381189; x=1695985989;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/ijlwZ6JRdK1U0SnHerxGcEJGjK9VRf4PRp/VeOrzMQ=;
-        b=ITlib30bkGKJfD9QCXCBPzA5k1zJpX0bBIgokw/NyT9DL6aeaY6Usoxr2uRfIoS2nC
-         Bq26EMby0mlVHIJtzw6SbUF3LqdIdbvInJ0QbqPxqWxvlM/5yOZA5ydNpcy8F9LABOId
-         +AkfmGwdjs/k9TCRPPxlqHrHs7fCr77PHfUqRAQeCS8p4chPahhWxl/n98cXFy+mkxA/
-         astVIYobGCISOjkpekowgftVMD03EWPyh7gUWOaOEd4NOS4fQDAyd9fglUcsgwOVFz5T
-         8nJTTye30tphF8VrqIIJgXf05ojh2551iO4I3urZhw5SUsX6Iz4ED8uQWVhWqgZAwANU
-         JCkQ==
-X-Gm-Message-State: AOJu0YymSZd3YVRkHwbCOraqFR4unpzJwNpp24GjwRTPMxMAzIf3ZuUJ
-        +MgINd11X7CtYrlKnT5RKAw=
-X-Google-Smtp-Source: AGHT+IHTzusDD1Vj12nFTAofcTh5ujgUoGMSUjxYvnBVt5FrCDDmYAOQS2TIjfWAp8W6AwxsKaiBCA==
-X-Received: by 2002:a05:600c:152:b0:403:cc64:2dbf with SMTP id w18-20020a05600c015200b00403cc642dbfmr7548257wmm.27.1695381188563;
-        Fri, 22 Sep 2023 04:13:08 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id g10-20020adffc8a000000b003176c6e87b1sm4191765wrr.81.2023.09.22.04.13.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Sep 2023 04:13:07 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Cc:     Christian Marangi <ansuelsmth@gmail.com>
-Subject: [net-next PATCH 3/3] net: stmmac: increase TX coalesce timer to 5ms
-Date:   Fri, 22 Sep 2023 13:12:47 +0200
-Message-Id: <20230922111247.497-3-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230922111247.497-1-ansuelsmth@gmail.com>
-References: <20230922111247.497-1-ansuelsmth@gmail.com>
+        Fri, 22 Sep 2023 07:22:43 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CCC28F;
+        Fri, 22 Sep 2023 04:22:36 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qjeF0-0001kI-Kc; Fri, 22 Sep 2023 13:22:34 +0200
+Message-ID: <b5e822ff-4b7c-4617-96c8-5b132df814ab@leemhuis.info>
+Date:   Fri, 22 Sep 2023 13:22:33 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on
+ MT7915
+Content-Language: en-US, de-DE
+To:     Oleksandr Natalenko <oleksandr@natalenko.name>,
+        linux-wireless@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20230726091704.25795-1-nbd@nbd.name>
+ <12289744.O9o76ZdvQC@natalenko.name>
+From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+In-Reply-To: <12289744.O9o76ZdvQC@natalenko.name>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695381756;a2ff28c2;
+X-HE-SMSGID: 1qjeF0-0001kI-Kc
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 8fce33317023 ("net: stmmac: Rework coalesce timer and fix
-multi-queue races") decreased the TX coalesce timer from 40ms to 1ms.
+[TLDR: I'm adding this report to the list of tracked Linux kernel
+regressions; the text you find below is based on a few templates
+paragraphs you might have encountered already in similar form.
+See link in footer if these mails annoy you.]
 
-This caused some performance regression on some target (regression was
-reported at least on ipq806x) in the order of 600mbps dropping from
-gigabit handling to only 200mbps.
+On 21.09.23 07:02, Oleksandr Natalenko wrote:
+> 
+> On středa 26. července 2023 11:17:02 CEST Felix Fietkau wrote:
+>> The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half-NSS
+>> 160 MHz support, so it is wrong to also advertise full 160 MHz support.
+>>
+>> Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width support for MT7915")
+>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
+>>  1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+>> index ee976657bfc3..78552f10b377 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+>> @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+>>  			if (!dev->dbdc_support)
+>>  				vht_cap->cap |=
+>>  					IEEE80211_VHT_CAP_SHORT_GI_160 |
+>> -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+>>  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
+>>  		} else {
+>>  			vht_cap->cap |=
+>>
+> 
+> For some reason this got backported into the stable kernel:
+> 
+> ```
+> $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt7915/
+> c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
+> edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
+> 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
+> 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
+> 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
+> 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is active
+> feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is active
+> 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
+> ```
+> 
+> and this broke my mt7915-based AP.
+> 
+> However, if I remove `[VT160]` capability from the hostapd config, things go back to normal. It does seem that 160 MHz still works even.
+> 
+> Is this expected?
 
-The problem was identified in the TX timer getting armed too much time.
-While this was fixed and improved in another commit, performance can be
-improved even further by increasing the timer delay a bit moving from
-1ms to 5ms.
+Thanks for the report. To be sure the issue doesn't fall through the
+cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
+tracking bot:
 
-The value is a good balance between battery saving by prevending too
-much interrupt to be generated and permitting good performance for
-internet oriented devices.
+#regzbot ^introduced 3ec5ac12ac8a4e..fe0ea395f0a351
+#regzbot title wifi: mt76: mt7915: removal of VHT160 capability broke hostap
+#regzbot ignore-activity
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/common.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This isn't a regression? This issue or a fix for it are already
+discussed somewhere else? It was fixed already? You want to clarify when
+the regression started to happen? Or point out I got the title or
+something else totally wrong? Then just reply and tell me -- ideally
+while also telling regzbot about it, as explained by the page listed in
+the footer of this mail.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index 403cb397d4d3..2d9f895c2193 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -290,7 +290,7 @@ struct stmmac_safety_stats {
- #define MIN_DMA_RIWT		0x10
- #define DEF_DMA_RIWT		0xa0
- /* Tx coalesce parameters */
--#define STMMAC_COAL_TX_TIMER	1000
-+#define STMMAC_COAL_TX_TIMER	5000
- #define STMMAC_MAX_COAL_TX_TICK	100000
- #define STMMAC_TX_MAX_FRAMES	256
- #define STMMAC_TX_FRAMES	25
--- 
-2.40.1
+Developers: When fixing the issue, remember to add 'Link:' tags pointing
+to the report (the parent of this mail). See page linked in footer for
+details.
 
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
