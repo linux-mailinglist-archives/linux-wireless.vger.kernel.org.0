@@ -2,93 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F2D7AB346
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 16:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94A097AB3EB
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 16:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233207AbjIVOKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 10:10:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46054 "EHLO
+        id S231508AbjIVOlX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Sep 2023 10:41:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229796AbjIVOKR (ORCPT
+        with ESMTP id S231461AbjIVOlV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 10:10:17 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D623100;
-        Fri, 22 Sep 2023 07:10:12 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38MAlPgr013694;
-        Fri, 22 Sep 2023 14:10:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=oGkedumiF7qYscPq09Wq92YClO+TfRoVXGPIg+PD0HQ=;
- b=Iar2PsA+0E28/CsFqHGYd7r3UjZPVQpoujsfZeeSjbJ6/Qp2k+RrRyyTSk2CbcMe5kVi
- iGZkGYFWIfUJjQAU67QlAjfKXiGDpQztz/6nBuGrunS70v9JEp63IX3RAT8TqoPxjtnp
- fvxFXe9kr4U74CoyINvW/2jZEIzunz8pOp+63HSNgCYbR99Ix6/6AQgnpQxq0WaYTG9E
- utWo/L/2i/aQsHqTegA3hVbzngUQm1HBL3G2tPZ9KqjjP6uaVJT4Xqihmf6COf1BENfA
- en6G6bFxFgZWP4YG6i22r8+nwv0tNkDcj0lF3TazJuEeqcORzkPYQN3eKeGo+K+kY9U8 6A== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t8txga2d8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Sep 2023 14:10:04 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38MEA38a027467
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Sep 2023 14:10:03 GMT
-Received: from [10.48.243.100] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 22 Sep
- 2023 07:10:03 -0700
-Message-ID: <b5fa2ea0-d025-47e3-a1c3-eb7c2f6bc5b7@quicinc.com>
-Date:   Fri, 22 Sep 2023 07:10:02 -0700
+        Fri, 22 Sep 2023 10:41:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3AFCF5
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 07:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695393626;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=rGnMCyubh7bE+/HJGj4DK0rgvnpm1pyHq1+UZD2NCjY=;
+        b=VbVQRiN3J/8nbxfz7R4heChBOhXHRhGrmGAQf+26ocGHC2KzkAtks7TjjuINyvc8fYlMZT
+        6IvKhyp2rJKFsOyZ/a0XWnMZEKGXTYVc9RZ/WPNgyGWaywZrqv1LRB5Je4bSqvp7RfWAkY
+        +sOsKYetEPUt+JmYCG1jFgjKWO5ajE4=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-58-o0b7w06JMqOM5b56DFhyOQ-1; Fri, 22 Sep 2023 10:40:25 -0400
+X-MC-Unique: o0b7w06JMqOM5b56DFhyOQ-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-530a085c62dso159331a12.0
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 07:40:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695393624; x=1695998424;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rGnMCyubh7bE+/HJGj4DK0rgvnpm1pyHq1+UZD2NCjY=;
+        b=mTCu4e6H5KGk00UUpM03qlgHfitOQWqe2qS6x2sC0BlgxxXbI0jZ7X5xT6JFsCcCdm
+         VJCLRiTm4uBHUiakT1WSRju2eLy9JIq6nKMuwUK5K+0i0PzqnqJk4MK5U235PYpSCi1G
+         4GXnW3QzS+Lbg6KmlprPuMlllr4DtfeUoox2069jzmYSP5Nntc2XThVdCov5l4goqmzq
+         v0bFyFhw9ukqw9pBD2T+KgUxZthOvGKrfyAB/ag6k/FHrfiUFx5WyIUL+SQnzGuj5ANb
+         54sVxys7Var3MCAXtbk4YP4mQDpN7cIj8NvozU9XnAZgibGJr8BdiuEd7INQFk/oxy3W
+         BTgQ==
+X-Gm-Message-State: AOJu0YzY9EZQz3HYf8yIpFcmVRb/qYnpVfOvRcjmxKy7zHWqKDpvRJ03
+        QgOca6qD0a2/ynsq4a1Vp6dpqnUk/bml5V72Xa4avGaaW2soJYfPie3zxj3ux1NAXX5MUN67O/b
+        uSmNOWl20Z0ddWZP2tOoPcVFSms046EV6SmhV8qFG+9Ow3Skx9Zs=
+X-Received: by 2002:a05:6402:51c9:b0:523:37cf:6f37 with SMTP id r9-20020a05640251c900b0052337cf6f37mr7551712edd.4.1695393624164;
+        Fri, 22 Sep 2023 07:40:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGaeMW0q3DuXsz0kHM9h9ZNaXKgZp/1aLg9254A9wa9TAeKK35Kd9zJ4ORdo4O86nq3u3AP7AmJn65V6xp8rOs=
+X-Received: by 2002:a05:6402:51c9:b0:523:37cf:6f37 with SMTP id
+ r9-20020a05640251c900b0052337cf6f37mr7551703edd.4.1695393623879; Fri, 22 Sep
+ 2023 07:40:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20230922120040.15460-1-jtornosm@redhat.com> <b5fa2ea0-d025-47e3-a1c3-eb7c2f6bc5b7@quicinc.com>
+In-Reply-To: <b5fa2ea0-d025-47e3-a1c3-eb7c2f6bc5b7@quicinc.com>
+From:   Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Date:   Fri, 22 Sep 2023 16:40:12 +0200
+Message-ID: <CABk-BGuOxCeHH0wJX9J3KBdn58nLDGnhWSn1Cma9R8AS2Xe_kQ@mail.gmail.com>
 Subject: Re: [bug] mhi: ath11k: resume after hibernation is not working
-Content-Language: en-US
-To:     Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-        <kvalo@kernel.org>, <ath11k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20230922120040.15460-1-jtornosm@redhat.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230922120040.15460-1-jtornosm@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 5eaN3bOQAHFkZHFd0mV6_XoLmwyPlDDd
-X-Proofpoint-GUID: 5eaN3bOQAHFkZHFd0mV6_XoLmwyPlDDd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-22_12,2023-09-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- priorityscore=1501 bulkscore=0 spamscore=0 malwarescore=0 adultscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=804 mlxscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309220121
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     kvalo@kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/22/2023 5:00 AM, Jose Ignacio Tornos Martinez wrote:
-> Hello,
-> 
-> We have several machines with QCNFA765 wireless card (WCN6856) and with
-> the same behavior: although hibernation seems to work, post resume is not
-> working due to the wireless card (if the wireless card is disabled or ath11k
-> driver is blacklisted, everything is working).
+Great!
 
-This is a known issue being tracked by:
-https://bugzilla.kernel.org/show_bug.cgi?id=214649
+Thanks for the info
 
-A fix for this issue is under development.
-
-/jeff
+Best regards
+Jos=C3=A9 Ignacio
 
