@@ -2,99 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8A677AB18A
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 14:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A472F7AB21E
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 14:28:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233916AbjIVMBV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 08:01:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45278 "EHLO
+        id S231714AbjIVM2x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Sep 2023 08:28:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbjIVMBV (ORCPT
+        with ESMTP id S231451AbjIVM2t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 08:01:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 064F799
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 05:00:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695384045;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=4cy021/toY323+D3zOQB5/xvXNwICCVgZEWVintFSi0=;
-        b=hVCS3mkfBzfNd7XisxydI/V9ubB6YvGb68Sdork0awcwKae2DIy6m7gKO8fuuMd2W9yBiT
-        V9SnPhvqup49gdnig2wiUYJsntg+nNgjhOG232B6mBas2ynk4BT74wT/1zZYjXrnyAVc1w
-        rrjnyi8rN3+PZxdsEi9VhLh7yLU+d8o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-613-STLtHhTrNj653BGVMwqeow-1; Fri, 22 Sep 2023 08:00:43 -0400
-X-MC-Unique: STLtHhTrNj653BGVMwqeow-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0E9763816C82;
-        Fri, 22 Sep 2023 12:00:43 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.193.54])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 72615492C37;
-        Fri, 22 Sep 2023 12:00:41 +0000 (UTC)
-From:   Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To:     kvalo@kernel.org, quic_jjohnson@quicinc.com,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     jtornosm@redhat.com
-Subject: [bug] mhi: ath11k: resume after hibernation is not working
-Date:   Fri, 22 Sep 2023 14:00:16 +0200
-Message-ID: <20230922120040.15460-1-jtornosm@redhat.com>
+        Fri, 22 Sep 2023 08:28:49 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31DA71A5;
+        Fri, 22 Sep 2023 05:28:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=/hHJSVVNBq+Q25kH/Q3wHbSMiRa2RSWRIm+2U1rOzjk=; b=RGnfJOeunzJN6IjLYEZrXxcAL/
+        fpuqpfDgH6Qj5AGs24gad1FLT/whsUz9i+WsoI2JuCWqvJREJGjVEjZGDNHJYKJ6ciBPPNTd/I/0+
+        Zj7N6VWu/XuVFoJ4TnxeWgPsNcLEZE4uTMKvr56eStvdFil+9r9xQ7pQu1x1FCDurx1c=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qjfGQ-007CHP-5B; Fri, 22 Sep 2023 14:28:06 +0200
+Date:   Fri, 22 Sep 2023 14:28:06 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [net-next PATCH 3/3] net: stmmac: increase TX coalesce timer to
+ 5ms
+Message-ID: <13bc074d-30c2-4bbf-8b4c-82f561c844b0@lunn.ch>
+References: <20230922111247.497-1-ansuelsmth@gmail.com>
+ <20230922111247.497-3-ansuelsmth@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230922111247.497-3-ansuelsmth@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
-X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Fri, Sep 22, 2023 at 01:12:47PM +0200, Christian Marangi wrote:
+> Commit 8fce33317023 ("net: stmmac: Rework coalesce timer and fix
+> multi-queue races") decreased the TX coalesce timer from 40ms to 1ms.
+> 
+> This caused some performance regression on some target (regression was
+> reported at least on ipq806x) in the order of 600mbps dropping from
+> gigabit handling to only 200mbps.
+> 
+> The problem was identified in the TX timer getting armed too much time.
+> While this was fixed and improved in another commit, performance can be
+> improved even further by increasing the timer delay a bit moving from
+> 1ms to 5ms.
+> 
+> The value is a good balance between battery saving by prevending too
+> much interrupt to be generated and permitting good performance for
+> internet oriented devices.
 
-We have several machines with QCNFA765 wireless card (WCN6856) and with
-the same behavior: although hibernation seems to work, post resume is not
-working due to the wireless card (if the wireless card is disabled or ath11k
-driver is blacklisted, everything is working).
+ethtool has a settings you can use for this:
 
-After hibernation, when we resume (power on), we get the following related
-logs:
-...
-[    9.631426] ath11k_pci 0000:03:00.0: wcn6855 hw2.1
-[   10.673834] ath11k_pci 0000:03:00.0: chip_id 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
-[   10.683137] ath11k_pci 0000:03:00.0: fw_version 0x110b196e fw_build_timestamp 2022-12-22 12:54 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-...
-[  123.323689] mhi mhi0: Did not enter M0 state, MHI state: M3, PM state: M3->M0
-[  123.323693] ath11k_pci 0000:03:00.0: failed to resume mhi: -5
-[  123.323695] ath11k_pci 0000:03:00.0: failed to resume hif during resume: -5
-[  123.323696] ath11k_pci 0000:03:00.0: failed to resume core: -5
-[  123.323696] ath11k_pci 0000:03:00.0: PM: dpm_run_callback(): pci_pm_restore+0x0/0xe0 returns -5
-[  123.323702] ath11k_pci 0000:03:00.0: PM: failed to restore async: error -5
-[  126.331726] ath11k_pci 0000:03:00.0: wmi command 16387 timeout
-[  126.331730] ath11k_pci 0000:03:00.0: failed to send WMI_PDEV_SET_PARAM cmd
-[  126.331732] ath11k_pci 0000:03:00.0: failed to enable dynamic bw: -11
-[  126.331734] ------------[ cut here ]------------
-[  126.331734] Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.
-[  126.331749] WARNING: CPU: 4 PID: 1967 at net/mac80211/util.c:2568 ieee80211_reconfig+0xa9/0x1660 [mac80211]
-...
-Linux kernel version: 6.6.0_rc2
+      ethtool -C|--coalesce devname [adaptive-rx on|off] [adaptive-tx on|off]
+              [rx-usecs N] [rx-frames N] [rx-usecs-irq N] [rx-frames-irq N]
+              [tx-usecs N] [tx-frames N] [tx-usecs-irq N] [tx-frames-irq N]
+              [stats-block-usecs N] [pkt-rate-low N] [rx-usecs-low N]
+              [rx-frames-low N] [tx-usecs-low N] [tx-frames-low N]
+              [pkt-rate-high N] [rx-usecs-high N] [rx-frames-high N]
+              [tx-usecs-high N] [tx-frames-high N] [sample-interval N]
+              [cqe-mode-rx on|off] [cqe-mode-tx on|off] [tx-aggr-max-bytes N]
+              [tx-aggr-max-frames N] [tx-aggr-time-usecs N]
 
-Could you help me to fix this?
-Why is M3->M0 transition not working? Could it be an issue with the firmware?
+If this is not implemented, i suggest you add support for it.
 
-Thanks
+Changing the default might cause regressions. Say there is a VoIP
+application which wants this low latency? It would be safer to allow
+user space to configure it as wanted.
 
-Best regards
-José Ignacio
-
+     Andrew
