@@ -2,101 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51EE77AAEB4
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE077AAEB5
 	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 11:49:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231976AbjIVJt2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 05:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45834 "EHLO
+        id S231764AbjIVJts (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Sep 2023 05:49:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230064AbjIVJt2 (ORCPT
+        with ESMTP id S233232AbjIVJtq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 05:49:28 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D188F
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 02:49:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D33C433CA;
-        Fri, 22 Sep 2023 09:49:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695376162;
-        bh=2PkDm1MBm9PwOayUT8B1AXo/8GTs8ZUrZ1gkVupKLIA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ERvDa4x+FiQk+KW9/bcKyjBekstgDIhGC9arW4HDX2iFt41YsW420PUWBTtuz1zV0
-         gP6yBt615lK7gBy//cYNsdDRPMEZa5SDuJzWeh2m6T3XNaboGKNYZxI4Sd45LUKvms
-         B0W9UkbKMPwB/5XNJ2BybnNUbAtTbt1K61STrDovmnBMJPsn1tiHPBNGeGlM80lmNS
-         wkrJAT0o6dEoRnUdhbBHsrTORUnbDoeN40SK2FnpCQKBya4zPrCFTExKfFy/ulHHxW
-         vzYrScQ+uRsBN4YNSnAuljw/Sw/q+MDH4Ux9Y2AbDBEaxobr1XqDpkn7KMn2zv/xH/
-         dVAKf7LVG6G9A==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath11k: mac: fix struct
- ieee80211_sband_iftype_data handling
-References: <20230921075440.1539515-1-kvalo@kernel.org>
-Date:   Fri, 22 Sep 2023 12:49:19 +0300
-In-Reply-To: <20230921075440.1539515-1-kvalo@kernel.org> (Kalle Valo's message
-        of "Thu, 21 Sep 2023 10:54:40 +0300")
-Message-ID: <87ediqa674.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Fri, 22 Sep 2023 05:49:46 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04468CE
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 02:49:39 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38M8h7oO003329;
+        Fri, 22 Sep 2023 09:49:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=TcdXJXxl5MZX7T9sGGxWFjxES5xGmOFnm+h4+rYR2hk=;
+ b=aMNmjyrZBs8mThIeojNk7hEKf2R+kpcK1RJ7BAMeOaXrWq1en3IkUjTJ5yYoTLQFLF2s
+ 8VjkRAV5BtvRVZGQp1PC8AAePslm4x8AQsgPEpQZiA60kdlZPXPqQJk2Nt+0Zo3mcaTV
+ sE6OepYcgAHcKrl4CFFnxzNvBN1Cu9Qfyoay/CKTVTKlCDv2EgPFfA2moQMkZ2DY3qIP
+ DCDzg0dqAL3ue3Vpe51k9I4H1oCfipkKQs1lOg2OPBd82J2eJI148hF+Gxi6NG1ANrC2
+ Zz1tPpSS9ZF937E+mKRzw6s4FQBSkHVmLODwtfErVUlUeQVOMbnH3KVqYPpE+QZchFYz 1A== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t8u0s1j21-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 22 Sep 2023 09:49:36 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38M9nZbU025978
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 22 Sep 2023 09:49:35 GMT
+Received: from [10.216.13.153] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 22 Sep
+ 2023 02:49:32 -0700
+Message-ID: <0bcb54dd-7248-40bc-b271-36f9ba8eca11@quicinc.com>
+Date:   Fri, 22 Sep 2023 15:19:29 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 06/13] wifi: ath11k: save power spectral density(psd)
+ of regulatory rule
+Content-Language: en-US
+To:     Wen Gong <quic_wgong@quicinc.com>, <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <kvalo@kernel.org>,
+        <quic_jjohnson@quicinc.com>
+References: <20230920082349.29111-1-quic_wgong@quicinc.com>
+ <20230920082349.29111-7-quic_wgong@quicinc.com>
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <20230920082349.29111-7-quic_wgong@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: DogMEjNlVIyiBbLa3lpgy1PXiqes2lin
+X-Proofpoint-ORIG-GUID: DogMEjNlVIyiBbLa3lpgy1PXiqes2lin
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-22_07,2023-09-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 phishscore=0 suspectscore=0
+ adultscore=0 mlxlogscore=841 spamscore=0 priorityscore=1501 clxscore=1015
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309220082
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+On 9/20/23 13:53, Wen Gong wrote:
+> Save the power spectral density(psd) report from firmware to struct
+s/psd/PSD     since its an abbreviation.
 
-> From: Kalle Valo <quic_kvalo@quicinc.com>
->
-> Commit e8c1841278a7 ("wifi: cfg80211: annotate iftype_data pointer with
-> sparse") added sparse checks for struct ieee80211_sband_iftype_data handling
-> which immediately found an issue in ath11k:
->
-> drivers/net/wireless/ath/ath11k/mac.c:7952:22: warning: incorrect type
-> in argument 1 (different address spaces)
-> drivers/net/wireless/ath/ath11k/mac.c:7952:22: expected struct
-> ieee80211_sta_he_cap const *he_cap
-> drivers/net/wireless/ath/ath11k/mac.c:7952:22: got struct
-> ieee80211_sta_he_cap const [noderef] __iftype_data *
->
-> The problem here is that we are accessing sband->iftype_data directly even
-> though we should use for_each_sband_iftype_data(). Now we iterate over each
-> item in the array and use the correct vif type which this vif is using.
->
-> Tested-on: WCN6855 hw2.0 PCI
-> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
->
-> Reported-by: Johannes Berg <johannes@sipsolutions.net>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> ieee80211_reg_rule. 
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 
-[...]
-
-> @@ -7949,7 +7951,17 @@ ath11k_mac_bitrate_mask_get_single_nss(struct ath11k *ar,
->  			return false;
->  	}
->  
-> -	he_mcs_map = le16_to_cpu(ath11k_mac_get_tx_mcs_map(&sband->iftype_data->he_cap));
-> +	for_each_sband_iftype_data(sband, i, iftd) {
-> +		if (iftd->types_mask & BIT(arvif->vif->type)) {
-> +			iftype_data = iftd;
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (iftype_data == NULL)
-> +		return false;
-> +
-> +	he_mcs_map = le16_to_cpu(ath11k_mac_get_tx_mcs_map(&iftype_data->he_cap));
-
-Johannes pointed out that I should use ieee80211_get_he_iftype_cap_vif()
-instead. I'll submit v2.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
