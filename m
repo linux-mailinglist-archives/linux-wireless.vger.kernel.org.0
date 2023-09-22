@@ -2,81 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6B67AAAA8
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 09:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E72287AACAD
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Sep 2023 10:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231862AbjIVHqI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 03:46:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52748 "EHLO
+        id S232330AbjIVIb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Sep 2023 04:31:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231878AbjIVHpp (ORCPT
+        with ESMTP id S229536AbjIVIb1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 03:45:45 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B7D119BA
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 00:44:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5776FC433C9;
-        Fri, 22 Sep 2023 07:44:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695368664;
-        bh=4J0YpT7AiSnhsgyKDdI1p4GbzGZK4PWSE/jvZEH5l6Y=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=mhxawKxuzRc1KQdx8en3S88LSiOACAIlvmifNk+VEQg1Y6RNagE2cuO1OYiO5O2cH
-         04ix2EIlj7VXzY5mRHXD/bpYrdaj0mvdtQLYXDmb8bOrTVndebI4gyB83iXHhk//T6
-         9ICAim+3Hu+7MnzuqF3ys6yPRfgN/NlZtOXW51yTPG++QfXuWgRD7x/LnTWVSmpQBw
-         VDVFg0VDXaOlVgNPNpxchFDQAEguq1+xyeeqE2q3bTP3WO1Tit5SGkqyBw/j7NPwaJ
-         jK5X4Zcbjv1Xl32SwL7T6xhaQ9MIUiKVQqcDLdiYx/rhZbi5BSOFkLflTwzInIIbCm
-         umSWquiN6XLug==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 22 Sep 2023 04:31:27 -0400
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A686E83;
+        Fri, 22 Sep 2023 01:31:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:To:References:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=O6U42eOE2ldK54dJpZcJGeTJkJVss+9hSeHi3irefeI=; b=HiCSWfTcg+iIBgtsk1jYShiEHQ
+        POSA2MirU470UqUCpTA9DeWFAWYEhTWWggCYnj8OuzxRFDWRWC/lAfScpTrxEx0zl3ixMW+2pmHhK
+        xhKEHElrBU1ROrUuh9zzkudoR+WkA0B0fEvWHknIEXE3ncFqhf1uHw0wTPItkKTAAGJQDMX8Fqkfh
+        cmRmyBzcrU1ikxPERV94lddOhYuDNfHvjD8EGxY1026O53GO3wb6I7JsvRbVirr3StunrYSbcsToN
+        CC9cLxDS6zDg7+dTXqJj8lu018165X53+DfQgUqougF2i1ZMOCyzuGFcy4q4wowVkU1INe1UxZoR0
+        YFHnm5OA==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1qjbZG-0008eK-0n; Fri, 22 Sep 2023 10:31:18 +0200
+Received: from [109.164.249.201] (helo=localhost.localdomain)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1qjbZF-000CbV-QO; Fri, 22 Sep 2023 10:31:17 +0200
+Subject: LPC 2023 Networking and BPF Track CFP (Final Reminder)
+References: <5c9482c9-1f61-2886-4137-a2e2679b2662@iogearbox.net>
+To:     netdev@vger.kernel.org, bpf@vger.kernel.org
+Cc:     xdp-newbies@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netfilter-devel@vger.kernel.org
+From:   Daniel Borkmann <daniel@iogearbox.net>
+X-Forwarded-Message-Id: <5c9482c9-1f61-2886-4137-a2e2679b2662@iogearbox.net>
+Message-ID: <96d6e492-5e00-3bc7-ce5b-83347e8628a7@iogearbox.net>
+Date:   Fri, 22 Sep 2023 10:31:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
+In-Reply-To: <5c9482c9-1f61-2886-4137-a2e2679b2662@iogearbox.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/7] wifi: rtw89: add subband index of primary channel to
- struct rtw89_chan
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230920074322.42898-2-pkshih@realtek.com>
-References: <20230920074322.42898-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169536866144.2011393.5748552700226455609.kvalo@kernel.org>
-Date:   Fri, 22 Sep 2023 07:44:23 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27038/Thu Sep 21 09:39:42 2023)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+This is the final reminder for the Call for Proposals (CFP) for the Networking
+and BPF track at the 2023 edition of the Linux Plumbers Conference (LPC) which
+is taking place in Richmond, VA, United States, on November 13th - 15th, 2023.
 
-> The subband index is a hardware value of relationship between primary
-> channel and bandwidth, and it is used by setting channel/bandwidth to
-> specify the primary channel.
-> 
-> Because this index is only needed when bandwidth >= 20 MHz, adjust
-> order of enumerator bandwidth to access offsets array easier. To prevent
-> misuse RTW89_CHANNEL_WIDTH_NUM as size, change it to
-> RTW89_CHANNEL_WIDTH_ORDINARY_NUM that will be the size of array. The
-> enumerator values of bandwidth (before ordinary number) will be also
-> used by upcoming TX power table built in firmware file, so add a comment
-> to remind keeping the order.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Note that the conference is planned to be both in person and remote (hybrid).
+CFP submitters should ideally be able to give their presentation in person to
+minimize technical issues, although presenting remotely will also be possible.
 
-7 patches applied to wireless-next.git, thanks.
+The Networking and BPF track technical committee consists of:
 
-9483d8b3aac8 wifi: rtw89: add subband index of primary channel to struct rtw89_chan
-1bf24172cc75 wifi: rtw89: indicate TX shape table inside RFE parameter
-4cc05e315650 wifi: rtw89: indicate TX power by rate table inside RFE parameter
-634fd9920c28 wifi: rtw89: phy: refine helpers used for raw TX power
-9707ea6d6822 wifi: rtw89: load TX power by rate when RFE parms setup
-f6d601c7590f wifi: rtw89: phy: extend TX power common stuffs for Wi-Fi 7 chips
-5ee7b2ea07cc wifi: rtw89: load TX power related tables from FW elements
+     David S. Miller <davem@davemloft.net>
+     Jakub Kicinski <kuba@kernel.org>
+     Paolo Abeni <pabeni@redhat.com>
+     Eric Dumazet <edumazet@google.com>
+     Alexei Starovoitov <ast@kernel.org>
+     Daniel Borkmann <daniel@iogearbox.net>
+     Andrii Nakryiko <andrii@kernel.org>
+     Martin Lau <martin.lau@linux.dev>
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230920074322.42898-2-pkshih@realtek.com/
+We are seeking proposals of 30 minutes in length (including Q&A discussion). Any
+kind of advanced Linux networking and/or BPF related topic will be considered.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Please submit your proposals through the official LPC website at:
 
+     https://lpc.events/event/17/abstracts/
+
+Make sure to select "eBPF & Networking Track" in the track pull-down menu.
+
+Proposals must be submitted by September 27th, and submitters will be notified
+of acceptance by October 2nd. Final slides (as PDF) are due on the first day of
+the conference.
+
+We are very much looking forward to a great conference and seeing you all!
