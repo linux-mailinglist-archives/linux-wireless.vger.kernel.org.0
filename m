@@ -2,125 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 315DC7ABD23
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Sep 2023 03:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A3D07ABD97
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Sep 2023 05:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbjIWBkN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 21:40:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51270 "EHLO
+        id S229758AbjIWD2u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Sep 2023 23:28:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbjIWBkM (ORCPT
+        with ESMTP id S229592AbjIWD2t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 21:40:12 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B986F19C
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 18:40:05 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2bffa8578feso51699701fa.2
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 18:40:05 -0700 (PDT)
+        Fri, 22 Sep 2023 23:28:49 -0400
+Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB996A9;
+        Fri, 22 Sep 2023 20:28:42 -0700 (PDT)
+Received: by mail-oo1-xc36.google.com with SMTP id 006d021491bc7-57ba2cd3507so57735eaf.2;
+        Fri, 22 Sep 2023 20:28:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1695433203; x=1696038003; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dpl9/vTvToaSda9SWWb29L6KDCw6ydexp+tSrTygRME=;
-        b=VdsCcG0gX//OgwaCYlmHyirYGm4IuVJEwoM2C4NJSk5A9jYwsCWMD3q+PRmwO2BvN0
-         KD2RcHTl+oCwGc23y8dn/d3HFysiXLg0bv1dcqkJ5+Hw34eg6zZgwQDUtZJ1FpqhPawE
-         MI82pWTQao73gTLB+wEBitSD693DIKdJulOe8=
+        d=gmail.com; s=20230601; t=1695439722; x=1696044522; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VNpi5MU32lqhvlFPPVlhf1T34olOc5AdM8aLJlax2ik=;
+        b=W1X10i/Xwh9/FNjyWm5QlEtCciUR3pzHumQxDk3647OkVgV3jzYuh6cHRglVmVdtbE
+         S5/CNhFO9Tl8fgkbQgCpvFkB3Lvoi4QjpxrmcnJLfRdkMvC+k76al+pYGHUoUcEDj21A
+         CbAjxb5fuyMMHjCQK+wf8mPOLSMeUNeqaYvMOsYVQoLspP/mDnsMDiSf9R/h8OFiRkpN
+         ApTIPDGXlB4WY8QlZtMH+4xZPZWrfNuatBA4/dGUa72gPKCXDsZBTmbHPFpEvLK65CAn
+         TRpNj1HsTuPhf4xdRBmJbXvYQrJhfNB60VigkMLPZm+q5ZMtEUPqWwV1Vpv6zdvFi1C2
+         ZYpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695433203; x=1696038003;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dpl9/vTvToaSda9SWWb29L6KDCw6ydexp+tSrTygRME=;
-        b=rYP6HCyK7I3g46OglNxwz1oJmjrWkJCZHKz1Cfa3suKLBQVVqfy2BvVBg1fJUhJUsC
-         Tut473v3B8zlHZvDL5OyMFOxvfbwJrPOQVAdQ4iuXiV3rOXcgFzIrAl6mZmr/JcgMr0X
-         Gj6UYrVkXAWyePPW29CrhjkgjqQW4XmwSiUdKo9o8IdtAQ5B9Z+854uHKqLUmxvx3ie/
-         KcPdx1GWlKBsdNUlCdQv3qlKWrLAl5OAU8dE4K1CPwvN1UvgZZa7FtwxFCeqeeB9XEjE
-         d+PHKGxMV08olGG1+1pakg/99mJZrPh0+/ixjw7q5dGIDVSj1vUiDXomC2Ta1vlw1NJC
-         NAgQ==
-X-Gm-Message-State: AOJu0YyNvdyKmWoNFhNbfGRgj5Gsfj7c01/S0N0eVyJCNzqgytRQ6Pzz
-        Pu7XB7H7v6l8ahauIZf5OPiw/qjpctqLpaIMH9U=
-X-Google-Smtp-Source: AGHT+IEg452jKm70/K8JfWGQnR639XocgxqsrR78wEh8s17V1VneW6k5+jseNmoFRR7AQGLZkSWTOA==
-X-Received: by 2002:a2e:9dc3:0:b0:2bf:f5c9:2dce with SMTP id x3-20020a2e9dc3000000b002bff5c92dcemr684924ljj.30.1695433203280;
-        Fri, 22 Sep 2023 18:40:03 -0700 (PDT)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
-        by smtp.gmail.com with ESMTPSA id 22-20020a05651c00d600b002b6cd89a3fcsm1127826ljr.118.2023.09.22.18.40.02
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Sep 2023 18:40:02 -0700 (PDT)
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2b962c226ceso51705461fa.3
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Sep 2023 18:40:02 -0700 (PDT)
-X-Received: by 2002:a2e:90d7:0:b0:2bf:f17d:c834 with SMTP id
- o23-20020a2e90d7000000b002bff17dc834mr646754ljg.29.1695433201619; Fri, 22 Sep
- 2023 18:40:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695439722; x=1696044522;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VNpi5MU32lqhvlFPPVlhf1T34olOc5AdM8aLJlax2ik=;
+        b=Pth4RYbCvTlS6wb5kz+m6Kh2T7FQUCwuT7r0T80qbosnVEepmT4GOT6Rt1qZV9fKXu
+         Yd5OUXrNiMowBdPiLEpOoA834sLP3Ezpqq855AQiT03kWzKTzv8iQm0Cg5LIikdBkduA
+         N4oDprcP6AavwOjyxW0HCr1ZLFVj34eemUYMhQQvnl/6Z8yCAfhXaKvudlNS6BFRXXmU
+         PH7lEHydAs3TLvLKt/g0EsmmeCIsg8UTut1IcV7MB0H01zyzi/eCQ2r+kePKHZvL4fGo
+         8rW7aKMga3S6EmBluzpZsp17vJexcs8KvsIH2q1TeP2Awuhqm1EnQj6igbGST+TUOEXx
+         CvfQ==
+X-Gm-Message-State: AOJu0Yzmp7BpBW9BJy8TlDxbr8zF20AqorWgD2Zl77lOOk0fK7E5x8hF
+        3/QWQrUspLgWUHak6h+1LLo=
+X-Google-Smtp-Source: AGHT+IEpnijR6D192lOlnLVDZYJx5p7/zpCx+KgC1P6/xTsMfatf3u4hQQWHcyP5otAI7S54orzxaA==
+X-Received: by 2002:a05:6358:52cb:b0:143:8084:e625 with SMTP id z11-20020a05635852cb00b001438084e625mr1563237rwz.11.1695439721791;
+        Fri, 22 Sep 2023 20:28:41 -0700 (PDT)
+Received: from instance-2.asia-northeast3-a.c.dynamic-net-399300.internal (214.81.64.34.bc.googleusercontent.com. [34.64.81.214])
+        by smtp.gmail.com with ESMTPSA id bu20-20020a632954000000b0057c29fec795sm3585767pgb.37.2023.09.22.20.28.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Sep 2023 20:28:41 -0700 (PDT)
+From:   roynatech@gmail.com
+To:     johannes@sipsolutions.net
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] mac80211: fix station hash table max_size config dependency
+Date:   Sat, 23 Sep 2023 03:28:34 +0000
+Message-Id: <20230923032834.9694-1-roynatech@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230920112259.18656-1-dmantipov@yandex.ru> <ZQt89BPMN6Fg3H6z@google.com>
- <cc57fb2f-1eca-f366-bec3-d4cdbb2c39ec@yandex.ru> <87o7hvafo8.fsf@kernel.org>
-In-Reply-To: <87o7hvafo8.fsf@kernel.org>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Fri, 22 Sep 2023 18:39:46 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXNu-CWa9V5Oc-01pLp72iMVRw7m46+bDdNUxVmfrR9PSQ@mail.gmail.com>
-Message-ID: <CA+ASDXNu-CWa9V5Oc-01pLp72iMVRw7m46+bDdNUxVmfrR9PSQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mwifiex: fix SDIO firmware dump wait
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
-        linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 5:12=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrote=
-:
->
-> Dmitry Antipov <dmantipov@yandex.ru> writes:
->
-> > On 9/21/23 02:15, Brian Norris wrote:
-> >
-> >> Have you tested this patch? You've certainly caught a logic bug, but
-> >> that doesn't mean the seemingly obvious solution actually works.
-> >
-> > Unfortunately by eyes only :-(. IIUC there should be a weird hardware
-> > stall to trigger an execution of the branch in subject, so I'm not sure
-> > how to actually test it even if I would have an access to the hardware.
+From: roynatech2544 <whiteshell2544@naver.com>
 
-If you had the hardware, you could at least test the positive case --
-that the "normally operating" case at least succeeds without hitting
-the retry/timeout loop failure. What if it's common for this "start
-flag" to be stuck non-zero, but we were ignoring it due to the bug
-(after a timeout), and things still worked fine? You rarely can trust
-that driver authors got their hardware/firmware bits correct as
-written, just because the driver logic suggests it should be so...
+Commit ebd82b3 ("mac80211: make station hash table max_size configurable") introduced config
+MAC80211_STA_HASH_MAX_SIZE, which is defined unconditionally even if MAC80211 is not set.
+It doesn't look like it is dependent of MAC80211_DEBUG_MENU either, as its only user is sta_info.c
+which is compiled unconditionally when MAC80211 != n. And without this config set somewhere, compile
+would error out.
 
-Or if you're just interested in testing the firmware dump: these
-drivers have a debugfs mechanism for triggering firmware dumps on
-demand. You don't need to actually crash the WiFi firmware.
+Make it depend on MAC80211 to correctly hide the config when MAC80211=n
 
-> I don't know about Brian but for me testing for regressions is the most
-> important part. If the patch is only compile tested it could break the
-> whole driver without anyone noticing. And then it's in a release and too
-> late.
+Fixes: ebd82b3 ("mac80211: make station hash table max_size configurable")
+Signed-off-by: roynatech2544 <whiteshell2544@naver.com>
 
-I might make a similar claim, but context-dependent. Certain kinds of
-patches are clear refactorings, and can reasonably be verified with
-static analysis. But many patches have a moderate or substantial
-runtime impact, and those are very important to test. In any case, it
-can even be difficult to judge the difference between the two types,
-so it's pretty fair to err on the side of "if it isn't run tested, it
-isn't worth merging" if you'd like.
+diff --git a/net/mac80211/Kconfig b/net/mac80211/Kconfig
+index 51ec8256b..b9dc520b6 100644
+--- a/net/mac80211/Kconfig
++++ b/net/mac80211/Kconfig
+@@ -296,7 +296,8 @@ config MAC80211_DEBUG_COUNTERS
+ 	  If unsure, say N.
+ 
+ config MAC80211_STA_HASH_MAX_SIZE
+-	int "Station hash table maximum size" if MAC80211_DEBUG_MENU
++	int "Station hash table maximum size"
++	depends on MAC80211
+ 	default 0
+ 	help
+ 	  Setting this option to a low value (e.g. 4) allows testing the
+-- 
+2.34.1
 
-> That's why I have been asking you to add "Compile tested only" to the
-> commit log so that it's obvious to everyone that your patches have
-> received zero testing but you don't seem to care.
-
-Yeah, that'd be nice. By now, I've pattern-matched the author though,
-so my question was more rhetorical ("because I'm sure you haven't
-tested the patch, I don't feel inclined to Ack it").
-
-Brian
