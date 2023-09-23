@@ -2,101 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A3D07ABD97
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Sep 2023 05:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE6217ABEA0
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Sep 2023 09:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbjIWD2u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Sep 2023 23:28:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52794 "EHLO
+        id S230359AbjIWHvO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Sep 2023 03:51:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229592AbjIWD2t (ORCPT
+        with ESMTP id S229808AbjIWHvM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Sep 2023 23:28:49 -0400
-Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB996A9;
-        Fri, 22 Sep 2023 20:28:42 -0700 (PDT)
-Received: by mail-oo1-xc36.google.com with SMTP id 006d021491bc7-57ba2cd3507so57735eaf.2;
-        Fri, 22 Sep 2023 20:28:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695439722; x=1696044522; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VNpi5MU32lqhvlFPPVlhf1T34olOc5AdM8aLJlax2ik=;
-        b=W1X10i/Xwh9/FNjyWm5QlEtCciUR3pzHumQxDk3647OkVgV3jzYuh6cHRglVmVdtbE
-         S5/CNhFO9Tl8fgkbQgCpvFkB3Lvoi4QjpxrmcnJLfRdkMvC+k76al+pYGHUoUcEDj21A
-         CbAjxb5fuyMMHjCQK+wf8mPOLSMeUNeqaYvMOsYVQoLspP/mDnsMDiSf9R/h8OFiRkpN
-         ApTIPDGXlB4WY8QlZtMH+4xZPZWrfNuatBA4/dGUa72gPKCXDsZBTmbHPFpEvLK65CAn
-         TRpNj1HsTuPhf4xdRBmJbXvYQrJhfNB60VigkMLPZm+q5ZMtEUPqWwV1Vpv6zdvFi1C2
-         ZYpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695439722; x=1696044522;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VNpi5MU32lqhvlFPPVlhf1T34olOc5AdM8aLJlax2ik=;
-        b=Pth4RYbCvTlS6wb5kz+m6Kh2T7FQUCwuT7r0T80qbosnVEepmT4GOT6Rt1qZV9fKXu
-         Yd5OUXrNiMowBdPiLEpOoA834sLP3Ezpqq855AQiT03kWzKTzv8iQm0Cg5LIikdBkduA
-         N4oDprcP6AavwOjyxW0HCr1ZLFVj34eemUYMhQQvnl/6Z8yCAfhXaKvudlNS6BFRXXmU
-         PH7lEHydAs3TLvLKt/g0EsmmeCIsg8UTut1IcV7MB0H01zyzi/eCQ2r+kePKHZvL4fGo
-         8rW7aKMga3S6EmBluzpZsp17vJexcs8KvsIH2q1TeP2Awuhqm1EnQj6igbGST+TUOEXx
-         CvfQ==
-X-Gm-Message-State: AOJu0Yzmp7BpBW9BJy8TlDxbr8zF20AqorWgD2Zl77lOOk0fK7E5x8hF
-        3/QWQrUspLgWUHak6h+1LLo=
-X-Google-Smtp-Source: AGHT+IEpnijR6D192lOlnLVDZYJx5p7/zpCx+KgC1P6/xTsMfatf3u4hQQWHcyP5otAI7S54orzxaA==
-X-Received: by 2002:a05:6358:52cb:b0:143:8084:e625 with SMTP id z11-20020a05635852cb00b001438084e625mr1563237rwz.11.1695439721791;
-        Fri, 22 Sep 2023 20:28:41 -0700 (PDT)
-Received: from instance-2.asia-northeast3-a.c.dynamic-net-399300.internal (214.81.64.34.bc.googleusercontent.com. [34.64.81.214])
-        by smtp.gmail.com with ESMTPSA id bu20-20020a632954000000b0057c29fec795sm3585767pgb.37.2023.09.22.20.28.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Sep 2023 20:28:41 -0700 (PDT)
-From:   roynatech@gmail.com
-To:     johannes@sipsolutions.net
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mac80211: fix station hash table max_size config dependency
-Date:   Sat, 23 Sep 2023 03:28:34 +0000
-Message-Id: <20230923032834.9694-1-roynatech@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Sat, 23 Sep 2023 03:51:12 -0400
+Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E4A0D11D;
+        Sat, 23 Sep 2023 00:51:05 -0700 (PDT)
+Received: from mailix1.insp.jussieu.fr (mailix1.insp.jussieu.fr [134.157.37.11])
+          by shiva.jussieu.fr (8.15.2/jtpda-5.4) with ESMTP id 38N7mEO5035034
+          ; Sat, 23 Sep 2023 09:48:14 +0200 (CEST)
+X-Ids:  164
+Received: from hordix.insp.jussieu.fr (hordix.insp.jussieu.fr [134.157.37.9])
+        by mailix1.insp.jussieu.fr (Postfix-INSP-2.10.1) with ESMTPSA id EE6E9C06B5F6;
+        Sat, 23 Sep 2023 09:48:08 +0200 (CEST)
+Received: from [105.112.214.216] ([105.112.214.216]) by
+ webmail.insp.jussieu.fr (Horde Framework) with HTTPS; Sat, 23 Sep 2023
+ 07:48:08 +0000
+Date:   Sat, 23 Sep 2023 07:48:08 +0000
+Message-ID: <20230923074808.Horde.cbloaD0KutWc0KgVIYXLh1O@webmail.insp.jussieu.fr>
+From:   Victoria Cleland <lamya.essaoui@insp.upmc.fr>
+Subject: Hallo
+Reply-to: v.cleland10@aol.com
+User-Agent: Horde Application Framework 5
+Organization: Institut des NanoSciences de Paris
+X-InspUpmcSession: essaoui
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Miltered: at jchkmail2.reseau.jussieu.fr with ID 650E983E.001 by Joe's j-chkmail (http : // j-chkmail dot ensmp dot fr)!
+X-j-chkmail-Enveloppe: 650E983E.001 from mailix1.insp.jussieu.fr/mailix1.insp.jussieu.fr/134.157.37.11/mailix1.insp.jussieu.fr/<lamya.essaoui@insp.upmc.fr>
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [134.157.0.129 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
+        *      [134.157.0.129 listed in wl.mailspike.net]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [v.cleland10[at]aol.com]
+        *  1.0 MISSING_HEADERS Missing To: header
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        *  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: roynatech2544 <whiteshell2544@naver.com>
 
-Commit ebd82b3 ("mac80211: make station hash table max_size configurable") introduced config
-MAC80211_STA_HASH_MAX_SIZE, which is defined unconditionally even if MAC80211 is not set.
-It doesn't look like it is dependent of MAC80211_DEBUG_MENU either, as its only user is sta_info.c
-which is compiled unconditionally when MAC80211 != n. And without this config set somewhere, compile
-would error out.
+23. September 2023.
 
-Make it depend on MAC80211 to correctly hide the config when MAC80211=n
+Hallo,
 
-Fixes: ebd82b3 ("mac80211: make station hash table max_size configurable")
-Signed-off-by: roynatech2544 <whiteshell2544@naver.com>
+Ich möchte Ihnen einen Geschäftsvorschlag mitteilen. Für weitere  
+Details antworten Sie auf Englisch.
 
-diff --git a/net/mac80211/Kconfig b/net/mac80211/Kconfig
-index 51ec8256b..b9dc520b6 100644
---- a/net/mac80211/Kconfig
-+++ b/net/mac80211/Kconfig
-@@ -296,7 +296,8 @@ config MAC80211_DEBUG_COUNTERS
- 	  If unsure, say N.
- 
- config MAC80211_STA_HASH_MAX_SIZE
--	int "Station hash table maximum size" if MAC80211_DEBUG_MENU
-+	int "Station hash table maximum size"
-+	depends on MAC80211
- 	default 0
- 	help
- 	  Setting this option to a low value (e.g. 4) allows testing the
--- 
-2.34.1
+Grüße
+Frau Victoria Cleland
+_________________________
+Sekretärin: Lamya Essaoui
 
