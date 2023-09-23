@@ -2,106 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1811B7AC298
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Sep 2023 16:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 546F27AC2A6
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Sep 2023 16:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231307AbjIWOOn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Sep 2023 10:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49524 "EHLO
+        id S231330AbjIWO0s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Sep 2023 10:26:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231675AbjIWOOl (ORCPT
+        with ESMTP id S230336AbjIWO0r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Sep 2023 10:14:41 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F26CF9E
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Sep 2023 07:14:34 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-d857847be8cso4091993276.0
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Sep 2023 07:14:34 -0700 (PDT)
+        Sat, 23 Sep 2023 10:26:47 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7FEA9F
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Sep 2023 07:26:41 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d865685f515so1923112276.1
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Sep 2023 07:26:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1695478474; x=1696083274; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1695479201; x=1696084001; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1iLEqFnILMt+wkr8WBn84dfrLSx+1tgjaK7k9gA8Y7I=;
-        b=BvuyUfs0yaNFItagZaHU4BMTk/Xe9X4KaVASNEaSWD3RkmTBstzsJgSC4DnzcKkQJH
-         wgmFeBnd6gjQ567A9Z7VepnpjKNfHeAMpHyx7GxaYyuQKgdtW6hE1ufOIHUv5sMyNps9
-         wOHu68ByPqb3wby4AbVBrLCoudEGrHKzGlZDo=
+        bh=1RYfQgQFTDleKFeg+YK2H7GaI3p7fCOoijSmYzaOa2o=;
+        b=R5spBe7bDMJ8aqADn5foaOTgxl7SEN13Pc1tv29RBvqf2tJeElnaC3LiczTmeW0O1S
+         55zNBRQiYI0A9t/atzFEiDPWWuE9PRwTlW8c9RcMK28kDlzXoHbokwxcwsAlJ9BkUnEz
+         tWU3aq3wl7LWTtCZVGVL/+4EgQxZNaThjmZv8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695478474; x=1696083274;
+        d=1e100.net; s=20230601; t=1695479201; x=1696084001;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1iLEqFnILMt+wkr8WBn84dfrLSx+1tgjaK7k9gA8Y7I=;
-        b=O1g2qCgdBAv4c4Cw/D0wgRH/RH2ayW9q1H62wCVTKJTuquyEwwFUyg/jQiPr6CZ4Oa
-         NIaFO1wafEYvy2+eQ+sRamog/UXEJuM5pbxkpJ/alItlD2dJez3lp8Red4YMYwSkUaPg
-         4UMj4NQcS/oQqxID1i0FYdocBm0X9jBTT50cUwbsDCiJPG0VV5D4nOO9hsACQN/NcOaY
-         FW06sLIMDxBden7WGFXMBl9aT1YvMysG0i2xndC8ZVBWpKW6+IAjnyQqjpdnBZpkD80c
-         BFJn5Fa2xf8LtxjKky0ZBmtiZNjGKf25g1Whq+VAFfKAmPcLfQypl4RkLm4PeL7H+Vc6
-         O2Ow==
-X-Gm-Message-State: AOJu0Yw/OBNSrtawSRKXrWXR9jSSN9+OjJhEkrJKg9kSwIfzBi0wyTMz
-        TtxOOCtRYo+r1VZqkeXZLA2F9zM2XO+alB+T3qMwgUv0r9un0v4kn+c=
-X-Google-Smtp-Source: AGHT+IEviIVG/9kX5ZmTR/HfKq1PQFEj87nwt9PNbrTq53QRUmppR8Mpx4/59EaDQbQSvWbF2GJT4dZdUQFcHWnOzI4=
-X-Received: by 2002:a25:8244:0:b0:d81:9939:91a5 with SMTP id
- d4-20020a258244000000b00d81993991a5mr1765015ybn.39.1695478474012; Sat, 23 Sep
- 2023 07:14:34 -0700 (PDT)
+        bh=1RYfQgQFTDleKFeg+YK2H7GaI3p7fCOoijSmYzaOa2o=;
+        b=Teqvlfry5LzKQ8mrBG91OUQdW09Jry/0bo7UNAj5JU0eaON7UQY5+fd3CULJLcseg2
+         mBhqgOxWGEXKuhd0YIErBZf5d5jyTuQ3dAkod3bOjC3GX1dRBRiKrRHN5WY8UYUrcl9R
+         Ja7KJnZz7QDSp9WGaxRhpthZNzlAJ4pBWxLDiY2xKGUnY2eFPwHw97LrPERAp3BQT8G6
+         GP7sl0meJF3pgMAJAEnS89fa70Hbm0rpNU7D+ope7vLlldQtz1U/zfhQSN/Yu2T+G1/w
+         yoliUPKMiXZ4g+q3LGs2Amopu1SE1F3KZnOUtg1k5gkTmDmOImIp+jLCBWzPVXM6wCQN
+         bF1w==
+X-Gm-Message-State: AOJu0YyRW59IyVLQtsLlaMsCJL1Eu21hd6rTrUffPyKYSorrvN8w27w2
+        AFJ7B5/jF5bzUrykLE0BkM7X1tOMaSz6pYyEk0pGMA==
+X-Google-Smtp-Source: AGHT+IGEe3Y70rw2YSUjPyhhgMJ4PJplUKyO6WbLyVANQxZlCvaxzfIJo/ULYWrtb11BSNcXHEMKMF0W1/xT8oLOYqg=
+X-Received: by 2002:a25:6907:0:b0:d81:6228:75a3 with SMTP id
+ e7-20020a256907000000b00d81622875a3mr4287248ybc.13.1695479200811; Sat, 23 Sep
+ 2023 07:26:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <f891cce4b52c939dfc6b71bb2f73e560e8cad287.1695374530.git.vinayak.yadawad@broadcom.com>
- <05bfe2ff2771770ce119601adf30e14dded3a4ff.camel@sipsolutions.net>
-In-Reply-To: <05bfe2ff2771770ce119601adf30e14dded3a4ff.camel@sipsolutions.net>
+References: <d19fc849488e63cf367029b614289c324f531ae8.1694751711.git.vinayak.yadawad@broadcom.com>
+ <75476a44-e85a-4fba-ae02-c15f1f051bdd@quicinc.com> <09e4413a307a8614534af4eb08e007d897114d23.camel@sipsolutions.net>
+In-Reply-To: <09e4413a307a8614534af4eb08e007d897114d23.camel@sipsolutions.net>
 From:   Vinayak Yadawad <vinayak.yadawad@broadcom.com>
-Date:   Sat, 23 Sep 2023 19:44:24 +0530
-Message-ID: <CAMLe8U_PFYu9TnubR23mia4vifDVZd7GERmOWT1cabnPcEZpSw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] cfg80211: OWE DH IE handling offload
+Date:   Sat, 23 Sep 2023 19:56:30 +0530
+Message-ID: <CAMLe8U_Dy3X3GJs82jbwFk7C6gF7P5OgDst=_g237_o9Hdi=6A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] cfg80211: Allow AP/P2PGO to indicate port
+ authorization to peer STA/P2PClient
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, jithu.jance@broadcom.com
+Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        linux-wireless@vger.kernel.org, jithu.jance@broadcom.com
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000030aa63060607580c"
+        boundary="000000000000819e2a0606078380"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000030aa63060607580c
+--000000000000819e2a0606078380
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Johannes,
+Hi,
 
->Seems like you'd also need something that userspace actually says
->"please offload this", so you don't end up doing it twice if it's an
->older userspace?
-If its older user space, the connect context will prepare the DH IEs
-and pass it down to the driver
-and driver can use it without having to generate again- so no other
-indication is required from user space.
-With newer user space, the DH IEs won't come down.
+I have addressed the comments as part of "[PATCH v3 1/1] cfg80211:
+Allow AP/P2PGO to indicate port authorization to peer STA/P2PClient".
+Please review.
 
 Regards,
 Vinayak
 
-
-On Fri, Sep 22, 2023 at 3:01=E2=80=AFPM Johannes Berg <johannes@sipsolution=
+On Mon, Sep 18, 2023 at 1:18=E2=80=AFPM Johannes Berg <johannes@sipsolution=
 s.net> wrote:
 >
-> On Fri, 2023-09-22 at 14:55 +0530, Vinayak Yadawad wrote:
-> > Introduce new feature flags for OWE offload that driver can
-> > advertise to indicate kernel/application space to avoid DH IE
-> > handling. When this flag is advertised, the driver/device will
-> > take care of DH IE inclusion and processing of peer DH IE to
-> > generate PMK.
+> On Fri, 2023-09-15 at 12:11 -0700, Jeff Johnson wrote:
+> > On 9/14/2023 10:17 PM, Vinayak Yadawad wrote:
+> > > In 4way handshake offload, cfg80211_port_authorized enables driver
+> > > to indicate successful 4way handshake to cfg80211 layer. Currently
+> > > this path of port authorization is restricted to interface type
+> > > NL80211_IFTYPE_STATION and NL80211_IFTYPE_P2P_CLIENT. This patch
+> > > extends the support for NL80211_IFTYPE_AP and NL80211_IFTYPE_P2P_GO
+> > > interfaces to authorize peer STA/P2P_CLIENT, whenever authentication
+> > > is offloaded on the AP/P2P_GO interface.
+> > >
+> > > Signed-off-by: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+> > > ---
 > >
+> > v1->v2 change log is missing
+> > can you provide that as a separate message
 >
-> Seems like you'd also need something that userspace actually says
-> "please offload this", so you don't end up doing it twice if it's an
-> older userspace?
+> Or just fix it with v3, this doesn't apply ...
+>
+> Also please indent the documentation per what you see there (tab).
 >
 > johannes
 
---00000000000030aa63060607580c
+--000000000000819e2a0606078380
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -172,13 +175,13 @@ BTl38q8FNdCLAiM1OD+blhu7LqMLVaAEEeoUGhRxdNkvMGss1Z7/ZefenAfm9IpiaGR0PQhBwI7c
 spqD/wIJUULcXiaj0eatDUjsrx3QN9OZOh3iubCt0uBoxCQUGuvxqd3Qz4FVKMSzEIzs8v/hwR+T
 nTkxggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNh
 MTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxIxd7r
-XtHLz48aMtQwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIDaovWPOhaFAnoxrRfIl
-BlGyvYcZJKNnLzJDp6TWH8xOMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
-MQ8XDTIzMDkyMzE0MTQzNFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUD
+XtHLz48aMtQwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIKl+xDLheQHiUhivWOoo
+gz7sV3uKaFjpE/rP5nlYGI4xMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
+MQ8XDTIzMDkyMzE0MjY0MVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUD
 BAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsG
-CWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBH2Q0zzTkks2/8ZGh8qg5hwhlZIeoL1mRhsikF
-WKw23bV4JvFROKHOIpkBxsogzwa2LMI6M0fH6JtFOJdwzhlrGzSW1MOA6VZqXcwkMAlcqzEuMLsI
-z1AZOe5U2xUytzNR59v8OKU2XisDcL7KvoHOKT4l0wIoFDha7VuOEZDTAWOIzci1YC+gCFflBAxZ
-OMXThejtq+CV2gLwqJ+TxKweRrNJZfCPgU5J63OMXriz6Fx8zUJZeMyWAjLPNYBYkiPe+/DVzTTF
-A9nW/FdeJUiurknyu7OhSRV4KSN7goIs9mANXIIKMa17DgUY+KLDhmWaYD4DCnfcc+alj1fSobRb
---00000000000030aa63060607580c--
+CWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQARMsslQXQkXBKB7L5OJn2vRtrgOlLQn+wh+0GT
+O5GCXcmaffR89udaZpx8D1gDWqLo4HPK8McnuHh8hI4CoWPPxbTRz613OOBMZh2b2Gp7M1VpFC5e
+wJCfFpqYM9UigO7iqTRHnOdhFWX8eE+1L4xEv8Uko1/lRVfPMOWe5xpGfFNiXkZWdgq4jgLqNs0i
+m+XIEdpHFW+5WXNswESeJLR7shngQL+V70EVmONvBhrU1upJe4QpGlS0NC0pSqsqmJ40XPA2phqO
+W/gcxBffxuxQiVDitFsr3e6+QZaHZ0imuCs6wEDl4toYNx9DrqVUSfkvFHznFwT9MTH3z8eVQVB9
+--000000000000819e2a0606078380--
