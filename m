@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1D87ADB35
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 17:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B24AC7ADB4F
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 17:24:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232482AbjIYPTM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Sep 2023 11:19:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54262 "EHLO
+        id S230076AbjIYPYs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Sep 2023 11:24:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230076AbjIYPTM (ORCPT
+        with ESMTP id S232867AbjIYPYj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Sep 2023 11:19:12 -0400
+        Mon, 25 Sep 2023 11:24:39 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB38DA3
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 08:19:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED71126
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 08:24:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
         Resent-Message-ID:In-Reply-To:References;
-        bh=/6TYy6I6K8Bq0h95Y7pqoBhUzgfdAQ2JhZ0FVJF4FQo=; t=1695655145; x=1696864745; 
-        b=WL49cve8UC67UQLQfGw49mlvPYw7g0wPrC5HHyUrhX/QHWcylWuFX0iQewVDs/1FXEvi6+Bf16U
-        I+RldtbDQqgajz87IrFg68E0rrEkV5/0BqN8q5pPXyOUuRyLhGlADQHlpdMJgjP0nhrCpIe7JM2U3
-        Q8PY5j8z95bTBlFDt02RRKEOMetKZ3FStYCUa9UdC6+uKf+kHviHD6SngGy943tRCAld3i+mGYyH0
-        q0OmZJwXEQvle3YOpuCyPIG3o9JzIsin/xhRfkF5ZhBSlghkXU5Hu3vxmRGFq1c3Ke7JLtVmTvX74
-        7NNO8T1GFpBUrWa3Gns79O1H8ZI8wvUcIaHA==;
+        bh=nu1oHk7mOs/IaEaiYZpvcooosF+/0ac7p7iyDrmaqDw=; t=1695655473; x=1696865073; 
+        b=MjPwkH5JN+F5g3I70CHz1eNhFEQauNFqzWgZ+FmigMlM6BXWn8SMTYuKHvE1HnY2M+TLlmgvLEr
+        4XYjtC6YHEKAg7mpUqyxvKViFzn98/IE+x1BXULv5oFi2GnE1t0mlR799hrgeShs6UevE1a42dKSK
+        MeDHAmVhzahRlyLV61qFi20q0kcSNegcj751QjD0CW0655w2EBtVYj/Zx2jX7aCaryhnw/KWs7Ptf
+        D3Q56fpz8lWve2OIlWG6usA2eZeGZyP2JrPPDSLwi9m0Sj9VxR/4ffOXcYFbKU4FYKkm4BHQloCRG
+        N/x9Fe0t6uMYbfGc55RmRwbC01o91DolKzMg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qknMU-003kP0-11;
-        Mon, 25 Sep 2023 17:19:02 +0200
+        id 1qknRm-003klf-2a;
+        Mon, 25 Sep 2023 17:24:30 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Cc:     Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH] wifi: cfg80211: avoid leaking stack data into trace
-Date:   Mon, 25 Sep 2023 17:18:56 +0200
-Message-ID: <20230925171855.a9271ef53b05.I8180bae663984c91a3e036b87f36a640ba409817@changeid>
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: cfg80211: add local_state_change to deauth trace
+Date:   Mon, 25 Sep 2023 17:24:28 +0200
+Message-ID: <20230925172427.585f4064ef71.If96d19601da29ff57ade59a7e2781be5ac21a549@changeid>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -49,32 +49,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-If the structure is not initialized then boolean types might be copied
-into the tracing data without being initialised. This causes data from
-the stack to leak into the trace and also triggers a UBSAN failure which
-can easily be avoided here.
+Add the local_state_change request to the deauth trace for
+easier debugging.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/trace.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 87b21c0c0f25..a680a00b16e1 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -8458,7 +8458,7 @@ static int nl80211_update_mesh_config(struct sk_buff *skb,
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	struct net_device *dev = info->user_ptr[1];
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
--	struct mesh_config cfg;
-+	struct mesh_config cfg = {};
- 	u32 mask;
- 	int err;
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index da2b73951c32..f6667bf3fd12 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -1321,16 +1321,18 @@ TRACE_EVENT(rdev_deauth,
+ 		NETDEV_ENTRY
+ 		MAC_ENTRY(bssid)
+ 		__field(u16, reason_code)
++		__field(bool, local_state_change)
+ 	),
+ 	TP_fast_assign(
+ 		WIPHY_ASSIGN;
+ 		NETDEV_ASSIGN;
+ 		MAC_ASSIGN(bssid, req->bssid);
+ 		__entry->reason_code = req->reason_code;
++		__entry->local_state_change = req->local_state_change;
+ 	),
+-	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", bssid: %pM, reason: %u",
++	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", bssid: %pM, reason: %u, local_state_change:%d",
+ 		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->bssid,
+-		  __entry->reason_code)
++		  __entry->reason_code, __entry->local_state_change)
+ );
  
+ TRACE_EVENT(rdev_disassoc,
 -- 
 2.41.0
 
