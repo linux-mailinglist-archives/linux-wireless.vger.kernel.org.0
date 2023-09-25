@@ -2,105 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 579867ADF23
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 20:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25A1D7ADF37
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 20:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232970AbjIYSjw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Sep 2023 14:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46936 "EHLO
+        id S232675AbjIYSqR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Sep 2023 14:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233381AbjIYSjr (ORCPT
+        with ESMTP id S232126AbjIYSqQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Sep 2023 14:39:47 -0400
-Received: from marcos.anarc.at (marcos.anarc.at [64.18.183.94])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3EA411C
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 11:39:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=debian.org;
-        s=marcos-debian.anarcat.user; t=1695667172;
-        bh=XOeQh7WzBXg0Q+S6ZDn6MhxCdXk3yu8QmXyl9qWvMvY=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=ctwDlSU8Y0oy5MuX+F66Aa3QXr5C/jPtbAkxXdb2wdknWrv6TYbQRYAtJrk7y/Znj
-         HeK8urDjdl4hT+B62bBPDIRSLeDdbJK6GOI2z6UjPBAcrHEpaKc0QpzvoHb3G605c/
-         N+hzG2m86tXFneb1PopSqf/iikRRx/GcPw7iINqz6j9b+tSDESxelk0oF+WdB+ipIH
-         TD0yPxeEWI3zHABGs6u8i9KQLk3XlAazzqAa96HUH/eJZt7tF+M2FSuQBCj9/sIe0E
-         QwG8HtnDmnfOLScOxUvRjTaYuQkQDXt/piylRrjDCP9SRRueuka1lVpj7yM06jwbh3
-         14v1/PJ7xzskw==
-Received: by marcos.anarc.at (Postfix, from userid 1000)
-        id C12A510E0F3; Mon, 25 Sep 2023 14:39:32 -0400 (EDT)
-Received: by angela.localdomain (Postfix, from userid 1000)
-        id 1F751E0207; Mon, 25 Sep 2023 14:39:32 -0400 (EDT)
-From:   =?utf-8?Q?Antoine_Beaupr=C3=A9?= <anarcat@debian.org>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     Gregory Greenman <gregory.greenman@intel.com>, ilan.peer@intel.com
-Subject: Re: Microcode SW error since Linux 6.5
-In-Reply-To: <0190dde1170bd1ee810e99b9799678f4f5b8f30e.camel@sipsolutions.net>
-Organization: Debian
-References: <87ttrncuc8.fsf@angela.anarc.at>
- <60e2c052f3cedc5c80964e4be90c50cdaa899a87.camel@sipsolutions.net>
- <87jzsf9dme.fsf@angela.anarc.at>
- <0190dde1170bd1ee810e99b9799678f4f5b8f30e.camel@sipsolutions.net>
-Autocrypt: addr=anarcat@debian.org; prefer-encrypt=nopreference;
- keydata=xjMEZHZPzhYJKwYBBAHaRw8BAQdAWdVzOFRW6FYVpeVaDo3sC4aJ2kUW4ukdEZ36UJLAHd7NJUFudG9pbmUgQmVhdXByw6kgPGFuYXJjYXRAZGViaWFuLm9yZz7ClgQTFggAPhYhBLu2zUyY104TWKdSpgIpOm+k5TRzBQJkdmCVAhsDBQkB4TOABQsJCAcDBRUKCQgLBRYCAwEAAh4BAheAAAoJEAIpOm+k5TRz+w8BANbRA+AMH0LN7trugVhaWe4wDpg94UVJloHPL+adJMK/AQCh39hyQXk3ivS2cK7xKZUgK0dBsbtJ2I2XBXvL9dS3Cc44BGR2UM4SCisGAQQBl1UBBQEBB0CYZha2IMY54WFXMG4S9/Smef54Pgon99LJ/hJ885p0ZAMBCAfCdwQYFggAIBYhBLu2zUyY104TWKdSpgIpOm+k5TRzBQJkdlDOAhsMAAoJEAIpOm+k5TRzBg0A+IbcsZhLx6FRIqBJCdfYMo7qovEo+vX0HZsUPRlq4HkBAIctCzmH3WyfOD/aUTeOF3tY+tIGUxxjQLGsNQZeGrQI
-Date:   Mon, 25 Sep 2023 14:39:32 -0400
-Message-ID: <8734z29jx7.fsf@angela.anarc.at>
+        Mon, 25 Sep 2023 14:46:16 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A2495;
+        Mon, 25 Sep 2023 11:46:08 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38PFMQWE000787;
+        Mon, 25 Sep 2023 18:46:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=Jr6k6269NdMSe/wZnFEItt6PcgwyvmPFe7xKMihrEfM=;
+ b=b9IULkbGGYs+XbTcJvQXoyMclRcNaqox2nu83sx6YP7NkM9FvEKAkouX6z/tQA8WZJac
+ TZYgOzA0cpvBnjinYAtlfK8rcZdieppDNQ3ttOhxRNoo9J3N+gktvv8eYseAS+eYtyly
+ GtTPoUOh1n4Uux2rqdp0XVVWwMreMU8eqCOKmrzPN7TEO9xTDtpvdcJ2kZAiekSWNlT+
+ a2eSrKeAd2H9/CrpnxdUeCswg9XWGAcw6rXKKAZZpfjTMmZRJyO3B2MvRFK0ddpJM41Q
+ Vhfv3JOvESmgvZT4azp9bjEvQAwm7O3rqbfqPQ061K4h7e01Z0RbGRfgY6a9djtomPyA 1g== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tb6tt1d60-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Sep 2023 18:46:04 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38PIk3Ss031334
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Sep 2023 18:46:03 GMT
+Received: from [10.48.244.213] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 25 Sep
+ 2023 11:46:03 -0700
+Message-ID: <c82d9d47-9c4b-4af9-a1e8-7c975b53fe30@quicinc.com>
+Date:   Mon, 25 Sep 2023 11:46:02 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,T_SPF_TEMPERROR
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless 1/2] ath: dfs_pattern_detector: Fix a memory
+ initialization issue
+Content-Language: en-US
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Kalle Valo <kvalo@kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Kalle Valo" <quic_kvalo@quicinc.com>,
+        <linux-wireless@vger.kernel.org>
+References: <ad8c55b97ee4b330cb053ce2c448123c309cc91c.1695538105.git.christophe.jaillet@wanadoo.fr>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <ad8c55b97ee4b330cb053ce2c448123c309cc91c.1695538105.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: uKXFCC1BcjHEwDCRqscCPID6gIha-rr1
+X-Proofpoint-ORIG-GUID: uKXFCC1BcjHEwDCRqscCPID6gIha-rr1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-25_15,2023-09-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 mlxlogscore=999 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 spamscore=0 mlxscore=0 phishscore=0 bulkscore=0
+ suspectscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2309180000 definitions=main-2309250145
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2023-09-25 08:03:09, Johannes Berg wrote:
-> On Sun, 2023-09-24 at 22:43 -0400, Antoine Beaupr=C3=A9 wrote:
+On 9/23/2023 11:57 PM, Christophe JAILLET wrote:
+> If an error occurs and channel_detector_exit() is called, it relies on
+> entries of the 'detectors' array to be NULL.
+> Otherwise, it may access to un-initialized memory.
+> 
+> Fix it and initialize the memory, as what was done before the commit in
+> Fixes.
+> 
+> Fixes: a063b650ce5d ("ath: dfs_pattern_detector: Avoid open coded arithmetic in memory allocation")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Patch #1/2 is a fix, for for wireless.
+> Patch #2/2 is for wireless-next I guess, but depnds on #1
+> 
+> Not sure if we can mix different target in the same serie. Let me know.
+> 
+> BTW, sorry for messing up things with a063b650ce5d :(
+> ---
+>   drivers/net/wireless/ath/dfs_pattern_detector.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/dfs_pattern_detector.c b/drivers/net/wireless/ath/dfs_pattern_detector.c
+> index 27f4d74a41c8..2788a1b06c17 100644
+> --- a/drivers/net/wireless/ath/dfs_pattern_detector.c
+> +++ b/drivers/net/wireless/ath/dfs_pattern_detector.c
+> @@ -206,7 +206,7 @@ channel_detector_create(struct dfs_pattern_detector *dpd, u16 freq)
+>   
+>   	INIT_LIST_HEAD(&cd->head);
+>   	cd->freq = freq;
+> -	cd->detectors = kmalloc_array(dpd->num_radar_types,
+> +	cd->detectors = kcalloc(dpd->num_radar_types,
+>   				      sizeof(*cd->detectors), GFP_ATOMIC);
 
-[...]
+nit: align descendant on (
 
->> > I think something like this, perhaps:
->> >=20
->> > --- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
->> > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
->> > @@ -2342,7 +2342,7 @@ iwl_mvm_scan_umac_fill_general_p_v12(struct iwl_=
-mvm *mvm,
->> >  	if (gen_flags & IWL_UMAC_SCAN_GEN_FLAGS_V2_FRAGMENTED_LMAC2)
->> >  		gp->num_of_fragments[SCAN_HB_LMAC_IDX] =3D IWL_SCAN_NUM_OF_FRAGS;
->> >=20=20
->> > -	if (version < 12) {
->> > +	if (version < 12 || !iwl_mvm_has_mld_api(mvm->fw)) {
->> >  		gp->scan_start_mac_or_link_id =3D scan_vif->id;
->> >  	} else {
->> >  		struct iwl_mvm_vif_link_info *link_info;
->>=20
->> Interesting! In any case, the firmware is certainly out of date in
->> Debian stable, and I guess it's to be expected that having it out of
->> sync with the running kernel is a Bad Idea, it's just not something I've
->> thought of before. :)
->
-> Did that patch help?
+>   	if (cd->detectors == NULL)
+>   		goto fail;
 
-I haven't tried, to be honest. It's been years since I compiled a
-kernel, so I haven't actually seriously considered it. But I can
-definitely put that on my list if it would be useful for you!
-
-Quite a bit of scaffolding to build to get back down there though...
-
->> Thanks for the debugging, I'll make sure to keep the firmware and kernel
->> in better lockstep in the future!
->
-> Yes, you can ... but I mean, we still do want to consider this a bug, I
-> think, since we explicitly built the thing to load the older firmware.
-> It just gets _far_ less testing.
-
-Got it, happy to play guinea pig a little further if that's useful.
-
-a.
-
---=20
-The desire to sacrifice an entire lifetime to the noblest of ideals
-serves no purpose if one works alone.
-                        - Che Guevara
