@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADD517AD2C6
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 10:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3AFA7AD2CB
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 10:11:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232644AbjIYILK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Sep 2023 04:11:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38990 "EHLO
+        id S232641AbjIYILQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Sep 2023 04:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232641AbjIYILJ (ORCPT
+        with ESMTP id S232649AbjIYILM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Sep 2023 04:11:09 -0400
+        Mon, 25 Sep 2023 04:11:12 -0400
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9282A9
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 01:11:02 -0700 (PDT)
-X-UUID: 0df954c45b7b11ee8051498923ad61e6-20230925
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B45C5A9
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 01:11:04 -0700 (PDT)
+X-UUID: 0dfc81125b7b11ee8051498923ad61e6-20230925
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=KsT74PDZ96S+IGVW2NED4fpSv89pTvSeSrxuAEOIpKs=;
-        b=V/mnwnPOhVqETjbsmLKD2T53D80AwwgEjDfivw2w7CVE6YdbDhPH2AzP18f7sMTpzm9/9eYTu5O6QCZZsMApaPzFkoi4Q+zw9C3pAugJMHoTJUs23eOfM1gOSHYevFX3yv6RsaAC5m6RjANNsgGm4uahKzS2iVd8wgINNeNfdxk=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=NzSqdi5Tb3UZ0TX2Ha5X2sq+Y2e788eONic1GxwcJ9E=;
+        b=c8aGUaKwlW6QQqCTu3h3RLJbolVE42xGwXaO4pQLo4nU32cBZtd+iDZPIT4puHyHokA6wZHVb8liUNKiGBXQ2jNuiehYXspxcVIIKTkK8cTMs4x1mfKviDCYwFEdsfT1DTIyQ2H4q78Bt0x+s2L1vvWKcziwywKzBoJQHnELISY=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.32,REQID:442b2257-dc07-4c46-96aa-fe06a0e2eb59,IP:0,U
+X-CID-O-INFO: VERSION:1.1.32,REQID:2c4679bd-13e7-475e-b9db-47d195f0c1ba,IP:0,U
         RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
         release,TS:0
-X-CID-META: VersionHash:5f78ec9,CLOUDID:8e7719f0-9a6e-4c39-b73e-f2bc08ca3dc5,B
+X-CID-META: VersionHash:5f78ec9,CLOUDID:99173dbf-14cc-44ca-b657-2d2783296e72,B
         ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
         RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
         DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 0df954c45b7b11ee8051498923ad61e6-20230925
+X-UUID: 0dfc81125b7b11ee8051498923ad61e6-20230925
 Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
         (envelope-from <deren.wu@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 215377696; Mon, 25 Sep 2023 16:10:56 +0800
+        with ESMTP id 1568780376; Mon, 25 Sep 2023 16:10:56 +0800
 Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
  mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -59,27 +59,27 @@ CC:     Sean Wang <sean.wang@mediatek.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH 3/6] wifi: mt76: mt7921: add 6GHz power type support for clc
-Date:   Mon, 25 Sep 2023 16:10:35 +0800
-Message-ID: <383d8c4678a26b31bc4bd1483779cb6b88b23b4c.1695627867.git.deren.wu@mediatek.com>
+Subject: [PATCH 4/6] wifi: mt76: mt7921: get regulatory information from the clc event
+Date:   Mon, 25 Sep 2023 16:10:36 +0800
+Message-ID: <91eefb04b95c5aef63d1f25ee2bef25f7daf34de.1695627867.git.deren.wu@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <cover.1695627867.git.deren.wu@mediatek.com>
 References: <cover.1695627867.git.deren.wu@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--4.275200-8.000000
-X-TMASE-MatchedRID: fgVbCT167QSR8u6DOJbzpwPZZctd3P4BX5TqQagR07diZCTkFQiKcEUW
-        SNUeoUM2ITT0CH6wCHZXUz+XcOBhEZ4tFtWKBvRp0Xw0ILvo/uUpWss5kPUFdPytJo0tuXDqQcb
-        fiRJqHPcvPUZhEG3lqB4ZBuPBdsI5RrYNcarBmZ/iNGQgiadfQxPVHMMzH1WYmyiLZetSf8mfop
-        0ytGwvXiq2rl3dzGQ1GpeevGsoI5frGfcQt3nowcW0abotUzGj4hiMIlligzVNikUHrE+F4NHgp
-        Ea6H8U5IBUV6e/BF8VtMAyq89suidOl4YUcYQu8W89IfFvINUQXRoPmWO3jekxwdkPqCq7vDEyN
-        +J8hd+jCS9WgDXVPCn7cGd19dSFd
+X-TM-AS-Result: No-10--9.409000-8.000000
+X-TMASE-MatchedRID: chvA8lDZYvB3jyG1lXn0RKwxbZnudyr7P9lbOpiWOGatj24Xqh0yXFnN
+        uOyuafqaxMIfhQQLLkE+zJdigxeeCAtrOhDKumbSfFMOK/HqfAZMkOX0UoduuQCGaccd4ae9cNi
+        oSkggDzn0p6fAAwu4MqRIz4oXrpFwQkfxbJAyTm7J5W6OZe5hhU1+P1DCPaJ9MT+isX6MhSknui
+        +WQ9elLaz6Q4QzIn0zOhQHRNrk2f8E7MuQrZP2o7RtO1RC1Ep0nrdrM99CmmBu4FknyqyshCYM7
+        vl6iI1V1jdwn2H9AvJtkfvwyItc5T7Geun57v0ckDpLRKO9xhR9LQinZ4QefPcjNeVeWlqY+gtH
+        j7OwNO0gCYMnfcK3PKwrStCy/NXBDelie4gRZ3dOFj//J6vGPWf3GVF2Neym/o4l/fFCcW0=
 X-TM-AS-User-Approved-Sender: No
 X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--4.275200-8.000000
+X-TMASE-Result: 10--9.409000-8.000000
 X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: 65BA54B0147603FC76963ECC048AE66BA5523A94F977BB7672BAE872CDB166502000:8
+X-TM-SNTS-SMTP: 9582C808B1EB897093650F0CA89DBC51DB5D8935A867A25E85B12E6E59A645462000:8
 X-MTK:  N
 X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
@@ -93,116 +93,167 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-There are several power type should be supported in 6GHz band. mt7921
-apply 6GHz power type from AP settings and clc will setup the
-corresponding regulatory power.
+The clc event can report the radio configuration for the corresponding
+country and the driver would take it as regulatory information of a
+certain platform device.
+
+This patch would change the clc commnad from no-waiting to waiting for
+event. For backward compatible, we also add a new nic capability tag
+to indicate the firmware did support this new clc event from now on.
 
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Co-developed-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 ---
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 34 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  4 ++-
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  9 +++++
- 3 files changed, 46 insertions(+), 1 deletion(-)
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 26 ++++++++++++++++---
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   | 13 ++++++++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |  4 +++
+ 5 files changed, 41 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index aa20fdce2729..cf8aecb200fc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -701,6 +701,38 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- 	mt792x_mutex_release(dev);
- }
- 
-+static void
-+mt7921_regd_set_6ghz_power_type(struct ieee80211_vif *vif)
-+{
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	struct mt792x_phy *phy = mvif->phy;
-+	struct mt792x_dev *dev = phy->dev;
-+
-+	if (hweight64(dev->mt76.vif_mask) > 1) {
-+		phy->power_type = MT_AP_DEFAULT;
-+		goto out;
-+	}
-+
-+	switch (vif->bss_conf.power_type) {
-+	case IEEE80211_REG_SP_AP:
-+		phy->power_type = MT_AP_SP;
-+		break;
-+	case IEEE80211_REG_VLP_AP:
-+		phy->power_type = MT_AP_VLP;
-+		break;
-+	case IEEE80211_REG_LPI_AP:
-+		phy->power_type = MT_AP_LPI;
-+		break;
-+	case IEEE80211_REG_UNSET_AP:
-+	default:
-+		phy->power_type = MT_AP_DEFAULT;
-+		break;
-+	}
-+
-+out:
-+	mt7921_mcu_set_clc(dev, dev->mt76.alpha2, dev->country_ie_env);
-+}
-+
- int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		       struct ieee80211_sta *sta)
- {
-@@ -736,6 +768,8 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	if (ret)
- 		return ret;
- 
-+	mt7921_regd_set_6ghz_power_type(vif);
-+
- 	mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
- 
- 	return 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 8d9ebe34816a..8c76ef92e14f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1254,10 +1254,12 @@ int __mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
- 		u8 pad1;
- 		u8 alpha2[2];
- 		u8 type[2];
--		u8 rsvd[64];
-+		u8 env_6g;
-+		u8 rsvd[63];
- 	} __packed req = {
- 		.idx = idx,
- 		.env = env_cap,
-+		.env_6g = dev->phy.power_type,
- 		.acpi_conf = mt792x_acpi_get_flags(&dev->phy),
- 	};
- 	int ret, valid_cnt = 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 548e89fad4d9..8b1dbddf4582 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -63,6 +63,14 @@ enum {
- 	MT792x_CLC_MAX_NUM,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index b73dbe1dbf3a..35f008492a6b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1340,6 +1340,7 @@ enum {
+ 	MT_NIC_CAP_ANTSWP = 0x16,
+ 	MT_NIC_CAP_WFDMA_REALLOC,
+ 	MT_NIC_CAP_6G,
++	MT_NIC_CAP_CHIP_CAP = 0x20,
  };
  
-+enum mt792x_reg_power_type {
-+	MT_AP_UNSET = 0,
-+	MT_AP_DEFAULT,
-+	MT_AP_LPI,
-+	MT_AP_SP,
-+	MT_AP_VLP,
-+};
-+
- DECLARE_EWMA(avg_signal, 10, 8)
+ #define UNI_WOW_DETECT_TYPE_MAGIC		BIT(0)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 8c76ef92e14f..4f66e27aa43a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -557,6 +557,9 @@ static int mt7921_mcu_get_nic_capability(struct mt792x_phy *mphy)
+ 				mt7921_mcu_parse_tx_resource(phy->dev,
+ 							     skb);
+ 			break;
++		case MT_NIC_CAP_CHIP_CAP:
++			memcpy(&mphy->chip_cap, (void *)skb->data, sizeof(u64));
++			break;
+ 		default:
+ 			break;
+ 		}
+@@ -1243,7 +1246,8 @@ int __mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 			 struct mt7921_clc *clc,
+ 			 u8 idx)
+ {
+-	struct sk_buff *skb;
++#define CLC_CAP_EVT_EN BIT(0)
++	struct sk_buff *skb, *ret_skb = NULL;
+ 	struct {
+ 		u8 ver;
+ 		u8 pad0;
+@@ -1251,7 +1255,7 @@ int __mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 		u8 idx;
+ 		u8 env;
+ 		u8 acpi_conf;
+-		u8 pad1;
++		u8 cap;
+ 		u8 alpha2[2];
+ 		u8 type[2];
+ 		u8 env_6g;
+@@ -1268,6 +1272,9 @@ int __mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 	if (!clc)
+ 		return 0;
  
- struct mt792x_sta {
-@@ -114,6 +122,7 @@ struct mt792x_phy {
++	if (dev->phy.chip_cap & MT792x_CHIP_CAP_CLC_EVT_EN)
++		req.cap |= CLC_CAP_EVT_EN;
++
+ 	pos = clc->data;
+ 	for (i = 0; i < clc->nr_country; i++) {
+ 		struct mt7921_clc_rule *rule = (struct mt7921_clc_rule *)pos;
+@@ -1289,10 +1296,21 @@ int __mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 			return -ENOMEM;
+ 		skb_put_data(skb, rule->data, len);
+ 
+-		ret = mt76_mcu_skb_send_msg(&dev->mt76, skb,
+-					    MCU_CE_CMD(SET_CLC), false);
++		ret = mt76_mcu_skb_send_and_get_msg(&dev->mt76, skb,
++						    MCU_CE_CMD(SET_CLC),
++						    !!(req.cap & CLC_CAP_EVT_EN),
++						    &ret_skb);
+ 		if (ret < 0)
+ 			return ret;
++
++		if (ret_skb) {
++			struct mt7921_clc_info_tlv *info;
++
++			info = (struct mt7921_clc_info_tlv *)(ret_skb->data + 4);
++			dev->phy.clc_chan_conf = info->chan_conf;
++			dev_kfree_skb(ret_skb);
++		}
++
+ 		valid_cnt++;
+ 	}
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+index 9b0aa3b70f0e..f9a259ee6b82 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+@@ -99,4 +99,17 @@ struct mt7921_rftest_evt {
+ 	__le32 param0;
+ 	__le32 param1;
+ } __packed;
++
++struct mt7921_clc_info_tlv {
++	__le16 tag;
++	__le16 len;
++
++	u8 chan_conf; /* BIT(0) : Enable UNII-4
++		       * BIT(1) : Enable UNII-5
++		       * BIT(2) : Enable UNII-6
++		       * BIT(3) : Enable UNII-7
++		       * BIT(4) : Enable UNII-8
++		       */
++	u8 rsv[63];
++} __packed;
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 87dd06855f68..ba3f9d9aacad 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -27,6 +27,7 @@
+ #define MT7921_SDIO_HDR_PKT_TYPE	GENMASK(17, 16)
+ 
+ #define MCU_UNI_EVENT_ROC  0x27
++#define MCU_UNI_EVENT_CLC  0x80
+ 
+ enum {
+ 	UNI_ROC_ACQUIRE,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
+index 8b1dbddf4582..34380d1eb9f4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -25,6 +25,8 @@
+ #define MT792x_FW_TAG_FEATURE	4
+ #define MT792x_FW_CAP_CNM	BIT(7)
+ 
++#define MT792x_CHIP_CAP_CLC_EVT_EN BIT(0)
++
+ /* NOTE: used to map mt76_rates. idx may change if firmware expands table */
+ #define MT792x_BASIC_RATES_TBL	11
+ 
+@@ -122,6 +124,7 @@ struct mt792x_phy {
  	struct mt76_mib_stats mib;
  
  	u8 sta_work_count;
-+	enum mt792x_reg_power_type power_type;
++	u8 clc_chan_conf;
+ 	enum mt792x_reg_power_type power_type;
  
  	struct sk_buff_head scan_event_list;
- 	struct delayed_work scan_work;
+@@ -130,6 +133,7 @@ struct mt792x_phy {
+ 	void *acpisar;
+ #endif
+ 	void *clc[MT792x_CLC_MAX_NUM];
++	u64 chip_cap;
+ 
+ 	struct work_struct roc_work;
+ 	struct timer_list roc_timer;
 -- 
 2.18.0
 
