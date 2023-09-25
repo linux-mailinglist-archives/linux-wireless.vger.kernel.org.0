@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA5257AD2B9
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 10:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4F197AD2BB
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 10:09:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232600AbjIYIJt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Sep 2023 04:09:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45410 "EHLO
+        id S232569AbjIYIJv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Sep 2023 04:09:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232559AbjIYIJs (ORCPT
+        with ESMTP id S232606AbjIYIJu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Sep 2023 04:09:48 -0400
+        Mon, 25 Sep 2023 04:09:50 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE2DAF
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 01:09:40 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38P89I0o83456785, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38P89I0o83456785
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55FE0DA
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 01:09:42 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38P89K7W03456792, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38P89K7W03456792
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 25 Sep 2023 16:09:18 +0800
+        Mon, 25 Sep 2023 16:09:20 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 25 Sep 2023 16:09:18 +0800
+ 15.1.2507.17; Mon, 25 Sep 2023 16:09:20 +0800
 Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 25 Sep
- 2023 16:09:18 +0800
+ 2023 16:09:19 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <johannes@sipsolutions.net>, <phhuang@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/3] wifi: rtw89: Refine bandwidth 160MHz uplink OFDMA performance
-Date:   Mon, 25 Sep 2023 16:09:01 +0800
-Message-ID: <20230925080902.51449-4-pkshih@realtek.com>
+Subject: [PATCH 3/3] wifi: rtw89: refine bandwidth 160MHz uplink OFDMA performance
+Date:   Mon, 25 Sep 2023 16:09:02 +0800
+Message-ID: <20230925080902.51449-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230925080902.51449-1-pkshih@realtek.com>
 References: <20230925080902.51449-1-pkshih@realtek.com>
@@ -45,10 +45,6 @@ X-Originating-IP: [172.21.69.25]
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
