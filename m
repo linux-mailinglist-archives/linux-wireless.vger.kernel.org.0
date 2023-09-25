@@ -2,160 +2,213 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FA2F7ACE0A
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 04:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B4137ACE18
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 04:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231421AbjIYCQK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Sep 2023 22:16:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48646 "EHLO
+        id S231703AbjIYC20 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Sep 2023 22:28:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbjIYCQJ (ORCPT
+        with ESMTP id S229561AbjIYC20 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Sep 2023 22:16:09 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E3ADC6
-        for <linux-wireless@vger.kernel.org>; Sun, 24 Sep 2023 19:16:03 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38P2EGUB003550;
-        Mon, 25 Sep 2023 02:15:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=EIUxD9SZcufmEDOSneOgGCFeMWo6xO3+8PnvzM8rsdY=;
- b=eXZ+Tdnc791kqSdKn8ZB8c5A56QQPVdb2re35zDogKeiInwKFThIyZzE/utgp0euaN/V
- P2yv73H/0q+EDkfmluVZoqfVt4ZH8Ij4LLOocrfWp072IcFsVHxgmvMRzxZgwQDi9TDf
- rZiLU1wGYdI1gtQTYjHk+wVNBVahBR1AOWXs587+KgErTU/vbGFAYSHJV/OECkbCcsEH
- IUpzmFCQSwI4Rvz0vkrJpSlX0gVxtI/Wl1wwiI8JzRN8wl9+AeUZY+Iymvkg6Y0hM+M/
- KzeTedsyXtWoaevdFHtOu+MaZ+mtmgrfLkz4ufoStSmsG+WZJCTnRlCGT+Wto9Hmt14+ bQ== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tajapgwst-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 25 Sep 2023 02:15:49 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38P2Fm9s006759
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 25 Sep 2023 02:15:48 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Sun, 24 Sep
- 2023 19:15:46 -0700
-Message-ID: <145e9534-6610-9c11-b2b9-87fb8e50ef81@quicinc.com>
-Date:   Mon, 25 Sep 2023 10:15:44 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v6 13/13] wifi: ath11k: send TPC power to firmware for 6
- GHz station
-To:     Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <kvalo@kernel.org>,
-        <quic_jjohnson@quicinc.com>
-References: <20230920082349.29111-1-quic_wgong@quicinc.com>
- <20230920082349.29111-14-quic_wgong@quicinc.com>
- <eb08e0f2-c932-4d79-b2ee-813c2999d1a5@quicinc.com>
- <fbad2af6-9c3f-c241-b820-7820b4200bf4@quicinc.com>
- <60aaa1fc-99cf-476c-af51-e5ad425792f9@quicinc.com>
-Content-Language: en-US
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <60aaa1fc-99cf-476c-af51-e5ad425792f9@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: iqi3JornSTpE9WFtoQvfefM_oX1yCIZ1
-X-Proofpoint-GUID: iqi3JornSTpE9WFtoQvfefM_oX1yCIZ1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-24_21,2023-09-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
- phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
- mlxscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2309250011
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Sun, 24 Sep 2023 22:28:26 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2E4DA
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Sep 2023 19:28:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695608899; x=1727144899;
+  h=date:from:to:cc:subject:message-id;
+  bh=0TzlU8GzWFDYomQO3OOdIhfFMOFlGBt0jNxBXSXy8YM=;
+  b=dZ6tfZ5x2Ngp28RMTnwwWGDiKYUXdsVZ4qZtxLnnMaY6JT/ehUKEuWsg
+   DpjhFyNSLny0DK+Ca1SfpMTTh5AV0Qbi4VZZAt5pZ/k5C5K6SPw1iYZYn
+   cQZCVps+3w5JqE+5W7dXoCZWWeLDqnvi6x0W051EDjS664BiZ4P3hFEa1
+   ELdHAhpNTdd4j1B31DUg3waM2pYKJrRr8K7QPZavkcdG9r8iT3q2XIQTk
+   t8ffsQIpHhehkwUzHAjp/g6kEIUTKN8XzyP7VqNF2TN6TD2s+lVy7M+HB
+   s/oLPrM4O4mfdP5WunXYGvX4OVWCxOE9NOreU7eUYFZjViefLPxsQWgXR
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="361404410"
+X-IronPort-AV: E=Sophos;i="6.03,174,1694761200"; 
+   d="scan'208";a="361404410"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2023 19:28:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="871897556"
+X-IronPort-AV: E=Sophos;i="6.03,174,1694761200"; 
+   d="scan'208";a="871897556"
+Received: from lkp-server02.sh.intel.com (HELO 32c80313467c) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 24 Sep 2023 19:28:17 -0700
+Received: from kbuild by 32c80313467c with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qkbKZ-0000nz-0s;
+        Mon, 25 Sep 2023 02:28:15 +0000
+Date:   Mon, 25 Sep 2023 10:27:37 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 5ee7b2ea07cc6972bc505103f5d483943754a601
+Message-ID: <202309251035.9hac7LIC-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/22/2023 9:25 PM, Aditya Kumar Singh wrote:
-> On 9/22/23 15:42, Wen Gong wrote:
->> On 9/22/2023 5:24 PM, Aditya Kumar Singh wrote:
->>> On 9/20/23 13:53, Wen Gong wrote:
->>>> When station is connected to a 6 GHz AP, it has 2 way to configure
->>>> the power limit to firmware. The first way is to send 2 wmi command
->>>> WMI_PDEV_PARAM_TXPOWER_LIMIT2G/WMI_PDEV_PARAM_TXPOWER_LIMIT5G to
->>>> firmware, the second way is to send WMI_VDEV_SET_TPC_POWER_CMDID to
->>>> firmware which include more parameters for power control.
->>>>
->>>> The first way is disabled in previous patch
->>>> "ath11k: discard BSS_CHANGED_TXPOWER when EXT_TPC_REG_SUPPORT for 6 
->>>> GHz".
->>>>
->>>> Prepare the parameter for wmi command WMI_VDEV_SET_TPC_POWER_CMDID and
->>>> send the firmware after vdev start response success from firmware, it
->>>> is for the second way of power control.
->>>>
->>>> Tested-on: WCN6855 hw2.0 PCI 
->>>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
->>>>
->>>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
->>>> ---
->>>>   drivers/net/wireless/ath/ath11k/mac.c | 8 +++++++-
->>>>   1 file changed, 7 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/net/wireless/ath/ath11k/mac.c 
->>>> b/drivers/net/wireless/ath/ath11k/mac.c
->>>> index a8ae281d2635..f8b907a758b1 100644
->>>> --- a/drivers/net/wireless/ath/ath11k/mac.c
->>>> +++ b/drivers/net/wireless/ath/ath11k/mac.c
->>>> @@ -7296,6 +7296,12 @@ ath11k_mac_vdev_start_restart(struct 
->>>> ath11k_vif *arvif,
->>>>           return ret;
->>>>       }
->>>>   +    if (ath11k_mac_supports_station_tpc(ar, arvif, chandef)) {
->>>> +        ath11k_mac_fill_reg_tpc_info(ar, arvif->vif, 
->>>> &arvif->chanctx);
->>> So we are passing local copy of channel context stored in 
->>> arvif->chanctx. Do we need to update it when channel changes?
->>>
->>> I see that during assignment time, we are copying/updating it and 
->>> accordingly the command will be sent to firmware, but what about 
->>> when STA moves channel? arvif->chanctx should be updated and tpc 
->>> command should be sent again in that case?
->>
->> This has been discussed before here per question of Johannes:"Could 
->> this information change? Should we track it in beacons?":
->>
->> [PATCH 9/9] mac80211: save transmit power envelope element and power 
->> constraint
->>
->> https://lore.kernel.org/linux-wireless/38e7d9d2eebafa7245a36a0a0396094526eb3efd.camel@sipsolutions.net/ 
->>
-> That's fine. That's w.r.t to TX power change. I'm saying here about 
-> CSA? What when AP tries to switch channel? For that client need not 
-> disassociate and associate back right?
->
-> In that case, channel context in mac80211 layer will change. But our 
-> driver's arvif->chanctx will have previous one only. We are using 
-> channel context to get the ieee80211_channel which has the PSD value, 
-> and that value we are sending to firmware via TPC command during 
-> intial association time. So when channel changes, firmware also should 
-> be updated with the latest PSD values via TPC command for the latest 
-> channel right?
->
-You are right. CSA may be change channel bandwidth.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 5ee7b2ea07cc6972bc505103f5d483943754a601  wifi: rtw89: load TX power related tables from FW elements
 
-Currently we could keep NOT support CSA as well as CSA for MLO since 
-these are the basic TPC support feature.
+elapsed time: 3939m
 
-We could make new patch later to support CSA fro TPC power, OK?
+configs tested: 136
+configs skipped: 2
 
->
->
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20230922   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20230922   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20230922   gcc  
+i386         buildonly-randconfig-002-20230922   gcc  
+i386         buildonly-randconfig-003-20230922   gcc  
+i386         buildonly-randconfig-004-20230922   gcc  
+i386         buildonly-randconfig-005-20230922   gcc  
+i386         buildonly-randconfig-006-20230922   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20230922   gcc  
+i386                  randconfig-002-20230922   gcc  
+i386                  randconfig-003-20230922   gcc  
+i386                  randconfig-004-20230922   gcc  
+i386                  randconfig-005-20230922   gcc  
+i386                  randconfig-006-20230922   gcc  
+i386                  randconfig-011-20230922   gcc  
+i386                  randconfig-012-20230922   gcc  
+i386                  randconfig-013-20230922   gcc  
+i386                  randconfig-014-20230922   gcc  
+i386                  randconfig-015-20230922   gcc  
+i386                  randconfig-016-20230922   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20230922   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20230922   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20230922   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20230922   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20230922   gcc  
+x86_64       buildonly-randconfig-002-20230922   gcc  
+x86_64       buildonly-randconfig-003-20230922   gcc  
+x86_64       buildonly-randconfig-004-20230922   gcc  
+x86_64       buildonly-randconfig-005-20230922   gcc  
+x86_64       buildonly-randconfig-006-20230922   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20230922   gcc  
+x86_64                randconfig-002-20230922   gcc  
+x86_64                randconfig-003-20230922   gcc  
+x86_64                randconfig-004-20230922   gcc  
+x86_64                randconfig-005-20230922   gcc  
+x86_64                randconfig-006-20230922   gcc  
+x86_64                randconfig-011-20230923   gcc  
+x86_64                randconfig-012-20230923   gcc  
+x86_64                randconfig-013-20230923   gcc  
+x86_64                randconfig-014-20230923   gcc  
+x86_64                randconfig-015-20230923   gcc  
+x86_64                randconfig-016-20230923   gcc  
+x86_64                randconfig-071-20230922   gcc  
+x86_64                randconfig-072-20230922   gcc  
+x86_64                randconfig-073-20230922   gcc  
+x86_64                randconfig-074-20230922   gcc  
+x86_64                randconfig-075-20230922   gcc  
+x86_64                randconfig-076-20230922   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
