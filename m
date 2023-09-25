@@ -2,76 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3037AD8F0
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 15:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE2CE7AD8FE
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Sep 2023 15:25:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231706AbjIYNVl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Sep 2023 09:21:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56174 "EHLO
+        id S230260AbjIYNZP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Sep 2023 09:25:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231160AbjIYNVj (ORCPT
+        with ESMTP id S229884AbjIYNZO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Sep 2023 09:21:39 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3E010C
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 06:21:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=8FTubTo95ecTE3O8mI6xsTp9mvBJJbU1Q1t/M+xnGrA=;
-        t=1695648093; x=1696857693; b=asNZIR/TJXxwgzTs/nrs6HzZm1r/N3KUbWzrbgyri3n0IkE
-        hhXvSWt0o81/Gv9b5Y2vq+LPZP7acTiNuLzZxKUAM5U458lnlhvHqZREKwlBGJFD3DsLqmKD7AvDL
-        xHd6miT/ssrFba/U5p1tbhmh/08JhodHKDAHIzArIgFNRCuw2nVMwwsfNgt2BYX0ETnQj40DEIBHd
-        O3RUPQYRTuj8Cd+Q6aSC1+vBpP5ZYROiJAcb3E+DJQ2n/zPSoIeSAqylDQT4d/wAPGlpaO4TCZwGm
-        9lBfAdIKVLGbJQGGGaDo99pIbmNvHM2VVRDGlXJkTm9ZyDU7oQ77FQwuGRSIVPHg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qklWk-003dNJ-1T;
-        Mon, 25 Sep 2023 15:21:30 +0200
-Message-ID: <36c2d107bf8dd2d32d6864ba929db026e9b8091d.camel@sipsolutions.net>
+        Mon, 25 Sep 2023 09:25:14 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B67FE
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 06:25:07 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38PASHfr025988;
+        Mon, 25 Sep 2023 13:25:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=1dhmgDgrHtpDlPa5DU2fApfUUjBvdKNVhkJdw7X5Hkw=;
+ b=g6qtyYM//QcD97hx8tLR+X1zJ2DFUXpH/udPBjIcqcuz55/vqP2ee5dy8bkaLd9a5cpW
+ PRvd2d/2VqfYfEH1Gcxd51n4fHKR6EfE4fZ+yQGR9qmE8sRgZj7Y8qNbVHhYL8orqlRR
+ njAdtwYtWFxbMsvHeNPAl5PRiIGPJ7lTdNO4OGgCH11uR/DpAK3As3hIHmNBrbBz8fEk
+ zGmWWDbCOn2/vpmTJTjErDxPan8CjcQ6A5+6JUxBt5fO91DvyePJ9EdS6dDSyn0235tr
+ KbTLwVaNs3fhMCwkKxvqFdqOqUIKKbi3BA0h6VDmGpqilMYbnV+DQCoeMbudyqAqfBsx Sw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t9rddbw0f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Sep 2023 13:25:04 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38PDP0hi027123
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Sep 2023 13:25:03 GMT
+Received: from [10.216.1.235] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 25 Sep
+ 2023 06:25:00 -0700
+Message-ID: <43014134-2702-47d2-8120-52459ae08660@quicinc.com>
+Date:   Mon, 25 Sep 2023 18:54:54 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/2] wifi: cfg80211/mac80211: add support for AP
  channel switch with MLO
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Date:   Mon, 25 Sep 2023 15:21:29 +0200
-In-Reply-To: <1d8e7395-61c1-4fba-9d83-8cebfb557b33@quicinc.com>
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
 References: <20230925115822.12131-1-quic_adisi@quicinc.com>
-         <20230925115822.12131-2-quic_adisi@quicinc.com>
-         <af4a763b624363543a37140c2106fb7a05800977.camel@sipsolutions.net>
-         <1d8e7395-61c1-4fba-9d83-8cebfb557b33@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+ <20230925115822.12131-2-quic_adisi@quicinc.com>
+ <aae994910abeeb7e445eb2731eeb7dac0b3e43cb.camel@sipsolutions.net>
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <aae994910abeeb7e445eb2731eeb7dac0b3e43cb.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ESDtadym23Y1vKqrf8VYej8Ah6cZqxeJ
+X-Proofpoint-ORIG-GUID: ESDtadym23Y1vKqrf8VYej8Ah6cZqxeJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-25_10,2023-09-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1015 mlxscore=0 priorityscore=1501
+ adultscore=0 suspectscore=0 phishscore=0 malwarescore=0 mlxlogscore=735
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2309250100
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-09-25 at 18:49 +0530, Aditya Kumar Singh wrote:
-> >=20
-> > Perhaps we should just get rid of sdata_dereference() entirely, after
-> > all, it's the same now, just the arguments are switched for no good
-> > reason.
-> Yup agreed. Are you already aware of any WIP in this regards? If not, I=
-=20
-> can take care for the CSA part at least in same series (in a different=
-=20
-> patch obviously :) )
-
-No, I was just thinking out loud now :)
-
-It'd be a trivial spatch, but I guess it'd be nicer to not have all that
-"sdata->local->hw.wiphy" in there if there's already another local or
-even wiphy variable in the function. And then while that's probably
-still possible in spatch, it's no longer trivial ;-)
-
-johannes
+On 9/25/23 18:42, Johannes Berg wrote:
+> On Mon, 2023-09-25 at 17:28 +0530, Aditya Kumar Singh wrote:
+>>
+>> -void ieee80211_csa_finish(struct ieee80211_vif *vif)
+>> +void ieee80211_csa_finish(struct ieee80211_vif *vif, unsigned int link_id)
+>>   {
+>>   	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
+>>   	struct ieee80211_local *local = sdata->local;
+>> +	struct ieee80211_link_data *link_data;
+>> +
+>> +	if (WARN_ON(link_id > IEEE80211_MLD_MAX_NUM_LINKS))
+>> +		return;
+> 
+>> =.
+> 
+> You also have that in the other patch.Sure, got it. Thanks.
