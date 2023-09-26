@@ -2,196 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8836E7AE8C2
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 11:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D137AE97B
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 11:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234114AbjIZJRZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Sep 2023 05:17:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41488 "EHLO
+        id S234282AbjIZJm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Sep 2023 05:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234086AbjIZJRX (ORCPT
+        with ESMTP id S234240AbjIZJm6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Sep 2023 05:17:23 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F4ABF
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 02:17:17 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38Q8jRnK026406;
-        Tue, 26 Sep 2023 09:17:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=63tai+1vk2FHPXqExoulcghxVIUuypAOFSXVN0CfajQ=;
- b=BWCD5R6Jbr/qccnsgZaiEKnfQbgXrgd0W8xK4YSJSEc1CVbEmLXLZVbXARQy8fp0mXpe
- zDjAo2mi5lIUoSzHDaQH6t/C2SIG7vxMNikiuYrIujtHcurPZFxM/pxWUblD71PwIldJ
- k+yLEjwBZO28rJ+9q6g3tYwII/ln/B+mv1zNn/TS/Vjrxr1vm85Es0wnoksp2XZm88ba
- 3JtxsLNBTr64147cm2vz4hDQOADgU1cDpM/PrKBJ8QV3qvBI2jn7fZhWegyZLWzPnEO4
- pmkEkKHL7GtlFt3KDJHuVVR/l70vEOyA8gjV6PgSutoag4QlFohZKTX/IaoDur+NZkLu Zg== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tbgfv1cwu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 09:17:12 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38Q9HBk2031492
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 09:17:11 GMT
-Received: from adisi-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Tue, 26 Sep 2023 02:17:09 -0700
-From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
-To:     <linux-wireless@vger.kernel.org>
-CC:     <johannes@sipsolutions.net>,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>
-Subject: [PATCH v3 3/3] wifi: mac80211: update beacon counters per link basis
-Date:   Tue, 26 Sep 2023 14:46:48 +0530
-Message-ID: <20230926091648.17184-4-quic_adisi@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230926091648.17184-1-quic_adisi@quicinc.com>
-References: <20230926091648.17184-1-quic_adisi@quicinc.com>
+        Tue, 26 Sep 2023 05:42:58 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F98B3
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 02:42:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=J07PKgzvHv9pru8vLLpOFovCpNHRFFMR8SOnLLFgFZk=;
+        t=1695721372; x=1696930972; b=n2V2LflF5itWd0702t/uwW75vlJq2ZrUTpWPQBliRz5bksu
+        ua1mFtLuv7mA6Bxg4+6t3QqHDmexNowDg81KsW22Dr/dZl1waEKGgZvi+RAkpJSGsOei5VMC4aQQM
+        rUytRoqmEAjjPmHrsFeMB/dv3ataYiCGGjAY2oxDqunykPEHZ/fwqWJgiGnoKpPLuWC8pkb52pug2
+        3NrkQZ/jdqPXucfL1FxYwIP50LdwLR6nSuF7QpCYUxZ8heZ4FT+HNMO7TaHHHp8YT9NtCEOWwMhgj
+        u60TIZEFN0xovg+5LuP+eLBaoKNje3yythIWyMzTAbhXdTEbwehE73eUJfXTynrA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1ql4ac-005RdD-1M;
+        Tue, 26 Sep 2023 11:42:46 +0200
+Message-ID: <d42b46d628c1d0d09d8772f19cec0b572251c02b.camel@sipsolutions.net>
+Subject: Re: [PATCH 3/3] wifi: mac80211: update link RX NSS by
+ ieee80211_sta_set_rx_nss() in ieee80211_assoc_config_link()
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, ath12k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 26 Sep 2023 11:42:45 +0200
+In-Reply-To: <7e350410-0e45-910d-68db-ea1d85df958a@quicinc.com>
+References: <20230906103458.24092-1-quic_wgong@quicinc.com>
+         <20230906103458.24092-4-quic_wgong@quicinc.com>
+         <e6ea3009c489fae910adbf2e1c766f2d827f287f.camel@sipsolutions.net>
+         <7e350410-0e45-910d-68db-ea1d85df958a@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: -fQnCBHpEsSS82FaEUINxe9DGPr-_4CC
-X-Proofpoint-ORIG-GUID: -fQnCBHpEsSS82FaEUINxe9DGPr-_4CC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-26_06,2023-09-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- phishscore=0 impostorscore=0 bulkscore=0 mlxlogscore=818 mlxscore=0
- spamscore=0 adultscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309260080
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently, function to update beacon counter uses deflink to fetch
-the beacon and then update the counter. However, with MLO, there is
-a need to update the counter for the beacon in a particular link.
+On Fri, 2023-09-15 at 15:53 +0800, Wen Gong wrote:
+> On 9/13/2023 5:04 PM, Johannes Berg wrote:
+> > On Wed, 2023-09-06 at 06:34 -0400, Wen Gong wrote:
+> > > Currently for MLO connection, only deflink's rx_nss is set to correct
+> > > value. The others links' rx_nss of struct ieee80211_link_sta is
+> > > value 0 in ieee80211_set_associated(), because they are not pass into
+> > > ieee80211_sta_set_rx_nss() in mac80211 except the deflink in
+> > > rate_control_rate_init(). This leads driver get NSS =3D 0 for other l=
+inks.
+> > > Add the ieee80211_sta_set_rx_nss() in ieee80211_assoc_config_link(),
+> > > then the other links' rx_nss will be set to the correct value.
+> > This is pretty much true, but I also think it's problematic the way you
+> > phrase it. Software rate control is pretty much, at least currently,
+> > _not_ supported for MLO (and I don't really see how to support it, if
+> > firmware picks the link to transmit on, as it probably should).
+> >=20
+> > Thus, I'm not even sure we should be calling rate_control_rate_init().
+> > Clearly we do today, but it's also obviously wrong for everything excep=
+t
+> > the call to ieee80211_sta_set_rx_nss().
+> >=20
+> > So while I agree that there's a problem with the RX NSS, I disagree tha=
+t
+> > this patch is the right way to fix it. Yes, it also fairly obviously
+> > fixes the problem, but it just makes an existing design problem worse.
+> >=20
+> > Please change change the overall design here so that
+> > ieee80211_sta_set_rx_nss() isn't related to rate control at all.
+> >=20
+> > johannes
+> So should I delete ieee80211_sta_set_rx_nss() in rate_control_rate_init()=
+,
+> and add it into ieee80211_assoc_config_link() as you said before here?
+> https://lore.kernel.org/linux-wireless/ca0f6ea2d78538ffb6640f2e56d65c89c8=
+6f5221.camel@sipsolutions.net/
 
-Add support to use link_id in order to fetch the beacon from a particular
-link data during beacon update counter.
+I think that would make sense. After all, rate_control_rate_init() is
+related to the software rate control which isn't really supported with
+MLD, and the NSS init is unrelated, it's just updating a piece of per
+(link) station data.
 
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- drivers/net/wireless/ath/ath10k/mac.c             |  2 +-
- drivers/net/wireless/ath/ath11k/mac.c             |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
- include/net/mac80211.h                            |  4 +++-
- net/mac80211/tx.c                                 | 14 +++++++++++---
- 5 files changed, 17 insertions(+), 7 deletions(-)
+> I checked the git log, ieee80211_sta_set_rx_nss() is added into
+> rate_control_rate_init() here for VHT, so is it correct to delete
+> ieee80211_sta_set_rx_nss() in rate_control_rate_init()?
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?id=
+=3D8921d04e8df7475d733d853564bdb001e83bf33f
+> >=20
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index d7c5bfec7283..555dab53dee7 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -2041,7 +2041,7 @@ static void ath10k_mac_vif_ap_csa_count_down(struct ath10k_vif *arvif)
- 		return;
- 
- 	if (!ieee80211_beacon_cntdwn_is_complete(vif)) {
--		ieee80211_beacon_update_cntdwn(vif);
-+		ieee80211_beacon_update_cntdwn(vif, 0);
- 
- 		ret = ath10k_mac_setup_bcn_tmpl(arvif);
- 		if (ret)
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 6ed036b51dba..46dd7b1c6d6e 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1588,7 +1588,7 @@ void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif)
- 	arvif->bcca_zero_sent = false;
- 
- 	if (vif->bss_conf.color_change_active)
--		ieee80211_beacon_update_cntdwn(vif);
-+		ieee80211_beacon_update_cntdwn(vif, 0);
- 	ath11k_mac_setup_bcn_tmpl(arvif);
- }
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index b69f8af47d14..12243d413d19 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1467,7 +1467,7 @@ static void iwl_mvm_csa_count_down(struct iwl_mvm *mvm,
- 	mvmvif->csa_countdown = true;
- 
- 	if (!ieee80211_beacon_cntdwn_is_complete(csa_vif)) {
--		int c = ieee80211_beacon_update_cntdwn(csa_vif);
-+		int c = ieee80211_beacon_update_cntdwn(csa_vif, 0);
- 
- 		iwl_mvm_mac_ctxt_beacon_changed(mvm, csa_vif,
- 						&csa_vif->bss_conf);
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index bce7102a439c..ce6a7eb74f0e 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -5435,6 +5435,7 @@ static inline struct sk_buff *ieee80211_beacon_get(struct ieee80211_hw *hw,
- /**
-  * ieee80211_beacon_update_cntdwn - request mac80211 to decrement the beacon countdown
-  * @vif: &struct ieee80211_vif pointer from the add_interface callback.
-+ * @link_id: valid link_id during MLO or 0 for non-MLO
-  *
-  * The beacon counter should be updated after each beacon transmission.
-  * This function is called implicitly when
-@@ -5444,7 +5445,8 @@ static inline struct sk_buff *ieee80211_beacon_get(struct ieee80211_hw *hw,
-  *
-  * Return: new countdown value
-  */
--u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif);
-+u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif,
-+				  unsigned int link_id);
- 
- /**
-  * ieee80211_beacon_set_cntdwn - request mac80211 to set beacon countdown
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index a984fc54644e..ab259647dd27 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5032,16 +5032,24 @@ static u8 __ieee80211_beacon_update_cntdwn(struct beacon_data *beacon)
- 	return beacon->cntdwn_current_counter;
- }
- 
--u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif)
-+u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif, unsigned int link_id)
- {
- 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-+	struct ieee80211_link_data *link;
- 	struct beacon_data *beacon = NULL;
- 	u8 count = 0;
- 
-+	if (WARN_ON(link_id > IEEE80211_MLD_MAX_NUM_LINKS))
-+		return 0;
-+
- 	rcu_read_lock();
- 
-+	link = rcu_dereference(sdata->link[link_id]);
-+	if (!link)
-+		goto unlock;
-+
- 	if (sdata->vif.type == NL80211_IFTYPE_AP)
--		beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
-+		beacon = rcu_dereference(link->u.ap.beacon);
- 	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
- 		beacon = rcu_dereference(sdata->u.ibss.presp);
- 	else if (ieee80211_vif_is_mesh(&sdata->vif))
-@@ -5282,7 +5290,7 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
- 
- 	if (beacon->cntdwn_counter_offsets[0]) {
- 		if (!is_template)
--			ieee80211_beacon_update_cntdwn(vif);
-+			ieee80211_beacon_update_cntdwn(vif, link->link_id);
- 
- 		ieee80211_set_beacon_cntdwn(sdata, beacon, link);
- 	}
--- 
-2.17.1
+Well we'll have to call it appropriately when rate_control_rate_init()
+is called today, and then the new places in your patch, I guess.
 
+But I per the above that makes more sense semantically, since we don't
+support software rate control on link stations.
+
+johannes
