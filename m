@@ -2,97 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D953F7AF594
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 22:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0BF47AF6B0
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Sep 2023 01:20:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233344AbjIZUze (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Sep 2023 16:55:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55168 "EHLO
+        id S229905AbjIZXUL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Sep 2023 19:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231945AbjIZUzd (ORCPT
+        with ESMTP id S232555AbjIZXSK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Sep 2023 16:55:33 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21207120
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 13:55:26 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38QKqotK024854;
-        Tue, 26 Sep 2023 20:55:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=NnIaeCTQlLYMDfNRAjt6gC50u/rje7hYhGKQNRxrJbo=;
- b=XgwZxj3u67WADaYY/1TBnq6Q7rOyvbE+EUaHJG9JC2sSYbPJ7D/c0hVAD2Z5LffuLsre
- 3kI2yc9j+PUKfUUxz93B4EkBxdlsM61Rka/BjdpH8x0u8qwtiYgpNaqRYTFWX9HMXNym
- cvE5NfGmX7aXCEZANOAj8ICuM2gwDBI3gXcTTYmbXbG9jfG/a5WeT408++7DCIXEddTa
- 6I9SeePVZt//rpBGnWPx27A44lfTCdh57E0S5ZioX2vfYp6lm9sJyGermrQ0MPNp0BaY
- lKdFowkb8KUL0GjTZzXFfXNx23MgLTwocvVAfLCwpK2zG93+n+ZUTGpYQvVJKquEIgxR 6w== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tbv661stb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 20:55:18 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38QKtH2l009275
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 20:55:17 GMT
-Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 26 Sep
- 2023 13:55:17 -0700
-Message-ID: <70a75205-8f27-4e73-9d32-d92b6f7bec68@quicinc.com>
-Date:   Tue, 26 Sep 2023 13:55:16 -0700
+        Tue, 26 Sep 2023 19:18:10 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A48F649C5
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 15:20:35 -0700 (PDT)
+X-UUID: e50090465cba11ee8051498923ad61e6-20230927
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=wh7XXbbE9dPhO5x00gz66x2RM9r1g2P9zNdBAYceaHc=;
+        b=CQdhlxEQ0/08MAcm7FY+C22YAfc8PZmuiWZd3xltME52oH0vYu3TvqDzy05BeCBQa/BYJUg42tz2Xt8xd88M+Tci69b6DXaa+jcgH6RB7Ptcp5yly5CfpPBHXttkyKrisXaEj7rBPD3XzN+R5P2NuhD1VdqVFLdY9UMHryHdQnQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.32,REQID:97b0cf78-54b3-4d65-b032-d1c9e2c34124,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:5f78ec9,CLOUDID:d85d6814-4929-4845-9571-38c601e9c3c9,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+        NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: e50090465cba11ee8051498923ad61e6-20230927
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1377897361; Wed, 27 Sep 2023 06:20:27 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Wed, 27 Sep 2023 06:20:26 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Wed, 27 Sep 2023 06:20:26 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <jsiuda@google.com>, <arowa@google.org>, <frankgor@google.com>,
+        <kuabhs@google.com>, <druth@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH] wifi: mt76: reduce spin_lock_bh held up in mt76_dma_rx_cleanup
+Date:   Wed, 27 Sep 2023 06:20:25 +0800
+Message-ID: <4983e1bf8f5e707a67bf6b04a0cbdce359110f48.1695766375.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath11k: mac: fix struct
- ieee80211_sband_iftype_data handling
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230926163350.2641064-1-kvalo@kernel.org>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230926163350.2641064-1-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: GIGySks6rvU9zN3uuTIl6PTo12ebh1gr
-X-Proofpoint-GUID: GIGySks6rvU9zN3uuTIl6PTo12ebh1gr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-26_15,2023-09-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 mlxlogscore=930 bulkscore=0 phishscore=0 suspectscore=0
- clxscore=1015 impostorscore=0 mlxscore=0 adultscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309260180
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,SPF_HELO_PASS,SPF_PASS,
+        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/26/2023 9:33 AM, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> Commit e8c1841278a7 ("wifi: cfg80211: annotate iftype_data pointer with
-> sparse") added sparse checks for struct ieee80211_sband_iftype_data handling
-> which immediately found an issue in ath11k:
-> 
-> drivers/net/wireless/ath/ath11k/mac.c:7952:22: warning: incorrect type in argument 1 (different address spaces)
-> drivers/net/wireless/ath/ath11k/mac.c:7952:22:    expected struct ieee80211_sta_he_cap const *he_cap
-> drivers/net/wireless/ath/ath11k/mac.c:7952:22:    got struct ieee80211_sta_he_cap const [noderef] __iftype_data *
-> 
-> The problem here is that we are accessing sband->iftype_data directly even
-> though we should use for_each_sband_iftype_data() or similar. Fortunately
-> there's ieee80211_get_he_iftype_cap_vif() which is just we need here so use it
+From: Sean Wang <sean.wang@mediatek.com>
 
-nit: just *what* we need
+mt76_dma_rx_cleanup would be frequenetly called up to reset the dma rings
+to be freshed as new ones when switching back from the deep sleep mode to
+the active mode on mt7921 and mt7922.
 
-> to get HE capabilities.
+Shrink the scope of spin_lock_bh in mt76_dma_rx_cleanup being held up
+to allow the kernel scheduler to be able to switch other tasks in time
+by reducing the latency.
+
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/dma.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 643e18ebb5ee..5f31d4d6a640 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -739,16 +739,18 @@ mt76_dma_rx_cleanup(struct mt76_dev *dev, struct mt76_queue *q)
+ 	if (!q->ndesc)
+ 		return;
+ 
+-	spin_lock_bh(&q->lock);
+-
+ 	do {
++		spin_lock_bh(&q->lock);
+ 		buf = mt76_dma_dequeue(dev, q, true, NULL, NULL, &more, NULL);
++		spin_unlock_bh(&q->lock);
++
+ 		if (!buf)
+ 			break;
+ 
+ 		mt76_put_page_pool_buf(buf, false);
+ 	} while (1);
+ 
++	spin_lock_bh(&q->lock);
+ 	if (q->rx_head) {
+ 		dev_kfree_skb(q->rx_head);
+ 		q->rx_head = NULL;
+-- 
+2.25.1
 
