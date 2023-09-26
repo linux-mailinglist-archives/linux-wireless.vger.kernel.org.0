@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7199A7AE980
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 11:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B039E7AE982
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 11:45:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234206AbjIZJoR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Sep 2023 05:44:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46744 "EHLO
+        id S234215AbjIZJpu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Sep 2023 05:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234175AbjIZJoP (ORCPT
+        with ESMTP id S234133AbjIZJpt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Sep 2023 05:44:15 -0400
+        Tue, 26 Sep 2023 05:45:49 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F13F811F
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 02:44:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64E6FBE
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 02:45:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=HmkCa+CDajndIlz08jjKz46l6h4i8QXpU+sUtr7YgfM=;
-        t=1695721449; x=1696931049; b=qHSoX/eXRJSk8C4PetB6fCPtSMXwCDaMNqcLjAeEqJUifYN
-        6AZxGh4hCLk8kZQSRD1G03XAutBduSiBKKLY777ogY3xy5N43zwx2qmQUkoDOl+01YXHdW1kL17TX
-        hlAQzuZU8KWt/5GXI7L9sAXnWHcSKY+9ebeyLl4Asfhe7JyEo4tR+rYAkKSH/g98EwQ0Gdh5UEC/6
-        Udhj0lXB/jCLaUH8U0iXMQcfivGxIoHaU8fLN3u4aNSU9olqX4s0s7yB9xBO2pqG7UmjbO7oN/5zV
-        SE67xUnP8lq+oRniyn2Yp5SJAUiYrBfENW2ETFIEYHuwpHCITicKfGVZ1ink8Mmw==;
+        Resent-Cc:Resent-Message-ID; bh=cKtdQqDRUJj7y/VLgZzxcJrmVo/eQVJf4ZnkNLE6taM=;
+        t=1695721542; x=1696931142; b=lZAke8xHmlH8AdciDVEhtzCd2nvkYAAnhCctv5NlTNHrZ2y
+        0Upg/k7Ix6vDBDiVcEEavcG9XgN3tP/WblFu0Or24QDPpG4mMxQBLkwpZOIYxaoIo7r2Ain/C3v5M
+        7Pd3GXMGmUspHHdlz9OmrvT2c/U6v92hbsy3+Inz5KYMlyrMCQfUxY/eq3p6aQlI2x/ZOhb+/Wgpy
+        Z/X4mEkjbff3rvthk9M2ddNBbKV/ECIvOsqn5dwyB0ELugHbiTVfHc1HQilfprXt/wOjyiIyjNWWi
+        0EjOju0ePZm4S9Ok56hKskFe4XXP4cCfDe1MoH1DJVoSWeD7qAG8MYoFNd6MWszg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1ql4br-005RiW-1I;
-        Tue, 26 Sep 2023 11:44:03 +0200
-Message-ID: <18228b58173d9f33b1c3ddda9df5b3c4b49fb075.camel@sipsolutions.net>
-Subject: Re: [PATCH 3/3] wifi: mac80211: update link RX NSS by
- ieee80211_sta_set_rx_nss() in ieee80211_assoc_config_link()
+        id 1ql4dN-005Rpq-16;
+        Tue, 26 Sep 2023 11:45:37 +0200
+Message-ID: <4dac29f3844309fb62afe6acd4c4ebd379b0a194.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/3] wifi: mac80211: add support to allow driver to
+ generate local link address for station
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Wen Gong <quic_wgong@quicinc.com>, ath12k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 26 Sep 2023 11:44:02 +0200
-In-Reply-To: <bfdcbf9a-0b27-1f7e-3eca-7390a9a7404e@quicinc.com>
+Date:   Tue, 26 Sep 2023 11:45:36 +0200
+In-Reply-To: <d23b617e-5ca0-e721-0c2a-fcca8942efef@quicinc.com>
 References: <20230906103458.24092-1-quic_wgong@quicinc.com>
-         <20230906103458.24092-4-quic_wgong@quicinc.com>
-         <e6ea3009c489fae910adbf2e1c766f2d827f287f.camel@sipsolutions.net>
-         <bfdcbf9a-0b27-1f7e-3eca-7390a9a7404e@quicinc.com>
+         <20230906103458.24092-2-quic_wgong@quicinc.com>
+         <cd762f33b1c15566237c85f1e265ee8a00006f5c.camel@sipsolutions.net>
+         <d23b617e-5ca0-e721-0c2a-fcca8942efef@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -56,51 +56,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-09-15 at 16:43 +0800, Wen Gong wrote:
-> On 9/13/2023 5:04 PM, Johannes Berg wrote:
+On Fri, 2023-09-15 at 16:11 +0800, Wen Gong wrote:
+> On 9/13/2023 4:55 PM, Johannes Berg wrote:
 > > On Wed, 2023-09-06 at 06:34 -0400, Wen Gong wrote:
-> > > Currently for MLO connection, only deflink's rx_nss is set to correct
-> > > value. The others links' rx_nss of struct ieee80211_link_sta is
-> > > value 0 in ieee80211_set_associated(), because they are not pass into
-> > > ieee80211_sta_set_rx_nss() in mac80211 except the deflink in
-> > > rate_control_rate_init(). This leads driver get NSS =3D 0 for other l=
-inks.
-> > > Add the ieee80211_sta_set_rx_nss() in ieee80211_assoc_config_link(),
-> > > then the other links' rx_nss will be set to the correct value.
-> > This is pretty much true, but I also think it's problematic the way you
-> > phrase it. Software rate control is pretty much, at least currently,
-> > _not_ supported for MLO (and I don't really see how to support it, if
-> > firmware picks the link to transmit on, as it probably should).
-> I searched all the folder wireless, I only found 5 places have the=20
-> handler of rate_init below,
-> and the functions are all empty. Is it means no driver support rate_init=
-=20
-> currently?
-> drivers/net/wireless/realtek/rtlwifi/rc.c:304:=C2=A0=C2=A0=C2=A0=C2=A0 .r=
-ate_init =3D=20
-> rtl_rate_init,
-> drivers/net/wireless/intel/iwlwifi/mvm/rs.c:4098:=C2=A0 .rate_init =3D=
-=20
-> rs_rate_init_ops,
-> drivers/net/wireless/intel/iwlwifi/dvm/rs.c:3276:=C2=A0 .rate_init =3D=
-=20
-> rs_rate_init_stub,
-> drivers/net/wireless/intel/iwlegacy/4965-rs.c:2779: .rate_init =3D=20
-> il4965_rs_rate_init_stub,
-> drivers/net/wireless/intel/iwlegacy/3945-rs.c:867: .rate_init =3D=20
-> il3945_rs_rate_init_stub,
 > [...]
+> > Maybe after all this explanation, all we need is a flag "reuse MLD
+> > address for assoc link"?
 >=20
+> yes. It is similar as I said before here:
+>=20
+> https://lore.kernel.org/linux-wireless/b9c6d022-12c3-a696-c4b9-cb14a6d30a=
+45@quicinc.com/
+>=20
+> >=20
+> >=20
+> > > +		ret =3D drv_generate_link_addr(sdata->local, sdata,
+> > > +					     link_id, link->conf->addr);
+> > > +		if (ret)
+> > > +			eth_random_addr(link->conf->addr);
+> > should probably refactor this into a separate function though.
+> OK.
+> >=20
+> > I'm also not sure how the driver even knows that a link it's being aske=
+d
+> > to get the address for *is* the assoc link? Do you want to rely on that
+> > being the first address handed out?
+> Current I used (vif->valid_links=3D=3D0) check for assoc link. When
+> drv_generate_link_addr() called for the assoc link, vif->valid_links
+> is 0, and it is not 0 for other links.
 
-Well, many other drivers use minstrel, and the _stub ones in intel are
-atually not doing anything.
+That seems a bit questionable?
 
-So most drivers would use=20
+Well then again, what do you want for AP mode? Anyway you can still
+distinguish, and if we later need to change an internal API that's not
+the end of the world either ...
 
-net/mac80211/rc80211_minstrel_ht.c:     .rate_init =3D
-minstrel_ht_rate_init,
-
-here.
+So OK, I guess we can live with this, just would like to see it wrapped
+up into a single function.
 
 johannes
-
