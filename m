@@ -2,97 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 045CF7AF03B
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 18:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A4E07AF051
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 18:10:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235176AbjIZQGr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Sep 2023 12:06:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50738 "EHLO
+        id S234564AbjIZQKN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Sep 2023 12:10:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235111AbjIZQGq (ORCPT
+        with ESMTP id S231300AbjIZQKM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Sep 2023 12:06:46 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAB6411D
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 09:06:39 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38QD4kUb019616;
-        Tue, 26 Sep 2023 16:06:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=Hmvi5r0uoIOfgf9Tuw7hGOKzWO5Nc0N/qKV4SUrHuFs=;
- b=BGd0YDQeCLiqVXLvPCFd2kz/g6Uw/CXwrbOAUFjQjbaeYpv55W7JWQCmutO0LPhIZ9M0
- Z5n5wcLli+xmo6pyaSAX8a2I/zqizxeX06eeNuquOr/Dw5+soXvu+fyv3h7kqKH7lfAp
- lJGcs6xcNZt8U0SLSU1v7MebpPub+9gMe7l1Ls2vgXPIrkFnVhMwrSLpzKD7jFN3PWAV
- Lx+Nfo+2hOyVvjqyyQ/AVgwxT+axOiXQDUtPgM50x1EXZZBddMKBVya5RGEE5thFT7dQ
- ENawB9ubZSDAkuLfD4L01vKV1TrMrTtIUMb4/9nnTU+uukdJ6sigSaoH//t7isTwNdye vg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tbw9bgxtb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 16:06:34 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38QG6YsM022120
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 16:06:34 GMT
-Received: from [10.48.244.213] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 26 Sep
- 2023 09:06:33 -0700
-Message-ID: <9bf5f334-2e4c-492f-8b8c-65b3ae08b0b9@quicinc.com>
-Date:   Tue, 26 Sep 2023 09:06:33 -0700
+        Tue, 26 Sep 2023 12:10:12 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824ED12A
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 09:10:05 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id 41be03b00d2f7-578e174660dso582491a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 09:10:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695744605; x=1696349405; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ng7mcmr4QJ6ZL7X9dSXkz6scbTE1whqwn58ZUV1v7fU=;
+        b=NaPrb46oYMRnlWFASyCQPR/r1KTaXYv7YnZxuPjaKLjFDNcTF68nRxUJgB48p3lXJq
+         T9OtzVRp1T0wyJDEaijObl4saAs8rOQR6e9RlVlnwHCiRTG83fvTwQswSyY4awKWSOW8
+         5sXEpmkyYylNEI6Z4pEOSaJOGkvrymZsWjxgUT7TymOK5I0DfMQ1+UrmRdvvgHEQBniE
+         5GNnTxfT6Njtf6mZAFTtWmejDjG7x6BXXpCyCk3rdcg31hvNlcZyCmn0SUtN7UPvkVay
+         E5dZKxloQcZRRwrPTA3UZ2BxzVt9tr/EoxP70/bax7JEtu6wqwdBFbD6fFwczaF5PYlY
+         d/Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695744605; x=1696349405;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ng7mcmr4QJ6ZL7X9dSXkz6scbTE1whqwn58ZUV1v7fU=;
+        b=MpOG9hUVM9GSRiBsIoZL0DCQ0TErFp9rWfsmD3cUo98H1FcHVGBgulakHxKgPkS4WS
+         9rUqQ5ZDWWrnlhYx/fTkNNVHBK5CmiNJwA4f4SI1z8v7eXhbZaxqQ3hFnBkPaYWFB4CF
+         ymfY36fbckLZwpK0blO2v8/ckHqmmy+8FJT1x9BmlIxos20cPQHkGa7Ua4jhkDh4Lx4V
+         CM/PebWDury7HIbV4xqe4bRVez2LpLtGerx6vSw3kX0j5XyV5mCU3rvK4Z0lRfpLX8TY
+         zlT7uQ68zW2h9aGub4fPJQnDs2cMoBKp+QzL0wYQGHDl03Mhisrq4OBDRI2aItTG73pM
+         JUSg==
+X-Gm-Message-State: AOJu0Yxbmxt1Kac4Usd3CRsg6sdtB50PS0dKlHU5JRR1M9OMVqVkLSrh
+        dBSx3Mj8wacFx/Uu5N6vtvSr9QEWNO5/tLK2bXE=
+X-Google-Smtp-Source: AGHT+IEnxdBawBX2wHUIU0/gS0lqHDW+IL7YzURAPMt0mh6z3TEqZ055rVfYRdhr12U4jnKwKvHQxJrl8VBby4c6gHc=
+X-Received: by 2002:a17:903:110d:b0:1c5:cd01:d846 with SMTP id
+ n13-20020a170903110d00b001c5cd01d846mr12363429plh.3.1695744604849; Tue, 26
+ Sep 2023 09:10:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [v2] wifi: ath11k: fix ath11k_mac_op_remain_on_channel()
- stack usage
-Content-Language: en-US
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     Tom Rix <trix@redhat.com>, Kalle Valo <kvalo@kernel.org>,
-        <linux-wireless@vger.kernel.org>
-References: <30dfbf07-9ec9-4ac9-8199-9f08dbe03739@quicinc.com>
- <20230926042906.13725-1-dmantipov@yandex.ru>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20230926042906.13725-1-dmantipov@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: X_gr59pGPrY44WuxdyXKlGqEomfLdeuz
-X-Proofpoint-ORIG-GUID: X_gr59pGPrY44WuxdyXKlGqEomfLdeuz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-26_13,2023-09-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 adultscore=0
- malwarescore=0 mlxscore=0 bulkscore=0 clxscore=1015 spamscore=0
- mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2309180000 definitions=main-2309260141
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a11:3a9:b0:4da:425a:267e with HTTP; Tue, 26 Sep 2023
+ 09:10:04 -0700 (PDT)
+Reply-To: stephenbord61@yahoo.com
+From:   Stephen Bordeaux <samu7582369@gmail.com>
+Date:   Tue, 26 Sep 2023 16:10:04 +0000
+Message-ID: <CAGykCHqtCd=86npscZS0oR7_3b4YB_wj+RK+s5Y=ipe0u3m_UQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.9 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/25/2023 9:29 PM, Dmitry Antipov wrote:
-> When compiling with clang 16.0.6, I've noticed the following:
-> 
-> drivers/net/wireless/ath/ath11k/mac.c:8903:12: warning: stack frame
-> size (1032) exceeds limit (1024) in 'ath11k_mac_op_remain_on_channel'
-> [-Wframe-larger-than]
-> static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
->             ^
-> 68/1032 (6.59%) spills, 964/1032 (93.41%) variables
-> 
-> So switch to kzalloc()'ed instance of 'struct scan_req_params' like
-> it's done in 'ath11k_mac_op_hw_scan()'. Compile tested only.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Dobr=C3=BD den
 
+Jsem Stephen Bordeaux, pr=C3=A1vn=C3=AD z=C3=A1stupce z advok=C3=A1tn=C3=AD=
+ kancel=C3=A1=C5=99e Bordeaux.
+Kontaktoval jsem v=C3=A1s ohledn=C4=9B poz=C5=AFstalosti fondu zesnul=C3=A9=
+ho Dr. Edwin ve
+v=C3=BD=C5=A1i 8,5 milionu dolar=C5=AF, kter=C3=A9 maj=C3=AD b=C3=BDt repat=
+riov=C3=A1ny na v=C3=A1=C5=A1 =C3=BA=C4=8Det.
+Nav=C3=ADc v t=C3=A9to transakci chci, abyste odpov=C4=9Bd=C4=9Bli d=C5=AFv=
+=C4=9Brn=C4=9B.
 
+Stephen Bordeaux
