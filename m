@@ -2,50 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 779D67AE381
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 03:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA19E7AE38E
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 04:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232474AbjIZBzG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Sep 2023 21:55:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58956 "EHLO
+        id S232536AbjIZCDD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Sep 2023 22:03:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230054AbjIZBzG (ORCPT
+        with ESMTP id S229934AbjIZCDC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Sep 2023 21:55:06 -0400
+        Mon, 25 Sep 2023 22:03:02 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F4811F;
-        Mon, 25 Sep 2023 18:54:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65713DF;
+        Mon, 25 Sep 2023 19:02:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1695693297;
-        bh=HDZLuCU5ZxOEpFG2Eug34ssRxcz/61/hDfUmS5JlVAE=;
+        s=201702; t=1695693774;
+        bh=bbAcJayj1L84857O4FBA8j8oz+LRbSeUOuV7lWJ03ck=;
         h=Date:From:To:Cc:Subject:From;
-        b=liggGrUhFYLwEy1ikysvKkLCjE9d4cFFReTEi+ZMp/6KnM2sOJkE3jqAzPsjp8ZMx
-         CpLJRYwl4t6WhhyaZHKxxfwVr+8r29T00TWJecwuijyY1NIPkIKTlw+JSo2Ip7OKO+
-         mnhMsEn6RjX6907U+zwbEBzigPkkgUp8j/rCtgaMCnt6DEsOnjnbWrD9kVi0nBc08i
-         Z3BxCoRRxkgzjbbhwVLN/9qcUDSiclqqcAyslmDR4Q0gS+vTQymLDebLM3/fRV8sBv
-         SXA7cSyS11LCWOOLKNNGGHO6JNj43+W+3Mf+8EH4BIdy/lCGIVKdZLVZ7b02wFmD72
-         +k8wJfM/NcJ4Q==
+        b=fgnlhs7nWut1MvXLhBgAoJqVXIe81kmzYC22iwIEMNia+IqF8Srl/2ro+CQd12SdS
+         fLwXFuA4bO+MEj/4uUWWw5007o/kO8v47gKzJU3B8YTKa9b523IZA7u03BAzxFHoyA
+         VwdsSpav7Lyv4f/P/hZmkxkql491RRgrFotwDplBHZEt61Gu7iWW/jOULexpnZBlHj
+         dEdQtKeuk3Lz/RXKfT3eHOQCr1ien/bQGXca/aMzsovtHCvpdeNTf4XpmBbqKPHcvX
+         Hp2cNF+h1KSJMOK7hWXmyDBo+3fgfkmjTnr8kz3ZzcI3zKDm3gBZz0tHILcT2IvC+B
+         FPSjNhYqKjsfg==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4RvjVR02R0z4xPN;
-        Tue, 26 Sep 2023 11:54:54 +1000 (AEST)
-Date:   Tue, 26 Sep 2023 11:54:52 +1000
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rvjgf01Ttz4xP9;
+        Tue, 26 Sep 2023 12:02:53 +1000 (AEST)
+Date:   Tue, 26 Sep 2023 12:02:53 +1000
 From:   Stephen Rothwell <sfr@canb.auug.org.au>
 To:     Kalle Valo <kvalo@kernel.org>,
         Johannes Berg <johannes@sipsolutions.net>,
         Wireless <linux-wireless@vger.kernel.org>
-Cc:     Aloka Dixit <quic_alokad@quicinc.com>,
-        Franziska Naepelt <franziska.naepelt@googlemail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Johannes Berg <johannes.berg@intel.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the wireless-next tree with Linus' tree
-Message-ID: <20230926115452.68a71261@canb.auug.org.au>
+Subject: linux-next: manual merge of the wireless-next tree with the
+ wireless tree
+Message-ID: <20230926120253.4f1e5730@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/JalrC.AZ1PGpYjh_00BopLc";
+Content-Type: multipart/signed; boundary="Sig_/syRt0eOJQcCbFd=QbOtETN4";
  protocol="application/pgp-signature"; micalg=pgp-sha256
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS autolearn=ham
@@ -56,24 +54,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/JalrC.AZ1PGpYjh_00BopLc
+--Sig_/syRt0eOJQcCbFd=QbOtETN4
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
 Hi all,
 
-Today's linux-next merge of the wireless-next tree got a conflict in:
+Today's linux-next merge of the wireless-next tree got conflicts in:
 
-  drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+  net/mac80211/cfg.c
 
 between commit:
 
-  1d85bb7fd66a ("staging: rtl8723bs: Fix alignment open parenthesis")
+  31db78a4923e ("wifi: mac80211: fix potential key use-after-free")
 
-from Linus' tree and commit:
+from the wireless tree and commit:
 
-  66f85d57b710 ("wifi: cfg80211: modify prototype for change_beacon")
-  bb55441c57cc ("wifi: cfg80211: split struct cfg80211_ap_settings")
+  4d3acf4311a0 ("wifi: mac80211: remove sta_mtx")
 
 from the wireless-next tree.
 
@@ -88,39 +85,42 @@ complex conflicts.
 Cheers,
 Stephen Rothwell
 
-diff --cc drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-index af155fca39b8,1e683212027c..000000000000
---- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-+++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-@@@ -2317,9 -2318,8 +2317,9 @@@ static int cfg80211_rtw_start_ap(struc
-  	return ret;
+diff --cc net/mac80211/cfg.c
+index 0e3a1753a51c,5bc6b1329465..000000000000
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@@ -565,15 -561,7 +561,11 @@@ static int ieee80211_add_key(struct wip
+  		break;
+  	}
+ =20
+ -	return ieee80211_key_link(key, link, sta);
+ +	err =3D ieee80211_key_link(key, link, sta);
+ +	/* KRACK protection, shouldn't happen but just silently accept key */
+ +	if (err =3D=3D -EALREADY)
+ +		err =3D 0;
+-=20
+-  out_unlock:
+- 	mutex_unlock(&local->sta_mtx);
+-=20
+ +	return err;
   }
  =20
- -static int cfg80211_rtw_change_beacon(struct wiphy *wiphy, struct net_dev=
-ice *ndev,
- -		struct cfg80211_ap_update *info)
- +static int cfg80211_rtw_change_beacon(struct wiphy *wiphy,
- +				      struct net_device *ndev,
-- 				      struct cfg80211_beacon_data *info)
-++				      struct cfg80211_ap_update *info)
-  {
-  	struct adapter *adapter =3D rtw_netdev_priv(ndev);
- =20
+  static struct ieee80211_key *
 
---Sig_/JalrC.AZ1PGpYjh_00BopLc
+--Sig_/syRt0eOJQcCbFd=QbOtETN4
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmUSOewACgkQAVBC80lX
-0GzRkgf+LO1FZ7xB5Ik2HCu0EVzVKonj1o9b1DhJLcI5IXsN4LkMNNK9c+8f2haq
-qTHTdWlJEr+DNE/4yLHU5T+Kr9M1v+PcMcZ/4oYiXy6xspNLg1YMxmewYGFH60Z8
-gGNei3BmbVALMO/dtxY44SctP4brCshowGkxYj94a56cGZjIBlELbniID/ECVjb1
-SfAmPhcK4xv+vToOzzM8BDDxqQso0dZKz39djAwhVICQQ+HvAzc5yWALVpe6sGz6
-ooN6HMriAq20AFl26j8dBvSPcGEgQBzz1/5SieAEYV3F5MW/AZkjJcUcHgbDFhty
-lfChdMI8LlYdr7OXseWfvgtrdF3GVQ==
-=SBoU
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmUSO80ACgkQAVBC80lX
+0GzQLwgAnBH0KvaJHxWsSbMIwPyNkzaDt8WO3G8EXyCNl5WgLBMq4hzk0Y7dcvJ2
+KJQ2s7hh9GZXJ7KzF9hL68uhfNpWJzBZPpUVUokARPS0CceqSpvuJ9rN5RLzVoI4
+TOcSgxZpKUl74VbBDzrTPHz6D75Mke4UeVMHq2ZNy7coXOUmVxBwKkvvrjG3lUW7
+KfgG+XaviADGiXPPdKn5I9MVFuykqoaNK6n74sZVsbTU3yXl98vkeF2a5DLHbVmJ
+IAThVHIOH8Gi52stLz4na1gyHsh5BNhalCqNqZAtQyih7W7BRwqYwFo3jr7dD1ls
+ilWn+L86bQrpwEUMMdz7zejT8VnOZA==
+=WjiI
 -----END PGP SIGNATURE-----
 
---Sig_/JalrC.AZ1PGpYjh_00BopLc--
+--Sig_/syRt0eOJQcCbFd=QbOtETN4--
