@@ -2,85 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 241CE7AF0D6
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 18:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D6A07AF104
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 18:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235289AbjIZQgw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Sep 2023 12:36:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51610 "EHLO
+        id S235312AbjIZQoN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Sep 2023 12:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235275AbjIZQgt (ORCPT
+        with ESMTP id S231300AbjIZQoL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Sep 2023 12:36:49 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B9BB3
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 09:36:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B478C433C7;
-        Tue, 26 Sep 2023 16:36:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695746202;
-        bh=lP81uXoqChNq6ZrPgB/+WsvOkHx6EnfAUwM1LkqDnvU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=CKbs5rJ0/RY2YSaDoBpcEwpN4FKzVMUIxuRpWOM+IJXQ2cARULamePKKGm69YBj3a
-         EXewJ2LBEsDebRZ/p+APfg3H/NPIH4iJEc+NXT6O7V+oHn2srYUvSKWZU4x/ImzxFP
-         0sjfxyn0KglrgfqEVzsS68gEsIucNYWuAnlxZJ0MiOdFfkdd6/Qxtlj1JiiThr/W9L
-         8XNCHKK5ImfQZfhNu0VjiBd49YM+mf1mRFKlc9Z5rQQw7xKCcgigYc7cVOTYpoKvAT
-         6mgw7agEBRGD1D7qtsHMGAxrrp699ETLX7Fv4DgqnK1ope7UamRWOWzKt8/FtpmsEs
-         T9HA6pryhJYAA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
+        Tue, 26 Sep 2023 12:44:11 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A56D7B3
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 09:44:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=COVzJlCjkIJzEAzNkBevFRzBhs8gP5wTdIzIYOr5xsM=;
+        t=1695746644; x=1696956244; b=RzbzzZBE3tlOB/pnJHZJlJpIVcEjwxSAf/QBgUm/HMzDe20
+        pZ/XdKru3ZkTaEC4UVzVhMA9HyVXbwxP397Z9vq/KUvgTagvbOnhI+M+TC1k2arRMjPwqQuE7xZVl
+        Abbh5sG+OUs6j9Yd+mKvHmlDrdyt4kuoWj/ltOonOqTMUtFsx+QnXPyfnmIbpkOVtFX80xtNzsPqT
+        mJFv7huk83OP4L5H2X8NCWzwHBnDtpM8e9InWmyLzBOJQcC554J/gr0DjdtSesbHjqYC1mdRhZNW9
+        PTwuqCBloOMLCNwv9dQvhs8Xknm2QagLx+b7+ASUZ4qysq+Lx9sbLv1t9+SxszRQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qlBAD-005qwV-1s;
+        Tue, 26 Sep 2023 18:43:57 +0200
+Message-ID: <49b5de54ca00f5521ceaa8210f587f2af48d6835.camel@sipsolutions.net>
 Subject: Re: [PATCH v2] wifi: ath11k: mac: fix struct
  ieee80211_sband_iftype_data handling
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Kalle Valo <kvalo@kernel.org>, ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 26 Sep 2023 18:43:56 +0200
+In-Reply-To: <20230926163350.2641064-1-kvalo@kernel.org>
 References: <20230926163350.2641064-1-kvalo@kernel.org>
-Date:   Tue, 26 Sep 2023 19:36:40 +0300
-In-Reply-To: <20230926163350.2641064-1-kvalo@kernel.org> (Kalle Valo's message
-        of "Tue, 26 Sep 2023 19:33:50 +0300")
-Message-ID: <87jzsc99if.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+On Tue, 2023-09-26 at 19:33 +0300, Kalle Valo wrote:
+>=20
+> -	he_mcs_map =3D le16_to_cpu(ath11k_mac_get_tx_mcs_map(&sband->iftype_dat=
+a->he_cap));
+> +	he_cap =3D ieee80211_get_he_iftype_cap_vif(sband, arvif->vif);
+> +	he_mcs_map =3D le16_to_cpu(ath11k_mac_get_tx_mcs_map(he_cap));
 
-> From: Kalle Valo <quic_kvalo@quicinc.com>
->
-> Commit e8c1841278a7 ("wifi: cfg80211: annotate iftype_data pointer with
-> sparse") added sparse checks for struct ieee80211_sband_iftype_data handling
-> which immediately found an issue in ath11k:
->
-> drivers/net/wireless/ath/ath11k/mac.c:7952:22: warning: incorrect type
-> in argument 1 (different address spaces)
-> drivers/net/wireless/ath/ath11k/mac.c:7952:22: expected struct
-> ieee80211_sta_he_cap const *he_cap
-> drivers/net/wireless/ath/ath11k/mac.c:7952:22: got struct
-> ieee80211_sta_he_cap const [noderef] __iftype_data *
->
-> The problem here is that we are accessing sband->iftype_data directly even
-> though we should use for_each_sband_iftype_data() or similar. Fortunately
-> there's ieee80211_get_he_iftype_cap_vif() which is just we need here so use it
-> to get HE capabilities.
->
-> Tested-on: WCN6855 hw2.0 PCI
-> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
->
-> Reported-by: Johannes Berg <johannes@sipsolutions.net>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Technically, ieee80211_get_he_iftype_cap_vif() could return NULL if you
+didn't actually configure/enable HE for this iftype, the static checkers
+might complain here.
 
-Changelog for v2:
-
-* use ieee80211_get_he_iftype_cap_vif() instead of open coding it
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
