@@ -2,96 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED88A7AE30B
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 02:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68E977AE30E
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 02:47:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232218AbjIZApX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Sep 2023 20:45:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33454 "EHLO
+        id S231228AbjIZArZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Sep 2023 20:47:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232062AbjIZApV (ORCPT
+        with ESMTP id S231225AbjIZArY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Sep 2023 20:45:21 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C284B109;
-        Mon, 25 Sep 2023 17:45:14 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38Q0d24f007282;
-        Tue, 26 Sep 2023 00:45:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=O6GQ05kOGxAM4YVWuYvy/Z6qCm8b0cByMPYMw3YB4JM=;
- b=AwQBw2qxwifO7KpAe1UD3QIB708vj5pk0zHgX+ruoQ6zpdrU5QWiqjFTRikytqg+YftE
- 7KUeMdAAgMXzWgysskXIGzId3cpvYSg5nfttzBXTJZQ+Sz3vUjkWcSFsTh2wBbO7PXI6
- iHtYwmRjEHi30t7F5Lb5bvxxmOoTicZKhpePDyuRFfsVL4zNka6xDhdJJlUDpAKrnS1f
- CkXhTa1FLj7BW/ih7suAoqFZjvECfI7LhLYjL39mJT7gW9su+L8kHghgiUKfrZ222Gm5
- jIlJmhPJaY26pIxKDj3A4rEhaK+CpP6UU8h8dIXLrPFrJ4/gqOArViYnQQwoS7gFH/3c JQ== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tb72shw18-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 00:45:11 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38Q0jABd019002
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 00:45:10 GMT
-Received: from [10.48.244.213] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 25 Sep
- 2023 17:45:10 -0700
-Message-ID: <5591d8a4-24be-4288-88df-29fd5a11ac66@quicinc.com>
-Date:   Mon, 25 Sep 2023 17:45:10 -0700
+        Mon, 25 Sep 2023 20:47:24 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED81210E
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 17:47:17 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38Q0lDuoD152244, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38Q0lDuoD152244
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Sep 2023 08:47:13 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Tue, 26 Sep 2023 08:47:14 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Tue, 26 Sep 2023 08:47:14 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
+ RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
+ 15.01.2375.007; Tue, 26 Sep 2023 08:47:14 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: On spatial multiplexing power save in rtlwifi (rtl8192de)
+Thread-Topic: On spatial multiplexing power save in rtlwifi (rtl8192de)
+Thread-Index: AQHZ7Vw3lfMaOFz5bUyjspm8JXQNYbAsR+/g
+Date:   Tue, 26 Sep 2023 00:47:14 +0000
+Message-ID: <cde3d672cc2a48cf8f41928b38ca2f25@realtek.com>
+References: <16576ef1-55a1-5efd-9f0e-1a0d8aa8cada@yandex.ru>
+In-Reply-To: <16576ef1-55a1-5efd-9f0e-1a0d8aa8cada@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-originating-ip: [172.21.69.25]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next 2/2] ath: dfs_pattern_detector: Use flex
- array to simplify code
-Content-Language: en-US
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Kalle Valo <kvalo@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>
-References: <ad8c55b97ee4b330cb053ce2c448123c309cc91c.1695538105.git.christophe.jaillet@wanadoo.fr>
- <1920cc38db2e570633e13b37d50852f3202a7270.1695538105.git.christophe.jaillet@wanadoo.fr>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <1920cc38db2e570633e13b37d50852f3202a7270.1695538105.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: PcxPwyF9f3xd-1O33kimOP-_8PQf5iQM
-X-Proofpoint-ORIG-GUID: PcxPwyF9f3xd-1O33kimOP-_8PQf5iQM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-25_19,2023-09-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- mlxscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- malwarescore=0 adultscore=0 mlxlogscore=850 spamscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309260003
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/23/2023 11:57 PM, Christophe JAILLET wrote:
-> At the time of the writing, the value of 'num_radar_types' is 7 or 9. So
-> on a 64 bits system, only 56 or 72 bytes are allocated for the
-> 'detectors' array.
-> 
-> Turn it into a flex array, in order to simplify memory management and save
-> an indirection when the array is used.
-> 
-> Doing so, cd->detectors can't be NULL, and channel_detector_exit() can be
-> simplified as well.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRG1pdHJ5IEFudGlwb3Yg
+PGRtYW50aXBvdkB5YW5kZXgucnU+DQo+IFNlbnQ6IEZyaWRheSwgU2VwdGVtYmVyIDIyLCAyMDIz
+IDk6NTQgUE0NCj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiBDYzog
+bGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IE9uIHNwYXRpYWwgbXVs
+dGlwbGV4aW5nIHBvd2VyIHNhdmUgaW4gcnRsd2lmaSAocnRsODE5MmRlKQ0KPiANCj4gU2hvdWxk
+bid0ICdydGw5MmRlX3VwZGF0ZV9oYWxfcmF0ZV90YWJsZSgpJyBhdm9pZCBoYXJkY29kZWQgJ21p
+bW9fcHMnDQo+IGJ1dCByYXRoZXIgZXh0cmFjdCBpdCBmcm9tICdzdHJ1Y3QgcnRsX3N0YV9pbmZv
+JyBsaWtlIGl0J3MgZG9uZSBpbg0KPiAncnRsOTJkZV91cGRhdGVfaGFsX3JhdGVfbWFzaygpJz8N
+Cj4gDQoNClRoZSBpbml0aWFsIGNvbW1pdCAzYWZmZGY0MjM3M2UgKCJydGx3aWZpOiBydGw4MTky
+ZGU6IE1lcmdlIGhhcmR3YXJlIHJvdXRpbmVzIikNCmlzIGFzIGl0IGlzLCBhbmQgSSdtIG5vdCBj
+bGVhciB0aGUgcmVhc29uIHdoeSBoYXJkY29kZSAnbWlub19wcycuIElJUkMsDQp0aGlzIGNoaXAg
+aGFzIHR3byBQSFksIHNvIGl0IGNvdWxkIGJlIGNvbmZpZ3VyZWQgYXMgdHdvIGludGVyZmFjZXMs
+IGFuZCBlYWNoDQpvbmUgd29ya3MgYXMgMVQxUiBtb2RlLiBNYXliZSwgdGhpcyBpcyB0aGUgcmVh
+c29uLi4uIA0KDQpDcnJlbnRseSwgcnRscHJpdi0+ZG0udXNlcmFtYXNrIGlzIGFsd2F5cyB0cnVl
+IGZvciBydGw4MTkyZGUsIHNvDQpydGw5MmRlX3VwZGF0ZV9oYWxfcmF0ZV90YWJsZSgpIHNob3Vs
+ZCBub3QgYmUgY2FsbGVkOiANCg0KCWlmIChydGxwcml2LT5kbS51c2VyYW1hc2spDQoJCXJ0bDky
+ZGVfdXBkYXRlX2hhbF9yYXRlX21hc2soaHcsIHN0YSwgcnNzaV9sZXZlbCwgdXBkYXRlX2J3KTsN
+CgllbHNlDQoJCXJ0bDkyZGVfdXBkYXRlX2hhbF9yYXRlX3RhYmxlKGh3LCBzdGEpOw0KDQpTaW5j
+ZSBJIGRvbid0IGhhdmUgYSBoYXJkd2FyZSB0byBkbyBhIHJlYWwgdGVzdCwgbm8gaWRlYSB0byB5
+b3VyIHF1ZXN0aW9uLiANCg0KUGluZy1LZQ0KDQo=
