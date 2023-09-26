@@ -2,51 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 429A67AE767
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 10:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A33E7AE768
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 10:07:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233828AbjIZIHm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Sep 2023 04:07:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45510 "EHLO
+        id S231908AbjIZIHo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Sep 2023 04:07:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233714AbjIZIHk (ORCPT
+        with ESMTP id S233829AbjIZIHm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Sep 2023 04:07:40 -0400
+        Tue, 26 Sep 2023 04:07:42 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B482C10A
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 01:07:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F4A7FC
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Sep 2023 01:07:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695715653; x=1727251653;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=xJFpSrMR2PfBNDT0v2TyQYC6jpMJwP7jbNB7opoco7k=;
-  b=FZPDMnS+FgfFIaW1qr/pxk/8yZvBhP2T+7LZ0O8CrUs4KgqvU6xiNtaS
-   C54nFe5u+ZRC89Iq2/RgXE4XFM6JnaaysTS8o62V2A1Go/DyuAnT82do6
-   nNv+e5lvlDNvTrGzp9kYAQf6Egw45dIWyGqWesUZf/wufLiOF9LEeA0q0
-   ddeyI1BnuCDNDSBbvDYF/ErsNPP0qDfvI2kvxKQFis49gg+DFJxH1w9b4
-   Co/CVUpAWwgcIKguzZYrhJwTvgskYK/juBEwLCa9dM3Nkz89RsZ4NOPDE
-   qwY5Oq7ESjAfJwIKRZVdaiZe0txObLRk2XpzF0qsRYH/p26suiD33nZcA
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="467797220"
+  t=1695715656; x=1727251656;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=shP0liIzuLg4auyW1ffFDnjNNe9mZbNVfTHCZnudP5I=;
+  b=GN3aFqnYQz2Hpu1XVL9uKeesvTuRsxxOEIWk+tk7JBeae3qQ4HXyR0CV
+   ZN0VkKCTZ4/zUkOK2nNoVV+ESPzRjBBZNF1HSzwN28leU3tRKNBEq9EpB
+   z5a+vw/PGUzWH+/fT6EnxWDuKopPkWK+Tqu1iFF2ifLzRP4H+ZsmZaaik
+   XWoT1G5aACpJCYAesZIQVMiazaktfn1UUg6gWrdosx8Cd3i1eMJk29WQm
+   WCi7iuiviQ/XDm809KvMV6a3ZJPDLP1Ve8nvfsfkuQTkehXUZdYgepOjb
+   xpPTBX2ShNv9/iLg+lirDg9bfZZ/5PDg7Nwy9sJ3I1OKE5MQazrlyn9Ze
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="467797229"
 X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; 
-   d="scan'208";a="467797220"
+   d="scan'208";a="467797229"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 01:07:33 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 01:07:36 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="698369252"
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="698369257"
 X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; 
-   d="scan'208";a="698369252"
+   d="scan'208";a="698369257"
 Received: from nbenitzh-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.178.250])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 01:07:31 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 01:07:34 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
+        Avraham Stern <avraham.stern@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 0/9] wifi: iwlwifi: updates - 2023-09-26 
-Date:   Tue, 26 Sep 2023 11:07:12 +0300
-Message-Id: <20230926080721.876640-1-gregory.greenman@intel.com>
+Subject: [PATCH 1/9] wifi: iwlwifi: mvm: update station's MFP flag after association
+Date:   Tue, 26 Sep 2023 11:07:13 +0300
+Message-Id: <20230926110319.2488cbd01bde.Ic0f08b7d3efcbdce27ec897f84d740fec8d169ef@changeid>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230926080721.876640-1-gregory.greenman@intel.com>
+References: <20230926080721.876640-1-gregory.greenman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -58,43 +61,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-Hi,
+The management frames protection flag is always set when the station
+is not yet authorized. However, it was not cleared after association
+even if the association did not use MFP. As a result, all public
+action frames are not parsed by fw (which will cause FTM to fail,
+for example). Update the station MFP flag after the station is
+authorized.
 
-This patch set includes iwlwifi patches intended for v6.7.
-It contains bugfixes and advances firmware version to 84.
+Fixes: 4c8d5c8d079e ("wifi: iwlwifi: mvm: tell firmware about per-STA MFP enablement")
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Thanks,
-Gregory
-
-Avraham Stern (2):
-  wifi: iwlwifi: mvm: update station's MFP flag after association
-  wifi: iwlwifi: mvm: fix removing pasn station for responder
-
-Gregory Greenman (1):
-  wifi: iwlwifi: bump FW API to 84 for AX/BZ/SC devices
-
-Johannes Berg (6):
-  wifi: iwlwifi: pcie: propagate iwl_pcie_gen2_apm_init() error
-  wifi: iwlwifi: skip opmode start retries on dead transport
-  wifi: iwlwifi: fix opmode start/stop race
-  wifi: iwlwifi: pcie: clean up WFPM control bits
-  wifi: iwlwifi: mvm: offload IGTK in AP if BIGTK is supported
-  wifi: iwlwifi: mvm: use correct sta ID for IGTK/BIGTK
-
- .../net/wireless/intel/iwlwifi/cfg/ax210.c    |  2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |  2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |  2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  | 19 ++++++++++-------
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  1 -
- .../intel/iwlwifi/mvm/ftm-responder.c         |  9 ++++++--
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 21 ++++++++++++++++---
- .../net/wireless/intel/iwlwifi/mvm/mld-key.c  |  9 ++++++--
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  4 ++--
- .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  5 ++++-
- 10 files changed, 53 insertions(+), 21 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 6fc5b3f22746..f9a4168e3e1a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3809,6 +3809,12 @@ iwl_mvm_sta_state_assoc_to_authorized(struct iwl_mvm *mvm,
+ 
+ 	iwl_mvm_rs_rate_init_all_links(mvm, vif, sta);
+ 
++	/* MFP is set by default before the station is authorized.
++	 * Clear it here in case it's not used.
++	 */
++	if (!sta->mfp)
++		return callbacks->update_sta(mvm, vif, sta);
++
+ 	return 0;
+ }
+ 
 -- 
 2.38.1
 
