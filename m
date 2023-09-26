@@ -2,125 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA19E7AE38E
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 04:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94ECB7AE393
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 04:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232536AbjIZCDD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Sep 2023 22:03:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
+        id S233179AbjIZCHD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Sep 2023 22:07:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229934AbjIZCDC (ORCPT
+        with ESMTP id S230098AbjIZCHC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Sep 2023 22:03:02 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65713DF;
-        Mon, 25 Sep 2023 19:02:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1695693774;
-        bh=bbAcJayj1L84857O4FBA8j8oz+LRbSeUOuV7lWJ03ck=;
-        h=Date:From:To:Cc:Subject:From;
-        b=fgnlhs7nWut1MvXLhBgAoJqVXIe81kmzYC22iwIEMNia+IqF8Srl/2ro+CQd12SdS
-         fLwXFuA4bO+MEj/4uUWWw5007o/kO8v47gKzJU3B8YTKa9b523IZA7u03BAzxFHoyA
-         VwdsSpav7Lyv4f/P/hZmkxkql491RRgrFotwDplBHZEt61Gu7iWW/jOULexpnZBlHj
-         dEdQtKeuk3Lz/RXKfT3eHOQCr1ien/bQGXca/aMzsovtHCvpdeNTf4XpmBbqKPHcvX
-         Hp2cNF+h1KSJMOK7hWXmyDBo+3fgfkmjTnr8kz3ZzcI3zKDm3gBZz0tHILcT2IvC+B
-         FPSjNhYqKjsfg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rvjgf01Ttz4xP9;
-        Tue, 26 Sep 2023 12:02:53 +1000 (AEST)
-Date:   Tue, 26 Sep 2023 12:02:53 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the wireless-next tree with the
- wireless tree
-Message-ID: <20230926120253.4f1e5730@canb.auug.org.au>
+        Mon, 25 Sep 2023 22:07:02 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5FD8D8;
+        Mon, 25 Sep 2023 19:06:55 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-59f7cc71e2eso39832367b3.0;
+        Mon, 25 Sep 2023 19:06:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695694015; x=1696298815; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KW9OTVtKUcJ1r6ahtEjJyCkdCwhSV0YXVMo8xFwAxVM=;
+        b=K2bRV28+dRZCt/LOuaOeytoWqkNVeAwwnenQa3QIQrVsxr29SBBH1F0jygk7GvorgD
+         TR0HrLnmRyWZdpMtofma4ZKKT5Y9OBZ7I6hlHIJJ8jTmyd9ZDOztZ2Vc7shpt8Y4aMyo
+         AEp15+bqMUtmVdPRJsxX+rfa3noDmYkAi7oIAUJPqVkZwSM8OmEdMD/uQIVnu42dMQdb
+         F7sUAHXISpdxcj/xi7GjttaZbC3bnkI34A5JohOwEfq25yflzQOo7E5dZ4ixyAqWmBCV
+         qXm/DHxFMgSDAy962GOzgWEe/XZsrUf+rihplIN9IfUZBebfK9Mo2H1+HxDHKBVh754d
+         n2Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695694015; x=1696298815;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KW9OTVtKUcJ1r6ahtEjJyCkdCwhSV0YXVMo8xFwAxVM=;
+        b=uliBfo4moISODAL579S+zYtfzJgbYQeS4I3LQvV7Bgv4AuPeI9z1bmf4xkkjInnEdU
+         JCT190RLa4OX1Jg+sBt43PQzOBOsV7DiuWmvYRr8rvTaxDL+tS7QjiANP1GChuw7L/Ev
+         sswVnanuJLA3dmn6i9pqe1fjyYJ1cy9KFyRf+EFy+23SDFHpzUabSWYmf+PfiGEWT/Wf
+         AqD78QVQZtTM0D5KSndeSGKGs9tbHkWrUynu5plTvsuXItw9DQX8P9u0lIbfLAag0+kc
+         sBpNhcWk5NOSXfydGYUZyp4I7Ii8Cpenb5PYqkAMhnL6SSqyFhu+UqE94ZhbCD2Wl6VW
+         mhxg==
+X-Gm-Message-State: AOJu0YwSnVjuAwpJ2/v5+QGtJLiUBZh34yAFiakKJSkTBhbEEUTlA6rp
+        qj8/8UMMvoqdPnJBwT+wGzTEw/dI+WDNWojaclwfMDQJTSk=
+X-Google-Smtp-Source: AGHT+IFtc/Rq3MDTSkg96FLLZ9Z1rrv8f1cL+mPnrxg7pqkqeQrwPWBEmiJdPnsXUh2xPSC6bRJgh7suU0EBm9JDKEw=
+X-Received: by 2002:a0d:ce81:0:b0:589:b3c6:95ff with SMTP id
+ q123-20020a0dce81000000b00589b3c695ffmr9314078ywd.36.1695694014949; Mon, 25
+ Sep 2023 19:06:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/syRt0eOJQcCbFd=QbOtETN4";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   John Salamon <salamonj9@gmail.com>
+Date:   Tue, 26 Sep 2023 11:36:43 +0930
+Message-ID: <CA+fyA4SqT4jgpWeq_ipp7i3ZM7s=gQkSdtsPw6x+zeJdGcXvqw@mail.gmail.com>
+Subject: PROBLEM: RTL8821CS SDIO card is unusable on boot (Anbernic RG353V)
+To:     pkshih@realtek.com
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/syRt0eOJQcCbFd=QbOtETN4
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On an Anbernic RG353V using the latest mainline kernel, the wifi
+(RTL8821CS) is in an unusable state on boot (no wireless adapter
+available) and I get the following kernel messages:
 
-Hi all,
+[    5.878711] rtw_8821cs mmc3:0001:1: Firmware version 24.11.0, H2C version 12
+[    6.218709] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x11080): -110
+[    6.218844] rtw_8821cs mmc3:0001:1: sdio write32 failed (0x11080): -110
+[    6.219136] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x10080): -110
+[    6.219230] rtw_8821cs mmc3:0001:1: sdio write32 failed (0x10080): -110
+[    6.219409] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x10040): -110
+[    6.219503] rtw_8821cs mmc3:0001:1: sdio write32 failed (0x10040): -110
+[    6.219706] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x11700): -110
+[    6.219800] rtw_8821cs mmc3:0001:1: sdio write32 failed (0x11700): -110
+[    6.219967] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x11708): -110
+[    6.220474] rtw_8821cs mmc3:0001:1: sdio write32 failed (0x11330): -110
+[    6.220673] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x1022c): -110
+[    6.220863] rtw_8821cs mmc3:0001:1: sdio write32 failed (0x1022c): -110
+[    6.220993] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x20): -110
+[    6.221570] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x11208): -110
+[    6.221695] rtw_8821cs mmc3:0001:1: sdio write32 failed (0x11208): -110
+[    6.222076] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x20): -110
+[    6.222195] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x24): -110
+[    6.222322] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x28): -110
+[    6.222471] rtw_8821cs mmc3:0001:1: Failed to write 4608 byte(s) to
+SDIO port 0x0000840c
+[    6.222510] rtw_8821cs mmc3:0001:1: failed to write data to rsvd page
+[    6.222680] rtw_8821cs mmc3:0001:1: failed to download rsvd page
+[    6.222851] rtw_8821cs mmc3:0001:1: failed to download firmware
+[    6.223011] rtw_8821cs mmc3:0001:1: failed to setup chip efuse info
+[    6.223033] rtw_8821cs mmc3:0001:1: failed to setup chip information
+[    6.224013] rtw_8821cs: probe of mmc3:0001:1 failed with error -110
 
-Today's linux-next merge of the wireless-next tree got conflicts in:
+If I rmmod rtw_8821cs and modprobe rtw_8821cs, it actually becomes
+usable, at least for a while.
+After some time, many repeated messages like this appear:
 
-  net/mac80211/cfg.c
+[ 1562.774009] rtw_8821cs mmc3:0001:1: timed out to flush queue 2
+[ 1563.234018] rtw_8821cs mmc3:0001:1: timed out to flush queue 1
 
-between commit:
+And I have to do the rmmod/modprobe trick again for it to start working again.
 
-  31db78a4923e ("wifi: mac80211: fix potential key use-after-free")
-
-from the wireless tree and commit:
-
-  4d3acf4311a0 ("wifi: mac80211: remove sta_mtx")
-
-from the wireless-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc net/mac80211/cfg.c
-index 0e3a1753a51c,5bc6b1329465..000000000000
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@@ -565,15 -561,7 +561,11 @@@ static int ieee80211_add_key(struct wip
-  		break;
-  	}
- =20
- -	return ieee80211_key_link(key, link, sta);
- +	err =3D ieee80211_key_link(key, link, sta);
- +	/* KRACK protection, shouldn't happen but just silently accept key */
- +	if (err =3D=3D -EALREADY)
- +		err =3D 0;
--=20
--  out_unlock:
-- 	mutex_unlock(&local->sta_mtx);
--=20
- +	return err;
-  }
- =20
-  static struct ieee80211_key *
-
---Sig_/syRt0eOJQcCbFd=QbOtETN4
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmUSO80ACgkQAVBC80lX
-0GzQLwgAnBH0KvaJHxWsSbMIwPyNkzaDt8WO3G8EXyCNl5WgLBMq4hzk0Y7dcvJ2
-KJQ2s7hh9GZXJ7KzF9hL68uhfNpWJzBZPpUVUokARPS0CceqSpvuJ9rN5RLzVoI4
-TOcSgxZpKUl74VbBDzrTPHz6D75Mke4UeVMHq2ZNy7coXOUmVxBwKkvvrjG3lUW7
-KfgG+XaviADGiXPPdKn5I9MVFuykqoaNK6n74sZVsbTU3yXl98vkeF2a5DLHbVmJ
-IAThVHIOH8Gi52stLz4na1gyHsh5BNhalCqNqZAtQyih7W7BRwqYwFo3jr7dD1ls
-ilWn+L86bQrpwEUMMdz7zejT8VnOZA==
-=WjiI
------END PGP SIGNATURE-----
-
---Sig_/syRt0eOJQcCbFd=QbOtETN4--
+I can always reproduce this on boot.
+I am using the latest mainline kernel, uboot and linux-firmware (I've
+also tried 6.5 kernel with the same result).
+kernel .config:
+https://github.com/human9/rg353v_linux/blob/main/linux_new.config
+dmesg: https://github.com/human9/rg353v_linux/blob/main/dmesg.txt
