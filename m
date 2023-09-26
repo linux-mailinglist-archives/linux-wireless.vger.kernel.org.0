@@ -2,64 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 487CB7AE33A
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 03:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 779D67AE381
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Sep 2023 03:55:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231767AbjIZBPM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Sep 2023 21:15:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40424 "EHLO
+        id S232474AbjIZBzG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Sep 2023 21:55:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231225AbjIZBPL (ORCPT
+        with ESMTP id S230054AbjIZBzG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Sep 2023 21:15:11 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ECC910C
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Sep 2023 18:15:05 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38Q1El4R2182003, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38Q1El4R2182003
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Sep 2023 09:14:47 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 26 Sep 2023 09:14:47 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 26 Sep 2023 09:14:47 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
- RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
- 15.01.2375.007; Tue, 26 Sep 2023 09:14:46 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-Subject: RE: [PATCH] wifi: rtlwifi: cleanup few rtlxxxx_set_hw_reg() routines
-Thread-Topic: [PATCH] wifi: rtlwifi: cleanup few rtlxxxx_set_hw_reg() routines
-Thread-Index: AQHZ7491+xF24f17okm2DcK8Rg2xbrAsTkmw
-Date:   Tue, 26 Sep 2023 01:14:46 +0000
-Message-ID: <6f07468cf7e94fa3baa7b9277b281921@realtek.com>
-References: <20230925090452.25633-1-dmantipov@yandex.ru>
-In-Reply-To: <20230925090452.25633-1-dmantipov@yandex.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.25]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 25 Sep 2023 21:55:06 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F4811F;
+        Mon, 25 Sep 2023 18:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1695693297;
+        bh=HDZLuCU5ZxOEpFG2Eug34ssRxcz/61/hDfUmS5JlVAE=;
+        h=Date:From:To:Cc:Subject:From;
+        b=liggGrUhFYLwEy1ikysvKkLCjE9d4cFFReTEi+ZMp/6KnM2sOJkE3jqAzPsjp8ZMx
+         CpLJRYwl4t6WhhyaZHKxxfwVr+8r29T00TWJecwuijyY1NIPkIKTlw+JSo2Ip7OKO+
+         mnhMsEn6RjX6907U+zwbEBzigPkkgUp8j/rCtgaMCnt6DEsOnjnbWrD9kVi0nBc08i
+         Z3BxCoRRxkgzjbbhwVLN/9qcUDSiclqqcAyslmDR4Q0gS+vTQymLDebLM3/fRV8sBv
+         SXA7cSyS11LCWOOLKNNGGHO6JNj43+W+3Mf+8EH4BIdy/lCGIVKdZLVZ7b02wFmD72
+         +k8wJfM/NcJ4Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4RvjVR02R0z4xPN;
+        Tue, 26 Sep 2023 11:54:54 +1000 (AEST)
+Date:   Tue, 26 Sep 2023 11:54:52 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Aloka Dixit <quic_alokad@quicinc.com>,
+        Franziska Naepelt <franziska.naepelt@googlemail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the wireless-next tree with Linus' tree
+Message-ID: <20230926115452.68a71261@canb.auug.org.au>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: multipart/signed; boundary="Sig_/JalrC.AZ1PGpYjh_00BopLc";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,25 +56,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+--Sig_/JalrC.AZ1PGpYjh_00BopLc
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
+Hi all,
 
-> -----Original Message-----
-> From: Dmitry Antipov <dmantipov@yandex.ru>
-> Sent: Monday, September 25, 2023 5:05 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; lvc-project@linuxtesting.org; Dmitry
-> Antipov <dmantipov@yandex.ru>
-> Subject: [PATCH] wifi: rtlwifi: cleanup few rtlxxxx_set_hw_reg() routines
-> 
-> Since 'u8' comparison against zero is always false, drop the
-> corresponding branches of AMPDU_MIN_SPACE adjustment within
-> 'rtlxxxx_set_hw_reg()' for rtl8188ee, rtl8192ce, rtl8192de,
-> rtl8723ae, rtl8723be, and rtl8821ae. Compile tested only.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Today's linux-next merge of the wireless-next tree got a conflict in:
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+  drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
 
+between commit:
 
+  1d85bb7fd66a ("staging: rtl8723bs: Fix alignment open parenthesis")
+
+from Linus' tree and commit:
+
+  66f85d57b710 ("wifi: cfg80211: modify prototype for change_beacon")
+  bb55441c57cc ("wifi: cfg80211: split struct cfg80211_ap_settings")
+
+from the wireless-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+index af155fca39b8,1e683212027c..000000000000
+--- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
++++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+@@@ -2317,9 -2318,8 +2317,9 @@@ static int cfg80211_rtw_start_ap(struc
+  	return ret;
+  }
+ =20
+ -static int cfg80211_rtw_change_beacon(struct wiphy *wiphy, struct net_dev=
+ice *ndev,
+ -		struct cfg80211_ap_update *info)
+ +static int cfg80211_rtw_change_beacon(struct wiphy *wiphy,
+ +				      struct net_device *ndev,
+- 				      struct cfg80211_beacon_data *info)
+++				      struct cfg80211_ap_update *info)
+  {
+  	struct adapter *adapter =3D rtw_netdev_priv(ndev);
+ =20
+
+--Sig_/JalrC.AZ1PGpYjh_00BopLc
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmUSOewACgkQAVBC80lX
+0GzRkgf+LO1FZ7xB5Ik2HCu0EVzVKonj1o9b1DhJLcI5IXsN4LkMNNK9c+8f2haq
+qTHTdWlJEr+DNE/4yLHU5T+Kr9M1v+PcMcZ/4oYiXy6xspNLg1YMxmewYGFH60Z8
+gGNei3BmbVALMO/dtxY44SctP4brCshowGkxYj94a56cGZjIBlELbniID/ECVjb1
+SfAmPhcK4xv+vToOzzM8BDDxqQso0dZKz39djAwhVICQQ+HvAzc5yWALVpe6sGz6
+ooN6HMriAq20AFl26j8dBvSPcGEgQBzz1/5SieAEYV3F5MW/AZkjJcUcHgbDFhty
+lfChdMI8LlYdr7OXseWfvgtrdF3GVQ==
+=SBoU
+-----END PGP SIGNATURE-----
+
+--Sig_/JalrC.AZ1PGpYjh_00BopLc--
