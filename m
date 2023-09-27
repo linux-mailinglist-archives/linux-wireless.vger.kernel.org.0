@@ -2,70 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A7207AFC1D
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Sep 2023 09:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D45AE7AFC3F
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Sep 2023 09:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230026AbjI0Hbq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Sep 2023 03:31:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40902 "EHLO
+        id S230024AbjI0Hme convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Sep 2023 03:42:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjI0Hbk (ORCPT
+        with ESMTP id S230033AbjI0Hma (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Sep 2023 03:31:40 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 323F0BF
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Sep 2023 00:31:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17837C433C8;
-        Wed, 27 Sep 2023 07:31:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695799898;
-        bh=fFM9dWLKbSW12rKgbiUTbCaH38+Vd2o9XQRwQlOmW2Y=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ShZ4KDJpeHUsv0JlPRIwdd9EAQKi8fiEJtVc9zU9+65uzuNYVW3EwxfZMDkAaHX9R
-         JM0VynrPrUaJXUX7bTv+Z4rGuEYNLEPxqIfhMaDdER67zpd6nGLHQCSpYtwtgTfznr
-         5u1tKSwMYwJIrKSc/G//CzcSw1UMVQkaeuMnVN5uRCEjOapmJ91BqkiUFv2OH2crY0
-         X5VmKmbgcoYCeZLA+LberAxUx0y6QDuiLAvGr6MrkQvCWAioIwobDGO+LXgPTuFWu/
-         9av0QxIqHaJvxOaY6wBu++EQu2tXmeobJJ2TmuORUKPzSEZbjATBIJC4CFSdU+WUzv
-         YNt2Y4LnrEsGw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 0/4] wifi: rtw89: update to follow regulations of China
+        Wed, 27 Sep 2023 03:42:30 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D627BF
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Sep 2023 00:42:29 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 38R7gLIK12082719, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 38R7gLIK12082719
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 27 Sep 2023 15:42:21 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 27 Sep 2023 15:42:17 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 27 Sep 2023 15:42:16 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c]) by
+ RTEXMBS04.realtek.com.tw ([fe80::7445:d92b:d0b3:f79c%5]) with mapi id
+ 15.01.2375.007; Wed, 27 Sep 2023 15:42:16 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     Kevin Yang <kevin_yang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 0/4] wifi: rtw89: update to follow regulations of China and Thailand
+Thread-Topic: [PATCH 0/4] wifi: rtw89: update to follow regulations of China
  and Thailand
+Thread-Index: AQHZ8RNggOyofwedR0eyXs1E6/zFSbAuRy95gAAAXAA=
+Date:   Wed, 27 Sep 2023 07:42:16 +0000
+Message-ID: <fb8ece3e7e44490c93e69654ca404984@realtek.com>
 References: <20230927072156.26336-1-pkshih@realtek.com>
-Date:   Wed, 27 Sep 2023 10:31:35 +0300
-In-Reply-To: <20230927072156.26336-1-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Wed, 27 Sep 2023 15:21:52 +0800")
-Message-ID: <8734z0842w.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ <8734z0842w.fsf@kernel.org>
+In-Reply-To: <8734z0842w.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-originating-ip: [172.21.69.25]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
 
-> Recently regulations of China and Thailand are changed, and these chips
-> have gotten new certifications, so apply new TX power tables.
->
-> Zong-Zhe Yang (4):
->   wifi: rtw89: regd: configure Thailand in regulation type
->   wifi: rtw89: 8852c: update TX power tables to R67
->   wifi: rtw89: 8852b: update TX power tables to R35
->   wifi: rtw89: 8851b: update TX power tables to R34
 
-I don't see patch 2 in patchwork but I did receive it to my
-kvalo@kernel.org adddress, maybe it was too big for the list?
+> -----Original Message-----
+> From: Kalle Valo <kvalo@kernel.org>
+> Sent: Wednesday, September 27, 2023 3:32 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: Kevin Yang <kevin_yang@realtek.com>; linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH 0/4] wifi: rtw89: update to follow regulations of China and Thailand
+> 
+> Ping-Ke Shih <pkshih@realtek.com> writes:
+> 
+> > Recently regulations of China and Thailand are changed, and these chips
+> > have gotten new certifications, so apply new TX power tables.
+> >
+> > Zong-Zhe Yang (4):
+> >   wifi: rtw89: regd: configure Thailand in regulation type
+> >   wifi: rtw89: 8852c: update TX power tables to R67
+> >   wifi: rtw89: 8852b: update TX power tables to R35
+> >   wifi: rtw89: 8851b: update TX power tables to R34
+> 
+> I don't see patch 2 in patchwork but I did receive it to my
+> kvalo@kernel.org adddress, maybe it was too big for the list?
 
-But I can also apply that manually so no need to split that patch.
+Yes, I think so. 
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+I noted that patch 2 was received late from linux-wireless@vger.kernel.org, so
+I checked the size and found that was too big. I was trying to split the patch,
+but minutes later I received it.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I think I should add a rule to my local script to check if patch size is larger
+than 500k to prevent this again. 
+
+> 
+> But I can also apply that manually so no need to split that patch.
+> 
+
+Thank you.
+
+Ping-Ke 
+
