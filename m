@@ -2,159 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ADB87B0A5C
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Sep 2023 18:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 319BA7B0B96
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Sep 2023 20:03:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231889AbjI0Qds (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Sep 2023 12:33:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45072 "EHLO
+        id S229651AbjI0SDe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Sep 2023 14:03:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231974AbjI0Qdl (ORCPT
+        with ESMTP id S229511AbjI0SDd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Sep 2023 12:33:41 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2077.outbound.protection.outlook.com [40.107.93.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE68121;
-        Wed, 27 Sep 2023 09:33:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZG+Lwf0gWOFYub+I9uJ92QnFh4PJl12B9enN7xwx1IKWnh4pXWvNda08qOU1ZdHR6q7cfM5PENehUxT2mJln4tYxvatHSDW7w6WNeRSZDLpQzykCxOFZxKklfmEDcrtAlrr2riGF38Zs45Nmt7oK07Q6gGSCV6cjjWh4KTzpdHCUJA2WEDAn7DX/QgzOxasWiw8vVzLlcWEiGvSazSwySmoZpol9TGJzhD9LUDejdDIFk9M/ml2SLJMdVKQrPBybrwV7K5QqqFhwcoggbjZ0HUw1F+YqkCQ1YQw0PjptEwnl+ziTSJsRlx96RNIrlB9m4g9mmPIqwnNyn/mPUGwc5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZPRftwa/5INHUuf/U0IO6DYv07+MkuBCaxGoh+MZ00E=;
- b=huhkI67tP8M6QtYr1GGcbmD43D/NYKT7XMEh/c5a9+XaNSiCTSRl3otIL1pzAyh4liXAtzMDCX/MiOIUzskb+F+0F35+gvF8/aSNEAYqQq59HeHg7P1R5YJtqzskgs5r5GlMml3WJl7XNPnixe6GyIF4ztmZG3c9NNcqiD9+JM0WgXuI3+YYFNRRP1q2ULa/W/+FZnvRAxNhcggeKX4FB+UxWyz2SNT5Dkew5dmIH664Bkwu0eU93pltjKa/eaQMYNEsG1hfP856YI+w+WHZlXJGjjWdilFZSJXMFccJz534IKoICzW8zwf4quylXmaRcYuhAm81tEry3zKdGQqEhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZPRftwa/5INHUuf/U0IO6DYv07+MkuBCaxGoh+MZ00E=;
- b=MyK/MeGDc/ayCNLod9IBgQjruHxrPsVfR0fu9XNRwccYQo0MuFs9zVeSKnCtvN3oXDwzbd+aV+IwBDchFYjtJSfcXUN+pByS7RmgZaor4/64PSToOp0vSjsnPscSbclQHDgk13WNx515PV4V1jS8ujLa/EXTBBasrfrvBoTQyp0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=silabs.com;
-Received: from IA1PR11MB7773.namprd11.prod.outlook.com (2603:10b6:208:3f0::21)
- by SA1PR11MB6781.namprd11.prod.outlook.com (2603:10b6:806:25d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.21; Wed, 27 Sep
- 2023 16:33:30 +0000
-Received: from IA1PR11MB7773.namprd11.prod.outlook.com
- ([fe80::d6c8:4cb6:2594:d8f3]) by IA1PR11MB7773.namprd11.prod.outlook.com
- ([fe80::d6c8:4cb6:2594:d8f3%4]) with mapi id 15.20.6813.027; Wed, 27 Sep 2023
- 16:33:29 +0000
-From:   =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>
-Subject: [PATCH v2 9/9] wifi: wfx: fix possible lock-up between scan and Rx filters
-Date:   Wed, 27 Sep 2023 18:32:57 +0200
-Message-Id: <20230927163257.568496-10-jerome.pouiller@silabs.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230927163257.568496-1-jerome.pouiller@silabs.com>
-References: <20230927163257.568496-1-jerome.pouiller@silabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-ClientProxiedBy: DS7PR06CA0052.namprd06.prod.outlook.com
- (2603:10b6:8:54::30) To IA1PR11MB7773.namprd11.prod.outlook.com
- (2603:10b6:208:3f0::21)
+        Wed, 27 Sep 2023 14:03:33 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 639B7A1
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Sep 2023 11:03:31 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38RE8M7w030246;
+        Wed, 27 Sep 2023 18:03:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=5ci5D/l1rMpQFW8/P1CYrRSQKPA6FGzjNAKvDgfqRXI=;
+ b=LyV2b1xMj93fyb3fX8x2KM49+XnH5H18xvPEjaAbShNUOso0LvMztD+ucmKyVGopz26J
+ gMc1JWLq0Zaclucik6zNpi/ViXuv01NFYExTYTdYcyXz2Eh6GxF9K4JI2N23gg5XvVrw
+ ATPMRT4FasJg+of3WDV1WMdWEy5H/ebZ0Cj8jnim5qU6qcAX0CA5c6b1/x3/QUpLcWg4
+ iYS4ig14oTaMQCxf1PCpZed3A8pP8igaI8xsFKDvbIZaQLLnkr+Mrr9EE85UZtCv+uDz
+ VhjHkgPgzjJh/XBZ22/g8COVblAg0nPv8N9JRqFmZy8xLbpDkXIAGnG7N9bJXZCdizWm vA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tc6hrt7pw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Sep 2023 18:03:28 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38RI3RCu016438
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Sep 2023 18:03:27 GMT
+Received: from [10.111.177.152] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 27 Sep
+ 2023 11:03:26 -0700
+Message-ID: <3f2323b2-de9e-4f1d-b302-cc20c15bc105@quicinc.com>
+Date:   Wed, 27 Sep 2023 11:03:26 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7773:EE_|SA1PR11MB6781:EE_
-X-MS-Office365-Filtering-Correlation-Id: 592df89b-9209-4b58-126d-08dbbf777b88
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9Y0TzJnRoGnKryoYEcR0dBJuhELdAyCKn+5eiMUFleo+drx4JGpm9c08S80jHxPpFPcE2OrGxssV4hsicojHZ1F+UGM46DZpu36zkczGWW72KhwETC4YuPmRaXgfMh1wH9y9O2VLAsOmLY8B38JQvEFKGvewBQjTPhGej2y/rPMIzP5zfDKyyoi5RBakCTWv/qFTu3ypqmYjGgqmRSoMFj5W39WeFb3kFiUXrzolyUWtDMCYTGLXhPla+nJwXnrvQq0aMcuRQtCZv4iqrDUZvoHHqHZGPrXlIhD1547V5QgBottHX9GDfU3VgMVgOjRho2MT1xGmoptbf1V2pPqDi/2Xk8zEF4Z1tX09vCuZ85HQJrOw0NbGXJiJLi903RWQG33rSYdVHyXdz5/J4xsE/hGaYVrshmb5ihi4Z+bJT7JhvCcZID2B0KB3apEfMTTMFrZAGTlfgK4uCLnF473st84+j7Cy+h9Kn4Ms+mT9kAC+PJ2kNQ+709BKeCH5eIvI1Bbw9PBpwfLo84deatoqZXyD4ntx2FDCutfY/pkCCH6SZOrXEyLBc3Q4bbqaAM7l
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7773.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(136003)(346002)(39850400004)(376002)(230922051799003)(451199024)(186009)(1800799009)(36756003)(86362001)(8936002)(107886003)(6486002)(8676002)(2906002)(38100700002)(4326008)(6512007)(41300700001)(83380400001)(66556008)(5660300002)(1076003)(66574015)(2616005)(52116002)(6506007)(6916009)(66476007)(66946007)(316002)(478600001)(6666004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b2h0czNVTldIUlBpeG9NNkxGdXBDWTFaY3dSbjBvMXU1NDBUK3Q3bTQyQ0Zz?=
- =?utf-8?B?UWVVVG9WZlcxTEg3Q0ljNFRDejdIWGtIZXRydWw2WjVyZlpwWVlwRkMxMzVv?=
- =?utf-8?B?cGlkNXVGcExzZmFyeElPamQzaGhRTEo0aW52eWhSbmExUFprVmhKK0tnTURJ?=
- =?utf-8?B?dGZkYWYzQXo2QlV0UWVwTkF5S3Nqd1BXS2tvRDVxcDNpQ1d0ZzV1RGlidFhz?=
- =?utf-8?B?K3ZXQVVyQkYyRFkrQUt4amxkUmFHZlZJWkZzOGs0WFU0MTRIeVhRYUFRamk4?=
- =?utf-8?B?czVwdHJiWGRpUU8zMjl3MWdnVHJoTWd2Y0J5TXdxeUNVWSthSHdmV1hUY2Zo?=
- =?utf-8?B?M25kMGt1MHJwWDFzenpINnBSaVo4WHk0a0UzNEZUTnhISTgyVGdOdDhyMXUw?=
- =?utf-8?B?dGJoSEpEZURhOEVkVkYzeHhTR1VvQitrUFJDREwybFgvOWdyWjhYRmdNL0dr?=
- =?utf-8?B?RFBpdmhITUZGbHhrUHZta2lRUUZvRmkwVURQTWpVdkMzdy9lTmVabTlnZllL?=
- =?utf-8?B?Mkg0UTlpRVNiVUo5NmkzMlFZblFTTUpBSXFUU2FuWno5bi9aUzJnZm14SndH?=
- =?utf-8?B?VFhQOWtGVDZjb3VGMEIvbkI0TUJFR3luK1E5QzNGNTgvTkpWM2FUVXVvNmtG?=
- =?utf-8?B?UTVPSUtGM1RvNzNGcW80UDVBbC9reEdZc3EraGQ2aXAyd0dFT1B0cTdTK0oz?=
- =?utf-8?B?d2NXcW1YSWJrTG5PMGYxZk5EaDFMR1JiYTFubkhvSUlQQmV4Y0RxNmpyMnBa?=
- =?utf-8?B?eUdxVmQzTkQ3Z3VhdS84UXF2SWE5bGVIdGp0OG51dmFJODc3ZUtWWmovd09a?=
- =?utf-8?B?cER4cWxWWmtXVFE0OEQzMjJocjB4eHo1Z2lTL0owRHZTazM3Y3JsUDczNUd1?=
- =?utf-8?B?bnVVSjFHS0VpVjVHbFBMRFdJZzAxcS9UVFRtM2hRNm1IZG04bUVZeW1uTll6?=
- =?utf-8?B?emZCbXpxa0ZYSHNIcG9JNEgwOFdzNDhrN2t6dlhXMGtlZS9LYXpmM2NXTUI0?=
- =?utf-8?B?NjNLUG5GeXkvNVhBOGhtSTY0NlVSaUloWjQzVk1oL1ZjZU10Q1cra3dJVkxo?=
- =?utf-8?B?d0EvcTluS0JXaU1QM0phQ3I4TGcxem4welRRTUMvV09FZy9WNmtvaHR2TVR2?=
- =?utf-8?B?UGJTMkpLZWRkVmtuWm93dEx2ZWtBK0V4eHRpcHlleFNvRGJmWUxYcjBCVnVu?=
- =?utf-8?B?ZGE0K2lWdmtyWVkzVVhybXRsNFRxQVNBbXJ3aFpiakN2Q3pGWHJVV3lRMnJk?=
- =?utf-8?B?SDFxYnRKbjc2eTYzSERSQ25YWnI1NjB2R3NxbHd4ekRXYnA5WktCQkZsV0FI?=
- =?utf-8?B?eVFMdlpNL2xHMlFwZkRoNzI1cjJqT2Yxckwrd3prcTlWcGw4T3BYQmtuOTE4?=
- =?utf-8?B?ZC8zU3BJeWlIMWppV3FBclRhQks4S1piUFd6VXZ0Q2VaQlVITllwRzExRTgr?=
- =?utf-8?B?TC9RZGh1QlVCUVZ5YlFSa2ZNVDdyUXBYeVNJbnFoMS9lNHBCMjJQL0JnNEZJ?=
- =?utf-8?B?aWlMeWhQUTl2bU1YQklNVEJGUW84bm9wMkhQSzRBbktXejRQK3RJVW1DQllh?=
- =?utf-8?B?NmtFbzgwUmE1bmt5anJIWnhPZUxBeFYxVzBkU2EwcEVCQ3E5RDFudUNEeXZB?=
- =?utf-8?B?K3ROVHhxdjRkRGxRL2w4c0RnR1kyVU5JSjh0ZlNEaFhtN3hVQklNRXo3MGdq?=
- =?utf-8?B?Zm5sempDdnI5UnY1RSt2Z0hCS0s0VmE2ZDBWeW5RM0ZxQVVwSWJQS2F6S0xJ?=
- =?utf-8?B?YXVDNHoyYjBaRGYvQ3NWSU9rRnJKb2JFME1lZ2duemtHc2RtOFhqU1Z4TU43?=
- =?utf-8?B?N1B3U0FRazVhWnhzRVlFaHhMcXcxaUFad0lIVlBtZFRFOGdOTkY3L3pzUWJj?=
- =?utf-8?B?b3prR1JJUlFUY0wwMS8zN2hiTldkTU1BUG9tQ2ZybUtzeDNpNEFhMXJWTHdF?=
- =?utf-8?B?aHlDTXo3RUMvSEJJUHlVNTU3SHF1WklLOE9lektKSVVBK2dJd3lzdGtmUm5I?=
- =?utf-8?B?Y1pUUzRScHZGMHlxQkVTdEdiS3I1WTJYTmpXWGcxZldmOGlPa1BtUmlWbjF1?=
- =?utf-8?B?NE5aOFdzdUdJUkxkUmhuSHVOcDh6UlU3c1FFbmQ3VVVOOG1NazgrWkpiYmd5?=
- =?utf-8?B?aEFGcDlJTm0xUk1zd0laN1hqL28zanZRaXpZQWxEak1kWEdTazVZWFlqdlll?=
- =?utf-8?Q?Vt0G1v/IrbSle6YW1LY5rD5R/RaUMytu4TliJJirFhu0?=
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 592df89b-9209-4b58-126d-08dbbf777b88
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7773.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2023 16:33:29.8944
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p7i6HnOJC1ZtVIgU1/0k7TZoUapmI6IAlo0coRSVtgucHqhCqn+VqrhNJYWkxI9Iv5FT60VjK/VVrAoQt3ymNg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6781
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FORGED_SPF_HELO,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: nl80211: remove set_fils_aad support
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20230926160950.d698c25528e3.If118a835a25c59de20e1728ab71949fdb4172fb2@changeid>
+ <9ddcbc2f-5e40-48cd-bdbd-943bd86acb61@quicinc.com>
+ <9a544a1b9385a150f779ac35a780dbb50200a962.camel@sipsolutions.net>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <9a544a1b9385a150f779ac35a780dbb50200a962.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: eRwPg6rN5IAQwLdE_-TelGVadGOguS_v
+X-Proofpoint-ORIG-GUID: eRwPg6rN5IAQwLdE_-TelGVadGOguS_v
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-27_12,2023-09-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0 phishscore=0
+ mlxscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309270152
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-VGhlIGRldmljZSBpZ25vcmUgdGhlIHJ4IGZpbHRlcnMgZHVyaW5nIHRoZSBzY2FuIG9wZXJhdGlv
-bi4Kd2Z4X2NvbmZpZ3VyZV9maWx0ZXIoKSBhY3F1aXJlcyBzY2FuX2xvY2sgdG8gcmVmbGVjdCB0
-aGlzIHJlc3RyaWN0aW9uLgpIb3dldmVyLCBpdCBpcyBub3QgcmVhbGx5IG5lY2Vzc2FyeSBzaW5j
-ZSBtYWM4MDIxMSBkb24ndCB0cnkgdG8KY29uZmlndXJlIFJ4IGZpbHRlcnMgZHVyaW5nIHNjYW4u
-CgpIb3dldmVyLCB0aGUgdGhpbmdzIGFyZSBjaGFuZ2luZy4gVGhlIHNjYW4gb3BlcmF0aW9uIGlz
-IGFsc28gdXNlZCB0bwppbXBsZW1lbnQgcmVtYWluLW9uLWNoYW5uZWwuIEluIHRoaXMgY2FzZSwg
-d2Z4X2NvbmZpZ3VyZV9maWx0ZXIoKSBjYW4gYmUKY2FsbGVkIGR1cmluZyB0aGUgc2Nhbi4gQ3Vy
-cmVudGx5LCB0aGlzIHNjZW5hcmlvIGdlbmVyYXRlIGEgZGVsYXkgdGhhdAplbmQgd2l0aCBhIHRp
-bWVvdXQgaW4gdGhlIHVwcGVyIGxheWVycy4gRm9yIHRoZSBmaW5hbCB1c2VyLCBzb21lCnNjZW5h
-cmlvIG9mIHRoZSBFYXN5Q29ubmVjdCBzcGVjaWZpY2F0aW9uIGVuZCB3aXRoIGEgZmFpbHVyZS4K
-ClNvLCBhdm9pZCBhY3F1aXJpbmcgdGhlIHNjYW5fbG9jayBhbmQganVzdCByZXR1cm4uCgpTaWdu
-ZWQtb2ZmLWJ5OiBKw6lyw7RtZSBQb3VpbGxlciA8amVyb21lLnBvdWlsbGVyQHNpbGFicy5jb20+
-Ci0tLQogZHJpdmVycy9uZXQvd2lyZWxlc3Mvc2lsYWJzL3dmeC9zdGEuYyB8IDYgKysrKy0tCiAx
-IGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdp
-dCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy93Zngvc3RhLmMgYi9kcml2ZXJzL25ldC93
-aXJlbGVzcy9zaWxhYnMvd2Z4L3N0YS5jCmluZGV4IDQ5NmI5M2RlM2VlNTguLjFiNmMxNTg0NTdi
-NDIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy93Zngvc3RhLmMKKysr
-IGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mvc2lsYWJzL3dmeC9zdGEuYwpAQCAtOTYsOCArOTYsMTEg
-QEAgdm9pZCB3ZnhfY29uZmlndXJlX2ZpbHRlcihzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywgdW5z
-aWduZWQgaW50IGNoYW5nZWRfZmxhZ3MsCiAJKnRvdGFsX2ZsYWdzICY9IEZJRl9CQ05fUFJCUkVT
-UF9QUk9NSVNDIHwgRklGX0FMTE1VTFRJIHwgRklGX09USEVSX0JTUyB8CiAJCQlGSUZfUFJPQkVf
-UkVRIHwgRklGX1BTUE9MTDsKIAorCS8qIEZpbHRlcnMgYXJlIGlnbm9yZWQgZHVyaW5nIHRoZSBz
-Y2FuLiBObyBmcmFtZXMgYXJlIGZpbHRlcmVkLiAqLworCWlmIChtdXRleF9pc19sb2NrZWQoJndk
-ZXYtPnNjYW5fbG9jaykpCisJCXJldHVybjsKKwogCW11dGV4X2xvY2soJndkZXYtPmNvbmZfbXV0
-ZXgpOwotCW11dGV4X2xvY2soJndkZXYtPnNjYW5fbG9jayk7CiAJd2hpbGUgKCh3dmlmID0gd3Zp
-Zl9pdGVyYXRlKHdkZXYsIHd2aWYpKSAhPSBOVUxMKSB7CiAJCS8qIE5vdGU6IEZJRl9CQ05fUFJC
-UkVTUF9QUk9NSVNDIGNvdmVycyBwcm9iZSByZXNwb25zZSBhbmQKIAkJICogYmVhY29ucyBmcm9t
-IG90aGVyIEJTUwpAQCAtMTI2LDcgKzEyOSw2IEBAIHZvaWQgd2Z4X2NvbmZpZ3VyZV9maWx0ZXIo
-c3RydWN0IGllZWU4MDIxMV9odyAqaHcsIHVuc2lnbmVkIGludCBjaGFuZ2VkX2ZsYWdzLAogCQkJ
-ZmlsdGVyX3ByYnJlcSA9IHRydWU7CiAJCXdmeF9oaWZfc2V0X3J4X2ZpbHRlcih3dmlmLCBmaWx0
-ZXJfYnNzaWQsIGZpbHRlcl9wcmJyZXEpOwogCX0KLQltdXRleF91bmxvY2soJndkZXYtPnNjYW5f
-bG9jayk7CiAJbXV0ZXhfdW5sb2NrKCZ3ZGV2LT5jb25mX211dGV4KTsKIH0KIAotLSAKMi4zOS4y
-Cgo=
+On 9/27/2023 12:00 AM, Johannes Berg wrote:
+> On Tue, 2023-09-26 at 13:35 -0700, Jeff Johnson wrote:
+>> On 9/26/2023 7:09 AM, Johannes Berg wrote:
+>>> From: Johannes Berg <johannes.berg@intel.com>
+>>>
+>>> There's no user for this, so remove the support.
+>>>
+>>> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+>>
+>> if you are going to remove it, why not just revert e306784a8de0
+>> ("cfg80211: AP mode driver offload for FILS association crypto") to make
+>> sure you get all of the artifacts? for example, I believe your patch
+>> will leave behind an unused struct cfg80211_fils_aad and unused
+>> FILS_AAD_ASSIGN() trace helper macro.
+> 
+> Hah, good point, I didn't do this well.
+> 
+>> the caveat to reverting is that it should only be a partial revert; the
+>> UAPI definitions would need to be retained (and should be documented as
+>> obsolete).
+> 
+> Yeah, that's why I didn't do it as a revert.
+> 
+>> however, let me check to make sure there is no plan to actually utilize
+>> this interface upstream. as i've indicated earlier, we are in the
+>> process of trying to transition to an "upstream first" mentality, but
+>> this is not going to happen overnight, but instead will take years. that
+>> said, i'd hate to rip out an interface now just to need to add it back
+>> in the future.
+> 
+> Sure. I don't mind keeping something around that really _has_ a future,
+> but it's been two years and nobody showed up ... but yeah, I also think
+> that "has a future" means upstream.
+> 
+> And clearly the old "other people can use it" argument doesn't work any
+> more either, the only other vendors who are doing something in AP mode
+> are Mediatek and maybe to some extent Realtek, and they all work on top
+> of mac80211 with thinner firmware. Broadcom has disappeared as far as I
+> can tell, with the occasional patch like recently that I'm also
+> suspecting serves pure out-of-tree driver purposes...
+
+Based on internal discussion I don't see a path forward to using this 
+interface upstream, so please continue with the extraction, 
+incorporating my prior comments.
+
+Thanks!
+/jeff
