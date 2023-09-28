@@ -2,63 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBA2B7B132D
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 08:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3B897B153A
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 09:43:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230449AbjI1GhC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 02:37:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
+        id S230425AbjI1HnX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 03:43:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjI1GhB (ORCPT
+        with ESMTP id S230265AbjI1HnW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 02:37:01 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18C459C;
-        Wed, 27 Sep 2023 23:36:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=wfjzeanupPjnEhAnbnxHI+LD+nLIbu+E90hTrqZ35hM=;
-        t=1695883020; x=1697092620; b=kyCCYOAcZHre0t23IB5F9LlfIu2edcFgE9N9hwjxkuHYitx
-        cGWRO/y28ntV4+r6u45qgoh+gDQ9F7Kd5RsMk54DeDE3Mx62KnJBiw3/pVLHFzf6RutYFNU8esTZf
-        17zll0oAHFsS4nQ87z3Pt+ynXrCnZGBK7HE9Lv8G/nY9ZVQOJ0tGg5/1jVhAwSQS7KV0muROFrt1+
-        PxSNzv7FuJTJj4hXnNdWbGNApmZ0CQbXobhUN/19GzpYhAdwT1Wviocaqip4xGQaZFiIeYkwZRCz2
-        kTrRH/Ty32UnHSRO+ctc1ZEFNPTQ2MbClcJJIMWOf7RAOFYqOtUzvlkJLk0f7ANA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qlkda-009K7X-1f;
-        Thu, 28 Sep 2023 08:36:38 +0200
-Message-ID: <fd1265994629dc8719d3361a7343f09b775f3a55.camel@sipsolutions.net>
-Subject: Re: [PATCH] wext.h: Clean up errors in wext.h
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     KaiLong Wang <wangkailong@jari.cn>, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Thu, 28 Sep 2023 08:36:36 +0200
-In-Reply-To: <7c5744ca.8aa.18ad9c22e75.Coremail.wangkailong@jari.cn>
-References: <7c5744ca.8aa.18ad9c22e75.Coremail.wangkailong@jari.cn>
+        Thu, 28 Sep 2023 03:43:22 -0400
+Received: from mail.bizcodes.pl (mail.bizcodes.pl [151.80.57.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D802792
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 00:43:20 -0700 (PDT)
+Received: by mail.bizcodes.pl (Postfix, from userid 1002)
+        id D2C2CA43CD; Thu, 28 Sep 2023 07:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bizcodes.pl; s=mail;
+        t=1695886943; bh=5QPMt7jNntM5ZbstM20BWsHIeLbmRE8lVU4Iu89IleQ=;
+        h=Date:From:To:Subject:From;
+        b=J/NAiDZKyTjMt8w7r1g1RbCr0t7R2tzBx1yFbS/snOhRpn3FT+cem5AfQk4WwP0r1
+         HIm6VmPNaNZZjkP46C+yDfDRSgw071TzUrLU9D4Sa2+S3k/DZeSebqk2yQCSYcB3D4
+         FTefDW8/m8dJMIpjnJBRghZMDFcmmz/jLsh58q/CGzQ+tFfo6R2+18jdTbJKEBZWa1
+         /ZUmX8G0bisAqGdh1vi6vmT2XN4DFFndFV0FEOrxrN7u2VXlwbeSUxiqawlx0WlMo0
+         54EcbJ8CMlvLNBdcPmPK3Ng5mX3ijTdhvn+2rFioOOy9eocijcwvxZbS3GYkx8ym15
+         ZxM3CinfMjglg==
+Received: by mail.bizcodes.pl for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 07:40:51 GMT
+Message-ID: <20230928064500-0.1.bz.1gqt3.0.80hqyged87@bizcodes.pl>
+Date:   Thu, 28 Sep 2023 07:40:51 GMT
+From:   "Marcin Chruszcz" <marcin.chruszcz@bizcodes.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.bizcodes.pl
+MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-09-28 at 11:08 +0800, KaiLong Wang wrote:
-> Fix the following errors reported by checkpatch:
->=20
+Dzie=C5=84 dobry!
 
-Please do these things on staging, there really is no reason to touch
-this decades-old code for such a thing now.
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
 
-johannes
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
+
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
+
+
+Pozdrawiam
+Marcin Chruszcz
