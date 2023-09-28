@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0AE77B1FC6
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 16:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C72E97B1FC9
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 16:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231489AbjI1Ogc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 10:36:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43614 "EHLO
+        id S231482AbjI1Ogf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 10:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231691AbjI1Ogb (ORCPT
+        with ESMTP id S231578AbjI1Ogd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 10:36:31 -0400
+        Thu, 28 Sep 2023 10:36:33 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18A17CC1
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 07:36:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DA711AB
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 07:36:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695911789; x=1727447789;
+  t=1695911791; x=1727447791;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jSk3eOIjdWrZ/vH5KLjnPp2uVqLfFKxMw6oRBzvY328=;
-  b=PXCmdrozJ26JOba2Wj9uBMQ4oLMcQryf4vv4I/50zewJX+MaBZ5xfZni
-   6nwMT/+tzN4r5ECvoduWwM+LPQcAZwWg/kcOJXPFWlTfb/UzQM6hgHOcb
-   ul6X2WjtP8OmGtTCDDdIjOH00f67uEYI2qk9mh9nnJp/8EeJUoxEk7Nhh
-   NlcHqg4zm32OSFyrYdfa4BOF1hwM5EiAewqjS8WktyLrYXr4GHib+R2CY
-   sFK5fn5LLLslJNuJHUu+hYinVQoO/AqVQr8zRZgnYzra7iML6ny7h5LA7
-   BQzHzye5FlYCx0bnc5mKE0lYbQP1+sBu2RtBIxTXLWERzRnwYbmH9+m0L
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="688507"
+  bh=tiSTdOTbZyN9JxSp528AmscEDwYbu12+VXV1VJ3Cfd0=;
+  b=eH8wHVy+fGyaNkhpSElEody5hEjOUZFicKs+Zn63O7DxIs1mPV2j/BWn
+   onUy5p6s4WYtukHJOKmvIAlcPZxA3d5uwKGNhsRTVJiIYCVYNYppdkNoO
+   0h9EuS9x/rKElO+oqH8xjuXVHw32pJqXl0QF8/sLJGt9vhLWm/GGmqXf2
+   By85b5QhX9VO0XMTcHjGG2AY2v0nIBODOBL4mLcaa38zG9KJtpRzK+m1+
+   G9k5fqzV0s4sGtZcwDnQdz0NZ/e/zH7yls7g4gxs9jSk5JpyU95qVq7hK
+   sfJ0TfNkLV73pjf8OzqiDOir9xqgDPHalYYCurOyGesbxbcQ9++i6LKEe
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="688523"
 X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
-   d="scan'208";a="688507"
+   d="scan'208";a="688523"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:36:29 -0700
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:36:31 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="996590541"
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="996590555"
 X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
-   d="scan'208";a="996590541"
+   d="scan'208";a="996590555"
 Received: from smoriles-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.92.89])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:36:27 -0700
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:36:29 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 15/18] wifi: mac80211: fix a expired vs. cancel race in roc
-Date:   Thu, 28 Sep 2023 17:35:36 +0300
-Message-Id: <20230928172905.4e4469be20ac.Iab0525f5cc4698acf23eab98b8b1eec02099cde0@changeid>
+Subject: [PATCH 16/18] wifi: cfg80211: wext: convert return value to kernel-doc
+Date:   Thu, 28 Sep 2023 17:35:37 +0300
+Message-Id: <20230928172905.ab3b9274bf07.If263f9f6726d6ad4661f8603e6a4485e0385d67f@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230928143539.1037500-1-gregory.greenman@intel.com>
 References: <20230928143539.1037500-1-gregory.greenman@intel.com>
@@ -62,68 +62,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-When the remain on channel is removed at the time it should
-have expired, we have a race: the driver could be handling
-the flow of the expiration while mac80211 is cancelling
-that very same remain on channel request.
+Since I'm getting a warning here right now, fix the
+kernel-doc to be "Returns:" rather than just writing
+that out in the doc paragraph.
 
-This wouldn't be problem in itself, but since mac80211
-can send the next request to the driver in the cancellation
-flow, we can get to the following situation:
-
-           CPU0                             CPU1
-expiration of roc in driver
-ieee80211_remain_on_channel_expired()
-                                         Cancellation of the roc
-schedules a worker (hw_roc_done)
-                                         Add next roc
-hw_roc_done_wk runs and ends
-the second roc prematurely.
-
-Since, by design, there is only one single request sent to the
-driver at a time, we can safely assume that after the cancel()
-request returns from the driver, we should not handle any worker
-that handles the expiration of the request.
-
-Cancel the hw_roc_done worker after the cancellation to make
-sure we start the next one with a clean slate.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/offchannel.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/wireless/wext-compat.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index 071582dbe6a5..6c4080202573 100644
---- a/net/mac80211/offchannel.c
-+++ b/net/mac80211/offchannel.c
-@@ -717,6 +717,23 @@ static int ieee80211_cancel_roc(struct ieee80211_local *local,
- 			return ret;
- 		}
+diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
+index d23ce088bffa..2371069f3c43 100644
+--- a/net/wireless/wext-compat.c
++++ b/net/wireless/wext-compat.c
+@@ -7,7 +7,7 @@
+  * we directly assign the wireless handlers of wireless interfaces.
+  *
+  * Copyright 2008-2009	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2019-2022 Intel Corporation
++ * Copyright (C) 2019-2023 Intel Corporation
+  */
  
-+		/*
-+		 * We could be racing against the notification from the driver:
-+		 *  + driver is handling the notification on CPU0
-+		 *  + user space is cancelling the remain on channel and
-+		 *    schedules the hw_roc_done worker.
-+		 *
-+		 *  Now hw_roc_done might start to run after the next roc will
-+		 *  start and mac80211 will think that this second roc has
-+		 *  ended prematurely.
-+		 *  Cancel the work to make sure that all the pending workers
-+		 *  have completed execution.
-+		 *  Note that this assumes that by the time the driver returns
-+		 *  from drv_cancel_remain_on_channel, it has completed all
-+		 *  the processing of related notifications.
-+		 */
-+		wiphy_work_cancel(local->hw.wiphy, &local->hw_roc_done);
-+
- 		/* TODO:
- 		 * if multiple items were combined here then we really shouldn't
- 		 * cancel them all - we should wait for as much time as needed
+ #include <linux/export.h>
+@@ -227,7 +227,7 @@ EXPORT_WEXT_HANDLER(cfg80211_wext_giwrange);
+  * cfg80211_wext_freq - get wext frequency for non-"auto"
+  * @freq: the wext freq encoding
+  *
+- * Returns a frequency, or a negative error code, or 0 for auto.
++ * Returns: a frequency, or a negative error code, or 0 for auto.
+  */
+ int cfg80211_wext_freq(struct iw_freq *freq)
+ {
 -- 
 2.38.1
 
