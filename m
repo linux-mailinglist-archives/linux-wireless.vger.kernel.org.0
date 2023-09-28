@@ -2,138 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 055097B1FCE
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 16:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A2967B204C
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 16:59:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231534AbjI1Ogj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 10:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43852 "EHLO
+        id S231376AbjI1O7z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 10:59:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231596AbjI1Ogh (ORCPT
+        with ESMTP id S231332AbjI1O7y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 10:36:37 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E0A136
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 07:36:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695911796; x=1727447796;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ua4ZGso1xaLXHXSvTBiuX2m7cSG81XStHJwmvnLVE9A=;
-  b=A3+R0Z/9mUl1flaXFHQuOgMGtrL+aKkyuBJ0lFNkm1PqAG0JliogReEY
-   325cYx1bUn5NcHHxMR+svzeMvCNX26IzkwQzs9nam4hrwg08pKK9q7BvC
-   hnklCSYMY1ksDoH2nfuc3Xa8eTUGVK8aSa4go/VpDpfRxvF80R7cwxyXi
-   KTc33WHZ1+ldRD57fppyqbCoP7LYtpP+AbqFQxV6OVUF0/M54cHkqHFwp
-   UFdjya6vkeYO+/yBBit2vIKsheTCnAIJ6Z30FN+i1XvwDqmZf3EvmsTZU
-   Lb15qGU1eu0rd1EEhOqtzSLJtEyY6oCZeskG8cQkcPUQKwaAUqvJlOSoi
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="688554"
-X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
-   d="scan'208";a="688554"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:36:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="996590579"
-X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
-   d="scan'208";a="996590579"
-Received: from smoriles-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.92.89])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:36:33 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 18/18] wifi: mac80211: flush STA queues on unauthorization
-Date:   Thu, 28 Sep 2023 17:35:39 +0300
-Message-Id: <20230928172905.d47f528829e7.I96903652c7ee0c5c66891f8b2364383da8e45a1f@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230928143539.1037500-1-gregory.greenman@intel.com>
-References: <20230928143539.1037500-1-gregory.greenman@intel.com>
+        Thu, 28 Sep 2023 10:59:54 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09BD195
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 07:59:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F19CC433C7;
+        Thu, 28 Sep 2023 14:59:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695913192;
+        bh=lpOR4Ou6X0Ukp2Qx3zi/x5F5K/rvMjRB0w5E6unmQdQ=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=GUAF/hFf0ZB6v2o5F5zS+Bg6az69VlGSDwjjobk4Z0pTSplNJOvoE+POSvkElf90n
+         3dRWD+p9nmpvn9n3gGSDACeW3QUL8XNzjghCnqJHGYsL32zqHBzPfbQPU9t9DPM3dv
+         VU5ynJIPWlehGQ/aLXkDmV+cbCogpJJA1BTv5kOV7yEFtX8XDt3/4hW2yncM0uz/HL
+         bq+VcKyUkQRDei4RpkzzNU3n36d6FTDg4VH/KkzZaKPMGYYxYGH4dLR6/eBlg+goJe
+         +YYRGm7IGkkog+Y9GX7dk3bFk40WCM9WgmC/gwpbwRSQst18+Ekl9O0BSHDi+uB/wU
+         yM5g+cUJ4MYwg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] wifi: ath12k: add support for hardware rfkill for
+ WCN7850
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230906110412.182176-1-quic_lingbok@quicinc.com>
+References: <20230906110412.182176-1-quic_lingbok@quicinc.com>
+To:     Lingbo Kong <quic_lingbok@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <quic_jjohnson@quicinc.com>,
+        <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169591318971.3019228.13253796564349878064.kvalo@kernel.org>
+Date:   Thu, 28 Sep 2023 14:59:51 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Lingbo Kong <quic_lingbok@quicinc.com> wrote:
 
-When the station is marked as no longer authorized, we shouldn't
-transmit to it any longer, but in particular we shouldn't be able
-to transmit to it after removing keys, which might lead to frames
-being sent out unencrypted depending on the exact hardware offload
-mechanism. Thus, instead of flushing only on station destruction,
-which covers only some cases, always flush on unauthorization.
+> When hardware rfkill is enabled in the firmware, it will report the
+> capability using WMI_SYS_CAP_INFO_RFKILL bit in the WMI_SERVICE_READY event
+> to the host. Currently ath12k does not process this service capability. In
+> order to support this, update ath12k to check if the capability is enabled,
+> if so, send the GPIO information to firmware. When the firmware detects
+> hardware rfkill is enabled by the user, it will report it using
+> WMI_RFKILL_STATE_CHANGE_EVENTID. When ath12k receive the event, it will set
+> the value of rfkill_radio_on based on whether radio_state is equal to
+> WMI_RFKILL_RADIO_STATE_ON, then send WMI_PDEV_PARAM_RFKILL_ENABLE to
+> firmware.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- net/mac80211/sta_info.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+Patch applied to ath-next branch of ath.git, thanks.
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 450700173422..0ba613dd1cc4 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1275,6 +1275,8 @@ static int _sta_info_move_state(struct sta_info *sta,
- 				enum ieee80211_sta_state new_state,
- 				bool recalc)
- {
-+	struct ieee80211_local *local = sta->local;
-+
- 	might_sleep();
- 
- 	if (sta->sta_state == new_state)
-@@ -1350,6 +1352,24 @@ static int _sta_info_move_state(struct sta_info *sta,
- 		} else if (sta->sta_state == IEEE80211_STA_AUTHORIZED) {
- 			ieee80211_vif_dec_num_mcast(sta->sdata);
- 			clear_bit(WLAN_STA_AUTHORIZED, &sta->_flags);
-+
-+			/*
-+			 * If we have encryption offload, flush (station) queues
-+			 * (after ensuring concurrent TX completed) so we won't
-+			 * transmit anything later unencrypted if/when keys are
-+			 * also removed, which might otherwise happen depending
-+			 * on how the hardware offload works.
-+			 */
-+			if (local->ops->set_key) {
-+				synchronize_net();
-+				if (local->ops->flush_sta)
-+					drv_flush_sta(local, sta->sdata, sta);
-+				else
-+					ieee80211_flush_queues(local,
-+							       sta->sdata,
-+							       false);
-+			}
-+
- 			ieee80211_clear_fast_xmit(sta);
- 			ieee80211_clear_fast_rx(sta);
- 		}
-@@ -1415,18 +1435,6 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
- 		WARN_ON_ONCE(ret);
- 	}
- 
--	/* Flush queues before removing keys, as that might remove them
--	 * from hardware, and then depending on the offload method, any
--	 * frames sitting on hardware queues might be sent out without
--	 * any encryption at all.
--	 */
--	if (local->ops->set_key) {
--		if (local->ops->flush_sta)
--			drv_flush_sta(local, sta->sdata, sta);
--		else
--			ieee80211_flush_queues(local, sta->sdata, false);
--	}
--
- 	/* now keys can no longer be reached */
- 	ieee80211_free_sta_keys(local, sta);
- 
+004ccbc0dd49 wifi: ath12k: add support for hardware rfkill for WCN7850
+
 -- 
-2.38.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20230906110412.182176-1-quic_lingbok@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
