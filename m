@@ -2,111 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDF287B1203
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 07:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02387B1236
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 07:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbjI1FY2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 01:24:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59028 "EHLO
+        id S229469AbjI1Fuy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 01:50:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjI1FYY (ORCPT
+        with ESMTP id S229453AbjI1Fux (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 01:24:24 -0400
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE84196
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Sep 2023 22:24:20 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-39.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0d:31b:0:640:fdf8:0])
-        by forward102a.mail.yandex.net (Yandex) with ESMTP id 446FE4233E;
-        Thu, 28 Sep 2023 08:23:48 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-39.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id lNJCiKgsFW20-XWmUY66N;
-        Thu, 28 Sep 2023 08:23:47 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1695878627; bh=JVTglUgH6iFlGHMHYFVEBTAd/FdPu3+s/7xqGCa01bI=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=OqeCjsAwS7r7V0NCxGIFWIDMfuzirHhbtLG0Ht83/AlK1FdMHwI1mF7mPvNtVOonb
-         F/YKghUkktaLkKO2oWlWScKNRzwQhablTQGucRPVQYnEcF9YavVdEI71ZiJkERA7tk
-         blJNBFatx82ePrRQpABbPlaWmoomdyKYJ1aTguxM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-39.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] [v2] wifi: rtlwifi: fix EDCA limit set by BT coexistence
-Date:   Thu, 28 Sep 2023 08:23:19 +0300
-Message-ID: <20230928052327.120178-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <1dc8ba8d0c93465a92fbfe4293c2c136@realtek.com>
-References: <1dc8ba8d0c93465a92fbfe4293c2c136@realtek.com>
+        Thu, 28 Sep 2023 01:50:53 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA8FF9
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Sep 2023 22:50:51 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38S5kTjM009353;
+        Thu, 28 Sep 2023 05:50:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=80+iWJsqL31O97GIPcsVD9nCK11R1yFQTCl21puXvqE=;
+ b=piPHRwR/wjDKgaiEYX9qnd13I5kuPsPShFkVBkJxiwzweL5Jp7Oa2zuSsGpeCbyzhtMc
+ qtslhi0d2t2C2k2bjH82S4xxPQKgHsuvdebsCi/0BX90UrmLMHbYXOH6WcBNzhLhsdNg
+ UtmIReSWecnpyChVfElXZOsiDsoQ5svpJ/dD/iPzW9o7tr8x2HQvDcwKhO7afTbmAdbB
+ e5ieKSUSQyOpvTQRC4fQbKi36Otawu15aRtO89n61vUpoLdGy99pL2kQMlE40/hl1urW
+ 8HbkVKfeh6wzrjTAgTVyTTpmkiGPJG241RhqEZPv4y8m22kvBht85R5wVU3joKhSYEIL 7Q== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3td24u84rs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 28 Sep 2023 05:50:44 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38S5oguI016421
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 28 Sep 2023 05:50:42 GMT
+Received: from yk-E5440.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Wed, 27 Sep 2023 22:50:41 -0700
+From:   Kang Yang <quic_kangyang@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH 0/4] dynamically update puncturing bitmap
+Date:   Thu, 28 Sep 2023 13:50:18 +0800
+Message-ID: <20230928055022.9670-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: JEKTZUFs9fCixfZwqJF2nbgrPu7QG1G3
+X-Proofpoint-ORIG-GUID: JEKTZUFs9fCixfZwqJF2nbgrPu7QG1G3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-28_03,2023-09-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
+ suspectscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=462 adultscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309280048
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In 'rtl92c_dm_check_edca_turbo()', 'rtl88e_dm_check_edca_turbo()',
-and 'rtl8723e_dm_check_edca_turbo()', the DL limit should be set
-from the corresponding field of 'rtlpriv->btcoexist' rather than
-UL. Compile tested only.
+After connection, puncturing bitmap maybe change. AP will include the
+related changes in beacon.
 
-Fixes: 0529c6b81761 ("rtlwifi: rtl8723ae: Update driver to match 06/28/14 Realtek version")
-Fixes: c151aed6aa14 ("rtlwifi: rtl8188ee: Update driver to match Realtek release of 06282014")
-Fixes: beb5bc402043 ("rtlwifi: rtl8192c-common: Convert common dynamic management routines for addition of rtl8192se and rtl8192de")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v2: adjust title (Ping-Ke Shih) and add similar fixes for
-rtl8723ae and rtl8188ee
----
- drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c       | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c       | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+So update the related changes dynamically.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
-index 6f61d6a10627..5a34894a533b 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
-@@ -799,7 +799,7 @@ static void rtl88e_dm_check_edca_turbo(struct ieee80211_hw *hw)
- 	}
- 
- 	if (rtlpriv->btcoexist.bt_edca_dl != 0) {
--		edca_be_ul = rtlpriv->btcoexist.bt_edca_dl;
-+		edca_be_dl = rtlpriv->btcoexist.bt_edca_dl;
- 		bt_change_edca = true;
- 	}
- 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
-index 0b6a15c2e5cc..d92aad60edfe 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
-@@ -640,7 +640,7 @@ static void rtl92c_dm_check_edca_turbo(struct ieee80211_hw *hw)
- 	}
- 
- 	if (rtlpriv->btcoexist.bt_edca_dl != 0) {
--		edca_be_ul = rtlpriv->btcoexist.bt_edca_dl;
-+		edca_be_dl = rtlpriv->btcoexist.bt_edca_dl;
- 		bt_change_edca = true;
- 	}
- 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c
-index 8ada31380efa..0ff8e355c23a 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c
-@@ -466,7 +466,7 @@ static void rtl8723e_dm_check_edca_turbo(struct ieee80211_hw *hw)
- 	}
- 
- 	if (rtlpriv->btcoexist.bt_edca_dl != 0) {
--		edca_be_ul = rtlpriv->btcoexist.bt_edca_dl;
-+		edca_be_dl = rtlpriv->btcoexist.bt_edca_dl;
- 		bt_change_edca = true;
- 	}
- 
+Kang Yang (4):
+  wifi: mac80211: mlme: fix verification of puncturing bitmap obtained
+    from AP
+  wifi: mac80211: mlme: correct the verification of extracted bitmap
+  wifi: mac80211: mlme: enable tracking bandwidth changes for 6 GHz band
+  wifi: ath12k: dynamically update puncturing bitmap
+
+ drivers/net/wireless/ath/ath12k/mac.c | 50 +++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h | 17 +++++++
+ net/mac80211/mlme.c                   | 72 ++++++++++++++++++++-------
+ 3 files changed, 121 insertions(+), 18 deletions(-)
+
+
+base-commit: 73e13f6a439b75a9dbc84bbfa0b0d6624b354853
 -- 
-2.41.0
+2.34.1
 
