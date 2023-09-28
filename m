@@ -2,70 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C11A7B1114
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 05:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDF287B1203
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 07:24:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229955AbjI1DKH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Sep 2023 23:10:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50084 "EHLO
+        id S230156AbjI1FY2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 01:24:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjI1DKF (ORCPT
+        with ESMTP id S229460AbjI1FYY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Sep 2023 23:10:05 -0400
-Received: from jari.cn (unknown [218.92.28.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id ECD5B94;
-        Wed, 27 Sep 2023 20:10:03 -0700 (PDT)
-Received: from wangkailong$jari.cn ( [182.148.12.64] ) by
- ajax-webmail-localhost.localdomain (Coremail) ; Thu, 28 Sep 2023 11:08:16
- +0800 (GMT+08:00)
-X-Originating-IP: [182.148.12.64]
-Date:   Thu, 28 Sep 2023 11:08:16 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   "KaiLong Wang" <wangkailong@jari.cn>
-To:     johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] wext.h: Clean up errors in wext.h
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.1-cmXT6 build
- 20230419(ff23bf83) Copyright (c) 2002-2023 www.mailtech.cn
- mispb-4e503810-ca60-4ec8-a188-7102c18937cf-zhkzyfz.cn
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        Thu, 28 Sep 2023 01:24:24 -0400
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE84196
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Sep 2023 22:24:20 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-39.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0d:31b:0:640:fdf8:0])
+        by forward102a.mail.yandex.net (Yandex) with ESMTP id 446FE4233E;
+        Thu, 28 Sep 2023 08:23:48 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-39.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id lNJCiKgsFW20-XWmUY66N;
+        Thu, 28 Sep 2023 08:23:47 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1695878627; bh=JVTglUgH6iFlGHMHYFVEBTAd/FdPu3+s/7xqGCa01bI=;
+        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+        b=OqeCjsAwS7r7V0NCxGIFWIDMfuzirHhbtLG0Ht83/AlK1FdMHwI1mF7mPvNtVOonb
+         F/YKghUkktaLkKO2oWlWScKNRzwQhablTQGucRPVQYnEcF9YavVdEI71ZiJkERA7tk
+         blJNBFatx82ePrRQpABbPlaWmoomdyKYJ1aTguxM=
+Authentication-Results: mail-nwsmtp-smtp-production-main-39.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] [v2] wifi: rtlwifi: fix EDCA limit set by BT coexistence
+Date:   Thu, 28 Sep 2023 08:23:19 +0300
+Message-ID: <20230928052327.120178-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <1dc8ba8d0c93465a92fbfe4293c2c136@realtek.com>
+References: <1dc8ba8d0c93465a92fbfe4293c2c136@realtek.com>
 MIME-Version: 1.0
-Message-ID: <7c5744ca.8aa.18ad9c22e75.Coremail.wangkailong@jari.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAfwBn+D0g7hRlZYC+AA--.636W
-X-CM-SenderInfo: 5zdqwypdlo00nj6mt2flof0/1tbiAQAIB2UT+K8AFQAHs9
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
-X-Spam-Status: No, score=2.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_PBL,RDNS_NONE,T_SPF_HELO_PERMERROR,T_SPF_PERMERROR,XPRIO
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rml4IHRoZSBmb2xsb3dpbmcgZXJyb3JzIHJlcG9ydGVkIGJ5IGNoZWNrcGF0Y2g6CgpFUlJPUjog
-ImZvbyAqIGJhciIgc2hvdWxkIGJlICJmb28gKmJhciIKClNpZ25lZC1vZmYtYnk6IEthaUxvbmcg
-V2FuZyA8d2FuZ2thaWxvbmdAamFyaS5jbj4KLS0tCiBpbmNsdWRlL25ldC93ZXh0LmggfCA4ICsr
-KystLS0tCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQoK
-ZGlmZiAtLWdpdCBhL2luY2x1ZGUvbmV0L3dleHQuaCBiL2luY2x1ZGUvbmV0L3dleHQuaAppbmRl
-eCBhYTE5MmE2NzAzMDQuLmEzYWFjNjQ4NzY1ZSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9uZXQvd2V4
-dC5oCisrKyBiL2luY2x1ZGUvbmV0L3dleHQuaApAQCAtNDgsMTAgKzQ4LDEwIEBAIGludCBpb2N0
-bF9wcml2YXRlX2NhbGwoc3RydWN0IG5ldF9kZXZpY2UgKmRldiwgc3RydWN0IGl3cmVxICppd3Is
-CiBpbnQgY29tcGF0X3ByaXZhdGVfY2FsbChzdHJ1Y3QgbmV0X2RldmljZSAqZGV2LCBzdHJ1Y3Qg
-aXdyZXEgKml3ciwKIAkJCXVuc2lnbmVkIGludCBjbWQsIHN0cnVjdCBpd19yZXF1ZXN0X2luZm8g
-KmluZm8sCiAJCQlpd19oYW5kbGVyIGhhbmRsZXIpOwotaW50IGl3X2hhbmRsZXJfZ2V0X3ByaXZh
-dGUoc3RydWN0IG5ldF9kZXZpY2UgKgkJZGV2LAotCQkJICAgc3RydWN0IGl3X3JlcXVlc3RfaW5m
-byAqCWluZm8sCi0JCQkgICB1bmlvbiBpd3JlcV9kYXRhICoJCXdycXUsCi0JCQkgICBjaGFyICoJ
-CQlleHRyYSk7CitpbnQgaXdfaGFuZGxlcl9nZXRfcHJpdmF0ZShzdHJ1Y3QgbmV0X2RldmljZSAq
-ZGV2LAorCQkJICAgc3RydWN0IGl3X3JlcXVlc3RfaW5mbyAqaW5mbywKKwkJCSAgIHVuaW9uIGl3
-cmVxX2RhdGEgKndycXUsCisJCQkgICBjaGFyICpleHRyYSk7CiAjZWxzZQogI2RlZmluZSBpb2N0
-bF9wcml2YXRlX2NhbGwgTlVMTAogI2RlZmluZSBjb21wYXRfcHJpdmF0ZV9jYWxsIE5VTEwKLS0g
-CjIuMTcuMQo=
+In 'rtl92c_dm_check_edca_turbo()', 'rtl88e_dm_check_edca_turbo()',
+and 'rtl8723e_dm_check_edca_turbo()', the DL limit should be set
+from the corresponding field of 'rtlpriv->btcoexist' rather than
+UL. Compile tested only.
+
+Fixes: 0529c6b81761 ("rtlwifi: rtl8723ae: Update driver to match 06/28/14 Realtek version")
+Fixes: c151aed6aa14 ("rtlwifi: rtl8188ee: Update driver to match Realtek release of 06282014")
+Fixes: beb5bc402043 ("rtlwifi: rtl8192c-common: Convert common dynamic management routines for addition of rtl8192se and rtl8192de")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v2: adjust title (Ping-Ke Shih) and add similar fixes for
+rtl8723ae and rtl8188ee
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c       | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c       | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
+index 6f61d6a10627..5a34894a533b 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
+@@ -799,7 +799,7 @@ static void rtl88e_dm_check_edca_turbo(struct ieee80211_hw *hw)
+ 	}
+ 
+ 	if (rtlpriv->btcoexist.bt_edca_dl != 0) {
+-		edca_be_ul = rtlpriv->btcoexist.bt_edca_dl;
++		edca_be_dl = rtlpriv->btcoexist.bt_edca_dl;
+ 		bt_change_edca = true;
+ 	}
+ 
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
+index 0b6a15c2e5cc..d92aad60edfe 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
+@@ -640,7 +640,7 @@ static void rtl92c_dm_check_edca_turbo(struct ieee80211_hw *hw)
+ 	}
+ 
+ 	if (rtlpriv->btcoexist.bt_edca_dl != 0) {
+-		edca_be_ul = rtlpriv->btcoexist.bt_edca_dl;
++		edca_be_dl = rtlpriv->btcoexist.bt_edca_dl;
+ 		bt_change_edca = true;
+ 	}
+ 
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c
+index 8ada31380efa..0ff8e355c23a 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c
+@@ -466,7 +466,7 @@ static void rtl8723e_dm_check_edca_turbo(struct ieee80211_hw *hw)
+ 	}
+ 
+ 	if (rtlpriv->btcoexist.bt_edca_dl != 0) {
+-		edca_be_ul = rtlpriv->btcoexist.bt_edca_dl;
++		edca_be_dl = rtlpriv->btcoexist.bt_edca_dl;
+ 		bt_change_edca = true;
+ 	}
+ 
+-- 
+2.41.0
+
