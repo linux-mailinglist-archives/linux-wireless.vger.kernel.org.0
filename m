@@ -2,46 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A577B21A3
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 17:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D5FA7B2217
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 18:18:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232045AbjI1Pq6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 11:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59286 "EHLO
+        id S231263AbjI1QSl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 12:18:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231845AbjI1Pq5 (ORCPT
+        with ESMTP id S231162AbjI1QSk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 11:46:57 -0400
+        Thu, 28 Sep 2023 12:18:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0520D6
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 08:46:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F9FC433C7;
-        Thu, 28 Sep 2023 15:46:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03D001A4
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 09:18:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB0AC433C7;
+        Thu, 28 Sep 2023 16:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695916014;
-        bh=KCQCIRbsa1m6qTWh9HIbZJWA7KSkVBIONtP4ro1bci0=;
+        s=k20201202; t=1695917917;
+        bh=/5JhqD/wO+wsTkpPLNjBCek6BbRFN8lhmXp1icpMp7w=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=mf8uvYje4sSGnByBOhDNCm480tZwXE8q+Bk01qYVSZFutC9p4vlKhrvF3QD7dPo77
-         0KaYfdkRDWh3IqKbaOBEYnCPZyiTehqt6Erz6YQEicAJOaZQ//LeSY1MpDbXHjijEF
-         thZj4J2TAdrXg8nN8cnCe8OGA8zi8IrxvTddpCpq24dtjw41iDTceeGXPMj07SIMN2
-         5NOCuf7YSsIA79ffkZG5fY71ww4j9rydoI65DnXI28j7Smm8hEnzm/dXI5sIMphVBg
-         m9Mt1Wz/w26O8uuoiTDZPuBD9XzkcAxXB7Hq4iN5MOWgVIIFvjbxqtC19dc7ruwunU
-         9o57+43RnaPLA==
+        b=rzQrtb6HElbp/mgji+G5jUc/GofKaINx7p3Dl+O1HbRSsr5y7I4IzEUKJ1c/kPN3+
+         H3cMjPQOaPMvXHZpNenWfrCEfLfrh4UTB//YovvmznQtBhUI9fBYOlcrwkM2NMNJVk
+         iGUwHGK7piEn3HNmPvheMQNigL7tDxNyGhLGb90aFMattVJSg5qaFR4EWAOF9fAS31
+         qxQPhI8+7BWheongO6jq1emNdc+HzgxNij8u6UnFhN5QcbX2sLgxTe2JSCOJsL20N1
+         NlL2ZdoEoVT8me0IyYZD0iyMrXh26Ugc6L4sqQtnCanyYeyk65cUO+nVU6ykiX16gJ
+         BWV7Jat4ZMHmg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: drop NULL pointer check in
- ath11k_dp_rx_mon_dest_process()
+Subject: Re: [PATCH] wifi: rt2x00: fix MT7620 low RSSI issue
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230907083852.10775-1-dmantipov@yandex.ru>
-References: <20230907083852.10775-1-dmantipov@yandex.ru>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
-        ath11k@lists.infradead.org, Dmitry Antipov <dmantipov@yandex.ru>
+In-Reply-To: <TYAP286MB031571CDB146C414A908A66DBCFEA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+References: <TYAP286MB031571CDB146C414A908A66DBCFEA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+To:     Shiji Yang <yangshiji66@outlook.com>
+Cc:     linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Shiji Yang <yangshiji66@outlook.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169591601112.3096214.11174520645995155662.kvalo@kernel.org>
-Date:   Thu, 28 Sep 2023 15:46:53 +0000 (UTC)
+Message-ID: <169591791433.3187104.10405094082972103919.kvalo@kernel.org>
+Date:   Thu, 28 Sep 2023 16:18:36 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -51,26 +50,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+Shiji Yang <yangshiji66@outlook.com> wrote:
 
-> Since 'srng_list' is a fixed-size array of 'struct hal_srng'
-> in 'struct ath11_hal', any of its member can't be NULL and
-> so relevant check may be dropped.
+> On Mediatek vendor driver[1], MT7620 (RT6352) uses different RSSI
+> base value '-2' compared to the other RT2x00 chips. This patch
+> introduces the SoC specific base value to fix the low RSSI value
+> reports on MT7620.
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> [1] Found on MT76x2E_MT7620_LinuxAP_V3.0.4.0_P3 ConvertToRssi().
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
 
-Failed to apply.
+Can someone review this, please?
 
-error: patch failed: drivers/net/wireless/ath/ath11k/dp_rx.c:5094
-error: drivers/net/wireless/ath/ath11k/dp_rx.c: patch does not apply
-stg import: Diff does not apply cleanly
-
-Patch set to Changes Requested.
+Patch set to Deferred.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230907083852.10775-1-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/TYAP286MB031571CDB146C414A908A66DBCFEA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
