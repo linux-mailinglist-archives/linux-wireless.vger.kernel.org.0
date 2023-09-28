@@ -2,91 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F66C7B2168
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 17:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFB547B2178
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 17:38:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231913AbjI1PdQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 11:33:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37954 "EHLO
+        id S232032AbjI1Pi4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 11:38:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231915AbjI1PdP (ORCPT
+        with ESMTP id S231979AbjI1Piz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 11:33:15 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFB6AC
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 08:33:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2384C433C7;
-        Thu, 28 Sep 2023 15:33:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695915193;
-        bh=1LuJxiMXhASalrUfVnL7ck/q6s7MQDu+aMOcytyqgAo=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=HVrYmn5uyV6eBfz6Gku2xahF9bWYa7EjgsVmgaJW8lNrR3Ufw5JmmKi1BVQDUfFKh
-         t24ukabQ9r4BQnaDwZfzy/x7UneGV4dqBtqsyhDYlZDX31SEI4dpvW+JeYLBB2FrIq
-         dVpFgXmq/NGQpXF1HhQKsw8IG1/K3EsqOYmgbHGcWe2yYxiTjpXfOeA14wzjkrDDEu
-         aejBzsLS5TVrRLfDmoppIjulT3QahFvfNDlvmntH51ZXTS3zxrjKxyLBc5qrFCe4E5
-         ApccGjDgsq0MuoOwKsFZ3ouuOwyyKCZXrPzmQK0UE6gT2wTg8VOYWGHNUrFwcMdHNc
-         rOfvoBcoW+ogg==
-Content-Type: text/plain; charset="utf-8"
+        Thu, 28 Sep 2023 11:38:55 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9A41AC
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 08:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=vR6IcYgCqG2TcZ76fxYJN+SvYFIa+FxOfQPvAXvHMlk=; t=1695915533; x=1697125133; 
+        b=XYY50sJHGzhGZe9TrgY4aKQ81fQ4VO7DH+gsZE9NFN3Jull8M5PKxTDnXC9eyMUK9xRJQIZWjKP
+        G/EwmT7n3S8N+1LD6+MCoA5yTJd0OUIxilBFSfT7GxEUVu//NEGaFyjplDqrO9h5/5apYvZguOrIc
+        PFlP92x4pGXoUqtP9nZj66RE7DZNsEYPp0AhEqYnJctJEnCRDU04qW0PrX8mBFS56ROSb4IIv1FI8
+        epMQRW0k+3UA4CxlVoVFhdjJQ/cSJXx5mj4zF9dAPboTTdmrECkjF4C7XnbO5V3X+hyVZd0mEXtNT
+        pR3LPRydswrd80PW/am8Z+ypdqEadR2JRudA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qlt6H-009sUH-2O;
+        Thu, 28 Sep 2023 17:38:50 +0200
+Message-ID: <ec69aa2722b07bffd6184d687861cc7e5ae9c1ef.camel@sipsolutions.net>
+Subject: removing OCB/WAVE/802.11p
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Rostislav Lisovy <lisovy@gmail.com>,
+        Bertold Van den Bergh <bertold.vandenbergh@esat.kuleuven.be>,
+        chrisshen@skku.edu, bienaime@skku.edu, pauljeong@skku.edu,
+        carloaugusto.grazia@unimore.it
+Date:   Thu, 28 Sep 2023 17:38:45 +0200
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 1/4] wifi: ath12k: add TAS capability for WCN7850
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230910082802.9198-2-quic_lingbok@quicinc.com>
-References: <20230910082802.9198-2-quic_lingbok@quicinc.com>
-To:     Lingbo Kong <quic_lingbok@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <quic_jjohnson@quicinc.com>,
-        <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169591519084.3096214.13489607891365501029.kvalo@kernel.org>
-Date:   Thu, 28 Sep 2023 15:33:12 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lingbo Kong <quic_lingbok@quicinc.com> wrote:
+Hi,
 
-> Currently, ath12k does not support Time-Average-SAR(TAS) for WCN7850. In
-> order to enable Time-Average-SAR(TAS) for WCN7850, ath12k defines
-> ath12k_get_acpi_all_data() function to get TAS configuration and SAR power
-> table, then sets pdev_id, param_type_id, and finally sends the TAS
-> configuration, SAR power table and WMI_PDEV_SET_BIOS_INTERFACE_CMDID
-> command to firmware to implement TAS during the initialization phase.
-> Besides, ath12k registers an ACPI event callback so that ACPI can notify
-> ath12k to get the updated SAR power table and sends it to firmware when the
-> device state is changed.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+CC'ing lots of people who touched or used this in the past in hopes of
+triggering some reaction somewhere ...
 
-Fails to apply, please rebase.
+I'm trying to do some cleanup in IBSS and following that some other
+cleanups wrt. station allocation etc., but OCB pretty much copied the
+IBSS code in this area, and I don't know how to use it, how to test it,
+who's using it, if anyone is actually maintaining it, etc.
 
-error: patch failed: drivers/net/wireless/ath/ath12k/core.h:771
-error: drivers/net/wireless/ath/ath12k/core.h: patch does not apply
-error: patch failed: drivers/net/wireless/ath/ath12k/hw.c:907
-error: drivers/net/wireless/ath/ath12k/hw.c: patch does not apply
-error: patch failed: drivers/net/wireless/ath/ath12k/hw.h:186
-error: drivers/net/wireless/ath/ath12k/hw.h: patch does not apply
-error: patch failed: drivers/net/wireless/ath/ath12k/wmi.h:4791
-error: drivers/net/wireless/ath/ath12k/wmi.h: patch does not apply
-stg import: Diff does not apply cleanly
+Also, it only ever got implemented for ath9k, so I'm guessing it's not
+getting any traction in new products/devices.
 
-4 patches set to Changes Requested.
+So I'm probably going to remove it.
 
-13378463 [v4,1/4] wifi: ath12k: add TAS capability for WCN7850
-13378462 [v4,2/4] wifi: ath12k: add BIOS SAR capability for WCN7850
-13378465 [v4,3/4] wifi: ath12k: add adjust configuration of CCA threshold value for WCN7850
-13378464 [v4,4/4] wifi: ath12k: add set band edge channel power for WCN7850
+Any takers to help maintain it instead?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230910082802.9198-2-quic_lingbok@quicinc.com/
+johannes
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
