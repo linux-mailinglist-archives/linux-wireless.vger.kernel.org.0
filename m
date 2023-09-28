@@ -2,249 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE9A17B1A9B
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 13:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 371167B1B51
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 13:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232068AbjI1LTw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 07:19:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46548 "EHLO
+        id S232005AbjI1Lmh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 07:42:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232053AbjI1LTO (ORCPT
+        with ESMTP id S231997AbjI1Lmg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 07:19:14 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20A2F3A84
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 04:06:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695899162; x=1727435162;
-  h=date:from:to:cc:subject:message-id;
-  bh=z2vmj7NGP51lkyqPDLjBImCw5PdTLiZQwPooshbyxBI=;
-  b=afHgItBbtqHRUrwZc7OjYmmSX7JCQwu9l1CbDuXQS7s7/N6obABGQIt4
-   qCBRQCG5SkoKyvB5GhE9WHtGizczXKnsxCnaOUxkGzaRpL1OmaF+7UqgV
-   EvEInvzmH/2pRVFJjOsdNYlCwM1XOg2CvMaMK0tEszPvCJjFSd/d2Jd8B
-   VStUDrr9kGxuRFtJF39I1371szYyz6sdNgERv0uZ1KcQgh+epf7DMIS+k
-   826agPCt5Y9xNx4Ph+FXVGsOql1QeMuiqjcjhCkG2H9K2Spgf1aJpfyZm
-   YToMrtsXNiMlSUYFl7w3xinnYf3ddnvxrIgj0DqMz8SC+e5vCRtAPdKds
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="361405227"
-X-IronPort-AV: E=Sophos;i="6.03,183,1694761200"; 
-   d="scan'208";a="361405227"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 04:05:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="1080533561"
-X-IronPort-AV: E=Sophos;i="6.03,183,1694761200"; 
-   d="scan'208";a="1080533561"
-Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
-  by fmsmga005.fm.intel.com with ESMTP; 28 Sep 2023 04:05:58 -0700
-Received: from kbuild by c3b01524d57c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qloqB-0001Nn-2z;
-        Thu, 28 Sep 2023 11:05:55 +0000
-Date:   Thu, 28 Sep 2023 19:05:06 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 22061bfc57fe08c77141dc876b4af75603c4d61d
-Message-ID: <202309281903.Gc2mvpfK-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        Thu, 28 Sep 2023 07:42:36 -0400
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B0FE126
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 04:42:34 -0700 (PDT)
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-6c61ada4178so7698280a34.0
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 04:42:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695901353; x=1696506153;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qTaDubZXEWSEPslgclOxwc7+Ad3m/lBvUqQUG3lQH1U=;
+        b=VfTH1i1gX/umr/5ku1Np2tnkV6Ic/ANoIyUyNfwL/KehXjavrZrc5ghP+xL6g0yYXq
+         2Z0WtTs/jNed3GXbjmt19cNIRUj7kB1MVYAiDYPNaNqyO47prDRYmC5i2UrGMCuI59Nz
+         HdkSnJiC3tCy0L+cdmGAhL1xuj6W4ZvJSUB5hJOsOoNTlbY3Te3VAQrim5i8nHydMLMt
+         iiiEwsaVaj3HXnryJQDi5kCdoKdDQxuNmDipEI/8sgBbN1pOwh1biQYtr4W6n0M6M3zr
+         X99Vb//a/fHuRoPKtzRj1F59Coc0icuWJXW8m2eMlmsvTfV2Lkx0vVU/ORXewAvGvnGa
+         JhcQ==
+X-Gm-Message-State: AOJu0YyNcmXzNTA2hDJSRJClyuT8NRdCb1KJ9L2PHGHYzxsinkk5DVS/
+        wZDs7wjhyIFZrUvVa1eQsxFO4sD8ZTRRgZX1Rio7gchoWmoV
+X-Google-Smtp-Source: AGHT+IGzJDdL7CGRqLCO9dfIof4cK7XxRZfPS6R1Yj25M96dgd53FV7gcHWycFeFD3YcwU49Wd3DOxR7JcS43H35tFBpUrBbu5Nt
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:3086:b0:3a7:3ced:532a with SMTP id
+ bl6-20020a056808308600b003a73ced532amr381328oib.7.1695901353486; Thu, 28 Sep
+ 2023 04:42:33 -0700 (PDT)
+Date:   Thu, 28 Sep 2023 04:42:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000bfaf33060669cd6b@google.com>
+Subject: [syzbot] Monthly wireless report (Sep 2023)
+From:   syzbot <syzbot+liste709cb91ac7b8a619720@syzkaller.appspotmail.com>
+To:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 22061bfc57fe08c77141dc876b4af75603c4d61d  wifi: iwlwifi: mvm: Fix incorrect usage of scan API
+Hello wireless maintainers/developers,
 
-elapsed time: 1452m
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-configs tested: 173
-configs skipped: 2
+During the period, 2 new issues were detected and 0 were fixed.
+In total, 28 issues are still open and 115 have been fixed so far.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Some of the still happening issues:
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20230928   gcc  
-arc                    vdk_hs38_smp_defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                       imx_v6_v7_defconfig   gcc  
-arm                         lpc32xx_defconfig   clang
-arm                        neponset_defconfig   clang
-arm                   randconfig-001-20230928   gcc  
-arm                        shmobile_defconfig   gcc  
-arm                        spear3xx_defconfig   clang
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20230928   gcc  
-i386         buildonly-randconfig-002-20230928   gcc  
-i386         buildonly-randconfig-003-20230928   gcc  
-i386         buildonly-randconfig-004-20230928   gcc  
-i386         buildonly-randconfig-005-20230928   gcc  
-i386         buildonly-randconfig-006-20230928   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20230927   gcc  
-i386                  randconfig-001-20230928   gcc  
-i386                  randconfig-002-20230927   gcc  
-i386                  randconfig-002-20230928   gcc  
-i386                  randconfig-003-20230927   gcc  
-i386                  randconfig-003-20230928   gcc  
-i386                  randconfig-004-20230927   gcc  
-i386                  randconfig-004-20230928   gcc  
-i386                  randconfig-005-20230927   gcc  
-i386                  randconfig-005-20230928   gcc  
-i386                  randconfig-006-20230927   gcc  
-i386                  randconfig-006-20230928   gcc  
-i386                  randconfig-011-20230927   gcc  
-i386                  randconfig-011-20230928   gcc  
-i386                  randconfig-012-20230927   gcc  
-i386                  randconfig-012-20230928   gcc  
-i386                  randconfig-013-20230927   gcc  
-i386                  randconfig-013-20230928   gcc  
-i386                  randconfig-014-20230927   gcc  
-i386                  randconfig-014-20230928   gcc  
-i386                  randconfig-015-20230927   gcc  
-i386                  randconfig-015-20230928   gcc  
-i386                  randconfig-016-20230927   gcc  
-i386                  randconfig-016-20230928   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20230927   gcc  
-loongarch             randconfig-001-20230928   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           ip28_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                      ppc64e_defconfig   clang
-powerpc                    sam440ep_defconfig   gcc  
-powerpc                    socrates_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20230927   gcc  
-riscv                 randconfig-001-20230928   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20230927   gcc  
-s390                  randconfig-001-20230928   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20230927   gcc  
-sparc                 randconfig-001-20230928   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20230927   gcc  
-x86_64       buildonly-randconfig-001-20230928   gcc  
-x86_64       buildonly-randconfig-002-20230927   gcc  
-x86_64       buildonly-randconfig-002-20230928   gcc  
-x86_64       buildonly-randconfig-003-20230927   gcc  
-x86_64       buildonly-randconfig-003-20230928   gcc  
-x86_64       buildonly-randconfig-004-20230927   gcc  
-x86_64       buildonly-randconfig-004-20230928   gcc  
-x86_64       buildonly-randconfig-005-20230927   gcc  
-x86_64       buildonly-randconfig-005-20230928   gcc  
-x86_64       buildonly-randconfig-006-20230927   gcc  
-x86_64       buildonly-randconfig-006-20230928   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                randconfig-001-20230928   gcc  
-x86_64                randconfig-002-20230928   gcc  
-x86_64                randconfig-003-20230928   gcc  
-x86_64                randconfig-004-20230928   gcc  
-x86_64                randconfig-005-20230928   gcc  
-x86_64                randconfig-006-20230928   gcc  
-x86_64                randconfig-011-20230928   gcc  
-x86_64                randconfig-012-20230928   gcc  
-x86_64                randconfig-013-20230928   gcc  
-x86_64                randconfig-014-20230928   gcc  
-x86_64                randconfig-015-20230928   gcc  
-x86_64                randconfig-016-20230928   gcc  
-x86_64                randconfig-071-20230928   gcc  
-x86_64                randconfig-072-20230928   gcc  
-x86_64                randconfig-073-20230928   gcc  
-x86_64                randconfig-074-20230928   gcc  
-x86_64                randconfig-075-20230928   gcc  
-x86_64                randconfig-076-20230928   gcc  
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                          rhel-8.3-func   gcc  
-x86_64                    rhel-8.3-kselftests   gcc  
-x86_64                         rhel-8.3-kunit   gcc  
-x86_64                           rhel-8.3-ltp   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
+Ref  Crashes Repro Title
+<1>  5399    Yes   WARNING in __ieee80211_beacon_get
+                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
+<2>  4322    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<3>  3473    Yes   WARNING in ieee80211_rx_list
+                   https://syzkaller.appspot.com/bug?extid=8830db5d3593b5546d2e
+<4>  2422    Yes   WARNING in ieee80211_link_info_change_notify (2)
+                   https://syzkaller.appspot.com/bug?extid=de87c09cc7b964ea2e23
+<5>  2066    No    WARNING in ieee80211_ibss_csa_beacon (2)
+                   https://syzkaller.appspot.com/bug?extid=b10a54cb0355d83fd75c
+<6>  870     Yes   WARNING in __rate_control_send_low
+                   https://syzkaller.appspot.com/bug?extid=fdc5123366fb9c3fdc6d
+<7>  816     Yes   WARNING in ar5523_submit_rx_cmd/usb_submit_urb
+                   https://syzkaller.appspot.com/bug?extid=6101b0c732dea13ea55b
+<8>  693     Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<9>  475     No    INFO: task hung in ath9k_hif_usb_firmware_cb (2)
+                   https://syzkaller.appspot.com/bug?extid=d5635158fb0281b27bff
+<10> 55      Yes   WARNING in ieee80211_free_ack_frame (2)
+                   https://syzkaller.appspot.com/bug?extid=ac648b0525be1feba506
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
