@@ -2,45 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA9EC7B204E
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 17:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE9B7B2050
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 17:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231384AbjI1PB0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 11:01:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35540 "EHLO
+        id S231262AbjI1PCv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 11:02:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231262AbjI1PBY (ORCPT
+        with ESMTP id S230430AbjI1PCu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 11:01:24 -0400
+        Thu, 28 Sep 2023 11:02:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B70194
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 08:01:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CF6C433C8;
-        Thu, 28 Sep 2023 15:01:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B371194
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 08:02:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16123C433C7;
+        Thu, 28 Sep 2023 15:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695913280;
-        bh=Sv4ZYwTJOdt8iL9WrmtNcE/NncscTaorBT+D7H4XgLk=;
+        s=k20201202; t=1695913368;
+        bh=tsaHVP2mx7ljQj4gqbh8HSWkgBxSGcfcQehBDZTlBcY=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ePHKEK7kdeARJnGXIHDaatuXWLffil8m9TDDOfhKeuFmylbKUDrqWvSxsT0PkdCtI
-         JdmfiCoYEPO0dhVDJi19IyjFzifjOSg9BStv/gfyhWpHDW7JWWsaUPGdFcYF7mZh7W
-         NzxLERpHbGU7XCO72xwAIIX7UPcDWIlf5ConemRsch7k8OQ0QW90IkQp1XM8vC4iUV
-         JZLMbnMm5p+zgMKBUuY+OYA6w2BJoHk3zzITfgLoo1AuK/HxNA1AVEvdADrZCQvDWL
-         XwjPgGL5EqB1qQu+78IGQ1bk0YQskETFvLFu3lFoQ4IrQf8orVJ+Y2qixQjUBi+1kh
-         IzRjuGxOEeDqg==
+        b=LykRHUy0u0cVgoS6993uSGpPsRukfCzMfffkSXgrHN1fnV57PE3PwypUy4B60tL7Q
+         KxLCUTNbO8ugzwI42HBXiJI8tDYrCZKYeWxTWNfzK6v6bKRWtKt5cHhjYgU26hd/Dn
+         1xzYEGN7+MpNYZJkw11fbg2DFMwQbKnU5oQF7EfIpT79OtnAavaJI5+VqPHz1/YuwS
+         +cQF50UrENEgAFang6JAqgiHsufWmUI0dJy5xMvHq10orEBApUcuskJeUDbgn5CScS
+         UixESlDAxNx75cj7VwIpLPyWOzDj0Y+kShJUD4cAl6yaMN+a4uzzw5bbB2GOoOB7MD
+         kOEdzn92TOB9Q==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: fix recovery fail while firmware crash when
- doing channel switch
+Subject: Re: [PATCH] wifi: ath12k: indicate to mac80211 scan complete with
+ aborted
+ flag for ATH12K_SCAN_STARTING state
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230905105229.10090-1-quic_wgong@quicinc.com>
-References: <20230905105229.10090-1-quic_wgong@quicinc.com>
+In-Reply-To: <20230905105947.10369-1-quic_wgong@quicinc.com>
+References: <20230905105947.10369-1-quic_wgong@quicinc.com>
 To:     Wen Gong <quic_wgong@quicinc.com>
 Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
         <quic_wgong@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169591327779.3019228.18229314827081753794.kvalo@kernel.org>
-Date:   Thu, 28 Sep 2023 15:01:19 +0000 (UTC)
+Message-ID: <169591336483.3019228.4801533515401885948.kvalo@kernel.org>
+Date:   Thu, 28 Sep 2023 15:02:46 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -52,15 +53,30 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Wen Gong <quic_wgong@quicinc.com> wrote:
 
-> When firmware crashed while channel switch running, recovery starts in
-> ath12k. Then ieee80211_sta_connection_lost() will be called by function
-> ieee80211_restart_work() in mac80211. And then many WMI command timeout
-> because firmware is crashed. Each WMI command cost 3 seconds, then the
-> total time will be large and leads recovery fail.
+> Scan failure can not be recovered from when running a loop of the
+> following steps:
+> 1. run scan: "iw wlan scan".
+> 2. run command: echo assert > /sys/kernel/debug/ath12k/wcn7850\ hw2.0/simulate_fw_crash
+>    immediately after step 1.
 > 
-> Hence change to set value ATH12K_FLAG_CRASH_FLUSH early and then
-> ath12k_wmi_cmd_send() will not wait 3 seconds, then recovery will be
-> started quickly and success.
+> result:
+> scan failed and can not recover even when wlan recovery succeeds:
+> command failed: Device or resource busy (-16)
+> 
+> reason:
+> When scan arrives, WMI_START_SCAN_CMDID is sent to the firmware and
+> function ath12k_mac_op_hw_scan() returns, then simulate_fw_crash arrives
+> and the scan started event does not arrive, and then it starts to do
+> recovery of wlan. __ath12k_mac_scan_finish() which is called from
+> ath12k_core_halt() is one step of recovery, it will not call
+> ieee80211_scan_completed() by logic currently because the scan state is
+> ATH12K_SCAN_STARTING. Thus it leads the scan not being completed in
+> mac80211, and leads all consecutive scans failing with -EBUSY in
+> nl80211_trigger_scan even after wlan recovery success.
+> 
+> Indicate scan complete with aborted flag to mac80211 for
+> ATH12K_SCAN_STARTING to allow recovery from scan failed with "Device or
+> resource busy (-16)" after wlan recovery.
 > 
 > Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 > 
@@ -70,10 +86,10 @@ Wen Gong <quic_wgong@quicinc.com> wrote:
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-ecbb987b0a96 wifi: ath12k: fix recovery fail while firmware crash when doing channel switch
+c2ebb1d11ab9 wifi: ath12k: indicate to mac80211 scan complete with aborted flag for ATH12K_SCAN_STARTING state
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230905105229.10090-1-quic_wgong@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230905105947.10369-1-quic_wgong@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
