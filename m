@@ -2,46 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD8697B222B
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 18:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5D167B2239
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 18:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230501AbjI1QWu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 12:22:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40920 "EHLO
+        id S231262AbjI1QZZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 12:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbjI1QWt (ORCPT
+        with ESMTP id S231285AbjI1QZY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 12:22:49 -0400
+        Thu, 28 Sep 2023 12:25:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D2B3B7
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 09:22:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBD4C433C7;
-        Thu, 28 Sep 2023 16:22:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 360AB139
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 09:25:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF88C433C8;
+        Thu, 28 Sep 2023 16:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695918167;
-        bh=u3b7XsKiElAWSNr1YIYXGE/clgmTiRQ/a4LE1Jn2Mmw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=k5PhC8zf0MrD8a9MvhGRgdDsRa7h+hzFTFYkqyemOH0O/W2p1HIdSlO4QeZ8S19sh
-         2ZRvm+NggrBV89Sh4JXk0UEWwJYP61uRrqCkiBCamTGa/lW44x3kSix/Ec55WK1P/P
-         EYLDru0PKk6u4dSd38TzpeoobO+4AzX0cW1+GEbUvVvUFyd/gdRitm6p2eEKQgFopB
-         X8QSXxS9LaRbBXV71Wmv91/xTy/8ykMXXtRV5M2PBTxDwmxWGUhvBWFO/D4yvCosfv
-         LLc5E4b5Vo9srKPR8MNDnXXZDdl0t5PcZNUljvZr1Ky1FXdajBobkmMxRj0dTgoVlK
-         2ekozxhq92J3w==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <johannes@sipsolutions.net>, <phhuang@realtek.com>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 2/3] wifi: rtw89: refine uplink trigger based control
- mechanism
-References: <20230925080902.51449-3-pkshih@realtek.com>
-        <169591802194.3187104.18062067562610023067.kvalo@kernel.org>
-Date:   Thu, 28 Sep 2023 19:24:54 +0300
-In-Reply-To: <169591802194.3187104.18062067562610023067.kvalo@kernel.org>
-        (Kalle Valo's message of "Thu, 28 Sep 2023 16:20:23 +0000 (UTC)")
-Message-ID: <87v8bui7u1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1695918321;
+        bh=a6FPpoxSHlYTIWmLaAXwhE9B0RHYQd7GxvWPzpMPuO4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Tti6LxSE5a30G3r21TC5MoMnfKgBoX/u/C64cips76PYtK9+XjriJ5TT9SdFvxxUH
+         ZjwWOegR9x6JCRqSXzlyN4HiEKrSMKlreHhdu9nyPQeMf3v2t1xWva2WLhlIGCJ2OS
+         7sUulUALrkHt+F0Nm66SL0rvo7cI24AVx1LSp3/hWUJsfj1O2usaLK7QTDjQDauEQ1
+         HDGJ9alWwuJyawvVQ0lx+Q71wPNhMeuBpE3Zbr2tOOz9cucA8fhJSUc5ETdeUuDX8G
+         xYbOjKcK1lk3G4ZGABF3bzkKl33XBI3Swm/3ZUWit0PdBfDvzLd7Ac4CrI5tpWHt2y
+         We2VgopyWBPaQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/4] wifi: rtw89: mcc: fix NoA start time when GO is
+ auxiliary
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230921003559.11588-2-pkshih@realtek.com>
+References: <20230921003559.11588-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169591831921.3187104.11096006562898285558.kvalo@kernel.org>
+Date:   Thu, 28 Sep 2023 16:25:20 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -51,33 +49,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> Ping-Ke Shih <pkshih@realtek.com> wrote:
->
->> From: Po-Hao Huang <phhuang@realtek.com>
->> 
->> Rename support_ul_tb_ctrl to waveform_ctrl since we need to do more
->> trigger based control and the naming could be confusing. Move related
->> code to leaf function so we make each functions separate and can be
->> easier to maintain.
->> 
->> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
->> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->
-> I don't see patch 1 in patchwork and I see patch 3 twice. Please check
-> and resend.
->
-> 3 patches set to Changes Requested.
->
-> 13397427 [2/3] wifi: rtw89: refine uplink trigger based control mechanism
-> 13397424 [3/3] wifi: rtw89: Refine bandwidth 160MHz uplink OFDMA performance
-> 13397426 [3/3] wifi: rtw89: refine bandwidth 160MHz uplink OFDMA performance
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> 
+> Under TDMA-based MCC (multi-channel concurrency), there are two roles,
+> reference and auxiliary. We arrange MCC timeline based on time domain
+> of reference role. Then, we calculate NoA start time according to MCC
+> timeline.
+> 
+> Besides, when MCC runs GO+STA mode, we plan an offset between GO time
+> domain and STA time domain to make their TBTTs have a time gap.
+> 
+> However, if GO is auxiliary role instead of reference role, NoA start
+> time is described by STA time domain instead of GO time domain. To fix
+> this, we apply the offset mentioned above to NoA start time to convert
+> time domain from STA to GO.
+> 
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Actually patch 1 was assigned to Johannes and he has already applied it.
-But due to seeing patch 3 twice it's still best to resend.
+4 patches applied to wireless-next.git, thanks.
+
+a4d7c872eb87 wifi: rtw89: mcc: fix NoA start time when GO is auxiliary
+5f499ce69b8d wifi: rtw89: pause/proceed MCC for ROC and HW scan
+0f93824ed720 wifi: rtw89: 8852c: declare to support two chanctx
+8e73c0455b12 wifi: rtw89: declare MCC in interface combination
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230921003559.11588-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
