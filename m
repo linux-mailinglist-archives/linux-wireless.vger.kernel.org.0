@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5574E7B1FB9
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 16:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE3FB7B1FBA
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 16:36:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231332AbjI1OgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 10:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34472 "EHLO
+        id S229980AbjI1OgJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 10:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjI1OgD (ORCPT
+        with ESMTP id S231372AbjI1OgI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 10:36:03 -0400
+        Thu, 28 Sep 2023 10:36:08 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA904136
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 07:36:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6781B1B2
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 07:36:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695911762; x=1727447762;
+  t=1695911764; x=1727447764;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=C45SE3j+1kco9QpPOK/teIoFdDoU36IAcxM9y6GMmGk=;
-  b=BEpMl+iXvevSB3kGFrjem/Kcyb+5H1LG3Jp9l6dlnnYx386CUFvVtRCv
-   AY+dAJQNc/S9Axf8UnG7Krtpk1xQFHWFGHcvaKoDZQBaSQYmjHmTHn0yz
-   XoMfU/k8GdHAqs6SSjieT40wT5HwFOT4IBRgj147IPo223fMD7rPTEb81
-   E6Roe+tilNOtWWCviKB5/qlg/gX0oa8k08U5JqXO00ckoeBTTZcEd9x5o
-   6SI5BDhSvnBW+twJgOHHZ05CeulyomkN/79xq6QG3GfchnHDHWdMtdI5w
-   qh+CQiUZPPcP+vzEGaIT8NL04AWxkqe907GKnX7kZvPwqtMVT0uphxiTa
+  bh=J4bkYJMTZkleugx0jHuV7+wbBiBml12mH0woJNycvq8=;
+  b=V4O7wSB+CwTpXQTWJfN0NSMGvmzNNQaH3yE6l1Jd7BoWn+C76E5P1qum
+   1eoGClq4G6UXmcOdZ2tP0Ho0QBHMBdmmLMZQaSACzfywnIEluTwIZ7XD+
+   oD/A8HqRcmmOH2h/9BNVavtgM2Kkeitfz0mbo8UgRm0kzN9aDvUkOCffb
+   qx3DCE57DtiSgxvshW8c69cLwDeJ+px/0+1+8Ql+8GfF8Jv4S6KklFH4z
+   59X6jJKQnI/isnwMH27jjyblxyZoiBudESGxGxVlw17piyL3RkZqYbyZY
+   E7YnJA7P6EKtEOyUlYxPw2C3nxAtKKvHqbYQN/zgAcxxZHv0qXCBoKGBu
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="688420"
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="688427"
 X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
-   d="scan'208";a="688420"
+   d="scan'208";a="688427"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:36:01 -0700
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:36:04 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="996590406"
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="996590414"
 X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
-   d="scan'208";a="996590406"
+   d="scan'208";a="996590414"
 Received: from smoriles-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.92.89])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:35:59 -0700
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 07:36:02 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 04/18] wifi: mac80211: add a driver callback to add vif debugfs
-Date:   Thu, 28 Sep 2023 17:35:25 +0300
-Message-Id: <20230928172905.ac38913f6ab7.Iee731d746bb08fcc628fa776f337016a12dc62ac@changeid>
+Subject: [PATCH 05/18] wifi: mac80211: handle debugfs when switching to/from MLO
+Date:   Thu, 28 Sep 2023 17:35:26 +0300
+Message-Id: <20230928172905.082e698caca9.I5bef7b2026e0f58b4a958b3d1f459ac5baeccfc9@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230928143539.1037500-1-gregory.greenman@intel.com>
 References: <20230928143539.1037500-1-gregory.greenman@intel.com>
@@ -65,116 +65,195 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-Add a callback which the driver can use to add the vif debugfs.
-We used to have this back until commit d260ff12e776 ("mac80211:
-remove vif debugfs driver callbacks") where we thought that it
-will be easier to just add them during interface add/remove.
+In MLO, we have a per-link debugfs directory which contains the
+per-link files. In case of non-MLO we would like to put the per-link
+files in the netdev directory to keep it how it was before MLO.
 
-However, now with multi-link, we want to have proper debugfs
-for drivers for multi-link where some files might be in the
-netdev for non-MLO connections, and in the links for MLO ones,
-so we need to do some reconstruction when switching the mode.
+- Upon interface creation the netdev will be created with the per-link
+  files in it.
+- Upon switching to MLO: delete the entire netdev directory and then
+  recreate it without the per-link files. Then the per-link directories
+  with the per-link files in it will be created in ieee80211_link_init()
+- Upon switching to non-MLO: delete the entire netdev directory
+  (including the per-link directories) and recreate it with the per-link
+  files in it.
 
-Moving to this new call enables that and MLO drivers will have
-to use it for proper debugfs operation.
+Note that this also aligns to always call the vif link debugfs
+method for the deflink as promised in the documentation, which
+wasn't done before.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- include/net/mac80211.h    |  6 ++++++
- net/mac80211/driver-ops.c | 11 ++++++++---
- net/mac80211/driver-ops.h | 23 +++++++++++++++++++++++
- 3 files changed, 37 insertions(+), 3 deletions(-)
+ net/mac80211/debugfs_netdev.c | 23 ++++++++++++++++++-----
+ net/mac80211/debugfs_netdev.h | 15 ++++++++++++---
+ net/mac80211/driver-ops.c     |  5 ++++-
+ net/mac80211/iface.c          |  2 +-
+ net/mac80211/link.c           |  5 +++++
+ 5 files changed, 40 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 72375eceb786..a9b73e357462 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -3869,6 +3869,10 @@ struct ieee80211_prep_tx_info {
-  *	the station. See @sta_pre_rcu_remove if needed.
-  *	This callback can sleep.
-  *
-+ * @vif_add_debugfs: Drivers can use this callback to add a debugfs vif
-+ *	directory with its files. This callback should be within a
-+ *	CONFIG_MAC80211_DEBUGFS conditional. This callback can sleep.
-+ *
-  * @link_add_debugfs: Drivers can use this callback to add debugfs files
-  *	when a link is added to a mac80211 vif. This callback should be within
-  *	a CONFIG_MAC80211_DEBUGFS conditional. This callback can sleep.
-@@ -4368,6 +4372,8 @@ struct ieee80211_ops {
- 	int (*sta_remove)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			  struct ieee80211_sta *sta);
+diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
+index 14a40348959a..b383dad18841 100644
+--- a/net/mac80211/debugfs_netdev.c
++++ b/net/mac80211/debugfs_netdev.c
+@@ -934,18 +934,20 @@ static void add_link_files(struct ieee80211_link_data *link,
+ 	}
+ }
+ 
+-void ieee80211_debugfs_add_netdev(struct ieee80211_sub_if_data *sdata)
++void ieee80211_debugfs_add_netdev(struct ieee80211_sub_if_data *sdata,
++				  bool mld_vif)
+ {
+ 	char buf[10+IFNAMSIZ];
+ 
+ 	sprintf(buf, "netdev:%s", sdata->name);
+ 	sdata->vif.debugfs_dir = debugfs_create_dir(buf,
+ 		sdata->local->hw.wiphy->debugfsdir);
++	/* deflink also has this */
++	sdata->deflink.debugfs_dir = sdata->vif.debugfs_dir;
+ 	sdata->debugfs.subdir_stations = debugfs_create_dir("stations",
+ 							sdata->vif.debugfs_dir);
+ 	add_files(sdata);
+-
+-	if (!(sdata->local->hw.wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO))
++	if (!mld_vif)
+ 		add_link_files(&sdata->deflink, sdata->vif.debugfs_dir);
+ }
+ 
+@@ -973,11 +975,21 @@ void ieee80211_debugfs_rename_netdev(struct ieee80211_sub_if_data *sdata)
+ 	debugfs_rename(dir->d_parent, dir, dir->d_parent, buf);
+ }
+ 
++void ieee80211_debugfs_recreate_netdev(struct ieee80211_sub_if_data *sdata,
++				       bool mld_vif)
++{
++	ieee80211_debugfs_remove_netdev(sdata);
++	ieee80211_debugfs_add_netdev(sdata, mld_vif);
++	drv_vif_add_debugfs(sdata->local, sdata);
++	if (!mld_vif)
++		ieee80211_link_debugfs_drv_add(&sdata->deflink);
++}
++
+ void ieee80211_link_debugfs_add(struct ieee80211_link_data *link)
+ {
+ 	char link_dir_name[10];
+ 
+-	if (WARN_ON(!link->sdata->vif.debugfs_dir))
++	if (WARN_ON(!link->sdata->vif.debugfs_dir || link->debugfs_dir))
+ 		return;
+ 
+ 	/* For now, this should not be called for non-MLO capable drivers */
+@@ -1014,7 +1026,8 @@ void ieee80211_link_debugfs_remove(struct ieee80211_link_data *link)
+ 
+ void ieee80211_link_debugfs_drv_add(struct ieee80211_link_data *link)
+ {
+-	if (WARN_ON(!link->debugfs_dir))
++	if (link->sdata->vif.type == NL80211_IFTYPE_MONITOR ||
++	    WARN_ON(!link->debugfs_dir))
+ 		return;
+ 
+ 	drv_link_add_debugfs(link->sdata->local, link->sdata,
+diff --git a/net/mac80211/debugfs_netdev.h b/net/mac80211/debugfs_netdev.h
+index 99e688dcabd6..b226b1aae88a 100644
+--- a/net/mac80211/debugfs_netdev.h
++++ b/net/mac80211/debugfs_netdev.h
+@@ -1,4 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Portions:
++ * Copyright (C) 2023 Intel Corporation
++ */
+ /* routines exported for debugfs handling */
+ 
+ #ifndef __IEEE80211_DEBUGFS_NETDEV_H
+@@ -7,9 +11,12 @@
+ #include "ieee80211_i.h"
+ 
  #ifdef CONFIG_MAC80211_DEBUGFS
-+	void (*vif_add_debugfs)(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif);
- 	void (*link_add_debugfs)(struct ieee80211_hw *hw,
- 				 struct ieee80211_vif *vif,
- 				 struct ieee80211_bss_conf *link_conf,
+-void ieee80211_debugfs_add_netdev(struct ieee80211_sub_if_data *sdata);
++void ieee80211_debugfs_add_netdev(struct ieee80211_sub_if_data *sdata,
++				  bool mld_vif);
+ void ieee80211_debugfs_remove_netdev(struct ieee80211_sub_if_data *sdata);
+ void ieee80211_debugfs_rename_netdev(struct ieee80211_sub_if_data *sdata);
++void ieee80211_debugfs_recreate_netdev(struct ieee80211_sub_if_data *sdata,
++				       bool mld_vif);
+ 
+ void ieee80211_link_debugfs_add(struct ieee80211_link_data *link);
+ void ieee80211_link_debugfs_remove(struct ieee80211_link_data *link);
+@@ -18,7 +25,7 @@ void ieee80211_link_debugfs_drv_add(struct ieee80211_link_data *link);
+ void ieee80211_link_debugfs_drv_remove(struct ieee80211_link_data *link);
+ #else
+ static inline void ieee80211_debugfs_add_netdev(
+-	struct ieee80211_sub_if_data *sdata)
++	struct ieee80211_sub_if_data *sdata, bool mld_vif)
+ {}
+ static inline void ieee80211_debugfs_remove_netdev(
+ 	struct ieee80211_sub_if_data *sdata)
+@@ -26,7 +33,9 @@ static inline void ieee80211_debugfs_remove_netdev(
+ static inline void ieee80211_debugfs_rename_netdev(
+ 	struct ieee80211_sub_if_data *sdata)
+ {}
+-
++static inline void ieee80211_debugfs_recreate_netdev(
++	struct ieee80211_sub_if_data *sdata, bool mld_vif)
++{}
+ static inline void ieee80211_link_debugfs_add(struct ieee80211_link_data *link)
+ {}
+ static inline void ieee80211_link_debugfs_remove(struct ieee80211_link_data *link)
 diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
-index 9112715a749a..08861ec61be9 100644
+index 08861ec61be9..7938ec87ef25 100644
 --- a/net/mac80211/driver-ops.c
 +++ b/net/mac80211/driver-ops.c
-@@ -72,10 +72,15 @@ int drv_add_interface(struct ieee80211_local *local,
- 	ret = local->ops->add_interface(&local->hw, &sdata->vif);
- 	trace_drv_return_int(local, ret);
+@@ -77,8 +77,11 @@ int drv_add_interface(struct ieee80211_local *local,
  
--	if (ret == 0)
--		sdata->flags |= IEEE80211_SDATA_IN_DRIVER;
-+	if (ret)
-+		return ret;
+ 	sdata->flags |= IEEE80211_SDATA_IN_DRIVER;
  
--	return ret;
-+	sdata->flags |= IEEE80211_SDATA_IN_DRIVER;
-+
-+	if (!local->in_reconfig)
-+		drv_vif_add_debugfs(local, sdata);
-+
-+	return 0;
+-	if (!local->in_reconfig)
++	if (!local->in_reconfig) {
+ 		drv_vif_add_debugfs(local, sdata);
++		/* initially vif is not MLD */
++		ieee80211_link_debugfs_drv_add(&sdata->deflink);
++	}
+ 
+ 	return 0;
+ }
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 510f8aead4f9..124cc53f6b34 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1775,7 +1775,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+ 	/* need to do this after the switch so vif.type is correct */
+ 	ieee80211_link_setup(&sdata->deflink);
+ 
+-	ieee80211_debugfs_add_netdev(sdata);
++	ieee80211_debugfs_add_netdev(sdata, false);
  }
  
- int drv_change_interface(struct ieee80211_local *local,
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 77048b9065e6..e07e65da15ee 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -489,6 +489,23 @@ static inline void drv_sta_remove(struct ieee80211_local *local,
- }
+ static int ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/mac80211/link.c b/net/mac80211/link.c
+index 2a78374f6f04..76c61a132569 100644
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -235,6 +235,9 @@ static int ieee80211_vif_update_links(struct ieee80211_sub_if_data *sdata,
+ 		RCU_INIT_POINTER(sdata->vif.link_conf[link_id], NULL);
+ 	}
  
- #ifdef CONFIG_MAC80211_DEBUGFS
-+static inline void drv_vif_add_debugfs(struct ieee80211_local *local,
-+				       struct ieee80211_sub_if_data *sdata)
-+{
-+	might_sleep();
++	if (!old_links)
++		ieee80211_debugfs_recreate_netdev(sdata, true);
 +
-+	if (sdata->vif.type == NL80211_IFTYPE_MONITOR ||
-+	    WARN_ON(!sdata->vif.debugfs_dir))
-+		return;
-+
-+	sdata = get_bss_sdata(sdata);
-+	if (!check_sdata_in_driver(sdata))
-+		return;
-+
-+	if (local->ops->vif_add_debugfs)
-+		local->ops->vif_add_debugfs(&local->hw, &sdata->vif);
-+}
-+
- static inline void drv_link_add_debugfs(struct ieee80211_local *local,
- 					struct ieee80211_sub_if_data *sdata,
- 					struct ieee80211_bss_conf *link_conf,
-@@ -539,6 +556,12 @@ static inline void drv_link_sta_add_debugfs(struct ieee80211_local *local,
- 		local->ops->link_sta_add_debugfs(&local->hw, &sdata->vif,
- 						 link_sta, dir);
- }
-+#else
-+static inline void drv_vif_add_debugfs(struct ieee80211_local *local,
-+				       struct ieee80211_sub_if_data *sdata)
-+{
-+	might_sleep();
-+}
- #endif
+ 	/* link them into data structures */
+ 	for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		WARN_ON(!use_deflink &&
+@@ -261,6 +264,8 @@ static int ieee80211_vif_update_links(struct ieee80211_sub_if_data *sdata,
+ 					   old_links & old_active,
+ 					   new_links & sdata->vif.active_links,
+ 					   old);
++		if (!new_links)
++			ieee80211_debugfs_recreate_netdev(sdata, false);
+ 	}
  
- static inline void drv_sta_pre_rcu_remove(struct ieee80211_local *local,
+ 	if (ret) {
 -- 
 2.38.1
 
