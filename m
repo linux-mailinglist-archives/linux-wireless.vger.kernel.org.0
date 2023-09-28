@@ -2,44 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B94A57B20A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 17:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9ACC7B20AC
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Sep 2023 17:15:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231622AbjI1PMs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Sep 2023 11:12:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60452 "EHLO
+        id S231444AbjI1PPS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Sep 2023 11:15:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231653AbjI1PMr (ORCPT
+        with ESMTP id S231206AbjI1PPR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Sep 2023 11:12:47 -0400
+        Thu, 28 Sep 2023 11:15:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A6EF9
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 08:12:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1104C433C7;
-        Thu, 28 Sep 2023 15:12:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E1A19E
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Sep 2023 08:15:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD954C433C7;
+        Thu, 28 Sep 2023 15:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695913964;
-        bh=SM8aoie+ezJU9UWpCf9w3qJBLObW5VTQZ19AGhyBUxw=;
+        s=k20201202; t=1695914113;
+        bh=kAJs4PHDj7FghUS9FI5ZgzxtTJ3kn3Onea5WYgB1/dY=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=GZj0DAFMD9JPXISv+El0rXTFMqeUskYVNuYuNVgU8ohhHofxRHXtjVIxLKE6irDsl
-         3bNss1PayM8GEbVLewPA0gB9nf3RYeCk2L1MBvH1PT9f35ddNpFZv+ggafyTQ6ZEQZ
-         q0zN5zhZp1VeBfQZbgDwnfsaJLD2+oJd5QQXL5zFgURb0oeC7X+RK34v7SZd7DgCRP
-         ruU6SzvA2r+BW5x7vqJwrAeXdrbcXkIUfOy+EeNIrqRm7olCplsXkNSENzvdYbOAVg
-         5Xd7Fvwm0zXla86xlE4krH3n8GKU5KLMq3aQKyRZNTMQJeYHJF9JXsQ9Txar7cCths
-         UM2iux660tXEA==
+        b=ni2G6718aymVVuc6bnNUv6im/Be4Y0xPBDHOROtbwS/TIkwOxiPhSyaEZ7mlmylgB
+         1dyeN/tzAAlIVKSD/RiJ249JLKLh3wgj9GUEBlT8zPJRMMDjxzRFlBDNX3z6XsUmaV
+         h7qRxInzCQKdXfwEp/EoQfLjgqP7fg9eaUV801Ix8sM1wkMaOEcjYU0SGq4cpXEfl8
+         pEpb1s+wIFVKEkadQCZrxpNzGY7y+EEXSFyLYodmlXgnZAu40SQ2wNfeUJ/k35CqEp
+         DPe2YRKGNtQEqYzjHItNuKLKibsek+GqGwYEaP/Y4lOCvCdFKeqVUzcYz15PjldNaG
+         GJkg8/BQx6cpQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ath12k: add msdu_end structure for WCN7850
+Subject: Re: [PATCH] [v2] wifi: ath11k: fix ath11k_mac_op_remain_on_channel()
+ stack usage
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230911093054.74943-1-quic_kangyang@quicinc.com>
-References: <20230911093054.74943-1-quic_kangyang@quicinc.com>
-To:     Kang Yang <quic_kangyang@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <quic_kangyang@quicinc.com>
+In-Reply-To: <20230926042906.13725-1-dmantipov@yandex.ru>
+References: <20230926042906.13725-1-dmantipov@yandex.ru>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Tom Rix <trix@redhat.com>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169591396177.3019228.6958340171406115973.kvalo@kernel.org>
-Date:   Thu, 28 Sep 2023 15:12:43 +0000 (UTC)
+Message-ID: <169591411089.3019228.2557633056821001389.kvalo@kernel.org>
+Date:   Thu, 28 Sep 2023 15:15:12 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -49,32 +51,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kang Yang <quic_kangyang@quicinc.com> wrote:
+Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> WCN7850 and QCN9274 currently use the same structure rx_msdu_end_qcn9274
-> for msdu_end. But content of msdu_end on WCN7850 is different from that of
-> QCN9274. Need to update it for WCN7850, otherwise will get the wrong
-> values when using it.
+> When compiling with clang 16.0.6, I've noticed the following:
 > 
-> For example, TID is no longer in WCN7850's msdu_end. But
-> ath12k_dp_rx_process_err() and ath12k_dp_rx_process_wbm_err() still get
-> TID from msdu_end. So an uncertain value will be used in these two
-> functions on WCN7850.
+> drivers/net/wireless/ath/ath11k/mac.c:8903:12: warning: stack frame
+> size (1032) exceeds limit (1024) in 'ath11k_mac_op_remain_on_channel'
+> [-Wframe-larger-than]
+> static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
+>            ^
+> 68/1032 (6.59%) spills, 964/1032 (93.41%) variables
 > 
-> Therefore, add new structure rx_msdu_end_wcn7850 for WCN7850.
+> So switch to kzalloc()'ed instance of 'struct scan_req_params' like
+> it's done in 'ath11k_mac_op_hw_scan()'. Compile tested only.
 > 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-ed823fd113b7 wifi: ath12k: add msdu_end structure for WCN7850
+4fd15bb705d3 wifi: ath11k: fix ath11k_mac_op_remain_on_channel() stack usage
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230911093054.74943-1-quic_kangyang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230926042906.13725-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
