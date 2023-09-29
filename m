@@ -2,48 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1A077B314F
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Sep 2023 13:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCFBB7B3284
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Sep 2023 14:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232779AbjI2L0N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Sep 2023 07:26:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60504 "EHLO
+        id S233119AbjI2M02 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Sep 2023 08:26:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjI2L0M (ORCPT
+        with ESMTP id S232859AbjI2M0Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Sep 2023 07:26:12 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2426FB7;
-        Fri, 29 Sep 2023 04:26:10 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qmBdH-00016J-Jk; Fri, 29 Sep 2023 13:26:07 +0200
-Message-ID: <9c1b89af-4002-4275-88e5-59d6ae1f4bcd@leemhuis.info>
-Date:   Fri, 29 Sep 2023 13:26:06 +0200
+        Fri, 29 Sep 2023 08:26:24 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7DB1B0
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Sep 2023 05:26:22 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-32336a30d18so5996488f8f.2
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Sep 2023 05:26:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695990380; x=1696595180; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zOwsmdvaqsnWOGdKfDU1+n+TMnPog80u/xFpJeYRDeI=;
+        b=KR5/WRfE8CiflZyoeNSa5QQ2VMG0mRUZILilNdOYVJRVZQM3BZB8yMD4H9NvC+LLKA
+         AllETZlhyBRETV9GtraiHcPgBiqK2W+WdkViEPogKZHWdpkQZSMdA0Oi0yP4holTzuOe
+         izunGc8rPEc67ru2yD/Lqh53SYlQOoWmHtThxfZllnaiz3BsN3OVnFWm95c5XFS8PbAr
+         48fQVNpaIXCHn4Oi3D/Z1q82olGM02po/8yvzezuz+wUYjY3kc8w/uGNiqf7C9y2MX4E
+         o7ZQKgvM1Ka9WA7X7XHwWb0LpByQ39EQibzLI4Yr1LmDcPeX16b4Brxjj47kjWLqDxmT
+         0KtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695990380; x=1696595180;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zOwsmdvaqsnWOGdKfDU1+n+TMnPog80u/xFpJeYRDeI=;
+        b=pcBXYHY0VG3Jyay1DxaEQxf41wNSNpSN3TZDr3+8+7RMb9XEwqgnPxYPbLibuQkY0Z
+         LjOQ5ah9YdZ+G1rayyAwIZiFqyx82kVMQY/OyjW+6j0yC8pNUUVawWAJOA4iOY2ahVNU
+         9mtWoSQZUVc5bSeFdlh2w6pbWqN3ygGuWNvnFluxzgvQIRlsOt0Hhv7aG10O40N8xNly
+         pZQQ48aNZ6bcyKHTiY70dukt71PKtKU+VDXPkY1GO3TRUlSPZPStMGnr2IMAw5aGFwP9
+         lbho88plVSXXAIiUpH0T48aW4TcVtW9fs7VwyGTtoq/GQncMYA39/TPVRX7GpmGwrP3D
+         rUZw==
+X-Gm-Message-State: AOJu0YzZ+6AwVM6mJMAq3vvgO5gd1IjpF8eMuedTdn+S9+v1RYS7q+GQ
+        COmTf/lb4jBB45pE8OJpscLDig==
+X-Google-Smtp-Source: AGHT+IFUoMj9nVwl6ZieDh3TdJZjzxLVhrxNXo1sk7Mp1DTcFzfqJjOkIJHYQ+0I05t0svf4UpsJyg==
+X-Received: by 2002:a5d:62c6:0:b0:31f:b138:5a0 with SMTP id o6-20020a5d62c6000000b0031fb13805a0mr3305014wrv.48.1695990380575;
+        Fri, 29 Sep 2023 05:26:20 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id k8-20020adfe3c8000000b00326028b4dd5sm571889wrm.113.2023.09.29.05.26.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Sep 2023 05:26:19 -0700 (PDT)
+Date:   Fri, 29 Sep 2023 15:26:17 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Christian Lamparter <chunkeey@gmail.com>,
+        Shiji Yang <yangshiji66@qq.com>
+Cc:     Linux Wireless <linux-wireless@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        Wu Yunchuan <yunchuan@nfschina.com>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: Re: [PATCH v2 wireless-next 2/9] carl9170: remove unnecessary
+ (void*) conversions
+Message-ID: <721a4c53-a253-4b0e-a5e0-fc4b992feb49@kadam.mountain>
+References: <20230919044916.523308-1-yunchuan@nfschina.com>
+ <e544d992-cddd-4ade-81ef-2eed4f3681e8@gmail.com>
+ <87zg16iab3.fsf@kernel.org>
+ <0b7623f7-561c-4f3b-91c1-aaf1c44f1158@kadam.mountain>
+ <d41d0c98-82ef-40f6-8c5c-68a94b5a4655@kadam.mountain>
+ <c5611be9-ef4d-4e49-84de-7ce893e3c73c@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on
- MT7915
-Content-Language: en-US, de-DE
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Cc:     linux-wireless@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20230726091704.25795-1-nbd@nbd.name>
- <12289744.O9o76ZdvQC@natalenko.name> <2023092145-luxury-fender-d5b9@gregkh>
- <4862789.31r3eYUQgx@natalenko.name>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <4862789.31r3eYUQgx@natalenko.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695986770;987ca405;
-X-HE-SMSGID: 1qmBdH-00016J-Jk
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c5611be9-ef4d-4e49-84de-7ce893e3c73c@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,75 +82,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Seems nothing happened since this regression was reported more that a
-week ago. From a quick search on lore it seems Felix is not around
-currently; thus bringing the other mt76 maintainers in, maybe they can
-help out here to get this fixed rather sooner than later, as the culprit
-unfortunately made it to various stable trees. Ciao, Thorsten.
+On Fri, Sep 29, 2023 at 09:23:26AM +0200, Christian Lamparter wrote:
+> I would like to take the chance to again point to this beauty:
+> <https://lore.kernel.org/linux-wireless/TYAP286MB03154F9AAFD4C35BEEDE4A99BC4CA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM/T/#mf1b8919a000fe661803c17073f48b3c410888541>
+> @Dan, @Jeff can you please comment on that too?
 
-On 21.09.23 18:03, Oleksandr Natalenko wrote:
-> On čtvrtek 21. září 2023 9:19:58 CEST Greg Kroah-Hartman wrote:
->> On Thu, Sep 21, 2023 at 07:02:41AM +0200, Oleksandr Natalenko wrote:
->>>
->>> On středa 26. července 2023 11:17:02 CEST Felix Fietkau wrote:
->>>> The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half-NSS
->>>> 160 MHz support, so it is wrong to also advertise full 160 MHz support.
->>>>
->>>> Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width support for MT7915")
->>>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->>>> ---
->>>>  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
->>>>  1 file changed, 1 deletion(-)
->>>>
->>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->>>> index ee976657bfc3..78552f10b377 100644
->>>> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->>>> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->>>> @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
->>>>  			if (!dev->dbdc_support)
->>>>  				vht_cap->cap |=
->>>>  					IEEE80211_VHT_CAP_SHORT_GI_160 |
->>>> -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
->>>>  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
->>>>  		} else {
->>>>  			vht_cap->cap |=
->>>>
->>>
->>> For some reason this got backported into the stable kernel:
->>>
->>> ```
->>> $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt7915/
->>> c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
->>> edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
->>> 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
->>> 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
->>> 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
->>> 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is active
->>> feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is active
->>> 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
->>> ```
->>>
->>> and this broke my mt7915-based AP.
->>>
->>> However, if I remove `[VT160]` capability from the hostapd config, things go back to normal. It does seem that 160 MHz still works even.
->>>
->>> Is this expected?
->>
->> Is your device also broken in 6.6-rc2?
-> 
-> Yes, the same behaviour is observed with v6.6-rc2:
-> 
-> ```
-> hostapd[1316]: Configured VHT capability [VHT_CAP_SUPP_CHAN_WIDTH_MASK] exceeds max value supported by the driver (1 > 0)
-> ```
-> 
-> while having `[VT160]` in `vht_capab=`.
+I don't know how Shiji Yang generated this warning.  The warning doesn't
+make sense and I don't see how the patch helps.  I tested with GCC (v12)
+and Clang (random from git) and neither one generates a warning.  What's
+the point of having all the struct members in a group when struct itself
+already forms a group?
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+#confused
 
-#regzbot introduced 3ec5ac12ac8a4e
-#regzbot ignore-activity
+regards,
+dan carpenter
+
