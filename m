@@ -2,79 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B0437B334E
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Sep 2023 15:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AAE97B340B
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Sep 2023 15:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232997AbjI2NSW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Sep 2023 09:18:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36618 "EHLO
+        id S233017AbjI2N6W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Sep 2023 09:58:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232925AbjI2NSV (ORCPT
+        with ESMTP id S232875AbjI2N6W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Sep 2023 09:18:21 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6D50E7
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Sep 2023 06:18:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA30C433C8;
-        Fri, 29 Sep 2023 13:18:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695993499;
-        bh=6eCocSUXWWHZqvMeL461G2ax4/sd6yLCuIpByV7gpgA=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=W0kUAD67zjoz8TpDNUCmCqzvkKZ5S/ZaWL0sg2YmC/Y76uiOfpaCPyXp0X7VyfUIg
-         vGrO6geS6aoaeQV/ajGS6Uae8UHl7rzTBYHZ7AM5LkF0KFZtZ6qeM/plz186WDbp3G
-         LQ3jvudGfKciE9ezSdqwo5L3bk0FUbYZ2uTeOx7xGgoriHG+pW2QBL0+et2A0kgbiX
-         RZMztvijFaWju3o+3WZ5Y9wND32Y7VKyzyuKtf8IZmgs0U7MSi9ik3mfjqUAeKKP7l
-         TijbepUzz4DO2D+e8YNtEOO3g+k90PFHSg7sNbU1/pUAsBnL0pPWUG67heNXXhB9yJ
-         p6RyWdtcgNb+A==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 29 Sep 2023 09:58:22 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73745DB
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Sep 2023 06:58:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=bKzQ8rWP/FfrgiPOGp7mbA0NlcIqwZuF6xHrG2k7GGQ=; t=1695995900; x=1697205500; 
+        b=moQBuMgF5AoFQLVVvo+e8WelfmKrpSxe8cJuMDyjSaGYotZH4ux6uuH16mFcd+H4GsHOPkPTRu8
+        2qesH0NWvHaL9IEYycPb9hMMW4mTFstL9VRQ5F9cb9gkioxcsicHgsop2l8DfHyIP9fc+kj15XMTh
+        e/6kGmZ4OSnHJnGRJup4HQvQMpdj4cfZ1Bl6hgD37uvKyg+CahjK4tcOMNxuI0fG9JX0nZYK91DA6
+        YhIm6G4pIS/ENls6wMVL1wR2ELUwtAOjOvUFOA+aoSeK/gpMAlJjMZNl/IszWIcOHdqTDzswXuujS
+        W/BncDDcMIXh6cdTEOCz2ELzcJCKydf4BnoA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qmE0X-00BkTa-0f;
+        Fri, 29 Sep 2023 15:58:17 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: mac80211: add back SPDX identifier
+Date:   Fri, 29 Sep 2023 15:58:14 +0200
+Message-ID: <20230929155813.9ec1cc7b8f7e.Ia8ee49c10d265963412c9129a64d4a1dbcb10e78@changeid>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 09/13] wifi: ath11k: fill parameters for vdev set tpc
- power
- WMI command
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230920082349.29111-10-quic_wgong@quicinc.com>
-References: <20230920082349.29111-10-quic_wgong@quicinc.com>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <quic_jjohnson@quicinc.com>, <quic_wgong@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169599349616.3629319.16079411629041044676.kvalo@kernel.org>
-Date:   Fri, 29 Sep 2023 13:18:18 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> wrote:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> Prepare the parameters which is needed for WMI command WMI_VDEV_SET_TPC_POWER_CMDID.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-> 
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Looks like I lost that by accident, add it back.
 
-And this also added new warnings:
+Fixes: 076fc8775daf ("wifi: cfg80211: remove wdev mutex")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/mlme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_mac_fill_reg_tpc_info':
-drivers/net/wireless/ath/ath11k/mac.c:7791:13: error: variable 'oper_freq' set but not used [-Werror=unused-but-set-variable]
-
-drivers/net/wireless/ath/ath11k/mac.c:7731: Possible repeated word: 'the'
-drivers/net/wireless/ath/ath11k/mac.c:7755: Possible repeated word: 'the'
-
-I fixed them in the pending branch:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=c9f905ac838d9a7d79adb49951c7b0579d020c0a
-
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 6a078eb23a5d..2ac36ad9fa91 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: GPL-2.0-only
+ /*
+  * BSS client mode implementation
+  * Copyright 2003-2008, Jouni Malinen <j@w1.fi>
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230920082349.29111-10-quic_wgong@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.41.0
 
