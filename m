@@ -2,74 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45B0A7B3734
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Sep 2023 17:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EA417B3786
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Sep 2023 18:10:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233665AbjI2PqO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Sep 2023 11:46:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38422 "EHLO
+        id S233538AbjI2QKc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Sep 2023 12:10:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233548AbjI2PqM (ORCPT
+        with ESMTP id S233439AbjI2QKa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Sep 2023 11:46:12 -0400
-Received: from forward102c.mail.yandex.net (forward102c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d102])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A930E1A7
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Sep 2023 08:46:07 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2991:0:640:f02b:0])
-        by forward102c.mail.yandex.net (Yandex) with ESMTP id 0D43B6004E;
-        Fri, 29 Sep 2023 18:46:05 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3kUKMc5DaiE0-AZOxEzi5;
-        Fri, 29 Sep 2023 18:46:04 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1696002364; bh=IHHiu9J3qjPvCqA5o5syaVW0pliP3UUj+flQC8NJBiE=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=JPIWtMZLXgOI0I3jVzXB+qE0kFaPdMym8+Y7iiaqn67qWcSIxVOVZ7C6D0ET9gFrJ
-         cQVtyp3524qSI38bFXdf3A+vjvJE8s1Av9z6tWdjPM9BNr9fVI0v4WDd3KQQntExXr
-         6MEcdoLnWiZbORdrFeEreydTkJiZygNBYXLN9yk8=
-Authentication-Results: mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: rtlwifi: use unsigned long for rtl_bssid_entry timestamp
-Date:   Fri, 29 Sep 2023 18:45:20 +0300
-Message-ID: <20230929154524.222498-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Fri, 29 Sep 2023 12:10:30 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FBBD199;
+        Fri, 29 Sep 2023 09:10:28 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38TENOVh019863;
+        Fri, 29 Sep 2023 16:10:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=fb8toZ6tuqPpiZJje1NqF/MIAnwFghvaaqDaPJ0vxLk=;
+ b=YH6+CC8lNJF8AF3KXiH0L1KDYbWUHZAZ+CZ0pBxkWDJ8OVTCeDYtlJEz0lE5VFI1XhIk
+ ZlwwRqH8cOZykQr29fQ0YG6cwTWbQzYwtUvQhk5mqD0FrZwha5PGsmI0d6p0rK5Bkjy7
+ Lf9GX3BN3yyClfxrZeHYwomaz+Yq0MoBCmMP3408TPakUW89lqbakERqlXExYV8Is6PU
+ 41Rb0WkMblyGtnWvDDBLChrUMOXa693SHhrvYZe3UkpWX2XIrCa8/+yeRBepnk4EGlCO
+ 10SmcRh5Yu9zebb16VkP9WSkPcOBm0xobgzD2/dxzCTOpMiCaETZljAXKpzDifiQq1eI Rw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tda4c30c8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 29 Sep 2023 16:10:16 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38TGAFp8028643
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 29 Sep 2023 16:10:15 GMT
+Received: from [10.111.177.152] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 29 Sep
+ 2023 09:10:15 -0700
+Message-ID: <597c6e87-2d1c-4a8d-ab9f-d0d22566b9ed@quicinc.com>
+Date:   Fri, 29 Sep 2023 09:10:14 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 wireless-next 2/9] carl9170: remove unnecessary (void*)
+ conversions
+Content-Language: en-US
+To:     Christian Lamparter <chunkeey@gmail.com>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+CC:     Wu Yunchuan <yunchuan@nfschina.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Kalle Valo <kvalo@kernel.org>
+References: <20230919044916.523308-1-yunchuan@nfschina.com>
+ <e544d992-cddd-4ade-81ef-2eed4f3681e8@gmail.com> <87zg16iab3.fsf@kernel.org>
+ <0b7623f7-561c-4f3b-91c1-aaf1c44f1158@kadam.mountain>
+ <d41d0c98-82ef-40f6-8c5c-68a94b5a4655@kadam.mountain>
+ <c5611be9-ef4d-4e49-84de-7ce893e3c73c@gmail.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <c5611be9-ef4d-4e49-84de-7ce893e3c73c@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: We08OCyBftnLfMRjBATwgVxjDM1xVfUI
+X-Proofpoint-ORIG-GUID: We08OCyBftnLfMRjBATwgVxjDM1xVfUI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-29_13,2023-09-28_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ mlxlogscore=677 lowpriorityscore=0 spamscore=0 adultscore=0 bulkscore=0
+ priorityscore=1501 clxscore=1011 mlxscore=0 impostorscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2309290139
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since 'age' of 'struct rtl_bssid_entry' is in jiffies, prefer 'unsigned
-long' over 'u32' to avoid possible truncation in 'rtl_collect_scan_list()'
-and thus weird result in 'rtl_scan_list_expire()'. Compile tested only.
+On 9/29/2023 12:23 AM, Christian Lamparter wrote:
+> I would like to take the chance to again point to this beauty:
+> <https://lore.kernel.org/linux-wireless/TYAP286MB03154F9AAFD4C35BEEDE4A99BC4CA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM/T/#mf1b8919a000fe661803c17073f48b3c410888541>
+> @Dan, @Jeff can you please comment on that too?
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/realtek/rtlwifi/wifi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I had not seen that patch since it was posted while I was transitioning 
+roles. It looks like a reasonable patch to me to handle FORTIFY_SOURCE 
+restrictions.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 2e7e04f91279..0f99e3446796 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -2708,7 +2708,7 @@ struct rtl_c2hcmd {
- struct rtl_bssid_entry {
- 	struct list_head list;
- 	u8 bssid[ETH_ALEN];
--	u32 age;
-+	unsigned long age;
- };
- 
- struct rtl_scan_list {
--- 
-2.41.0
+Can it (any any other ath folder patches) be reposted for review?
+
+/jeff
 
