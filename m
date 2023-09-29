@@ -2,100 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EA417B3786
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Sep 2023 18:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA99E7B38E7
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Sep 2023 19:27:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233538AbjI2QKc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Sep 2023 12:10:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52940 "EHLO
+        id S233968AbjI2R1J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Sep 2023 13:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233439AbjI2QKa (ORCPT
+        with ESMTP id S233855AbjI2R0Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Sep 2023 12:10:30 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FBBD199;
-        Fri, 29 Sep 2023 09:10:28 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38TENOVh019863;
-        Fri, 29 Sep 2023 16:10:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=fb8toZ6tuqPpiZJje1NqF/MIAnwFghvaaqDaPJ0vxLk=;
- b=YH6+CC8lNJF8AF3KXiH0L1KDYbWUHZAZ+CZ0pBxkWDJ8OVTCeDYtlJEz0lE5VFI1XhIk
- ZlwwRqH8cOZykQr29fQ0YG6cwTWbQzYwtUvQhk5mqD0FrZwha5PGsmI0d6p0rK5Bkjy7
- Lf9GX3BN3yyClfxrZeHYwomaz+Yq0MoBCmMP3408TPakUW89lqbakERqlXExYV8Is6PU
- 41Rb0WkMblyGtnWvDDBLChrUMOXa693SHhrvYZe3UkpWX2XIrCa8/+yeRBepnk4EGlCO
- 10SmcRh5Yu9zebb16VkP9WSkPcOBm0xobgzD2/dxzCTOpMiCaETZljAXKpzDifiQq1eI Rw== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tda4c30c8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 29 Sep 2023 16:10:16 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38TGAFp8028643
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 29 Sep 2023 16:10:15 GMT
-Received: from [10.111.177.152] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 29 Sep
- 2023 09:10:15 -0700
-Message-ID: <597c6e87-2d1c-4a8d-ab9f-d0d22566b9ed@quicinc.com>
-Date:   Fri, 29 Sep 2023 09:10:14 -0700
+        Fri, 29 Sep 2023 13:26:25 -0400
+X-Greylist: delayed 331 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 29 Sep 2023 10:26:11 PDT
+Received: from server.cesssrl.com (server.cesssrl.com [185.174.102.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0ECC173E
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Sep 2023 10:26:11 -0700 (PDT)
+Received: from vps2693868.trouble-free.net (unknown [216.219.84.124])
+        by server.cesssrl.com (Postfix) with ESMTPSA id 4C74FC267C
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Sep 2023 17:20:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cesssrl.com;
+        s=default; t=1696008039;
+        bh=iJTqGnnG6buyHZVR5r2JJTvVf4nhZ1f8J9awWmPB2pY=; h=From:To:Subject;
+        b=H2H/R5qKEALFHrxwbTrmEHUT0KZDSHgdJfbw28RnMGmY8wkJZLI76FLRm1O5qqja9
+         LTXRzpnM384JDp4itkw+InXAWc+mDh//EKKRfZt/B59b4b389T95KwG1RRYeTB1Gvj
+         zDtFxZ6Pfvicd7CBOHu1H5sOlRV3UHNoK3j8cMA7fbFQjvYEV+Uxy9sEJSjhtbdHA9
+         cLiIjtD20E/flZ+536y1dCLgGF/u3WHCcoStcylcsj8E9XZlsnSI6kt31FP1xqAXb1
+         5xPjq7uIWbDKR13bOH60eoMOSF9meKzRhOGK2E/pdDqYoEuO+n9VEwbD1uZUlwPhRm
+         4JLSVNaromq0Q==
+Authentication-Results: server.cesssrl.com;
+        spf=pass (sender IP is 216.219.84.124) smtp.mailfrom=inquiry@cesssrl.com smtp.helo=vps2693868.trouble-free.net
+Received-SPF: pass (server.cesssrl.com: connection is authenticated)
+Reply-To: "Eng. Don Walker" <don.walker@gfzenergyengineeringcorp.link>
+From:   "Eng. Don Walker" <inquiry@cesssrl.com>
+To:     linux-wireless@vger.kernel.org
+Subject: Inquiry M01nftjmj:Ref
+Date:   29 Sep 2023 10:20:38 -0700
+Message-ID: <20230929102036.4E6783AB4510F18E@cesssrl.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 wireless-next 2/9] carl9170: remove unnecessary (void*)
- conversions
-Content-Language: en-US
-To:     Christian Lamparter <chunkeey@gmail.com>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-CC:     Wu Yunchuan <yunchuan@nfschina.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Kalle Valo <kvalo@kernel.org>
-References: <20230919044916.523308-1-yunchuan@nfschina.com>
- <e544d992-cddd-4ade-81ef-2eed4f3681e8@gmail.com> <87zg16iab3.fsf@kernel.org>
- <0b7623f7-561c-4f3b-91c1-aaf1c44f1158@kadam.mountain>
- <d41d0c98-82ef-40f6-8c5c-68a94b5a4655@kadam.mountain>
- <c5611be9-ef4d-4e49-84de-7ce893e3c73c@gmail.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <c5611be9-ef4d-4e49-84de-7ce893e3c73c@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: We08OCyBftnLfMRjBATwgVxjDM1xVfUI
-X-Proofpoint-ORIG-GUID: We08OCyBftnLfMRjBATwgVxjDM1xVfUI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-29_13,2023-09-28_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- mlxlogscore=677 lowpriorityscore=0 spamscore=0 adultscore=0 bulkscore=0
- priorityscore=1501 clxscore=1011 mlxscore=0 impostorscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2309290139
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-PPP-Message-ID: <169600803973.584965.12416577659363065554@server.cesssrl.com>
+X-PPP-Vhost: cesssrl.com
+X-Spam-Status: No, score=3.3 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/29/2023 12:23 AM, Christian Lamparter wrote:
-> I would like to take the chance to again point to this beauty:
-> <https://lore.kernel.org/linux-wireless/TYAP286MB03154F9AAFD4C35BEEDE4A99BC4CA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM/T/#mf1b8919a000fe661803c17073f48b3c410888541>
-> @Dan, @Jeff can you please comment on that too?
+Good day,
+I will be in your Country from the 15th to the 30th November 2023=20
+with 7 other people and we need your services during our stay. 
 
-I had not seen that patch since it was posted while I was transitioning 
-roles. It looks like a reasonable patch to me to handle FORTIFY_SOURCE 
-restrictions.
+Kindly confirm availability and prices. 
+=20
+What credit card types do you accept for deposit?
+=20
+Don.
 
-Can it (any any other ath folder patches) be reposted for review?
 
-/jeff
-
+Message Ref: 01-bfqkbeh
+Message Time Stamp: 9/29/2023 10:20:36 a.m.
