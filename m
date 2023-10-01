@@ -2,287 +2,261 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E7637B42FD
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Sep 2023 20:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1EA07B4546
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Oct 2023 07:12:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234722AbjI3SYw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 30 Sep 2023 14:24:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54292 "EHLO
+        id S231830AbjJAFMN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 1 Oct 2023 01:12:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233050AbjI3SYv (ORCPT
+        with ESMTP id S229455AbjJAFML (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 30 Sep 2023 14:24:51 -0400
-Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91663E3
-        for <linux-wireless@vger.kernel.org>; Sat, 30 Sep 2023 11:24:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-        s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
-        MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=I92h+pBrbRmqNLsJdW2KW4wBmrOUPxWxUtiHFSqeEuI=; b=cAalnVu8ZO9YCCH+NMwhDqGbEh
-        4ck0EsS5jrcOM0FQHcZfwJxDvB9unCaciK0e25sXQKjgbF6OW0cU0T6lrE2tcRiGyWo8qvbsad2Eo
-        e4vcp+KIUECH+p2cHhSe8A8MMUodP0VWzZj4c9s24Bf7ecLIP3czaJtUhe9jSVzsROTM=;
-Received: from p54ae922c.dip0.t-ipconnect.de ([84.174.146.44] helo=nf.local)
-        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <nbd@nbd.name>)
-        id 1qmedx-008tnk-RF; Sat, 30 Sep 2023 20:24:45 +0200
-Message-ID: <a5a2baaa-0db4-403e-9ebd-a7ff089675b4@nbd.name>
-Date:   Sat, 30 Sep 2023 20:24:45 +0200
+        Sun, 1 Oct 2023 01:12:11 -0400
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EE82C2;
+        Sat, 30 Sep 2023 22:12:09 -0700 (PDT)
+Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-584a761b301so6894261a12.3;
+        Sat, 30 Sep 2023 22:12:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696137129; x=1696741929; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=S4YUhySqj0LKSfhzqzSpnPiis7zCCeIWybzjnn9kJe4=;
+        b=CuZvVkRnK8BdLw6UpYg+uEnhju5vQlOUS25g2RKuXTbsf7yc+HQkGArIPiw61iWfWH
+         osRQRY4c9cq5KMBQtQ+cU46ZMY92IVGm1IDlRJMYxv1wamaqkEdR3YmkERj5cABIFREC
+         xAQ5urL/tvliW2GR2VaG7Q/TEjn7y3CWhKJwSKCKyc5uVT/aiNStGdQFMjOR4/XWULW+
+         hYcWIbppc/zJobVCOc1sC3/K3BTd9LpbCQQ1BZ3G+z2VXFGo0dZgrpj6XJMf53TQ7QUJ
+         Iq11qBLvtI2159DD3U2WexWntIDV92Mk+IZCokRnESIWO3MGQt4DECRBlz4++ro6VBp9
+         kwNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696137129; x=1696741929;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S4YUhySqj0LKSfhzqzSpnPiis7zCCeIWybzjnn9kJe4=;
+        b=ah0RFDz/V16fbghRh7hZerx5n7+3+66Cz3kuYOMnXpAjobYbhVvin+9caaxd6zUnmQ
+         9pKYZCkVLGYV/o/0oxNTjLzK9Iev+mDp6VRkP4OxF8+wsWTdUusTB6Z4RSYTFg0dTzPl
+         FYqY9S1uVeVdTZwAxfKn10lQZVyfnfHz5p1yll8v1wA9FiFEW2Njdyq6IpeNBsL6wfOT
+         yPobjnh8n03jiPSzywH8v18zPHlw/8DVaLLeyzURBVBNmoKsCa4wQiYhUsXuAZ+KuAd7
+         mprr8KBHdzTwUa/WDyy6qU5AZOR/3FIGvpfXRiDpsqQsBCd3IWD1XhsVaZevWdt8z6tP
+         qajA==
+X-Gm-Message-State: AOJu0Yx8ohXAdaf+niyxX4iaE9evHRR4k8ReP8MsBOw6b9/lDSsaJPWT
+        erVa7FXzZrYUKfdVixMplDo=
+X-Google-Smtp-Source: AGHT+IFlfnmexc/xDdHnkmAXRnLPuNY/c26M5gwiQFZ+djIdGhfa1kG5j7ot4XT/hNIDq6Y/+WIvSA==
+X-Received: by 2002:a05:6a20:4406:b0:153:dff0:c998 with SMTP id ce6-20020a056a20440600b00153dff0c998mr11017262pzb.6.1696137128430;
+        Sat, 30 Sep 2023 22:12:08 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id s22-20020a62e716000000b0069023d80e63sm17251232pfh.25.2023.09.30.22.12.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 Sep 2023 22:12:07 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id A0B608C4A20F; Sun,  1 Oct 2023 12:12:03 +0700 (WIB)
+Date:   Sun, 1 Oct 2023 12:12:02 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     enc0der <enc0der@gmail.com>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux USB <linux-usb@vger.kernel.org>,
+        Linux RCU <rcu@vger.kernel.org>
+Cc:     Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Hayes Wang <hayeswang@realtek.com>,
+        Simon Horman <horms@kernel.org>,
+        Andre Przywara <andre.przywara@arm.com>,
+        Andrew Gaul <gaul@gaul.org>,
+        =?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Zqiang <qiang.zhang1211@gmail.com>
+Subject: Re: rt8000usb driver issue (maybe interaction with other drivers)
+Message-ID: <ZRj_ovMi-Xbb8i-D@debian.me>
+References: <CAEXpi5Rd6Y4umKOWRsCjX0kit=W5ZrVhn=MuRkyvJPwmjjDVnA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76 2023-09-30
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="zlCIcyjmXaMZlAlu"
+Content-Disposition: inline
+In-Reply-To: <CAEXpi5Rd6Y4umKOWRsCjX0kit=W5ZrVhn=MuRkyvJPwmjjDVnA@mail.gmail.com>
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
 
-here's my first request for 6.7
+--zlCIcyjmXaMZlAlu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- Felix
+On Sat, Sep 30, 2023 at 06:04:22PM -0400, enc0der wrote:
+> Hello all!
+>=20
+> This is the first time I have ever reported anything linux related, so
+> if this is not the proper way, please let me know what the correct way
+> is.
+>=20
+> I am using an NVIDIA Jetson Orin Nano developer platform.  They
+> release what they call a jetpack that comes with linux and their
+> additions on top.  We are using the latest version they release (just
+> released about a month ago)
 
-The following changes since commit aa75cc029e053627743fba2cde8a73519abe8421:
+Something like a distro? What version?
 
-   wifi: mac80211: add back SPDX identifier (2023-09-29 23:21:33 +0200)
+>=20
+> When I plug in a USB WiFi adapter that uses the rt8000usb driver, if I
+> connect to a network it sees, I get a kernel panic.  If I have
+> "automatically connect" it kernel panics when I plug the USB in.
+>=20
+> The version of the kernel they ship is:
+>=20
+> 5.10.120-tegra. (tegra is their additions)
+>=20
+> I talked with NVIDIA first on what I was seeing and after looking at
+> my log, they said it is likely a driver problem.
+>=20
+> Right after I plug in the device, this is the sequence of messages I see:
+>=20
+> [  264.400281] BUG: scheduling while atomic: NetworkManager/622/0x00000203
+> [  264.408778] BUG: scheduling while atomic: NetworkManager/622/0xfffffdff
+> [  264.417178] BUG: scheduling while atomic: swapper/2/0/0x00000504
+> [  264.423685] bad: scheduling from the idle thread!
+>=20
+> Then it panics
+>=20
+> Sometimes it prints more, like:
+>=20
+> [   21.657382] BUG: scheduling while atomic: NetworkManager/630/0x00000203
+> [   21.664818] WARNING: CPU: 4 PID: 630 at
+> kernel/rcu/tree_plugin.h:297 rcu_note_context_switch+0x50/0x540
+> [   21.675028] ---[ end trace 62dc42c98ec427c8 ]---
+> [   21.679873] BUG: scheduling while atomic: NetworkManager/630/0x00000505
+> [   21.687591] WARNING: CPU: 4 PID: 0 at kernel/rcu/tree.c:624
+> rcu_eqs_enter.isra.0+0x128/0x130
+> [   21.696512] ---[ end trace 62dc42c98ec427c9 ]---
+>=20
+> I've also seen this:
+>=20
+> [   27.885487] Unable to handle kernel paging request at virtual
+> address 0000000000001000
+> [   27.893656] Mem abort info:
+> [   27.896524]   ESR =3D 0x86000004
+> [   27.899664]   EC =3D 0x21: IABT (current EL), IL =3D 32 bits
+> [   27.905124]   SET =3D 0, FnV =3D 0
+> [   27.908257]   EA =3D 0, S1PTW =3D 0
+> [   27.911480] user pgtable: 4k pages, 48-bit VAs, pgdp=3D00000001110cb000
+> [   27.918090] [0000000000001000] pgd=3D0000000000000000, p4d=3D000000000=
+0000000
+> [   27.925066] Internal error: Oops: 86000004 [#1] PREEMPT SMP
+> [   27.930794] Modules linked in: mtd_blkdevs(E) mtd(E) lzo_rle(E)
+> lzo_compress(E) zram(E) ramoops(E) reed_solomon(E) bnep(E) loop(E)
+> rt2800usb(E) rt2x00usb(E) rt2800lib(E) rt2x00lib(E) aes_ce_blk(E)
+> rtl8822ce(E) mac80211(E) crypto_simd(E) cryptd(E) rtk_btusb(E)
+> snd_soc_tegra186_asrc(E) input_leds(E) snd_soc_tegra186_dspk(E)
+> snd_soc_tegra210_ope(E) aes_ce_cipher(E) snd_soc_tegra186_arad(E)
+> snd_soc_tegra210_iqc(E) ghash_ce(E) btusb(E) snd_soc_tegra210_mvc(E)
+> snd_soc_tegra210_afc(E) sha2_ce(E) btrtl(E) snd_soc_tegra210_amx(E)
+> snd_soc_tegra210_dmic(E) snd_soc_tegra210_adx(E) r8168(E)
+> snd_soc_tegra210_adsp(E) snd_soc_tegra210_admaif(E) sha256_arm64(E)
+> btbcm(E) snd_soc_tegra210_mixer(E) snd_soc_tegra210_sfc(E)
+> snd_soc_tegra210_i2s(E) cfg80211(E) snd_soc_tegra_machine_driver(E)
+> snd_soc_tegra_pcm(E) sha1_ce(E) btintel(E) snd_hda_codec_hdmi(E)
+> snd_soc_tegra_utils(E) snd_hda_tegra(E) snd_soc_simple_card_utils(E)
+> snd_soc_spdif_tx(E) nvadsp(E) snd_soc_tegra210_ahub(E)
+> snd_hda_codec(E) userspace_alert(E)
+> [   27.930905]  snd_hda_core(E) tegra_bpmp_thermal(E) nv_imx219(E)
+> spi_tegra114(E) tegra210_adma(E) nvidia(OE) binfmt_misc(E) ina3221(E)
+> pwm_fan(E) nvgpu(E) nvmap(E) ip_tables(E) x_tables(E) [last unloaded:
+> mtdblock]
+> [   28.042400] CPU: 4 PID: 630 Comm: NetworkManager Tainted: G
+> W  OE     5.10.120-tegra #1
 
-are available in the Git repository at:
+Out-of-tree modules, right?
 
-   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2023-09-30
+> [   28.051233] Hardware name: Unknown NVIDIA Orin Nano Developer
+> Kit/NVIDIA Orin Nano Developer Kit, BIOS 4.1-33958178 08/01/2023
+> [   28.062910] pstate: 60400089 (nZCv daIf +PAN -UAO -TCO BTYPE=3D--)
+> [   28.069071] pc : 0x1000
+> [   28.071586] lr : arm_smmu_dma_sync+0x40/0x70
+> [   28.075965] sp : ffff8000100231a0
+> [   28.079365] x29: 0000000000001000 x28: ffff4655c01d0ec0
+> [   28.084817] x27: ffffaced1f227000 x26: ffff4655c6ee32c0
+> [   28.090270] x25: 0000000000000000 x24: ffffaced1e405858
+> [   28.095718] x23: ffff46572e84ae00 x22: ffff4655c6ee2c40
+> [   28.101165] x21: ffff4655c82c3480 x20: ffffaced1db49e08
+> [   28.106618] x19: ffff8000100231c0 x18: 0000000000010101
+> [   28.112073] x17: 0000000000cccccc x16: ffffaced1d23382c
+> [   28.117520] x15: 0000000000000000 x14: 0000000000000000
+> [   28.122970] x13: 0000000000000001 x12: 0000000000000000
+> [   28.128421] x11: 0000000000000008 x10: 0000000000000ab0
+> [   28.133863] x9 : ffff800010023180 x8 : ffff4655c6ee3750
+> [   28.139309] x7 : 000000067eb29c20 x6 : 0000000000000238
+> [   28.144763] x5 : 00000000410fd420 x4 : 0000000000f0000f
+> [   28.150214] x3 : 0000000000001000 x2 : ffff4655c82c3480
+> [   28.155658] x1 : ffffaced1db49e08 x0 : ffff465704c37558
+> [   28.161107] Call trace:
+> [   28.163620]  0x1000
+> [   28.165777] Code: bad PC value
+> [   28.168911] ---[ end trace 62dc42c98ec427ca ]---
+> [   28.183964] Kernel panic - not syncing: Oops: Fatal exception
+> [   28.189864] SMP: stopping secondary CPUs
+> [   29.275883] SMP: failed to stop secondary CPUs 0-5
+> [   29.280811] Kernel Offset: 0x2ced0d200000 from 0xffff800010000000
+> [   29.287066] PHYS_OFFSET: 0xffffb9ab40000000
+> [   29.291360] CPU features: 0x08040006,4a80aa38
+> [   29.295832] Memory Limit: none
+> [   29.309234] ---[ end Kernel panic - not syncing: Oops: Fatal exception=
+ ]---
+>=20
+> (This one I believe when I started with the wifi adapter connected to
+> USB3 and networking was set to automatically connect.
+>=20
+> I see in the git repo that these drivers have been changed over the
+> last few years.  Given the age of the kernel that NVIDIA is using, I
+> am not sure how to correlate changes listed in the history of the
+> files with the release.  I guess I could download and diff them until
+> I figure out where.
 
-for you to fetch changes up to bd94d501c0c99753497f8396e96738a560bac10e:
+Where?
 
-   wifi: mt76: Annotate struct mt76_rx_tid with __counted_by (2023-09-30 20:19:43 +0200)
+>=20
+> I'm just not sure where to go from here.  I do know without question,
+> older versions of these drivers work on the Jetson Nano and Raspberry
+> Pi 3 which are MUCH older kernels.
 
-----------------------------------------------------------------
-mt76 patches for 6.7
+What version?
 
-* mt7603/mt7628 stability improvements
-* fixes
-* new driver for mt7925
+Confused...
 
-----------------------------------------------------------------
-Allen Ye (1):
-       wifi: mt76: check sta rx control frame to multibss capability
+--=20
+An old man doll... just what I always wanted! - Clara
 
-Benjamin Lin (1):
-       wifi: mt76: mt7996: remove periodic MPDU TXS request
+--zlCIcyjmXaMZlAlu
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Bo Jiao (1):
-       wifi: mt76: fix potential memory leak of beacon commands
+-----BEGIN PGP SIGNATURE-----
 
-Chank Chen (1):
-       wifi: mt76: connac: add MBSSID support for mt7996
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZRj/nAAKCRD2uYlJVVFO
+o1/uAP9U5c+HrCnrgS9+9Fz84uFAVGGXGNNCchVTz4xKlXb4cwD+P/3vhahwAQpE
+I5Jgd6FkdvFx1EOhylnVvJg4ej7R8Q4=
+=LHJ5
+-----END PGP SIGNATURE-----
 
-Deren Wu (10):
-       wifi: mt76: connac: introduce helper for mt7925 chipset
-       wifi: mt76: mt792x: support mt7925 chip init
-       wifi: mt76: connac: export functions for mt7925
-       wifi: mt76: connac: add eht support for phy mode config
-       wifi: mt76: connac: add eht support for tx power
-       wifi: mt76: connac: add data field in struct tlv
-       wifi: mt76: connac: add more unified command IDs
-       wifi: mt76: connac: add more unified event IDs
-       wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips
-       wifi: mt76: mt7921: move connac nic capability handling to mt7921
-
-Dmitry Antipov (2):
-       wifi: mt76: add DMA mapping error check in mt76_alloc_txwi()
-       wifi: mt76: fix clang-specific fortify warnings
-
-Felix Fietkau (9):
-       wifi: mt76: mt7603: rework/fix rx pse hang check
-       wifi: mt76: mt7603: improve watchdog reset reliablity
-       wifi: mt76: mt7603: improve stuck beacon handling
-       wifi: mt76: mt7603: add missing register initialization for MT7628
-       wifi: mt76: mt7603: disable A-MSDU tx support on MT7628
-       wifi: mt76: fix race condition related to checking tx queue fill status
-       wifi: mt76: remove unused error path in mt76_connac_tx_complete_skb
-       wifi: mt76: mt7915: fix monitor mode issues
-       wifi: mt76: mt7915 add tc offloading support
-
-Howard Hsu (3):
-       wifi: mt76: mt7996: fix beamform mcu cmd configuration
-       wifi: mt76: mt7996: fix beamformee ss subfield in EHT PHY cap
-       wifi: mt76: mt7996: support more options for mt7996_set_bitrate_mask()
-
-Ingo Rohloff (1):
-       wifi: mt76: mt7921e: Support MT7992 IP in Xiaomi Redmibook 15 Pro (2023)
-
-Jen-Hao Cheng (1):
-       wifi: mt76: mt7996: support per-band LED control
-
-Jinjie Ruan (2):
-       wifi: mt76: Use PTR_ERR_OR_ZERO() to simplify code
-       wifi: mt76: Drop unnecessary error check for debugfs_create_dir()
-
-Johannes Berg (1):
-       wifi: mt76: use atomic iface iteration for pre-TBTT work
-
-Kees Cook (1):
-       wifi: mt76: Annotate struct mt76_rx_tid with __counted_by
-
-Lorenzo Bianconi (2):
-       wifi: mt76: mt792x: move mt7921_skb_add_usb_sdio_hdr in mt792x module
-       wifi: mt76: mt792x: move some common usb code in mt792x module
-
-MeiChia Chiu (2):
-       wifi: mt76: update beacon size limitation
-       wifi: mt76: mt7915: fix beamforming availability check
-
-Ming Yen Hsieh (4):
-       wifi: mt76: mt7921: enable set txpower for UNII-4
-       wifi: mt76: mt7921: add 6GHz power type support for clc
-       wifi: mt76: mt7921: get regulatory information from the clc event
-       wifi: mt76: mt7921: update the channel usage when the regd domain changed
-
-Peter Chiu (6):
-       wifi: mt76: mt7996: set correct wcid in txp
-       wifi: mt76: mt7996: fix wmm queue mapping
-       wifi: mt76: mt7996: fix rx rate report for CBW320-2
-       wifi: mt76: mt7996: fix TWT command format
-       wifi: mt76: check vif type before reporting cca and csa
-       wifi: mt76: mt7915: update mpdu density capability
-
-Sean Wang (4):
-       wifi: mt76: move struct ieee80211_chanctx_conf up to struct mt76_vif
-       wifi: mt76: mt7921: fix the wrong rate pickup for the chanctx driver
-       wifi: mt76: mt7921: fix the wrong rate selected in fw for the chanctx driver
-       wifi: mt76: reduce spin_lock_bh held up in mt76_dma_rx_cleanup
-
-Shayne Chen (2):
-       wifi: mt76: mt7996: only set vif teardown cmds at remove interface
-       wifi: mt76: fix per-band IEEE80211_CONF_MONITOR flag comparison
-
-StanleyYP Wang (1):
-       wifi: mt76: get rid of false alamrs of tx emission issues
-
-Yi-Chia Hsieh (3):
-       wifi: mt76: mt7996: get tx_retries and tx_failed from txfree
-       wifi: mt76: mt7996: Add mcu commands for getting sta tx statistic
-       wifi: mt76: mt7996: enable PPDU-TxS to host
-
-  drivers/net/wireless/mediatek/mt76/Kconfig            |    1 +
-  drivers/net/wireless/mediatek/mt76/Makefile           |    1 +
-  drivers/net/wireless/mediatek/mt76/debugfs.c          |    2 -
-  drivers/net/wireless/mediatek/mt76/dma.c              |   14 +-
-  drivers/net/wireless/mediatek/mt76/eeprom.c           |    7 +-
-  drivers/net/wireless/mediatek/mt76/mac80211.c         |   62 ++-
-  drivers/net/wireless/mediatek/mt76/mt76.h             |   36 +-
-  drivers/net/wireless/mediatek/mt76/mt7603/beacon.c    |   76 +++-
-  drivers/net/wireless/mediatek/mt76/mt7603/core.c      |    2 +
-  drivers/net/wireless/mediatek/mt76/mt7603/init.c      |    8 +
-  drivers/net/wireless/mediatek/mt76/mt7603/mac.c       |   52 +--
-  drivers/net/wireless/mediatek/mt76/mt7603/main.c      |    4 +-
-  drivers/net/wireless/mediatek/mt76/mt7603/regs.h      |    5 +
-  drivers/net/wireless/mediatek/mt76/mt7615/init.c      |    5 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/main.c      |    4 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c       |    2 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c   |    2 +-
-  drivers/net/wireless/mediatek/mt76/mt76_connac.h      |    6 +
-  drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h |   18 +-
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c  |   28 +-
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c  |  191 +++------
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h  |   60 ++-
-  drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c   |    8 +-
-  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c     |   11 +-
-  drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c |   13 +-
-  drivers/net/wireless/mediatek/mt76/mt76x02_util.c     |    4 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/init.c      |   24 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/mac.c       |    2 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/main.c      |   53 ++-
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c       |   79 ++--
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h       |   18 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h    |    4 +
-  drivers/net/wireless/mediatek/mt76/mt7915/regs.h      |    1 +
-  drivers/net/wireless/mediatek/mt76/mt7915/soc.c       |    5 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/init.c      |   54 ++-
-  drivers/net/wireless/mediatek/mt76/mt7921/mac.c       |    2 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/main.c      |   69 ++--
-  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c       |  155 ++++++-
-  drivers/net/wireless/mediatek/mt76/mt7921/mcu.h       |   13 +
-  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h    |   18 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/pci.c       |    2 +
-  drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c   |    2 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c  |    2 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/usb.c       |   12 +-
-  drivers/net/wireless/mediatek/mt76/mt7925/Kconfig     |   30 ++
-  drivers/net/wireless/mediatek/mt76/mt7925/Makefile    |    9 +
-  drivers/net/wireless/mediatek/mt76/mt7925/debugfs.c   |  319 +++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/init.c      |  235 +++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/mac.c       | 1452 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/mac.h       |   23 ++
-  drivers/net/wireless/mediatek/mt76/mt7925/main.c      | 1454 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c       | 3174 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/mcu.h       |  537 ++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h    |  309 ++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/pci.c       |  586 ++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c   |  148 +++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c   |   53 +++
-  drivers/net/wireless/mediatek/mt76/mt7925/regs.h      |   92 +++++
-  drivers/net/wireless/mediatek/mt76/mt7925/usb.c       |  332 +++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt792x.h           |   38 +-
-  drivers/net/wireless/mediatek/mt76/mt792x_core.c      |   30 +-
-  drivers/net/wireless/mediatek/mt76/mt792x_dma.c       |   49 ++-
-  drivers/net/wireless/mediatek/mt76/mt792x_usb.c       |    9 +
-  drivers/net/wireless/mediatek/mt76/mt7996/init.c      |   50 ++-
-  drivers/net/wireless/mediatek/mt76/mt7996/mac.c       |  111 +++--
-  drivers/net/wireless/mediatek/mt76/mt7996/main.c      |   65 +--
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c       |  359 ++++++++++++++--
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.h       |   37 +-
-  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h    |    2 +-
-  drivers/net/wireless/mediatek/mt76/mt7996/regs.h      |    8 +
-  drivers/net/wireless/mediatek/mt76/tx.c               |  108 ++++-
-  include/linux/pci_ids.h                               |    2 +
-  72 files changed, 10198 insertions(+), 560 deletions(-)
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/Kconfig
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/Makefile
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/debugfs.c
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/init.c
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/mac.h
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/main.c
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/regs.h
-  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+--zlCIcyjmXaMZlAlu--
