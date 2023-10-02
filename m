@@ -2,52 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E98527B5A84
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Oct 2023 20:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A47BD7B5C8D
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Oct 2023 23:42:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238843AbjJBSvB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Oct 2023 14:51:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33928 "EHLO
+        id S230014AbjJBVmg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Oct 2023 17:42:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229655AbjJBSvA (ORCPT
+        with ESMTP id S229650AbjJBVmf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Oct 2023 14:51:00 -0400
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE253AB
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Oct 2023 11:50:56 -0700 (PDT)
-Received: (wp-smtpd smtp.wp.pl 42026 invoked from network); 2 Oct 2023 20:50:54 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1696272654; bh=GepljF1EQTI9r70EH4tqi9RpNkoQyh/hyQxu9GZweVk=;
-          h=From:To:Cc:Subject;
-          b=IWGGnhxfjpYf6rC2AzOjOIHwe/vB1LOrIcefmkfFh25VqtFS5EqdYTiKGun2Fim6t
-           rTPdESj/5rszSFz5/JDkHBVs0QDnjJSN+F+QucwuMfLkcDqws+Zccvr28B811SM+SV
-           IKXeZi6JJC6kq7HQCU6AgaNDi7yYEwQz4EmcmTsc=
-Received: from 89-64-13-175.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.13.175])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <bagasdotme@gmail.com>; 2 Oct 2023 20:50:54 +0200
-Date:   Mon, 2 Oct 2023 20:50:53 +0200
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     enc0der <enc0der@gmail.com>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Wireless <linux-wireless@vger.kernel.org>
-Subject: Re: rt8000usb driver issue (maybe interaction with other drivers)
-Message-ID: <20231002185053.GB402943@wp.pl>
-References: <CAEXpi5Rd6Y4umKOWRsCjX0kit=W5ZrVhn=MuRkyvJPwmjjDVnA@mail.gmail.com>
- <ZRj_ovMi-Xbb8i-D@debian.me>
+        Mon, 2 Oct 2023 17:42:35 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B18B9E;
+        Mon,  2 Oct 2023 14:42:32 -0700 (PDT)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 392Lc35b009233;
+        Mon, 2 Oct 2023 21:41:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=9DoH5Z0FBBn7OOXsdsVMtbrWjPpvQTS37XxZVqX2ya0=;
+ b=lxWXuknd3yuLsB86dOCJbRBBlD1v8Gr3EKV5SxMyczpYq9wVkuu9dRTsHmqBPIZEOrxH
+ RD5yl7IZRyLRaBM00mbLWa6O6cbBcdU6azN8t6TnT3PDvMgdSBmWA95OCiZUzRMnT1Od
+ rDuK07M+9ePTBIr763u/90apwJmDdY1L8gdceYC16fJJY9GDYZ85Nqg0Ch/G1V4h2Z60
+ iRaMo6XOEkYreYQBFyDo3oVThvgzs0bjAubGuZ/c0AHqVvxQ4Mq7FBbIldd3qMC/lsHo
+ qjIT/lXGdiSENpNgiiQMZRA8yrHTWxQTMCyotLa+Oq306GD7AIKHYwGG6O/qUpRzUthr /w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tg5q109ax-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 02 Oct 2023 21:41:31 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 392LcTNL009989;
+        Mon, 2 Oct 2023 21:41:30 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tg5q109a6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 02 Oct 2023 21:41:30 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+        by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 392K30kt005924;
+        Mon, 2 Oct 2023 21:41:28 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+        by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tex0scxuw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 02 Oct 2023 21:41:28 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+        by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 392LfR6B27001512
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 2 Oct 2023 21:41:27 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 866195803F;
+        Mon,  2 Oct 2023 21:41:27 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6C15A5804E;
+        Mon,  2 Oct 2023 21:41:23 +0000 (GMT)
+Received: from [9.61.133.200] (unknown [9.61.133.200])
+        by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Mon,  2 Oct 2023 21:41:23 +0000 (GMT)
+Message-ID: <406173de-f215-4719-be69-7789869126a0@linux.ibm.com>
+Date:   Mon, 2 Oct 2023 16:41:20 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZRj_ovMi-Xbb8i-D@debian.me>
-X-WP-MailID: 5ca95ff5381d87fae914a0949b3625fa
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [IWPl]                               
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next PATCH 3/4] netdev: replace napi_reschedule with
+ napi_schedule
+To:     Christian Marangi <ansuelsmth@gmail.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        Jeroen de Borst <jeroendb@google.com>,
+        Praveen Kaligineedi <pkaligineedi@google.com>,
+        Shailend Chand <shailend@google.com>,
+        Douglas Miller <dougmill@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Haren Myneni <haren@linux.ibm.com>,
+        Rick Lindsley <ricklind@linux.ibm.com>,
+        Dany Madden <danymadden@us.ibm.com>,
+        Thomas Falcon <tlfalcon@linux.ibm.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+        Intel Corporation <linuxwwan@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+        Liu Haijun <haijun.liu@mediatek.com>,
+        M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
+        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Wei Fang <wei.fang@nxp.com>, Alex Elder <elder@linaro.org>,
+        Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+        Bailey Forrest <bcf@google.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Junfeng Guo <junfeng.guo@intel.com>,
+        Ziwei Xiao <ziweixiao@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rushil Gupta <rushilg@google.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        Yuri Karpov <YKarpov@ispras.ru>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Zheng Zengkai <zhengzengkai@huawei.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Lee Jones <lee@kernel.org>, Dawei Li <set_pte_at@outlook.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Benjamin Berg <benjamin.berg@intel.com>,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+References: <20231002151023.4054-1-ansuelsmth@gmail.com>
+ <20231002151023.4054-3-ansuelsmth@gmail.com>
+Content-Language: en-US
+From:   Nick Child <nnac123@linux.ibm.com>
+In-Reply-To: <20231002151023.4054-3-ansuelsmth@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AFJ5CXgaf9gn3Ls0jloeGnb824w-iwMV
+X-Proofpoint-ORIG-GUID: Qz1_8zO7QXXjWE3s-ruwlXCzRrelvADM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-02_15,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ clxscore=1011 impostorscore=0 adultscore=0 mlxlogscore=829 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310020167
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -55,94 +157,21 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-(cc list is too big, I shrink it)
 
-On Sun, Oct 01, 2023 at 12:12:02PM +0700, Bagas Sanjaya wrote:
-> On Sat, Sep 30, 2023 at 06:04:22PM -0400, enc0der wrote:
-> > Hello all!
-> > 
-> > This is the first time I have ever reported anything linux related, so
-> > if this is not the proper way, please let me know what the correct way
-> > is.
-> > 
-> > I am using an NVIDIA Jetson Orin Nano developer platform.  They
-> > release what they call a jetpack that comes with linux and their
-> > additions on top.  We are using the latest version they release (just
-> > released about a month ago)
+On 10/2/23 10:10, Christian Marangi wrote:
+> Now that napi_schedule return a bool, we can drop napi_reschedule that
+> does the same exact function. The function comes from a very old commit
+> bfe13f54f502 ("ibm_emac: Convert to use napi_struct independent of struct
+> net_device") and the purpose is actually deprecated in favour of
+> different logic.
 > 
-> Something like a distro? What version?
+> Convert every user of napi_reschedule to napi_schedule.
 > 
-> > 
-> > When I plug in a USB WiFi adapter that uses the rt8000usb driver, if I
-> > connect to a network it sees, I get a kernel panic.  If I have
-> > "automatically connect" it kernel panics when I plug the USB in.
-> > 
-> > The version of the kernel they ship is:
-> > 
-> > 5.10.120-tegra. (tegra is their additions)
-> > 
-> > I talked with NVIDIA first on what I was seeing and after looking at
-> > my log, they said it is likely a driver problem.
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
 
-Is possible that this is rt2800usb or usb host driver issue. But without
-full logs we can not be sure.  
+For
+>   drivers/net/ethernet/ibm/ibmveth.c                     |  2 +-
+>   drivers/net/ethernet/ibm/ibmvnic.c                     |  2 +-
 
-> > Right after I plug in the device, this is the sequence of messages I see:
-> > 
-> > [  264.400281] BUG: scheduling while atomic: NetworkManager/622/0x00000203
-
-After that message there should be stack trace visible. To debug this
-you would need to find a way to see the full logs (dmesg/kmsg) after the crash.
-It can be serial console, netconsole, pstore or some other thing. Perhaps
-your platform allow to boot debug kernel with various check, which will
-not panic when the bug occures and will show useful info in the logs.
-
-> > [   28.071586] lr : arm_smmu_dma_sync+0x40/0x70
-> > [   28.075965] sp : ffff8000100231a0
-> > [   28.079365] x29: 0000000000001000 x28: ffff4655c01d0ec0
-> > [   28.084817] x27: ffffaced1f227000 x26: ffff4655c6ee32c0
-> > [   28.090270] x25: 0000000000000000 x24: ffffaced1e405858
-> > [   28.095718] x23: ffff46572e84ae00 x22: ffff4655c6ee2c40
-> > [   28.101165] x21: ffff4655c82c3480 x20: ffffaced1db49e08
-> > [   28.106618] x19: ffff8000100231c0 x18: 0000000000010101
-> > [   28.112073] x17: 0000000000cccccc x16: ffffaced1d23382c
-> > [   28.117520] x15: 0000000000000000 x14: 0000000000000000
-> > [   28.122970] x13: 0000000000000001 x12: 0000000000000000
-> > [   28.128421] x11: 0000000000000008 x10: 0000000000000ab0
-> > [   28.133863] x9 : ffff800010023180 x8 : ffff4655c6ee3750
-> > [   28.139309] x7 : 000000067eb29c20 x6 : 0000000000000238
-> > [   28.144763] x5 : 00000000410fd420 x4 : 0000000000f0000f
-> > [   28.150214] x3 : 0000000000001000 x2 : ffff4655c82c3480
-> > [   28.155658] x1 : ffffaced1db49e08 x0 : ffff465704c37558
-> > [   28.161107] Call trace:
-> > [   28.163620]  0x1000
-> > [   28.165777] Code: bad PC value
-> > [   28.168911] ---[ end trace 62dc42c98ec427ca ]---
-> > [   28.183964] Kernel panic - not syncing: Oops: Fatal exception
-> > [   28.189864] SMP: stopping secondary CPUs
-> > [   29.275883] SMP: failed to stop secondary CPUs 0-5
-> > [   29.280811] Kernel Offset: 0x2ced0d200000 from 0xffff800010000000
-
-This actually suggest that the issue is somewhere in the core.
-But again, without full logs we can not be sure.
-
-> > [   29.287066] PHYS_OFFSET: 0xffffb9ab40000000
-> > [   29.291360] CPU features: 0x08040006,4a80aa38
-> > [   29.295832] Memory Limit: none
-> > [   29.309234] ---[ end Kernel panic - not syncing: Oops: Fatal exception ]---
-> > 
-> > (This one I believe when I started with the wifi adapter connected to
-> > USB3 and networking was set to automatically connect.
-> > 
-> > I see in the git repo that these drivers have been changed over the
-> > last few years.  Given the age of the kernel that NVIDIA is using, I
-> > am not sure how to correlate changes listed in the history of the
-> > files with the release.  I guess I could download and diff them until
-> > I figure out where.
-
-The rt2800 driver wasn't modified for ages. It's rater stable, but
-perhaps there are issues in other involved modules i.e. mac80211.
-
-Regards
-Stanislaw
-
+Acked-by: Nick Child <nnac123@linux.ibm.com>
