@@ -2,124 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4725D7B548E
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Oct 2023 16:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE1507B56A0
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Oct 2023 17:38:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237661AbjJBOJ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Oct 2023 10:09:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54030 "EHLO
+        id S237856AbjJBPKk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Oct 2023 11:10:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236201AbjJBOJZ (ORCPT
+        with ESMTP id S237474AbjJBPKj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Oct 2023 10:09:25 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A85809B
-        for <linux-wireless@vger.kernel.org>; Mon,  2 Oct 2023 07:09:21 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 392Cqn3j030923;
-        Mon, 2 Oct 2023 14:09:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=NAJ95J+c4IZJm7HDf0fm+4Wl4ZicV9IqxOM1yivywfA=;
- b=Ms+TfXERT1MDTy+5vP6uEaT8695nhaO9rvg3Qh8w/6cPCDOsVBWliG4ZSNoPV/zPR2Nm
- 6zas5EIfehmG+AVb4mIoeCyvrHD1sdV4QkQyjg6GOPxSgp7iynUx/D67OcROJUU3KXET
- ZqT6GD5YOHKhCneEz5rDvqKbRBEUMhr/UabSREVC9ksO//2A2ocq5N2WQsAhKU3NFaLy
- mrQ3dwgqH0C00UcXn7psg3Rbq39iatOXj4GwJAhrgXlkdmw4/mZydbOXi2yCLY/UqyXF
- 7c+mqazfiO1GGpR7ijPtb2uKZCKnv4BPl0Ytp4TQgepQ8vyURClYkAnhasIi+vq+p9ar 9A== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tecuukp2r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 02 Oct 2023 14:09:16 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 392E9Go7032421
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 2 Oct 2023 14:09:16 GMT
-Received: from [10.111.179.185] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 2 Oct
- 2023 07:09:16 -0700
-Message-ID: <d7185f2a-cae8-4560-b147-c1d88fd61868@quicinc.com>
-Date:   Mon, 2 Oct 2023 07:09:15 -0700
+        Mon, 2 Oct 2023 11:10:39 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E08AA7;
+        Mon,  2 Oct 2023 08:10:37 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-405524e6769so19673945e9.1;
+        Mon, 02 Oct 2023 08:10:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696259435; x=1696864235; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ow78hAE0yIyUemUyYOBz3q9ywNhxcPT95anou49aj54=;
+        b=c80gFIoPqrwcLKlFSS8K9oDmqlQg4oi6PxQUcBOA/M7K6QYK6gP1pjeL9bl5sEfqkY
+         yxe9D6CwXKOlGm0KZueG5FqHZDJcWbB8cRAQcap4Gsyp6al92+6zZTCsgyOUx1TuhROs
+         R2a+Kfe9TMoQRdJnAkyWlsZ4FP7vcxO80I9sMGiuMMQmwRoqvOnIWTWxA3JwqGlqi140
+         hmybqIi6JnU+dji1bzYHV4XpTtJs6mdBJihdHp0+vJhdZpHIT5KIQdaHNTDnd+sCvfSm
+         DICsvYp9WLV5jvyoJun0tNHITZ80n4o9l+f7tT6sxftwnI/l8LI9rsgwusVUyzmGKC90
+         3JNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696259435; x=1696864235;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ow78hAE0yIyUemUyYOBz3q9ywNhxcPT95anou49aj54=;
+        b=jHQrdUYKydvo+/HlZd/VI52Ot8fjcUslt7opN2xmooVla2+THaZW0ZanWH3dUMtESD
+         I0m+z045/czLscoD1cpHFrbFep8Lqa09gUJxDnBGMuFPj5OuaXONBB3q6/DMQaTVpGDx
+         EMtUfPe/GRQ0eoVqCg4Bre5DzLlcD+eyPobEnh8gMx21QTLT+95M39y64q7WtJtm0WAK
+         0xmrwBZGUgNDchQ4PanP3D90D6cOVi4tHyyAXymJXD3SpeDW65ewnGlX95Q4JDF2Q12B
+         3b5Ov9UUkwNjv/KOVdCcB4j67Xtl1M16YYDDqQ0yT7zb0zNNbjr8Mhfg4H8l+tKY+Bjs
+         j2GQ==
+X-Gm-Message-State: AOJu0Yz/1iXZ2tIASVviQstm0ESlF/93Wjno0/dY5jprsnR7oqYTv98S
+        mLYvlZWuP8q4SJDhJLkT5RM=
+X-Google-Smtp-Source: AGHT+IER54DFWa7vQIFTj6+iJgsPdY5/GDB29GHbGeIgWOfOFDfcvPSoorLgTOCTW0kTjVMyBnWZcA==
+X-Received: by 2002:a05:600c:4991:b0:401:b92f:eec5 with SMTP id h17-20020a05600c499100b00401b92feec5mr10163374wmp.9.1696259434455;
+        Mon, 02 Oct 2023 08:10:34 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id t15-20020a1c770f000000b00406408dc788sm7421565wmi.44.2023.10.02.08.10.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Oct 2023 08:10:32 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        Jeroen de Borst <jeroendb@google.com>,
+        Praveen Kaligineedi <pkaligineedi@google.com>,
+        Shailend Chand <shailend@google.com>,
+        Douglas Miller <dougmill@linux.ibm.com>,
+        Nick Child <nnac123@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Haren Myneni <haren@linux.ibm.com>,
+        Rick Lindsley <ricklind@linux.ibm.com>,
+        Dany Madden <danymadden@us.ibm.com>,
+        Thomas Falcon <tlfalcon@linux.ibm.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+        Intel Corporation <linuxwwan@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+        Liu Haijun <haijun.liu@mediatek.com>,
+        M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
+        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Wei Fang <wei.fang@nxp.com>, Alex Elder <elder@linaro.org>,
+        Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+        Bailey Forrest <bcf@google.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Junfeng Guo <junfeng.guo@intel.com>,
+        Ziwei Xiao <ziweixiao@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rushil Gupta <rushilg@google.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Yuri Karpov <YKarpov@ispras.ru>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Zheng Zengkai <zhengzengkai@huawei.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Lee Jones <lee@kernel.org>, Dawei Li <set_pte_at@outlook.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Benjamin Berg <benjamin.berg@intel.com>,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: [net-next PATCH 1/4] netdev: replace simple napi_schedule_prep/__napi_schedule to napi_schedule
+Date:   Mon,  2 Oct 2023 17:10:20 +0200
+Message-Id: <20231002151023.4054-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k_pci: failed to connect to HTT: -110
-Content-Language: en-US
-To:     Fourhundred Thecat <400thecat@ik.me>,
-        Linux Wireless <linux-wireless@vger.kernel.org>
-References: <1642436c-9046-1abe-c65b-880df9096038@ik.me>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <1642436c-9046-1abe-c65b-880df9096038@ik.me>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: _GH-hX1NGHvlkYUa1B1AlCkoup8bK6DM
-X-Proofpoint-ORIG-GUID: _GH-hX1NGHvlkYUa1B1AlCkoup8bK6DM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-02_08,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1011
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310020107
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/29/2023 10:38 AM, Fourhundred Thecat wrote:
-> Hello,
-> 
-> I have Qualcomm QCNFA765.
-> I am using custom-compiled kernel 6.1.55. I have ath11k_pci in the 
-> kernel, and all firmware files are loaded successfully. Yet, when 
-> booting, I see on the console:
-> 
-> ath11k_pci: Service connect timeout
-> ath11k_pci: failed to connect to HTT: -110
-> ath11k_pci: failed to start core: -110
-> 
-> and the network device wlan0 does not exist.
-> 
-> But lspci -v shows the network card, and module it is using.
-> 
-> and dmesg | grep ath11k
-> 
-> ath11k_pci: BAR 0: assigned [mem 0x90600000-0x907fffff 64bit]
-> ath11k_pci: enabling device (0000 -> 0002)
-> ath11k_pci: MSI vectors: 1
-> ath11k_pci: wcn6855 hw2.1
-> ath11k_pci: chip_id 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
-> ath11k_pci: fw_version 0x11090c35 fw_build_timestamp 2022-04-18 20:23 
-> fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
-> ath11k_pci: leaving PCI ASPM disabled to avoid MHI M2 problems
-> ath11k_pci: failed to receive control response completion, polling..
-> ath11k_pci: Service connect timeout
-> ath11k_pci: failed to connect to HTT: -110
-> ath11k_pci: failed to start core: -110
-> ath11k_pci: ignore reset dev flags 0x4000
-> ath11k_pci: ignore reset dev flags 0x4000
-> ath11k_pci: failed to wait wlan mode request (mode 4): -110
-> ath11k_pci: qmi failed to send wlan mode off: -110
-> 
-> since I am using custom kernel, it is possible i am missing some kernel 
-> option. Here is my kernel config
-> 
-> https://ctxt.io/2/AABQk4VZEg
-> 
-> can somebody please tell me what is the problem ?
-> 
-> thank you,
+Replace drivers that still use napi_schedule_prep/__napi_schedule
+with napi_schedule helper as it does the same exact check and call.
 
-Does your tree have:
-39564b475ac5 wifi: ath11k: fix boot failure with one MSI vector
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/ethernet/ni/nixge.c     | 3 +--
+ drivers/net/ethernet/wiznet/w5100.c | 4 ++--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/ni/nixge.c b/drivers/net/ethernet/ni/nixge.c
+index 97f4798f4b42..f71a4f8bbb89 100644
+--- a/drivers/net/ethernet/ni/nixge.c
++++ b/drivers/net/ethernet/ni/nixge.c
+@@ -755,8 +755,7 @@ static irqreturn_t nixge_rx_irq(int irq, void *_ndev)
+ 		cr &= ~(XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
+ 		nixge_dma_write_reg(priv, XAXIDMA_RX_CR_OFFSET, cr);
+ 
+-		if (napi_schedule_prep(&priv->napi))
+-			__napi_schedule(&priv->napi);
++		napi_schedule(&priv->napi);
+ 		goto out;
+ 	}
+ 	if (!(status & XAXIDMA_IRQ_ALL_MASK)) {
+diff --git a/drivers/net/ethernet/wiznet/w5100.c b/drivers/net/ethernet/wiznet/w5100.c
+index 341ee2f249fd..5613fd6a9f0a 100644
+--- a/drivers/net/ethernet/wiznet/w5100.c
++++ b/drivers/net/ethernet/wiznet/w5100.c
+@@ -930,8 +930,8 @@ static irqreturn_t w5100_interrupt(int irq, void *ndev_instance)
+ 
+ 		if (priv->ops->may_sleep)
+ 			queue_work(priv->xfer_wq, &priv->rx_work);
+-		else if (napi_schedule_prep(&priv->napi))
+-			__napi_schedule(&priv->napi);
++		else
++			napi_schedule(&priv->napi)
+ 	}
+ 
+ 	return IRQ_HANDLED;
+-- 
+2.40.1
 
