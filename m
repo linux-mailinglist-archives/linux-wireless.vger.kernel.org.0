@@ -2,44 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91BAC7B6C82
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 16:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D26A57B6C8F
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 17:01:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240398AbjJCO4c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Oct 2023 10:56:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37538 "EHLO
+        id S240226AbjJCPBr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Oct 2023 11:01:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240717AbjJCO41 (ORCPT
+        with ESMTP id S240576AbjJCPBi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Oct 2023 10:56:27 -0400
+        Tue, 3 Oct 2023 11:01:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3FB173F
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 07:56:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691DCC433C7;
-        Tue,  3 Oct 2023 14:56:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF561A1
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 08:01:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42EFC433C8;
+        Tue,  3 Oct 2023 15:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696344973;
-        bh=p0AgQWyC7sV+5Z0KZ2RWo84QUqVPvvrxy7P5WybgfBA=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=JteOu6smdI73xmfL2Gj/5UxP+Jfrh/iElevnZvhn2tThq0DhhZqMiBSpcPjz0gmu1
-         e2je7eOU/WH7Qr+h92BTDaavu6fzHKwlYWaRbURygw27uTdX6CrJKt5xFtsWO6Q4fz
-         Y8/PpPWt96bGpqDOiVR9hbT4eDMrggw6ADT6NbI37OnNqJvn4Gw67DLQP+tgiMWYJz
-         vd92qWv5n7iU5z3CjNR2pNIvsynPcdAUPZA0st2MZCfnLyzI21kvKBbOz5ISTV3mB6
-         qeX0TMZRFRkx+KZ+00P+/h22UH6s2vjdRpmLaC/kP2se8wzk3Lakd50OPWnbuu0cuH
-         SsEYRovi07AEA==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: Encoding regdb.bin in board-2.bin
+        s=k20201202; t=1696345295;
+        bh=lVcxIOxipF//JQsTO3JXp6HIOgSsOIh5C2sbfnSbzhw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CbosmV/bZL50DTPQD2iDFbm5HTNgTYuN+ab+ixJKEwcM+u+cR+KHKfBIeN9oEEgjf
+         XA/6a1P/Uu1grtQofMTDJdoAQNlUxfi4iG27XZ311+OrDw58TG76/lSiqh4Cwkmjl/
+         EXqZZuYp/tdGT/TZKdYNRfreKj08WhMr2kwNl5TcXxoPNxdmtM2GY7beJv8FZoB01L
+         5Vb8F/lBuolgH1MIVNeejOtrxiwiVwywZfoUeoyQO3zNXX86aZ60RwUOJlj9r/rmgF
+         R8ZrPkk2rQuTGYebnJfYec7QK+FGQq8q80KvIQ1IPsfJht4EXJ4Gwt+/pPliNoT+dO
+         QsOt1idAOdg8Q==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230131123422.24985-1-quic_karm@quicinc.com>
-References: <20230131123422.24985-1-quic_karm@quicinc.com>
-To:     Karthik M <quic_karm@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Karthik M <quic_karm@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169634497029.182212.8117239239886289035.kvalo@kernel.org>
-Date:   Tue,  3 Oct 2023 14:56:12 +0000 (UTC)
+To:     ath12k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: ath12k: fix debug messages
+Date:   Tue,  3 Oct 2023 18:01:32 +0300
+Message-Id: <20231003150132.187875-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -49,37 +45,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Karthik M <quic_karm@quicinc.com> wrote:
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-> Currently regulatory database information are in regdb.bin outside
-> the board-2.bin.
-> 
-> In this implementation, Add support to encode the secured regdb.bin
-> in board-2.bin along with the bdf files.
-> 
-> New api(ath12k_core_fetch_regdb) fetches the board specific regdb
-> from board-2.bin. If it fails, it downloads the default regdb.
-> 
-> Firmware receives the binary over QMI and verifies the signing.
-> If it is authentic, the binary will be used.
-> 
-> Renumbered the enum ATH12K_BD_IE_BOARD_EXT to '2' since it is
-> not used in the code. ATH12K_BD_IE_REGDB enum will take the value '1'
-> as per the ath11k upstream design.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Karthik M <quic_karm@quicinc.com>
+In ath12k the debug messages were broken, no matter setting what value to the
+debug_mask module parameter would not get the debug messages printed. The issue
+is that __ath12k_dbg() uses dev_dbg() to print the debug messages which requires either enabling
+CONFIG_DYNAMIC_DEBUG or DEBUG symbol in the driver.
 
-It's a long time since I tested this and this doesn't apply anymore so I
-cannot give you any detailed report. But IIRC I noticed in my test that
-having just board.bin didn't work anymore. Please double check that, rebase and
-submit v2.
+ath12k is supposed to use debug_mask module to control whether debug messages
+are printed or not. Using both CONFIG_DYNAMIC_DEBUG and debug_mask parameter
+does not make any sense so switch to using dev_printk(), just like ath11k does.
+Now it's enough just to debug_mask module parameter to get the debug messages.
 
-Patch set to Changes Requested.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/debug.c b/drivers/net/wireless/ath/ath12k/debug.c
+index 67893923e010..45d33279e665 100644
+--- a/drivers/net/wireless/ath/ath12k/debug.c
++++ b/drivers/net/wireless/ath/ath12k/debug.c
+@@ -64,7 +64,7 @@ void __ath12k_dbg(struct ath12k_base *ab, enum ath12k_debug_mask mask,
+ 	vaf.va = &args;
+ 
+ 	if (ath12k_debug_mask & mask)
+-		dev_dbg(ab->dev, "%pV", &vaf);
++		dev_printk(KERN_DEBUG, ab->dev, "%pV", &vaf);
+ 
+ 	/* TODO: trace log */
+ 
+
+base-commit: 140accd3f29eee6507f8a51bc38e85c119aedf14
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230131123422.24985-1-quic_karm@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.39.2
 
