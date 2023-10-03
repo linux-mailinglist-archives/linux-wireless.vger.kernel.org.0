@@ -2,45 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C17AC7B682C
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 13:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D91F7B6834
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 13:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231927AbjJCLoU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Oct 2023 07:44:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39488 "EHLO
+        id S240653AbjJCLoh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Oct 2023 07:44:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231912AbjJCLoT (ORCPT
+        with ESMTP id S240629AbjJCLog (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Oct 2023 07:44:19 -0400
+        Tue, 3 Oct 2023 07:44:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72739A1
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 04:44:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C470C433C9;
-        Tue,  3 Oct 2023 11:44:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 938FDCC;
+        Tue,  3 Oct 2023 04:44:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B88C433C8;
+        Tue,  3 Oct 2023 11:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696333457;
-        bh=1ZHQ/8YgwEfzgFbkL9qF9ChB6L2yi23VDEiHrr0QSOc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ok4Gd3nvHv1EyjGVLUsCl7xtuwHxjPUWEjBD3qkDA6gsXTrnKQYAlPmZcG7rAXYY/
-         9KDHyZtSxr88tcOEplso1aK/By0kcmnJati7UEpKeELlS6ElK3vaIs6NJnH/2jRXZT
-         jc7N0SCKtiyU7lfVxyE0SScXS/Y6O4MJR0tU+5xHQdmKYa4kqRw3fb/B5TUcm8BQsa
-         PCAtkRdyOTKGnXfcGaG0Xq5C3PHrQbsJ0ycPD7moI/soiTRbsl9qTTJkaMNNdVy/A3
-         ipozdRkNbxbsaBURS8GtAnVHQ0Eiz8+ck8nDlDwXYWuA8MKbC4wBJQ0RGLHFaX2l0T
-         VQ1TwXiJyqsOw==
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1696333469;
+        bh=yaYF8nb6MGq8t2g+aVZfQLDiwQe8acgckiqnV2dLxv0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J1L016eKkQnPRYFTSWXF1ICWSxYD9w/kulER6Q0Vn4uQ54bsfWsMXdtAgc/Uo6LAy
+         KKua71HQnxSZjZeS2NejRYQ4/35slOsJ8wakBSFgTixqx5lY+J+tCI1bT13O1KbaJz
+         YFPI5eJgWlRzM7y2LwWXuxARgq9FY/MsPQwidvhth2Af0cEt+CyW3vx/rc2KfvLkWH
+         e8UfwKONycNVRdszAUNRYe937PQwLjlXCpv+vA+fzF8hgALt7/l0OEekuaeJfJomEc
+         RqvSafdTDpgAL6xcyfnGUJcPYhrFCrTgkCcLi1BRLyco/43YW8YBAyvFbXL06rdR8e
+         z53YvalJqqOog==
+Date:   Tue, 3 Oct 2023 13:44:24 +0200
+From:   Simon Horman <horms@kernel.org>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/3] wifi: cfg80211: fix header kernel-doc typos
+Message-ID: <ZRv+mApb7siTqWg7@kernel.org>
+References: <20231001191633.19090-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtlwifi: use unsigned long for rtl_bssid_entry
- timestamp
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230929154524.222498-1-dmantipov@yandex.ru>
-References: <20230929154524.222498-1-dmantipov@yandex.ru>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169633345416.28914.4857738400744205275.kvalo@kernel.org>
-Date:   Tue,  3 Oct 2023 11:44:15 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231001191633.19090-1-rdunlap@infradead.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -50,21 +53,10 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
-
-> Since 'age' of 'struct rtl_bssid_entry' is in jiffies, prefer 'unsigned
-> long' over 'u32' to avoid possible truncation in 'rtl_collect_scan_list()'
-> and thus weird result in 'rtl_scan_list_expire()'. Compile tested only.
+On Sun, Oct 01, 2023 at 12:16:31PM -0700, Randy Dunlap wrote:
+> Correct spelling of several words.
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-Patch applied to wireless-next.git, thanks.
-
-f0fb62e090bd wifi: rtlwifi: use unsigned long for rtl_bssid_entry timestamp
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230929154524.222498-1-dmantipov@yandex.ru/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Reviewed-by: Simon Horman <horms@kernel.org>
 
