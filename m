@@ -2,44 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA0217B682B
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 13:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C17AC7B682C
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 13:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231853AbjJCLnf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Oct 2023 07:43:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53708 "EHLO
+        id S231927AbjJCLoU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Oct 2023 07:44:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231849AbjJCLnf (ORCPT
+        with ESMTP id S231912AbjJCLoT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Oct 2023 07:43:35 -0400
+        Tue, 3 Oct 2023 07:44:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0823B9E
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 04:43:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8BFC433C8;
-        Tue,  3 Oct 2023 11:43:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72739A1
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 04:44:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C470C433C9;
+        Tue,  3 Oct 2023 11:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696333411;
-        bh=If9HVbuazEn6sAFnxE1hhqlt0QODRA68PURiXdO1W2c=;
+        s=k20201202; t=1696333457;
+        bh=1ZHQ/8YgwEfzgFbkL9qF9ChB6L2yi23VDEiHrr0QSOc=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=lojKNxoj1nL+yEU/tOVXSHWasEk4GMmp7XpoO3VIqEes6hWnmSqWvxeA/AINvtUGo
-         uF6C4rGldM6V6KpJrgTlyJbtSdXjqMWw4pVIzTpInSzK3r/kbze1XJ9cU4X29jotIL
-         zy8UMZB6uWDEwbUG5UMwC7qfua1cUo22wlaaota25+N+VUkveZ/zr8btMtsRhVRF90
-         ku6memtM0mKMeNgcCbqlZHyqXCT7RR/CktzhkD6Eydtt9etOP/da5yBt9OfCDr369M
-         qJKuMIMhmNFi2eCYVBMUOcUThW5ggVU9gk6/Q5UL8FRP7PQgF9fpYvaU8JYsNjODdi
-         H0mDnqwOGdZTQ==
+        b=ok4Gd3nvHv1EyjGVLUsCl7xtuwHxjPUWEjBD3qkDA6gsXTrnKQYAlPmZcG7rAXYY/
+         9KDHyZtSxr88tcOEplso1aK/By0kcmnJati7UEpKeELlS6ElK3vaIs6NJnH/2jRXZT
+         jc7N0SCKtiyU7lfVxyE0SScXS/Y6O4MJR0tU+5xHQdmKYa4kqRw3fb/B5TUcm8BQsa
+         PCAtkRdyOTKGnXfcGaG0Xq5C3PHrQbsJ0ycPD7moI/soiTRbsl9qTTJkaMNNdVy/A3
+         ipozdRkNbxbsaBURS8GtAnVHQ0Eiz8+ck8nDlDwXYWuA8MKbC4wBJQ0RGLHFaX2l0T
+         VQ1TwXiJyqsOw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] [v2] wifi: rtlwifi: fix EDCA limit set by BT coexistence
+Subject: Re: [PATCH] wifi: rtlwifi: use unsigned long for rtl_bssid_entry
+ timestamp
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230928052327.120178-1-dmantipov@yandex.ru>
-References: <20230928052327.120178-1-dmantipov@yandex.ru>
+In-Reply-To: <20230929154524.222498-1-dmantipov@yandex.ru>
+References: <20230929154524.222498-1-dmantipov@yandex.ru>
 To:     Dmitry Antipov <dmantipov@yandex.ru>
 Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
         Dmitry Antipov <dmantipov@yandex.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169633340846.28914.7192576233008842750.kvalo@kernel.org>
-Date:   Tue,  3 Oct 2023 11:43:30 +0000 (UTC)
+Message-ID: <169633345416.28914.4857738400744205275.kvalo@kernel.org>
+Date:   Tue,  3 Oct 2023 11:44:15 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -51,23 +52,19 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> In 'rtl92c_dm_check_edca_turbo()', 'rtl88e_dm_check_edca_turbo()',
-> and 'rtl8723e_dm_check_edca_turbo()', the DL limit should be set
-> from the corresponding field of 'rtlpriv->btcoexist' rather than
-> UL. Compile tested only.
+> Since 'age' of 'struct rtl_bssid_entry' is in jiffies, prefer 'unsigned
+> long' over 'u32' to avoid possible truncation in 'rtl_collect_scan_list()'
+> and thus weird result in 'rtl_scan_list_expire()'. Compile tested only.
 > 
-> Fixes: 0529c6b81761 ("rtlwifi: rtl8723ae: Update driver to match 06/28/14 Realtek version")
-> Fixes: c151aed6aa14 ("rtlwifi: rtl8188ee: Update driver to match Realtek release of 06282014")
-> Fixes: beb5bc402043 ("rtlwifi: rtl8192c-common: Convert common dynamic management routines for addition of rtl8192se and rtl8192de")
 > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 > Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-next.git, thanks.
 
-3391ee7f9ea5 wifi: rtlwifi: fix EDCA limit set by BT coexistence
+f0fb62e090bd wifi: rtlwifi: use unsigned long for rtl_bssid_entry timestamp
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230928052327.120178-1-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230929154524.222498-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
