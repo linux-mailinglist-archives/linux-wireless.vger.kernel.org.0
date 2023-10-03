@@ -2,98 +2,183 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90F127B684C
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 13:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D6B67B689A
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 14:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231916AbjJCLwc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Oct 2023 07:52:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42860 "EHLO
+        id S232297AbjJCMJO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Oct 2023 08:09:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231849AbjJCLwc (ORCPT
+        with ESMTP id S232254AbjJCMJM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Oct 2023 07:52:32 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFDEAA3
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 04:52:28 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qndwu-00069f-HO; Tue, 03 Oct 2023 13:52:24 +0200
-Message-ID: <5d0904a4-bc0d-42dd-aae8-6b50e5c567ba@leemhuis.info>
-Date:   Tue, 3 Oct 2023 13:52:21 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: Microcode SW error since Linux 6.5
-Content-Language: en-US, de-DE
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Cc:     ilan.peer@intel.com,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        =?UTF-8?Q?Antoine_Beaupr=C3=A9?= <anarcat@debian.org>,
+        Tue, 3 Oct 2023 08:09:12 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7285A6
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 05:09:09 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qneCg-0007eJ-Ik; Tue, 03 Oct 2023 14:08:42 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qneCb-00Al6F-SV; Tue, 03 Oct 2023 14:08:37 +0200
+Received: from pengutronix.de (unknown [172.20.34.65])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        (Authenticated sender: mkl-all@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id D0B6422CC33;
+        Tue,  3 Oct 2023 11:26:49 +0000 (UTC)
+Date:   Tue, 3 Oct 2023 13:26:49 +0200
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        Jeroen de Borst <jeroendb@google.com>,
+        Praveen Kaligineedi <pkaligineedi@google.com>,
+        Shailend Chand <shailend@google.com>,
+        Douglas Miller <dougmill@linux.ibm.com>,
+        Nick Child <nnac123@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Haren Myneni <haren@linux.ibm.com>,
+        Rick Lindsley <ricklind@linux.ibm.com>,
+        Dany Madden <danymadden@us.ibm.com>,
+        Thomas Falcon <tlfalcon@linux.ibm.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+        Intel Corporation <linuxwwan@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+        Liu Haijun <haijun.liu@mediatek.com>,
+        M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
+        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Wei Fang <wei.fang@nxp.com>, Alex Elder <elder@linaro.org>,
+        Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+        Bailey Forrest <bcf@google.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Junfeng Guo <junfeng.guo@intel.com>,
+        Ziwei Xiao <ziweixiao@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rushil Gupta <rushilg@google.com>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Yuri Karpov <YKarpov@ispras.ru>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Zheng Zengkai <zhengzengkai@huawei.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Lee Jones <lee@kernel.org>, Dawei Li <set_pte_at@outlook.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Benjamin Berg <benjamin.berg@intel.com>,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org
-References: <87ttrncuc8.fsf@angela.anarc.at>
- <60e2c052f3cedc5c80964e4be90c50cdaa899a87.camel@sipsolutions.net>
- <87jzsf9dme.fsf@angela.anarc.at>
- <0190dde1170bd1ee810e99b9799678f4f5b8f30e.camel@sipsolutions.net>
- <8734z29jx7.fsf@angela.anarc.at>
- <7bd483fd0d004aed37931561a7faa2e176ca3fac.camel@sipsolutions.net>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <7bd483fd0d004aed37931561a7faa2e176ca3fac.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1696333948;69d3ac3c;
-X-HE-SMSGID: 1qndwu-00069f-HO
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [net-next PATCH 3/4] netdev: replace napi_reschedule with
+ napi_schedule
+Message-ID: <20231003-struggle-lung-3d7c89eab00b-mkl@pengutronix.de>
+References: <20231002151023.4054-1-ansuelsmth@gmail.com>
+ <20231002151023.4054-3-ansuelsmth@gmail.com>
+ <20231003-living-seltzer-172ea6aec629-mkl@pengutronix.de>
+ <651bf88c.050a0220.3a982.31fc@mx.google.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="zbzdaj4jqyp54e52"
+Content-Disposition: inline
+In-Reply-To: <651bf88c.050a0220.3a982.31fc@mx.google.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[CCing the regressions list]
 
-On 25.09.23 21:03, Johannes Berg wrote:
-> On Mon, 2023-09-25 at 14:39 -0400, Antoine Beaupré wrote:
->>> Did that patch help?
->>
->> I haven't tried, to be honest. It's been years since I compiled a
->> kernel, so I haven't actually seriously considered it. But I can
->> definitely put that on my list if it would be useful for you!
-> Heh ok. Well we can also try it I guess. Or reason our way through it,
-> but I'm pretty sure something like that should be done here.
-> 
->>> Yes, you can ... but I mean, we still do want to consider this a bug, I
->>> think, since we explicitly built the thing to load the older firmware.
->>> It just gets _far_ less testing.
->>
->> Got it, happy to play guinea pig a little further if that's useful.
-> Well you might want to go for the extra stability instead :-) I'm kind
-> of thinking along the lines of "if you can download the next wifi
-> firmware with the current one, that's probably good enough". :)
+--zbzdaj4jqyp54e52
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Well, that's not how Linus wants things to be, as due to this "no
-regression" rule things should continue to work if people update the
-kernel without updating linux-firmware (as also explained in
-Documentation/driver-api/firmware/firmware-usage-guidelines.rst).
+On 03.10.2023 13:18:33, Christian Marangi wrote:
+> On Tue, Oct 03, 2023 at 09:16:33AM +0200, Marc Kleine-Budde wrote:
+> > On 02.10.2023 17:10:22, Christian Marangi wrote:
+> > > Now that napi_schedule return a bool, we can drop napi_reschedule that
+> > > does the same exact function. The function comes from a very old comm=
+it
+> > > bfe13f54f502 ("ibm_emac: Convert to use napi_struct independent of st=
+ruct
+> > > net_device") and the purpose is actually deprecated in favour of
+> > > different logic.
+> > >=20
+> > > Convert every user of napi_reschedule to napi_schedule.
+> > >=20
+> > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > > ---
+> > >  drivers/infiniband/ulp/ipoib/ipoib_ib.c                |  4 ++--
+> > >  drivers/net/can/dev/rx-offload.c                       |  2 +-
+> >=20
+> > Acked-by: Marc Kleine-Budde # for can/dev/rx-offload.c
+>=20
+> Just to make sure can I use the correct tag: (you didn't include the
+> mail)
 
-That's what I though when I saw that message initially, but I thought:
-well, not worth a comment, the reporter apparently doesn't mind that
-much. But since then I saw more and more reports that looked related to
-my untrained eyes (and thus might not be related at all!).
+Doh! Sure.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=217894
-https://bugzilla.kernel.org/show_bug.cgi?id=217894#c6 (same ticket)
-https://bugzilla.kernel.org/show_bug.cgi?id=217963
-https://lore.kernel.org/all/f6448719-14e2-4962-ac3d-1be3c19156ed@dolce-energy.com/
+> Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for can/dev/rx-offload=
+=2Ec
 
-Gregory, Johannes, is there something wrong here with 6.5.y? If yes: is
-anything already been done to improve the state of things?
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for can/dev/rx-offload.c
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--zbzdaj4jqyp54e52
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmUb+nYACgkQvlAcSiqK
+BOgAwwf9HSZX1sxRgnOHWLXSBACCTpqNm26rDzNrIqPlybJQVie8rNauFCEQbSz+
+cKDZD68pDokwEv+8WajpOBW0d/Zc27B2d7EZtYhlopNFjo0XIPYoYfA6QTXfZ6Qs
+vi22lC87vHoyEwEi37X3yTPapJVY2GDgyGSD+8FsdOliNE679gautzYvZSWLPiRF
+stXo71bRBm15AbVKwCuOqymieHGxKbooQ09lRIYUXdK6oF671CJLKUia6m9Qg42f
+6Itf4TBPlF4XdxS0vqKrvTsg78XduHN1FmuI+RJIPdzULMx9CoUlr8BOSfGomsN3
+eoH9v4s8IDrkLGQifa7oRIgxg9EkFw==
+=72hV
+-----END PGP SIGNATURE-----
+
+--zbzdaj4jqyp54e52--
