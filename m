@@ -2,76 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0F4C7B607A
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 07:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58F587B628C
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Oct 2023 09:34:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230086AbjJCFoy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Oct 2023 01:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51980 "EHLO
+        id S231469AbjJCHeQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Oct 2023 03:34:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229920AbjJCFox (ORCPT
+        with ESMTP id S230473AbjJCHeM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Oct 2023 01:44:53 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60FDBB3;
-        Mon,  2 Oct 2023 22:44:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29246C433C7;
-        Tue,  3 Oct 2023 05:44:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696311890;
-        bh=TaZguEXQKjSyHnAA74xfdT5k4Fyw6T4I2L535UsMZOQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Oh8mIWoYdcBvLrHp+irD9zsUljjwD3BOI5QjL/ZqAV6DWIHPKSRsG0CWXO3492MrJ
-         WwR5pZBA5YgtC/KfkEF8sIqz1I3K0IUlEyLmVNaf40Y8DrhCrbDEFG4oaXgdic4DGg
-         dxPK83/RQWn5CrN+/HVyKDpXQH7tkXaK3LoCOzm2A20eENtKr+6SaWMirT1wRXpw5+
-         whladzHvzb4Qb+eaE+YzLiBLCzg7gDV8UdMbg7Dxc0Vq1M/ku8id4II+QEKo9WPOvS
-         dL0yg7YJ4Do9t/MBPiV+IJEIrrWRTGU9ooSmKIYCVzqTVPVx+VR2J4n0OiQkBa9rpy
-         p1F7oVYVdttdg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     enc0der <enc0der@gmail.com>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux USB <linux-usb@vger.kernel.org>,
-        Linux RCU <rcu@vger.kernel.org>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Tue, 3 Oct 2023 03:34:12 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A642AA9
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 00:34:09 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qnZub-0003ZK-PJ; Tue, 03 Oct 2023 09:33:45 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qnZuX-00Aidd-0Z; Tue, 03 Oct 2023 09:33:41 +0200
+Received: from pengutronix.de (unknown [172.20.34.65])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        (Authenticated sender: mkl-all@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id 9626922CA40;
+        Tue,  3 Oct 2023 07:16:33 +0000 (UTC)
+Date:   Tue, 3 Oct 2023 09:16:33 +0200
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Hayes Wang <hayeswang@realtek.com>,
-        Simon Horman <horms@kernel.org>,
-        Andre Przywara <andre.przywara@arm.com>,
-        Andrew Gaul <gaul@gaul.org>,
-        =?utf-8?Q?Bj?= =?utf-8?Q?=C3=B8rn?= Mork <bjorn@mork.no>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Zqiang <qiang.zhang1211@gmail.com>
-Subject: Re: rt8000usb driver issue (maybe interaction with other drivers)
-References: <CAEXpi5Rd6Y4umKOWRsCjX0kit=W5ZrVhn=MuRkyvJPwmjjDVnA@mail.gmail.com>
-        <ZRj_ovMi-Xbb8i-D@debian.me>
-        <CAEXpi5RiLbma5cb-ctEvvb7LGRn78VTOh5HDmreC2hYgtBEQog@mail.gmail.com>
-        <3d246a72-2755-484f-8274-0c61fc185592@gmail.com>
-Date:   Tue, 03 Oct 2023 08:47:00 +0300
-In-Reply-To: <3d246a72-2755-484f-8274-0c61fc185592@gmail.com> (Bagas Sanjaya's
-        message of "Sun, 1 Oct 2023 12:53:22 +0700")
-Message-ID: <878r8ki7fv.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Chris Snook <chris.snook@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        Jeroen de Borst <jeroendb@google.com>,
+        Praveen Kaligineedi <pkaligineedi@google.com>,
+        Shailend Chand <shailend@google.com>,
+        Douglas Miller <dougmill@linux.ibm.com>,
+        Nick Child <nnac123@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Haren Myneni <haren@linux.ibm.com>,
+        Rick Lindsley <ricklind@linux.ibm.com>,
+        Dany Madden <danymadden@us.ibm.com>,
+        Thomas Falcon <tlfalcon@linux.ibm.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+        Intel Corporation <linuxwwan@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+        Liu Haijun <haijun.liu@mediatek.com>,
+        M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
+        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Wei Fang <wei.fang@nxp.com>, Alex Elder <elder@linaro.org>,
+        Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+        Bailey Forrest <bcf@google.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Junfeng Guo <junfeng.guo@intel.com>,
+        Ziwei Xiao <ziweixiao@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rushil Gupta <rushilg@google.com>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Yuri Karpov <YKarpov@ispras.ru>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Zheng Zengkai <zhengzengkai@huawei.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Lee Jones <lee@kernel.org>, Dawei Li <set_pte_at@outlook.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Benjamin Berg <benjamin.berg@intel.com>,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [net-next PATCH 3/4] netdev: replace napi_reschedule with
+ napi_schedule
+Message-ID: <20231003-living-seltzer-172ea6aec629-mkl@pengutronix.de>
+References: <20231002151023.4054-1-ansuelsmth@gmail.com>
+ <20231002151023.4054-3-ansuelsmth@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="rxxtlje5djnxwkyg"
+Content-Disposition: inline
+In-Reply-To: <20231002151023.4054-3-ansuelsmth@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,26 +120,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bagas Sanjaya <bagasdotme@gmail.com> writes:
 
->> These are the drivers being loaded:
->> 
->> rt2800usb              36864  0
->> rt2x00usb              24576  1 rt2800usb
->> rt2800lib             122880  1 rt2800usb
->> rt2x00lib              77824  3 rt2800usb,rt2x00usb,rt2800lib
->> mac80211              811008  3 rt2x00lib,rt2x00usb,rt2800lib
->> cfg80211              724992  2 rt2x00lib,mac80211
->> 
->
-> I don't see rt2800usb module in the mainline kernel. Is it out-of-tree?
-> (no wonder why it taints your kernel)
+--rxxtlje5djnxwkyg
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'm guessing it's this driver:
+On 02.10.2023 17:10:22, Christian Marangi wrote:
+> Now that napi_schedule return a bool, we can drop napi_reschedule that
+> does the same exact function. The function comes from a very old commit
+> bfe13f54f502 ("ibm_emac: Convert to use napi_struct independent of struct
+> net_device") and the purpose is actually deprecated in favour of
+> different logic.
+>=20
+> Convert every user of napi_reschedule to napi_schedule.
+>=20
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
+>  drivers/infiniband/ulp/ipoib/ipoib_ib.c                |  4 ++--
+>  drivers/net/can/dev/rx-offload.c                       |  2 +-
 
-drivers/net/wireless/ralink/rt2x00/Makefile:obj-$(CONFIG_RT2800USB)                     += rt2800usb.o
+Acked-by: Marc Kleine-Budde # for can/dev/rx-offload.c
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+regards,
+Marc
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--rxxtlje5djnxwkyg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmUbv84ACgkQvlAcSiqK
+BOjnFwf+OhxcXa9c83Acv0LbbO4tgmF/CI9y5Gz59aFevokQHG/8d2f2USWDkqPB
+r/Yi54VuZtFU1I6dV9XVQtndbXcoPbhBYFOrdNFJtYbXU405HTkgVrKM3LEv8Num
+vuyP5J6+IPisIYReCl6jAlWMNbZmiQHVdI4dyV/I0R3W0VDSBcDd8vxouQrT+iNb
+wqTBUCgjHnea7OhI3S+CDi7692mmk8RC5Jbhxb0rr+i49Dx6gtpmCUb8QmB94TDT
+Rn5auDyJLh0+Wcg+eDdnNvKjNBS7v//BDSY+asVFVwlQ3/aMqVBXlKStFwHQa33O
+P/Y7vHxUVvIeimQmBn2zif8iFQjF3Q==
+=qf69
+-----END PGP SIGNATURE-----
+
+--rxxtlje5djnxwkyg--
