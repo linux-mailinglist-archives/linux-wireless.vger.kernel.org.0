@@ -2,38 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06A187B7BB9
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 11:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCBD47B7AA9
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 10:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233005AbjJDJSY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 05:18:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41150 "EHLO
+        id S241849AbjJDIvb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 04:51:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241873AbjJDIv2 (ORCPT
+        with ESMTP id S241861AbjJDIva (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 04:51:28 -0400
+        Wed, 4 Oct 2023 04:51:30 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5BE0B0
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 01:51:24 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3948pFTW13164838, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 3948pFTW13164838
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B90DA6
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 01:51:26 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3948pHefD3164845, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 3948pHefD3164845
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 4 Oct 2023 16:51:15 +0800
+        Wed, 4 Oct 2023 16:51:17 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 4 Oct 2023 16:51:15 +0800
+ 15.1.2375.32; Wed, 4 Oct 2023 16:51:17 +0800
 Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 4 Oct 2023
- 16:51:14 +0800
+ 16:51:16 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 4/5] wifi: rtw88: regd: update regulatory map to R64-R42
-Date:   Wed, 4 Oct 2023 16:50:50 +0800
-Message-ID: <20231004085051.205683-5-pkshih@realtek.com>
+Subject: [PATCH 5/5] wifi: rtw88: 8821c: tweak CCK TX filter setting for SRRC regulation
+Date:   Wed, 4 Oct 2023 16:50:51 +0800
+Message-ID: <20231004085051.205683-6-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231004085051.205683-1-pkshih@realtek.com>
 References: <20231004085051.205683-1-pkshih@realtek.com>
@@ -47,9 +47,13 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UPPERCASE_50_75
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,75 +62,154 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Sync Realtek Regulatory R42 and Realtek Channel Plan R64.
-Start to configure with Realtek regd CHILE, CN, UK, QATAR, UKRAINE.
+Since new criterion released by SRRC (State Radio Regulatory Commission,
+China) is stricter, we have adjusted TX power limit tables for it. But,
+due to RTL8821C HW characteristic, we still need to use specific parameter
+in CCK TX filter when set channel to avoid violations in some corner cases.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/regd.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw88/regd.c     |  8 +++
+ drivers/net/wireless/realtek/rtw88/regd.h     |  2 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 67 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h |  1 +
+ 4 files changed, 78 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw88/regd.c b/drivers/net/wireless/realtek/rtw88/regd.c
-index 680d8f32fce6..124fc7ae6a14 100644
+index 124fc7ae6a14..7f3b2ea3f2a5 100644
 --- a/drivers/net/wireless/realtek/rtw88/regd.c
 +++ b/drivers/net/wireless/realtek/rtw88/regd.c
-@@ -70,16 +70,16 @@ static const struct rtw_regulatory rtw_reg_map[] = {
- 	COUNTRY_REGD_ENT("BY", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("BZ", RTW_REGD_FCC, RTW_REGD_FCC),
- 	COUNTRY_REGD_ENT("CA", RTW_REGD_IC, RTW_REGD_IC),
--	COUNTRY_REGD_ENT("CC", RTW_REGD_ETSI, RTW_REGD_ETSI),
-+	COUNTRY_REGD_ENT("CC", RTW_REGD_ACMA, RTW_REGD_ACMA),
- 	COUNTRY_REGD_ENT("CD", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("CF", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("CG", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("CH", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("CI", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("CK", RTW_REGD_ETSI, RTW_REGD_ETSI),
--	COUNTRY_REGD_ENT("CL", RTW_REGD_FCC, RTW_REGD_FCC),
-+	COUNTRY_REGD_ENT("CL", RTW_REGD_CHILE, RTW_REGD_CHILE),
- 	COUNTRY_REGD_ENT("CM", RTW_REGD_ETSI, RTW_REGD_ETSI),
--	COUNTRY_REGD_ENT("CN", RTW_REGD_ETSI, RTW_REGD_ETSI),
-+	COUNTRY_REGD_ENT("CN", RTW_REGD_CN, RTW_REGD_CN),
- 	COUNTRY_REGD_ENT("CO", RTW_REGD_FCC, RTW_REGD_FCC),
- 	COUNTRY_REGD_ENT("CR", RTW_REGD_FCC, RTW_REGD_FCC),
- 	COUNTRY_REGD_ENT("CV", RTW_REGD_ETSI, RTW_REGD_ETSI),
-@@ -106,7 +106,7 @@ static const struct rtw_regulatory rtw_reg_map[] = {
- 	COUNTRY_REGD_ENT("FO", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("FR", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("GA", RTW_REGD_ETSI, RTW_REGD_ETSI),
--	COUNTRY_REGD_ENT("GB", RTW_REGD_ETSI, RTW_REGD_ETSI),
-+	COUNTRY_REGD_ENT("GB", RTW_REGD_UK, RTW_REGD_UK),
- 	COUNTRY_REGD_ENT("GD", RTW_REGD_FCC, RTW_REGD_FCC),
- 	COUNTRY_REGD_ENT("GE", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("GF", RTW_REGD_ETSI, RTW_REGD_ETSI),
-@@ -214,7 +214,7 @@ static const struct rtw_regulatory rtw_reg_map[] = {
- 	COUNTRY_REGD_ENT("PT", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("PW", RTW_REGD_FCC, RTW_REGD_FCC),
- 	COUNTRY_REGD_ENT("PY", RTW_REGD_FCC, RTW_REGD_FCC),
--	COUNTRY_REGD_ENT("QA", RTW_REGD_ETSI, RTW_REGD_ETSI),
-+	COUNTRY_REGD_ENT("QA", RTW_REGD_QATAR, RTW_REGD_QATAR),
- 	COUNTRY_REGD_ENT("RE", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("RO", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("RS", RTW_REGD_ETSI, RTW_REGD_ETSI),
-@@ -234,7 +234,7 @@ static const struct rtw_regulatory rtw_reg_map[] = {
- 	COUNTRY_REGD_ENT("SN", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("SO", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("SR", RTW_REGD_FCC, RTW_REGD_FCC),
--	COUNTRY_REGD_ENT("ST", RTW_REGD_FCC, RTW_REGD_FCC),
-+	COUNTRY_REGD_ENT("ST", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("SV", RTW_REGD_FCC, RTW_REGD_FCC),
- 	COUNTRY_REGD_ENT("SX", RTW_REGD_FCC, RTW_REGD_FCC),
- 	COUNTRY_REGD_ENT("SZ", RTW_REGD_ETSI, RTW_REGD_ETSI),
-@@ -253,7 +253,7 @@ static const struct rtw_regulatory rtw_reg_map[] = {
- 	COUNTRY_REGD_ENT("TV", RTW_REGD_ETSI, RTW_REGD_WW),
- 	COUNTRY_REGD_ENT("TW", RTW_REGD_FCC, RTW_REGD_FCC),
- 	COUNTRY_REGD_ENT("TZ", RTW_REGD_ETSI, RTW_REGD_ETSI),
--	COUNTRY_REGD_ENT("UA", RTW_REGD_ETSI, RTW_REGD_ETSI),
-+	COUNTRY_REGD_ENT("UA", RTW_REGD_UKRAINE, RTW_REGD_UKRAINE),
- 	COUNTRY_REGD_ENT("UG", RTW_REGD_ETSI, RTW_REGD_ETSI),
- 	COUNTRY_REGD_ENT("US", RTW_REGD_FCC, RTW_REGD_FCC),
- 	COUNTRY_REGD_ENT("UY", RTW_REGD_FCC, RTW_REGD_FCC),
+@@ -502,6 +502,14 @@ u8 rtw_regd_get(struct rtw_dev *rtwdev)
+ }
+ EXPORT_SYMBOL(rtw_regd_get);
+ 
++bool rtw_regd_srrc(struct rtw_dev *rtwdev)
++{
++	struct rtw_regd *regd = &rtwdev->regd;
++
++	return rtw_reg_match(regd->regulatory, "CN");
++}
++EXPORT_SYMBOL(rtw_regd_srrc);
++
+ struct rtw_regd_alternative_t {
+ 	bool set;
+ 	u8 alt;
+diff --git a/drivers/net/wireless/realtek/rtw88/regd.h b/drivers/net/wireless/realtek/rtw88/regd.h
+index 34cb13d0cd9e..3c5a6fd8e6dd 100644
+--- a/drivers/net/wireless/realtek/rtw88/regd.h
++++ b/drivers/net/wireless/realtek/rtw88/regd.h
+@@ -68,4 +68,6 @@ int rtw_regd_init(struct rtw_dev *rtwdev);
+ int rtw_regd_hint(struct rtw_dev *rtwdev);
+ u8 rtw_regd_get(struct rtw_dev *rtwdev);
+ bool rtw_regd_has_alt(u8 regd, u8 *regd_alt);
++bool rtw_regd_srrc(struct rtw_dev *rtwdev);
++
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index adf224618a2a..429bb420b056 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -381,6 +381,65 @@ static void rtw8821c_set_channel_rxdfir(struct rtw_dev *rtwdev, u8 bw)
+ 	}
+ }
+ 
++static void rtw8821c_cck_tx_filter_srrc(struct rtw_dev *rtwdev, u8 channel, u8 bw)
++{
++	struct rtw_hal *hal = &rtwdev->hal;
++
++	if (channel == 14) {
++		rtw_write32_mask(rtwdev, REG_CCA_FLTR, MASKHWORD, 0xe82c);
++		rtw_write32_mask(rtwdev, REG_TXSF2, MASKDWORD, 0x0000b81c);
++		rtw_write32_mask(rtwdev, REG_TXSF6, MASKLWORD, 0x0000);
++		rtw_write32_mask(rtwdev, REG_TXFILTER, MASKDWORD, 0x00003667);
++
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00002);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001e);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001c);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000e);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000c);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00000);
++	} else if (channel == 13 ||
++		   (channel == 11 && bw == RTW_CHANNEL_WIDTH_40)) {
++		rtw_write32_mask(rtwdev, REG_CCA_FLTR, MASKHWORD, 0xf8fe);
++		rtw_write32_mask(rtwdev, REG_TXSF2, MASKDWORD, 0x64b80c1c);
++		rtw_write32_mask(rtwdev, REG_TXSF6, MASKLWORD, 0x8810);
++		rtw_write32_mask(rtwdev, REG_TXFILTER, MASKDWORD, 0x01235667);
++
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00002);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001e);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00027);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001c);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00027);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000e);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00029);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000c);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00026);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00000);
++	} else {
++		rtw_write32_mask(rtwdev, REG_CCA_FLTR, MASKHWORD, 0xe82c);
++		rtw_write32_mask(rtwdev, REG_TXSF2, MASKDWORD,
++				 hal->ch_param[0]);
++		rtw_write32_mask(rtwdev, REG_TXSF6, MASKLWORD,
++				 hal->ch_param[1] & MASKLWORD);
++		rtw_write32_mask(rtwdev, REG_TXFILTER, MASKDWORD,
++				 hal->ch_param[2]);
++
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00002);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001e);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001c);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000e);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000c);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
++		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00000);
++	}
++}
++
+ static void rtw8821c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 				    u8 primary_ch_idx)
+ {
+@@ -395,6 +454,13 @@ static void rtw8821c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 
+ 		rtw_write32_mask(rtwdev, REG_TXSCALE_A, 0xf00, 0x0);
+ 		rtw_write32_mask(rtwdev, REG_CLKTRK, 0x1ffe0000, 0x96a);
++
++		if (rtw_regd_srrc(rtwdev)) {
++			rtw8821c_cck_tx_filter_srrc(rtwdev, channel, bw);
++			goto set_bw;
++		}
++
++		/* CCK TX filter parameters for default case */
+ 		if (channel == 14) {
+ 			rtw_write32_mask(rtwdev, REG_TXSF2, MASKDWORD, 0x0000b81c);
+ 			rtw_write32_mask(rtwdev, REG_TXSF6, MASKLWORD, 0x0000);
+@@ -430,6 +496,7 @@ static void rtw8821c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 			rtw_write32_mask(rtwdev, REG_CLKTRK, 0x1ffe0000, 0x412);
+ 	}
+ 
++set_bw:
+ 	switch (bw) {
+ 	case RTW_CHANNEL_WIDTH_20:
+ 	default:
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+index fcff31688c45..91ed921407bb 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+@@ -238,6 +238,7 @@ extern const struct rtw_chip_info rtw8821c_hw_spec;
+ #define REG_RXSB	0xa00
+ #define REG_ADCINI	0xa04
+ #define REG_PWRTH	0xa08
++#define REG_CCA_FLTR	0xa20
+ #define REG_TXSF2	0xa24
+ #define REG_TXSF6	0xa28
+ #define REG_FA_CCK	0xa5c
 -- 
 2.25.1
 
