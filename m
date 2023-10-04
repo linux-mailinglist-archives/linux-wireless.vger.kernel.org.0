@@ -2,214 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCBD47B7AA9
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 10:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB57B7B7B6A
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 11:12:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241849AbjJDIvb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 04:51:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41198 "EHLO
+        id S241885AbjJDJMs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 05:12:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241861AbjJDIva (ORCPT
+        with ESMTP id S232913AbjJDJMr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 04:51:30 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B90DA6
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 01:51:26 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3948pHefD3164845, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 3948pHefD3164845
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 4 Oct 2023 16:51:17 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 4 Oct 2023 16:51:17 +0800
-Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 4 Oct 2023
- 16:51:16 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/5] wifi: rtw88: 8821c: tweak CCK TX filter setting for SRRC regulation
-Date:   Wed, 4 Oct 2023 16:50:51 +0800
-Message-ID: <20231004085051.205683-6-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231004085051.205683-1-pkshih@realtek.com>
-References: <20231004085051.205683-1-pkshih@realtek.com>
+        Wed, 4 Oct 2023 05:12:47 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B39A6
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 02:12:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696410764; x=1727946764;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=f8CC7SDz967K5KY+0M3Gkk5o9lmtnPDemAdlwYxrQmo=;
+  b=Q3f3twb88htKVO+wbREBScqrWYb7Nk/Nuk+Jf+PIZ+S33r6c/jbPr51G
+   Ml6QdyIruFX0jbpMCiz9My8MgmHEiQuElUwGQUHwZhhtdLHKaSSkG1d+4
+   bK0+/xUYPl8RFWVy/4DponGnDUCxKEzPIVfk8XZzWVjgvLOlLXNrD3gdV
+   sRr4DPoRkgrvbgV2yn682Yubpef3otye75Y1pp0aNPRyZF1eiHzqix4IQ
+   IY0+fkOoQqapM9RtzmHGF9GjosLgFwdsaK78gJ2nCIFOrqr9aXgpuXT9h
+   53GCCqMZfvsdrnW4i2Q/BAy25NCBy9mT13Hv3ECIwcWhTjN//TfJupvo7
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="380387041"
+X-IronPort-AV: E=Sophos;i="6.03,199,1694761200"; 
+   d="scan'208";a="380387041"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 02:12:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="727930994"
+X-IronPort-AV: E=Sophos;i="6.03,199,1694761200"; 
+   d="scan'208";a="727930994"
+Received: from oferweis-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.222.21])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 02:12:41 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH v2 12/18] wifi: mac80211: Check if we had first beacon with relevant links
+Date:   Wed,  4 Oct 2023 12:12:02 +0300
+Message-Id: <20231004120820.d290f0ab77b0.Ic1505cf3d60f74580d31efa7e52046947c490b85@changeid>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.25]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-Since new criterion released by SRRC (State Radio Regulatory Commission,
-China) is stricter, we have adjusted TX power limit tables for it. But,
-due to RTL8821C HW characteristic, we still need to use specific parameter
-in CCK TX filter when set channel to avoid violations in some corner cases.
+If there is a disassoc before the fisrt beacon we need to protect a
+session for the deauth frame. Currently we are checking if we had a
+beacon in the default link, which is wrong in a MLO connection and
+link id != 0.
+Fix this by checking all the active links, if none had a beacon then
+protect a session.
+If at least one link had a beacon there is no need for session
+protection.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/realtek/rtw88/regd.c     |  8 +++
- drivers/net/wireless/realtek/rtw88/regd.h     |  2 +
- drivers/net/wireless/realtek/rtw88/rtw8821c.c | 67 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8821c.h |  1 +
- 4 files changed, 78 insertions(+)
+v2: fixed a typo in commit message
+---
+ net/mac80211/mlme.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/regd.c b/drivers/net/wireless/realtek/rtw88/regd.c
-index 124fc7ae6a14..7f3b2ea3f2a5 100644
---- a/drivers/net/wireless/realtek/rtw88/regd.c
-+++ b/drivers/net/wireless/realtek/rtw88/regd.c
-@@ -502,6 +502,14 @@ u8 rtw_regd_get(struct rtw_dev *rtwdev)
- }
- EXPORT_SYMBOL(rtw_regd_get);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index ad4d8b191b39..8c8f2b633f85 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2936,9 +2936,20 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 		 * deauthentication frame by calling mgd_prepare_tx, if the
+ 		 * driver requested so.
+ 		 */
+-		if (ieee80211_hw_check(&local->hw, DEAUTH_NEED_MGD_TX_PREP) &&
+-		    !sdata->deflink.u.mgd.have_beacon) {
+-			drv_mgd_prepare_tx(sdata->local, sdata, &info);
++		if (ieee80211_hw_check(&local->hw, DEAUTH_NEED_MGD_TX_PREP)) {
++			for (link_id = 0; link_id < ARRAY_SIZE(sdata->link);
++			     link_id++) {
++				struct ieee80211_link_data *link;
++
++				link = sdata_dereference(sdata->link[link_id],
++							 sdata);
++				if (!link)
++					continue;
++				if (link->u.mgd.have_beacon)
++					break;
++			}
++			if (link_id == IEEE80211_MLD_MAX_NUM_LINKS)
++				drv_mgd_prepare_tx(sdata->local, sdata, &info);
+ 		}
  
-+bool rtw_regd_srrc(struct rtw_dev *rtwdev)
-+{
-+	struct rtw_regd *regd = &rtwdev->regd;
-+
-+	return rtw_reg_match(regd->regulatory, "CN");
-+}
-+EXPORT_SYMBOL(rtw_regd_srrc);
-+
- struct rtw_regd_alternative_t {
- 	bool set;
- 	u8 alt;
-diff --git a/drivers/net/wireless/realtek/rtw88/regd.h b/drivers/net/wireless/realtek/rtw88/regd.h
-index 34cb13d0cd9e..3c5a6fd8e6dd 100644
---- a/drivers/net/wireless/realtek/rtw88/regd.h
-+++ b/drivers/net/wireless/realtek/rtw88/regd.h
-@@ -68,4 +68,6 @@ int rtw_regd_init(struct rtw_dev *rtwdev);
- int rtw_regd_hint(struct rtw_dev *rtwdev);
- u8 rtw_regd_get(struct rtw_dev *rtwdev);
- bool rtw_regd_has_alt(u8 regd, u8 *regd_alt);
-+bool rtw_regd_srrc(struct rtw_dev *rtwdev);
-+
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index adf224618a2a..429bb420b056 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -381,6 +381,65 @@ static void rtw8821c_set_channel_rxdfir(struct rtw_dev *rtwdev, u8 bw)
- 	}
- }
- 
-+static void rtw8821c_cck_tx_filter_srrc(struct rtw_dev *rtwdev, u8 channel, u8 bw)
-+{
-+	struct rtw_hal *hal = &rtwdev->hal;
-+
-+	if (channel == 14) {
-+		rtw_write32_mask(rtwdev, REG_CCA_FLTR, MASKHWORD, 0xe82c);
-+		rtw_write32_mask(rtwdev, REG_TXSF2, MASKDWORD, 0x0000b81c);
-+		rtw_write32_mask(rtwdev, REG_TXSF6, MASKLWORD, 0x0000);
-+		rtw_write32_mask(rtwdev, REG_TXFILTER, MASKDWORD, 0x00003667);
-+
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00002);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001e);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001c);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000e);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000c);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00000);
-+	} else if (channel == 13 ||
-+		   (channel == 11 && bw == RTW_CHANNEL_WIDTH_40)) {
-+		rtw_write32_mask(rtwdev, REG_CCA_FLTR, MASKHWORD, 0xf8fe);
-+		rtw_write32_mask(rtwdev, REG_TXSF2, MASKDWORD, 0x64b80c1c);
-+		rtw_write32_mask(rtwdev, REG_TXSF6, MASKLWORD, 0x8810);
-+		rtw_write32_mask(rtwdev, REG_TXFILTER, MASKDWORD, 0x01235667);
-+
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00002);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001e);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00027);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001c);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00027);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000e);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00029);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000c);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00026);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00000);
-+	} else {
-+		rtw_write32_mask(rtwdev, REG_CCA_FLTR, MASKHWORD, 0xe82c);
-+		rtw_write32_mask(rtwdev, REG_TXSF2, MASKDWORD,
-+				 hal->ch_param[0]);
-+		rtw_write32_mask(rtwdev, REG_TXSF6, MASKLWORD,
-+				 hal->ch_param[1] & MASKLWORD);
-+		rtw_write32_mask(rtwdev, REG_TXFILTER, MASKDWORD,
-+				 hal->ch_param[2]);
-+
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00002);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001e);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0001c);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000e);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x0000c);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWD0, RFREG_MASK, 0x00000);
-+		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE2, RFREG_MASK, 0x00000);
-+	}
-+}
-+
- static void rtw8821c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
- 				    u8 primary_ch_idx)
- {
-@@ -395,6 +454,13 @@ static void rtw8821c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
- 
- 		rtw_write32_mask(rtwdev, REG_TXSCALE_A, 0xf00, 0x0);
- 		rtw_write32_mask(rtwdev, REG_CLKTRK, 0x1ffe0000, 0x96a);
-+
-+		if (rtw_regd_srrc(rtwdev)) {
-+			rtw8821c_cck_tx_filter_srrc(rtwdev, channel, bw);
-+			goto set_bw;
-+		}
-+
-+		/* CCK TX filter parameters for default case */
- 		if (channel == 14) {
- 			rtw_write32_mask(rtwdev, REG_TXSF2, MASKDWORD, 0x0000b81c);
- 			rtw_write32_mask(rtwdev, REG_TXSF6, MASKLWORD, 0x0000);
-@@ -430,6 +496,7 @@ static void rtw8821c_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
- 			rtw_write32_mask(rtwdev, REG_CLKTRK, 0x1ffe0000, 0x412);
- 	}
- 
-+set_bw:
- 	switch (bw) {
- 	case RTW_CHANNEL_WIDTH_20:
- 	default:
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-index fcff31688c45..91ed921407bb 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-@@ -238,6 +238,7 @@ extern const struct rtw_chip_info rtw8821c_hw_spec;
- #define REG_RXSB	0xa00
- #define REG_ADCINI	0xa04
- #define REG_PWRTH	0xa08
-+#define REG_CCA_FLTR	0xa20
- #define REG_TXSF2	0xa24
- #define REG_TXSF6	0xa28
- #define REG_FA_CCK	0xa5c
+ 		ieee80211_send_deauth_disassoc(sdata, sdata->vif.cfg.ap_addr,
 -- 
-2.25.1
+2.38.1
 
