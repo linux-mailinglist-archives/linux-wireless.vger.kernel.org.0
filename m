@@ -2,39 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C777B8B09
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 20:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB9BB7B8D7F
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 21:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244579AbjJDSpU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 14:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40098 "EHLO
+        id S243847AbjJDTgh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 15:36:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244571AbjJDSpT (ORCPT
+        with ESMTP id S233525AbjJDTgY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 14:45:19 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29C5EDD;
-        Wed,  4 Oct 2023 11:45:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3ADC433C7;
-        Wed,  4 Oct 2023 18:45:14 +0000 (UTC)
-Date:   Wed, 4 Oct 2023 14:46:22 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 0/4] tracing: improve symbolic printing
-Message-ID: <20231004144622.6b944803@gandalf.local.home>
-In-Reply-To: <46b5785866870e9c1aefbe222d69fbacb93c1cdd.camel@sipsolutions.net>
-References: <20230921085129.261556-5-johannes@sipsolutions.net>
-        <20231004092205.02c8eb0b@kernel.org>
-        <46b5785866870e9c1aefbe222d69fbacb93c1cdd.camel@sipsolutions.net>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Wed, 4 Oct 2023 15:36:24 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7D3FA9
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 12:36:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=LnhOXVDLLomVsMwt+u5YAe+yWz54aDiRcmXmw7Loxbc=;
+        t=1696448180; x=1697657780; b=F+MLhq6aw1ETOL8X7XOmsei8ISrp5m3aiRnuFvUelZL7fj7
+        c74CYdlIMtcqsfT9VLc1CTn4f6Tk7GmT3vknNDnMbg79VbyUg6GrYEjFRcWVHVfIeozAODla+oVDv
+        8pWZjcGtlLf3cY+zhz6m9kjoUd8ISfKOrjpqOYsVDWSZBY7clBOEZi48tkPe+H8/3jXtPSQWG01un
+        bWfE9VHQG2HPqCYBfjDdtCTudUFtqtZ2iO48lEILmQUByz26e8TcodurrKEqOr45HvYwF1ad51mxV
+        0mKaf4zG4nzVrBOgovHtZ+iZ8kSWv/k/E78XVJr4EZ/LDEIqWn1ZACAXoppHvltg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC0)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qo7fO-00000004UZk-0oHA;
+        Wed, 04 Oct 2023 21:36:18 +0200
+Message-ID: <5b1aeb36dbc7316e5de0b0cfdf429b754c5cfd82.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211:  ethtool:  check link sta if deflink sta not
+ found.
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     greearb@candelatech.com, linux-wireless@vger.kernel.org
+Date:   Wed, 04 Oct 2023 21:36:17 +0200
+In-Reply-To: <20231003215839.981227-1-greearb@candelatech.com>
+References: <20231003215839.981227-1-greearb@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,28 +52,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 04 Oct 2023 20:38:46 +0200
-Johannes Berg <johannes@sipsolutions.net> wrote:
+On Tue, 2023-10-03 at 14:58 -0700, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
+>=20
+> While testing with wifi-7 radio put into AX mode, link-0 is created.
+> sdata->deflink.u.mgd.bssid was 00 in this case, so sta was not
+> found.
+>=20
+> Use link-0 for sta if it is available to do a better job of reporting
+> ethtool stats.
+>=20
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+>  net/mac80211/ethtool.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>=20
+> diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
+> index 6bd7fba8a867..1b58304fc68a 100644
+> --- a/net/mac80211/ethtool.c
+> +++ b/net/mac80211/ethtool.c
+> @@ -96,6 +96,7 @@ static void ieee80211_get_stats2(struct net_device *dev=
+,
+>  	struct ieee80211_local *local =3D sdata->local;
+>  	struct station_info sinfo;
+>  	struct survey_info survey;
+> +	struct ieee80211_link_data *link;
+>  	int i, q;
+>  	int z;
+>  #define STA_STATS_SURVEY_LEN 7
+> @@ -128,6 +129,12 @@ static void ieee80211_get_stats2(struct net_device *=
+dev,
+>  	if (sdata->vif.type =3D=3D NL80211_IFTYPE_STATION) {
+>  		sta =3D sta_info_get_bss(sdata, sdata->deflink.u.mgd.bssid);
 
-> On Wed, 2023-10-04 at 09:22 -0700, Jakub Kicinski wrote:
-> > 
-> > Potentially naive question - the trace point holds enum skb_drop_reason.
-> > The user space can get the names from BTF. Can we not teach user space
-> > to generically look up names of enums in BTF?  
-> 
-> I'll note that, unrelated to the discussion about whether or not we
-> could use BTF, we couldn't do it in this case anyway since the whole
-> drop reasons aren't captured in enum skb_drop_reason, that contains only
-> the core ones, and now other subsystems are adding their own somewhat
-> dynamically later.
+Just don't even try this, link[0] is always valid.
 
-Another issue with using BTF, is that the BTF would need to be saved in the
-trace.dat or perf.data file, as many times the trace data is moved off to
-another machine for offline analysis. And using the vmlinux would not be
-useful, because there is several times you have multiple trace files for
-various versions of a build and that would require mapping which
-vmlinux/btf file goes with which trace data.
+> +		if (!sta) {
+> +			link =3D sdata_dereference(sdata->link[0], sdata);
 
-Right now, the conversions can easily be saved in the trace file directly.
+but link[0] is a bad idea anyway ... what if the AP only assigned link 1
+and 2? Or you connected only there?
 
--- Steve
+I'm not even sure this is really worth fixing, do you really want a
+random link's statistics?
+
+johannes
