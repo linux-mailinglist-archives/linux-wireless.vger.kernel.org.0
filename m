@@ -2,133 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29ECB7B7C0B
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 11:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B60F57B7C11
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 11:27:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241796AbjJDJZ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 05:25:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59434 "EHLO
+        id S241786AbjJDJ1T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 05:27:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241786AbjJDJZ5 (ORCPT
+        with ESMTP id S232947AbjJDJ1S (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 05:25:57 -0400
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A889B4
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 02:25:50 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-18.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-18.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:a712:0:640:d986:0])
-        by forward102b.mail.yandex.net (Yandex) with ESMTP id 4F4EA60048;
-        Wed,  4 Oct 2023 12:25:17 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-18.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id GPToqNUDbSw0-vFloPHod;
-        Wed, 04 Oct 2023 12:25:16 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1696411516; bh=y8vnpVFH0nfmZzRBaLfb3Y5VHCCT8BS9rmi7kT8eIY4=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=Dj78jkPFKnC4le+w/dY+5Jbf3OhkM8P5s2wDAz/XaNUG2BuTTZjX4nj+VUNTUTBR6
-         QtrPqK6sJO42fopUat1MGQFKuPU1rHnEE4OP+mKICtVhskmE4SXDu3oMj2Hb1T7hCM
-         ly34YTDq/4N65aqErdkRqcO0a477F8eByTbGtmb4=
-Authentication-Results: mail-nwsmtp-smtp-production-main-18.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: rtlwifi: use unsigned long for bt_coexist_8723 timestamp
-Date:   Wed,  4 Oct 2023 12:24:15 +0300
-Message-ID: <20231004092418.73337-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Wed, 4 Oct 2023 05:27:18 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1754A7
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 02:27:15 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3946fJ0Q026552;
+        Wed, 4 Oct 2023 09:27:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=TL/VZuhUuPOqA3p7Frj3xe/JUomdScXO27AxeCPEM2s=;
+ b=OaXelCvmQVDwQKrA9b8xXHbf86pf2hUVecVOHq3TssH/J3INSttQuROb3fTJ2VEPmoSB
+ +gosNB+PPe16j8rHES6dhhylPWEQ/AKdpvvuNuL/Xkzs1CKN/iGfRgaIWy0l4b8P0Plb
+ 9/+nZPGP8bt/VEvDs7nHy82CNs7rEm5+wEDL+8zzdEzo9x9xEBRUNjI+VSp9C6nLbG4s
+ qd7cZUK7mwjyWR7FKWGk+Ir8yCcev+T/XqDGvhP8RjWHR85xPqPwZ908PoFRV2CH1MI0
+ LZq/X7UKXTatBTNX/zT5s0ZxfW+EvS9FXLivYpVaGhPpE8BuskamJLG4agChYa3FVrLG tQ== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tgbjgug8c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 04 Oct 2023 09:27:11 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3949RA4B026650
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 4 Oct 2023 09:27:10 GMT
+Received: from adisi-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Wed, 4 Oct 2023 02:27:08 -0700
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
+Subject: [PATCH] wifi: ath11k: add parsing of phy bitmap for reg rules
+Date:   Wed, 4 Oct 2023 14:56:55 +0530
+Message-ID: <20231004092655.25020-1-quic_adisi@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: n6CrF58gvDrlCznk04yztdPNKXxni92C
+X-Proofpoint-GUID: n6CrF58gvDrlCznk04yztdPNKXxni92C
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-04_01,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ lowpriorityscore=0 spamscore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 mlxlogscore=999 phishscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310040067
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since 'bt_inq_page_start_time' of 'struct bt_coexist_8723' is
-in jiffies, prefer 'unsigned long' over 'u32' to avoid possible
-truncation in 'rtl8723e_dm_bt_inq_page_monitor()' and adjust
-related code. Found with clang's -Wshorten-64-to-32, compile
-tested only.
+Certain regulatory domains could put restrictions on phy mode operation.
+For example, in a few countries HE Operation is not allowed. For such
+countries, firmware indicates this via phy bitmap in each reg rule.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Currently, there is no logic to parse this info and then pass it on to the
+cfg80211/regulatory.
+
+Add parsing of this phy bitmap from the regulatory channel change event and
+then accordingly map it to cfg80211/regulatory flags and pass it on to it.
+
+While at it, correct typo in debug print s/dsf/dfs.
+
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- .../wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c | 16 +++++++---------
- drivers/net/wireless/realtek/rtlwifi/wifi.h      |  2 +-
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath11k/reg.c | 11 +++++++++++
+ drivers/net/wireless/ath/ath11k/reg.h |  3 +++
+ drivers/net/wireless/ath/ath11k/wmi.c |  5 +++--
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
-index 53af0d209b11..b34dffc6a30c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
-@@ -1122,7 +1122,7 @@ static void rtl8723e_dm_bt_2_ant_hid_sco_esco(struct ieee80211_hw *hw)
- 	/* Always ignore WlanAct if bHid|bSCOBusy|bSCOeSCO */
+diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
+index 7f9fb968dac6..3c7debae800a 100644
+--- a/drivers/net/wireless/ath/ath11k/reg.c
++++ b/drivers/net/wireless/ath/ath11k/reg.c
+@@ -352,6 +352,16 @@ static u32 ath11k_map_fw_reg_flags(u16 reg_flags)
+ 	return flags;
+ }
  
- 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
--		"[BTCoex], BT btInqPageStartTime = 0x%x, btTxRxCntLvl = %d\n",
-+		"[BTCoex], BT btInqPageStartTime = 0x%lx, btTxRxCntLvl = %d\n",
- 		hal_coex_8723.bt_inq_page_start_time, bt_tx_rx_cnt_lvl);
- 	if ((hal_coex_8723.bt_inq_page_start_time) ||
- 	    (BT_TXRX_CNT_LEVEL_3 == bt_tx_rx_cnt_lvl)) {
-@@ -1335,7 +1335,7 @@ static void rtl8723e_dm_bt_2_ant_ftp_a2dp(struct ieee80211_hw *hw)
- 		btdm8723.dec_bt_pwr = true;
- 
- 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
--		"[BTCoex], BT btInqPageStartTime = 0x%x, btTxRxCntLvl = %d\n",
-+		"[BTCoex], BT btInqPageStartTime = 0x%lx, btTxRxCntLvl = %d\n",
- 		hal_coex_8723.bt_inq_page_start_time, bt_tx_rx_cnt_lvl);
- 
- 	if ((hal_coex_8723.bt_inq_page_start_time) ||
-@@ -1358,9 +1358,8 @@ static void rtl8723e_dm_bt_2_ant_ftp_a2dp(struct ieee80211_hw *hw)
- static void rtl8723e_dm_bt_inq_page_monitor(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	u32 cur_time;
-+	unsigned long cur_time = jiffies;
- 
--	cur_time = jiffies;
- 	if (hal_coex_8723.c2h_bt_inquiry_page) {
- 		/* bt inquiry or page is started. */
- 		if (hal_coex_8723.bt_inq_page_start_time == 0) {
-@@ -1368,18 +1367,17 @@ static void rtl8723e_dm_bt_inq_page_monitor(struct ieee80211_hw *hw)
- 			BT_COEX_STATE_BT_INQ_PAGE;
- 			hal_coex_8723.bt_inq_page_start_time = cur_time;
- 			rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
--				"[BTCoex], BT Inquiry/page is started at time : 0x%x\n",
-+				"[BTCoex], BT Inquiry/page is started at time : 0x%lx\n",
- 				hal_coex_8723.bt_inq_page_start_time);
++static u32 ath11k_map_fw_phy_flags(u32 phy_flags)
++{
++	u32 flags = 0;
++
++	if (phy_flags & ATH11K_REG_PHY_BITMAP_NO11AX)
++		flags |= NL80211_RRF_NO_HE;
++
++	return flags;
++}
++
+ static bool
+ ath11k_reg_can_intersect(struct ieee80211_reg_rule *rule1,
+ 			 struct ieee80211_reg_rule *rule2)
+@@ -685,6 +695,7 @@ ath11k_reg_build_regd(struct ath11k_base *ab,
  		}
- 	}
- 	rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
--		"[BTCoex], BT Inquiry/page started time : 0x%x, cur_time : 0x%x\n",
-+		"[BTCoex], BT Inquiry/page started time : 0x%lx, cur_time : 0x%lx\n",
- 		hal_coex_8723.bt_inq_page_start_time, cur_time);
  
- 	if (hal_coex_8723.bt_inq_page_start_time) {
--		if ((((long)cur_time -
--			(long)hal_coex_8723.bt_inq_page_start_time) / HZ)
--			>= 10) {
-+		if (jiffies_to_msecs(cur_time -
-+				     hal_coex_8723.bt_inq_page_start_time) >= 10000) {
- 			rtl_dbg(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
- 				"[BTCoex], BT Inquiry/page >= 10sec!!!\n");
- 			hal_coex_8723.bt_inq_page_start_time = 0;
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 0f99e3446796..47b4685b6d24 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -1597,7 +1597,7 @@ struct bt_coexist_8723 {
- 	u8 c2h_bt_info;
- 	bool c2h_bt_info_req_sent;
- 	bool c2h_bt_inquiry_page;
--	u32 bt_inq_page_start_time;
-+	unsigned long bt_inq_page_start_time;
- 	u8 bt_retry_cnt;
- 	u8 c2h_bt_info_original;
- 	u8 bt_inquiry_page_cnt;
+ 		flags |= ath11k_map_fw_reg_flags(reg_rule->flags);
++		flags |= ath11k_map_fw_phy_flags(reg_info->phybitmap);
+ 
+ 		ath11k_reg_update_rule(tmp_regd->reg_rules + i,
+ 				       reg_rule->start_freq,
+diff --git a/drivers/net/wireless/ath/ath11k/reg.h b/drivers/net/wireless/ath/ath11k/reg.h
+index 2f284f26378d..84daa6543b6a 100644
+--- a/drivers/net/wireless/ath/ath11k/reg.h
++++ b/drivers/net/wireless/ath/ath11k/reg.h
+@@ -24,6 +24,9 @@ enum ath11k_dfs_region {
+ 	ATH11K_DFS_REG_UNDEF,
+ };
+ 
++/* Phy bitmaps */
++#define ATH11K_REG_PHY_BITMAP_NO11AX	BIT(5)
++
+ /* ATH11K Regulatory API's */
+ void ath11k_reg_init(struct ath11k *ar);
+ void ath11k_reg_free(struct ath11k_base *ab);
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index e93601fe7bcb..1542c2b0a981 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -5440,10 +5440,11 @@ static int ath11k_pull_reg_chan_list_ext_update_ev(struct ath11k_base *ab,
+ 	}
+ 
+ 	ath11k_dbg(ab, ATH11K_DBG_WMI,
+-		   "cc_ext %s dsf %d BW: min_2ghz %d max_2ghz %d min_5ghz %d max_5ghz %d",
++		   "cc_ext %s dfs %d BW: min_2ghz %d max_2ghz %d min_5ghz %d max_5ghz %d, phy_bitmap: 0x%x",
+ 		   reg_info->alpha2, reg_info->dfs_region,
+ 		   reg_info->min_bw_2ghz, reg_info->max_bw_2ghz,
+-		   reg_info->min_bw_5ghz, reg_info->max_bw_5ghz);
++		   reg_info->min_bw_5ghz, reg_info->max_bw_5ghz,
++		   reg_info->phybitmap);
+ 
+ 	ath11k_dbg(ab, ATH11K_DBG_WMI,
+ 		   "num_2ghz_reg_rules %d num_5ghz_reg_rules %d",
+
+base-commit: 140accd3f29eee6507f8a51bc38e85c119aedf14
 -- 
-2.41.0
+2.17.1
 
