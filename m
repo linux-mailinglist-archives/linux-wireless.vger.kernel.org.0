@@ -2,96 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 989C87B80B9
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 15:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C06247B8298
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 16:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242568AbjJDNWU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 09:22:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42464 "EHLO
+        id S242897AbjJDOoa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 10:44:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233134AbjJDNWT (ORCPT
+        with ESMTP id S233695AbjJDOoa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 09:22:19 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2056EA9;
-        Wed,  4 Oct 2023 06:22:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36839C433C7;
-        Wed,  4 Oct 2023 13:22:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696425735;
-        bh=XcNVHacYiIbSwWhIVO7sCT66vTxeZhDiJBmFYdVfMQA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=UmE4ZMKFpiTI5ejNFIKrUnbyTIICN9g07PoKMfRFBspih3a8vN5E72+NozXhztg53
-         7jIL+111n84DW7dqaVpSRk3YXeCkXimZ1W2RL54TM1vvW/JshuECieVscKc8Und4K0
-         r8p2QwcOlcwNh2gWhfW3V6MUfzVlkRTz5XK+BgXKCimZrkVKQhNHfGCeTqfRj0PsAN
-         DqWRl/8Y+OIpdkOYGFVmrH11kSKHJQZN19oDji5MSGOuWRSBwJAx9Ftm8gXIuUNWiQ
-         k0IQuuzaEh1N3Q+qIMorlswYRf5Xzbq9WIOAeRGNRZyWzT0xLRzqyMEJk10+SG+exA
-         OghsHYOu492dw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Felix Fietkau <nbd@nbd.name>,
-        Felipe Negrelli Wolter <felipe.negrelliwolter@silabs.com>,
-        Olivier Souloumiac <olivier.souloumiac@silabs.com>,
-        Alexandr Suslenko <suslenko.o@ajax.systems>
-Subject: Re: [PATCH v2] wifi: wfx: fix case where rates are out of order
-References: <20231004123039.157112-1-jerome.pouiller@silabs.com>
-        <8734yq7dg0.fsf@kernel.org> <2534699.vzjCzTo3RI@pc-42>
-Date:   Wed, 04 Oct 2023 16:22:12 +0300
-In-Reply-To: <2534699.vzjCzTo3RI@pc-42> (=?utf-8?B?IkrDqXLDtG1l?=
- Pouiller"'s message of "Wed,
-        04 Oct 2023 15:00:49 +0200")
-Message-ID: <87y1gi5xq3.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Wed, 4 Oct 2023 10:44:30 -0400
+X-Greylist: delayed 337 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 04 Oct 2023 07:44:27 PDT
+Received: from tretyak2.mcst.ru (tretyak2.mcst.ru [212.5.119.215])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE98AB;
+        Wed,  4 Oct 2023 07:44:26 -0700 (PDT)
+Received: from tretyak2.mcst.ru (localhost [127.0.0.1])
+        by tretyak2.mcst.ru (Postfix) with ESMTP id 514B1102397;
+        Wed,  4 Oct 2023 17:38:45 +0300 (MSK)
+Received: from frog.lab.sun.mcst.ru (frog.lab.sun.mcst.ru [176.16.4.50])
+        by tretyak2.mcst.ru (Postfix) with ESMTP id 4BB9D102395;
+        Wed,  4 Oct 2023 17:38:00 +0300 (MSK)
+Received: from artemiev-i.lab.sun.mcst.ru (avior-1 [192.168.63.223])
+        by frog.lab.sun.mcst.ru (8.13.4/8.12.11) with ESMTP id 394Ebxp3003157;
+        Wed, 4 Oct 2023 17:37:59 +0300
+From:   Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
+Subject: [lvc-project] [PATCH] wifi: mac80211: fix buffer overflow in ieee80211_rx_get_bigtk()
+Date:   Wed,  4 Oct 2023 17:37:40 +0300
+Message-Id: <20231004143740.40933-1-Igor.A.Artemiev@mcst.ru>
+X-Mailer: git-send-email 2.39.0.152.ga5737674b6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+         bases: 20111107 #2745587, check: 20231004 notchecked
+X-AV-Checked: ClamAV using ClamSMTP
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
+If 'idx' is 0, then 'idx2' is -1, and arrays 
+will be accessed by a negative index. 
 
->> > v2:
->> >   - Fix malformed tags in commit body. (checkpatch still complains abo=
-ut
->> >     missing Close tag, but the bug tracker is not public and I don't h=
-ave
->> >     the exact URL)
->>=20
->> Just out of curiosity why does the checkpatch complain about a missing
->> Close tag? I don't get it why there should be one.
->
-> I am on top of v6.6-rc3. I get:
->
->     $ ./scripts/checkpatch.pl -g HEAD^..HEAD
->     WARNING: Prefer a maximum 75 chars per line (possible unwrapped commi=
-t description?)
->     #26:
->                       best    ____________rate__________    ____statistic=
-s___    _____last____    ______sum-of________
->
->     WARNING: Reported-by: should be immediately followed by Closes: with =
-a URL to the report
->     #57:
->     Reported-by: Alexandr Suslenko <suslenko.o@ajax.systems>
->     Co-developed-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.co=
-m>
->     [...]
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Ah, thanks. Now I understand. But that rule doesn't make any sense to
-me, for example I get reports privately as well and add a Reported-by
-without a Closes tag. So always feel free to ignore that checkpatch
-warning.
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+---
+ net/mac80211/rx.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index e751cda5eef6..e686380434bd 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -1868,10 +1868,13 @@ ieee80211_rx_get_bigtk(struct ieee80211_rx_data *rx, int idx)
+ 		key = rcu_dereference(rx->link_sta->gtk[idx]);
+ 	if (!key)
+ 		key = rcu_dereference(rx->link->gtk[idx]);
+-	if (!key && rx->link_sta)
+-		key = rcu_dereference(rx->link_sta->gtk[idx2]);
+-	if (!key)
+-		key = rcu_dereference(rx->link->gtk[idx2]);
++
++	if (idx2 >= 0) {
++		if (!key && rx->link_sta)
++			key = rcu_dereference(rx->link_sta->gtk[idx2]);
++		if (!key)
++			key = rcu_dereference(rx->link->gtk[idx2]);
++	}
+ 
+ 	return key;
+ }
+-- 
+2.30.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
