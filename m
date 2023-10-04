@@ -2,66 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F5DD7B8309
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 16:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E59307B839C
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 17:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243050AbjJDO6s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 10:58:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46438 "EHLO
+        id S233409AbjJDPbL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 11:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233695AbjJDO6r (ORCPT
+        with ESMTP id S233256AbjJDPbK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 10:58:47 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7939CAB;
-        Wed,  4 Oct 2023 07:58:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=ItaLEz8yYofv11YCURyJNHQx1l8I20bDLTqN6Rxdd18=;
-        t=1696431523; x=1697641123; b=V8UOdtE6xNiCDdn57mg2rZW1wknmRZhcWWKzURhlpGXn0xL
-        AP+N0SPBViYfmIxwNOBfLsMIrBRI/ripJk1Yc1mUSP5CZr71arfZ/xOC4zA4u0U+1ibnGg7zlZQVJ
-        AW19LyyeftKStRpcvyC0aTjt705Z76vNyGTJT05u0OZz67X4ljGOJqZZXSPvnTEobvAv6Unwbp9N2
-        PnpCvbNDUJNphgHzz5dmekHS94tqQ0djiZ4HhA6cLXornbbYq5HFgw/9BJbF3rYXb1OxqwU7RuRxg
-        Plhh3Y+3Tuz6QTMDXJbCY7FIymIV1KxF11LxiaVKfJo5lJqjR/TaiypI50rfXsAg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qo3KV-0040mn-30;
-        Wed, 04 Oct 2023 16:58:28 +0200
-Message-ID: <3ba8e3902ade7483a82bd305a35a236744ffba25.camel@sipsolutions.net>
-Subject: Re: [lvc-project] [PATCH] wifi: mac80211: fix buffer overflow in
- ieee80211_rx_get_bigtk()
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
-Date:   Wed, 04 Oct 2023 16:58:26 +0200
-In-Reply-To: <20231004143740.40933-1-Igor.A.Artemiev@mcst.ru>
-References: <20231004143740.40933-1-Igor.A.Artemiev@mcst.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Wed, 4 Oct 2023 11:31:10 -0400
+Received: from forward102c.mail.yandex.net (forward102c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C1D93
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 08:31:00 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2991:0:640:f02b:0])
+        by forward102c.mail.yandex.net (Yandex) with ESMTP id 5C47D600E9;
+        Wed,  4 Oct 2023 18:30:58 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id uUZ92hXDV4Y0-mf8Zybz3;
+        Wed, 04 Oct 2023 18:30:57 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1696433457; bh=ZD9We9xupCIrBixLGX9Q3raR/4qdCNn7ToJ4SJNO9to=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=WEzEwmCz6gPox9pey+cTKEBsf2jqK3BEJk0uclADYD8WPv3gQEN3UDgqcoV/wYf6D
+         Ww1TceY4ycK7B0NOmgxzWy1okKRlHMHkVnIdPNcUoaJ4cmooeqAyeAHy62nG5HjKI+
+         cjt/uGWTMBc1gbhBBq4bFG2PyGbfxIfHDftf24/Q=
+Authentication-Results: mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: wext: remove unused argument of ieee80211_get_tdls_action()
+Date:   Wed,  4 Oct 2023 18:30:29 +0300
+Message-ID: <20231004153032.206134-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-10-04 at 17:37 +0300, Igor Artemiev wrote:
-> If 'idx' is 0
+Remove unused 'hdr_size' argument of 'ieee80211_get_tdls_action()'
+and adjust 'ieee80211_report_used_skb()' accordingly.
 
-And ... how exactly do you propose that is going to happen?
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ include/linux/ieee80211.h | 3 +--
+ net/mac80211/status.c     | 5 +----
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-johannes
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 62b4469c6866..045a776ee547 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -4490,12 +4490,11 @@ static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
+ /**
+  * ieee80211_get_tdls_action - get tdls packet action (or -1, if not tdls packet)
+  * @skb: the skb containing the frame, length will not be checked
+- * @hdr_size: the size of the ieee80211_hdr that starts at skb->data
+  *
+  * This function assumes the frame is a data frame, and that the network header
+  * is in the correct place.
+  */
+-static inline int ieee80211_get_tdls_action(struct sk_buff *skb, u32 hdr_size)
++static inline int ieee80211_get_tdls_action(struct sk_buff *skb)
+ {
+ 	if (!skb_is_nonlinear(skb) &&
+ 	    skb->len > (skb_network_offset(skb) + 2)) {
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index f67eafada741..807cdab38d5e 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -731,12 +731,9 @@ static void ieee80211_report_used_skb(struct ieee80211_local *local,
+ 		if (!sdata) {
+ 			skb->dev = NULL;
+ 		} else if (!dropped) {
+-			unsigned int hdr_size =
+-				ieee80211_hdrlen(hdr->frame_control);
+-
+ 			/* Check to see if packet is a TDLS teardown packet */
+ 			if (ieee80211_is_data(hdr->frame_control) &&
+-			    (ieee80211_get_tdls_action(skb, hdr_size) ==
++			    (ieee80211_get_tdls_action(skb) ==
+ 			     WLAN_TDLS_TEARDOWN)) {
+ 				ieee80211_tdls_td_tx_handle(local, sdata, skb,
+ 							    info->flags);
+-- 
+2.41.0
+
