@@ -2,66 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBF317B7750
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 07:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A0317B776C
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 07:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241238AbjJDFEd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 01:04:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38442 "EHLO
+        id S241345AbjJDFTI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 01:19:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231154AbjJDFEc (ORCPT
+        with ESMTP id S241323AbjJDFTH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 01:04:32 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE83A9
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 22:04:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F12C433C7;
-        Wed,  4 Oct 2023 05:04:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696395869;
-        bh=r+H4bH6Wkf05V8nL3m4zJERWeGZQxIY/3XMujV/trDw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ixW7krCB4P9rU3aU9FO246UUCB8JVuOYh+Y1tF/+HaKQTCLR94vSVqICb/sHGm9tq
-         xe+0da0mrfQHvVVsmKPuV0Oz0lufES18yeGt60KizCgvIu2Xmt4200WT1sHY0mOnVe
-         YHOwutj50R/7T6zyP9ieyw6jQDp6asRuPCYryCzAKBrtuMO5eyTcFsqW5+Qva7RW5+
-         m+dPruQY5U0jz46oA0qO02rkhFvNt4lx6RzTFwcv2Y+3gXixCHIE4Xxl8ojguqahWl
-         zfXReriJ047auq7cV7S/Cl67wBq0eoFYOUk8wQQuYWc0DkBw4NW+vvFfRKsQZMOQca
-         dsbHR5aYvAGGQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: wifi-7 + MLO: wlan is not seen in /proc/net/wireless
-References: <db9ef851-5784-c6a5-d3d5-5747ef21e0b6@candelatech.com>
-Date:   Wed, 04 Oct 2023 08:06:45 +0300
-In-Reply-To: <db9ef851-5784-c6a5-d3d5-5747ef21e0b6@candelatech.com> (Ben
-        Greear's message of "Tue, 3 Oct 2023 12:09:20 -0700")
-Message-ID: <87zg0zgemy.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Wed, 4 Oct 2023 01:19:07 -0400
+Received: from esa2.hc5620-63.iphmx.com (esa2.hc5620-63.iphmx.com [68.232.149.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F3B96A7;
+        Tue,  3 Oct 2023 22:19:03 -0700 (PDT)
+X-CSE-ConnectionGUID: M9/SVn+AS+GYKfkQcXmkjg==
+X-CSE-MsgGUID: zbQ+5IJZSTWCEoHIQ9Zm3w==
+Message-Id: <bc8e20$ot3r@esa2.hc5620-63.iphmx.com>
+X-IronPort-RemoteIP: 185.225.73.120
+X-IronPort-MID: 816251
+X-IronPort-Reputation: -5.6
+X-IronPort-Listener: MailFlow
+X-IronPort-SenderGroup: RELAY_O365
+X-IronPort-MailFlowPolicy: $RELAYED
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from unknown (HELO [185.225.73.120]) ([185.225.73.120])
+  by esa2.hc5620-63.iphmx.com with ESMTP; 04 Oct 2023 01:19:00 -0400
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: REMINDER
+To:     Recipients <test@mail2world.com>
+From:   "Mr. mohd" <test@mail2world.com>
+Date:   Tue, 03 Oct 2023 22:18:45 -0700
+Reply-To: mohamedsafiah47@gmail.com
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,HK_NAME_FM_MR_MRS,
+        MSGID_FROM_MTA_HEADER,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL,SPF_FAIL,
+        SPF_HELO_PASS,SPOOFED_FREEMAIL,SPOOFED_FREEM_REPTO,
+        TO_EQ_FM_DOM_SPF_FAIL,TO_EQ_FM_SPF_FAIL autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [68.232.149.158 listed in list.dnswl.org]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [185.225.73.120 listed in zen.spamhaus.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_FAIL SPF: sender does not match SPF record (fail)
+        *      [SPF failed: Please see http://www.openspf.org/Why?s=mfrom;id=test%40mail2world.com;ip=68.232.149.158;r=lindbergh.monkeyblade.net]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mohamedsafiah47[at]gmail.com]
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [test[at]mail2world.com]
+        *  0.0 MSGID_FROM_MTA_HEADER Message-Id was added by a relay
+        *  1.5 HK_NAME_FM_MR_MRS No description available.
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 TO_EQ_FM_SPF_FAIL To == From and external SPF failed
+        *  0.0 TO_EQ_FM_DOM_SPF_FAIL To domain == From domain and external SPF
+        *       failed
+        *  0.4 SPOOFED_FREEMAIL No description available.
+        *  1.0 SPOOFED_FREEM_REPTO Forged freemail sender with freemail
+        *      reply-to
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ben Greear <greearb@candelatech.com> writes:
 
-> I'm testing a wifi-7 radio against MLO AP.  I notice the link-0 debugfgs links
-> show up and STA is associated and acquired DHCP, but wlan is not in /proc/net/wireless.
-> I'm in 6.5.5+ kernel.
->
-> Is this expected?
+Dear
+My name is Mohamed Abdul I have the capacity to inject a considerable
+amount of capital in any viable project 
+1,cell phone number what-sap
+2,full name
 
-wext doesn't support Wi-Fi 7, see:
 
-https://git.kernel.org/linus/52fd90638a72
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+yours truly
+Mohamed Abdul Ahmed
