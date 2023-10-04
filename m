@@ -2,42 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9BB7B8D7F
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 21:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9FF97B8D86
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 21:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243847AbjJDTgh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 15:36:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37930 "EHLO
+        id S233525AbjJDTi1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 15:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233525AbjJDTgY (ORCPT
+        with ESMTP id S233651AbjJDTi1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 15:36:24 -0400
+        Wed, 4 Oct 2023 15:38:27 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7D3FA9
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 12:36:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD59BD
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 12:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
         Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=LnhOXVDLLomVsMwt+u5YAe+yWz54aDiRcmXmw7Loxbc=;
-        t=1696448180; x=1697657780; b=F+MLhq6aw1ETOL8X7XOmsei8ISrp5m3aiRnuFvUelZL7fj7
-        c74CYdlIMtcqsfT9VLc1CTn4f6Tk7GmT3vknNDnMbg79VbyUg6GrYEjFRcWVHVfIeozAODla+oVDv
-        8pWZjcGtlLf3cY+zhz6m9kjoUd8ISfKOrjpqOYsVDWSZBY7clBOEZi48tkPe+H8/3jXtPSQWG01un
-        bWfE9VHQG2HPqCYBfjDdtCTudUFtqtZ2iO48lEILmQUByz26e8TcodurrKEqOr45HvYwF1ad51mxV
-        0mKaf4zG4nzVrBOgovHtZ+iZ8kSWv/k/E78XVJr4EZ/LDEIqWn1ZACAXoppHvltg==;
+        Resent-Cc:Resent-Message-ID; bh=TkPv8Sbi3Zs7b8O8WyzzIUGcc2ER1uN3udrqf8p5nCs=;
+        t=1696448304; x=1697657904; b=EPMKscjZu8ipY/qga2jXDSVAp5C372rMiJ6z0/RomUgiExv
+        Fpe6BbbQ4EXXVUD1HYQqccVW0hhBJfonmZ2+aoHMeaYHgDRZg4+mZKzB2rgfODJeTfWku+sgvihwH
+        yIpDg6LJSLjejsh05p1zE8cLpJMbYVRkBUfBi9otODrf01237KND5rIhnqczkLlUv1SbrCTeyCpxZ
+        ucruIgVd1IhnVbO/VKi5kYNxXGFWcoyXapTSxcuvQMct49XV2kNbO/6/nvNsSo4lMqOq8upZeyCmW
+        cEtEgN8zmwrBvu3VlyuarCHgs8FdaIiEFY2qKH9XrPxdLbmKMWrIWISAvRxJOVNg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.97-RC0)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qo7fO-00000004UZk-0oHA;
-        Wed, 04 Oct 2023 21:36:18 +0200
-Message-ID: <5b1aeb36dbc7316e5de0b0cfdf429b754c5cfd82.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211:  ethtool:  check link sta if deflink sta not
- found.
+        id 1qo7hO-00000004UkN-0jeN;
+        Wed, 04 Oct 2023 21:38:22 +0200
+Message-ID: <4ae5a8dbe80e0eb0b96e9165892746fc3b3e9197.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211:  Allow STA to connect in AX mode to MLD AP.
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     greearb@candelatech.com, linux-wireless@vger.kernel.org
-Date:   Wed, 04 Oct 2023 21:36:17 +0200
-In-Reply-To: <20231003215839.981227-1-greearb@candelatech.com>
-References: <20231003215839.981227-1-greearb@candelatech.com>
+Date:   Wed, 04 Oct 2023 21:38:21 +0200
+In-Reply-To: <20231003164326.857433-1-greearb@candelatech.com>
+References: <20231003164326.857433-1-greearb@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -52,48 +51,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-10-03 at 14:58 -0700, greearb@candelatech.com wrote:
+On Tue, 2023-10-03 at 09:43 -0700, greearb@candelatech.com wrote:
 > From: Ben Greear <greearb@candelatech.com>
 >=20
-> While testing with wifi-7 radio put into AX mode, link-0 is created.
-> sdata->deflink.u.mgd.bssid was 00 in this case, so sta was not
-> found.
+> Check if user has configured STA to be AX mode, and if so,
+> skip the check for MLD elements (as they would not be needed
+> in AX mode).
+
+Eh, no, I think this is wrong.
+
 >=20
-> Use link-0 for sta if it is available to do a better job of reporting
-> ethtool stats.
->=20
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> ---
->  net/mac80211/ethtool.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->=20
-> diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
-> index 6bd7fba8a867..1b58304fc68a 100644
-> --- a/net/mac80211/ethtool.c
-> +++ b/net/mac80211/ethtool.c
-> @@ -96,6 +96,7 @@ static void ieee80211_get_stats2(struct net_device *dev=
-,
->  	struct ieee80211_local *local =3D sdata->local;
->  	struct station_info sinfo;
->  	struct survey_info survey;
-> +	struct ieee80211_link_data *link;
->  	int i, q;
->  	int z;
->  #define STA_STATS_SURVEY_LEN 7
-> @@ -128,6 +129,12 @@ static void ieee80211_get_stats2(struct net_device *=
-dev,
->  	if (sdata->vif.type =3D=3D NL80211_IFTYPE_STATION) {
->  		sta =3D sta_info_get_bss(sdata, sdata->deflink.u.mgd.bssid);
+>  		if (ieee80211_vif_is_mld(&sdata->vif)) {
 
-Just don't even try this, link[0] is always valid.
+If you get past this if, you've (locally) committed to doing EHT
+already, not just HE (n=C3=A9e 11ax), so should have an EHT connection?
 
-> +		if (!sta) {
-> +			link =3D sdata_dereference(sdata->link[0], sdata);
-
-but link[0] is a bad idea anyway ... what if the AP only assigned link 1
-and 2? Or you connected only there?
-
-I'm not even sure this is really worth fixing, do you really want a
-random link's statistics?
+Though the change is hard to read - but why are you telling the
+supplicant to connect with MLO if you wanted to not use EHT?
 
 johannes
+
