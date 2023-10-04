@@ -2,88 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C06247B8298
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 16:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F5DD7B8309
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 16:58:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242897AbjJDOoa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 10:44:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33696 "EHLO
+        id S243050AbjJDO6s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 10:58:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233695AbjJDOoa (ORCPT
+        with ESMTP id S233695AbjJDO6r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 10:44:30 -0400
-X-Greylist: delayed 337 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 04 Oct 2023 07:44:27 PDT
-Received: from tretyak2.mcst.ru (tretyak2.mcst.ru [212.5.119.215])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE98AB;
-        Wed,  4 Oct 2023 07:44:26 -0700 (PDT)
-Received: from tretyak2.mcst.ru (localhost [127.0.0.1])
-        by tretyak2.mcst.ru (Postfix) with ESMTP id 514B1102397;
-        Wed,  4 Oct 2023 17:38:45 +0300 (MSK)
-Received: from frog.lab.sun.mcst.ru (frog.lab.sun.mcst.ru [176.16.4.50])
-        by tretyak2.mcst.ru (Postfix) with ESMTP id 4BB9D102395;
-        Wed,  4 Oct 2023 17:38:00 +0300 (MSK)
-Received: from artemiev-i.lab.sun.mcst.ru (avior-1 [192.168.63.223])
-        by frog.lab.sun.mcst.ru (8.13.4/8.12.11) with ESMTP id 394Ebxp3003157;
-        Wed, 4 Oct 2023 17:37:59 +0300
-From:   Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-        "David S. Miller" <davem@davemloft.net>,
+        Wed, 4 Oct 2023 10:58:47 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7939CAB;
+        Wed,  4 Oct 2023 07:58:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=ItaLEz8yYofv11YCURyJNHQx1l8I20bDLTqN6Rxdd18=;
+        t=1696431523; x=1697641123; b=V8UOdtE6xNiCDdn57mg2rZW1wknmRZhcWWKzURhlpGXn0xL
+        AP+N0SPBViYfmIxwNOBfLsMIrBRI/ripJk1Yc1mUSP5CZr71arfZ/xOC4zA4u0U+1ibnGg7zlZQVJ
+        AW19LyyeftKStRpcvyC0aTjt705Z76vNyGTJT05u0OZz67X4ljGOJqZZXSPvnTEobvAv6Unwbp9N2
+        PnpCvbNDUJNphgHzz5dmekHS94tqQ0djiZ4HhA6cLXornbbYq5HFgw/9BJbF3rYXb1OxqwU7RuRxg
+        Plhh3Y+3Tuz6QTMDXJbCY7FIymIV1KxF11LxiaVKfJo5lJqjR/TaiypI50rfXsAg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qo3KV-0040mn-30;
+        Wed, 04 Oct 2023 16:58:28 +0200
+Message-ID: <3ba8e3902ade7483a82bd305a35a236744ffba25.camel@sipsolutions.net>
+Subject: Re: [lvc-project] [PATCH] wifi: mac80211: fix buffer overflow in
+ ieee80211_rx_get_bigtk()
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Cc:     "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
-Subject: [lvc-project] [PATCH] wifi: mac80211: fix buffer overflow in ieee80211_rx_get_bigtk()
-Date:   Wed,  4 Oct 2023 17:37:40 +0300
-Message-Id: <20231004143740.40933-1-Igor.A.Artemiev@mcst.ru>
-X-Mailer: git-send-email 2.39.0.152.ga5737674b6
+Date:   Wed, 04 Oct 2023 16:58:26 +0200
+In-Reply-To: <20231004143740.40933-1-Igor.A.Artemiev@mcst.ru>
+References: <20231004143740.40933-1-Igor.A.Artemiev@mcst.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-         bases: 20111107 #2745587, check: 20231004 notchecked
-X-AV-Checked: ClamAV using ClamSMTP
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If 'idx' is 0, then 'idx2' is -1, and arrays 
-will be accessed by a negative index. 
+On Wed, 2023-10-04 at 17:37 +0300, Igor Artemiev wrote:
+> If 'idx' is 0
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+And ... how exactly do you propose that is going to happen?
 
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
----
- net/mac80211/rx.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index e751cda5eef6..e686380434bd 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -1868,10 +1868,13 @@ ieee80211_rx_get_bigtk(struct ieee80211_rx_data *rx, int idx)
- 		key = rcu_dereference(rx->link_sta->gtk[idx]);
- 	if (!key)
- 		key = rcu_dereference(rx->link->gtk[idx]);
--	if (!key && rx->link_sta)
--		key = rcu_dereference(rx->link_sta->gtk[idx2]);
--	if (!key)
--		key = rcu_dereference(rx->link->gtk[idx2]);
-+
-+	if (idx2 >= 0) {
-+		if (!key && rx->link_sta)
-+			key = rcu_dereference(rx->link_sta->gtk[idx2]);
-+		if (!key)
-+			key = rcu_dereference(rx->link->gtk[idx2]);
-+	}
- 
- 	return key;
- }
--- 
-2.30.2
-
+johannes
