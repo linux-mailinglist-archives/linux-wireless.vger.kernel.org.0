@@ -2,100 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75A597B803B
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 15:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 736507B80A9
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 15:19:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233105AbjJDNJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 09:09:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54326 "EHLO
+        id S242623AbjJDNT7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 09:19:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233003AbjJDNJw (ORCPT
+        with ESMTP id S242619AbjJDNT6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 09:09:52 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA5C398
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 06:09:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644F6C433C7;
-        Wed,  4 Oct 2023 13:09:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696424987;
-        bh=1KMiCQ4GF1yebZeJQUOFvoggMENRJNEp1ySztWeeoaQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=hfGPaZ9IiJjxWKrNkLefmfTSa/1Xf8u/qGfr/neXnOAmEFeODqpOdrTaj4gNb7jiJ
-         GmvJ2MLJciwNIqLfxWWOv2JdXJocQ3ByPWfE8rSnjD5WTQ1k5u5rRhIlgfZIiFKAWA
-         ZESrdVSVfxFzthyxqwhir0mXIpRv5VJgqOdGkDWxzQT+37DIFA//hnUhNX2mJ/sey/
-         Lu3AhzCr2GEZJAPb7Lohp7TQGRJ7Ux96wf2ufvvHbZV0/XfdTnCQcJbJ14s7phbmlR
-         ehBe4BCWNSFEENLj49hV0NKNMALV7hjkKsHBZrFGbLeauKOtQwoihxR/QzL/sKPLp7
-         RpavAPBjKTtvw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Cc:     "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Peer, Ilan" <ilan.peer@intel.com>,
-        "anarcat@debian.org" <anarcat@debian.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: Re: Microcode SW error since Linux 6.5
-References: <87ttrncuc8.fsf@angela.anarc.at>
-        <60e2c052f3cedc5c80964e4be90c50cdaa899a87.camel@sipsolutions.net>
-        <87jzsf9dme.fsf@angela.anarc.at>
-        <0190dde1170bd1ee810e99b9799678f4f5b8f30e.camel@sipsolutions.net>
-        <8734z29jx7.fsf@angela.anarc.at>
-        <7bd483fd0d004aed37931561a7faa2e176ca3fac.camel@sipsolutions.net>
-        <5d0904a4-bc0d-42dd-aae8-6b50e5c567ba@leemhuis.info>
-        <42e000913e3af714c77fb7a55dd898733e271be0.camel@intel.com>
-        <0c07b6bf-a9cc-4dc0-b71c-a2257e501e5f@leemhuis.info>
-Date:   Wed, 04 Oct 2023 16:12:03 +0300
-In-Reply-To: <0c07b6bf-a9cc-4dc0-b71c-a2257e501e5f@leemhuis.info> (Linux
-        regression tracking's message of "Wed, 4 Oct 2023 10:35:54 +0200")
-Message-ID: <87h6n6h6qk.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Wed, 4 Oct 2023 09:19:58 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2BB4BD
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 06:19:54 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9715DC40078;
+        Wed,  4 Oct 2023 13:19:52 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.112.175])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id D139D13C2B0;
+        Wed,  4 Oct 2023 06:19:51 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D139D13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1696425592;
+        bh=HC0GAFCZ+v2kYnaSWkha5J20bITVP6ag0FMiQmONu3s=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=Q5udTm5yDD04y/O6Xa2rZsq2CGIJhCMIBqqeiJI0awNo1Mdv57X/HhRaG3YOylO1x
+         /KjYfWFbFuQsaoemRIe7pL1SDFmQIPcwDQhAcW4yqBDjgLC1Nq+bS4JpuXz8BZ/Dem
+         Ft1qFosjEmzy6MnSYVZ6duiw9jyYFQTeIYtpGBuA=
+Subject: Re: wifi-7 + MLO: wlan is not seen in /proc/net/wireless
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <db9ef851-5784-c6a5-d3d5-5747ef21e0b6@candelatech.com>
+ <87zg0zgemy.fsf@kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <3e684eea-147b-ca03-1c40-291ece4d1ebb@candelatech.com>
+Date:   Wed, 4 Oct 2023 06:19:51 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <87zg0zgemy.fsf@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-MDID: 1696425593-AKYixWhFqbkg
+X-MDID-O: us5;ut7;1696425593;AKYixWhFqbkg;<greearb@candelatech.com>;bd4b609eaf65fb42f4d2136609b7cb93
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Linux regression tracking (Thorsten Leemhuis)"
-<regressions@leemhuis.info> writes:
->> The patch in [1] should solve the issue. The problem was that wrong version
->> of Firmware API was used for some older versions.
->> 
->> [1]
->> https://patchwork.kernel.org/project/linux-wireless/patch/20230926165546.086e635fbbe6.Ia660f35ca0b1079f2c2ea92fd8d14d8101a89d03@changeid/
->
-> Ahh, great, many thx for the reply. Two things then:
->
-> (1) I wanted to ask why this patch is not in mainline or -net yet, but
-> then noticed the fix is among the patches of a one week old pull request
-> that afaics was not handled yet:
-> https://lore.kernel.org/all/20230927095835.25803-2-johannes@sipsolutions.net/
->
-> Guess that one fell through the cracks due to the Netconf 2023 workshop?
-> Maybe this msg gets things rolling again.
+On 10/3/23 10:06 PM, Kalle Valo wrote:
+> Ben Greear <greearb@candelatech.com> writes:
+> 
+>> I'm testing a wifi-7 radio against MLO AP.  I notice the link-0 debugfgs links
+>> show up and STA is associated and acquired DHCP, but wlan is not in /proc/net/wireless.
+>> I'm in 6.5.5+ kernel.
+>>
+>> Is this expected?
+> 
+> wext doesn't support Wi-Fi 7, see:
+> 
+> https://git.kernel.org/linus/52fd90638a72
 
-At least on Monday there were something 500 patches in netdev patchwork
-and today I see still 340 patches. Understandably it takes time to
-process all that, let's just wait patiently and let the maintainers do
-their job in peace.
+For somewhat similar reasons, ethtool stats are broken for MLO
+too (see my patches from yesterday).
 
-I see our pull request is in active state in patchwork so I don't think
-it has fell through the cracks:
+To keep at least some backwards compatibility, would it be worth
+reporting the 'best' link's information?  To me best is highest
+band that is connected.  It could also just be the first link that is
+connected.
 
-https://patchwork.kernel.org/project/netdevbpf/patch/20230927095835.25803-2-johannes@sipsolutions.net/
+Any suggestions for how to do ethtool stats better for MLO?
+
+Maybe the original values would be for the first, or maybe best link,
+and then add new stats fields for second and third links?
+
+Thanks,
+Ben
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
