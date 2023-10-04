@@ -2,75 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3A3C7B768F
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 04:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF85C7B7722
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 06:30:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240544AbjJDCKN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Oct 2023 22:10:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41190 "EHLO
+        id S232507AbjJDEaF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 00:30:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232366AbjJDCKN (ORCPT
+        with ESMTP id S229745AbjJDEaE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Oct 2023 22:10:13 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4439AB
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 19:10:08 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3941r2nn012034;
-        Wed, 4 Oct 2023 02:09:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=ydS1Nsdr7hBbmTEYNr5SVlkkXTsC+jI1AZ+rHqokxHg=;
- b=LGqnSaMO97NhSsPLFxmzjCcbXktjiadiB30cD83fhRxUd1W/OUajX4QGhMoyMHWkAK6K
- wdGQEm6nhuvivck0SfASb2jEde6jWsbR5A29xF0aBQXqMSxenBJuZOeuD8MHY2ThJx01
- k3FDBIqmqP4ntR3La0tTQQvPbYIRQl1fLpL0O1hW+SYTHojndutbM6Wn1ks9rZtw7kQA
- Dtm89TMnHaYrFJ6b8g0AqFeRWzE2XpPHfyBqN5sctTmYTkYocL++OkmE/+YQ9HQbfmHT
- XK9QvrRpjGn/bag8x5VOkfWxhHVHquKZ1IPSoUhxHAai/HP2n5RT5UAZ3jOc7b/ELrR+ bA== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tgr9mgr2v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 04 Oct 2023 02:09:49 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39429m54018949
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 4 Oct 2023 02:09:48 GMT
-Received: from [10.201.207.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 3 Oct
- 2023 19:09:47 -0700
-Message-ID: <735c1318-2a6d-4247-8220-868f63f08578@quicinc.com>
-Date:   Wed, 4 Oct 2023 07:39:44 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] wifi: ath11k: fix Tx power value during active CAC
-Content-Language: en-US
+        Wed, 4 Oct 2023 00:30:04 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B19490
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Oct 2023 21:30:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696393800; x=1727929800;
+  h=date:from:to:cc:subject:message-id;
+  bh=xlIRUR+3aFNki9P7SlD0y0FCl3wjSURZVVu28HtiY/o=;
+  b=VctkCkYbpMbVX0Hq8qYD5TbdQ2NDGKzudkkqkH9RpMKqHtmv75B3CiOM
+   Gs6TnvEWvajSp4eJtkXiXMRt6mqzv74gwafMn5qzv2UbKOeD6PVkBKsLA
+   anch7i6OY8ahwmPe4Gecg6druyU3uGhhZdD8uhU7JrlZ75aQS+FGmyErv
+   2KUsl8qrKDoKO2DjfubPwRYrk+gNEBhWxNAhMoY6S+D4KQqRKezNKWwOI
+   XN0jxZWedbhlpDrlASo0RA0ozcqXErVu9Zn4/L2VNWTj0owRMtEW4oZ+A
+   dHhOjiXdkT037H1UFPIlv54j3Aa+Hrq2qnzES79hpmOzL3PrO3Blf7T0E
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="382955388"
+X-IronPort-AV: E=Sophos;i="6.03,199,1694761200"; 
+   d="scan'208";a="382955388"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 21:29:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="894770960"
+X-IronPort-AV: E=Sophos;i="6.03,199,1694761200"; 
+   d="scan'208";a="894770960"
+Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 03 Oct 2023 21:28:33 -0700
+Received: from kbuild by c3b01524d57c with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qntWG-000BPt-23;
+        Wed, 04 Oct 2023 04:29:56 +0000
+Date:   Wed, 04 Oct 2023 12:29:21 +0800
+From:   kernel test robot <lkp@intel.com>
 To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20230912051857.2284-4-quic_adisi@quicinc.com>
- <169634351476.120947.13624704208026863471.kvalo@kernel.org>
-From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <169634351476.120947.13624704208026863471.kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 3XI6ERby30MfBK6Yo1pUD1ICi7_nkY7C
-X-Proofpoint-ORIG-GUID: 3XI6ERby30MfBK6Yo1pUD1ICi7_nkY7C
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-04_01,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 adultscore=0 clxscore=1015
- mlxlogscore=803 phishscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310040013
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ f0fb62e090bdf38eb3c7e127f21858708b55b71b
+Message-ID: <202310041218.1CTX39G3-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,29 +61,121 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/3/23 20:01, Kalle Valo wrote:
-> Aditya Kumar Singh <quic_adisi@quicinc.com> wrote:
-> 
->> Tx power is fetched from firmware's pdev stats. However, during active
->> CAC, firmware does not fill the current Tx power and sends the max
->> initialised value filled during firmware init. If host sends this power
->> to user space, this is wrong since in certain situations, the Tx power
->> could be greater than the max allowed by the regulatory. Hence, host
->> should not be fetching the Tx power during an active CAC.
->>
->> Fix this issue by returning Tx power as 0 during active CAC since it
->> is known that during CAC, there will be no transmission happening.
-> 
-> The returning as 0 doesn't seem to match the code. Should I change the sentence to:
-> 
-> "Fix this issue by returning -EAGAIN error so that the user space knows there's
-> no value available right now."
-Oops. Looks like only in commit message its still zero. Its changed to 
-return -EAGAIN in code.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: f0fb62e090bdf38eb3c7e127f21858708b55b71b  wifi: rtlwifi: use unsigned long for rtl_bssid_entry timestamp
 
-+	if (test_bit(ATH11K_CAC_RUNNING, &ar->dev_flags)) {
-+		mutex_unlock(&ar->conf_mutex);
-+		return -EAGAIN;
-+	}
+elapsed time: 954m
 
-So could you just rectify while applying or should I resend?
+configs tested: 102
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231003   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20231003   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231003   gcc  
+i386         buildonly-randconfig-002-20231003   gcc  
+i386         buildonly-randconfig-003-20231003   gcc  
+i386         buildonly-randconfig-004-20231003   gcc  
+i386         buildonly-randconfig-005-20231003   gcc  
+i386         buildonly-randconfig-006-20231003   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231003   gcc  
+i386                  randconfig-002-20231003   gcc  
+i386                  randconfig-003-20231003   gcc  
+i386                  randconfig-004-20231003   gcc  
+i386                  randconfig-005-20231003   gcc  
+i386                  randconfig-006-20231003   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231003   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-006-20231003   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
