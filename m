@@ -2,52 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52E497B7C47
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 11:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B588D7B7C4A
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Oct 2023 11:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242038AbjJDJhL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 05:37:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51268 "EHLO
+        id S242047AbjJDJhM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Oct 2023 05:37:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242052AbjJDJhI (ORCPT
+        with ESMTP id S242046AbjJDJhH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 05:37:08 -0400
+        Wed, 4 Oct 2023 05:37:07 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8123E5
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 02:37:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CD1CE6
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 02:37:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696412223; x=1727948223;
+  t=1696412224; x=1727948224;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=asTR5MzVNnOyuC7tvBkgvpMtw4WjGXVi2Wb5u57oZ/c=;
-  b=l/JUTMW1gikSKKqG5ynWsamMJ828cF5bxBm6y8mG1/IF4FPwKo4Uwn1j
-   PQl9K0jO+OQTFihXGpcyjko8k44IeDNJZnlRDGcrDRmBvHQ8FPKtr+xlU
-   gDli1EGUQztQ8h2i45DuCrin79xUPuyQfS1JP7yToOMcWVnQu+6bVxsGw
-   D2X6PNJ/nR/xqw9QGq394XohN18h2gOx8PMxhaU3A304frljIAiHrkwld
-   Bjn4eBTWexIsSskyq97d3wI87yk0ECa5S/SyiW26A4SuJFy2x50HSvkDj
-   M1nfzMgHLwd+g9papf2Q+YsSKJ4Z8C4RiCW0q8t41BOzNGbB3auPGv7RC
+  bh=WFoP7IO7laD8OTBw8G180uv3S61BHByTz5OwF2se6sU=;
+  b=PDn8snEeE0hbuuBE79L2379EW55/avwH7jiEnUPAJ/2dNl+j/uEmVsIm
+   YK+zDHQv/I+U5BiSi5uKGAWEyOk6auCFLkMQR/snMg0N+BKoVM+jjRzZa
+   ARqwZNs7T1eRnIKoAOxYs8ShIRPhHgEICzT7yZnrxAm4WZ1REgKU2cZ3i
+   6yTk0NBHlJZGNIi4b61f1i5IgOQTfIEU98nNNvBPC9+WDUJyIIEoPsMIZ
+   /BDguLg6J3bT2foCVzQuq5k5CgvG59Wh5ByfVQ7X4mh2I2MXg4pJvLyu/
+   aOFzc6a/w4LVZ6/yN/f3oSlXXEOjEPQBo8hc1LpwOYeWfzdpfQB8aAkfK
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="449611765"
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="449611776"
 X-IronPort-AV: E=Sophos;i="6.03,199,1694761200"; 
-   d="scan'208";a="449611765"
+   d="scan'208";a="449611776"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 02:36:56 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 02:36:59 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="1082415162"
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="1082415166"
 X-IronPort-AV: E=Sophos;i="6.03,199,1694761200"; 
-   d="scan'208";a="1082415162"
+   d="scan'208";a="1082415166"
 Received: from oferweis-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.222.21])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 02:36:55 -0700
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 02:36:57 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 05/15] wifi: iwlwifi: mvm: add a per-link debugfs
-Date:   Wed,  4 Oct 2023 12:36:24 +0300
-Message-Id: <20231004123422.6a161f021ae8.Ic8f40f2b4682270c94036e3c11c3996ae34266fa@changeid>
+Subject: [PATCH 06/15] wifi: iwlwifi: mvm: fix SB CFG check
+Date:   Wed,  4 Oct 2023 12:36:25 +0300
+Message-Id: <20231004123422.ab21c7d5e219.I4f9906ebc7ecf38fd276510a276280a9261c8f7f@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20231004093634.131303-1-gregory.greenman@intel.com>
 References: <20231004093634.131303-1-gregory.greenman@intel.com>
@@ -63,126 +62,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Add a per-link debugfs entry in iwlmvm level so we can read/write link
-related parameters.
-Do it by implementing the link_add_debugfs API introduced by mac80211.
+We shouldn't check the 0x10 bit here, since the register
+holds different values (not just bit masks.). Check for
+the exact value where this is needed only.
 
-Each entry will have a path like this:
-.../netdev:wlan0/link-X/iwlmvm/<file_name>
-for each link X.
-
-For non-MLD vifs this callback is called when the original vif
-debugfs dir is also created, so handle that case by not creating
-the 'iwlmvm' directory again.
-
-Note that we don't have to worry about the cleaning the iwlmvm/*
-directory as it is already done by mac80211 when removing the link
-(or netdev).
-
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  | 46 +++++++++++++++++++
- .../net/wireless/intel/iwlwifi/mvm/debugfs.h  |  1 +
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  1 +
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  4 ++
- 4 files changed, 52 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-index 3a42fb38b32f..e8b881596baf 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-@@ -761,3 +761,49 @@ void iwl_mvm_vif_dbgfs_rm_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
- 	debugfs_remove(mvmvif->dbgfs_slink);
- 	mvmvif->dbgfs_slink = NULL;
- }
-+
-+#define MVM_DEBUGFS_WRITE_LINK_FILE_OPS(name, bufsz)			\
-+	_MVM_DEBUGFS_WRITE_FILE_OPS(link_##name, bufsz,			\
-+				    struct ieee80211_bss_conf)
-+#define MVM_DEBUGFS_READ_WRITE_LINK_FILE_OPS(name, bufsz)		\
-+	_MVM_DEBUGFS_READ_WRITE_FILE_OPS(link_##name, bufsz,		\
-+					 struct ieee80211_bss_conf)
-+#define MVM_DEBUGFS_ADD_LINK_FILE(name, parent, mode)			\
-+	debugfs_create_file(#name, mode, parent, link_conf,		\
-+			    &iwl_dbgfs_link_##name##_ops)
-+
-+static void iwl_mvm_debugfs_add_link_files(struct ieee80211_vif *vif,
-+					   struct ieee80211_bss_conf *link_conf,
-+					   struct dentry *mvm_dir)
-+{
-+	/* Add per-link files here*/
-+}
-+
-+void iwl_mvm_link_add_debugfs(struct ieee80211_hw *hw,
-+			      struct ieee80211_vif *vif,
-+			      struct ieee80211_bss_conf *link_conf,
-+			      struct dentry *dir)
-+{
-+	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+	struct iwl_mvm *mvm = mvmvif->mvm;
-+	unsigned int link_id = link_conf->link_id;
-+	struct iwl_mvm_vif_link_info *link_info = mvmvif->link[link_id];
-+	struct dentry *mvm_dir;
-+
-+	if (WARN_ON(!link_info) || !dir)
-+		return;
-+
-+	if (dir == vif->debugfs_dir) {
-+		WARN_ON(!mvmvif->dbgfs_dir);
-+		mvm_dir = mvmvif->dbgfs_dir;
-+	} else {
-+		mvm_dir = debugfs_create_dir("iwlmvm", dir);
-+		if (IS_ERR_OR_NULL(mvm_dir)) {
-+			IWL_ERR(mvm, "Failed to create debugfs directory under %pd\n",
-+				dir);
-+			return;
-+		}
-+	}
-+
-+	iwl_mvm_debugfs_add_link_files(vif, link_conf, mvm_dir);
-+}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.h b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.h
-index 0711ab689c48..cc2c45b45ddc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.h
-@@ -1,5 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-+ * Copyright (C) 2023 Intel Corporation
-  * Copyright (C) 2012-2014 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 2a55ba01fc78..faec7ee17d9a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -1205,6 +1205,7 @@ const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
+index 7bd4ce149e04..c1a94b01ce14 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
+@@ -382,7 +382,7 @@ enum {
+ #define PREG_PRPH_WPROT_22000		0xA04D00
  
- #ifdef CONFIG_IWLWIFI_DEBUGFS
- 	.vif_add_debugfs = iwl_mvm_vif_add_debugfs,
-+	.link_add_debugfs = iwl_mvm_link_add_debugfs,
- 	.link_sta_add_debugfs = iwl_mvm_link_sta_add_debugfs,
- #endif
- 	.set_hw_timestamp = iwl_mvm_set_hw_timestamp,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 5ec79bea5af1..f8b95693bd98 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -2406,6 +2406,10 @@ void iwl_mvm_link_sta_add_debugfs(struct ieee80211_hw *hw,
- 				  struct ieee80211_vif *vif,
- 				  struct ieee80211_link_sta *link_sta,
- 				  struct dentry *dir);
-+void iwl_mvm_link_add_debugfs(struct ieee80211_hw *hw,
-+			      struct ieee80211_vif *vif,
-+			      struct ieee80211_bss_conf *link_conf,
-+			      struct dentry *dir);
- #endif
- 
- /* new MLD related APIs */
+ #define SB_MODIFY_CFG_FLAG		0xA03088
+-#define SB_CFG_RESIDES_IN_OTP_MASK	0x10
++#define SB_CFG_RESIDES_IN_ROM		0x80
+ #define SB_CPU_1_STATUS			0xA01E30
+ #define SB_CPU_2_STATUS			0xA01E34
+ #define UMAG_SB_CPU_1_STATUS		0xA038C0
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 5c719636c9bd..d56c62b9c205 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -596,7 +596,7 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm)
+ 	if (mvm->trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_AX210) {
+ 		sb_cfg = iwl_read_umac_prph(mvm->trans, SB_MODIFY_CFG_FLAG);
+ 		/* if needed, we'll reset this on our way out later */
+-		mvm->pldr_sync = !(sb_cfg & SB_CFG_RESIDES_IN_OTP_MASK);
++		mvm->pldr_sync = sb_cfg == SB_CFG_RESIDES_IN_ROM;
+ 		if (mvm->pldr_sync && iwl_mei_pldr_req())
+ 			return -EBUSY;
+ 	}
 -- 
 2.38.1
 
