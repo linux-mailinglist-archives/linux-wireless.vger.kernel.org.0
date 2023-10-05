@@ -2,59 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 898497BA6EB
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Oct 2023 18:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 313357BA656
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Oct 2023 18:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233331AbjJEQnT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Oct 2023 12:43:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46998 "EHLO
+        id S229646AbjJEQdh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Oct 2023 12:33:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234520AbjJEQlh (ORCPT
+        with ESMTP id S231865AbjJEQck (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Oct 2023 12:41:37 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9D15178D1
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Oct 2023 09:10:01 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-537f07dfe8eso12324a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Oct 2023 09:10:01 -0700 (PDT)
+        Thu, 5 Oct 2023 12:32:40 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE112422C
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Oct 2023 09:12:09 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-4053f24c900so80205e9.1
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Oct 2023 09:12:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696522200; x=1697127000; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1696522328; x=1697127128; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wRCO/tDP4lRLu2OPV/gEOu9clmIfNVaCcbX9ayRgMZQ=;
-        b=sIFf5Zh2sZHqRywywGBF8so85oAW0i5GI0cfRWdSUM8jDcIuCvvr/mdR2e96GGLdfV
-         Gq13bsMyuJsLjtXcYKN1HBsa5ehu+CPd/k5pv9KgHTZrdmCJrA9SjsvkYp5XjmfvQ4im
-         12eztqV2Pz56UGyn/8wKmIPKtvh2SKa7FLlU+18dtVgdKlbrTrs/3E1PybeQdrvC0nVc
-         oGVK1HjcgbBKi2lEbQq2QHHfSB45JcGS7qGwTh32GVgkI+TsiQfEEKyczPIOes6YgeZ3
-         J5DVSgGwxfLVdZl4nP+XOYx2Ho1RU+q95bPKdLh/LqpGgHA5wW67Ym+6Oi9AC84wXiH9
-         M8fQ==
+        bh=0r0z6lg6WCpdjTrIkK0dVsLYyVCZ/7MdG8Aqn4UL8Rc=;
+        b=o681KbIh2TlLlhg8XG13gpUMzwdOWGu93tlv1/AmAQmTSR1pYFOLQ39scqoBCGGlhi
+         4twWQG1uOshmLs2xF5w3/nPDQegq0pHr0IWitMDfaFoK/bDa9m+nCYE67EVozR0MX0+X
+         EyGpMb4MPF9fy3rf61gcJROjNqNa6HcEqJuxmhB+ki0io7BHtCw0U0i/lw4kIKZpWQfR
+         6Kjip00dYddoVNJ958TrIuB6gJsLypWAVPUE31LC1LfuJ6rivEEgPkbYFRhuBmoZQOui
+         QtqcpUzWEIo2mO1rI7Z0w5A7W0peQitW15tx4IKCl23o7rV+GX/ihXN7g61y1pw7elN7
+         oC2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696522200; x=1697127000;
+        d=1e100.net; s=20230601; t=1696522328; x=1697127128;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wRCO/tDP4lRLu2OPV/gEOu9clmIfNVaCcbX9ayRgMZQ=;
-        b=mLW7a8EL6Mc3vFk52C6D3NrhRqbN4LfRL3E1Ygg06yRL5QpO6KWzQMr9ukj1One/sX
-         gUHWjSkJPHDQV7I3Q0i7m2s+7EaQVBTrbUqBMryJovdiqrdQgU1ATMk10hfMy6/aGq1Z
-         FV5J3noXU7dVpsVUqGuprDMOSc0zv2QwxVNjmj29e+jGCFO4cSmfvnfczlgTOQRSBGTT
-         GMJveycjeEVPpWjJeibnhH7iMqD0NUf0+1noMeqGSDL7VXn7Ro9Ua2TsTPW1NumvvbjB
-         KPQYZuzb6JAyqestWxftqdO2wwdPwlNObk3niHnly8i8zzbcPaYrr5Y2OhV4SyllF10C
-         E2Yw==
-X-Gm-Message-State: AOJu0YygmgIj2hcm0BCahhV7LEUZL7zG6av35UEInzOuRUJuh+wu+74K
-        6U4rLN/pzmHCYG3fdqgrNl0+SBbrBDjVT83+PgxbnA==
-X-Google-Smtp-Source: AGHT+IFzYlK6nOXqFn3XTRyZ9yDEZC9Bs5FeKRJ0Zfr3978r7XwjxquujorP05hjLrjSFu1gUI2ea386eAkHyH3Ha+s=
-X-Received: by 2002:a50:8d0f:0:b0:538:50e4:5446 with SMTP id
- s15-20020a508d0f000000b0053850e45446mr71813eds.5.1696522199600; Thu, 05 Oct
- 2023 09:09:59 -0700 (PDT)
+        bh=0r0z6lg6WCpdjTrIkK0dVsLYyVCZ/7MdG8Aqn4UL8Rc=;
+        b=t9+KkjHBfvKyJB0+LIkOOeHHEsu4HGQ8cAKrRQCX9OIHnZ6KRPOUUlJ4CLpHCz/WmT
+         5AKsFtWFgYQtv+sZz65O0c4/9qGo1BBZe6e2nqbDJKjti/vAjAEzi7tfPPrkpa/9zK2O
+         hlSEM+B72HDEsEw1vn2Ny8lmkmYuQh7IEN5IyW/TIUZ2nl+lCb8CsEhiIMIRJw3gLR3a
+         RdSp3/3MxhqmeNNDCoUuz/Ta+vc0d13yfyMD0GX++oKfDNBErcwUcjPynVyi5gQ7CYSz
+         vF8n4PYNKsNkxMjlt6Tfm3kLLKk1zLLgPSI4IAW9/FAKBt3Qrxt/ley3/7Mfr5UY+q3s
+         eEMQ==
+X-Gm-Message-State: AOJu0YyoOmA7cXtpmXkyP+MExeNXPUqhZcbpnIxF/R9oLkdtlJCQXIjc
+        EjtKiaet1UZc78433MQdUrwNxn72B25m1v9Z80Fx4A==
+X-Google-Smtp-Source: AGHT+IHsG9cALy9l/AGtf9WGqoTk1+vFPuwod1G0A2HPE9T+W6tIBWkayyF2LSEa5O28SfRy9xIMPv/xnERf3BuOFTY=
+X-Received: by 2002:a05:600c:b93:b0:3fe:eb42:7ec with SMTP id
+ fl19-20020a05600c0b9300b003feeb4207ecmr61696wmb.1.1696522327966; Thu, 05 Oct
+ 2023 09:12:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231003145150.2498-1-ansuelsmth@gmail.com>
-In-Reply-To: <20231003145150.2498-1-ansuelsmth@gmail.com>
+References: <20231003145150.2498-1-ansuelsmth@gmail.com> <20231003145150.2498-3-ansuelsmth@gmail.com>
+In-Reply-To: <20231003145150.2498-3-ansuelsmth@gmail.com>
 From:   Eric Dumazet <edumazet@google.com>
-Date:   Thu, 5 Oct 2023 18:09:42 +0200
-Message-ID: <CANn89iK5E=SFJoNNTd3SNdT0oPR503dEf_gNfP=Ls3AKS_4F_g@mail.gmail.com>
-Subject: Re: [net-next PATCH v2 1/4] netdev: replace simple
- napi_schedule_prep/__napi_schedule to napi_schedule
+Date:   Thu, 5 Oct 2023 18:11:56 +0200
+Message-ID: <CANn89iK226C-pHUJm7HKMyEtMycGC=KCA2M6kw2KJaUj0cCT6w@mail.gmail.com>
+Subject: Re: [net-next PATCH v2 3/4] netdev: replace napi_reschedule with napi_schedule
 To:     Christian Marangi <ansuelsmth@gmail.com>
 Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
         Wolfgang Grandegger <wg@grandegger.com>,
@@ -123,7 +122,7 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -135,9 +134,20 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 On Tue, Oct 3, 2023 at 8:36=E2=80=AFPM Christian Marangi <ansuelsmth@gmail.=
 com> wrote:
 >
-> Replace drivers that still use napi_schedule_prep/__napi_schedule
-> with napi_schedule helper as it does the same exact check and call.
+> Now that napi_schedule return a bool, we can drop napi_reschedule that
+> does the same exact function. The function comes from a very old commit
+> bfe13f54f502 ("ibm_emac: Convert to use napi_struct independent of struct
+> net_device") and the purpose is actually deprecated in favour of
+> different logic.
+>
+> Convert every user of napi_reschedule to napi_schedule.
 >
 > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com> # ath10k
+> Acked-by: Nick Child <nnac123@linux.ibm.com> # ibm
+> Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for can/dev/rx-offload=
+.c
+
+OK, but I suspect some users of napi_reschedule() might not be race-free...
 
 Reviewed-by: Eric Dumazet <edumazet@google.com>
