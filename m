@@ -2,58 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AEFA7B98B5
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Oct 2023 01:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D157B9DCD
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Oct 2023 15:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231684AbjJDXce (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Oct 2023 19:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55900 "EHLO
+        id S229959AbjJENz4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Oct 2023 09:55:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230169AbjJDXcd (ORCPT
+        with ESMTP id S243817AbjJENtY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Oct 2023 19:32:33 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF464C0
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Oct 2023 16:32:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696462350; x=1727998350;
-  h=date:from:to:cc:subject:message-id;
-  bh=DIYwT/GHCl6hAWhfvXT8QwhVrI5zeja12aqfVu8/69A=;
-  b=IzpluOk0MbSxRsiyvoxVK/ogBeDIGd8hBgDyoN8H/NwXyJ+9x/4fab21
-   XbEioO4HGFLVkbi7B3fNmyBga3F8IhbHgMyzdxJrAShlZGXPvAjo65XvW
-   YI7/5Edzbg1ImMczrz3h31/+3obRXemIrVA20P+iVCkEzHghpbeVX1ZNW
-   rpDzGclaZcOjDhz+uiz0a6bEW/9jkaka3i9IH2+souLTyeUziLtQmItBC
-   /ahkGmT5h3wAtYsbsTeO1Km3ufOtJvBM+iOnJDeBE9yKdRiaHZpx3SPM1
-   ZhkbQsEO4YhxzL8VmKmxViMGL07YCV+rz12RJ7UzB250jLanCqBj+KCEH
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="363616654"
-X-IronPort-AV: E=Sophos;i="6.03,201,1694761200"; 
-   d="scan'208";a="363616654"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 16:32:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="786720093"
-X-IronPort-AV: E=Sophos;i="6.03,201,1694761200"; 
-   d="scan'208";a="786720093"
-Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 04 Oct 2023 16:32:22 -0700
-Received: from kbuild by c3b01524d57c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qoBLn-000KkK-2F;
-        Wed, 04 Oct 2023 23:32:19 +0000
-Date:   Thu, 05 Oct 2023 07:32:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Subject: [wireless-next:pending] BUILD SUCCESS
- 6e41ffa1dea50785b6ec9c9cc83363e2d18a00df
-Message-ID: <202310050705.PQBlf2Z9-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        Thu, 5 Oct 2023 09:49:24 -0400
+Received: from mail-ot1-x350.google.com (mail-ot1-x350.google.com [IPv6:2607:f8b0:4864:20::350])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0018D903B
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Oct 2023 01:49:45 -0700 (PDT)
+Received: by mail-ot1-x350.google.com with SMTP id 46e09a7af769-6c626bfcd3fso836494a34.3
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Oct 2023 01:49:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696495784; x=1697100584;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O5CT72nr6fyLIM2HBIZewHuJMtsZSdhGCa8W/NlrzdE=;
+        b=Hr9LmOjIzfUJ9HeDxh31GJJs41zR/004u9w2/+Aie8K8kgVphqr7C2/z1M9A2XCPdT
+         OtS0mwf8o5gr0HBmflq4OGM6nwiaYXtdF8zws2eI6PCgjjvb5xCmAlqfWdbj4r6hzobb
+         dERHKaJy3cJCa+VLAjig/wprSnWxkveP3hJtROhBI54FzWYd7kERJkvoo7r0sq0qG09K
+         RND7ZzPUuXLnrYWlTA/x2pz4EJDJwsJNN8hki/PuREb/6ERrZtVP0cmCFF1K35OGwhwP
+         tFp1Bm4nyXzFvWF936+uQkgSKTiUHcANhAnJmefUXx3TF7GNoVW3+znR+byeOBLRD1T0
+         toRQ==
+X-Gm-Message-State: AOJu0YxUdysyKcNHLxUImgvTO5WZJlHoosM1tZNYjsryXTuwePYuw5E/
+        NFkgMmXbxdSJ16+AmKoJSq6KGakOqPTd+tn3PXiVuBxL6q+F
+X-Google-Smtp-Source: AGHT+IHo2mnMCI10UV5TXKADf/v1RkgnT7tekZCDwNptOcZZfYxVDZ7TggD0WGNuei7CQm9SVjBSkU+Mt7tLm3HnsTxz0UA+JsN/
+MIME-Version: 1.0
+X-Received: by 2002:a05:6870:1a89:b0:1d6:e8f0:4c47 with SMTP id
+ ef9-20020a0568701a8900b001d6e8f04c47mr1782979oab.9.1696495782543; Thu, 05 Oct
+ 2023 01:49:42 -0700 (PDT)
+Date:   Thu, 05 Oct 2023 01:49:42 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000007b47270606f43464@google.com>
+Subject: [syzbot] [net?] [wireless?] memory leak in regulatory_init_db
+From:   syzbot <syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SORTED_RECIPS,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,147 +57,121 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
-branch HEAD: 6e41ffa1dea50785b6ec9c9cc83363e2d18a00df  Merge tag 'mt76-for-kvalo-2023-09-30' of https://github.com/nbd168/wireless into pending
+Hello,
 
-elapsed time: 734m
+syzbot found the following issue on:
 
-configs tested: 128
-configs skipped: 2
+HEAD commit:    3b517966c561 Merge tag 'dma-mapping-6.6-2023-09-30' of git..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=130dac2a680000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=aa96152f5a3192e3
+dashboard link: https://syzkaller.appspot.com/bug?extid=39ec16ff6cc18b1d066d
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1695bd3e680000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16ae8c4e680000
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/cb67ab976a91/disk-3b517966.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/21326eb3ef67/vmlinux-3b517966.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/0a95555fe120/bzImage-3b517966.xz
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231004   gcc  
-arc                   randconfig-001-20231005   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                            dove_defconfig   clang
-arm                       multi_v4t_defconfig   gcc  
-arm                   randconfig-001-20231004   gcc  
-arm                   randconfig-001-20231005   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20231004   gcc  
-i386         buildonly-randconfig-002-20231004   gcc  
-i386         buildonly-randconfig-003-20231004   gcc  
-i386         buildonly-randconfig-004-20231004   gcc  
-i386         buildonly-randconfig-005-20231004   gcc  
-i386         buildonly-randconfig-006-20231004   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231004   gcc  
-i386                  randconfig-001-20231005   gcc  
-i386                  randconfig-002-20231004   gcc  
-i386                  randconfig-002-20231005   gcc  
-i386                  randconfig-003-20231004   gcc  
-i386                  randconfig-003-20231005   gcc  
-i386                  randconfig-004-20231004   gcc  
-i386                  randconfig-004-20231005   gcc  
-i386                  randconfig-005-20231004   gcc  
-i386                  randconfig-005-20231005   gcc  
-i386                  randconfig-006-20231004   gcc  
-i386                  randconfig-006-20231005   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231004   gcc  
-loongarch             randconfig-001-20231005   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                            mac_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                  decstation_64_defconfig   gcc  
-mips                           ip28_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         alldefconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                     mpc512x_defconfig   clang
-powerpc                       ppc64_defconfig   gcc  
-powerpc                         wii_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                     magicpanelr2_defconfig   gcc  
-sh                             sh03_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                       sparc32_defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20231004   gcc  
-x86_64                randconfig-002-20231004   gcc  
-x86_64                randconfig-003-20231004   gcc  
-x86_64                randconfig-004-20231004   gcc  
-x86_64                randconfig-005-20231004   gcc  
-x86_64                randconfig-006-20231004   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+executing program
+BUG: memory leak
+unreferenced object 0xffff888108f880c0 (size 64):
+  comm "swapper/0", pid 1, jiffies 4294938895 (age 68.260s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    ff ff ff ff 00 00 00 00 00 00 00 00 30 30 00 00  ............00..
+  backtrace:
+    [<ffffffff81574195>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
+    [<ffffffff875a3f05>] kmalloc include/linux/slab.h:599 [inline]
+    [<ffffffff875a3f05>] kzalloc include/linux/slab.h:720 [inline]
+    [<ffffffff875a3f05>] regulatory_hint_core net/wireless/reg.c:3218 [inline]
+    [<ffffffff875a3f05>] regulatory_init_db+0xe5/0x1d0 net/wireless/reg.c:4290
+    [<ffffffff81001cb6>] do_one_initcall+0x76/0x430 init/main.c:1232
+    [<ffffffff874d86ea>] do_initcall_level init/main.c:1294 [inline]
+    [<ffffffff874d86ea>] do_initcalls init/main.c:1310 [inline]
+    [<ffffffff874d86ea>] do_basic_setup init/main.c:1329 [inline]
+    [<ffffffff874d86ea>] kernel_init_freeable+0x25a/0x460 init/main.c:1547
+    [<ffffffff84b3928b>] kernel_init+0x1b/0x290 init/main.c:1437
+    [<ffffffff81149f25>] ret_from_fork+0x45/0x50 arch/x86/kernel/process.c:147
+    [<ffffffff81002be1>] ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+
+BUG: memory leak
+unreferenced object 0xffff88814490d800 (size 2048):
+  comm "syz-executor220", pid 5026, jiffies 4294943369 (age 23.530s)
+  hex dump (first 32 bytes):
+    d8 4c a8 0d 81 88 ff ff 22 01 00 00 00 00 ad de  .L......".......
+    00 00 00 00 ff ff ff ff ff ff 00 aa aa aa aa aa  ................
+  backtrace:
+    [<ffffffff81574195>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
+    [<ffffffff84527e6f>] kmalloc include/linux/slab.h:599 [inline]
+    [<ffffffff84527e6f>] kzalloc include/linux/slab.h:720 [inline]
+    [<ffffffff84527e6f>] hci_conn_add+0x4f/0x5e0 net/bluetooth/hci_conn.c:957
+    [<ffffffff84528668>] hci_connect_acl+0x198/0x1b0 net/bluetooth/hci_conn.c:1632
+    [<ffffffff8452b4cb>] hci_connect_sco+0x4b/0x520 net/bluetooth/hci_conn.c:1685
+    [<ffffffff8459d6b3>] sco_connect net/bluetooth/sco.c:266 [inline]
+    [<ffffffff8459d6b3>] sco_sock_connect+0x1c3/0x520 net/bluetooth/sco.c:591
+    [<ffffffff83e96b01>] __sys_connect_file+0x91/0xb0 net/socket.c:2033
+    [<ffffffff83e96c06>] __sys_connect+0xe6/0x110 net/socket.c:2050
+    [<ffffffff83e96c4c>] __do_sys_connect net/socket.c:2060 [inline]
+    [<ffffffff83e96c4c>] __se_sys_connect net/socket.c:2057 [inline]
+    [<ffffffff83e96c4c>] __x64_sys_connect+0x1c/0x20 net/socket.c:2057
+    [<ffffffff84b33fc8>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff84b33fc8>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+BUG: memory leak
+unreferenced object 0xffff8881091dc400 (size 512):
+  comm "kworker/u5:2", pid 5022, jiffies 4294943869 (age 18.530s)
+  hex dump (first 32 bytes):
+    00 d8 90 44 81 88 ff ff c0 b9 e2 0c 81 88 ff ff  ...D............
+    fd 03 00 00 00 00 00 00 00 06 0c 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff81574195>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
+    [<ffffffff845627dd>] kmalloc include/linux/slab.h:599 [inline]
+    [<ffffffff845627dd>] kzalloc include/linux/slab.h:720 [inline]
+    [<ffffffff845627dd>] l2cap_conn_add.part.0+0x3d/0x340 net/bluetooth/l2cap_core.c:7845
+    [<ffffffff845703b4>] l2cap_conn_add net/bluetooth/l2cap_core.c:71 [inline]
+    [<ffffffff845703b4>] l2cap_connect_cfm+0x264/0x740 net/bluetooth/l2cap_core.c:8242
+    [<ffffffff8452ba43>] hci_connect_cfm include/net/bluetooth/hci_core.h:1935 [inline]
+    [<ffffffff8452ba43>] hci_conn_failed+0xa3/0x120 net/bluetooth/hci_conn.c:1251
+    [<ffffffff84594cc6>] hci_abort_conn_sync+0x4d6/0x6d0 net/bluetooth/hci_sync.c:5435
+    [<ffffffff8452560d>] abort_conn_sync+0x7d/0xa0 net/bluetooth/hci_conn.c:2894
+    [<ffffffff8458b3ad>] hci_cmd_sync_work+0xcd/0x150 net/bluetooth/hci_sync.c:306
+    [<ffffffff812c8d9d>] process_one_work+0x23d/0x530 kernel/workqueue.c:2630
+    [<ffffffff812c99c7>] process_scheduled_works kernel/workqueue.c:2703 [inline]
+    [<ffffffff812c99c7>] worker_thread+0x327/0x590 kernel/workqueue.c:2784
+    [<ffffffff812d6d9b>] kthread+0x12b/0x170 kernel/kthread.c:388
+    [<ffffffff81149f25>] ret_from_fork+0x45/0x50 arch/x86/kernel/process.c:147
+    [<ffffffff81002be1>] ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the bug is already fixed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite bug's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the bug is a duplicate of another bug, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
