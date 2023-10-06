@@ -2,117 +2,188 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6C907BB77B
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Oct 2023 14:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86D407BB8AA
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Oct 2023 15:13:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232173AbjJFMWB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Oct 2023 08:22:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42152 "EHLO
+        id S232178AbjJFNNg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Oct 2023 09:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232000AbjJFMWA (ORCPT
+        with ESMTP id S231705AbjJFNNf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Oct 2023 08:22:00 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B17ACA
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Oct 2023 05:21:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91D2C433C7;
-        Fri,  6 Oct 2023 12:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696594919;
-        bh=O9WIz0wKW84YgqoCVsyMw+N5LTvDV1mzG7gMzBO8rHE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=S1ySHGJDbf2+24R5jw/YL8CJQt/y/hbkQPhE6PATtuXX6JG7ziNK/I+YDY2dTFfT8
-         RwBisnO5iZFLpg6dDm+XDMI1n3wGNbjOIWzlHj/CizpOTK+x6KLXWfT/h1+dYy4O/M
-         5eO9NlQhbIX+DSAvXSmzYutU5Oupqzsx0A0U+VD3RWncg5mBcCB5H4S/BGDnKMRBE6
-         YQfl/huF4+8E+E0swRJzjP5T41J9sVhiPF/FAM73RBqOCBvfpRFOrsb0PeOfP2ABed
-         QyTTbSEkQBOnDio2tGlcvqvHtf85i+d+4/H+cLhNd7IoFBFllRgkCl2SDCcMqGdFuw
-         i3HA4ozu4XEFA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Julian Calaby <julian.calaby@gmail.com>
-Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Hector Martin <marcan@marcan.st>,
-        SHA-cyfmac-dev-list@infineon.com,
-        brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: On brcm80211 maintenance and support
-References: <6f78e624-62ee-3ae5-1db4-a0411566def8@yandex.ru>
-        <CAGRGNgU7aySyUny9aG_+wXiKJ7j1weosa-rZDY4_WAXbq-3ABg@mail.gmail.com>
-Date:   Fri, 06 Oct 2023 15:21:54 +0300
-In-Reply-To: <CAGRGNgU7aySyUny9aG_+wXiKJ7j1weosa-rZDY4_WAXbq-3ABg@mail.gmail.com>
-        (Julian Calaby's message of "Fri, 6 Oct 2023 21:44:05 +1100")
-Message-ID: <87ttr454bh.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Fri, 6 Oct 2023 09:13:35 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 336B193
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Oct 2023 06:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696598013; x=1728134013;
+  h=date:from:to:cc:subject:message-id;
+  bh=iRM+jkXnhKh9u9+HsLpMaX24yyWPzYF2LxZXmJVUkV8=;
+  b=gXItCcWYKipAWf3ywf0tb86JympBFYa6blxhKPkZioqqwaaPg8OJplYr
+   4cled5Wr6IflRDzS50kuS7SR1b7V3gJsspwn3oh94UWy/0CKshu+luNaf
+   0fCaekFyBi2YmaDYYzT4sySMKK1CsSbLUwYX1LJ0iOzyUgb3BXgU5sb1E
+   NO2wgN6vsMp4LlMcVABNAdhvFNxmWXG+dH7JLYV0JWefzuPZ7ccX5S7tm
+   5hA+OgS9MoD00DZzevTqYBOS10qDW0G34f8ZcJszHe6sBgNoLAyhI7M60
+   4jnSn4F5PCenKW1lujLJlgxAv6hFD3742we4UQu54/HxkIat6s7H5Yutc
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="383638856"
+X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
+   d="scan'208";a="383638856"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 06:13:32 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="702058818"
+X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
+   d="scan'208";a="702058818"
+Received: from lkp-server01.sh.intel.com (HELO 8a3a91ad4240) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 06 Oct 2023 06:13:30 -0700
+Received: from kbuild by 8a3a91ad4240 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qoke0-00007J-0k;
+        Fri, 06 Oct 2023 13:13:28 +0000
+Date:   Fri, 06 Oct 2023 21:12:35 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:merge-wireless-2023-10-05] BUILD SUCCESS
+ 75d44c01dd5479c7e121f740ce3c90cf4e9549fc
+Message-ID: <202310062132.JwN5vGO0-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Julian Calaby <julian.calaby@gmail.com> writes:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git merge-wireless-2023-10-05
+branch HEAD: 75d44c01dd5479c7e121f740ce3c90cf4e9549fc  Merge wireless into wireless-next
 
-> Hi Dmitry,
->
-> (relevant people and lists CC'd)
->
-> On Fri, Oct 6, 2023 at 3:16=E2=80=AFAM Dmitry Antipov <dmantipov@yandex.r=
-u> wrote:
->>
->> Kalle,
->>
->> what's an actual status of brcm80211 driver? It seems
->> that the relevant MAINTAINERS entries are no longer
->> useful, and [1] states that Broadcom is just "disappeared".
->
-> Arend hasn't posted since February:
-> https://lore.kernel.org/linux-wireless/63f72045-e51d-d9a4-a0ed-c221bcdcee=
-03@gmail.com/
->
-> Franky is still reviewing things as of early August:
-> https://lore.kernel.org/linux-wireless/CA+8PC_evb-6Y3dKnAN4BN=3DODEVxY5-c=
-Db6Lc72u0j1WBtx7p1A@mail.gmail.com/
->
-> Hante hasn't posted since 2018:
-> https://lore.kernel.org/linux-wireless/4f6223b8083ed69432493a37d4f45b69@m=
-ail.gmail.com/
->
-> Hector Martin has a bunch of Apple-specific patches downstream in the
-> Asahi Linux kernel and has been looking for guidance on how to
-> upstream it without any real answers:
-> https://lore.kernel.org/linux-wireless/181af6e9-799d-b730-dc14-ee2de2541f=
-35@marcan.st/
->
-> There's also speculation that the Raspberry Pi people have downstream
-> patches too, but I haven't been able to find anything concrete in a
-> very brief search.
+elapsed time: 895m
 
-Thanks for the research, that is helpful.
+configs tested: 112
+configs skipped: 2
 
-> Finally, the Cypress / Infineon people appear to be uninterested in
-> discussing the driver.
->
-> I think it's pretty safe to say that this driver is nearly
-> unmaintained by Broadcom, definitely unmaintained by Cypress /
-> Infineon and Arend is unable to answer questions relating to anything
-> beyond the code as-written.
->
-> Kalle, should this driver get orphaned?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-We definitely need to consider that but let's first wait for Arend to
-comment.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231006   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                         nhk8815_defconfig   gcc  
+arm                   randconfig-001-20231006   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231006   gcc  
+i386         buildonly-randconfig-002-20231006   gcc  
+i386         buildonly-randconfig-003-20231006   gcc  
+i386         buildonly-randconfig-004-20231006   gcc  
+i386         buildonly-randconfig-005-20231006   gcc  
+i386         buildonly-randconfig-006-20231006   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231006   gcc  
+i386                  randconfig-002-20231006   gcc  
+i386                  randconfig-003-20231006   gcc  
+i386                  randconfig-004-20231006   gcc  
+i386                  randconfig-005-20231006   gcc  
+i386                  randconfig-006-20231006   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231006   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            alldefconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                      walnut_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                          r7785rp_defconfig   gcc  
+sh                        sh7757lcr_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231006   gcc  
+x86_64                randconfig-002-20231006   gcc  
+x86_64                randconfig-003-20231006   gcc  
+x86_64                randconfig-004-20231006   gcc  
+x86_64                randconfig-005-20231006   gcc  
+x86_64                randconfig-006-20231006   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
