@@ -2,83 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A1827BC025
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Oct 2023 22:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9781B7BC033
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Oct 2023 22:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233460AbjJFURb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Oct 2023 16:17:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51920 "EHLO
+        id S233483AbjJFUTX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Oct 2023 16:19:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233445AbjJFUR3 (ORCPT
+        with ESMTP id S233466AbjJFUTW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Oct 2023 16:17:29 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C87EFE
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Oct 2023 13:17:24 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-690ba63891dso2152525b3a.2
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Oct 2023 13:17:24 -0700 (PDT)
+        Fri, 6 Oct 2023 16:19:22 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A84D183
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Oct 2023 13:19:04 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1c62d61dc96so19042445ad.0
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Oct 2023 13:19:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1696623443; x=1697228243; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1696623544; x=1697228344; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kW97lFtdi7tQSx5WV0UdX/3taJs5J9htbLPAyylMrXE=;
-        b=kJfSleHIr4K5rV9AG0993UM4ty3EhIbt+f1zqjQPQATref/U78mlNCHrRB2PdId8Ap
-         rhMUfyWUb428Sj2BvkML1y1A/7QkCp2Op73EBLONKDC5PJfN6WU/1uP2e6ODanPf2sO6
-         PfJVx9hocwMqsuqGyF0UB6KAQYv9A7WlZEcn0=
+        bh=5f6ytO4v8vRnOLZhCY/GWjs+tAFnZkSFkkdvYDNCuiM=;
+        b=TaI8cg108Z+FMYXbLmtGXzt85khSvCQ8ZqpzT3S5C0ne8ixhqMJ7RNhBEtYJHOeydC
+         YJcsNxvGlw2FmWA+n5cB6Qm+GrbrNTNCxBCD7TICWsP7rViIvVK03P/rb40VesaRN+RC
+         IcKZYsz7m2dcT5K6DXy5FgJ7Zr8XXln/ZZNOY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696623443; x=1697228243;
+        d=1e100.net; s=20230601; t=1696623544; x=1697228344;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=kW97lFtdi7tQSx5WV0UdX/3taJs5J9htbLPAyylMrXE=;
-        b=m7+BvaxqhPMK1dbAW8Hnvh3VaIfzTGPWoKu3J+Z/ppTKwX+rbGgnuyk1Hp8rgUgOlT
-         OSgu+pM0XdDvhPYJvOdno7niKCOgBNto1Qrm8ZWk+D/Sx82YNPAwcwbyLPaIBuSV+wbO
-         DSR3WfZDlPZUptXEnORSa2YsVcWIjWBeZzk3eOWUZSwEBdNh0+W81UYBVlqdNi+dYgGz
-         g8/VsHS2pPWOYQBYBYRIuU85UjkFMPIaemo0lRYyWWSlDnyfFeClTxWzYvpY0an0dBb5
-         cI+pGcmK7GGtLVZJLv4PMu4x14k4jEUn88BsmJhsUi49CHttWSf3zxEkLKMCIHHdPZOx
-         MaIw==
-X-Gm-Message-State: AOJu0Yypq8ZYjuYUkRssi1eLCDU3LF/Bw6jDgqMnrMPKEPja8WVoAfMm
-        nh0rvjKdV2y0+OtXXzXIac2ozA==
-X-Google-Smtp-Source: AGHT+IG6MS6aq0hR7NEmqMW13hny+F7i2UoqfOJWvAQ5rl6J3/G66uwQc2vUM5xOUeHLWKCJ3JR0OQ==
-X-Received: by 2002:a05:6a21:3296:b0:140:d536:d428 with SMTP id yt22-20020a056a21329600b00140d536d428mr10800853pzb.51.1696623443148;
-        Fri, 06 Oct 2023 13:17:23 -0700 (PDT)
+        bh=5f6ytO4v8vRnOLZhCY/GWjs+tAFnZkSFkkdvYDNCuiM=;
+        b=elYAwtDVQHAfMf+YJZ+ITGYU/v1Z8ICbyoznp8dIUYG15iOqgGoe6Wc+cv9l3yOYQy
+         C5iE57+PMB+qIm1NVbBSU+lmupT1tXhA4uKf4e2FZZG//ObVhj5vqykB8zic2tesKOFK
+         fj51eWSc8Wu/jQHDcE1jkH5Au4PP1UEHCIKEnPnpjaxVY9F57h6SANE3p3LAsHsRy3aC
+         BGGSF/pZvTbrXdSymXHI8OOquINRa66SHWG7XzCM+5ABveAFOesPDgSAS+0+tskK9prL
+         wehrPM/sbmmPaLu6ZW5v6uLN3Li40cmcUgNsSvPK68cMu5sJQmhUxgN/YQQSmnkNt6ng
+         YTFQ==
+X-Gm-Message-State: AOJu0Yw54F+1SZphFEJObe/kVDaiyZSQz3E/+a2jg4dk6H+dwvxznGH5
+        +4PdMDFlhwSb8cFurUaviEFVkg==
+X-Google-Smtp-Source: AGHT+IHoIlMhgrt/e6wSDVo6U3GrZoPZTlLlZDAUuVIjDuJVhWRmiaJrCWW+kz/LaH09wQ+DUjWSpg==
+X-Received: by 2002:a17:903:1245:b0:1c4:4dbc:92bc with SMTP id u5-20020a170903124500b001c44dbc92bcmr10579883plh.16.1696623543892;
+        Fri, 06 Oct 2023 13:19:03 -0700 (PDT)
 Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id q16-20020a62ae10000000b0069343e474bcsm1886916pff.104.2023.10.06.13.17.22
+        by smtp.gmail.com with ESMTPSA id a12-20020a170902ee8c00b001acae9734c0sm4331895pld.266.2023.10.06.13.19.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Oct 2023 13:17:22 -0700 (PDT)
+        Fri, 06 Oct 2023 13:19:03 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
-To:     Christian Lamparter <chunkeey@googlemail.com>
-Cc:     Kees Cook <keescook@chromium.org>, Kalle Valo <kvalo@kernel.org>,
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Kees Cook <keescook@chromium.org>,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         linux-wireless@vger.kernel.org, linux-hardening@vger.kernel.org,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Tom Rix <trix@redhat.com>, linux-kernel@vger.kernel.org,
         llvm@lists.linux.dev
-Subject: [PATCH] wifi: p54: Annotate struct p54_cal_database with __counted_by
-Date:   Fri,  6 Oct 2023 13:17:20 -0700
-Message-Id: <20231006201719.work.356-kees@kernel.org>
+Subject: [PATCH] wifi: intersil: hostap: Annotate struct prism2_download_data with __counted_by
+Date:   Fri,  6 Oct 2023 13:19:02 -0700
+Message-Id: <20231006201901.work.278-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1282; i=keescook@chromium.org;
- h=from:subject:message-id; bh=NFwzX0Eq7KCDbbQM5umu2p/6j6lMwTY9c2gIIvIyXH8=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlIGtQu26M1sSthhYbE6kdTUaJiSm4LeUxUUykm
- 4fh5mQO3aaJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZSBrUAAKCRCJcvTf3G3A
- Jhn3D/9y8+XILyj+byVNV0fCgmz3v95DGYn0tJmv1MXslgAFu8Pww0V8y65fznB07xphjUv3cxA
- WEudhs5dA2oWKVPIwgQkBr3dHpfR7MfTVAMX10JUODoUvZVbazlu7hg0b1/7JFv1xtmuwolgPFU
- ZDLr+eXAHNGcBC7mQDHWoQhR/anMut6KlTh0STekS1k9UApNKth4ayj4Q27n6URT7tgcLyhTpXG
- IDqWi7pmZhV0HTzbN3qJ9OzS8Ea6Mrr3flfaApdtgc8l4Q8/KxLtO+gbQgWTd5bSAhG8ee3BrW7
- CbghSKSSzyymAfdDTmw0xrvj6qfi+fTNEnOC/ahuDL/gsc+OPa/JbiLIWhLqhF5tOPKrwtvEPWQ
- zaUV5mYkSplYev71JajAiT3XxdTIy4NvIAHvwhdz6qakMmuIPeWdxXVsF30xALAoGqwA4LUljcE
- rOKtVVsTzIf3yZNJhOzFzBwOZlf6gpiSCfX/WLCn9+84Xf44KcnkWmIOrAJp8v85wuBKsOa3FGh
- 7TVCgeR/pe2oepKBwd24/KIQfu00XLzyQ7gliBRqobRTqowyK+UH4HCz6dW8TJ9+xF/1MBlohwB
- xWPTCxRzak2H8nyD8d/6psRG4kwCNICHXBCHdZ2sggZ3np+yS6sngN07u5+GoFUfkOBP2trZMya
- Y8XV3hQ JBRA4ZRg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1293; i=keescook@chromium.org;
+ h=from:subject:message-id; bh=TKH2rwBEryE3wL9UTdezXy/1pyU6gGSThNovHiWR+yA=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlIGu2xaMzE8hOMdtfFrRZu2+Af9UD+Je6xgVdx
+ MTm5JiaiHGJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZSBrtgAKCRCJcvTf3G3A
+ Ju49EACitXCernnFJ9biGqz8FuXcSt+CYk4lCp82ncDmztIE7w8s7PrVYr3qyIXD5St+yemEvIY
+ 8+TFJqHuSJ+paWaoNHAhsxTg1r09JWvOimJUZ3ElMl6n/Bd8/pxwY1ZHbmnlgOkLvs8+kXiYhfN
+ /6++V7c10DTQExTdfUBlANEEoIZ8mQdJEHPv6sbSbxYOFYQeKo4XW3BxYi9WU4g1JcCmoRSNQB3
+ /k0E9TD8cAbbKU8FvNLEMCG9ME9FlhoA9yskpT6t7sTt4eBqzc1XNpXHTEnqwn9kHsRmi2WaUui
+ vCgEF5gre80jNXK/sNllBjTiVbWYgBw3dyX1ghrHZMJmec97kDFi+IDdwdp9X68JKFcIqwEdM0i
+ eJROy9QnWw9Rqo9gH+mfkop6wvtjTIlAfOTHlRzMvS+rIXhZAdMu/q88krRTEI4Q39mFJnxOuCE
+ gOHoMiSxFoo+Lk8jQ4psIWfiq616RjfdOkBeWatRJ1SXz5clGVKm/GIjrmAUNUfQQ03Tnnj08W3
+ YQzgJWjH7EcBu0Yi0xiAELx8XW4MBy1Dn+rlcWlyOXyMd0J0W3M0iPxQD0ttRrhHVa/pILy9THj
+ ACXphBwkKUpFySPa87ZUKJkkZETjbhD+ROuipwdrpc9vCOeiP22iA6esHKK6LteyO+UPePjIBJE
+ ouK1x0v ulZR6wig==
 X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -92,9 +92,9 @@ their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
 array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
 functions).
 
-As found with Coccinelle[1], add __counted_by for struct p54_cal_database.
+As found with Coccinelle[1], add __counted_by for struct
+prism2_download_data.
 
-Cc: Christian Lamparter <chunkeey@googlemail.com>
 Cc: Kalle Valo <kvalo@kernel.org>
 Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 Cc: linux-wireless@vger.kernel.org
@@ -102,22 +102,22 @@ Cc: linux-hardening@vger.kernel.org
 Link: https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci [1]
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/net/wireless/intersil/p54/p54.h | 2 +-
+ drivers/net/wireless/intersil/hostap/hostap_wlan.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intersil/p54/p54.h b/drivers/net/wireless/intersil/p54/p54.h
-index 3356ea708d81..770e348d1f6c 100644
---- a/drivers/net/wireless/intersil/p54/p54.h
-+++ b/drivers/net/wireless/intersil/p54/p54.h
-@@ -126,7 +126,7 @@ struct p54_cal_database {
- 	size_t entry_size;
- 	size_t offset;
- 	size_t len;
--	u8 data[];
-+	u8 data[] __counted_by(entries);
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_wlan.h b/drivers/net/wireless/intersil/hostap/hostap_wlan.h
+index c25cd21d18bd..f71c0545c0be 100644
+--- a/drivers/net/wireless/intersil/hostap/hostap_wlan.h
++++ b/drivers/net/wireless/intersil/hostap/hostap_wlan.h
+@@ -617,7 +617,7 @@ struct prism2_download_data {
+ 		u32 addr; /* wlan card address */
+ 		u32 len;
+ 		u8 *data; /* allocated data */
+-	} data[];
++	} data[] __counted_by(num_areas);
  };
  
- #define EEPROM_READBACK_LEN 0x3fc
+ 
 -- 
 2.34.1
 
