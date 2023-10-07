@@ -2,60 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0F3C7BC476
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Oct 2023 05:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4277BC7D2
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Oct 2023 14:51:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343516AbjJGDng (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Oct 2023 23:43:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36938 "EHLO
+        id S1343917AbjJGMvJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Oct 2023 08:51:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343491AbjJGDne (ORCPT
+        with ESMTP id S1343882AbjJGMvI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Oct 2023 23:43:34 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9140BD;
-        Fri,  6 Oct 2023 20:43:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1D1C433C8;
-        Sat,  7 Oct 2023 03:43:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696650213;
-        bh=/XnJFcvVU6ZpIin+GOGN2gLHcNQTV4L7LTIlpf+1yQY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=nai38z5tQi/p+Yb92wCONFYch2eSpqfHrzRMrnJ7iVeumcdV887o0orT0t+lcNxbD
-         i40XIhm1BvRGR2ZMm9DH7dxV++olEpvAkXVd2E4mYUe8BtD/3KIZunE3wZ200+FA4e
-         BVzRxvSlnUrshY2lDc56P5Hdequv+9GOndP7+nYDi1H3p7tMgPUekIdu2PwlCkjMAH
-         KJ956YKUgrVkzSVW8EgLKj7UAnqXalGPoLumnXY8f5ot1+bmNpwT0pPydbsN+uByu4
-         U3sdDb8y3JeAf6SLYC8az7syBFG43FhZ4FKz8XJST4Ym/fAmRDep1oEenb1kvF2zue
-         xGX8o2/Ru1yfg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] wifi: mt76: Annotate struct mt76_rx_tid with __counted_by
-References: <20230915200612.never.786-kees@kernel.org>
-        <202310061320.8630F7E51@keescook>
-Date:   Sat, 07 Oct 2023 06:45:52 +0300
-In-Reply-To: <202310061320.8630F7E51@keescook> (Kees Cook's message of "Fri, 6
-        Oct 2023 13:21:13 -0700")
-Message-ID: <87cyxrgknj.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Sat, 7 Oct 2023 08:51:08 -0400
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49236B9;
+        Sat,  7 Oct 2023 05:51:05 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 8EF3A42617;
+        Sat,  7 Oct 2023 12:50:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1696683062; bh=iMMy30V2RH8HcFAxtufW8zJaG9pqEhOMkEXIgIHkq3w=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=NT94CZh0cDdfJkYzwtrEiGKhibKhm24cN9CWUZKfKgZeSV/MiEj79eaefgp8L8/e2
+         EYLkGQ/azhx2fp0nwbBpEqNoF9jhCJPMbDvF6Pjhu6GyTR6ItH2ezD7v0UNBZeGp6L
+         ANzPrfjfpLt0629j9mNVucxqwVEq2KERadWPmRlTbjyUS9+QMFDaLPXf+G9+ZXfAfi
+         zElfJmGxuVXT7VIKcL+lbyf224yf8jWdQr2VtZz8TcK0+cyyfbwiZsbescfeVWPjmd
+         pQb8mWRVCEVdM+4AsXZCRP7SPcKarphtPdRrUGUfjDeRMfjkgEjj0W2U3s5fUjLWwt
+         BfEbAqK1z0n2g==
+Message-ID: <e470902a-35eb-9bb4-7a9e-167f985c98bb@marcan.st>
+Date:   Sat, 7 Oct 2023 21:50:56 +0900
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: On brcm80211 maintenance and support
+Content-Language: en-US
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com,
+        brcm80211-dev-list.pdl@broadcom.com,
+        Asahi Linux <asahi@lists.linux.dev>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Julian Calaby <julian.calaby@gmail.com>
+References: <6f78e624-62ee-3ae5-1db4-a0411566def8@yandex.ru>
+ <CAGRGNgU7aySyUny9aG_+wXiKJ7j1weosa-rZDY4_WAXbq-3ABg@mail.gmail.com>
+ <87ttr454bh.fsf@kernel.org> <3c5a3e7a-b332-4a77-51ba-bed3cad1e79f@marcan.st>
+ <e1ee4d76-f717-a67c-8099-7b91192ba1ca@yandex.ru>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <e1ee4d76-f717-a67c-8099-7b91192ba1ca@yandex.ru>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,26 +68,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
+On 07/10/2023 00.48, Dmitry Antipov wrote:
+> On 10/6/23 18:34, Hector Martin wrote:
+> 
+>> For better or worse, if nobody else does, I'm willing to sign up to
+>> maintain the chips shipping on Apple ARM64 machines (i.e. BCM4378,
+>> BCM4387, BCM4388 - that last one I have bringup for downstream, just got
+>> it done this week) and partially BCM4377 as a bonus (since I have access
+>> to an older Intel Mac with that one, and already did bringup for it,
+>> though my access is sporadic). I'm already playing part time maintainer
+>> anyway (other folks have already sent us patches I'll have to upstream),
+>> and we need this driver to keep working and continue to support new chips.
+> 
+> Good news. Would you capable to consider some generic (not hooked to any
+> particular hardware) things like [1] ?
+> 
+> [1] https://lore.kernel.org/linux-wireless/20230703162458.155942-1-dmantipov@yandex.ru/
+> 
 
-> On Fri, Sep 15, 2023 at 01:06:12PM -0700, Kees Cook wrote:
->> Prepare for the coming implementation by GCC and Clang of the __counted_by
->> attribute. Flexible array members annotated with __counted_by can have
->> their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
->> (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
->> functions).
->> 
->> As found with Coccinelle[1], add __counted_by for struct mt76_rx_tid.
->
-> Friendly ping. Can this get picked up by the wifi tree, or should it go
-> via something else?
+Sure, I've done cleanup type stuff myself too.
 
-It's already in mt76 pull request and should be in wireless-next next
-week:
+- Hector
 
-https://patchwork.kernel.org/project/linux-wireless/patch/a5a2baaa-0db4-403e-9ebd-a7ff089675b4@nbd.name/
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
