@@ -2,226 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47C057BCCF5
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Oct 2023 09:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F7F47BCD08
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Oct 2023 09:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229441AbjJHHJF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Oct 2023 03:09:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54370 "EHLO
+        id S230526AbjJHHgH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Oct 2023 03:36:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234223AbjJHHJA (ORCPT
+        with ESMTP id S229441AbjJHHgG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Oct 2023 03:09:00 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A54E102
-        for <linux-wireless@vger.kernel.org>; Sun,  8 Oct 2023 00:08:57 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-51e24210395so8151a12.0
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Oct 2023 00:08:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696748935; x=1697353735; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6boweBsbEPYLh1haUGvUFhb+7tfvWfkGzP1aLPKTUnI=;
-        b=F39qHPk5zk2pyBIKhEM6PcfKPQRqnY9pi/x8dTGkHBXtoFP1RZ9kgEew/bWJahSX7u
-         ijedCeuRSfwz7OjfdCyxdqgtiBIWDVnZ+085y5EzOmOe01pKu/WoqWvlKM610Lf5ihNv
-         BMUgGXOMdVPIH/J4H13eMVDC7AnXJsSP84YgXJgXK+hcNEhDJZUgmt1wUlUZv3PKqkU0
-         g3k1jhh3eNn9QqkZXTNDOqxxoGlKUKZouNkqgcyvOvgTA+tlURIcHSfsmXi4Jc2lAOHi
-         Va+NwqU0sc3x25H3/Yd53hz8MkS+gfLDgULe90K8Q9KqVKkuV57WLP+bSXUphgxnKMpJ
-         4SZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696748935; x=1697353735;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6boweBsbEPYLh1haUGvUFhb+7tfvWfkGzP1aLPKTUnI=;
-        b=JOemDpk8tuAeXPXHzCkzHSOOYU0wcWkVW1+ZtOqvzv/VF19tKO8nF4RHq60JIBVmwS
-         MySOMSj1aa6SYquviCEoNPmXF7O2vpbzNnji+L/MVNoXqVhQBIibqZ6AvMvO9uHd7Ekm
-         h3gm2AavNwChYHKYHrDMbfqBDvU2MpjKd0dM+TuGYlXQKmCsSxkkBFgXrMmnv4dKzOsQ
-         u0Y9l5dXK4sRJURvSe26p3i2Ti2uqFcM5Shx5+R0ez2a5QUZvLD5YdG2v+ZH71rzpOhI
-         5siMsimd51o5pHd2n3kj9ZM4aBgZsjPtlRwU3uI/EEwS8pLRuKqkxPrXW/J/d82fJ57L
-         ssXw==
-X-Gm-Message-State: AOJu0YzjXlRqkgYySVb6tqaBcppf7oWEAsYGBuVE8J9NKc4Cu8UZwjQB
-        XLFbEfScQ7mPtVaQQj1E7Dve3Le73IvQSBA+pK193g==
-X-Google-Smtp-Source: AGHT+IEVhxr/hi+K678k9mZTv6OusdxrCYSsJHysJnZbWTvXJuhiZ+72RbS/nL58DWxeXDrsThbghNBmT+06iJCcOf8=
-X-Received: by 2002:a50:9f6c:0:b0:52e:f99a:b5f8 with SMTP id
- b99-20020a509f6c000000b0052ef99ab5f8mr308559edf.7.1696748935193; Sun, 08 Oct
- 2023 00:08:55 -0700 (PDT)
+        Sun, 8 Oct 2023 03:36:06 -0400
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E712B9;
+        Sun,  8 Oct 2023 00:36:01 -0700 (PDT)
+Received: by bues.ch with esmtpsa (Exim 4.96)
+        (envelope-from <m@bues.ch>)
+        id 1qpOKS-0001K9-1j;
+        Sun, 08 Oct 2023 09:35:55 +0200
+Date:   Sun, 8 Oct 2023 09:35:20 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [RFC PATCH] ssb: relax SSB_EMBEDDED dependencies
+Message-ID: <20231008093520.42ead15f@barney>
+In-Reply-To: <20231007182443.32300-1-rdunlap@infradead.org>
+References: <20231007182443.32300-1-rdunlap@infradead.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20231003145150.2498-1-ansuelsmth@gmail.com> <20231003145150.2498-4-ansuelsmth@gmail.com>
- <CANn89iLtYZJPOQE7OkAbEdmhT8qjzAJ+27poa__3c8Nf0M6u_w@mail.gmail.com> <652056c5.5d0a0220.2b60d.c5dc@mx.google.com>
-In-Reply-To: <652056c5.5d0a0220.2b60d.c5dc@mx.google.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Sun, 8 Oct 2023 09:08:41 +0200
-Message-ID: <CANn89i+Cie+oE_hTWkyJWutTG9CnPy+dbW+-A97Q+E9Rq-f9rQ@mail.gmail.com>
-Subject: Re: [net-next PATCH v2 4/4] netdev: use napi_schedule bool instead of napi_schedule_prep/__napi_schedule
-To:     Christian Marangi <ansuelsmth@gmail.com>
-Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        Raju Rangoju <rajur@chelsio.com>,
-        Jeroen de Borst <jeroendb@google.com>,
-        Praveen Kaligineedi <pkaligineedi@google.com>,
-        Shailend Chand <shailend@google.com>,
-        Douglas Miller <dougmill@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Nick Child <nnac123@linux.ibm.com>,
-        Haren Myneni <haren@linux.ibm.com>,
-        Rick Lindsley <ricklind@linux.ibm.com>,
-        Dany Madden <danymadden@us.ibm.com>,
-        Thomas Falcon <tlfalcon@linux.ibm.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Kalle Valo <kvalo@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-        Intel Corporation <linuxwwan@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
-        Liu Haijun <haijun.liu@mediatek.com>,
-        M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
-        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
-        Ziwei Xiao <ziweixiao@google.com>,
-        Rushil Gupta <rushilg@google.com>,
-        Coco Li <lixiaoyan@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Junfeng Guo <junfeng.guo@intel.com>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Wei Fang <wei.fang@nxp.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Yuri Karpov <YKarpov@ispras.ru>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Zheng Zengkai <zhengzengkai@huawei.com>,
-        Lee Jones <lee@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Dawei Li <set_pte_at@outlook.com>,
-        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-        Benjamin Berg <benjamin.berg@intel.com>,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-can@vger.kernel.org, netdev@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/9PIyIezhhAqouq34xqM7bjm";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Oct 6, 2023 at 8:49=E2=80=AFPM Christian Marangi <ansuelsmth@gmail.=
-com> wrote:
->
-> On Thu, Oct 05, 2023 at 06:16:26PM +0200, Eric Dumazet wrote:
-> > On Tue, Oct 3, 2023 at 8:36=E2=80=AFPM Christian Marangi <ansuelsmth@gm=
-ail.com> wrote:
-> > >
-> > > Replace if condition of napi_schedule_prep/__napi_schedule and use bo=
-ol
-> > > from napi_schedule directly where possible.
-> > >
-> > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> > > ---
-> > >  drivers/net/ethernet/atheros/atlx/atl1.c     | 4 +---
-> > >  drivers/net/ethernet/toshiba/tc35815.c       | 4 +---
-> > >  drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 4 +---
-> > >  3 files changed, 3 insertions(+), 9 deletions(-)
-> > >
-> > > diff --git a/drivers/net/ethernet/atheros/atlx/atl1.c b/drivers/net/e=
-thernet/atheros/atlx/atl1.c
-> > > index 02aa6fd8ebc2..a9014d7932db 100644
-> > > --- a/drivers/net/ethernet/atheros/atlx/atl1.c
-> > > +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-> > > @@ -2446,7 +2446,7 @@ static int atl1_rings_clean(struct napi_struct =
-*napi, int budget)
-> > >
-> > >  static inline int atl1_sched_rings_clean(struct atl1_adapter* adapte=
-r)
-> > >  {
-> > > -       if (!napi_schedule_prep(&adapter->napi))
-> > > +       if (!napi_schedule(&adapter->napi))
-> > >                 /* It is possible in case even the RX/TX ints are dis=
-abled via IMR
-> > >                  * register the ISR bits are set anyway (but do not p=
-roduce IRQ).
-> > >                  * To handle such situation the napi functions used t=
-o check is
-> > > @@ -2454,8 +2454,6 @@ static inline int atl1_sched_rings_clean(struct=
- atl1_adapter* adapter)
-> > >                  */
-> > >                 return 0;
-> > >
-> > > -       __napi_schedule(&adapter->napi);
-> > > -
-> > >         /*
-> > >          * Disable RX/TX ints via IMR register if it is
-> > >          * allowed. NAPI handler must reenable them in same
-> > > diff --git a/drivers/net/ethernet/toshiba/tc35815.c b/drivers/net/eth=
-ernet/toshiba/tc35815.c
-> > > index 14cf6ecf6d0d..a8b8a0e13f9a 100644
-> > > --- a/drivers/net/ethernet/toshiba/tc35815.c
-> > > +++ b/drivers/net/ethernet/toshiba/tc35815.c
-> > > @@ -1436,9 +1436,7 @@ static irqreturn_t tc35815_interrupt(int irq, v=
-oid *dev_id)
-> > >         if (!(dmactl & DMA_IntMask)) {
-> > >                 /* disable interrupts */
-> > >                 tc_writel(dmactl | DMA_IntMask, &tr->DMA_Ctl);
-> > > -               if (napi_schedule_prep(&lp->napi))
-> > > -                       __napi_schedule(&lp->napi);
-> > > -               else {
-> > > +               if (!napi_schedule(&lp->napi)) {
-> > >                         printk(KERN_ERR "%s: interrupt taken in poll\=
-n",
-> > >                                dev->name);
-> > >                         BUG();
-> >
-> > Hmmm... could you also remove this BUG() ? I think this code path can b=
-e taken
-> > if some applications are using busy polling.
-> >
-> > Or simply rewrite this with the traditional
-> >
-> > if (napi_schedule_prep(&lp->napi)) {
-> >    /* disable interrupts */
-> >    tc_writel(dmactl | DMA_IntMask, &tr->DMA_Ctl);
-> >     __napi_schedule(&lp->napi);
-> > }
-> >
-> >
->
-> Mhhh is it safe to do so? I mean it seems very wrong to print a warning
-> and BUG() instead of disabling the interrupt only if napi can be
-> scheduled... Maybe is very old code? The more I see this the more I see
-> problem... (randomly disabling the interrupt and then make the kernel
-> die)
+--Sig_/9PIyIezhhAqouq34xqM7bjm
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-I am pretty sure this BUG() can be hit these days with busy polling or
-setting gro_flush_timeout.
+Hi Randy,
 
-I wish we could remove these bugs before someone copy-paste them.
+thanks for the patch.
 
-Again, this is orthogonal, I might simply stop doing reviews if this
-is not useful.
+On Sat,  7 Oct 2023 11:24:43 -0700
+Randy Dunlap <rdunlap@infradead.org> wrote:
+
+> This is a kconfig warning in a randconfig when CONFIG_PCI is not set:
+>=20
+> WARNING: unmet direct dependencies detected for SSB_EMBEDDED
+>   Depends on [n]: SSB [=3Dy] && SSB_DRIVER_MIPS [=3Dy] &&
+> SSB_PCICORE_HOSTMODE [=3Dn] Selected by [y]:
+>   - BCM47XX_SSB [=3Dy] && BCM47XX [=3Dy]
+>=20
+> This is caused by arch/mips/bcm47xx/Kconfig's symbol BCM47XX_SSB
+> selecting SSB_EMBEDDED when CONFIG_PCI is not set.
+>=20
+> This warning can be prevented by having SSB_EMBEDDED not depend on
+> SSB_PCICORE_HOSTMODE, although some parts of SSB use PCI.
+
+> diff -- a/drivers/ssb/Kconfig b/drivers/ssb/Kconfig
+> --- a/drivers/ssb/Kconfig
+> +++ b/drivers/ssb/Kconfig
+> @@ -134,7 +134,7 @@ config SSB_SFLASH
+>  # Assumption: We are on embedded, if we compile the MIPS core.
+>  config SSB_EMBEDDED
+>  	bool
+> -	depends on SSB_DRIVER_MIPS && SSB_PCICORE_HOSTMODE
+> +	depends on SSB_DRIVER_MIPS
+>  	default y
+> =20
+>  config SSB_DRIVER_EXTIF
+
+Could we instead make SSB_EMBEDDED depend on SSB_PCICORE_HOSTMODE if
+PCI!=3Dn. Wouldn't that also solve the problem?
+
+I don't fully remember how all this ssb config stuff works, but to
+me adding a PCICORE->PCI dependency sounds safer against build
+regressions in some other configurations.
+
+What do you think?
+
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/9PIyIezhhAqouq34xqM7bjm
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmUiW7gACgkQ9TK+HZCN
+iw5kThAAzOTfIX882ys2ZC7uP4UJMeszEWOpPQX1XGO4FUkDALJyYIKHEmc3MV9N
+/lyLrIeH1X7DSpn8eo1UEQ6+wZYzR0uNUUrRNwponzQrp/TtzyEoW3eR54p/fZjA
+Rlc5hSd61FfAwF2rtWjyMuSV1Drsm2rg75I50xU60xL2U9WbkRHNpfI/dTfBiuNB
+POWxoCLF/YmsvRbix+CPHzMFO6fggTLLu1UrbnsHZp5PQqWEwxkfeT+UZBMZqjNC
+iJVxy0JHaT7Eh8GV1h2xE46+okLdBqTFtJre+Z5oebn7vNOROM6K/B9wGebCKfu4
+7huGbxMl0oUr8FhNOgD544arI/l9cC3WmYQ0PXBFrveGdmfukUECOOIcTtRN9TQr
+yRhPOZSZNvgUKFZI4lRR8OEtNOcOjsVE2aAGdMgfYbgpSZJDELmwSjkx4yCAgZ7q
+GWnHCa6WbW1C9bNcwpt2eV1+Uyy8eU7IoUg5CZCwD6y0UriYD40DGNkpYQLfVwEL
+9qc6RJh7ujook92qZlhUkdfUF34WbfGo/GxVgnCvteHwcnG3Ahh2se5T+tyPQm5u
+5BIy2pPOGf+9SP0oGKtqrOtyUwdD/11R1q2qx84fhrYdh+FZf/vLVCDZAcMqUzfv
+66xUwPleihuTxNxxFYZclRlvq6a48tWQC4kchMXeOMUcjEDv6PA=
+=LKqz
+-----END PGP SIGNATURE-----
+
+--Sig_/9PIyIezhhAqouq34xqM7bjm--
