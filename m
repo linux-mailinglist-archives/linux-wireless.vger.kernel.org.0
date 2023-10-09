@@ -2,69 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D2B37BD507
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 10:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6F527BD500
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 10:18:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234378AbjJIIVq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Oct 2023 04:21:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47444 "EHLO
+        id S234376AbjJIISd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Oct 2023 04:18:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232666AbjJIIVp (ORCPT
+        with ESMTP id S232666AbjJIISb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Oct 2023 04:21:45 -0400
-X-Greylist: delayed 368 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 09 Oct 2023 01:21:43 PDT
-Received: from mail.durme.pl (mail.durme.pl [217.182.69.186])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6AF78F
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 01:21:43 -0700 (PDT)
-Received: by mail.durme.pl (Postfix, from userid 1002)
-        id 80DA34CC2E; Mon,  9 Oct 2023 08:15:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=durme.pl; s=mail;
-        t=1696839334; bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
-        h=Date:From:To:Subject:From;
-        b=JA7VAruqRYYhpJ1QBwyzvwgvLs9X2o6JiCoUJW6CDM1vo6s4tjLVjgqPtrJSHC+OW
-         TXwl2lpGrAv++t9HuRSh3+OF/evbFBxUCrRqTnb3uesWnnCgT0CerHeo1V3jj8XGJl
-         8mupD2M0Jw3f22tZlNUK+i8BzkGeIDNbSVxMJoeN5hfsKMs+EOwWdv5LmmXBlkziFs
-         eIGe9tkB0syiaQECHc2270KAxjNQNUetmeWZJQDDUnnyKCYMhMB+8i/jdosXOPvSM0
-         7xs2ctYLDk5uqK/C+WexJV2IUTBiVImt2fNts1yz5902ZGbNhPihLZEMGp65yyGNhx
-         C/qPJ/NvcZFHA==
-Received: by mail.durme.pl for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 08:15:04 GMT
-Message-ID: <20231009064501-0.1.4t.nmef.0.jfdxvek6hb@durme.pl>
-Date:   Mon,  9 Oct 2023 08:15:04 GMT
-From:   "Krystian Wieczorek" <krystian.wieczorek@durme.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: W sprawie samochodu
-X-Mailer: mail.durme.pl
+        Mon, 9 Oct 2023 04:18:31 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C77638F
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 01:18:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=IjeNk0Y5JtGnrNEcA2qCKSSicZ1bcfGYnsYpvYCB90s=; t=1696839510; x=1698049110; 
+        b=dWnbkFKYZKZGr0vjVU7KPEQBFJGNW9Avlys4Jz51iNYFW4p8Wspdhd8CBWWxMYSPeHNpNDvDyHU
+        Mqvry8GBGyBFpqcSpiOXBx+O3gYaFBkBm1m+Bn6pDg/77aQySJEFceJyC0+Pcy3F/8aal0nIAu9Xu
+        9kI8CE+PEWryIUod93IM/J6aksg7Wi92v9yvAEjQwG3oTPmcdyHcIzfjNp5idIyU6lO+K5OflSTgH
+        3/FsoRtYh3IBqrclUcnzTEidoeWPvD4Z26OOJdkn3MSbcw+TgUdr9YM+QCjc654+D2T2f6W8AXsI+
+        PsTe3wLxMVP3j5UveueZV0OhPZyVSvd/TwmQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC0)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qplTA-0000000FAki-1PNR;
+        Mon, 09 Oct 2023 10:18:28 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH] wifi: cfg80211: use system_unbound_wq for wiphy work
+Date:   Mon,  9 Oct 2023 10:18:01 +0200
+Message-ID: <20231009101800.bb75408bf635.I6528d97e24b3da36cdf633b4738327d77c7276f2@changeid>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NIXSPAM_IXHASH,RCVD_IN_SBL_CSS,
-        SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+From: Johannes Berg <johannes.berg@intel.com>
 
-chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
-, je=C5=9Bli chodzi o system monitoringu GPS.
+Since wiphy work items can run pretty much arbitrary
+code in the stack/driver, it can take longer to run
+all of this, so we shouldn't be using system_wq via
+schedule_work(). Also, we lock the wiphy (which is
+the reason this exists), so use system_unbound_wq.
 
-Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
-e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
-a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
+Reported-by: Kalle Valo <kvalo@kernel.org>
+Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
-dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
-szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
-mne znaczenie.
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 7df8ffcfa0c4..758c9a2a12c0 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1613,7 +1613,7 @@ void wiphy_work_queue(struct wiphy *wiphy, struct wiphy_work *work)
+ 		list_add_tail(&work->entry, &rdev->wiphy_work_list);
+ 	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
+ 
+-	schedule_work(&rdev->wiphy_work);
++	queue_work(system_unbound_wq, &rdev->wiphy_work);
+ }
+ EXPORT_SYMBOL_GPL(wiphy_work_queue);
+ 
+-- 
+2.41.0
 
-Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
-b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
-
-
-Pozdrawiam
-Krystian Wieczorek
