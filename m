@@ -2,146 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E9127BEE0C
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 00:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3CF37BEF47
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 01:43:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378859AbjJIWFl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Oct 2023 18:05:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52046 "EHLO
+        id S1379068AbjJIXnQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Oct 2023 19:43:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377059AbjJIWFj (ORCPT
+        with ESMTP id S1378168AbjJIXnO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Oct 2023 18:05:39 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE8A7E6
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 15:05:24 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-6969b391791so3391817b3a.3
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Oct 2023 15:05:24 -0700 (PDT)
+        Mon, 9 Oct 2023 19:43:14 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C820A9
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 16:43:12 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1dcfe9cd337so2491568fac.2
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Oct 2023 16:43:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1696889124; x=1697493924; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/rIbMEY0KLZuTJXGkvyS53BfVxkGFGvroxWH8XJdJsI=;
-        b=DHzg7jHM90iHDjEjpMVZsxcPKECro4TSt3cw2gx2SqVlX+MA+mZSTS2TB4w4cdejL3
-         5FBrDWCWG55KCfaiqXU/fojQuiefCwEdEgBf7tX1366TdltsrZ4Rz99QvJefA6eHEiuo
-         sgf9lc4KpbU7hjV4u+SqHHloTnvhlonluxnHs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696889124; x=1697493924;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1696894992; x=1697499792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/rIbMEY0KLZuTJXGkvyS53BfVxkGFGvroxWH8XJdJsI=;
-        b=N5QCswGBJ8ywSXJaueVMCgJ5OCI/qJMzL4sZRsun2sITdFDXPINPokeIXZvECgzkQ7
-         SX9SBwnoCKMiDlUiUMgXXi2Sl+xWKVUGzNUP5wFwe9/CPlRfCZ8MpuD6EZADZhR0iPME
-         WkTILUD1Mae7JjWQcAljAoAk/Znb4Cx8CMjK47vRBOuuaX599uNmdInTIbqbe4dosEbc
-         2fAw1/AtjaVO5y1thPUeui0WPdInPwQjF+C3jY/IVMdhx5JfNRwFLBzuxZFRESoZgg0m
-         d0Go0PkGg5+3bF42w/jQkLwrgJ0tKiY1wVTnlby1MTW11J7gLfEsukf14pw1W19jR2US
-         eN2g==
-X-Gm-Message-State: AOJu0YwHXqNCCtV6nQz6+wU5vMQdqgJtsIReI5cZ1PQTqGTPJSrZ6uh6
-        IOjVja+sumUZgUZ2OR4uq1ulwQ==
-X-Google-Smtp-Source: AGHT+IEBCqtLNAeRUJEeWjcTOnSv1UFgTNeaa9XXwYbRiU7M2LJKxYcai3apehX/wjgyfixLRc3kcA==
-X-Received: by 2002:a05:6a20:d41e:b0:16b:74bb:e57e with SMTP id il30-20020a056a20d41e00b0016b74bbe57emr8200777pzb.12.1696889124175;
-        Mon, 09 Oct 2023 15:05:24 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id c12-20020aa78e0c000000b006933866fd21sm6918310pfr.117.2023.10.09.15.05.23
+        bh=Xrc2DNtzr7WUli92ysWJKPQNNroXkQpQ9YdmsD4PBYM=;
+        b=TOjeJUTANSegbrVtzmSg2Wu8EDeYcqU+Zl9uw2UJd64egfQjMDoaO7WgDSQN90ifLI
+         QnIs0tgXev4XAVNs856qdlyEsHmBTbFxzXgRIjcCzQLWS0L8u2L2BSRZJxImT4EVb1Qr
+         CJGwrB1DYOolUDNw7bkYWIBDf1BcR0rtt7BSpbVBurmsHuiA0IQNmSIS8htjZ/SMCEV3
+         w5EeqJl2xP2FtYKhI9C4pQZ5o0Exo5j/R1NMLWrtxSkZPk92I6+S8qtC9D9QmGz6w9wn
+         NJb92eAjXQP1f2bjPfz8L69x6nWjWb+dRX7EGvJgQEDM3OSN3vnFqxi8+WxRkMY6zi2r
+         Zhqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696894992; x=1697499792;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Xrc2DNtzr7WUli92ysWJKPQNNroXkQpQ9YdmsD4PBYM=;
+        b=AM7DaYWQ1Qd6ER1E+isZ7LaRmr2JAhJ1bNL+dCbuBpKhsZTFvS0SZSLCY4cxhUjcBx
+         afnAlfz11hunq+JaiEeSidsqricfj4Y5+i7nWaUHeUWjZHqBQQNrRFGMPaOiaC9t1Pih
+         PbDeZ9sLBkymxLWIX/Clw8eyl5rvglXvEHV1UvJheX1sbhsNopcb9jTDf+66/1cAiXvU
+         Ir0Y+3BFTvLQc+BHzm6pRfiGL23cgBVpKiHJG8h+wwLRS4sVv2BhoY/VGaQgKbi8HSYQ
+         77L0o1kNkecsKlJB0sUL8JgDa0t5xB3RbCmJvLMMvmZ+/ZcOVEtGCcIm4dNeIsrf/nsX
+         dUNw==
+X-Gm-Message-State: AOJu0Yzjc1lZjop+OcSxIhCx4Fgn72QWllwSfGi9ifOBqUfk8gd/XonS
+        tR7Zm3VG2szUrY7kJqnVMO739g==
+X-Google-Smtp-Source: AGHT+IGZjdcGJcPM2ssfu4CXuU8dn+LKhcOJHfZVLV2qybq3DQf2t3fKYJxXoMRNZB4O6SQYYHOjyw==
+X-Received: by 2002:a05:6870:fbac:b0:1d0:d357:c526 with SMTP id kv44-20020a056870fbac00b001d0d357c526mr16407549oab.11.1696894991815;
+        Mon, 09 Oct 2023 16:43:11 -0700 (PDT)
+Received: from hermes.local (204-195-126-68.wavecable.com. [204.195.126.68])
+        by smtp.gmail.com with ESMTPSA id 3-20020aa79103000000b0068bbe3073b6sm6912590pfh.181.2023.10.09.16.43.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Oct 2023 15:05:23 -0700 (PDT)
-Date:   Mon, 9 Oct 2023 15:05:21 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] wifi: brcmfmac: fweh: Add __counted_by for struct
- brcmf_fweh_queue_item and use struct_size()
-Message-ID: <202310091505.396E92C3@keescook>
-References: <ZSRzrIe0345eymk2@work>
+        Mon, 09 Oct 2023 16:43:10 -0700 (PDT)
+Date:   Mon, 9 Oct 2023 16:43:03 -0700
+From:   Stephen Hemminger <stephen@networkplumber.org>
+To:     Rodolfo Zitellini <rwz@xhero.org>
+Cc:     Arnd Bergmann <arnd@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wpan@vger.kernel.org,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, Doug Brown <doug@schmorgal.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 01/10] appletalk: remove localtalk and ppp support
+Message-ID: <20231009164303.0fe2f556@hermes.local>
+In-Reply-To: <790BA488-B6F6-41ED-96EF-2089EF1C043B@xhero.org>
+References: <20231009141908.1767241-1-arnd@kernel.org>
+        <790BA488-B6F6-41ED-96EF-2089EF1C043B@xhero.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZSRzrIe0345eymk2@work>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 09, 2023 at 03:42:04PM -0600, Gustavo A. R. Silva wrote:
-> Prepare for the coming implementation by GCC and Clang of the __counted_by
-> attribute. Flexible array members annotated with __counted_by can have
-> their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
-> array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-> functions).
-> 
-> Also, relocate `event->datalen = datalen;` to before calling
-> `memcpy(event->data, data, datalen);`, so that the __counted_by
-> annotation has effect, and flex-array member `data` can be properly
-> bounds-checked at run-time.
-> 
-> While there, use struct_size() helper, instead of the open-coded
-> version, to calculate the size for the allocation of the whole
-> flexible structure, including of course, the flexible-array member.
-> 
-> This code was found with the help of Coccinelle, and audited and
-> fixed manually.
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+On Mon, 9 Oct 2023 18:49:43 +0200
+Rodolfo Zitellini <rwz@xhero.org> wrote:
 
-Yeah, looks right. Thanks for moving the count assignment.
+> Hi!
+> I=E2=80=99ve been working on a new LocalTalk interface driver for the las=
+t couple months, do you think it would be possible to at least postpone the=
+ removal of LT a bit?
+>=20
+> It is a driver for an open source device called TashTalk (https://github.=
+com/lampmerchant/tashtalk), which runs on a PIC micro that does all the LT =
+interfacing, and communicates back via serial to the host system. My driver=
+ is relatively simple and works very well with netatalk 2.2 (which is still=
+ maintained and still has support for AppleTalk). The driver is basically c=
+omplete and trsted and I was preparing to submit a patch.
+>=20
+> Still having LocalTalk in my view has many advantages for us enthusiasts =
+that still want to bridge old machines to the current world without modific=
+ations, for example for printing on modern printers, netbooting, sharing fi=
+les and even tcp/ip. All this basically works out of the box via the driver=
+, Linux and available userspace tools (netatalk, macipgw).
+>=20
+> The old ISA cards supported by COPS were basically unobtanium even 20 yea=
+rs ago, but the solution of using a PIC and a serial port is very robust an=
+d much more furure-proof. We also already have a device that can interface =
+a modern machine directly via USB to LocalTalk.
+>=20
+> The development of the TashTalk has been also extensively discussed on th=
+r 68KMLA forum (https://68kmla.org/bb/index.php?threads/modtashtalk-lt0-dri=
+ver-for-linux.45031/)
+>=20
+> I hope the decision to remove LocalTalk can be reconsidered at least for =
+the time being so there is a chance to submit a new, modern device making u=
+se of this stack.
+>=20
+> Many Thanks,
+> Rodolfo Zitellini
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-
--Kees
-
-> ---
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-> index dac7eb77799b..68960ae98987 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-> @@ -33,7 +33,7 @@ struct brcmf_fweh_queue_item {
->  	u8 ifaddr[ETH_ALEN];
->  	struct brcmf_event_msg_be emsg;
->  	u32 datalen;
-> -	u8 data[];
-> +	u8 data[] __counted_by(datalen);
->  };
->  
->  /*
-> @@ -418,17 +418,17 @@ void brcmf_fweh_process_event(struct brcmf_pub *drvr,
->  	    datalen + sizeof(*event_packet) > packet_len)
->  		return;
->  
-> -	event = kzalloc(sizeof(*event) + datalen, gfp);
-> +	event = kzalloc(struct_size(event, data, datalen), gfp);
->  	if (!event)
->  		return;
->  
-> +	event->datalen = datalen;
->  	event->code = code;
->  	event->ifidx = event_packet->msg.ifidx;
->  
->  	/* use memcpy to get aligned event message */
->  	memcpy(&event->emsg, &event_packet->msg, sizeof(event->emsg));
->  	memcpy(event->data, data, datalen);
-> -	event->datalen = datalen;
->  	memcpy(event->ifaddr, event_packet->eth.h_dest, ETH_ALEN);
->  
->  	brcmf_fweh_queue_event(fweh, event);
-> -- 
-> 2.34.1
-> 
-> 
-
--- 
-Kees Cook
+Does it really need it to be a kernel protocol stack?
+What about doing it in userspace or with BPF?
