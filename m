@@ -2,143 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30BBE7BE70C
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 18:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92AA07BE73E
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 19:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377272AbjJIQ4Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Oct 2023 12:56:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40618 "EHLO
+        id S1377138AbjJIRAP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Oct 2023 13:00:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376588AbjJIQ4Q (ORCPT
+        with ESMTP id S1376950AbjJIRAO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Oct 2023 12:56:16 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE399D
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 09:56:14 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-692779f583fso3181331b3a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Oct 2023 09:56:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1696870574; x=1697475374; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BI1wdHvupQf0LaYbc5/G8p3qu/45NR/6x8pz02yh3PE=;
-        b=Q4wh+a/oJyOU0GBAbt9uc99A9WiOgV+YcRmeLb4UUfMf4VlgokwcP92m70XoytoW2e
-         r2MufKKMFTXq3o64nhVKe72u7EPn7Lr6bIVjrgMzp7pzau4PHAgLKfFXp6jUTMDWA3Vh
-         sYQOz50kVGk65u59a0k3ZgJrugAZK/to1QcA4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696870574; x=1697475374;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BI1wdHvupQf0LaYbc5/G8p3qu/45NR/6x8pz02yh3PE=;
-        b=ujoIS4v0EICBmgiOVjU36bVj84PjQ4sNoyF0RAGqT0nVzFybw22jzy+JeixAr39wfV
-         mNjVk6yUdAGz+2xbrjnyATxU+u0LoZtfjYFO0QaP5GwCcdCNdJ/UK4AbrxZN+X+XNERG
-         NgFWs7qB7udtxtpySqyYdoIuo3oIivYpaapq6W/Yv6AeAOtm2JEmIVNWRXCZn04u3bj5
-         RKx7btA8bTx7zXw2XraQP4tsxvp/FUWtTeelAMygES3ULGO4VCjg6ba4VDFtQGxPK2y1
-         KZxYgS55JF5pmvzpq0cCknm8DPId85EcdscC1KmpQ4haUmayrk46xAbWvWnecQPdONWn
-         AzUw==
-X-Gm-Message-State: AOJu0Ywgf+NSKZvIc3Lm9BGUzx5T2OrfLdSltAJ5ocqpijMkppMbhHX0
-        0mBoKm2hOsaWt+tOM0WXF1Dsfg==
-X-Google-Smtp-Source: AGHT+IExmUks9+I/YiKBGr4BtICx6xzlqORwNadZpHtAORGWPchSbI37a3pFI+AKwfNa/ZHilpgCWw==
-X-Received: by 2002:a05:6a00:124a:b0:690:ce30:47e5 with SMTP id u10-20020a056a00124a00b00690ce3047e5mr14761348pfi.6.1696870574128;
-        Mon, 09 Oct 2023 09:56:14 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id l3-20020a62be03000000b00688c733fe92sm6540299pff.215.2023.10.09.09.56.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Oct 2023 09:56:13 -0700 (PDT)
-Date:   Mon, 9 Oct 2023 09:56:11 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-        "trix@redhat.com" <trix@redhat.com>,
-        "nathan@kernel.org" <nathan@kernel.org>,
-        "ndesaulniers@google.com" <ndesaulniers@google.com>,
-        "gustavoars@kernel.org" <gustavoars@kernel.org>
-Subject: Re: [PATCH] wifi: rtw89: coex: Annotate struct
- rtw89_btc_btf_set_slot_table with __counted_by
-Message-ID: <202310090953.B7CE5CF4B@keescook>
-References: <20231006201715.work.239-kees@kernel.org>
- <4716f3c7bf3d34ea25229edd5250f5f0cff639d8.camel@realtek.com>
+        Mon, 9 Oct 2023 13:00:14 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1898CC
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 10:00:10 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 399EjWGu025532;
+        Mon, 9 Oct 2023 17:00:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=UlDOppxQT3UIpZ3cnTZKUVvTyWX3ee38hDdLgDHBERk=;
+ b=I86If8pikm9OC5xuE9XyRB0rqrRhhsWI0ApqpqWf/1FhRmtmz0FDzZZAEGmKDxyEk/dQ
+ LSEvH7Gbrwg599ClUkXWgW1hXKQ/B1foPhsCjj6QNlGb14A4njeHULrcyChrOq5jEjw/
+ UyhRotLX7ytcxfs57UEdllDaCg9tez7W3QX1rsaKFN0X4fe3Ca/W7qyie1zN8/vV6LWJ
+ g6TvTZRH5fVE0TegG+vAwp4Qtm13DSs0p5wW16rbm7MAN+sVw4yrg7HV9tUmNErmUi94
+ Ervt2z75deQV5+rJECC13nY+m25iChlvxy3EnLyYK/nQohLR2E1n0Oz6vTq6RslNQJro Qw== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tkh87b0eg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Oct 2023 17:00:00 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 399Gxx8E011531
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 9 Oct 2023 16:59:59 GMT
+Received: from [10.111.180.41] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 9 Oct
+ 2023 09:59:59 -0700
+Message-ID: <757d6d82-b4fd-4bce-98e5-bbf09724e37e@quicinc.com>
+Date:   Mon, 9 Oct 2023 09:59:58 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4716f3c7bf3d34ea25229edd5250f5f0cff639d8.camel@realtek.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] wifi: ath12k: add TAS capability for WCN7850
+Content-Language: en-US
+To:     Lingbo Kong <quic_lingbok@quicinc.com>,
+        <ath12k@lists.infradead.org>, <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20231009090149.247211-1-quic_lingbok@quicinc.com>
+ <20231009090149.247211-2-quic_lingbok@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231009090149.247211-2-quic_lingbok@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: YjLcXZUcm76j6AKWOcZbvClyVYFfy4kp
+X-Proofpoint-GUID: YjLcXZUcm76j6AKWOcZbvClyVYFfy4kp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-09_14,2023-10-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1 clxscore=1015 suspectscore=0
+ phishscore=0 impostorscore=0 mlxscore=1 bulkscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 spamscore=1 malwarescore=0 mlxlogscore=218
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2310090138
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Oct 07, 2023 at 01:20:43AM +0000, Ping-Ke Shih wrote:
-> On Fri, 2023-10-06 at 13:17 -0700, Kees Cook wrote:
-> > 
-> > Prepare for the coming implementation by GCC and Clang of the __counted_by
-> > attribute. Flexible array members annotated with __counted_by can have
-> > their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
-> > array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-> > functions).
-> > 
-> > As found with Coccinelle[1], add __counted_by for struct
-> > rtw89_btc_btf_set_slot_table.
-> > 
-> > Cc: Ping-Ke Shih <pkshih@realtek.com>
-> > Cc: Kalle Valo <kvalo@kernel.org>
-> > Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-> > Cc: linux-wireless@vger.kernel.org
-> > Cc: linux-hardening@vger.kernel.org
-> > Link: https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci [1]
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  drivers/net/wireless/realtek/rtw89/coex.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-> > index 4ba8b3df70ae..d66a1152c3f5 100644
-> > --- a/drivers/net/wireless/realtek/rtw89/coex.c
-> > +++ b/drivers/net/wireless/realtek/rtw89/coex.c
-> > @@ -237,7 +237,7 @@ struct rtw89_btc_btf_set_report {
-> >  struct rtw89_btc_btf_set_slot_table {
-> >         u8 fver;
-> >         u8 tbl_num;
-> > -       u8 buf[];
-> > +       u8 buf[] __counted_by(tbl_num);
-> 
-> This struct isn't defined properly. It should be 
-> 
-> struct rtw89_btc_btf_set_slot_table {
-> 	u8 fver;
-> 	u8 tbl_num;
-> 	struct rtw89_btc_fbtc_slot tbl[] __counted_by(tbl_num);
-> } __packed;
-> 
-> And, we should modify rtw89_btc_fw_set_slots() as well. 
-> 
-> Another struct 'rtw89_btc_btf_set_mon_reg' has similar problem.
-> 
-> So, NACK this patch. I will prepare one or two patches for them next week. 
+On 10/9/2023 2:01 AM, Lingbo Kong wrote:
 
-Ah-ha; thank you!
+...
 
-> By the way, I have question about __counted_by(). Can I apply it to little/big-
-> endian 'num'? Like
-> 
-> struct foo {
-> 	...
-> 	__le32 num;
-> 	__le32 data[] __counted_by(num);
-> }
+> +void ath12k_acpi_remove_notify(struct ath12k_base *ab)
+> +{
+> +	acpi_remove_notify_handler(ACPI_HANDLE(ab->dev),
+> +				   ACPI_DEVICE_NOTIFY,
+> +				   acpi_dsm_notify);
+> +}
 
-Unfortunately not yet. I hope to see it extended in the future to allow
-for arbitrary expressions. For this first step, it only handles native
-sizes.
+As flagged by the kernel test robot, there is no prototype defined for 
+this public function. In addition, I don't see any callers anywhere in 
+your patch series, so it seems either this should be removed, or a 
+correct call site should be identified and the function prototype should 
+be defined in the appropriate header file.
 
--- 
-Kees Cook
+/jeff
+
