@@ -2,151 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAA297BE5A8
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 17:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2793A7BE5D2
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 18:04:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377072AbjJIP5Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Oct 2023 11:57:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58930 "EHLO
+        id S1376809AbjJIQEc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Oct 2023 12:04:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376789AbjJIP5P (ORCPT
+        with ESMTP id S1376485AbjJIQEb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Oct 2023 11:57:15 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9BA791
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 08:57:13 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9b9a494cc59so796043766b.3
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Oct 2023 08:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696867032; x=1697471832; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sS/e/hw4jCtdsY89aS5EtxAVP80gniVJgMVrvS9y9WI=;
-        b=L621JKcoKihswE+y+j9sPiJ3wgKVCLoAS9bWWYu9a4NFeTwgXs1iGBC81DoC9vFv+5
-         t0zgo94ONd5Y4J2rYu3nDWfFwHCBQ+B0Boi1Meg+F94PpXE+AbK1epqtp7/TINKPzUku
-         n/edbXypwpvFw+IccLHDy1R/9jTez2/IPhsHruXRWJovsnW1bB6aaASrJynAsdMj922D
-         AwquvZBtP/JnLqYPNJN5nf1WFgjZUdGYEGWaNX7JdVr5jgrQY3rJpHDvfO89yosWBD8o
-         +zoctktY8ErZia9sTMNgjLGiG8cLmROHtM5HRhlWUZgx1DP8PYEbMEW/a48OYrEBxOS9
-         Yfww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696867032; x=1697471832;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sS/e/hw4jCtdsY89aS5EtxAVP80gniVJgMVrvS9y9WI=;
-        b=JOvlvfkWI5MR4MunTwRHnsmWSl/VAADzXlOI8GSkevgPv7uw5kUt5IwlxL7Pu455Wm
-         ghfcBEHYU06EOlshpXFZzdf353YOb1ERhwrPTVfj13SRMAdOR6jqwDQU1D+jgYhBW6D3
-         qNeFoKbn+QOHwEzv3n4oXAk+gB8IJ19JC3EsvKcJ7b68D2IhhAYt19i9AqKElGo+vZ0N
-         X0le6jTYs6FoGOpSSo+gd8JzSq9wGT7upTT15HCqxsFqARyOsH9t90itfPz+oIRrUFeM
-         iX7OAEibbuC/rXCFX7nMvlgYQTSZi8ze0ovyMVbtmg7oPEej39/wVInYCeIiLsed5yWt
-         iWgw==
-X-Gm-Message-State: AOJu0Yx5RjjTujAeTutN6Wm6ytG+kIMJjQ5GzwgaDjMqSek/FKmA9u3D
-        aZTJBvNLGJZlCOY+MCH1aHORNJmdbsgnYsOCNmfbqIQ51KE=
-X-Google-Smtp-Source: AGHT+IGeju/rCVsf1zPShUdAvVQvCYTgUK2IWXR8OUBDZv2+p0H24WbNI0SgAC3pmvBZPXpB0CxSZtjKVlqGA0aYaZE=
-X-Received: by 2002:a17:906:ce:b0:9b2:a078:4461 with SMTP id
- 14-20020a17090600ce00b009b2a0784461mr13390655eji.44.1696867031802; Mon, 09
- Oct 2023 08:57:11 -0700 (PDT)
+        Mon, 9 Oct 2023 12:04:31 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C62E891
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 09:04:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696867470; x=1728403470;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xVGqlS7LaCbb3n5Sy3qivv+XPMNzDr8YRZEIm/seggk=;
+  b=RgRvaRO9Yh6yDjqcoJqE8GbuiwAx3Z4H1LDBJhoXYciVTxIKYBSdCbN6
+   nD/JhbakBPkVDTorhQL90Gb4dHywupfAPLgYjnYwUOs7S9CmYTVm6QP2m
+   ywg0SHPXAH/534f0JBS3NtrQ/p5fw/4Fv60nSWC1vrpLg9AXjIV6d05bZ
+   aFH/juXz0lsgt5oIZIqoowC+80lK9KrakCjZa/u0Y0anFGfWzXD7uAQW5
+   dkKEovFqiXwLA5xuLKBtOGit5zCcA6vf8YT+v3/wfSzHpLToD1wo4GZIK
+   QK6qpBWpCydH0Nk05ysku/OFxVqnhDZkWn6t2HbZlu9Mb/b+6dlA8Cflh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="363527659"
+X-IronPort-AV: E=Sophos;i="6.03,210,1694761200"; 
+   d="scan'208";a="363527659"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2023 09:02:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="1084361024"
+X-IronPort-AV: E=Sophos;i="6.03,210,1694761200"; 
+   d="scan'208";a="1084361024"
+Received: from lkp-server02.sh.intel.com (HELO 4ed589823ba4) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 09 Oct 2023 09:02:56 -0700
+Received: from kbuild by 4ed589823ba4 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qpsib-0000Ku-2u;
+        Mon, 09 Oct 2023 16:02:53 +0000
+Date:   Tue, 10 Oct 2023 00:02:02 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Lingbo Kong <quic_lingbok@quicinc.com>, ath12k@lists.infradead.org,
+        kvalo@kernel.org, quic_jjohnson@quicinc.com
+Cc:     oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+        quic_lingbok@quicinc.com
+Subject: Re: [PATCH v5 1/4] wifi: ath12k: add TAS capability for WCN7850
+Message-ID: <202310092349.fe3kN7bp-lkp@intel.com>
+References: <20231009090149.247211-2-quic_lingbok@quicinc.com>
 MIME-Version: 1.0
-References: <CAAMvbhGsA4A9qHrYdXcNXLzv7a7xZZq98f90Q-Btb-9vs9ayCw@mail.gmail.com>
-In-Reply-To: <CAAMvbhGsA4A9qHrYdXcNXLzv7a7xZZq98f90Q-Btb-9vs9ayCw@mail.gmail.com>
-From:   James Dutton <james.dutton@gmail.com>
-Date:   Mon, 9 Oct 2023 16:56:35 +0100
-Message-ID: <CAAMvbhHo8wo924YVZqFrLKQko59iSiLMhVAzb=tdSvf_-v1CCQ@mail.gmail.com>
-Subject: Re: mac80211 bugs
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231009090149.247211-2-quic_lingbok@quicinc.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 1 Oct 2023 at 11:27, James Dutton <james.dutton@gmail.com> wrote:
->
-> Hi,
->
-> I recently saw a report of a kernel bug that was caused by a null
-> pointer reference in:
-> mac80211.c: sta_set_sinfo()
->
+Hi Lingbo,
 
-The kernel Oops has this:
-Code: d3441c63 12000c00 8b030ca3 f9409c63 (f9400465)
-Extract of the code:
+kernel test robot noticed the following build warnings:
 
-/usr/src/linux/net/mac80211/st
-a_info.c:2451
-    d118:       17fffee6        b       ccb0 <sta_set_sinfo+0x6b0>
-/usr/src/linux/net/mac80211/sta_info.c:2422
-    d11c:       f9402107        ldr     x7, [x8, #64]
-    d120:       d3441c42        ubfx    x2, x2, #4, #4
-    d124:       12000c00        and     w0, w0, #0xf
-    d128:       8b020ce2        add     x2, x7, x2, lsl #3
-/usr/src/linux/net/mac80211/sta_info.c:2424
-    d12c:       f9409c42        ldr     x2, [x2, #312]
-    d130:       f9400447        ldr     x7, [x2, #8]    <-----It_crashes_here
-    d134:       b40004c7        cbz     x7, d1cc <sta_set_sinfo+0xbcc>
-/usr/src/linux/net/mac80211/sta_info.c:2427
-    d138:       52800188        mov     w8, #0xc                        // #12
-    d13c:       52800082        mov     w2, #0x4                        // #4
-    d140:       9ba81c00        umaddl  x0, w0, w8, x7
-    d144:       79400800        ldrh    w0, [x0, #4]
-/usr/src/linux/net/mac80211/sta_info.c:2428
-    d148:       f10004df        cmp     x6, #0x1
-    d14c:       54000080        b.eq    d15c <sta_set_sinfo+0xb5c>  // b.none
+[auto build test WARNING on 3b961e3a412d9d4b70418f53d07847af0a7ea376]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Lingbo-Kong/wifi-ath12k-add-TAS-capability-for-WCN7850/20231009-170444
+base:   3b961e3a412d9d4b70418f53d07847af0a7ea376
+patch link:    https://lore.kernel.org/r/20231009090149.247211-2-quic_lingbok%40quicinc.com
+patch subject: [PATCH v5 1/4] wifi: ath12k: add TAS capability for WCN7850
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20231009/202310092349.fe3kN7bp-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231009/202310092349.fe3kN7bp-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310092349.fe3kN7bp-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/net/wireless/ath/ath12k/acpi.c:109:6: warning: no previous prototype for 'ath12k_acpi_remove_notify' [-Wmissing-prototypes]
+     109 | void ath12k_acpi_remove_notify(struct ath12k_base *ab)
+         |      ^~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-/usr/src/linux/net/mac80211/sta_info.c:2424
-       case STA_STATS_RATE_TYPE_LEGACY: {
-                struct ieee80211_supported_band *sband;
-                u16 brate;
-                unsigned int shift;
-                int band = STA_STATS_GET(LEGACY_BAND, rate);
-                int rate_idx = STA_STATS_GET(LEGACY_IDX, rate);
+vim +/ath12k_acpi_remove_notify +109 drivers/net/wireless/ath/ath12k/acpi.c
 
-                sband = local->hw.wiphy->bands[band];
+   108	
+ > 109	void ath12k_acpi_remove_notify(struct ath12k_base *ab)
+   110	{
+   111		acpi_remove_notify_handler(ACPI_HANDLE(ab->dev),
+   112					   ACPI_DEVICE_NOTIFY,
+   113					   acpi_dsm_notify);
+   114	}
+   115	
 
-                if (WARN_ON_ONCE(!sband->bitrates))      <------It_crashes_here
-                        break;
-
-                brate = sband->bitrates[rate_idx].bitrate;
-                if (rinfo->bw == RATE_INFO_BW_5)
-                        shift = 2;
-                else if (rinfo->bw == RATE_INFO_BW_10)
-                        shift = 1;
-                else
-                        shift = 0;
-                rinfo->legacy = DIV_ROUND_UP(brate, 1 << shift);
-                break;
-                }
-
-Looking at this, it can be one of two things:
-1) local->hw.wiphy->bands[band];    is NULL
-2) bands is an array of 6 items, making band valid for values 0-5.
-If band >= 6, it would cause problems.
-So maybe something along these lines might help:
-
-Signed-off-by: James Courtier-Dutton <james.dutton@gmail.com>
---- sta_info.c.org      2023-10-08 19:52:13.578270007 +0100
-+++ sta_info.c.new2     2023-10-08 19:52:09.450214070 +0100
-@@ -2420,7 +2420,26 @@
-                int band = STA_STATS_GET(LEGACY_BAND, rate);
-                int rate_idx = STA_STATS_GET(LEGACY_IDX, rate);
-
-+               if (band >= NUM_NL80211_BANDS) {
-+                       printk("ERROR: band=%d is too large.
-Returning\n", band);
-+                       break;
-+               }
-+
-                sband = local->hw.wiphy->bands[band];
-+               if (!sband) {
-+                       printk("ERROR: sband NULL. Returning\n");
-+                       break;
-+               }
-
-                if (WARN_ON_ONCE(!sband->bitrates))
-                        break;
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
