@@ -2,122 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C0127BE6FD
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 18:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30BBE7BE70C
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 18:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377730AbjJIQu7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Oct 2023 12:50:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46398 "EHLO
+        id S1377272AbjJIQ4Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Oct 2023 12:56:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377774AbjJIQuw (ORCPT
+        with ESMTP id S1376588AbjJIQ4Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Oct 2023 12:50:52 -0400
-X-Greylist: delayed 60 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 09 Oct 2023 09:50:49 PDT
-Received: from smtpdh19-su.aruba.it (smtpdh19-su.aruba.it [62.149.155.160])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2969AE6
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 09:50:48 -0700 (PDT)
-Received: from smtpclient.apple ([77.57.21.113])
-        by Aruba Outgoing Smtp  with ESMTPA
-        id ptRwqOnrzNaf2ptRwqgl68; Mon, 09 Oct 2023 18:49:45 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-        t=1696870185; bh=gmcCaRK3zDFXeLHvSaSXDPxPLsTm44LPT6qMmASM9QQ=;
-        h=Content-Type:Mime-Version:Subject:From:Date:To;
-        b=iAIWShWt4QASYU9NnYUWrqJ5HQc/MIbcxe5IRAPB/egNTBRXaJXVIH01aO3EEq40b
-         GVQ65kc13GZGVyVsc89CzFerDWMOOWZTRVUjZw6LhbaqDiy79O28SVb0cVgsnbbFJ2
-         DmOWr3hY0Mk0NIIgz2DSx48419qhUfJl5duznYAofDm/X9Wcd6FuUqE1Idbka2QriM
-         DfigWBCT2u6BW41hz6mUzz6ZZcDPOlOk6yDdkNzu1CbgvVg2yWoVYoc34Y1QirpIae
-         ZgPw/cTNmYOXsiZZ1MbL9Kjw7Omt4428jpHnNslJKp3a0oKiHxy7/+BnSS6jWPJ6NP
-         7zur3nvs1Ww3A==
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.15\))
-Subject: Re: [PATCH 01/10] appletalk: remove localtalk and ppp support
-From:   Rodolfo Zitellini <rwz@xhero.org>
-In-Reply-To: <20231009141908.1767241-1-arnd@kernel.org>
-Date:   Mon, 9 Oct 2023 18:49:43 +0200
-Cc:     Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wpan@vger.kernel.org,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, Doug Brown <doug@schmorgal.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <790BA488-B6F6-41ED-96EF-2089EF1C043B@xhero.org>
-References: <20231009141908.1767241-1-arnd@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-X-Mailer: Apple Mail (2.3654.120.0.1.15)
-X-CMAE-Envelope: MS4xfP3cw6wZrPwgQ30qHpmEsEsj4aHRoEDgqsT7xAtkoVvLa14Scx/RmfCls41lLYVVOrlQq3GGKzZp1O6ho5NhC428DACm/3N31Io5eYUM5y9NZgfv5W6U
- PM8IzaHFQOhlV5kMwOWLB0MPpXWChaAm3dDgBT2FB1ahfAiuKg76E1B6eDmDf3Z5OtBDQafhkOf7fxee5sQDUdeZmzrQL1F60cWQNAZvOcp+wSeISEMVXcTM
- z8F6yEH6rcfYxQ+WAoXV1Vu8gYCtseFg9II3cWNkOdzyaQ4+YXcRCgF3Y9bZO4yAFMl+MbErKqjnlZYqF79f7GOG4P5ZwcVqbNutAMZUkZoD5j5puMI126LQ
- AmcL6HI21sXY5LCEQmgCsYxWOj73Y2LQrPneA7WA8Z4L21Onk2MAMjqXbRytM7VC5uoIGoYmnslCSgsji8evzX6pSl3YJ35Qyd0ojapk49u/8vHqQ6IJtq9g
- 4nPods51ya2y07z2HOQTPZPWa7pET1YoV+nyw8rfuhH3DBN+5r9J8Cfw0RYYGhGANyLlsDI5zaUsZLmoW2poH9/O4h3ISuaeSX5TriVpnZV93J3mJLoHMssH
- G9+e1sjF5+iLpakXDy+ik6atGWAMJ7CP9dEBBs4uWLbvKQ==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        Mon, 9 Oct 2023 12:56:16 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE399D
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 09:56:14 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-692779f583fso3181331b3a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Oct 2023 09:56:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1696870574; x=1697475374; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BI1wdHvupQf0LaYbc5/G8p3qu/45NR/6x8pz02yh3PE=;
+        b=Q4wh+a/oJyOU0GBAbt9uc99A9WiOgV+YcRmeLb4UUfMf4VlgokwcP92m70XoytoW2e
+         r2MufKKMFTXq3o64nhVKe72u7EPn7Lr6bIVjrgMzp7pzau4PHAgLKfFXp6jUTMDWA3Vh
+         sYQOz50kVGk65u59a0k3ZgJrugAZK/to1QcA4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696870574; x=1697475374;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BI1wdHvupQf0LaYbc5/G8p3qu/45NR/6x8pz02yh3PE=;
+        b=ujoIS4v0EICBmgiOVjU36bVj84PjQ4sNoyF0RAGqT0nVzFybw22jzy+JeixAr39wfV
+         mNjVk6yUdAGz+2xbrjnyATxU+u0LoZtfjYFO0QaP5GwCcdCNdJ/UK4AbrxZN+X+XNERG
+         NgFWs7qB7udtxtpySqyYdoIuo3oIivYpaapq6W/Yv6AeAOtm2JEmIVNWRXCZn04u3bj5
+         RKx7btA8bTx7zXw2XraQP4tsxvp/FUWtTeelAMygES3ULGO4VCjg6ba4VDFtQGxPK2y1
+         KZxYgS55JF5pmvzpq0cCknm8DPId85EcdscC1KmpQ4haUmayrk46xAbWvWnecQPdONWn
+         AzUw==
+X-Gm-Message-State: AOJu0Ywgf+NSKZvIc3Lm9BGUzx5T2OrfLdSltAJ5ocqpijMkppMbhHX0
+        0mBoKm2hOsaWt+tOM0WXF1Dsfg==
+X-Google-Smtp-Source: AGHT+IExmUks9+I/YiKBGr4BtICx6xzlqORwNadZpHtAORGWPchSbI37a3pFI+AKwfNa/ZHilpgCWw==
+X-Received: by 2002:a05:6a00:124a:b0:690:ce30:47e5 with SMTP id u10-20020a056a00124a00b00690ce3047e5mr14761348pfi.6.1696870574128;
+        Mon, 09 Oct 2023 09:56:14 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id l3-20020a62be03000000b00688c733fe92sm6540299pff.215.2023.10.09.09.56.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Oct 2023 09:56:13 -0700 (PDT)
+Date:   Mon, 9 Oct 2023 09:56:11 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+        "trix@redhat.com" <trix@redhat.com>,
+        "nathan@kernel.org" <nathan@kernel.org>,
+        "ndesaulniers@google.com" <ndesaulniers@google.com>,
+        "gustavoars@kernel.org" <gustavoars@kernel.org>
+Subject: Re: [PATCH] wifi: rtw89: coex: Annotate struct
+ rtw89_btc_btf_set_slot_table with __counted_by
+Message-ID: <202310090953.B7CE5CF4B@keescook>
+References: <20231006201715.work.239-kees@kernel.org>
+ <4716f3c7bf3d34ea25229edd5250f5f0cff639d8.camel@realtek.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4716f3c7bf3d34ea25229edd5250f5f0cff639d8.camel@realtek.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Sat, Oct 07, 2023 at 01:20:43AM +0000, Ping-Ke Shih wrote:
+> On Fri, 2023-10-06 at 13:17 -0700, Kees Cook wrote:
+> > 
+> > Prepare for the coming implementation by GCC and Clang of the __counted_by
+> > attribute. Flexible array members annotated with __counted_by can have
+> > their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
+> > array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+> > functions).
+> > 
+> > As found with Coccinelle[1], add __counted_by for struct
+> > rtw89_btc_btf_set_slot_table.
+> > 
+> > Cc: Ping-Ke Shih <pkshih@realtek.com>
+> > Cc: Kalle Valo <kvalo@kernel.org>
+> > Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+> > Cc: linux-wireless@vger.kernel.org
+> > Cc: linux-hardening@vger.kernel.org
+> > Link: https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci [1]
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > ---
+> >  drivers/net/wireless/realtek/rtw89/coex.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+> > index 4ba8b3df70ae..d66a1152c3f5 100644
+> > --- a/drivers/net/wireless/realtek/rtw89/coex.c
+> > +++ b/drivers/net/wireless/realtek/rtw89/coex.c
+> > @@ -237,7 +237,7 @@ struct rtw89_btc_btf_set_report {
+> >  struct rtw89_btc_btf_set_slot_table {
+> >         u8 fver;
+> >         u8 tbl_num;
+> > -       u8 buf[];
+> > +       u8 buf[] __counted_by(tbl_num);
+> 
+> This struct isn't defined properly. It should be 
+> 
+> struct rtw89_btc_btf_set_slot_table {
+> 	u8 fver;
+> 	u8 tbl_num;
+> 	struct rtw89_btc_fbtc_slot tbl[] __counted_by(tbl_num);
+> } __packed;
+> 
+> And, we should modify rtw89_btc_fw_set_slots() as well. 
+> 
+> Another struct 'rtw89_btc_btf_set_mon_reg' has similar problem.
+> 
+> So, NACK this patch. I will prepare one or two patches for them next week. 
 
-> From: Arnd Bergmann <arnd@arndb.de>
->=20
-> The last localtalk driver is gone now, and ppp support was never fully
-> merged, so clean up the appletalk code by removing the obvious dead
-> code paths.
->=20
-> Notably, this removes one of the two callers of the old =
-.ndo_do_ioctl()
-> callback that was abused for getting device addresses and is now
-> only used in the ieee802154 subsystem, which still uses the same =
-trick.
->=20
-> The include/uapi/linux/if_ltalk.h header might still be required
-> for building userspace programs, but I made sure that debian code
-> search and the netatalk upstream have no references it it, so it
-> should be fine to remove.
->=20
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Ah-ha; thank you!
 
-Hi!
-I=E2=80=99ve been working on a new LocalTalk interface driver for the =
-last couple months, do you think it would be possible to at least =
-postpone the removal of LT a bit?
+> By the way, I have question about __counted_by(). Can I apply it to little/big-
+> endian 'num'? Like
+> 
+> struct foo {
+> 	...
+> 	__le32 num;
+> 	__le32 data[] __counted_by(num);
+> }
 
-It is a driver for an open source device called TashTalk =
-(https://github.com/lampmerchant/tashtalk), which runs on a PIC micro =
-that does all the LT interfacing, and communicates back via serial to =
-the host system. My driver is relatively simple and works very well with =
-netatalk 2.2 (which is still maintained and still has support for =
-AppleTalk). The driver is basically complete and trsted and I was =
-preparing to submit a patch.
+Unfortunately not yet. I hope to see it extended in the future to allow
+for arbitrary expressions. For this first step, it only handles native
+sizes.
 
-Still having LocalTalk in my view has many advantages for us enthusiasts =
-that still want to bridge old machines to the current world without =
-modifications, for example for printing on modern printers, netbooting, =
-sharing files and even tcp/ip. All this basically works out of the box =
-via the driver, Linux and available userspace tools (netatalk, macipgw).
-
-The old ISA cards supported by COPS were basically unobtanium even 20 =
-years ago, but the solution of using a PIC and a serial port is very =
-robust and much more furure-proof. We also already have a device that =
-can interface a modern machine directly via USB to LocalTalk.
-
-The development of the TashTalk has been also extensively discussed on =
-thr 68KMLA forum =
-(https://68kmla.org/bb/index.php?threads/modtashtalk-lt0-driver-for-linux.=
-45031/)
-
-I hope the decision to remove LocalTalk can be reconsidered at least for =
-the time being so there is a chance to submit a new, modern device =
-making use of this stack.
-
-Many Thanks,
-Rodolfo Zitellini=
+-- 
+Kees Cook
