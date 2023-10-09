@@ -2,82 +2,248 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F527BD500
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 10:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB5507BD536
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 10:27:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234376AbjJIISd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Oct 2023 04:18:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56614 "EHLO
+        id S234441AbjJII1t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Oct 2023 04:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232666AbjJIISb (ORCPT
+        with ESMTP id S234407AbjJII1s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Oct 2023 04:18:31 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C77638F
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 01:18:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=IjeNk0Y5JtGnrNEcA2qCKSSicZ1bcfGYnsYpvYCB90s=; t=1696839510; x=1698049110; 
-        b=dWnbkFKYZKZGr0vjVU7KPEQBFJGNW9Avlys4Jz51iNYFW4p8Wspdhd8CBWWxMYSPeHNpNDvDyHU
-        Mqvry8GBGyBFpqcSpiOXBx+O3gYaFBkBm1m+Bn6pDg/77aQySJEFceJyC0+Pcy3F/8aal0nIAu9Xu
-        9kI8CE+PEWryIUod93IM/J6aksg7Wi92v9yvAEjQwG3oTPmcdyHcIzfjNp5idIyU6lO+K5OflSTgH
-        3/FsoRtYh3IBqrclUcnzTEidoeWPvD4Z26OOJdkn3MSbcw+TgUdr9YM+QCjc654+D2T2f6W8AXsI+
-        PsTe3wLxMVP3j5UveueZV0OhPZyVSvd/TwmQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.97-RC0)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qplTA-0000000FAki-1PNR;
-        Mon, 09 Oct 2023 10:18:28 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH] wifi: cfg80211: use system_unbound_wq for wiphy work
-Date:   Mon,  9 Oct 2023 10:18:01 +0200
-Message-ID: <20231009101800.bb75408bf635.I6528d97e24b3da36cdf633b4738327d77c7276f2@changeid>
-X-Mailer: git-send-email 2.41.0
+        Mon, 9 Oct 2023 04:27:48 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C20AB
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 01:27:45 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-51e24210395so12393a12.0
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Oct 2023 01:27:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1696840064; x=1697444864; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U/6BMjrzXld+2G2niRt8GwZnrjwExfOE5RsZF3IWDsg=;
+        b=1Fvemo0zUEKWZz2P8ySOREgI6whV3blDLPFWkyKqFgGnIo++FsYUKbIP4/v7ivCHeK
+         HKlpENY6UMOXVLbHCvDYYYK7MoDXsUjMfHaZ2UEdldT75b1O/Er2Yh5btjd8ZUJhWuAd
+         rVQ5SV3f0XtPlgMiXb6nEWyN+j70uil5mEVNJMGPArnD4m9tOasbYa/FL/1FBiiPftff
+         ROaXOl2frpDh74+GBeY+SLMfKPaygCn7bRT6t9RBAjQ9mFprSkkPJTtoSWBen/+EmpvI
+         4i0JPXoO2v2LotPZrj3m0CSHW6K7VQ44iqg4uuGaSz02JOkwqxGqIucOTdLbhRGbURkW
+         lIbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696840064; x=1697444864;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=U/6BMjrzXld+2G2niRt8GwZnrjwExfOE5RsZF3IWDsg=;
+        b=Hkm+S8rPi84IKyNHYzoO0YLuJUfkUnAlO2fO7/WT3j4bKetQaSWbH3jeQfrqnbKzYT
+         /rwZl55bDRlNU9VtVS03/5IwvpYLWao+FKLxG73+GyDkrO2pa07rfHkVnds8QXIGX+p5
+         rZkJ4epBYTcu0kzqDPvCaIgoix92RlxDCR80Z2TBZVUUGt4cThnC4+quB5RwKjSS77S3
+         o1tdU15I/gcmkIMvAT6g3tGeRyXm28aZFHOlH5a+ot84Morx0P7kc2kIuV+Y0Iqx35bs
+         VCaMj/mnxzosDMYExffsPVqDO+ZCmWMpVnCePLkjAiMguypuifJKahsDdeT97NVq/co8
+         Negw==
+X-Gm-Message-State: AOJu0Yzo3E3t7d36uxY3BQQcxPc8EK1UathymcE7nEsAHICqTT9oCbFO
+        TVAzuSvQ0QCl2j1wToVRCoK5d+j3eq3ISyw903kQzw==
+X-Google-Smtp-Source: AGHT+IHwFKC+Y1e+xZpwgUIz2ef+3S7gZvKInf35YDgwedW3l6WDYZ0JQtR1RAcQrjw2Yv9CI2XyHOq3oVUBlcAavLI=
+X-Received: by 2002:a50:9fa4:0:b0:538:5f9e:f0fc with SMTP id
+ c33-20020a509fa4000000b005385f9ef0fcmr350450edf.0.1696840063815; Mon, 09 Oct
+ 2023 01:27:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20231003145150.2498-1-ansuelsmth@gmail.com> <20231003145150.2498-4-ansuelsmth@gmail.com>
+ <CANn89iLtYZJPOQE7OkAbEdmhT8qjzAJ+27poa__3c8Nf0M6u_w@mail.gmail.com>
+ <652056c5.5d0a0220.2b60d.c5dc@mx.google.com> <CANn89i+Cie+oE_hTWkyJWutTG9CnPy+dbW+-A97Q+E9Rq-f9rQ@mail.gmail.com>
+ <6522f495.df0a0220.326ed.de6c@mx.google.com>
+In-Reply-To: <6522f495.df0a0220.326ed.de6c@mx.google.com>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Mon, 9 Oct 2023 10:27:32 +0200
+Message-ID: <CANn89iLLsM8=fqoa_7O8iYyCzT2ebNs_jpY+e-RW+xCc7UnSDg@mail.gmail.com>
+Subject: Re: [net-next PATCH v2 4/4] netdev: use napi_schedule bool instead of napi_schedule_prep/__napi_schedule
+To:     Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        Jeroen de Borst <jeroendb@google.com>,
+        Praveen Kaligineedi <pkaligineedi@google.com>,
+        Shailend Chand <shailend@google.com>,
+        Douglas Miller <dougmill@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Nick Child <nnac123@linux.ibm.com>,
+        Haren Myneni <haren@linux.ibm.com>,
+        Rick Lindsley <ricklind@linux.ibm.com>,
+        Dany Madden <danymadden@us.ibm.com>,
+        Thomas Falcon <tlfalcon@linux.ibm.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+        Intel Corporation <linuxwwan@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+        Liu Haijun <haijun.liu@mediatek.com>,
+        M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
+        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+        Ziwei Xiao <ziweixiao@google.com>,
+        Rushil Gupta <rushilg@google.com>,
+        Coco Li <lixiaoyan@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Junfeng Guo <junfeng.guo@intel.com>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Wei Fang <wei.fang@nxp.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Yuri Karpov <YKarpov@ispras.ru>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Zheng Zengkai <zhengzengkai@huawei.com>,
+        Lee Jones <lee@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Dawei Li <set_pte_at@outlook.com>,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+        Benjamin Berg <benjamin.berg@intel.com>,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Sun, Oct 8, 2023 at 8:27=E2=80=AFPM Christian Marangi <ansuelsmth@gmail.=
+com> wrote:
+>
+> On Sun, Oct 08, 2023 at 09:08:41AM +0200, Eric Dumazet wrote:
+> > On Fri, Oct 6, 2023 at 8:49=E2=80=AFPM Christian Marangi <ansuelsmth@gm=
+ail.com> wrote:
+> > >
+> > > On Thu, Oct 05, 2023 at 06:16:26PM +0200, Eric Dumazet wrote:
+> > > > On Tue, Oct 3, 2023 at 8:36=E2=80=AFPM Christian Marangi <ansuelsmt=
+h@gmail.com> wrote:
+> > > > >
+> > > > > Replace if condition of napi_schedule_prep/__napi_schedule and us=
+e bool
+> > > > > from napi_schedule directly where possible.
+> > > > >
+> > > > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > > > > ---
+> > > > >  drivers/net/ethernet/atheros/atlx/atl1.c     | 4 +---
+> > > > >  drivers/net/ethernet/toshiba/tc35815.c       | 4 +---
+> > > > >  drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 4 +---
+> > > > >  3 files changed, 3 insertions(+), 9 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/net/ethernet/atheros/atlx/atl1.c b/drivers/n=
+et/ethernet/atheros/atlx/atl1.c
+> > > > > index 02aa6fd8ebc2..a9014d7932db 100644
+> > > > > --- a/drivers/net/ethernet/atheros/atlx/atl1.c
+> > > > > +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
+> > > > > @@ -2446,7 +2446,7 @@ static int atl1_rings_clean(struct napi_str=
+uct *napi, int budget)
+> > > > >
+> > > > >  static inline int atl1_sched_rings_clean(struct atl1_adapter* ad=
+apter)
+> > > > >  {
+> > > > > -       if (!napi_schedule_prep(&adapter->napi))
+> > > > > +       if (!napi_schedule(&adapter->napi))
+> > > > >                 /* It is possible in case even the RX/TX ints are=
+ disabled via IMR
+> > > > >                  * register the ISR bits are set anyway (but do n=
+ot produce IRQ).
+> > > > >                  * To handle such situation the napi functions us=
+ed to check is
+> > > > > @@ -2454,8 +2454,6 @@ static inline int atl1_sched_rings_clean(st=
+ruct atl1_adapter* adapter)
+> > > > >                  */
+> > > > >                 return 0;
+> > > > >
+> > > > > -       __napi_schedule(&adapter->napi);
+> > > > > -
+> > > > >         /*
+> > > > >          * Disable RX/TX ints via IMR register if it is
+> > > > >          * allowed. NAPI handler must reenable them in same
+> > > > > diff --git a/drivers/net/ethernet/toshiba/tc35815.c b/drivers/net=
+/ethernet/toshiba/tc35815.c
+> > > > > index 14cf6ecf6d0d..a8b8a0e13f9a 100644
+> > > > > --- a/drivers/net/ethernet/toshiba/tc35815.c
+> > > > > +++ b/drivers/net/ethernet/toshiba/tc35815.c
+> > > > > @@ -1436,9 +1436,7 @@ static irqreturn_t tc35815_interrupt(int ir=
+q, void *dev_id)
+> > > > >         if (!(dmactl & DMA_IntMask)) {
+> > > > >                 /* disable interrupts */
+> > > > >                 tc_writel(dmactl | DMA_IntMask, &tr->DMA_Ctl);
+> > > > > -               if (napi_schedule_prep(&lp->napi))
+> > > > > -                       __napi_schedule(&lp->napi);
+> > > > > -               else {
+> > > > > +               if (!napi_schedule(&lp->napi)) {
+> > > > >                         printk(KERN_ERR "%s: interrupt taken in p=
+oll\n",
+> > > > >                                dev->name);
+> > > > >                         BUG();
+> > > >
+> > > > Hmmm... could you also remove this BUG() ? I think this code path c=
+an be taken
+> > > > if some applications are using busy polling.
+> > > >
+> > > > Or simply rewrite this with the traditional
+> > > >
+> > > > if (napi_schedule_prep(&lp->napi)) {
+> > > >    /* disable interrupts */
+> > > >    tc_writel(dmactl | DMA_IntMask, &tr->DMA_Ctl);
+> > > >     __napi_schedule(&lp->napi);
+> > > > }
+> > > >
+> > > >
+> > >
+> > > Mhhh is it safe to do so? I mean it seems very wrong to print a warni=
+ng
+> > > and BUG() instead of disabling the interrupt only if napi can be
+> > > scheduled... Maybe is very old code? The more I see this the more I s=
+ee
+> > > problem... (randomly disabling the interrupt and then make the kernel
+> > > die)
+> >
+> > I am pretty sure this BUG() can be hit these days with busy polling or
+> > setting gro_flush_timeout.
+> >
+> > I wish we could remove these bugs before someone copy-paste them.
+> >
+> > Again, this is orthogonal, I might simply stop doing reviews if this
+> > is not useful.
+>
+> They are very useful and thanks a lot for them! I'm asking these as to
+> understand how to proceed. I have in queue 2 other series that depends
+> on this and I'm just asking info on how to speedup the progress on this!
+>
+> Soo think I have to send v3 with the suggested change and BUG() dropped?
+> Happy to do everything to fix and improve this series!
 
-Since wiphy work items can run pretty much arbitrary
-code in the stack/driver, it can take longer to run
-all of this, so we shouldn't be using system_wq via
-schedule_work(). Also, we lock the wiphy (which is
-the reason this exists), so use system_unbound_wq.
+I think that your patch series is all about doing cleanups,
+so I suggested adding another cleanup/fix,
+and this can be done independently.
 
-Reported-by: Kalle Valo <kvalo@kernel.org>
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 7df8ffcfa0c4..758c9a2a12c0 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1613,7 +1613,7 @@ void wiphy_work_queue(struct wiphy *wiphy, struct wiphy_work *work)
- 		list_add_tail(&work->entry, &rdev->wiphy_work_list);
- 	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
- 
--	schedule_work(&rdev->wiphy_work);
-+	queue_work(system_unbound_wq, &rdev->wiphy_work);
- }
- EXPORT_SYMBOL_GPL(wiphy_work_queue);
- 
--- 
-2.41.0
-
+I doubt this matters, this code has probably not been used for quite a
+long time...
