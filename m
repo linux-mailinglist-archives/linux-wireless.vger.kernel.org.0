@@ -2,113 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 481767BD2E7
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 07:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25ACF7BD32D
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 08:13:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345129AbjJIFzs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Oct 2023 01:55:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60122 "EHLO
+        id S1345168AbjJIGNN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Oct 2023 02:13:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345049AbjJIFzr (ORCPT
+        with ESMTP id S1345198AbjJIGNC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Oct 2023 01:55:47 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB21A4
-        for <linux-wireless@vger.kernel.org>; Sun,  8 Oct 2023 22:55:39 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qpjEv-00042z-Kq; Mon, 09 Oct 2023 07:55:37 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qpjEq-000L3W-Gp; Mon, 09 Oct 2023 07:55:32 +0200
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qpjEq-00DU3G-EO; Mon, 09 Oct 2023 07:55:32 +0200
-Date:   Mon, 9 Oct 2023 07:55:32 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Jinjie Ruan <ruanjinjie@huawei.com>
-Cc:     linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, neo_jou <neo_jou@realtek.com>,
-        Hans Ulli Kroll <linux@ulli-kroll.de>
-Subject: Re: [PATCH] wifi: rtw88: Remove duplicate NULL check before calling
- usb_kill/free_urb()
-Message-ID: <20231009055532.GB3114228@pengutronix.de>
-References: <20231008025852.1239450-1-ruanjinjie@huawei.com>
+        Mon, 9 Oct 2023 02:13:02 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1468114;
+        Sun,  8 Oct 2023 23:12:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
+        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+        bh=oDYkvH5wug9S80itmdHwIQJoxhzYG8li6W+6qaoHsJ4=; b=p1raZY77z3vwCgTpHU/G6ruyDn
+        4hVq8+oTHjR71pBVyy9nhZ9/Q4G7HGHmrjx5IYVhAlUL1FIlbcacRtXCiWbrYUQAU9h9CSATDDaf3
+        sNJ9m3Yeeq7vRIjr/HvUINnK8DUUqnuvOGyFKAFQaibrwakTTZxGUqAxlhiJDML02OU1TM3sYw/u4
+        27ENZXhkZrLAt5cXuHPsSo48um0usr1MaobGVIDPeOlNkauiNUk4VkwMxedCBpy1RyGlpe4HPSBFC
+        tBQhWXVmMblS6P5gBWW0LN2FXjCON5dMugTQV61m+ge6EZj7Wr0fDmBuuOlwFtze0c3gEbmu/cAtS
+        UIxh93Fg==;
+Received: from [50.53.46.231] (helo=[192.168.254.15])
+        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qpjVa-009pD2-0T;
+        Mon, 09 Oct 2023 06:12:50 +0000
+Message-ID: <e551fb4c-1e3d-4e1a-a465-5b88842789c6@infradead.org>
+Date:   Sun, 8 Oct 2023 23:12:49 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231008025852.1239450-1-ruanjinjie@huawei.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] ssb: relax SSB_EMBEDDED dependencies
+Content-Language: en-US
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     =?UTF-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <20231007182443.32300-1-rdunlap@infradead.org>
+ <20231008093520.42ead15f@barney>
+ <22bc05d3-86e9-4cf6-aec6-10d11df1acc3@infradead.org>
+In-Reply-To: <22bc05d3-86e9-4cf6-aec6-10d11df1acc3@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Oct 08, 2023 at 10:58:52AM +0800, Jinjie Ruan wrote:
-> Both usb_kill_urb() and usb_free_urb() do the NULL check itself, so there
-> is no need to duplicate it prior to calling.
-> 
-> Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/usb.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+Hi Michael,
 
-Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Sascha
-
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-> index d879d7e3dc81..e6ab1ac6d709 100644
-> --- a/drivers/net/wireless/realtek/rtw88/usb.c
-> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
-> @@ -611,8 +611,7 @@ static void rtw_usb_cancel_rx_bufs(struct rtw_usb *rtwusb)
->  
->  	for (i = 0; i < RTW_USB_RXCB_NUM; i++) {
->  		rxcb = &rtwusb->rx_cb[i];
-> -		if (rxcb->rx_urb)
-> -			usb_kill_urb(rxcb->rx_urb);
-> +		usb_kill_urb(rxcb->rx_urb);
->  	}
->  }
->  
-> @@ -623,10 +622,8 @@ static void rtw_usb_free_rx_bufs(struct rtw_usb *rtwusb)
->  
->  	for (i = 0; i < RTW_USB_RXCB_NUM; i++) {
->  		rxcb = &rtwusb->rx_cb[i];
-> -		if (rxcb->rx_urb) {
-> -			usb_kill_urb(rxcb->rx_urb);
-> -			usb_free_urb(rxcb->rx_urb);
-> -		}
-> +		usb_kill_urb(rxcb->rx_urb);
-> +		usb_free_urb(rxcb->rx_urb);
->  	}
->  }
->  
-> -- 
-> 2.34.1
+On 10/8/23 07:08, Randy Dunlap wrote:
 > 
 > 
+> On 10/8/23 00:35, Michael Büsch wrote:
+>> Hi Randy,
+>>
+>> thanks for the patch.
+>>
+>> On Sat,  7 Oct 2023 11:24:43 -0700
+>> Randy Dunlap <rdunlap@infradead.org> wrote:
+>>
+>>> This is a kconfig warning in a randconfig when CONFIG_PCI is not set:
+>>>
+>>> WARNING: unmet direct dependencies detected for SSB_EMBEDDED
+>>>   Depends on [n]: SSB [=y] && SSB_DRIVER_MIPS [=y] &&
+>>> SSB_PCICORE_HOSTMODE [=n] Selected by [y]:
+>>>   - BCM47XX_SSB [=y] && BCM47XX [=y]
+>>>
+>>> This is caused by arch/mips/bcm47xx/Kconfig's symbol BCM47XX_SSB
+>>> selecting SSB_EMBEDDED when CONFIG_PCI is not set.
+>>>
+>>> This warning can be prevented by having SSB_EMBEDDED not depend on
+>>> SSB_PCICORE_HOSTMODE, although some parts of SSB use PCI.
+>>
+>>> diff -- a/drivers/ssb/Kconfig b/drivers/ssb/Kconfig
+>>> --- a/drivers/ssb/Kconfig
+>>> +++ b/drivers/ssb/Kconfig
+>>> @@ -134,7 +134,7 @@ config SSB_SFLASH
+>>>  # Assumption: We are on embedded, if we compile the MIPS core.
+>>>  config SSB_EMBEDDED
+>>>  	bool
+>>> -	depends on SSB_DRIVER_MIPS && SSB_PCICORE_HOSTMODE
+>>> +	depends on SSB_DRIVER_MIPS
+>>>  	default y
+>>>  
+>>>  config SSB_DRIVER_EXTIF
+>>
+>> Could we instead make SSB_EMBEDDED depend on SSB_PCICORE_HOSTMODE if
+>> PCI!=n. Wouldn't that also solve the problem?
+>>
+>> I don't fully remember how all this ssb config stuff works, but to
+>> me adding a PCICORE->PCI dependency sounds safer against build
+>> regressions in some other configurations.
+>>
+>> What do you think?
+> 
+> I'll test it some and see how it works out.
+> Thanks.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The following change seems to work and passes some testing.
+Is this what you had in mind?
+Thanks.
+
+---
+---
+ drivers/ssb/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff -- a/drivers/ssb/Kconfig b/drivers/ssb/Kconfig
+--- a/drivers/ssb/Kconfig
++++ b/drivers/ssb/Kconfig
+@@ -134,7 +134,7 @@ config SSB_SFLASH
+ # Assumption: We are on embedded, if we compile the MIPS core.
+ config SSB_EMBEDDED
+ 	bool
+-	depends on SSB_DRIVER_MIPS && SSB_PCICORE_HOSTMODE
++	depends on PCI=n || SSB_PCICORE_HOSTMODE
+ 	default y
+ 
+ config SSB_DRIVER_EXTIF
+
