@@ -2,54 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D2317BEB4B
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 22:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7A517BEB8E
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Oct 2023 22:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378566AbjJIUJu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Oct 2023 16:09:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55620 "EHLO
+        id S1378055AbjJIUWb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Oct 2023 16:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378554AbjJIUJs (ORCPT
+        with ESMTP id S234540AbjJIUWa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Oct 2023 16:09:48 -0400
-Received: from mail-ot1-f78.google.com (mail-ot1-f78.google.com [209.85.210.78])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25E7DB6
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 13:09:46 -0700 (PDT)
-Received: by mail-ot1-f78.google.com with SMTP id 46e09a7af769-6c65fe5e6f0so6839435a34.3
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Oct 2023 13:09:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696882185; x=1697486985;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+        Mon, 9 Oct 2023 16:22:30 -0400
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170A6A3
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Oct 2023 13:22:28 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1dd54aca17cso3666542fac.3
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Oct 2023 13:22:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696882947; x=1697487747; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Vdk/s0cRW1gT3irTEZ17OEvDFCD/HvOZqWIKEfeeFxk=;
-        b=ATwduw4EE14b5YivsCWgbh0fwd3cV3IeIs3iFv/T0ynDx9ezd50PStLA8+6U5cxJ1g
-         xE6Gh7dUTzxQMaQpaKodLdod8d1if0YgRmZqwkzwoKSRy9cbwVdSURjnbNkOGOWA5Dek
-         hw2wGp6P0nA570A5f2HxOX2hnBZZQIR5v4svSOpkJh5yAA5fCDme75DJsiVhBTVyLNOM
-         h6FCK8wIrxL2DfbV4nv6G5w2i8CFoN5A1XFzeqDRxTHvos5GmLyvGvP5eM6HfuMnS1Bv
-         C4hzBwtLvsRhZ78Fd6JRw7n+AWBOpD38V/3lzlU/fmwOxrwL9tJ/pCbSifLs0zppCJxE
-         f0hA==
-X-Gm-Message-State: AOJu0YwEHnogS1jjyYOem6DMCD2CB/F+kHY292nwxMJJxJL9RoCjk3W+
-        kFpxmMXdU4Wf3wFkvbTAkJo7GaswTwN2woNriKnPggD9L0q8
-X-Google-Smtp-Source: AGHT+IFIG1BHSYIUplQLFd/iGd96P8h7DQ4/qzR45dskjrKAVrNZRIDWumuU7+lVTrCTVkhYxwHSAvLT0zINvQLstXsa6ATzOVKF
+        bh=lPugHq+FTVI6wjFwU6/difcH2OtrbT6TMNdfc1s3ROI=;
+        b=mbyyvPZNYS/WI8hYmDZeaPMxadYieXdAUF7NHjbzzzY5fOOGalWlt4BeiylpCSZDdN
+         lRPsKmt5jbCWKfMa2Fxz56FgJVFy8jJuoNxJu/GcGtceYnxyyYV+NkAzIwZSqD4ts1ay
+         2DV+4NMyb9PqKRJrfqjygZIWaAWUUgrzEPgCBZoAq8dmU+vRlbSImeCDSa32pXg9aqjr
+         ne655+Dxrg/I7b0Py1JeEKhBW7bpI1/VjH8WsNwrEUl7XQs+RUALg6GitYZ+t5RWIL3s
+         HNxwMFf96lNLI7fupV5UkErjElUxVBclSrQIVwERl3dPtgmkN5jU61R3ybNsz7cq/nUj
+         pfvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696882947; x=1697487747;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lPugHq+FTVI6wjFwU6/difcH2OtrbT6TMNdfc1s3ROI=;
+        b=N3GG+bt/8cmLeNFN0Mj9gGcfH1w4rVGRXOPyWkn6cD6MllIvTBz1CiwvDIv5uUCg5D
+         fBIuTYAhF6yKXF4MRiDIVoyi9w/JObY1eVo8JUGzdO6utDQM+5ddXU5EnU7jKjhOOEPf
+         +O4j8IAqxL4zCU9K3kKQnKCOlraZ5/ukOah7aZxgeoFemFwmPCeLF0b2AefRxhIDY1xg
+         RaK4OVK0MSM144Ko6JiM2l1NWMUgaro3oX4Qo1WoHAEoSJWwpokU3ZemPxIpUHcqk3uh
+         rWblXGoWAPBH4okugpQxsVgRXHGiCW8rtYgXPvZERMRKN90707sC2MfDZbjYbA2VwzcZ
+         sp/Q==
+X-Gm-Message-State: AOJu0Yy3TJLX0idg5KS2aVn3Y9qDSQ/E9jKSaLz9K9Gbx94Ai+Ii0kKL
+        THKcfmiuaEfqF7A2iodhmcE=
+X-Google-Smtp-Source: AGHT+IGAt+EExQlwSnJxDpIfnnKGNd+xYroi4LoWTYooHfAtyWnd53d/fFzBLwYhkhPYb2ZP0IjQyQ==
+X-Received: by 2002:a05:6870:f708:b0:1dc:c65e:ded2 with SMTP id ej8-20020a056870f70800b001dcc65eded2mr17503474oab.12.1696882946933;
+        Mon, 09 Oct 2023 13:22:26 -0700 (PDT)
+Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id s13-20020a0ce30d000000b0063d038df3f3sm4122315qvl.52.2023.10.09.13.22.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Oct 2023 13:22:26 -0700 (PDT)
+Message-ID: <cd9e71c8-2884-427a-a394-756f62ab09ba@gmail.com>
+Date:   Mon, 9 Oct 2023 22:22:23 +0200
 MIME-Version: 1.0
-X-Received: by 2002:a05:6870:769b:b0:1e1:1e68:ba3d with SMTP id
- dx27-20020a056870769b00b001e11e68ba3dmr6212784oab.7.1696882185433; Mon, 09
- Oct 2023 13:09:45 -0700 (PDT)
-Date:   Mon, 09 Oct 2023 13:09:45 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e3788c06074e2b84@google.com>
-Subject: [syzbot] [net?] [wireless?] possible deadlock in rfkill_send_events
-From:   syzbot <syzbot+509238e523e032442b80@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com, johannes.berg@intel.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: On brcm80211 maintenance and support
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>,
+        Julian Calaby <julian.calaby@gmail.com>
+Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Hector Martin <marcan@marcan.st>,
+        SHA-cyfmac-dev-list@infineon.com,
+        brcm80211-dev-list.pdl@broadcom.com
+References: <6f78e624-62ee-3ae5-1db4-a0411566def8@yandex.ru>
+ <CAGRGNgU7aySyUny9aG_+wXiKJ7j1weosa-rZDY4_WAXbq-3ABg@mail.gmail.com>
+ <87ttr454bh.fsf@kernel.org>
+From:   Arend Van Spriel <aspriel@gmail.com>
+In-Reply-To: <87ttr454bh.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,135 +84,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On 10/6/2023 2:21 PM, Kalle Valo wrote:
+> Julian Calaby <julian.calaby@gmail.com> writes:
+> 
+>> Hi Dmitry,
+>>
+>> (relevant people and lists CC'd)
+>>
+>> On Fri, Oct 6, 2023 at 3:16 AM Dmitry Antipov <dmantipov@yandex.ru> wrote:
+>>>
+>>> Kalle,
+>>>
+>>> what's an actual status of brcm80211 driver? It seems
+>>> that the relevant MAINTAINERS entries are no longer
+>>> useful, and [1] states that Broadcom is just "disappeared".
+>>
+>> Arend hasn't posted since February:
+>> https://lore.kernel.org/linux-wireless/63f72045-e51d-d9a4-a0ed-c221bcdcee03@gmail.com/
+>>
+>> Franky is still reviewing things as of early August:
+>> https://lore.kernel.org/linux-wireless/CA+8PC_evb-6Y3dKnAN4BN=ODEVxY5-cDb6Lc72u0j1WBtx7p1A@mail.gmail.com/
+>>
+>> Hante hasn't posted since 2018:
+>> https://lore.kernel.org/linux-wireless/4f6223b8083ed69432493a37d4f45b69@mail.gmail.com/
+>>
+>> Hector Martin has a bunch of Apple-specific patches downstream in the
+>> Asahi Linux kernel and has been looking for guidance on how to
+>> upstream it without any real answers:
+>> https://lore.kernel.org/linux-wireless/181af6e9-799d-b730-dc14-ee2de2541f35@marcan.st/
+>>
+>> There's also speculation that the Raspberry Pi people have downstream
+>> patches too, but I haven't been able to find anything concrete in a
+>> very brief search.
+> 
+> Thanks for the research, that is helpful.
+> 
+>> Finally, the Cypress / Infineon people appear to be uninterested in
+>> discussing the driver.
+>>
+>> I think it's pretty safe to say that this driver is nearly
+>> unmaintained by Broadcom, definitely unmaintained by Cypress /
+>> Infineon and Arend is unable to answer questions relating to anything
+>> beyond the code as-written.
+>>
+>> Kalle, should this driver get orphaned?
+> 
+> We definitely need to consider that but let's first wait for Arend to
+> comment.
 
-syzbot found the following issue on:
+Using my personal email account to comment. Broadcom has pulled away 
+most resources from the brcm80211 drivers as there is no business 
+interest for it and it turned into a one-fifth man show as I was granted 
+to work one day a week on brcm80211. Nice theory but in practice other 
+work always takes priority. So "nearly unmaintained" is no exaggeration. 
+I probably can not meet the expectations some people in the community 
+have regarding driver maintainers, but I can still review patch 
+submissions although I should keep a better eye on the list to do that. 
+It would not be my choice to abandon brcm80211, but if my contributions 
+are considered insufficient than I will accept that fact.
 
-HEAD commit:    f291209eca5e Merge tag 'net-6.6-rc5' of git://git.kernel.o..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=1139f1be680000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b89b61abf7449972
-dashboard link: https://syzkaller.appspot.com/bug?extid=509238e523e032442b80
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1103ec86680000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=118b6bda680000
+Ever since Infineon took over Cypress wifi business things turned quiet 
+soon. Their website still claims brcmfmac is the driver to use. Earlier 
+this year I did have contact with them to hear whether they were 
+committed to the driver. At least I got an answer, but not much more 
+than that.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/7b2add3a29c7/disk-f291209e.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7a15a9498899/vmlinux-f291209e.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f39062509f32/bzImage-f291209e.xz
+Regards,
+Arend
 
-The issue was bisected to:
-
-commit 2c3dfba4cf84ac4f306cc6653b37b6dd6859ae9d
-Author: Johannes Berg <johannes.berg@intel.com>
-Date:   Thu Sep 14 13:45:17 2023 +0000
-
-    rfkill: sync before userspace visibility/changes
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=13967b3a680000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=10567b3a680000
-console output: https://syzkaller.appspot.com/x/log.txt?x=17967b3a680000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+509238e523e032442b80@syzkaller.appspotmail.com
-Fixes: 2c3dfba4cf84 ("rfkill: sync before userspace visibility/changes")
-
-============================================
-WARNING: possible recursive locking detected
-6.6.0-rc4-syzkaller-00158-gf291209eca5e #0 Not tainted
---------------------------------------------
-syz-executor675/5132 is trying to acquire lock:
-ffff8880297ee088 (&data->mtx){+.+.}-{3:3}, at: rfkill_send_events+0x226/0x3f0 net/rfkill/core.c:286
-
-but task is already holding lock:
-ffff88801bfc0088 (&data->mtx){+.+.}-{3:3}, at: rfkill_fop_open+0x146/0x750 net/rfkill/core.c:1183
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&data->mtx);
-  lock(&data->mtx);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-3 locks held by syz-executor675/5132:
- #0: ffffffff8d6f39e8 (misc_mtx){+.+.}-{3:3}, at: misc_open+0x59/0x4c0 drivers/char/misc.c:129
- #1: ffffffff8ea7fa68 (rfkill_global_mutex){+.+.}-{3:3}, at: rfkill_fop_open+0x13c/0x750 net/rfkill/core.c:1182
- #2: ffff88801bfc0088 (&data->mtx){+.+.}-{3:3}, at: rfkill_fop_open+0x146/0x750 net/rfkill/core.c:1183
-
-stack backtrace:
-CPU: 1 PID: 5132 Comm: syz-executor675 Not tainted 6.6.0-rc4-syzkaller-00158-gf291209eca5e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
- check_deadlock kernel/locking/lockdep.c:3062 [inline]
- validate_chain kernel/locking/lockdep.c:3855 [inline]
- __lock_acquire+0x2971/0x5de0 kernel/locking/lockdep.c:5136
- lock_acquire kernel/locking/lockdep.c:5753 [inline]
- lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5718
- __mutex_lock_common kernel/locking/mutex.c:603 [inline]
- __mutex_lock+0x181/0x1340 kernel/locking/mutex.c:747
- rfkill_send_events+0x226/0x3f0 net/rfkill/core.c:286
- rfkill_event net/rfkill/core.c:301 [inline]
- rfkill_event net/rfkill/core.c:293 [inline]
- rfkill_set_block+0x3d0/0x550 net/rfkill/core.c:369
- rfkill_sync net/rfkill/core.c:379 [inline]
- rfkill_sync+0x10a/0x1c0 net/rfkill/core.c:372
- rfkill_fop_open+0x1d6/0x750 net/rfkill/core.c:1193
- misc_open+0x3da/0x4c0 drivers/char/misc.c:165
- chrdev_open+0x277/0x700 fs/char_dev.c:414
- do_dentry_open+0x88b/0x1730 fs/open.c:929
- do_open fs/namei.c:3639 [inline]
- path_openat+0x19af/0x29c0 fs/namei.c:3796
- do_filp_open+0x1de/0x430 fs/namei.c:3823
- do_sys_openat2+0x176/0x1e0 fs/open.c:1422
- do_sys_open fs/open.c:1437 [inline]
- __do_sys_openat fs/open.c:1453 [inline]
- __se_sys_openat fs/open.c:1448 [inline]
- __x64_sys_openat+0x175/0x210 fs/open.c:1448
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f8b31dbc989
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 41 1e 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f8b31f5ccc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 00007f8b31e3c4c8 RCX: 00007f8b31dbc989
-RDX: 0000000000000801 RSI: 0000000020000040 RDI: ffffffffffffff9c
-RBP: 0000000000000000 R08: 0000000000000000 R09: 00007f8b31f5c7f0
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
-R13: 00007f8b31f5cd00 R14: 00007f8b31f5cd40 R15: 0000000000000000
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-
-If the bug is already fixed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite bug's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the bug is a duplicate of another bug, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
