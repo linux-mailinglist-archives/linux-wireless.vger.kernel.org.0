@@ -2,258 +2,200 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9388F7BF4E1
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 09:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F51D7BF4F1
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 09:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442573AbjJJHxw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 03:53:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52446 "EHLO
+        id S1442572AbjJJHyn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 03:54:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442480AbjJJHxv (ORCPT
+        with ESMTP id S1442619AbjJJHyi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 03:53:51 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 245BF92;
-        Tue, 10 Oct 2023 00:53:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CBDC433C7;
-        Tue, 10 Oct 2023 07:53:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696924429;
-        bh=gh+wF2cOm71mHLeriwt1ClLG5cXqexAVx/dzA0lWn7Q=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mMI+ffJ9AN/y2qJ9AO9MU2AgEBE2589Kk1bIOq7YWkAqx0RkIlzhYh+Ao4AX8SWbE
-         ZGZqrhh99+Fc+JLDnzskHqNAwMN/XXxPBZvpYNaysSBwHFteSyO4bBzXAVlDXtEhaI
-         AwMLnIym/vAicYnaFHcrBk/S15Ts20bfzNZ7Q4N+fpxyL2tCAvBhvTarqvAvquH1uQ
-         IlelyzJ8gkUCzxvPdsa56+zfyZWYS/6f6iDlsAkp69k4+iPB6l0BLP5G+JJ0f7qJLh
-         +gtPdZXxSiOURBYlwBG/AMGd9Yv3YoydGu7xKaELp2uDkCpSeIH50t6xxNsoEWzczC
-         h4QEDqjDnez+A==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Rodolfo Zitellini <rwz@xhero.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>, Netdev <netdev@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wpan@vger.kernel.org,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, Doug Brown <doug@schmorgal.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2] appletalk: make localtalk and ppp support conditional
-Date:   Tue, 10 Oct 2023 09:53:37 +0200
-Message-Id: <20231010075337.3100563-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <DE61EEA5-D560-40B6-8F4D-22F299AC61ED@xhero.org>
-References: <DE61EEA5-D560-40B6-8F4D-22F299AC61ED@xhero.org>
+        Tue, 10 Oct 2023 03:54:38 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0EBA4;
+        Tue, 10 Oct 2023 00:54:37 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-405497850dbso49741515e9.0;
+        Tue, 10 Oct 2023 00:54:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696924476; x=1697529276; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iwwM7auPgZJMU7dH/X5o56/hwua6iH2A1QFl6/0EOd0=;
+        b=V6xfKpPBZTbS6eVz4iMpEXFUchDmqhSn0Cwyc05jiqi3vR+WJlu8pppJilTXDdPlph
+         PRxCD+95LLdqprM9L1zKPOhVed3FZHHu1oWgnQg3WkR0M4yReUcuvDRnv9JQBNeoGckW
+         Trxpvnb4FViHX7Ws50B1yqA7K7dNiR25T8QMYuTcw46j5kkULb8f+PiyMBHUbqGScWbb
+         IonN3Fuh3o4WZgOBRyGGm+B9Z+Cj+go1Bm9XMqfETtq+st9KexgWqleHNIMzyAx6kjYg
+         PoLoq+UqBNbtRvLOkVQTSpyXjbrokXX0trbGwxFfttb9WUziBJ0lPLN6NeHtIfi9xQhg
+         toxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696924476; x=1697529276;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iwwM7auPgZJMU7dH/X5o56/hwua6iH2A1QFl6/0EOd0=;
+        b=CxsH1TWc3e06dq6V0BkWtT6qZOjCbTU0dGwcEVsPhw7KncaukXjg3PuTdBexUE0qK0
+         DXrPwcPibKKRFOuqIpbnhV4Emr9/S/L5Swr9hX00dRhzRacW9P9dBOar5vz5vQzsuVsv
+         xGZtL2450/dF6HW6e4B03HEk2rO7uENJv2lP87LsKI7617r6szi4AaFXjyMESx+YQO2J
+         GoYAJpJYUYJolOorlTioQTpEtU4ETQ7rPnvXIQHWG2qFmGTVdPsqksUwobh8fNPvHkQ9
+         znp017v7yGsNzt5QrgZaZOOO9PPa93tfcbqFUzx3/6sENdHllkMAQReU/NnlnvvVoiKV
+         knjw==
+X-Gm-Message-State: AOJu0YzD0SP6pFdT8kBmlaolcwJLo3aPHrLWbC1LWs0fufkCwPaa10sA
+        u/lRZ/lCna9ymacsAFMfAvI=
+X-Google-Smtp-Source: AGHT+IFoXHF3xhB1R1QbXfa6gtatnLXym3Q5nnEunh6zFeATAVA0tqJjWKSQ447yVOYMirHfwQlOJg==
+X-Received: by 2002:a5d:500b:0:b0:319:8a66:f695 with SMTP id e11-20020a5d500b000000b003198a66f695mr13345455wrt.55.1696924475419;
+        Tue, 10 Oct 2023 00:54:35 -0700 (PDT)
+Received: from [192.168.0.101] ([77.126.80.27])
+        by smtp.gmail.com with ESMTPSA id z3-20020a056000110300b0031c6581d55esm11802488wrw.91.2023.10.10.00.54.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Oct 2023 00:54:35 -0700 (PDT)
+Message-ID: <f288a1cd-0e15-4301-8522-d46840dd2d93@gmail.com>
+Date:   Tue, 10 Oct 2023 10:54:26 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next v3 3/5] netdev: replace napi_reschedule with
+ napi_schedule
+Content-Language: en-US
+To:     Christian Marangi <ansuelsmth@gmail.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        Jeroen de Borst <jeroendb@google.com>,
+        Praveen Kaligineedi <pkaligineedi@google.com>,
+        Shailend Chand <shailend@google.com>,
+        Douglas Miller <dougmill@linux.ibm.com>,
+        Nick Child <nnac123@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Haren Myneni <haren@linux.ibm.com>,
+        Rick Lindsley <ricklind@linux.ibm.com>,
+        Dany Madden <danymadden@us.ibm.com>,
+        Thomas Falcon <tlfalcon@linux.ibm.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+        Intel Corporation <linuxwwan@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+        Liu Haijun <haijun.liu@mediatek.com>,
+        M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
+        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Alex Elder <elder@linaro.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+        Bailey Forrest <bcf@google.com>,
+        Junfeng Guo <junfeng.guo@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Ziwei Xiao <ziweixiao@google.com>,
+        Rushil Gupta <rushilg@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Yuri Karpov <YKarpov@ispras.ru>, Andrew Lunn <andrew@lunn.ch>,
+        Zheng Zengkai <zhengzengkai@huawei.com>,
+        Dawei Li <set_pte_at@outlook.com>,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+        Benjamin Berg <benjamin.berg@intel.com>,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+References: <20231009133754.9834-1-ansuelsmth@gmail.com>
+ <20231009133754.9834-3-ansuelsmth@gmail.com>
+From:   Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <20231009133754.9834-3-ansuelsmth@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
 
-The last localtalk driver is gone now, and ppp support was never fully
-merged, but the code to support them for phase1 networking still calls
-the deprecated .ndo_do_ioctl() helper.
 
-In order to better isolate the localtalk and ppp portions of appletalk,
-guard all of the corresponding code with CONFIG_DEV_APPLETALK checks,
-including a preprocessor conditional that guards the internal ioctl calls.
+On 09/10/2023 16:37, Christian Marangi wrote:
+> Now that napi_schedule return a bool, we can drop napi_reschedule that
+> does the same exact function. The function comes from a very old commit
+> bfe13f54f502 ("ibm_emac: Convert to use napi_struct independent of struct
+> net_device") and the purpose is actually deprecated in favour of
+> different logic.
+> 
+> Convert every user of napi_reschedule to napi_schedule.
+> 
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com> # ath10k
+> Acked-by: Nick Child <nnac123@linux.ibm.com> # ibm
+> Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for can/dev/rx-offload.c
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> ---
+> Changes v3:
+> - Add Reviewed-by tag
+> Changes v2:
+> - Add ack tag
+> ---
+>   drivers/infiniband/ulp/ipoib/ipoib_ib.c                |  4 ++--
+>   drivers/net/can/dev/rx-offload.c                       |  2 +-
+>   drivers/net/ethernet/chelsio/cxgb4/sge.c               |  2 +-
+>   drivers/net/ethernet/chelsio/cxgb4vf/sge.c             |  2 +-
+>   drivers/net/ethernet/ezchip/nps_enet.c                 |  2 +-
+>   drivers/net/ethernet/google/gve/gve_main.c             |  2 +-
+>   drivers/net/ethernet/ibm/ehea/ehea_main.c              |  2 +-
+>   drivers/net/ethernet/ibm/emac/mal.c                    |  2 +-
+>   drivers/net/ethernet/ibm/ibmveth.c                     |  2 +-
+>   drivers/net/ethernet/ibm/ibmvnic.c                     |  2 +-
+>   drivers/net/ethernet/mellanox/mlx4/en_rx.c             |  2 +-
+>   drivers/net/ethernet/ni/nixge.c                        |  2 +-
+>   drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c |  2 +-
+>   drivers/net/ethernet/xscale/ixp4xx_eth.c               |  4 ++--
+>   drivers/net/fjes/fjes_main.c                           |  2 +-
+>   drivers/net/wan/ixp4xx_hss.c                           |  4 ++--
+>   drivers/net/wireless/ath/ath10k/pci.c                  |  2 +-
+>   drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c             |  2 +-
+>   include/linux/netdevice.h                              | 10 ----------
+>   19 files changed, 21 insertions(+), 31 deletions(-)
+> 
 
-This is currently all dead code and will now be left out of the
-module since this Kconfig symbol is always undefined, but there are
-plans to add a new driver for localtalk again in the future. When
-that happens, the logic can be cleaned up to work properly without
-the need for the ioctl.
+...
 
-Link: https://lore.kernel.org/lkml/790BA488-B6F6-41ED-96EF-2089EF1C043B@xhero.org/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-v2: don't actually remove the code, just make it conditional since we
-are likely to need it again.
+> diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+> index 332472fe4990..a09b6e05337d 100644
+> --- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+> @@ -400,7 +400,7 @@ void mlx4_en_recover_from_oom(struct mlx4_en_priv *priv)
+>   	for (ring = 0; ring < priv->rx_ring_num; ring++) {
+>   		if (mlx4_en_is_ring_empty(priv->rx_ring[ring])) {
+>   			local_bh_disable();
+> -			napi_reschedule(&priv->rx_cq[ring]->napi);
+> +			napi_schedule(&priv->rx_cq[ring]->napi);
+>   			local_bh_enable();
+>   		}
+>   	}
 
- include/linux/atalk.h  |  1 -
- net/appletalk/Makefile |  3 ++-
- net/appletalk/aarp.c   | 24 +++++++++++++++---------
- net/appletalk/ddp.c    | 24 +++++++++++++-----------
- 4 files changed, 30 insertions(+), 22 deletions(-)
-
-diff --git a/include/linux/atalk.h b/include/linux/atalk.h
-index a55bfc6567d01..2896f2ac9568e 100644
---- a/include/linux/atalk.h
-+++ b/include/linux/atalk.h
-@@ -121,7 +121,6 @@ static inline struct atalk_iface *atalk_find_dev(struct net_device *dev)
- #endif
- 
- extern struct atalk_addr *atalk_find_dev_addr(struct net_device *dev);
--extern struct net_device *atrtr_get_dev(struct atalk_addr *sa);
- extern int		 aarp_send_ddp(struct net_device *dev,
- 				       struct sk_buff *skb,
- 				       struct atalk_addr *sa, void *hwaddr);
-diff --git a/net/appletalk/Makefile b/net/appletalk/Makefile
-index 33164d972d379..410d52f9113e2 100644
---- a/net/appletalk/Makefile
-+++ b/net/appletalk/Makefile
-@@ -5,6 +5,7 @@
- 
- obj-$(CONFIG_ATALK) += appletalk.o
- 
--appletalk-y			:= aarp.o ddp.o dev.o
-+appletalk-y			:= aarp.o ddp.o
- appletalk-$(CONFIG_PROC_FS)	+= atalk_proc.o
- appletalk-$(CONFIG_SYSCTL)	+= sysctl_net_atalk.o
-+appletalk-$(CONFIG_DEV_APPLETALK) += dev.o
-diff --git a/net/appletalk/aarp.c b/net/appletalk/aarp.c
-index 9fa0b246902be..b15f67293ac4c 100644
---- a/net/appletalk/aarp.c
-+++ b/net/appletalk/aarp.c
-@@ -438,14 +438,17 @@ static struct atalk_addr *__aarp_proxy_find(struct net_device *dev,
-  */
- static void aarp_send_probe_phase1(struct atalk_iface *iface)
- {
-+#if IS_ENABLED(CONFIG_DEV_APPLETALK)
- 	struct ifreq atreq;
- 	struct sockaddr_at *sa = (struct sockaddr_at *)&atreq.ifr_addr;
- 	const struct net_device_ops *ops = iface->dev->netdev_ops;
- 
- 	sa->sat_addr.s_node = iface->address.s_node;
- 	sa->sat_addr.s_net = ntohs(iface->address.s_net);
--
--	/* We pass the Net:Node to the drivers/cards by a Device ioctl. */
-+	/*
-+	 * We used to pass the address via device ioctl, this has to
-+	 *  be rewritten if we bring back localtalk.
-+	 */
- 	if (!(ops->ndo_do_ioctl(iface->dev, &atreq, SIOCSIFADDR))) {
- 		ops->ndo_do_ioctl(iface->dev, &atreq, SIOCGIFADDR);
- 		if (iface->address.s_net != htons(sa->sat_addr.s_net) ||
-@@ -455,13 +458,15 @@ static void aarp_send_probe_phase1(struct atalk_iface *iface)
- 		iface->address.s_net  = htons(sa->sat_addr.s_net);
- 		iface->address.s_node = sa->sat_addr.s_node;
- 	}
-+#endif
- }
- 
- 
- void aarp_probe_network(struct atalk_iface *atif)
- {
--	if (atif->dev->type == ARPHRD_LOCALTLK ||
--	    atif->dev->type == ARPHRD_PPP)
-+	if (IS_ENABLED(CONFIG_DEV_APPLETALK) &&
-+	    (atif->dev->type == ARPHRD_LOCALTLK ||
-+	     atif->dev->type == ARPHRD_PPP))
- 		aarp_send_probe_phase1(atif);
- 	else {
- 		unsigned int count;
-@@ -488,8 +493,9 @@ int aarp_proxy_probe_network(struct atalk_iface *atif, struct atalk_addr *sa)
- 	 * we don't currently support LocalTalk or PPP for proxy AARP;
- 	 * if someone wants to try and add it, have fun
- 	 */
--	if (atif->dev->type == ARPHRD_LOCALTLK ||
--	    atif->dev->type == ARPHRD_PPP)
-+	if (IS_ENABLED(CONFIG_DEV_APPLETALK) &&
-+	    (atif->dev->type == ARPHRD_LOCALTLK ||
-+	     atif->dev->type == ARPHRD_PPP))
- 		goto out;
- 
- 	/*
-@@ -550,7 +556,8 @@ int aarp_send_ddp(struct net_device *dev, struct sk_buff *skb,
- 	skb_reset_network_header(skb);
- 
- 	/* Check for LocalTalk first */
--	if (dev->type == ARPHRD_LOCALTLK) {
-+	if (IS_ENABLED(CONFIG_DEV_APPLETALK) &&
-+	    dev->type == ARPHRD_LOCALTLK) {
- 		struct atalk_addr *at = atalk_find_dev_addr(dev);
- 		struct ddpehdr *ddp = (struct ddpehdr *)skb->data;
- 		int ft = 2;
-@@ -588,7 +595,7 @@ int aarp_send_ddp(struct net_device *dev, struct sk_buff *skb,
- 	}
- 
- 	/* On a PPP link we neither compress nor aarp.  */
--	if (dev->type == ARPHRD_PPP) {
-+	if (IS_ENABLED(CONFIG_DEV_APPLETALK) && dev->type == ARPHRD_PPP) {
- 		skb->protocol = htons(ETH_P_PPPTALK);
- 		skb->dev = dev;
- 		goto sendit;
-@@ -674,7 +681,6 @@ int aarp_send_ddp(struct net_device *dev, struct sk_buff *skb,
- drop:
- 	return NET_XMIT_DROP;
- }
--EXPORT_SYMBOL(aarp_send_ddp);
- 
- /*
-  *	An entry in the aarp unresolved queue has become resolved. Send
-diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
-index 8978fb6212ffb..d4dc6a9fd3b6b 100644
---- a/net/appletalk/ddp.c
-+++ b/net/appletalk/ddp.c
-@@ -473,7 +473,7 @@ static struct atalk_route *atrtr_find(struct atalk_addr *target)
-  * Given an AppleTalk network, find the device to use. This can be
-  * a simple lookup.
-  */
--struct net_device *atrtr_get_dev(struct atalk_addr *sa)
-+static struct net_device *atrtr_get_dev(struct atalk_addr *sa)
- {
- 	struct atalk_route *atr = atrtr_find(sa);
- 	return atr ? atr->dev : NULL;
-@@ -1947,10 +1947,6 @@ static struct packet_type ppptalk_packet_type __read_mostly = {
- 
- static unsigned char ddp_snap_id[] = { 0x08, 0x00, 0x07, 0x80, 0x9B };
- 
--/* Export symbols for use by drivers when AppleTalk is a module */
--EXPORT_SYMBOL(atrtr_get_dev);
--EXPORT_SYMBOL(atalk_find_dev_addr);
--
- /* Called by proto.c on kernel start up */
- static int __init atalk_init(void)
- {
-@@ -1971,8 +1967,10 @@ static int __init atalk_init(void)
- 		goto out_sock;
- 	}
- 
--	dev_add_pack(&ltalk_packet_type);
--	dev_add_pack(&ppptalk_packet_type);
-+	if (IS_ENABLED(CONFIG_DEV_APPLETALK)) {
-+		dev_add_pack(&ltalk_packet_type);
-+		dev_add_pack(&ppptalk_packet_type);
-+	}
- 
- 	rc = register_netdevice_notifier(&ddp_notifier);
- 	if (rc)
-@@ -1998,8 +1996,10 @@ static int __init atalk_init(void)
- out_dev:
- 	unregister_netdevice_notifier(&ddp_notifier);
- out_snap:
--	dev_remove_pack(&ppptalk_packet_type);
--	dev_remove_pack(&ltalk_packet_type);
-+	if (IS_ENABLED(CONFIG_DEV_APPLETALK)) {
-+		dev_remove_pack(&ppptalk_packet_type);
-+		dev_remove_pack(&ltalk_packet_type);
-+	}
- 	unregister_snap_client(ddp_dl);
- out_sock:
- 	sock_unregister(PF_APPLETALK);
-@@ -2026,8 +2026,10 @@ static void __exit atalk_exit(void)
- 	atalk_proc_exit();
- 	aarp_cleanup_module();	/* General aarp clean-up. */
- 	unregister_netdevice_notifier(&ddp_notifier);
--	dev_remove_pack(&ltalk_packet_type);
--	dev_remove_pack(&ppptalk_packet_type);
-+	if (IS_ENABLED(CONFIG_DEV_APPLETALK)) {
-+		dev_remove_pack(&ltalk_packet_type);
-+		dev_remove_pack(&ppptalk_packet_type);
-+	}
- 	unregister_snap_client(ddp_dl);
- 	sock_unregister(PF_APPLETALK);
- 	proto_unregister(&ddp_proto);
--- 
-2.39.2
+For mlx4 part:
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
 
