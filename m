@@ -2,115 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 541A37C41BA
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 22:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D01CD7C44E6
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 00:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbjJJUm4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 16:42:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57740 "EHLO
+        id S234684AbjJJWuf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 18:50:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234598AbjJJUmy (ORCPT
+        with ESMTP id S1344171AbjJJWuX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 16:42:54 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA205B6
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 13:42:45 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-9adb9fa7200so52192066b.0
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 13:42:45 -0700 (PDT)
+        Tue, 10 Oct 2023 18:50:23 -0400
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4828F184
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 15:50:09 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-58e119bb28eso274594a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 15:50:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696970564; x=1697575364; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=cJ7qBg0sgvbtjbaMF3kiM4Gox7ddpQ2d3bhgQqglVpA=;
-        b=gFC00mQBZQL3//LtS28NtLWz/c73+y5p57iKM5sFHBcg9WClYg9FTJ+u6X/aAk5r9G
-         4EnydRMCIiBUsIKGXnWk217x8SqBbY6TZg5KJFvno0TIGWkLK6fcmPYnWduQbmMlIs8d
-         0jUygBhADxdxObJr2ABABQhca4E0Tt/1QC2DGirRDpkd/h1BzqBxZJvuHCjYSzNkigHp
-         6dEo9h5bJyq2qrFEQ/RkoU8zfhIdrwB1hdwyzmWLfBce1NELdpCKvY518L+/ZkOOKK3d
-         EAsqLk5W41/d0mdVnWSjcIMbbkIDvSEmLGgeqIbngPqdP/5f786+L/TOlqGXjcHWgtog
-         5iag==
+        d=chromium.org; s=google; t=1696978208; x=1697583008; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=N2ph4e3aw3myowCBYVpWGXZK0YS95STvUJ4nSeseoUo=;
+        b=gI4e5XqTajQKEPi50KbEZB0HoCzzK9XziB5Cyf6iK1MfUkMOvFoz7eMMAPIsDeVuYB
+         whc3Bxpkz+z7sIqHcb1JOsz+bl8lzh7oHBYpIl5EtqWKdZ0SGaCBL8vmDHQrZPviLJc+
+         E1VCq6FAD6B7yqKCTDHxrgcOD96qjZVQJqgY8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696970564; x=1697575364;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cJ7qBg0sgvbtjbaMF3kiM4Gox7ddpQ2d3bhgQqglVpA=;
-        b=PfyQpSN8u+d/TmENWbYtyrsItpASW7Zmn9CO9o9rf4XLXwt5nHPbNHUYvCQ/sudevb
-         Lxyply3Ibyj0p7BBBzvH5aAgz0fkChaVlfYH0i2XswMOG+fIitPVjeSkJo4K6VF2m8CZ
-         PmNMGPsHb7ZiTxiFJKkBBdhV6i9Wtx0ivHSVHzCZcSidbddwAlFqlN2N04N2jscDmMLi
-         ZzNxzILbAu16tcRSHv0NtZyZpqWw5ej9rCvuwrwo3+0/wYsZMzv5uoy+JDI8jbOtQuai
-         BKVERwQ3bJXqb/lvIGECT8hS++ZincFqE4MXi3mpUI/C5rRYK2oH3+0ldEZDUsgrR9l0
-         B5DA==
-X-Gm-Message-State: AOJu0YzM8W8DYO29uLOuPWt0wY6V0dO96H0WYLmWGukQCyjGcKxaFCMg
-        lUJeBn4tek6s1V+BPtW1B9tl8Kvk0YE2VNrKv3wq5zm0Ecw=
-X-Google-Smtp-Source: AGHT+IHQs0RYTRUgFplgLXT7Y/u7cjVhknwg/TrHzyMF0tQdYRGWRAPEdxrD5vDBxD8tLAujiFxJ/gB8Kp+q7kXCGiE=
-X-Received: by 2002:a17:907:808:b0:9b2:cee1:1f82 with SMTP id
- wv8-20020a170907080800b009b2cee11f82mr13004527ejb.7.1696970564116; Tue, 10
- Oct 2023 13:42:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696978208; x=1697583008;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N2ph4e3aw3myowCBYVpWGXZK0YS95STvUJ4nSeseoUo=;
+        b=h26xTNstGUxSGIaR+QyPTgaQCZ3an9W5l3wbecBV9jpX6ikBPS9cXDT5heiFjc14nB
+         Gh89i5U0Qqoj1cMiFySdpyipCuKxP8ZGfWhpyrdZ2y9r5EHWBz26xdZRCy65G43+tLVU
+         hRm4O0IuA+0/0hnXMWWRHrAQ8J5YHXy4KQlMv8JEFDFrqVXudNtjSgr1L6jCA2+8KTQs
+         n96iW6GWeXv0KXdG2QXVQxuOC/23woIJWdwAuqHhAIzyRr84QlJIZcjNUmWXuWylD0EW
+         PSAQbWFm4hdTMOzDmsrGUDS9827Vq34blgn8jIGoOBNhxXnBk8JXekEP2DUi8iLU2T45
+         hPhQ==
+X-Gm-Message-State: AOJu0YzFyRujc7cyYY7QteKVziv2ZleCVly/iEnfPcbzt4qzbYRPTLyt
+        CsZV9DFRpcjLn2bpvFa3QE4bgA==
+X-Google-Smtp-Source: AGHT+IHMjjMmufUYlfMeoiy4n2bRLKopeW77T7iwNUpfO2rnyXe54YxZIWGrE/Lf+yAz7OEr8Uu0pQ==
+X-Received: by 2002:a17:90b:4b47:b0:27c:edf7:db4a with SMTP id mi7-20020a17090b4b4700b0027cedf7db4amr4226933pjb.16.1696978208228;
+        Tue, 10 Oct 2023 15:50:08 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id bx4-20020a17090af48400b0026b76edd607sm10596603pjb.15.2023.10.10.15.50.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Oct 2023 15:50:07 -0700 (PDT)
+Date:   Tue, 10 Oct 2023 15:50:06 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] hostap: Add __counted_by for struct
+ prism2_download_data and use struct_size()
+Message-ID: <202310101549.E09DE6F@keescook>
+References: <ZSRXXvWMMkm7qqRW@work>
 MIME-Version: 1.0
-References: <CAAMvbhGsA4A9qHrYdXcNXLzv7a7xZZq98f90Q-Btb-9vs9ayCw@mail.gmail.com>
- <CAAMvbhHo8wo924YVZqFrLKQko59iSiLMhVAzb=tdSvf_-v1CCQ@mail.gmail.com> <acdb4315780bde3481c44ba90fe341fea75a2929.camel@sipsolutions.net>
-In-Reply-To: <acdb4315780bde3481c44ba90fe341fea75a2929.camel@sipsolutions.net>
-From:   James Dutton <james.dutton@gmail.com>
-Date:   Tue, 10 Oct 2023 21:42:07 +0100
-Message-ID: <CAAMvbhHoAgqhCJhHfBLtO0q-E9GvN=-+pix8O93N=rCZ60c41g@mail.gmail.com>
-Subject: Re: mac80211 bugs
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZSRXXvWMMkm7qqRW@work>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 10 Oct 2023 at 15:22, Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> On Mon, 2023-10-09 at 16:56 +0100, James Dutton wrote:
-> >
-> > Looking at this, it can be one of two things:
-> > 1) local->hw.wiphy->bands[band];    is NULL
->
-> Yes, I think that's it.
->
-> > 2) bands is an array of 6 items, making band valid for values 0-5.
-> > If band >= 6, it would cause problems.
->
-> Highly unlikely.
->
-[snip]
->
-> _Maybe_ change it to WARN_ON_ONCE(!sband || !sband->bitrates) there, but
-> really I think we should prevent this in the first place.
->
->
-> Is this, by any chance, a device without 2.4 GHz?
->
+On Mon, Oct 09, 2023 at 01:41:18PM -0600, Gustavo A. R. Silva wrote:
+> Prepare for the coming implementation by GCC and Clang of the __counted_by
+> attribute. Flexible array members annotated with __counted_by can have
+> their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
+> array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+> functions).
+> 
+> While there, use struct_size() helper, instead of the open-coded
+> version, to calculate the size for the allocation of the whole
+> flexible structure, including of course, the flexible-array member.
+> 
+> This code was found with the help of Coccinelle, and audited and
+> fixed manually.
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Hi,
-I have the same device that is reported to be crashing. My device does
-not actually crash, so I personally have not seen the problem.
-My device is what I would call unstable (not crashing, just not
-forwarding packets) though. My work around is to switch on/off
-airplane mode on the client, and it continues forwarding packets
-again. Some of the wifi device drivers have some not very portable use
-of bit fields that looks suspicious to me, but again no proof yet of
-what causes my stability problems. It is why a lot of access to bit
-fields in the kernel correctly uses portable accessors like
-STA_STATS_GET() and friends.
+I realize I didn't actually send my R-b for this thread, so here it is:
 
-I have seen this though:
-https://github.com/openwrt/openwrt/issues/13198
-Which has reports of a few other people seeing the crash.
-The device has both 2.4 and 5G wifi.
-From what I can see, the band information originates from what the
-wifi card received over the RF.
-So, theoretically, it might be caused by a bogus wifi packet being received.
-I agree that it is unlikely for "band" to get to 6 or above, but until
-one of the users who are seeing the problem runs a kernel with the
-extra printk or WARN statements in it, I don't think we are going to
-know the cause for certain.
-I think it prudent to put the if statements in to catch both edge cases.
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+:)
+
+-- 
+Kees Cook
