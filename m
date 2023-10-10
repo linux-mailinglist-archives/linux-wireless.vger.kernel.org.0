@@ -2,193 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E670C7BFF2C
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 16:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 714BA7BFF4D
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 16:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233053AbjJJO0h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 10:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45412 "EHLO
+        id S233083AbjJJO3L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 10:29:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232288AbjJJO0b (ORCPT
+        with ESMTP id S233297AbjJJO2w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 10:26:31 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7FCA7
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 07:26:29 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-3214cdb4b27so5465440f8f.1
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 07:26:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1696947988; x=1697552788; darn=vger.kernel.org;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j53K03Kx2OEVEprpKFtivoudi9Lu8+UFfHYtpWBkeXs=;
-        b=JXEosGHl7ZlDAjoVm+xzdIZl6L61J1C98MEu1CUg7wnzqsLM3LJrGcQv6/2moecS5V
-         BY3T4doR5fHqVIDtJQsxaeM2sfjSz81iofw35ZH1eT8EVie1rmfuCGN9pUpWNfyOQ//z
-         yUAMMal+FGLLLXyolq66bTkPDxlE18DAcs5JQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696947988; x=1697552788;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j53K03Kx2OEVEprpKFtivoudi9Lu8+UFfHYtpWBkeXs=;
-        b=SkQz78CERgl5vB3PQOdNvLXRBIl7vCkY+DC6KcZklHrckoi3iUbizVRvYltVwUXOQr
-         WrHbZgStSg3QugWHxetzb0qpiDqtg5VTfkacLXFNN83JTrwpwqDjg3MiProAZ4tDE0Vb
-         JnY74VrHRt/o+L7FuTMGSXLAwksA9StyzW9ApyQW5yAeyvzLwIeoRzDM5dWTQ1dqjz/4
-         qotAA5BsadDBSQjRpPcOXQH1tWwMQ/GU3RbyaKUXLoO4peTPiCEENlfIS1WSe9Z23EyZ
-         ndGg7Uj8g+SAaeAmWVgvb8WQYnpvn60q/6iOUTHZlu9BwcZChDxHPeFuXQg4BhlBRB3V
-         Fhvw==
-X-Gm-Message-State: AOJu0Yy/5ggVqb2JQtzCHp31OmPi8t4voFI66x7cQUECg0Eo0jj6TjVx
-        M5R4AOUf5wnZxl4/bD9HE8GbEw==
-X-Google-Smtp-Source: AGHT+IHkko9I0pI1D0eoUEg+jw0MQK4OSnxFwzfBvwAh/9E7d7JTVcQjnrVyUg+SuIeucBsvvj1HkQ==
-X-Received: by 2002:adf:8bde:0:b0:32c:e910:b69f with SMTP id w30-20020adf8bde000000b0032ce910b69fmr1686461wra.56.1696947987756;
-        Tue, 10 Oct 2023 07:26:27 -0700 (PDT)
-Received: from [10.230.43.52] ([192.19.152.250])
-        by smtp.gmail.com with ESMTPSA id d9-20020a5d6dc9000000b00327b5ca093dsm12788508wrz.117.2023.10.10.07.26.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 10 Oct 2023 07:26:26 -0700 (PDT)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <linux-kernel@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>
-Date:   Tue, 10 Oct 2023 16:26:25 +0200
-Message-ID: <18b19fb5a68.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <ZSRzrIe0345eymk2@work>
-References: <ZSRzrIe0345eymk2@work>
-User-Agent: AquaMail/1.46.0 (build: 104600328)
-Subject: Re: [PATCH][next] wifi: brcmfmac: fweh: Add __counted_by for struct brcmf_fweh_queue_item and use struct_size()
+        Tue, 10 Oct 2023 10:28:52 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1006AC
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 07:28:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=gqGhBg+Yymrde0mq9bGp5ymB6dgvoWKbsFjWMeM68VY=;
+        t=1696948131; x=1698157731; b=VEpUI1ke5d0K2Pf1i1dV9bI3md3e8zxceWA1+WxSOJrBwd5
+        1ahVnSoIXBAXOhWijTjBiI8Z4frxMZjIDVUD6ahSLjPH7To6r2mbeb6N/VKrYKvfCqCxUGDAvxXN6
+        FX6zbfEiljyGid9ubxvkClw7uthJPoIrkxZ7TV9l2An64KcavOE8xgDtSmO+S/0la5fWN4IzAGGkQ
+        l+UMGdXPNbFQEYyhjKZvRg1BZJEu/jdbSyO9bXL2+jnTwlUh8Rh+1KU17N1sMTSjK8Mc73Wzpx048
+        yhDN9iGNeyRU1u53hJj/d0MrrCbg0ct56GLVGWn2KJguiZBZFw+UigUQ0581ybDQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qqDj5-00000000Rg0-4Bjw;
+        Tue, 10 Oct 2023 16:28:48 +0200
+Message-ID: <2ec54be2691176677386253e64e819deadcf00fb.camel@sipsolutions.net>
+Subject: Re: wifi-7 + MLO: wlan is not seen in /proc/net/wireless
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ben Greear <greearb@candelatech.com>, Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Tue, 10 Oct 2023 16:28:46 +0200
+In-Reply-To: <3e684eea-147b-ca03-1c40-291ece4d1ebb@candelatech.com>
+References: <db9ef851-5784-c6a5-d3d5-5747ef21e0b6@candelatech.com>
+         <87zg0zgemy.fsf@kernel.org>
+         <3e684eea-147b-ca03-1c40-291ece4d1ebb@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000000939f406075d7ed8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000000939f406075d7ed8
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+On Wed, 2023-10-04 at 06:19 -0700, Ben Greear wrote:
+> On 10/3/23 10:06 PM, Kalle Valo wrote:
+> > Ben Greear <greearb@candelatech.com> writes:
+> >=20
+> > > I'm testing a wifi-7 radio against MLO AP.  I notice the link-0 debug=
+fgs links
+> > > show up and STA is associated and acquired DHCP, but wlan is not in /=
+proc/net/wireless.
+> > > I'm in 6.5.5+ kernel.
+> > >=20
+> > > Is this expected?
+> >=20
+> > wext doesn't support Wi-Fi 7, see:
+> >=20
+> > https://git.kernel.org/linus/52fd90638a72
+>=20
+> For somewhat similar reasons, ethtool stats are broken for MLO
+> too (see my patches from yesterday).
+>=20
+> To keep at least some backwards compatibility, would it be worth
+> reporting the 'best' link's information?  To me best is highest
+> band that is connected.  It could also just be the first link that is
+> connected.
 
-On October 9, 2023 11:42:11 PM "Gustavo A. R. Silva" 
-<gustavoars@kernel.org> wrote:
+So I think we should differentiate here. For wext, certainly no. I don't
+want to support wext forever, and multi-link is a really good reason to
+say "nope, things just stop working here, stop using 1996 technology".
 
-> Prepare for the coming implementation by GCC and Clang of the __counted_by
-> attribute. Flexible array members annotated with __counted_by can have
-> their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
-> array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-> functions).
->
-> Also, relocate `event->datalen = datalen;` to before calling
-> `memcpy(event->data, data, datalen);`, so that the __counted_by
-> annotation has effect, and flex-array member `data` can be properly
-> bounds-checked at run-time.
->
-> While there, use struct_size() helper, instead of the open-coded
-> version, to calculate the size for the allocation of the whole
-> flexible structure, including of course, the flexible-array member.
->
-> This code was found with the help of Coccinelle, and audited and
-> fixed manually.
+For ethtool, well, to be honest I never really liked it in the first
+place (*), but I guess we should somehow fix some things there...
+Perhaps report some cumulative values?
 
-From the description above I think this change looks sane so...
-
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> ---
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 6 +++---
-> 1 file changed, 3 insertions(+), 3 deletions(-)
+But let's discuss that on the individual patches I guess.
 
 
+(*) I also don't like your iwlwifi patch for those 'buckets', FWIW,
+there's no real explanation for why the buckets should be this way, and
+putting an array into flat ethtool also feels just wrong.
 
---0000000000000939f406075d7ed8
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCpzKPCwzf3cgajv1MK
-5VZH0m5UAKxxeut3iulGrgImijAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzEwMTAxNDI2MjhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA4dBj46EBIMfTNuo/j3HSG/AhCF1rFRDqp13H
-ILsPNiuR5rtRo3Ei7vQDmz3e02I9gxXBTevjbjUBSyKYRjRxScM2i1S5WiHkoGAQH1JeWS7FAJB+
-GDmCP6jatDu5IWDd/pOOnqOVSmPgWrq0orverSr+lO6z3X+8Io976r2nGewFZDRrcAfxLP9venby
-i69+DjwtRJDmUFQwXksjW9cUZmgJSxvYXYRY0WHFh0+8AddQAvcdPNO4JwC4+D3JOeeap+iEnRc4
-7GGD95XlorQ36MhohE61GVgGupbrKULtTDNrBzjCjeefjWNAzlWNyLUmmBQbssqa8vtzgisgmsD9
-hw==
---0000000000000939f406075d7ed8--
+johannes
