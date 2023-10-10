@@ -2,144 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E34F57C0074
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 17:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C117C7C0133
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 18:08:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233408AbjJJPfx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 11:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
+        id S233624AbjJJQIZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 12:08:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233249AbjJJPfv (ORCPT
+        with ESMTP id S233748AbjJJQIN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 11:35:51 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E529B6
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 08:35:49 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d8afe543712so6194191276.0
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 08:35:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1696952148; x=1697556948; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W+bVvVmNARXfzksOwpB0sUT7ON07eOsylXSyNT6q0Wk=;
-        b=LwsYK1mDbwygFdLcK0M2Fwg3dER8Hx6z0CnEhnMU/5pOkgW1l4KNxKnAgf0zAVt8r4
-         4VKOMXBBwS+x9Cvr1c6qJgO2oxnpxDJOGMj02EZh/WgR0qV9qJyt6onG3PYA/sMhqiKQ
-         BFNUY4AlxVcH2Pc3NW8nhYRhS8Z3kbkwSm8eohNpVYv22c4Dw/+YnMV9ja4XtL5d+ys0
-         lnwiKY09NQ6Yk3pbAc1cYG/DB/gjzYM/Sl3p5ThSz2o+DElM3j3PxenNpVEwPOTSnOPZ
-         NCYCVgPFQNyZbS7OGtQKiGm2n93hgfgWZpV5DZnFHozHWsL85h90qw6KBDnqTNo7bDWv
-         XOMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696952148; x=1697556948;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W+bVvVmNARXfzksOwpB0sUT7ON07eOsylXSyNT6q0Wk=;
-        b=kWX7TL43fkaoawTfRoB4k09EYRXOl0JGX/xg1UBwN0oBtaPbi8v03A7Dhiy2h0qMnw
-         siNDwiZSu0cFpLPg1VsPH4kq7njP6OaJYAMJuO5gPQbkP9oCIP3gWzahC6DQ13XgVjru
-         HzZPNPQ0NdDyckPPp7IESq+FlfcA/R2RKcwVh2WCLqTAD470+9LUpiwIYIWKUL9en0vJ
-         1xjBxQ9o/LM8B22RKfpbUYr/UwlNiBG4hUWmmPCPazdT4flQ4OffHShM2p1E3rNwkVyt
-         DcTNMxIlyD1t5kJaBEFrBEsDH5Yb71c1K+jNLWcJQAkkAJcW34Mx0r3LJ4byL4Ykt63j
-         3uGQ==
-X-Gm-Message-State: AOJu0YyHelEGCHDcKd3SJIxMvBn4URN4tdjct6ecCpXVY5y2UhcDTZZ8
-        2vv3Uw/ZA1mWcor0YAjX6pwxZt/NenCemPgWKzDRSQ==
-X-Google-Smtp-Source: AGHT+IHyKvPvteLHJsP21FSAJDsvCrIM7jAUYYBVWwm3qsR0h8B0YjeevGze8t/rDMvBAMvKtKPMdsN1QwahNOoS6YM=
-X-Received: by 2002:a25:4cc9:0:b0:d9a:6aaf:2589 with SMTP id
- z192-20020a254cc9000000b00d9a6aaf2589mr1415894yba.9.1696952148563; Tue, 10
- Oct 2023 08:35:48 -0700 (PDT)
+        Tue, 10 Oct 2023 12:08:13 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA50F110;
+        Tue, 10 Oct 2023 09:08:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA565C433C7;
+        Tue, 10 Oct 2023 16:08:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696954086;
+        bh=KeboIcJegdKGvMa6Bdc3IgQt8LK861hniGvhLYLpqeY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mZMHZz41VdyjdmFJpKcLz2EEZvHlx4Z9LA2pJehim9MLOLhg6kkrINVF9J6vzSmOk
+         HbXqrRPwaypoxLnBVShLaD0toSlbeQXrF/mE76gYBGhZSXyr0xHI8nmruzeruhYdCO
+         56KXqPQ1BW9934Bs6hP2iRH6tsmd/aFPZPZfA1Wg=
+Date:   Tue, 10 Oct 2023 18:08:03 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Kalle Valo <kvalo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Jakub Kicinski <kuba@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        "David S. Miller" <davem@davemloft.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
+Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
+Message-ID: <2023101051-unmasked-cleaver-79b3@gregkh>
+References: <20231010155444.858483-1-arnd@kernel.org>
 MIME-Version: 1.0
-References: <6f78e624-62ee-3ae5-1db4-a0411566def8@yandex.ru>
- <CAGRGNgU7aySyUny9aG_+wXiKJ7j1weosa-rZDY4_WAXbq-3ABg@mail.gmail.com>
- <87ttr454bh.fsf@kernel.org> <3c5a3e7a-b332-4a77-51ba-bed3cad1e79f@marcan.st>
- <e1ee4d76-f717-a67c-8099-7b91192ba1ca@yandex.ru> <e470902a-35eb-9bb4-7a9e-167f985c98bb@marcan.st>
- <CAEg-Je-mpcrEoM_nD3_8A=gZhdWpn3hxfGZNEfGRNupGwRdetw@mail.gmail.com>
-In-Reply-To: <CAEg-Je-mpcrEoM_nD3_8A=gZhdWpn3hxfGZNEfGRNupGwRdetw@mail.gmail.com>
-From:   Phil Elwell <phil@raspberrypi.com>
-Date:   Tue, 10 Oct 2023 16:35:37 +0100
-Message-ID: <CAMEGJJ3jeOK2WbW7YP4=y2E0Z7GnffHiqZhgAmXJjKchv3jG+A@mail.gmail.com>
-Subject: Re: On brcm80211 maintenance and support
-To:     Neal Gompa <neal@gompa.dev>
-Cc:     Hector Martin <marcan@marcan.st>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Asahi Linux <asahi@lists.linux.dev>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Julian Calaby <julian.calaby@gmail.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231010155444.858483-1-arnd@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi everyone,
+On Tue, Oct 10, 2023 at 05:27:29PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> While looking at the old drivers using the obsolete .ndo_do_ioctl()
+> callback, I found a number of network drivers that are especially
+> obsolete, in particular for 802.11b (11Mbit/s) or even older wireless
+> networks, using non-busmaster ISA/PCMCIA style bus interfaces, and using
+> the legacy wireless extension ioctls rather than the netlink interfaces
+> that were meant to replace them in 2007. All of these drivers are
+> obsolete or orphaned.
+> 
+> We had previously discussed this topic, but nobody ever moved the
+> files, so I now went through the list to my best knowledge. These
+> are the drivers that I would classify as "probably unused" by now:
+> 
+>  - Atmel at76c502/at76c504/at76c506 is a PIO-only (PCMCIA, mini-PCI
+>    and Cardbus) 802.11b driver with incomplete CFG80211 support.
+>    The related at76c50x USB driver uses MAC80211 and remains.
+> 
+>  - Cisco Aironet is an 802.11b PCMCIA and mini-PCI with limited support
+>    for Cardbus DMA and for CFG80211.
+> 
+>  - HostAP is an ISA/PCMCIA style 802.11b driver supporting only
+>    wireless extensions, and some custom ioctls (already removed).
+>    Some devices include a legacy PCI bridge but no DMA.
+> 
+>  - Aviator/Raytheon is an early PCMCIA driver, apparently predating
+>    802.11b and only supporting wireless extensions.
+> 
+>  - Planet WL3501 is another PCMCIA driver for pre-802.11b interfaces
+>    (2Mbit/s) with incomplete CFG80211 support
+> 
+>  - Zydas zd1201 is a USB 802.11b driver with limited support for
+>    CFG80211.
+> 
+>  - Orinoco is a PIO-only ISA/PCMCIA 802.11b device with extra bus
+>    interface connections for PCI/Cardbus/mini-PCI and a few
+>    pre-2002 Apple PowerMac variants. It supports both
+>    wireless extensions and CFG80211, but I could not tell if
+>    it requires using both.
+> 
+>  - Wireless RNDIS USB is a new-style CFG80211 driver for 802.11b
+>    and 802.11g USB hardware from around 2004 to 2006. This makes it
+>    more modern than any of the others, but Kalle already classified
+>    it as "legacy" in commit 298e50ad8eb8f ("wifi: move raycs, wl3501
+>    and rndis_wlan to legacy directory"), so it stays with ray_cs and
+>    wl3501_cs.
+> 
+> There are a few other drivers that are similar to these but that are
+> more likely to still be needed, and are not moved here:
+> 
+>  - Intel ipw2x00 is a PCI bus-master device for 802.11a/b/g that was
+>    popular in "Centrino" branded laptops from 2003 to 2005, but it
+>    still requires wireless extensions.
+> 
+>  - Marvell Libertas is an 802.11a/b/g device with a number of bus
+>    interfaces (USB, SDIO, SPI, PCMCIA) and incomplete CFG80211
+>    support. This one was used in the OLPC XO laptop and some other
+>    embedded devices that are still supported.
+> 
+>  - Some broadcom b43xx devices use the SSB bus that can be abstracted
+>    through PCMCIA. All of them use CFG80211.
+> 
+>  - The Sony Playstation 3 "gelic" ethernet driver contains a bridge
+>    and an 802.11b/g client chip that is controlled through a hypervisor
+>    interface from the OS, and it uses wireless extensions in the kernel
+>    driver.
+> 
+> Link: https://lore.kernel.org/all/87imaeg4ar.fsf@codeaurora.org/
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-On Tue, 10 Oct 2023 at 15:53, Neal Gompa <neal@gompa.dev> wrote:
->
-> * Spam *
-> On Sat, Oct 7, 2023 at 8:51=E2=80=AFAM Hector Martin <marcan@marcan.st> w=
-rote:
-> >
-> > On 07/10/2023 00.48, Dmitry Antipov wrote:
-> > > On 10/6/23 18:34, Hector Martin wrote:
-> > >
-> > >> For better or worse, if nobody else does, I'm willing to sign up to
-> > >> maintain the chips shipping on Apple ARM64 machines (i.e. BCM4378,
-> > >> BCM4387, BCM4388 - that last one I have bringup for downstream, just=
- got
-> > >> it done this week) and partially BCM4377 as a bonus (since I have ac=
-cess
-> > >> to an older Intel Mac with that one, and already did bringup for it,
-> > >> though my access is sporadic). I'm already playing part time maintai=
-ner
-> > >> anyway (other folks have already sent us patches I'll have to upstre=
-am),
-> > >> and we need this driver to keep working and continue to support new =
-chips.
-> > >
-> > > Good news. Would you capable to consider some generic (not hooked to =
-any
-> > > particular hardware) things like [1] ?
-> > >
-> > > [1] https://lore.kernel.org/linux-wireless/20230703162458.155942-1-dm=
-antipov@yandex.ru/
-> > >
-> >
-> > Sure, I've done cleanup type stuff myself too.
-> >
->
-> Can we please get this done so that the pile of Broadcom patches can
-> actually start landing again? It's been frustrating watching patch
-> submissions be ignored for over a year now. At least add Hector as a
-> co-maintainer and allow him to land stuff people have been using
-> outside to get Broadcom Wi-Fi to *work*.
->
-> Having stuff sit on the pile and be *ignored* is frustrating for
-> contributors and users, and massively disincentivizes people from
-> working in upstream Linux.
+Stuff in drivers/staging/ is to get code _into_ the main portion of the
+kernel tree, not out.  If these aren't being used, let's just drop them
+entirely.
 
-This is just a quick note to say that Raspberry Pi obviously has a
-vested interest in the future of the brcmfmac driver. In our
-downstream tree we use the upstream driver largely unmodified - there
-are a handful of patches that tinker around the edges, the largest of
-which is in the area of firmware location and being phased out - no
-patches from Infineon/Cypress, Synaptics or Broadcom.
+What is the need to have them move to staging, only to have me delete
+them in the next release after that (or after that?)  Why delay and why
+not just remove them now?
 
-We're very much WiFi users as opposed to WiFi developers, but if
-there's something useful we can contribute then please speak up and
-I'll see what we can do.
+thanks,
 
-Phil
+greg k-h
