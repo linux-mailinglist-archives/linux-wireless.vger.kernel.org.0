@@ -2,133 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C966D7BFCDE
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 15:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAA3D7BFF12
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 16:22:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231902AbjJJNEm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 09:04:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45432 "EHLO
+        id S232488AbjJJOWg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 10:22:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231400AbjJJNEl (ORCPT
+        with ESMTP id S232107AbjJJOWg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 09:04:41 -0400
-Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [178.154.239.211])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 024BFB7
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 06:04:33 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:1116:0:640:d64e:0])
-        by forward100c.mail.yandex.net (Yandex) with ESMTP id 0FD2060AF6;
-        Tue, 10 Oct 2023 16:04:31 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id T4dMM5FBc4Y0-pYhbnZjp;
-        Tue, 10 Oct 2023 16:04:30 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1696943070; bh=ndLT2fKpXBuRMxvKj9I+u1TXiaVTTvlVHOoVUFBI3GY=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=ZDvBYCicslPeu8WCCWuvih73OOVXmMQuATzpDUpaBj/dpLzvZdA+p2+5ntW41QWre
-         nj1tex7F8/AHlIh9tegEIFFMnEnAqcyabG9cWJqTOCDVfp3IbCmr7+bNtic7jxHouh
-         LOl2m1nER7hRcvhf4AU5VieF1PHUqtBmW01OJgiM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: rtlwifi: use convenient list_count_nodes()
-Date:   Tue, 10 Oct 2023 16:03:50 +0300
-Message-ID: <20231010130353.30461-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Tue, 10 Oct 2023 10:22:36 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D936191
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 07:22:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=plapjsWfysEH6LuEfPgV0TG2DznUyd7rnTYhfAMa0+M=;
+        t=1696947751; x=1698157351; b=TrtplLSBs6aFoa9iLlg8tqa3RwocISoy5bJw8EzQOCcUH3r
+        doKqULmsjdjpfR62+A6mZ+foxrjhI7Q9qusSaWco1zgEiYRGaY/fiZsuTwE94HoQCZaxVYqNHWhCV
+        z83xl1R/5oibG5QQwbtDsjA+pk3/DztuTV6XhadpKbSfPgQ0DyygTi4B80v+EeUkEwtiNI40zHGwh
+        jputpckDmAYMFbMsT2dhzfAii3Y5EOixQr2uOzRbdPHr0ymSy/MKBxe7rO4dOIwx9VNX2eTvlu/e9
+        xPg63AuOPGyf6jNVDzJhOZGFyd7Ybsf6ppzvZOLgTgrd9aBEgGXIPMcsqkJmbfMQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qqDcx-00000000RQ2-3yEp;
+        Tue, 10 Oct 2023 16:22:28 +0200
+Message-ID: <acdb4315780bde3481c44ba90fe341fea75a2929.camel@sipsolutions.net>
+Subject: Re: mac80211 bugs
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     James Dutton <james.dutton@gmail.com>,
+        linux-wireless@vger.kernel.org
+Date:   Tue, 10 Oct 2023 16:22:26 +0200
+In-Reply-To: <CAAMvbhHo8wo924YVZqFrLKQko59iSiLMhVAzb=tdSvf_-v1CCQ@mail.gmail.com>
+References: <CAAMvbhGsA4A9qHrYdXcNXLzv7a7xZZq98f90Q-Btb-9vs9ayCw@mail.gmail.com>
+         <CAAMvbhHo8wo924YVZqFrLKQko59iSiLMhVAzb=tdSvf_-v1CCQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Simplify 'rtl92ee_dm_common_info_self_update()',
-'rtl8723be_dm_common_info_self_update()', and
-'rtl8821ae_dm_common_info_self_update()' by using
-'list_count_nodes()'. Compile tested only.
+On Mon, 2023-10-09 at 16:56 +0100, James Dutton wrote:
+> /usr/src/linux/net/mac80211/sta_info.c:2424
+>        case STA_STATS_RATE_TYPE_LEGACY: {
+>                 struct ieee80211_supported_band *sband;
+>                 u16 brate;
+>                 unsigned int shift;
+>                 int band =3D STA_STATS_GET(LEGACY_BAND, rate);
+>                 int rate_idx =3D STA_STATS_GET(LEGACY_IDX, rate);
+>=20
+>                 sband =3D local->hw.wiphy->bands[band];
+>=20
+>                 if (WARN_ON_ONCE(!sband->bitrates))      <------It_crashe=
+s_here
+>                         break;
+>=20
+>                 brate =3D sband->bitrates[rate_idx].bitrate;
+>                 if (rinfo->bw =3D=3D RATE_INFO_BW_5)
+>                         shift =3D 2;
+>                 else if (rinfo->bw =3D=3D RATE_INFO_BW_10)
+>                         shift =3D 1;
+>                 else
+>                         shift =3D 0;
+>                 rinfo->legacy =3D DIV_ROUND_UP(brate, 1 << shift);
+>                 break;
+>                 }
+>=20
+> Looking at this, it can be one of two things:
+> 1) local->hw.wiphy->bands[band];    is NULL
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c | 5 +----
- drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c | 5 +----
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c | 4 +---
- 3 files changed, 3 insertions(+), 11 deletions(-)
+Yes, I think that's it.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-index 997ff115b9ab..efd22b75c05f 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-@@ -936,7 +936,6 @@ void rtl92ee_dm_init(struct ieee80211_hw *hw)
- static void rtl92ee_dm_common_info_self_update(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	struct rtl_sta_info *drv_priv;
- 	u8 cnt = 0;
- 
- 	rtlpriv->dm.one_entry_only = false;
-@@ -951,9 +950,7 @@ static void rtl92ee_dm_common_info_self_update(struct ieee80211_hw *hw)
- 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_ADHOC ||
- 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_MESH_POINT) {
- 		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
--		list_for_each_entry(drv_priv, &rtlpriv->entry_list, list) {
--			cnt++;
--		}
-+		cnt = list_count_nodes(&rtlpriv->entry_list);
- 		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
- 
- 		if (cnt == 1)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
-index c3c990cc032f..a54faec6f8a8 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
-@@ -1211,7 +1211,6 @@ static void rtl8723be_dm_common_info_self_update(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	u8 cnt = 0;
--	struct rtl_sta_info *drv_priv;
- 
- 	rtlpriv->dm.one_entry_only = false;
- 
-@@ -1225,9 +1224,7 @@ static void rtl8723be_dm_common_info_self_update(struct ieee80211_hw *hw)
- 		rtlpriv->mac80211.opmode == NL80211_IFTYPE_ADHOC ||
- 		rtlpriv->mac80211.opmode == NL80211_IFTYPE_MESH_POINT) {
- 		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
--		list_for_each_entry(drv_priv, &rtlpriv->entry_list, list) {
--			cnt++;
--		}
-+		cnt = list_count_nodes(&rtlpriv->entry_list);
- 		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
- 
- 		if (cnt == 1)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
-index f3fe16798c59..fd739e482d0a 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
-@@ -828,7 +828,6 @@ static void rtl8821ae_dm_common_info_self_update(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	u8 cnt = 0;
--	struct rtl_sta_info *drv_priv;
- 
- 	rtlpriv->dm.tx_rate = 0xff;
- 
-@@ -844,8 +843,7 @@ static void rtl8821ae_dm_common_info_self_update(struct ieee80211_hw *hw)
- 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_ADHOC ||
- 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_MESH_POINT) {
- 		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
--		list_for_each_entry(drv_priv, &rtlpriv->entry_list, list)
--			cnt++;
-+		cnt = list_count_nodes(&rtlpriv->entry_list);
- 		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
- 
- 		if (cnt == 1)
--- 
-2.41.0
+> 2) bands is an array of 6 items, making band valid for values 0-5.
+> If band >=3D 6, it would cause problems.
 
+Highly unlikely.
+
+> So maybe something along these lines might help:
+>=20
+> Signed-off-by: James Courtier-Dutton <james.dutton@gmail.com>
+> --- sta_info.c.org      2023-10-08 19:52:13.578270007 +0100
+> +++ sta_info.c.new2     2023-10-08 19:52:09.450214070 +0100
+> @@ -2420,7 +2420,26 @@
+>                 int band =3D STA_STATS_GET(LEGACY_BAND, rate);
+>                 int rate_idx =3D STA_STATS_GET(LEGACY_IDX, rate);
+>=20
+> +               if (band >=3D NUM_NL80211_BANDS) {
+> +                       printk("ERROR: band=3D%d is too large.
+> Returning\n", band);
+> +                       break;
+> +               }
+> +
+>                 sband =3D local->hw.wiphy->bands[band];
+> +               if (!sband) {
+> +                       printk("ERROR: sband NULL. Returning\n");
+> +                       break;
+> +               }
+
+
+You'd really never want a plain printk, and anyway, that printk is
+malformed (no severity string macro).
+
+
+_Maybe_ change it to WARN_ON_ONCE(!sband || !sband->bitrates) there, but
+really I think we should prevent this in the first place.
+
+
+Is this, by any chance, a device without 2.4 GHz?
+
+johannes
