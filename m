@@ -2,105 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E4E7BFF8D
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 16:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 266977BFFB9
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 16:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232979AbjJJOrf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 10:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38904 "EHLO
+        id S233089AbjJJOxj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 10:53:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232942AbjJJOrd (ORCPT
+        with ESMTP id S233129AbjJJOxh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 10:47:33 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77C46CC
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 07:47:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=fVnY/vPKWuSe5iTNEB38fQy6nx0rgZg8LeS5g/9IyiE=;
-        t=1696949252; x=1698158852; b=chj3g8td9MFUTqXyqdp4o/K2xHWulP+8RviHLMh+tk7NZZd
-        VimgsDiZzrZsbfHqiG9tBTLlDrY+bPnfEvlaGJwXF8shv6dNEKCh6VFl8+Ys9HZCmHnUT8CxoA6Jz
-        uznLIbL0r8OTB8+6vjYrV/uPdhu3ccnl/fkhScjRvXGnClcwRiorv0WoNDwHELqWBQNRIUU9HvK90
-        3iFkR1X9otyWObZeZFNyfc7+Y2mVGqLkCNh7qSsrM3iwNlVnwPWTV3rZJVUfMvTOg9g7IONNG1dll
-        C5t62oj2W+s3IMDLeNllbYw4EQdFZ049Mt3jjBVjKCMYgLN0HmwrIljZZ2Mi5QSg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.97-RC1)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qqE1B-00000000SUy-0mmc;
-        Tue, 10 Oct 2023 16:47:29 +0200
-Message-ID: <ac1f3d9b81dbca244bdc8262e9d2ee44220f78c1.camel@sipsolutions.net>
-Subject: Re: removing OCB/WAVE/802.11p
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Cc:     Rostislav Lisovy <lisovy@gmail.com>, chrisshen@skku.edu,
-        bienaime@skku.edu, pauljeong@skku.edu,
-        carloaugusto.grazia@unimore.it
-Date:   Tue, 10 Oct 2023 16:47:28 +0200
-In-Reply-To: <90fcfe15-de1b-4371-a316-574ac7a03eda@quicinc.com>
-References: <ec69aa2722b07bffd6184d687861cc7e5ae9c1ef.camel@sipsolutions.net>
-         <90fcfe15-de1b-4371-a316-574ac7a03eda@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Tue, 10 Oct 2023 10:53:37 -0400
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85AFBAF;
+        Tue, 10 Oct 2023 07:53:35 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-9b29186e20aso983053866b.2;
+        Tue, 10 Oct 2023 07:53:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696949613; x=1697554413;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l2WcnQotkJYAWCE6CEWba043WY3ByyYClp8a0rZyMlw=;
+        b=IL/+MoOu4lHRDpcRRt+6K2s9O9avOHU9X0cR3lTnhpMAcwUxnoks/2tAiH7nmfhy3k
+         HVHZzLtwpwo0CZ6hDdOXUBR85qUmefdgw5w89xtFPpR+GZBrJeIMHWaxoGRk4uCALywR
+         BJBDqBB4VDwFlGDEWFIAAciiop5hiUgygCICuWDgSqT8BGWicLBe92MlY7zWksxZNHMd
+         WkWXzG7h7Po93hvtMsGmXF2NhFt+Yhv18u8l8NWUw7yRAhunBDiAvpI03rMv83U0YAWd
+         VPtR6Uea3wvtEIcAlHfKsWDe1Z5/lf9CQZT6CkQn85ZmXZhPIGcXRh/Kk6hk6oEVojVO
+         w9cg==
+X-Gm-Message-State: AOJu0YxhOBg3ZgKqtwXQnGtq4+NCHDIsaz4ZRFUwhGQFMQEy0LriuQMR
+        WrmSw9gIrMZuj2S58R3ld1NE3YYUwDVMsrcV
+X-Google-Smtp-Source: AGHT+IGsIfK0Zy+vZKhBmDZIUZ4M/XAyefeAZ83TW23ZSGesPv12jfc3BywCGT/LL1knu6CYWMYUiw==
+X-Received: by 2002:a17:906:20d8:b0:9a1:bebc:8282 with SMTP id c24-20020a17090620d800b009a1bebc8282mr15374190ejc.32.1696949613595;
+        Tue, 10 Oct 2023 07:53:33 -0700 (PDT)
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
+        by smtp.gmail.com with ESMTPSA id ss7-20020a170907038700b009a9fbeb15f5sm8440056ejb.46.2023.10.10.07.53.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Oct 2023 07:53:33 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-53da80ada57so757175a12.0;
+        Tue, 10 Oct 2023 07:53:33 -0700 (PDT)
+X-Received: by 2002:aa7:dd0c:0:b0:538:15df:d12f with SMTP id
+ i12-20020aa7dd0c000000b0053815dfd12fmr15463803edv.18.1696949612893; Tue, 10
+ Oct 2023 07:53:32 -0700 (PDT)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <6f78e624-62ee-3ae5-1db4-a0411566def8@yandex.ru>
+ <CAGRGNgU7aySyUny9aG_+wXiKJ7j1weosa-rZDY4_WAXbq-3ABg@mail.gmail.com>
+ <87ttr454bh.fsf@kernel.org> <3c5a3e7a-b332-4a77-51ba-bed3cad1e79f@marcan.st>
+ <e1ee4d76-f717-a67c-8099-7b91192ba1ca@yandex.ru> <e470902a-35eb-9bb4-7a9e-167f985c98bb@marcan.st>
+In-Reply-To: <e470902a-35eb-9bb4-7a9e-167f985c98bb@marcan.st>
+From:   Neal Gompa <neal@gompa.dev>
+Date:   Tue, 10 Oct 2023 10:52:56 -0400
+X-Gmail-Original-Message-ID: <CAEg-Je-mpcrEoM_nD3_8A=gZhdWpn3hxfGZNEfGRNupGwRdetw@mail.gmail.com>
+Message-ID: <CAEg-Je-mpcrEoM_nD3_8A=gZhdWpn3hxfGZNEfGRNupGwRdetw@mail.gmail.com>
+Subject: Re: On brcm80211 maintenance and support
+To:     Hector Martin <marcan@marcan.st>
+Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com,
+        brcm80211-dev-list.pdl@broadcom.com,
+        Asahi Linux <asahi@lists.linux.dev>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Julian Calaby <julian.calaby@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Phil Elwell <phil@raspberrypi.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-10-06 at 16:15 -0700, Jeff Johnson wrote:
-> On 9/28/2023 8:38 AM, Johannes Berg wrote:
-> > Hi,
-> >=20
-> > CC'ing lots of people who touched or used this in the past in hopes of
-> > triggering some reaction somewhere ...
-> >=20
-> > I'm trying to do some cleanup in IBSS and following that some other
-> > cleanups wrt. station allocation etc., but OCB pretty much copied the
-> > IBSS code in this area, and I don't know how to use it, how to test it,
-> > who's using it, if anyone is actually maintaining it, etc.
-> >=20
-> > Also, it only ever got implemented for ath9k, so I'm guessing it's not
-> > getting any traction in new products/devices.
-> >=20
-> > So I'm probably going to remove it.
-> >=20
-> > Any takers to help maintain it instead?
->=20
-> Do you have an estimate on the footprint of this logic? Do you have a=20
-> proposed patch?
+On Sat, Oct 7, 2023 at 8:51 AM Hector Martin <marcan@marcan.st> wrote:
+>
+> On 07/10/2023 00.48, Dmitry Antipov wrote:
+> > On 10/6/23 18:34, Hector Martin wrote:
+> >
+> >> For better or worse, if nobody else does, I'm willing to sign up to
+> >> maintain the chips shipping on Apple ARM64 machines (i.e. BCM4378,
+> >> BCM4387, BCM4388 - that last one I have bringup for downstream, just got
+> >> it done this week) and partially BCM4377 as a bonus (since I have access
+> >> to an older Intel Mac with that one, and already did bringup for it,
+> >> though my access is sporadic). I'm already playing part time maintainer
+> >> anyway (other folks have already sent us patches I'll have to upstream),
+> >> and we need this driver to keep working and continue to support new chips.
+> >
+> > Good news. Would you capable to consider some generic (not hooked to any
+> > particular hardware) things like [1] ?
+> >
+> > [1] https://lore.kernel.org/linux-wireless/20230703162458.155942-1-dmantipov@yandex.ru/
+> >
+>
+> Sure, I've done cleanup type stuff myself too.
+>
 
-Neither. It's actually not really big, and I was just putting out
-feelers.
+Can we please get this done so that the pile of Broadcom patches can
+actually start landing again? It's been frustrating watching patch
+submissions be ignored for over a year now. At least add Hector as a
+co-maintainer and allow him to land stuff people have been using
+outside to get Broadcom Wi-Fi to *work*.
 
-The particular reason was that we had a patch a long time back:
-https://patchwork.kernel.org/project/linux-wireless/patch/20180216161301.29=
-339-3-luca@coelho.fi/
+Having stuff sit on the pile and be *ignored* is frustrating for
+contributors and users, and massively disincentivizes people from
+working in upstream Linux.
 
-which was rightfully rejected. But I was looking at it recently again,
-thinking I should revive it (and I may still), and then I thought if I
-do that, I can remove the gfp_t argument to sta_info_alloc(), but OCB
-identically copied this code ...
 
-Now, I suppose OCB doesn't have much in the way of station
-discovery/connection process (like auth) since that's kind of the
-_point_, but maybe doing something else would work here?
 
-> In addition to ath9k I know there is out-of-tree usage of this=20
-> functionality, and I'm trying to see if I can find someone to maintain=
-=20
-> this. But how would that actually work?
-
-Well for starters it'd be nice to actually have some tests with hwsim, I
-guess, and someone who knows how to use it, how to test things if there
-are relevant changes, etc.
-
-johannes
+--
+真実はいつも一つ！/ Always, there's only one truth!
