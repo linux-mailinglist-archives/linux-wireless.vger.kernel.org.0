@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43DE27BF366
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 08:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B34CC7BF36F
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 08:57:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442329AbjJJG4i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 02:56:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47288 "EHLO
+        id S1442367AbjJJG5t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 02:57:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442233AbjJJG4g (ORCPT
+        with ESMTP id S1442363AbjJJG5s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 02:56:36 -0400
+        Tue, 10 Oct 2023 02:57:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0215099;
-        Mon,  9 Oct 2023 23:56:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05159C433C7;
-        Tue, 10 Oct 2023 06:56:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD44199;
+        Mon,  9 Oct 2023 23:57:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F33C433C8;
+        Tue, 10 Oct 2023 06:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696920995;
-        bh=l9c92wWaaUlL412ziyk84LFOr/63o2bETtDk0X6EBBA=;
+        s=k20201202; t=1696921066;
+        bh=TIRu023yRiAn4rr+cVhgd1+H6BjEpKUsZCa1Z/im/zU=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=mSnAx1cJ2tXbkPJDmce/e+Yy4go10RrHu4x650kLfqEAXwWWmpcT0ihmLphmtqK7E
-         09RQwYuIRROk3F45mk6xIAD+bK8S274BmefacWsy8ChMk4mIsglJgtSqE7+DFUsU98
-         6giQVCMtiv+6iuzToRofql/G8roZjHhhlOtaf2MVJLkycpyZ5itKLwRt2dftwYHaDW
-         Kwvq0kGYUzowhzLPd/bb2QhHNYAQc3MfEd2gVyLwPTMeCwTCzRJr4jdvig5ZopgtxU
-         wv2YZgpfJjf3awObRRfybEHwDShK1aVVxh4vW0oP+VSCYE55bclxgDyMoET4xQs7b1
-         5Kjg24lXwnSNw==
+        b=eGoBSQjbQGUMyzFoSyJfbtWDcVCfyhQnmnKf1C58Cre/eyW9BSnD1X6qSu/KgVJwL
+         CuYTKv2kCCa/5qmXQbltfB84K7Unkx/9oqPkHAPg5Z0oBf5wR37XihttMeMlOURRG8
+         kwJZGqR6MiCd1iGkpJKvNhEOu+K+bXFXuFq0EnrDNmI4A2LARuG2NdYTNOM+b+LVnc
+         5odic9AdqSNJmPmuZXRI7x45Hqpr1a0zO2bKcnHLNeukJb1hP/kD9ki84d+4yGPTv0
+         6+J0ED+5upIMUz86XpvNNUrcxSzl3TFpGDrnqqrVCuTGs38IM3SEtR6Cbqm1V3eP3T
+         WL3uvlp4W9nIA==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Arnd Bergmann <arnd@kernel.org>
 Cc:     Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
@@ -40,13 +40,13 @@ Cc:     Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
         "David S . Miller" <davem@davemloft.net>,
         linux-kernel@vger.kernel.org, Doug Brown <doug@schmorgal.com>,
         Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 08/10] wireless: atmel: remove unused ioctl function
+Subject: Re: [PATCH 09/10] wireless: hostap: remove unused ioctl function
 References: <20231009141908.1767241-1-arnd@kernel.org>
-        <20231009141908.1767241-8-arnd@kernel.org>
-Date:   Tue, 10 Oct 2023 09:59:01 +0300
-In-Reply-To: <20231009141908.1767241-8-arnd@kernel.org> (Arnd Bergmann's
-        message of "Mon, 9 Oct 2023 16:19:06 +0200")
-Message-ID: <87zg0rezey.fsf@kernel.org>
+        <20231009141908.1767241-9-arnd@kernel.org>
+Date:   Tue, 10 Oct 2023 10:00:12 +0300
+In-Reply-To: <20231009141908.1767241-9-arnd@kernel.org> (Arnd Bergmann's
+        message of "Mon, 9 Oct 2023 16:19:07 +0200")
+Message-ID: <87v8bfezcz.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -64,13 +64,13 @@ Arnd Bergmann <arnd@kernel.org> writes:
 
 > From: Arnd Bergmann <arnd@arndb.de>
 >
-> This function has no callers, and for the past 20 years, the request_firmware
-> interface has been in place instead of the custom firmware loader.
+> The ioctl handler has no actual callers in the kernel and is useless.
+> All the functionality should be reachable through the regualar interfaces.
 >
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Yuck, good riddance. In the title we prefer "wifi:" over "wireless:" but
-that's nitpicking. I assume this goes via a net tree so:
+In the title we prefer "wifi:" over "wireless:" but that's nitpicking. I
+assume this goes via a net tree so:
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
 
