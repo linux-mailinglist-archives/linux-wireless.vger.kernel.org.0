@@ -2,152 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A82AB7BF73A
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 11:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C03C7BFBAC
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 14:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjJJJYH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 05:24:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58128 "EHLO
+        id S231901AbjJJMov (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 08:44:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230411AbjJJJXi (ORCPT
+        with ESMTP id S231816AbjJJMou (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 05:23:38 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9939310A;
-        Tue, 10 Oct 2023 02:22:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696929756; x=1728465756;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pe28AkaWQOFbPDoeW0f0UL3u+esQjxzrmxDbQGIXd+k=;
-  b=bijAnBjhFSfwl40qC5elRccbOLCwGz8zb+82bedu8RzMV9OWNm3beuOv
-   4mhCT0zlMURcj15KvsiWkuRv67LGReq/pX0JOiqhKX/SD3zKIKaE5kXsB
-   DJK3G867QD4AIjyFTwHo2HJgA2BsIiPWGpt2blCobg8tFd7tbfpvztsGK
-   75JycjMS81ufYliB2peDgz5KGH4hbrHRznXiVmi3FjdOE3Ays1iEZsHoW
-   D9U/sMpEkICSBQ4rvOmk2H6gaPJv2qdtrXzJ9Jzg42MoD/uXSaZO5uNj2
-   oqdk3PLyuZmuaDWjZ+tgwQNtXVloYd11H5F2CfTMXjF3OB1TAXp+DymWh
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="369414287"
-X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="369414287"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 02:22:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="788512822"
-X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="788512822"
-Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 10 Oct 2023 02:22:32 -0700
-Received: from kbuild by f64821696465 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qq8wg-0000EE-0A;
-        Tue, 10 Oct 2023 09:22:30 +0000
-Date:   Tue, 10 Oct 2023 17:21:54 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Arnd Bergmann <arnd@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wpan@vger.kernel.org,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, Doug Brown <doug@schmorgal.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 01/10] appletalk: remove localtalk and ppp support
-Message-ID: <202310101724.iRnAoP3r-lkp@intel.com>
-References: <20231009141908.1767241-1-arnd@kernel.org>
+        Tue, 10 Oct 2023 08:44:50 -0400
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F7D6B6
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 05:44:49 -0700 (PDT)
+Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
+        by cmsmtp with ESMTP
+        id q0ANqUGvVaLCxqC6SqCSdJ; Tue, 10 Oct 2023 12:44:48 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id qC6Rq8PvcFEmGqC6Rqf30J; Tue, 10 Oct 2023 12:44:47 +0000
+X-Authority-Analysis: v=2.4 cv=IOARtyjG c=1 sm=1 tr=0 ts=6525473f
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=wYkD_t78qR0A:10
+ a=jDH3Shn7vTvwIdt3UFAA:9 a=QEXdDO2ut3YA:10
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=w69pY1l90qXB0+Na6v5MmCnARPNAj99fld00SExm3i8=; b=n0IIPU70CeF1gla0g/bB3sif3p
+        0IQJuOZxW/vc8fXodjZTtPNS/9Ocyqvt7LepwbzuysMJMSf06kNIwKaLWwhbndcC6RzBtyNpO0w4H
+        efqGQ6fF192ZRjuHCgkmmwLvefCI0zm08RvXQxm6+kmz3YbzoKcbvEi5SWNIw/5t8RQFUzQ7FNai7
+        Tk5cXaEhRP9Nz1rAOM5BJqWNYrX2AhJpifnTrgq8kI5JKxsru4wvGnvk1JFnL9UoMXqIF3xXmZMHD
+        rrdrRehvta5S/dD43ubSvEWG7ZHAmEZUNKRWUDvtwVBQJY7nCY++ZyQslmEI+Ye9TrI04ywbO/DEt
+        qC440T/w==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:57606 helo=[192.168.15.7])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.1)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1qqC6Q-0029an-2c;
+        Tue, 10 Oct 2023 07:44:46 -0500
+Message-ID: <584b8c6f-a77d-482f-a33e-c6043b080b3e@embeddedor.com>
+Date:   Tue, 10 Oct 2023 06:44:43 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231009141908.1767241-1-arnd@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] hostap: Add __counted_by for struct
+ prism2_download_data and use struct_size()
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>, Kees Cook <keescook@chromium.org>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+References: <ZSRXXvWMMkm7qqRW@work> <202310091253.665A9C9@keescook>
+ <169f782e-9cc4-49bc-9618-ca6acc526e37@embeddedor.com>
+ <202310091341.74A2D82BB@keescook> <877cnv57cx.fsf@kernel.org>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <877cnv57cx.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1qqC6Q-0029an-2c
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.7]) [187.162.21.192]:57606
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGb+b0mnNLRNo4ucEBOP5GXxhg1qaUk5HutBFZkIlFTqUDW33EA3kpJ5W+T/1k8xFmoUN4uzLTniCuQnhNBQkm1r9Tka8GqMOJB97xYQP/ilB7r1mOt8
+ u8Sd4m5uNlPfQE4mVVjhVN4ityKs555fDRPqi1NdA6JkZHdugD970bbOUDvMJ/UgZnrlNMhv/a4Mg01ZaFLRDJwfSn7HVnFpm7oFv4Na90Kc4+U3f5BXlBgj
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arnd,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on next-20231009]
-[cannot apply to linus/master v6.6-rc5 v6.6-rc4 v6.6-rc3 v6.6-rc5]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Arnd-Bergmann/ieee802154-avoid-deprecated-ndo_do_ioctl-callback/20231009-222305
-base:   next-20231009
-patch link:    https://lore.kernel.org/r/20231009141908.1767241-1-arnd%40kernel.org
-patch subject: [PATCH 01/10] appletalk: remove localtalk and ppp support
-config: nios2-randconfig-001-20231010 (https://download.01.org/0day-ci/archive/20231010/202310101724.iRnAoP3r-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231010/202310101724.iRnAoP3r-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310101724.iRnAoP3r-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   drivers/net/appletalk/ipddp.c: In function 'ipddp_create':
->> drivers/net/appletalk/ipddp.c:207:24: error: implicit declaration of function 'atrtr_get_dev'; did you mean 'to_net_dev'? [-Werror=implicit-function-declaration]
-     207 |         if ((rt->dev = atrtr_get_dev(&rt->at)) == NULL) {
-         |                        ^~~~~~~~~~~~~
-         |                        to_net_dev
->> drivers/net/appletalk/ipddp.c:207:22: warning: assignment to 'struct net_device *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     207 |         if ((rt->dev = atrtr_get_dev(&rt->at)) == NULL) {
-         |                      ^
-   cc1: some warnings being treated as errors
 
 
-vim +207 drivers/net/appletalk/ipddp.c
+On 10/10/23 08:17, Kalle Valo wrote:
 
-^1da177e4c3f41 Linus Torvalds   2005-04-16  192  
-^1da177e4c3f41 Linus Torvalds   2005-04-16  193  /*
-^1da177e4c3f41 Linus Torvalds   2005-04-16  194   * Create a routing entry. We first verify that the
-^1da177e4c3f41 Linus Torvalds   2005-04-16  195   * record does not already exist. If it does we return -EEXIST
-^1da177e4c3f41 Linus Torvalds   2005-04-16  196   */
-^1da177e4c3f41 Linus Torvalds   2005-04-16  197  static int ipddp_create(struct ipddp_route *new_rt)
-^1da177e4c3f41 Linus Torvalds   2005-04-16  198  {
-ce7e40c432ba84 Vlad Tsyrklevich 2017-01-09  199          struct ipddp_route *rt = kzalloc(sizeof(*rt), GFP_KERNEL);
-^1da177e4c3f41 Linus Torvalds   2005-04-16  200  
-^1da177e4c3f41 Linus Torvalds   2005-04-16  201          if (rt == NULL)
-^1da177e4c3f41 Linus Torvalds   2005-04-16  202                  return -ENOMEM;
-^1da177e4c3f41 Linus Torvalds   2005-04-16  203  
-^1da177e4c3f41 Linus Torvalds   2005-04-16  204          rt->ip = new_rt->ip;
-^1da177e4c3f41 Linus Torvalds   2005-04-16  205          rt->at = new_rt->at;
-^1da177e4c3f41 Linus Torvalds   2005-04-16  206          rt->next = NULL;
-^1da177e4c3f41 Linus Torvalds   2005-04-16 @207          if ((rt->dev = atrtr_get_dev(&rt->at)) == NULL) {
-^1da177e4c3f41 Linus Torvalds   2005-04-16  208  		kfree(rt);
-^1da177e4c3f41 Linus Torvalds   2005-04-16  209                  return -ENETUNREACH;
-^1da177e4c3f41 Linus Torvalds   2005-04-16  210          }
-^1da177e4c3f41 Linus Torvalds   2005-04-16  211  
-5615968a708451 David S. Miller  2009-05-27  212  	spin_lock_bh(&ipddp_route_lock);
-5615968a708451 David S. Miller  2009-05-27  213  	if (__ipddp_find_route(rt)) {
-5615968a708451 David S. Miller  2009-05-27  214  		spin_unlock_bh(&ipddp_route_lock);
-^1da177e4c3f41 Linus Torvalds   2005-04-16  215  		kfree(rt);
-^1da177e4c3f41 Linus Torvalds   2005-04-16  216  		return -EEXIST;
-^1da177e4c3f41 Linus Torvalds   2005-04-16  217  	}
-^1da177e4c3f41 Linus Torvalds   2005-04-16  218  
-^1da177e4c3f41 Linus Torvalds   2005-04-16  219          rt->next = ipddp_route_list;
-^1da177e4c3f41 Linus Torvalds   2005-04-16  220          ipddp_route_list = rt;
-^1da177e4c3f41 Linus Torvalds   2005-04-16  221  
-5615968a708451 David S. Miller  2009-05-27  222  	spin_unlock_bh(&ipddp_route_lock);
-5615968a708451 David S. Miller  2009-05-27  223  
-^1da177e4c3f41 Linus Torvalds   2005-04-16  224          return 0;
-^1da177e4c3f41 Linus Torvalds   2005-04-16  225  }
-^1da177e4c3f41 Linus Torvalds   2005-04-16  226  
+> 
+> No need to resend. I marked Kees' version as Superseded so that I don't
+> accidentally take the wrong version.
+> 
+> In the title "wifi:" is missing but I can add that during commit.
+> 
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Awesome. :)
+
+Thanks, Kalle!
+--
+Gustavo
