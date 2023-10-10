@@ -2,168 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 110D57BF6B9
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 11:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A82AB7BF73A
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 11:24:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbjJJJEr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 05:04:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50898 "EHLO
+        id S229720AbjJJJYH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 05:24:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjJJJEq (ORCPT
+        with ESMTP id S230411AbjJJJXi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 05:04:46 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FA439E;
-        Tue, 10 Oct 2023 02:04:44 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-690bf8fdd1aso3912830b3a.2;
-        Tue, 10 Oct 2023 02:04:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696928683; x=1697533483; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J2RXE7fyLfD3qzF7sApsWnRY+f5dq9bXtB3kEGmnfPA=;
-        b=jDOIwObNqjweS6R1vH0WkQg1MiXb3EEn/g4HzapqA8RVl0Qbm7Ar2uC+wRId0HPq/m
-         jno+oNOKxhDpmtnzCCD9fJKn3f31AkPEIYRNqC3EVGpkj33ZV/qOYb+LYdraBL80Gbkq
-         uhCjR2D+6qarcdVBZJFXu/7dm8W6j1AJk3J8EXUTSQx/cWLxrP4MI/d0muOsJngJG6sa
-         4pLWLvwFraO2Fn91qglH3Ow9neB5RnvA87YnoAhaXtqhBpGGy+Q1Y2zO/uystQIaKSGx
-         YzXZ6JAA9DHxFQDBVO88Fgf/984TPJ5D4c34661zYwLLRsC9A1tUnritSrEW6h7RM9fP
-         WHUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696928683; x=1697533483;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=J2RXE7fyLfD3qzF7sApsWnRY+f5dq9bXtB3kEGmnfPA=;
-        b=manAia/Xg6CSNm/98MGFqZZx8loMrZFdu5mnlOZFNuVDntRMkvVW9Ph4GSh9DrrCc3
-         /4Y2LbWv/dTF/kfMkpUpgW+GyFKtoW50r9mvJhcsZ8HXPMOnln0ZadyjVbMwEKDsxGAO
-         mU/ekbuVCyHJReckivT22Ey3hOOjNffEWuCwjUU0+VO95GExmYGk2F1OqthX2QOXAbRn
-         +kLTbMefDN3E9BiPJBcPCtoCUMDuwplQH0KokkCxAZsFAtz4MDzfEUHRu/BJzrGdy6KB
-         yeX0QTlsmkbjX2EqizgU1J5MsK8bEChl+LeAbbtmTvPp9jRv74W5RC58k49x4jgMktXQ
-         5oyA==
-X-Gm-Message-State: AOJu0YyYHfsM6OrNlyLlZQSgtP7bp7dP75t3D7Q1InghhBZsJJZwkP84
-        zSSn4eu720rcPoMHwAJ6jzkx1yCHKws=
-X-Google-Smtp-Source: AGHT+IEhcp8R/FIAFbq7UdZjUFdRU8O5IedvU7V229puFGOvbTBRQjqRn9NJ5K7zxFYXulEXk+KUhQ==
-X-Received: by 2002:a05:6a00:369a:b0:69f:b6c4:51e0 with SMTP id dw26-20020a056a00369a00b0069fb6c451e0mr5180154pfb.1.1696928683511;
-        Tue, 10 Oct 2023 02:04:43 -0700 (PDT)
-Received: from [192.168.0.106] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id u13-20020a63470d000000b0056b27af8715sm9323866pga.43.2023.10.10.02.04.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Oct 2023 02:04:43 -0700 (PDT)
-Message-ID: <83b5114c-1ff8-4251-a4ef-8c0e7614f74b@gmail.com>
-Date:   Tue, 10 Oct 2023 16:04:38 +0700
+        Tue, 10 Oct 2023 05:23:38 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9939310A;
+        Tue, 10 Oct 2023 02:22:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696929756; x=1728465756;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pe28AkaWQOFbPDoeW0f0UL3u+esQjxzrmxDbQGIXd+k=;
+  b=bijAnBjhFSfwl40qC5elRccbOLCwGz8zb+82bedu8RzMV9OWNm3beuOv
+   4mhCT0zlMURcj15KvsiWkuRv67LGReq/pX0JOiqhKX/SD3zKIKaE5kXsB
+   DJK3G867QD4AIjyFTwHo2HJgA2BsIiPWGpt2blCobg8tFd7tbfpvztsGK
+   75JycjMS81ufYliB2peDgz5KGH4hbrHRznXiVmi3FjdOE3Ays1iEZsHoW
+   D9U/sMpEkICSBQ4rvOmk2H6gaPJv2qdtrXzJ9Jzg42MoD/uXSaZO5uNj2
+   oqdk3PLyuZmuaDWjZ+tgwQNtXVloYd11H5F2CfTMXjF3OB1TAXp+DymWh
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="369414287"
+X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
+   d="scan'208";a="369414287"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 02:22:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="788512822"
+X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
+   d="scan'208";a="788512822"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 10 Oct 2023 02:22:32 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qq8wg-0000EE-0A;
+        Tue, 10 Oct 2023 09:22:30 +0000
+Date:   Tue, 10 Oct 2023 17:21:54 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Arnd Bergmann <arnd@kernel.org>, Jakub Kicinski <kuba@kernel.org>
+Cc:     oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wpan@vger.kernel.org,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, Doug Brown <doug@schmorgal.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 01/10] appletalk: remove localtalk and ppp support
+Message-ID: <202310101724.iRnAoP3r-lkp@intel.com>
+References: <20231009141908.1767241-1-arnd@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Wireless <linux-wireless@vger.kernel.org>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        Victor <victormingueza@gmail.com>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: rtw89_8852be wifi disconnects and needs to be restarted
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231009141908.1767241-1-arnd@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hi Arnd,
 
-I notice a regression report on Bugzilla [1]. Quoting from it:
+kernel test robot noticed the following build errors:
 
-> Hi,
-> 
->   I got a new laptop HP 445 G9 that comes with the Realtek RTL8852BE. The wifi is able to connect to internet briefly and then it disconnects from the network, the device is not available any longer until I restart the laptop.
-> 
->  I'm using Arch and cloned the linux 6.2 and installed this version, although not maintained anymore, it works fine and is stable, wifi never disconnects, but newer versions of the kernel seem to have the issue mentioned above. Below are some logs from the kernel 6.5
-> 
-> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: loaded firmware rtw89/rtw8852b_fw-1.bin
-> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: enabling device (0000 -> 0003)
-> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: Firmware version 0.29.29.1, cmd version 0, type 5
-> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: Firmware version 0.29.29.1, cmd version 0, type 3
-> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: chip rfe_type is 1
-> Oct 03 21:29:14 ryzen14 NetworkManager[823]: <info>  [1696321754.6290] rfkill0: found Wi-Fi radio killswitch (at /sys/devices/pci0000:00/0000:00:01.3/0000:02:00.0/ieee80211/phy0/rfkill0) (driver rtw89_8852be)
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: failed to pre-release fwcmd
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 0
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 1
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 2
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 3
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 8
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 9
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 0
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 1
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 2
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 3
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 8
-> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 9
-> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: FW does not process h2c registers
-> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
-> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
-> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: write rf busy swsi
-> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: write rf busy swsi
-> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
-> ....
-> Oct 03 21:30:56 ryzen14 kernel: rtw89_8852be 0000:02:00.0: write rf busy swsi
-> Oct 03 21:30:56 ryzen14 kernel: rtw89_8852be 0000:02:00.0: FW does not process h2c registers
-> Oct 03 21:30:56 ryzen14 kernel: rtw89_8852be 0000:02:00.0: HW scan failed with status: -110
-> Oct 03 21:30:57 ryzen14 kernel: rtw89_8852be 0000:02:00.0: Update probe request failed
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: FW does not process h2c registers
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
-> ...
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: write rf busy swsi
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: FW does not process h2c registers
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: HW scan failed with status: -110
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: xtal si not ready(W): offset=90 val=10 mask=10
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: xtal si not ready(W): offset=90 val=10 mask=10
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: mac init fail, ret:-110
-> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: xtal si not ready(W): offset=90 val=10 mask=10
-> Oct 03 21:30:59 ryzen14 kernel: rtw89_8852be 0000:02:00.0: xtal si not ready(W): offset=90 val=10 mask=10
-> Oct 03 21:30:59 ryzen14 kernel: rtw89_8852be 0000:02:00.0: mac init fail, ret:-110
-> 
-> More details about the wireless device based on HP specification:
-> 
-> Realtek RTL8852BE 802.11ax (2x2) Wi-Fi and Bluetooth 5.2 combo
-> Qualcomm Fast Connect 6900 Wi-Fi 6E 802.11ax (2x2) and Bluetooth 5.2 combo
-> 
-> Hopefully those details are useful, let me know if I can provide any further information.
+[auto build test ERROR on next-20231009]
+[cannot apply to linus/master v6.6-rc5 v6.6-rc4 v6.6-rc3 v6.6-rc5]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Then the reporter (Cc'ed) had found the workaround:
+url:    https://github.com/intel-lab-lkp/linux/commits/Arnd-Bergmann/ieee802154-avoid-deprecated-ndo_do_ioctl-callback/20231009-222305
+base:   next-20231009
+patch link:    https://lore.kernel.org/r/20231009141908.1767241-1-arnd%40kernel.org
+patch subject: [PATCH 01/10] appletalk: remove localtalk and ppp support
+config: nios2-randconfig-001-20231010 (https://download.01.org/0day-ci/archive/20231010/202310101724.iRnAoP3r-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231010/202310101724.iRnAoP3r-lkp@intel.com/reproduce)
 
-> Hi all,
-> 
->   After some more testing I found a workaround for now to run any modern kernel (> 6.2). I disabled some of the features for low power mode on the pci device and it seems stable now while running 6.5.
-> 
->   I created a file in modprobe.d to disable the power saving settings:
-> 
-> /etc/modprobe.d/20-wifi.conf
-> options rtw89_pci disable_aspm_l1ss=y disable_aspm_l1=y
-> options rtw89_core disable_ps_mode=y
-> 
->   Probably there are some issues with the driver when in power saving mode, which is the default behavior. Hopefully the new info brings some light for fixing the drivers.
-> 
-> Thanks,
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310101724.iRnAoP3r-lkp@intel.com/
 
-See Bugzilla for the full thread.
+All error/warnings (new ones prefixed by >>):
 
-Anyway, I'm adding this regression to regzbot:
+   drivers/net/appletalk/ipddp.c: In function 'ipddp_create':
+>> drivers/net/appletalk/ipddp.c:207:24: error: implicit declaration of function 'atrtr_get_dev'; did you mean 'to_net_dev'? [-Werror=implicit-function-declaration]
+     207 |         if ((rt->dev = atrtr_get_dev(&rt->at)) == NULL) {
+         |                        ^~~~~~~~~~~~~
+         |                        to_net_dev
+>> drivers/net/appletalk/ipddp.c:207:22: warning: assignment to 'struct net_device *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     207 |         if ((rt->dev = atrtr_get_dev(&rt->at)) == NULL) {
+         |                      ^
+   cc1: some warnings being treated as errors
 
-#regzbot introduced: v6.2..v6.5 https://bugzilla.kernel.org/show_bug.cgi?id=217978
-#regzbot title: rtw89_8852be wifi disconnects in power saving mode
 
-Thanks.
+vim +207 drivers/net/appletalk/ipddp.c
 
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217978
+^1da177e4c3f41 Linus Torvalds   2005-04-16  192  
+^1da177e4c3f41 Linus Torvalds   2005-04-16  193  /*
+^1da177e4c3f41 Linus Torvalds   2005-04-16  194   * Create a routing entry. We first verify that the
+^1da177e4c3f41 Linus Torvalds   2005-04-16  195   * record does not already exist. If it does we return -EEXIST
+^1da177e4c3f41 Linus Torvalds   2005-04-16  196   */
+^1da177e4c3f41 Linus Torvalds   2005-04-16  197  static int ipddp_create(struct ipddp_route *new_rt)
+^1da177e4c3f41 Linus Torvalds   2005-04-16  198  {
+ce7e40c432ba84 Vlad Tsyrklevich 2017-01-09  199          struct ipddp_route *rt = kzalloc(sizeof(*rt), GFP_KERNEL);
+^1da177e4c3f41 Linus Torvalds   2005-04-16  200  
+^1da177e4c3f41 Linus Torvalds   2005-04-16  201          if (rt == NULL)
+^1da177e4c3f41 Linus Torvalds   2005-04-16  202                  return -ENOMEM;
+^1da177e4c3f41 Linus Torvalds   2005-04-16  203  
+^1da177e4c3f41 Linus Torvalds   2005-04-16  204          rt->ip = new_rt->ip;
+^1da177e4c3f41 Linus Torvalds   2005-04-16  205          rt->at = new_rt->at;
+^1da177e4c3f41 Linus Torvalds   2005-04-16  206          rt->next = NULL;
+^1da177e4c3f41 Linus Torvalds   2005-04-16 @207          if ((rt->dev = atrtr_get_dev(&rt->at)) == NULL) {
+^1da177e4c3f41 Linus Torvalds   2005-04-16  208  		kfree(rt);
+^1da177e4c3f41 Linus Torvalds   2005-04-16  209                  return -ENETUNREACH;
+^1da177e4c3f41 Linus Torvalds   2005-04-16  210          }
+^1da177e4c3f41 Linus Torvalds   2005-04-16  211  
+5615968a708451 David S. Miller  2009-05-27  212  	spin_lock_bh(&ipddp_route_lock);
+5615968a708451 David S. Miller  2009-05-27  213  	if (__ipddp_find_route(rt)) {
+5615968a708451 David S. Miller  2009-05-27  214  		spin_unlock_bh(&ipddp_route_lock);
+^1da177e4c3f41 Linus Torvalds   2005-04-16  215  		kfree(rt);
+^1da177e4c3f41 Linus Torvalds   2005-04-16  216  		return -EEXIST;
+^1da177e4c3f41 Linus Torvalds   2005-04-16  217  	}
+^1da177e4c3f41 Linus Torvalds   2005-04-16  218  
+^1da177e4c3f41 Linus Torvalds   2005-04-16  219          rt->next = ipddp_route_list;
+^1da177e4c3f41 Linus Torvalds   2005-04-16  220          ipddp_route_list = rt;
+^1da177e4c3f41 Linus Torvalds   2005-04-16  221  
+5615968a708451 David S. Miller  2009-05-27  222  	spin_unlock_bh(&ipddp_route_lock);
+5615968a708451 David S. Miller  2009-05-27  223  
+^1da177e4c3f41 Linus Torvalds   2005-04-16  224          return 0;
+^1da177e4c3f41 Linus Torvalds   2005-04-16  225  }
+^1da177e4c3f41 Linus Torvalds   2005-04-16  226  
 
 -- 
-An old man doll... just what I always wanted! - Clara
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
