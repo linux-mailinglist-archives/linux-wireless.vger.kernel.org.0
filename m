@@ -2,156 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C3057BF573
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 10:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 110D57BF6B9
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 11:04:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442722AbjJJIQJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 04:16:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52312 "EHLO
+        id S229541AbjJJJEr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 05:04:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442712AbjJJIQG (ORCPT
+        with ESMTP id S229476AbjJJJEq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 04:16:06 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84E4197;
-        Tue, 10 Oct 2023 01:16:03 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id 44FD13200A7A;
-        Tue, 10 Oct 2023 04:15:59 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 10 Oct 2023 04:16:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1696925758; x=1697012158; bh=37O+bLcXHzAtlGTxAl7BM9VidjbxHB5bNg3
-        Khnx7FEY=; b=VX5fC4Q/Fwzp47Fe1GjiddDyNK6GDmgxx9AnAlw4N6tKQ9xxeBk
-        zFlj2nlHzuctJSCQlBv2ocNWNH2aGJ6TkRsuPsCPAmGsEwNdqNQfnfXyjQFdLmC2
-        p20GdS9jwh1UhwKKIhrVXTgpEO66+qw4ocoezSvp+Hk+zWMDywZxkPKfwM8WKWNX
-        30DuzJc7DSxQoCHRrnZAjwPrYfD65PQI/ZzQa/2hVyrj+dEd5bc8MzAN09+K7VOi
-        IMZHBtT2nuMB+UyNtJTp4PVF6VbA+0wPZd6RHDkEoyMSwk3r2sSiyAs5nztOiIQ6
-        ye+LVryb4ZqiKVba2ZACFlsWyGGFjAn3pvg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1696925758; x=1697012158; bh=37O+bLcXHzAtlGTxAl7BM9VidjbxHB5bNg3
-        Khnx7FEY=; b=h28zTzFXfFrEIvsbBtlAfMw0eohC+N8xcl2PZe9Kt3YlxfrZqXG
-        LEBluCJSUym0hj2jGGfiAeqFNWkxjl7aDHJ+X+JYVr4kE3+QAp5EZ+JmY/jd4GHM
-        ydK2HCjCxGdSuhF6dg5YgVhVw3jOis7wUxmVozKbKDcj8OhoEwB1rzuaP3PwYzjs
-        7EY+jFPyrt1HKFHC+EXe16a8K8+vfRk7SdHowKaYYof6YDLEUEXVjzK0VHZG2H+r
-        J18d9S0uNBjcariQVw4gZ2yDZuc6dI2cfR3MAc3wyM+dku8Mt+Nk9iXMD6Q0eGkK
-        Om4hmkiXa5LPS3H4J/Yma2LN7KxrTu0EmXw==
-X-ME-Sender: <xms:PgglZTAGcVIWHAnllWjXsXLzjrKuM5Ia5b6pURc-mYQz2Q4Se0aVBg>
-    <xme:PgglZZje5EFxgF098kwzO0XJE0zxvlw8wplo68kuRsgPo5ZKmIgbbzTw5pXfWSk2t
-    foH45KKGLoglj8-kiE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrheehucetufdoteggodetrfdotffvucfrrh
-    hofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedtgfejveen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggv
-X-ME-Proxy: <xmx:PgglZemu76nlIQmFWr9QTNdfapasFxAjU4ddnU8Sq_F_XhYxQNBl0A>
-    <xmx:PgglZVw74kOKcxNCm28y3EDpsrNJ90A1UHaex7izTALL6caigKZOoQ>
-    <xmx:PgglZYSyu-Up5FKPRurAXX-XE-pfpCH4V0bFBhnfJjxnEXKAu3tPiA>
-    <xmx:PgglZcb2rHKW8mgK4EV70Q9Ym7cs5vMZJmjRUQjAuSuoc7zvNhZeqw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 2C21EB60089; Tue, 10 Oct 2023 04:15:58 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-958-g1b1b911df8-fm-20230927.002-g1b1b911d
+        Tue, 10 Oct 2023 05:04:46 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FA439E;
+        Tue, 10 Oct 2023 02:04:44 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-690bf8fdd1aso3912830b3a.2;
+        Tue, 10 Oct 2023 02:04:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696928683; x=1697533483; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J2RXE7fyLfD3qzF7sApsWnRY+f5dq9bXtB3kEGmnfPA=;
+        b=jDOIwObNqjweS6R1vH0WkQg1MiXb3EEn/g4HzapqA8RVl0Qbm7Ar2uC+wRId0HPq/m
+         jno+oNOKxhDpmtnzCCD9fJKn3f31AkPEIYRNqC3EVGpkj33ZV/qOYb+LYdraBL80Gbkq
+         uhCjR2D+6qarcdVBZJFXu/7dm8W6j1AJk3J8EXUTSQx/cWLxrP4MI/d0muOsJngJG6sa
+         4pLWLvwFraO2Fn91qglH3Ow9neB5RnvA87YnoAhaXtqhBpGGy+Q1Y2zO/uystQIaKSGx
+         YzXZ6JAA9DHxFQDBVO88Fgf/984TPJ5D4c34661zYwLLRsC9A1tUnritSrEW6h7RM9fP
+         WHUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696928683; x=1697533483;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=J2RXE7fyLfD3qzF7sApsWnRY+f5dq9bXtB3kEGmnfPA=;
+        b=manAia/Xg6CSNm/98MGFqZZx8loMrZFdu5mnlOZFNuVDntRMkvVW9Ph4GSh9DrrCc3
+         /4Y2LbWv/dTF/kfMkpUpgW+GyFKtoW50r9mvJhcsZ8HXPMOnln0ZadyjVbMwEKDsxGAO
+         mU/ekbuVCyHJReckivT22Ey3hOOjNffEWuCwjUU0+VO95GExmYGk2F1OqthX2QOXAbRn
+         +kLTbMefDN3E9BiPJBcPCtoCUMDuwplQH0KokkCxAZsFAtz4MDzfEUHRu/BJzrGdy6KB
+         yeX0QTlsmkbjX2EqizgU1J5MsK8bEChl+LeAbbtmTvPp9jRv74W5RC58k49x4jgMktXQ
+         5oyA==
+X-Gm-Message-State: AOJu0YyYHfsM6OrNlyLlZQSgtP7bp7dP75t3D7Q1InghhBZsJJZwkP84
+        zSSn4eu720rcPoMHwAJ6jzkx1yCHKws=
+X-Google-Smtp-Source: AGHT+IEhcp8R/FIAFbq7UdZjUFdRU8O5IedvU7V229puFGOvbTBRQjqRn9NJ5K7zxFYXulEXk+KUhQ==
+X-Received: by 2002:a05:6a00:369a:b0:69f:b6c4:51e0 with SMTP id dw26-20020a056a00369a00b0069fb6c451e0mr5180154pfb.1.1696928683511;
+        Tue, 10 Oct 2023 02:04:43 -0700 (PDT)
+Received: from [192.168.0.106] ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id u13-20020a63470d000000b0056b27af8715sm9323866pga.43.2023.10.10.02.04.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Oct 2023 02:04:43 -0700 (PDT)
+Message-ID: <83b5114c-1ff8-4251-a4ef-8c0e7614f74b@gmail.com>
+Date:   Tue, 10 Oct 2023 16:04:38 +0700
 MIME-Version: 1.0
-Message-Id: <2d325867-95c9-4bff-8f24-9083c730d7ba@app.fastmail.com>
-In-Reply-To: <DE61EEA5-D560-40B6-8F4D-22F299AC61ED@xhero.org>
-References: <20231009141908.1767241-1-arnd@kernel.org>
- <790BA488-B6F6-41ED-96EF-2089EF1C043B@xhero.org>
- <3cb4bb96-1651-4179-9c32-507937282d7d@app.fastmail.com>
- <DE61EEA5-D560-40B6-8F4D-22F299AC61ED@xhero.org>
-Date:   Tue, 10 Oct 2023 10:15:37 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Rodolfo Zitellini" <rwz@xhero.org>
-Cc:     "Arnd Bergmann" <arnd@kernel.org>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org,
-        "Johannes Berg" <johannes@sipsolutions.net>,
-        linux-wpan@vger.kernel.org,
-        "Michael Hennerich" <michael.hennerich@analog.com>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, "Doug Brown" <doug@schmorgal.com>
-Subject: Re: [PATCH 01/10] appletalk: remove localtalk and ppp support
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Wireless <linux-wireless@vger.kernel.org>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+        Victor <victormingueza@gmail.com>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Fwd: rtw89_8852be wifi disconnects and needs to be restarted
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 10, 2023, at 09:10, Rodolfo Zitellini wrote:
->> Il giorno 9 ott 2023, alle ore 19:29, Arnd Bergmann <arnd@arndb.de> h=
-a scritto:
->> On Mon, Oct 9, 2023, at 18:49, Rodolfo Zitellini wrote:
->> I can see a few ways this could work out:
->>=20
->> - add a custom callback pointer to struct atalk_iface to
->>  get and set the address for phase1 probing instead of going
->>  through the ioctl
->
-> This was my initial thought, at least for the moment, mostly to keep=20
-> netatalk happy and make sure I don=E2=80=99t break other stuff that ma=
-kes=20
-> assumptions on how the address probing worked. There are other bits I=20
-> would like to improve, for example tcpdump (which parses correctly=20
-> appetalk packets!) is broken in the current implementation.
->
->> - rewrite the probing logic in aarp.c more widely, and improve
->>  the userspace interface in the process by introducing a netlink
->>  interface
->
-> This is sorta the =E2=80=9Csecond step=E2=80=9D I was planning, I thin=
-k the logic for=20
-> probing could be redesigned and simplified (it also does not work 100%=20
-> correctly), and it could be a good chance to improve the interface wit=
-h=20
-> netatalk too.
+Hi,
 
-Ok, I've adapted my patch now to not actually drop the
-localtalk code for now, and sent that out, I hope that works
-for you. Even if we go with the v1 patch that removes it all,
-you could just as well start with a revert of my patch when
-you add your driver, so in the end it shouldn't make much
-of a difference.
+I notice a regression report on Bugzilla [1]. Quoting from it:
 
->> - Move your entire driver into userspace and go to the kernel
->>  using tun/tap. This has the added benefit of avoiding a lot
->>  of the complexity of the tty line discipline code you have.
->
-> We had some discussion too if to just make the lt an userspace stack, =
-I=20
-> personally like how it is currently implemented because existing code=20
-> can run basically without modification.
->
-> I would propose at this stage to change the TashTalk driver to remove=20
-> ndo_do_ioctl and to use a custom callback, if this ok.
+> Hi,
+> 
+>   I got a new laptop HP 445 G9 that comes with the Realtek RTL8852BE. The wifi is able to connect to internet briefly and then it disconnects from the network, the device is not available any longer until I restart the laptop.
+> 
+>  I'm using Arch and cloned the linux 6.2 and installed this version, although not maintained anymore, it works fine and is stable, wifi never disconnects, but newer versions of the kernel seem to have the issue mentioned above. Below are some logs from the kernel 6.5
+> 
+> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: loaded firmware rtw89/rtw8852b_fw-1.bin
+> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: enabling device (0000 -> 0003)
+> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: Firmware version 0.29.29.1, cmd version 0, type 5
+> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: Firmware version 0.29.29.1, cmd version 0, type 3
+> Oct 03 21:29:14 ryzen14 kernel: rtw89_8852be 0000:02:00.0: chip rfe_type is 1
+> Oct 03 21:29:14 ryzen14 NetworkManager[823]: <info>  [1696321754.6290] rfkill0: found Wi-Fi radio killswitch (at /sys/devices/pci0000:00/0000:00:01.3/0000:02:00.0/ieee80211/phy0/rfkill0) (driver rtw89_8852be)
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: failed to pre-release fwcmd
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 0
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 1
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 2
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 3
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 8
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 9
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 0
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 1
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 2
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 3
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 8
+> Oct 03 21:30:41 ryzen14 kernel: rtw89_8852be 0000:02:00.0: timed out to flush pci txch: 9
+> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: FW does not process h2c registers
+> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
+> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
+> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: write rf busy swsi
+> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: write rf busy swsi
+> Oct 03 21:30:42 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
+> ....
+> Oct 03 21:30:56 ryzen14 kernel: rtw89_8852be 0000:02:00.0: write rf busy swsi
+> Oct 03 21:30:56 ryzen14 kernel: rtw89_8852be 0000:02:00.0: FW does not process h2c registers
+> Oct 03 21:30:56 ryzen14 kernel: rtw89_8852be 0000:02:00.0: HW scan failed with status: -110
+> Oct 03 21:30:57 ryzen14 kernel: rtw89_8852be 0000:02:00.0: Update probe request failed
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: FW does not process h2c registers
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
+> ...
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: read rf busy swsi
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: write rf busy swsi
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: FW does not process h2c registers
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: HW scan failed with status: -110
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: xtal si not ready(W): offset=90 val=10 mask=10
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: xtal si not ready(W): offset=90 val=10 mask=10
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: mac init fail, ret:-110
+> Oct 03 21:30:58 ryzen14 kernel: rtw89_8852be 0000:02:00.0: xtal si not ready(W): offset=90 val=10 mask=10
+> Oct 03 21:30:59 ryzen14 kernel: rtw89_8852be 0000:02:00.0: xtal si not ready(W): offset=90 val=10 mask=10
+> Oct 03 21:30:59 ryzen14 kernel: rtw89_8852be 0000:02:00.0: mac init fail, ret:-110
+> 
+> More details about the wireless device based on HP specification:
+> 
+> Realtek RTL8852BE 802.11ax (2x2) Wi-Fi and Bluetooth 5.2 combo
+> Qualcomm Fast Connect 6900 Wi-Fi 6E 802.11ax (2x2) and Bluetooth 5.2 combo
+> 
+> Hopefully those details are useful, let me know if I can provide any further information.
 
-It looks like you still need a custom userspace tool to set up
-the uart for your new driver, so my feeling would be that having a
-userspace bridge to implement the localtalk/uart to ethertalk/tap
-driver would actually be nicer for both usability and maintenance.
+Then the reporter (Cc'ed) had found the workaround:
 
-It's not something we need to decide now though, and is up to
-you in the end.
+> Hi all,
+> 
+>   After some more testing I found a workaround for now to run any modern kernel (> 6.2). I disabled some of the features for low power mode on the pci device and it seems stable now while running 6.5.
+> 
+>   I created a file in modprobe.d to disable the power saving settings:
+> 
+> /etc/modprobe.d/20-wifi.conf
+> options rtw89_pci disable_aspm_l1ss=y disable_aspm_l1=y
+> options rtw89_core disable_ps_mode=y
+> 
+>   Probably there are some issues with the driver when in power saving mode, which is the default behavior. Hopefully the new info brings some light for fixing the drivers.
+> 
+> Thanks,
 
-      Arnd
+See Bugzilla for the full thread.
+
+Anyway, I'm adding this regression to regzbot:
+
+#regzbot introduced: v6.2..v6.5 https://bugzilla.kernel.org/show_bug.cgi?id=217978
+#regzbot title: rtw89_8852be wifi disconnects in power saving mode
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217978
+
+-- 
+An old man doll... just what I always wanted! - Clara
