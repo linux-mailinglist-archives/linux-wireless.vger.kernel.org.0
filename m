@@ -2,58 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C97027BFFD6
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 16:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64EEA7C0050
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Oct 2023 17:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232977AbjJJO5L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 10:57:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52866 "EHLO
+        id S233167AbjJJPYB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Oct 2023 11:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233225AbjJJO5I (ORCPT
+        with ESMTP id S232740AbjJJPYA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 10:57:08 -0400
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545C2B8
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 07:57:05 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id A9B9E41EC4;
-        Tue, 10 Oct 2023 14:57:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-        t=1696949822; bh=P/f3XdP28f20iuuj36uSrQM3o1wChLmi8Y2pRwWmDdk=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=EXc+v5um6Pqjuvb41ClwI3LH1PrlUr+XLEzVreG83Q/NJCo1rBXIj8bB8Qb9iYoh5
-         pPo4RLRnzQ03gy9rIy8VMgnmid/3/Q39buhXhCkc9ESwifCpb3lDLeTsGhL4uXLiQt
-         VEvGuLZ0qw/kshig98OGPI7mQZ+ueV8jwE0420OqwF+1bLFRhwnUMVLOpP5n1+YF4O
-         1cJenJxnz2fSNDvIvd25uefxt4UJyUiAKWua2wvdKdhZSmJAEMSvZEBRyypWVXC2gX
-         c/Sn4hCq4fzLm9jSCIpID9BEjYqRt+19nnYin5VNRZeyPUq4+apEMJVOlLicTj06Gf
-         WiB8u5uCCtQaA==
-Message-ID: <97e68d20-2b5a-417f-8c8f-15e84ef24447@marcan.st>
-Date:   Tue, 10 Oct 2023 23:57:00 +0900
+        Tue, 10 Oct 2023 11:24:00 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0726793
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 08:23:58 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39AEKaUa023884;
+        Tue, 10 Oct 2023 15:23:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=jIEk7bY1igBLvz7sWdZaDhWClh1IdiHKmn4/UZenYjo=;
+ b=QCwkFm1ek6k5619ED+B98Vlf0irH0m4mmsSOb3xRkhe1+QlWuJCkaNktTm9gc7Wrp5Ds
+ KcJ3hyEYcSj08UXm9+QSwSy5Ehn81Ac+ByUF8emq3NVFSRnmJ7QcGCGDaRYQ80zvUZwB
+ 9tFwUQQFdG2QHgwHKmOBJPyZLvVl4mokVVGmsl0ky+C62u4uYGt3r9blmEsd+ZSU8N9Q
+ 3nHziLs5atA4jKDo83YM9+3CbniJCfhCnznjXCF/oS0HsrLv2LoYCGSVHkUGIFObWgt5
+ sCZDsd0KWX6na1VdP6H+9aOq0oziJvauJei8VCdC2FtCujLkyTQ+uHO6kJY1lz4+j0xL 5A== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tmyma95pa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 10 Oct 2023 15:23:45 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39AFNeZV027254
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 10 Oct 2023 15:23:41 GMT
+Received: from [10.111.180.41] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 10 Oct
+ 2023 08:23:17 -0700
+Message-ID: <2c08791e-44b7-444e-9fb6-a828d849a67b@quicinc.com>
+Date:   Tue, 10 Oct 2023 08:23:16 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: On brcm80211 maintenance and support
+Subject: Re: [PATCH] wifi: ath11k: ath11k_debugfs_register(): fix
+ format-truncation warning
 Content-Language: en-US
-To:     Arend Van Spriel <aspriel@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Julian Calaby <julian.calaby@gmail.com>
-Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        brcm80211-dev-list.pdl@broadcom.com
-References: <6f78e624-62ee-3ae5-1db4-a0411566def8@yandex.ru>
- <CAGRGNgU7aySyUny9aG_+wXiKJ7j1weosa-rZDY4_WAXbq-3ABg@mail.gmail.com>
- <87ttr454bh.fsf@kernel.org> <cd9e71c8-2884-427a-a394-756f62ab09ba@gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <cd9e71c8-2884-427a-a394-756f62ab09ba@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To:     Kalle Valo <kvalo@kernel.org>, <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20231010062250.2580951-1-kvalo@kernel.org>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231010062250.2580951-1-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 634K_kZdhPhQ8BOY2QMrwvFiQHeRgQqQ
+X-Proofpoint-GUID: 634K_kZdhPhQ8BOY2QMrwvFiQHeRgQqQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-10_10,2023-10-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ adultscore=0 spamscore=0 clxscore=1015 mlxscore=0 mlxlogscore=750
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310100113
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -64,98 +78,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2023/10/10 5:22, Arend Van Spriel wrote:
-> On 10/6/2023 2:21 PM, Kalle Valo wrote:
->> Julian Calaby <julian.calaby@gmail.com> writes:
->>
->>> Hi Dmitry,
->>>
->>> (relevant people and lists CC'd)
->>>
->>> On Fri, Oct 6, 2023 at 3:16 AM Dmitry Antipov <dmantipov@yandex.ru> 
->>> wrote:
->>>>
->>>> Kalle,
->>>>
->>>> what's an actual status of brcm80211 driver? It seems
->>>> that the relevant MAINTAINERS entries are no longer
->>>> useful, and [1] states that Broadcom is just "disappeared".
->>>
->>> Arend hasn't posted since February:
->>> https://lore.kernel.org/linux-wireless/63f72045-e51d-d9a4-a0ed-c221bcdcee03@gmail.com/
->>>
->>> Franky is still reviewing things as of early August:
->>> https://lore.kernel.org/linux-wireless/CA+8PC_evb-6Y3dKnAN4BN=ODEVxY5-cDb6Lc72u0j1WBtx7p1A@mail.gmail.com/
->>>
->>> Hante hasn't posted since 2018:
->>> https://lore.kernel.org/linux-wireless/4f6223b8083ed69432493a37d4f45b69@mail.gmail.com/
->>>
->>> Hector Martin has a bunch of Apple-specific patches downstream in the
->>> Asahi Linux kernel and has been looking for guidance on how to
->>> upstream it without any real answers:
->>> https://lore.kernel.org/linux-wireless/181af6e9-799d-b730-dc14-ee2de2541f35@marcan.st/
->>>
->>> There's also speculation that the Raspberry Pi people have downstream
->>> patches too, but I haven't been able to find anything concrete in a
->>> very brief search.
->>
->> Thanks for the research, that is helpful.
->>
->>> Finally, the Cypress / Infineon people appear to be uninterested in
->>> discussing the driver.
->>>
->>> I think it's pretty safe to say that this driver is nearly
->>> unmaintained by Broadcom, definitely unmaintained by Cypress /
->>> Infineon and Arend is unable to answer questions relating to anything
->>> beyond the code as-written.
->>>
->>> Kalle, should this driver get orphaned?
->>
->> We definitely need to consider that but let's first wait for Arend to
->> comment.
+On 10/9/2023 11:22 PM, Kalle Valo wrote:
+> From: Kalle Valo <quic_kvalo@quicinc.com>
 > 
-> Using my personal email account to comment. Broadcom has pulled away 
-> most resources from the brcm80211 drivers as there is no business 
-> interest for it and it turned into a one-fifth man show as I was granted 
-> to work one day a week on brcm80211. Nice theory but in practice other 
-> work always takes priority. So "nearly unmaintained" is no exaggeration. 
-> I probably can not meet the expectations some people in the community 
-> have regarding driver maintainers, but I can still review patch 
-> submissions although I should keep a better eye on the list to do that. 
-> It would not be my choice to abandon brcm80211, but if my contributions 
-> are considered insufficient than I will accept that fact.
+> In v6.6-rc4 with GCC 13.2 I see a new warning:
 > 
-> Ever since Infineon took over Cypress wifi business things turned quiet 
-> soon. Their website still claims brcmfmac is the driver to use. Earlier 
-> this year I did have contact with them to hear whether they were 
-> committed to the driver. At least I got an answer, but not much more 
-> than that.
+> drivers/net/wireless/ath/ath11k/debugfs.c: In function 'ath11k_debugfs_register':
+> drivers/net/wireless/ath/ath11k/debugfs.c:1597:51: error: '%d' directive output may be truncated writing between 1 and 3 bytes into a region of size 2 [-Werror=format-truncation=]
+> drivers/net/wireless/ath/ath11k/debugfs.c:1597:48: note: directive argument in the range [0, 255]
+> drivers/net/wireless/ath/ath11k/debugfs.c:1597:9: note: 'snprintf' output between 5 and 7 bytes into a destination of size 5
 > 
-
-Okay, so pragmatically, this needs a new maintainer. Would you be okay 
-with adding myself as a co-maintainer? You could leave yourself as a 
-maintainer or downgrade yourself to reviewer.
-
-We should also remove the other two Broadcom folks from the maintainers 
-list if they are effectively gone.
-
-I expect my patch submissions to be reviewed by someone (in general); if 
-we do this, that could be anyone (not just you), therefore unblocking 
-upstreaming of Apple hardware related changes.
-
- From my point of view, pragmatically, the most useful things that a 
-Broadcom employee can do to help this driver out without being an 
-outright maintainer are:
-
-- Answering questions (about firmwares, compats, hardware revisions, 
-debugging, etc.) in a reasonably timely manner
-- Testing on a wider variety of hardware
-
-If someone can at least validate that my firmware version gates and such 
-are done properly, then there's a chance we won't randomly break other 
-chips. If someone can actively test on other hardware, even better. If I 
-end up being the only one keeping the driver afloat, as I mentioned in 
-my other reply, all I can promise is decent support on chips Apple uses.
-
-- Hector
+> Increase the size of pdev_name to 10 bytes to make sure there's enough room for
+> the string. Also change the format to '%u' as ar->pdev_idx is u8.
+> 
+> Compile tested only.
+> 
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
