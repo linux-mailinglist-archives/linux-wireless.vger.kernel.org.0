@@ -2,50 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76FC97C4FE4
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 12:18:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 102D17C4FAB
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 12:09:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231468AbjJKKSI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 06:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35732 "EHLO
+        id S1346112AbjJKKJB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 06:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231948AbjJKKSG (ORCPT
+        with ESMTP id S234777AbjJKKIp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 06:18:06 -0400
+        Wed, 11 Oct 2023 06:08:45 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 294A319BE
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 03:07:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 938E6130
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 03:07:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697018866; x=1728554866;
+  t=1697018868; x=1728554868;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=rudZcrRqzLk7xoQG4/RUl5ApVruUy5Uq9djN1M6tkdo=;
-  b=LkDIQ7XaZDGHT2L0wKeLBM6SZ5zy9IvqCUJf2rMnDq7moG2bRUgt7bfc
-   SIMJR6T9YMeamoCLpfN+cOfsCS0UgULAD8BTjuowzVck+xNZTm7VUSGS+
-   TT146ocerOd9ReHRgjYugwMTj3Hr39oFqXsTAIYDLQzKwr09CdN0Fbkl/
-   JLU/egunA5QQMLE7B+Ov45soghhsGAWsgXemM2HNbd3If1jNpA4Rpra5s
-   Q4IeYMlmGJnmdNeMREiY7YZQsrZ8lEiGwLPAcyu1SYFty7kIQYhqfSr1P
-   OFnlR73ZnaTDJeW21RxbTovHMk4O7U1lI3x+3LCqFBdlIBs560EGslyxF
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="415670551"
+  bh=O6WrMWOjyycMbPSY/pHH3ZNWt5VaLRiqLFq+3uVf5p4=;
+  b=k0zbda2aCsf7KHCPYkiYWvCKaYf5Ar5wd11i9jkTjEuCU9J45jbUClwE
+   jkvd1yANQ1ISMQ/h7sBFUvh1wSnptBZtu7vD0klVKg0UJBqh6o5LKn9V7
+   Ko/gMvWTWiGiYgEabGjsuT0eqp83aGcxXOIeiGdPTytZNMKaF6rIzG/0+
+   OUj6shzJfXEx7/HJjFemM+eyfNwHlPQWl4LAoLfw5GDEp2MEx1yBuNEaN
+   YKeZI5uK7ENOCcMhiBBq+im+GAQiiil0Xs+fPzIJ5ufzlvVnz0mZcj8Wa
+   rq+Yb27N5Ku0BcWewuZk4Z+aTmRFMj5sPKFE6kc2tl6JqyMJfA3Xv77v8
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="415670564"
 X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="415670551"
+   d="scan'208";a="415670564"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 03:07:45 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 03:07:48 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="1001050236"
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="1001050248"
 X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="1001050236"
+   d="scan'208";a="1001050248"
 Received: from mzarix-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.94.125])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 03:07:44 -0700
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 03:07:46 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
+        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 01/16] wifi: iwlwifi: fw: increase fw_version string size
-Date:   Wed, 11 Oct 2023 13:07:16 +0300
-Message-Id: <20231011130030.d859c6fc4bb1.Idced2e8d63c492872edcde1a3ce2cdd6cc0f8eb7@changeid>
+Subject: [PATCH 02/16] wifi: iwlwifi: add new RF support for wifi7
+Date:   Wed, 11 Oct 2023 13:07:17 +0300
+Message-Id: <20231011130030.d902aa8cfd1b.I7c7b357ba41c00015d6c6255b45b3d17549948f0@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20231011100731.361200-1-gregory.greenman@intel.com>
 References: <20231011100731.361200-1-gregory.greenman@intel.com>
@@ -62,39 +63,83 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-In reality 64 bytes are enough to hold fw version string,
-but some compilers can complain (with W=1) that output may be
-truncated when building this string with snprintf.
-Increase the size to avoid this sort of warnings.
+Add the support for new RF based on step-id.
 
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/img.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h |  3 ++-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 14 +++++++++++---
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/img.h b/drivers/net/wireless/intel/iwlwifi/fw/img.h
-index 8d0d58d61892..96bda80632f3 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/img.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/img.h
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+index 3653a9fd9d8c..a4df67ff21ba 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
 @@ -1,6 +1,6 @@
  /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
  /*
-- * Copyright (C) 2005-2014, 2018-2021 Intel Corporation
+- * Copyright (C) 2005-2014, 2018-2022 Intel Corporation
 + * Copyright (C) 2005-2014, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
   * Copyright (C) 2016 Intel Deutschland GmbH
   */
-@@ -198,7 +198,7 @@ struct iwl_dump_exclude {
- struct iwl_fw {
- 	u32 ucode_ver;
+@@ -313,6 +313,7 @@ enum {
+ 	SILICON_C_STEP,
+ 	SILICON_D_STEP,
+ 	SILICON_E_STEP,
++	SILICON_TC_STEP = 0xe,
+ 	SILICON_Z_STEP = 0xf,
+ };
  
--	char fw_version[64];
-+	char fw_version[128];
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index c4e50f204630..3753e2ae582f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -162,6 +162,8 @@ static inline char iwl_drv_get_step(int step)
+ {
+ 	if (step == SILICON_Z_STEP)
+ 		return 'z';
++	if (step == SILICON_TC_STEP)
++		return 'a';
+ 	return 'a' + step;
+ }
  
- 	/* ucode images */
- 	struct fw_img img[IWL_UCODE_TYPE_MAX];
+@@ -178,6 +180,8 @@ const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf)
+ 
+ 	mac_step = iwl_drv_get_step(trans->hw_rev_step);
+ 
++	rf_step = iwl_drv_get_step(CSR_HW_RFID_STEP(trans->hw_rf_id));
++
+ 	switch (CSR_HW_RFID_TYPE(trans->hw_rf_id)) {
+ 	case IWL_CFG_RF_TYPE_HR1:
+ 	case IWL_CFG_RF_TYPE_HR2:
+@@ -196,7 +200,13 @@ const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf)
+ 		rf = "fm";
+ 		break;
+ 	case IWL_CFG_RF_TYPE_WH:
+-		rf = "wh";
++		if (SILICON_Z_STEP ==
++		    CSR_HW_RFID_STEP(trans->hw_rf_id)) {
++			rf = "whtc";
++			rf_step = 'a';
++		} else {
++			rf = "wh";
++		}
+ 		break;
+ 	default:
+ 		return "unknown-rf";
+@@ -204,8 +214,6 @@ const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf)
+ 
+ 	cdb = CSR_HW_RFID_IS_CDB(trans->hw_rf_id) ? "4" : "";
+ 
+-	rf_step = iwl_drv_get_step(CSR_HW_RFID_STEP(trans->hw_rf_id));
+-
+ 	scnprintf(buf, FW_NAME_PRE_BUFSIZE,
+ 		  "iwlwifi-%s-%c0-%s%s-%c0",
+ 		  trans->cfg->fw_name_mac, mac_step,
 -- 
 2.38.1
 
