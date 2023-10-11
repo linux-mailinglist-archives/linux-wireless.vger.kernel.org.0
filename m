@@ -2,179 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 959647C5290
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 13:53:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B22687C5604
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 15:59:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232126AbjJKLxl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 07:53:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43466 "EHLO
+        id S234875AbjJKN7A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 09:59:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjJKLxk (ORCPT
+        with ESMTP id S1346969AbjJKN6z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 07:53:40 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA69CA9
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 04:53:37 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39BBrPVb93997758, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 39BBrPVb93997758
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 11 Oct 2023 19:53:25 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 11 Oct 2023 19:53:25 +0800
-Received: from [127.0.1.1] (172.16.16.120) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 11 Oct
- 2023 19:53:24 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>, <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v3 6/6] wifi: rtw89: add EHT radiotap in monitor mode
-Date:   Wed, 11 Oct 2023 19:52:56 +0800
-Message-ID: <20231011115256.6121-7-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231011115256.6121-1-pkshih@realtek.com>
-References: <20231011115256.6121-1-pkshih@realtek.com>
+        Wed, 11 Oct 2023 09:58:55 -0400
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF55A4;
+        Wed, 11 Oct 2023 06:58:53 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.west.internal (Postfix) with ESMTP id 10527320097E;
+        Wed, 11 Oct 2023 09:58:49 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Wed, 11 Oct 2023 09:58:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1697032729; x=1697119129; bh=55
+        13x7CGlfvER0v0ogwIOJMgIvkS5URYby8pnUxjHR8=; b=alJF+gknS2t5bXhjAI
+        sHkdyHEbB2MitewZdRAIdFZasn477ImxMwNrXFioAbdM/U416qCeUfcxm9BpHs0R
+        M4bK/poCaK1m8vfq95p64ppRkVYwHdBThVzOoqlDaoatV6H0MTzq0Q/Z+YJBnBxu
+        YDv2opHprMua5t8BGYHezCnyj45pYOUa6JsT4cIPv5BEc2JMq7yRbui/M546V3pc
+        6bOos0XpBCVBtt36Ah2ROhXetL2mxZk5zmL2zExElh0GP9jiX+97YDngBwKnwa3D
+        ZkMh42iadXSCupDijSt9sGgSlyqJM6Y1j58N2r5CONLd6K6pJbsvugGxUBf6TeCr
+        WQ5w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1697032729; x=1697119129; bh=5513x7CGlfvER
+        0v0ogwIOJMgIvkS5URYby8pnUxjHR8=; b=POeVMESARlnmKLJfn8KdtvyPlYTG6
+        rdbHlG0otsElBsUAP6PO/EUIOBpHrZ8kJjxMELYwVJn0l7mhV+ZxwMrZoD2TVOGG
+        W9BOLCQePG/hO54QeCtPGVNj8hmIrcoJq7MgKGUjQvO2Bw8p1cs9efMozPxMylmk
+        RyBox4WkV4QfKj69yjYchYSELECrYu2RxY/AKBoU2+NH1o6AI2BeLcDwI+L3xH5S
+        YM7ttmwmYMxKWU634w9OLqrgsAuB/kaqS6rej5kLeT7JDcMfd+0jUWkMLFG5Ejxb
+        FodyPV1/T2gJPZw8QEOMkhQ9dyy6ow6r/+s9EHLC6O4givhy8YlUNaDRA==
+X-ME-Sender: <xms:GaomZbV6q8RmxQ-S8K9LBD_37CNPSDmx7xYMsq3jygiS8iwY4mkR8A>
+    <xme:GaomZTn5EyqxG0KeWEWTmKosDZheRMiW-zCyd-5-IQ4DueQYUd9FEgq5X7bAmnSEf
+    wWsIYC4XyongdeR7VM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrheekgdeikecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:GaomZXarVgL099yr9bZj1XydrRvGNIQO4m8LHvsvLkCWI_ZwZN_cLQ>
+    <xmx:GaomZWVxnobGn3E7dcVdcMlXue6aDZ_YBtwrYxdLsgUICrxM5Bsa4g>
+    <xmx:GaomZVnKtgZSpIPxtAZb4PQGA2hRFkSzTmtWobTkurdjX2sX4Vqbqg>
+    <xmx:GaomZbfIN1j-4OmLC7i9t1_m52NFOc3VoWAWXckXvId4jDJxM-b7YQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 1AA24B60089; Wed, 11 Oct 2023 09:58:48 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.120]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-Id: <08cfd4d6-d12f-4e63-8f87-12cda83fa7b3@app.fastmail.com>
+In-Reply-To: <87v8bfezcz.fsf@kernel.org>
+References: <20231009141908.1767241-1-arnd@kernel.org>
+ <20231009141908.1767241-9-arnd@kernel.org> <87v8bfezcz.fsf@kernel.org>
+Date:   Wed, 11 Oct 2023 15:58:27 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Kalle Valo" <kvalo@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>
+Cc:     "Jakub Kicinski" <kuba@kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org,
+        "Johannes Berg" <johannes@sipsolutions.net>,
+        linux-wpan@vger.kernel.org,
+        "Michael Hennerich" <michael.hennerich@analog.com>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        "Eric Dumazet" <edumazet@google.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, "Doug Brown" <doug@schmorgal.com>
+Subject: Re: [PATCH 09/10] wireless: hostap: remove unused ioctl function
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add IEEE80211_RADIOTAP_EHT and IEEE80211_RADIOTAP_EHT_USIG radiotap to
-fill basic EHT NSS, MCS, GI and bandwidth.
+On Tue, Oct 10, 2023, at 09:00, Kalle Valo wrote:
+> Arnd Bergmann <arnd@kernel.org> writes:
+>
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> The ioctl handler has no actual callers in the kernel and is useless.
+>> All the functionality should be reachable through the regualar interfaces.
+>>
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> In the title we prefer "wifi:" over "wireless:" but that's nitpicking. I
+> assume this goes via a net tree so:
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v3:
-  - add 'const' modifier to constant array, and use plain 'if' statement to
-    check its range.
----
- drivers/net/wireless/realtek/rtw89/core.c | 68 +++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/core.h |  9 ++-
- 2 files changed, 76 insertions(+), 1 deletion(-)
+Changed for v2
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 2742e6646cf1..4bfb4188de72 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1907,6 +1907,72 @@ static void rtw89_core_hw_to_sband_rate(struct ieee80211_rx_status *rx_status)
- 	rx_status->rate_idx -= 4;
- }
- 
-+static const u8 rx_status_bw_to_radiotap_eht_usig[] = {
-+	[RATE_INFO_BW_20] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_20MHZ,
-+	[RATE_INFO_BW_5] = U8_MAX,
-+	[RATE_INFO_BW_10] = U8_MAX,
-+	[RATE_INFO_BW_40] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_40MHZ,
-+	[RATE_INFO_BW_80] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_80MHZ,
-+	[RATE_INFO_BW_160] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_160MHZ,
-+	[RATE_INFO_BW_HE_RU] = U8_MAX,
-+	[RATE_INFO_BW_320] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_320MHZ_1,
-+	[RATE_INFO_BW_EHT_RU] = U8_MAX,
-+};
-+
-+static void rtw89_core_update_radiotap_eht(struct rtw89_dev *rtwdev,
-+					   struct sk_buff *skb,
-+					   struct ieee80211_rx_status *rx_status)
-+{
-+	struct ieee80211_radiotap_eht_usig *usig;
-+	struct ieee80211_radiotap_eht *eht;
-+	struct ieee80211_radiotap_tlv *tlv;
-+	int eht_len = struct_size(eht, user_info, 1);
-+	int usig_len = sizeof(*usig);
-+	int len;
-+	u8 bw;
-+
-+	len = sizeof(*tlv) + ALIGN(eht_len, 4) +
-+	      sizeof(*tlv) + ALIGN(usig_len, 4);
-+
-+	rx_status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
-+	skb_reset_mac_header(skb);
-+
-+	/* EHT */
-+	tlv = skb_push(skb, len);
-+	memset(tlv, 0, len);
-+	tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT);
-+	tlv->len = cpu_to_le16(eht_len);
-+
-+	eht = (struct ieee80211_radiotap_eht *)tlv->data;
-+	eht->known = cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_GI);
-+	eht->data[0] =
-+		le32_encode_bits(rx_status->eht.gi, IEEE80211_RADIOTAP_EHT_DATA0_GI);
-+
-+	eht->user_info[0] =
-+		cpu_to_le32(IEEE80211_RADIOTAP_EHT_USER_INFO_MCS_KNOWN |
-+			    IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_KNOWN_O);
-+	eht->user_info[0] |=
-+		le32_encode_bits(rx_status->rate_idx, IEEE80211_RADIOTAP_EHT_USER_INFO_MCS) |
-+		le32_encode_bits(rx_status->nss, IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_O);
-+
-+	/* U-SIG */
-+	tlv = (void *)tlv + sizeof(*tlv) + ALIGN(eht_len, 4);
-+	tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT_USIG);
-+	tlv->len = cpu_to_le16(usig_len);
-+
-+	if (rx_status->bw >= ARRAY_SIZE(rx_status_bw_to_radiotap_eht_usig))
-+		return;
-+
-+	bw = rx_status_bw_to_radiotap_eht_usig[rx_status->bw];
-+	if (bw == U8_MAX)
-+		return;
-+
-+	usig = (struct ieee80211_radiotap_eht_usig *)tlv->data;
-+	usig->common =
-+		le32_encode_bits(1, IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_KNOWN) |
-+		le32_encode_bits(bw, IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW);
-+}
-+
- static void rtw89_core_update_radiotap(struct rtw89_dev *rtwdev,
- 				       struct sk_buff *skb,
- 				       struct ieee80211_rx_status *rx_status)
-@@ -1925,6 +1991,8 @@ static void rtw89_core_update_radiotap(struct rtw89_dev *rtwdev,
- 		rx_status->flag |= RX_FLAG_RADIOTAP_HE;
- 		he = skb_push(skb, sizeof(*he));
- 		*he = known_he;
-+	} else if (rx_status->encoding == RX_ENC_EHT) {
-+		rtw89_core_update_radiotap_eht(rtwdev, skb, rx_status);
- 	}
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 8c0dfd73031e..d5272a82ff8b 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -37,7 +37,14 @@ extern const struct ieee80211_ops rtw89_ops;
- #define RSSI_FACTOR 1
- #define RTW89_RSSI_RAW_TO_DBM(rssi) ((s8)((rssi) >> RSSI_FACTOR) - MAX_RSSI)
- #define RTW89_TX_DIV_RSSI_RAW_TH (2 << RSSI_FACTOR)
--#define RTW89_RADIOTAP_ROOM ALIGN(sizeof(struct ieee80211_radiotap_he), 64)
-+#define RTW89_RADIOTAP_ROOM_HE sizeof(struct ieee80211_radiotap_he)
-+#define RTW89_RADIOTAP_ROOM_EHT \
-+	(sizeof(struct ieee80211_radiotap_tlv) + \
-+	 ALIGN(struct_size((struct ieee80211_radiotap_eht *)0, user_info, 1), 4) + \
-+	 sizeof(struct ieee80211_radiotap_tlv) + \
-+	 ALIGN(sizeof(struct ieee80211_radiotap_eht_usig), 4))
-+#define RTW89_RADIOTAP_ROOM \
-+	ALIGN(max(RTW89_RADIOTAP_ROOM_HE, RTW89_RADIOTAP_ROOM_EHT), 64)
- 
- #define RTW89_HTC_MASK_VARIANT GENMASK(1, 0)
- #define RTW89_HTC_VARIANT_HE 3
--- 
-2.25.1
+> Acked-by: Kalle Valo <kvalo@kernel.org>
 
+Thanks
+
+> Let me know if I should take this to wireless-next instead.
+
+I think it's better to keep the series together and merge it
+through net-next directly, since the last patch depends on all
+the ones before it.
+
+     Arnd
