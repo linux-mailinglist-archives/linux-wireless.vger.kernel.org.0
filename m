@@ -2,149 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D9F97C5E4B
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 22:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4FED7C5F0D
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 23:22:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376384AbjJKUXz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 16:23:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51122 "EHLO
+        id S233496AbjJKVWL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 17:22:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233358AbjJKUXw (ORCPT
+        with ESMTP id S233390AbjJKVWK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 16:23:52 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A31EC91;
-        Wed, 11 Oct 2023 13:23:50 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id E5CC85C01E9;
-        Wed, 11 Oct 2023 16:23:49 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 11 Oct 2023 16:23:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1697055829; x=1697142229; bh=V4
-        0Dm0ERM/8BGJO0YKNSpWXn7zZJAk8XtXCkCcVqzY0=; b=hRGi7XOVwKS8e7rsjX
-        NZ6/5yOeiyC76EKt+OkAt5JSsR8lKu0cKPnWEwviGzRpAPg9vz9zjTwo/Aw7F4ad
-        0u2k0+hJcJXv99oh5fHhE7yDXK9r4vuJPz+sl5vfSwM1u+rgjhQ/JfvtmYcmOmaT
-        HAGeRW240ha9dPeYqjSeao8CBZDiHocAgOZfmkOTnkw0M+Ep8Z5iM8fifK2NFSfX
-        f9ZWw964PHSlp1+XfZLYV/n/S89Fv25t0GWjU4WuYB7oikxuQPCoqOVaYd6YyxON
-        hkKilbsWjingOG1O4HZ2BzdUva4896xiuRoOYrHv/wMEWrIPVmJJAZfj+T6vSHYH
-        3hPA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1697055829; x=1697142229; bh=V40Dm0ERM/8BG
-        JO0YKNSpWXn7zZJAk8XtXCkCcVqzY0=; b=ToQqibCWxH2crMF6jSlJoeGHkiwFh
-        5aWhkEs/wTrIa0c+UMlXxmhJTB/DBv+R51hpiTDknZghHzF//SdEQ6Sw+wXbaRQG
-        UzfXIzvwgbwWlq0a7/vKJ+bUPGCkz1arJ6QpfaXrL36hB9kWznLt+kHNU4C88bAr
-        ij1ckQ8ZpbHUrWerSJJnXg64qfAZ8UokaMvXalHD4dQ3C4R7nfoMUh086XF3J91/
-        itkhbQjT7AvuIE7w8It9M8knuO6I7E+c/L/VbBCNT3mAeFverH9InB8YCd9+wQkn
-        1DgWdFY68aLZwkALqM9THAa9R3ayOe5aBCGJrQR4xT1DAPzvrSEeQD1dQ==
-X-ME-Sender: <xms:VAQnZVz-uRX71Rud-fLOB6wYIQ0lEsuThZELWmOfmQM0SkkUJZY9aw>
-    <xme:VAQnZVQRfuexdbc7Zh6RqapMppPiii2ABngpFOZ-BYyUqgJ_4AA6gU3fjhrMehmCi
-    KD0PV5GhS--mPDPC1w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrheekgddugeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:VQQnZfUwD51L3NCq0ZMTAZcAaGiKGjQQPBq3deOJ8SH9XCYrm0Heeg>
-    <xmx:VQQnZXhiM2KBuOkakp-pI0uI9zq7b2-cTxKjbEcNuMh-pEQ5pOSQtA>
-    <xmx:VQQnZXCBPA3e8nZOW1RUDZ5B2Xed3zWTIf0moJcUQdLM6FvfGFKx6A>
-    <xmx:VQQnZb7bOtyKcfR8jX-Rb83RjdSHleoh8AvL-xr7hpK-066QMqUBzw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id CCF0EB60089; Wed, 11 Oct 2023 16:23:48 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
+        Wed, 11 Oct 2023 17:22:10 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007C490;
+        Wed, 11 Oct 2023 14:22:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCE2C433C8;
+        Wed, 11 Oct 2023 21:22:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697059328;
+        bh=qpNUqw05PLc7b1md/614fr1Zk6arYszd1WK9gMvl0Os=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=ghyoFWHuCUoYAQQVImwLJec5By6IY8ldZU+IpgLhM86gHWNMMGsDK4I3bZN3O9HN6
+         DZ662abX5LzoV0AuEi9+5Ki6vZZQBQwOyiKdPRI4rA2aI7uLPzLKnygGYsAASzsGrz
+         QKdQ9RXXuApQ6HirgahUGTdW+uLPDMBSzhJdQjS18i+uHHpiCtlwWFOhjYSCOugggW
+         Duv0TMGaORQs/RXdvsCl/MbpQ76sczbG4Y1+Ext0ZSAafYpDZUgO9tYsFTZwJorZnI
+         X29tvX4dE26f0/NdjlsksaHY7OVFRWeD2ft2MA6pgB+n+l9lv7LOpuKtJ8H4lcIsBg
+         tvwjDEZAHbqog==
+Date:   Wed, 11 Oct 2023 16:22:06 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc:     linux-pci@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-bluetooth@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 03/13] PCI/ASPM: Disable ASPM when driver requests it
+Message-ID: <20231011212206.GA1043224@bhelgaas>
 MIME-Version: 1.0
-Message-Id: <db98d9ac-7650-4a72-8eb9-4def1f17ea0d@app.fastmail.com>
-In-Reply-To: <da777a72-55d1-4ee3-91c8-30afe7659f54@gmail.com>
-References: <20231010155444.858483-1-arnd@kernel.org>
- <da777a72-55d1-4ee3-91c8-30afe7659f54@gmail.com>
-Date:   Wed, 11 Oct 2023 22:22:32 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Philipp Hortmann" <philipp.g.hortmann@gmail.com>,
-        "Arnd Bergmann" <arnd@kernel.org>, "Kalle Valo" <kvalo@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc:     "Nicolas Ferre" <nicolas.ferre@microchip.com>,
-        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
-        "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
-        "Jakub Kicinski" <kuba@kernel.org>, "Pavel Machek" <pavel@ucw.cz>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Larry Finger" <Larry.Finger@lwfinger.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230918131103.24119-4-ilpo.jarvinen@linux.intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 11, 2023, at 20:13, Philipp Hortmann wrote:
-> On 10/10/23 17:27, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de> While looking at the old drivers 
->> using the obsolete .ndo_do_ioctl() callback, I found a number of network 
->> drivers that are especially obsolete, in particular for 802.11b 
->> (11Mbit/s) or even older wireless networks, using non-busmaster 
->> ISA/PCMCIA style bus interfaces, and using the legacy wireless extension 
->> ioctls rather than the netlink interfaces that were meant to replace 
->> them in 2007. All of these drivers are obsolete or orphaned. We had 
->> previously discussed this topic, but nobody ever moved the files, so I 
->> now went through the list to my best knowledge. These are the drivers 
->> that I would classify as "probably unused" by now:
->
-> I found a USB WLAN Stick with a rtl8192u. I got it last Saturday and 
-> found out that the firmware is missing in my ubuntu 20.04. I found it on 
-> the web and fixed it. When I started the driver my computer crashed. The 
-> missing part was: priv->priv_wq = alloc_workqueue("priv_wq", 0, 0); 
-> Fixing this the next error was a network = kzalloc(sizeof(*network), 
-> GFP_KERNEL); in wrong context with leads to a crash of my computer. 
-> Fixing this leads to another issue which lets my computer crash.
->
-> For me the firmware of rtl8192u was intentionally missing because of the 
-> issues with the driver.
->
-> What this has to do with your question?
-> Can we check for missing firmware in main distributions to know which 
-> drivers are considered to be old and unused?
+On Mon, Sep 18, 2023 at 04:10:53PM +0300, Ilpo Järvinen wrote:
+> PCI core/ASPM service driver allows controlling ASPM state through
+> pci_disable_link_state() and pci_enable_link_state() API. It was
+> decided earlier (see the Link below), to not allow ASPM changes when OS
+> does not have control over it but only log a warning about the problem
+> (commit 2add0ec14c25 ("PCI/ASPM: Warn when driver asks to disable ASPM,
+> but we can't do it")). Similarly, if ASPM is not enabled through
+> config, ASPM cannot be disabled.
+> ...
 
-Nice, thanks so much for testing.
+> +#ifndef CONFIG_PCIEASPM
+> +/*
+> + * Always disable ASPM when requested, even when CONFIG_PCIEASPM is
+> + * not build to avoid drivers adding code to do it on their own
+> + * which caused issues when core does not know about the out-of-band
+> + * ASPM state changes.
+> + */
+> +int pci_disable_link_state_locked(struct pci_dev *pdev, int state)
+> +{
+> +	struct pci_dev *parent = pdev->bus->self;
+> +	struct pci_bus *linkbus = pdev->bus;
+> +	struct pci_dev *child;
+> +	u16 aspm_enabled, linkctl;
+> +	int ret;
+> +
+> +	if (!parent)
+> +		return -ENODEV;
 
-I see the two bugs were introduced in 2016 by commit 1761a85c3bed3
-("staging: rtl8192u: Remove create_workqueue()") and in 2021 by
-commit 061e390b7c87f ("staging: rtl8192u: ieee80211_softmac: Move a
-large data struct onto the heap"), so it's been broken for a while.
+P.S. I think this should look the same to the user (same dmesg log and
+same taint, if we do that) as the CONFIG_PCIEASPM=y case.
 
-I also checked rtl8192e for the same bugs, but that driver
-managed to avoid this even though it had the same code
-originally.
+> +	ret = pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &linkctl);
+> +	if (ret != PCIBIOS_SUCCESSFUL)
+> +		return pcibios_err_to_errno(ret);
+> +	aspm_enabled = linkctl & PCI_EXP_LNKCTL_ASPMC;
+> +
+> +	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &linkctl);
+> +	if (ret != PCIBIOS_SUCCESSFUL)
+> +		return pcibios_err_to_errno(ret);
+> +	aspm_enabled |= linkctl & PCI_EXP_LNKCTL_ASPMC;
+> +
+> +	/* If no states need to be disabled, don't touch LNKCTL */
+> +	if (state & aspm_enabled)
+> +		return 0;
+> +
+> +	ret = pcie_capability_clear_word(parent, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_ASPMC);
+> +	if (ret != PCIBIOS_SUCCESSFUL)
+> +		return pcibios_err_to_errno(ret);
+> +	list_for_each_entry(child, &linkbus->devices, bus_list)
+> +		pcie_capability_clear_word(child, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_ASPMC);
 
-Regarding the firmware files, I found:
+This disables *all* ASPM states, unlike the version when
+CONFIG_PCIEASPM is enabled.  I suppose there's a reason, and maybe a
+comment could elaborate on it?
 
-- rtl8192e, rtl7812 and rtl8723bs are all in the linux-firmware
-  package, unlike rtl8192u
+When CONFIG_PCIEASPM is not enabled, I don't think we actively
+*disable* ASPM in the hardware; we just leave it as-is, so firmware
+might have left it enabled.
 
-- atmel firmware is not in upstream linux-firmware, but Debian
-  has an atmel-firmware package for it
+> +
+> +	return 0;
+> +}
 
-- I could not find a Debian package for ks7010sd.rom
+Conceptually it seems like the LNKCTL updates here should be the same
+whether CONFIG_PCIEASPM is enabled or not (subject to the question
+above).
 
-- vt6656/vntwusb.fw is in firmware-misc-nonfree
+When CONFIG_PCIEASPM is enabled, we might need to do more stuff, but
+it seems like the core should be the same.
 
-- orinoco has multiple firmware files, but only agere_sta_fw.bin
-  and agere_ap_fw.bin are in Debian and linux-firmware.
-
-     Arnd
+Bjorn
