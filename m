@@ -2,60 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 110C47C4FC0
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 12:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BA087C4FFF
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 12:23:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346388AbjJKKKD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 06:10:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39786 "EHLO
+        id S231556AbjJKKX3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 06:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234765AbjJKKJj (ORCPT
+        with ESMTP id S231468AbjJKKX3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 06:09:39 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E42268C
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 03:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697018900; x=1728554900;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6avcSBc2nWsyXIHPhseJhtxWUNyqJX6lpDl/0cR2N7w=;
-  b=RJa+BBqjGJ9gYTqJHgmZ7awffhdint3JWPg1lwbQqE9wWkUgeHSR4+rm
-   /+RrjTooEDlgYDdIg68OtqGZFC3j3JmVE0Zf2DD/alnRDTLtHxJhnvhvz
-   OQbBqPXQS96o64LgMptRqDqEchr1S4eZyvraje2RUVjqXOgg8rKBbi2oL
-   v/NriK3EPmg0sqVwvWmuEg0fmdQgq6aCw46iNe8nvOWeJ/AvhvoyPxSQo
-   Vqc510DkCQcT8d36ioLQ+ui92jke2/pQstIMnvO98anvmgtsiBxDaNE+j
-   qz2MPN9N8YkQQfGnOOBQKlvkKpH2/WBsgsYoWKX4NwR8PJG2s3J4yXPaV
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="415670709"
-X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="415670709"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 03:08:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="1001050339"
-X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="1001050339"
-Received: from mzarix-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.94.125])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 03:08:18 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 16/16] wifi: iwlwifi: add support for activating UNII-1 in WW via BIOS
-Date:   Wed, 11 Oct 2023 13:07:31 +0300
-Message-Id: <20231011130030.86d4ad178042.Ief40acc08b5482ff147fd17e74e36f1933e43def@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20231011100731.361200-1-gregory.greenman@intel.com>
-References: <20231011100731.361200-1-gregory.greenman@intel.com>
+        Wed, 11 Oct 2023 06:23:29 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8450092;
+        Wed, 11 Oct 2023 03:23:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A62C433C8;
+        Wed, 11 Oct 2023 10:23:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697019807;
+        bh=uzaVQqLOGJxWr+e1UKs6LqUdqccor/QwHqpTPeLLIjY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=HR8fQApm8u948mV5ib/wShytLG4hsN8EqV9zfYTtJCYGcqDBF3rUzwHyc4F5UCe4E
+         4sFTQcJ+sE15ZKutBAKB7M1Hkh7Ux1FGD6sTB8eRBKiIsFcn/I7RpZ+uL2NWvJFtZY
+         ZqjZ30vP3ww5L5ngeju14Yg4i+a/84B40blyKwNNBwbUvm3hHnTTnMJWU8MHdoS8Hx
+         EmBFUTKtEeZfULzqwOgxPcYEasB+uHE+E0fUito+FzWQMehuNlcRKqqQRwBYvDEr6+
+         DBuCi6AYo4uYdovuZTMydGZ0DNug3AA4JGqtcrvI/ydsZWfUXFhmQZWcBdR+cp/mEx
+         MYLX3cKc8sJpA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Neal Gompa <neal@gompa.dev>
+Cc:     Hector Martin <marcan@marcan.st>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com,
+        brcm80211-dev-list.pdl@broadcom.com,
+        Asahi Linux <asahi@lists.linux.dev>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Julian Calaby <julian.calaby@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Phil Elwell <phil@raspberrypi.org>
+Subject: Re: On brcm80211 maintenance and support
+References: <6f78e624-62ee-3ae5-1db4-a0411566def8@yandex.ru>
+        <CAGRGNgU7aySyUny9aG_+wXiKJ7j1weosa-rZDY4_WAXbq-3ABg@mail.gmail.com>
+        <87ttr454bh.fsf@kernel.org>
+        <3c5a3e7a-b332-4a77-51ba-bed3cad1e79f@marcan.st>
+        <e1ee4d76-f717-a67c-8099-7b91192ba1ca@yandex.ru>
+        <e470902a-35eb-9bb4-7a9e-167f985c98bb@marcan.st>
+        <CAEg-Je-mpcrEoM_nD3_8A=gZhdWpn3hxfGZNEfGRNupGwRdetw@mail.gmail.com>
+Date:   Wed, 11 Oct 2023 13:23:22 +0300
+In-Reply-To: <CAEg-Je-mpcrEoM_nD3_8A=gZhdWpn3hxfGZNEfGRNupGwRdetw@mail.gmail.com>
+        (Neal Gompa's message of "Tue, 10 Oct 2023 10:52:56 -0400")
+Message-ID: <87edi14fvp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,104 +69,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Neal Gompa <neal@gompa.dev> writes:
 
-There is a requirement from OEMs to support a new bit in DSM function 8,
-which will indicate that this device is an indoor one, and that it
-should activate UNII-1 (5.2GHz) sub band in the World Wide Geo Profile.
-Add support for this by reading this bit from BIOS and sending it to the
-FW.
+> On Sat, Oct 7, 2023 at 8:51=E2=80=AFAM Hector Martin <marcan@marcan.st> w=
+rote:
+>
+>>
+>> On 07/10/2023 00.48, Dmitry Antipov wrote:
+>> > On 10/6/23 18:34, Hector Martin wrote:
+>> >
+>> >> For better or worse, if nobody else does, I'm willing to sign up to
+>> >> maintain the chips shipping on Apple ARM64 machines (i.e. BCM4378,
+>> >> BCM4387, BCM4388 - that last one I have bringup for downstream, just =
+got
+>> >> it done this week) and partially BCM4377 as a bonus (since I have acc=
+ess
+>> >> to an older Intel Mac with that one, and already did bringup for it,
+>> >> though my access is sporadic). I'm already playing part time maintain=
+er
+>> >> anyway (other folks have already sent us patches I'll have to upstrea=
+m),
+>> >> and we need this driver to keep working and continue to support new c=
+hips.
+>> >
+>> > Good news. Would you capable to consider some generic (not hooked to a=
+ny
+>> > particular hardware) things like [1] ?
+>> >
+>> > [1]
+>> > https://lore.kernel.org/linux-wireless/20230703162458.155942-1-dmantip=
+ov@yandex.ru/
+>> >
+>>
+>> Sure, I've done cleanup type stuff myself too.
+>>
+>
+> Can we please get this done so that the pile of Broadcom patches can
+> actually start landing again? It's been frustrating watching patch
+> submissions be ignored for over a year now. At least add Hector as a
+> co-maintainer and allow him to land stuff people have been using
+> outside to get Broadcom Wi-Fi to *work*.
+>
+> Having stuff sit on the pile and be *ignored* is frustrating for
+> contributors and users, and massively disincentivizes people from
+> working in upstream Linux.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- .../net/wireless/intel/iwlwifi/fw/api/nvm-reg.h | 17 +++++++++++++----
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c     | 14 +++++++++-----
- 2 files changed, 22 insertions(+), 9 deletions(-)
+Your email reminds me of this comic:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-index d1fede962573..0fa88ee76477 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-@@ -605,6 +605,7 @@ struct iwl_lari_config_change_cmd_v6 {
- 
- /**
-  * struct iwl_lari_config_change_cmd_v7 - change LARI configuration
-+ * This structure is used also for lari cmd version 8.
-  * @config_bitmap: Bitmap of the config commands. Each bit will trigger a
-  *     different predefined FW config operation.
-  * @oem_uhb_allow_bitmap: Bitmap of UHB enabled MCC sets.
-@@ -614,9 +615,12 @@ struct iwl_lari_config_change_cmd_v6 {
-  * @oem_unii4_allow_bitmap: Bitmap of unii4 allowed MCCs.There are two bits
-  *     per country, one to indicate whether to override and the other to
-  *     indicate allow/disallow unii4 channels.
-- * @chan_state_active_bitmap: Bitmap for overriding channel state to active.
-- *     Each bit represents a country or region to activate, according to the
-- *     BIOS definitions.
-+ * @chan_state_active_bitmap: Bitmap to enable different bands per country
-+ *     or region.
-+ *     Each bit represents a country or region, and a band to activate
-+ *     according to the BIOS definitions.
-+ *     For LARI cmd version 7 - bits 0:3 are supported.
-+ *     For LARI cmd version 8 - bits 0:4 are supported.
-  * @force_disable_channels_bitmap: Bitmap of disabled bands/channels.
-  *     Each bit represents a set of channels in a specific band that should be
-  *     disabled
-@@ -631,7 +635,12 @@ struct iwl_lari_config_change_cmd_v7 {
- 	__le32 chan_state_active_bitmap;
- 	__le32 force_disable_channels_bitmap;
- 	__le32 edt_bitmap;
--} __packed; /* LARI_CHANGE_CONF_CMD_S_VER_7 */
-+} __packed;
-+/* LARI_CHANGE_CONF_CMD_S_VER_7 */
-+/* LARI_CHANGE_CONF_CMD_S_VER_8 */
-+
-+/* Activate UNII-1 (5.2GHz) for World Wide */
-+#define ACTIVATE_5G2_IN_WW_MASK	BIT(4)
- 
- /**
-  * struct iwl_pnvm_init_complete_ntfy - PNVM initialization complete
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index f04f85320133..103233c0f38f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1233,6 +1233,9 @@ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
- 	int ret;
- 	u32 value;
- 	struct iwl_lari_config_change_cmd_v7 cmd = {};
-+	u8 cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw,
-+					   WIDE_ID(REGULATORY_AND_NVM_GROUP,
-+						   LARI_CONFIG_CHANGE), 1);
- 
- 	cmd.config_bitmap = iwl_acpi_get_lari_config_bitmap(&mvm->fwrt);
- 
-@@ -1250,8 +1253,11 @@ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
- 	ret = iwl_acpi_get_dsm_u32(mvm->fwrt.dev, 0,
- 				   DSM_FUNC_ACTIVATE_CHANNEL,
- 				   &iwl_guid, &value);
--	if (!ret)
-+	if (!ret) {
-+		if (cmd_ver < 8)
-+			value &= ~ACTIVATE_5G2_IN_WW_MASK;
- 		cmd.chan_state_active_bitmap = cpu_to_le32(value);
-+	}
- 
- 	ret = iwl_acpi_get_dsm_u32(mvm->fwrt.dev, 0,
- 				   DSM_FUNC_ENABLE_6E,
-@@ -1279,11 +1285,9 @@ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
- 	    cmd.force_disable_channels_bitmap ||
- 	    cmd.edt_bitmap) {
- 		size_t cmd_size;
--		u8 cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw,
--						   WIDE_ID(REGULATORY_AND_NVM_GROUP,
--							   LARI_CONFIG_CHANGE),
--						   1);
-+
- 		switch (cmd_ver) {
-+		case 8:
- 		case 7:
- 			cmd_size = sizeof(struct iwl_lari_config_change_cmd_v7);
- 			break;
--- 
-2.38.1
+https://xkcd.com/2347/
 
+In the last few years we seem to be getting more of these "Work faster!"
+emails and honestly it's getting frustrating for us maintainers. If
+Linux wireless is important for you then help us! You can review
+patches, run tests on real hardware, write hwsim test cases[1], fix
+compiler warnings[2] etc. to help us maintainers and speed up
+development. There's so much to do and while you gain experience on the
+wireless development you can help even more.
+
+Also take it into account that it's not just simple to "take patches"
+and be done with it. There are high quality requirements, the code needs
+to have no compiler warnings and must not cause any regressions in
+existing setups. That's not easy at all, especially as our hardware
+testing is basically limited to few the most active drivers. And let
+alone there are very exotic hardware out there and it's impossible to
+test all of them.
+
+If you have patches you want to submit to linux-wireless: please read
+carefully our documentation (starting from the wiki link below) and then
+go to the main Linux documentation[3]. Once you have a good
+understanding how we prefer patches to be submitted, submit a patch. But
+I always recommend starting from something small, taking baby steps and
+learning from the feedback. This gives the best chances of patches being
+accepted.
+
+[1] https://lore.kernel.org/linux-wireless/ac1f3d9b81dbca244bdc8262e9d2ee44=
+220f78c1.camel@sipsolutions.net/
+
+[2] https://lore.kernel.org/linux-wireless/87fs2k5l1a.fsf@kernel.org/
+
+[3] https://docs.kernel.org/
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
