@@ -2,114 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 371BF7C4B0E
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 08:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A46C47C4B42
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 09:09:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344641AbjJKG7O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 02:59:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35866 "EHLO
+        id S1344561AbjJKHJN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 03:09:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344499AbjJKG7M (ORCPT
+        with ESMTP id S1343997AbjJKHJM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 02:59:12 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEFA9C9;
-        Tue, 10 Oct 2023 23:59:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=4M6imKxtdJE19FbvYIuupVV35F4/3W3m3pR3DRZhbLQ=;
-        t=1697007550; x=1698217150; b=UWDpGBg1tsJMhyNGX8kCz0x1YNEUguz/lI4Ub5xE1fkfaiF
-        yM2CuujxCdev4q1uyjXHH2YGIK3JAaNJWSm2uUxmssb6gMKe6ruzMiVIejk0p2PwVOzl3kkhM+xRm
-        8Z8YN5+fVwHMM+KhpFtYHqPMhxPZsc2DfqCpkdkayzcrl4tnz5eXbYzOjmyGbZweDx/2JUWHLVEjY
-        fSC4vapGP+0Unkgj2x8wvclwSbvA9kklJeDQP14Ubff7VZWX2C5d7pFvZGvSLuBinE8YR2iHHr3M/
-        aegy5v9RJGndnGZYKi6AKSTbhakiMvmV+WZH0b2IMetzojIGO8UqkE0JJAt+bmkA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.97-RC1)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qqTBR-00000001d2I-1HSW;
-        Wed, 11 Oct 2023 08:59:05 +0200
-Message-ID: <844b47b618a2ef91f6dcfe2cb88ccd92ad278a6a.camel@sipsolutions.net>
-Subject: Re: [syzbot] [wireless?] [net?] memory leak in ieee80211_add_key
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     syzbot <syzbot+c7f9b4282ce793ea2456@syzkaller.appspotmail.com>,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Date:   Wed, 11 Oct 2023 08:59:04 +0200
-In-Reply-To: <000000000000230b04060765c8d0@google.com>
-References: <000000000000230b04060765c8d0@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        Wed, 11 Oct 2023 03:09:12 -0400
+Received: from smtpcmd11128.aruba.it (smtpcmd11128.aruba.it [62.149.156.128])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155839B
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 00:09:07 -0700 (PDT)
+Received: from smtpclient.apple ([178.197.207.108])
+        by Aruba Outgoing Smtp  with ESMTPA
+        id qTL5qhUPwT2S6qTL5qdYwG; Wed, 11 Oct 2023 09:09:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+        t=1697008145; bh=OFZaDkGYXLAqctRIWUHK2zLsfn3fVaLLoVZLlGB7ECs=;
+        h=Content-Type:Mime-Version:Subject:From:Date:To;
+        b=gSITyVIPmvPqIY+TI/ONWy67LBXZJoWfIYTOxHdmsrkexV5uF3oHAFAJWUwRfNUex
+         j73xgyR6znKwSVHy1RAp9pRRozrw88QIOVSnCx0pnZ308W3zN7bQKPTIpFDOUKF/yU
+         wy/ycug6rFPjx4esbpCrQuR8jY1CtwpoeH++e96ag2voR6rjA+ImmPhaOMdbGarIuu
+         /8HtmJ8YEXI4okreyZ1nlUj40sCcw+IyLVSEhygfb8IUnK+Cri7sBnyzXdB0cgYD3f
+         YF44wNUfGmNBsyl/LWOIegybCxd43Kb4G3qYzngFfYyBtApVWgJUahjCQSTgDuN2ry
+         n+AXx1jYXy87A==
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.15\))
+Subject: Re: [PATCH 01/10] appletalk: remove localtalk and ppp support
+From:   Rodolfo Zitellini <rwz@xhero.org>
+In-Reply-To: <2d325867-95c9-4bff-8f24-9083c730d7ba@app.fastmail.com>
+Date:   Wed, 11 Oct 2023 09:09:02 +0200
+Cc:     Arnd Bergmann <arnd@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wpan@vger.kernel.org,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org, Doug Brown <doug@schmorgal.com>
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SORTED_RECIPS,SPF_HELO_PASS,
-        SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Message-Id: <D4934680-DFB5-471F-893F-32FEA9A6C26C@xhero.org>
+References: <20231009141908.1767241-1-arnd@kernel.org>
+ <790BA488-B6F6-41ED-96EF-2089EF1C043B@xhero.org>
+ <3cb4bb96-1651-4179-9c32-507937282d7d@app.fastmail.com>
+ <DE61EEA5-D560-40B6-8F4D-22F299AC61ED@xhero.org>
+ <2d325867-95c9-4bff-8f24-9083c730d7ba@app.fastmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+X-Mailer: Apple Mail (2.3654.120.0.1.15)
+X-CMAE-Envelope: MS4xfJ+NY3qkgFTiuA0L32HFj+5woru5XqLJ2Z2A2TqBSyNMJjn9LTpk+PwA/TopQdGSgZemVGvpmWUkrlezKQaaSorGUs9nrzbOLTMBAdAjKxcCKnQ07IS3
+ MjQ6AI+8VVwJBvQpEn3Xv82MRQiQmMkCGgXJ19Y7pPt0j21usz3a1MYa4c7pNjY0/woBJG3IAUohLs0BK1DVJo+2DDCNWeZhjrqBgXEzJeKtiuXAEusogHqk
+ Kv/XrrLNv82hS8KstVy59xpwj+1mUKhMvH4JdRDUFsxdVUFBcvqcL0WRsGhtnfzcCdyA/TygYOtuOVrl6o5UlSbzo0ebTHp3Y8W0PaKbEdOsGLlpnixo4bm7
+ KgcsyGX1T/poBUvWCUxFJPJ1fPYcC0GUM2BgGPYOuH7rm4lf6GntqES+VwZNZbwhoyq74t4PC/Pz1vtF1pC9eTeJm1utj9fotl8OGUQhd3CLuHGAGnMNwOIe
+ xBDzmq8bC0rDCVKWXr26+qe3YPQHq1JbDi2yYPEerMcJigv+JZLrzidZ51bE2WiqMsfJG8guomcqd2+GcBgf6rxC/SYB7kx5sM1LnUAl8lhu4h0bEIs+zk4N
+ xaQHjZItQCeMyU264BiSV9NbEwikOv9u7uR7tnhC9x80EA==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-10-10 at 17:19 -0700, syzbot wrote:
-> Hello,
->=20
-> syzbot found the following issue on:
->=20
-> HEAD commit:    af95dc6fdc25 Merge tag 'pci-v6.6-fixes-2' of git://git.ke=
-r..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=3D111f914168000=
-0
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D92fc678f64486=
-a09
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dc7f9b4282ce793e=
-a2456
-> compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for D=
-ebian) 2.40
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D12874a7e680=
-000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D17eba91168000=
-0
->=20
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/8bc195198bd8/dis=
-k-af95dc6f.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/769216d795c4/vmlinu=
-x-af95dc6f.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/8ceb9e44a618/b=
-zImage-af95dc6f.xz
->=20
-> IMPORTANT: if you fix the issue, please add the following tag to the comm=
-it:
-> Reported-by: syzbot+c7f9b4282ce793ea2456@syzkaller.appspotmail.com
->=20
-> executing program
-> executing program
-> BUG: memory leak
-> unreferenced object 0xffff8881419b3000 (size 1024):
->   comm "syz-executor294", pid 5023, jiffies 4294944772 (age 13.090s)
->   hex dump (first 32 bytes):
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 18 30 9b 41 81 88 ff ff  .........0.A....
->   backtrace:
->     [<ffffffff8157491b>] __do_kmalloc_node mm/slab_common.c:1022 [inline]
->     [<ffffffff8157491b>] __kmalloc+0x4b/0x150 mm/slab_common.c:1036
->     [<ffffffff848575dc>] kmalloc include/linux/slab.h:603 [inline]
->     [<ffffffff848575dc>] kzalloc include/linux/slab.h:720 [inline]
->     [<ffffffff848575dc>] ieee80211_key_alloc+0x5c/0x590 net/mac80211/key.=
-c:603
->     [<ffffffff8482b0d2>] ieee80211_add_key+0x162/0x540 net/mac80211/cfg.c=
-:500
 
-I think already fixed by
-https://patchwork.kernel.org/project/linux-wireless/patch/20231005210917.13=
-977-2-johannes@sipsolutions.net/
-though the patch isn't in the tree yet - will take care of it later
-today (I hope).
 
-johannes
+> Il giorno 10 ott 2023, alle ore 10:15, Arnd Bergmann <arnd@arndb.de> =
+ha scritto:
+>=20
+> On Tue, Oct 10, 2023, at 09:10, Rodolfo Zitellini wrote:
+>>> Il giorno 9 ott 2023, alle ore 19:29, Arnd Bergmann <arnd@arndb.de> =
+ha scritto:
+>>> On Mon, Oct 9, 2023, at 18:49, Rodolfo Zitellini wrote:
+>>> I can see a few ways this could work out:
+>>>=20
+>>> - add a custom callback pointer to struct atalk_iface to
+>>> get and set the address for phase1 probing instead of going
+>>> through the ioctl
+>>=20
+>> This was my initial thought, at least for the moment, mostly to keep=20=
+
+>> netatalk happy and make sure I don=E2=80=99t break other stuff that =
+makes=20
+>> assumptions on how the address probing worked. There are other bits I=20=
+
+>> would like to improve, for example tcpdump (which parses correctly=20
+>> appetalk packets!) is broken in the current implementation.
+>>=20
+>>> - rewrite the probing logic in aarp.c more widely, and improve
+>>> the userspace interface in the process by introducing a netlink
+>>> interface
+>>=20
+>> This is sorta the =E2=80=9Csecond step=E2=80=9D I was planning, I =
+think the logic for=20
+>> probing could be redesigned and simplified (it also does not work =
+100%=20
+>> correctly), and it could be a good chance to improve the interface =
+with=20
+>> netatalk too.
+>=20
+> Ok, I've adapted my patch now to not actually drop the
+> localtalk code for now, and sent that out, I hope that works
+> for you. Even if we go with the v1 patch that removes it all,
+> you could just as well start with a revert of my patch when
+> you add your driver, so in the end it shouldn't make much
+> of a difference.
+
+Thank you very much! I will try to make my patch ready to be submitted =
+soon, and I will add the proper reverts if needed.
+
+>>> - Move your entire driver into userspace and go to the kernel
+>>> using tun/tap. This has the added benefit of avoiding a lot
+>>> of the complexity of the tty line discipline code you have.
+>>=20
+>> We had some discussion too if to just make the lt an userspace stack, =
+I=20
+>> personally like how it is currently implemented because existing code=20=
+
+>> can run basically without modification.
+>>=20
+>> I would propose at this stage to change the TashTalk driver to remove=20=
+
+>> ndo_do_ioctl and to use a custom callback, if this ok.
+>=20
+> It looks like you still need a custom userspace tool to set up
+> the uart for your new driver, so my feeling would be that having a
+> userspace bridge to implement the localtalk/uart to ethertalk/tap
+> driver would actually be nicer for both usability and maintenance.
+>=20
+> It's not something we need to decide now though, and is up to
+> you in the end.
+
+I will experiment with this too, as it will require a bit of work to =
+morph localtalk packets to ethertalk/aarp ones, and the code in the =
+kernel has some specialized bits for localtalk here and there.
+
+In any case, many thanks!
+Rodolfo
+
