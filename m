@@ -2,46 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 577597C4E61
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 11:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A6967C4E64
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 11:21:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231374AbjJKJUd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 05:20:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44044 "EHLO
+        id S231375AbjJKJVW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 05:21:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbjJKJUd (ORCPT
+        with ESMTP id S230351AbjJKJVU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 05:20:33 -0400
+        Wed, 11 Oct 2023 05:21:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC41691;
-        Wed, 11 Oct 2023 02:20:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AB2C433C8;
-        Wed, 11 Oct 2023 09:20:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52EA691;
+        Wed, 11 Oct 2023 02:21:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDB7C433C8;
+        Wed, 11 Oct 2023 09:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697016031;
-        bh=ju74xlAz+WDMwoyepe65xhltEQNC+JPoiTlVmjOaOko=;
+        s=k20201202; t=1697016079;
+        bh=3pErmMLXBZsb29R9HnOmK6xrUTNWs9hBhZaadCT77w8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ExCST8SGknwh7LJsiMX5ttjhAskvHlMNFC5dQwQqOlA0z7+je2lOeZw3T7N9czsb5
-         uknL6sF3w6JVNKuQDaE7RvxzalH3Ck6jyXNiGwk7TDxNAQGbvVdlXpsOOl3/9y9Mv4
-         9zmdkl4VxktJNfnjO9TVd8RgTYcPJ6XkOOSgHcOubBW/J8Iv5ZmnN52SjftuwBBeMd
-         WvZNZjNMRWh5BhZ5JE98EIiDmej7i8r4Bw044xiJ/fs+XHLntXwi9lMqKn11c2QXj5
-         g2Pl2HHYYy30dVjWjQc27QczOKXs2WU8gTKpO23YefjYDoCAdl6RodgSxj2Q0DxLtE
-         3YI5N5Ap01zTA==
+        b=fdM2wih+iuPvtBZe0BJvHVwvgUAopMOVwNYxPZOlg8MpaBPkMUtpJVjQtQ3Lsun4y
+         UVz9KZ+8oYkNSgQIGqgooWUV1Az/SFWjilFP2Z/AtXCS19tIGBIo+a/hA9jIWiW49K
+         I9/lXmL2HQ+mlH6i+eJG/jpbY0YAk4cPbC1/gpT1jlJ1mtb4oVkq19RV/thThyc/Av
+         wu9zaieb2XZPXwxup6xAUNlzaryW7Fv+DxGKIX2LQ8le16etfIMogRb6QWfgyBzBts
+         BZwmpglnHtC7ZUIDYJr2jD5iYAGbyd6QlQDma88y4PlC2ihzUTS/sVi2xTQIqB8JKT
+         t3Ga2NLjlWsfA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [next] wifi: hostap: Add __counted_by for struct
- prism2_download_data and use struct_size()
+Subject: Re: [PATCH][next] wifi: brcmfmac: fweh: Add __counted_by for struct
+ brcmf_fweh_queue_item and use struct_size()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <ZSRXXvWMMkm7qqRW@work>
-References: <ZSRXXvWMMkm7qqRW@work>
+In-Reply-To: <ZSRzrIe0345eymk2@work>
+References: <ZSRzrIe0345eymk2@work>
 To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         linux-hardening@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169701602833.2760941.2948588134703156601.kvalo@kernel.org>
-Date:   Wed, 11 Oct 2023 09:20:30 +0000 (UTC)
+Message-ID: <169701607495.2760941.7574229474626886892.kvalo@kernel.org>
+Date:   Wed, 11 Oct 2023 09:21:16 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,6 +64,11 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 > array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
 > functions).
 > 
+> Also, relocate `event->datalen = datalen;` to before calling
+> `memcpy(event->data, data, datalen);`, so that the __counted_by
+> annotation has effect, and flex-array member `data` can be properly
+> bounds-checked at run-time.
+> 
 > While there, use struct_size() helper, instead of the open-coded
 > version, to calculate the size for the allocation of the whole
 > flexible structure, including of course, the flexible-array member.
@@ -68,13 +78,14 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 > 
 > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 > Reviewed-by: Kees Cook <keescook@chromium.org>
+> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
 Patch applied to wireless-next.git, thanks.
 
-5cf47dc14158 wifi: hostap: Add __counted_by for struct prism2_download_data and use struct_size()
+62d19b358088 wifi: brcmfmac: fweh: Add __counted_by for struct brcmf_fweh_queue_item and use struct_size()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/ZSRXXvWMMkm7qqRW@work/
+https://patchwork.kernel.org/project/linux-wireless/patch/ZSRzrIe0345eymk2@work/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
