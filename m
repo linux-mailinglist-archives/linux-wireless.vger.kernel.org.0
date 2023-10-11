@@ -2,77 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F48D7C57B1
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 17:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29D5E7C57C8
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 17:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232673AbjJKPEU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 11:04:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45336 "EHLO
+        id S232684AbjJKPJ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 11:09:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232415AbjJKPET (ORCPT
+        with ESMTP id S232716AbjJKPJ6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 11:04:19 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAAF29D
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 08:04:16 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-31427ddd3fbso6506127f8f.0
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 08:04:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1697036655; x=1697641455; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hRkqB8/peQlqSu9v9E/Jxgpb5iu6r7QHy0PIjTwaP3U=;
-        b=Wa/rr+qYC8sSKEtftymBPnBFWOwtAUwirmBF/93mEazjvXl182v0aK/83guW5UIg+3
-         LvIf0WO9xMZYUcWGqndZvFQyNv3fquN1seN1VZvwOeirw4vPCD7MDh12zjxaLqd9ffQv
-         hN1748m3vSN+fdR/RdIdpJuTpkvGYFb9zcEzQ5yh1s3quTAsF0YbklAEQZED/94QYLTb
-         0m6DI96wUlDwZ3MAWvcoUhHkTMbZKej9YJLJIma7++uCinn0aA865VUb8loQQtr96Ots
-         AcZBjmyijGPOuiqDGYB6aF/oV5RpLoPrOd+J8FCLK/Bwwq6otnAV9CeslfrBz0WZAJ9C
-         DpnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697036655; x=1697641455;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hRkqB8/peQlqSu9v9E/Jxgpb5iu6r7QHy0PIjTwaP3U=;
-        b=vDxq8uqtbUgGVKBWIQLo++7Ez82XlexUvJVXJn/xIYGEaDjqkicM5Y2J6Qsc+pLFek
-         C5teLBP/WbXgW3KeY/BagA7w0cbTKy3OpfA9eOnc3Z54OqAvHgldQPG2sDqmlRKW1pHe
-         IeCeHCjnm+9btv0o02ZU7/RxtEPq93v66di7zrhLHOJMQvs1lTfKAHAGJqlCBK3u1o/B
-         4hlXWRsRM7KIkGUVnPjNH5eAwyrrTbQl2q5fuqe/CJjw5LMxq+yhsAiy3bGri4SDIigq
-         0VDvoeYPvy8UjSfPxrH1aujnp+/cuRVed1yM6mNgTPWN7+qRtEHiKM1Aq6kqnjCSthUi
-         aknw==
-X-Gm-Message-State: AOJu0YyGr5rzDjzTxcxBMVAEb7l0mbKS7GQE4e2sNFvpJnTYEION/uZz
-        tb5iTck2YBPA5v3nZYPwi7FuDw==
-X-Google-Smtp-Source: AGHT+IFfZQ1SiRV7geQ0Uqaa1luLtMmhs2/HZDlMTol8OQRTChK4x+uxynd3PWFf8uF8nkr/44Pylg==
-X-Received: by 2002:a5d:548f:0:b0:31d:d48f:12a3 with SMTP id h15-20020a5d548f000000b0031dd48f12a3mr16620164wrv.43.1697036655189;
-        Wed, 11 Oct 2023 08:04:15 -0700 (PDT)
-Received: from localhost (host-213-179-129-39.customer.m-online.net. [213.179.129.39])
-        by smtp.gmail.com with ESMTPSA id f11-20020a5d50cb000000b00325c7295450sm15782616wrt.3.2023.10.11.08.04.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 08:04:14 -0700 (PDT)
-Date:   Wed, 11 Oct 2023 17:04:12 +0200
-From:   Jiri Pirko <jiri@resnulli.us>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wpan@vger.kernel.org,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Rodolfo Zitellini <rwz@xhero.org>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v2 01/10] appletalk: make localtalk and ppp support
- conditional
-Message-ID: <ZSa5bIcISlvW3zo5@nanopsycho>
-References: <20231011140225.253106-1-arnd@kernel.org>
+        Wed, 11 Oct 2023 11:09:58 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB17A4;
+        Wed, 11 Oct 2023 08:09:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B52FC433C9;
+        Wed, 11 Oct 2023 15:09:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697036996;
+        bh=NK7/zcAL72Zfq6YQF/vUxdXthgBdgQPxmKzGhiyQLLU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Xb6qwA4CNigU6EZ/vw5T4xI8CNKktxyPfYHFobP8vYN2PS2b1eMTa9KzZKmWYJkoe
+         pxLr/TfiXbtGtSv4Ny3qNUk0mGT1kUDVTUtoM3aAUACYa8LrGH2Wh9gRXuPsfdyMzu
+         wdGvEANVijWWQy5xhw0vLEI84yrhOKDgZZbu6yvhb6C+GHmDJDZ+3J+YB5MF+JqQvV
+         wdVpy4pJU+N6cQUD6oyaWVmu2nSS7rcfV6qSIHvCQZn3s5SPTNwTl2W4zvbZC+DJnc
+         HPe03ERpdteJ8l7louBWQScthVQJhkzQxtKNd9oPhGB/7XODTLKlchESt+mK7MRLhO
+         Llduy5PyXKIMA==
+Date:   Wed, 11 Oct 2023 08:09:55 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Pavel Machek <pavel@ucw.cz>,
+        "David S. Miller" <davem@davemloft.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
+Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
+Message-ID: <20231011080955.1beeb010@kernel.org>
+In-Reply-To: <87r0m1fwg9.fsf@kernel.org>
+References: <20231010155444.858483-1-arnd@kernel.org>
+        <2023101051-unmasked-cleaver-79b3@gregkh>
+        <87y1g94szz.fsf@kernel.org>
+        <2023101139-pyromania-game-2237@gregkh>
+        <87r0m1fwg9.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231011140225.253106-1-arnd@kernel.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,5 +61,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, 11 Oct 2023 10:29:58 +0300 Kalle Valo wrote:
+> > No matter what the time frame is, it's never going to line up with all
+> > distros, or catch everyone properly.  
+> 
+> Yeah, that's true.
+> 
+> > I recommend, just delete all the ones you feel are not being used, in a
+> > patch that removes them one-by-one, so that it is trivial to revert if
+> > someone shows up and says "hey, my device stopped working!" a few years
+> > in the future.  
+> 
+> I'm starting to lean towards this as well. We have talked about this for
+> so long now but no practical solution ever found so maybe just bite the
+> bullet finally. What do others think?
 
-Could you provide a cover letter for the set please?
+FWIW in Ethernet we do what Greg says. Delete it, if someone complains
+we revert back in. The revert did actually happen once, it was pretty
+painless (Greg even took it into stable tree, IIRC).
