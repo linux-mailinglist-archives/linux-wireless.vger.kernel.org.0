@@ -2,146 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A46C47C4B42
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 09:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 555DD7C4BA6
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 09:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344561AbjJKHJN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 03:09:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44800 "EHLO
+        id S1344699AbjJKHZW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 03:25:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343997AbjJKHJM (ORCPT
+        with ESMTP id S1344185AbjJKHZV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 03:09:12 -0400
-Received: from smtpcmd11128.aruba.it (smtpcmd11128.aruba.it [62.149.156.128])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155839B
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 00:09:07 -0700 (PDT)
-Received: from smtpclient.apple ([178.197.207.108])
-        by Aruba Outgoing Smtp  with ESMTPA
-        id qTL5qhUPwT2S6qTL5qdYwG; Wed, 11 Oct 2023 09:09:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-        t=1697008145; bh=OFZaDkGYXLAqctRIWUHK2zLsfn3fVaLLoVZLlGB7ECs=;
-        h=Content-Type:Mime-Version:Subject:From:Date:To;
-        b=gSITyVIPmvPqIY+TI/ONWy67LBXZJoWfIYTOxHdmsrkexV5uF3oHAFAJWUwRfNUex
-         j73xgyR6znKwSVHy1RAp9pRRozrw88QIOVSnCx0pnZ308W3zN7bQKPTIpFDOUKF/yU
-         wy/ycug6rFPjx4esbpCrQuR8jY1CtwpoeH++e96ag2voR6rjA+ImmPhaOMdbGarIuu
-         /8HtmJ8YEXI4okreyZ1nlUj40sCcw+IyLVSEhygfb8IUnK+Cri7sBnyzXdB0cgYD3f
-         YF44wNUfGmNBsyl/LWOIegybCxd43Kb4G3qYzngFfYyBtApVWgJUahjCQSTgDuN2ry
-         n+AXx1jYXy87A==
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.15\))
-Subject: Re: [PATCH 01/10] appletalk: remove localtalk and ppp support
-From:   Rodolfo Zitellini <rwz@xhero.org>
-In-Reply-To: <2d325867-95c9-4bff-8f24-9083c730d7ba@app.fastmail.com>
-Date:   Wed, 11 Oct 2023 09:09:02 +0200
-Cc:     Arnd Bergmann <arnd@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Wed, 11 Oct 2023 03:25:21 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E248E8F;
+        Wed, 11 Oct 2023 00:25:19 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id BCB445C03D8;
+        Wed, 11 Oct 2023 03:25:16 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Wed, 11 Oct 2023 03:25:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1697009116; x=1697095516; bh=kD
+        hqZEcn+/X4jJsIF1cxUsHx79+GqJ1Tu21mo+Jtftw=; b=Q9gryz4W/6jNfDE6H7
+        11iqTSBnZENqF2lzY3vIXi2SgXn4/LQ5T5qLj8SvhrBukJE0Dd5FEvNd4UazkV6F
+        JjXfZgxi1dQV4sWyBxiZUQ2S5mccbkOWN87Gm6UC6TYH4VFRoTHtpVhEaczohFsf
+        nubDPMJ/59ecWdOxTfAsAU1fYNFCoS1zgkLeXcWWpPwOUc+tokdCmjy9ruAa5Soc
+        mcKjwAez262RypTHxGRTkPKNfNWXgqQ/5xREvFvFHj6uQzup9iCAyX0P0PXapoFo
+        4gxiitmVYroLF31Ekn+u8xpNelj//SAcht0QjwdjseShhd1eA0P2GvH3Qcv4luuL
+        bcbA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1697009116; x=1697095516; bh=kDhqZEcn+/X4j
+        JsIF1cxUsHx79+GqJ1Tu21mo+Jtftw=; b=l1VMNGC3Xawc4/EzKmRaLvOlwzS8v
+        Y/ZFo4xeqwDZ6GojmmeYuH+GV54bjpXXaSij38dArwXCDmx/2PbbGz3QhFl4/D0M
+        vU9JJTw94h7tha4wtVh+t36vBxZ9WZhVC3QmBAfMTRPWA3AMvtjnNO3PDH5mENZ0
+        qKjS2tN/SL1HX9DzzMNLjD2gFKEW4oNAy6BHfXqKEvUBXW03YbxTfDPv5jX0U5GG
+        XPSpOI5OQXankWH+VexLJotMVFw2bCfr+mn+5bJ8GwzjSGqd432LrfL5hZiv0Dy2
+        ztd9JLsBysl4I1j9ppqHsi1TJDMgqgD25c1pp3yHoRCbgbsKFOaYebqqA==
+X-ME-Sender: <xms:3E0mZVeeQg7hx-juSvPB_Pygh-g8QbrFELUzYHHXYhK_vDamMwqzyg>
+    <xme:3E0mZTOxyZ7kGHyBMKdTqUFAvl0QIiZi6ZQgLagQ2khzGMA4L5mn9pPooGf5sDBCh
+    EPs2VhNUSITS01jBRg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrheejgdejjecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:3E0mZeiceF3iQlQCX7dRwxjbO56tP4PQRQINkGtfP3JrO1UVgz0p4g>
+    <xmx:3E0mZe-qFkRyhpmO9Zp80jqr36RLV36iQIXYjJSsjhzVgad0DG9TpQ>
+    <xmx:3E0mZRtG0W2ff9wt5MwuYJk7_hnp2ctHkiPPD2-QYerRV1icxW7RWw>
+    <xmx:3E0mZSmVUfk720cOQ1DuGqqsOitRehvTGpYCg3VtTyLM3B-0yn3Ifg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 23C85B60089; Wed, 11 Oct 2023 03:25:16 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
+MIME-Version: 1.0
+Message-Id: <d081871c-977c-43e9-afa3-a3c3e5880fea@app.fastmail.com>
+In-Reply-To: <87y1g94szz.fsf@kernel.org>
+References: <20231010155444.858483-1-arnd@kernel.org>
+ <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
+Date:   Wed, 11 Oct 2023 09:24:55 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Kalle Valo" <kvalo@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc:     "Arnd Bergmann" <arnd@kernel.org>,
+        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wpan@vger.kernel.org,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
+        "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+        "Pavel Machek" <pavel@ucw.cz>, "Jakub Kicinski" <kuba@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, Doug Brown <doug@schmorgal.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D4934680-DFB5-471F-893F-32FEA9A6C26C@xhero.org>
-References: <20231009141908.1767241-1-arnd@kernel.org>
- <790BA488-B6F6-41ED-96EF-2089EF1C043B@xhero.org>
- <3cb4bb96-1651-4179-9c32-507937282d7d@app.fastmail.com>
- <DE61EEA5-D560-40B6-8F4D-22F299AC61ED@xhero.org>
- <2d325867-95c9-4bff-8f24-9083c730d7ba@app.fastmail.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-X-Mailer: Apple Mail (2.3654.120.0.1.15)
-X-CMAE-Envelope: MS4xfJ+NY3qkgFTiuA0L32HFj+5woru5XqLJ2Z2A2TqBSyNMJjn9LTpk+PwA/TopQdGSgZemVGvpmWUkrlezKQaaSorGUs9nrzbOLTMBAdAjKxcCKnQ07IS3
- MjQ6AI+8VVwJBvQpEn3Xv82MRQiQmMkCGgXJ19Y7pPt0j21usz3a1MYa4c7pNjY0/woBJG3IAUohLs0BK1DVJo+2DDCNWeZhjrqBgXEzJeKtiuXAEusogHqk
- Kv/XrrLNv82hS8KstVy59xpwj+1mUKhMvH4JdRDUFsxdVUFBcvqcL0WRsGhtnfzcCdyA/TygYOtuOVrl6o5UlSbzo0ebTHp3Y8W0PaKbEdOsGLlpnixo4bm7
- KgcsyGX1T/poBUvWCUxFJPJ1fPYcC0GUM2BgGPYOuH7rm4lf6GntqES+VwZNZbwhoyq74t4PC/Pz1vtF1pC9eTeJm1utj9fotl8OGUQhd3CLuHGAGnMNwOIe
- xBDzmq8bC0rDCVKWXr26+qe3YPQHq1JbDi2yYPEerMcJigv+JZLrzidZ51bE2WiqMsfJG8guomcqd2+GcBgf6rxC/SYB7kx5sM1LnUAl8lhu4h0bEIs+zk4N
- xaQHjZItQCeMyU264BiSV9NbEwikOv9u7uR7tnhC9x80EA==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        linux-arm-kernel@lists.infradead.org,
+        "Larry Finger" <Larry.Finger@lwfinger.net>
+Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, Oct 11, 2023, at 07:40, Kalle Valo wrote:
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+>
+> We (the wireless folks) have been talking about dropping legacy drivers
+> on and off for several years now. The problem is that we don't know
+> which of them work and which not, for example IIRC someone reported
+> recently that wl3501 still works.
+>
+> Personally I would be extremly happy to remove all the ancient drivers
+> as that reduces the amount of code for us to maintain but is that the
+> right thing to do for the users? I don't have an answer to that,
+> comments very welcome.
 
+I had a look at what openwrt enables, to see if any of the drivers
+in my RFC patch are actually enabled, if anything supports legacy
+embedded devices with these it would be openwrt. The good news here
+is that openwrt intentionally leaves WEXT disabled, and none of them
+are still in use.
 
-> Il giorno 10 ott 2023, alle ore 10:15, Arnd Bergmann <arnd@arndb.de> =
-ha scritto:
->=20
-> On Tue, Oct 10, 2023, at 09:10, Rodolfo Zitellini wrote:
->>> Il giorno 9 ott 2023, alle ore 19:29, Arnd Bergmann <arnd@arndb.de> =
-ha scritto:
->>> On Mon, Oct 9, 2023, at 18:49, Rodolfo Zitellini wrote:
->>> I can see a few ways this could work out:
->>>=20
->>> - add a custom callback pointer to struct atalk_iface to
->>> get and set the address for phase1 probing instead of going
->>> through the ioctl
->>=20
->> This was my initial thought, at least for the moment, mostly to keep=20=
+I also did the same thing for the kernel defconfig files, which
+has a few hits:
 
->> netatalk happy and make sure I don=E2=80=99t break other stuff that =
-makes=20
->> assumptions on how the address probing worked. There are other bits I=20=
+arch/arm/configs/pxa_defconfig:CONFIG_HERMES=m
+arch/arm/configs/pxa_defconfig:CONFIG_HOSTAP=m
+arch/arm/configs/pxa_defconfig:CONFIG_HOSTAP_CS=m
+arch/arm/configs/pxa_defconfig:CONFIG_PCMCIA_HERMES=m
+arch/arm/configs/pxa_defconfig:CONFIG_PCMCIA_SPECTRUM=m
+arch/loongarch/configs/loongson3_defconfig:CONFIG_HOSTAP=m
+arch/loongarch/configs/loongson3_defconfig:CONFIG_USB_NET_RNDIS_WLAN=m
+arch/mips/configs/ip22_defconfig:CONFIG_HOSTAP=m
+arch/mips/configs/ip27_defconfig:CONFIG_ATMEL=m
+arch/mips/configs/ip27_defconfig:CONFIG_HERMES=m
+arch/mips/configs/ip27_defconfig:CONFIG_HOSTAP=m
+arch/mips/configs/ip27_defconfig:CONFIG_HOSTAP_PCI=m
+arch/mips/configs/ip27_defconfig:CONFIG_HOSTAP_PLX=m
+arch/mips/configs/ip27_defconfig:CONFIG_NORTEL_HERMES=m
+arch/mips/configs/ip27_defconfig:CONFIG_PCI_ATMEL=m
+arch/mips/configs/ip27_defconfig:CONFIG_PLX_HERMES=m
+arch/mips/configs/ip27_defconfig:CONFIG_TMD_HERMES=m
+arch/mips/configs/loongson2k_defconfig:CONFIG_HOSTAP=m
+arch/mips/configs/loongson3_defconfig:CONFIG_HOSTAP=m
+arch/mips/configs/malta_defconfig:CONFIG_ATMEL=m
+arch/mips/configs/malta_defconfig:CONFIG_HOSTAP=m
+arch/mips/configs/malta_defconfig:CONFIG_HOSTAP_PCI=m
+arch/mips/configs/malta_defconfig:CONFIG_HOSTAP_PLX=m
+arch/mips/configs/malta_defconfig:CONFIG_PCI_ATMEL=m
+arch/mips/configs/malta_kvm_defconfig:CONFIG_ATMEL=m
+arch/mips/configs/malta_kvm_defconfig:CONFIG_HOSTAP=m
+arch/mips/configs/malta_kvm_defconfig:CONFIG_HOSTAP_PCI=m
+arch/mips/configs/malta_kvm_defconfig:CONFIG_HOSTAP_PLX=m
+arch/mips/configs/malta_kvm_defconfig:CONFIG_PCI_ATMEL=m
+arch/mips/configs/maltaup_xpa_defconfig:CONFIG_ATMEL=m
+arch/mips/configs/maltaup_xpa_defconfig:CONFIG_HOSTAP=m
+arch/mips/configs/maltaup_xpa_defconfig:CONFIG_HOSTAP_PCI=m
+arch/mips/configs/maltaup_xpa_defconfig:CONFIG_HOSTAP_PLX=m
+arch/mips/configs/maltaup_xpa_defconfig:CONFIG_PCI_ATMEL=m
 
->> would like to improve, for example tcpdump (which parses correctly=20
->> appetalk packets!) is broken in the current implementation.
->>=20
->>> - rewrite the probing logic in aarp.c more widely, and improve
->>> the userspace interface in the process by introducing a netlink
->>> interface
->>=20
->> This is sorta the =E2=80=9Csecond step=E2=80=9D I was planning, I =
-think the logic for=20
->> probing could be redesigned and simplified (it also does not work =
-100%=20
->> correctly), and it could be a good chance to improve the interface =
-with=20
->> netatalk too.
->=20
-> Ok, I've adapted my patch now to not actually drop the
-> localtalk code for now, and sent that out, I hope that works
-> for you. Even if we go with the v1 patch that removes it all,
-> you could just as well start with a revert of my patch when
-> you add your driver, so in the end it shouldn't make much
-> of a difference.
+My interpretation here is that these defconfigs just enabled
+all drivers that were relevant at the time when the boards
+were new. The loongarch defconfig is a bit of an outlier,
+as this is a fairly new platform.
 
-Thank you very much! I will try to make my patch ready to be submitted =
-soon, and I will add the proper reverts if needed.
+Debian on the other just enables every driver, so there
+is no good way to know what they actually use.
 
->>> - Move your entire driver into userspace and go to the kernel
->>> using tun/tap. This has the added benefit of avoiding a lot
->>> of the complexity of the tty line discipline code you have.
->>=20
->> We had some discussion too if to just make the lt an userspace stack, =
-I=20
->> personally like how it is currently implemented because existing code=20=
-
->> can run basically without modification.
->>=20
->> I would propose at this stage to change the TashTalk driver to remove=20=
-
->> ndo_do_ioctl and to use a custom callback, if this ok.
->=20
-> It looks like you still need a custom userspace tool to set up
-> the uart for your new driver, so my feeling would be that having a
-> userspace bridge to implement the localtalk/uart to ethertalk/tap
-> driver would actually be nicer for both usability and maintenance.
->=20
-> It's not something we need to decide now though, and is up to
-> you in the end.
-
-I will experiment with this too, as it will require a bit of work to =
-morph localtalk packets to ethertalk/aarp ones, and the code in the =
-kernel has some specialized bits for localtalk here and there.
-
-In any case, many thanks!
-Rodolfo
-
+      Arnd
