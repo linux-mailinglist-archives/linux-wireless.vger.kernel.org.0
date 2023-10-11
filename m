@@ -2,134 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D83C07C4E09
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 11:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 154937C4E4A
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 11:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346134AbjJKJCt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 05:02:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36694 "EHLO
+        id S232444AbjJKJNr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 05:13:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345910AbjJKJC3 (ORCPT
+        with ESMTP id S231182AbjJKJNq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 05:02:29 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D986E10EC;
-        Wed, 11 Oct 2023 02:01:50 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id 74E315C0286;
-        Wed, 11 Oct 2023 05:01:47 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 11 Oct 2023 05:01:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1697014907; x=1697101307; bh=DE
-        xhJxe6pAvV5eiD/1fwWplvOVteEj7vs73QB2WI/+8=; b=cGAQWZnu0g1DKpMsdQ
-        nwOEGFS/BLPM92HbcGgu7MQ9JHtP6bD0YjbJ+0sKHLKR5nnPPTQMEZFeaJtqSfTT
-        CT6t5BfH67Mk5GjgXaSeJfZUbcqy93H/bgS6uuEiOYd2b1oAKhwI+iRmHvhS0CDa
-        Bpdho81qZDtTuMK8n639b6GK8U1OujeOqf/wLkxj7I9SfWI4D7TgmzzYdil0fxX/
-        je/43bHzgJROy6ZELUx8czqbM0fhpcqhRK2L7n9WXsd5qHs7/K/havp3dfvryYT2
-        fAKctxjk6Fkp6FSLGceZ7mYO94VKDqRGAqlPqcWZ+D4FIxQclNkNNRjbIZ5pYY5j
-        s6jw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1697014907; x=1697101307; bh=DExhJxe6pAvV5
-        eiD/1fwWplvOVteEj7vs73QB2WI/+8=; b=mkiW3Emb3vdKnJhx8bwy1ZihSQQq5
-        weJSue0zdVPKOYp+zbo07jpwpfsgdMXsXTL1G5GiO8FdIYYycdkfVJl6823/uvJL
-        DmGZSrI9W4BxVKbwuWKHcmu6jfbY7VIqvGOOyya5XmkRLL+A3Z+KYer5/4p05hga
-        dTqUXWAfICNO4a2UBjF/UKeGiXOSQMG13/lFoCbjlCdRF6mkpBVe64CIsMAUwJre
-        /NvHX6+RvX5k08u6UD9HuXfqNs2dYU0lpKyI5me4gldF7a9EdjHyLw8nj8shaPkN
-        l4005mZh+rO6o9hr24wTV2rC4VpCLZFZBWwQd8VZ49kKhppmoXKFVmTGQ==
-X-ME-Sender: <xms:emQmZX7arryhpAE7MpSUqgHmfJELkAPTSDSR7EXG7nLaRLcgpIcA8w>
-    <xme:emQmZc5X3mZ1PfyCiipbsxv6oe4ASx9IukAhPSsewSEOC22hhTciit5rOLQBRU9i5
-    Q7l0a8YW5HJ4e5Siz0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrheekgddtkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeejvddvvdduleduheejiedtheehiedvjefgleelffeigfevhffhueduhfegfeef
-    heenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:emQmZefO1hwrftI7xsKAB1Rej1Kq5sNhezSDoh8HzoAq0qF6gj4HnA>
-    <xmx:emQmZYIOMZnyDA_UM5JV4wdz0g9u2rox0vFXQsDagmTv49e97s2csA>
-    <xmx:emQmZbK9B6Woc8ZHsNwvLTLHRfJEc6E4PYLC5G3xXVIxAlzHUTAMhQ>
-    <xmx:e2QmZYAggTvDdM3nzrT7LybqMgVeindjS90MzkORb3LS2gPJ19C4Vw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 1EC58B60089; Wed, 11 Oct 2023 05:01:46 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
+        Wed, 11 Oct 2023 05:13:46 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8310698
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 02:13:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE42C433C7;
+        Wed, 11 Oct 2023 09:13:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697015624;
+        bh=zTR9jSfctFPdj2KpKIyTrJ6PeHXdRAVd7Qnm5yLcJxE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=RlpztWxs7fdjkdqQV2J0GGFOFT5E4twEgNVXpQo+E7CAiT1P0fvvnc/xkYdqmVk4f
+         WEg6R4lkkBVEKjQecgy6LyCrbYswAMdjJqbXS5B215TciPJYvtG9G+/e58aE3LJzU+
+         Pw8qfwtlMGe3FKsgb16kySTg/aLE11PqqVNnwsXpXQzgoqLu5K52xV4PhTHTmgbuXE
+         36b3jQOLXtUzKon/gJYKKGabluPGt1i9GTn0PRnUuRG/vElygXTFiPQeC5I6KAfHcx
+         2iVOl2amsJADA9pJ0YBpDG7a1HJXJYBnHet4uXhb+qReyziaUFC9TQHJE9CV46Aj+e
+         P1+NhnGRWbvVA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2 6/6] wifi: rtw89: add EHT radiotap in monitor mode
+References: <20231010021006.6061-1-pkshih@realtek.com>
+        <20231010021006.6061-7-pkshih@realtek.com>
+Date:   Wed, 11 Oct 2023 12:13:41 +0300
+In-Reply-To: <20231010021006.6061-7-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Tue, 10 Oct 2023 10:10:06 +0800")
+Message-ID: <87il7d4j3u.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Message-Id: <f5243ad9-0e7d-4a2f-b944-a45c41330aaf@app.fastmail.com>
-In-Reply-To: <87r0m14khb.fsf@kernel.org>
-References: <20231010155444.858483-1-arnd@kernel.org>
- <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
- <d081871c-977c-43e9-afa3-a3c3e5880fea@app.fastmail.com>
- <87r0m14khb.fsf@kernel.org>
-Date:   Wed, 11 Oct 2023 11:01:25 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Kalle Valo" <kvalo@kernel.org>
-Cc:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Arnd Bergmann" <arnd@kernel.org>,
-        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
-        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-wireless@vger.kernel.org,
-        "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
-        "Pavel Machek" <pavel@ucw.cz>, "Jakub Kicinski" <kuba@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-arm-kernel@lists.infradead.org,
-        "Larry Finger" <Larry.Finger@lwfinger.net>
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
 Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 11, 2023, at 10:44, Kalle Valo wrote:
-> "Arnd Bergmann" <arnd@arndb.de> writes:
->> On Wed, Oct 11, 2023, at 07:40, Kalle Valo wrote:
->>> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
->>>
->>> We (the wireless folks) have been talking about dropping legacy drivers
->>> on and off for several years now. The problem is that we don't know
->>> which of them work and which not, for example IIRC someone reported
->>> recently that wl3501 still works.
->>>
->>> Personally I would be extremly happy to remove all the ancient drivers
->>> as that reduces the amount of code for us to maintain but is that the
->>> right thing to do for the users? I don't have an answer to that,
->>> comments very welcome.
->>
->> I had a look at what openwrt enables, to see if any of the drivers
->> in my RFC patch are actually enabled, if anything supports legacy
->> embedded devices with these it would be openwrt. The good news here
->> is that openwrt intentionally leaves WEXT disabled, and none of them
->> are still in use.
+Ping-Ke Shih <pkshih@realtek.com> writes:
+
+> Add IEEE80211_RADIOTAP_EHT and IEEE80211_RADIOTAP_EHT_USIG radiotap to
+> fill basic EHT NSS, MCS, GI and bandwidth.
 >
-> I don't think openwrt is a good metric in this case. These drivers are
-> for 20+ years old hardware, most likely running on really old x86
-> laptops. So the chances of them running openwrt on those laptops is low
-> and I would expect them to run more traditional distros like debian or
-> ubuntu. But of course this is just guessing.
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+>  drivers/net/wireless/realtek/rtw89/core.c | 66 +++++++++++++++++++++++
+>  drivers/net/wireless/realtek/rtw89/core.h |  9 +++-
+>  2 files changed, 74 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+> index 2742e6646cf1..8cb1715d049a 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.c
+> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> @@ -1907,6 +1907,70 @@ static void rtw89_core_hw_to_sband_rate(struct ieee80211_rx_status *rx_status)
+>  	rx_status->rate_idx -= 4;
+>  }
+>  
+> +static u8 rx_status_bw_to_radiotap_eht_usig[] = {
+> +	[RATE_INFO_BW_20] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_20MHZ,
+> +	[RATE_INFO_BW_5] = U8_MAX,
+> +	[RATE_INFO_BW_10] = U8_MAX,
+> +	[RATE_INFO_BW_40] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_40MHZ,
+> +	[RATE_INFO_BW_80] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_80MHZ,
+> +	[RATE_INFO_BW_160] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_160MHZ,
+> +	[RATE_INFO_BW_HE_RU] = U8_MAX,
+> +	[RATE_INFO_BW_320] = IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_320MHZ_1,
+> +	[RATE_INFO_BW_EHT_RU] = U8_MAX,
+> +};
 
-OpenWRT is clearly not a good metric for laptops, but it's a good
-indicator for embedded systems, in particular those with wireless
-access points, and it does enable a lot of them
-(atheros, broadcom, intel, marvell, ralink, realtek, mt76, wlcore,
-rsi ...) depending on the platform.
+Sorry, I noticed this only when I was abot to commit this. Should this
+be static const?
 
-I can also see that it used to enable airo, p54, hermes, adm8211,
-zd1211, ipw2x00 and libertas but stopped this a year ago, see
-https://github.com/openwrt/openwrt/commit/a06e023b4e12
+> +static void rtw89_core_update_radiotap_eht(struct rtw89_dev *rtwdev,
+> +					   struct sk_buff *skb,
+> +					   struct ieee80211_rx_status *rx_status)
+> +{
+> +	struct ieee80211_radiotap_eht_usig *usig;
+> +	struct ieee80211_radiotap_eht *eht;
+> +	struct ieee80211_radiotap_tlv *tlv;
+> +	int eht_len = struct_size(eht, user_info, 1);
+> +	int usig_len = sizeof(*usig);
+> +	int len;
+> +	u8 bw;
+> +
+> +	len = sizeof(*tlv) + ALIGN(eht_len, 4) +
+> +	      sizeof(*tlv) + ALIGN(usig_len, 4);
+> +
+> +	rx_status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
+> +	skb_reset_mac_header(skb);
+> +
+> +	/* EHT */
+> +	tlv = skb_push(skb, len);
+> +	memset(tlv, 0, len);
+> +	tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT);
+> +	tlv->len = cpu_to_le16(eht_len);
+> +
+> +	eht = (struct ieee80211_radiotap_eht *)tlv->data;
+> +	eht->known = cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_GI);
+> +	eht->data[0] =
+> +		le32_encode_bits(rx_status->eht.gi, IEEE80211_RADIOTAP_EHT_DATA0_GI);
+> +
+> +	eht->user_info[0] =
+> +		cpu_to_le32(IEEE80211_RADIOTAP_EHT_USER_INFO_MCS_KNOWN |
+> +			    IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_KNOWN_O);
+> +	eht->user_info[0] |=
+> +		le32_encode_bits(rx_status->rate_idx, IEEE80211_RADIOTAP_EHT_USER_INFO_MCS) |
+> +		le32_encode_bits(rx_status->nss, IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_O);
+> +
+> +	/* U-SIG */
+> +	tlv = (void *)tlv + sizeof(*tlv) + ALIGN(eht_len, 4);
+> +	tlv->type = cpu_to_le16(IEEE80211_RADIOTAP_EHT_USIG);
+> +	tlv->len = cpu_to_le16(usig_len);
+> +
+> +	bw = rx_status->bw < ARRAY_SIZE(rx_status_bw_to_radiotap_eht_usig) ?
+> +	     rx_status_bw_to_radiotap_eht_usig[rx_status->bw] : U8_MAX;
+> +	if (bw == U8_MAX)
+> +		return;
 
-     Arnd
+This is cosmetics but I feel that 'if' statement is more readable than
+':' operator:
+
+if (rx_status->bw >= ARRAY_SIZE(rx_status_bw_to_radiotap_eht_usig)
+        return;
+        
+bw = rx_status_bw_to_radiotap_eht_usig[rx_status->bw];
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
