@@ -2,92 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDCD37C58AF
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 17:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5C417C594E
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 18:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232750AbjJKP6I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 11:58:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56678 "EHLO
+        id S1346812AbjJKQiQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 12:38:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230226AbjJKP6H (ORCPT
+        with ESMTP id S232512AbjJKQiP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 11:58:07 -0400
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90DFD8F;
-        Wed, 11 Oct 2023 08:58:05 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id 4DD8C3200945;
-        Wed, 11 Oct 2023 11:58:01 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 11 Oct 2023 11:58:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1697039880; x=1697126280; bh=7H
-        Jkg/z8yMK6BHAYpmQDPyFjBK9Xn+ituvuEwAuZ1sU=; b=UVrZGTUIN/c+wOrjog
-        V4H1MycpdvOstYDdYmz6kQvmlXMauPc9wG4HupXP9G/ReLiXafAkUjS+sZEbRN0f
-        jZYR39UNK2581JykJ0XJeyTsMpe/huU9w18VgyyKp6JwnNi7Tx9B8QhovC0NlI81
-        hYf/r/qoMxEMTUwWznAh7j7NCxugCnHq860yJk4U81Uqq0qSgQAFlWeMiCdTsRe4
-        WeS1otq5untWkPF34AdO27vX/Y62ovQR1+O6n/lg7bjQYE+pazHxI3k6c6Os0RcD
-        MHn1EWGlZMobVxq/d1A7+fB+wdL8DkYfmj6MwSDv1b+SMvxPWxV9DwV4Y3P1NuRV
-        P6sw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1697039880; x=1697126280; bh=7HJkg/z8yMK6B
-        HAYpmQDPyFjBK9Xn+ituvuEwAuZ1sU=; b=DuqgHXuRkjGzv+sTVQXosPn4qx3IG
-        pp0FiLiqn0YzKA4Exz530ss62tkJ0JcrBK7OWeQz14oG3MEAAtZGcqzI0V+21941
-        xFof5XUuSDb+0m4kwAzSKruypnuL188xCt70zp7dvyoLhT45IbrhJz/q3ySNn4cK
-        /An+FzaHKbvg1iE9uK02O9ejiEjUBdoYHEdcXb00bzzjHaIx3foxvoQhSv3a8EIH
-        TsguJLzeGl9vRBq1hT+9ugqXZvc6SGrPf8K7TqHwZQ4RO+oaoaS3TIS46KHel7rW
-        oyoBMWFuQvAqQd7G1hLQ/j4P1h4zZwATDfcwwJGKZZ0/rDyGwt4dBPDAQ==
-X-ME-Sender: <xms:CMYmZV0XE_EsNbv0M22Xjk7OczozGwze6bo3NRK15HHwsRKTwUu2Iw>
-    <xme:CMYmZcGc0ENyppHryqZhpcyV0hOOcxjuTXA42bBoLODDCTcQEtXH2PAr1RIuPrqTi
-    IB0IEPFtpOKWSCOL60>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrheekgdelvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeufeeh
-    udenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:CMYmZV589CMQPoU21g8abAl3zQiB30Rq5SFLxdDrBC0XlvrFP_5y5A>
-    <xmx:CMYmZS3UYGaaj_dDsRqeO5bwzM73qo2MfAiY8fjWT39O9vFI2ikiCA>
-    <xmx:CMYmZYGJmnHAdwzedxXPSUko0KfLjLOGgtM7CAl8R2UN-HOCj08sgg>
-    <xmx:CMYmZfcEwbKy8YlJQgLXNdgzXoi3YSodyaYkJuapJr-ijNW9VXkIoQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id E845BB60089; Wed, 11 Oct 2023 11:57:59 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
+        Wed, 11 Oct 2023 12:38:15 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 264BD8F
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 09:38:13 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39BCNJpp017903;
+        Wed, 11 Oct 2023 16:38:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=gu2apgfUR9QVJtxf7s5KraUVpcOv6L4f5sRu4PMzoEo=;
+ b=V+ZLAypLAl2+hVF7j88bQ+AleU7rPEuJXXSL/QazlgReJIn9vQwS6divex2ddgMvWT8U
+ qk5a7hYbmndeCeIFyGEUTsUhRpMh95xdcJ3hpmCskg3lW+r8yAE/DCZ8szK0YoBNOwQE
+ ro3ILnP6gVUd526yky8N2PHJZR/NdnaIZxNOtv0y163cEsJo1bAHr4LK7MHiNc25cWJV
+ 77kB1e4Q24cSo8vefUYFK9RtM9dXaUOaByQBIGXkUiHdxrg2rcSHKctFZ+ZKGkw/8uAe
+ 3x0dXTGYdYpMeJ2gOubNiPf9CBGUD7a5YMMzqGgYk4XP7DyC3dPcJEz9I0RoI4KLO9ta MQ== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tnstyrxsk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 11 Oct 2023 16:38:07 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39BGc7xc019816
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 11 Oct 2023 16:38:07 GMT
+Received: from [10.111.181.241] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Wed, 11 Oct
+ 2023 09:38:06 -0700
+Message-ID: <fbc9c0ed-87b9-490b-9992-14625eda9635@quicinc.com>
+Date:   Wed, 11 Oct 2023 09:38:06 -0700
 MIME-Version: 1.0
-Message-Id: <82527b7f-4509-4a59-a9cf-2df47e6e1a7c@app.fastmail.com>
-In-Reply-To: <ZSa5bIcISlvW3zo5@nanopsycho>
-References: <20231011140225.253106-1-arnd@kernel.org>
- <ZSa5bIcISlvW3zo5@nanopsycho>
-Date:   Wed, 11 Oct 2023 17:57:38 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Jiri Pirko" <jiri@resnulli.us>, "Arnd Bergmann" <arnd@kernel.org>
-Cc:     "Jakub Kicinski" <kuba@kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org,
-        "Johannes Berg" <johannes@sipsolutions.net>,
-        linux-wpan@vger.kernel.org,
-        "Michael Hennerich" <michael.hennerich@analog.com>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rodolfo Zitellini" <rwz@xhero.org>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 01/10] appletalk: make localtalk and ppp support conditional
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/4] wifi: ath12k: add TAS capability for WCN7850
+Content-Language: en-US
+To:     Lingbo Kong <quic_lingbok@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20231011050004.423413-1-quic_lingbok@quicinc.com>
+ <20231011050004.423413-2-quic_lingbok@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231011050004.423413-2-quic_lingbok@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: M39FipRfkYYfimfBIUtnppooHA7poeZa
+X-Proofpoint-GUID: M39FipRfkYYfimfBIUtnppooHA7poeZa
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-11_11,2023-10-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ impostorscore=0 mlxlogscore=883 lowpriorityscore=0 clxscore=1015
+ spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310110145
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -95,30 +79,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 11, 2023, at 17:04, Jiri Pirko wrote:
-> Could you provide a cover letter for the set please?
+On 10/10/2023 10:00 PM, Lingbo Kong wrote:
+> Currently, ath12k does not support Time-Average-SAR(TAS) for WCN7850. In
+> order to enable Time-Average-SAR(TAS) for WCN7850, ath12k defines
+> ath12k_get_acpi_all_data() function to get TAS configuration and SAR power
+> table, then sets pdev_id, param_type_id, and finally sends the TAS
+> configuration, SAR power table and WMI_PDEV_SET_BIOS_INTERFACE_CMDID
+> command to firmware to implement TAS during the initialization phase.
+> Besides, ath12k registers an ACPI event callback so that ACPI can notify
+> ath12k to get the updated SAR power table and sends it to firmware when the
+> device state is changed.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Subject: [PATCH v2 00/10] remove final .ndo_do_ioctl references
-
-The .ndo_do_ioctl() netdev operation used to be how one communicates
-with a network driver from userspace, but since my previous cleanup [1],
-it is purely internal to the kernel.
-
-Removing the cops appletalk/localtalk driver made me revisit the
-missing pieces from that older series, removing all the unused
-implementations in wireless drivers as well as the two kernel-internal
-callers in the ieee802154 and appletalk stacks.
-
-One ethernet driver was already merged in the meantime that should
-have used .ndo_eth_ioctl instead of .ndo_do_ioctl, so fix that as well.
-With the complete removal, any future drivers making this mistake
-cause build failures that are easier to spot.
-
-[1] https://lore.kernel.org/netdev/20201106221743.3271965-1-arnd@kernel.org/
-
-----
-Hope that helps, I had commented on the cops removal about sending
-this but of course not everyone here saw that. Let me know if I should
-resend the patches together with the cover letter.
-
-    Arnd
