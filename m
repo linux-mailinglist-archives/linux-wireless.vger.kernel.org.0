@@ -2,34 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88BD07C56B7
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 16:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F48D7C57B1
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 17:04:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234985AbjJKOYA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 10:24:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55516 "EHLO
+        id S232673AbjJKPEU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 11:04:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235072AbjJKODi (ORCPT
+        with ESMTP id S232415AbjJKPET (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 10:03:38 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 754F792;
-        Wed, 11 Oct 2023 07:03:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17310C433CC;
-        Wed, 11 Oct 2023 14:03:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697033004;
-        bh=zrhlLGL/7VohDIuN/EnFdfDCdV/hjo/fxSU8flcn0tg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fv1HVdZCtl1nJlrYvL4pbAyBWkP5ONV8qajJUP3MxqjnmH7ue9v7qW5IY/d5p+JX0
-         XzuLDOSvYdqyJqrMue4njz27bUrf3is+UQkG+0Q30EQsfZtTHlO3p+vWGTF9182BkG
-         UUZPGRKBvYwBTr5nY88nGPXcup+2wbUzlxEAQvEMiapopqvV58MnfdZ/sW10zJPlYl
-         E70dw4/UxSSM1nf7fdjyNjc8LI/n6v2crN/Rbnix/VMb6o8TlrAZtLo1t6rNB+Yq83
-         wlti2jF0kEbgmTnPqjaS6F5CjSxANi7pncq0av/3EA5s/UOfO5+eMuDlCeAIB06ZzP
-         aRvesvlAVww2Q==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     netdev@vger.kernel.org,
+        Wed, 11 Oct 2023 11:04:19 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAAF29D
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 08:04:16 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-31427ddd3fbso6506127f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 08:04:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1697036655; x=1697641455; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hRkqB8/peQlqSu9v9E/Jxgpb5iu6r7QHy0PIjTwaP3U=;
+        b=Wa/rr+qYC8sSKEtftymBPnBFWOwtAUwirmBF/93mEazjvXl182v0aK/83guW5UIg+3
+         LvIf0WO9xMZYUcWGqndZvFQyNv3fquN1seN1VZvwOeirw4vPCD7MDh12zjxaLqd9ffQv
+         hN1748m3vSN+fdR/RdIdpJuTpkvGYFb9zcEzQ5yh1s3quTAsF0YbklAEQZED/94QYLTb
+         0m6DI96wUlDwZ3MAWvcoUhHkTMbZKej9YJLJIma7++uCinn0aA865VUb8loQQtr96Ots
+         AcZBjmyijGPOuiqDGYB6aF/oV5RpLoPrOd+J8FCLK/Bwwq6otnAV9CeslfrBz0WZAJ9C
+         DpnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697036655; x=1697641455;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hRkqB8/peQlqSu9v9E/Jxgpb5iu6r7QHy0PIjTwaP3U=;
+        b=vDxq8uqtbUgGVKBWIQLo++7Ez82XlexUvJVXJn/xIYGEaDjqkicM5Y2J6Qsc+pLFek
+         C5teLBP/WbXgW3KeY/BagA7w0cbTKy3OpfA9eOnc3Z54OqAvHgldQPG2sDqmlRKW1pHe
+         IeCeHCjnm+9btv0o02ZU7/RxtEPq93v66di7zrhLHOJMQvs1lTfKAHAGJqlCBK3u1o/B
+         4hlXWRsRM7KIkGUVnPjNH5eAwyrrTbQl2q5fuqe/CJjw5LMxq+yhsAiy3bGri4SDIigq
+         0VDvoeYPvy8UjSfPxrH1aujnp+/cuRVed1yM6mNgTPWN7+qRtEHiKM1Aq6kqnjCSthUi
+         aknw==
+X-Gm-Message-State: AOJu0YyGr5rzDjzTxcxBMVAEb7l0mbKS7GQE4e2sNFvpJnTYEION/uZz
+        tb5iTck2YBPA5v3nZYPwi7FuDw==
+X-Google-Smtp-Source: AGHT+IFfZQ1SiRV7geQ0Uqaa1luLtMmhs2/HZDlMTol8OQRTChK4x+uxynd3PWFf8uF8nkr/44Pylg==
+X-Received: by 2002:a5d:548f:0:b0:31d:d48f:12a3 with SMTP id h15-20020a5d548f000000b0031dd48f12a3mr16620164wrv.43.1697036655189;
+        Wed, 11 Oct 2023 08:04:15 -0700 (PDT)
+Received: from localhost (host-213-179-129-39.customer.m-online.net. [213.179.129.39])
+        by smtp.gmail.com with ESMTPSA id f11-20020a5d50cb000000b00325c7295450sm15782616wrt.3.2023.10.11.08.04.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Oct 2023 08:04:14 -0700 (PDT)
+Date:   Wed, 11 Oct 2023 17:04:12 +0200
+From:   Jiri Pirko <jiri@resnulli.us>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-wireless@vger.kernel.org,
         Johannes Berg <johannes@sipsolutions.net>,
@@ -40,17 +63,16 @@ Cc:     netdev@vger.kernel.org,
         "David S . Miller" <davem@davemloft.net>,
         Rodolfo Zitellini <rwz@xhero.org>, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2 10/10] net: remove ndo_do_ioctl handler
-Date:   Wed, 11 Oct 2023 16:02:25 +0200
-Message-Id: <20231011140225.253106-10-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231011140225.253106-1-arnd@kernel.org>
+Subject: Re: [PATCH v2 01/10] appletalk: make localtalk and ppp support
+ conditional
+Message-ID: <ZSa5bIcISlvW3zo5@nanopsycho>
 References: <20231011140225.253106-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231011140225.253106-1-arnd@kernel.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,61 +80,5 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
 
-All of the references to the callback pointer are gone, so remove the
-pointer itself before we grow new references to it.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- Documentation/networking/netdevices.rst | 8 --------
- include/linux/netdevice.h               | 7 -------
- 2 files changed, 15 deletions(-)
-
-diff --git a/Documentation/networking/netdevices.rst b/Documentation/networking/netdevices.rst
-index 9e4cccb90b870..6f9b71c5d37b8 100644
---- a/Documentation/networking/netdevices.rst
-+++ b/Documentation/networking/netdevices.rst
-@@ -218,14 +218,6 @@ ndo_stop:
- 	Context: process
- 	Note: netif_running() is guaranteed false
- 
--ndo_do_ioctl:
--	Synchronization: rtnl_lock() semaphore.
--	Context: process
--
--        This is only called by network subsystems internally,
--        not by user space calling ioctl as it was in before
--        linux-5.14.
--
- ndo_siocbond:
-         Synchronization: rtnl_lock() semaphore.
-         Context: process
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index e070a4540fbaf..8d1cc8f195cb6 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -1121,11 +1121,6 @@ struct netdev_net_notifier {
-  * int (*ndo_validate_addr)(struct net_device *dev);
-  *	Test if Media Access Control address is valid for the device.
-  *
-- * int (*ndo_do_ioctl)(struct net_device *dev, struct ifreq *ifr, int cmd);
-- *	Old-style ioctl entry point. This is used internally by the
-- *	appletalk and ieee802154 subsystems but is no longer called by
-- *	the device ioctl handler.
-- *
-  * int (*ndo_siocbond)(struct net_device *dev, struct ifreq *ifr, int cmd);
-  *	Used by the bonding driver for its device specific ioctls:
-  *	SIOCBONDENSLAVE, SIOCBONDRELEASE, SIOCBONDSETHWADDR, SIOCBONDCHANGEACTIVE,
-@@ -1429,8 +1424,6 @@ struct net_device_ops {
- 	int			(*ndo_set_mac_address)(struct net_device *dev,
- 						       void *addr);
- 	int			(*ndo_validate_addr)(struct net_device *dev);
--	int			(*ndo_do_ioctl)(struct net_device *dev,
--					        struct ifreq *ifr, int cmd);
- 	int			(*ndo_eth_ioctl)(struct net_device *dev,
- 						 struct ifreq *ifr, int cmd);
- 	int			(*ndo_siocbond)(struct net_device *dev,
--- 
-2.39.2
-
+Could you provide a cover letter for the set please?
