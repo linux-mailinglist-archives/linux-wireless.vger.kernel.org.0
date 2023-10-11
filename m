@@ -2,103 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F385D7C4732
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 03:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9E417C48E8
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 06:53:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344546AbjJKBYh convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Oct 2023 21:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41220 "EHLO
+        id S1344777AbjJKExZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 00:53:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344484AbjJKBYg (ORCPT
+        with ESMTP id S229534AbjJKExZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Oct 2023 21:24:36 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9247092
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 18:24:32 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39B1OLHp83255901, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 39B1OLHp83255901
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 11 Oct 2023 09:24:21 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 11 Oct 2023 09:24:22 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Wed, 11 Oct 2023 09:24:21 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Wed, 11 Oct 2023 09:24:21 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] wifi: rtlwifi: use convenient list_count_nodes()
-Thread-Topic: [PATCH] wifi: rtlwifi: use convenient list_count_nodes()
-Thread-Index: AQHZ+3pZXFo0BoARxE+CsxYJLndNNrBDy8/Q
-Date:   Wed, 11 Oct 2023 01:24:21 +0000
-Message-ID: <cbbd8f38e9ef4e3dba415952cf466ee8@realtek.com>
-References: <20231010130353.30461-1-dmantipov@yandex.ru>
-In-Reply-To: <20231010130353.30461-1-dmantipov@yandex.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.25]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Wed, 11 Oct 2023 00:53:25 -0400
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7060E94
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 21:53:18 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net [IPv6:2a02:6b8:c00:2584:0:640:9f7a:0])
+        by forward102b.mail.yandex.net (Yandex) with ESMTP id E305360993;
+        Wed, 11 Oct 2023 07:53:15 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id ErV7pqNDdeA0-SJvCyZI0;
+        Wed, 11 Oct 2023 07:53:15 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1696999995; bh=StAW872blpzgQMdiGYJLukgGlBYRTrMPOUt9UDIO73o=;
+        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+        b=Rd5CDc9qnbQNWwaWe34L6jqYSdR9ME9y2dizLTwPxwXUpaUs0HFc84v9Y14mW5SI9
+         fzzVh2YddKxh9E0glqx0MglTCkUC3HEyyjLw8pwKmJAc+kj7YU6Y3S8cMBfWqoXbbD
+         5kokSMhJ2oWEX+EiEhkQgydWaYXghUm0y8mJy6MY=
+Authentication-Results: mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] [v2] wifi: rtlwifi: use convenient list_count_nodes()
+Date:   Wed, 11 Oct 2023 07:52:01 +0300
+Message-ID: <20231011045227.7989-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <cbbd8f38e9ef4e3dba415952cf466ee8@realtek.com>
+References: <cbbd8f38e9ef4e3dba415952cf466ee8@realtek.com>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Simplify 'rtl92ee_dm_common_info_self_update()',
+'rtl8723be_dm_common_info_self_update()', and
+'rtl8821ae_dm_common_info_self_update()' by using
+'list_count_nodes()'. Compile tested only.
 
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v2: drop redundant initializers (Ping-Ke Shih)
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c | 7 ++-----
+ drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c | 7 ++-----
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c | 6 ++----
+ 3 files changed, 6 insertions(+), 14 deletions(-)
 
-> -----Original Message-----
-> From: Dmitry Antipov <dmantipov@yandex.ru>
-> Sent: Tuesday, October 10, 2023 9:04 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; Dmitry Antipov <dmantipov@yandex.ru>
-> Subject: [PATCH] wifi: rtlwifi: use convenient list_count_nodes()
-> 
-> Simplify 'rtl92ee_dm_common_info_self_update()',
-> 'rtl8723be_dm_common_info_self_update()', and
-> 'rtl8821ae_dm_common_info_self_update()' by using
-> 'list_count_nodes()'. Compile tested only.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
->  drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c | 5 +----
->  drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c | 5 +----
->  drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c | 4 +---
->  3 files changed, 3 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-> index 997ff115b9ab..efd22b75c05f 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-> @@ -936,7 +936,6 @@ void rtl92ee_dm_init(struct ieee80211_hw *hw)
->  static void rtl92ee_dm_common_info_self_update(struct ieee80211_hw *hw)
->  {
->         struct rtl_priv *rtlpriv = rtl_priv(hw);
-> -       struct rtl_sta_info *drv_priv;
->         u8 cnt = 0;
-
-After 'cnt = list_count_nodes(...)', this initializer is not necessary.
-As well as other two cases. 
-
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
+index 997ff115b9ab..5a828a934fe9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
+@@ -936,8 +936,7 @@ void rtl92ee_dm_init(struct ieee80211_hw *hw)
+ static void rtl92ee_dm_common_info_self_update(struct ieee80211_hw *hw)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_sta_info *drv_priv;
+-	u8 cnt = 0;
++	u8 cnt;
+ 
+ 	rtlpriv->dm.one_entry_only = false;
+ 
+@@ -951,9 +950,7 @@ static void rtl92ee_dm_common_info_self_update(struct ieee80211_hw *hw)
+ 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_ADHOC ||
+ 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_MESH_POINT) {
+ 		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
+-		list_for_each_entry(drv_priv, &rtlpriv->entry_list, list) {
+-			cnt++;
+-		}
++		cnt = list_count_nodes(&rtlpriv->entry_list);
+ 		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
+ 
+ 		if (cnt == 1)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
+index c3c990cc032f..c53f95144812 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
+@@ -1210,8 +1210,7 @@ static void rtl8723be_dm_dynamic_atc_switch(struct ieee80211_hw *hw)
+ static void rtl8723be_dm_common_info_self_update(struct ieee80211_hw *hw)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u8 cnt = 0;
+-	struct rtl_sta_info *drv_priv;
++	u8 cnt;
+ 
+ 	rtlpriv->dm.one_entry_only = false;
+ 
+@@ -1225,9 +1224,7 @@ static void rtl8723be_dm_common_info_self_update(struct ieee80211_hw *hw)
+ 		rtlpriv->mac80211.opmode == NL80211_IFTYPE_ADHOC ||
+ 		rtlpriv->mac80211.opmode == NL80211_IFTYPE_MESH_POINT) {
+ 		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
+-		list_for_each_entry(drv_priv, &rtlpriv->entry_list, list) {
+-			cnt++;
+-		}
++		cnt = list_count_nodes(&rtlpriv->entry_list);
+ 		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
+ 
+ 		if (cnt == 1)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+index f3fe16798c59..76b5395539d0 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+@@ -827,8 +827,7 @@ static void rtl8821ae_dm_dig(struct ieee80211_hw *hw)
+ static void rtl8821ae_dm_common_info_self_update(struct ieee80211_hw *hw)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u8 cnt = 0;
+-	struct rtl_sta_info *drv_priv;
++	u8 cnt;
+ 
+ 	rtlpriv->dm.tx_rate = 0xff;
+ 
+@@ -844,8 +843,7 @@ static void rtl8821ae_dm_common_info_self_update(struct ieee80211_hw *hw)
+ 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_ADHOC ||
+ 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_MESH_POINT) {
+ 		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
+-		list_for_each_entry(drv_priv, &rtlpriv->entry_list, list)
+-			cnt++;
++		cnt = list_count_nodes(&rtlpriv->entry_list);
+ 		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
+ 
+ 		if (cnt == 1)
+-- 
+2.41.0
 
