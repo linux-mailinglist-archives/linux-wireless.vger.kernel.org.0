@@ -2,97 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BBB77C4AD9
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 08:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 371BF7C4B0E
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 08:59:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345542AbjJKGm4 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 02:42:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37140 "EHLO
+        id S1344641AbjJKG7O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 02:59:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345499AbjJKGmz (ORCPT
+        with ESMTP id S1344499AbjJKG7M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 02:42:55 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E17DA4;
-        Tue, 10 Oct 2023 23:42:54 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39B6gOcJ53664973, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 39B6gOcJ53664973
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 11 Oct 2023 14:42:24 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 11 Oct 2023 14:42:24 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 11 Oct 2023 14:42:24 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Wed, 11 Oct 2023 14:42:24 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Kees Cook <keescook@chromium.org>
-CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-        "trix@redhat.com" <trix@redhat.com>,
-        "nathan@kernel.org" <nathan@kernel.org>,
-        "ndesaulniers@google.com" <ndesaulniers@google.com>,
-        "gustavoars@kernel.org" <gustavoars@kernel.org>
-Subject: RE: [PATCH] wifi: rtw89: coex: Annotate struct rtw89_btc_btf_set_slot_table with __counted_by
-Thread-Topic: [PATCH] wifi: rtw89: coex: Annotate struct
- rtw89_btc_btf_set_slot_table with __counted_by
-Thread-Index: AQHZ+JIdINNFwhWCA0q/Xu1rquYi7LA9Aa0AgAQqFYCAAv5lMA==
-Date:   Wed, 11 Oct 2023 06:42:23 +0000
-Message-ID: <a47f01def02c4ccdb0d4ca3967ad7584@realtek.com>
-References: <20231006201715.work.239-kees@kernel.org>
- <4716f3c7bf3d34ea25229edd5250f5f0cff639d8.camel@realtek.com>
- <202310090953.B7CE5CF4B@keescook>
-In-Reply-To: <202310090953.B7CE5CF4B@keescook>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.25]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Wed, 11 Oct 2023 02:59:12 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEFA9C9;
+        Tue, 10 Oct 2023 23:59:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=4M6imKxtdJE19FbvYIuupVV35F4/3W3m3pR3DRZhbLQ=;
+        t=1697007550; x=1698217150; b=UWDpGBg1tsJMhyNGX8kCz0x1YNEUguz/lI4Ub5xE1fkfaiF
+        yM2CuujxCdev4q1uyjXHH2YGIK3JAaNJWSm2uUxmssb6gMKe6ruzMiVIejk0p2PwVOzl3kkhM+xRm
+        8Z8YN5+fVwHMM+KhpFtYHqPMhxPZsc2DfqCpkdkayzcrl4tnz5eXbYzOjmyGbZweDx/2JUWHLVEjY
+        fSC4vapGP+0Unkgj2x8wvclwSbvA9kklJeDQP14Ubff7VZWX2C5d7pFvZGvSLuBinE8YR2iHHr3M/
+        aegy5v9RJGndnGZYKi6AKSTbhakiMvmV+WZH0b2IMetzojIGO8UqkE0JJAt+bmkA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qqTBR-00000001d2I-1HSW;
+        Wed, 11 Oct 2023 08:59:05 +0200
+Message-ID: <844b47b618a2ef91f6dcfe2cb88ccd92ad278a6a.camel@sipsolutions.net>
+Subject: Re: [syzbot] [wireless?] [net?] memory leak in ieee80211_add_key
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     syzbot <syzbot+c7f9b4282ce793ea2456@syzkaller.appspotmail.com>,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Date:   Wed, 11 Oct 2023 08:59:04 +0200
+In-Reply-To: <000000000000230b04060765c8d0@google.com>
+References: <000000000000230b04060765c8d0@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SORTED_RECIPS,SPF_HELO_PASS,
+        SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kees,
+On Tue, 2023-10-10 at 17:19 -0700, syzbot wrote:
+> Hello,
+>=20
+> syzbot found the following issue on:
+>=20
+> HEAD commit:    af95dc6fdc25 Merge tag 'pci-v6.6-fixes-2' of git://git.ke=
+r..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D111f914168000=
+0
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D92fc678f64486=
+a09
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dc7f9b4282ce793e=
+a2456
+> compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for D=
+ebian) 2.40
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D12874a7e680=
+000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D17eba91168000=
+0
+>=20
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/8bc195198bd8/dis=
+k-af95dc6f.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/769216d795c4/vmlinu=
+x-af95dc6f.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/8ceb9e44a618/b=
+zImage-af95dc6f.xz
+>=20
+> IMPORTANT: if you fix the issue, please add the following tag to the comm=
+it:
+> Reported-by: syzbot+c7f9b4282ce793ea2456@syzkaller.appspotmail.com
+>=20
+> executing program
+> executing program
+> BUG: memory leak
+> unreferenced object 0xffff8881419b3000 (size 1024):
+>   comm "syz-executor294", pid 5023, jiffies 4294944772 (age 13.090s)
+>   hex dump (first 32 bytes):
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 18 30 9b 41 81 88 ff ff  .........0.A....
+>   backtrace:
+>     [<ffffffff8157491b>] __do_kmalloc_node mm/slab_common.c:1022 [inline]
+>     [<ffffffff8157491b>] __kmalloc+0x4b/0x150 mm/slab_common.c:1036
+>     [<ffffffff848575dc>] kmalloc include/linux/slab.h:603 [inline]
+>     [<ffffffff848575dc>] kzalloc include/linux/slab.h:720 [inline]
+>     [<ffffffff848575dc>] ieee80211_key_alloc+0x5c/0x590 net/mac80211/key.=
+c:603
+>     [<ffffffff8482b0d2>] ieee80211_add_key+0x162/0x540 net/mac80211/cfg.c=
+:500
 
-> -----Original Message-----
-> From: Kees Cook <keescook@chromium.org>
-> Sent: Tuesday, October 10, 2023 12:56 AM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: kvalo@kernel.org; llvm@lists.linux.dev; linux-kernel@vger.kernel.org; linux-wireless@vger.kernel.org;
-> linux-hardening@vger.kernel.org; trix@redhat.com; nathan@kernel.org; ndesaulniers@google.com;
-> gustavoars@kernel.org
-> Subject: Re: [PATCH] wifi: rtw89: coex: Annotate struct rtw89_btc_btf_set_slot_table with __counted_by
-> 
-> On Sat, Oct 07, 2023 at 01:20:43AM +0000, Ping-Ke Shih wrote:
-> > On Fri, 2023-10-06 at 13:17 -0700, Kees Cook wrote:
-> >
-> > So, NACK this patch. I will prepare one or two patches for them next week.
-> 
-> Ah-ha; thank you!
+I think already fixed by
+https://patchwork.kernel.org/project/linux-wireless/patch/20231005210917.13=
+977-2-johannes@sipsolutions.net/
+though the patch isn't in the tree yet - will take care of it later
+today (I hope).
 
-I have sent two patches [1]. Please help to review and Cc people if needed. 
-
-[1] https://lore.kernel.org/linux-wireless/20231011063725.25276-1-pkshih@realtek.com/T/#t
-
-
-
+johannes
