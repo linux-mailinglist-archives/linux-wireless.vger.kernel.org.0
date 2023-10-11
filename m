@@ -2,80 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29D5E7C57C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 17:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D9B27C586B
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 17:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232684AbjJKPJ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 11:09:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48262 "EHLO
+        id S234961AbjJKPq6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 11:46:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232716AbjJKPJ6 (ORCPT
+        with ESMTP id S232739AbjJKPq5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 11:09:58 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB17A4;
-        Wed, 11 Oct 2023 08:09:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B52FC433C9;
-        Wed, 11 Oct 2023 15:09:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697036996;
-        bh=NK7/zcAL72Zfq6YQF/vUxdXthgBdgQPxmKzGhiyQLLU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Xb6qwA4CNigU6EZ/vw5T4xI8CNKktxyPfYHFobP8vYN2PS2b1eMTa9KzZKmWYJkoe
-         pxLr/TfiXbtGtSv4Ny3qNUk0mGT1kUDVTUtoM3aAUACYa8LrGH2Wh9gRXuPsfdyMzu
-         wdGvEANVijWWQy5xhw0vLEI84yrhOKDgZZbu6yvhb6C+GHmDJDZ+3J+YB5MF+JqQvV
-         wdVpy4pJU+N6cQUD6oyaWVmu2nSS7rcfV6qSIHvCQZn3s5SPTNwTl2W4zvbZC+DJnc
-         HPe03ERpdteJ8l7louBWQScthVQJhkzQxtKNd9oPhGB/7XODTLKlchESt+mK7MRLhO
-         Llduy5PyXKIMA==
-Date:   Wed, 11 Oct 2023 08:09:55 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Pavel Machek <pavel@ucw.cz>,
-        "David S. Miller" <davem@davemloft.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-Message-ID: <20231011080955.1beeb010@kernel.org>
-In-Reply-To: <87r0m1fwg9.fsf@kernel.org>
-References: <20231010155444.858483-1-arnd@kernel.org>
-        <2023101051-unmasked-cleaver-79b3@gregkh>
-        <87y1g94szz.fsf@kernel.org>
-        <2023101139-pyromania-game-2237@gregkh>
-        <87r0m1fwg9.fsf@kernel.org>
+        Wed, 11 Oct 2023 11:46:57 -0400
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [178.154.239.83])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ED0B8F
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 08:46:54 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:47bd:0:640:2492:0])
+        by forward100a.mail.yandex.net (Yandex) with ESMTP id 17DEC429D7;
+        Wed, 11 Oct 2023 18:46:52 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id pkg2t9WDf8c0-49q1YBQE;
+        Wed, 11 Oct 2023 18:46:51 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1697039211; bh=mSXb3zdvuoyrctJTsAkGHz98ViUElZdLI+UiDcHVd4o=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=ZFukbZUGsTxLJGSsnQ3gw2lrbdOJz2pyAj7DUAe8IFdJnCJQaR+5cb4rIDCEOpaUA
+         2ddbV7sLQbo0lKHaciEdK5H7IyWRSyIg6atTiLAda2YkzEvp/iAudvhuxIyWydnnCw
+         UAJntvczBaXS3hDXX9v3994jLtKYmdrZsbvYlNvM=
+Authentication-Results: mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/2] wifi: rtlwifi: cleanup struct rtl_ps_ctl
+Date:   Wed, 11 Oct 2023 18:44:36 +0300
+Message-ID: <20231011154442.52457-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 11 Oct 2023 10:29:58 +0300 Kalle Valo wrote:
-> > No matter what the time frame is, it's never going to line up with all
-> > distros, or catch everyone properly.  
-> 
-> Yeah, that's true.
-> 
-> > I recommend, just delete all the ones you feel are not being used, in a
-> > patch that removes them one-by-one, so that it is trivial to revert if
-> > someone shows up and says "hey, my device stopped working!" a few years
-> > in the future.  
-> 
-> I'm starting to lean towards this as well. We have talked about this for
-> so long now but no practical solution ever found so maybe just bite the
-> bullet finally. What do others think?
+Remove set but otherwise unused 'sleep_ms', 'last_action',
+and 'last_slept' members of 'struct rtl_ps_ctl' (these
+seems to be a leftovers from some older code) and adjust
+'rtl_swlps_wq_callback()' accordingly.
 
-FWIW in Ethernet we do what Greg says. Delete it, if someone complains
-we revert back in. The revert did actually happen once, it was pretty
-painless (Greg even took it into stable tree, IIRC).
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/realtek/rtlwifi/ps.c   | 10 ----------
+ drivers/net/wireless/realtek/rtlwifi/wifi.h |  3 ---
+ 2 files changed, 13 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
+index 629c03271bde..ba61fcec9fae 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/ps.c
++++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
+@@ -688,16 +688,6 @@ void rtl_swlps_wq_callback(struct work_struct *work)
+ 	/* we can sleep after ps null send ok */
+ 	if (rtlpriv->psc.state_inap) {
+ 		rtl_swlps_rf_sleep(hw);
+-
+-		if (rtlpriv->psc.state && !ps) {
+-			rtlpriv->psc.sleep_ms = jiffies_to_msecs(jiffies -
+-						 rtlpriv->psc.last_action);
+-		}
+-
+-		if (ps)
+-			rtlpriv->psc.last_slept = jiffies;
+-
+-		rtlpriv->psc.last_action = jiffies;
+ 		rtlpriv->psc.state = ps;
+ 	}
+ }
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 47b4685b6d24..cabf6c82a639 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -2037,14 +2037,11 @@ struct rtl_ps_ctl {
+ 	bool multi_buffered;
+ 	u16 nullfunc_seq;
+ 	unsigned int dtim_counter;
+-	unsigned int sleep_ms;
+ 	unsigned long last_sleep_jiffies;
+ 	unsigned long last_awake_jiffies;
+ 	unsigned long last_delaylps_stamp_jiffies;
+ 	unsigned long last_dtim;
+ 	unsigned long last_beacon;
+-	unsigned long last_action;
+-	unsigned long last_slept;
+ 
+ 	/*For P2P PS */
+ 	struct rtl_p2p_ps_info p2p_ps_info;
+-- 
+2.41.0
+
