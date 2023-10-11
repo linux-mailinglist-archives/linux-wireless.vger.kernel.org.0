@@ -2,142 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9E417C48E8
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 06:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E20B37C48EA
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 07:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344777AbjJKExZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 00:53:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49082 "EHLO
+        id S1345026AbjJKFA1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 01:00:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjJKExZ (ORCPT
+        with ESMTP id S229534AbjJKFAZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 00:53:25 -0400
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7060E94
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 21:53:18 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net [IPv6:2a02:6b8:c00:2584:0:640:9f7a:0])
-        by forward102b.mail.yandex.net (Yandex) with ESMTP id E305360993;
-        Wed, 11 Oct 2023 07:53:15 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id ErV7pqNDdeA0-SJvCyZI0;
-        Wed, 11 Oct 2023 07:53:15 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1696999995; bh=StAW872blpzgQMdiGYJLukgGlBYRTrMPOUt9UDIO73o=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=Rd5CDc9qnbQNWwaWe34L6jqYSdR9ME9y2dizLTwPxwXUpaUs0HFc84v9Y14mW5SI9
-         fzzVh2YddKxh9E0glqx0MglTCkUC3HEyyjLw8pwKmJAc+kj7YU6Y3S8cMBfWqoXbbD
-         5kokSMhJ2oWEX+EiEhkQgydWaYXghUm0y8mJy6MY=
-Authentication-Results: mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] [v2] wifi: rtlwifi: use convenient list_count_nodes()
-Date:   Wed, 11 Oct 2023 07:52:01 +0300
-Message-ID: <20231011045227.7989-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <cbbd8f38e9ef4e3dba415952cf466ee8@realtek.com>
-References: <cbbd8f38e9ef4e3dba415952cf466ee8@realtek.com>
+        Wed, 11 Oct 2023 01:00:25 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87B4E91
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Oct 2023 22:00:24 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39B3iRjU024160;
+        Wed, 11 Oct 2023 05:00:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=GJX3fHYAIyq5rxahShgwddeQ9Rp96eEBAU0kaVpTujc=;
+ b=NbQVZTDnozCJ5zFkV/fRLCVarHlwlFKMeqM3jZ41ch5LG9jMCHQPIGuXcLIbFXceBBpz
+ t3HxHqNb3SAHhZiAhumgMe8NpDDNIdaFOwPzzI4anJRd0QuwTAYsN5PBY9wo1E2w6k4F
+ gLJBvEwl33PF5sM7SAedoYxZrZCECezyoNt1lJzzmb+E+UPfz1pprNydlEoJjzpbdaXM
+ QsjEL0FJZmnMjJDsg+ihVk398qUWwK7Wai/xtOFM+warqnIbdgNOx4Y1QEJsmQQi7XVu
+ hkweedUV6oND3e/EGe3qgebV+8h2sZ7RCKbOJDXTEbeK6VSxObAzbGnT9DgNPkKD9PmV IA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tmxjpjvm7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 11 Oct 2023 05:00:19 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39B50IK0025702
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 11 Oct 2023 05:00:18 GMT
+Received: from lingbok-Latitude-E5440.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Tue, 10 Oct 2023 22:00:16 -0700
+From:   Lingbo Kong <quic_lingbok@quicinc.com>
+To:     <ath12k@lists.infradead.org>, <quic_jjohnson@quicinc.com>
+CC:     <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
+Subject: [PATCH v6 0/4] wifi: ath12k: implement some functionalities through reading ACPI Table
+Date:   Wed, 11 Oct 2023 01:00:00 -0400
+Message-ID: <20231011050004.423413-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: QAwEy8YKm2h9ALgNgavo_lzHsrV8AAjT
+X-Proofpoint-ORIG-GUID: QAwEy8YKm2h9ALgNgavo_lzHsrV8AAjT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-10_19,2023-10-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ phishscore=0 priorityscore=1501 suspectscore=0 clxscore=1015
+ impostorscore=0 spamscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=635
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310110044
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Simplify 'rtl92ee_dm_common_info_self_update()',
-'rtl8723be_dm_common_info_self_update()', and
-'rtl8821ae_dm_common_info_self_update()' by using
-'list_count_nodes()'. Compile tested only.
+Through reading ACPI table, implement Time-Average-SAR(TAS), BIOS SAR,
+configuration of CCA threshold and band edge channel power functionalities.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v2: drop redundant initializers (Ping-Ke Shih)
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c | 7 ++-----
- drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c | 7 ++-----
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c | 6 ++----
- 3 files changed, 6 insertions(+), 14 deletions(-)
+v6:
+1.remove code that is not called
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-index 997ff115b9ab..5a828a934fe9 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-@@ -936,8 +936,7 @@ void rtl92ee_dm_init(struct ieee80211_hw *hw)
- static void rtl92ee_dm_common_info_self_update(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	struct rtl_sta_info *drv_priv;
--	u8 cnt = 0;
-+	u8 cnt;
- 
- 	rtlpriv->dm.one_entry_only = false;
- 
-@@ -951,9 +950,7 @@ static void rtl92ee_dm_common_info_self_update(struct ieee80211_hw *hw)
- 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_ADHOC ||
- 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_MESH_POINT) {
- 		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
--		list_for_each_entry(drv_priv, &rtlpriv->entry_list, list) {
--			cnt++;
--		}
-+		cnt = list_count_nodes(&rtlpriv->entry_list);
- 		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
- 
- 		if (cnt == 1)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
-index c3c990cc032f..c53f95144812 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
-@@ -1210,8 +1210,7 @@ static void rtl8723be_dm_dynamic_atc_switch(struct ieee80211_hw *hw)
- static void rtl8723be_dm_common_info_self_update(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	u8 cnt = 0;
--	struct rtl_sta_info *drv_priv;
-+	u8 cnt;
- 
- 	rtlpriv->dm.one_entry_only = false;
- 
-@@ -1225,9 +1224,7 @@ static void rtl8723be_dm_common_info_self_update(struct ieee80211_hw *hw)
- 		rtlpriv->mac80211.opmode == NL80211_IFTYPE_ADHOC ||
- 		rtlpriv->mac80211.opmode == NL80211_IFTYPE_MESH_POINT) {
- 		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
--		list_for_each_entry(drv_priv, &rtlpriv->entry_list, list) {
--			cnt++;
--		}
-+		cnt = list_count_nodes(&rtlpriv->entry_list);
- 		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
- 
- 		if (cnt == 1)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
-index f3fe16798c59..76b5395539d0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
-@@ -827,8 +827,7 @@ static void rtl8821ae_dm_dig(struct ieee80211_hw *hw)
- static void rtl8821ae_dm_common_info_self_update(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	u8 cnt = 0;
--	struct rtl_sta_info *drv_priv;
-+	u8 cnt;
- 
- 	rtlpriv->dm.tx_rate = 0xff;
- 
-@@ -844,8 +843,7 @@ static void rtl8821ae_dm_common_info_self_update(struct ieee80211_hw *hw)
- 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_ADHOC ||
- 	    rtlpriv->mac80211.opmode == NL80211_IFTYPE_MESH_POINT) {
- 		spin_lock_bh(&rtlpriv->locks.entry_list_lock);
--		list_for_each_entry(drv_priv, &rtlpriv->entry_list, list)
--			cnt++;
-+		cnt = list_count_nodes(&rtlpriv->entry_list);
- 		spin_unlock_bh(&rtlpriv->locks.entry_list_lock);
- 
- 		if (cnt == 1)
+v5:
+1.rebase to the latest tag
+
+v4:
+1.revise commit log using imperative voice
+2.delete guid_is_null()
+
+v3:
+1.remove unnecessary cpu_to_le32()
+2.adjust the order of the macros
+3.apply jeff's advice
+
+v2:
+1.put <linux/acpi.h> in the include guard
+
+Lingbo Kong (4):
+  wifi: ath12k: add TAS capability for WCN7850
+  wifi: ath12k: add BIOS SAR capability for WCN7850
+  wifi: ath12k: add adjust configuration of CCA threshold value for
+    WCN7850
+  wifi: ath12k: add set band edge channel power for WCN7850
+
+ drivers/net/wireless/ath/ath12k/Makefile |   3 +-
+ drivers/net/wireless/ath/ath12k/acpi.c   | 358 +++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/acpi.h   |  60 ++++
+ drivers/net/wireless/ath/ath12k/core.c   |   6 +
+ drivers/net/wireless/ath/ath12k/core.h   |  13 +
+ drivers/net/wireless/ath/ath12k/hw.c     |  10 +
+ drivers/net/wireless/ath/ath12k/hw.h     |   4 +-
+ drivers/net/wireless/ath/ath12k/pci.c    |   6 +
+ drivers/net/wireless/ath/ath12k/wmi.c    | 252 ++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h    |  47 ++-
+ 10 files changed, 756 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/acpi.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/acpi.h
+
+
+base-commit: 1424328125660281e749480357c7eeda839c144e
 -- 
-2.41.0
+2.34.1
 
