@@ -2,58 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 963D17C6ACA
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 12:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D82357C6B1A
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 12:28:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347132AbjJLKRp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 06:17:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57428 "EHLO
+        id S1377884AbjJLK2I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 06:28:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347124AbjJLKRo (ORCPT
+        with ESMTP id S1377922AbjJLK2H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 06:17:44 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B71BECA
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 03:17:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697105862; x=1728641862;
-  h=date:from:to:cc:subject:message-id;
-  bh=YZrAZTGRin7SlnKJkdY24uoyhisnuqzJv2dRNjPuoNk=;
-  b=a+0sJ3cf9WYqhzHS6VwJRtJU1giEf80PJcmifH+L49jbbMt5BRPIQrHw
-   qDOcpy5NharJAmKnqI0JuOO9y+2CZhYRVjgnqQB/r3nOTHd8Qr04GeKaX
-   FFshMHiGeZtkH0h+DsCaGD431a2H7iSGbZv+u1iWepEutSN4FKK+FaZCD
-   a/gvh591bRlkPAa5Dn9YfUVxteqkaOy2ZIFC/hJviWgavBe33Eyl3Q3JP
-   zk2h4UTYBG7cEes0twBXAotB3dtcC2xJJIEvWGNWcrDKfLeLNESoLmEFJ
-   kK5cjZVJ0cXXYVGgjxXXDrOtNGOeQxUbpWelhQY6qTf+h6LhQH2ULamdE
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="364252422"
-X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
-   d="scan'208";a="364252422"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 03:17:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="820082595"
-X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
-   d="scan'208";a="820082595"
-Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 12 Oct 2023 03:17:41 -0700
-Received: from kbuild by f64821696465 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qqsl9-0003Mr-0H;
-        Thu, 12 Oct 2023 10:17:39 +0000
-Date:   Thu, 12 Oct 2023 18:17:07 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 62d19b35808816dc2bdf5031e5401230f6a915ba
-Message-ID: <202310121803.54t6Apla-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+        Thu, 12 Oct 2023 06:28:07 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D862C90;
+        Thu, 12 Oct 2023 03:28:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955BFC433C8;
+        Thu, 12 Oct 2023 10:28:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697106483;
+        bh=FbfTb532UtefkAymkh2mZnU5Xx3DDUSbd8sYKfSFdGY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=nHNCHhP6wfFh80mXpe0gyuhhSqhByBP9qUEcOutOzvlP1cvTxzMxajie1GblmH0tE
+         3sLL9pXiW4F2LU/tR+t9LwvcCTSqLFqmxLGEmokk08Q7c9dVE43ZBZ1tbJubfNLYyq
+         zw0dm8+x5G/3f42m4NEX49sNiol2aNzcSbBSg5J9nHzzoyNuB+5o0pZ9ljjMOV1kQk
+         Y59Siwik74qPOsbh9CE0GouggBeG0O9cTle9PhObgwpD4CJqTSKVKLLvsGthmuiNqz
+         msbqJCraosSs1eOP087Cl4YQyEMObqyX4ndk3tg2S0qmRtdq8SmURvXH8srqeOEuvJ
+         ojfY8FXP+1U3Q==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Dan Carpenter <dan.carpenter@linaro.org>
+Cc:     oe-kbuild@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
+        lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475
+ mt76x02_set_key() warn: variable dereferenced before check 'key' (see line
+ 415)
+References: <77fee326-963a-40eb-80c9-2788a9ff9c22@kadam.mountain>
+Date:   Thu, 12 Oct 2023 13:27:59 +0300
+In-Reply-To: <77fee326-963a-40eb-80c9-2788a9ff9c22@kadam.mountain> (Dan
+        Carpenter's message of "Thu, 12 Oct 2023 09:40:39 +0300")
+Message-ID: <871qe03zkg.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,180 +53,116 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 62d19b35808816dc2bdf5031e5401230f6a915ba  wifi: brcmfmac: fweh: Add __counted_by for struct brcmf_fweh_queue_item and use struct_size()
+(Adding linux-wireless, full report below.)
 
-elapsed time: 1459m
+Dan Carpenter <dan.carpenter@linaro.org> writes:
 
-configs tested: 161
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                      axs103_smp_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231011   gcc  
-arc                   randconfig-001-20231012   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                         orion5x_defconfig   clang
-arm                   randconfig-001-20231011   gcc  
-arm                   randconfig-001-20231012   gcc  
-arm                         wpcm450_defconfig   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20231011   gcc  
-i386         buildonly-randconfig-002-20231011   gcc  
-i386         buildonly-randconfig-003-20231011   gcc  
-i386         buildonly-randconfig-004-20231011   gcc  
-i386         buildonly-randconfig-005-20231011   gcc  
-i386         buildonly-randconfig-006-20231011   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231011   gcc  
-i386                  randconfig-001-20231012   gcc  
-i386                  randconfig-002-20231011   gcc  
-i386                  randconfig-002-20231012   gcc  
-i386                  randconfig-003-20231011   gcc  
-i386                  randconfig-003-20231012   gcc  
-i386                  randconfig-004-20231011   gcc  
-i386                  randconfig-004-20231012   gcc  
-i386                  randconfig-005-20231011   gcc  
-i386                  randconfig-005-20231012   gcc  
-i386                  randconfig-006-20231011   gcc  
-i386                  randconfig-006-20231012   gcc  
-i386                  randconfig-011-20231011   gcc  
-i386                  randconfig-012-20231011   gcc  
-i386                  randconfig-013-20231011   gcc  
-i386                  randconfig-014-20231011   gcc  
-i386                  randconfig-015-20231011   gcc  
-i386                  randconfig-016-20231011   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231011   gcc  
-loongarch             randconfig-001-20231012   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      loongson3_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                         alldefconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                      pcm030_defconfig   gcc  
-powerpc                     tqm8560_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20231011   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231011   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                         apsh4a3a_defconfig   gcc  
-sh                                  defconfig   gcc  
-sh                ecovec24-romimage_defconfig   gcc  
-sh                        edosk7705_defconfig   gcc  
-sh                           se7750_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231012   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20231011   gcc  
-x86_64       buildonly-randconfig-001-20231012   gcc  
-x86_64       buildonly-randconfig-002-20231011   gcc  
-x86_64       buildonly-randconfig-002-20231012   gcc  
-x86_64       buildonly-randconfig-003-20231011   gcc  
-x86_64       buildonly-randconfig-003-20231012   gcc  
-x86_64       buildonly-randconfig-004-20231011   gcc  
-x86_64       buildonly-randconfig-004-20231012   gcc  
-x86_64       buildonly-randconfig-005-20231011   gcc  
-x86_64       buildonly-randconfig-005-20231012   gcc  
-x86_64       buildonly-randconfig-006-20231011   gcc  
-x86_64       buildonly-randconfig-006-20231012   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20231011   gcc  
-x86_64                randconfig-002-20231011   gcc  
-x86_64                randconfig-003-20231011   gcc  
-x86_64                randconfig-004-20231011   gcc  
-x86_64                randconfig-005-20231011   gcc  
-x86_64                randconfig-006-20231011   gcc  
-x86_64                randconfig-011-20231011   gcc  
-x86_64                randconfig-012-20231011   gcc  
-x86_64                randconfig-013-20231011   gcc  
-x86_64                randconfig-014-20231011   gcc  
-x86_64                randconfig-015-20231011   gcc  
-x86_64                randconfig-016-20231011   gcc  
-x86_64                randconfig-071-20231011   gcc  
-x86_64                randconfig-072-20231011   gcc  
-x86_64                randconfig-073-20231011   gcc  
-x86_64                randconfig-074-20231011   gcc  
-x86_64                randconfig-075-20231011   gcc  
-x86_64                randconfig-076-20231011   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                  cadence_csp_defconfig   gcc  
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> head:   401644852d0b2a278811de38081be23f74b5bb04
+> commit: e6db67fa871dee37d22701daba806bfcd4d9df49 wifi: mt76: ignore key disable commands
+> config: i386-randconfig-141-20231011 (https://download.01.org/0day-ci/archive/20231012/202310121455.LwR349tb-lkp@intel.com/config)
+> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> reproduce: (https://download.01.org/0day-ci/archive/20231012/202310121455.LwR349tb-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> | Closes: https://lore.kernel.org/r/202310121455.LwR349tb-lkp@intel.com/
+>
+> smatch warnings:
+> drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475 mt76x02_set_key() warn: variable dereferenced before check 'key' (see line 415)
+>
+> vim +/key +475 drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+>
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  407  int mt76x02_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  408  		    struct ieee80211_vif *vif, struct ieee80211_sta *sta,
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  409  		    struct ieee80211_key_conf *key)
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  410  {
+> d87cf75f111183 Lorenzo Bianconi  2018-10-07  411  	struct mt76x02_dev *dev = hw->priv;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  412  	struct mt76x02_vif *mvif = (struct mt76x02_vif *)vif->drv_priv;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  413  	struct mt76x02_sta *msta;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  414  	struct mt76_wcid *wcid;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @415  	int idx = key->keyidx;
+>                                                                   ^^^^^^^^^^^
+> Dereference
+>
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  416  	int ret;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  417  
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  418  	/* fall back to sw encryption for unsupported ciphers */
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  419  	switch (key->cipher) {
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  420  	case WLAN_CIPHER_SUITE_WEP40:
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  421  	case WLAN_CIPHER_SUITE_WEP104:
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  422  	case WLAN_CIPHER_SUITE_TKIP:
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  423  	case WLAN_CIPHER_SUITE_CCMP:
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  424  		break;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  425  	default:
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  426  		return -EOPNOTSUPP;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  427  	}
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  428  
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  429  	/*
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  430  	 * The hardware does not support per-STA RX GTK, fall back
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  431  	 * to software mode for these.
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  432  	 */
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  433  	if ((vif->type == NL80211_IFTYPE_ADHOC ||
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  434  	     vif->type == NL80211_IFTYPE_MESH_POINT) &&
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  435  	    (key->cipher == WLAN_CIPHER_SUITE_TKIP ||
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  436  	     key->cipher == WLAN_CIPHER_SUITE_CCMP) &&
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  437  	    !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  438  		return -EOPNOTSUPP;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  439  
+> b98558e2529986 Stanislaw Gruszka 2019-03-19  440  	/*
+> b98558e2529986 Stanislaw Gruszka 2019-03-19  441  	 * In USB AP mode, broadcast/multicast frames are setup in beacon
+> b98558e2529986 Stanislaw Gruszka 2019-03-19  442  	 * data registers and sent via HW beacons engine, they require to
+> b98558e2529986 Stanislaw Gruszka 2019-03-19  443  	 * be already encrypted.
+> b98558e2529986 Stanislaw Gruszka 2019-03-19  444  	 */
+> 61c51a74a4e586 Lorenzo Bianconi  2019-10-29  445  	if (mt76_is_usb(&dev->mt76) &&
+> b98558e2529986 Stanislaw Gruszka 2019-03-19  446  	    vif->type == NL80211_IFTYPE_AP &&
+> b98558e2529986 Stanislaw Gruszka 2019-03-19  447  	    !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+> b98558e2529986 Stanislaw Gruszka 2019-03-19  448  		return -EOPNOTSUPP;
+> b98558e2529986 Stanislaw Gruszka 2019-03-19  449  
+> 4b36cc6b390f18 David Bauer       2021-02-07  450  	/* MT76x0 GTK offloading does not work with more than one VIF */
+> 4b36cc6b390f18 David Bauer       2021-02-07  451  	if (is_mt76x0(dev) && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+> 4b36cc6b390f18 David Bauer       2021-02-07  452  		return -EOPNOTSUPP;
+> 4b36cc6b390f18 David Bauer       2021-02-07  453  
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  454  	msta = sta ? (struct mt76x02_sta *)sta->drv_priv : NULL;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  455  	wcid = msta ? &msta->wcid : &mvif->group_wcid;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  456  
+> e6db67fa871dee Felix Fietkau     2023-03-30  457  	if (cmd != SET_KEY) {
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  458  		if (idx == wcid->hw_key_idx) {
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  459  			wcid->hw_key_idx = -1;
+> f2f6a47b504b8f Felix Fietkau     2019-01-25  460  			wcid->sw_iv = false;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  461  		}
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  462  
+> e6db67fa871dee Felix Fietkau     2023-03-30  463  		return 0;
+> e6db67fa871dee Felix Fietkau     2023-03-30  464  	}
+> e6db67fa871dee Felix Fietkau     2023-03-30  465  
+> e6db67fa871dee Felix Fietkau     2023-03-30  466  	key->hw_key_idx = wcid->idx;
+> e6db67fa871dee Felix Fietkau     2023-03-30  467  	wcid->hw_key_idx = idx;
+> e6db67fa871dee Felix Fietkau     2023-03-30  468  	if (key->flags & IEEE80211_KEY_FLAG_RX_MGMT) {
+> e6db67fa871dee Felix Fietkau     2023-03-30  469  		key->flags |= IEEE80211_KEY_FLAG_SW_MGMT_TX;
+> e6db67fa871dee Felix Fietkau     2023-03-30  470  		wcid->sw_iv = true;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  471  	}
+> d87cf75f111183 Lorenzo Bianconi  2018-10-07  472  	mt76_wcid_key_setup(&dev->mt76, wcid, key);
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  473  
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  474  	if (!msta) {
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @475  		if (key || wcid->hw_key_idx == idx) {
+>                                                                     ^^^
+> Check for NULL.  I think "key" can't be NULL so this check is always
+> true.  The check can be removed and the code pulled in an tab.
+>
+> 8d66af49a3db9a Lorenzo Bianconi  2018-10-07  476  			ret = mt76x02_mac_wcid_set_key(dev, wcid->idx, key);
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  477  			if (ret)
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  478  				return ret;
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  479  		}
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  480  
+> 8d66af49a3db9a Lorenzo Bianconi  2018-10-07  481  		return mt76x02_mac_shared_key_setup(dev, mvif->idx, idx, key);
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  482  	}
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  483  
+> 8d66af49a3db9a Lorenzo Bianconi  2018-10-07  484  	return mt76x02_mac_wcid_set_key(dev, msta->wcid.idx, key);
+> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  485  }
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
