@@ -2,188 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A2E17C69E6
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 11:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F33A27C6A7D
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 12:08:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235582AbjJLJn2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 05:43:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59226 "EHLO
+        id S235645AbjJLKIl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 06:08:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235513AbjJLJn0 (ORCPT
+        with ESMTP id S234179AbjJLKIj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 05:43:26 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5A04B7
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 02:43:24 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-5041bb9ce51so1064532e87.1
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 02:43:24 -0700 (PDT)
+        Thu, 12 Oct 2023 06:08:39 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665E0C6;
+        Thu, 12 Oct 2023 03:08:37 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-323ef9a8b59so736704f8f.3;
+        Thu, 12 Oct 2023 03:08:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697103803; x=1697708603; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ev4LIOcPBHb3dZB/MpdIQpGNibYTwjPMmscB5eDijmM=;
-        b=tKdHXeDLNx0Zpro8BJZ4zHToWiPPwmG78ldbA2ajRaVNYTXFXBoi4R+aBx4KiWxQ3U
-         ZTbzHzbug2zh1Huvhf10AIjno2xJWei4o5hTlilfG/k3YsQiyCOaTLSjbgZUDnbR77my
-         qzSUZvJYEPAAlJWYH6JoyvTpHFpzJifPmKOSl6IAK6RkA0VEQnILBviBfILEnXPJUx6G
-         SIMg7wq35cctGCvejXi7EifD2I1P9cxaIKDbGWDDmWxV/2LnZWOj9dTfj+wmuyPP/JKu
-         kID556EZ9/cWSbc39LuUY5iXdUywZs7H3usN4eW1H5UjgSEXeraHoVuLqAAA92f3aAQ3
-         YQDw==
+        d=gmail.com; s=20230601; t=1697105316; x=1697710116; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T61YK6EFuEDV5qJWA4z7WzFbSG37tp0bqVIjSbOkXyE=;
+        b=EfJRwDutfZmXSQa9iyd1ZNe0ahj28nmmBC5iAvGupVtHkw1kg5bAo6Bp4V7478Zba0
+         Ev8Gd/WrIchg4m5oPX3YH54nVFyVhGBB6zckwwA9DZMqfeQSfjhO/qwXX0JTACfwV/Ao
+         riAqWVzvjOYGClHxXjebnu3FExAWf1vGnxfxnxzaGJW0IYirSn/IApsFOzY+o9jx/tKf
+         PxG3qE7HcuSiFOSzoS5kFyBV+pYOHkr3FSNsYG+GbDNh3siEhyfw4VfFkTFiHetxF2YW
+         R+kqbMMKruwBoF4EaJ2zKK4k9cMWuZzaxEImdZiCCCHOHJDA0Nz7DufxI8n/l4gyvThh
+         pPyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697103803; x=1697708603;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ev4LIOcPBHb3dZB/MpdIQpGNibYTwjPMmscB5eDijmM=;
-        b=St5MOqs8on9S8HWOWbmIq8AvPGSrj/RUnFD3SrFbRaIE9DBXZjD70WhsjhNBqNptEX
-         lMrtP+FyxrfeN5yC26OwqwViKFoGgqgy3FJWnCZ0IoRD0FInSI4BrgkkDLNg+A4q7wOg
-         avJAbqwXLGCsbJbOj/wyC+sW7lZARoO/HEiNavk0rqhCoYT4fQZO1lW3TMgo01slspjd
-         q0eX57HYk456SrhFv3UsYf+NyyDKq6FbZVZadlZu1IUYzb83zBlA+5rRYdWNaeeGz0lA
-         JvrDoG18tv4hqEjBTLgor6WhI9+kJuaD1lUP40Dt/IxoQOsYZofGHdkpYMfIqzys9BiO
-         I5JQ==
-X-Gm-Message-State: AOJu0Yzj6XWyyTPtDYpTxU9KDuhpLDdd8wYGeGY4iaq1BTFSAhOts6p6
-        U96tbT+6qwaEqy20ltHehbsnZQ==
-X-Google-Smtp-Source: AGHT+IFdy4xiMItgwXPE78wsSzqRNEoOOAX+Tw3dvj2Do2sVc/I4a1Ayw2fXFbHUIafCkVWCPMe3IQ==
-X-Received: by 2002:a19:ee0e:0:b0:4f9:6842:afc with SMTP id g14-20020a19ee0e000000b004f968420afcmr17754005lfb.64.1697103802659;
-        Thu, 12 Oct 2023 02:43:22 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id q5-20020a7bce85000000b0040596352951sm21500897wmj.5.2023.10.12.02.43.21
+        d=1e100.net; s=20230601; t=1697105316; x=1697710116;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=T61YK6EFuEDV5qJWA4z7WzFbSG37tp0bqVIjSbOkXyE=;
+        b=K5gdyqCEMD4zEMUuqa4vA6fBJdOUQ3xvtmC8rnbnXjP2wIpEcinz3FZipiBpoQLmyG
+         UVutZWIiEPmpCrtEISafzirkKGzC5TgFph/HYM6BB8OBIcNuiyKfE9ZfkHc3SDQRJzSg
+         qxHwy4oGXeRuWIjNHfYsKshtekmjTh9Gf9SjoPcfV+15vNgCRrJxWXiil7lr/ceFa5cu
+         HNxthYxcFz/1TSkKGyXLKiJYlBM7cT0ToQNHh/m+3zhXGgYXKwLMznO9W6M4mH2bzAzU
+         ElRFt31X5n4M2HYhTnUiboRoq0hLOpptAJTqZGP0wLdxoDgOFrvHsdVUGDiUCZ9h4Xno
+         IWqA==
+X-Gm-Message-State: AOJu0YxMlcXEoNIF2AYUB+bjK9OxQe3/GJzdyVtv1ftjdFeaq5Fz2k2P
+        qH/gJ0uG7g1Iv7zXKU3N3v0=
+X-Google-Smtp-Source: AGHT+IGY5/V2HmMll0R7ee8D+XKgPX1fVMvqjMxzETQE5YP729txcGhYLYxlO8b4P76nKez6ryZjLw==
+X-Received: by 2002:a5d:6447:0:b0:31f:fb5d:96da with SMTP id d7-20020a5d6447000000b0031ffb5d96damr21560136wrw.64.1697105315533;
+        Thu, 12 Oct 2023 03:08:35 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id dj16-20020a0560000b1000b003198a9d758dsm922737wrb.78.2023.10.12.03.08.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 02:43:22 -0700 (PDT)
-Date:   Thu, 12 Oct 2023 12:43:18 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     yi-chia.hsieh@mediatek.com
-Cc:     linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: [bug report] wifi: mt76: mt7996: get tx_retries and tx_failed from
- txfree
-Message-ID: <1a35373d-0d71-4564-af86-e95f0ffb7312@moroto.mountain>
+        Thu, 12 Oct 2023 03:08:35 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc:     Christian Marangi <ansuelsmth@gmail.com>
+Subject: [net-next PATCH v2 0/4] net: stmmac: improve tx timer logic
+Date:   Thu, 12 Oct 2023 12:04:55 +0200
+Message-Id: <20231012100459.6158-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Yi-Chia Hsieh,
+This series comes with the intention of restoring original performance
+of stmmac on some router/device that used the stmmac driver to handle
+gigabit traffic.
 
-The patch 2461599f835e: "wifi: mt76: mt7996: get tx_retries and
-tx_failed from txfree" from Sep 21, 2023 (linux-next), leads to the
-following Smatch static checker warning:
+More info are present in patch 3. This cover letter is to show results
+and improvements of the following change.
 
-	drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1130 mt7996_mac_tx_free()
-	error: uninitialized symbol 'wcid'.
+The move to hr_timer for tx timer and commit 8fce33317023 ("net: stmmac:
+Rework coalesce timer and fix multi-queue races") caused big performance
+regression on these kind of device.
 
-drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-    1068 static void
-    1069 mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
-    1070 {
-    1071         __le32 *tx_free = (__le32 *)data, *cur_info;
-    1072         struct mt76_dev *mdev = &dev->mt76;
-    1073         struct mt76_phy *phy2 = mdev->phys[MT_BAND1];
-    1074         struct mt76_phy *phy3 = mdev->phys[MT_BAND2];
-    1075         struct mt76_txwi_cache *txwi;
-    1076         struct ieee80211_sta *sta = NULL;
-    1077         struct mt76_wcid *wcid;
-    1078         LIST_HEAD(free_list);
-    1079         struct sk_buff *skb, *tmp;
-    1080         void *end = data + len;
-    1081         bool wake = false;
-    1082         u16 total, count = 0;
-    1083 
-    1084         /* clean DMA queues and unmap buffers first */
-    1085         mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[MT_TXQ_PSD], false);
-    1086         mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[MT_TXQ_BE], false);
-    1087         if (phy2) {
-    1088                 mt76_queue_tx_cleanup(dev, phy2->q_tx[MT_TXQ_PSD], false);
-    1089                 mt76_queue_tx_cleanup(dev, phy2->q_tx[MT_TXQ_BE], false);
-    1090         }
-    1091         if (phy3) {
-    1092                 mt76_queue_tx_cleanup(dev, phy3->q_tx[MT_TXQ_PSD], false);
-    1093                 mt76_queue_tx_cleanup(dev, phy3->q_tx[MT_TXQ_BE], false);
-    1094         }
-    1095 
-    1096         if (WARN_ON_ONCE(le32_get_bits(tx_free[1], MT_TXFREE1_VER) < 5))
-    1097                 return;
-    1098 
-    1099         total = le32_get_bits(tx_free[0], MT_TXFREE0_MSDU_CNT);
-    1100         for (cur_info = &tx_free[2]; count < total; cur_info++) {
-    1101                 u32 msdu, info;
-    1102                 u8 i;
-    1103 
-    1104                 if (WARN_ON_ONCE((void *)cur_info >= end))
-    1105                         return;
-    1106                 /* 1'b1: new wcid pair.
-    1107                  * 1'b0: msdu_id with the same 'wcid pair' as above.
-    1108                  */
-    1109                 info = le32_to_cpu(*cur_info);
-    1110                 if (info & MT_TXFREE_INFO_PAIR) {
-    1111                         struct mt7996_sta *msta;
-    1112                         u16 idx;
-    1113 
-    1114                         idx = FIELD_GET(MT_TXFREE_INFO_WLAN_ID, info);
-    1115                         wcid = rcu_dereference(dev->mt76.wcid[idx]);
+This was observed on ipq806x that after kernel 4.19 couldn't handle
+gigabit speed anymore.
 
-Initialized here
+The following series is currently applied and tested in OpenWrt SNAPSHOT
+and have great performance increase. (the scenario is qca8k switch +
+stmmac dwmac1000) Some good comparison can be found here [1].
 
-    1116                         sta = wcid_to_sta(wcid);
-    1117                         if (!sta)
-    1118                                 continue;
-    1119 
-    1120                         msta = container_of(wcid, struct mt7996_sta, wcid);
-    1121                         spin_lock_bh(&mdev->sta_poll_lock);
-    1122                         if (list_empty(&msta->wcid.poll_list))
-    1123                                 list_add_tail(&msta->wcid.poll_list,
-    1124                                               &mdev->sta_poll_list);
-    1125                         spin_unlock_bh(&mdev->sta_poll_lock);
-    1126                         continue;
-    1127                 } else if (info & MT_TXFREE_INFO_HEADER) {
-    1128                         u32 tx_retries = 0, tx_failed = 0;
-    1129 
---> 1130                         if (!wcid)
+The difference is from a swconfig scenario (where dsa tagging is not
+used so very low CPU impact in handling traffic) and DSA scenario where
+tagging is used and there is a minimal impact in the CPU. As can be
+notice even with DSA in place we have better perf.
 
-Uninitialized on first iteration
+It was observed by other user that also SQM scenario with cake scheduler
+were improved in the order of 100mbps (this scenario is CPU limited and
+any increase of perf is caused by removing load on the CPU)
 
-    1131                                 continue;
-    1132 
-    1133                         tx_retries =
-    1134                                 FIELD_GET(MT_TXFREE_INFO_COUNT, info) - 1;
-    1135                         tx_failed = tx_retries +
-    1136                                 !!FIELD_GET(MT_TXFREE_INFO_STAT, info);
-    1137 
-    1138                         wcid->stats.tx_retries += tx_retries;
-    1139                         wcid->stats.tx_failed += tx_failed;
-    1140                         continue;
-    1141                 }
-    1142 
-    1143                 for (i = 0; i < 2; i++) {
-    1144                         msdu = (info >> (15 * i)) & MT_TXFREE_INFO_MSDU_ID;
-    1145                         if (msdu == MT_TXFREE_INFO_MSDU_ID)
-    1146                                 continue;
-    1147 
-    1148                         count++;
-    1149                         txwi = mt76_token_release(mdev, msdu, &wake);
-    1150                         if (!txwi)
-    1151                                 continue;
-    1152 
-    1153                         mt7996_txwi_free(dev, txwi, sta, &free_list);
-    1154                 }
-    1155         }
-    1156 
-    1157         mt7996_mac_sta_poll(dev);
-    1158 
-    1159         if (wake)
-    1160                 mt76_set_tx_blocked(&dev->mt76, false);
-    1161 
-    1162         mt76_worker_schedule(&dev->mt76.tx_worker);
-    1163 
-    1164         list_for_each_entry_safe(skb, tmp, &free_list, list) {
-    1165                 skb_list_del_init(skb);
-    1166                 napi_consume_skb(skb, 1);
-    1167         }
-    1168 }
+Been at least 15 days that this is in use without any complain or bug
+reported about queue timeout. (was the case with v1 before the
+additional patch was added, only appear on real world tests and not on
+iperf tests)
 
-regards,
-dan carpenter
+[1] https://forum.openwrt.org/t/netgear-r7800-exploration-ipq8065-qca9984/285/3427?u=ansuel
+
+Changes v2:
+- Add patch to move tx timer arm outside tx clean.
+
+Christian Marangi (4):
+  net: introduce napi_is_scheduled helper
+  net: stmmac: improve TX timer arm logic
+  net: stmmac: move TX timer arm after DMA enable
+  net: stmmac: increase TX coalesce timer to 5ms
+
+ drivers/net/ethernet/chelsio/cxgb3/sge.c      |  8 ----
+ drivers/net/ethernet/stmicro/stmmac/common.h  |  2 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 37 +++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/core.c     |  2 +-
+ include/linux/netdevice.h                     | 23 ++++++++++++
+ net/core/dev.c                                |  2 +-
+ 6 files changed, 56 insertions(+), 18 deletions(-)
+
+-- 
+2.40.1
+
