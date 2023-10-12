@@ -2,84 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 032227C6A87
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 12:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 963D17C6ACA
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 12:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377623AbjJLKIs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 06:08:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50256 "EHLO
+        id S1347132AbjJLKRp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 06:17:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234179AbjJLKIn (ORCPT
+        with ESMTP id S1347124AbjJLKRo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 06:08:43 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69BE7C4;
-        Thu, 12 Oct 2023 03:08:42 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-503f39d3236so1090854e87.0;
-        Thu, 12 Oct 2023 03:08:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697105320; x=1697710120; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SSAhxNCccBDPfEaHOYwSm94ZHYVqbuNn4mUPNvHQg0g=;
-        b=gTxX+HH9CD41EJ0vfZVq6sqXUh0V3cUca9TO/iJyBUV9oD14ZTfB47ESOAUohZm7hS
-         Ji/IbmgF8DIdAqhvD+PggOT9vuvuIg8kNjJXKQRkDvY0SMu0jvR4ZjYiGE0a1esM54Cu
-         24mFa8jNzsIH5TwmwM3QGtmA2vX3x2Q/THH/eleQ5uklZfuwq0agMFoDBnvYSkKE9Jty
-         XgBsn1Fgi2vistLqiQIWgxE8BA7SdgVL4NlQecfXhu0MxUXIS3RPND9N1QhVEjZWpsPZ
-         Sy81DB2ccz9wE/UJ/8RypUT768k4nSf5C6GwcFjCPDVo1/RJLoVNIxg20InJ8DydlcH9
-         sBWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697105320; x=1697710120;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SSAhxNCccBDPfEaHOYwSm94ZHYVqbuNn4mUPNvHQg0g=;
-        b=nSh4CPaJnXb+EJ0QMZnJsE1iVTCQDa59hM7BWFJywuyCloS8sPtJKDgHw8qyrSTJJu
-         UOnDiEIZL1jP0v4H1TMEddZxp7Lj5f9vs3enbJHEjuJYoKg07pCP8L44f9iT+iMMp/LR
-         Fqwqpg03QcVkXDljMSzUBTs2KJUJ5U5TgrcVoKAIIEgMqGimDysFAXPHahN1LQQeTcgX
-         31fhSFz90TYtWo3He+OD2szOYqYqdp2+P8TW95Q3B7M7NsVhuR3AORoK/GiArgXCfJzZ
-         UyiPJEd1EzfffbPyyKs614/KIj/T8pmxC4NZQaTLiDI1bGPfjknuTB/1rht+a0U51MX1
-         9lHQ==
-X-Gm-Message-State: AOJu0YwF4BUBbg0xTrF3D3F1HxwFCup65xW/QLzfHShgiGe+pYKvnSe0
-        tExw0gq3Kzeg2hHPy0vWbbO7Z9aIomA=
-X-Google-Smtp-Source: AGHT+IFS5wYVsErszFbLHXbccvljCxec7tsdB2hdb2nVZS6k8/mqAnVjAi0sisagLq6W9E03Rccilg==
-X-Received: by 2002:a05:6512:210c:b0:503:36cb:5436 with SMTP id q12-20020a056512210c00b0050336cb5436mr18333699lfr.9.1697105320566;
-        Thu, 12 Oct 2023 03:08:40 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id dj16-20020a0560000b1000b003198a9d758dsm922737wrb.78.2023.10.12.03.08.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 03:08:40 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
+        Thu, 12 Oct 2023 06:17:44 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B71BECA
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 03:17:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697105862; x=1728641862;
+  h=date:from:to:cc:subject:message-id;
+  bh=YZrAZTGRin7SlnKJkdY24uoyhisnuqzJv2dRNjPuoNk=;
+  b=a+0sJ3cf9WYqhzHS6VwJRtJU1giEf80PJcmifH+L49jbbMt5BRPIQrHw
+   qDOcpy5NharJAmKnqI0JuOO9y+2CZhYRVjgnqQB/r3nOTHd8Qr04GeKaX
+   FFshMHiGeZtkH0h+DsCaGD431a2H7iSGbZv+u1iWepEutSN4FKK+FaZCD
+   a/gvh591bRlkPAa5Dn9YfUVxteqkaOy2ZIFC/hJviWgavBe33Eyl3Q3JP
+   zk2h4UTYBG7cEes0twBXAotB3dtcC2xJJIEvWGNWcrDKfLeLNESoLmEFJ
+   kK5cjZVJ0cXXYVGgjxXXDrOtNGOeQxUbpWelhQY6qTf+h6LhQH2ULamdE
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="364252422"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
+   d="scan'208";a="364252422"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 03:17:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="820082595"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
+   d="scan'208";a="820082595"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 12 Oct 2023 03:17:41 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qqsl9-0003Mr-0H;
+        Thu, 12 Oct 2023 10:17:39 +0000
+Date:   Thu, 12 Oct 2023 18:17:07 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
-Cc:     Christian Marangi <ansuelsmth@gmail.com>
-Subject: [net-next PATCH v2 4/4] net: stmmac: increase TX coalesce timer to 5ms
-Date:   Thu, 12 Oct 2023 12:04:59 +0200
-Message-Id: <20231012100459.6158-5-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231012100459.6158-1-ansuelsmth@gmail.com>
-References: <20231012100459.6158-1-ansuelsmth@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Subject: [wireless-next:main] BUILD SUCCESS
+ 62d19b35808816dc2bdf5031e5401230f6a915ba
+Message-ID: <202310121803.54t6Apla-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -87,40 +61,180 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 8fce33317023 ("net: stmmac: Rework coalesce timer and fix
-multi-queue races") decreased the TX coalesce timer from 40ms to 1ms.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 62d19b35808816dc2bdf5031e5401230f6a915ba  wifi: brcmfmac: fweh: Add __counted_by for struct brcmf_fweh_queue_item and use struct_size()
 
-This caused some performance regression on some target (regression was
-reported at least on ipq806x) in the order of 600mbps dropping from
-gigabit handling to only 200mbps.
+elapsed time: 1459m
 
-The problem was identified in the TX timer getting armed too much time.
-While this was fixed and improved in another commit, performance can be
-improved even further by increasing the timer delay a bit moving from
-1ms to 5ms.
+configs tested: 161
+configs skipped: 2
 
-The value is a good balance between battery saving by prevending too
-much interrupt to be generated and permitting good performance for
-internet oriented devices.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/common.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                      axs103_smp_defconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231011   gcc  
+arc                   randconfig-001-20231012   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                         orion5x_defconfig   clang
+arm                   randconfig-001-20231011   gcc  
+arm                   randconfig-001-20231012   gcc  
+arm                         wpcm450_defconfig   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231011   gcc  
+i386         buildonly-randconfig-002-20231011   gcc  
+i386         buildonly-randconfig-003-20231011   gcc  
+i386         buildonly-randconfig-004-20231011   gcc  
+i386         buildonly-randconfig-005-20231011   gcc  
+i386         buildonly-randconfig-006-20231011   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231011   gcc  
+i386                  randconfig-001-20231012   gcc  
+i386                  randconfig-002-20231011   gcc  
+i386                  randconfig-002-20231012   gcc  
+i386                  randconfig-003-20231011   gcc  
+i386                  randconfig-003-20231012   gcc  
+i386                  randconfig-004-20231011   gcc  
+i386                  randconfig-004-20231012   gcc  
+i386                  randconfig-005-20231011   gcc  
+i386                  randconfig-005-20231012   gcc  
+i386                  randconfig-006-20231011   gcc  
+i386                  randconfig-006-20231012   gcc  
+i386                  randconfig-011-20231011   gcc  
+i386                  randconfig-012-20231011   gcc  
+i386                  randconfig-013-20231011   gcc  
+i386                  randconfig-014-20231011   gcc  
+i386                  randconfig-015-20231011   gcc  
+i386                  randconfig-016-20231011   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231011   gcc  
+loongarch             randconfig-001-20231012   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                      loongson3_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                         alldefconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                      pcm030_defconfig   gcc  
+powerpc                     tqm8560_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20231011   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231011   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                         apsh4a3a_defconfig   gcc  
+sh                                  defconfig   gcc  
+sh                ecovec24-romimage_defconfig   gcc  
+sh                        edosk7705_defconfig   gcc  
+sh                           se7750_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231012   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20231011   gcc  
+x86_64       buildonly-randconfig-001-20231012   gcc  
+x86_64       buildonly-randconfig-002-20231011   gcc  
+x86_64       buildonly-randconfig-002-20231012   gcc  
+x86_64       buildonly-randconfig-003-20231011   gcc  
+x86_64       buildonly-randconfig-003-20231012   gcc  
+x86_64       buildonly-randconfig-004-20231011   gcc  
+x86_64       buildonly-randconfig-004-20231012   gcc  
+x86_64       buildonly-randconfig-005-20231011   gcc  
+x86_64       buildonly-randconfig-005-20231012   gcc  
+x86_64       buildonly-randconfig-006-20231011   gcc  
+x86_64       buildonly-randconfig-006-20231012   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231011   gcc  
+x86_64                randconfig-002-20231011   gcc  
+x86_64                randconfig-003-20231011   gcc  
+x86_64                randconfig-004-20231011   gcc  
+x86_64                randconfig-005-20231011   gcc  
+x86_64                randconfig-006-20231011   gcc  
+x86_64                randconfig-011-20231011   gcc  
+x86_64                randconfig-012-20231011   gcc  
+x86_64                randconfig-013-20231011   gcc  
+x86_64                randconfig-014-20231011   gcc  
+x86_64                randconfig-015-20231011   gcc  
+x86_64                randconfig-016-20231011   gcc  
+x86_64                randconfig-071-20231011   gcc  
+x86_64                randconfig-072-20231011   gcc  
+x86_64                randconfig-073-20231011   gcc  
+x86_64                randconfig-074-20231011   gcc  
+x86_64                randconfig-075-20231011   gcc  
+x86_64                randconfig-076-20231011   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                  cadence_csp_defconfig   gcc  
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index 1e996c29043d..e3f650e88f82 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -293,7 +293,7 @@ struct stmmac_safety_stats {
- #define MIN_DMA_RIWT		0x10
- #define DEF_DMA_RIWT		0xa0
- /* Tx coalesce parameters */
--#define STMMAC_COAL_TX_TIMER	1000
-+#define STMMAC_COAL_TX_TIMER	5000
- #define STMMAC_MAX_COAL_TX_TICK	100000
- #define STMMAC_TX_MAX_FRAMES	256
- #define STMMAC_TX_FRAMES	25
 -- 
-2.40.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
