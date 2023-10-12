@@ -2,37 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85EB27C6FDA
+	by mail.lfdr.de (Postfix) with ESMTP id DEC9B7C6FDB
 	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 15:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344014AbjJLN7B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S235121AbjJLN7B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Thu, 12 Oct 2023 09:59:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54642 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379089AbjJLN66 (ORCPT
+        with ESMTP id S1379110AbjJLN67 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 09:58:58 -0400
+        Thu, 12 Oct 2023 09:58:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54279B7
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 06:58:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD9CC433C9
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 13:58:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F10BB8
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 06:58:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AE2C433CA
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 13:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697119136;
-        bh=jF+7IMp5CgKRFx2BgekeEO1YriNortFU8RNFF52/nTQ=;
-        h=From:To:Subject:Date:From;
-        b=M0331rq1filE3VKlz0Ai205HRTH9cpyHukB1mslKfnIg1/s+QyUaCYRfIwYOb1W9c
-         6Dpi5JevtEiFP68fDt/tbT0VSdoc5nvl5V7fImXERajxwOM1Aj4w4R+Ivml/UA8Rh4
-         /RAdjLTERC0sYxkQ50dbLxepwA7Djq/p7QjoBB+FjttiCTNmasojMbIKfdHf2qWbWw
-         qwMX8DG0hitB1nH9FXGielvP94cGVDAFDpid4TtPV6RQWihMo4zcY46FzWg5y0w9ql
-         YWdGlaH55bSvKV/o0psS4euLs5ZZhsRRQPz95LJLW2nXCLak0bS7MjT3oJwonaS1IV
-         I0FGKFg10dDjg==
+        s=k20201202; t=1697119137;
+        bh=cHOTseFbAfjWR5oKSR/XiH3SiuVSV0ZA/i/AQo2UWKk=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=XTKB8KRdJya0HkrLNc6OeuL+4cDjAJcmZQhyallaYrk4AFEwfeuGXGKChLSrkhrl5
+         9xuqARy5zQIY0eKpwR6SsTMTVKbI9Nq4vE5QgkbF1rG8L+yhSSXiDLLehE15Fsq1Hx
+         SNaL/3HE0lcmsN0ZWMXFCjGLGixzV1x3Hf/zyIBVgvROlA3wdZhDzLyjz7goYktQix
+         415QQAcTfxakVdzLrQfG41gviuYFgYc7y/PcCs1+1arUj0zYd4+VttPr+ArvYc8+qP
+         RxwLX1w6EZdTv546KwQLxAsJ1BaqYZT0ZU3RTd56mGYG8xh0NTx4QGm3bBVCLcl62z
+         gnEvdSLRu3TaQ==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 1/3] wifi: brcmfmac: fix format-truncation warnings
-Date:   Thu, 12 Oct 2023 16:58:52 +0300
-Message-Id: <20231012135854.3473332-1-kvalo@kernel.org>
+Subject: [PATCH 2/3] wifi: ipw2x00: fix format-truncation warnings
+Date:   Thu, 12 Oct 2023 16:58:53 +0300
+Message-Id: <20231012135854.3473332-2-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231012135854.3473332-1-kvalo@kernel.org>
+References: <20231012135854.3473332-1-kvalo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -46,54 +48,99 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On v6.6-rc4 with GCC 13.2 I see:
 
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:262:52: warning: '%d' directive output may be truncated writing between 1 and 5 bytes into a region of size 4 [-Wformat-truncation=]
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:262:46: note: directive argument in the range [0, 65535]
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:262:46: note: directive argument in the range [0, 65535]
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:262:9: note: 'snprintf' output between 9 and 17 bytes into a destination of size 9
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:265:55: warning: '%d' directive output may be truncated writing between 1 and 5 bytes into a region of size 4 [-Wformat-truncation=]
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:265:48: note: directive argument in the range [0, 65535]
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:265:48: note: directive argument in the range [0, 65535]
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:265:9: note: 'snprintf' output between 10 and 18 bytes into a destination of size 10
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:342:50: warning: '/' directive output may be truncated writing 1 byte into a region of size between 0 and 4 [-Wformat-truncation=]
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:342:42: note: directive argument in the range [0, 65535]
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:342:9: note: 'snprintf' output between 10 and 18 bytes into a destination of size 10
+drivers/net/wireless/intel/ipw2x00/ipw2100.c:5905:63: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size 32 [-Wformat-truncation=]
+drivers/net/wireless/intel/ipw2x00/ipw2100.c:5905:9: note: 'snprintf' output between 4 and 140 bytes into a destination of size 32
+drivers/net/wireless/intel/ipw2x00/ipw2200.c:10392:63: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size 32 [-Wformat-truncation=]
+drivers/net/wireless/intel/ipw2x00/ipw2200.c:10392:9: note: 'snprintf' output between 4 and 98 bytes into a destination of size 32
 
-Fix these by increasing the buffer sizes to 20 bytes to make sure there's enough space.
+Fix this by copying only the firmware version and not providing any extra
+information via ethtool. This is an ancient driver anyway and most likely
+removed soon so it doesn't really matter.
 
 Compile tested only.
 
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c | 20 ++------------------
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c |  6 +-----
+ 2 files changed, 3 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-index 09d2f2dc2b46..83f8ed7d00f9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-@@ -19,7 +19,7 @@
- 
- #define BRCMF_FW_MAX_NVRAM_SIZE			64000
- #define BRCMF_FW_NVRAM_DEVPATH_LEN		19	/* devpath0=pcie/1/4/ */
--#define BRCMF_FW_NVRAM_PCIEDEV_LEN		10	/* pcie/1/4/ + \0 */
-+#define BRCMF_FW_NVRAM_PCIEDEV_LEN		20	/* pcie/1/4/ + \0 */
- #define BRCMF_FW_DEFAULT_BOARDREV		"boardrev=0xff"
- #define BRCMF_FW_MACADDR_FMT			"macaddr=%pM"
- #define BRCMF_FW_MACADDR_LEN			(7 + ETH_ALEN * 3)
-@@ -238,9 +238,9 @@ static void brcmf_fw_strip_multi_v1(struct nvram_parser *nvp, u16 domain_nr,
- 				    u16 bus_nr)
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index 0812db8936f1..b6636002c7d2 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -317,8 +317,6 @@ static int ipw2100_get_firmware(struct ipw2100_priv *priv,
+ 				struct ipw2100_fw *fw);
+ static int ipw2100_get_fwversion(struct ipw2100_priv *priv, char *buf,
+ 				 size_t max);
+-static int ipw2100_get_ucodeversion(struct ipw2100_priv *priv, char *buf,
+-				    size_t max);
+ static void ipw2100_release_firmware(struct ipw2100_priv *priv,
+ 				     struct ipw2100_fw *fw);
+ static int ipw2100_ucode_download(struct ipw2100_priv *priv,
+@@ -5894,17 +5892,14 @@ static void ipw_ethtool_get_drvinfo(struct net_device *dev,
+ 				    struct ethtool_drvinfo *info)
  {
- 	/* Device path with a leading '=' key-value separator */
--	char pci_path[] = "=pci/?/?";
-+	char pci_path[20];
- 	size_t pci_len;
--	char pcie_path[] = "=pcie/?/?";
-+	char pcie_path[20];
- 	size_t pcie_len;
+ 	struct ipw2100_priv *priv = libipw_priv(dev);
+-	char fw_ver[64], ucode_ver[64];
++	char fw_ver[64];
  
- 	u32 i, j;
-
-base-commit: 618071ae0f7e8c1aeb9b1b1e9ee876bcc3f045fc
+ 	strscpy(info->driver, DRV_NAME, sizeof(info->driver));
+ 	strscpy(info->version, DRV_VERSION, sizeof(info->version));
+ 
+ 	ipw2100_get_fwversion(priv, fw_ver, sizeof(fw_ver));
+-	ipw2100_get_ucodeversion(priv, ucode_ver, sizeof(ucode_ver));
+-
+-	snprintf(info->fw_version, sizeof(info->fw_version), "%s:%d:%s",
+-		 fw_ver, priv->eeprom_version, ucode_ver);
+ 
++	strscpy(info->fw_version, fw_ver, sizeof(info->fw_version));
+ 	strscpy(info->bus_info, pci_name(priv->pci_dev),
+ 		sizeof(info->bus_info));
+ }
+@@ -8406,17 +8401,6 @@ static int ipw2100_get_fwversion(struct ipw2100_priv *priv, char *buf,
+ 	return tmp;
+ }
+ 
+-static int ipw2100_get_ucodeversion(struct ipw2100_priv *priv, char *buf,
+-				    size_t max)
+-{
+-	u32 ver;
+-	u32 len = sizeof(ver);
+-	/* microcode version is a 32 bit integer */
+-	if (ipw2100_get_ordinal(priv, IPW_ORD_UCODE_VERSION, &ver, &len))
+-		return -EIO;
+-	return snprintf(buf, max, "%08X", ver);
+-}
+-
+ /*
+  * On exit, the firmware will have been freed from the fw list
+  */
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index 820100cac491..902a772f4649 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -10378,7 +10378,6 @@ static void ipw_ethtool_get_drvinfo(struct net_device *dev,
+ {
+ 	struct ipw_priv *p = libipw_priv(dev);
+ 	char vers[64];
+-	char date[32];
+ 	u32 len;
+ 
+ 	strscpy(info->driver, DRV_NAME, sizeof(info->driver));
+@@ -10386,11 +10385,8 @@ static void ipw_ethtool_get_drvinfo(struct net_device *dev,
+ 
+ 	len = sizeof(vers);
+ 	ipw_get_ordinal(p, IPW_ORD_STAT_FW_VERSION, vers, &len);
+-	len = sizeof(date);
+-	ipw_get_ordinal(p, IPW_ORD_STAT_FW_DATE, date, &len);
+ 
+-	snprintf(info->fw_version, sizeof(info->fw_version), "%s (%s)",
+-		 vers, date);
++	strscpy(info->fw_version, vers, sizeof(info->fw_version));
+ 	strscpy(info->bus_info, pci_name(p->pci_dev),
+ 		sizeof(info->bus_info));
+ }
 -- 
 2.39.2
 
