@@ -2,183 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F065A7C5F8D
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Oct 2023 23:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 869737C61DE
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 02:37:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233707AbjJKVxd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 17:53:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35190 "EHLO
+        id S235230AbjJLAhb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 20:37:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233451AbjJKVxb (ORCPT
+        with ESMTP id S233886AbjJLAha (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 17:53:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E179E;
-        Wed, 11 Oct 2023 14:53:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87540C433C9;
-        Wed, 11 Oct 2023 21:53:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697061209;
-        bh=qY9Rp5zkRIt2DsQivgERNNESbVTGEul4kS5s7/dIoho=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=EAwNFrclnTWEuXdB+Z8mt3u3kuEAAoUwY82PbS8J18XDNC6E3OiHHHxAFbbd17IOO
-         T6KemaFOH4w9WVID23kFc5vCnMeXYebhs7yahyg9gnbxexaaSqR+KOEgoCrxijFWyG
-         dnCiAysL1ttbyJnzXZGaT8aqz/DwQbEhhDfWR38iscslUEL9bLiDHhVjMYSwKPoaYH
-         vE7EY6dncxhXQ4FluROOjHz7swY5mrWHaRm0x+YRj0w+mEnls2n/6+o4Mg69zLynhg
-         wf5HljSZ4OwbmmK2VZKj4KXyrtee/VgZ11v8Vna96PUYyaJ2T6vmKgYUE3ho/7KBKo
-         bDWaoqyCH5pFQ==
-Date:   Wed, 11 Oct 2023 16:53:27 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc:     linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 05/13] PCI/ASPM: Add pci_enable_link_state()
-Message-ID: <20231011215327.GA1043654@bhelgaas>
+        Wed, 11 Oct 2023 20:37:30 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 833F698;
+        Wed, 11 Oct 2023 17:37:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1697071043;
+        bh=d0eWK5n2+GWr3yid0IrdcGPcamDTbmkULf2jKU9FMh4=;
+        h=Date:From:To:Cc:Subject:From;
+        b=J7MKxLij/7k8M7iY9b6lnoDEYzdYn6acQA2nURqomPEU62BxrerraaAHhMuhLWHJJ
+         QDUnvexRjR/MWFe89JHnFbKsWuaOp030cDQ4DMkUVnvxQMob+z+BHCXyFL2tPOR3JV
+         5i2loRNYD1e0u6czG01uM0bnkaEehAr2HqgQ5VmH8rIM3ep2qJ1mcskWX4gh3PHEgy
+         07kdcXWhn9acQbMOCpw3i2a5ALnhr0zMxpD4pqIQVrUsRbWREfDgI6XlaoO4wG+gN+
+         G7IFnufOWJacFiws7WQ8dJd9/t+77gFsYhoJ7cLXNhVUtQVfInKbcgUsLdmwaNgpfj
+         yrMF2WXuKlAHA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4S5W1Y66qDz4xWb;
+        Thu, 12 Oct 2023 11:37:21 +1100 (AEDT)
+Date:   Thu, 12 Oct 2023 11:37:21 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     Networking <netdev@vger.kernel.org>,
+        Wireless <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the net-next tree with the wireless
+ tree
+Message-ID: <20231012113648.46eea5ec@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230918131103.24119-6-ilpo.jarvinen@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/wof5tWYoXT/+z+takc=pVNJ";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Sep 18, 2023 at 04:10:55PM +0300, Ilpo Järvinen wrote:
-> pci_disable_link_state() lacks a symmetric pair. Some drivers want to
-> disable ASPM during certain phases of their operation but then
-> re-enable it later on. If pci_disable_link_state() is made for the
-> device, there is currently no way to re-enable the states that were
-> disabled.
+--Sig_/wof5tWYoXT/+z+takc=pVNJ
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-pci_disable_link_state() gives drivers a way to disable specified ASPM
-states using a bitmask (PCIE_LINK_STATE_L0S, PCIE_LINK_STATE_L1,
-PCIE_LINK_STATE_L1_1, etc), but IIUC the driver can't tell exactly
-what changed and can't directly restore the original state, e.g.,
+Hi all,
 
-  - PCIE_LINK_STATE_L1 enabled initially
-  - driver calls pci_disable_link_state(PCIE_LINK_STATE_L0S)
-  - driver calls pci_enable_link_state(PCIE_LINK_STATE_L0S)
-  - PCIE_LINK_STATE_L0S and PCIE_LINK_STATE_L1 are enabled now
+Today's linux-next merge of the net-next tree got a conflict in:
 
-Now PCIE_LINK_STATE_L0S is enabled even though it was not initially
-enabled.  Maybe that's what we want; I dunno.
+  net/mac80211/key.c
 
-pci_disable_link_state() currently returns success/failure, but only
-r8169 and mt76 even check, and only rtl_init_one() (r8169) has a
-non-trivial reason, so it's conceivable that it could return a bitmask
-instead.
+between commit:
 
-> Add pci_enable_link_state() to remove ASPM states from the state
-> disable mask.
-> 
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> ---
->  drivers/pci/pcie/aspm.c | 42 +++++++++++++++++++++++++++++++++++++++++
->  include/linux/pci.h     |  2 ++
->  2 files changed, 44 insertions(+)
-> 
-> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> index 91dc95aca90f..f45d18d47c20 100644
-> --- a/drivers/pci/pcie/aspm.c
-> +++ b/drivers/pci/pcie/aspm.c
-> @@ -1117,6 +1117,48 @@ int pci_disable_link_state(struct pci_dev *pdev, int state)
->  }
->  EXPORT_SYMBOL(pci_disable_link_state);
->  
-> +/**
-> + * pci_enable_link_state - Re-enable device's link state
-> + * @pdev: PCI device
-> + * @state: ASPM link states to re-enable
-> + *
-> + * Enable device's link state that were previously disable so the link is
+  02e0e426a2fb ("wifi: mac80211: fix error path key leak")
 
-"state[s] that were previously disable[d]" alludes to the use case you
-have in mind, but I don't think it describes how this function
-actually works.  This function just makes it possible to enable the
-specified states.  The @state parameter may have nothing to do with
-any previously disabled states.
+from the wireless tree and commits:
 
-> + * allowed to enter the specific states. Note that if the BIOS didn't grant
-> + * ASPM control to the OS, this does nothing because we can't touch the
-> + * LNKCTL register.
-> + *
-> + * Return: 0 or a negative errno.
-> + */
-> +int pci_enable_link_state(struct pci_dev *pdev, int state)
-> +{
-> +	struct pcie_link_state *link = pcie_aspm_get_link(pdev);
-> +
-> +	if (!link)
-> +		return -EINVAL;
-> +	/*
-> +	 * A driver requested that ASPM be enabled on this device, but
-> +	 * if we don't have permission to manage ASPM (e.g., on ACPI
-> +	 * systems we have to observe the FADT ACPI_FADT_NO_ASPM bit and
-> +	 * the _OSC method), we can't honor that request.
-> +	 */
-> +	if (aspm_disabled) {
-> +		pci_warn(pdev, "can't enable ASPM; OS doesn't have ASPM control\n");
-> +		return -EPERM;
-> +	}
-> +
-> +	mutex_lock(&aspm_lock);
-> +	link->aspm_disable &= ~pci_link_state_mask(state);
-> +	pcie_config_aspm_link(link, policy_to_aspm_state(link));
-> +
-> +	if (state & PCIE_LINK_STATE_CLKPM)
-> +		link->clkpm_disable = 0;
-> +	pcie_set_clkpm(link, policy_to_clkpm_state(link));
-> +	mutex_unlock(&aspm_lock);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(pci_enable_link_state);
-> +
->  /**
->   * pci_set_default_link_state - Set the default device link state
->   * @pdev: PCI device
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 3c24ca164104..844d09230264 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -1776,11 +1776,13 @@ extern bool pcie_ports_native;
->  int pci_disable_link_state(struct pci_dev *pdev, int state);
->  int pci_disable_link_state_locked(struct pci_dev *pdev, int state);
->  #ifdef CONFIG_PCIEASPM
-> +int pci_enable_link_state(struct pci_dev *pdev, int state);
->  int pci_set_default_link_state(struct pci_dev *pdev, int state);
->  void pcie_no_aspm(void);
->  bool pcie_aspm_support_enabled(void);
->  bool pcie_aspm_enabled(struct pci_dev *pdev);
->  #else
-> +static inline int pci_enable_link_state(struct pci_dev *pdev, int state) { return -EOPNOTSUPP; }
->  static inline int pci_set_default_link_state(struct pci_dev *pdev, int state)
->  { return 0; }
->  static inline void pcie_no_aspm(void) { }
-> -- 
-> 2.30.2
-> 
-> 
-> -- 
-> ath12k mailing list
-> ath12k@lists.infradead.org
-> https://lists.infradead.org/mailman/listinfo/ath12k
+  2a8b665e6bcc ("wifi: mac80211: remove key_mtx")
+  7d6904bf26b9 ("Merge wireless into wireless-next")
+
+from the net-next tree.
+
+I fixed it up (I just used the latter, there may be more needed) and
+can carry the fix as necessary. This is now fixed as far as linux-next
+is concerned, but any non trivial conflicts should be mentioned to your
+upstream maintainer when your tree is submitted for merging.  You may
+also want to consider cooperating with the maintainer of the
+conflicting tree to minimise any particularly complex conflicts.
+
+
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/wof5tWYoXT/+z+takc=pVNJ
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmUnP8EACgkQAVBC80lX
+0GzuVgf/XJeoQF5D8JpWF3YB37FVbdZm3PvJJr0N5LKTsYcwwOhaBIms38+UcD5S
+TntSRx3UiVlPC4walmHH74a+d5is2W46BMSWSgkne58MLJ2Js/qEs1k6EnTzSwN/
+XW/bjrpjD0cTivwGTLssG/Zz+QmAkplL0xpgnkrQ4y1+JCoEAOXqejpJpENXloPP
+ZI9qOqb6hB6FEoyq5BS1PmvKqzBGCl9DB/WtYOFjP7iAIYTpHMlM8iUo7kUq2DxX
+WUI16HxCIa/d1Xbz+UWD0/VcIPAp/mRTU0oMjzyhx+ascJPtqdd9v0KR5mydh64I
++FLQ2eGwYxXjr191YzYb2VFij29aJg==
+=bNpy
+-----END PGP SIGNATURE-----
+
+--Sig_/wof5tWYoXT/+z+takc=pVNJ--
