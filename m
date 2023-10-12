@@ -2,78 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1148F7C6DC9
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 14:17:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A877C6E64
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 14:42:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347211AbjJLMRC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 08:17:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
+        id S235709AbjJLMm0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 08:42:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343908AbjJLMRB (ORCPT
+        with ESMTP id S1343894AbjJLMmZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 08:17:01 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD6D2B7
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 05:17:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A85C433C7;
-        Thu, 12 Oct 2023 12:16:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697113020;
-        bh=un9r1J+wb3IxjUD97AY6S9Fr1vVQfxEvKE/st9YxWPM=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=BJwwO9/oRy/HlpUsoJ6yYdYQ3FS6LZt7Kaq0jNuyltm0kP1CyRcWnW7tCZQXylWdk
-         HDQUbO5braRIcfMDcFMfoE5cedErBDwdILGJ8JGhHOJpzNNGbGxL+Fs+Sd0oU7xxu1
-         6RWtEtPd4anaB9PTflu/3DvirWssBHro3MX1UFi6WKod53YxZflYqV+wzMN49AZI0U
-         J+KaXsikahzUxrmUwxyqWp87iZa/RWkAXbv7tgOAK1qie6SpCNo3/doNd0W2b6RAKK
-         krHXYopxNmibK5xbFMSGZxG+/7VJjWxks1K07kUjwx9ZNOVkjDYbvEfGYcz22A//ke
-         hAuZib8bS7m9w==
-Content-Type: text/plain; charset="utf-8"
+        Thu, 12 Oct 2023 08:42:25 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A6F2B8
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 05:42:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697114544; x=1728650544;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=txssGbNqUyoiw43rE6+UzN1EndvjDhdjXtlPodoMyDg=;
+  b=POTV7ocoh8b5HPmpU0pAeobCLLlXJIxS3HFjBfFtyi60V9shtUs8uohf
+   ECLOMmuPxEKavd4YGE9lf18PxO0Py+x2A0EbvKT/b43uS5lIvPSOI5TaD
+   xj5ezsyYZwBI3QlOPoh91b6JbBdnGDMiYcoQcGSYS4Jw/NRLLPpsFqmod
+   t8IuWmx3jqR5wCo4NxjXhZzMfOkwWqE4oWIXgtf6YzdOBG5G0SCcOzaH0
+   0EarfmQWnA5rmSv1wtOB+etNb2il2JtJgYC64hx298UWkyA16ho+mkyx1
+   LV41Mi8kBSpKoSFMTQR3tuGV+ecF3YNZSlXgFdgntnIaMF0yyVNcUc8uj
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="449097019"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
+   d="scan'208";a="449097019"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 05:42:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="878087327"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
+   d="scan'208";a="878087327"
+Received: from lzilberb-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.201.48])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 05:42:22 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH v2 01/16] wifi: iwlwifi: fw: increase fw_version string size
+Date:   Thu, 12 Oct 2023 15:41:48 +0300
+Message-Id: <20231012153950.f4465b4b4e2b.Idced2e8d63c492872edcde1a3ce2cdd6cc0f8eb7@changeid>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] wifi: rtw89: coex: add annotation __counted_by() for
- struct rtw89_btc_btf_set_slot_table
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231011063725.25276-1-pkshih@realtek.com>
-References: <20231011063725.25276-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <keescook@chromium.org>, <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169711301771.2932680.1214330921072528204.kvalo@kernel.org>
-Date:   Thu, 12 Oct 2023 12:16:59 +0000 (UTC)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-> Prepare for the coming implementation by GCC and Clang of the __counted_by
-> attribute. Flexible array members annotated with __counted_by can have
-> their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
-> array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-> functions).
-> 
-> Use struct_size() and flex_array_size() helpers to calculate proper sizes
-> for allocation and memcpy().
-> 
-> Don't change logic at all, and result is identical as before.
-> 
-> Cc: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
+In reality 64 bytes are enough to hold fw version string,
+but some compilers can complain (with W=1) that output may be
+truncated when building this string with snprintf.
+Increase the size to avoid this sort of warnings and state
+explicitely that we want the size to be trancated to 32 bytes.
 
-2 patches applied to wireless-next.git, thanks.
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+---
+v2: explicitely limit size to 32 bytes in several snprintf() calls.
+---
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/img.h   | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-07202dc12b53 wifi: rtw89: coex: add annotation __counted_by() for struct rtw89_btc_btf_set_slot_table
-618071ae0f7e wifi: rtw89: coex: add annotation __counted_by() to struct rtw89_btc_btf_set_mon_reg
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index a873be109f43..8774dd7b921e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1464,7 +1464,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 
+ 	snprintf(priv->hw->wiphy->fw_version,
+ 		 sizeof(priv->hw->wiphy->fw_version),
+-		 "%s", fw->fw_version);
++		 "%.31s", fw->fw_version);
+ 
+ 	priv->new_scan_threshold_behaviour =
+ 		!!(ucode_flags & IWL_UCODE_TLV_FLAGS_NEWSCAN);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/img.h b/drivers/net/wireless/intel/iwlwifi/fw/img.h
+index 8d0d58d61892..96bda80632f3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/img.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/img.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2005-2014, 2018-2021 Intel Corporation
++ * Copyright (C) 2005-2014, 2018-2023 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016 Intel Deutschland GmbH
+  */
+@@ -198,7 +198,7 @@ struct iwl_dump_exclude {
+ struct iwl_fw {
+ 	u32 ucode_ver;
+ 
+-	char fw_version[64];
++	char fw_version[128];
+ 
+ 	/* ucode images */
+ 	struct fw_img img[IWL_UCODE_TYPE_MAX];
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 465090f67aaf..4390adc31a29 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1304,7 +1304,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 
+ 	snprintf(mvm->hw->wiphy->fw_version,
+ 		 sizeof(mvm->hw->wiphy->fw_version),
+-		 "%s", fw->fw_version);
++		 "%.31s", fw->fw_version);
+ 
+ 	trans_cfg.fw_reset_handshake = fw_has_capa(&mvm->fw->ucode_capa,
+ 						   IWL_UCODE_TLV_CAPA_FW_RESET_HANDSHAKE);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231011063725.25276-1-pkshih@realtek.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.38.1
 
