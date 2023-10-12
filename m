@@ -2,81 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11D7D7C7326
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 18:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BD937C74F8
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 19:40:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235765AbjJLQgj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 12:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34102 "EHLO
+        id S1379555AbjJLRkg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 13:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235760AbjJLQgh (ORCPT
+        with ESMTP id S1344198AbjJLRkf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 12:36:37 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB17DD;
-        Thu, 12 Oct 2023 09:36:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=FSonfJ43zgcuW47KrZQgDGNzqMRjSofTrzRRTIZpHxw=; b=AcK5zXeWq6cVOul5gredeXoI3t
-        7pceXZIXjt6v//yo13Ykd6hmIKqGaVf8Euj9mIAxAX+gs1j8yYwly9Fqt8jn2G3uAOFZXJGkV5PZD
-        DmYOXr712vrJ2F7eIB3L2S1ryBex2vA8uGFzSMWZ0JpEeqrhZJ39ktHwJDgsCNZbK77YUWJt02jcy
-        tubb6Lb7EKT/fXiREytmIdkjUpIRL1yS9EOP3iX14D5Ab0pDzhNm1nWl2hhavT8iHjI4XIHOb3SMc
-        9V2c4zfH8VPG4L9AnDrfUIeiW/ucau1GS2+LnOkzvSucMCLiciR2vPwmNeCZpYxDFimKbmhQS1MvG
-        E98Cg9pw==;
-Received: from 173.red-88-11-240.dynamicip.rima-tde.net ([88.11.240.173] helo=[192.168.100.242])
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qqyfP-000KOI-5s; Thu, 12 Oct 2023 16:36:07 +0000
-Message-ID: <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
-Date:   Thu, 12 Oct 2023 18:36:04 +0200
+        Thu, 12 Oct 2023 13:40:35 -0400
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6486FC9;
+        Thu, 12 Oct 2023 10:40:31 -0700 (PDT)
+Received: by bues.ch with esmtpsa (Exim 4.96)
+        (envelope-from <m@bues.ch>)
+        id 1qqzfe-0003qF-1h;
+        Thu, 12 Oct 2023 19:40:25 +0200
+Date:   Thu, 12 Oct 2023 19:39:38 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [RFC PATCH] ssb: relax SSB_EMBEDDED dependencies
+Message-ID: <20231012193938.16fb7db6@barney>
+In-Reply-To: <13eeb01a-2f4f-4c8e-b097-6e80d822862b@infradead.org>
+References: <20231007182443.32300-1-rdunlap@infradead.org>
+        <20231008093520.42ead15f@barney>
+        <22bc05d3-86e9-4cf6-aec6-10d11df1acc3@infradead.org>
+        <e551fb4c-1e3d-4e1a-a465-5b88842789c6@infradead.org>
+        <20231010204346.78961fc4@barney>
+        <13eeb01a-2f4f-4c8e-b097-6e80d822862b@infradead.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Pavel Machek <pavel@ucw.cz>,
-        "David S . Miller" <davem@davemloft.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-staging@lists.linux.dev,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <20231010155444.858483-1-arnd@kernel.org>
- <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
- <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
- <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
- <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
- <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
- <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
- <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
-Content-Language: en-US
-From:   Geoff Levand <geoff@infradead.org>
-In-Reply-To: <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/=77zqe27yUYwq.aWi2HATI+";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/12/23 17:41, Johannes Berg wrote:
-> But seriously - is it worth to try to keep a wireless driver for it if
-> we don't even know anyone using a PS3 at all?
+--Sig_/=77zqe27yUYwq.aWi2HATI+
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-There is still a considerable user base for the PS3, so we
-must keep the ps3-gelic-wireless driver.
+On Wed, 11 Oct 2023 20:44:49 -0700
+Randy Dunlap <rdunlap@infradead.org> wrote:
 
--Geoff
+> > I thought about something like this:
+> >=20
+> > depends on (SSB_DRIVER_MIPS && PCI=3Dn) || (SSB_DRIVER_MIPS &&
+> > SSB_PCICORE_HOSTMODE)
+> >=20
+> > Would that solve the warning? =20
+>=20
+> Yes, that works as well, although I prefer to express it like this:
+>=20
+>  config SSB_EMBEDDED
+>  	bool
+> -	depends on SSB_DRIVER_MIPS && SSB_PCICORE_HOSTMODE
+> +	depends on SSB_DRIVER_MIPS
+> +	depends on PCI=3Dn || SSB_PCICORE_HOSTMODE
+>  	default y
 
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
+
+
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/=77zqe27yUYwq.aWi2HATI+
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmUoL1oACgkQ9TK+HZCN
+iw5r4w/+L3+1CoIsR0Pmu9kFjOYPZuaNPaeTetHQoBEvuHvQNoiwaWUewWn4mzyk
+e0zclN55PHMiY0o28q1/Kp47zZbY4yoiVPRLXTLem3ra4bXDqMmGlK1eL4AvaYj/
+T045qAeK5ghBpyTjhyeq2hEdVvJLHR1f1vFPsHdMISx7he8c496PwB7M8F/rK0SK
+0EygvpakTOCfcrCpvlDmRIoEYbUsmM0iCHCweDno44OMVIvPDgm4s2aQ4nrJP4av
+fObGOdbc1uGuObs2oQWRBF/bvCTFzzCHgNhhr+A8mRdBoWxm6t8ng9SEbLh/54rm
+66bawXjPbik8XvYvVhmHmLMQ2JtBQtUQmWgchcyXGWfaHm0hujcWcPzWAyJtZVXk
+u5F2R2ThjO6eE0U5PnBpNULpQ57iSRW6xBwLehMhTG7cBvSNg9r0fgkedMApNHj2
+lk1zGyhh5GfmQUqEpQ/kKIBG3JJs0cqvV1T7KIXkOWw73Ki09TDj169CAeW6GfdG
+L3cMmOOs2SxoPY/eAaCge7Nc5RzdITEK6CUQe72YyqOLkda1iGXRCkyg6tGyrGb/
+ZvkXZoRPVDzw/ZwbtUd19s1UiPFFRyH65MFnZNokSRih726xiLqSrF789WRvXm9I
+GCyUFta57UzHPUo3rjUUVDfxHQBtRW//s1erO5uw66g/KyjSTYI=
+=yFxf
+-----END PGP SIGNATURE-----
+
+--Sig_/=77zqe27yUYwq.aWi2HATI+--
