@@ -2,44 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65ADC7C71E6
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 17:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9C997C71FD
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 18:04:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344081AbjJLP4c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 11:56:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60092 "EHLO
+        id S235745AbjJLQEr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 12:04:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343986AbjJLP4a (ORCPT
+        with ESMTP id S1347328AbjJLQEp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 11:56:30 -0400
+        Thu, 12 Oct 2023 12:04:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80A89C6
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 08:56:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45980C433C7;
-        Thu, 12 Oct 2023 15:56:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39CA0CA
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 09:04:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B49C433C7;
+        Thu, 12 Oct 2023 16:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697126188;
-        bh=Zrg9V546WCSensWGA9/PHBSdUYk0odDitoKotkVzj2Q=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=aQQZsDPQsQRQG0n9w+OOUrEYnaot5STc+71j9yVBlzEfxSOUfXnSsEU7Z94NY7pqA
-         JOqBT6BIymWBAxhykksTuAESml/7YVh2ebYpmN+2cHMloTMnBa3JvOnmUm7HOQaLzf
-         /cUprJl8BBYI1wNW1zwLfkWQoze/6xdtOs+O8kvXDuwxMHl/+6f1Hsx9t0Ew0sL9PU
-         Cd3z+WezPlUj+7t6UI5g5amqHS3lZFAqkF+5u0s3oCx1JHuTToeXpmgFsqaeTxQjpx
-         ckn4uVkbsbz7359GRKsR73C0s3KFWUzmWRlAaz3DN9PAH36LjahVHUORHIrh6h4BAO
-         NBQ8pYFtZs/xQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     gregory.greenman@intel.com
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 01/16] wifi: iwlwifi: fw: increase fw_version string
- size
-References: <20231012153950.f4465b4b4e2b.Idced2e8d63c492872edcde1a3ce2cdd6cc0f8eb7@changeid>
-Date:   Thu, 12 Oct 2023 18:59:00 +0300
-In-Reply-To: <20231012153950.f4465b4b4e2b.Idced2e8d63c492872edcde1a3ce2cdd6cc0f8eb7@changeid>
-        (gregory greenman's message of "Thu, 12 Oct 2023 15:41:48 +0300")
-Message-ID: <877cnrg7cr.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1697126682;
+        bh=0a8q07czlG6HQ5qQfZp5nEWDBqfgNcc/HJ7dGSCrRW4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=lJEgfKi0fgm90QstBoW3qr7+5m0jzyM3B2PD5yZerbXZqUDiKPm+XKjX2YHhx/7SG
+         rO5EOHg7+nOQ6oYntvtGvsno/zbnAYjqVl8zbnbyP5QYOthdMGccoaqUrkjQgCtHkw
+         B7ZSsNiquH7NJyvwiaH6ov9zZnQq4PvHv282aMSCqZSPBLHMHj28/Ku/k+uyyA29F8
+         uRkv8l5vSH6xpDR1JlgbP59GgIy4xQtDKE9B6NgGj+7LJVsk2ShcjPt2OoZyR1U2XY
+         JF5X2MNMHbHCQUwNljwDi/5zsEt24nw0EdV2zzZoAlEtkWJAlZlfzijAw8ixtRza1m
+         j+DWIt1I3yrkQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: ath11k: ath11k_debugfs_register(): fix
+ format-truncation warning
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231010062250.2580951-1-kvalo@kernel.org>
+References: <20231010062250.2580951-1-kvalo@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169712667989.3501995.4611783426919308415.kvalo@kernel.org>
+Date:   Thu, 12 Oct 2023 16:04:41 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -49,23 +49,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-gregory.greenman@intel.com writes:
+Kalle Valo <kvalo@kernel.org> wrote:
 
-> From: Gregory Greenman <gregory.greenman@intel.com>
->
-> In reality 64 bytes are enough to hold fw version string,
-> but some compilers can complain (with W=1) that output may be
-> truncated when building this string with snprintf.
-> Increase the size to avoid this sort of warnings and state
-> explicitely that we want the size to be trancated to 32 bytes.
->
-> Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+> In v6.6-rc4 with GCC 13.2 I see a new warning:
+> 
+> drivers/net/wireless/ath/ath11k/debugfs.c: In function 'ath11k_debugfs_register':
+> drivers/net/wireless/ath/ath11k/debugfs.c:1597:51: error: '%d' directive output may be truncated writing between 1 and 3 bytes into a region of size 2 [-Werror=format-truncation=]
+> drivers/net/wireless/ath/ath11k/debugfs.c:1597:48: note: directive argument in the range [0, 255]
+> drivers/net/wireless/ath/ath11k/debugfs.c:1597:9: note: 'snprintf' output between 5 and 7 bytes into a destination of size 5
+> 
+> Increase the size of pdev_name to 10 bytes to make sure there's enough room for
+> the string. Also change the format to '%u' as ar->pdev_idx is u8.
+> 
+> Compile tested only.
+> 
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Thanks, I don't see warnings from iwlwifi anymore.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Tested-by: Kalle Valo <kvalo@kernel.org>
+a47111663491 wifi: ath11k: ath11k_debugfs_register(): fix format-truncation warning
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231010062250.2580951-1-kvalo@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
