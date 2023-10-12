@@ -2,216 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F58E7C6FEC
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 16:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 607F27C700E
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 16:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235735AbjJLOC5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 10:02:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33962 "EHLO
+        id S1343627AbjJLOIi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 10:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235570AbjJLOC4 (ORCPT
+        with ESMTP id S235570AbjJLOIh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 10:02:56 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED09FC4
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 07:02:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096C4C433C7
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 14:02:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697119374;
-        bh=c6Oxp4lb2zkqfrJQLR6JW+PwlrYWb3MMT6NSedmS1ns=;
-        h=From:To:Subject:Date:From;
-        b=EJ/JFIApS+FTTSVBdcuAQ0unDX+jO4x/AAYghNHXc3AWBPGA9uW9eQI58m3Czx9Ln
-         OgIE/HzSw6ENhhxmfKE8H8QjfsAmmeedm1Wm1iVM9Hp8Smfch9a0JZqdmLuSGz1cOi
-         i5gQzUaHqtlrcwsNTnRCpmGr3ckVDtAgGftxnRt8b30uIl7O4N3EgjaTOTXLPn8LzB
-         nLwxHe8X4Ml6lyWKA8VIgRTtliOKIJbsl6FLpayAv2bw2q/0UqdTpTSTGJK5CBO8nx
-         MguX7rq+YRPfb4OwnucseypFsgw1ytfsDuKmAWZJLvWSvQvJhFgqzGsKd/ae+ue22x
-         6MlR2ArHClhpA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH RFC] wifi: iwlwifi: fix format-truncation warnings
-Date:   Thu, 12 Oct 2023 17:02:51 +0300
-Message-Id: <20231012140251.3473708-1-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        Thu, 12 Oct 2023 10:08:37 -0400
+X-Greylist: delayed 409 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 12 Oct 2023 07:08:35 PDT
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 617D9BB
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 07:08:34 -0700 (PDT)
+Received: from localhost.localdomain (unknown [58.61.141.228])
+        by mail-m121145.qiye.163.com (Hmail) with ESMTPA id 1A011800080;
+        Thu, 12 Oct 2023 22:01:24 +0800 (CST)
+From:   Chukun Pan <amadeus@jmu.edu.cn>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chukun Pan <amadeus@jmu.edu.cn>
+Subject: [PATCH 1/1] wifi: rtw88: 8822b: disable call trace when write RF mode table fail
+Date:   Thu, 12 Oct 2023 22:01:20 +0800
+Message-Id: <20231012140120.891411-1-amadeus@jmu.edu.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCTB8fVksdThodSUwfSE0dTVUTARMWGhIXJBQOD1
+        lXWRgSC1lBWU5DVU1KVUpPSlVJSUNZV1kWGg8SFR0UWUFZT0tIVUpKS0hKQ1VKS0tVS1kG
+X-HM-Tid: 0a8b24312c1fb03akuuu1a011800080
+X-HM-MType: 10
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6OD46EDo6AjwrTQtONFEjNTkR
+        MhowCwxVSlVKTUJMSkpCSUNPTExLVTMWGhIXVRoWGh8eDgg7ERYOVR4fDlUYFUVZV1kSC1lBWU5D
+        VU1KVUpPSlVJSUNZV1kIAVlBSkJIQjcG
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On v6.6-rc4 with GCC 13.2 I see:
+The rtw88 driver throws a useless Call Trace when the rtl8812bu
+or rtl8822be wifi modules fail to write the RF mode table.
+Since this does not affect normal use of the wifi modules,
+replace WARN() with driver warning to avoid useless panic.
 
-drivers/net/wireless/intel/iwlwifi/dvm/main.c:1467:19: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size 32 [-Wformat-truncation=]
-drivers/net/wireless/intel/iwlwifi/dvm/main.c:1465:9: note: 'snprintf' output between 1 and 64 bytes into a destination of size 32
-drivers/net/wireless/intel/iwlwifi/mvm/ops.c:1307:19: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size 32 [-Wformat-truncation=]
-drivers/net/wireless/intel/iwlwifi/mvm/ops.c:1305:9: note: 'snprintf' output between 1 and 64 bytes into a destination of size 32
-drivers/net/wireless/intel/iwlwifi/iwl-drv.c:549:33: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size between 48 and 56 [-Wformat-truncation=]
-drivers/net/wireless/intel/iwlwifi/iwl-drv.c:547:9: note: 'snprintf' output 9 or more bytes (assuming 80) into a destination of size 64
-drivers/net/wireless/intel/iwlwifi/iwl-drv.c:729:33: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size between 48 and 56 [-Wformat-truncation=]
-drivers/net/wireless/intel/iwlwifi/iwl-drv.c:727:9: note: 'snprintf' output 9 or more bytes (assuming 80) into a destination of size 64
-drivers/net/wireless/intel/iwlwifi/iwl-drv.c:989:51: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size between 46 and 58 [-Wformat-truncation=]
-drivers/net/wireless/intel/iwlwifi/iwl-drv.c:987:33: note: 'snprintf' output between 7 and 82 bytes into a destination of size 64
-drivers/net/wireless/intel/iwlwifi/iwl-drv.c:984:53: warning: '%s' directive output may be truncated writing up to 63 bytes into a region of size between 40 and 50 [-Wformat-truncation=]
-drivers/net/wireless/intel/iwlwifi/iwl-drv.c:982:33: note: 'snprintf' output between 15 and 88 bytes into a destination of size 64
-
-Two of the warnings were easy to fix by using strscpy(). But the rest were more
-challening. For now I was only able to come up with artificial testing of
-snprintf() return value but that doesn't make really sense. I marked the ugly
-once "FIXME" in the code.
-
-Any ideas how to fix the warnings properly?
-
-Compile tested only.
-
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/main.c |  5 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  | 64 +++++++++++--------
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  5 +-
- 3 files changed, 41 insertions(+), 33 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index a873be109f43..6b252f19b641 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1462,9 +1462,8 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	iwl_power_initialize(priv);
- 	iwl_tt_initialize(priv);
- 
--	snprintf(priv->hw->wiphy->fw_version,
--		 sizeof(priv->hw->wiphy->fw_version),
--		 "%s", fw->fw_version);
-+	strscpy(priv->hw->wiphy->fw_version, fw->fw_version,
-+		sizeof(priv->hw->wiphy->fw_version));
- 
- 	priv->new_scan_threshold_behaviour =
- 		!!(ucode_flags & IWL_UCODE_TLV_FLAGS_NEWSCAN);
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index fb5e254757e7..85cb7ad604d5 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -496,6 +496,7 @@ static int iwl_parse_v1_v2_firmware(struct iwl_drv *drv,
- 	u32 api_ver, hdr_size, build;
- 	char buildstr[25];
- 	const u8 *src;
-+	int len;
- 
- 	drv->fw.ucode_ver = le32_to_cpu(ucode->ver);
- 	api_ver = IWL_UCODE_API(drv->fw.ucode_ver);
-@@ -544,14 +545,16 @@ static int iwl_parse_v1_v2_firmware(struct iwl_drv *drv,
- 	else
- 		buildstr[0] = '\0';
- 
--	snprintf(drv->fw.fw_version,
--		 sizeof(drv->fw.fw_version),
--		 "%u.%u.%u.%u%s %s",
--		 IWL_UCODE_MAJOR(drv->fw.ucode_ver),
--		 IWL_UCODE_MINOR(drv->fw.ucode_ver),
--		 IWL_UCODE_API(drv->fw.ucode_ver),
--		 IWL_UCODE_SERIAL(drv->fw.ucode_ver),
--		 buildstr, iwl_reduced_fw_name(drv));
-+	len = snprintf(drv->fw.fw_version,
-+		       sizeof(drv->fw.fw_version),
-+		       "%u.%u.%u.%u%s %s",
-+		       IWL_UCODE_MAJOR(drv->fw.ucode_ver),
-+		       IWL_UCODE_MINOR(drv->fw.ucode_ver),
-+		       IWL_UCODE_API(drv->fw.ucode_ver),
-+		       IWL_UCODE_SERIAL(drv->fw.ucode_ver),
-+		       buildstr, iwl_reduced_fw_name(drv));
-+	if (len)
-+		printk("FIXME");
- 
- 	/* Verify size of file vs. image size info in file's header */
- 
-@@ -700,7 +703,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
- 	const u8 *tlv_data;
- 	char buildstr[25];
- 	u32 build, paging_mem_size;
--	int num_of_cpus;
-+	int num_of_cpus, l;
- 	bool usniffer_req = false;
- 
- 	if (len < sizeof(*ucode)) {
-@@ -724,14 +727,16 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
- 	else
- 		buildstr[0] = '\0';
- 
--	snprintf(drv->fw.fw_version,
--		 sizeof(drv->fw.fw_version),
--		 "%u.%u.%u.%u%s %s",
--		 IWL_UCODE_MAJOR(drv->fw.ucode_ver),
--		 IWL_UCODE_MINOR(drv->fw.ucode_ver),
--		 IWL_UCODE_API(drv->fw.ucode_ver),
--		 IWL_UCODE_SERIAL(drv->fw.ucode_ver),
--		 buildstr, iwl_reduced_fw_name(drv));
-+	l = snprintf(drv->fw.fw_version,
-+		       sizeof(drv->fw.fw_version),
-+		       "%u.%u.%u.%u%s %s",
-+		       IWL_UCODE_MAJOR(drv->fw.ucode_ver),
-+		       IWL_UCODE_MINOR(drv->fw.ucode_ver),
-+		       IWL_UCODE_API(drv->fw.ucode_ver),
-+		       IWL_UCODE_SERIAL(drv->fw.ucode_ver),
-+		       buildstr, iwl_reduced_fw_name(drv));
-+	if (l)
-+		printk("FIXME");
- 
- 	data = ucode->data;
- 
-@@ -978,16 +983,21 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
- 			minor = le32_to_cpup(ptr++);
- 			local_comp = le32_to_cpup(ptr);
- 
--			if (major >= 35)
--				snprintf(drv->fw.fw_version,
--					 sizeof(drv->fw.fw_version),
--					"%u.%08x.%u %s", major, minor,
--					local_comp, iwl_reduced_fw_name(drv));
--			else
--				snprintf(drv->fw.fw_version,
--					 sizeof(drv->fw.fw_version),
--					"%u.%u.%u %s", major, minor,
--					local_comp, iwl_reduced_fw_name(drv));
-+			if (major >= 35) {
-+				l = snprintf(drv->fw.fw_version,
-+					     sizeof(drv->fw.fw_version),
-+					     "%u.%08x.%u %s", major, minor,
-+					     local_comp, iwl_reduced_fw_name(drv));
-+				if (l)
-+					printk("FIXME");
-+			} else {
-+				l = snprintf(drv->fw.fw_version,
-+					     sizeof(drv->fw.fw_version),
-+					     "%u.%u.%u %s", major, minor,
-+					     local_comp, iwl_reduced_fw_name(drv));
-+				if (l)
-+					printk("FIXME");
-+			}
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 3017a9760da8..06b6efcd16d2 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -820,8 +820,10 @@ static void rtw8822b_config_trx_mode(struct rtw_dev *rtwdev, u8 tx_path,
  			break;
- 			}
- 		case IWL_UCODE_TLV_FW_DBG_DEST: {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 465090f67aaf..3864aaf7c1ac 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1302,9 +1302,8 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
- 	trans_cfg.cmd_q_wdg_timeout =
- 		iwl_mvm_get_wd_timeout(mvm, NULL, false, true);
+ 	}
  
--	snprintf(mvm->hw->wiphy->fw_version,
--		 sizeof(mvm->hw->wiphy->fw_version),
--		 "%s", fw->fw_version);
-+	strscpy(mvm->hw->wiphy->fw_version, fw->fw_version,
-+		sizeof(mvm->hw->wiphy->fw_version));
+-	if (WARN(counter <= 0, "write RF mode table fail\n"))
++	if (counter <= 0) {
++		rtw_warn(rtwdev, "write RF mode table fail\n");
+ 		return;
++	}
  
- 	trans_cfg.fw_reset_handshake = fw_has_capa(&mvm->fw->ucode_capa,
- 						   IWL_UCODE_TLV_CAPA_FW_RESET_HANDSHAKE);
-
-base-commit: 618071ae0f7e8c1aeb9b1b1e9ee876bcc3f045fc
+ 	rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE, RFREG_MASK, 0x80000);
+ 	rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x00001);
 -- 
-2.39.2
+2.25.1
 
