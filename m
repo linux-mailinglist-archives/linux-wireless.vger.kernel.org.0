@@ -2,119 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BE447C7252
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 18:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DBF57C7277
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 18:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344029AbjJLQUA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 12:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58558 "EHLO
+        id S1379539AbjJLQZh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 12:25:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235728AbjJLQT7 (ORCPT
+        with ESMTP id S1379523AbjJLQZg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 12:19:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38E4ACF
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 09:19:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1697127549;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=SQu5TmIv6kRwUt1hSoHmn+8CkuoIuY67NQyE/AJm8Vc=;
-        b=E62aGihq7yfA0AfOFPYBWlU9ba4vsp3aBQwKk6KxfhmmWrF3GOpz+VlUZtABQj1oJoveXE
-        F3NMYcqgNYq8grzYyO/BAlVVccIi/Y/bZwbi5yMzLq5RI/jv+Mewf0S+jHlNbQ+J7JdeA2
-        S8ak/Qt/z2NbTnDQxn/OrjvSzNyuZ1Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-241-2Ttejii7N1WX9_4r3iRUVw-1; Thu, 12 Oct 2023 12:19:02 -0400
-X-MC-Unique: 2Ttejii7N1WX9_4r3iRUVw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E2C7858281;
-        Thu, 12 Oct 2023 16:19:01 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.22.50.17])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B53464060EA;
-        Thu, 12 Oct 2023 16:18:58 +0000 (UTC)
-Message-ID: <2017087fd471048ff1edb6e57e61883b4ae084be.camel@redhat.com>
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-From:   Dan Williams <dcbw@redhat.com>
-To:     Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Pavel Machek <pavel@ucw.cz>,
-        "David S . Miller" <davem@davemloft.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
-Date:   Thu, 12 Oct 2023 11:18:57 -0500
-In-Reply-To: <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
-References: <20231010155444.858483-1-arnd@kernel.org>
-         <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
-         <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
-         <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
-         <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Thu, 12 Oct 2023 12:25:36 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B5AE5
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 09:25:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08ABDC433C8;
+        Thu, 12 Oct 2023 16:25:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697127933;
+        bh=YNQigbYz044LjlyWkF5uH8izFEBMRQbk1jX2yJ52+HY=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=owaWl7YQ8CnnS8FHNgaUmwuOWAC9NgEW/SJD0KRbScPfd64osPjXVcgNLqVU0g8oz
+         ngcdI96wzEYrLaZGl3f9arnzEKoHou0vIoPcM5CneqP67ZXZxMsxMeyFmbCB8/QHGJ
+         RfvZn6getXkISasQei58JKPmijzRU6NeJspdpRztm0HPn2N4d8wTtT4zDZ2YEHk/0W
+         kty0qATbNINUCZKFw+QsIGWsLXNhpOIpCVrj4xIiZzCxtLTXThKfMdER+IKYMij5Y7
+         dZjPzeZnvUNREq5nVsSx3SlumDxIq5ER8LHYN9gl8F29+4EleDUxStU8jaqxSYJEuO
+         4kWyZS8uG4cYA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 1/4] wifi: ath12k: add TAS capability for WCN7850
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231011050004.423413-2-quic_lingbok@quicinc.com>
+References: <20231011050004.423413-2-quic_lingbok@quicinc.com>
+To:     Lingbo Kong <quic_lingbok@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <quic_jjohnson@quicinc.com>,
+        <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169712793008.3550118.7804115872979270031.kvalo@kernel.org>
+Date:   Thu, 12 Oct 2023 16:25:31 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-10-12 at 16:36 +0200, Arnd Bergmann wrote:
-> On Thu, Oct 12, 2023, at 13:47, Kalle Valo wrote:
-> >=20
-> > Is anyone willing to submit patches? Use wireless-next as the
-> > baseline
-> > for patches and one driver per commit, please. That way it's easy
-> > to
-> > revert later, if needed (hopefully not).
->=20
-> I can do it, I've already done most of the work for moving the
-> drivers, so I just need to split up my existing patch and leave out
-> the bits that get added to drivers/staging.
->=20
-> I'll also send Greg a patch to remove rtl8192u now that we know
-> that this has been broken for 7 years. Similarly, I'd include
-> another patch to remove PCMCIA support for libertas, as that
-> would otherwise be the only remaining 16-bit PCMCIA wlan card,
-> and I could find no indication of this one ever being popular,
-> unlike the USB/SDIO/SPI variants of the same device or the
-> other PCMCIA drivers.
+Lingbo Kong <quic_lingbok@quicinc.com> wrote:
 
-This was only for CF cards of which there were a couple; I still have
-cards but don't have a machine with CF anymore. USB/SDIO/SPI (as you
-point out) have much higher usage.
+> Currently, ath12k does not support Time-Average-SAR(TAS) for WCN7850. In
+> order to enable Time-Average-SAR(TAS) for WCN7850, ath12k defines
+> ath12k_get_acpi_all_data() function to get TAS configuration and SAR power
+> table, then sets pdev_id, param_type_id, and finally sends the TAS
+> configuration, SAR power table and WMI_PDEV_SET_BIOS_INTERFACE_CMDID
+> command to firmware to implement TAS during the initialization phase.
+> Besides, ath12k registers an ACPI event callback so that ACPI can notify
+> ath12k to get the updated SAR power table and sends it to firmware when the
+> device state is changed.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-ACK from me (if my historical libertas involvement counts for anything)
-on removing Libertas CF support.
+This adds a lot of new warnings:
 
-Dan
+drivers/net/wireless/ath/ath12k/wmi.c:7172:21: warning: incorrect type in assignment (different base types)
+drivers/net/wireless/ath/ath12k/wmi.c:7172:21:    expected restricted __le32 [usertype] length
+drivers/net/wireless/ath/ath12k/wmi.c:7172:21:    got int
+drivers/net/wireless/ath/ath12k/acpi.h:27: line length of 96 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:115: line length of 96 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:152: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:154: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:165: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:255: line length of 91 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:257: line length of 91 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:278: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:301: line length of 94 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:309: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:317: line length of 96 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:328: line length of 95 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/acpi.c:330: line length of 95 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:6995: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7007: line length of 91 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7009: line length of 94 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7035: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7047: line length of 91 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7049: line length of 94 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7070: line length of 97 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7079: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7099: line length of 91 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7101: line length of 94 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7128: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7139: line length of 91 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7141: line length of 94 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7168: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7180: line length of 91 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7182: line length of 94 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7207: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7219: line length of 91 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/wmi.c:7221: line length of 94 exceeds 90 columns
 
->=20
-> This would leave only a handful of wext implementations in the
-> tree: ipw2x00, ps3-gelic-wireless, staging/rtl8712, staging/rtl8192e
-> and staging/ks7010. Since ipw2x00 is apparently still supported
-> in theory and was rather popular on Pentium-M based systems 20
-> years ago, this may still need to be converted to cfg80211
-> before you can remove support for wext style drivers altogether.
-> ps3-gelic-wireless and rtl8712 are also still maintained but have
-> a much smaller user base I assume.
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Arnd
->=20
+Please ALWAYS run ath12k-check.
+
+4 patches set to Changes Requested.
+
+13416565 [v6,1/4] wifi: ath12k: add TAS capability for WCN7850
+13416566 [v6,2/4] wifi: ath12k: add BIOS SAR capability for WCN7850
+13416564 [v6,3/4] wifi: ath12k: add adjust configuration of CCA threshold value for WCN7850
+13416567 [v6,4/4] wifi: ath12k: add set band edge channel power for WCN7850
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20231011050004.423413-2-quic_lingbok@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
