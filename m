@@ -2,61 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD42D7C71B4
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 17:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1189E7C71BD
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 17:41:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347302AbjJLPjn convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 11:39:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55050 "EHLO
+        id S1347305AbjJLPlj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 11:41:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347155AbjJLPjn (ORCPT
+        with ESMTP id S1347307AbjJLPli (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 11:39:43 -0400
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C99B8;
-        Thu, 12 Oct 2023 08:39:41 -0700 (PDT)
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-d9ac3b4f42cso685668276.0;
-        Thu, 12 Oct 2023 08:39:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697125181; x=1697729981;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T4kyj9ZjW+gYqmJqenBaJFDkWv6wTV1m+k4AYZcQP5U=;
-        b=Y485q4qrpddHaroBj2bBK8HtvIGSkf0jQUglHo+ijsrWX3FacyHS21tP/YLT9qc4gA
-         duc+P2NIYI5DjlDSA09j190GBBTnR6VNmRtRiNfmBNYYzzVqdDSw3ahKKYMKqTTCwrOd
-         L4SS8VZSM+NYEk6LKgQF4B8bMI1JDznxgnPGRA5ODcA3GTwDcprSWhglEzi+GpwCvLxj
-         Xi1v4b0nxN3HcJ1j63V+CPiATyj+jf0+cq7apUmyGgsK7dedX7uEQc3m3lDmBZLANvsr
-         ZDnRg1PZ0gt5bQM27Y8kBKRsE0p+1emjoTdfv5gCt41a6oHBpAN4xAfYdE2t2GfeF4JJ
-         nVNQ==
-X-Gm-Message-State: AOJu0YwoZHJ55xTSaqH2xJcpxzCEMDkiArywhzhVXCniarTG2ftP56a+
-        TM9eJZNThaps+7xHRGBjDIJ5MjB5fmRDgA==
-X-Google-Smtp-Source: AGHT+IHaPF7JLMVJohv1c+pvVujAPRbQ9QqRJJqjUSIXufp+uzyePS1WhCqd8F08pqLLiay0DXcW7g==
-X-Received: by 2002:a25:42c2:0:b0:d9a:4b66:72a4 with SMTP id p185-20020a2542c2000000b00d9a4b6672a4mr6055387yba.31.1697125180804;
-        Thu, 12 Oct 2023 08:39:40 -0700 (PDT)
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com. [209.85.128.181])
-        by smtp.gmail.com with ESMTPSA id u4-20020a258404000000b00d72176bdc5csm27732ybk.40.2023.10.12.08.39.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Oct 2023 08:39:40 -0700 (PDT)
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-5a4c073cc06so19269977b3.1;
-        Thu, 12 Oct 2023 08:39:40 -0700 (PDT)
-X-Received: by 2002:a81:49d7:0:b0:59b:5255:4882 with SMTP id
- w206-20020a8149d7000000b0059b52554882mr12310427ywa.20.1697125180367; Thu, 12
- Oct 2023 08:39:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231010155444.858483-1-arnd@kernel.org> <2023101051-unmasked-cleaver-79b3@gregkh>
- <87y1g94szz.fsf@kernel.org> <2023101139-pyromania-game-2237@gregkh>
- <87r0m1fwg9.fsf@kernel.org> <20231011080955.1beeb010@kernel.org>
- <87sf6g2hc8.fsf@kernel.org> <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
- <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
-In-Reply-To: <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 12 Oct 2023 17:39:28 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
-Message-ID: <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
+        Thu, 12 Oct 2023 11:41:38 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66C7B8;
+        Thu, 12 Oct 2023 08:41:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=1AUZ4kSi2AEEEv3nuAS4HldMWbbuyLi811omII/FRFQ=;
+        t=1697125296; x=1698334896; b=uMMpgm+03zIjdiuVAoc5NUM2xNDauYkoRpA5AvUdLOO6YDx
+        zyFyedf7xylZ6Jn64e9B+4GKwA1jVOw8l8Ky21YItTtTdWL72AzMkWCPIaKU+AvOOfgRsa4Gr/41r
+        TnSU+xUTC6ouMEvIdY94EVFTKMi8garyHJBZfj5F61cVFj9ZkZ/MBmnVSOW5PYgP9RSlrYpyS0H6A
+        haIvID0MkUIr5pnC6tOH6TgnDnwpzE/UQvnvzyxkzOac4ej0BNRZRGvJhD/56P9m8zeCTFu56R9+k
+        GToZw3eEA/vCvxePBzvgwlkzvcLHu84Dr+NVOnXCaxcvhJcLumjw89fV8vBN/ySA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qqxoW-00000003T2i-3J0o;
+        Thu, 12 Oct 2023 17:41:29 +0200
+Message-ID: <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
 Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-To:     Johannes Berg <johannes@sipsolutions.net>
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -71,41 +48,55 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-staging@lists.linux.dev, Geoff Levand <geoff@infradead.org>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Date:   Thu, 12 Oct 2023 17:41:27 +0200
+In-Reply-To: <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
+References: <20231010155444.858483-1-arnd@kernel.org>
+         <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
+         <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
+         <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
+         <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
+         <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
+         <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+On Thu, 2023-10-12 at 17:39 +0200, Geert Uytterhoeven wrote:
+> Hi Johannes,
+>=20
+> On Thu, Oct 12, 2023 at 5:28=E2=80=AFPM Johannes Berg <johannes@sipsoluti=
+ons.net> wrote:
+> > On Thu, 2023-10-12 at 16:36 +0200, Arnd Bergmann wrote:
+> > >=20
+> > > ps3-gelic-wireless
+> >=20
+> > Didn't Sony disable Linux on PS3 eventually? Though maybe someone still
+> > has some devices with old software.
+>=20
+> If you didn't update the firmware, you could keep on using Linux.
+>=20
+> And people may have found a vulnerability in more recent firmware
+> versions that allows them to run custom software.
 
-On Thu, Oct 12, 2023 at 5:28 PM Johannes Berg <johannes@sipsolutions.net> wrote:
-> On Thu, 2023-10-12 at 16:36 +0200, Arnd Bergmann wrote:
-> >
-> > ps3-gelic-wireless
->
-> Didn't Sony disable Linux on PS3 eventually? Though maybe someone still
-> has some devices with old software.
+Yeah, fair.
 
-If you didn't update the firmware, you could keep on using Linux.
+> I don't know, it's been +10 years ago I touched a PS3 ;-)
 
-And people may have found a vulnerability in more recent firmware
-versions that allows them to run custom software.
-I don't know, it's been +10 years ago I touched a PS3 ;-)
+I never had one :-)
 
-Gr{oetje,eeting}s,
+But seriously - is it worth to try to keep a wireless driver for it if
+we don't even know anyone using a PS3 at all?
 
-                        Geert
+But maybe we'll find someone :-)
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+johannes
