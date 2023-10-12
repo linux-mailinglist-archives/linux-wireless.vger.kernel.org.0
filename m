@@ -2,170 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 445CE7C6BA5
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 12:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A98707C6C94
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 13:42:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347135AbjJLK4c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 06:56:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37078 "EHLO
+        id S1343858AbjJLLme (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 07:42:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbjJLK40 (ORCPT
+        with ESMTP id S1347108AbjJLLme (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 06:56:26 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E182CF;
-        Thu, 12 Oct 2023 03:56:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697108185; x=1728644185;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=ncUYHUPUudbeDBu1X+DbOYSPV06JH2dv47rcK32PQ+0=;
-  b=CYclsOvOPtH3Q8m1wMMmDYUHx/L6vQrIQRlGlDiTpobaSJ/SD8nZa1yQ
-   lmY9YqnctCNWpDlmbqOQfO8u3cwjxe1sBLbcfgWfX7nJ+ZrNDZ4y23gAX
-   HbkMANv6j4C80UF4fY2QznF81/dmYLkDw/KG2IiTPs7jbdaRuZ4TdQFxh
-   wlLZwCWV8LmydShMWfIj8HsKLUGGxyKHhIL2h8Yd4USZuVsQsWxWUShau
-   izP+1118O9PObYimo3ulINXAXq9pIBJWoqzKEwS/rGrv3vJAdEgdjHiSQ
-   VeVAmvpuDHBN7XAu6gEJd7JD4Cb/HMGDGmdPiPIXwKpyDJUTvWKLeg2qw
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="3483256"
-X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
-   d="scan'208";a="3483256"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 03:56:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="789349717"
-X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
-   d="scan'208";a="789349717"
-Received: from asroczyn-mobl.ger.corp.intel.com ([10.249.36.107])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 03:56:18 -0700
-Date:   Thu, 12 Oct 2023 13:56:16 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-cc:     linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
-Subject: Re: [PATCH v2 03/13] PCI/ASPM: Disable ASPM when driver requests
- it
-In-Reply-To: <20231011212206.GA1043224@bhelgaas>
-Message-ID: <aa3386a4-c22d-6d5d-112d-f36b22cda6d3@linux.intel.com>
-References: <20231011212206.GA1043224@bhelgaas>
+        Thu, 12 Oct 2023 07:42:34 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89E9A9
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 04:42:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2860C433C9
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 11:42:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697110952;
+        bh=5ml1vA2Ho0IqNhI9miMvL/upVCxyE4/sB85I4L4+9L4=;
+        h=From:To:Subject:Date:From;
+        b=LWx84aWaJLhbIlwZkbKwgmdSth09EfzGgVshmsQzkHJ9DUwG2sChZTF/upCl1q6vu
+         Y9ntWDPxYTo2j++AQQAp0i9N1M37XOXe98fmr3ZH3fMEVs8JxSmtVMNzcdc+oPout+
+         MJO9V2j9DnqoDgaw47BsXtFkrzeuNqlkAYu25wPospHl9WSpZIcicBimNeOMOq5rj5
+         DqvgI1wXFeACwdpf3PitLUoHAuKvckmDpl/ti4TcG/qilZO8P7AosZ/Xwujxi9+oPa
+         C3P7Lhq5yJF7uYinZwcNoAScd7phmhgNwAYBMqcY/a3zRwRMqBnCE7vfaatBKbbnbH
+         SmFKrT9vF+UBA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 0/2] wifi: mac80211: workaround the two remaining htmldocs warnings
+Date:   Thu, 12 Oct 2023 14:42:27 +0300
+Message-Id: <20231012114229.2931808-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1326969328-1697108183=:1692"
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+We have two annoying htmldocs warnings left in wireless subsystem so add
+workarounds for them.
 
---8323329-1326969328-1697108183=:1692
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+v2:
 
-On Wed, 11 Oct 2023, Bjorn Helgaas wrote:
+o patch 2: rename the struct instead
 
-> On Mon, Sep 18, 2023 at 04:10:53PM +0300, Ilpo Järvinen wrote:
-> > PCI core/ASPM service driver allows controlling ASPM state through
-> > pci_disable_link_state() and pci_enable_link_state() API. It was
-> > decided earlier (see the Link below), to not allow ASPM changes when OS
-> > does not have control over it but only log a warning about the problem
-> > (commit 2add0ec14c25 ("PCI/ASPM: Warn when driver asks to disable ASPM,
-> > but we can't do it")). Similarly, if ASPM is not enabled through
-> > config, ASPM cannot be disabled.
-> > ...
-> 
-> > +#ifndef CONFIG_PCIEASPM
-> > +/*
-> > + * Always disable ASPM when requested, even when CONFIG_PCIEASPM is
-> > + * not build to avoid drivers adding code to do it on their own
-> > + * which caused issues when core does not know about the out-of-band
-> > + * ASPM state changes.
-> > + */
-> > +int pci_disable_link_state_locked(struct pci_dev *pdev, int state)
-> > +{
-> > +	struct pci_dev *parent = pdev->bus->self;
-> > +	struct pci_bus *linkbus = pdev->bus;
-> > +	struct pci_dev *child;
-> > +	u16 aspm_enabled, linkctl;
-> > +	int ret;
-> > +
-> > +	if (!parent)
-> > +		return -ENODEV;
-> 
-> P.S. I think this should look the same to the user (same dmesg log and
-> same taint, if we do that) as the CONFIG_PCIEASPM=y case.
+o drop RFC label
 
-Okay.
+v1: https://patchwork.kernel.org/project/linux-wireless/list/?series=791407&state=*&order=date
 
-> > +	ret = pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &linkctl);
-> > +	if (ret != PCIBIOS_SUCCESSFUL)
-> > +		return pcibios_err_to_errno(ret);
-> > +	aspm_enabled = linkctl & PCI_EXP_LNKCTL_ASPMC;
-> > +
-> > +	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &linkctl);
-> > +	if (ret != PCIBIOS_SUCCESSFUL)
-> > +		return pcibios_err_to_errno(ret);
-> > +	aspm_enabled |= linkctl & PCI_EXP_LNKCTL_ASPMC;
-> > +
-> > +	/* If no states need to be disabled, don't touch LNKCTL */
-> > +	if (state & aspm_enabled)
-> > +		return 0;
-> > +
-> > +	ret = pcie_capability_clear_word(parent, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_ASPMC);
-> > +	if (ret != PCIBIOS_SUCCESSFUL)
-> > +		return pcibios_err_to_errno(ret);
-> > +	list_for_each_entry(child, &linkbus->devices, bus_list)
-> > +		pcie_capability_clear_word(child, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_ASPMC);
-> 
-> This disables *all* ASPM states, unlike the version when
-> CONFIG_PCIEASPM is enabled.  I suppose there's a reason, and maybe a
-> comment could elaborate on it?
->
-> When CONFIG_PCIEASPM is not enabled, I don't think we actively
-> *disable* ASPM in the hardware; we just leave it as-is, so firmware
-> might have left it enabled.
+Kalle Valo (2):
+  wifi: mac80211: rename ieee80211_tx_status() to
+    ieee80211_tx_status_skb()
+  wifi: mac80211: rename struct cfg80211_rx_assoc_resp to
+    cfg80211_rx_assoc_resp_data
 
-This whole trickery is intended for drivers that do not want to have ASPM 
-because the devices are broken with it. So leaving it as-is is not really 
-an option (as demonstrated by the custom workarounds).
+ Documentation/driver-api/80211/mac80211.rst   |  2 +-
+ drivers/net/wireless/ath/ath12k/dp_tx.c       |  4 +--
+ drivers/net/wireless/ath/ath5k/base.c         |  2 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c |  2 +-
+ drivers/net/wireless/ath/ath9k/xmit.c         |  2 +-
+ drivers/net/wireless/broadcom/b43/dma.c       |  4 +--
+ drivers/net/wireless/broadcom/b43/pio.c       |  2 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/tx.c   |  4 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  4 +--
+ drivers/net/wireless/mediatek/mt7601u/tx.c    |  2 +-
+ .../net/wireless/ralink/rt2x00/rt2x00dev.c    |  2 +-
+ drivers/net/wireless/st/cw1200/txrx.c         |  2 +-
+ drivers/net/wireless/ti/wl1251/tx.c           |  6 ++--
+ include/net/cfg80211.h                        |  8 ++---
+ include/net/mac80211.h                        | 30 +++++++++----------
+ net/mac80211/main.c                           |  2 +-
+ net/mac80211/mlme.c                           |  2 +-
+ net/mac80211/status.c                         |  4 +--
+ net/wireless/mlme.c                           |  2 +-
+ net/wireless/nl80211.c                        |  2 +-
+ net/wireless/nl80211.h                        |  2 +-
+ net/wireless/trace.h                          |  2 +-
+ 22 files changed, 46 insertions(+), 46 deletions(-)
 
-> > +
-> > +	return 0;
-> > +}
-> 
-> Conceptually it seems like the LNKCTL updates here should be the same
-> whether CONFIG_PCIEASPM is enabled or not (subject to the question
-> above).
-> 
-> When CONFIG_PCIEASPM is enabled, we might need to do more stuff, but
-> it seems like the core should be the same.
 
-So you think it's safer to partially disable ASPM (as per driver's 
-request) rather than disable it completely? I got the impression that the 
-latter might be safer from what Rafael said earlier but I suppose I might 
-have misinterpreted him since he didn't exactly say that it might be safer 
-to _completely_ disable it.
-
+base-commit: 62d19b35808816dc2bdf5031e5401230f6a915ba
 -- 
- i.
+2.39.2
 
---8323329-1326969328-1697108183=:1692--
