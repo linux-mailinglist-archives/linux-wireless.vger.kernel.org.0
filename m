@@ -2,117 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BB177C61EB
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 02:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B75967C626D
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 03:49:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376654AbjJLAkc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Oct 2023 20:40:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50828 "EHLO
+        id S233992AbjJLBtl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Oct 2023 21:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233886AbjJLAkb (ORCPT
+        with ESMTP id S233269AbjJLBtl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Oct 2023 20:40:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE0FC9E;
-        Wed, 11 Oct 2023 17:40:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 83BDBC433CD;
-        Thu, 12 Oct 2023 00:40:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697071229;
-        bh=wGHJyiALp3GFYTvWaoHxyso+f2Vuj4QGs+ejJHlDf/k=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=VE5CUTDPsvYyqkldEDqOEXMVmFtYsTPZSIVSOrPhdqUiu+qC0gTSFu6e4mo37ejhQ
-         /nJHSRLR/5Uq37Vk7V8G+nOXlNvk8vH6E7h/jFJuVqHPRQONGS0TzuyWGyPhojUAH7
-         Y4urAQ4NY7DQHqZIv7DL90hwQTF8/SrBLn8tcK2EKIaO4+tESHK8SoJsiMlOStfslk
-         O/7RUIjozO0FXUzHR0diff2R+Z5LRSigjR9sS4lydG4rj6L1lOXawWzS/iyDrc3/8u
-         ubZ2+bqVueHFdmEqJE9Vi1b+9kyKU6EIaNcULLSEz66GZICCGoNPjSU3dE+Xj/HwlZ
-         8gXY0TDIzUzzA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5A538E21ED9;
-        Thu, 12 Oct 2023 00:40:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 11 Oct 2023 21:49:41 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11D4EA9
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Oct 2023 18:49:35 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39C1nQ7f9585690, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.92/5.92) with ESMTPS id 39C1nQ7f9585690
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 12 Oct 2023 09:49:26 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Thu, 12 Oct 2023 09:49:26 +0800
+Received: from [127.0.1.1] (172.21.69.25) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 12 Oct
+ 2023 09:49:26 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/6] wifi: rtw89: generalize MAC registers to support WiFi 7 chips
+Date:   Thu, 12 Oct 2023 09:48:56 +0800
+Message-ID: <20231012014902.18523-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [net-next v3 1/5] netdev: replace simple
- napi_schedule_prep/__napi_schedule to napi_schedule
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169707122936.23011.6924255297609142862.git-patchwork-notify@kernel.org>
-Date:   Thu, 12 Oct 2023 00:40:29 +0000
-References: <20231009133754.9834-1-ansuelsmth@gmail.com>
-In-Reply-To: <20231009133754.9834-1-ansuelsmth@gmail.com>
-To:     Christian Marangi <ansuelsmth@gmail.com>
-Cc:     jgg@ziepe.ca, leon@kernel.org, wg@grandegger.com,
-        mkl@pengutronix.de, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, chris.snook@gmail.com,
-        rajur@chelsio.com, jeroendb@google.com, pkaligineedi@google.com,
-        shailend@google.com, dougmill@linux.ibm.com, nnac123@linux.ibm.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        haren@linux.ibm.com, ricklind@linux.ibm.com, danymadden@us.ibm.com,
-        tlfalcon@linux.ibm.com, tariqt@nvidia.com,
-        alexandre.torgue@foss.st.com, joabreu@synopsys.com,
-        mcoquelin.stm32@gmail.com, khalasa@piap.pl, kvalo@kernel.org,
-        quic_jjohnson@quicinc.com, gregory.greenman@intel.com,
-        chandrashekar.devegowda@intel.com, linuxwwan@intel.com,
-        chiranjeevi.rapolu@linux.intel.com, haijun.liu@mediatek.com,
-        m.chetan.kumar@linux.intel.com, ricardo.martinez@linux.intel.com,
-        loic.poulain@linaro.org, ryazanov.s.a@gmail.com,
-        johannes@sipsolutions.net, ruc_gongyuanjun@163.com,
-        elder@linaro.org, bhupesh.sharma@linaro.org, horms@kernel.org,
-        robh@kernel.org, bcf@google.com, junfeng.guo@intel.com,
-        gustavoars@kernel.org, ziweixiao@google.com, rushilg@google.com,
-        tglx@linutronix.de, u.kleine-koenig@pengutronix.de,
-        krzysztof.kozlowski@linaro.org, YKarpov@ispras.ru, andrew@lunn.ch,
-        zhengzengkai@huawei.com, set_pte_at@outlook.com,
-        pagadala.yesu.anjaneyulu@intel.com, benjamin.berg@intel.com,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-can@vger.kernel.org, netdev@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.25]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+WiFi 7 registers of RTS, MU-EDCA and beamforming are different from
+existing chips, but we can still possibly reuse most of existing code.
+The initial beamformee code when associated is largely different, so make
+them as individual functions.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Ping-Ke Shih (1):
+  wifi: rtw89: mac: add registers of MU-EDCA parameters for WiFi 7 chips
 
-On Mon,  9 Oct 2023 15:37:50 +0200 you wrote:
-> Replace drivers that still use napi_schedule_prep/__napi_schedule
-> with napi_schedule helper as it does the same exact check and call.
-> 
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
-> ---
-> Changes v3:
-> - Add Reviewed-by tag
-> Changes v2:
-> - Add missing semicolon
-> 
-> [...]
+Zong-Zhe Yang (5):
+  wifi: rtw89: mac: update RTS threshold according to chip gen
+  wifi: rtw89: mac: generalize register of MU-EDCA switch according to
+    chip gen
+  wifi: rtw89: mac: set bfee_ctrl() according to chip gen
+  wifi: rtw89: mac: set bf_assoc capabilities according to chip gen
+  wifi: rtw89: mac: do bf_monitor only if WiFi 6 chips
 
-Here is the summary with links:
-  - [net-next,v3,1/5] netdev: replace simple napi_schedule_prep/__napi_schedule to napi_schedule
-    https://git.kernel.org/netdev/net-next/c/ef724517b596
-  - [net-next,v3,2/5] netdev: make napi_schedule return bool on NAPI successful schedule
-    https://git.kernel.org/netdev/net-next/c/0a779003213b
-  - [net-next,v3,3/5] netdev: replace napi_reschedule with napi_schedule
-    https://git.kernel.org/netdev/net-next/c/73382e919f3d
-  - [net-next,v3,4/5] net: tc35815: rework network interface interrupt logic
-    https://git.kernel.org/netdev/net-next/c/be176234d0a8
-  - [net-next,v3,5/5] netdev: use napi_schedule bool instead of napi_schedule_prep/__napi_schedule
-    https://git.kernel.org/netdev/net-next/c/d1fea38f01ac
+ drivers/net/wireless/realtek/rtw89/mac.c      |  57 ++++--
+ drivers/net/wireless/realtek/rtw89/mac.h      |  22 ++-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  16 +-
+ drivers/net/wireless/realtek/rtw89/mac_be.c   | 174 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h      |  79 ++++++++
+ 5 files changed, 322 insertions(+), 26 deletions(-)
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
