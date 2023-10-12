@@ -2,167 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D82357C6B1A
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 12:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDC9F7C6B39
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 12:34:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377884AbjJLK2I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 06:28:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57340 "EHLO
+        id S1378101AbjJLKeJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 06:34:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377922AbjJLK2H (ORCPT
+        with ESMTP id S234170AbjJLKeI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 06:28:07 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D862C90;
-        Thu, 12 Oct 2023 03:28:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955BFC433C8;
-        Thu, 12 Oct 2023 10:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697106483;
-        bh=FbfTb532UtefkAymkh2mZnU5Xx3DDUSbd8sYKfSFdGY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=nHNCHhP6wfFh80mXpe0gyuhhSqhByBP9qUEcOutOzvlP1cvTxzMxajie1GblmH0tE
-         3sLL9pXiW4F2LU/tR+t9LwvcCTSqLFqmxLGEmokk08Q7c9dVE43ZBZ1tbJubfNLYyq
-         zw0dm8+x5G/3f42m4NEX49sNiol2aNzcSbBSg5J9nHzzoyNuB+5o0pZ9ljjMOV1kQk
-         Y59Siwik74qPOsbh9CE0GouggBeG0O9cTle9PhObgwpD4CJqTSKVKLLvsGthmuiNqz
-         msbqJCraosSs1eOP087Cl4YQyEMObqyX4ndk3tg2S0qmRtdq8SmURvXH8srqeOEuvJ
-         ojfY8FXP+1U3Q==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     oe-kbuild@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
-        lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475
- mt76x02_set_key() warn: variable dereferenced before check 'key' (see line
- 415)
-References: <77fee326-963a-40eb-80c9-2788a9ff9c22@kadam.mountain>
-Date:   Thu, 12 Oct 2023 13:27:59 +0300
-In-Reply-To: <77fee326-963a-40eb-80c9-2788a9ff9c22@kadam.mountain> (Dan
-        Carpenter's message of "Thu, 12 Oct 2023 09:40:39 +0300")
-Message-ID: <871qe03zkg.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Thu, 12 Oct 2023 06:34:08 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960AC90;
+        Thu, 12 Oct 2023 03:34:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697106846; x=1728642846;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=ji8x2F8u0U0ggxefEbWPL9IJWQlQGGYyAuJIBploLj8=;
+  b=bN3f4Qk6kxsqtiPEdc7hozzc/lHyjyLmT9hB1THfw7cBEeXlPkp2ydv4
+   A5RWqQuNNWZM4AHxz7lFg/5vYZlLPnq3fbNSRje7q8fucWjt+5h6iHSUq
+   lV2n0tt63s27D4mcreO06tcglJUm++kPYTWNkmUiUTT9Su1BNqB0btepP
+   v2x/eCjoYn4Z/KmXkMXUfrnzCL0uqLlTPy7VYz2lRVcyCOX1YVtOgi8hz
+   PXk3wjIBqd57RZhJI714m3FQ9sIPDHK0wEz4wFbNmHdxX/NDdcpf5ZU/a
+   IrodtZrjUd3H3whvPsp1yjwKL187hu6QXV/0zKS3Pt5cD0Ws99XtR3TbB
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="388748393"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
+   d="scan'208";a="388748393"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 03:34:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="870527710"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
+   d="scan'208";a="870527710"
+Received: from asroczyn-mobl.ger.corp.intel.com ([10.249.36.107])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 03:34:00 -0700
+Date:   Thu, 12 Oct 2023 13:29:49 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+cc:     linux-pci@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-bluetooth@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
+Subject: Re: [PATCH v2 04/13] PCI/ASPM: Move L0S/L1/sub states mask calculation
+ into a helper
+In-Reply-To: <20231011193206.GA1039708@bhelgaas>
+Message-ID: <bcecb577-bf69-e854-6f59-f4cb26c4b354@linux.intel.com>
+References: <20231011193206.GA1039708@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; boundary="8323329-1380828921-1697106845=:1692"
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(Adding linux-wireless, full report below.)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Dan Carpenter <dan.carpenter@linaro.org> writes:
+--8323329-1380828921-1697106845=:1692
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> head:   401644852d0b2a278811de38081be23f74b5bb04
-> commit: e6db67fa871dee37d22701daba806bfcd4d9df49 wifi: mt76: ignore key disable commands
-> config: i386-randconfig-141-20231011 (https://download.01.org/0day-ci/archive/20231012/202310121455.LwR349tb-lkp@intel.com/config)
-> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-> reproduce: (https://download.01.org/0day-ci/archive/20231012/202310121455.LwR349tb-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202310121455.LwR349tb-lkp@intel.com/
->
-> smatch warnings:
-> drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475 mt76x02_set_key() warn: variable dereferenced before check 'key' (see line 415)
->
-> vim +/key +475 drivers/net/wireless/mediatek/mt76/mt76x02_util.c
->
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  407  int mt76x02_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  408  		    struct ieee80211_vif *vif, struct ieee80211_sta *sta,
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  409  		    struct ieee80211_key_conf *key)
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  410  {
-> d87cf75f111183 Lorenzo Bianconi  2018-10-07  411  	struct mt76x02_dev *dev = hw->priv;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  412  	struct mt76x02_vif *mvif = (struct mt76x02_vif *)vif->drv_priv;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  413  	struct mt76x02_sta *msta;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  414  	struct mt76_wcid *wcid;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @415  	int idx = key->keyidx;
->                                                                   ^^^^^^^^^^^
-> Dereference
->
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  416  	int ret;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  417  
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  418  	/* fall back to sw encryption for unsupported ciphers */
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  419  	switch (key->cipher) {
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  420  	case WLAN_CIPHER_SUITE_WEP40:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  421  	case WLAN_CIPHER_SUITE_WEP104:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  422  	case WLAN_CIPHER_SUITE_TKIP:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  423  	case WLAN_CIPHER_SUITE_CCMP:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  424  		break;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  425  	default:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  426  		return -EOPNOTSUPP;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  427  	}
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  428  
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  429  	/*
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  430  	 * The hardware does not support per-STA RX GTK, fall back
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  431  	 * to software mode for these.
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  432  	 */
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  433  	if ((vif->type == NL80211_IFTYPE_ADHOC ||
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  434  	     vif->type == NL80211_IFTYPE_MESH_POINT) &&
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  435  	    (key->cipher == WLAN_CIPHER_SUITE_TKIP ||
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  436  	     key->cipher == WLAN_CIPHER_SUITE_CCMP) &&
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  437  	    !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  438  		return -EOPNOTSUPP;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  439  
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  440  	/*
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  441  	 * In USB AP mode, broadcast/multicast frames are setup in beacon
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  442  	 * data registers and sent via HW beacons engine, they require to
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  443  	 * be already encrypted.
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  444  	 */
-> 61c51a74a4e586 Lorenzo Bianconi  2019-10-29  445  	if (mt76_is_usb(&dev->mt76) &&
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  446  	    vif->type == NL80211_IFTYPE_AP &&
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  447  	    !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  448  		return -EOPNOTSUPP;
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  449  
-> 4b36cc6b390f18 David Bauer       2021-02-07  450  	/* MT76x0 GTK offloading does not work with more than one VIF */
-> 4b36cc6b390f18 David Bauer       2021-02-07  451  	if (is_mt76x0(dev) && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
-> 4b36cc6b390f18 David Bauer       2021-02-07  452  		return -EOPNOTSUPP;
-> 4b36cc6b390f18 David Bauer       2021-02-07  453  
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  454  	msta = sta ? (struct mt76x02_sta *)sta->drv_priv : NULL;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  455  	wcid = msta ? &msta->wcid : &mvif->group_wcid;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  456  
-> e6db67fa871dee Felix Fietkau     2023-03-30  457  	if (cmd != SET_KEY) {
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  458  		if (idx == wcid->hw_key_idx) {
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  459  			wcid->hw_key_idx = -1;
-> f2f6a47b504b8f Felix Fietkau     2019-01-25  460  			wcid->sw_iv = false;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  461  		}
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  462  
-> e6db67fa871dee Felix Fietkau     2023-03-30  463  		return 0;
-> e6db67fa871dee Felix Fietkau     2023-03-30  464  	}
-> e6db67fa871dee Felix Fietkau     2023-03-30  465  
-> e6db67fa871dee Felix Fietkau     2023-03-30  466  	key->hw_key_idx = wcid->idx;
-> e6db67fa871dee Felix Fietkau     2023-03-30  467  	wcid->hw_key_idx = idx;
-> e6db67fa871dee Felix Fietkau     2023-03-30  468  	if (key->flags & IEEE80211_KEY_FLAG_RX_MGMT) {
-> e6db67fa871dee Felix Fietkau     2023-03-30  469  		key->flags |= IEEE80211_KEY_FLAG_SW_MGMT_TX;
-> e6db67fa871dee Felix Fietkau     2023-03-30  470  		wcid->sw_iv = true;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  471  	}
-> d87cf75f111183 Lorenzo Bianconi  2018-10-07  472  	mt76_wcid_key_setup(&dev->mt76, wcid, key);
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  473  
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  474  	if (!msta) {
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @475  		if (key || wcid->hw_key_idx == idx) {
->                                                                     ^^^
-> Check for NULL.  I think "key" can't be NULL so this check is always
-> true.  The check can be removed and the code pulled in an tab.
->
-> 8d66af49a3db9a Lorenzo Bianconi  2018-10-07  476  			ret = mt76x02_mac_wcid_set_key(dev, wcid->idx, key);
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  477  			if (ret)
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  478  				return ret;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  479  		}
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  480  
-> 8d66af49a3db9a Lorenzo Bianconi  2018-10-07  481  		return mt76x02_mac_shared_key_setup(dev, mvif->idx, idx, key);
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  482  	}
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  483  
-> 8d66af49a3db9a Lorenzo Bianconi  2018-10-07  484  	return mt76x02_mac_wcid_set_key(dev, msta->wcid.idx, key);
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  485  }
+On Wed, 11 Oct 2023, Bjorn Helgaas wrote:
+
+> On Mon, Sep 18, 2023 at 04:10:54PM +0300, Ilpo Järvinen wrote:
+> > ASPM service driver does the same L0S / L1S / sub states allowed
+> > calculation in __pci_disable_link_state() and
+> > pci_set_default_link_state().
+> 
+> Is there a typo or something here?  This patch only adds a call to
+> __pci_disable_link_state(), not to pci_set_default_link_state().
+
+This was because one of the changes that got included in the meantime made 
+the state handling in those two functions to differ so I removed the call 
+from the code but forgot to update the changelog to match the code. I'll 
+fix the changelog.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+ i.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+> > Create a helper to calculate the mask for the allowed states.
+> > 
+> > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> > ---
+> >  drivers/pci/pcie/aspm.c | 33 +++++++++++++++++++++------------
+> >  1 file changed, 21 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+> > index ec6d7a092ac1..91dc95aca90f 100644
+> > --- a/drivers/pci/pcie/aspm.c
+> > +++ b/drivers/pci/pcie/aspm.c
+> > @@ -1034,6 +1034,26 @@ static struct pcie_link_state *pcie_aspm_get_link(struct pci_dev *pdev)
+> >  	return bridge->link_state;
+> >  }
+> >  
+> > +static u8 pci_link_state_mask(int state)
+> > +{
+> > +	u8 result = 0;
+> > +
+> > +	if (state & PCIE_LINK_STATE_L0S)
+> > +		result |= ASPM_STATE_L0S;
+> > +	if (state & PCIE_LINK_STATE_L1)
+> > +		result |= ASPM_STATE_L1;
+> > +	if (state & PCIE_LINK_STATE_L1_1)
+> > +		result |= ASPM_STATE_L1_1;
+> > +	if (state & PCIE_LINK_STATE_L1_2)
+> > +		result |= ASPM_STATE_L1_2;
+> > +	if (state & PCIE_LINK_STATE_L1_1_PCIPM)
+> > +		result |= ASPM_STATE_L1_1_PCIPM;
+> > +	if (state & PCIE_LINK_STATE_L1_2_PCIPM)
+> > +		result |= ASPM_STATE_L1_2_PCIPM;
+> > +
+> > +	return result;
+> > +}
+> > +
+> >  static int __pci_disable_link_state(struct pci_dev *pdev, int state, bool sem)
+> >  {
+> >  	struct pcie_link_state *link = pcie_aspm_get_link(pdev);
+> > @@ -1063,18 +1083,7 @@ static int __pci_disable_link_state(struct pci_dev *pdev, int state, bool sem)
+> >  	if (sem)
+> >  		down_read(&pci_bus_sem);
+> >  	mutex_lock(&aspm_lock);
+> > -	if (state & PCIE_LINK_STATE_L0S)
+> > -		link->aspm_disable |= ASPM_STATE_L0S;
+> > -	if (state & PCIE_LINK_STATE_L1)
+> > -		link->aspm_disable |= ASPM_STATE_L1;
+> > -	if (state & PCIE_LINK_STATE_L1_1)
+> > -		link->aspm_disable |= ASPM_STATE_L1_1;
+> > -	if (state & PCIE_LINK_STATE_L1_2)
+> > -		link->aspm_disable |= ASPM_STATE_L1_2;
+> > -	if (state & PCIE_LINK_STATE_L1_1_PCIPM)
+> > -		link->aspm_disable |= ASPM_STATE_L1_1_PCIPM;
+> > -	if (state & PCIE_LINK_STATE_L1_2_PCIPM)
+> > -		link->aspm_disable |= ASPM_STATE_L1_2_PCIPM;
+> > +	link->aspm_disable |= pci_link_state_mask(state);
+> >  	pcie_config_aspm_link(link, policy_to_aspm_state(link));
+> >  
+> >  	if (state & PCIE_LINK_STATE_CLKPM)
+
+
+--8323329-1380828921-1697106845=:1692--
