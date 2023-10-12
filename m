@@ -2,76 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 607F27C700E
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 16:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 016DE7C7064
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Oct 2023 16:37:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343627AbjJLOIi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Oct 2023 10:08:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40848 "EHLO
+        id S1344026AbjJLOhB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Oct 2023 10:37:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235570AbjJLOIh (ORCPT
+        with ESMTP id S1343673AbjJLOg7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Oct 2023 10:08:37 -0400
-X-Greylist: delayed 409 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 12 Oct 2023 07:08:35 PDT
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 617D9BB
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Oct 2023 07:08:34 -0700 (PDT)
-Received: from localhost.localdomain (unknown [58.61.141.228])
-        by mail-m121145.qiye.163.com (Hmail) with ESMTPA id 1A011800080;
-        Thu, 12 Oct 2023 22:01:24 +0800 (CST)
-From:   Chukun Pan <amadeus@jmu.edu.cn>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chukun Pan <amadeus@jmu.edu.cn>
-Subject: [PATCH 1/1] wifi: rtw88: 8822b: disable call trace when write RF mode table fail
-Date:   Thu, 12 Oct 2023 22:01:20 +0800
-Message-Id: <20231012140120.891411-1-amadeus@jmu.edu.cn>
-X-Mailer: git-send-email 2.25.1
+        Thu, 12 Oct 2023 10:36:59 -0400
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9934391;
+        Thu, 12 Oct 2023 07:36:56 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.west.internal (Postfix) with ESMTP id 3182B3200977;
+        Thu, 12 Oct 2023 10:36:52 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 12 Oct 2023 10:36:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1697121411; x=1697207811; bh=dT
+        K6vB86TTa39cmBteipnbE5ZieH/rRMtOJjJ9SFwYw=; b=Tivic6xGP99PN1FGrn
+        eZ+OO4z9CT92jlXaBKxpci5w57UD1TD2KXotzk9uDohCCnhbeJe/LzTefY4j2SHr
+        90SYJqOZf/KYm+ub73LawRFmrUmbJdHw9L7oHVbz+O7Ahs5FDCHS/IMc/OyfuMbr
+        GjjzO9ALVzlRkSjmwD11zZetCvlZc8fR1xlFcYZHUmFaaQJgMa9hysZ+EnjPdHC1
+        RuJyQZycVAWOfJHN+4LZdjxcjsmcYCtfepHcGYw6TaYWdvP4PLBEih6O+Q/gsWwX
+        eUXOHbgZKgIrUitwVDWrhmYMKNK/MKRDldciix1V4149vGzwLhWSLviwW0xMq0OS
+        0NjA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1697121411; x=1697207811; bh=dTK6vB86TTa39
+        cmBteipnbE5ZieH/rRMtOJjJ9SFwYw=; b=g1Teoq2cG0IIV16g9UqalYOHpKNTX
+        HIkN6/I4aZlyVvxyfmsUtEyoSQExzv+IMiCN3vj3fCcpWmb+m8r97LUbaiHBlxw2
+        TEdHCKjfL/nwBujQGA6Kgl8dhPEqT+PjlVaORvxHLzI8KD573EGeg7xtnItS7PVr
+        Gyj/JEg4g/Uz/eoJIFQkD60RgKcQNXBycHCmC7TYKdA3qkENeFKWhDHYbT5tA0lY
+        wMLDlw5D3QbfJPoSKqDEHSS782Ren2ZqCaF6YOnisF9gDDZQOMClC14Zqx89rNOs
+        oYeVioBmZMLDrjJXvq2z0kGTe5Ec/2ITiqF8pqObJ4cxo2lx80/xC0wNw==
+X-ME-Sender: <xms:gwQoZXtty0NQfKaC3SwT2-HChUmZ3T5-G7hS6T7l6-KjSk-0oVLdwA>
+    <xme:gwQoZYc7VIGN6FhiyWDBzSEr7TdJ-EPzZmlxLPBJOBBS1-xWauqIIdNpAPtLIJsQn
+    _BihDzBuduc8o-9Mjs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedriedtgdeikecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:gwQoZaz6LKiQWiEoR-kC2R-iQgLHvMUlh9K9q8UqMojCckK4gQtZhA>
+    <xmx:gwQoZWOv0Id1TAPb8pHY66ENEePxYuWiIArJeJmoFfWcJeuaV6-lBw>
+    <xmx:gwQoZX9j9RZ0Gq1FnOzEoIzlswnaE2vi9f1evz8-zLQsx2VZJiZu6w>
+    <xmx:gwQoZWXJ36zrWUNE5v4AY8Ge_1jsj2TljiM2_fMcrqza9AwAReJ0ww>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 54B9DB60089; Thu, 12 Oct 2023 10:36:51 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCTB8fVksdThodSUwfSE0dTVUTARMWGhIXJBQOD1
-        lXWRgSC1lBWU5DVU1KVUpPSlVJSUNZV1kWGg8SFR0UWUFZT0tIVUpKS0hKQ1VKS0tVS1kG
-X-HM-Tid: 0a8b24312c1fb03akuuu1a011800080
-X-HM-MType: 10
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6OD46EDo6AjwrTQtONFEjNTkR
-        MhowCwxVSlVKTUJMSkpCSUNPTExLVTMWGhIXVRoWGh8eDgg7ERYOVR4fDlUYFUVZV1kSC1lBWU5D
-        VU1KVUpPSlVJSUNZV1kIAVlBSkJIQjcG
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Message-Id: <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
+In-Reply-To: <87sf6g2hc8.fsf@kernel.org>
+References: <20231010155444.858483-1-arnd@kernel.org>
+ <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
+ <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
+ <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
+Date:   Thu, 12 Oct 2023 16:36:26 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Kalle Valo" <kvalo@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>
+Cc:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "Arnd Bergmann" <arnd@kernel.org>,
+        "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+        "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+        "Pavel Machek" <pavel@ucw.cz>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Larry Finger" <Larry.Finger@lwfinger.net>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
+Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The rtw88 driver throws a useless Call Trace when the rtl8812bu
-or rtl8822be wifi modules fail to write the RF mode table.
-Since this does not affect normal use of the wifi modules,
-replace WARN() with driver warning to avoid useless panic.
+On Thu, Oct 12, 2023, at 13:47, Kalle Valo wrote:
+>
+> Is anyone willing to submit patches? Use wireless-next as the baseline
+> for patches and one driver per commit, please. That way it's easy to
+> revert later, if needed (hopefully not).
 
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
----
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I can do it, I've already done most of the work for moving the
+drivers, so I just need to split up my existing patch and leave out
+the bits that get added to drivers/staging.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 3017a9760da8..06b6efcd16d2 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -820,8 +820,10 @@ static void rtw8822b_config_trx_mode(struct rtw_dev *rtwdev, u8 tx_path,
- 			break;
- 	}
- 
--	if (WARN(counter <= 0, "write RF mode table fail\n"))
-+	if (counter <= 0) {
-+		rtw_warn(rtwdev, "write RF mode table fail\n");
- 		return;
-+	}
- 
- 	rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWE, RFREG_MASK, 0x80000);
- 	rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTWA, RFREG_MASK, 0x00001);
--- 
-2.25.1
+I'll also send Greg a patch to remove rtl8192u now that we know
+that this has been broken for 7 years. Similarly, I'd include
+another patch to remove PCMCIA support for libertas, as that
+would otherwise be the only remaining 16-bit PCMCIA wlan card,
+and I could find no indication of this one ever being popular,
+unlike the USB/SDIO/SPI variants of the same device or the
+other PCMCIA drivers.
 
+This would leave only a handful of wext implementations in the
+tree: ipw2x00, ps3-gelic-wireless, staging/rtl8712, staging/rtl8192e
+and staging/ks7010. Since ipw2x00 is apparently still supported
+in theory and was rather popular on Pentium-M based systems 20
+years ago, this may still need to be converted to cfg80211
+before you can remove support for wext style drivers altogether.
+ps3-gelic-wireless and rtl8712 are also still maintained but have
+a much smaller user base I assume.
+
+      Arnd
