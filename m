@@ -2,127 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D56B37C8906
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 17:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DA417C894C
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 17:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232467AbjJMPpO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Oct 2023 11:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32986 "EHLO
+        id S232560AbjJMP4z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Oct 2023 11:56:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232410AbjJMPpN (ORCPT
+        with ESMTP id S232606AbjJMP4u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Oct 2023 11:45:13 -0400
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD21CB7;
-        Fri, 13 Oct 2023 08:45:09 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id 8C99C3200A38;
-        Fri, 13 Oct 2023 11:45:07 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Fri, 13 Oct 2023 11:45:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1697211907; x=1697298307; bh=0S
-        q5aN/LEeIdEtvpU4m3Ee5Hif+IIBF9F9j0cI69vvg=; b=QfSe04c+Y6UV+PgVX8
-        ipjzO11XYYPPGyAwgDHlq+Bw0zIP9gWxJjcNcvCQYhHzdsqlEySU7hdPN3yXE+kV
-        sWIdr6p69QcAUCyXmWoN8OoJVh9UYAm31S2HsNFANMOZ461tIkn8J0AZn79Rs2Ow
-        dVx5XpBZcN0Ku1DApCTl9EIRhjigzffykqoUclC3McWBRt19TcHEnIpOZ7NpBtZ+
-        rn+g30Wq4JRQS67BuZfmFi7hegvvc3ZScX3HvcCBn72A+DwO1Jub5FnhEQItUMUe
-        yy/UhIHvvgHCOBus5Ot8HJpEvyAGmchRO/LMfr79D3c7l1GIIegFPc2e1gwvFnUM
-        0ZJw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1697211907; x=1697298307; bh=0Sq5aN/LEeIdE
-        tvpU4m3Ee5Hif+IIBF9F9j0cI69vvg=; b=HlebnGkiYLove2NgAjXZ1BrX1E4BO
-        rllh75aIqbF3UPjtExUKH1fFjWwxqzxGKFxLl85cMBN6oiqj3/obCkMIe/j27JEx
-        K6DUA2H+433N0yckEmdVYfKJvUD3obb++KT36pLVOMtXKhsr3CWeVTXdt6mJCEBb
-        PRkdaHcARKcWSO0U3zjYR/06rvY3243LEPC3l53pJvWsQ3RE+BQGeCDISzOcuq12
-        FEyXi4Hfu5JGncNXSB7sLdl52wzOKLPivcp6qMc29pnS6gJdRElg2oezts5g3W+D
-        qfy+CEH/my0ScNwhjtXM8gpvTMORnfsFRknJkpeGP/kh7UQNI1gntuQZg==
-X-ME-Sender: <xms:AmYpZcsvVDyOhwSyQ70izb8_xBVsCY_kfn6gdWQWio7HXLWxZusBPA>
-    <xme:AmYpZZfX4rNm-lh5GW_s8Fpfo0otpXih4YpZZlPZePJEwjIo-TOIu6moQ8_b7hGSl
-    eOLjPNmu67Og7Fx9Qs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrieefgdeilecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:AmYpZXzN2w3dbR22gN4m-cKujh4GRSIxI8kLEk5iXqN-3zzR1xutyw>
-    <xmx:AmYpZfNRZ5xYU705tJzb4gFqaDT5P2H_jwJmbuRMJMxX7Sa3ug505A>
-    <xmx:AmYpZc_65e0KsmA9vWgubuAuTXNCLVK-UdJEwJ7CoQcBqQM2LCorag>
-    <xmx:A2YpZfeA7_dBOkylpD1LmWWHIkTTd6VjkTkNStwUHhVVjHjqWRhgug>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 4F568B60089; Fri, 13 Oct 2023 11:45:06 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
-MIME-Version: 1.0
-Message-Id: <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
-In-Reply-To: <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
-References: <20231010155444.858483-1-arnd@kernel.org>
- <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
- <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
- <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
- <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
- <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
- <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
- <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
- <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
-Date:   Fri, 13 Oct 2023 17:44:43 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Geoff Levand" <geoff@infradead.org>,
-        "Johannes Berg" <johannes@sipsolutions.net>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>
-Cc:     "Kalle Valo" <kvalo@kernel.org>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Arnd Bergmann" <arnd@kernel.org>,
-        "Nicolas Ferre" <nicolas.ferre@microchip.com>,
-        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
-        "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
-        "Pavel Machek" <pavel@ucw.cz>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Larry Finger" <Larry.Finger@lwfinger.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-staging@lists.linux.dev,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 13 Oct 2023 11:56:50 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F4CD7
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Oct 2023 08:56:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697212608; x=1728748608;
+  h=date:from:to:cc:subject:message-id;
+  bh=QmqSQgDzmle0jM/NIV+oR1W/NaDFilD6hdYpWaKTZUg=;
+  b=kRFs4bMRMUAgYyROBxJNUxOkHOLVpczLWLxibEASljHx/BknDCGqUi72
+   AgXopMhSWJ0TNIUGjx/A86xFhUaGKWvD4qBTIPeKdnxt9UoFy9cVdsiGc
+   bYnYwRLgeEIKIgZgquhCeLlNUyh2kfuL1o4gqlMjbKsVeeoMNvLdkhXMb
+   ep8Ilr2r5jacNkBgAvcVl/7PWCcF3Legurc7LaK3TKoKJ6JVox/RY7r5x
+   On5m7SmVmWHOr1x3wiZGpckabF/f/2p7IV1UnuqdAviTe/e65Nz9wK1WY
+   fEkPU9ymlpoXa8YLf84tZoINhk01AfkZrguKiStt1zmwaY/FBMmCZmzPR
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="6769879"
+X-IronPort-AV: E=Sophos;i="6.03,222,1694761200"; 
+   d="scan'208";a="6769879"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 08:56:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="704692105"
+X-IronPort-AV: E=Sophos;i="6.03,222,1694761200"; 
+   d="scan'208";a="704692105"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 13 Oct 2023 08:56:45 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qrKWp-00053Y-17;
+        Fri, 13 Oct 2023 15:56:43 +0000
+Date:   Fri, 13 Oct 2023 23:56:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 618071ae0f7e8c1aeb9b1b1e9ee876bcc3f045fc
+Message-ID: <202310132338.OTD22c4h-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 12, 2023, at 18:36, Geoff Levand wrote:
-> On 10/12/23 17:41, Johannes Berg wrote:
->> But seriously - is it worth to try to keep a wireless driver for it if
->> we don't even know anyone using a PS3 at all?
->
-> There is still a considerable user base for the PS3, so we
-> must keep the ps3-gelic-wireless driver.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 618071ae0f7e8c1aeb9b1b1e9ee876bcc3f045fc  wifi: rtw89: coex: add annotation __counted_by() to struct rtw89_btc_btf_set_mon_reg
 
-Do you know if anyone has tried changing this driver over to the
-cfg80211 interface from the wireless extensions? With the
-series I have prepared now, it is the only driver outside of
-drivers/staging that still uses wext and stops us from removing
-that altogether. 
+elapsed time: 1628m
 
-[side note: it appears that the PS3 I have is the only model
- without wireless networking, as I bought cheapest Asian 20GB version
- back in early 2007. It still has the original firmware on it
- and should run Linux, but I haven't tried it since at least
- 2009].
+configs tested: 121
+configs skipped: 2
 
-    Arnd
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231012   gcc  
+arc                   randconfig-001-20231013   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20231013   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231013   gcc  
+i386                  randconfig-002-20231013   gcc  
+i386                  randconfig-003-20231013   gcc  
+i386                  randconfig-004-20231013   gcc  
+i386                  randconfig-005-20231013   gcc  
+i386                  randconfig-006-20231013   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231012   gcc  
+loongarch             randconfig-001-20231013   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                        bcm63xx_defconfig   clang
+mips                           ip27_defconfig   clang
+mips                           rs90_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                      ppc6xx_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                    nommu_virt_defconfig   clang
+riscv                 randconfig-001-20231013   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231013   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                            migor_defconfig   gcc  
+sh                            shmin_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231013   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                randconfig-001-20231013   gcc  
+x86_64                randconfig-002-20231013   gcc  
+x86_64                randconfig-003-20231013   gcc  
+x86_64                randconfig-004-20231013   gcc  
+x86_64                randconfig-005-20231013   gcc  
+x86_64                randconfig-006-20231013   gcc  
+x86_64                           rhel-8.3-bpf   gcc  
+x86_64                          rhel-8.3-func   gcc  
+x86_64                    rhel-8.3-kselftests   gcc  
+x86_64                         rhel-8.3-kunit   gcc  
+x86_64                           rhel-8.3-ltp   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
