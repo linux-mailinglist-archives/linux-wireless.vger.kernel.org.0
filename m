@@ -2,104 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C1A07C8CB4
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 20:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B4CC7C8D48
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 20:47:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231320AbjJMSDJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Oct 2023 14:03:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58496 "EHLO
+        id S229891AbjJMSrj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Oct 2023 14:47:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230260AbjJMSDH (ORCPT
+        with ESMTP id S229830AbjJMSri (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Oct 2023 14:03:07 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7EAFD6;
-        Fri, 13 Oct 2023 11:03:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=+YCPIF7bIuvSFdfYLoHL+t68NvW/EnMItKeS5kyuoaw=;
-        t=1697220186; x=1698429786; b=xjUWAVCIMPx6GnpMdib8tUsdaaVSUjHjavnGPJ5x3v/8cPj
-        MHM+Jy3RvA8xJp33+XD4WbWPX4w0xUE5AQkAKn6KfxwOGJ7P0yprCscqaLH5DFmMtfIdXBzkSy3Sg
-        DLc18rG/WsuHxZmPO+PAjJNSK6FpH7OSjKQSLBv6Sf1np4xfir+7KJXpxhk3C4NAi9gPE1WvCEpMZ
-        fGHZPebuhq9j9NI998GiyrYDjf1gEzv50E2HJqjRUdgw6yp4cfdRGFNTy53T98a5cNgW3uDdm4QmK
-        4SADaia4+cMxjQuArGCpsLDwhfBhYKQjpXNyIJQXOHHprFy3dIDb3C8EouXg2D2w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.97-RC1)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qrMUs-00000004lf0-44Ty;
-        Fri, 13 Oct 2023 20:02:51 +0200
-Message-ID: <789449f63ff6175ff46951507c03753f4430aa85.camel@sipsolutions.net>
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Arnd Bergmann <arnd@arndb.de>, Geoff Levand <geoff@infradead.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Kalle Valo <kvalo@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Pavel Machek <pavel@ucw.cz>,
-        "David S . Miller" <davem@davemloft.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-staging@lists.linux.dev,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Date:   Fri, 13 Oct 2023 20:02:49 +0200
-In-Reply-To: <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
-References: <20231010155444.858483-1-arnd@kernel.org>
-         <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
-         <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
-         <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
-         <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
-         <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
-         <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
-         <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
-         <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
-         <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Fri, 13 Oct 2023 14:47:38 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A49BE
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Oct 2023 11:47:35 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39DEPQm8015187;
+        Fri, 13 Oct 2023 18:47:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=iQ2dzGPfFTzrQcqKDqRYY4LkZbGk6fb9XbYLh8vfbME=;
+ b=FeUkexyB2Dg0ZtSJzM/HQ2WN92pwQkl57+iMs+Ui62dwTzeIvBzMfNb1xF0wIUeJLjuf
+ l5sxLeKFcaL4OFBZKSy3UPtnLXsE6fWI5W4OOqC12Y2YCBiMv5i7aZg8Baups2fIbPYI
+ GhGD9DTIllBFFulvX8T3MIzCqTvhWW/S6ze+RvhlPVt3eMdI0+WjLRKfmfQtYJ5Z6LO5
+ WRlzxGv5JRvvt5dU9fEdeSb4w12+2U05zkVNKB2tpLaNwFFKpREjnpIi0NbzELhcK4uB
+ wqQYl6XNCT5GtyKBGN377EAOjReB+1K5Lu3EJ2Myp/X0pX+tc3xt9ljVxDwUlg4suPR6 eA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tpt1rajcn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 13 Oct 2023 18:47:30 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39DIlTbP028020
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 13 Oct 2023 18:47:29 GMT
+Received: from [10.111.181.241] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 13 Oct
+ 2023 11:47:29 -0700
+Message-ID: <46b945be-44c1-445e-a719-e5c7ed0e400a@quicinc.com>
+Date:   Fri, 13 Oct 2023 11:47:28 -0700
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/4] wifi: ath12k: add TAS capability for WCN7850
+Content-Language: en-US
+To:     Lingbo Kong <quic_lingbok@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20231013114434.81648-1-quic_lingbok@quicinc.com>
+ <20231013114434.81648-2-quic_lingbok@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231013114434.81648-2-quic_lingbok@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 9GpsAS0pITyivyqevBdzqRY1pN-7Ux0r
+X-Proofpoint-ORIG-GUID: 9GpsAS0pITyivyqevBdzqRY1pN-7Ux0r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-13_09,2023-10-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ mlxlogscore=844 priorityscore=1501 suspectscore=0 adultscore=0
+ clxscore=1015 mlxscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310130161
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-10-13 at 17:44 +0200, Arnd Bergmann wrote:
-> On Thu, Oct 12, 2023, at 18:36, Geoff Levand wrote:
-> > On 10/12/23 17:41, Johannes Berg wrote:
-> > > But seriously - is it worth to try to keep a wireless driver for it i=
-f
-> > > we don't even know anyone using a PS3 at all?
-> >=20
-> > There is still a considerable user base for the PS3, so we
-> > must keep the ps3-gelic-wireless driver.
->=20
-> Do you know if anyone has tried changing this driver over to the
-> cfg80211 interface from the wireless extensions?
+On 10/13/2023 4:44 AM, Lingbo Kong wrote:
+> Currently, ath12k does not support Time-Average-SAR(TAS) for WCN7850. In
+> order to enable Time-Average-SAR(TAS) for WCN7850, ath12k defines
+> ath12k_get_acpi_all_data() function to get TAS configuration and SAR power
+> table, then sets pdev_id, param_type_id, and finally sends the TAS
+> configuration, SAR power table and WMI_PDEV_SET_BIOS_INTERFACE_CMDID
+> command to firmware to implement TAS during the initialization phase.
+> Besides, ath12k registers an ACPI event callback so that ACPI can notify
+> ath12k to get the updated SAR power table and sends it to firmware when the
+> device state is changed.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
 
-I looked at that yesterday, and sadly I _think_ it's not even possible,
-there are some corner cases in it like "no WPA2" that don't seem to be
-fully covered in cfg80211/nl80211, at least not with the APIs today and
-with current versions of wpa_supplicant.
+Verified ath12k-check
 
-It might still be doable because things like
-WPA_DRIVER_CAPA_KEY_MGMT_WPA2_PSK don't really seem to be used much in
-wpa_supplicant, but we'd have to carefully test that I guess.
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Also, it depends on the PS3 firmware version whether or not that's
-supported.
 
-Then again, arguably wifi without WPA2 is pretty much useless these
-days?
-
-johannes
