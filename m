@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 065DA7C88CE
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 17:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D56B37C8906
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 17:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232372AbjJMPhL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Oct 2023 11:37:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42346 "EHLO
+        id S232467AbjJMPpO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Oct 2023 11:45:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232270AbjJMPhK (ORCPT
+        with ESMTP id S232410AbjJMPpN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Oct 2023 11:37:10 -0400
+        Fri, 13 Oct 2023 11:45:13 -0400
 Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62EA7BB;
-        Fri, 13 Oct 2023 08:37:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD21CB7;
+        Fri, 13 Oct 2023 08:45:09 -0700 (PDT)
 Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id 70768320099A;
-        Fri, 13 Oct 2023 11:37:06 -0400 (EDT)
+        by mailout.west.internal (Postfix) with ESMTP id 8C99C3200A38;
+        Fri, 13 Oct 2023 11:45:07 -0400 (EDT)
 Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Fri, 13 Oct 2023 11:37:07 -0400
+  by compute5.internal (MEProxy); Fri, 13 Oct 2023 11:45:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
         :cc:content-type:content-type:date:date:from:from:in-reply-to
         :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1697211425; x=1697297825; bh=26
-        NXCBDrkJj89cZAV32XsTyyy8aUMxOJsXi8lmri3vw=; b=jQ5QdFoHU3oMAZHcCw
-        iVLFaC2Py9bvZc4DnMI3Ds0BSehahzjwf9nTVcVrXzo0wfaUKxB69BYHq8sYnDwg
-        NnfP0WpIfq98c7ymB2i8vIrjP6OxZcq98csXMvdvER5BapZTLFBCYKRa0hxi6Pmm
-        gp1ZVPuHdArKD8e72L9AaZztvs+BN/M+G5negRFH6ucn9d5BCG7HffuizFPCoSF/
-        UzdQPheEEPcsI9O72Qe4/dlZMNk0hy0YeAupNhEwsw5vCNdbyaB9RZuYbj/Aq8Cp
-        EkrDRKE0EfJ54t/3fgeAFjUNFyJWKgv+74K3FEaG/8yA4Jhn4T5tEoBi0QWm0dBD
-        o4Yw==
+        :subject:subject:to:to; s=fm2; t=1697211907; x=1697298307; bh=0S
+        q5aN/LEeIdEtvpU4m3Ee5Hif+IIBF9F9j0cI69vvg=; b=QfSe04c+Y6UV+PgVX8
+        ipjzO11XYYPPGyAwgDHlq+Bw0zIP9gWxJjcNcvCQYhHzdsqlEySU7hdPN3yXE+kV
+        sWIdr6p69QcAUCyXmWoN8OoJVh9UYAm31S2HsNFANMOZ461tIkn8J0AZn79Rs2Ow
+        dVx5XpBZcN0Ku1DApCTl9EIRhjigzffykqoUclC3McWBRt19TcHEnIpOZ7NpBtZ+
+        rn+g30Wq4JRQS67BuZfmFi7hegvvc3ZScX3HvcCBn72A+DwO1Jub5FnhEQItUMUe
+        yy/UhIHvvgHCOBus5Ot8HJpEvyAGmchRO/LMfr79D3c7l1GIIegFPc2e1gwvFnUM
+        0ZJw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-type:content-type:date:date
         :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
         :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1697211425; x=1697297825; bh=26NXCBDrkJj89
-        cZAV32XsTyyy8aUMxOJsXi8lmri3vw=; b=URYipmw6T2mlurfuhM2NBBDoE56gi
-        Sts4mxphK+gx2ICELCFlWucVLJX+SPdXEBbNZqBHDWw1RDw6Z04baB0ADo4E5+mZ
-        NnjcaYCMf85hXHpHDhQXs6sU1jBvzCx1Uz2kv5FXbdeGQlKM+rXcavV1uW/XFfia
-        Zf0HxCie1HozEFFQhLeGHHLZzlv6FomTCKb2dfp9OPtd55l0Kp3Z9HzliGZBgCqy
-        ClS/63epQga/Sga/Q0qD6+RM1NtdMm/Ft531OBo47Shw8MpRKbLX9H4fcV1f7lqa
-        GCyn6w7kNmN4/Hx9sV6+5EqXW2laYKzvFMG24O2K7IcrtaLsxyLJMd0Xg==
-X-ME-Sender: <xms:IWQpZTyr6UxSO-7ZO_medwMS-S_dBtjymsnUOjkzWHabQqU8cnOkgg>
-    <xme:IWQpZbTsm9p3KPeCX01HcSN0sap2lG0YMErYouyEJumKY6WSnKElCXwUl180ZzH2x
-    _uB_HaqZVZ9cLWYF3c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrieefgdeikecutefuodetggdotefrodftvf
+        :x-sasl-enc; s=fm2; t=1697211907; x=1697298307; bh=0Sq5aN/LEeIdE
+        tvpU4m3Ee5Hif+IIBF9F9j0cI69vvg=; b=HlebnGkiYLove2NgAjXZ1BrX1E4BO
+        rllh75aIqbF3UPjtExUKH1fFjWwxqzxGKFxLl85cMBN6oiqj3/obCkMIe/j27JEx
+        K6DUA2H+433N0yckEmdVYfKJvUD3obb++KT36pLVOMtXKhsr3CWeVTXdt6mJCEBb
+        PRkdaHcARKcWSO0U3zjYR/06rvY3243LEPC3l53pJvWsQ3RE+BQGeCDISzOcuq12
+        FEyXi4Hfu5JGncNXSB7sLdl52wzOKLPivcp6qMc29pnS6gJdRElg2oezts5g3W+D
+        qfy+CEH/my0ScNwhjtXM8gpvTMORnfsFRknJkpeGP/kh7UQNI1gntuQZg==
+X-ME-Sender: <xms:AmYpZcsvVDyOhwSyQ70izb8_xBVsCY_kfn6gdWQWio7HXLWxZusBPA>
+    <xme:AmYpZZfX4rNm-lh5GW_s8Fpfo0otpXih4YpZZlPZePJEwjIo-TOIu6moQ8_b7hGSl
+    eOLjPNmu67Og7Fx9Qs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrieefgdeilecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
     fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
@@ -54,33 +54,46 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrieefgdeikecutefuodetggdote
     gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
     ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
     hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:IWQpZdXYXXDF3_FkvDvCsOoTD0_qDGydEUOYy1E9TCYYMrqJ6LGnyg>
-    <xmx:IWQpZdgcBAgZTwUxxDNQuzoGjzqyG8AXN1bkUixpEOrf_7-VsNisSA>
-    <xmx:IWQpZVAcDj_5hcFhy43cLtpJhGJeqyyR8uns4VG6O38HMuu1aY44Fg>
-    <xmx:IWQpZZ5ZnYSkjVgejXsQ1RJ92MsB1Ojkvl1wci8kOYcbjp-Nz_OOCA>
+X-ME-Proxy: <xmx:AmYpZXzN2w3dbR22gN4m-cKujh4GRSIxI8kLEk5iXqN-3zzR1xutyw>
+    <xmx:AmYpZfNRZ5xYU705tJzb4gFqaDT5P2H_jwJmbuRMJMxX7Sa3ug505A>
+    <xmx:AmYpZc_65e0KsmA9vWgubuAuTXNCLVK-UdJEwJ7CoQcBqQM2LCorag>
+    <xmx:A2YpZfeA7_dBOkylpD1LmWWHIkTTd6VjkTkNStwUHhVVjHjqWRhgug>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 2F199B60089; Fri, 13 Oct 2023 11:37:05 -0400 (EDT)
+        id 4F568B60089; Fri, 13 Oct 2023 11:45:06 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
 MIME-Version: 1.0
-Message-Id: <c8f43e1b-aed1-4b45-ba7c-d896ff66dfa7@app.fastmail.com>
-In-Reply-To: <e93e4008-65c5-4f1d-812a-64b48f0513a2@gmail.com>
+Message-Id: <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
+In-Reply-To: <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
 References: <20231010155444.858483-1-arnd@kernel.org>
- <e93e4008-65c5-4f1d-812a-64b48f0513a2@gmail.com>
-Date:   Fri, 13 Oct 2023 17:36:41 +0200
+ <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
+ <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
+ <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
+ <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
+ <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
+ <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
+ <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
+ <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
+Date:   Fri, 13 Oct 2023 17:44:43 +0200
 From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Philipp Hortmann" <philipp.g.hortmann@gmail.com>,
-        "Arnd Bergmann" <arnd@kernel.org>, "Kalle Valo" <kvalo@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc:     "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+To:     "Geoff Levand" <geoff@infradead.org>,
+        "Johannes Berg" <johannes@sipsolutions.net>,
+        "Geert Uytterhoeven" <geert@linux-m68k.org>
+Cc:     "Kalle Valo" <kvalo@kernel.org>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "Arnd Bergmann" <arnd@kernel.org>,
+        "Nicolas Ferre" <nicolas.ferre@microchip.com>,
         "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
         "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
-        "Jakub Kicinski" <kuba@kernel.org>, "Pavel Machek" <pavel@ucw.cz>,
+        "Pavel Machek" <pavel@ucw.cz>,
         "David S . Miller" <davem@davemloft.net>,
         "Larry Finger" <Larry.Finger@lwfinger.net>,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
+        linux-arm-kernel@lists.infradead.org,
+        linux-staging@lists.linux.dev,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
 Content-Type: text/plain
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -92,45 +105,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Oct 13, 2023, at 08:42, Philipp Hortmann wrote:
-> On 10/10/23 17:27, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de> While looking at the old drivers 
->> using the obsolete .ndo_do_ioctl() callback, I found a number of network 
->> drivers that are especially obsolete, in particular for 802.11b 
->> (11Mbit/s) or even older wireless networks, using non-busmaster 
->> ISA/PCMCIA style bus interfaces, and using the legacy wireless extension 
->> ioctls rather than the netlink interfaces that were meant to replace 
->> them in 2007. All of these drivers are obsolete or orphaned.
+On Thu, Oct 12, 2023, at 18:36, Geoff Levand wrote:
+> On 10/12/23 17:41, Johannes Berg wrote:
+>> But seriously - is it worth to try to keep a wireless driver for it if
+>> we don't even know anyone using a PS3 at all?
 >
-> we should take into account how good the wlan connection is.
-> This of course leads to tests on real hardware. I do have a vt6655. 
-> Please have a look at the test results below. In a nutshell it is a very 
-> bumpy connection you get with vt6655. You can have issues to connect on 
-> every channel and data is coming in waves. So sometimes you will almost 
-> not notice you have a wlan connection and then it takes very long to 
-> load the next site. Ping times up to 80 seconds. Packet losses up to 
-> 40%. So I assume all users have gone away from this module as it is not 
-> comfortable.
->
-> Do you think this helps you?
->
-> I do have two vt6656 hardware as well. Are you interested in tests?
-> I can do a patch to remove vt6655. Do you think it makes sense?
->
-> Thanks for your support.
+> There is still a considerable user base for the PS3, so we
+> must keep the ps3-gelic-wireless driver.
 
-Hi Philipp,
+Do you know if anyone has tried changing this driver over to the
+cfg80211 interface from the wireless extensions? With the
+series I have prepared now, it is the only driver outside of
+drivers/staging that still uses wext and stops us from removing
+that altogether. 
 
-My vague feeling is that bad performance on its own is not
-enough justification to remove the driver without some other
-reason. From what I can tell in the logs, Malcolm Priestley
-made good progress on cleaning up theses driver, converting it
-to mac80211 and sending improvements until 2020.
+[side note: it appears that the PS3 I have is the only model
+ without wireless networking, as I bought cheapest Asian 20GB version
+ back in early 2007. It still has the original firmware on it
+ and should run Linux, but I haven't tried it since at least
+ 2009].
 
-At the moment, I'd suggest focusing on the drivers that
-still use wext (git grep -w iw_handler_def drivers), if we
-can show that rtl8192e, rtl8712 or ks7010 have been broken
-for a while, removing those would help with removing wext
-altogether.
-
-     Arnd
+    Arnd
