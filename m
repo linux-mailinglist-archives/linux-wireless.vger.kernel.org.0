@@ -2,149 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37C7D7C8BBD
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 18:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C1A07C8CB4
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 20:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbjJMQs6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Oct 2023 12:48:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41202 "EHLO
+        id S231320AbjJMSDJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Oct 2023 14:03:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230213AbjJMQsx (ORCPT
+        with ESMTP id S230260AbjJMSDH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Oct 2023 12:48:53 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7BCB7;
-        Fri, 13 Oct 2023 09:48:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61FEC433C9;
-        Fri, 13 Oct 2023 16:48:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697215731;
-        bh=szP7x2S0GYdm6BcJLpTOMMqgkvX4QE9nsVO22TS5i8o=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=iXecQ4KBb/XyryDRw48MJQ8eE5IZmTibbJWLMBT63ah7VMsNNhfRxsQRBnSxXVRz8
-         ptzcbqS9ofaJyIOri3ZALVgpwCe+Rwg/lONB4QUFij9MtoErSRw7/rE4HfqKMRp9Ol
-         1AuluwowvDK8NcbSOabPG4FxyRekhzTRLLTUCt9VlQsHG9fr69h7832PJfiQYCJtsC
-         xvTbFlvGOVHUu8F9jtsNeee3XWb5EfGiJLqK4gNafwswJDcPCPTqjBh2AHAtqM1Mvf
-         uNDeS2sjsSyZm50Zfb+V47XLjRkfe0MUfugLCniPVwGscnhdTvdZP2Opj4v6DC5oEv
-         fj+erZKZvWbGg==
-Date:   Fri, 13 Oct 2023 11:48:50 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc:     linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
+        Fri, 13 Oct 2023 14:03:07 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7EAFD6;
+        Fri, 13 Oct 2023 11:03:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=+YCPIF7bIuvSFdfYLoHL+t68NvW/EnMItKeS5kyuoaw=;
+        t=1697220186; x=1698429786; b=xjUWAVCIMPx6GnpMdib8tUsdaaVSUjHjavnGPJ5x3v/8cPj
+        MHM+Jy3RvA8xJp33+XD4WbWPX4w0xUE5AQkAKn6KfxwOGJ7P0yprCscqaLH5DFmMtfIdXBzkSy3Sg
+        DLc18rG/WsuHxZmPO+PAjJNSK6FpH7OSjKQSLBv6Sf1np4xfir+7KJXpxhk3C4NAi9gPE1WvCEpMZ
+        fGHZPebuhq9j9NI998GiyrYDjf1gEzv50E2HJqjRUdgw6yp4cfdRGFNTy53T98a5cNgW3uDdm4QmK
+        4SADaia4+cMxjQuArGCpsLDwhfBhYKQjpXNyIJQXOHHprFy3dIDb3C8EouXg2D2w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qrMUs-00000004lf0-44Ty;
+        Fri, 13 Oct 2023 20:02:51 +0200
+Message-ID: <789449f63ff6175ff46951507c03753f4430aa85.camel@sipsolutions.net>
+Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Arnd Bergmann <arnd@arndb.de>, Geoff Levand <geoff@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Kalle Valo <kvalo@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Pavel Machek <pavel@ucw.cz>,
+        "David S . Miller" <davem@davemloft.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
-Subject: Re: [PATCH v2 05/13] PCI/ASPM: Add pci_enable_link_state()
-Message-ID: <20231013164850.GA1118214@bhelgaas>
+        linux-staging@lists.linux.dev,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Date:   Fri, 13 Oct 2023 20:02:49 +0200
+In-Reply-To: <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
+References: <20231010155444.858483-1-arnd@kernel.org>
+         <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
+         <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
+         <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
+         <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
+         <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
+         <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
+         <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
+         <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
+         <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <afb4db5-5fe1-9f5d-a910-032adf195c@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 12, 2023 at 03:53:39PM +0300, Ilpo Järvinen wrote:
-> On Wed, 11 Oct 2023, Bjorn Helgaas wrote:
-> > On Mon, Sep 18, 2023 at 04:10:55PM +0300, Ilpo Järvinen wrote:
-> > > pci_disable_link_state() lacks a symmetric pair. Some drivers want to
-> > > disable ASPM during certain phases of their operation but then
-> > > re-enable it later on. If pci_disable_link_state() is made for the
-> > > device, there is currently no way to re-enable the states that were
-> > > disabled.
-> > 
-> > pci_disable_link_state() gives drivers a way to disable specified ASPM
-> > states using a bitmask (PCIE_LINK_STATE_L0S, PCIE_LINK_STATE_L1,
-> > PCIE_LINK_STATE_L1_1, etc), but IIUC the driver can't tell exactly
-> > what changed and can't directly restore the original state, e.g.,
-> > 
-> >   - PCIE_LINK_STATE_L1 enabled initially
-> >   - driver calls pci_disable_link_state(PCIE_LINK_STATE_L0S)
-> >   - driver calls pci_enable_link_state(PCIE_LINK_STATE_L0S)
-> >   - PCIE_LINK_STATE_L0S and PCIE_LINK_STATE_L1 are enabled now
-> > 
-> > Now PCIE_LINK_STATE_L0S is enabled even though it was not initially
-> > enabled.  Maybe that's what we want; I dunno.
-> > 
-> > pci_disable_link_state() currently returns success/failure, but only
-> > r8169 and mt76 even check, and only rtl_init_one() (r8169) has a
-> > non-trivial reason, so it's conceivable that it could return a bitmask
-> > instead.
-> 
-> It's great that you suggested this since it's actually what also I've been 
-> started to think should be done instead of this straightforward approach
-> I used in V2. 
-> 
-> That is, don't have the drivers to get anything directly from LNKCTL
-> but they should get everything through the API provided by the 
-> disable/enable calls which makes it easy for the driver to pass the same
-> value back into the enable call.
-> 
-> > > Add pci_enable_link_state() to remove ASPM states from the state
-> > > disable mask.
-> > > 
-> > > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> > > ---
-> > >  drivers/pci/pcie/aspm.c | 42 +++++++++++++++++++++++++++++++++++++++++
-> > >  include/linux/pci.h     |  2 ++
-> > >  2 files changed, 44 insertions(+)
-> > > 
-> > > diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> > > index 91dc95aca90f..f45d18d47c20 100644
-> > > --- a/drivers/pci/pcie/aspm.c
-> > > +++ b/drivers/pci/pcie/aspm.c
-> > > @@ -1117,6 +1117,48 @@ int pci_disable_link_state(struct pci_dev *pdev, int state)
-> > >  }
-> > >  EXPORT_SYMBOL(pci_disable_link_state);
-> > >  
-> > > +/**
-> > > + * pci_enable_link_state - Re-enable device's link state
-> > > + * @pdev: PCI device
-> > > + * @state: ASPM link states to re-enable
-> > > + *
-> > > + * Enable device's link state that were previously disable so the link is
-> > 
-> > "state[s] that were previously disable[d]" alludes to the use case you
-> > have in mind, but I don't think it describes how this function
-> > actually works.  This function just makes it possible to enable the
-> > specified states.  The @state parameter may have nothing to do with
-> > any previously disabled states.
-> 
-> Yes, it's what I've been thinking between the lines. But I see your point 
-> that this API didn't make it easy/obvious as is.
-> 
-> Would you want me to enforce it too besides altering the API such that the 
-> states are actually returned from disable call? (I don't personally find
-> that necessary as long as the API pair itself makes it obvious what the 
-> driver is expect to pass there.)
+On Fri, 2023-10-13 at 17:44 +0200, Arnd Bergmann wrote:
+> On Thu, Oct 12, 2023, at 18:36, Geoff Levand wrote:
+> > On 10/12/23 17:41, Johannes Berg wrote:
+> > > But seriously - is it worth to try to keep a wireless driver for it i=
+f
+> > > we don't even know anyone using a PS3 at all?
+> >=20
+> > There is still a considerable user base for the PS3, so we
+> > must keep the ps3-gelic-wireless driver.
+>=20
+> Do you know if anyone has tried changing this driver over to the
+> cfg80211 interface from the wireless extensions?
 
-This was just a comment about the doc not matching the function
-behavior.
+I looked at that yesterday, and sadly I _think_ it's not even possible,
+there are some corner cases in it like "no WPA2" that don't seem to be
+fully covered in cfg80211/nl80211, at least not with the APIs today and
+with current versions of wpa_supplicant.
 
-I think we have to support pci_enable_link_state() even if the driver
-hasn't previously called pci_disable_link_state(), so drivers have to
-be able to specify the pci_enable_link_state() @state from scratch.
+It might still be doable because things like
+WPA_DRIVER_CAPA_KEY_MGMT_WPA2_PSK don't really seem to be used much in
+wpa_supplicant, but we'd have to carefully test that I guess.
 
-Does that answer the enforcement question?  I don't think we can
-really enforce anything other than that @state specifies valid ASPM
-states.
+Also, it depends on the PS3 firmware version whether or not that's
+supported.
 
-Bjorn
+Then again, arguably wifi without WPA2 is pretty much useless these
+days?
+
+johannes
