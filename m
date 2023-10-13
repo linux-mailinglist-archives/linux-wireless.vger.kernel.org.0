@@ -2,106 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E52737C8B2D
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 18:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7EB97C8BA5
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Oct 2023 18:48:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230481AbjJMQYq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Oct 2023 12:24:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
+        id S231489AbjJMQmd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Oct 2023 12:42:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230053AbjJMQYp (ORCPT
+        with ESMTP id S229518AbjJMQmc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Oct 2023 12:24:45 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D474AD;
-        Fri, 13 Oct 2023 09:24:44 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1e10ba12fd3so1282755fac.1;
-        Fri, 13 Oct 2023 09:24:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697214283; x=1697819083; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=NZs5dBVvL8WiMBXWyFhU0nbTUlLlApXVMkA85zryGNY=;
-        b=Ho/xQ+kgGBY9yeCPbzCClAClbMqAfLLdCDKhCwRwnxQWJEUFxyOjOySV8YVKoQJ5Nc
-         0nDe1uZbxcMQ27P6tPms6cn7z15pCJ9F/w10oPNoAoWPdYrIVraRP+QqeYqTdzG4FQso
-         7FxxgpCwz13DJN5d7xNj9tXlXTx8wWTLtzcJJTgbL05u56F/Ujve1SmSX7EkVTAfmLQ4
-         VUK5XtDHnnMo857v3kZ2fHHBQ2MSruPyICpZXOsw8ENkckqJsFXFOxFmoEPsJiPft51M
-         CFPEAN1fSvJYocEGy7Sj+H3bgF2cD97eiaXJ8ifPBtRow6GeDgFbd3lTVd7YIVsLZJ0D
-         EpUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697214283; x=1697819083;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NZs5dBVvL8WiMBXWyFhU0nbTUlLlApXVMkA85zryGNY=;
-        b=tk2NdX7xXPY3SHAf9knYiNaHMaNwL1LawqjybN4jXI8COHQXRLoBv/jIdLqs2PK617
-         YhAPlVPWM+35dbt9v8oiZl22hD2a7J00HKWWmAHqzi30my0zFyXjMH8yu0+o8RrRb0If
-         7JgJRXRQ4j0MOfSobbJpZxlkwa/2YWDewGKNVD8rhW5uufW5dzWdWRK0Q15Tmnygiek4
-         +hRNsvKMaatnS9yd4zFII7hpyPX8UWMLc40RuACdMN/Sj8hRT0MgvT3DP/ruhsz4zL8B
-         I+GJfpAzUchukFIfhTm8f17Qm3jITtescMzUx34hbKcdr27S1X+nKUAAvWTBDT+nuOwc
-         cjkw==
-X-Gm-Message-State: AOJu0YyFJ8eq2K7K876KpgLkg8qy4MvDpis6Dxh1gbl6vJ4C25gt1d+K
-        EN7lJ9ucMGnn3z5p5UBYxi0=
-X-Google-Smtp-Source: AGHT+IFGYCd/N+rPNVxVUr5XyZgvZlE2KWP/I3hCNw8Dr+H1r9wACkBJTRNdNs5V8axQznfFCLtaQA==
-X-Received: by 2002:a05:6871:5319:b0:1e9:9469:a858 with SMTP id hx25-20020a056871531900b001e99469a858mr8477450oac.39.1697214283317;
-        Fri, 13 Oct 2023 09:24:43 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id m3-20020a056870a10300b001e98fa5c9edsm818649oae.40.2023.10.13.09.24.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Oct 2023 09:24:42 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <56fe16bf-3fc9-49f9-9646-c236b885afa5@lwfinger.net>
-Date:   Fri, 13 Oct 2023 11:24:40 -0500
+        Fri, 13 Oct 2023 12:42:32 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD657B7;
+        Fri, 13 Oct 2023 09:42:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C518C433C8;
+        Fri, 13 Oct 2023 16:42:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697215350;
+        bh=MqC3yrRRj3UMGOPti8ERknVNqGEUu0oFiV03E0Vidv0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=b86OTm7/vWPz1lXdWBiZn7RcGveX1aFsvL5jmXTq2YbcyNGIbGhWA6q1/AnMGbd1N
+         IFYYegR+vc8lMskeUk8lajThoc+bo1PlPWPhNqD2fwOG3AfKYpg90Eza/kNH0uSNPW
+         Jky7Vj9783vlIkTQS3O7jJucPYVzjXAq/DJZUjUVY+A/BEROWzFLMN0GpWgbN/I8Vu
+         ImQsRWZuesvRBHjxd0H3/8ZdxSWJjJnhbYb4F5CAQ1P15D5R2lTSA+hkWwJq0LpHAe
+         Bn/6fD9G+fr9mHm/5sCM1EEe3TdFQCGEcv6U3ysqKGhpLI6CBcvRuzJ9zOUE+g+0U1
+         YdquVEXDnza8g==
+Date:   Fri, 13 Oct 2023 11:42:28 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-pci@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-bluetooth@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
+Subject: Re: [PATCH v2 03/13] PCI/ASPM: Disable ASPM when driver requests it
+Message-ID: <20231013164228.GA1117889@bhelgaas>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
-        Arnd Bergmann <arnd@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Jakub Kicinski <kuba@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
-References: <20231010155444.858483-1-arnd@kernel.org>
- <e93e4008-65c5-4f1d-812a-64b48f0513a2@gmail.com>
- <c8f43e1b-aed1-4b45-ba7c-d896ff66dfa7@app.fastmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <c8f43e1b-aed1-4b45-ba7c-d896ff66dfa7@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aa3386a4-c22d-6d5d-112d-f36b22cda6d3@linux.intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/13/23 10:36, Arnd Bergmann wrote:
-> At the moment, I'd suggest focusing on the drivers that still use wext (git grep 
-> -w iw_handler_def drivers), if we can show that rtl8192e, rtl8712 or ks7010 have 
-> been broken for a while, removing those would help with removing wext altogether.
+On Thu, Oct 12, 2023 at 01:56:16PM +0300, Ilpo Järvinen wrote:
+> On Wed, 11 Oct 2023, Bjorn Helgaas wrote:
+> > On Mon, Sep 18, 2023 at 04:10:53PM +0300, Ilpo Järvinen wrote:
+> > > PCI core/ASPM service driver allows controlling ASPM state through
+> > > pci_disable_link_state() and pci_enable_link_state() API. It was
+> > > decided earlier (see the Link below), to not allow ASPM changes when OS
+> > > does not have control over it but only log a warning about the problem
+> > > (commit 2add0ec14c25 ("PCI/ASPM: Warn when driver asks to disable ASPM,
+> > > but we can't do it")). Similarly, if ASPM is not enabled through
+> > > config, ASPM cannot be disabled.
+> ...
 
-I do not know about the the others, but rtl8712 is still in use according to the 
-flow of questions I see on a GitHub repo that I maintain.
+> > This disables *all* ASPM states, unlike the version when
+> > CONFIG_PCIEASPM is enabled.  I suppose there's a reason, and maybe a
+> > comment could elaborate on it?
+> >
+> > When CONFIG_PCIEASPM is not enabled, I don't think we actively
+> > *disable* ASPM in the hardware; we just leave it as-is, so firmware
+> > might have left it enabled.
+> 
+> This whole trickery is intended for drivers that do not want to have ASPM 
+> because the devices are broken with it. So leaving it as-is is not really 
+> an option (as demonstrated by the custom workarounds).
 
-There has been some recent effort to convert rtl8192e to use cfg/nl/mac80211. 
-That one is problematic as it has the same PCI_ID as RTL8192SE, but the drivers 
-differ. Note the special code in the probe routine of 
-drivers/net/wireless/realtek/rtlwifi/rtl8192se to detect if the wrong one has 
-triggered the routine. That code should also be in the probe routine for 
-RTL8192E with the test negated. I have both devices, but it has been a long time 
-since I actually used either of them. I also have an rtl8712 device, thus I 
-should be available for testing.
+Right.
 
-Larry
+> > Conceptually it seems like the LNKCTL updates here should be the same
+> > whether CONFIG_PCIEASPM is enabled or not (subject to the question
+> > above).
+> > 
+> > When CONFIG_PCIEASPM is enabled, we might need to do more stuff, but
+> > it seems like the core should be the same.
+> 
+> So you think it's safer to partially disable ASPM (as per driver's 
+> request) rather than disable it completely? I got the impression that the 
+> latter might be safer from what Rafael said earlier but I suppose I might 
+> have misinterpreted him since he didn't exactly say that it might be safer 
+> to _completely_ disable it.
 
+My question is whether the state of the device should depend on
+CONFIG_PCIEASPM.  If the driver does this:
+
+  pci_disable_link_state(PCIE_LINK_STATE_L0S)
+
+do we want to leave L1 enabled when CONFIG_PCIEASPM=y but disable L1
+when CONFIG_PCIEASPM is unset?
+
+I can see arguments both ways.  My thought was that it would be nice
+to end up with a single implementation of pci_disable_link_state()
+with an #ifdef around the CONFIG_PCIEASPM-enabled stuff because it
+makes the code easier to read.
+
+Bjorn
