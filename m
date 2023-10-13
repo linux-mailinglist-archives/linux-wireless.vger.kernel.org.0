@@ -2,96 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA4577C914A
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 01:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 996457C914C
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 01:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232194AbjJMXW1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Oct 2023 19:22:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47722 "EHLO
+        id S232431AbjJMXW2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Oct 2023 19:22:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231924AbjJMXW0 (ORCPT
+        with ESMTP id S232383AbjJMXW1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Oct 2023 19:22:26 -0400
+        Fri, 13 Oct 2023 19:22:27 -0400
 Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2072.outbound.protection.outlook.com [40.92.99.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C775BE
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Oct 2023 16:22:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B068BC2
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Oct 2023 16:22:25 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ksaxAFYyv1hdyD2gO2FdreW4mt5FN6u+MSghEe6oj4rlc6iQQ5ufaszUq4HK24tjk04YA2Tjy64cvs8bUBtjr0GQgm/Paw9U+fal+TARY766aiIzcbkmLXFpZ8rwqMFCJsyHyt0hZEet0uiyXV95CyED8jR0U+yH5ESX9h86YKGCdU1kHWmX7iPTL21NuIHFcWbLqudKEvgchI/52VZKLE+Noei64bRr58W00lNUNeK6nZ9lz2iecpQ2YPGFshrZ9kqGQ1Umvnut4wlQv1wqq2Ia08dbesS4n0+036ZUCm/8aysfy5Pcgvf+qd+a3SyEJGGUlUYfDzfx/TT5z9+SRA==
+ b=A7xUhQ6i0sBLkyhPdw9VnUWOzw+vSLEYLIRp3UZ/Rh/faE8vMciyiLKVKiY0krbo27UFwIRBykxehIj4HXVXoEdds7N9N3plztlDzO98hTNLPmVJYor7K1PNp6y3tD6qlWaN5dY5m3Rd4DiTqnz1Hdpmsvv9rhd4fPOmbvGsbyppnEP8A+Tl3WmbAfK5IEv4Bsj/KFkFuJ9paodNEEyuC8o/R/qibKOm++kMd1GalIcoxXh9wqOXKx/fiiYvlFyMZVyu2mphOg7HFzaj68z0onBm/A08qlL1CvIS0f0s9XfpgCl7l3oOvIRHklWLDo2uBvgyVmf6Kd7SS6MeOvGtoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wi0KsgjoU4BgJtfmSpQQNmdlzzYYiBArj7G/m6I4f/U=;
- b=U57nrog2jQgiNZn0i//nAXcltjlTQ8mBHtypCmYYcUygXs1AjQZktJBh0uMQf04nP6kAew/VUzRZ8wZBaVSE8X3pTDMOQED3Kcrlew/CWJ0L3JEhGTi9xoKzHtKal7BerLowo6YMiCkyhem77nclFr+agYtkFr0f4IWQSyTH7jnJ+GK025VdCv7nSntDM1s5oopji8mtbpIMOI98ftEys+IhARTkYe6T1LyAcGSjaaL+Jk9mtGFCtC/Jw5vyw+XbrQXSnHXNHmewfQioUiZTkk6w2t+86z5oWoMxvwipNAKn6nlvDNd+HZVA87oyEHWqQEs7QdMwqcyAdkwI9CItjQ==
+ bh=s1C+OECrPgyku3ySESsbfvKbG450xbOMf5+1/jaaWHw=;
+ b=bevwldPniCW2hkL5SiDyT6861fvr1yGueeTRswHi2Ri/U+dBGa9OiaXhsyS6zOysXztMCkiCBHQYoPKIP6qKfamBzFoKUjtVlbh1Pz0iUskxpIGshSkHOIehZ4FoRU87O6abVGolFCrx+DVdsKogLCb7FkITzbgY3i3B62ZyDtskKn6MBwMe8wdTFOmepnbB/4M0/m/nVRw7bg7YAn7UeIqT7DU1qJjvVRJ54uRsbpU0MMCIRyAkfaYY0OD2MzisAYQmLXIsnnXG3x+ZWqO1LFYQTvCWJVULuJPq4cIeVeRoG3Mjk3REs8MGPCP4xXboG+Sw91L9K2+nEzciKIpLjg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wi0KsgjoU4BgJtfmSpQQNmdlzzYYiBArj7G/m6I4f/U=;
- b=LBQtDF9rctDe4yWV1ovCnhl8i4v3ZB4KW1KOVrXqNmrFGr/u5HozHfNfQ9LstSXiKpLICecvfs+Fs//84gg17BbGPt4cYlCy2HP9L2x147irp3jK7d6MZLDXfYQjV1KhRc42pGfLXgQz7OSWsWPqGRMdzV8Tj0Z+Lywva7wjDuxPOB7CGe+p7j27hDAvBGh8EJSrYueJpceeAqoenehhP8xhn8hJKQHwcST3i7MavolDIzQ4Q6tvGaQDrR3VTc8OQWlOLPf0zlPENX94AY3UVWIaRVFQZjodB/dimae/H/hK4X7o/fEllxF1sc8jFooLXziA6Ui7PpnjR7Ose7/ZCw==
+ bh=s1C+OECrPgyku3ySESsbfvKbG450xbOMf5+1/jaaWHw=;
+ b=J7rdCJWGrG7Xl53tMYXUeimI6Se7vJcG3wHDh1/A1tBszwOwwCC1AonRaSX8t6MS6+DseH/E8SibiNuinuVOvdGuxR/FaG07XVdHPk4P57cp2c0SLiHAncwkGrdSFX7p6VNPeTg8TjpKw4Io3z0dFZLmYItlTjNY0DlyVIcCBn2liiGEsLWO1XMvt1gdXlmVTzq5/yMQZV3JItdvIfHNzzQspS5nc8/tyv/s5J19G2bCIE9NAok8HlGNcRUajX5N2gGWmkCoDiuMG6CW/eWRKTpfqbVjx29oL7Fv9cdZCXPYflwywqSOb9vgVQPOzEDkdaYmMcO6oe4Ij4YMuleMcA==
 Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM (2603:1096:404:8041::8)
  by TYYP286MB1691.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:fd::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.31; Fri, 13 Oct
- 2023 23:22:22 +0000
+ 2023 23:22:23 +0000
 Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
  ([fe80::bbb1:a301:f7b6:744a]) by TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
  ([fe80::bbb1:a301:f7b6:744a%4]) with mapi id 15.20.6886.030; Fri, 13 Oct 2023
- 23:22:22 +0000
+ 23:22:23 +0000
 From:   Shiji Yang <yangshiji66@outlook.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     Stanislaw Gruszka <stf_xl@wp.pl>,
         Helmut Schaa <helmut.schaa@googlemail.com>,
         Kalle Valo <kvalo@kernel.org>,
         Shiji Yang <yangshiji66@outlook.com>
-Subject: [PATCH 1/3] wifi: rt2x00: improve MT7620 register initialization
-Date:   Sat, 14 Oct 2023 07:21:28 +0800
-Message-ID: <TYAP286MB0315C345BF66B37977FD16BBBCD2A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+Subject: [PATCH 2/3] wifi: rt2x00: rework MT7620 channel config function
+Date:   Sat, 14 Oct 2023 07:21:29 +0800
+Message-ID: <TYAP286MB0315DEAEAFE9470077066EFABCD2A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231013232130.416-1-yangshiji66@outlook.com>
 References: <20231013232130.416-1-yangshiji66@outlook.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-TMN:  [kU/wz1r+Ckz00b9ycYszlzh3ac0F6UfXA1ANgFwKcgk=]
+X-TMN:  [RbpzqHzuEBnShHC64BHf21TB/oW+hMvhOgb7votRxEU=]
 X-ClientProxiedBy: TYBP286CA0031.JPNP286.PROD.OUTLOOK.COM
  (2603:1096:404:10a::19) To TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
  (2603:1096:404:8041::8)
-X-Microsoft-Original-Message-ID: <20231013232130.416-2-yangshiji66@outlook.com>
+X-Microsoft-Original-Message-ID: <20231013232130.416-3-yangshiji66@outlook.com>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: TYAP286MB0315:EE_|TYYP286MB1691:EE_
-X-MS-Office365-Filtering-Correlation-Id: bb11cee8-5930-495a-ae21-08dbcc434045
+X-MS-Office365-Filtering-Correlation-Id: 2d88d417-2217-4fbf-9301-08dbcc43412a
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: jA42NYVSgM1czEbL7IXSgTnic0+EgDGRJuj0ipspQ5OzZZdhy8zAQFGe/qbrzoYPOeUPIb1xxAuV+KlJxxIL4k3Rz2Hr0zOUHSso1LRfbbGkZepoeVjX6WrNI7c7foo2rShcAiFXU71mHfBrVwMgpLx8pNgjBaMQslU2OJN0CWSMr66C+MGciJvepNtHrzy8hXEQmU1GTlw8OPNglnz9iRsXfn+rHNeqGZuwNKxxvGRF8KS4gOfU9PNf4TQMTb/q8myZQDbR77zZybs+olm52Y7fRHPmS4HS/DyVm0AwW/zBaIwmU0pvKzu9Stq7XKx9JPvSdZgXCLX6sn3LpyRbzr7B+XgYrjAJ74Weaut8vEFd6zOARNtrgYT5I+nzgAjt3QdQ+8qANs3OtB7pIxxsCdNP9ETeaC0W2A9ogaU29nNTeEXKpyvCBWXhxxHMsw+dy3OszTWP65SgLkYff52Ms6quJIKdpeml+2Fe+Cw1Jni9NwpDD/Kl/5OOBtaWpXgMiYDJRdqknmn/lp8+bwlM7kpImObro3ufvOb6Kdb3Y3FlPIxJ9CEAWFdfrFgOaJu+AFjv3hV+Y1OV73c+Bs87W5tlaQ5OBKQSj2lwmv9EuOIf62BdR86XghRBc65zHy85
+X-Microsoft-Antispam-Message-Info: DW2eeFaXczsjbSjRInib3aZLEvzyatC+FpZjHS0SbmdTZgYSuL1m1W2N63k30N1XTloYZhwNRMbo/AIYZJgEqBJeNX+47vSKjytJutn1Sr0GdGkETNpUVJybA1wqqtKq51tgfX1Fs7oHLQpOvnaGxqV2PCimuWf3l1z3Yuh6jlQA+qnz0uywQMBMUPtU6ENP5A8POfYpd5rEH7XE54LqaUNl8wIsE9zLTN0QJT4dkpFfpE0AMQhnYgVtjMJCd7h74q1g2bnln8gZzjqST26lBSeQjTfJZ2pOxt8VR/6i+1aDJEGgsnXILckiU4VvULcs6RXRXK5ijiN+Nw6Z5+zugQ/9YZGOGoViSPjwvezR/SGx/lW328dcdtDSsXEKOu9NPM75/drtDsidKJQk0yGxWgMUm2m/c5Fg0rkFtkt/S2I7k/r0hUErWHFf3zeU8ES/LTPbPflQogEuZsSvk06QXHzfi9w6Roqqz+wLDtu838WUEqcGaA4P6KAWfU7Rb/ye0Pk0Do7bhZZqNXHG2mFndMtZHGTN1FGNlPOgm6MQZgcznA6m4L2mj3QU24zbOupVgvBBlkMgQ1JqglfHo5ygTVtQVCR00JY4g1FC2KkpGSgy0shwbDg+a2gglsvipIdn
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CUtSDE1FDE/6GEYvzEVR6qFy8LVtv2JHidCQgq/GjMT3ce/fd0pkAJzbA84b?=
- =?us-ascii?Q?9XLOS4gjEjgJSg0v1gfuoBPXZkQBSty8MCoz9ehlFCd02Db/G3S065M0Hje9?=
- =?us-ascii?Q?ZTsx91r79R9d/IJ3tKc9ykrNNP2sq3qjmoqLg/yVslFXZkt2Er/29w96+Iv2?=
- =?us-ascii?Q?Q537hLywtP4RZuclnWpxRJ83pz3pA5i49+seOwqgbeDGkC7Y3oPzm8WNh0Xq?=
- =?us-ascii?Q?B2Va32VR0871yFXqY1c+5TYDvX2wt31RfjG2FvJfAWLmTbYVT7qe0zYBEwUw?=
- =?us-ascii?Q?ZYUqzwtrrQWYFrjdHi/5qA3cg8ihdBABA/VCS41KloyvEfCutDZKF8dNCfqi?=
- =?us-ascii?Q?2gX/yitaJdHwiRJywcUMoCfrDiYrRp7zj4SVGIVM83ZeDTXF2Oafad+4xS1l?=
- =?us-ascii?Q?VBVPwnsvqNoNplVk0DP/GQFmLvhbwlS3BP7ov5ENlxd2Zv+917O2+S7/IGBJ?=
- =?us-ascii?Q?INChfZsCSMrG0hrZwJbK0nxg7F3lmZcts95v8GD6SRXrf6IUvvDQhXWnw+J+?=
- =?us-ascii?Q?afh4kv9UPfqQ0ia9gA2cZRuus1tjYC2CQ/A/2uCedLK26vgHxpqbVLAzQwk3?=
- =?us-ascii?Q?d7qLIQu7K8wbSIGNK4DD17IJYPIFQyqwFEgRop6CO0MPslotpFkYPueCOZ8c?=
- =?us-ascii?Q?yPswum/ad7ev/G5uYlLzFxlHJk80KUFqqN3t1dOYiSA4+li9pv/ESpkMi2vR?=
- =?us-ascii?Q?CETmISwLrVAflKsPY0lK2wTkowsEX4qgz0KO514nX75YiADsFHaypA5dRmEd?=
- =?us-ascii?Q?YYDDKpThRq5kzYTFF+X8BkXZ8wRjOUBA+o64fL9wZ5pyF8tIDK1s9YFa4NF0?=
- =?us-ascii?Q?Mbaj6Vr4KQ5LKvyCChsfv/XmyrD50+geJMqpoQtq7a82NaAIQDnn8/aINTXm?=
- =?us-ascii?Q?w1gnO8nOzRuE9RbaobTkIZUuracaHBC+ahhxUJKYo3u3axn+QUrLpkOWhfZe?=
- =?us-ascii?Q?1zH+rM0sNskQ7lp5oN69APByZTW9Wn7GU9zTVjRq2/RdOXS41EM5GsV/81pi?=
- =?us-ascii?Q?v3ezsCNfgBXMLQp6AsLpoeKSnXXG8bw/+O70c8g39h03+hAYAgC8m3VeVb6J?=
- =?us-ascii?Q?OIzelmgzedjcaLlR7vm8rBAduql9B2G4ig7habfXKzdx8dFPEAj9lpeUMA4j?=
- =?us-ascii?Q?ttsLIuetGfXBWe38JQn32YW+3ptVMn04HqzJyxLYf0oU1MPYi1uPjMgtvn/Z?=
- =?us-ascii?Q?B/PTJbMNmUN7Aft8bf0l3l0+r7PvtO4gHwzteP8AF296bN1fyu9wrcdmbG0?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zkjZqf3fW8cBhPmWOXK4452ww4p1HBuB1DEFSllzkfNzrBs8HUpbF9hFivJ+?=
+ =?us-ascii?Q?OukKjmthqmlXASdfhRDxxdhJTLLkYeWlaif3y7MaeIEmPTXnWI9Gndmzruyp?=
+ =?us-ascii?Q?YxVNQVsV6v6yxLm722lVU621yU4w0dOorCD0EhoCZzj3RTD3g5DQXm99Okp1?=
+ =?us-ascii?Q?QiosRkK0dOb+ho5k/PciJviyEEOugm+QobPlZgGnYxVU55o5++sfG7Lr1Nyy?=
+ =?us-ascii?Q?rEISSi7Hg9tStsPW1Mcwn4TAfAonO56OhsvXce/jmj+HmN/oGuOb/HVpqnTq?=
+ =?us-ascii?Q?WmUoNL0294UlBuXWxlh3PGv1wTjuxeolnL8JXKS9aLtTpTGC0dv2SjIlGvFo?=
+ =?us-ascii?Q?+Uu4qfL3lAntNly6VZ37Z2E+MrHe/XVuvgjVsdQ7nQaWzblYT5bnqyOIiMmk?=
+ =?us-ascii?Q?oX6/vm54NOL3+3MAGTpVtuFoaL25rYJMoUo1n0X0jj3cN8CoFEY61cfwp7hK?=
+ =?us-ascii?Q?aGXENs7f5zoscDDwidUtwRd7qxp376ZvDCT4tAEoozhD1l1EwaAzmlMAffho?=
+ =?us-ascii?Q?yYl/gYD78hk1EuVRPwWlUBsuN2Ogf0W4/loXCJBUQKRu6WXnm1IQpReFudF3?=
+ =?us-ascii?Q?eNaR8E8I2V9X3ulUzAvEsBLhLpexRHNUmAggEe8Un4mP+Er1zfC9sMcUCgeq?=
+ =?us-ascii?Q?TL1DmlldzSCCsAEg86q3eP89VbTFKhbCtdaY45Az8Ht6Qom3Xz5W7hmqYagg?=
+ =?us-ascii?Q?naazNbHkgnFnGkY2waf5/4BWSpXBY1UEoPzetbqWJ/HRHTk0oqLy0gWjYaeN?=
+ =?us-ascii?Q?1fgkKkmnmspVrp3Dms+P+x5pIRCY3IqxEvyvI/4xEJR4X4aYnqcOgjJj1a4q?=
+ =?us-ascii?Q?HjHvAtpXYsjTorSpZpbeCLOgNhWarHcOll3EUwhnMQ8RDZv7vOYjIcX9IDlu?=
+ =?us-ascii?Q?bArAZ7dPzJSKfiuDrHFrgFsr28hKVB5P1k2IOnjZfia+Uh+PmtVW5hRRXzYq?=
+ =?us-ascii?Q?EVJlhjGYqQ6QqYXKo4RgIKUqZEIB8FQoc6+fDf06RQLllyAe2U69MNukmMnO?=
+ =?us-ascii?Q?SAgtQI0uUpY+/a4lxri487VzMqcpHJJHrA8WJcXtWjHkUtLjt0ZjSrMsTENy?=
+ =?us-ascii?Q?cOcFyQ5Ot0tx1tVrffEwyfbdV2BXj8now/oEcfxCMDrLfiANEsWLJAfmsvst?=
+ =?us-ascii?Q?GmdzKChoW6emPZwa9VEixiQCPf5X9lHuijlTGrU80G5MuGEYLzLcE8Db4JkW?=
+ =?us-ascii?Q?ugI1LJFm9DxaRGxVYZ6vfU//5RX5EBJd9B62HMgVqT7PNXEaGsttjqqJtuI?=
  =?us-ascii?Q?=3D?=
 X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb11cee8-5930-495a-ae21-08dbcc434045
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d88d417-2217-4fbf-9301-08dbcc43412a
 X-MS-Exchange-CrossTenant-AuthSource: TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2023 23:22:22.0133
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2023 23:22:23.4554
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -107,128 +107,146 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-1. Do not hard reset the BBP. We can use soft reset instead. This
-   change has some help to the calibration failure issue.
-2. Enable falling back to legacy rate from the HT/RTS rate by
-   setting the HT_FBK_TO_LEGACY register.
-3. Implement MCS rate specific maximum PSDU size. It can improve
-   the transmission quality under the low RSSI condition.
-4. Set BBP_84 register value to 0x19. This is used for extension
-   channel overlapping IOT.
+1. Move the channel configuration code from rt2800_vco_calibration()
+   to the rt2800_config_channel().
+2. Use MT7620 SoC specific AGC initial LNA value instead of the
+   RT5592's value.
+3. BBP{195,196} pairing write has been replaced with
+   rt2800_bbp_glrt_write() to reduce redundant code.
 
 Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2800.h   | 18 ++++++++++++++
- .../net/wireless/ralink/rt2x00/rt2800lib.c    | 24 +++++++++++++++++++
- .../net/wireless/ralink/rt2x00/rt2800mmio.c   |  3 +++
- 3 files changed, 45 insertions(+)
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    | 91 +++++++------------
+ 1 file changed, 35 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800.h b/drivers/net/wireless/ralink/rt2x00/rt2800.h
-index de2ee5ffc..48521e455 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800.h
-@@ -870,6 +870,18 @@
- #define LED_CFG_Y_LED_MODE		FIELD32(0x30000000)
- #define LED_CFG_LED_POLAR		FIELD32(0x40000000)
- 
-+/*
-+ * AMPDU_MAX_LEN_20M1S: Per MCS max A-MPDU length, 20 MHz, MCS 0-7
-+ * AMPDU_MAX_LEN_20M2S: Per MCS max A-MPDU length, 20 MHz, MCS 8-15
-+ * AMPDU_MAX_LEN_40M1S: Per MCS max A-MPDU length, 40 MHz, MCS 0-7
-+ * AMPDU_MAX_LEN_40M2S: Per MCS max A-MPDU length, 40 MHz, MCS 8-15
-+ * Maximum A-MPDU length = 2^(AMPDU_MAX - 5) kilobytes
-+ */
-+#define AMPDU_MAX_LEN_20M1S		0x1030
-+#define AMPDU_MAX_LEN_20M2S		0x1034
-+#define AMPDU_MAX_LEN_40M1S		0x1038
-+#define AMPDU_MAX_LEN_40M2S		0x103C
-+
- /*
-  * AMPDU_BA_WINSIZE: Force BlockAck window size
-  * FORCE_WINSIZE_ENABLE:
-@@ -1545,6 +1557,12 @@
-  */
- #define EXP_ACK_TIME			0x1380
- 
-+/*
-+ * HT_FBK_TO_LEGACY: Enable/Disable HT/RTS fallback to OFDM/CCK rate
-+ * Not available for legacy SoCs
-+ */
-+#define HT_FBK_TO_LEGACY		0x1384
-+
- /* TX_PWR_CFG_5 */
- #define TX_PWR_CFG_5			0x1384
- #define TX_PWR_CFG_5_MCS16_CH0		FIELD32(0x0000000f)
 diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index 7b2bf23ac..acc720ef4 100644
+index acc720ef4..ae969ec20 100644
 --- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
 +++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -5903,6 +5903,7 @@ static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
- 	struct rt2800_drv_data *drv_data = rt2x00dev->drv_data;
- 	u32 reg;
- 	u16 eeprom;
-+	u8 bbp;
- 	unsigned int i;
- 	int ret;
- 
-@@ -5912,6 +5913,19 @@ static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
- 	if (ret)
- 		return ret;
- 
-+	if (rt2x00_rt(rt2x00dev, RT6352)) {
-+		rt2800_register_write(rt2x00dev, MAC_SYS_CTRL, 0x01);
-+
-+		bbp = rt2800_bbp_read(rt2x00dev, 21);
-+		bbp |= 0x01;
-+		rt2800_bbp_write(rt2x00dev, 21, bbp);
-+		bbp = rt2800_bbp_read(rt2x00dev, 21);
-+		bbp &= (~0x01);
-+		rt2800_bbp_write(rt2x00dev, 21, bbp);
-+
-+		rt2800_register_write(rt2x00dev, MAC_SYS_CTRL, 0x00);
-+	}
-+
- 	rt2800_register_write(rt2x00dev, LEGACY_BASIC_RATE, 0x0000013f);
- 	rt2800_register_write(rt2x00dev, HT_BASIC_RATE, 0x00008003);
- 
-@@ -6065,6 +6079,14 @@ static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
- 		reg = rt2800_register_read(rt2x00dev, TX_ALC_CFG_1);
- 		rt2x00_set_field32(&reg, TX_ALC_CFG_1_ROS_BUSY_EN, 0);
- 		rt2800_register_write(rt2x00dev, TX_ALC_CFG_1, reg);
-+
-+		rt2800_register_write(rt2x00dev, AMPDU_MAX_LEN_20M1S, 0x77754433);
-+		rt2800_register_write(rt2x00dev, AMPDU_MAX_LEN_20M2S, 0x77765543);
-+		rt2800_register_write(rt2x00dev, AMPDU_MAX_LEN_40M1S, 0x77765544);
-+		rt2800_register_write(rt2x00dev, AMPDU_MAX_LEN_40M2S, 0x77765544);
-+
-+		rt2800_register_write(rt2x00dev, HT_FBK_TO_LEGACY, 0x1010);
-+
- 	} else {
- 		rt2800_register_write(rt2x00dev, TX_SW_CFG0, 0x00000000);
- 		rt2800_register_write(rt2x00dev, TX_SW_CFG1, 0x00080606);
-@@ -7283,6 +7305,8 @@ static void rt2800_init_bbp_6352(struct rt2x00_dev *rt2x00dev)
- 	rt2800_bbp_dcoc_write(rt2x00dev, 159, 0x64);
- 
- 	rt2800_bbp4_mac_if_ctrl(rt2x00dev);
-+
-+	rt2800_bbp_write(rt2x00dev, 84, 0x19);
+@@ -3913,14 +3913,6 @@ static void rt2800_config_channel_rf7620(struct rt2x00_dev *rt2x00dev,
+ 		rfcsr |= tx_agc_fc;
+ 		rt2800_rfcsr_write_bank(rt2x00dev, 7, 59, rfcsr);
+ 	}
+-
+-	if (conf_is_ht40(conf)) {
+-		rt2800_bbp_glrt_write(rt2x00dev, 141, 0x10);
+-		rt2800_bbp_glrt_write(rt2x00dev, 157, 0x2f);
+-	} else {
+-		rt2800_bbp_glrt_write(rt2x00dev, 141, 0x1a);
+-		rt2800_bbp_glrt_write(rt2x00dev, 157, 0x40);
+-	}
  }
  
- static void rt2800_init_bbp(struct rt2x00_dev *rt2x00dev)
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c b/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c
-index 862098f75..5323acff9 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800mmio.c
-@@ -760,6 +760,9 @@ int rt2800mmio_init_registers(struct rt2x00_dev *rt2x00dev)
+ static void rt2800_config_alc_rt6352(struct rt2x00_dev *rt2x00dev,
+@@ -4489,32 +4481,46 @@ static void rt2800_config_channel(struct rt2x00_dev *rt2x00dev,
+ 		usleep_range(1000, 1500);
+ 	}
  
- 	rt2x00mmio_register_write(rt2x00dev, PWR_PIN_CFG, 0x00000003);
+-	if (rt2x00_rt(rt2x00dev, RT5592) || rt2x00_rt(rt2x00dev, RT6352)) {
+-		reg = 0x10;
+-		if (!conf_is_ht40(conf)) {
+-			if (rt2x00_rt(rt2x00dev, RT6352) &&
+-			    rt2x00_has_cap_external_lna_bg(rt2x00dev)) {
+-				reg |= 0x5;
+-			} else {
+-				reg |= 0xa;
+-			}
+-		}
+-		rt2800_bbp_write(rt2x00dev, 195, 141);
+-		rt2800_bbp_write(rt2x00dev, 196, reg);
++	if (rt2x00_rt(rt2x00dev, RT5592)) {
++		bbp = conf_is_ht40(conf) ? 0x10 : 0x1a;
++		rt2800_bbp_glrt_write(rt2x00dev, 141, bbp);
  
-+	if (rt2x00_rt(rt2x00dev, RT6352))
-+		return 0;
+-		/* AGC init.
+-		 * Despite the vendor driver using different values here for
+-		 * RT6352 chip, we use 0x1c for now. This may have to be changed
+-		 * once TSSI got implemented.
+-		 */
+-		reg = (rf->channel <= 14 ? 0x1c : 0x24) + 2*rt2x00dev->lna_gain;
+-		rt2800_bbp_write_with_rx_chain(rt2x00dev, 66, reg);
++		bbp = (rf->channel <= 14 ? 0x1c : 0x24) + 2 * rt2x00dev->lna_gain;
++		rt2800_bbp_write_with_rx_chain(rt2x00dev, 66, bbp);
+ 
+-		if (rt2x00_rt(rt2x00dev, RT5592))
+-			rt2800_iq_calibrate(rt2x00dev, rf->channel);
++		rt2800_iq_calibrate(rt2x00dev, rf->channel);
+ 	}
+ 
+ 	if (rt2x00_rt(rt2x00dev, RT6352)) {
++		/* BBP for GLRT BW */
++		bbp = conf_is_ht40(conf) ?
++		      0x10 : rt2x00_has_cap_external_lna_bg(rt2x00dev) ?
++		      0x15 : 0x1a;
++		rt2800_bbp_glrt_write(rt2x00dev, 141, bbp);
 +
- 	reg = 0;
- 	rt2x00_set_field32(&reg, MAC_SYS_CTRL_RESET_CSR, 1);
- 	rt2x00_set_field32(&reg, MAC_SYS_CTRL_RESET_BBP, 1);
++		bbp = conf_is_ht40(conf) ? 0x2f : 0x40;
++		rt2800_bbp_glrt_write(rt2x00dev, 157, bbp);
++
++		if (rt2x00dev->default_ant.rx_chain_num == 1) {
++			rt2800_bbp_write(rt2x00dev, 91, 0x07);
++			rt2800_bbp_write(rt2x00dev, 95, 0x1a);
++			rt2800_bbp_glrt_write(rt2x00dev, 128, 0xa0);
++			rt2800_bbp_glrt_write(rt2x00dev, 170, 0x12);
++			rt2800_bbp_glrt_write(rt2x00dev, 171, 0x10);
++		} else {
++			rt2800_bbp_write(rt2x00dev, 91, 0x06);
++			rt2800_bbp_write(rt2x00dev, 95, 0x9a);
++			rt2800_bbp_glrt_write(rt2x00dev, 128, 0xe0);
++			rt2800_bbp_glrt_write(rt2x00dev, 170, 0x30);
++			rt2800_bbp_glrt_write(rt2x00dev, 171, 0x30);
++		}
++
++		/* AGC init */
++		bbp = rf->channel <= 14 ? 0x04 + 2 * rt2x00dev->lna_gain : 0;
++		rt2800_bbp_write_with_rx_chain(rt2x00dev, 66, bbp);
++
++		usleep_range(1000, 1500);
++
+ 		if (test_bit(CAPABILITY_EXTERNAL_PA_TX0,
+ 			     &rt2x00dev->cap_flags)) {
+ 			reg = rt2800_register_read(rt2x00dev, RF_CONTROL3);
+@@ -5660,26 +5666,6 @@ void rt2800_vco_calibration(struct rt2x00_dev *rt2x00dev)
+ 	rt2800_register_write(rt2x00dev, TX_PIN_CFG, tx_pin);
+ 
+ 	if (rt2x00_rt(rt2x00dev, RT6352)) {
+-		if (rt2x00dev->default_ant.rx_chain_num == 1) {
+-			rt2800_bbp_write(rt2x00dev, 91, 0x07);
+-			rt2800_bbp_write(rt2x00dev, 95, 0x1A);
+-			rt2800_bbp_write(rt2x00dev, 195, 128);
+-			rt2800_bbp_write(rt2x00dev, 196, 0xA0);
+-			rt2800_bbp_write(rt2x00dev, 195, 170);
+-			rt2800_bbp_write(rt2x00dev, 196, 0x12);
+-			rt2800_bbp_write(rt2x00dev, 195, 171);
+-			rt2800_bbp_write(rt2x00dev, 196, 0x10);
+-		} else {
+-			rt2800_bbp_write(rt2x00dev, 91, 0x06);
+-			rt2800_bbp_write(rt2x00dev, 95, 0x9A);
+-			rt2800_bbp_write(rt2x00dev, 195, 128);
+-			rt2800_bbp_write(rt2x00dev, 196, 0xE0);
+-			rt2800_bbp_write(rt2x00dev, 195, 170);
+-			rt2800_bbp_write(rt2x00dev, 196, 0x30);
+-			rt2800_bbp_write(rt2x00dev, 195, 171);
+-			rt2800_bbp_write(rt2x00dev, 196, 0x30);
+-		}
+-
+ 		if (rt2x00_has_cap_external_lna_bg(rt2x00dev)) {
+ 			rt2800_bbp_write(rt2x00dev, 75, 0x68);
+ 			rt2800_bbp_write(rt2x00dev, 76, 0x4C);
+@@ -5687,13 +5673,6 @@ void rt2800_vco_calibration(struct rt2x00_dev *rt2x00dev)
+ 			rt2800_bbp_write(rt2x00dev, 80, 0x0C);
+ 			rt2800_bbp_write(rt2x00dev, 82, 0xB6);
+ 		}
+-
+-		/* On 11A, We should delay and wait RF/BBP to be stable
+-		 * and the appropriate time should be 1000 micro seconds
+-		 * 2005/06/05 - On 11G, we also need this delay time.
+-		 * Otherwise it's difficult to pass the WHQL.
+-		 */
+-		usleep_range(1000, 1500);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(rt2800_vco_calibration);
 -- 
 2.39.2
 
