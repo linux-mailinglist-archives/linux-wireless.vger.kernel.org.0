@@ -2,75 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83C3E7C91ED
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 02:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6C587C920C
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 03:13:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231469AbjJNA62 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Oct 2023 20:58:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49166 "EHLO
+        id S231469AbjJNBNI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Oct 2023 21:13:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjJNA61 (ORCPT
+        with ESMTP id S229518AbjJNBNI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Oct 2023 20:58:27 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0944191;
-        Fri, 13 Oct 2023 17:58:25 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39E0aN6V031312;
-        Sat, 14 Oct 2023 00:58:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=2Mn/sALuAGncO7Zfs3mDJhQdbV4y5KH35BwJzbtCZAM=;
- b=WhiUNd5a0vuOSUpe4BF+G9ZmBVZm6akp4HHGKJZ8zjmCzHVdOZiN4PUP7VBIBFBbla4G
- 7mFJ4GPoSDzJLTfzRsnoE1z4Nh6J8CiFsJWu6lJvSd3FylZLCGwBdo5kLzH/UNsCVOAu
- ZWhvP5Vsbz4vHwmEvJN06wLz3a1iAss3sK2XLcj2G1eK7CXEbir00SBLiVJpEZICrfm9
- bQgTbE/xrZvtoXiBEjTeg/tHO+kSvCWA/ryAw7QbTLAfYM5NcpvS3MO36qYLMD88WaVo
- UB/Id4N3mgoqF+4EHHEl1hQ+jstQwTpOy0slAAMqKk0PVYLkC1Ljy7fF/yDsuJQxGtqC kg== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tq5101f85-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 14 Oct 2023 00:58:05 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39E0w48k025410
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 14 Oct 2023 00:58:04 GMT
-Received: from [10.48.240.22] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 13 Oct
- 2023 17:58:03 -0700
-Message-ID: <1cfc7c64-439c-437e-af82-7fce1202242d@quicinc.com>
-Date:   Fri, 13 Oct 2023 17:58:03 -0700
+        Fri, 13 Oct 2023 21:13:08 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 555D995;
+        Fri, 13 Oct 2023 18:13:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED41C433C7;
+        Sat, 14 Oct 2023 01:13:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697245987;
+        bh=n50kcxXI9A3yMV6jxB8NrEwZdjVrYAXqsMjPwBDWtY8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rNoygbMPeUIwtR64hZ7Q9YWWviszucUMdTDI1AIStFs/rvaOC69pt3n9quzesBklA
+         QSAIC1b1su7cYyKrsjrSTAbSJNA4+Eq/7vBX5pRwX8JuEkD1u442a7Qz3sYL+tVjH6
+         DtAOwHRgKy++OtzgwGKsxXIbNu+45VYfWHcjhYJQ3c4tcxjIq82FPKlNLawkVoEGyY
+         cl9plrQrT7vQesR4b8c1y7wnQKg5AQQmi5XkP4EyaDQ0pLKwAM/TShTPymf0aWp0Q8
+         x+qbRJu+c+B0N/m1qoJ5lnrHiHRS12f5N8pv67DNwUMkG+F1sdMpEoX2V6CcSyIQ8c
+         9HlJizg1+GI/w==
+Date:   Fri, 13 Oct 2023 18:13:05 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [net-next PATCH v2 3/4] net: stmmac: move TX timer arm after
+ DMA enable
+Message-ID: <20231013181305.605fc789@kernel.org>
+In-Reply-To: <20231012100459.6158-4-ansuelsmth@gmail.com>
+References: <20231012100459.6158-1-ansuelsmth@gmail.com>
+        <20231012100459.6158-4-ansuelsmth@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ath10k: replace deprecated strncpy with strtomem_pad
-Content-Language: en-US
-To:     Justin Stitt <justinstitt@google.com>,
-        Kalle Valo <kvalo@kernel.org>
-CC:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-hardening@vger.kernel.org>
-References: <20231013-strncpy-drivers-net-wireless-ath-ath10k-mac-c-v1-1-24e40201afa3@google.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231013-strncpy-drivers-net-wireless-ath-ath10k-mac-c-v1-1-24e40201afa3@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: D4pQm2n1GAZ-B8U95Qc8FjHAJ3n19PkZ
-X-Proofpoint-GUID: D4pQm2n1GAZ-B8U95Qc8FjHAJ3n19PkZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-13_12,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 mlxscore=0
- mlxlogscore=751 spamscore=0 clxscore=1011 adultscore=0 impostorscore=0
- malwarescore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2309180000 definitions=main-2310140006
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,47 +64,9 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/13/2023 1:33 PM, Justin Stitt wrote:
-> strncpy() is deprecated [1] and we should prefer less ambiguous
-> interfaces.
-> 
-> In this case, arvif->u.ap.ssid has its length maintained by
-> arvif->u.ap.ssid_len which indicates it may not need to be
-> NUL-terminated, although by virtue of using strtomem_pad (with NUL-byte
-> pad character) and having a destination size larger than the source,
-> ssid will, incidentally, be NUL-terminated here.
-> 
-> As strtomem_pad() docs say:
->   * @dest: Pointer of destination character array (marked as __nonstring)
->   * @src: Pointer to NUL-terminated string
->   * @pad: Padding character to fill any remaining bytes of @dest after copy
->   *
->   * This is a replacement for strncpy() uses where the destination is not
->   * a NUL-terminated string, but with bounds checking on the source size, and
->   * an explicit padding character. If padding is not required, use strtomem().
-> 
-> Let's also mark ath10k_vif.u.ap.ssid as __nonstring.
+On Thu, 12 Oct 2023 12:04:58 +0200 Christian Marangi wrote:
+> +static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue
 
-what criteria is used to determine whether or not to use __nonstring?
-doesn't the use of u8 vs char already communicate that distinction?
-just want to know what other u8 arrays might require this.
-FWIW the documentation referenced by the __nonstring macro explicitly 
-refers to "type array of char, signed char, or unsigned char"
-
-> 
-> It is unclear to me whether padding is strictly necessary. Perhaps we
-> should opt for just strtomem() -- padding certainly doesn't hurt,
-> though.
-
-concur that padding probably isn't necessary but doesn't hurt, and will 
-prevent confusion if looking at this member in a crashdump
-
-> 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-
-Either with or without the __nonstring...
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-
+missing comma at the end, does not build :(
+-- 
+pw-bot: cr
