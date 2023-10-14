@@ -2,71 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6C587C920C
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 03:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 199187C9258
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 04:43:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231469AbjJNBNI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Oct 2023 21:13:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36624 "EHLO
+        id S230297AbjJNCnd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Oct 2023 22:43:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJNBNI (ORCPT
+        with ESMTP id S229518AbjJNCnc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Oct 2023 21:13:08 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 555D995;
-        Fri, 13 Oct 2023 18:13:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED41C433C7;
-        Sat, 14 Oct 2023 01:13:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697245987;
-        bh=n50kcxXI9A3yMV6jxB8NrEwZdjVrYAXqsMjPwBDWtY8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rNoygbMPeUIwtR64hZ7Q9YWWviszucUMdTDI1AIStFs/rvaOC69pt3n9quzesBklA
-         QSAIC1b1su7cYyKrsjrSTAbSJNA4+Eq/7vBX5pRwX8JuEkD1u442a7Qz3sYL+tVjH6
-         DtAOwHRgKy++OtzgwGKsxXIbNu+45VYfWHcjhYJQ3c4tcxjIq82FPKlNLawkVoEGyY
-         cl9plrQrT7vQesR4b8c1y7wnQKg5AQQmi5XkP4EyaDQ0pLKwAM/TShTPymf0aWp0Q8
-         x+qbRJu+c+B0N/m1qoJ5lnrHiHRS12f5N8pv67DNwUMkG+F1sdMpEoX2V6CcSyIQ8c
-         9HlJizg1+GI/w==
-Date:   Fri, 13 Oct 2023 18:13:05 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Christian Marangi <ansuelsmth@gmail.com>
-Cc:     Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [net-next PATCH v2 3/4] net: stmmac: move TX timer arm after
- DMA enable
-Message-ID: <20231013181305.605fc789@kernel.org>
-In-Reply-To: <20231012100459.6158-4-ansuelsmth@gmail.com>
-References: <20231012100459.6158-1-ansuelsmth@gmail.com>
-        <20231012100459.6158-4-ansuelsmth@gmail.com>
+        Fri, 13 Oct 2023 22:43:32 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 896EFA9;
+        Fri, 13 Oct 2023 19:43:30 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1ca052ec63bso9580235ad.1;
+        Fri, 13 Oct 2023 19:43:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697251410; x=1697856210; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jTITjb+//k4DyyD3GweboqFVPC/ATyRtYY/wTSNvCM4=;
+        b=cmHqSYBvcsZgIAwxhCaaujB13IaNCplRmerI9luJ8GQ7jlUoxJ1yy6o0N2rDRreKUi
+         hm4wRERJHYjE86cO8WFaoNmasFsEZspnjhBMOduno0ZfdVbgGASmxdpzfCZLoNDvKTWe
+         69HeXWBEYwghHww9A8ErfCl07khAWxaJ/eYIGyNRk7wHhGz1E3FXJy0faUTRtf2RfQyL
+         hZZnM7UQBUvqNiIn25cORFmMrwBTsb734xwOTXOS/IhNWAyJz6cCIcdyce5q9JOQdOhO
+         F4C+t+4DSnB+EnHNEX1bjo2A7wXYfHSjIJmJY2PTiKRVvgsw1wLN/OyWWnCwlylf/3eL
+         Wbew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697251410; x=1697856210;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jTITjb+//k4DyyD3GweboqFVPC/ATyRtYY/wTSNvCM4=;
+        b=YRwwcZ3vDClUT5eARegF48CQvHo5ctI/sNjmLaQoZvgxvMiThCqvTROOvKl5bQNCZU
+         NFMsIvpzv5lX3Rz7Co00AvSIIby8jbN5D3eq5jXjUu0sTi/+8g0jfhkRdIzPaF3K5Mc/
+         IHsZ3o/NM32q8bMupA9S0J2zIOyfjZGklKjsoadaj+WKdF4YKDZeafsFCpv0GTv00lHc
+         4wAAlkBfaD73ZI2orD2tgpuvouTildumT3s3JXVOxN6oKbfm8TRrq/8RRsQX+1kwlK9V
+         BC1QPEjivZY/UQAWFPQdM1nAfddz+LCBpcFXjwzLon3PF3l0IYXJbWCku4OKgA9GTtez
+         YWrA==
+X-Gm-Message-State: AOJu0Yze4awPKw4+H7joHnlBm9tM8h/C6d9dDr+0gyxn+sdblw8xOkYQ
+        WghJctTKZDFQxs9zvo1ngUI=
+X-Google-Smtp-Source: AGHT+IEqg4czoCTQgV5nzmU+1DggLn8urc5zF5zeamlQc9J5Vg1C0OuNeAgCLyJ44mKzrTZyXZf7GQ==
+X-Received: by 2002:a05:6a21:62a:b0:170:3e5b:bccd with SMTP id ll42-20020a056a21062a00b001703e5bbccdmr14673239pzb.30.1697251409932;
+        Fri, 13 Oct 2023 19:43:29 -0700 (PDT)
+Received: from pek-lxu-l1.wrs.com ([111.198.228.56])
+        by smtp.gmail.com with ESMTPSA id d13-20020a17090b004d00b00273744e6eccsm771880pjt.12.2023.10.13.19.43.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Oct 2023 19:43:29 -0700 (PDT)
+From:   Edward AD <twuufnxlz@gmail.com>
+To:     horms@kernel.org
+Cc:     davem@davemloft.net, edumazet@google.com, johannes.berg@intel.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzbot+509238e523e032442b80@syzkaller.appspotmail.com,
+        syzkaller-bugs@googlegroups.com, twuufnxlz@gmail.com
+Subject: Re: [PATCH] rfkill: fix deadlock in rfkill_send_events
+Date:   Sat, 14 Oct 2023 10:43:22 +0800
+Message-ID: <20231014024321.1002066-2-twuufnxlz@gmail.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231013110638.GD29570@kernel.org>
+References: <20231013110638.GD29570@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
+        HK_RANDOM_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 12 Oct 2023 12:04:58 +0200 Christian Marangi wrote:
-> +static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue
-
-missing comma at the end, does not build :(
--- 
-pw-bot: cr
+Hi Simon Horman,
+On Fri, 13 Oct 2023 13:06:38 +0200, Simon Horman wrote:
+> I am wondering if you considered moving the rfkill_sync() calls
+> to before &data->mtx is taken, to avoid the need to drop and
+> retake it?
+If you move rfkill_sync() before calling &data->mtx, more code will be added 
+because rfkill_sync() is in the loop body.
+> 
+> Perhaps it doesn't work for some reason (compile tested only!).
+> But this does seem somehow cleaner for me.
+BR,
+edward
