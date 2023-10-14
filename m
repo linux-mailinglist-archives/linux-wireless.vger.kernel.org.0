@@ -2,48 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACF187C92D9
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 07:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA91C7C9307
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 08:42:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232793AbjJNFUM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Oct 2023 01:20:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39928 "EHLO
+        id S232810AbjJNGmI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Oct 2023 02:42:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJNFUL (ORCPT
+        with ESMTP id S229518AbjJNGmH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Oct 2023 01:20:11 -0400
+        Sat, 14 Oct 2023 02:42:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8409BBF;
-        Fri, 13 Oct 2023 22:20:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838B0C433C7;
-        Sat, 14 Oct 2023 05:20:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11E4B83;
+        Fri, 13 Oct 2023 23:42:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7893DC433C8;
+        Sat, 14 Oct 2023 06:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697260809;
-        bh=Ytj2/J6JoBkWt+fErmzSJIMEUCzhsog0az/dPrYSoqI=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ICYTGHBrHoTDiCb37W1wDlaDlK2hb/Usrv/wIXwmxTCIWFzfO9QvRdHfeAbkk45gm
-         OtFGC3aMI5oB9BrXLw5R675UrRIvEZleHHRci0z0YyJaAxxHmHI/eNdGcYSQMbxXvk
-         YLu9JKXVZl/AZ3mfmFT0q0FyYyBjudqMVgdOhDYF07XRNDENqcCOqdNfkvAJBUXs1x
-         aSOqcfKQK4oY4fcBsv9vsR4oUCAKoNw1LmLpFV8o5NXLHe+4VDpZPNJo5CWLgpDi8k
-         NDFu6b2/fgdUCusNpdKVD8TemfPcRWlfp+cNascn79BgHfWV5a9cACas3mSKLjrj6h
-         C5hreUQFnu+qg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Abhishek Kumar <kuabhs@chromium.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     johannes.berg@intel.com, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 2/2] ath10k: mac: enable
- WIPHY_FLAG_CHANNEL_CHANGE_ON_BEACON on ath10k
-References: <20230629035254.2.I23c5e51afcc6173299bb2806c8c38364ad15dd63@changeid>
-        <169634426707.121370.9448850980134728319.kvalo@kernel.org>
-Date:   Sat, 14 Oct 2023 08:20:05 +0300
-In-Reply-To: <169634426707.121370.9448850980134728319.kvalo@kernel.org> (Kalle
-        Valo's message of "Tue, 3 Oct 2023 14:44:28 +0000 (UTC)")
-Message-ID: <87il793hmi.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1697265725;
+        bh=Pvnp6ClDU4xAPFz+GWQJRLH4Q1XIrlzcHFNtXw92fUQ=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=IFrC+uuAlTszbKfHKFobiZGt35OWBZvGIonkyj/r68qF6fQ4z4aH3+ZHBwyT6DQKs
+         ELO4kjrrSll4lLcK9w56nn+NB7JrCGdQvbIJANYfbesEssGtFyCZ+tdDXiRLEuPNJq
+         NWwxEif8pM/z0It850p4If9P7PDrKK+caiQZm8Ke206qqfEU7zRXLr3O/dR9Rv3TjV
+         4E2UvmNu6xmMx5QDGnwzGOQOVNAsLbl/6xTKRmXaPgBolYcIOLnZEWONO1c4eYjN+/
+         1/nv6HMX+Fjtz2RfLiUGcLbZCxDtcsa6TkxLpQqA2KQc3slwOjmr8G4QkwkmDherTt
+         49buWmwGgjxzw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 08/10] wifi: atmel: remove unused ioctl function
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231011140225.253106-8-arnd@kernel.org>
+References: <20231011140225.253106-8-arnd@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wpan@vger.kernel.org,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Rodolfo Zitellini <rwz@xhero.org>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169726572036.3637479.12619977038667266484.kvalo@kernel.org>
+Date:   Sat, 14 Oct 2023 06:42:02 +0000 (UTC)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -54,30 +59,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Arnd Bergmann <arnd@kernel.org> wrote:
 
-> Abhishek Kumar <kuabhs@chromium.org> wrote:
->
->> Enabling this flag, ensures that reg_call_notifier is called
->> on beacon hints from handle_reg_beacon in cfg80211. This call
->> propagates the channel property changes to ath10k driver, thus
->> changing the channel property from passive scan to active scan
->> based on beacon hints.
->> Once the channels are rightly changed from passive to active,the
->> connection to hidden SSID does not fail.
->> 
->> Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
->
-> There's no Tested-on tag, on which hardware/firmware did you test this?
->
-> This flag is now enabled on ALL ath10k supported hardware: SNOC, PCI, SDIO and
-> maybe soon USB. I'm just wondering can we trust that this doesn't break
-> anything.
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> This function has no callers, and for the past 20 years, the request_firmware
+> interface has been in place instead of the custom firmware loader.
+> 
+> Acked-by: Kalle Valo <kvalo@kernel.org>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Jeff, what are your thoughts on this? I'm worried how different ath10k
-firmwares can be and if this breaks something.
+2 patches applied to wireless-next.git, thanks.
+
+166ab7ca3418 wifi: atmel: remove unused ioctl function
+f35ccb65bd18 wifi: hostap: remove unused ioctl function
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231011140225.253106-8-arnd@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
