@@ -2,78 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 315727C95CE
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 19:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C88B7C9635
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 22:02:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233306AbjJNRzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Oct 2023 13:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
+        id S230120AbjJNUBy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Oct 2023 16:01:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233305AbjJNRzy (ORCPT
+        with ESMTP id S229490AbjJNUBx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Oct 2023 13:55:54 -0400
-Received: from mx3.wp.pl (mx1.wp.pl [212.77.101.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1FE3AD
-        for <linux-wireless@vger.kernel.org>; Sat, 14 Oct 2023 10:55:51 -0700 (PDT)
-Received: (wp-smtpd smtp.wp.pl 13601 invoked from network); 14 Oct 2023 19:55:49 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1697306149; bh=IviouoENiV3dIQX3le2G3hlEj85bbWI6cx7TYEfcPio=;
-          h=From:To:Cc:Subject;
-          b=m0nWIiKpn9jb2qRiAIIR3ppcZaLYQLbjJJCSZoKVtVx5drPDzj/6eN4PzTHm3+I1W
-           lQxxJZecwUOvSlHxySMawx6xHJaDLIrgH+MFtWV3Ze/BhErzExTlemyuMPbsFOjaxM
-           SmxMKxFS5jKKAUXZ6f3I7sRuKE4G4oLdv3WUVDcQ=
-Received: from 89-64-13-175.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.13.175])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <yangshiji66@outlook.com>; 14 Oct 2023 19:55:49 +0200
-Date:   Sat, 14 Oct 2023 19:55:48 +0200
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
-To:     Shiji Yang <yangshiji66@outlook.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: Re: [PATCH 3/3] wifi: rt2x00: rework MT7620 PA/LNA RF calibration
-Message-ID: <20231014175548.GB477888@wp.pl>
-References: <20231013232130.416-1-yangshiji66@outlook.com>
- <TYAP286MB031551F2B4A929484A35EF28BCD2A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+        Sat, 14 Oct 2023 16:01:53 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62210CC;
+        Sat, 14 Oct 2023 13:01:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=Qx6rCJtGnmnzbwc9tTPUP7Vp17ZzyuVXPDYRTh3fyrI=;
+        t=1697313711; x=1698523311; b=CvZJiQ5R/YAI99CbCAFPhZMyMZzSgEWREUZLi5Qtkc75v56
+        MiYV5Yq3aFYaUdUvzaMhKCiYCdvuW9XnE/a4wkaHG08TnTpO4A/2RDw04VtTYTMagRxSaSn8yVmJD
+        zhp00GehfvbNM0fe/5JuLcxthAiQ60S+e/opXxhX+suaE0iYTnORzcJ6qd6MYty/nmYH8+KTYAboc
+        WKErbhg709W/SeKKOsTCDB8xwiLjWrBJjufBPGP6Mql19D34/4JJldQpBBUWL88PqIJbp5IhtYu0v
+        LA6w0wgubvJE54Z0a40eUWfqbMP9+KpxF1XftLMte7GjvYROT0smyvnQWBHSBYkA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qrkpW-00000006DPi-1nVX;
+        Sat, 14 Oct 2023 22:01:46 +0200
+Message-ID: <fec9cfe4436786f6f9b61ee6e9bb7766efb29d34.camel@sipsolutions.net>
+Subject: Re: [PATCH] rfkill: fix deadlock in rfkill_send_events
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Simon Horman <horms@kernel.org>, Edward AD <twuufnxlz@gmail.com>
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzbot+509238e523e032442b80@syzkaller.appspotmail.com,
+        syzkaller-bugs@googlegroups.com
+Date:   Sat, 14 Oct 2023 22:01:45 +0200
+In-Reply-To: <20231014072943.GV29570@kernel.org>
+References: <20231013110638.GD29570@kernel.org>
+         <20231014024321.1002066-2-twuufnxlz@gmail.com>
+         <20231014072943.GV29570@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYAP286MB031551F2B4A929484A35EF28BCD2A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
-X-WP-MailID: b84589b2a147c8830702279fe2395879
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [EXMR]                               
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Oct 14, 2023 at 07:21:30AM +0800, Shiji Yang wrote:
-> 1. Move MT7620 PA/LNA calibration code to dedicated functions.
-> 2. For external PA/LNA devices, restore RF and BBP registers before
->    R-Calibration.
-> 3. Do Rx DCOC calibration again before RXIQ calibration.
-> 4. Add some missing LNA related registers' initialization.
-> 
-> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-<snip>
->  int rt2800_enable_radio(struct rt2x00_dev *rt2x00dev)
->  {
->  	u32 reg;
-> @@ -10762,6 +10831,10 @@ int rt2800_enable_radio(struct rt2x00_dev *rt2x00dev)
->  	rt2800_init_bbp(rt2x00dev);
->  	rt2800_init_rfcsr(rt2x00dev);
->  
-> +	/* Do calibration and init PA/LNA for RT6352 */
-> +	if (rt2x00_rt(rt2x00dev, RT6352))
-> +		rt2800_calibration_rt6352(rt2x00dev);
-rt2800_init_rcsr() -> rt2800_init_rfcsr_6352() is called right
-before this. Could we have rt2800_calibration_rt6352() there ? 
+On Sat, 2023-10-14 at 09:29 +0200, Simon Horman wrote:
+> On Sat, Oct 14, 2023 at 10:43:22AM +0800, Edward AD wrote:
+> > Hi Simon Horman,
+> > On Fri, 13 Oct 2023 13:06:38 +0200, Simon Horman wrote:
+> > > I am wondering if you considered moving the rfkill_sync() calls
+> > > to before &data->mtx is taken, to avoid the need to drop and
+> > > retake it?
+> > If you move rfkill_sync() before calling &data->mtx, more code will be =
+added=20
+> > because rfkill_sync() is in the loop body.
+>=20
+> Maybe that is true. And maybe that is a good argument for
+> not taking the approach that I suggested. But I do think it
+> is simpler from a locking perspective, and that has some merit.
+>=20
 
-Regards
-Stanislaw
+FWIW, I missed this patch and discussion until now, but I already fixed
+the issue differently:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commi=
+t/?id=3Df2ac54ebf85615a6d78f5eb213a8bbeeb17ebe5d
+
+There was never any need to hold the data->mtx for anything but the list
+manipulation, and even that isn't _really_ needed since the 'data' is
+completely fresh and not seen anywhere else yet.
+
+(I'll also note that the subject of this thread is wrong since this was
+never an *actual* deadlock, just a *possible* one reported by lockdep.)
+
+johannes
