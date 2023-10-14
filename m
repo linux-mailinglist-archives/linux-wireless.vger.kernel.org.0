@@ -2,61 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 784277C93C1
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 11:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEBD57C93D4
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Oct 2023 11:30:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232999AbjJNJ1e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Oct 2023 05:27:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53936 "EHLO
+        id S233014AbjJNJab (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Oct 2023 05:30:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232937AbjJNJ1d (ORCPT
+        with ESMTP id S232937AbjJNJab (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Oct 2023 05:27:33 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CEF5AD;
-        Sat, 14 Oct 2023 02:27:32 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-40776b20031so8136525e9.0;
-        Sat, 14 Oct 2023 02:27:32 -0700 (PDT)
+        Sat, 14 Oct 2023 05:30:31 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B6BBF;
+        Sat, 14 Oct 2023 02:30:29 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2c514cbbe7eso3039731fa.1;
+        Sat, 14 Oct 2023 02:30:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697275650; x=1697880450; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=yqjTtNujnWMy88VPNV8UrR+LdaZ9WG6NKz13qE7MTmE=;
-        b=EkG7/6rcELYTWZdbyasOiyeX9cnKK/pl8B9uTCLQOUCHXPBumMWycoQQu8iYdN4+rQ
-         L8j8FdASQQPqlAp4oVRZtkVKXDh2HOPsBk6hKr0lgdCk/AWN8/Vicf4Et5h4QyxK9abw
-         9JuZyVbaz5AwmpaLnuNzj0kF3liKt/WHlU9EvACk7y9HRXd5WxlDC3r4DekuC9Fo3mms
-         6N4fOZl7oeHZEolDuxxktGgKdPX4CudeKCjKL6Ij1JwQl72Y2MVTTZ8XDFdldfEiCfHt
-         Oia8AzUgSD3VRQgCVOcOGYzo8K+H7XBlgQBnYVK58sAC2waeZwBJUb2gzR57tXIKNPXV
-         cvZw==
+        d=gmail.com; s=20230601; t=1697275827; x=1697880627; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vVgxHCn/B7V074W174vEDwqS68k37Kzh+EyWr5cIE3M=;
+        b=a5n1L684NdmB7DzIzSgpOgLXdlAIAD+DND0RpDFATQCCm0pZlu4l+w/fkh9PwmLhQE
+         7sDo0N02AbHWB3N9QxSIVfmspXdSgE6G/8b9F8iLsLJ3UFIWp1QLUv02Jcst+OpMSAG4
+         aMxxk8ELPKHK/+aJ6qu3TjeyOofVkY6KnHboYNHqjE0CFuBmOyQriR+V91l8NX3SXUGz
+         0Pkh8GrLdV7ErFw2uDlA137i7EF4gy2zJDUjJW1hN7QNm8hhDn9iGfS6Avthw3QAp/aq
+         4sbw2COLWxaKnQDAikXwS6YoCBipqY0bys2rRALtmuGCB36KI3wdWVfRSg7gQaBYIqwu
+         +uQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697275650; x=1697880450;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yqjTtNujnWMy88VPNV8UrR+LdaZ9WG6NKz13qE7MTmE=;
-        b=UHYsWodLO9EZCadEaH6DvEvgXtICuNXz2KXIFc3MciuP4C53W7kZBcTfPjPGur4pr1
-         nvpJ18sBijvHL/WzhdnjL+OPC6fRuDICLM7p+cyibEaWphR4fPhMLDv3qH1w/pns41VC
-         tEP5ElilzxGIZP5QNmJhMY87eZirRB/hSAzXXBYzM2eFhh6oeG/dkDY2sJ6/ml1UEBJe
-         8cx9qA8KbHTCPbbVwcTl4JKloSUkfz67FV97I8QjE5BW6tmZaCKkVmBYFcYtJBDhDTXF
-         wt7unyEywxLQB4koRWwcuMNbOgIy1SMmo/lbCLG3jvrdkJJUHC6KA7NkLh/2h9UXpef1
-         uzUA==
-X-Gm-Message-State: AOJu0YwgJqsBnmoditjDdptyhDxbt2HcJ7bw5JYbYzRDfAsOln2aOOzd
-        FxG2ttGTHAlPwwLomZtOyLc=
-X-Google-Smtp-Source: AGHT+IEKzWJbvz9sdajMP9sZmmvJ1GgbFvXL53QYeHYszED8GAmWTvoPfVlS7CXVxkH04Co8ImitsQ==
-X-Received: by 2002:a05:600c:3544:b0:407:39ea:d926 with SMTP id i4-20020a05600c354400b0040739ead926mr18548553wmq.9.1697275650125;
-        Sat, 14 Oct 2023 02:27:30 -0700 (PDT)
-Received: from Ansuel-xps. (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.gmail.com with ESMTPSA id bd10-20020a05600c1f0a00b004077219aed5sm1514878wmb.6.2023.10.14.02.27.29
+        d=1e100.net; s=20230601; t=1697275827; x=1697880627;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vVgxHCn/B7V074W174vEDwqS68k37Kzh+EyWr5cIE3M=;
+        b=jWHXB2moOXs647FzREq6X+Q22ajIoHfQ+ebmWTFvLTY3T9A4OwcAK0xVP3Em21DbAx
+         uKgqAqzkEYmX3JGwZ0kztvVhbUvMf771PYSw3S/dV0OgRjwIMkLEAzCcyR5v4ooWbu0H
+         2ykRZOGJCjufwju2px+TXLv92FHARrDN3LJLNrivMncWIZy+z2mGJCM9Y1F5BRXi8zxp
+         c6ZiE63TOj7ZCd1tbtmI52LoeidLUKHQi0ONcHIvkD8WfDtx+Jdi9SG7a45CsZkhGT+3
+         ZDyUnZSAbyD18J731WFCrqBDzw27sNVe970ZuVi6E5h0NUMJ4naagjjMXwb6DhlmGpN9
+         /ECQ==
+X-Gm-Message-State: AOJu0YxBaWs18i+rVY+E7HS5dpMk8vZs3UylVKw6Z5DanPamskOQF+O+
+        eBW3tTi0vDrjYJvKvOiZpQg=
+X-Google-Smtp-Source: AGHT+IGJJJQm7yfJhqss5S4XY8Bm6bfFs0fCEocRUTeiHfSNoKjAzN8d4DstSYgAxtzxjhfGDA7Lxg==
+X-Received: by 2002:a05:6512:695:b0:503:28cb:c087 with SMTP id t21-20020a056512069500b0050328cbc087mr37064060lfe.29.1697275826447;
+        Sat, 14 Oct 2023 02:30:26 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id u12-20020adff88c000000b0032d9a1f2ec3sm3691564wrp.27.2023.10.14.02.30.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Oct 2023 02:27:29 -0700 (PDT)
-Message-ID: <652a5f01.050a0220.6635d.5a6a@mx.google.com>
-X-Google-Original-Message-ID: <ZSpe//2oYu6+cZws@Ansuel-xps.>
-Date:   Sat, 14 Oct 2023 11:27:27 +0200
+        Sat, 14 Oct 2023 02:30:26 -0700 (PDT)
 From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Raju Rangoju <rajur@chelsio.com>,
+To:     Raju Rangoju <rajur@chelsio.com>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Jose Abreu <joabreu@synopsys.com>,
@@ -70,15 +67,13 @@ Cc:     Raju Rangoju <rajur@chelsio.com>,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org,
         linux-wireless@vger.kernel.org
-Subject: Re: [net-next PATCH v2 3/4] net: stmmac: move TX timer arm after DMA
- enable
-References: <20231012100459.6158-1-ansuelsmth@gmail.com>
- <20231012100459.6158-4-ansuelsmth@gmail.com>
- <20231013181305.605fc789@kernel.org>
+Cc:     Christian Marangi <ansuelsmth@gmail.com>
+Subject: [net-next PATCH v3 0/4] net: stmmac: improve tx timer logic
+Date:   Sat, 14 Oct 2023 11:29:50 +0200
+Message-Id: <20231014092954.1850-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231013181305.605fc789@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -89,17 +84,59 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Oct 13, 2023 at 06:13:05PM -0700, Jakub Kicinski wrote:
-> On Thu, 12 Oct 2023 12:04:58 +0200 Christian Marangi wrote:
-> > +static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue
-> 
-> missing comma at the end, does not build :(
-> -- 
-> pw-bot: cr
+This series comes with the intention of restoring original performance
+of stmmac on some router/device that used the stmmac driver to handle
+gigabit traffic.
 
-Sorry for wasting your time :(
-Having to port this between 6.1 and net-next and it slipped in while
-fixing the rebase conflict. Totally my fault.
+More info are present in patch 3. This cover letter is to show results
+and improvements of the following change.
+
+The move to hr_timer for tx timer and commit 8fce33317023 ("net: stmmac:
+Rework coalesce timer and fix multi-queue races") caused big performance
+regression on these kind of device.
+
+This was observed on ipq806x that after kernel 4.19 couldn't handle
+gigabit speed anymore.
+
+The following series is currently applied and tested in OpenWrt SNAPSHOT
+and have great performance increase. (the scenario is qca8k switch +
+stmmac dwmac1000) Some good comparison can be found here [1].
+
+The difference is from a swconfig scenario (where dsa tagging is not
+used so very low CPU impact in handling traffic) and DSA scenario where
+tagging is used and there is a minimal impact in the CPU. As can be
+notice even with DSA in place we have better perf.
+
+It was observed by other user that also SQM scenario with cake scheduler
+were improved in the order of 100mbps (this scenario is CPU limited and
+any increase of perf is caused by removing load on the CPU)
+
+Been at least 15 days that this is in use without any complain or bug
+reported about queue timeout. (was the case with v1 before the
+additional patch was added, only appear on real world tests and not on
+iperf tests)
+
+[1] https://forum.openwrt.org/t/netgear-r7800-exploration-ipq8065-qca9984/285/3427?u=ansuel
+
+Changes v3:
+- Fix compilation error for missing comma
+Changes v2:
+- Add patch to move tx timer arm outside tx clean.
+
+Christian Marangi (4):
+  net: introduce napi_is_scheduled helper
+  net: stmmac: improve TX timer arm logic
+  net: stmmac: move TX timer arm after DMA enable
+  net: stmmac: increase TX coalesce timer to 5ms
+
+ drivers/net/ethernet/chelsio/cxgb3/sge.c      |  8 ----
+ drivers/net/ethernet/stmicro/stmmac/common.h  |  2 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 37 +++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/core.c     |  2 +-
+ include/linux/netdevice.h                     | 23 ++++++++++++
+ net/core/dev.c                                |  2 +-
+ 6 files changed, 56 insertions(+), 18 deletions(-)
 
 -- 
-	Ansuel
+2.40.1
+
