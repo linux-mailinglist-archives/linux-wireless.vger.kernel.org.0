@@ -2,58 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 181E87C99D0
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Oct 2023 17:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B758B7C9AD1
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Oct 2023 20:43:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230043AbjJOPjX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Oct 2023 11:39:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37544 "EHLO
+        id S229649AbjJOSmH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Oct 2023 14:42:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjJOPjW (ORCPT
+        with ESMTP id S229522AbjJOSmG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Oct 2023 11:39:22 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AA66D6
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Oct 2023 08:39:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697384361; x=1728920361;
-  h=date:from:to:cc:subject:message-id;
-  bh=t5jASv7B88PRJsZxnUhHiKoIT0WpKIADJlxOa+cnlGA=;
-  b=jtQh46ADiPeSBzbCw6nMe9VxlWsgkLc5J+OO4O0sPCMIub8LvcVy8y9m
-   4p/408LFj5d5gh0/DvClz0NzODdX2mxHiI76YSr1EN+BmDSSvQqS5d/VO
-   Oka2ITSRNby14tUFsZ2ws78Ew0ql7MXMV6WmDb1B/xbNGjb5bgExYvsgs
-   D2RswIHPLlZUloB+4+Gkj6WdLNeKuWECdCJXDYFJCurpn4d9inDx0ZG4V
-   CHm5E1Nh0aoNRR/ODPZo8El6+nC3+yiIfm1ASlb7RoyJg8526PbMMoNme
-   3P78c2+2yUvgQSfOyVBAtXI8Xf8h4WOkKEY66P+/tRtGi/93jXo5UpY9s
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365661486"
-X-IronPort-AV: E=Sophos;i="6.03,226,1694761200"; 
-   d="scan'208";a="365661486"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2023 08:39:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="879149325"
-X-IronPort-AV: E=Sophos;i="6.03,226,1694761200"; 
-   d="scan'208";a="879149325"
-Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 15 Oct 2023 08:39:19 -0700
-Received: from kbuild by f64821696465 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qs3D1-0007WN-2S;
-        Sun, 15 Oct 2023 15:39:16 +0000
-Date:   Sun, 15 Oct 2023 23:39:12 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- b650981501bf00bc84f09cf3b3e0b6190cfed794
-Message-ID: <202310152310.a3x9Z6lk-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        Sun, 15 Oct 2023 14:42:06 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E08AB;
+        Sun, 15 Oct 2023 11:42:04 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9bf0bee9f2fso38807466b.1;
+        Sun, 15 Oct 2023 11:42:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697395323; x=1698000123; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lqtpH20wflaioGvES9J8NH5ppY7AwDBKbQOe+1udiSg=;
+        b=eWuILn9UcVf3e/U9LwZxb1m1EN+Bf6mk8T03Iu3i2upfzE+Az7S/uj9wYlIbmyngUu
+         XJCnlp0Fo19S6qk96g6c2Bh+Ex0HF8e9cPSBcqogrACKgBDFEEAeI+OG5w3F1eMLQZ06
+         WiM2RfGllv7H12SzUN2yQ2e+JoHPdO46Hi9zyv/Th4IjxO8PUC+QWRBhnrZF1Xn9Qlh0
+         jTgdQNAiflnoMqMuAQ+uGF+idmf8VkiPuXfgr6mpNF1wANIiHoW2ZADEG1YrO4ey3Wkq
+         vFBRkDe0mKpnCGZHUBtUSuEmBkTGkWe5Z8EL4Syef2v+6gGv7o1gWWMCUFoF2R//7bb+
+         BE6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697395323; x=1698000123;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lqtpH20wflaioGvES9J8NH5ppY7AwDBKbQOe+1udiSg=;
+        b=JSILALsrTtvAvMHQ1g/loGZUqQmYg0Xw8Txk+KhMXd6EuLABEapDQgOufB78ZdOQZM
+         cGA0r22yDf4SWKHZABWhlbgy+0GErWkE4Gf8+RKt4svY1MiMcpYroy3i8bQl1B7kNUWL
+         BH7bhw3hnvwhy3NCnxAV2qbeLVRiNCzpHUk/6ZwBIEqB70eA5qdz9WMsY2zxcuwlqFXX
+         iLojIMpafz6ShVrU04q0Gkqtit9miCJNk7Z0nDiFFwD440LnBve+8ShTbrA9KbE6DXAr
+         roTMqSaav5TuWJQroJGsYmjjaMU4l25Yx6f0JUkuBU2JAkCcz5MhmccX6SL7/EiZx/ji
+         n59Q==
+X-Gm-Message-State: AOJu0YxW77um6PraBP+MGjrts/AzWUgMCfRVGcFUB64ZWCBc7n5k1H/3
+        FldPY07Vo9VEJOf8xOGQQRY=
+X-Google-Smtp-Source: AGHT+IHNaW6WWeWoA+ixNKPIZiaPZY/LmCPKta4SIuS41L9rhTiHm3rRf9wxlI/K+SAfdEX0xtYFSw==
+X-Received: by 2002:a17:907:6d1a:b0:9be:8de2:a56c with SMTP id sa26-20020a1709076d1a00b009be8de2a56cmr3832751ejc.0.1697395323004;
+        Sun, 15 Oct 2023 11:42:03 -0700 (PDT)
+Received: from [192.168.0.103] (p579356c7.dip0.t-ipconnect.de. [87.147.86.199])
+        by smtp.gmail.com with ESMTPSA id mr8-20020a170907828800b009adc5802d08sm2591566ejc.190.2023.10.15.11.42.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 15 Oct 2023 11:42:02 -0700 (PDT)
+Message-ID: <08e266b5-cc6f-4428-bb50-11122a174e94@gmail.com>
+Date:   Sun, 15 Oct 2023 20:42:01 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
+To:     Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Jakub Kicinski <kuba@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        "David S . Miller" <davem@davemloft.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
+References: <20231010155444.858483-1-arnd@kernel.org>
+ <e93e4008-65c5-4f1d-812a-64b48f0513a2@gmail.com>
+ <c8f43e1b-aed1-4b45-ba7c-d896ff66dfa7@app.fastmail.com>
+Content-Language: en-US
+From:   Philipp Hortmann <philipp.g.hortmann@gmail.com>
+In-Reply-To: <c8f43e1b-aed1-4b45-ba7c-d896ff66dfa7@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,120 +84,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: b650981501bf00bc84f09cf3b3e0b6190cfed794  wifi: rtw89: mac: do bf_monitor only if WiFi 6 chips
+On 10/13/23 17:36, Arnd Bergmann wrote:
+> At the moment, I'd suggest focusing on the drivers that still use wext 
+> (git grep -w iw_handler_def drivers), if we can show that rtl8192e, 
+> rtl8712 or ks7010 have been broken for a while, removing those would 
+> help with removing wext altogether.
 
-elapsed time: 1897m
 
-configs tested: 101
-configs skipped: 2
+Hi,
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+__rtl8192e__
+this hardware is available on ebay 13 times.
+ping statistics:
+1191 packets transmitted, 1191 received, 0% packet loss, time 1192169ms
+rtt min/avg/max/mdev = 0.633/2.184/74.792/3.157 ms
+maximum download 12,5 MByte/s
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231014   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                   randconfig-001-20231014   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231014   gcc  
-i386                  randconfig-002-20231014   gcc  
-i386                  randconfig-003-20231014   gcc  
-i386                  randconfig-004-20231014   gcc  
-i386                  randconfig-005-20231014   gcc  
-i386                  randconfig-006-20231014   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231014   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20231014   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231014   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231014   gcc  
-sparc                 randconfig-001-20231015   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20231014   gcc  
-x86_64                randconfig-002-20231014   gcc  
-x86_64                randconfig-003-20231014   gcc  
-x86_64                randconfig-004-20231014   gcc  
-x86_64                randconfig-005-20231014   gcc  
-x86_64                randconfig-006-20231014   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
+__rtl8712__
+stick packard bell AW-NU120
+ping statistics:
+678 packets transmitted, 652 received, 3.83481% packet loss, time 678287ms
+rtt min/avg/max/mdev = 0.943/4.835/231.435/17.900 ms
+maximum download 12,5 MByte/s
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I would like to remove the private functions as the "wireless tools" 
+package is deprecated. The following functions are available:
+kernel@matrix-ESPRIMO-P710:~/Documents/git/kernels/staging$ iwpriv wlan0
+wlan0     Available private ioctls :
+           read32           (8BE0) : set   1 int   & get   0
+           write32          (8BE1) : set   1 int   & get   0
+           driver_ext       (8BE2) : set   0       & get   0
+           mp_ioctl         (8BE3) : set   0       & get   0
+           apinfo           (8BE4) : set   1 int   & get   0
+           setpid           (8BE5) : set   1 int   & get   0
+           wps_start        (8BE6) : set   1 int   & get   0
+           chplan           (8BE7) : set   1 int   & get   0
+
+What do you think about this?
+
+Thanks
+
+Bye Philipp
