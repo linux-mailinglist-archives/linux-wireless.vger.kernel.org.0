@@ -2,126 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B758B7C9AD1
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Oct 2023 20:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63B437C9B33
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Oct 2023 22:04:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbjJOSmH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Oct 2023 14:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40500 "EHLO
+        id S231160AbjJOUEJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Oct 2023 16:04:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjJOSmG (ORCPT
+        with ESMTP id S229559AbjJOUEG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Oct 2023 14:42:06 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E08AB;
-        Sun, 15 Oct 2023 11:42:04 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9bf0bee9f2fso38807466b.1;
-        Sun, 15 Oct 2023 11:42:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697395323; x=1698000123; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lqtpH20wflaioGvES9J8NH5ppY7AwDBKbQOe+1udiSg=;
-        b=eWuILn9UcVf3e/U9LwZxb1m1EN+Bf6mk8T03Iu3i2upfzE+Az7S/uj9wYlIbmyngUu
-         XJCnlp0Fo19S6qk96g6c2Bh+Ex0HF8e9cPSBcqogrACKgBDFEEAeI+OG5w3F1eMLQZ06
-         WiM2RfGllv7H12SzUN2yQ2e+JoHPdO46Hi9zyv/Th4IjxO8PUC+QWRBhnrZF1Xn9Qlh0
-         jTgdQNAiflnoMqMuAQ+uGF+idmf8VkiPuXfgr6mpNF1wANIiHoW2ZADEG1YrO4ey3Wkq
-         vFBRkDe0mKpnCGZHUBtUSuEmBkTGkWe5Z8EL4Syef2v+6gGv7o1gWWMCUFoF2R//7bb+
-         BE6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697395323; x=1698000123;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lqtpH20wflaioGvES9J8NH5ppY7AwDBKbQOe+1udiSg=;
-        b=JSILALsrTtvAvMHQ1g/loGZUqQmYg0Xw8Txk+KhMXd6EuLABEapDQgOufB78ZdOQZM
-         cGA0r22yDf4SWKHZABWhlbgy+0GErWkE4Gf8+RKt4svY1MiMcpYroy3i8bQl1B7kNUWL
-         BH7bhw3hnvwhy3NCnxAV2qbeLVRiNCzpHUk/6ZwBIEqB70eA5qdz9WMsY2zxcuwlqFXX
-         iLojIMpafz6ShVrU04q0Gkqtit9miCJNk7Z0nDiFFwD440LnBve+8ShTbrA9KbE6DXAr
-         roTMqSaav5TuWJQroJGsYmjjaMU4l25Yx6f0JUkuBU2JAkCcz5MhmccX6SL7/EiZx/ji
-         n59Q==
-X-Gm-Message-State: AOJu0YxW77um6PraBP+MGjrts/AzWUgMCfRVGcFUB64ZWCBc7n5k1H/3
-        FldPY07Vo9VEJOf8xOGQQRY=
-X-Google-Smtp-Source: AGHT+IHNaW6WWeWoA+ixNKPIZiaPZY/LmCPKta4SIuS41L9rhTiHm3rRf9wxlI/K+SAfdEX0xtYFSw==
-X-Received: by 2002:a17:907:6d1a:b0:9be:8de2:a56c with SMTP id sa26-20020a1709076d1a00b009be8de2a56cmr3832751ejc.0.1697395323004;
-        Sun, 15 Oct 2023 11:42:03 -0700 (PDT)
-Received: from [192.168.0.103] (p579356c7.dip0.t-ipconnect.de. [87.147.86.199])
-        by smtp.gmail.com with ESMTPSA id mr8-20020a170907828800b009adc5802d08sm2591566ejc.190.2023.10.15.11.42.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Oct 2023 11:42:02 -0700 (PDT)
-Message-ID: <08e266b5-cc6f-4428-bb50-11122a174e94@gmail.com>
-Date:   Sun, 15 Oct 2023 20:42:01 +0200
+        Sun, 15 Oct 2023 16:04:06 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FF9C5;
+        Sun, 15 Oct 2023 13:04:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1697400212; bh=HsI6q5ZqWA2Xqb7iuplYKiKLey5gau/NWt1cjNPYiYY=;
+        h=From:Subject:Date:To:Cc;
+        b=eibEV0JgXjMSfigi6w8SQom18W9kxtWAUaGm3ygoHsIpQBIuT3Ls0VUtLq0m6LcGR
+         ioWkLPyESxVYM8f+klu/B7KfdFsbuts9Yb3Wo9J7GCh5dQxKZMoOVv1BpeJvPh9kZc
+         +qndWPnRl9OZebR6NZ0790k5kZQn4oOZThl4RG70=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH 0/4] Add WCN3680B WiFi/Bluetooth and enable it on Fairphone
+ 3
+Date:   Sun, 15 Oct 2023 22:03:05 +0200
+Message-Id: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-To:     Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Jakub Kicinski <kuba@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        "David S . Miller" <davem@davemloft.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev
-References: <20231010155444.858483-1-arnd@kernel.org>
- <e93e4008-65c5-4f1d-812a-64b48f0513a2@gmail.com>
- <c8f43e1b-aed1-4b45-ba7c-d896ff66dfa7@app.fastmail.com>
-Content-Language: en-US
-From:   Philipp Hortmann <philipp.g.hortmann@gmail.com>
-In-Reply-To: <c8f43e1b-aed1-4b45-ba7c-d896ff66dfa7@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHpFLGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDA0NT3bQCY93y5LziYl0j41QL4yQLI2PTNFMloPqCotS0zAqwWdGxtbU
+ ALtuZRVsAAAA=
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Cc:     linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1128; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=HsI6q5ZqWA2Xqb7iuplYKiKLey5gau/NWt1cjNPYiYY=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlLEWG9Gp66ulRUz7oQWuzEBvMk2DKLUswm1NFY
+ OuLLA8+1VaJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZSxFhgAKCRBy2EO4nU3X
+ VspqD/0c+2OcM1vAUEhGee8RMbaeYcyy0yD6WuefeqaEEHO51eB9PlZimEv/NDVi2H/N1FFvKjG
+ PhA96ExHV1idW3gUcEod6w8QSGGSu8FSVEY08LfV8iIFxZiZazxvrKAzOOI5KpI28btSbsLjg4E
+ 4A6alHfxWSfoeAAvLwgb070Pj7D8mIqjhQ9gasW85r+Z5hb+5l/qOe/mp+gKXuQ+8vIu9b5OXFj
+ dEc+O0V3XEzfwANhzmYfZVcQoXqFAsPGyKLLuglHsVGXS7uSXxdEwR7XfXh5pmszFVAomIKjboY
+ U6NRRq6otOG/6nKxy8GLv4yQjuVd8I95IUvTk7wlMYJeJDnOAQmaHZGLcfHIfs5RpzITo+p8n+1
+ cSrpKVligbDsaJZBSct8IttOph6UL8XdhM7l9skVtlHLiMPLcbYFQaxwNDduJOxDyaC0ukQD/db
+ Mmsj38SNSAoJOIV43HTygfFHVB4en7/8CpyGSQ5xG35u1sdpT633ZSfZKBc8NXyCQMCtuRWUsdL
+ dJsCUg//rZ6JOSlfUg25WUXZeGO/60D86DZkyOk/KhYpSD77VpQDQTJ7oF/5qR9JwjCOfbNsGLa
+ T3X3Vz1YLzwn2bqqVL1t9P1GL1DbLir2IL2spBuk0qaEGAAYC6tQwbT9l3gbsM9eF+R9KDRY/nn
+ YhEGG6xQG3LxoQA==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/13/23 17:36, Arnd Bergmann wrote:
-> At the moment, I'd suggest focusing on the drivers that still use wext 
-> (git grep -w iw_handler_def drivers), if we can show that rtl8192e, 
-> rtl8712 or ks7010 have been broken for a while, removing those would 
-> help with removing wext altogether.
+Add a new compatible for the WCN3680B found together with some Qualcomm
+SoCs. And enable this WiFi/Bluetooth combo on Fairphone 3 smartphone.
 
+Worth noting that I'm pretty sure some phones already in mainline do
+have this WCN3680B chip enabled but are using a different compatible,
+e.g. qcom,wcn3680 (without the b suffix).
 
-Hi,
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Luca Weiss (4):
+      dt-bindings: remoteproc: qcom: wcnss: Add WCN3680B compatible
+      remoteproc: qcom_wcnss: Add WCN3680B compatible
+      wifi: wcn36xx: Add check for WCN3680B
+      arm64: dts: qcom: sdm632-fairphone-fp3: Enable WiFi/Bluetooth
 
-__rtl8192e__
-this hardware is available on ebay 13 times.
-ping statistics:
-1191 packets transmitted, 1191 received, 0% packet loss, time 1192169ms
-rtt min/avg/max/mdev = 0.633/2.184/74.792/3.157 ms
-maximum download 12,5 MByte/s
+ .../devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml    |  1 +
+ arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts         | 15 +++++++++++++++
+ drivers/net/wireless/ath/wcn36xx/main.c                   |  3 ++-
+ drivers/remoteproc/qcom_wcnss_iris.c                      |  1 +
+ 4 files changed, 19 insertions(+), 1 deletion(-)
+---
+base-commit: 09eda82818c490a6fb24f1374bd704ea5c3b577a
+change-id: 20231015-fp3-wcnss-23e83b8235f5
 
-__rtl8712__
-stick packard bell AW-NU120
-ping statistics:
-678 packets transmitted, 652 received, 3.83481% packet loss, time 678287ms
-rtt min/avg/max/mdev = 0.943/4.835/231.435/17.900 ms
-maximum download 12,5 MByte/s
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
-I would like to remove the private functions as the "wireless tools" 
-package is deprecated. The following functions are available:
-kernel@matrix-ESPRIMO-P710:~/Documents/git/kernels/staging$ iwpriv wlan0
-wlan0     Available private ioctls :
-           read32           (8BE0) : set   1 int   & get   0
-           write32          (8BE1) : set   1 int   & get   0
-           driver_ext       (8BE2) : set   0       & get   0
-           mp_ioctl         (8BE3) : set   0       & get   0
-           apinfo           (8BE4) : set   1 int   & get   0
-           setpid           (8BE5) : set   1 int   & get   0
-           wps_start        (8BE6) : set   1 int   & get   0
-           chplan           (8BE7) : set   1 int   & get   0
-
-What do you think about this?
-
-Thanks
-
-Bye Philipp
