@@ -2,60 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E86247C9EE2
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 07:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D02B7C9EF2
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 07:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229523AbjJPFgP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Oct 2023 01:36:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38392 "EHLO
+        id S232231AbjJPFgb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Oct 2023 01:36:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232016AbjJPFgC (ORCPT
+        with ESMTP id S229841AbjJPFgN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Oct 2023 01:36:02 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB5F101
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Oct 2023 22:35:38 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-405361bb9f7so41736955e9.2
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Oct 2023 22:35:38 -0700 (PDT)
+        Mon, 16 Oct 2023 01:36:13 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA0B5136
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Oct 2023 22:35:53 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-405361bb9f7so41738105e9.2
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Oct 2023 22:35:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697434536; x=1698039336; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1697434551; x=1698039351; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1lRW6iqRQ1rx4JmMgr/7+KkLqDf3AWZfuUZmiEDm6kI=;
-        b=iMlkcRWP3YtzK34Q3y3gI6//E3vNBuxuRSN4UOnyZ0iD3/Shb4MQciYU7xlbESP5R3
-         92y82aZr03Kd2Jo7YD3GfSkJ80omqdGV5InepJaZ99Rc0qZCbbwKKH2B3AIsnd4Pq8Dh
-         QKl2mqtrKz0pj+dmrZOI5Mh42MLg09kEVLY8YgsuHtIMnG+6SykZZWXIRUJwAWSjhctt
-         Pu/0unsTAwV80ISk9p2WHceYUwmSxl+L503IX4k+ywM5mdVSy3SqHPUrbhKlXBwmsOvS
-         Ly13zTwc9Sb9t0HNUR+/bZlyvmvHYSJy9pjf4xMby5CBeREiv4iEn+7ne3XtqQF4J5Uc
-         6rAQ==
+        bh=rO4RRKGFSisS6nP2T87BuXwXCuEHZxmiyFz9Bu8h24o=;
+        b=en7LUwaBdGKxyy3PxoUqtuD04oKydFcAZWKqrS0S/FGLlbt5Q3F/ZfdpTCmwija4mp
+         FCmZze2oj0dqiUzVBuo0pxdBFZzKfcMIFMNYBSA2Pa8SCCe7Ce3AJTdxfcjlxb8POzFJ
+         3Wm14MzbG2/UAkRL8CMNQm4wkyxsU8fMJkaV8T5uzCphRR5/1ouelT6QRXjUQ9AF78KY
+         o7P/S4SfvZLzkf7s/WeSMGVYwk75J27fpGG9j31XS6r4WZEn+Pv1VJtg0x411DMZU0kT
+         XC/qHMO8a/UJHLhVC8g02IR3CUSXV2SKJjJdc1hZIU/o9a5K51u593o5nzXhvnWZTQWf
+         EihA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697434536; x=1698039336;
+        d=1e100.net; s=20230601; t=1697434551; x=1698039351;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1lRW6iqRQ1rx4JmMgr/7+KkLqDf3AWZfuUZmiEDm6kI=;
-        b=aORGU2KXvP0wtGW8okLabdZPNDkmfvLERruAMFu34hKwsyW6IjASbzIfQmXPwiBriN
-         Zss8w14CcCL7AaZjNU/Kj+qdOT1y4CrlIkSOBTI6H/FjqNU+AsbyVgrXmHYnqxOPRlwO
-         FWoB48OXjPcSYy2SSK3XLLPBOZ/aJhx7b2HH3Ko/PgA1PVaeFrkXoXor0aUU60opWDrS
-         P0oz6L+y8qezovLvc3P41GKSuxMElbthgM3TALQhhDCmEikWF5kj3Zrl6/Z0CcM9QbWZ
-         Oha3aQ61pfbpvNAPvqy43g9YA8NzBRUV/ruqMjhlQqhRG4iGGx7tNvU1oazd4jjZm2Io
-         RUEQ==
-X-Gm-Message-State: AOJu0Yx03X1JISauh0nAfsHgrhQ1tzE8YQIiDdEuFNrm1dxW2Ic4R+1/
-        +CNrlNverz45MmsH+ctRsmWoOA==
-X-Google-Smtp-Source: AGHT+IERpfoiaji28Dum93uMtxDB7WpJU3fQVZVKC+lYEF1YzNOo/U9HY7otv0RfqmIdfi9cPXuwrQ==
-X-Received: by 2002:a05:600c:2050:b0:405:3955:5881 with SMTP id p16-20020a05600c205000b0040539555881mr27050920wmg.36.1697434536660;
-        Sun, 15 Oct 2023 22:35:36 -0700 (PDT)
+        bh=rO4RRKGFSisS6nP2T87BuXwXCuEHZxmiyFz9Bu8h24o=;
+        b=HggUZ8Tw4RetxI71ACGwI/SDbXLd2LUv/MFT0tQo24r1hYVpuMsh7s3VRvLS0cVUSf
+         HpZv0tokJSBJFpURvUgWN3rrdCSLtBq49BWG1kk5suw4Goo/QOjr3TXkjmIDFVtorTgC
+         5oPiJUdlS1El6oOU03t5xmg1Zg4mwLhHjroXu12J7vj1T28ySTeFQpjBqndsvqx+g1GN
+         hEztm4URyd36zj4ZygvPUMD0KewkE2iFxp9JuYgq5aqApu/qEsdK0ZLdnq9DKJlBAv/0
+         EJxMvtAQ3qNvbfMsu269XjQEKOHB4uTEabcHdVJ19u7oNHKm10ZfPugNS3SfTQeU4fSY
+         LF/w==
+X-Gm-Message-State: AOJu0YwMC+URp4Yl4BIA8g3BI59uMc12r6NN580NQv7IU/10xScWTh2v
+        pBMR13SF8nY7tCYz4K1CQzlGVQ==
+X-Google-Smtp-Source: AGHT+IGbCwZfcjMGitTdGailA5if/MX9PTZv88FsWIrFciAkD//BsTygG3fhZ8H2nLSfrTT0iNb3nQ==
+X-Received: by 2002:a05:600c:5120:b0:407:5b54:bb09 with SMTP id o32-20020a05600c512000b004075b54bb09mr12843868wms.7.1697434551412;
+        Sun, 15 Oct 2023 22:35:51 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.154])
-        by smtp.gmail.com with ESMTPSA id p18-20020a05600c431200b0040642a1df1csm6114712wme.25.2023.10.15.22.35.34
+        by smtp.gmail.com with ESMTPSA id p18-20020a05600c431200b0040642a1df1csm6114712wme.25.2023.10.15.22.35.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Oct 2023 22:35:36 -0700 (PDT)
-Message-ID: <ffca099a-bf05-4973-885d-b049a45d466f@linaro.org>
-Date:   Mon, 16 Oct 2023 07:35:33 +0200
+        Sun, 15 Oct 2023 22:35:50 -0700 (PDT)
+Message-ID: <f342446c-7afb-414c-a4d5-1eff03fe397e@linaro.org>
+Date:   Mon, 16 Oct 2023 07:35:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: remoteproc: qcom: wcnss: Add WCN3680B
- compatible
+Subject: Re: [PATCH 2/4] remoteproc: qcom_wcnss: Add WCN3680B compatible
 Content-Language: en-US
 To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
@@ -73,7 +72,7 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
 References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
- <20231015-fp3-wcnss-v1-1-1b311335e931@z3ntu.xyz>
+ <20231015-fp3-wcnss-v1-2-1b311335e931@z3ntu.xyz>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -119,7 +118,7 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231015-fp3-wcnss-v1-1-1b311335e931@z3ntu.xyz>
+In-Reply-To: <20231015-fp3-wcnss-v1-2-1b311335e931@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -133,25 +132,27 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 On 15/10/2023 22:03, Luca Weiss wrote:
-> Add a compatible for the iris subnode in the WCNSS PIL.
+> Add a compatible for the WCN3680B chip used with some Qualcomm SoCs.
+> 
+> It shares the same regulator setup as WCN3680, so we can reuse the
+> driver data for that.
 > 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
->  Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml | 1 +
+>  drivers/remoteproc/qcom_wcnss_iris.c | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> index 45eb42bd3c2c..0e5e0b7a0610 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> @@ -111,6 +111,7 @@ properties:
->            - qcom,wcn3660
->            - qcom,wcn3660b
->            - qcom,wcn3680
-> +          - qcom,wcn3680b
+> diff --git a/drivers/remoteproc/qcom_wcnss_iris.c b/drivers/remoteproc/qcom_wcnss_iris.c
+> index dd36fd077911..22acc609105f 100644
+> --- a/drivers/remoteproc/qcom_wcnss_iris.c
+> +++ b/drivers/remoteproc/qcom_wcnss_iris.c
+> @@ -99,6 +99,7 @@ static const struct of_device_id iris_of_match[] = {
+>  	{ .compatible = "qcom,wcn3660", .data = &wcn3660_data },
+>  	{ .compatible = "qcom,wcn3660b", .data = &wcn3680_data },
+>  	{ .compatible = "qcom,wcn3680", .data = &wcn3680_data },
+> +	{ .compatible = "qcom,wcn3680b", .data = &wcn3680_data },
 
-Looks like this should be made as compatible with qcom,wcn3680 (so with
-fallback).
+Just make devices compatible and no need for this driver change.
 
 Best regards,
 Krzysztof
