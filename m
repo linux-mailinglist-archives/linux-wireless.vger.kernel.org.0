@@ -2,133 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F10AD7CAD6F
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 17:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44F737CB033
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 18:49:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232531AbjJPP0o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Oct 2023 11:26:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59634 "EHLO
+        id S234281AbjJPQte (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Oct 2023 12:49:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231569AbjJPP0n (ORCPT
+        with ESMTP id S234286AbjJPQtU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Oct 2023 11:26:43 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EA1583;
-        Mon, 16 Oct 2023 08:26:41 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39GDqkYC016148;
-        Mon, 16 Oct 2023 15:26:29 GMT
+        Mon, 16 Oct 2023 12:49:20 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 157A42128;
+        Mon, 16 Oct 2023 09:41:33 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39GGX4xj002792;
+        Mon, 16 Oct 2023 16:41:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=MyC9f2w4EEsPlVpNLnlyuAWHpwQt8r4G/toQCWixs/8=;
- b=DOEboIWieNTh9elHXLcw2qP1jt0wMIp1zsuNc7m3ISKuXV7PAi4bUUhozxzmthqewDC9
- PF8VBQhgcNmaeqoewRnxiCmORDttb5eMhmidSeQ/e0SE7PwteSUr1PEFCrB2ghv+q8CQ
- evWMWXi3g1OCLEPu2btQfkDLwGIZS6g6q6JzRf8GZ6Q6Knz1M47DCFgri8rWTc5MhW4l
- 0+aRHWFSHZmkSJz/M00wEnIgnOxSPphliPBKC0K7KjPfzsTSM92ym+JgC3rWpEzt5icl
- ATxPKIP8acCriJwzMGgw93cewgdfutlcFnwJXSrAXd0PnxQmd11gPPzf3PsqPHNE3ssN PQ== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tqgbt4p4j-1
+ bh=iUkNAEhmQcRALEI8TK0LzZjyN4+TVeYxiZy0KPk2Wh0=;
+ b=H8xjBa8gHPauBSHWpWfvEIU01ujnLO3WL4xP5uAL6ijCyPDbcv2YOz4I/uC5q7b5uNEW
+ /6Y7mWkblfrIDEolYQZWspyysgirYHx2kAncWwE/o41NcfLtCUhu0mxzdl9YbUMHPr4+
+ ak9kOEdxyNKXyITjJPtLjvPFK5Kf5d0rNLu7d8zpRlPUsENIKyjgXT9LOYYOfxBh6JPq
+ aLBjkuyfK3oCjUaKFhfTw72NHmlAtbN5CWV3GeTY2f1kMaEGz8021AFEAqycc/HVJ2tm
+ oWPs5myX5ocj9VkpNJg+wlClOmrAa70KoWSTY1XwXNQP963bwoRTp7Y+gK2wW9fB9kZF uQ== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tqm9f4mmj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 16 Oct 2023 15:26:28 +0000
+        Mon, 16 Oct 2023 16:41:20 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39GFQRsX005741
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39GGfJP2030527
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 16 Oct 2023 15:26:27 GMT
+        Mon, 16 Oct 2023 16:41:19 GMT
 Received: from [10.48.240.22] (10.49.16.6) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Mon, 16 Oct
- 2023 08:26:27 -0700
-Message-ID: <bb95048f-2540-4d42-abb2-3132d33cd6c3@quicinc.com>
-Date:   Mon, 16 Oct 2023 08:26:26 -0700
+ 2023 09:41:18 -0700
+Message-ID: <cabb874c-7518-4565-a007-f466f1b69165@quicinc.com>
+Date:   Mon, 16 Oct 2023 09:41:18 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: wilc1000: use vmm_table as array in wilc struct
+Subject: Re: [PATCH 2/2] ath10k: mac: enable
+ WIPHY_FLAG_CHANNEL_CHANGE_ON_BEACON on ath10k
 Content-Language: en-US
-To:     =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Kalle Valo <kvalo@kernel.org>,
-        Michael Walle <mwalle@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Ajay Singh <ajay.kathat@microchip.com>,
-        <stable@vger.kernel.org>
-References: <20231016-wilc1000_tx_oops-v2-1-8d1982a29ef1@bootlin.com>
+To:     Kalle Valo <kvalo@kernel.org>, Abhishek Kumar <kuabhs@chromium.org>
+CC:     <johannes.berg@intel.com>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <ath10k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+References: <20230629035254.2.I23c5e51afcc6173299bb2806c8c38364ad15dd63@changeid>
+ <169634426707.121370.9448850980134728319.kvalo@kernel.org>
+ <87il793hmi.fsf@kernel.org>
 From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231016-wilc1000_tx_oops-v2-1-8d1982a29ef1@bootlin.com>
+In-Reply-To: <87il793hmi.fsf@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.49.16.6]
 X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: hn3_gZv5TaIoq10NCTZuuGF58VgI8Baz
-X-Proofpoint-ORIG-GUID: hn3_gZv5TaIoq10NCTZuuGF58VgI8Baz
+X-Proofpoint-GUID: j9hu2thAUudPAJfKw7Dq_SsN7Z2POx0C
+X-Proofpoint-ORIG-GUID: j9hu2thAUudPAJfKw7Dq_SsN7Z2POx0C
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-16_08,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 mlxlogscore=927
- adultscore=0 spamscore=0 bulkscore=0 clxscore=1011 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310160133
+ definitions=2023-10-16_10,2023-10-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 phishscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1011 bulkscore=0 mlxlogscore=738
+ priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2309180000 definitions=main-2310160145
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/16/2023 1:29 AM, Alexis Lothoré wrote:
-> From: Ajay Singh <ajay.kathat@microchip.com>
+On 10/13/2023 10:20 PM, Kalle Valo wrote:
+> Kalle Valo <kvalo@kernel.org> writes:
 > 
-> Enabling KASAN and running some iperf tests raises some memory issues with
-> vmm_table:
+>> Abhishek Kumar <kuabhs@chromium.org> wrote:
+>>
+>>> Enabling this flag, ensures that reg_call_notifier is called
+>>> on beacon hints from handle_reg_beacon in cfg80211. This call
+>>> propagates the channel property changes to ath10k driver, thus
+>>> changing the channel property from passive scan to active scan
+>>> based on beacon hints.
+>>> Once the channels are rightly changed from passive to active,the
+>>> connection to hidden SSID does not fail.
+>>>
+>>> Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+>>
+>> There's no Tested-on tag, on which hardware/firmware did you test this?
+>>
+>> This flag is now enabled on ALL ath10k supported hardware: SNOC, PCI, SDIO and
+>> maybe soon USB. I'm just wondering can we trust that this doesn't break
+>> anything.
 > 
-> BUG: KASAN: slab-out-of-bounds in wilc_wlan_handle_txq+0x6ac/0xdb4
-> Write of size 4 at addr c3a61540 by task wlan0-tx/95
+> Jeff, what are your thoughts on this? I'm worried how different ath10k
+> firmwares can be and if this breaks something.
 > 
-> KASAN detects that we are writing data beyond range allocated to vmm_table.
-> There is indeed a mismatch between the size passed to allocator in
-> wilc_wlan_init, and the range of possible indexes used later: allocation
-> size is missing a multiplication by sizeof(u32)
-> 
-> Fixes: 40b717bfcefa ("wifi: wilc1000: fix DMA on stack objects")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-> ---
-> Changes in v2:
-> - keep dedicated dynamic allocation for vmm_table
-> - Link to v1: https://lore.kernel.org/r/20231013-wilc1000_tx_oops-v1-1-3761beb9524d@bootlin.com
-> ---
->   drivers/net/wireless/microchip/wilc1000/wlan.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-> index 58bbf50081e4..e4113f2dfadf 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-> @@ -1492,7 +1492,7 @@ int wilc_wlan_init(struct net_device *dev)
->   	}
->   
->   	if (!wilc->vmm_table)
-> -		wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE, GFP_KERNEL);
-> +		wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE * sizeof(u32), GFP_KERNEL);
 
-this is probably OK since the values are constant, but kcalloc() is 
-generally preferred
+Since the 1/2 patch is already in pull-request: wireless-next-2023-10-06 
+I went through the logic of that again. It would have been nice if that 
+actually described how it fixes the problem. What actually causes a 
+channel to change from passive to active?
 
->   
->   	if (!wilc->vmm_table) {
->   		ret = -ENOBUFS;
-> 
-> ---
-> base-commit: ea12d85cbfd6b08fff40a4fefccc011b6cfadf8e
-> change-id: 20231012-wilc1000_tx_oops-58ce91ee3e93
-> 
-> Best regards,
+Note the existing logic prior to the 1/2 patch already updates the wiphy 
+and userspace with the updated channel flags, so it seems reasonable to 
+also update the driver
+
+However, this led me down the rabbit hole of trying to figure out what 
+happens if a beacon hint causes us to change a channel from passive to 
+active, but then that AP goes away. What, if anything, causes the 
+channel to revert back to passive? I'm not immediately seeing that logic 
+anywhere.
+
+My concern is that we have an AP with a hidden SSID on a DFS channel, 
+and as a result of a beacon hint we switch that channel to active scan. 
+But then later that AP detects radar and vacates the channel. Then we 
+potentially have stations doing active scan on a DFS channel with an 
+active radar.
+
+Hopefully this is all handled, and it just isn't obvious in my 
+admittedly very quick 10 minute scan of the code.
+
+And as far as the 2/2 patch, note this logic is all dependent upon 
+reg_is_world_roaming(wiphy) returning true, so ath10k impact would 
+really depend upon the board regulatory settings, whether configured for 
+a fixed regulatory domain/country code or configured for world roaming.
+
+/jeff
+
 
