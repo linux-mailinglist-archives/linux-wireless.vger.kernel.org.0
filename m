@@ -2,166 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5850B7CABF4
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 16:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C2B37CACEF
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 17:06:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232240AbjJPOrt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Oct 2023 10:47:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49696 "EHLO
+        id S233749AbjJPPGY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Oct 2023 11:06:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232341AbjJPOrr (ORCPT
+        with ESMTP id S233628AbjJPPGW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Oct 2023 10:47:47 -0400
-X-Greylist: delayed 162 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 16 Oct 2023 07:47:42 PDT
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6EA195;
-        Mon, 16 Oct 2023 07:47:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1697467480; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=VQJg1RsTctPWMnunyunfLHy2rLs7zNB/CNL3uh76kEa1fZsXzKvAIpoB8tkgfT2RNu
-    2rKoWE5OPZRMM+BCSsYTpW6khc3tI1nH5N/1qJvDzfiYK5GlaTi3KbQDrkyeKDVWVMet
-    1A1bt/1meFjCYzuxWdYQsfyFAp9nQzs0T0qZM/x0FXBuhDfVWajh7E4FKGpP9uMECv4W
-    pH58fRwShTyIYR2EyKDqYwcy2HpGDlymYkPPDw1nmu2fhIAsnjXpQGKzZKO94ZNvNJKO
-    fhFeTMVj1meRxgiTyIgbwlDTjaiOswOuukT4Wc/XkYJFpqDhiQrrmpvh4S/2EAVFvBfv
-    REow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1697467480;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=xX5hBwIyyt+mobzNXbEEyEPguKjaJlDcotBwI7v0tiw=;
-    b=n+Mfk6c1CeBShSjZ88173Z2R7ZIK1RjEdPw3nYDGYcW1wK28Gt5wqklMEffbVD8iV6
-    vkvS7zxhGbuoPoAMPbESIGocsGxi+axSxo35rbLCka5+DEJFF18Xd+u0t6QCLVkZvrrP
-    gcwp26JgNliUepXjbaDE8CEUI+8yF6e+sZ7c140P8ZvM5ztoWB5t6qma0hERztyvDMHR
-    0tdEUBIP/RCR/hx2iOYUnNFGWWSMGx+FAbyNvbmvOrK6kjGrHx7DI4yjdIbWBqxcLq/x
-    JpWL4ayjasaa4YLb1lIcnpJ2VFYTBRrMxtFsGtcA3ENaBTcGij1fb4H9Iv60gY0JgjLM
-    ic7A==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1697467480;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=xX5hBwIyyt+mobzNXbEEyEPguKjaJlDcotBwI7v0tiw=;
-    b=G+2o7R0QMJJBT+YXg8vDQQQxGzsXPhWuM22xgxnzxP2fhmYCupPM4yKQPOdo0U5/Up
-    MhRXevKhGuT76C/ItYHomUyvnv9EWLUe2MK3Bj4kJ4xWCzRV0H0w6Z6iXXMUokyHGaHQ
-    w0GLCb15rSUmK6bQ8BG9LeDYy3dv+ftDmBdLsz/sQ/9hxS9yMKJiVvLbS5u6Al4ttAkf
-    nuZsNP0hcx2KQjItQL7vm763usWbbpKa8F/hoIIjRr5nbDk65f/vR8OMz5Hrb6T1Eiu8
-    QMp+UHCm8n1iy0tPNJvRI4UlQKaXhMwwt5HEjoqtPCQqw/oIvP0NOYLotbfj9+ZdK0AB
-    I8yg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1697467480;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=xX5hBwIyyt+mobzNXbEEyEPguKjaJlDcotBwI7v0tiw=;
-    b=69+eKkTf5LWsB5y5p8U21qGYEfe9j1pEpjC8AFafAYiu3jM8pCAKLCE28qCC2LfAbd
-    s/WryFLK3a7YggE0SUCw==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA+p3h"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.9.0 DYNA|AUTH)
-    with ESMTPSA id j34a49z9GEid25O
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Mon, 16 Oct 2023 16:44:39 +0200 (CEST)
-Date:   Mon, 16 Oct 2023 16:44:28 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     Luca Weiss <luca@z3ntu.xyz>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/4] dt-bindings: remoteproc: qcom: wcnss: Add WCN3680B
- compatible
-Message-ID: <ZS1MTAHq6GLW6RAK@gerhold.net>
-References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
- <20231015-fp3-wcnss-v1-1-1b311335e931@z3ntu.xyz>
- <ffca099a-bf05-4973-885d-b049a45d466f@linaro.org>
- <CAMZdPi-S2_UQO-rD38-thwta-YgH3W78Ecd1Du7Q_US=J7k0ew@mail.gmail.com>
+        Mon, 16 Oct 2023 11:06:22 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0959EE
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Oct 2023 08:06:20 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39GErxec007404;
+        Mon, 16 Oct 2023 15:06:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=C2SeAC1Q96Ooalm6wroPTZmcORSo5/u/+qefyTvRxYU=;
+ b=A6F36M73PA61IH9IBNw0bjp4jhuJSe9YHNPVBCR6Rw1MRldtHhShRWYm1kPF16txYRga
+ J4L91dZVDzBrnqNDkmZjDMybSBylsdL5mbPaszIi1vJoPiaCf6U67jLy6IOV4pH/lx4F
+ BnSvYV6ui6PXWI15oXaEwo48vxGU4hTu4HYEc9ykClEK5k3+612K6n++ktwLjE/6YwO1
+ DChdbuDzFunS/HhY9xlAEy+6ZKGk5aY2KEyBkqIAg9JTc9aR7/bvNKVfMnZ+oErqj30H
+ xMSLDSKSvbfUzqXYckut8f1/Ln9iTXbuRJ4DXmk93pUrSVu9FEuSADQwn+YWvpPyNxBX ew== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tqhxychxh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 16 Oct 2023 15:06:16 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39GF6Fvd012505
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 16 Oct 2023 15:06:15 GMT
+Received: from [10.48.240.22] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Mon, 16 Oct
+ 2023 08:06:15 -0700
+Message-ID: <4df22a30-80a7-4a61-a3c2-8ac91afe578a@quicinc.com>
+Date:   Mon, 16 Oct 2023 08:06:14 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMZdPi-S2_UQO-rD38-thwta-YgH3W78Ecd1Du7Q_US=J7k0ew@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: ath11k: rename the wmi_sc naming convention to
+ wmi_ab
+Content-Language: en-US
+To:     Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20231014032650.32605-1-quic_periyasa@quicinc.com>
+ <20231014032650.32605-2-quic_periyasa@quicinc.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231014032650.32605-2-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: qrihCxL0CgrbHdOOih5zarhI2oNuGHHh
+X-Proofpoint-ORIG-GUID: qrihCxL0CgrbHdOOih5zarhI2oNuGHHh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-16_08,2023-10-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 spamscore=0 impostorscore=0
+ clxscore=1015 mlxlogscore=654 phishscore=0 bulkscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310160130
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 03:16:14PM +0200, Loic Poulain wrote:
-> On Mon, 16 Oct 2023 at 07:35, Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
-> >
-> > On 15/10/2023 22:03, Luca Weiss wrote:
-> > > Add a compatible for the iris subnode in the WCNSS PIL.
-> > >
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > ---
-> > >  Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > index 45eb42bd3c2c..0e5e0b7a0610 100644
-> > > --- a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > +++ b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > @@ -111,6 +111,7 @@ properties:
-> > >            - qcom,wcn3660
-> > >            - qcom,wcn3660b
-> > >            - qcom,wcn3680
-> > > +          - qcom,wcn3680b
-> >
-> > Looks like this should be made as compatible with qcom,wcn3680 (so with
-> > fallback).
+On 10/13/2023 8:26 PM, Karthikeyan Periyasamy wrote:
+> In WMI layer module, the identifier wmi_sc is used to represent
+> an instance of ath11k_wmi_base structure. However, within ath11k,
+> the convention is to use "ab" to represent an SoC "base" struct.
+> So change the all instances of wmi_sc to wmi_ab.
 > 
-> Yes, agree, let's do a regular fallback as there is nothing 'b'
-> specific in the driver:
-> `compatible = "qcom,wcn3680b", "qcom,wcn3680";`
+> Compile tested only.
 > 
-> And yes, we should also have done that for qcom,wcn3660b...
-> 
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-I don't think this would have worked properly for qcom,wcn3660b:
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
- - It's not compatible with "qcom,wcn3660", because they have different
-   regulator voltage requirements. wcn3660(a?) needs vddpa with
-   2.9-3.0V, but wcn3660b needs 3.3V. That's why wcn3660b uses the
-   wcn3680_data in qcom_wcnss.iris.c. Otherwise if you would run an
-   older kernel that knows "qcom,wcn3660" but not "qcom,wcn3660b" it
-   would apply the wrong voltage.
-
- - It's not compatible with "qcom,wcn3680" either because that is used
-   as indication if 802.11ac is supported (wcn3660b doesn't).
-
-The main question here is: What does the current "qcom,wcn3680"
-compatible actually represent? It's defined with vddpa = 3.3V in the
-driver, which would suggest that:
-
- 1. It's actually meant to represent WCN3680B, which needs 3.3V vddpa
-    like WCN3660B, or
-
- 2. WCN3680(A?) has different requirements than WCN3660(A?) and also
-    needs 3.3V vddpa. But then what is the difference between
-    WCN3680(A?) and WCN3680B? Is there even a variant without ...B?
-
-There is public documentation for WCN3660B and WCN3680B but the non-B
-variants are shrouded in mystery.
-
-Thanks,
-Stephan
