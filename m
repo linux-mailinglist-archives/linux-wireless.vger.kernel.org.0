@@ -2,162 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A530A7CB4EA
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 22:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BFB7CB538
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 23:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232365AbjJPUwj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Oct 2023 16:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46884 "EHLO
+        id S233282AbjJPVWa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Oct 2023 17:22:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbjJPUwh (ORCPT
+        with ESMTP id S229666AbjJPVW3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Oct 2023 16:52:37 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46193A7
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Oct 2023 13:52:35 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-53406799540so8707835a12.1
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Oct 2023 13:52:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697489554; x=1698094354; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+HU6cA1bWRfvIfBDvXUL6UUn9mAyVrw+2kF9P2luauc=;
-        b=KnnpNBuRS3Z6pzATlCxujnLGRaSu9lV4XhxQfLgAwBghl6D37pQuOmKoh4LTAOyLi5
-         tW/hXxzQtS2v9XHXBFdwlokEsBXt2eLnEaPH6w8SKbie3t7oTVGJqOcjSkswlSvYQDPp
-         pW6B01HOZo6xhhraZBiBvE1lY1spjlDA3AZELF0cAX9qVXrE45wsJqyJm5ndI2ClPL6X
-         E+hQIkq+RL7YGGI8lSDoR3WaDcRg3cGSIYr/cSo/wjMOb2dBK3vRry13dBXPYoXSGQX0
-         zcaBNL2dkl3iy8WQi+c3l/Q46e3T0LJeWTZyBV9pPeIyLkuq20CQSQG+2Uaw9r3cgz0t
-         rjDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697489554; x=1698094354;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+HU6cA1bWRfvIfBDvXUL6UUn9mAyVrw+2kF9P2luauc=;
-        b=mbwhxfhBwF/U+BXcQOTog1Z0Fu6LbTIq1ehCH19kSRNlSVx8dAlrmKIrPFTkMXIe0a
-         ytbr9ZFHpTtRMrZUcVgBYQrrLJC4MDB5H3KEgdiYqx2oTthYgL6h3dX5DFO8N1KESkNF
-         6r2kjG7NML5mc4XEo6ITiJxI+1n9AB+N3utM+l5kAbDEuvEzhwjJudUbDVTl3NPk/P84
-         GCFnW3SUktp43gQttie5lNJXAeK3cBdtZrQINQLP+/SacAFP3UnKL+nQV97q4Umfcir6
-         QPRtwN9gTJAzEbvqWDtfoa5vU3nqY+LGVbGXoUk/Ff4MvR/g7utCk8yThaIy4T4GU3xr
-         V26g==
-X-Gm-Message-State: AOJu0Yyh+V24Rs3AU0QNzc3MCzaBe5hcTPBQ6Xe6OZPjvpU7HPBd9SNj
-        j4M43jjvtW0YvGRo0wNBXj2numJi3xJ3nI93BnqEcQ==
-X-Google-Smtp-Source: AGHT+IHvX+5Vp4Dd/E0t8YnJrM0ptZlI0kjlD4REJBJcFs5dOkKpETV4nVqhxEFchg0ggpy2mpKxg0DuvklQztNybd0=
-X-Received: by 2002:a05:6402:5252:b0:53e:21f6:d784 with SMTP id
- t18-20020a056402525200b0053e21f6d784mr337922edd.8.1697489553657; Mon, 16 Oct
- 2023 13:52:33 -0700 (PDT)
+        Mon, 16 Oct 2023 17:22:29 -0400
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 370CEA7;
+        Mon, 16 Oct 2023 14:22:27 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 88B70FF806;
+        Mon, 16 Oct 2023 21:22:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1697491345;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0mmINDpTwCAmUV8dD8J0BfvK4SwBpCRLkJ0C+AEu8wI=;
+        b=RL0vrCkIKGAZwxV6uYhZHAVRTQmO9ReaEW3Vl4Ru5LwwV8Edezze6IutuIfGIOOeBxi3bK
+        /qwysA4DD0gJgGAO0REtTdFzqHmsu49/TyKTSmzehh4sViV30BanApvE144lIKq6IEFuGi
+        WNi4Hiif+q9Jrj/mxwfPP90Adsvao1/wkJ76JfPbN9Gj0gDe2hLeymq5aRRWOw+VJIqQ6p
+        x5w4IHIjDPjIEiXxv52NeU62tLIEaqJij+JPdTxGrzSvqoyENSf8ZpTbU56UWKydMZV4hu
+        0S0sb72ZYD1bghF+NAAB6znGXCXkrpCvB9i8p7QmsB6WpwMKAHdczac095Znug==
+Message-ID: <74eac5f2-228b-4775-a101-53b2fdd5bf86@bootlin.com>
+Date:   Mon, 16 Oct 2023 23:23:39 +0200
 MIME-Version: 1.0
-References: <20231016-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v1-1-4234807ca07e@google.com>
-In-Reply-To: <20231016-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v1-1-4234807ca07e@google.com>
-From:   Justin Stitt <justinstitt@google.com>
-Date:   Mon, 16 Oct 2023 13:52:21 -0700
-Message-ID: <CAFhGd8rm=KJyinG-aqFj75JqQnC0=_+6NSbcdr=wG7SqXCsppQ@mail.gmail.com>
-Subject: Re: [PATCH] brcmfmac: replace deprecated strncpy with strscpy
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: wilc1000: use vmm_table as array in wilc struct
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Kalle Valo <kvalo@kernel.org>,
+        Michael Walle <mwalle@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ajay Singh <ajay.kathat@microchip.com>, stable@vger.kernel.org
+References: <20231016-wilc1000_tx_oops-v2-1-8d1982a29ef1@bootlin.com>
+ <bb95048f-2540-4d42-abb2-3132d33cd6c3@quicinc.com>
+Content-Language: en-US
+From:   =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <bb95048f-2540-4d42-abb2-3132d33cd6c3@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 1:48=E2=80=AFPM Justin Stitt <justinstitt@google.co=
-m> wrote:
->
-> strncpy() is deprecated for use on NUL-terminated destination strings
-> [1] and as such we should prefer more robust and less ambiguous string
-> interfaces.
->
-> We expect ifp->ndev->name to be NUL-terminated based on its use in
-> format strings within core.c:
-> via brcmf_ifname() ->
-> 67 |       char *brcmf_ifname(struct brcmf_if *ifp)
-> 68 |       {
-> 69 |            if (!ifp)
-> 70 |                    return "<if_null>";
-> 71 |
-> 72 |            if (ifp->ndev)
-> 73 |                    return ifp->ndev->name;
-> 74 |
-> 75 |            return "<if_none>";
-> 76 |       }
-> ...
-> 288 |       static netdev_tx_t brcmf_netdev_start_xmit(struct sk_buff *sk=
-b,
-> 289 |                                              struct net_device *nde=
-v) {
-> ...
-> 330 |       brcmf_dbg(INFO, "%s: insufficient headroom (%d)\n",
-> 331 |                 brcmf_ifname(ifp), head_delta);
-> ...
-> 336 |       bphy_err(drvr, "%s: failed to expand headroom\n",
-> 337 |                brcmf_ifname(ifp));
->
-> Considering the above, a suitable replacement is `strscpy` [2] due to
-> the fact that it guarantees NUL-termination on the destination buffer
-> without unnecessarily NUL-padding.
->
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strn=
-cpy-on-nul-terminated-strings [1]
-> Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.h=
-tml [2]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-> ---
-> Note: build-tested only.
->
-> Found with: $ rg "strncpy\("
-> ---
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c =
-b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index 2a90bb24ba77..7daa418df877 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -866,7 +866,7 @@ struct wireless_dev *brcmf_apsta_add_vif(struct wiphy=
- *wiphy, const char *name,
->                 goto fail;
->         }
->
-> -       strncpy(ifp->ndev->name, name, sizeof(ifp->ndev->name) - 1);
-> +       strscpy(ifp->ndev->name, name, sizeof(ifp->ndev->name));
->         err =3D brcmf_net_attach(ifp, true);
->         if (err) {
->                 bphy_err(drvr, "Registering netdevice failed\n");
->
-> ---
-> base-commit: cbf3a2cb156a2c911d8f38d8247814b4c07f49a2
-> change-id: 20231016-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmf=
-mac-cfg80211-c-a20108421685
->
-> Best regards,
-> --
-> Justin Stitt <justinstitt@google.com>
->
+Hello Jeff,
 
-Ignore this patch. It will be rolled into a series with others.
+On 10/16/23 17:26, Jeff Johnson wrote:
+> On 10/16/2023 1:29 AM, Alexis Lothoré wrote:
+>> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c
+>> b/drivers/net/wireless/microchip/wilc1000/wlan.c
+>> index 58bbf50081e4..e4113f2dfadf 100644
+>> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
+>> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+>> @@ -1492,7 +1492,7 @@ int wilc_wlan_init(struct net_device *dev)
+>>       }
+>>         if (!wilc->vmm_table)
+>> -        wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE, GFP_KERNEL);
+>> +        wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE * sizeof(u32), GFP_KERNEL);
+> 
+> this is probably OK since the values are constant, but kcalloc() is generally
+> preferred
 
-Just found some more strncpy uses in broadcom/brcm80211 so I will make a se=
-ries
-fixing them all at once.
+Ok, I can submit a new version with kcalloc. One thing that I do not understand
+however is why checkpatch.pl remains silent on this one. I guess it should raise
+the ALLOC_WITH_MULTIPLY warning here. I tried to dive into the script to
+understand why, but I drowned in regexes (and Perl, with which I am not familiar
+with). Could it be because of both sides being constant ?
 
+Thanks,
+Alexis
 
-Thanks
-Justin
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
