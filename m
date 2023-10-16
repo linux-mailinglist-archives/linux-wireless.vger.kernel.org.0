@@ -2,179 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07EF17CA8A4
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 14:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD65F7CA92B
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Oct 2023 15:17:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233341AbjJPM5R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Oct 2023 08:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43734 "EHLO
+        id S233100AbjJPNQ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Oct 2023 09:16:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230017AbjJPM5Q (ORCPT
+        with ESMTP id S233370AbjJPNQ4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Oct 2023 08:57:16 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674ABAD;
-        Mon, 16 Oct 2023 05:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697461034; x=1728997034;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=33VN831uWAKG7f4eIn44PpDJgWUV0McuEtJM+oSWIh4=;
-  b=Xf/12PbHv7oGM5zCun8OHZP2oOMZxmhEH6ZJ5/lUhqXfYAqUQEckGFxg
-   uhBxh6kGxA949FC6FN2zZBWyvKJUifUexGABTLbcEAf1OWjx7mkTVa8Th
-   xcjaHeb44AZsDmv4pcw7gCTgvOCLukytu2kdP8klIQpb52JMIVDCQIG4w
-   L1wXdn9S2w13DghDuKXdK3k7ITNbCmmBqcE7MLPz8phNpEUDr+k3GznJW
-   WWb2zBxOO8yfgVXUiNz7waOrIXsq+sVisX6XfG9x/jLpM0Arh3YOUHPEd
-   Uq4Y8ewK7wuy0L394EulosARaZq0Chiyy9OV9IB39oKpZLPVvwycCESLJ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="4130579"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; 
-   d="scan'208";a="4130579"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 05:57:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="1087063948"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; 
-   d="scan'208";a="1087063948"
-Received: from rhaeussl-mobl.ger.corp.intel.com (HELO bhoerz-mobl1.ger.corp.intel.com) ([10.252.59.103])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 05:57:07 -0700
-Date:   Mon, 16 Oct 2023 15:57:05 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-cc:     linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
-Subject: Re: [PATCH v2 05/13] PCI/ASPM: Add pci_enable_link_state()
-In-Reply-To: <20231013164850.GA1118214@bhelgaas>
-Message-ID: <9da430a3-9336-8e75-7385-3d5ddcb6cb7@linux.intel.com>
-References: <20231013164850.GA1118214@bhelgaas>
+        Mon, 16 Oct 2023 09:16:56 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34B3CFA
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Oct 2023 06:16:53 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-53dd752685fso7842936a12.3
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Oct 2023 06:16:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697462211; x=1698067011; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5pF3ZPZEJfxdS2FlRC7PR1IY9uBSbrt/ops9UBd2HfE=;
+        b=hXP2m7zB+eZV9J2vjpZJifdy11Th60shY8dj0WYzMGrGQoy7msSk4KBwCftXdkXJ1i
+         RWXepVusPjHblJ1gcfovDNMp7bFpPqPQuOS6eSHDsg8q0mxiH7NV784Lin+wPSlHqtIF
+         KJc+W+wweKM/sPOaJTggiwkVE0S8qIpSuhKrhMsSgbzXEQXGgQpDYm8tKFlaqhE4Cvd9
+         7IZloz2s/dA0BPEHUrmAIggGzqlHwftVQ/mWThqfIlB1+kS/5gt+GzD4+IAmw8FLvs+i
+         M9M62f8w9T4+2BpnEsuFkB1DvYvDbJk3hHVjq3RzSfAVC7pu97HBPH+8RQ/T8RruiORu
+         QLRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697462211; x=1698067011;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5pF3ZPZEJfxdS2FlRC7PR1IY9uBSbrt/ops9UBd2HfE=;
+        b=FYJC2Vyr+a2UAG/DpxZVCZsUfmLRIyJVeWYUwg1lecpg+ZMB2b+uPoWPEc0qTXCzzy
+         gDk9W4wirfob/zsRW23BIwQj5FxL/rew3IMA2mB2s322GyPKL0qYRDpBnniO1pqhTIk1
+         TW2F1/RPw9P16cir5nUBeCwK5bws6FpzOPFAd9/1YkKa7SH6FrrsGzzKHNI9gU3pbkNy
+         +0fKz+o8CnKF0tvLDgnfy9i1ktH9AIp1wixNp/wcbrPTzf5m4Ut6Lz2ok8XQ6NpqVo8e
+         oNjgHPBnN3CjqQGiATACZj2/RDjHLN8Gw9KA1A+0Y34lAf7uS9aYgNAkJRlF9JPbaKjP
+         uV/A==
+X-Gm-Message-State: AOJu0YxydRpgqIectd1iUjcYlzIiinnFZjGVVH7stseXNM2zFblk80TE
+        6FiaXMdnnvyeXzhHPcZk+LUWDVHZ30SsJV3qbbKF8g==
+X-Google-Smtp-Source: AGHT+IETt7yzLHkEuRMnCxA43jlgZJZykbSAwlI5IGIsB+5JMf71DfTWev/OHil7N3vTUxjnSk6fw080fjWFprpfg98=
+X-Received: by 2002:a05:6402:3548:b0:53e:468c:8c49 with SMTP id
+ f8-20020a056402354800b0053e468c8c49mr8269572edd.35.1697462211419; Mon, 16 Oct
+ 2023 06:16:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1750157713-1697461032=:1986"
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
+ <20231015-fp3-wcnss-v1-1-1b311335e931@z3ntu.xyz> <ffca099a-bf05-4973-885d-b049a45d466f@linaro.org>
+In-Reply-To: <ffca099a-bf05-4973-885d-b049a45d466f@linaro.org>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Mon, 16 Oct 2023 15:16:14 +0200
+Message-ID: <CAMZdPi-S2_UQO-rD38-thwta-YgH3W78Ecd1Du7Q_US=J7k0ew@mail.gmail.com>
+Subject: Re: [PATCH 1/4] dt-bindings: remoteproc: qcom: wcnss: Add WCN3680B compatible
+To:     Luca Weiss <luca@z3ntu.xyz>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+        Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, 16 Oct 2023 at 07:35, Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 15/10/2023 22:03, Luca Weiss wrote:
+> > Add a compatible for the iris subnode in the WCNSS PIL.
+> >
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> >  Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > index 45eb42bd3c2c..0e5e0b7a0610 100644
+> > --- a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > +++ b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > @@ -111,6 +111,7 @@ properties:
+> >            - qcom,wcn3660
+> >            - qcom,wcn3660b
+> >            - qcom,wcn3680
+> > +          - qcom,wcn3680b
+>
+> Looks like this should be made as compatible with qcom,wcn3680 (so with
+> fallback).
 
---8323329-1750157713-1697461032=:1986
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Yes, agree, let's do a regular fallback as there is nothing 'b'
+specific in the driver:
+`compatible = "qcom,wcn3680b", "qcom,wcn3680";`
 
-On Fri, 13 Oct 2023, Bjorn Helgaas wrote:
+And yes, we should also have done that for qcom,wcn3660b...
 
-> On Thu, Oct 12, 2023 at 03:53:39PM +0300, Ilpo Järvinen wrote:
-> > On Wed, 11 Oct 2023, Bjorn Helgaas wrote:
-> > > On Mon, Sep 18, 2023 at 04:10:55PM +0300, Ilpo Järvinen wrote:
-> > > > pci_disable_link_state() lacks a symmetric pair. Some drivers want to
-> > > > disable ASPM during certain phases of their operation but then
-> > > > re-enable it later on. If pci_disable_link_state() is made for the
-> > > > device, there is currently no way to re-enable the states that were
-> > > > disabled.
-> > > 
-> > > pci_disable_link_state() gives drivers a way to disable specified ASPM
-> > > states using a bitmask (PCIE_LINK_STATE_L0S, PCIE_LINK_STATE_L1,
-> > > PCIE_LINK_STATE_L1_1, etc), but IIUC the driver can't tell exactly
-> > > what changed and can't directly restore the original state, e.g.,
-> > > 
-> > >   - PCIE_LINK_STATE_L1 enabled initially
-> > >   - driver calls pci_disable_link_state(PCIE_LINK_STATE_L0S)
-> > >   - driver calls pci_enable_link_state(PCIE_LINK_STATE_L0S)
-> > >   - PCIE_LINK_STATE_L0S and PCIE_LINK_STATE_L1 are enabled now
-> > > 
-> > > Now PCIE_LINK_STATE_L0S is enabled even though it was not initially
-> > > enabled.  Maybe that's what we want; I dunno.
-> > > 
-> > > pci_disable_link_state() currently returns success/failure, but only
-> > > r8169 and mt76 even check, and only rtl_init_one() (r8169) has a
-> > > non-trivial reason, so it's conceivable that it could return a bitmask
-> > > instead.
-> > 
-> > It's great that you suggested this since it's actually what also I've been 
-> > started to think should be done instead of this straightforward approach
-> > I used in V2. 
-> > 
-> > That is, don't have the drivers to get anything directly from LNKCTL
-> > but they should get everything through the API provided by the 
-> > disable/enable calls which makes it easy for the driver to pass the same
-> > value back into the enable call.
-> > 
-> > > > Add pci_enable_link_state() to remove ASPM states from the state
-> > > > disable mask.
-> > > > 
-> > > > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> > > > ---
-> > > >  drivers/pci/pcie/aspm.c | 42 +++++++++++++++++++++++++++++++++++++++++
-> > > >  include/linux/pci.h     |  2 ++
-> > > >  2 files changed, 44 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> > > > index 91dc95aca90f..f45d18d47c20 100644
-> > > > --- a/drivers/pci/pcie/aspm.c
-> > > > +++ b/drivers/pci/pcie/aspm.c
-> > > > @@ -1117,6 +1117,48 @@ int pci_disable_link_state(struct pci_dev *pdev, int state)
-> > > >  }
-> > > >  EXPORT_SYMBOL(pci_disable_link_state);
-> > > >  
-> > > > +/**
-> > > > + * pci_enable_link_state - Re-enable device's link state
-> > > > + * @pdev: PCI device
-> > > > + * @state: ASPM link states to re-enable
-> > > > + *
-> > > > + * Enable device's link state that were previously disable so the link is
-> > > 
-> > > "state[s] that were previously disable[d]" alludes to the use case you
-> > > have in mind, but I don't think it describes how this function
-> > > actually works.  This function just makes it possible to enable the
-> > > specified states.  The @state parameter may have nothing to do with
-> > > any previously disabled states.
-> > 
-> > Yes, it's what I've been thinking between the lines. But I see your point 
-> > that this API didn't make it easy/obvious as is.
-> > 
-> > Would you want me to enforce it too besides altering the API such that the 
-> > states are actually returned from disable call? (I don't personally find
-> > that necessary as long as the API pair itself makes it obvious what the 
-> > driver is expect to pass there.)
-> 
-> This was just a comment about the doc not matching the function
-> behavior.
-> 
-> I think we have to support pci_enable_link_state() even if the driver
-> hasn't previously called pci_disable_link_state(), so drivers have to
-> be able to specify the pci_enable_link_state() @state from scratch.
-> 
-> Does that answer the enforcement question?
-
-Yes.
-
--- 
- i.
-
-> I don't think we can
-> really enforce anything other than that @state specifies valid ASPM
-> states.
-> 
-> Bjorn
-> 
-
---8323329-1750157713-1697461032=:1986--
+Regards,
+Loic
