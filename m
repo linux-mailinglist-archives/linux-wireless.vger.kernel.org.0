@@ -2,62 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADEE17CCF6A
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 23:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE5FC7CCF7E
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 23:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234679AbjJQVk2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 17:40:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55892 "EHLO
+        id S1343887AbjJQVsW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 17:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjJQVk1 (ORCPT
+        with ESMTP id S231444AbjJQVsV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 17:40:27 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19205C6
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:40:26 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d9a541b720aso7997050276.0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:40:26 -0700 (PDT)
+        Tue, 17 Oct 2023 17:48:21 -0400
+Received: from mail-ot1-x34a.google.com (mail-ot1-x34a.google.com [IPv6:2607:f8b0:4864:20::34a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A99B2C4
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:48:18 -0700 (PDT)
+Received: by mail-ot1-x34a.google.com with SMTP id 46e09a7af769-6ccf7049ed4so1671439a34.1
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:48:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697578825; x=1698183625; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1697579298; x=1698184098; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=8h1aCmYwBL0e7W6QWqk+xWgvSrCWZqDeOTvw03oLfSg=;
-        b=qlAZQVX9to8AsnGtSK9dGDNbukyPI9T4vbd0dj6nd9YHFLQnNLVaotL36E1CD3uwna
-         snyna3DclkcApbbo4tkLOBNI1G5Lt26Bl9j8/ziNT7dxqIrtxMSfeqIaKD9VxsJou2mk
-         pEfrpcEbXyVCSfmc6cA78W+Fwq4DyCxzr+r05f0gLrmnUtOZqlRpQ7cB8P+i3DGc+Hze
-         VLIq4TZlUCrPDgpp/X9SEKTxAKKU49fzxEJDEbQYDB29EOazGR+u518qD2cACX12vAnt
-         1/r8gJ+F9O23/c+B7lLCbYmDQ7UlqaEcWDjbg9loRkoG3wsyM7vHlgvIussJIoMpokmN
-         xkGQ==
+        bh=jj/BDLyDGa85AqSpf8Df2TijHyh0pX3EpIXoVJmKNCk=;
+        b=gi6sz4EBJXXHstijbjXRHHmb7O2Y+koWFcl1JueeGAJ+IKJJuu2e6vhH3+aUcEzCOV
+         9LSNiE3kbr9yKQRaJMhLkGR6uduvwYxIRkdzkX+0K4X78ZWfzyoSlqv3if0NMaC0jmkR
+         ds4CBlg6nIhzpR3W9ElYLEa2TuG3eC5SNyqgb6evYz29xNRzTuYWR3CYa39Z9K3aOYAz
+         7FGL1XWdR+yvv8XYxXQZtuXd8HnswjuAqqOWg0OcMpcGczEk5CiYXhDsOPAMpxbd1B0y
+         Vg5RUwZ3cTEYn8kiO0VNpdMtFdgWdTJlLCii2ubidlSgEl933GUg+nGNlzKRENFhJ43K
+         oBSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697578825; x=1698183625;
+        d=1e100.net; s=20230601; t=1697579298; x=1698184098;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=8h1aCmYwBL0e7W6QWqk+xWgvSrCWZqDeOTvw03oLfSg=;
-        b=puSeJ1tEixPbCZtLgG+GRIyjxh4uyxFb30IFkIdBzldxIJOv+br+aCNAWIbkjZEiuT
-         0Tw+iUyT00I5fXV5Scj8pYjNC70AB1KW5xBMic0+awndeRmiHLNyL83ZPf/WkrP4SXgW
-         ozWE6vpcc9gzmM+w9x5kZHMhOrNDUihUAChwXmA3cKGV/ZxOB8J9/rrOy5l7Vj8l7RHq
-         rYm+ZHvdX2Rav0VaIXGZFX1qqbL2e/r7MjdcPF/4Zm8aJPtzZ6RcLsDRk68PlXUeB+zI
-         EP047xjD/pKuqJ7AwtJ7FeIfgrTlAUrJg/o4sZ0qV8FI0qEpU2Jy1GchcHGSxFTuTgje
-         xLGg==
-X-Gm-Message-State: AOJu0YwNfVH2HBkKbJn4mklvZIZK9JGCmxFlt9Ij8aIpLoDsni6TcKd8
-        KoIRY/upIj1P3KVQBxqRMUrDIKXuC+OW2ZBeiw==
-X-Google-Smtp-Source: AGHT+IFD9/z9qICdr6kZphkx91CVVnKWaOa56BAR7Tmf8Lf9ihklTplMdVnhLZQLfrXyng5/4mRo2/jNV92nK6R8IA==
+        bh=jj/BDLyDGa85AqSpf8Df2TijHyh0pX3EpIXoVJmKNCk=;
+        b=G9v6boIcVPEImN4lcfW41ZftJxmIcgST7v7MHdV32PMYMbh/SG2BpNSqk93mX+8tKM
+         u0w4Ca/I6CX3EDPcNYDiyYtfos+sa5KPFed3ZWW0Vtc5k6u+fc8S7qculbSImN8I3XBh
+         7G+q7f/8/ho232jYlGUOieEJTvyR+NPIYz+leWZn4oGxW2NaPuvqwKSscAIW02dVNW7/
+         1GgaVWdxEk4yqFzeTO45g3jv5ipTOyetmxLnmwPn2mQ07oM6izAwxDmm9ss+BOKpWhju
+         cIuchrxmueKxLwze6gt7v8s5B1Hl6G5c160JsrZufQJZNWL8uOZ2Eg50/baYaSQvnCyV
+         necQ==
+X-Gm-Message-State: AOJu0YyvX47AmuSoMe5szl9K1ANJ7z9GpCqMTwhwA5ndjTdqKGifYGWj
+        WLwyxn87i9gTSYACKhXQsKLkd8BujERIT4HYYw==
+X-Google-Smtp-Source: AGHT+IGifKHIeEs6hQ9nd30qPs+zzZSt7lXKQ4GxXFSqvyt0kQejSoL8ILihmhinXdJGVmfGsL1ifdheILn0dvO2Ow==
 X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a25:c711:0:b0:d9a:519f:d0e6 with SMTP
- id w17-20020a25c711000000b00d9a519fd0e6mr68734ybe.6.1697578825351; Tue, 17
- Oct 2023 14:40:25 -0700 (PDT)
-Date:   Tue, 17 Oct 2023 21:40:24 +0000
+ (user=justinstitt job=sendgmr) by 2002:a9d:625a:0:b0:6c4:c061:341c with SMTP
+ id i26-20020a9d625a000000b006c4c061341cmr1115376otk.5.1697579298035; Tue, 17
+ Oct 2023 14:48:18 -0700 (PDT)
+Date:   Tue, 17 Oct 2023 21:48:15 +0000
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAEj/LmUC/x2NwQqDMBAFf0X23IUkBRv6K6WHEp92QdKwG9Qi/
- rvB0zCXmZ0MKjB6djspFjH55Sb+1lH6fvIElqE5BRfu3vkHW9Wcyp8HlQVqnFF5FcUMM5ZcMbO UNWzOXQyNifsxxtgKAa6nli6KUbZr+3ofxwlgwuPYhgAAAA==
+X-B4-Tracking: v=1; b=H4sIAB4BL2UC/6WOQQqDMBBFr1Ky7pQkUg1d9R7FRTGjDthEZkJUx
+ Ls39Qpdfd5fvP93JciEoh6XXTFmEoqhgL1eVDe+w4BAvrCy2lZGmwYkcejmDTxTRhYImGAhxgl
+ FgELCCWhe7Kr1mbZkB3XvnCsGi7pWRT0z9rSes6+28EiSIm/ni2x+7Z+D2YABxMZXaO/ON+45x DhMeOviR7XHcXwBRc67tPkAAAA=
 X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1697578824; l=3644;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1697579297; l=3821;
  i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=no/u8aepbF9xy/WjzFODZYqsJCgSR5M+hrKqDii17yY=; b=VjQaKS/y3uXgNEupzuOEFzu8WiM+Y7gt+1HvljUvV/p0HQ5TM4zVxf5vE5G7bp9kMvXLTjTQL
- mGnDQVQcQkcDeItbzifkeXs+wU3QaL+vkhF/Sb0gikb0eDMT2gXGCgi
+ bh=ZZ92JxohATICi1IhnExgHVpB9lc7D4o0lN8/nCXFWag=; b=DLkNhMPJ2kmoCBTHgNn3p10//NWOir3cf1evFANYbRyynZLyFff7F4SXVKNXaWrlubIajvY6T
+ XwkImuUtXeZBi+ck/Ln30rZdSFDnbjSVPJ4WXc5pMrUpe/SK/r2pKtU
 X-Mailer: b4 0.12.3
-Message-ID: <20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-v1-1-ee7d3e258d78@google.com>
-Subject: [PATCH] ipw2x00: replace deprecated strncpy with strscpy_pad
+Message-ID: <20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-v2-1-465e10dc817c@google.com>
+Subject: [PATCH v2] wifi: ipw2x00: replace deprecated strncpy with strscpy_pad
 From:   Justin Stitt <justinstitt@google.com>
 To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
         Kalle Valo <kvalo@kernel.org>
@@ -68,7 +69,7 @@ Content-Type: text/plain; charset="utf-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -109,6 +110,10 @@ Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-
 Link: https://github.com/KSPP/linux/issues/90
 Cc: linux-hardening@vger.kernel.org
 Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Changes in v2:
+- add wifi: to subject
+- Link to v1: https://lore.kernel.org/r/20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-v1-1-ee7d3e258d78@google.com
 ---
 Note: build-tested only.
 
