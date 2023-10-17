@@ -2,74 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5FC7CCF7E
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 23:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E19F7CCF8D
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 23:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343887AbjJQVsW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 17:48:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55094 "EHLO
+        id S234891AbjJQV6w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 17:58:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231444AbjJQVsV (ORCPT
+        with ESMTP id S230056AbjJQV6v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 17:48:21 -0400
-Received: from mail-ot1-x34a.google.com (mail-ot1-x34a.google.com [IPv6:2607:f8b0:4864:20::34a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A99B2C4
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:48:18 -0700 (PDT)
-Received: by mail-ot1-x34a.google.com with SMTP id 46e09a7af769-6ccf7049ed4so1671439a34.1
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:48:18 -0700 (PDT)
+        Tue, 17 Oct 2023 17:58:51 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56FD0C4
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:58:50 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a839b31a0dso64004777b3.0
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:58:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697579298; x=1698184098; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1697579929; x=1698184729; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=jj/BDLyDGa85AqSpf8Df2TijHyh0pX3EpIXoVJmKNCk=;
-        b=gi6sz4EBJXXHstijbjXRHHmb7O2Y+koWFcl1JueeGAJ+IKJJuu2e6vhH3+aUcEzCOV
-         9LSNiE3kbr9yKQRaJMhLkGR6uduvwYxIRkdzkX+0K4X78ZWfzyoSlqv3if0NMaC0jmkR
-         ds4CBlg6nIhzpR3W9ElYLEa2TuG3eC5SNyqgb6evYz29xNRzTuYWR3CYa39Z9K3aOYAz
-         7FGL1XWdR+yvv8XYxXQZtuXd8HnswjuAqqOWg0OcMpcGczEk5CiYXhDsOPAMpxbd1B0y
-         Vg5RUwZ3cTEYn8kiO0VNpdMtFdgWdTJlLCii2ubidlSgEl933GUg+nGNlzKRENFhJ43K
-         oBSQ==
+        bh=ZtA0QmfTazD4bejJUvxhW4u+owAfFqWpqMd8aiBPDi0=;
+        b=fX1WOxuMpKW1tvMyO4Aleww+sSym9wGDCa/ORANY60YXXEbKr7se7bxsRoSIOi3cWv
+         Sva/Kjm2n7l+GzUiGPirCKlelh8BwrODtmdXjAxCfa4zjDORuRCShlxqPsmwXMvkHAdF
+         2SF/8TZSNYCZJ/svpNG+qrkic75vth7PVMkKED6fxCDEJ8wOf50kCpUREOeKbej2P0sg
+         UyaLok7GBxfJLVEzmgJ4nddpVSHsv5aymQQSRnf0GWKWO2JncfZ73RVbd54yLtfBLuHu
+         ltYEapBgQ03ks7TiyMvJCJgRB4k5mnRwMdjntGqCLbIMhkZHEijCcOv9qQOxfXmhlos5
+         5AhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697579298; x=1698184098;
+        d=1e100.net; s=20230601; t=1697579929; x=1698184729;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=jj/BDLyDGa85AqSpf8Df2TijHyh0pX3EpIXoVJmKNCk=;
-        b=G9v6boIcVPEImN4lcfW41ZftJxmIcgST7v7MHdV32PMYMbh/SG2BpNSqk93mX+8tKM
-         u0w4Ca/I6CX3EDPcNYDiyYtfos+sa5KPFed3ZWW0Vtc5k6u+fc8S7qculbSImN8I3XBh
-         7G+q7f/8/ho232jYlGUOieEJTvyR+NPIYz+leWZn4oGxW2NaPuvqwKSscAIW02dVNW7/
-         1GgaVWdxEk4yqFzeTO45g3jv5ipTOyetmxLnmwPn2mQ07oM6izAwxDmm9ss+BOKpWhju
-         cIuchrxmueKxLwze6gt7v8s5B1Hl6G5c160JsrZufQJZNWL8uOZ2Eg50/baYaSQvnCyV
-         necQ==
-X-Gm-Message-State: AOJu0YyvX47AmuSoMe5szl9K1ANJ7z9GpCqMTwhwA5ndjTdqKGifYGWj
-        WLwyxn87i9gTSYACKhXQsKLkd8BujERIT4HYYw==
-X-Google-Smtp-Source: AGHT+IGifKHIeEs6hQ9nd30qPs+zzZSt7lXKQ4GxXFSqvyt0kQejSoL8ILihmhinXdJGVmfGsL1ifdheILn0dvO2Ow==
+        bh=ZtA0QmfTazD4bejJUvxhW4u+owAfFqWpqMd8aiBPDi0=;
+        b=UFE5Lfqdh5/DrzlB17VBUTOKE3qIpPTCNVC394dTFZKOjuf819Qeg46IyWwFcXEHTM
+         c5l70vNmzThylTOMGJs6ntZ3wO4I0uiz7x/ccMTcwIJ0zxCr7r5/ll/8iCPT3HKFl5it
+         y+D96hKvfrVwD1f19aG2gLrgCIkycgFrfic/YWQIfelkiWKcxcc4/5fq1lS8lE9FInhp
+         LS9vFiBx/IhoQa9zS7OUG7jlx9YRsuHX38ajHtywwlujmEPvF3W2jp22lK46901FVGjw
+         dXVFgURHOV7I7eUTD0Pn8gbIavy+EndBGWlLEAqO+0flwX929MJaw3YfX3Ngrkv5e9vI
+         84xw==
+X-Gm-Message-State: AOJu0YxtLEMiVrb1NpK2BUQ8V9FofSYxE+OkbFCoSgwvD++PzMftLfHL
+        uQOjA+yFxpcoLMLJMdyITOHX9uw0WlKvNnv8+Q==
+X-Google-Smtp-Source: AGHT+IHDs3y1E7k+8uXlkij8vcC0qgc1jSTYg965KjyTu12FZPFdJux12EXTyV9h27znP+YEVJYXB6E2gitoCo3PCg==
 X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a9d:625a:0:b0:6c4:c061:341c with SMTP
- id i26-20020a9d625a000000b006c4c061341cmr1115376otk.5.1697579298035; Tue, 17
- Oct 2023 14:48:18 -0700 (PDT)
-Date:   Tue, 17 Oct 2023 21:48:15 +0000
+ (user=justinstitt job=sendgmr) by 2002:a0d:d787:0:b0:59b:f863:6f60 with SMTP
+ id z129-20020a0dd787000000b0059bf8636f60mr81791ywd.4.1697579929629; Tue, 17
+ Oct 2023 14:58:49 -0700 (PDT)
+Date:   Tue, 17 Oct 2023 21:58:44 +0000
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAB4BL2UC/6WOQQqDMBBFr1Ky7pQkUg1d9R7FRTGjDthEZkJUx
- Ls39Qpdfd5fvP93JciEoh6XXTFmEoqhgL1eVDe+w4BAvrCy2lZGmwYkcejmDTxTRhYImGAhxgl
- FgELCCWhe7Kr1mbZkB3XvnCsGi7pWRT0z9rSes6+28EiSIm/ni2x+7Z+D2YABxMZXaO/ON+45x DhMeOviR7XHcXwBRc67tPkAAAA=
+X-B4-Tracking: v=1; b=H4sIAJMDL2UC/x3NSwrDMAwA0asErSuw3UI/VyldJLaUCowbJBOnh
+ Ny9psu3mdnBSIUMHsMOSquYfEqHPw0Q32OZCSV1Q3Dh7J2/olUtcfliUllJDQtVbKKUyQylVMo oLTdhQW6Yphkjer7c2bnpNgaCXl6UWLb/9fk6jh8QFOZMhQAAAA==
 X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1697579297; l=3821;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1697579928; l=2481;
  i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=ZZ92JxohATICi1IhnExgHVpB9lc7D4o0lN8/nCXFWag=; b=DLkNhMPJ2kmoCBTHgNn3p10//NWOir3cf1evFANYbRyynZLyFff7F4SXVKNXaWrlubIajvY6T
- XwkImuUtXeZBi+ck/Ln30rZdSFDnbjSVPJ4WXc5pMrUpe/SK/r2pKtU
+ bh=ssxs2Jsrs2hPLtwX1Sk+1Tw5TTVcJVG2jRbLqY3Nmzo=; b=euoX0Jg9LbRcp6r/+6JIqUrfaDAKuWxPOT7SWUWCkFd9tCFkFL1KEXgYs5MQi+IMRc0kTTReU
+ jDmNrXF5LRuAIyY/fyEHQCdk0cZLzPa3Qi6V64hHwnsB9k/dZM+P3Tf
 X-Mailer: b4 0.12.3
-Message-ID: <20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-v2-1-465e10dc817c@google.com>
-Subject: [PATCH v2] wifi: ipw2x00: replace deprecated strncpy with strscpy_pad
+Message-ID: <20231017-strncpy-drivers-net-wireless-intel-iwlwifi-fw-dbg-c-v1-1-bf69ec7d1b97@google.com>
+Subject: [PATCH] wifi: iwlwifi: fw: replace deprecated strncpy with strscpy
 From:   Justin Stitt <justinstitt@google.com>
-To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+To:     Gregory Greenman <gregory.greenman@intel.com>,
         Kalle Valo <kvalo@kernel.org>
 Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hardening@vger.kernel.org,
         Justin Stitt <justinstitt@google.com>
 Content-Type: text/plain; charset="utf-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -80,96 +79,53 @@ strncpy() is deprecated for use on NUL-terminated destination strings
 [1] and as such we should prefer more robust and less ambiguous string
 interfaces.
 
-`extra` is intended to be NUL-terminated which is evident by the manual
-assignment of a NUL-byte as well as its immediate usage with strlen().
+Based on the deliberate `sizeof(dest) ... - 1` pattern we can see that
+both dump_info->dev_human_readable and dump_info->bus_human_readable are
+intended to be NUL-terminated.
 
-Moreover, many of these getters and setters are NUL-padding buffers with
-memset():
-2439  |	memset(&tx_power, 0, sizeof(tx_power));
-9998  | memset(sys_config, 0, sizeof(struct ipw_sys_config));
-10084 | memset(tfd, 0, sizeof(*tfd));
-10261 | memset(&dummystats, 0, sizeof(dummystats));
-... let's maintain this behavior and NUL-pad our destination buffer.
-
-Considering the above, a suitable replacement is `strscpy_pad` due to
-the fact that it guarantees both NUL-termination and NUL-padding on the
-destination buffer.
-
-To be clear, there is no bug in the current implementation as
-MAX_WX_STRING is much larger than the size of the string literals being
-copied from. Also, strncpy() does NUL-pad the destination buffer and
-using strscpy_pad() simply matches that behavior. All in all, there
-should be no functional change but we are one step closer to eliminating
-usage of strncpy().
-
-Do note that we cannot use the more idiomatic strscpy invocation of
-(dest, src, sizeof(dest)) as the destination buffer cannot have its size
-determined at compile time. So, let's stick with (dest, src, LEN).
+Neither of these symbols seem to be actually used after being assigned.
+Which means our replacement doesn't really matter. At any rate, it would
+seem NUL-padding is not required so let's use `strscpy` [2] due to the
+fact that it guarantees NUL-termination on the destination buffer
+without unnecessarily NUL-padding. (but maybe these should be
+used or removed).
 
 Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
 Link: https://github.com/KSPP/linux/issues/90
 Cc: linux-hardening@vger.kernel.org
 Signed-off-by: Justin Stitt <justinstitt@google.com>
----
-Changes in v2:
-- add wifi: to subject
-- Link to v1: https://lore.kernel.org/r/20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-v1-1-ee7d3e258d78@google.com
 ---
 Note: build-tested only.
 
 Found with: $ rg "strncpy\("
 ---
- drivers/net/wireless/intel/ipw2x00/ipw2200.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-index 820100cac491..44f2d91ad30f 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -9656,31 +9656,30 @@ static int ipw_wx_get_wireless_mode(struct net_device *dev,
- 	mutex_lock(&priv->mutex);
- 	switch (priv->ieee->mode) {
- 	case IEEE_A:
--		strncpy(extra, "802.11a (1)", MAX_WX_STRING);
-+		strscpy_pad(extra, "802.11a (1)", MAX_WX_STRING);
- 		break;
- 	case IEEE_B:
--		strncpy(extra, "802.11b (2)", MAX_WX_STRING);
-+		strscpy_pad(extra, "802.11b (2)", MAX_WX_STRING);
- 		break;
- 	case IEEE_A | IEEE_B:
--		strncpy(extra, "802.11ab (3)", MAX_WX_STRING);
-+		strscpy_pad(extra, "802.11ab (3)", MAX_WX_STRING);
- 		break;
- 	case IEEE_G:
--		strncpy(extra, "802.11g (4)", MAX_WX_STRING);
-+		strscpy_pad(extra, "802.11g (4)", MAX_WX_STRING);
- 		break;
- 	case IEEE_A | IEEE_G:
--		strncpy(extra, "802.11ag (5)", MAX_WX_STRING);
-+		strscpy_pad(extra, "802.11ag (5)", MAX_WX_STRING);
- 		break;
- 	case IEEE_B | IEEE_G:
--		strncpy(extra, "802.11bg (6)", MAX_WX_STRING);
-+		strscpy_pad(extra, "802.11bg (6)", MAX_WX_STRING);
- 		break;
- 	case IEEE_A | IEEE_B | IEEE_G:
--		strncpy(extra, "802.11abg (7)", MAX_WX_STRING);
-+		strscpy_pad(extra, "802.11abg (7)", MAX_WX_STRING);
- 		break;
- 	default:
--		strncpy(extra, "unknown", MAX_WX_STRING);
-+		strscpy_pad(extra, "unknown", MAX_WX_STRING);
- 		break;
- 	}
--	extra[MAX_WX_STRING - 1] = '\0';
- 
- 	IPW_DEBUG_WX("PRIV GET MODE: %s\n", extra);
- 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 3ab6a68f1e9f..5455f8d1aab0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -880,10 +880,10 @@ iwl_fw_error_dump_file(struct iwl_fw_runtime *fwrt,
+ 			cpu_to_le32(fwrt->trans->hw_rev_step);
+ 		memcpy(dump_info->fw_human_readable, fwrt->fw->human_readable,
+ 		       sizeof(dump_info->fw_human_readable));
+-		strncpy(dump_info->dev_human_readable, fwrt->trans->name,
+-			sizeof(dump_info->dev_human_readable) - 1);
+-		strncpy(dump_info->bus_human_readable, fwrt->dev->bus->name,
+-			sizeof(dump_info->bus_human_readable) - 1);
++		strscpy(dump_info->dev_human_readable, fwrt->trans->name,
++			sizeof(dump_info->dev_human_readable));
++		strscpy(dump_info->bus_human_readable, fwrt->dev->bus->name,
++			sizeof(dump_info->bus_human_readable));
+ 		dump_info->num_of_lmacs = fwrt->smem_cfg.num_lmacs;
+ 		dump_info->lmac_err_id[0] =
+ 			cpu_to_le32(fwrt->dump.lmac_err_id[0]);
 
 ---
 base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
-change-id: 20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-6f8880232e06
+change-id: 20231017-strncpy-drivers-net-wireless-intel-iwlwifi-fw-dbg-c-1f49f00b8a2e
 
 Best regards,
 --
