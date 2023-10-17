@@ -2,131 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9376F7CCC42
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 21:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EB307CCC66
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 21:38:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344284AbjJQT2E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 15:28:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37692 "EHLO
+        id S1343739AbjJQTim (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 15:38:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344252AbjJQT2A (ORCPT
+        with ESMTP id S234998AbjJQTil (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 15:28:00 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA061FA;
-        Tue, 17 Oct 2023 12:27:56 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-32db8924201so1898917f8f.1;
-        Tue, 17 Oct 2023 12:27:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697570875; x=1698175675; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mw4sfthIPjM3BfawqG9k28qO9mlhU0PnICKHznmlMio=;
-        b=NIZviTjuruV1qa9Wk70mt8Urg8uDkHAiM+hD3B0sVtTO0A7teqOEIm07xRzjaENQj0
-         /XhGiyNNG3uSGOpIHKm+XAIHMEY3vvKLvE7NxPyNI100BG27rFG06kL0U07BywL2reWC
-         nhGb3zLKciibGeGE3X1URcO0AitVEI5csZsSY3mCBMuxwInA93+/M6DKGK9GuofEq9+6
-         aHKDPiPzlV0KBtPPJKN3aml6wn97qMPs18GkzNIe9z+Wo08lRqVlWIKAr7V70oI2V6ol
-         VlsDVYydhOUqIs1VaxZ9X1a118+uh5SZHVkMDosmMP/72GfpYhScsPCMS5pv9x2eewWn
-         yPcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697570875; x=1698175675;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mw4sfthIPjM3BfawqG9k28qO9mlhU0PnICKHznmlMio=;
-        b=VSMwpLypc+BXpOUleL2/HtgIIuEob4ZxoR6C4+7fBUr4RzVpXgIv4eETQDqy9bwv6X
-         R+j/EZhrIZNOPmXROcZOnlRzCC84Uduz6PvOxZpIj2VYsfTeIIns0tRvGSuE5HUXdceZ
-         tVEi7ZyH9NwgjwHjNZcgsFeMerUQOTvyvbsZH/ZFI0ZxfL/FDwWgSRL4mr+6Qfs0acKy
-         wElL1lqqoGrB+cGCoFa7SvfPXnd6XXDzSchQl3Kz1uR+ZY7KMXFVG9tXYAQ1bwXs2oPV
-         aNjSJ82iLQU6Sm8ZUyHQ25RE4qIv2SlyYrzfK8YmQr9JXeLtW76VzhU9mo5qJWoUSZYK
-         b68A==
-X-Gm-Message-State: AOJu0YwRvnS9ciw4zvdWKJ/bDjSYBA5WRBdoW3Q778G1lUlEqZqKqoOX
-        rEQuVC8ou650ZkPFWCw70Eg=
-X-Google-Smtp-Source: AGHT+IHglYUm70uW0GVWCXnzNjqxcIopFPc+GSa/J1yUXCB4sfKjA0wso4+1pkjiDF1KQL7RhyLuhg==
-X-Received: by 2002:adf:e5cb:0:b0:32d:9d3d:3025 with SMTP id a11-20020adfe5cb000000b0032d9d3d3025mr2390702wrn.26.1697570875023;
-        Tue, 17 Oct 2023 12:27:55 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id o2-20020adfeac2000000b0032cc35c2ef7sm435897wrn.29.2023.10.17.12.27.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 12:27:54 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        Alexander Couzens <lynxis@fe80.eu>,
-        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Daniel Golle <daniel@makrotopia.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: [net-next RFC PATCH 6/6] wifi: mt76: permit to load precal from NVMEM cell for mt7915
-Date:   Tue, 17 Oct 2023 21:05:10 +0200
-Message-Id: <20231017190510.27163-6-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231017190510.27163-1-ansuelsmth@gmail.com>
-References: <20231017190510.27163-1-ansuelsmth@gmail.com>
+        Tue, 17 Oct 2023 15:38:41 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7858D98
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 12:38:40 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39HEpHlK008545;
+        Tue, 17 Oct 2023 19:38:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=Y/y/0QnvL+eGuC45VSQaLho4UKeRTLlSMFuoL+S2R3s=;
+ b=HVhHin25G4RbYNVJgrEr+L/hNAkT915szH9m0jywXvcW/UcZPyeLPoPg4B6xTRtG0YtB
+ 3PYuzBqtbwRQ2oxORYZvZUN841MSsEnUoV0YUYYl6I8qM4Ry7C7phmoSdeTQDBn3v7LX
+ 3cc64pnEVcsRMaziLN3C/OSSsFM+fNl+oBvgiVdaf6qUafgO/78HCsrBnfzIWsNMgJy2
+ 34uLOW9YQ8oRb3sKcwYXIRUyAeY3ZPnCY0r5lFg0MV/r1PYkq/Im3xxLQzPMa7XBtWHU
+ zaYbnaSIXBky9LnxyqyfQ03F4CDUMV2ubx/+OtgTKFZL8jlb/WmjsKU3O6zUjrG5U5uD Ew== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tsr7c1a6t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 19:38:33 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39HJcWZE011445
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 19:38:32 GMT
+Received: from [10.111.183.229] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Tue, 17 Oct
+ 2023 12:38:32 -0700
+Message-ID: <8a825923-c34d-40b5-812e-e28a25c83eb5@quicinc.com>
+Date:   Tue, 17 Oct 2023 12:38:31 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: fix -Wformat-truncation warning
+Content-Language: en-US
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     Kalle Valo <kvalo@kernel.org>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+References: <87fs2k5l1a.fsf@kernel.org>
+ <20231017155342.112032-1-dmantipov@yandex.ru>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231017155342.112032-1-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: vdBeFmwcPG6rSwAw11GbHP1EfrxeTbR1
+X-Proofpoint-GUID: vdBeFmwcPG6rSwAw11GbHP1EfrxeTbR1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-17_03,2023-10-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1015 bulkscore=0 adultscore=0
+ impostorscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=463
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310170166
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Permit to load precal from NVMEM cell for mt7915. The NVMEM cell must be
-named "precal" to be correctly loaded.
-
-NVMEM cell must already account the correct offset and be placed after
-the EEPROM as the function expect the data right from the start.
-
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
-
-I would like to have some hint of the cell name... Is it ok to use
-precal? Should we use "precal-eeprom"?
-
----
- drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-index 5228f710b3da..3bb2643d1b26 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -11,6 +11,7 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
- 	u8 *eeprom = mdev->eeprom.data;
- 	u32 val = eeprom[MT_EE_DO_PRE_CAL];
- 	u32 offs;
-+	int ret;
- 
- 	if (!dev->flash_mode)
- 		return 0;
-@@ -25,7 +26,11 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
- 
- 	offs = is_mt7915(&dev->mt76) ? MT_EE_PRECAL : MT_EE_PRECAL_V2;
- 
--	return mt76_get_of_data_from_mtd(mdev, dev->cal, offs, val);
-+	ret = mt76_get_of_data_from_mtd(mdev, dev->cal, offs, val);
-+	if (!ret)
-+		return ret;
-+
-+	return mt76_get_of_data_from_nvmem(mdev, dev->cal, "precal", val);
- }
- 
- static int mt7915_check_eeprom(struct mt7915_dev *dev)
--- 
-2.40.1
+On 10/17/2023 8:53 AM, Dmitry Antipov wrote:
+> Fix the following warning observed with GCC 13.2 and -Wformat-truncation:
+> 
+> drivers/net/wireless/ath/ath11k/debugfs.c: In function ‘ath11k_debugfs_register’:
+> drivers/net/wireless/ath/ath11k/debugfs.c:1597:51: warning: ‘%d’ directive output
+> may be truncated writing between 1 and 3 bytes into a region of size 2 [-Wformat-truncation=]
+>   1597 |         snprintf(pdev_name, sizeof(pdev_name), "%s%d", "mac", ar->pdev_idx);
+>        |                                                   ^~
+> drivers/net/wireless/ath/ath11k/debugfs.c:1597:48: note: directive argument in the range [0, 255]
+>   1597 |         snprintf(pdev_name, sizeof(pdev_name), "%s%d", "mac", ar->pdev_idx);
+>        |                                                ^~~~~~
+> drivers/net/wireless/ath/ath11k/debugfs.c:1597:9: note: ‘snprintf’ output between
+> 5 and 7 bytes into a destination of size 5
+>   1597 |         snprintf(pdev_name, sizeof(pdev_name), "%s%d", "mac", ar->pdev_idx);
+>        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> Simplify the 'snprintf()' statement as well.
+> 
+> Suggested-by: Kalle Valo <kvalo@kernel.org>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
