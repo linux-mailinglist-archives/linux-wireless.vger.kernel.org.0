@@ -2,70 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC1ED7CC937
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 18:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74B8C7CC9E8
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 19:29:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233785AbjJQQ4l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 12:56:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57688 "EHLO
+        id S234794AbjJQR3H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 13:29:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233499AbjJQQ4k (ORCPT
+        with ESMTP id S1343908AbjJQR3G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 12:56:40 -0400
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F17AA4
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 09:56:39 -0700 (PDT)
-Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-4195fddd6d7so49695631cf.0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 09:56:39 -0700 (PDT)
+        Tue, 17 Oct 2023 13:29:06 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8CAEF0
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 10:29:02 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-53e70b0a218so5559082a12.2
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 10:29:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697561798; x=1698166598; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:references:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6Lxk9ICuNszqfm+sUcVU/wQO8YIegQv++qn3iso04u4=;
-        b=WAs/9+594MSXdZTXpv2Qg0epjbNqzIbylagEUPBz7EG5hZnX9afNzOgleutNEFtYaI
-         5fmHJN40npdh3yTVk6Ahb08uNScgnXqh26frGeQ6dnS71LHa+TD6/Rwb+1TIVWBNYTa1
-         iRb8H+z/qp5GlcIgN0DrBEEabe1mYxWVmzy1j/QD9G+8ujsU3OiXhtYMeOGD1wv7dNpl
-         pICfZpo2M69by+pwojKn5jIMfdEfc8Pbk10aWWBgqshUcvJgwFkPYfWF5NHMziBUtPCn
-         DkXklo9N3Qo5LdMV3iVjw+O12jKTeWGwCBAzdqV17tQtqVYAwYja2y1ObY59Zg2O77Dc
-         /V9w==
+        d=google.com; s=20230601; t=1697563741; x=1698168541; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kbaoHGtRFkb4iQdi7piJDjd4r/VjAzI9OU8YnNVrjQk=;
+        b=J5ZECETHOTFCjqDiaBpyziIQSsv/rUHWS0N6AqctiYOzNzKNv8Ri1QvIkIrLSQ+REQ
+         +oAD/o5ZzJfdeU0WyLxVdFv2pKdNTlfLT33iQT3cxkXHhAEffd/1Xl4+Dr2HpnnUaWO+
+         OorKU2cvQmExrwYIJG/dnHAlqQeTuXI2pa6qU8YmqWdGMVESBvTu6xKYYrb+FFtQb+vF
+         mgv/FJZgV8nOK3GriTfSff3IIykl0aShhXiKBQe9z7ergDJlPUzrdyR3cDwsdj4hPzQW
+         K37zBMcvhHHrTwV1594aFS4wM/IAh1C3wFHhFAq42Bs+QKGxtkFZdF/G6N2Kmfu8DnSG
+         CUMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697561798; x=1698166598;
-        h=content-transfer-encoding:in-reply-to:references:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Lxk9ICuNszqfm+sUcVU/wQO8YIegQv++qn3iso04u4=;
-        b=goEXpHOMsAeenCbywGp3hA+FYJlBVtmw2zoxvprq5UuD4vZ3sd6r8wWdEtwCGvaLGs
-         bm//rmMfr/A8N6yNQWMS+NbNonJ3Bj8CT0GYSOmL+zb2h6OdHssnGgBFvoUwVB2lRvq8
-         MEVFLfp4Gkg/cCv3heAwAmHs/Ux6oTGYzt3MKq3KRUr0aaGsGFXo9U2be49BJySRP7VY
-         P9WKWOTjcnkYvFLfx91h9icntFnuyLwf6vTcGFSJc+MOnffV1UCwxuhmxd/uNtULDDPj
-         j09L2nAWcWjE/YSkb8OQHDrGLp2YxTFAiSxuGNkSlUOMbhFwB5XzzW+bGGDXAkYcfj5L
-         yDmQ==
-X-Gm-Message-State: AOJu0YxPQFvqJWUSOypYSWEHnbbMW7QL8XO6VFOBKgaRq/UHPGlgTxJJ
-        S/Q4oAxXZgfrT+yXewRqwt9QM0CtmCo=
-X-Google-Smtp-Source: AGHT+IGSy8pNtACKf2V7AgqJvwUe3xxXUym70+by++AWHR7uxmkMZ1cjrbe4BsEDN46mi1T+8DGX9w==
-X-Received: by 2002:a05:622a:1183:b0:412:c81:efe2 with SMTP id m3-20020a05622a118300b004120c81efe2mr3335382qtk.31.1697561798158;
-        Tue, 17 Oct 2023 09:56:38 -0700 (PDT)
-Received: from [10.102.4.159] (50-78-19-50-static.hfc.comcastbusiness.net. [50.78.19.50])
-        by smtp.gmail.com with ESMTPSA id k2-20020ac81402000000b004199c98f87dsm756623qtj.74.2023.10.17.09.56.36
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Oct 2023 09:56:37 -0700 (PDT)
-Message-ID: <c84bf2bf-7af5-49d4-b3a4-dba7abb8fca6@gmail.com>
-Date:   Tue, 17 Oct 2023 09:56:35 -0700
+        d=1e100.net; s=20230601; t=1697563741; x=1698168541;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kbaoHGtRFkb4iQdi7piJDjd4r/VjAzI9OU8YnNVrjQk=;
+        b=JhF4G4FqPWW+vODYT2YHOLeadjCYHq0M6evKYyCzxnuUIyjM9+QSLSZxxWqpyhQ/m7
+         PbN5Y+srWhkKrJwlqtd+8AzqLjTbiakoMGOpfZe0R3Zn47B0Kbyuqun9Eny7Mt3EiRIs
+         eA87/5Wdz6J7nXgjlx1ShywpzJ/+ZJ3KVrSxaeXGiBv7Qf+X1kC9sDDGPgCj5gKusclx
+         HwDJaDZeGtO3J4lJxkmoUP5NAHQEgI1PvqvZOMaCbvD995QlGxc3F8mwfU1+VxpOOSfF
+         OVEIQZbb9nGzWbGqWEk0Y4VCCWTAH2JtFaV6Ci0vqWknKpZFvO6D62yU2jdHI8Ktmu4S
+         Jbdg==
+X-Gm-Message-State: AOJu0Yz9cELXtOc+K4v2uIlXoDwylCCtWwXzqgN25XD1QmVUAC7hwY7v
+        ndi3wNWGjk9ZValJ1OU5CUULA9clVZi9gfFas+apyA==
+X-Google-Smtp-Source: AGHT+IEEdof/SA6oeV0xMjDWOT8etyV5eJRD/VxqCEWFm4nunalOCqm6NO1Y/2Key1Cw4GX92D5gcv0E1+f0+MPOrto=
+X-Received: by 2002:a50:baa7:0:b0:53e:d16e:9b7f with SMTP id
+ x36-20020a50baa7000000b0053ed16e9b7fmr2648967ede.34.1697563741185; Tue, 17
+ Oct 2023 10:29:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: RX multicast action frames (ath10k)
-Content-Language: en-US
-From:   James Prestwood <prestwoj@gmail.com>
-To:     linux-wireless@vger.kernel.org
-References: <01c99bfb-b87b-4566-a873-38c6b7dbc0d9@gmail.com>
-In-Reply-To: <01c99bfb-b87b-4566-a873-38c6b7dbc0d9@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20231016-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v2-1-6c7567e1d3b8@google.com>
+ <CA+8PC_cZbchz-i0Wfhr1rE5M-xqUVdQZce94TowU=yqOynDBKg@mail.gmail.com>
+In-Reply-To: <CA+8PC_cZbchz-i0Wfhr1rE5M-xqUVdQZce94TowU=yqOynDBKg@mail.gmail.com>
+From:   Justin Stitt <justinstitt@google.com>
+Date:   Tue, 17 Oct 2023 10:28:49 -0700
+Message-ID: <CAFhGd8pxU=ZS3hodJxP5BPpf21rq66KKKNU9MHouimAjX+wHLw@mail.gmail.com>
+Subject: Re: [PATCH v2] brcmfmac: replace deprecated strncpy
+To:     Franky Lin <franky.lin@broadcom.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,35 +75,253 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/17/23 7:42 AM, James Prestwood wrote:
-> Hi,
-> 
-> Currently it is not possible to receive multicast action frames (AFAIK) 
-> unless EXT_FEATURE_MULTICAST_REGISTRATIONS is supported, which is 
-> currently only ath9k (and hwsim). This was added to support DPP which 
-> I'm also trying to do on a system using ath10k (potentially ath11k in 
-> the future). The original change [1] to ath9k was quite simple and just 
-> set FIF_MCAST_ACTION to the list of filters.
-> 
-> I tried doing this for ath10k with no luck, and looking deeper it 
-> appears the firmware API (ATH10K_FW_WMI_OP_VERSION_TLV) doesn't have the 
-> "rx_filter" command. I'm using a QCA6174.
-> 
-> I also noticed the "configure_filter" op for ath10k seems to be monitor 
-> specific.
-> 
-> So I'm wondering if this is something the firmware needs to support (if 
-> so I guess I'm SOL unless someone wants to add that). If not I could use 
-> some guidance on how I could support it if its possible to modify the 
-> ath10k driver.
-> 
+On Tue, Oct 17, 2023 at 9:49=E2=80=AFAM Franky Lin <franky.lin@broadcom.com=
+> wrote:
+>
+>  Hi Justin,
+>
+> On Mon, Oct 16, 2023 at 3:14=E2=80=AFPM Justin Stitt <justinstitt@google.=
+com> wrote:
+> >
+> > strncpy() is deprecated for use on NUL-terminated destination strings
+> > [1] and as such we should prefer more robust and less ambiguous string
+> > interfaces.
+> >
+> > This patch replaces multiple strncpy uses. For easier reading, I'll lis=
+t
+> > each destination buffer and mention whether it requires either
+> > NUL-termination or NUL-padding.
+>
+> Kudos to the detailed analysis of each instance. One thing I can think
+> of to make this better is to split it into smaller patches so if any
+> regression is observed, only the specific code causing it needs to be
+> reverted. Maybe instance 2, 3, 4 can be handled in one patch since
+> they are touching the country code in one file. The other instances
+> each can be an individual patch.
+>
+> The "brcmfmac" in the title is not accurate. The change touches both
+> brcmfmac and brcmsmac. So "brcm80211" would be more appropriate.
+
+Got it, will send new revision with a new subject + split up patches.
+
+>
 > Thanks,
-> James
-> 
-> [1] 
-> https://lore.kernel.org/linux-wireless/20200426084733.7889-1-jouni@codeaurora.org/
+> - Franky
+>
+> >
+> > 1) ifp->ndev->name
+> >
+> > We expect ifp->ndev->name to be NUL-terminated based on its use in
+> > format strings within core.c:
+> > 67 |       char *brcmf_ifname(struct brcmf_if *ifp)
+> > 68 |       {
+> > 69 |            if (!ifp)
+> > 70 |                    return "<if_null>";
+> > 71 |
+> > 72 |            if (ifp->ndev)
+> > 73 |                    return ifp->ndev->name;
+> > 74 |
+> > 75 |            return "<if_none>";
+> > 76 |       }
+> > ...
+> > 288 |       static netdev_tx_t brcmf_netdev_start_xmit(struct sk_buff *=
+skb,
+> > 289 |                                              struct net_device *n=
+dev) {
+> > ...
+> > 330 |       brcmf_dbg(INFO, "%s: insufficient headroom (%d)\n",
+> > 331 |                 brcmf_ifname(ifp), head_delta);
+> > ...
+> > 336 |       bphy_err(drvr, "%s: failed to expand headroom\n",
+> > 337 |                brcmf_ifname(ifp));
+> >
+> > In this context, a suitable replacement is `strscpy` [2] due to the fac=
+t
+> > that it guarantees NUL-termination on the destination buffer without
+> > unnecessarily NUL-padding.
+> >
+> > 2) wlc->pub->srom_ccode
+> >
+> > We're just copying two bytes from ccode into wlc->pub->srom_ccode with
+> > no expectation that srom_ccode be NUL-terminated.
+> > wlc->pub->srom_ccode is only used in regulatory_hint():
+> > 1193 |       if (wl->pub->srom_ccode[0] &&
+> > 1194 |           regulatory_hint(wl->wiphy, wl->pub->srom_ccode))
+> > 1195 |               wiphy_err(wl->wiphy, "%s: regulatory hint failed\n=
+", __func__);
+> >
+> > We can see that only index 0 and index 1 are accessed.
+> > 3307 |       int regulatory_hint(struct wiphy *wiphy, const char *alpha=
+2)
+> > 3308 |       {
+> > ...  |          ...
+> > 3322 |          request->alpha2[0] =3D alpha2[0];
+> > 3323 |          request->alpha2[1] =3D alpha2[1];
+> > ...  |          ...
+> > 3332 |       }
+> >
+> > Since this is just a simple byte copy with correct lengths, let's use
+> > memcpy(). There should be no functional change.
+> >
+> > 3) wlc->country_default, 4) wlc->autocountry_default
+> >
+> > FWICT, these two aren't used anywhere. At any rate, let's apply the sam=
+e
+> > reasoning as above and just use memcpy().
+> >
+> > 5) di->name
+> >
+> > We expect di->name to be NUL-terminated based on its usage with format
+> > strings:
+> > |       brcms_dbg_dma(di->core,
+> > |                     "%s: DMA64 tx doesn't have AE set\n",
+> > |                     di->name);
+> >
+> > Looking at its allocation we can see that it is already zero-allocated
+> > which means NUL-padding is not required:
+> > |       di =3D kzalloc(sizeof(struct dma_info), GFP_ATOMIC);
+> >
+> > 6) wlc->modulecb[i].name
+> >
+> > We expect each name in wlc->modulecb to be NUL-terminated based on thei=
+r
+> > usage with strcmp():
+> > |       if (!strcmp(wlc->modulecb[i].name, name) &&
+> >
+> > NUL-padding is not required as wlc is zero-allocated in:
+> > brcms_c_attach_malloc() ->
+> > |       wlc =3D kzalloc(sizeof(struct brcms_c_info), GFP_ATOMIC);
+> >
+> > Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#st=
+rncpy-on-nul-terminated-strings [1]
+> > Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en=
+.html [2]
+> > Link: https://github.com/KSPP/linux/issues/90
+> > Cc: linux-hardening@vger.kernel.org
+> > Signed-off-by: Justin Stitt <justinstitt@google.com>
+> > ---
+> > Changes in v2:
+> > - add other strncpy replacements
+> > - Link to v1: https://lore.kernel.org/r/20231016-strncpy-drivers-net-wi=
+reless-broadcom-brcm80211-brcmfmac-cfg80211-c-v1-1-4234807ca07e@google.com
+> > ---
+> > Note: build-tested only.
+> >
+> > I've grouped these all into a single patch instead of a series as many
+> > of the replacements are related to others and rely on context from one
+> > another to justify changes.
+> > ---
+> >  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+> >  drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c      | 2 +-
+> >  drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c  | 6 +++---
+> >  drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c      | 3 +--
+> >  drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c     | 4 ++--
+> >  5 files changed, 8 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.=
+c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> > index 2a90bb24ba77..7daa418df877 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> > @@ -866,7 +866,7 @@ struct wireless_dev *brcmf_apsta_add_vif(struct wip=
+hy *wiphy, const char *name,
+> >                 goto fail;
+> >         }
+> >
+> > -       strncpy(ifp->ndev->name, name, sizeof(ifp->ndev->name) - 1);
+> > +       strscpy(ifp->ndev->name, name, sizeof(ifp->ndev->name));
+> >         err =3D brcmf_net_attach(ifp, true);
+> >         if (err) {
+> >                 bphy_err(drvr, "Registering netdevice failed\n");
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/d=
+rivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> > index d4492d02e4ea..6e0c90f4718b 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> > @@ -2334,7 +2334,7 @@ struct wireless_dev *brcmf_p2p_add_vif(struct wip=
+hy *wiphy, const char *name,
+> >                 goto fail;
+> >         }
+> >
+> > -       strncpy(ifp->ndev->name, name, sizeof(ifp->ndev->name) - 1);
+> > +       strscpy(ifp->ndev->name, name, sizeof(ifp->ndev->name));
+> >         ifp->ndev->name_assign_type =3D name_assign_type;
+> >         err =3D brcmf_net_attach(ifp, true);
+> >         if (err) {
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c=
+ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+> > index 5a6d9c86552a..f6962e558d7c 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+> > @@ -341,7 +341,7 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(st=
+ruct brcms_c_info *wlc)
+> >         /* store the country code for passing up as a regulatory hint *=
+/
+> >         wlc_cm->world_regd =3D brcms_world_regd(ccode, ccode_len);
+> >         if (brcms_c_country_valid(ccode))
+> > -               strncpy(wlc->pub->srom_ccode, ccode, ccode_len);
+> > +               memcpy(wlc->pub->srom_ccode, ccode, ccode_len);
+> >
+> >         /*
+> >          * If no custom world domain is found in the SROM, use the
+> > @@ -354,10 +354,10 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(=
+struct brcms_c_info *wlc)
+> >         }
+> >
+> >         /* save default country for exiting 11d regulatory mode */
+> > -       strncpy(wlc->country_default, ccode, ccode_len);
+> > +       memcpy(wlc->country_default, ccode, ccode_len);
+> >
+> >         /* initialize autocountry_default to driver default */
+> > -       strncpy(wlc->autocountry_default, ccode, ccode_len);
+> > +       memcpy(wlc->autocountry_default, ccode, ccode_len);
+> >
+> >         brcms_c_set_country(wlc_cm, wlc_cm->world_regd);
+> >
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c b/d=
+rivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
+> > index b7df576bb84d..3d5c1ef8f7f2 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
+> > @@ -584,8 +584,7 @@ struct dma_pub *dma_attach(char *name, struct brcms=
+_c_info *wlc,
+> >                       rxextheadroom, nrxpost, rxoffset, txregbase, rxre=
+gbase);
+> >
+> >         /* make a private copy of our callers name */
+> > -       strncpy(di->name, name, MAXNAMEL);
+> > -       di->name[MAXNAMEL - 1] =3D '\0';
+> > +       strscpy(di->name, name, sizeof(di->name));
+> >
+> >         di->dmadev =3D core->dma_dev;
+> >
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/=
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> > index b3663c5ef382..34460b5815d0 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> > @@ -5551,8 +5551,8 @@ int brcms_c_module_register(struct brcms_pub *pub=
+,
+> >         /* find an empty entry and just add, no duplication check! */
+> >         for (i =3D 0; i < BRCMS_MAXMODULES; i++) {
+> >                 if (wlc->modulecb[i].name[0] =3D=3D '\0') {
+> > -                       strncpy(wlc->modulecb[i].name, name,
+> > -                               sizeof(wlc->modulecb[i].name) - 1);
+> > +                       strscpy(wlc->modulecb[i].name, name,
+> > +                               sizeof(wlc->modulecb[i].name));
+> >                         wlc->modulecb[i].hdl =3D hdl;
+> >                         wlc->modulecb[i].down_fn =3D d_fn;
+> >                         return 0;
+> >
+> > ---
+> > base-commit: cbf3a2cb156a2c911d8f38d8247814b4c07f49a2
+> > change-id: 20231016-strncpy-drivers-net-wireless-broadcom-brcm80211-brc=
+mfmac-cfg80211-c-a20108421685
+> >
+> > Best regards,
+> > --
+> > Justin Stitt <justinstitt@google.com>
+> >
 
-Figured it out, I had misunderstood what "monitor" meant in the context 
-of changing an RX filter. Patch sent.
-
-https://lore.kernel.org/linux-wireless/20231017165306.118779-1-prestwoj@gmail.com/T/#u
+Thanks
+Justin
