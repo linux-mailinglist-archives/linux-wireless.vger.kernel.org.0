@@ -2,152 +2,300 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A6D7CC0BA
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 12:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B117CC31F
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 14:26:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234801AbjJQKcx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 06:32:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37750 "EHLO
+        id S235214AbjJQM0P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 08:26:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233570AbjJQKcx (ORCPT
+        with ESMTP id S234996AbjJQM0E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 06:32:53 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D7CA2
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 03:32:51 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 1EA6A66072ED;
-        Tue, 17 Oct 2023 11:32:49 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1697538770;
-        bh=Yuzeico+9BX44/F83mznBU79r2PrtZxBdBYdsAKolDk=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=V5oX5SV9blZ+Jh0eY5jDSoFJcXbeVR88J/S6QbUluAtCrPBI/8gMJHKOFu29Upxbk
-         7NQ38qpgTBMgzuI7+bd8oQks+S9POG1uh+wNlJTr3+r/ysR3O/9NryqnZNQLi7p0+c
-         Za+RcUrLNqJ/fWHZxk6yC2Dt8vyWAuIvKu6kAf+T0BoQA+qobegz+pnwYi/yi16kil
-         vvnjAtPhHxaJJxlUYOtZ6CL3cHof7pyiwUDGiPVqFZ8GgxEvLLdqktza9TnehYnlYV
-         0E7ANUUOTsOx9Lmoy8CfWmXFs5God1wNm4R6zxWXGMihbT9k6v6uXqm0UHoe4OH/mL
-         7Qy0GsGTPqsTQ==
-Message-ID: <927e7d50-826d-4c92-9931-3c59b18c6945@collabora.com>
-Date:   Tue, 17 Oct 2023 12:32:46 +0200
+        Tue, 17 Oct 2023 08:26:04 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE8DFD;
+        Tue, 17 Oct 2023 05:26:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697545560; x=1729081560;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DQ9JzogYoM8lZ2rQwhtTOmw7I8+Aql/bN4b4lbUehJ8=;
+  b=BGHmkwZMm3BVtNP6j0Al3YR7Vs5UDaxjoFnDTlb5p2+gSQ06vwf669/k
+   9wSClOn9LqMxpzPmRRMFjBXcNUCfVKyq+MoULtrFpH3aqLhozSo4Utzmc
+   QNfgppnxjXI3ne1l9KYDkb5dctqbrqHVXeRN8Xr4/isD47fN0AyC38Ogc
+   gXGimVhhvr/ecRVP8fBtdK5jTnb45FyVDAwRVArgOoDj/d1/6hf9SzlNO
+   BuzWOhzWI7UZFT+wMAYsblfkIhw7a/XjYEfWOlhJV3WQAMTIf8OsEUHHA
+   i0c6h/qp99QHTlXBQfhRaCQV6jxQjKNedLXJWzPc2Su1YDGqLga/GqR4P
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="366029451"
+X-IronPort-AV: E=Sophos;i="6.03,232,1694761200"; 
+   d="scan'208";a="366029451"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 05:25:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="749669241"
+X-IronPort-AV: E=Sophos;i="6.03,232,1694761200"; 
+   d="scan'208";a="749669241"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by orsmga007.jf.intel.com with ESMTP; 17 Oct 2023 05:25:53 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qsj8w-0009aI-32;
+        Tue, 17 Oct 2023 12:25:50 +0000
+Date:   Tue, 17 Oct 2023 20:25:38 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Christian Marangi <ansuelsmth@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+        Christian Marangi <ansuelsmth@gmail.com>
+Subject: Re: [net-next PATCH v3 3/4] net: stmmac: move TX timer arm after DMA
+ enable
+Message-ID: <202310172026.wU2jdMzf-lkp@intel.com>
+References: <20231014092954.1850-4-ansuelsmth@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] wifi: mt76: mt7921: update the channel usage when
- the regd domain changed
-Content-Language: en-US
-To:     Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Quan Zhou <quan.zhou@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-References: <cover.1696039301.git.deren.wu@mediatek.com>
- <14b7b24fbe0029cac43d2c0c9e471b118419ad8e.1696039301.git.deren.wu@mediatek.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <14b7b24fbe0029cac43d2c0c9e471b118419ad8e.1696039301.git.deren.wu@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231014092954.1850-4-ansuelsmth@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Il 30/09/23 04:25, Deren Wu ha scritto:
-> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> 
-> The 5.9/6GHz channel license of a certain platform device has been
-> regulated in various countries. That may be difference with standard
-> Liunx regulatory domain settings. In this case, when .reg_notifier()
-> called for regulatory change, mt792x chipset should update the channel
-> usage based on clc or dts configurations.
-> 
-> Channel would be disabled by following cases.
-> * clc report the particular UNII-x is disabled.
-> * dts enabled and the channel is not configured.
-> 
-> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Hi Christian,
 
-Hello,
-this patch is giving a kernel panic on the MT8195 Acer Tomato Chromebook.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Marangi/net-introduce-napi_is_scheduled-helper/20231017-133614
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20231014092954.1850-4-ansuelsmth%40gmail.com
+patch subject: [net-next PATCH v3 3/4] net: stmmac: move TX timer arm after DMA enable
+config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20231017/202310172026.wU2jdMzf-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231017/202310172026.wU2jdMzf-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310172026.wU2jdMzf-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:2550: warning: Function parameter or member 'pending_packets' not described in 'stmmac_tx_clean'
 
 
-Please refer to this stacktrace:
+vim +2550 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 
-<1>[   19.442078] Unable to handle kernel NULL pointer dereference at virtual 
-address 0000000000000014
-<1>[   19.457535] Mem abort info:
-<1>[   19.465329]   ESR = 0x0000000096000004
-<1>[   19.473295]   EC = 0x25: DABT (current EL), IL = 32 bits
-<1>[   19.482354]   SET = 0, FnV = 0
-<1>[   19.489143]   EA = 0, S1PTW = 0
-<1>[   19.495991]   FSC = 0x04: level 0 translation fault
-<1>[   19.504554] Data abort info:
-<1>[   19.511111]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-<1>[   19.520269]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-<1>[   19.528988]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-<1>[   19.537960] user pgtable: 4k pages, 48-bit VAs, pgdp=00000001027a9000
-<1>[   19.548014] [0000000000000014] pgd=0000000000000000, p4d=0000000000000000
-<0>[   19.558429] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-<4>[   19.568270] Modules linked in: mt7921e mt7921_common mt792x_lib 
-mt76_connac_lib mt76 mac80211 btusb btintel cfg80211 btmtk snd_sof_ipc_msg_injector 
-btrtl snd_sof_ipc_flood_test btbcm bluetooth snd_sof_mt8195 uvcvideo 
-mtk_adsp_common snd_sof_xtensa_dsp uvc snd_sof_of snd_sof videobuf2_vmalloc 
-ecdh_generic ecc snd_sof_utils cros_ec_lid_angle cros_ec_sensors crct10dif_ce 
-cros_ec_sensors_core cros_usbpd_logger crypto_user fuse ip_tables ipv6
-<4>[   19.614237] CPU: 1 PID: 105 Comm: kworker/1:1 Not tainted 
-6.6.0-rc6-next-20231017+ #324
-<4>[   19.625957] Hardware name: Acer Tomato (rev2) board (DT)
-<4>[   19.634970] Workqueue: events mt7921_init_work [mt7921_common]
-<4>[   19.644522] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-<4>[   19.655182] pc : mt7921_regd_notifier+0x180/0x290 [mt7921_common]
-<4>[   19.664983] lr : mt7921_regd_notifier+0xd4/0x290 [mt7921_common]
-<4>[   19.674679] sp : ffff800080acba80
-<4>[   19.681649] x29: ffff800080acba80 x28: 0000000000000000 x27: ffff4faf16032148
-<4>[   19.692483] x26: 0000000000000000 x25: 0000000000000000 x24: ffff4faf1603afa0
-<4>[   19.703294] x23: 00000000ffffe926 x22: ffff4faf16031fa0 x21: 0000000000000023
-<4>[   19.714108] x20: 000000000000001c x19: ffff4faf16ba6f40 x18: 00000000ff1d6000
-<4>[   19.724928] x17: 0000000000000000 x16: ffffac6b891c2750 x15: ffff800081051000
-<4>[   19.735722] x14: 0000000000000180 x13: 0000000000000000 x12: 0000000000000002
-<4>[   19.746478] x11: 0000000000000002 x10: ffff4faf01c21780 x9 : ffffac6b891c282c
-<4>[   19.757214] x8 : 00000000006c0000 x7 : ffffac6b6b020cf0 x6 : ffffac6b6b020ce8
-<4>[   19.767945] x5 : ffffac6b6b020d00 x4 : ffffac6b6b020cf8 x3 : ffff4faf16035fa0
-<4>[   19.778648] x2 : 0000000000000000 x1 : 000000000000001c x0 : 0000000000000031
-<4>[   19.789366] Call trace:
-<4>[   19.795381]  mt7921_regd_notifier+0x180/0x290 [mt7921_common]
-<4>[   19.804675]  wiphy_update_regulatory+0x2bc/0xa08 [cfg80211]
-<4>[   19.813864]  wiphy_regulatory_register+0x4c/0x88 [cfg80211]
-<4>[   19.823029]  wiphy_register+0x75c/0x8d0 [cfg80211]
-<4>[   19.831446]  ieee80211_register_hw+0x70c/0xc10 [mac80211]
-<4>[   19.840479]  mt76_register_device+0x168/0x2e8 [mt76]
-<4>[   19.849008]  mt7921_init_work+0xdc/0x250 [mt7921_common]
-<4>[   19.857817]  process_one_work+0x148/0x3c0
-<4>[   19.865292]  worker_thread+0x32c/0x450
-<4>[   19.872489]  kthread+0x11c/0x128
-<4>[   19.879173]  ret_from_fork+0x10/0x20
-<0>[   19.886153] Code: f0000041 9100a021 94000aef aa0003f9 (b9401780)
-<4>[   19.895634] ---[ end trace 0000000000000000 ]---
+3a6c12a0c6c3f8 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Xiaoliang Yang           2021-12-08  2540  
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2541  /**
+732fdf0e5253e9 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2014-11-18  2542   * stmmac_tx_clean - to manage the transmission completion
+32ceabcad3c8ab drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2013-04-08  2543   * @priv: driver private structure
+d0ea5cbdc286de drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jesse Brandeburg         2020-09-25  2544   * @budget: napi budget limiting this functions packet handling
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2545   * @queue: TX queue index
+732fdf0e5253e9 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2014-11-18  2546   * Description: it reclaims the transmit resources after transmission completes.
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2547   */
+af9cfa9bbb7075 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Christian Marangi        2023-10-14  2548  static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue,
+af9cfa9bbb7075 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Christian Marangi        2023-10-14  2549  			   bool *pending_packets)
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14 @2550  {
+8531c80800c10e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Christian Marangi        2022-07-23  2551  	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-09-18  2552  	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
+3897957494d979 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Beniamino Galvani        2015-01-21  2553  	unsigned int bytes_compl = 0, pkts_compl = 0;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2554  	unsigned int entry, xmits = 0, count = 0;
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-07-18  2555  	u32 tx_packets = 0, tx_errors = 0;
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-07-18  2556  	unsigned long flags;
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2557  
+8fce3331702316 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2018-09-17  2558  	__netif_tx_lock_bh(netdev_get_tx_queue(priv->dev, queue));
+a9097a9666fd7b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2011-10-18  2559  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2560  	tx_q->xsk_frames_done = 0;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2561  
+8d5f4b07174976 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Bernd Edlinger           2017-10-21  2562  	entry = tx_q->dirty_tx;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2563  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2564  	/* Try to clean all TX complete frame in 1 shot */
+8531c80800c10e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Christian Marangi        2022-07-23  2565  	while ((entry != tx_q->cur_tx) && count < priv->dma_conf.dma_tx_size) {
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2566  		struct xdp_frame *xdpf;
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2567  		struct sk_buff *skb;
+c24602ef866493 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2013-03-26  2568  		struct dma_desc *p;
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2569  		int status;
+c24602ef866493 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2013-03-26  2570  
+8b278a5b69a229 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2571  		if (tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_XDP_TX ||
+8b278a5b69a229 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2572  		    tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_XDP_NDO) {
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2573  			xdpf = tx_q->xdpf[entry];
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2574  			skb = NULL;
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2575  		} else if (tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_SKB) {
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2576  			xdpf = NULL;
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2577  			skb = tx_q->tx_skbuff[entry];
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2578  		} else {
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2579  			xdpf = NULL;
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2580  			skb = NULL;
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2581  		}
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2582  
+c24602ef866493 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2013-03-26  2583  		if (priv->extend_desc)
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2584  			p = (struct dma_desc *)(tx_q->dma_etx + entry);
+579a25a854d482 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2020-01-13  2585  		else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+579a25a854d482 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2020-01-13  2586  			p = &tx_q->dma_entx[entry].basic;
+c24602ef866493 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2013-03-26  2587  		else
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2588  			p = tx_q->dma_tx + entry;
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2589  
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-07-18  2590  		status = stmmac_tx_status(priv,	&priv->xstats, p, priv->ioaddr);
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2591  		/* Check if the descriptor is owned by the DMA */
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2592  		if (unlikely(status & tx_dma_own))
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2593  			break;
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2594  
+8fce3331702316 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2018-09-17  2595  		count++;
+8fce3331702316 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2018-09-17  2596  
+a6b25da5e7ba21 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Niklas Cassel            2018-02-26  2597  		/* Make sure descriptor fields are read after reading
+a6b25da5e7ba21 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Niklas Cassel            2018-02-26  2598  		 * the own bit.
+a6b25da5e7ba21 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Niklas Cassel            2018-02-26  2599  		 */
+a6b25da5e7ba21 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Niklas Cassel            2018-02-26  2600  		dma_rmb();
+a6b25da5e7ba21 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Niklas Cassel            2018-02-26  2601  
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2602  		/* Just consider the last segment and ...*/
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2603  		if (likely(!(status & tx_not_ls))) {
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2604  			/* ... verify the status error condition */
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2605  			if (unlikely(status & tx_err)) {
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-07-18  2606  				tx_errors++;
+3a6c12a0c6c3f8 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Xiaoliang Yang           2021-12-08  2607  				if (unlikely(status & tx_err_bump_tc))
+3a6c12a0c6c3f8 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Xiaoliang Yang           2021-12-08  2608  					stmmac_bump_dma_threshold(priv, queue);
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2609  			} else {
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-07-18  2610  				tx_packets++;
+c363b6586cd424 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Fabrice Gasnier          2016-02-29  2611  			}
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2612  			if (skb)
+ba1ffd74df74a9 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2016-11-14  2613  				stmmac_get_tx_hwtstamp(priv, p, skb);
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2614  		}
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2615  
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2616  		if (likely(tx_q->tx_skbuff_dma[entry].buf &&
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2617  			   tx_q->tx_skbuff_dma[entry].buf_type != STMMAC_TXBUF_T_XDP_TX)) {
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2618  			if (tx_q->tx_skbuff_dma[entry].map_as_page)
+362b37be01edc7 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2014-08-27  2619  				dma_unmap_page(priv->device,
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2620  					       tx_q->tx_skbuff_dma[entry].buf,
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2621  					       tx_q->tx_skbuff_dma[entry].len,
+362b37be01edc7 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2014-08-27  2622  					       DMA_TO_DEVICE);
+362b37be01edc7 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2014-08-27  2623  			else
+cf32deec16e4e8 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Rayagond Kokatanur       2013-03-26  2624  				dma_unmap_single(priv->device,
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2625  						 tx_q->tx_skbuff_dma[entry].buf,
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2626  						 tx_q->tx_skbuff_dma[entry].len,
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2627  						 DMA_TO_DEVICE);
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2628  			tx_q->tx_skbuff_dma[entry].buf = 0;
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2629  			tx_q->tx_skbuff_dma[entry].len = 0;
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2630  			tx_q->tx_skbuff_dma[entry].map_as_page = false;
+cf32deec16e4e8 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Rayagond Kokatanur       2013-03-26  2631  		}
+f748be531d7012 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Alexandre TORGUE         2016-04-01  2632  
+2c520b1c9cfa7d drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2018-04-16  2633  		stmmac_clean_desc3(priv, tx_q, p);
+f748be531d7012 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Alexandre TORGUE         2016-04-01  2634  
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2635  		tx_q->tx_skbuff_dma[entry].last_segment = false;
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2636  		tx_q->tx_skbuff_dma[entry].is_jumbo = false;
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2637  
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2638  		if (xdpf &&
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2639  		    tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_XDP_TX) {
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2640  			xdp_return_frame_rx_napi(xdpf);
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2641  			tx_q->xdpf[entry] = NULL;
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2642  		}
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2643  
+8b278a5b69a229 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2644  		if (xdpf &&
+8b278a5b69a229 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2645  		    tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_XDP_NDO) {
+8b278a5b69a229 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2646  			xdp_return_frame(xdpf);
+8b278a5b69a229 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2647  			tx_q->xdpf[entry] = NULL;
+8b278a5b69a229 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2648  		}
+8b278a5b69a229 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2649  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2650  		if (tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_XSK_TX)
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2651  			tx_q->xsk_frames_done++;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2652  
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2653  		if (tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_SKB) {
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2654  			if (likely(skb)) {
+3897957494d979 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Beniamino Galvani        2015-01-21  2655  				pkts_compl++;
+3897957494d979 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Beniamino Galvani        2015-01-21  2656  				bytes_compl += skb->len;
+7c565c33464798 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Eric W. Biederman        2014-03-15  2657  				dev_consume_skb_any(skb);
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2658  				tx_q->tx_skbuff[entry] = NULL;
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2659  			}
+be8b38a722e68f drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-01  2660  		}
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2661  
+42de047d60bc5d drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2018-04-16  2662  		stmmac_release_tx_desc(priv, p, priv->mode);
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2663  
+8531c80800c10e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Christian Marangi        2022-07-23  2664  		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2665  	}
+ce736788e8a92c drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2666  	tx_q->dirty_tx = entry;
+3897957494d979 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Beniamino Galvani        2015-01-21  2667  
+c22a3f48ef99ea drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2668  	netdev_tx_completed_queue(netdev_get_tx_queue(priv->dev, queue),
+c22a3f48ef99ea drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2669  				  pkts_compl, bytes_compl);
+c22a3f48ef99ea drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2670  
+c22a3f48ef99ea drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2671  	if (unlikely(netif_tx_queue_stopped(netdev_get_tx_queue(priv->dev,
+c22a3f48ef99ea drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2672  								queue))) &&
+aa042f60e4961d drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Song, Yoong Siang        2020-09-16  2673  	    stmmac_tx_avail(priv, queue) > STMMAC_TX_THRESH(priv)) {
+3897957494d979 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Beniamino Galvani        2015-01-21  2674  
+b3e51069627e2b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c LABBE Corentin           2016-11-16  2675  		netif_dbg(priv, tx_done, priv->dev,
+b3e51069627e2b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c LABBE Corentin           2016-11-16  2676  			  "%s: restart transmit\n", __func__);
+c22a3f48ef99ea drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Joao Pinto               2017-04-06  2677  		netif_tx_wake_queue(netdev_get_tx_queue(priv->dev, queue));
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2678  	}
+d765955d2ae0b8 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2012-06-27  2679  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2680  	if (tx_q->xsk_pool) {
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2681  		bool work_done;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2682  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2683  		if (tx_q->xsk_frames_done)
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2684  			xsk_tx_completed(tx_q->xsk_pool, tx_q->xsk_frames_done);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2685  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2686  		if (xsk_uses_need_wakeup(tx_q->xsk_pool))
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2687  			xsk_set_tx_need_wakeup(tx_q->xsk_pool);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2688  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2689  		/* For XSK TX, we try to send as many as possible.
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2690  		 * If XSK work done (XSK TX desc empty and budget still
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2691  		 * available), return "budget - 1" to reenable TX IRQ.
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2692  		 * Else, return "budget" to make NAPI continue polling.
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2693  		 */
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2694  		work_done = stmmac_xdp_xmit_zc(priv, queue,
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2695  					       STMMAC_XSK_TX_BUDGET_MAX);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2696  		if (work_done)
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2697  			xmits = budget - 1;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2698  		else
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2699  			xmits = budget;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2700  	}
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2701  
+be1c7eae8c7dfc drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Vineetha G. Jaya Kumaran 2020-10-28  2702  	if (priv->eee_enabled && !priv->tx_path_in_lpi_mode &&
+be1c7eae8c7dfc drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Vineetha G. Jaya Kumaran 2020-10-28  2703  	    priv->eee_sw_timer_en) {
+c74ead223deb88 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2022-01-23  2704  		if (stmmac_enable_eee_mode(priv))
+388e201d41fa1e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Vineetha G. Jaya Kumaran 2020-10-01  2705  			mod_timer(&priv->eee_ctrl_timer, STMMAC_LPI_T(priv->tx_lpi_timer));
+d765955d2ae0b8 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Giuseppe CAVALLARO       2012-06-27  2706  	}
+8fce3331702316 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2018-09-17  2707  
+4ccb45857c2c07 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2019-02-19  2708  	/* We still have pending packets, let's call for a new scheduling */
+4ccb45857c2c07 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2019-02-19  2709  	if (tx_q->dirty_tx != tx_q->cur_tx)
+af9cfa9bbb7075 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Christian Marangi        2023-10-14  2710  		*pending_packets = true;
+4ccb45857c2c07 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2019-02-19  2711  
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-09-18  2712  	flags = u64_stats_update_begin_irqsave(&txq_stats->syncp);
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-09-18  2713  	txq_stats->tx_packets += tx_packets;
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-09-18  2714  	txq_stats->tx_pkt_n += tx_packets;
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-09-18  2715  	txq_stats->tx_clean++;
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-09-18  2716  	u64_stats_update_end_irqrestore(&txq_stats->syncp, flags);
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-07-18  2717  
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-07-18  2718  	priv->xstats.tx_errors += tx_errors;
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang            2023-07-18  2719  
+8fce3331702316 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2018-09-17  2720  	__netif_tx_unlock_bh(netdev_get_tx_queue(priv->dev, queue));
+8fce3331702316 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jose Abreu               2018-09-17  2721  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2722  	/* Combine decisions from TX clean and XSK TX */
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong           2021-04-13  2723  	return max(count, xmits);
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2724  }
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro       2009-10-14  2725  
 
-Regards,
-Angelo
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
