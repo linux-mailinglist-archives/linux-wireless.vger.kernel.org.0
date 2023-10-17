@@ -2,62 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BE77CCD95
+	by mail.lfdr.de (Postfix) with ESMTP id 595897CCD97
 	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 22:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232198AbjJQULe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 16:11:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33058 "EHLO
+        id S232437AbjJQULf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 16:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230219AbjJQULd (ORCPT
+        with ESMTP id S232126AbjJQULe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 16:11:33 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C93376FAE
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 13:11:30 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d9ace796374so7458337276.0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 13:11:30 -0700 (PDT)
+        Tue, 17 Oct 2023 16:11:34 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3576FAD
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 13:11:32 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a7a6fd18abso93618797b3.1
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 13:11:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697573490; x=1698178290; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1697573491; x=1698178291; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ui+yzBeCi4InBjuyJPgf+DR/WwQH9rt9/DWplSIMOHU=;
-        b=ZCuy4p31X0jloLomlNs8XJvcVmD3ttbQZNyoTaVJtOPWzGnvcoBOUQ2e/4YMwqDivW
-         pChbMBubGifg0+wkZkXMzdTiOKUuB2aHMAmxB/9Mv8KsYLbxxdet6YiS9GbpB9OwWGP+
-         sJ9MQKnRqO6kmkX16VHGXNBm/5FFiL5LcC/s7VEtw2d3fSgO08wVJjvOUoXGe3acumjv
-         EkufxrbqH+2EIGEBN4qJjUPQvmH6LXMlXY/gUAso3wV6XIzldjhKz1I+tgIm3AbKrm/+
-         UZ2/G73GkTq6YTO+i+aw3ZLEmZZDdVslZk+qd691sC6QrCIlIg/kQrVi4wKYfOZuE0he
-         fBVQ==
+        bh=U16d/1k+vtJxpQ32+/WF4Jgqek04k8/6Qv2CuyTmXCM=;
+        b=GDEw2UZD8lhNP6ELGmB+xjB5hHNDqRBbdhGPd9h1sG3qFnW/nPWcOxYFXEZ+Wd9J/N
+         lPlZkZPgX2mH6M5V46HwIGj+Nui06vZpUDlRdMhyL10A/rkUnYuQHwhUIhYkpHOGCUws
+         /dd432KsbYNybH4owBweGCQJVzMEdNZRwIlH2/gO1oCsVtoudADx6YfHCg1ed9siU13J
+         xuof9Gn1cEuw6PDxWcnBd/+IRqSiXvuz1rLOanse6ob7Qvv6lDZMANcWcKl7C3DYZgOD
+         tfDBPzctQg5MZAmdHt+iGEtkD34/lvmuQwPl028phrBANLBjZrdU21FeRzhC/sc0ng3E
+         RC+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697573490; x=1698178290;
+        d=1e100.net; s=20230601; t=1697573491; x=1698178291;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ui+yzBeCi4InBjuyJPgf+DR/WwQH9rt9/DWplSIMOHU=;
-        b=iFl31wGsRp6FDogqjg5kms3qBGVktDhfX80KW3VDOsvAErw63rNuG2q2DpR/eMFC4Y
-         oyh3V5LcwlUQpo/QWFatt8Qh1PCMrWfevDMKSl9Al9wmk9H5hT0+2LCbVqWPZ+XTnNLv
-         ZsfDwmAZLUcCscjxEIfE4oQDuj0EhLeUn5lSWpEorbuLo38uZQAohXKJDYhcAUecDaoF
-         9Xlkxcqsftai6Ev5dMLzbM7SO9MogtjxMu/YiCqOkKDbvj76GEQx7e5yG+algB7uJwRp
-         TT5DKmWHbdgv35B2Xyi69pf473nsJWkOYtsojq6gqva3HlMpbgN/oOsGRkj+UifhgfDf
-         eEBg==
-X-Gm-Message-State: AOJu0YwC/22pL/DKUTlweFIT8sGwtfk5joVy4+RCrDkHp7RXkoUfCmKl
-        sUiTXt+4ncbtcGUayeeWbRzP63cBgRHceyOm2A==
-X-Google-Smtp-Source: AGHT+IFdwSVFWDCbuxt9p23HfZYWm/J4eAdvM+BOXOvX8s65kb3vTO6keHsPW31fPGnVCQ1IRGQlfmNgVa+/ISopmw==
+        bh=U16d/1k+vtJxpQ32+/WF4Jgqek04k8/6Qv2CuyTmXCM=;
+        b=VSaTyNSsX+VR4BP8ZZL0NHhKSPSd9XLThoLrA4bRBhhYliQ49EqTD7BCYeL3nhICBi
+         xh4mcA8REyYjIbpLsF+p6IBohE34yurGcv+jULIlhj8bTthkBgaJvUzPmzqEDoLyJ0LT
+         QclFXF63KCPALuLB+kJV3kwI25WmvowZ2OAhgMVgGeKJJwLGBZIzeXFDnYFrkaAJEimg
+         TgqK0F3fiduNPJeRE36XnMKE+Ij2SlKtxOARSx3EaWNjYnBH28RJNFdfWlVeHeqXty6u
+         oe/N1yk/rigaf44YC5z+QsDb8COAflr4HLtkGq4O+5kUTlKcwj0GwMDwq7TxDYjJmQn+
+         vlsw==
+X-Gm-Message-State: AOJu0YzDJWmVErNNH08YqqrYZxYGO2lVRl+9uwhN9Oa34o9AvmzkFym2
+        ZvciqE+MvJ5vVqBYlEmbNiB6GrgNrGYXfnDipA==
+X-Google-Smtp-Source: AGHT+IGpHQMAlN9H+dIGsgef4tZ3F2beOgDLdbLhwLbsk5LDWsH2GwN5lcJpP9ul6mWvpEKLa973Tu7cXXdTrNS5Nw==
 X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a05:6902:1346:b0:d9a:54e7:e910 with
- SMTP id g6-20020a056902134600b00d9a54e7e910mr71519ybu.4.1697573490059; Tue,
- 17 Oct 2023 13:11:30 -0700 (PDT)
-Date:   Tue, 17 Oct 2023 20:11:28 +0000
+ (user=justinstitt job=sendgmr) by 2002:a81:84c8:0:b0:59b:eb63:4beb with SMTP
+ id u191-20020a8184c8000000b0059beb634bebmr71930ywf.7.1697573491197; Tue, 17
+ Oct 2023 13:11:31 -0700 (PDT)
+Date:   Tue, 17 Oct 2023 20:11:29 +0000
 In-Reply-To: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-0-af780d74ae38@google.com>
 Mime-Version: 1.0
 References: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-0-af780d74ae38@google.com>
 X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1697573487; l=4966;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1697573487; l=2638;
  i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=gHDinb9a9sswIvj29QskOHXNeesA8YN3gdLsehwyx1o=; b=nAmbdGpBqSQNB9t1IYFTrpRaeC1QGXnuDgq0waS/15OL6TsrXeiVeYGUhvKYWMguhBQNEWYZk
- gJw9TTzVK+NDSiJlDVIqhgFT6x7JwDNKYduhIJHm8v3luvNPMUIb0OH
+ bh=zJRX9bfYMLnf8bwx/y1SqZRLrWT3yCChHrc9KJ+aw0g=; b=36Wx10SOxayn+TXLBPF3Sdbo+ZOjyWFKEXOZQUWfzf/HDZaBLlDvUd/FbJiQtsFySN1BKVG9K
+ S2f9g+oP7StAX9U5Iv2XSJNPkbxap07eIIAsrMoZPt/V36oDC327Jgg
 X-Mailer: b4 0.12.3
-Message-ID: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-1-af780d74ae38@google.com>
-Subject: [PATCH v3 1/2] wifi: brcm80211: replace deprecated strncpy with strscpy
+Message-ID: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-2-af780d74ae38@google.com>
+Subject: [PATCH v3 2/2] wifi: brcmsmac: replace deprecated strncpy with memcpy
 From:   Justin Stitt <justinstitt@google.com>
 To:     Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
@@ -79,116 +79,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Let's move away from using strncpy and instead favor a less ambiguous
-and more robust interface.
+Let's move away from using strncpy and instead use the more obvious
+interface for this context.
 
-For ifp->ndev->name, we expect ifp->ndev->name to be NUL-terminated based
-on its use in format strings within core.c:
-67 |       char *brcmf_ifname(struct brcmf_if *ifp)
-68 |       {
-69 |            if (!ifp)
-70 |                    return "<if_null>";
-71 |
-72 |            if (ifp->ndev)
-73 |                    return ifp->ndev->name;
-74 |
-75 |            return "<if_none>";
-76 |       }
-...
-288 |       static netdev_tx_t brcmf_netdev_start_xmit(struct sk_buff *skb,
-289 |                                              struct net_device *ndev) {
-...
-330 |       brcmf_dbg(INFO, "%s: insufficient headroom (%d)\n",
-331 |                 brcmf_ifname(ifp), head_delta);
-...
-336 |       bphy_err(drvr, "%s: failed to expand headroom\n",
-337 |                brcmf_ifname(ifp));
+For wlc->pub->srom_ccode, we're just copying two bytes from ccode into
+wlc->pub->srom_ccode with no expectation that srom_ccode be
+NUL-terminated:
+wlc->pub->srom_ccode is only used in regulatory_hint():
+1193 |       if (wl->pub->srom_ccode[0] &&
+1194 |           regulatory_hint(wl->wiphy, wl->pub->srom_ccode))
+1195 |               wiphy_err(wl->wiphy, "%s: regulatory hint failed\n", __func__);
 
-For di->name, we expect di->name to be NUL-terminated based on its usage
-with format strings:
-|       brcms_dbg_dma(di->core,
-|                     "%s: DMA64 tx doesn't have AE set\n",
-|                     di->name);
+We can see that only index 0 and index 1 are accessed.
+3307 |       int regulatory_hint(struct wiphy *wiphy, const char *alpha2)
+3308 |       {
+...  |          ...
+3322 |          request->alpha2[0] = alpha2[0];
+3323 |          request->alpha2[1] = alpha2[1];
+...  |          ...
+3332 |       }
 
-Looking at its allocation we can see that it is already zero-allocated
-which means NUL-padding is not required:
-|       di = kzalloc(sizeof(struct dma_info), GFP_ATOMIC);
+Since this is just a simple byte copy with correct lengths, let's use
+memcpy(). There should be no functional change.
 
-For wlc->modulecb[i].name, we expect each name in wlc->modulecb to be
-NUL-terminated based on their usage with strcmp():
-|       if (!strcmp(wlc->modulecb[i].name, name) &&
-
-NUL-padding is not required as wlc is zero-allocated in:
-brcms_c_attach_malloc() ->
-|       wlc = kzalloc(sizeof(struct brcms_c_info), GFP_ATOMIC);
-
-For all these cases, a suitable replacement is `strscpy` due to the fact
-that it guarantees NUL-termination on the destination buffer without
-unnecessarily NUL-padding.
+In a similar boat, both wlc->country_default and
+wlc->autocountry_default are just simple byte copies so let's use
+memcpy. However, FWICT they aren't used anywhere. (they should be
+used or removed -- not in scope of my patch, though).
 
 Signed-off-by: Justin Stitt <justinstitt@google.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c      | 2 +-
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c      | 3 +--
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c     | 4 ++--
- 4 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 2a90bb24ba77..7daa418df877 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -866,7 +866,7 @@ struct wireless_dev *brcmf_apsta_add_vif(struct wiphy *wiphy, const char *name,
- 		goto fail;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+index 5a6d9c86552a..f6962e558d7c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+@@ -341,7 +341,7 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(struct brcms_c_info *wlc)
+ 	/* store the country code for passing up as a regulatory hint */
+ 	wlc_cm->world_regd = brcms_world_regd(ccode, ccode_len);
+ 	if (brcms_c_country_valid(ccode))
+-		strncpy(wlc->pub->srom_ccode, ccode, ccode_len);
++		memcpy(wlc->pub->srom_ccode, ccode, ccode_len);
+ 
+ 	/*
+ 	 * If no custom world domain is found in the SROM, use the
+@@ -354,10 +354,10 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(struct brcms_c_info *wlc)
  	}
  
--	strncpy(ifp->ndev->name, name, sizeof(ifp->ndev->name) - 1);
-+	strscpy(ifp->ndev->name, name, sizeof(ifp->ndev->name));
- 	err = brcmf_net_attach(ifp, true);
- 	if (err) {
- 		bphy_err(drvr, "Registering netdevice failed\n");
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-index d4492d02e4ea..6e0c90f4718b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-@@ -2334,7 +2334,7 @@ struct wireless_dev *brcmf_p2p_add_vif(struct wiphy *wiphy, const char *name,
- 		goto fail;
- 	}
+ 	/* save default country for exiting 11d regulatory mode */
+-	strncpy(wlc->country_default, ccode, ccode_len);
++	memcpy(wlc->country_default, ccode, ccode_len);
  
--	strncpy(ifp->ndev->name, name, sizeof(ifp->ndev->name) - 1);
-+	strscpy(ifp->ndev->name, name, sizeof(ifp->ndev->name));
- 	ifp->ndev->name_assign_type = name_assign_type;
- 	err = brcmf_net_attach(ifp, true);
- 	if (err) {
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
-index b7df576bb84d..3d5c1ef8f7f2 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
-@@ -584,8 +584,7 @@ struct dma_pub *dma_attach(char *name, struct brcms_c_info *wlc,
- 		      rxextheadroom, nrxpost, rxoffset, txregbase, rxregbase);
+ 	/* initialize autocountry_default to driver default */
+-	strncpy(wlc->autocountry_default, ccode, ccode_len);
++	memcpy(wlc->autocountry_default, ccode, ccode_len);
  
- 	/* make a private copy of our callers name */
--	strncpy(di->name, name, MAXNAMEL);
--	di->name[MAXNAMEL - 1] = '\0';
-+	strscpy(di->name, name, sizeof(di->name));
+ 	brcms_c_set_country(wlc_cm, wlc_cm->world_regd);
  
- 	di->dmadev = core->dma_dev;
- 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-index b3663c5ef382..34460b5815d0 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-@@ -5551,8 +5551,8 @@ int brcms_c_module_register(struct brcms_pub *pub,
- 	/* find an empty entry and just add, no duplication check! */
- 	for (i = 0; i < BRCMS_MAXMODULES; i++) {
- 		if (wlc->modulecb[i].name[0] == '\0') {
--			strncpy(wlc->modulecb[i].name, name,
--				sizeof(wlc->modulecb[i].name) - 1);
-+			strscpy(wlc->modulecb[i].name, name,
-+				sizeof(wlc->modulecb[i].name));
- 			wlc->modulecb[i].hdl = hdl;
- 			wlc->modulecb[i].down_fn = d_fn;
- 			return 0;
 
 -- 
 2.42.0.655.g421f12c284-goog
