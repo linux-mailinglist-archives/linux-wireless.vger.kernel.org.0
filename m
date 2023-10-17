@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB887CBEBB
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 11:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C1447CBEBA
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 11:17:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234798AbjJQJRN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 05:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60342 "EHLO
+        id S234789AbjJQJRL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 05:17:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234815AbjJQJRI (ORCPT
+        with ESMTP id S234818AbjJQJRI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 17 Oct 2023 05:17:08 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1DF4B0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 02:17:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C3F8E
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 02:17:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697534226; x=1729070226;
+  t=1697534227; x=1729070227;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9wN4cvpXoiYZlfHNDWUevkbXccgdtS4kMjPD1n8CJCU=;
-  b=S/oKepBTYemWyH2YDTgzJUyAeewUpwk0CQ315rKT7WAhJMSTke9w5bt+
-   eIcHDeJ9g/PJrghhAls2yqRRdBprUCDrMFxxroEjRoqxXom2NuJro3xtq
-   XwGjKPadQMC3tos2TwfasncVD5QTXi3QuVIPxp/aYmgwMj+NuWtKCHOfp
-   CODeo6/YOyH4kPzPL1qekZ/ML95Y8VS3LFf/USLdE+8HLl0+g7S881QFb
-   qTPVrjAqJDD/2uYISbAWQbzknJMHn7e79tF1nWMTLTE87hHAxeeJYFTsW
-   nJ7WxPmQJxMs/iJO1XJ2ommmuRWVfUbo1lYJw+TAtfqD2n0SKXH/khMlG
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="370808515"
+  bh=Nrk1edAwGnxK+zkxOd2NMBb6glTVuHbGkC4vphJZ8D0=;
+  b=eKIL0p0ovptHh9DcNxQKRjv1orFVYZiZT73Vw17bPFcXzoUOHJbG9TPh
+   eOFhjtX9Esf9cc8ICXvYlak9c0Au0b41jv/Ngoe9oMfY7Szq18luIHr2h
+   70Sy5TpJoYJmS5sXQRZzvqvxVvuBCcCY+pRscNYv4W69u27kA/dcRf2fy
+   IXCLFh9pgNsYwm2oQDmFTnVUqSHdkkF7PBiRQk4R19JusdqxC89kiPYmr
+   +G6Toauz5clgqVW/wC8L6h0ACsWoam7zYHYFNIckO7zutKporDW5dRKTF
+   qV5fvxwfdxJF6f9esl245hcYbpLdPRqNEjyulO15ziM8EkWoaV8jEuJKw
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="370808517"
 X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
-   d="scan'208";a="370808515"
+   d="scan'208";a="370808517"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 02:17:05 -0700
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 02:17:06 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="759731796"
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="759731810"
 X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
-   d="scan'208";a="759731796"
+   d="scan'208";a="759731810"
 Received: from obarinsh-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.213.101])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 02:17:02 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 02:17:05 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 01/14] wifi: iwlwifi: make time_events MLO aware
-Date:   Tue, 17 Oct 2023 12:16:36 +0300
-Message-Id: <20231017115047.21496bcacb18.I79d037325b4fae4c12a22d9477e53fc9c537ad46@changeid>
+Subject: [PATCH 02/14] wifi: iwlwifi: support link_id in SESSION_PROTECTION cmd
+Date:   Tue, 17 Oct 2023 12:16:37 +0300
+Message-Id: <20231017115047.a3cb29ed0617.I85b8a85b0d9186d3dd4d704254e46775b0ccf7de@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20231017091649.65090-1-gregory.greenman@intel.com>
 References: <20231017091649.65090-1-gregory.greenman@intel.com>
@@ -64,207 +64,217 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-As session protection API is moving to be per link instead of per mac,
-move the time events to be per link too.
-
-Since there is only one concurrent time event per mac, it feels
-unnecessary to have the time_event as a member of iwl_mvm_link_info.
-(That way we will have to iterate over all links each time we want to
-clear a time event, and also we will need mac80211 to tell us the link
-id when mgd_tx_complete() is called.)
-So leave this as a member of iwl_mvm_vif, but add the link id to the
-time_event structure.
-
-The link id in time_event will only be maintained and used for:
-1. When SESSION_PROTECTION_CMD is supported (before it, we don't have MLO)
-2. For time_events of types SESSION_PROTECT_CONF_ASSOC,
-   SESSION_PROTECT_CONF_P2P_DEVICE_DISCOV, and
-   SESSION_PROTECT_CONF_P2P_GO_NEGOTIATION
-   (not for aux roc/ Hot Spot time_events).
-
-For P2P, non-MLO connections, and pre-MLD API, deflink id, meaning 0,
-will be used
+FW is introducing an API change in which link ID will be used
+for session protection cmd. Add support for it.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c     |  9 +++++----
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c |  8 +++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h          |  3 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/tdls.c         |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c   | 10 ++++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.h   |  4 +++-
- 6 files changed, 26 insertions(+), 10 deletions(-)
+ .../intel/iwlwifi/fw/api/time-event.h         | 11 ++-
+ .../wireless/intel/iwlwifi/mvm/time-event.c   | 78 ++++++++++++++-----
+ 2 files changed, 64 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index ba087c5ba6e1..38ee1629ec4b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -2462,7 +2462,7 @@ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h b/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h
+index f0d4056199a7..701b2929c3a4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2012-2014, 2018-2020, 2022 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2020, 2022-2023 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -432,8 +432,8 @@ enum iwl_mvm_session_prot_conf_id {
  
- void iwl_mvm_protect_assoc(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
--			   u32 duration_override)
-+			   u32 duration_override, unsigned int link_id)
- {
- 	u32 duration = IWL_MVM_TE_SESSION_PROTECTION_MAX_TIME_MS;
- 	u32 min_duration = IWL_MVM_TE_SESSION_PROTECTION_MIN_TIME_MS;
-@@ -2482,7 +2482,8 @@ void iwl_mvm_protect_assoc(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	if (fw_has_capa(&mvm->fw->ucode_capa,
- 			IWL_UCODE_TLV_CAPA_SESSION_PROT_CMD))
- 		iwl_mvm_schedule_session_protection(mvm, vif, 900,
--						    min_duration, false);
-+						    min_duration, false,
-+						    link_id);
- 	else
- 		iwl_mvm_protect_session(mvm, vif, duration,
- 					min_duration, 500, false);
-@@ -2670,7 +2671,7 @@ static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
- 				 * time could be small without us having heard
- 				 * a beacon yet.
- 				 */
--				iwl_mvm_protect_assoc(mvm, vif, 0);
-+				iwl_mvm_protect_assoc(mvm, vif, 0, 0);
- 			}
+ /**
+  * struct iwl_mvm_session_prot_cmd - configure a session protection
+- * @id_and_color: the id and color of the mac for which this session protection
+- *	is sent
++ * @id_and_color: the id and color of the link (or mac, for command version 1)
++ *	for which this session protection is sent
+  * @action: can be either FW_CTXT_ACTION_ADD or FW_CTXT_ACTION_REMOVE,
+  *	see &enum iwl_ctxt_action
+  * @conf_id: see &enum iwl_mvm_session_prot_conf_id
+@@ -454,7 +454,10 @@ struct iwl_mvm_session_prot_cmd {
+ 	__le32 duration_tu;
+ 	__le32 repetition_count;
+ 	__le32 interval;
+-} __packed; /* SESSION_PROTECTION_CMD_API_S_VER_1 */
++} __packed;
++/* SESSION_PROTECTION_CMD_API_S_VER_1 and
++ * SESSION_PROTECTION_CMD_API_S_VER_2
++ */
  
- 			iwl_mvm_sf_update(mvm, vif, false);
-@@ -4009,7 +4010,7 @@ void iwl_mvm_mac_mgd_prepare_tx(struct ieee80211_hw *hw,
- 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
- 
- 	mutex_lock(&mvm->mutex);
--	iwl_mvm_protect_assoc(mvm, vif, info->duration);
-+	iwl_mvm_protect_assoc(mvm, vif, info->duration, info->link_id);
- 	mutex_unlock(&mvm->mutex);
- }
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index e5f386ae862d..8402482a74a0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -851,6 +851,12 @@ static void iwl_mvm_mld_vif_cfg_changed_station(struct iwl_mvm *mvm,
- 
- 			if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status) &&
- 			    protect) {
-+				/* We are in assoc so only one link is active-
-+				 * The association link
-+				 */
-+				unsigned int link_id =
-+					ffs(vif->active_links) - 1;
-+
- 				/* If we're not restarting and still haven't
- 				 * heard a beacon (dtim period unknown) then
- 				 * make sure we still have enough minimum time
-@@ -860,7 +866,7 @@ static void iwl_mvm_mld_vif_cfg_changed_station(struct iwl_mvm *mvm,
- 				 * time could be small without us having heard
- 				 * a beacon yet.
- 				 */
--				iwl_mvm_protect_assoc(mvm, vif, 0);
-+				iwl_mvm_protect_assoc(mvm, vif, 0, link_id);
- 			}
- 
- 			iwl_mvm_sf_update(mvm, vif, false);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index f81f1ec3bb79..0bd2a8bcaee5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -121,6 +121,7 @@ struct iwl_mvm_time_event_data {
- 	 * if the te is in the time event list or not (when id == TE_MAX)
- 	 */
- 	u32 id;
-+	u8 link_id;
- };
- 
-  /* Power management */
-@@ -1956,7 +1957,7 @@ int iwl_mvm_cancel_roc(struct ieee80211_hw *hw,
- 		       struct ieee80211_vif *vif);
- /*Session Protection */
- void iwl_mvm_protect_assoc(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
--			   u32 duration_override);
-+			   u32 duration_override, unsigned int link_id);
- 
- /* Quota management */
- static inline size_t iwl_mvm_quota_cmd_size(struct iwl_mvm *mvm)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
-index fac992af3ddb..e7d5f4ebeb25 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
-@@ -155,7 +155,7 @@ void iwl_mvm_mac_mgd_protect_tdls_discover(struct ieee80211_hw *hw,
- 	if (fw_has_capa(&mvm->fw->ucode_capa,
- 			IWL_UCODE_TLV_CAPA_SESSION_PROT_CMD))
- 		iwl_mvm_schedule_session_protection(mvm, vif, duration,
--						    duration, true);
-+						    duration, true, link_id);
- 	else
- 		iwl_mvm_protect_session(mvm, vif, duration,
- 					duration, 100, true);
+ /**
+  * struct iwl_mvm_session_prot_notif - session protection started / ended
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index 7ab6cabda9a4..54e57c7ecfc8 100644
+index 54e57c7ecfc8..ecbebef80791 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -42,6 +42,7 @@ void iwl_mvm_te_clear_data(struct iwl_mvm *mvm,
- 	te_data->uid = 0;
- 	te_data->id = TE_MAX;
- 	te_data->vif = NULL;
-+	te_data->link_id = -1;
+@@ -689,19 +689,46 @@ void iwl_mvm_protect_session(struct iwl_mvm *mvm,
+ 	}
  }
  
- void iwl_mvm_roc_done_wk(struct work_struct *wk)
-@@ -951,6 +952,9 @@ iwl_mvm_start_p2p_roc_session_protection(struct iwl_mvm *mvm,
- 	/* The time_event_data.id field is reused to save session
- 	 * protection's configuration.
- 	 */
++/* Determine whether mac or link id should be used, and validate the link id */
++static int iwl_mvm_get_session_prot_id(struct iwl_mvm *mvm,
++				       struct ieee80211_vif *vif,
++				       u32 link_id)
++{
++	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	int ver = iwl_fw_lookup_cmd_ver(mvm->fw,
++					WIDE_ID(MAC_CONF_GROUP,
++						SESSION_PROTECTION_CMD), 1);
 +
-+	mvmvif->time_event_data.link_id = 0;
++	if (ver < 2)
++		return mvmvif->id;
 +
- 	switch (type) {
- 	case IEEE80211_ROC_TYPE_NORMAL:
- 		mvmvif->time_event_data.id =
-@@ -1231,7 +1235,8 @@ static bool iwl_mvm_session_prot_notif(struct iwl_notif_wait_data *notif_wait,
- void iwl_mvm_schedule_session_protection(struct iwl_mvm *mvm,
- 					 struct ieee80211_vif *vif,
- 					 u32 duration, u32 min_duration,
--					 bool wait_for_notif)
-+					 bool wait_for_notif,
-+					 unsigned int link_id)
++	if (WARN(link_id < 0 || !mvmvif->link[link_id],
++		 "Invalid link ID for session protection: %u\n", link_id))
++		return -EINVAL;
++
++	if (WARN(ieee80211_vif_is_mld(vif) &&
++		 !(vif->active_links & BIT(link_id)),
++		 "Session Protection on an inactive link: %u\n", link_id))
++		return -EINVAL;
++
++	return mvmvif->link[link_id]->fw_link_id;
++}
++
+ static void iwl_mvm_cancel_session_protection(struct iwl_mvm *mvm,
+-					      struct iwl_mvm_vif *mvmvif,
+-					      u32 id)
++					      struct ieee80211_vif *vif,
++					      u32 id, u32 link_id)
  {
++	int mac_link_id = iwl_mvm_get_session_prot_id(mvm, vif, link_id);
+ 	struct iwl_mvm_session_prot_cmd cmd = {
+-		.id_and_color =
+-			cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
+-							mvmvif->color)),
++		.id_and_color = cpu_to_le32(mac_link_id),
+ 		.action = cpu_to_le32(FW_CTXT_ACTION_REMOVE),
+ 		.conf_id = cpu_to_le32(id),
+ 	};
+ 	int ret;
+ 
++	if (mac_link_id < 0)
++		return;
++
+ 	ret = iwl_mvm_send_cmd_pdu(mvm,
+ 				   WIDE_ID(MAC_CONF_GROUP, SESSION_PROTECTION_CMD),
+ 				   0, sizeof(cmd), &cmd);
+@@ -715,10 +742,12 @@ static bool __iwl_mvm_remove_time_event(struct iwl_mvm *mvm,
+ 					u32 *uid)
+ {
+ 	u32 id;
++	struct ieee80211_vif *vif = te_data->vif;
+ 	struct iwl_mvm_vif *mvmvif;
+ 	enum nl80211_iftype iftype;
++	unsigned int link_id;
+ 
+-	if (!te_data->vif)
++	if (!vif)
+ 		return false;
+ 
+ 	mvmvif = iwl_mvm_vif_from_mac80211(te_data->vif);
+@@ -733,6 +762,7 @@ static bool __iwl_mvm_remove_time_event(struct iwl_mvm *mvm,
+ 	/* Save time event uid before clearing its data */
+ 	*uid = te_data->uid;
+ 	id = te_data->id;
++	link_id = te_data->link_id;
+ 
+ 	/*
+ 	 * The clear_data function handles time events that were already removed
+@@ -750,7 +780,8 @@ static bool __iwl_mvm_remove_time_event(struct iwl_mvm *mvm,
+ 	    id != HOT_SPOT_CMD) {
+ 		if (mvmvif && id < SESSION_PROTECT_CONF_MAX_ID) {
+ 			/* Session protection is still ongoing. Cancel it */
+-			iwl_mvm_cancel_session_protection(mvm, mvmvif, id);
++			iwl_mvm_cancel_session_protection(mvm, vif, id,
++							  link_id);
+ 			if (iftype == NL80211_IFTYPE_P2P_DEVICE) {
+ 				iwl_mvm_p2p_roc_finished(mvm);
+ 			}
+@@ -941,8 +972,7 @@ iwl_mvm_start_p2p_roc_session_protection(struct iwl_mvm *mvm,
  	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm_session_prot_cmd cmd = {
+ 		.id_and_color =
+-			cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
+-							mvmvif->color)),
++			cpu_to_le32(iwl_mvm_get_session_prot_id(mvm, vif, 0)),
+ 		.action = cpu_to_le32(FW_CTXT_ACTION_ADD),
+ 		.duration_tu = cpu_to_le32(MSEC_TO_TU(duration)),
+ 	};
+@@ -1112,8 +1142,9 @@ void iwl_mvm_stop_roc(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 		mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 
+ 		if (vif->type == NL80211_IFTYPE_P2P_DEVICE) {
+-			iwl_mvm_cancel_session_protection(mvm, mvmvif,
+-							  mvmvif->time_event_data.id);
++			iwl_mvm_cancel_session_protection(mvm, vif,
++							  mvmvif->time_event_data.id,
++							  mvmvif->time_event_data.link_id);
+ 			iwl_mvm_p2p_roc_finished(mvm);
+ 		} else {
+ 			iwl_mvm_roc_station_remove(mvm, mvmvif);
+@@ -1242,15 +1273,17 @@ void iwl_mvm_schedule_session_protection(struct iwl_mvm *mvm,
  	struct iwl_mvm_time_event_data *te_data = &mvmvif->time_event_data;
-@@ -1249,7 +1254,7 @@ void iwl_mvm_schedule_session_protection(struct iwl_mvm *mvm,
+ 	const u16 notif[] = { WIDE_ID(MAC_CONF_GROUP, SESSION_PROTECTION_NOTIF) };
+ 	struct iwl_notification_wait wait_notif;
++	int mac_link_id = iwl_mvm_get_session_prot_id(mvm, vif, link_id);
+ 	struct iwl_mvm_session_prot_cmd cmd = {
+-		.id_and_color =
+-			cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
+-							mvmvif->color)),
++		.id_and_color = cpu_to_le32(mac_link_id),
+ 		.action = cpu_to_le32(FW_CTXT_ACTION_ADD),
+ 		.conf_id = cpu_to_le32(SESSION_PROTECT_CONF_ASSOC),
+ 		.duration_tu = cpu_to_le32(MSEC_TO_TU(duration)),
+ 	};
+ 
++	if (mac_link_id < 0)
++		return;
++
  	lockdep_assert_held(&mvm->mutex);
  
  	spin_lock_bh(&mvm->time_event_lock);
--	if (te_data->running &&
-+	if (te_data->running && te_data->link_id == link_id &&
- 	    time_after(te_data->end_jiffies, TU_TO_EXP_TIME(min_duration))) {
- 		IWL_DEBUG_TE(mvm, "We have enough time in the current TE: %u\n",
- 			     jiffies_to_msecs(te_data->end_jiffies - jiffies));
-@@ -1266,6 +1271,7 @@ void iwl_mvm_schedule_session_protection(struct iwl_mvm *mvm,
- 	te_data->id = le32_to_cpu(cmd.conf_id);
- 	te_data->duration = le32_to_cpu(cmd.duration_tu);
- 	te_data->vif = vif;
-+	te_data->link_id = link_id;
- 	spin_unlock_bh(&mvm->time_event_lock);
+@@ -1281,11 +1314,7 @@ void iwl_mvm_schedule_session_protection(struct iwl_mvm *mvm,
+ 		if (iwl_mvm_send_cmd_pdu(mvm,
+ 					 WIDE_ID(MAC_CONF_GROUP, SESSION_PROTECTION_CMD),
+ 					 0, sizeof(cmd), &cmd)) {
+-			IWL_ERR(mvm,
+-				"Couldn't send the SESSION_PROTECTION_CMD\n");
+-			spin_lock_bh(&mvm->time_event_lock);
+-			iwl_mvm_te_clear_data(mvm, te_data);
+-			spin_unlock_bh(&mvm->time_event_lock);
++			goto send_cmd_err;
+ 		}
  
- 	IWL_DEBUG_TE(mvm, "Add new session protection, duration %d TU\n",
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.h b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.h
-index f77df939b6b1..49256ba4cf58 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.h
-@@ -206,11 +206,13 @@ iwl_mvm_te_scheduled(struct iwl_mvm_time_event_data *te_data)
-  * @duration: the requested duration of the protection
-  * @min_duration: the minimum duration of the protection
-  * @wait_for_notif: if true, will block until the start of the protection
-+ * @link_id: The link to schedule a session protection for
-  */
- void iwl_mvm_schedule_session_protection(struct iwl_mvm *mvm,
- 					 struct ieee80211_vif *vif,
- 					 u32 duration, u32 min_duration,
--					 bool wait_for_notif);
-+					 bool wait_for_notif,
-+					 unsigned int link_id);
- 
- /**
-  * iwl_mvm_rx_session_protect_notif - handles %SESSION_PROTECTION_NOTIF
+ 		return;
+@@ -1298,12 +1327,19 @@ void iwl_mvm_schedule_session_protection(struct iwl_mvm *mvm,
+ 	if (iwl_mvm_send_cmd_pdu(mvm,
+ 				 WIDE_ID(MAC_CONF_GROUP, SESSION_PROTECTION_CMD),
+ 				 0, sizeof(cmd), &cmd)) {
+-		IWL_ERR(mvm,
+-			"Couldn't send the SESSION_PROTECTION_CMD\n");
+ 		iwl_remove_notification(&mvm->notif_wait, &wait_notif);
++		goto send_cmd_err;
+ 	} else if (iwl_wait_notification(&mvm->notif_wait, &wait_notif,
+ 					 TU_TO_JIFFIES(100))) {
+ 		IWL_ERR(mvm,
+ 			"Failed to protect session until session protection\n");
+ 	}
++	return;
++
++send_cmd_err:
++	IWL_ERR(mvm,
++		"Couldn't send the SESSION_PROTECTION_CMD\n");
++	spin_lock_bh(&mvm->time_event_lock);
++	iwl_mvm_te_clear_data(mvm, te_data);
++	spin_unlock_bh(&mvm->time_event_lock);
+ }
 -- 
 2.38.1
 
