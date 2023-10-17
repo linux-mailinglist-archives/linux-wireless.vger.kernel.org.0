@@ -2,45 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 142487CC4C4
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 15:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 431DF7CC5E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 16:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343636AbjJQNab (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 09:30:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40512 "EHLO
+        id S234973AbjJQOZe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 10:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234968AbjJQNab (ORCPT
+        with ESMTP id S231560AbjJQOZb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 09:30:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4CBBF7
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 06:30:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E3BC433C8;
-        Tue, 17 Oct 2023 13:30:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697549428;
-        bh=/OapuL4h3uUpw84juCQ6z2WXTSkaxnDG3aPjYYNKpew=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Dmvl2p1kEQDfmpR3woPWE2jSXodAnnKrYbIhYojHvh/i0jbgwcVkrrKhPtf58uFc2
-         s9URIrOWvh/7/6Hgyw/mrp+2M64WwfsH9apL5ZW2XKu/m4MsebhcrE4ic8mvv4SYoB
-         hQSG6yeNwVyae4wo+gik9adLommGXpKPefH+tcHSR3da0qB4b87Fergtxeox7sh6dt
-         loLpbdoVaj+x+Hl7Vep+Lb0lsiSF4e8txTkw5g7Jfer5GCx+ctDFBOFRJsnbf3zTZp
-         S0gOfTEcJOHALmmLvION4kzLENTveGDxQITT0KhHf2uvberx0dLyMaRxaG4QW96RF7
-         WijtD6DR0yTGg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
-        shayne.chen@mediatek.com, Bo.Jiao@mediatek.com,
-        sujuan.chen@mediatek.com, linux-mediatek@lists.infradead.org
-Subject: [PATCH] wifi: mt76: mt7996: add wed rro delete session garbage collector
-Date:   Tue, 17 Oct 2023 15:30:16 +0200
-Message-ID: <8bbb69372c125a6b2cba8d7ac1e65aeb287a596f.1697549308.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.41.0
+        Tue, 17 Oct 2023 10:25:31 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73C5D92
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 07:25:28 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 41BB466072A7;
+        Tue, 17 Oct 2023 15:25:26 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1697552727;
+        bh=4XecZoT85LVsfAhbdxT9GKsxPFiQt5bqc/2fG/us2EE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=NKW0ByeJnsOXv9obG5D5JHC2bY03k40AJJBBsmF1pTzqRL5+onTMyj2kEU47QimV9
+         5H+rFiJGpGeydAcb5N+ey69vxIbwRfua/uFVCOHpYqQfOEccTvStragiAjQsiofjsp
+         PKqj7A0bTRqpsK4FHI8dimPh1KStPjxsso9M5RkntcvjygKWe/tt7xtvNPkvaUkTl+
+         yOzrghT58tdecmwuwiIPmyvBlfDu/I+SH4v1s8xxUzhk9cdlqXvFFSxhCGqTNRtYP5
+         Tw5tLzn9SRdxz107MWkDHIHtQWxnywoRpHoVr27dukq25KmismxJqHwu+bpTQDr75R
+         ceumummfWpoXQ==
+Message-ID: <ecccfd61-2cbc-4528-aa5a-0b1b7f83cccb@collabora.com>
+Date:   Tue, 17 Oct 2023 16:25:24 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mt76: mt7921: fix kernel panic by accessing invalid
+ 6GHz channel info
+Content-Language: en-US
+To:     Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Quan Zhou <quan.zhou@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+References: <b3c45980a230f17af186d4004107ed27ee952cc9.1697547461.git.deren.wu@mediatek.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <b3c45980a230f17af186d4004107ed27ee952cc9.1697547461.git.deren.wu@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,359 +70,79 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce the capability to clear WED rro session configured in the hw
-according to the event reported by the MCU firmware
+Il 17/10/23 15:04, Deren Wu ha scritto:
+> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+> 
+> When the chip not support 6GHz capability, the channels of 6GHz information
+> should not be updated.
+> 
+> May get the stacktrace without this patch.
+> <1>[   19.442078] Unable to handle kernel NULL pointer dereference at
+> virtual address 0000000000000014
+> <1>[   19.457535] Mem abort info:
+> <1>[   19.465329]   ESR = 0x0000000096000004
+> <1>[   19.473295]   EC = 0x25: DABT (current EL), IL = 32 bits
+> <1>[   19.482354]   SET = 0, FnV = 0
+> <1>[   19.489143]   EA = 0, S1PTW = 0
+> <1>[   19.495991]   FSC = 0x04: level 0 translation fault
+> <1>[   19.504554] Data abort info:
+> <1>[   19.511111]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+> <1>[   19.520269]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> <1>[   19.528988]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> <1>[   19.537960] user pgtable: 4k pages, 48-bit VAs, pgdp=00000001027a9000
+> <1>[   19.548014] [0000000000000014] pgd=0000000000000000, p4d=000000000000
+> <0>[   19.558429] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+> <4>[   19.568270] Modules linked in: mt7921e mt7921_common mt792x_lib
+> mt76_connac_lib mt76 mac80211 btusb btintel cfg80211 btmtk snd_sof_ipc_msg_
+> btrtl snd_sof_ipc_flood_test btbcm bluetooth snd_sof_mt8195 uvcvideo
+> mtk_adsp_common snd_sof_xtensa_dsp uvc snd_sof_of snd_sof videobuf2_vmalloc
+> ecdh_generic ecc snd_sof_utils cros_ec_lid_angle cros_ec_sensors crct10dif_
+> cros_ec_sensors_core cros_usbpd_logger crypto_user fuse ip_tables ipv6
+> <4>[   19.614237] CPU: 1 PID: 105 Comm: kworker/1:1 Not tainted
+> 6.6.0-rc6-next-20231017+ #324
+> <4>[   19.625957] Hardware name: Acer Tomato (rev2) board (DT)
+> <4>[   19.634970] Workqueue: events mt7921_init_work [mt7921_common]
+> <4>[   19.644522] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTY
+> <4>[   19.655182] pc : mt7921_regd_notifier+0x180/0x290 [mt7921_common]
+> <4>[   19.664983] lr : mt7921_regd_notifier+0xd4/0x290 [mt7921_common]
+> <4>[   19.674679] sp : ffff800080acba80
+> <4>[   19.681649] x29: ffff800080acba80 x28: 0000000000000000 x27: ffff4faf
+> <4>[   19.692483] x26: 0000000000000000 x25: 0000000000000000 x24: ffff4faf
+> <4>[   19.703294] x23: 00000000ffffe926 x22: ffff4faf16031fa0 x21: 00000000
+> <4>[   19.714108] x20: 000000000000001c x19: ffff4faf16ba6f40 x18: 00000000
+> <4>[   19.724928] x17: 0000000000000000 x16: ffffac6b891c2750 x15: ffff8000
+> <4>[   19.735722] x14: 0000000000000180 x13: 0000000000000000 x12: 00000000
+> <4>[   19.746478] x11: 0000000000000002 x10: ffff4faf01c21780 x9 : ffffac6b
+> <4>[   19.757214] x8 : 00000000006c0000 x7 : ffffac6b6b020cf0 x6 : ffffac6b
+> <4>[   19.767945] x5 : ffffac6b6b020d00 x4 : ffffac6b6b020cf8 x3 : ffff4faf
+> <4>[   19.778648] x2 : 0000000000000000 x1 : 000000000000001c x0 : 00000000
+> <4>[   19.789366] Call trace:
+> <4>[   19.795381]  mt7921_regd_notifier+0x180/0x290 [mt7921_common]
+> <4>[   19.804675]  wiphy_update_regulatory+0x2bc/0xa08 [cfg80211]
+> <4>[   19.813864]  wiphy_regulatory_register+0x4c/0x88 [cfg80211]
+> <4>[   19.823029]  wiphy_register+0x75c/0x8d0 [cfg80211]
+> <4>[   19.831446]  ieee80211_register_hw+0x70c/0xc10 [mac80211]
+> <4>[   19.840479]  mt76_register_device+0x168/0x2e8 [mt76]
+> <4>[   19.849008]  mt7921_init_work+0xdc/0x250 [mt7921_common]
+> <4>[   19.857817]  process_one_work+0x148/0x3c0
+> <4>[   19.865292]  worker_thread+0x32c/0x450
+> <4>[   19.872489]  kthread+0x11c/0x128
+> <4>[   19.879173]  ret_from_fork+0x10/0x20
+> <0>[   19.886153] Code: f0000041 9100a021 94000aef aa0003f9 (b9401780)
+> <4>[   19.895634] ---[ end trace 0000000000000000 ]---
+> 
+> Reported-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Closes: https://lore.kernel.org/all/927e7d50-826d-4c92-9931-3c59b18c6945@collabora.com/
+> Fixes: 09382d8f8641 ("mt7921: update the channel usage when the regd domain changed")
+> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 
-Co-developed-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-This patch is based on the series below:
-https://patchwork.kernel.org/project/linux-wireless/cover/cover.1697445995.git.lorenzo@kernel.org/
----
- drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
- .../net/wireless/mediatek/mt76/mt7996/init.c  | 52 +++++++++++
- .../net/wireless/mediatek/mt76/mt7996/mac.c   |  3 +
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 89 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7996/mcu.h   | 35 ++++++++
- .../wireless/mediatek/mt76/mt7996/mt7996.h    | 10 +++
- .../net/wireless/mediatek/mt76/mt7996/regs.h  |  6 ++
- 8 files changed, 197 insertions(+)
+I can confirm the regression is fixed with this patch.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 413e33a7b16e..1460e47ff1d0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -404,6 +404,7 @@ struct mt76_rx_tid {
- 	spinlock_t lock;
- 	struct delayed_work reorder_work;
- 
-+	u16 id;
- 	u16 head;
- 	u16 size;
- 	u16 nframes;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 0563b1b22f48..97822f7d46cc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1022,6 +1022,7 @@ enum {
- 	MCU_UNI_EVENT_ROC = 0x27,
- 	MCU_UNI_EVENT_TX_DONE = 0x2d,
- 	MCU_UNI_EVENT_NIC_CAPAB = 0x43,
-+	MCU_UNI_EVENT_WED_RRO = 0x57,
- 	MCU_UNI_EVENT_PER_STA_INFO = 0x6d,
- 	MCU_UNI_EVENT_ALL_STA_INFO = 0x6e,
- };
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index a1adbc65ae00..5af85ddfdc36 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -641,6 +641,54 @@ static void mt7996_wed_rro_free(struct mt7996_dev *dev)
- #endif
- }
- 
-+static void mt7996_wed_rro_work(struct work_struct *work)
-+{
-+#ifdef CONFIG_NET_MEDIATEK_SOC_WED
-+	struct mt7996_dev *dev;
-+	LIST_HEAD(list);
-+
-+	dev = (struct mt7996_dev *)container_of(work, struct mt7996_dev,
-+						wed_rro.work);
-+
-+	spin_lock_bh(&dev->wed_rro.lock);
-+	list_splice_init(&dev->wed_rro.poll_list, &list);
-+	spin_unlock_bh(&dev->wed_rro.lock);
-+
-+	while (!list_empty(&list)) {
-+		struct mt7996_wed_rro_session_id *e;
-+		int i;
-+
-+		e = list_first_entry(&list, struct mt7996_wed_rro_session_id,
-+				     list);
-+		list_del_init(&e->list);
-+
-+		for (i = 0; i < MT7996_RRO_WINDOW_MAX_LEN; i++) {
-+			void *ptr = dev->wed_rro.session.ptr;
-+			struct mt7996_wed_rro_addr *elem;
-+			u32 idx, elem_id = i;
-+
-+			if (e->id == MT7996_RRO_MAX_SESSION)
-+				goto reset;
-+
-+			idx = e->id / MT7996_RRO_BA_BITMAP_SESSION_SIZE;
-+			if (idx >= ARRAY_SIZE(dev->wed_rro.addr_elem))
-+				goto out;
-+
-+			ptr = dev->wed_rro.addr_elem[idx].ptr;
-+			elem_id +=
-+				(e->id % MT7996_RRO_BA_BITMAP_SESSION_SIZE) *
-+				MT7996_RRO_WINDOW_MAX_LEN;
-+reset:
-+			elem = ptr + elem_id * sizeof(*elem);
-+			elem->signature = 0xff;
-+		}
-+		mt7996_mcu_wed_rro_reset_sessions(dev, e->id);
-+out:
-+		kfree(e);
-+	}
-+#endif
-+}
-+
- static int mt7996_init_hardware(struct mt7996_dev *dev)
- {
- 	int ret, idx;
-@@ -648,6 +696,9 @@ static int mt7996_init_hardware(struct mt7996_dev *dev)
- 	mt76_wr(dev, MT_INT_SOURCE_CSR, ~0);
- 
- 	INIT_WORK(&dev->init_work, mt7996_init_work);
-+	INIT_WORK(&dev->wed_rro.work, mt7996_wed_rro_work);
-+	INIT_LIST_HEAD(&dev->wed_rro.poll_list);
-+	spin_lock_init(&dev->wed_rro.lock);
- 
- 	dev->dbdc_support = true;
- 	dev->tbtc_support = true;
-@@ -1100,6 +1151,7 @@ int mt7996_register_device(struct mt7996_dev *dev)
- 
- void mt7996_unregister_device(struct mt7996_dev *dev)
- {
-+	cancel_work_sync(&dev->wed_rro.work);
- 	mt7996_unregister_phy(mt7996_phy3(dev), MT_BAND2);
- 	mt7996_unregister_phy(mt7996_phy2(dev), MT_BAND1);
- 	mt7996_coredump_unregister(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 236a88b50e97..7e896af29404 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1822,6 +1822,7 @@ mt7996_mac_full_reset(struct mt7996_dev *dev)
- 	if (phy3)
- 		ieee80211_stop_queues(phy3->mt76->hw);
- 
-+	cancel_work_sync(&dev->wed_rro.work);
- 	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	if (phy2)
- 		cancel_delayed_work_sync(&phy2->mt76->mac_work);
-@@ -1920,6 +1921,8 @@ void mt7996_mac_reset_work(struct work_struct *work)
- 	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
-+
-+	cancel_work_sync(&dev->wed_rro.work);
- 	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	if (phy2) {
- 		set_bit(MT76_RESET, &phy2->mt76->state);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 5369f0a7800c..61de5e041627 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -526,6 +526,73 @@ mt7996_mcu_rx_unsolicited_event(struct mt7996_dev *dev, struct sk_buff *skb)
- 	dev_kfree_skb(skb);
- }
- 
-+static void
-+mt7996_mcu_wed_rro_event(struct mt7996_dev *dev, struct sk_buff *skb)
-+{
-+	struct mt7996_mcu_wed_rro_event *event = (void *)skb->data;
-+
-+	if (!dev->has_rro)
-+		return;
-+
-+	skb_pull(skb, sizeof(struct mt7996_mcu_rxd) + 4);
-+
-+	switch (event->tag) {
-+	case UNI_WED_RRO_BA_SESSION_STATUS: {
-+		struct mt7996_mcu_wed_rro_ba_event *e;
-+
-+		while (skb->len >= sizeof(*e)) {
-+			struct mt76_rx_tid *tid;
-+			struct mt76_wcid *wcid;
-+			u16 idx;
-+
-+			e = (void *)skb->data;
-+			idx = le16_to_cpu(e->wlan_id);
-+			if (idx >= ARRAY_SIZE(dev->mt76.wcid))
-+				break;
-+
-+			wcid = rcu_dereference(dev->mt76.wcid[idx]);
-+			if (!wcid || !wcid->sta)
-+				break;
-+
-+			if (e->tid >= ARRAY_SIZE(wcid->aggr))
-+				break;
-+
-+			tid = rcu_dereference(wcid->aggr[e->tid]);
-+			if (!tid)
-+				break;
-+
-+			tid->id = le16_to_cpu(e->id);
-+			skb_pull(skb, sizeof(*e));
-+		}
-+		break;
-+	}
-+	case UNI_WED_RRO_BA_SESSION_DELETE: {
-+		struct mt7996_mcu_wed_rro_ba_delete_event *e;
-+
-+		while (skb->len >= sizeof(*e)) {
-+			struct mt7996_wed_rro_session_id *session;
-+
-+			e = (void *)skb->data;
-+			session = kzalloc(sizeof(*session), GFP_ATOMIC);
-+			if (!session)
-+				break;
-+
-+			session->id = le16_to_cpu(e->session_id);
-+
-+			spin_lock_bh(&dev->wed_rro.lock);
-+			list_add_tail(&session->list, &dev->wed_rro.poll_list);
-+			spin_unlock_bh(&dev->wed_rro.lock);
-+
-+			ieee80211_queue_work(mt76_hw(dev), &dev->wed_rro.work);
-+			skb_pull(skb, sizeof(*e));
-+		}
-+		break;
-+	}
-+	default:
-+		break;
-+	}
-+}
-+
- static void
- mt7996_mcu_uni_rx_unsolicited_event(struct mt7996_dev *dev, struct sk_buff *skb)
- {
-@@ -544,6 +611,9 @@ mt7996_mcu_uni_rx_unsolicited_event(struct mt7996_dev *dev, struct sk_buff *skb)
- 	case MCU_UNI_EVENT_ALL_STA_INFO:
- 		mt7996_mcu_rx_all_sta_info_event(dev, skb);
- 		break;
-+	case MCU_UNI_EVENT_WED_RRO:
-+		mt7996_mcu_wed_rro_event(dev, skb);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -4087,3 +4157,22 @@ int mt7996_mcu_get_all_sta_info(struct mt7996_phy *phy, u16 tag)
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_WM_UNI_CMD(ALL_STA_INFO),
- 				 &req, sizeof(req), false);
- }
-+
-+int mt7996_mcu_wed_rro_reset_sessions(struct mt7996_dev *dev, u16 id)
-+{
-+	struct {
-+		u8 __rsv[4];
-+
-+		__le16 tag;
-+		__le16 len;
-+		__le16 session_id;
-+		u8 pad[4];
-+	} __packed req = {
-+		.tag = cpu_to_le16(UNI_RRO_DEL_BA_SESSION),
-+		.len = cpu_to_le16(sizeof(req) - 4),
-+		.session_id = cpu_to_le16(id),
-+	};
-+
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_WM_UNI_CMD(RRO), &req,
-+				 sizeof(req), true);
-+}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-index a4715b8e005b..e32a78d6622b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-@@ -179,6 +179,41 @@ struct mt7996_mcu_all_sta_info_event {
- 	};
- } __packed;
- 
-+struct mt7996_mcu_wed_rro_event {
-+	struct mt7996_mcu_rxd rxd;
-+
-+	u8 __rsv1[4];
-+
-+	__le16 tag;
-+	__le16 len;
-+} __packed;
-+
-+struct mt7996_mcu_wed_rro_ba_event {
-+	__le16 tag;
-+	__le16 len;
-+
-+	__le16 wlan_id;
-+	u8 tid;
-+	u8 __rsv1;
-+	__le32 status;
-+	__le16 id;
-+	u8 __rsv2[2];
-+} __packed;
-+
-+struct mt7996_mcu_wed_rro_ba_delete_event {
-+	__le16 tag;
-+	__le16 len;
-+
-+	__le16 session_id;
-+	u8 __rsv2[2];
-+} __packed;
-+
-+enum  {
-+	UNI_WED_RRO_BA_SESSION_STATUS,
-+	UNI_WED_RRO_BA_SESSION_TBL,
-+	UNI_WED_RRO_BA_SESSION_DELETE,
-+};
-+
- enum mt7996_chan_mib_offs {
- 	UNI_MIB_OBSS_AIRTIME = 26,
- 	UNI_MIB_NON_WIFI_TIME = 27,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index f7b6945b7acc..e7818b2b253f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -182,6 +182,11 @@ struct mt7996_wed_rro_addr {
- 	u32 signature : 8;
- };
- 
-+struct mt7996_wed_rro_session_id {
-+	struct list_head list;
-+	u16 id;
-+};
-+
- struct mt7996_phy {
- 	struct mt76_phy *mt76;
- 	struct mt7996_dev *dev;
-@@ -276,6 +281,10 @@ struct mt7996_dev {
- 			void *ptr;
- 			dma_addr_t phy_addr;
- 		} session;
-+
-+		struct work_struct work;
-+		struct list_head poll_list;
-+		spinlock_t lock;
- 	} wed_rro;
- 
- 	bool ibf;
-@@ -456,6 +465,7 @@ int mt7996_mcu_trigger_assert(struct mt7996_dev *dev);
- void mt7996_mcu_rx_event(struct mt7996_dev *dev, struct sk_buff *skb);
- void mt7996_mcu_exit(struct mt7996_dev *dev);
- int mt7996_mcu_get_all_sta_info(struct mt7996_phy *phy, u16 tag);
-+int mt7996_mcu_wed_rro_reset_sessions(struct mt7996_dev *dev, u16 id);
- 
- static inline u8 mt7996_max_interface_num(struct mt7996_dev *dev)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-index 49eb583399c5..e9edba830aff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-@@ -71,6 +71,12 @@ enum base_rev {
- #define MT_RRO_ACK_SN_CTRL_SN_MASK		GENMASK(27, 16)
- #define MT_RRO_ACK_SN_CTRL_SESSION_MASK		GENMASK(11, 0)
- 
-+#define MT_RRO_DBG_RD_CTRL			MT_RRO_TOP(0xe0)
-+#define MT_RRO_DBG_RD_ADDR			GENMASK(15, 0)
-+#define MT_RRO_DBG_RD_EXEC			BIT(31)
-+
-+#define MT_RRO_DBG_RDAT_DW(_n)			MT_RRO_TOP(0xf0 + (_n) * 0x4)
-+
- #define MT_MCU_INT_EVENT			0x2108
- #define MT_MCU_INT_EVENT_DMA_STOPPED		BIT(0)
- #define MT_MCU_INT_EVENT_DMA_INIT		BIT(1)
--- 
-2.41.0
+# Acer Chromebook Spin 513 CP513-2H (MT8195)
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+
+Thanks,
+Angelo
