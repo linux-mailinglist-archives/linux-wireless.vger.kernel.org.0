@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 864B67CD0FF
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 01:46:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7119A7CD103
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 01:48:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343819AbjJQXqH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 19:46:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34056 "EHLO
+        id S234793AbjJQXsG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 19:48:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230219AbjJQXqF (ORCPT
+        with ESMTP id S229484AbjJQXsF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 19:46:05 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EACBE93;
-        Tue, 17 Oct 2023 16:46:03 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39HMEsgm022749;
-        Tue, 17 Oct 2023 23:46:00 GMT
+        Tue, 17 Oct 2023 19:48:05 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5A9193;
+        Tue, 17 Oct 2023 16:48:03 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39HNT8Eh018343;
+        Tue, 17 Oct 2023 23:47:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=LUSUOBP1ttPi6t/1ybd6GMPKoodfh+0mk8r/LJuFoNM=;
- b=jGsQ9MOB+6fnHk7be20FWNgPrh0qEbIKKtIM+SBPHi/pmSSvFOmeN946HAjI4KaxiImx
- Xv20Amllf8zDMJERg1JxTfzV9lfepqiTjpfktg5aRs22nDD2yck91F38jbQXo75GmwFw
- onWGhOmIHfrvp2YGX8j4vU/8N3Xg6EEkzwgIFgXBMORlUWIMwCpdH0v6GZSaaqg/lVn0
- aJ/96Et1UQQyF7Abc9G6HCzskHPfGURbIc4NXMqS9F4YZT0/4QF8E2+9eKjdmQuOL6yw
- CmUWzE7idiJQubJHXedppavRCx6TgKh0j9cqaihH+6rq6XKHREiulO3Xc+eZUIorngAM 2w== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tsv0v1948-1
+ bh=DJoVEfqFMIqV1HS5dvMlwjU/EVOBb+1dppBYz/22x64=;
+ b=IKE+gyGbd/y5V4x/BLos/pmADc6/9nAEs95JGJJd9hKQEnMl/FvYJv0tFK+w+IH6jjaW
+ 9ypoBxSebCAgULnSYdpAGJfehhahF/ttEzX+gnSI3dAUx0wrgHmKWaLgYX4h7f0DW71H
+ 1F1f8xgI7X1zx2HztX/v7pWbiamcKh7I81nlGYk0g5DaTbEggX/hzoft1WHBepUz1gf6
+ YHQ+lryCk2+dARpysI6qnUiaxHsLsWDMxIL6om14pIHGA6MEIVOk12PyxGSP3FoSRcA9
+ AMbs2dd0v0Y2V6FsKZVxIStIrMlA3a16+RKZS4W3nftegDL5acZMiVAKHqNT1eFly40v Cw== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ts85fuwk7-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 17 Oct 2023 23:46:00 +0000
+        Tue, 17 Oct 2023 23:47:58 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39HNjxo9018916
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39HNlvbi004065
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 17 Oct 2023 23:45:59 GMT
+        Tue, 17 Oct 2023 23:47:57 GMT
 Received: from [10.111.183.229] (10.49.16.6) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Tue, 17 Oct
- 2023 16:45:59 -0700
-Message-ID: <68fba283-aff8-4751-a4df-78843d89ef13@quicinc.com>
-Date:   Tue, 17 Oct 2023 16:45:58 -0700
+ 2023 16:47:57 -0700
+Message-ID: <36928c4f-3353-42c7-a42f-2bc31e1eee89@quicinc.com>
+Date:   Tue, 17 Oct 2023 16:47:56 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: replace deprecated strncpy with strscpy
+Subject: Re: [PATCH] wl18xx: replace deprecated strncpy with strscpy
 Content-Language: en-US
 To:     Justin Stitt <justinstitt@google.com>,
         Kalle Valo <kvalo@kernel.org>
 CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-hardening@vger.kernel.org>
-References: <20231017-strncpy-drivers-net-wireless-ti-wl1251-main-c-v1-1-3a5c02382e35@google.com>
+References: <20231017-strncpy-drivers-net-wireless-ti-wl18xx-main-c-v1-1-ed5322ec8068@google.com>
 From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231017-strncpy-drivers-net-wireless-ti-wl1251-main-c-v1-1-3a5c02382e35@google.com>
+In-Reply-To: <20231017-strncpy-drivers-net-wireless-ti-wl18xx-main-c-v1-1-ed5322ec8068@google.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.49.16.6]
@@ -59,15 +59,15 @@ X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Cwo5mhxmDBI9yyfqFvjYCnMOXT_ItOln
-X-Proofpoint-GUID: Cwo5mhxmDBI9yyfqFvjYCnMOXT_ItOln
+X-Proofpoint-ORIG-GUID: ---xUCgFdwsCS9tW5717FXPkhoNc1glg
+X-Proofpoint-GUID: ---xUCgFdwsCS9tW5717FXPkhoNc1glg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-17_07,2023-10-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 malwarescore=0 phishscore=0 mlxscore=0 mlxlogscore=432
- impostorscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0 mlxscore=0
+ bulkscore=0 impostorscore=0 suspectscore=0 mlxlogscore=378
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2310170201
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
@@ -78,16 +78,6 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/17/2023 4:30 PM, Justin Stitt wrote:
-...
-
-> diff --git a/drivers/net/wireless/ti/wl1251/main.c b/drivers/net/wireless/ti/wl1251/main.c
-> index eded284af600..cd9a41f59f32 100644
-> --- a/drivers/net/wireless/ti/wl1251/main.c
-> +++ b/drivers/net/wireless/ti/wl1251/main.c
-
-wrong subject for this path. unfortunately for you the most recent 
-changes to this file have been in conjunction with mac80211 changes and 
-hence why you see that prefix. But for a stand-alone driver patch the 
-correct prefix should be wifi: wl1251:
-
+this patch (and a few others in your recent set) are missing the wifi: 
+prefix. this prefix is a relatively new addition and would not show up 
+in the history of some of these ancient drivers you are touching :)
