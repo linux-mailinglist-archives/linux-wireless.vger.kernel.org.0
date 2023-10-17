@@ -2,143 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 595897CCD97
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 22:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 547B37CCDD2
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 22:22:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232437AbjJQULf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 16:11:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33082 "EHLO
+        id S233635AbjJQUWL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 16:22:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232126AbjJQULe (ORCPT
+        with ESMTP id S229459AbjJQUWK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 16:11:34 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3576FAD
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 13:11:32 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a7a6fd18abso93618797b3.1
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 13:11:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697573491; x=1698178291; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U16d/1k+vtJxpQ32+/WF4Jgqek04k8/6Qv2CuyTmXCM=;
-        b=GDEw2UZD8lhNP6ELGmB+xjB5hHNDqRBbdhGPd9h1sG3qFnW/nPWcOxYFXEZ+Wd9J/N
-         lPlZkZPgX2mH6M5V46HwIGj+Nui06vZpUDlRdMhyL10A/rkUnYuQHwhUIhYkpHOGCUws
-         /dd432KsbYNybH4owBweGCQJVzMEdNZRwIlH2/gO1oCsVtoudADx6YfHCg1ed9siU13J
-         xuof9Gn1cEuw6PDxWcnBd/+IRqSiXvuz1rLOanse6ob7Qvv6lDZMANcWcKl7C3DYZgOD
-         tfDBPzctQg5MZAmdHt+iGEtkD34/lvmuQwPl028phrBANLBjZrdU21FeRzhC/sc0ng3E
-         RC+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697573491; x=1698178291;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U16d/1k+vtJxpQ32+/WF4Jgqek04k8/6Qv2CuyTmXCM=;
-        b=VSaTyNSsX+VR4BP8ZZL0NHhKSPSd9XLThoLrA4bRBhhYliQ49EqTD7BCYeL3nhICBi
-         xh4mcA8REyYjIbpLsF+p6IBohE34yurGcv+jULIlhj8bTthkBgaJvUzPmzqEDoLyJ0LT
-         QclFXF63KCPALuLB+kJV3kwI25WmvowZ2OAhgMVgGeKJJwLGBZIzeXFDnYFrkaAJEimg
-         TgqK0F3fiduNPJeRE36XnMKE+Ij2SlKtxOARSx3EaWNjYnBH28RJNFdfWlVeHeqXty6u
-         oe/N1yk/rigaf44YC5z+QsDb8COAflr4HLtkGq4O+5kUTlKcwj0GwMDwq7TxDYjJmQn+
-         vlsw==
-X-Gm-Message-State: AOJu0YzDJWmVErNNH08YqqrYZxYGO2lVRl+9uwhN9Oa34o9AvmzkFym2
-        ZvciqE+MvJ5vVqBYlEmbNiB6GrgNrGYXfnDipA==
-X-Google-Smtp-Source: AGHT+IGpHQMAlN9H+dIGsgef4tZ3F2beOgDLdbLhwLbsk5LDWsH2GwN5lcJpP9ul6mWvpEKLa973Tu7cXXdTrNS5Nw==
-X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a81:84c8:0:b0:59b:eb63:4beb with SMTP
- id u191-20020a8184c8000000b0059beb634bebmr71930ywf.7.1697573491197; Tue, 17
- Oct 2023 13:11:31 -0700 (PDT)
-Date:   Tue, 17 Oct 2023 20:11:29 +0000
-In-Reply-To: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-0-af780d74ae38@google.com>
-Mime-Version: 1.0
-References: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-0-af780d74ae38@google.com>
-X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1697573487; l=2638;
- i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=zJRX9bfYMLnf8bwx/y1SqZRLrWT3yCChHrc9KJ+aw0g=; b=36Wx10SOxayn+TXLBPF3Sdbo+ZOjyWFKEXOZQUWfzf/HDZaBLlDvUd/FbJiQtsFySN1BKVG9K
- S2f9g+oP7StAX9U5Iv2XSJNPkbxap07eIIAsrMoZPt/V36oDC327Jgg
-X-Mailer: b4 0.12.3
-Message-ID: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-2-af780d74ae38@google.com>
-Subject: [PATCH v3 2/2] wifi: brcmsmac: replace deprecated strncpy with memcpy
-From:   Justin Stitt <justinstitt@google.com>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Justin Stitt <justinstitt@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        Tue, 17 Oct 2023 16:22:10 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A04699E;
+        Tue, 17 Oct 2023 13:22:05 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39HIBKkw026527;
+        Tue, 17 Oct 2023 20:21:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=/qf3pasEzmjys+cMl5PwEBlVeKLc105W8ndPVPmEegU=;
+ b=ezxgBamU3b5h403v98h6ggxdCUu8eVPvT5YQkTgXYC+FcaQVxEZbPrFVF7hxhHbM5UEr
+ BBBt9X2NO+1qMNZT7/56eipjtfC44l/5cnQ/Y6JXeRAJ5aeoYag02yGmE3jj21SXtR2O
+ 954NDLmFS0aYWTh4lC3ETDr53ekAYvaGTFU1rDQGpE8FgdTGMMgOGVM2s5jdZiLG4pzx
+ /EahPVdBPutYkiGME/CMJFK16EIDQgBWs4TkJqMeaZ6iPyeK3alJCSlyqn4pKFE6Nj8z
+ tsMWHKsBlWjMXqyxQcTrfMcR2sLY+CQTCy9nSgp834yUQZ9Cvfmt2bJ9/sSfHEa17gCw VA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ts85fukf1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 20:21:55 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39HKLsOM032450
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 20:21:54 GMT
+Received: from [10.111.183.229] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Tue, 17 Oct
+ 2023 13:21:53 -0700
+Message-ID: <ac17b30f-3c3c-4384-a8a9-1b2c9d92ec3e@quicinc.com>
+Date:   Tue, 17 Oct 2023 13:21:52 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] wifi: wilc1000: use vmm_table as array in wilc struct
+Content-Language: en-US
+To:     =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Kalle Valo <kvalo@kernel.org>,
+        Michael Walle <mwalle@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        <stable@vger.kernel.org>
+References: <20231017-wilc1000_tx_oops-v3-1-b2155f1f7bee@bootlin.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231017-wilc1000_tx_oops-v3-1-b2155f1f7bee@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: _NdsBOsBRAUb3_eFgsyulir8muyyx9GT
+X-Proofpoint-GUID: _NdsBOsBRAUb3_eFgsyulir8muyyx9GT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-17_03,2023-10-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0 mlxscore=0
+ bulkscore=0 impostorscore=0 suspectscore=0 mlxlogscore=583
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310170173
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Let's move away from using strncpy and instead use the more obvious
-interface for this context.
+On 10/17/2023 1:43 AM, Alexis Lothoré wrote:
+> From: Ajay Singh <ajay.kathat@microchip.com>
+> 
+> Enabling KASAN and running some iperf tests raises some memory issues with
+> vmm_table:
+> 
+> BUG: KASAN: slab-out-of-bounds in wilc_wlan_handle_txq+0x6ac/0xdb4
+> Write of size 4 at addr c3a61540 by task wlan0-tx/95
+> 
+> KASAN detects that we are writing data beyond range allocated to vmm_table.
+> There is indeed a mismatch between the size passed to allocator in
+> wilc_wlan_init, and the range of possible indexes used later: allocation
+> size is missing a multiplication by sizeof(u32)
+> 
+> Fixes: 40b717bfcefa ("wifi: wilc1000: fix DMA on stack objects")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-For wlc->pub->srom_ccode, we're just copying two bytes from ccode into
-wlc->pub->srom_ccode with no expectation that srom_ccode be
-NUL-terminated:
-wlc->pub->srom_ccode is only used in regulatory_hint():
-1193 |       if (wl->pub->srom_ccode[0] &&
-1194 |           regulatory_hint(wl->wiphy, wl->pub->srom_ccode))
-1195 |               wiphy_err(wl->wiphy, "%s: regulatory hint failed\n", __func__);
-
-We can see that only index 0 and index 1 are accessed.
-3307 |       int regulatory_hint(struct wiphy *wiphy, const char *alpha2)
-3308 |       {
-...  |          ...
-3322 |          request->alpha2[0] = alpha2[0];
-3323 |          request->alpha2[1] = alpha2[1];
-...  |          ...
-3332 |       }
-
-Since this is just a simple byte copy with correct lengths, let's use
-memcpy(). There should be no functional change.
-
-In a similar boat, both wlc->country_default and
-wlc->autocountry_default are just simple byte copies so let's use
-memcpy. However, FWICT they aren't used anywhere. (they should be
-used or removed -- not in scope of my patch, though).
-
-Signed-off-by: Justin Stitt <justinstitt@google.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
-index 5a6d9c86552a..f6962e558d7c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
-@@ -341,7 +341,7 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(struct brcms_c_info *wlc)
- 	/* store the country code for passing up as a regulatory hint */
- 	wlc_cm->world_regd = brcms_world_regd(ccode, ccode_len);
- 	if (brcms_c_country_valid(ccode))
--		strncpy(wlc->pub->srom_ccode, ccode, ccode_len);
-+		memcpy(wlc->pub->srom_ccode, ccode, ccode_len);
- 
- 	/*
- 	 * If no custom world domain is found in the SROM, use the
-@@ -354,10 +354,10 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(struct brcms_c_info *wlc)
- 	}
- 
- 	/* save default country for exiting 11d regulatory mode */
--	strncpy(wlc->country_default, ccode, ccode_len);
-+	memcpy(wlc->country_default, ccode, ccode_len);
- 
- 	/* initialize autocountry_default to driver default */
--	strncpy(wlc->autocountry_default, ccode, ccode_len);
-+	memcpy(wlc->autocountry_default, ccode, ccode_len);
- 
- 	brcms_c_set_country(wlc_cm, wlc_cm->world_regd);
- 
-
--- 
-2.42.0.655.g421f12c284-goog
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
