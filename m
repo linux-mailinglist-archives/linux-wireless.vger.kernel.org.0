@@ -2,216 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44F277CCF60
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 23:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADEE17CCF6A
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 23:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344192AbjJQVgK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 17:36:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49500 "EHLO
+        id S234679AbjJQVk2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 17:40:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235205AbjJQVf4 (ORCPT
+        with ESMTP id S229459AbjJQVk1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 17:35:56 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1A81708
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:27:50 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-53e855d7dacso5917324a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:27:50 -0700 (PDT)
+        Tue, 17 Oct 2023 17:40:27 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19205C6
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:40:26 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d9a541b720aso7997050276.0
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 14:40:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1697578069; x=1698182869; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fxrjHUoZZH4zTzTaZ4Kkh62a1s3Dut+pJ0nPRIt37/w=;
-        b=LEXvvb2+zNgNlAt9DTyuBg/Y6o5YRxTL7X+h2E1PsZe/FXZ5rbhU9uC9mX+wmsP14+
-         HYAsLDC5ZmuTunyTgOy8vfuEyUYsE4Rv5vYj7TmoHErMqfW/NkeMEhj+eLJMmQxmYpJ5
-         F4s6NNNAcJTMSZQC7tJiUqFLTsZngZFvP3h64=
+        d=google.com; s=20230601; t=1697578825; x=1698183625; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8h1aCmYwBL0e7W6QWqk+xWgvSrCWZqDeOTvw03oLfSg=;
+        b=qlAZQVX9to8AsnGtSK9dGDNbukyPI9T4vbd0dj6nd9YHFLQnNLVaotL36E1CD3uwna
+         snyna3DclkcApbbo4tkLOBNI1G5Lt26Bl9j8/ziNT7dxqIrtxMSfeqIaKD9VxsJou2mk
+         pEfrpcEbXyVCSfmc6cA78W+Fwq4DyCxzr+r05f0gLrmnUtOZqlRpQ7cB8P+i3DGc+Hze
+         VLIq4TZlUCrPDgpp/X9SEKTxAKKU49fzxEJDEbQYDB29EOazGR+u518qD2cACX12vAnt
+         1/r8gJ+F9O23/c+B7lLCbYmDQ7UlqaEcWDjbg9loRkoG3wsyM7vHlgvIussJIoMpokmN
+         xkGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697578069; x=1698182869;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fxrjHUoZZH4zTzTaZ4Kkh62a1s3Dut+pJ0nPRIt37/w=;
-        b=uJaJXOu6p22eXY5Km+5t4c4qvqgmf4EbtibEoiwC6kqSXyZKoAYe+obe7qsYueKVtA
-         JkFep2PTb6jQ1VYjNgvdQKvcFPRTdSG1WrGtiGrFQgVygyQJ4VdDavGlADoOLo+eCbwP
-         oAIh/5tF5XHomwKcU+s4k5TMawoIR7vfefkg+fYzLfoTUFM92mhYCk1TxvQbmgMgwDUr
-         /EqAMU/SJPx8nantgG1Tmm0CLD65ZvBN/to0Ks3S76CLRYmoSuN/bFw0iZHoWYeq9iyK
-         MxuQOp+GgI3rkZ4omhSUhHT5nYp28Auaz0Vua15Qez+SoGxztZrzgr+60SyS0IzpPR7R
-         qWBg==
-X-Gm-Message-State: AOJu0YwL56JvQOI8/uxiLp1g4IZ+/iDyhD5Yh/4QGQAy6ROqDSp5QW1k
-        Mak6Ellm0ovSSFPAd5eLaLa/4fde0twajkhqxSKnww==
-X-Google-Smtp-Source: AGHT+IHz//RTMV0xdLNsXC+boHDA3P92nGp7xaTVos4w8MggCT9M2rR3TSu1YqGCHC2/kEs7JuziGYkbZHEK19GvaZY=
-X-Received: by 2002:a05:6402:2711:b0:53e:f321:e6fd with SMTP id
- y17-20020a056402271100b0053ef321e6fdmr2880225edd.9.1697578069408; Tue, 17 Oct
- 2023 14:27:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-0-af780d74ae38@google.com>
-In-Reply-To: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-0-af780d74ae38@google.com>
-From:   Franky Lin <franky.lin@broadcom.com>
-Date:   Tue, 17 Oct 2023 14:27:21 -0700
-Message-ID: <CA+8PC_euoeTyvhm8ANWD0KawzZxYsEdRqys8COoez0dGvFxn6A@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] wifi: brcm80211: replace deprecated strncpy
-To:     Justin Stitt <justinstitt@google.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000d2ddf90607f03148"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        d=1e100.net; s=20230601; t=1697578825; x=1698183625;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8h1aCmYwBL0e7W6QWqk+xWgvSrCWZqDeOTvw03oLfSg=;
+        b=puSeJ1tEixPbCZtLgG+GRIyjxh4uyxFb30IFkIdBzldxIJOv+br+aCNAWIbkjZEiuT
+         0Tw+iUyT00I5fXV5Scj8pYjNC70AB1KW5xBMic0+awndeRmiHLNyL83ZPf/WkrP4SXgW
+         ozWE6vpcc9gzmM+w9x5kZHMhOrNDUihUAChwXmA3cKGV/ZxOB8J9/rrOy5l7Vj8l7RHq
+         rYm+ZHvdX2Rav0VaIXGZFX1qqbL2e/r7MjdcPF/4Zm8aJPtzZ6RcLsDRk68PlXUeB+zI
+         EP047xjD/pKuqJ7AwtJ7FeIfgrTlAUrJg/o4sZ0qV8FI0qEpU2Jy1GchcHGSxFTuTgje
+         xLGg==
+X-Gm-Message-State: AOJu0YwNfVH2HBkKbJn4mklvZIZK9JGCmxFlt9Ij8aIpLoDsni6TcKd8
+        KoIRY/upIj1P3KVQBxqRMUrDIKXuC+OW2ZBeiw==
+X-Google-Smtp-Source: AGHT+IFD9/z9qICdr6kZphkx91CVVnKWaOa56BAR7Tmf8Lf9ihklTplMdVnhLZQLfrXyng5/4mRo2/jNV92nK6R8IA==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a25:c711:0:b0:d9a:519f:d0e6 with SMTP
+ id w17-20020a25c711000000b00d9a519fd0e6mr68734ybe.6.1697578825351; Tue, 17
+ Oct 2023 14:40:25 -0700 (PDT)
+Date:   Tue, 17 Oct 2023 21:40:24 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAEj/LmUC/x2NwQqDMBAFf0X23IUkBRv6K6WHEp92QdKwG9Qi/
+ rvB0zCXmZ0MKjB6djspFjH55Sb+1lH6fvIElqE5BRfu3vkHW9Wcyp8HlQVqnFF5FcUMM5ZcMbO UNWzOXQyNifsxxtgKAa6nli6KUbZr+3ofxwlgwuPYhgAAAA==
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1697578824; l=3644;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=no/u8aepbF9xy/WjzFODZYqsJCgSR5M+hrKqDii17yY=; b=VjQaKS/y3uXgNEupzuOEFzu8WiM+Y7gt+1HvljUvV/p0HQ5TM4zVxf5vE5G7bp9kMvXLTjTQL
+ mGnDQVQcQkcDeItbzifkeXs+wU3QaL+vkhF/Sb0gikb0eDMT2gXGCgi
+X-Mailer: b4 0.12.3
+Message-ID: <20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-v1-1-ee7d3e258d78@google.com>
+Subject: [PATCH] ipw2x00: replace deprecated strncpy with strscpy_pad
+From:   Justin Stitt <justinstitt@google.com>
+To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000d2ddf90607f03148
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+strncpy() is deprecated for use on NUL-terminated destination strings
+[1] and as such we should prefer more robust and less ambiguous string
+interfaces.
 
-On Tue, Oct 17, 2023 at 1:11=E2=80=AFPM 'Justin Stitt' via
-BRCM80211-DEV-LIST,PDL <brcm80211-dev-list.pdl@broadcom.com> wrote:
->
-> Hi,
->
-> This series used to be just one patch in [v2] but I've split it into two
-> separate patches.
->
-> The motivation behind this series is that strncpy() is deprecated for
-> use on NUL-terminated destination strings [1] and as such we should
-> prefer more robust and less ambiguous string interfaces.
->
-> In cases where we expect the destination buffer to be NUL-terminated
-> let's opt for strscpy() as this guarantees NUL-termination. Other cases
-> are just simple byte copies with pre-determined bounds; for these let's
-> use plain-ol' memcpy().
->
-> Each change is detailed in its accompanying patch message.
->
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strn=
-cpy-on-nul-terminated-strings [1]
-> Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.h=
-tml [2]
-> Link: https://github.com/KSPP/linux/issues/90
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
+`extra` is intended to be NUL-terminated which is evident by the manual
+assignment of a NUL-byte as well as its immediate usage with strlen().
 
-Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+Moreover, many of these getters and setters are NUL-padding buffers with
+memset():
+2439  |	memset(&tx_power, 0, sizeof(tx_power));
+9998  | memset(sys_config, 0, sizeof(struct ipw_sys_config));
+10084 | memset(tfd, 0, sizeof(*tfd));
+10261 | memset(&dummystats, 0, sizeof(dummystats));
+... let's maintain this behavior and NUL-pad our destination buffer.
 
-> ---
-> Changes in v3:
-> - split up into two separate patches (thanks Franky)
-> - use better subject line (thanks Franky + Kalle)
-> - Link to v2: https://lore.kernel.org/r/20231016-strncpy-drivers-net-wire=
-less-broadcom-brcm80211-brcmfmac-cfg80211-c-v2-1-6c7567e1d3b8@google.com
->
-> Changes in v2:
-> - add other strncpy replacements
-> - Link to v1: https://lore.kernel.org/r/20231016-strncpy-drivers-net-wire=
-less-broadcom-brcm80211-brcmfmac-cfg80211-c-v1-1-4234807ca07e@google.com
->
-> ---
-> Justin Stitt (2):
->       wifi: brcm80211: replace deprecated strncpy with strscpy
->       wifi: brcmsmac: replace deprecated strncpy with memcpy
->
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c      | 2 +-
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c  | 6 +++---
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c      | 3 +--
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c     | 4 ++--
->  5 files changed, 8 insertions(+), 9 deletions(-)
-> ---
-> base-commit: cbf3a2cb156a2c911d8f38d8247814b4c07f49a2
-> change-id: 20231016-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmf=
-mac-cfg80211-c-a20108421685
->
-> Best regards,
-> --
-> Justin Stitt <justinstitt@google.com>
->
+Considering the above, a suitable replacement is `strscpy_pad` due to
+the fact that it guarantees both NUL-termination and NUL-padding on the
+destination buffer.
 
---000000000000d2ddf90607f03148
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+To be clear, there is no bug in the current implementation as
+MAX_WX_STRING is much larger than the size of the string literals being
+copied from. Also, strncpy() does NUL-pad the destination buffer and
+using strscpy_pad() simply matches that behavior. All in all, there
+should be no functional change but we are one step closer to eliminating
+usage of strncpy().
 
-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
-BZrfei1PlO2m9d3AfpeD7Y1pVL1SrZC1yvhXeDO463M8rGKz/l8XZrJY1P6qU8U6QwxjFgXr5o5B
-9N6Yw9IhwXhZI3m6F1pe3mMdZ9cFC3xS3Ke+awIDAQABo4IB2DCCAdQwDgYDVR0PAQH/BAQDAgWg
-MIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZCaHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
-LmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3J0MEEGCCsGAQUFBzABhjVo
-dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMDBNBgNV
-HSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2ln
-bi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNVHR8EQjBAMD6gPKA6hjhodHRwOi8vY3Js
-Lmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNybDAiBgNVHREEGzAZ
-gRdmcmFua3kubGluQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNVHSMEGDAW
-gBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU0v383z+6bcUXkukYi4fq7VBiM6swDQYJ
-KoZIhvcNAQELBQADggEBABUIiuJPuLq9vbb6/7d0VJ6LS6osA6kNs0Tph9iEX49TxPQJtvA97oy4
-AgPCjWNiAMLkmu+kNQKlNZG3Vl3S4A+VMOogB6aKtiLlz73Cs0sPgpohw6GSS41TKVt17PrAzo0o
-/xuXczzIbtvrpoi6OnGlsW4aVCqQSOqKUamG8wU8u3/h+iPM1rr4z6ZHdyrllNi+ukH/Z6Dpn6wF
-ATUa+n5ReFZpli4TzcqVHw7i+OaB23TMHCwed4OPFm0H3zcCJgVtgt3z95IPak7bBuYLAGMT2c3K
-Xkdn27MnpydqZw5mnP970DgyUMHXY3Jvj65UAVioJUr4LkNBL7Tsk/6q0FExggJtMIICaQIBATBr
-MFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9i
-YWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxcbvtv+NUbtJoPDWwwDQYJYIZI
-AWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEILT1iC3aQyymafY12H4b/+tMNcXJx2JOomwQDhhi
-fJSfMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIzMTAxNzIxMjc0
-OVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQB
-AjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkq
-hkiG9w0BAQEFAASCAQATZBnt3TWrBgxd2UDG44w+DvkKxKBjSUHEKRGiQA7WF4OTNZFNMea/bZxq
-7eL8p2mtwx0/PZmhUYKJB4HMODXuE+6rPuqwtZ4mxlp0QmnP9qEu1vnflVIpLmVaa9+0Vf1ZHECE
-DZysuq+2R3sa0IhBNhPLavnPyV7awNxrd7EDtZ0wlwyQuBR1UsfQNngq2wacUJniWa423kxuZuqi
-JRX4uKEsVgi1LiFO1SKRlQZZKyTFCvBSFCD54o8rbqmuq4zSDedlRCcGN2YS3sXiRdy7FZmQRG19
-M1DugJQP9QwykW73z96O7zqZic4Kcih0tKvNR7XJTECIvJqZrdro76WH
---000000000000d2ddf90607f03148--
+Do note that we cannot use the more idiomatic strscpy invocation of
+(dest, src, sizeof(dest)) as the destination buffer cannot have its size
+determined at compile time. So, let's stick with (dest, src, LEN).
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Note: build-tested only.
+
+Found with: $ rg "strncpy\("
+---
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index 820100cac491..44f2d91ad30f 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -9656,31 +9656,30 @@ static int ipw_wx_get_wireless_mode(struct net_device *dev,
+ 	mutex_lock(&priv->mutex);
+ 	switch (priv->ieee->mode) {
+ 	case IEEE_A:
+-		strncpy(extra, "802.11a (1)", MAX_WX_STRING);
++		strscpy_pad(extra, "802.11a (1)", MAX_WX_STRING);
+ 		break;
+ 	case IEEE_B:
+-		strncpy(extra, "802.11b (2)", MAX_WX_STRING);
++		strscpy_pad(extra, "802.11b (2)", MAX_WX_STRING);
+ 		break;
+ 	case IEEE_A | IEEE_B:
+-		strncpy(extra, "802.11ab (3)", MAX_WX_STRING);
++		strscpy_pad(extra, "802.11ab (3)", MAX_WX_STRING);
+ 		break;
+ 	case IEEE_G:
+-		strncpy(extra, "802.11g (4)", MAX_WX_STRING);
++		strscpy_pad(extra, "802.11g (4)", MAX_WX_STRING);
+ 		break;
+ 	case IEEE_A | IEEE_G:
+-		strncpy(extra, "802.11ag (5)", MAX_WX_STRING);
++		strscpy_pad(extra, "802.11ag (5)", MAX_WX_STRING);
+ 		break;
+ 	case IEEE_B | IEEE_G:
+-		strncpy(extra, "802.11bg (6)", MAX_WX_STRING);
++		strscpy_pad(extra, "802.11bg (6)", MAX_WX_STRING);
+ 		break;
+ 	case IEEE_A | IEEE_B | IEEE_G:
+-		strncpy(extra, "802.11abg (7)", MAX_WX_STRING);
++		strscpy_pad(extra, "802.11abg (7)", MAX_WX_STRING);
+ 		break;
+ 	default:
+-		strncpy(extra, "unknown", MAX_WX_STRING);
++		strscpy_pad(extra, "unknown", MAX_WX_STRING);
+ 		break;
+ 	}
+-	extra[MAX_WX_STRING - 1] = '\0';
+ 
+ 	IPW_DEBUG_WX("PRIV GET MODE: %s\n", extra);
+ 
+
+---
+base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
+change-id: 20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-6f8880232e06
+
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
+
