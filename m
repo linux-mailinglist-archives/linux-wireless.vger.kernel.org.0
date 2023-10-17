@@ -2,221 +2,230 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 500D07CB8CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 04:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3817D7CB9D6
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 06:52:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234474AbjJQC4k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Oct 2023 22:56:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54082 "EHLO
+        id S234032AbjJQEw6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 00:52:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234454AbjJQC4a (ORCPT
+        with ESMTP id S229452AbjJQEw5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Oct 2023 22:56:30 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2081.outbound.protection.outlook.com [40.107.223.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AB7BFD;
-        Mon, 16 Oct 2023 19:55:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gtpw6c0ygifg8OTq6P0KW2Le2B6S549wSjubrY8jKJxFR9vnnzAhCwFv2U8TFko1uZdkr600BwGae26fEWTazS0nC4V09lAUBwmU2dv9FLg+4MJi7utoBrTjZ4CftftfS+5LKvmnIZ0vrw4TNj0lkbCbrX2PUCT/Evo/Fg6Om0YytObvM0ENYfmvfqEz29je+4lUwOztwOU2FA4Jcm1FiCN937xBgpwewSGfBcSUUKK8pyqpFpJIeF1U+AhmtgYNKVPiyCdTtRfZbsnRxPtsIDlLI64R9ZBAtaSRHFVIU7tMwQVEzvVUyYXVeCQg4ZZ8Qy4rW2qpK7UytaYNDDlEnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ymyfopRpnD+SjDQpDk720xaQkDvgTOsMoJ9/AJaDsd0=;
- b=F+UNwYOtMcD3wbMPsb372zdumNMnyJ9rQ4c57E933KGQNF0yET7OojVyWl1QThqIPNKm3NmBfdG7tSe+Kz8mqE+hmOSE/NJjTMIoXx6JlKFHc1QdnjYtRSyjiMEhg06EuHnonvPCLwvOOvPSfHXFINLvFY4i8v3+Ue+m03dQAHWLEyvgI4/Qr6qJhqFelkbTRB7dKgPqDQt8+zZEz4KGKZLGYqFPK+PM22WO5/jAkmyAZlHdR38fQjW5c/bdfvTokegNCXmotRaCb/d2MXAoykTRFnYWsHQHrd0KTt4+NlvONHJHZQ9SrM8DKmCZAsE+rPvFcL2dnlI3ybOf1oalxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ymyfopRpnD+SjDQpDk720xaQkDvgTOsMoJ9/AJaDsd0=;
- b=am9YBnPbFNlwi/reuu1+rDgleZjLx1R7nsbI+OvQ3cX9dwaK0WJpuGBUoRXAGmE7W4ZD9bw85SjvdQxijuXJXnSQJ110lxj0uB2ye1XhqphHqhTeY26gP33JGOycpLqp0P1FrxJnJToSdEEz6C+06hED+OIAyLrcS+DlSSdD4iw=
-Received: from MW4P221CA0009.NAMP221.PROD.OUTLOOK.COM (2603:10b6:303:8b::14)
- by CY5PR12MB6179.namprd12.prod.outlook.com (2603:10b6:930:24::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.36; Tue, 17 Oct
- 2023 02:55:55 +0000
-Received: from MWH0EPF000989E6.namprd02.prod.outlook.com
- (2603:10b6:303:8b:cafe::3e) by MW4P221CA0009.outlook.office365.com
- (2603:10b6:303:8b::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.36 via Frontend
- Transport; Tue, 17 Oct 2023 02:55:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MWH0EPF000989E6.mail.protection.outlook.com (10.167.241.133) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.22 via Frontend Transport; Tue, 17 Oct 2023 02:55:54 +0000
-Received: from compile-server.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 16 Oct
- 2023 21:55:49 -0500
-From:   Ma Jun <Jun.Ma2@amd.com>
-To:     <amd-gfx@lists.freedesktop.org>, <lenb@kernel.org>,
-        <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <alexander.deucher@amd.com>, <Lijo.Lazar@amd.com>,
-        <mario.limonciello@amd.com>
-CC:     <majun@amd.com>, <netdev@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
-        Evan Quan <quanliangl@hotmail.com>, Ma Jun <Jun.Ma2@amd.com>
-Subject: [PATCH v12 9/9] drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
-Date:   Tue, 17 Oct 2023 10:53:58 +0800
-Message-ID: <20231017025358.1773598-10-Jun.Ma2@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231017025358.1773598-1-Jun.Ma2@amd.com>
-References: <20231017025358.1773598-1-Jun.Ma2@amd.com>
+        Tue, 17 Oct 2023 00:52:57 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C85428F;
+        Mon, 16 Oct 2023 21:52:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697518374; x=1729054374;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a7+zbXGEIsTGyV49l/0A/kQQ8/C1zGHxhbMLWfHnmV0=;
+  b=G5OTK3TGX+sc1KbNco8eGqOemWBUF4fiENo+L5lrZdTFM18UUDnkONBE
+   lXIvXf91hEk9giMXwUOK0Wekf7BdoqfRcW1993lVWMyE8ilz8sACh5uny
+   HOzGDXMKUyP1uE7oE694vPwYsTQBZmUi0mdle1nRC5UUAq6E1qmkJTb9b
+   eSD0jYXWcGjvw0la3IMnd7XsYZnmafPd/ocXctQK4ErVXzvt4M3CtNtZk
+   rbXsOt2h45kmVSMDvp7F7AsvNC/NQKxziTM8E/O+VVJJ2glbv4OmHWmcz
+   YdDpGkX+wJ1yqv/XtfHc0Okrkbh1IWynH3D/PtEqVenqSX2cw/hOLG2OJ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="376066179"
+X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
+   d="scan'208";a="376066179"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 21:52:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
+   d="scan'208";a="3926568"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 16 Oct 2023 21:52:54 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qsc4U-00091r-27;
+        Tue, 17 Oct 2023 04:52:46 +0000
+Date:   Tue, 17 Oct 2023 12:52:44 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Christian Marangi <ansuelsmth@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+        Christian Marangi <ansuelsmth@gmail.com>
+Subject: Re: [net-next PATCH v2 3/4] net: stmmac: move TX timer arm after DMA
+ enable
+Message-ID: <202310171222.UN3fzVpz-lkp@intel.com>
+References: <20231012100459.6158-4-ansuelsmth@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000989E6:EE_|CY5PR12MB6179:EE_
-X-MS-Office365-Filtering-Correlation-Id: 47227f90-3328-4214-79fd-08dbcebc94e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: jqnUF3YrEf2ZQqoOaeCPBkQoif1jpQjljuyzWRqDvxQBZTLBd1ry7YxPLONosCTTHOMnPD1D5udvPJ9Vd2M2ovmZPXe2SzpFobk6Kee3empLO6+pI8yLBiik+B81A89ZIi0chzZvHm5VxDXC+299QkoHXciHvwKgGSKT/U0k77xSvLeRdWjLYo/XzVoWYDv8tvMLVUWtfBJl2zFcsUYGJYaQvff4lNvZGxWjULBiU7hxrHeWagkln55SYR2EjpiKupMq4uoS3w4gxW6DleGMudTGngXskmSaq8h+o2CdVU967znCJ9P1aIUAUHEbmIcPQ3CXMDlKlS51sz5LtrCN6lw6jqdt8NX+ldwx3bGOViaCDDWr8t8Wra5sxoTTp4iYHInWXCPOgwIIxmd3RtyF+ebuC3wqO3wy6qs5LisiDAiJeAOmFMUJODLWt6zkRTWWKPdVSzqyBP6VCHasT5AW+Qwo5U0dWayvzViINUwCpkwrgSlBDHB/KnImedfjhJ9LiZMHTSUWl1LB3q4R6RyvFqve+vGaxiF6ksjgtdgJbR7pf2iDs7+Dd1+pjppeJJ2SJUOFcPcPuaRZMEhrXwUWzkeZn0WCH1SHzGpcY4V0h1H6T5YhZ81OpmZ10gZlN4oFcHu+9fA53Cnq5PFdXjyQEN530opREFJO+eDTw0A+Jw1yu9K5hUVkyEwki5cOSuhd1h1OBVsKnghmU3wD3460a65hnyiIdSn93u4eb/ZwkrMN5Z4hyD5yctuZIp3yF+OTkscy6jBtTWYF59UqIMKpL5dR8u7QiAKDUHCVLn5Gx90=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(346002)(376002)(39860400002)(136003)(230922051799003)(82310400011)(64100799003)(451199024)(186009)(1800799009)(40470700004)(36840700001)(110136005)(478600001)(45080400002)(7696005)(6666004)(86362001)(81166007)(36756003)(356005)(921005)(82740400003)(40460700003)(16526019)(26005)(2616005)(426003)(1076003)(83380400001)(6636002)(316002)(54906003)(70586007)(70206006)(41300700001)(5660300002)(8936002)(4326008)(8676002)(2906002)(7416002)(336012)(32650700002)(40480700001)(36860700001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2023 02:55:54.8251
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47227f90-3328-4214-79fd-08dbcebc94e0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989E6.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6179
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231012100459.6158-4-ansuelsmth@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Evan Quan <quanliangl@hotmail.com>
+Hi Christian,
 
-Fulfill the SMU13.0.7 support for Wifi RFI mitigation feature.
+kernel test robot noticed the following build warnings:
 
-Signed-off-by: Evan Quan <quanliangl@hotmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
---
-v10->v11:
-  - downgrade the prompt level on message failure(Lijo)
----
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  | 59 +++++++++++++++++++
- 1 file changed, 59 insertions(+)
+[auto build test WARNING on net-next/main]
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-index 62f2886ab4df..c5736fb3cf6d 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -126,6 +126,7 @@ static struct cmn2asic_msg_mapping smu_v13_0_7_message_map[SMU_MSG_MAX_COUNT] =
- 	MSG_MAP(AllowGpo,			PPSMC_MSG_SetGpoAllow,           0),
- 	MSG_MAP(GetPptLimit,			PPSMC_MSG_GetPptLimit,                 0),
- 	MSG_MAP(NotifyPowerSource,		PPSMC_MSG_NotifyPowerSource,           0),
-+	MSG_MAP(EnableUCLKShadow,		PPSMC_MSG_EnableUCLKShadow,            0),
- };
- 
- static struct cmn2asic_mapping smu_v13_0_7_clk_map[SMU_CLK_COUNT] = {
-@@ -207,6 +208,7 @@ static struct cmn2asic_mapping smu_v13_0_7_table_map[SMU_TABLE_COUNT] = {
- 	TAB_MAP(ACTIVITY_MONITOR_COEFF),
- 	[SMU_TABLE_COMBO_PPTABLE] = {1, TABLE_COMBO_PPTABLE},
- 	TAB_MAP(OVERDRIVE),
-+	TAB_MAP(WIFIBAND),
- };
- 
- static struct cmn2asic_mapping smu_v13_0_7_pwr_src_map[SMU_POWER_SOURCE_COUNT] = {
-@@ -503,6 +505,9 @@ static int smu_v13_0_7_tables_init(struct smu_context *smu)
- 	               AMDGPU_GEM_DOMAIN_VRAM);
- 	SMU_TABLE_INIT(tables, SMU_TABLE_COMBO_PPTABLE, MP0_MP1_DATA_REGION_SIZE_COMBOPPTABLE,
- 			PAGE_SIZE, AMDGPU_GEM_DOMAIN_VRAM);
-+	SMU_TABLE_INIT(tables, SMU_TABLE_WIFIBAND,
-+		       sizeof(WifiBandEntryTable_t), PAGE_SIZE,
-+		       AMDGPU_GEM_DOMAIN_VRAM);
- 
- 	smu_table->metrics_table = kzalloc(sizeof(SmuMetricsExternal_t), GFP_KERNEL);
- 	if (!smu_table->metrics_table)
-@@ -2179,6 +2184,57 @@ static int smu_v13_0_7_set_df_cstate(struct smu_context *smu,
- 					       NULL);
- }
- 
-+static bool smu_v13_0_7_wbrf_support_check(struct smu_context *smu)
-+{
-+	return smu->smc_fw_version > 0x00524600;
-+}
-+
-+static int smu_v13_0_7_set_wbrf_exclusion_ranges(struct smu_context *smu,
-+						 struct freq_band_range *exclusion_ranges)
-+{
-+	WifiBandEntryTable_t wifi_bands;
-+	int valid_entries = 0;
-+	int ret, i;
-+
-+	memset(&wifi_bands, 0, sizeof(wifi_bands));
-+	for (i = 0; i < ARRAY_SIZE(wifi_bands.WifiBandEntry); i++) {
-+		if (!exclusion_ranges[i].start &&
-+		    !exclusion_ranges[i].end)
-+			break;
-+
-+		/* PMFW expects the inputs to be in Mhz unit */
-+		wifi_bands.WifiBandEntry[valid_entries].LowFreq =
-+			DIV_ROUND_DOWN_ULL(exclusion_ranges[i].start, HZ_IN_MHZ);
-+		wifi_bands.WifiBandEntry[valid_entries++].HighFreq =
-+			DIV_ROUND_UP_ULL(exclusion_ranges[i].end, HZ_IN_MHZ);
-+	}
-+	wifi_bands.WifiBandEntryNum = valid_entries;
-+
-+	/*
-+	 * Per confirm with PMFW team, WifiBandEntryNum = 0 is a valid setting.
-+	 * Considering the scenarios below:
-+	 * - At first the wifi device adds an exclusion range e.g. (2400,2500) to
-+	 *   BIOS and our driver gets notified. We will set WifiBandEntryNum = 1
-+	 *   and pass the WifiBandEntry (2400, 2500) to PMFW.
-+	 *
-+	 * - Later the wifi device removes the wifiband list added above and
-+	 *   our driver gets notified again. At this time, driver will set
-+	 *   WifiBandEntryNum = 0 and pass an empty WifiBandEntry list to PMFW.
-+	 *   - PMFW may still need to do some uclk shadow update(e.g. switching
-+	 *     from shadow clock back to primary clock) on receiving this.
-+	 */
-+
-+	ret = smu_cmn_update_table(smu,
-+				   SMU_TABLE_WIFIBAND,
-+				   0,
-+				   (void *)(&wifi_bands),
-+				   true);
-+	if (ret)
-+		dev_warn(smu->adev->dev, "Failed to set wifiband!");
-+
-+	return ret;
-+}
-+
- static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.get_allowed_feature_mask = smu_v13_0_7_get_allowed_feature_mask,
- 	.set_default_dpm_table = smu_v13_0_7_set_default_dpm_table,
-@@ -2247,6 +2303,9 @@ static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
- 	.set_mp1_state = smu_v13_0_7_set_mp1_state,
- 	.set_df_cstate = smu_v13_0_7_set_df_cstate,
- 	.gpo_control = smu_v13_0_gpo_control,
-+	.is_asic_wbrf_supported = smu_v13_0_7_wbrf_support_check,
-+	.enable_uclk_shadow = smu_v13_0_enable_uclk_shadow,
-+	.set_wbrf_exclusion_ranges = smu_v13_0_7_set_wbrf_exclusion_ranges,
- };
- 
- void smu_v13_0_7_set_ppt_funcs(struct smu_context *smu)
+url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Marangi/net-introduce-napi_is_scheduled-helper/20231017-104641
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20231012100459.6158-4-ansuelsmth%40gmail.com
+patch subject: [net-next PATCH v2 3/4] net: stmmac: move TX timer arm after DMA enable
+config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20231017/202310171222.UN3fzVpz-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231017/202310171222.UN3fzVpz-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202310171222.UN3fzVpz-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:2549:28: error: expected ';', ',' or ')' before 'bool'
+    2549 |                            bool *pending_packets)
+         |                            ^~~~
+   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c: In function 'stmmac_napi_poll_tx':
+   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:5586:21: error: implicit declaration of function 'stmmac_tx_clean'; did you mean 'stmmac_rx_vlan'? [-Werror=implicit-function-declaration]
+    5586 |         work_done = stmmac_tx_clean(priv, budget, chan, &pending_packets);
+         |                     ^~~~~~~~~~~~~~~
+         |                     stmmac_rx_vlan
+   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c: At top level:
+>> drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:2425:13: warning: 'stmmac_xdp_xmit_zc' defined but not used [-Wunused-function]
+    2425 | static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
+         |             ^~~~~~~~~~~~~~~~~~
+>> drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:536:13: warning: 'stmmac_get_tx_hwtstamp' defined but not used [-Wunused-function]
+     536 | static void stmmac_get_tx_hwtstamp(struct stmmac_priv *priv,
+         |             ^~~~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/stmmac_xdp_xmit_zc +2425 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+
+47dd7a540b8a0c drivers/net/stmmac/stmmac_main.c                  Giuseppe Cavallaro 2009-10-14  2424  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13 @2425  static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2426  {
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2427  	struct netdev_queue *nq = netdev_get_tx_queue(priv->dev, queue);
+8531c80800c10e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Christian Marangi  2022-07-23  2428  	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang      2023-09-18  2429  	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2430  	struct xsk_buff_pool *pool = tx_q->xsk_pool;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2431  	unsigned int entry = tx_q->cur_tx;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2432  	struct dma_desc *tx_desc = NULL;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2433  	struct xdp_desc xdp_desc;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2434  	bool work_done = true;
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang      2023-07-18  2435  	u32 tx_set_ic_bit = 0;
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang      2023-07-18  2436  	unsigned long flags;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2437  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2438  	/* Avoids TX time-out as we are sharing with slow path */
+e92af33e472cf3 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Alexander Lobakin  2021-11-17  2439  	txq_trans_cond_update(nq);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2440  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2441  	budget = min(budget, stmmac_tx_avail(priv, queue));
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2442  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2443  	while (budget-- > 0) {
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2444  		dma_addr_t dma_addr;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2445  		bool set_ic;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2446  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2447  		/* We are sharing with slow path and stop XSK TX desc submission when
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2448  		 * available TX ring is less than threshold.
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2449  		 */
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2450  		if (unlikely(stmmac_tx_avail(priv, queue) < STMMAC_TX_XSK_AVAIL) ||
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2451  		    !netif_carrier_ok(priv->dev)) {
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2452  			work_done = false;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2453  			break;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2454  		}
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2455  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2456  		if (!xsk_tx_peek_desc(pool, &xdp_desc))
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2457  			break;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2458  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2459  		if (likely(priv->extend_desc))
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2460  			tx_desc = (struct dma_desc *)(tx_q->dma_etx + entry);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2461  		else if (tx_q->tbs & STMMAC_TBS_AVAIL)
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2462  			tx_desc = &tx_q->dma_entx[entry].basic;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2463  		else
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2464  			tx_desc = tx_q->dma_tx + entry;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2465  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2466  		dma_addr = xsk_buff_raw_get_dma(pool, xdp_desc.addr);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2467  		xsk_buff_raw_dma_sync_for_device(pool, dma_addr, xdp_desc.len);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2468  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2469  		tx_q->tx_skbuff_dma[entry].buf_type = STMMAC_TXBUF_T_XSK_TX;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2470  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2471  		/* To return XDP buffer to XSK pool, we simple call
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2472  		 * xsk_tx_completed(), so we don't need to fill up
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2473  		 * 'buf' and 'xdpf'.
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2474  		 */
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2475  		tx_q->tx_skbuff_dma[entry].buf = 0;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2476  		tx_q->xdpf[entry] = NULL;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2477  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2478  		tx_q->tx_skbuff_dma[entry].map_as_page = false;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2479  		tx_q->tx_skbuff_dma[entry].len = xdp_desc.len;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2480  		tx_q->tx_skbuff_dma[entry].last_segment = true;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2481  		tx_q->tx_skbuff_dma[entry].is_jumbo = false;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2482  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2483  		stmmac_set_desc_addr(priv, tx_desc, dma_addr);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2484  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2485  		tx_q->tx_count_frames++;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2486  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2487  		if (!priv->tx_coal_frames[queue])
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2488  			set_ic = false;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2489  		else if (tx_q->tx_count_frames % priv->tx_coal_frames[queue] == 0)
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2490  			set_ic = true;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2491  		else
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2492  			set_ic = false;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2493  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2494  		if (set_ic) {
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2495  			tx_q->tx_count_frames = 0;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2496  			stmmac_set_tx_ic(priv, tx_desc);
+133466c3bbe171 drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang      2023-07-18  2497  			tx_set_ic_bit++;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2498  		}
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2499  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2500  		stmmac_prepare_tx_desc(priv, tx_desc, 1, xdp_desc.len,
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2501  				       true, priv->mode, true, true,
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2502  				       xdp_desc.len);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2503  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2504  		stmmac_enable_dma_transmission(priv, priv->ioaddr);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2505  
+8531c80800c10e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Christian Marangi  2022-07-23  2506  		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2507  		entry = tx_q->cur_tx;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2508  	}
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang      2023-09-18  2509  	flags = u64_stats_update_begin_irqsave(&txq_stats->syncp);
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang      2023-09-18  2510  	txq_stats->tx_set_ic_bit += tx_set_ic_bit;
+8070274b472e2e drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Jisheng Zhang      2023-09-18  2511  	u64_stats_update_end_irqrestore(&txq_stats->syncp, flags);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2512  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2513  	if (tx_desc) {
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2514  		stmmac_flush_tx_descriptors(priv, queue);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2515  		xsk_tx_release(pool);
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2516  	}
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2517  
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2518  	/* Return true if all of the 3 conditions are met
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2519  	 *  a) TX Budget is still available
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2520  	 *  b) work_done = true when XSK TX desc peek is empty (no more
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2521  	 *     pending XSK TX for transmission)
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2522  	 */
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2523  	return !!budget && work_done;
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2524  }
+132c32ee5bc09b drivers/net/ethernet/stmicro/stmmac/stmmac_main.c Ong Boon Leong     2021-04-13  2525  
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
