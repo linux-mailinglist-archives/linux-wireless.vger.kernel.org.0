@@ -2,153 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5150B7CBEC8
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 11:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E137CBEEC
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Oct 2023 11:21:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343509AbjJQJRi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Oct 2023 05:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53502 "EHLO
+        id S234900AbjJQJVH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Oct 2023 05:21:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343505AbjJQJRf (ORCPT
+        with ESMTP id S234866AbjJQJVC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Oct 2023 05:17:35 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83787F9
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Oct 2023 02:17:33 -0700 (PDT)
+        Tue, 17 Oct 2023 05:21:02 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C51E811B;
+        Tue, 17 Oct 2023 02:20:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697534253; x=1729070253;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2423up6+XrnAJTfyV2+clcnazPWsPTSuqg8FGcMlrys=;
-  b=mF2gn8qr1VRBv6WHLHLQHDtHcS+FHlH7KCWcqgakdgHvbV8O5sGvhliw
-   /K6pb5uhftoPTZCqPp6DwG+M6wIzuhfvplxMBRo7jNrrIdcYLwMtFDytP
-   kC29t2CIK9v/bYxdOk5eVchxRYvjDEpKFExPzB8FNdDRF01es7v6qGIqn
-   vzQoU4shkE3BCYtPk0YfVJ5fYrgj2Ch6ClDQ/WoyLprA3Ma3jVzn6L61B
-   JKGvLnsx4FdMDlbcR+IUot7mxpRCYg9T17xMyYv+ykQpnuzC+ZlsjxMFA
-   X6tSSz708ADZssJ3OOLbV8LKS4SFI07Cn+QYLXpj0dbQ33OK8Vfpk/hwQ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="370808569"
+  t=1697534451; x=1729070451;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=v/7G7MGX1gcW6Dj8Rktw//OjNQ+o0JO+cRKd4i36UZg=;
+  b=W9uLLy+AyzYv1HzTg9S8jn6++nAcAX1CihwhesmPVBX6Pht+w/f4z0B/
+   /ppIQ5d8rKvB2okZrKPcxROIJdsPH0TCV2h9/X+QU6ArOFpmFuHuR3RWs
+   TIIE/Prb6YCGJFJ5dxwsscygasdoEE04IvhoBnn3loQWzM5iyGiN0TsnN
+   HMU80jyGiuaYtT1nEXgzGR+XkkUeB5uCkL/shJVDapKRSL7NlpleOa1WA
+   G8vR+5JhEvNgO7f6wA6UDnbMlwIDrhnSZwTNKjDxSuN2JoYG2LTDj1Twf
+   GZrnNRuRzHsCcNOBozLGbZTIuLOHhCvwR2+eMh2ikiDmj0txFRnUueDo/
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="365999435"
 X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
-   d="scan'208";a="370808569"
+   d="scan'208";a="365999435"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 02:17:33 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 02:20:23 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="759731975"
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="759733290"
 X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
-   d="scan'208";a="759731975"
-Received: from obarinsh-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.213.101])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 02:17:31 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 14/14] wifi: iwlwifi: mvm: fix regdb initialization
-Date:   Tue, 17 Oct 2023 12:16:49 +0300
-Message-Id: <20231017115047.78b2c5b891b0.Iac49d52e0bfc0317372015607c63ea9276bbb188@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20231017091649.65090-1-gregory.greenman@intel.com>
-References: <20231017091649.65090-1-gregory.greenman@intel.com>
+   d="scan'208";a="759733290"
+Received: from spandruv-mobl.amr.corp.intel.com ([10.252.44.24])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 02:20:19 -0700
+Date:   Tue, 17 Oct 2023 12:20:17 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Ma Jun <Jun.Ma2@amd.com>
+cc:     amd-gfx@lists.freedesktop.org, lenb@kernel.org,
+        johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        alexander.deucher@amd.com, Lijo.Lazar@amd.com,
+        mario.limonciello@amd.com, majun@amd.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v12 1/9] Documentation/driver-api: Add document about
+ WBRF mechanism
+In-Reply-To: <20231017025358.1773598-2-Jun.Ma2@amd.com>
+Message-ID: <f3c89e85-a683-eedf-9c3-ed54173bc12@linux.intel.com>
+References: <20231017025358.1773598-1-Jun.Ma2@amd.com> <20231017025358.1773598-2-Jun.Ma2@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+On Tue, 17 Oct 2023, Ma Jun wrote:
 
-In order to get regulatory domain, driver sends MCC_UPDATE_CMD to the
-FW. One of the parameters in the response is the status which can tell
-if the regdomain has changed or not.
+> Add documentation about AMD's Wifi band RFI mitigation (WBRF) mechanism
+> explaining the theory and how it is used.
+> 
+> Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+> ---
+>  Documentation/driver-api/wbrf.rst | 73 +++++++++++++++++++++++++++++++
+>  1 file changed, 73 insertions(+)
+>  create mode 100644 Documentation/driver-api/wbrf.rst
+> 
+> diff --git a/Documentation/driver-api/wbrf.rst b/Documentation/driver-api/wbrf.rst
+> new file mode 100644
+> index 000000000000..8561840263b3
+> --- /dev/null
+> +++ b/Documentation/driver-api/wbrf.rst
+> @@ -0,0 +1,73 @@
+> +.. SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +=================================
+> +WBRF - Wifi Band RFI Mitigations
+> +=================================
+> +Due to electrical and mechanical constraints in certain platform designs
 
-When iwl_mvm_init_mcc() is called during iwl_op_mode_mvm_start(), then
-sband is still NULL and channel parameters (i.e. chan->flags)  cannot be
-initialized. When, further in the flow, iwl_mvm_update_mcc() is called
-during iwl_mvm_up(), it first checks if the regdomain has changed and
-then skips the update if it remains the same. But, since channel
-parameters weren't initialized yet, the update should be forced in this
-codepath. Fix that by adding a corresponding parameter to
-iwl_mvm_init_fw_regd().
+Add empty line before starting the content of a section.
 
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c       | 2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 8 +++++---
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      | 2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c      | 2 +-
- 4 files changed, 8 insertions(+), 6 deletions(-)
+> +there may be likely interference of relatively high-powered harmonics of
+> +the GPU memory clocks with local radio module frequency bands used by
+> +certain Wifi bands.
+> +
+> +To mitigate possible RFI interference producers can advertise the
+> +frequencies in use and consumers can use this information to avoid using
+> +these frequencies for sensitive features.
+> +
+> +When a platform is known to have this issue with any contained devices,
+> +the platform designer will advertise the availability of this feature via
+> +ACPI devices with a device specific method (_DSM).
+> +* Producers with this _DSM will be able to advertise the frequencies in use.
+> +* Consumers with this _DSM will be able to register for notifications of
+> +frequencies in use.
+> +
+> +Some general terms
+> +==================
+> +Producer: such component who can produce high-powered radio frequency
+> +Consumer: such component who can adjust its in-use frequency in
+> +           response to the radio frequencies of other components to
+> +           mitigate the possible RFI.
+> +
+> +To make the mechanism function, those producers should notify active use
+> +of their particular frequencies so that other consumers can make relative
+> +internal adjustments as necessary to avoid this resonance.
+> +
+> +ACPI interface
+> +==============
+> +Although initially used by for wifi + dGPU use cases, the ACPI interface
+> +can be scaled to any type of device that a platform designer discovers
+> +can cause interference.
+> +
+> +The GUID used for the _DSM is 7B7656CF-DC3D-4C1C-83E9-66E721DE3070.
+> +
+> +3 functions are available in this _DSM:
+> +
+> +* 0: discover # of functions available
+> +* 1: record RF bands in use
+> +* 2: retrieve RF bands in use
+> +
+> +Driver programming interface
+> +============================
+> +.. kernel-doc:: drivers/platform/x86/amd/wbrf.c
+> +
+> +Sample Usage
+> +=============
+> +The expected flow for the producers:
+> +1) During probe, call `acpi_amd_wbrf_supported_producer` to check if WBRF
+> +can be enabled for the device.
+> +2) On using some frequency band, call `acpi_amd_wbrf_add_remove` with 'add'
+> +param to get other consumers properly notified.
+> +3) Or on stopping using some frequency band, call
+> +`acpi_amd_wbrf_add_remove` with 'remove' param to get other consumers notified.
+> +
+> +The expected flow for the consumers:
+> +1) During probe, call `acpi_amd_wbrf_supported_consumer` to check if WBRF
+> +can be enabled for the device.
+> +2) Call `amd_wbrf_register_notifier` to register for notification
+> +of frequency band change(add or remove) from other producers.
+> +3) Call the `amd_wbrf_retrieve_freq_band` intentionally to retrieve
+> +current active frequency bands considering some producers may broadcast
+> +such information before the consumer is up.
+> +4) On receiving a notification for frequency band change, run
+> +`amd_wbrf_retrieve_freq_band` again to retrieve the latest
+> +active frequency bands.
+> +5) During driver cleanup, call `amd_wbrf_unregister_notifier` to
+> +unregister the notifier.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 46ee280231ea..92c45571bd69 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -818,7 +818,7 @@ static int iwl_mvm_d3_reprogram(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	if (ret)
- 		IWL_ERR(mvm, "Failed to send quota: %d\n", ret);
- 
--	if (iwl_mvm_is_lar_supported(mvm) && iwl_mvm_init_fw_regd(mvm))
-+	if (iwl_mvm_is_lar_supported(mvm) && iwl_mvm_init_fw_regd(mvm, false))
- 		IWL_ERR(mvm, "Failed to initialize D3 LAR information\n");
- 
- 	return 0;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 28da98e75e52..bb330f1b5d9e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -186,7 +186,7 @@ struct ieee80211_regdomain *iwl_mvm_get_current_regdomain(struct iwl_mvm *mvm,
- 				     MCC_SOURCE_OLD_FW, changed);
- }
- 
--int iwl_mvm_init_fw_regd(struct iwl_mvm *mvm)
-+int iwl_mvm_init_fw_regd(struct iwl_mvm *mvm, bool force_regd_sync)
- {
- 	enum iwl_mcc_source used_src;
- 	struct ieee80211_regdomain *regd;
-@@ -213,8 +213,10 @@ int iwl_mvm_init_fw_regd(struct iwl_mvm *mvm)
- 	if (IS_ERR_OR_NULL(regd))
- 		return -EIO;
- 
--	/* update cfg80211 if the regdomain was changed */
--	if (changed)
-+	/* update cfg80211 if the regdomain was changed or the caller explicitly
-+	 * asked to update regdomain
-+	 */
-+	if (changed || force_regd_sync)
- 		ret = regulatory_set_wiphy_regd_sync(mvm->hw->wiphy, regd);
- 	else
- 		ret = 0;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 81f7b0a644f9..760cebf22fee 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -2241,7 +2241,7 @@ struct ieee80211_regdomain *iwl_mvm_get_regdomain(struct wiphy *wiphy,
- 						  bool *changed);
- struct ieee80211_regdomain *iwl_mvm_get_current_regdomain(struct iwl_mvm *mvm,
- 							  bool *changed);
--int iwl_mvm_init_fw_regd(struct iwl_mvm *mvm);
-+int iwl_mvm_init_fw_regd(struct iwl_mvm *mvm, bool force_regd_sync);
- void iwl_mvm_update_changed_regdom(struct iwl_mvm *mvm);
- 
- /* smart fifo */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-index 17a1e5717dde..c0dd441e800e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-@@ -573,7 +573,7 @@ int iwl_mvm_init_mcc(struct iwl_mvm *mvm)
- 	 * try to replay the last set MCC to FW. If it doesn't exist,
- 	 * queue an update to cfg80211 to retrieve the default alpha2 from FW.
- 	 */
--	retval = iwl_mvm_init_fw_regd(mvm);
-+	retval = iwl_mvm_init_fw_regd(mvm, true);
- 	if (retval != -ENOENT)
- 		return retval;
- 
+Align these so that only the numbers start from first column. I think the 
+proper markup for numbered lists is 1. not 1).
+
+
 -- 
-2.38.1
+ i.
 
