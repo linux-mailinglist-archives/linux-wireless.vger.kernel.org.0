@@ -2,149 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD0B27CEA37
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 23:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6257C7CEC24
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 01:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231919AbjJRVuF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Oct 2023 17:50:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49290 "EHLO
+        id S231521AbjJRXfM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Oct 2023 19:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230334AbjJRVuE (ORCPT
+        with ESMTP id S229697AbjJRXfL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Oct 2023 17:50:04 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CBC2111
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:50:02 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a7af69a4baso111746877b3.0
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:50:02 -0700 (PDT)
+        Wed, 18 Oct 2023 19:35:11 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57EB910F
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 16:35:09 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1c9bca1d96cso51634345ad.3
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 16:35:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697665801; x=1698270601; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=z8zZipBfwYNWzVL/d5y/qUL95UR9zvumjoOjtC0bzRU=;
-        b=sl82I0r5PMtHtJ6HzraR/DHXHBM77LzsndZNdvsOaZrTDj2RWUzCXC9OpAXU+iwjpE
-         jnPMHAU6cvTBsnuuEM45zMaC6XYV8h6gj46DIQstwtT/6FjJ4SqnZSWf4w9I0iH5lDYR
-         Gc+QbeIfiQDNG7QxmfTY5CnVfgcyfdAvuBFDIH7DI0b9QccGe04yt/mgxlfTQ8k9vWw+
-         hEORv86pxWu/B3LU/VaqoxoxtrHMm65zM2jgjCWH+ddmW48pm6NUipKNoOTRfIkZlW9B
-         3CCTfW0eWnQHqgHUwddT9NAxuiiGmD9uvLeciy8vzROLj/6+2L8KEiUaZ7SqajjW9sOo
-         bMJg==
+        d=chromium.org; s=google; t=1697672109; x=1698276909; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xxRMOhkHfqF2Yz4cAD/a2m3hMjCZwz0gsRF0WfVLtiE=;
+        b=BjWFbYahC8O7XRC6DzvorCb+dM3pvf7X0L08LcR0xDolDfiK+MlYyXrpliWGl4qid2
+         nNKBAQyiJJAliwcHEe5cgl4FtTbPJrMvw4rzQoe7/Ohb/vPADzsD5nLIpum6K99Sg9vD
+         Ilzd+FOC3Hjt/K6UapFQSsb5QbX15vszM+P3U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697665801; x=1698270601;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z8zZipBfwYNWzVL/d5y/qUL95UR9zvumjoOjtC0bzRU=;
-        b=ONJMrfpXbHas6+ym0WNM1+rDjWXaiIE6hYOKQdKCCLel3pe8sIfM4VkdIjUxgVEedT
-         EsucKO7vPoX4y3ASrOk09Kt8Gh6G3a/f7S43NyH/3N6GvFzT8DdwbV4BsR18ormeHRnZ
-         WSewPOgUplgZm7VOS1NNeNNsNOyNzMMvFR3abf1AVgct1vEng6pz1arosEr/yAFvFf1G
-         rRo7Bc5wJ6y3jA+ks75Oq3lUvQqywTMfT1LX2mF6rz/6i61+6FjrVDCC2dElOlsRoIDt
-         Mgl7KTDW/4bdXXy3g6am+I2MtseTXncxVViILwrtLS3puUPRWvjE2jX1cWZJ0qvPbnZO
-         F8yw==
-X-Gm-Message-State: AOJu0YxnEWv0RprbUmlOXreSH6wTT+5QLy7SbisaQR/mfEQFAkQaHz9n
-        Rsy1OaSI2j94YW+hoEmC5pvAMjRPM2b2N5qS7g==
-X-Google-Smtp-Source: AGHT+IEN/FTSASrll23QyNRMxl3kr6I8Hj0ECv2EwBFAUZlWSl9jzbvTcPJAY+6SodfofM1HCyBdr6WOwoVCZaWyww==
-X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a25:9a42:0:b0:d9a:da03:97e8 with SMTP
- id r2-20020a259a42000000b00d9ada0397e8mr15079ybo.2.1697665801580; Wed, 18 Oct
- 2023 14:50:01 -0700 (PDT)
-Date:   Wed, 18 Oct 2023 21:50:01 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAhTMGUC/x3NwQqDMAyA4VeRnBdou4vsVcYOXUy3gIuSFHWI7
- 27x+F3+fwdnE3Z4dDsYL+IyaUO8dUDfrB9GGZohhXSPIfbo1ZTmPw4mC5ujcsVVjEd2xyq4jjQ Z4y+LIiEFSn1OpbxDgdacjYts1+/5Oo4Td1K6yn8AAAA=
-X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1697665800; l=2656;
- i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=+Kzx2MbD//7ayd+aOst6C3X1PEowOw6WZ0FJ1cJtGh0=; b=PHmejvnmSgVgn+JBcu0Adx76+ya44Z1bQUxBUSKkPHEXVZqm2ntP844KkvGQvnoeCjqDYj+QK
- VdfW2La2QM2BXds6tdk7luDoj/gtbofZTNzHKJ52cnnh7z7vH0EK0Xu
-X-Mailer: b4 0.12.3
-Message-ID: <20231018-strncpy-drivers-net-wireless-ti-wlcore-main-c-v1-1-1b1055f482a1@google.com>
-Subject: [PATCH] wifi: wlcore: main: replace deprecated strncpy with strscpy
-From:   Justin Stitt <justinstitt@google.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Justin Stitt <justinstitt@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        d=1e100.net; s=20230601; t=1697672109; x=1698276909;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xxRMOhkHfqF2Yz4cAD/a2m3hMjCZwz0gsRF0WfVLtiE=;
+        b=Jv0VRaQHaQvF+oPgvIAACgYjcUMvs+d1IGkvOzeEXOnvfi2tLJ4sS63ZAVqGjvNUka
+         DxeSlUM+JB0YGtJJhwx+nsVb4eoeSOLZrRnE9hni09U/7msE4lvcLudVVRpHCUxMtqEb
+         ZCQgq2vwXwalkAf74u46wK7nuUqLqiuZxj2gF4XOGIi/wOFDuv8PrRO+AKcWijeAmgPj
+         QGmJs4HDWTHurvcNG1A11jSob/7FKh8tIqamrcdSkEEadYJcpSVHxS6bWOssQwkDQrjY
+         4seZtDXgMsvkvZS/REBrHD2xtcpMOebwuhQSDgZllKKbPRYSCELePekIeMGWFb2oFu+7
+         9ItQ==
+X-Gm-Message-State: AOJu0YyOb3HanmCeMiaiSst+c7N4olFrME/RIc0JhbtDrJjQbTwb8cwU
+        sNp9Cb70EtxFZ5CAzjX6W6V3VQ==
+X-Google-Smtp-Source: AGHT+IFLUHDsJM96lu+Gr9hzdtzNvixg1+XlD/7STZUI8C4D6K92Q/4/Tg+mC7mHeCFcak1NFFEC+Q==
+X-Received: by 2002:a17:902:ec87:b0:1c5:d063:b70e with SMTP id x7-20020a170902ec8700b001c5d063b70emr1020318plg.53.1697672108702;
+        Wed, 18 Oct 2023 16:35:08 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id f18-20020a170902ce9200b001bc18e579aesm480575plg.101.2023.10.18.16.35.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 16:35:08 -0700 (PDT)
+Date:   Wed, 18 Oct 2023 16:35:07 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     Justin Stitt <justinstitt@google.com>,
+        Kalle Valo <kvalo@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] ath10k: replace deprecated strncpy with strtomem_pad
+Message-ID: <202310181626.C5BE0C21F@keescook>
+References: <20231013-strncpy-drivers-net-wireless-ath-ath10k-mac-c-v1-1-24e40201afa3@google.com>
+ <1cfc7c64-439c-437e-af82-7fce1202242d@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1cfc7c64-439c-437e-af82-7fce1202242d@quicinc.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-strncpy() is deprecated for use on NUL-terminated destination strings
-[1] and as such we should prefer more robust and less ambiguous string
-interfaces.
+On Fri, Oct 13, 2023 at 05:58:03PM -0700, Jeff Johnson wrote:
+> On 10/13/2023 1:33 PM, Justin Stitt wrote:
+> > strncpy() is deprecated [1] and we should prefer less ambiguous
+> > interfaces.
+> > 
+> > In this case, arvif->u.ap.ssid has its length maintained by
+> > arvif->u.ap.ssid_len which indicates it may not need to be
+> > NUL-terminated, although by virtue of using strtomem_pad (with NUL-byte
+> > pad character) and having a destination size larger than the source,
+> > ssid will, incidentally, be NUL-terminated here.
+> > 
+> > As strtomem_pad() docs say:
+> >   * @dest: Pointer of destination character array (marked as __nonstring)
+> >   * @src: Pointer to NUL-terminated string
+> >   * @pad: Padding character to fill any remaining bytes of @dest after copy
+> >   *
+> >   * This is a replacement for strncpy() uses where the destination is not
+> >   * a NUL-terminated string, but with bounds checking on the source size, and
+> >   * an explicit padding character. If padding is not required, use strtomem().
+> > 
+> > Let's also mark ath10k_vif.u.ap.ssid as __nonstring.
+> 
+> what criteria is used to determine whether or not to use __nonstring?
+> doesn't the use of u8 vs char already communicate that distinction?
+> just want to know what other u8 arrays might require this.
+> FWIW the documentation referenced by the __nonstring macro explicitly refers
+> to "type array of char, signed char, or unsigned char"
 
-We expect fw_version strings to be NUL-terminated based on other similar
-assignments:
+The use of __nonstring is for byte arrays that are _not_ expected to be
+%NUL terminated. Unfortunately "char" vs "u8" isn't distinguished by the
+compiler. All byte arrays are treated as C strings unless __nonstring is
+used.
 
-wireless/broadcom/brcm80211/brcmsmac/main.c
-7867:           snprintf(wlc->wiphy->fw_version,
-7868:                    sizeof(wlc->wiphy->fw_version), "%u.%u", rev, patch);
+> > It is unclear to me whether padding is strictly necessary. Perhaps we
+> > should opt for just strtomem() -- padding certainly doesn't hurt,
+> > though.
+> 
+> concur that padding probably isn't necessary but doesn't hurt, and will
+> prevent confusion if looking at this member in a crashdump
+> 
+> > 
+> > Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+> > Link: https://github.com/KSPP/linux/issues/90
+> > Cc: linux-hardening@vger.kernel.org
+> > Signed-off-by: Justin Stitt <justinstitt@google.com>
+> 
+> Either with or without the __nonstring...
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-wireless/broadcom/b43legacy/main.c
-1765:   snprintf(wiphy->fw_version, sizeof(wiphy->fw_version), "%u.%u",
+Yup, it looks like the ssid member is passed around with memcpy()
+everywhere else.
 
-wireless/broadcom/b43/main.c
-2730:   snprintf(wiphy->fw_version, sizeof(wiphy->fw_version), "%u.%u",
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-wireless/intel/iwlwifi/dvm/main.c
-1465:   snprintf(priv->hw->wiphy->fw_version,
-1466:            sizeof(priv->hw->wiphy->fw_version),
-
-wireless/intel/ipw2x00/ipw2100.c
-5905:   snprintf(info->fw_version, sizeof(info->fw_version), "%s:%d:%s",
-
-Based on this, NUL-padding is not required.
-
-A suitable replacement is `strscpy` [2] due to the fact that it
-guarantees NUL-termination on the destination buffer without
-unnecessarily NUL-padding.
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
-Link: https://github.com/KSPP/linux/issues/90
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Justin Stitt <justinstitt@google.com>
----
-Note: build-tested only.
-
-Found with: $ rg "strncpy\("
----
- drivers/net/wireless/ti/wlcore/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index bf21611872a3..52a427bd54fa 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -1126,7 +1126,7 @@ int wl1271_plt_start(struct wl1271 *wl, const enum plt_mode plt_mode)
- 
- 		/* update hw/fw version info in wiphy struct */
- 		wiphy->hw_version = wl->chip.id;
--		strncpy(wiphy->fw_version, wl->chip.fw_ver_str,
-+		strscpy(wiphy->fw_version, wl->chip.fw_ver_str,
- 			sizeof(wiphy->fw_version));
- 
- 		goto out;
-@@ -2344,7 +2344,7 @@ static int wl12xx_init_fw(struct wl1271 *wl)
- 
- 	/* update hw/fw version info in wiphy struct */
- 	wiphy->hw_version = wl->chip.id;
--	strncpy(wiphy->fw_version, wl->chip.fw_ver_str,
-+	strscpy(wiphy->fw_version, wl->chip.fw_ver_str,
- 		sizeof(wiphy->fw_version));
- 
- 	/*
-
----
-base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
-change-id: 20231018-strncpy-drivers-net-wireless-ti-wlcore-main-c-c0c28a2ffb0f
-
-Best regards,
---
-Justin Stitt <justinstitt@google.com>
-
+-- 
+Kees Cook
