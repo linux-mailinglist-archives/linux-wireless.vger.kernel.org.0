@@ -2,145 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91CAF7CDAC1
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 13:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ABBD7CDBCB
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 14:36:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231150AbjJRLjq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Oct 2023 07:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49232 "EHLO
+        id S235131AbjJRMgC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Oct 2023 08:36:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344551AbjJRLjo (ORCPT
+        with ESMTP id S1344518AbjJRMgB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Oct 2023 07:39:44 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E1112F
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 04:39:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=bCy8dKQpQ9iG+rcaw3GhkrRi3vhdBx1LFm1P6vdeUMg=;
-        t=1697629181; x=1698838781; b=mBREfynix1xIdOUPcGItiRvWugesxKn2euXOyVeaYOuPTfz
-        L25HXgLQVa66ExgdaeXa/LspbDmISaUwFU/f2JjoIgSxJ38mO6WLu8fKJ1bs6piJWHpOGu+nZ4llK
-        gJhLucDVsSGKQDDUOM2CJGFGImwZKkdsAGEhZDZI97wu7eFU+cSXmoGdYG04H7rVCIVgkXd9f5wI9
-        5RLRyjNNj4qkkweN7leq2PKnD1Nfjslcm4SQUQS9oBE1gVtX6djbdz6YI/MN1fLw/+m9GYtUVAxw3
-        41W9JJfTDcDbo3WXcguvIsDhHmgl3/OjBtK8hXrSxO7x36eAGWgZoUcTWKLLHddA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.97-RC1)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qt4tm-0000000Blvt-1ctA;
-        Wed, 18 Oct 2023 13:39:38 +0200
-Message-ID: <08ff36664eb34bce8e7beb425233b1e8d4a4971c.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/4] wifi: mac80211: mlme: fix verification of
- puncturing bitmap obtained from AP
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kang Yang <quic_kangyang@quicinc.com>, ath12k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 18 Oct 2023 13:39:37 +0200
-In-Reply-To: <20230928055022.9670-2-quic_kangyang@quicinc.com>
-References: <20230928055022.9670-1-quic_kangyang@quicinc.com>
-         <20230928055022.9670-2-quic_kangyang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Wed, 18 Oct 2023 08:36:01 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C00D710F;
+        Wed, 18 Oct 2023 05:35:58 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-4081ccf69dcso10049875e9.0;
+        Wed, 18 Oct 2023 05:35:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697632557; x=1698237357; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+z2DeuWbLpI7AEzz9he/oetq9pODDYK4Bo2MZwm1LlY=;
+        b=kznUucxN6CW1QLdzL9Q9cLnndx4jBo8J/iAytD6q6kEyJCUN/o6yzcImP3lQvZ93ri
+         9130pjTDDxhA0Q5Cxm+Im2vENF2tlQRlIEEYdsDcdcnI1+PNwAA/r7XtUbPHQqmGf9+J
+         yMSsQ84WSU+imrHsKbuaRRtoBFyjJ0RX1sxpjJ1M+52XiguiPbfrmRZR410lKLkTO8Ni
+         yNJp8gItC0nb3NFnfTS1WQluVdenO/nLWGbtybqpaCW6pZbpfXgFFPVCAOhU2f+DFZ6B
+         FTk6y7xQ8V4wg5M3VcnALZTprrM7z6xZtexIGYpxRi7XKAXRoar85wb1T7TTXl+Ztp4C
+         u/4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697632557; x=1698237357;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+z2DeuWbLpI7AEzz9he/oetq9pODDYK4Bo2MZwm1LlY=;
+        b=OwGgJ/iA//+hhTRhZxry9khxURYndmFIsZhV6sipskl/LaN2tt37N3T9w0NrbxV2J9
+         sn8yqmN3kh0+3w4uMRkImNtEjNOMWDnKDmLzMYCJR+mrOP6hrm+3Amd2hbQVXyW4uHlf
+         3bZYBz6WqBpISBCe7/unXn9Wm70DgMR7dFDIbM/2uMieiG8ApraHJUYnRZNDiAVa3V+U
+         Saiu8w9pLl54kvv3shKnuKuSHpDX9A7BuYJCpYKUFj0+fs8A1uc0z722eAPc1kijb/88
+         tNP6/CHRqkkTBJ3Y1npaP1BacHQDIAYJQExskQb8f8sqPKoX3pm3uCHALlT//ud1FRhb
+         Moyw==
+X-Gm-Message-State: AOJu0Ywy9/hXPi71bkDBwbcssCGNyBAbAe1lxwaMcVpVJ6jEDIB0equH
+        CG2S/xDBHIwNIcbC99Va7kE=
+X-Google-Smtp-Source: AGHT+IHi7O1ZsGGb+3ZGVPAoATB5PmPAZWxpAXGDGRKLUdLuB4yOu6xE3tV0+2ka93mWmWLL4vJhfw==
+X-Received: by 2002:adf:9b95:0:b0:31f:fc9a:a03 with SMTP id d21-20020adf9b95000000b0031ffc9a0a03mr4367013wrc.20.1697632556892;
+        Wed, 18 Oct 2023 05:35:56 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id q28-20020adfab1c000000b003248a490e3asm2048211wrc.39.2023.10.18.05.35.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 05:35:56 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Simon Horman <horms@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc:     Christian Marangi <ansuelsmth@gmail.com>
+Subject: [net-next PATCH v4 0/4] net: stmmac: improve tx timer logic
+Date:   Wed, 18 Oct 2023 14:35:46 +0200
+Message-Id: <20231018123550.27110-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-09-28 at 13:50 +0800, Kang Yang wrote:
->=20
-> +static enum nl80211_chan_width
-> +ieee80211_rx_bw_to_nlwidth(enum ieee80211_sta_rx_bandwidth bw)
-> +{
-> +	switch (bw) {
-> +	case IEEE80211_STA_RX_BW_20:
-> +		return NL80211_CHAN_WIDTH_20;
+This series comes with the intention of restoring original performance
+of stmmac on some router/device that used the stmmac driver to handle
+gigabit traffic.
 
-So for a while now I was actually not responding to this because I was
-scratching my head over how this function ever could be needed or make
-sense ...
+More info are present in patch 3. This cover letter is to show results
+and improvements of the following change.
 
+The move to hr_timer for tx timer and commit 8fce33317023 ("net: stmmac:
+Rework coalesce timer and fix multi-queue races") caused big performance
+regression on these kind of device.
 
->  static bool ieee80211_config_puncturing(struct ieee80211_link_data *link=
-,
->  					const struct ieee80211_eht_operation *eht_oper,
->  					u64 *changed)
->  {
-> +	struct cfg80211_chan_def rx_chandef =3D link->conf->chandef;
->  	u16 bitmap =3D 0, extracted;
-> +	u8 bw =3D 0;
-> =20
->  	if ((eht_oper->params & IEEE80211_EHT_OPER_INFO_PRESENT) &&
->  	    (eht_oper->params &
-> @@ -5684,6 +5706,28 @@ static bool ieee80211_config_puncturing(struct iee=
-e80211_link_data *link,
->  		const u8 *disable_subchannel_bitmap =3D info->optional;
-> =20
->  		bitmap =3D get_unaligned_le16(disable_subchannel_bitmap);
-> +		bw =3D u8_get_bits(info->control, IEEE80211_EHT_OPER_CHAN_WIDTH);
-> +		rx_chandef.width =3D ieee80211_rx_bw_to_nlwidth(bw);
+This was observed on ipq806x that after kernel 4.19 couldn't handle
+gigabit speed anymore.
 
-But looking here, it clearly _doesn't_ make sense. IEEE80211_STA_RX_BW_*
-is a purely internal API, has nothing to do with the spec.
+The following series is currently applied and tested in OpenWrt SNAPSHOT
+and have great performance increase. (the scenario is qca8k switch +
+stmmac dwmac1000) Some good comparison can be found here [1].
 
-All this might even be "accidentally correct", but it really isn't right
-at all - the values in IEEE80211_EHT_OPER_CHAN_WIDTH are
-IEEE80211_EHT_OPER_CHAN_WIDTH_*, not IEEE80211_STA_RX_BW_*.
+The difference is from a swconfig scenario (where dsa tagging is not
+used so very low CPU impact in handling traffic) and DSA scenario where
+tagging is used and there is a minimal impact in the CPU. As can be
+notice even with DSA in place we have better perf.
 
+It was observed by other user that also SQM scenario with cake scheduler
+were improved in the order of 100mbps (this scenario is CPU limited and
+any increase of perf is caused by removing load on the CPU)
 
+Been at least 15 days that this is in use without any complain or bug
+reported about queue timeout. (was the case with v1 before the
+additional patch was added, only appear on real world tests and not on
+iperf tests)
 
-More generally though, I don't even understand the change.
+[1] https://forum.openwrt.org/t/netgear-r7800-exploration-ipq8065-qca9984/285/3427?u=ansuel
 
-> +		if (rx_chandef.width =3D=3D NL80211_CHAN_WIDTH_80)
-> +			rx_chandef.center_freq1 =3D
-> +				ieee80211_channel_to_frequency(info->ccfs0,
-> +							       rx_chandef.chan->band);
-> +		else if (rx_chandef.width =3D=3D NL80211_CHAN_WIDTH_160 ||
-> +			 rx_chandef.width =3D=3D NL80211_CHAN_WIDTH_320)
-> +			rx_chandef.center_freq1 =3D
-> +				ieee80211_channel_to_frequency(info->ccfs1,
-> +							       rx_chandef.chan->band);
-> +	}
-> +
-> +	if (!cfg80211_valid_disable_subchannel_bitmap(&bitmap,
-> +						      &rx_chandef)) {
-> +		link_info(link,
-> +			  "Got an invalid disable subchannel bitmap from AP %pM: bitmap =3D 0=
-x%x, bw =3D 0x%x. disconnect\n",
-> +			  link->u.mgd.bssid,
-> +			  bitmap,
-> +			  rx_chandef.width);
-> +		return false;
->  	}
-> =20
->  	extracted =3D ieee80211_extract_dis_subch_bmap(eht_oper,
-// I've filled in the context here in the patch
->                                                      &link->conf->chandef=
-,
->                                                      bitmap);
->=20
->         /* accept if there are no changes */
->         if (!(*changed & BSS_CHANGED_BANDWIDTH) &&
->             extracted =3D=3D link->conf->eht_puncturing)
->                 return true;
+Changes v4:
+- Fix W=1 warning for missing define of pending_packets
+Changes v3:
+- Fix compilation error for missing comma
+Changes v2:
+- Add patch to move tx timer arm outside tx clean.
 
-but ... ieee80211_extract_dis_subch_bmap actually already takes the
-bandwidth from eht_oper into account!
-=20
-> -	if (!cfg80211_valid_disable_subchannel_bitmap(&bitmap,
-> -						      &link->conf->chandef)) {
+Christian Marangi (4):
+  net: introduce napi_is_scheduled helper
+  net: stmmac: improve TX timer arm logic
+  net: stmmac: move TX timer arm after DMA enable
+  net: stmmac: increase TX coalesce timer to 5ms
 
-So are you saying that the real bug is that we're missing to update the
-link->conf->chandef with the EHT operation from the assoc response?
+ drivers/net/ethernet/chelsio/cxgb3/sge.c      |  8 ----
+ drivers/net/ethernet/stmicro/stmmac/common.h  |  2 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 40 +++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/core.c     |  2 +-
+ include/linux/netdevice.h                     | 23 +++++++++++
+ net/core/dev.c                                |  2 +-
+ 6 files changed, 59 insertions(+), 18 deletions(-)
 
-But you didn't fix that issue ... so not sure?
-
-johannes
+-- 
+2.40.1
 
