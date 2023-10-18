@@ -2,127 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6E727CDCD8
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 15:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31C3F7CE135
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 17:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231514AbjJRNLA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Oct 2023 09:11:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41780 "EHLO
+        id S232334AbjJRPal (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Oct 2023 11:30:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231486AbjJRNKw (ORCPT
+        with ESMTP id S231582AbjJRPaj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Oct 2023 09:10:52 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB8EE121;
-        Wed, 18 Oct 2023 06:10:49 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-40839807e82so6244565e9.0;
-        Wed, 18 Oct 2023 06:10:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697634648; x=1698239448; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DGsOIe2+gPILwGffb1seZvDCNStpRAryY2lIF4RhpfU=;
-        b=P12hSEyKzWUjCTpsnuYPfSMIaiBzDveTQlI055qzkKokR+prIbcWABw5lld2BLtmYy
-         /kVZp0DgfFhhd214UHSlmGZNX4ivk/s+ffwZHekKmOWU2BKVNwJrMXQ40ffvFBDKjiQs
-         NJ1qkLjBjqGqqIFjJ1Webo6CBlu045v3pdaiCR4dlVui2lelATmhifQ+utdQqyHy+ejz
-         YzSDFoWlS+k2RsLVy3bh1tgrDfhtsp8TSb3j6Nf0pERG23cQtRlWmKAB5kjT6tt4cpSO
-         uNiUoF+ebxRrUM1pLXtarSH932O1QdGMVMPte2nhgPnNoFVAcADlqqocaCld75EHJyCw
-         WNBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697634648; x=1698239448;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DGsOIe2+gPILwGffb1seZvDCNStpRAryY2lIF4RhpfU=;
-        b=KRFMWbPJxSlSsF+TSd63B+S2KRzdHQUpC64+Ja1oUMFSc94wJ22kgMIx5tnUwDI4h6
-         pdalNdH/DVlzUityngV+8B5NitbA9RLdq5gtC0tGJaff28H+m3rqqtrOdyCo1RTtODSN
-         IMJdSkX1vS1iMtLKH+RPXwcjoQMudw4IaaGe/VNMJsw+CdrndZWjg+WQGC2jZ8mYca6r
-         aCzLZ4uXSeyBI7jhguOQK+8YLK0IUI6kiCkpC7tDlZj+4VGqk/rZc1RuVpeYxZra6MUB
-         OOGpCN+s36dA1cxNOr5NpdNoarrxmMElAq5kn3wrUt78lozN/4GkcQxNsKqr7XaTramJ
-         psww==
-X-Gm-Message-State: AOJu0YwI/PTeTHzcTqqE9hGe8zyA9a1Z09e/m3kZ7iujg3uGH6LoyHY6
-        xSTR2A4E/RnodGv4c3M5RI4=
-X-Google-Smtp-Source: AGHT+IE+sCuWLXpMpKKSnIlfOUq+4N22pU9jPx36Nsbry/7Ty+ZgoJU7ODY9iOR5ZJrkAcpV+SNbSw==
-X-Received: by 2002:a05:600c:4ecb:b0:3fe:1fd9:bedf with SMTP id g11-20020a05600c4ecb00b003fe1fd9bedfmr4798254wmq.11.1697634647542;
-        Wed, 18 Oct 2023 06:10:47 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id u6-20020a05600c138600b004064288597bsm1677426wmf.30.2023.10.18.06.10.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 06:10:47 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        Alexander Couzens <lynxis@fe80.eu>,
-        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Daniel Golle <daniel@makrotopia.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     Shiji Yang <yangshiji66@outlook.com>
-Subject: [PATCH v2 6/6] wifi: mt76: permit to load precal from NVMEM cell for mt7915
-Date:   Wed, 18 Oct 2023 15:09:42 +0200
-Message-Id: <20231018130942.31187-6-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231018130942.31187-1-ansuelsmth@gmail.com>
-References: <20231018130942.31187-1-ansuelsmth@gmail.com>
+        Wed, 18 Oct 2023 11:30:39 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A1D118
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 08:30:34 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39IFJeCZ018197;
+        Wed, 18 Oct 2023 15:30:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=OdNuxyO6elS7DV3bJ3NKsmQhot8BHJL7528qcLwee8U=;
+ b=SSboG6pt0Un0gXpdvac/XBWh8cxtuz15lDo9jDRnKak+CxaKY5/tGe0ArpT8SeKepL0S
+ AMnbBtUCu2ocCp9xNKliSOSW+O8RDHAlRg9iEPrdER6F/IppcLc+0NbT2FMDvsXM6VJN
+ w16zuRbrGyqJ0kUZDQtnra9zv/syuJXkyohZCi2q7ob3DGcioevGCQa6m8o3LPiN0KzC
+ kUJq+n9SO8MD3KyKCM+UK2Lhxj2IJP9bj2HeohpI0tQRlQ4fE698eOtQ2aTkT32xF3Um
+ KnTFCmgBi9GYeeySGkhk3emyZg7PEB38wR1P8l3+a7OyTtPTLu67zcjgLp4sH+YQJHoA 5g== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tt5v81j1p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 18 Oct 2023 15:30:25 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39IFUOqg014978
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 18 Oct 2023 15:30:24 GMT
+Received: from periyasa-linux.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Wed, 18 Oct 2023 08:30:22 -0700
+From:   Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Subject: [PATCH 0/2] wifi: ath12k: rename the variable naming convention
+Date:   Wed, 18 Oct 2023 21:00:06 +0530
+Message-ID: <20231018153008.29820-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: o3KAnvxqOSbpuvTymmTBQZHRUn4xzv0X
+X-Proofpoint-ORIG-GUID: o3KAnvxqOSbpuvTymmTBQZHRUn4xzv0X
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-18_13,2023-10-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=607 lowpriorityscore=0 phishscore=0 impostorscore=0
+ suspectscore=0 mlxscore=0 clxscore=1011 bulkscore=0 priorityscore=1501
+ spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310180124
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Permit to load precal from NVMEM cell for mt7915. The NVMEM cell must be
-named "precal" to be correctly loaded.
+Currently, the identifier sc is used to represent an instance of SoC
+structure. But in ath12k ab is refer to the SoC data structure.
+So rename the variable name.
 
-NVMEM cell must already account the correct offset and be placed after
-the EEPROM as the function expect the data right from the start.
+Karthikeyan Periyasamy (2):
+  wifi: ath12k: rename the wmi_sc naming convention to wmi_ab
+  wifi: ath12k: rename the sc naming convention to ab
 
-Tested-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/hif.h | 18 +++++++++---------
+ drivers/net/wireless/ath/ath12k/pci.c |  4 ++--
+ drivers/net/wireless/ath/ath12k/wmi.c | 22 +++++++++++-----------
+ 3 files changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-index 5228f710b3da..3bb2643d1b26 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -11,6 +11,7 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
- 	u8 *eeprom = mdev->eeprom.data;
- 	u32 val = eeprom[MT_EE_DO_PRE_CAL];
- 	u32 offs;
-+	int ret;
- 
- 	if (!dev->flash_mode)
- 		return 0;
-@@ -25,7 +26,11 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
- 
- 	offs = is_mt7915(&dev->mt76) ? MT_EE_PRECAL : MT_EE_PRECAL_V2;
- 
--	return mt76_get_of_data_from_mtd(mdev, dev->cal, offs, val);
-+	ret = mt76_get_of_data_from_mtd(mdev, dev->cal, offs, val);
-+	if (!ret)
-+		return ret;
-+
-+	return mt76_get_of_data_from_nvmem(mdev, dev->cal, "precal", val);
- }
- 
- static int mt7915_check_eeprom(struct mt7915_dev *dev)
+
+base-commit: 91bc2f15a1b8c38ddbc1ea400dcd4bbd3639d22b
 -- 
-2.40.1
+2.17.1
 
