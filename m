@@ -2,68 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 291517CE9E5
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 23:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35E537CEA1D
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 23:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231590AbjJRVTh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Oct 2023 17:19:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58792 "EHLO
+        id S235351AbjJRVjM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Oct 2023 17:39:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbjJRVTh (ORCPT
+        with ESMTP id S235328AbjJRVhe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Oct 2023 17:19:37 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13B55AB
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:19:35 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-533d31a8523so12342468a12.1
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:19:34 -0700 (PDT)
+        Wed, 18 Oct 2023 17:37:34 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3555B18E
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:36:58 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d9b9aeb4962so6394844276.3
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:36:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697663973; x=1698268773; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s/FSk4NVjesoEjX9UpCsJWztXtqv48kZAgLj5F3JyN4=;
-        b=MTSXEPw9v+57p3Ahu7sgz3HIP2N/WeMmsMfIZfXFJBW2ppmKIKoPnk6CqDUCVT8ET2
-         08TNxpb/9sGnhrs2GFJfEAsnd70FNwK7yYPEFoICQc8mFtRYPhkkJ8jHmFk+MctwKOZy
-         8ARd0yY3qsOmSIsvPbm32ur8bFofAzlI+s+PzYyYlfzP1jIEuB+XBSkKEaYuWvMtm8OR
-         7VXy6l4n4dQ8Wa269FU1aSguc18aCsgtc1Y3XsHlWbtz+dqlJ86yobqAmryHA/a1f45N
-         X5M/Np2l+wOX3U1f0mC6pNSw00uby7113gvBZ8MyyMVqllae85EjO5BghNsPpYwQVa8K
-         2aaw==
+        d=google.com; s=20230601; t=1697665017; x=1698269817; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Apw+K3wbh3OZXkFJF9ttgUhZ1/KMfhepE/h3Z/nrhhg=;
+        b=sOMYCpovTxS5U3soGKsPsDhphKBQqQ7pFNpxGbliZWa3duJDcX4NPvNvPCPZXc5TEO
+         ALx6sxQUupyBFqtPFN+2he6wwVGU5JmEP8y2OQx9ZpiAFKAT7r6RISQwkgOCFqZJc7Pg
+         YOzo5eY0/wAXmSfapFuUFRGYOcOq97e1ZjHM5UKmn+8DnWzki3O5Zh5KVJzpRuVvw2nB
+         WQsHhcBg8js8LLsPAWqNgyYRwlDwhskg9TQZ+8v3l0BY0DN6eWDiy9cIWnqzxZ1Rvt7S
+         55G4P82nmsJOcvks6cYr4CILy0q0d1IdAXorKwhVDNJglSMmBrnlrTRUJ5Y39P9eTboC
+         Nnag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697663973; x=1698268773;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s/FSk4NVjesoEjX9UpCsJWztXtqv48kZAgLj5F3JyN4=;
-        b=D/VxLswQbPE1daL4f5Cs88BWrV/mzq8XTF7dWEc6ZOLimEaqE2mc0US/qir2drgBVw
-         p7mgtN6GvM3PRBiyUdclHjoWXMEX2mqDFVxoW/1BHzmUUlIvBUUaucblmycl7ErQaiCQ
-         T5XCuLKE44x7n4Am4QGql5Dcjrunw4AP/zcFMajbGtjJBpvUSeC+5HJsAqKia4Cx/0wR
-         QDPwuDTelZfiCY1M6wavAJDb4YMrkrbG855Gx7YCT8Eqt5y8NJwWuZ0/n96MeFeygMuZ
-         KPNVXkUIJRRznLubH5aiB3ZHsdtVhgRc9HE6+XeHf6owrH/ld5hayZxctThNKbKoEm9P
-         +Bww==
-X-Gm-Message-State: AOJu0Yyz9e+cUX7izrMKt/UyajltmJ4ywBL4ZEGpMzexhQecepF9QVxL
-        6dwvLL19enuyZmaJPOTq22Wd9q+Hd2oiG0oTnmTiPQ==
-X-Google-Smtp-Source: AGHT+IE/tItcU+QsIrMEA7yBZIbjY7HpSGFTtyiQdF8hm+Wu6Xl4hef2s7DP1tpn/ggqQKAAFjo6NKlZRLF5s0lSa5g=
-X-Received: by 2002:a50:a6d5:0:b0:53e:1721:146b with SMTP id
- f21-20020a50a6d5000000b0053e1721146bmr113470edc.28.1697663973414; Wed, 18 Oct
- 2023 14:19:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231017-strncpy-drivers-net-wireless-ti-wl18xx-main-c-v1-1-ed5322ec8068@google.com>
- <36928c4f-3353-42c7-a42f-2bc31e1eee89@quicinc.com>
-In-Reply-To: <36928c4f-3353-42c7-a42f-2bc31e1eee89@quicinc.com>
+        d=1e100.net; s=20230601; t=1697665017; x=1698269817;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Apw+K3wbh3OZXkFJF9ttgUhZ1/KMfhepE/h3Z/nrhhg=;
+        b=rBhqjqvbQi6M5pxGbHtKwaDw2V91gCvrybyWvsrDBUY4BSZq4OZlVMBHeiF1N7xbbQ
+         t5B3iiVJdy2RQfqEmcYJZbN6uT2+F+ITlq+Liz1VuQEZ3hjNtq9qklA7hSG9Q8jR94Ap
+         OPvDWj492dHTrcg4APikGVW07p50r/Y5OWimU81AnKBYON01urVHsWpTr1WETXYVkEZO
+         nB85Tx9WNlvWGAFpn3l+aseqyMj/05mun3hir3xHK0I4LMum9ZAu9Cp1LFULpJNsueXv
+         p+/TeJ2W7IelXEP286pPW31STNBCgKuBUl37dFdcOQX9Rc0Occ76+D6GKREXDbF1NQgx
+         jqog==
+X-Gm-Message-State: AOJu0YyJAx4rFUPWLlgZ2r8tEM4xf53diaQJh5/7s9Ios+ngYkh6nxwL
+        47sc74wgk4iyGJ0ljrI1EljHSjl/f7kEW36Ntg==
+X-Google-Smtp-Source: AGHT+IGSlprorlyl1mgbo8vGOacNcFePZOft5yeMt5sY8BpvBoW5KTqkMCOXwEmrGdwrXiVAPLHmL8tY9DH0ADPQMA==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a25:3612:0:b0:d77:f6f9:159 with SMTP
+ id d18-20020a253612000000b00d77f6f90159mr12678yba.9.1697665017365; Wed, 18
+ Oct 2023 14:36:57 -0700 (PDT)
+Date:   Wed, 18 Oct 2023 21:36:56 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPdPMGUC/x3NQQqDMBBG4avIrPuDUWjSXqV0oXHaDkgiM0Et4
+ t0buvw27x1krMJG9+Yg5VVMcqpwl4biZ0hvhkzV1LVd71oXYEVTXL6YVFZWQ+KCTZRnNkMRbHP MyhhzLogYexeGcPXe33qqzUX5Jfv/93ie5w8UCQwlfwAAAA==
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1697665016; l=2407;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=1sn8QWCZ44RCQzErWJdYQ+n26NCaZzNSi8s/QrSSU98=; b=YvRIzw5H0MFncQuWWs8NbUgiTTAS31UhNBIMEPaFLJXfQmn3tCuNoRcDOJgfhNL1sZanZ+MIn
+ k4D3fVgBDSWDd5XXtq+Z2KKqnyS9aoZg0rsaxahj8wROyIki3p5554Q
+X-Mailer: b4 0.12.3
+Message-ID: <20231018-strncpy-drivers-net-wireless-ti-wlcore-boot-c-v1-1-d3c6cc6b80fe@google.com>
+Subject: [PATCH] wifi: wlcore: replace deprecated strncpy with strscpy
 From:   Justin Stitt <justinstitt@google.com>
-Date:   Wed, 18 Oct 2023 14:19:21 -0700
-Message-ID: <CAFhGd8qOdS9pAT+NxgC8f-Fr13C3G0k=r_KX11XCWsjVmLzs6A@mail.gmail.com>
-Subject: Re: [PATCH] wl18xx: replace deprecated strncpy with strscpy
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,20 +74,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jeff,
+strncpy() is deprecated for use on NUL-terminated destination strings
+[1] and as such we should prefer more robust and less ambiguous string
+interfaces.
 
-On Tue, Oct 17, 2023 at 4:48=E2=80=AFPM Jeff Johnson <quic_jjohnson@quicinc=
-.com> wrote:
->
-> this patch (and a few others in your recent set) are missing the wifi:
-> prefix. this prefix is a relatively new addition and would not show up
-> in the history of some of these ancient drivers you are touching :)
+We expect wl->chip.fw_ver_str to be NUL-terminated based on its usage
+with DRIVER_STATE_PRINT_STR() in debugfs.c:
+491 | DRIVER_STATE_PRINT_STR(chip.fw_ver_str);
+... which uses DRIVER_STATE_PRINT():
+444 | #define DRIVER_STATE_PRINT_STR(x)  DRIVER_STATE_PRINT(x, "%s")
+... which relies on scnprintf:
+434 | #define DRIVER_STATE_PRINT(x, fmt)   \
+435 | 	(res += scnprintf(buf + res, DRIVER_STATE_BUF_LEN - res,\
+436 | 			  #x " = " fmt "\n", wl->x))
 
-Thanks for pointing this out!
+Moreover, NUL-padding is not required.
 
-I fixed it in [v2].
+Considering the above, a suitable replacement is `strscpy` [2] due to
+the fact that it guarantees NUL-termination on the destination buffer
+without unnecessarily NUL-padding.
 
-[v2]: https://lore.kernel.org/r/20231018-strncpy-drivers-net-wireless-ti-wl=
-18xx-main-c-v2-1-ab828a491ce5@google.com
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Similar-to: https://lore.kernel.org/all/20231018-strncpy-drivers-net-wireless-ti-wl18xx-main-c-v2-1-ab828a491ce5@google.com/
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Note: build-tested only.
 
-Justin
+Found with: $ rg "strncpy\("
+---
+ drivers/net/wireless/ti/wlcore/boot.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ti/wlcore/boot.c b/drivers/net/wireless/ti/wlcore/boot.c
+index 85abd0a2d1c9..f481c2e3dbc8 100644
+--- a/drivers/net/wireless/ti/wlcore/boot.c
++++ b/drivers/net/wireless/ti/wlcore/boot.c
+@@ -41,12 +41,9 @@ static int wlcore_boot_parse_fw_ver(struct wl1271 *wl,
+ {
+ 	int ret;
+ 
+-	strncpy(wl->chip.fw_ver_str, static_data->fw_version,
++	strscpy(wl->chip.fw_ver_str, static_data->fw_version,
+ 		sizeof(wl->chip.fw_ver_str));
+ 
+-	/* make sure the string is NULL-terminated */
+-	wl->chip.fw_ver_str[sizeof(wl->chip.fw_ver_str) - 1] = '\0';
+-
+ 	ret = sscanf(wl->chip.fw_ver_str + 4, "%u.%u.%u.%u.%u",
+ 		     &wl->chip.fw_ver[0], &wl->chip.fw_ver[1],
+ 		     &wl->chip.fw_ver[2], &wl->chip.fw_ver[3],
+
+---
+base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
+change-id: 20231018-strncpy-drivers-net-wireless-ti-wlcore-boot-c-b318a8677793
+
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
+
