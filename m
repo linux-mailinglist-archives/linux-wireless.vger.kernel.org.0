@@ -2,98 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD16B7CE9DF
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 23:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F0C57CE9E3
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 23:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229963AbjJRVRN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Oct 2023 17:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46292 "EHLO
+        id S232144AbjJRVSb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Oct 2023 17:18:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbjJRVRM (ORCPT
+        with ESMTP id S232041AbjJRVS3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Oct 2023 17:17:12 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DF1AFA
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:17:10 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-53d82bea507so12553456a12.2
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:17:10 -0700 (PDT)
+        Wed, 18 Oct 2023 17:18:29 -0400
+Received: from mail-ot1-x349.google.com (mail-ot1-x349.google.com [IPv6:2607:f8b0:4864:20::349])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D10FE
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:18:27 -0700 (PDT)
+Received: by mail-ot1-x349.google.com with SMTP id 46e09a7af769-6c65a8aaa0dso9654687a34.2
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:18:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697663829; x=1698268629; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BmzWNRuuuMHLesQTgLE+SaWMDv+DrXY0BM9GFaIRAmU=;
-        b=e+iFmLSRPde5OBfeeGguRNuxFKBq6QS1RO3O923Ks4FdwIsgfvga0zkp1A75T0UXGP
-         V78GjbrZ1TLlEY7bJWBOi73ia6Se/54+kRlSM8U1KUmFOh7QHap+JrMP7lWCaZn5lJVg
-         lmTOuNpGkaP+y0KZ4Lp+4IXShw7Yb+yiZGqlfNbwwd8O3ZYL296tb1qmJaIWeG20mJp0
-         3JnRf/RGEJ4XecGoTZJWvtJifAnJj4j8gXOmZ+SqQ5DRBoA06Hgy6VabvyElKk1hotgZ
-         cAtUnB+HDn2v53Qf9NFpdTXz7rkNuNk5ZO/QZPh2jjIQ04HMxZtOEzb+8P5SuKfpdq9T
-         pSzA==
+        d=google.com; s=20230601; t=1697663906; x=1698268706; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yN8Xmmf7uD1d77qxmyThi4rG4N+pXFvSzBoNB6ZmfFk=;
+        b=NpnU7MfhCS4XY98IISFshulZfv+fpsfPt3+qx1UQiseUqT/0mB3fvxaMw1g4bJlWvk
+         SzDeF2w96iV2k7OI2gN8+R17ZGgxnZ7P+mU7rNz872yBAKntg/U4dV+csARd7tXyJNXq
+         c2KmFiEO8gLl/AOxnbxVOW1yC20O/nLgJ6HFYzbjtwmVOubLORZ2SiTZ+Cnznda5nHpX
+         IZkFVs4eKuCLlgpAjLiXWwcoR07rAU/zhgzLj5GomKsxSAohA8O/Kblg7IozDt9c0qyg
+         rAT/81toXgxYCjBAd6JnoBrKTvHYHG82Fpwh7qLHM1vyg5KksyH5TmaXMBuDMZdlw1Ir
+         UANQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697663829; x=1698268629;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BmzWNRuuuMHLesQTgLE+SaWMDv+DrXY0BM9GFaIRAmU=;
-        b=gnK4WS81x1nBf1ZPuOA4c/Ii4d6OSDaw594mJtq+nVv5ySP2SaAQjss2wno7MtYLaz
-         cEVlgkmTRO/qJNhrAIj2aFFxlSHwF23dObSLoHpXutFpeNyBB3X1MMcjxfJHGUQvcjkQ
-         gdZzC49by0XZYeiQ1zL96Kw1pXuiKERgeTrBETO6WBzfz6TnBvKDx3Wmx5mM3CaoMXVN
-         /a8JRHBaOzSmnlGPlWW6Sl/G7Mo995bL6tqLon7I2UfbcdPCR+CVOpy/TpPDygYcqQMP
-         NtQyhm3wWFmr/ajZMb3s2QxYcyuOuTkauKaof/ygUB3p/XNwlInYxHCq5qJIumzye582
-         On9A==
-X-Gm-Message-State: AOJu0YxebreqRVnBHfPPlaJiCEsaGA9uq5CU33/+tOJlhRqApeQP18iy
-        vUk5l7x/Ykaxtk4781ScOLqQOKA35Z7meQvmMR7P0Q==
-X-Google-Smtp-Source: AGHT+IF6zjERAyTclhi1slQ6zRPCjIhAEdwhb3O6LQNCCsuTO+W6R8ZELmUgrESCNkBRM9HEiVaaSPyHU1ysa4KHxvg=
-X-Received: by 2002:a05:6402:520a:b0:53e:8972:1d4f with SMTP id
- s10-20020a056402520a00b0053e89721d4fmr158614edd.5.1697663828986; Wed, 18 Oct
- 2023 14:17:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231017-strncpy-drivers-net-wireless-ti-wl1251-main-c-v1-1-3a5c02382e35@google.com>
- <68fba283-aff8-4751-a4df-78843d89ef13@quicinc.com>
-In-Reply-To: <68fba283-aff8-4751-a4df-78843d89ef13@quicinc.com>
+        d=1e100.net; s=20230601; t=1697663906; x=1698268706;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yN8Xmmf7uD1d77qxmyThi4rG4N+pXFvSzBoNB6ZmfFk=;
+        b=THXWN5g/7XFeeR9IZmxoBmwBJoiVuQoJZUTYKdOqiXAidHn6JpoUFb8wp9Hz5gJiI7
+         BAGgoepVERLmA+ttIPbH8yg3ugM82CthWovmCGfWXmVeImsEvGyPjX+jur7P9o6vsWH6
+         +WW36Og5+ZUdtTVjtIKJ8VF0rk4SD6tthn7Wzma4MwUVMUOHIKkfg1p3zdYsGlX5Apsw
+         I1mjnBQ19xg0MixSHlx4k2qTAOvO9Iv6HowE1W0ZxhwWWltxe9OlW+KeDuzOma0Wv+lG
+         YfF599EOzn39n8xoT/9lX28uG3VoX4UWvHyB4Xn5+fOuW6DAsMdGH/AWbdNBT2L0R3HS
+         3NNQ==
+X-Gm-Message-State: AOJu0YzXxu4mbjXzCdK0JoRD2y4/JyeQsJca9srSsszIRgOVkO9Z2AWU
+        uEg9Ri8Pk8K9ZwNRbuhGf6+PgGt6vvcr7owc/Q==
+X-Google-Smtp-Source: AGHT+IEqDPm9pBK525CUrTvp7fWEq/XpUln5u+ElP5FIqJb3IDRLpFT+4MmNyVgB2DEUV0PxPpzarH5RmxWbY1X1Pw==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a9d:4f08:0:b0:6c4:abb1:483f with SMTP
+ id d8-20020a9d4f08000000b006c4abb1483fmr151782otl.2.1697663906391; Wed, 18
+ Oct 2023 14:18:26 -0700 (PDT)
+Date:   Wed, 18 Oct 2023 21:18:24 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAJ9LMGUC/53NTQ6DIBCG4asY1p1GsP6kq96jcYE41UkUzEBQY
+ 7x7qUfo8v0W33MIj0zoxTM7BGMkT86mULdMmFHbAYH61ELlqpC5rMEHtmbZoWeKyB4sBliJcUL
+ vIRCsk2y2DWZNFgwUZaVzVatOdw+RPhfGD22X925Tj+SD4/3io/yt/0pRggTsy0IpNE1eNa/Bu WHCu3GzaM/z/AKAqSjd6wAAAA==
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1697663905; l=2897;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=lMVpXzAbthcxiCNfxcyNDG6TNfyPkqxWUDDeMmHC4Uw=; b=x86eQLBjWQhfaxdwh4ogz4PqhKCrv1sPzCQUF/5jtKH/6gtucs0svlqppMZ0fYjPZlWMlUBvW
+ JKrY4BC107aBjmBPeGu+f1S+rMK+/2wLcsr58oG3dm4WiQ2tbTgNxRy
+X-Mailer: b4 0.12.3
+Message-ID: <20231018-strncpy-drivers-net-wireless-ti-wl18xx-main-c-v2-1-ab828a491ce5@google.com>
+Subject: [PATCH v2] wifi: wl18xx: replace deprecated strncpy with strscpy
 From:   Justin Stitt <justinstitt@google.com>
-Date:   Wed, 18 Oct 2023 14:16:57 -0700
-Message-ID: <CAFhGd8pTPkY+8=cFf9ys7vfRrzTJsh0rvnKJwDGaWvq3s=MEvg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mac80211: replace deprecated strncpy with strscpy
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 17, 2023 at 4:46=E2=80=AFPM Jeff Johnson <quic_jjohnson@quicinc=
-.com> wrote:
->
-> On 10/17/2023 4:30 PM, Justin Stitt wrote:
-> ...
->
-> > diff --git a/drivers/net/wireless/ti/wl1251/main.c b/drivers/net/wirele=
-ss/ti/wl1251/main.c
-> > index eded284af600..cd9a41f59f32 100644
-> > --- a/drivers/net/wireless/ti/wl1251/main.c
-> > +++ b/drivers/net/wireless/ti/wl1251/main.c
->
-> wrong subject for this path. unfortunately for you the most recent
-> changes to this file have been in conjunction with mac80211 changes and
-> hence why you see that prefix. But for a stand-alone driver patch the
-> correct prefix should be wifi: wl1251:
->
+strncpy() is deprecated for use on NUL-terminated destination strings
+[1] and as such we should prefer more robust and less ambiguous string
+interfaces.
 
-Ah, I see. I fixed it in [v2].
+wl->chip.phy_fw_ver_str is obviously intended to be NUL-terminated by
+the deliberate comment telling us as much. Furthermore, its only use is
+drivers/net/wireless/ti/wlcore/debugfs.c shows us it should be
+NUL-terminated since its used in scnprintf:
+492 | DRIVER_STATE_PRINT_STR(chip.phy_fw_ver_str);
+which is defined as:
+| #define DRIVER_STATE_PRINT_STR(x)  DRIVER_STATE_PRINT(x, "%s")
+...
+| #define DRIVER_STATE_PRINT(x, fmt)   \
+| 	(res += scnprintf(buf + res, DRIVER_STATE_BUF_LEN - res,\
+| 			  #x " = " fmt "\n", wl->x))
 
-[v2]: https://lore.kernel.org/r/20231018-strncpy-drivers-net-wireless-ti-wl=
-1251-main-c-v2-1-67b63dfcb1b8@google.com
+We can also see that NUL-padding is not required.
 
-Thanks!
+Considering the above, a suitable replacement is `strscpy` [2] due to
+the fact that it guarantees NUL-termination on the destination buffer
+without unnecessarily NUL-padding.
 
-Justin
+The very fact that a plain-english comment had to be made alongside a
+manual NUL-byte assignment for such a simple purpose shows why strncpy
+is faulty. It has non-obvious behavior that has to be clarified every
+time it is used (and if it isn't then the reader suffers).
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Changes in v2:
+- add wifi: to subject (thanks Jeff)
+- Link to v1: https://lore.kernel.org/r/20231017-strncpy-drivers-net-wireless-ti-wl18xx-main-c-v1-1-ed5322ec8068@google.com
+---
+Note: build-tested only.
+
+Found with: $ rg "strncpy\("
+---
+ drivers/net/wireless/ti/wl18xx/main.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ti/wl18xx/main.c b/drivers/net/wireless/ti/wl18xx/main.c
+index 0b3cf8477c6c..1e4a430d1543 100644
+--- a/drivers/net/wireless/ti/wl18xx/main.c
++++ b/drivers/net/wireless/ti/wl18xx/main.c
+@@ -1516,12 +1516,9 @@ static int wl18xx_handle_static_data(struct wl1271 *wl,
+ 	struct wl18xx_static_data_priv *static_data_priv =
+ 		(struct wl18xx_static_data_priv *) static_data->priv;
+ 
+-	strncpy(wl->chip.phy_fw_ver_str, static_data_priv->phy_version,
++	strscpy(wl->chip.phy_fw_ver_str, static_data_priv->phy_version,
+ 		sizeof(wl->chip.phy_fw_ver_str));
+ 
+-	/* make sure the string is NULL-terminated */
+-	wl->chip.phy_fw_ver_str[sizeof(wl->chip.phy_fw_ver_str) - 1] = '\0';
+-
+ 	wl1271_info("PHY firmware version: %s", static_data_priv->phy_version);
+ 
+ 	return 0;
+
+---
+base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
+change-id: 20231017-strncpy-drivers-net-wireless-ti-wl18xx-main-c-356a0272bab4
+
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
+
