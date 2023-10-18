@@ -2,136 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 046067CE926
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 22:38:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 805B77CE9D9
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 23:15:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231951AbjJRUid (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Oct 2023 16:38:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37974 "EHLO
+        id S231894AbjJRVP3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Oct 2023 17:15:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229721AbjJRUic (ORCPT
+        with ESMTP id S230119AbjJRVP1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Oct 2023 16:38:32 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7C69B;
-        Wed, 18 Oct 2023 13:38:30 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39IKTOAG022689;
-        Wed, 18 Oct 2023 20:37:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=e2EOl1tPILygjSh/0CYYTdKsXdjPmmVF/tri/fxozYM=;
- b=ROagZD8LnpTkHqP3kQT6vKcBml8ZoysU4p06A/YSExAhOnCMZYGQntaRhqfQe2yP1TT/
- uZdwyCiWEPcRJRlmB6nGwEpZTvB5Gfn2rredS6sR2IgZsGplB0I3A8ZRc6X9p6JJ3RHU
- buOk3aCbWiV1cM9Wfi6UGLMxg2lv8NNn5exEtaOB2o7UOt6lB3yDR7tdoK/r3lorp4Ew
- XbqwL1MPtIFicBZiKYdUVosCjX5AcMc/YLB/RuDV17GbcyUDfyeGQ53zLSaeHsJAfI+d
- ML5BzD/fGXHK5UhjUoyNMfFd5KifypxZzIqkiXdorCWTQQ4VDMnjFVh3h0G/4CO+mfiF 8w== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tt905a35e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 Oct 2023 20:37:46 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39IKbjG7003326
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 Oct 2023 20:37:45 GMT
-Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Wed, 18 Oct
- 2023 13:37:44 -0700
-Message-ID: <7e18fb84-b9ff-4f95-b94a-7459ab6154e1@quicinc.com>
-Date:   Wed, 18 Oct 2023 13:37:43 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geoff Levand <geoff@infradead.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-CC:     Kalle Valo <kvalo@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Pavel Machek <pavel@ucw.cz>,
-        "David S . Miller" <davem@davemloft.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-staging@lists.linux.dev>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <20231010155444.858483-1-arnd@kernel.org>
- <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
- <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
- <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
- <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
- <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
- <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
- <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
- <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
- <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
- <789449f63ff6175ff46951507c03753f4430aa85.camel@sipsolutions.net>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <789449f63ff6175ff46951507c03753f4430aa85.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: fiO2b6PTY8GstS0iygVw6A7oxrwtgyNF
-X-Proofpoint-ORIG-GUID: fiO2b6PTY8GstS0iygVw6A7oxrwtgyNF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-18_18,2023-10-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
- phishscore=0 mlxlogscore=972 lowpriorityscore=0 suspectscore=0
- clxscore=1011 priorityscore=1501 impostorscore=0 adultscore=0
- malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310180169
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Wed, 18 Oct 2023 17:15:27 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 575BB115
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:15:24 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d9cad450d5fso273243276.1
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 14:15:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697663723; x=1698268523; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DWFdITK9FYnC6ndQyLKptFhv/4XAT9ljqHM/fNT7TZM=;
+        b=OHA9bpChmrzhXQ0BWjrKQKkp/9+hMPyiDE8UJgC4rg8W7Lnu2OQadEKaLF9ebIptmv
+         6WPZif1jBHClBCzQMsj0tYvPwZ3I+ZEeqAWtwjp8pA93esxzXYkhGYu5jMaRfI4AjOKr
+         E7M3WLQiho9dRH8XeN5xS7t+sjMdKUvFLdaNsa6KasV629qTboz1II3Dpi+oYP8ech/t
+         sPlJvjdwXJRteDxEbO3D7Vk5GX/beZFZE1ewC2oAfhweZKOGhp3iogi8LCLWR2qiuzZH
+         Atics1pSevmExBk0TkkVxzU2IWWprGyBlxnAqyFuQhy3Q0gipUDHV+b3hvw+od3wrtkm
+         d16w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697663723; x=1698268523;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DWFdITK9FYnC6ndQyLKptFhv/4XAT9ljqHM/fNT7TZM=;
+        b=KBjzuEd6Jk+MdDUrwLJ+OHUbd9dl/PsnWuwCfnpeScHSMm2uGQvZudAaMj5n4MFCXM
+         xfe6F237LA0duzly2mdTW0n71ysMM6+rX4KAtfeeukdf4mG4iIb8eZDIcYwOifq1RKuB
+         DixgRswATxr1chcYyTLxAcw7KSBPHFsdPdZNEQ1whQUL+dTwyPPzcfLLW/+pkbQcAcL3
+         Xbz7nOrwfu8jpyOYNnM4OWYKI92r90pe2GubovTPBfK+FnB/V6shlMoIw4H6nkmx41St
+         96MVfeRXKDRL4RnaJMQvWZFH+pTuxZx7SSw4ZpcdwvB7sdc15hhkjkodjwWyZ46fLFiB
+         JvZg==
+X-Gm-Message-State: AOJu0YwmPVaKUpmrPNQ7FisGEXdRUWxHjyB3VovJgndeTKCW1KtNJi3U
+        kbC1Y1V93SVKda4wo9SHjjdFrpjXHtMDfKqTJg==
+X-Google-Smtp-Source: AGHT+IE98FBPpehxuSmAoDMMyrPO6eIxEf9m+v4GafxR/P68phKpdYLKbL9enPw6AIvI9BgsiyIo3/p7t7gXzQzvYg==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a25:4215:0:b0:d9a:47ea:69a5 with SMTP
+ id p21-20020a254215000000b00d9a47ea69a5mr13155yba.1.1697663723500; Wed, 18
+ Oct 2023 14:15:23 -0700 (PDT)
+Date:   Wed, 18 Oct 2023 21:15:23 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAOpKMGUC/52NQQ6CMBBFr0K6dgxTghJX3sOwqO0Ik0BLpk2RE
+ O5u9Qgu30/+e7uKJExR3apdCWWOHHwBfaqUHY0fCNgVVrrWDdZ4hZjE22UDJ5xJInhKsLLQRDF
+ CYlgn1C3CbNiDhctTO9MhWWucKs5F6MXvX+/RFx45piDbL5/xu/5byggIjWltuXeamvY+hDBMd LZhVv1xHB9Bi0CG6wAAAA==
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1697663722; l=2913;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=yDbQL0fT5ECag/Hfa0melicYIqMQ//3xY2/rpNFfZOo=; b=iw2u/dbT5NFr1oMNr8mHNhtfVVlrHVDEyj+xyEAXaQhj7NdVCgY6R2c/BwjBfl2BSF93w/vCD
+ qIz4P8kmKrDDoiAx7rQaljqwJ7AqZn07VHLp/I67Ngu6B4/Hxt+OECV
+X-Mailer: b4 0.12.3
+Message-ID: <20231018-strncpy-drivers-net-wireless-ti-wl1251-main-c-v2-1-67b63dfcb1b8@google.com>
+Subject: [PATCH v2] wifi: wl1251: replace deprecated strncpy with strscpy
+From:   Justin Stitt <justinstitt@google.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/13/2023 11:02 AM, Johannes Berg wrote:
-> On Fri, 2023-10-13 at 17:44 +0200, Arnd Bergmann wrote:
->> On Thu, Oct 12, 2023, at 18:36, Geoff Levand wrote:
->>> On 10/12/23 17:41, Johannes Berg wrote:
->>>> But seriously - is it worth to try to keep a wireless driver for it if
->>>> we don't even know anyone using a PS3 at all?
->>>
->>> There is still a considerable user base for the PS3, so we
->>> must keep the ps3-gelic-wireless driver.
->>
->> Do you know if anyone has tried changing this driver over to the
->> cfg80211 interface from the wireless extensions?
-> 
-> I looked at that yesterday, and sadly I _think_ it's not even possible,
-> there are some corner cases in it like "no WPA2" that don't seem to be
-> fully covered in cfg80211/nl80211, at least not with the APIs today and
-> with current versions of wpa_supplicant.
-> 
-> It might still be doable because things like
-> WPA_DRIVER_CAPA_KEY_MGMT_WPA2_PSK don't really seem to be used much in
-> wpa_supplicant, but we'd have to carefully test that I guess.
-> 
-> Also, it depends on the PS3 firmware version whether or not that's
-> supported.
-> 
-> Then again, arguably wifi without WPA2 is pretty much useless these
-> days?
+strncpy() is deprecated for use on NUL-terminated destination strings
+[1] and as such we should prefer more robust and less ambiguous string
+interfaces.
 
-This is a good point. It doesn't matter if the clients work if there are 
-no Access Points to connect to. And if you do have an old one you can 
-connect to, it will be an insecure connection. Wardriving, anyone?
+Based on other assignments of similar fw_version fields we can see that
+NUL-termination is required but not NUL-padding:
+ethernet/intel/ixgbe/ixgbe_ethtool.c
+1111:   strscpy(drvinfo->fw_version, adapter->eeprom_id,
+1112:           sizeof(drvinfo->fw_version));
 
-/jeff
+ethernet/intel/igc/igc_ethtool.c
+147:    scnprintf(adapter->fw_version,
+148:              sizeof(adapter->fw_version),
+153:    strscpy(drvinfo->fw_version, adapter->fw_version,
+154:            sizeof(drvinfo->fw_version));
+
+wireless/broadcom/brcm80211/brcmfmac/core.c
+569:    strscpy(info->fw_version, drvr->fwver, sizeof(info->fw_version));
+
+wireless/broadcom/brcm80211/brcmsmac/main.c
+7867:           snprintf(wlc->wiphy->fw_version,
+7868:                    sizeof(wlc->wiphy->fw_version), "%u.%u", rev, patch);
+
+wireless/broadcom/b43legacy/main.c
+1765:   snprintf(wiphy->fw_version, sizeof(wiphy->fw_version), "%u.%u",
+
+wireless/broadcom/b43/main.c
+2730:   snprintf(wiphy->fw_version, sizeof(wiphy->fw_version), "%u.%u",
+
+wireless/intel/iwlwifi/dvm/main.c
+1465:   snprintf(priv->hw->wiphy->fw_version,
+1466:            sizeof(priv->hw->wiphy->fw_version),
+
+wireless/intel/ipw2x00/ipw2100.c
+5905:   snprintf(info->fw_version, sizeof(info->fw_version), "%s:%d:%s",
+
+A suitable replacement is `strscpy` due to the fact that it guarantees
+NUL-termination on the destination buffer without unnecessarily
+NUL-padding.
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Changes in v2:
+- fix subject (thanks Jeff)
+- Link to v1: https://lore.kernel.org/r/20231017-strncpy-drivers-net-wireless-ti-wl1251-main-c-v1-1-3a5c02382e35@google.com
+---
+Note: build-tested only.
+
+Found with: $ rg "strncpy\("
+---
+ drivers/net/wireless/ti/wl1251/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ti/wl1251/main.c b/drivers/net/wireless/ti/wl1251/main.c
+index eded284af600..cd9a41f59f32 100644
+--- a/drivers/net/wireless/ti/wl1251/main.c
++++ b/drivers/net/wireless/ti/wl1251/main.c
+@@ -404,7 +404,7 @@ static int wl1251_op_start(struct ieee80211_hw *hw)
+ 
+ 	/* update hw/fw version info in wiphy struct */
+ 	wiphy->hw_version = wl->chip_id;
+-	strncpy(wiphy->fw_version, wl->fw_ver, sizeof(wiphy->fw_version));
++	strscpy(wiphy->fw_version, wl->fw_ver, sizeof(wiphy->fw_version));
+ 
+ out:
+ 	if (ret < 0)
+
+---
+base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
+change-id: 20231017-strncpy-drivers-net-wireless-ti-wl1251-main-c-6b2da81eccad
+
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
 
