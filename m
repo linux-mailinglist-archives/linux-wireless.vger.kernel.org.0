@@ -2,239 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 554677CDC7B
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 14:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 496FA7CDCCE
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Oct 2023 15:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231209AbjJRM6o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Oct 2023 08:58:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55988 "EHLO
+        id S231298AbjJRNKr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Oct 2023 09:10:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231204AbjJRM6o (ORCPT
+        with ESMTP id S231210AbjJRNKp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Oct 2023 08:58:44 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F6C106
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 05:58:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=H6wpHQyqDRiGMAVO4r6r3kA3To3bH+EnFoHtKSoZecw=;
-        t=1697633922; x=1698843522; b=kUrAoalDUgV/Q1ITGXki+hlVQVm3eqNVtckXsspiFeyqPjn
-        9wxebqgWTNms8X4w1TRh/FCr0ZH3/nP3+jBESI7p2KMfc8s2Lsq0K32WZ/YiHdiPGvFxtErhkGDNs
-        9IjIufOO/wUrAiwWeZpGqNy2fofpW1I9EA/MzBK3bh9yQyYg2xobmZbCkPygGlvYZ5Pr05jPZba2I
-        YN7VQQzqUwQs0iNnmfoaxnHChdW8YPPUoYiFgHDPaJd3sjfw8Ut93GG4MEfNypR+l0qcTS5FkdEPx
-        MmyB5fO0bUw10D2NbHrmVGxjGVWTccIcy8SEdr1h9/+z4ai0di8XbkFVuo9gQO6g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.97-RC1)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qt68E-0000000Bopw-4BvM;
-        Wed, 18 Oct 2023 14:58:39 +0200
-Message-ID: <28b099e7a37824f0b59ab824e67b3437485e45d5.camel@sipsolutions.net>
-Subject: Re: [PATCH 2/3] cfg80211: validate RU puncturing bitmap
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aloka Dixit <quic_alokad@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Date:   Wed, 18 Oct 2023 14:58:37 +0200
-In-Reply-To: <460cb443-868c-ec05-7aec-5b1eee381ae2@quicinc.com>
-References: <20220214223051.3610-1-quic_alokad@quicinc.com>
-         <20220214223051.3610-3-quic_alokad@quicinc.com>
-         <a9813545a25cd63f71cc31476230514a80350802.camel@sipsolutions.net>
-         <6cf56be5-16d6-2bcd-150f-bf29f98b7f1b@quicinc.com>
-         <58fdd62041c0388740cabea5a421c5417f959124.camel@sipsolutions.net>
-         <9fd4a3097e078c1fe2acd5fbd0c559b0390daa49.camel@sipsolutions.net>
-         <460cb443-868c-ec05-7aec-5b1eee381ae2@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Wed, 18 Oct 2023 09:10:45 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12AD8F7;
+        Wed, 18 Oct 2023 06:10:43 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2c518a1d83fso60329821fa.3;
+        Wed, 18 Oct 2023 06:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697634641; x=1698239441; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
+        b=lNWsNGayi00fyI33JdnRcA9H0i70H+ss+eHrV8nraqgUvwKzP18+oBgmJP/Ffdtxvw
+         0uENuC1dN3qRym5YW/ozONK0y+c5vj3Y8NTWz8fYnn0g1Fvyveh5I/mvaADyke2NQpc8
+         3/c5s+gfmg7xyQ6IWQGH1DDTXP3fCmL4YZ5FRqHhAXuUIwiuMCjR/PLKVnjNjVtbxDOL
+         LPRpFTTssZcZHDVBKi3YkaUEBbybOlRpYeMcBLQtfImmTgEdj57cXT65laoC3+5lHw6B
+         B+bHZo2T7wcD8j5xvFcR80LAATYgFb0M4tB8cXBmR7WLVPLCTqWY4iLv3R4/U9tEJIHR
+         Nu6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697634641; x=1698239441;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
+        b=HBqgwY4fPFv2dkKFCb0c/K4rxLs7JKqb1yJnEJYD4CKxq47RBoMO5B55RMMS52cwFY
+         B9SzDM5fu0xZeUFL4ahdA4SZ/+t9IShQ4kcDmez4SfarHHi8QwiyNyHy+jPrYl3jLF/S
+         Iy2r3HDLs8fydXUFOsQrhyIj/leH2dFHw4WbPjMMO8LbpoIlKm9z0/nIBIlSeNc4esv/
+         wkmGCUvwcr+LdSCXI330u8UdioEpGVUlFR4J2bSZJNIuCfjK5mrcl4sdBQJ4DsfqNU7+
+         aEniEwHyy4bb8eururvkNJ9FdGWjQ7QePFc+uyXZ7Z3qt+HxJbruddLCWqcQNz7KC3z+
+         hv5A==
+X-Gm-Message-State: AOJu0YycjdldEcYZLYx5rRq61bKvoN7vMu8LyUQmfSf0J6ZPfyoi1FiQ
+        mT7CFpKh1vm/qURQzyxh4hc=
+X-Google-Smtp-Source: AGHT+IGfdJUpk8Rdt2SKdTJZt1PuOoBqvCcCill/y7BxjK6YaWEs7dFTajSyDUWp2IXypz6opVTCQA==
+X-Received: by 2002:a2e:9c43:0:b0:2c5:234b:d1eb with SMTP id t3-20020a2e9c43000000b002c5234bd1ebmr3001799ljj.50.1697634640737;
+        Wed, 18 Oct 2023 06:10:40 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id u6-20020a05600c138600b004064288597bsm1677426wmf.30.2023.10.18.06.10.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 06:10:40 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Alexander Couzens <lynxis@fe80.eu>,
+        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
+        Daniel Golle <daniel@makrotopia.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Cc:     stable@vger.kernel.org
+Subject: [PATCH v2 1/6] wifi: mt76: fix broken precal loading from MTD for mt7915
+Date:   Wed, 18 Oct 2023 15:09:37 +0200
+Message-Id: <20231018130942.31187-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Commit 495184ac91bb ("mt76: mt7915: add support for applying
+pre-calibration data") was fundamentally broken and never worked.
 
-> > > > Regarding if different puncturing pattern should be considered as a=
- new
-> > > > context - yes, depending on if it is HE or non-HE mode, the new bit=
-map
-> > > > may be invalid and the operation should fail.
-> >=20
-> > Which I'm not sure I understood then, and certainly not sure I
-> > understand now, but I said:
-> >=20
->=20
-> 802.11be allows only few patterns when AP is operating in non-OFDMA mode=
-=20
-> but if OFDMA is used then each 80 MHz sub-block can have a different=20
-> puncturing pattern when BW > 80MHz.
+The idea (before NVMEM support) was to expand the MTD function and pass
+an additional offset. For normal EEPROM load the offset would always be
+0. For the purpose of precal loading, an offset was passed that was
+internally the size of EEPROM, since precal data is right after the
+EEPROM.
 
-Right, but that's not the same, it's per PPDU more or less, no? I mean,
-you say in the trigger frame for example that some RU is not allocated.
+Problem is that the offset value passed is never handled and is actually
+overwrite by
 
-So is that relevant here?
+	offset = be32_to_cpup(list);
+	ret = mtd_read(mtd, offset, len, &retlen, eep);
 
-> I know *_HE was not the best terminology, originally it was *_OFDMA but=
-=20
-> later changed because we decided to base the puncturing bitmap=20
-> validation based on HE vs older modes.
-> Function "cfg80211_ru_punct_bitmap_valid" added in this version first=20
-> checks for non-OFDMA patterns, and only if "ru_punct_bitmap_supp_he"=20
-> attribute is set by the userspace then it goes further to also check=20
-> against patterns allowed for OFDMA.
-> I could not find any other way to decide OFDMA vs non-OFDMA than letting=
-=20
-> userspace explicitly indicate latter.
-> It would be great if you can provide your inputs on this.
+resulting in the passed offset value always ingnored. (and even passing
+garbage data as precal as the start of the EEPROM is getting read)
 
-This ... doesn't exist upstream?
+Fix this by adding to the current offset value, the offset from DT to
+correctly read the piece of data at the requested location.
 
-OK actually it did exist in this patch though.
+Cc: stable@vger.kernel.org
+Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt76/eeprom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Not sure I understand. Let's go back to what we have in the tree now.
-The only thing we check there is
-cfg80211_valid_disable_subchannel_bitmap(), which on the client at least
-is just for the "disabled subchannel bitmap" in the EHT operation.
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index 36564930aef1..2558788f7ffb 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -67,7 +67,7 @@ static int mt76_get_of_epprom_from_mtd(struct mt76_dev *dev, void *eep, int offs
+ 		goto out_put_node;
+ 	}
+ 
+-	offset = be32_to_cpup(list);
++	offset += be32_to_cpup(list);
+ 	ret = mtd_read(mtd, offset, len, &retlen, eep);
+ 	put_mtd_device(mtd);
+ 	if (mtd_is_bitflip(ret))
+-- 
+2.40.1
 
-Are you thinking about (separately?) configuring the OFDMA puncturing?
-Which spec-wise you do per PPDU, controlled by the AP (trigger frame), I
-think?
-
-
-> > Which, actually, I've learned since that I was completely wrong about!
-> > It should, and likely must, in fact be two separate channel contexts,
-> > with all the limitations that implies.
-> >=20
-> > The thing is - back then I was making not just one, but in fact *two*
-> > wrong assumptions:
-> >=20
-> >     1. The DSP/radio can receive punctured PPDUs if listening on the no=
-n
-> >        punctured channel.
-> >       =20
-> >        At least for our device that's not true, not sure about ath12k? =
-It
-> >        seems you have a per-peer puncturing configuration even, but tha=
-t
-> >        seems odd, and it's always just set to the vif puncturing
-> >        configuration.
-> >       =20
->=20
-> Yes, same vif puncturing pattern is assigned for all the peers=20
-> associated on that vif, but firmware requires it to be sent separately=
-=20
-> for each peer.
-
-OK, thanks.
-
-What if it differs for different vifs?
-
-> >     2. You can simply transmit punctured PPDUs when on a non-punctured
-> >        channel, i.e. it's just a rate control decision.
-> >       =20
-> >        This is perhaps less important, but it's also not really true.
-> >        While you can clearly _transmit_ this way, that's not the only
-> >        thing - you also need to do the CCA before transmitting, and if
-> >        there's noise/interference on the punctured channel, you'd much
-> >        more rarely find the channel to be clear and be able to transmit
-> >        if this doesn't consider the puncturing, but that's something to
-> >        do sort of generally in the background for the transmit.
-> >=20
-> > It might be possible to work around #2, but I'm not sure it's possible
-> > to work around #1?
-> >=20
-> >=20
-> > So I think I have two questions:
-> >     A. Would you object if I moved the puncturing into the chandef afte=
-r
-> >        all?
-> >       =20
->=20
-> This is where I'm getting confused.
-
-:)
-
-> The main reason to put in chandef was that I thought of the bitmap as a=
-=20
-> radio characteristic (not vif).=C2=A0
-
-Right.
-
-> But after you brought up that AP+STA=20
-> mode can have different bitmaps, even though all other channel=20
-> characteristics (width, cf etc) are same, I realized my original=20
-> assumption wrong incorrect.
-
-So I convinced you, I guess, but what I'm saying is that - at least as
-far as our hardware is concerned - I was wrong!
-
-Thing is: you're not just transmitting with this bitmap, you're also
-listening - for both CCA and RX - in a specific way. And at least the
-way our hardware works, we apparently can't do puncturing just based on
-the preamble, and can't do CCA depending on the next frame.
-
-So that means the (non-OFDMA) puncturing bitmap *does* in fact become a
-radio characteristic.
-
-I don't know though is if that's really true for all hardware in
-general, or just a side effect of our design. I could see that it might
-be possible to receive punctured/non-punctured without changing hardware
-configuration, and certainly that it might be doable to do CCA depending
-on which frame you're going to transmit.
-
-But in any case, as far as I'm told the hardware design we have doesn't
-allow that, so I think I'd like to move this to the chandef/chanctx, and
-then perhaps define a driver callback to determine compatibility, if
-needed?
-
-> Moving the bitmap to cfg80211_ap_settings() meant that each AP vif can=
-=20
-> have different bitmap, and I'm guessing you similarly added for each STA=
-=20
-> vif context.
-
-Yes.
-
-> Now if you move it back into chandef, how exactly will this work if you=
-=20
-> need different bitmaps?
-
-You'd get two chanctx since it's not compatible, unless we define some
-extra callback or hw flags to determine what's treated as compatible and
-what isn't. But see above - I actually want that, now that I know how
-the HW works :)
-
-> >     B. How does ath12k cope #1/#2 above? Would we need to have a callba=
-ck
-> >        to the driver to compare if two channel contexts are compatible =
-or
-> >        not (e.g. if they have different puncturing), or does ath12k als=
-o
-> >        have limitations on RX/TX that mean it would actually prefer two
-> >        channel contexts for the cases I had outlined in the quoted text
-> >        above (STA+STA/AP+STA)?
-> >=20
->=20
-> If we do end up moving the bitmap back to chandef, we may need some=20
-> changes, because as I said above, when I originally added it I hadn't=20
-> thought of different bitmaps for each vif.
-> But can you give an example of what you would consider as compatible=20
-> channel contexts and what would be incompatible? I'm not clear on that pa=
-rt.
-
-Easy example:
-
- * control channel 36, 80 MHz, puncturing bitmap 0x2
- * control channel 36, 80 MHz, puncturing bitmap 0
-
-Contrary to what I thought and said before, I want to treat these as
-*not* compatible now, and allocate two channel contexts if I end up
-having to do this.
-
-johannes
