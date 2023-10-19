@@ -2,109 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 720B47CFEBB
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 17:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA8F97CFF44
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 18:18:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235443AbjJSPx7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Oct 2023 11:53:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41190 "EHLO
+        id S232846AbjJSQSF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Oct 2023 12:18:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233176AbjJSPx6 (ORCPT
+        with ESMTP id S229894AbjJSQSF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Oct 2023 11:53:58 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E9C93;
-        Thu, 19 Oct 2023 08:53:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B09C433C8;
-        Thu, 19 Oct 2023 15:53:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697730836;
-        bh=wa4WXUdBJDSprT0pug2ujhG4LLF9gr+xArqonoxADzw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=sXKWpTylvlESxh+A9Ob0R/6Ik+gMuidD6esDgwByGAV8s6TPXDJolqJ8+l+mEAHYh
-         d1M59feYyobvivShElD7sHFA1952PL4IhTuygo2gVnCTiM2/+aOmL/VMxuVNXQlC4B
-         Pkvr7U9z4QIB8r2Jy2rKHXVbYa09DwZn3Xd8/Aeg4Ou4eBbaFlpGA3Be3uOG7gU4aZ
-         WtR6mxZnlEKNWalKmfIDIYPn/XQKlFxyTwnjR2f24gw0BqI3BQbR4AIdNxYFE0gNg4
-         RyNzKWp8mWJSCHYMNKmjQcGRBOQ8FnAi+LDtskbRn2XKQ/Ygc/VHfWOZL9VNFS+mPd
-         ljpK+AzNp49rg==
-Received: from johan by xi.lan with local (Exim 4.96)
-        (envelope-from <johan+linaro@kernel.org>)
-        id 1qtVLT-0008Eg-2K;
-        Thu, 19 Oct 2023 17:53:59 +0200
-From:   Johan Hovold <johan+linaro@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-        Carl Huang <quic_cjhuang@quicinc.com>
-Subject: [PATCH] wifi: ath11k: fix gtk offload status event locking
-Date:   Thu, 19 Oct 2023 17:53:42 +0200
-Message-ID: <20231019155342.31631-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.41.0
+        Thu, 19 Oct 2023 12:18:05 -0400
+X-Greylist: delayed 398 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 19 Oct 2023 09:18:03 PDT
+Received: from titan.fastwww.net (titan2.fastwww.net [198.27.78.195])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F9C89B
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 09:18:02 -0700 (PDT)
+Comment: DomainKeys? See http://domainkeys.sourceforge.net/
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=default; d=lockie.ca;
+  b=nqbiGw1wH7sr7vdBhzRT2zvAbz2QlluWNxAH1T7v7xjIxym+8nHLBT7yP7ZHIptD24NhUiCVa+8hTq+NvJGo03p8P0BRUh/fkLF5vJDVem2pt2aUq9HGCQCP7Kqg6r00Y3t9eIWrylRD+znDXJw/NllsahuAKueSUlhHIUYx1HvL5Elk75H0UccS0Hot6S40vJ4RRDcG+O8nOn50+npPVpKS33EO/w0D149us3OXiPnbnTXitLMNXox/+pWCfFwRTpdiqEljhOY6SDGrsKERaXY47M25430CJMAoAbYEz3jyk7I/k/qsesrNh/fi9nIh65TLo8HQPSGLgp1sfQ08UA==;
+  h=Received:Received:Received:Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:X-Correlation-ID;
+Received: (qmail 3847486 invoked by uid 108); 19 Oct 2023 16:11:21 +0000
+Received: from unknown (HELO titan.fastwww.net) (127.0.0.1)
+  by titan.fastwww.net with SMTP; 19 Oct 2023 16:11:21 +0000
+Received: from dummy.faircode.eu ([153.92.40.73])
+        by titan.fastwww.net with ESMTPSA
+        id z1WqAylVMWU6tToApSktOw
+        (envelope-from <bjlockie@lockie.ca>); Thu, 19 Oct 2023 16:11:21 +0000
+Date:   Thu, 19 Oct 2023 12:11:16 -0400 (EDT)
+From:   James <bjlockie@lockie.ca>
+To:     Jon Doe <tuksgig@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Message-ID: <ce544a72-2af6-4448-8817-1d4cb54f456a@lockie.ca>
+In-Reply-To: <CAMes48--xvNjYZdO1DKjfkXRv7AJcqJaWYzJ9fYSPPxQ_M7muw@mail.gmail.com>
+References: <CAMes48--xvNjYZdO1DKjfkXRv7AJcqJaWYzJ9fYSPPxQ_M7muw@mail.gmail.com>
+Subject: Re: rtw88 usb adapter can't authenticate
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Correlation-ID: <ce544a72-2af6-4448-8817-1d4cb54f456a@lockie.ca>
+X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_05,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The ath11k active pdevs are protected by RCU but the gtk offload status
-event handling code calling ath11k_mac_get_arvif_by_vdev_id() was not
-marked as a read-side critical section.
+Oct 19, 2023 11:00:56 AM Jon Doe <tuksgig@gmail.com>:
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
-
-Fixes: a16d9b50cfba ("ath11k: support GTK rekey offload")
-Cc: stable@vger.kernel.org      # 5.18
-Cc: Carl Huang <quic_cjhuang@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
-
-...and here's one more, this time using the
-ath11k_mac_get_arvif_by_vdev_id() helper.
-
-Johan
-
-
- drivers/net/wireless/ath/ath11k/wmi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index f0eac6cb84fd..78af659b1ccd 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8618,12 +8618,13 @@ static void ath11k_wmi_gtk_offload_status_event(struct ath11k_base *ab,
- 		return;
- 	}
- 
-+	rcu_read_lock();
-+
- 	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, ev->vdev_id);
- 	if (!arvif) {
- 		ath11k_warn(ab, "failed to get arvif for vdev_id:%d\n",
- 			    ev->vdev_id);
--		kfree(tb);
--		return;
-+		goto exit;
- 	}
- 
- 	ath11k_dbg(ab, ATH11K_DBG_WMI, "event gtk offload refresh_cnt %d\n",
-@@ -8640,6 +8641,8 @@ static void ath11k_wmi_gtk_offload_status_event(struct ath11k_base *ab,
- 
- 	ieee80211_gtk_rekey_notify(arvif->vif, arvif->bssid,
- 				   (void *)&replay_ctr_be, GFP_ATOMIC);
-+exit:
-+	rcu_read_unlock();
- 
- 	kfree(tb);
- }
--- 
-2.41.0
-
+> Hi,
+>
+> I have a Cudy AC1300 model WU1400 USB Wifi adapter that fails to
+> authenticate properly. Driver for this device is rtw88_8822bu.
+> Reported this previously at
+> https://bugzilla.redhat.com/show_bug.cgi?id=2188243 with logs of the
+> error messages.
+>
+> Scanning works but authentication fails after 3 attempts. Any ideas?
+Have different SIDs for 2.4ghz and 5ghz.
+That causes problems.
