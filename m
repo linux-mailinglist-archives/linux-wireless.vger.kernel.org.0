@@ -2,99 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB5047CF6A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 13:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AE2E7CF6F8
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 13:37:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345280AbjJSLZ2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Oct 2023 07:25:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41202 "EHLO
+        id S1345377AbjJSLhY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Oct 2023 07:37:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233097AbjJSLZ1 (ORCPT
+        with ESMTP id S1345251AbjJSLhX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Oct 2023 07:25:27 -0400
+        Thu, 19 Oct 2023 07:37:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4C5112;
-        Thu, 19 Oct 2023 04:25:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50389C433C7;
-        Thu, 19 Oct 2023 11:25:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503B812D;
+        Thu, 19 Oct 2023 04:37:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08C3C433CA;
+        Thu, 19 Oct 2023 11:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697714725;
-        bh=2+1ko55W9laxkcWM8XgRn2t5ivATFYF/i+u9InS6YGg=;
+        s=k20201202; t=1697715441;
+        bh=XRLiFEfMwPbR8a7nAVapktcO0NcTy6NCdxqoQM3snxg=;
         h=From:To:Cc:Subject:Date:From;
-        b=iFvREIZttd4PBZP5wFQgW5etIhNOod1lbEpO6DboYsnmHopXPF+nkcYHeWu7lFIk+
-         9Awcuzz9OUOD2zYmvbf5UhZAr38qduuWe/CGusXmhCPLjHLgylJjajGteVdG/0LKt2
-         BmjdUS/32FIfKQZFbbu/Xst0tGHXok7bZNidnvgNcFde6oYTZpnFNk2foNy2vPGwyq
-         RfUPnMjI3Te7coftpneYAaFXFuRbouSldLU0Q36q0EjFjCJYlPrwr70Tq4Hpl/zeCx
-         jf6ohOfVUtrgTHVTf8qHSGrxMRPqTUIO67yhyWT9pSduo8yWQokEpTLEQt7LnT2M9e
-         sgVzSmYdHGn2Q==
+        b=qmRuIlXIR74X5BKQOa/KowjNG5uJeJiJ6i+tre6pUhvGQ2DkBCeoBtdGWga2qZs5g
+         fgCNo5+CbGFk4UbfgkX9QTHPEhTQbZ0m6paBxhyUk/X6bmT4VkRW21N0ArYVRGYI2l
+         YJdnZpIEdAVVPsHkeEAIwHVNwABELZlIQB2DrWspIgqk6avSx0Wfs2p3ZXhP9+XB1H
+         8R5Hr1WDlsNlYHi0j6q+ARCIkxkzrVDiDoOkORsfDbXbobEuXqmNOJNvAL4xQ8tlZA
+         LROdrQSqlROmkbAgsVLw2jbvU2iqO1ufL5UVkWlRdjQlQGowOtDhJnf77IIS5UM6no
+         Y/vZpgGaCRT7g==
 Received: from johan by xi.lan with local (Exim 4.96)
         (envelope-from <johan+linaro@kernel.org>)
-        id 1qtR9b-0000Xa-2E;
-        Thu, 19 Oct 2023 13:25:28 +0200
+        id 1qtRLA-0002Me-2u;
+        Thu, 19 Oct 2023 13:37:24 +0200
 From:   Johan Hovold <johan+linaro@kernel.org>
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH] wifi: ath11k: fix htt pktlog locking
-Date:   Thu, 19 Oct 2023 13:25:21 +0200
-Message-ID: <20231019112521.2071-1-johan+linaro@kernel.org>
+        Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 0/2] wifi: ath12k: fix event locking
+Date:   Thu, 19 Oct 2023 13:36:48 +0200
+Message-ID: <20231019113650.9060-1-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The ath11k active pdevs are protected by RCU but the htt pktlog handling
-code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section.
+As was reported here:
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
+	https://lore.kernel.org/lkml/20231019104211.13769-1-johan+linaro@kernel.org/
+	https://lore.kernel.org/lkml/20231019112521.2071-1-johan+linaro@kernel.org/
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
+RCU lockdep reported suspicious RCU usage in the ath11k temperature
+event handling code and code review revealed a few more handlers with
+similar problems.
 
-Here's one more...
+Apparently these issues have also been reproduced in the ath12k driver. 
+
+Note that these were found through inspection and that this series has
+only been compile tested.
 
 Johan
 
- drivers/net/wireless/ath/ath11k/dp_rx.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 62bc98852f0f..0acbf53ae991 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1621,14 +1621,18 @@ static void ath11k_htt_pktlog(struct ath11k_base *ab, struct sk_buff *skb)
- 	u8 pdev_id;
- 
- 	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, data->hdr);
-+
-+	rcu_read_lock();
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
- 	if (!ar) {
- 		ath11k_warn(ab, "invalid pdev id %d on htt pktlog\n", pdev_id);
--		return;
-+		goto out;
- 	}
- 
- 	trace_ath11k_htt_pktlog(ar, data->payload, hdr->size,
- 				ar->ab->pktlog_defs_checksum);
-+out:
-+	rcu_read_unlock();
- }
- 
- static void ath11k_htt_backpressure_event_handler(struct ath11k_base *ab,
+Johan Hovold (2):
+  wifi: ath12k: fix dfs-radar and temperature event locking
+  wifi: ath12k: fix htt mlo-offset event locking
+
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 7 +++++--
+ drivers/net/wireless/ath/ath12k/wmi.c   | 8 +++++++-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
+
 -- 
 2.41.0
 
