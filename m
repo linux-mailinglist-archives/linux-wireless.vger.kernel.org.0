@@ -2,135 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11E107D00D0
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 19:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B485B7D00FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 19:53:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345994AbjJSRpG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Oct 2023 13:45:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36332 "EHLO
+        id S235501AbjJSRxg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Oct 2023 13:53:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235484AbjJSRpF (ORCPT
+        with ESMTP id S235491AbjJSRxg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Oct 2023 13:45:05 -0400
-Received: from mail-oo1-xc49.google.com (mail-oo1-xc49.google.com [IPv6:2607:f8b0:4864:20::c49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3699114
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 10:45:02 -0700 (PDT)
-Received: by mail-oo1-xc49.google.com with SMTP id 006d021491bc7-583eeba3d76so1580671eaf.1
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 10:45:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697737502; x=1698342302; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qg+otgUOPQR+8G/4uV/TUAnZUyW51Jn+plgzCktzBuA=;
-        b=XDrru/ApZi0UXweUD7gr35ntg23Lt6QbrC+gaMYzlj6SB+gYOAjz3t7R5ockw+MHY5
-         nAI8oYvVYUrtmsr7HZwamZqKxvQqafGaVIb0TBm9XjC5nGmARMH2nIyJL/D9g1OERy2K
-         2qlHmwyJ01x9qs5JsEZlpmr7+T05U7DMFoySaqPshFPCbwRuKld6h/hDhCGLtYHvuafi
-         To94gucsbTQwVuDc6Q3VzoDuh92fNEzpiGUAFO3ti0fBGfIA/d+ECCCbs2vGNZXXiNvM
-         j9q9D5SlqVSP2b3IJJYv4SNXHZGOgdTOnAXFMwmbZcFIHf7guo/8duT4QwWtp6qXC0GJ
-         xZ6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697737502; x=1698342302;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qg+otgUOPQR+8G/4uV/TUAnZUyW51Jn+plgzCktzBuA=;
-        b=GODQyz9wfuFjxuDe+9LQ+c0fab1JJmdTkrxRpzAka3qPa9ugLlBIvTLvNHSk703FUB
-         vrdtDDsXcDzdNvoOfqsAbCbSNlhOFXCi1VNB0UIJDVibAIAM+kiuy8UWtg+hDe7XBtzS
-         itryND1TqFOQ4M2dwlw68PICGz0/9jGfzNBjqb9pYhsyzcPgeM7kARQrMW2Tk/FETqlf
-         slQZ/WF/fWPqU4kiA+jL8KvkqBSS779ZlzKdMbit7+U8AgAQ4hXyltlZiqeCZRZij4JY
-         1H6lSIwENs7169jGYoFzw82/quDpTabmB7I2QF/QiPJYE0RspP7joIJJU3EUKWL6QCg0
-         +37g==
-X-Gm-Message-State: AOJu0Yx9RKKvQG5Rr6QQkG0Vxrrwj77C3NnrIdKEl9Kw/V8a8/LL3Et9
-        aStT24i6tQ/q2K7FfbcNoNkZjcSt2KjHZNmO+g==
-X-Google-Smtp-Source: AGHT+IF/1XWODGKQ3tILQKxRsLwEu1ZDsY+BIBDOaGIwchVda0e1YeB9gM+pNN+BK6LJjMlqq0ITrFJ7PPV61+TGJA==
-X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a4a:6c15:0:b0:581:f8d7:e4af with SMTP
- id q21-20020a4a6c15000000b00581f8d7e4afmr1090598ooc.0.1697737502309; Thu, 19
- Oct 2023 10:45:02 -0700 (PDT)
-Date:   Thu, 19 Oct 2023 17:44:59 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIABtrMWUC/6WOQQ6CMBBFr0K6dgytRsSV9zAsoExhktqSadNKC
- He3cgWX7y3++5sIyIRBPKpNMCYK5F0BdaqEnns3IdBYWKhaXWQtGwiRnV5WGJkScgCHETIxWgw
- ByEW0QNlmMgQmwzhMoEGaa2vqerj3CkVZXhgNfY7qqys8U4ie1+NEkj/7Xy9JkDCYW4u6GeXQN s/J+8niWfu36PZ9/wL0GBhH9wAAAA==
-X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1697737501; l=2408;
- i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=+j1ZR4eOwaN2eWhtI6Or7popX8JK/RP2CN1CNyJtMuM=; b=BJyGQKERL2LGGUnreMt73sxdVT2rdOk9iwAulRF+/ouCnd05D/W3ZTM6a5zobWDvA04d1pUyB
- RMDmJtVuIm/DdGrXlkpaGZ8jYNcg5qsjcAjsQrDmYemRAMmAxa9iYGi
-X-Mailer: b4 0.12.3
-Message-ID: <20231019-strncpy-drivers-net-wireless-intel-iwlwifi-fw-dbg-c-v2-1-179b211a374b@google.com>
-Subject: [PATCH v2] wifi: iwlwifi: fw: replace deprecated strncpy with strscpy_pad
-From:   Justin Stitt <justinstitt@google.com>
-To:     Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Justin Stitt <justinstitt@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        Thu, 19 Oct 2023 13:53:36 -0400
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C547114
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 10:53:32 -0700 (PDT)
+Received: (wp-smtpd smtp.wp.pl 7621 invoked from network); 19 Oct 2023 19:53:28 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1697738009; bh=2+rAyM9M/Mvxutl5GHk2fAK8bFZXXD6Ce8sUEHiFKio=;
+          h=From:To:Cc:Subject;
+          b=DlzZ5ETnhYF6Z8ZzLcFDlrCyyYlhzXL5xA5XFl664MkyrfNr9oKVWAGFg37WhS6iW
+           83ZAl/L99TSslc9TKvNCCfY9xErN2Kl5kOJ8SnGboFpvHaH9ZNeUjhjnlyAhNFMKCv
+           GOfnIFYxlvqruAH6d9UOOYIyE3MRxksqCWz4tUN8=
+Received: from 89-64-13-175.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.13.175])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <kvalo@kernel.org>; 19 Oct 2023 19:53:28 +0200
+Date:   Thu, 19 Oct 2023 19:53:28 +0200
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Shiji Yang <yangshiji66@outlook.com>, helmut.schaa@googlemail.com,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: rt2x00: fix rt2800 watchdog function
+Message-ID: <20231019175328.GA512047@wp.pl>
+References: <169769882877.117236.15856778587852752332.kvalo@kernel.org>
+ <TYAP286MB0315BFF338DEE34898A20584BCD4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+ <87h6mm20vl.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h6mm20vl.fsf@kernel.org>
+X-WP-MailID: 73c6b66a9abc78415fbeca0f90fae148
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [wTMR]                               
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-strncpy() is deprecated for use on NUL-terminated destination strings
-[1] and as such we should prefer more robust and less ambiguous string
-interfaces.
+On Thu, Oct 19, 2023 at 04:33:02PM +0300, Kalle Valo wrote:
+> Shiji Yang <yangshiji66@outlook.com> writes:
+> 
+> > On Thu, 19 Oct 2023 07:00:30 +0000, Kalle Valo wrote:
+> >
+> >>Shiji Yang <yangshiji66@outlook.com> wrote:
+> >>
+> >>> The watchdog function is broken on rt2800 series SoCs. This patch
+> >>> fixes the incorrect watchdog logic to make it work again.
+> >>> 
+> >>> 1. Update current wdt queue index if it's not equal to the previous
+> >>>    index. Watchdog compares the current and previous queue index to
+> >>>    judge if the queue hung.
+> >>> 2. Make sure hung_{rx,tx} 'true' status won't be override by the
+> >>>    normal queue. Any queue hangs should trigger a reset action.
+> >>> 3. Clear the watchdog counter of all queues before resetting the
+> >>>    hardware. This change may help to avoid the reset loop.
+> >>> 4. Change hang check function return type to bool as we only need
+> >>>    to return two status, yes or no.
+> >>> 
+> >>> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
-Based on the deliberate `sizeof(dest) ... - 1` pattern we can see that
-both dump_info->dev_human_readable and dump_info->bus_human_readable are
-intended to be NUL-terminated.
+> >>Is this patch ok to take?
+> >
+> >
+> > Hi! I think it's ready. I've been testing it for a few weeks.
+> 
+> That question was more towards maintainers Stanislaw, Helmut and other
+> reviewers :)
+> 
+> That reminds me, is Helmut still maintaining this driver? I haven't seen
+> an ack from him since 2016. As we nowadays try to keep the MAINTAINERS
+> up-to-date so should we remove him?
 
-Moreover, since this seems to cross the file boundary let's NUL-pad to
-ensure no behavior change.
+Yeah, feel free to remove him. I can post a patch if needed.
 
-strscpy_pad() covers both the NUL-termination and NUL-padding, let's use
-it.
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-Link: https://github.com/KSPP/linux/issues/90
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Justin Stitt <justinstitt@google.com>
----
-Changes in v2:
-- prefer strscpy_pad (thanks Kees)
-- Link to v1: https://lore.kernel.org/r/20231017-strncpy-drivers-net-wireless-intel-iwlwifi-fw-dbg-c-v1-1-bf69ec7d1b97@google.com
----
-Note: build-tested only.
-
-Found with: $ rg "strncpy\("
----
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 3ab6a68f1e9f..7aa282592cdc 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -880,10 +880,10 @@ iwl_fw_error_dump_file(struct iwl_fw_runtime *fwrt,
- 			cpu_to_le32(fwrt->trans->hw_rev_step);
- 		memcpy(dump_info->fw_human_readable, fwrt->fw->human_readable,
- 		       sizeof(dump_info->fw_human_readable));
--		strncpy(dump_info->dev_human_readable, fwrt->trans->name,
--			sizeof(dump_info->dev_human_readable) - 1);
--		strncpy(dump_info->bus_human_readable, fwrt->dev->bus->name,
--			sizeof(dump_info->bus_human_readable) - 1);
-+		strscpy_pad(dump_info->dev_human_readable, fwrt->trans->name,
-+			sizeof(dump_info->dev_human_readable));
-+		strscpy_pad(dump_info->bus_human_readable, fwrt->dev->bus->name,
-+			sizeof(dump_info->bus_human_readable));
- 		dump_info->num_of_lmacs = fwrt->smem_cfg.num_lmacs;
- 		dump_info->lmac_err_id[0] =
- 			cpu_to_le32(fwrt->dump.lmac_err_id[0]);
-
----
-base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
-change-id: 20231017-strncpy-drivers-net-wireless-intel-iwlwifi-fw-dbg-c-1f49f00b8a2e
-
-Best regards,
---
-Justin Stitt <justinstitt@google.com>
+Regards
+Stanislaw
 
