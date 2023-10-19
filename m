@@ -2,45 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 444337CF141
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 09:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 140247CF146
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 09:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344829AbjJSHaO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Oct 2023 03:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50692 "EHLO
+        id S233089AbjJSHa6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Oct 2023 03:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232326AbjJSHaN (ORCPT
+        with ESMTP id S232326AbjJSHa4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Oct 2023 03:30:13 -0400
+        Thu, 19 Oct 2023 03:30:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C1D89F
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 00:30:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FF7C433C8;
-        Thu, 19 Oct 2023 07:30:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CDA69F;
+        Thu, 19 Oct 2023 00:30:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E478DC433C8;
+        Thu, 19 Oct 2023 07:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697700611;
-        bh=Q6ljW3apHy3A+ic7lg/JrRHklhVp0Gl6lRNCyWGIAF8=;
+        s=k20201202; t=1697700654;
+        bh=9g/oL5ciNynJcn9WgauUXtHsSALIsdoIPjlIDDbWEys=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=OTUII57P8xo4sNMZA9SOyd75drmKpftt5eAoHmJ0vq57eh4LSpUGm5H0pEbOHVkdZ
-         UJ+6kJFv4nmWMZp+pQxw7AOdEoPU9R9n3RaWjXa11U6IYCLjU6/LPJCDO40got0ucH
-         ncFK61DjqM8wA2CG94qc9DrvJCF5rQPM+WUzLgw+awsSHTxe71q4rKwKOeMqkX2MRk
-         91s1Hh5A8JnczR4KS0LHiFeN2FiqBRngEJ8XfVN716XlQfjQmtdFxVDHupUfxQIUNH
-         GKFCMjAxMq3vYtNOV+rCrB+HI7MNthn6Cq/aiTeRhL85ue3pMvesWlBUGZcelHrF6H
-         qtnZg9LrIppNw==
+        b=KRvWN9M6Omb2EVLdylaIEl4OTKB6w92CHI5vHjZIMrWPeWS5m5xxzwc4Svg15O4K+
+         PSP7OveM/o+APV5fOwGPsPs31FyZa4VPZS2zSvYMJNwljwOJ4ryUMf0ddezjFfYRH0
+         /oCi2R4j9Ty6XAL6MV+Yp91x+04hyBo/uG12eDCXAAZ0m2eFXF0/FKdJXoa1+ZFmtb
+         grkx5g/glQxPH7wAq4qbM2JAfmbxjfYXldpL+uXzvYibDTj+1X9gPDqFOspPxpoGtZ
+         0tQWY/ftgAG4V1d1qpUt2RNXLRX42CxjgXu2aZg0vQfDvWb7qlyGSXiAKcWcyylyJM
+         F5CX5JTmq/pag==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/3] wifi: rtlwifi: drop pre_fill_tx_bd_desc() from HAL
- interface
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] wifi: wilc1000: use vmm_table as array in wilc struct
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231016135925.129223-1-dmantipov@yandex.ru>
-References: <20231016135925.129223-1-dmantipov@yandex.ru>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
+In-Reply-To: <20231017-wilc1000_tx_oops-v3-1-b2155f1f7bee@bootlin.com>
+References: <20231017-wilc1000_tx_oops-v3-1-b2155f1f7bee@bootlin.com>
+To:     =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc:     Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Michael Walle <mwalle@kernel.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        stable@vger.kernel.org,
+        =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169770060845.117236.6582869818092142659.kvalo@kernel.org>
-Date:   Thu, 19 Oct 2023 07:30:10 +0000 (UTC)
+Message-ID: <169770065004.117236.8779995270709198838.kvalo@kernel.org>
+Date:   Thu, 19 Oct 2023 07:30:51 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -50,24 +55,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+Alexis Lothoré <alexis.lothore@bootlin.com> wrote:
 
-> Since 'pre_fill_tx_bd_desc()' is actually used for rtl8192ee only,
-> there is no need to maintain function pointer in 'struct rtl_hal_ops',
-> and 'rtl92ee_pre_fill_tx_bd_desc()' may be converted to static.
-> Compile tested only.
+> From: Ajay Singh <ajay.kathat@microchip.com>
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Enabling KASAN and running some iperf tests raises some memory issues with
+> vmm_table:
+> 
+> BUG: KASAN: slab-out-of-bounds in wilc_wlan_handle_txq+0x6ac/0xdb4
+> Write of size 4 at addr c3a61540 by task wlan0-tx/95
+> 
+> KASAN detects that we are writing data beyond range allocated to vmm_table.
+> There is indeed a mismatch between the size passed to allocator in
+> wilc_wlan_init, and the range of possible indexes used later: allocation
+> size is missing a multiplication by sizeof(u32)
+> 
+> Fixes: 40b717bfcefa ("wifi: wilc1000: fix DMA on stack objects")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+> Reviewed-by: Michael Walle <mwalle@kernel.org>
+> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-3 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-fc83ee9d587f wifi: rtlwifi: drop pre_fill_tx_bd_desc() from HAL interface
-9e58030622d0 wifi: rtlwifi: drop fill_fake_txdesc() from HAL interface
-2f4ae0feab8b wifi: rtlwifi: drop chk_switch_dmdp() from HAL interface
+05ac1a198a63 wifi: wilc1000: use vmm_table as array in wilc struct
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231016135925.129223-1-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231017-wilc1000_tx_oops-v3-1-b2155f1f7bee@bootlin.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
