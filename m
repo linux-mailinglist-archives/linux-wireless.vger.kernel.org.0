@@ -2,65 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18BC77CF579
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 12:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 653667CF57F
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 12:43:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbjJSKi1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Oct 2023 06:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42814 "EHLO
+        id S232761AbjJSKnL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Oct 2023 06:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjJSKi0 (ORCPT
+        with ESMTP id S229632AbjJSKnL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Oct 2023 06:38:26 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72BD119
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 03:38:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=64BjuiIoJXnsKmJBOxKeNr4hDLgeJUrCY+eejb5bpO4=;
-        t=1697711904; x=1698921504; b=IR4Wv44kOAiVa3KxuvapHbPTLSCBVQbZb/pRQf+xmlz72zn
-        KW71J0qVEzWBiNWRoFZzxhuqcdn6zfWaisj0hij0IdUnfzYHjuW1j1Rkv7EVtqp3m0HVthSfIjrrM
-        Z0MWn2DlfzsXSwChxRf0rIV4EuXr6/860X4fgeOxvLvLqJYnnPTb/y7vcyFn47qYIal2ltivPG1Xn
-        4zH81H8Ycu0eEhdKPe31weDCsCd9cd1toeGmHzaCK2yZsHkX2PfmjrdHNlsyLbogJSzx0DNO8Zpp8
-        pT0lViWPiCqUTMmhhU9vA7+r57l/6vNfznv2OOmr4kfyFrT2UmUtqXCw9O6Oh9nw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.97-RC1)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qtQQ2-0000000DIQC-0Jby;
-        Thu, 19 Oct 2023 12:38:22 +0200
-Message-ID: <06036e52a37713db714d82e535975bf03f6ba366.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless] cfg80211: allow grace period for DFS available
- after beacon shutdown
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Date:   Thu, 19 Oct 2023 12:38:21 +0200
-In-Reply-To: <20230914112147.26985-1-nbd@nbd.name>
-References: <20230914112147.26985-1-nbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        Thu, 19 Oct 2023 06:43:11 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04C2311F;
+        Thu, 19 Oct 2023 03:43:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AD0C433C7;
+        Thu, 19 Oct 2023 10:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697712189;
+        bh=iUSdV9CFZmw4yRgGQyhrpABX6aSvA+ch603XWDzFF6E=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PB9JH2lKw92emWDbT8O4k989xfioIzTWSkvZC36EY8GmomzMrdlUwFj4um5PleG2z
+         hznwRuYuSvJ8T8+EIGqgVZtWx/AT2wJNhU/UfsRdFhuglbl1cxgoxKWSPmU6/k5Lko
+         6dTGH7Cn3kG8FsN1q9y5vSYfugN/ExifmxhFdGzrT4caXP3KXxixJz73kvD4Ni4OqO
+         29pbGcHEbRlBWiYkodZAbWHqSS6PJmFheaac1qMXj4DLI1HBV7SFkv/VlOkw6vY2ri
+         RmjMnDd7yN3zZTbcCL0ZOBK4eZ6cs0vCUS451hl7RqIFEvGv9L14kL+XG/MiNFAOWO
+         9CYL1/56G+zPA==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1qtQUh-0003ak-2v;
+        Thu, 19 Oct 2023 12:43:12 +0200
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 0/2] wifi: ath11k: fix event locking
+Date:   Thu, 19 Oct 2023 12:42:09 +0200
+Message-ID: <20231019104211.13769-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-09-14 at 13:21 +0200, Felix Fietkau wrote:
-> Fixes reconfiguring an AP on a DFS channel in non-ETSI regdomain
+RCU lockdep reported suspicious RCU usage when accessing the temperature
+sensor. Inspection revealed that the DFS radar event code was also
+missing the required RCU read-side critical section marking.
 
-Sorry, I think I mentioned this on IRC but maybe you never saw: can you
-please elaborate on the commit message?
+Johan
 
-It looks pretty OK but describing just that it fixes something seems a
-bit sparse.
 
-johannes
+Johan Hovold (2):
+  wifi: ath11k: fix temperature event locking
+  wifi: ath11k: fix dfs radar event locking
+
+ drivers/net/wireless/ath/ath11k/wmi.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+-- 
+2.41.0
 
