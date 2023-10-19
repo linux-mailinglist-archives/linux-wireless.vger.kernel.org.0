@@ -2,88 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC6807CECF3
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 02:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB0FA7CED66
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 03:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231283AbjJSAws convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Oct 2023 20:52:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48722 "EHLO
+        id S231341AbjJSBTG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Oct 2023 21:19:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbjJSAwr (ORCPT
+        with ESMTP id S229891AbjJSBTF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Oct 2023 20:52:47 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B353118
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 17:52:46 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39J0qbp772253848, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39J0qbp772253848
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 19 Oct 2023 08:52:37 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 19 Oct 2023 08:52:38 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 19 Oct 2023 08:52:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Thu, 19 Oct 2023 08:52:38 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 3/3] wifi: rtlwifi: drop chk_switch_dmdp() from HAL interface
-Thread-Topic: [PATCH 3/3] wifi: rtlwifi: drop chk_switch_dmdp() from HAL
- interface
-Thread-Index: AQHaADkfOi8Z8+ZZ6U+oo7dBgjEeorBQTISw
-Date:   Thu, 19 Oct 2023 00:52:38 +0000
-Message-ID: <524f633cb609429fa362aa601a87fe62@realtek.com>
-References: <20231016135925.129223-1-dmantipov@yandex.ru>
- <20231016135925.129223-3-dmantipov@yandex.ru>
-In-Reply-To: <20231016135925.129223-3-dmantipov@yandex.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.71.113]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Wed, 18 Oct 2023 21:19:05 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A091E112
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 18:19:03 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d8a000f6a51so8329691276.3
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 18:19:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1697678343; x=1698283143; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xgp6z1oSdgUt9IWRR9iqkN0+S+6uNUFzUlZ52E0GfRE=;
+        b=RMvBUOSuSQCX8LvQNCehtRVgw0wL99GLaIgJSU/bnR+fEmFggV7rWCGvyK6hLiIHg6
+         QTKCknMBM8KKfiJWt1ctRNhT3qnBrMy7U7EzTOQTPl/e+9V9jD45SxzA0NTmBAO4/oWQ
+         lfLvi4tUuAoEBKkrrZlepge+e3Jmt0ocS5IQM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697678343; x=1698283143;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xgp6z1oSdgUt9IWRR9iqkN0+S+6uNUFzUlZ52E0GfRE=;
+        b=H1bbTgSi1q95Xn8tT/ixXPQwJ5n9RAshjbLKVTzWRQMbVeyE3ppKQ7rmCLVWclovNy
+         hXwMPqmAbr7XvGpF/uFheQVQULUHDcQbCf71gl9dqZw6nfHyPC1CHaieP7EpgFbVhwpz
+         zAEpThVvAYsibMRN0W3HmMEKdViUuThs5HeL9YgYRL67Ma8Nwi87Ukmy50plyj8ij7Wz
+         kDL5ZygYuZNLlenVcCrcjpcExO4OZuHkjvmIiPMdGBONKiHq5w4fpvuO4EtCOpEy9G6j
+         e1PH9zHSOWYFKZGTnlyGIiDB+h2cxZMOpzCQAdjvcF+yIpO5GiKDYhrJqODFiZ9v7xWD
+         vibg==
+X-Gm-Message-State: AOJu0Yyi15onEghysT62Fe/0153I1JyrJcCs0tR9FW/KTW7hn2feG2cv
+        n3tnS50lRs72eQ5Mm/ubuNAaG/4UPM7HheA/vqE=
+X-Google-Smtp-Source: AGHT+IG3mAP8gw66SVpkc5giu589EfWx1B2jkhPIkaRjNV7e1LI2HxlT4Gr/1DydCq2HbLeRe8PkEw==
+X-Received: by 2002:a25:d50:0:b0:d9a:d61d:17dc with SMTP id 77-20020a250d50000000b00d9ad61d17dcmr915811ybn.36.1697678342824;
+        Wed, 18 Oct 2023 18:19:02 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id h191-20020a6383c8000000b0058953648c27sm2318856pge.88.2023.10.18.18.19.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 18:19:02 -0700 (PDT)
+Date:   Wed, 18 Oct 2023 18:19:01 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Justin Stitt <justinstitt@google.com>
+Cc:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: ipw2x00: replace deprecated strncpy with
+ strscpy_pad
+Message-ID: <202310181800.C6F7B42@keescook>
+References: <20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-v2-1-465e10dc817c@google.com>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231017-strncpy-drivers-net-wireless-intel-ipw2x00-ipw2200-c-v2-1-465e10dc817c@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Dmitry Antipov <dmantipov@yandex.ru>
-> Sent: Monday, October 16, 2023 9:59 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; Dmitry Antipov <dmantipov@yandex.ru>
-> Subject: [PATCH 3/3] wifi: rtlwifi: drop chk_switch_dmdp() from HAL interface
+On Tue, Oct 17, 2023 at 09:48:15PM +0000, Justin Stitt wrote:
+> strncpy() is deprecated for use on NUL-terminated destination strings
+> [1] and as such we should prefer more robust and less ambiguous string
+> interfaces.
 > 
-> Since there is no chip-specific code behind 'chk_switch_dmdp()',
-> there is no need to maintain function pointer in 'struct rtl_hal_ops'
-> and relevant common code may be simplified. Compile tested only.
+> `extra` is intended to be NUL-terminated which is evident by the manual
+> assignment of a NUL-byte as well as its immediate usage with strlen().
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Moreover, many of these getters and setters are NUL-padding buffers with
+> memset():
+> 2439  |	memset(&tx_power, 0, sizeof(tx_power));
+> 9998  | memset(sys_config, 0, sizeof(struct ipw_sys_config));
+> 10084 | memset(tfd, 0, sizeof(*tfd));
+> 10261 | memset(&dummystats, 0, sizeof(dummystats));
+> ... let's maintain this behavior and NUL-pad our destination buffer.
+> 
+> Considering the above, a suitable replacement is `strscpy_pad` due to
+> the fact that it guarantees both NUL-termination and NUL-padding on the
+> destination buffer.
+> 
+> To be clear, there is no bug in the current implementation as
+> MAX_WX_STRING is much larger than the size of the string literals being
+> copied from. Also, strncpy() does NUL-pad the destination buffer and
+> using strscpy_pad() simply matches that behavior. All in all, there
+> should be no functional change but we are one step closer to eliminating
+> usage of strncpy().
+> 
+> Do note that we cannot use the more idiomatic strscpy invocation of
+> (dest, src, sizeof(dest)) as the destination buffer cannot have its size
+> determined at compile time. So, let's stick with (dest, src, LEN).
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Yeah, these interfaces have external buffer size declarations. In this
+case, MAX_WX_STRING.
 
-Thanks for the cleanup. 
+This is probably one of the most difficult set of callbacks to track
+down. sysfs might be worse...
 
+But, ultimately, this is a private ioctl handler, and it is all boiled
+down to calling ioctl_private_iw_point() (via ioctl_private_call()),
+which does the allocation of "extra". The size, which is not passed to
+the handler (*sob*), is determined by: get_priv_descr_and_size(), which
+is looking at drivers/net/wireless/intel/ipw2x00/ipw2200.c's
+ipw_priv_args:
 
+        {
+         .cmd = IPW_PRIV_GET_MODE,
+         .get_args = IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_FIXED | MAX_WX_STRING,
+         .name = "get_mode"},
+
+So it looks good to me.
+
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-- 
+Kees Cook
