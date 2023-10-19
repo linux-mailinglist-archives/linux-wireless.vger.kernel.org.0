@@ -2,62 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D5F87CEC3C
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 01:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 581447CEC8E
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 02:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231432AbjJRXqc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Oct 2023 19:46:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
+        id S231704AbjJSADI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Oct 2023 20:03:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbjJRXqb (ORCPT
+        with ESMTP id S229632AbjJSADH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Oct 2023 19:46:31 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B6DB6
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 16:46:29 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1ca82f015e4so27394295ad.1
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 16:46:29 -0700 (PDT)
+        Wed, 18 Oct 2023 20:03:07 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCDAC114
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 17:03:04 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-5b5354da665so2505562a12.2
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Oct 2023 17:03:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1697672789; x=1698277589; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1697673784; x=1698278584; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3v1rhi+yKtok5E46TzBIftVhW1iXBs0xE9buXjfaVnI=;
-        b=lwH0JzFHtMMa+2pD9EDGoYQLPpua1jrlyu94Ll4kNXAxnTk27UN6vsWJMwdUJuWT5b
-         SCj+201ECpXk8GA+Qcklj02ZJyMUnlcTV0P1fBOcrSt7TqnmI3Hc7wyLSY87lZmrzGDd
-         yjIsazmpitZedKc16KcWGfAQTRJ8dUtIWxkaI=
+        bh=T/Zi+O5EOF8MxmYTpNQNZzDcOGwyvihj+XdDWSOvn6s=;
+        b=iTY8joTjEef/ERLwWT1SitzkN02oqldiSAsUv38Bn7nIXqZFzrW+D9erwAxe29Dk7V
+         O5rSFaI9v6q1Ndk/Dh3RgW0ZXHyiQxwvJH801k5CfMuHe5aHLwsQ9LlMz0GPxdsBGiRU
+         AkK+jzaPEqxxikeP6WT23RtUwlDnlMTqCvLKI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697672789; x=1698277589;
+        d=1e100.net; s=20230601; t=1697673784; x=1698278584;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3v1rhi+yKtok5E46TzBIftVhW1iXBs0xE9buXjfaVnI=;
-        b=RAIvkXlbCzFtzsh3r2yr6cKLrqA9PwlUnc8yyVHzJ3zMSIq15twxUFOc2YcwDHhPna
-         vFlEGLt6qCRKPwePBXjHcz1TLUjEu1mKQimPAtdY6y236mM7Qd4Fb++KaDO006g439vJ
-         PPEg/O3+WVxHr19kB/F3pgAzQZt0CzhNvXZ7zl/MHtVgUxQp7+xBwpEZs9YVGJ9OrcAp
-         l5ESsgqGCumpjer24OlP04OWKhpGAwWNrAvxxGBCIML6LwgBVNGwbsvRigDz7fW38sA7
-         JpiQeTm+JgVWoJjPOvOlTql2rkWMS8gletLhXbBjIkV1qWvpToNdl8SJAtnyIQ6BWSeG
-         68OA==
-X-Gm-Message-State: AOJu0YzS9rHdx4uzmCNqntzYs3KEfEnz2Qy5bNbjyI+t6e5cdgjq+Ay+
-        L8vBiKOKqFO+DW/MmO/0Qup15g==
-X-Google-Smtp-Source: AGHT+IFp6P8pqIxvXv4Y1V94ikCTA6ZBwWNCz2ZyYtPkXdFvATMca6D7EmktS1Sfy3E+tpGKb9S5Yw==
-X-Received: by 2002:a17:903:32d2:b0:1c3:5f05:922a with SMTP id i18-20020a17090332d200b001c35f05922amr930264plr.60.1697672789354;
-        Wed, 18 Oct 2023 16:46:29 -0700 (PDT)
+        bh=T/Zi+O5EOF8MxmYTpNQNZzDcOGwyvihj+XdDWSOvn6s=;
+        b=DkRWLvlHVL+ZiOuyA6FXJuz+62abSWhpAuAybsoss1RDsNVDCnjp6J9mdIBOLfeJoA
+         M0FD14iezpwfU8ZT40q22WIT6aHxu1BZwq5r3hiGypKoainDFzGZwFI37q+5Mr+v12UX
+         ZiIW9BBabguawZoeMHTx0AWww6ky131Gm2DoOGPQlx/GVlFFPO9zPyF1JZywiX2gKAnB
+         8UelZgJ0xXFqsIHR4QArkKfgCBfU9zS2P9hXYCTCilw2RmaHXdE8zOvRB7wCGfqSVkmW
+         jpI3drXyYbBWjBX71tfQx8NiWF5tp2dKxUB+/msLyxtmEsTqQjAtXVVWAeVjjyGiwTcb
+         6zkg==
+X-Gm-Message-State: AOJu0YwqKAJ8asTQYaZOrEG2PaXStYMsgbKOXOehKsYyzF2gmboTUYd/
+        9aFcev9e9bK9hb4LQav/YJMkJQ==
+X-Google-Smtp-Source: AGHT+IGrcFp93mw31etRpM+tGlTdUDGBZ2GMJztc6dNNbeKI6ATXUY7U6QHgT4Dp4nc4Q3FOq4tEVA==
+X-Received: by 2002:a05:6a20:12d5:b0:16b:c62d:876 with SMTP id v21-20020a056a2012d500b0016bc62d0876mr866390pzg.23.1697673784108;
+        Wed, 18 Oct 2023 17:03:04 -0700 (PDT)
 Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id l21-20020a170902d35500b001c736370245sm506840plk.54.2023.10.18.16.46.28
+        by smtp.gmail.com with ESMTPSA id d92-20020a17090a6f6500b0027654d389casm467204pjk.54.2023.10.18.17.03.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 16:46:28 -0700 (PDT)
-Date:   Wed, 18 Oct 2023 16:46:28 -0700
+        Wed, 18 Oct 2023 17:03:03 -0700 (PDT)
+Date:   Wed, 18 Oct 2023 17:03:02 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Justin Stitt <justinstitt@google.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] atmel: replace deprecated strncpy/strcpy with strscpy
-Message-ID: <202310181643.47D7231BF5@keescook>
-References: <20231016-strncpy-drivers-net-wireless-atmel-atmel-c-v1-1-038d0e73c402@google.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] wifi: brcmsmac: replace deprecated strncpy with
+ memcpy
+Message-ID: <202310181654.E47A7709@keescook>
+References: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-0-af780d74ae38@google.com>
+ <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-2-af780d74ae38@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231016-strncpy-drivers-net-wireless-atmel-atmel-c-v1-1-038d0e73c402@google.com>
+In-Reply-To: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-2-af780d74ae38@google.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
@@ -68,95 +75,95 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 08:22:45PM +0000, Justin Stitt wrote:
-> strncpy() is deprecated for use on NUL-terminated destination strings
-> [1] and as such we should prefer more robust and less ambiguous string
-> interfaces. strcpy() is also deprecated [2] and shouldn't be used.
-
-Since these are read-only const C strings being copied into a fixed
-sized buffer, I would actually prefer to just leave these as-is since
-they're already getting verified by FORTIFY_SOURCE.
-
-> We expect priv->firmware_id to be NUL-terminated based on its usage
-> with seq_printf() and strlen() in atmel.c:
-> 1420 |       seq_printf(m, "%s loaded by host\n", priv->firmware_id);
-> ...
-> 3884 |       if (strlen(priv->firmware_id) == 0) {
+On Tue, Oct 17, 2023 at 08:11:29PM +0000, Justin Stitt wrote:
+> Let's move away from using strncpy and instead use the more obvious
+> interface for this context.
 > 
-> NUL-padding is not required, which is evident by the usage of a plain
-> strcpy():
-> 3891 |   strcpy(priv->firmware_id, "atmel_at76c502.bin");
+> For wlc->pub->srom_ccode, we're just copying two bytes from ccode into
+> wlc->pub->srom_ccode with no expectation that srom_ccode be
+> NUL-terminated:
+> wlc->pub->srom_ccode is only used in regulatory_hint():
+> 1193 |       if (wl->pub->srom_ccode[0] &&
+> 1194 |           regulatory_hint(wl->wiphy, wl->pub->srom_ccode))
+> 1195 |               wiphy_err(wl->wiphy, "%s: regulatory hint failed\n", __func__);
 > 
-> Considering the above, a suitable replacement is `strscpy` [2] due to
-> the fact that it guarantees NUL-termination on the destination buffer
-> without unnecessarily NUL-padding.
+> We can see that only index 0 and index 1 are accessed.
+> 3307 |       int regulatory_hint(struct wiphy *wiphy, const char *alpha2)
+> 3308 |       {
+> ...  |          ...
+> 3322 |          request->alpha2[0] = alpha2[0];
+> 3323 |          request->alpha2[1] = alpha2[1];
+> ...  |          ...
+> 3332 |       }
 > 
-> Let's also replace hard-coded lengths to be `sizeof(...)` for buffers
-> that the compiler can detect the size for as this is less error prone.
+> Since this is just a simple byte copy with correct lengths, let's use
+> memcpy(). There should be no functional change.
 > 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [2]
-> Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [3]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
+> In a similar boat, both wlc->country_default and
+> wlc->autocountry_default are just simple byte copies so let's use
+> memcpy. However, FWICT they aren't used anywhere. (they should be
+> used or removed -- not in scope of my patch, though).
+> 
 > Signed-off-by: Justin Stitt <justinstitt@google.com>
 > ---
-> Note: build-tested only.
+>  drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> Found with: $ rg "strncpy\("
-> ---
->  drivers/net/wireless/atmel/atmel.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/atmel/atmel.c b/drivers/net/wireless/atmel/atmel.c
-> index 7c2d1c588156..199b9144ef63 100644
-> --- a/drivers/net/wireless/atmel/atmel.c
-> +++ b/drivers/net/wireless/atmel/atmel.c
-> @@ -2011,7 +2011,7 @@ static int atmel_get_name(struct net_device *dev,
->  			  union iwreq_data *wrqu,
->  			  char *extra)
->  {
-> -	strcpy(wrqu->name, "IEEE 802.11-DS");
-> +	strscpy(wrqu->name, "IEEE 802.11-DS", sizeof(wrqu->name));
->  	return 0;
->  }
->  
-> @@ -2651,8 +2651,7 @@ static int atmel_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
->  
->  		priv->firmware = new_firmware;
->  		priv->firmware_length = com.len;
-> -		strncpy(priv->firmware_id, com.id, 31);
-> -		priv->firmware_id[31] = '\0';
-> +		strscpy(priv->firmware_id, com.id, sizeof(priv->firmware_id));
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+> index 5a6d9c86552a..f6962e558d7c 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+> @@ -341,7 +341,7 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(struct brcms_c_info *wlc)
+>  	/* store the country code for passing up as a regulatory hint */
+>  	wlc_cm->world_regd = brcms_world_regd(ccode, ccode_len);
+>  	if (brcms_c_country_valid(ccode))
+> -		strncpy(wlc->pub->srom_ccode, ccode, ccode_len);
+> +		memcpy(wlc->pub->srom_ccode, ccode, ccode_len);
 
-I wonder why this ever used strncpy -- they're both 32 byte buffer
-arrays. Regardless, yup, this looks correct to me. Can you respin
-without the strcpy() changes?
+        const char *ccode = sprom->alpha2;
+        int ccode_len = sizeof(sprom->alpha2);
+
+struct ssb_sprom {
+	...
+        char alpha2[2];         /* Country Code as two chars like EU or US */
+
+This should be marked __nonstring, IMO.
+
+struct brcms_pub {
+	...
+        char srom_ccode[BRCM_CNTRY_BUF_SZ];     /* Country Code in SROM */
+
+#define BRCM_CNTRY_BUF_SZ        4       /* Country string is 3 bytes + NUL */
+
+This, however, is shown as explicitly %NUL terminated.
+
+The old strncpy wasn't %NUL terminating wlc->pub->srom_ccode, though, so
+the memcpy is the same result, but is that actually _correct_ here?
+
+>  
+>  	/*
+>  	 * If no custom world domain is found in the SROM, use the
+> @@ -354,10 +354,10 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(struct brcms_c_info *wlc)
+>  	}
+>  
+>  	/* save default country for exiting 11d regulatory mode */
+> -	strncpy(wlc->country_default, ccode, ccode_len);
+> +	memcpy(wlc->country_default, ccode, ccode_len);
+>  
+>  	/* initialize autocountry_default to driver default */
+> -	strncpy(wlc->autocountry_default, ccode, ccode_len);
+> +	memcpy(wlc->autocountry_default, ccode, ccode_len);
+
+struct brcms_c_info {
+	...
+        char country_default[BRCM_CNTRY_BUF_SZ];
+        char autocountry_default[BRCM_CNTRY_BUF_SZ];
+
+These are similar...
+
+So, this change results in the same behavior, but is it right?
 
 -Kees
-
->  		break;
->  
->  	case ATMELRD:
-> @@ -3889,7 +3888,8 @@ static int reset_atmel_card(struct net_device *dev)
->  					printk(KERN_INFO
->  					       "%s: if not, use the firmware= module parameter.\n",
->  					       dev->name);
-> -					strcpy(priv->firmware_id, "atmel_at76c502.bin");
-> +					strscpy(priv->firmware_id, "atmel_at76c502.bin",
-> +						sizeof(priv->firmware_id));
->  				}
->  				err = request_firmware(&fw_entry, priv->firmware_id, priv->sys_dev);
->  				if (err != 0) {
-> 
-> ---
-> base-commit: cbf3a2cb156a2c911d8f38d8247814b4c07f49a2
-> change-id: 20231016-strncpy-drivers-net-wireless-atmel-atmel-c-7ca951cf7cfa
-> 
-> Best regards,
-> --
-> Justin Stitt <justinstitt@google.com>
-> 
 
 -- 
 Kees Cook
