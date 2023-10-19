@@ -2,94 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90C1C7D00A0
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 19:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8A507D00C2
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 19:38:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346259AbjJSRd3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Oct 2023 13:33:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53992 "EHLO
+        id S1346151AbjJSRiD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Oct 2023 13:38:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235492AbjJSRd2 (ORCPT
+        with ESMTP id S235495AbjJSRiB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Oct 2023 13:33:28 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC73106;
-        Thu, 19 Oct 2023 10:33:26 -0700 (PDT)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39JHMWw4015395;
-        Thu, 19 Oct 2023 17:33:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=hSDxNbot7+m/+CmxWZ/YuRhATf9AFer7UvRxZ/UJhh8=;
- b=Rx+tFQ4McqlKFSPTQvXuQc6/JfkltsqvEiyLjipSjlfcVA0+85MYhrhZytYSo9V7YjFV
- DEf/PduFO+nm0415OsV35r4bmdiucA9/gl8cP/bOz246qLzzmkp88T5l1UdCPtdV3bjs
- mV9vokh+g0x7G/lakE5hF64LvAQQHBhYw7cgBVIC4PCn5N4ry2dl6MHwhf8OANTSIjaE
- sagigS0GxgiZh0B9nZKp/YG5DLdVWhnh7YLLNjmaX2/Mqif7A9iXCAy6cIoptLYWzdZk
- ZXN88CUXRk4rRTjALKcRk+AWTnNMtwM9im7TnEFE04tljxK0GfdUVAu95l/x8drtO3P3 ug== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tu14cs6pr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Oct 2023 17:33:18 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39JHXHLK010429
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Oct 2023 17:33:17 GMT
-Received: from [10.48.241.70] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Thu, 19 Oct
- 2023 10:33:16 -0700
-Message-ID: <69b0b9c8-d06f-46b5-8246-a2e1dce0d06f@quicinc.com>
-Date:   Thu, 19 Oct 2023 10:33:16 -0700
+        Thu, 19 Oct 2023 13:38:01 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7AD4112
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 10:37:58 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-53d8320f0easo14018840a12.3
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 10:37:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697737077; x=1698341877; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gVLsdu4894wzLjbCSVYdckk2YNXtNkRVnHj3GUzmzxE=;
+        b=BMzbXv7TA5pLGFuZoo4Nag6x50lPfNo5yJvW8CYSRGjYnCqGj2B+SZVSw2gpXMxS5C
+         3Gunmp8zD2pZb8RYNpZcaOfes0FtMtxj8B9NrLd8kPUKbWVzclbonq+kbO1jL/v8lxij
+         RX2FHAbzRnJWzJd8r8aluLSjFZSyoYLwJodmw5JkEN0nPocTa1yG+1NEVOb3UmEovUrJ
+         iR9+7n5HWcsV8J32xGWQZKVtxTpEyMx+lD83e0sV/Cx4bPEGzIY06Kr2iJK1Yo3nyk0H
+         Aw23yhhZ9CpAYTTmSMTejQ6u0JxfykdgivukiYkhcc4tT8ozRxDuwjkoLdW8RCXn2ezN
+         7otA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697737077; x=1698341877;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gVLsdu4894wzLjbCSVYdckk2YNXtNkRVnHj3GUzmzxE=;
+        b=G/O24vJsEgDtsJotg4yBBrMNMO55tefpZVeH/Qo5tE/+5Z0Mfx5kOZHIsKXhjJBUN3
+         65v8F3hymSLZImhWyr13Z1TMeHM6WeRmZ32lk7nXW9zqaqDZQSPBh96RvneuGa+gBPDX
+         28UEcJXccL/m2MUKDHG6OoUF0mGRyFJZkXhxl7J5DZWrBsOUtjs+vH5eHZoS7XsC0wCd
+         X6OkNs2Nh7vqyUwmXDFYh2pVSShkWKXTdNojD3vXTyqLjWs0TG04yhvkldP1ghvHsftF
+         fvPx1Arh2wC6+BuQ7Iu2UrkpiKBl05Njvl72F+q34G34l0fiHbSZ378DkGcF0wJk0SuO
+         9YpQ==
+X-Gm-Message-State: AOJu0YxBGHGmRju5zwD4MgEQ6fTuQYoVoFgW8kmdjvKImLN1MS3z5WN1
+        bg1uJT2m7P4N0gon+Q4Jfsnar3gMCa+B+8VATOp6Pg==
+X-Google-Smtp-Source: AGHT+IGgNlHXWJ4jAnKdze+bNbnKLPu1+tzb6oWrarJ3fNEgLoQAaoZLCjwvwJxcBXJ/th47uvdz3RgYjYvcHib0AQw=
+X-Received: by 2002:a05:6402:5106:b0:53d:a4e5:67d0 with SMTP id
+ m6-20020a056402510600b0053da4e567d0mr2179966edd.13.1697737077110; Thu, 19 Oct
+ 2023 10:37:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wifi: ath12k: fix htt mlo-offset event locking
-Content-Language: en-US
-To:     Johan Hovold <johan+linaro@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>
-CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20231019113650.9060-1-johan+linaro@kernel.org>
- <20231019113650.9060-3-johan+linaro@kernel.org>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231019113650.9060-3-johan+linaro@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: O8n16vmkdMIhsOECwXV-9vjXnY9_BkmW
-X-Proofpoint-ORIG-GUID: O8n16vmkdMIhsOECwXV-9vjXnY9_BkmW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-19_15,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=456 clxscore=1015 suspectscore=0 impostorscore=0 adultscore=0
- bulkscore=0 mlxscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310190148
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-0-af780d74ae38@google.com>
+ <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-2-af780d74ae38@google.com>
+ <202310181654.E47A7709@keescook>
+In-Reply-To: <202310181654.E47A7709@keescook>
+From:   Justin Stitt <justinstitt@google.com>
+Date:   Thu, 19 Oct 2023 10:37:45 -0700
+Message-ID: <CAFhGd8oAaVUP3KcXPkpF061T55PfGCKbxMRKay-==RWguMqJWQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] wifi: brcmsmac: replace deprecated strncpy with memcpy
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/19/2023 4:36 AM, Johan Hovold wrote:
-> The ath12k active pdevs are protected by RCU but the htt mlo-offset
-> event handling code calling ath12k_mac_get_ar_by_pdev_id() was not
-> marked as a read-side critical section.
-> 
-> Mark the code in question as an RCU read-side critical section to avoid
-> any potential use-after-free issues.
-> 
-> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Cc: stable@vger.kernel.org      # v6.2
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+On Wed, Oct 18, 2023 at 5:03=E2=80=AFPM Kees Cook <keescook@chromium.org> w=
+rote:
+>
+> On Tue, Oct 17, 2023 at 08:11:29PM +0000, Justin Stitt wrote:
+> > Let's move away from using strncpy and instead use the more obvious
+> > interface for this context.
+> >
+> > For wlc->pub->srom_ccode, we're just copying two bytes from ccode into
+> > wlc->pub->srom_ccode with no expectation that srom_ccode be
+> > NUL-terminated:
+> > wlc->pub->srom_ccode is only used in regulatory_hint():
+> > 1193 |       if (wl->pub->srom_ccode[0] &&
+> > 1194 |           regulatory_hint(wl->wiphy, wl->pub->srom_ccode))
+> > 1195 |               wiphy_err(wl->wiphy, "%s: regulatory hint failed\n=
+", __func__);
+> >
+> > We can see that only index 0 and index 1 are accessed.
+> > 3307 |       int regulatory_hint(struct wiphy *wiphy, const char *alpha=
+2)
+> > 3308 |       {
+> > ...  |          ...
+> > 3322 |          request->alpha2[0] =3D alpha2[0];
+> > 3323 |          request->alpha2[1] =3D alpha2[1];
+> > ...  |          ...
+> > 3332 |       }
+> >
+> > Since this is just a simple byte copy with correct lengths, let's use
+> > memcpy(). There should be no functional change.
+> >
+> > In a similar boat, both wlc->country_default and
+> > wlc->autocountry_default are just simple byte copies so let's use
+> > memcpy. However, FWICT they aren't used anywhere. (they should be
+> > used or removed -- not in scope of my patch, though).
+> >
+> > Signed-off-by: Justin Stitt <justinstitt@google.com>
+> > ---
+> >  drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c=
+ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+> > index 5a6d9c86552a..f6962e558d7c 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/channel.c
+> > @@ -341,7 +341,7 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(st=
+ruct brcms_c_info *wlc)
+> >       /* store the country code for passing up as a regulatory hint */
+> >       wlc_cm->world_regd =3D brcms_world_regd(ccode, ccode_len);
+> >       if (brcms_c_country_valid(ccode))
+> > -             strncpy(wlc->pub->srom_ccode, ccode, ccode_len);
+> > +             memcpy(wlc->pub->srom_ccode, ccode, ccode_len);
+>
+>         const char *ccode =3D sprom->alpha2;
+>         int ccode_len =3D sizeof(sprom->alpha2);
+>
+> struct ssb_sprom {
+>         ...
+>         char alpha2[2];         /* Country Code as two chars like EU or U=
+S */
+>
+> This should be marked __nonstring, IMO.
+>
+> struct brcms_pub {
+>         ...
+>         char srom_ccode[BRCM_CNTRY_BUF_SZ];     /* Country Code in SROM *=
+/
+>
+> #define BRCM_CNTRY_BUF_SZ        4       /* Country string is 3 bytes + N=
+UL */
+>
+> This, however, is shown as explicitly %NUL terminated.
+>
+> The old strncpy wasn't %NUL terminating wlc->pub->srom_ccode, though, so
+> the memcpy is the same result, but is that actually _correct_ here?
 
+Judging from the usage, we can see that only bytes at offset 0 and 1 are
+used. I think the comment "/* Country string is 3 bytes + NUL */" might
+be misleading or perhaps there are other uses that I can't find (which
+require NUL-termination)?
+
+>
+> >
+> >       /*
+> >        * If no custom world domain is found in the SROM, use the
+> > @@ -354,10 +354,10 @@ struct brcms_cm_info *brcms_c_channel_mgr_attach(=
+struct brcms_c_info *wlc)
+> >       }
+> >
+> >       /* save default country for exiting 11d regulatory mode */
+> > -     strncpy(wlc->country_default, ccode, ccode_len);
+> > +     memcpy(wlc->country_default, ccode, ccode_len);
+> >
+> >       /* initialize autocountry_default to driver default */
+> > -     strncpy(wlc->autocountry_default, ccode, ccode_len);
+> > +     memcpy(wlc->autocountry_default, ccode, ccode_len);
+>
+> struct brcms_c_info {
+>         ...
+>         char country_default[BRCM_CNTRY_BUF_SZ];
+>         char autocountry_default[BRCM_CNTRY_BUF_SZ];
+>
+> These are similar...
+
+I can't find any uses for these either.
+
+>
+> So, this change results in the same behavior, but is it right?
+>
+> -Kees
+>
+> --
+> Kees Cook
+
+Thanks
+Justin
