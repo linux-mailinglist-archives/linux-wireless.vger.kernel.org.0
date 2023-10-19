@@ -2,90 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87CA27CFDA5
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 17:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BDD97CFDBA
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 17:22:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235423AbjJSPRl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Oct 2023 11:17:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60152 "EHLO
+        id S1346175AbjJSPWX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Oct 2023 11:22:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232841AbjJSPRk (ORCPT
+        with ESMTP id S1345950AbjJSPWW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Oct 2023 11:17:40 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7088B11B;
-        Thu, 19 Oct 2023 08:17:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E51C433C7;
-        Thu, 19 Oct 2023 15:17:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697728659;
-        bh=WtVNBWC5iNjbnScpjiJDxp8GdsgsTgsH5bVGO2dnDFk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ueOCtb8TLybx9AXSOcBSm2CkxjqD3rXqlLe1hBgQL4guFYt9A9ld77Tg2HjbC6I2O
-         6GlFAo/ZlGKnRsw3N3mRy0cvXRyzLjTlWP+VGrLngQMb3movYXiFNSxTSOzAU9U2mG
-         UoHaq0cADAyCel5zgFycAu8fqXLvYg0u/zeKKfgyF3JPWAGx7zN2CFhWPH1s2snv8M
-         X5cRVu/cCbZa5jN/INltP35xMFxOzRNYAFRbj0r1TWHKmkq6eHkRLkvRCg8ZVp7jCJ
-         2jTmgBsPOMXsx4+ot11p7+juPto3ClaY9SxL/ui8wZ8V0HQf3MO7wDKgU0q9AiQ//8
-         Fb/KK4JAtRLfg==
-Received: from johan by xi.lan with local (Exim 4.96)
-        (envelope-from <johan@kernel.org>)
-        id 1qtUmL-0005Sf-2m;
-        Thu, 19 Oct 2023 17:17:42 +0200
-Date:   Thu, 19 Oct 2023 17:17:41 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] wifi: ath11k: fix temperature event locking
-Message-ID: <ZTFIlS79DclOOjrS@hovoldconsulting.com>
-References: <20231019104211.13769-1-johan+linaro@kernel.org>
- <20231019104211.13769-2-johan+linaro@kernel.org>
- <4233c8af-5911-40bf-b5ba-dd0a63863a45@quicinc.com>
+        Thu, 19 Oct 2023 11:22:22 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F2F9121
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 08:22:20 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39JERbDc005020;
+        Thu, 19 Oct 2023 15:22:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=0v2LvWG1tVNrZ6aUGcIw7ZwbbjE/fboEMBfgC/plseQ=;
+ b=lgiPLyIx8LcIdxy4/Z56HVuKnBQEITyMdd2tYBjq3F0t9VafBnbGvP7HIuKiRux2UFBg
+ R+WCa1eWGtDkyBl0yx9ie4vP1SSel7mHTjuUacGL8nlRwvSS/C5UOPRXp9HzggHsX9PK
+ qQq62mInG22h0JveXZTlm/OpPGppyRa1fNhw1JJiw1/E/OwpgZ56PA1R2pppUFQc9xJK
+ Kdn+hLyASnArIieYfjjvpWksy+dGQImAb3vIUhk/pkJYoBjLO/j1faUlsxpzcaiv4xFc
+ y0JwUC6+ZFz7Y2s9IVLY6FtWZfK+6ERv+IzAEl6Dh32yUe5UxsCOE/uP3ZBa/MBAXak7 ww== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tu67jr441-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 19 Oct 2023 15:22:10 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39JFM9pN010981
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 19 Oct 2023 15:22:10 GMT
+Received: from [10.48.241.70] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Thu, 19 Oct
+ 2023 08:22:09 -0700
+Message-ID: <626763fa-4691-4e81-9afb-77f60b017d74@quicinc.com>
+Date:   Thu, 19 Oct 2023 08:22:09 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4233c8af-5911-40bf-b5ba-dd0a63863a45@quicinc.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] wifi: ath11k: add firmware-2.bin support
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <mhi@lists.linux.dev>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+References: <20230727100430.3603551-1-kvalo@kernel.org>
+ <20230727100430.3603551-4-kvalo@kernel.org>
+ <563e8d01-beba-bff2-54e0-7629c462add0@quicinc.com>
+ <87leby2152.fsf@kernel.org>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <87leby2152.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ZNFuLNRZZ-m0d71pHTZpO9m-B6aQhZDL
+X-Proofpoint-ORIG-GUID: ZNFuLNRZZ-m0d71pHTZpO9m-B6aQhZDL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-19_14,2023-10-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=552 impostorscore=0 mlxscore=0 malwarescore=0
+ phishscore=0 spamscore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310190129
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 19, 2023 at 08:04:55AM -0700, Jeff Johnson wrote:
-> On 10/19/2023 3:42 AM, Johan Hovold wrote:
-> > The ath11k active pdevs are protected by RCU but the temperature event
-> > handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-> > read-side critical section as reported by RCU lockdep:
+On 10/19/2023 6:27 AM, Kalle Valo wrote:
+> Here's the updated commit in pending branch:
 > 
-> How do I enable this? Just enable CONFIG_PROVE_RCU?
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=96e0d3887f65eaac7745ff9da7c89f0c59bb347d
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Yeah, via CONFIG_PROVE_LOCKING.
 
-> Of course I'd also need to exercise the code path...
-
-Right, this one I hit when reading out the sensor temperature (e.g.
-using lm_sensors).
- 
-> > +	rcu_read_lock();
-> > +
-> >   	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
-> >   	if (!ar) {
-> >   		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
-> 
-> aren't you missing an unlock() in this error path?
-> 
-> perhaps have a goto cleanup that does both the unlock() and the kfree()?
-
-Bah, I am, thanks for catching that.
-
-Spent too much time on scanning for further instances that I didn't
-check the first one properly. Sorry about that. Will send a v2.
-
-Johan
