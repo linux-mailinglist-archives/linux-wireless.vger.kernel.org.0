@@ -2,57 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58EEB7D0054
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 19:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3C757D007C
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Oct 2023 19:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345848AbjJSROp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Oct 2023 13:14:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
+        id S235488AbjJSR12 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Oct 2023 13:27:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232930AbjJSROo (ORCPT
+        with ESMTP id S233272AbjJSR11 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Oct 2023 13:14:44 -0400
+        Thu, 19 Oct 2023 13:27:27 -0400
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF4C106;
-        Thu, 19 Oct 2023 10:14:42 -0700 (PDT)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39JGM1t2018904;
-        Thu, 19 Oct 2023 17:14:38 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFA5CF;
+        Thu, 19 Oct 2023 10:27:26 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39JDfmcH010428;
+        Thu, 19 Oct 2023 17:27:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=zvoS9bMPhzzMF3tou0VZrB8JXEoraLA843fYSqg5hws=;
- b=jvo6izvlWGta4R14+0jzMk3QcM0AUxLPrP0kUP4EyxxVm13Uv+W99wWjVbvWt+BqdoO9
- huyg8EvjYX5TNeRqz6gqdbvOXQOGy2ktT24YkSGeqsYHq3As8xY166uge2p0+17MBOtA
- QpM7sBXyPkafBMpuKVXvEySp0F3MHNAOpP76++7c+BFkxV+3SWmKcHglD+FjoTEfa/rJ
- W3n8cNfultTVuzXq+8v2njE43MnMQz7pfuCAfmp04VFOymi7Vhdx5Kn5QPumGGuNDv8i
- FhKbT9Xfkp55TS9kP/IuNoMMC6mfcDLU0CQrTdkEU337TUZJjOpuQHg0S7hp3pEWJPxR uA== 
+ bh=U9G3NTV0pybnBgmSQBaCrwWGelgPxhZ1dOfQoqMdbQk=;
+ b=fgZmmRcw8C0CqwuSGs1wiH+Ywy8BWadHowE0zC1poLakHVPKT6228JL1q34JEQU3h38k
+ BKyVqEwkFQNT0cOwhRCF0j4KsqxN0kcitLwHdzuu65s5nDrzUv1D0vzvoH91wX+VB18r
+ L/QHvdm0kSpGf19oI5V/atAOr4F0000o65rnNwsGXBJJfcX+vKlKRxPhya/qYCwZ/1ki
+ lse7161NDIRMHRgDziGfEjvxTHg3ahTEpB5GqRQBfVsSl9+2x2MuIMd10RBlISZwdlKN
+ 8XnPpJ2OYKuRrQAuddZzFmajkGQ5d+Akg5P8rJg6Ovbrl/Fbx0APe2H1kbmPbFsGg1Ty uQ== 
 Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tu1t6s24m-1
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tu49b0qdk-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Oct 2023 17:14:37 +0000
+        Thu, 19 Oct 2023 17:27:22 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39JHEbDI021346
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39JHRLmR003677
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Oct 2023 17:14:37 GMT
+        Thu, 19 Oct 2023 17:27:21 GMT
 Received: from [10.48.241.70] (10.49.16.6) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Thu, 19 Oct
- 2023 10:14:36 -0700
-Message-ID: <acc17669-2023-4658-a0d7-a3317aaf93ad@quicinc.com>
-Date:   Thu, 19 Oct 2023 10:14:36 -0700
+ 2023 10:27:21 -0700
+Message-ID: <a13dd4f1-4058-4559-96f4-e110f7f4e16a@quicinc.com>
+Date:   Thu, 19 Oct 2023 10:27:20 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] wifi: ath11k: fix temperature event locking
+Subject: Re: [PATCH] wifi: ath11k: fix gtk offload status event locking
 Content-Language: en-US
 To:     Johan Hovold <johan+linaro@kernel.org>,
         Kalle Valo <kvalo@kernel.org>
 CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20231019153115.26401-1-johan+linaro@kernel.org>
- <20231019153115.26401-2-johan+linaro@kernel.org>
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        Carl Huang <quic_cjhuang@quicinc.com>
+References: <20231019155342.31631-1-johan+linaro@kernel.org>
 From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231019153115.26401-2-johan+linaro@kernel.org>
+In-Reply-To: <20231019155342.31631-1-johan+linaro@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.49.16.6]
@@ -60,16 +60,16 @@ X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: TM-SAViKT_2mnuqUy9NfHbbhKBcv8E3r
-X-Proofpoint-ORIG-GUID: TM-SAViKT_2mnuqUy9NfHbbhKBcv8E3r
+X-Proofpoint-ORIG-GUID: dc76GSLz5aeiQPpj1bnMdk0McHTqslkm
+X-Proofpoint-GUID: dc76GSLz5aeiQPpj1bnMdk0McHTqslkm
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-19_16,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 suspectscore=0
- adultscore=0 malwarescore=0 mlxlogscore=503 phishscore=0 spamscore=0
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2309180000 definitions=main-2310190146
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=577
+ impostorscore=0 phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ mlxscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310190148
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -80,34 +80,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/19/2023 8:31 AM, Johan Hovold wrote:
-> The ath11k active pdevs are protected by RCU but the temperature event
-> handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-> read-side critical section as reported by RCU lockdep:
-> 
-> 	=============================
-> 	WARNING: suspicious RCU usage
-> 	6.6.0-rc6 #7 Not tainted
-> 	-----------------------------
-> 	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
-> 
-> 	other info that might help us debug this:
-> 
-> 	rcu_scheduler_active = 2, debug_locks = 1
-> 	no locks held by swapper/0/0.
-> 	...
-> 	Call trace:
-> 	...
-> 	 lockdep_rcu_suspicious+0x16c/0x22c
-> 	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
-> 	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
-> 	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
+On 10/19/2023 8:53 AM, Johan Hovold wrote:
+> The ath11k active pdevs are protected by RCU but the gtk offload status
+> event handling code calling ath11k_mac_get_arvif_by_vdev_id() was not
+> marked as a read-side critical section.
 > 
 > Mark the code in question as an RCU read-side critical section to avoid
 > any potential use-after-free issues.
 > 
-> Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
-> Cc: stable@vger.kernel.org      # 5.7
+> Fixes: a16d9b50cfba ("ath11k: support GTK rekey offload")
+> Cc: stable@vger.kernel.org      # 5.18
+> Cc: Carl Huang <quic_cjhuang@quicinc.com>
 > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
