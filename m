@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A7087D0D30
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 12:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D21C7D0D31
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 12:32:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376890AbjJTKcH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Oct 2023 06:32:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51900 "EHLO
+        id S1376893AbjJTKcJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Oct 2023 06:32:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376891AbjJTKcE (ORCPT
+        with ESMTP id S1376891AbjJTKcI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Oct 2023 06:32:04 -0400
+        Fri, 20 Oct 2023 06:32:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D31A1D5D
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 03:32:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1132BC433C9;
-        Fri, 20 Oct 2023 10:32:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56CE3D65
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 03:32:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFCBC433C7;
+        Fri, 20 Oct 2023 10:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697797922;
-        bh=iCDbtoqp4JDm0LxlvrH53ccqWCzQRCqkN4LJ47GsAos=;
+        s=k20201202; t=1697797926;
+        bh=Ak0QFvH77MLGFgfI6JsaCzO9S99tDGkLifJGZt947IY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KmNVVUSticFMQFchd+1r6NubLiXUcT9vK5ytmxJHPKrdIUFBwujIkJBQqZ0yi+Qo8
-         4hXm5+JnISVOwC7QGtSjKRxc8EUpPvB5nP5yTFfh406Ynqj7QT2v5BDmDzmUB8r4O7
-         PtsmZ0ZGxUkIV1OiZtOgEAU0YKUrqrkUKpWDi6QOudUjR10yGn8H0yohraxzlSSAFT
-         RGpWPVwwNUVwTqCBw72nu4Sv5AVbAXj/LhZfqo2PUsyeUJ1ISHjxX2v2TtQmyTnCXj
-         FUD2BIBXvy7RbJoGxTcNoFGm0FOTr4KJ+28i6QqWU071cgQgYX0JHwV7+1JLYbVrJE
-         nx/uxoMhqkzRA==
+        b=lhuiGIhUzxgukmusaP2XNBwoL70Kpo6w9uu9yZNhoabUY3PtmldJLzk+lFcyjmveb
+         ZhP/jt50p/XxFPFmi6ynS0pVaAotoQMBekuJBNGi5v63p+bS5BBFEAd1eTf5xJyeSU
+         UlxGQnBEtTzVMfzUCMxeb5+fsHNq7KgtEgS8X9fZr1sVxSlZcZ4jEQqkRCRR4r5e5p
+         HgJ5t6BuspgVYtEHlRASznZiDw8XXoqOQgEVCTNIvvsu0RbTu9gnB1pWb+D42XXd2d
+         DH3BzZ5iXHTdTZsYpt4eQcprAH0leAz8bHF8zLwdLJ9l6I1maYs/sJT4lJYuPnjCwy
+         Y68uaYnoqbHDg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
         shayne.chen@mediatek.com, Bo.Jiao@mediatek.com,
         sujuan.chen@mediatek.com, linux-mediatek@lists.infradead.org
-Subject: [PATCH v3 11/13] mt76: move wed reset common code in mt76 module
-Date:   Fri, 20 Oct 2023 12:30:58 +0200
-Message-ID: <cd7a5d68415b742f7dd5fac5d85a3e7e18be3512.1697797423.git.lorenzo@kernel.org>
+Subject: [PATCH v3 12/13] mt76: mt7996: add wed reset support
+Date:   Fri, 20 Oct 2023 12:30:59 +0200
+Message-ID: <eb4746e2edf924e2c5385f7bbbff0d09d8e43d49.1697797423.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1697797422.git.lorenzo@kernel.org>
 References: <cover.1697797422.git.lorenzo@kernel.org>
@@ -51,172 +51,269 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move WED reset code shared between mt7915 and mt7996 in common module.
-This is a preliminary patch to introduce WED reset support for mt7996.
+Introduce the capability to reset mt7996 chipset if requested by wed
+driver.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c      | 14 ++++++++++
- drivers/net/wireless/mediatek/mt76/dma.h      |  9 ++++++
- drivers/net/wireless/mediatek/mt76/mmio.c     |  8 ++++++
- drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
- .../net/wireless/mediatek/mt76/mt7915/dma.c   | 28 ++-----------------
- .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  9 +-----
- 6 files changed, 36 insertions(+), 33 deletions(-)
+ drivers/net/wireless/mediatek/mt76/dma.c      | 14 ++++--
+ .../net/wireless/mediatek/mt76/mt7996/dma.c   | 18 +++++--
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 47 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7996/mmio.c  | 37 +++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7996/regs.h  |  7 ++-
+ 5 files changed, 114 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index e60012a1896b..71f07deeeaab 100644
+index 71f07deeeaab..d0067b8dbbc8 100644
 --- a/drivers/net/wireless/mediatek/mt76/dma.c
 +++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -1036,6 +1036,20 @@ void mt76_dma_attach(struct mt76_dev *dev)
- }
- EXPORT_SYMBOL_GPL(mt76_dma_attach);
+@@ -854,10 +854,16 @@ mt76_dma_rx_reset(struct mt76_dev *dev, enum mt76_rxq_id qid)
  
-+void mt76_dma_wed_reset(struct mt76_dev *dev)
-+{
-+	struct mt76_mmio *mmio = &dev->mmio;
+ 	/* reset WED rx queues */
+ 	mt76_dma_wed_setup(dev, q, true);
+-	if (!mt76_queue_is_wed_tx_free(q)) {
+-		mt76_dma_sync_idx(dev, q);
+-		mt76_dma_rx_fill(dev, q, false);
+-	}
 +
-+	if (!test_bit(MT76_STATE_WED_RESET, &dev->phy.state))
++	if (mt76_queue_is_wed_tx_free(q))
 +		return;
 +
-+	complete(&mmio->wed_reset);
++	if (mtk_wed_device_active(&dev->mmio.wed) &&
++	    mt76_queue_is_wed_rro(q))
++		return;
 +
-+	if (!wait_for_completion_timeout(&mmio->wed_reset_complete, 3 * HZ))
-+		dev_err(dev->dev, "wed reset complete timeout\n");
-+}
-+EXPORT_SYMBOL_GPL(mt76_dma_wed_reset);
-+
- void mt76_dma_cleanup(struct mt76_dev *dev)
- {
- 	int i;
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.h b/drivers/net/wireless/mediatek/mt76/dma.h
-index e549e678b69f..c60dfb817227 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.h
-+++ b/drivers/net/wireless/mediatek/mt76/dma.h
-@@ -78,6 +78,15 @@ int mt76_dma_rx_poll(struct napi_struct *napi, int budget);
- void mt76_dma_attach(struct mt76_dev *dev);
- void mt76_dma_cleanup(struct mt76_dev *dev);
- int mt76_dma_wed_setup(struct mt76_dev *dev, struct mt76_queue *q, bool reset);
-+void mt76_dma_wed_reset(struct mt76_dev *dev);
-+
-+static inline void
-+mt76_dma_reset_tx_queue(struct mt76_dev *dev, struct mt76_queue *q)
-+{
-+	dev->queue_ops->reset_q(dev, q);
-+	if (mtk_wed_device_active(&dev->mmio.wed))
-+		mt76_dma_wed_setup(dev, q, true);
-+}
- 
- static inline void
- mt76_dma_should_drop_buf(bool *drop, u32 ctrl, u32 buf1, u32 info)
-diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wireless/mediatek/mt76/mmio.c
-index c34624978a14..4a006409a373 100644
---- a/drivers/net/wireless/mediatek/mt76/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mmio.c
-@@ -179,6 +179,14 @@ void mt76_mmio_wed_offload_disable(struct mtk_wed_device *wed)
- 	spin_unlock_bh(&dev->token_lock);
- }
- EXPORT_SYMBOL_GPL(mt76_mmio_wed_offload_disable);
-+
-+void mt76_mmio_wed_reset_complete(struct mtk_wed_device *wed)
-+{
-+	struct mt76_dev *dev = container_of(wed, struct mt76_dev, mmio.wed);
-+
-+	complete(&dev->mmio.wed_reset_complete);
-+}
-+EXPORT_SYMBOL_GPL(mt76_mmio_wed_reset_complete);
- #endif /*CONFIG_NET_MEDIATEK_SOC_WED */
- 
- void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index f015c94b3c68..482a280b7c25 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1102,6 +1102,7 @@ u32 mt76_mmio_wed_init_rx_buf(struct mtk_wed_device *wed, int size);
- void mt76_mmio_wed_release_rx_buf(struct mtk_wed_device *wed);
- int mt76_mmio_wed_offload_enable(struct mtk_wed_device *wed);
- void mt76_mmio_wed_offload_disable(struct mtk_wed_device *wed);
-+void mt76_mmio_wed_reset_complete(struct mtk_wed_device *wed);
- #endif /*CONFIG_NET_MEDIATEK_SOC_WED */
- 
- #define mt76xx_chip(dev) mt76_chip(&((dev)->mt76))
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-index 1bceeb5227b1..c91a1c54027f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-@@ -587,28 +587,6 @@ int mt7915_dma_init(struct mt7915_dev *dev, struct mt7915_phy *phy2)
- 	return 0;
++	mt76_dma_sync_idx(dev, q);
++	mt76_dma_rx_fill(dev, q, false);
  }
  
--static void mt7915_dma_wed_reset(struct mt7915_dev *dev)
--{
--	struct mt76_dev *mdev = &dev->mt76;
--
--	if (!test_bit(MT76_STATE_WED_RESET, &dev->mphy.state))
--		return;
--
--	complete(&mdev->mmio.wed_reset);
--
--	if (!wait_for_completion_timeout(&dev->mt76.mmio.wed_reset_complete,
--					 3 * HZ))
--		dev_err(dev->mt76.dev, "wed reset complete timeout\n");
--}
--
--static void
--mt7915_dma_reset_tx_queue(struct mt7915_dev *dev, struct mt76_queue *q)
--{
--	mt76_queue_reset(dev, q);
--	if (mtk_wed_device_active(&dev->mt76.mmio.wed))
--		mt76_dma_wed_setup(&dev->mt76, q, true);
--}
--
- int mt7915_dma_reset(struct mt7915_dev *dev, bool force)
- {
- 	struct mt76_phy *mphy_ext = dev->mt76.phys[MT_BAND1];
-@@ -636,13 +614,13 @@ int mt7915_dma_reset(struct mt7915_dev *dev, bool force)
- 		mtk_wed_device_dma_reset(wed);
+ static void
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+index 2221d22ccffb..8bc08d993085 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+@@ -621,21 +621,33 @@ void mt7996_dma_reset(struct mt7996_dev *dev, bool force)
+ 	if (force)
+ 		mt7996_wfsys_reset(dev);
  
- 	mt7915_dma_disable(dev, force);
--	mt7915_dma_wed_reset(dev);
++	if (dev->hif2 && mtk_wed_device_active(&dev->mt76.mmio.wed_hif2))
++		mtk_wed_device_dma_reset(&dev->mt76.mmio.wed_hif2);
++
++	if (mtk_wed_device_active(&dev->mt76.mmio.wed))
++		mtk_wed_device_dma_reset(&dev->mt76.mmio.wed);
++
+ 	mt7996_dma_disable(dev, force);
 +	mt76_dma_wed_reset(&dev->mt76);
  
  	/* reset hw queues */
  	for (i = 0; i < __MT_TXQ_MAX; i++) {
--		mt7915_dma_reset_tx_queue(dev, dev->mphy.q_tx[i]);
+-		mt76_queue_reset(dev, dev->mphy.q_tx[i]);
 +		mt76_dma_reset_tx_queue(&dev->mt76, dev->mphy.q_tx[i]);
- 		if (mphy_ext)
--			mt7915_dma_reset_tx_queue(dev, mphy_ext->q_tx[i]);
-+			mt76_dma_reset_tx_queue(&dev->mt76, mphy_ext->q_tx[i]);
+ 		if (phy2)
+-			mt76_queue_reset(dev, phy2->q_tx[i]);
++			mt76_dma_reset_tx_queue(&dev->mt76, phy2->q_tx[i]);
+ 		if (phy3)
+-			mt76_queue_reset(dev, phy3->q_tx[i]);
++			mt76_dma_reset_tx_queue(&dev->mt76, phy3->q_tx[i]);
  	}
  
  	for (i = 0; i < __MT_MCUQ_MAX; i++)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 85cb3fed9505..c404c90b58a6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -595,13 +595,6 @@ static int mt7915_mmio_wed_reset(struct mtk_wed_device *wed)
+ 		mt76_queue_reset(dev, dev->mt76.q_mcu[i]);
  
- 	return ret;
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
++		if (mtk_wed_device_active(&dev->mt76.mmio.wed))
++			if (mt76_queue_is_wed_rro(&dev->mt76.q_rx[i]) ||
++			    mt76_queue_is_wed_tx_free(&dev->mt76.q_rx[i]))
++				continue;
++
+ 		mt76_queue_reset(dev, &dev->mt76.q_rx[i]);
+ 	}
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index c79e1b4588b4..236a88b50e97 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1712,6 +1712,10 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 	/* disable all tx/rx napi */
+ 	mt76_worker_disable(&dev->mt76.tx_worker);
+ 	mt76_for_each_q_rx(mdev, i) {
++		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
++		    mt76_queue_is_wed_rro(&mdev->q_rx[i]))
++			continue;
++
+ 		if (mdev->q_rx[i].ndesc)
+ 			napi_disable(&dev->mt76.napi[i]);
+ 	}
+@@ -1725,6 +1729,10 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 
+ 	local_bh_disable();
+ 	mt76_for_each_q_rx(mdev, i) {
++		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
++		    mt76_queue_is_wed_rro(&mdev->q_rx[i]))
++			continue;
++
+ 		if (mdev->q_rx[i].ndesc) {
+ 			napi_enable(&dev->mt76.napi[i]);
+ 			napi_schedule(&dev->mt76.napi[i]);
+@@ -1896,6 +1904,13 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 
+ 	dev_info(dev->mt76.dev,"\n%s L1 SER recovery start.",
+ 		 wiphy_name(dev->mt76.hw->wiphy));
++
++	if (mtk_wed_device_active(&dev->mt76.mmio.wed_hif2))
++		mtk_wed_device_stop(&dev->mt76.mmio.wed_hif2);
++
++	if (mtk_wed_device_active(&dev->mt76.mmio.wed))
++		mtk_wed_device_stop(&dev->mt76.mmio.wed);
++
+ 	ieee80211_stop_queues(mt76_hw(dev));
+ 	if (phy2)
+ 		ieee80211_stop_queues(phy2->mt76->hw);
+@@ -1915,8 +1930,13 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 		cancel_delayed_work_sync(&phy3->mt76->mac_work);
+ 	}
+ 	mt76_worker_disable(&dev->mt76.tx_worker);
+-	mt76_for_each_q_rx(&dev->mt76, i)
++	mt76_for_each_q_rx(&dev->mt76, i) {
++		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
++		    mt76_queue_is_wed_rro(&dev->mt76.q_rx[i]))
++			continue;
++
+ 		napi_disable(&dev->mt76.napi[i]);
++	}
+ 	napi_disable(&dev->mt76.tx_napi);
+ 
+ 	mutex_lock(&dev->mt76.mutex);
+@@ -1939,6 +1959,27 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 	/* enable DMA Tx/Tx and interrupt */
+ 	mt7996_dma_start(dev, false, false);
+ 
++	if (mtk_wed_device_active(&dev->mt76.mmio.wed)) {
++		u32 wed_irq_mask = MT_INT_RRO_RX_DONE | MT_INT_TX_DONE_BAND2 |
++				   dev->mt76.mmio.irqmask;
++
++		if (mtk_wed_get_rx_capa(&dev->mt76.mmio.wed))
++			wed_irq_mask &= ~MT_INT_RX_DONE_RRO_IND;
++
++		mt76_wr(dev, MT_INT_MASK_CSR, wed_irq_mask);
++
++		mtk_wed_device_start_hw_rro(&dev->mt76.mmio.wed, wed_irq_mask,
++					    true);
++		mt7996_irq_enable(dev, wed_irq_mask);
++		mt7996_irq_disable(dev, 0);
++	}
++
++	if (mtk_wed_device_active(&dev->mt76.mmio.wed_hif2)) {
++		mt76_wr(dev, MT_INT_PCIE1_MASK_CSR, MT_INT_TX_RX_DONE_EXT);
++		mtk_wed_device_start(&dev->mt76.mmio.wed_hif2,
++				     MT_INT_TX_RX_DONE_EXT);
++	}
++
+ 	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 	clear_bit(MT76_RESET, &dev->mphy.state);
+ 	if (phy2)
+@@ -1948,6 +1989,10 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 
+ 	local_bh_disable();
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
++		if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
++		    mt76_queue_is_wed_rro(&dev->mt76.q_rx[i]))
++			continue;
++
+ 		napi_enable(&dev->mt76.napi[i]);
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index c7b6d4bd2ded..739d7f53d347 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -6,9 +6,11 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/rtnetlink.h>
+ 
+ #include "mt7996.h"
+ #include "mac.h"
++#include "mcu.h"
+ #include "../trace.h"
+ #include "../dma.h"
+ 
+@@ -195,6 +197,37 @@ static u32 mt7996_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
+ 	return dev->bus_ops->rmw(mdev, __mt7996_reg_addr(dev, offset), mask, val);
  }
--
--static void mt7915_mmio_wed_reset_complete(struct mtk_wed_device *wed)
--{
--	struct mt76_dev *dev = container_of(wed, struct mt76_dev, mmio.wed);
--
--	complete(&dev->mmio.wed_reset_complete);
--}
- #endif
  
- int mt7915_mmio_wed_init(struct mt7915_dev *dev, void *pdev_ptr,
-@@ -685,7 +678,7 @@ int mt7915_mmio_wed_init(struct mt7915_dev *dev, void *pdev_ptr,
++#ifdef CONFIG_NET_MEDIATEK_SOC_WED
++static int mt7996_mmio_wed_reset(struct mtk_wed_device *wed)
++{
++	struct mt76_dev *mdev = container_of(wed, struct mt76_dev, mmio.wed);
++	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
++	struct mt76_phy *mphy = &dev->mphy;
++	int ret;
++
++	ASSERT_RTNL();
++
++	if (test_and_set_bit(MT76_STATE_WED_RESET, &mphy->state))
++		return -EBUSY;
++
++	ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_TRIGGER, UNI_CMD_SER_SET_RECOVER_L1,
++				 mphy->band_idx);
++	if (ret)
++		goto out;
++
++	rtnl_unlock();
++	if (!wait_for_completion_timeout(&mdev->mmio.wed_reset, 20 * HZ)) {
++		dev_err(mdev->dev, "wed reset timeout\n");
++		ret = -ETIMEDOUT;
++	}
++	rtnl_lock();
++out:
++	clear_bit(MT76_STATE_WED_RESET, &mphy->state);
++
++	return ret;
++}
++#endif
++
+ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
+ 			 bool hif2, int *irq)
+ {
+@@ -311,6 +344,10 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
  	wed->wlan.release_rx_buf = mt76_mmio_wed_release_rx_buf;
- 	wed->wlan.update_wo_rx_stats = mt7915_mmio_wed_update_rx_stats;
- 	wed->wlan.reset = mt7915_mmio_wed_reset;
--	wed->wlan.reset_complete = mt7915_mmio_wed_reset_complete;
-+	wed->wlan.reset_complete = mt76_mmio_wed_reset_complete;
+ 	wed->wlan.offload_enable = mt76_mmio_wed_offload_enable;
+ 	wed->wlan.offload_disable = mt76_mmio_wed_offload_disable;
++	if (!hif2) {
++		wed->wlan.reset = mt7996_mmio_wed_reset;
++		wed->wlan.reset_complete = mt76_mmio_wed_reset_complete;
++	}
  
- 	dev->mt76.rx_token_size = wed->wlan.rx_npkt;
+ 	if (mtk_wed_device_attach(wed))
+ 		return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
+index 7cefe8985590..49eb583399c5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
+@@ -455,8 +455,9 @@ enum base_rev {
+ #define MT_INT_RX_DONE_WA_TRI			BIT(3)
+ #define MT_INT_RX_TXFREE_MAIN			BIT(17)
+ #define MT_INT_RX_TXFREE_TRI			BIT(15)
+-#define MT_INT_MCU_CMD				BIT(29)
++#define MT_INT_RX_DONE_BAND2_EXT		BIT(23)
+ #define MT_INT_RX_TXFREE_EXT			BIT(26)
++#define MT_INT_MCU_CMD				BIT(29)
  
+ #define MT_INT_RX_DONE_RRO_BAND0		BIT(16)
+ #define MT_INT_RX_DONE_RRO_BAND1		BIT(16)
+@@ -506,6 +507,10 @@ enum base_rev {
+ #define MT_INT_TX_DONE_BAND1			BIT(31)
+ #define MT_INT_TX_DONE_BAND2			BIT(15)
+ 
++#define MT_INT_TX_RX_DONE_EXT			(MT_INT_TX_DONE_BAND2 |		\
++						 MT_INT_RX_DONE_BAND2_EXT |	\
++						 MT_INT_RX_TXFREE_EXT)
++
+ #define MT_INT_TX_DONE_MCU			(MT_INT_TX_MCU(MT_MCUQ_WA) |	\
+ 						 MT_INT_TX_MCU(MT_MCUQ_WM) |	\
+ 						 MT_INT_TX_MCU(MT_MCUQ_FWDL))
 -- 
 2.41.0
 
