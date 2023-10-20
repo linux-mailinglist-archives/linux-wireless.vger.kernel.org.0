@@ -2,240 +2,235 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 235337D0C91
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 12:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3B357D0C80
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 11:59:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376966AbjJTKAQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Oct 2023 06:00:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47870 "EHLO
+        id S1376908AbjJTJ7u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Oct 2023 05:59:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376916AbjJTJ7v (ORCPT
+        with ESMTP id S1376849AbjJTJ7r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Oct 2023 05:59:51 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C033510DF
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:59:47 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6b3c2607d9bso578375b3a.1
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:59:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1697795987; x=1698400787; darn=vger.kernel.org;
-        h=in-reply-to:subject:from:references:cc:to:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=uBYXNmVizX5H4ssevNHbrQraUcSEIihwkpsfI/XJnIk=;
-        b=W3rNyRfU+Vpp/J8Woxj5c5sdXW1X3Y0AXQEBKSRwdMoVwJR+/YO/VDiBqiBrAbJfEc
-         8ctM53tOTdbY7LvMZTioQvW+mz3O/7jZecyQ58oHSFk/DNZ6YFMyrOInSc+KPLA+DygA
-         akhPs14oBhtbZ6XgmmWVt85Lkoh1YYpxTJaIc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697795987; x=1698400787;
-        h=in-reply-to:subject:from:references:cc:to:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uBYXNmVizX5H4ssevNHbrQraUcSEIihwkpsfI/XJnIk=;
-        b=S4s5aenmriYKzEkfIGm2IGZ4XgrqrmFC6XcZVe7+llJf7KOf+pIYo9zgty/DMdptHI
-         y3NX126iWczOt5GmE3aHoyKZSJfOR5ynXwJZACM5RMWzR528A01Uk2nKFfPwU2jKaATC
-         EDvdKdhZzqT5/sWPF/HV86vHpUHToDomDmvWUoLLyt/YEtlaFK8yr7WvBT1/H6Aey0bj
-         ltcTXbI8eky8uYOJu6nJo6cbwY/Sqg+GRMmtID94XBLJakYBDYJSbiiBux0iinNCUZ6J
-         cv1/W2X3v/Y5U2P/YLm5eeRgXJRPt1xWTTZxiIgS3d7RZ3wCQsi8L099CdCi0n3PDSbY
-         5G8Q==
-X-Gm-Message-State: AOJu0YxO9nF33SYxOkTLYZ2ZD3cWkGMJ3o4ZhmtlqvMZrERxoofFw6ox
-        xWmd1JoSsvSOcqEwNbAIWEPDlQ==
-X-Google-Smtp-Source: AGHT+IG8mipRIpk2TKjZchRJ9uRHEZoElKS1h1PAFAYuuwSMNmhiNDMMyGzlhvb8t2JGmLxZywRQzQ==
-X-Received: by 2002:a05:6a21:7795:b0:171:c88a:890c with SMTP id bd21-20020a056a21779500b00171c88a890cmr1192289pzc.25.1697795987301;
-        Fri, 20 Oct 2023 02:59:47 -0700 (PDT)
-Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 12-20020a170902c20c00b001ab2b4105ddsm1154059pll.60.2023.10.20.02.59.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Oct 2023 02:59:46 -0700 (PDT)
-Message-ID: <89388810-089d-efdc-393d-fbb5f4092a9a@broadcom.com>
-Date:   Fri, 20 Oct 2023 11:59:41 +0200
+        Fri, 20 Oct 2023 05:59:47 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6FD3D5A;
+        Fri, 20 Oct 2023 02:59:35 -0700 (PDT)
+Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4SBg2B1gjJzVlN1;
+        Fri, 20 Oct 2023 17:55:46 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.56) by
+ dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Fri, 20 Oct 2023 17:59:29 +0800
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+To:     <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Yunsheng Lin <linyunsheng@huawei.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Alexander Duyck <alexander.duyck@gmail.com>,
+        Liang Chen <liangchen.linux@gmail.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <intel-wired-lan@lists.osuosl.org>, <linux-rdma@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH net-next v12 2/5] page_pool: remove PP_FLAG_PAGE_FRAG
+Date:   Fri, 20 Oct 2023 17:59:49 +0800
+Message-ID: <20231020095952.11055-3-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20231020095952.11055-1-linyunsheng@huawei.com>
+References: <20231020095952.11055-1-linyunsheng@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-To:     Daniel Berlin <dberlin@dberlin.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org
-References: <cover.1697650207.git.dberlin@dberlin.org>
- <791863a231dca48234a3468b299d0bc71a85b6b0.1697650207.git.dberlin@dberlin.org>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH 5/5] [brcmfmac] Add remaining support for 6G by supporting
- new scan structures.
-In-Reply-To: <791863a231dca48234a3468b299d0bc71a85b6b0.1697650207.git.dberlin@dberlin.org>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000bd75e9060822eed7"
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.69.192.56]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500005.china.huawei.com (7.185.36.74)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000bd75e9060822eed7
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+PP_FLAG_PAGE_FRAG is not really needed after pp_frag_count
+handling is unified and page_pool_alloc_frag() is supported
+in 32-bit arch with 64-bit DMA, so remove it.
 
-On 10/19/2023 3:42 AM, Daniel Berlin wrote:
-> Add support for netinfo v3 and other PNO v3 structures, which contains
-> a chanspec rather than just a channel.
-> Gate support for netinfo_v3 and other structures on the proper feature
-> caps in the firmware.
-> 
-> Unfortunately, the v3 structures are different enough that we have to
-> use different handling for them in places (even the same named fields
-> are in different places).
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+CC: Lorenzo Bianconi <lorenzo@kernel.org>
+CC: Alexander Duyck <alexander.duyck@gmail.com>
+CC: Liang Chen <liangchen.linux@gmail.com>
+CC: Alexander Lobakin <aleksander.lobakin@intel.com>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c                | 2 --
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c          | 3 +--
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c              | 3 ---
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c            | 2 +-
+ include/net/page_pool/types.h                            | 6 ++----
+ net/core/page_pool.c                                     | 3 +--
+ net/core/skbuff.c                                        | 2 +-
+ 9 files changed, 8 insertions(+), 17 deletions(-)
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Daniel Berlin <dberlin@dberlin.org>
-> ---
->   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 239 ++++++++++++++----
->   .../broadcom/brcm80211/brcmfmac/feature.c     |  10 +
->   .../broadcom/brcm80211/brcmfmac/feature.h     |   6 +-
->   .../broadcom/brcm80211/brcmfmac/fwil_types.h  |  62 +++++
->   .../broadcom/brcm80211/brcmfmac/pno.c         | 105 +++++++-
->   .../broadcom/brcm80211/brcmfmac/pno.h         |   9 +
->   6 files changed, 371 insertions(+), 60 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index bc8355d7f9b5..3656790ec4c9 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -32,6 +32,7 @@
->   #include "vendor.h"
->   #include "bus.h"
->   #include "common.h"
-> +#include "feature.h"
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 16eb7a7af970..2685d0b7be4b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -3250,8 +3250,6 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
+ 	pp.dma_dir = bp->rx_dir;
+ 	pp.max_len = PAGE_SIZE;
+ 	pp.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
+-	if (PAGE_SIZE > BNXT_RX_PAGE_SIZE)
+-		pp.flags |= PP_FLAG_PAGE_FRAG;
+ 
+ 	rxr->page_pool = page_pool_create(&pp);
+ 	if (IS_ERR(rxr->page_pool)) {
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index cf50368441b7..06117502001f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -4940,8 +4940,7 @@ static void hns3_put_ring_config(struct hns3_nic_priv *priv)
+ static void hns3_alloc_page_pool(struct hns3_enet_ring *ring)
+ {
+ 	struct page_pool_params pp_params = {
+-		.flags = PP_FLAG_DMA_MAP | PP_FLAG_PAGE_FRAG |
+-				PP_FLAG_DMA_SYNC_DEV,
++		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+ 		.order = hns3_page_order(ring),
+ 		.pool_size = ring->desc_num * hns3_buf_size(ring) /
+ 				(PAGE_SIZE << hns3_page_order(ring)),
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 6fa79898c42c..55a099986b55 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -595,9 +595,6 @@ static struct page_pool *idpf_rx_create_page_pool(struct idpf_queue *rxbufq)
+ 		.offset		= 0,
+ 	};
+ 
+-	if (rxbufq->rx_buf_size == IDPF_RX_BUF_2048)
+-		pp.flags |= PP_FLAG_PAGE_FRAG;
+-
+ 	return page_pool_create(&pp);
+ }
+ 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index 818ce76185b2..1a42bfded872 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1404,7 +1404,7 @@ int otx2_pool_init(struct otx2_nic *pfvf, u16 pool_id,
+ 	}
+ 
+ 	pp_params.order = get_order(buf_size);
+-	pp_params.flags = PP_FLAG_PAGE_FRAG | PP_FLAG_DMA_MAP;
++	pp_params.flags = PP_FLAG_DMA_MAP;
+ 	pp_params.pool_size = min(OTX2_PAGE_POOL_SZ, numptrs);
+ 	pp_params.nid = NUMA_NO_NODE;
+ 	pp_params.dev = pfvf->dev;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 9325b8f00af0..ea58c6917433 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -897,7 +897,7 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
+ 		struct page_pool_params pp_params = { 0 };
+ 
+ 		pp_params.order     = 0;
+-		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV | PP_FLAG_PAGE_FRAG;
++		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
+ 		pp_params.pool_size = pool_size;
+ 		pp_params.nid       = node;
+ 		pp_params.dev       = rq->pdev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index cb76053973aa..51a767121b0d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -570,7 +570,7 @@ int mt76_create_page_pool(struct mt76_dev *dev, struct mt76_queue *q)
+ {
+ 	struct page_pool_params pp_params = {
+ 		.order = 0,
+-		.flags = PP_FLAG_PAGE_FRAG,
++		.flags = 0,
+ 		.nid = NUMA_NO_NODE,
+ 		.dev = dev->dma_dev,
+ 	};
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index 887e7946a597..6fc5134095ed 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -17,10 +17,8 @@
+ 					* Please note DMA-sync-for-CPU is still
+ 					* device driver responsibility
+ 					*/
+-#define PP_FLAG_PAGE_FRAG	BIT(2) /* for page frag feature */
+ #define PP_FLAG_ALL		(PP_FLAG_DMA_MAP |\
+-				 PP_FLAG_DMA_SYNC_DEV |\
+-				 PP_FLAG_PAGE_FRAG)
++				 PP_FLAG_DMA_SYNC_DEV)
+ 
+ /*
+  * Fast allocation side cache array/stack
+@@ -45,7 +43,7 @@ struct pp_alloc_cache {
+ 
+ /**
+  * struct page_pool_params - page pool parameters
+- * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV, PP_FLAG_PAGE_FRAG
++ * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV
+  * @order:	2^order pages on allocation
+  * @pool_size:	size of the ptr_ring
+  * @nid:	NUMA node id to allocate from pages from
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 953535cab081..2a3671c97ca7 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -756,8 +756,7 @@ struct page *page_pool_alloc_frag(struct page_pool *pool,
+ 	unsigned int max_size = PAGE_SIZE << pool->p.order;
+ 	struct page *page = pool->frag_page;
+ 
+-	if (WARN_ON(!(pool->p.flags & PP_FLAG_PAGE_FRAG) ||
+-		    size > max_size))
++	if (WARN_ON(size > max_size))
+ 		return NULL;
+ 
+ 	size = ALIGN(size, dma_get_cache_alignment());
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 975c9a6ffb4a..c52ddd6891d9 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5765,7 +5765,7 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
+ 	/* In general, avoid mixing page_pool and non-page_pool allocated
+ 	 * pages within the same SKB. Additionally avoid dealing with clones
+ 	 * with page_pool pages, in case the SKB is using page_pool fragment
+-	 * references (PP_FLAG_PAGE_FRAG). Since we only take full page
++	 * references (page_pool_alloc_frag()). Since we only take full page
+ 	 * references for cloned SKBs at the moment that would result in
+ 	 * inconsistent reference counts.
+ 	 * In theory we could take full references if @from is cloned and
+-- 
+2.33.0
 
-Suspect this was already include, but no harm being explicit about it.
-
->   
->   #define BRCMF_SCAN_IE_LEN_MAX		2048
->   
-
-[...]
-
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> index 81f2d77cb004..b35c27a64db1 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> @@ -1051,6 +1051,46 @@ struct brcmf_pno_param_le {
->   	__le32 slow_freq;
->   };
->   
-> +/**
-> + * struct brcmf_pno_param_le - PNO scan configuration parameters
-
-v3?
-
-> + *
-> + * @version: PNO parameters version.
-> + * @length: Length of PNO structure
-> + * @scan_freq: scan frequency.
-> + * @lost_network_timeout: #sec. to declare discovered network as lost.
-> + * @flags: Bit field to control features of PFN such as sort criteria auto
-> + *	enable switch and background scan.
-> + * @rssi_margin: Margin to avoid jitter for choosing a PFN based on RSSI sort
-> + *	criteria.
-> + * @bestn: number of best networks in each scan.
-> + * @mscan: number of scans recorded.
-> + * @repeat: minimum number of scan intervals before scan frequency changes
-> + *	in adaptive scan.
-> + * @exp: exponent of 2 for maximum scan interval.
-> + * @slow_freq: slow scan period.
-> + * @min_bound: min bound for scan time randomization
-> + * @max_bound: max bound for scan time randomization
-> + * @pfn_lp_scan_disable: unused
-> + * @pfn_lp_scan_cnt: allow interleaving lp scan with hp scan
-> + */
-> +struct brcmf_pno_param_v3_le {
-
-[...]
-
---000000000000bd75e9060822eed7
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCC9Ry9VKU0Etv0ccKF
-bLf1ViXxcYetSfZZuaJqDfrUKDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzEwMjAwOTU5NDdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAZnHkww4l9qn/n2RA7/0Frq9+vFMkWuKQJvA1
-w8ZxnS5W86XgKx6ac0ztil3r5vbTR8TE14Clrv9UluJgmOvknjQnRe5TrmvbrguwRWNHihjhUODA
-fTpoxqzGZFwVnd2PnNXpBKgPbu+3pYQ2AWF2yXdmkWm8tVHG8zGkU+ftUxr7Q66kerg4Sv/qeSlq
-hxLv1bN/nUkuX1ad4Bn8cy42h9t/WQCqQYBYjqZYT8tY7FjjpC14h9KMqiuhe0h5+2WRvkfiRSmF
-nHcZMRmTnOrrOqIXdejDg3TW/TqTXgC9V3KMx7wEa1yeE+0WEaBd4YqwuIgaMUCmNLocGSaIXxNR
-VA==
---000000000000bd75e9060822eed7--
