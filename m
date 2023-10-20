@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB4797D0C86
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 11:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 235337D0C91
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 12:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376835AbjJTJ7e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Oct 2023 05:59:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56014 "EHLO
+        id S1376966AbjJTKAQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Oct 2023 06:00:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376827AbjJTJ7c (ORCPT
+        with ESMTP id S1376916AbjJTJ7v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Oct 2023 05:59:32 -0400
+        Fri, 20 Oct 2023 05:59:51 -0400
 Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B3CD55
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:59:31 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6b6f4c118b7so601378b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:59:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C033510DF
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:59:47 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6b3c2607d9bso578375b3a.1
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1697795970; x=1698400770; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1697795987; x=1698400787; darn=vger.kernel.org;
         h=in-reply-to:subject:from:references:cc:to:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=k8OjWGKVsmksplElhPANY4OIHf017myGf6rrJMFr67k=;
-        b=GEoEXe/jTiBpxBjF2wkgm5gTNT3A1qRZKIeRjHB6FrUvTjp0yMh6cxyKcNpkkcM8BU
-         aE2pJcxqF8f/a4k/0uUm4L6NVAlDOXbTsyCuoURxr3Y/WTUMDG+P+YAB8mMdme+2Tl6W
-         Uzzy7KgO6F7QWGEhZMODJdklhQ3L1cpkej0Dw=
+        bh=uBYXNmVizX5H4ssevNHbrQraUcSEIihwkpsfI/XJnIk=;
+        b=W3rNyRfU+Vpp/J8Woxj5c5sdXW1X3Y0AXQEBKSRwdMoVwJR+/YO/VDiBqiBrAbJfEc
+         8ctM53tOTdbY7LvMZTioQvW+mz3O/7jZecyQ58oHSFk/DNZ6YFMyrOInSc+KPLA+DygA
+         akhPs14oBhtbZ6XgmmWVt85Lkoh1YYpxTJaIc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697795970; x=1698400770;
+        d=1e100.net; s=20230601; t=1697795987; x=1698400787;
         h=in-reply-to:subject:from:references:cc:to:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=k8OjWGKVsmksplElhPANY4OIHf017myGf6rrJMFr67k=;
-        b=s8qR36nwYKb5D3b60cy+BYPSJPK4yi/c9xDzO2BV8ubV9UiJmZOlOKalpiqz1PbfhJ
-         KknuMN7IX3WuHYXZv5D51p5PciG/mqWfKG5ia9wiVmTJnsusMn4kc366fnKt1VAYUBnj
-         UDymrkt0fWYDUVZcgO4UN2Uu7DL/eQLqZMObsr8qmKLr3jU68e2X3oDyzs7PrLrM/64A
-         g/p5lx33SFDhkTHD+yh3VdMk1dCw8oWuOQ8bB6T2GEAQh3PL88CV+j9LYuPO6+h9s/W5
-         UNxWNjsiHrZiXIi4QZUxNLdjd3SPCAfS5fUPEPQFV6YrJQABTBQpQMKokLQT403WpYsQ
-         PMuQ==
-X-Gm-Message-State: AOJu0YwzVRPajtJi7vKGJ0IUTwS1bDfUmWJQBQgvd2hCSciEvtbQGfaU
-        SGZsilEvWtAoG+wc7FUUATUhPw==
-X-Google-Smtp-Source: AGHT+IEXiODUeBcBYPo47nX3QK1RvkLu2Xak7bnzxKVawe4+/NXuJETiEjgp8KhEzWLPp/pAKQFjnw==
-X-Received: by 2002:a05:6a00:15c7:b0:6b4:6b8:e945 with SMTP id o7-20020a056a0015c700b006b406b8e945mr1270551pfu.15.1697795970386;
-        Fri, 20 Oct 2023 02:59:30 -0700 (PDT)
+        bh=uBYXNmVizX5H4ssevNHbrQraUcSEIihwkpsfI/XJnIk=;
+        b=S4s5aenmriYKzEkfIGm2IGZ4XgrqrmFC6XcZVe7+llJf7KOf+pIYo9zgty/DMdptHI
+         y3NX126iWczOt5GmE3aHoyKZSJfOR5ynXwJZACM5RMWzR528A01Uk2nKFfPwU2jKaATC
+         EDvdKdhZzqT5/sWPF/HV86vHpUHToDomDmvWUoLLyt/YEtlaFK8yr7WvBT1/H6Aey0bj
+         ltcTXbI8eky8uYOJu6nJo6cbwY/Sqg+GRMmtID94XBLJakYBDYJSbiiBux0iinNCUZ6J
+         cv1/W2X3v/Y5U2P/YLm5eeRgXJRPt1xWTTZxiIgS3d7RZ3wCQsi8L099CdCi0n3PDSbY
+         5G8Q==
+X-Gm-Message-State: AOJu0YxO9nF33SYxOkTLYZ2ZD3cWkGMJ3o4ZhmtlqvMZrERxoofFw6ox
+        xWmd1JoSsvSOcqEwNbAIWEPDlQ==
+X-Google-Smtp-Source: AGHT+IG8mipRIpk2TKjZchRJ9uRHEZoElKS1h1PAFAYuuwSMNmhiNDMMyGzlhvb8t2JGmLxZywRQzQ==
+X-Received: by 2002:a05:6a21:7795:b0:171:c88a:890c with SMTP id bd21-20020a056a21779500b00171c88a890cmr1192289pzc.25.1697795987301;
+        Fri, 20 Oct 2023 02:59:47 -0700 (PDT)
 Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id z21-20020aa79f95000000b0069323619f69sm1190020pfr.143.2023.10.20.02.59.26
+        by smtp.gmail.com with ESMTPSA id 12-20020a170902c20c00b001ab2b4105ddsm1154059pll.60.2023.10.20.02.59.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Oct 2023 02:59:28 -0700 (PDT)
-Message-ID: <b907f696-c966-54ef-3267-12833c6f5d91@broadcom.com>
-Date:   Fri, 20 Oct 2023 11:59:23 +0200
+        Fri, 20 Oct 2023 02:59:46 -0700 (PDT)
+Message-ID: <89388810-089d-efdc-393d-fbb5f4092a9a@broadcom.com>
+Date:   Fri, 20 Oct 2023 11:59:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
@@ -57,15 +57,15 @@ To:     Daniel Berlin <dberlin@dberlin.org>,
         Hante Meuleman <hante.meuleman@broadcom.com>
 Cc:     linux-wireless@vger.kernel.org,
         brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        Hector Martin <marcan@marcan.st>
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org
 References: <cover.1697650207.git.dberlin@dberlin.org>
- <079882bf4a7c026547ecf8ad50a2b7a49ade7130.1697650207.git.dberlin@dberlin.org>
+ <791863a231dca48234a3468b299d0bc71a85b6b0.1697650207.git.dberlin@dberlin.org>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH 4/5] wifi: brcmfmac: Support bss_info up to v112
-In-Reply-To: <079882bf4a7c026547ecf8ad50a2b7a49ade7130.1697650207.git.dberlin@dberlin.org>
+Subject: Re: [PATCH 5/5] [brcmfmac] Add remaining support for 6G by supporting
+ new scan structures.
+In-Reply-To: <791863a231dca48234a3468b299d0bc71a85b6b0.1697650207.git.dberlin@dberlin.org>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000bd0e8e060822edf4"
+        boundary="000000000000bd75e9060822eed7"
 X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -76,79 +76,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000bd0e8e060822edf4
+--000000000000bd75e9060822eed7
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 10/19/2023 3:42 AM, Daniel Berlin wrote:
-> From: Hector Martin <marcan@marcan.st>
+> Add support for netinfo v3 and other PNO v3 structures, which contains
+> a chanspec rather than just a channel.
+> Gate support for netinfo_v3 and other structures on the proper feature
+> caps in the firmware.
 > 
-> The structures are compatible and just add fields, so we can just treat
-> it as always v112. If we start using new fields, that will have to be
-> gated on the version.
+> Unfortunately, the v3 structures are different enough that we have to
+> use different handling for them in places (even the same named fields
+> are in different places).
 
-Seems EHT is creeping in here.
-
-Having doubts about compatibility statement (see below)...
-
-> Signed-off-by: Hector Martin <marcan@marcan.st>
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Daniel Berlin <dberlin@dberlin.org>
 > ---
->   .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  5 ++-
->   .../broadcom/brcm80211/brcmfmac/fwil_types.h  | 37 +++++++++++++++++--
->   2 files changed, 36 insertions(+), 6 deletions(-)
+>   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 239 ++++++++++++++----
+>   .../broadcom/brcm80211/brcmfmac/feature.c     |  10 +
+>   .../broadcom/brcm80211/brcmfmac/feature.h     |   6 +-
+>   .../broadcom/brcm80211/brcmfmac/fwil_types.h  |  62 +++++
+>   .../broadcom/brcm80211/brcmfmac/pno.c         | 105 +++++++-
+>   .../broadcom/brcm80211/brcmfmac/pno.h         |   9 +
+>   6 files changed, 371 insertions(+), 60 deletions(-)
 > 
 > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index 4cf728368892..bc8355d7f9b5 100644
+> index bc8355d7f9b5..3656790ec4c9 100644
 > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
 > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -3496,8 +3496,9 @@ static s32 brcmf_inform_bss(struct brcmf_cfg80211_info *cfg)
->   
->   	bss_list = (struct brcmf_scan_results *)cfg->escan_info.escan_buf;
->   	if (bss_list->count != 0 &&
-> -	    bss_list->version != BRCMF_BSS_INFO_VERSION) {
-> -		bphy_err(drvr, "Version %d != WL_BSS_INFO_VERSION\n",
-> +	    (bss_list->version < BRCMF_BSS_INFO_MIN_VERSION ||
-> +	    bss_list->version > BRCMF_BSS_INFO_MAX_VERSION)) {
-> +		bphy_err(drvr, "BSS info version %d unsupported\n",
->   			 bss_list->version);
->   		return -EOPNOTSUPP;
->   	}
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> index 1077e6f1d61a..81f2d77cb004 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> @@ -18,7 +18,8 @@
->   #define BRCMF_ARP_OL_HOST_AUTO_REPLY	0x00000004
->   #define BRCMF_ARP_OL_PEER_AUTO_REPLY	0x00000008
->   
-> -#define	BRCMF_BSS_INFO_VERSION	109 /* curr ver of brcmf_bss_info_le struct */
-> +#define	BRCMF_BSS_INFO_MIN_VERSION	109 /* min ver of brcmf_bss_info_le struct */
-> +#define	BRCMF_BSS_INFO_MAX_VERSION	112 /* max ver of brcmf_bss_info_le struct */
->   #define BRCMF_BSS_RSSI_ON_CHANNEL	0x0004
->   
->   #define BRCMF_STA_BRCM			0x00000001	/* Running a Broadcom driver */
-> @@ -323,28 +324,56 @@ struct brcmf_bss_info_le {
->   	__le16 capability;	/* Capability information */
->   	u8 SSID_len;
->   	u8 SSID[32];
-> +	u8 bcnflags;		/* additional flags w.r.t. beacon */
+> @@ -32,6 +32,7 @@
+>   #include "vendor.h"
+>   #include "bus.h"
+>   #include "common.h"
+> +#include "feature.h"
 
-Ehm. Coming back to your statement "structures are compatible and just 
-add fields". How are they compatible? You now treat v109 struct as v112 
-so fields below are shifted because of bcnflags. So you read invalid 
-information. This does not fly or I am missing something here.
+Suspect this was already include, but no harm being explicit about it.
 
->   	struct {
->   		__le32 count;   /* # rates in this set */
->   		u8 rates[16]; /* rates in 500kbps units w/hi bit set if basic */
->   	} rateset;		/* supported rates */
->   	__le16 chanspec;	/* chanspec for bss */
->   	__le16 atim_window;	/* units are Kusec */
+>   
+>   #define BRCMF_SCAN_IE_LEN_MAX		2048
+>   
 
 [...]
 
---000000000000bd0e8e060822edf4
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+> index 81f2d77cb004..b35c27a64db1 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+> @@ -1051,6 +1051,46 @@ struct brcmf_pno_param_le {
+>   	__le32 slow_freq;
+>   };
+>   
+> +/**
+> + * struct brcmf_pno_param_le - PNO scan configuration parameters
+
+v3?
+
+> + *
+> + * @version: PNO parameters version.
+> + * @length: Length of PNO structure
+> + * @scan_freq: scan frequency.
+> + * @lost_network_timeout: #sec. to declare discovered network as lost.
+> + * @flags: Bit field to control features of PFN such as sort criteria auto
+> + *	enable switch and background scan.
+> + * @rssi_margin: Margin to avoid jitter for choosing a PFN based on RSSI sort
+> + *	criteria.
+> + * @bestn: number of best networks in each scan.
+> + * @mscan: number of scans recorded.
+> + * @repeat: minimum number of scan intervals before scan frequency changes
+> + *	in adaptive scan.
+> + * @exp: exponent of 2 for maximum scan interval.
+> + * @slow_freq: slow scan period.
+> + * @min_bound: min bound for scan time randomization
+> + * @max_bound: max bound for scan time randomization
+> + * @pfn_lp_scan_disable: unused
+> + * @pfn_lp_scan_cnt: allow interleaving lp scan with hp scan
+> + */
+> +struct brcmf_pno_param_v3_le {
+
+[...]
+
+--000000000000bd75e9060822eed7
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -219,14 +228,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCA+xyaBP16nvmtAxlTJ
-tt/zrUZ/TcxQ5c/YLXn9W/ujXjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzEwMjAwOTU5MzBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCC9Ry9VKU0Etv0ccKF
+bLf1ViXxcYetSfZZuaJqDfrUKDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzEwMjAwOTU5NDdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAvl8vOZniuCDO5m988kGErPq99twIZHUUGwrd
-4griYQQS5a+V0AVpFXAcF14St6apgZnLA80s/Z4cfQJjEmNOSWXBKqrHA3OlEp5D62QLVVx07h7J
-mVcxsL1EcFklU9JuK/SD+JClZQhRXHtkU9Emc7eOb9hrS9vIRckwE7FuO6WO+DIxqS6Gig3T8CAy
-ywmPVJ44KBJfg1xJE1HUUi41/57aQBL6xcBJj1/C+gmy3YJXU5USi24pAwDJcyOU0QY/vaHdhkcP
-1tc7quLsvqWQ0fntrHjYktE3IqImd7cNIxyBNrlW54vHJuaY2bS59qzjSEIKndbjeF4/ehjI63qs
-Rw==
---000000000000bd0e8e060822edf4--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAZnHkww4l9qn/n2RA7/0Frq9+vFMkWuKQJvA1
+w8ZxnS5W86XgKx6ac0ztil3r5vbTR8TE14Clrv9UluJgmOvknjQnRe5TrmvbrguwRWNHihjhUODA
+fTpoxqzGZFwVnd2PnNXpBKgPbu+3pYQ2AWF2yXdmkWm8tVHG8zGkU+ftUxr7Q66kerg4Sv/qeSlq
+hxLv1bN/nUkuX1ad4Bn8cy42h9t/WQCqQYBYjqZYT8tY7FjjpC14h9KMqiuhe0h5+2WRvkfiRSmF
+nHcZMRmTnOrrOqIXdejDg3TW/TqTXgC9V3KMx7wEa1yeE+0WEaBd4YqwuIgaMUCmNLocGSaIXxNR
+VA==
+--000000000000bd75e9060822eed7--
