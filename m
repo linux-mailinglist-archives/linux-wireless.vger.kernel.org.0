@@ -2,58 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 181CC7D1414
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 18:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 710107D141D
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 18:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229795AbjJTQfd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Oct 2023 12:35:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33952 "EHLO
+        id S229648AbjJTQgT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Oct 2023 12:36:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjJTQfb (ORCPT
+        with ESMTP id S229555AbjJTQgR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Oct 2023 12:35:31 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 955BDD5E
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 09:35:29 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2c54c8934abso15117641fa.0
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 09:35:29 -0700 (PDT)
+        Fri, 20 Oct 2023 12:36:17 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 486CCD6B
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 09:36:15 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2c523ac38fbso15123481fa.0
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 09:36:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dberlin.org; s=google; t=1697819728; x=1698424528; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jp6YfYGoVMtTsSCroLFUYhmimeWjcHuUGyEJ+OCnT1g=;
-        b=gqKe6wDI4X0t/jcjf+IcWV5pToIAmV4zvN+4lM+E74i2p9na72KiW7PJ/F68np8mXC
-         Zi6hNo+I5JTXCbWiUlnByPqResw1eVp8mcUjeFWuUGoGDVpZCNU9uDOsXRrKRtExXa9I
-         02UivF40ZIMyYFbtTAidEEKvx79D2jLhvbipuIynkQo/yBDS0zLvI0G/nUULD3dwPM7Q
-         TDFjMzhjtjOtvp4qSYt4DbJmZDXPkEIUKE+W1SJVLZvQ/6Iwz4bF71pzWriqrSdhCrxU
-         osts/z4fGLedt8n/Hi3scAYmnuNwlzBIBylSvzMmRKwRVFaGh1k0RFIb5X0Q3KJdYuW0
-         eQpQ==
+        d=dberlin.org; s=google; t=1697819773; x=1698424573; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AWikgjvSE35PTGSbSuie+aPwQzHN09c8HW1HYQB+sf0=;
+        b=VkEV5wNcYCYbxoaE2thD1Lilw4JWGh2GPuUn5UafR17g7R2BzGsupWb7k4M9ERSYR8
+         akb0j9Lu7fmqpdMfMCgp/h98avIHVDGAGtMExbJjRzDn65qDqZQK0YQh6GiTo+V4cXqJ
+         ZaddcVdsuAHqbwanCdohP/vvS63dq5jmOb5Gwvu3U5ozVCv7cecARV0vPaR9853OflPZ
+         j1gM0qT2zVPYBHZnKsERidIQ56zkDlYKdViAqk18LRgDKuV52JB7tzM9dtTSH1pU76T0
+         NjFHGSbeDFyaHp/sdSOjYYCom6U6xhcpFNQ4vESFcH1J3sIFiXAu65QqzFlp+ZlDfRJ0
+         QY0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697819728; x=1698424528;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Jp6YfYGoVMtTsSCroLFUYhmimeWjcHuUGyEJ+OCnT1g=;
-        b=N9kFwUE7WApEAupq6wBL6toXd+pHKSIXynA7wZ6aI5vy1xymg5OPd/WsVmCxv8ewtw
-         fZGequJUgDdjMmH+f6mmGQABfXPC7qeFiOHVL6BqCC60kPyeLhUgCK93/xTMG5rrUvy5
-         f48ekRC8Ppr++OT0OYYX8+r5Wtxis4QqQkic+nA+cju43blxuZjD8+/1ZmobI7EuiQ+N
-         qxFGUdgYZh64MmQo6V/oLhN13Io7WYGIxctxkmDRQ+TD0HuflBm6mPYn+Zb8ts4TdGBP
-         T3b6nPDh/q2kQkT+umleyMTJg0UMZlFSAucE/jFBr/D+I3LWUg5mLNVUZE/KUZg86Hi+
-         QCTA==
-X-Gm-Message-State: AOJu0YwaxRLjbd66qSOJao3aYeJK66zwi243kqdh3/Y/BSGFiUVnQTqq
-        UkYRp5DeXdhrQXWBfbmmDzaYHBouF5NpiJadQsPXTA==
-X-Google-Smtp-Source: AGHT+IHvYymc9rPNUuFnhzZdAawyOIWzYujGImzZt+jS1Ezk94R6vXx4xCMpxeZU/92fph8ajhp2Gr4FkJp7FR79DuA=
-X-Received: by 2002:a05:651c:198c:b0:2c0:2f51:cb97 with SMTP id
- bx12-20020a05651c198c00b002c02f51cb97mr1972942ljb.6.1697819727424; Fri, 20
- Oct 2023 09:35:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697819773; x=1698424573;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AWikgjvSE35PTGSbSuie+aPwQzHN09c8HW1HYQB+sf0=;
+        b=n6e/CTo5+RJFuBYwZzh6VuzCoBK9EXtvq7OL3WnlIwhuBQSoUjcdhlWbZ+/41mPlvY
+         9ae4REToXKY2VYDWNrgyObRV0SJ0VJzKLTPk87EZSfVvW0MVHbp5B4PXUVmSU1Ot92Zi
+         qvgys1JCQxYgXL+sZ2wdKRgobYtLatTRMVtWE4+guUafBtsJxY1wdJRB3zY0zagVJgm7
+         KV+TeR7QpCMToyw0TwVEhEW6HckIxvehCfGYRmtdOaUrgekRB5dboyfNRIjj37hWfgMr
+         k0n0GRKcfQfa0IHhbZhuG4x7H6vRIkdEjfusxconlW88bgKLhd6/UuEZ4SIjP3irtmYe
+         Erow==
+X-Gm-Message-State: AOJu0YxgPFCJulNHoOYU1IbDlBnqsFvcMRsWD+l0NtmkXE/xhmeZplrE
+        D33yNenNgoxGVP5hVDxhIPxpmDfgb5twL2Y3BSJmIw==
+X-Google-Smtp-Source: AGHT+IG9FrJ+4IDGeQ5HI4NuEOL5bT0XfITQxtC2xYwKhr5rMhoYqSAWfKWojrK/kLlHBC2M+Qi/As+8Q8sFRthQNLI=
+X-Received: by 2002:a05:651c:1a28:b0:2c5:80d:53b1 with SMTP id
+ by40-20020a05651c1a2800b002c5080d53b1mr2380888ljb.43.1697819773114; Fri, 20
+ Oct 2023 09:36:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1697650207.git.dberlin@dberlin.org> <52c993fd93e13ac015be935a5284294c9a74ea8e.1697650207.git.dberlin@dberlin.org>
- <cc58057b-bc08-f717-1676-13046fc26c5c@broadcom.com>
-In-Reply-To: <cc58057b-bc08-f717-1676-13046fc26c5c@broadcom.com>
+References: <cover.1697650207.git.dberlin@dberlin.org> <0b95944fcf047b3ec83cecb0c65ca24de43810fd.1697650207.git.dberlin@dberlin.org>
+ <d55c968a-d953-67d7-cdff-f856422607f5@broadcom.com>
+In-Reply-To: <d55c968a-d953-67d7-cdff-f856422607f5@broadcom.com>
 From:   Daniel Berlin <dberlin@dberlin.org>
-Date:   Fri, 20 Oct 2023 12:35:16 -0400
-Message-ID: <CAF4BwTUTmUd0c-y_NfSi9WkCnDO9bhtpx03Aai1ByH5auq9YXw@mail.gmail.com>
-Subject: Re: [PATCH 2/5] [brcmfmac] Add support for 6G bands
+Date:   Fri, 20 Oct 2023 12:36:01 -0400
+Message-ID: <CAF4BwTWDAV0_iecq3Z7iOxe9UejYkYpDrfMqBXA=hq_ouEePKw@mail.gmail.com>
+Subject: Re: [PATCH 1/5] [brcmfmac] Add support for encoding/decoding 6g chanspecs
 To:     Arend van Spriel <arend.vanspriel@broadcom.com>
 Cc:     Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
@@ -62,6 +63,7 @@ Cc:     Arend van Spriel <aspriel@gmail.com>,
         brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -71,129 +73,207 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
->
-> maybe handle channel 2 here as well, ie.:
->         .center_freq = ((_channel) == 2) ? 5935 : 5950 + (5 * (_channel)),
->
-> > +     .hw_value               = (_channel),                   \
-> > +     .max_antenna_gain       = 0,                            \
-> > +     .max_power              = 30,                           \
-> > +}
->
-> so we can drop this one below...
->
-Will do.
+I'll remove the extra prints, and the 320MHZ.
 
+On Fri, Oct 20, 2023 at 5:57=E2=80=AFAM Arend van Spriel
+<arend.vanspriel@broadcom.com> wrote:
 >
->
-> > +             /* We ignore this BSS ID rather than try to continue on.
-> > +              * Otherwise we will cause an OOPs because our frequency is 0.
-> > +              * The main case this occurs is some new frequency band
-> > +              * we have not seen before, and if we return an error,
-> > +              * we will cause the scan to fail.  It seems better to
-> > +              * report the error, skip this BSS, and move on.
-> > +              */
-> > +             return 0;
-> > +     }
-> >       bss_data.chan = ieee80211_get_channel(wiphy, freq);
->
-> How could this fail? Our wiphy registers all possible channels so if
-> ieee80211_channel_to_frequency() succeeds ieee80211_get_channel() can
-> not fail.
-
-I agree.
->
->
-> > @@ -6965,6 +7066,10 @@ static int brcmf_construct_chaninfo(struct brcmf_cfg80211_info *cfg,
-> >               for (i = 0; i < band->n_channels; i++)
-> >                       band->channels[i].flags = IEEE80211_CHAN_DISABLED;
-> >       band = wiphy->bands[NL80211_BAND_5GHZ];
-> > +     if (band)
->
-> Eh. Why is this conditional? We are creating all bands in the wiphy
-> instance so why the null check here?
-
-
-I just matched what was there, I can remove all of them if we want.
-
-(I'll take care of the rest of the comments between here)
-
->
-> > -     brcmf_dbg(INFO, "nmode=%d, vhtmode=%d, bw_cap=(%d, %d)\n",
-> > +     brcmf_dbg(INFO,
-> > +               "nmode=%d, vhtmode=%d, bw_cap=(%d, %d, %d), he_cap=(%d, %d)\n",
-> >                 nmode, vhtmode, bw_cap[NL80211_BAND_2GHZ],
-> > -               bw_cap[NL80211_BAND_5GHZ]);
-> > +               bw_cap[NL80211_BAND_5GHZ], bw_cap[NL80211_BAND_6GHZ],
-> > +               he_cap[0], he_cap[1]);
->
-> So are these he mac and phy capabilities? ...
-
-No, unfortunately, it's either 1 or 0 on these chips, and all chips i tested.
-This is the hardware capability iovar.
-
-In the debug firmware i have access to (not apple's), i do see a
-command that looks like it may give the he cap, but i can't find how
-it would ever be triggered.
-(The iovar code for the iovar above is either always just return 0 or return 1)
-There are no obvious iovars that relate, and  the absolute latest
-bcmdhd hardcodes the he caps, as do infineon's latest ifx code.
-:(
-I'l hack around see if i can get the caps out of it.
-
-I'll double check other ones.
-
-> > @@ -8331,18 +8589,21 @@ struct brcmf_cfg80211_info *brcmf_cfg80211_attach(struct brcmf_pub *drvr,
-> >       if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_DUMP_OBSS))
-> >               ops->dump_survey = brcmf_cfg80211_dump_survey;
+> On 10/19/2023 3:42 AM, Daniel Berlin wrote:
+> > This patch adds support for 6G chanspecs, as part of adding 6G and
+> > 802.11ax support.
 > >
-> > -     err = wiphy_register(wiphy);
-> > -     if (err < 0) {
-> > -             bphy_err(drvr, "Could not register wiphy device (%d)\n", err);
-> > -             goto priv_out;
-> > -     }
-> > -
-> > +     /* We have to configure the bands before we register the wiphy device
-> > +      * because it requires that band capabilities be correct.
-> > +      */
+> > I added the correct values for the upcoming 320mhz as well so that the
+> > info is complete.
 >
-> Is it?
-
-If you register the 6g band without he_cap set, 80211 is unhappy.
-It sanity checks the bands in wiphy_register, and we get caught in the
-HE supported check for 6g.
-
-See here:
-https://elixir.bootlin.com/linux/latest/source/net/wireless/core.c#L823
-
-In general, you can see it sanity checks the bands/etc as part of
-registration.  It happens that 6g triggers the he one, but it seems in
-general the bands are supposed to be sane before registration.
-
-
-
-> The order was deliberate. brcmf_setup_wiphybands() calls
-> brcmf_construct_chaninfo() which disables all channels. When you do that
-> before wiphy_register() the orig_flags of the channel will be DISABLED
-> and can never be used.
-
-I'll take care of this by copying the flags around.
-
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>>
+> Signed-off-by: Daniel Berlin <dberlin@dberlin.org>
+> > ---
+> >   .../broadcom/brcm80211/brcmutil/d11.c         | 46 +++++++++++++++---=
+-
+> >   .../broadcom/brcm80211/include/brcmu_d11.h    | 46 +++++++++++++-----=
+-
+> >   .../broadcom/brcm80211/include/brcmu_wifi.h   | 27 ++++++++---
+> >   3 files changed, 89 insertions(+), 30 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmutil/d11.c b/d=
+rivers/net/wireless/broadcom/brcm80211/brcmutil/d11.c
+> > index 1e2b1e487eb7..faf7eeeeb2d5 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmutil/d11.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmutil/d11.c
 >
-> >       err = brcmf_setup_wiphybands(cfg);
-> >       if (err) {
-> >               bphy_err(drvr, "Setting wiphy bands failed (%d)\n", err);
-> >               goto wiphy_unreg_out;
+> [...]
+>
+> > @@ -117,7 +127,9 @@ static void brcmu_d11n_decchspec(struct brcmu_chan =
+*ch)
+> >               }
+> >               break;
+> >       default:
+> > -             WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
+> > +             WARN_ONCE(1,
+> > +                       "Invalid chanspec - unknown 11n bandwidth 0x%04=
+x\n",
+> > +                       ch->chspec);
+>
+> I don't think this provides more info. The WARN_ONCE() already prints
+> code location and stack trace.
+>
+> >               break;
 > >       }
 > >
-> > +     err = wiphy_register(wiphy);
-> > +     if (err < 0) {
-> > +             bphy_err(drvr, "Could not register wiphy device (%d)\n", err);
-> > +             goto priv_out;
-> > +     }
-> > +
-> >       /* If cfg80211 didn't disable 40MHz HT CAP in wiphy_register(),
-> >        * setup 40MHz in 2GHz band and enable OBSS scanning.
-> >        */
+> > @@ -129,7 +141,8 @@ static void brcmu_d11n_decchspec(struct brcmu_chan =
+*ch)
+> >               ch->band =3D BRCMU_CHAN_BAND_2G;
+> >               break;
+> >       default:
+> > -             WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
+> > +             WARN_ONCE(1, "Invalid chanspec - unknown 11n band 0x%04x\=
+n",
+> > +                       ch->chspec);
+>
+> ditto
+>
+> >               break;
+> >       }
+> >   }
+> > @@ -156,7 +169,9 @@ static void brcmu_d11ac_decchspec(struct brcmu_chan=
+ *ch)
+> >                       ch->sb =3D BRCMU_CHAN_SB_U;
+> >                       ch->control_ch_num +=3D CH_10MHZ_APART;
+> >               } else {
+> > -                     WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chs=
+pec);
+> > +                     WARN_ONCE(1,
+> > +                               "Invalid chanspec - unknown 11ac channe=
+l distance 0x%04x\n",
+> > +                               ch->chspec);
+>
+> ditto
+>
+> >               }
+> >               break;
+> >       case BRCMU_CHSPEC_D11AC_BW_80:
+> > @@ -177,7 +192,9 @@ static void brcmu_d11ac_decchspec(struct brcmu_chan=
+ *ch)
+> >                       ch->control_ch_num +=3D CH_30MHZ_APART;
+> >                       break;
+> >               default:
+> > -                     WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chs=
+pec);
+> > +                     WARN_ONCE(1,
+> > +                               "Invalid chanspec - unknown 11ac channe=
+l distance 0x%04x\n",
+> > +                               ch->chspec);
+>
+> ditto
+>
+> >                       break;
+> >               }
+> >               break;
+> > @@ -211,17 +228,24 @@ static void brcmu_d11ac_decchspec(struct brcmu_ch=
+an *ch)
+> >                       ch->control_ch_num +=3D CH_70MHZ_APART;
+> >                       break;
+> >               default:
+> > -                     WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chs=
+pec);
+> > +                     WARN_ONCE(1,
+> > +                               "Invalid chanspec - unknown 11ac channe=
+l distance 0x%04x\n",
+> > +                               ch->chspec);
+>
+> ditto
+>
+> >                       break;
+> >               }
+> >               break;
+> >       case BRCMU_CHSPEC_D11AC_BW_8080:
+> >       default:
+> > -             WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
+> > +             WARN_ONCE(1,
+> > +                       "Invalid chanspec - unknown 11ac channel bandwi=
+dth 0x%04x\n",
+> > +                       ch->chspec);
+> >               break;
+> >       }
+> >
+> >       switch (ch->chspec & BRCMU_CHSPEC_D11AC_BND_MASK) {
+> > +     case BRCMU_CHSPEC_D11AC_BND_6G:
+> > +             ch->band =3D BRCMU_CHAN_BAND_6G;
+> > +             break;
+> >       case BRCMU_CHSPEC_D11AC_BND_5G:
+> >               ch->band =3D BRCMU_CHAN_BAND_5G;
+> >               break;
+>
+> [...]
+>
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcmu_d11.=
+h b/drivers/net/wireless/broadcom/brcm80211/include/brcmu_d11.h
+> > index f6344023855c..bb48b7442062 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/include/brcmu_d11.h
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/include/brcmu_d11.h
+> > @@ -69,24 +69,44 @@
+> >   #define  BRCMU_CHSPEC_D11AC_SB_UU   BRCMU_CHSPEC_D11AC_SB_LUU
+> >   #define  BRCMU_CHSPEC_D11AC_SB_L    BRCMU_CHSPEC_D11AC_SB_LLL
+> >   #define  BRCMU_CHSPEC_D11AC_SB_U    BRCMU_CHSPEC_D11AC_SB_LLU
+> > +/* channel sideband indication for frequency >=3D 240MHz */
+> > +#define BRCMU_CHSPEC_D11AC_320_SB_MASK       0x0780
+> > +#define BRCMU_CHSPEC_D11AC_320_SB_SHIFT      7
+> > +#define BRCMU_CHSPEC_D11AC_SB_LLLL   0x0000
+> > +#define BRCMU_CHSPEC_D11AC_SB_LLLU   0x0080
+> > +#define BRCMU_CHSPEC_D11AC_SB_LLUL   0x0100
+> > +#define BRCMU_CHSPEC_D11AC_SB_LLUU   0x0180
+> > +#define BRCMU_CHSPEC_D11AC_SB_LULL   0x0200
+> > +#define BRCMU_CHSPEC_D11AC_SB_LULU   0x0280
+> > +#define BRCMU_CHSPEC_D11AC_SB_LUUL   0x0300
+> > +#define BRCMU_CHSPEC_D11AC_SB_LUUU   0x0380
+> > +#define BRCMU_CHSPEC_D11AC_SB_ULLL   0x0400
+> > +#define BRCMU_CHSPEC_D11AC_SB_ULLU   0x0480
+> > +#define BRCMU_CHSPEC_D11AC_SB_ULUL   0x0500
+> > +#define BRCMU_CHSPEC_D11AC_SB_ULUU   0x0580
+> > +#define BRCMU_CHSPEC_D11AC_SB_UULL   0x0600
+> > +#define BRCMU_CHSPEC_D11AC_SB_UULU   0x0680
+> > +#define BRCMU_CHSPEC_D11AC_SB_UUUL   0x0700
+> > +#define BRCMU_CHSPEC_D11AC_SB_UUUU   0x0780
+>
+> These are WCC specific, but I think it is okay to have these definitions
+> here.
+>
+> >   #define BRCMU_CHSPEC_D11AC_BW_MASK  0x3800
+> >   #define BRCMU_CHSPEC_D11AC_BW_SHIFT 11
+> > -#define  BRCMU_CHSPEC_D11AC_BW_5     0x0000
+> > -#define  BRCMU_CHSPEC_D11AC_BW_10    0x0800
+> > -#define  BRCMU_CHSPEC_D11AC_BW_20    0x1000
+> > -#define  BRCMU_CHSPEC_D11AC_BW_40    0x1800
+> > -#define  BRCMU_CHSPEC_D11AC_BW_80    0x2000
+> > -#define  BRCMU_CHSPEC_D11AC_BW_160   0x2800
+> > -#define  BRCMU_CHSPEC_D11AC_BW_8080  0x3000
+> > -#define BRCMU_CHSPEC_D11AC_BND_MASK  0xc000
+> > -#define BRCMU_CHSPEC_D11AC_BND_SHIFT 14
+> > -#define  BRCMU_CHSPEC_D11AC_BND_2G   0x0000
+> > -#define  BRCMU_CHSPEC_D11AC_BND_3G   0x4000
+> > -#define  BRCMU_CHSPEC_D11AC_BND_4G   0x8000
+> > -#define  BRCMU_CHSPEC_D11AC_BND_5G   0xc000
+> > +#define BRCMU_CHSPEC_D11AC_BW_10    0x0800
+> > +#define BRCMU_CHSPEC_D11AC_BW_20    0x1000
+> > +#define BRCMU_CHSPEC_D11AC_BW_40    0x1800
+> > +#define BRCMU_CHSPEC_D11AC_BW_80    0x2000
+> > +#define BRCMU_CHSPEC_D11AC_BW_160   0x2800
+> > +#define BRCMU_CHSPEC_D11AC_BW_320   0x0000
+>
+> 320MHz is 802.11be. No need to add this already, but not a biggy.
+>
+> > +#define BRCMU_CHSPEC_D11AC_BW_8080  0x3000
+> > +#define BRCMU_CHSPEC_D11AC_BND_MASK 0xc000
+> > +#define BRCMU_CHSPEC_D11AC_BND_SHIFT 14
+> > +#define BRCMU_CHSPEC_D11AC_BND_2G   0x0000
+> > +#define BRCMU_CHSPEC_D11AC_BND_4G   0x8000
+> > +#define BRCMU_CHSPEC_D11AC_BND_5G   0xc000
+> > +#define BRCMU_CHSPEC_D11AC_BND_6G   0x4000
+> >
+> >   #define BRCMU_CHAN_BAND_2G          0
+> >   #define BRCMU_CHAN_BAND_5G          1
+> > +#define BRCMU_CHAN_BAND_6G           2
+> >
+> >   enum brcmu_chan_bw {
+> >       BRCMU_CHAN_BW_20,
 >
