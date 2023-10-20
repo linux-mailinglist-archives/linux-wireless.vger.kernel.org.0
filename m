@@ -2,39 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67FA67D0C01
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 11:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8435B7D0C39
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 11:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376822AbjJTJgV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Oct 2023 05:36:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49340 "EHLO
+        id S1376642AbjJTJrr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Oct 2023 05:47:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376797AbjJTJgL (ORCPT
+        with ESMTP id S1376319AbjJTJro (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Oct 2023 05:36:11 -0400
-Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7A831713;
-        Fri, 20 Oct 2023 02:36:02 -0700 (PDT)
-Received: by bues.ch with esmtpsa (Exim 4.96)
-        (envelope-from <m@bues.ch>)
-        id 1qtlv2-0001rL-2F;
-        Fri, 20 Oct 2023 11:35:47 +0200
-Date:   Fri, 20 Oct 2023 11:35:14 +0200
-From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To:     Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
-Cc:     Larry.Finger@lwfinger.net, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] b43legacy: Removed unneeded variable in debugfs
-Message-ID: <20231020113514.122bfb6e@barney>
-In-Reply-To: <20231020092735.2565-1-bragathemanick0908@gmail.com>
-References: <20231020092735.2565-1-bragathemanick0908@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        Fri, 20 Oct 2023 05:47:44 -0400
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6F3011B
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:47:40 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:4110:0:640:2904:0])
+        by forward102b.mail.yandex.net (Yandex) with ESMTP id 9097F60976;
+        Fri, 20 Oct 2023 12:47:37 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id alGG179BWiE0-HYuRQl4n;
+        Fri, 20 Oct 2023 12:47:37 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1697795257; bh=lehyrglspCYlZoOFe6aAzj+uE6xZrxNxmMSJs9IJcA4=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=vUvK2vEqoZGlyDkHi13f1vn91BnS6tyZsP2M6zRstMmLwOextIEFV+I0DY015mAVU
+         1OZopGuxFIcUaQCJR3PVHBXqt7pFZe9D0wffCg8mdOGbSj4pA47aMPvtFhogUeFjk0
+         Q9qLPdWeNhnqlcPt3/NL9JfhHJ2xT4wBC7UUjZx8=
+Authentication-Results: mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/2] wifi: mwifiex: fix SDIO firmware read timeout handling
+Date:   Fri, 20 Oct 2023 12:46:28 +0300
+Message-ID: <20231020094654.33258-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/kfDnOujsaQJS.7yl4+DvrH0";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,47 +48,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/kfDnOujsaQJS.7yl4+DvrH0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In 'mwifiex_sdio_generic_fw_dump()', move the check whether
+'sdio_readb()' has failed for MAX_POLL_TRIES times out of
+the reading loop. Compile tested only.
 
-On Fri, 20 Oct 2023 14:57:35 +0530
-Bragatheswaran Manickavel <bragathemanick0908@gmail.com> wrote:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-> Removed unneeded variable. Issue identified using Coccinelle semantic.
-> No functional impact
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-This patch is completely wrong. It would not even compile.
-Please compile your patches before submitting them!
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index 6462a0ffe698..d80bd3816e3c 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -2889,12 +2889,12 @@ static void mwifiex_sdio_generic_fw_dump(struct mwifiex_adapter *adapter)
+ 			}
+ 			if (start_flag == 0)
+ 				break;
+-			if (tries == MAX_POLL_TRIES) {
+-				mwifiex_dbg(adapter, ERROR,
+-					    "FW not ready to dump\n");
+-				ret = -1;
+-				goto done;
+-			}
++		}
++		if (tries == MAX_POLL_TRIES) {
++			mwifiex_dbg(adapter, ERROR,
++				    "FW not ready to dump\n");
++			ret = -1;
++			goto done;
+ 		}
+ 		usleep_range(100, 200);
+ 	}
+-- 
+2.41.0
 
-And it is the second time we see this nonsense.
-The code is correct as-is. There is no unused variable.
-
-NACK.
-
---=20
-Michael B=C3=BCsch
-https://bues.ch/
-
---Sig_/kfDnOujsaQJS.7yl4+DvrH0
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmUySdIACgkQ9TK+HZCN
-iw7mtxAAiVUycpeZTGhcQXIsXI5dmrqAsTA2Nsxr01vvreRpLZDZUFLOg7ou4rXz
-JD5nD+4ZdIbQnlSyF4CVgpZbstsYSa0FGeC4yHnASIAX0Ou6x3bqhX28K+Gdb/RH
-isjualTrLUR94jQJqjnFrTKjVD2ezTjG5i0NJSwP3roTohMXUfUApyJE7CV/URIA
-SosRMc6aKnrfdd4pHidRLW1BVNKpY5NiK++rjwaPzxqy2riEzVyHKkZoQaJB2lHm
-DBTDeRHj3D5ZUSlB0U/nlR0eyg3jixvtCONvXls2CDWOtLApSUh86Zm2BIE39HX7
-3uxqnAsf+RmtuKxb4IhyqBAkHj6In8VQ4HL7yOflRdAZkKo3JkJBaoE9idYvP20Y
-gWWi3NoIeLybwVRID/iAb/5SDGKHmjX4gBsxonOhH9066++kPWvdVHWDzdN5ibfQ
-EEiX3r+l1rCuQfAlNrqgHR0UNgMxzCxAnWCmlR5RJbSCxmNU87qwafLmZBN9rYaN
-+XDOFrLm1fSNfOtFTdN2ee85mzOEJoGpIoHqytnYPO2RY98q6HotCMRIO+o76BTG
-ULhxVYvSEQIvQIGwUycT60eehKD7T4wb5xvzB61m/aP60SG4fQq/uH7K2dvxPU5D
-mI79wh855Geu4H1NJr3rgOlyUDYnVFkUSdbWTspvif9VYsNQ2wQ=
-=wS4g
------END PGP SIGNATURE-----
-
---Sig_/kfDnOujsaQJS.7yl4+DvrH0--
