@@ -2,89 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62AC27D079A
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 07:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05B037D07C9
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 07:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233500AbjJTFbQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Oct 2023 01:31:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42558 "EHLO
+        id S233556AbjJTFtj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Oct 2023 01:49:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232838AbjJTFbO (ORCPT
+        with ESMTP id S233497AbjJTFti (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Oct 2023 01:31:14 -0400
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EFE119
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 22:31:09 -0700 (PDT)
-Received: by mail-ua1-x92c.google.com with SMTP id a1e0cc1a2514c-7b5f7f4e733so166427241.3
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Oct 2023 22:31:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697779868; x=1698384668; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kf6uWwuj/p1QTyWsLbeO61soCn3K6rBcnzJEXreDgDo=;
-        b=VRJWadiJu06UmV4/qOPzXqDg+hGZnBGvxDhXMxMNoRsDiA1aqHw4vXlsO6PvyNNDHJ
-         wOMYt5dawb+TMaad4yXQI9Av+kyOEa1+cOO/L4/jkR+uWTpL0TCBIrUNF45TVF8/YsW5
-         3IJnjKqH41jiAWKK3TYR9VlqRlKsfAezdiRxcJarzWnIWg0LcqIQ0x6fy0lMHE9cqKhf
-         vAAbkWr1s0imSRrN7lzZNG8ibNClyL0gCeBPWHS0RZdME2eKm03+Fd759kf5WiRSMf+G
-         SwgnQQ7jcQIZ51W7ktAIPGk8lW8UMz/tkHaeijJv6himHXXJl/IZXdX0CLGUcixp7NiZ
-         m2uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697779868; x=1698384668;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kf6uWwuj/p1QTyWsLbeO61soCn3K6rBcnzJEXreDgDo=;
-        b=R7micRHyVUR/93Dw9lScyeuIWGDzoL87E1cZJdvZ127/YuxSHpfMEj+YW8jsrs2Wip
-         qle5T1s7k7ljbOQWi1Gztpg2sn/gScuXqjDY4gIz0OKfH/aX+OeVy4fHy2uma3DnGZyT
-         ZP+5WMySe/Ua9m64L7x0WglHGIHn4D9bps9dE2Lo7Hw+0SE04VO33oEpuvxp2K8Pahzy
-         JlPOn2WYWaDBsKmhnTiKGgKRvJyy9qddyZ3vWt4154TGa9uM6DRze5GQp5enkPIl6B5H
-         Q4S4IbhrnaYGwp/buWKPqy+1hDIOydX6+2BFDNMOiYB81BfjkZL/smyyBGw5P5lh1+6t
-         ex7g==
-X-Gm-Message-State: AOJu0YzM0cvae1oEHQeBR4sk/ARRw9zNSJb4VjRtSjoSu0dZW0+kG6TE
-        zPuJ1CvUmNSXcP3e0ErzuPEmTIz4qEdLa3uVAbW8tJ4K
-X-Google-Smtp-Source: AGHT+IEC7X265f+UCg6SJwwSdkW5GO5G8UvisZc6CH9rYrH3U5g3CGkhAzZXlmaVe4S9wZANySQvYO6CtlfqMzxLjhw=
-X-Received: by 2002:a67:c204:0:b0:452:62b2:36b with SMTP id
- i4-20020a67c204000000b0045262b2036bmr1050649vsj.30.1697779868377; Thu, 19 Oct
- 2023 22:31:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAMes48--xvNjYZdO1DKjfkXRv7AJcqJaWYzJ9fYSPPxQ_M7muw@mail.gmail.com>
- <ce544a72-2af6-4448-8817-1d4cb54f456a@lockie.ca>
-In-Reply-To: <ce544a72-2af6-4448-8817-1d4cb54f456a@lockie.ca>
-From:   Jon Doe <tuksgig@gmail.com>
-Date:   Fri, 20 Oct 2023 07:30:57 +0200
-Message-ID: <CAMes488xPhpKuYUxgHd1WnnQUCUwmeOseCGtTv+Y9Z52b4MRnQ@mail.gmail.com>
-Subject: Re: rtw88 usb adapter can't authenticate
-To:     James <bjlockie@lockie.ca>
-Cc:     linux-wireless@vger.kernel.org
+        Fri, 20 Oct 2023 01:49:38 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0CB7CA;
+        Thu, 19 Oct 2023 22:49:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=yMF4pcHvul9aj3NPNIUSsgOOjrOeA7W4g86fUYpJouU=;
+        t=1697780976; x=1698990576; b=h9quspUkPVO9QA1faW25l+Frsw8hu5AqyMQKAAEhUahbSgU
+        RNujxoaoF/F5hD+y5aniUX0Plx8R3OrjR+uP/2/vsZZ8ItpQkQeCrC68OQDv5Av082ahdSkRkgIXe
+        fbW4PDXxNab90Mysx7U8H7FX4oLJEwKYEhHhIn2E+9P6pyi1HyD66bZBUOfL6QS9xzId64nszxzk8
+        DyqI0+K8w+ZCSkNLY3mfbnfH7oYYibU4BcaAkm23dKFSVxJWwm3s2xxyCR++zXpQnPH8WT2mfz9av
+        bvcnpWCP1LMEHzPwUNOTFy8Qaen6ggT0FF95fN1hq0sqPzzMOL3mwcKVOhf9wLTg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qtiO1-0000000ENZE-015f;
+        Fri, 20 Oct 2023 07:49:29 +0200
+Message-ID: <007e30c2fe785e2f3fd7ffae9b85b7903f46e48c.camel@sipsolutions.net>
+Subject: Re: linux-next: manual merge of the net-next tree with the wireless
+ tree
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        David Miller <davem@davemloft.net>,
+        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        Wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Date:   Fri, 20 Oct 2023 07:49:27 +0200
+In-Reply-To: <20231019144004.0f5b2533@kernel.org>
+References: <20231012113648.46eea5ec@canb.auug.org.au>
+         <987ecad0840a9d15bd844184ea595aff1f3b9c0c.camel@sipsolutions.net>
+         <20231019144004.0f5b2533@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I re-tested with different SSIDS on 2.4 and 5GHz, same problem, fails
-to authenticate. Tested with 3 different access points. Latest kernel
-I tested with is 6.5.5 on Manjaro Linux.
+On Thu, 2023-10-19 at 14:40 -0700, Jakub Kicinski wrote:
+> On Thu, 12 Oct 2023 10:10:10 +0200 Johannes Berg wrote:
+> > > I fixed it up (I just used the latter, there may be more needed) =20
+> >=20
+> > Just using net-next/wireless-next is fine, I actually noticed the issue
+> > while I was merging the trees to fix the previous conflicts here.
+>=20
+> Resolved the conflict in 041c3466f39d, could you double check?
 
-On Thu, Oct 19, 2023 at 6:11=E2=80=AFPM James <bjlockie@lockie.ca> wrote:
->
-> Oct 19, 2023 11:00:56 AM Jon Doe <tuksgig@gmail.com>:
->
-> > Hi,
-> >
-> > I have a Cudy AC1300 model WU1400 USB Wifi adapter that fails to
-> > authenticate properly. Driver for this device is rtw88_8822bu.
-> > Reported this previously at
-> > https://bugzilla.redhat.com/show_bug.cgi?id=3D2188243 with logs of the
-> > error messages.
-> >
-> > Scanning works but authentication fails after 3 attempts. Any ideas?
-> Have different SIDs for 2.4ghz and 5ghz.
-> That causes problems.
+I don't see anything there, but I guess that means it's good? Code looks
+fine.
+
+> Also, there's another direct return without freeing the key in
+> ieee80211_key_link(), is that one okay ?
+
+*sigh*
+
+No, it's not. I think that means I resolved the previous merge there
+incorrectly, because it's OK in wireless and broken in wireless-next,
+and it had been fixed in d097ae01ebd4 ("wifi: mac80211: fix potential
+key leak").
+
+Anyway, thanks for checking and noticing! Will fix.
+
+johannes
