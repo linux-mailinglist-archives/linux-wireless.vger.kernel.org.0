@@ -2,101 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 750437D1297
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 17:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 181CC7D1414
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 18:35:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377641AbjJTP0P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Oct 2023 11:26:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36832 "EHLO
+        id S229795AbjJTQfd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Oct 2023 12:35:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377665AbjJTP0N (ORCPT
+        with ESMTP id S229648AbjJTQfb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Oct 2023 11:26:13 -0400
-Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 060F491
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 08:26:07 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-18.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-18.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:2020:0:640:ada2:0])
-        by forward500b.mail.yandex.net (Yandex) with ESMTP id 05C77611C4;
-        Fri, 20 Oct 2023 18:26:05 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-18.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3QMIsn0BQCg0-wlcfshnI;
-        Fri, 20 Oct 2023 18:26:04 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1697815564; bh=+wmlGkO/grl9JTb/21U+/Oa1nS8dPh4tIhNc4D/GNmY=;
-        h=In-Reply-To:To:From:Cc:Date:References:Subject:Message-ID;
-        b=d5BXUjvHwKopdpqpuFiAEAOUu5mAwJqH2ERW3W4SNV+ImEnoZ2uWTTRuW3HxCRUTt
-         L969wC9WZb9sTnPZNtDi0y08NKNBJjqvX47833loN7cxjKC0ACCRfVKP+hiFipoWTb
-         UpqCakJ2qYJdfq3z2miDEaPP4F4qJDBfgLnoAUjU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-18.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <2920a009-9168-42b1-80a9-1e74940555c3@yandex.ru>
-Date:   Fri, 20 Oct 2023 18:26:03 +0300
+        Fri, 20 Oct 2023 12:35:31 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 955BDD5E
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 09:35:29 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2c54c8934abso15117641fa.0
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 09:35:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dberlin.org; s=google; t=1697819728; x=1698424528; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jp6YfYGoVMtTsSCroLFUYhmimeWjcHuUGyEJ+OCnT1g=;
+        b=gqKe6wDI4X0t/jcjf+IcWV5pToIAmV4zvN+4lM+E74i2p9na72KiW7PJ/F68np8mXC
+         Zi6hNo+I5JTXCbWiUlnByPqResw1eVp8mcUjeFWuUGoGDVpZCNU9uDOsXRrKRtExXa9I
+         02UivF40ZIMyYFbtTAidEEKvx79D2jLhvbipuIynkQo/yBDS0zLvI0G/nUULD3dwPM7Q
+         TDFjMzhjtjOtvp4qSYt4DbJmZDXPkEIUKE+W1SJVLZvQ/6Iwz4bF71pzWriqrSdhCrxU
+         osts/z4fGLedt8n/Hi3scAYmnuNwlzBIBylSvzMmRKwRVFaGh1k0RFIb5X0Q3KJdYuW0
+         eQpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697819728; x=1698424528;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jp6YfYGoVMtTsSCroLFUYhmimeWjcHuUGyEJ+OCnT1g=;
+        b=N9kFwUE7WApEAupq6wBL6toXd+pHKSIXynA7wZ6aI5vy1xymg5OPd/WsVmCxv8ewtw
+         fZGequJUgDdjMmH+f6mmGQABfXPC7qeFiOHVL6BqCC60kPyeLhUgCK93/xTMG5rrUvy5
+         f48ekRC8Ppr++OT0OYYX8+r5Wtxis4QqQkic+nA+cju43blxuZjD8+/1ZmobI7EuiQ+N
+         qxFGUdgYZh64MmQo6V/oLhN13Io7WYGIxctxkmDRQ+TD0HuflBm6mPYn+Zb8ts4TdGBP
+         T3b6nPDh/q2kQkT+umleyMTJg0UMZlFSAucE/jFBr/D+I3LWUg5mLNVUZE/KUZg86Hi+
+         QCTA==
+X-Gm-Message-State: AOJu0YwaxRLjbd66qSOJao3aYeJK66zwi243kqdh3/Y/BSGFiUVnQTqq
+        UkYRp5DeXdhrQXWBfbmmDzaYHBouF5NpiJadQsPXTA==
+X-Google-Smtp-Source: AGHT+IHvYymc9rPNUuFnhzZdAawyOIWzYujGImzZt+jS1Ezk94R6vXx4xCMpxeZU/92fph8ajhp2Gr4FkJp7FR79DuA=
+X-Received: by 2002:a05:651c:198c:b0:2c0:2f51:cb97 with SMTP id
+ bx12-20020a05651c198c00b002c02f51cb97mr1972942ljb.6.1697819727424; Fri, 20
+ Oct 2023 09:35:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath9k: fix -Wformat-truncation warning
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        linux-wireless@vger.kernel.org
-References: <20231017155201.111950-1-dmantipov@yandex.ru>
- <169781313737.352343.12523599682050042172.kvalo@kernel.org>
-Content-Language: en-US
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- tx98MCutXbJWn55RtnVKbpIiMfBrcB8=
-In-Reply-To: <169781313737.352343.12523599682050042172.kvalo@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <cover.1697650207.git.dberlin@dberlin.org> <52c993fd93e13ac015be935a5284294c9a74ea8e.1697650207.git.dberlin@dberlin.org>
+ <cc58057b-bc08-f717-1676-13046fc26c5c@broadcom.com>
+In-Reply-To: <cc58057b-bc08-f717-1676-13046fc26c5c@broadcom.com>
+From:   Daniel Berlin <dberlin@dberlin.org>
+Date:   Fri, 20 Oct 2023 12:35:16 -0400
+Message-ID: <CAF4BwTUTmUd0c-y_NfSi9WkCnDO9bhtpx03Aai1ByH5auq9YXw@mail.gmail.com>
+Subject: Re: [PATCH 2/5] [brcmfmac] Add support for 6G bands
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,T_SPF_TEMPERROR autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/20/23 17:45, Kalle Valo wrote:
+>
+>
+> maybe handle channel 2 here as well, ie.:
+>         .center_freq = ((_channel) == 2) ? 5935 : 5950 + (5 * (_channel)),
+>
+> > +     .hw_value               = (_channel),                   \
+> > +     .max_antenna_gain       = 0,                            \
+> > +     .max_power              = 30,                           \
+> > +}
+>
+> so we can drop this one below...
+>
+Will do.
 
-> As I didn't get any replies to my RFH I unfortunately already fixed this myself:
-> 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20231012135854.3473332-3-kvalo@kernel.org/
-> 
-> I just used a bigger buffer than you.
+>
+>
+> > +             /* We ignore this BSS ID rather than try to continue on.
+> > +              * Otherwise we will cause an OOPs because our frequency is 0.
+> > +              * The main case this occurs is some new frequency band
+> > +              * we have not seen before, and if we return an error,
+> > +              * we will cause the scan to fail.  It seems better to
+> > +              * report the error, skip this BSS, and move on.
+> > +              */
+> > +             return 0;
+> > +     }
+> >       bss_data.chan = ieee80211_get_channel(wiphy, freq);
+>
+> How could this fail? Our wiphy registers all possible channels so if
+> ieee80211_channel_to_frequency() succeeds ieee80211_get_channel() can
+> not fail.
 
-To be honest, I've expected a fast reply from Toke. Anyway, you're the maintainer.
+I agree.
+>
+>
+> > @@ -6965,6 +7066,10 @@ static int brcmf_construct_chaninfo(struct brcmf_cfg80211_info *cfg,
+> >               for (i = 0; i < band->n_channels; i++)
+> >                       band->channels[i].flags = IEEE80211_CHAN_DISABLED;
+> >       band = wiphy->bands[NL80211_BAND_5GHZ];
+> > +     if (band)
+>
+> Eh. Why is this conditional? We are creating all bands in the wiphy
+> instance so why the null check here?
 
-Dmitry
 
+I just matched what was there, I can remove all of them if we want.
+
+(I'll take care of the rest of the comments between here)
+
+>
+> > -     brcmf_dbg(INFO, "nmode=%d, vhtmode=%d, bw_cap=(%d, %d)\n",
+> > +     brcmf_dbg(INFO,
+> > +               "nmode=%d, vhtmode=%d, bw_cap=(%d, %d, %d), he_cap=(%d, %d)\n",
+> >                 nmode, vhtmode, bw_cap[NL80211_BAND_2GHZ],
+> > -               bw_cap[NL80211_BAND_5GHZ]);
+> > +               bw_cap[NL80211_BAND_5GHZ], bw_cap[NL80211_BAND_6GHZ],
+> > +               he_cap[0], he_cap[1]);
+>
+> So are these he mac and phy capabilities? ...
+
+No, unfortunately, it's either 1 or 0 on these chips, and all chips i tested.
+This is the hardware capability iovar.
+
+In the debug firmware i have access to (not apple's), i do see a
+command that looks like it may give the he cap, but i can't find how
+it would ever be triggered.
+(The iovar code for the iovar above is either always just return 0 or return 1)
+There are no obvious iovars that relate, and  the absolute latest
+bcmdhd hardcodes the he caps, as do infineon's latest ifx code.
+:(
+I'l hack around see if i can get the caps out of it.
+
+I'll double check other ones.
+
+> > @@ -8331,18 +8589,21 @@ struct brcmf_cfg80211_info *brcmf_cfg80211_attach(struct brcmf_pub *drvr,
+> >       if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_DUMP_OBSS))
+> >               ops->dump_survey = brcmf_cfg80211_dump_survey;
+> >
+> > -     err = wiphy_register(wiphy);
+> > -     if (err < 0) {
+> > -             bphy_err(drvr, "Could not register wiphy device (%d)\n", err);
+> > -             goto priv_out;
+> > -     }
+> > -
+> > +     /* We have to configure the bands before we register the wiphy device
+> > +      * because it requires that band capabilities be correct.
+> > +      */
+>
+> Is it?
+
+If you register the 6g band without he_cap set, 80211 is unhappy.
+It sanity checks the bands in wiphy_register, and we get caught in the
+HE supported check for 6g.
+
+See here:
+https://elixir.bootlin.com/linux/latest/source/net/wireless/core.c#L823
+
+In general, you can see it sanity checks the bands/etc as part of
+registration.  It happens that 6g triggers the he one, but it seems in
+general the bands are supposed to be sane before registration.
+
+
+
+> The order was deliberate. brcmf_setup_wiphybands() calls
+> brcmf_construct_chaninfo() which disables all channels. When you do that
+> before wiphy_register() the orig_flags of the channel will be DISABLED
+> and can never be used.
+
+I'll take care of this by copying the flags around.
+
+>
+> >       err = brcmf_setup_wiphybands(cfg);
+> >       if (err) {
+> >               bphy_err(drvr, "Setting wiphy bands failed (%d)\n", err);
+> >               goto wiphy_unreg_out;
+> >       }
+> >
+> > +     err = wiphy_register(wiphy);
+> > +     if (err < 0) {
+> > +             bphy_err(drvr, "Could not register wiphy device (%d)\n", err);
+> > +             goto priv_out;
+> > +     }
+> > +
+> >       /* If cfg80211 didn't disable 40MHz HT CAP in wiphy_register(),
+> >        * setup 40MHz in 2GHz band and enable OBSS scanning.
+> >        */
+>
