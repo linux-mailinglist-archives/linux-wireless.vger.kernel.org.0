@@ -2,235 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3B357D0C80
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 11:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9547C7D0D25
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 12:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376908AbjJTJ7u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Oct 2023 05:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47656 "EHLO
+        id S1376720AbjJTKbY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Oct 2023 06:31:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376849AbjJTJ7r (ORCPT
+        with ESMTP id S1376854AbjJTKbW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Oct 2023 05:59:47 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6FD3D5A;
-        Fri, 20 Oct 2023 02:59:35 -0700 (PDT)
-Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4SBg2B1gjJzVlN1;
-        Fri, 20 Oct 2023 17:55:46 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 20 Oct 2023 17:59:29 +0800
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-To:     <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Yunsheng Lin <linyunsheng@huawei.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Alexander Duyck <alexander.duyck@gmail.com>,
-        Liang Chen <liangchen.linux@gmail.com>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        <intel-wired-lan@lists.osuosl.org>, <linux-rdma@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH net-next v12 2/5] page_pool: remove PP_FLAG_PAGE_FRAG
-Date:   Fri, 20 Oct 2023 17:59:49 +0800
-Message-ID: <20231020095952.11055-3-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20231020095952.11055-1-linyunsheng@huawei.com>
-References: <20231020095952.11055-1-linyunsheng@huawei.com>
+        Fri, 20 Oct 2023 06:31:22 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3952D69
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 03:31:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4398DC433C8;
+        Fri, 20 Oct 2023 10:31:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697797880;
+        bh=QG0eqApJv057ZhUcrZWheMwZD0XE0lTlkrDwaucJpqk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=doOaSRLpZMJzggL6jVoa8LczUhdPDxKgghOhWEAAEQ6N9cIx+6JPLuagVPdgniFDf
+         Mv2ROcU+avVJQyrW+SFw2zv7hT7Y+XWH9iR6QHi1SE1flpQsiMcjDXuEaEVxTepaAY
+         v195HEop5kBSf6Y6JpZaOLZn2IDmMmoEtLwTkLQ8tKlwMQIjXaa6rMzDO9P3OHNBOm
+         p3v/MyaPS3N/B2IM0jLnEnUSCe47WBtAKQbC8E0gJx36AcfPkvGqMwB+Q5dMCFROsn
+         9Ap2HGu2T8x+zGMVfKjwqK5ApijAfdpy1RZesDg+LYDDKnIYciTmWh11nrXUu55+Bl
+         oh2UJC1WjV95A==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
+        shayne.chen@mediatek.com, Bo.Jiao@mediatek.com,
+        sujuan.chen@mediatek.com, linux-mediatek@lists.infradead.org
+Subject: [PATCH v3 00/13] wifi: mt7996: add wed support
+Date:   Fri, 20 Oct 2023 12:30:47 +0200
+Message-ID: <cover.1697797422.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.69.192.56]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500005.china.huawei.com (7.185.36.74)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PP_FLAG_PAGE_FRAG is not really needed after pp_frag_count
-handling is unified and page_pool_alloc_frag() is supported
-in 32-bit arch with 64-bit DMA, so remove it.
+Similar to MT7915, introduce Wireless Ethernet Dispatcher (WED)
+support for MT7996 driver to offload transmitted/received traffic.
 
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-CC: Lorenzo Bianconi <lorenzo@kernel.org>
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-CC: Liang Chen <liangchen.linux@gmail.com>
-CC: Alexander Lobakin <aleksander.lobakin@intel.com>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c                | 2 --
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c          | 3 +--
- drivers/net/ethernet/intel/idpf/idpf_txrx.c              | 3 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c        | 2 +-
- drivers/net/wireless/mediatek/mt76/mac80211.c            | 2 +-
- include/net/page_pool/types.h                            | 6 ++----
- net/core/page_pool.c                                     | 3 +--
- net/core/skbuff.c                                        | 2 +-
- 9 files changed, 8 insertions(+), 17 deletions(-)
+Changes since v2:
+- fix compilation errors if wed is not enabled
+- add RRO garbage collector patch to the series
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 16eb7a7af970..2685d0b7be4b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -3250,8 +3250,6 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
- 	pp.dma_dir = bp->rx_dir;
- 	pp.max_len = PAGE_SIZE;
- 	pp.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
--	if (PAGE_SIZE > BNXT_RX_PAGE_SIZE)
--		pp.flags |= PP_FLAG_PAGE_FRAG;
- 
- 	rxr->page_pool = page_pool_create(&pp);
- 	if (IS_ERR(rxr->page_pool)) {
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index cf50368441b7..06117502001f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -4940,8 +4940,7 @@ static void hns3_put_ring_config(struct hns3_nic_priv *priv)
- static void hns3_alloc_page_pool(struct hns3_enet_ring *ring)
- {
- 	struct page_pool_params pp_params = {
--		.flags = PP_FLAG_DMA_MAP | PP_FLAG_PAGE_FRAG |
--				PP_FLAG_DMA_SYNC_DEV,
-+		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
- 		.order = hns3_page_order(ring),
- 		.pool_size = ring->desc_num * hns3_buf_size(ring) /
- 				(PAGE_SIZE << hns3_page_order(ring)),
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 6fa79898c42c..55a099986b55 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -595,9 +595,6 @@ static struct page_pool *idpf_rx_create_page_pool(struct idpf_queue *rxbufq)
- 		.offset		= 0,
- 	};
- 
--	if (rxbufq->rx_buf_size == IDPF_RX_BUF_2048)
--		pp.flags |= PP_FLAG_PAGE_FRAG;
--
- 	return page_pool_create(&pp);
- }
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 818ce76185b2..1a42bfded872 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -1404,7 +1404,7 @@ int otx2_pool_init(struct otx2_nic *pfvf, u16 pool_id,
- 	}
- 
- 	pp_params.order = get_order(buf_size);
--	pp_params.flags = PP_FLAG_PAGE_FRAG | PP_FLAG_DMA_MAP;
-+	pp_params.flags = PP_FLAG_DMA_MAP;
- 	pp_params.pool_size = min(OTX2_PAGE_POOL_SZ, numptrs);
- 	pp_params.nid = NUMA_NO_NODE;
- 	pp_params.dev = pfvf->dev;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 9325b8f00af0..ea58c6917433 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -897,7 +897,7 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
- 		struct page_pool_params pp_params = { 0 };
- 
- 		pp_params.order     = 0;
--		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV | PP_FLAG_PAGE_FRAG;
-+		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
- 		pp_params.pool_size = pool_size;
- 		pp_params.nid       = node;
- 		pp_params.dev       = rq->pdev;
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index cb76053973aa..51a767121b0d 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -570,7 +570,7 @@ int mt76_create_page_pool(struct mt76_dev *dev, struct mt76_queue *q)
- {
- 	struct page_pool_params pp_params = {
- 		.order = 0,
--		.flags = PP_FLAG_PAGE_FRAG,
-+		.flags = 0,
- 		.nid = NUMA_NO_NODE,
- 		.dev = dev->dma_dev,
- 	};
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index 887e7946a597..6fc5134095ed 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -17,10 +17,8 @@
- 					* Please note DMA-sync-for-CPU is still
- 					* device driver responsibility
- 					*/
--#define PP_FLAG_PAGE_FRAG	BIT(2) /* for page frag feature */
- #define PP_FLAG_ALL		(PP_FLAG_DMA_MAP |\
--				 PP_FLAG_DMA_SYNC_DEV |\
--				 PP_FLAG_PAGE_FRAG)
-+				 PP_FLAG_DMA_SYNC_DEV)
- 
- /*
-  * Fast allocation side cache array/stack
-@@ -45,7 +43,7 @@ struct pp_alloc_cache {
- 
- /**
-  * struct page_pool_params - page pool parameters
-- * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV, PP_FLAG_PAGE_FRAG
-+ * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV
-  * @order:	2^order pages on allocation
-  * @pool_size:	size of the ptr_ring
-  * @nid:	NUMA node id to allocate from pages from
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 953535cab081..2a3671c97ca7 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -756,8 +756,7 @@ struct page *page_pool_alloc_frag(struct page_pool *pool,
- 	unsigned int max_size = PAGE_SIZE << pool->p.order;
- 	struct page *page = pool->frag_page;
- 
--	if (WARN_ON(!(pool->p.flags & PP_FLAG_PAGE_FRAG) ||
--		    size > max_size))
-+	if (WARN_ON(size > max_size))
- 		return NULL;
- 
- 	size = ALIGN(size, dma_get_cache_alignment());
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 975c9a6ffb4a..c52ddd6891d9 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5765,7 +5765,7 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
- 	/* In general, avoid mixing page_pool and non-page_pool allocated
- 	 * pages within the same SKB. Additionally avoid dealing with clones
- 	 * with page_pool pages, in case the SKB is using page_pool fragment
--	 * references (PP_FLAG_PAGE_FRAG). Since we only take full page
-+	 * references (page_pool_alloc_frag()). Since we only take full page
- 	 * references for cloned SKBs at the moment that would result in
- 	 * inconsistent reference counts.
- 	 * In theory we could take full references if @from is cloned and
+Changes since v1:
+- add wed reset support
+- unmap rro buffer on module unload
+- check ind reason to check if the rx buffer must be discarded
+
+Bo Jiao (1):
+  wifi: mt76: mt7996: add wed rx support
+
+Lorenzo Bianconi (11):
+  wifi: mt76: mmio: move mt76_mmio_wed_{init,release}_rx_buf in common
+    code
+  wifi: mt76: move mt76_mmio_wed_offload_{enable,disable} in common code
+  wifi: mt76: move mt76_net_setup_tc in common code
+  wifi: mt76: introduce mt76_queue_is_wed_tx_free utility routine
+  wifi: mt76: introduce wed pointer in mt76_queue
+  wifi: mt76: increase MT_QFLAG_WED_TYPE size
+  wifi: mt76: dma: introduce __mt76_dma_queue_reset utility routine
+  wifi: mt76: mt7996: use u16 for val field in mt7996_mcu_set_rro
+    signature
+  mt76: move wed reset common code in mt76 module
+  mt76: mt7996: add wed reset support
+  wifi: mt76: mt7996: add wed rro delete session garbage collector
+
+Sujuan Chen (1):
+  wifi: mt76: mt7996: add wed tx support
+
+ drivers/net/wireless/mediatek/mt76/dma.c      | 246 +++++++++++-----
+ drivers/net/wireless/mediatek/mt76/dma.h      |  52 ++++
+ drivers/net/wireless/mediatek/mt76/mac80211.c |  19 +-
+ drivers/net/wireless/mediatek/mt76/mmio.c     | 105 +++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  96 +++++-
+ .../net/wireless/mediatek/mt76/mt7603/dma.c   |   9 +-
+ .../net/wireless/mediatek/mt76/mt7615/dma.c   |   6 +-
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |   3 +-
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  |   5 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   1 +
+ .../net/wireless/mediatek/mt76/mt76x02_mmio.c |   5 +-
+ .../net/wireless/mediatek/mt76/mt7915/dma.c   |  46 +--
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  16 +-
+ .../net/wireless/mediatek/mt76/mt7915/mmio.c  | 116 +-------
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |   2 +-
+ .../net/wireless/mediatek/mt76/mt7925/pci.c   |   2 +-
+ .../net/wireless/mediatek/mt76/mt7996/dma.c   | 276 ++++++++++++++++--
+ .../net/wireless/mediatek/mt76/mt7996/init.c  | 256 +++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 122 +++++++-
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  42 +++
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 115 +++++++-
+ .../net/wireless/mediatek/mt76/mt7996/mcu.h   |  37 +++
+ .../net/wireless/mediatek/mt76/mt7996/mmio.c  | 245 ++++++++++++++--
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |  79 ++++-
+ .../net/wireless/mediatek/mt76/mt7996/pci.c   |  61 ++--
+ .../net/wireless/mediatek/mt76/mt7996/regs.h  |  78 ++++-
+ 26 files changed, 1695 insertions(+), 345 deletions(-)
+
 -- 
-2.33.0
+2.41.0
 
