@@ -2,57 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90CF77D0C72
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 11:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB4797D0C86
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Oct 2023 11:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376813AbjJTJ6j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Oct 2023 05:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39116 "EHLO
+        id S1376835AbjJTJ7e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Oct 2023 05:59:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376803AbjJTJ6h (ORCPT
+        with ESMTP id S1376827AbjJTJ7c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Oct 2023 05:58:37 -0400
-Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1E68D5E
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:58:34 -0700 (PDT)
-Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-57b9231e91dso333009eaf.2
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:58:34 -0700 (PDT)
+        Fri, 20 Oct 2023 05:59:32 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B3CD55
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:59:31 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6b6f4c118b7so601378b3a.0
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Oct 2023 02:59:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1697795914; x=1698400714; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:subject:from:user-agent:mime-version
+        d=broadcom.com; s=google; t=1697795970; x=1698400770; darn=vger.kernel.org;
+        h=in-reply-to:subject:from:references:cc:to:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=tx0G6wOD4Fx0afC45DjQ4HWdzGeggXxntEngoM/wYMk=;
-        b=ZutILY6THoG/aDlBe2T0KiMOPeuz7FFkZYlbIugkxeIm86YtWQ4jpLrBKE1PDERho1
-         N5CCFTMnZZ7nzMZHwagVBd1kwdeTtYRnZtfwNgaREm9lAv/ttRTrQMkVQnYxEWCBhe23
-         +a1cLtKW0uJ5Su7wkWk0n/VTKt5TOkdcoO21s=
+        bh=k8OjWGKVsmksplElhPANY4OIHf017myGf6rrJMFr67k=;
+        b=GEoEXe/jTiBpxBjF2wkgm5gTNT3A1qRZKIeRjHB6FrUvTjp0yMh6cxyKcNpkkcM8BU
+         aE2pJcxqF8f/a4k/0uUm4L6NVAlDOXbTsyCuoURxr3Y/WTUMDG+P+YAB8mMdme+2Tl6W
+         Uzzy7KgO6F7QWGEhZMODJdklhQ3L1cpkej0Dw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697795914; x=1698400714;
-        h=in-reply-to:references:cc:to:subject:from:user-agent:mime-version
+        d=1e100.net; s=20230601; t=1697795970; x=1698400770;
+        h=in-reply-to:subject:from:references:cc:to:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tx0G6wOD4Fx0afC45DjQ4HWdzGeggXxntEngoM/wYMk=;
-        b=Vk1VxJU5CAdzLViExyc8/4XRHLTcNV0rKcybr/ryh+/bzjSkA/b3yZKXr7EQ0+j/S6
-         imdzMbNbb4Sw6u17Zxqar9iTGeVSg2w/+BsTEt9PK29aRYz/B8rslhsrPnjErxowpr8z
-         TKZGNDUxCPn/VtlYMTcnhgsGd+uqeeLTSE4vuu6ZYqPx4Ju67YuCu65TGIij9DGsd/Hz
-         QIyX7FmFFQyhRtclQMQx3MBP1C3jMktcBtduzXsFc1A1Q2CrW9Hd75j1H58AfxQlqGDr
-         bKUTY9IYXATaLWGzvRXCWRtFuUzM8xCZhcZg9bU76RM0B275o7hWY/rh145B5TCkhXGq
-         an7g==
-X-Gm-Message-State: AOJu0Yz4h4S9/z3bhOnd1SYkrbo3nBQbvyw2AmsLLCvw9QYGbwc+DdzB
-        AX/ARA1UTc/XQqep1cYgL8bJiA==
-X-Google-Smtp-Source: AGHT+IG1rhwAAVMYRWzx4l8SBK63ETZ1qZ/qywHuWEWfxcBiYMz24Z/f3/5Z0yqH+39CcOK8ve/lag==
-X-Received: by 2002:a05:6358:3995:b0:139:c75f:63eb with SMTP id b21-20020a056358399500b00139c75f63ebmr1316704rwe.21.1697795914172;
-        Fri, 20 Oct 2023 02:58:34 -0700 (PDT)
+        bh=k8OjWGKVsmksplElhPANY4OIHf017myGf6rrJMFr67k=;
+        b=s8qR36nwYKb5D3b60cy+BYPSJPK4yi/c9xDzO2BV8ubV9UiJmZOlOKalpiqz1PbfhJ
+         KknuMN7IX3WuHYXZv5D51p5PciG/mqWfKG5ia9wiVmTJnsusMn4kc366fnKt1VAYUBnj
+         UDymrkt0fWYDUVZcgO4UN2Uu7DL/eQLqZMObsr8qmKLr3jU68e2X3oDyzs7PrLrM/64A
+         g/p5lx33SFDhkTHD+yh3VdMk1dCw8oWuOQ8bB6T2GEAQh3PL88CV+j9LYuPO6+h9s/W5
+         UNxWNjsiHrZiXIi4QZUxNLdjd3SPCAfS5fUPEPQFV6YrJQABTBQpQMKokLQT403WpYsQ
+         PMuQ==
+X-Gm-Message-State: AOJu0YwzVRPajtJi7vKGJ0IUTwS1bDfUmWJQBQgvd2hCSciEvtbQGfaU
+        SGZsilEvWtAoG+wc7FUUATUhPw==
+X-Google-Smtp-Source: AGHT+IEXiODUeBcBYPo47nX3QK1RvkLu2Xak7bnzxKVawe4+/NXuJETiEjgp8KhEzWLPp/pAKQFjnw==
+X-Received: by 2002:a05:6a00:15c7:b0:6b4:6b8:e945 with SMTP id o7-20020a056a0015c700b006b406b8e945mr1270551pfu.15.1697795970386;
+        Fri, 20 Oct 2023 02:59:30 -0700 (PDT)
 Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id x11-20020aa7956b000000b006baa1cf561dsm1171606pfq.0.2023.10.20.02.58.29
+        by smtp.gmail.com with ESMTPSA id z21-20020aa79f95000000b0069323619f69sm1190020pfr.143.2023.10.20.02.59.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Oct 2023 02:58:32 -0700 (PDT)
-Message-ID: <3e08f96d-9fc7-e806-70b3-8e6fc09f6123@broadcom.com>
-Date:   Fri, 20 Oct 2023 11:58:27 +0200
+        Fri, 20 Oct 2023 02:59:28 -0700 (PDT)
+Message-ID: <b907f696-c966-54ef-3267-12833c6f5d91@broadcom.com>
+Date:   Fri, 20 Oct 2023 11:59:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH 3/5] wifi: brcmfmac: Add support for SCAN_V3
 To:     Daniel Berlin <dberlin@dberlin.org>,
         Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
@@ -62,13 +60,15 @@ Cc:     linux-wireless@vger.kernel.org,
         SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
         Hector Martin <marcan@marcan.st>
 References: <cover.1697650207.git.dberlin@dberlin.org>
- <9bb36bcc0dbbbe6f991be30ec404b6e5197238ac.1697650207.git.dberlin@dberlin.org>
-In-Reply-To: <9bb36bcc0dbbbe6f991be30ec404b6e5197238ac.1697650207.git.dberlin@dberlin.org>
+ <079882bf4a7c026547ecf8ad50a2b7a49ade7130.1697650207.git.dberlin@dberlin.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: Re: [PATCH 4/5] wifi: brcmfmac: Support bss_info up to v112
+In-Reply-To: <079882bf4a7c026547ecf8ad50a2b7a49ade7130.1697650207.git.dberlin@dberlin.org>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000627c32060822ea19"
+        boundary="000000000000bd0e8e060822edf4"
 X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,7 +76,7 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000627c32060822ea19
+--000000000000bd0e8e060822edf4
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -84,172 +84,71 @@ Content-Transfer-Encoding: 7bit
 On 10/19/2023 3:42 AM, Daniel Berlin wrote:
 > From: Hector Martin <marcan@marcan.st>
 > 
-> This is essentially identical to SCAN_V2 with an extra field where we
-> had a padding byte, so don't bother duplicating the entire structure.
-> Just add the field and the logic to set the version properly.
+> The structures are compatible and just add fields, so we can just treat
+> it as always v112. If we start using new fields, that will have to be
+> gated on the version.
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Seems EHT is creeping in here.
+
+Having doubts about compatibility statement (see below)...
+
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 20 +++++++++++++------
->   .../broadcom/brcm80211/brcmfmac/feature.c     | 16 ++++++++++++++-
->   .../broadcom/brcm80211/brcmfmac/feature.h     |  1 +
->   .../broadcom/brcm80211/brcmfmac/fwil_types.h  | 15 +++++++++++++-
->   4 files changed, 44 insertions(+), 8 deletions(-)
+>   .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  5 ++-
+>   .../broadcom/brcm80211/brcmfmac/fwil_types.h  | 37 +++++++++++++++++--
+>   2 files changed, 36 insertions(+), 6 deletions(-)
 > 
 > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index 7143ffe659f6..4cf728368892 100644
+> index 4cf728368892..bc8355d7f9b5 100644
 > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
 > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -1125,6 +1125,7 @@ static void brcmf_scan_params_v2_to_v1(struct brcmf_scan_params_v2_le *params_v2
->   }
+> @@ -3496,8 +3496,9 @@ static s32 brcmf_inform_bss(struct brcmf_cfg80211_info *cfg)
 >   
->   static void brcmf_escan_prep(struct brcmf_cfg80211_info *cfg,
-> +			     struct brcmf_if *ifp,
->   			     struct brcmf_scan_params_v2_le *params_le,
->   			     struct cfg80211_scan_request *request)
->   {
-> @@ -1141,8 +1142,13 @@ static void brcmf_escan_prep(struct brcmf_cfg80211_info *cfg,
->   
->   	length = BRCMF_SCAN_PARAMS_V2_FIXED_SIZE;
->   
-> -	params_le->version = cpu_to_le16(BRCMF_SCAN_PARAMS_VERSION_V2);
-> +	if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_SCAN_V3))
-> +		params_le->version = cpu_to_le16(BRCMF_SCAN_PARAMS_VERSION_V3);
-> +	else
-> +		params_le->version = cpu_to_le16(BRCMF_SCAN_PARAMS_VERSION_V2);
-> +
->   	params_le->bss_type = DOT11_BSSTYPE_ANY;
-> +	params_le->ssid_type = 0;
->   	params_le->scan_type = cpu_to_le32(BRCMF_SCANTYPE_ACTIVE);
->   	params_le->channel_num = 0;
->   	params_le->nprobes = cpu_to_le32(-1);
-> @@ -1237,7 +1243,7 @@ s32 brcmf_notify_escan_complete(struct brcmf_cfg80211_info *cfg,
->   		/* Do a scan abort to stop the driver's scan engine */
->   		brcmf_dbg(SCAN, "ABORT scan in firmware\n");
->   
-> -		brcmf_escan_prep(cfg, &params_v2_le, NULL);
-> +		brcmf_escan_prep(cfg, ifp, &params_v2_le, NULL);
->   
->   		/* E-Scan (or anyother type) can be aborted by SCAN */
->   		if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_SCAN_V2)) {
-> @@ -1497,11 +1503,13 @@ brcmf_run_escan(struct brcmf_cfg80211_info *cfg, struct brcmf_if *ifp,
->   		goto exit;
+>   	bss_list = (struct brcmf_scan_results *)cfg->escan_info.escan_buf;
+>   	if (bss_list->count != 0 &&
+> -	    bss_list->version != BRCMF_BSS_INFO_VERSION) {
+> -		bphy_err(drvr, "Version %d != WL_BSS_INFO_VERSION\n",
+> +	    (bss_list->version < BRCMF_BSS_INFO_MIN_VERSION ||
+> +	    bss_list->version > BRCMF_BSS_INFO_MAX_VERSION)) {
+> +		bphy_err(drvr, "BSS info version %d unsupported\n",
+>   			 bss_list->version);
+>   		return -EOPNOTSUPP;
 >   	}
->   	BUG_ON(params_size + sizeof("escan") >= BRCMF_DCMD_MEDLEN);
-> -	brcmf_escan_prep(cfg, &params->params_v2_le, request);
-> +	brcmf_escan_prep(cfg, ifp, &params->params_v2_le, request);
->   
-> -	params->version = cpu_to_le32(BRCMF_ESCAN_REQ_VERSION_V2);
-> -
-> -	if (!brcmf_feat_is_enabled(ifp, BRCMF_FEAT_SCAN_V2)) {
-> +	if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_SCAN_V3)) {
-> +		params->version = cpu_to_le32(BRCMF_ESCAN_REQ_VERSION_V3);
-> +	} else if (brcmf_feat_is_enabled(ifp, BRCMF_FEAT_SCAN_V2)) {
-> +		params->version = cpu_to_le32(BRCMF_ESCAN_REQ_VERSION_V2);
-> +	} else {
->   		struct brcmf_escan_params_le *params_v1;
->   
->   		params_size -= BRCMF_SCAN_PARAMS_V2_FIXED_SIZE;
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-> index 6d10c9efbe93..c545d3b250e1 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-> @@ -287,6 +287,7 @@ static int brcmf_feat_fwcap_debugfs_read(struct seq_file *seq, void *data)
->   void brcmf_feat_attach(struct brcmf_pub *drvr)
->   {
->   	struct brcmf_if *ifp = brcmf_get_ifp(drvr, 0);
-> +	struct brcmf_wl_scan_version_le scan_ver;
->   	struct brcmf_pno_macaddr_le pfn_mac;
->   	struct brcmf_gscan_config gscan_cfg;
->   	u32 wowl_cap;
-> @@ -337,7 +338,20 @@ void brcmf_feat_attach(struct brcmf_pub *drvr)
->   		ifp->drvr->feat_flags |= BIT(BRCMF_FEAT_SCAN_RANDOM_MAC);
->   
->   	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_FWSUP, "sup_wpa");
-> -	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_SCAN_V2, "scan_ver");
-> +
-> +	err = brcmf_fil_iovar_data_get(ifp, "scan_ver", &scan_ver, sizeof(scan_ver));
-> +	if (!err) {
-> +		int ver = le16_to_cpu(scan_ver.scan_ver_major);
-> +
-> +		if (ver == 2) {
-> +			ifp->drvr->feat_flags |= BIT(BRCMF_FEAT_SCAN_V2);
-> +		} else if (ver == 3) {
-> +			/* We consider SCAN_V3 a subtype of SCAN_V2 since the
-> +			 * structure is essentially the same.
-> +			 */
-> +			ifp->drvr->feat_flags |= BIT(BRCMF_FEAT_SCAN_V2) | BIT(BRCMF_FEAT_SCAN_V3);
-> +		}
-> +	}
->   
->   	if (drvr->settings->feature_disable) {
->   		brcmf_dbg(INFO, "Features: 0x%02x, disable: 0x%02x\n",
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h
-> index 7f4f0b3e4a7b..3317e80c398a 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.h
-> @@ -56,6 +56,7 @@
->   	BRCMF_FEAT_DEF(FWAUTH) \
->   	BRCMF_FEAT_DEF(DUMP_OBSS) \
->   	BRCMF_FEAT_DEF(SCAN_V2) \
-> +	BRCMF_FEAT_DEF(SCAN_V3) \
->   	BRCMF_FEAT_DEF(PMKID_V2) \
->   	BRCMF_FEAT_DEF(PMKID_V3)
-
-Having API versioning marked as feature does not feel right. Will 
-probably come up with different mechanism for that.
-
 > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> index 9d248ba1c0b2..1077e6f1d61a 100644
+> index 1077e6f1d61a..81f2d77cb004 100644
 > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
 > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> @@ -52,6 +52,7 @@
+> @@ -18,7 +18,8 @@
+>   #define BRCMF_ARP_OL_HOST_AUTO_REPLY	0x00000004
+>   #define BRCMF_ARP_OL_PEER_AUTO_REPLY	0x00000008
 >   
->   /* version of brcmf_scan_params structure */
->   #define BRCMF_SCAN_PARAMS_VERSION_V2	2
-> +#define BRCMF_SCAN_PARAMS_VERSION_V3	3
+> -#define	BRCMF_BSS_INFO_VERSION	109 /* curr ver of brcmf_bss_info_le struct */
+> +#define	BRCMF_BSS_INFO_MIN_VERSION	109 /* min ver of brcmf_bss_info_le struct */
+> +#define	BRCMF_BSS_INFO_MAX_VERSION	112 /* max ver of brcmf_bss_info_le struct */
+>   #define BRCMF_BSS_RSSI_ON_CHANNEL	0x0004
 >   
->   /* masks for channel and ssid count */
->   #define BRCMF_SCAN_PARAMS_COUNT_MASK	0x0000ffff
-> @@ -72,6 +73,7 @@
->   #define DOT11_BSSTYPE_ANY		2
->   #define BRCMF_ESCAN_REQ_VERSION		1
->   #define BRCMF_ESCAN_REQ_VERSION_V2	2
-> +#define BRCMF_ESCAN_REQ_VERSION_V3	3
->   
->   #define BRCMF_MAXRATES_IN_SET		16	/* max # of rates in rateset */
->   
-> @@ -414,7 +416,7 @@ struct brcmf_scan_params_v2_le {
->   	s8 bss_type;		/* default: any,
->   				 * DOT11_BSSTYPE_ANY/INFRASTRUCTURE/INDEPENDENT
->   				 */
-> -	u8 pad;
-> +	u8 ssid_type;		/* v3 only */
->   	__le32 scan_type;	/* flags, 0 use default */
->   	__le32 nprobes;		/* -1 use default, number of probes per channel */
->   	__le32 active_time;	/* -1 use default, dwell time per channel for
-> @@ -833,6 +835,17 @@ struct brcmf_wlc_version_le {
->   	__le16 wlc_ver_minor;
->   };
->   
-> +/**
-> + * struct brcmf_wl_scan_version_le - scan interface version
-> + */
-> +struct brcmf_wl_scan_version_le {
-> +	__le16 version;
-> +	__le16 length;
-> +	__le16 scan_ver_major;
-> +};
-> +
-> +#define BRCMF_WL_SCAN_VERSION_VERSION 1
-> +
->   /**
->    * struct brcmf_assoclist_le - request assoc list.
->    *
+>   #define BRCMF_STA_BRCM			0x00000001	/* Running a Broadcom driver */
+> @@ -323,28 +324,56 @@ struct brcmf_bss_info_le {
+>   	__le16 capability;	/* Capability information */
+>   	u8 SSID_len;
+>   	u8 SSID[32];
+> +	u8 bcnflags;		/* additional flags w.r.t. beacon */
 
+Ehm. Coming back to your statement "structures are compatible and just 
+add fields". How are they compatible? You now treat v109 struct as v112 
+so fields below are shifted because of bcnflags. So you read invalid 
+information. This does not fly or I am missing something here.
 
---000000000000627c32060822ea19
+>   	struct {
+>   		__le32 count;   /* # rates in this set */
+>   		u8 rates[16]; /* rates in 500kbps units w/hi bit set if basic */
+>   	} rateset;		/* supported rates */
+>   	__le16 chanspec;	/* chanspec for bss */
+>   	__le16 atim_window;	/* units are Kusec */
+
+[...]
+
+--000000000000bd0e8e060822edf4
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -320,14 +219,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBJGq34sf9DfZhozcbD
-x3gZ6/IgyiCoNgmd7aWGufMHrjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzEwMjAwOTU4MzRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCA+xyaBP16nvmtAxlTJ
+tt/zrUZ/TcxQ5c/YLXn9W/ujXjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzEwMjAwOTU5MzBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA6BMp/cfrOfuFNH0UZAvnOJsP1s55s/Nuhm6z
-hjk5IidcAdpY9DzuUPMHZrnQyEaMN6nr2WR7oBZH/4uTmuN4E4wTcs789wV/jyIV5oBlRr0jEllM
-wk4zS4AkG4iMQdJtmKs7ovRD/SoL3C8d4KWTMAaZxA+O1PgRVmN3X3tsYXEF6IThn/xpN1raJLsw
-amb+2d3cuIO2GFmOAgvi+Tx6mj0yKB+Am1FCLAP8dt8tD8v1ux0BIwtrysZUDcy2K0USVP7MZ/HW
-5uk5CaqObiXaYi6VytPVXtgdVI38+NGnVubLQRJGfKZ36oFkEGvSFFDjQZ2ouEHmmf7rve4AVQg0
-ng==
---000000000000627c32060822ea19--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAvl8vOZniuCDO5m988kGErPq99twIZHUUGwrd
+4griYQQS5a+V0AVpFXAcF14St6apgZnLA80s/Z4cfQJjEmNOSWXBKqrHA3OlEp5D62QLVVx07h7J
+mVcxsL1EcFklU9JuK/SD+JClZQhRXHtkU9Emc7eOb9hrS9vIRckwE7FuO6WO+DIxqS6Gig3T8CAy
+ywmPVJ44KBJfg1xJE1HUUi41/57aQBL6xcBJj1/C+gmy3YJXU5USi24pAwDJcyOU0QY/vaHdhkcP
+1tc7quLsvqWQ0fntrHjYktE3IqImd7cNIxyBNrlW54vHJuaY2bS59qzjSEIKndbjeF4/ehjI63qs
+Rw==
+--000000000000bd0e8e060822edf4--
