@@ -2,216 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 137697D1D83
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Oct 2023 16:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3317C7D1DF8
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Oct 2023 17:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230093AbjJUOlB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Oct 2023 10:41:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48122 "EHLO
+        id S231403AbjJUPsk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Oct 2023 11:48:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231280AbjJUOlA (ORCPT
+        with ESMTP id S229583AbjJUPsj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Oct 2023 10:41:00 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B272D66
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Oct 2023 07:40:54 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-507b9408c61so2374775e87.0
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Oct 2023 07:40:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dberlin.org; s=google; t=1697899253; x=1698504053; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c4RGN71ke5T4dmY5Ao906sQxzaEaT/R/ELscOoI4tYI=;
-        b=EdnFsEOQl3gNbC/8mq9MNRTRN0NpZb5IYsyqijXwBTltjr3Ph8mgF+VpuWPNcJY8NJ
-         0LiekhZvsBiRCB5jj2tD4HrSKHWnkXC+98iuBaq9UjnXjGHSKygAa6eiPLVPXBZmnAOF
-         /0YkTGS1qqSqWlQEHl0f/Kv5VdSwXtTa5pxFHGcGh7JYRujxneWGzQ1W8ZnUJs5UA/GJ
-         M0/tyTybTqTqkKxCxQj4BUCRZb9M294Wu1We6d2ad/yqjU7MPoEbAoDBWZDq7kjRcuLF
-         B8eM5BS9S9vyoNRfR/1trHKqMEfBwP3wdfVIwWM0ZDmVT5uCONHO7mWMfmTGXP7LbzY1
-         im0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697899253; x=1698504053;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c4RGN71ke5T4dmY5Ao906sQxzaEaT/R/ELscOoI4tYI=;
-        b=xN4WMlt+WajUildrE6Ei/Po045Lud2IbTb7p9P4/FqBJTcaMlbvZxZEvf96MIqm44K
-         erQxE+SeGaq0Ec8JaG9HOq0t4vuJmStIbYKpkDnNyJXsTqyTcsdWslVmsRkvNPEQY0iD
-         vZbchcn3I10aITy0/v1+CCNjl1NR4sXIdFC5evqEBZ2kVdTrUvILOrTYOwnnDa5LPcQI
-         2xOaLSYbPyVdwqEPxACM/lvcrhi4Z0IuTsnjxRGCIfMvJod4YlJIPVrIrmT8G1Rm+1tx
-         wYLovh0xMib5q6laXtdkkiRMAtUd9MxxJuPlHLSbIYId2DfVOwQiFcDBCiMzLgXz03se
-         fKlw==
-X-Gm-Message-State: AOJu0Yw9o0l37rZkHwcdfGP6kCwSW4DBdT74xlwW4ao4J0mYAw8BJ84R
-        wIqesCVZlpODaapIELbDqep8MG9XaKlEP0lp9OE/MA==
-X-Google-Smtp-Source: AGHT+IHT5WDs88HCdoYDl86/v8lWQrzUBw93RC+XK90RUpyZMkEMONLPJFy9OhS2Kg+5PJU6iB3OKyU/92r2TI1Kz54=
-X-Received: by 2002:ac2:43ab:0:b0:502:fe11:a68f with SMTP id
- t11-20020ac243ab000000b00502fe11a68fmr3625830lfl.28.1697899252363; Sat, 21
- Oct 2023 07:40:52 -0700 (PDT)
+        Sat, 21 Oct 2023 11:48:39 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A8D135
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Oct 2023 08:48:35 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A5E4BC4005D
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Oct 2023 15:48:33 +0000 (UTC)
+Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 135B013C2B0;
+        Sat, 21 Oct 2023 08:48:33 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 135B013C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1697903313;
+        bh=bQSguloIhJ24I1AK7EnMYfTF5biL+kIyn8Rmpab0mkc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mDXQk+zjiXiWDe1PTe9BXWNmVTQ1zpXXCLWS8jIyqEeiUsdd+R6KRVYe4pwJzZCe8
+         s2AtmCnC61mWF5b60RckehD3mlhPyK/Ma8BEhOfGTs/uXgz7jgD+81ngGqZpKDfpxZ
+         kI4QYv57Xd/2nyD7GhbKJXRG7p++LAR40PHupriM=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH] wifi: wireless:  Fix bad memory passed in inform_single_bss_data.
+Date:   Sat, 21 Oct 2023 08:48:27 -0700
+Message-Id: <20231021154827.1142734-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-References: <cover.1697719099.git.dberlin@dberlin.org> <d2ef482bcf01fc515224cd508d730590a5294df2.1697719099.git.dberlin@dberlin.org>
-In-Reply-To: <d2ef482bcf01fc515224cd508d730590a5294df2.1697719099.git.dberlin@dberlin.org>
-From:   Daniel Berlin <dberlin@dberlin.org>
-Date:   Sat, 21 Oct 2023 10:40:41 -0400
-Message-ID: <CAF4BwTVQf25uCCVovtce+kjz0pFFMZX=Ln36R4Vd-1LEsxrcMw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] [brcmfmac] Fix regulatory domain handling to reset
- bands properly
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-MDID: 1697903314-YN1PqJ5r4uRI
+X-MDID-O: us5;ut7;1697903314;YN1PqJ5r4uRI;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-As an aside, the alternative would be to simply not ignore any
-attempts to set the regulatory domain, regardless of whether it's 00
-or the chip is already set to that country.
-It doesn't happen that often, so it's not clear it's worth avoiding it at a=
-ll.
-There are some things i'd have to fix to make it work resiliently well
-(for example, i know we set the 2g bw cap where we do because it has
-to be done with the interface down), but i can fix those if needed.
+From: Ben Greear <greearb@candelatech.com>
 
-On Thu, Oct 19, 2023 at 10:18=E2=80=AFAM Daniel Berlin <dberlin@dberlin.org=
-> wrote:
->
-> Currently, we ignore the default country in the reg notifier.
-> We also register a custom regulatory domain, which is set
-> as the default.
-> As a result, the chip is likely to be set to the correct country,
-> but the regulatory domain will not match it.
->
-> When the regulatory notifier is then called, we see the countries
-> are the same and do not change anything, even though the domain
-> is wrong.
->
-> This patch forces us to reset the bands on the first country change
-> even if the chip is already set to that country.
->
-> We also restore the original band info before reconstructing channel
-> info, as the new regdom power limits may be higher than what is
-> currently set.
->
-> Signed-off-by: Daniel Berlin <dberlin@dberlin.org>
-> ---
->  .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 38 +++++++++++++++----
->  .../broadcom/brcm80211/brcmfmac/cfg80211.h    |  2 +
->  2 files changed, 33 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c =
-b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index 3656790ec4c9..7bc479ccc24b 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -7199,11 +7199,23 @@ static int brcmf_construct_chaninfo(struct brcmf_=
-cfg80211_info *cfg,
->                 goto fail_pbuf;
->         }
->
-> +       /* Changing regulatory domain may change channels and limits
-> +        * To ensure that we correctly set the new band info, copy the or=
-iginal
-> +        * info first.
-> +        */
->         band =3D wiphy->bands[NL80211_BAND_2GHZ];
-> -       if (band)
-> +       if (band) {
-> +               memcpy(band->channels, &__wl_2ghz_channels,
-> +                      sizeof(__wl_2ghz_channels));
-> +               band->n_channels =3D ARRAY_SIZE(__wl_2ghz_channels);
->                 for (i =3D 0; i < band->n_channels; i++)
->                         band->channels[i].flags =3D IEEE80211_CHAN_DISABL=
-ED;
-> +       }
->         band =3D wiphy->bands[NL80211_BAND_5GHZ];
-> -       if (band)
-> +       if (band) {
-> +               memcpy(band->channels, &__wl_5ghz_channels,
-> +                      sizeof(__wl_5ghz_channels));
-> +               band->n_channels =3D ARRAY_SIZE(__wl_5ghz_channels);
->                 for (i =3D 0; i < band->n_channels; i++)
->                         band->channels[i].flags =3D IEEE80211_CHAN_DISABL=
-ED;
-> +       }
-> @@ -7210,8 +7222,11 @@
->         band =3D wiphy->bands[NL80211_BAND_6GHZ];
-> -       if (band)
-> +       if (band) {
-> +               memcpy(band->channels, &__wl_6ghz_channels,
-> +                      sizeof(__wl_6ghz_channels));
-> +               band->n_channels =3D ARRAY_SIZE(__wl_6ghz_channels);
->                 for (i =3D 0; i < band->n_channels; i++)
->                         band->channels[i].flags =3D IEEE80211_CHAN_DISABL=
-ED;
-> -
-> +       }
->         total =3D le32_to_cpu(list->count);
->         if (total > BRCMF_MAX_CHANSPEC_LIST) {
->                 bphy_err(drvr, "Invalid count of channel Spec. (%u)\n",
-> @@ -8601,9 +8616,17 @@ static void brcmf_cfg80211_reg_notifier(struct wip=
-hy *wiphy,
->         }
->
->         err =3D brcmf_translate_country_code(ifp->drvr, req->alpha2, &ccr=
-eq);
-> -       if (err)
-> -               return;
-> -
-> +       if (err) {
-> +               /* Because we ignore the default country code above,
-> +                * we will start out in our custom reg domain, but the ch=
-ip
-> +                * may already be set to the right country.
-> +                * As such, we force the bands to be re-set the first
-> +                * time we try to set a country for real.
-> +                */
-> +               if (err !=3D -EAGAIN || !cfg->force_band_setup)
-> +                       return;
-> +       }
-> +       cfg->force_band_setup =3D false;
->         err =3D brcmf_fil_iovar_data_set(ifp, "country", &ccreq, sizeof(c=
-creq));
->         if (err) {
->                 bphy_err(drvr, "Firmware rejected country setting\n");
-> @@ -8670,6 +8693,7 @@ struct brcmf_cfg80211_info *brcmf_cfg80211_attach(s=
-truct brcmf_pub *drvr,
->         cfg->pub =3D drvr;
->         init_vif_event(&cfg->vif_event);
->         INIT_LIST_HEAD(&cfg->vif_list);
-> +       cfg->force_band_setup =3D true;
->
->         vif =3D brcmf_alloc_vif(cfg, NL80211_IFTYPE_STATION);
->         if (IS_ERR(vif))
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h =
-b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
-> index 0e1fa3f0dea2..7e60ceeeeb3a 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.h
-> @@ -327,6 +327,7 @@ struct brcmf_cfg80211_wowl {
->   * @dongle_up: indicate whether dongle up or not.
->   * @roam_on: on/off switch for dongle self-roaming.
->   * @scan_tried: indicates if first scan attempted.
-> + * @force_band_setup: indicates if we should force band setup
->   * @dcmd_buf: dcmd buffer.
->   * @extra_buf: mainly to grab assoc information.
->   * @debugfsdir: debugfs folder for this device.
-> @@ -357,6 +358,7 @@ struct brcmf_cfg80211_info {
->         bool pwr_save;
->         bool dongle_up;
->         bool scan_tried;
-> +       bool force_band_setup;
->         u8 *dcmd_buf;
->         u8 *extra_buf;
->         struct dentry *debugfsdir;
-> --
-> 2.41.0
->
+The sins of similar variable names and passing void pointers
+are seen again in wireless-next tree.
+
+Wrong data was passed into the rdev_inform_bss method causing
+crashes.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ net/wireless/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 7f8e831ef1dc..52b048675cc7 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -2155,7 +2155,7 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
+ 	if (!res)
+ 		goto drop;
+ 
+-	rdev_inform_bss(rdev, &res->pub, ies, data->drv_data);
++	rdev_inform_bss(rdev, &res->pub, ies, drv_data->drv_data);
+ 
+ 	if (data->bss_source == BSS_SOURCE_MBSSID) {
+ 		/* this is a nontransmitting bss, we need to add it to
+-- 
+2.40.0
+
