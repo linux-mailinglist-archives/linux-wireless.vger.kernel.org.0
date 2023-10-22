@@ -2,69 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67EBB7D2317
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Oct 2023 14:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 886B07D2330
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Oct 2023 15:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231648AbjJVMbN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Oct 2023 08:31:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51536 "EHLO
+        id S230331AbjJVNbb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Oct 2023 09:31:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230440AbjJVMbM (ORCPT
+        with ESMTP id S229588AbjJVNba (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Oct 2023 08:31:12 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A23E4;
-        Sun, 22 Oct 2023 05:31:10 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-9c41e95efcbso339070866b.3;
-        Sun, 22 Oct 2023 05:31:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697977869; x=1698582669; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XOMYBFKd8F3GC1twwAJy4M1O83pGevcctA9lZA8WXl4=;
-        b=dEyUdMOrSdCe/Tbe9ylcBYa21fnFzFHF8iJJLolCZ4+ReYtnIGOEFHwVIvqprpwAak
-         jBDicutooL9NDMgC+44lVdYvmBv0RPVvq0mVB/XNlMHymhVDN297ZBbvU0JUiYDZiHRc
-         Xc2ILRR8FZQakLBH8KRx4ZGKDChvHFoflh6uERKa2fuYCAzYlN83RWbVEBBDuijrMrHC
-         sN1T0taQQCTpXXLDiWFw3hXJRipYm/0PBNdnXzqUMIYqViuZUyeH3yncdXh06QKuEolb
-         lJb6S0G3Sy1L6mFRr/0+9reGN+3+QLE5UugOxRH1NKqcl3Mo5GlRGlPNaMn5bqi0/J8p
-         beGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697977869; x=1698582669;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XOMYBFKd8F3GC1twwAJy4M1O83pGevcctA9lZA8WXl4=;
-        b=A/HRwhcej2b6cHwlgJFu+xvYTEy2TAOxc+W+ZNQ8wnlwXPdR0IzgLsvBFlixda9KPc
-         3jg5SLansXwBzR/E4km1dbj2yudQ/jTJOkamP4TGJBIEZilJs8XvX5+cYWWJsnqKF8Bw
-         WFJgb8Rrt7eqhc9rcaCaX5iCPeHPyOm/cxYAUDk/EakO6YRMbfnvIi27iyKI3Jfwiy4W
-         xMGO8NDW63QzYPhq0hxZ2keLoIfkSvKlC3D1QWnJN/YnGfIJH6t6kgGwAhPzG40VGJRp
-         qTengdgVb0eVc8nJrkuj2ERn9Fejbv3rHuWK0s6QXf1dMawGP9oOtwcsWmPJEoNXzHx1
-         wK9w==
-X-Gm-Message-State: AOJu0YyrIHL0usgY1WZgLpInnTUZUNU/kyUFhh4PtvWuBzLLaUCJjUcC
-        qSmKYxI+Dtx2T80/2pMI+OQx9Qr8OoU+dw==
-X-Google-Smtp-Source: AGHT+IGPYKycsiDu6PyO9oA5+5Eu8kUSYBi1Y2oUaTmSVDj8vv2eIL/iL2lmiOT+0JpFUMR+Wg/A0A==
-X-Received: by 2002:a17:907:94c1:b0:9bf:4915:22c7 with SMTP id dn1-20020a17090794c100b009bf491522c7mr4983297ejc.55.1697977868530;
-        Sun, 22 Oct 2023 05:31:08 -0700 (PDT)
-Received: from [192.168.0.14] (ip-213-220-240-165.bb.vodafone.cz. [213.220.240.165])
-        by smtp.gmail.com with ESMTPSA id h25-20020a170906261900b0099293cdbc98sm5121720ejc.145.2023.10.22.05.31.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Oct 2023 05:31:07 -0700 (PDT)
-Message-ID: <d85050999a2944a921a38352d1c371fdb3b8c29e.camel@gmail.com>
-Subject: Re: Old WiFi modules -- for testing?
-From:   Rostislav Lisovy <lisovy@gmail.com>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     Kalle Valo <kvalo@kernel.org>
-Date:   Sun, 22 Oct 2023 14:31:07 +0200
-In-Reply-To: <ZTUIJHf1vdSxkXeX@debian.me>
-References: <ca929e1d8197ace414a06b20151b84de3dd160f4.camel@gmail.com>
-         <ZTUIJHf1vdSxkXeX@debian.me>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+        Sun, 22 Oct 2023 09:31:30 -0400
+Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F203DA
+        for <linux-wireless@vger.kernel.org>; Sun, 22 Oct 2023 06:31:23 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:112b:0:640:c113:0])
+        by forward101b.mail.yandex.net (Yandex) with ESMTP id 15A4860A6A;
+        Sun, 22 Oct 2023 16:31:21 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id KVMhodNDXCg0-7DwGs1yM;
+        Sun, 22 Oct 2023 16:31:20 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1697981480; bh=+sRH5rm985oKn75ETXqJFqoK9TTRlqgfF7q+cW0OjaE=;
+        h=Subject:To:From:Cc:Date:Message-ID;
+        b=FRhs3+bF4FiNfOHLdmyAXrulpMogmcU5XLBh73oXlBrUi0ZS+JqUTPkMxHwX64Qq9
+         UIcu+2uWz2Ea6w4TzE1GXUioCy22AkmZtxp+HTeBGw4oSYWgOmH9I2cUlYJiOtgVyX
+         laSn5cGCDjRgjmed/QBEYYdziJDeBuJnsIMF/i8o=
+Authentication-Results: mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <df9c1998-70ed-4bf8-95cc-9d851d7ccfcd@yandex.ru>
+Date:   Sun, 22 Oct 2023 16:31:20 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     linux-wireless@vger.kernel.org
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+Autocrypt: addr=dmantipov@yandex.ru; keydata=
+ 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
+ tx98MCutXbJWn55RtnVKbpIiMfBrcB8=
+Subject: On EDCCA control in rtlwifi
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -75,23 +83,8 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Unfortunately I do not have any further info than what is on the
-pictures.
+I've noticed that 'rtl92ee_dm_dynamic_edcca()' and 'rtl8723be_dm_dynamic_edcca()'
+are almost identical and both depends on 'pre_edcca_enable' of 'struct rtl_hal',
+but only the first one can toggle it. Isn't it a bug somewhere?
 
-Rostislav
-
-
-
-On Sun, 2023-10-22 at 18:31 +0700, Bagas Sanjaya wrote:
-> On Sun, Oct 22, 2023 at 12:16:04PM +0200, Rostislav Lisovy wrote:
-> > Hi,
-> > I am interested in donating the following WiFi modules to the
-> > "Linux
-> > wireless project". I guess they can be used for some automated
-> > testing
-> > or training or something like that?
-> >=20
-> > https://photos.app.goo.gl/sfootr3X8KVUBYf48
->=20
-> From album link above, I can't tell exact models. Can you list ones?
->=20
+Dmitry
