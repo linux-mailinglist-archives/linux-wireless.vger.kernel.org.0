@@ -2,102 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ADDC7D2358
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Oct 2023 16:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCB357D236A
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Oct 2023 16:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231297AbjJVOR3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Oct 2023 10:17:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42784 "EHLO
+        id S231139AbjJVO4M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Oct 2023 10:56:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjJVOR2 (ORCPT
+        with ESMTP id S229500AbjJVO4L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Oct 2023 10:17:28 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BAB0E7;
-        Sun, 22 Oct 2023 07:17:26 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9bdf5829000so358101466b.0;
-        Sun, 22 Oct 2023 07:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697984245; x=1698589045; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RMaQYL7VWn5dUS6/mp9AuU+h6Mgmj1GyOYjCOvXr5CY=;
-        b=DFeB/WEcAtVaGcExcx4GUO1NT2KmS6t3/A7P8l6XC2O1CpYp4cdeQkR7szj4Jkl4Cf
-         CU3z2FddyLfdmTq3REwrHpuZkVmV2FqHevRvOzWqWzZ8RmOR5FgHgRKIp1EdrtKR+tlc
-         VpepuAzhbU10AvfgFmudmXIn7D1888GPI84oiS7LdbJGi6uTTtcTFexmSijaZGliMJCD
-         o+amXh6DgfG511dx4yDAD/AvQjDAaUxWkVHN/y0gHGQv+PxFPOzQpJfv1UneyYrdcA6A
-         zZqEW2HxVdraKMMPbLvxrg/qT6uKyJwS84EW8Y1p6nHpg0TBGyexrKGOkc1AxeyGLm4/
-         QFoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697984245; x=1698589045;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RMaQYL7VWn5dUS6/mp9AuU+h6Mgmj1GyOYjCOvXr5CY=;
-        b=GkJukh9/Pq87ZlUBv03M5bY4bz+yisYkGHwCCm3hXC2SM2tp/otIc5E7jOE3MnSyM2
-         khTVlfCHR+0iNi4FT97O8EH6gRnQD/B8m34By+F3cklUI+0SUkUQdOBpZfm7ftSE/nLc
-         M1NbpptPEJEL2yjrtS/Sjugtn2JNf2nv7zAy0rgEr5s+wqjHEFFSVKu/+HKMI8BkunuP
-         s0OsV6HEM6sfCL3aScRMooHOrikJOcokr1n7EQLXXiUbD6sQ+VdJQDlTlZf9du3sU9fK
-         EQOtLup8MWTo1dYvQrPhG5hTwMeqDC4qGnxs3Ms1t1gPZ0LdvZcGRrQpzpO4lyr1ogKv
-         oiwg==
-X-Gm-Message-State: AOJu0Yy7Nv5vhAB8JmRWKsu7kADjaVHNIsseiExwCKFie6l/XxEYYOZs
-        zfOV6Z+T4X/IEvRcTWVvECLOcGWdsNVIWw==
-X-Google-Smtp-Source: AGHT+IErw0Qbe+MsGsYAhYdmSQEJyNSTHTrFmCIj+RyVRCxOvHwI+S/94+caxGkzYAXul/xgjXlqWQ==
-X-Received: by 2002:a17:907:70e:b0:9bf:5771:a8cf with SMTP id xb14-20020a170907070e00b009bf5771a8cfmr5065125ejb.70.1697984244708;
-        Sun, 22 Oct 2023 07:17:24 -0700 (PDT)
-Received: from [192.168.0.14] (ip-213-220-240-165.bb.vodafone.cz. [213.220.240.165])
-        by smtp.gmail.com with ESMTPSA id a5-20020a170906468500b00992b2c55c67sm5120053ejr.156.2023.10.22.07.17.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Oct 2023 07:17:24 -0700 (PDT)
-Message-ID: <c998e99a4b8051b62776c66afb1ccd516d888d63.camel@gmail.com>
-Subject: Re: Old WiFi modules -- for testing?
-From:   Rostislav Lisovy <lisovy@gmail.com>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     Kalle Valo <kvalo@kernel.org>
-Date:   Sun, 22 Oct 2023 16:17:23 +0200
-In-Reply-To: <872e8be6-c0d0-4e5f-94d8-e5c021d24585@gmail.com>
-References: <ca929e1d8197ace414a06b20151b84de3dd160f4.camel@gmail.com>
-         <ZTUIJHf1vdSxkXeX@debian.me>
-         <d85050999a2944a921a38352d1c371fdb3b8c29e.camel@gmail.com>
-         <872e8be6-c0d0-4e5f-94d8-e5c021d24585@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+        Sun, 22 Oct 2023 10:56:11 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35665A4
+        for <linux-wireless@vger.kernel.org>; Sun, 22 Oct 2023 07:56:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697986569; x=1729522569;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4lz9J35+4ZgVST8FN3TPDIJw0/ekqGEzoLWaGc5dJn8=;
+  b=C/OjLghMGjwqvOsiKAzde4X0LPWRlpnNTk9HH3IcZVx+/92cxAAPWllX
+   TRroa3xtf/Ap1JLeOC/Xpbq501lMBG01JnZbLdTOefzFI5D2uRwDr69ie
+   o8GSpcP2K7I3WHUdmdiMosuE27yItOT2PnZy9yy3VoxnBM4RiK1VgPbPI
+   4WSsHv0t1YJAhYjxbfoAqfypF8Ez+gBDN4zDjaQnYve9wwtmEuhSTQS67
+   hT9RgbXI9Xe3CaayVf1Yef8JHaWTBDu2L1sFr03tEL9e1rLr51sFnelqh
+   I3U1jDOoGu3kQxp+36+lNBnTdHadxsbkFnFWWxklcQisaEl6HubHTXr6n
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10870"; a="472925841"
+X-IronPort-AV: E=Sophos;i="6.03,242,1694761200"; 
+   d="scan'208";a="472925841"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2023 07:56:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.03,242,1694761200"; 
+   d="scan'208";a="5556172"
+Received: from umark-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.231.87])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2023 07:54:52 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/10] wifi: iwlwifi: updates - 2023-10-22
+Date:   Sun, 22 Oct 2023 17:55:46 +0300
+Message-Id: <20231022145556.244202-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-What patches? Have you read my original email? :)
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-I am offering the modules to the linux-wireless project for free...
-Maybe they can be used for testing or some "training activities".
+Hi,
 
-If not... no problem and I can get rid of them is some other way.
+This patch set includes iwlwifi patches intended for v6.7
 
-Rostislav
+It contains a few bugfixes and cleanups.
+In addition, it implements the new statistis firmware API and bumps
+firmware API to 86.
 
+Thanks,
+Gregory
 
+Anjaneyulu (2):
+  wifi: iwlwifi: mvm: implement new firmware API for statistics
+  wifi: iwlwifi: mvm: debugfs for fw system stats
 
-On Sun, 2023-10-22 at 21:09 +0700, Bagas Sanjaya wrote:
-> On 22/10/2023 19:31, Rostislav Lisovy wrote:
-> > Unfortunately I do not have any further info than what is on the
-> > pictures.
-> >=20
->=20
-> I'm confused then...
->=20
-> Anyway, you can try submitting patches as contributor (see
-> Documentation/process/submitting-patches.rst for details).
->=20
-> Bye!
->=20
+Daniel Gabay (1):
+  wifi: iwlwifi: read DSM func 2 for specific RF types
+
+Gregory Greenman (1):
+  wifi: iwlwifi: bump FW API to 86 for AX/BZ/SC devices
+
+Johannes Berg (3):
+  wifi: iwlwifi: trace full frames with TX status request
+  wifi: iwlwifi: mvm: cycle FW link on chanctx removal
+  wifi: iwlwifi: mvm: show dump even for pldr_sync
+
+Miri Korenblit (2):
+  wifi: iwlwifi: mvm: add a print when sending RLC command
+  wifi: iwlwifi: empty overflow queue during flush
+
+Mukesh Sisodiya (1):
+  wifi: iwlwifi: fw: Add support for UATS table in UHB
+
+ .../net/wireless/intel/iwlwifi/cfg/ax210.c    |   2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |   2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |   2 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/tx.c   |   5 +-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  26 ++-
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |  30 ++++
+ .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  18 ++
+ .../net/wireless/intel/iwlwifi/fw/api/stats.h | 153 +++++++++++++++--
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |   4 +
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c  |  50 ++++++
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h  |  17 ++
+ .../net/wireless/intel/iwlwifi/iwl-devtrace.h |   8 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |   7 +-
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 104 ++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  59 +++++++
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  46 +++--
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  13 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  12 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  27 ++-
+ .../net/wireless/intel/iwlwifi/mvm/phy-ctxt.c |   3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 157 +++++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   4 +-
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |  61 +++++++
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c |   9 +-
+ drivers/net/wireless/intel/iwlwifi/queue/tx.h |   2 +-
+ 25 files changed, 756 insertions(+), 65 deletions(-)
+
+-- 
+2.38.1
+
