@@ -2,66 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAAF67D2286
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Oct 2023 12:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 901687D22E7
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Oct 2023 13:31:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231551AbjJVKQL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Oct 2023 06:16:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45056 "EHLO
+        id S231552AbjJVLbz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Oct 2023 07:31:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231424AbjJVKQK (ORCPT
+        with ESMTP id S229472AbjJVLby (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Oct 2023 06:16:10 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4722CEE
-        for <linux-wireless@vger.kernel.org>; Sun, 22 Oct 2023 03:16:08 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-53e08e439c7so3588513a12.0
-        for <linux-wireless@vger.kernel.org>; Sun, 22 Oct 2023 03:16:08 -0700 (PDT)
+        Sun, 22 Oct 2023 07:31:54 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F8E4E9;
+        Sun, 22 Oct 2023 04:31:52 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-5ac865d1358so1228956a12.3;
+        Sun, 22 Oct 2023 04:31:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697969766; x=1698574566; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:date:to:from
-         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=FDLenGM6rRvmszfH7Fb1IvY1icqMZoQlR9FBjkW2Nkg=;
-        b=lVt0lJ4pDgXO0aPLKvYBiKhNKHL+/2Dq5uPd38n84swSc5utLs7bUhchOS6d4ds2Sz
-         5c31NN2QFORbzJy6NsoU5psvQa69aSsEsnflc0IxH58Ns0m5jRgL0onB//0+qP/BE7bq
-         kuruQYMO8ED9IL3YMow+OG3aaKf2UDADEp+hpQqoLuWdr4fveIflRtUIdPFvmTQwFQBS
-         epXGUvRs58ZiM8snOkIquUgG2621V807R6g1xTUtZ/f/Pk+EH5XFvuS7jLr59CiidX9D
-         mz1qV8iG+vmaVvrLRnjSWg8cCpMUC2Zdx0Mb35bMbfT4IZJtdKjjfuOhq93Y3c90HEjo
-         KeqA==
+        d=gmail.com; s=20230601; t=1697974312; x=1698579112; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qHpL2z0CuG7al3rf922b7WTCtXZClfeTh1eh1r/Moj0=;
+        b=kKCvFHmtWu5tqLILXX0AedG84M7fH4kHZYt+gr3jw7HHXeOcp5WaBgwjRq6rdha3Qo
+         Dgi/KvkCwzvZrdniKRc9afNRgjYb2kDvVcmCrxrv/UNg5TypeSSLga/mdi3mBbBwJ3A8
+         1KGhFhf867IId5VJS4jhoiG/QgVwDKyF9VlKLvaoO225h/WSzkngCsnj04RhG1O18+u/
+         IV3jwa7xr+MW5Hf7aMxgo7SjOcjdkfnrDSACtEgtsdaCX8VkNLM5kkpIDIO0CBW2UKxt
+         9mvZ/YhOdFH+uXyAeXger52+gJEmAb0mOkRXDFBypY4wA0unbUT1FpxJ/aK9UrEJzR0T
+         8WLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697969766; x=1698574566;
-        h=mime-version:user-agent:content-transfer-encoding:date:to:from
-         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1697974312; x=1698579112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FDLenGM6rRvmszfH7Fb1IvY1icqMZoQlR9FBjkW2Nkg=;
-        b=vFAPwwScwUXdWRP6fxisI2lUOls8jcPbpiN8mfOWBnDWkT4SdMHwwaM+eK0AJNN4+R
-         8bmN2qEFj+2BjuJWFmkf6+egHI5wm4WM9EvyhzJ3nA1T81ctmMveS13kwyCUHbIHL7ke
-         F1Co7qlnWqsiBRwQD8wQWlJPYomxcft7rOT758q1qUCqmBdy/ehC4+rr6MHenCVsqJOq
-         bDz2TxYm0eZyZsgapHsX5GP0LEy2eBjSGqJdfth2dG6x/JUHaY+jRwG3xv0MqcHQEy4w
-         dMIhQaZzL6QJCaPgnVvvbK6SHpeVB4AnjwXG5TXu5ExW71XRzmGesKvig5R2O/cbR2fe
-         M3Ew==
-X-Gm-Message-State: AOJu0YzkQUGjv+ZnQDHuSuf/PLdSQ3fmdLw0dA5rZWRsn2nVb+wqIaO5
-        m5H7xAI7cBL8x5MIHQ9aP0aiuEzuxelisg==
-X-Google-Smtp-Source: AGHT+IE7SHOVtApQlH+irMzrJaexoaxYn5+OTZY36DHxmgQXUfzBSLcJtDKcimTjzQ6nbTZe/mKjGQ==
-X-Received: by 2002:a50:ccc1:0:b0:540:16d0:3332 with SMTP id b1-20020a50ccc1000000b0054016d03332mr1872252edj.20.1697969765994;
-        Sun, 22 Oct 2023 03:16:05 -0700 (PDT)
-Received: from [192.168.0.14] (ip-213-220-240-165.bb.vodafone.cz. [213.220.240.165])
-        by smtp.gmail.com with ESMTPSA id cf15-20020a0564020b8f00b0053deb97e8e6sm4545156edb.28.2023.10.22.03.16.05
-        for <linux-wireless@vger.kernel.org>
+        bh=qHpL2z0CuG7al3rf922b7WTCtXZClfeTh1eh1r/Moj0=;
+        b=ch8W28QtCTDJMDPtLCW+GdXunki7MESh3Bun8000lmg/T5JnoKk+GvEr7wxyxu/QRw
+         UncwXDcjXBTVS8nxqUF2O4ddiXVD+w1AXZn3TV5pJ8isBEX7APMhzbNaiaQT4YLGg42i
+         Dm6a+OQ0NOGLOr7/P46hkXAQohU5B26zIuq8nOkzrTTW9nEJKpg14f6cHWT6B2zqiqrU
+         K9A+6iR+fq2o3et2UKcQEvcr/YETSimHEbuGaDp81fSkwfrtnjCSsKQ/knU5D7Grgw3m
+         6/PLo/ha7mCP48uDbN2wSkZauPomXnRuK14B+jOJuYju8yQP/RDk0xk8+6EMQUEz/vKC
+         gtcA==
+X-Gm-Message-State: AOJu0YyScEbhTEZOU0pla9YqfBqIE7AKxedYKbnzqOKpVVvKhvl7xLvn
+        vtrZ3gL3TKSd8tP3OPAZ4hB642J6TjE=
+X-Google-Smtp-Source: AGHT+IEM6DFjYHYDarRMyd0/IV6lbMNl6C3UkgpHkbUg7yuK36W08HUQM+y8SBM0+lAw8OjRMabC0A==
+X-Received: by 2002:a17:90b:a06:b0:27d:23f1:ddeb with SMTP id gg6-20020a17090b0a0600b0027d23f1ddebmr4779740pjb.38.1697974311987;
+        Sun, 22 Oct 2023 04:31:51 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id h6-20020a17090acf0600b00273744e6eccsm4152824pju.12.2023.10.22.04.31.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Oct 2023 03:16:05 -0700 (PDT)
-Message-ID: <ca929e1d8197ace414a06b20151b84de3dd160f4.camel@gmail.com>
-Subject: Old WiFi modules -- for testing?
-From:   Rostislav Lisovy <lisovy@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Date:   Sun, 22 Oct 2023 12:16:04 +0200
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+        Sun, 22 Oct 2023 04:31:51 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 0A49D8322DD7; Sun, 22 Oct 2023 18:31:48 +0700 (WIB)
+Date:   Sun, 22 Oct 2023 18:31:48 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Rostislav Lisovy <lisovy@gmail.com>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Kalle Valo <kvalo@kernel.org>
+Subject: Re: Old WiFi modules -- for testing?
+Message-ID: <ZTUIJHf1vdSxkXeX@debian.me>
+References: <ca929e1d8197ace414a06b20151b84de3dd160f4.camel@gmail.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="LioeYb2fbIOpCQfJ"
+Content-Disposition: inline
+In-Reply-To: <ca929e1d8197ace414a06b20151b84de3dd160f4.camel@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,18 +75,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-I am interested in donating the following WiFi modules to the "Linux
-wireless project". I guess they can be used for some automated testing
-or training or something like that?
 
-https://photos.app.goo.gl/sfootr3X8KVUBYf48
+--LioeYb2fbIOpCQfJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I am located in Prague, Czech Republic.
-I can for sure ship worldwide if someone pays the shipping cost.
+On Sun, Oct 22, 2023 at 12:16:04PM +0200, Rostislav Lisovy wrote:
+> Hi,
+> I am interested in donating the following WiFi modules to the "Linux
+> wireless project". I guess they can be used for some automated testing
+> or training or something like that?
+>=20
+> https://photos.app.goo.gl/sfootr3X8KVUBYf48
 
-Not sure if there is better site/mailing-list for such offer.
+=46rom album link above, I can't tell exact models. Can you list ones?
 
-Best regards,
-Rostislav
+--=20
+An old man doll... just what I always wanted! - Clara
 
+--LioeYb2fbIOpCQfJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZTUIJAAKCRD2uYlJVVFO
+o5tHAQCP7ybF2+BIoWuVdO1b9i4PErFhJjufHUYo92BvWv4DgQEA1Ol/FXygsgxF
+XfJynOzItd3MH8JqfxMim68K5Vl0vg4=
+=KMhm
+-----END PGP SIGNATURE-----
+
+--LioeYb2fbIOpCQfJ--
