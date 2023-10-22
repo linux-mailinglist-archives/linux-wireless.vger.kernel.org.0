@@ -2,45 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE877D2496
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Oct 2023 18:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D02AD7D2553
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Oct 2023 20:31:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231876AbjJVQhu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Oct 2023 12:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55512 "EHLO
+        id S232290AbjJVSbJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Oct 2023 14:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbjJVQht (ORCPT
+        with ESMTP id S229452AbjJVSbI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Oct 2023 12:37:49 -0400
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B77BFB
-        for <linux-wireless@vger.kernel.org>; Sun, 22 Oct 2023 09:37:44 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:c008:0:640:847d:0])
-        by forward100b.mail.yandex.net (Yandex) with ESMTP id E07FC60A9C;
-        Sun, 22 Oct 2023 19:37:38 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id bbP9trODUa60-FqeiNzu8;
-        Sun, 22 Oct 2023 19:37:38 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1697992658; bh=sgwwkisg6ICUgcPL/oLt8/dITqQf11m3ZDhDJoJMRcY=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=eR2AW+Y8E5uQ3NfH5DMxh/RTP3Z2WmESlNYO5mlxTPUpBCpeQn340NJsAYXArFV+7
-         +BJGvd6e5KMsxgVtQLB5aZp/tTl35Dy2pvvppWG9PFZuqpK5FAaIig3CQ9ikRUIbYZ
-         LRcoRRBR5TcD/cbWbJ9JBeWTx2HdFsc6c71TwwuQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: rtlwifi: cleanup struct rtl_hal
-Date:   Sun, 22 Oct 2023 19:36:25 +0300
-Message-ID: <20231022163628.111991-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Sun, 22 Oct 2023 14:31:08 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEFDAE0
+        for <linux-wireless@vger.kernel.org>; Sun, 22 Oct 2023 11:31:03 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id DDFD09C0061;
+        Sun, 22 Oct 2023 18:31:01 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.115.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 1AEA713C2B0;
+        Sun, 22 Oct 2023 11:31:01 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1AEA713C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1697999461;
+        bh=IvUm6CLxAh5K+bEKgJ/6vshzfMblN9ozFAOHDJzxQDI=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=XgaqzUQhNuooxsvGmP+d0ctaS9fDuOUpSvGwEW7E6dZ5zfog65DcnMDm/hrl+SJcn
+         Vk2CZhDmOBEIYuYMzUnWbB4CLJ1jkz2tQaS0VmyjvP/1a9JTP28lMXlgDXdmvOYlcJ
+         R/Po3ydiGQ8uUfAQ8os7EepwHNRt2/DzGDNTeQw0=
+Subject: Re: [PATCH] wifi: wireless: Fix bad memory passed in
+ inform_single_bss_data.
+To:     James Dutton <james.dutton@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <20231021154827.1142734-1-greearb@candelatech.com>
+ <CAAMvbhHqbXXgF6FpPoWnqKbn=0A0br55wLN9T1xfnwRyiwvnuw@mail.gmail.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <4c25e9a2-1669-264d-4a86-a53f5a386f0e@candelatech.com>
+Date:   Sun, 22 Oct 2023 11:30:59 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <CAAMvbhHqbXXgF6FpPoWnqKbn=0A0br55wLN9T1xfnwRyiwvnuw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-MDID: 1697999462-gpaeC5IXyYVC
+X-MDID-O: us5;at1;1697999462;gpaeC5IXyYVC;<greearb@candelatech.com>;cdf7db34a5aabb5f190d60746317ab8f
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,174 +61,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove unused and set but otherwise unused 'bbrf_ready', 'external_pa',
-'pa_mode', 'rx_tag', 'rts_en', 'wow_enable', 'wow_enabled' and
-'hw_rof_enable' (which seems to be an erroneous duplication of the same
-one of 'struct rtl_phy') fields of 'struct rtl_hal', adjust related
-code. Compile tested only.
+On 10/22/23 5:14 AM, James Dutton wrote:
+> On Sat, 21 Oct 2023 at 16:52, <greearb@candelatech.com> wrote:
+>>
+>> From: Ben Greear <greearb@candelatech.com>
+>>
+>> The sins of similar variable names and passing void pointers
+>> are seen again in wireless-next tree.
+>>
+>> Wrong data was passed into the rdev_inform_bss method causing
+>> crashes.
+>>
+> 
+> Is there any good reason for the void pointers?
+> The patch you propose fixes the immediate problem, but if the void
+> pointers were replaced with struct pointers, the compiler could catch
+> this sort of problem.
+> I imagine there could be similar confusion with this struct and
+> function having the same name:
+> 0 scan.c 1999 struct cfg80211_inform_single_bss_data {
+> 1 scan.c 2023 cfg80211_inform_single_bss_data(struct wiphy *wiphy,
+> 
+> Maybe renaming the following:
+> struct cfg80211_inform_bss *drv_data = data->drv_data;
+> to
+> struct cfg80211_inform_bss *c_inform_bss1 = data->drv_data;
+> would reduce the confusion.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c |  7 -------
- drivers/net/wireless/realtek/rtlwifi/rtl8192ee/hw.c |  1 -
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c |  9 +++++----
- drivers/net/wireless/realtek/rtlwifi/wifi.h         | 10 ----------
- 4 files changed, 5 insertions(+), 22 deletions(-)
+It takes a lot of time and patience to get more complicated patches upstreamed,
+so maybe someone else has interested in pursuing that.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-index 5a828a934fe9..fad132512a20 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-@@ -432,10 +432,8 @@ static void rtl92ee_dm_check_rssi_monitor(struct ieee80211_hw *hw)
- static void rtl92ee_dm_init_primary_cca_check(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
- 	struct dynamic_primary_cca *primarycca = &rtlpriv->primarycca;
- 
--	rtlhal->rts_en = 0;
- 	primarycca->dup_rts_flag = 0;
- 	primarycca->intf_flag = 0;
- 	primarycca->intf_type = 0;
-@@ -615,13 +613,11 @@ static void rtl92ee_dm_dynamic_primary_cca_ckeck(struct ieee80211_hw *hw)
- 				rtl92ee_dm_write_dynamic_cca(hw, cur_mf_state);
- 				primarycca->pricca_flag = 1;
- 				primarycca->dup_rts_flag = 1;
--				rtlpriv->rtlhal.rts_en = 1;
- 			} else {
- 				primarycca->intf_type = 0;
- 				primarycca->intf_flag = 0;
- 				cur_mf_state = MF_USC_LSC;
- 				rtl92ee_dm_write_dynamic_cca(hw, cur_mf_state);
--				rtlpriv->rtlhal.rts_en = 0;
- 				primarycca->dup_rts_flag = 0;
- 			}
- 		} else if (sec_ch_offset == 1) {
-@@ -642,13 +638,11 @@ static void rtl92ee_dm_dynamic_primary_cca_ckeck(struct ieee80211_hw *hw)
- 				rtl92ee_dm_write_dynamic_cca(hw, cur_mf_state);
- 				primarycca->pricca_flag = 1;
- 				primarycca->dup_rts_flag = 1;
--				rtlpriv->rtlhal.rts_en = 1;
- 			} else {
- 				primarycca->intf_type = 0;
- 				primarycca->intf_flag = 0;
- 				cur_mf_state = MF_USC_LSC;
- 				rtl92ee_dm_write_dynamic_cca(hw, cur_mf_state);
--				rtlpriv->rtlhal.rts_en = 0;
- 				primarycca->dup_rts_flag = 0;
- 			}
- 		}
-@@ -660,7 +654,6 @@ static void rtl92ee_dm_dynamic_primary_cca_ckeck(struct ieee80211_hw *hw)
- 			cur_mf_state = MF_USC_LSC;
- 			/* default */
- 			rtl92ee_dm_write_dynamic_cca(hw, cur_mf_state);
--			rtlpriv->rtlhal.rts_en = 0;
- 			primarycca->dup_rts_flag = 0;
- 			primarycca->intf_type = 0;
- 			primarycca->intf_flag = 0;
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/hw.c
-index ebb7abd0c9ad..d4da5cdc8414 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/hw.c
-@@ -1320,7 +1320,6 @@ int rtl92ee_hw_init(struct ieee80211_hw *hw)
- 		err = 1;
- 		return err;
- 	}
--	rtlhal->rx_tag = 0;
- 	rtl_write_word(rtlpriv, REG_PCIE_CTRL_REG, 0x8000);
- 	err = rtl92ee_download_fw(hw, false);
- 	if (err) {
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
-index 1633328bc3d1..da77069545a6 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
-@@ -1705,7 +1705,7 @@ static void _rtl8821ae_enable_ltr(struct ieee80211_hw *hw)
- static bool _rtl8821ae_wowlan_initialize_adapter(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-+	struct rtl_phy *rtlphy = &rtlpriv->phy;
- 	bool init_finished = true;
- 	u8 tmp = 0;
- 
-@@ -1735,7 +1735,7 @@ static bool _rtl8821ae_wowlan_initialize_adapter(struct ieee80211_hw *hw)
- 	rtl8821ae_set_fw_wowlan_mode(hw, false);
- 	rtl8821ae_set_fw_remote_wake_ctrl_cmd(hw, 0);
- 
--	if (rtlhal->hw_rof_enable) {
-+	if (rtlphy->hw_rof_enable) {
- 		tmp = rtl_read_byte(rtlpriv, REG_HSISR + 3);
- 		if (tmp & BIT(1)) {
- 			/* Clear GPIO9 ISR */
-@@ -2042,7 +2042,7 @@ static enum version_8821ae _rtl8821ae_read_chip_version(struct ieee80211_hw *hw)
- 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8821AE) {
- 		/*WL_HWROF_EN.*/
- 		value32 = rtl_read_dword(rtlpriv, REG_MULTI_FUNC_CTRL);
--		rtlhal->hw_rof_enable = ((value32 & WL_HWROF_EN) ? 1 : 0);
-+		rtlphy->hw_rof_enable = ((value32 & WL_HWROF_EN) ? 1 : 0);
- 	}
- 
- 	switch (version) {
-@@ -2340,6 +2340,7 @@ void rtl8821ae_card_disable(struct ieee80211_hw *hw)
- 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
- 	struct rtl_ps_ctl *ppsc = rtl_psc(rtlpriv);
- 	struct rtl_mac *mac = rtl_mac(rtlpriv);
-+	struct rtl_phy *rtlphy = &rtlpriv->phy;
- 	enum nl80211_iftype opmode;
- 	bool support_remote_wakeup;
- 	u8 tmp;
-@@ -2449,7 +2450,7 @@ void rtl8821ae_card_disable(struct ieee80211_hw *hw)
- 			"Wait Tx DMA Finished before host sleep. count=%d\n",
- 			count);
- 
--		if (rtlhal->hw_rof_enable) {
-+		if (rtlphy->hw_rof_enable) {
- 			printk("hw_rof_enable\n");
- 			tmp = rtl_read_byte(rtlpriv, REG_HSISR + 3);
- 			rtl_write_byte(rtlpriv, REG_HSISR + 3, tmp | BIT(1));
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 31a481f43a07..3a837d62eda1 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -1610,7 +1610,6 @@ struct rtl_hal {
- 	bool up_first_time;
- 	bool first_init;
- 	bool being_init_adapter;
--	bool bbrf_ready;
- 	bool mac_func_enable;
- 	bool pre_edcca_enable;
- 	struct bt_coexist_8723 hal_coex_8723;
-@@ -1623,9 +1622,7 @@ struct rtl_hal {
- 	u8 state;		/*stop 0, start 1 */
- 	u8 board_type;
- 	u8 package_type;
--	u8 external_pa;
- 
--	u8 pa_mode;
- 	u8 pa_type_2g;
- 	u8 pa_type_5g;
- 	u8 lna_type_2g;
-@@ -1691,20 +1688,13 @@ struct rtl_hal {
- 	bool master_of_dmsp;
- 	bool slave_of_dmsp;
- 
--	u16 rx_tag;/*for 92ee*/
--	u8 rts_en;
--
- 	/*for wowlan*/
--	bool wow_enable;
- 	bool enter_pnp_sleep;
- 	bool wake_from_pnp_sleep;
--	bool wow_enabled;
- 	time64_t last_suspend_sec;
- 	u32 wowlan_fwsize;
- 	u8 *wowlan_firmware;
- 
--	u8 hw_rof_enable; /*Enable GPIO[9] as WL RF HW PDn source*/
--
- 	bool real_wow_v2_enable;
- 	bool re_init_llt_table;
- };
+Probably a somewhat generic call-back struct could be used to pass info back to
+the mac80211 stack instead of using the void*, but that would require touching
+a larger set of drivers most likely.
+
+I am tracking down more crash bugs in the mean time.
+
+Thanks,
+Ben
+
 -- 
-2.41.0
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
