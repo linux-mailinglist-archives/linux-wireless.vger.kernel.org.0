@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 491E97D3E8B
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Oct 2023 20:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4CC27D3EA3
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Oct 2023 20:09:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231394AbjJWSG5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Oct 2023 14:06:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35646 "EHLO
+        id S229453AbjJWSJ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Oct 2023 14:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229829AbjJWSG4 (ORCPT
+        with ESMTP id S232729AbjJWSJ0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Oct 2023 14:06:56 -0400
-Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57CD5B7
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Oct 2023 11:06:54 -0700 (PDT)
-Received: by mail-qv1-xf36.google.com with SMTP id 6a1803df08f44-66d0c777bf0so22765986d6.3
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Oct 2023 11:06:54 -0700 (PDT)
+        Mon, 23 Oct 2023 14:09:26 -0400
+Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959ECDB
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Oct 2023 11:09:23 -0700 (PDT)
+Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-7b6d6773d05so1222351241.2
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Oct 2023 11:09:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1698084413; x=1698689213; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1698084562; x=1698689362; darn=vger.kernel.org;
         h=mime-version:subject:user-agent:references:in-reply-to:message-id
          :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=G0X6SOmHKQVbKWEWevasa/uFdeL1mbhDEyU2i+27nUg=;
-        b=MPcCwm82CA39u8zMZggG8ZLY1akh5jZQmaUIedq+y6HckhtqZH0UAP0w984gBkAgvD
-         R/IBXAn3wdM0J7p0zvTPOq4/6a+A06n8qojWPEYs63lbvRW1VFDUuYGAzEWAlb/2zWjA
-         5iaUnlSJCA3IdvBNMP5WrivVSvkd5X/SGJVJs=
+        bh=WNKh+fvKqV70JSl1lhO+eUx12ou8vt5D4M538fy5R9c=;
+        b=guQqcL27W0Rcl1U2N6Q/zj6WuOr10m8PysB+HrZv7/uboPUF3Egxet7LH2TxBVTX6B
+         ivFzTucRExTQDwFZgpxDO+fZJidc2nRV9rqpzHyVjL0VUv5f1fIGknYUBYoDkKXsz2/M
+         aINkFpcvutBc7uBZZW/ICngMd6k7J6jJ4X6YU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698084413; x=1698689213;
+        d=1e100.net; s=20230601; t=1698084562; x=1698689362;
         h=mime-version:subject:user-agent:references:in-reply-to:message-id
          :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G0X6SOmHKQVbKWEWevasa/uFdeL1mbhDEyU2i+27nUg=;
-        b=HQls/vkGcTRr2elvQGgRJClRWbXp0CENP8XcZigjOtjSJMPBGyrqppfKp4egiFcM5U
-         CIdMFspMqEK40vof1sDdJ+xLftXyjaTD44e7isjtZaJqiPwPBSCzdFJcGLzABC6JnlmJ
-         9cTU/Zgwx97oHhyete78a4pt5uoA3j8Jh1hQjPgq8wLtji7CJF5n6S5lsgQ+WG1H0Lbw
-         fekxWeVpiF5paXjtd8No9faCvTW7s6Ng3J5c/amCkEuCyU9BcxYCA3J77EPWp6ehr2TJ
-         aNYF6WghMAdkxQukXTI96vzenZLc+rWOrFTn6Z7xBHTc2N4MAfNjkesS4W5w1+bjslqR
-         rFgA==
-X-Gm-Message-State: AOJu0YylBkyuFTdcGmaHhFLmALYajgk6gtfpO2NapDHXIaw5qpIuXK/Z
-        FgZbvXnZ8BX5uv+OjVrmy28E9g==
-X-Google-Smtp-Source: AGHT+IFkftliCux4EtCPT1F17i71NdP+qLX9hf15tnzZSeRom6Nv6DINg3Nf+cmGGhfDtmT1/Zanug==
-X-Received: by 2002:a05:6214:29eb:b0:66d:a155:9740 with SMTP id jv11-20020a05621429eb00b0066da1559740mr9398748qvb.8.1698084413363;
-        Mon, 23 Oct 2023 11:06:53 -0700 (PDT)
+        bh=WNKh+fvKqV70JSl1lhO+eUx12ou8vt5D4M538fy5R9c=;
+        b=caL9FCF9+OaPPRLZWke/IO3Un5vWm0CC+GAhTckoAnwYuIQ6QbDAQBAV7rfne8H+sQ
+         mkbif/qdizoQTC4JTmbgdwWFoY6Q4eP95jbQWPma9wVn1js77AZ/3KoGH8F9sl7fU26+
+         4eMtIXjqjNYul5Xt0pLM7aa8jkbjF4ak0upYtOLAbkyctNW7s+5AmaArkUhz++uYHz1W
+         9m063ZZIG5jf8Xfi/zswe0JI9MB3URsTxjkX5ZLDdZNCiAy3Shcka9I0Rb1Ncto97mw8
+         njsZ5b7GDCw68nHcyXZdQkbT0CKTtW3+XAsPCspqSbBroPCG7XegnMmD2pFH5zX2HRuK
+         OGxQ==
+X-Gm-Message-State: AOJu0YycuRI4ET2Tbp56zD2ViFpvpI7MW+lbOa65d9usYNp72djdOXDZ
+        eGelCdnxj0krHB/9zGUwjj4Ddw==
+X-Google-Smtp-Source: AGHT+IGQ7a/vPe4wpxooYtsVgW/e28SHR37JQYABIKNsLcOY9EExdoysea13JZdetmR7wdxI4Fg4Qg==
+X-Received: by 2002:a67:ae05:0:b0:452:5798:64bd with SMTP id x5-20020a67ae05000000b00452579864bdmr8487600vse.35.1698084562615;
+        Mon, 23 Oct 2023 11:09:22 -0700 (PDT)
 Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id h9-20020a0cf8c9000000b0065d0a4262e0sm3033721qvo.70.2023.10.23.11.06.50
+        by smtp.gmail.com with ESMTPSA id y13-20020ab07d0d000000b0079b3282b5f5sm946803uaw.2.2023.10.23.11.09.19
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 23 Oct 2023 11:06:52 -0700 (PDT)
+        Mon, 23 Oct 2023 11:09:21 -0700 (PDT)
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
 To:     Daniel Berlin <dberlin@dberlin.org>
 CC:     Arend van Spriel <aspriel@gmail.com>,
@@ -54,19 +54,20 @@ CC:     Arend van Spriel <aspriel@gmail.com>,
         <linux-wireless@vger.kernel.org>,
         <brcm80211-dev-list.pdl@broadcom.com>,
         <SHA-cyfmac-dev-list@infineon.com>, <linux-kernel@vger.kernel.org>
-Date:   Mon, 23 Oct 2023 20:06:48 +0200
-Message-ID: <18b5db7cac0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <CAF4BwTUJ7NxWomeDEa7TOtjfCjEP+dD68HeT3QyDcNoA1QbXVQ@mail.gmail.com>
+Date:   Mon, 23 Oct 2023 20:09:16 +0200
+Message-ID: <18b5dba0ce0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <18b5db7cac0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 References: <cover.1697650207.git.dberlin@dberlin.org>
  <52c993fd93e13ac015be935a5284294c9a74ea8e.1697650207.git.dberlin@dberlin.org>
  <cc58057b-bc08-f717-1676-13046fc26c5c@broadcom.com>
  <CAF4BwTUTmUd0c-y_NfSi9WkCnDO9bhtpx03Aai1ByH5auq9YXw@mail.gmail.com>
  <CAF4BwTUJ7NxWomeDEa7TOtjfCjEP+dD68HeT3QyDcNoA1QbXVQ@mail.gmail.com>
+ <18b5db7cac0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 User-Agent: AquaMail/1.47.0 (build: 104700356)
 Subject: Re: [PATCH 2/5] [brcmfmac] Add support for 6G bands
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000004661ff060866166b"
+        boundary="0000000000002b53c00608661f8d"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -77,74 +78,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000004661ff060866166b
+--0000000000002b53c00608661f8d
 Content-Type: text/plain; format=flowed; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
+On October 23, 2023 8:06:52 PM Arend Van Spriel 
+<arend.vanspriel@broadcom.com> wrote:
 
-On October 23, 2023 1:41:34 PM Daniel Berlin <dberlin@dberlin.org> wrote:
-
-> On Fri, Oct 20, 2023 at 12:35 PM Daniel Berlin <dberlin@dberlin.org> wrote:
->>
+> On October 23, 2023 1:41:34 PM Daniel Berlin <dberlin@dberlin.org> wrote:
+>
+>> On Fri, Oct 20, 2023 at 12:35 PM Daniel Berlin <dberlin@dberlin.org> wrote:
 >>>
->>>> -     brcmf_dbg(INFO, "nmode=%d, vhtmode=%d, bw_cap=(%d, %d)\n",
->>>> +     brcmf_dbg(INFO,
->>>> +               "nmode=%d, vhtmode=%d, bw_cap=(%d, %d, %d), he_cap=(%d, %d)\n",
->>>>            nmode, vhtmode, bw_cap[NL80211_BAND_2GHZ],
->>>> -               bw_cap[NL80211_BAND_5GHZ]);
->>>> +               bw_cap[NL80211_BAND_5GHZ], bw_cap[NL80211_BAND_6GHZ],
->>>> +               he_cap[0], he_cap[1]);
+>>>>
+>>>>> -     brcmf_dbg(INFO, "nmode=%d, vhtmode=%d, bw_cap=(%d, %d)\n",
+>>>>> +     brcmf_dbg(INFO,
+>>>>> +               "nmode=%d, vhtmode=%d, bw_cap=(%d, %d, %d), he_cap=(%d, %d)\n",
+>>>>>      nmode, vhtmode, bw_cap[NL80211_BAND_2GHZ],
+>>>>> -               bw_cap[NL80211_BAND_5GHZ]);
+>>>>> +               bw_cap[NL80211_BAND_5GHZ], bw_cap[NL80211_BAND_6GHZ],
+>>>>> +               he_cap[0], he_cap[1]);
+>>>>
+>>>> So are these he mac and phy capabilities? ...
 >>>
->>> So are these he mac and phy capabilities? ...
+>>> No, unfortunately, it's either 1 or 0 on these chips, and all chips i tested.
+>>> This is the hardware capability iovar.
+>>>
+>>> In the debug firmware i have access to (not apple's), i do see a
+>>> command that looks like it may give the he cap, but i can't find how
+>>> it would ever be triggered.
+>>> (The iovar code for the iovar above is either always just return 0 or return 1)
+>>> There are no obvious iovars that relate, and  the absolute latest
+>>> bcmdhd hardcodes the he caps, as do infineon's latest ifx code.
+>>> :(
+>>> I'l hack around see if i can get the caps out of it.
+>>>
+>>> I'll double check other ones.
 >>
->> No, unfortunately, it's either 1 or 0 on these chips, and all chips i tested.
->> This is the hardware capability iovar.
 >>
->> In the debug firmware i have access to (not apple's), i do see a
->> command that looks like it may give the he cap, but i can't find how
->> it would ever be triggered.
->> (The iovar code for the iovar above is either always just return 0 or return 1)
->> There are no obvious iovars that relate, and  the absolute latest
->> bcmdhd hardcodes the he caps, as do infineon's latest ifx code.
->> :(
->> I'l hack around see if i can get the caps out of it.
+>> So, I reached a  conclusion on this piece.
 >>
->> I'll double check other ones.
+>> This is really an xtlv with subcommands that everyone (including me)
+>> is wrongly treating as a non-xtlv.
+>> The above is really showing you the enable value.
+>> There is also hardware cap value (which is 0/1 as well).
+>>
+>> In the 4398/4390 firmware, a "defcap" subcommand was added to the
+>> firmware which can retrieve the default HE capabilities bytes for the
+>> mac and phy and be used to fill them in.
 >
+> So they adopted the same subcommand I added in our firmware. Hopefully it
+> is a true copy.
 >
-> So, I reached a  conclusion on this piece.
+>> However, it is unsupported in the firmware for earlier chips,
+>> including these chips (or at least, any firmware i've found for it,
+>> apple's or not)
+>>
+>> As such, at least for these, STA/AP caps will have to be hardcoded.
+>>
+>> I have updated the code to include the subcommands that exist here,
+>> and properly use an xtlv command to retrieve this (it's really a uint8
+>> value).
 >
-> This is really an xtlv with subcommands that everyone (including me)
-> is wrongly treating as a non-xtlv.
-> The above is really showing you the enable value.
-> There is also hardware cap value (which is 0/1 as well).
->
-> In the 4398/4390 firmware, a "defcap" subcommand was added to the
-> firmware which can retrieve the default HE capabilities bytes for the
-> mac and phy and be used to fill them in.
+> I do have patch lying around here that add xtlv support to fwil.c. Or did I
+> already submit that.
 
-So they adopted the same subcommand I added in our firmware. Hopefully it 
-is a true copy.
-
-> However, it is unsupported in the firmware for earlier chips,
-> including these chips (or at least, any firmware i've found for it,
-> apple's or not)
->
-> As such, at least for these, STA/AP caps will have to be hardcoded.
->
-> I have updated the code to include the subcommands that exist here,
-> and properly use an xtlv command to retrieve this (it's really a uint8
-> value).
-
-I do have patch lying around here that add xtlv support to fwil.c. Or did I 
-already submit that.
-
-Gr. AvS
+It's already there indeed :-D
+> Gr. AvS
 
 
 
 
---0000000000004661ff060866166b
+--0000000000002b53c00608661f8d
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -215,14 +219,14 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBrmnJEOu64lDI+ytBH
-PYQwe1Eoj4UUNtyCn7SeSJhlGTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzEwMjMxODA2NTNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDJ1v9w/4XWqApLXOAZ
+qsCMt0tLueZzwlfbJprLXfwXBTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzEwMjMxODA5MjJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYItDK+9NyBtFUeaxGJTsHDUktZIWaok4+4en
-8gV4txgPuNVuGyBmYV+LOAem7hrObIylakoMfkqqzrDn3I7ODytKhTPHl6dwM3kWAAHiX3W88Ubt
-kYj79r2Lp8eMGrz7YiWcHpnS8oCroZdpRq4+v1XwcHvmST9W8utihZ1o2/tbvWoRByXd57m+wV5k
-fGcJp0Jj8J4+cA3sV0u20uF+XqYMKOHX/ZnZMxK4HjWQV06wg3FjPG3seFzGAAGMoxnEMbr9KlPF
-VQuWCHC8wsEzeADfjAZT9sq1sCA/WE1J0/5RMR8sNp2fcWhmDIobHBvPYlavINKelSJx/DV94+1r
-Bg==
---0000000000004661ff060866166b--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAl22TNRPesHqoQ9HL0UiomWKfKm8LVpFEaExq
+hikQSzADXq8xeuFaBu/4i1vvUQxTRwkpgTYR8MJE+Xp+KkwVw1phw1A3nrxK3+et1UY13x360R7A
+G4JTZ/me6btt8QogyuTAJABycTNKeZbMo1boWx+1Ym1JHIRCjaxmvQzkPmOFHsZLzpnrU5r7vKww
+IhWeGIQeyo2KbA/smf6DWTDWZuCfLU6GdDF9O1teXxyPk8baW5N+fBvW6+g7uVCs4udyjDxRrYrO
+oTyDHk4fXFqsMXCgYZGfiPOQZNH27+qI2tTSFbj1Y/4kL1n0UFHqO8aN91hdYEh6/AQdMRay1TeU
+Ww==
+--0000000000002b53c00608661f8d--
