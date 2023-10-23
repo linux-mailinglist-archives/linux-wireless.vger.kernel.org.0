@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D200A7D2859
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Oct 2023 04:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCD767D286B
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Oct 2023 04:16:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233112AbjJWCMz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Oct 2023 22:12:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52806 "EHLO
+        id S233015AbjJWCQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Oct 2023 22:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233155AbjJWCMy (ORCPT
+        with ESMTP id S232910AbjJWCQb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Oct 2023 22:12:54 -0400
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2041.outbound.protection.outlook.com [40.107.6.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654CF10C4;
-        Sun, 22 Oct 2023 19:12:49 -0700 (PDT)
+        Sun, 22 Oct 2023 22:16:31 -0400
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2050.outbound.protection.outlook.com [40.107.21.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3EC90;
+        Sun, 22 Oct 2023 19:16:29 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D2C1gD7cMb8r1Jg51wp38wvW8BtGoTw0b7XFisFWTMjFzzNpq8wURKTJB+rtwDBvfnkWCuYqn7Z0wd3Rj8u8naHIhJ+EuzjSENUr02gdTklXPnZ9Ohh8t4ssngBeRjPEPbmJbimyWuKHeOuYwWGUlTtWAo3o3uwHhkWhEcmId7lkJ6n7tJiktyGeTlA4aVMIZ/XWOuVCLrUdimzRTZP871BCxFoxPIrOZnVFJwE8hJBECtT+EFK8CddGVz2My3oGcBTY7frdZF5kwxo3zZK+zm65OYIJRHrG0dggeyzH04vkSaUFztfodizRkIPUQOZ/enssTlnkwqjTCSVGKBRvkg==
+ b=AtV+uRN8L0mvyHirgoZhgQz/hk/WAxjmrm7LQyBeKUJYhUu7uPtCvI0EiEhC9exExviWzgv7QZMfHzIGX7JlT6qdUyia41w3XYL4VnMtMiQhzWqJOeUHLDQagBw8lLZrlxvBie4ZO+HByUj8wOlnx3zyN2KAPGIWfhlc8naTSiMR9iS67zRPbb6dmmxwZSSQQK6vDF5Qs1Vf6Gf1vn28JMrn/ayaGRn9+foEMlJZDg6HlGuVGiqkGzgEKAqZq+0oDJsm9YccvlMFaNnQw9+BPlE3j7CRlHMD+zcAY2COKG2qOG75zG3LY/7UnaYrV0b+EZUXgDfc99jccmLzPNHgDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J0JOj4+9Sj76eZ7MBZAiIQSBi3C01FitxhSnw6MoYZk=;
- b=Xza8qvzXP6bSeB2curGgFdXQ9jkC2psvjEj69Fv4UwNyBbcJepzC9lIhMO0D51JghtJIWUvS595HFoP3hVZj5jDbY4TexPu7Fhwah//aNDBmdWWEk63RJOnwMaBOWsIzeb15cUY9jk+W04XZT3GW5SAFL2x9jI1bO0zu20OePsov4TUmJ9V59xAtwVN8M0VM/zkmxy8Q5QeasB/dMjpdujvwS0D93/dnwqXrd+50Rekf8QRofWtkpK7/68DEKTGff1Ga4AVCrh7gSLgL2FmuiXUroPhw2GhfE36wDAhbAGBQzbDJf8eA5d9CnkxUfBhYP3rXmWv13Of1X/VglYnaJw==
+ bh=/o73vil6ujsJl4bhefLprgh7kGzJ7/gsVmctfLIjd6g=;
+ b=KsigtOO8Y5qgzWSp7sYFlSzS1BTXylF6IBR5nbAvsGUIHxq5rdaYl+64AxuXC5671wdhWrL0GT8MlbJP5MeQqSrcqO8IjGjLjybSPJzswsRKceHWo9EleCkAho0/Ck1lkqnsnv/7PshL2OyHHVvh96d3SDEgDHVIXcyvaJB8oLdpXMRxyHfOMwL394H5af6vOmOV3yo/QEHgmDbryGGWPCri5MbMbCqm6K3tnESl/2iDqbYXctpnL6T3NzqJbZcWUPyTfydU3SpAt/HtG0msNK2ObTIR5USsSCW2bLr/aysVC9Dn2kpGl5HdTxIt80QUgs6ynSBmprrlOz7fUNzn4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J0JOj4+9Sj76eZ7MBZAiIQSBi3C01FitxhSnw6MoYZk=;
- b=fz/jpFT3nvNYSKwu5QDYldZKSyfx/7MBx7t4Vr1KWqjh/T4hIWEbi3/x0vBJ+AmAGg7KVc+irz14VZU4+htKTlbYmEPc8XZeTCkPZox16URkIyjRPWsXUYM4HBCnrUllTyLnTUn4egZlUnx11fZGCSqET++iixY4er6GgOT72yI=
+ bh=/o73vil6ujsJl4bhefLprgh7kGzJ7/gsVmctfLIjd6g=;
+ b=gunN7+msnTbLJPF5UMPpiwUGrIJM002MnqrQ66fLleZGuDjf2Hj9FcOsagYOFLWOHQ0/BvrY8VHd5pILYFxjjkh2+tW5CYf/a+PItJApyfxZ0UV01Oqu8y5tgr+2OrgCdU/Z5h6h6yCG7+WQpiEKdqaxVccLBOJkzJegF4JoGiM=
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by PAXPR04MB9643.eurprd04.prod.outlook.com (2603:10a6:102:241::19) with
+ by AM8PR04MB7411.eurprd04.prod.outlook.com (2603:10a6:20b:1d8::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.35; Mon, 23 Oct
- 2023 02:12:46 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.11; Mon, 23 Oct
+ 2023 02:16:26 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b%7]) with mapi id 15.20.6933.011; Mon, 23 Oct 2023
- 02:12:46 +0000
+ 02:16:26 +0000
 From:   David Lin <yu-hao.lin@nxp.com>
 To:     Francesco Dolcini <francesco@dolcini.it>
 CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
@@ -46,16 +46,16 @@ CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "kvalo@kernel.org" <kvalo@kernel.org>,
         Sharvari Harisangam <sharvari.harisangam@nxp.com>,
         Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: RE: [EXT] Re: [PATCH] wifi: mwifiex: added delay after firmware
- downloaded.
-Thread-Topic: [EXT] Re: [PATCH] wifi: mwifiex: added delay after firmware
- downloaded.
-Thread-Index: AdoDBnqsYZDxfBp+Q3Wpq1CAkxdKPABF4TyAAE4S+iA=
-Date:   Mon, 23 Oct 2023 02:12:46 +0000
-Message-ID: <PA4PR04MB96383AEDA0E0D42A11E5518AD1D8A@PA4PR04MB9638.eurprd04.prod.outlook.com>
-References: <PA4PR04MB96388864C8B07F2B3AA7964AD1DBA@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <ZTPKedZWWAfDjmpo@livingston.pivistrello.it>
-In-Reply-To: <ZTPKedZWWAfDjmpo@livingston.pivistrello.it>
+Subject: RE: [EXT] Re: [PATCH v6 1/6] wifi: mwifiex: added code to support
+ host mlme.
+Thread-Topic: [EXT] Re: [PATCH v6 1/6] wifi: mwifiex: added code to support
+ host mlme.
+Thread-Index: AdoDCD3HfqdGXSjhR7u7/u1lbWxIUwBLzz6AAEfEgvA=
+Date:   Mon, 23 Oct 2023 02:16:26 +0000
+Message-ID: <PA4PR04MB9638E6859D64EF4FC4762C03D1D8A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <PA4PR04MB9638DEFC074F41AAEE3AC471D1DBA@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZTP1OXGExKCMk14D@livingston.pivistrello.it>
+In-Reply-To: <ZTP1OXGExKCMk14D@livingston.pivistrello.it>
 Accept-Language: zh-TW, en-US
 Content-Language: zh-TW
 X-MS-Has-Attach: 
@@ -63,57 +63,57 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|PAXPR04MB9643:EE_
-x-ms-office365-filtering-correlation-id: 1fcb191d-08b8-43be-e99c-08dbd36d8c46
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|AM8PR04MB7411:EE_
+x-ms-office365-filtering-correlation-id: 034d9d63-62c7-4061-b0a7-08dbd36e0f70
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: I3temUkkqua6WdhyuGbH1VZEXeo/bXN0iworOpGerUM2VKkWGTUNSfmmeicQDzIcDBJpKa0ggk6/eea1v14fPVmVJM2Sc+X+ZMVMr7jMpRSnxW6gYZLKWK85XaRknykL4yf1iN3eCBP50TQeU1f19wHu59UdV+2nvfZrYu5EiHevWQJNg3LcUSkO6Z1Nv3g2/WW8lrvew80O1YoGdaxBfcWnj+aNZIq37e7eTN3UavLNNvMTXv+uibmwl9rmf6yK22aNdurhTxtulheuTPu1RW+x87SEYeP6ZA8U7soFbH0FPpoWsZXm6mMXnkpzS0aE4J03CFKrpzRrGIwsWZMe1u4ETebYBxifZeiYW0bD3Hu/H/RFWgVo5G8Qy5IucPWgBGEPYM53UJEIVIxSRqzR09sv81JVEju6ea2ZAuxxmp74ZsmWSYdYsIWXadVykBGlBNz80t3XMlIqkccwjeCViNcxj0U/t7IF6CiZ511skJCfWzAUhTBhdWih61gx4AodHfQ2l4qgVSlOTDNKS7PiOM5oemfAaT2g2XDBuBDUje4R+oEG7pHJc0bN2ttAsi0DiWoxWnohUWhRaIXTdEm0r1+HEku6nokQCi0lX/4mo+7mEO1FtC2+5j6iv9VR/b2g
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(39860400002)(396003)(376002)(136003)(230922051799003)(1800799009)(451199024)(186009)(64100799003)(38070700009)(66946007)(55016003)(53546011)(316002)(122000001)(38100700002)(66446008)(83380400001)(66476007)(66556008)(2906002)(7696005)(64756008)(478600001)(54906003)(76116006)(33656002)(6916009)(9686003)(26005)(8936002)(6506007)(71200400001)(86362001)(52536014)(4326008)(8676002)(5660300002)(41300700001);DIR:OUT;SFP:1101;
+x-microsoft-antispam-message-info: lrOCQZIVqvcwT+TuYUDZ7MjClSppJlckUumv6n3lU0ikIer5LbWtHhNEWhwqkdWr7Zbb8QYrfgSKiybwBCLs9XXc1TSCJjPcSunao0E8twg3patshyyDkgZQcPDvRJ60PBl1wadgwhQEdmgxW5I7Iat30om8CvOWMSq7Rgt2TUIwpdNk9aVHVOCLZo0fje9XajCeNJOkw70VmE0N6YXmzO7aM3Z3ugzg0rilr9qooIk87M8pMtK0YcObAY6tyCp5jJnmyY4xpGUgUpjxYCkhHI1eTzNyUbwVYZSICjctJ5mE05Khsynl1OvbQ/N6webXg/6YsWSmSBfwgBIL1kZFzWbb5X4L6WlDWfqgR5lfv4dM4hbD4OrOU1XVFIvGTxh66xCSm5G/X7yXhfApGSFdAdSeZgnnkGQZGHRFy74dPElQ5mwxkQR/72fHy2Z+0bxcmaCJqJWttkFpq5EabD25Thsdi7V3LA6xPqrbjD9QUlvADDOzrSCid9fmwOWY39HmFN0p7t73PzNAlg9rbjyc9w6lagB3xl4Jjy8M+bHdacthRcgjjL9C55JJUwtGpdaiwrKHOudNcKlcD1p/WJ/MrNnLkowuK9Cbm7eHIRfh4eQ=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(136003)(396003)(376002)(39860400002)(230922051799003)(186009)(451199024)(64100799003)(1800799009)(26005)(38070700009)(38100700002)(2906002)(55016003)(41300700001)(86362001)(52536014)(5660300002)(8676002)(8936002)(4326008)(33656002)(7696005)(6506007)(478600001)(71200400001)(122000001)(66946007)(316002)(76116006)(54906003)(64756008)(66446008)(66476007)(66556008)(6916009)(83380400001)(966005)(53546011)(45080400002)(9686003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?jgJ+edL34odhGpQS8SjHZcnxXZZKnU36dY4MGPbZUGIw2eD1HE53H8AOSg8g?=
- =?us-ascii?Q?QVjNDOxJsG/CUSVzF/toxqyeMTJfyKWRg7B6uHSi/YDWtCQUj8G1zemBm7GZ?=
- =?us-ascii?Q?rXtvBZkW7wCEkX8nOCKpk+u+N8OSD0rxATpdPbQHgdxkCmgWru1jzKJ40yWW?=
- =?us-ascii?Q?gqQhfPaPtnPqBGQ3luf92jjjgHVWtPAAQSW82AawZCwMxDm8uv3mfLvTvQuD?=
- =?us-ascii?Q?NcSi2OIbXdt6hx6R7/avMs63i354gBQZ1MIL2qQQRCfm9sD2fIeeLs/miCeN?=
- =?us-ascii?Q?2YFZnvZvgQ8mjjnvTWxj18bwJOs1fg2aJ9EID6vv2mLLewSZBU7g4jwTvkh2?=
- =?us-ascii?Q?3EszZm0903qykEEeVDGjqt1HMUw3mvAmdANYzZQN7+osX9hlDJxhPjsAVOtk?=
- =?us-ascii?Q?EmwvPl1uayIzya8DG3SJA6PDb2b66J+T7QX8spiQzIdRyFa1omzYelfas1fH?=
- =?us-ascii?Q?75WkUsVTl6bTIApg0tBJHLqIjhiez13OZ8uw7RfYh1iITknjza8FRLRKY8/w?=
- =?us-ascii?Q?cStNI5AnR5XDwwqqw+QHQ+hgIaOh9nNm0GU3+e/QHtbr6I/I/OgY9i8lE3kD?=
- =?us-ascii?Q?H6vLgMamVsGZ2rcFxJBr8c4vKjmc9lDVJcpI38WiP9FxjNsQHIbt/mpmY30m?=
- =?us-ascii?Q?Oq7XZGRhCSeU3MiMOJrgibW0CIvHLEj1/8ZB4T7AFkw3kEGcBHC1wooALrRw?=
- =?us-ascii?Q?BWA8Obcf//6pISbJniVDCYVSL5aeIyAp/vea3BlRRXu4Ck4h52cZArFDZ79X?=
- =?us-ascii?Q?LtM9lee5tndLYJCBc4CelQHfi+08pQWagKCyHjutsqcnhEEmVHziHro5DrIJ?=
- =?us-ascii?Q?ZVfXOIc23fUPqcoYWy2SHu9/EngGq0SHbLaR/7ghNImmaE+q+JarKZ5PlUIe?=
- =?us-ascii?Q?WM465eCJ2y2B5N6aHT0cJ/Pi4+nRWwpf0afGSKsYtdeoFHiyxaAASv1eW6s3?=
- =?us-ascii?Q?Z4hSEAcU+vJ1Fro7xgNGwS/aUe+g0uPFc2p/RFEDnGYh/OzqpQyPB5ku0uhb?=
- =?us-ascii?Q?ff+bopowmn/SzWuQrigEwZOoV0uB0Pyhe1p77PeGXxd1QfRdJGTCa62BAROQ?=
- =?us-ascii?Q?lk1gvz0O60HbkaKd6UauJjzVMYCWIknLEUrz53juuCfkvuSGhl3/XmSIEUUg?=
- =?us-ascii?Q?Gph+Gst9De1DX2QmB4PTMx9I8ztjspZS6qLOwyGNhQoYLE1B6mQaTJAsjEPG?=
- =?us-ascii?Q?SdzfkFiOWsaeEVTtUumvdK8Y2f94Apm2XnL4du+RvMw7st5l1kqPrKH0YnlD?=
- =?us-ascii?Q?j5fZKByRIMdacAFJOYP9mhVvAADrfZqq/3L1S7ptu/HcOQFnMna6BRdutPsl?=
- =?us-ascii?Q?qPRagySnHNxQwyjuVimhTl0qqffIOqY8wNd4hbzus/8mLq6tIzJ/R2b0OA4z?=
- =?us-ascii?Q?bsLhiGemUeq4YAIRYPvBeFC3fMCENCSZNIeY9QFpL2X+cud/gmmxWLkztzSV?=
- =?us-ascii?Q?9c5N8yej/QZSX/lbHZbxNoP8EECH21CZt16BrzUKA9gYgx+Dmohz5de4TuCq?=
- =?us-ascii?Q?+UWEW7mkkpbpwazpv2FYELtQeWkJe3BD2Hls8B+Gzq9FVKx4YG9/SHOTQjrD?=
- =?us-ascii?Q?N/Bviq2eJA0E0bhK8E7Kkbn5+9s6RhJZVSRS6/DK?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ZQo4ZBAnDvNOVzzAOivmqXIgrJLp+aCckbeESerMI0g9I+x/Omq4i0hZeCeO?=
+ =?us-ascii?Q?eC4p8U4wPXHI2ixCtm52OdqD11xltEGjD2USUzRDy5rEpbr94G5vVMClAia4?=
+ =?us-ascii?Q?62sZ1fWcwgZVjeaTlz6u4NPfmvU9D2Dn8NsZmkdLD5PF1IcaNHOo+zvfTqsj?=
+ =?us-ascii?Q?EmH3ySNLGK2P0CrgxUyvD/gWzBGmcDPHMVUyAwr+NLT/YlabEWB8tNrlCSji?=
+ =?us-ascii?Q?mVJ/mW/0gw+WfM4+fljh4A57AD+Z99jYLKyy+kq0RWFHBVRtbRteK1iiOFk4?=
+ =?us-ascii?Q?IUWVKx9iXoJG506X/K+EVkm1Ja02sBV3hx9C52cdmfBjN08FGPsFigpGH7+/?=
+ =?us-ascii?Q?RSEi2HDmFAhu6QbTmfuxa4CcCr3SWGolk2BWWZvmb4Q4F8qvNugj8F6O6M4M?=
+ =?us-ascii?Q?rVyd0rgSbeqwzemy+gh7BxYdbZWd4Wt9nQc2X9IZBFm+4/WFuJawzI64xT8e?=
+ =?us-ascii?Q?ubh8fWZ6RKiuK6POx4Zm+Q4g8JvhBpqCF1/iqynjzcM1iPKq11mx28bhMsK0?=
+ =?us-ascii?Q?IDE2C4tF3UJv9ENvUvyyhljwHe86Om23YtyLqUFmj+hboyg212Zhf1+6VxUg?=
+ =?us-ascii?Q?bCi0Zl4XXOLjpSPNZMYrpAl4TsWvvR5HnqR++NQHgqNS6Wc+YP18wWNTMrf8?=
+ =?us-ascii?Q?XfVgG5RCaQm++PtL0efZ419ODr048SP+TNjA8s4s8rrwO+OcL6Lkq1gdl2VN?=
+ =?us-ascii?Q?x85Onf68RvjpuuoVh027rjNmB3GGPT6hwMpZ8/eCpejnEXU/k7P5O8B/Ys9+?=
+ =?us-ascii?Q?dCzINpAXdfMmaR2M1j09rqXjMfn8KrIAffX5z0KsEHwpbTtrxDEskUZfzvys?=
+ =?us-ascii?Q?l5u8wuECZWG7FzHAk6Ev1oQTYBszBCo9Pc9vjsrAAyApNdowRisHRx64m1IU?=
+ =?us-ascii?Q?0F9RuN0selFZJUmKp/2HClS2v8eNuDgctK9OC8L3aT5BnGR0eayHS0qHh+r0?=
+ =?us-ascii?Q?qU89DvqvVa9AN4VzgMzbrM5CqS+/PU8eJViorOORzXj+4A2Hy4gPnnnkc+cz?=
+ =?us-ascii?Q?0I0u6PiaMhxqIO+K2/xT/dfSnebltf5Ve3DU5e460Uc1Tm976rK4HYd823MC?=
+ =?us-ascii?Q?sEfDgzB6Lx48v9dtgpmrxsxt3b1wz1gtvU2sBgG3EnqFB3I1KKuo8V3TL8lP?=
+ =?us-ascii?Q?mHN0+b3DZwRgJen0x4Sjv5bOh1+TkT/64ZfUq/oqXBtRh7uOsuZ2egdpjeb7?=
+ =?us-ascii?Q?6TwW3sLEBjYIBk6mxjD9N85V6HDorFVlkpfhN8DJ96SZs0UwxRsGZWeiz5JI?=
+ =?us-ascii?Q?kKDOhKRzYR1fbOZ9lC6TbKXiv/v44BwA6CXi9EBWa6h9XRNOAGpAEqTxIEm9?=
+ =?us-ascii?Q?13IXRsxSA/EpcIdbkcR+LQeDvqtqcwN3dWyOvBLrA25CmiOrzzIZJfJ0+aTk?=
+ =?us-ascii?Q?BbDSCSBh6gXEPEkxC7k8pQQNp1dhUpuOYwqt05DS+58UlmWOzS1Qw8js47+E?=
+ =?us-ascii?Q?zZ2jIjrDejeupVCSTKS5qk1lXJYaEaX9G4re6FAh4rxFECmYyWiL5LmecJpj?=
+ =?us-ascii?Q?btDsbtlSEEP8K0sBCLG2hQzmPCwusCgxSKCbqtluTRqrDaZIBUsAqvqnvI4j?=
+ =?us-ascii?Q?gny+Tuhw0S3rB9SeqEDaA4tEefK4foChn6/uaorh?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1fcb191d-08b8-43be-e99c-08dbd36d8c46
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2023 02:12:46.1131
+X-MS-Exchange-CrossTenant-Network-Message-Id: 034d9d63-62c7-4061-b0a7-08dbd36e0f70
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2023 02:16:26.1597
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tiOF192vc6QZVxwBeMhjwtIaIdBDU8PR2n0dwOKBtrYX88jKgKPtFnzubOpXs4UbrnEX9ZPyMtMOOl3VVLgfiA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9643
+X-MS-Exchange-CrossTenant-userprincipalname: Cxo8llWpbnbkiQD32Dl52WmLrVr1k8PGmmw1WBYmecveHgFbaIMVuvrKC43bRf9UZHQhD+Tz8PLfW0yjX3RdIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7411
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -122,67 +122,113 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
 > From: Francesco Dolcini <francesco@dolcini.it>
-> Sent: Saturday, October 21, 2023 8:56 PM
+> Sent: Saturday, October 21, 2023 11:59 PM
 > To: David Lin <yu-hao.lin@nxp.com>
 > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
 > briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it; Sharvar=
 i
 > Harisangam <sharvari.harisangam@nxp.com>; Pete Hsieh
 > <tsung-hsien.hsieh@nxp.com>
-> Subject: [EXT] Re: [PATCH] wifi: mwifiex: added delay after firmware
-> downloaded.
->=20
+> Subject: [EXT] Re: [PATCH v6 1/6] wifi: mwifiex: added code to support ho=
+st
+> mlme.
+>
 > Caution: This is an external email. Please take care when clicking links =
 or
 > opening attachments. When in doubt, report the message using the 'Report
 > this email' button
->=20
->=20
+>
+>
 > Hello David,
 > thanks for your patch.
->=20
-> On Fri, Oct 20, 2023 at 03:35:34AM +0000, David Lin wrote:
-> > Added 100 ms delayed after firmware is downloaded and active in order
-> > to avoid command timeout for the first command sent to firmware.
->=20
-> Please have a look at Documentation/process/submitting-patches.rst.
-> In very brief:
->  - you should use imperative mood to describe your changes
->  - this is fixing a real issue, I believe this is worth a more complete c=
-ommit
->    message, including a log of the failure this is solving.
->=20
-> I am also inclined to think that this change should be backported and it =
-likely
-> would need a Fixes: tag.
->=20
+>
+> On Fri, Oct 20, 2023 at 03:48:11AM +0000, David Lin wrote:
+> > 1. For station mode first.
+> > 2. This feature is a must for WPA3.
+> > 3. Firmware key api version 2 is needed for this feature.
+> > 4. The code is only enabled and tested with IW416.
+> > 5. This feature is disabled for other chips.
+> >
+> > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 > > ---
-> >  drivers/net/wireless/marvell/mwifiex/main.c | 1 +
-> >  1 file changed, 1 insertion(+)
+> >  .../net/wireless/marvell/mwifiex/cfg80211.c   | 327
+> ++++++++++++++++++
+> >  drivers/net/wireless/marvell/mwifiex/cmdevt.c |  14 +-
+> >  drivers/net/wireless/marvell/mwifiex/decl.h   |  12 +
+> >  drivers/net/wireless/marvell/mwifiex/fw.h     |  15 +
+> >  drivers/net/wireless/marvell/mwifiex/init.c   |   3 +
+> >  drivers/net/wireless/marvell/mwifiex/join.c   |  64 +++-
+> >  drivers/net/wireless/marvell/mwifiex/main.h   |  10 +
+> >  drivers/net/wireless/marvell/mwifiex/scan.c   |   6 +
+> >  drivers/net/wireless/marvell/mwifiex/sdio.c   |  13 +
+> >  drivers/net/wireless/marvell/mwifiex/sdio.h   |   2 +
+> >  .../net/wireless/marvell/mwifiex/sta_event.c  |  18 +-
+> >  .../net/wireless/marvell/mwifiex/sta_ioctl.c  |   3 +-
+> >  drivers/net/wireless/marvell/mwifiex/sta_tx.c |   9 +-
+> >  .../net/wireless/marvell/mwifiex/uap_cmd.c    |  26 ++
+> >  drivers/net/wireless/marvell/mwifiex/util.c   |  73 ++++
+> >  15 files changed, 582 insertions(+), 13 deletions(-)
 > >
-> > diff --git a/drivers/net/wireless/marvell/mwifiex/main.c
-> > b/drivers/net/wireless/marvell/mwifiex/main.c
-> > index d99127dc466e..a25e8bb8daec 100644
-> > --- a/drivers/net/wireless/marvell/mwifiex/main.c
-> > +++ b/drivers/net/wireless/marvell/mwifiex/main.c
-> > @@ -570,6 +570,7 @@ static int _mwifiex_fw_dpc(const struct firmware
-> *firmware, void *context)
-> >               goto err_dnld_fw;
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > index 7a15ea8072e6..40c39e4765f7 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > @@ -57,6 +57,31 @@ ieee80211_iface_combination
+> mwifiex_iface_comb_ap_sta_drcs =3D {
+> >       .beacon_int_infra_match =3D true,
+> >  };
 > >
-> >       mwifiex_dbg(adapter, MSG, "WLAN FW is active\n");
-> > +     mdelay(100);
->=20
-> from my understanding there is already a function polling for the firmwar=
-e to
-> be active, e.g. mwifiex_check_fw_status(). Maybe is that function that ne=
-eds
-> to be fixed instead of adding an additional delay here?
->=20
+> > +struct mwifiex_ieee80211_mgmt {
+> > +     __le16 frame_control;
+> > +     __le16 duration;
+> > +     u8 da[ETH_ALEN];
+> > +     u8 sa[ETH_ALEN];
+> > +     u8 bssid[ETH_ALEN];
+> > +     __le16 seq_ctrl;
+> > +     u8 addr4[ETH_ALEN];
+> > +     union {
+> > +             struct {
+> > +                     __le16 auth_alg;
+> > +                     __le16 auth_transaction;
+> > +                     __le16 status_code;
+> > +                     /* possibly followed by Challenge text */
+> > +                     u8 variable[];
+> > +             } __packed auth;
+> > +             struct {
+> > +                     __le16 capab_info;
+> > +                     __le16 listen_interval;
+> > +                     /* followed by SSID and Supported rates */
+> > +                     u8 variable[];
+> > +             } __packed assoc_req;
+> > +     } u;
+> > +} __pack;
+>
+> I noticed that you ignored some (all?) of my feedback [1].
+>
+> Maybe my feedback got lost between the quotes, maybe you just forgot to
+> apply it. Please go back to the previous discussion and either implement =
+all
+> requested changes or keep discussing them.
+>
 
-O.K. I will check the function to see if I can add this modification to the=
- function.
+I think I replied your request and follow it. Please check following link:
+
+https://patchwork.kernel.org/project/linux-wireless/patch/PA4PR04MB9638DEFC=
+074F41AAEE3AC471D1DBA@PA4PR04MB9638.eurprd04.prod.outlook.com/
+
+Please press "Series:   | expand", you will find cover letter with related =
+patches there. You can review any commit and reply the e-mail separately. T=
+hanks.
 
 > Francesco
-
+>
+> [1]
+> https://lore.kern/
+> el.org%2Fall%2FZRLsuJfxuvFk1K16%40francesco-nb.int.toradex.com%2F&data=3D
+> 05%7C01%7Cyu-hao.lin%40nxp.com%7C60169d7a09b1452f396708dbd24e9e7
+> 2%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C6383350073303695
+> 20%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiL
+> CJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=3DcBRFymTJojjf
+> Kp%2F42K%2FWue8ctA1mTdIOqGjtgiHx%2Bsg%3D&reserved=3D0
