@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA72A7D396C
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Oct 2023 16:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D855D7D3980
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Oct 2023 16:39:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233459AbjJWOgL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Oct 2023 10:36:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
+        id S233435AbjJWOjU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Oct 2023 10:39:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230356AbjJWOgJ (ORCPT
+        with ESMTP id S233343AbjJWOjT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Oct 2023 10:36:09 -0400
+        Mon, 23 Oct 2023 10:39:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B52C1DD;
-        Mon, 23 Oct 2023 07:36:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256C7C433C7;
-        Mon, 23 Oct 2023 14:36:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C7E83;
+        Mon, 23 Oct 2023 07:39:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA3DC433C8;
+        Mon, 23 Oct 2023 14:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698071767;
-        bh=PgA9yYa6/1qxru0Rwr8SOL4n9Sf+KY4AdlDhFZNeRMo=;
+        s=k20201202; t=1698071957;
+        bh=NIVU0lraVnY9tVfNs+nrqx9z11nCFVyyanfkCTzzArs=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=qQjhSgSZxVDSNrUricToBpOO3r3/9HPO9ePt28aLe38EMuSbiPvh0DhTtdiZt8DKb
-         zccwbQRXYv7h1SjVPXd+UphUB4VILi6IE0ef/Jkpf14TinQSLXWHSeg1KNGKZlGKdO
-         qUPTnR5EwpEQOYod9oelcttVvxy2u8hinktsyJNfh6eVdJ8aPD5hfQisqosvKojUQG
-         s89phH1sbMPTAH5f61vmorwhTOeop64y9KNMHJEaAYKBLRVJ2+mAsiMTUv4cjo5tZH
-         MD1WPybZUAYpoiJZgnv8d32NDcnx73frJGkJDJswEYZjFVVWqdMGI8b1ndc4MtJw14
-         Op5z3rREu0YVA==
+        b=iC4DU14qaPkUB3GGsIVwt86wSYTMScEqVbTjWAnhwDqWdK6OBqgsVnaE7LIhXuFo1
+         eC9EnqeJeeDFOk/PBqx9QVcIssVmfLiyzOAgIKSqKqGx2mkJPMack6hLUAknFZlDCg
+         hRybi5Uz37GPsc5lxsB50ytFzSvixqE2HRhNme42zv0ANDPcMyfEtGdTbGXzXeaQOV
+         k0+6D86vzJNPCqNvBxyPWntyFSO/hFcdldzSWWxJyegTa6oGwwmQWdXensnwM+xUu+
+         gkmsyhGef3CWRinnERGNTpaAW1ZOkZcN4afgn9lb4Vz74urmZGNeaVwJ7JvxYWpAiI
+         X3tL1w87tsSsQ==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Arnd Bergmann <arnd@kernel.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
@@ -45,14 +45,16 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Gregory Greenman <gregory.greenman@intel.com>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 04/10] wifi: remove obsolete hostap driver
+        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Linux Wireless <ilw@linux.intel.com>
+Subject: Re: [PATCH 10/10] [RFC] wifi: remove ipw2100/ipw2200 drivers
 References: <20231023131953.2876682-1-arnd@kernel.org>
-        <20231023131953.2876682-5-arnd@kernel.org>
-Date:   Mon, 23 Oct 2023 17:36:00 +0300
-In-Reply-To: <20231023131953.2876682-5-arnd@kernel.org> (Arnd Bergmann's
-        message of "Mon, 23 Oct 2023 15:19:46 +0200")
-Message-ID: <87msw9z9rj.fsf@kernel.org>
+        <20231023131953.2876682-11-arnd@kernel.org>
+Date:   Mon, 23 Oct 2023 17:39:10 +0300
+In-Reply-To: <20231023131953.2876682-11-arnd@kernel.org> (Arnd Bergmann's
+        message of "Mon, 23 Oct 2023 15:19:52 +0200")
+Message-ID: <87il6xz9m9.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -69,19 +71,32 @@ Arnd Bergmann <arnd@kernel.org> writes:
 
 > From: Arnd Bergmann <arnd@arndb.de>
 >
-> HostAP is an ISA/PCMCIA style 802.11b driver supporting only
-> wireless extensions, and some custom ioctls (already removed).
-> Some devices include a legacy PCI bridge but no DMA.
+> These two drivers were used for the earliest "Centrino" branded Intel
+> laptops during the late 32-bit Pentium-M era, roughly 2003 to 2005, which
+> probably makes it the most modern platform that still uses the wireless
+> extension interface instead of cfg80211. Unlike the other drivers that
+> are suggested for removal, this one is still officially maintained.
 >
-> The driver was marked obsolete in 2016 and is highly unlikely
-> to still have any users.
+> According to Johannes Berg, there was an effort to finish the move away
+> from wext in the past, but the last evidence of this that I could find
+> is from commit a3caa99e6c68f ("libipw: initiate cfg80211 API conversion
+> (v2)") in 2009.
 >
+> Link: https://lore.kernel.org/all/87fs2fgals.fsf@kernel.org/
+> Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
+> Cc: Linux Wireless <ilw@linux.intel.com>
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> I'm not convinced this should be in the same set of drivers as the
+> rest, since this is clearly less obsolete than the other hardware
+> that I would remove support for.
+
+I am inclined to remove this one as well, it's just so old.
 
 This patch didn't make it to the list, I guess it was too big. But it's
 available from the pending branch:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?h=pending&id=39ed2ce3bdc43bc9dbed65608d98828f21b9f33d
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?h=pending&id=81ba6b51c3a640b277274701407bbf557f12edac
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
