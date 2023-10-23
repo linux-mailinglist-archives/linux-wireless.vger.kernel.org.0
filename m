@@ -2,56 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBD147D2B5D
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Oct 2023 09:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A047D2C85
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Oct 2023 10:21:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233528AbjJWHb1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Oct 2023 03:31:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45500 "EHLO
+        id S229514AbjJWIVv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Oct 2023 04:21:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbjJWHb0 (ORCPT
+        with ESMTP id S229452AbjJWIVu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Oct 2023 03:31:26 -0400
-Received: from mail.loanfly.pl (mail.loanfly.pl [141.94.250.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077FA9B
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Oct 2023 00:31:23 -0700 (PDT)
-Received: by mail.loanfly.pl (Postfix, from userid 1002)
-        id EB180A342F; Mon, 23 Oct 2023 07:31:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=loanfly.pl; s=mail;
-        t=1698046281; bh=Y0HnXqH+26AP5Uq6M8BQXaj1HIAPQY/WndV9tkpAHHU=;
-        h=Date:From:To:Subject:From;
-        b=I01Vc5i6RyRA+d1YJhg0OCsig5j4ZgQL81mZZP1e1eE0XKapNwu3zW3iMt2PHXnKc
-         sVlo7DrcywJNmSFkJxaF1cxTo2/y8Ik6GdXTCxAO448zXqjZZ+c6amZ2V+5wcymCEp
-         ChRON8o4V+nnv7YsmfA6WJtk1NB5eUQ0DhGagFsgBngb1e+6VM6bcO8wAqnjtXfzVN
-         DcoyydCrLZsU1pxdfz8HPVpSS09KxWLyy7FdbqO1uaoyHULtXUGnaxS2TBRH3LjOyX
-         EKVPkwEZ/nuJkkaStKcH4TIw6P/nex09RbzV7+U9y5ycMDlcRG2o+cQ+89gdGmnS3w
-         QQatviUAZUTOg==
-Received: by mail.loanfly.pl for <linux-wireless@vger.kernel.org>; Mon, 23 Oct 2023 07:31:09 GMT
-Message-ID: <20231023064501-0.1.da.1kdzd.0.5aou7r3bjj@loanfly.pl>
-Date:   Mon, 23 Oct 2023 07:31:09 GMT
-From:   "Damian Cichocki" <damian.cichocki@loanfly.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: =?UTF-8?Q?Pytanie_o_samoch=C3=B3d?=
-X-Mailer: mail.loanfly.pl
+        Mon, 23 Oct 2023 04:21:50 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52CD2C4;
+        Mon, 23 Oct 2023 01:21:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09788C433C8;
+        Mon, 23 Oct 2023 08:21:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698049309;
+        bh=XrV2myKEdPltpSB/WUfNxpDSBHC2mWbdDw5pNtMkL6M=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=HsfhGDoEfPjA5VsgPB61n9vuRtS3rRWTBrMJxZ+Bo6tM7z/z1gY0ODdqkX/ootUpJ
+         Uij7KHHIZAD7GmoTmzl6XhMuIRY8TEbBY0l8mDHPeSARhZkKnGMPpK+gCULQ//D3r+
+         ESETdzNLGF7IZoadYoeNWuUZwKxheYvcUpkxjmhDUXc2/pujLP6qtSQgzSPRqwItF0
+         Um9MD+/JpCiu65SLBEBdnxCTTdYrkaCk9+0nuJ4hcR/At4IBjLx8ayusk2RgFn43S+
+         2BV94J8y3n2MvzJZ2bSeuIG74HYw+b4AVo27cCwAb58ghmEPDd5pITeNozVmQnolaq
+         fMxm2jlP0If8g==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Chukun Pan <amadeus@jmu.edu.cn>
+Cc:     pkshih@realtek.com, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/1] wifi: rtw88: 8822b: disable call trace when write
+ RF mode table fail
+References: <8734yff8vr.fsf@kernel.org>
+        <20231022090901.430143-1-amadeus@jmu.edu.cn>
+Date:   Mon, 23 Oct 2023 11:21:45 +0300
+In-Reply-To: <20231022090901.430143-1-amadeus@jmu.edu.cn> (Chukun Pan's
+        message of "Sun, 22 Oct 2023 17:09:01 +0800")
+Message-ID: <878r7t21gm.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_ABUSE_SURBL autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Chukun Pan <amadeus@jmu.edu.cn> writes:
 
-Czy interesuje Pa=C5=84stwa rozwi=C4=85zanie umo=C5=BCliwiaj=C4=85ce moni=
-torowanie samochod=C3=B3w firmowych oraz optymalizacj=C4=99 koszt=C3=B3w =
-ich utrzymania?=20
+>> _Why_ is that warning printed? Are your devices uncalibrated or are they
+>> somehow else special?
+>
+> I don't know, but not only my rtl8822be wifi module will have this call trace
+> every time when the driver probes. This can be considered a common problem.
+> So I prefer to disable this call trace and use the driver warning instead.
 
+Why do you say this is a common problem? AFAIK you are the only one
+reporting this issue, right? It would help to understand _why_ you are
+seeing this, ie. what's the root cause? Just randomly removing warnings
+without understanding the root cause is frowned upon.
 
-Pozdrawiam,
-Damian Cichocki
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
