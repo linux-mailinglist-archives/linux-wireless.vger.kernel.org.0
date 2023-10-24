@@ -2,97 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89D8B7D4928
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 09:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1F9A7D49C8
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 10:16:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233752AbjJXH6j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Oct 2023 03:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33326 "EHLO
+        id S233634AbjJXIQA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Oct 2023 04:16:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232004AbjJXH6i (ORCPT
+        with ESMTP id S233509AbjJXIP5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Oct 2023 03:58:38 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 097B5111;
-        Tue, 24 Oct 2023 00:58:36 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-4083dbc43cfso30453875e9.3;
-        Tue, 24 Oct 2023 00:58:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698134314; x=1698739114; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=F/HtEs3uRz9gEWjbZhb7PO6cLxbnlpDSnYG/nx0cMBY=;
-        b=F/dyGMQgmhF3JiwUgQcwVkMJRjFCzkjgSIMlc3gU0om+1QrYezWMPKD4gArJ++S9mT
-         XGzfaal64ct0rU6Qgq2wglto2ZgeNGt9oEecZ6d4Md7kvi3jemsdoEFxYnTcEN2zDt9W
-         9NJGLs9tn2xHgA58Hq35JJkf+IgMDOn2Upq574lbBtUHPAyug+06Us2mxcPXYea2caRw
-         e5UEOdt0lv/gGk5+IEUVXe2xCqJSYUCX3ECB5+zKaUuF8bQ9AIZJSGAddeS8iI6/nLVQ
-         qDN5oZDJ/tPuQxLBk/8e8N+eKHVQKQdtyIHm6TbvWXYk+O/B1cnuQe2ZxwOd3mgJ/IXf
-         lWzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698134314; x=1698739114;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F/HtEs3uRz9gEWjbZhb7PO6cLxbnlpDSnYG/nx0cMBY=;
-        b=YvvRTONZL8jJrbJl64gy/8+Kw1zL8CwUgS9OPKBTT9yn9f8CieuOwU7C0mMQ7llh9f
-         dKvJeTo7cnhJxjBMNYR4cn4E+bCTuF3CEyeglcYLGZbHU0d4GZk3nYBKA0FQnjSktmOh
-         FwF4x1UBcbW8DEWK+SNoyFmsLwZGhAeLUpD7EdPAz+RX7xptE2c8jo+ydaExkcMrVJMG
-         WkL161WoItLAfh5S8pTT7bipwBh7gAUr6iT6Ugp2Zl0YHYNa3oTgxrlt+3F63bDLRJS2
-         J09BRscrsKeavgpC2ZTZTyXZ7n46D4322dtTm7VUnmyzp6e6IY+rpwgEjIBppJmo05zW
-         jjhA==
-X-Gm-Message-State: AOJu0YxCpPTtQgtqd0z+tiweuPL2L+GVBxfa+peFY+OVh+/zuxoduEje
-        D/mfQrAZXWJOXciN/IoemC4=
-X-Google-Smtp-Source: AGHT+IF30oiEgFGhMcxcPgUJRA24HG6sxIFDWiPUfcQIYeZXfeyFm+j5FHiLpV82d/M11oRUgBv6Fg==
-X-Received: by 2002:a05:600c:4e8c:b0:401:bf56:8ba6 with SMTP id f12-20020a05600c4e8c00b00401bf568ba6mr8759283wmq.28.1698134314272;
-        Tue, 24 Oct 2023 00:58:34 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id r6-20020a05600c458600b00406443c8b4fsm16155790wmo.19.2023.10.24.00.58.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Oct 2023 00:58:33 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        linux-wireless@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: iwlwifi: Fix spelling mistake "SESION" -> "SESSION"
-Date:   Tue, 24 Oct 2023 08:58:32 +0100
-Message-Id: <20231024075832.695405-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        Tue, 24 Oct 2023 04:15:57 -0400
+Received: from mail.citycodes.pl (mail.citycodes.pl [158.255.215.195])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 707FDD7B
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 01:15:55 -0700 (PDT)
+Received: by mail.citycodes.pl (Postfix, from userid 1001)
+        id 48AFA21714; Tue, 24 Oct 2023 10:15:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=citycodes.pl; s=mail;
+        t=1698135354; bh=fClkhHu/p6gIm8tbpvFwCqGX3kXIMdqjiuDdSiYGEkk=;
+        h=Date:From:To:Subject:From;
+        b=mNVA/Z9rvUGEQdNsW75/y/Z+72MWBh61f+ebj6JOhQrYGAco1HzFJrEHVfznIIrJz
+         T4/+W6Nz7wNDFiXKp8xIXQH0vQpKnXNhKKty/BEUIK3kbV6ouSWZ/bf9crlin1rWTd
+         zciPN6upOhuK3+3dg7AuQP4dJLKvQVimp/e2gLmaavqmYHyZiuBK4h7YoTYlLzhK/z
+         hXdsYVCw5W62/ikW+tT30+/tIjOkd5Pda8M5Mh1LrOFjApUP7RIoTHAnlIcHCYk9fp
+         FzdDv7442KOEIwA06GCUa41ZMxfA+LYKZH8mYL6L/ByDHmSMOYNVaXNvCnZU6yE15X
+         NJJ6Yd9T9jvCw==
+Received: by mail.citycodes.pl for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 08:15:29 GMT
+Message-ID: <20231024084500-0.1.8a.l8mc.0.pbw0u7d39b@citycodes.pl>
+Date:   Tue, 24 Oct 2023 08:15:29 GMT
+From:   "Kamil Lasek" <kamil.lasek@citycodes.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.citycodes.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a spelling mistake in a WARN message. Fix it.
+Dzie=C5=84 dobry,
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index 218fdf1ed530..245d45f48cc0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -929,7 +929,7 @@ void iwl_mvm_rx_session_protect_notif(struct iwl_mvm *mvm,
- 
- 	if (WARN(ver > 2 && mvmvif->time_event_data.link_id >= 0 &&
- 		 mvmvif->time_event_data.link_id != notif_link_id,
--		 "SESION_PROTECTION_NOTIF was received for link %u, while the current time event is on link %u\n",
-+		 "SESSION_PROTECTION_NOTIF was received for link %u, while the current time event is on link %u\n",
- 		 notif_link_id, mvmvif->time_event_data.link_id))
- 		goto out_unlock;
- 
--- 
-2.39.2
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej.
 
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
+
+
+Pozdrawiam,
+Kamil Lasek
