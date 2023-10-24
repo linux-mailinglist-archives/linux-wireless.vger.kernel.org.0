@@ -2,75 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E7887D5A41
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 20:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9CED7D5A8B
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 20:31:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343956AbjJXSO5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Oct 2023 14:14:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51664 "EHLO
+        id S1344099AbjJXSbt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Oct 2023 14:31:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230304AbjJXSO4 (ORCPT
+        with ESMTP id S1343802AbjJXSbs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Oct 2023 14:14:56 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 792CE10D0;
-        Tue, 24 Oct 2023 11:14:54 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39OEu7ll009708;
-        Tue, 24 Oct 2023 18:14:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=cTHcP7g736rXwQ/nASzpO40/4IpTvv0Zn+p4k+C0POQ=;
- b=Ws4fpA3IktqCIJjALVBuab5OupNt9jrxE1J6ziOzdUBIsKy6xY8D+nV4vJU9NxMWRmuR
- 00NM9jv4biqjT3uj3BjX9JVfc7lwsLyc2sgY6ZwkyUExFcIgc3Vfq6FoXO9+DgyuGf5v
- rgn8jzNocBJC6/EpQ0fvqdYvevEAn+qhWvmT85myvz/AAk4k5UBZR5468M4CymNq3Any
- aLlsmhXZna318mkmnHBlEllTk+ns/POCX+vozYcCeX4koqpPu5AFerrCIdg97Q1kuPAe
- BQMLr8Zjl1tztWzAuuHzuN61DZNon7fFp9iN1k1ENvGpl4bzdWnKw83SP12aFZ+zwtJ6 6Q== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tx5f59udc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 24 Oct 2023 18:14:45 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39OIEh3K000451
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 24 Oct 2023 18:14:44 GMT
-Received: from [10.48.243.236] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Tue, 24 Oct
- 2023 11:14:43 -0700
-Message-ID: <68281586-f75e-4995-a30f-130f3aa1e7a8@quicinc.com>
-Date:   Tue, 24 Oct 2023 11:14:42 -0700
+        Tue, 24 Oct 2023 14:31:48 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19CAB9F
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 11:31:45 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 79382180086
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 18:31:43 +0000 (UTC)
+Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id C2EA813C2B0
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 11:31:42 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C2EA813C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1698172302;
+        bh=jOd6SvZJOcREtioF+ESY9ZER5ZXS5TgysP/x8wYiCvk=;
+        h=Date:Subject:To:References:From:In-Reply-To:From;
+        b=YJxZrTiBYk9kR+uuM+Zfu5RZ+IMMAye3Nkqt7CN5dZm1IEheLiWsWzaSQnMW26tdg
+         O5NUk84+7HpEgTH511wfBudn8GKO1UUnwRzkB3iCFZRtpJmAho2iIWsjrDySqKDfzD
+         QrTYCUEDT+/cV+B/IUNPJBQqHIeP/PmAPQEWkZfA=
+Message-ID: <3a40a14e-c597-e38d-f66e-b56a6f19ba87@candelatech.com>
+Date:   Tue, 24 Oct 2023 11:31:42 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath10k: replace deprecated strncpy with memcpy
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2] wifi: mac80211: ethtool: use best available link for
+ default stats.
 Content-Language: en-US
-To:     Justin Stitt <justinstitt@google.com>,
-        Kalle Valo <kvalo@kernel.org>
-CC:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-hardening@vger.kernel.org>
-References: <20231024-strncpy-drivers-net-wireless-ath-ath10k-mac-c-v2-1-4c1f4cd4b4df@google.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231024-strncpy-drivers-net-wireless-ath-ath10k-mac-c-v2-1-4c1f4cd4b4df@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <20231020152353.3705759-1-greearb@candelatech.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20231020152353.3705759-1-greearb@candelatech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: AHpv-gD2BPzomyaq-KFnFaBSmVhO_kBX
-X-Proofpoint-ORIG-GUID: AHpv-gD2BPzomyaq-KFnFaBSmVhO_kBX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-24_17,2023-10-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 mlxlogscore=296 bulkscore=0 suspectscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310240156
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+X-MDID: 1698172304-mNt8XVf3OYtf
+X-MDID-O: us5;at1;1698172304;mNt8XVf3OYtf;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,29 +59,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/24/2023 10:42 AM, Justin Stitt wrote:
-> strncpy() is deprecated [1] and we should prefer less ambiguous
-> interfaces.
+On 10/20/23 08:23, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
 > 
-> In this case, arvif->u.ap.ssid has its length maintained by
-> arvif->u.ap.ssid_len which indicates it may not need to be
-> NUL-terminated. Make this explicit with __nonstring and use a plain old
-> memcpy.
+> Best link is the link with the highest state (ie, associated)
+> and if multiple links have same state, the highest
+> frequency wins.
 > 
-> This is also consistent with future copies into arvif->u.ap.ssid:
-> 
-> 	if (changed & BSS_CHANGED_SSID &&
-> 	    vif->type == NL80211_IFTYPE_AP) {
-> 		arvif->u.ap.ssid_len = vif->cfg.ssid_len;
-> 		if (vif->cfg.ssid_len)
-> 			memcpy(arvif->u.ap.ssid, vif->cfg.ssid,
-> 			       vif->cfg.ssid_len);
-> 		arvif->u.ap.hidden_ssid = info->hidden_ssid;
-> 	}
-> 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> This makes current ethtool stats more useful.  Per-link
+> ethtool stats can be added later.
+
+The kernel robot is correct, this patch is buggy and would crash with a 2+ link
+situation.  I'll send v3, though I don't have an AP that actually advertises > 1 link
+so difficult to test well...
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
 
