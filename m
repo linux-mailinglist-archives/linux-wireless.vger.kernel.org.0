@@ -2,63 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74DEF7D5937
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 18:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 270127D59E1
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 19:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343902AbjJXQ6R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Oct 2023 12:58:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37822 "EHLO
+        id S1344077AbjJXRmW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Oct 2023 13:42:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233233AbjJXQ6Q (ORCPT
+        with ESMTP id S1343855AbjJXRmV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Oct 2023 12:58:16 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE910118
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 09:58:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698166694; x=1729702694;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1EwDa7coesaBPjJOS2L3hsnRGJdfNvpca2VWPqT6cSE=;
-  b=eFU97I5VqzafawtwZVsGSizE8qXCosphfUWF098GdkeaXp3LmITMvpo+
-   +3kOnkrKnhJ22usFIFuMLBqmXmSDqR/7BOAaVBdgfSTnKo9xXrpdoaqk+
-   ZNdKdoWDAcpt7b5bq90Dbmt0zKRZyhqHyVFIV6Dj3398IP3uHzkGzglym
-   cpiE/OxQ6QVP2GBT614UW8k3tXFNAxx6dsbzEwzRdVxmij2MgcspdIJJ8
-   14EEGQhp5jd0Io9IXymXSoS0q8iQ3PLqspxYIQn98NbeApA4U/BnXxwO3
-   rMuGzkiKHXS7BqW7MNyrJOC+1kl8un/aZhj4NOOxwTpeoIhQW2L2bzF7H
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="366456352"
-X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
-   d="scan'208";a="366456352"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 09:58:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="787847844"
-X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
-   d="scan'208";a="787847844"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 24 Oct 2023 09:58:12 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qvKjK-00083h-0x;
-        Tue, 24 Oct 2023 16:58:10 +0000
-Date:   Wed, 25 Oct 2023 00:57:12 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     greearb@candelatech.com, linux-wireless@vger.kernel.org
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        Ben Greear <greearb@candelatech.com>
-Subject: Re: [PATCH v2] wifi: mac80211: ethtool: use best available link for
- default stats.
-Message-ID: <202310250024.SZSqLsNe-lkp@intel.com>
-References: <20231020152353.3705759-1-greearb@candelatech.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231020152353.3705759-1-greearb@candelatech.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        Tue, 24 Oct 2023 13:42:21 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D0D10CC
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 10:42:18 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-da04fb79246so753739276.2
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 10:42:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1698169338; x=1698774138; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=IiUyQYP0TuoT75NL7ZUXuVLk1dlI1JfFc9pMS1xuxEY=;
+        b=t2S8tvDUUejCeZ24leQtjT9hpGKC3oyQqn2VVxA/2T9M++timZ+6N76fw7Mx9if+cw
+         dhP18KcJiRHPNp1rn6pKvLSrv2l305m8UVej+yFIM7n73RUUTgfB4TXudIekTsUhDBVP
+         h5yEdUS7ybCGUQHb4TFRMwmUcDB5/s0jGjK+76OMfBXIeg2lwScjbQkkGtHCCfqOJ9YM
+         mWNcsE/PLgsxu59DVatz/ox8YiQsn36/nKAFcpclC0g7+f35iZW4KUO6zPVTKXDxGs6L
+         llHmekKdTAoi+fWQrCRloWSepECx3zPJz9fb/k6GxjMY5NimB1yxY3EWORWKyd+vmfTJ
+         8+jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698169338; x=1698774138;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IiUyQYP0TuoT75NL7ZUXuVLk1dlI1JfFc9pMS1xuxEY=;
+        b=S052WrKfU9HlA/ZLxX0thb0Y5br1tJkxPxAgaR4u8EFJtRUG+yinb8Hq9yvZD6RoWX
+         N/8CQFPUfoJpBd4OSMDBx1RJXALXoY7MSbx8NLSQjNqm1pC5dgYQNBozDngGhAWOnGn0
+         IkTCkMqAmIkanlXV7nKZ9rY5TtZaGZETiQjB/GVvhWntFzrm6Mcujbc+2U//3uMEDqt9
+         XQ4aGnqtgnZUUDMdDAZxDWDwU8FtMOfxNpfph2pWsX7Sb+hJjB13SP1yz0rnw9waetou
+         lo6B1X+iT+NnrLjH9kyx5pgDUKfkfyexZDkPwZ+taGSRuk6/Jesv2j4iiSyYUh4L6/Vz
+         nOkA==
+X-Gm-Message-State: AOJu0Yw9784uNpjPZhVPEK3Asa7HJ5EswFlQNMwC7o20HFI8P3Hfktfh
+        Z0kMbRQ2KB4uhL8x/aChWqd7xkdwhm06imsPlA==
+X-Google-Smtp-Source: AGHT+IGxBUJ6AOf1u6czuQpcFOXKwJ3JNLy/s7RwipVOoLtmeRdVForQN5tuNUrGj1C4sbWae1Qtv6lDQzZihH6Diw==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a05:6902:1083:b0:d9a:c3b8:4274 with
+ SMTP id v3-20020a056902108300b00d9ac3b84274mr332751ybu.7.1698169337984; Tue,
+ 24 Oct 2023 10:42:17 -0700 (PDT)
+Date:   Tue, 24 Oct 2023 17:42:16 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPcBOGUC/52NTQqDMBCFryJZd0p+NIWueo/iIsRRQ9WUmZBWx
+ Ls3eoTyeIvvLd63CUYKyOJebYIwBw5xKaAvlfCjWwaE0BUWWmqjpDLAiRb/XqGjkJEYFkzwCYQ
+ TMoNL41ElXzA7DyU345rGWovWifL5JuzD9/Q928Jj4BRpPfVZHeu/pqxAga6xlloq1zvzGGIcJ rz6OIt23/cfmGU7pusAAAA=
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1698169336; l=2664;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=v7X6AgaYGtLwlN3x1yqa0dzr/NEuarCPk3n9BpO0sN0=; b=t/Ub/yzQiuI1fBkkvEt7r+RmgkE6N5jCyDcKYYtcuRX0JU7I4tPXvRrsG8ukYhxbLdofgXYK5
+ fRSaupgp7LWCw9dftF9BYantl62Zrfybz6X6RRUqMFlL8hHOmRxfTbl
+X-Mailer: b4 0.12.3
+Message-ID: <20231024-strncpy-drivers-net-wireless-ath-ath10k-mac-c-v2-1-4c1f4cd4b4df@google.com>
+Subject: [PATCH v2] wifi: ath10k: replace deprecated strncpy with memcpy
+From:   Justin Stitt <justinstitt@google.com>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,96 +76,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+strncpy() is deprecated [1] and we should prefer less ambiguous
+interfaces.
 
-kernel test robot noticed the following build warnings:
+In this case, arvif->u.ap.ssid has its length maintained by
+arvif->u.ap.ssid_len which indicates it may not need to be
+NUL-terminated. Make this explicit with __nonstring and use a plain old
+memcpy.
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.6-rc7 next-20231024]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This is also consistent with future copies into arvif->u.ap.ssid:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/greearb-candelatech-com/wifi-mac80211-ethtool-use-best-available-link-for-default-stats/20231020-232523
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20231020152353.3705759-1-greearb%40candelatech.com
-patch subject: [PATCH v2] wifi: mac80211: ethtool: use best available link for default stats.
-config: mips-bmips_stb_defconfig (https://download.01.org/0day-ci/archive/20231025/202310250024.SZSqLsNe-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231025/202310250024.SZSqLsNe-lkp@intel.com/reproduce)
+	if (changed & BSS_CHANGED_SSID &&
+	    vif->type == NL80211_IFTYPE_AP) {
+		arvif->u.ap.ssid_len = vif->cfg.ssid_len;
+		if (vif->cfg.ssid_len)
+			memcpy(arvif->u.ap.ssid, vif->cfg.ssid,
+			       vif->cfg.ssid_len);
+		arvif->u.ap.hidden_ssid = info->hidden_ssid;
+	}
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202310250024.SZSqLsNe-lkp@intel.com/
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Changes in v2:
+- update subject to include wifi
+- prefer memcpy() over strtomem() (thanks Kalle, Jeff)
+- rebase onto 6.6-rc7 @d88520ad73b79e71
+- Link to v1: https://lore.kernel.org/r/20231013-strncpy-drivers-net-wireless-ath-ath10k-mac-c-v1-1-24e40201afa3@google.com
+---
+Note: build-tested only.
 
-All warnings (new ones prefixed by >>):
+Found with: $ rg "strncpy\("
+---
+ drivers/net/wireless/ath/ath10k/core.h | 2 +-
+ drivers/net/wireless/ath/ath10k/mac.c  | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
->> net/mac80211/link.c:143:7: warning: variable 'sta1' is uninitialized when used here [-Wuninitialized]
-     143 |                 if (sta1->sta_state > best_sta->sta_state) {
-         |                     ^~~~
-   net/mac80211/link.c:131:24: note: initialize the variable 'sta1' to silence this warning
-     131 |                 struct sta_info *sta1;
-         |                                      ^
-         |                                       = NULL
-   1 warning generated.
+diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
+index 4b5239de4018..ba9795a8378a 100644
+--- a/drivers/net/wireless/ath/ath10k/core.h
++++ b/drivers/net/wireless/ath/ath10k/core.h
+@@ -607,7 +607,7 @@ struct ath10k_vif {
+ 			u8 tim_bitmap[64];
+ 			u8 tim_len;
+ 			u32 ssid_len;
+-			u8 ssid[IEEE80211_MAX_SSID_LEN];
++			u8 ssid[IEEE80211_MAX_SSID_LEN] __nonstring;
+ 			bool hidden_ssid;
+ 			/* P2P_IE with NoA attribute for P2P_GO case */
+ 			u32 noa_len;
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 03e7bc5b6c0b..f3f6deb354c6 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -6125,9 +6125,8 @@ static void ath10k_bss_info_changed(struct ieee80211_hw *hw,
+ 
+ 		if (ieee80211_vif_is_mesh(vif)) {
+ 			/* mesh doesn't use SSID but firmware needs it */
+-			strncpy(arvif->u.ap.ssid, "mesh",
+-				sizeof(arvif->u.ap.ssid));
+ 			arvif->u.ap.ssid_len = 4;
++			memcpy(arvif->u.ap.ssid, "mesh", arvif->u.ap.ssid_len);
+ 		}
+ 	}
+ 
 
+---
+base-commit: d88520ad73b79e71e3ddf08de335b8520ae41c5c
+change-id: 20231013-strncpy-drivers-net-wireless-ath-ath10k-mac-c-c73a55666e6a
 
-vim +/sta1 +143 net/mac80211/link.c
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
 
-   117	
-   118	/* For cases where we need a link for stats and such, and just want
-   119	 * a 'good' one.
-   120	 */
-   121	struct sta_info *
-   122	ieee80211_find_best_sta_link(struct ieee80211_sub_if_data *sdata,
-   123				     struct ieee80211_link_data **link)
-   124	{
-   125		struct ieee80211_link_data *best_link = NULL;
-   126		struct sta_info *best_sta = NULL;
-   127		int i;
-   128	
-   129		for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
-   130			struct ieee80211_link_data *link1;
-   131			struct sta_info *sta1;
-   132			bool sta1_better = false;
-   133	
-   134			link1 = sdata_dereference(sdata->link[i], sdata);
-   135			if (!link1)
-   136				continue;
-   137			if (!best_link) {
-   138				best_link = link1;
-   139				best_sta = sta_info_get_bss(sdata, best_link->u.mgd.bssid);
-   140				continue;
-   141			}
-   142			/* we have two potential best links, find one we like best. */
- > 143			if (sta1->sta_state > best_sta->sta_state) {
-   144				sta1_better = true;
-   145			} else if (sta1->sta_state == best_sta->sta_state) {
-   146				u32 freq_best = 0;
-   147				u32 freq1 = 0;
-   148	
-   149				if (best_link->conf->chandef.chan)
-   150					freq_best = best_link->conf->chandef.chan->center_freq;
-   151				if (link1->conf->chandef.chan)
-   152					freq1 = link1->conf->chandef.chan->center_freq;
-   153				if (freq1 > freq_best)
-   154					sta1_better = true;
-   155			}
-   156	
-   157			if (sta1_better) {
-   158				best_sta = sta1;
-   159				best_link = link1;
-   160			}
-   161		}
-   162	
-   163		*link = best_link;
-   164		if (best_link)
-   165			return sta_info_get_bss(sdata, best_link->u.mgd.bssid);
-   166		return sta_info_get_bss(sdata, sdata->deflink.u.mgd.bssid);
-   167	}
-   168	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
