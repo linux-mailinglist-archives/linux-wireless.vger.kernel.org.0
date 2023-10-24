@@ -2,81 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 790217D5410
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 16:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B19C7D541D
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 16:32:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234089AbjJXObx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Oct 2023 10:31:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57664 "EHLO
+        id S234482AbjJXOcl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Oct 2023 10:32:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343801AbjJXO2x (ORCPT
+        with ESMTP id S234469AbjJXOck (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Oct 2023 10:28:53 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD6EA10D1;
-        Tue, 24 Oct 2023 07:28:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAC1C433C8;
-        Tue, 24 Oct 2023 14:28:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698157730;
-        bh=ypIMNYS6FyQIe4ePxJ+5oz5tdfmsVd2FnFFM7K0THyQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tlDwkr7Eyhll2twIrEyMEwBLTavG1kyr+CWEQ2B2ZqyPbnY/TbuAeNOX3Ll1wDHBl
-         TygyF3lpuqVhzRJGWhol+qx5QNalxy+raSfqOnt44i4R4aRRR92f3JJsDk5tXd98a5
-         V8Pnks0xHYH7gu6tpSZEWMGOyyeZDbbDAIKa7QXbHFRYvR4WM4n/TEqMZLAo6DgWJ5
-         bD5ZsFfKUqZyYBJhCL47B7ZZUz+lr6tcsxwQ/j+jLnZ403pwZ7sRplkpgp+sPaSBaj
-         IsY1wg7aqo9Fek4rcJbdICYNb2zArlG7oZVNQwBcJIakMomr1DkO4eysy7nFcHjD2l
-         lVnY0egCFg92Q==
-Received: from johan by xi.lan with local (Exim 4.96)
-        (envelope-from <johan@kernel.org>)
-        id 1qvIP5-0003aY-08;
-        Tue, 24 Oct 2023 16:29:07 +0200
-Date:   Tue, 24 Oct 2023 16:29:07 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] wifi: ath11k: fix temperature event locking
-Message-ID: <ZTfUswqVkAgJvnye@hovoldconsulting.com>
-References: <20231019153115.26401-1-johan+linaro@kernel.org>
- <20231019153115.26401-2-johan+linaro@kernel.org>
- <87sf60xgs8.fsf@kernel.org>
+        Tue, 24 Oct 2023 10:32:40 -0400
+Received: from forward102c.mail.yandex.net (forward102c.mail.yandex.net [178.154.239.213])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C58DE8
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 07:32:37 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:150a:0:640:1aa5:0])
+        by forward102c.mail.yandex.net (Yandex) with ESMTP id 0E02360A80;
+        Tue, 24 Oct 2023 17:32:05 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3WPIMU8WnSw0-80AOf66O;
+        Tue, 24 Oct 2023 17:32:04 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1698157924; bh=U0/HJdvl6o1z+6yAXxaPEsSHWfhrLDe3b87cw+RbCBc=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=UZOJfV58iStRBJdm9mTqfavxg1EDMYy7dL2d5Zm68tyy9JZno3sEx5wMVbEH+2jdg
+         MmD1L302dzlreHGCiqCiRER4Joex0f2aiGitgz7dqriEUvEBf91ce9KzN3i3eSy8dA
+         inwmlwq9SKgnWfvp+0BamBQx3x3XH/j07OPFGSpg=
+Authentication-Results: mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: rtw89: fix timeout calculation in rtw89_roc_end()
+Date:   Tue, 24 Oct 2023 17:31:33 +0300
+Message-ID: <20231024143137.30393-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87sf60xgs8.fsf@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 24, 2023 at 04:59:35PM +0300, Kalle Valo wrote:
-> Johan Hovold <johan+linaro@kernel.org> writes:
-> 
-> > The ath11k active pdevs are protected by RCU but the temperature event
-> > handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-> > read-side critical section as reported by RCU lockdep:
+Since 'rtw89_core_tx_kick_off_and_wait()' assumes timeout
+(actually RTW89_ROC_TX_TIMEOUT) in milliseconds, I suppose
+that RTW89_ROC_IDLE_TIMEOUT is in milliseconds as well. If
+so, 'msecs_to_jiffies()' should be used in a call to
+'ieee80211_queue_delayed_work()' from 'rtw89_roc_end()'.
+Compile tested only.
 
-> On what hardware and firmware version did you test this? As there's so
-> many different combos we use Tested-on tag to provide that information
-> in the commit message:
-> 
-> https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatches#tested-on_tag
-> 
-> I can add that if you let me know what you used.
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/realtek/rtw89/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I hit this on the Lenovo Thinkpad X13s and I guess the tag should be:
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 4bfb4188de72..15196f07b5c0 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2886,7 +2886,7 @@ void rtw89_roc_end(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+ 
+ 	if (hw->conf.flags & IEEE80211_CONF_IDLE)
+ 		ieee80211_queue_delayed_work(hw, &roc->roc_work,
+-					     RTW89_ROC_IDLE_TIMEOUT);
++					     msecs_to_jiffies(RTW89_ROC_IDLE_TIMEOUT));
+ }
+ 
+ void rtw89_roc_work(struct work_struct *work)
+-- 
+2.41.0
 
-Tested-on: QCNFA765 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-
-Note that I've only been able to test the ath11k fixes (not the
-corresponding ath12k) and I only tested this particular patch fully
-(e.g. since I didn't trigger any radar events).
-
-Johan
