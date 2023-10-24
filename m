@@ -2,43 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 762277D5385
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 16:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A22E7D53A4
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 16:07:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343540AbjJXN7z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Oct 2023 09:59:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32864 "EHLO
+        id S234664AbjJXOHp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Oct 2023 10:07:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234869AbjJXN7t (ORCPT
+        with ESMTP id S234210AbjJXOHo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Oct 2023 09:59:49 -0400
+        Tue, 24 Oct 2023 10:07:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ECF1D7B;
-        Tue, 24 Oct 2023 06:59:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3873C433C8;
-        Tue, 24 Oct 2023 13:59:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A259DA3;
+        Tue, 24 Oct 2023 07:07:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A78C433C8;
+        Tue, 24 Oct 2023 14:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698155981;
-        bh=dsmBnlL6bvCmPrgmLzqlJBYDPnEdRwCx2sRSLyjJX0Y=;
+        s=k20201202; t=1698156462;
+        bh=9jC8oNZgHX1Zi6aWIvKR5WIBscBYWtT/XNF7Ji+UiB8=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=HtVoJ3OGlu4I0g7c6nceoQtrXqr+/rL/LttZelrFM0wKPsJvPOqfj3iSNYKVJE2LO
-         0VIoSplFYuYpBei0qTA6kphdzyD+MgyNNRnl3g0Y03cOt8+rsYfgqp/Utq2z+PeAjy
-         hnwOWkkINyyW3UY6nQ4Yx9XSoHwBebK2UXBElN4HVFVQio2wJHThXt/gi8juZoiSaY
-         GjtlRiDTlxnqe/i6hB7btQ2B2opfa4avGMl1I7Y2MKxwVt0XwI8Tx2REMWl032JywK
-         ZPvLrC1Vor+obo/PRX3UWJ5sDsLwig85VAEOFSrdwAMIB2/t1Uyhydx6Uzwo4bEmhi
-         C/r9XXtEq4gjQ==
+        b=gXC+envN88pZ16F8KzAjczjiWBqEKfHwpJD0p7P+wmzdB+o7NwKEiLXAFTNwGw/1g
+         dieOYHrquj917Fj/nh2ar4Oc8Wj2kFU+RX8UHAM2mzCoTWHtvOteXl2tsuuLYEvOpV
+         vhzNHq5eF96otmpUqWODLhOHYs0IfVbpKVmsjrwylxLKKgTAk8QVJUarSBxggH+LZv
+         9i00MapnXdOhEsMDCibsxQUOp13U/KyXxxJWIPHsUoJ3lwq3tzXcjuLzexDz/vbXRK
+         Si+n9xhtkO/wslDcK+pBQlm2SmySgNzvQuF0myT1gavca1fWMSqLJOW2UX0A4RLgpj
+         fctl56uXy/gww==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Johan Hovold <johan+linaro@kernel.org>
 Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
         ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] wifi: ath11k: fix temperature event locking
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] wifi: ath11k: fix event locking
 References: <20231019153115.26401-1-johan+linaro@kernel.org>
-        <20231019153115.26401-2-johan+linaro@kernel.org>
-Date:   Tue, 24 Oct 2023 16:59:35 +0300
-In-Reply-To: <20231019153115.26401-2-johan+linaro@kernel.org> (Johan Hovold's
-        message of "Thu, 19 Oct 2023 17:31:14 +0200")
-Message-ID: <87sf60xgs8.fsf@kernel.org>
+Date:   Tue, 24 Oct 2023 17:07:38 +0300
+In-Reply-To: <20231019153115.26401-1-johan+linaro@kernel.org> (Johan Hovold's
+        message of "Thu, 19 Oct 2023 17:31:13 +0200")
+Message-ID: <87o7goxget.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -53,42 +52,25 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Johan Hovold <johan+linaro@kernel.org> writes:
 
-> The ath11k active pdevs are protected by RCU but the temperature event
-> handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-> read-side critical section as reported by RCU lockdep:
+> RCU lockdep reported suspicious RCU usage when accessing the temperature
+> sensor. Inspection revealed that the DFS radar event code was also
+> missing the required RCU read-side critical section marking.
 >
-> 	=============================
-> 	WARNING: suspicious RCU usage
-> 	6.6.0-rc6 #7 Not tainted
-> 	-----------------------------
-> 	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
+> Johan
 >
-> 	other info that might help us debug this:
 >
-> 	rcu_scheduler_active = 2, debug_locks = 1
-> 	no locks held by swapper/0/0.
-> 	...
-> 	Call trace:
-> 	...
-> 	 lockdep_rcu_suspicious+0x16c/0x22c
-> 	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
-> 	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
-> 	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
+> Changes in v2
+>  - add the missing rcu_read_unlock() to an
+>    ath11k_wmi_pdev_temperature_event() error path as noticed by Jeff
 >
-> Mark the code in question as an RCU read-side critical section to avoid
-> any potential use-after-free issues.
 >
-> Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
-> Cc: stable@vger.kernel.org      # 5.7
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> Johan Hovold (2):
+>   wifi: ath11k: fix temperature event locking
+>   wifi: ath11k: fix dfs radar event locking
 
-On what hardware and firmware version did you test this? As there's so
-many different combos we use Tested-on tag to provide that information
-in the commit message:
-
-https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatches#tested-on_tag
-
-I can add that if you let me know what you used.
+Thanks for the fixes. I really like using lockdep_assert_held() to
+document if a function requires some lock held, is there anything
+similar for RCU?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
