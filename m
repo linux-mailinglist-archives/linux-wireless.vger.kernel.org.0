@@ -2,82 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CED7D5A8B
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 20:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 069567D5BD4
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 21:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344099AbjJXSbt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Oct 2023 14:31:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59256 "EHLO
+        id S1344218AbjJXTuk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Oct 2023 15:50:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343802AbjJXSbs (ORCPT
+        with ESMTP id S234912AbjJXTuj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Oct 2023 14:31:48 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19CAB9F
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 11:31:45 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 79382180086
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 18:31:43 +0000 (UTC)
-Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id C2EA813C2B0
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 11:31:42 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C2EA813C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1698172302;
-        bh=jOd6SvZJOcREtioF+ESY9ZER5ZXS5TgysP/x8wYiCvk=;
-        h=Date:Subject:To:References:From:In-Reply-To:From;
-        b=YJxZrTiBYk9kR+uuM+Zfu5RZ+IMMAye3Nkqt7CN5dZm1IEheLiWsWzaSQnMW26tdg
-         O5NUk84+7HpEgTH511wfBudn8GKO1UUnwRzkB3iCFZRtpJmAho2iIWsjrDySqKDfzD
-         QrTYCUEDT+/cV+B/IUNPJBQqHIeP/PmAPQEWkZfA=
-Message-ID: <3a40a14e-c597-e38d-f66e-b56a6f19ba87@candelatech.com>
-Date:   Tue, 24 Oct 2023 11:31:42 -0700
+        Tue, 24 Oct 2023 15:50:39 -0400
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A484122
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 12:50:37 -0700 (PDT)
+Received: from eig-obgw-5002a.ext.cloudfilter.net ([10.0.29.215])
+        by cmsmtp with ESMTPS
+        id vLeIq63nYKOkLvNQCqmr6q; Tue, 24 Oct 2023 19:50:37 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id vNQBqvvsqF1O4vNQCqm6fx; Tue, 24 Oct 2023 19:50:36 +0000
+X-Authority-Analysis: v=2.4 cv=CcwbWZnl c=1 sm=1 tr=0 ts=6538200c
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=_mNlVl-r0hj7kTaC:21 a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=wYkD_t78qR0A:10
+ a=uwMjjtW2jUbwP7mzfGYA:9 a=QEXdDO2ut3YA:10 a=N_l3Vs37sht3-TxgB6J7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:Cc:To:
+        Subject:From:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=g54kz6I2OxMrqzBsVAyW+xfzdHVn9xE3lpEyC5lhvJs=; b=OzZcSIgm+yEGFVLC3R0m8HijPQ
+        lhLIjWcJvlYi/ttwdT02zDdt8r9JXRcveNlKlsLuW9I7KEx90YSSUkyBAJxIasNaoBw5eXEBqryHR
+        TEfhawSfU7CSH/BkMqiMQyhXqNl3Fs58s+/XfkacYUo82q8kdpPPOM216HjPlf0GtmJqbFruaT5fA
+        mznRgRxTTfbSlBfcUdwb5pu6XgiDLRHx80NEsNF0uQF9GT1UA8/CP4SAcN926YU7vwzs0IYOE5kaz
+        qt6BR19MBBqj/VrGVPM93VlENWousMPGOcHUPdyW/6t60Vlk0T0YSHn9aFAImWY5q6MEKhderrafn
+        iSBqr1TQ==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:48784 helo=[192.168.15.10])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.2)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1qvNQB-001ZQp-1F;
+        Tue, 24 Oct 2023 14:50:35 -0500
+Message-ID: <626ae2e7-66f8-423b-b17f-e75c1a6d29b3@embeddedor.com>
+Date:   Tue, 24 Oct 2023 13:50:34 -0600
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] wifi: mac80211: ethtool: use best available link for
- default stats.
+User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <20231020152353.3705759-1-greearb@candelatech.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <20231020152353.3705759-1-greearb@candelatech.com>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [RFC - is this a bug?] wifi: ath10k: Asking for some light on this,
+ please :)
+To:     Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MDID: 1698172304-mNt8XVf3OYtf
-X-MDID-O: us5;at1;1698172304;mNt8XVf3OYtf;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1qvNQB-001ZQp-1F
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.10]) [187.162.21.192]:48784
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJttZ0PKxoGfqXJ8U8HphXIdTU7GgySZE7jjOXfOi9SuQgAJX3AiDuKKIdostdO7KxsTTLSe4hpuTMzB3x34tOpG5gkPy48iQfG4tZseqDarJXd+ehPB
+ Opv0Gs9uoe5Lt87t0MtuDn3t7n1xEHG/EzL1hEjiE02l13LqEAZNy5iwCehbnyHcnh5n7jIYWvK2ktpi7FnyBx5hIzljnNnD8u6yqua9AdGdthoHm9wqcvRv
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/20/23 08:23, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
-> 
-> Best link is the link with the highest state (ie, associated)
-> and if multiple links have same state, the highest
-> frequency wins.
-> 
-> This makes current ethtool stats more useful.  Per-link
-> ethtool stats can be added later.
+Hi all,
 
-The kernel robot is correct, this patch is buggy and would crash with a 2+ link
-situation.  I'll send v3, though I don't have an AP that actually advertises > 1 link
-so difficult to test well...
+While working on tranforming one-element array `peer_chan_list` in
+`struct wmi_tdls_peer_capabilities` into a flex-array member
 
-Thanks,
-Ben
+7187 struct wmi_tdls_peer_capabilities {
+...
+7199         struct wmi_channel peer_chan_list[1];
+7200 } __packed;
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+the following line caught my attention:
 
+./drivers/net/wireless/ath/ath10k/wmi.c:
+8920         memset(skb->data, 0, sizeof(*cmd));
+
+Notice that before the flex-array transformation, we are zeroing 128
+bytes in `skb->data` because `sizeof(*cmd) == 128`, see below:
+
+$ pahole -C wmi_10_4_tdls_peer_update_cmd drivers/net/wireless/ath/ath10k/wmi.o
+struct wmi_10_4_tdls_peer_update_cmd {
+	__le32                     vdev_id;              /*     0     4 */
+	struct wmi_mac_addr        peer_macaddr;         /*     4     8 */
+	__le32                     peer_state;           /*    12     4 */
+	__le32                     reserved[4];          /*    16    16 */
+	struct wmi_tdls_peer_capabilities peer_capab;    /*    32    96 */
+
+	/* size: 128, cachelines: 2, members: 5 */
+};
+
+So, after the flex-array transformation (and the necessary adjustments
+to a few other lines of code) we would be zeroing 104 bytes in
+`skb->data` because `sizeof(*cmd) == 104`, see below:
+
+$ pahole -C wmi_10_4_tdls_peer_update_cmd drivers/net/wireless/ath/ath10k/wmi.o
+struct wmi_10_4_tdls_peer_update_cmd {
+	__le32                     vdev_id;              /*     0     4 */
+	struct wmi_mac_addr        peer_macaddr;         /*     4     8 */
+	__le32                     peer_state;           /*    12     4 */
+	__le32                     reserved[4];          /*    16    16 */
+	struct wmi_tdls_peer_capabilities peer_capab;    /*    32    72 */
+
+	/* size: 104, cachelines: 2, members: 5 */
+	/* last cacheline: 40 bytes */
+};
+
+This difference arises because the size of the element type for the
+`peer_chan_list` array, which is `sizeof(struct wmi_channel) == 24 `
+
+$ pahole -C wmi_channel drivers/net/wireless/ath/ath10k/wmi.o
+struct wmi_channel {
+	__le32                     mhz;                  /*     0     4 */
+	__le32                     band_center_freq1;    /*     4     4 */
+	__le32                     band_center_freq2;    /*     8     4 */
+
+[..]
+                                                /*    20     4 */
+
+	/* size: 24, cachelines: 1, members: 6 */
+	/* last cacheline: 24 bytes */
+};
+
+is included in `sizeof(*cmd)` before the transformation.
+
+So, my question is: do we really need to zero out those extra 24 bytes in
+`skb->data`? or is it rather a bug in the original code?
+
+Thanks!
+--
+Gustavo
 
