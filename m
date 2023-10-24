@@ -2,114 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A64BB7D4CA9
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 11:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B6907D4E13
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Oct 2023 12:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234204AbjJXJkb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Oct 2023 05:40:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34982 "EHLO
+        id S234075AbjJXKiB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Oct 2023 06:38:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234319AbjJXJkZ (ORCPT
+        with ESMTP id S234014AbjJXKiA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Oct 2023 05:40:25 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A09030F4;
-        Tue, 24 Oct 2023 02:30:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EABCC433C8;
-        Tue, 24 Oct 2023 09:30:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698139836;
-        bh=CB0uZasGotH3WSQ2XD6CQGludeAGY3f8w17TrzekeQU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Dby9AI0p83lKR7U5CCjg2W7DpqRQqyb59zNfumlkY8ts8VHFwcff/XFzqbRKMY55Q
-         RPEGb17YmlSQo+XND8ZEqC7yXRo+6kDE9s3zllgDm+XX6xUwEB5Z4wXMl+4sx4O02e
-         HlDNnlnAG9UftAcKGoZHxSGp4zKOqPsYGiLTNoVQbiaXrsshmAYMv0FyYHYIOOaS0K
-         FNXQGox4XxUgAWUtTfAGwv5zHAnOri9VwXtnN3WXrk66gXQ6NM2RfYSYo+eyHFUIRd
-         CbCvNJqEy1WbUgxeM336II3ysCBIN6XpQjlNUkpd2/EQUjF31mxQmi6Kk7gjMRduMv
-         TE0I45NGqEfNA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Cc:     Arnd Bergmann <arnd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Geoff Levand <geoff@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Pavel Machek <pavel@ucw.cz>, Stanislaw Gruszka <stf_xl@wp.pl>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Linux Wireless <ilw@linux.intel.com>
-Subject: Re: [PATCH 10/10] [RFC] wifi: remove ipw2100/ipw2200 drivers
-References: <20231023131953.2876682-1-arnd@kernel.org>
-        <20231023131953.2876682-11-arnd@kernel.org>
-        <20231024014302.0a0b79b0@mir>
-Date:   Tue, 24 Oct 2023 12:30:29 +0300
-In-Reply-To: <20231024014302.0a0b79b0@mir> (Stefan Lippers-Hollmann's message
-        of "Tue, 24 Oct 2023 01:43:02 +0200")
-Message-ID: <875y2wz7t6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Tue, 24 Oct 2023 06:38:00 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D769E5;
+        Tue, 24 Oct 2023 03:37:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=UQe5qsO91Lw4qUDZ0AOdGhyhApPjPXBszYhO63qJTUc=; t=1698143878; x=1699353478; 
+        b=G80kx5f6Vxt6k3u027gMFHesoYU0F5osDUcWRPUCrgnWsc/UbiDTY6nRLVw1SKLoUhOIzlKVwRd
+        ci3xo0J2WQedKCj/EtOYBmROTU9vdlGXnersDZ95WI4As2533CZqS92TrCo+Q5wlWDgIB/8+BDXQx
+        Y37ww0Q62h2uj6jAtyZ69BGC3yM7vCc1P1XOW6IrNsCd7aiB/ueKnSCo1d4PB2QVGNfrb6MHj2A35
+        whqufl3Oft1ZkGwywpKuFQJEC16sIsHhtbDEIQQRrMugcXRHTgqsxe5Lsc/FG7s1A6X7sYB25Iuxc
+        C0tGjxfraCBlJzgv3twnkZu6LgW5cLhZhlTA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qvEnL-00000001Mg6-0hPM;
+        Tue, 24 Oct 2023 12:37:55 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: wireless-2023-10-24
+Date:   Tue, 24 Oct 2023 12:35:41 +0200
+Message-ID: <20231024103540.19198-2-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stefan Lippers-Hollmann <s.l-h@gmx.de> writes:
+Hi,
 
-> On 2023-10-23, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->>
->> These two drivers were used for the earliest "Centrino" branded Intel
->> laptops during the late 32-bit Pentium-M era, roughly 2003 to 2005, which
->> probably makes it the most modern platform that still uses the wireless
->> extension interface instead of cfg80211. Unlike the other drivers that
->> are suggested for removal, this one is still officially maintained.
->>
->> According to Johannes Berg, there was an effort to finish the move away
->> from wext in the past, but the last evidence of this that I could find
->> is from commit a3caa99e6c68f ("libipw: initiate cfg80211 API conversion
->> (v2)") in 2009.
->>
->> Link: https://lore.kernel.org/all/87fs2fgals.fsf@kernel.org/
->> Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
->> Cc: Linux Wireless <ilw@linux.intel.com>
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> ---
->> I'm not convinced this should be in the same set of drivers as the
->> rest, since this is clearly less obsolete than the other hardware
->> that I would remove support for.
->
-> These have indeed been very common back in the day, I'm still using
-> a 2003-vintage 1.5 GHz Pentium-M 'Banias' Acer Travelmate 292LMi
-> notebook using ipw2200 (and have two spare ipw2200 mini-PCI cards).
-> Works still fine using v6.5.8-rc1 and WPA2PSK/ CCMP (sadly it does
-> not do WPA3) and I do use it semi-regularly (running the latest
-> stable- or stable-rc kernel of the day).
->
-> While it would be nice to replace it with an ath5k based card (to
-> get WPA3 support), the card isn't that easy to reach in the notebook,
-> so it would be sad to see this go.
+We have a couple of last-minute fixes for some issues.
 
-Wow, I'm very surprised that ipw2200 still works after 20 years. Thanks
-for the report, I think it's best that we still keep the ipw2x00 driver
-in the kernel.
+Note that this introduces a merge conflict with -next,
+which Stephen reported and (correctly) resolved here:
+https://lore.kernel.org/linux-wireless/20231024112424.7de86457@canb.auug.org.au/
+Basically just context - use the ieee80211_is_protected_dual_of_public_action()
+check from this pull request, and the return code
+RX_DROP_U_UNPROT_UNICAST_PUB_ACTION from -next.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Please pull and let us know if there's any problem.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks,
+johannes
+
+
+
+The following changes since commit f2ac54ebf85615a6d78f5eb213a8bbeeb17ebe5d:
+
+  net: rfkill: reduce data->mtx scope in rfkill_fop_open (2023-10-11 16:55:10 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2023-10-24
+
+for you to fetch changes up to 91535613b6090fc968c601d11d4e2f16b333713c:
+
+  wifi: mac80211: don't drop all unprotected public action frames (2023-10-23 13:25:30 +0200)
+
+----------------------------------------------------------------
+Three more fixes:
+ - don't drop all unprotected public action frames since
+   some don't have a protected dual
+ - fix pointer confusion in scanning code
+ - fix warning in some connections with multiple links
+
+----------------------------------------------------------------
+Avraham Stern (1):
+      wifi: mac80211: don't drop all unprotected public action frames
+
+Ben Greear (1):
+      wifi: cfg80211: pass correct pointer to rdev_inform_bss()
+
+Johannes Berg (1):
+      wifi: cfg80211: fix assoc response warning on failed links
+
+ include/linux/ieee80211.h | 29 +++++++++++++++++++++++++++++
+ net/mac80211/rx.c         |  3 +--
+ net/wireless/mlme.c       |  3 ++-
+ net/wireless/scan.c       |  2 +-
+ 4 files changed, 33 insertions(+), 4 deletions(-)
+
