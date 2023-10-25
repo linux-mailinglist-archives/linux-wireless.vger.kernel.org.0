@@ -2,189 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A455A7D5F55
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Oct 2023 03:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72EDB7D5FC7
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Oct 2023 04:12:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230284AbjJYBHF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Oct 2023 21:07:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56358 "EHLO
+        id S229548AbjJYCMk convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Oct 2023 22:12:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229606AbjJYBHE (ORCPT
+        with ESMTP id S229453AbjJYCMj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Oct 2023 21:07:04 -0400
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E4F6128
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 18:07:02 -0700 (PDT)
-Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
-        by cmsmtp with ESMTPS
-        id vRRcqi701hqFdvSMPqyVmY; Wed, 25 Oct 2023 01:07:01 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with ESMTPS
-        id vSMOqBCS51wVhvSMOqssja; Wed, 25 Oct 2023 01:07:01 +0000
-X-Authority-Analysis: v=2.4 cv=ANu0s8gj c=1 sm=1 tr=0 ts=65386a35
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=_mNlVl-r0hj7kTaC:21 a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=wYkD_t78qR0A:10
- a=VwQbUJbxAAAA:8 a=stkexhm8AAAA:8 a=_Wotqz80AAAA:8 a=jR2mby-O1imw8BYHV3QA:9
- a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22 a=pIW3pCRaVxJDc-hWtpF8:22
- a=buJP51TR1BpY-zbLSsyS:22 a=N_l3Vs37sht3-TxgB6J7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=jgueludWkZgknBALxo52tKnH1XcORBXqsInq+hMs+AA=; b=cVl4Aqq/QtjRsb9reVAKMjUA4b
-        JxcileGUcoYCD5yZH1ZltbFYWLZHYo+EiooYvbdsktidvQqdNwWQxu9GLFzQd2VSKbGU5AO3TmHSa
-        0OMAd7+7NRrRfcS+bDX/+jUSSb/MwVrTH7jQNRZCKEa/SXldSeJ1/H0BLtvEgyR7JGGVQ4YWnCWCJ
-        klr2NqBRUoy6vu/GSdrXewRjfTA4ifuHKV8sCelFrzmJateexgzbTw2y8/NTSAg+RwXQbR7Hynmpl
-        CyeTj6OFXGqO0PAeDC74NNODEmtLVuOiCgW7m4vZ6BeLDuPKEO6AxLmQ4HiVIRSFEreVNdZ2UUsiW
-        zXMsqVgg==;
-Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:48400 helo=[192.168.15.10])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96.2)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1qvSMO-001oyw-0H;
-        Tue, 24 Oct 2023 20:07:00 -0500
-Message-ID: <e19b9dcc-99d0-414d-95ef-69149daedaa9@embeddedor.com>
-Date:   Tue, 24 Oct 2023 19:06:58 -0600
+        Tue, 24 Oct 2023 22:12:39 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AA8710C6
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 19:12:34 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39P2CHyeC964703, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39P2CHyeC964703
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 25 Oct 2023 10:12:17 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Wed, 25 Oct 2023 10:12:14 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Wed, 25 Oct 2023 10:12:13 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
+ 15.01.2375.007; Wed, 25 Oct 2023 10:12:13 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     Kalle Valo <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw89: fix timeout calculation in rtw89_roc_end()
+Thread-Topic: [PATCH] wifi: rtw89: fix timeout calculation in rtw89_roc_end()
+Thread-Index: AQHaBob2+arQHghNX06nliqfXd7SW7BZxCDQ
+Date:   Wed, 25 Oct 2023 02:12:13 +0000
+Message-ID: <18db194927c944deb189a0c4dee78df0@realtek.com>
+References: <20231024143137.30393-1-dmantipov@yandex.ru>
+In-Reply-To: <20231024143137.30393-1-dmantipov@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-originating-ip: [172.21.71.113]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC - is this a bug?] wifi: ath10k: Asking for some light on
- this, please :)
-Content-Language: en-US
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-References: <626ae2e7-66f8-423b-b17f-e75c1a6d29b3@embeddedor.com>
-In-Reply-To: <626ae2e7-66f8-423b-b17f-e75c1a6d29b3@embeddedor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.21.192
-X-Source-L: No
-X-Exim-ID: 1qvSMO-001oyw-0H
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.10]) [187.162.21.192]:48400
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 4
-X-Org:  HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfNc0e/RwBpAQBjYT1fyF4PtyyvbOUUWvnhRJNHAxmQp3Gt9Vbuf6SVqg+Ua38enrEVE1S6Rp0f5wTFiJC3OpJrZ6V1bv0GfvcXDppm6i8NeZuj3nbuVt
- CEWVWg5F1R8HcNY/+3RQIwtYggPRPytJmReRwsH5rmtIldWgxa6opxX500OCWjBJY/rbKrpGqyI0ZiBkOM/dXXqs10YJRXwBbsgZNmJYawi4hz0DuJv/iEZF
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[+CC Manikanta Pubbisetty ]
-
-As Johannes[1] pointed out, this `memset()` is probably unnecessary:
-
-./drivers/net/wireless/ath/ath10k/wmi.c:
-8920         memset(skb->data, 0, sizeof(*cmd));
-
-However, the same exact issue[2] is present at the line below inside
-function `ath10k_wmi_alloc_skb()`:
-
-drivers/net/wireless/ath/ath10k/wmi.c:
-1799         memset(skb->data, 0, round_len);
 
 
-Thanks
---
-Gustavo
+> -----Original Message-----
+> From: Dmitry Antipov <dmantipov@yandex.ru>
+> Sent: Tuesday, October 24, 2023 10:32 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; Dmitry Antipov <dmantipov@yandex.ru>
+> Subject: [PATCH] wifi: rtw89: fix timeout calculation in rtw89_roc_end()
+> 
+> Since 'rtw89_core_tx_kick_off_and_wait()' assumes timeout
+> (actually RTW89_ROC_TX_TIMEOUT) in milliseconds, I suppose
+> that RTW89_ROC_IDLE_TIMEOUT is in milliseconds as well. If
+> so, 'msecs_to_jiffies()' should be used in a call to
+> 'ieee80211_queue_delayed_work()' from 'rtw89_roc_end()'.
+> Compile tested only.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-[1] https://lore.kernel.org/linux-hardening/26b15f4702cef17fe70b496a62f03735874bd16a.camel@sipsolutions.net/
-[2] https://lore.kernel.org/linux-hardening/07e9bb04-f9fc-46d5-bfb9-a00a63a707c0@embeddedor.com/
+Thanks for the finding. 
 
-On 10/24/23 13:50, Gustavo A. R. Silva wrote:
-> Hi all,
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
+> ---
+>  drivers/net/wireless/realtek/rtw89/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> While working on tranforming one-element array `peer_chan_list` in
-> `struct wmi_tdls_peer_capabilities` into a flex-array member
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+> index 4bfb4188de72..15196f07b5c0 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.c
+> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> @@ -2886,7 +2886,7 @@ void rtw89_roc_end(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
 > 
-> 7187 struct wmi_tdls_peer_capabilities {
-> ...
-> 7199         struct wmi_channel peer_chan_list[1];
-> 7200 } __packed;
+>         if (hw->conf.flags & IEEE80211_CONF_IDLE)
+>                 ieee80211_queue_delayed_work(hw, &roc->roc_work,
+> -                                            RTW89_ROC_IDLE_TIMEOUT);
+> +                                            msecs_to_jiffies(RTW89_ROC_IDLE_TIMEOUT));
+>  }
 > 
-> the following line caught my attention:
-> 
-> ./drivers/net/wireless/ath/ath10k/wmi.c:
-> 8920         memset(skb->data, 0, sizeof(*cmd));
-> 
-> Notice that before the flex-array transformation, we are zeroing 128
-> bytes in `skb->data` because `sizeof(*cmd) == 128`, see below:
-> 
-> $ pahole -C wmi_10_4_tdls_peer_update_cmd drivers/net/wireless/ath/ath10k/wmi.o
-> struct wmi_10_4_tdls_peer_update_cmd {
->      __le32                     vdev_id;              /*     0     4 */
->      struct wmi_mac_addr        peer_macaddr;         /*     4     8 */
->      __le32                     peer_state;           /*    12     4 */
->      __le32                     reserved[4];          /*    16    16 */
->      struct wmi_tdls_peer_capabilities peer_capab;    /*    32    96 */
-> 
->      /* size: 128, cachelines: 2, members: 5 */
-> };
-> 
-> So, after the flex-array transformation (and the necessary adjustments
-> to a few other lines of code) we would be zeroing 104 bytes in
-> `skb->data` because `sizeof(*cmd) == 104`, see below:
-> 
-> $ pahole -C wmi_10_4_tdls_peer_update_cmd drivers/net/wireless/ath/ath10k/wmi.o
-> struct wmi_10_4_tdls_peer_update_cmd {
->      __le32                     vdev_id;              /*     0     4 */
->      struct wmi_mac_addr        peer_macaddr;         /*     4     8 */
->      __le32                     peer_state;           /*    12     4 */
->      __le32                     reserved[4];          /*    16    16 */
->      struct wmi_tdls_peer_capabilities peer_capab;    /*    32    72 */
-> 
->      /* size: 104, cachelines: 2, members: 5 */
->      /* last cacheline: 40 bytes */
-> };
-> 
-> This difference arises because the size of the element type for the
-> `peer_chan_list` array, which is `sizeof(struct wmi_channel) == 24 `
-> 
-> $ pahole -C wmi_channel drivers/net/wireless/ath/ath10k/wmi.o
-> struct wmi_channel {
->      __le32                     mhz;                  /*     0     4 */
->      __le32                     band_center_freq1;    /*     4     4 */
->      __le32                     band_center_freq2;    /*     8     4 */
-> 
-> [..]
->                                                 /*    20     4 */
-> 
->      /* size: 24, cachelines: 1, members: 6 */
->      /* last cacheline: 24 bytes */
-> };
-> 
-> is included in `sizeof(*cmd)` before the transformation.
-> 
-> So, my question is: do we really need to zero out those extra 24 bytes in
-> `skb->data`? or is it rather a bug in the original code?
-> 
-> Thanks!
-> -- 
-> Gustavo
-> 
-> 
+>  void rtw89_roc_work(struct work_struct *work)
+> --
+> 2.41.0
+
