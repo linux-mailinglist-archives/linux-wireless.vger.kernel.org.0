@@ -2,50 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A8D47D73EB
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Oct 2023 21:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AF2D7D7402
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Oct 2023 21:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234427AbjJYTJc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Oct 2023 15:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38370 "EHLO
+        id S234733AbjJYTMW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Oct 2023 15:12:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234055AbjJYTJa (ORCPT
+        with ESMTP id S229682AbjJYTMU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Oct 2023 15:09:30 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A3AC0
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Oct 2023 12:09:28 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 16C75B0006B
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Oct 2023 19:09:26 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 570AC13C2B1;
-        Wed, 25 Oct 2023 12:09:25 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 570AC13C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1698260965;
-        bh=XMfesbeSVAxqpf2D0SpR1qJ1LtlVdwGS8uU64So2gBU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eGE/8JGNI2YIdfSImwsBDbymFKqXcrrATZ9LvNwKxh2S60O8hlyyFcIUVwZblbTkb
-         r3OU7o4DF8uFGsMOTzmMCdiCUieJK3Q914fvIGsyKpCh7vQV+oneE10Lyr6rCv/h0v
-         SlZV9xbzQ5qx2aCTA3vgJaFd2Sdn7rh4y5jjmgGI=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 12/12] wifi: mt76: mt7915: add rx-ppdu-size-out-of-range ethtool counter
-Date:   Wed, 25 Oct 2023 12:09:20 -0700
-Message-Id: <20231025190920.2142693-3-greearb@candelatech.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20231025190920.2142693-1-greearb@candelatech.com>
-References: <20231025190920.2142693-1-greearb@candelatech.com>
+        Wed, 25 Oct 2023 15:12:20 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F092191
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Oct 2023 12:12:17 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-31427ddd3fbso70210f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Oct 2023 12:12:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1698261135; x=1698865935; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BJE1oxlQfYqBKYgdY9os4N8F8vLdx7K54CDVTJraf3w=;
+        b=eUc2/3FF7yx0VmmvhHMsoEFoS6ulqUbTwRr270/lx+Xsq5jjQJlnaHoquaafSt0WOO
+         CenzJGVXHX/sSX6D5u27SJeC2k6a9zS9IUup9ZpY0Lb29pOyqjNiXn2ZfV7GhNr99Zvt
+         ZBk6timVsYHtuTmRdID4yWHJItubs/B1ViVlhM4h0lZL4SmUV5LnWR61Ujhw5/3jsf5j
+         NZzCUY93bx3YOP6dX+nQOcbOhIyr3c2wq89KcvSLPc++ZRI1QfxeeVhxihH7v5yaE/U1
+         3CU0ITLH72xwA+JRAlrTRKnvSZAxOZvCETVOm44uoMN9/EcL4tshP/lsAL5x47fY0fQU
+         xFPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698261135; x=1698865935;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BJE1oxlQfYqBKYgdY9os4N8F8vLdx7K54CDVTJraf3w=;
+        b=uCPFFJ3F02Xa7BpG7TajxeDqxa0DaxjEhxnaTdTVVsCcSgWwawg6q/JbWIXgB9qDnW
+         D/BAt07EvtuFHvWV12mvi1KT/q8d/OiktItx1eT+Y7aokPifniPriau8KnJxzUonIaW+
+         CDCNekKCPk2nraImV85ikW//7odbwqPL2/RJjxQV/KWDbMGDrTGOsK2yfTmpU9wfVEjP
+         gms7Ae+S2WlC23iIGuFrctOcqyUum/iPu953yiJMnHghUEfF6XocgNOgnfqNEPfcn4gu
+         8JObUc+lPaVhlJAQPHN9umHDfZVPC7Fljfv0uEu57P5sxZeP5jUPkBLrfl1Oq/QQ/XpH
+         +bHw==
+X-Gm-Message-State: AOJu0YwsUAjQw2dzXcnp6jLkCZpFs7WD710vxM5ozxKZ4yYdCPBJP09U
+        c1Qt9zfR4s6ivqHsfG6M72W2Iw==
+X-Google-Smtp-Source: AGHT+IFmQB+pB5vXHCUGxPLndR4N+esrM3X5ULS8AWxa265+wqOl+oIbPQk/vjEZoQVGxg1VO5gHxQ==
+X-Received: by 2002:a5d:4e06:0:b0:32d:a3a0:e927 with SMTP id p6-20020a5d4e06000000b0032da3a0e927mr10823356wrt.58.1698261135536;
+        Wed, 25 Oct 2023 12:12:15 -0700 (PDT)
+Received: from [192.168.0.106] (haunt.prize.volia.net. [93.72.109.136])
+        by smtp.gmail.com with ESMTPSA id f6-20020a5d50c6000000b003258934a4bcsm12673992wrt.42.2023.10.25.12.12.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Oct 2023 12:12:14 -0700 (PDT)
+Message-ID: <1d484f6a-669b-e222-391b-43e3b4904097@blackwall.org>
+Date:   Wed, 25 Oct 2023 22:12:13 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1698260966-jpaXqw7cSorr
-X-MDID-O: us5;at1;1698260966;jpaXqw7cSorr;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH net-next] netlink: make range pointers in policies const
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc:     netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+        j.vosburgh@gmail.com, andy@greyhouse.net, dsahern@kernel.org,
+        jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
+        vinicius.gomes@intel.com, johannes@sipsolutions.net,
+        idosch@nvidia.com, linux-wireless@vger.kernel.org
+References: <20231025162204.132528-1-kuba@kernel.org>
+From:   Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20231025162204.132528-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,77 +77,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On 10/25/23 19:22, Jakub Kicinski wrote:
+> struct nla_policy is usually constant itself, but unless
+> we make the ranges inside constant we won't be able to
+> make range structs const. The ranges are not modified
+> by the core.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: j.vosburgh@gmail.com
+> CC: andy@greyhouse.net
+> CC: dsahern@kernel.org
+> CC: jhs@mojatatu.com
+> CC: xiyou.wangcong@gmail.com
+> CC: jiri@resnulli.us
+> CC: vinicius.gomes@intel.com
+> CC: johannes@sipsolutions.net
+> CC: razor@blackwall.org
+> CC: idosch@nvidia.com
+> CC: linux-wireless@vger.kernel.org
+> ---
+>   drivers/net/bonding/bond_netlink.c | 2 +-
+>   drivers/net/vxlan/vxlan_mdb.c      | 2 +-
+>   include/net/netlink.h              | 4 ++--
+>   net/ipv6/ioam6_iptunnel.c          | 2 +-
+>   net/sched/sch_fq.c                 | 2 +-
+>   net/sched/sch_fq_pie.c             | 2 +-
+>   net/sched/sch_qfq.c                | 2 +-
+>   net/sched/sch_taprio.c             | 2 +-
+>   net/wireless/nl80211.c             | 2 +-
+>   tools/net/ynl/ynl-gen-c.py         | 2 +-
+>   10 files changed, 11 insertions(+), 11 deletions(-)
+> 
 
-Support this additional MIB counter, it shares register with
-the rx-fifo-overflow counter.
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- drivers/net/wireless/mediatek/mt76/mt76.h        | 1 +
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c  | 1 +
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt7915/regs.h | 1 +
- 4 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 9b5c1ee7951d..03ec0eedaa8f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -944,6 +944,7 @@ struct mt76_mib_stats {
- 
- 	/* rx stats */
- 	u32 rx_fifo_full_cnt;
-+	u32 rx_oor_cnt;
- 	u32 channel_idle_cnt;
- 	u32 primary_cca_busy_time;
- 	u32 secondary_cca_busy_time;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index f6d8e08d7083..d6ec34dff090 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1829,6 +1829,7 @@ void mt7915_mac_update_stats(struct mt7915_phy *phy)
- 
- 	cnt = mt76_rr(dev, MT_MIB_SDR4(band));
- 	mib->rx_fifo_full_cnt += FIELD_GET(MT_MIB_SDR4_RX_FIFO_FULL_MASK, cnt);
-+	mib->rx_oor_cnt += FIELD_GET(MT_MIB_SDR4_RX_OOR_MASK, cnt);
- 
- 	cnt = mt76_rr(dev, MT_MIB_SDR5(band));
- 	mib->rx_mpdu_cnt += cnt;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index e9b3b247c0d5..e9d3a47e7747 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1309,6 +1309,7 @@ static const char mt7915_gstrings_stats[][ETH_GSTRING_LEN] = {
- 
- 	/* rx counters */
- 	"rx_fifo_full_cnt",
-+	"rx_oor_cnt", /* rx ppdu length is bad */
- 	"rx_mpdu_cnt",
- 	"channel_idle_cnt",
- 	"primary_cca_busy_time",
-@@ -1537,7 +1538,8 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
- 		data[ei++] = mib->tx_amsdu[i];
- 
- 	/* rx counters */
--	data[ei++] = mib->rx_fifo_full_cnt;
-+	data[ei++] = mib->rx_fifo_full_cnt; /* group-5 might exacerbate this */
-+	data[ei++] = mib->rx_oor_cnt;
- 	data[ei++] = mib->rx_mpdu_cnt;
- 	data[ei++] = mib->channel_idle_cnt;
- 	data[ei++] = mib->primary_cca_busy_time;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 89ac8e6707b8..a3070f07177b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -313,6 +313,7 @@ enum offs_rev {
- 
- #define MT_MIB_SDR4(_band)		MT_WF_MIB(_band, __OFFS(MIB_SDR4))
- #define MT_MIB_SDR4_RX_FIFO_FULL_MASK	GENMASK(15, 0)
-+#define MT_MIB_SDR4_RX_OOR_MASK		GENMASK(23, 16)
- 
- /* rx mpdu counter, full 32 bits */
- #define MT_MIB_SDR5(_band)		MT_WF_MIB(_band, __OFFS(MIB_SDR5))
--- 
-2.40.0
 
