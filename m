@@ -2,114 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AF2D7D7402
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Oct 2023 21:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3C197D77D1
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Oct 2023 00:28:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234733AbjJYTMW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Oct 2023 15:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41572 "EHLO
+        id S229649AbjJYW2B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Oct 2023 18:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbjJYTMU (ORCPT
+        with ESMTP id S229583AbjJYW2A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Oct 2023 15:12:20 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F092191
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Oct 2023 12:12:17 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-31427ddd3fbso70210f8f.0
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Oct 2023 12:12:17 -0700 (PDT)
+        Wed, 25 Oct 2023 18:28:00 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC22C92;
+        Wed, 25 Oct 2023 15:27:57 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-1eb6c559ab4so156175fac.0;
+        Wed, 25 Oct 2023 15:27:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1698261135; x=1698865935; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BJE1oxlQfYqBKYgdY9os4N8F8vLdx7K54CDVTJraf3w=;
-        b=eUc2/3FF7yx0VmmvhHMsoEFoS6ulqUbTwRr270/lx+Xsq5jjQJlnaHoquaafSt0WOO
-         CenzJGVXHX/sSX6D5u27SJeC2k6a9zS9IUup9ZpY0Lb29pOyqjNiXn2ZfV7GhNr99Zvt
-         ZBk6timVsYHtuTmRdID4yWHJItubs/B1ViVlhM4h0lZL4SmUV5LnWR61Ujhw5/3jsf5j
-         NZzCUY93bx3YOP6dX+nQOcbOhIyr3c2wq89KcvSLPc++ZRI1QfxeeVhxihH7v5yaE/U1
-         3CU0ITLH72xwA+JRAlrTRKnvSZAxOZvCETVOm44uoMN9/EcL4tshP/lsAL5x47fY0fQU
-         xFPQ==
+        d=gmail.com; s=20230601; t=1698272877; x=1698877677; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gpIvHM5NvuykoUDW2kRupuz5sx/Tvq7a0jlZsKkUcZs=;
+        b=eWNAk+1+9NCO7Q0BFAip+sDbyQQZPat2xWXVi83UWRwnZ1Ly0js3vGVQmijzWwhGK4
+         2LQyU9aXYudK1kALFtugRBIloQQAhGfCSj/MNcsSmtErCmSXmjNt2bhU4TtaQjnGwFJ/
+         71SD+dmM3/cyAJRu80rBx/XqfzdIrtjrjifzvXmVEUoF7p2b7VMiQfIuWxxT/0t9MM0P
+         aBbvfG/S6+r+19GKtePxZCneEUXKJpVorsb4k+ETjeMi/IRxv/xTy/3Spk1mVc5EfV6n
+         jQJgaz3B2IZFyFj5dTUgn37t+F1E5w8KdhZx8FtteHRB3pnSaqZjEpgXPQSX4ptak1qL
+         CVRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698261135; x=1698865935;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BJE1oxlQfYqBKYgdY9os4N8F8vLdx7K54CDVTJraf3w=;
-        b=uCPFFJ3F02Xa7BpG7TajxeDqxa0DaxjEhxnaTdTVVsCcSgWwawg6q/JbWIXgB9qDnW
-         D/BAt07EvtuFHvWV12mvi1KT/q8d/OiktItx1eT+Y7aokPifniPriau8KnJxzUonIaW+
-         CDCNekKCPk2nraImV85ikW//7odbwqPL2/RJjxQV/KWDbMGDrTGOsK2yfTmpU9wfVEjP
-         gms7Ae+S2WlC23iIGuFrctOcqyUum/iPu953yiJMnHghUEfF6XocgNOgnfqNEPfcn4gu
-         8JObUc+lPaVhlJAQPHN9umHDfZVPC7Fljfv0uEu57P5sxZeP5jUPkBLrfl1Oq/QQ/XpH
-         +bHw==
-X-Gm-Message-State: AOJu0YwsUAjQw2dzXcnp6jLkCZpFs7WD710vxM5ozxKZ4yYdCPBJP09U
-        c1Qt9zfR4s6ivqHsfG6M72W2Iw==
-X-Google-Smtp-Source: AGHT+IFmQB+pB5vXHCUGxPLndR4N+esrM3X5ULS8AWxa265+wqOl+oIbPQk/vjEZoQVGxg1VO5gHxQ==
-X-Received: by 2002:a5d:4e06:0:b0:32d:a3a0:e927 with SMTP id p6-20020a5d4e06000000b0032da3a0e927mr10823356wrt.58.1698261135536;
-        Wed, 25 Oct 2023 12:12:15 -0700 (PDT)
-Received: from [192.168.0.106] (haunt.prize.volia.net. [93.72.109.136])
-        by smtp.gmail.com with ESMTPSA id f6-20020a5d50c6000000b003258934a4bcsm12673992wrt.42.2023.10.25.12.12.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Oct 2023 12:12:14 -0700 (PDT)
-Message-ID: <1d484f6a-669b-e222-391b-43e3b4904097@blackwall.org>
-Date:   Wed, 25 Oct 2023 22:12:13 +0300
+        d=1e100.net; s=20230601; t=1698272877; x=1698877677;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gpIvHM5NvuykoUDW2kRupuz5sx/Tvq7a0jlZsKkUcZs=;
+        b=Jx1fnKk70FRJ/qk0cucOTt96CH6qaoNshuJ3qqX1r9zfXFYdAD6q93B4skPzPd+mDB
+         f+Y2yxGXDgpjeUhLfxR2ARBTTmqs9y2phKknT4YCyR3r8dZ1m7OO51ci56Jk2Cldg0GR
+         zs3qgvYM5tZmkU3ZaJmh9A6lqifAYrE8VGBoxGmDDuxZnmyD1xbjB8h4dhyslbSQWlKy
+         Yrz5mjD8TCTe8A7NjI2ZlV2TjdqdkhLqwyL0C99FetNt5JyLWsR162/+1YUkMokeTPk8
+         ySDAY/b5qU/wrV1b1R31YvgNPDEYgeMhAcN8zGCGcerfKF8UxO7OBPTCK8EVxihacVRh
+         1lew==
+X-Gm-Message-State: AOJu0YzyHGtR/mKStNps3zpp+OEGQqwMYhkfd0EinrJc0GkAcxnoHb+5
+        JEgbh+lFc6zEa6chVWp1XIEX4nRbumpplYyTKi4=
+X-Google-Smtp-Source: AGHT+IGppM3tGzEymUiuG98SnROM8wXZMsAgd+v2Tnglma2FhzcDZnsttPGrnBID7W3UQdByYtn9HbwApuPSX3zdZhk=
+X-Received: by 2002:a05:6871:4391:b0:1bb:a227:7008 with SMTP id
+ lv17-20020a056871439100b001bba2277008mr20401190oab.3.1698272877001; Wed, 25
+ Oct 2023 15:27:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH net-next] netlink: make range pointers in policies const
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc:     netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
-        j.vosburgh@gmail.com, andy@greyhouse.net, dsahern@kernel.org,
-        jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
-        vinicius.gomes@intel.com, johannes@sipsolutions.net,
-        idosch@nvidia.com, linux-wireless@vger.kernel.org
-References: <20231025162204.132528-1-kuba@kernel.org>
-From:   Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20231025162204.132528-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Witold Baryluk <witold.baryluk@gmail.com>
+Date:   Wed, 25 Oct 2023 22:27:20 +0000
+Message-ID: <CAEGMnwo6RFqADPO5FRkRUNL=GfV6DY8UuwgsypEYOD3LTnXdJg@mail.gmail.com>
+Subject: Re: [PATCH 10/10] [RFC] wifi: remove ipw2100/ipw2200 drivers
+To:     arnd@kernel.org
+Cc:     Larry.Finger@lwfinger.net, alexandre.belloni@bootlin.com,
+        arnd@arndb.de, claudiu.beznea@tuxon.dev, davem@davemloft.net,
+        geert@linux-m68k.org, geoff@infradead.org,
+        gregkh@linuxfoundation.org, gregory.greenman@intel.com,
+        ilw@linux.intel.com, johannes@sipsolutions.net, kuba@kernel.org,
+        kvalo@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        nicolas.ferre@microchip.com, pavel@ucw.cz,
+        quic_jjohnson@quicinc.com, stas.yakovlev@gmail.com, stf_xl@wp.pl
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/25/23 19:22, Jakub Kicinski wrote:
-> struct nla_policy is usually constant itself, but unless
-> we make the ranges inside constant we won't be able to
-> make range structs const. The ranges are not modified
-> by the core.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> These two drivers were used for the earliest "Centrino" branded Intel
+> laptops during the late 32-bit Pentium-M era, roughly 2003 to 2005, which
+> probably makes it the most modern platform that still uses the wireless
+> extension interface instead of cfg80211. Unlike the other drivers that
+> are suggested for removal, this one is still officially maintained.
+>
+> According to Johannes Berg, there was an effort to finish the move away
+> from wext in the past, but the last evidence of this that I could find
+> is from commit a3caa99e6c68f ("libipw: initiate cfg80211 API conversion
+> (v2)") in 2009.
+>
+> Link: https://lore.kernel.org/all/87fs2fgals.fsf@kernel.org/
+> Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
+> Cc: Linux Wireless <ilw@linux.intel.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
-> CC: j.vosburgh@gmail.com
-> CC: andy@greyhouse.net
-> CC: dsahern@kernel.org
-> CC: jhs@mojatatu.com
-> CC: xiyou.wangcong@gmail.com
-> CC: jiri@resnulli.us
-> CC: vinicius.gomes@intel.com
-> CC: johannes@sipsolutions.net
-> CC: razor@blackwall.org
-> CC: idosch@nvidia.com
-> CC: linux-wireless@vger.kernel.org
-> ---
->   drivers/net/bonding/bond_netlink.c | 2 +-
->   drivers/net/vxlan/vxlan_mdb.c      | 2 +-
->   include/net/netlink.h              | 4 ++--
->   net/ipv6/ioam6_iptunnel.c          | 2 +-
->   net/sched/sch_fq.c                 | 2 +-
->   net/sched/sch_fq_pie.c             | 2 +-
->   net/sched/sch_qfq.c                | 2 +-
->   net/sched/sch_taprio.c             | 2 +-
->   net/wireless/nl80211.c             | 2 +-
->   tools/net/ynl/ynl-gen-c.py         | 2 +-
->   10 files changed, 11 insertions(+), 11 deletions(-)
-> 
+> I'm not convinced this should be in the same set of drivers as the
+> rest, since this is clearly less obsolete than the other hardware
+> that I would remove support for.
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+I still use ipw2200 on Intel PRO/Wireless 2915ABG [Calexico2] Network
+Connection card, in my IBM Thinkpad X41 (Pentium-M 1.73GHz, Centrino
+platform). The laptop is rock solid, and I use it as a backup for my
+other Thinkpad. In fact is sometimes preferable to more modern machines
+(IMHO X41 itself is the best laptop ever made in terms of a design).
+
+Never had really issues with WiFi on it. In terms of speed it is neither
+far or slow, but does the job anyway.
+
+Now, I do not use this laptop frequently, maybe once or twice a month.
+But that is more because in I use laptops less in general these days. Not
+because the machine is not usable. I have modern SSD in it, second hard
+drive, two USB 3.0 ports via ExpressCard, high res 4:3 (1440x1050)
+display, full disk encryption, etc.
+
+I would really like for this driver to stay in the mainline for another 5-10
+years.
+
+I might be interested in modernizing the driver, but I have no idea how
+much effort it would be (in terms of changed fraction of code). 20k LOC is
+neither small or big, and not obvious (a lot of it would be unchanged),
+if it is a week of work, or months of work.
+
+I would not have an issue with removing it, and readding back if somebody
+(or me) ports it, if not for re-review from scratch concerns. If I port
+it, I would not be able to do re-review, 1) out of date coding standards,
+2) different reviewers, 3) I would only port needed parts, and keep rest
+of the driver intact, so I would not be able to really provide much
+insight. So, readding after porting might be harder than keeping and
+porting.
+
+I also used in the past other drivers you are removing (zd1201, hostap,
+orinoco, rndis, wl3501), but I do not have too much worry about them, as
+they are ancient, and also require ancient hardware to run.
 
 
+Cheers,
+Witold
+
+
+-- 
+Witold Baryluk
