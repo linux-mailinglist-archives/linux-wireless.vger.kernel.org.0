@@ -2,57 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C692C7D5F30
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Oct 2023 02:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A455A7D5F55
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Oct 2023 03:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229798AbjJYAun (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Oct 2023 20:50:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43132 "EHLO
+        id S230284AbjJYBHF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Oct 2023 21:07:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbjJYAul (ORCPT
+        with ESMTP id S229606AbjJYBHE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Oct 2023 20:50:41 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DFDF10E5
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 17:50:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698195039; x=1729731039;
-  h=date:from:to:cc:subject:message-id;
-  bh=N1nzqx23cBvCE/E4DCbVu46Erf8hdG8e1nx/iJWrj94=;
-  b=n19gARdVpx8ki1nwdqWMrR9vJyv1CFzW1Z/XOrmBUrXdlUBaZFclhWXT
-   0aW6JPtbRqGq941yc0avXHxt+aE0hAWcQiRr43nRLI5SDIGx96b3oU2Sb
-   s4O7vD6m1k3eJwGe4JUjq1QdQTKk6K1iTZ0G7IfB5vnl9WjDT47RtrXAY
-   3d5xZjq84z+Br+UqHGLEMb+rvAhRfp3L64hToROe0ZkXC1E45chbsST43
-   /FKwqUtW7S4pyfdN8xrtPy6hn7HOAFRvi+oQ1Ul7lUP9RSNyLHVkrl2fv
-   MeCTHqZHZSAqvZ4zfBQsaBQTwlYj7xS95Isyz8h3ZUpf1dWBFNAtV/eXQ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="384419329"
-X-IronPort-AV: E=Sophos;i="6.03,249,1694761200"; 
-   d="scan'208";a="384419329"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 17:50:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="752173907"
-X-IronPort-AV: E=Sophos;i="6.03,249,1694761200"; 
-   d="scan'208";a="752173907"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 24 Oct 2023 17:50:37 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qvS6U-0008S3-2W;
-        Wed, 25 Oct 2023 00:50:34 +0000
-Date:   Wed, 25 Oct 2023 08:49:38 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 91535613b6090fc968c601d11d4e2f16b333713c
-Message-ID: <202310250834.AGoCmF8G-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        Tue, 24 Oct 2023 21:07:04 -0400
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E4F6128
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 18:07:02 -0700 (PDT)
+Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
+        by cmsmtp with ESMTPS
+        id vRRcqi701hqFdvSMPqyVmY; Wed, 25 Oct 2023 01:07:01 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id vSMOqBCS51wVhvSMOqssja; Wed, 25 Oct 2023 01:07:01 +0000
+X-Authority-Analysis: v=2.4 cv=ANu0s8gj c=1 sm=1 tr=0 ts=65386a35
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=_mNlVl-r0hj7kTaC:21 a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=wYkD_t78qR0A:10
+ a=VwQbUJbxAAAA:8 a=stkexhm8AAAA:8 a=_Wotqz80AAAA:8 a=jR2mby-O1imw8BYHV3QA:9
+ a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22 a=pIW3pCRaVxJDc-hWtpF8:22
+ a=buJP51TR1BpY-zbLSsyS:22 a=N_l3Vs37sht3-TxgB6J7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=jgueludWkZgknBALxo52tKnH1XcORBXqsInq+hMs+AA=; b=cVl4Aqq/QtjRsb9reVAKMjUA4b
+        JxcileGUcoYCD5yZH1ZltbFYWLZHYo+EiooYvbdsktidvQqdNwWQxu9GLFzQd2VSKbGU5AO3TmHSa
+        0OMAd7+7NRrRfcS+bDX/+jUSSb/MwVrTH7jQNRZCKEa/SXldSeJ1/H0BLtvEgyR7JGGVQ4YWnCWCJ
+        klr2NqBRUoy6vu/GSdrXewRjfTA4ifuHKV8sCelFrzmJateexgzbTw2y8/NTSAg+RwXQbR7Hynmpl
+        CyeTj6OFXGqO0PAeDC74NNODEmtLVuOiCgW7m4vZ6BeLDuPKEO6AxLmQ4HiVIRSFEreVNdZ2UUsiW
+        zXMsqVgg==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:48400 helo=[192.168.15.10])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.2)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1qvSMO-001oyw-0H;
+        Tue, 24 Oct 2023 20:07:00 -0500
+Message-ID: <e19b9dcc-99d0-414d-95ef-69149daedaa9@embeddedor.com>
+Date:   Tue, 24 Oct 2023 19:06:58 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC - is this a bug?] wifi: ath10k: Asking for some light on
+ this, please :)
+Content-Language: en-US
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+References: <626ae2e7-66f8-423b-b17f-e75c1a6d29b3@embeddedor.com>
+In-Reply-To: <626ae2e7-66f8-423b-b17f-e75c1a6d29b3@embeddedor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1qvSMO-001oyw-0H
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.10]) [187.162.21.192]:48400
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfNc0e/RwBpAQBjYT1fyF4PtyyvbOUUWvnhRJNHAxmQp3Gt9Vbuf6SVqg+Ua38enrEVE1S6Rp0f5wTFiJC3OpJrZ6V1bv0GfvcXDppm6i8NeZuj3nbuVt
+ CEWVWg5F1R8HcNY/+3RQIwtYggPRPytJmReRwsH5rmtIldWgxa6opxX500OCWjBJY/rbKrpGqyI0ZiBkOM/dXXqs10YJRXwBbsgZNmJYawi4hz0DuJv/iEZF
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,203 +95,96 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 91535613b6090fc968c601d11d4e2f16b333713c  wifi: mac80211: don't drop all unprotected public action frames
+[+CC Manikanta Pubbisetty ]
 
-elapsed time: 2058m
+As Johannes[1] pointed out, this `memset()` is probably unnecessary:
 
-configs tested: 184
-configs skipped: 2
+./drivers/net/wireless/ath/ath10k/wmi.c:
+8920         memset(skb->data, 0, sizeof(*cmd));
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+However, the same exact issue[2] is present at the line below inside
+function `ath10k_wmi_alloc_skb()`:
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                            hsdk_defconfig   gcc  
-arc                   randconfig-001-20231024   gcc  
-arc                   randconfig-001-20231025   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                   randconfig-001-20231025   gcc  
-arm                           u8500_defconfig   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             alldefconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20231024   gcc  
-i386         buildonly-randconfig-001-20231025   gcc  
-i386         buildonly-randconfig-002-20231024   gcc  
-i386         buildonly-randconfig-002-20231025   gcc  
-i386         buildonly-randconfig-003-20231024   gcc  
-i386         buildonly-randconfig-003-20231025   gcc  
-i386         buildonly-randconfig-004-20231024   gcc  
-i386         buildonly-randconfig-004-20231025   gcc  
-i386         buildonly-randconfig-005-20231024   gcc  
-i386         buildonly-randconfig-005-20231025   gcc  
-i386         buildonly-randconfig-006-20231024   gcc  
-i386         buildonly-randconfig-006-20231025   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231024   gcc  
-i386                  randconfig-001-20231025   gcc  
-i386                  randconfig-002-20231024   gcc  
-i386                  randconfig-002-20231025   gcc  
-i386                  randconfig-003-20231024   gcc  
-i386                  randconfig-003-20231025   gcc  
-i386                  randconfig-004-20231024   gcc  
-i386                  randconfig-004-20231025   gcc  
-i386                  randconfig-005-20231024   gcc  
-i386                  randconfig-005-20231025   gcc  
-i386                  randconfig-006-20231024   gcc  
-i386                  randconfig-006-20231025   gcc  
-i386                  randconfig-011-20231024   gcc  
-i386                  randconfig-011-20231025   gcc  
-i386                  randconfig-012-20231024   gcc  
-i386                  randconfig-012-20231025   gcc  
-i386                  randconfig-013-20231024   gcc  
-i386                  randconfig-013-20231025   gcc  
-i386                  randconfig-014-20231024   gcc  
-i386                  randconfig-014-20231025   gcc  
-i386                  randconfig-015-20231024   gcc  
-i386                  randconfig-015-20231025   gcc  
-i386                  randconfig-016-20231024   gcc  
-i386                  randconfig-016-20231025   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231024   gcc  
-loongarch             randconfig-001-20231025   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                     cu1000-neo_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                       holly_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20231024   gcc  
-riscv                 randconfig-001-20231025   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231024   gcc  
-s390                  randconfig-001-20231025   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                 kfr2r09-romimage_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231024   gcc  
-sparc                 randconfig-001-20231025   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20231024   gcc  
-x86_64       buildonly-randconfig-001-20231025   gcc  
-x86_64       buildonly-randconfig-002-20231024   gcc  
-x86_64       buildonly-randconfig-002-20231025   gcc  
-x86_64       buildonly-randconfig-003-20231024   gcc  
-x86_64       buildonly-randconfig-003-20231025   gcc  
-x86_64       buildonly-randconfig-004-20231024   gcc  
-x86_64       buildonly-randconfig-004-20231025   gcc  
-x86_64       buildonly-randconfig-005-20231024   gcc  
-x86_64       buildonly-randconfig-005-20231025   gcc  
-x86_64       buildonly-randconfig-006-20231024   gcc  
-x86_64       buildonly-randconfig-006-20231025   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                randconfig-001-20231024   gcc  
-x86_64                randconfig-001-20231025   gcc  
-x86_64                randconfig-002-20231024   gcc  
-x86_64                randconfig-002-20231025   gcc  
-x86_64                randconfig-003-20231024   gcc  
-x86_64                randconfig-003-20231025   gcc  
-x86_64                randconfig-004-20231024   gcc  
-x86_64                randconfig-004-20231025   gcc  
-x86_64                randconfig-005-20231024   gcc  
-x86_64                randconfig-005-20231025   gcc  
-x86_64                randconfig-006-20231024   gcc  
-x86_64                randconfig-006-20231025   gcc  
-x86_64                randconfig-011-20231025   gcc  
-x86_64                randconfig-012-20231025   gcc  
-x86_64                randconfig-013-20231025   gcc  
-x86_64                randconfig-014-20231025   gcc  
-x86_64                randconfig-015-20231025   gcc  
-x86_64                randconfig-016-20231025   gcc  
-x86_64                randconfig-071-20231025   gcc  
-x86_64                randconfig-072-20231025   gcc  
-x86_64                randconfig-073-20231025   gcc  
-x86_64                randconfig-074-20231025   gcc  
-x86_64                randconfig-075-20231025   gcc  
-x86_64                randconfig-076-20231025   gcc  
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                          rhel-8.3-func   gcc  
-x86_64                    rhel-8.3-kselftests   gcc  
-x86_64                         rhel-8.3-kunit   gcc  
-x86_64                           rhel-8.3-ltp   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                  cadence_csp_defconfig   gcc  
+drivers/net/wireless/ath/ath10k/wmi.c:
+1799         memset(skb->data, 0, round_len);
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+Thanks
+--
+Gustavo
+
+[1] https://lore.kernel.org/linux-hardening/26b15f4702cef17fe70b496a62f03735874bd16a.camel@sipsolutions.net/
+[2] https://lore.kernel.org/linux-hardening/07e9bb04-f9fc-46d5-bfb9-a00a63a707c0@embeddedor.com/
+
+On 10/24/23 13:50, Gustavo A. R. Silva wrote:
+> Hi all,
+> 
+> While working on tranforming one-element array `peer_chan_list` in
+> `struct wmi_tdls_peer_capabilities` into a flex-array member
+> 
+> 7187 struct wmi_tdls_peer_capabilities {
+> ...
+> 7199         struct wmi_channel peer_chan_list[1];
+> 7200 } __packed;
+> 
+> the following line caught my attention:
+> 
+> ./drivers/net/wireless/ath/ath10k/wmi.c:
+> 8920         memset(skb->data, 0, sizeof(*cmd));
+> 
+> Notice that before the flex-array transformation, we are zeroing 128
+> bytes in `skb->data` because `sizeof(*cmd) == 128`, see below:
+> 
+> $ pahole -C wmi_10_4_tdls_peer_update_cmd drivers/net/wireless/ath/ath10k/wmi.o
+> struct wmi_10_4_tdls_peer_update_cmd {
+>      __le32                     vdev_id;              /*     0     4 */
+>      struct wmi_mac_addr        peer_macaddr;         /*     4     8 */
+>      __le32                     peer_state;           /*    12     4 */
+>      __le32                     reserved[4];          /*    16    16 */
+>      struct wmi_tdls_peer_capabilities peer_capab;    /*    32    96 */
+> 
+>      /* size: 128, cachelines: 2, members: 5 */
+> };
+> 
+> So, after the flex-array transformation (and the necessary adjustments
+> to a few other lines of code) we would be zeroing 104 bytes in
+> `skb->data` because `sizeof(*cmd) == 104`, see below:
+> 
+> $ pahole -C wmi_10_4_tdls_peer_update_cmd drivers/net/wireless/ath/ath10k/wmi.o
+> struct wmi_10_4_tdls_peer_update_cmd {
+>      __le32                     vdev_id;              /*     0     4 */
+>      struct wmi_mac_addr        peer_macaddr;         /*     4     8 */
+>      __le32                     peer_state;           /*    12     4 */
+>      __le32                     reserved[4];          /*    16    16 */
+>      struct wmi_tdls_peer_capabilities peer_capab;    /*    32    72 */
+> 
+>      /* size: 104, cachelines: 2, members: 5 */
+>      /* last cacheline: 40 bytes */
+> };
+> 
+> This difference arises because the size of the element type for the
+> `peer_chan_list` array, which is `sizeof(struct wmi_channel) == 24 `
+> 
+> $ pahole -C wmi_channel drivers/net/wireless/ath/ath10k/wmi.o
+> struct wmi_channel {
+>      __le32                     mhz;                  /*     0     4 */
+>      __le32                     band_center_freq1;    /*     4     4 */
+>      __le32                     band_center_freq2;    /*     8     4 */
+> 
+> [..]
+>                                                 /*    20     4 */
+> 
+>      /* size: 24, cachelines: 1, members: 6 */
+>      /* last cacheline: 24 bytes */
+> };
+> 
+> is included in `sizeof(*cmd)` before the transformation.
+> 
+> So, my question is: do we really need to zero out those extra 24 bytes in
+> `skb->data`? or is it rather a bug in the original code?
+> 
+> Thanks!
+> -- 
+> Gustavo
+> 
+> 
