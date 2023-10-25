@@ -2,66 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA8FD7D60B1
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Oct 2023 06:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 755F27D60F7
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Oct 2023 06:55:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232594AbjJYEBh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Oct 2023 00:01:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44370 "EHLO
+        id S229616AbjJYEzS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Oct 2023 00:55:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232560AbjJYEBc (ORCPT
+        with ESMTP id S229456AbjJYEzS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Oct 2023 00:01:32 -0400
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4945D137;
-        Tue, 24 Oct 2023 21:01:25 -0700 (PDT)
-Received: from localhost.localdomain (unknown [58.61.140.248])
-        by mail-m121145.qiye.163.com (Hmail) with ESMTPA id 8B0078000C1;
-        Wed, 25 Oct 2023 12:01:05 +0800 (CST)
-From:   Chukun Pan <amadeus@jmu.edu.cn>
-To:     pkshih@realtek.com
-Cc:     kvalo@kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Chukun Pan <amadeus@jmu.edu.cn>
-Subject: Re: [PATCH 1/1] wifi: rtw88: 8822b: disable call trace when write RF mode table fail
-Date:   Wed, 25 Oct 2023 12:01:00 +0800
-Message-Id: <20231025040101.17919-1-amadeus@jmu.edu.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <8dffe5f57c6948e1bca5f7cb3e40a781@realtek.com>
-References: <8dffe5f57c6948e1bca5f7cb3e40a781@realtek.com>
+        Wed, 25 Oct 2023 00:55:18 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E809D
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Oct 2023 21:55:14 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39P3ureI004025;
+        Wed, 25 Oct 2023 04:55:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=gyWPWjmjqLcBADPCyNQZAfS7D99bZTCB9d0MzfFFl0E=;
+ b=C3dY5m1Q71rSFWumK3PWE1JrL3jrBv7Nok4nNUZ5zOYcrxYN1ICYzaQX9ob9mLTarzXP
+ 2NKGhTFBVapX+Vga+WRTs0YqbWKYZtXbjeB8F1slCXNzBm2KCIRUAbd/i/cntX61Blhc
+ r4dmKwj0XphytlfaXiYEIvgblGAoAXuIaDjBr0+Nx+8AurObjACNHyCd/Duce5FAsiN3
+ Ow77ZTBxhxwkhkLrTir6zjmtrrTuji7MaOA3GXsO4jQo0XU8s4ilW1sg8FU2YIR2QflU
+ HRaJ8Kjzn7Wm/5REH73pBgcWyhntAPs4dqFkRELmW+vXoBEghhjuFK3mUbwXEkq+3IEV SA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3txjtnh3nh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 25 Oct 2023 04:55:09 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39P4t8Wo025666
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 25 Oct 2023 04:55:08 GMT
+Received: from [10.48.243.236] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Tue, 24 Oct
+ 2023 21:55:07 -0700
+Message-ID: <61688563-5db3-42e3-82a6-d972777a0923@quicinc.com>
+Date:   Tue, 24 Oct 2023 21:55:07 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-        tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaTBhDVhpNGBgfQhkYHh8ZSlUTARMWGhIXJBQOD1
-        lXWRgSC1lBWU5DVU1KVUpPS1VJT0NZV1kWGg8SFR0UWUFZT0tIVUpKS0hKQ1VKS0tVS1kG
-X-HM-Tid: 0a8b64fe3ecdb03akuuu8b0078000c1
-X-HM-MType: 10
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PEk6EBw4Ezw3NTM8FhYITAw4
-        IxMwCwpVSlVKTUJDSUtNT01NSEtNVTMWGhIXVRoWGh8eDgg7ERYOVR4fDlUYFUVZV1kSC1lBWU5D
-        VU1KVUpPS1VJT0NZV1kIAVlBSk5NTTcG
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] wifi: ieee80211: fix PV1 frame control field name
+Content-Language: en-US
+To:     Liam Kearney <liam.kearney@morsemicro.com>,
+        <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20231025002755.1752983-1-liam.kearney@morsemicro.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231025002755.1752983-1-liam.kearney@morsemicro.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: uK_n3TTrB9-Lv0xIPmQGtFErvnvVEDzG
+X-Proofpoint-ORIG-GUID: uK_n3TTrB9-Lv0xIPmQGtFErvnvVEDzG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-25_01,2023-10-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=452
+ impostorscore=0 priorityscore=1501 clxscore=1015 mlxscore=0 spamscore=0
+ phishscore=0 malwarescore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
+ definitions=main-2310250041
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Except to call trace, rtl8822be works well in your side? If so, you just
-> worry the verbose trace, right?  
+On 10/24/2023 5:27 PM, Liam Kearney wrote:
+> Update PV1 frame control field TODS to FROMDS to match 802.11 standard
+> 
+> Signed-off-by: Liam Kearney <liam.kearney@morsemicro.com>
 
-Yes, it's a bit noisy.
-
-> By the way, I tested two hardware version of rtl8822be, and they both are fine.
-
-Sorry wasted your time, but can you test the rtl8812bu wifi module?
-Based on the issues search, I'm not the only one who has this problem.
-https://github.com/lwfinger/rtw88/issues/111#issuecomment-1385923235
-https://github.com/lwfinger/rtw88/issues/151#issuecomment-1753011363
-
-Thanks,
-Chukun
-
--- 
-2.25.1
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
