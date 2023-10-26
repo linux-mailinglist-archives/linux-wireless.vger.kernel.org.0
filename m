@@ -2,86 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 054157D8B5B
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 00:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B3F87D8C23
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 01:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344898AbjJZWDa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 18:03:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32904 "EHLO
+        id S1345006AbjJZXTY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Oct 2023 19:19:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230186AbjJZWD3 (ORCPT
+        with ESMTP id S1345001AbjJZXTW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 18:03:29 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 227A81B5
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 15:03:26 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9ba081173a3so225814066b.1
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 15:03:26 -0700 (PDT)
+        Thu, 26 Oct 2023 19:19:22 -0400
+Received: from mail-oo1-xc4a.google.com (mail-oo1-xc4a.google.com [IPv6:2607:f8b0:4864:20::c4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9941B9
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 16:19:19 -0700 (PDT)
+Received: by mail-oo1-xc4a.google.com with SMTP id 006d021491bc7-581da174501so2327637eaf.2
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 16:19:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698357804; x=1698962604; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DEmmsMUNDXrHxbfE3Ce3REr5A6wqcO3bgGi92YBCkzI=;
-        b=b6py9JZyfVMrZlL9Jrva7w5VfIiGgteU73GfhFfG4sEaLJkxrbhpfZa81w21gz8eeW
-         en3F3GdHCHMu7EIqMWDcUXl0qOPghFnoNDPulKM+K93DeQyP98eZpO9zlmLbF0h+oZKk
-         ZPicbXWat17VSNxEdTf4WXBTxlYUelUZ65MvCdS8+M4CnwA1/yO18V+jnjFCnCw1ZR45
-         4txR3ytLNXZXOa4EJzP4IQmYGxIPbQwjjlZsmNlaZu52ZFE5A9VhjxAugf7cBifOcHwz
-         ES/+bXdZc5nzF29ZsVXdRJMEkfmNWUxOAyW/3epHKVbERIDuF18t0UAOt1RiP33TLzUu
-         WuPw==
+        d=google.com; s=20230601; t=1698362359; x=1698967159; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rJUIaaq/oswhFA94o3ND9d9+Iexffy2MpltZ9TbSQQY=;
+        b=BC6d5eOUbpZj2EhbDkCtoVPkarvXcccoL04DzKW8pl/jhqx1Q520C4Urca1Sko4OKp
+         bavNq0XNv/2izUivQLIGWWR6M3faFCIa7rZ9ZBRM8mi8+aEFeTs5eNZzFR9nCX3wdkjF
+         uThlr63OwueeAPgi/UTizMQ3P2jeEdcjoCj1Xo3+na26rAwqxQGfEgC9UtLPv3sarxqq
+         v8LoUR9ZKTSAtLv0dBohaGBlqWXihME/P2Y9Mfis07mDh3MfCe8OfXfq2Zk1bk9hrAvQ
+         sYWc9AEJeXa16H3UgQvsmPj+ARr2tgzjj9sTZ1AB+P6NQPJxhUWYKAFxA+HRDppn/Px8
+         KzNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698357804; x=1698962604;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DEmmsMUNDXrHxbfE3Ce3REr5A6wqcO3bgGi92YBCkzI=;
-        b=HK7Cn6fQtvX6zAdoGjzWGFxax6Cc/R58yPi/+OFCsEA81rEVWhNToyMvDhzol4tszW
-         ULzZk8zsYYlhHJFCEuuobhcreFrd8LiLNkwH51hu2S/5qy3mQSUifVgJJHk/n19BXnan
-         KGjYNg72umb62yW1+YR4iFuvljDL77xSBLMJi6ewnLLjI/ttSnEcM3m6sQAo99D9+gFH
-         ZZcuPjl8ZIFwXNbjNIbD2Op7g4J1oPgjiRY8kV5Cv7+4Sgy1vlHLlD8u0E5JciNU7cNF
-         4t5yUiKsGbHBgS0SeoL5b6S9OrKEAlhc4dJ5qvnBWPTaJ3fLxY0UivBvSOaFdJ14sBp+
-         RCtQ==
-X-Gm-Message-State: AOJu0Yw80rO2+DLzI+lcnxnbq0nbKV9DhgvQTa+9+L9/EvUYtfX/d86H
-        W2R3LFCos3OeXXEX0sekx/o4hvJJkdjQhm6W25PjHg==
-X-Google-Smtp-Source: AGHT+IG6agKha0G/h583YdKCsY86p8qRjxzUVJVt92aAyYP3t8wQ6XoOF+pq/EnAOsxzX746Vh6W1fwNE0cooKXSZp4=
-X-Received: by 2002:a17:906:6a24:b0:9c5:ea33:7bf9 with SMTP id
- qw36-20020a1709066a2400b009c5ea337bf9mr701118ejc.51.1698357804394; Thu, 26
- Oct 2023 15:03:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231026171349.work.928-kees@kernel.org>
-In-Reply-To: <20231026171349.work.928-kees@kernel.org>
+        d=1e100.net; s=20230601; t=1698362359; x=1698967159;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rJUIaaq/oswhFA94o3ND9d9+Iexffy2MpltZ9TbSQQY=;
+        b=X3LJBWE15+mRDOZACkiiyekzHwzeU8hMNUgui379houBkMkpYE9Ozt2MuRbnqqLtf7
+         mk9VTLkgy8tX0fgvbTyi7pOVWIr2U5c5n2e8s/h6rTMdA1A0JticDQk6N4MX/UN6JimX
+         rZn1RwgXHgJf+Q/DO0ql51u561NOTDjK55T+KsuJRqUK/jvX/+EQGAjwaerg83Iq+pYp
+         4t/YpcDaucMan/Pyxejkq8HHB8MafFGgRjTUq5u8zdODX/5gdjXLrniuBLAemL9O5Pag
+         kj1mzSUecaJVJTkB0fpGSg1HsyHzOkgSOmuZk2o6JZukBdPJyoujXOuaydU1ewiFsAXg
+         Dv8g==
+X-Gm-Message-State: AOJu0Yz+e+8eEVSXoAykR+KCfGpbHzADEhyfg9sXj8/ygEhWDmkKupk9
+        MFJE2q2ZU7mhKxKWb1eeEFfwl52BFCD5NKMLRQ==
+X-Google-Smtp-Source: AGHT+IEn/SLjvxaFs50tSZC9lk6X5MyTWbZRithyR/6U6p23lScjjTmjpQ6xvz1RXCrqGehDHbWGiifwhVwJ4bGNuw==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a4a:e658:0:b0:581:dbb1:219b with SMTP
+ id q24-20020a4ae658000000b00581dbb1219bmr404827oot.0.1698362359119; Thu, 26
+ Oct 2023 16:19:19 -0700 (PDT)
+Date:   Thu, 26 Oct 2023 23:19:18 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPXzOmUC/53NQQ6CMBCF4auQrh3TUpHoinsYFtCOMAm2ZIZUC
+ eHuVo7g8n+L921KkAlF3YtNMSYSiiFHeSqUG7swIJDPrUpdWqNNDbJwcPMKnikhCwRc4E2ME4q
+ AI3EROuIIDry+Oa8rrbsrqvw3Mz7pc1iPNvdIskReDzqZ3/qPkgwYQHvxVW/7Gm3dDDEOE55df Kl23/cvKrGXxOMAAAA=
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1698362358; l=2719;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=tC58vKAxLJm5cAdnZ9rYPmKDTa3guBZo7Oh8cfH/AXg=; b=xW/7pk2zSIdbdaANtOGtksyMjVeqD8M30IczBSFi365yP9f/D8GLqCR5vqlPF/2OcBvYQdmMr
+ CAYKpl7GFTvD4/4vGd7LbAxPSijXKO8qWqRTUeMAOjbIl15/K3OHB/C
+X-Mailer: b4 0.12.3
+Message-ID: <20231026-strncpy-drivers-net-wireless-cisco-airo-c-v2-1-413427249e47@google.com>
+Subject: [PATCH v2] airo: replace deprecated strncpy with strscpy_pad
 From:   Justin Stitt <justinstitt@google.com>
-Date:   Thu, 26 Oct 2023 15:03:11 -0700
-Message-ID: <CAFhGd8p8Ako1zFrUrE62OxhqGqmDVEFi3NtT754gZP_sLAZ99w@mail.gmail.com>
-Subject: Re: [RFC][PATCH] wifi: wil6210: Replace strlcat() usage with seq_buf
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Max Chen <mxchen@codeaurora.org>,
-        Yang Shen <shenyang39@huawei.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        Petr Mladek <pmladek@suse.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Yun Zhou <yun.zhou@windriver.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Zhen Lei <thunder.leizhen@huawei.com>,
-        linux-trace-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org,
+        Justin Stitt <justinstitt@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -89,124 +75,76 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 26, 2023 at 10:13=E2=80=AFAM Kees Cook <keescook@chromium.org> =
-wrote:
->
-> The use of strlcat() is fragile at best, and we'd like to remove it from
-> the available string APIs in the kernel. Instead, use the safer seq_buf
-> APIs.
->
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Cc: Max Chen <mxchen@codeaurora.org>
-> Cc: Yang Shen <shenyang39@huawei.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Justin Stitt <justinstitt@google.com>
-> Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> Cc: Petr Mladek <pmladek@suse.com>
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Yun Zhou <yun.zhou@windriver.com>
-> Cc: Jacob Keller <jacob.e.keller@intel.com>
-> Cc: Zhen Lei <thunder.leizhen@huawei.com>
-> Cc: linux-trace-kernel@vger.kernel.org
-> Cc: linux-wireless@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
-> This is mainly an example of where/how to use the ongoing seq_buf
-> refactoring happening in the tracing tree:
-> https://lore.kernel.org/lkml/20231026170722.work.638-kees@kernel.org/
+strncpy() is deprecated for use on NUL-terminated destination strings
+[1] and as such we should prefer more robust and less ambiguous string
+interfaces.
 
-I like it. C-strings and many of their associated apis are dodgy. This
-looks like a worthwhile replacement.
+`extra` is clearly supposed to be NUL-terminated which is evident by the
+manual NUL-byte assignment as well as its immediate usage with strlen().
 
-I think many of my strncpy -> strscpy replacements could've easily
-been something along these lines as well.
+Moreover, let's NUL-pad since there is deliberate effort (48 instances)
+made elsewhere to zero-out buffers in these getters and setters:
+6050 | memset(local->config.nodeName, 0, sizeof(local->config.nodeName));
+6130 | memset(local->config.rates, 0, 8);
+6139 | memset(local->config.rates, 0, 8);
+6414 | memset(key.key, 0, MAX_KEY_SIZE);
+6497 | memset(extra, 0, 16);
+(to be clear, strncpy also NUL-padded -- we are matching that behavior)
 
-Happy to see robustness increasing in the kernel by means
-of replacing sketchy C-string stuff.
+Considering the above, a suitable replacement is `strscpy_pad` due to
+the fact that it guarantees both NUL-termination and NUL-padding on the
+destination buffer.
 
-> ---
->  drivers/net/wireless/ath/wil6210/wmi.c | 23 ++++++++++-------------
->  1 file changed, 10 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireles=
-s/ath/wil6210/wmi.c
-> index 6fdb77d4c59e..45b8c651b8e2 100644
-> --- a/drivers/net/wireless/ath/wil6210/wmi.c
-> +++ b/drivers/net/wireless/ath/wil6210/wmi.c
-> @@ -3159,36 +3159,34 @@ int wmi_suspend(struct wil6210_priv *wil)
->         return rc;
->  }
->
-> -static void resume_triggers2string(u32 triggers, char *string, int str_s=
-ize)
-> +static void resume_triggers2string(u32 triggers, struct seq_buf *s)
->  {
-> -       string[0] =3D '\0';
-> -
->         if (!triggers) {
-> -               strlcat(string, " UNKNOWN", str_size);
-> +               seq_buf_puts(s, " UNKNOWN");
->                 return;
->         }
->
->         if (triggers & WMI_RESUME_TRIGGER_HOST)
-> -               strlcat(string, " HOST", str_size);
-> +               seq_buf_puts(s, " HOST")
->
->         if (triggers & WMI_RESUME_TRIGGER_UCAST_RX)
-> -               strlcat(string, " UCAST_RX", str_size);
-> +               seq_buf_puts(s, " UCAST_RX");
->
->         if (triggers & WMI_RESUME_TRIGGER_BCAST_RX)
-> -               strlcat(string, " BCAST_RX", str_size);
-> +               seq_buf_puts(s, " BCAST_RX");
->
->         if (triggers & WMI_RESUME_TRIGGER_WMI_EVT)
-> -               strlcat(string, " WMI_EVT", str_size);
-> +               seq_buf_puts(s, " WMI_EVT");
->
->         if (triggers & WMI_RESUME_TRIGGER_DISCONNECT)
-> -               strlcat(string, " DISCONNECT", str_size);
-> +               seq_buf_puts(s, " DISCONNECT");
->  }
->
->  int wmi_resume(struct wil6210_priv *wil)
->  {
->         struct wil6210_vif *vif =3D ndev_to_vif(wil->main_ndev);
->         int rc;
-> -       char string[100];
-> +       DECLARE_SEQ_BUF(s, 100);
->         struct {
->                 struct wmi_cmd_hdr wmi;
->                 struct wmi_traffic_resume_event evt;
-> @@ -3203,10 +3201,9 @@ int wmi_resume(struct wil6210_priv *wil)
->                       WIL_WAIT_FOR_SUSPEND_RESUME_COMP);
->         if (rc)
->                 return rc;
-> -       resume_triggers2string(le32_to_cpu(reply.evt.resume_triggers), st=
-ring,
-> -                              sizeof(string));
-> +       resume_triggers2string(le32_to_cpu(reply.evt.resume_triggers), s)=
-;
->         wil_dbg_pm(wil, "device resume %s, resume triggers:%s (0x%x)\n",
-> -                  reply.evt.status ? "failed" : "passed", string,
-> +                  reply.evt.status ? "failed" : "passed", seq_buf_cstr(s=
-),
->                    le32_to_cpu(reply.evt.resume_triggers));
->
->         return reply.evt.status;
-> --
-> 2.34.1
->
+We can also replace the hard-coded size of "16" to IW_ESSID_MAX_SIZE
+because this function is a wext handler.
 
-Thanks
-Justin
+In wext-core.c we have:
+static const struct iw_ioctl_description standard_ioctl[] = {
+...
+        [IW_IOCTL_IDX(SIOCGIWNICKN)] = {
+                .header_type    = IW_HEADER_TYPE_POINT,
+                .token_size     = 1,
+                .max_tokens     = IW_ESSID_MAX_SIZE,
+        },
+
+So the buffer size is (strangely) IW_ESSID_MAX_SIZE
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Changes in v2:
+- use IW_ESSID_MAX_SIZE (thanks Jeff, Kees)
+- Link to v1: https://lore.kernel.org/r/20231017-strncpy-drivers-net-wireless-cisco-airo-c-v1-1-e34d5b3b7e37@google.com
+---
+Note: build-tested only.
+
+Found with: $ rg "strncpy\("
+---
+ drivers/net/wireless/cisco/airo.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+index dbd13f7aa3e6..6a099642e854 100644
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -6067,8 +6067,7 @@ static int airo_get_nick(struct net_device *dev,
+ 	struct airo_info *local = dev->ml_priv;
+ 
+ 	readConfigRid(local, 1);
+-	strncpy(extra, local->config.nodeName, 16);
+-	extra[16] = '\0';
++	strscpy_pad(extra, local->config.nodeName, IW_ESSID_MAX_SIZE);
+ 	dwrq->length = strlen(extra);
+ 
+ 	return 0;
+
+---
+base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
+change-id: 20231017-strncpy-drivers-net-wireless-cisco-airo-c-d09cd0500a6e
+
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
+
