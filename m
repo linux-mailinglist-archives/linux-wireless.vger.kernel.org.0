@@ -2,118 +2,202 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 426E97D862E
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Oct 2023 17:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13D717D8762
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Oct 2023 19:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345050AbjJZPtW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 11:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35764 "EHLO
+        id S231844AbjJZROB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Oct 2023 13:14:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231280AbjJZPtW (ORCPT
+        with ESMTP id S1345342AbjJZRNz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 11:49:22 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39D8C196
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 08:49:20 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1CF7DA80063;
-        Thu, 26 Oct 2023 15:49:18 +0000 (UTC)
-Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 922F113C2B0;
-        Thu, 26 Oct 2023 08:49:17 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 922F113C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1698335357;
-        bh=M2H0AFdd/kZ2Syc5TDFsxiHPTeBnwLDsAHa7dQc3N98=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=ar7ozGaSWdNzV8g/YqwaIxCcY1R1mS2avJNUkXz7NIthSDXI0aGTo5pIrPJiY2oEN
-         fPvpUnsqGyu1bX01JZ8ZymbJIdzRPMEvFeO5Pt08NSpeFbPsmhFRAs5UzigXn57dJJ
-         DtOiOoFy1TXtvE/XmlWnC+0IFGvDgDfGFBEGrdZk=
-Message-ID: <2d3603c7-2377-4c0f-a46f-378214e41403@candelatech.com>
-Date:   Thu, 26 Oct 2023 08:49:17 -0700
+        Thu, 26 Oct 2023 13:13:55 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AD08194
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 10:13:52 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6b26a3163acso1090578b3a.2
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 10:13:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1698340431; x=1698945231; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XaUboxRO1+viinf77RQ7N/zAs2SC9fz2QEeXcJMB0SE=;
+        b=LPcaEvY2WsHosUhm9UNIJRboimWiVIPcEZY6bxci4+s3avWuyS4sveKrffJauIwfKm
+         yQSXSgC85uNhJJLuvGgMSYwBiQnGKL8EVPH9MQotftHT5E0Xv+kTRjlQAJpvpn2ePGrz
+         6pxcxZtISeNS5i70ru+tglbKD6qdWO3BGMKQQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698340431; x=1698945231;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XaUboxRO1+viinf77RQ7N/zAs2SC9fz2QEeXcJMB0SE=;
+        b=bJGZsm6sbB+ps8XvVdbg12GZ140LOUnEe9Ao+WpgQJbJHB3YW9dv1f1Phxk6GZHCmS
+         WNHI6MDwREls3zeOzR+NMEeneodwSPcv1DLIa4Xr7INerqovMp3aOOqqlmQNYbMfVKj2
+         N8bfAl/ZO6V80PHw3j1W7praCJ6jURITmS9gQT+df6btRCge9RHDUXSE+nqlEDS1Vl2r
+         55DZl9X0Xf1XCRSpo4G1reY9qC9zOmT4CF4VVBxlir5W+4fAXD/tFaacTCWqdJM9iBG1
+         3dHwCwD45ObU4WV6ZLGYfFEa46m/NWczycQedoa6nhbs0FaCq9XbcMHfKzTTVKSuPMk5
+         Nd3Q==
+X-Gm-Message-State: AOJu0YzP3gw3/jLIZ3hJ6QnX0bbWBiaUgBSaGbPncn2qIy/+K6/7Gqa8
+        wPJ3L5JVl0Kc3EJ8MLnqNg24CA==
+X-Google-Smtp-Source: AGHT+IHyR59Pg2x487W+2yP92vC6UvozxH+Vq9jfsqmXLiUPD1h2P4QuTeIdk8oTKJcNWeUXyLwVqQ==
+X-Received: by 2002:a05:6a00:3924:b0:6be:43d5:6505 with SMTP id fh36-20020a056a00392400b006be43d56505mr84131pfb.6.1698340431616;
+        Thu, 26 Oct 2023 10:13:51 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id d6-20020aa797a6000000b006b225011ee5sm11474423pfq.6.2023.10.26.10.13.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Oct 2023 10:13:51 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Max Chen <mxchen@codeaurora.org>,
+        Yang Shen <shenyang39@huawei.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Justin Stitt <justinstitt@google.com>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Petr Mladek <pmladek@suse.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Yun Zhou <yun.zhou@windriver.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        linux-trace-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [RFC][PATCH] wifi: wil6210: Replace strlcat() usage with seq_buf
+Date:   Thu, 26 Oct 2023 10:13:49 -0700
+Message-Id: <20231026171349.work.928-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Regression wireless-next: mt7921: update the channel usage when
- the regd domain changed
-Content-Language: en-US
-To:     =?UTF-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     =?UTF-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?= 
-        <Mingyen.Hsieh@mediatek.com>
-References: <2fb78387-d226-3193-8ca7-90040561b9ad@candelatech.com>
- <e0afaea7118b742d695fc0ef19e04ff0cb6a902f.camel@mediatek.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <e0afaea7118b742d695fc0ef19e04ff0cb6a902f.camel@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3544; i=keescook@chromium.org;
+ h=from:subject:message-id; bh=D2vtiEKqUsGt/Z09LYNxtKXhUwmDCO+5281guVaf7GY=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlOp5NR+tMMbDVnVZsfav6ogCPxtfc/WTZ15nO2
+ QRMEDBKLY6JAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZTqeTQAKCRCJcvTf3G3A
+ JqQzD/9l0E0xuPY6P0roZjkRSULXnrIXkTO42RKEmMgsVde2QhNfDm1jpgQwKYS79HR7MUy81R6
+ xuvxMMyhXUeRGa0rsA+6TA+heail3hcWvUUQjBz3mmibnTXjOleWcVee0TLju/NW4+Qi/i4VslT
+ ss+3VmN0dnlToJW9TccwpeivyT3Zwx+ZTBbtu4c8nNeNwuexL3DzygCn0ERJpGqTaXv31L44t54
+ 5CluQm2N4kAm97ajzuFbUJJup54tIxrVklY7yRjuagF8gIKfXtUmGuvENXj+wjOdIpwgFOpknt2
+ Strg8uN5CjXYpgRv8mhM+vDY7JNBAC9PqjbM8agfAHxWkEyDywHuv+RPz3cnTColqfnenVfPYl1
+ Oxbpvi4SQwK/fOsMTmnfiA/TN5Up9l031ukqov92TTse4SgYhCVO8i4hvWBhXylLBKgfKm/SwFk
+ SbVfcwbNpUwx+ZicySY48xcf1i1EZ0ydWkL137rTlcJjdvV8q7U+gubWcorg7P0UYKb7JISAlhK
+ OhAEcdoTkf8CodYwlFwOSx4/FUI84czwgddorDvN1nUkjSSg6YSzjFjqX+bNedUZYokvgv7/pMu
+ v3B3kUPSVnQ3Czc6EwGf0reFM3YSfnbATzoKYVDYHLfCvxrFfdxbaZWbTmbtNIlVfKz+ocrFry8
+ ifQRSEE 3hfkIc6w==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-MDID: 1698335358-TtHUBjz05NWG
-X-MDID-O: us5;ut7;1698335358;TtHUBjz05NWG;<greearb@candelatech.com>;8f958617cfa0c472bf23b5b733da7b59
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/25/23 20:58, Deren Wu (武德仁) wrote:
-> Hi Ben,
-> 
-> On Wed, 2023-10-25 at 09:05 -0700, Ben Greear wrote:
->> I noticed mt7922 radios would no longer enable 6e band in wireless-
->> next.
->> 
->> My test system has Intel radios and mt7922 radios in it.  I bisected
->> to the commit
->> below.  It looks like that patch can disable 6e based on regdom
->> change, but cannot
->> enable 6e again in case regdom changes back to something that
->> supports 6e.
->> 
->> Intel tri-band radios disable 6e by default, then enable it after
->> scanning
->> US regdom beacons.  Maybe that regdom changing by Intel helps break
->> the mt7922
->> with the below patch applied?
-> 
-> Thanks for the report. There is a capability check missed. Could you
-> pleae help to check this patch? Let's make sure you run into the same
-> problem.
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> index 55baac70860b..a738ea95110e 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -69,6 +69,9 @@ mt7921_regd_channel_update(struct wiphy *wiphy,
-> struct mt792x_dev *dev)
->          struct ieee80211_channel *ch;
->          int i, cfreq;
-> 
-> +       if (!(dev->phy.chip_cap & MT792x_CHIP_CAP_CLC_EVT_EN))
-> +               dev->phy.clc_chan_conf = 0xff;
-> +
->          np = mt76_find_power_limits_node(mdev);
-> 
->          sband = wiphy->bands[NL80211_BAND_5GHZ];
+The use of strlcat() is fragile at best, and we'd like to remove it from
+the available string APIs in the kernel. Instead, use the safer seq_buf
+APIs.
 
-This fixed the problem in a quick test.
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Max Chen <mxchen@codeaurora.org>
+Cc: Yang Shen <shenyang39@huawei.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Yun Zhou <yun.zhou@windriver.com>
+Cc: Jacob Keller <jacob.e.keller@intel.com>
+Cc: Zhen Lei <thunder.leizhen@huawei.com>
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+This is mainly an example of where/how to use the ongoing seq_buf
+refactoring happening in the tracing tree:
+https://lore.kernel.org/lkml/20231026170722.work.638-kees@kernel.org/
+---
+ drivers/net/wireless/ath/wil6210/wmi.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-I'll add this to our tree and we'll do more testing on it...
-
-Thanks,
-Ben
-
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
+index 6fdb77d4c59e..45b8c651b8e2 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.c
++++ b/drivers/net/wireless/ath/wil6210/wmi.c
+@@ -3159,36 +3159,34 @@ int wmi_suspend(struct wil6210_priv *wil)
+ 	return rc;
+ }
+ 
+-static void resume_triggers2string(u32 triggers, char *string, int str_size)
++static void resume_triggers2string(u32 triggers, struct seq_buf *s)
+ {
+-	string[0] = '\0';
+-
+ 	if (!triggers) {
+-		strlcat(string, " UNKNOWN", str_size);
++		seq_buf_puts(s, " UNKNOWN");
+ 		return;
+ 	}
+ 
+ 	if (triggers & WMI_RESUME_TRIGGER_HOST)
+-		strlcat(string, " HOST", str_size);
++		seq_buf_puts(s, " HOST")
+ 
+ 	if (triggers & WMI_RESUME_TRIGGER_UCAST_RX)
+-		strlcat(string, " UCAST_RX", str_size);
++		seq_buf_puts(s, " UCAST_RX");
+ 
+ 	if (triggers & WMI_RESUME_TRIGGER_BCAST_RX)
+-		strlcat(string, " BCAST_RX", str_size);
++		seq_buf_puts(s, " BCAST_RX");
+ 
+ 	if (triggers & WMI_RESUME_TRIGGER_WMI_EVT)
+-		strlcat(string, " WMI_EVT", str_size);
++		seq_buf_puts(s, " WMI_EVT");
+ 
+ 	if (triggers & WMI_RESUME_TRIGGER_DISCONNECT)
+-		strlcat(string, " DISCONNECT", str_size);
++		seq_buf_puts(s, " DISCONNECT");
+ }
+ 
+ int wmi_resume(struct wil6210_priv *wil)
+ {
+ 	struct wil6210_vif *vif = ndev_to_vif(wil->main_ndev);
+ 	int rc;
+-	char string[100];
++	DECLARE_SEQ_BUF(s, 100);
+ 	struct {
+ 		struct wmi_cmd_hdr wmi;
+ 		struct wmi_traffic_resume_event evt;
+@@ -3203,10 +3201,9 @@ int wmi_resume(struct wil6210_priv *wil)
+ 		      WIL_WAIT_FOR_SUSPEND_RESUME_COMP);
+ 	if (rc)
+ 		return rc;
+-	resume_triggers2string(le32_to_cpu(reply.evt.resume_triggers), string,
+-			       sizeof(string));
++	resume_triggers2string(le32_to_cpu(reply.evt.resume_triggers), s);
+ 	wil_dbg_pm(wil, "device resume %s, resume triggers:%s (0x%x)\n",
+-		   reply.evt.status ? "failed" : "passed", string,
++		   reply.evt.status ? "failed" : "passed", seq_buf_cstr(s),
+ 		   le32_to_cpu(reply.evt.resume_triggers));
+ 
+ 	return reply.evt.status;
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+2.34.1
 
