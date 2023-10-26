@@ -2,72 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B3F87D8C23
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 01:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F0E87D8C45
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 01:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345006AbjJZXTY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 19:19:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53400 "EHLO
+        id S231410AbjJZXk2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Oct 2023 19:40:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345001AbjJZXTW (ORCPT
+        with ESMTP id S229437AbjJZXk1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 19:19:22 -0400
-Received: from mail-oo1-xc4a.google.com (mail-oo1-xc4a.google.com [IPv6:2607:f8b0:4864:20::c4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9941B9
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 16:19:19 -0700 (PDT)
-Received: by mail-oo1-xc4a.google.com with SMTP id 006d021491bc7-581da174501so2327637eaf.2
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 16:19:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698362359; x=1698967159; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rJUIaaq/oswhFA94o3ND9d9+Iexffy2MpltZ9TbSQQY=;
-        b=BC6d5eOUbpZj2EhbDkCtoVPkarvXcccoL04DzKW8pl/jhqx1Q520C4Urca1Sko4OKp
-         bavNq0XNv/2izUivQLIGWWR6M3faFCIa7rZ9ZBRM8mi8+aEFeTs5eNZzFR9nCX3wdkjF
-         uThlr63OwueeAPgi/UTizMQ3P2jeEdcjoCj1Xo3+na26rAwqxQGfEgC9UtLPv3sarxqq
-         v8LoUR9ZKTSAtLv0dBohaGBlqWXihME/P2Y9Mfis07mDh3MfCe8OfXfq2Zk1bk9hrAvQ
-         sYWc9AEJeXa16H3UgQvsmPj+ARr2tgzjj9sTZ1AB+P6NQPJxhUWYKAFxA+HRDppn/Px8
-         KzNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698362359; x=1698967159;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rJUIaaq/oswhFA94o3ND9d9+Iexffy2MpltZ9TbSQQY=;
-        b=X3LJBWE15+mRDOZACkiiyekzHwzeU8hMNUgui379houBkMkpYE9Ozt2MuRbnqqLtf7
-         mk9VTLkgy8tX0fgvbTyi7pOVWIr2U5c5n2e8s/h6rTMdA1A0JticDQk6N4MX/UN6JimX
-         rZn1RwgXHgJf+Q/DO0ql51u561NOTDjK55T+KsuJRqUK/jvX/+EQGAjwaerg83Iq+pYp
-         4t/YpcDaucMan/Pyxejkq8HHB8MafFGgRjTUq5u8zdODX/5gdjXLrniuBLAemL9O5Pag
-         kj1mzSUecaJVJTkB0fpGSg1HsyHzOkgSOmuZk2o6JZukBdPJyoujXOuaydU1ewiFsAXg
-         Dv8g==
-X-Gm-Message-State: AOJu0Yz+e+8eEVSXoAykR+KCfGpbHzADEhyfg9sXj8/ygEhWDmkKupk9
-        MFJE2q2ZU7mhKxKWb1eeEFfwl52BFCD5NKMLRQ==
-X-Google-Smtp-Source: AGHT+IEn/SLjvxaFs50tSZC9lk6X5MyTWbZRithyR/6U6p23lScjjTmjpQ6xvz1RXCrqGehDHbWGiifwhVwJ4bGNuw==
-X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a4a:e658:0:b0:581:dbb1:219b with SMTP
- id q24-20020a4ae658000000b00581dbb1219bmr404827oot.0.1698362359119; Thu, 26
- Oct 2023 16:19:19 -0700 (PDT)
-Date:   Thu, 26 Oct 2023 23:19:18 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPXzOmUC/53NQQ6CMBCF4auQrh3TUpHoinsYFtCOMAm2ZIZUC
- eHuVo7g8n+L921KkAlF3YtNMSYSiiFHeSqUG7swIJDPrUpdWqNNDbJwcPMKnikhCwRc4E2ME4q
- AI3EROuIIDry+Oa8rrbsrqvw3Mz7pc1iPNvdIskReDzqZ3/qPkgwYQHvxVW/7Gm3dDDEOE55df Kl23/cvKrGXxOMAAAA=
-X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1698362358; l=2719;
- i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=tC58vKAxLJm5cAdnZ9rYPmKDTa3guBZo7Oh8cfH/AXg=; b=xW/7pk2zSIdbdaANtOGtksyMjVeqD8M30IczBSFi365yP9f/D8GLqCR5vqlPF/2OcBvYQdmMr
- CAYKpl7GFTvD4/4vGd7LbAxPSijXKO8qWqRTUeMAOjbIl15/K3OHB/C
-X-Mailer: b4 0.12.3
-Message-ID: <20231026-strncpy-drivers-net-wireless-cisco-airo-c-v2-1-413427249e47@google.com>
-Subject: [PATCH v2] airo: replace deprecated strncpy with strscpy_pad
-From:   Justin Stitt <justinstitt@google.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Justin Stitt <justinstitt@google.com>
+        Thu, 26 Oct 2023 19:40:27 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C72DC187
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 16:40:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 58319C433C7;
+        Thu, 26 Oct 2023 23:40:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698363625;
+        bh=R7x6CkCU+Tbnkm7sX4xnBQ7U4p7knsBu7uuqxvZJsSo=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=KHR1PD8mVM1nA5oCzyfDv/d5Irs2veNWT/mRkMUVIDHaCU9tiUj9rVfgwqibJVOBF
+         J/Lm1NEVetb+OgBH15KipKsg164TMUFS4SV7NDHYjKu2/S/mNFJweJIY493aEytZVO
+         /t77s7hZXkB5e+YZ0wSERJiV69Wavbbb6bNEN7m5TFbL4xv+96BNJcSkdg/nxrvT88
+         xm9NMH/UMYO+Ryw5fldold57TPyJGx7ojxdjGbzjLYh9yjj2ytSJM6nee41Uzjv36H
+         1S7QCBi6su26aD7KWxT7D773Wfvdl1nvu36Sox8W021+hkreTWLSmOcEObTwKUTUNa
+         uy2L1dQvctZ3A==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3485FC41620;
+        Thu, 26 Oct 2023 23:40:25 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] netlink: make range pointers in policies const
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169836362519.18504.11964226514290552580.git-patchwork-notify@kernel.org>
+Date:   Thu, 26 Oct 2023 23:40:25 +0000
+References: <20231025162204.132528-1-kuba@kernel.org>
+In-Reply-To: <20231025162204.132528-1-kuba@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+        pabeni@redhat.com, j.vosburgh@gmail.com, andy@greyhouse.net,
+        dsahern@kernel.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
+        jiri@resnulli.us, vinicius.gomes@intel.com,
+        johannes@sipsolutions.net, razor@blackwall.org, idosch@nvidia.com,
+        linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,76 +56,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-strncpy() is deprecated for use on NUL-terminated destination strings
-[1] and as such we should prefer more robust and less ambiguous string
-interfaces.
+Hello:
 
-`extra` is clearly supposed to be NUL-terminated which is evident by the
-manual NUL-byte assignment as well as its immediate usage with strlen().
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Moreover, let's NUL-pad since there is deliberate effort (48 instances)
-made elsewhere to zero-out buffers in these getters and setters:
-6050 | memset(local->config.nodeName, 0, sizeof(local->config.nodeName));
-6130 | memset(local->config.rates, 0, 8);
-6139 | memset(local->config.rates, 0, 8);
-6414 | memset(key.key, 0, MAX_KEY_SIZE);
-6497 | memset(extra, 0, 16);
-(to be clear, strncpy also NUL-padded -- we are matching that behavior)
+On Wed, 25 Oct 2023 09:22:04 -0700 you wrote:
+> struct nla_policy is usually constant itself, but unless
+> we make the ranges inside constant we won't be able to
+> make range structs const. The ranges are not modified
+> by the core.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> 
+> [...]
 
-Considering the above, a suitable replacement is `strscpy_pad` due to
-the fact that it guarantees both NUL-termination and NUL-padding on the
-destination buffer.
+Here is the summary with links:
+  - [net-next] netlink: make range pointers in policies const
+    https://git.kernel.org/netdev/net-next/c/ea23fbd2a8f7
 
-We can also replace the hard-coded size of "16" to IW_ESSID_MAX_SIZE
-because this function is a wext handler.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-In wext-core.c we have:
-static const struct iw_ioctl_description standard_ioctl[] = {
-...
-        [IW_IOCTL_IDX(SIOCGIWNICKN)] = {
-                .header_type    = IW_HEADER_TYPE_POINT,
-                .token_size     = 1,
-                .max_tokens     = IW_ESSID_MAX_SIZE,
-        },
-
-So the buffer size is (strangely) IW_ESSID_MAX_SIZE
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-Link: https://github.com/KSPP/linux/issues/90
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Justin Stitt <justinstitt@google.com>
----
-Changes in v2:
-- use IW_ESSID_MAX_SIZE (thanks Jeff, Kees)
-- Link to v1: https://lore.kernel.org/r/20231017-strncpy-drivers-net-wireless-cisco-airo-c-v1-1-e34d5b3b7e37@google.com
----
-Note: build-tested only.
-
-Found with: $ rg "strncpy\("
----
- drivers/net/wireless/cisco/airo.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
-index dbd13f7aa3e6..6a099642e854 100644
---- a/drivers/net/wireless/cisco/airo.c
-+++ b/drivers/net/wireless/cisco/airo.c
-@@ -6067,8 +6067,7 @@ static int airo_get_nick(struct net_device *dev,
- 	struct airo_info *local = dev->ml_priv;
- 
- 	readConfigRid(local, 1);
--	strncpy(extra, local->config.nodeName, 16);
--	extra[16] = '\0';
-+	strscpy_pad(extra, local->config.nodeName, IW_ESSID_MAX_SIZE);
- 	dwrq->length = strlen(extra);
- 
- 	return 0;
-
----
-base-commit: 58720809f52779dc0f08e53e54b014209d13eebb
-change-id: 20231017-strncpy-drivers-net-wireless-cisco-airo-c-d09cd0500a6e
-
-Best regards,
---
-Justin Stitt <justinstitt@google.com>
 
