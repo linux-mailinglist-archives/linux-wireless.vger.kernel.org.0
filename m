@@ -2,202 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13D717D8762
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Oct 2023 19:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B60FE7D8775
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Oct 2023 19:21:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231844AbjJZROB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 13:14:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36200 "EHLO
+        id S231528AbjJZRVA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Oct 2023 13:21:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345342AbjJZRNz (ORCPT
+        with ESMTP id S229668AbjJZRU6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 13:13:55 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AD08194
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 10:13:52 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6b26a3163acso1090578b3a.2
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 10:13:52 -0700 (PDT)
+        Thu, 26 Oct 2023 13:20:58 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83BED10A
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 10:20:56 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1c9de3f66e5so9030875ad.3
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 10:20:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1698340431; x=1698945231; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XaUboxRO1+viinf77RQ7N/zAs2SC9fz2QEeXcJMB0SE=;
-        b=LPcaEvY2WsHosUhm9UNIJRboimWiVIPcEZY6bxci4+s3avWuyS4sveKrffJauIwfKm
-         yQSXSgC85uNhJJLuvGgMSYwBiQnGKL8EVPH9MQotftHT5E0Xv+kTRjlQAJpvpn2ePGrz
-         6pxcxZtISeNS5i70ru+tglbKD6qdWO3BGMKQQ=
+        d=chromium.org; s=google; t=1698340856; x=1698945656; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SLXTzOtavTM4dZPYG+XNWZHVk3Ib4e1r6kiIfRSr4qc=;
+        b=AVuzpXtwM12ujd6Ig2dGh9jvvF4/g456JbfTUBTQXvqdNBmDUtwa5DwVIx3GXX5mI5
+         lP99tikf+SnYjxxTEyldxsLk5gZZdz8qa1NZb1bX8B7vRw4mgxagYhuE4usDivmFgohE
+         jRyD9nj/J+hCyZm32eZb2jGoNJ5hvQPzxfehw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698340431; x=1698945231;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XaUboxRO1+viinf77RQ7N/zAs2SC9fz2QEeXcJMB0SE=;
-        b=bJGZsm6sbB+ps8XvVdbg12GZ140LOUnEe9Ao+WpgQJbJHB3YW9dv1f1Phxk6GZHCmS
-         WNHI6MDwREls3zeOzR+NMEeneodwSPcv1DLIa4Xr7INerqovMp3aOOqqlmQNYbMfVKj2
-         N8bfAl/ZO6V80PHw3j1W7praCJ6jURITmS9gQT+df6btRCge9RHDUXSE+nqlEDS1Vl2r
-         55DZl9X0Xf1XCRSpo4G1reY9qC9zOmT4CF4VVBxlir5W+4fAXD/tFaacTCWqdJM9iBG1
-         3dHwCwD45ObU4WV6ZLGYfFEa46m/NWczycQedoa6nhbs0FaCq9XbcMHfKzTTVKSuPMk5
-         Nd3Q==
-X-Gm-Message-State: AOJu0YzP3gw3/jLIZ3hJ6QnX0bbWBiaUgBSaGbPncn2qIy/+K6/7Gqa8
-        wPJ3L5JVl0Kc3EJ8MLnqNg24CA==
-X-Google-Smtp-Source: AGHT+IHyR59Pg2x487W+2yP92vC6UvozxH+Vq9jfsqmXLiUPD1h2P4QuTeIdk8oTKJcNWeUXyLwVqQ==
-X-Received: by 2002:a05:6a00:3924:b0:6be:43d5:6505 with SMTP id fh36-20020a056a00392400b006be43d56505mr84131pfb.6.1698340431616;
-        Thu, 26 Oct 2023 10:13:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698340856; x=1698945656;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SLXTzOtavTM4dZPYG+XNWZHVk3Ib4e1r6kiIfRSr4qc=;
+        b=Jn0KhtH2xnxhD+zaPScKXEHfFit+GrZwDC7DYJ1SAJVsCQJBkltu0aZoK/IMdLqtNM
+         BLFOfvM2I87uQcxKR93Z8aEwj/5GtpF5yg+Asj+CMpLD0Pqzx61xSXI1L/1uY6zHsUUM
+         clXcwaC/421iX/BceZPjs3UGh4y7CyB8xs+mdMbt89o44wt3h+WsC1Je5RYss18EPO1M
+         NjQHUZDtnUUQLf9nofcqht5viDOnaeiyyvG5z2G44KvZKNzlpvyZGSAqFq0owjMPMG1S
+         g4ZC5p3lG+9gz3en0fpCXn/7DkMWl4lMR5XLlh7KlUzPXIXIaDDdo89IUxdETcltAcpF
+         bWMA==
+X-Gm-Message-State: AOJu0YzOe/wPRUYZLc9zd5olRlMU9fOpMPQU8W4wZNnuY2Sj/fJLzH5+
+        pP6IX6YND9K8T/Co/pzV1Mzppg==
+X-Google-Smtp-Source: AGHT+IHJSLmUKEy3dGDjKezIZa9WLzUAniS+YJWcgL2oDdL/ykmdEe2bZHw04Ac3YlnVoI5x7iOEJA==
+X-Received: by 2002:a17:902:e84c:b0:1c5:d0ba:429 with SMTP id t12-20020a170902e84c00b001c5d0ba0429mr178898plg.4.1698340856010;
+        Thu, 26 Oct 2023 10:20:56 -0700 (PDT)
 Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id d6-20020aa797a6000000b006b225011ee5sm11474423pfq.6.2023.10.26.10.13.51
+        by smtp.gmail.com with ESMTPSA id k11-20020a170902694b00b001b016313b1dsm11240816plt.86.2023.10.26.10.20.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Oct 2023 10:13:51 -0700 (PDT)
+        Thu, 26 Oct 2023 10:20:55 -0700 (PDT)
+Date:   Thu, 26 Oct 2023 10:20:55 -0700
 From:   Kees Cook <keescook@chromium.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Max Chen <mxchen@codeaurora.org>,
-        Yang Shen <shenyang39@huawei.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Justin Stitt <justinstitt@google.com>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        Petr Mladek <pmladek@suse.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Yun Zhou <yun.zhou@windriver.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Zhen Lei <thunder.leizhen@huawei.com>,
-        linux-trace-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [RFC][PATCH] wifi: wil6210: Replace strlcat() usage with seq_buf
-Date:   Thu, 26 Oct 2023 10:13:49 -0700
-Message-Id: <20231026171349.work.928-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+To:     Justin Stitt <justinstitt@google.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] wifi: brcm80211: replace deprecated strncpy with
+ strscpy
+Message-ID: <202310261020.2D4DB7177@keescook>
+References: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-0-af780d74ae38@google.com>
+ <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-1-af780d74ae38@google.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3544; i=keescook@chromium.org;
- h=from:subject:message-id; bh=D2vtiEKqUsGt/Z09LYNxtKXhUwmDCO+5281guVaf7GY=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlOp5NR+tMMbDVnVZsfav6ogCPxtfc/WTZ15nO2
- QRMEDBKLY6JAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZTqeTQAKCRCJcvTf3G3A
- JqQzD/9l0E0xuPY6P0roZjkRSULXnrIXkTO42RKEmMgsVde2QhNfDm1jpgQwKYS79HR7MUy81R6
- xuvxMMyhXUeRGa0rsA+6TA+heail3hcWvUUQjBz3mmibnTXjOleWcVee0TLju/NW4+Qi/i4VslT
- ss+3VmN0dnlToJW9TccwpeivyT3Zwx+ZTBbtu4c8nNeNwuexL3DzygCn0ERJpGqTaXv31L44t54
- 5CluQm2N4kAm97ajzuFbUJJup54tIxrVklY7yRjuagF8gIKfXtUmGuvENXj+wjOdIpwgFOpknt2
- Strg8uN5CjXYpgRv8mhM+vDY7JNBAC9PqjbM8agfAHxWkEyDywHuv+RPz3cnTColqfnenVfPYl1
- Oxbpvi4SQwK/fOsMTmnfiA/TN5Up9l031ukqov92TTse4SgYhCVO8i4hvWBhXylLBKgfKm/SwFk
- SbVfcwbNpUwx+ZicySY48xcf1i1EZ0ydWkL137rTlcJjdvV8q7U+gubWcorg7P0UYKb7JISAlhK
- OhAEcdoTkf8CodYwlFwOSx4/FUI84czwgddorDvN1nUkjSSg6YSzjFjqX+bNedUZYokvgv7/pMu
- v3B3kUPSVnQ3Czc6EwGf0reFM3YSfnbATzoKYVDYHLfCvxrFfdxbaZWbTmbtNIlVfKz+ocrFry8
- ifQRSEE 3hfkIc6w==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-1-af780d74ae38@google.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The use of strlcat() is fragile at best, and we'd like to remove it from
-the available string APIs in the kernel. Instead, use the safer seq_buf
-APIs.
+On Tue, Oct 17, 2023 at 08:11:28PM +0000, Justin Stitt wrote:
+> Let's move away from using strncpy and instead favor a less ambiguous
+> and more robust interface.
+> 
+> For ifp->ndev->name, we expect ifp->ndev->name to be NUL-terminated based
+> on its use in format strings within core.c:
+> 67 |       char *brcmf_ifname(struct brcmf_if *ifp)
+> 68 |       {
+> 69 |            if (!ifp)
+> 70 |                    return "<if_null>";
+> 71 |
+> 72 |            if (ifp->ndev)
+> 73 |                    return ifp->ndev->name;
+> 74 |
+> 75 |            return "<if_none>";
+> 76 |       }
+> ...
+> 288 |       static netdev_tx_t brcmf_netdev_start_xmit(struct sk_buff *skb,
+> 289 |                                              struct net_device *ndev) {
+> ...
+> 330 |       brcmf_dbg(INFO, "%s: insufficient headroom (%d)\n",
+> 331 |                 brcmf_ifname(ifp), head_delta);
+> ...
+> 336 |       bphy_err(drvr, "%s: failed to expand headroom\n",
+> 337 |                brcmf_ifname(ifp));
+> 
+> For di->name, we expect di->name to be NUL-terminated based on its usage
+> with format strings:
+> |       brcms_dbg_dma(di->core,
+> |                     "%s: DMA64 tx doesn't have AE set\n",
+> |                     di->name);
+> 
+> Looking at its allocation we can see that it is already zero-allocated
+> which means NUL-padding is not required:
+> |       di = kzalloc(sizeof(struct dma_info), GFP_ATOMIC);
+> 
+> For wlc->modulecb[i].name, we expect each name in wlc->modulecb to be
+> NUL-terminated based on their usage with strcmp():
+> |       if (!strcmp(wlc->modulecb[i].name, name) &&
+> 
+> NUL-padding is not required as wlc is zero-allocated in:
+> brcms_c_attach_malloc() ->
+> |       wlc = kzalloc(sizeof(struct brcms_c_info), GFP_ATOMIC);
+> 
+> For all these cases, a suitable replacement is `strscpy` due to the fact
+> that it guarantees NUL-termination on the destination buffer without
+> unnecessarily NUL-padding.
+> 
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
 
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Max Chen <mxchen@codeaurora.org>
-Cc: Yang Shen <shenyang39@huawei.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Yun Zhou <yun.zhou@windriver.com>
-Cc: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Zhen Lei <thunder.leizhen@huawei.com>
-Cc: linux-trace-kernel@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
-This is mainly an example of where/how to use the ongoing seq_buf
-refactoring happening in the tracing tree:
-https://lore.kernel.org/lkml/20231026170722.work.638-kees@kernel.org/
----
- drivers/net/wireless/ath/wil6210/wmi.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+Good; this looks like standard direct replacements.
 
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
-index 6fdb77d4c59e..45b8c651b8e2 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.c
-+++ b/drivers/net/wireless/ath/wil6210/wmi.c
-@@ -3159,36 +3159,34 @@ int wmi_suspend(struct wil6210_priv *wil)
- 	return rc;
- }
- 
--static void resume_triggers2string(u32 triggers, char *string, int str_size)
-+static void resume_triggers2string(u32 triggers, struct seq_buf *s)
- {
--	string[0] = '\0';
--
- 	if (!triggers) {
--		strlcat(string, " UNKNOWN", str_size);
-+		seq_buf_puts(s, " UNKNOWN");
- 		return;
- 	}
- 
- 	if (triggers & WMI_RESUME_TRIGGER_HOST)
--		strlcat(string, " HOST", str_size);
-+		seq_buf_puts(s, " HOST")
- 
- 	if (triggers & WMI_RESUME_TRIGGER_UCAST_RX)
--		strlcat(string, " UCAST_RX", str_size);
-+		seq_buf_puts(s, " UCAST_RX");
- 
- 	if (triggers & WMI_RESUME_TRIGGER_BCAST_RX)
--		strlcat(string, " BCAST_RX", str_size);
-+		seq_buf_puts(s, " BCAST_RX");
- 
- 	if (triggers & WMI_RESUME_TRIGGER_WMI_EVT)
--		strlcat(string, " WMI_EVT", str_size);
-+		seq_buf_puts(s, " WMI_EVT");
- 
- 	if (triggers & WMI_RESUME_TRIGGER_DISCONNECT)
--		strlcat(string, " DISCONNECT", str_size);
-+		seq_buf_puts(s, " DISCONNECT");
- }
- 
- int wmi_resume(struct wil6210_priv *wil)
- {
- 	struct wil6210_vif *vif = ndev_to_vif(wil->main_ndev);
- 	int rc;
--	char string[100];
-+	DECLARE_SEQ_BUF(s, 100);
- 	struct {
- 		struct wmi_cmd_hdr wmi;
- 		struct wmi_traffic_resume_event evt;
-@@ -3203,10 +3201,9 @@ int wmi_resume(struct wil6210_priv *wil)
- 		      WIL_WAIT_FOR_SUSPEND_RESUME_COMP);
- 	if (rc)
- 		return rc;
--	resume_triggers2string(le32_to_cpu(reply.evt.resume_triggers), string,
--			       sizeof(string));
-+	resume_triggers2string(le32_to_cpu(reply.evt.resume_triggers), s);
- 	wil_dbg_pm(wil, "device resume %s, resume triggers:%s (0x%x)\n",
--		   reply.evt.status ? "failed" : "passed", string,
-+		   reply.evt.status ? "failed" : "passed", seq_buf_cstr(s),
- 		   le32_to_cpu(reply.evt.resume_triggers));
- 
- 	return reply.evt.status;
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
 -- 
-2.34.1
-
+Kees Cook
