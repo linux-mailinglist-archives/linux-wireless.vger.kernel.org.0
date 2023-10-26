@@ -2,151 +2,211 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2B5D7D8B4E
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 00:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 054157D8B5B
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 00:03:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232171AbjJZWCX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 18:02:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36588 "EHLO
+        id S1344898AbjJZWDa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Oct 2023 18:03:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229668AbjJZWCV (ORCPT
+        with ESMTP id S230186AbjJZWD3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 18:02:21 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF647AB;
-        Thu, 26 Oct 2023 15:02:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA825C433C8;
-        Thu, 26 Oct 2023 22:02:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698357739;
-        bh=v+OwCPCkufkei1OkZ0IK7OBnZIyQ/k2CAv18GMp5ECU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=n78Q8MakmY6S/n69Ux03t5U9WUOopOaUt6nDKsoVSQ7EwfcRn4luVSqYv4gLpBVda
-         DrKIa1h7StitkkRiy4EE1uZV9ATfMIOdG1LH7fry+wsdgg7K0o8FZyDL0K8lk1O1cV
-         t8tCIDdZoIwRLbl3rrSWnJxwraxqaVw/Gir1EFKFtZzjPUiogtA2KbpA/GPnWVFE75
-         vFVT+iMPgWVgs1VDlgs/RGVAxhV9lLfl6E7IGtKj2DkZ2fYHoCBfSJQ4yR5Uj+vsRQ
-         d1R5iC/0IUud8PHKgG7cpchJEmznQsL2QPpfVhJQJ4HgyUhDYk2WkITTtzPLdgWmQ9
-         XkdZf2GExUM1w==
-Date:   Thu, 26 Oct 2023 17:02:16 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        linux-pci@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-rdma@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
-Subject: Re: [PATCH v2 03/13] PCI/ASPM: Disable ASPM when driver requests it
-Message-ID: <20231026220216.GA1752508@bhelgaas>
+        Thu, 26 Oct 2023 18:03:29 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 227A81B5
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 15:03:26 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9ba081173a3so225814066b.1
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 15:03:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1698357804; x=1698962604; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DEmmsMUNDXrHxbfE3Ce3REr5A6wqcO3bgGi92YBCkzI=;
+        b=b6py9JZyfVMrZlL9Jrva7w5VfIiGgteU73GfhFfG4sEaLJkxrbhpfZa81w21gz8eeW
+         en3F3GdHCHMu7EIqMWDcUXl0qOPghFnoNDPulKM+K93DeQyP98eZpO9zlmLbF0h+oZKk
+         ZPicbXWat17VSNxEdTf4WXBTxlYUelUZ65MvCdS8+M4CnwA1/yO18V+jnjFCnCw1ZR45
+         4txR3ytLNXZXOa4EJzP4IQmYGxIPbQwjjlZsmNlaZu52ZFE5A9VhjxAugf7cBifOcHwz
+         ES/+bXdZc5nzF29ZsVXdRJMEkfmNWUxOAyW/3epHKVbERIDuF18t0UAOt1RiP33TLzUu
+         WuPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698357804; x=1698962604;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DEmmsMUNDXrHxbfE3Ce3REr5A6wqcO3bgGi92YBCkzI=;
+        b=HK7Cn6fQtvX6zAdoGjzWGFxax6Cc/R58yPi/+OFCsEA81rEVWhNToyMvDhzol4tszW
+         ULzZk8zsYYlhHJFCEuuobhcreFrd8LiLNkwH51hu2S/5qy3mQSUifVgJJHk/n19BXnan
+         KGjYNg72umb62yW1+YR4iFuvljDL77xSBLMJi6ewnLLjI/ttSnEcM3m6sQAo99D9+gFH
+         ZZcuPjl8ZIFwXNbjNIbD2Op7g4J1oPgjiRY8kV5Cv7+4Sgy1vlHLlD8u0E5JciNU7cNF
+         4t5yUiKsGbHBgS0SeoL5b6S9OrKEAlhc4dJ5qvnBWPTaJ3fLxY0UivBvSOaFdJ14sBp+
+         RCtQ==
+X-Gm-Message-State: AOJu0Yw80rO2+DLzI+lcnxnbq0nbKV9DhgvQTa+9+L9/EvUYtfX/d86H
+        W2R3LFCos3OeXXEX0sekx/o4hvJJkdjQhm6W25PjHg==
+X-Google-Smtp-Source: AGHT+IG6agKha0G/h583YdKCsY86p8qRjxzUVJVt92aAyYP3t8wQ6XoOF+pq/EnAOsxzX746Vh6W1fwNE0cooKXSZp4=
+X-Received: by 2002:a17:906:6a24:b0:9c5:ea33:7bf9 with SMTP id
+ qw36-20020a1709066a2400b009c5ea337bf9mr701118ejc.51.1698357804394; Thu, 26
+ Oct 2023 15:03:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a434d9f-48ec-cfe5-900-8923361798a9@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20231026171349.work.928-kees@kernel.org>
+In-Reply-To: <20231026171349.work.928-kees@kernel.org>
+From:   Justin Stitt <justinstitt@google.com>
+Date:   Thu, 26 Oct 2023 15:03:11 -0700
+Message-ID: <CAFhGd8p8Ako1zFrUrE62OxhqGqmDVEFi3NtT754gZP_sLAZ99w@mail.gmail.com>
+Subject: Re: [RFC][PATCH] wifi: wil6210: Replace strlcat() usage with seq_buf
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Max Chen <mxchen@codeaurora.org>,
+        Yang Shen <shenyang39@huawei.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Petr Mladek <pmladek@suse.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Yun Zhou <yun.zhou@windriver.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        linux-trace-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 05:27:37PM +0300, Ilpo Järvinen wrote:
-> On Fri, 13 Oct 2023, Bjorn Helgaas wrote:
-> > On Thu, Oct 12, 2023 at 01:56:16PM +0300, Ilpo Järvinen wrote:
-> > > On Wed, 11 Oct 2023, Bjorn Helgaas wrote:
-> > > > On Mon, Sep 18, 2023 at 04:10:53PM +0300, Ilpo Järvinen wrote:
-> > > > > PCI core/ASPM service driver allows controlling ASPM state
-> > > > > through pci_disable_link_state() and pci_enable_link_state()
-> > > > > API. It was decided earlier (see the Link below), to not
-> > > > > allow ASPM changes when OS does not have control over it but
-> > > > > only log a warning about the problem (commit 2add0ec14c25
-> > > > > ("PCI/ASPM: Warn when driver asks to disable ASPM, but we
-> > > > > can't do it")). Similarly, if ASPM is not enabled through
-> > > > > config, ASPM cannot be disabled.
-> > > ...
-> > 
-> > > > This disables *all* ASPM states, unlike the version when
-> > > > CONFIG_PCIEASPM is enabled.  I suppose there's a reason, and
-> > > > maybe a comment could elaborate on it?
-> > > >
-> > > > When CONFIG_PCIEASPM is not enabled, I don't think we actively
-> > > > *disable* ASPM in the hardware; we just leave it as-is, so
-> > > > firmware might have left it enabled.
-> > > 
-> > > This whole trickery is intended for drivers that do not want to
-> > > have ASPM because the devices are broken with it. So leaving it
-> > > as-is is not really an option (as demonstrated by the custom
-> > > workarounds).
-> > 
-> > Right.
-> > 
-> > > > Conceptually it seems like the LNKCTL updates here should be
-> > > > the same whether CONFIG_PCIEASPM is enabled or not (subject to
-> > > > the question above).
-> > > > 
-> > > > When CONFIG_PCIEASPM is enabled, we might need to do more
-> > > > stuff, but it seems like the core should be the same.
-> > > 
-> > > So you think it's safer to partially disable ASPM (as per
-> > > driver's request) rather than disable it completely? I got the
-> > > impression that the latter might be safer from what Rafael said
-> > > earlier but I suppose I might have misinterpreted him since he
-> > > didn't exactly say that it might be safer to _completely_
-> > > disable it.
-> > 
-> > My question is whether the state of the device should depend on
-> > CONFIG_PCIEASPM.  If the driver does this:
-> > 
-> >   pci_disable_link_state(PCIE_LINK_STATE_L0S)
-> > 
-> > do we want to leave L1 enabled when CONFIG_PCIEASPM=y but disable L1
-> > when CONFIG_PCIEASPM is unset?
-> > 
-> > I can see arguments both ways.  My thought was that it would be nice
-> > to end up with a single implementation of pci_disable_link_state()
-> > with an #ifdef around the CONFIG_PCIEASPM-enabled stuff because it
-> > makes the code easier to read.
+On Thu, Oct 26, 2023 at 10:13=E2=80=AFAM Kees Cook <keescook@chromium.org> =
+wrote:
+>
+> The use of strlcat() is fragile at best, and we'd like to remove it from
+> the available string APIs in the kernel. Instead, use the safer seq_buf
+> APIs.
+>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Cc: Max Chen <mxchen@codeaurora.org>
+> Cc: Yang Shen <shenyang39@huawei.com>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Justin Stitt <justinstitt@google.com>
+> Cc: Kent Overstreet <kent.overstreet@linux.dev>
+> Cc: Petr Mladek <pmladek@suse.com>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Yun Zhou <yun.zhou@windriver.com>
+> Cc: Jacob Keller <jacob.e.keller@intel.com>
+> Cc: Zhen Lei <thunder.leizhen@huawei.com>
+> Cc: linux-trace-kernel@vger.kernel.org
+> Cc: linux-wireless@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+> This is mainly an example of where/how to use the ongoing seq_buf
+> refactoring happening in the tracing tree:
+> https://lore.kernel.org/lkml/20231026170722.work.638-kees@kernel.org/
 
-Responding to myself here, I think we should do the partial disables
-because it matches what the drivers did previously by hand, we can
-reduce the number of code paths, and the resulting device state will
-be the same regardless of CONFIG_PCIEASPM.
+I like it. C-strings and many of their associated apis are dodgy. This
+looks like a worthwhile replacement.
 
-> I think there's still one important thing to discuss and none of the
-> comments have covered that area so far.
-> 
-> The drivers that have workaround are not going to turn more
-> dangerous than they're already without this change, so we're mostly
-> within charted waters there even with what you propose. However, I
-> think the bigger catch and potential source of problems, with both
-> this v2 and your alternative, are the drivers that do not have the
-> workarounds around CONFIG_PCIEASPM=n and/or _OSC permissions. Those
-> code paths just call pci_disable_link_state() and do nothing else.
-> 
-> Do you think it's okay to alter the behavior for those drivers too
-> (disable ASPM where it previously was a no-op)?
+I think many of my strncpy -> strscpy replacements could've easily
+been something along these lines as well.
 
-Yes.  I assume the reason those drivers call pci_disable_link_state()
-is because some hardware defect means ASPM doesn't work correctly.
+Happy to see robustness increasing in the kernel by means
+of replacing sketchy C-string stuff.
 
-This change means pci_disable_link_state() will disable ASPM even when
-the OS doesn't own ASPM or CONFIG_PCIEASPM is unset.  I think those
-cases are unusual and probably not well tested, and I suspect that if
-we *did* test them, we'd find that ASPM doesn't work with the current
-kernel.
+> ---
+>  drivers/net/wireless/ath/wil6210/wmi.c | 23 ++++++++++-------------
+>  1 file changed, 10 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireles=
+s/ath/wil6210/wmi.c
+> index 6fdb77d4c59e..45b8c651b8e2 100644
+> --- a/drivers/net/wireless/ath/wil6210/wmi.c
+> +++ b/drivers/net/wireless/ath/wil6210/wmi.c
+> @@ -3159,36 +3159,34 @@ int wmi_suspend(struct wil6210_priv *wil)
+>         return rc;
+>  }
+>
+> -static void resume_triggers2string(u32 triggers, char *string, int str_s=
+ize)
+> +static void resume_triggers2string(u32 triggers, struct seq_buf *s)
+>  {
+> -       string[0] =3D '\0';
+> -
+>         if (!triggers) {
+> -               strlcat(string, " UNKNOWN", str_size);
+> +               seq_buf_puts(s, " UNKNOWN");
+>                 return;
+>         }
+>
+>         if (triggers & WMI_RESUME_TRIGGER_HOST)
+> -               strlcat(string, " HOST", str_size);
+> +               seq_buf_puts(s, " HOST")
+>
+>         if (triggers & WMI_RESUME_TRIGGER_UCAST_RX)
+> -               strlcat(string, " UCAST_RX", str_size);
+> +               seq_buf_puts(s, " UCAST_RX");
+>
+>         if (triggers & WMI_RESUME_TRIGGER_BCAST_RX)
+> -               strlcat(string, " BCAST_RX", str_size);
+> +               seq_buf_puts(s, " BCAST_RX");
+>
+>         if (triggers & WMI_RESUME_TRIGGER_WMI_EVT)
+> -               strlcat(string, " WMI_EVT", str_size);
+> +               seq_buf_puts(s, " WMI_EVT");
+>
+>         if (triggers & WMI_RESUME_TRIGGER_DISCONNECT)
+> -               strlcat(string, " DISCONNECT", str_size);
+> +               seq_buf_puts(s, " DISCONNECT");
+>  }
+>
+>  int wmi_resume(struct wil6210_priv *wil)
+>  {
+>         struct wil6210_vif *vif =3D ndev_to_vif(wil->main_ndev);
+>         int rc;
+> -       char string[100];
+> +       DECLARE_SEQ_BUF(s, 100);
+>         struct {
+>                 struct wmi_cmd_hdr wmi;
+>                 struct wmi_traffic_resume_event evt;
+> @@ -3203,10 +3201,9 @@ int wmi_resume(struct wil6210_priv *wil)
+>                       WIL_WAIT_FOR_SUSPEND_RESUME_COMP);
+>         if (rc)
+>                 return rc;
+> -       resume_triggers2string(le32_to_cpu(reply.evt.resume_triggers), st=
+ring,
+> -                              sizeof(string));
+> +       resume_triggers2string(le32_to_cpu(reply.evt.resume_triggers), s)=
+;
+>         wil_dbg_pm(wil, "device resume %s, resume triggers:%s (0x%x)\n",
+> -                  reply.evt.status ? "failed" : "passed", string,
+> +                  reply.evt.status ? "failed" : "passed", seq_buf_cstr(s=
+),
+>                    le32_to_cpu(reply.evt.resume_triggers));
+>
+>         return reply.evt.status;
+> --
+> 2.34.1
+>
 
-So I think this is more likely to *fix* something than to break it.
-
-Bjorn
+Thanks
+Justin
