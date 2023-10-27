@@ -2,114 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0735E7D9AF3
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 16:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E6D87D9B40
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 16:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345997AbjJ0OPI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Oct 2023 10:15:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45508 "EHLO
+        id S1345851AbjJ0OXc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Oct 2023 10:23:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231302AbjJ0OPH (ORCPT
+        with ESMTP id S1345738AbjJ0OXb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Oct 2023 10:15:07 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5CB121;
-        Fri, 27 Oct 2023 07:15:05 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-41cbd1d7e04so14521061cf.1;
-        Fri, 27 Oct 2023 07:15:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698416104; x=1699020904; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Yg87veBdY0tY4XFSjr+wNPzOvhvzS0mNaVmWdiTVM3E=;
-        b=AnekxiPujceLQ+lP8A75edKykmetdMFSK2a+5Az08YQa2nIT5i5tym2r4Cnh3HDBtc
-         yIab7+zgKL/02k/sEseZ2JLx1122q+TbTC7OUXKD+R4Lcb2UpqcgqAUkqHIFdFcx/VgV
-         lqQawXbNw2ceHFhLnvs1LFyPzmkEgyy1XyeA48RrU9bTnzJAiYTWrPWsjIvWp950HE4S
-         x6zNZpOXEO2gT8Vb/IBMsNrjL8OsqJStj5i5sdiYG0O3nIrTXFJvxrgF06dFgja7SNBx
-         LuKLoStMiE/Xasd3wJ/riPQyH1uUP7upxMC1X+H2NuwUrUZVQ+dv4r606BoocFobxSUi
-         76Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698416104; x=1699020904;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yg87veBdY0tY4XFSjr+wNPzOvhvzS0mNaVmWdiTVM3E=;
-        b=nbU3xCo9WMM7I4n6VM+JwKgPmxZxcALTpWOBLqkyKRqFcS/D9NKaUt+Vbs/imtA/dN
-         /Br4MRVI9peTGwKSD99IQBJSvUE4Ay/OwuRqdYKR4UBcsFXSRKluINMwV5dLZYYVPxNR
-         kjh46oQeY8V5qvraAub9aIVnJJgYqf9jvND/X6OqaUilbAgYs1EcArD2BSg/6/+H7iVF
-         lmZkHzYNaD3Iu6SYAp7iN0fE8s/Q4wf2FffenuWwJGlP2zE8QPv8sEDpWn10aNs8qF8y
-         QXLYNEiwhjEAf/sO+TO5fiLJRhxzBViOHMfKe6n1zjflB1cjir60tYISlvsehhDwoOCB
-         MJuA==
-X-Gm-Message-State: AOJu0YxqL6vVwjANKaFRizAJty/NqIxlEA7AGIKGhBT5GmVOkAupDeO7
-        T6xdFfINFzP/xxhjhHFAjC+NDnnyPJXbig==
-X-Google-Smtp-Source: AGHT+IGx8EGswR918ba/TV6YTHRay0TxyRbnouvKN/xV7ldNfoBJMz8LuTJ4g2Z6olnHdFzPjLsEnA==
-X-Received: by 2002:ac8:5882:0:b0:41c:d562:cee0 with SMTP id t2-20020ac85882000000b0041cd562cee0mr2951497qta.57.1698416104396;
-        Fri, 27 Oct 2023 07:15:04 -0700 (PDT)
-Received: from ?IPV6:2001:470:8:94a::251? ([2001:470:8:94a::251])
-        by smtp.googlemail.com with ESMTPSA id s21-20020a05622a1a9500b0041b381b9833sm607923qtc.75.2023.10.27.07.15.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 07:15:03 -0700 (PDT)
-Message-ID: <323e1669-e145-21bc-a124-923303ad2138@gmail.com>
-Date:   Fri, 27 Oct 2023 10:15:02 -0400
+        Fri, 27 Oct 2023 10:23:31 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C481187
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Oct 2023 07:23:22 -0700 (PDT)
+X-UUID: 5fb43c9e74d411eea33bb35ae8d461a2-20231027
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=vcDrZzaMTeW3MiV5yhk9Ro3SKcVOc+eJXb6PH5a7FNA=;
+        b=pzif4YlSPXbK66ENWjzdcQKKJ46YfBgaUJnpeApSO63Ica5rpRIPO22kmRT0k/AEeseCJXxz5DJGoWuwgZdt8bL0rzVtSRMVUizRVZTc4BdnLDPU9Bub6hdVr3S8GYEtKebaZd9G8PtWvzMKxlBcVk63H1rn3y66vLZm0YqaRlQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.32,REQID:cbb1f759-9c1a-46f8-9006-0f49721466e7,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:5f78ec9,CLOUDID:dfd5f971-1bd3-4f48-b671-ada88705968c,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
+        DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: 5fb43c9e74d411eea33bb35ae8d461a2-20231027
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1346552869; Fri, 27 Oct 2023 22:23:18 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Fri, 27 Oct 2023 22:23:17 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Fri, 27 Oct 2023 22:23:17 +0800
+From:   Deren Wu <deren.wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        "Kalle Valo" <kvalo@kernel.org>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Quan Zhou <quan.zhou@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Ben Greear <greearb@candelatech.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [next] wifi: mt76: mt7921: fix the missing default CLC channel config value
+Date:   Fri, 27 Oct 2023 22:22:43 +0800
+Message-ID: <3c03260707034f997864c20d7f77f88c6e24e56b.1698415301.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH net-next 1/4] net: fill in MODULE_DESCRIPTION()s in
- kuba@'s modules
-To:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc:     netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org
-References: <20231026190101.1413939-1-kuba@kernel.org>
- <20231026190101.1413939-2-kuba@kernel.org>
-Content-Language: en-US
-From:   Jonathan Bither <jonbither@gmail.com>
-In-Reply-To: <20231026190101.1413939-2-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--3.451800-8.000000
+X-TMASE-MatchedRID: +aPT1BniHkxPwhYh7WurQ23NvezwBrVmWDLajM22ETbxxaAXDrCns6vW
+        9qD1DQeTjwQarLbSitSx8xfnDVGMQyZywmJvYiNpA9lly13c/gERWG8HyxfLI7lmMfLNiuka0p6
+        6g4/WVuhP7yM7bfVWWIAy6p60ZV62fJ5/bZ6npdjKayT/BQTiGu5+4KX96PVEK6DfNkvIv+YytG
+        HO66XW3QLaqW/p/SSDjDfWgUD8xCZqgCmb2XIMHXFha5mJQS63DKW6jJ2i0UOHacorxE7l9sn2W
+        lhAdnbBdATQdtPksR+3/JiWOe6GXXSWgQ2GpXdZbxffl9hhCBw=
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--3.451800-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: DC85E81DB92A109DB74E891CEF1C774BE3F517E1A5765F28A6534F3F177E49652000:8
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,T_SPF_TEMPERROR,
+        UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-On 10/26/23 15:00, Jakub Kicinski wrote:
-> W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
-> Fill it in for the modules I maintain.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: linux-wireless@vger.kernel.org
-> ---
->   drivers/net/netdevsim/netdev.c              | 1 +
->   drivers/net/wireless/mediatek/mt7601u/usb.c | 1 +
->   2 files changed, 2 insertions(+)
->
-> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-> index 2eac92f49631..aecaf5f44374 100644
-> --- a/drivers/net/netdevsim/netdev.c
-> +++ b/drivers/net/netdevsim/netdev.c
-> @@ -470,4 +470,5 @@ static void __exit nsim_module_exit(void)
->   module_init(nsim_module_init);
->   module_exit(nsim_module_exit);
->   MODULE_LICENSE("GPL");
-> +MODULE_DESCRIPTION("Simulated networking device for testing");
->   MODULE_ALIAS_RTNL_LINK(DRV_NAME);
-> diff --git a/drivers/net/wireless/mediatek/mt7601u/usb.c b/drivers/net/wireless/mediatek/mt7601u/usb.c
-> index cc772045d526..d2ee6540ebb2 100644
-> --- a/drivers/net/wireless/mediatek/mt7601u/usb.c
-> +++ b/drivers/net/wireless/mediatek/mt7601u/usb.c
-> @@ -365,6 +365,7 @@ static int mt7601u_resume(struct usb_interface *usb_intf)
->   
->   MODULE_DEVICE_TABLE(usb, mt7601u_device_table);
->   MODULE_FIRMWARE(MT7601U_FIRMWARE);
-> +MODULE_DESCRIPTION("MediaTek MT7601U USD Wireless LAN driver");
-Did you mean USB?
->   MODULE_LICENSE("GPL");
->   
->   static struct usb_driver mt7601u_driver = {
+No matter CLC is enabled or disabled, the driver should initialize
+the default value for channel configuration of CLC.
+
+Reported-and-tested-by: Ben Greear <greearb@candelatech.com>
+Closes: https://lore.kernel.org/all/2fb78387-d226-3193-8ca7-90040561b9ad@candelatech.com/
+Fixes: 09382d8f8641 ("mt7921: update the channel usage when the regd domain changed")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 63f3d4a5c9aa..2cc2d2788f83 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -375,6 +375,7 @@ static int mt7921_load_clc(struct mt792x_dev *dev, const char *fw_name)
+ 	int ret, i, len, offset = 0;
+ 	u8 *clc_base = NULL, hw_encap = 0;
+ 
++	dev->phy.clc_chan_conf = 0xff;
+ 	if (mt7921_disable_clc ||
+ 	    mt76_is_usb(&dev->mt76))
+ 		return 0;
+-- 
+2.18.0
+
