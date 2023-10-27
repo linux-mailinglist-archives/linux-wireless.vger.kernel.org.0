@@ -2,122 +2,211 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D6537D8C8D
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 02:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D06DA7D8CAE
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 03:06:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbjJ0AdJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 20:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45204 "EHLO
+        id S229694AbjJ0BE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Oct 2023 21:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjJ0AdI (ORCPT
+        with ESMTP id S229633AbjJ0BE5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 20:33:08 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED4AA1B5;
-        Thu, 26 Oct 2023 17:33:05 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39R0NVSQ025993;
-        Fri, 27 Oct 2023 00:33:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=0s13OFv2F6fjlgVjY49htr9zsLYqUerU5cHUE6R3sKw=;
- b=RmdH0JRrFD2LipC3Nsbl8k5KdkFhiw7up3o73DWr3XQilFA6UhiA0tl6HWuYKuWiv1nZ
- oCu7Pt4PIwO6XaA7Bkkh4mYnZTMyOi3F+gjZmox1/lmaHjcWs1km//YD5sgabXSTGR2H
- 9KE3XAHSaXaWuKtZbc/GhBp9Wemml+vD/5hX2Vs3o5tJUh4mlBzYl1ITQbuPGPjDtFwx
- CvxPqNOeYpu4ZKS6nusqSdjV88qhc1bhi6W7Xh+zEXd+oCjyTIzT8Xr7eEx2p0p69V0J
- MXEM2AhgrESYGjukzXZIJIRaXsdL/NjbQZBjsIcgjGmoS1fbQ4YeiVESetME/syBey1x lg== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tyx3u8mb9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Oct 2023 00:33:00 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39R0WxZq025199
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Oct 2023 00:32:59 GMT
-Received: from [10.48.246.67] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Thu, 26 Oct
- 2023 17:32:59 -0700
-Message-ID: <37dec5a3-01b7-49e5-95ee-091d19e7e807@quicinc.com>
-Date:   Thu, 26 Oct 2023 17:32:58 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] airo: replace deprecated strncpy with strscpy_pad
-Content-Language: en-US
-To:     Justin Stitt <justinstitt@google.com>,
-        Kalle Valo <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>
-References: <20231026-strncpy-drivers-net-wireless-cisco-airo-c-v2-1-413427249e47@google.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231026-strncpy-drivers-net-wireless-cisco-airo-c-v2-1-413427249e47@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: qblieAJ7RQUPr4Vcgtl7-_zYRWfRfiXF
-X-Proofpoint-GUID: qblieAJ7RQUPr4Vcgtl7-_zYRWfRfiXF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-26_22,2023-10-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
- mlxlogscore=950 suspectscore=0 spamscore=0 mlxscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 impostorscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2310270003
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        Thu, 26 Oct 2023 21:04:57 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960871B6
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 18:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698368694; x=1729904694;
+  h=date:from:to:cc:subject:message-id;
+  bh=dSxFQ+8irXQNqUyePURMH57CKwyK8Rnx6+O4xHLpGb4=;
+  b=MTNkkHZ3s8ustAngqKCO/tjvwX5sL0UwSsk38dY4N3E1LTuCdJbmp3m4
+   iptY7V9rY6NmMNOnqyLbssaODnpmfwziIzxAF1ffBcB37/o3UuHH31Ss9
+   f++xEEvi8F1fL5FtXSuqtMG63uOMVltmULCi2+5aYuKwbklFjjIxSoeqm
+   FAzTSEdjCHEa/hyIdjqkm/0eMj6ckUkl8HjLCtn/pmzMixrKrp+5Y7iSq
+   Lb3kZIbv8O9xi99GDf/FycgBmDfuscnwq3MplWAcNAaZm+p/viKwDHXZX
+   +e/1On1wLSDhMYADgBjX74Ayrm+ytmKJlqyqwvUjio+00/4LDuo/kpZIb
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="390542972"
+X-IronPort-AV: E=Sophos;i="6.03,255,1694761200"; 
+   d="scan'208";a="390542972"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 18:04:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="903115594"
+X-IronPort-AV: E=Sophos;i="6.03,255,1694761200"; 
+   d="scan'208";a="903115594"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 26 Oct 2023 18:02:25 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qwBHO-000AHl-1j;
+        Fri, 27 Oct 2023 01:04:50 +0000
+Date:   Fri, 27 Oct 2023 09:04:25 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: [wireless-next:pending] BUILD SUCCESS
+ 81ba6b51c3a640b277274701407bbf557f12edac
+Message-ID: <202310270922.rm7Y1Mgp-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/26/2023 4:19 PM, Justin Stitt wrote:
-> strncpy() is deprecated for use on NUL-terminated destination strings
-> [1] and as such we should prefer more robust and less ambiguous string
-> interfaces.
-> 
-> `extra` is clearly supposed to be NUL-terminated which is evident by the
-> manual NUL-byte assignment as well as its immediate usage with strlen().
-> 
-> Moreover, let's NUL-pad since there is deliberate effort (48 instances)
-> made elsewhere to zero-out buffers in these getters and setters:
-> 6050 | memset(local->config.nodeName, 0, sizeof(local->config.nodeName));
-> 6130 | memset(local->config.rates, 0, 8);
-> 6139 | memset(local->config.rates, 0, 8);
-> 6414 | memset(key.key, 0, MAX_KEY_SIZE);
-> 6497 | memset(extra, 0, 16);
-> (to be clear, strncpy also NUL-padded -- we are matching that behavior)
-> 
-> Considering the above, a suitable replacement is `strscpy_pad` due to
-> the fact that it guarantees both NUL-termination and NUL-padding on the
-> destination buffer.
-> 
-> We can also replace the hard-coded size of "16" to IW_ESSID_MAX_SIZE
-> because this function is a wext handler.
-> 
-> In wext-core.c we have:
-> static const struct iw_ioctl_description standard_ioctl[] = {
-> ...
->          [IW_IOCTL_IDX(SIOCGIWNICKN)] = {
->                  .header_type    = IW_HEADER_TYPE_POINT,
->                  .token_size     = 1,
->                  .max_tokens     = IW_ESSID_MAX_SIZE,
->          },
-> 
-> So the buffer size is (strangely) IW_ESSID_MAX_SIZE
-> 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
+branch HEAD: 81ba6b51c3a640b277274701407bbf557f12edac  wifi: remove ipw2100/ipw2200 drivers
 
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+elapsed time: 4953m
 
+configs tested: 133
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231024   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20231025   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231024   gcc  
+i386         buildonly-randconfig-002-20231024   gcc  
+i386         buildonly-randconfig-003-20231024   gcc  
+i386         buildonly-randconfig-004-20231024   gcc  
+i386         buildonly-randconfig-005-20231024   gcc  
+i386         buildonly-randconfig-006-20231024   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231024   gcc  
+i386                  randconfig-002-20231024   gcc  
+i386                  randconfig-003-20231024   gcc  
+i386                  randconfig-004-20231024   gcc  
+i386                  randconfig-005-20231024   gcc  
+i386                  randconfig-006-20231024   gcc  
+i386                  randconfig-011-20231024   gcc  
+i386                  randconfig-012-20231024   gcc  
+i386                  randconfig-013-20231024   gcc  
+i386                  randconfig-014-20231024   gcc  
+i386                  randconfig-015-20231024   gcc  
+i386                  randconfig-016-20231024   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231024   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20231024   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231024   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231024   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20231024   gcc  
+x86_64       buildonly-randconfig-002-20231024   gcc  
+x86_64       buildonly-randconfig-003-20231024   gcc  
+x86_64       buildonly-randconfig-004-20231024   gcc  
+x86_64       buildonly-randconfig-005-20231024   gcc  
+x86_64       buildonly-randconfig-006-20231024   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231024   gcc  
+x86_64                randconfig-002-20231024   gcc  
+x86_64                randconfig-003-20231024   gcc  
+x86_64                randconfig-004-20231024   gcc  
+x86_64                randconfig-005-20231024   gcc  
+x86_64                randconfig-006-20231024   gcc  
+x86_64                randconfig-011-20231025   gcc  
+x86_64                randconfig-012-20231025   gcc  
+x86_64                randconfig-013-20231025   gcc  
+x86_64                randconfig-014-20231025   gcc  
+x86_64                randconfig-015-20231025   gcc  
+x86_64                randconfig-016-20231025   gcc  
+x86_64                randconfig-071-20231025   gcc  
+x86_64                randconfig-072-20231025   gcc  
+x86_64                randconfig-073-20231025   gcc  
+x86_64                randconfig-074-20231025   gcc  
+x86_64                randconfig-075-20231025   gcc  
+x86_64                randconfig-076-20231025   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
