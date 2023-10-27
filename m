@@ -2,70 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F7627D8F32
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 09:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF92B7D9080
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 10:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345289AbjJ0HHo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Oct 2023 03:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37022 "EHLO
+        id S231420AbjJ0IA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Oct 2023 04:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229590AbjJ0HHn (ORCPT
+        with ESMTP id S230523AbjJ0IA1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Oct 2023 03:07:43 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66D7B116;
-        Fri, 27 Oct 2023 00:07:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BD8C433C7;
-        Fri, 27 Oct 2023 07:07:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698390461;
-        bh=wJS+QNrJXp1MsR3/ZUU86Cl8sI9OcARWlPbkBdr/bKk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=1cKRZ/dqG1UPyK7jGIKlc7d4qyLaGMVNalQpqY5YHNuJmLJssUWMCh6+DxStZzOCx
-         ycijrCqRKHCwG3bBlKXxj6ROCUqVDwp9sptIHEiJoXAY5OMP9E1PBCQQoH3nnqTxU/
-         IxMV/TmCRUpp4AVho4hqjROmuArhRVLTI/EHMcDk=
-Date:   Fri, 27 Oct 2023 09:07:36 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Witold Baryluk <witold.baryluk@gmail.com>, arnd@kernel.org,
-        Larry.Finger@lwfinger.net, alexandre.belloni@bootlin.com,
-        arnd@arndb.de, claudiu.beznea@tuxon.dev, davem@davemloft.net,
-        geert@linux-m68k.org, geoff@infradead.org,
-        gregory.greenman@intel.com, ilw@linux.intel.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, nicolas.ferre@microchip.com,
-        pavel@ucw.cz, quic_jjohnson@quicinc.com, stas.yakovlev@gmail.com,
-        stf_xl@wp.pl
-Subject: Re: [PATCH 10/10] [RFC] wifi: remove ipw2100/ipw2200 drivers
-Message-ID: <2023102709-purse-repressed-d8b9@gregkh>
-References: <CAEGMnwo6RFqADPO5FRkRUNL=GfV6DY8UuwgsypEYOD3LTnXdJg@mail.gmail.com>
- <87o7gld8l4.fsf@kernel.org>
+        Fri, 27 Oct 2023 04:00:27 -0400
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B239F1A5
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Oct 2023 01:00:20 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:2087:0:640:7bf5:0])
+        by forward103b.mail.yandex.net (Yandex) with ESMTP id 560D160AD5;
+        Fri, 27 Oct 2023 10:59:47 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kxLb4GHW1Ko0-RumREi07;
+        Fri, 27 Oct 2023 10:59:46 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1698393586; bh=lKGfT/ZUcHsAp7BYh2JTjzrWjXSX98Wi8cGwDyNsMuk=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=sTdarNQ5A38hLqc71seujpKMx1325BiBm99wlYi6BA9ztE/uq3TOUuidL0HKUc1bK
+         A8Ytwm+fi4LBb7eBr4lyuIffau6VFAlJBqkxklSrYgKzIlJ8XJeq5GB0TMdvRsFMUg
+         VzTuL5FtHQvnxIlYHhwWYjJhoztKKehpad9dnsUw=
+Authentication-Results: mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: rtlwifi: fix USB device initialization sequence
+Date:   Fri, 27 Oct 2023 10:59:17 +0300
+Message-ID: <20231027075920.116006-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87o7gld8l4.fsf@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 26, 2023 at 12:41:27PM +0300, Kalle Valo wrote:
-> For example, I see lots of dead code under '#ifdef NOT_YET' and '#if 0',
-> removing those is a good a start. Also converting the ugly debug_level
-> procfs file to something more modern would be nice, maybe using just
-> dev_dbg() throught the driver is a good option? Or maybe use a module
-> parameter instead?
+Do not ignore possible errors in '_rtl_usb_init()' and tweak error
+handling in 'rtl_usb_probe()' to ensure that 'rtl_usb_cleanup()' is
+called when needed. Minor style adjustments, compile tested only.
 
-Ick, no new module parameters, this isn't the 1990's, please just use
-the netdev debug lines instead :)
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 25 ++++++++++++----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-thanks,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 30bf2775a335..12b8a5fae947 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -332,10 +332,11 @@ static int _rtl_usb_init(struct ieee80211_hw *hw)
+ 	}
+ 	/* usb endpoint mapping */
+ 	err = rtlpriv->cfg->usb_interface_cfg->usb_endpoint_mapping(hw);
+-	rtlusb->usb_mq_to_hwq =  rtlpriv->cfg->usb_interface_cfg->usb_mq_to_hwq;
+-	_rtl_usb_init_tx(hw);
+-	_rtl_usb_init_rx(hw);
+-	return err;
++	if (err)
++		return err;
++	rtlusb->usb_mq_to_hwq = rtlpriv->cfg->usb_interface_cfg->usb_mq_to_hwq;
++	err = _rtl_usb_init_tx(hw);
++	return err ? err : _rtl_usb_init_rx(hw);
+ }
+ 
+ static void rtl_usb_init_sw(struct ieee80211_hw *hw)
+@@ -1033,37 +1034,39 @@ int rtl_usb_probe(struct usb_interface *intf,
+ 	/* Init IO handler */
+ 	_rtl_usb_io_handler_init(&udev->dev, hw);
+ 	rtlpriv->cfg->ops->read_chip_version(hw);
+-	/*like read eeprom and so on */
++	/* like read eeprom and so on */
+ 	rtlpriv->cfg->ops->read_eeprom_info(hw);
+ 	err = _rtl_usb_init(hw);
+ 	if (err)
+-		goto error_out2;
++		goto out_usb_init;
+ 	rtl_usb_init_sw(hw);
+ 	/* Init mac80211 sw */
+ 	err = rtl_init_core(hw);
+ 	if (err) {
+ 		pr_err("Can't allocate sw for mac80211\n");
+-		goto error_out2;
++		goto out_core_init;
+ 	}
+ 	if (rtlpriv->cfg->ops->init_sw_vars(hw)) {
+ 		pr_err("Can't init_sw_vars\n");
+-		goto error_out;
++		goto out;
+ 	}
+ 	rtl_init_sw_leds(hw);
+ 
+ 	err = ieee80211_register_hw(hw);
+ 	if (err) {
+ 		pr_err("Can't register mac80211 hw.\n");
+-		goto error_out;
++		goto out;
+ 	}
+ 	rtlpriv->mac80211.mac80211_registered = 1;
+ 
+ 	set_bit(RTL_STATUS_INTERFACE_START, &rtlpriv->status);
+ 	return 0;
+ 
+-error_out:
++out:
+ 	rtl_deinit_core(hw);
+-error_out2:
++out_core_init:
++	rtl_usb_cleanup(hw);
++out_usb_init:
+ 	_rtl_usb_io_handler_release(hw);
+ 	usb_put_dev(udev);
+ 	complete(&rtlpriv->firmware_loading_complete);
+-- 
+2.41.0
 
-greg k-h
