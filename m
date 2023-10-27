@@ -2,24 +2,24 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 724B77D8CDA
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 03:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2319B7D8CDB
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 03:45:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbjJ0BpR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 21:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35430 "EHLO
+        id S1345081AbjJ0BpX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Oct 2023 21:45:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjJ0BpQ (ORCPT
+        with ESMTP id S229437AbjJ0BpU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 21:45:16 -0400
+        Thu, 26 Oct 2023 21:45:20 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE49FAB
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 18:45:13 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39R1j55c93456141, This message is accepted by code: ctloc85258
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B1471B6
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 18:45:16 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39R1j75c93456141, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39R1j55c93456141
+        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39R1j75c93456141
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 27 Oct 2023 09:45:05 +0800
+        Fri, 27 Oct 2023 09:45:07 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
@@ -27,13 +27,13 @@ Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 27 Oct
- 2023 09:44:40 +0800
+ 2023 09:44:42 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 1/4] wifi: rtw89: set entry size of address CAM to H2C field by chip
-Date:   Fri, 27 Oct 2023 09:43:59 +0800
-Message-ID: <20231027014402.9448-2-pkshih@realtek.com>
+Subject: [PATCH 2/4] wifi: rtw89: configure PPDU max user by chip
+Date:   Fri, 27 Oct 2023 09:44:00 +0800
+Message-ID: <20231027014402.9448-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231027014402.9448-1-pkshih@realtek.com>
 References: <20231027014402.9448-1-pkshih@realtek.com>
@@ -59,61 +59,114 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The new chips change hardware design to shrink entry size of address
-CAM from 0x40 to 0x20, so make this change accordingly.
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
+Different chip can support different max user in one PPDU report.
+So, we now configure it in chip info.
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/cam.c | 16 +++++++++++++++-
- drivers/net/wireless/realtek/rtw89/mac.h |  1 +
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.c     | 6 ++++--
+ drivers/net/wireless/realtek/rtw89/core.h     | 2 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c | 1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c | 1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c | 1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 1 +
+ 6 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index f5301c2bbf13..914c94988b2f 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -488,6 +488,20 @@ static int rtw89_cam_get_avail_addr_cam(struct rtw89_dev *rtwdev,
- 	return 0;
- }
- 
-+static u8 rtw89_get_addr_cam_entry_size(struct rtw89_dev *rtwdev)
-+{
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 4bfb4188de72..6a70c035b22e 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1407,6 +1407,7 @@ static int rtw89_core_rx_process_mac_ppdu(struct rtw89_dev *rtwdev,
+ 					  struct sk_buff *skb,
+ 					  struct rtw89_rx_phy_ppdu *phy_ppdu)
+ {
 +	const struct rtw89_chip_info *chip = rtwdev->chip;
-+
-+	switch (chip->chip_id) {
-+	case RTL8852A:
-+	case RTL8852B:
-+	case RTL8851B:
-+		return ADDR_CAM_ENT_SIZE;
-+	default:
-+		return ADDR_CAM_ENT_SHORT_SIZE;
-+	}
-+}
-+
- int rtw89_cam_init_addr_cam(struct rtw89_dev *rtwdev,
- 			    struct rtw89_addr_cam_entry *addr_cam,
- 			    const struct rtw89_bssid_cam_entry *bssid_cam)
-@@ -509,7 +523,7 @@ int rtw89_cam_init_addr_cam(struct rtw89_dev *rtwdev,
+ 	const struct rtw89_rxinfo *rxinfo = (const struct rtw89_rxinfo *)skb->data;
+ 	bool rx_cnt_valid = false;
+ 	u8 plcp_size = 0;
+@@ -1416,8 +1417,9 @@ static int rtw89_core_rx_process_mac_ppdu(struct rtw89_dev *rtwdev,
+ 	rx_cnt_valid = le32_get_bits(rxinfo->w0, RTW89_RXINFO_W0_RX_CNT_VLD);
+ 	plcp_size = le32_get_bits(rxinfo->w1, RTW89_RXINFO_W1_PLCP_LEN) << 3;
+ 	usr_num = le32_get_bits(rxinfo->w0, RTW89_RXINFO_W0_USR_NUM);
+-	if (usr_num > RTW89_PPDU_MAX_USR) {
+-		rtw89_warn(rtwdev, "Invalid user number in mac info\n");
++	if (usr_num > chip->ppdu_max_usr) {
++		rtw89_warn(rtwdev, "Invalid user number (%d) in mac info\n",
++			   usr_num);
+ 		return -EINVAL;
  	}
  
- 	addr_cam->addr_cam_idx = addr_cam_idx;
--	addr_cam->len = ADDR_CAM_ENT_SIZE;
-+	addr_cam->len = rtw89_get_addr_cam_entry_size(rtwdev);
- 	addr_cam->offset = 0;
- 	addr_cam->valid = true;
- 	addr_cam->addr_mask = 0;
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index c11c904f87fe..cd2e9b850c72 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -10,6 +10,7 @@
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 91e4d4e79eea..2eb29ea9ff7b 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2815,7 +2815,6 @@ struct rtw89_ra_info {
+ 	u8 csi_bw:3;
+ };
  
- #define MAC_MEM_DUMP_PAGE_SIZE 0x40000
- #define ADDR_CAM_ENT_SIZE  0x40
-+#define ADDR_CAM_ENT_SHORT_SIZE 0x20
- #define BSSID_CAM_ENT_SIZE 0x08
- #define HFC_PAGE_UNIT 64
- #define RPWM_TRY_CNT 3
+-#define RTW89_PPDU_MAX_USR 4
+ #define RTW89_PPDU_MAC_INFO_USR_SIZE 4
+ #define RTW89_PPDU_MAC_INFO_SIZE 8
+ #define RTW89_PPDU_MAC_RX_CNT_SIZE 96
+@@ -3644,6 +3643,7 @@ struct rtw89_chip_info {
+ 	u8 bacam_num;
+ 	u8 bacam_dynamic_num;
+ 	enum rtw89_bacam_ver bacam_ver;
++	u8 ppdu_max_usr;
+ 
+ 	u8 sec_ctrl_efuse_size;
+ 	u32 physical_efuse_size;
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+index 50522ff85003..ffc464b2ac10 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+@@ -2393,6 +2393,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
+ 	.bacam_num		= 2,
+ 	.bacam_dynamic_num	= 4,
+ 	.bacam_ver		= RTW89_BACAM_V0,
++	.ppdu_max_usr		= 4,
+ 	.sec_ctrl_efuse_size	= 4,
+ 	.physical_efuse_size	= 1216,
+ 	.logical_efuse_size	= 2048,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 0c36e6180e25..0d6f87b900d5 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -2129,6 +2129,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
+ 	.bacam_num		= 2,
+ 	.bacam_dynamic_num	= 4,
+ 	.bacam_ver		= RTW89_BACAM_V0,
++	.ppdu_max_usr		= 4,
+ 	.sec_ctrl_efuse_size	= 4,
+ 	.physical_efuse_size	= 1216,
+ 	.logical_efuse_size	= 1536,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index 9d4e6f08218d..62c2feab569c 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -2563,6 +2563,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
+ 	.bacam_num		= 2,
+ 	.bacam_dynamic_num	= 4,
+ 	.bacam_ver		= RTW89_BACAM_V0,
++	.ppdu_max_usr		= 4,
+ 	.sec_ctrl_efuse_size	= 4,
+ 	.physical_efuse_size	= 1216,
+ 	.logical_efuse_size	= 2048,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 3b7d8ab39bab..7bb5d359a06a 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -2877,6 +2877,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
+ 	.bacam_num		= 8,
+ 	.bacam_dynamic_num	= 8,
+ 	.bacam_ver		= RTW89_BACAM_V0_EXT,
++	.ppdu_max_usr		= 8,
+ 	.sec_ctrl_efuse_size	= 4,
+ 	.physical_efuse_size	= 1216,
+ 	.logical_efuse_size	= 2048,
 -- 
 2.25.1
 
