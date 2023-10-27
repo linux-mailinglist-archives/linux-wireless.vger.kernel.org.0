@@ -2,81 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74BBC7D8CF3
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 03:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF397D8E00
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 07:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233035AbjJ0B53 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 21:57:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53340 "EHLO
+        id S234981AbjJ0FKz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Oct 2023 01:10:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjJ0B52 (ORCPT
+        with ESMTP id S231431AbjJ0FKy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 21:57:28 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E3101B6
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 18:57:26 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39R1vJhbD3466375, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39R1vJhbD3466375
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 27 Oct 2023 09:57:19 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 27 Oct 2023 09:57:09 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 27 Oct 2023 09:57:09 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Fri, 27 Oct 2023 09:57:09 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     Kevin Yang <kevin_yang@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 0/4] wifi: rtw89: update address CAM size and PPDU parser to support WiFi 7 chips
-Thread-Topic: [PATCH 0/4] wifi: rtw89: update address CAM size and PPDU parser
- to support WiFi 7 chips
-Thread-Index: AQHaCHc9DCtnoEVjl0KK9SiIT8UGwbBc32UQ
-Date:   Fri, 27 Oct 2023 01:57:09 +0000
-Message-ID: <3ae80cbceb374e9e925f0f715154eccb@realtek.com>
-References: <20231027014402.9448-1-pkshih@realtek.com>
-In-Reply-To: <20231027014402.9448-1-pkshih@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.94]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 27 Oct 2023 01:10:54 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6505C1B9
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 22:10:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B6EC3C433CD;
+        Fri, 27 Oct 2023 05:10:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698383450;
+        bh=TyXcPDcA7TTQbRhs/9lOlcg1EO9AahL5ljNgx/nBR9c=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=e6OaOrIyiQeYIS2CC12RNOaS5wYkAEw0l9jnf8ZPhZq6cNj38I53cGpPca+Do0tK9
+         opMnQ1WbG8/Vcy0IWhRZ8bJpAr0dGLiIB+AG3fUoYwmXlmWEnVuTlGxx6yGhd8/rjN
+         glZrvc8UAOKupIletQBrm8BxjMgbimfSY5ApAvp6XGrs907aZgQUcdEqcWmuFrTZGS
+         o87t+D1v1fk/xzHAMbNmov1MGq851RLmH3a+7MH0Vt2oTkb01XFmMjebMr+PO7LO6w
+         aqq0krkieVqZ+NCRIN/DhWBTF3E00NAwp5RTXSr8DfdCVJMX/95NOkTXD3JP9JydoF
+         w3V4fiSLUUexw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 93302E11F57;
+        Fri, 27 Oct 2023 05:10:50 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-next-2023-10-26
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169838345059.10513.5353747529284282144.git-patchwork-notify@kernel.org>
+Date:   Fri, 27 Oct 2023 05:10:50 +0000
+References: <20231026090411.B2426C433CB@smtp.kernel.org>
+In-Reply-To: <20231026090411.B2426C433CB@smtp.kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello:
 
-> -----Original Message-----
-> From: Ping-Ke Shih <pkshih@realtek.com>
-> Sent: Friday, October 27, 2023 9:44 AM
-> To: kvalo@kernel.org
-> Cc: Kevin Yang <kevin_yang@realtek.com>; linux-wireless@vger.kernel.org
-> Subject: [PATCH 0/4] wifi: rtw89: update address CAM size and PPDU parser to support WiFi 7 chips
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 26 Oct 2023 09:04:11 +0000 (UTC) you wrote:
+> Hi,
 > 
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
+> 
+> Kalle
+> 
+> [...]
 
-Please drop v0 patchset, because subject prefix of patch 3/4 is typo.
+Here is the summary with links:
+  - pull-request: wireless-next-2023-10-26
+    https://git.kernel.org/netdev/net-next/c/edd68156bccf
 
-Ping-Ke
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
