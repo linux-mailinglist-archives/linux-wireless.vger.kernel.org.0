@@ -2,41 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 103D27D8CDE
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 03:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C8E7D8CEA
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 03:56:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345097AbjJ0Bp5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 21:45:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53652 "EHLO
+        id S1345118AbjJ0B4o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Oct 2023 21:56:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345082AbjJ0Bp5 (ORCPT
+        with ESMTP id S1345102AbjJ0B4m (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 21:45:57 -0400
+        Thu, 26 Oct 2023 21:56:42 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4CA4111
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 18:45:54 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39R1jmKV33456432, This message is accepted by code: ctloc85258
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7638AB
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 18:56:40 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39R1uWl153466053, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39R1jmKV33456432
+        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39R1uWl153466053
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 27 Oct 2023 09:45:48 +0800
+        Fri, 27 Oct 2023 09:56:32 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 27 Oct 2023 09:45:44 +0800
+ 15.1.2507.17; Fri, 27 Oct 2023 09:55:13 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 27 Oct
- 2023 09:45:41 +0800
+ 2023 09:51:35 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 4/4] wifi: rtw89: extend PHY status parser to support WiFi 7 chips
-Date:   Fri, 27 Oct 2023 09:45:06 +0800
-Message-ID: <20231027014506.9570-1-pkshih@realtek.com>
+Subject: [PATCH v2 0/4] wifi: rtw89: update address CAM size and PPDU parser to support WiFi 7 chips
+Date:   Fri, 27 Oct 2023 09:50:55 +0800
+Message-ID: <20231027015059.10032-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231027014402.9448-1-pkshih@realtek.com>
-References: <20231027014402.9448-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -55,59 +53,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PHY status IEs is used to have more information about received packets,
-such as RSSI and EVM. For each PHY IE type, it has different predefined
-PHY IE length, and the length are changed, so add them for WiFi 7 chips
-accordingly.
+Patch 1/3 is to fill various entry size of address CAM accordingly, because
+hardware designer shrinks size for new chips.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+Patch 2/4 ~ 3/4 aim to adjust parser of RX PPDU status, the logic is almost
+the same as existing, but size and fields are changed a little. The PPDU
+packet looks like
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index ac99434c0e66..554191086336 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1513,14 +1513,24 @@ static void rtw89_core_rx_process_phy_ppdu_iter(void *data,
- static u16 rtw89_core_get_phy_status_ie_len(struct rtw89_dev *rtwdev,
- 					    const struct rtw89_phy_sts_iehdr *iehdr)
- {
--	static const u8 physts_ie_len_tab[32] = {
--		16, 32, 24, 24, 8, 8, 8, 8, VAR_LEN, 8, VAR_LEN, 176, VAR_LEN,
--		VAR_LEN, VAR_LEN, VAR_LEN, VAR_LEN, VAR_LEN, 16, 24, VAR_LEN,
--		VAR_LEN, VAR_LEN, 0, 24, 24, 24, 24, 32, 32, 32, 32
-+	static const u8 physts_ie_len_tabs[RTW89_CHIP_GEN_NUM][32] = {
-+		[RTW89_CHIP_AX] = {
-+			16, 32, 24, 24, 8, 8, 8, 8, VAR_LEN, 8, VAR_LEN, 176, VAR_LEN,
-+			VAR_LEN, VAR_LEN, VAR_LEN, VAR_LEN, VAR_LEN, 16, 24, VAR_LEN,
-+			VAR_LEN, VAR_LEN, 0, 24, 24, 24, 24, 32, 32, 32, 32
-+		},
-+		[RTW89_CHIP_BE] = {
-+			32, 40, 24, 24, 8, 8, 8, 8, VAR_LEN, 8, VAR_LEN, 176, VAR_LEN,
-+			VAR_LEN, VAR_LEN, VAR_LEN, VAR_LEN, VAR_LEN, 16, 24, VAR_LEN,
-+			VAR_LEN, VAR_LEN, 0, 24, 24, 24, 24, 32, 32, 32, 32
-+		},
- 	};
-+	const u8 *physts_ie_len_tab;
- 	u16 ie_len;
- 	u8 ie;
- 
-+	physts_ie_len_tab = physts_ie_len_tabs[rtwdev->chip->chip_gen];
-+
- 	ie = le32_get_bits(iehdr->w0, RTW89_PHY_STS_IEHDR_TYPE);
- 	if (physts_ie_len_tab[ie] != VAR_LEN)
- 		ie_len = physts_ie_len_tab[ie];
-@@ -1607,6 +1617,9 @@ static int rtw89_core_rx_process_phy_ppdu(struct rtw89_dev *rtwdev,
- 
- 	len_from_header = le32_get_bits(hdr->w0, RTW89_PHY_STS_HDR_W0_LEN) << 3;
- 
-+	if (rtwdev->chip->chip_gen == RTW89_CHIP_BE)
-+		len_from_header += PHY_STS_HDR_LEN;
-+
- 	if (len_from_header != phy_ppdu->len) {
- 		rtw89_debug(rtwdev, RTW89_DBG_UNEXP, "phy ppdu len mismatch\n");
- 		return -EINVAL;
+ +---------------------------+
+ |           RX WD           |  (RX WD is fixed length basically)
+ | type = PDDU satus         |
+ |                           |
+ +---------------------------+
+ | PPDU status - MAC part    |
+ | * basic info (8 bytes)    |  (basic info indicates if following fields
+ |   - usr_num               |   are existing)
+ |   - with_rx_info          |
+ |   - plcp_len              |
+ | * usrs[usr_num]           |
+ | * rx info(128 bytes opt.) |
+ | * plcp[plcp_len]          |
+ +---------------------------+
+ |  PPDU status - PHY part   |
+ | * basic info (8 bytes)    |
+ |   - total length          |
+ | * IEs[]                   |  (iterate all IEs within total length)
+ +---------------------------+
+
+v2: correct typo of subject prefix of patch 3/4
+
+Ping-Ke Shih (3):
+  wifi: rtw89: set entry size of address CAM to H2C field by chip
+  wifi: rtw89: consider RX info for WiFi 7 chips
+  wifi: rtw89: extend PHY status parser to support WiFi 7 chips
+
+Zong-Zhe Yang (1):
+  wifi: rtw89: configure PPDU max user by chip
+
+ drivers/net/wireless/realtek/rtw89/cam.c      | 16 +++-
+ drivers/net/wireless/realtek/rtw89/core.c     | 86 ++++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/core.h     |  3 +-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
+ drivers/net/wireless/realtek/rtw89/txrx.h     |  4 +
+ 9 files changed, 99 insertions(+), 15 deletions(-)
+
 -- 
 2.25.1
 
