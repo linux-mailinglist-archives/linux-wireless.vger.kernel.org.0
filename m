@@ -2,211 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D06DA7D8CAE
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 03:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 983C87D8CD9
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Oct 2023 03:45:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjJ0BE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Oct 2023 21:04:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43152 "EHLO
+        id S229600AbjJ0BpO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Oct 2023 21:45:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbjJ0BE5 (ORCPT
+        with ESMTP id S229437AbjJ0BpN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Oct 2023 21:04:57 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960871B6
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 18:04:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698368694; x=1729904694;
-  h=date:from:to:cc:subject:message-id;
-  bh=dSxFQ+8irXQNqUyePURMH57CKwyK8Rnx6+O4xHLpGb4=;
-  b=MTNkkHZ3s8ustAngqKCO/tjvwX5sL0UwSsk38dY4N3E1LTuCdJbmp3m4
-   iptY7V9rY6NmMNOnqyLbssaODnpmfwziIzxAF1ffBcB37/o3UuHH31Ss9
-   f++xEEvi8F1fL5FtXSuqtMG63uOMVltmULCi2+5aYuKwbklFjjIxSoeqm
-   FAzTSEdjCHEa/hyIdjqkm/0eMj6ckUkl8HjLCtn/pmzMixrKrp+5Y7iSq
-   Lb3kZIbv8O9xi99GDf/FycgBmDfuscnwq3MplWAcNAaZm+p/viKwDHXZX
-   +e/1On1wLSDhMYADgBjX74Ayrm+ytmKJlqyqwvUjio+00/4LDuo/kpZIb
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="390542972"
-X-IronPort-AV: E=Sophos;i="6.03,255,1694761200"; 
-   d="scan'208";a="390542972"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 18:04:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="903115594"
-X-IronPort-AV: E=Sophos;i="6.03,255,1694761200"; 
-   d="scan'208";a="903115594"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 26 Oct 2023 18:02:25 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qwBHO-000AHl-1j;
-        Fri, 27 Oct 2023 01:04:50 +0000
-Date:   Fri, 27 Oct 2023 09:04:25 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Subject: [wireless-next:pending] BUILD SUCCESS
- 81ba6b51c3a640b277274701407bbf557f12edac
-Message-ID: <202310270922.rm7Y1Mgp-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        Thu, 26 Oct 2023 21:45:13 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92F8BAB
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Oct 2023 18:45:09 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 39R1ix2H33456085, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 39R1ix2H33456085
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 27 Oct 2023 09:44:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Fri, 27 Oct 2023 09:44:39 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 27 Oct
+ 2023 09:44:38 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/4] wifi: rtw89: update address CAM size and PPDU parser to support WiFi 7 chips
+Date:   Fri, 27 Oct 2023 09:43:58 +0800
+Message-ID: <20231027014402.9448-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.94]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
-branch HEAD: 81ba6b51c3a640b277274701407bbf557f12edac  wifi: remove ipw2100/ipw2200 drivers
+Patch 1/3 is to fill various entry size of address CAM accordingly, because
+hardware designer shrinks size for new chips.
 
-elapsed time: 4953m
+Patch 2/4 ~ 3/4 aim to adjust parser of RX PPDU status, the logic is almost
+the same as existing, but size and fields are changed a little. The PPDU
+packet looks like
 
-configs tested: 133
-configs skipped: 2
+ +---------------------------+
+ |           RX WD           |  (RX WD is fixed length basically)
+ | type = PDDU satus         |
+ |                           |
+ +---------------------------+
+ | PPDU status - MAC part    |
+ | * basic info (8 bytes)    |  (basic info indicates if following fields
+ |   - usr_num               |   are existing)
+ |   - with_rx_info          |
+ |   - plcp_len              |
+ | * usrs[usr_num]           |
+ | * rx info(128 bytes opt.) |
+ | * plcp[plcp_len]          |
+ +---------------------------+
+ |  PPDU status - PHY part   |
+ | * basic info (8 bytes)    |
+ |   - total length          |
+ | * IEs[]                   |  (iterate all IEs within total length)
+ +---------------------------+
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Ping-Ke Shih (3):
+  wifi: rtw89: set entry size of address CAM to H2C field by chip
+  wifi: rwt89: consider RX info for WiFi 7 chips
+  wifi: rtw89: extend PHY status parser to support WiFi 7 chips
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231024   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                   randconfig-001-20231025   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20231024   gcc  
-i386         buildonly-randconfig-002-20231024   gcc  
-i386         buildonly-randconfig-003-20231024   gcc  
-i386         buildonly-randconfig-004-20231024   gcc  
-i386         buildonly-randconfig-005-20231024   gcc  
-i386         buildonly-randconfig-006-20231024   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231024   gcc  
-i386                  randconfig-002-20231024   gcc  
-i386                  randconfig-003-20231024   gcc  
-i386                  randconfig-004-20231024   gcc  
-i386                  randconfig-005-20231024   gcc  
-i386                  randconfig-006-20231024   gcc  
-i386                  randconfig-011-20231024   gcc  
-i386                  randconfig-012-20231024   gcc  
-i386                  randconfig-013-20231024   gcc  
-i386                  randconfig-014-20231024   gcc  
-i386                  randconfig-015-20231024   gcc  
-i386                  randconfig-016-20231024   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231024   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20231024   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231024   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231024   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20231024   gcc  
-x86_64       buildonly-randconfig-002-20231024   gcc  
-x86_64       buildonly-randconfig-003-20231024   gcc  
-x86_64       buildonly-randconfig-004-20231024   gcc  
-x86_64       buildonly-randconfig-005-20231024   gcc  
-x86_64       buildonly-randconfig-006-20231024   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20231024   gcc  
-x86_64                randconfig-002-20231024   gcc  
-x86_64                randconfig-003-20231024   gcc  
-x86_64                randconfig-004-20231024   gcc  
-x86_64                randconfig-005-20231024   gcc  
-x86_64                randconfig-006-20231024   gcc  
-x86_64                randconfig-011-20231025   gcc  
-x86_64                randconfig-012-20231025   gcc  
-x86_64                randconfig-013-20231025   gcc  
-x86_64                randconfig-014-20231025   gcc  
-x86_64                randconfig-015-20231025   gcc  
-x86_64                randconfig-016-20231025   gcc  
-x86_64                randconfig-071-20231025   gcc  
-x86_64                randconfig-072-20231025   gcc  
-x86_64                randconfig-073-20231025   gcc  
-x86_64                randconfig-074-20231025   gcc  
-x86_64                randconfig-075-20231025   gcc  
-x86_64                randconfig-076-20231025   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
+Zong-Zhe Yang (1):
+  wifi: rtw89: configure PPDU max user by chip
+
+ drivers/net/wireless/realtek/rtw89/cam.c      | 16 +++-
+ drivers/net/wireless/realtek/rtw89/core.c     | 86 ++++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/core.h     |  3 +-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
+ drivers/net/wireless/realtek/rtw89/txrx.h     |  4 +
+ 9 files changed, 99 insertions(+), 15 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
