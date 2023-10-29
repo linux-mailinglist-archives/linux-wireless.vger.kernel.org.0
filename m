@@ -2,219 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9197D7DA959
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Oct 2023 22:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DD2D7DAA4E
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Oct 2023 02:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbjJ1Uyo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 28 Oct 2023 16:54:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53252 "EHLO
+        id S229794AbjJ2AyX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 Oct 2023 20:54:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjJ1Uyn (ORCPT
+        with ESMTP id S229446AbjJ2AyW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 28 Oct 2023 16:54:43 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B699B8
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Oct 2023 13:54:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698526481; x=1730062481;
-  h=date:from:to:cc:subject:message-id;
-  bh=F7/2ioHVIuqB1i/f6vpojx0R/9wXK94KLPCrEVXOQJE=;
-  b=T5sDxoh/38a2yLbvkbk/wX5a3fTo9ocIkIgGdTEO39l+Fsi49RPehWwK
-   CfwKSZa2m4SoLddSplynG++SnhhvxMS1+usD7z6hsvCRYW/MKSRXSGk/j
-   OxksEWyb2ASJFWoWRR07/AfoSsUNG9M02WEE/revlMgtH5Oy+LlbwvvUu
-   20d23U63DJCVAy3REdDjL36w6sqY1+7XlycRTDEd1QdK1zeaXIaNWyErC
-   FE1X8ubz089+D2KmiDtOfu6lK+dxpap2BYgNWz0vOw4On7Cf4mO9tPIon
-   1WAJSpkka7jH78wrGJ3KiTyzdyfVRMIjF0wQP/8czUqL+xpBLl6aliS2P
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="755798"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="755798"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 13:54:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="876700214"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="876700214"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 28 Oct 2023 13:54:39 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qwqKK-000C4j-2g;
-        Sat, 28 Oct 2023 20:54:36 +0000
-Date:   Sun, 29 Oct 2023 04:53:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- cc54d2e2c58a40a82dfd39afa95d3d27f3d6509d
-Message-ID: <202310290451.78S6eJZV-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Sat, 28 Oct 2023 20:54:22 -0400
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2066.outbound.protection.outlook.com [40.92.99.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8239E
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Oct 2023 17:54:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ehY2kXN31Y7f6NDTabtPdvUa+9aUkq7kvqjk/d9VwUlOrTXm42zVJ0zYOB4BDZp4oato4HqVkxowi+zeGSgcpcj0a2c8nb0erh06bzQXEj65kIcbLATnN0hnA/kCpFmvd1QGKHnzCH1LWKkKH0pAL0ZW2MHSGbWLPKUjFBFyPHwTTvYdkhP/RqT0+RNkeubFuqwbYwEaWJiObF6b7/W/7UhOZCykLsWi/DJ2rlC4OWuQoVf4jDNJjQ1yLJpTMC1FXaO3vk2f/fsHjqEm837benKyaf8SnkrbWxxLaFXGSgSs5AdpjNd36Ba7vanz05QzHUHLJFFBMcGJqrbSviRWbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dbWn+lPDJPma78prKLFlZY60TAwLHBNaDrFl4DVM1Sg=;
+ b=CvRid59VvRjDoQJIaEgfizh8XYlaMGFfhR+OImAwuG/BB85LT2K4fj+Aq/xhziiKnvK92Xf5uI7VJL7g5wdcn45JiVVrci7T/1Zscz1qzVaWEpd2iYMh0VBAun8sUpa/lQLCu4sbAURwzpFF+dkkVEeORxpUA9s5MvFyqsGyxEaThpH9dHZ6aGxalAmO8k3fsGX37bWLwZEAa7LS1FHilCaOIEg9d1EOjVa83D1/rl3uiyoa2R78qdr3Dq6RF24fm3SEICRRZQLNapLsyPJ/uoRWhyqQNQolpOSeGUgk/r2sD5+uwMY0tFbPAulL4s3j3tZz+H49e6lYx7e1tmzOTg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dbWn+lPDJPma78prKLFlZY60TAwLHBNaDrFl4DVM1Sg=;
+ b=vO2FKteAJpicDyX577KzSCnEBko/zBdwsbz2y7dE2nrlvJ/nlQJnF78SzLQbeo2arPD0tcXurhmau7znINcWj1GKZ1XBLgA7CBHYbseA5ccly4SKw3AH1CFNh4NNN7FQGHz5o0ca098FAAIVHCGLkIe0a1hbBgFMcF4PLKULacL+8SnrhlknAJ8ZKob/mrxLzCz9BeVm5wNnx/OMfxNRMtLYwtLoRyTxRU1YChLZ6fiYT/sN6tp10YY4+lSJ90bDmDsh5lmqsmxbirqgQMcNlQRX82YblhlH38krVEJc0UymwqdHfMjPxFAdGQJys4oQl5EuCgCsgbJm7PG6+797sw==
+Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM (2603:1096:404:8041::8)
+ by TYCP286MB2258.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:153::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.26; Sun, 29 Oct
+ 2023 00:54:16 +0000
+Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::465a:2534:4d99:a25b]) by TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::465a:2534:4d99:a25b%6]) with mapi id 15.20.6933.019; Sun, 29 Oct 2023
+ 00:54:16 +0000
+From:   Shiji Yang <yangshiji66@outlook.com>
+To:     kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, stf_xl@wp.pl
+Subject: Re: [PATCH 2/3] wifi: rt2x00: disable RTS threshold for rt2800 by default
+Date:   Sun, 29 Oct 2023 08:54:02 +0800
+Message-ID: <TYAP286MB03156AAFCED8CD8D91392FC5BCA2A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <87y1fmbxwc.fsf@kernel.org>
+References: <87y1fmbxwc.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN:  [CODVy8XVF+HDrCLHxGz2NpUhWVHjMB6lVIFIFis2wPs=]
+X-ClientProxiedBy: SG2PR04CA0183.apcprd04.prod.outlook.com
+ (2603:1096:4:14::21) To TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:404:8041::8)
+X-Microsoft-Original-Message-ID: <20231029005402.6834-1-yangshiji66@outlook.com>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYAP286MB0315:EE_|TYCP286MB2258:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3feb9bd7-35f6-408b-38ba-08dbd819928e
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: cDiIPYwdO6+sYufrWWgAXvJ6aQfch14Yiv7lMZvYYqrZiiPZ7Plx37SmnOFoUEJeDeda2je1e12vQ+8zYxj+4/jP0LaYjmNLe3zk94o9hQj3rdmlxHs7vfEjYqIcnNEToh3kpf7gS21bdmMVRvfHZmCQ6/IaRyl3MuZmowjlUyj6JnQ4dGu39bOO1GkTVBi8YcCwm9rjfbSUUHhq67pRpKW6QFqXM55U70rZ31vsIfUe0YcZCmUQFHEMFYona0kGQwCXpHuKEgj2lHX6JeqwVPFipWBxAhGbzrPDYUgbGM93FwNEhTYr4fN4VqjNaGC3jsNtmEOv6NpUZ2AHg6YKRsu6Jnxj8Da8GlNwrVZWu6T7sdo6fK7NaSJY8kAQDrB1J0xMWZs+Tmsgb3gAt+BVIoNXa9ZAUm/o/KdljJlk5VU7fppbQJGEjMhSQlUnn6fZVidneoMy5p+D4cepkLBQycuS0BjvUss2vHd1eGmx0gATu9Qc3PvR11u2fdilzL0bFyfO6qIxPoOYtKvs/LmS1AYzOwoa/1c+UD8az3F0ojBRCbMH1c8BjlAQK8ixAXyv
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9MX/lsqg0XR3i+HOyvySLs9+BUc03mw7dwobQQyVFuWXy7az7KCNCn0oOG4d?=
+ =?us-ascii?Q?7nvsm9p6WFmpJEpTPhmQTG0s6EjIKouD4+tF4n+OE/O7bjTmX8klO7um2Cww?=
+ =?us-ascii?Q?jbeJ3RGAirQUAX/Z99wLjYJFO4oqpjyhRiugdQlbMBpZ+vpyCSnANl8ohDsH?=
+ =?us-ascii?Q?BI3daChk1J6FZBqlFAdo64beU8I0kWdMgLV2ORgofrbGvmdbn/4JA8/WudRv?=
+ =?us-ascii?Q?uk4oUaWRQxYkiN06pNZc9r1xNZ1uipWz0LDOc+thSXEaWAFdcZoZG2otrTo0?=
+ =?us-ascii?Q?eZcZNUT7uR9ZZwSCuthv/bBePfogkz79AxSwo4lhkpwR4Ro4TC4M2q/LFIXL?=
+ =?us-ascii?Q?8vaf3WrBYm6214i2wL4/o1vnvVZfO8rGlLztTkbP2AlM8S+3sQlkf/f8Mtwt?=
+ =?us-ascii?Q?iTGpCkuSIn0VcTsaTvltpW0xp70KyNLKSt57371NryRggzrBl9W0ULqJMvW+?=
+ =?us-ascii?Q?4arGdGV90rU25WNEzvXTMtoFKCFhXDLZ2/DxqKYWXTYCTnMbIknd1Jln9ioA?=
+ =?us-ascii?Q?Ka1dOxYYdpmxiLqyI/IfhmYy8QIfGwlVBiU3R1cQjAFdwL18mKAaFhdZO5eF?=
+ =?us-ascii?Q?sPinxIR8roDJ3T6Jpa/kQkZof/skdgT2q0qfvA6DAjiiUC+dreJTMeUkXaK7?=
+ =?us-ascii?Q?U1mkg3iQTUl486iiWUEBG4KcOdBgjNllOEju7+S63XGPiVC8Gt6VL3UdsVvX?=
+ =?us-ascii?Q?x3kVuVgZ2nL4F6yQyc+CNX9RM5k9FBaLqDQGX1KKJcjbcoc+03cRRNNSu4yw?=
+ =?us-ascii?Q?yvrohW3dD/hu+tvD8oJsU4T65a5wm5M/IhGYSGm6Ne+iSZNamtRhslK2zqqo?=
+ =?us-ascii?Q?60Q435ePuQf6N0WUE/CwZ/TXXJ+ECx8Ijku1zxlIqi0zjo81SANjHIoEvhEe?=
+ =?us-ascii?Q?Zg4W96wEKB7pc5ndn1UE213K7M98M6RFRm1dbdKNJx2o6d/Se8002a7PE6lx?=
+ =?us-ascii?Q?6u7nxMFNpHxQXJJ1LW8Dp8QdAMtGiWZ6YHn/Gx+udAtxpe6lejPcI+wH4y4j?=
+ =?us-ascii?Q?+XhNDLgBdUsXd367vJiaJc4P+efu+iF/vb9fWD77erQh0gkJ6AkE6s5NeJpf?=
+ =?us-ascii?Q?8pMh+j8rNrCHys/08FkzJMonmI5YxxAZL3bBt/IXaaMbvHV6BqbEpR7drwSy?=
+ =?us-ascii?Q?78oTJjHkkXTWPZBmsLyzNneMFtIrwP+cf+OrTNv22SZKMxp6Jmp/SLZkLpgU?=
+ =?us-ascii?Q?q5pGF1XyTLfoEk9YfDdz0Hdt+sR3Ypv5fvG0o/H9n1l62BqjVNUckCPmo5I?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3feb9bd7-35f6-408b-38ba-08dbd819928e
+X-MS-Exchange-CrossTenant-AuthSource: TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2023 00:54:15.9321
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB2258
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: cc54d2e2c58a40a82dfd39afa95d3d27f3d6509d  MAINTAINERS: Remove linuxwwan@intel.com mailing list
+On Sat, 28 Oct 2023 17:54:27 +0300, Kalle Valo wrote:
 
-Warning ids grouped by kconfigs:
+>Shiji Yang <yangshiji66@outlook.com> writes:
+>
+>> Disable the RTS threshold for OFDM and CCK rates by default as the
+>> initial RTS threshold is 'IEEE80211_MAX_RTS_THRESHOLD'. And RTS
+>> thresholds for all other rates have already been disabled when init.
+>>
+>> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+>
+>The commit log should always answer to the question "Why?". What problem
+>does this patch fix?
 
-gcc_recent_errors
-`-- i386-randconfig-141-20231028
-    |-- drivers-scsi-storvsc_drv.c-storvsc_execute_vstor_op()-warn:missing-error-code-ret
-    `-- drivers-scsi-storvsc_drv.c-storvsc_queuecommand()-warn:possible-memory-leak-of-payload
+Hi! Thanks for your review.
 
-elapsed time: 2271m
+rt2800 has a lot of registers to control the RTS enable/disable
+status for different rates. And the driver control them via
+rt2800_set_rts_threshold(). I found that when RTS was disabled
+in user interface, this function won't be called at all. This
+means that the RTS is still 'on' for CCK and OFDM rates. So we'd
+better to disable them by default in case they did some bad
+things. The RTS for HT20 and HT40 is already default off so we
+don't need to touch them. If we toggle the RTS status, these
+register bits will be enabled/disabled again by
+rt2800_set_rts_threshold().
 
-configs tested: 134
-configs skipped: 2
+If this patch is acceptable, I will add more explanations in the
+v2 patch. Anyway, I don't know if it really solves some existing
+problems, but I think it should be like this.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231027   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         assabet_defconfig   gcc  
-arm                                 defconfig   gcc  
-arm                         lpc32xx_defconfig   clang
-arm                   randconfig-001-20231027   gcc  
-arm                         socfpga_defconfig   clang
-arm                           sunxi_defconfig   gcc  
-arm                       versatile_defconfig   clang
-arm                         vf610m4_defconfig   gcc  
-arm                         wpcm450_defconfig   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386         buildonly-randconfig-006-20231027   gcc  
-i386                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231027   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                         apollo_defconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        mvme147_defconfig   gcc  
-m68k                        stmark2_defconfig   gcc  
-m68k                           sun3_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                        bcm63xx_defconfig   clang
-mips                       bmips_be_defconfig   gcc  
-mips                         cobalt_defconfig   gcc  
-mips                         db1xxx_defconfig   gcc  
-mips                     decstation_defconfig   gcc  
-mips                     loongson1b_defconfig   gcc  
-mips                           rs90_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc                       virt_defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                      arches_defconfig   gcc  
-powerpc                        cell_defconfig   gcc  
-powerpc                      chrp32_defconfig   gcc  
-powerpc                      katmai_defconfig   clang
-powerpc                     kilauea_defconfig   clang
-powerpc                     ksi8560_defconfig   clang
-powerpc                      obs600_defconfig   clang
-powerpc                      ppc40x_defconfig   gcc  
-powerpc                         ps3_defconfig   gcc  
-powerpc                     taishan_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20231027   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231027   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                         ecovec24_defconfig   gcc  
-sh                             espt_defconfig   gcc  
-sh                          rsk7203_defconfig   gcc  
-sh                          sdk7780_defconfig   gcc  
-sh                           se7343_defconfig   gcc  
-sh                           se7750_defconfig   gcc  
-sh                        sh7763rdp_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231027   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           alldefconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-006-20231027   gcc  
-x86_64                randconfig-011-20231027   gcc  
-x86_64                randconfig-012-20231027   gcc  
-x86_64                randconfig-013-20231027   gcc  
-x86_64                randconfig-014-20231027   gcc  
-x86_64                randconfig-015-20231027   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                       common_defconfig   gcc  
-xtensa                generic_kc705_defconfig   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+Shiji Yang
