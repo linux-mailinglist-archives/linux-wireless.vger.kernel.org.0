@@ -2,137 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DD2D7DAA4E
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Oct 2023 02:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58EF27DAC4E
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Oct 2023 12:52:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbjJ2AyX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 28 Oct 2023 20:54:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39378 "EHLO
+        id S230121AbjJ2LwY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Oct 2023 07:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjJ2AyW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 28 Oct 2023 20:54:22 -0400
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2066.outbound.protection.outlook.com [40.92.99.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8239E
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Oct 2023 17:54:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ehY2kXN31Y7f6NDTabtPdvUa+9aUkq7kvqjk/d9VwUlOrTXm42zVJ0zYOB4BDZp4oato4HqVkxowi+zeGSgcpcj0a2c8nb0erh06bzQXEj65kIcbLATnN0hnA/kCpFmvd1QGKHnzCH1LWKkKH0pAL0ZW2MHSGbWLPKUjFBFyPHwTTvYdkhP/RqT0+RNkeubFuqwbYwEaWJiObF6b7/W/7UhOZCykLsWi/DJ2rlC4OWuQoVf4jDNJjQ1yLJpTMC1FXaO3vk2f/fsHjqEm837benKyaf8SnkrbWxxLaFXGSgSs5AdpjNd36Ba7vanz05QzHUHLJFFBMcGJqrbSviRWbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dbWn+lPDJPma78prKLFlZY60TAwLHBNaDrFl4DVM1Sg=;
- b=CvRid59VvRjDoQJIaEgfizh8XYlaMGFfhR+OImAwuG/BB85LT2K4fj+Aq/xhziiKnvK92Xf5uI7VJL7g5wdcn45JiVVrci7T/1Zscz1qzVaWEpd2iYMh0VBAun8sUpa/lQLCu4sbAURwzpFF+dkkVEeORxpUA9s5MvFyqsGyxEaThpH9dHZ6aGxalAmO8k3fsGX37bWLwZEAa7LS1FHilCaOIEg9d1EOjVa83D1/rl3uiyoa2R78qdr3Dq6RF24fm3SEICRRZQLNapLsyPJ/uoRWhyqQNQolpOSeGUgk/r2sD5+uwMY0tFbPAulL4s3j3tZz+H49e6lYx7e1tmzOTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dbWn+lPDJPma78prKLFlZY60TAwLHBNaDrFl4DVM1Sg=;
- b=vO2FKteAJpicDyX577KzSCnEBko/zBdwsbz2y7dE2nrlvJ/nlQJnF78SzLQbeo2arPD0tcXurhmau7znINcWj1GKZ1XBLgA7CBHYbseA5ccly4SKw3AH1CFNh4NNN7FQGHz5o0ca098FAAIVHCGLkIe0a1hbBgFMcF4PLKULacL+8SnrhlknAJ8ZKob/mrxLzCz9BeVm5wNnx/OMfxNRMtLYwtLoRyTxRU1YChLZ6fiYT/sN6tp10YY4+lSJ90bDmDsh5lmqsmxbirqgQMcNlQRX82YblhlH38krVEJc0UymwqdHfMjPxFAdGQJys4oQl5EuCgCsgbJm7PG6+797sw==
-Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM (2603:1096:404:8041::8)
- by TYCP286MB2258.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:153::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.26; Sun, 29 Oct
- 2023 00:54:16 +0000
-Received: from TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
- ([fe80::465a:2534:4d99:a25b]) by TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
- ([fe80::465a:2534:4d99:a25b%6]) with mapi id 15.20.6933.019; Sun, 29 Oct 2023
- 00:54:16 +0000
-From:   Shiji Yang <yangshiji66@outlook.com>
-To:     kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, stf_xl@wp.pl
-Subject: Re: [PATCH 2/3] wifi: rt2x00: disable RTS threshold for rt2800 by default
-Date:   Sun, 29 Oct 2023 08:54:02 +0800
-Message-ID: <TYAP286MB03156AAFCED8CD8D91392FC5BCA2A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <87y1fmbxwc.fsf@kernel.org>
-References: <87y1fmbxwc.fsf@kernel.org>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN:  [CODVy8XVF+HDrCLHxGz2NpUhWVHjMB6lVIFIFis2wPs=]
-X-ClientProxiedBy: SG2PR04CA0183.apcprd04.prod.outlook.com
- (2603:1096:4:14::21) To TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:404:8041::8)
-X-Microsoft-Original-Message-ID: <20231029005402.6834-1-yangshiji66@outlook.com>
+        with ESMTP id S229533AbjJ2LwX (ORCPT
+        <RFC822;linux-wireless@vger.kernel.org>);
+        Sun, 29 Oct 2023 07:52:23 -0400
+Received: from smtp1.ms.mff.cuni.cz (smtp1.ms.mff.cuni.cz [IPv6:2001:718:1e03:801::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C385BF;
+        Sun, 29 Oct 2023 04:52:20 -0700 (PDT)
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+        (authenticated)
+        by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 39TBIQdY065431
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+        Sun, 29 Oct 2023 12:18:27 +0100 (CET)
+        (envelope-from balejk@matfyz.cz)
+From:   Karel Balej <balejk@matfyz.cz>
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org
+Cc:     =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Karel Balej <balejk@matfyz.cz>
+Subject: [PATCH 0/2] net: mwifiex: add support for the SD8777 chipset
+Date:   Sun, 29 Oct 2023 12:08:15 +0100
+Message-ID: <20231029111807.19261-1-balejk@matfyz.cz>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYAP286MB0315:EE_|TYCP286MB2258:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3feb9bd7-35f6-408b-38ba-08dbd819928e
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cDiIPYwdO6+sYufrWWgAXvJ6aQfch14Yiv7lMZvYYqrZiiPZ7Plx37SmnOFoUEJeDeda2je1e12vQ+8zYxj+4/jP0LaYjmNLe3zk94o9hQj3rdmlxHs7vfEjYqIcnNEToh3kpf7gS21bdmMVRvfHZmCQ6/IaRyl3MuZmowjlUyj6JnQ4dGu39bOO1GkTVBi8YcCwm9rjfbSUUHhq67pRpKW6QFqXM55U70rZ31vsIfUe0YcZCmUQFHEMFYona0kGQwCXpHuKEgj2lHX6JeqwVPFipWBxAhGbzrPDYUgbGM93FwNEhTYr4fN4VqjNaGC3jsNtmEOv6NpUZ2AHg6YKRsu6Jnxj8Da8GlNwrVZWu6T7sdo6fK7NaSJY8kAQDrB1J0xMWZs+Tmsgb3gAt+BVIoNXa9ZAUm/o/KdljJlk5VU7fppbQJGEjMhSQlUnn6fZVidneoMy5p+D4cepkLBQycuS0BjvUss2vHd1eGmx0gATu9Qc3PvR11u2fdilzL0bFyfO6qIxPoOYtKvs/LmS1AYzOwoa/1c+UD8az3F0ojBRCbMH1c8BjlAQK8ixAXyv
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9MX/lsqg0XR3i+HOyvySLs9+BUc03mw7dwobQQyVFuWXy7az7KCNCn0oOG4d?=
- =?us-ascii?Q?7nvsm9p6WFmpJEpTPhmQTG0s6EjIKouD4+tF4n+OE/O7bjTmX8klO7um2Cww?=
- =?us-ascii?Q?jbeJ3RGAirQUAX/Z99wLjYJFO4oqpjyhRiugdQlbMBpZ+vpyCSnANl8ohDsH?=
- =?us-ascii?Q?BI3daChk1J6FZBqlFAdo64beU8I0kWdMgLV2ORgofrbGvmdbn/4JA8/WudRv?=
- =?us-ascii?Q?uk4oUaWRQxYkiN06pNZc9r1xNZ1uipWz0LDOc+thSXEaWAFdcZoZG2otrTo0?=
- =?us-ascii?Q?eZcZNUT7uR9ZZwSCuthv/bBePfogkz79AxSwo4lhkpwR4Ro4TC4M2q/LFIXL?=
- =?us-ascii?Q?8vaf3WrBYm6214i2wL4/o1vnvVZfO8rGlLztTkbP2AlM8S+3sQlkf/f8Mtwt?=
- =?us-ascii?Q?iTGpCkuSIn0VcTsaTvltpW0xp70KyNLKSt57371NryRggzrBl9W0ULqJMvW+?=
- =?us-ascii?Q?4arGdGV90rU25WNEzvXTMtoFKCFhXDLZ2/DxqKYWXTYCTnMbIknd1Jln9ioA?=
- =?us-ascii?Q?Ka1dOxYYdpmxiLqyI/IfhmYy8QIfGwlVBiU3R1cQjAFdwL18mKAaFhdZO5eF?=
- =?us-ascii?Q?sPinxIR8roDJ3T6Jpa/kQkZof/skdgT2q0qfvA6DAjiiUC+dreJTMeUkXaK7?=
- =?us-ascii?Q?U1mkg3iQTUl486iiWUEBG4KcOdBgjNllOEju7+S63XGPiVC8Gt6VL3UdsVvX?=
- =?us-ascii?Q?x3kVuVgZ2nL4F6yQyc+CNX9RM5k9FBaLqDQGX1KKJcjbcoc+03cRRNNSu4yw?=
- =?us-ascii?Q?yvrohW3dD/hu+tvD8oJsU4T65a5wm5M/IhGYSGm6Ne+iSZNamtRhslK2zqqo?=
- =?us-ascii?Q?60Q435ePuQf6N0WUE/CwZ/TXXJ+ECx8Ijku1zxlIqi0zjo81SANjHIoEvhEe?=
- =?us-ascii?Q?Zg4W96wEKB7pc5ndn1UE213K7M98M6RFRm1dbdKNJx2o6d/Se8002a7PE6lx?=
- =?us-ascii?Q?6u7nxMFNpHxQXJJ1LW8Dp8QdAMtGiWZ6YHn/Gx+udAtxpe6lejPcI+wH4y4j?=
- =?us-ascii?Q?+XhNDLgBdUsXd367vJiaJc4P+efu+iF/vb9fWD77erQh0gkJ6AkE6s5NeJpf?=
- =?us-ascii?Q?8pMh+j8rNrCHys/08FkzJMonmI5YxxAZL3bBt/IXaaMbvHV6BqbEpR7drwSy?=
- =?us-ascii?Q?78oTJjHkkXTWPZBmsLyzNneMFtIrwP+cf+OrTNv22SZKMxp6Jmp/SLZkLpgU?=
- =?us-ascii?Q?q5pGF1XyTLfoEk9YfDdz0Hdt+sR3Ypv5fvG0o/H9n1l62BqjVNUckCPmo5I?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3feb9bd7-35f6-408b-38ba-08dbd819928e
-X-MS-Exchange-CrossTenant-AuthSource: TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2023 00:54:15.9321
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB2258
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 28 Oct 2023 17:54:27 +0300, Kalle Valo wrote:
+This series introduces simple modifications to the Marvell mwifiex
+wireless driver to make it support the SD8777 chipset which can be found
+in mobile devices using the PXA1908 SoC (the support for which is being
+upstreamed here [1]), among others, such as samsung,coreprimevelte or
+samsung,xcover3lte. The changes are based on the Samsung downstream code
+for coreprimevelte [2].
 
->Shiji Yang <yangshiji66@outlook.com> writes:
->
->> Disable the RTS threshold for OFDM and CCK rates by default as the
->> initial RTS threshold is 'IEEE80211_MAX_RTS_THRESHOLD'. And RTS
->> thresholds for all other rates have already been disabled when init.
->>
->> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
->
->The commit log should always answer to the question "Why?". What problem
->does this patch fix?
+The driver requires proprietary firmware which is not yet part of
+linux-firmware, but it is packaged in postmarketOS.
 
-Hi! Thanks for your review.
+The Marvell repository for PXA1908 [3] contains some information in the
+form of release notes (in a PDF under drivers/marvell/sd8777).
 
-rt2800 has a lot of registers to control the RTS enable/disable
-status for different rates. And the driver control them via
-rt2800_set_rts_threshold(). I found that when RTS was disabled
-in user interface, this function won't be called at all. This
-means that the RTS is still 'on' for CCK and OFDM rates. So we'd
-better to disable them by default in case they did some bad
-things. The RTS for HT20 and HT40 is already default off so we
-don't need to touch them. If we toggle the RTS status, these
-register bits will be enabled/disabled again by
-rt2800_set_rts_threshold().
+This series was sucessfully tested with the aforementioned smartphone,
+samsung,coreprimevelte. However it has a caveat: the driver is not
+always able to load the firmware onto the device and even when it
+succeeds, it emits some errors and eventually breaks irrecoverably after
+some time, seemingly after heavier usage. dmesg outputs with description
+are below. The suspicion, supported by the fact that the eMMC on the
+smartphone does not work at the moment (it reports as busy and the
+initialization fails with -ETIMEDOUT, see [4] for dmesg output), is that
+the problem is either with the MMC driver (sdhci-pxav3) or the clocks
+driver which according to the author is currently missing some parts
+present in the downstream version. In particular, the lack of tuning in
+the mainline sdhci-pxav3 was considered a possible cause (specifically
+the dvfs tuning which the downstream driver performs), however disabling
+of this tuning in the downstream kernel doesn't seem to have any effect
+on it's ability to use either eMMC or the wireless.
 
-If this patch is acceptable, I will add more explanations in the
-v2 patch. Anyway, I don't know if it really solves some existing
-problems, but I think it should be like this.
+Here are the relevant dmesg outputs for several situations (debug
+messages are enabled in the first, not so in the others):
 
-Regards,
-Shiji Yang
+This is the usual output when the firmware loading fails. The device has
+to be rebooted before the next attempt to load the firmware because the
+driver seems to think that it's already loaded.
+
+	[   68.335394] mwifiex_sdio mmc2:0001:1: info: SDIO FUNC1 IO port: 0x10000
+	[   68.485552] mwifiex_sdio mmc2:0001:1: info: downloading FW image (418332 bytes)
+	[   68.698674] mwifiex_sdio mmc2:0001:1: FW download, write iomem (0) failed @ 208016
+	[   68.698711] mwifiex_sdio mmc2:0001:1: prog_fw failed ret=0xffffffff
+	[   68.698724] mwifiex_sdio mmc2:0001:1: info: _mwifiex_fw_dpc: unregister device
+
+The return value of mwifiex_write_data_sync which is invoked during the
+firmware loading is -EILSEQ.
+
+Here, the download succeeds but the driver still emits some errors.
+Eventually after some (short in this case) time the wireless stops
+working and the below errors are printed repeatedly (here the failure
+occurred while page loading was in progress in Mozilla Firefox). A
+restart seems to be necessary to get the adapter to work again.
+
+	[   61.876547] mwifiex_sdio mmc2:0001:1: info: FW download over, size 418332 bytes
+	[   61.981497] mwifiex_sdio mmc2:0001:1: WLAN FW is active
+	[   62.278898] mwifiex_sdio mmc2:0001:1: CMD_RESP: cmd 0x242 error, result=0x2
+	[   62.278919] mwifiex_sdio mmc2:0001:1: mwifiex_process_cmdresp: cmd 0x242 failed during	initialization
+	[   62.661327] mwifiex_sdio mmc2:0001:1: info: MWIFIEX VERSION: mwifiex 1.0 (14.75.33.p119) 
+	[   62.661349] mwifiex_sdio mmc2:0001:1: driver_version = mwifiex 1.0 (14.75.33.p119) 
+	[   63.886186] mwifiex_sdio mmc2:0001:1: info: trying to associate to bssid CENSORED
+	[   63.898581] mwifiex_sdio mmc2:0001:1: info: associated to bssid CENSORED successfully
+	[   64.011982] mwifiex_sdio mmc2:0001:1: CMD_RESP: cmd 0x23f error, result=0x2
+	[  145.926392] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(1) failed: -110
+	[  146.643323] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  147.342918] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(2) failed: -16
+	[  148.041929] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  148.727401] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(3) failed: -16
+	[  149.418479] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  149.418508] mwifiex_sdio mmc2:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
+	[  150.108002] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(1) failed: -16
+	[  150.788011] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  151.452231] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(2) failed: -16
+	[  152.136966] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  152.836739] mwifiex_sdio mmc2:0001:1: host_to_card, write iomem	(3) failed: -16
+	[  153.545571] mwifiex_sdio mmc2:0001:1: write CFG reg failed
+	[  153.545611] mwifiex_sdio mmc2:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
+	[  154.083665] mwifiex_sdio mmc2:0001:1: cmd_wait_q terminated: -110
+	[  154.083707] mwifiex_sdio mmc2:0001:1: failed to get signal information
+	[...]
+
+Last observed scenario is again a failure occuring some time after
+firmware loading succeeds. This also seems to be irrecoverable without
+device reboot.
+
+	[ 2101.209913] mwifiex_sdio mmc2:0001:1: mwifiex_cmd_timeout_func: Timeout cmd id = 0xa4, act = 0x0
+	[ 2101.209941] mwifiex_sdio mmc2:0001:1: num_data_h2c_failure = 0
+	[ 2101.209949] mwifiex_sdio mmc2:0001:1: num_cmd_h2c_failure = 0
+	[ 2101.209957] mwifiex_sdio mmc2:0001:1: is_cmd_timedout = 1
+	[ 2101.209964] mwifiex_sdio mmc2:0001:1: num_tx_timeout = 0
+	[ 2101.209971] mwifiex_sdio mmc2:0001:1: last_cmd_index = 1
+	[ 2101.209978] mwifiex_sdio mmc2:0001:1: last_cmd_id: 16 00 a4 00 75 00 a4 00 7f 00
+	[ 2101.209988] mwifiex_sdio mmc2:0001:1: last_cmd_act: 00 00 00 00 02 00 00 00 00 00
+	[ 2101.209995] mwifiex_sdio mmc2:0001:1: last_cmd_resp_index = 0
+	[ 2101.210003] mwifiex_sdio mmc2:0001:1: last_cmd_resp_id: 16 80 a4 80 75 80 a4 80 7f 80
+	[ 2101.210010] mwifiex_sdio mmc2:0001:1: last_event_index = 4
+	[ 2101.210018] mwifiex_sdio mmc2:0001:1: last_event: 0b 00 0a 00 0b 00 0a 00 1c 00
+	[ 2101.210025] mwifiex_sdio mmc2:0001:1: data_sent=1 cmd_sent=1
+	[ 2101.210033] mwifiex_sdio mmc2:0001:1: ps_mode=1 ps_state=0
+	[ 2101.210089] mwifiex_sdio mmc2:0001:1: failed to get signal information
+	[ 2101.210761] mwifiex_sdio mmc2:0001:1: PREP_CMD: FW is in bad state
+	[ 2101.210786] mwifiex_sdio mmc2:0001:1: failed to get signal information
+	[ 2101.211162] mwifiex_sdio mmc2:0001:1: ===mwifiex driverinfo dump start===
+	[ 2101.211178] mwifiex_sdio mmc2:0001:1: info: MWIFIEX VERSION: mwifiex 1.0 (14.75.33.p119) 
+	[ 2101.211202] mwifiex_sdio mmc2:0001:1: SDIO register dump start
+	[ 2101.211482] mwifiex_sdio mmc2:0001:1: SDIO Func0 (0x0-0x9): 32 02 02 02 03 00 00 02 03 00 
+	[ 2101.211649] mwifiex_sdio mmc2:0001:1: SDIO Func1 (0x0-0x9): 02 3f 03 00 00 00 00 00 92 00 
+	[ 2101.211740] mwifiex_sdio mmc2:0001:1: SDIO Func1: (0x28) 00 (0x30) 08 (0x34) 07 (0x38) 11 (0x3c) 00 
+	[ 2101.211921] mwifiex_sdio mmc2:0001:1: SDIO Func1 (0x60-0x6a): dc fe 5f 81 ca 04 00 79 79 00 30 
+	[ 2101.314135] mwifiex_sdio mmc2:0001:1: SDIO Func1 (0x60-0x6a): dc fe 5f 81 ca 04 00 79 79 00 30 
+	[ 2101.314168] mwifiex_sdio mmc2:0001:1: SDIO register dump end
+	[ 2101.314300] mwifiex_sdio mmc2:0001:1: ===mwifiex driverinfo dump end===
+	[ 2101.314313] mwifiex_sdio mmc2:0001:1: == mwifiex dump information to /sys/class/devcoredump start
+	[ 2101.314586] mwifiex_sdio mmc2:0001:1: == mwifiex dump information to /sys/class/devcoredump end
+	[ 2101.314610] mwifiex_sdio mmc2:0001:1: PREP_CMD: FW is in bad state
+	[ 2101.314638] mwifiex_sdio mmc2:0001:1: PREP_CMD: FW is in bad state
+	[ 2101.317997] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318029] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318037] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318044] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318051] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318057] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318064] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318071] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318078] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318084] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.318091] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.318098] mwifiex_sdio mmc2:0001:1: deleting the crypto keys
+	[ 2101.321278] mwifiex_sdio mmc2:0001:1: info: shutdown mwifiex...
+	[ 2101.323214] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.323250] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.324427] mwifiex_sdio mmc2:0001:1: PREP_CMD: card is removed
+	[ 2101.419786] mmc2: queuing unknown CIS tuple 0x50 [40 1e fd d1 c0 46 70 47 00 b5 23 48 24 49 01 60 24 48 24 49 01 60 24 49 08 47 1f 48 24 49 01 60] (32 bytes)
+	[ 2101.460850] mmc2: queuing unknown CIS tuple 0x70 [53 f0 21 e3 1e ff 2f e1 10 1f 11 ee 00 00 50 e3 02 2a a0 e3 02 10 c1 01 02 10 81 11 10 1f 01 ee 1e ff 2f e1 01 00 a0 e3 f6 ff ff eb ea ff ff fa 48 00 9f e5 54 10 9f e5 54 20 9f e5 ef ff ff eb] (71 bytes)
+	[ 2101.532495] mmc2: queuing unknown CIS tuple 0xe8 [2f 07 ee 1e ff 2f e1 0e 30 a0 e1 00 00 a0 e3 ea ff ff eb e5 ff ff fa 03 e0 a0 e1 2c 30 9f e5 13 ff 2f e1 00 10 80 e5 1a 9f 00 ee 12 ff 2f e1 04 21 00 80 c0 00 10 80 04 22 00 80 06 0a 46 02 48] (144 bytes)
+	[ 2101.598922] mmc2: queuing unknown CIS tuple 0x9d [29 15 1d 01 00 4d 61 72 76 65 6c 6c 20 42 6c 75 65 74 6f 6f 74 68 20 44 65 76 69 63 65 00 00 ff 20 04 df 02 32 91 21 02 0c 00 22 2a 01 01 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 00 00 00] (162 bytes)
+	[ 2101.599647] mmc2: tried to HW reset card, got error -2
+	[ 2101.599699] mwifiex_sdio mmc2:0001:1: SDIO HW reset failed: -2
+
+Despite these problems, the wireless is overall usable on the phone,
+once the firmware loading succeeds, even for intensive transfers, until
+one of the other failures occurs, for which no rule seems to exist - it
+can happen soon after starting some transfer or it can work for several
+hours under normal load, although some CMD_RESP errors (as above) are
+printed frequently.
+
+[1] https://lore.kernel.org/all/20231010-pxa1908-lkml-v6-0-b2fe09240cf8@skole.hr/
+[2] https://github.com/CoderCharmander/g361f-kernel
+[3] https://github.com/acorn-marvell/brillo_pxa_kernel
+[4] https://wiki.postmarketos.org/wiki/Marvell_PXA1908
+
+Karel Balej (2):
+  dt-bindings: mwifiex: document use with the SD8777 chipset
+  net: mwifiex: add support for the SD8777 chipset
+
+ .../bindings/net/wireless/marvell-8xxx.txt    |  3 ++-
+ drivers/net/wireless/marvell/mwifiex/Kconfig  |  4 ++--
+ drivers/net/wireless/marvell/mwifiex/sdio.c   | 19 +++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/sdio.h   |  1 +
+ include/linux/mmc/sdio_ids.h                  |  1 +
+ 5 files changed, 25 insertions(+), 3 deletions(-)
+
+-- 
+2.42.0
+
