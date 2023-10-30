@@ -2,100 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C037DBA37
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 14:00:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD437DBC05
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 15:44:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233308AbjJ3NAe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Oct 2023 09:00:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60958 "EHLO
+        id S233530AbjJ3Oos (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Oct 2023 10:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232531AbjJ3NAe (ORCPT
+        with ESMTP id S231919AbjJ3Oor (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Oct 2023 09:00:34 -0400
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 269B3C4
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Oct 2023 06:00:32 -0700 (PDT)
-Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-1ef34202c46so7094229fac.3
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Oct 2023 06:00:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698670831; x=1699275631;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JTjdLhPSR8o/s4EdG0NLUrckI4j66D3bWvV2ySVwA3Y=;
-        b=bPUJtl/fIrJfh09bMRe5xNBRCQ3NGDXegLZJIZFkL9HXJ4NV2Dk3qzFoYVHqJ6G9iH
-         FejFj0irZ2s8dpjsOKGNZz+TJUKQLNm08dz9z0BOyXXJpgISdfuzaLKyi0O08jRKpvN8
-         ZiaeoC3m99vvITpnfcWHYrAr0grGjnJ84oj//moKk2oEaof67Ig+QL4HkxAN950A/jN1
-         vyBDjc8ZH92vBBXRfGHXD9PjHAj4nLjv7sWPmkB0hmKmHTuYpuLfZaEIQujExEGDC9TF
-         AmMsbXQHuZl2oOU17jzEs+tSHWte0A7Fq2DWnUiKpVpk3oInVv/ikzrNA1nQ2XLDCsfO
-         9uEA==
-X-Gm-Message-State: AOJu0Yz9SPA0pr6lAj6tioOxFoz1xiqNNTGz5yiVruav18mM3a81Z0VV
-        ZqmteEcTGnjh+6DqbV0Kfclpm2uKwskcFNxqBsWitpKH0qc/
-X-Google-Smtp-Source: AGHT+IHbzZNuIVkbe0hpThrJ/UudcchJUGoS16Zn++U8CdurW9lVoNZBYPeISznISNT67JSyCiudAcXlS7q8gSiEAOryVqNDecws
+        Mon, 30 Oct 2023 10:44:47 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B6D4D3;
+        Mon, 30 Oct 2023 07:44:45 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39UE4MqY010666;
+        Mon, 30 Oct 2023 14:44:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=mXSGZUEjOreMAiQEx2UggsToksCZ04QF2O4pPO5u4gg=;
+ b=Z0gzTpYd9PbtuUsxDjs4VynhJcIPJ4v2uP8P57PV8S9HObq+w5QM5UNKRIV8yDHfWgNY
+ VqT7ziHS03vJE10M3enptjSEhyd2ypf97cEIbe9M1CCGrremhf2xi0Tfa+kPdd4XFC7y
+ jc5eKR1tdn0HsspNoOwXMtrDequOQQMLXngT6A6/We66taG7wNHg0VzwjmMjis2F1Jdd
+ skfU8T3947d4I2roFbrC5v3r8odkGbKzPe/rDAAa6g29OSP7qKtZYU6+f3YCB1HV9liW
+ Sq83BFIkEAo2XKqNvY1G/LnwklilRxodGQ5YqJwhDb5RXIsFOrleuawRwQOuRQ8OBq0g vw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u280jrwfq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 30 Oct 2023 14:44:36 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39UEiZxc028289
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 30 Oct 2023 14:44:35 GMT
+Received: from [10.48.245.206] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Mon, 30 Oct
+ 2023 07:44:35 -0700
+Message-ID: <13eb9eec-29f7-431e-9069-c2dd67d50db5@quicinc.com>
+Date:   Mon, 30 Oct 2023 07:44:34 -0700
 MIME-Version: 1.0
-X-Received: by 2002:a05:6870:3646:b0:1e9:dc1e:8384 with SMTP id
- v6-20020a056870364600b001e9dc1e8384mr4860767oak.5.1698670831553; Mon, 30 Oct
- 2023 06:00:31 -0700 (PDT)
-Date:   Mon, 30 Oct 2023 06:00:31 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000081565c0608ee9ff7@google.com>
-Subject: [syzbot] Monthly wireless report (Oct 2023)
-From:   syzbot <syzbot+list5fc659ef9f99e160b97e@syzkaller.appspotmail.com>
-To:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] wifi: ath11k: Remove unneeded semicolon
+Content-Language: en-US
+To:     Yang Li <yang.lee@linux.alibaba.com>, <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Abaci Robot <abaci@linux.alibaba.com>,
+        Anilkumar Kolli <quic_akolli@quicinc.com>
+References: <20231030060225.28987-1-yang.lee@linux.alibaba.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231030060225.28987-1-yang.lee@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: slg_UMqCEmqJW65rj-7bdCV3966MkiR3
+X-Proofpoint-ORIG-GUID: slg_UMqCEmqJW65rj-7bdCV3966MkiR3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-30_10,2023-10-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 mlxlogscore=444
+ adultscore=0 spamscore=0 bulkscore=0 impostorscore=0 clxscore=1011
+ mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2310300113
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello wireless maintainers/developers,
+On 10/29/2023 11:02 PM, Yang Li wrote:
+> ./drivers/net/wireless/ath/ath11k/fw.c:136:2-3: Unneeded semicolon
+> 
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=7073
+> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
 
-This is a 31-day syzbot report for the wireless subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireless
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-During the period, 3 new issues were detected and 1 were fixed.
-In total, 31 issues are still open and 117 have been fixed so far.
-
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  5673    Yes   WARNING in __ieee80211_beacon_get
-                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
-<2>  4356    Yes   WARNING in __cfg80211_ibss_joined (2)
-                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
-<3>  3473    Yes   WARNING in ieee80211_rx_list
-                   https://syzkaller.appspot.com/bug?extid=8830db5d3593b5546d2e
-<4>  2775    Yes   WARNING in ieee80211_link_info_change_notify (2)
-                   https://syzkaller.appspot.com/bug?extid=de87c09cc7b964ea2e23
-<5>  2440    No    WARNING in ieee80211_ibss_csa_beacon (2)
-                   https://syzkaller.appspot.com/bug?extid=b10a54cb0355d83fd75c
-<6>  940     Yes   WARNING in __rate_control_send_low
-                   https://syzkaller.appspot.com/bug?extid=fdc5123366fb9c3fdc6d
-<7>  824     Yes   WARNING in ar5523_submit_rx_cmd/usb_submit_urb
-                   https://syzkaller.appspot.com/bug?extid=6101b0c732dea13ea55b
-<8>  706     Yes   WARNING in ieee80211_start_next_roc
-                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
-<9>  477     No    INFO: task hung in ath9k_hif_usb_firmware_cb (2)
-                   https://syzkaller.appspot.com/bug?extid=d5635158fb0281b27bff
-<10> 87      Yes   WARNING in ieee80211_bss_info_change_notify (2)
-                   https://syzkaller.appspot.com/bug?extid=dd4779978217b1973180
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
