@@ -2,45 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1D617DBED1
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 18:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3660E7DBED9
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 18:26:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233834AbjJ3RZD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Oct 2023 13:25:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58480 "EHLO
+        id S229849AbjJ3R0R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Oct 2023 13:26:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233016AbjJ3RZB (ORCPT
+        with ESMTP id S232654AbjJ3R0Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Oct 2023 13:25:01 -0400
+        Mon, 30 Oct 2023 13:26:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D54C0;
-        Mon, 30 Oct 2023 10:24:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96856C433C7;
-        Mon, 30 Oct 2023 17:24:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1324AB
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Oct 2023 10:26:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAA4C433C8;
+        Mon, 30 Oct 2023 17:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698686698;
-        bh=PK/A8z3yZbNpKpLD9q6y6ISaFX6It4ni4b4D7mCk3SI=;
+        s=k20201202; t=1698686774;
+        bh=pGbjYj9fq7YZjhzpeUsN3+hJPBYd942gOq3ILUrtahw=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=j5H8ZAaD84BLwmy67QicRyv36dH42wsdA20UkFF2a8aLZF0Fxe9xRJ0bJg0BnCkJS
-         XtIXZgPI/7CAzoObiWFC12KpazElRzs+9DcWe5XhaErNyOnv4Q3G04Q/lkpwTSUHcj
-         smJ7LWRJfPobgmJzENxNzM2LYJ7RT/GWSWw5RkDSVYmviwm6eqqHZB8wsJMtZd0Pyr
-         LIw/rCnZqFivwsVuz8uNiO/tRLovFc87oJy0HpctYCGmaJEsfW6U+1S08CaphpOw4r
-         8tjrnyTHnTK26XN95CJNpDD05VX6Kc9mx2tS9mpqIxp6TzYGOtZTcy0QFiT39U1n3e
-         wXXKNAvOHsv9g==
+        b=ZrlBB0qRz5T63TTt8qOuS7Pj+Xx6Dobg7FOoDuGxO8pfCIFoqPUT2zb0txqNLCh+R
+         z8Et3kGYX0pidee+5AQKCLwn5pWUDIhbSC8B7M5RuhBZXvpiKqXuNMQWoCgQIJ3hjb
+         7kY6GiUAq8P8ZruHIFth5UEaD4CXcckfyDHrXQxEv2S4O8ofDAj2bKU0aruhhsQlRA
+         IoKgLymk9/IMiBu1eRLdd/3ofhWJi2l0rMzJr64VfG+R1iMe9JDVlCGVDA85rHndnI
+         ozOCoHddd62wNZ49LBmfYkB6CCeIQg9Ox98cd1qZTO8FGzLDAtXHNGrCql7QmkR7LV
+         s8Qk9MvzafnRQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [v2] wifi: airo: replace deprecated strncpy with strscpy_pad
+Subject: Re: [PATCH v2 1/4] wifi: rtw89: set entry size of address CAM to H2C
+ field by chip
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231026-strncpy-drivers-net-wireless-cisco-airo-c-v2-1-413427249e47@google.com>
-References: <20231026-strncpy-drivers-net-wireless-cisco-airo-c-v2-1-413427249e47@google.com>
-To:     Justin Stitt <justinstitt@google.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Justin Stitt <justinstitt@google.com>
+In-Reply-To: <20231027015059.10032-2-pkshih@realtek.com>
+References: <20231027015059.10032-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169868669554.1993746.6778918340957233673.kvalo@kernel.org>
-Date:   Mon, 30 Oct 2023 17:24:57 +0000 (UTC)
+Message-ID: <169868677216.1993746.18349131169051211820.kvalo@kernel.org>
+Date:   Mon, 30 Oct 2023 17:26:13 +0000 (UTC)
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -50,54 +49,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Justin Stitt <justinstitt@google.com> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> strncpy() is deprecated for use on NUL-terminated destination strings
-> [1] and as such we should prefer more robust and less ambiguous string
-> interfaces.
+> The new chips change hardware design to shrink entry size of address
+> CAM from 0x40 to 0x20, so make this change accordingly.
 > 
-> `extra` is clearly supposed to be NUL-terminated which is evident by the
-> manual NUL-byte assignment as well as its immediate usage with strlen().
-> 
-> Moreover, let's NUL-pad since there is deliberate effort (48 instances)
-> made elsewhere to zero-out buffers in these getters and setters:
-> 6050 | memset(local->config.nodeName, 0, sizeof(local->config.nodeName));
-> 6130 | memset(local->config.rates, 0, 8);
-> 6139 | memset(local->config.rates, 0, 8);
-> 6414 | memset(key.key, 0, MAX_KEY_SIZE);
-> 6497 | memset(extra, 0, 16);
-> (to be clear, strncpy also NUL-padded -- we are matching that behavior)
-> 
-> Considering the above, a suitable replacement is `strscpy_pad` due to
-> the fact that it guarantees both NUL-termination and NUL-padding on the
-> destination buffer.
-> 
-> We can also replace the hard-coded size of "16" to IW_ESSID_MAX_SIZE
-> because this function is a wext handler.
-> 
-> In wext-core.c we have:
-> static const struct iw_ioctl_description standard_ioctl[] = {
-> ...
->         [IW_IOCTL_IDX(SIOCGIWNICKN)] = {
->                 .header_type    = IW_HEADER_TYPE_POINT,
->                 .token_size     = 1,
->                 .max_tokens     = IW_ESSID_MAX_SIZE,
->         },
-> 
-> So the buffer size is (strangely) IW_ESSID_MAX_SIZE
-> 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+4 patches applied to wireless-next.git, thanks.
 
-9beac4ee4928 wifi: airo: replace deprecated strncpy with strscpy_pad
+0f4aa3af1371 wifi: rtw89: set entry size of address CAM to H2C field by chip
+76d45f48e4fc wifi: rtw89: configure PPDU max user by chip
+e343face52b0 wifi: rtw89: consider RX info for WiFi 7 chips
+944496bada22 wifi: rtw89: extend PHY status parser to support WiFi 7 chips
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231026-strncpy-drivers-net-wireless-cisco-airo-c-v2-1-413427249e47@google.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231027015059.10032-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
