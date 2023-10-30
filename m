@@ -2,51 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8D687DBEB3
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 18:20:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9F137DBEB6
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 18:21:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232579AbjJ3RUx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Oct 2023 13:20:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54512 "EHLO
+        id S232492AbjJ3RV4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Oct 2023 13:21:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229587AbjJ3RUw (ORCPT
+        with ESMTP id S229587AbjJ3RVy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Oct 2023 13:20:52 -0400
+        Mon, 30 Oct 2023 13:21:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63FF8E;
-        Mon, 30 Oct 2023 10:20:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3464BC433C8;
-        Mon, 30 Oct 2023 17:20:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CA6A93
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Oct 2023 10:21:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDE7C433C8;
+        Mon, 30 Oct 2023 17:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698686448;
-        bh=J/BDKDmt4ytWYut9+XphDd+OA2xYRaH3LWnmAbLoFQE=;
+        s=k20201202; t=1698686511;
+        bh=rANL6psiG5ulAXPSIn2MnjE22OYsPykwhcAwasBKuSk=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Rde9Dv9j3N672wNfHkJUA0SIvXLKmsAIx2651HHsMohDpXIk6yRPthyTABuWJqL7w
-         f5Ap7RlKuHXOqxPJmFFyk+TfPHMGPnmRezQAwe6eWsZR0WZ2rOW7e+Hmn2Gr2YRDad
-         Q/DAoBJ6qX62/83GIuNVYlNHJx3OpOm5E2PRmI/wd5w1ZSeOd96daq/Drl1bLvIuT5
-         VbVMISEFqX6DH1gdc70xHkV4OHXJZgEQknZ/IbYQhemtpNBXaQNvwjqxTyGzrtjn3u
-         1KJvTE8ELQVZJDfDOK8NiBz4C/ngUgWlVV0tvfOTRI7Rj7RSMcWMFuvoTr0vNlIyzY
-         ro/6w+2ZpJemA==
+        b=XyXqIMgj9u4RNNf/AAu7B2QVan7oElvBSCdwlIdAibRBlOtm8QuhMzldbF4Cg9/iY
+         k0T37b8POR38a0xWxicfOhRU40iqjRU+AMuJDlb/jBf4z+Ejp7fuqY64PwTOcNDVgV
+         ZeetXJdQm9Ine7k0Q1uH+IcSboVfV4a4wlXZ6WQu6ycUKOo+cSJC0kZq+MojguT/AU
+         A+bQVgXkQCEQHGJ1x0nr2fpwGvsVHECl7QIWLpKHENKA71L/D3dOIa3A2kTJuSLXaP
+         z6FgtzMKefrcXqdzIgxw1ALmGF67bDhN2J73KUXpKBElwovT4vVMfzmdCfiAc0O2Nc
+         nRR5wfUVMDA7g==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/2] wifi: brcm80211: replace deprecated strncpy with
- strscpy
+Subject: Re: [PATCH 1/3] [v2] wifi: rtlwifi: cleanup struct rtl_hal
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-1-af780d74ae38@google.com>
-References: <20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-1-af780d74ae38@google.com>
-To:     Justin Stitt <justinstitt@google.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Justin Stitt <justinstitt@google.com>
+In-Reply-To: <20231023091722.52509-1-dmantipov@yandex.ru>
+References: <20231023091722.52509-1-dmantipov@yandex.ru>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169868644429.1993746.5520695482478737730.kvalo@kernel.org>
-Date:   Mon, 30 Oct 2023 17:20:45 +0000 (UTC)
+Message-ID: <169868650882.1993746.2479350711464936750.kvalo@kernel.org>
+Date:   Mon, 30 Oct 2023 17:21:50 +0000 (UTC)
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -56,65 +49,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Justin Stitt <justinstitt@google.com> wrote:
+Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> Let's move away from using strncpy and instead favor a less ambiguous
-> and more robust interface.
+> Remove unused and set but otherwise unused 'bbrf_ready', 'external_pa',
+> 'pa_mode', 'rx_tag', 'rts_en', 'wow_enable' and 'wow_enabled' fields
+> of 'struct rtl_hal', adjust related code. Compile tested only.
 > 
-> For ifp->ndev->name, we expect ifp->ndev->name to be NUL-terminated based
-> on its use in format strings within core.c:
-> 67 |       char *brcmf_ifname(struct brcmf_if *ifp)
-> 68 |       {
-> 69 |            if (!ifp)
-> 70 |                    return "<if_null>";
-> 71 |
-> 72 |            if (ifp->ndev)
-> 73 |                    return ifp->ndev->name;
-> 74 |
-> 75 |            return "<if_none>";
-> 76 |       }
-> ...
-> 288 |       static netdev_tx_t brcmf_netdev_start_xmit(struct sk_buff *skb,
-> 289 |                                              struct net_device *ndev) {
-> ...
-> 330 |       brcmf_dbg(INFO, "%s: insufficient headroom (%d)\n",
-> 331 |                 brcmf_ifname(ifp), head_delta);
-> ...
-> 336 |       bphy_err(drvr, "%s: failed to expand headroom\n",
-> 337 |                brcmf_ifname(ifp));
-> 
-> For di->name, we expect di->name to be NUL-terminated based on its usage
-> with format strings:
-> |       brcms_dbg_dma(di->core,
-> |                     "%s: DMA64 tx doesn't have AE set\n",
-> |                     di->name);
-> 
-> Looking at its allocation we can see that it is already zero-allocated
-> which means NUL-padding is not required:
-> |       di = kzalloc(sizeof(struct dma_info), GFP_ATOMIC);
-> 
-> For wlc->modulecb[i].name, we expect each name in wlc->modulecb to be
-> NUL-terminated based on their usage with strcmp():
-> |       if (!strcmp(wlc->modulecb[i].name, name) &&
-> 
-> NUL-padding is not required as wlc is zero-allocated in:
-> brcms_c_attach_malloc() ->
-> |       wlc = kzalloc(sizeof(struct brcms_c_info), GFP_ATOMIC);
-> 
-> For all these cases, a suitable replacement is `strscpy` due to the fact
-> that it guarantees NUL-termination on the destination buffer without
-> unnecessarily NUL-padding.
-> 
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-2 patches applied to wireless-next.git, thanks.
+3 patches applied to wireless-next.git, thanks.
 
-9d0d0a207040 wifi: brcm80211: replace deprecated strncpy with strscpy
-a614f9579705 wifi: brcmsmac: replace deprecated strncpy with memcpy
+d1e6b020c32d wifi: rtlwifi: cleanup struct rtl_hal
+d1337ccb4477 wifi: rtlwifi: cleanup struct rtl_phy
+7419d8ab3508 wifi: rtlwifi: rtl92ee_dm_dynamic_primary_cca_check(): fix typo in function name
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231017-strncpy-drivers-net-wireless-broadcom-brcm80211-brcmfmac-cfg80211-c-v3-1-af780d74ae38@google.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231023091722.52509-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
