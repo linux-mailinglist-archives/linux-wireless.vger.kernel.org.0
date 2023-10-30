@@ -2,81 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB6C67DC179
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 22:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 697DD7DC26B
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 23:27:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230248AbjJ3VA6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Oct 2023 17:00:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46554 "EHLO
+        id S231948AbjJ3W1s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Oct 2023 18:27:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231282AbjJ3VA4 (ORCPT
+        with ESMTP id S229598AbjJ3W1p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Oct 2023 17:00:56 -0400
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50160F7
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Oct 2023 14:00:54 -0700 (PDT)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1ea1742c1a5so1185658fac.0
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Oct 2023 14:00:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698699653; x=1699304453; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=P8m8EAbGJbUxe5B9fBXpOTBojQ9A3raNvAoswxRtY9Q=;
-        b=gYKcHxPhZuF+3d1tRKcVuAMgNwkOEj7o+xdqIdXhMCMh+UERPJr9u/i+xw+wu5fSpO
-         uS4FUFqciJx+cOjfJyIDmTOqCiqp1vecaWB3McgyxDP841RMBas/v5wZ34Kpa5kp6K9c
-         TUQXzrEmj0KYqehpYqLlTt+07nIsJSWXlOphx01VClNuBB7NME4b8QugJiIYJazlBtf6
-         bxk8url8tN17h8gbkZAvsuQICARKIl36yVb5oN93fWO6RzX8OMghhJWDd2XwQP+EQjbS
-         2w5iiqaEHWa+/bhXR9P8EzkE5brM/6HzG7xKucJKluTbDCWMWe7HahvGPvQzUJVbRW22
-         Q63Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698699653; x=1699304453;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P8m8EAbGJbUxe5B9fBXpOTBojQ9A3raNvAoswxRtY9Q=;
-        b=GCLzpZOzHNiIv9dkAPy+E6IK+iLbCbuHfaJf1J+BNVs6ya5yzlrqfzl2bJP65wyBZ+
-         GsglJmBX6EV9VNTvS2nweaSdL2Dm/2ETOcNqR/80aGFD1TOJ/xuY4V7VC/ScnhiBvUWP
-         T0yTSJjlqyBfYynqkquKyyCF/opyZQX9hShHlA+UU+6O1NGXyZ0fcCyfUYTBqGSCVsVW
-         HJn1BIcYnrN4j6cx0emw8z1ysyqbZ6Akjatf7p1HK3TJhrKdB2YQQ1TiSenZC9xpxERA
-         wHI68L/rwmsnk8JsQNCgBVbqbwjpRFtrIhoEhHO2uLXsZE/r9H1Hz0n/3unsSrEXmmo6
-         KDLg==
-X-Gm-Message-State: AOJu0Ywi7tDE7WUYb2mnM1rX8hQt+WTOjfD5ua0AhUZtgOc8dNeWWVHM
-        tNZ8F+/WUAlvbGB8XHLB2mHSHrc9FYrHO+diU5g=
-X-Google-Smtp-Source: AGHT+IHeCj1fS8NHrfyADJ47pG0M+N1ni+AAVhnMC/OaBJv/bdXfVzLFoJehASyM4moqjbnFU8izIWDVMLvuzFuykJE=
-X-Received: by 2002:a05:6870:6f09:b0:1e9:9440:fe4a with SMTP id
- qw9-20020a0568706f0900b001e99440fe4amr11989097oab.3.1698699653332; Mon, 30
- Oct 2023 14:00:53 -0700 (PDT)
+        Mon, 30 Oct 2023 18:27:45 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DB62DD
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Oct 2023 15:27:39 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39UMKi6j012551;
+        Mon, 30 Oct 2023 22:27:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=f9M8oj5m8gGqnMvsMmHrXaaJJyCI/3BkI++OL43xR3Q=;
+ b=dmVbvjFn/a7BdV2xHIAHH319LMxbTxGYEMhNefhNqj1PMKmTK0nfKY7uWz/FRZVg3dUm
+ EPB8QSG/qMiu4FhRr2aS968vOJ3jxVEfjA50jLGuMMZjD9rUog9Y15UCStWqizTo4tlT
+ so4DmyEN3ibi/W9nfFrcc1hs8fAq2+P/L0dsZMm6qjcdltzLPoHuJdkfyCvyDtvcrLg2
+ O79rzjKXnBABQtSuxZTD9W0GcahKEEePcE4IQt+Q/r8U9eotEVWx3iS3i5fCG3PnCpvO
+ aDJLzH1B8EuAzVhTG0IcJdwGu5G4Z8bIQ/vD5FRpBVCIserRmkPd6uUz8Si5Akq9ElZB fQ== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u0sw7w3ur-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 30 Oct 2023 22:27:34 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39UMRX7s032102
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 30 Oct 2023 22:27:33 GMT
+Received: from rajkbhag-linux.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Mon, 30 Oct 2023 15:27:31 -0700
+From:   Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Subject: [PATCH 00/13] wifi: ath12k: QCN9274 dualmac bring up
+Date:   Tue, 31 Oct 2023 03:56:47 +0530
+Message-ID: <20231030222700.18914-1-quic_rajkbhag@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-From:   olivia taylor <onetapdatalist@gmail.com>
-Date:   Mon, 30 Oct 2023 16:00:41 -0500
-Message-ID: <CACxKAZkCJWtOYAzSpb9XmnmLDEuMyOr3CjrN=bcVjkMMcQ46qA@mail.gmail.com>
-Subject: RE: AWS re:Invent Attendees List- 2023
-To:     olivia taylor <onetapdatalist@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=2.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,
-        FILL_THIS_FORM_LONG,FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 9BZv49GD7IuutbGE4dheJP98RNn7ReAx
+X-Proofpoint-GUID: 9BZv49GD7IuutbGE4dheJP98RNn7ReAx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-30_13,2023-10-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=688 clxscore=1011
+ phishscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 impostorscore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2310300176
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+This series add the basic support for QCN9274 dualmac bring up.
+It also add support for word based RX TLVs subscription for
+QCN9274.
 
-Would you be interested in acquiring the AWS re:Invent Attendees Data
-List for 2023?
+Aaradhana Sahu (1):
+  wifi: ath12k: fix firmware assert during insmod in memory segment mode
 
-The list includes: company or organization name, first name, last
-name, full name, contact job title, verified email address, website
-URL, mailing address, phone number, industry, and many more.
+Ganesh Babu Jothiram (1):
+  wifi: ath12k: Read board id to support split-PHY QCN9274
 
-Number of Contacts: 50,487
-Cost: $1,989
+Harshitha Prem (1):
+  wifi: ath12k: add support for peer meta data version
 
-Interested? Email me back; I would love to provide more information on the list.
+Karthikeyan Kathirvel (1):
+  wifi: ath12k: subscribe required word mask from rx tlv
 
-Kind Regards,
-Olivia
-Marketing Coordinator
+Karthikeyan Periyasamy (1):
+  wifi: ath12k: add MAC id support in WBM error path
+
+P Praneesh (2):
+  wifi: ath12k: Add logic to write QRTR node id to scratch
+  wifi: ath12k: fix PCI read and write
+
+Raj Kumar Bhagat (3):
+  wifi: ath12k: fix fetching MCBC flag for QCN9274
+  wifi: ath12k: split hal_ops to support RX TLVs word mask compaction
+  wifi: ath12k: remove hal_desc_sz from hw params
+
+Rajat Soni (1):
+  wifi: ath12k: Update enum wmi_direct_buffer_module
+
+Sowmiya Sree Elavalagan (1):
+  wifi: ath12k: fetch correct pdev id from WMI_SERVICE_READY_EXT_EVENTID
+
+Sriram R (1):
+  wifi: ath12k: indicate NON MBSSID vdev by default during vdev start
+
+ drivers/net/wireless/ath/ath12k/core.c    |  29 ++
+ drivers/net/wireless/ath/ath12k/core.h    |   5 +
+ drivers/net/wireless/ath/ath12k/dp.c      |  15 +
+ drivers/net/wireless/ath/ath12k/dp.h      |  14 +
+ drivers/net/wireless/ath/ath12k/dp_mon.c  |   5 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c   | 161 +++++----
+ drivers/net/wireless/ath/ath12k/dp_tx.c   |  20 ++
+ drivers/net/wireless/ath/ath12k/hal.c     | 406 +++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/hal.h     |  17 +-
+ drivers/net/wireless/ath/ath12k/hw.c      |   8 +-
+ drivers/net/wireless/ath/ath12k/hw.h      |  29 +-
+ drivers/net/wireless/ath/ath12k/mac.c     |  12 +-
+ drivers/net/wireless/ath/ath12k/mhi.c     |  21 +-
+ drivers/net/wireless/ath/ath12k/pci.c     |  78 +++--
+ drivers/net/wireless/ath/ath12k/pci.h     |   4 +
+ drivers/net/wireless/ath/ath12k/qmi.h     |   1 -
+ drivers/net/wireless/ath/ath12k/rx_desc.h | 114 +++++-
+ drivers/net/wireless/ath/ath12k/wmi.c     |  31 +-
+ drivers/net/wireless/ath/ath12k/wmi.h     |  59 +++-
+ 19 files changed, 878 insertions(+), 151 deletions(-)
+
+
+base-commit: f473b4a72b7cccfc1d0110b55dce1edaa5bbce9e
+-- 
+2.17.1
+
