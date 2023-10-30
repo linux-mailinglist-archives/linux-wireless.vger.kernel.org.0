@@ -2,50 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86BF67DBE5B
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 17:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FDB57DBE6D
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Oct 2023 18:01:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231919AbjJ3Q4F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Oct 2023 12:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54596 "EHLO
+        id S231789AbjJ3RBP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Oct 2023 13:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232072AbjJ3Q4D (ORCPT
+        with ESMTP id S229514AbjJ3RBO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Oct 2023 12:56:03 -0400
+        Mon, 30 Oct 2023 13:01:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8AC4DB;
-        Mon, 30 Oct 2023 09:56:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C1BC433C7;
-        Mon, 30 Oct 2023 16:55:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76005A9
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Oct 2023 10:01:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D036C433C7;
+        Mon, 30 Oct 2023 17:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698684960;
-        bh=7+7vRhXHb5QjQwut8OzZIttdLSOWtUI77jnd6XpGSc4=;
+        s=k20201202; t=1698685271;
+        bh=uhht+9KTwyk5xSob1/njGftx8cix5tlAAKpjG3TawZE=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=IIWebl7JgzJnu8OG5ttQkIo9V8/m9IvZLf/StWmZgBfxWD9jeT/YVvjLlXZfhgH5s
-         kcR75Po7P1yB1jcFGhWlpFs8RJPPacFX/rmewlstO3kP0siwx/qbB4jQOiFti4A1q9
-         mj5sFcZTYPJdkXJUR9RzanWW8/4aH1Fc89jjzSPAm5qL82K+88AKpP6KzuaKfvZF0p
-         LBDvpLeLTlGahSrdM2KKfAxUYXzDb7pveOMwWUA6aCOvlx/g0jv+JMIR1jXkjoiXF4
-         biqdLLSyukbxjK+7wnxw9qisV1bQJWTmHVyChAGrn3htbVw+xF9A9w2OD9yjg+4PBH
-         AtbosC34rrQWA==
+        b=t8DS9JKVcR63N9kyRZcLw1my5sk6Ql1WYdfXRXLbkFlOiVhOuTpXG9ZvqV2++eZ5/
+         fCDIpxT6dUA7CrL+zHNYNxQLELEGW0PYhc1JPToFoPJIqLEe3GBdXPfIxxsUeDB4HB
+         /9S7Rtbmeai8X1S1fUg2zdmGjOVZ9Kd6fEPuHSGtorfi73KWbnT24Ei0NNvZk44Xl+
+         IXqxnMld/KW4SA67yf+fiqLrBYhSFY8DXVgut3NrJwfuCFJEG4/a/qoAqKxW6wTx9Z
+         SYRkie6BqBC90CV48MwNwZWtlW2GqvjAXrMuIMlIQ23nrLOQkFCA67x96eZ1ilwAS/
+         sNJmBVUVTs8vw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     arnd@kernel.org, Larry.Finger@lwfinger.net,
-        alexandre.belloni@bootlin.com, arnd@arndb.de,
-        claudiu.beznea@tuxon.dev, davem@davemloft.net,
-        geert@linux-m68k.org, geoff@infradead.org,
-        gregkh@linuxfoundation.org, gregory.greenman@intel.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, nicolas.ferre@microchip.com,
-        pavel@ucw.cz, quic_jjohnson@quicinc.com, stf_xl@wp.pl
-Subject: Re: [PATCH 00/10] Remove obsolete and orphaned wifi drivers
-References: <20231023131953.2876682-1-arnd@kernel.org>
-        <20231030071922.233080-1-glaubitz@physik.fu-berlin.de>
-Date:   Mon, 30 Oct 2023 18:55:53 +0200
-In-Reply-To: <20231030071922.233080-1-glaubitz@physik.fu-berlin.de> (John Paul
-        Adrian Glaubitz's message of "Mon, 30 Oct 2023 08:19:22 +0100")
-Message-ID: <87cywwvyli.fsf@kernel.org>
+To:     Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     Aaradhana Sahu <quic_aarasahu@quicinc.com>,
+        <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 0/4] ath12k: Factory test mode support
+References: <20231030082749.17855-1-quic_aarasahu@quicinc.com>
+        <37452ae3-3006-41ca-9b31-f0d4bed75e35@quicinc.com>
+Date:   Mon, 30 Oct 2023 19:01:08 +0200
+In-Reply-To: <37452ae3-3006-41ca-9b31-f0d4bed75e35@quicinc.com> (Jeff
+        Johnson's message of "Mon, 30 Oct 2023 08:21:11 -0700")
+Message-ID: <878r7kvycr.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -58,25 +50,57 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> There is some non-x86 hardware like the Amiga that still uses
-> PCMCIA-style networking cards on machines like the A600 and A1200. So,
-> unless these drivers are actually causing problems, I would rather not
-> see them go yet.
+> On 10/30/2023 1:27 AM, Aaradhana Sahu wrote:
+>
+>> Device is booted in factory test mode for calibration.
+>> The commands are sent from userspace application, which
+>> is sent to firmware using wmi commands. Firmware sends
+>> the response to driver as wmi events and driver sends
+>> these events to the application via netlink message.
+>> Also added changes related to correct pdev id access for
+>> fw test cmd.
+>> Aaradhana Sahu (3):
+>>    wifi: ath: create common testmode_i.h file for ath drivers
+>>    wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
+>>    wifi: ath12k: add factory test mode support
+>> Rajat Soni (1):
+>>    wifi: ath12k: Fill pdev id for fw test cmd
+>>   drivers/net/wireless/ath/ath11k/testmode.c    |  78 ++--
+>>   drivers/net/wireless/ath/ath12k/Makefile      |   1 +
+>>   drivers/net/wireless/ath/ath12k/core.c        |  19 +-
+>>   drivers/net/wireless/ath/ath12k/core.h        |  13 +
+>>   drivers/net/wireless/ath/ath12k/debug.h       |   1 +
+>>   drivers/net/wireless/ath/ath12k/dp.c          |   3 +
+>>   drivers/net/wireless/ath/ath12k/mac.c         |  13 +-
+>>   drivers/net/wireless/ath/ath12k/pci.c         |   1 +
+>>   drivers/net/wireless/ath/ath12k/testmode.c    | 413 ++++++++++++++++++
+>>   drivers/net/wireless/ath/ath12k/testmode.h    |  42 ++
+>>   drivers/net/wireless/ath/ath12k/wmi.c         |  38 +-
+>>   drivers/net/wireless/ath/ath12k/wmi.h         |  22 +-
+>>   .../wireless/ath/{ath11k => }/testmode_i.h    |  52 +--
+>>   13 files changed, 624 insertions(+), 72 deletions(-)
+>>   create mode 100644 drivers/net/wireless/ath/ath12k/testmode.c
+>>   create mode 100644 drivers/net/wireless/ath/ath12k/testmode.h
+>>   rename drivers/net/wireless/ath/{ath11k => }/testmode_i.h (53%)
+>> base-commit: 0263687f4441d5a5eab8074d56b4693c8f0acf85
+>
+> That base-commit is pretty old (tag: ath-202309051328) and your series
+> fails to apply to current ath-next, please rebase:
 
-There is a cost maintaining these drivers so I would like to see more
-information in the report, at least:
+That tag is almost two months old! Aaradhana, what an earth are you
+testing with?
 
-* exact driver and hardware used
+> Applying: wifi: ath: create common testmode_i.h file for ath drivers
+> Applying: wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
+> Applying: wifi: ath12k: add factory test mode support
+> Patch failed at 0003 wifi: ath12k: add factory test mode support
+>
+> In addition, please use
 
-* last kernel version tested
-
-* kernel log messages from a successful case
-
-Here's a good example:
-
-https://lore.kernel.org/linux-wireless/20231024014302.0a0b79b0@mir/
+Jeff, did you sent your mail too early? Something seems to be missing in
+your mail.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
