@@ -2,59 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADD0E7DC90C
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Oct 2023 10:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A1407DC9AE
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Oct 2023 10:32:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343738AbjJaJIK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Oct 2023 05:08:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57772 "EHLO
+        id S1343929AbjJaJce (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Oct 2023 05:32:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235768AbjJaJIJ (ORCPT
+        with ESMTP id S1343923AbjJaJce (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Oct 2023 05:08:09 -0400
+        Tue, 31 Oct 2023 05:32:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE6191;
-        Tue, 31 Oct 2023 02:08:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EEBC433C8;
-        Tue, 31 Oct 2023 09:08:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB79EB7
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 02:32:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DE9C433C8
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 09:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698743286;
-        bh=feIBOznLOh65axwYyiiYpq9McN8nBddJCuTkou94EY8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=VblEe006dkOhHKFV8lXYkjBoV+/BKggu8KsI5kMIAb2Q1426nw4dRAAVoYwb69UEw
-         G4GLrarHQQVvZuXCYCZpQm3MzyKeWeBmJjvlgQ6PMCq7xr4I4hB0HHfGshV2oZUG15
-         X6DMTAU3M/qqtSGFor+HnXWdZfMMByBst6bHmnUyfk/boW/rAygCoryItoD82ouGdQ
-         F5rgczw5G1IKtPxgez4yKfn8OvhBZ5q4umOXcv+za1DnTK33HU98GoVwOWr045jrBq
-         m/rH+Oca3fkh8qYaRN6iMziupF3suM3KgYmJZfX4wsLpF+TVmwMsBaFclHecefyoKM
-         WMmuIxn5gT6Nw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Geoff Levand <geoff@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Pavel Machek <pavel@ucw.cz>, Stanislaw Gruszka <stf_xl@wp.pl>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 00/10] Remove obsolete and orphaned wifi drivers
-References: <20231023131953.2876682-1-arnd@kernel.org>
-Date:   Tue, 31 Oct 2023 11:08:00 +0200
-In-Reply-To: <20231023131953.2876682-1-arnd@kernel.org> (Arnd Bergmann's
-        message of "Mon, 23 Oct 2023 15:19:42 +0200")
-Message-ID: <874ji7w45r.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1698744746;
+        bh=uFgBPpvtFnSyCFYwY97t4H00HZ5VRzhmUWbnbsuu23U=;
+        h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+        b=fsjkVXM12nJEGZwqGDBBQjpq5KPqdeBkNmwZha0UVTuJNlNmSV0iMvYk6i2I3qdLs
+         4s9tr/eOjPGoRvODW8LJSJotU1rj+v/xsiyq1Q+/xLrVddkyX7/I+ahNK5U+isaDPu
+         rp4E1zu4nTVNwJFRLOIhmUsg2GvSoiGfR6o7gyb4BW6PwhRdKa9kHQBFJpIchu3W65
+         DbQ9VKjtBXMx9bVdSaEqI5e1B2nFzyYXAPI7lg3gpx0v+V/UJgWf/8LDfcKO/Z4l0m
+         HCTXWbmWY1+GlcH863+vFtA8378z5rMGIzvbFUIG/sWrh/FZJfUAJs/1gMKeQO+CWg
+         GdzYBB+copnDQ==
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6bd32d1a040so5523681b3a.3
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 02:32:26 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyTJ7Jo4M/pJ6lMhOX34XD1nw+UTXlvZQg/oFxvnZZ3SuKtk1J/
+        cuQJBRlazT51epSiSo/SxnLKqzsVrBhQ+w45ECk=
+X-Google-Smtp-Source: AGHT+IEkP2MUggQPZMmoZUfMMyfZmPPn4GeiV9x8hi6H0QA8ftsfhJC7lsvLDOEYQmIvYau5HJZMwt5HhjQG4g5eyh4=
+X-Received: by 2002:a05:6a20:4282:b0:17a:eff5:fbbd with SMTP id
+ o2-20020a056a20428200b0017aeff5fbbdmr17226026pzj.43.1698744746128; Tue, 31
+ Oct 2023 02:32:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <ZPJF1/2YA4dP+ggY@ubuntu-x1> <CAGb2v657baNMPKU3QADijx7hZa=GUcSv2LEDdn6N=QQaFX8r-g@mail.gmail.com>
+ <ZUAUahZakEvOXpip@do-x1extreme>
+In-Reply-To: <ZUAUahZakEvOXpip@do-x1extreme>
+Reply-To: wens@kernel.org
+From:   Chen-Yu Tsai <wens@kernel.org>
+Date:   Tue, 31 Oct 2023 17:32:15 +0800
+X-Gmail-Original-Message-ID: <CAGb2v66cVj2O89G9qhKCqca+jyBK9ic3866giL=LZX4mQo-eDg@mail.gmail.com>
+Message-ID: <CAGb2v66cVj2O89G9qhKCqca+jyBK9ic3866giL=LZX4mQo-eDg@mail.gmail.com>
+Subject: Re: [wireless-regdb] [ANN] wireless-regdb: master-2023-09-01
+To:     Seth Forshee <sforshee@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -65,68 +60,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> writes:
+On Tue, Oct 31, 2023 at 4:39=E2=80=AFAM Seth Forshee <sforshee@kernel.org> =
+wrote:
+>
+> On Tue, Oct 24, 2023 at 02:23:26PM +0800, Chen-Yu Tsai wrote:
+> > I'd like to take up maintainership.
+>
+> Thanks for volunteering! Sorry I didn't get respond sooner, this thread
+> was buried kinda deep in my inbox so I didn't notice your message right
+> away.
+>
+> > As far as I know, I would need to:
+> >
+> > 1. Make a clone of the repository on git.kernel.org under my own namesp=
+ace.
+> > 2. Generate a key pair and certificate
+> > 3. Put the certificate into the kernel tree
+> > 4. Update the docs to point to the new repository and certificate
+> > 5. Review incoming patches and apply them
+> > 6. Tag releases timely
+> >
+> > I'm not sure if I missed anything.
+>
+> That's the bulk of it. Most of the time is spend validating proposed
+> changes against the government documents. There's also maintaining the
+> tools to build the database and moderating the mailing list, but neither
+> of those are much effort.
 
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> As discussed previously, a lot of the older wifi drivers are likely
-> entirely unused, Though we can't know for sure.
->
-> As suggested by both Greg and Jakub, let's remove the ones that look
-> are most likely to have no users left and also get in the way of the
-> wext cleanup. If anyone is still using any of these, we can revert the
-> driver removal individually.
->
-> I would suggest merging these for net-next after 6.7-rc1 is out, to give
-> them the maximum amount of time for users to speak up before a release
-> comes out.
->
-> This kills off all pcmcia wifi drivers, and all wext users in
-> drivers/net/wireless, but not the ps3-gelic-wireless driver in
-> drivers/net/ethernet, or the staging drivers.
->
-> In staging, rtl8192u was already removed in the meantime, while rtl8712
-> and rtl8192e are apparently still used.  I have not been able to find
-> out whether ks7010 is still in use.
->
-> 	Arnd
->
-> Link: https://lore.kernel.org/lkml/20231011080955.1beeb010@kernel.org/
->
->
-> Arnd Bergmann (10):
->   wifi: libertas: drop 16-bit PCMCIA support
->   wifi: atmel: remove wext style at76c50x drivers
->   wifi: remove orphaned cisco/aironet driver
->   wifi: remove obsolete hostap driver
->   wifi: remove orphaned zd1201 driver
->   wifi: remove orphaned orinoco driver
->   wifi: remove orphaned ray_cs driver
->   wifi: remove orphaned wl3501 driver
->   wifi: remove orphaned rndis_wlan driver
->   [RFC] wifi: remove ipw2100/ipw2200 drivers
+I managed to get some support internally for the validation part. I
+should be able to lean on our WiFi team or external partners if docs
+provided are insufficient.
 
-I manually applied these 9 to wireless-next:
+One thing I forgot to ask. After a release is tagged, is there some
+magic bot that produces a tarball and uploads it to kernel.org? Or
+is that a manual process?
 
-4b478bf6bdd8 wifi: libertas: drop 16-bit PCMCIA support
-77e49bec6414 wifi: atmel: remove wext style at76c50x drivers
-6853c70ba5ed wifi: remove orphaned cisco/aironet driver
-d0172d5f7576 wifi: remove obsolete hostap driver
-757a46c2a7a9 wifi: remove orphaned zd1201 driver
-1535d5962d79 wifi: remove orphaned orinoco driver
-6b9dbaff83d6 wifi: remove orphaned ray_cs driver
-238349207cd3 wifi: remove orphaned wl3501 driver
-bec95598b24a wifi: remove orphaned rndis_wlan driver
+> Johannes will be the one who needs to accept your key into the kernel,
+> so we should wait for a +1 from him at least before we really get the
+> ball rolling.
 
-I dropped this patch as we got several reports about people using the
-driver:
++Johannes for his opinion.
 
-[RFC] wifi: remove ipw2100/ipw2200 drivers
+Thanks!
+ChenYu
 
-The patches are queued for v6.8. Arnd, thanks a lot for cleaning this
-up!
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> Thanks,
+> Seth
