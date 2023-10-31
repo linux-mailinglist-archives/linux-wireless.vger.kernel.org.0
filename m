@@ -2,107 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A1407DC9AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Oct 2023 10:32:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE6F7DCEC1
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Oct 2023 15:06:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343929AbjJaJce (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Oct 2023 05:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59460 "EHLO
+        id S1343884AbjJaOER (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Oct 2023 10:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343923AbjJaJce (ORCPT
+        with ESMTP id S233712AbjJaOEQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Oct 2023 05:32:34 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB79EB7
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 02:32:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DE9C433C8
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 09:32:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698744746;
-        bh=uFgBPpvtFnSyCFYwY97t4H00HZ5VRzhmUWbnbsuu23U=;
-        h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-        b=fsjkVXM12nJEGZwqGDBBQjpq5KPqdeBkNmwZha0UVTuJNlNmSV0iMvYk6i2I3qdLs
-         4s9tr/eOjPGoRvODW8LJSJotU1rj+v/xsiyq1Q+/xLrVddkyX7/I+ahNK5U+isaDPu
-         rp4E1zu4nTVNwJFRLOIhmUsg2GvSoiGfR6o7gyb4BW6PwhRdKa9kHQBFJpIchu3W65
-         DbQ9VKjtBXMx9bVdSaEqI5e1B2nFzyYXAPI7lg3gpx0v+V/UJgWf/8LDfcKO/Z4l0m
-         HCTXWbmWY1+GlcH863+vFtA8378z5rMGIzvbFUIG/sWrh/FZJfUAJs/1gMKeQO+CWg
-         GdzYBB+copnDQ==
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6bd32d1a040so5523681b3a.3
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 02:32:26 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyTJ7Jo4M/pJ6lMhOX34XD1nw+UTXlvZQg/oFxvnZZ3SuKtk1J/
-        cuQJBRlazT51epSiSo/SxnLKqzsVrBhQ+w45ECk=
-X-Google-Smtp-Source: AGHT+IEkP2MUggQPZMmoZUfMMyfZmPPn4GeiV9x8hi6H0QA8ftsfhJC7lsvLDOEYQmIvYau5HJZMwt5HhjQG4g5eyh4=
-X-Received: by 2002:a05:6a20:4282:b0:17a:eff5:fbbd with SMTP id
- o2-20020a056a20428200b0017aeff5fbbdmr17226026pzj.43.1698744746128; Tue, 31
- Oct 2023 02:32:26 -0700 (PDT)
+        Tue, 31 Oct 2023 10:04:16 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1D5E6
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 07:04:13 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2c6b5841f61so32707761fa.0
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 07:04:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dberlin.org; s=google; t=1698761051; x=1699365851; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yRTIlAh7OIzV3RODVT7AOAa8TASI1wwfrQcS91mwxTs=;
+        b=Bj2A3ykPrV9OLqDdGVSoCYA+qV4/R2kQsFJSFTFdcST+vEQ69/MJNVHVp2M1a+Qyh1
+         /d8xhPq1B1Zl2znV6h5tBD324+xw+3vA8SlKl+cWsuhWGR/qvvYlXrccnNwZCXpKHO7k
+         QzpFmCqXNfLlkeYAAoxDRs+YBqCVkmaWNllAQxjv8UseR0RcyJPezOj4PkfQf+8SsYni
+         7upFueOjn/g0G6ZdwzPnOpJQA0SyxAQ07aT+aUYA31/4tMoOGtpvxVgGJ2WHgZJGTJk+
+         Llz2iuDKx5JqElEnwwoJZIfDKTiQV7fT30hNWc3XHMMM0oStlPg4H18737/Hyn7VpxOq
+         dePQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698761051; x=1699365851;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yRTIlAh7OIzV3RODVT7AOAa8TASI1wwfrQcS91mwxTs=;
+        b=TOOp+jJUnBibCKhLU9iEvN/3jkRIdoEtIw56ZLO2mYn6dzM2kvkgBF1wQ3/7Rasfdw
+         PrZWCFXhAW6xmoVdhvATmmveTMcjOBdm+KvuY43XtTcPl6bUuTc3l62F/gAEje5AYNgF
+         C/nTqHV0rM+tlwvFZYDk3Wjrg4FX9VeXiiBlm+Mt0hn747sJt1NEhpUXYUbL2GLS3aKZ
+         k6t/O7BYCVmVGLPCwMUtWAch8xx31ozFYz2nHFXGrMXg20zbyYaVEfDEB/EAc1WpGeKM
+         EDhloHiXCBXcxjWeXnh708KKvdZ1tqYrHTxTpBjlftlaChH+/DbGAKqtRkYag8NbQ97G
+         gRag==
+X-Gm-Message-State: AOJu0YwBBzcveYpGSQ3c2crMPrISa7Td+ojBUWx5rHkrvQmo8k25YfiP
+        43oi9sv/r5bF01WSUkFNt1FjIPdNBy3i235gu1qCgg==
+X-Google-Smtp-Source: AGHT+IHnLFd7q2LXO8jzCsHIrlhdssA4af93Pg/BHH/2GIwTcD/7GGjoPOet1oGVMkRbOHKIDUEGce6uKh4n4cnpD9M=
+X-Received: by 2002:a05:651c:b9f:b0:2c5:9be0:973e with SMTP id
+ bg31-20020a05651c0b9f00b002c59be0973emr978572ljb.9.1698761051274; Tue, 31 Oct
+ 2023 07:04:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <ZPJF1/2YA4dP+ggY@ubuntu-x1> <CAGb2v657baNMPKU3QADijx7hZa=GUcSv2LEDdn6N=QQaFX8r-g@mail.gmail.com>
- <ZUAUahZakEvOXpip@do-x1extreme>
-In-Reply-To: <ZUAUahZakEvOXpip@do-x1extreme>
-Reply-To: wens@kernel.org
-From:   Chen-Yu Tsai <wens@kernel.org>
-Date:   Tue, 31 Oct 2023 17:32:15 +0800
-X-Gmail-Original-Message-ID: <CAGb2v66cVj2O89G9qhKCqca+jyBK9ic3866giL=LZX4mQo-eDg@mail.gmail.com>
-Message-ID: <CAGb2v66cVj2O89G9qhKCqca+jyBK9ic3866giL=LZX4mQo-eDg@mail.gmail.com>
-Subject: Re: [wireless-regdb] [ANN] wireless-regdb: master-2023-09-01
-To:     Seth Forshee <sforshee@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <cover.1697650207.git.dberlin@dberlin.org> <079882bf4a7c026547ecf8ad50a2b7a49ade7130.1697650207.git.dberlin@dberlin.org>
+ <b907f696-c966-54ef-3267-12833c6f5d91@broadcom.com> <CAF4BwTWzxbpSqeCbcFQjSf3a4sJio8PME-H7w-_juQ3RCmKGmg@mail.gmail.com>
+In-Reply-To: <CAF4BwTWzxbpSqeCbcFQjSf3a4sJio8PME-H7w-_juQ3RCmKGmg@mail.gmail.com>
+From:   Daniel Berlin <dberlin@dberlin.org>
+Date:   Tue, 31 Oct 2023 10:04:00 -0400
+Message-ID: <CAF4BwTUCtARMGwUfUiaJK+1DfYtnm8pTZ6sA2UCWEaw0XihbCw@mail.gmail.com>
+Subject: Re: [PATCH 4/5] wifi: brcmfmac: Support bss_info up to v112
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        Hector Martin <marcan@marcan.st>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 31, 2023 at 4:39=E2=80=AFAM Seth Forshee <sforshee@kernel.org> =
-wrote:
+On Fri, Oct 20, 2023 at 1:31=E2=80=AFPM Daniel Berlin <dberlin@dberlin.org>=
+ wrote:
 >
-> On Tue, Oct 24, 2023 at 02:23:26PM +0800, Chen-Yu Tsai wrote:
-> > I'd like to take up maintainership.
+> So, at least in the example code I have, all variants of the 109 and
+> 112 structures both have bcnflags in that place - it was always
+> missing here.
+> For example, see
+> https://android.googlesource.com/kernel/google-modules/wlan/bcmdhd/bcm439=
+8/+/refs/heads/android-gs-shusky-5.15-u-qpr1-beta2/include/wlioctl.h
+> and  compare v109 and v112 of bssinfo.
 >
-> Thanks for volunteering! Sorry I didn't get respond sooner, this thread
-> was buried kinda deep in my inbox so I didn't notice your message right
-> away.
+> As such, the 109 and 112 structures are compatible given these definition=
+s.
 >
-> > As far as I know, I would need to:
-> >
-> > 1. Make a clone of the repository on git.kernel.org under my own namesp=
-ace.
-> > 2. Generate a key pair and certificate
-> > 3. Put the certificate into the kernel tree
-> > 4. Update the docs to point to the new repository and certificate
-> > 5. Review incoming patches and apply them
-> > 6. Tag releases timely
-> >
-> > I'm not sure if I missed anything.
->
-> That's the bulk of it. Most of the time is spend validating proposed
-> changes against the government documents. There's also maintaining the
-> tools to build the database and moderating the mailing list, but neither
-> of those are much effort.
+> I don't know if what is there right now is wrong, or it is "yet
+> another variant" of the 109 structure that we need to handle.
+> Any idea what the ground truth is?
 
-I managed to get some support internally for the validation part. I
-should be able to lean on our WiFi team or external partners if docs
-provided are insufficient.
+Circling back to this - i have checked other sources as well -
+infineon also has u8 (though it's marked as padding) there, etc.
 
-One thing I forgot to ask. After a release is tagged, is there some
-magic bot that produces a tarball and uploads it to kernel.org? Or
-is that a manual process?
+As far as i can tell, the structure should have that u8 there in all
+versions i can find.
 
-> Johannes will be the one who needs to accept your key into the kernel,
-> so we should wait for a +1 from him at least before we really get the
-> ball rolling.
+Nevertheless, I think I can make it not matter ;)
 
-+Johannes for his opinion.
+I'm going to post an RFC of some patches that handle this and other
+structure versioning
+things through function pointer structures that we set based on
+interface versions available. So instead of setting feature flags, we
+query the various iovars/firmware
+info for the right interface versions, and set up the
+structures/function pointers to handle the versions
+we will get from the firmware.
 
-Thanks!
-ChenYu
+This also makes the common code cleaner as they no longer have to deal
+with the structure differences - for example,  brcmf_cfg80211_connect
+now just calls
+something like drvr->join_params_handler.get_struct_from_connect to
+get an extended join params struct of the right version
+and doesn't look inside the result anymore. It's an RFC so we can
+argue about the approach and APIs, i just did what seemed
+easy/obvious.
 
-> Thanks,
-> Seth
+I have converted bss info, join params, scan params, and netinfo
+versions to use this approach, and all now support all versions of the
+structures available.
+
+If we go that route, it wont matter if we overlay bss info structures or no=
+t.
+
+As an aside, while doing the function pointer work, i discovered some
+other structure bugs (missing fields) that seem to be causing
+failures/fallbacks on every chip i tested (no matter who the vendor
+was).
+
+So for example, some of the extended join parameter substructs are
+missing fields, and every chip i tried (5 variants, representing 2
+vendors and 3 join_param versions) all gave
+BUFTOSHORT when trying to use the join iovar as a result, and all fell
+back to using the SET_SSID method.
+With the v0/v1 structure fixed, they all use the join iovar successfully an=
+d
+never fall back.
+
+--Dan
