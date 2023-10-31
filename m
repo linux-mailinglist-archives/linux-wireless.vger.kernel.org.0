@@ -2,72 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE6F7DCEC1
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Oct 2023 15:06:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E507C7DD18D
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Oct 2023 17:28:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343884AbjJaOER (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Oct 2023 10:04:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51354 "EHLO
+        id S1345177AbjJaQ1z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Oct 2023 12:27:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233712AbjJaOEQ (ORCPT
+        with ESMTP id S1345153AbjJaQ1v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Oct 2023 10:04:16 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1D5E6
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 07:04:13 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2c6b5841f61so32707761fa.0
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 07:04:13 -0700 (PDT)
+        Tue, 31 Oct 2023 12:27:51 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F386EA6
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 09:27:48 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-32db8924201so3673479f8f.1
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 09:27:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dberlin.org; s=google; t=1698761051; x=1699365851; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yRTIlAh7OIzV3RODVT7AOAa8TASI1wwfrQcS91mwxTs=;
-        b=Bj2A3ykPrV9OLqDdGVSoCYA+qV4/R2kQsFJSFTFdcST+vEQ69/MJNVHVp2M1a+Qyh1
-         /d8xhPq1B1Zl2znV6h5tBD324+xw+3vA8SlKl+cWsuhWGR/qvvYlXrccnNwZCXpKHO7k
-         QzpFmCqXNfLlkeYAAoxDRs+YBqCVkmaWNllAQxjv8UseR0RcyJPezOj4PkfQf+8SsYni
-         7upFueOjn/g0G6ZdwzPnOpJQA0SyxAQ07aT+aUYA31/4tMoOGtpvxVgGJ2WHgZJGTJk+
-         Llz2iuDKx5JqElEnwwoJZIfDKTiQV7fT30hNWc3XHMMM0oStlPg4H18737/Hyn7VpxOq
-         dePQ==
+        d=broadcom.com; s=google; t=1698769667; x=1699374467; darn=vger.kernel.org;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WENJxBpExbb5hcCBBCflFk8YoKvN/SBPq3udLdIu7Yc=;
+        b=Ng0Wh7HeE7hcbu/uF4r0XIk8ZX6VnoOtLleivMLyGKBK+11AN5Gim3I1Xql/ByhK65
+         oeueSqwA4GloDPdE07M+momf032pFviRYpZSN8HIFj+v19AVZM3MoD3YAOZ+2o4KPGsQ
+         WYuoPVeNPXVOjVDhYU0WmbAsdisx7WI/IAlns=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698761051; x=1699365851;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yRTIlAh7OIzV3RODVT7AOAa8TASI1wwfrQcS91mwxTs=;
-        b=TOOp+jJUnBibCKhLU9iEvN/3jkRIdoEtIw56ZLO2mYn6dzM2kvkgBF1wQ3/7Rasfdw
-         PrZWCFXhAW6xmoVdhvATmmveTMcjOBdm+KvuY43XtTcPl6bUuTc3l62F/gAEje5AYNgF
-         C/nTqHV0rM+tlwvFZYDk3Wjrg4FX9VeXiiBlm+Mt0hn747sJt1NEhpUXYUbL2GLS3aKZ
-         k6t/O7BYCVmVGLPCwMUtWAch8xx31ozFYz2nHFXGrMXg20zbyYaVEfDEB/EAc1WpGeKM
-         EDhloHiXCBXcxjWeXnh708KKvdZ1tqYrHTxTpBjlftlaChH+/DbGAKqtRkYag8NbQ97G
-         gRag==
-X-Gm-Message-State: AOJu0YwBBzcveYpGSQ3c2crMPrISa7Td+ojBUWx5rHkrvQmo8k25YfiP
-        43oi9sv/r5bF01WSUkFNt1FjIPdNBy3i235gu1qCgg==
-X-Google-Smtp-Source: AGHT+IHnLFd7q2LXO8jzCsHIrlhdssA4af93Pg/BHH/2GIwTcD/7GGjoPOet1oGVMkRbOHKIDUEGce6uKh4n4cnpD9M=
-X-Received: by 2002:a05:651c:b9f:b0:2c5:9be0:973e with SMTP id
- bg31-20020a05651c0b9f00b002c59be0973emr978572ljb.9.1698761051274; Tue, 31 Oct
- 2023 07:04:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1697650207.git.dberlin@dberlin.org> <079882bf4a7c026547ecf8ad50a2b7a49ade7130.1697650207.git.dberlin@dberlin.org>
- <b907f696-c966-54ef-3267-12833c6f5d91@broadcom.com> <CAF4BwTWzxbpSqeCbcFQjSf3a4sJio8PME-H7w-_juQ3RCmKGmg@mail.gmail.com>
-In-Reply-To: <CAF4BwTWzxbpSqeCbcFQjSf3a4sJio8PME-H7w-_juQ3RCmKGmg@mail.gmail.com>
-From:   Daniel Berlin <dberlin@dberlin.org>
-Date:   Tue, 31 Oct 2023 10:04:00 -0400
-Message-ID: <CAF4BwTUCtARMGwUfUiaJK+1DfYtnm8pTZ6sA2UCWEaw0XihbCw@mail.gmail.com>
-Subject: Re: [PATCH 4/5] wifi: brcmfmac: Support bss_info up to v112
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
+        d=1e100.net; s=20230601; t=1698769667; x=1699374467;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WENJxBpExbb5hcCBBCflFk8YoKvN/SBPq3udLdIu7Yc=;
+        b=e3e6fPBSBw5w5l5jjoL1pqqEUjzC7VY8cEBN5uEJ0RJpoRQ+Z+YmJKZGn4lYOHWT2R
+         /PdHfuaI006A2Kbz/nRGN43LXNAtUnGXs+hDBc4S4NdQhnUt7K6dzC9e531/m4OTJnm6
+         X2yWGsFW7doxMUsZlx9Q3dV/0GJ7kPd/+mSxwdexSebFdaXmaFPwVvGMST5Tybs4ubHI
+         6NfbzXB7IHB4SDbwAVFIa7DmWKxLTbDILJ/5OwiZ6mOcyxpEO+AzRHykGh8yoYRoLIvS
+         dh2Hg+h4Thnn+KnI0UFqblOEGOK/IS+zzam4+mTH1IZq/NyNhKPh3cMfwd64Nf0ztsIJ
+         6A+Q==
+X-Gm-Message-State: AOJu0YzBnXt3679BKM5PZspFJ10vuS+96GaSzpJeK5jM87tdI6b2nx13
+        7bt+5zzWhdH+qSQhxxkZO35yGQ==
+X-Google-Smtp-Source: AGHT+IF3C4IBSGLrML/y/fRXJ6yStzweHLWeQBbQdUPhWot6EjZP+RmenANghOSvxgJDMQzfCWowSA==
+X-Received: by 2002:a5d:6c68:0:b0:32f:7c50:ce7f with SMTP id r8-20020a5d6c68000000b0032f7c50ce7fmr8619479wrz.13.1698769667439;
+        Tue, 31 Oct 2023 09:27:47 -0700 (PDT)
+Received: from [10.230.43.52] ([192.19.152.250])
+        by smtp.gmail.com with ESMTPSA id bs4-20020a056000070400b0032da75af3easm1892554wrb.80.2023.10.31.09.27.45
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 31 Oct 2023 09:27:46 -0700 (PDT)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Daniel Berlin <dberlin@dberlin.org>
+CC:     Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <linux-kernel@vger.kernel.org>,
         Hector Martin <marcan@marcan.st>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Date:   Tue, 31 Oct 2023 17:27:46 +0100
+Message-ID: <18b868fffd0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <CAF4BwTUCtARMGwUfUiaJK+1DfYtnm8pTZ6sA2UCWEaw0XihbCw@mail.gmail.com>
+References: <cover.1697650207.git.dberlin@dberlin.org>
+ <079882bf4a7c026547ecf8ad50a2b7a49ade7130.1697650207.git.dberlin@dberlin.org>
+ <b907f696-c966-54ef-3267-12833c6f5d91@broadcom.com>
+ <CAF4BwTWzxbpSqeCbcFQjSf3a4sJio8PME-H7w-_juQ3RCmKGmg@mail.gmail.com>
+ <CAF4BwTUCtARMGwUfUiaJK+1DfYtnm8pTZ6sA2UCWEaw0XihbCw@mail.gmail.com>
+User-Agent: AquaMail/1.47.0 (build: 104700356)
+Subject: Re: [PATCH 4/5] wifi: brcmfmac: Support bss_info up to v112
+MIME-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="00000000000099e137060905a2d2"
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,69 +78,133 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Oct 20, 2023 at 1:31=E2=80=AFPM Daniel Berlin <dberlin@dberlin.org>=
- wrote:
+--00000000000099e137060905a2d2
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+
+
+On October 31, 2023 3:04:12 PM Daniel Berlin <dberlin@dberlin.org> wrote:
+
+> On Fri, Oct 20, 2023 at 1:31 PM Daniel Berlin <dberlin@dberlin.org> wrote:
+>>
+>> So, at least in the example code I have, all variants of the 109 and
+>> 112 structures both have bcnflags in that place - it was always
+>> missing here.
+>> For example, see
+>> https://android.googlesource.com/kernel/google-modules/wlan/bcmdhd/bcm4398/+/refs/heads/android-gs-shusky-5.15-u-qpr1-beta2/include/wlioctl.h
+>> and  compare v109 and v112 of bssinfo.
+>>
+>> As such, the 109 and 112 structures are compatible given these definitions.
+>>
+>> I don't know if what is there right now is wrong, or it is "yet
+>> another variant" of the 109 structure that we need to handle.
+>> Any idea what the ground truth is?
 >
-> So, at least in the example code I have, all variants of the 109 and
-> 112 structures both have bcnflags in that place - it was always
-> missing here.
-> For example, see
-> https://android.googlesource.com/kernel/google-modules/wlan/bcmdhd/bcm439=
-8/+/refs/heads/android-gs-shusky-5.15-u-qpr1-beta2/include/wlioctl.h
-> and  compare v109 and v112 of bssinfo.
+> Circling back to this - i have checked other sources as well -
+> infineon also has u8 (though it's marked as padding) there, etc.
 >
-> As such, the 109 and 112 structures are compatible given these definition=
-s.
+> As far as i can tell, the structure should have that u8 there in all
+> versions i can find.
 >
-> I don't know if what is there right now is wrong, or it is "yet
-> another variant" of the 109 structure that we need to handle.
-> Any idea what the ground truth is?
+> Nevertheless, I think I can make it not matter ;)
+>
+> I'm going to post an RFC of some patches that handle this and other
+> structure versioning
+> things through function pointer structures that we set based on
+> interface versions available. So instead of setting feature flags, we
+> query the various iovars/firmware
+> info for the right interface versions, and set up the
+> structures/function pointers to handle the versions
+> we will get from the firmware
 
-Circling back to this - i have checked other sources as well -
-infineon also has u8 (though it's marked as padding) there, etc.
+The feature flag approach was a concern and the above is more or less what 
+I had in mind so curious to see how this takes shape.
 
-As far as i can tell, the structure should have that u8 there in all
-versions i can find.
+Regards,
+Arend
 
-Nevertheless, I think I can make it not matter ;)
 
-I'm going to post an RFC of some patches that handle this and other
-structure versioning
-things through function pointer structures that we set based on
-interface versions available. So instead of setting feature flags, we
-query the various iovars/firmware
-info for the right interface versions, and set up the
-structures/function pointers to handle the versions
-we will get from the firmware.
 
-This also makes the common code cleaner as they no longer have to deal
-with the structure differences - for example,  brcmf_cfg80211_connect
-now just calls
-something like drvr->join_params_handler.get_struct_from_connect to
-get an extended join params struct of the right version
-and doesn't look inside the result anymore. It's an RFC so we can
-argue about the approach and APIs, i just did what seemed
-easy/obvious.
+--00000000000099e137060905a2d2
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-I have converted bss info, join params, scan params, and netinfo
-versions to use this approach, and all now support all versions of the
-structures available.
-
-If we go that route, it wont matter if we overlay bss info structures or no=
-t.
-
-As an aside, while doing the function pointer work, i discovered some
-other structure bugs (missing fields) that seem to be causing
-failures/fallbacks on every chip i tested (no matter who the vendor
-was).
-
-So for example, some of the extended join parameter substructs are
-missing fields, and every chip i tried (5 variants, representing 2
-vendors and 3 join_param versions) all gave
-BUFTOSHORT when trying to use the join iovar as a result, and all fell
-back to using the SET_SSID method.
-With the v0/v1 structure fixed, they all use the join iovar successfully an=
-d
-never fall back.
-
---Dan
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDsu8BVHyLhUxmzj4Yc
+LbmyrzK8mKkkOP2lO7bZVqfs7jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzEwMzExNjI3NDdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEApwsh8sIhJ6bHcf2meylCg8Bi2jvtqZJJE1uV
+rQXMMlCF38BaWvU4Ies84X0ZVjfKWgkrWZOlhuDd3Nceq20dOKa60bkbuJ5DinnhMrPGiGTAP08Z
+WFsI7evf24dg+SMpbXup9/Ey00m7lFRsN+Eb9w+oVpSkBY0tOfyItnUKS7kGQfDWtx+HcCvLMG2d
+Ckd81IWrIxZ1V6JmoZGCVghzQTqFvxKmlC5XaqQorhR/SxD0m1XbQIW/qv7vdIHwpvsiSyUpJdN6
+sujr39TQJGKwIoK8rEMpnO/7KfIt0hUNuHRmXAYKSSkMVIjqzdv+nSiX5A5LRHb/DPqKxWmeITMH
+3Q==
+--00000000000099e137060905a2d2--
