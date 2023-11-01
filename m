@@ -2,139 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC2307DD857
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Oct 2023 23:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8CC47DDA5F
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Nov 2023 01:48:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346769AbjJaWcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Oct 2023 18:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50076 "EHLO
+        id S236795AbjKAAsm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Oct 2023 20:48:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344887AbjJaWcE (ORCPT
+        with ESMTP id S231947AbjKAAsl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Oct 2023 18:32:04 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8868EED
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 15:32:01 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 703A4C006F
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 22:31:59 +0000 (UTC)
-Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id F0B3613C2B0
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 15:31:58 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F0B3613C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1698791519;
-        bh=SQmlXZWbQrztkP/nzm6L8lLwm9wpkPmJN/oWJVtW8JY=;
-        h=Date:To:From:Subject:From;
-        b=A4zK6mT9TGGf7sgrjyYoRzAbhZGzq7+YYR3iJo2nyMkDHc2n4hOdyvLSP7RvMmdI8
-         CtdOTdFHDfshhBWeOIVtQPJqEm6mMSnsA8Lk0F9sgrwvpRGsLpF6WB2TL2xGDArTCQ
-         3q1p6j7b/vdPQnioIAAzXTVv1ixP7uV2XtYAHwrE=
-Message-ID: <eac89197-1faf-899b-c1eb-7de8fc8bd2c5@candelatech.com>
-Date:   Tue, 31 Oct 2023 15:31:58 -0700
+        Tue, 31 Oct 2023 20:48:41 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BCACEA
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Oct 2023 17:48:35 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3A10mJhQ5803123, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.93/5.92) with ESMTPS id 3A10mJhQ5803123
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 1 Nov 2023 08:48:19 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 1 Nov 2023 08:48:20 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 1 Nov 2023 08:48:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
+ 15.01.2375.007; Wed, 1 Nov 2023 08:48:19 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     Kalle Valo <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 1/2] wifi: rtw88: simplify rtw_chip_cfg_csi_rate()
+Thread-Topic: [PATCH 1/2] wifi: rtw88: simplify rtw_chip_cfg_csi_rate()
+Thread-Index: AQHaCxP/7YRshr6njkC7FTt89gksa7BkopFg
+Date:   Wed, 1 Nov 2023 00:48:19 +0000
+Message-ID: <41e756e2184e4b1fa3422fa5c682cf91@realtek.com>
+References: <20231030093144.82504-1-dmantipov@yandex.ru>
+In-Reply-To: <20231030093144.82504-1-dmantipov@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-originating-ip: [172.21.69.94]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antivirus-attachment-filter-interceptor-info: license violation
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   Ben Greear <greearb@candelatech.com>
-Subject: wireless-next plus hacks, iwl_dbg_tlv_add related memory debugging
- splat.
-Organization: Candela Technologies
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1698791520-Sjc72w4EbGxY
-X-MDID-O: us5;ut7;1698791520;Sjc72w4EbGxY;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I saw this while testing a kernel a great pile of debugging options turned on.
 
-This might be something I can actually debug, so I'll try to investigate it more.
 
-Oct 31 15:19:38 ct523c-2103 kernel: BUG kmalloc-96 (Tainted: G        W         ): Freepointer corrupt
-Oct 31 15:19:38 ct523c-2103 kernel: -----------------------------------------------------------------------------
-Oct 31 15:19:38 ct523c-2103 kernel: Allocated in iwl_dbg_tlv_add+0x27/0xc0 [iwlwifi] age=18446726515884352973 cpu=4088 pid=990
-Oct 31 15:19:38 ct523c-2103 kernel: adjust-he-cap, disabling 160Mhz.
-Oct 31 15:19:38 ct523c-2103 kernel:  __kmalloc+0x4b/0x150
-Oct 31 15:19:38 ct523c-2103 kernel:  iwl_dbg_tlv_add+0x27/0xc0 [iwlwifi]
-Oct 31 15:19:38 ct523c-2103 kernel:  _iwl_dbg_tlv_time_point+0x14c2/0x1660 [iwlwifi]
-Oct 31 15:19:38 ct523c-2103 kernel:  iwl_run_unified_mvm_ucode+0x171/0x4c0 [iwlmvm]
-Oct 31 15:19:38 ct523c-2103 kernel:  iwl_run_init_mvm_ucode+0x3e7/0x620 [iwlmvm]
-Oct 31 15:19:38 ct523c-2103 kernel:  iwl_mvm_start_get_nvm+0xff/0x380 [iwlmvm]
-Oct 31 15:19:38 ct523c-2103 kernel:  iwl_op_mode_mvm_start+0x1119/0x1460 [iwlmvm]
-Oct 31 15:19:38 ct523c-2103 kernel:  _iwl_op_mode_start+0x197/0x1e0 [iwlwifi]
-Oct 31 15:19:38 ct523c-2103 kernel:  iwl_opmode_register+0x84/0x110 [iwlwifi]
-Oct 31 15:19:38 ct523c-2103 kernel:  0xffffffffa1ac801d
-Oct 31 15:19:38 ct523c-2103 kernel:  do_one_initcall+0xb4/0x380
-Oct 31 15:19:38 ct523c-2103 kernel:  do_init_module+0x130/0x360
-Oct 31 15:19:38 ct523c-2103 kernel:  load_module+0x3263/0x3440
-Oct 31 15:19:38 ct523c-2103 kernel:  init_module_from_file+0xcc/0x120
-Oct 31 15:19:38 ct523c-2103 kernel:  idempotent_init_module+0x1ae/0x3e0
-Oct 31 15:19:38 ct523c-2103 kernel:  __x64_sys_finit_module+0x73/0xc0
-Oct 31 15:19:38 ct523c-2103 kernel: Slab 0xffffea0004ade580 objects=37 used=18 fp=0xffff88812b796cb0 
-flags=0x5fff8000000840(slab|head|node=0|zone=2|lastcpupid=0x3fff)
-Oct 31 15:19:38 ct523c-2103 kernel: Object 0xffff88812b796878 @offset=2168 fp=0x00000ff82b796950
-Oct 31 15:19:38 ct523c-2103 kernel: Redzone  ffff88812b796870: cc cc cc cc cc cc cc cc                          ........
-Oct 31 15:19:38 ct523c-2103 kernel: Object   ffff88812b796878: 40 8e 12 cb 81 88 ff ff f5 5a 00 00 ca 02 50 06  @........Z....P.
-Oct 31 15:19:38 ct523c-2103 kernel: Object   ffff88812b796888: 09 00 00 01 48 00 00 00 01 00 00 00 00 00 00 00  ....H...........
-Oct 31 15:19:38 ct523c-2103 kernel: Object   ffff88812b796898: 08 00 00 00 0a 1a 00 00 03 00 01 00 00 00 00 00  ................
-Oct 31 15:19:38 ct523c-2103 kernel: Object   ffff88812b7968a8: ff ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00  ................
-Oct 31 15:19:38 ct523c-2103 kernel: Object   ffff88812b7968b8: 00 00 00 00 01 00 01 04 01 00 00 f0 f8 0f 00 00  ................
-Oct 31 15:19:38 ct523c-2103 kernel: Object   ffff88812b7968c8: cc cc cc cc cc cc cc cc cc cc cc cc f8 0f 00 00  ................
-Oct 31 15:19:38 ct523c-2103 kernel: Redzone  ffff88812b7968d8: cc cc cc cc cc cc cc cc                          ........
-Oct 31 15:19:38 ct523c-2103 kernel: Padding  ffff88812b79693c: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a              ZZZZZZZZZZZZ
-Oct 31 15:19:38 ct523c-2103 kernel: CPU: 0 PID: 23351 Comm: pkill Tainted: G        W          6.6.0-rc5+ #8
-Oct 31 15:19:38 ct523c-2103 kernel: Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/21/2023
-Oct 31 15:19:38 ct523c-2103 kernel: Call Trace:
-Oct 31 15:19:38 ct523c-2103 kernel:  <TASK>
-Oct 31 15:19:38 ct523c-2103 kernel:  dump_stack_lvl+0x57/0x90
-Oct 31 15:19:38 ct523c-2103 kernel:  check_object+0x14e/0x310
-Oct 31 15:19:38 ct523c-2103 kernel:  free_to_partial_list+0x1ff/0x5b0
-Oct 31 15:19:38 ct523c-2103 kernel:  ? qlist_free_all+0x68/0x190
-Oct 31 15:19:38 ct523c-2103 kernel:  qlist_free_all+0x6d/0x190
-Oct 31 15:19:38 ct523c-2103 kernel:  ? _raw_spin_unlock_irqrestore+0x2b/0x50
-Oct 31 15:19:38 ct523c-2103 kernel:  kasan_quarantine_reduce+0x18a/0x1d0
-Oct 31 15:19:38 ct523c-2103 kernel:  __kasan_slab_alloc+0x46/0x70
-Oct 31 15:19:38 ct523c-2103 kernel:  kmem_cache_alloc+0x111/0x310
-Oct 31 15:19:38 ct523c-2103 kernel:  ? mntput_no_expire+0xf0/0x5d0
-Oct 31 15:19:38 ct523c-2103 kernel:  ? getname_flags.part.0+0x34/0x240
-Oct 31 15:19:38 ct523c-2103 kernel:  ? mark_held_locks+0x24/0x90
-Oct 31 15:19:38 ct523c-2103 kernel:  getname_flags.part.0+0x34/0x240
-Oct 31 15:19:38 ct523c-2103 kernel:  ? build_open_flags+0x1d9/0x240
-Oct 31 15:19:38 ct523c-2103 kernel:  do_sys_openat2+0xc6/0x130
-Oct 31 15:19:38 ct523c-2103 kernel:  ? build_open_flags+0x240/0x240
-Oct 31 15:19:38 ct523c-2103 kernel:  ? debug_objects_oom+0x220/0x220
-Oct 31 15:19:38 ct523c-2103 kernel:  ? lockdep_hardirqs_on_prepare+0x132/0x200
-Oct 31 15:19:38 ct523c-2103 kernel:  ? percpu_counter_add_batch+0xd0/0x120
-Oct 31 15:19:38 ct523c-2103 kernel:  __x64_sys_openat+0xe0/0x130
-Oct 31 15:19:38 ct523c-2103 kernel:  ? __x64_compat_sys_openat+0x130/0x130
-Oct 31 15:19:38 ct523c-2103 kernel:  ? __call_rcu_common.constprop.0+0x220/0x480
-Oct 31 15:19:38 ct523c-2103 kernel:  ? lockdep_hardirqs_on_prepare+0x132/0x200
-Oct 31 15:19:38 ct523c-2103 kernel:  ? syscall_enter_from_user_mode+0x1c/0x50
-Oct 31 15:19:38 ct523c-2103 kernel:  do_syscall_64+0x34/0xb0
-Oct 31 15:19:38 ct523c-2103 kernel:  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-Oct 31 15:19:38 ct523c-2103 kernel: RIP: 0033:0x7fbc6c9018e8
-Oct 31 15:19:38 ct523c-2103 kernel: Code: f0 25 00 00 41 00 3d 00 00 41 00 74 45 64 8b 04 25 18 00 00 00 85 c0 75 69 89 da 48 89 ee bf 9c ff ff ff b8 01 01 00 
-00 0f 05 <48> 3d 00 f0 ff ff 0f 87 8c 00 00 00 48 8b 54 24 28 64 48 2b 14 25
-Oct 31 15:19:38 ct523c-2103 kernel: RSP: 002b:00007ffcd6384370 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-Oct 31 15:19:38 ct523c-2103 kernel: RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fbc6c9018e8
-Oct 31 15:19:38 ct523c-2103 kernel: RDX: 0000000000000000 RSI: 00007ffcd6384400 RDI: 00000000ffffff9c
-Oct 31 15:19:38 ct523c-2103 kernel: RBP: 00007ffcd6384400 R08: 0000000000000000 R09: 0000000000000073
-Oct 31 15:19:38 ct523c-2103 kernel: R10: 0000000000000000 R11: 0000000000000246 R12: 0000562d00eb8ac0
-Oct 31 15:19:38 ct523c-2103 kernel: R13: 0000000000000000 R14: 0000000000000020 R15: 000000000001ffc5
-Oct 31 15:19:38 ct523c-2103 kernel:  </TASK>
-Oct 31 15:19:38 ct523c-2103 kernel: FIX kmalloc-96: Object at 0xffff88812b796878 not freed
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+> -----Original Message-----
+> From: Dmitry Antipov <dmantipov@yandex.ru>
+> Sent: Monday, October 30, 2023 5:32 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; Dmitry Antipov <dmantipov@yandex.ru>
+> Subject: [PATCH 1/2] wifi: rtw88: simplify rtw_chip_cfg_csi_rate()
+> 
+> Since fix rate flag in 'rtw_dynamic_csi_rate()' is a hardcoded
+> zero and actually unused in an underlying 'rtw_bf_cfg_csi_rate()',
+> simplify 'rtw_chip_cfg_csi_rate()' by dropping last argument and
+> adjust '(*cfg_csi_rate)()' of 'struct rtw_chip_ops' accordingly.
+> 
+> Briefly tested on the following USB dongle:
+> 
+> usb 3-6: new high-speed USB device number 7 using xhci_hcd
+> usb 3-6: New USB device found, idVendor=0bda, idProduct=b812, bcdDevice=2.10
+> usb 3-6: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+> usb 3-6: Product: USB3.0 802.11ac 1200M Adapter
+> usb 3-6: Manufacturer: Realtek
+> usb 3-6: SerialNumber: 123456
+> rtw_8822bu 3-6:1.0: Firmware version 27.2.0, H2C version 13
+> usbcore: registered new interface driver rtw_8822bu
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+>  drivers/net/wireless/realtek/rtw88/bf.c   | 2 +-
+>  drivers/net/wireless/realtek/rtw88/bf.h   | 9 +++++----
+>  drivers/net/wireless/realtek/rtw88/main.c | 4 +---
+>  drivers/net/wireless/realtek/rtw88/main.h | 2 +-
+>  4 files changed, 8 insertions(+), 9 deletions(-)
+> 
+
+[...]
+
+> diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+> index 4a33d2e47f33..4ea2f09709b0 100644
+> --- a/drivers/net/wireless/realtek/rtw88/main.c
+> +++ b/drivers/net/wireless/realtek/rtw88/main.c
+> @@ -170,7 +170,6 @@ struct rtw_watch_dog_iter_data {
+>  static void rtw_dynamic_csi_rate(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif)
+>  {
+>         struct rtw_bf_info *bf_info = &rtwdev->bf_info;
+> -       u8 fix_rate_enable = 0;
+
+rtw88 is still active and possible to tune this parameter for certain circumstances,
+and this parameter is helpful to understand current configuration, so I would tend
+to not merge this patchset. 
+
+Ping-Ke 
 
