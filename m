@@ -2,103 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 062827DE19E
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Nov 2023 14:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED0527DE226
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Nov 2023 15:14:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343969AbjKANZy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Nov 2023 09:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39404 "EHLO
+        id S1343738AbjKAODh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Nov 2023 10:03:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343828AbjKANZx (ORCPT
+        with ESMTP id S230460AbjKAODg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Nov 2023 09:25:53 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F0EE110
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Nov 2023 06:25:50 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-53dd3f169d8so10661563a12.3
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Nov 2023 06:25:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698845149; x=1699449949; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=l7dYfY4/Q3qjzALeokbjPzM7YiHGzhe3bW4UqrFKSJw=;
-        b=IB5LCa5/bnTe0R8tpO8g8ptj1B6V0X2YHSOtqCRn7zlbMHEhXG0MC/OwEmxn0KyxYw
-         wr1ptuV6a2IKFVjZWnuEKRJvuThsTmpriKIbwzNrybFZNATp//ASBbegFCLqITRI7XsR
-         oPKZI8YhX1hzeDtlyb/TGcd993NKttYs/m4YuG5GStvfr49TofEembCZB60bwGA3FZOn
-         BgVwatRLaD/kCC3/pES6Jw+I07WlVV0FTgpA9VMixcbH1uHy2WwPCU6aYZPD+ixTKwgX
-         G0IZJkeS7Au0SUNYvey55j4xG/+1n8ZQBHzUoStWINVuwk7doCMZMoAq/mgwVXP26Bxq
-         FmiQ==
+        Wed, 1 Nov 2023 10:03:36 -0400
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00E7310C;
+        Wed,  1 Nov 2023 07:03:33 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-9ae2cc4d17eso1050002066b.1;
+        Wed, 01 Nov 2023 07:03:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698845149; x=1699449949;
+        d=1e100.net; s=20230601; t=1698847412; x=1699452212;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l7dYfY4/Q3qjzALeokbjPzM7YiHGzhe3bW4UqrFKSJw=;
-        b=H+ajxoGo4pZqu/5c6Ivl/bkIMnUFF9cy0L7Vm9Z7dNak7jcUjxfDkE5UaG2oID8aRk
-         cNRh10tu1HbAnkt2Z01VZYN1r+uIminl41ncVYVDE6kUFOzxCGSdqeSB+IN19xPgCPkm
-         vkmzzgs0OJEqtcFAs/z1gCSS9MT7kZ9Ub+YoZ6xRReAPY5ABARznE4/aJQFmAV5wKnG/
-         67nT0aPOFsjDIOzxI/seCp5yUibSnuc5stvgPWvVDAenxfGjZohKeDieMBMGGzwVee9I
-         w0wZe8UJKZgqXmzsluNtEPucLhFfa4R/dhGX/vG8kSb3Z+eh5glRDfD4Ka3mDPx9nFeO
-         KqVQ==
-X-Gm-Message-State: AOJu0YxfYkCG/vhFFqaZTn+doGCBRDcF6ZcQfoqQUaOB7wVZoy9mnrrH
-        tdRbY5rlfEdysn4qWjzgiXW8HEmkPTfY3ugUXQI82LDB
-X-Google-Smtp-Source: AGHT+IHVGv31WPL8Nlk0KbvJTRIVmJetZhIUBJzgHC7X2v+WJQCembmW/pG/xLGlRm1yObDkrqYrn7oBwaKHp4wqgog=
-X-Received: by 2002:a50:9e05:0:b0:543:72cf:5056 with SMTP id
- z5-20020a509e05000000b0054372cf5056mr3816405ede.9.1698845148625; Wed, 01 Nov
- 2023 06:25:48 -0700 (PDT)
+        bh=Gisn127HjRfCqlCw+GGWcrZ4rm16EE8igW2fuBilOVI=;
+        b=Cngm8zDawke4xt581k6Sdq3qeqirK7LAldJUeDM9lCeJ7Ug3/4mxmba7pHZWpk66lg
+         atrGpaKYoufiEAyEC+ow50yG9XgEgeSceIAzH4vmHVaBxMfhkbhU/gBIAIPjARKqFaM0
+         QDHk1zaZ0GYxeOksHYebz6OxLf5mHOg6W8w/XhW3KpUWf0EHspxPHAud6ZcJt415T2Sc
+         ajsHVpBn5CtWqFDy/QMWczmnN9h3EdFXiGPlofzAU+rMk5kgJpT7kNFOU1UTE/B6R4vn
+         6+4QmZ3cJlusWZKqZJW4zDTXjMS3iyuMvOBo4lS6ht9RhaGG3OW9Z2sgoNvYNQZJsIqZ
+         OWlQ==
+X-Gm-Message-State: AOJu0YxZhozNMhOYfwPTp29GJ0aEBnUxWZWpYcRiebOlS/cU30GkM697
+        h8QVf95hD9zrjfoaeznwkQFo7sApus2jAg==
+X-Google-Smtp-Source: AGHT+IEV2Boyth/nieT2YIpyOSd7xpQoTtK8Nx/oZCoOmPIeu6bUdxKa1KTVU7d4gy65UJApHwxVCA==
+X-Received: by 2002:a17:907:a0a:b0:9c3:e158:316a with SMTP id bb10-20020a1709070a0a00b009c3e158316amr2069997ejc.68.1698847411459;
+        Wed, 01 Nov 2023 07:03:31 -0700 (PDT)
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
+        by smtp.gmail.com with ESMTPSA id rn20-20020a170906d93400b009929d998abcsm2398281ejb.209.2023.11.01.07.03.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Nov 2023 07:03:31 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-9a58dbd5daeso1047120466b.2;
+        Wed, 01 Nov 2023 07:03:31 -0700 (PDT)
+X-Received: by 2002:a17:907:764c:b0:9b8:b683:5837 with SMTP id
+ kj12-20020a170907764c00b009b8b6835837mr1531634ejc.46.1698847411026; Wed, 01
+ Nov 2023 07:03:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAKPbyNCpkGB3e3adK1+kPrQnGq6dfO8cEEUyULowgaMu4c_9jg@mail.gmail.com>
- <58cbb526061446d6b236dd83a6a77b96@realtek.com>
-In-Reply-To: <58cbb526061446d6b236dd83a6a77b96@realtek.com>
-From:   4javier <4javiereg4@gmail.com>
-Date:   Wed, 1 Nov 2023 14:25:37 +0100
-Message-ID: <CAKPbyNBA5v-=XOK+ZxvpmyRSbwqZBAnf5mUgvizeNA1CrpxO4g@mail.gmail.com>
-Subject: Re: Realtek 8852BE: bluetooth interference with wifi power_save
- enabled on Linux
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20231101095533.45258-1-tom@baremetal.dev> <87o7gdbog8.fsf@kernel.org>
+In-Reply-To: <87o7gdbog8.fsf@kernel.org>
+From:   Tom Waldron <tom@baremetal.dev>
+Date:   Wed, 1 Nov 2023 14:03:19 +0000
+X-Gmail-Original-Message-ID: <CANjHDnCFMVayX7fHBYJc8GwdNS8wrnrJYMx-0ZrB++9kP2ojUQ@mail.gmail.com>
+Message-ID: <CANjHDnCFMVayX7fHBYJc8GwdNS8wrnrJYMx-0ZrB++9kP2ojUQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] wifi: mt76: mt7921: Add a new VID/PID 0b48/7922 for MT7922
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, nbd@nbd.name,
+        lorenzo@kernel.org, ryder.lee@mediatek.com,
+        shayne.chen@mediatek.com, sean.wang@mediatek.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks a lot.
+Yes, it seems I missed some of the output from get_maintainer.pl and
+only caught the last few lines. I've CC's some of the others including
+Felix & Lorenzo.
 
-I just tried that new firmware and had no playback issue for at least
-an hour of playing.
-I didn't have the chance to test mic yet, but I'm confident the
-problem is solved for that too.
-If I'm wrong, I'll reply here again.
+Thank you for spotting this, Kalle.
 
-Cheers.
 
-Il giorno mer 1 nov 2023 alle ore 01:52 Ping-Ke Shih
-<pkshih@realtek.com> ha scritto:
+On Wed, 1 Nov 2023 at 13:19, Kalle Valo <kvalo@kernel.org> wrote:
 >
+> Tom Waldron <tom@baremetal.dev> writes:
 >
->
-> > -----Original Message-----
-> > From: 4javier <4javiereg4@gmail.com>
-> > Sent: Wednesday, October 4, 2023 1:47 AM
-> > To: linux-wireless@vger.kernel.org
-> > Subject: Realtek 8852BE: bluetooth interference with wifi power_save enabled on Linux
+> > Add VID/PID 0b48/7922 for MediaTek MT7922 wifi chip.
+> > Change tested on Redmi Book Pro 15 2023 (Fedora 38).
 > >
-> >
-> > Good morning
-> >
-> > I'm experiencing issues with this Realtek WiFi/BT comb chip on an HP 470 G9.
-> > My bluetooth device gets choppy audio when wifi_powersave is on.
+> > Signed-off-by: Tom Waldron <tom@baremetal.dev>
 >
-> I have uploaded new firmware [1] that I suppose it can fix this problem. Please
-> download and copy it to /lib/firmware/rtw89/rtw8852b_fw-1.bin
+> Should I take this to wireless? Felix&Lorenzo, ack?
 >
-> [1] https://lore.kernel.org/linux-wireless/baed3fc347269c3dd34244f34946e09dff183825.camel@realtek.com/T/#u
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
 >
-> Ping-Ke
->
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
