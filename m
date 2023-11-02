@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C61797DFBCF
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 22:00:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43E797DFBD6
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 22:02:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234460AbjKBVAd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Nov 2023 17:00:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40174 "EHLO
+        id S232106AbjKBVC0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Nov 2023 17:02:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234444AbjKBVAc (ORCPT
+        with ESMTP id S229698AbjKBVCZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Nov 2023 17:00:32 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DAB9196
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Nov 2023 14:00:23 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6b87c1edfd5so1292525b3a.1
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Nov 2023 14:00:22 -0700 (PDT)
+        Thu, 2 Nov 2023 17:02:25 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF6E3195
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Nov 2023 14:02:20 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-6c3077984e8so1367048b3a.0
+        for <linux-wireless@vger.kernel.org>; Thu, 02 Nov 2023 14:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1698958822; x=1699563622; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1698958940; x=1699563740; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E8KFumTag/+mfUr046qXGDZHDIauHHYyGcdwD8EXFRY=;
-        b=JZIyIVCwD0ECTxQVk3G1/Ci2yYOqLuqNmMu2KPCbmd4HFX/q2nNzTTZYxyfmFDLYg0
-         bgFDBtojDff9NEPVAdbup66Ulfsc/yAOnuKDctVk7jf6dalWD5meSdtrbkSTA7uqjiZK
-         3UFg71SQe1vaYzXXRWpxMU9Kz777urhB4z6ts=
+        bh=IPuGtKMPlEfvRS+P+xBusUQd48EgHVGydBMy1D5IEL4=;
+        b=eCOLRmCofS/3Ru4fUr+jV98QuZNjY+W6xFtaZwYepsCQIxArwfbuDQtmNEpEOK5cTT
+         vVvdYi7xaY9tdvuo89d0dVnJbpjFeo/XHDI1vrF1d6JsgU0DgDwF6sJ72LnCVxzbpBVR
+         4mPBusHKhtyx7b+9gynEH8ygpwxsHfjoG6gSk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698958822; x=1699563622;
+        d=1e100.net; s=20230601; t=1698958940; x=1699563740;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E8KFumTag/+mfUr046qXGDZHDIauHHYyGcdwD8EXFRY=;
-        b=guQsdtYB/p6c3dtwK8wIMmvYRiXYLf1i96rG7MqLwdA7umVDZ564bFp2pt7xwflllE
-         LueKRveS2hFf5rBaIhJb/+p0WjJxDZ5T1xVWCMBHHSoIPzf2793S+nXmVw3qUFrwYvOa
-         E5+y88nziQVhhb2hPTzXdryuy/W+LxfsO+W/9JfVOBo7HJ0br/I7ZzgdAoUdGpliz3oG
-         pJMfKIAoR6qzXHyR06GPZJdM+qyvCqR6CACjaBYTLVz5QVFmBeIGY6uT1NSX+GiWYP26
-         wMYnlL0JO4+ffFcdNw8GV5+y4XkDPaa+169MXqMKlcuIjCA7uTeRgfh9R0wpoh0aLT8S
-         Vw/g==
-X-Gm-Message-State: AOJu0Yzq2byAW5hJf4XDam8Fpwg2QRfx9WQjSZiWvlr2iejl2Y5XKg+g
-        uy/CAGHYc18spgUyKE9LJwJk6A==
-X-Google-Smtp-Source: AGHT+IHpWfHMpmZgu3Ki0ANwOyVLt9nZosdSKPzywMjZQkoftSaNFtV+rbheqzdq77GxD/borUX1wg==
-X-Received: by 2002:a05:6a21:18a:b0:181:74fe:ba83 with SMTP id le10-20020a056a21018a00b0018174feba83mr5241243pzb.40.1698958822357;
-        Thu, 02 Nov 2023 14:00:22 -0700 (PDT)
+        bh=IPuGtKMPlEfvRS+P+xBusUQd48EgHVGydBMy1D5IEL4=;
+        b=fGymATLXeIyPGJNK/e6UXuOAQGEGWwlyOtzHxCAB9t7rSIMsyGSmN+RV3Kg90z7Kb+
+         WJ5CFougPLFoCZvhH1eP7eSpIWJ6JbaMBOxQ/xGy1v6pKwIawEyt4JkSjcYzaBAOggsh
+         1LlhqIXhDVMeRixSnvm3J+nXxm7me/Lkw94e+RNSh9OzFFQgUhKwPVSVkyGHMFek7Usm
+         0K+DX7ndXZ1szEgSjMksZLlnw+bmuSVT9kh1mIbmWVbjann1JZKpJYyLFyoQyxy08j4H
+         pa69BfqAuU+2lGSlZW1Lw5hUvxRzaVX8fzgKCQrHGHU5GV3V8z52fLkyoQwFB4ULBSij
+         m0Mw==
+X-Gm-Message-State: AOJu0YxYBxd6kxcvNzvxkmXiBHtvudAA7aPGRxHMyk9pwvxWdrYza1rm
+        l14A+xwMRefJ077I2QVS5tig8Q==
+X-Google-Smtp-Source: AGHT+IFYvdfRwpri72fkum0U8llMGbXB5T3T/b0kSk4KbqyH+3NrsK9gYNXQO1FoJxEDxjHW0gjP7w==
+X-Received: by 2002:a05:6a00:2d0b:b0:692:6d3f:485b with SMTP id fa11-20020a056a002d0b00b006926d3f485bmr18420114pfb.3.1698958940181;
+        Thu, 02 Nov 2023 14:02:20 -0700 (PDT)
 Received: from localhost ([2620:15c:9d:2:a601:95c2:1e12:1936])
-        by smtp.gmail.com with UTF8SMTPSA id b7-20020a62cf07000000b0068842ebfd10sm174384pfg.160.2023.11.02.14.00.19
+        by smtp.gmail.com with UTF8SMTPSA id fh21-20020a056a00391500b006b22218cb92sm172254pfb.43.2023.11.02.14.02.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Nov 2023 14:00:20 -0700 (PDT)
-Date:   Thu, 2 Nov 2023 14:00:17 -0700
+        Thu, 02 Nov 2023 14:02:19 -0700 (PDT)
+Date:   Thu, 2 Nov 2023 14:02:18 -0700
 From:   Brian Norris <briannorris@chromium.org>
 To:     Karel Balej <balejk@matfyz.cz>
 Cc:     Kalle Valo <kvalo@kernel.org>,
@@ -63,41 +63,35 @@ Cc:     Kalle Valo <kvalo@kernel.org>,
         linux-mmc@vger.kernel.org,
         Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 0/2] net: mwifiex: add support for the SD8777 chipset
-Message-ID: <ZUQN4Ua8byy-Fsy8@google.com>
+Subject: Re: [PATCH 1/2] dt-bindings: mwifiex: document use with the SD8777
+ chipset
+Message-ID: <ZUQOWtIofdSDHi3t@google.com>
 References: <20231029111807.19261-1-balejk@matfyz.cz>
+ <20231029111807.19261-2-balejk@matfyz.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231029111807.19261-1-balejk@matfyz.cz>
+In-Reply-To: <20231029111807.19261-2-balejk@matfyz.cz>
 X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Oct 29, 2023 at 12:08:15PM +0100, Karel Balej wrote:
-> The driver requires proprietary firmware which is not yet part of
-> linux-firmware, but it is packaged in postmarketOS.
+On Sun, Oct 29, 2023 at 12:08:16PM +0100, Karel Balej wrote:
+> Document the corresponding compatible string for the use of this driver
+> with the Marvell SD8777 wireless chipset.
+> 
+> Signed-off-by: Karel Balej <balejk@matfyz.cz>
 
-You gotta get that done:
+FWIW, the binding looks fine from mwifiex point of view, so:
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#new_driver
+Acked-by: Brian Norris <briannorris@chromium.org>
 
-"have firmware images submitted for linux-firmware with an acceptable
-license allowing redistribution"
-
-We can't have a driver requesting a mrvl/sd8777_uapsta.bin firmware that
-isn't available for anyone [1].
-
-Until that's done, NAK.
-
-[1] I think you might be referring to this:
-https://github.com/xcover3/android_vendor_samsung_xcover3lte/commit/6e324b43b32dc607327d89148dd5d83a14429ee6
-
-But I don't see any license info, so I don't think that's going to be
-appropriate for linux-firmware.
+But see cover letter. We can't merge driver support without a
+linux-firmware-compatible (or otherwise redistributable) firmware, so
+NAK for the series.
