@@ -2,77 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BF347DF1CD
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 12:56:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9EBA7DF219
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 13:16:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345307AbjKBL4S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Nov 2023 07:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50864 "EHLO
+        id S235207AbjKBMQs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Nov 2023 08:16:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229789AbjKBL4R (ORCPT
+        with ESMTP id S235163AbjKBMQi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Nov 2023 07:56:17 -0400
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5874EC2
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Nov 2023 04:56:11 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:c008:0:640:847d:0])
-        by forward100b.mail.yandex.net (Yandex) with ESMTP id B12CF60A70;
-        Thu,  2 Nov 2023 14:56:08 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 7uVw5Z3Wna60-2IEMiWZP;
-        Thu, 02 Nov 2023 14:56:08 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1698926168; bh=kYOqe9ItMvuHNpvGGEg15k4BHBVjjZXqImvg0hwSvF0=;
-        h=Message-ID:Date:Cc:Subject:To:From;
-        b=wlzYQ2yvRMuDZcFKXxwr7/6M3ftTqK3oAwXBc4xW+MUAxr40lPMMU8Xb/0i1UzYAU
-         pzmAJ93KIAyWpyrBK5gsqTHDqDDFA5fPr57CItBe++FHn0gg5Cya0Oua5ko/eNDcGT
-         g+IlWg/2XTEy+xK277u8rU/D6pfw/7ZUgEkastes=
-Authentication-Results: mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: rtw88: simplify __rtw_tx_work()
-Date:   Thu,  2 Nov 2023 14:55:55 +0300
-Message-ID: <20231102115606.69838-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
+        Thu, 2 Nov 2023 08:16:38 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70DBDD4A;
+        Thu,  2 Nov 2023 05:05:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=HntS3je0QXLdwZ1+s0cY5G8BrYYXr4+VZLC8JT4/rII=;
+        t=1698926705; x=1700136305; b=NKDhxjaAUuI3JDJyd63RPVH0Ptk1lRm3c4N4FLFL7HCbwP3
+        qad+oA1OBfZi6Pky9vv3z6SziT5Tjd9TVHB6nWBQzJsYWyHLEgeudp2iHvbLjgYVtS/7eXlPXj4xU
+        y2BFi3iZAJqmM7w/HILq0SawjaPkjJj1vYppozyY40oCM8NsShLWFSKrP+rfTNL0h/sQygkK1Ztqm
+        ok/jOPXAeC3/fv6jn2QJHUAK2Mr5zgxFFmBJUtf+gTO9UQxwAkQQJtSSdUwnW9oyCN+Pd2BLl7PSH
+        iptIrFL3Erv1RKZ17+aJNFvRfKnL0vEGabYlOX21LpETe+MKUKWLvjqe/qRHcUSw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qyWRS-0000000BHyX-0ieC;
+        Thu, 02 Nov 2023 13:04:54 +0100
+Message-ID: <b080757463a1f55a38484e3ea39fd3697e98409e.camel@sipsolutions.net>
+Subject: Re: [Patch v13 4/9] wifi: mac80211: Add support for WBRF features
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Ma Jun <Jun.Ma2@amd.com>
+Cc:     amd-gfx@lists.freedesktop.org, lenb@kernel.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alexander.deucher@amd.com, Lijo.Lazar@amd.com,
+        mario.limonciello@amd.com, Netdev <netdev@vger.kernel.org>,
+        linux-wireless@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, majun@amd.com,
+        Evan Quan <quanliangl@hotmail.com>
+Date:   Thu, 02 Nov 2023 13:04:52 +0100
+In-Reply-To: <5b8ea81c-dd4c-7f2a-c862-b9a0aab16044@linux.intel.com>
+References: <20231030071832.2217118-1-Jun.Ma2@amd.com>
+         <20231030071832.2217118-5-Jun.Ma2@amd.com>
+         <5b8ea81c-dd4c-7f2a-c862-b9a0aab16044@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since 'ieee80211_txq_get_depth()' allows NULL for 2nd and
-3rd arguments, simplify '__rtw_tx_work()' by dropping unused
-'byte_cnt'. Compile tested only.
+On Thu, 2023-11-02 at 13:55 +0200, Ilpo J=C3=A4rvinen wrote:
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/realtek/rtw88/tx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index f63900b6621d..c02ac673be32 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -656,9 +656,8 @@ void __rtw_tx_work(struct rtw_dev *rtwdev)
- 	list_for_each_entry_safe(rtwtxq, tmp, &rtwdev->txqs, list) {
- 		struct ieee80211_txq *txq = rtwtxq_to_txq(rtwtxq);
- 		unsigned long frame_cnt;
--		unsigned long byte_cnt;
- 
--		ieee80211_txq_get_depth(txq, &frame_cnt, &byte_cnt);
-+		ieee80211_txq_get_depth(txq, &frame_cnt, NULL);
- 		rtw_txq_push(rtwdev, rtwtxq, frame_cnt);
- 
- 		list_del_init(&rtwtxq->list);
--- 
-2.41.0
+[please trim your quotes]
 
+> > +static void get_chan_freq_boundary(u32 center_freq, u32 bandwidth, u64=
+ *start, u64 *end)
+> > +{
+> > +	bandwidth =3D MHZ_TO_KHZ(bandwidth);
+> > +	center_freq =3D MHZ_TO_KHZ(center_freq);
+>=20
+> Please use include/linux/units.h ones for these too.
+
+Now we're feature creeping though - this has existed for *years* in the
+wireless stack with many instances? We can convert them over, I guess,
+but not sure that makes much sense here - we'd want to add such macros
+to units.h, but ... moving them can be independent of this patch?
+
+johannes
