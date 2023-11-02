@@ -2,105 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A85A17DFAB9
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 20:14:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C61797DFBCF
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 22:00:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233206AbjKBTOa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Nov 2023 15:14:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45890 "EHLO
+        id S234460AbjKBVAd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Nov 2023 17:00:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbjKBTO3 (ORCPT
+        with ESMTP id S234444AbjKBVAc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Nov 2023 15:14:29 -0400
-Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B561C188;
-        Thu,  2 Nov 2023 12:14:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-        s=mail; t=1698952460;
-        bh=O7wEcDJtrGJ2yEwB0sEkgTD3GrHwoBv5RI3h12B/TWg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mPDbYyzj2o7kfdQXXedsrUe8Ts0XLpOU4a2ChB6jMnNoFOwzBU97iZ5d7QZ00ekr4
-         BirHopLx8Qy05TCzR71Ua/aGkDs4JdExXFm45Bsz8W5tT/23QYJSV2X/Br3bfo9uKn
-         7bmJ/7HLYGg+8BnqSk72TpcADtK5s4dA533fXfgA=
-Date:   Thu, 2 Nov 2023 20:14:19 +0100
-From:   Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To:     Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Thu, 2 Nov 2023 17:00:32 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DAB9196
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Nov 2023 14:00:23 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6b87c1edfd5so1292525b3a.1
+        for <linux-wireless@vger.kernel.org>; Thu, 02 Nov 2023 14:00:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1698958822; x=1699563622; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=E8KFumTag/+mfUr046qXGDZHDIauHHYyGcdwD8EXFRY=;
+        b=JZIyIVCwD0ECTxQVk3G1/Ci2yYOqLuqNmMu2KPCbmd4HFX/q2nNzTTZYxyfmFDLYg0
+         bgFDBtojDff9NEPVAdbup66Ulfsc/yAOnuKDctVk7jf6dalWD5meSdtrbkSTA7uqjiZK
+         3UFg71SQe1vaYzXXRWpxMU9Kz777urhB4z6ts=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698958822; x=1699563622;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E8KFumTag/+mfUr046qXGDZHDIauHHYyGcdwD8EXFRY=;
+        b=guQsdtYB/p6c3dtwK8wIMmvYRiXYLf1i96rG7MqLwdA7umVDZ564bFp2pt7xwflllE
+         LueKRveS2hFf5rBaIhJb/+p0WjJxDZ5T1xVWCMBHHSoIPzf2793S+nXmVw3qUFrwYvOa
+         E5+y88nziQVhhb2hPTzXdryuy/W+LxfsO+W/9JfVOBo7HJ0br/I7ZzgdAoUdGpliz3oG
+         pJMfKIAoR6qzXHyR06GPZJdM+qyvCqR6CACjaBYTLVz5QVFmBeIGY6uT1NSX+GiWYP26
+         wMYnlL0JO4+ffFcdNw8GV5+y4XkDPaa+169MXqMKlcuIjCA7uTeRgfh9R0wpoh0aLT8S
+         Vw/g==
+X-Gm-Message-State: AOJu0Yzq2byAW5hJf4XDam8Fpwg2QRfx9WQjSZiWvlr2iejl2Y5XKg+g
+        uy/CAGHYc18spgUyKE9LJwJk6A==
+X-Google-Smtp-Source: AGHT+IHpWfHMpmZgu3Ki0ANwOyVLt9nZosdSKPzywMjZQkoftSaNFtV+rbheqzdq77GxD/borUX1wg==
+X-Received: by 2002:a05:6a21:18a:b0:181:74fe:ba83 with SMTP id le10-20020a056a21018a00b0018174feba83mr5241243pzb.40.1698958822357;
+        Thu, 02 Nov 2023 14:00:22 -0700 (PDT)
+Received: from localhost ([2620:15c:9d:2:a601:95c2:1e12:1936])
+        by smtp.gmail.com with UTF8SMTPSA id b7-20020a62cf07000000b0068842ebfd10sm174384pfg.160.2023.11.02.14.00.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Nov 2023 14:00:20 -0700 (PDT)
+Date:   Thu, 2 Nov 2023 14:00:17 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Karel Balej <balejk@matfyz.cz>
+Cc:     Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rfkill: return ENOTTY on invalid ioctl
-Message-ID: <613039a4-41af-48ff-8113-3b0ee8077bcf@t-8ch.de>
-References: <20231101-rfkill-ioctl-enosys-v1-1-5bf374fabffe@weissschuh.net>
- <a069393c-86b3-ef79-82dd-0b60caf2a907@intel.com>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org,
+        Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 0/2] net: mwifiex: add support for the SD8777 chipset
+Message-ID: <ZUQN4Ua8byy-Fsy8@google.com>
+References: <20231029111807.19261-1-balejk@matfyz.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a069393c-86b3-ef79-82dd-0b60caf2a907@intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231029111807.19261-1-balejk@matfyz.cz>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi!
+On Sun, Oct 29, 2023 at 12:08:15PM +0100, Karel Balej wrote:
+> The driver requires proprietary firmware which is not yet part of
+> linux-firmware, but it is packaged in postmarketOS.
 
-On 2023-11-02 09:57:45+0100, Przemek Kitszel wrote:
-> On 11/1/23 20:41, Thomas Weißschuh wrote:
-> > For unknown ioctls the correct error is
-> > ENOTTY "Inappropriate ioctl for device".
-> 
-> For sure!
-> 
-> I would like to learn more of why this is not an UAPI breaking change?
+You gotta get that done:
 
-"break" would mean that some user application worked correctly before
-but does not do so anymore with this change.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#new_driver
 
-This seems highly unlikely and I was not able to find such an
-application via Debian code search.
+"have firmware images submitted for linux-firmware with an acceptable
+license allowing redistribution"
 
-In general I did *not* mark this change for stable so if some
-application would indeed break it gets detected before the patch hits
-a release.
+We can't have a driver requesting a mrvl/sd8777_uapsta.bin firmware that
+isn't available for anyone [1].
 
-> > 
-> > ENOSYS as returned before should only be used to indicate that a syscall
-> > is not available at all.
-> > 
-> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> > ---
-> >   net/rfkill/core.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-> > index 14cc8fe8584b..c3feb4f49d09 100644
-> > --- a/net/rfkill/core.c
-> > +++ b/net/rfkill/core.c
-> > @@ -1351,11 +1351,11 @@ static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
-> >   			     unsigned long arg)
-> >   {
-> >   	struct rfkill_data *data = file->private_data;
-> > -	int ret = -ENOSYS;
-> > +	int ret = -ENOTTY;
-> >   	u32 size;
-> >   	if (_IOC_TYPE(cmd) != RFKILL_IOC_MAGIC)
-> > -		return -ENOSYS;
-> > +		return -ENOTTY;
-> >   	mutex_lock(&data->mtx);
-> >   	switch (_IOC_NR(cmd)) {
-> > 
-> > ---
-> > base-commit: 7d461b291e65938f15f56fe58da2303b07578a76
-> > change-id: 20231101-rfkill-ioctl-enosys-00a2bb0a4ab1
-> > 
-> > Best regards,
-> 
+Until that's done, NAK.
+
+[1] I think you might be referring to this:
+https://github.com/xcover3/android_vendor_samsung_xcover3lte/commit/6e324b43b32dc607327d89148dd5d83a14429ee6
+
+But I don't see any license info, so I don't think that's going to be
+appropriate for linux-firmware.
