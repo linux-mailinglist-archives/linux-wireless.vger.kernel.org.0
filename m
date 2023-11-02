@@ -2,79 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B0827DF679
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 16:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A85A17DFAB9
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 20:14:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347591AbjKBPdm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Nov 2023 11:33:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53296 "EHLO
+        id S233206AbjKBTOa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Nov 2023 15:14:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347641AbjKBPd3 (ORCPT
+        with ESMTP id S229717AbjKBTO3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Nov 2023 11:33:29 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82B74194
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Nov 2023 08:33:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B5EC433CA;
-        Thu,  2 Nov 2023 15:33:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698939206;
-        bh=YSkyxTlpftdDqfkFADcgeMcrGL2jgJI037pt5vjQbnQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=uP+ZFFDt6A60vU/c+ND9HCqauis7ntCATYz7mBF0HL86s9MkY6+WQwyvgGJIe4z6g
-         CRlwRDO4UuTLIG/3nRk1kH2EdI8/h+YmFgIdzudTx6koiJexaXr1Z+FB3CchQlR6nG
-         pj3v9ohBBJD5yL9AySEXmUCW4lR72dhBZKRf+cgNAx0GzkuhJx3MZZ7qdd6uDd003v
-         s9dsOucSWUZlNm+hQ2R+CSY7VbirFQf/bbrlR+3M1cC6HcGxAHVXIKm7m1wfRAwmdD
-         uJr0aLfARWz6iwl1MlFsO03Ov0pgBynVV+YVx35bMAf07V2/gUnuliF+8euZSIi4qF
-         Yl3ZbCNGwMiTg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        P Praneesh <quic_ppranees@quicinc.com>
-Subject: Re: [PATCH 06/13] wifi: ath12k: Add logic to write QRTR node id to
- scratch
-References: <20231030222700.18914-1-quic_rajkbhag@quicinc.com>
-        <20231030222700.18914-7-quic_rajkbhag@quicinc.com>
-Date:   Thu, 02 Nov 2023 17:33:22 +0200
-In-Reply-To: <20231030222700.18914-7-quic_rajkbhag@quicinc.com> (Raj Kumar
-        Bhagat's message of "Tue, 31 Oct 2023 03:56:53 +0530")
-Message-ID: <87v8akuq4d.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Thu, 2 Nov 2023 15:14:29 -0400
+Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B561C188;
+        Thu,  2 Nov 2023 12:14:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+        s=mail; t=1698952460;
+        bh=O7wEcDJtrGJ2yEwB0sEkgTD3GrHwoBv5RI3h12B/TWg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mPDbYyzj2o7kfdQXXedsrUe8Ts0XLpOU4a2ChB6jMnNoFOwzBU97iZ5d7QZ00ekr4
+         BirHopLx8Qy05TCzR71Ua/aGkDs4JdExXFm45Bsz8W5tT/23QYJSV2X/Br3bfo9uKn
+         7bmJ/7HLYGg+8BnqSk72TpcADtK5s4dA533fXfgA=
+Date:   Thu, 2 Nov 2023 20:14:19 +0100
+From:   Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To:     Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rfkill: return ENOTTY on invalid ioctl
+Message-ID: <613039a4-41af-48ff-8113-3b0ee8077bcf@t-8ch.de>
+References: <20231101-rfkill-ioctl-enosys-v1-1-5bf374fabffe@weissschuh.net>
+ <a069393c-86b3-ef79-82dd-0b60caf2a907@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a069393c-86b3-ef79-82dd-0b60caf2a907@intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
+Hi!
 
-> From: P Praneesh <quic_ppranees@quicinc.com>
->
-> Currently only one MHI device is registered successfully on platform
-> having two or more identical MHI devices. This is beacuse QMI service
-> runs with identical QRTR node ID. And, qrtr-lookup cannot register
-> more than one QMI service with identical node ID.
->
-> Hence, generate a unique QRTR instance ID from PCIe domain number and
-> bus number. QMI allows node id to be written on scratch register.
-> Add logic to write QRTR node id to the register. It is available for
-> firmware to uniquely identify an instance.
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+On 2023-11-02 09:57:45+0100, Przemek Kitszel wrote:
+> On 11/1/23 20:41, Thomas Weißschuh wrote:
+> > For unknown ioctls the correct error is
+> > ENOTTY "Inappropriate ioctl for device".
+> 
+> For sure!
+> 
+> I would like to learn more of why this is not an UAPI breaking change?
 
-BTW we got a test report that this breaks WCN7850 support.
+"break" would mean that some user application worked correctly before
+but does not do so anymore with this change.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+This seems highly unlikely and I was not able to find such an
+application via Debian code search.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+In general I did *not* mark this change for stable so if some
+application would indeed break it gets detected before the patch hits
+a release.
+
+> > 
+> > ENOSYS as returned before should only be used to indicate that a syscall
+> > is not available at all.
+> > 
+> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> > ---
+> >   net/rfkill/core.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+> > index 14cc8fe8584b..c3feb4f49d09 100644
+> > --- a/net/rfkill/core.c
+> > +++ b/net/rfkill/core.c
+> > @@ -1351,11 +1351,11 @@ static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
+> >   			     unsigned long arg)
+> >   {
+> >   	struct rfkill_data *data = file->private_data;
+> > -	int ret = -ENOSYS;
+> > +	int ret = -ENOTTY;
+> >   	u32 size;
+> >   	if (_IOC_TYPE(cmd) != RFKILL_IOC_MAGIC)
+> > -		return -ENOSYS;
+> > +		return -ENOTTY;
+> >   	mutex_lock(&data->mtx);
+> >   	switch (_IOC_NR(cmd)) {
+> > 
+> > ---
+> > base-commit: 7d461b291e65938f15f56fe58da2303b07578a76
+> > change-id: 20231101-rfkill-ioctl-enosys-00a2bb0a4ab1
+> > 
+> > Best regards,
+> 
