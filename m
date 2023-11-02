@@ -2,77 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9C467DF471
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 15:00:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37BE77DF592
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 16:02:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235163AbjKBOAf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Nov 2023 10:00:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55292 "EHLO
+        id S233984AbjKBPCl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Nov 2023 11:02:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235129AbjKBOAe (ORCPT
+        with ESMTP id S229537AbjKBPCk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Nov 2023 10:00:34 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC37783
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Nov 2023 07:00:28 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-280137f1a1bso895974a91.1
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Nov 2023 07:00:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698933628; x=1699538428; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JNLytVSJlr1D0ot2ygWKsJu12BdCJtoL17C9W5FT6eY=;
-        b=i9Pt7t1cqSPlpRkofH00hs1bjhfmNzTFIQsm6ZPZwAloLTa24E/QSYz6qurEX+UgTV
-         KCHVnUzJXr0AtfEx3McwESTmisCqsNGCfyINndTRUaubh64P6Vl+U72qk3Z+4qAwTb66
-         kJE7w+x9SAueRGgrr20AQAYojK6dEQd8acfsuilhjrX/8WJm3WyNLZa3jR4YETSX91vp
-         Cs5m6z5WjnjWxjlXAawAYmRaxXAJdfl8jon2z2emnoYpzcQKXpyNzq2gWugWhBNmK3DW
-         qeuMnoOvx3/XkTZBYEPT0wj7ImL8mf1BWFQ8Ef89Yh8JWOvPfpHpxYwZDNi09GVkTqgt
-         akaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698933628; x=1699538428;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JNLytVSJlr1D0ot2ygWKsJu12BdCJtoL17C9W5FT6eY=;
-        b=SkXl2r0VzyMOGaXCGzj2I1uuqjtB6mk/On6+OyID4HWF5c9jOZZJvQVGKpDgwlrEZT
-         PH4Ev+s6bn5Os74iO7FIR39y223g/1TGzxvYIbWYstfvHfVxIMaNtGyXvsdITT3WqZZI
-         iZpo6H37JkYpBJjBpW/mvanivPqxTSaR5M1nv/gKGjjkAATjgSL5T8NkMZ1g4sBLVrk8
-         G6Qd2NCTPEiFAD4JwO/IaD+aclpxy4SwE0V77hVQIb+h82iYiYjBntHQsP3uDCQaWOV3
-         pUK9ECd4eI7xKL3kc9EBF42pQ4qvY6HuBzZBc2Qr/enW7Ophsx47nj3PNmlUo69HTrRr
-         8B3g==
-X-Gm-Message-State: AOJu0YzrOU0dlAei/1I/kTsPVivB7Q1Gd2D0C/6JLOyg9PkC3WpnpXJI
-        WiAGmSGfTIWZcYIag1NacxIJx9/iBs0rFbMEwyE=
-X-Google-Smtp-Source: AGHT+IEuXK1STSE08VJL3njFXiOmcw1unKGjwO0RHMLYJD+rGUd/eGEL3UW2vFmRMBz7m1PtADoTfQMhrJy2kyKciqA=
-X-Received: by 2002:a17:90b:111:b0:27d:c95:b0ad with SMTP id
- p17-20020a17090b011100b0027d0c95b0admr15193196pjz.21.1698933627436; Thu, 02
- Nov 2023 07:00:27 -0700 (PDT)
+        Thu, 2 Nov 2023 11:02:40 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDEBD187
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Nov 2023 08:02:33 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A2CtjcZ019322;
+        Thu, 2 Nov 2023 15:02:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=i8bu6OzOOokKbxYJkmLoobVMCZTR7aocliOXz74c27k=;
+ b=KjlrNpL/qkClJeY/Mh8TCVL+iQYbWgZgdkl5FCWESPs35Q9/uZfD46fhbBDWr/ysOUuZ
+ 4lI5NLPBnDV0vlokrL6vZ/RPWfLKaONYspiM8iFUDciJsoipMRnlsvl5asIxZY6nNdto
+ hofeKmTu6SR1X89xq2GOOA3EI6zr1zYqAHwrYnTpSqlMfisZeRAyJFnd2MPlBZM114Oh
+ dfONl4fOArju99wqin2o0aD1qMMUJhIdcx40uYB2AcyIjNI+tnMUhOtcK8HtXP4VR+U5
+ 3dcqteqyZLaZPtN19UyOdVaq5IaA9yKEickoFVytN866FPtP8OJtwd9xFZieb3aiZk9u WA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u47d50u4c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 02 Nov 2023 15:02:16 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3A2F2FJW015062
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 2 Nov 2023 15:02:15 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Thu, 2 Nov
+ 2023 08:02:14 -0700
+Message-ID: <f2f09cac-d364-46eb-9dbd-ca90ddea32f8@quicinc.com>
+Date:   Thu, 2 Nov 2023 08:02:14 -0700
 MIME-Version: 1.0
-Received: by 2002:a17:522:792:b0:51a:59a:4014 with HTTP; Thu, 2 Nov 2023
- 07:00:27 -0700 (PDT)
-Reply-To: oj616414@gmail.com
-From:   johnson pattaego <lenle.goungbiamam@gmail.com>
-Date:   Thu, 2 Nov 2023 14:00:27 +0000
-Message-ID: <CAL454wBXs1b8PUPjyKRXaaF0NZJ2KFiOdFyUyk7Z_70i2WyCzQ@mail.gmail.com>
-Subject: =?UTF-8?B?w5xkdsO2emzDtm0sLy8v?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: *
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath10k: simplify __ath10k_htt_tx_txq_recalc()
+Content-Language: en-US
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     Kalle Valo <kvalo@kernel.org>, <ath10k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+References: <20231102115459.69791-1-dmantipov@yandex.ru>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231102115459.69791-1-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: QlkItmYuzlJ9bw7LUcS_z8gS3cugohJN
+X-Proofpoint-ORIG-GUID: QlkItmYuzlJ9bw7LUcS_z8gS3cugohJN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-02_04,2023-11-02_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 mlxlogscore=456 bulkscore=0 adultscore=0 mlxscore=0
+ suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2311020121
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-=C3=9Cdv=C3=B6zl=C3=B6m, van egy v=C3=A1llalkoz=C3=A1som, amelyre =C3=BAgy =
-hivatkoztam r=C3=A1d, mint
-neked   ugyanaz a vezet=C3=A9kn=C3=A9v, mint a n=C3=A9hai =C3=BCgyfelem, de=
- a r=C3=A9szletek az
-al=C3=A1bbiak lesznek =C3=A9rtes=C3=ADtj=C3=BCk =C3=96nt, amikor meger=C5=
-=91s=C3=ADti ennek az e-mailnek
-a k=C3=A9zhezv=C3=A9tel=C3=A9t. =C3=9Cdv=C3=B6zlettel
+On 11/2/2023 4:54 AM, Dmitry Antipov wrote:
+> Since 'ieee80211_txq_get_depth()' allows NULL for 2nd and
+> 3rd arguments, simplify '__ath10k_htt_tx_txq_recalc()' by
+> dropping unused 'frame_cnt'. Compile tested only.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
