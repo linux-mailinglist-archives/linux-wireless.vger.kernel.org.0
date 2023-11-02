@@ -2,205 +2,315 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 270237DEE81
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 09:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E574A7DEF6F
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Nov 2023 11:05:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234509AbjKBI6G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Nov 2023 04:58:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47080 "EHLO
+        id S1346122AbjKBKD4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Nov 2023 06:03:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbjKBI6F (ORCPT
+        with ESMTP id S1346100AbjKBKDy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Nov 2023 04:58:05 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB28612C;
-        Thu,  2 Nov 2023 01:57:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698915479; x=1730451479;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=jjxDBOZdJc4vHbqVwB8kXxP8ncE4BsjrCVo2DpkDzms=;
-  b=lIgkbUYSFj9FAPckRaongu6sXEha3+hs+15XbxZqKsu7g39LAAkoJagq
-   yQVy3bHeJNm5g2Me+2F2Wyo5wRo6ypW017jaBuzoRHoTiAx61lRalV7pT
-   DBp0Wxb3JqrG0ISHKwoigpKLSsH2QLL+5YOFNHXfcLwUqX8OHAExVXbd0
-   ZF5ntqBuaMkErSMimq7kWYjILcJ2Wgbd8kvr17TGTXJU/gDcLxvAZxjlf
-   O4wxmVTQA63ysRCptzMIP3bCgfLDqiMTh6ZLL3wRXjQ7YwPEB7dSuKDzo
-   OyRhYcujoljqsqZO0Wq2J7EJs7EIdAWhD4NHA8dLTXecGP+dE6eM8oelY
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="373709795"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; 
-   d="scan'208";a="373709795"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2023 01:57:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="1008404181"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; 
-   d="scan'208";a="1008404181"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmsmga006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 Nov 2023 01:57:58 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Thu, 2 Nov 2023 01:57:58 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Thu, 2 Nov 2023 01:57:58 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.100)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+        Thu, 2 Nov 2023 06:03:54 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF1B139
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Nov 2023 03:03:44 -0700 (PDT)
+X-UUID: 12e7fbb6796711ee8051498923ad61e6-20231102
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ZW7oytBfEYIFtb17a2KbJQzgKcLYXCVLnxcs+UWC8N4=;
+        b=b7mgaGJZIt+Hz1hvfSM7BZC9RxY99rVCV9Avcmtnb9joaVoL/n+eWQyGz6n6i3BVcU1B3zRmWJ5ADNUtGJtZenid3yfa8I54PuCDDxjlBG2sq3saeq6JuImInIUrsuS729dNh/6U/gZFbO79R2pJgGEGojrdREIsp75ig2ojpts=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:c3f6a4b9-ef85-4cd4-8283-8d0fbf76d20d,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:364b77b,CLOUDID:bdc03172-1bd3-4f48-b671-ada88705968c,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+        NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 12e7fbb6796711ee8051498923ad61e6-20231102
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 42095070; Thu, 02 Nov 2023 18:03:30 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ MTKMBS14N2.mediatek.inc (172.21.101.76) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Thu, 2 Nov 2023 01:57:56 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DJua0yzd0ZXDU7EYzVZGPS1dpW2bS55Lgzfhii8i8A0u79mtW7E+QZGphe2nLpKrE5LugWjQAvD4CHqedNAw49TUWcE4J61gEaojD0uxQ8ToAstDTF8mxtCKch0w3TFwIzXemO9kPuMLZqSywdjKhf9dX3R4RqhfDgas5eDHkHRE+wpY5x9AqwHp/3BlfJeuTY6Cm1HiJiiGQ9pwo53BTGP+Wsl9DUW5AiqkAvkZCiT4NWapvYUlTTQbfpQtlvNKkJAxXbZ8Q0OvLXmen8x1/4/p1x/RFrIggVSpbfs/4K2VnYAjGP7VnT3FzDZZ8drx4yYMZYg1S4F4yh7WiOcGOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fto+A8RqjyHg5kbgDqcfPF2RfgokuvJFS5VzD9yGZ6I=;
- b=NO70sPeIJmw8eyKE9ZRVTmSNkTKi8kCksxNx35cIRiQJdMy2UgPrcB9H47niPaxLZ8mqCYbkqATKAAFZAFEmkiXhHXHp1J6x82wyEpbx1rzik+SAQo+Wyc7CHBxvA0FUV2ofsdI/bkhDlaUuAalNHdaWq9bArisH/hQV7fw6slGWC5ENm87vnXhNiqyJFqLrADjNJeUOl8WFyQmO8+w/Anakh7l0SEBR/BXBJPnAbBc3ZNs0CDcwfqQ6VpA3LVL6ABSTJrhHLmYCH+AcwlEpaixCq2MycatpIuGCT/82Nmcdn9uyr6ek2sRVJZhfMtvCa01INmPZCRsLO3veRdOGpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BYAPR11MB3672.namprd11.prod.outlook.com (2603:10b6:a03:fa::30)
- by PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.26; Thu, 2 Nov
- 2023 08:57:55 +0000
-Received: from BYAPR11MB3672.namprd11.prod.outlook.com
- ([fe80::4bff:ef3:3532:d7eb]) by BYAPR11MB3672.namprd11.prod.outlook.com
- ([fe80::4bff:ef3:3532:d7eb%5]) with mapi id 15.20.6954.021; Thu, 2 Nov 2023
- 08:57:54 +0000
-Message-ID: <a069393c-86b3-ef79-82dd-0b60caf2a907@intel.com>
-Date:   Thu, 2 Nov 2023 09:57:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH] rfkill: return ENOTTY on invalid ioctl
-To:     =?UTF-8?Q?Thomas_Wei=c3=9fschuh?= <linux@weissschuh.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20231101-rfkill-ioctl-enosys-v1-1-5bf374fabffe@weissschuh.net>
-Content-Language: en-US
-From:   Przemek Kitszel <przemyslaw.kitszel@intel.com>
-In-Reply-To: <20231101-rfkill-ioctl-enosys-v1-1-5bf374fabffe@weissschuh.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0037.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:48::19) To DM6PR11MB3674.namprd11.prod.outlook.com
- (2603:10b6:5:13d::11)
+ 15.2.1118.26; Thu, 2 Nov 2023 18:03:28 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 2 Nov 2023 18:03:27 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Allen Ye <allen.ye@mediatek.com>
+Subject: [PATCH 1/8] wifi: mt76: change txpower init to per-phy
+Date:   Thu, 2 Nov 2023 18:02:55 +0800
+Message-ID: <20231102100302.22160-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR11MB3672:EE_|PH8PR11MB8107:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8012d642-2ce1-4d03-5443-08dbdb81cc39
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: e+fv+F3YaLxqa75ZDIo7mhJcaIhgoMgM0FxMZ5BSDEyoDI5auoru9w9So13GZ/o9pmIrX2pHKrEk5Pn5ZbO9zZC8whY5e8PnTj78kBwbEGS54CN2TNUb17DUSTKEanLSABjyluRhdibMR++9R4NW6eYegiQGc3+VVlsn1n36by6bex+wV0QTNh8hMIIdStqWfAwdW4bHfPCEXMY9vs2PE1vM28cq8wfvGgy0D1KX4Lv3C2Ii7F9Li2OF3gu2D1PaZRhg3HLVvHc57L10GMS6SMmD7+2r2mwOQuqHTDfpMZmAxaSY0vYoMw6ZN+621TZeBmRIOjs475ySNF7vhGfRNyFcs2vFSxX+w48BMRm5vcNfB8CDULSnXEFEbNyrp07JTVTDg9DVmOu0uIVeeTqxFgI2ddAnPyDuY0r9KPFC/+PWZgEmQSUP/4bIVVHyo3IOwXAQ7iDeKyphClGlG+EuddWdKsLxerBsju+ecavxtL7kfW11a2GfaFf5KmYnZz1Np0ShobKwvdvUi4MBuogATOQO2LXqrN73+C31QWSOP6eGw4hNZqRdBmZxkpbuntmKCGnmz/fhGm9oWqR/P/3OtvvIem7CERavQtShqIb+Ywf+qnx+i3mnI0CjMp74N95fXJ+PM+GDA9AZavRWjVEf1Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3672.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(346002)(136003)(366004)(396003)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(6512007)(36756003)(83380400001)(26005)(5660300002)(66574015)(6506007)(6666004)(53546011)(2616005)(82960400001)(8936002)(41300700001)(8676002)(66556008)(316002)(66476007)(31686004)(66946007)(478600001)(86362001)(31696002)(38100700002)(110136005)(2906002)(6486002)(4326008)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZU9tdEh3NXlianl6Z0xPV0V6bXBabEI4TFRLWDgvL2dTNjRSMGh2eHJjM0Vx?=
- =?utf-8?B?Y01uNGNJWGxKeFdtdEZaQThNNlZRWjFhRy9zczhLUEdZV0Q1ZjZIVFMzaklE?=
- =?utf-8?B?YnQyVmI5UWltd2xmZE9JOXNsSXdiV0ttMDdEaFBZN2IzODBhc2lXWnAwQ0dK?=
- =?utf-8?B?VWxHQUkrWUVuTUVVY1I4L3k2RkR3c24xYy9Wbm5OZmtXdFU0bE0vUC83MWJP?=
- =?utf-8?B?dnZaamE1aVhSYWZNejJkaTR5UE1DS2dCWGRaNnVQaFIyVkNCY1h6QWRQK2Zu?=
- =?utf-8?B?UDdPaUFadW5mSTNaZ1I5MnFNSllqK3RObDR5bnk2QUI5Sklxb0xGR25RYjVp?=
- =?utf-8?B?ZE11QmxxRFQ1TDJheFRTeXoxNGJiT2xRN0ZocDhrZk5uS1R4Z2ZiK2QrNjZm?=
- =?utf-8?B?VFcyNElsdTlRREFTbnJqNzNJNnd6SlhyTGhUbThTNkY2RUw2QkVvZ0VTd0Fu?=
- =?utf-8?B?TjQ2T0tkVFJTUEJXS2NjTzZkUEQ1WmpxblRrb1hYeWxQNjMyUmpldTVBeWhS?=
- =?utf-8?B?azBBWk9JeVd5ZmNObWJHZnhETUFTNkJXVTZ0eWtCZzd5NmZtMFNYVDNBelZ6?=
- =?utf-8?B?RTY2VS8zNkxWeUp5allZcjJCbHRFeEZBU205SVhmT1pvT1Y4a1FMRHlCdjNN?=
- =?utf-8?B?SWdhMmhvSVNqV0RpcGhpZTQyUTJEMCtMcVNQanVxTjgwbUVCRFBDODFvZE9B?=
- =?utf-8?B?eFRSU1ovTmtRMmRyU2F3R05OM3ozRVQ4UlR4cW1MMVY2ZGZPYjdSdUNSdVZN?=
- =?utf-8?B?bmsxVXRoWm5iTUtNNEdMVkx4aW5LaWZTRXpobkVwdjFXMExqRUptLzRRVytM?=
- =?utf-8?B?SEFVK1orQjIzR0dHMHZScGlFR3llYjlRYVIreDRoVXVMcENGK0ZJYmNjNEd6?=
- =?utf-8?B?aDV5QWNzZlVkdjZiMHNJS0N5S1hGZ2ErZjZURUY1dHdkdnVIeXgyOU8rbWFu?=
- =?utf-8?B?U055MkxJeHBZeFVnY1g4czQ0UFVWVzB5bzhueXc1RjN4MWVrVEd1Z2hpYkww?=
- =?utf-8?B?ZUpRQW1oWVY4YW5PT3JDWXI2NE1rMjdUVUpSOFBhWERjdDUvWVVXRmlkZCtj?=
- =?utf-8?B?dUlYaHN1VVgwU3c5NDB0eDArbWxGWll0WDFtYnk0SlhUejUrcFQwQ25LelBa?=
- =?utf-8?B?dnpjZ0hPcjVmSzZUWTloeWxmRWlpdERRdFhJcTNEd21VTUVYM1FvMGw3dVNm?=
- =?utf-8?B?QUVVQjJCbXNFYURBRXpTNGpERU9sKzhVb3pJNExTUGtsOU1xQSsrVXRkVGxS?=
- =?utf-8?B?KzIyd1hBL2cwbW9nTEJ6L1krLy8vQm00cU5hNktEY1czUFEwQjFxR2t4blRk?=
- =?utf-8?B?eWdUMk1maUZvVnJ5MGlSbms0Q0k4eTRMcG5qTitwM3pnd2RLZ0d5UjJBNW5U?=
- =?utf-8?B?Nnh6WW94U3d1eEhwMmNkSnpmNGQ4Z2o3Vmo3aHZCZk5MRHVPdlNlTVlxcUVh?=
- =?utf-8?B?MmdkejVCQzJtNThOV0Q1ZTkvb3FMejVnR296TG5tOWtQdVQ5NEVSMVl6TDdJ?=
- =?utf-8?B?UzZ3dGFwYm0yR3d6R3FLWTU2QXprYTZpTmNnV0x3Mks1MTBoU1RkdHR2c2Vt?=
- =?utf-8?B?RUlZMDMvcmxzN0ZNUWZvT0xpUWtoOGlOYU1uMTJRU0lMWHZoK3FKeTUxb0lH?=
- =?utf-8?B?dkx3MnZSUkxlTElzZVZaQW5TeC9vVnJJTkNrTmtFc3VGbUd3R3BrS2QyS1o2?=
- =?utf-8?B?bGFXYTdrM3RnZjJDWXJJRHlVNHE3TTJYYU5KZXNlREdQdkRCcm1ZVXY1ejJv?=
- =?utf-8?B?a0FjUzR4NEhENTNBMG9NdzJFZGdPRklTcWZvRjhSSEdydFhYQnZYYVMybUFv?=
- =?utf-8?B?cGZnek5USjBxYzY0MTZFbjdrRHFVMG5qQm9kR25CYTlLaTd0ZlhVYk5QR0Nh?=
- =?utf-8?B?RktMbnZtVGxVd215azN5RjAxdVRRSWx4dWlGeFY5UGtWeHk2ak5qQUdtdzdn?=
- =?utf-8?B?cWxoZnFmODdncU0rU3BwOGF0eTVGVnowcG1FUGU4MXUwT3dzRFVCRW83MklM?=
- =?utf-8?B?TFJEWTVGRHlKdTBRcXVuUmk3R25wSks2dEhNUDdqMDhyMklMdVVVMEJsVkh3?=
- =?utf-8?B?STY2T0tGSWhOTEdvTEFUZVFxUkpFMDJVSElGNmQ1Vm9mRjNwTnFhNVJBVkc1?=
- =?utf-8?B?N29PTGMwU2dJVmpBMi85cytPZ1p3Q0tvNUt3Wmw0OWdMc2FRUkdteUxoMnBL?=
- =?utf-8?B?dnc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8012d642-2ce1-4d03-5443-08dbdb81cc39
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3674.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2023 08:57:54.1382
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0RBZmaA6WiZcPldds3mNZaRXb6yjXxMZTd5HLDKV2GFjqwZpDlFNG8X0JWmOX9yf5jiUSpM6fM6MIpOidlYbJM5rmoCW5WRH60IGobN1ux8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8107
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--1.745100-8.000000
+X-TMASE-MatchedRID: fEgilWoYZ6y4TtpEqCKkMna57ruHAnHxTJDl9FKHbrkAhmnHHeGnvSKI
+        UiL7FC/vZUOuMOrkDQqDtDBADBIVrkKtkjlYA82dh2VzUlo4HVPljSRvSGpq3Ezgq++3Q0pHZiu
+        ZFcXDg1xYHxG6vTRI6qu1MB/hHvTafMalxiFMN0q+dJWHbg4ITrn7V+KB+3cumyiLZetSf8mfop
+        0ytGwvXiq2rl3dzGQ1GpeevGsoI5cryI+9SRfDcN+Eh/0rLvStkJWU+NqlpaYDjO5RP6xeRKAjM
+        iFdEUCtEbic1EEgxMuIyHEsyEgDMsZKR2bOXB8HRp4gvWprmK0XRoPmWO3jekxwdkPqCq7vDEyN
+        +J8hd+jCS9WgDXVPCn7cGd19dSFd
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--1.745100-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: 491AC7AE080333C55E5AEE923BF1FD9DC821E69CA3CFD2FD98E699EC5A477C512000:8
+X-MTK:  N
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/1/23 20:41, Thomas Weißschuh wrote:
-> For unknown ioctls the correct error is
-> ENOTTY "Inappropriate ioctl for device".
+Use per-phy structure for maximum txpower value initializing, since each
+phy may have a different chainmask, which can impact the calculation of
+power gain.
 
-For sure!
+Co-developed-by: Allen Ye <allen.ye@mediatek.com>
+Signed-off-by: Allen Ye <allen.ye@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 30 ++++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   |  4 +--
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  3 +-
+ .../net/wireless/mediatek/mt76/mt7996/init.c  | 30 ++++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   |  6 ++--
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |  3 +-
+ 6 files changed, 47 insertions(+), 29 deletions(-)
 
-I would like to learn more of why this is not an UAPI breaking change?
-
-> 
-> ENOSYS as returned before should only be used to indicate that a syscall
-> is not available at all.
-> 
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> ---
->   net/rfkill/core.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-> index 14cc8fe8584b..c3feb4f49d09 100644
-> --- a/net/rfkill/core.c
-> +++ b/net/rfkill/core.c
-> @@ -1351,11 +1351,11 @@ static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
->   			     unsigned long arg)
->   {
->   	struct rfkill_data *data = file->private_data;
-> -	int ret = -ENOSYS;
-> +	int ret = -ENOTTY;
->   	u32 size;
->   
->   	if (_IOC_TYPE(cmd) != RFKILL_IOC_MAGIC)
-> -		return -ENOSYS;
-> +		return -ENOTTY;
->   
->   	mutex_lock(&data->mtx);
->   	switch (_IOC_NR(cmd)) {
-> 
-> ---
-> base-commit: 7d461b291e65938f15f56fe58da2303b07578a76
-> change-id: 20231101-rfkill-ioctl-enosys-00a2bb0a4ab1
-> 
-> Best regards,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 81478289f17e..cea2f6d9050a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -275,10 +275,11 @@ static void mt7915_led_set_brightness(struct led_classdev *led_cdev,
+ 		mt7915_led_set_config(led_cdev, 0xff, 0);
+ }
+ 
+-void mt7915_init_txpower(struct mt7915_dev *dev,
+-			 struct ieee80211_supported_band *sband)
++static void __mt7915_init_txpower(struct mt7915_phy *phy,
++				  struct ieee80211_supported_band *sband)
+ {
+-	int i, n_chains = hweight8(dev->mphy.antenna_mask);
++	struct mt7915_dev *dev = phy->dev;
++	int i, n_chains = hweight16(phy->mt76->chainmask);
+ 	int nss_delta = mt76_tx_power_nss_delta(n_chains);
+ 	int pwr_delta = mt7915_eeprom_get_power_delta(dev, sband->band);
+ 	struct mt76_power_limits limits;
+@@ -296,7 +297,7 @@ void mt7915_init_txpower(struct mt7915_dev *dev,
+ 		}
+ 
+ 		target_power += pwr_delta;
+-		target_power = mt76_get_rate_power_limits(&dev->mphy, chan,
++		target_power = mt76_get_rate_power_limits(phy->mt76, chan,
+ 							  &limits,
+ 							  target_power);
+ 		target_power += nss_delta;
+@@ -307,6 +308,19 @@ void mt7915_init_txpower(struct mt7915_dev *dev,
+ 	}
+ }
+ 
++void mt7915_init_txpower(struct mt7915_phy *phy)
++{
++	if (!phy)
++		return;
++
++	if (phy->mt76->cap.has_2ghz)
++		__mt7915_init_txpower(phy, &phy->mt76->sband_2g.sband);
++	if (phy->mt76->cap.has_5ghz)
++		__mt7915_init_txpower(phy, &phy->mt76->sband_5g.sband);
++	if (phy->mt76->cap.has_6ghz)
++		__mt7915_init_txpower(phy, &phy->mt76->sband_6g.sband);
++}
++
+ static void
+ mt7915_regd_notifier(struct wiphy *wiphy,
+ 		     struct regulatory_request *request)
+@@ -322,9 +336,7 @@ mt7915_regd_notifier(struct wiphy *wiphy,
+ 	if (dev->mt76.region == NL80211_DFS_UNSET)
+ 		mt7915_mcu_rdd_background_enable(phy, NULL);
+ 
+-	mt7915_init_txpower(dev, &mphy->sband_2g.sband);
+-	mt7915_init_txpower(dev, &mphy->sband_5g.sband);
+-	mt7915_init_txpower(dev, &mphy->sband_6g.sband);
++	mt7915_init_txpower(phy);
+ 
+ 	mphy->dfs_state = MT_DFS_STATE_UNKNOWN;
+ 	mt7915_dfs_init_radar_detector(phy);
+@@ -442,6 +454,7 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+ 	mt76_set_stream_caps(phy->mt76, true);
+ 	mt7915_set_stream_vht_txbf_caps(phy);
+ 	mt7915_set_stream_he_caps(phy);
++	mt7915_init_txpower(phy);
+ 
+ 	wiphy->available_antennas_rx = phy->mt76->antenna_mask;
+ 	wiphy->available_antennas_tx = phy->mt76->antenna_mask;
+@@ -703,9 +716,6 @@ static void mt7915_init_work(struct work_struct *work)
+ 
+ 	mt7915_mcu_set_eeprom(dev);
+ 	mt7915_mac_init(dev);
+-	mt7915_init_txpower(dev, &dev->mphy.sband_2g.sband);
+-	mt7915_init_txpower(dev, &dev->mphy.sband_5g.sband);
+-	mt7915_init_txpower(dev, &dev->mphy.sband_6g.sband);
+ 	mt7915_txbf_init(dev);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 2222fb9aa103..ac6c086b1a9e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1401,8 +1401,8 @@ mt7915_mac_restart(struct mt7915_dev *dev)
+ 		goto out;
+ 
+ 	mt7915_mac_init(dev);
+-	mt7915_init_txpower(dev, &dev->mphy.sband_2g.sband);
+-	mt7915_init_txpower(dev, &dev->mphy.sband_5g.sband);
++	mt7915_init_txpower(&dev->phy);
++	mt7915_init_txpower(phy2);
+ 	ret = mt7915_txbf_init(dev);
+ 
+ 	if (test_bit(MT76_STATE_RUNNING, &dev->mphy.state)) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index d317c523b23f..4727d9c7b11d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -425,8 +425,7 @@ void mt7915_dma_cleanup(struct mt7915_dev *dev);
+ int mt7915_dma_reset(struct mt7915_dev *dev, bool force);
+ int mt7915_dma_start(struct mt7915_dev *dev, bool reset, bool wed_reset);
+ int mt7915_txbf_init(struct mt7915_dev *dev);
+-void mt7915_init_txpower(struct mt7915_dev *dev,
+-			 struct ieee80211_supported_band *sband);
++void mt7915_init_txpower(struct mt7915_phy *phy);
+ void mt7915_reset(struct mt7915_dev *dev);
+ int mt7915_run(struct ieee80211_hw *hw);
+ int mt7915_mcu_init(struct mt7915_dev *dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 6a03cddaed04..1896571ad140 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -288,10 +288,11 @@ static void mt7996_led_set_brightness(struct led_classdev *led_cdev,
+ 		mt7996_led_set_config(led_cdev, 0xff, 0);
+ }
+ 
+-void mt7996_init_txpower(struct mt7996_dev *dev,
+-			 struct ieee80211_supported_band *sband)
++static void __mt7996_init_txpower(struct mt7996_phy *phy,
++				  struct ieee80211_supported_band *sband)
+ {
+-	int i, nss = hweight8(dev->mphy.antenna_mask);
++	struct mt7996_dev *dev = phy->dev;
++	int i, nss = hweight16(phy->mt76->chainmask);
+ 	int nss_delta = mt76_tx_power_nss_delta(nss);
+ 	int pwr_delta = mt7996_eeprom_get_power_delta(dev, sband->band);
+ 	struct mt76_power_limits limits;
+@@ -301,7 +302,7 @@ void mt7996_init_txpower(struct mt7996_dev *dev,
+ 		int target_power = mt7996_eeprom_get_target_power(dev, chan);
+ 
+ 		target_power += pwr_delta;
+-		target_power = mt76_get_rate_power_limits(&dev->mphy, chan,
++		target_power = mt76_get_rate_power_limits(phy->mt76, chan,
+ 							  &limits,
+ 							  target_power);
+ 		target_power += nss_delta;
+@@ -312,6 +313,19 @@ void mt7996_init_txpower(struct mt7996_dev *dev,
+ 	}
+ }
+ 
++void mt7996_init_txpower(struct mt7996_phy *phy)
++{
++	if (!phy)
++		return;
++
++	if (phy->mt76->cap.has_2ghz)
++		__mt7996_init_txpower(phy, &phy->mt76->sband_2g.sband);
++	if (phy->mt76->cap.has_5ghz)
++		__mt7996_init_txpower(phy, &phy->mt76->sband_5g.sband);
++	if (phy->mt76->cap.has_6ghz)
++		__mt7996_init_txpower(phy, &phy->mt76->sband_6g.sband);
++}
++
+ static void
+ mt7996_regd_notifier(struct wiphy *wiphy,
+ 		     struct regulatory_request *request)
+@@ -326,9 +340,7 @@ mt7996_regd_notifier(struct wiphy *wiphy,
+ 	if (dev->mt76.region == NL80211_DFS_UNSET)
+ 		mt7996_mcu_rdd_background_enable(phy, NULL);
+ 
+-	mt7996_init_txpower(dev, &phy->mt76->sband_2g.sband);
+-	mt7996_init_txpower(dev, &phy->mt76->sband_5g.sband);
+-	mt7996_init_txpower(dev, &phy->mt76->sband_6g.sband);
++	mt7996_init_txpower(phy);
+ 
+ 	phy->mt76->dfs_state = MT_DFS_STATE_UNKNOWN;
+ 	mt7996_dfs_init_radar_detector(phy);
+@@ -424,6 +436,7 @@ mt7996_init_wiphy(struct ieee80211_hw *hw, struct mtk_wed_device *wed)
+ 	mt76_set_stream_caps(phy->mt76, true);
+ 	mt7996_set_stream_vht_txbf_caps(phy);
+ 	mt7996_set_stream_he_eht_caps(phy);
++	mt7996_init_txpower(phy);
+ 
+ 	wiphy->available_antennas_rx = phy->mt76->antenna_mask;
+ 	wiphy->available_antennas_tx = phy->mt76->antenna_mask;
+@@ -656,9 +669,6 @@ static void mt7996_init_work(struct work_struct *work)
+ 
+ 	mt7996_mcu_set_eeprom(dev);
+ 	mt7996_mac_init(dev);
+-	mt7996_init_txpower(dev, &dev->mphy.sband_2g.sband);
+-	mt7996_init_txpower(dev, &dev->mphy.sband_5g.sband);
+-	mt7996_init_txpower(dev, &dev->mphy.sband_6g.sband);
+ 	mt7996_txbf_init(dev);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 71ae8e263221..56dfbeb51504 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1755,9 +1755,9 @@ mt7996_mac_restart(struct mt7996_dev *dev)
+ 		goto out;
+ 
+ 	mt7996_mac_init(dev);
+-	mt7996_init_txpower(dev, &dev->mphy.sband_2g.sband);
+-	mt7996_init_txpower(dev, &dev->mphy.sband_5g.sband);
+-	mt7996_init_txpower(dev, &dev->mphy.sband_6g.sband);
++	mt7996_init_txpower(&dev->phy);
++	mt7996_init_txpower(phy2);
++	mt7996_init_txpower(phy3);
+ 	ret = mt7996_txbf_init(dev);
+ 
+ 	if (test_bit(MT76_STATE_RUNNING, &dev->mphy.state)) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 0a150bcb2c19..d3eb564623ae 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -414,8 +414,7 @@ void mt7996_dma_cleanup(struct mt7996_dev *dev);
+ void mt7996_dma_start(struct mt7996_dev *dev, bool reset, bool wed_reset);
+ int mt7996_init_tx_queues(struct mt7996_phy *phy, int idx,
+ 			  int n_desc, int ring_base, struct mtk_wed_device *wed);
+-void mt7996_init_txpower(struct mt7996_dev *dev,
+-			 struct ieee80211_supported_band *sband);
++void mt7996_init_txpower(struct mt7996_phy *phy);
+ int mt7996_txbf_init(struct mt7996_dev *dev);
+ void mt7996_reset(struct mt7996_dev *dev);
+ int mt7996_run(struct ieee80211_hw *hw);
+-- 
+2.39.2
 
