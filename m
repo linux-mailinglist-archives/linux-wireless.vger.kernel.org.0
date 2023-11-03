@@ -2,90 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50EDC7E0A8F
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Nov 2023 22:05:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F1EE7E0AF0
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Nov 2023 23:05:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229954AbjKCVFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Nov 2023 17:05:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60354 "EHLO
+        id S233348AbjKCWF7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Nov 2023 18:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjKCVE7 (ORCPT
+        with ESMTP id S230392AbjKCWF6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Nov 2023 17:04:59 -0400
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995F3D55
-        for <linux-wireless@vger.kernel.org>; Fri,  3 Nov 2023 14:04:54 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5a92782615dso30337207b3.2
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Nov 2023 14:04:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699045454; x=1699650254; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qy3OuAgfwsXLCV1yZj84+HeyH48ULIPhiiEV5yyrxBc=;
-        b=BWsuEiPK2uEr1ARn5hipj2OlnvgPFXmYIjWGXmHOvpGIh1zqrjK/lBbJv1RQplEKeO
-         H751J7QcY4PDl5sWWlEqin+RNQOd/Cl7b4vLmvYCDkYf/qkV3pUmp7sgPmqY7C4tmCcC
-         +IsAEJIGWOzczWkTx19u1YMFOtoO6fqkEU4DpVk1thjQBYOp6+QR/Z75SxkQYhy+32N9
-         vg/qUCXDyTPs+rAcztYJD/ly2zV/xtHO4+cPUi5M/nt2hFK5xjHz28ziOm6SiR9PeqQg
-         FKWvHpp3MwVIOPAAyJnl8TW8F6B2KJUV5+80gUf5Qi3fdJ95TGRRvycFOGae+rwpLGL+
-         It5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699045454; x=1699650254;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qy3OuAgfwsXLCV1yZj84+HeyH48ULIPhiiEV5yyrxBc=;
-        b=J4d23d2+eBoGLTgbJy62Y8Pk+rvpyiyL09exfViV0DYAVCEjX/kEk9+cj1eJEylANB
-         4ZIxF96q+nqLjq3Iwv41gEZsaFsrhA/c1+klkwza94+zf+SvXrlZojwgKWxhzHPm/HCH
-         cV74vdB1Niv8eUVVQJJxlQ7PoWxOLHQ2WmJdx4e7R+rnKi2VaKirfJE/dGpBYs29bVu5
-         gk5dnOCbId+imHLE65/fNw3/Nf4aUBGp2bWdNhwzUYPKE58UkkV7PKijACEhgSsEq9m6
-         Ymj+x0zN7rCasRRnjbA3vbp3Kgi2vGQwze85KCZh94A3jMa4WHbha8WaVzL8kl8c13Ka
-         ph1w==
-X-Gm-Message-State: AOJu0Yy9XtsC2w+HHeSVlH3vPUKR3km8AGGv89wAR2iDinNLFzzL+Fb1
-        KqJvrtennrg6jfNBaOS4Dw6E3/9VE6EMBvLljNM+NvBDyRZCyg==
-X-Google-Smtp-Source: AGHT+IG7pmhgomWSmmFmD9JRHZPDEizOy9TQY/xZ5Bg0WcaJg6KBxR8mKNiRlJ6iRkA9HygoD6mlxtImRKog6uLifAU=
-X-Received: by 2002:a81:6c49:0:b0:59f:773a:b14c with SMTP id
- h70-20020a816c49000000b0059f773ab14cmr4104495ywc.37.1699045454366; Fri, 03
- Nov 2023 14:04:14 -0700 (PDT)
+        Fri, 3 Nov 2023 18:05:58 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC6BDD68;
+        Fri,  3 Nov 2023 15:05:55 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A3LunVt010061;
+        Fri, 3 Nov 2023 22:05:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : date :
+ subject : mime-version : content-type : content-transfer-encoding :
+ message-id : to : cc; s=qcppdkim1;
+ bh=NqUTEFbJ5nq8FmahHI75LFuipe+tD6i+E3bAsGInr5k=;
+ b=DULFBaHq3SIQkrzSbiqcLHPxtRiMDk/rNhL/b9+cG4Wgr4PdG6j4VC6AX6hsZil7PGu3
+ deFXkqFhzWNqvK2GE0K7JNcT4cNdE5g32mQyQ0FgtVRL7bLIJgLGRhqEo4GsUNlgAhAY
+ V1KfiB+X/eaZQejBLXkT8w2qoqn0qXgohtCSPVeEBTp6xXhYRzt7iPxgw/nZ8rS8F7Qz
+ lJZCr4sROl/pC7iBQ3vj5bQQjtrESVP1K6DgnvoxnI+ddmaoJZi7WmK1qBB+OcsK2zN5
+ iUrkyYSW8ed3nUEixbKlzlN670DjhYfmrEABkRO4QLmCKTQn+8f7OtylCt08MAYkZj8L gA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u533j8wcs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 03 Nov 2023 22:05:49 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3A3M5c67021096
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 3 Nov 2023 22:05:38 GMT
+Received: from hu-jjohnson-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Fri, 3 Nov 2023 15:05:37 -0700
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+Date:   Fri, 3 Nov 2023 15:05:36 -0700
+Subject: [PATCH] wifi: ath10k: Remove unused struct ath10k_htc_frame
 MIME-Version: 1.0
-From:   Diego Garcia del Rio <garci66@gmail.com>
-Date:   Fri, 3 Nov 2023 18:04:03 -0300
-Message-ID: <CAL4zwzyGT2YdMWU3iOpE6q8kd=TKb4=cSFZud_vPpoid2A-SSw@mail.gmail.com>
-Subject: wireless-regdb: Update regulatory rules for Argentina (AR) on 6GHz
-To:     linux-wireless@vger.kernel.org
-Cc:     wireless-regdb@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20231103-ath10k_htc_frame-v1-1-ff00b38a9630@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAK9uRWUC/32NQQ6CMBBFr0JmbU2nVEBX3sMQUsvUTgygbSUaw
+ t2tHMDle8l/f4FIgSnCqVgg0MyRpzED7gqw3ow3EtxnBiVViVIdhEke5b3zyXYumIEEVn1DunT
+ 1seohzx6BHL+35KXN7DmmKXy2hxl/9k9sRoFCNgq1Kmttrvr8fLHl0e7tNEC7rusXLp8pWbIAA
+ AA=
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.12.3
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 8yDxnvN3hX6ED0uM-r3Or87iMcaGtgww
+X-Proofpoint-ORIG-GUID: 8yDxnvN3hX6ED0uM-r3Or87iMcaGtgww
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-03_21,2023-11-02_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=713 clxscore=1015
+ priorityscore=1501 adultscore=0 impostorscore=0 malwarescore=0 mlxscore=0
+ bulkscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310240000
+ definitions=main-2311030187
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear wireless-regdb / linux-wireless list members,
+struct ath10k_htc_frame is unused, and since it illogically contains
+two consecutive flexible arrays, it could never be used, so remove it.
 
-Argentina approved, in may 2023, the use of the 6GHz band for indoor
-use. The specific decree can be consulted here :
-https://www.boletinoficial.gob.ar/detalleAviso/primera/287126/20230524
-but the specific technical addendum can be read at the link "Anexo 1"
-at the end of that document.
+No functional changes, compile tested only.
 
-The main changes are that operation on the band  5925-7125 MHz is
-allowed at an EIRP of 30dBm for APs and 24dBm for clients. The APs
-must also follow a maximum Power Spectral Density 5dBm/MHz  and
-clients must restrict themselves to -1 dBm/MHz EIRP PSD.
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ drivers/net/wireless/ath/ath10k/htc.h | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-I wasn't sure how to express the PSD requirements in the txt file nor
-how (or if its possible at all) to distinguish APs from clients.
+diff --git a/drivers/net/wireless/ath/ath10k/htc.h b/drivers/net/wireless/ath/ath10k/htc.h
+index 0d180faf3b77..0eaa21ad86ac 100644
+--- a/drivers/net/wireless/ath/ath10k/htc.h
++++ b/drivers/net/wireless/ath/ath10k/htc.h
+@@ -253,19 +253,6 @@ struct ath10k_htc_record {
+ 	};
+ } __packed __aligned(4);
+ 
+-/*
+- * note: the trailer offset is dynamic depending
+- * on payload length. this is only a struct layout draft
+- */
+-struct ath10k_htc_frame {
+-	struct ath10k_htc_hdr hdr;
+-	union {
+-		struct ath10k_htc_msg msg;
+-		u8 payload[0];
+-	};
+-	struct ath10k_htc_record trailer[0];
+-} __packed __aligned(4);
+-
+ /*******************/
+ /* Host-side stuff */
+ /*******************/
 
-The given PSD limits would mean 18dBm for an AP at 20MHz, and 3dBm for
-each doubling in frequency, so a max of 27dBm for 160MHz APs)  while
-for clients, it would be 12dBm for a 20MHz channel and again, 3dBm
-plus for each doubling in channel width  (maximum of 21 dBm for a
-160MHz channel).
+---
+base-commit: ac2f43d3d34e52b0d388b4c573ff6bbac90235b9
+change-id: 20231025-ath10k_htc_frame-16d8e43f796d
 
-I believe that basically copying the FCC restrictions for the 6GHz
-band would probably be enough, but I was not 100% sure.
-
-Thanks!
