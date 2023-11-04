@@ -2,70 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43D617E0EA0
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Nov 2023 10:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC1C67E0FDA
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Nov 2023 15:13:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbjKDJgJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 Nov 2023 05:36:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44004 "EHLO
+        id S232127AbjKDONk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 Nov 2023 10:13:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231556AbjKDJgG (ORCPT
+        with ESMTP id S229783AbjKDONj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 Nov 2023 05:36:06 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 160201BC;
-        Sat,  4 Nov 2023 02:36:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699090563; x=1730626563;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TKtrzNgMqDAKf1z08TGFrJnDze24jCCX69YqZL3GLDY=;
-  b=a4M3XkCTGYP1Lm5R/GAfD9LIKUylZJZ2DpoQVWLFBQRWP+sIJwz0JAoQ
-   RG+UC4mgUAUVB2/BPJFxOJl3UBWzPf95QCfspXgiq7FOafg0QHQ4ol2Er
-   js6RuodhEELd9huWWSA++yY5e+OaVM/G/eT96+P629WcR6ZD52UCKtddf
-   J0ErdNDaCwdY3ksspVWXz+v2kL8GXN6WasEagVqqmbwUK62T78C7rVmXk
-   X7CBQAyj7PQpmXHUzsLyfPX8yjgxopZj8barHDtDfPcKlXdemSvUjpNCQ
-   Ogu+nEN1skXGH4fOKV8FHneMMpXWmCi3iQvrsnvTZSbv8YViTs/8zQnrg
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10883"; a="392964675"
-X-IronPort-AV: E=Sophos;i="6.03,276,1694761200"; 
-   d="scan'208";a="392964675"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2023 02:36:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10883"; a="832256857"
-X-IronPort-AV: E=Sophos;i="6.03,276,1694761200"; 
-   d="scan'208";a="832256857"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 04 Nov 2023 02:35:58 -0700
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qzD4O-0003jx-06;
-        Sat, 04 Nov 2023 09:35:56 +0000
-Date:   Sat, 4 Nov 2023 17:34:52 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Zheng Wang <zyytlz.wz@163.com>, aspriel@gmail.com
-Cc:     oe-kbuild-all@lists.linux.dev, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org,
-        johannes.berg@intel.com, marcan@marcan.st,
-        linus.walleij@linaro.org, jisoo.jang@yonsei.ac.kr,
-        linuxlovemin@yonsei.ac.kr, wataru.gohda@cypress.com,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Zheng Wang <zyytlz.wz@163.com>
-Subject: Re: [PATCH] wifi: cfg80211: Fix use-after-free bug in
- brcmf_cfg80211_detach
-Message-ID: <202311041735.pCIzwiLF-lkp@intel.com>
-References: <20231104054709.716585-1-zyytlz.wz@163.com>
+        Sat, 4 Nov 2023 10:13:39 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B84191
+        for <linux-wireless@vger.kernel.org>; Sat,  4 Nov 2023 07:13:36 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-9d267605ceeso440079166b.2
+        for <linux-wireless@vger.kernel.org>; Sat, 04 Nov 2023 07:13:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699107215; x=1699712015; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s5hP1q2MBV6dkt+KbwYUAFqTOnmM3x+XBgSEx9c7uP0=;
+        b=MLp21cDdlYXV3jFFPp1akrMni1m/PWnTCyZToRNtb3lU0uXZsJ/WvrqVP2f+zxhhuC
+         b+TVTrlb6mjPjR/l2fSY16OK4F4LaVs6x1conPMzD+EaEigPQi+dI2HVFxyv2OEOHcuD
+         us2x6VAcxIqQqZC7Orh8+PoUiAjKGjbYkxi5a2bEGhX1+mt3SIN7HKo8Rfj2OgmPVKgY
+         bOLXdDHQg4LFy3ScbLkEdiXLgAoZE1/q7VhMXrCqB/HVAKuITiiUsQHuHxacOlvt2KDJ
+         sNUewy9U01WD0OTCZJXdkU8XICyqciH1GYjwoVgn9rRlHD+CrIqWvfjkNhX/RSkbCFha
+         ZHlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699107215; x=1699712015;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s5hP1q2MBV6dkt+KbwYUAFqTOnmM3x+XBgSEx9c7uP0=;
+        b=ihcBZDw/1a3nI/ogmLPzlNQch4Y6bOu/Mxx7hiSlVXH9NYGePakNyb4vmR9uo3w0Ja
+         EDqc4NJQ7XJhsNfSZRjPiLq1AxHzTpgGb9a9xjD1s4S9Q+wjBzNRaG8s8cyBL8LTndHu
+         KAbS5yiSkE/hzZM9aet3IqVwaxTMZyVn3V2RMi96DGHlhjH/hndnFBoMCPVa41RZVbKZ
+         hWc1zb1BENKy91yjC9s2upukPwG/6uPIS5laO5AmiR7hmp23L4iRsyB3Iw8xtC3jvW3h
+         voI/x56lqYLy1X0sIiWY1dJSYG0HUgo3wbH0pbdHAZqUIlCZIJIIIUXn0a1Nj5XsdF0G
+         hHTw==
+X-Gm-Message-State: AOJu0YxAWQFe9Pr826wsRpoUbDxAxOGbJIM0Cq+eA/tlfEePAyeX4Nm0
+        kS5qjoN0vBMdPxX9AMFrZQafDt73O94heg==
+X-Google-Smtp-Source: AGHT+IHFTveroqhstmSp1xyxTgG1XauMwYmrpbQghcSmKMBBbc4Yea1djQl4fU4uOghxBXx1sDoAPA==
+X-Received: by 2002:a17:906:fe09:b0:9ae:673a:88c8 with SMTP id wy9-20020a170906fe0900b009ae673a88c8mr8748450ejb.21.1699107214555;
+        Sat, 04 Nov 2023 07:13:34 -0700 (PDT)
+Received: from dev-Ubuntu-20.mshome.net (smtp.home.oldium.net. [77.48.26.242])
+        by smtp.googlemail.com with ESMTPSA id ov13-20020a170906fc0d00b009944e955e19sm1999496ejb.30.2023.11.04.07.13.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Nov 2023 07:13:34 -0700 (PDT)
+From:   =?UTF-8?q?Old=C5=99ich=20Jedli=C4=8Dka?= <oldium.pro@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     =?UTF-8?q?Old=C5=99ich=20Jedli=C4=8Dka?= <oldium.pro@gmail.com>
+Subject: [PATCH] wifi: mac80211: do not pass AP_VLAN vif pointer to drivers during flush
+Date:   Sat,  4 Nov 2023 15:13:33 +0100
+Message-Id: <20231104141333.3710-1-oldium.pro@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231104054709.716585-1-zyytlz.wz@163.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,67 +69,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Zheng,
+This fixes WARN_ONs when using AP_VLANs after station removal. The flush
+call passed AP_VLAN vif to driver, but because these vifs are virtual and
+not registered with drivers, we need to translate to the correct AP vif
+first.
 
-kernel test robot noticed the following build errors:
+Closes: https://github.com/openwrt/openwrt/issues/12420
+Link: https://github.com/openwrt/openwrt/pull/13620
+Fixes: 0b75a1b1e42e ("wifi: mac80211: flush queues on STA removal")
+Fixes: d00800a289c9 ("wifi: mac80211: add flush_sta method")
+Tested-by: Konstantin Demin <rockdrilla@gmail.com>
+Tested-by: Koen Vandeputte <koen.vandeputte@citymesh.com>
+Signed-off-by: Oldřich Jedlička <oldium.pro@gmail.com>
+---
+ net/mac80211/driver-ops.h | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v6.6 next-20231103]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Zheng-Wang/wifi-cfg80211-Fix-use-after-free-bug-in-brcmf_cfg80211_detach/20231104-135107
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20231104054709.716585-1-zyytlz.wz%40163.com
-patch subject: [PATCH] wifi: cfg80211: Fix use-after-free bug in brcmf_cfg80211_detach
-config: arc-randconfig-002-20231104 (https://download.01.org/0day-ci/archive/20231104/202311041735.pCIzwiLF-lkp@intel.com/config)
-compiler: arceb-elf-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231104/202311041735.pCIzwiLF-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311041735.pCIzwiLF-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c: In function 'brcmf_cfg80211_detach':
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:8436:34: error: passing argument 1 of 'cancel_delayed_work_sync' from incompatible pointer type [-Werror=incompatible-pointer-types]
-    8436 |         cancel_delayed_work_sync(&cfg->escan_timeout_work);
-         |                                  ^~~~~~~~~~~~~~~~~~~~~~~~
-         |                                  |
-         |                                  struct work_struct *
-   In file included from include/linux/mm_types.h:19,
-                    from include/linux/mmzone.h:22,
-                    from include/linux/gfp.h:7,
-                    from include/linux/xarray.h:15,
-                    from include/linux/list_lru.h:14,
-                    from include/linux/fs.h:13,
-                    from include/linux/highmem.h:5,
-                    from include/linux/bvec.h:10,
-                    from include/linux/skbuff.h:17,
-                    from include/linux/if_ether.h:19,
-                    from include/linux/etherdevice.h:20,
-                    from drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:9:
-   include/linux/workqueue.h:511:59: note: expected 'struct delayed_work *' but argument is of type 'struct work_struct *'
-     511 | extern bool cancel_delayed_work_sync(struct delayed_work *dwork);
-         |                                      ~~~~~~~~~~~~~~~~~~~~~^~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +/cancel_delayed_work_sync +8436 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-
-  8428	
-  8429	void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
-  8430	{
-  8431		if (!cfg)
-  8432			return;
-  8433	
-  8434		if (timer_pending(&cfg->escan_timeout))
-  8435			del_timer_sync(&cfg->escan_timeout);
-> 8436		cancel_delayed_work_sync(&cfg->escan_timeout_work);
-
+diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+index 568633b38c47..f690c385a345 100644
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -23,7 +23,7 @@
+ static inline struct ieee80211_sub_if_data *
+ get_bss_sdata(struct ieee80211_sub_if_data *sdata)
+ {
+-	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
++	if (sdata && sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		sdata = container_of(sdata->bss, struct ieee80211_sub_if_data,
+ 				     u.ap);
+ 
+@@ -695,11 +695,14 @@ static inline void drv_flush(struct ieee80211_local *local,
+ 			     struct ieee80211_sub_if_data *sdata,
+ 			     u32 queues, bool drop)
+ {
+-	struct ieee80211_vif *vif = sdata ? &sdata->vif : NULL;
++	struct ieee80211_vif *vif;
+ 
+ 	might_sleep();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
++	sdata = get_bss_sdata(sdata);
++	vif = sdata ? &sdata->vif : NULL;
++
+ 	if (sdata && !check_sdata_in_driver(sdata))
+ 		return;
+ 
+@@ -716,6 +719,8 @@ static inline void drv_flush_sta(struct ieee80211_local *local,
+ 	might_sleep();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
++	sdata = get_bss_sdata(sdata);
++
+ 	if (sdata && !check_sdata_in_driver(sdata))
+ 		return;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
