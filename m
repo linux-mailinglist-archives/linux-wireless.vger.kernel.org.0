@@ -2,194 +2,189 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3985B7E2BDE
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 19:26:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07C4F7E2FAD
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 23:17:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232439AbjKFS0W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Nov 2023 13:26:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48116 "EHLO
+        id S233230AbjKFWR3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Nov 2023 17:17:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbjKFS0T (ORCPT
+        with ESMTP id S233218AbjKFWR3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Nov 2023 13:26:19 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EE7E1BF;
-        Mon,  6 Nov 2023 10:26:16 -0800 (PST)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6FOkXu013264;
-        Mon, 6 Nov 2023 18:26:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : date :
- subject : mime-version : content-type : content-transfer-encoding :
- message-id : references : in-reply-to : to : cc; s=qcppdkim1;
- bh=55t/8xBDytWJU1+2fU6EcVnx5wtMVDKpMD1oL/ICq6Y=;
- b=QhBn8Eq4vDvpkJI43KvE+AW+bIs3ef28K8wj+cyHGpDuWBF0TbtK8sEToU/OzU4ZEhZq
- PrEyW6+am8jNbkR1u6NkR+G/VaYgzsLylALtwynVzawzdNT6l2wPyC5319BF50vEcEMv
- 4K5/ym4qoLbrHwrVWfslHPfp9hXj6oBmUJ9DOwYyRe51Q7J92tEvO35P+D8lF1y95kS6
- soW6L8pJjrTSjKAaqouKTK5850L9Yl/qKq+bHC2pVeIncKUvl3VsXljCy03llrH4+mcw
- 6tx4jszQ8AXPPpfnHl3gDSOcsDuYAsYV5obYjA7IPcre8AN1vH/2rdHGsX/fWDu2JRAR 8w== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u72r28f9n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Nov 2023 18:26:06 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3A6IQ5iL013288
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 6 Nov 2023 18:26:05 GMT
-Received: from hu-jjohnson-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Mon, 6 Nov 2023 10:26:05 -0800
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-Date:   Mon, 6 Nov 2023 10:26:06 -0800
-Subject: [PATCH 4/4] wifi: ath12k: Consolidate WMI peer flags
+        Mon, 6 Nov 2023 17:17:29 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D667D73
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Nov 2023 14:17:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=xrCmiEwh59q5iF2khtEqmNhqiQOtKHREoAp6ADnpnCE=; t=1699309046; x=1700518646; 
+        b=dURkzZ31viu5LQuWaxnNoXM/11fy9m8runMSVLBJ4gstQp1KGYP6pdJhxoQ0fnd2xd9W1ZoUXm+
+        psiZV0t/crhXHsV/a5FStAhNyn+EsYhDCQmpBQcGTv37VLVqzCEvyBmcn8oAzsxBUB1bR/bc077hy
+        rxOuRocoRsGMWZ4GSRC8vQAOD22uYSskDLnaKfZjvOvJY6QyEQrkaFY/+uDDxcw9t2XZJP0PFxuLH
+        1yGjLUfVzTP2cPPU0lSnUWmOUHdGq4Fv6YP9Ja8AT+mnRp0dcldn6EEucSc51dm1+yV1HZxOdYmQr
+        YuHy86iWFi1c4xryr6mTlS3qgpQF4ZigoMNA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1r07uM-0000000FvtR-3tGv;
+        Mon, 06 Nov 2023 23:17:23 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Max Schulze <max.schulze@online.de>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [RFC PATCH] wifi: cfg80211: fix CQM for non-range use
+Date:   Mon,  6 Nov 2023 23:17:16 +0100
+Message-ID: <20231106231715.3a506ac2dadb.Ie774b85b9d4ff934a1236e77096cb9c6c9fe6561@changeid>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20231106-ath-peer-flags-v1-4-781e83b7e8e8@quicinc.com>
-References: <20231106-ath-peer-flags-v1-0-781e83b7e8e8@quicinc.com>
-In-Reply-To: <20231106-ath-peer-flags-v1-0-781e83b7e8e8@quicinc.com>
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <ath12k@lists.infradead.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.12.3
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 15c66zbwy1zOMu8kmutE6kYi05iXIM_l
-X-Proofpoint-ORIG-GUID: 15c66zbwy1zOMu8kmutE6kYi05iXIM_l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-06_13,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- clxscore=1015 phishscore=0 priorityscore=1501 mlxscore=0 spamscore=0
- mlxlogscore=667 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2311060149
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently wmi.h has two separate set of definitions for peer
-flags. One set of flags is defined in enum wmi_tlv_peer_flags, and,
-except for the last three, are named WMI_TLV_PEER_*. The other set of
-flags are defined as macros, and are named WMI_PEER_*. The last three
-macros have the same name as the last three wmi_tlv_peer_flags
-enumerators.
+From: Johannes Berg <johannes.berg@intel.com>
 
-The code only uses the WMI_PEER_* names; the WMI_TLV_PEER_* names are
-unused. So as a first step in consolidation, remove all the
-WMI_TLV_PEER_* names.
+My prior race fix here broke CQM when ranges aren't used, as
+the reporting worker now requires the cqm_config to be set in
+the wdev, but isn't set when there's no range configured.
 
-But since having an enum to define all the flags is actually a good
-thing since that provides a handle by which to refer to the entire set
-of flags, recast the WMI_PEER_* macros into enumerators.
+Rather than continuing to special-case the range version, set
+the cqm_config always and configure accordingly, also tracking
+if range was used or not to be able to clear the configuration
+appropriately with the same API, which was actually not right
+if both were implemented by a driver for some reason, as is
+the case with mac80211 (though there the implementations are
+equivalent so it doesn't matter.)
 
-Compile tested only.
+Also, the original multiple-RSSI commit lost checking for the
+callback, so might have potentially crashed if a driver had
+neither implementation, and userspace tried to use it despite
+not being advertised as supported.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: stable@vger.kernel.org
+Fixes: 4a4b8169501b ("cfg80211: Accept multiple RSSI thresholds for CQM")
+Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/ath/ath12k/wmi.h | 61 +++++++++++------------------------
- 1 file changed, 19 insertions(+), 42 deletions(-)
+ net/wireless/core.h    |  1 +
+ net/wireless/nl80211.c | 50 ++++++++++++++++++++++++++----------------
+ 2 files changed, 32 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 7d295330e6f1..811aeea34e34 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH12K_WMI_H
-@@ -1146,25 +1146,27 @@ enum wmi_tlv_vdev_param {
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 4c692c7faf30..cb61d33d4f1e 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -293,6 +293,7 @@ struct cfg80211_cqm_config {
+ 	u32 rssi_hyst;
+ 	s32 last_rssi_event_value;
+ 	enum nl80211_cqm_rssi_threshold_event last_rssi_event_type;
++	bool use_range_api;
+ 	int n_rssi_thresholds;
+ 	s32 rssi_thresholds[] __counted_by(n_rssi_thresholds);
  };
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 569234bc2be6..dbfed5a2d7b6 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12787,10 +12787,6 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+ 	int i, n, low_index;
+ 	int err;
  
- enum wmi_tlv_peer_flags {
--	WMI_TLV_PEER_AUTH = 0x00000001,
--	WMI_TLV_PEER_QOS = 0x00000002,
--	WMI_TLV_PEER_NEED_PTK_4_WAY = 0x00000004,
--	WMI_TLV_PEER_NEED_GTK_2_WAY = 0x00000010,
--	WMI_TLV_PEER_APSD = 0x00000800,
--	WMI_TLV_PEER_HT = 0x00001000,
--	WMI_TLV_PEER_40MHZ = 0x00002000,
--	WMI_TLV_PEER_STBC = 0x00008000,
--	WMI_TLV_PEER_LDPC = 0x00010000,
--	WMI_TLV_PEER_DYN_MIMOPS = 0x00020000,
--	WMI_TLV_PEER_STATIC_MIMOPS = 0x00040000,
--	WMI_TLV_PEER_SPATIAL_MUX = 0x00200000,
--	WMI_TLV_PEER_VHT = 0x02000000,
--	WMI_TLV_PEER_80MHZ = 0x04000000,
--	WMI_TLV_PEER_PMF = 0x08000000,
-+	WMI_PEER_AUTH		= 0x00000001,
-+	WMI_PEER_QOS		= 0x00000002,
-+	WMI_PEER_NEED_PTK_4_WAY	= 0x00000004,
-+	WMI_PEER_NEED_GTK_2_WAY	= 0x00000010,
-+	WMI_PEER_HE		= 0x00000400,
-+	WMI_PEER_APSD		= 0x00000800,
-+	WMI_PEER_HT		= 0x00001000,
-+	WMI_PEER_40MHZ		= 0x00002000,
-+	WMI_PEER_STBC		= 0x00008000,
-+	WMI_PEER_LDPC		= 0x00010000,
-+	WMI_PEER_DYN_MIMOPS	= 0x00020000,
-+	WMI_PEER_STATIC_MIMOPS	= 0x00040000,
-+	WMI_PEER_SPATIAL_MUX	= 0x00200000,
-+	WMI_PEER_TWT_REQ	= 0x00400000,
-+	WMI_PEER_TWT_RESP	= 0x00800000,
-+	WMI_PEER_VHT		= 0x02000000,
-+	WMI_PEER_80MHZ		= 0x04000000,
-+	WMI_PEER_PMF		= 0x08000000,
- 	WMI_PEER_IS_P2P_CAPABLE = 0x20000000,
- 	WMI_PEER_160MHZ         = 0x40000000,
- 	WMI_PEER_SAFEMODE_EN    = 0x80000000,
+-	/* RSSI reporting disabled? */
+-	if (!cqm_config)
+-		return rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
 -
- };
+ 	/*
+ 	 * Obtain current RSSI value if possible, if not and no RSSI threshold
+ 	 * event has been received yet, we should receive an event after a
+@@ -12865,23 +12861,25 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 	    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT)
+ 		return -EOPNOTSUPP;
  
- enum wmi_tlv_peer_flags_ext {
-@@ -3844,31 +3846,6 @@ struct wmi_unit_test_cmd {
- 
- #define MAX_SUPPORTED_RATES 128
- 
--#define WMI_PEER_AUTH		0x00000001
--#define WMI_PEER_QOS		0x00000002
--#define WMI_PEER_NEED_PTK_4_WAY	0x00000004
--#define WMI_PEER_NEED_GTK_2_WAY	0x00000010
--#define WMI_PEER_HE		0x00000400
--#define WMI_PEER_APSD		0x00000800
--#define WMI_PEER_HT		0x00001000
--#define WMI_PEER_40MHZ		0x00002000
--#define WMI_PEER_STBC		0x00008000
--#define WMI_PEER_LDPC		0x00010000
--#define WMI_PEER_DYN_MIMOPS	0x00020000
--#define WMI_PEER_STATIC_MIMOPS	0x00040000
--#define WMI_PEER_SPATIAL_MUX	0x00200000
--#define WMI_PEER_TWT_REQ	0x00400000
--#define WMI_PEER_TWT_RESP	0x00800000
--#define WMI_PEER_VHT		0x02000000
--#define WMI_PEER_80MHZ		0x04000000
--#define WMI_PEER_PMF		0x08000000
--/* TODO: Place holder for WLAN_PEER_F_PS_PRESEND_REQUIRED = 0x10000000.
-- * Need to be cleaned up
-- */
--#define WMI_PEER_IS_P2P_CAPABLE	0x20000000
--#define WMI_PEER_160MHZ		0x40000000
--#define WMI_PEER_SAFEMODE_EN	0x80000000
+-	if (n_thresholds <= 1 && rdev->ops->set_cqm_rssi_config) {
+-		if (n_thresholds == 0 || thresholds[0] == 0) /* Disabling */
+-			return rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
 -
- struct ath12k_wmi_vht_rate_set_params {
- 	__le32 tlv_header;
- 	__le32 rx_max_rate;
-
+-		return rdev_set_cqm_rssi_config(rdev, dev,
+-						thresholds[0], hysteresis);
+-	}
+-
+-	if (!wiphy_ext_feature_isset(&rdev->wiphy,
+-				     NL80211_EXT_FEATURE_CQM_RSSI_LIST))
+-		return -EOPNOTSUPP;
+-
+ 	if (n_thresholds == 1 && thresholds[0] == 0) /* Disabling */
+ 		n_thresholds = 0;
+ 
+ 	old = wiphy_dereference(wdev->wiphy, wdev->cqm_config);
+ 
++	/* if already disabled just succeed */
++	if (!n_thresholds && !old)
++		return 0;
++
++	if (n_thresholds > 1) {
++		if (!wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
++		    !rdev->ops->set_cqm_rssi_range_config)
++			return -EOPNOTSUPP;
++	} else {
++		if (!rdev->ops->set_cqm_rssi_config)
++			return -EOPNOTSUPP;
++	}
++
+ 	if (n_thresholds) {
+ 		cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
+ 						 n_thresholds),
+@@ -12894,13 +12892,26 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 		memcpy(cqm_config->rssi_thresholds, thresholds,
+ 		       flex_array_size(cqm_config, rssi_thresholds,
+ 				       n_thresholds));
++		cqm_config->use_range_api = n_thresholds > 1 ||
++					    !rdev->ops->set_cqm_rssi_config;
+ 
+ 		rcu_assign_pointer(wdev->cqm_config, cqm_config);
++
++		if (cqm_config->use_range_api)
++			err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
++		else
++			err = rdev_set_cqm_rssi_config(rdev, dev,
++						       thresholds[0],
++						       hysteresis);
+ 	} else {
+ 		RCU_INIT_POINTER(wdev->cqm_config, NULL);
++		/* if enabled as range also disable via range */
++		if (old->use_range_api)
++			err = rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
++		else
++			err = rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
+ 	}
+ 
+-	err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
+ 	if (err) {
+ 		rcu_assign_pointer(wdev->cqm_config, old);
+ 		kfree_rcu(cqm_config, rcu_head);
+@@ -19009,10 +19020,11 @@ void cfg80211_cqm_rssi_notify_work(struct wiphy *wiphy, struct wiphy_work *work)
+ 	s32 rssi_level;
+ 
+ 	cqm_config = wiphy_dereference(wdev->wiphy, wdev->cqm_config);
+-	if (!wdev->cqm_config)
++	if (!cqm_config)
+ 		return;
+ 
+-	cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
++	if (cqm_config->use_range_api)
++		cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
+ 
+ 	rssi_level = cqm_config->last_rssi_event_value;
+ 	rssi_event = cqm_config->last_rssi_event_type;
 -- 
-2.42.0
+2.41.0
 
