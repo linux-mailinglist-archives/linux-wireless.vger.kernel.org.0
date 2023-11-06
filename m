@@ -2,52 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E3957E2BCC
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 19:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B31D7E2BD9
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 19:26:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232364AbjKFSVS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Nov 2023 13:21:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42240 "EHLO
+        id S232132AbjKFS0S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Nov 2023 13:26:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232343AbjKFSVQ (ORCPT
+        with ESMTP id S231773AbjKFS0R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Nov 2023 13:21:16 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 287511BF;
-        Mon,  6 Nov 2023 10:21:13 -0800 (PST)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6GvrbE026671;
-        Mon, 6 Nov 2023 18:21:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : date :
- subject : mime-version : content-type : content-transfer-encoding :
- message-id : references : in-reply-to : to : cc; s=qcppdkim1;
- bh=AA5O2SCvUm9mfQBN4CAXYP/QY4STb+gr3WQyrPEczG8=;
- b=D7MfIvHwOsfJWhGClYEzy+ypr+bbNzgh7lgpg2XAD/TP9tVqupUBqQ5boIpamasdcD2Q
- Lthq/konhgC51RhE4xlthwS6qxLX1OExiuH+DUqx4MrBlHtVNafdAKcmfar4houfMHcS
- 6p/R42ybUSkY4ygH3CpnI//xI3T8A1ASCzOt+YCXFrDZzORrDsfLbcVqdzI5NT/ZaUBB
- TIfJpTaG8lbNPsIw03mEpKOa9cR61P7riZGgRfNF9cAFL0ks9BHbdQazfq5ZlWnCBsa7
- stjyOA8l4OdgMWUy0yQlu8jS57B6JjmIsGXL2QsJ5i40qLV4K+x0mY3nL8R6WmreCLoN hw== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u5efyn3tn-1
+        Mon, 6 Nov 2023 13:26:17 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAF8D94;
+        Mon,  6 Nov 2023 10:26:14 -0800 (PST)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6FMouU010307;
+        Mon, 6 Nov 2023 18:26:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : subject :
+ date : message-id : mime-version : content-type :
+ content-transfer-encoding : to : cc; s=qcppdkim1;
+ bh=RRWRgFaAfm7cZ7J8Siauhh/pe7RSZ+2aVReaG7ZVh64=;
+ b=ke9M8AKX+yB+eUwBFNj10BkCs/MHJx1AVXv6peYVMYCClfE9cIiLY+2IuoI+Vb+daron
+ Myr1PUy4lUU7liROGJlJxAgDe9ho3Z0TmP5brJfJDzYFrkDV/g5obX0EpmXz9Zu6Cj2+
+ VSCO2BKCxdD1MkqfFthGh4RcNikX1OnjRIOQsEDm+Nf96Lra7leSssMZtiUDLkQZbskz
+ rmYPbNqxBgmRei9VGKjvDjW1rp0b4eDTbHu6NXYqSiScIQCC05vMGZ+1ZugPDvDmDkWL
+ JCgJifATOYBxWrB+DZjI8hBxxIgU/1ZvCKuZSkQZBtwSG2RxZp9/LyeSF+zFPSTBdnck Hw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u72r28f9k-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Nov 2023 18:21:06 +0000
+        Mon, 06 Nov 2023 18:26:05 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3A6IL5LB012649
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3A6IQ4X7029692
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 6 Nov 2023 18:21:05 GMT
+        Mon, 6 Nov 2023 18:26:04 GMT
 Received: from hu-jjohnson-lv.qualcomm.com (10.49.16.6) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Mon, 6 Nov 2023 10:21:05 -0800
+ 15.2.1118.39; Mon, 6 Nov 2023 10:26:03 -0800
 From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-Date:   Mon, 6 Nov 2023 10:21:05 -0800
-Subject: [PATCH 2/2] wifi: ath12k: Remove struct ath12k::ops
+Subject: [PATCH 0/4] wifi: ath: Cleanup WMI peer flags
+Date:   Mon, 6 Nov 2023 10:26:02 -0800
+Message-ID: <20231106-ath-peer-flags-v1-0-781e83b7e8e8@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20231106-ath12k-remove-ieee80211_ops-v1-2-d72cef1a855b@quicinc.com>
-References: <20231106-ath12k-remove-ieee80211_ops-v1-0-d72cef1a855b@quicinc.com>
-In-Reply-To: <20231106-ath12k-remove-ieee80211_ops-v1-0-d72cef1a855b@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIALsvSWUC/33MQQ6CMBCF4auQrq1ppyroynsYF8O0hUkUsMVGQ
+ 7i7hZ0LXf4ved8kogvsojgVkwguceS+y6E3haAWu8ZJtrkFKDBaK5A4tnJwLkh/wybKCnboTaW
+ gVLXIpyE4z68VvFxztxzHPrxXP+ll/UklLZUktMaCLRHr+vx4MnFHW+rvYsES/AcgA/7oywMZs
+ lrvv4F5nj8UNqe87wAAAA==
 To:     Kalle Valo <kvalo@kernel.org>
 CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <ath12k@lists.infradead.org>,
@@ -58,15 +60,15 @@ X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Qj7TBQjdYMMaxBubdRIegKMRt751ls1E
-X-Proofpoint-ORIG-GUID: Qj7TBQjdYMMaxBubdRIegKMRt751ls1E
+X-Proofpoint-GUID: kR5dy0D9mzBaXAl28jm49zqSGNjHBM1y
+X-Proofpoint-ORIG-GUID: kR5dy0D9mzBaXAl28jm49zqSGNjHBM1y
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-06_13,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=484 priorityscore=1501 malwarescore=0 mlxscore=0 clxscore=1015
- phishscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ clxscore=1015 phishscore=0 priorityscore=1501 mlxscore=0 spamscore=0
+ mlxlogscore=314 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2310240000 definitions=main-2311060149
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
@@ -78,44 +80,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently struct ath12k defines the following member:
-	struct ieee80211_ops *ops;
+Both ath11k and ath12k inherited from ath10k some WMI peer flag
+definitions that are unused, so remove them.
 
-This is being flagged by checkpatch.pl:
-WARNING: struct ieee80211_ops should normally be const
-
-The original plan was to add the const qualifier.  However, it turns
-out this is actually unused, so remove it.
-
-No functional changes, compile tested only.
+This series is compile tested only.
 
 Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Jeff Johnson (4):
+      wifi: ath11k: Remove obsolete struct wmi_peer_flags_map *peer_flags
+      wifi: ath12k: Remove obsolete struct wmi_peer_flags_map *peer_flags
+      wifi: ath11k: Consolidate WMI peer flags
+      wifi: ath12k: Consolidate WMI peer flags
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 68c42ca44fcb..6dbe817d2ec7 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH12K_CORE_H
-@@ -467,7 +467,6 @@ struct ath12k {
- 	struct ath12k_base *ab;
- 	struct ath12k_pdev *pdev;
- 	struct ieee80211_hw *hw;
--	struct ieee80211_ops *ops;
- 	struct ath12k_wmi_pdev *wmi;
- 	struct ath12k_pdev_dp dp;
- 	u8 mac_addr[ETH_ALEN];
-
--- 
-2.42.0
+ drivers/net/wireless/ath/ath11k/wmi.h | 61 ++++++++++-----------------------
+ drivers/net/wireless/ath/ath12k/wmi.h | 63 +++++++++++------------------------
+ 2 files changed, 37 insertions(+), 87 deletions(-)
+---
+base-commit: ac2f43d3d34e52b0d388b4c573ff6bbac90235b9
+change-id: 20231102-ath-peer-flags-824af380270b
 
