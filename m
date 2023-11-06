@@ -2,120 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D513F7E29D1
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 17:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90EBE7E2A89
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 17:59:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232689AbjKFQd4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Nov 2023 11:33:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51904 "EHLO
+        id S232875AbjKFQ7w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Nov 2023 11:59:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231792AbjKFQdx (ORCPT
+        with ESMTP id S232477AbjKFQ7v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Nov 2023 11:33:53 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A93A4;
-        Mon,  6 Nov 2023 08:33:50 -0800 (PST)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6G1jXO017862;
-        Mon, 6 Nov 2023 16:33:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=STkmTe5rIC/2ejeHvl/1lIfOskilFGYF5p+NP1HVvk8=;
- b=Ye0cUa6tBdk1xd4P3WvwaghSDGIOHqIPxbwbEZlxtI7lpKcv/YuXRRl+MNJqUTJz6dQg
- neaha6GN8ZFxNa1JOprSbuiZayEYK+zMOtk+JHPaOSVnzKzfyOg2ANKrYqsMznMbb6zH
- mfuLrnJC8UKBbVfMXWinGAZzMLBNNre9ZdKjtQ4tB8fIJTFu0Hu/w3ychWTq4uXeKyUU
- 06Quo6FN9M8B6WfjiVUNTyHIP1fQxUsGJdj20DqPbF5FpTRtvOi9HWMvjxAN14jiFWln
- DGaItIl29tWQH28JebcPtxW1JjNGbNBS3mu8ztHFVfsoo4+dBKhpJZ6Z1F8kpNpp8cb2 +Q== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u73a702hm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Nov 2023 16:33:41 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3A6GXeG1009410
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 6 Nov 2023 16:33:40 GMT
-Received: from [10.110.1.228] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Mon, 6 Nov
- 2023 08:33:40 -0800
-Message-ID: <ec7d829b-28c3-400b-97f9-e6d2f5a4d4aa@quicinc.com>
-Date:   Mon, 6 Nov 2023 08:33:39 -0800
+        Mon, 6 Nov 2023 11:59:51 -0500
+Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B037C1BC
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Nov 2023 08:59:48 -0800 (PST)
+Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1f03db0a410so2948029fac.1
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Nov 2023 08:59:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699289987; x=1699894787; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RRaQCB+WAyZCRxwh3nGzG4C9VXbodi8S/JIQ1w8O7Po=;
+        b=MppJ/Q45BIerDqLwsaSm/laSAND2L4vdFx7SPEwViBo24hYlOxuVD8c7VSQyx1SU4X
+         XRcoqKMgKahrdNo4YjEDDzADu5utcBSjPuqS+sTWvLeQ6klyhlMT+4tzpbBA1SxhmihO
+         VhHCk0NKEdERoatF3g7bqoRC83Wwb8j7gcuBdgLCNjDfFubENYgQE/OyurNB6TPce51N
+         bI3kccwoVXHSESXArfdwVEoBqDbini1iXBmNaowhnTaj9LN78tIN+YkRUa1kRtD1CsqG
+         faMWc7RDQryOw3ojKFxw5gzQtmboOh+Dk+DTn2eC18wXcQsL8dogpyo5fCI4pPgZnXic
+         I5iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699289987; x=1699894787;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RRaQCB+WAyZCRxwh3nGzG4C9VXbodi8S/JIQ1w8O7Po=;
+        b=jahDNgUnuamyvrPXm7kml+NnaCUJ22CHvcY9729AXnxY5uMtnvMOtGbZ7kp5Pfh9T5
+         l6n0zgHEbQ/ACujZr9chcI8J7cNQQ9/G1WpFaUCzSKcBNnlblIeFjuljXHv9lJQ7BBlI
+         lcWXvXkEOietY/PtPZwLfLXzGn2GC2/Q4JC+EL/whqHaBvSC+meH99Ao3Er9d03+tfah
+         hgMPMd2fFgusqi3ptVVmF0IjyHnhtxRrxqyW8wnHX4Wirs/S9gCk/ey5lT67S08tpvKl
+         uwssFni282Qrc95OVV000BXA4GhZUjrYCWvro8oT9XvI9Z36pGLFGPCGhVL4ZrOJkR6C
+         yz3A==
+X-Gm-Message-State: AOJu0YzWLJavgjeQijiAXNLHBO9Hsn/C2WvttrJoNKekK7JCEJ+FuEGG
+        mfyXQbnllss/5K+jRqGpiksHqZko4BQ=
+X-Google-Smtp-Source: AGHT+IEOp41g8n5cGTj1t37rhV8hBULVBN8tqWQFh3wavlFONqlB/yCh4XsJx8eEhYWOHDmfrjy0iQ==
+X-Received: by 2002:a05:6870:9126:b0:1ea:1e74:c377 with SMTP id o38-20020a056870912600b001ea1e74c377mr294433oae.36.1699289986941;
+        Mon, 06 Nov 2023 08:59:46 -0800 (PST)
+Received: from [192.168.0.162] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id y1-20020a056870e3c100b001d6a92f79dcsm1478072oad.2.2023.11.06.08.59.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Nov 2023 08:59:46 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <68dd07cf-538f-46b8-8979-b9b9c98a3ea6@lwfinger.net>
+Date:   Mon, 6 Nov 2023 10:59:45 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] wifi: rt2x00: improve watchdog support
 Content-Language: en-US
-To:     Shiji Yang <yangshiji66@outlook.com>,
-        <linux-wireless@vger.kernel.org>
-CC:     Stanislaw Gruszka <stf_xl@wp.pl>, Kalle Valo <kvalo@kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <TYAP286MB0315D63EBE1DE458D6B9D42ABCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <TYAP286MB0315D63EBE1DE458D6B9D42ABCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: jt2Tg85W3KmuZCTcQe6xPOj0NYkz9ARs
-X-Proofpoint-GUID: jt2Tg85W3KmuZCTcQe6xPOj0NYkz9ARs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-06_12,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 clxscore=1011 bulkscore=0 spamscore=0 suspectscore=0
- priorityscore=1501 mlxscore=0 mlxlogscore=392 adultscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2311060133
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Subject: iwlmvm spams the logs with kernel 6.7-rc0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/4/2023 1:57 AM, Shiji Yang wrote:
-> P.S. It seems that this cover letter won't be included in the patch
-> series in https://lore.kernel.org/. It's an issue with the Outlook
-> email or I missed something?
+Hi,
 
-Outlook e-mail is apparently rewriting your e-mail headers:
+Since I switched to kernel 6.7-rc0, also known as 6.6.0-git+, my log is spammed 
+with the following messages:
 
-Subject: [PATCH v2 0/3] wifi: rt2x00: improve watchdog support
-Message-ID: 
-<TYAP286MB0315D63EBE1DE458D6B9D42ABCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
-X-Microsoft-Original-Message-ID: 
-<20231104085800.17576-1-yangshiji66@outlook.com>
+[53181.545583] iwlwifi 0000:04:00.0: Failed to create debugfs directory under 
+netdev:wlp4s0
+[53596.526017] debugfs: Directory 'iwlmvm' with parent 'netdev:wlp4s0' already 
+present!
 
-Subject: [PATCH v2 1/3] wifi: rt2x00: introduce DMA busy check watchdog 
-for rt2800
-Message-ID: 
-<TYAP286MB0315D7462CE08A119A99DE34BCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
-In-Reply-To: <20231104085800.17576-1-yangshiji66@outlook.com>
-References: <20231104085800.17576-1-yangshiji66@outlook.com>
+My Intel device is as follows:
 
-Subject: [PATCH v2 2/3] wifi: rt2x00: disable RTS threshold for rt2800 
-by default
-Message-ID: 
-<TYAP286MB03155DDB953155B7A2DE849ABCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
-In-Reply-To: <20231104085800.17576-1-yangshiji66@outlook.com>
-References: <20231104085800.17576-1-yangshiji66@outlook.com>
+04:00.0 Network controller [0280]: Intel Corporation Wireless 7260 [8086:08b1] 
+(rev 73)
 
-Your actual patches are being threaded since they all reference the same 
-Message ID, but the cover letter no longer has that Message ID.
+Thanks,
 
-You might want to look at using b4 
-(<https://b4.docs.kernel.org/en/latest/contributor/overview.html>) 
-instead of git send-email.
-
- From the linked page:
-The main benefit of b4 send is that you no longer have to really care if 
-your mail server performs some kind of content mangling that causes 
-patches to become corrupted, or if it doesn’t provide a way to send mail 
-via SMTP.
-
+Larry
