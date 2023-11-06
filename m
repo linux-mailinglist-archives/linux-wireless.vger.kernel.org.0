@@ -2,91 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90EBE7E2A89
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 17:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1673D7E2BCD
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 19:21:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232875AbjKFQ7w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Nov 2023 11:59:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40130 "EHLO
+        id S232371AbjKFSVU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Nov 2023 13:21:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232477AbjKFQ7v (ORCPT
+        with ESMTP id S232331AbjKFSVQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Nov 2023 11:59:51 -0500
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B037C1BC
-        for <linux-wireless@vger.kernel.org>; Mon,  6 Nov 2023 08:59:48 -0800 (PST)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1f03db0a410so2948029fac.1
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Nov 2023 08:59:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699289987; x=1699894787; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RRaQCB+WAyZCRxwh3nGzG4C9VXbodi8S/JIQ1w8O7Po=;
-        b=MppJ/Q45BIerDqLwsaSm/laSAND2L4vdFx7SPEwViBo24hYlOxuVD8c7VSQyx1SU4X
-         XRcoqKMgKahrdNo4YjEDDzADu5utcBSjPuqS+sTWvLeQ6klyhlMT+4tzpbBA1SxhmihO
-         VhHCk0NKEdERoatF3g7bqoRC83Wwb8j7gcuBdgLCNjDfFubENYgQE/OyurNB6TPce51N
-         bI3kccwoVXHSESXArfdwVEoBqDbini1iXBmNaowhnTaj9LN78tIN+YkRUa1kRtD1CsqG
-         faMWc7RDQryOw3ojKFxw5gzQtmboOh+Dk+DTn2eC18wXcQsL8dogpyo5fCI4pPgZnXic
-         I5iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699289987; x=1699894787;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RRaQCB+WAyZCRxwh3nGzG4C9VXbodi8S/JIQ1w8O7Po=;
-        b=jahDNgUnuamyvrPXm7kml+NnaCUJ22CHvcY9729AXnxY5uMtnvMOtGbZ7kp5Pfh9T5
-         l6n0zgHEbQ/ACujZr9chcI8J7cNQQ9/G1WpFaUCzSKcBNnlblIeFjuljXHv9lJQ7BBlI
-         lcWXvXkEOietY/PtPZwLfLXzGn2GC2/Q4JC+EL/whqHaBvSC+meH99Ao3Er9d03+tfah
-         hgMPMd2fFgusqi3ptVVmF0IjyHnhtxRrxqyW8wnHX4Wirs/S9gCk/ey5lT67S08tpvKl
-         uwssFni282Qrc95OVV000BXA4GhZUjrYCWvro8oT9XvI9Z36pGLFGPCGhVL4ZrOJkR6C
-         yz3A==
-X-Gm-Message-State: AOJu0YzWLJavgjeQijiAXNLHBO9Hsn/C2WvttrJoNKekK7JCEJ+FuEGG
-        mfyXQbnllss/5K+jRqGpiksHqZko4BQ=
-X-Google-Smtp-Source: AGHT+IEOp41g8n5cGTj1t37rhV8hBULVBN8tqWQFh3wavlFONqlB/yCh4XsJx8eEhYWOHDmfrjy0iQ==
-X-Received: by 2002:a05:6870:9126:b0:1ea:1e74:c377 with SMTP id o38-20020a056870912600b001ea1e74c377mr294433oae.36.1699289986941;
-        Mon, 06 Nov 2023 08:59:46 -0800 (PST)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id y1-20020a056870e3c100b001d6a92f79dcsm1478072oad.2.2023.11.06.08.59.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Nov 2023 08:59:46 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <68dd07cf-538f-46b8-8979-b9b9c98a3ea6@lwfinger.net>
-Date:   Mon, 6 Nov 2023 10:59:45 -0600
+        Mon, 6 Nov 2023 13:21:16 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A9394;
+        Mon,  6 Nov 2023 10:21:13 -0800 (PST)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6Gknvh011661;
+        Mon, 6 Nov 2023 18:21:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : subject :
+ date : message-id : mime-version : content-type :
+ content-transfer-encoding : to : cc; s=qcppdkim1;
+ bh=ceL5f11GRLXt9jwnLwk2T1E0KMg/oQbyhBZC5O9i/ck=;
+ b=mVWEBAGscTxmDukwqBjGf+txaRZLHnP7zohArfTVAqvVr+w8b/7Rb1avsMAT39wLMHra
+ mqxjLBy5lAbqdaMXtZpy8PqJCtCbKsDdpiKnP1fCYJQ5pwXZRhlA960FjPt1BoWiMYSn
+ vv7ke/ILMhCaGJTb9SUO7b+cVInW5yXZBH+9da3MWNBDBBUVkO+SmN6obNeB90ZgoU5G
+ MmZk6cqvhTll3TcFDNI0BSxw/N5r6GQ9gEZj/nE0V6JUeLMcoO9oneiNufP6khvzFZ9Q
+ fTTJKRVVyGrsL3oZje123x6P0zVfcdVBm+iDKW+V87fu5+/TQ5twJf+PgUeMOnZZdnug Cw== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u72c00hum-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Nov 2023 18:21:05 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3A6IL44E005509
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 6 Nov 2023 18:21:04 GMT
+Received: from hu-jjohnson-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Mon, 6 Nov 2023 10:21:04 -0800
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: [PATCH 0/2] wifi: ath: Remove unused struct ieee80211_ops *ops
+Date:   Mon, 6 Nov 2023 10:21:03 -0800
+Message-ID: <20231106-ath12k-remove-ieee80211_ops-v1-0-d72cef1a855b@quicinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Subject: iwlmvm spams the logs with kernel 6.7-rc0
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+X-B4-Tracking: v=1; b=H4sIAI8uSWUC/42NQQ6CMBBFr0JmbU2nSFNdcQ9DDLajnRgotthoC
+ He3cgKX7/3k/QUSRaYEp2qBSJkTh7EA7iqwvh/vJNgVBiVVjShr0c8e1UNEGkIuIxEZqRAvYUo
+ CtXRGN3Sk/gClMEW68Xurn7vCntMc4mc7y/iz/3UzCika7bS+GmNJ2/b5Ysuj3dswQLeu6xd2O
+ oF4yAAAAA==
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.12.3
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Ha_CJw8WRaAxs88KjvnrEMgUSSCEFpxc
+X-Proofpoint-GUID: Ha_CJw8WRaAxs88KjvnrEMgUSSCEFpxc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-06_13,2023-11-02_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 mlxscore=0 mlxlogscore=453 clxscore=1015
+ priorityscore=1501 malwarescore=0 bulkscore=0 lowpriorityscore=0
+ adultscore=0 spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2310240000 definitions=main-2311060149
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Both ath11k and ath12k define the following:
+	struct ieee80211_ops *ops;
 
-Since I switched to kernel 6.7-rc0, also known as 6.6.0-git+, my log is spammed 
-with the following messages:
+This is being flagged by checkpatch.pl:
+WARNING: struct ieee80211_ops should normally be const
 
-[53181.545583] iwlwifi 0000:04:00.0: Failed to create debugfs directory under 
-netdev:wlp4s0
-[53596.526017] debugfs: Directory 'iwlmvm' with parent 'netdev:wlp4s0' already 
-present!
+But it turns out that in both cases this is unused, so remove it.
 
-My Intel device is as follows:
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+Jeff Johnson (2):
+      wifi: ath11k: Remove struct ath11k::ops
+      wifi: ath12k: Remove struct ath12k::ops
 
-04:00.0 Network controller [0280]: Intel Corporation Wireless 7260 [8086:08b1] 
-(rev 73)
+ drivers/net/wireless/ath/ath11k/core.h | 1 -
+ drivers/net/wireless/ath/ath12k/core.h | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
+---
+base-commit: ac2f43d3d34e52b0d388b4c573ff6bbac90235b9
+change-id: 20231103-ath12k-remove-ieee80211_ops-160d865e9ea4
 
-Thanks,
-
-Larry
