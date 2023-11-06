@@ -2,39 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6C417E1A51
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 07:43:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A1837E1A7F
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 07:52:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbjKFGnc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Nov 2023 01:43:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50238 "EHLO
+        id S230424AbjKFGwb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Nov 2023 01:52:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbjKFGna (ORCPT
+        with ESMTP id S229717AbjKFGwa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Nov 2023 01:43:30 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BD10F9;
-        Sun,  5 Nov 2023 22:43:25 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3A66gbokF3312619, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3A66gbokF3312619
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 6 Nov 2023 14:42:37 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 6 Nov 2023 14:42:38 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Mon, 6 Nov 2023 14:42:37 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Mon, 6 Nov 2023 14:42:37 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Zheng Hacker <hackerzheng666@gmail.com>,
-        Zheng Wang <zyytlz.wz@163.com>
-CC:     "aspriel@gmail.com" <aspriel@gmail.com>,
+        Mon, 6 Nov 2023 01:52:30 -0500
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B09CF2;
+        Sun,  5 Nov 2023 22:52:27 -0800 (PST)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-2802c41b716so3351974a91.1;
+        Sun, 05 Nov 2023 22:52:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699253547; x=1699858347; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bviLxA9QNdIstU/q8Z042feuvD4EaOTMHTUZ5s5WBZ4=;
+        b=YeI3yy20zOTq2eiHR1TDItV616F3z7EUlis54FrTnsmdhmB//BTZ3yZUPiJiTZp7x2
+         eDKSqeKOY8FHOwzGe6lylUQyyaK1JY/ouC5mlyTDSnTnzHPePqR/jxr8vvz4amfaAqen
+         wd6Ba/HOHbxZxM0G3XshKziGpDTUyNDSylMJgmng1rblx403sKln6EYb1lM3SrxnSTBC
+         r6r1KMxHGWo8MMf628KSTu1bhdO7guQv3igO3zgnE3hwOQ67zESaj+IbKq2/POaVCakR
+         M1TMt9i1eHpJbEmBh0xFcvC7iTcxfsfk13ewmZxhmHrP0j2h1UOqAbuXwomYAFPmtNtt
+         ZthQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699253547; x=1699858347;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bviLxA9QNdIstU/q8Z042feuvD4EaOTMHTUZ5s5WBZ4=;
+        b=hmIYcWcMP8rhQSpB16ztcxh13X6p5Xa8oTpc2Iw7pnE7Ed6nj9pmMl4Imqw0xux5tL
+         NQ5cuPzLAsmwa6uxhnnbYwYvinVtLuoy70oKgJ+wUYzRCTVQ/umArRlHKByy1hUaiBMO
+         5GG0COJxs5HnqntVHe7KOHqUQJNqhrdECW1FG8xGLpKVt1Y4a6t5skIvKTHTT7HUFU2n
+         dAGUGH39YdGhG+OW2CFeU64fcO5rxJO09jTNijeBvh/uVcb8BERibDSxABrtkOuThHZu
+         OcHnXyqtD1N27jPYcRHzprDoR03TTL/61a0iNz+jwbowD2SwlSLlUHIs7MBJ4lC3lmWp
+         WhsA==
+X-Gm-Message-State: AOJu0Yy+BQDnBT2ei6hAp5Pvsqy3F7QH5camqLdSjKV5cqOTPX3dr8Qh
+        EH2VJEcVjfcb+sk+rziUw6kg55lAGsMi0XIsUpI=
+X-Google-Smtp-Source: AGHT+IH0UsoRI9qSbDMkZLg8GKhuey+R/ZxL8cN0JuTvG/kGi6E7pvI+gBl7zzbU0OCpWZ0FZGDubJtg1T3QAZtnMRA=
+X-Received: by 2002:a17:90a:1a0b:b0:280:c576:31b6 with SMTP id
+ 11-20020a17090a1a0b00b00280c57631b6mr10365842pjk.39.1699253546534; Sun, 05
+ Nov 2023 22:52:26 -0800 (PST)
+MIME-Version: 1.0
+References: <20231106043957.815407-1-zyytlz.wz@163.com> <CAJedcCxoDVS-7jVwLvsWOWiv0aObyYBiG-GmqX4bq+Qp+i3iTw@mail.gmail.com>
+ <e783dbcedc9b444ca2651d2eac036d6e@realtek.com>
+In-Reply-To: <e783dbcedc9b444ca2651d2eac036d6e@realtek.com>
+From:   Zheng Hacker <hackerzheng666@gmail.com>
+Date:   Mon, 6 Nov 2023 14:52:15 +0800
+Message-ID: <CAJedcCzWkozTPHd6Lm7uzxZHyxzZw1zQwb=LBzuGRbCw7ThmRQ@mail.gmail.com>
+Subject: Re: [PATCH v3] brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Zheng Wang <zyytlz.wz@163.com>,
+        "aspriel@gmail.com" <aspriel@gmail.com>,
         "franky.lin@broadcom.com" <franky.lin@broadcom.com>,
         "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
         "kvalo@kernel.org" <kvalo@kernel.org>,
@@ -51,53 +74,55 @@ CC:     "aspriel@gmail.com" <aspriel@gmail.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "security@kernel.org" <security@kernel.org>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v3] brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
-Thread-Topic: [PATCH v3] brcmfmac: Fix use-after-free bug in
- brcmf_cfg80211_detach
-Thread-Index: AQHaEHB6V0+Brry5e0a00xnicEhvc7Bs12Vg
-Date:   Mon, 6 Nov 2023 06:42:37 +0000
-Message-ID: <e783dbcedc9b444ca2651d2eac036d6e@realtek.com>
-References: <20231106043957.815407-1-zyytlz.wz@163.com>
- <CAJedcCxoDVS-7jVwLvsWOWiv0aObyYBiG-GmqX4bq+Qp+i3iTw@mail.gmail.com>
-In-Reply-To: <CAJedcCxoDVS-7jVwLvsWOWiv0aObyYBiG-GmqX4bq+Qp+i3iTw@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.94]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogWmhlbmcgSGFja2VyIDxo
-YWNrZXJ6aGVuZzY2NkBnbWFpbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwgTm92ZW1iZXIgNiwgMjAy
-MyAxOjE2IFBNDQo+IFRvOiBaaGVuZyBXYW5nIDx6eXl0bHoud3pAMTYzLmNvbT4NCj4gQ2M6IGFz
-cHJpZWxAZ21haWwuY29tOyBmcmFua3kubGluQGJyb2FkY29tLmNvbTsgaGFudGUubWV1bGVtYW5A
-YnJvYWRjb20uY29tOyBrdmFsb0BrZXJuZWwub3JnOw0KPiBqb2hhbm5lcy5iZXJnQGludGVsLmNv
-bTsgbWFyY2FuQG1hcmNhbi5zdDsgbGludXMud2FsbGVpakBsaW5hcm8ub3JnOyBqaXNvby5qYW5n
-QHlvbnNlaS5hYy5rcjsNCj4gbGludXhsb3ZlbWluQHlvbnNlaS5hYy5rcjsgd2F0YXJ1LmdvaGRh
-QGN5cHJlc3MuY29tOyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7DQo+IGJyY204MDIx
-MS1kZXYtbGlzdC5wZGxAYnJvYWRjb20uY29tOyBTSEEtY3lmbWFjLWRldi1saXN0QGluZmluZW9u
-LmNvbTsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsNCj4gc2VjdXJpdHlAa2VybmVsLm9y
-Zzsgc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYzXSBicmNt
-Zm1hYzogRml4IHVzZS1hZnRlci1mcmVlIGJ1ZyBpbiBicmNtZl9jZmc4MDIxMV9kZXRhY2gNCg0K
-c3ViamVjdCBwcmVmaXggIndpZjogYnJjbWZtYWM6IC4uLiINClRyeSAiZ2l0IGxvZyAtLW9uZWxp
-bmUgZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20vYnJjbTgwMjExL2JyY21mbWFjIiB0byBr
-bm93IHRoYXQuIA0KDQo+IA0KPiBUaGlzIGlzIHRoZSBjYW5kaWRhdGUgcGF0Y2ggb2YgQ1ZFLTIw
-MjMtNDcyMzMgOg0KPiBodHRwczovL252ZC5uaXN0Lmdvdi92dWxuL2RldGFpbC9DVkUtMjAyMy00
-NzIzMw0KDQpJIHRoaW5rIHlvdSBjYW4gYWRkIHRoaXMgbGluayB0byBjb21taXQgbWVzc2FnZSBh
-cyB3ZWxsLiANCg0KDQo=
+Ping-Ke Shih <pkshih@realtek.com> =E4=BA=8E2023=E5=B9=B411=E6=9C=886=E6=97=
+=A5=E5=91=A8=E4=B8=80 14:43=E5=86=99=E9=81=93=EF=BC=9A
+>
+>
+>
+> > -----Original Message-----
+> > From: Zheng Hacker <hackerzheng666@gmail.com>
+> > Sent: Monday, November 6, 2023 1:16 PM
+> > To: Zheng Wang <zyytlz.wz@163.com>
+> > Cc: aspriel@gmail.com; franky.lin@broadcom.com; hante.meuleman@broadcom=
+.com; kvalo@kernel.org;
+> > johannes.berg@intel.com; marcan@marcan.st; linus.walleij@linaro.org; ji=
+soo.jang@yonsei.ac.kr;
+> > linuxlovemin@yonsei.ac.kr; wataru.gohda@cypress.com; linux-wireless@vge=
+r.kernel.org;
+> > brcm80211-dev-list.pdl@broadcom.com; SHA-cyfmac-dev-list@infineon.com; =
+linux-kernel@vger.kernel.org;
+> > security@kernel.org; stable@vger.kernel.org
+> > Subject: Re: [PATCH v3] brcmfmac: Fix use-after-free bug in brcmf_cfg80=
+211_detach
+>
+> subject prefix "wif: brcmfmac: ..."
+> Try "git log --oneline drivers/net/wireless/broadcom/brcm80211/brcmfmac" =
+to know that.
+>
+
+Get it! Thanks for your kind reminder.
+
+> >
+> > This is the candidate patch of CVE-2023-47233 :
+> > https://nvd.nist.gov/vuln/detail/CVE-2023-47233
+>
+> I think you can add this link to commit message as well.
+>
+>
+
+Will apply your suggestion in the next version.
+
+Best regrads,
+Zheng
