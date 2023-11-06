@@ -2,94 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72F067E25D2
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 14:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B5C87E2675
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Nov 2023 15:19:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232721AbjKFNkQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Nov 2023 08:40:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56632 "EHLO
+        id S230405AbjKFOTC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Nov 2023 09:19:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230192AbjKFNkP (ORCPT
+        with ESMTP id S229705AbjKFOTB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Nov 2023 08:40:15 -0500
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D543134;
-        Mon,  6 Nov 2023 05:40:12 -0800 (PST)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-5bbfc735572so1141067b3.0;
-        Mon, 06 Nov 2023 05:40:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699278011; x=1699882811; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jewR5NoRMz4cQc4UcviSvb0/aGqCk/tL3bfyVAdf58g=;
-        b=HJeaFhyjzlSP8wpL4jziB/moodtAhy7rs/bLzaXrIPhyz9BgPllR13wLlp8cDBov/9
-         8YAiZLnOItEslf/LmIzqt9gJSjq9mF8NDeSen44OZ9Ygjomo1gDZ0nwlaj6iP2WimUjh
-         huhS/yBDnY3lZ1/h/kThJ2QwKa9stbYAwyJ5W7dm8Rgt8Fu9Nwqy/74rU3k7qRbZ1E1x
-         jTAz6PvgWREOC2iSsmAdbxuxk2KvB88UhEdPhja+hQsaCZ5WgJTfaJTktrvaWy5cPHIm
-         haCIcwD+Yl2XXVUXEGFw4WtPuNfVKQ4ljKjZVs6HQKDuNmhwVDm4IKmuL1yD8S+evZKZ
-         Jfow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699278011; x=1699882811;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jewR5NoRMz4cQc4UcviSvb0/aGqCk/tL3bfyVAdf58g=;
-        b=t5219eC2mnEur+053zdOwsG1cNxVkOGxb3AIk1k8hIzaqfWkHUf7w+i3Lk0Sj+lRHb
-         RavJswrr0kqi71GqvwwG7ECjDWjBD5RLWvlPFr/jc1ZTRB014UzvHJoPttGR6UKKUHEk
-         EnS1KF+h4w5tu4Osj/GBdxW2YecDQfjlHdFgp5F15JnD1/t9nZFK7ToRzhBxybVvJYCM
-         h71gKMkkacfmTS0GhfPTHOQ2ygYTMqFVHQ4RzgA3ixduJFrIMvIfzKAgCJ44S9UUvuYC
-         10h3+yveRF4JRTBpQx1ghr+xsyPj5pn2VYI1c+zQchsHzV6KQ3QnHAUcwAVJEmHOF8Av
-         fevA==
-X-Gm-Message-State: AOJu0YyTYbsicdDbey1Jwg69TJP2wGZ/y8FyLua/4fEszSIDgPOldr7u
-        0H8I1OwUTtyx7UAZImIOfjUPMbw7tOmJEQGIR3g=
-X-Google-Smtp-Source: AGHT+IEF0AcUDMb8VcTXj4YSTL5VwrOIm5LmtYwWV9jJVvlhBE7F+vAtQvRICYYPVCS6INyjnN1pv1Dpvxex83kuyew=
-X-Received: by 2002:a25:5051:0:b0:d9c:410b:c364 with SMTP id
- e78-20020a255051000000b00d9c410bc364mr16862879ybb.6.1699278011034; Mon, 06
- Nov 2023 05:40:11 -0800 (PST)
+        Mon, 6 Nov 2023 09:19:01 -0500
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.198])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 88987DF;
+        Mon,  6 Nov 2023 06:18:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=GHKDY
+        oOVMXecpK9LSE+iNohkCdObnkzqAJ+O5AtWvHk=; b=Y7XpWMSFxGujh2q/yvDDI
+        5+YQvSOeWb9zLtnoTrKoG0u4ufiGme5GDs3dWob2lAfuYOT0PbI5s6y4uFtVyXNw
+        beXDxhuN/hrAogS4bp2VDB/i6+TAdjx7IsA+RA1c84jTF0eYambo7Bc/yZK0qqGs
+        2jS6Qp97s87fdR547iXQU4=
+Received: from leanderwang-LC4.localdomain (unknown [111.206.145.21])
+        by zwqz-smtp-mta-g5-3 (Coremail) with SMTP id _____wDXv09k9UhlfEHwCQ--.49806S2;
+        Mon, 06 Nov 2023 22:17:08 +0800 (CST)
+From:   Zheng Wang <zyytlz.wz@163.com>
+To:     aspriel@gmail.com
+Cc:     franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        kvalo@kernel.org, johannes.berg@intel.com, marcan@marcan.st,
+        linus.walleij@linaro.org, jisoo.jang@yonsei.ac.kr,
+        linuxlovemin@yonsei.ac.kr, wataru.gohda@cypress.com,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com, arend.vanspriel@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        security@kernel.org, stable@vger.kernel.org,
+        hackerzheng666@gmail.com, Zheng Wang <zyytlz.wz@163.com>
+Subject: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in  brcmf_cfg80211_detach
+Date:   Mon,  6 Nov 2023 22:17:04 +0800
+Message-Id: <20231106141704.866455-1-zyytlz.wz@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <CABXGCsMQXiNZHXoqa5_ypO8xSiGCAPhpUrXMyjx5poZ=kiGSow@mail.gmail.com>
- <d2792e3513899a4e4cfd9a8a6c24dbf19b5fe1d3.camel@mediatek.com>
-In-Reply-To: <d2792e3513899a4e4cfd9a8a6c24dbf19b5fe1d3.camel@mediatek.com>
-From:   Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Date:   Mon, 6 Nov 2023 18:40:00 +0500
-Message-ID: <CABXGCsP16Mx0=tXv0dFQA9aS_vCy5rk7DpJcoeYJzfhFYqrGJA@mail.gmail.com>
-Subject: Re: 6.7/kasan/regression/bisected: mt7921_regd_notifier+0x3e2
-To:     =?UTF-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "nbd@nbd.name" <nbd@nbd.name>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        =?UTF-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?= 
-        <Mingyen.Hsieh@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wDXv09k9UhlfEHwCQ--.49806S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr13tw1fAw4UJw1rZFyxKrg_yoW8ur1kpF
+        WxWa4qyryUWrW3Kr4F9rnrJFy8ta1DKwnYkr4j93Z3uFn8Wr18JrW8KFya93WDGrs2yay7
+        Ar4vqrnrGrZ7GFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR1rWrUUUUU=
+X-Originating-IP: [111.206.145.21]
+X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/xtbBgwggU1d7gdDP3AAAsW
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L4,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Nov 4, 2023 at 3:37=E2=80=AFAM Deren Wu (=E6=AD=A6=E5=BE=B7=E4=BB=
-=81) <Deren.Wu@mediatek.com> wrote:
->
->
-> Based on this stacktrace, I think we have the patch here.
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/drivers/net/wireless/mediatek/mt76?id=3D169b7acb847e8dc656cd2289a91ff668f7=
-2405a0
->
-> Please help to verify your issue with this patch.
+This is the candidate patch of CVE-2023-47233 :
+https://nvd.nist.gov/vuln/detail/CVE-2023-47233
 
-Thanks, I can confirm that this fixes KASAN: null-ptr-deref in range
-[0x0000000000000178-0x000000000000017f] at mt7921_regd_notifier+0x3e2
+In brcm80211 driver,it starts with the following invoking chain
+to start init a timeout worker:
 
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+->brcmf_usb_probe
+  ->brcmf_usb_probe_cb
+    ->brcmf_attach
+      ->brcmf_bus_started
+        ->brcmf_cfg80211_attach
+          ->wl_init_priv
+            ->brcmf_init_escan
+              ->INIT_WORK(&cfg->escan_timeout_work,
+		  brcmf_cfg80211_escan_timeout_worker);
 
---=20
-Best Regards,
-Mike Gavrilov.
+If we disconnect the USB by hotplug, it will call
+brcmf_usb_disconnect to make cleanup. The invoking chain is :
+
+brcmf_usb_disconnect
+  ->brcmf_usb_disconnect_cb
+    ->brcmf_detach
+      ->brcmf_cfg80211_detach
+        ->kfree(cfg);
+
+While the timeout woker may still be running. This will cause
+a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
+
+Fix it by deleting the timer and canceling the worker in
+brcmf_cfg80211_detach.
+
+Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Cc: stable@vger.kernel.org
+---
+v5:
+- replace del_timer_sync with timer_shutdown_sync suggested by
+Arend and Takashi
+v4:
+- rename the subject and add CVE number as Ping-Ke Shih suggested
+v3:
+- rename the subject as Johannes suggested
+v2:
+- fix the error of kernel test bot reported
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 667462369a32..a8723a61c9e4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -8431,6 +8431,8 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
+ 	if (!cfg)
+ 		return;
+ 
++	timer_shutdown_sync(&cfg->escan_timeout);
++	cancel_work_sync(&cfg->escan_timeout_work);
+ 	brcmf_pno_detach(cfg);
+ 	brcmf_btcoex_detach(cfg);
+ 	wiphy_unregister(cfg->wiphy);
+-- 
+2.25.1
+
