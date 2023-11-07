@@ -2,94 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E42057E4534
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 17:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA5D97E458B
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 17:11:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343897AbjKGQDD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Nov 2023 11:03:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35258 "EHLO
+        id S235354AbjKGQLA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Nov 2023 11:11:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344407AbjKGQCl (ORCPT
+        with ESMTP id S235363AbjKGQKD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Nov 2023 11:02:41 -0500
-Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D51688A6E
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Nov 2023 07:53:48 -0800 (PST)
-Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net [IPv6:2a02:6b8:c2b:7a7:0:640:3f88:0])
-        by forward500a.mail.yandex.net (Yandex) with ESMTP id 5074B6113E;
-        Tue,  7 Nov 2023 18:53:46 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id jreo0M5UriE0-HLcxAP8D;
-        Tue, 07 Nov 2023 18:53:45 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1699372425; bh=GX2bYsYWkg5AjmoajMKLBzetXRQFXK2KPpegCQYCsCQ=;
-        h=In-Reply-To:Subject:To:From:Cc:Date:References:Message-ID;
-        b=vsd3GXf6fXVD+/3fVdTnr+Ii0k3EQO9HaL8RA2Ms1WEkc1gMTwnSKioYGPXUti0Dv
-         FVGpZt342MFGi/FaVMlR5k0fXkG9uPVtCy4dtJjCXUOwZ72U6rINnZY4FDVFlrfqAw
-         +atcAGzWdzdRLXOyHq2qRmVi3Z1ElPuYL6OdlJXA=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <73a27525-bed6-4bee-8bd6-973bff07e608@yandex.ru>
-Date:   Tue, 7 Nov 2023 18:53:45 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To:     Johannes Berg <johannes@sipsolutions.net>,
+        Tue, 7 Nov 2023 11:10:03 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D4D621117
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Nov 2023 08:02:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=xzU9VhB4mdbof3mIoxy7KRqil2lVEU5pGqPFku67oXc=;
+        t=1699372964; x=1700582564; b=ni5wN0GtQSbAfTLvWPT9PntKgBMgAqa8FdA2cWH4JErvLXG
+        UYKtzbd/41W+a2il7z0NAvCBcjZoFXm1xWRzXAhuBRm3sZS0vEUIFUsifDaauxuZjnGJ1cEUbl0BD
+        86M1OtTb5OyPlFpJnsRLqZMPjXqGtPFkJaiq1kb/sQsuUk5sSCXqkrW9mm4rGi9bFZkI02z1dedqs
+        Kg6V4HAnpfOklpzp2YeCNEule/2ncO6XChJcfMjb0HExRC08JVMtRJ99Z/ZX068Iex7p+ec9WGw0/
+        diZU7qlH7a6C7QoJ5T1IYauPNmemvagN3dXgqpieQuxt7GdG+9/p/Btjiglqjs7w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97-RC1)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1r0OXJ-0000000H0nH-1dPK;
+        Tue, 07 Nov 2023 17:02:41 +0100
+Message-ID: <9ca0a134b2ca98c44d861329fe8e5040f0522890.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: iwlwifi: add missing milliseconds to TUs
+ conversion
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Dmitry Antipov <dmantipov@yandex.ru>,
         Gregory Greenman <gregory.greenman@intel.com>
 Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Date:   Tue, 07 Nov 2023 17:02:40 +0100
+In-Reply-To: <73a27525-bed6-4bee-8bd6-973bff07e608@yandex.ru>
 References: <20231107152611.61952-1-dmantipov@yandex.ru>
- <22c0b564fc18fcd4d421d520f94a78bdb644d1e4.camel@sipsolutions.net>
-Content-Language: en-US
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- tx98MCutXbJWn55RtnVKbpIiMfBrcB8=
-Subject: Re: [PATCH] wifi: iwlwifi: add missing milliseconds to TUs conversion
-In-Reply-To: <22c0b564fc18fcd4d421d520f94a78bdb644d1e4.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+         <22c0b564fc18fcd4d421d520f94a78bdb644d1e4.camel@sipsolutions.net>
+         <73a27525-bed6-4bee-8bd6-973bff07e608@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/7/23 18:41, Johannes Berg wrote:
+On Tue, 2023-11-07 at 18:53 +0300, Dmitry Antipov wrote:
+> On 11/7/23 18:41, Johannes Berg wrote:
+>=20
+> > Well, the function is actually documenting both TUs and ms depending
+> > where you look ;-)
+>=20
+> I've relied on the comments around 'struct iwl_time_event_cmd'.
 
-> Well, the function is actually documenting both TUs and ms depending
-> where you look ;-)
+Yes but the function docs also say:
 
-I've relied on the comments around 'struct iwl_time_event_cmd'.
+ * @min_duration: will start a new session if the current session will end
+ *      in less than min_duration.
+ * @max_delay: maximum delay before starting the time event (in TU)
 
-> It's also only 2.4% off, so ...
+so it expects input in TU already. Then it goes on to say:
 
-The corner case when MSEC_TO_TU(1) yields to 0 may be more interesting.
+ * This function can be used to start a session protection which means that=
+ the
+ * fw will stay on the channel for %duration_ms milliseconds. This function
 
-Dmitry
+so it's not consistent, but I'm not surprised, my son's teachers always
+praise him for tracking units and I think it's obvious you have to ;-)
+Why should the code be different :P
+
+(Then again, "duration_ms" isn't even an argument)
+
+
+The value from mac80211 that's passed in comes from
+
+ * struct ieee80211_prep_tx_info - prepare TX information
+ * @duration: if non-zero, hint about the required duration,
+ *      only used with the mgd_prepare_tx() method.
+
+
+which doesn't even say the unit ... but in the one place setting it uses
+jiffies_to_msecs() to fill it, so it's also not necessarily very
+accurate (depending on CONFIG_HZ.)
+
+
+Maybe we should rename IWL_MVM_TE_SESSION_PROTECTION_MAX_TIME_MS and
+IWL_MVM_TE_SESSION_PROTECTION_MIN_TIME_MS to _TU to make it more
+aligned? Dunno.
+
+> > It's also only 2.4% off, so ...
+>=20
+> The corner case when MSEC_TO_TU(1) yields to 0 may be more interesting.
+
+The input should be in the order of (a) hundred(s) TU/ms, so that won't
+really ever happen.
+
+The reason why I don't really want to convert it is that the beacon
+intervals are typically 100 TU, and so if we use 400 ms which converts
+to 390 TU we _just_ don't cover 4 beacon intervals which is a bit stupid
+since the precise timing doesn't matter. Covering 4 gives us a better
+chance here, and anyway the firmware will also have some delays etc.
+
+johannes
