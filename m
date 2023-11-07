@@ -2,189 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F02CC7E492F
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 20:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58C0D7E4B1F
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 22:49:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235176AbjKGT26 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Nov 2023 14:28:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33442 "EHLO
+        id S1343777AbjKGVti (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Nov 2023 16:49:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343983AbjKGT25 (ORCPT
+        with ESMTP id S235204AbjKGVth (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Nov 2023 14:28:57 -0500
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6CAA10A
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Nov 2023 11:28:54 -0800 (PST)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-5afa5dbc378so67382317b3.0
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Nov 2023 11:28:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1699385334; x=1699990134; darn=vger.kernel.org;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Iq3+sKNzSZd3RigLek6L7y8YkyavsMJhf+xBzR+RIz4=;
-        b=cL9v059p7BOs41pZRCD+GYZZ1JbuhsbYSfv30hNHm/5sFE6tfQ/KylotEaESgSXYUW
-         zKgtQ8loTOK6Q7+1k9AXXQrV7YQfhS4VP+Tn+r5w5zfimoWwj2WFTQgh74NrQT4r0/Qi
-         nP1t6YGnoT/Si4msbq8KYwxlg0PAtyFlhZYb4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699385334; x=1699990134;
-        h=in-reply-to:from:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Iq3+sKNzSZd3RigLek6L7y8YkyavsMJhf+xBzR+RIz4=;
-        b=STbBWk9GC9r6+4Pi2og81ctTdV4s1K7rm/IUEA+J9LgVWJpQgBx/xPFy3ZjfXHB8KG
-         RhZCanuNusBxbJyN+JkImiHNx3WhNMLFVa/gWiW0R/oR2srdp5kLy+k42Y2dfRcRBF/h
-         Pz0zv9SqAJrLdhDPH0c4I9v1rMpMzd6zxC8RtVu3xZCohMQZP3aCW7+8IqbA5K86BhR7
-         Pcl+PazfH10S8vSdEHNh8ZPee2mcRSP93qizYS297j1aqzLd5hN2QNEleCCemJU2Vrbf
-         RWqA7lpo73qvS5q/bwAEyT7cDnpoBzWVEjmiGlmvjF5o++swe2pBE/NsN8+vp6TDMXYJ
-         yg1g==
-X-Gm-Message-State: AOJu0Yy2oTbjpqxi+YwMqZ/gXxa7N59SDJbmetPNUlGFFcP2/ibCYZYg
-        N/CoiWjp028gcaXPD9cq0RzpDw==
-X-Google-Smtp-Source: AGHT+IHXwFW/dRgtOneU2Pr5+kl9mLu1N6ALGz6BxjiDfff0gVOmJgFRG1qZdI6uLNiXcJtUl0+D7g==
-X-Received: by 2002:a05:690c:f8e:b0:5a7:ba17:7109 with SMTP id df14-20020a05690c0f8e00b005a7ba177109mr13311155ywb.1.1699385334083;
-        Tue, 07 Nov 2023 11:28:54 -0800 (PST)
-Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id cr20-20020ad456f4000000b0065af71585b5sm206810qvb.58.2023.11.07.11.28.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Nov 2023 11:28:52 -0800 (PST)
-Message-ID: <2ddab002-27af-0a0d-b8ce-a5479887e203@broadcom.com>
-Date:   Tue, 7 Nov 2023 20:28:48 +0100
+        Tue, 7 Nov 2023 16:49:37 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B4A10DF
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Nov 2023 13:49:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699393775; x=1730929775;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0KHj1k7qfeW+W1ip/XseMAhArMjz1QbT3cyHL68ABYE=;
+  b=GaQfRiNrmQvocKDqXIVHStDMauMETu64Nz5r8cVSyBKlXRp8Oykc6lCL
+   zizEmFgHbx2nI/LeJh1bltmtG0lFEw8TCBoBhex8RpQtQPguZo2lCKt7E
+   p6CMcj77IkJCByQYcqWzFCMD+ryXGNwVVJze33vykvAH5mUyu87FU/rd5
+   qeGMlTXEQ+IwoevGWj+FyCtazrWN/ZD20j+sO5INJCiJklkPPJdV0rCri
+   3BBzQkdw7SVV90gwP/+b+hFkCdVRhFohaxLlRIdD0VOgupYPrAIoRMych
+   abwrJWZDcGt63Ep6uay7/AcaWfXCvlYR5e56nzqGcJFNP6IHp1PlTbx34
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="393552992"
+X-IronPort-AV: E=Sophos;i="6.03,284,1694761200"; 
+   d="scan'208";a="393552992"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2023 13:49:33 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="936297183"
+X-IronPort-AV: E=Sophos;i="6.03,284,1694761200"; 
+   d="scan'208";a="936297183"
+Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 07 Nov 2023 13:49:30 -0800
+Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1r0Twu-0007Pa-0C;
+        Tue, 07 Nov 2023 21:49:28 +0000
+Date:   Wed, 8 Nov 2023 05:48:37 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Michael-CY Lee <michael-cy.lee@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Money Wang <money.wang@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Michael-CY Lee <michael-cy.lee@mediatek.com>
+Subject: Re: [PATCH 1/2] wifi: mac80211: Add utilities for converting op_class
+Message-ID: <202311080415.70MyjizQ-lkp@intel.com>
+References: <20231106073301.7351-1-michael-cy.lee@mediatek.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 4/5] wifi: brcmfmac: Support bss_info up to v112
-To:     Daniel Berlin <dberlin@dberlin.org>
-Cc:     Hector Martin <marcan@marcan.st>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org
-References: <cover.1697650207.git.dberlin@dberlin.org>
- <079882bf4a7c026547ecf8ad50a2b7a49ade7130.1697650207.git.dberlin@dberlin.org>
- <b907f696-c966-54ef-3267-12833c6f5d91@broadcom.com>
- <26a081e6-032a-b58d-851c-eaac745e7c87@marcan.st>
- <25e43cd3-45e6-d775-87c4-9ed7cdfe3e2d@broadcom.com>
- <CAF4BwTV=S39mUcbhoxCf6Z6+gGGFy5ctfYwbKt5yDMUYD5r3gw@mail.gmail.com>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <CAF4BwTV=S39mUcbhoxCf6Z6+gGGFy5ctfYwbKt5yDMUYD5r3gw@mail.gmail.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000031719a060994fb8d"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231106073301.7351-1-michael-cy.lee@mediatek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000031719a060994fb8d
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Hi Michael-CY,
 
-On 11/7/2023 1:00 PM, Daniel Berlin wrote:
-> On Tue, Nov 7, 2023 at 6:51 AM Arend van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
->>
->> On 11/7/2023 12:11 PM, Hector Martin wrote:
->>> On 20/10/2023 18.59, Arend van Spriel wrote:
->>>> On 10/19/2023 3:42 AM, Daniel Berlin wrote:
->>>>> From: Hector Martin <marcan@marcan.st>
->>>>>
->>>>> The structures are compatible and just add fields, so we can just treat
->>>>> it as always v112. If we start using new fields, that will have to be
->>>>> gated on the version.
->>>>
->>>> Seems EHT is creeping in here.
->>>>
->>>> Having doubts about compatibility statement (see below)...
->>>>
+kernel test robot noticed the following build warnings:
 
-Doubts resolved.
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v6.6 next-20231107]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->>>>> Signed-off-by: Hector Martin <marcan@marcan.st>
->>>>> ---
->>>>>     .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  5 ++-
->>>>>     .../broadcom/brcm80211/brcmfmac/fwil_types.h  | 37 +++++++++++++++++--
->>>>>     2 files changed, 36 insertions(+), 6 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Michael-CY-Lee/wifi-mac80211-Refactor-STA-CSA-parsing-flow/20231106-161059
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20231106073301.7351-1-michael-cy.lee%40mediatek.com
+patch subject: [PATCH 1/2] wifi: mac80211: Add utilities for converting op_class
+config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20231108/202311080415.70MyjizQ-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231108/202311080415.70MyjizQ-lkp@intel.com/reproduce)
 
---00000000000031719a060994fb8d
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311080415.70MyjizQ-lkp@intel.com/
 
-MIIQdwYJKoZIhvcNAQcCoIIQaDCCEGQCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-gg3OMIIFDTCCA/WgAwIBAgIQeEqpED+lv77edQixNJMdADANBgkqhkiG9w0BAQsFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMDA5MTYwMDAwMDBaFw0yODA5MTYwMDAwMDBaMFsxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBS
-MyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
-vbCmXCcsbZ/a0fRIQMBxp4gJnnyeneFYpEtNydrZZ+GeKSMdHiDgXD1UnRSIudKo+moQ6YlCOu4t
-rVWO/EiXfYnK7zeop26ry1RpKtogB7/O115zultAz64ydQYLe+a1e/czkALg3sgTcOOcFZTXk38e
-aqsXsipoX1vsNurqPtnC27TWsA7pk4uKXscFjkeUE8JZu9BDKaswZygxBOPBQBwrA5+20Wxlk6k1
-e6EKaaNaNZUy30q3ArEf30ZDpXyfCtiXnupjSK8WU2cK4qsEtj09JS4+mhi0CTCrCnXAzum3tgcH
-cHRg0prcSzzEUDQWoFxyuqwiwhHu3sPQNmFOMwIDAQABo4IB2jCCAdYwDgYDVR0PAQH/BAQDAgGG
-MGAGA1UdJQRZMFcGCCsGAQUFBwMCBggrBgEFBQcDBAYKKwYBBAGCNxQCAgYKKwYBBAGCNwoDBAYJ
-KwYBBAGCNxUGBgorBgEEAYI3CgMMBggrBgEFBQcDBwYIKwYBBQUHAxEwEgYDVR0TAQH/BAgwBgEB
-/wIBADAdBgNVHQ4EFgQUljPR5lgXWzR1ioFWZNW+SN6hj88wHwYDVR0jBBgwFoAUj/BLf6guRSSu
-TVD6Y5qL3uLdG7wwegYIKwYBBQUHAQEEbjBsMC0GCCsGAQUFBzABhiFodHRwOi8vb2NzcC5nbG9i
-YWxzaWduLmNvbS9yb290cjMwOwYIKwYBBQUHMAKGL2h0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5j
-b20vY2FjZXJ0L3Jvb3QtcjMuY3J0MDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwuZ2xvYmFs
-c2lnbi5jb20vcm9vdC1yMy5jcmwwWgYDVR0gBFMwUTALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgEo
-CjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAN
-BgkqhkiG9w0BAQsFAAOCAQEAdAXk/XCnDeAOd9nNEUvWPxblOQ/5o/q6OIeTYvoEvUUi2qHUOtbf
-jBGdTptFsXXe4RgjVF9b6DuizgYfy+cILmvi5hfk3Iq8MAZsgtW+A/otQsJvK2wRatLE61RbzkX8
-9/OXEZ1zT7t/q2RiJqzpvV8NChxIj+P7WTtepPm9AIj0Keue+gS2qvzAZAY34ZZeRHgA7g5O4TPJ
-/oTd+4rgiU++wLDlcZYd/slFkaT3xg4qWDepEMjT4T1qFOQIL+ijUArYS4owpPg9NISTKa1qqKWJ
-jFoyms0d0GwOniIIbBvhI2MJ7BSY9MYtWVT5jJO3tsVHwj4cp92CSFuGwunFMzCCA18wggJHoAMC
-AQICCwQAAAAAASFYUwiiMA0GCSqGSIb3DQEBCwUAMEwxIDAeBgNVBAsTF0dsb2JhbFNpZ24gUm9v
-dCBDQSAtIFIzMRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpHbG9iYWxTaWduMB4XDTA5
-MDMxODEwMDAwMFoXDTI5MDMxODEwMDAwMFowTDEgMB4GA1UECxMXR2xvYmFsU2lnbiBSb290IENB
-IC0gUjMxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2JhbFNpZ24wggEiMA0GCSqG
-SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDMJXaQeQZ4Ihb1wIO2hMoonv0FdhHFrYhy/EYCQ8eyip0E
-XyTLLkvhYIJG4VKrDIFHcGzdZNHr9SyjD4I9DCuul9e2FIYQebs7E4B3jAjhSdJqYi8fXvqWaN+J
-J5U4nwbXPsnLJlkNc96wyOkmDoMVxu9bi9IEYMpJpij2aTv2y8gokeWdimFXN6x0FNx04Druci8u
-nPvQu7/1PQDhBjPogiuuU6Y6FnOM3UEOIDrAtKeh6bJPkC4yYOlXy7kEkmho5TgmYHWyn3f/kRTv
-riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
-QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
-UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
-M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
-Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
-14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
-a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
-XzCCBVYwggQ+oAMCAQICDE79bW6SMzVJMuOi1zANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
-RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
-UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAxMTQzMjNaFw0yNTA5MTAxMTQzMjNaMIGV
-MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
-BgNVBAoTDUJyb2FkY29tIEluYy4xGTAXBgNVBAMTEEFyZW5kIFZhbiBTcHJpZWwxKzApBgkqhkiG
-9w0BCQEWHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IB
-DwAwggEKAoIBAQDxOB8Yu89pZLsG9Ic8ZY3uGibuv+NRsij+E70OMJQIwugrByyNq5xgH0BI22vJ
-LT7VKCB6YJC88ewEFfYi3EKW/sn6RL16ImUM40beDmQ12WBquJRoxVNyoByNalmTOBNYR95ZQZJw
-1nrzaoJtK0XIsv0dNCUcLlAc+jHkngD+I0ptVuWoMO1BcJexqJf5iX2M1CdC8PXTh9g4FIQnG2mc
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDJYALzuZXDILRF7wYo
-hKLe2oLidw3LdUhGsziiMVStxDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzExMDcxOTI4NTRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAnPJJTlozV+c5YLrnuDRdcZbvzviNqr843Tr3
-vDZrBsS+VSs2+enq0iiqDDr/AsLLJI8pTbYXPHGSaBwYSfZUE6YcCH1ZS4qTHoDTBZG/HwtvF94/
-SWWj9Ouu4fRYDIHYPIfPvHcHDQQs0XYPpHvo2oZQszg3IwZXY1vgtk87275rTp1bukzssqEGkrf6
-oW1msCkRp/69adaZ0dYAYSwXaES2ogkGZDmfJVj+yiljEtevAhDy7fWrirUAfMtYXNtahS6uLbBN
-OAHEo/xvDBM+3EcUL2TDIWA6RGyxBZBHfcoesOKYhdGTi6mXoUeaotpgjC85g5Bn7gLL5D0Cs1zL
-pA==
---00000000000031719a060994fb8d--
+All warnings (new ones prefixed by >>):
+
+>> net/wireless/util.c:2039:11: warning: variable 'offset' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+           else if (control_freq >= 5180)
+                    ^~~~~~~~~~~~~~~~~~~~
+   net/wireless/util.c:2041:2: note: uninitialized use occurs here
+           offset /= 20;
+           ^~~~~~
+   net/wireless/util.c:2039:7: note: remove the 'if' if its condition is always true
+           else if (control_freq >= 5180)
+                ^~~~~~~~~~~~~~~~~~~~~~~~~
+   net/wireless/util.c:2025:26: note: initialize the variable 'offset' to silence this warning
+           u32 control_freq, offset;
+                                   ^
+                                    = 0
+   1 warning generated.
+
+
+vim +2039 net/wireless/util.c
+
+  2019	
+  2020	bool ieee80211_operating_class_to_center_freq(u8 operating_class,
+  2021						      struct ieee80211_channel *chan,
+  2022						      u32 *center_freq1,
+  2023						      u32 *center_freq2)
+  2024	{
+  2025		u32 control_freq, offset;
+  2026		enum nl80211_band band;
+  2027	
+  2028		control_freq = chan->center_freq;
+  2029		if (!ieee80211_operating_class_to_band(operating_class, &band))
+  2030			return false;
+  2031	
+  2032		if (band != chan->band)
+  2033			return false;
+  2034	
+  2035		if (control_freq >= 5955)
+  2036			offset = control_freq - 5955;
+  2037		else if (control_freq >= 5745)
+  2038			offset = control_freq - 5745;
+> 2039		else if (control_freq >= 5180)
+  2040			offset = control_freq - 5180;
+  2041		offset /= 20;
+  2042	
+  2043		*center_freq2 = 0;
+  2044		switch (operating_class) {
+  2045		case 81:  /* 2 GHz band; 20 MHz; channels 1..13 */
+  2046		case 82:  /* 2 GHz band; 20 MHz; channel 14 */
+  2047		case 115: /* 5 GHz band; 20 MHz; channels 36,40,44,48 */
+  2048		case 118: /* 5 GHz band; 20 MHz; channels 52,56,60,64 */
+  2049		case 121: /* 5 GHz band; 20 MHz; channels 100..144 */
+  2050		case 124: /* 5 GHz band; 20 MHz; channels 149,153,157,161 */
+  2051		case 125: /* 5 GHz band; 20 MHz; channels 149..177 */
+  2052		case 131: /* 6 GHz band; 20 MHz; channels 1..233*/
+  2053		case 136: /* 6 GHz band; 20 MHz; channel 2 */
+  2054			*center_freq1 = control_freq;
+  2055			return true;
+  2056		case 83:  /* 2 GHz band; 40 MHz; channels 1..9 */
+  2057		case 116: /* 5 GHz band; 40 MHz; channels 36,44 */
+  2058		case 119: /* 5 GHz band; 40 MHz; channels 52,60 */
+  2059		case 122: /* 5 GHz band; 40 MHz; channels 100,108,116,124,132,140 */
+  2060		case 126: /* 5 GHz band; 40 MHz; channels 149,157,165,173 */
+  2061			*center_freq1 = control_freq + 10;
+  2062			return true;
+  2063		case 84:  /* 2 GHz band; 40 MHz; channels 5..13 */
+  2064		case 117: /* 5 GHz band; 40 MHz; channels 40,48 */
+  2065		case 120: /* 5 GHz band; 40 MHz; channels 56,64 */
+  2066		case 123: /* 5 GHz band; 40 MHz; channels 104,112,120,128,136,144 */
+  2067		case 127: /* 5 GHz band; 40 MHz; channels 153,161,169,177 */
+  2068			*center_freq1 = control_freq - 10;
+  2069			return true;
+  2070		case 132: /* 6 GHz band; 40 MHz; channels 1,5,..,229*/
+  2071			*center_freq1 = control_freq + 10 - (offset & 1) * 20;
+  2072			return true;
+  2073		case 128: /* 5 GHz band; 80 MHz; channels 36..64,100..144,149..177 */
+  2074			*center_freq1 = control_freq + 30 - (offset & 3) * 20;
+  2075			return true;
+  2076		case 130: /* 5 GHz band; 80+80 MHz; channels 36..64,100..144,149..177 */
+  2077			/* TODO How to know the center_freq2 of 80+80 MHz?*/
+  2078			*center_freq1 = 0;
+  2079			return false;
+  2080		case 133: /* 6 GHz band; 80 MHz; channels 1,5,..,229 */
+  2081			*center_freq1 = control_freq + 30 - (offset & 3) * 20;
+  2082			return true;
+  2083		case 129: /* 5 GHz band; 160 MHz; channels 36..64,100..144,149..177 */
+  2084			*center_freq1 = control_freq + 70 - (offset & 7) * 20;
+  2085			return true;
+  2086		case 134: /* 6 GHz band; 160 MHz; channels 1,5,..,229 */
+  2087			*center_freq1 = control_freq + 70 - (offset & 7) * 20;
+  2088			return true;
+  2089		case 135: /* 6 GHz band; 80+80 MHz; channels 1,5,..,229 */
+  2090			/* TODO How to know the center_freq2 of 80+80 MHz?*/
+  2091			*center_freq1 = 0;
+  2092			return false;
+  2093		case 137: /* 6 GHz band; 320 MHz; channels 1,5,..,229 */
+  2094			/* TODO it's 320 MHz-1 or 320 MHz-2 channelization? */
+  2095			*center_freq1 = 0;
+  2096			return false;
+  2097		default:
+  2098			return false;
+  2099		}
+  2100	}
+  2101	EXPORT_SYMBOL(ieee80211_operating_class_to_center_freq);
+  2102	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
