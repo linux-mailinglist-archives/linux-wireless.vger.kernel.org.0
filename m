@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97C407E3C31
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 13:13:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83E597E3DA4
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 13:30:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234032AbjKGMNM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Nov 2023 07:13:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42740 "EHLO
+        id S234760AbjKGMaI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Nov 2023 07:30:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234125AbjKGMMm (ORCPT
+        with ESMTP id S234392AbjKGM3q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Nov 2023 07:12:42 -0500
+        Tue, 7 Nov 2023 07:29:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4E8310F7;
-        Tue,  7 Nov 2023 04:10:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CAB5C433C7;
-        Tue,  7 Nov 2023 12:10:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870531FC4;
+        Tue,  7 Nov 2023 04:10:30 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2979C433C9;
+        Tue,  7 Nov 2023 12:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699359016;
-        bh=dlKGT6xNm9zRSZTFvdB4JSXK24nbtzqgVv1rfWPrhmE=;
+        s=k20201202; t=1699359029;
+        bh=rjyDa/JzWevqiRTvkRQBMVxrkWCq/sYG2ae5ELikHhw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LdjbNvVfDuu0435zS+XJHfGbsu7XNlSP/9Msest8pFRoKdvb9bR0JM1mVYoACwcDc
-         UQgMTQFbsC75s8oXlqXDPUox/g1bei/CPZ4v3s9/I0q1HrrQ/I8RofQU5fbrIf/ngy
-         wqowhg8khFs6eHAAVCio3GoYi1PZ71JipIkiB7STcOQ+8EGOk846oJSk31upMGHcOz
-         GjsB/ynMJygnS0CvCMKP708lv2yPFJOqIkbgscLHqvfyWavPfx7hH2COhcJVlXqvuX
-         xOeprGiLqvw8cJVoJhvW3V7Bazsn9vugEd961PgzjtYDblUkSNE41eFaxPB/sLpSP8
-         BTE2brEFCYf6A==
+        b=M4cZUewBoAKO5Sw4jxy8jYpPrn+VKH7zoiMlhKMSp+E6yzSGR9UszTheUg/Co2aMY
+         JqhCbMRCWsXV9nVM2JRdaqIoNr8nGIdS5YIhb5J2KHtOA1zNV39JbaRLT9SDIgmB71
+         5JkXOCV3sS6gqq+rADq9pPlBVwzIMG0njZaQPwmGR3gy8OJAB0h1okjVAS1KeVX+Sd
+         Fhz3TbN7waWKry28Kw6ANzYPXf+m+JUVLgdqOsIrZ+tHE4QuLnMWXf5Qko8qKLhuSV
+         XFqfnayLYp6dTGDKZ6niVJUd3cIBPYqM2rTcrq9akQ7XBR82gEKlA0wSzdyRvWT4vj
+         c1+xdF+f0KSZg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Douglas Anderson <dianders@chromium.org>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        quic_jjohnson@quicinc.com, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 18/30] wifi: ath10k: Don't touch the CE interrupt registers after power up
-Date:   Tue,  7 Nov 2023 07:08:33 -0500
-Message-ID: <20231107120922.3757126-18-sashal@kernel.org>
+        miriam.rachel.korenblit@intel.com, emmanuel.grumbach@intel.com,
+        ilan.peer@intel.com, linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.5 22/30] wifi: iwlwifi: mvm: fix size check for fw_link_id
+Date:   Tue,  7 Nov 2023 07:08:37 -0500
+Message-ID: <20231107120922.3757126-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231107120922.3757126-1-sashal@kernel.org>
 References: <20231107120922.3757126-1-sashal@kernel.org>
@@ -55,120 +55,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-[ Upstream commit 170c75d43a77dc937c58f07ecf847ba1b42ab74e ]
+[ Upstream commit e25bd1853cc8308158d97e5b3696ea3689fa0840 ]
 
-As talked about in commit d66d24ac300c ("ath10k: Keep track of which
-interrupts fired, don't poll them"), if we access the copy engine
-register at a bad time then ath10k can go boom. However, it's not
-necessarily easy to know when it's safe to access them.
+Check that fw_link_id does not exceed the size of link_id_to_link_conf
+array. There's no any codepath that can cause that, but it's still
+safer to verify in case fw_link_id gets corrupted.
 
-The ChromeOS test labs saw a crash that looked like this at
-shutdown/reboot time (on a chromeos-5.15 kernel, but likely the
-problem could also reproduce upstream):
-
-Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
-...
-CPU: 4 PID: 6168 Comm: reboot Not tainted 5.15.111-lockdep-19350-g1d624fe6758f #1 010b9b233ab055c27c6dc88efb0be2f4e9e86f51
-Hardware name: Google Kingoftown (DT)
-...
-pc : ath10k_snoc_read32+0x50/0x74 [ath10k_snoc]
-lr : ath10k_snoc_read32+0x24/0x74 [ath10k_snoc]
-...
-Call trace:
-ath10k_snoc_read32+0x50/0x74 [ath10k_snoc ...]
-ath10k_ce_disable_interrupt+0x190/0x65c [ath10k_core ...]
-ath10k_ce_disable_interrupts+0x8c/0x120 [ath10k_core ...]
-ath10k_snoc_hif_stop+0x78/0x660 [ath10k_snoc ...]
-ath10k_core_stop+0x13c/0x1ec [ath10k_core ...]
-ath10k_halt+0x398/0x5b0 [ath10k_core ...]
-ath10k_stop+0xfc/0x1a8 [ath10k_core ...]
-drv_stop+0x148/0x6b4 [mac80211 ...]
-ieee80211_stop_device+0x70/0x80 [mac80211 ...]
-ieee80211_do_stop+0x10d8/0x15b0 [mac80211 ...]
-ieee80211_stop+0x144/0x1a0 [mac80211 ...]
-__dev_close_many+0x1e8/0x2c0
-dev_close_many+0x198/0x33c
-dev_close+0x140/0x210
-cfg80211_shutdown_all_interfaces+0xc8/0x1e0 [cfg80211 ...]
-ieee80211_remove_interfaces+0x118/0x5c4 [mac80211 ...]
-ieee80211_unregister_hw+0x64/0x1f4 [mac80211 ...]
-ath10k_mac_unregister+0x4c/0xf0 [ath10k_core ...]
-ath10k_core_unregister+0x80/0xb0 [ath10k_core ...]
-ath10k_snoc_free_resources+0xb8/0x1ec [ath10k_snoc ...]
-ath10k_snoc_shutdown+0x98/0xd0 [ath10k_snoc ...]
-platform_shutdown+0x7c/0xa0
-device_shutdown+0x3e0/0x58c
-kernel_restart_prepare+0x68/0xa0
-kernel_restart+0x28/0x7c
-
-Though there's no known way to reproduce the problem, it makes sense
-that it would be the same issue where we're trying to access copy
-engine registers when it's not allowed.
-
-Let's fix this by changing how we "disable" the interrupts. Instead of
-tweaking the copy engine registers we'll just use disable_irq() and
-enable_irq(). Then we'll configure the interrupts once at power up
-time.
-
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231017115047.3385bd11f423.I2d30fdb464f951c648217553c47901857a0046c7@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 26214c00cd0d7..2c39bad7ebfb9 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -828,12 +828,20 @@ static void ath10k_snoc_hif_get_default_pipe(struct ath10k *ar,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+index ace82e2c5bd91..a15e2c6caa242 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+@@ -61,7 +61,7 @@ int iwl_mvm_add_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	if (link_info->fw_link_id == IWL_MVM_FW_LINK_ID_INVALID) {
+ 		link_info->fw_link_id = iwl_mvm_get_free_fw_link_id(mvm,
+ 								    mvmvif);
+-		if (link_info->fw_link_id == IWL_MVM_FW_LINK_ID_INVALID)
++		if (link_info->fw_link_id >= ARRAY_SIZE(mvm->link_id_to_link_conf))
+ 			return -EINVAL;
  
- static inline void ath10k_snoc_irq_disable(struct ath10k *ar)
- {
--	ath10k_ce_disable_interrupts(ar);
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	int id;
-+
-+	for (id = 0; id < CE_COUNT_MAX; id++)
-+		disable_irq(ar_snoc->ce_irqs[id].irq_line);
- }
+ 		rcu_assign_pointer(mvm->link_id_to_link_conf[link_info->fw_link_id],
+@@ -245,7 +245,7 @@ int iwl_mvm_remove_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	int ret;
  
- static inline void ath10k_snoc_irq_enable(struct ath10k *ar)
- {
--	ath10k_ce_enable_interrupts(ar);
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	int id;
-+
-+	for (id = 0; id < CE_COUNT_MAX; id++)
-+		enable_irq(ar_snoc->ce_irqs[id].irq_line);
- }
+ 	if (WARN_ON(!link_info ||
+-		    link_info->fw_link_id == IWL_MVM_FW_LINK_ID_INVALID))
++		    link_info->fw_link_id >= ARRAY_SIZE(mvm->link_id_to_link_conf)))
+ 		return -EINVAL;
  
- static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
-@@ -1090,6 +1098,8 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
- 		goto err_free_rri;
- 	}
- 
-+	ath10k_ce_enable_interrupts(ar);
-+
- 	return 0;
- 
- err_free_rri:
-@@ -1253,8 +1263,8 @@ static int ath10k_snoc_request_irq(struct ath10k *ar)
- 
- 	for (id = 0; id < CE_COUNT_MAX; id++) {
- 		ret = request_irq(ar_snoc->ce_irqs[id].irq_line,
--				  ath10k_snoc_per_engine_handler, 0,
--				  ce_name[id], ar);
-+				  ath10k_snoc_per_engine_handler,
-+				  IRQF_NO_AUTOEN, ce_name[id], ar);
- 		if (ret) {
- 			ath10k_err(ar,
- 				   "failed to register IRQ handler for CE %d: %d\n",
+ 	RCU_INIT_POINTER(mvm->link_id_to_link_conf[link_info->fw_link_id],
 -- 
 2.42.0
 
