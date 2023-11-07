@@ -2,48 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83E597E3DA4
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 13:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA5BC7E3C4D
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 13:14:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234760AbjKGMaI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Nov 2023 07:30:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36338 "EHLO
+        id S234510AbjKGMOw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Nov 2023 07:14:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234392AbjKGM3q (ORCPT
+        with ESMTP id S234532AbjKGMOa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Nov 2023 07:29:46 -0500
+        Tue, 7 Nov 2023 07:14:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870531FC4;
-        Tue,  7 Nov 2023 04:10:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2979C433C9;
-        Tue,  7 Nov 2023 12:10:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B9EF3C28;
+        Tue,  7 Nov 2023 04:11:08 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EDC7C433C7;
+        Tue,  7 Nov 2023 12:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699359029;
-        bh=rjyDa/JzWevqiRTvkRQBMVxrkWCq/sYG2ae5ELikHhw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M4cZUewBoAKO5Sw4jxy8jYpPrn+VKH7zoiMlhKMSp+E6yzSGR9UszTheUg/Co2aMY
-         JqhCbMRCWsXV9nVM2JRdaqIoNr8nGIdS5YIhb5J2KHtOA1zNV39JbaRLT9SDIgmB71
-         5JkXOCV3sS6gqq+rADq9pPlBVwzIMG0njZaQPwmGR3gy8OJAB0h1okjVAS1KeVX+Sd
-         Fhz3TbN7waWKry28Kw6ANzYPXf+m+JUVLgdqOsIrZ+tHE4QuLnMWXf5Qko8qKLhuSV
-         XFqfnayLYp6dTGDKZ6niVJUd3cIBPYqM2rTcrq9akQ7XBR82gEKlA0wSzdyRvWT4vj
-         c1+xdF+f0KSZg==
+        s=k20201202; t=1699359067;
+        bh=h+HWbq1F2NPW0nxN2+Um1YD2SAa9d2WPjiFNzz39+dU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=XrBupYsh6IlA8OS2V40h3xAvHROdYytW8TsqGUoNBY0WhIouqdP1MLuVkXfDieTZ7
+         9ciJBN3j95fF2a42/+XsJ3Sn0vwkNeqVvcWnq1As7iPQU7s/O7GC2cXjMXBLhxRClw
+         n4GuZ3vOrdxlADrwslbUiBk3rUP+8aBx/7ezJsXU1LZOqdJVK3/tCarFm9tktjBSub
+         mwmdrQVV4REp5xdDn8bRTpEGAhs+9NKW91Yb51tEb3GSxUX8J0HgwK09ZkEQImyczH
+         D4yTjnv9FFLA4mkVFd8F5voXtzHgx9hzQt7yxKShs7NzXl0EtGOpnbNLp/PRRxnNrF
+         dRb0MBIypZznQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
-        miriam.rachel.korenblit@intel.com, emmanuel.grumbach@intel.com,
-        ilan.peer@intel.com, linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 22/30] wifi: iwlwifi: mvm: fix size check for fw_link_id
-Date:   Tue,  7 Nov 2023 07:08:37 -0500
-Message-ID: <20231107120922.3757126-22-sashal@kernel.org>
+Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        srini.raju@purelifi.com, nathan@kernel.org,
+        ndesaulniers@google.com, linux-wireless@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.1 01/18] wifi: plfxlc: fix clang-specific fortify warning
+Date:   Tue,  7 Nov 2023 07:10:31 -0500
+Message-ID: <20231107121104.3757943-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231107120922.3757126-1-sashal@kernel.org>
-References: <20231107120922.3757126-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.10
+X-stable-base: Linux 6.1.61
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -55,44 +53,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit e25bd1853cc8308158d97e5b3696ea3689fa0840 ]
+[ Upstream commit a763e92c78615ea838f5b9a841398b1d4adb968e ]
 
-Check that fw_link_id does not exceed the size of link_id_to_link_conf
-array. There's no any codepath that can cause that, but it's still
-safer to verify in case fw_link_id gets corrupted.
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
 
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231017115047.3385bd11f423.I2d30fdb464f951c648217553c47901857a0046c7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+In file included from drivers/net/wireless/purelifi/plfxlc/mac.c:6:
+In file included from ./include/linux/netdevice.h:24:
+In file included from ./include/linux/timer.h:6:
+In file included from ./include/linux/ktime.h:24:
+In file included from ./include/linux/time.h:60:
+In file included from ./include/linux/time32.h:13:
+In file included from ./include/linux/timex.h:67:
+In file included from ./arch/x86/include/asm/timex.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
+
+The compiler actually complains on 'plfxlc_get_et_strings()' where
+fortification logic inteprets call to 'memcpy()' as an attempt to copy
+the whole 'et_strings' array from its first member and so issues an
+overread warning. This warning may be silenced by passing an address
+of the whole array and not the first member to 'memcpy()'.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230829094541.234751-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/link.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/purelifi/plfxlc/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index ace82e2c5bd91..a15e2c6caa242 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -61,7 +61,7 @@ int iwl_mvm_add_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	if (link_info->fw_link_id == IWL_MVM_FW_LINK_ID_INVALID) {
- 		link_info->fw_link_id = iwl_mvm_get_free_fw_link_id(mvm,
- 								    mvmvif);
--		if (link_info->fw_link_id == IWL_MVM_FW_LINK_ID_INVALID)
-+		if (link_info->fw_link_id >= ARRAY_SIZE(mvm->link_id_to_link_conf))
- 			return -EINVAL;
+diff --git a/drivers/net/wireless/purelifi/plfxlc/mac.c b/drivers/net/wireless/purelifi/plfxlc/mac.c
+index d3cdffbded693..87a4ff888ddd4 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/mac.c
++++ b/drivers/net/wireless/purelifi/plfxlc/mac.c
+@@ -666,7 +666,7 @@ static void plfxlc_get_et_strings(struct ieee80211_hw *hw,
+ 				  u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *et_strings, sizeof(et_strings));
++		memcpy(data, et_strings, sizeof(et_strings));
+ }
  
- 		rcu_assign_pointer(mvm->link_id_to_link_conf[link_info->fw_link_id],
-@@ -245,7 +245,7 @@ int iwl_mvm_remove_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	int ret;
- 
- 	if (WARN_ON(!link_info ||
--		    link_info->fw_link_id == IWL_MVM_FW_LINK_ID_INVALID))
-+		    link_info->fw_link_id >= ARRAY_SIZE(mvm->link_id_to_link_conf)))
- 		return -EINVAL;
- 
- 	RCU_INIT_POINTER(mvm->link_id_to_link_conf[link_info->fw_link_id],
+ static void plfxlc_get_et_stats(struct ieee80211_hw *hw,
 -- 
 2.42.0
 
