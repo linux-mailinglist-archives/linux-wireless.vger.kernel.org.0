@@ -2,72 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DC5B7E3B63
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 13:00:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8CB37E3B79
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 13:07:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbjKGMAi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Nov 2023 07:00:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54526 "EHLO
+        id S233830AbjKGMHK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Nov 2023 07:07:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233747AbjKGMAh (ORCPT
+        with ESMTP id S230082AbjKGMHJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Nov 2023 07:00:37 -0500
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17F67B0
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Nov 2023 04:00:34 -0800 (PST)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2c594196344so74152411fa.3
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Nov 2023 04:00:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dberlin.org; s=google; t=1699358432; x=1699963232; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L95ez5A4n9QHf1D8VLYBAIlRuv3kU+vYgZcEfG+m+f4=;
-        b=lOHStBwvEJW/z9lR+usVjaJwFjbKsBNT5YH3AI8Bd6yS1lFO9RRCoF6C8NsphzZnb5
-         PjNUCDFvhhPI+kM0sJb63IhXbhu9Kmy397qvLf02GbxfxZpC1pixR+WP0noqI7PoDAAR
-         6dcOkgCf7a5h4qgxVXxz1GCwKDwl9cJaThMNv+6iKK1xfkQ4n7T69qWNsuaFcAAvZdEB
-         S0I/ALf0dne41uRw3uu3ITV9XaRUs65VKg826aszuq8uAYrgFrXONdASJKeSvHrB4xI4
-         BZEhTNcpGysOXNmu+ZsXYTZEP5Kkw8YHjzhA4C4BayOrgYXOkhXnLanebAfxNV4uy2YV
-         eKkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699358432; x=1699963232;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L95ez5A4n9QHf1D8VLYBAIlRuv3kU+vYgZcEfG+m+f4=;
-        b=S0DRI3xpcBeCpHSk32jRGENXJd95jwMcQIcMTNd1uKtHtIoit+XU0JAIJHXJ5E+TUs
-         sBU66vyokPqVSk2yIzkoWAgGWuiDqXXkrhUuIp/5n/u2San8HCqGiAaJBB9lgeng1a86
-         3ndwNmzeD4VZJu5P4N1yEuRkm+mMlAY8i2K0Scq24f1Snq164egd7jCV2A3k27oTSBCR
-         RatF1HoSkIjUOFe2g9X0HNZREWv5eAmas0lgiF88UMWNORdzyA3Aid5R9Vtzka2NPZeD
-         bCzE2RY3Y0V2GF3n7s8hveC12+FWx1irB/dq1SRBUSF9PQ7Yx62FA4767cZ9FanCd5pU
-         LqKA==
-X-Gm-Message-State: AOJu0YxoFChswcNjOD/b/7/o3nFFjFw38CtesQ1v1M7fWRu5DHPUDDBo
-        OUpwaMbJshqasAndkpn3ZiF772Z4nQOyu/QnMWd4FQ==
-X-Google-Smtp-Source: AGHT+IG5rc7x9o0jJVh9h79Tb60MT+HTw/cZ7zSVnENop7Wm/YFTjOPuq/2DhQ6u9VwRPMoXmiI0kTH8nEuQhrsVpLM=
-X-Received: by 2002:a2e:8684:0:b0:2c6:f945:d95a with SMTP id
- l4-20020a2e8684000000b002c6f945d95amr9578220lji.36.1699358431957; Tue, 07 Nov
- 2023 04:00:31 -0800 (PST)
+        Tue, 7 Nov 2023 07:07:09 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67FF8B0;
+        Tue,  7 Nov 2023 04:07:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06254C433C8;
+        Tue,  7 Nov 2023 12:07:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699358827;
+        bh=sRiXMLpheY4QGeKZeXYbo4dw7/5A4/r9949x82S4fL8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Wrkfflj/ZDDo0HgAfjFbRik4Ai69sKRxUBqVIOF8UFRouppDqkbUNwe+OxuHTPFAk
+         2AvjF13ffzV9zqrRKNGTWPDdvRpNsQREU6DxIfCl85oo++7c48cHotkNBMSP3bWMim
+         HAn0LZC8d11TlsUUX3MDYUspF+bvZO7lagKGVhc+7v/axZ07n/Qpb2ozrRxxDA+g3M
+         9QCOnxyFcQdtvtBFEeEBg39b4x9AMlPtImuq+U0PCsCYhoXfsWnDbs9Eoi6trKjMOK
+         1spuUYU4ecae0QGr2YYEXLDggWXFClhUP9NtLzyBNGrMRP816nMLCusbl4+Lf0BF1J
+         HoH0fs9qpnvKQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        srini.raju@purelifi.com, nathan@kernel.org,
+        ndesaulniers@google.com, linux-wireless@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 01/31] wifi: plfxlc: fix clang-specific fortify warning
+Date:   Tue,  7 Nov 2023 07:05:48 -0500
+Message-ID: <20231107120704.3756327-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-References: <cover.1697650207.git.dberlin@dberlin.org> <079882bf4a7c026547ecf8ad50a2b7a49ade7130.1697650207.git.dberlin@dberlin.org>
- <b907f696-c966-54ef-3267-12833c6f5d91@broadcom.com> <26a081e6-032a-b58d-851c-eaac745e7c87@marcan.st>
- <25e43cd3-45e6-d775-87c4-9ed7cdfe3e2d@broadcom.com>
-In-Reply-To: <25e43cd3-45e6-d775-87c4-9ed7cdfe3e2d@broadcom.com>
-From:   Daniel Berlin <dberlin@dberlin.org>
-Date:   Tue, 7 Nov 2023 07:00:20 -0500
-Message-ID: <CAF4BwTV=S39mUcbhoxCf6Z6+gGGFy5ctfYwbKt5yDMUYD5r3gw@mail.gmail.com>
-Subject: Re: [PATCH 4/5] wifi: brcmfmac: Support bss_info up to v112
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Hector Martin <marcan@marcan.st>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,55 +53,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 7, 2023 at 6:51=E2=80=AFAM Arend van Spriel
-<arend.vanspriel@broadcom.com> wrote:
->
-> On 11/7/2023 12:11 PM, Hector Martin wrote:
-> > On 20/10/2023 18.59, Arend van Spriel wrote:
-> >> On 10/19/2023 3:42 AM, Daniel Berlin wrote:
-> >>> From: Hector Martin <marcan@marcan.st>
-> >>>
-> >>> The structures are compatible and just add fields, so we can just tre=
-at
-> >>> it as always v112. If we start using new fields, that will have to be
-> >>> gated on the version.
-> >>
-> >> Seems EHT is creeping in here.
-> >>
-> >> Having doubts about compatibility statement (see below)...
-> >>
-> >>> Signed-off-by: Hector Martin <marcan@marcan.st>
-> >>> ---
-> >>>    .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  5 ++-
-> >>>    .../broadcom/brcm80211/brcmfmac/fwil_types.h  | 37 +++++++++++++++=
-++--
-> >>>    2 files changed, 36 insertions(+), 6 deletions(-)
-> >>>
->
-> [...]
->
-> >>> @@ -323,28 +324,56 @@ struct brcmf_bss_info_le {
-> >>>     __le16 capability;      /* Capability information */
-> >>>     u8 SSID_len;
-> >>>     u8 SSID[32];
-> >>> +   u8 bcnflags;            /* additional flags w.r.t. beacon */
-> >>
-> >> Ehm. Coming back to your statement "structures are compatible and just
-> >> add fields". How are they compatible? You now treat v109 struct as v11=
-2
-> >> so fields below are shifted because of bcnflags. So you read invalid
-> >> information. This does not fly or I am missing something here.
-> >
-> > bcmflags was previously an implied padding byte. If you actually check
-> > the offsets of the subsequent fields, you'll see they haven't changed.
-> > In fact this was added at some point in the past and just missing here,
-> > and is a general case of "padding bytes were not explicitly specified"
-> > which is arguably an anti-pattern and should never have been the case.
->
-> Yeah. Let's not argue ;-) I did miss something here and leave it with
-> that. What about the EHT stuff? I would prefer to keep it out unless
-> full EHT support is added.
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-The EHT stuff you flagged (defines, etc) in the other patches can be
-left out - this one can't since it is definitionally part of the v112
-struct.
+[ Upstream commit a763e92c78615ea838f5b9a841398b1d4adb968e ]
+
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
+
+In file included from drivers/net/wireless/purelifi/plfxlc/mac.c:6:
+In file included from ./include/linux/netdevice.h:24:
+In file included from ./include/linux/timer.h:6:
+In file included from ./include/linux/ktime.h:24:
+In file included from ./include/linux/time.h:60:
+In file included from ./include/linux/time32.h:13:
+In file included from ./include/linux/timex.h:67:
+In file included from ./arch/x86/include/asm/timex.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
+
+The compiler actually complains on 'plfxlc_get_et_strings()' where
+fortification logic inteprets call to 'memcpy()' as an attempt to copy
+the whole 'et_strings' array from its first member and so issues an
+overread warning. This warning may be silenced by passing an address
+of the whole array and not the first member to 'memcpy()'.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230829094541.234751-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/purelifi/plfxlc/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/purelifi/plfxlc/mac.c b/drivers/net/wireless/purelifi/plfxlc/mac.c
+index 94ee831b5de35..506d2f31efb5a 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/mac.c
++++ b/drivers/net/wireless/purelifi/plfxlc/mac.c
+@@ -666,7 +666,7 @@ static void plfxlc_get_et_strings(struct ieee80211_hw *hw,
+ 				  u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *et_strings, sizeof(et_strings));
++		memcpy(data, et_strings, sizeof(et_strings));
+ }
+ 
+ static void plfxlc_get_et_stats(struct ieee80211_hw *hw,
+-- 
+2.42.0
+
