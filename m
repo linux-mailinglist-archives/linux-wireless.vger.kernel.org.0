@@ -2,47 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 552B27E3D45
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 13:27:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BCFB7E3C2F
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 13:13:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234405AbjKGM1G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Nov 2023 07:27:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52612 "EHLO
+        id S234496AbjKGMNI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Nov 2023 07:13:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234221AbjKGM0w (ORCPT
+        with ESMTP id S234378AbjKGMMf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Nov 2023 07:26:52 -0500
+        Tue, 7 Nov 2023 07:12:35 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E14C1BE2;
-        Tue,  7 Nov 2023 04:10:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF04AC433C9;
-        Tue,  7 Nov 2023 12:10:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA6A10DE;
+        Tue,  7 Nov 2023 04:10:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2057C433CC;
+        Tue,  7 Nov 2023 12:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699359007;
-        bh=+mxGaSSeTSwa0Gg5Ml4n2KMjwdczO05A6HdzKAdtoYw=;
+        s=k20201202; t=1699359014;
+        bh=m4GR3HEp/0QZHpgM7Xx9QUuUGlCZyWMpGXU8UeBqoPY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XPpEluHFYNImOi+E2iZgUdA2RPMA/XHQCS/0LzZ1uB/vviaECMa2mNPeOAkZFIDn9
-         SF6j40kh20LLj7NC3LevgBX6wIfCITEhwTE3rjHWCv5s9gC2aHqx4vl0ulkQnN/IQ8
-         uVlM7yQ+21gTdZeAjFIRCGSRFEs0e6xqEFNWj2wfmQow7E8pyPK6VwYvfg9oH4/rNz
-         8YDxDP/XiDfEtQotuei7RFDqxYgAOLA6HIrJy4JBKHeBwv8NGqJN2Fb1tCiCLs4Mj/
-         m8q7mcJbhNzpDNtecww4TSzg1eWN5QcN8h/25dmvoWyqia1n6SPEuBx7B84O5bBH59
-         NHQGrc6YY2sIQ==
+        b=VNZ02GIptFMwq/Lkq6IDTWLIm++FOCVpWXLnPt3Ez3gDVnuLrQK6z/p1uTOd3Uy5j
+         SjFvhTvJinaLmkWWoKpJJ6MI4mXh/9QUXzAQSo8LUollu0rYCth1HuqnNJlhKT1tYB
+         e/luh13kmyK+LZlxK8cBlBiV5m9AcyxpQJ/ROtwVbRabilkFsQhUJRZGdjBoLblmWk
+         iPw6Vcehr1pJax/uh9QnAk+8fjsylZgWOC01p+F76KQ082thXQbTMR9HN4e0n7HqNp
+         oHq/uC+4ZqlBRFR73MGWDdevuJyBNqKBmPrgHP8nCNZxqCsG8LrCxnXuhJCPCX6nk6
+         rZOkkpbcQpIDw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
-        lorenzo@kernel.org, ryder.lee@mediatek.com, kvalo@kernel.org,
-        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-        chui-hao.chiu@mediatek.com, Bo.Jiao@mediatek.com,
-        howard-yh.hsu@mediatek.com, meichia.chiu@mediatek.com,
-        linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.5 14/30] wifi: mt76: get rid of false alamrs of tx emission issues
-Date:   Tue,  7 Nov 2023 07:08:29 -0500
-Message-ID: <20231107120922.3757126-14-sashal@kernel.org>
+Cc:     Ma Ke <make_ruc2021@163.com>, Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
+        quic_jjohnson@quicinc.com, ath12k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.5 17/30] wifi: ath12k: mhi: fix potential memory leak in ath12k_mhi_register()
+Date:   Tue,  7 Nov 2023 07:08:32 -0500
+Message-ID: <20231107120922.3757126-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231107120922.3757126-1-sashal@kernel.org>
 References: <20231107120922.3757126-1-sashal@kernel.org>
@@ -61,62 +54,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: Ma Ke <make_ruc2021@163.com>
 
-[ Upstream commit 413f05d68d11981f5984b49214d3a5a0d88079b1 ]
+[ Upstream commit 47c27aa7ded4b8ead19b3487cc42a6185b762903 ]
 
-When the set_chan_info command is set with CH_SWITCH_NORMAL reason,
-even if the action is UNI_CHANNEL_RX_PATH, it'll still generate some
-unexpected tones, which might confuse DFS CAC tests that there are some
-tone leakages. To get rid of these kinds of false alarms, always bypass
-DPD calibration when IEEE80211_CONF_IDLE is set.
+mhi_alloc_controller() allocates a memory space for mhi_ctrl. When some
+errors occur, mhi_ctrl should be freed by mhi_free_controller() and set
+ab_pci->mhi_ctrl = NULL.
 
-Reviewed-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+We can fix it by calling mhi_free_controller() when the failure happens
+and set ab_pci->mhi_ctrl = NULL in all of the places where we call
+mhi_free_controller().
+
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230922021036.3604157-1-make_ruc2021@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 6 +++---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath12k/mhi.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 1a8611c6b684d..d46db4b04b78b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2687,10 +2687,10 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd)
- 	if (mt76_connac_spe_idx(phy->mt76->antenna_mask))
- 		req.tx_path_num = fls(phy->mt76->antenna_mask);
+diff --git a/drivers/net/wireless/ath/ath12k/mhi.c b/drivers/net/wireless/ath/ath12k/mhi.c
+index 42f1140baa4fe..f83d3e09ae366 100644
+--- a/drivers/net/wireless/ath/ath12k/mhi.c
++++ b/drivers/net/wireless/ath/ath12k/mhi.c
+@@ -370,8 +370,7 @@ int ath12k_mhi_register(struct ath12k_pci *ab_pci)
+ 	ret = ath12k_mhi_get_msi(ab_pci);
+ 	if (ret) {
+ 		ath12k_err(ab, "failed to get msi for mhi\n");
+-		mhi_free_controller(mhi_ctrl);
+-		return ret;
++		goto free_controller;
+ 	}
  
--	if (cmd == MCU_EXT_CMD(SET_RX_PATH) ||
--	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-+	if (dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
- 		req.switch_reason = CH_SWITCH_NORMAL;
--	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-+	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL ||
-+		 phy->mt76->hw->conf.flags & IEEE80211_CONF_IDLE)
- 		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
- 	else if (!cfg80211_reg_can_beacon(phy->mt76->hw->wiphy, chandef,
- 					  NL80211_IFTYPE_AP))
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 62a02b03d83ba..c22a7ec285cd4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2861,10 +2861,10 @@ int mt7996_mcu_set_chan_info(struct mt7996_phy *phy, u16 tag)
- 		.channel_band = ch_band[chandef->chan->band],
- 	};
+ 	mhi_ctrl->iova_start = 0;
+@@ -388,11 +387,15 @@ int ath12k_mhi_register(struct ath12k_pci *ab_pci)
+ 	ret = mhi_register_controller(mhi_ctrl, ab->hw_params->mhi_config);
+ 	if (ret) {
+ 		ath12k_err(ab, "failed to register to mhi bus, err = %d\n", ret);
+-		mhi_free_controller(mhi_ctrl);
+-		return ret;
++		goto free_controller;
+ 	}
  
--	if (tag == UNI_CHANNEL_RX_PATH ||
--	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-+	if (dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
- 		req.switch_reason = CH_SWITCH_NORMAL;
--	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-+	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL ||
-+		 phy->mt76->hw->conf.flags & IEEE80211_CONF_IDLE)
- 		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
- 	else if (!cfg80211_reg_can_beacon(phy->mt76->hw->wiphy, chandef,
- 					  NL80211_IFTYPE_AP))
+ 	return 0;
++
++free_controller:
++	mhi_free_controller(mhi_ctrl);
++	ab_pci->mhi_ctrl = NULL;
++	return ret;
+ }
+ 
+ void ath12k_mhi_unregister(struct ath12k_pci *ab_pci)
 -- 
 2.42.0
 
