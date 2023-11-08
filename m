@@ -2,190 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBEBD7E4B84
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Nov 2023 23:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A2847E4F45
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 04:03:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234110AbjKGWLH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Nov 2023 17:11:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48334 "EHLO
+        id S234703AbjKHDD2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Nov 2023 22:03:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235241AbjKGWK4 (ORCPT
+        with ESMTP id S230126AbjKHDD1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Nov 2023 17:10:56 -0500
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFB6E10D0
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Nov 2023 14:08:23 -0800 (PST)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1FFDC80007D;
-        Tue,  7 Nov 2023 22:08:21 +0000 (UTC)
-Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 9AE4113C2B0;
-        Tue,  7 Nov 2023 14:08:20 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 9AE4113C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1699394900;
-        bh=FsxpWjn+b/kDPwEhKK5st7nRS6+OlQrslDeMucgeYuQ=;
-        h=Date:To:Cc:From:Subject:From;
-        b=CPiG+sJlQq6yqNB9nWNfLcr/jZ9nsWjdtD5awSYGoidYssFXndOpw6IAyC4e3bJiE
-         L63o0KELP6nTDfuUwG8UP9xzl6oRYmDtLab66mpo27PYwfmsDiwa6xQ4mVKW0QAzll
-         65U38f7PmwfxhwhsrJgppnizfqULLNP9Oj8hydbE=
-Message-ID: <56d0b043-0585-5380-5703-f25d9a42f39d@candelatech.com>
-Date:   Tue, 7 Nov 2023 14:08:20 -0800
+        Tue, 7 Nov 2023 22:03:27 -0500
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D5B510EC;
+        Tue,  7 Nov 2023 19:03:25 -0800 (PST)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-2809fb0027cso4889937a91.2;
+        Tue, 07 Nov 2023 19:03:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699412605; x=1700017405; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Roult3H5GeBy1d+QJ2ELRPfrTfU65zFDOPqiiV5RpBY=;
+        b=XMosQJqhaK9LRLQd6lcmpo+oLUZvBLUtJJdK3iDPnB8+UBt7o5cECH6s0mIY+CIq+5
+         5mTObbwRkW75CrlbkLcOjVAcmimYKvCG8irInw+4rWgBvb36kgPS5qfntoZZoWPjpsLE
+         TTf8M53I3bxo1yB2uCufn17DvjjPyIidxJ5BCuoFrXE/W59GgqWpiDyhc0tWoHLxDKI7
+         Fy071mZg3yg+cewfhNxW4gp4lQEMYE+adVL7zMrV75/YxKunT0ZqtWpALMuggxqIa0ge
+         d9iEZDUToWsE+SaINJYAV9VoIb/F/A5RhE13KChH1tE6AFjEVdn32V5JHrfdcIy0LBVq
+         SUYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699412605; x=1700017405;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Roult3H5GeBy1d+QJ2ELRPfrTfU65zFDOPqiiV5RpBY=;
+        b=nlt1f+KKdhQHCfUOJ3fwFOYDKzuTLvdqbutm4wrLuDS4Xbt2qQA453J3cmkm3csbmj
+         ZJnvdw6D11pXL27iAaVo5asGC4fqKA92UyMMv7OmsK/8SNCBOiaN1ybMsnL2z6viIqqA
+         M1FxOoAbs7x2cih01LzKBp9zMX/5TbZyOlDOLPx3AoBn8nDa7ELLpNtNIEWX1wM40Afg
+         zi1Q3tsz39FjCpmd9M7fFnUi38OKPRGXvEZLNTqrgGjNk+GfgZvo0rhJl+vZgCNToqLE
+         N+x38TX9jeZCWryL2VjbS71LUdbMTUhnSE2lXy4LNpAXhlX+M/9sjcTmowZjvlFdLFwH
+         IWRA==
+X-Gm-Message-State: AOJu0Yx6ncv9Gw8aksNzDJ4X8FqdZae1qseLtF8xzcS/NczrV71SyBQ5
+        H+KNLxxEkqaPVJMiSdqO/rx9ne5ZqaOJOs+j2s0=
+X-Google-Smtp-Source: AGHT+IH7qDbmtE7zwlbS/d/+wacRnaFS6GN+wV6OdZsWqrJ3k9uTLyzwcDfFQmcw4mIBiOc/1pOgoaBC+tNMnehaF0E=
+X-Received: by 2002:a17:90a:2:b0:280:2438:120 with SMTP id 2-20020a17090a000200b0028024380120mr606164pja.45.1699412604862;
+ Tue, 07 Nov 2023 19:03:24 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-Cc:     "Berg, Johannes" <johannes.berg@intel.com>
-From:   Ben Greear <greearb@candelatech.com>
-Subject: 6.7.0-rc1 + hacks deadlock bug, wifi netdev delete + cat of debugfs
- file.
-Organization: Candela Technologies
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1699394901-hBGbjtp-Rpin
-X-MDID-O: us5;at1;1699394901;hBGbjtp-Rpin;<greearb@candelatech.com>;232dd55d48f96bb835b07b88a6baba61
+References: <20231106141704.866455-1-zyytlz.wz@163.com> <87o7g7ueom.fsf@kernel.org>
+ <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com> <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From:   Zheng Hacker <hackerzheng666@gmail.com>
+Date:   Wed, 8 Nov 2023 11:03:12 +0800
+Message-ID: <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
+Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, Zheng Wang <zyytlz.wz@163.com>,
+        aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, johannes.berg@intel.com,
+        marcan@marcan.st, linus.walleij@linaro.org,
+        jisoo.jang@yonsei.ac.kr, linuxlovemin@yonsei.ac.kr,
+        wataru.gohda@cypress.com, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        security@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Arend Van Spriel <arend.vanspriel@broadcom.com> =E4=BA=8E2023=E5=B9=B411=E6=
+=9C=886=E6=97=A5=E5=91=A8=E4=B8=80 23:48=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.com> wr=
+ote:
+>
+> > Thanks! I didn't test it for I don't have a device. Very appreciated
+> > if anyone could help with that.
+>
+> I would volunteer, but it made me dig deep and not sure if there is a
+> problem to solve here.
+>
+> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scanning() =
+->
+> brcmf_notify_escan_complete() which does delete the timer.
+>
+> What am I missing here?
 
-I think this lockup is because iw is holding rtnl and wiphy mutex,
-and is blocked waiting for debugfs to be closed.  Another 'cat'
-program has debugfs file open, and is blocking on trying to acquire
-wiphy mutex.
+Thanks four your detailed review. I did see the code and not sure if
+brcmf_notify_escan_complete
+would be triggered for sure. So in the first version I want to delete
+the pending timer ahead of time.
+As I'm not very familiar with the logic here. I'm still not sure if we
+should delete the timer_shutdown_sync.
+Looking forward to your reply :)
 
-I think we must not acquire wiphy mutex in debugfs methods, somehow,
-to resolve this deadlock.  I do not know a safe way to do that.
+```cpp
+if (cfg->int_escan_map || cfg->scan_request) {
+    escan->escan_state =3D WL_ESCAN_STATE_IDLE;
+    brcmf_notify_escan_complete(cfg, escan->ifp, true, true);
+  }
+```
 
-93434 Nov 07 01:06:35 ct523c-2103 kernel: task:iw              state:D stack:
-       0     pid:342999 tgid:342999 ppid:342998 flags:0x00004002
-93435 Nov 07 01:06:35 ct523c-2103 kernel: Call Trace:
-93436 Nov 07 01:06:35 ct523c-2103 kernel:  <TASK>
-93437 Nov 07 01:06:35 ct523c-2103 kernel:  __schedule+0x377/0xa10
-93438 Nov 07 01:06:35 ct523c-2103 kernel:  ? sched_clock_cpu+0xb/0x180
-93439 Nov 07 01:06:35 ct523c-2103 kernel:  schedule+0x29/0xc0
-93440 Nov 07 01:06:35 ct523c-2103 kernel:  schedule_timeout+0x136/0x150
-93441 Nov 07 01:06:35 ct523c-2103 kernel:  ? d_walk+0x2a2/0x2b0
-93442 Nov 07 01:06:35 ct523c-2103 kernel:  wait_for_completion+0x7d/0x130
-93443 Nov 07 01:06:35 ct523c-2103 kernel:  remove_one+0x52/0x70
-93444 Nov 07 01:06:35 ct523c-2103 kernel:  simple_recursive_removal+0x1e3/0x280
-93445 Nov 07 01:06:35 ct523c-2103 kernel:  ? start_creating.part.0+0x170/0x170
-93446 Nov 07 01:06:35 ct523c-2103 kernel:  debugfs_remove+0x3b/0x60
-93447 Nov 07 01:06:35 ct523c-2103 kernel:  ieee80211_debugfs_remove_netdev+0x15//
-       0x30 [mac80211]
-93448 Nov 07 01:06:35 ct523c-2103 kernel:  ieee80211_teardown_sdata+0x13/0x50
-       [mac80211]
-93449 Nov 07 01:06:35 ct523c-2103 kernel:  unregister_netdevice_many_notify+
-       0x3a8/0x7c0
-93450 Nov 07 01:06:35 ct523c-2103 kernel:  unregister_netdevice_queue+0x84/0xc0
-93451 Nov 07 01:06:35 ct523c-2103 kernel:  _cfg80211_unregister_wdev+0x1e7/
-       0x230 [cfg80211]
-93452 Nov 07 01:06:35 ct523c-2103 kernel:  ieee80211_if_remove+0x8b/0xe0
-       [mac80211]
-93453 Nov 07 01:06:35 ct523c-2103 kernel:  ieee80211_del_iface+0xc/0x10
-       [mac80211]
-93454 Nov 07 01:06:35 ct523c-2103 kernel:  cfg80211_remove_virtual_intf+0x28/
-       0xd0 [cfg80211]
-93455 Nov 07 01:06:35 ct523c-2103 kernel:  genl_family_rcv_msg_doit+0xd1/0x120
-93456 Nov 07 01:06:35 ct523c-2103 kernel:  genl_rcv_msg+0x17b/0x290
-93457 Nov 07 01:06:35 ct523c-2103 kernel:  ? __cfg80211_wdev_from_attrs+0x290/
-       0x290 [cfg80211]
-93458 Nov 07 01:06:35 ct523c-2103 kernel:  ? nl80211_stop_ap+0x30/0x30
-       [cfg80211]
-93459 Nov 07 01:06:35 ct523c-2103 kernel:  ? nlmsg_trim+0x20/0x20 [cfg80211]
-93460 Nov 07 01:06:35 ct523c-2103 kernel:  ? genl_family_rcv_msg_dumpit+0xf0/
-       0xf0
-93461 Nov 07 01:06:35 ct523c-2103 kernel:  netlink_rcv_skb+0x4f/0x100
-93462 Nov 07 01:06:35 ct523c-2103 kernel:  genl_rcv+0x1f/0x30
-93463 Nov 07 01:06:35 ct523c-2103 kernel:  netlink_unicast+0x18b/0x280
-93464 Nov 07 01:06:35 ct523c-2103 kernel:  netlink_sendmsg+0x24b/0x4c0
-93465 Nov 07 01:06:35 ct523c-2103 kernel:  __sock_sendmsg+0x33/0x60
-93466 Nov 07 01:06:35 ct523c-2103 kernel:  ____sys_sendmsg+0x229/0x2a0
-93467 Nov 07 01:06:35 ct523c-2103 kernel:  ? copy_msghdr_from_user+0x68/0xa0
-93468 Nov 07 01:06:35 ct523c-2103 kernel:  ___sys_sendmsg+0x81/0xc0
-93469 Nov 07 01:06:35 ct523c-2103 kernel:  ? do_fault+0x238/0x450
-93470 Nov 07 01:06:35 ct523c-2103 kernel:  __sys_sendmsg+0x52/0xa0
-93471 Nov 07 01:06:35 ct523c-2103 kernel:  do_syscall_64+0x3b/0x110
+Best regards,
+Zheng
 
-gdb) l *(remove_one+0x52)
-0xffffffff81540d22 is in remove_one (/home/greearb/git/linux-6.7.dev.y/fs/debugfs/inode.c:735).
-730		smp_mb();
-731		fsd = READ_ONCE(dentry->d_fsdata);
-732		if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
-733			return;
-734		if (!refcount_dec_and_test(&fsd->active_users))
-735			wait_for_completion(&fsd->active_users_drained);
-736	}
-737	
-738	static void remove_one(struct dentry *victim)
-739	{
-
-(gdb) l *(wait_for_completion+0x7d)
-0xffffffff81dbc47d is in wait_for_completion (/home/greearb/git/linux-6.7.dev.y/kernel/sched/completion.c:96).
-91				}
-92				__prepare_to_swait(&x->wait, &wait);
-93				__set_current_state(state);
-94				raw_spin_unlock_irq(&x->wait.lock);
-95				timeout = action(timeout);
-96				raw_spin_lock_irq(&x->wait.lock);
-97			} while (!x->done && timeout);
-98			__finish_swait(&x->wait, &wait);
-99			if (!x->done)
-100				return timeout;
-(gdb)
-
-
-I noticed a blocked 'cat' process.  This one has debugfs open, and is blocked on wiphy mutex:
-
-101118 Nov 07 13:50:49 ct523c-2103 kernel: task:cat             state:D stack:
-        0     pid:343014 tgid:343014 ppid:342995 flags:0x00000002
-101119 Nov 07 13:50:49 ct523c-2103 kernel: Call Trace:
-101120 Nov 07 13:50:49 ct523c-2103 kernel:  <TASK>
-101121 Nov 07 13:50:49 ct523c-2103 kernel:  __schedule+0x377/0xa10
-101122 Nov 07 13:50:49 ct523c-2103 kernel:  schedule+0x29/0xc0
-101123 Nov 07 13:50:49 ct523c-2103 kernel:  schedule_preempt_disabled+0xc/0x20
-101124 Nov 07 13:50:49 ct523c-2103 kernel:  __mutex_lock.constprop.0+0x34d/0x760
-101125 Nov 07 13:50:49 ct523c-2103 kernel:  ?
-        ieee80211_if_fmt_dot11MeshMaxRetries+0x20/0x20 [mac80211]
-101126 Nov 07 13:50:49 ct523c-2103 kernel:  ieee80211_if_read_sdata+0x3f/0xb0
-        [mac80211]
-101127 Nov 07 13:50:49 ct523c-2103 kernel:  ? __pte_offset_map+0x12/0x160
-101128 Nov 07 13:50:49 ct523c-2103 kernel:  ? __pte_offset_map_lock+0x8e/0x100
-101129 Nov 07 13:50:49 ct523c-2103 kernel:  ? folio_add_new_anon_rmap+0x48/0xd0
-101130 Nov 07 13:50:49 ct523c-2103 kernel:  ? set_ptes.constprop.0+0x1e/0xa0
-101131 Nov 07 13:50:49 ct523c-2103 kernel:  ? do_anonymous_page+0x2b2/0x3d0
-101132 Nov 07 13:50:49 ct523c-2103 kernel:  ? __handle_mm_fault+0xa0f/0xd10
-
-Method in question is this:
-
-static ssize_t ieee80211_if_read_sdata(
-	struct ieee80211_sub_if_data *sdata,
-	char __user *userbuf,
-	size_t count, loff_t *ppos,
-	ssize_t (*format)(const struct ieee80211_sub_if_data *sdata, char *, int))
-{
-	char buf[200];
-	ssize_t ret = -EINVAL;
-
-	wiphy_lock(sdata->local->hw.wiphy);
-	ret = (*format)(sdata, buf, sizeof(buf));
-	wiphy_unlock(sdata->local->hw.wiphy);
-
-
-Other programs are blocked trying to get rtnl or wiphy locks, but I think they
-are not the issue...  Full logs available if someone wants to see it...
-
-
-Thanks,
-Ben
-
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+>
+> Regards,
+> Arend
+>
+> >
+> > Kalle Valo <kvalo@kernel.org> =E4=BA=8E2023=E5=B9=B411=E6=9C=886=E6=97=
+=A5=E5=91=A8=E4=B8=80 22:41=E5=86=99=E9=81=93=EF=BC=9A
+> >>
+> >> Zheng Wang <zyytlz.wz@163.com> writes:
+> >>
+> >>> This is the candidate patch of CVE-2023-47233 :
+> >>> https://nvd.nist.gov/vuln/detail/CVE-2023-47233
+> >>>
+> >>> In brcm80211 driver,it starts with the following invoking chain
+> >>> to start init a timeout worker:
+> >>>
+> >>> ->brcmf_usb_probe
+> >>> ->brcmf_usb_probe_cb
+> >>> ->brcmf_attach
+> >>> ->brcmf_bus_started
+> >>>  ->brcmf_cfg80211_attach
+> >>>    ->wl_init_priv
+> >>>      ->brcmf_init_escan
+> >>>        ->INIT_WORK(&cfg->escan_timeout_work,
+> >>>          brcmf_cfg80211_escan_timeout_worker);
+> >>>
+> >>> If we disconnect the USB by hotplug, it will call
+> >>> brcmf_usb_disconnect to make cleanup. The invoking chain is :
+> >>>
+> >>> brcmf_usb_disconnect
+> >>> ->brcmf_usb_disconnect_cb
+> >>> ->brcmf_detach
+> >>> ->brcmf_cfg80211_detach
+> >>>  ->kfree(cfg);
+> >>>
+> >>> While the timeout woker may still be running. This will cause
+> >>> a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
+> >>>
+> >>> Fix it by deleting the timer and canceling the worker in
+> >>> brcmf_cfg80211_detach.
+> >>>
+> >>> Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
+> >>> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+> >>> Cc: stable@vger.kernel.org
+> >>> ---
+> >>> v5:
+> >>> - replace del_timer_sync with timer_shutdown_sync suggested by
+> >>> Arend and Takashi
+> >>> v4:
+> >>> - rename the subject and add CVE number as Ping-Ke Shih suggested
+> >>> v3:
+> >>> - rename the subject as Johannes suggested
+> >>> v2:
+> >>> - fix the error of kernel test bot reported
+> >>> ---
+> >>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 ++
+> >>> 1 file changed, 2 insertions(+)
+> >>>
+> >>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg8021=
+1.c
+> >>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> >>> index 667462369a32..a8723a61c9e4 100644
+> >>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> >>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> >>> @@ -8431,6 +8431,8 @@ void brcmf_cfg80211_detach(struct brcmf_cfg8021=
+1_info
+> >>> *cfg)
+> >>> if (!cfg)
+> >>>        return;
+> >>>
+> >>> +     timer_shutdown_sync(&cfg->escan_timeout);
+> >>> +     cancel_work_sync(&cfg->escan_timeout_work);
+> >>> brcmf_pno_detach(cfg);
+> >>> brcmf_btcoex_detach(cfg);
+> >>> wiphy_unregister(cfg->wiphy);
+> >>
+> >> Has anyone tested this on a real device? As v1 didn't even compile I a=
+m
+> >> very cautious:
+> >>
+> >> https://patchwork.kernel.org/project/linux-wireless/patch/202311040547=
+09.716585-1-zyytlz.wz@163.com/
+> >>
+> >> --
+> >> https://patchwork.kernel.org/project/linux-wireless/list/
+> >>
+> >> https://wireless.wiki.kernel.org/en/developers/documentation/submittin=
+gpatches
+>
+>
+>
