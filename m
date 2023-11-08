@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D46917E569F
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 13:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C87F67E595A
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 15:41:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344521AbjKHM7A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Nov 2023 07:59:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49958 "EHLO
+        id S232636AbjKHOlc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Nov 2023 09:41:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344383AbjKHM7A (ORCPT
+        with ESMTP id S234156AbjKHOla (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Nov 2023 07:59:00 -0500
+        Wed, 8 Nov 2023 09:41:30 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C4D51BF3
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Nov 2023 04:58:58 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AF152691
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Nov 2023 06:31:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
         Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=oSs6Bob0xva7GxhXmcE4fSs5B8dOwVuaf4sIW5P27As=;
-        t=1699448338; x=1700657938; b=SsrHCtw5Q2/MB1d7y+TF/gIEfW5NC+pIyB1VSRDqV/8JFd1
-        UY7ysDEheRaoUhUD+pFdJEonSC6eGCMkZx6gUi2U4b8tSdesV/9HuhWQjk41nAJTe+X5h/8/k8vFX
-        Gkep0AHJGyxECHzQpQsi4Y4fbBBopGNoW131k9dTfRJkDJBvRiAiEagDCW05dI508GJYFgzLRfrEH
-        ZO95+uYmxrOy+rG1VUEYAKbCc0eao+k8O/+Z3q5+rxMBnUrCyJp407v2C2XIGCSQNpyrbiqRjtsrJ
-        n3dtQQ53PbPGH5YfU3sA1ZBDAviUlhWifXANg1KfCQHAsJc+AhLa0xHQQKrtvYrw==;
+        Resent-Cc:Resent-Message-ID; bh=ixw8fBa4bXNaGiibsKo+A9yjOqD73Bbihcsn+62Mq9c=;
+        t=1699453891; x=1700663491; b=BhvJey/hqYBi9gzWkYZbiESa1rGwCWbW1LPlMK2huxy7biK
+        lhwdh1otnNVi731Eiwrnx9eXcjWhyi/Ak/SP4A1novvTCBX+i9wqM5fuiQkhF8nVB1RxrEJY4N2hF
+        4ExbgSlhZnNHTa8CbOPHosEAH5Zu8yMIIbUp5y9mzQfBVSeqZY0IiwJVobXbNKLGhgrNEJ4aorUNB
+        7qk7tSMuYpyzz0GObWW3c/0ETZxD9LNMsaQMQ8HG3w5ovSTtPtRfARKXySMkxyEjs1flAaQdEp8yJ
+        mr0eVCcxUpuRiq5gTCk+jfdiDPONy8lqCtW6kcxI81Mj2IZebFVvlU6nvcBkydcw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.97)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1r0i91-00000000VbF-27gL;
-        Wed, 08 Nov 2023 13:58:55 +0100
-Message-ID: <009fc2c209027efb5578e57926276be81891faca.camel@sipsolutions.net>
+        id 1r0jaZ-00000000YH1-3woz;
+        Wed, 08 Nov 2023 15:31:28 +0100
+Message-ID: <8e2b0ba0dcc7af2b7e4e6443816e8e3170faf4fc.camel@sipsolutions.net>
 Subject: Re: [PATCH 2/3] cfg80211: validate RU puncturing bitmap
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Aloka Dixit <quic_alokad@quicinc.com>,
         linux-wireless@vger.kernel.org
-Date:   Wed, 08 Nov 2023 13:58:54 +0100
-In-Reply-To: <587c4a25-4977-b2d7-a587-f2a742105a43@quicinc.com>
+Date:   Wed, 08 Nov 2023 15:31:27 +0100
+In-Reply-To: <009fc2c209027efb5578e57926276be81891faca.camel@sipsolutions.net>
 References: <20220214223051.3610-1-quic_alokad@quicinc.com>
          <20220214223051.3610-3-quic_alokad@quicinc.com>
          <a9813545a25cd63f71cc31476230514a80350802.camel@sipsolutions.net>
@@ -46,6 +46,7 @@ References: <20220214223051.3610-1-quic_alokad@quicinc.com>
          <460cb443-868c-ec05-7aec-5b1eee381ae2@quicinc.com>
          <28b099e7a37824f0b59ab824e67b3437485e45d5.camel@sipsolutions.net>
          <587c4a25-4977-b2d7-a587-f2a742105a43@quicinc.com>
+         <009fc2c209027efb5578e57926276be81891faca.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -55,77 +56,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-10-18 at 17:09 -0700, Aloka Dixit wrote:
-> On 10/18/2023 5:58 AM, Johannes Berg wrote:
-> >=20
-> > Are you thinking about (separately?) configuring the OFDMA puncturing?
-> > Which spec-wise you do per PPDU, controlled by the AP (trigger frame), =
-I
-> > think?
-> >=20
+On Wed, 2023-11-08 at 13:58 +0100, Johannes Berg wrote:
 >=20
-> Need to study the spec again so not any time soon.
-> Will send a new series if it is needed.
-
-OK.
-
-> > > >      1. The DSP/radio can receive punctured PPDUs if listening on t=
-he non
-> > > >         punctured channel.
-> > > >        =20
-> > > >         At least for our device that's not true, not sure about ath=
-12k? It
-> > > >         seems you have a per-peer puncturing configuration even, bu=
-t that
-> > > >         seems odd, and it's always just set to the vif puncturing
-> > > >         configuration.
-> > > >        =20
-> > >=20
-> > > Yes, same vif puncturing pattern is assigned for all the peers
-> > > associated on that vif, but firmware requires it to be sent separatel=
-y
-> > > for each peer.
-> >=20
-> > OK, thanks.
-> >=20
-> > What if it differs for different vifs?
-> >=20
->=20
-> So far that use-case hasn't come up but I'm confirming if we really need=
+> > I'm okay if you want to move it back to chandef, in fact I myself can=
 =20
-> that support or not. Will get back you.
+> > send a series for it.
+>=20
+> I'm planning to start working on it now/soon.
+>=20
 
-Thanks.
-(Also reminder, but yeah, I've also been busy otherwise.)
+Actually, I need to work on the wider bandwidth OFDMA thing first ...
+which has similar implications. See 802.11be D4.0 - 36.3.2.7/.8 "80/160
+MHz operating non-AP EHT STAs participating in wider bandwidth OFDMA".
 
-> > > If we do end up moving the bitmap back to chandef, we may need some
-> > > changes, because as I said above, when I originally added it I hadn't
-> > > thought of different bitmaps for each vif.
-> > > But can you give an example of what you would consider as compatible
-> > > channel contexts and what would be incompatible? I'm not clear on tha=
-t part.
-> >=20
-> > Easy example:
-> >=20
-> >   * control channel 36, 80 MHz, puncturing bitmap 0x2
-> >   * control channel 36, 80 MHz, puncturing bitmap 0
-> >=20
-> > Contrary to what I thought and said before, I want to treat these as
-> > *not* compatible now, and allocate two channel contexts if I end up
-> > having to do this.
+Do you have any thoughts on that?
 
-> I'm okay if you want to move it back to chandef, in fact I myself can=20
-> send a series for it.
-
-I'm planning to start working on it now/soon.
-
-> As far as two contexts are concerned, sounds like you don't need that=20
-> for your use-case. And I will confirm if we need it or not.
-
-Not sure what you mean - I do in fact want two channel contexts for
-this?
-
-But please check if you need that or not, as discussed above - this is
-the "different puncturing pattern for different vifs" case.
+I'm thinking I should add it to the chanctx in mac80211, which will add
+some implementation complexity=C2=A0there though but I think it makes more
+sense, i.e. adding an "ap_def" to struct ieee80211_chanctx_conf.
 
 johannes
