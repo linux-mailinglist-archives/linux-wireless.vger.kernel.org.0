@@ -2,93 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F557E594D
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 15:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA9827E59AD
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 16:07:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233722AbjKHOj1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Nov 2023 09:39:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36888 "EHLO
+        id S232461AbjKHPHi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Nov 2023 10:07:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233419AbjKHOj0 (ORCPT
+        with ESMTP id S229640AbjKHPHi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Nov 2023 09:39:26 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FC141BC3
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Nov 2023 06:39:24 -0800 (PST)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A8E2ddA015496;
-        Wed, 8 Nov 2023 14:39:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=dv/Z9G6ZAr9+lMxiIaSYC1sphG27a5cZSvv4iXRKE4E=;
- b=VSi+0vhHhqkroGtIAQtYVqxDjxxDmSMhworfrSpTdIjGIddR3ewKbXcn4bPPSwKUOI+M
- PujqA8FLYosifRbed2QMDT91KXfaooS3H65LXXq7phi13SPNnvCfO/qDm7nD7CflxRjH
- dXjnedg56zHVARxqncDsXryQeZGhVzE+ZvNdR1dNAn2DVUA5Ha4XqP08vgdxuiG2hAqL
- BeXXfz/oxhyIn/USkuj4LbKFm4KN7DepEu1G6dXu3/IqBOwsyVudLay8fvoqK8059Vzl
- dyoOU9HGBHsS2w9dCgZmfUdkpG5K038Zr4KDT39nyAJGeBzmcJEPrMc/gzck/mUwV6nV kg== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u7w2c1vvq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 08 Nov 2023 14:39:18 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3A8EdFaX013459
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 8 Nov 2023 14:39:15 GMT
-Received: from [10.110.1.228] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Wed, 8 Nov
- 2023 06:39:14 -0800
-Message-ID: <b2a44dc4-f5ec-46fe-a4ce-a2151ac65aa3@quicinc.com>
-Date:   Wed, 8 Nov 2023 06:39:14 -0800
+        Wed, 8 Nov 2023 10:07:38 -0500
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F19D91BE4
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Nov 2023 07:07:35 -0800 (PST)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D1A808007D;
+        Wed,  8 Nov 2023 15:07:33 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.112.12])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 67F6B13C2B0;
+        Wed,  8 Nov 2023 07:07:25 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 67F6B13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1699456045;
+        bh=2oJXfmsPoHxDXe18vjZYW3/oe7Qrx5qjrMnvAYYNz9c=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=PjapBVTfy3ZdyWmVC3lOj8fn0av6+ItySx/r6NPQSuwISE7yoEs1xyftbFMC08y+/
+         qM6VFO7Yy7/nAm7mcTA3H4/nJ8zuHvRjO0ldwCUTp5lNo2QajWrjpoDYSN+/wdONt3
+         NykDkfNhgYdqbai5yWDKxmvaaXIzD77QRYU1C6H0=
+Subject: Re: 6.7.0-rc1 + hacks deadlock bug, wifi netdev delete + cat of
+ debugfs file.
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+References: <56d0b043-0585-5380-5703-f25d9a42f39d@candelatech.com>
+ <cb377661e760d7728d11bd155b016f852b2681eb.camel@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <e8e38526-665d-6a88-b433-6f40b1182b57@candelatech.com>
+Date:   Wed, 8 Nov 2023 07:07:24 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Can ath11k automatically enable CRYPTO_MICHAEL_MIC?
-Content-Language: en-US
-To:     James Prestwood <prestwoj@gmail.com>,
-        <linux-wireless@vger.kernel.org>,
-        "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-References: <c558e244-b10d-43f3-9f42-f6c2f98d5b95@gmail.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <c558e244-b10d-43f3-9f42-f6c2f98d5b95@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+In-Reply-To: <cb377661e760d7728d11bd155b016f852b2681eb.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: K52qDjw9qRCO-05013gYInzWHpQXaLlV
-X-Proofpoint-ORIG-GUID: K52qDjw9qRCO-05013gYInzWHpQXaLlV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-08_03,2023-11-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=703
- lowpriorityscore=0 phishscore=0 adultscore=0 clxscore=1011
- priorityscore=1501 impostorscore=0 spamscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311080121
+X-MDID: 1699456054-ISBOetZFELcU
+X-MDID-O: us5;at1;1699456054;ISBOetZFELcU;<greearb@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/8/2023 6:33 AM, James Prestwood wrote:
-> Hi,
+On 11/8/23 2:31 AM, Johannes Berg wrote:
+> On Tue, 2023-11-07 at 14:08 -0800, Ben Greear wrote:
+>> Hello,
+>>
+>> I think this lockup is because iw is holding rtnl and wiphy mutex,
+>> and is blocked waiting for debugfs to be closed.  Another 'cat'
+>> program has debugfs file open, and is blocking on trying to acquire
+>> wiphy mutex.
+>>
+>> I think we must not acquire wiphy mutex in debugfs methods, somehow,
+>> to resolve this deadlock.  I do not know a safe way to do that.
 > 
-> I'm not very familiar with how the Kconfig stuff works, but I spent 
-> longer than I care to admit trying to get the ath11k support to show up 
-> in menuconfig.
+> Hmm. I almost want to say "don't do that then", but I guess you're just
+> randomly accessing debugfs files.
 > 
-> The issue was CONFIG_CRYPT_MICHAEL_MIC was not set, which removed the 
-> ath11k driver from menuconfig because of:
-> 
-> depends on CRYPTO_MICHAEL_MIC
-> 
-> Maybe there was a good reason (again, I don't know much about Kconfig), 
-> but should/could this use "select" to automatically enable 
-> CRYPTO_MICHAEL_MIC?
-> 
-> Thanks,
-> James
+> I guess we can at least make the mutex acquisition in debugfs killable
+> (or interruptible), so you can recover from this.
 
-+ ath11k list to see if there is any history on this topic
+If we can detect that the phy is going away in debugfs, then we could
+return early before attempting the lock?  That would catch most things,
+I guess, but still a potential race since I guess we'd have to do that check
+w/out locks.  Can we do a try-mutex-lock, if not acquired, return if wiphy-going-away,
+else sleep a bit, try again?
+
+> 
+> But fundamentally this is probably not really even a new issue.
+> 
+> I don't know how to interrupt a specific task that's stuck in a specific
+> debugfs file though, e.g. when removing them.
+
+Or, can we grab rtnl before we even open the debugfs file, like in the .open method?
+
+Or can we remove the debugfs files after rtnl but before we lock the wiphy mutex
+in the destruction path?
+
+I have been running similar code for...like 15 years, and haven't seen this particular
+deadlock before, so I think it is at least exacerbated by the locking changes.  Or maybe
+I had particularly bad luck yesterday....
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
