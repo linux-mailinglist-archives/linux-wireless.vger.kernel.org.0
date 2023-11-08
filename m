@@ -2,65 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E3277E5CEC
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 19:11:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFAE17E5CF2
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 19:12:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231607AbjKHSK7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Nov 2023 13:10:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57936 "EHLO
+        id S231958AbjKHSMI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Nov 2023 13:12:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjKHSK6 (ORCPT
+        with ESMTP id S230116AbjKHSMH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Nov 2023 13:10:58 -0500
+        Wed, 8 Nov 2023 13:12:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2D11FEE
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Nov 2023 10:10:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A780EC433C7;
-        Wed,  8 Nov 2023 18:10:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D09DB1FEB
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Nov 2023 10:12:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5F0C433C7;
+        Wed,  8 Nov 2023 18:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699467056;
-        bh=0tQ4isPBw1F+eysYAGhZfmmWgKHgLU7wVsDFcxe/8As=;
+        s=k20201202; t=1699467124;
+        bh=PgrzDEYlueh9xFGD1NeRdSnGnOOq4l6E06v9kSvG+xo=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=eYU+lonnMbR4RdKWSJYI/eYfYxXXWghuGAZyx66AV8O/yil9+JbCUB0ACRH1+rMY5
-         PrvJGyetoZF10LCFfXIYYqRr79TMBF0IdnXxlNafYB3sZXnrGeQqeDYbFLrWX9MQ85
-         hOrY8pm9dTXBOEmqARwDGrVUW1OZ0mNP7KKYRLMI4a8yCpSnlGZUmGsaRcanNNsfL5
-         RGPCd/f0qLzuBHActlVEpwYkWoWgHXYTsTUB+kFVgdszGJsqyAyjDmLvrQBrzFgsUd
-         3nodfSaLO/xBN36LCLmzk4dOk9ixXt+i+vzIEmFmNMMSlUD2w6HeOmwIpjBVuauIv5
-         68G20BOuo5Wzg==
+        b=nuZ7LeM7n4uLQYv8rTW1UxhYczU/1rUv03OMExL0b7Alxl1PyEjyz3WlCPTK7uEuA
+         qjvLT4QQT8ACBsVkzbfIJqkC3uJl9yZkudknS6kUkOdQf+slbG6CTruZdz7v+yGmrV
+         jmAJg7eXhMKaJaYOMoELkwAve2rbXK0iQpov2GGTjXTZd1DF84kaVZjvzlgatwQ3s2
+         Z/Gdz4zX94T3fKOu+piZLfknl1RU9SOSPhDh8m28NgurJz8rzZnHRMuc0yunUZ6nh6
+         ODX2V3E7Iz7sp7LqWgiQ2DF+4KyrjqfvmwhOv1DByo5PgM1eoZg7ViBQrFV/BewpRK
+         jpRKCkdt66ofg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/5] wifi: rtw89: pci: add PCI generation information to
- pci_info for each chip
+Subject: Re: [PATCH] wifi: rtw89: coex: use struct assignment to replace
+ memcpy()
+ to append TDMA content
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231101072149.21997-2-pkshih@realtek.com>
-References: <20231101072149.21997-2-pkshih@realtek.com>
+In-Reply-To: <20231102003716.25815-1-pkshih@realtek.com>
+References: <20231102003716.25815-1-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
 Cc:     <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169946705347.2821494.11093924787860890785.kvalo@kernel.org>
-Date:   Wed,  8 Nov 2023 18:10:55 +0000 (UTC)
+Message-ID: <169946712218.2821494.17415728678244513492.kvalo@kernel.org>
+Date:   Wed,  8 Nov 2023 18:12:03 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> In order to reuse PCI initial and configuration flows, add struct
-> rtw89_pci_gen_def to abstract the differences between WiFi 6/7 generations.
+> To notify firmware TDMA timeslot assignment, append TDMA parameters when
+> sending policy H2C firmware command. However, compiler warns we do memcpy()
+> data to val[] field of TLV struct. To avoid this, assign the struct value
+> with simple '=' instead. Compile tested only.
 > 
+> rtw89/coex.c: In function '_append_tdma':
+> drivers/net/wireless/realtek/rtw89/coex.c:1585:17:
+>  warning: writing 8 bytes into a region of size 0 [-Wstringop-overflow=]
+>  1585 |                 memcpy(&v3->tdma, &dm->tdma, sizeof(v3->tdma));
+>       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> In file included from drivers/net/wireless/realtek/rtw89/coex.h:8,
+>                  from drivers/net/wireless/realtek/rtw89/coex.c:5:
+> drivers/net/wireless/realtek/rtw89/core.h:2703:37:
+>  note: at offset [5714, 71249] into destination object 'ver' of size 8
+>  2703 |         const struct rtw89_btc_ver *ver;
+>       |                                     ^~~
+> drivers/net/wireless/realtek/rtw89/coex.c:1579:17:
+>  warning: writing 8 bytes into a region of size 0 [-Wstringop-overflow=]
+>  1579 |                 memcpy(v, &dm->tdma, sizeof(*v));
+>       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/realtek/rtw89/core.h:2703:37:
+>  note: at offset [5710, 71245] into destination object 'ver' of size 8
+>  2703 |         const struct rtw89_btc_ver *ver;
+>       |                                     ^~~
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202310301908.Wrj0diqe-lkp@intel.com/
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-5 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-07fabde630a6 wifi: rtw89: pci: add PCI generation information to pci_info for each chip
-bfdcfee3659c wifi: rtw89: pci: use gen_def pointer to configure mac_{pre,post}_init and clear PCI ring index
-2daafe9a0cb6 wifi: rtw89: pci: implement PCI mac_pre_init for WiFi 7 chips
-e24ae0f07625 wifi: rtw89: pci: add LTR v2 for WiFi 7 chip
-5cb0d6b878c3 wifi: rtw89: pci: implement PCI mac_post_init for WiFi 7 chips
+ca76817f4c4b wifi: rtw89: coex: use struct assignment to replace memcpy() to append TDMA content
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231101072149.21997-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231102003716.25815-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
