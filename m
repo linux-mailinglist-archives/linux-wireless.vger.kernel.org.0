@@ -2,197 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 041BD7E54BE
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 12:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AD1E7E566A
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 13:38:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230045AbjKHLNl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Nov 2023 06:13:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36010 "EHLO
+        id S1344383AbjKHMia (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Nov 2023 07:38:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229579AbjKHLNk (ORCPT
+        with ESMTP id S234691AbjKHMi2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Nov 2023 06:13:40 -0500
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D7001B3;
-        Wed,  8 Nov 2023 03:13:38 -0800 (PST)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-9dd5879a126so788084066b.3;
-        Wed, 08 Nov 2023 03:13:38 -0800 (PST)
+        Wed, 8 Nov 2023 07:38:28 -0500
+Received: from mail-ot1-f77.google.com (mail-ot1-f77.google.com [209.85.210.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E255C1BF4
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Nov 2023 04:38:26 -0800 (PST)
+Received: by mail-ot1-f77.google.com with SMTP id 46e09a7af769-6d329f136f0so8617306a34.1
+        for <linux-wireless@vger.kernel.org>; Wed, 08 Nov 2023 04:38:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699442015; x=1700046815;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aa+ViCUK3fZfx5s1sIETj47ifZQeP9M0i8nxo+tjcZI=;
-        b=Xt64usWH2OWYyeun8ifSfOruxI8XO6PIk+jE+AUUeom6xvwsIpKiTFOP3gkDMpw1xy
-         4SWBoTgD7Db3bSOeAU8KmzqBa8lKzvsrwMQmrkIdAfxybVgslbFKjZZYLgSL05MHoJiO
-         uRlCyFJRdyOsOSY9NX3nXU4LsNoxKzYXOjdJg4jM0OTuQ+TgcdLkIbOkvaTAbWrFzV8I
-         JId3qkf7KPTePhd9VVJr0rp+iA43DTLH1Z0JtDjKa0Fch/p8S7svBcHAShy/36DZozwX
-         amqvkqqIpsF8PswVepz9hXFhgeXjxXIrjbFctMz2/Zks7SNrVWo3P1qHMRSDPP2xq66O
-         CJ/A==
-X-Gm-Message-State: AOJu0Ywn/5TK9BfDoh8hjjn6YQzN/8h+OHKuKo+0VlL8CWcpHv1JF7ll
-        XXMIwxn9fJhKTEhcbqY/JqP9lX5wLbqZBnZT
-X-Google-Smtp-Source: AGHT+IG7kJINmYiYUwemScmJGQ+6Kb+dtYvW2pg4CcQls8sson1LSal0/gbDhMXSDWIRMID83mvHLw==
-X-Received: by 2002:a17:907:7b95:b0:9c7:59d1:b2c9 with SMTP id ne21-20020a1709077b9500b009c759d1b2c9mr1174660ejc.17.1699442014603;
-        Wed, 08 Nov 2023 03:13:34 -0800 (PST)
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com. [209.85.218.48])
-        by smtp.gmail.com with ESMTPSA id y19-20020a17090668d300b00992f2befcbcsm861697ejr.180.2023.11.08.03.13.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Nov 2023 03:13:34 -0800 (PST)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-9dd5879a126so788079266b.3;
-        Wed, 08 Nov 2023 03:13:34 -0800 (PST)
-X-Received: by 2002:a17:907:7d9e:b0:9a9:ef41:e5c7 with SMTP id
- oz30-20020a1709077d9e00b009a9ef41e5c7mr1292716ejc.8.1699442013815; Wed, 08
- Nov 2023 03:13:33 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699447106; x=1700051906;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=f9rx/NIwDuIO7RH8l1m10PzkYB91FmtIKSHTeanxTHM=;
+        b=WfuzXUpS6JguGM+AOWnigqa9dtX14CY+tbOt6WNq6NXPttyQ2HAov+wWMuGDfR7Eq1
+         bvuynTmrAuk59ryXT/XqB5qimU8P8/u8IzOESEV+bGJrCCHS4VEel2P/ZfPIng+8/bxa
+         i8a7BNWBeSt+YVwX9cxpyIg+Y61ziIGWFk49hdLVSkfZFQq2X5P3exJud6Wqu+kU1jbB
+         9R5e/YyU9z0rrLTXy09w0qQN3ComH7qZgbmOXw6d4oSGyFp3c0hPEpLxK0j1fO4YByY9
+         HcjHFSdI5kv8U2G0+I+yPpiAOH3IOaxbWZYY5DxmloFtI5HnCPZu4x5Q3RDCg6OT3tj/
+         e1mg==
+X-Gm-Message-State: AOJu0YxMydfSIZ47Ehm0hhLScbW6/QY+vpezyYENCguSl1rqJFyneFBc
+        QxjUd6S1N5TCypq5ZGhI0fDbNESYco2KGxZpbKoT8O0UqB9c
+X-Google-Smtp-Source: AGHT+IG71zcFpz6v7BgDMgGsmf8ro6g3f2BtFnk+5GxCdSxmGM4jtJyBkjuFqm2Buq1Xn8XzDIk65nSM9m/S/cMH3sSE+eWS5nQl
 MIME-Version: 1.0
-References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
-In-Reply-To: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
-From:   Neal Gompa <neal@gompa.dev>
-Date:   Wed, 8 Nov 2023 06:12:56 -0500
-X-Gmail-Original-Message-ID: <CAEg-Je-pu5Xdej33b_6vrjgddP0A=-Pc_RFbB-wDVNxPXy2mZw@mail.gmail.com>
-Message-ID: <CAEg-Je-pu5Xdej33b_6vrjgddP0A=-Pc_RFbB-wDVNxPXy2mZw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Daniel Berlin <dberlin@dberlin.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev
+X-Received: by 2002:a05:6808:198f:b0:3ae:2024:837d with SMTP id
+ bj15-20020a056808198f00b003ae2024837dmr769620oib.8.1699447106316; Wed, 08 Nov
+ 2023 04:38:26 -0800 (PST)
+Date:   Wed, 08 Nov 2023 04:38:26 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000001633ea0609a35d4d@google.com>
+Subject: [syzbot] [wireless?] [net?] WARNING in ieee80211_rfkill_poll
+From:   syzbot <syzbot+7e59a5bfc7a897247e18@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 7, 2023 at 1:06 AM Hector Martin <marcan@marcan.st> wrote:
->
-> Using the WSEC command instead of sae_password seems to be the supported
-> mechanism on newer firmware, and also how the brcmdhd driver does it.
->
-> According to user reports [1], the sae_password codepath doesn't actually
-> work on machines with Cypress chips anyway, so no harm in removing it.
->
-> This makes WPA3 work with iwd, or with wpa_supplicant pending a support
-> patchset [2].
->
-> [1] https://rachelbythebay.com/w/2023/11/06/wpa3/
-> [2] http://lists.infradead.org/pipermail/hostap/2023-July/041653.html
->
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
->  .../broadcom/brcm80211/brcmfmac/cfg80211.c         | 46 +++++++++-------------
->  .../broadcom/brcm80211/brcmfmac/fwil_types.h       |  2 +-
->  2 files changed, 20 insertions(+), 28 deletions(-)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index 2a90bb24ba77..138af70a33b8 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -1687,52 +1687,44 @@ static u16 brcmf_map_fw_linkdown_reason(const struct brcmf_event_msg *e)
->         return reason;
->  }
->
-> -static int brcmf_set_pmk(struct brcmf_if *ifp, const u8 *pmk_data, u16 pmk_len)
-> +static int brcmf_set_wsec(struct brcmf_if *ifp, const u8 *key, u16 key_len, u16 flags)
->  {
->         struct brcmf_pub *drvr = ifp->drvr;
->         struct brcmf_wsec_pmk_le pmk;
->         int err;
->
-> +       if (key_len > sizeof(pmk.key)) {
-> +               bphy_err(drvr, "key must be less than %zu bytes\n",
-> +                        sizeof(pmk.key));
-> +               return -EINVAL;
-> +       }
-> +
->         memset(&pmk, 0, sizeof(pmk));
->
-> -       /* pass pmk directly */
-> -       pmk.key_len = cpu_to_le16(pmk_len);
-> -       pmk.flags = cpu_to_le16(0);
-> -       memcpy(pmk.key, pmk_data, pmk_len);
-> +       /* pass key material directly */
-> +       pmk.key_len = cpu_to_le16(key_len);
-> +       pmk.flags = cpu_to_le16(flags);
-> +       memcpy(pmk.key, key, key_len);
->
-> -       /* store psk in firmware */
-> +       /* store key material in firmware */
->         err = brcmf_fil_cmd_data_set(ifp, BRCMF_C_SET_WSEC_PMK,
->                                      &pmk, sizeof(pmk));
->         if (err < 0)
->                 bphy_err(drvr, "failed to change PSK in firmware (len=%u)\n",
-> -                        pmk_len);
-> +                        key_len);
->
->         return err;
->  }
->
-> +static int brcmf_set_pmk(struct brcmf_if *ifp, const u8 *pmk_data, u16 pmk_len)
-> +{
-> +       return brcmf_set_wsec(ifp, pmk_data, pmk_len, 0);
-> +}
-> +
->  static int brcmf_set_sae_password(struct brcmf_if *ifp, const u8 *pwd_data,
->                                   u16 pwd_len)
->  {
-> -       struct brcmf_pub *drvr = ifp->drvr;
-> -       struct brcmf_wsec_sae_pwd_le sae_pwd;
-> -       int err;
-> -
-> -       if (pwd_len > BRCMF_WSEC_MAX_SAE_PASSWORD_LEN) {
-> -               bphy_err(drvr, "sae_password must be less than %d\n",
-> -                        BRCMF_WSEC_MAX_SAE_PASSWORD_LEN);
-> -               return -EINVAL;
-> -       }
-> -
-> -       sae_pwd.key_len = cpu_to_le16(pwd_len);
-> -       memcpy(sae_pwd.key, pwd_data, pwd_len);
-> -
-> -       err = brcmf_fil_iovar_data_set(ifp, "sae_password", &sae_pwd,
-> -                                      sizeof(sae_pwd));
-> -       if (err < 0)
-> -               bphy_err(drvr, "failed to set SAE password in firmware (len=%u)\n",
-> -                        pwd_len);
-> -
-> -       return err;
-> +       return brcmf_set_wsec(ifp, pwd_data, pwd_len, BRCMF_WSEC_PASSPHRASE);
->  }
->
->  static void brcmf_link_down(struct brcmf_cfg80211_vif *vif, u16 reason,
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> index 611d1a6aabb9..b68c46caabe8 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-> @@ -584,7 +584,7 @@ struct brcmf_wsec_key_le {
->  struct brcmf_wsec_pmk_le {
->         __le16  key_len;
->         __le16  flags;
-> -       u8 key[2 * BRCMF_WSEC_MAX_PSK_LEN + 1];
-> +       u8 key[BRCMF_WSEC_MAX_SAE_PASSWORD_LEN];
->  };
->
->  /**
->
-> ---
-> base-commit: ffc253263a1375a65fa6c9f62a893e9767fbebfa
-> change-id: 20231107-brcmfmac-wpa3-9e5f66e8be34
->
-> Best regards,
-> --
-> Hector Martin <marcan@marcan.st>
->
->
+Hello,
 
-Looks good to me.
+syzbot found the following issue on:
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
+HEAD commit:    90b0c2b2edd1 Merge tag 'pinctrl-v6.7-1' of git://git.kerne..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=1437f47b680000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b0220f5f3436eb1a
+dashboard link: https://syzkaller.appspot.com/bug?extid=7e59a5bfc7a897247e18
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13c670c0e80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1310d47b680000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/38f32e2d2d96/disk-90b0c2b2.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/ec454d0d1d26/vmlinux-90b0c2b2.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/110137c447a9/bzImage-90b0c2b2.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+7e59a5bfc7a897247e18@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 732 at net/mac80211/driver-ops.h:688 drv_rfkill_poll net/mac80211/driver-ops.h:688 [inline]
+WARNING: CPU: 1 PID: 732 at net/mac80211/driver-ops.h:688 ieee80211_rfkill_poll+0x134/0x170 net/mac80211/cfg.c:3100
+Modules linked in:
+CPU: 1 PID: 732 Comm: kworker/1:2 Not tainted 6.6.0-syzkaller-14142-g90b0c2b2edd1 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/09/2023
+Workqueue: events_power_efficient rfkill_poll
+RIP: 0010:drv_rfkill_poll net/mac80211/driver-ops.h:688 [inline]
+RIP: 0010:ieee80211_rfkill_poll+0x134/0x170 net/mac80211/cfg.c:3100
+Code: 60 07 00 00 be ff ff ff ff 48 8d 78 68 e8 44 f4 38 00 31 ff 89 c5 89 c6 e8 89 59 39 fb 85 ed 0f 85 44 ff ff ff e8 0c 5e 39 fb <0f> 0b e9 38 ff ff ff e8 00 5e 39 fb 0f 0b 48 c7 c7 f8 16 34 89 e8
+RSP: 0018:ffffc90001cafc90 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888100ff0700 RCX: ffffffff8614b267
+RDX: ffff888107368000 RSI: ffffffff8614b274 RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 1ffffffff15c0565 R12: ffff888100ff0700
+R13: 0000000000000001 R14: ffffc90001cafd80 R15: ffff8881f673ad40
+FS:  0000000000000000(0000) GS:ffff8881f6700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f6477ad0e40 CR3: 00000001122fe000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ rdev_rfkill_poll net/wireless/rdev-ops.h:636 [inline]
+ cfg80211_rfkill_poll+0xc9/0x240 net/wireless/core.c:224
+ rfkill_poll+0x8d/0x110 net/rfkill/core.c:1037
+ process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
+ process_scheduled_works kernel/workqueue.c:2703 [inline]
+ worker_thread+0x8b9/0x1290 kernel/workqueue.c:2784
+ kthread+0x33c/0x440 kernel/kthread.c:388
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+ </TASK>
 
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
---
-真実はいつも一つ！/ Always, there's only one truth!
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
