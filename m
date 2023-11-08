@@ -2,62 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 914F57E5CD6
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 19:06:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12FAD7E5CDC
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 19:08:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbjKHSG5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Nov 2023 13:06:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57034 "EHLO
+        id S229907AbjKHSIU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Nov 2023 13:08:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjKHSG4 (ORCPT
+        with ESMTP id S229460AbjKHSIU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Nov 2023 13:06:56 -0500
+        Wed, 8 Nov 2023 13:08:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BD9B186
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Nov 2023 10:06:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA45C433C8;
-        Wed,  8 Nov 2023 18:06:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E845C186
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Nov 2023 10:08:17 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF80C433C8;
+        Wed,  8 Nov 2023 18:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699466813;
-        bh=ZDpHDGVEFP+bE91rOEdXGu/bEAWDoVUCkXyc/7UOY6E=;
+        s=k20201202; t=1699466897;
+        bh=2/9otKjW6UkjDbQCjf9BaYmmjJBtqSON1JS/f1/T15U=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=tOaxwE5s0EKWY7eKOUavVDZadTIn6hx3G+jt1RsSq/WBnNxnaFQN+QIiUDj/SG5WA
-         ifxo/x7WObLSoqpyTGmZgqB9M3deGJgN/UKWTypsK4msyMNIzLe+17UH77qvK2ZhpK
-         1duhzK2fYSbu1+pXtkHhBSyiek20YxFFVsmQcKVzsfNlZjrcmCjscRWzZuASAVnpOa
-         imef0Y48WgEoDVnWmydaMxpmObaMmMMTlMnGn2fxEGQoreyLLxfEnBYB32XfCZLPf4
-         RyAEVVBm62Srp6pYb0Wx198yxdno2J7D2XmXiEtDuxnpHSbAWyXRB4J0BEDyaLQvPM
-         REgmJ8bTMZT8A==
+        b=WpD26rNTH2t1l3m9u/bxntnNc0QLVRLyt9u6gCJYYT4EavCGItL1ApFd7VcEvOmRh
+         8mNjLSWuj98Ey195vvtMD695g4yAGuo3Nsrf8Tc9l0XH/zCtIBK6yFJJrvka+gPkUC
+         xhKcjxdv4rMI4Vgf+SAE4kOywwOPZI1lmNisX3BHAEFaT/JO28ISP3l0DbWEmDLLFr
+         RTizRjZRI83bLNxhgNYs0GFCg2eYZCr1C9JtNANDXpBwIuI1DNEEeLG9WedJS6TaFd
+         i9gVMqRcoZTj9xre6VoliXDoZeVbNt4AneeUT9QreRm5gp8QRsbgbM+DJeBocfk6uq
+         Q/vd5LAeGA7Cw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: plfxlc: check for allocation failure in
- plfxlc_usb_wreq_async()
+Subject: Re: [PATCH 1/2] wifi: wilc1000: cleanup struct wilc_conn_info
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <e8d4a19a-f251-4101-a89b-607345e938cb@moroto.mountain>
-References: <e8d4a19a-f251-4101-a89b-607345e938cb@moroto.mountain>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     Srinivasan Raju <srini.raju@purelifi.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20231031171330.70399-1-dmantipov@yandex.ru>
+References: <20231031171330.70399-1-dmantipov@yandex.ru>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <169946681070.2821494.11583175295083759020.kvalo@kernel.org>
-Date:   Wed,  8 Nov 2023 18:06:52 +0000 (UTC)
+Message-ID: <169946689473.2821494.3798870018831794922.kvalo@kernel.org>
+Date:   Wed,  8 Nov 2023 18:08:16 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> Check for if the usb_alloc_urb() failed.
+> Remove set but otherwise unused 'ch' member of 'struct wilc_conn_info'
+> and avoid typeless 'void *' pointers in '(*conn_result)()' callback.
+> Likewise for 'wilc_parse_join_bss_param()'. Compile tested only.
 > 
-> Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-Patch applied to wireless-next.git, thanks.
+2 patches applied to wireless-next.git, thanks.
 
-40018a8fa9aa wifi: plfxlc: check for allocation failure in plfxlc_usb_wreq_async()
+4859b08f197b wifi: wilc1000: cleanup struct wilc_conn_info
+a2fbf9e1e8ac wifi: wilc1000: simplify wilc_scan()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/e8d4a19a-f251-4101-a89b-607345e938cb@moroto.mountain/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231031171330.70399-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
