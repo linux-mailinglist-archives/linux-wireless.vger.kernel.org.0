@@ -2,134 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE06F7E507A
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 07:49:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6CE7E5081
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Nov 2023 07:52:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230467AbjKHGtW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Nov 2023 01:49:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43492 "EHLO
+        id S230507AbjKHGwT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Nov 2023 01:52:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjKHGtV (ORCPT
+        with ESMTP id S229566AbjKHGwS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Nov 2023 01:49:21 -0500
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F0E1B5
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Nov 2023 22:49:19 -0800 (PST)
-Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-5bdb0be3591so1654154a12.2
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Nov 2023 22:49:19 -0800 (PST)
+        Wed, 8 Nov 2023 01:52:18 -0500
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 683798F
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Nov 2023 22:52:16 -0800 (PST)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5a7fb84f6ceso72997927b3.1
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Nov 2023 22:52:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1699426159; x=1700030959; darn=vger.kernel.org;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7oVHHhdaMqS1H8blCRWicVGXUlG0u2YinqoxLo0sK40=;
-        b=fFO0H07+u5go2DzCBoRf5uL2Pe4za0FM5cAc6ja50RSYL3p1DezsWZzIyqKyNzAM+j
-         RekqJeDX3iuZx7ch7nIYuEPCZn1M/mTzqjwkDOPR2v2XmbWDGhRHsK6cAzAmjb1aUsov
-         HjN+mrlsfgWxf6TyWJLj+zSWAa6izimz6Cars=
+        d=broadcom.com; s=google; t=1699426335; x=1700031135; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9CX8X2jzrRGkYHSmp/MEq69D5ivUbDaN57eMIbkg2d0=;
+        b=SXOL9Y+dj90irAsSa4qY+E7bPk5Cy0MMdrqHtN/aV7LEp0aS3luWBzxWfes5aaOQY6
+         pN43k9/7dX6qSr8fjjmIobdinsKqnEt2XOZSS6XNmcj4LT2RPUJSYjibgbIcIRzCSRPn
+         2GRevDTdh02R0TVs3o6aKjj2s44NjqiKpWbn4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699426159; x=1700030959;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7oVHHhdaMqS1H8blCRWicVGXUlG0u2YinqoxLo0sK40=;
-        b=Fbx+hVU+dUlH2ijS6W0rWI6JBi7AOa3ZcZUcDX0Gr6z7pxb1ton3vpJftSpScoQLNu
-         U5ua7XjIiAvoRBbw2mT+bUNlbToy9oSEvkF+t9qBrSkXia98WVUJTooIWQPCUo/mlAui
-         OGaOIpgHVt9j8+/81l1k6FiI3O5S0T6uM/T8mX8xloFymburZRXMPTgJkCUfidMdZopw
-         kYwjuusua2XzLqsR9ZL23vUb+72vW6tKFNNXQR9L7AYrUK7lqoY/Shm4+mT/ONEIQ3iJ
-         ZE7cA8k2fWrfTun13hBuQIx1j15uSw9dOlXqKLhljblleTD4Y1oV41H/GNIwnTlIPgr4
-         WHAA==
-X-Gm-Message-State: AOJu0Yy5lEFIhfI3Vpk9SAIAC7m6lFYzSAweo1TWGzgfqIoVSftie8Dl
-        Rz8Obkz1l7rOOtqHNwH988cImQ==
-X-Google-Smtp-Source: AGHT+IErj/VqnUnbwml+vb92G7ecgoBoj9tQvDT1fjrv6L2sPNZTFT/xN5eLdsR4T717FneyxIZa4g==
-X-Received: by 2002:a05:6a20:914b:b0:181:bc16:48de with SMTP id x11-20020a056a20914b00b00181bc1648demr1338586pzc.31.1699426158712;
-        Tue, 07 Nov 2023 22:49:18 -0800 (PST)
-Received: from ibnvda0196.ibn.broadcom.net ([192.19.252.250])
-        by smtp.gmail.com with ESMTPSA id h4-20020a170902748400b001cc52ca2dfbsm932686pll.120.2023.11.07.22.49.16
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Nov 2023 22:49:18 -0800 (PST)
-From:   Vinayak Yadawad <vinayak.yadawad@broadcom.com>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, jithu.jance@broadcom.com,
-        Vinayak Yadawad <vinayak.yadawad@broadcom.com>
-Subject: [PATCH v2 1/1] wifi: nl80211: Extend del pmksa support for SAE and OWE security
-Date:   Wed,  8 Nov 2023 12:19:08 +0530
-Message-Id: <083b63a2e6f5ae42e11e4044350a28cea8d462b7.1699426085.git.vinayak.yadawad@broadcom.com>
-X-Mailer: git-send-email 2.32.0
+        d=1e100.net; s=20230601; t=1699426335; x=1700031135;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9CX8X2jzrRGkYHSmp/MEq69D5ivUbDaN57eMIbkg2d0=;
+        b=qXH9mN0O8Nm4gSMdKC8V4ZDyCm4sEy7pgA9sye8iehQTQut2Vx8pG31/aGZyutrcFq
+         si9SOYeJC4EM0XeskzJUkhmOrwRmCBDMEiu+3JnNqlWFQARHb+20hAOCAfO2W5MmJv8W
+         KnI06PzrKQ92vLBndtHRFgrLvkhwb2Yjxm4gjxIB1KKJKNTz3II9whSf6kbR5lgVYQVJ
+         kgq7sbLcrWaq2etN2MKYrTwBgQPrZmRFww5KL3huREaEM55wonhrf4/kbRulE+kCCljX
+         7VLUPWa7TSJNJtynltZAfU72z+ottIvFKYfvEXnrP1lpSZ02cBJQudn1XX+C8RyuACcr
+         r5hw==
+X-Gm-Message-State: AOJu0YygW/vCyK3qBATsC0QSMYTxHylZuWmhxCZM9g4Wi9WGiH8RDfgz
+        BEyCWHiJ262ePLqoaVmu532FTZ0m7DfxlUN3gZxD0A==
+X-Google-Smtp-Source: AGHT+IHwmT1smD9HKz4z/XMR7bKpwI+C6qnX+Jpy/eK07FDOm2TP8wYv54XGvGUfgD3r9kcP+W5S8Hh6tW4jSIZcaNQ=
+X-Received: by 2002:a25:ce88:0:b0:da0:88a1:1e8a with SMTP id
+ x130-20020a25ce88000000b00da088a11e8amr932428ybe.44.1699426335444; Tue, 07
+ Nov 2023 22:52:15 -0800 (PST)
 MIME-Version: 1.0
+References: <a4e53b3538b04ce9c3f53b216d106c6914f4ad0b.1699339021.git.vinayak.yadawad@broadcom.com>
+ <877cmtbqfk.fsf@kernel.org>
+In-Reply-To: <877cmtbqfk.fsf@kernel.org>
+From:   Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+Date:   Wed, 8 Nov 2023 12:22:03 +0530
+Message-ID: <CAMLe8U8RTMcKuDj5YH6yR1N05eCym3mT0=Tb-sTa7NBA9QMfjA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] wifi:nl80211: Extend del pmksa support for SAE and
+ OWE security
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        jithu.jance@broadcom.com
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000008a22cf06099e7c5e"
+        boundary="00000000000012506306099e877d"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000008a22cf06099e7c5e
-Content-Transfer-Encoding: 8bit
+--00000000000012506306099e877d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Current handling of del pmksa with SSID is limited to FILS
-security. In the current change the del pmksa support is extended
-to SAE/OWE security offloads as well. For OWE/SAE offloads, the
-PMK is generated and cached at driver/FW, so user app needs the
-capability to request cache deletion based on SSID for drivers
-supporting SAE/OWE offload.
----
-v1->v2: Addressed review comments for indentation
-Signed-off-by: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
----
- net/wireless/nl80211.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+Hi Kalle,
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 569234bc2be6..8dc1c800f171 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12183,24 +12183,37 @@ static int nl80211_setdel_pmksa(struct sk_buff *skb, struct genl_info *info)
- 
- 	memset(&pmksa, 0, sizeof(struct cfg80211_pmksa));
- 
--	if (!info->attrs[NL80211_ATTR_PMKID])
-+	if ((info->genlhdr->cmd == NL80211_CMD_SET_PMKSA) &&
-+	    (!info->attrs[NL80211_ATTR_PMKID]))
- 		return -EINVAL;
- 
--	pmksa.pmkid = nla_data(info->attrs[NL80211_ATTR_PMKID]);
-+	if (info->attrs[NL80211_ATTR_PMKID])
-+		pmksa.pmkid = nla_data(info->attrs[NL80211_ATTR_PMKID]);
- 
- 	if (info->attrs[NL80211_ATTR_MAC]) {
- 		pmksa.bssid = nla_data(info->attrs[NL80211_ATTR_MAC]);
--	} else if (info->attrs[NL80211_ATTR_SSID] &&
--		   info->attrs[NL80211_ATTR_FILS_CACHE_ID] &&
--		   (info->genlhdr->cmd == NL80211_CMD_DEL_PMKSA ||
-+	} else if (info->attrs[NL80211_ATTR_SSID]) {
-+		/* SSID based pmksa flush suppported only for FILS,
-+		 * OWE/SAE OFFLOAD cases
-+		 */
-+		if (info->attrs[NL80211_ATTR_FILS_CACHE_ID] &&
-+		    (info->genlhdr->cmd == NL80211_CMD_DEL_PMKSA ||
- 		    info->attrs[NL80211_ATTR_PMK])) {
-+			pmksa.cache_id =
-+				nla_data(info->attrs[NL80211_ATTR_FILS_CACHE_ID]);
-+		} else if ((info->genlhdr->cmd == NL80211_CMD_DEL_PMKSA) &&
-+		    (!wiphy_ext_feature_isset(
-+		    &rdev->wiphy, NL80211_EXT_FEATURE_SAE_OFFLOAD) &&
-+		    (!wiphy_ext_feature_isset(
-+		    &rdev->wiphy,NL80211_EXT_FEATURE_OWE_OFFLOAD)))){
-+			return -EINVAL;
-+		}
- 		pmksa.ssid = nla_data(info->attrs[NL80211_ATTR_SSID]);
- 		pmksa.ssid_len = nla_len(info->attrs[NL80211_ATTR_SSID]);
--		pmksa.cache_id =
--			nla_data(info->attrs[NL80211_ATTR_FILS_CACHE_ID]);
- 	} else {
- 		return -EINVAL;
- 	}
-+
- 	if (info->attrs[NL80211_ATTR_PMK]) {
- 		pmksa.pmk = nla_data(info->attrs[NL80211_ATTR_PMK]);
- 		pmksa.pmk_len = nla_len(info->attrs[NL80211_ATTR_PMK]);
--- 
-2.32.0
+Thanks for the review comment.
+I have addressed the comment in version 2 of the patch "[PATCH v2 1/1]
+wifi: nl80211: Extend del pmksa support for SAE and OWE security"
+
+Regards,
+Vinayak
 
 
---0000000000008a22cf06099e7c5e
+On Tue, Nov 7, 2023 at 7:45=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Vinayak Yadawad <vinayak.yadawad@broadcom.com> writes:
+>
+> > Current handling of del pmksa with SSID is limited to FILS
+> > security. In the current change the del pmksa support is extended
+> > to SAE/OWE security offloads as well. For OWE/SAE offloads, the
+> > PMK is generated and cached at driver/FW, so user app needs the
+> > capability to request cache deletion based on SSID for drivers
+> > supporting SAE/OWE offload.
+> >
+> > Signed-off-by: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+>
+> There should be a space after "wifi:" in the title. Not sure if Johannes
+> can fix that or if he prefers to submit a new version.
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
+
+--00000000000012506306099e877d
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -200,13 +168,13 @@ BTl38q8FNdCLAiM1OD+blhu7LqMLVaAEEeoUGhRxdNkvMGss1Z7/ZefenAfm9IpiaGR0PQhBwI7c
 spqD/wIJUULcXiaj0eatDUjsrx3QN9OZOh3iubCt0uBoxCQUGuvxqd3Qz4FVKMSzEIzs8v/hwR+T
 nTkxggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNh
 MTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxIxd7r
-XtHLz48aMtQwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIDhvY//06vYHT/v7zMUK
-fR3Z+VAb4wB5bb0Ru+/PMD2mMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
-MQ8XDTIzMTEwODA2NDkxOVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUD
+XtHLz48aMtQwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIAcJpOoUku6g3emo/aef
+ZIxvW7hOgfutxnkdP/jvN81zMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
+MQ8XDTIzMTEwODA2NTIxNVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUD
 BAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsG
-CWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQA1cdSCPxpSXlWvHB6R/9e1XB4BJRfAz66bQ2bu
-+eQ2D9KpdbGb50QDOf5O3Hzdcm/0i94dbEz3ejoxKm7PRM/ykl2vX4lIV3oU1ZRTTGaMX35mQu7b
-H6aFK0w0CqPA1j7YJd3QKuIhKiwyYJstiNcVVaO2W+i0MslKiyAKLWnTNgM3fcsWHfVRVrX02T0H
-oSXkjtxKzVHvxpxVRKyEvmuRSUXdifIH6hrA3um9NrRXrTIHugiHFMpHCP3pySVqfYDe6b2qa20O
-Ur+NoTvWI+hYE+7J/hSib/yk+lF/ALyx3pgwHhkh06MpJjo1SFEXllP8y16hRf5Y/EIERYighlyR
---0000000000008a22cf06099e7c5e--
+CWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQB1O4COuFxtRHUInMaqV1T72K3igSPWi8oyvIfE
+Rr0ZlusY2D0b3kTsr4R6GYqhEkseX6CAe52v8NEqg/LCGDvtC4yiJ+bOVlHHbMB1Pszy2GgCg4tB
+tA9C8mTUJL/EaW9d7LnCwD4G2DCgX904EsE2RNgfCBfGAsk4TzrkRa+Br89ooizYGJq1MyGL076H
+S9yYl9c0q5w/tl8TtoHnKnuJGxacao8Q5FpikFFOjvs1V870fxXvvSGG6um2OXE8foscTEVxRIQs
+LLaL+M99VgwoABOvyLMDUKJAmoI8y5H84WUUFfYBwk+REcdtYmd8hUtCNeWc3Wj1SUgeAkysbdEo
+--00000000000012506306099e877d--
