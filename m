@@ -2,66 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A9917E71E0
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Nov 2023 20:03:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B5C27E71E1
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Nov 2023 20:04:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345074AbjKITDt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Nov 2023 14:03:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41174 "EHLO
+        id S230119AbjKITEE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Nov 2023 14:04:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345077AbjKITDr (ORCPT
+        with ESMTP id S1345085AbjKITDx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Nov 2023 14:03:47 -0500
+        Thu, 9 Nov 2023 14:03:53 -0500
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 027843C14
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Nov 2023 11:03:44 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF7813C18
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Nov 2023 11:03:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699556625; x=1731092625;
+  t=1699556631; x=1731092631;
   h=date:from:to:cc:subject:message-id;
-  bh=yaCna9EW3sQ426NRjuKlr0goMTUCENYAkesp3qHauRM=;
-  b=G+Vu/QQw+06yS+7KHA3eCBpn4Ie1z1GXyjYHKSB0zHZuZR5Y1Ha/C9l5
-   6pNj3hXL6c38pcZHM05wWkXEubjIH5MbZnZT4pAMgBMX6VA5GcbabgzGP
-   eS1A8L/KASiCGQlTBR5hnPfukvINcRhhPa6kxhmObEws2juDAV2jPL3ZZ
-   /LmvOet9rjTNqy5jsdw3RtABewteLwt8ZVmZwxaLwouncQip/x7YabWMD
-   OXyaZbgaKElWbTTDR1wKyW2Ny+/L3Y1RI0Vs8A5XIrmJnmp9oRAJCEbZq
-   zWKQyc08XiM8TjTAKvoi0bQhkEYdTbFXfCStlTVn3zd6oiNW45DZMBlEa
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="3090236"
+  bh=Mo+KqhWXaoc+APznTdEmqJtVMfvrLB5rTQ0WQ1SLWs8=;
+  b=ehQk5+TpHbcCeVPTnlRndqpwDp+rxXDeng5mCW8OMHFyeVpLiJ9xqWsS
+   uhcjKyDjOnJ0iQGLZuOyrlcCzDDxzs7fHeCdGfhyterbNdA98rtYk/fjK
+   QqNZXR6yiE7nph+3lxlBxqOc1t2yZHsROhxPuo4DaGiOzIWPDjXWKHFdo
+   7UFEBXg9Dd0zGaktuh7fxzsUv68NAloPtLqs7zLDBvRny7D+pKsQenr61
+   mnQ/IQUdE58koZGC8or9wBIMhIciBMyl1ClBY5Kuz4Sv/FU4W1DGiSJDj
+   I0Xlh65OE952mdv9+K5jS4sgyvsb3ts2ppWyv0Bm4sY4llRZhhAmb++Nx
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="3090260"
 X-IronPort-AV: E=Sophos;i="6.03,290,1694761200"; 
-   d="scan'208";a="3090236"
+   d="scan'208";a="3090260"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2023 11:03:45 -0800
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2023 11:03:51 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="756981062"
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="756981079"
 X-IronPort-AV: E=Sophos;i="6.03,290,1694761200"; 
-   d="scan'208";a="756981062"
+   d="scan'208";a="756981079"
 Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 09 Nov 2023 11:03:42 -0800
+  by orsmga007.jf.intel.com with ESMTP; 09 Nov 2023 11:03:45 -0800
 Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
         (envelope-from <lkp@intel.com>)
-        id 1r1AJY-00093l-1R;
-        Thu, 09 Nov 2023 19:03:40 +0000
-Date:   Fri, 10 Nov 2023 03:03:22 +0800
+        id 1r1AJb-00093r-06;
+        Thu, 09 Nov 2023 19:03:43 +0000
+Date:   Fri, 10 Nov 2023 03:03:38 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- a11d965a218f0cd95b13fe44d0bcd8a20ce134a8
-Message-ID: <202311100319.tR87NUmg-lkp@intel.com>
+Subject: [wireless:for-next] BUILD SUCCESS
+ 7a934b5cc3f452df6f9a4903450fc103dee98ee8
+Message-ID: <202311100335.BYVgqDz1-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: a11d965a218f0cd95b13fe44d0bcd8a20ce134a8  wifi: rt2x00: restart beacon queue when hardware reset
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 7a934b5cc3f452df6f9a4903450fc103dee98ee8  wifi: mt76: mt7921: fix 6GHz disabled by the missing default CLC config
 
-elapsed time: 1470m
+elapsed time: 1472m
 
-configs tested: 201
-configs skipped: 3
+configs tested: 195
+configs skipped: 5
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -74,8 +74,6 @@ arc                              allmodconfig   gcc
 arc                               allnoconfig   gcc  
 arc                              allyesconfig   gcc  
 arc                                 defconfig   gcc  
-arc                   randconfig-001-20231109   gcc  
-arc                   randconfig-002-20231109   gcc  
 arc                    vdk_hs38_smp_defconfig   gcc  
 arm                              allmodconfig   gcc  
 arm                               allnoconfig   gcc  
@@ -107,8 +105,6 @@ csky                             allmodconfig   gcc
 csky                              allnoconfig   gcc  
 csky                             allyesconfig   gcc  
 csky                                defconfig   gcc  
-csky                  randconfig-001-20231109   gcc  
-csky                  randconfig-002-20231109   gcc  
 i386                             allmodconfig   gcc  
 i386                              allnoconfig   gcc  
 i386                             allyesconfig   gcc  
@@ -135,8 +131,6 @@ loongarch                        allmodconfig   gcc
 loongarch                         allnoconfig   gcc  
 loongarch                        allyesconfig   gcc  
 loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231109   gcc  
-loongarch             randconfig-002-20231109   gcc  
 m68k                             allmodconfig   gcc  
 m68k                              allnoconfig   gcc  
 m68k                             allyesconfig   gcc  
