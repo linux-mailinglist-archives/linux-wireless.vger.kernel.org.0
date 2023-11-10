@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B9757E7FA1
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Nov 2023 18:57:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1B007E80B2
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Nov 2023 19:17:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229967AbjKJR4o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Nov 2023 12:56:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50802 "EHLO
+        id S1345107AbjKJSRY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Nov 2023 13:17:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235631AbjKJRz7 (ORCPT
+        with ESMTP id S1346113AbjKJSQj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Nov 2023 12:55:59 -0500
+        Fri, 10 Nov 2023 13:16:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 213552812E
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Nov 2023 02:22:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36980C433CA;
-        Fri, 10 Nov 2023 10:22:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A8C28135
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Nov 2023 02:22:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A57C433C8;
+        Fri, 10 Nov 2023 10:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699611729;
-        bh=5ou17yiktRU9nagkHXi6c6F9I8XPQs9jzQuZICUzCw4=;
+        s=k20201202; t=1699611730;
+        bh=hptKbYz04+x5Rr0maSkv69QvScaY06HUThEK/G5dIhM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kd2bZGTTww+NHdBdmpixjeUbted6II9Zmcrm1Y1tUbHnmuxVbsY+zZXeZx7h+vCem
-         UOVVaGTqAgDgIYeeHfOui1/hpCTLy9CzyO0aGhzFNF5zVqemBWVlxvribKdvfNdZy7
-         q50zCxJiOlesEpZKVWVjwWnOadJQpZMfLsP6MOCzGGNaPkzrRmS2L35QNph9FAFyCW
-         GwOjCR/eF32U5jhFEPo1u9dlB43KDYGCstJhrDd/PHM9YI32s5QoULPrVH4yXj2dT9
-         kxIb6q6lWNe4P4DewJ6PVCAKpN8RETVgqj9PcVDNS14YgKiT0YDIdo1bQyXM0KGAnZ
-         6Fd1lIZOMl5JA==
+        b=BkMo7EG6iUws0M/o6eo67UcGSSC6caRinXQ6YCAQIeTAjUdzj/soIs7A00vEsswei
+         Uz/eA64OKT6OWdFUiYd7UnU211hCMV65JQ7yG/A3Oze90Fxlfau00+KR1j7ZVgW9I2
+         cutec7332I9fLZAvWwAXxK81C3Tq7rGL5yIIw/13E0quEN6Wq0OCiYWWWUKUwLXDJt
+         qFG4eaApzDzE0dpRhvw3DMdyOICKrbvEiYmrQ5JJPeuJ0sBWQtgIbV/aLFkNVPhFZK
+         Aj+E0Ts36sj/gKYP57gKjgM7aNhK78Pk8RwoD1DBDk/68H7Sf8jYpI5kS8ttPPjsgc
+         rHN3ObEhPfFDA==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     mhi@lists.linux.dev
 Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: [PATCH RFC 3/8] wifi: ath11k: handle irq enable/disable in several code path
-Date:   Fri, 10 Nov 2023 12:21:57 +0200
-Message-Id: <20231110102202.3168243-4-kvalo@kernel.org>
+Subject: [PATCH RFC 4/8] wifi: ath11k: remove MHI LOOPBACK channels
+Date:   Fri, 10 Nov 2023 12:21:58 +0200
+Message-Id: <20231110102202.3168243-5-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231110102202.3168243-1-kvalo@kernel.org>
 References: <20231110102202.3168243-1-kvalo@kernel.org>
@@ -50,58 +50,59 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-For non WoW suspend/resume, ath11k host powers down whole hardware
-when suspend and power up it when resume, the code path it goes
-through is very like the ath11k reset logic.
+There is no driver to match these two channels, so
+remove them. This fixes warnings from MHI subsystem during suspend:
 
-In order to reuse that logic, do some IRQ management work to make
-it work.
+mhi mhi0_LOOPBACK: 1: Failed to reset channel, still resetting
+mhi mhi0_LOOPBACK: 0: Failed to reset channel, still resetting
 
 Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
 
 Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/ath11k/mhi.c | 28 ---------------------------
+ 1 file changed, 28 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 0c6ecbb9a066..fbd6b6a0e12c 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -852,9 +852,6 @@ int ath11k_core_resume(struct ath11k_base *ab)
- 		return ret;
- 	}
+diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+index afeabd6ecc67..d4fe1d1c86e4 100644
+--- a/drivers/net/wireless/ath/ath11k/mhi.c
++++ b/drivers/net/wireless/ath/ath11k/mhi.c
+@@ -21,34 +21,6 @@
+ #define RDDM_DUMP_SIZE	0x420000
  
--	ath11k_hif_ce_irq_enable(ab);
--	ath11k_hif_irq_enable(ab);
--
- 	ret = ath11k_dp_rx_pktlog_start(ab);
- 	if (ret) {
- 		ath11k_warn(ab, "failed to start rx pktlog during resume: %d\n",
-@@ -1775,10 +1772,9 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
- 
- 	mutex_lock(&ab->core_lock);
- 	ath11k_thermal_unregister(ab);
--	ath11k_hif_irq_disable(ab);
- 	ath11k_dp_pdev_free(ab);
- 	ath11k_spectral_deinit(ab);
--	ath11k_hif_stop(ab);
-+	ath11k_ce_cleanup_pipes(ab);
- 	ath11k_wmi_detach(ab);
- 	ath11k_dp_pdev_reo_cleanup(ab);
- 	mutex_unlock(&ab->core_lock);
-@@ -2033,8 +2029,8 @@ static void ath11k_core_reset(struct work_struct *work)
- 	time_left = wait_for_completion_timeout(&ab->recovery_start,
- 						ATH11K_RECOVER_START_TIMEOUT_HZ);
- 
--	ath11k_hif_power_down(ab);
--	ath11k_hif_power_up(ab);
-+	ath11k_hif_irq_disable(ab);
-+	ath11k_hif_ce_irq_disable(ab);
- 
- 	ath11k_dbg(ab, ATH11K_DBG_BOOT, "reset started\n");
- }
+ static struct mhi_channel_config ath11k_mhi_channels_qca6390[] = {
+-	{
+-		.num = 0,
+-		.name = "LOOPBACK",
+-		.num_elements = 32,
+-		.event_ring = 0,
+-		.dir = DMA_TO_DEVICE,
+-		.ee_mask = 0x4,
+-		.pollcfg = 0,
+-		.doorbell = MHI_DB_BRST_DISABLE,
+-		.lpm_notify = false,
+-		.offload_channel = false,
+-		.doorbell_mode_switch = false,
+-		.auto_queue = false,
+-	},
+-	{
+-		.num = 1,
+-		.name = "LOOPBACK",
+-		.num_elements = 32,
+-		.event_ring = 0,
+-		.dir = DMA_FROM_DEVICE,
+-		.ee_mask = 0x4,
+-		.pollcfg = 0,
+-		.doorbell = MHI_DB_BRST_DISABLE,
+-		.lpm_notify = false,
+-		.offload_channel = false,
+-		.doorbell_mode_switch = false,
+-		.auto_queue = false,
+-	},
+ 	{
+ 		.num = 20,
+ 		.name = "IPCR",
 -- 
 2.39.2
 
