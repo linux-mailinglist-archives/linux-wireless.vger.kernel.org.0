@@ -2,38 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F0497E767F
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Nov 2023 02:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E14FF7E7681
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Nov 2023 02:24:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345535AbjKJBYa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Nov 2023 20:24:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59194 "EHLO
+        id S1345552AbjKJBYb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Nov 2023 20:24:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345556AbjKJBY2 (ORCPT
+        with ESMTP id S234801AbjKJBY2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 9 Nov 2023 20:24:28 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5A6344A4
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 224C444B9
         for <linux-wireless@vger.kernel.org>; Thu,  9 Nov 2023 17:24:25 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AA1OB1o81890521, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AA1OB1o81890521
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AA1ODYI01890528, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AA1ODYI01890528
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 10 Nov 2023 09:24:11 +0800
+        Fri, 10 Nov 2023 09:24:13 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 10 Nov 2023 09:24:12 +0800
+ 15.1.2507.17; Fri, 10 Nov 2023 09:24:14 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 10 Nov
- 2023 09:24:12 +0800
+ 2023 09:24:13 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/7] wifi: rtw89: pci: stop/start DMA for level 1 recovery according to chip gen
-Date:   Fri, 10 Nov 2023 09:23:14 +0800
-Message-ID: <20231110012319.12727-3-pkshih@realtek.com>
+Subject: [PATCH 3/7] wifi: rtw89: pci: add pre_deinit to be called after probe complete
+Date:   Fri, 10 Nov 2023 09:23:15 +0800
+Message-ID: <20231110012319.12727-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231110012319.12727-1-pkshih@realtek.com>
 References: <20231110012319.12727-1-pkshih@realtek.com>
@@ -47,245 +47,167 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+At probe stage, we only do partial initialization to enable ability to
+download firmware and read capabilities. After that, we use this pre_deinit
+to disable HCI to save power.
 
-Level 1 recovery is to recover TX/RX rings, so it needs PCI to stop/start
-DMA. But, different chip gen have different implementations, either
-register address/mask or function flow. So, configure callback of
-stop/start DMA by chip gen.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c    | 21 +++++---
- drivers/net/wireless/realtek/rtw89/pci.h    |  4 ++
- drivers/net/wireless/realtek/rtw89/pci_be.c | 55 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/ser.c    |  6 +++
- 4 files changed, 78 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c   |  2 ++
+ drivers/net/wireless/realtek/rtw89/core.h   |  6 ++++++
+ drivers/net/wireless/realtek/rtw89/pci.c    |  2 ++
+ drivers/net/wireless/realtek/rtw89/pci.h    | 12 ++++++++++++
+ drivers/net/wireless/realtek/rtw89/pci_be.c | 18 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h    |  9 +++++++++
+ 6 files changed, 49 insertions(+)
 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index c689fc2b2d49..b18f54b16f9a 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -4236,6 +4236,8 @@ static int rtw89_chip_efuse_info_setup(struct rtw89_dev *rtwdev)
+ 
+ 	rtw89_core_setup_phycap(rtwdev);
+ 
++	rtw89_hci_mac_pre_deinit(rtwdev);
++
+ 	rtw89_mac_pwr_off(rtwdev);
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index da8181539d1a..07b529a76396 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3064,6 +3064,7 @@ struct rtw89_hci_ops {
+ 	void (*write32)(struct rtw89_dev *rtwdev, u32 addr, u32 data);
+ 
+ 	int (*mac_pre_init)(struct rtw89_dev *rtwdev);
++	int (*mac_pre_deinit)(struct rtw89_dev *rtwdev);
+ 	int (*mac_post_init)(struct rtw89_dev *rtwdev);
+ 	int (*deinit)(struct rtw89_dev *rtwdev);
+ 
+@@ -4803,6 +4804,11 @@ static inline void rtw89_hci_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ 	return rtwdev->hci.ops->tx_kick_off(rtwdev, txch);
+ }
+ 
++static inline int rtw89_hci_mac_pre_deinit(struct rtw89_dev *rtwdev)
++{
++	return rtwdev->hci.ops->mac_pre_deinit(rtwdev);
++}
++
+ static inline void rtw89_hci_flush_queues(struct rtw89_dev *rtwdev, u32 queues,
+ 					  bool drop)
+ {
 diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index bac9ec2236da..822b914cf935 100644
+index 822b914cf935..013588a572c5 100644
 --- a/drivers/net/wireless/realtek/rtw89/pci.c
 +++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -1755,7 +1755,7 @@ static void rtw89_pci_ctrl_dma_io(struct rtw89_dev *rtwdev, bool enable)
- 		rtw89_write32_set(rtwdev, reg->addr, reg->mask);
- }
+@@ -3837,6 +3837,7 @@ EXPORT_SYMBOL(rtw89_pm_ops);
  
--static void rtw89_pci_ctrl_dma_all(struct rtw89_dev *rtwdev, bool enable)
-+void rtw89_pci_ctrl_dma_all(struct rtw89_dev *rtwdev, bool enable)
- {
- 	rtw89_pci_ctrl_dma_io(rtwdev, enable);
- 	rtw89_pci_ctrl_dma_trx(rtwdev, enable);
-@@ -3640,7 +3640,7 @@ static void rtw89_pci_l1ss_cfg(struct rtw89_dev *rtwdev)
- 		rtw89_pci_l1ss_set(rtwdev, true);
- }
- 
--static int rtw89_pci_poll_io_idle(struct rtw89_dev *rtwdev)
-+static int rtw89_pci_poll_io_idle_ax(struct rtw89_dev *rtwdev)
- {
- 	int ret = 0;
- 	u32 sts;
-@@ -3657,7 +3657,7 @@ static int rtw89_pci_poll_io_idle(struct rtw89_dev *rtwdev)
- 	return ret;
- }
- 
--static int rtw89_pci_lv1rst_stop_dma(struct rtw89_dev *rtwdev)
-+static int rtw89_pci_lv1rst_stop_dma_ax(struct rtw89_dev *rtwdev)
- {
- 	u32 val;
- 	int ret;
-@@ -3666,7 +3666,7 @@ static int rtw89_pci_lv1rst_stop_dma(struct rtw89_dev *rtwdev)
- 		return 0;
- 
- 	rtw89_pci_ctrl_dma_all(rtwdev, false);
--	ret = rtw89_pci_poll_io_idle(rtwdev);
-+	ret = rtw89_pci_poll_io_idle_ax(rtwdev);
- 	if (ret) {
- 		val = rtw89_read32(rtwdev, R_AX_DBG_ERR_FLAG);
- 		rtw89_debug(rtwdev, RTW89_DBG_HCI,
-@@ -3677,7 +3677,7 @@ static int rtw89_pci_lv1rst_stop_dma(struct rtw89_dev *rtwdev)
- 		if (val & B_AX_RX_STUCK)
- 			rtw89_mac_ctrl_hci_dma_rx(rtwdev, false);
- 		rtw89_mac_ctrl_hci_dma_trx(rtwdev, true);
--		ret = rtw89_pci_poll_io_idle(rtwdev);
-+		ret = rtw89_pci_poll_io_idle_ax(rtwdev);
- 		val = rtw89_read32(rtwdev, R_AX_DBG_ERR_FLAG);
- 		rtw89_debug(rtwdev, RTW89_DBG_HCI,
- 			    "[PCIe] poll_io_idle fail, after 0x%08x: 0x%08x\n",
-@@ -3687,7 +3687,7 @@ static int rtw89_pci_lv1rst_stop_dma(struct rtw89_dev *rtwdev)
- 	return ret;
- }
- 
--static int rtw89_pci_lv1rst_start_dma(struct rtw89_dev *rtwdev)
-+static int rtw89_pci_lv1rst_start_dma_ax(struct rtw89_dev *rtwdev)
- {
- 	u32 ret;
- 
-@@ -3709,18 +3709,20 @@ static int rtw89_pci_lv1rst_start_dma(struct rtw89_dev *rtwdev)
- static int rtw89_pci_ops_mac_lv1_recovery(struct rtw89_dev *rtwdev,
- 					  enum rtw89_lv1_rcvy_step step)
- {
-+	const struct rtw89_pci_info *info = rtwdev->pci_info;
-+	const struct rtw89_pci_gen_def *gen_def = info->gen_def;
- 	int ret;
- 
- 	switch (step) {
- 	case RTW89_LV1_RCVY_STEP_1:
--		ret = rtw89_pci_lv1rst_stop_dma(rtwdev);
-+		ret = gen_def->lv1rst_stop_dma(rtwdev);
- 		if (ret)
- 			rtw89_err(rtwdev, "lv1 rcvy pci stop dma fail\n");
- 
- 		break;
- 
- 	case RTW89_LV1_RCVY_STEP_2:
--		ret = rtw89_pci_lv1rst_start_dma(rtwdev);
-+		ret = gen_def->lv1rst_start_dma(rtwdev);
- 		if (ret)
- 			rtw89_err(rtwdev, "lv1 rcvy pci start dma fail\n");
- 		break;
-@@ -3839,6 +3841,9 @@ const struct rtw89_pci_gen_def rtw89_pci_gen_ax = {
+ const struct rtw89_pci_gen_def rtw89_pci_gen_ax = {
+ 	.mac_pre_init = rtw89_pci_ops_mac_pre_init_ax,
++	.mac_pre_deinit = NULL,
+ 	.mac_post_init = rtw89_pci_ops_mac_post_init_ax,
  
  	.clr_idx_all = rtw89_pci_clr_idx_all_ax,
- 	.rst_bdram = rtw89_pci_rst_bdram_ax,
-+
-+	.lv1rst_stop_dma = rtw89_pci_lv1rst_stop_dma_ax,
-+	.lv1rst_start_dma = rtw89_pci_lv1rst_start_dma_ax,
- };
- EXPORT_SYMBOL(rtw89_pci_gen_ax);
+@@ -3866,6 +3867,7 @@ static const struct rtw89_hci_ops rtw89_pci_ops = {
+ 	.write32	= rtw89_pci_ops_write32,
+ 
+ 	.mac_pre_init	= rtw89_pci_ops_mac_pre_init,
++	.mac_pre_deinit	= rtw89_pci_ops_mac_pre_deinit,
+ 	.mac_post_init	= rtw89_pci_ops_mac_post_init,
+ 	.deinit		= rtw89_pci_ops_deinit,
  
 diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
-index e3a4a6119660..30ab9d41e0ee 100644
+index 30ab9d41e0ee..426f9d28650b 100644
 --- a/drivers/net/wireless/realtek/rtw89/pci.h
 +++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -1042,6 +1042,9 @@ struct rtw89_pci_gen_def {
+@@ -1038,6 +1038,7 @@ struct rtw89_pci_bd_ram {
+ 
+ struct rtw89_pci_gen_def {
+ 	int (*mac_pre_init)(struct rtw89_dev *rtwdev);
++	int (*mac_pre_deinit)(struct rtw89_dev *rtwdev);
+ 	int (*mac_post_init)(struct rtw89_dev *rtwdev);
  
  	void (*clr_idx_all)(struct rtw89_dev *rtwdev);
- 	int (*rst_bdram)(struct rtw89_dev *rtwdev);
-+
-+	int (*lv1rst_stop_dma)(struct rtw89_dev *rtwdev);
-+	int (*lv1rst_start_dma)(struct rtw89_dev *rtwdev);
- };
+@@ -1464,6 +1465,17 @@ static inline int rtw89_pci_ops_mac_pre_init(struct rtw89_dev *rtwdev)
+ 	return gen_def->mac_pre_init(rtwdev);
+ }
  
- struct rtw89_pci_info {
-@@ -1369,6 +1372,7 @@ u32 rtw89_pci_fill_txaddr_info(struct rtw89_dev *rtwdev,
- u32 rtw89_pci_fill_txaddr_info_v1(struct rtw89_dev *rtwdev,
- 				  void *txaddr_info_addr, u32 total_len,
- 				  dma_addr_t dma, u8 *add_info_nr);
-+void rtw89_pci_ctrl_dma_all(struct rtw89_dev *rtwdev, bool enable);
- void rtw89_pci_config_intr_mask(struct rtw89_dev *rtwdev);
- void rtw89_pci_config_intr_mask_v1(struct rtw89_dev *rtwdev);
- void rtw89_pci_enable_intr(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci);
++static inline int rtw89_pci_ops_mac_pre_deinit(struct rtw89_dev *rtwdev)
++{
++	const struct rtw89_pci_info *info = rtwdev->pci_info;
++	const struct rtw89_pci_gen_def *gen_def = info->gen_def;
++
++	if (!gen_def->mac_pre_deinit)
++		return 0;
++
++	return gen_def->mac_pre_deinit(rtwdev);
++}
++
+ static inline int rtw89_pci_ops_mac_post_init(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_pci_info *info = rtwdev->pci_info;
 diff --git a/drivers/net/wireless/realtek/rtw89/pci_be.c b/drivers/net/wireless/realtek/rtw89/pci_be.c
-index 7d552b1a2d5e..01d72cde48a3 100644
+index 01d72cde48a3..4f76395e243a 100644
 --- a/drivers/net/wireless/realtek/rtw89/pci_be.c
 +++ b/drivers/net/wireless/realtek/rtw89/pci_be.c
-@@ -4,6 +4,7 @@
- 
- #include <linux/pci.h>
- 
-+#include "mac.h"
- #include "pci.h"
- #include "reg.h"
- 
-@@ -420,11 +421,65 @@ static int rtw89_pci_ops_mac_post_init_be(struct rtw89_dev *rtwdev)
+@@ -329,6 +329,23 @@ static int rtw89_pci_ops_mac_pre_init_be(struct rtw89_dev *rtwdev)
  	return 0;
  }
  
-+static int rtw89_pci_poll_io_idle_be(struct rtw89_dev *rtwdev)
++static int rtw89_pci_ops_mac_pre_deinit_be(struct rtw89_dev *rtwdev)
 +{
-+	u32 sts;
-+	int ret;
++	u32 val;
 +
-+	ret = read_poll_timeout_atomic(rtw89_read32, sts,
-+				       !(sts & B_BE_HAXI_MST_BUSY),
-+				       10, 1000, false, rtwdev,
-+				       R_BE_HAXI_DMA_BUSY1);
-+	if (ret) {
-+		rtw89_err(rtwdev, "pci dmach busy1 0x%X\n", sts);
-+		return ret;
-+	}
++	_patch_pcie_power_wake_be(rtwdev, false);
 +
-+	return 0;
-+}
-+
-+static int rtw89_pci_lv1rst_stop_dma_be(struct rtw89_dev *rtwdev)
-+{
-+	int ret;
-+
-+	rtw89_pci_ctrl_dma_all(rtwdev, false);
-+	ret = rtw89_pci_poll_io_idle_be(rtwdev);
-+	if (!ret)
++	val = rtw89_read32_mask(rtwdev, R_BE_IC_PWR_STATE, B_BE_WLMAC_PWR_STE_MASK);
++	if (val == 0)
 +		return 0;
 +
-+	rtw89_debug(rtwdev, RTW89_DBG_HCI,
-+		    "[PCIe] poll_io_idle fail; reset hci dma trx\n");
++	rtw89_pci_ctrl_trxdma_pcie_be(rtwdev, MAC_AX_PCIE_DISABLE,
++				      MAC_AX_PCIE_DISABLE, MAC_AX_PCIE_DISABLE);
++	rtw89_pci_clr_idx_all_be(rtwdev);
 +
-+	rtw89_mac_ctrl_hci_dma_trx(rtwdev, false);
-+	rtw89_mac_ctrl_hci_dma_trx(rtwdev, true);
-+
-+	return rtw89_pci_poll_io_idle_be(rtwdev);
-+}
-+
-+static int rtw89_pci_lv1rst_start_dma_be(struct rtw89_dev *rtwdev)
-+{
-+	int ret;
-+
-+	rtw89_mac_ctrl_hci_dma_trx(rtwdev, false);
-+	rtw89_mac_ctrl_hci_dma_trx(rtwdev, true);
-+	rtw89_pci_clr_idx_all(rtwdev);
-+
-+	ret = rtw89_pci_rst_bdram_be(rtwdev);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_pci_ctrl_dma_all(rtwdev, true);
 +	return 0;
 +}
 +
+ int rtw89_pci_ltr_set_v2(struct rtw89_dev *rtwdev, bool en)
+ {
+ 	u32 ctrl0, cfg0, cfg1, dec_ctrl, idle_ltcy, act_ltcy, dis_ltcy;
+@@ -474,6 +491,7 @@ static int rtw89_pci_lv1rst_start_dma_be(struct rtw89_dev *rtwdev)
+ 
  const struct rtw89_pci_gen_def rtw89_pci_gen_be = {
  	.mac_pre_init = rtw89_pci_ops_mac_pre_init_be,
++	.mac_pre_deinit = rtw89_pci_ops_mac_pre_deinit_be,
  	.mac_post_init = rtw89_pci_ops_mac_post_init_be,
  
  	.clr_idx_all = rtw89_pci_clr_idx_all_be,
- 	.rst_bdram = rtw89_pci_rst_bdram_be,
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 68a5d8ff6a70..470302e6de11 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -3871,6 +3871,15 @@
+ #define R_BE_UDM2 0x01F8
+ #define B_BE_UDM2_EPC_RA_MASK GENMASK(31, 0)
+ 
++#define R_BE_IC_PWR_STATE 0x03F0
++#define B_BE_WHOLE_SYS_PWR_STE_MASK GENMASK(25, 16)
++#define MAC_AX_SYS_ACT 0x220
++#define B_BE_WLMAC_PWR_STE_MASK GENMASK(9, 8)
++#define B_BE_UART_HCISYS_PWR_STE_MASK GENMASK(7, 6)
++#define B_BE_SDIO_HCISYS_PWR_STE_MASK GENMASK(5, 4)
++#define B_BE_USB_HCISYS_PWR_STE_MASK GENMASK(3, 2)
++#define B_BE_PCIE_HCISYS_PWR_STE_MASK GENMASK(1, 0)
 +
-+	.lv1rst_stop_dma = rtw89_pci_lv1rst_stop_dma_be,
-+	.lv1rst_start_dma = rtw89_pci_lv1rst_start_dma_be,
- };
- EXPORT_SYMBOL(rtw89_pci_gen_be);
-diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
-index c1644353053f..1e4a79a3b814 100644
---- a/drivers/net/wireless/realtek/rtw89/ser.c
-+++ b/drivers/net/wireless/realtek/rtw89/ser.c
-@@ -361,6 +361,9 @@ static int hal_enable_dma(struct rtw89_ser *ser)
- 	ret = rtwdev->hci.ops->mac_lv1_rcvy(rtwdev, RTW89_LV1_RCVY_STEP_2);
- 	if (!ret)
- 		clear_bit(RTW89_SER_HAL_STOP_DMA, ser->flags);
-+	else
-+		rtw89_debug(rtwdev, RTW89_DBG_SER,
-+			    "lv1 rcvy fail to start dma: %d\n", ret);
- 
- 	return ret;
- }
-@@ -376,6 +379,9 @@ static int hal_stop_dma(struct rtw89_ser *ser)
- 	ret = rtwdev->hci.ops->mac_lv1_rcvy(rtwdev, RTW89_LV1_RCVY_STEP_1);
- 	if (!ret)
- 		set_bit(RTW89_SER_HAL_STOP_DMA, ser->flags);
-+	else
-+		rtw89_debug(rtwdev, RTW89_DBG_SER,
-+			    "lv1 rcvy fail to stop dma: %d\n", ret);
- 
- 	return ret;
- }
+ #define R_BE_DCPU_PLATFORM_ENABLE 0x0888
+ #define B_BE_DCPU_SYM_DPLT_MEM_MUX_EN BIT(10)
+ #define B_BE_DCPU_WARM_EN BIT(9)
 -- 
 2.25.1
 
