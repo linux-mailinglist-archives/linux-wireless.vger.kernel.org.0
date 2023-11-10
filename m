@@ -2,75 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F7A87E8259
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Nov 2023 20:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EA307E8360
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Nov 2023 21:05:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345726AbjKJTQ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Nov 2023 14:16:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47916 "EHLO
+        id S1344581AbjKJUEM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Nov 2023 15:04:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344246AbjKJTQq (ORCPT
+        with ESMTP id S229601AbjKJUEL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Nov 2023 14:16:46 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91EEB7E2D
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Nov 2023 10:54:28 -0800 (PST)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AAIckbC026572;
-        Fri, 10 Nov 2023 18:54:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=hUIa1xw7MNKdlnHkIlbisQWeSZuSkGwfRvkO7Fyg85c=;
- b=RAbZhXxb7hC3UxM+M6toWjoNEWNRtpls/IkGTMpcZGFaUiC8r+Uk7EkN6FEGglGh7Z26
- I3ghKLCeWu4XdnyQMS6bLwvOmgb/r4NNmHfGOg4k82QZqB8Ssl0qBBqrZv8BMHKY8S3H
- yQMmIVI50hKSV9Gt7YX8Nl1g9oELZtUFkEjDrw4h6wFhsRjLzQF1efum9VsNm+Em5f0v
- JPdMKSw2UM/n7/kOJ/tOeoqy9tin9gZA1oQrRS4V2FLGyAe/YcQGdsOGq8ayJopdu985
- 3n1xXtFPVocsmCUU7ZKinQhFEDT9aF3Gs9fobbKwFDEh87LSicWBJeWHxmpM359d3b3i Zg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u9q0w0fft-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Nov 2023 18:54:26 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AAIrxok013208
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Nov 2023 18:53:59 GMT
-Received: from [10.110.6.241] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Fri, 10 Nov
- 2023 10:53:59 -0800
-Message-ID: <3d54205c-46a0-4353-b1c0-1f5afe8d4c5d@quicinc.com>
-Date:   Fri, 10 Nov 2023 10:53:59 -0800
+        Fri, 10 Nov 2023 15:04:11 -0500
+Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17EC09D;
+        Fri, 10 Nov 2023 12:04:08 -0800 (PST)
+Received: by mail-oo1-xc2e.google.com with SMTP id 006d021491bc7-5845a94dae1so1224865eaf.0;
+        Fri, 10 Nov 2023 12:04:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699646647; x=1700251447; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=ok7T5kOB9FTvNg2Z1Ix/MQSI1tJOHNOutZNWOUXGjg4=;
+        b=iooO++W5arAhMIrGuKYxNyhLJ2uiWQ16bwKBKVs3xkERnIcXP+V2vtGAmy2LPDMO4W
+         WpbEz3jLwFJHJ0HWffxrL++nTlRsGALH7hng1aOt2Ug26+H8OHkVjD77GTYEzFWpTCJl
+         Bxg4YlrvkZh/WGpE8PnCreDblD4+S7yB8Q5CG5Y5B1sGHspstqVpmpotWwKV8kzzMvRs
+         UlmSOqt2bY2KazrOH6bbJiBs1uINsQ2WvvkZGQo8bvh76OBQgN1qenkK5iEKFpbtywrj
+         joPQYlodHD2rlRtjYIchMyYzWZnQeq1FP7BWt4rZZKs0ui8MQEdq/yVfZEPC/Y5u6/03
+         Nbzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699646647; x=1700251447;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ok7T5kOB9FTvNg2Z1Ix/MQSI1tJOHNOutZNWOUXGjg4=;
+        b=a1Wf/EwCtH00ozcseLtOxs4QzmKXHjcJz1ZDk1sx7lpyXMdVJffLQeApf7rZikACPL
+         vUv82kBORK4MZbqEicdsyi3IpbPdqGk3lsZlYx/oVBqVEPdi7XTVMbM+tHRBQv7j2egi
+         OOSWVoFYIqvDP6GZXOMg34pSW9G+6czaWSKH1r4M0LU9lUDCznc9cVlZZ+yaWWdklc7b
+         Yry38CvHv+pOqic02FV86RSjEz3EUyP6Frj1+wnMQgie/RGUyPILm7Ehiu+CA2mgP9cI
+         8tJ0z8QxjOJEaRFvy5ri3vW0SWH/m3bfyu2IMsxBoKGbNHl4i8dDxMvIMaZ8hMMcdO8H
+         MYIA==
+X-Gm-Message-State: AOJu0Yz4omHa3Oso2ZpucUki60F8Bf3ufqIf2Xi4elpGVw43+U3abRDe
+        pBU3y5nWNwOpuXllO4/xhvc=
+X-Google-Smtp-Source: AGHT+IEVMiQvoQ7QuO6zONN+XDqwBqZXLrHtlukr0r8Gu8Pz8GUD/b6P7fyVF6W6LKqL2qjo1lbwsw==
+X-Received: by 2002:a54:4118:0:b0:3b6:c3fa:3d25 with SMTP id l24-20020a544118000000b003b6c3fa3d25mr1651363oic.14.1699646647265;
+        Fri, 10 Nov 2023 12:04:07 -0800 (PST)
+Received: from [192.168.0.162] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id ez4-20020a0568082a0400b003a9cd23980esm35404oib.8.2023.11.10.12.04.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Nov 2023 12:04:06 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <05390e0b-27fd-4190-971e-e70a498c8221@lwfinger.net>
+Date:   Fri, 10 Nov 2023 14:04:01 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] ath12k: Refactor Rxdma replenish arguments
+Subject: Re: [PATCH] rtlwifi: rtl8723be: Disable ASPM if RTL8723BE connects to
+ some Intel PCI bridge
+To:     Jian-Hong Pan <jhp@endlessos.org>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessos.org
+References: <20231110103227.58008-2-jhp@endlessos.org>
 Content-Language: en-US
-To:     Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20231110081317.19608-1-quic_periyasa@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231110081317.19608-1-quic_periyasa@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20231110103227.58008-2-jhp@endlessos.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 7KZH7TBnPdqIj9UdsCnZYXjYmI9BqNMO
-X-Proofpoint-ORIG-GUID: 7KZH7TBnPdqIj9UdsCnZYXjYmI9BqNMO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-10_16,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 spamscore=0 mlxlogscore=372 phishscore=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 malwarescore=0 mlxscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311100158
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,23 +79,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/10/2023 12:13 AM, Karthikeyan Periyasamy wrote:
-> Avoid the explicit arguments of Rxdma replenish to optimize the per packet
-> rx data path CPU cycles. Also refactor the Rxdma ring structure.
+On 11/10/23 04:32, Jian-Hong Pan wrote:
+> Disable rtl8723be's ASPM if the Realtek RTL8723BE PCIe Wireless adapter
+> connects to some Intel PCI bridges, such as Skylake and Kabylake.
+> Otherwise, the PCI AER flood hangs system:
 > 
-> Karthikeyan Periyasamy (4):
->    wifi: ath12k: avoid explicit mac id argument in Rxdma replenish
->    wifi: ath12k: avoid explicit RBM id argument in Rxdma replenish
->    wifi: ath12k: avoid explicit HW conversion argument in Rxdma replenish
->    wifi: ath12k: refactor DP Rxdma ring structure
+> pcieport 0000:00:1c.5: PCIe Bus Error: severity=Corrected, type=Physical Layer, (Receiver ID)
+> pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
+> pcieport 0000:00:1c.5:    [ 0] RxErr                  (First)
+> pcieport 0000:00:1c.5: AER: Corrected error received: 0000:00:1c.5
+> pcieport 0000:00:1c.5: AER: can't find device of ID00e5
+> pcieport 0000:00:1c.5: AER: Corrected error received: 0000:00:1c.5
+> pcieport 0000:00:1c.5: AER: can't find device of ID00e5
+> pcieport 0000:00:1c.5: AER: Multiple Corrected error received: 0000:00:1c.5
+> pcieport 0000:00:1c.5: AER: can't find device of ID00e5
 > 
->   drivers/net/wireless/ath/ath12k/dp.c     |   4 +-
->   drivers/net/wireless/ath/ath12k/dp.h     |  11 +-
->   drivers/net/wireless/ath/ath12k/dp_mon.c |  10 +-
->   drivers/net/wireless/ath/ath12k/dp_mon.h |   2 +-
->   drivers/net/wireless/ath/ath12k/dp_rx.c  | 143 ++++++++++-------------
->   drivers/net/wireless/ath/ath12k/dp_rx.h  |   6 +-
->   6 files changed, 76 insertions(+), 100 deletions(-)
+> Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=218127
+> Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+> ---
+>   .../wireless/realtek/rtlwifi/rtl8723be/sw.c   | 19 +++++++++++++++++++
+>   1 file changed, 19 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/sw.c
+> index 43b611d5288d..720c79e0781a 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/sw.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/sw.c
+> @@ -25,10 +25,29 @@ static void rtl8723be_init_aspm_vars(struct ieee80211_hw *hw)
+>   {
+>   	struct rtl_priv *rtlpriv = rtl_priv(hw);
+>   	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+> +	struct pci_dev *bridge_pdev;
+>   
+>   	/*close ASPM for AMD defaultly */
+>   	rtlpci->const_amdpci_aspm = 0;
+>   
+> +	/* Disable ASPM if RTL8723BE connects to some Intel PCI bridges, such as
+> +	 * Skylake and Kabylake. Otherwise, the PCI AER flood hangs system.
+> +	 */
+> +	bridge_pdev = rtlpci->pdev->bus->self;
+> +	if (bridge_pdev->vendor == PCI_VENDOR_ID_INTEL) {
+> +		switch(bridge_pdev->device) {
+> +		case 0x9d15:
+> +		/* PCI bridges on Skylake */
+> +		case 0xa110 ... 0xa11f:
+> +		case 0xa167 ... 0xa16a:
+> +		/* PCI bridges on Kabylake */
+> +		case 0xa290 ... 0xa29f:
+> +		case 0xa2e7 ... 0xa2ee:
+> +			rtlpriv->cfg->mod_params->aspm_support = 0;
+> +			break;
+> +		}
+> +	}
+> +
+>   	/* ASPM PS mode.
+>   	 * 0 - Disable ASPM,
+>   	 * 1 - Enable ASPM without Clock Req,
 
-Can you respin and update the QuIC copyright to 2023?
+Does the switch statement need a default case in the event that Intel offers a 
+compatible AP?
+
+Larry
 
