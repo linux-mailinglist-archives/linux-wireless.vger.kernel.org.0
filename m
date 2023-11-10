@@ -2,69 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F6FF7E880C
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Nov 2023 02:58:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24B587E8530
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Nov 2023 22:40:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345432AbjKKB6C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Nov 2023 20:58:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41530 "EHLO
+        id S229569AbjKJVkC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Nov 2023 16:40:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229730AbjKKB6C (ORCPT
+        with ESMTP id S229471AbjKJVkB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Nov 2023 20:58:02 -0500
-Received: from mail.maprial.com (mail.maprial.com [190.181.35.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08C39448C;
-        Fri, 10 Nov 2023 17:57:58 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.maprial.com (Postfix) with ESMTP id 1D7D5877DB2B;
-        Fri, 10 Nov 2023 19:03:14 -0400 (-04)
-Received: from mail.maprial.com ([127.0.0.1])
-        by localhost (mail.maprial.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id uudwnPmQtw6C; Fri, 10 Nov 2023 19:03:13 -0400 (-04)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.maprial.com (Postfix) with ESMTP id A7020877C931;
-        Fri, 10 Nov 2023 17:53:03 -0400 (-04)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.maprial.com A7020877C931
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maprial.com;
-        s=8A254412-65B9-11ED-A564-8B9C10001A2B; t=1699653183;
-        bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=WGSRQvgsV5hZsUl5/3P22rHnUAUfNmG8nLDKLEq7Jsur50k8tGlJ3SJtdEINx7hQD
-         i2dZFdI647gdEy0rDN/YzW44Qy2KejjgS2UsLYG1iHbPpUiIbaige2iujPRmzIMt5K
-         tMjtasDxnLD6VT0TAe3OMBFs42pbB5GOptz51MG8=
-X-Virus-Scanned: amavisd-new at mail.maprial.com
-Received: from mail.maprial.com ([127.0.0.1])
-        by localhost (mail.maprial.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id YEse06XlwEdt; Fri, 10 Nov 2023 17:53:03 -0400 (-04)
-Received: from [192.168.1.152] (unknown [51.179.104.230])
-        by mail.maprial.com (Postfix) with ESMTPSA id 486AC815E1DE;
-        Fri, 10 Nov 2023 17:03:41 -0400 (-04)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+        Fri, 10 Nov 2023 16:40:01 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75F5BA9;
+        Fri, 10 Nov 2023 13:39:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=zv4p0IORXbUduRi4hB1ViF0SxIffSRz9cFMe9JTmeIQ=;
+        t=1699652398; x=1700861998; b=S4RLP2TGncVD+SsWLHv6/8l3YTBVtDi0qZK8MKnEE6dG45g
+        5GP0lEuMgoTgKz/mgEH/o41FCZ+DWSzu+NKXD3XrKsoOwX65zY8UEe9n8AIOsacpBn7MPR7I3P2/n
+        90dYK+MbxGlJdocf+QSv0Gd5eDhkWSL89j0Dvwh/V/uvvcqLDoG0a6iZky/Jx4kIwM2ul6QlMEWHu
+        oNnqZx3b+N4W4F2khVYrTVEV3G0s/WV52DQ/2umYPQ+V6+OSr2wVJ+RAJxYjdx6VgS8W5U/UAdFuT
+        KO14sf/uwdxdw72CeZQnGy2ukNmd/wDVjxyQKFXcO8fzLEeDF4Gr5EIeVMoxMPlA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1r1ZEJ-00000003DcW-2daU;
+        Fri, 10 Nov 2023 22:39:55 +0100
+Message-ID: <c4c14b15d5e0c2e4650b50ef7ae9d8755f83900e.camel@sipsolutions.net>
+Subject: Re: [PATCH] mwifiex: clean up some inconsistent indenting
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        briannorris@chromium.org
+Cc:     kvalo@kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Abaci Robot <abaci@linux.alibaba.com>
+Date:   Fri, 10 Nov 2023 22:39:54 +0100
+In-Reply-To: <20231110083327.7022-1-jiapeng.chong@linux.alibaba.com>
+References: <20231110083327.7022-1-jiapeng.chong@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
-To:     Recipients <gvalencia@maprial.com>
-From:   gvalencia@maprial.com
-Date:   Fri, 10 Nov 2023 22:03:31 +0100
-Reply-To: joliushk@gmail.com
-Message-Id: <20231110210342.486AC815E1DE@mail.maprial.com>
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Goededag,
-Ik ben mevrouw Joanna Liu en een medewerker van Citi Bank Hong Kong.
-Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
+On Fri, 2023-11-10 at 16:33 +0800, Jiapeng Chong wrote:
+> No functional modification involved.
+>=20
+> drivers/net/wireless/marvell/mwifiex/sta_event.c:789 mwifiex_process_sta_=
+event() warn: inconsistent indenting.
+
+OK, sure ...
+
+> +++ b/drivers/net/wireless/marvell/mwifiex/sta_event.c
+> @@ -762,7 +762,7 @@ int mwifiex_process_sta_event(struct mwifiex_private =
+*priv)
+>  		mwifiex_dbg(adapter, EVENT, "info: EVENT: AWAKE\n");
+>  		if (!adapter->pps_uapsd_mode &&
+>  		    (priv->port_open ||
+> -		     (priv->bss_mode =3D=3D NL80211_IFTYPE_ADHOC)) &&
+> +		    (priv->bss_mode =3D=3D NL80211_IFTYPE_ADHOC)) &&
+>  		    priv->media_connected && adapter->sleep_period.period) {
+>  			adapter->pps_uapsd_mode =3D true;
+>  			mwifiex_dbg(adapter, EVENT,
+> @@ -773,7 +773,7 @@ int mwifiex_process_sta_event(struct mwifiex_private =
+*priv)
+>  			if (mwifiex_check_last_packet_indication(priv)) {
+>  				if (adapter->data_sent ||
+>  				    (adapter->if_ops.is_port_ready &&
+> -				     !adapter->if_ops.is_port_ready(priv))) {
+> +				    !adapter->if_ops.is_port_ready(priv))) {
+>  					adapter->ps_state =3D PS_STATE_AWAKE;
+>  					adapter->pm_wakeup_card_req =3D false;
+>  					adapter->pm_wakeup_fw_try =3D false;
 
 
-Ik wacht op jullie reacties
-Met vriendelijke groeten
-mevrouw Joanna Liu
+Seems fine.
+
+> @@ -781,12 +781,10 @@ int mwifiex_process_sta_event(struct mwifiex_privat=
+e *priv)
+>  					break;
+>  				}
+>  				if (!mwifiex_send_null_packet
+> -					(priv,
+> -					 MWIFIEX_TxPD_POWER_MGMT_NULL_PACKET |
+> -					 MWIFIEX_TxPD_POWER_MGMT_LAST_PACKET))
+> -						adapter->ps_state =3D
+> -							PS_STATE_SLEEP;
+> -					return 0;
+> +				    (priv, MWIFIEX_TxPD_POWER_MGMT_NULL_PACKET |
+> +				     MWIFIEX_TxPD_POWER_MGMT_LAST_PACKET))
+> +					adapter->ps_state =3D PS_STATE_SLEEP;
+> +				return 0;
+>=20
+
+=F0=9F=A4=B7=E2=80=8D=E2=99=80=EF=B8=8F=EF=B8=8F
+That's not really an improvement is it? You've just indented the
+function arguments as if they were part another part of the condition? I
+mean, sure, it was awful - but ... maybe better break the 80 cols rule
+(which isn't one any more anyway)?
+
+johannes
