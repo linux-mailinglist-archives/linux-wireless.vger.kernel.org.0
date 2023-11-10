@@ -2,295 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF4A77E73BA
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Nov 2023 22:38:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1717E75B2
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Nov 2023 01:11:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234793AbjKIVif (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Nov 2023 16:38:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50714 "EHLO
+        id S235197AbjKJALK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Nov 2023 19:11:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234678AbjKIVib (ORCPT
+        with ESMTP id S235195AbjKJAK7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Nov 2023 16:38:31 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5DF22139;
-        Thu,  9 Nov 2023 13:38:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=+DtEJdw1hoIddhRyJ2mVLtfdj8W1joudvJrs09mD3A4=;
-        t=1699565905; x=1700775505; b=oivGQvGso84+xWyeMP70VawhLwOycZqLWhdWpejaMMlG5wr
-        t3bfh8e+lk0W+TyCRSRE0wYsVW1/2k7MdFeWmtP5sYFFujM8n78IVFZxAr3s0/UNltKEsmMRm4ajq
-        BEV/IfGn35NAWQgCR03GbQWIQhtbk8kVYuLAV7/sWCZsoimoz53TL9ceORr5l2fIWaYZsr8VxS+zD
-        506/boRHbvK1j7+kdHi2628msi1LGL+iOUJdks0ini9VGoLEXpN7/a+FOzs7f3T3WkUUsT/ARRMIx
-        exqCWN4xV8PiEQ1vVwlTGE9Ruk65YaKP5jwHA+gVzTn9bk6lMuFIDZtpWsTcPdYA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.97)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1r1CjF-00000001znF-4871;
-        Thu, 09 Nov 2023 22:38:22 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     linux-fsdevel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Nicolai Stange <nicstange@gmail.com>,
-        Ben Greear <greearb@candelatech.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [RFC PATCH 6/6] wifi: mac80211: use wiphy locked debugfs for sdata/link
-Date:   Thu,  9 Nov 2023 22:22:58 +0100
-Message-ID: <20231109222251.f6f6241e2541.I99a21601e124f5ac4e161ad32b19949e7896e390@changeid>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231109212251.213873-7-johannes@sipsolutions.net>
-References: <20231109212251.213873-7-johannes@sipsolutions.net>
+        Thu, 9 Nov 2023 19:10:59 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7979E6A68
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Nov 2023 16:06:26 -0800 (PST)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A9NsjP8008041;
+        Fri, 10 Nov 2023 00:06:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=DLrhEL4LxUz9Tp4lLJR+bN5nshNSVrn4xQuNT+IaCVQ=;
+ b=aezcW+0W/Z6b6nvswFqSxpBav7sl8yZOWi6SNjRNI47gddQ/HLIBOn61Unl+SrbtsPJq
+ NLrzcKHM+WKX0bG3LkvH+vreWFCoyHXdmVCB+4QnLCHraIGloHcIVoOt+idjA0NqS3Cs
+ rrql3HxGIBbY4U25CcvgMeVtR9tbtMVUFCvPXoZF+gVXBZ4d7vj48cQSdpoRgguPazvh
+ ANnY8XCr/7H3ycNG2LmN98C4Z3Nspmg0SXXWcMEdrsYObK+UXJKxL94pi1/fsjbuCktm
+ VIT5BR9XSluSXAemKDWpF16Lt3LnaIZC+EbLEEN553Qk9Hjy+3HkmqRPsEg/xtc0MSg8 DA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u93gtrtkc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 10 Nov 2023 00:06:24 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AA06N6u010974
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 10 Nov 2023 00:06:23 GMT
+Received: from [10.110.6.241] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Thu, 9 Nov
+ 2023 16:06:23 -0800
+Message-ID: <ff9af6fc-22a4-4ccf-88e0-ffaa4e733ba8@quicinc.com>
+Date:   Thu, 9 Nov 2023 16:06:22 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: Handle 320Mhz in
+ ieee80211_ht_cap_ie_to_sta_ht_cap
+Content-Language: en-US
+To:     <greearb@candelatech.com>, <linux-wireless@vger.kernel.org>
+References: <20231109182201.495381-1-greearb@candelatech.com>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231109182201.495381-1-greearb@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 64umyaRMrfko77sLg4oJQzbuv6VnVGVc
+X-Proofpoint-GUID: 64umyaRMrfko77sLg4oJQzbuv6VnVGVc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-09_17,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1011
+ priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
+ malwarescore=0 mlxlogscore=691 suspectscore=0 spamscore=0 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311090178
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 11/9/2023 10:22 AM, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
+> 
+> I saw a splat in the switch statement, I think because 320Mhz was
 
-The debugfs files for netdevs (sdata) and links are removed
-with the wiphy mutex held, which may deadlock. Use the new
-wiphy locked debugfs to avoid that.
+nit: s/Mhz/MHz/
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/debugfs_netdev.c | 150 ++++++++++++++++++++++++----------
- 1 file changed, 105 insertions(+), 45 deletions(-)
-
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index ec91e131b29e..80aeb25f1b68 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -22,88 +22,148 @@
- #include "debugfs_netdev.h"
- #include "driver-ops.h"
- 
-+struct ieee80211_if_read_sdata_data {
-+	ssize_t (*format)(const struct ieee80211_sub_if_data *, char *, int);
-+	struct ieee80211_sub_if_data *sdata;
-+};
-+
-+static ssize_t ieee80211_if_read_sdata_handler(struct wiphy *wiphy,
-+					       struct file *file,
-+					       char *buf,
-+					       size_t bufsize,
-+					       void *data)
-+{
-+	struct ieee80211_if_read_sdata_data *d = data;
-+
-+	return d->format(d->sdata, buf, bufsize);
-+}
-+
- static ssize_t ieee80211_if_read_sdata(
--	struct ieee80211_sub_if_data *sdata,
-+	struct file *file,
- 	char __user *userbuf,
- 	size_t count, loff_t *ppos,
- 	ssize_t (*format)(const struct ieee80211_sub_if_data *sdata, char *, int))
- {
-+	struct ieee80211_sub_if_data *sdata = file->private_data;
-+	struct ieee80211_if_read_sdata_data data = {
-+		.format = format,
-+		.sdata = sdata,
-+	};
- 	char buf[200];
--	ssize_t ret = -EINVAL;
- 
--	wiphy_lock(sdata->local->hw.wiphy);
--	ret = (*format)(sdata, buf, sizeof(buf));
--	wiphy_unlock(sdata->local->hw.wiphy);
-+	return wiphy_locked_debugfs_read(sdata->local->hw.wiphy,
-+					 file, buf, sizeof(buf),
-+					 userbuf, count, ppos,
-+					 ieee80211_if_read_sdata_handler,
-+					 &data);
-+}
- 
--	if (ret >= 0)
--		ret = simple_read_from_buffer(userbuf, count, ppos, buf, ret);
-+struct ieee80211_if_write_sdata_data {
-+	ssize_t (*write)(struct ieee80211_sub_if_data *, const char *, int);
-+	struct ieee80211_sub_if_data *sdata;
-+};
- 
--	return ret;
-+static ssize_t ieee80211_if_write_sdata_handler(struct wiphy *wiphy,
-+						struct file *file,
-+						char *buf,
-+						size_t count,
-+						void *data)
-+{
-+	struct ieee80211_if_write_sdata_data *d = data;
-+
-+	return d->write(d->sdata, buf, count);
- }
- 
- static ssize_t ieee80211_if_write_sdata(
--	struct ieee80211_sub_if_data *sdata,
-+	struct file *file,
- 	const char __user *userbuf,
- 	size_t count, loff_t *ppos,
- 	ssize_t (*write)(struct ieee80211_sub_if_data *sdata, const char *, int))
- {
-+	struct ieee80211_sub_if_data *sdata = file->private_data;
-+	struct ieee80211_if_write_sdata_data data = {
-+		.write = write,
-+		.sdata = sdata,
-+	};
- 	char buf[64];
--	ssize_t ret;
- 
--	if (count >= sizeof(buf))
--		return -E2BIG;
-+	return wiphy_locked_debugfs_write(sdata->local->hw.wiphy,
-+					  file, buf, sizeof(buf),
-+					  userbuf, count,
-+					  ieee80211_if_write_sdata_handler,
-+					  &data);
-+}
- 
--	if (copy_from_user(buf, userbuf, count))
--		return -EFAULT;
--	buf[count] = '\0';
-+struct ieee80211_if_read_link_data {
-+	ssize_t (*format)(const struct ieee80211_link_data *, char *, int);
-+	struct ieee80211_link_data *link;
-+};
- 
--	wiphy_lock(sdata->local->hw.wiphy);
--	ret = (*write)(sdata, buf, count);
--	wiphy_unlock(sdata->local->hw.wiphy);
-+static ssize_t ieee80211_if_read_link_handler(struct wiphy *wiphy,
-+					      struct file *file,
-+					      char *buf,
-+					      size_t bufsize,
-+					      void *data)
-+{
-+	struct ieee80211_if_read_link_data *d = data;
- 
--	return ret;
-+	return d->format(d->link, buf, bufsize);
- }
- 
- static ssize_t ieee80211_if_read_link(
--	struct ieee80211_link_data *link,
-+	struct file *file,
- 	char __user *userbuf,
- 	size_t count, loff_t *ppos,
- 	ssize_t (*format)(const struct ieee80211_link_data *link, char *, int))
- {
-+	struct ieee80211_link_data *link = file->private_data;
-+	struct ieee80211_if_read_link_data data = {
-+		.format = format,
-+		.link = link,
-+	};
- 	char buf[200];
--	ssize_t ret = -EINVAL;
- 
--	wiphy_lock(link->sdata->local->hw.wiphy);
--	ret = (*format)(link, buf, sizeof(buf));
--	wiphy_unlock(link->sdata->local->hw.wiphy);
-+	return wiphy_locked_debugfs_read(link->sdata->local->hw.wiphy,
-+					 file, buf, sizeof(buf),
-+					 userbuf, count, ppos,
-+					 ieee80211_if_read_link_handler,
-+					 &data);
-+}
- 
--	if (ret >= 0)
--		ret = simple_read_from_buffer(userbuf, count, ppos, buf, ret);
-+struct ieee80211_if_write_link_data {
-+	ssize_t (*write)(struct ieee80211_link_data *, const char *, int);
-+	struct ieee80211_link_data *link;
-+};
- 
--	return ret;
-+static ssize_t ieee80211_if_write_link_handler(struct wiphy *wiphy,
-+					       struct file *file,
-+					       char *buf,
-+					       size_t count,
-+					       void *data)
-+{
-+	struct ieee80211_if_write_sdata_data *d = data;
-+
-+	return d->write(d->sdata, buf, count);
- }
- 
- static ssize_t ieee80211_if_write_link(
--	struct ieee80211_link_data *link,
-+	struct file *file,
- 	const char __user *userbuf,
- 	size_t count, loff_t *ppos,
- 	ssize_t (*write)(struct ieee80211_link_data *link, const char *, int))
- {
-+	struct ieee80211_link_data *link = file->private_data;
-+	struct ieee80211_if_write_link_data data = {
-+		.write = write,
-+		.link = link,
-+	};
- 	char buf[64];
--	ssize_t ret;
- 
--	if (count >= sizeof(buf))
--		return -E2BIG;
--
--	if (copy_from_user(buf, userbuf, count))
--		return -EFAULT;
--	buf[count] = '\0';
--
--	wiphy_lock(link->sdata->local->hw.wiphy);
--	ret = (*write)(link, buf, count);
--	wiphy_unlock(link->sdata->local->hw.wiphy);
--
--	return ret;
-+	return wiphy_locked_debugfs_write(link->sdata->local->hw.wiphy,
-+					  file, buf, sizeof(buf),
-+					  userbuf, count,
-+					  ieee80211_if_write_link_handler,
-+					  &data);
- }
- 
- #define IEEE80211_IF_FMT(name, type, field, format_string)		\
-@@ -173,7 +233,7 @@ static ssize_t ieee80211_if_read_##name(struct file *file,		\
- 					char __user *userbuf,		\
- 					size_t count, loff_t *ppos)	\
- {									\
--	return ieee80211_if_read_sdata(file->private_data,		\
-+	return ieee80211_if_read_sdata(file,				\
- 				       userbuf, count, ppos,		\
- 				       ieee80211_if_fmt_##name);	\
- }
-@@ -183,7 +243,7 @@ static ssize_t ieee80211_if_write_##name(struct file *file,		\
- 					 const char __user *userbuf,	\
- 					 size_t count, loff_t *ppos)	\
- {									\
--	return ieee80211_if_write_sdata(file->private_data, userbuf,	\
-+	return ieee80211_if_write_sdata(file, userbuf,			\
- 					count, ppos,			\
- 					ieee80211_if_parse_##name);	\
- }
-@@ -211,7 +271,7 @@ static ssize_t ieee80211_if_read_##name(struct file *file,		\
- 					char __user *userbuf,		\
- 					size_t count, loff_t *ppos)	\
- {									\
--	return ieee80211_if_read_link(file->private_data,		\
-+	return ieee80211_if_read_link(file,				\
- 				      userbuf, count, ppos,		\
- 				      ieee80211_if_fmt_##name);	\
- }
-@@ -221,7 +281,7 @@ static ssize_t ieee80211_if_write_##name(struct file *file,		\
- 					 const char __user *userbuf,	\
- 					 size_t count, loff_t *ppos)	\
- {									\
--	return ieee80211_if_write_link(file->private_data, userbuf,	\
-+	return ieee80211_if_write_link(file, userbuf,			\
- 				       count, ppos,			\
- 				       ieee80211_if_parse_##name);	\
- }
--- 
-2.41.0
+> not specified..
+> 
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+>   net/mac80211/ht.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
+> index 68cea2685224..749f4ecab990 100644
+> --- a/net/mac80211/ht.c
+> +++ b/net/mac80211/ht.c
+> @@ -271,6 +271,7 @@ bool ieee80211_ht_cap_ie_to_sta_ht_cap(struct ieee80211_sub_if_data *sdata,
+>   	case NL80211_CHAN_WIDTH_80:
+>   	case NL80211_CHAN_WIDTH_80P80:
+>   	case NL80211_CHAN_WIDTH_160:
+> +	case NL80211_CHAN_WIDTH_320:
+>   		bw = ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 ?
+>   				IEEE80211_STA_RX_BW_40 : IEEE80211_STA_RX_BW_20;
+>   		break;
 
