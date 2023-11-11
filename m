@@ -2,152 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B42347E8814
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Nov 2023 03:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 727CB7E8915
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Nov 2023 05:02:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343841AbjKKCHs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Nov 2023 21:07:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60362 "EHLO
+        id S230215AbjKKECJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Nov 2023 23:02:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjKKCHr (ORCPT
+        with ESMTP id S229709AbjKKECH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Nov 2023 21:07:47 -0500
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D5F83C0E;
-        Fri, 10 Nov 2023 18:07:43 -0800 (PST)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6bb4abb8100so2380803b3a.2;
-        Fri, 10 Nov 2023 18:07:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699668462; x=1700273262; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=us4PH3hYSKV8M14QXIBOyvA+4JqUtwc0XH3JtG4nmDY=;
-        b=H2SACKIh/aE8QyI9hmjRYgDpTcn2jhbedsoYWNKoryJo5gw9y7qRdGpdtzhyqtnT7Z
-         IyaivMsC/o5jYmUFamrLMj9RntR/nwl0g8dafIeGJTDW1dg07ALue77KOXLepq+enGS/
-         46tLvitQ3NET2vdPyIV9R5noUpnuWGcuaKZFdOLL/A6ZVNgLawVy4M7OTyxSymo48bNO
-         HambX9i5EFqNPBzmShFNds6UgrMK1QOYi+0O1wvZdNrMiLyN3/KUQzJbTENNA1dIR3Pk
-         sLNfBM82Q/cDLg4xKsWzYCoMR8jLVOchb6lHHLHwP7it+gpT9+Y2FpIlCv+CcExXeIRc
-         MOmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699668462; x=1700273262;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=us4PH3hYSKV8M14QXIBOyvA+4JqUtwc0XH3JtG4nmDY=;
-        b=P3pAzLvZOpeLxQh1oPV5tCz10xk/ZcK6+p1XPqbHMSICLemiCMoao0Fn93PwvSljmH
-         tjFsMNIqa+73RiZuFPzZote0LUUHJzU/pYFtXtZS8/kmgo83fIPYQjn3/RPy3fcM03jE
-         di23VitBv5Eu+qCedPXRgS5DssTX9yqAtCntMxo+PTXY9YA961PaNu50GmizlzC1X2w3
-         18XvVDFf61EYsOCH7JI7yNpqe1tacImlH4kwsLNq4KWyWOdwTq8eoMHrJ+5AnthPbMWH
-         Gik916q8RqHs9OnMEeupN7x7U8sC/pig4zFqCZDF+RZc6NmAN7jElCXn9bpnQ85mjdht
-         1vWQ==
-X-Gm-Message-State: AOJu0Yw/tHvbPAotgeLg+64ZdE3AKl9yrM+SdGSmFxycEjAa73UqYBjY
-        /AIBS52Bc/9wmLOlW2no107JkTRlazE60A==
-X-Google-Smtp-Source: AGHT+IHNBBW3BK8jyaoUi7xXcxcZdBpSdb0qc7l3zTckarw97gd+X2tbBj1Oc1EwReuZ3Rk530zP9g==
-X-Received: by 2002:a05:6a20:ce83:b0:131:b3fa:eaaa with SMTP id if3-20020a056a20ce8300b00131b3faeaaamr588855pzb.61.1699668462452;
-        Fri, 10 Nov 2023 18:07:42 -0800 (PST)
-Received: from [192.168.0.106] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id 13-20020a170902c20d00b001a9b29b6759sm308895pll.183.2023.11.10.18.07.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Nov 2023 18:07:41 -0800 (PST)
-Message-ID: <60585667-70ca-4ace-8d8f-dbdd8d4428a6@gmail.com>
-Date:   Sat, 11 Nov 2023 09:07:35 +0700
+        Fri, 10 Nov 2023 23:02:07 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 217731FEF
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Nov 2023 20:02:04 -0800 (PST)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AB3hQvw007196;
+        Sat, 11 Nov 2023 04:01:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=0ShenSEDZTptJ33kTOgofmsx502ftZSKDsBpsm35Wxo=;
+ b=AGa8JXecINboR3YCUgJZv+kDfLdxlPRn7DgMOwdmj7UPZnM8zP8ThGpxOFZqQmPWm4oV
+ 0xa9ut+ltHf1a3ZTz+KvHOAQTdAN+sC1fAr6vay+Epa1dBtJLoEMgwOnC70YyFMaLahx
+ 12+y/pcUWS66uE33dNNJwHBQWqQ8PPJFkGIasT2WxyC7f3i0MaJnN5DHu/h1vr8tFxqs
+ ZVtwB8e4OxQSpQdK8nq0JLfDEaXARxHJWwdoQBEVRg/dtKhiFrLTB1LnkwKBizUHHLIO
+ Psh01LK0eTU3nWSI6G3B6XnpOwuAt2rBBXtaxDTB2oDKpvTcTf9FC062BEGTNaRRTBsv rA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ua0mdg47t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 11 Nov 2023 04:01:56 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AB41NON026721
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 11 Nov 2023 04:01:23 GMT
+Received: from periyasa-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Fri, 10 Nov 2023 20:01:21 -0800
+From:   Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Subject: [PATCH v2] wifi: ath12k: fix the error handler of rfkill config
+Date:   Sat, 11 Nov 2023 09:31:07 +0530
+Message-ID: <20231111040107.18708-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux PowerPC <linuxppc-dev@lists.ozlabs.org>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Jian-Hong Pan <jhp@endlessos.org>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: The PCIe AER error flood between PCIe bridge and Realtek's
- RTL8723BE makes system hang
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: I6b_bwVEa27QfgD-r4gi7ShNIyikDldD
+X-Proofpoint-GUID: I6b_bwVEa27QfgD-r4gi7ShNIyikDldD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-10_21,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 malwarescore=0 mlxlogscore=712 spamscore=0 clxscore=1015
+ mlxscore=0 priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311110031
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+When the core rfkill config throws error, it should free the
+allocated resources. Currently it is not freeing the core pdev
+create resources. Avoid this issue by calling the core pdev
+destroy in the error handler of core rfkill config.
 
-I notice a bug report on Bugzilla [1]. Quoting from it:
+Found this issue in the code review and it is compile tested only.
 
-> We have an ASUS X555UQ laptop equipped with Intel i7-6500U CPU and Realtek RTL8723BE PCIe Wireless adapter.
-> 
-> We tested it with kernel 6.6.  System keeps showing AER error message flood, even hangs up, until rtl8723be's ASPM is disabled.
-> 
-> kernel: pcieport 0000:00:1c.5: PCIe Bus Error: severity=Corrected, type=Physical Layer, (Receiver ID)
-> kernel: pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
-> kernel: pcieport 0000:00:1c.5:    [ 0] RxErr                  (First)
-> kernel: pcieport 0000:00:1c.5: AER: Corrected error received: 0000:00:1c.5
-> kernel: pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-> kernel: pcieport 0000:00:1c.5: AER: Corrected error received: 0000:00:1c.5
-> kernel: pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-> kernel: pcieport 0000:00:1c.5: AER: Multiple Corrected error received: 0000:00:1c.5
-> kernel: pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-> 
-> Here is the PCI tree:
-> $ lspci -tv
-> -[0000:00]-+-00.0  Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers
->            +-02.0  Intel Corporation Skylake GT2 [HD Graphics 520]
->            +-04.0  Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Thermal Subsystem
->            +-14.0  Intel Corporation Sunrise Point-LP USB 3.0 xHCI Controller
->            +-14.2  Intel Corporation Sunrise Point-LP Thermal subsystem
->            +-15.0  Intel Corporation Sunrise Point-LP Serial IO I2C Controller #0
->            +-15.1  Intel Corporation Sunrise Point-LP Serial IO I2C Controller #1
->            +-16.0  Intel Corporation Sunrise Point-LP CSME HECI #1
->            +-17.0  Intel Corporation Sunrise Point-LP SATA Controller [AHCI mode]
->            +-1c.0-[01]----00.0  NVIDIA Corporation GM108M [GeForce 940MX]
->            +-1c.4-[02]----00.0  Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
->            +-1c.5-[03]----00.0  Realtek Semiconductor Co., Ltd. RTL8723BE PCIe Wireless Network Adapter
->            +-1f.0  Intel Corporation Sunrise Point-LP LPC Controller
->            +-1f.2  Intel Corporation Sunrise Point-LP PMC
->            +-1f.3  Intel Corporation Sunrise Point-LP HD Audio
->            \-1f.4  Intel Corporation Sunrise Point-LP SMBus
+Fixes: 004ccbc0dd49 ("wifi: ath12k: add support for hardware rfkill for WCN7850")
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+---
+ v2:
+  - Changed the copyright year
 
-And then the reporter found that it was ASPM bug:
+ drivers/net/wireless/ath/ath12k/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-> Notice a long time ago discussion mail: Dmesg filled with "AER: Corrected error received" [1]
-> 
-> So, I force write 1 to clear Receiver Error Status bit of Correctable Error Status Register, like
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 9c8fd69ae5ad..39faedd2ec8e 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1141,8 +1160,9 @@ static void aer_isr_one_error(struct aer_rpc *rpc,
->                         e_info.multi_error_valid = 0;
->                 aer_print_port_info(pdev, &e_info);
->  
-> -               if (find_source_device(pdev, &e_info))
-> -                       aer_process_err_devices(&e_info);
-> +               //if (find_source_device(pdev, &e_info))
-> +               //      aer_process_err_devices(&e_info);
-> +               pci_write_config_dword(pdev, pdev->aer_cap + PCI_ERR_COR_STATUS, 0x1);
->         }
->  
->         if (e_src->status & PCI_ERR_ROOT_UNCOR_RCV) {
-> 
-> Then, system should clear the error right away.  However, system still get the AER flood ...
-> 
-> Seems that we still have to disable rtl8723be's ASPM.
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index b936760b5140..6c01b282fcd3 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <linux/module.h>
+@@ -698,13 +698,15 @@ int ath12k_core_qmi_firmware_ready(struct ath12k_base *ab)
+ 	ret = ath12k_core_rfkill_config(ab);
+ 	if (ret && ret != -EOPNOTSUPP) {
+ 		ath12k_err(ab, "failed to config rfkill: %d\n", ret);
+-		goto err_core_stop;
++		goto err_core_pdev_destroy;
+ 	}
+ 
+ 	mutex_unlock(&ab->core_lock);
+ 
+ 	return 0;
+ 
++err_core_pdev_destroy:
++	ath12k_core_pdev_destroy(ab);
+ err_core_stop:
+ 	ath12k_core_stop(ab);
+ 	ath12k_mac_destroy(ab);
 
-See Bugzilla for the full thread and attached full kernel logs.
-
-Thanks.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=218127
-
+base-commit: 553d0057523dc1d6935160613f1fbf9bb8db88f6
 -- 
-An old man doll... just what I always wanted! - Clara
+2.17.1
+
