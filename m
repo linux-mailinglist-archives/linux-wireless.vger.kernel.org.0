@@ -2,97 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A290F7EA01C
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 16:35:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DFEC7EA026
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 16:38:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229454AbjKMPf6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Nov 2023 10:35:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33290 "EHLO
+        id S230355AbjKMPiF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Nov 2023 10:38:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230205AbjKMPf5 (ORCPT
+        with ESMTP id S229644AbjKMPiE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Nov 2023 10:35:57 -0500
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B5A3D67
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 07:35:54 -0800 (PST)
-Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-4ac20c41e82so1934010e0c.1
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 07:35:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699889753; x=1700494553; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+PdjSok2XoLaWMORWa8Sq9Dmuh3JEG3tHfef6IY4J7g=;
-        b=BMb1bicHwvAkni6glMNRDyi3u9HvIsv1Q99NDIpZowVtx/7WhinJm8ywyS32Q0rXSj
-         wh8ieMCIdc8vZMj7cYG18TAJeSDdaM790lHOPessLmnKnmxvLndnfY41605ywv7DEV/m
-         OlXyalBGhoYOLN3A0tsjq61fAaOlQKx1g/fW4fbB4OHgkdjgnrV1dlFVMexhsO552gFP
-         GwHpUmyZXSqI+AJyhN45KZDsOoIJrPa9RCz0miIV+T6u2jVY2VLp2onPY7Cq1Ej4ZyUD
-         S6rvfOGLiKgPhRgApO3Aho0YX5y0VwOpG0m/yYfAFSpsFkX2YDSTzi+nSaJ+SuTPi1vA
-         WWuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699889753; x=1700494553;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+PdjSok2XoLaWMORWa8Sq9Dmuh3JEG3tHfef6IY4J7g=;
-        b=rZ6vducAbmGHvrx6XoYlxMxBsVU6WCp1FfnnVW37Azc54czXB/Mzy54FNCzo+XKHBP
-         IVAkeZ1U943dfvA+kmms5famJYDfuibjEwTN7JYHk184O32/I/VsKD8bOL9gyewpzGr+
-         H7Hn4Xdb14Vb6g76TCI09I3SF0K//e0jVDMHjhl6gUEWGMRfU+6MsieJ+JsAZjE58hXx
-         605cmLgJ7tHSKfpF7d057hmnjDyXj5fjwDS9r+79BQfEQLn91cup7pn/a5BthJe8oOoT
-         M4zFHxY/C7QJAZE7G73cz4PrhBn8Q9vH4Y2l5vqwlfvxx3r3Rrg6djkIPwsD/55pUALO
-         KMNQ==
-X-Gm-Message-State: AOJu0YyRXmSkrx+n++x9SR5aB9XerZr3mMUQwZVW8Uqc4GipZ94638XO
-        MtkVhTFKLTswgZJKD1EIZLHKLDxQRyg=
-X-Google-Smtp-Source: AGHT+IG2mhYLwm8auUoh0ELZfl6ZoLSC47MqFJqMDJaN172fE5Ny0Ht9823SAp0l4YIzu0kde3/qIg==
-X-Received: by 2002:a1f:a084:0:b0:49b:289a:cc3f with SMTP id j126-20020a1fa084000000b0049b289acc3fmr6115120vke.3.1699889752763;
-        Mon, 13 Nov 2023 07:35:52 -0800 (PST)
-Received: from LOCLAP699.rst-02.locus (50-78-19-50-static.hfc.comcastbusiness.net. [50.78.19.50])
-        by smtp.gmail.com with ESMTPSA id o2-20020ac841c2000000b0041803dfb240sm2016794qtm.45.2023.11.13.07.35.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 07:35:52 -0800 (PST)
-From:   James Prestwood <prestwoj@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     James Prestwood <prestwoj@gmail.com>
-Subject: [PATCH 2/2] wifi: ath12k: use select for CRYPTO_MICHAEL_MIC
-Date:   Mon, 13 Nov 2023 07:35:44 -0800
-Message-Id: <20231113153544.282461-2-prestwoj@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231113153544.282461-1-prestwoj@gmail.com>
-References: <20231113153544.282461-1-prestwoj@gmail.com>
+        Mon, 13 Nov 2023 10:38:04 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2310FD71;
+        Mon, 13 Nov 2023 07:38:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E4CC433C7;
+        Mon, 13 Nov 2023 15:37:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699889880;
+        bh=nodC5p6ug9A05wH2ElfMtDXiy9l8bsxSv4FLIQhdg+8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=OVppq6+u/PyTFjBKZoEW1bZQdrZdfALGvpZuIevND49++UtW0H1PQBT8OCcDyj7bq
+         6T5Y+bxzkoh05KHmQJ9K+YPcnS5HwNo/MkXw/19RPzalc1SsXBa55IFnnS6utSwk4T
+         LWx1zxUxsF0cBMcy4y6XyFZhbTV54zaEZ0rHdSR3wwzcGF0qkYK7PLJVjRIQc58rGc
+         HBmGLRVyXR6LL7h0P4WKnCtSOsuf3xfPbR4Gyn34y4olTQX1rEXeDO4qpMxSHYJIJQ
+         4HbEF/CEXFjktmfTAOwNIada18f7cLpOQFSxkOuHmFoo6AMffAEDGJ3e2l51Ne9K7k
+         /GwrwlYSkmdLA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "Luca Weiss" <luca.weiss@fairphone.com>
+Cc:     "Jeff Johnson" <quic_jjohnson@quicinc.com>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath11k: Defer on rproc_get failure
+References: <20231027-ath11k-rproc-defer-v1-1-f6b6a812cd18@fairphone.com>
+        <87lebowjyf.fsf@kernel.org> <CWJ4ZLEZCKQC.2STOBNUU06B2P@fairphone.com>
+Date:   Mon, 13 Nov 2023 17:37:57 +0200
+In-Reply-To: <CWJ4ZLEZCKQC.2STOBNUU06B2P@fairphone.com> (Luca Weiss's message
+        of "Fri, 27 Oct 2023 12:07:09 +0200")
+Message-ID: <87a5rhu0iy.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Let ath12k select this option automatically which makes building
-more intuitive if the user enables this driver (rather than the
-driver not building unless CRYPTO_MICAEL_MIC is explicitly enabled)
+"Luca Weiss" <luca.weiss@fairphone.com> writes:
 
-Signed-off-by: James Prestwood <prestwoj@gmail.com>
----
- drivers/net/wireless/ath/ath12k/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On Fri Oct 27, 2023 at 10:25 AM CEST, Kalle Valo wrote:
+>
+>> Luca Weiss <luca.weiss@fairphone.com> writes:
+>>
+>> > If we already have gotten the rproc_handle (meaning the "qcom,rproc"
+>> > property is defined in the devicetree), it's a valid state that the
+>> > remoteproc module hasn't probed yet so we should defer probing instead
+>> > of just failing to probe.
+>> >
+>> > This resolves a race condition when the ath11k driver probes and fails
+>> > before the wpss remoteproc driver has probed, like the following:
+>> >
+>> >   [    6.232360] ath11k 17a10040.wifi: failed to get rproc
+>> >   [    6.232366] ath11k 17a10040.wifi: failed to get rproc: -22
+>> >   [    6.232478] ath11k: probe of 17a10040.wifi failed with error -22
+>> >        ...
+>> >   [    6.252415] remoteproc remoteproc2: 8a00000.remoteproc is available
+>> >   [    6.252776] remoteproc remoteproc2: powering up 8a00000.remoteproc
+>> >   [    6.252781] remoteproc remoteproc2: Booting fw image qcom/qcm6490/fairphone5/wpss.mdt, size 7188
+>> >
+>> > So, defer the probe if we hit that so we can retry later once the wpss
+>> > remoteproc is available.
+>> >
+>> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>
+>> Did you test this on a real device? If yes, what ath11k hardware and firmware
+>> did you use? We use Tested-on tag to document that:
+>>
+>> https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatches#tested-on_tag
+>
+> Hi,
+>
+> Yes I tested this on qcm6490-fairphone-fp5 including some extra patches
+> for wpss-pas remoteproc support (nothing special, just adding it to the
+> existing PAS driver) and wifi enablement in dts.
 
-diff --git a/drivers/net/wireless/ath/ath12k/Kconfig b/drivers/net/wireless/ath/ath12k/Kconfig
-index 4f9c514c13e7..e135d2b1b61d 100644
---- a/drivers/net/wireless/ath/ath12k/Kconfig
-+++ b/drivers/net/wireless/ath/ath12k/Kconfig
-@@ -2,7 +2,7 @@
- config ATH12K
- 	tristate "Qualcomm Technologies Wi-Fi 7 support (ath12k)"
- 	depends on MAC80211 && HAS_DMA && PCI
--	depends on CRYPTO_MICHAEL_MIC
-+	select CRYPTO_MICHAEL_MIC
- 	select QCOM_QMI_HELPERS
- 	select MHI_BUS
- 	select QRTR
+Nice, do you have a link to the patches or a git tree which has
+everything? And how difficult would it be for me to run vanilla
+kernel.org kernel (no vendor kernels or anything like that) on Fairphone
+5? Any documentation available for that?
+
+I'm asking because I don't have a test setup for WCN6750 right now. It
+would be awesome if I could use Fairphone for testing :)
+
+> I built this line from info from the dmesg, hope it's okay:
+>
+> Tested-on: wcn6750 hw1.0 AHB WLAN.MSL.1.0.1-01264-QCAMSLSWPLZ-1.37886.3
+
+Thanks, I added that to the commit message.
+
+> And thinking about it, a Fixes tag would also be appropriate for this
+> patch. The code was moved to a different file in commit ba929d6fe31a
+> ("ath11k: Remove rproc references from common core layer") but I think
+> this tag should be correct.
+>
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+
+Ok, I added that as well.
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
