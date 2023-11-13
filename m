@@ -2,228 +2,270 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4261F7E9396
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 01:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76DC97E9462
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 03:11:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230394AbjKMAcY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 12 Nov 2023 19:32:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35622 "EHLO
+        id S231504AbjKMCLj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 12 Nov 2023 21:11:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230036AbjKMAcX (ORCPT
+        with ESMTP id S229665AbjKMCLi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 12 Nov 2023 19:32:23 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F7B7B9
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Nov 2023 16:32:20 -0800 (PST)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AD0MgQ5012327;
-        Mon, 13 Nov 2023 00:32:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=DDJAuqU6dNI49U0AqHcyTXIU3f3WNSMCiLfZf/s9yAY=;
- b=M8JwBZdS9kjGbrXOtjl8bbW7kA8VL5OS4i3Y/NbD8ODHKsL1/ooxtN3NwHzs4H6DIaJK
- Ot30nhV81U+2trRQqGbZw5R915G13NHwhXYm7YZ2MjVfxPxDdK61RmaNWRq6CB8GfLeh
- O3klLhQl/iCGwhkQUItJNLaOZNZyp/rfUyrgtBicLEXpIzz5hIvrNi3ZWKDldFl4ZcL1
- Rnaq5981txZMTBjjYqi/T5Vu+vc0dVAujYjCtbSDoj9f70OQVTtH+T1Q3mnjNcb5vgDR
- /pblHkJKAaAV0AjOfnYcZUcpXMdc7lfxrscnxomPGJTJlPYOeQgndmwnn6ldExRsrpMo XQ== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ua1q1jhhb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 13 Nov 2023 00:32:04 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AD0W3IG029472
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 13 Nov 2023 00:32:03 GMT
-Received: from [10.253.78.207] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Sun, 12 Nov
- 2023 16:32:01 -0800
-Message-ID: <6c21c0ae-ddaf-4c62-9017-1cbbf2eaa429@quicinc.com>
-Date:   Mon, 13 Nov 2023 08:32:00 +0800
+        Sun, 12 Nov 2023 21:11:38 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A9C511C
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Nov 2023 18:11:26 -0800 (PST)
+X-UUID: f1145ffa81c911eea33bb35ae8d461a2-20231113
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=pAsthbzADJx3MMEZcWhf4thSAMygZ12WqhsFc8e+XAo=;
+        b=l8aje2I3OvwEky2BElPeZjIQb2eBhkdP8YnR1H+aOQXBZ4GlPdJMh2PMxymtwj+JbUmuBWwi762AeAMscmp5Dr8vBMzuDkUC53vplmYStIT4ML/3q/rjcVn0UCct3AUm71iRD24L+dprfBbXb6vWkxKWwefJqRkAAG+SLGbkRUM=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:2a6292e1-6a54-496b-a26e-760c0293e768,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:364b77b,CLOUDID:b09e4f95-10ce-4e4b-85c2-c9b5229ff92b,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+        NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: f1145ffa81c911eea33bb35ae8d461a2-20231113
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
+        (envelope-from <michael-cy.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1509245877; Mon, 13 Nov 2023 10:11:22 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 13 Nov 2023 10:11:19 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 13 Nov 2023 10:11:19 +0800
+From:   Michael-CY Lee <michael-cy.lee@mediatek.com>
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+CC:     Johannes Berg <johannes@sipsolutions.net>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Money Wang <money.wang@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Michael-CY Lee <michael-cy.lee@mediatek.com>
+Subject: [PATCH v2,1/2] wifi: mac80211: Add utilities for converting op_class
+Date:   Mon, 13 Nov 2023 10:11:06 +0800
+Message-ID: <20231113021107.13110-1-michael-cy.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/8] bus: mhi: host: add new interfaces to handle MHI
- channels directly
-Content-Language: en-US
-To:     Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Kalle Valo <kvalo@kernel.org>, <mhi@lists.linux.dev>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20231110102202.3168243-1-kvalo@kernel.org>
- <20231110102202.3168243-3-kvalo@kernel.org>
- <2cb885fa-ab21-dd54-22ff-d23abfc7ea03@quicinc.com>
- <a822b44b-68ac-4383-b837-623dc86c8882@quicinc.com>
- <5d77e9da-4a83-547a-08d9-5d7626e2a600@quicinc.com>
-From:   Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <5d77e9da-4a83-547a-08d9-5d7626e2a600@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: SJJzqyg095O3feHanflnttqzCFE8Qzx6
-X-Proofpoint-ORIG-GUID: SJJzqyg095O3feHanflnttqzCFE8Qzx6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-12_24,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- clxscore=1015 adultscore=0 spamscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 impostorscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311130002
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--3.322700-8.000000
+X-TMASE-MatchedRID: 70Ug8sDH78/LmQtq4MlK+Y3NgkEqAN0Rdp9Xbh4iYgemg3jaUxa3XvVK
+        H6lJND8AJtzOk8Hd4JNxTzGHHhO45IW/d/vd8jP9H5YQyOg71ZZMkOX0UoduuS8zQZ2rR/OpHz5
+        ccRN5kLNhRGbVgSP6g3tNt2X25HGOvqB+AnZW+xMdxBAG5/hkW9OGA1GsPb1XjdXw3QqAuhr9kt
+        CFFjP4beLzNWBegCW2wgn7iDBesS3CttcwYNipX6Znf3oa3keFS+6YaIfbskLa/B+Sp7xcTkrvD
+        bJlC3s5OjzFEmBOt6iFPFZju4qY8EoQgUotyPsfh4x9yz/PxE60Kyqa3iMJX7IOwIgzK02XdmtR
+        sRmKkASJZPT2ZDPuzPD2QfzMDLjho65UufHcDvg=
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--3.322700-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: B9F18406CEAA7A9FB95E6B112F9CC941C78028B1C8ABBCA8FC12C880C22E421A2000:8
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,MAY_BE_FORGED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,
+        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+These utilities include converting op_class to nl80211 channel width and
+center frequency.
 
-On 11/13/2023 12:18 AM, Jeffrey Hugo wrote:
-> On 11/11/2023 8:59 PM, Baochen Qiang wrote:
->>
->> On 11/11/2023 1:14 AM, Jeffrey Hugo wrote:
->>> On 11/10/2023 3:21 AM, Kalle Valo wrote:
->>>> From: Baochen Qiang <quic_bqiang@quicinc.com>
->>>>
->>>> When using mhi_power_down_no_destroy() MHI hosts need to unprepare 
->>>> MHI channels
->>>> by themselves.  Similarly, MHI stack will also not create new MHI 
->>>> device since
->>>> old devices were not destroyed, so MHI hosts need to prepare 
->>>> channels as well.
->>>> Hence add these two interfaces to make that possible.
->>>>
->>>> Tested-on: WCN6855 hw2.0 PCI 
->>>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
->>>>
->>>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
->>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
->>>> ---
->>>>   drivers/bus/mhi/host/main.c | 91 
->>>> +++++++++++++++++++++++++++++++++++++
->>>>   include/linux/mhi.h         | 18 ++++++++
->>>>   2 files changed, 109 insertions(+)
->>>>
->>>> diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
->>>> index dcf627b36e82..9bcf8a49c000 100644
->>>> --- a/drivers/bus/mhi/host/main.c
->>>> +++ b/drivers/bus/mhi/host/main.c
->>>> @@ -1667,6 +1667,49 @@ int 
->>>> mhi_prepare_for_transfer_autoqueue(struct mhi_device *mhi_dev)
->>>>   }
->>>>   EXPORT_SYMBOL_GPL(mhi_prepare_for_transfer_autoqueue);
->>>>   +static int __mhi_prepare_for_transfer_autoqueue(struct device 
->>>> *dev, void *data)
->>>> +{
->>>> +    struct mhi_device *mhi_dev;
->>>> +    struct mhi_chan *ul_chan, *dl_chan;
->>>> +    enum mhi_ee_type ee = MHI_EE_MAX;
->>>> +
->>>> +    if (dev->bus != &mhi_bus_type)
->>>> +        return 0;
->>>> +
->>>> +    mhi_dev = to_mhi_device(dev);
->>>> +
->>>> +    /* Only prepare virtual devices thats attached to bus */
->>>
->>> "that are"?
->>>
->> It means MHI devices with a type of MHI_DEVICE_XFER. See also 
->> mhi_destroy_device();
->
-> I think you are confused about my comment.  "thats" is not correct 
-> English.  I was suggesting you replace it with "that are", but there 
-> are many ways to reword the comment.
+Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
+Signed-off-by: Money Wang <money.wang@mediatek.com>
+---
+v2: fix the build warning
+---
+ include/net/cfg80211.h |  25 ++++++++
+ net/wireless/util.c    | 127 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 152 insertions(+)
 
-Sorry for misunderstood your comment. Will refine it in next version.
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index b137a33a1b68..a226d1cae7f7 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -8669,6 +8669,31 @@ void cfg80211_ch_switch_started_notify(struct net_device *dev,
+ bool ieee80211_operating_class_to_band(u8 operating_class,
+ 				       enum nl80211_band *band);
+ 
++/**
++ * ieee80211_operating_class_to_center_freq - convert operating class to
++ * center frequency
++ *
++ * @operating_class: the operating class to convert
++ * @chan: the ieee80211_channel to convert
++ * @center_freq1: cneter frequency 1 pointer to fill
++ * @center_freq2: cneter frequency 2 pointer to fill
++ *
++ * Returns %true if the conversion was successful, %false otherwise.
++ */
++bool ieee80211_operating_class_to_center_freq(u8 operating_class,
++					      struct ieee80211_channel *chan,
++					      u32 *center_freq1,
++					      u32 *center_freq2);
++
++/**
++ * ieee80211_operating_class_to_chan_width - convert operating class to
++ * nl80211 channel width
++ *
++ * @operating_class: the operating class to convert
++ */
++enum nl80211_chan_width
++ieee80211_operating_class_to_chan_width(u8 operating_class);
++
+ /**
+  * ieee80211_chandef_to_operating_class - convert chandef to operation class
+  *
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 626b858b4b35..383c9f0897ce 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -2017,6 +2017,133 @@ bool ieee80211_operating_class_to_band(u8 operating_class,
+ }
+ EXPORT_SYMBOL(ieee80211_operating_class_to_band);
+ 
++bool ieee80211_operating_class_to_center_freq(u8 operating_class,
++					      struct ieee80211_channel *chan,
++					      u32 *center_freq1,
++					      u32 *center_freq2)
++{
++	u32 control_freq, offset = 0;
++	enum nl80211_band band;
++
++	control_freq = chan->center_freq;
++	if (!ieee80211_operating_class_to_band(operating_class, &band))
++		return false;
++
++	if (band != chan->band)
++		return false;
++
++	if (control_freq >= 5955)
++		offset = control_freq - 5955;
++	else if (control_freq >= 5745)
++		offset = control_freq - 5745;
++	else if (control_freq >= 5180)
++		offset = control_freq - 5180;
++	offset /= 20;
++
++	*center_freq2 = 0;
++	switch (operating_class) {
++	case 81:  /* 2 GHz band; 20 MHz; channels 1..13 */
++	case 82:  /* 2 GHz band; 20 MHz; channel 14 */
++	case 115: /* 5 GHz band; 20 MHz; channels 36,40,44,48 */
++	case 118: /* 5 GHz band; 20 MHz; channels 52,56,60,64 */
++	case 121: /* 5 GHz band; 20 MHz; channels 100..144 */
++	case 124: /* 5 GHz band; 20 MHz; channels 149,153,157,161 */
++	case 125: /* 5 GHz band; 20 MHz; channels 149..177 */
++	case 131: /* 6 GHz band; 20 MHz; channels 1..233*/
++	case 136: /* 6 GHz band; 20 MHz; channel 2 */
++		*center_freq1 = control_freq;
++		return true;
++	case 83:  /* 2 GHz band; 40 MHz; channels 1..9 */
++	case 116: /* 5 GHz band; 40 MHz; channels 36,44 */
++	case 119: /* 5 GHz band; 40 MHz; channels 52,60 */
++	case 122: /* 5 GHz band; 40 MHz; channels 100,108,116,124,132,140 */
++	case 126: /* 5 GHz band; 40 MHz; channels 149,157,165,173 */
++		*center_freq1 = control_freq + 10;
++		return true;
++	case 84:  /* 2 GHz band; 40 MHz; channels 5..13 */
++	case 117: /* 5 GHz band; 40 MHz; channels 40,48 */
++	case 120: /* 5 GHz band; 40 MHz; channels 56,64 */
++	case 123: /* 5 GHz band; 40 MHz; channels 104,112,120,128,136,144 */
++	case 127: /* 5 GHz band; 40 MHz; channels 153,161,169,177 */
++		*center_freq1 = control_freq - 10;
++		return true;
++	case 132: /* 6 GHz band; 40 MHz; channels 1,5,..,229*/
++		*center_freq1 = control_freq + 10 - (offset & 1) * 20;
++		return true;
++	case 128: /* 5 GHz band; 80 MHz; channels 36..64,100..144,149..177 */
++		*center_freq1 = control_freq + 30 - (offset & 3) * 20;
++		return true;
++	case 130: /* 5 GHz band; 80+80 MHz; channels 36..64,100..144,149..177 */
++		/* TODO How to know the center_freq2 of 80+80 MHz?*/
++		*center_freq1 = 0;
++		return false;
++	case 133: /* 6 GHz band; 80 MHz; channels 1,5,..,229 */
++		*center_freq1 = control_freq + 30 - (offset & 3) * 20;
++		return true;
++	case 129: /* 5 GHz band; 160 MHz; channels 36..64,100..144,149..177 */
++		*center_freq1 = control_freq + 70 - (offset & 7) * 20;
++		return true;
++	case 134: /* 6 GHz band; 160 MHz; channels 1,5,..,229 */
++		*center_freq1 = control_freq + 70 - (offset & 7) * 20;
++		return true;
++	case 135: /* 6 GHz band; 80+80 MHz; channels 1,5,..,229 */
++		/* TODO How to know the center_freq2 of 80+80 MHz?*/
++		*center_freq1 = 0;
++		return false;
++	case 137: /* 6 GHz band; 320 MHz; channels 1,5,..,229 */
++		/* TODO it's 320 MHz-1 or 320 MHz-2 channelization? */
++		*center_freq1 = 0;
++		return false;
++	default:
++		return false;
++	}
++}
++EXPORT_SYMBOL(ieee80211_operating_class_to_center_freq);
++
++enum nl80211_chan_width
++ieee80211_operating_class_to_chan_width(u8 operating_class)
++{
++	switch (operating_class) {
++	case 81:  /* 2 GHz band; 20 MHz; channels 1..13 */
++	case 82:  /* 2 GHz band; 20 MHz; channel 14 */
++	case 115: /* 5 GHz band; 20 MHz; channels 36,40,44,48 */
++	case 118: /* 5 GHz band; 20 MHz; channels 52,56,60,64 */
++	case 121: /* 5 GHz band; 20 MHz; channels 100..144 */
++	case 124: /* 5 GHz band; 20 MHz; channels 149,153,157,161 */
++	case 125: /* 5 GHz band; 20 MHz; channels 149..177 */
++	case 131: /* 6 GHz band; 20 MHz; channels 1..233*/
++	case 136: /* 6 GHz band; 20 MHz; channel 2 */
++		return NL80211_CHAN_WIDTH_20;
++	case 83:  /* 2 GHz band; 40 MHz; channels 1..9 */
++	case 84:  /* 2 GHz band; 40 MHz; channels 5..13 */
++	case 116: /* 5 GHz band; 40 MHz; channels 36,44 */
++	case 117: /* 5 GHz band; 40 MHz; channels 40,48 */
++	case 119: /* 5 GHz band; 40 MHz; channels 52,60 */
++	case 120: /* 5 GHz band; 40 MHz; channels 56,64 */
++	case 122: /* 5 GHz band; 40 MHz; channels 100,108,116,124,132,140 */
++	case 123: /* 5 GHz band; 40 MHz; channels 104,112,120,128,136,144 */
++	case 126: /* 5 GHz band; 40 MHz; channels 149,157,165,173 */
++	case 127: /* 5 GHz band; 40 MHz; channels 153,161,169,177 */
++	case 132: /* 6 GHz band; 40 MHz; channels 1,5,..,229*/
++		return NL80211_CHAN_WIDTH_40;
++	case 128: /* 5 GHz band; 80 MHz; channels 36..64,100..144,149..177 */
++	case 133: /* 6 GHz band; 80 MHz; channels 1,5,..,229 */
++		return NL80211_CHAN_WIDTH_80;
++	case 130: /* 5 GHz band; 80+80 MHz; channels 36..64,100..144,149..177 */
++	case 135: /* 6 GHz band; 80+80 MHz; channels 1,5,..,229 */
++		return NL80211_CHAN_WIDTH_80P80;
++	case 129: /* 5 GHz band; 160 MHz; channels 36..64,100..144,149..177 */
++	case 134: /* 6 GHz band; 160 MHz; channels 1,5,..,229 */
++		return NL80211_CHAN_WIDTH_160;
++	case 137: /* 6 GHz band; 320 MHz; channels 1,5,..,229 */
++		return NL80211_CHAN_WIDTH_320;
++	default:
++		WARN_ON(1);
++		return NL80211_CHAN_WIDTH_20_NOHT;
++	}
++}
++EXPORT_SYMBOL(ieee80211_operating_class_to_chan_width);
++
+ bool ieee80211_chandef_to_operating_class(struct cfg80211_chan_def *chandef,
+ 					  u8 *op_class)
+ {
+-- 
+2.25.1
 
-
->
->>
->>
->>>> +    if (mhi_dev->dev_type == MHI_DEVICE_CONTROLLER)
->>>> +        return 0;
->>>> +
->>>> +    ul_chan = mhi_dev->ul_chan;
->>>> +    dl_chan = mhi_dev->dl_chan;
->>>> +
->>>> +    /*
->>>> +     * If execution environment is specified, remove only those 
->>>> devices that
->>>> +     * started in them based on ee_mask for the channels as we 
->>>> move on to a
->>>> +     * different execution environment
->>>> +     */
->>>> +    if (data)
->>>> +        ee = *(enum mhi_ee_type *)data;
->>>> +
->>>> +    if (ul_chan && ee != MHI_EE_MAX && !(ul_chan->ee_mask & BIT(ee)))
->>>> +        return 0;
->>>> +
->>>> +
->>>> +    if (dl_chan && ee != MHI_EE_MAX && !(dl_chan->ee_mask & BIT(ee)))
->>>> +        return 0;
->>>> +
->>>> +    return mhi_prepare_for_transfer_autoqueue(mhi_dev);
->>>> +}
->>>> +
->>>> +int mhi_prepare_all_for_transfer_autoqueue(struct mhi_controller 
->>>> *mhi_cntrl)
->>>> +{
->>>> +    return device_for_each_child(&mhi_cntrl->mhi_dev->dev, NULL,
->>>> +                     __mhi_prepare_for_transfer_autoqueue);
->>>> +}
->>>> +EXPORT_SYMBOL_GPL(mhi_prepare_all_for_transfer_autoqueue);
->>>
->>> This seems broken.  It appears to configure all channels as 
->>> autoqueue, regardless of how the controller initially configured 
->>> them.  This would only be safe to use if all channels were 
->>> configured for autoqueue, but would silently cause issues otherwise.
->>
->> Thanks for pointing that. Yes, it is not correct to treat all 
->> channels as autoqueue regardless of its initial configuration. So how 
->> about change as below:
->
-> Seems ok.
->
->>
->> /* The difference between mhi_prepare_for_transfer_autoqueue() and 
->> mhi_prepare_for_transfer() comes from how to treat downlink channel */
->>
->> mhi_prepare_for_transfer_dev(struct device *dev, ...)
->>
->> {
->>
->> ...
->>
->> dl_chan = mhi_dev->dl_chan;
->>
->> ...
->>
->> if (dl_chan->pre_alloc)
->>
->>         mhi_prepare_for_transfer_autoqueue(dev);
->>
->> else
->>
->>         mhi_prepare_for_transfer(dev);
->>
->> }
->>
->> /* And then iterate all devices and call 
->> mhi_prepare_for_transfer_dev() for each. */
->>
->> int mhi_prepare_all_for_transfer(struct mhi_controller *mhi_cntrl)
->> {
->>      return device_for_each_child(&mhi_cntrl->mhi_dev->dev, NULL,
->>                       mhi_prepare_for_transfer_dev);
->> }
->> EXPORT_SYMBOL_GPL(mhi_prepare_all_for_transfer);
->>
->
