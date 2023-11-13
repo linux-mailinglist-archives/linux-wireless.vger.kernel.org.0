@@ -2,47 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96A6E7E9F22
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 15:48:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 329B87E9F7B
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 16:05:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230056AbjKMOsw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Nov 2023 09:48:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54736 "EHLO
+        id S231218AbjKMPFF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Nov 2023 10:05:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbjKMOsv (ORCPT
+        with ESMTP id S229626AbjKMPFE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Nov 2023 09:48:51 -0500
-Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [178.154.239.211])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D2A71A5
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 06:48:44 -0800 (PST)
-Received: from mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net [IPv6:2a02:6b8:c00:2f9f:0:640:dfdd:0])
-        by forward100c.mail.yandex.net (Yandex) with ESMTP id 6A5886090D;
-        Mon, 13 Nov 2023 17:48:12 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id Amj84jlUtuQ0-NiaHArxL;
-        Mon, 13 Nov 2023 17:48:12 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1699886892; bh=LTQa9sc17ntD9uNZCs1vpw8MhnFcVfJo2L9K62kMj0Y=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=m3vdNVViCbOa0q5me1hZmKRbg7iDu/ANCess5OXbzhh8iFUi0ixhQjNjzu4WFNqTC
-         dXI/xBhfbQ+UJToNkhyGHW9HlWW6lLAnOrfZLP0k4ecypYZ/X6NsAIS52210DY6887
-         ZloyEqt/nPbBcBVQiMWCKLnJ/+jx7lvYBiLkfTOg=
-Authentication-Results: mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 2/2] wifi: rtlwifi: simplify rtl_action_proc() and rtl_tx_agg_start()
-Date:   Mon, 13 Nov 2023 17:47:30 +0300
-Message-ID: <20231113144734.197359-2-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231113144734.197359-1-dmantipov@yandex.ru>
-References: <20231113144734.197359-1-dmantipov@yandex.ru>
+        Mon, 13 Nov 2023 10:05:04 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7989D51
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 07:05:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C94C433C8;
+        Mon, 13 Nov 2023 15:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699887901;
+        bh=cxxt0RjIfFF/CZhpHwC7zVqe2rTl2Bif9faDu5W+QQo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=YXPy9grA/RP4gMtMDyE9Xj44btD0R5Xy2oTYOU7P03GZ7MngwvlFRa6jyQ5TL9P4M
+         5s6g4vkxg5uShUwBhspOZlzivnwWp2cXUu0Ka5tpRaEBUS+5TmmTFThQim6xAeKEMu
+         1041lup5dheOQRc9VfWYVcilZWlUq4E+CkMRsbBuR4/uMLwK/eMB6eEEZXeF6C4KbX
+         6qSssX5F+xgt7z9bosHgtA+fa898erKOh+FgmOyrVBl7ElckBWqu6ndTwlQUYtEd5h
+         6ymtIcmv7M2XSsbVnYS7nSuRS38TXNIbNqMRSGhv3m6MGJrmyyqqNRNFTbdqDQ13jF
+         C8J/Cr3vZuKog==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jeffrey Hugo <quic_jhugo@quicinc.com>
+Cc:     Baochen Qiang <quic_bqiang@quicinc.com>, <mhi@lists.linux.dev>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH RFC 4/8] wifi: ath11k: remove MHI LOOPBACK channels
+References: <20231110102202.3168243-1-kvalo@kernel.org>
+        <20231110102202.3168243-5-kvalo@kernel.org>
+        <f56bce13-bba8-40d2-1dfc-210478ff63d6@quicinc.com>
+        <e2ad1380-d55f-42bd-9f40-ef8aa6e0f105@quicinc.com>
+        <818fddb9-b59e-7a6f-6605-2ba016d0db60@quicinc.com>
+        <87msvhu4d5.fsf@kernel.org>
+        <fb3709a6-95d2-711f-3ca1-0107fa159c62@quicinc.com>
+Date:   Mon, 13 Nov 2023 17:04:58 +0200
+In-Reply-To: <fb3709a6-95d2-711f-3ca1-0107fa159c62@quicinc.com> (Jeffrey
+        Hugo's message of "Mon, 13 Nov 2023 07:26:46 -0700")
+Message-ID: <87il65u21x.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,51 +57,55 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since 'drv_priv' is an in-place member allocated at the end of
-'struct ieee80211_sta', it can't be NULL and so relevant checks
-in 'rtl_action_proc()' and 'rtl_tx_agg_start()' may be dropped.
-Compile tested only.
+Jeffrey Hugo <quic_jhugo@quicinc.com> writes:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> On 11/13/2023 7:15 AM, Kalle Valo wrote:
+>
+>> Jeffrey Hugo <quic_jhugo@quicinc.com> writes:
+>>=20
+>>> On 11/11/2023 9:24 PM, Baochen Qiang wrote:
+>>>
+>>>> On 11/11/2023 12:54 AM, Jeffrey Hugo wrote:
+>>>>> On 11/10/2023 3:21 AM, Kalle Valo wrote:
+>>>>>> From: Baochen Qiang <quic_bqiang@quicinc.com>
+>>>>>>
+>>>>>> There is no driver to match these two channels, so
+>>>>>> remove them. This fixes warnings from MHI subsystem during suspend:
+>>>>>>
+>>>>>> mhi mhi0_LOOPBACK: 1: Failed to reset channel, still resetting
+>>>>>> mhi mhi0_LOOPBACK: 0: Failed to reset channel, still resetting
+>>>>>
+>>>>> This feels like just masking a real issue.
+>>>>>
+>>>>> If LOOPBACK is not being consumed, then the channel should never go
+>>>>> into the start state.=C2=A0 Why would we be trying to transition to t=
+he
+>>>>> reset state then?
+>>>>>
+>>>>> -Jeff
+>>>> That is because, with patch 'bus: mhi: host: add new interfaces to
+>>>> handle MHI channels directly' in this patch set, ath11k is able to
+>>>> call mhi_unprepare_all_from_transfer(), which will reset all
+>>>> channels.
+>>>
+>>> that implementation is flawed if it is causing this.  Looks like you
+>>> never check to see if the channel was prepared in the first place.
+>>>
+>>> If you go fix that, then it looks like this change is not needed.
+>> BTW what do these loopback channels do? I didn't notice any
+>> difference
+>> in the functionality so I'm wondering the reason for these.
+>>=20
+>
+> The loopback channel is defined as a service where any data the host
+> sends to the device is immediately sent back to the host, unmodified.
+> The typical usecase is smoke test and performance profiling.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/realtek/rtlwifi/base.c | 8 --------
- 1 file changed, 8 deletions(-)
+Thanks, good to know. We don't have any such functionality in ath11k
+right now and if we ever do we can always add the channels back.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
-index 7ce37fb4fdbf..1a8d715b7c07 100644
---- a/drivers/net/wireless/realtek/rtlwifi/base.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/base.c
-@@ -1402,10 +1402,6 @@ bool rtl_action_proc(struct ieee80211_hw *hw, struct sk_buff *skb, u8 is_tx)
- 
- 				sta_entry =
- 					(struct rtl_sta_info *)sta->drv_priv;
--				if (!sta_entry) {
--					rcu_read_unlock();
--					return true;
--				}
- 				capab =
- 				  le16_to_cpu(mgmt->u.action.u.addba_req.capab);
- 				tid = (capab &
-@@ -1760,8 +1756,6 @@ int rtl_tx_agg_start(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		return -EINVAL;
- 
- 	sta_entry = (struct rtl_sta_info *)sta->drv_priv;
--	if (!sta_entry)
--		return -ENXIO;
- 	tid_data = &sta_entry->tids[tid];
- 
- 	rtl_dbg(rtlpriv, COMP_SEND, DBG_DMESG,
-@@ -1818,8 +1812,6 @@ int rtl_rx_agg_start(struct ieee80211_hw *hw,
- 	}
- 
- 	sta_entry = (struct rtl_sta_info *)sta->drv_priv;
--	if (!sta_entry)
--		return -ENXIO;
- 	tid_data = &sta_entry->tids[tid];
- 
- 	rtl_dbg(rtlpriv, COMP_RECV, DBG_DMESG,
--- 
-2.41.0
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
