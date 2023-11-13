@@ -2,181 +2,258 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B7367E9814
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 09:53:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0AC07E9895
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 10:11:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230015AbjKMIxO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Nov 2023 03:53:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44002 "EHLO
+        id S233233AbjKMJLY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Nov 2023 04:11:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229817AbjKMIxN (ORCPT
+        with ESMTP id S229817AbjKMJLX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Nov 2023 03:53:13 -0500
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0E6D79
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 00:53:10 -0800 (PST)
-Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-35930447ae9so15324735ab.2
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 00:53:10 -0800 (PST)
+        Mon, 13 Nov 2023 04:11:23 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C49D10D1
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 01:11:19 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-9d267605ceeso622735666b.2
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 01:11:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1699865590; x=1700470390; darn=vger.kernel.org;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=32gub2dZr5/iGUHKrY/AaUWgxAA88sOmxu3+/OmBjms=;
-        b=T1vOXdNhIEGjQIMv9w2Ws1LhPrCq0+O2DGxLzTO7oIQ3JkxLtd0kyjOLktgWS7r6+6
-         IPnF/wy3f3fgVPrOy18gHkJZ+yHog5K/Z/XVWz3GmPXKVTdMHqwu7Z7/Ql9u7h7DWcfJ
-         lelC//L+t0gvT9UevUIOSQdmoydZ6FDMAGaz8=
+        d=broadcom.com; s=google; t=1699866678; x=1700471478; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1W4uE/XVzgEoCccSE2mjCxi0tTITGdhzgbqpdJeXWUA=;
+        b=OjfQdNTyKxmH50rvoDK5+RodYS7sVFQ5RwPu+aFRwnadKVT4GNAUSrAOJCMPPIz7bd
+         bLgiAyTGqZMR0+684aZrIqfJPAifPtqh/tkbJqE2Bgo+bL75X1/3agjPBTj8d7KCUiso
+         f0WmdTys5/d8hNxb66dgYLI8UQLBCI5ngo0O4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699865590; x=1700470390;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=32gub2dZr5/iGUHKrY/AaUWgxAA88sOmxu3+/OmBjms=;
-        b=jWBAJskJ0zt71sIlVoaNROYOach4K5qf92WVpK/qBWcfKBiCUzGKS2rvUbckNah2Ui
-         6ob0cxKbaYQTsv2kZcjDwv02G4Yu92ji+kOkkoFN/KaB2jKD0YxsKgmqwdUKnlknVqeS
-         z70pcAUHdBWN1LzAvREXUJh5oZK0kLRHoWD3mnfpb9sUqqB5ejqbi94tfl/Vmxvmehr1
-         W24NWAlPefLqvlSTN9DoNTJYsz5lMq6VdJnSDQXwSFnaVQ8p/TSViny1Wt2Izo8LgHkg
-         rb7GhdZNbp4QFH7vPbGH3nMagPG34J10VqBPVAx7o36/qUeSuZvEpfEgTCH8580X909G
-         NVNA==
-X-Gm-Message-State: AOJu0YxGG8TqQyvaxpZL0eD62DLcyIQDgZ8wo2Gc8+aj3Rklxc6/TPEy
-        sL3/Db2lM33IDo7LonSDLUjGC5KS8DaqNbYdmLI=
-X-Google-Smtp-Source: AGHT+IGZ2g11yhXi4svo2ILo7ayRKuhsxMBEcAYtKUlFqFrhVyi5Ek0u6UAq0GBWn797VpEl0EAnfQ==
-X-Received: by 2002:a05:6e02:188f:b0:351:5b43:5ecd with SMTP id o15-20020a056e02188f00b003515b435ecdmr9358071ilu.14.1699865589983;
-        Mon, 13 Nov 2023 00:53:09 -0800 (PST)
-Received: from C02F22LSML85.dhcp.broadcom.net ([192.19.252.250])
-        by smtp.gmail.com with ESMTPSA id x24-20020aa784d8000000b00692cb1224casm3461582pfn.183.2023.11.13.00.53.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 00:53:08 -0800 (PST)
-From:   Jithu Jance <jithu.jance@broadcom.com>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, vinayak.yadawad@broadcom.com,
-        Jithu Jance <jithu.jance@broadcom.com>
-Subject: [PATCH 1/1] wifi: nl80211: Add PTK/GTK rekey interval attributes for APs supporting PSK offload
-Date:   Mon, 13 Nov 2023 14:22:24 +0530
-Message-Id: <20231113085224.75642-1-jithu.jance@broadcom.com>
-X-Mailer: git-send-email 2.38.1
+        d=1e100.net; s=20230601; t=1699866678; x=1700471478;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1W4uE/XVzgEoCccSE2mjCxi0tTITGdhzgbqpdJeXWUA=;
+        b=HmgY6wAdcz5XGwfEeg8nrQWpfWQPlPQa5Xu/ZA5JjGwpJoDmfN1oIAnKoBt96o1h+T
+         I89vV6Q2txJDj1/gIOmjJE1Y4LIFnK84kD/ggG/DEpR6D+9++90yTe9rJPSKlArK0eDY
+         ehmsN7eg9L8wzEjaH7oPCx7SWugrhHJigQTjz2HSHrE1QsXj0mtgOvCsc2QCfxgMhvC+
+         k69PPGJjEITEitwHClh3/pQqILK6+h2tThYbSxc1Uz3QbbbRzBfn6dZjlBjCd1RMGlnN
+         GcWloohi5IJpHnRZDhRf/GhNwcaMfWAi8yNbr8WA3Ko7FTFGCEeEjrqIqJoj3bZTd1ST
+         EXDQ==
+X-Gm-Message-State: AOJu0Yyf9FC9vjf3hLZNIzZP2xdyU76jYH+xj87oxmyjWB4NeWmb7Wg6
+        n+nqnPiEzXa0FppsFucs/AufcA==
+X-Google-Smtp-Source: AGHT+IGJshc8psBCRqqAoQSYAtIjzqHW3hMxtNKQoVtAlqlqCZWY90UoiqOh12ZNQQDg/yzAq25sNw==
+X-Received: by 2002:a17:906:1395:b0:9c7:59d1:b2ce with SMTP id f21-20020a170906139500b009c759d1b2cemr3605109ejc.5.1699866677960;
+        Mon, 13 Nov 2023 01:11:17 -0800 (PST)
+Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id v21-20020a1709064e9500b009df5d874ca7sm3705777eju.23.2023.11.13.01.11.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Nov 2023 01:11:16 -0800 (PST)
+Message-ID: <d8f7dc94-40f5-4544-9693-01d7cbc6fefb@broadcom.com>
+Date:   Mon, 13 Nov 2023 10:11:15 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail,
+ reason -52 - Part 2
+To:     Stefan Wahren <wahrenst@gmx.net>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@kernel.org>
+References: <d9c9336a-6314-4de9-aead-8b865bb30f05@gmx.net>
+ <18bbf6acf10.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <cb07408d-af14-4b01-bd96-15c480989643@gmx.net>
+ <5c462fac-b27d-41c0-a62c-a8951bf445d2@gmx.net>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <5c462fac-b27d-41c0-a62c-a8951bf445d2@gmx.net>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000ace79f060a04cc38"
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_NO_TEXT,
+        boundary="0000000000008710bd060a050d9f"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000ace79f060a04cc38
+--0000000000008710bd060a050d9f
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-This patch adds attributes to NL80211_CMD_START_AP that the user application
-can use to pass down PTK/GTK rekey interval times to the driver. If driver can't
-support the configuration, it is expected to return failure to NL8011_CMD_START_AP.
-The rekey interval timings are to be passed in seconds.
+On 11/11/2023 9:30 PM, Stefan Wahren wrote:
+> Am 11.11.23 um 19:29 schrieb Stefan Wahren:
+>>
+>> Am 11.11.23 um 18:25 schrieb Arend Van Spriel:
+>>> On November 11, 2023 5:48:46 PM Stefan Wahren <wahrenst@gmx.net> wrote:
+>>>
+>>>
+>>> Again look like these are disabled channels. At least chanspec 0xd022
+>>> is 5G channel 34. You say you get this only once so not every 60
+>>> seconds?
+>> I get this everytime i trigger a reconnect to the wifi network, so not
+>> periodically (checked that). Strangely the initial automatic connect
+>> doesn't trigger this errors.
+> I additionally placed a WARN_ON_ONCE after the error log and enabled the
+> firmware error log of brcmf_fil_cmd_data(). Maybe this helps.
 
-Signed-off-by: Jithu Jance <jithu.jance@broadcom.com>
----
- include/net/cfg80211.h       |  6 ++++++
- include/uapi/linux/nl80211.h | 13 +++++++++++++
- net/wireless/nl80211.c       | 11 +++++++++++
- 3 files changed, 30 insertions(+)
+It does a bit. At least it shows this is happening with the dump_survey 
+(again). I don't really understand why though. It implies the channel is 
+not disabled, but unclear why. The channel flags are changed in 
+brcmf_construct_chaninfo() so we probably should focus debug on that 
+function.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index b137a33a1b68..459e29d4d766 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1218,6 +1218,10 @@ struct survey_info {
-  *
-  *	NL80211_SAE_PWE_BOTH
-  *	  Allow either hunting-and-pecking loop or hash-to-element
-+ * @ptk_rekey_interval: PTK rekey interval in seconds for drivers supporting
-+ *	AP 4 way handshake offload.
-+ * @gtk_rekey_interval: GTK rekey interval in seconds for drivers supporting
-+ *	AP 4 way handshake offload.
-  */
- struct cfg80211_crypto_settings {
- 	u32 wpa_versions;
-@@ -1235,6 +1239,8 @@ struct cfg80211_crypto_settings {
- 	const u8 *sae_pwd;
- 	u8 sae_pwd_len;
- 	enum nl80211_sae_pwe_mechanism sae_pwe;
-+	u32 ptk_rekey_interval;
-+	u32 gtk_rekey_interval;
- };
- 
- /**
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index dced2c49daec..1bc4650efed1 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -205,6 +205,10 @@
-  * preshared key material is provided, for example when that driver does
-  * not support setting the temporal keys through %NL80211_CMD_NEW_KEY.
-  *
-+ * NL80211_CMD_START_AP can optionally carry %NL80211_ATTR_GTK_REKEY_INTERVAL
-+ * and %NL80211_ATTR_PTK_REKEY_INTERVAL to pass down user configured values to
-+ * the driver.
-+ *
-  * For 802.1X the PMK or PMK-R0 are set by providing %NL80211_ATTR_PMK
-  * using %NL80211_CMD_SET_PMK. For offloaded FT support also
-  * %NL80211_ATTR_PMKR0_NAME must be provided.
-@@ -2826,6 +2830,12 @@ enum nl80211_commands {
-  * @NL80211_ATTR_MLO_LINK_DISABLED: Flag attribute indicating that the link is
-  *	disabled.
-  *
-+ * @NL80211_ATTR_PTK_REKEY_INTERVAL: PTK refresh interval in seconds for drivers
-+ * supporting NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK.
-+ *
-+ * @NL80211_ATTR_GTK_REKEY_INTERVAL: GTK refresh interval in seconds for drivers
-+ * supporting NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3364,6 +3374,9 @@ enum nl80211_attrs {
- 
- 	NL80211_ATTR_MLO_LINK_DISABLED,
- 
-+	NL80211_ATTR_PTK_REKEY_INTERVAL,
-+	NL80211_ATTR_GTK_REKEY_INTERVAL,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 569234bc2be6..9c4b2da8f269 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -10892,6 +10892,17 @@ static int nl80211_crypto_settings(struct cfg80211_registered_device *rdev,
- 	else
- 		settings->sae_pwe = NL80211_SAE_PWE_UNSPECIFIED;
- 
-+	if (info->attrs[NL80211_ATTR_PTK_REKEY_INTERVAL] ||
-+	    info->attrs[NL80211_ATTR_GTK_REKEY_INTERVAL]) {
-+		if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+					NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK))
-+			return -EINVAL;
-+		if (info->attrs[NL80211_ATTR_PTK_REKEY_INTERVAL])
-+			settings->ptk_rekey_interval = nla_get_u32(info->attrs[NL80211_ATTR_PTK_REKEY_INTERVAL]);
-+		else
-+			settings->gtk_rekey_interval = nla_get_u32(info->attrs[NL80211_ATTR_GTK_REKEY_INTERVAL]);
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.38.1
+Regards,
+Arend
 
+> Here is the output after the first reconnect:
+> 
+> [   98.820098] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [   98.820135] ------------[ cut here ]------------
+> [   98.820145] WARNING: CPU: 3 PID: 469 at
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:8073
+> brcmf_cfg80211_dump_survey+0x330/0x348 [brcmfmac]
+> [   98.820256] Modules linked in: aes_arm aes_generic cmac brcmfmac_wcc
+> vc4 brcmfmac snd_soc_hdmi_codec brcmutil snd_soc_core sha256_generic
+> ac97_bus libsha256 snd_pcm_dmaengine sha256_arm snd_pcm cfg80211
+> hci_uart snd_timer btbcm snd bluetooth soundcore onboard_usb_hub
+> drm_dma_helper ecdh_generic ecc libaes raspberrypi_hwmon bcm2835_thermal
+> microchip lan78xx crc32_arm_ce
+> [   98.820459] CPU: 3 PID: 469 Comm: wpa_supplicant Not tainted
+> 6.6.0-15494-g6bc986ab839c-dirty #136
+> [   98.820476] Hardware name: BCM2835
+> [   98.820495]  unwind_backtrace from show_stack+0x10/0x14
+> [   98.820534]  show_stack from dump_stack_lvl+0x40/0x4c
+> [   98.820564]  dump_stack_lvl from __warn+0x7c/0x124
+> [   98.820600]  __warn from warn_slowpath_fmt+0x170/0x178
+> [   98.820636]  warn_slowpath_fmt from
+> brcmf_cfg80211_dump_survey+0x330/0x348 [brcmfmac]
+> [   98.820749]  brcmf_cfg80211_dump_survey [brcmfmac] from
+> nl80211_dump_survey+0x174/0x2bc [cfg80211]
+> [   98.821014]  nl80211_dump_survey [cfg80211] from genl_dumpit+0x38/0x74
+> [   98.821185]  genl_dumpit from netlink_dump+0x158/0x334
+> [   98.821211]  netlink_dump from __netlink_dump_start+0x1bc/0x27c
+> [   98.821234]  __netlink_dump_start from genl_rcv_msg+0x148/0x358
+> [   98.821259]  genl_rcv_msg from netlink_rcv_skb+0xb4/0x10c
+> [   98.821285]  netlink_rcv_skb from genl_rcv+0x24/0x34
+> [   98.821310]  genl_rcv from netlink_unicast+0x1f4/0x2d0
+> [   98.821336]  netlink_unicast from netlink_sendmsg+0x1cc/0x454
+> [   98.821361]  netlink_sendmsg from ____sys_sendmsg+0xa0/0x26c
+> [   98.821393]  ____sys_sendmsg from ___sys_sendmsg+0x68/0x94
+> [   98.821428]  ___sys_sendmsg from sys_sendmsg+0x4c/0x88
+> [   98.821466]  sys_sendmsg from ret_fast_syscall+0x0/0x54
+> [   98.821495] Exception stack(0xf10f9fa8 to 0xf10f9ff0)
+> [   98.821512] 9fa0:                   00247210 00247628 00000004
+> bed3d8c8 00000000 00000000
+> [   98.821530] 9fc0: 00247210 00247628 00247198 00000128 b6f32000
+> bed3d994 00000001 00000004
+> [   98.821543] 9fe0: 0000006c bed3d880 b6f175bc b6a7a970
+> [   98.821554] ---[ end trace 0000000000000000 ]---
+> [   98.821566] brcmfmac: brcmf_set_channel: set chanspec 0xd022 fail,
+> reason -52
+> [   98.930254] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [   98.930287] brcmfmac: brcmf_set_channel: set chanspec 0xd026 fail,
+> reason -52
+> [   99.040104] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [   99.040134] brcmfmac: brcmf_set_channel: set chanspec 0xd02a fail,
+> reason -52
+> [   99.150242] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [   99.150279] brcmfmac: brcmf_set_channel: set chanspec 0xd02e fail,
+> reason -52
+> [  100.910174] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [  100.910211] brcmfmac: brcmf_set_channel: set chanspec 0xd090 fail,
+> reason -52
+> [  115.670205] net_ratelimit: 10 callbacks suppressed
+> [  115.670232] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [  115.670259] brcmfmac: brcmf_set_channel: set chanspec 0xd022 fail,
+> reason -52
+> [  115.780284] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [  115.780313] brcmfmac: brcmf_set_channel: set chanspec 0xd026 fail,
+> reason -52
+> [  115.890261] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [  115.890296] brcmfmac: brcmf_set_channel: set chanspec 0xd02a fail,
+> reason -52
+> [  116.000283] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [  116.000313] brcmfmac: brcmf_set_channel: set chanspec 0xd02e fail,
+> reason -52
+> [  117.760217] ieee80211 phy0: brcmf_fil_cmd_data: Firmware error: (-20)
+> [  117.760253] brcmfmac: brcmf_set_channel: set chanspec 0xd090 fail,
+> reason -52
+> 
+>>
+>> Regards
+>>>
+>>> Regards,
+>>> Arend
+>>>
+>>>> Best regards
+>>>>
+>>>> [1] -
+>>>> https://lore.kernel.org/linux-wireless/2635fd4f-dfa0-1d87-058b-e455cee96750@i2se.com/
+>>>>
+>>>> [2] -
+>>>> https://lore.kernel.org/linux-wireless/2635fd4f-dfa0-1d87-058b-e455cee96750@i2se.com/
+>>>>
+>>>
+>>>
+>>>
+>>
+> 
 
---000000000000ace79f060a04cc38
+--0000000000008710bd060a050d9f
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Description: S/MIME Cryptographic Signature
 
-MIIQagYJKoZIhvcNAQcCoIIQWzCCEFcCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-gg3BMIIFDTCCA/WgAwIBAgIQeEqpED+lv77edQixNJMdADANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+MIIQdwYJKoZIhvcNAQcCoIIQaDCCEGQCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+gg3OMIIFDTCCA/WgAwIBAgIQeEqpED+lv77edQixNJMdADANBgkqhkiG9w0BAQsFADBMMSAwHgYD
 VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
 AxMKR2xvYmFsU2lnbjAeFw0yMDA5MTYwMDAwMDBaFw0yODA5MTYwMDAwMDBaMFsxCzAJBgNVBAYT
 AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBS
@@ -214,39 +291,40 @@ M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
 Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
 14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
 a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
-XzCCBUkwggQxoAMCAQICDBhVVq9XaSHrnhQTpzANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
+XzCCBVYwggQ+oAMCAQICDE79bW6SMzVJMuOi1zANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
 RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
-UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAxMzU2MzlaFw0yNTA5MTAxMzU2MzlaMIGM
+UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAxMTQzMjNaFw0yNTA5MTAxMTQzMjNaMIGV
 MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
-BgNVBAoTDUJyb2FkY29tIEluYy4xFDASBgNVBAMTC0ppdGh1IEphbmNlMScwJQYJKoZIhvcNAQkB
-FhhqaXRodS5qYW5jZUBicm9hZGNvbS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
-AQDQjZIkE6Gx9Y+DWz6jt7+wX/+tspCYqi2+cp8Yi8ToETLRFLalsTfwdLwk9qB/8sBsXwvcDRf0
-uJPkhr8Rrwg5HGMfYEnLdYjOjS3kFPX0tTk5lb6RSAYY9gWTiAE6gsfzROm9QKCHzYNcCaYZl36y
-4wyArr7cIWiXnlRsDb8hF/8m93POfn0OXOWJE9gJbTuzV6sWeiGpi4+RVqq/mvMLYANI1SCnEXJH
-mpwrn0/6Sf3DEFfysFSvrnhOv7DRZ1OuvLvE6won+W2My2cUk/GwsJigcfVOIeW+6k8HqYoeS5Gv
-DqYgzE2mJ/xRXZNMUqRea8CP9NUSkK5n5JKnGBMFAgMBAAGjggHZMIIB1TAOBgNVHQ8BAf8EBAMC
-BaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJlLmdsb2JhbHNp
-Z24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYIKwYBBQUHMAGG
-NWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwME0G
-A1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxz
-aWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqGOGh0dHA6Ly9j
-cmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3JsMCMGA1UdEQQc
-MBqBGGppdGh1LmphbmNlQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNVHSME
-GDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQUUOaotQ254RGCyTOE3GmUYiOr6xQw
-DQYJKoZIhvcNAQELBQADggEBAJQEmVAg5gHetC6cEpTOOkvxmlpVDUvrqLSJdclgVyEj1rM+Qc4q
-VrkDMnRI9JpQ0XgPi+/oebdZ7NcqPnvkNyz1hU9T4i5KwG93YEvqKND02+TrR9TvNCqNhDV3v6qU
-8aXoDtJuqSlkH8em+nzdVbHwp/4M9XNfKY2IaItl3wPDs1Ti4D6OewXG+hSmcsvbclgSvZTJnIJI
-It9h7f+sXIxBghRNL631e4HsXTIi2U7EM1cnNupsDm6wZzg9O4bVtYexIi1fSy3xbOn+bxJOI4dM
-pgEAAsnH2RekyBDHAWHW7qp7P+AXkLoNrQlGqs3r8W2eNgrwcxLphpakQ29LvhMxggJtMIICaQIB
-ATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhH
-bG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwYVVavV2kh654UE6cwDQYJ
-YIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIGFFTYex9pARsBaPQuMnCv0RbqfVKICif2SF
-39W+XdlkMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIzMTExMzA4
-NTMxMFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFl
-AwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATAN
-BgkqhkiG9w0BAQEFAASCAQCqaMqF+yoH6JYy+lNnK4fK5HvTyPTyDInFisN/ru1OZD6Ql+pwvZ0m
-nbywTwgGvFmIP1d6F6Q7Mmf348JWRCPpfgVW1X18TKjI4OemNwfpv0Bcoo4QZKQQpIxi6I49VWOH
-78c7zco6lanPAOBkRmtnAprvJPG3LbclWxstJuPmJlYh2GHrdJYIWsv1qdw0D0l85J9dz84jRLOm
-0y3OpscWAMBYNcc4TkzmYSVPiY1CMtde8Q20WaqmdMLtWPlmKlmJ+uoNAH4xg9Dq9fWaiphblKOc
-pJXr48aGRrYQQ/OSQ8GW9Uz4xVqj9qNdI9LzmVKrMjl9T8qDstGcINxHB+Mx
---000000000000ace79f060a04cc38--
+BgNVBAoTDUJyb2FkY29tIEluYy4xGTAXBgNVBAMTEEFyZW5kIFZhbiBTcHJpZWwxKzApBgkqhkiG
+9w0BCQEWHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IB
+DwAwggEKAoIBAQDxOB8Yu89pZLsG9Ic8ZY3uGibuv+NRsij+E70OMJQIwugrByyNq5xgH0BI22vJ
+LT7VKCB6YJC88ewEFfYi3EKW/sn6RL16ImUM40beDmQ12WBquJRoxVNyoByNalmTOBNYR95ZQZJw
+1nrzaoJtK0XIsv0dNCUcLlAc+jHkngD+I0ptVuWoMO1BcJexqJf5iX2M1CdC8PXTh9g4FIQnG2mc
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAdQGhjow5bRmDgRBRE
+OhR1IEs2nO1yk3zWLXx8m1TwizAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzExMTMwOTExMThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEATqALPtRUc7yO8SQ043AFHNDL3Ahp1a3g1f5l
+pYiFXv0wM9GgG2X48MCPyYYnyuKWHshfVKh4OQSPbTcLBOuWNl9y0522Gli9mVHRuMSB9NgFK3Zo
+uaot5+lA/gAG6CYiKIpf/pK58WBqMQr8qmpeKBXJucqubPozQRrub9+aX3AwgH4dbR3jRGmd8iha
+uQW+rRa9S42DFAs7X01JpM1FamFKm6ULWOoaPo/Bml0FubCrZPEdeoKlSavrSVEfOdAWWYaLEK4W
+FkYY+6sbcFA23WSiKrDjLCT0VDvj/el4XZDKV0WV1MJxe3WmtEkyVhwAgppV4PGyrZvVOPRxusVa
+0A==
+--0000000000008710bd060a050d9f--
