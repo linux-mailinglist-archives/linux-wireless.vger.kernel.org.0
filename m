@@ -2,94 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 114CA7E9FE2
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 16:23:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 369C37EA01B
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 16:35:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231435AbjKMPXe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Nov 2023 10:23:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52880 "EHLO
+        id S230106AbjKMPf4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Nov 2023 10:35:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231225AbjKMPXd (ORCPT
+        with ESMTP id S230034AbjKMPfz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Nov 2023 10:23:33 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4474D67
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 07:23:30 -0800 (PST)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ADAWGFN021308;
-        Mon, 13 Nov 2023 15:23:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=mQkIctUny5Z7pkWEIrabujEW1CfB+ASyHKeol1dt3rk=;
- b=VK/ogdzmTZ/GNVPyL/6ue9g1MvwuQ+ID6KKhGVEYDRTPCs5cb3J4rmAdzy4onjrQWKBJ
- HdMaGUkFV1UdpjBB6kCLMy+x68vNVTRKmoHxgTDsAsXmUt2pN+NRVvECk4D/r7WyrtYD
- vXpzaveI68p/5P4dQXLM4EnFTCslGTVi7qTjhb2p5YRxwijEpb6rMJmQ6ZpIZoBY4LkE
- 6MNGRWtxR4zNIQujbciwKJAp2Zk3gq1Y4qppRnAeh5EtreWkUPJZ8pzmk/8YsHAOgOOK
- ZbpavxWIzlV/zqKBbZwqV2deF1HbfCxtrRU/+J5WNBo+4xNHj7g8f9YoM5Q0nzl6LRPE lA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3u9yanc73v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 13 Nov 2023 15:23:29 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3ADFNSYB005804
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 13 Nov 2023 15:23:28 GMT
-Received: from [10.110.49.55] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Mon, 13 Nov
- 2023 07:23:28 -0800
-Message-ID: <13544bcb-9c8b-49cd-9b43-ebe2d2b96778@quicinc.com>
-Date:   Mon, 13 Nov 2023 07:23:27 -0800
+        Mon, 13 Nov 2023 10:35:55 -0500
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E388AC2
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 07:35:52 -0800 (PST)
+Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-41cd8bd5727so27172841cf.3
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 07:35:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699889752; x=1700494552; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/qRHNLJQLqgBuhA+bGh1CdRxwGlPm5c6onmqi8Aufi4=;
+        b=dHxDHt/y3MeSjoXvDWBRdaby6NrPyNeiPK1aUlSsDue/Z8ajI9vTCczBXAiwmd2LR4
+         hxxugc94TGGAtCnlnXkl4e1/x6gnkBK8HmqFrj4dWnMYGMrHEMpAvzqQlgQ4vxvQciDJ
+         YYNjcpLdr13t/kWPTe1XnSShDQCbLE9C80YDf3DwfKSY8ltsaS+emqGQK1EfJyLBBOS/
+         u9xMliw2lkMvNTCLmN1GE3DGBGj+gQTAQwVfM8+ZoFgqvnDE0f7QfP4fImgwlJXm0o1O
+         3KgHS4cHkniktu6j/QPUgZ9EdP/UG1KXNZkmYa7I3F8OZFlMJBlmoYfMipf8gwDCp/sJ
+         GS3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699889752; x=1700494552;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/qRHNLJQLqgBuhA+bGh1CdRxwGlPm5c6onmqi8Aufi4=;
+        b=biGDc15sg8YQU8/W/OqoDGWndoca5C/nHdRfGr1BqLz202r1STQYu1twHtSSBKk6Jd
+         ZMSxKoVmQYfxqMfg4tWaHCWcmf3IkekNJAhDRnPm1bL9RjKAP/JT3GAMbm8NuV7ami72
+         cpiSLMD8gddT1/BrlGS1KjB/6wieWSBsAiA30A0P8fPmAjGd6p1oZ/zhnQ6wrH/gh1XI
+         3GHVb0K33VtHNllE2Gm7RJzB5IjqiPKt2Rb2j0u8DFZ6qZjlv/h9L0MNFSyI7Xb/3YAx
+         Gd2zY/2/07Mg7vyXp0x4zkoF+fa7VmFOWiMoQCf3djAHZeiczFpUDOqaTbKybXT20g6E
+         mWxw==
+X-Gm-Message-State: AOJu0YzGfau89pMzpd8XKj7yyuCD84Lwl3nlVELkYcozXBKFc92zkilC
+        cGrk19ZN7/9lf9lOsrXjwU8oBnolnWU=
+X-Google-Smtp-Source: AGHT+IH9spqrhUQpN9rLxm+6OxRlqrfvw1OLSAXH0D6fkHFjruwlInYzdjWSnFfe7qOJXFm5qONoHg==
+X-Received: by 2002:a05:622a:1451:b0:41e:a8ab:3c73 with SMTP id v17-20020a05622a145100b0041ea8ab3c73mr7846568qtx.41.1699889751731;
+        Mon, 13 Nov 2023 07:35:51 -0800 (PST)
+Received: from LOCLAP699.rst-02.locus (50-78-19-50-static.hfc.comcastbusiness.net. [50.78.19.50])
+        by smtp.gmail.com with ESMTPSA id o2-20020ac841c2000000b0041803dfb240sm2016794qtm.45.2023.11.13.07.35.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Nov 2023 07:35:51 -0800 (PST)
+From:   James Prestwood <prestwoj@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     James Prestwood <prestwoj@gmail.com>
+Subject: [PATCH 1/2] wifi: ath11k: use select for CRYPTO_MICHAEL_MIC
+Date:   Mon, 13 Nov 2023 07:35:43 -0800
+Message-Id: <20231113153544.282461-1-prestwoj@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] wifi: ath12k: refactor DP Rxdma ring structure
-Content-Language: en-US
-To:     Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20231111043934.20485-1-quic_periyasa@quicinc.com>
- <20231111043934.20485-5-quic_periyasa@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231111043934.20485-5-quic_periyasa@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: A4fYoinMQiryO-GZk9ZmBKgvCeW6YqJR
-X-Proofpoint-GUID: A4fYoinMQiryO-GZk9ZmBKgvCeW6YqJR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-13_06,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- malwarescore=0 phishscore=0 mlxscore=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 mlxlogscore=674 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311130125
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/10/2023 8:39 PM, Karthikeyan Periyasamy wrote:
-> Currently data path Rxdma ring structure store the IDR buffer and lock.
-> These IDR handling is needed only for SW cookie conversion and not
-> needed for HW cookie conversion. REO Rxdma ring use the HW cookie
-> conversion and monitor Rxdma ring use the SW cookie conversion.
-> Since idr not needed for REO Rxdma ring, remove the IDR data entity
-> from the data path Rxdma ring structure. Introduce the new data path ring
-> structure for monitor rxmda rings since it need IDR data entity.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00125-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Let ath11k select this option automatically which makes building
+more intuitive if the user enables this driver (rather than the
+driver not building unless CRYPTO_MICAEL_MIC is explicitly enabled)
+
+Signed-off-by: James Prestwood <prestwoj@gmail.com>
+---
+ drivers/net/wireless/ath/ath11k/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/Kconfig b/drivers/net/wireless/ath/ath11k/Kconfig
+index ad5cc6cac05b..27f0523bf967 100644
+--- a/drivers/net/wireless/ath/ath11k/Kconfig
++++ b/drivers/net/wireless/ath/ath11k/Kconfig
+@@ -2,7 +2,7 @@
+ config ATH11K
+ 	tristate "Qualcomm Technologies 802.11ax chipset support"
+ 	depends on MAC80211 && HAS_DMA
+-	depends on CRYPTO_MICHAEL_MIC
++	select CRYPTO_MICHAEL_MIC
+ 	select ATH_COMMON
+ 	select QCOM_QMI_HELPERS
+ 	help
+-- 
+2.25.1
 
