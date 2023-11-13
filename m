@@ -2,135 +2,251 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDB4A7E96EB
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 08:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B7367E9814
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Nov 2023 09:53:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233176AbjKMHHs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Nov 2023 02:07:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56942 "EHLO
+        id S230015AbjKMIxO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Nov 2023 03:53:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233190AbjKMHHq (ORCPT
+        with ESMTP id S229817AbjKMIxN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Nov 2023 02:07:46 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D55410F2
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Nov 2023 23:07:43 -0800 (PST)
-X-UUID: 5395b3c681f311ee8051498923ad61e6-20231113
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Z+1z+INgSpEVU5Co74aO5rGjZbWWz/zN2KZmmWyWREU=;
-        b=mG8TzTp6XsiPazY4UVjqklpESWc0I9tVjrqZXjVvQHpQk7Y+oyb5DpjHJ7L0Zmg40sfktUgYi2yOtFrcdi2QQngS54lXxYDkalRSAWdOlBJy1ai4R4pcn18HEXdUYDLEf4SWOvsNtxJMmdq+7npUnKBPCI+SXd/ZiRz7s9Jy4JU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:a47f1c66-77d1-4f64-a1e3-6b017a4b7702,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:364b77b,CLOUDID:f5439572-1bd3-4f48-b671-ada88705968c,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-        NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 5395b3c681f311ee8051498923ad61e6-20231113
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 538473182; Mon, 13 Nov 2023 15:07:37 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 13 Nov 2023 15:07:35 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 13 Nov 2023 15:07:35 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <Bo.Jiao@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 8/8] wifi: mt76: mt7996: add PCI IDs for mt7992
-Date:   Mon, 13 Nov 2023 15:06:19 +0800
-Message-ID: <20231113070619.19964-9-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20231113070619.19964-1-shayne.chen@mediatek.com>
-References: <20231113070619.19964-1-shayne.chen@mediatek.com>
+        Mon, 13 Nov 2023 03:53:13 -0500
+Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0E6D79
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 00:53:10 -0800 (PST)
+Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-35930447ae9so15324735ab.2
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 00:53:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1699865590; x=1700470390; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=32gub2dZr5/iGUHKrY/AaUWgxAA88sOmxu3+/OmBjms=;
+        b=T1vOXdNhIEGjQIMv9w2Ws1LhPrCq0+O2DGxLzTO7oIQ3JkxLtd0kyjOLktgWS7r6+6
+         IPnF/wy3f3fgVPrOy18gHkJZ+yHog5K/Z/XVWz3GmPXKVTdMHqwu7Z7/Ql9u7h7DWcfJ
+         lelC//L+t0gvT9UevUIOSQdmoydZ6FDMAGaz8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699865590; x=1700470390;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=32gub2dZr5/iGUHKrY/AaUWgxAA88sOmxu3+/OmBjms=;
+        b=jWBAJskJ0zt71sIlVoaNROYOach4K5qf92WVpK/qBWcfKBiCUzGKS2rvUbckNah2Ui
+         6ob0cxKbaYQTsv2kZcjDwv02G4Yu92ji+kOkkoFN/KaB2jKD0YxsKgmqwdUKnlknVqeS
+         z70pcAUHdBWN1LzAvREXUJh5oZK0kLRHoWD3mnfpb9sUqqB5ejqbi94tfl/Vmxvmehr1
+         W24NWAlPefLqvlSTN9DoNTJYsz5lMq6VdJnSDQXwSFnaVQ8p/TSViny1Wt2Izo8LgHkg
+         rb7GhdZNbp4QFH7vPbGH3nMagPG34J10VqBPVAx7o36/qUeSuZvEpfEgTCH8580X909G
+         NVNA==
+X-Gm-Message-State: AOJu0YxGG8TqQyvaxpZL0eD62DLcyIQDgZ8wo2Gc8+aj3Rklxc6/TPEy
+        sL3/Db2lM33IDo7LonSDLUjGC5KS8DaqNbYdmLI=
+X-Google-Smtp-Source: AGHT+IGZ2g11yhXi4svo2ILo7ayRKuhsxMBEcAYtKUlFqFrhVyi5Ek0u6UAq0GBWn797VpEl0EAnfQ==
+X-Received: by 2002:a05:6e02:188f:b0:351:5b43:5ecd with SMTP id o15-20020a056e02188f00b003515b435ecdmr9358071ilu.14.1699865589983;
+        Mon, 13 Nov 2023 00:53:09 -0800 (PST)
+Received: from C02F22LSML85.dhcp.broadcom.net ([192.19.252.250])
+        by smtp.gmail.com with ESMTPSA id x24-20020aa784d8000000b00692cb1224casm3461582pfn.183.2023.11.13.00.53.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Nov 2023 00:53:08 -0800 (PST)
+From:   Jithu Jance <jithu.jance@broadcom.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, vinayak.yadawad@broadcom.com,
+        Jithu Jance <jithu.jance@broadcom.com>
+Subject: [PATCH 1/1] wifi: nl80211: Add PTK/GTK rekey interval attributes for APs supporting PSK offload
+Date:   Mon, 13 Nov 2023 14:22:24 +0530
+Message-Id: <20231113085224.75642-1-jithu.jance@broadcom.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--5.044900-8.000000
-X-TMASE-MatchedRID: x6uIgBUWMEwxFdXyW/P+XRWCVBr+Ay98mdrHMkUHHq//mpvOG+QCxPlY
-        oV6p/cSxy6Vu04JxfRLZGGE6hr7LujlcyhHfhEXKPlrzaogdiJxPZ8WbDkfxU5soi2XrUn/Jn6K
-        dMrRsL14qtq5d3cxkNZd/mwLf2BVUrc/mcXcLg2DTP0jAC4C89bUdrRJhMJpw342XdyXrs++UTG
-        VAhB5EbQ==
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--5.044900-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: DC0FF7A9E4AE2A53B0686656EBC82C2B16FCA1A6479720B36FBA445F16875C242000:8
-X-MTK:  N
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,RDNS_NONE,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000ace79f060a04cc38"
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_NO_TEXT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+--000000000000ace79f060a04cc38
+Content-Transfer-Encoding: 8bit
 
-Add PCI device IDs to enable mt7992 chipsets support.
+This patch adds attributes to NL80211_CMD_START_AP that the user application
+can use to pass down PTK/GTK rekey interval times to the driver. If driver can't
+support the configuration, it is expected to return failure to NL8011_CMD_START_AP.
+The rekey interval timings are to be passed in seconds.
 
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Jithu Jance <jithu.jance@broadcom.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/pci.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/net/cfg80211.h       |  6 ++++++
+ include/uapi/linux/nl80211.h | 13 +++++++++++++
+ net/wireless/nl80211.c       | 11 +++++++++++
+ 3 files changed, 30 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-index baa5fb97a121..a35939cbf3bf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-@@ -17,11 +17,13 @@ static u32 hif_idx;
- 
- static const struct pci_device_id mt7996_pci_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7990) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7992) },
- 	{ },
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index b137a33a1b68..459e29d4d766 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1218,6 +1218,10 @@ struct survey_info {
+  *
+  *	NL80211_SAE_PWE_BOTH
+  *	  Allow either hunting-and-pecking loop or hash-to-element
++ * @ptk_rekey_interval: PTK rekey interval in seconds for drivers supporting
++ *	AP 4 way handshake offload.
++ * @gtk_rekey_interval: GTK rekey interval in seconds for drivers supporting
++ *	AP 4 way handshake offload.
+  */
+ struct cfg80211_crypto_settings {
+ 	u32 wpa_versions;
+@@ -1235,6 +1239,8 @@ struct cfg80211_crypto_settings {
+ 	const u8 *sae_pwd;
+ 	u8 sae_pwd_len;
+ 	enum nl80211_sae_pwe_mechanism sae_pwe;
++	u32 ptk_rekey_interval;
++	u32 gtk_rekey_interval;
  };
  
- static const struct pci_device_id mt7996_hif_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7991) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x799a) },
- 	{ },
- };
+ /**
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index dced2c49daec..1bc4650efed1 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -205,6 +205,10 @@
+  * preshared key material is provided, for example when that driver does
+  * not support setting the temporal keys through %NL80211_CMD_NEW_KEY.
+  *
++ * NL80211_CMD_START_AP can optionally carry %NL80211_ATTR_GTK_REKEY_INTERVAL
++ * and %NL80211_ATTR_PTK_REKEY_INTERVAL to pass down user configured values to
++ * the driver.
++ *
+  * For 802.1X the PMK or PMK-R0 are set by providing %NL80211_ATTR_PMK
+  * using %NL80211_CMD_SET_PMK. For offloaded FT support also
+  * %NL80211_ATTR_PMKR0_NAME must be provided.
+@@ -2826,6 +2830,12 @@ enum nl80211_commands {
+  * @NL80211_ATTR_MLO_LINK_DISABLED: Flag attribute indicating that the link is
+  *	disabled.
+  *
++ * @NL80211_ATTR_PTK_REKEY_INTERVAL: PTK refresh interval in seconds for drivers
++ * supporting NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK.
++ *
++ * @NL80211_ATTR_GTK_REKEY_INTERVAL: GTK refresh interval in seconds for drivers
++ * supporting NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3364,6 +3374,9 @@ enum nl80211_attrs {
  
-@@ -60,7 +62,9 @@ static void mt7996_put_hif2(struct mt7996_hif *hif)
- static struct mt7996_hif *mt7996_pci_init_hif2(struct pci_dev *pdev)
- {
- 	hif_idx++;
--	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL))
+ 	NL80211_ATTR_MLO_LINK_DISABLED,
+ 
++	NL80211_ATTR_PTK_REKEY_INTERVAL,
++	NL80211_ATTR_GTK_REKEY_INTERVAL,
 +
-+	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL) &&
-+	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x799a, NULL))
- 		return NULL;
+ 	/* add attributes here, update the policy in nl80211.c */
  
- 	writel(hif_idx | MT_PCIE_RECOG_ID_SEM,
-@@ -113,7 +117,7 @@ static int mt7996_pci_probe(struct pci_dev *pdev,
+ 	__NL80211_ATTR_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 569234bc2be6..9c4b2da8f269 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10892,6 +10892,17 @@ static int nl80211_crypto_settings(struct cfg80211_registered_device *rdev,
+ 	else
+ 		settings->sae_pwe = NL80211_SAE_PWE_UNSPECIFIED;
  
- 	mt76_pci_disable_aspm(pdev);
++	if (info->attrs[NL80211_ATTR_PTK_REKEY_INTERVAL] ||
++	    info->attrs[NL80211_ATTR_GTK_REKEY_INTERVAL]) {
++		if (!wiphy_ext_feature_isset(&rdev->wiphy,
++					NL80211_EXT_FEATURE_4WAY_HANDSHAKE_AP_PSK))
++			return -EINVAL;
++		if (info->attrs[NL80211_ATTR_PTK_REKEY_INTERVAL])
++			settings->ptk_rekey_interval = nla_get_u32(info->attrs[NL80211_ATTR_PTK_REKEY_INTERVAL]);
++		else
++			settings->gtk_rekey_interval = nla_get_u32(info->attrs[NL80211_ATTR_GTK_REKEY_INTERVAL]);
++	}
++
+ 	return 0;
+ }
  
--	if (id->device == 0x7991)
-+	if (id->device == 0x7991 || id->device == 0x799a)
- 		return mt7996_pci_hif2_probe(pdev);
- 
- 	dev = mt7996_mmio_probe(&pdev->dev, pcim_iomap_table(pdev)[0],
 -- 
-2.39.2
+2.38.1
 
+
+--000000000000ace79f060a04cc38
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+mpwrn0/6Sf3DEFfysFSvrnhOv7DRZ1OuvLvE6won+W2My2cUk/GwsJigcfVOIeW+6k8HqYoeS5Gv
+DqYgzE2mJ/xRXZNMUqRea8CP9NUSkK5n5JKnGBMFAgMBAAGjggHZMIIB1TAOBgNVHQ8BAf8EBAMC
+BaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJlLmdsb2JhbHNp
+Z24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYIKwYBBQUHMAGG
+NWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwME0G
+A1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxz
+aWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqGOGh0dHA6Ly9j
+cmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3JsMCMGA1UdEQQc
+MBqBGGppdGh1LmphbmNlQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNVHSME
+GDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQUUOaotQ254RGCyTOE3GmUYiOr6xQw
+DQYJKoZIhvcNAQELBQADggEBAJQEmVAg5gHetC6cEpTOOkvxmlpVDUvrqLSJdclgVyEj1rM+Qc4q
+VrkDMnRI9JpQ0XgPi+/oebdZ7NcqPnvkNyz1hU9T4i5KwG93YEvqKND02+TrR9TvNCqNhDV3v6qU
+8aXoDtJuqSlkH8em+nzdVbHwp/4M9XNfKY2IaItl3wPDs1Ti4D6OewXG+hSmcsvbclgSvZTJnIJI
+It9h7f+sXIxBghRNL631e4HsXTIi2U7EM1cnNupsDm6wZzg9O4bVtYexIi1fSy3xbOn+bxJOI4dM
+pgEAAsnH2RekyBDHAWHW7qp7P+AXkLoNrQlGqs3r8W2eNgrwcxLphpakQ29LvhMxggJtMIICaQIB
+ATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhH
+bG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwYVVavV2kh654UE6cwDQYJ
+YIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIGFFTYex9pARsBaPQuMnCv0RbqfVKICif2SF
+39W+XdlkMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIzMTExMzA4
+NTMxMFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFl
+AwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATAN
+BgkqhkiG9w0BAQEFAASCAQCqaMqF+yoH6JYy+lNnK4fK5HvTyPTyDInFisN/ru1OZD6Ql+pwvZ0m
+nbywTwgGvFmIP1d6F6Q7Mmf348JWRCPpfgVW1X18TKjI4OemNwfpv0Bcoo4QZKQQpIxi6I49VWOH
+78c7zco6lanPAOBkRmtnAprvJPG3LbclWxstJuPmJlYh2GHrdJYIWsv1qdw0D0l85J9dz84jRLOm
+0y3OpscWAMBYNcc4TkzmYSVPiY1CMtde8Q20WaqmdMLtWPlmKlmJ+uoNAH4xg9Dq9fWaiphblKOc
+pJXr48aGRrYQQ/OSQ8GW9Uz4xVqj9qNdI9LzmVKrMjl9T8qDstGcINxHB+Mx
+--000000000000ace79f060a04cc38--
