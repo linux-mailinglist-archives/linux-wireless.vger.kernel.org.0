@@ -2,109 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA3BD7EAB80
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Nov 2023 09:20:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B3927EACC1
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Nov 2023 10:15:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232392AbjKNIUS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Nov 2023 03:20:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52182 "EHLO
+        id S232466AbjKNJPI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Nov 2023 04:15:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232377AbjKNIUR (ORCPT
+        with ESMTP id S231382AbjKNJPE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Nov 2023 03:20:17 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83CE4D4A
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Nov 2023 00:20:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37345C433C7;
-        Tue, 14 Nov 2023 08:20:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699950013;
-        bh=4N7GVjwSCjPbc2a2ptNOVzUWfFh28n3fXrbaDbzETxw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=HyNQGQlMwK2poFbIMOD3ONv7+FrAy5XYxL/MdEfQa/ZxGjzAc1CjGOrZHHDtdER8I
-         dpjezoUbcEw1FjEIIj72QIgnAx1GmAdqVuYQy+FjEqMFZ02IEGpdejAXnQ1VwrFtPs
-         GZWe73tG1PfgDrmifm9XHqqeQbdJgkvVkj24pkcHEimueIMd2nrTV+Hk7fAIdOuvwl
-         45QSNPZ07r3/J9YN5ziUJyCaaRBCk+YMOKQP7arHsN9ByEfSg+MSuKLHh+g/ILOr+G
-         XLXLPTynPlVohfxpPGfsQOEjeJ+DXdhRr5nznKvypzVfzJqttzIn0O8VwI3gDfVoNX
-         2tH6NunlnSGQw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     James Prestwood <prestwoj@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: [PATCH] wifi: ath10k: add support to allow broadcast action
- from RX
-References: <20231017165306.118779-1-prestwoj@gmail.com>
-        <169989062657.3473659.188127753057713210.kvalo@kernel.org>
-        <2033c16c-4d9a-4592-bb81-7a9ad7821576@gmail.com>
-Date:   Tue, 14 Nov 2023 10:20:10 +0200
-In-Reply-To: <2033c16c-4d9a-4592-bb81-7a9ad7821576@gmail.com> (James
-        Prestwood's message of "Mon, 13 Nov 2023 09:27:59 -0800")
-Message-ID: <87wmuk926d.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        Tue, 14 Nov 2023 04:15:04 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57532DD
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Nov 2023 01:15:00 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AE9EoQkA814933, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AE9EoQkA814933
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 Nov 2023 17:14:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Tue, 14 Nov 2023 17:14:51 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 14 Nov
+ 2023 17:14:50 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/3] wifi: rtw89: read country list supporting 6 GHz from BIOS
+Date:   Tue, 14 Nov 2023 17:13:56 +0800
+Message-ID: <20231114091359.50664-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.94]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-James Prestwood <prestwoj@gmail.com> writes:
+A platform might get 6 GHz certifications on certain countries, because
+many countries still don't allow 6 GHz channels yet. To prevent having
+misbehavior on 6 GHz channels, read white or black country list from BIOS
+and configure channels accordingly.
 
-> On 11/13/23 7:50 AM, Kalle Valo wrote:
->> James Prestwood <prestwoj@gmail.com> wrote:
->> 
->>> Advertise support for multicast frame registration and update the RX
->>> filter with FIF_MCAST_ACTION to allow broadcast action frames to be
->>> received. Broadcast action frames are needed for the Device
->>> Provisioning Protocol (DPP) for Presence and PKEX Exchange requests.
->>>
->>> Signed-off-by: James Prestwood <prestwoj@gmail.com>
->>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
->> On what hardware and firmware did you test with this? As there's so
->> many
->> different combinations in ath10k we use Tested-on tag to document that.
->> https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#tested-on_tag
->> As ath10k hardware and firmware can work very differently from each
->> other I'm
->> suspicious if this feature really work in all of them.
->
-> I only tested on a QCA6174 (and I'll add Tested-on for that). This
-> makes sense and maybe enabling unconditionally for all ath10k hardware
-> is the wrong way to go about it.
->
-> Since I don't have the ability to test every hardware combination
-> hopefully someone from atheros can chime in.
+Also, update regulatory map to the latest to support more countries for
+6 GHz channels.
 
-Heh, Atheros is long gone. But your comment made me remember the good
-old times and smile :)
+Zong-Zhe Yang (3):
+  wifi: rtw89: acpi: process 6 GHz band policy from DSM
+  wifi: rtw89: regd: handle policy of 6 GHz according to BIOS
+  wifi: rtw89: regd: update regulatory map to R65-R44
 
-> Is there some firmware/driver value that can be queried which tells me
-> if broadcast RX is supported?
-
-A good question for which I don't have an answer. Does anyone else know?
-
-Do you have a simple test case for this? It would help if people could
-test this feature on their ath10k devices and send us results.
-
-> Or if not is checking ar->hw_rev == ATH10K_HW_QCA6174 good enough? 
-
-BTW instead of checking ar->hw_rev our preference is to add a new
-boolean to struct ath10k_hw_params. That way it's easier to enable and
-disable the feature per hardware version.
-
-> Or are there sub-variants that may or may not support this?
-
-There are several QCA6174 variants and you can check the variants from
-ath10k_hw_params_list. For example, hw2.1 or SDIO firmware may very well
-behave different from the PCI firmware. To be on the safe side I think it's
-best to enable the feature only on the hardware versions we have
-verified to work.
+ drivers/net/wireless/realtek/rtw89/acpi.c  |  81 ++++++++--
+ drivers/net/wireless/realtek/rtw89/acpi.h  |  32 +++-
+ drivers/net/wireless/realtek/rtw89/core.h  |   3 +
+ drivers/net/wireless/realtek/rtw89/debug.h |   1 +
+ drivers/net/wireless/realtek/rtw89/regd.c  | 175 ++++++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/sar.c   |   4 +-
+ 6 files changed, 272 insertions(+), 24 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
