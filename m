@@ -2,90 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C6A7EA7E8
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Nov 2023 01:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0C497EA82C
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Nov 2023 02:24:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbjKNAwj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Nov 2023 19:52:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45696 "EHLO
+        id S229703AbjKNBYT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Nov 2023 20:24:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbjKNAwi (ORCPT
+        with ESMTP id S229659AbjKNBYS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Nov 2023 19:52:38 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398F2D4E
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 16:52:35 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AE0qNNK1459854, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AE0qNNK1459854
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Nov 2023 08:52:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 14 Nov 2023 08:52:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 14 Nov 2023 08:52:23 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Tue, 14 Nov 2023 08:52:23 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: RE: EFUSE in RTW8723DS
-Thread-Topic: EFUSE in RTW8723DS
-Thread-Index: AQHaFBQbaER/+8rOBUK6A5kkYXA52rB4/Z5Q
-Date:   Tue, 14 Nov 2023 00:52:23 +0000
-Message-ID: <748b045e7aaa43eb9a7fb83ad924614f@realtek.com>
-References: <f3505110-b76b-4152-8375-37fa3184d3c1@lwfinger.net>
-In-Reply-To: <f3505110-b76b-4152-8375-37fa3184d3c1@lwfinger.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.94]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 13 Nov 2023 20:24:18 -0500
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B441AA
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 17:24:14 -0800 (PST)
+Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
+        by cmsmtp with ESMTPS
+        id 2eSFrEKMhWcCI2iA1rZfDP; Tue, 14 Nov 2023 01:24:13 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id 2iA0rALWa97pz2iA1rI355; Tue, 14 Nov 2023 01:24:13 +0000
+X-Authority-Analysis: v=2.4 cv=ULDOoQTy c=1 sm=1 tr=0 ts=6552cc3d
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
+ a=n9Sqmae0AAAA:8 a=9VXzpLBs2m9k5JNODz8A:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=UmAUUZEt6-oIqEbegvw9:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=doC+LBatWPId0UyWA3LyXgIK5aM8JnD/Z9O3xHc/vRc=; b=K/VG0wXm1192jg2fa7ctTi3Yim
+        HiR7beYT6gKdFz6CC0KWevnLLnCVcR0woSbwD0MoI/dSkgmgx7d67AHTDp8iWmow5RFNDtrOyvZ/5
+        BTWy3hRnVKvtdDtSnAKWXx56EMj0cLF3nmwUykfCGDqNuAf47bXBwdpV+zSmib6l/aF+w10b8KRix
+        GkaShNn8Hvhei72Y3X3ni+Oix95Fhd6B6iy+fU0ZI5XKC6W3sWKavoEhBjLfedco+YcBhRw6r+poL
+        lpszecQS38OP9ZWpfcOyYaPUaw9DxFMe2efNOkYXUOi3KQ0UrQ6oRyLEPojef9aN2ZpU3VlKc+78V
+        JJchBMUg==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:48806 helo=[192.168.15.10])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.2)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1r2iA0-0026pL-0p;
+        Mon, 13 Nov 2023 19:24:12 -0600
+Message-ID: <192fbb0d-f4f6-4384-98d8-b7422349dafb@embeddedor.com>
+Date:   Mon, 13 Nov 2023 19:23:49 -0600
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] wifi: rtw89: coex: Fix -Wstringop-overflow warnings
+ in _append_tdma()
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
+References: <ZVJ6lRCRaywGktxJ@work>
+ <fd0d79048efa47868173c5fd8950b956@realtek.com>
+Content-Language: en-US
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <fd0d79048efa47868173c5fd8950b956@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1r2iA0-0026pL-0p
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.10]) [187.162.21.192]:48806
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfFpL2vZbhD61LSbp9AFahdD9WuIfHWO6z4+pdJGjNiypzK/pEVkshrEZ+tLWQdVVAcdwwFjpZG87sHtWYJHByTOIaovU7b7AN7c3kZOe8wZfSK/gy1Io
+ /2/9Q69WwWBoEccA3wWL7W08aOF/w78NIQGCWjVtvBAtPegqFiSTNCYdvpqDvY+Hplli7oLqXzY9yEkn1F98aiqzNCSRp0Z8LWJjnCkbI+HKjJi5OtQzmiZK
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTGFycnkgRmluZ2VyIDxs
-YXJyeS5maW5nZXJAZ21haWwuY29tPiBPbiBCZWhhbGYgT2YgTGFycnkgRmluZ2VyDQo+IFNlbnQ6
-IFNhdHVyZGF5LCBOb3ZlbWJlciAxMSwgMjAyMyA0OjI2IEFNDQo+IFRvOiBNYXJ0aW4gQmx1bWVu
-c3RpbmdsIDxtYXJ0aW4uYmx1bWVuc3RpbmdsQGdvb2dsZW1haWwuY29tPg0KPiBDYzogbGludXgt
-d2lyZWxlc3MgPGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZz4NCj4gU3ViamVjdDogRUZV
-U0UgaW4gUlRXODcyM0RTDQo+IA0KPiBNYXJ0aW4sDQo+IA0KPiBUaGUgY29tbWl0IDliZTIwYTgy
-MjMyNyAoIndpZmk6IHJ0dzg4OiBydHc4NzIzZDogSW1wbGVtZW50IFJUTDg3MjNEUyAoU0RJTykN
-Cj4gZWZ1c2UgcGFyc2luZyIpIGluZGljYXRlcyB0aGF0IG5vIGFkZGl0aW9uYWwgaW5mb3JtYXRp
-b24gaXMgZXh0cmFjdGVkIGZyb20gdGhlDQo+IEVGVVNFPyBJcyB0aGF0IHRydWUsIG9yIGRpZCBJ
-IG1pc3JlYWQgdGhlIGNvZGU/DQoNCkkgdGhpbmsgdGhlIGNvbW1pdCBpcyBvbmx5IHRvIHJlYWQg
-TUFDIGFkZHJlc3MgdGhhdCBpcyBwcm9ncmFtbWVkIGluIGRpZmZlcmVudA0KbG9jYXRpb24gZnJv
-bSBQQ0kgaW50ZXJmYWNlLCBhbmQgbm8gbW9yZSBpbmZvcm1hdGlvbi4gDQoNCj4gDQo+IE9uZSBw
-cm9ibGVtIHdlIGFyZSBoYXZpbmcgaXMgdGhhdCBzb21lIGRldmljZXMgY29tZSB3aXRoIHplcm8g
-cHJvZ3JhbW1pbmcgaW4gdGhlDQo+IEVGVVNFLCBhbmQgZXZlbiB3aXRoIHN1cHBseWluZyBhIHZh
-bGlkIE1BQyBhZGRyZXNzLCB0aGUgcGVyZm9ybWFuY2UgaXMgcG9vci4NCg0KT25lIG9yIHR3byB5
-ZWFycyBhZ28sIHBlb3BsZSByZXBvcnRlZCBlZnVzZSBvZiBSVEw4MTkyREUgKElJUkMpIGlzbid0
-IHByb2dyYW1tZWQNCmluIE9wZW5XUlQgcGxhdGZvcm0gb3JpZ2luYWxseS4gVGhhdCBraW5kIG9m
-IHByb2R1Y3QsIGNhbGlicmF0aW9uIHZhbHVlcyBhcmUgc3RvcmVkDQppbiBleHRlcm5hbCBmaWxl
-cyBpbnN0ZWFkLCBhbmQgY2hpcCBpcyBzb2xkZXJlZCBvbiBtYWluIGJvYXJkIGluc3RlYWQgb2Yg
-YQ0Kc2VwYXJhdGVkIGhhcmR3YXJlIG1vZHVsZSBzdWNoIE0uMi4NCg0KTWF5YmUsIHdlIGNhbiBy
-ZWFkIGNhbGlicmF0aW9uIHZhbHVlcyBwcm9ncmFtbWVkIGluIGVmdXNlIGFzIF9kZWZhdWx0XyB2
-YWx1ZXMNCmZyb20gYW5vdGhlciBtb2R1bGUuIFRoaXMgY2FuJ3QgeWllbGQgdGhlIGJlc3QgcGVy
-Zm9ybWFuY2UsIGJ1dCBhdCBsZWFzdCBiZXR0ZXINCnRoYW4gbm90aGluZy4gDQoNClBpbmctS2UN
-Cg0KDQo=
+
+
+On 11/13/23 18:37, Ping-Ke Shih wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> Sent: Tuesday, November 14, 2023 3:36 AM
+>> To: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>
+>> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org; Gustavo A. R. Silva
+>> <gustavoars@kernel.org>; linux-hardening@vger.kernel.org
+>> Subject: [PATCH][next] wifi: rtw89: coex: Fix -Wstringop-overflow warnings in _append_tdma()
+>>
+>> Copy a couple of structures directly, instead of using `memcpy()`.
+>>
+> 
+> wireless-next has taken my patch [1] that is identical to yours.
+
+Great!
+
+I had mine ready on Oct 31, but I was waiting for the merge window to close
+before sending it.
+
+Glad to see that the issue is fixed already. :)
+
+Thanks
+--
+Gustavo
+
+> 
+> [1] https://lore.kernel.org/all/20231102003716.25815-1-pkshih@realtek.com/
+> 
+> 
