@@ -2,168 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 714497EA8E5
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Nov 2023 04:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3B5B7EAA97
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Nov 2023 07:43:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231837AbjKNDCj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Nov 2023 22:02:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43202 "EHLO
+        id S230140AbjKNGnJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Nov 2023 01:43:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231932AbjKNDCh (ORCPT
+        with ESMTP id S229596AbjKNGnI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Nov 2023 22:02:37 -0500
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B31B8D6B
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 19:02:33 -0800 (PST)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-daf26d84100so3765035276.3
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Nov 2023 19:02:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos.org; s=google; t=1699930953; x=1700535753; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gqZzcCxPogZ4weI+Q/ubPKVklfpSz+fQI4/4NWR6BNs=;
-        b=MNwIN7+S2922t8Y93v7bHSAurfQzlAo9+LL8EBRlk0b7Rgu1IVmc083EflU3F6ISWb
-         DLk4zgKHeUBz5L0C5/BrFZUOEMkEuyCt9o4VkMAjPo1Oy6QnnCNOuUUGWJ8vabxmrgS6
-         5Yy71ug34qMBlQtiiqPFqoSHlVEKhyZn2MXlJjrAykszLJMxB51jCNvIIUNcm02u7ZTa
-         aQXfNWe3XwMgqje54/2CEpuep9e0q44KAdY1HlBgzc/N4tz0wChuHx4pFFr3hxXt87AX
-         7xTcWoX0lUrrG4bl0dzlFVDr6Jm0YMEYAHr7nABMwOxrDyF/b26eBhqqCnheHxTU7/l+
-         Ipjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699930953; x=1700535753;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gqZzcCxPogZ4weI+Q/ubPKVklfpSz+fQI4/4NWR6BNs=;
-        b=gII6HrurZqzyl9Nva2xkDiPNi44w0Qlfj+DpsyFuY1WY/U3iZXk/DVaqIL3L/b4+CK
-         bk5h3RzPGWcVLV7d1aa2iKWk3r44ndLK+C0h+73dIgLHchzkyRYQvnPBXvY6Fqo4ziqI
-         hkBGj94Qw2kFk3jSa9SfRaQj7jJPWAJs4ux95GHq236V2b72eqEBH62q7XBBaF4SqrI4
-         v6YHPQ+tPBvvRoGDG5tFJM2HYYSJefecOzRckMq7uyS35+1RlCJlUuQaGCMcpzfi+vVL
-         XJzDO3XFOPW0TtpaeA6zBCx9wWawuqs2LBn469uvVDFZ43hBlkM922eiIcIbEF7ow/LO
-         8GlQ==
-X-Gm-Message-State: AOJu0Yz+NBKP86QvjG5gYFZ2P60XHHSzmTRABGvdEIMcAjryKneH2MD+
-        zHtuNj31Y0U82DS8zx2bhtQ2+Mndr277llVKV7Dt0g==
-X-Google-Smtp-Source: AGHT+IFNwr8wv9JaoJy4GA2VlDpZCYz3yp9rdXiq6e8grWmuklQ6MpUS+TDx59gtLNV45falGTOCSMoZhSnBgFk3RNk=
-X-Received: by 2002:a25:3788:0:b0:da0:4f22:4eda with SMTP id
- e130-20020a253788000000b00da04f224edamr8288087yba.36.1699930952918; Mon, 13
- Nov 2023 19:02:32 -0800 (PST)
-MIME-Version: 1.0
-References: <05390e0b-27fd-4190-971e-e70a498c8221@lwfinger.net>
- <20231113043454.10053-2-jhp@endlessos.org> <2614f3f7a386435ea7d5f989061c7780@realtek.com>
-In-Reply-To: <2614f3f7a386435ea7d5f989061c7780@realtek.com>
-From:   Jian-Hong Pan <jhp@endlessos.org>
-Date:   Tue, 14 Nov 2023 11:01:56 +0800
-Message-ID: <CAPpJ_eeNbq5saQFTq0tz72r05Z4ROSWqn_CNBx=bEpLsd6vT7g@mail.gmail.com>
-Subject: Re: [PATCH v2] rtlwifi: rtl8723be: Disable ASPM if RTL8723BE connects
- to Intel PCI bridge
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Tue, 14 Nov 2023 01:43:08 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 715A1D44;
+        Mon, 13 Nov 2023 22:43:03 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AE6goAQ3719874, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AE6goAQ3719874
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 Nov 2023 14:42:51 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.32; Tue, 14 Nov 2023 14:42:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Tue, 14 Nov 2023 14:42:50 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
+ 15.01.2375.007; Tue, 14 Nov 2023 14:42:50 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Su Hui <suhui@nfschina.com>,
+        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessos.org" <linux@endlessos.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtl8xxxu: correct the error value of 'timeout'
+Thread-Topic: [PATCH] wifi: rtl8xxxu: correct the error value of 'timeout'
+Thread-Index: AQHaFfU176HEg0cqUE+cx76xEkVz7LB5XczQ
+Date:   Tue, 14 Nov 2023 06:42:50 +0000
+Message-ID: <e8b847437ab242d18108d9364360bb8a@realtek.com>
+References: <20231113054917.96894-1-suhui@nfschina.com>
+In-Reply-To: <20231113054917.96894-1-suhui@nfschina.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-originating-ip: [172.21.69.94]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> =E6=96=BC 2023=E5=B9=B411=E6=9C=8814=E6=
-=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8A=E5=8D=889:41=E5=AF=AB=E9=81=93=EF=BC=9A
->
->
->
-> > -----Original Message-----
-> > From: Jian-Hong Pan <jhp@endlessos.org>
-> > Sent: Monday, November 13, 2023 12:35 PM
-> > To: Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih <pkshih@real=
-tek.com>
-> > Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; linu=
-x-kernel@vger.kernel.org;
-> > linux@endlessos.org; Jian-Hong Pan <jhp@endlessos.org>
-> > Subject: [PATCH v2] rtlwifi: rtl8723be: Disable ASPM if RTL8723BE conne=
-cts to Intel PCI bridge
-> >
-> > Disable rtl8723be's ASPM if the Realtek RTL8723BE PCIe Wireless adapter
-> > connects to some Intel PCI bridges, such as Skylake and Kabylake.
-> > Otherwise, the PCI AER flood hangs system:
-> >
-> > pcieport 0000:00:1c.5: PCIe Bus Error: severity=3DCorrected, type=3DPhy=
-sical Layer, (Receiver ID)
-> > pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=3D0000000=
-1/00002000
-> > pcieport 0000:00:1c.5:    [ 0] RxErr                  (First)
-> > pcieport 0000:00:1c.5: AER: Corrected error received: 0000:00:1c.5
-> > pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-> > pcieport 0000:00:1c.5: AER: Corrected error received: 0000:00:1c.5
-> > pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-> > pcieport 0000:00:1c.5: AER: Multiple Corrected error received: 0000:00:=
-1c.5
-> > pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-> >
-> > Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=3D218127
->
-> Seemingly, you can use "Link" or "Closes" tag.
->
-> > Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
->
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
->
->
-> > ---
-> > v2: Add the switch case's default condition with comment:
-> >     "The ASPM has already been enabled by initializing
-> >     rtl8723be_mod_params' aspm_support as 1."
-> >
-> >  .../wireless/realtek/rtlwifi/rtl8723be/sw.c   | 24 +++++++++++++++++++
-> >  1 file changed, 24 insertions(+)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/sw.c
-> > b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/sw.c
-> > index 43b611d5288d..b20c0b9d8393 100644
-> > --- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/sw.c
-> > +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/sw.c
-> > @@ -25,10 +25,34 @@ static void rtl8723be_init_aspm_vars(struct ieee802=
-11_hw *hw)
-> >  {
-> >         struct rtl_priv *rtlpriv =3D rtl_priv(hw);
-> >         struct rtl_pci *rtlpci =3D rtl_pcidev(rtl_pcipriv(hw));
-> > +       struct pci_dev *bridge_pdev;
-> >
-> >         /*close ASPM for AMD defaultly */
-> >         rtlpci->const_amdpci_aspm =3D 0;
-> >
-> > +       /* Disable ASPM if RTL8723BE connects to some Intel PCI bridges=
-, such as
-> > +        * Skylake and Kabylake. Otherwise, the PCI AER flood hangs sys=
-tem.
-> > +        */
-> > +       bridge_pdev =3D rtlpci->pdev->bus->self;
-> > +       if (bridge_pdev->vendor =3D=3D PCI_VENDOR_ID_INTEL) {
-> > +               switch(bridge_pdev->device) {
-> > +               case 0x9d15:
-> > +               /* PCI bridges on Skylake */
-> > +               case 0xa110 ... 0xa11f:
-> > +               case 0xa167 ... 0xa16a:
-> > +               /* PCI bridges on Kabylake */
-> > +               case 0xa290 ... 0xa29f:
-> > +               case 0xa2e7 ... 0xa2ee:
->
-> Out of curiosity, do you have so many real platforms to test?
 
-We have tested those platforms before, because of the hardware
-enablement.  They all have the same error, and the error bothers
-people many years.
-https://groups.google.com/g/fa.linux.kernel/c/0uz8Nr_NVOI
 
-However, most of them are returned back to the owner now.  By
-accident, we keep the ASUS X555UQ equipped with Intel i7-6500U CPU and
-Realtek RTL8723BE PCIe Wireless adapter on hands for more test.
+> -----Original Message-----
+> From: Su Hui <suhui@nfschina.com>
+> Sent: Monday, November 13, 2023 1:49 PM
+> To: Jes.Sorensen@gmail.com; kvalo@kernel.org
+> Cc: Su Hui <suhui@nfschina.com>; linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> kernel-janitors@vger.kernel.org
+> Subject: [PATCH] wifi: rtl8xxxu: correct the error value of 'timeout'
+> 
+> When 'rtl8xxxu_dma_agg_pages <= page_thresh', 'timeout' should equal to
+> 'page_thresh' rather than '4'. Change the code order to fix this problem.
+> 
+> Fixes: 614e389f36a9 ("rtl8xxxu: gen1: Set aggregation timeout (REG_RXDMA_AGG_PG_TH + 1) as well")
 
-Jian-Hong Pan
+I think this should fix
+Fixes: fd83f1227826 ("rtl8xxxu: gen1: Add module parameters to adjust DMA aggregation parameters")
+
+> Signed-off-by: Su Hui <suhui@nfschina.com>
+> ---
+>  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c    | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index 43ee7592bc6e..9cab8b1dc486 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -4757,6 +4757,12 @@ void rtl8xxxu_gen1_init_aggregation(struct rtl8xxxu_priv *priv)
+>          *   RxAggPageTimeout = 4 or 6 (absolute time 34ms/(2^6))
+>          */
+> 
+> +       /* REG_RXDMA_AGG_PG_TH + 1 seems to be the timeout register on
+> +        * gen2 chips and rtl8188eu. The rtl8723au seems unhappy if we
+> +        * don't set it, so better set both.
+> +        */
+> +       timeout = 4;
+> +
+>         page_thresh = (priv->fops->rx_agg_buf_size / 512);
+>         if (rtl8xxxu_dma_agg_pages >= 0) {
+>                 if (rtl8xxxu_dma_agg_pages <= page_thresh)
+
+The logic here is:
+
+	page_thresh = (priv->fops->rx_agg_buf_size / 512);
+	if (rtl8xxxu_dma_agg_pages >= 0) {
+		if (rtl8xxxu_dma_agg_pages <= page_thresh)
+			timeout = page_thresh;
+
+Do you know why 'timeout = page_thresh;'? Intuitively, units of 'timeout' and
+'thresh' are different. Maybe, we should correct here instead?
+
+
