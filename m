@@ -2,92 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7C097EBE2B
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Nov 2023 08:35:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDE047EBEA0
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Nov 2023 09:36:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234648AbjKOHfH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Nov 2023 02:35:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57412 "EHLO
+        id S234679AbjKOIgq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Nov 2023 03:36:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbjKOHfG (ORCPT
+        with ESMTP id S234675AbjKOIgp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Nov 2023 02:35:06 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 688C1E1
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Nov 2023 23:35:02 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2865C433C9;
-        Wed, 15 Nov 2023 07:35:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700033702;
-        bh=GT0hEbHcdnhV9E8kQMfoo+S3PpKbshnIluX+ZHX2Jx0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tUBxUm0pK97Aj7nnaMJh/hTbtCEvoT8dVr5yM1ias4rduvE8PGNJREA+9Vrt+dgOW
-         +kKH5gNLjTAAayCteZD/XkSSxTngPbxMOWEaEsipDJhJ2REOUjUVFKEGsOmyrIYF77
-         ri2qNbfMtoXZaQR2OmxcyS+agb4+kbSpfGK7uCCVNGBqUWN0Fe4R6zdrXFGg+h2gsA
-         OCvZxvuUps9ZVLrZLhGxNEs6sXTyE9KkuueRl4Cyx2xYnFka2b2Tu26DEy1Me/y8dz
-         Kvqt1wb6GBseqkan97QMwT4og26+hJ2qUMEAk+UL7+rBl9qPUbsDE3tCij+aP7rUIt
-         F4nQxLZ8zEhhg==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-        (envelope-from <johan@kernel.org>)
-        id 1r3AQN-0000H1-0L;
-        Wed, 15 Nov 2023 08:34:59 +0100
-Date:   Wed, 15 Nov 2023 08:34:59 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org
-Subject: Re: wifi: mac80211: lockdep splat with 6.7-rc1
-Message-ID: <ZVR0o7Jvp6-zCS7R@hovoldconsulting.com>
-References: <ZVOXX6qg4vXEx8dX@hovoldconsulting.com>
- <02159e92fd1d9a6fd993ae9f913c7ed756b6d3ac.camel@sipsolutions.net>
+        Wed, 15 Nov 2023 03:36:45 -0500
+Received: from mail.tradestry.pl (mail.tradestry.pl [141.94.250.68])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E687810E
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Nov 2023 00:36:42 -0800 (PST)
+Received: by mail.tradestry.pl (Postfix, from userid 1002)
+        id BB518A4B81; Wed, 15 Nov 2023 08:36:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tradestry.pl; s=mail;
+        t=1700037401; bh=Y0HnXqH+26AP5Uq6M8BQXaj1HIAPQY/WndV9tkpAHHU=;
+        h=Date:From:To:Subject:From;
+        b=KrUWxqnTEFqPf54L0wk/PyjP1gp3SBaFddbsd9MaOnHQO8JyHET966ceLpDH+S6f/
+         SXwtUoonVNgAa3VZBMbh+jLq/k5Z8iRIgDqDza1v7zv5U/VLyasGDJzKd1KTeobJ3r
+         0UhQt4SLGvr7Pzjzcif0Axcju6b4FrRVeoYE1Sn05v4NAoCgXl0WxX+vA6bBUivJoq
+         yLGtrEbxd+QDfGKIOymLtY9zo2XlJQ7V8Pt2Zim2t+yDI35rd5HPMUV1pOzW3IkGFM
+         y5rJySI36J7sw6zG/ZSjkPLvFQ2PdJr/bd72UoZNwVGJZ9+N83O5Ylc5NiErXQsPOV
+         v3LOA+Kr7hKqA==
+Received: by mail.tradestry.pl for <linux-wireless@vger.kernel.org>; Wed, 15 Nov 2023 08:36:04 GMT
+Message-ID: <20231115074501-0.1.dp.1kdzd.0.jj5c5nlt2d@tradestry.pl>
+Date:   Wed, 15 Nov 2023 08:36:04 GMT
+From:   "Damian Cichocki" <damian.cichocki@tradestry.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?Q?Pytanie_o_samoch=C3=B3d?=
+X-Mailer: mail.tradestry.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <02159e92fd1d9a6fd993ae9f913c7ed756b6d3ac.camel@sipsolutions.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_05,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_ABUSE_SURBL,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  1.2 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
+        *      blocklist
+        *      [URIs: tradestry.pl]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: tradestry.pl]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [141.94.250.68 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: tradestry.pl]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [141.94.250.68 listed in bl.score.senderscore.com]
+        * -0.5 BAYES_05 BODY: Bayes spam probability is 1 to 5%
+        *      [score: 0.0155]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 14, 2023 at 06:02:33PM +0100, Johannes Berg wrote:
-> On Tue, 2023-11-14 at 16:50 +0100, Johan Hovold wrote:
+Dzie=C5=84 dobry,
 
-> > Naively adding locking around the call in ieee80211_get_tx_power()
-> > (e.g. similar to 6b348f6e34ce ("wifi: mac80211: ethtool: always hold
-> > wiphy mutex")) does not work as there are other paths that call this
-> > function with the lock held, specifically via ieee80211_register_hw().
-> 
-> The latter we can just take the lock I guess?
+Czy interesuje Pa=C5=84stwa rozwi=C4=85zanie umo=C5=BCliwiaj=C4=85ce moni=
+torowanie samochod=C3=B3w firmowych oraz optymalizacj=C4=99 koszt=C3=B3w =
+ich utrzymania?=20
 
-ieee80211_register_hw() is specifically already taking the lock. 
- 
-> > [    7.127780]  ieee80211_get_tx_power+0x19c/0x1c0 [mac80211]
-> > [    7.127859]  nl80211_send_iface+0x208/0x6a4 [cfg80211]
-> > [    7.127946]  nl80211_dump_interface+0x120/0x254 [cfg80211]
-> 
-> And here maybe we should just take the mutex at the nl80211 level.
 
-Yeah, it looks like you can possibly add it to nl80211_dump_interface().
-
-nl80211_send_iface() is already called in paths like:
-
-    ieee80211_get_tx_power+0x28/0x1c0 [mac80211]
-    nl80211_send_iface+0x208/0x6a4 [cfg80211]
-    nl80211_notify_iface+0x58/0xcc [cfg80211]
-    cfg80211_register_wdev+0xa0/0x12c [cfg80211]
-    cfg80211_register_netdevice+0x7c/0x108 [cfg80211]
-    ieee80211_if_add+0x4b0/0x5cc [mac80211]
-    ieee80211_register_hw+0xbec/0xc2c [mac80211]
-
-> That's the nice thing now, it's shared between the layers :)
-> 
-> I can't do it right now, but I'll take a look tomorrow.
-
-Sounds good, thanks.
-
-Johan
+Pozdrawiam,
+Damian Cichocki
