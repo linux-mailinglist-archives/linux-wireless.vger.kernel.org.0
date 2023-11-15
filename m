@@ -2,49 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 348BE7EC803
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Nov 2023 17:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA4F17EC821
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Nov 2023 17:06:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231511AbjKOQA3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Nov 2023 11:00:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43322 "EHLO
+        id S231996AbjKOQGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Nov 2023 11:06:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229784AbjKOQA3 (ORCPT
+        with ESMTP id S231894AbjKOQGP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Nov 2023 11:00:29 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CFE8194
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Nov 2023 08:00:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6AEC433C8;
-        Wed, 15 Nov 2023 16:00:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700064025;
-        bh=oScyJ9KTvIxBPm63+sx7MFVp+HeKppRXpPKIyCGg/68=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GRrdm9bz4B+hH4AvDLZ7ERP2i0pijDhkqdH2x8oEbVMwN1n56R9v0m1X/7qLicAeI
-         Hk3fFzLQ6cNrCD03Ue2OXniAVuh6N3pW6fEBH2Hc02RkF3chnKsM40MYnIjwx5UWJa
-         oZDCofS5HuHb4vN0cJtB1mxWCaGJykobrNUBKWrMkWY4QaEkVgKntSZC7/vAHAfOJb
-         Q2oA7Zvy8VFTINqV5oLgzyvjD5BYM9U5Ii2NBfWM2wgWGM7L84mFVxdI5xY0+bjuOZ
-         CqcNVdyQH5hVsLYGqdWU4XQQ66qQbPSNQ62/p1sgContGOXo6P1WMsV3+TpGqAb8pF
-         xyDOwSG4dvJug==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-        (envelope-from <johan@kernel.org>)
-        id 1r3IJT-0006dG-31;
-        Wed, 15 Nov 2023 17:00:24 +0100
-Date:   Wed, 15 Nov 2023 17:00:23 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH] wifi: cfg80211: hold wiphy mutex for send_interface
-Message-ID: <ZVTrF7xPsf-JseJ5@hovoldconsulting.com>
-References: <20231115130615.b1ccadaf9e13.Ic207e2f99f806e9120278f92fdebc2822842c301@changeid>
+        Wed, 15 Nov 2023 11:06:15 -0500
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 063B395
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Nov 2023 08:06:11 -0800 (PST)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 512AFB80070;
+        Wed, 15 Nov 2023 16:06:08 +0000 (UTC)
+Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 06CCE13C2B0;
+        Wed, 15 Nov 2023 08:01:03 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 06CCE13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1700064064;
+        bh=EmimStlLWzZ1oPQ8Ea8Mt6uvMdSWobvDaIPHtDJdC9U=;
+        h=Date:Subject:To:References:From:In-Reply-To:From;
+        b=OXJphScecvcYCgneudNQk7maz6heMcrA1eiBh5nGfxRltFZuJ3apLXP/wP7P1TcTK
+         PwB31S6VCpZpSK6vX3jnsDKhBKzMMihVkHHPgh5y29R0UGpoPpLHEdKQbRkZwqFFEl
+         uxwLAHGOtUmI5jjRnup9m2TwNqClue9yyyUTkpa4=
+Message-ID: <7a76305b-dd42-b866-f64f-93b7c8811f97@candelatech.com>
+Date:   Wed, 15 Nov 2023 08:01:01 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231115130615.b1ccadaf9e13.Ic207e2f99f806e9120278f92fdebc2822842c301@changeid>
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] wifi: iwlwifi: Add debugging around scan failure warning.
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <20231114212309.2180281-1-greearb@candelatech.com>
+ <9574407e2be4c97b1ef2d9f73b5eecb08791ff56.camel@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <9574407e2be4c97b1ef2d9f73b5eecb08791ff56.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1700064369-3TbTFP5nZzpd
+X-MDID-O: us5;at1;1700064369;3TbTFP5nZzpd;<greearb@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,28 +61,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 15, 2023 at 01:06:16PM +0100, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
+On 11/15/23 00:57, Johannes Berg wrote:
+> On Tue, 2023-11-14 at 13:23 -0800, greearb@candelatech.com wrote:
+>> From: Ben Greear <greearb@candelatech.com>
+>>
+>> Provide additional information that may help debugging why
+>> the WARN_ON is seen.
+>>
+>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>> ---
+>>   drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+>> index 75c5c58e14a5..ec24ece7c877 100644
+>> --- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+>> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+>> @@ -2356,7 +2356,10 @@ iwl_mvm_scan_umac_fill_general_p_v12(struct iwl_mvm *mvm,
+>>   			link_id = ffs(vif->active_links) - 1;
+>>   
+>>   		link_info = scan_vif->link[link_id];
+>> -		if (!WARN_ON(!link_info))
+>> +		if (WARN_ON(!link_info))
+>> +			IWL_ERR(mvm, "scan failure: Cannot find link info for link-id: %d active-links: 0x%x\n",
+>> +				link_id, vif->active_links);
+>>
 > 
-> Given all the locking rework in mac80211, we pretty much
-> need to get into the driver with the wiphy mutex held in
-> all callbacks. This is already mostly the case, but as
-> Johan reported, in the get_txpower it may not be true.
+> It would make sense to put the data *into* the warning, rather than
+> separately? Though I'm not sure I see so much value in the long string
+> (vs. just the data).
+
+I assume IWL_ERR will provide some extra context in systems with multiple radios,
+so more useful than what I could easily put into WARN_* directly.
+
 > 
-> Lock the wiphy mutex around nl80211_send_iface(), then
-> is also around callers of nl80211_notify_iface(). This
-> is easy to do, fixes the problem, and aligns the locking
-> between various calls to it in different parts of the
-> code of cfg80211.
+> But honestly I'm not sure this really even is a problem at all? Some
+> confusion can happen during firmware restart here, and not sure we can
+> really fix that. Though maybe with the new locking we can.
+
+I see the splat, not sure why.  It would be nice to know if link-id is
+corrupted somehow, or if active links is zero, etc.
+
+Thanks,
+Ben
+
 > 
-> Fixes: 0e8185ce1dde ("wifi: mac80211: check wiphy mutex in ops")
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/r/ZVOXX6qg4vXEx8dX@hovoldconsulting.com
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> johannes
+> 
 
-Thanks for the quick fix. With this I no longer see any lockdep splat on
-boot with the X13s:
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
 
-Johan
