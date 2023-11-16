@@ -2,189 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8FB97EE59B
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Nov 2023 17:59:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B6547EE5FA
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Nov 2023 18:32:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230182AbjKPQ7P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Nov 2023 11:59:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54650 "EHLO
+        id S1345251AbjKPRc4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Nov 2023 12:32:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjKPQ7O (ORCPT
+        with ESMTP id S229482AbjKPRcz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Nov 2023 11:59:14 -0500
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2079.outbound.protection.outlook.com [40.107.94.79])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C42D49
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Nov 2023 08:59:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JDyF/Ny131sSaz8ICYHbakheiIH7gnLG9kAhnU0x6e8+tgRJee/5u+uDS3slpLikUXtKFJh/6kv7R+58RIOldrvk4gihXz42JUm241zzakW/vTDA6eNpYAVHCtB2fcIUm7HkjBW2kGXUyr+uVHcmvTc60rTNrjGw2q809C6mBn7iebLWZ8JnYrCnZToaoRMNdZUbsgegiMBaX6Cptsm64cpGCAzR5dmNZKlsn6QrMSZPa7WnraDwGvBklGRrCZl5x/YkBjjBpVS7lpSeplqp3BDXm5jFOBIoOwyNEpP49oXf9EwcguydLLOhnIuDegO8qwHdUU6csS13xmrPfjS6WQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KeQ4xTFDS3UElsxjOLU1tPbqFxlv5fH1gm04kJPeYy0=;
- b=jH74/ZB2tynSV5th0AgXlmRuvtRlUZmWceME62+yxutu1C6j3QiShnk2vI0+P8jPGw5jg0gPfAyElE/OrKLdCfyFEcimqIGrjSEop14euPHs6dJnyV55aeznv68urSo0MyqWSEZrfW+AI5K05+Wx4XkPzIXvuKZ7bqFTVsrcVn8UIoVwndeo+AK7/1eBFnts30E6P2DupQONSfDiTbRfKu8J/xr+oRoCjV8RII052OKJreGB2+2MmW0dfNs0ujrptzgBxKRklQp/+Zv8yhfDTGTU6Wi8BRqiWNYQ6dXb1wG//v0YLbXGftdFTgDCa60gSUvPsQNqNbmdDSbgcdBS6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KeQ4xTFDS3UElsxjOLU1tPbqFxlv5fH1gm04kJPeYy0=;
- b=5SrUtszZZ5tMt9tGeE0TGaynKvgfX2CDI+nUf0K2Py3Xfihn1PVpRSFVG2nRbTu0q7xS4y5HXtEjnA6MMW1qivlhDWVhJaJHKgn9p6+bgkow7/6RgeFYcC9QZ9shB2L3jXvuKJyeOKdUeCQtL2iZw4BJMxvtJ/d7SZpQcV1ZP2o=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by BL1PR12MB5707.namprd12.prod.outlook.com (2603:10b6:208:386::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.21; Thu, 16 Nov
- 2023 16:59:07 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a%5]) with mapi id 15.20.7002.019; Thu, 16 Nov 2023
- 16:59:07 +0000
-Message-ID: <d02a862a-2bba-4169-8c14-e52e358c5dd2@amd.com>
-Date:   Thu, 16 Nov 2023 10:59:04 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: iwlwifi firmware updates 2023-11-16-fixed
-Content-Language: en-US
-To:     "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-Cc:     "jwboyer@kernel.org" <jwboyer@kernel.org>,
-        "Yang, You-Sheng" <vicamo.yang@canonical.com>,
-        "Hutchings, Ben" <ben@decadent.org.uk>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
-        "Ben Ami, Golan" <golan.ben.ami@intel.com>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
-References: <877cd7e05d187b48ec2615c7b4c1def200370eef.camel@intel.com>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <877cd7e05d187b48ec2615c7b4c1def200370eef.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM6PR07CA0124.namprd07.prod.outlook.com
- (2603:10b6:5:330::34) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        Thu, 16 Nov 2023 12:32:55 -0500
+Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39CC181
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Nov 2023 09:32:51 -0800 (PST)
+Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-1f055438492so553374fac.3
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Nov 2023 09:32:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700155971; x=1700760771; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YhrTZXBGF+X2MMIUf+fkrZJsJ9KiVh9phIYWrQEPVwU=;
+        b=WXve5avXV3+xxK+cw5NfXwxrgLpZPxxhBc6Vs1lYg/m3JzlCfd8bCD4JXYXZYXfq0I
+         P98vxHjGRNEuIFjpMuUfPs/PsVwJ218HHX0AFE2H6a49l53pZOFS3moK3Ocy2RUKhXWw
+         O20I3a7kNHFzr+uRr8skPYPjvyxHgVBGxnUSR04CAnR+9IZf/mjLT9DntFXjEvKlGFHv
+         Qr9/6C8OmfebzenR+mbN5oUdPcBRg8DUpE4K9v4yZMP+JpHr0g2kxotnnwjyPzT6sjSp
+         2DXtDssHuVzRBdHfGkF4xfKvgTALyB5h+qWUC5yAjwRg7kMeH3jPy6lNpdj6Mq2Ze2j5
+         kPVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700155971; x=1700760771;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YhrTZXBGF+X2MMIUf+fkrZJsJ9KiVh9phIYWrQEPVwU=;
+        b=C1n0CkzBpStnEj/l/WF9noQq7909/Qhx/TUWjkmr/fljxfqu0xAJXzHzx0opoENze3
+         VmWmlFR0Z5HTMxvFQdudrw5kQqEMoVeMT9HHX4kwtRFeF2P8RtIgHTf9al1J9c2zwX+t
+         QVZr6vMAMkjl37uqKJbfGVZuAG4tSGZXidVeM5Ax7c9PMmbGhEvI52UhKugUH9qoKGol
+         EE3lvwImsaHRODWdM5mokElnGTdYdAu5/bWjbZIszoga4XfOJ9vE8aWJmHkA9tS6D30o
+         o4u+s1MCuaJ8n5Xy6ihHiL9xzWVCtioKmLWB4gSfobp1ddqtH+JUbZlEHA8Q1sGapJra
+         oyOA==
+X-Gm-Message-State: AOJu0YxIDNK3jKtYv47SFohwjwT4ZGyROl3LqssHYYSjTo9un+Aeb5eL
+        QigCn4xRJYgihK2LumuspjdKFxCd8U0=
+X-Google-Smtp-Source: AGHT+IHKqhImXg/utDqMeQRq3OooGXVlqgCgVu24XbM6r1rVggdOizUwfFDQKgHeLvs3ZITECSsLMw==
+X-Received: by 2002:a05:6870:169b:b0:1ef:bfd8:90d1 with SMTP id j27-20020a056870169b00b001efbfd890d1mr20225279oae.22.1700155970718;
+        Thu, 16 Nov 2023 09:32:50 -0800 (PST)
+Received: from LOCLAP699.rst-02.locus (50-78-19-50-static.hfc.comcastbusiness.net. [50.78.19.50])
+        by smtp.gmail.com with ESMTPSA id i15-20020ac84f4f000000b004181d77e08fsm4482887qtw.85.2023.11.16.09.32.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Nov 2023 09:32:50 -0800 (PST)
+From:   James Prestwood <prestwoj@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     James Prestwood <prestwoj@gmail.com>
+Subject: [PATCH v2] wifi: ath10k: add support to allow broadcast action frame RX
+Date:   Thu, 16 Nov 2023 09:32:46 -0800
+Message-Id: <20231116173246.40458-1-prestwoj@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|BL1PR12MB5707:EE_
-X-MS-Office365-Filtering-Correlation-Id: cae53bce-06fb-4c44-828a-08dbe6c55852
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bilExsifYCl1Rvni26oBkVg+asqYUES4CrNounFnHpqUz6hJLxKWRLRiCQNxIj4OnznUM92tVXN+tur9N7QT17NzToRqE7j/mk7ZEBr6NwYcwRF8yLU8QoVgq/iCfb8RzdMmSnoMWtzU/WoAIKk64Gw3+eKliINrDyYIr/vLLbf7zxSq3TYU9y8dX48leFImetPWu7eS1D1Z+tLvwztEvTU+kxnqCXV5PpPC7FK+qRICXhtfrjFmzV7aVbdrwjrFcva/3Kcl+k6z+kR3MT+24MWBx2REa+nJ1OLmOSK+lu2RD+lRfIUq21znKGt2VVJlXTs9ZsNWMkdoi6z/UGZ7tJ1waQkUbx2m/c9OGokFaaTHTyuyuoqIfBJPMV9uDJBwQlzLBy2SqxDb1X0x+oA/7iVeI94W4RSxmqZF80vrFM3iJPwAb5oB4MfBjFyUafd9xvAcI5BBGz48XhIOPpdoXzqzYhifXCCpxl68YcO2QKR0BS9nxbCLc4bjmEeSBYu1aZYq0KMVji8eg4AQbbwUI0QkZt6XpPBd7WC6ogNXxzrHbGH4O0tZ/FiVXfRUvYcICGgoEf8LR3D0xK3wJGhpmO2AyLVETIXn+dS+mz1WMfP3VYUhrl/SPKg4PC/BDjV0r7RNNxnoHHaASn33Il0z3Mx9oo3ZLMCkd595Jv3IBkg6HPOJ/TVQecnZ6kZH+9UG4X65YYmz7UOSnup895euQGSkO+pcCiWsQoUWXWglSPA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(39860400002)(376002)(136003)(396003)(230922051799003)(1800799009)(186009)(64100799003)(451199024)(36756003)(6506007)(26005)(6666004)(6512007)(53546011)(2616005)(83380400001)(478600001)(44832011)(5660300002)(8936002)(4326008)(8676002)(41300700001)(7416002)(966005)(2906002)(4001150100001)(6486002)(316002)(66476007)(110136005)(66556008)(54906003)(66946007)(31696002)(86362001)(38100700002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y3ZibGc3MGZrQk1sQWhqcjJXM2Z3Q1pGTE03QUxaZjJ4eXJXazBWS2J3ZXdE?=
- =?utf-8?B?QldoSW9xUlhWT1pmSkk4QzV6d2lRZkNQN0xRcTNmKytNeDV1RzQzdHVON25V?=
- =?utf-8?B?cFNvNFRLQmo0eGQwcGIxdTA2cHlUUDVySmNXQzdWd3ZXblJ6SE1WNnlmQkU1?=
- =?utf-8?B?aGFwbGN0ci8rZ1dHblB3eG5sYUxlOTdHWEJ5KzgvaUNRTTJXcUNsMGpnV2py?=
- =?utf-8?B?ZFFvNDBtSDFSN1J3L0R6RU4yallNUlZKYno3b3UwVHZIYlMzQVpOTDFncW1W?=
- =?utf-8?B?TnRmdlQ5VGxSSnZidVFOMlFrYUlDZ0RUSTlLVjMwNnAvczdZbEphbk1abjNa?=
- =?utf-8?B?YXFaWlI5UjhsOWF5aXpqMURwcG84ei9iRVZ6TVlGbHgwTnhSS0xWdFpDVFVV?=
- =?utf-8?B?NkNtbTBzaUFuWlJJT2x3L1ROeVl5NjJneUZSWE95dHozdVFxVVE2MURJcmZy?=
- =?utf-8?B?OFhJcmpMNUQ1MEthVEk3UWg4YStJRk5iLzlWRjhEWTZrUUV6N1gxdHNFRXVy?=
- =?utf-8?B?dllOb3VxcjZpZXRkVjBMdG0yYzFaYjRSc1N2c0dZL0ZubzNieTFDYStMN2NB?=
- =?utf-8?B?aGFaVWJKNi9RL2pacHgwRTVRMktVT2tLc0tEckpDTkR3T2ZOOCtZMVRzSnYv?=
- =?utf-8?B?NFVXODJCTytLbHl2U0RGcm4xRkQ0amhnZER2NnBudU9BOTRGKzVva3BBMjN6?=
- =?utf-8?B?c25kTVBJUnBZQXh5SUFnQWx1MnhvRXE3QW5SM0JFVzdVNVhCd2lYYTVwKzln?=
- =?utf-8?B?R2JzL2tSMjRZQks3d2tkNE5CTHg3Q29PZVUzeG11QnhlZG1mV0pWa29QTFJn?=
- =?utf-8?B?bXZ3TllBaWU5MjQ0MVN6UGtRakVLQVpqL1BuOWI4VGY5WXkxZk81a3NNK2xl?=
- =?utf-8?B?Mit3TDVOMzhCL1JLZkFrV0VqZFVYTGFxcmpHbUk4TG16RnBnUDZvNTA0SFg5?=
- =?utf-8?B?OVBsQUQrZUdZSEFLNWZteEhVSm1veERhM0d2N1R0cER1ZnVTRFNJeGZ5UW5F?=
- =?utf-8?B?c3hlT1lFU05VUmZKZUhQWEVTeEFza3ZBMUMvaW01MFFMdnZBRU9lLzMvb1F1?=
- =?utf-8?B?UW00QlZnV3d6ek9vU3VRWmRsMDFETFA1Q29saU1OVUpjTVNOREV2QWFFNWk2?=
- =?utf-8?B?dGpsaTRHWnppUWNKL2s4N3Y1di9IdVVHTWtjaEQ4S3BZdTM0OFlJS2JtV0xK?=
- =?utf-8?B?aW0vTzlhdFcraUdyb0hQUnNJcEROenRQTjlRMmNONzlIOEs1c3A4WitqcHdh?=
- =?utf-8?B?NENzd29GcW9nTDVta01Tdmo3UHg5dW55azZFc2VoYW4zTlF6K3lMNVFBdnNP?=
- =?utf-8?B?Q0IvZndsalErKzNQcnJicVUzTVlVeDJ6NjBxTnhwN1J5cW51dGx2S0hwUE80?=
- =?utf-8?B?eGxOdHlNaFpIRVVKZlQyZTY4VmV6WUp1Tk54UFZuUTFJN2JjL3llbVJtQWJq?=
- =?utf-8?B?MGZPeVFkTGNuMHVjd296bXN0YW1YZzlHRllmTkNRMSsrbHFBZ0hCaWMrVG5K?=
- =?utf-8?B?OS9CNmZsdHhTc2hQN2d6TXYxa3BHNCsxNG1hQzljaTJIZXh6bC9ybXNHK09B?=
- =?utf-8?B?ZFBBQnNCL2d0Q1NNZXRHeUJSamFZNXdtamltR0ZHbkwzdytMVTZBcDQwbjdL?=
- =?utf-8?B?Zmt5U3R1cjlFUlJFelZwT1UraW1kajNqazIzY2xCQUVjSXlaL2Z1QWpZYUZM?=
- =?utf-8?B?bzEvdW5WTGNRckJ6RjBZWDQ2QmVnQU5WWllKbXp3QXJsMWlNdXV1YTlKanhv?=
- =?utf-8?B?UDBrNWtHdFBZb2o3blhzaTRRd0piNmtDVkNOMzh6K2Q3QUkySFBPRmJkQ3Rr?=
- =?utf-8?B?d2Faa3FBeFI1ZngzL1p0QnU3UUt1UWxQajZEK2k1L0V3bUNvWGI0VFIyaDUy?=
- =?utf-8?B?aGFtV214VVcrNmtpT0F1MXBNN0t4WXZDUTVNaDRuVHhhUi9HaFl0bnlHblFO?=
- =?utf-8?B?RGFVUmhRV251VlBsUVJ4UUFmMVVOT0ExR1VRM1JYdnhsSDBzbEV4QWpQME1B?=
- =?utf-8?B?WEl3OXBicmVaV0pFdnFNQi9jMjRodTBGaWZScmh3TERvZytOaEdTMUtudUVD?=
- =?utf-8?B?UWxSWTVJTHNITTZEbHBjUHo1QnJ6R2I4MWhZRzhjODAxbkZzQ0VLMEE2RUVw?=
- =?utf-8?Q?qmubQ1LyIjzohWbfJ+svf3aIt?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cae53bce-06fb-4c44-828a-08dbe6c55852
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2023 16:59:07.3081
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /HgnPGnAhJ6Swa17yRNYXvGw1PvOlENFYFhP3vQTARVj08BEcGaaRR3SSIzYO/vrp+PDXPXb6qpJnubxLLTzRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5707
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/16/2023 04:26, Greenman, Gregory wrote:
-> Hi,
-> 
-> This contains a second fix for core83-55 firmware which had a signing issue.
-> It should be working this time, sorry for the mess.
-> 
-> Please pull or let me know if there are any issues.
-> 
-> Thanks,
-> Gregory
-> 
-> 
-> The following changes since commit 124b66396ac7a6dce724d04ac7b3bcef1db1d551:
-> 
->    Merge branch 'robot/pr-0-1700068965' into 'main' (2023-11-15 17:24:46 +0000)
-> 
-> are available in the Git repository at:
-> 
->    http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git tags/iwlwifi-fw-2023-11-16-fixed
-> 
-> for you to fetch changes up to f27dec616e29e44cd90645926c1459639d112c3d:
-> 
->    iwlwifi: fix for the new FWs from core83-55 release (2023-11-16 12:15:53 +0200)
-> 
-> ----------------------------------------------------------------
-> Fixed firmware and PNVM signatures
-> 
-> ----------------------------------------------------------------
-> Gregory Greenman (1):
->        iwlwifi: fix for the new FWs from core83-55 release
-> 
->   iwlwifi-gl-c0-fm-c0-86.ucode  | Bin 1840116 -> 1840116 bytes
->   iwlwifi-gl-c0-fm-c0.pnvm      | Bin 226668 -> 226668 bytes
->   iwlwifi-ma-b0-gf-a0-86.ucode  | Bin 1695788 -> 1695788 bytes
->   iwlwifi-ma-b0-gf-a0.pnvm      | Bin 55092 -> 55092 bytes
->   iwlwifi-ma-b0-gf4-a0-86.ucode | Bin 1670940 -> 1670940 bytes
->   iwlwifi-ma-b0-gf4-a0.pnvm     | Bin 27820 -> 27820 bytes
->   iwlwifi-ma-b0-hr-b0-86.ucode  | Bin 1520636 -> 1520636 bytes
->   iwlwifi-so-a0-gf-a0-86.ucode  | Bin 1679788 -> 1679788 bytes
->   iwlwifi-so-a0-gf-a0.pnvm      | Bin 55172 -> 55172 bytes
->   iwlwifi-so-a0-gf4-a0-86.ucode | Bin 1653836 -> 1653836 bytes
->   iwlwifi-so-a0-gf4-a0.pnvm     | Bin 27860 -> 27860 bytes
->   iwlwifi-so-a0-hr-b0-86.ucode  | Bin 1507388 -> 1507388 bytes
->   iwlwifi-ty-a0-gf-a0-86.ucode  | Bin 1632464 -> 1632464 bytes
->   iwlwifi-ty-a0-gf-a0.pnvm      | Bin 55020 -> 55020 bytes
->   14 files changed, 0 insertions(+), 0 deletions(-)
+Broadcast action frames are needed for the Device Provisioning
+Protocol (DPP) for Presence and PKEX Exchange requests. Currently
+just ath9k has this capability so this is being enabled for
+ath10k (for at least one hardware variant).
 
-Hopefully pulled the right one in, the robot that scans the list got a 
-bit confused by your multiple submissions.  Please check what got 
-committed to ensure it worked.
+Add a new capability flag in ath10k_hw_params to indicate support
+for receiving multicast action frames. This bit is then checked
+when configuring the RX filter and (if set) multicast action frame
+registration is enabled.
 
-If it got messed up, can you please resubmit one more time?
+Until more hardware can be tested only the "qca6174 hw3.2" variant
+is enabling this feature.
 
-It's not strictly necessary but in the future it might be easier to do 
-merge requests at 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests to 
-avoid multiple back and forth emails for mistakes.
+Note: I went ahead and removed the 'changed_flags' mask operation
+since it had no effect, that parameter was not being used anywhere.
+
+Tested-on: QCA6174 hw3.2 WLAN.RM.4.4.1-00288-
+
+Signed-off-by: James Prestwood <prestwoj@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/core.c |  1 +
+ drivers/net/wireless/ath/ath10k/hw.h   |  3 +++
+ drivers/net/wireless/ath/ath10k/mac.c  | 14 +++++++++++---
+ 3 files changed, 15 insertions(+), 3 deletions(-)
+
+v2:
+ * Add flag in ath10k_hw_params and only set FIF_MCAST_ACTION
+   if that hardware allows it.
+
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 5eb131ab916f..f2077756ffdf 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -381,6 +381,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+ 		.hw_restart_disconnect = false,
+ 		.use_fw_tx_credits = true,
+ 		.delay_unmap_buffer = false,
++		.mcast_frame_registration = true,
+ 	},
+ 	{
+ 		.id = QCA99X0_HW_2_0_DEV_VERSION,
+diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
+index 9643031a4427..2aeb52c7f189 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.h
++++ b/drivers/net/wireless/ath/ath10k/hw.h
+@@ -639,6 +639,9 @@ struct ath10k_hw_params {
+ 	bool use_fw_tx_credits;
+ 
+ 	bool delay_unmap_buffer;
++
++	/* The hardware support multicast frame registrations */
++	bool mcast_frame_registration;
+ };
+ 
+ struct htt_resp;
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index ec8d5b29bc72..0d0de3646d31 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -1249,7 +1249,7 @@ static bool ath10k_mac_monitor_vdev_is_needed(struct ath10k *ar)
+ 	return ar->monitor ||
+ 	       (!test_bit(ATH10K_FW_FEATURE_ALLOWS_MESH_BCAST,
+ 			  ar->running_fw->fw_file.fw_features) &&
+-		(ar->filter_flags & FIF_OTHER_BSS)) ||
++		(ar->filter_flags & (FIF_OTHER_BSS | FIF_MCAST_ACTION))) ||
+ 	       test_bit(ATH10K_CAC_RUNNING, &ar->dev_flags);
+ }
+ 
+@@ -6027,11 +6027,15 @@ static void ath10k_configure_filter(struct ieee80211_hw *hw,
+ {
+ 	struct ath10k *ar = hw->priv;
+ 	int ret;
++	unsigned int supported = SUPPORTED_FILTERS;
+ 
+ 	mutex_lock(&ar->conf_mutex);
+ 
+-	changed_flags &= SUPPORTED_FILTERS;
+-	*total_flags &= SUPPORTED_FILTERS;
++	if (ar->hw_params.mcast_frame_registration)
++		supported |= FIF_MCAST_ACTION;
++
++	*total_flags &= supported;
++
+ 	ar->filter_flags = *total_flags;
+ 
+ 	ret = ath10k_monitor_recalc(ar);
+@@ -10114,6 +10118,10 @@ int ath10k_mac_register(struct ath10k *ar)
+ 			      NL80211_EXT_FEATURE_SET_SCAN_DWELL);
+ 	wiphy_ext_feature_set(ar->hw->wiphy, NL80211_EXT_FEATURE_AQL);
+ 
++	if (ar->hw_params.mcast_frame_registration)
++		wiphy_ext_feature_set(ar->hw->wiphy,
++				      NL80211_EXT_FEATURE_MULTICAST_REGISTRATIONS);
++
+ 	if (test_bit(WMI_SERVICE_TX_DATA_ACK_RSSI, ar->wmi.svc_map) ||
+ 	    test_bit(WMI_SERVICE_HTT_MGMT_TX_COMP_VALID_FLAGS, ar->wmi.svc_map))
+ 		wiphy_ext_feature_set(ar->hw->wiphy,
+-- 
+2.34.1
+
