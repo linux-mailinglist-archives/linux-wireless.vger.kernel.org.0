@@ -2,63 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 226857EF8CA
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Nov 2023 21:38:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 633637EF898
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Nov 2023 21:21:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235608AbjKQUiQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Nov 2023 15:38:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38858 "EHLO
+        id S232174AbjKQUVu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Nov 2023 15:21:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232311AbjKQUiO (ORCPT
+        with ESMTP id S231201AbjKQUVt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Nov 2023 15:38:14 -0500
-X-Greylist: delayed 1349 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Nov 2023 12:38:10 PST
-Received: from coiirm.cetait.es (coiirm.cetait.es [217.160.168.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44C60D6D;
-        Fri, 17 Nov 2023 12:38:10 -0800 (PST)
-Received: from webmail.coiirm.es (localhost.localdomain [127.0.0.1])
-        by coiirm.cetait.es (Postfix) with ESMTPSA id 3B9CC3E5B67;
-        Fri, 17 Nov 2023 21:02:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=coiirm.es;
-        s=default; t=1700251361;
-        bh=nUp/bglnvvu+C/E73cLDgAAg4wdK/dLxL9RGipyD5BE=; h=From:To:Subject;
-        b=IZfbykQtemPGP1XjdfxT/YoWZl4DeS4bGB7jk3A/0R4nB+Lhvpfrxg+jsuHj5AO8G
-         PBaO2ZxAeCoP5Ko4pukhiBtKtPoIIlDdcsSqCgn8pBE3qOrUXuNo1nj78sTOpobUnu
-         U6uKUqHIgWe1itvteM1aqk0RebxjUWT80yJ8aiLk=
-Authentication-Results: coiirm.cetait.es;
-        spf=pass (sender IP is 127.0.0.1) smtp.mailfrom=josee.jimenezc@coiirm.es smtp.helo=webmail.coiirm.es
-Received-SPF: pass (coiirm.cetait.es: connection is authenticated)
+        Fri, 17 Nov 2023 15:21:49 -0500
+Received: from mail-oa1-x44.google.com (mail-oa1-x44.google.com [IPv6:2001:4860:4864:20::44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7656BD6D
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Nov 2023 12:21:46 -0800 (PST)
+Received: by mail-oa1-x44.google.com with SMTP id 586e51a60fabf-1eb7a8e9dd0so1246194fac.3
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Nov 2023 12:21:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=healthydataprovider.com; s=google; t=1700252506; x=1700857306; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lfBG3wpv71smcZXEDIfsS0xK1hS13iptlrh35h5mv9M=;
+        b=TJOm5RXkpcUG0QSlFocAQ/f1QvK4Rl/zcPLEK2jC6xYIB2TmJAQZ7sjOwESWQLzu/8
+         QCAjsX3WT4BFX25eapMKz2Gj6u9F7NZ39ARKZihi3wj5Ql1/ys+PCxl+4Z/sw1yQ/Ez+
+         AifnL3CVUE9nCtWx7itHx51W0G6M8EiCpEn47IkcQdNL1s55hr7kWkWBklIu+0OKYxLJ
+         Mn2Bt9Riu+iArsBlF6OWFz76WX6cm1tn3eBPpLcCKcskLeCOp3ngqsS9FszNSWLYgy+J
+         lt5Kf5FgYiv3vXPmfKjRqcbXEZvGsjcpSFG/3WSNJMpUEYmhplvpOkREVmf+gJER6P+Q
+         hcTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700252506; x=1700857306;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lfBG3wpv71smcZXEDIfsS0xK1hS13iptlrh35h5mv9M=;
+        b=wfR9v7O7yN+gly+46KPFlHj5TXLWsLu0zsG2xIwSrLWpuQvq1v5JbJKUbXTanL0JVs
+         Iax7xNE0Y6Hq12RbctPLwJEdZrGDY8Ntksweqr4NL9xt67foLamMZ8RiNZD9jBfBBQdx
+         cejbP30M/IK8Z3Tx2KEe2Von8tCjM+pgtE1xwW5CIrIiHwYT8QsbyufY/tx7adhJQUjj
+         cjm/1c8GSd7vTlcws0FLilzdOLvGFgrq6FXMSEbUjAgUBgagb1rnUvkYUSO9HghauQj5
+         hppcqDpf+gLaYIqVksk9LCIscHZLNUa+INP9x8wkyCWtFRHTQeRgO1o4LkQCteGjCntR
+         R8jg==
+X-Gm-Message-State: AOJu0YwHoePbr1X5kq4UZYBsm99rRMxrm4kGq4Ybzmk8mxJrwObFupjF
+        zJUKXp0TZFHvr005WmhP3YGYwMh3pW5hUBDcxx8fyw==
+X-Google-Smtp-Source: AGHT+IFXuqV2numuPfyTJchq2qqdADa2NdqViU2G1+Bb1yZG1XAodN4sxeVSoNGIvHT/P0ItAjJ7ZJy3QFWL+ZHd7GI=
+X-Received: by 2002:a05:6870:41d3:b0:1e9:e0f3:d716 with SMTP id
+ z19-20020a05687041d300b001e9e0f3d716mr302446oac.37.1700252505699; Fri, 17 Nov
+ 2023 12:21:45 -0800 (PST)
 MIME-Version: 1.0
-Date:   Fri, 17 Nov 2023 20:02:28 +0000
-From:   Johnson Benjamin <josee.jimenezc@coiirm.es>
-To:     undisclosed-recipients:;
-Subject: Good afternoon from (TG),
-Reply-To: johnsonbenjamin7600@gmail.com
-User-Agent: Roundcube Webmail/1.4.15
-Message-ID: <da7d963f86210fd8d1cdd495aae6deeb@coiirm.es>
-X-Sender: josee.jimenezc@coiirm.es
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <170025135403.19448.3808950220078232775@coiirm.cetait.es>
-X-PPP-Vhost: coiirm.es
-X-Spam-Status: No, score=2.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+From:   Rose Frank <rose@healthydataprovider.com>
+Date:   Fri, 17 Nov 2023 14:21:34 -0600
+Message-ID: <CAEBxSDzim+_W+4PkQVH4sk7thgHu1atoUek0beWcd6=bhH4qqA@mail.gmail.com>
+Subject: RE: AWS re:Invent Registrants Email List 2023
+To:     Rose Frank <rose@healthydataprovider.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
-Good afternoon from (TG),
+Would you be interested in acquiring the AWS re:Invent Email List?
 
-Did you receive the message I sent to you? Can I resend it to you?
+Number of Contacts: 42,486
+Cost: $1,918
 
-Yours faithfully
+Interested? Email me back; I would love to provide more information on the list.
 
-Barrister Johnson Benjamin
+Kind Regards,
+Rose Frank
+Marketing Coordinator
