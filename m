@@ -2,64 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89AAD7EEB4C
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Nov 2023 04:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 286C67EEB50
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Nov 2023 04:09:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbjKQDF7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Nov 2023 22:05:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45646 "EHLO
+        id S1345655AbjKQDJd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Nov 2023 22:09:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjKQDF6 (ORCPT
+        with ESMTP id S229888AbjKQDJd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Nov 2023 22:05:58 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B3249F
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Nov 2023 19:05:55 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AH35eOsA2832665, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AH35eOsA2832665
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Nov 2023 11:05:40 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 17 Nov 2023 11:05:40 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 17 Nov 2023 11:05:40 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Fri, 17 Nov 2023 11:05:40 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-Subject: RE: [PATCH 1/2] wifi: rtlwifi: more cleanup for struct rtl_hal
-Thread-Topic: [PATCH 1/2] wifi: rtlwifi: more cleanup for struct rtl_hal
-Thread-Index: AQHaFkCHTBsHuqTCt0G6N7QDezkgG7B9173Q
-Date:   Fri, 17 Nov 2023 03:05:40 +0000
-Message-ID: <0dbc9bb6820d4efba40af93f14ef5418@realtek.com>
-References: <20231113144734.197359-1-dmantipov@yandex.ru>
-In-Reply-To: <20231113144734.197359-1-dmantipov@yandex.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-originating-ip: [172.21.69.94]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 16 Nov 2023 22:09:33 -0500
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF63B7
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Nov 2023 19:09:28 -0800 (PST)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5a7af52ee31so17645047b3.2
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Nov 2023 19:09:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessos.org; s=google; t=1700190568; x=1700795368; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9dvQwYX0AbNUKYJxhYB7mWucZ5NqgiQwNSXvYRsaqmw=;
+        b=dutC8bD8mQK8tgXHdN5KNauYD/bua0EKP0PDeN+0bf4V2L9nsVFkokRjRb65i0t7Ao
+         0F6x2LhX5atOdi2OXOhKCZeXuvdz4UPl+hy3HWCVZZSu2HDD1o+x6qUPEW0JS4Pc1G2Q
+         OKUkFwYSONg94vm5GRVpLMUTx2unnhuCYVZ0/GO9hD1/BMymKEia0zNTLMi8Vcin0lUH
+         6JjvbcDPKIKY5uDmI5ZfFPYcF/fF+K+8Phmn7G7dr+RaZqScv2OeftoPGhO8528x8Dit
+         m39YsV0U/IkUjEbZZTrcOfNJv7y8YZXVV/m+K15VDxjqn54kkcBx64l85lXbxClyojP7
+         hrZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700190568; x=1700795368;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9dvQwYX0AbNUKYJxhYB7mWucZ5NqgiQwNSXvYRsaqmw=;
+        b=QtRqW64Aq9/aoGmopn1oUnM783LCfamJhLKfzDLL9CHP+kCumy+JlMudVZYHD3JuFj
+         pO9YrOjYVxIHtf+pmmmc3aDQSDtn4WRG3FxsVperV2LSJZFuFJGuHXZhAVAv1uYPcmoG
+         ZvU3XGMWHmJskrZKXjGIWPOnqAHBhHr5f7DholIxzow+tEAMUetQhucHcXTx3KRvP2Sv
+         BQl0L3iQMFR0BD5b5EA54CiYhEqOD90aas2XBR5zJjyJBHR/G6ypmDD45Ui4mif6dY/T
+         h4Lyrd6UwLlq4bXva6bdwsXkhgnt86fv46nQdoC2ZhWBEtZGzVi6p3VTWtjER5cg+cq/
+         AAPA==
+X-Gm-Message-State: AOJu0YxlpqRxD2jrfwjOMBNyZ+9NLs6s8KE+l7Vr1NajhaV3RbdVCHkK
+        UxsjG8eznwnRLbOsASiIqQVxCMjALIudUQSZi7EP7w==
+X-Google-Smtp-Source: AGHT+IEANNmauSZaHaRuZAmzlWQ3y1H8cwhOolm2HJqw4V3xT3mjgn17Nn7CLJc1kr+gi3L9i7oZUIGg/GMyL5hW1VE=
+X-Received: by 2002:a81:7142:0:b0:59b:61c2:e8db with SMTP id
+ m63-20020a817142000000b0059b61c2e8dbmr16510473ywc.49.1700190567894; Thu, 16
+ Nov 2023 19:09:27 -0800 (PST)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+References: <20231116180529.52752-1-helgaas@kernel.org> <d370746955d347a88cccc953caa87551@realtek.com>
+In-Reply-To: <d370746955d347a88cccc953caa87551@realtek.com>
+From:   Jian-Hong Pan <jhp@endlessos.org>
+Date:   Fri, 17 Nov 2023 11:08:51 +0800
+Message-ID: <CAPpJ_edhtr_mHD5bZj-bj8j33-9BXia5US-KnkgT56iJY+Dszg@mail.gmail.com>
+Subject: Re: [PATCH] wifi: rtlwifi: drop unused const_amdpci_aspm
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Jonathan Bither <jonbither@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,45 +74,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Ping-Ke Shih <pkshih@realtek.com> =E6=96=BC 2023=E5=B9=B411=E6=9C=8817=E6=
+=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8A=E5=8D=8810:58=E5=AF=AB=E9=81=93=EF=BC=
+=9A
+>
+>
+>
+> > -----Original Message-----
+> > From: Bjorn Helgaas <helgaas@kernel.org>
+> > Sent: Friday, November 17, 2023 2:05 AM
+> > To: Ping-Ke Shih <pkshih@realtek.com>
+> > Cc: Kalle Valo <kvalo@kernel.org>; Jian-Hong Pan <jhp@endlessos.org>; L=
+arry Finger
+> > <Larry.Finger@lwfinger.net>; Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.in=
+tel.com>; Jonathan Bither
+> > <jonbither@gmail.com>; linux-wireless@vger.kernel.org; linux-kernel@vge=
+r.kernel.org; Bjorn Helgaas
+> > <bhelgaas@google.com>
+> > Subject: [PATCH] wifi: rtlwifi: drop unused const_amdpci_aspm
+> >
+> > From: Bjorn Helgaas <bhelgaas@google.com>
+> >
+> > Remove the unused "const_amdpci_aspm" member of struct rtl_pci and
+> > struct rtl_ps_ctl.
+> >
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+>
 
-
-> -----Original Message-----
-> From: Dmitry Antipov <dmantipov@yandex.ru>
-> Sent: Monday, November 13, 2023 10:47 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; lvc-project@linuxtesting.org; Dmitry
-> Antipov <dmantipov@yandex.ru>
-> Subject: [PATCH 1/2] wifi: rtlwifi: more cleanup for struct rtl_hal
-> 
-> Following commit d1e6b020c32d ("wifi: rtlwifi: cleanup struct rtl_hal"),
-> remove unused 'hal_coex_8723', 'current_bandtypebackup', 'master_of_dmsp'
-> and 'slave_of_dmsp' members of 'struct rtl_hal' as well. Compile tested
-> only.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
->  drivers/net/wireless/realtek/rtlwifi/wifi.h | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> index 171a461cd812..33c3e001266f 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> @@ -1605,7 +1605,6 @@ struct rtl_hal {
->         bool being_init_adapter;
->         bool mac_func_enable;
->         bool pre_edcca_enable;
-> -       struct bt_coexist_8723 hal_coex_8723;
-
-In drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c, it does a global
-static variable:
-   static struct bt_coexist_8723 hal_coex_8723;
-
-That's not a good practice. It would be better to use the field you are removing.
-To prevent wasting space, we can dynamically allocate the space when 8723AE
-is presented only.
-
-Note, I don't have this old module 8723AE, so even you achieve the patch, 
-I can't test it on a real hardware. 
-
-
+Acked-by: Jian-Hong Pan <jhp@endlessos.org>
