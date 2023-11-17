@@ -2,90 +2,240 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD2127EEBF8
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Nov 2023 06:30:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF6F7EEC36
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Nov 2023 07:24:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229926AbjKQFau (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Nov 2023 00:30:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55362 "EHLO
+        id S230137AbjKQGYl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Nov 2023 01:24:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229901AbjKQFau (ORCPT
+        with ESMTP id S230061AbjKQGYi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Nov 2023 00:30:50 -0500
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1BB0A6;
-        Thu, 16 Nov 2023 21:30:46 -0800 (PST)
-Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2c742186a3bso20509861fa.1;
-        Thu, 16 Nov 2023 21:30:46 -0800 (PST)
+        Fri, 17 Nov 2023 01:24:38 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 987EED50
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Nov 2023 22:24:32 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-40839652b97so12492115e9.3
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Nov 2023 22:24:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700199045; x=1700803845; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6+5OfOb2sZO7MAbLVWKJTky5HfBI5gwmrmh4yrNi8bE=;
-        b=JAY5QYGvB8oH5aK9ZzPfwtrJu9dyjUWq5q7r+KmeWMNXkvswsl7ReFZB68RNurztf6
-         SBNVV8wlyNb8+YWVxpcMk8lGJrjKuI9+qzGcELEr7esL2OEaDnE9uUPteweYoac2VV03
-         1j6cBzSvz/icRZxOVKkQTPC7ID6zcravFNwGi8u5ISX0GiHDID1aLkPsy4K+fAUSNoV5
-         X0+/UXib4CL1o07cXpmMhg/df7oAMGWxizF+FTEgtRnWekZkUe1bqrNdbBUCo4foBCQl
-         FPYEgZfjPbG0nsFjFfTZvBQ8eXxjSU1RMfs+jj0KiCbRez7+HJRQhVytysdjeskN9+c2
-         RseA==
+        d=broadcom.com; s=google; t=1700202271; x=1700807071; darn=vger.kernel.org;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MJHCQYM1PJ6V5lbaAI5pp6u2mDklYIhAUw0Q52gtdRg=;
+        b=RZG3OdZgyKwBsMlx9AUpyQXnG69sXVMoC7hAk4/4YaE6hdah9YZccNnZBzuAlhoaIC
+         AoU/FwsmqI5sEPaVluMdvJVikHfybG5fyoDzwEglu2aHgnov2VzWQgP5QuxZwtQKffD9
+         2LBNNjuT7EBpqbwkHjzPDv3jOENJMTB2bTQpw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700199045; x=1700803845;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6+5OfOb2sZO7MAbLVWKJTky5HfBI5gwmrmh4yrNi8bE=;
-        b=UFGLJFCVrd2VHgKp28Cwnx1pA1ZwNEQ12e6dJtWwSEsGdQwjyn4z6GyWNIUqM51lvu
-         QxSkvn4IwtZHCIs1djEe49OqACL7f/t4KXz86FP4nc0vqpHeAZ8o6MZFdjtTesrHNH8W
-         N7ZZLPCrgd5kxSOPNMdT2Nz4wfZ8WouqFZ0uZ7QsPHHiJfmVNqdMpAAsmuCWbI2d+PhK
-         T0KoFOSlJIGALrLTTU+Rsp3mdgHRAZVrGAHnGNUUzs5g8HjNOZo17cG0wZPybAu18ZL6
-         yL9kyvjzA6pJHhBRnv7sJJvY8mnhxJdtUTcZgneytqRFUbf3ee8h7k8OIkq8WRyvv1U/
-         GkmA==
-X-Gm-Message-State: AOJu0Yzbd+ozi6qQKvccw0F84/T3pwcecsIAfT7FA/rhmCrdngqSxQoN
-        iWiBx+Pw8K2RPR7WBhOsbkWT2pAf5dI6WNzhkfmnbKCVc9w=
-X-Google-Smtp-Source: AGHT+IFkqKplUEU97iUGS1k/jBNokuHKyp3swU6pHYOmFPf12NGCOQ/6JotOz8HTpkiR8bJHkmUX9TlxFfLQslWUNNs=
-X-Received: by 2002:a2e:3208:0:b0:2c6:f6eb:b396 with SMTP id
- y8-20020a2e3208000000b002c6f6ebb396mr8092700ljy.40.1700199044527; Thu, 16 Nov
- 2023 21:30:44 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700202271; x=1700807071;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MJHCQYM1PJ6V5lbaAI5pp6u2mDklYIhAUw0Q52gtdRg=;
+        b=iH5abOyB4U1WO03R+IHPdFxz7IPGJeWaor46pp7Tt6GtCLHXQVqkLnVQCFlTuqDzQb
+         igS8M1T2Gxgr40Aak0/y6iRzZAv9/mfUo/F/7du0JfFME7hSwbdf8J/ESBwKdA2NDL+D
+         +arnNN8kEE4vy/9mNwZSYNAr4XLMtzU8Zbk17ln21yFUgmQ/3ZRGLiUNrb3o9xMj0J3N
+         gSpC8qKCaHET5YPW1gioQKz2u4Kjz3T1UMTSCYXNeDZt7k5Ay6Em98bFFyN9kuVgnPOU
+         AXziGteI6s/BKafPiz4bYcu5fFMrWpkR5vTH2fgqQexTfPH3e1PPJ8sJisctytAbslOa
+         B+Bw==
+X-Gm-Message-State: AOJu0YyQ2UdtbWnqGUJ09hwuDfO5lHNWEJf6cGxE3VsXfoFBX5uwSJpc
+        GbVz6n7TSyi5L1Vv2EfRAss4EA==
+X-Google-Smtp-Source: AGHT+IHEIRIlgUuZyIEv/6VSJUAq60NYgD1Uojf5rvmhJwLYobmfKCR1AlKYGjvLeIE6AtPZpiRK7g==
+X-Received: by 2002:a05:600c:4e4c:b0:409:50b4:3da8 with SMTP id e12-20020a05600c4e4c00b0040950b43da8mr13984874wmq.38.1700202270911;
+        Thu, 16 Nov 2023 22:24:30 -0800 (PST)
+Received: from [10.230.35.166] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id 14-20020a05600c22ce00b004053a6b8c41sm1516375wmg.12.2023.11.16.22.24.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 16 Nov 2023 22:24:29 -0800 (PST)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Zheng Hacker <hackerzheng666@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>
+CC:     Kalle Valo <kvalo@kernel.org>, Zheng Wang <zyytlz.wz@163.com>,
+        <aspriel@gmail.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <johannes.berg@intel.com>,
+        <marcan@marcan.st>, <linus.walleij@linaro.org>,
+        <jisoo.jang@yonsei.ac.kr>, <linuxlovemin@yonsei.ac.kr>,
+        <wataru.gohda@cypress.com>, <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <linux-kernel@vger.kernel.org>,
+        <security@kernel.org>, <stable@vger.kernel.org>
+Date:   Fri, 17 Nov 2023 07:24:28 +0100
+Message-ID: <18bdbf3c560.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <CAJedcCzTv5oT-=+DaT6pCnor9QijUWGEkxg0PcZRWQDHxTWPeA@mail.gmail.com>
+References: <20231106141704.866455-1-zyytlz.wz@163.com>
+ <87o7g7ueom.fsf@kernel.org>
+ <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com>
+ <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
+ <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com>
+ <CAJedcCzj9SFbx-=xDymqJyV2fu0xjmz2RH4+gT+Gxsqubg35ZA@mail.gmail.com>
+ <18bd95c97f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <87h6llmu7t.wl-tiwai@suse.de>
+ <CAJedcCzTv5oT-=+DaT6pCnor9QijUWGEkxg0PcZRWQDHxTWPeA@mail.gmail.com>
+User-Agent: AquaMail/1.48.0 (build: 104800386)
+Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
 MIME-Version: 1.0
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Date:   Fri, 17 Nov 2023 06:30:32 +0100
-Message-ID: <CACna6rwZ8q1Zoz4UAryipsZ90yVD86BrcTNv1yKyS8F4DXsuSQ@mail.gmail.com>
-Subject: mt76 DT binding: undocumented interrupts
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>,
-        Sam Shih <sam.shih@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="0000000000006e2e0e060a533029"
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+--0000000000006e2e0e060a533029
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-I noticed that Wi-Fi on mt7986 has 4 interrupts instead of 1. See:
-arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-300218b0503d ("arm64: dts: mt7986: add built-in Wi-Fi device nodes")
+On November 17, 2023 3:31:40 AM Zheng Hacker <hackerzheng666@gmail.com> wrote:
 
-Those interrupts seem unused by Linux's mt76 driver and are
-undocumented in mediatek,mt76.yaml.
+> Yes, that makes this issue hard to fix. I was wondering why it binds the
+> worker with the timer rather than using just one of them.
 
-Can someone explain what those interrupts are, or just send DT binding
-update patch, please? I'd like to get DTS matching DT binding and
-passing dtbs_check validation.
+No top posting please!
 
---=20
-Rafa=C5=82
+The timer context is softirq and worker is thread context. The ability to 
+sleep is the big difference between the two or at least the reason for 
+using them here.
+
+Regards,
+Arend
+
+>
+> Takashi Iwai <tiwai@suse.de> 于2023年11月17日周五 02:25写道：
+>>
+>> On Thu, 16 Nov 2023 19:20:06 +0100,
+>> Arend Van Spriel wrote:
+>>>
+>>> On November 15, 2023 4:00:46 PM Zheng Hacker <hackerzheng666@gmail.com> wrote:
+>>>
+>>>> Arend van Spriel <arend.vanspriel@broadcom.com> 于2023年11月13日周一 17:18写道：
+>>>>>
+>>>>> On November 8, 2023 4:03:26 AM Zheng Hacker <hackerzheng666@gmail.com>
+>>>>> wrote:
+>>>>>
+>>>>>> Arend Van Spriel <arend.vanspriel@broadcom.com> 于2023年11月6日周一 23:48写道：
+>>>>>>>
+>>>>>>> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.com> wrote:
+>>>>>>>
+>>>>>>>> Thanks! I didn't test it for I don't have a device. Very appreciated
+>>>>>>>> if anyone could help with that.
+>>>>>>>
+>>>>>>> I would volunteer, but it made me dig deep and not sure if there is a
+>>>>>>> problem to solve here.
+>>>>>>>
+>>>>>>> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scanning() ->
+>>>>>>> brcmf_notify_escan_complete() which does delete the timer.
+>>>>>>>
+>>>>>>> What am I missing here?
+>>>>>>
+>>>>>> Thanks four your detailed review. I did see the code and not sure if
+>>>>>> brcmf_notify_escan_complete
+>>>>>> would be triggered for sure. So in the first version I want to delete
+>>>>>> the pending timer ahead of time.
+>>>>>
+>>>>> Why requesting a CVE when you are not sure? Seems a bit hasty to put it
+>>>>> mildly.
+>>>>
+>>>> I'm sure the issue exists because there's only cancler of timer but not woker.
+>>>> As there's similar CVEs before like : https://github.com/V4bel/CVE-2022-41218,
+>>>> I submit it as soon as I found it.
+>>>
+>>> Ah, yes. The cancel_work_sync() can also be done in
+>>> brcmf_notify_escan_complete().
+>>
+>> AFAIUC, brcmf_notify_scan_complete() is called from the work itself,
+>> too, hence you can't issue cancel_work_sync() there (unless you make
+>> it conditional).
+>>
+>>
+>> Takashi
+
+
+
+
+--0000000000006e2e0e060a533029
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC3ukAAhTt+ttJkXkSA
+4spkeeOyph5TXyCvtaw5oZ+NcTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzExMTcwNjI0MzFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAHUeINH4MifLXe9JfBSP+PFHJi3I4O62D5VIf
+v4NgZWsvfUA1UX5aHcmpVIaGkit+GIRDaJUpPxa+9VxfhH+wTsTkk2FnzB8mr2Cx33ockNBmPZil
+0UMoYdGCfPiN8YIGyvThxG5tVlGWdr2FWsBYiyq9EfGAp2lBKWhp9bNpZ6BGOKHVJoMXx8fXkMUP
+61JKgIwC8B2LpYlNMKh/7oEUvPcmtKqyq4pMXVudbPO0SXFCvcVeX4NdTNyLdlbXq+6iFkJULSKR
+0LcY9h7mOLjQTJGCPG4k+KSe7v0bTdwup6za//Zs8YZqdYSKf0YxKOAjRbHxRKNUi9D1zF6T/Vss
+uQ==
+--0000000000006e2e0e060a533029--
