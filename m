@@ -2,262 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 012997EFF51
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Nov 2023 12:43:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2F5D7EFFF9
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Nov 2023 14:46:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbjKRLnh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Nov 2023 06:43:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42418 "EHLO
+        id S229727AbjKRNqC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Nov 2023 08:46:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjKRLnf (ORCPT
+        with ESMTP id S229668AbjKRNqB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Nov 2023 06:43:35 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451D8D57
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Nov 2023 03:43:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=s31663417; t=1700307794; x=1700912594; i=wahrenst@gmx.net;
-        bh=gSIWooRq1OF6vM7OgTfJkmCSOtuOT2VPnA4Y3lZi92Q=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-         In-Reply-To;
-        b=cfQ+CR+MSf+IoHfeUCfokuOMCqnd7r1GOC9nJASb1E8avUFECmRjJG2D9JhGOtT/
-         EZWh0a+Jai62SWT9de+UqmPckd4bHYO2kYhtB7u1BnlbCmwWcJCxej3OwHomEelMD
-         h2d4kF8d/f3iJm1xYYrQYKzUcg8gcsv9AdPmpNUtOUirD9kX8iCJc30gEdbIw93xW
-         AhQAdCLrEUq9zYZ8J8/U5ZdZsAt0YSLSGxKmQY/HKlkGdvapuhhps6LoDSZIpsFLD
-         d+krwEsPhNiiZtbAQCmZq6WgUdOYpi/ll0/XgVvvftBuDI9e4/WY8RataTtU5n0x0
-         /Lw0QgMt+1v26glStw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.129] ([37.4.248.43]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MEV3C-1r73Ye2TO6-00Fz26; Sat, 18
- Nov 2023 12:43:14 +0100
-Message-ID: <0e5eba2f-e524-4f0d-8217-2770c57ad5ed@gmx.net>
-Date:   Sat, 18 Nov 2023 12:43:13 +0100
+        Sat, 18 Nov 2023 08:46:01 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B47C5192
+        for <linux-wireless@vger.kernel.org>; Sat, 18 Nov 2023 05:45:58 -0800 (PST)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AIDNglw024419;
+        Sat, 18 Nov 2023 13:45:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=WIVSHzPUMBSWfExEXnkw0x/d4wXX6rzRV/LMUplqz2Q=;
+ b=cX2Ttyl+rJTFn8LIXjRK7qzN/+dtvN9Pta3O7JBoUmgH4SxPiOKaWdiV/CelJrun4Iv/
+ 2tDjgTko6lcqO6R66XQpDLMADpUdpe52VL41cCxriSbMX+bW271DwTh7iZES/bsaaF82
+ hf8ApRg8WHAOi1qMBcjTeopn/L4JDU0VppMU1NGRHg5XI5OQkaXZSWBhrozxHEQikrUa
+ hxXEIdshNZFRSfzC85g8+z11onbBqu8fnqLIEEVAwTIil4h4rpw4fpy72wfpS/tEbXSS
+ 9SViPvUGxkBCK8e0ZwiBRG/Y41j901kjnyXJGHsqS/vGfDZjJGUpeFqdpu0URRmg2YEn QA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uejymrrxn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 18 Nov 2023 13:45:54 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AIDjs6A003738
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 18 Nov 2023 13:45:54 GMT
+Received: from lingbok-Latitude-E5440.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sat, 18 Nov 2023 05:45:52 -0800
+From:   Lingbo Kong <quic_lingbok@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <lingbok@qti.qualcomm.com>
+Subject: [PATCH] wifi: ath12k: fix the issue that the multicast/broadcast indicator is not read correctly for WCN7850
+Date:   Sat, 18 Nov 2023 08:45:38 -0500
+Message-ID: <20231118134538.19545-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail,
- reason -52 - Part 2
-Content-Language: en-US
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@kernel.org>
-References: <d9c9336a-6314-4de9-aead-8b865bb30f05@gmx.net>
- <18bbf6acf10.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <cb07408d-af14-4b01-bd96-15c480989643@gmx.net>
- <5c462fac-b27d-41c0-a62c-a8951bf445d2@gmx.net>
- <d8f7dc94-40f5-4544-9693-01d7cbc6fefb@broadcom.com>
- <ca0fd1c5-380d-4756-a33a-cb6c84014ce4@gmx.net>
- <89d3f34a-3427-4871-971c-d960a16918ac@broadcom.com>
- <004dabc3-c345-4d90-9348-5caa9b1f3849@gmx.net>
- <c3996f70-bb2a-4d26-a7e9-a1b062fa0474@broadcom.com>
-From:   Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <c3996f70-bb2a-4d26-a7e9-a1b062fa0474@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xcC5mtFpj7Gt39IB/Y23PTsyP2Zu2RekaHpXSonYYBVNKqrgIml
- iuDDODWvJ2m40lGtO+1s3lTaUVtYhGGewcogI34A8b/JWny/yrgZ4uRNG6fnfyfUP7oSNBN
- 6aZFkFJXhf4b/5SyqctMmCQFyxFf2yVtzcmT8zcFw9VciCh7YSbc5U32wMiM6lcI5yXVcKx
- dIiboUJO3OX/ZIACHf0Hg==
-UI-OutboundReport: notjunk:1;M01:P0:5+5UMZH+4xQ=;042sxWqLsqWxMjTFqifSoMvHva+
- 9xoMj2fHn6JEDVZvsybuZi0w8Qku77KV0sIpV/UrHIgEqtfnbYADhioV+ZaYpE3q/vhG8tEDw
- OWGBkvRqAbzkmMj1bMZA5ST+s7BNf5GRj/aF8EwElfyDql+hvE/hKPV2atxEe7yKQx2q5aGgM
- LeFix4eYyFIrO2zazPv5UnJqrnDf51ZvxZHHIqZ25FM+Z381jwHLL048zHX1Wf2TxvaM5urcn
- eBDNkSOivtAIcEyA4nm8BCRKySr/AxyQpX9oHm7aD49eg++ZW1rpRqQiOvFdhe7jXMajm1GDc
- pbREO3amt0gqzasHgZER2fb+BHJLZE9v8TPiJ0kxhkcK4ULtnT3hf8P4Mt9thMbnTozuk7k2z
- YKR63BMOGKg2cTY9gnUSNhL2ZsPNSqwJgmqqb5xpewuBxHkSqNsS3hPbRoDYLF0YECsc4VLqj
- abrZsWtkRMaO4ilexrySKcN1EfxrQ0Ya3XcNY3MNXnh0nI6POZHTzSQ7i0GRrColUlFfuC5HK
- UF26m9ZfC3/jTwO60/dWnUJxxabQQhYFtlhQuuCvLlL5i3yOwtBrmhRG64U6MXbBDOSFa80KI
- gT5E3v9LkWU6lb4eXF/cDkoSeOxP5a4U9ZIfXCkgqoh7V/oRtVw7UQCx6WhskeDfACuETpgsL
- u/luQZTyHoPTGM7Zs0riHZPxevOiqCJYsQKMtCmJoCAzRGn2/wH89uk/NMW1ypmjYr+Cm6Tnk
- c/wF/Vb7vi6Qx2l3NrZ4fRtbsxA4deAAFLF+rH8JRRVraHPeAlG6htpFjt8NuIVGuZPODjcGg
- ZMbM1PiUowD31JpMr7ULYHaWnPNDyWGGNkp9N3ghxy0L52WmzUZ+eBIQ7CCvIgjKFGNubxUeb
- IN4OppJ0Ouw5jy+D9VSM+VOjdtUsU9wP4D6kixcbbg7v/0H4q+/Zsmqg8R/ca1qVjGkTJnoqG
- 89MUCg==
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: oGUf3sKjH1VxM0up2Jtl0Phu7BDusAqy
+X-Proofpoint-ORIG-GUID: oGUf3sKjH1VxM0up2Jtl0Phu7BDusAqy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-18_13,2023-11-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 mlxscore=0 mlxlogscore=742 phishscore=0 spamscore=0
+ malwarescore=0 bulkscore=0 impostorscore=0 priorityscore=1501
+ clxscore=1011 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311180104
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arend,
+We observe some packets are discarded in ieee80211_rx_handlers_result
+function for WCN7850. This is because the way to get multicast/broadcast
+indicator with RX_MSDU_END_INFO5_DA_IS_MCBC & info5 is incorrect. It should
+use RX_MSDU_END_INFO13_MCAST_BCAST & info13 to get multicast/broadcast
+indicator.
 
-Am 15.11.23 um 21:09 schrieb Arend van Spriel:
-> On 11/15/2023 7:35 PM, Stefan Wahren wrote:
->> Am 15.11.23 um 10:34 schrieb Arend van Spriel:
->>> On 11/13/2023 10:02 PM, Stefan Wahren wrote:
->>>> Hi Arend,
->>>>
->>>> Am 13.11.23 um 10:11 schrieb Arend van Spriel:
->>>>> On 11/11/2023 9:30 PM, Stefan Wahren wrote:
->>>>>> Am 11.11.23 um 19:29 schrieb Stefan Wahren:
->>>>>>>
->>>>>>> Am 11.11.23 um 18:25 schrieb Arend Van Spriel:
->>>>>>>> On November 11, 2023 5:48:46 PM Stefan Wahren <wahrenst@gmx.net>
->>>>>>>> wrote:
->>>>>>>>
->>>>>>>>
->>>>>>>> Again look like these are disabled channels. At least chanspec
->>>>>>>> 0xd022
->>>>>>>> is 5G channel 34. You say you get this only once so not every 60
->>>>>>>> seconds?
->>>>>>> I get this everytime i trigger a reconnect to the wifi network, so
->>>>>>> not
->>>>>>> periodically (checked that). Strangely the initial automatic
->>>>>>> connect
->>>>>>> doesn't trigger this errors.
->>>>>> I additionally placed a WARN_ON_ONCE after the error log and
->>>>>> enabled the
->>>>>> firmware error log of brcmf_fil_cmd_data(). Maybe this helps.
->>>>>
->>>>> It does a bit. At least it shows this is happening with the
->>>>> dump_survey (again). I don't really understand why though. It implie=
-s
->>>>> the channel is not disabled, but unclear why. The channel flags are
->>>>> changed in brcmf_construct_chaninfo() so we probably should focus
->>>>> debug on that function.
->>>>>
->>>>
->>>> i placed a pr_err at the start of brcmf_construct_chaninfo and anothe=
-r
->>>> pr_err into the for loop before the "if (channel->orig_flags &
->>>> IEEE80211_CHAN_DISABLED) continue".
->>>>
->>>> pr_err("%s: Ch num %d, chanspec 0x%x, orig_flags: %x.\n", __func__,
->>>> ch.control_ch_num, ch.chspec, channel->orig_flags);
->>>>
->>>> It seems that brcmf_construct_chaninfo is called two times, but the
->>>> results are different. I could find 0xd090 in the first run, but
->>>> not in
->>>> second. The other chanspecs doesn't seem to occur in both runs. No
->>>> idea
->>>> what's going on here.
->>>
->>> Can you print all wiphy band channels before exiting
->>> brcmf_construct_chaninfo() and print both channel->orig_flags and
->>> channel->flags?
->>
->> Sure. It seems that in the first call of=C2=A0brcmf_construct_chaninfo =
-the
->> channel 144 is not disabled, but in the second.
->
-> I am a bit confused. So the chanspec as mentioned in this email
-> subject is no longer observed, but you still see failure in
-> brcmf_set_channel() for other chanspecs?
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 
-before we dive deeper into this let me summarize my observations from
-the beginning. From my understanding the errors are triggered for the 5
-GHz channels 34, 38, 42, 46, 144 (chanspec: 0xd022, 0xd026, 0xd02a,
-0xd090). So i would focus my observations on those.
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/hal.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-As you said that the channel flags are set in brcmf_construct_chaninfo()
-i dump them, here is the output of the first call:
+diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
+index eca86fc25a60..4966887e312b 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -889,8 +889,8 @@ static u8 *ath12k_hw_wcn7850_rx_desc_mpdu_start_addr2(struct hal_rx_desc *desc)
+ 
+ static bool ath12k_hw_wcn7850_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
+ {
+-	return __le16_to_cpu(desc->u.wcn7850.msdu_end.info5) &
+-	       RX_MSDU_END_INFO5_DA_IS_MCBC;
++	return __le16_to_cpu(desc->u.wcn7850.msdu_end.info13) &
++	       RX_MSDU_END_INFO13_MCAST_BCAST;
+ }
+ 
+ static void ath12k_hw_wcn7850_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
 
-[=C2=A0=C2=A0=C2=A0 8.785850] brcmfmac: 5 GHz: 0: hw_value 34: orig_flags:=
- 00080000,
-flags 00000001
-[=C2=A0=C2=A0=C2=A0 8.785861] brcmfmac: 5 GHz: 2: hw_value 38: orig_flags:=
- 00080000,
-flags 00000001
-[=C2=A0=C2=A0=C2=A0 8.785872] brcmfmac: 5 GHz: 4: hw_value 42: orig_flags:=
- 00080000,
-flags 00000001
-[=C2=A0=C2=A0=C2=A0 8.785882] brcmfmac: 5 GHz: 6: hw_value 46: orig_flags:=
- 00080000,
-flags 00000001
-[=C2=A0=C2=A0=C2=A0 8.785974] brcmfmac: 5 GHz: 23: hw_value 144: orig_flag=
-s: 00080000,
-flags 0000011a
-
-All of them except 144 are disabled via flags. Btw wpa_supplicant is
-configured to country DE within the configuration.
-
-The second and last time brcmf_construct_chaninfo() is called is a few
-seconds later during boot, we get the following:
-
-[=C2=A0=C2=A0 12.490877] brcmfmac: 5 GHz: 0: hw_value 34: orig_flags: 0008=
-0000,
-flags 00000001
-[=C2=A0=C2=A0 12.490891] brcmfmac: 5 GHz: 2: hw_value 38: orig_flags: 0008=
-0000,
-flags 00000001
-[=C2=A0=C2=A0 12.490904] brcmfmac: 5 GHz: 4: hw_value 42: orig_flags: 0008=
-0000,
-flags 00000001
-[=C2=A0=C2=A0 12.490918] brcmfmac: 5 GHz: 6: hw_value 46: orig_flags: 0008=
-0000,
-flags 00000001
-[=C2=A0=C2=A0 12.491031] brcmfmac: 5 GHz: 23: hw_value 144: orig_flags: 00=
-080000,
-flags 00000001
-
-Now all of them are disabled via flags.
-
-So after that i trigger the reconnect to the same 5 GHz network as
-before. brcmf_construct_chaninfo is never called again, but at the time
-brcmf_set_channel is called the flags for these channels are completely
-different:
-
-[=C2=A0=C2=A0 90.010002] brcmfmac: brcmf_set_channel: set chanspec 0xd022 =
-fail,
-reason -52
-[=C2=A0=C2=A0 90.010017] brcmfmac: hw_value 34, orig_flags: 00080000, flag=
-s 00080220
-[=C2=A0=C2=A0 90.120007] ieee80211 phy0: brcmf_fil_cmd_data: Firmware erro=
-r: (-20)
-[=C2=A0=C2=A0 90.120038] brcmfmac: brcmf_set_channel: set chanspec 0xd026 =
-fail,
-reason -52
-[=C2=A0=C2=A0 90.120053] brcmfmac: hw_value 38, orig_flags: 00080000, flag=
-s 00080200
-[=C2=A0=C2=A0 90.230029] ieee80211 phy0: brcmf_fil_cmd_data: Firmware erro=
-r: (-20)
-[=C2=A0=C2=A0 90.230058] brcmfmac: brcmf_set_channel: set chanspec 0xd02a =
-fail,
-reason -52
-[=C2=A0=C2=A0 90.230073] brcmfmac: hw_value 42, orig_flags: 00080000, flag=
-s 00080200
-[=C2=A0=C2=A0 90.340042] ieee80211 phy0: brcmf_fil_cmd_data: Firmware erro=
-r: (-20)
-[=C2=A0=C2=A0 90.340071] brcmfmac: brcmf_set_channel: set chanspec 0xd02e =
-fail,
-reason -52
-[=C2=A0=C2=A0 90.340086] brcmfmac: hw_value 46, orig_flags: 00080000, flag=
-s 00080210
-[=C2=A0=C2=A0 92.100073] ieee80211 phy0: brcmf_fil_cmd_data: Firmware erro=
-r: (-20)
-[=C2=A0=C2=A0 92.100110] brcmfmac: brcmf_set_channel: set chanspec 0xd090 =
-fail,
-reason -52
-[=C2=A0=C2=A0 92.100126] brcmfmac: hw_value 144, orig_flags: 00080000, fla=
-gs 00080118
-
-Where does these new flags come from? It's clear that these doesn't come
-from brcmf_construct_chaninfo(). So what manipulates the flags
-afterwards? Shouldn't brcmf_construct_chaninfo() called on reconnect?
-
-Best regards
-
->
-> brcmf_construct_chaninfo() is called from brcmf_setup_wiphybands() and
-> that function is called in two places:
->
-> 1) brcmf_cfg80211_attach(): right after wiphy_register()
-> 2) brcmf_cfg80211_reg_notifier()
->
-> Can we figure out if brcmf_cfg80211_reg_notifier() is indeed invoked
-> on your platform and what country is being configured. If the country
-> is indeed changed than it can be expected that some channels are
-> disabled or enabled.
->
-> Regards,
-> Arend
+base-commit: 23c5ea6737e45d5a6342c21884400e7697d7c342
+-- 
+2.34.1
 
