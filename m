@@ -2,70 +2,213 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F33417F0EC0
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 10:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 458337F0EFC
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 10:25:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232521AbjKTJPr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Nov 2023 04:15:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43178 "EHLO
+        id S232571AbjKTJZN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Nov 2023 04:25:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232554AbjKTJPm (ORCPT
+        with ESMTP id S231997AbjKTJZM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Nov 2023 04:15:42 -0500
-Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C991DA7
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 01:15:38 -0800 (PST)
-Received: by mail-vk1-xa2a.google.com with SMTP id 71dfb90a1353d-4af6a700087so1417911e0c.0
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 01:15:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700471738; x=1701076538; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uGUSPipm8cHx9uqpOKEqNlZRVI6FwrP0qizfWCjAeMo=;
-        b=DJJ6rRfYhwAUyLaLEvQUL0WEzHxZ/SdBwDwxhWXlA1k665MMluGFFX6AjsbWxYzYEb
-         Jf1PN3xWwu/E2IYfpqWPjXmg4VrRTxFYupLzjBck6quw8M7VcfIu0N9JQ1d45sN3EBtx
-         Se+gAfRt0kPsIk7eeaGSOKxziytfC1kMJW4j6EN+GlB5eW0URq/TmiCcRZ9Gg7aSsx47
-         ntTN183De5TiNp7VZJIoskpffXAGiEznMYckUCHeTYD9tLsDInXc1qLjNxkpSZ+VZDIA
-         2S/Ooio/J4BZLNFbVZYGrjQwPg74u4buRKEgzIcoWl26Y5B41s9oWTSdRGWqHhoPREvO
-         eaJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700471738; x=1701076538;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uGUSPipm8cHx9uqpOKEqNlZRVI6FwrP0qizfWCjAeMo=;
-        b=MnvlkDOyLxi2a/XalBaLJ4s94LQru/nOsMTcvrOriE9tdY9ahSfMCOZ+3GFXxfPD0C
-         3i1N6RWfRCOC0soMY2mrzJu+sHPPFHGZEu0MX2lMBLa/g+DMSxtHkj3Q9HiCKaTOjBoo
-         K8sFR00XiKyM/cdenRTW/LcjAaolibQVlqAstI7z8JDFtXLYicUYYw83dYpUJvqwjt1+
-         HE2doJg1R+DGISt6QNqs6SYNaI5L8UyXvgEiaxlh2zx6yr2J6OSgCQ2WfXB1/18kH3yP
-         67xpDL2/9J5ryX5HmKb7rTT6Sx6v9kqOUwf3otAre6pdbaMsq1AuHW88eVOgx+yuVzB5
-         8xsQ==
-X-Gm-Message-State: AOJu0Yy5PA3MCFbrQPO+09xDmCaTaIF405i52wY73gFI2zFW18ka7cld
-        INgX71ouBTNCtvehfT5q5wiAu19Gn5Gw/zW2WFI=
-X-Google-Smtp-Source: AGHT+IFa5Zia3nlUuw4gB/6z6NwXGwrFctCxlDmv3Kju7CF46IFApKxHYzYLaxyAZGqjD6akasaslZHho0beZDFvaYM=
-X-Received: by 2002:a1f:cac7:0:b0:49e:1eca:f84d with SMTP id
- a190-20020a1fcac7000000b0049e1ecaf84dmr4598800vkg.14.1700471737875; Mon, 20
- Nov 2023 01:15:37 -0800 (PST)
+        Mon, 20 Nov 2023 04:25:12 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5F4DCD;
+        Mon, 20 Nov 2023 01:25:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700472308; x=1732008308;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=BVUYYQ1JYAQmJwUnfzncwjq61tORuEuESunZjowyk9o=;
+  b=RoO18/ZUgKH+IGafBqYuRiwNfDVEkPmNmRc0YsFPvqJ6ALrkh2I5Fpbk
+   U5/Krds5dG7rsKf+vImHCYkUWVgf2YfSOpgNXqfmlFb5woNZM45fgzbHo
+   lw5FjVIfVQs2+geGQMsfVliUtNhsvlECTydNvTPSFd2infdrl0/fl38uB
+   XOsuajJQy10sBu8T5QVq1nVyFNOckUzrjvnFyTHi3yZeBo8pWQC+PmjXJ
+   QWP1iCkr6x3u5bc1VV8kPsd8CNq7I2HuXT4LfaFweWwgOfHcZps+FpiYS
+   w4Bzfg2dwGd1XPtB9VB/zeTZoe1pysD5Q3Y/Y9DZh3G/m/otpwzmSkRhJ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="4765284"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="4765284"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 01:25:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="795418486"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="795418486"
+Received: from akeren-mobl.ger.corp.intel.com ([10.252.40.26])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 01:25:05 -0800
+Date:   Mon, 20 Nov 2023 11:25:03 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+cc:     "John W. Linville" <linville@tuxdriver.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/7] wifi: rtlwifi: Convert LNKCTL change to PCIe cap
+ RMW accessors
+In-Reply-To: <20231117222416.GA94936@bhelgaas>
+Message-ID: <bcb6c224-c279-bfa3-5bf0-d1e7512f44cb@linux.intel.com>
+References: <20231117222416.GA94936@bhelgaas>
 MIME-Version: 1.0
-Received: by 2002:ab0:55d4:0:b0:755:5671:293a with HTTP; Mon, 20 Nov 2023
- 01:15:37 -0800 (PST)
-Reply-To: andersonmorris490@gmail.com
-From:   Morris Anderson <thompsonburton665@gmail.com>
-Date:   Mon, 20 Nov 2023 09:15:37 +0000
-Message-ID: <CAMz0d3HArRbG1BqQS2nJ1kyCifPZEQ0+-_TPnJT=emvkhPJgAQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: multipart/mixed; BOUNDARY="8323329-1911404933-1700466388=:2032"
+Content-ID: <118f9d3-aec8-f64a-2857-2dfad61f381c@linux.intel.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-1911404933-1700466388=:2032
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+Content-ID: <79bf996f-ae7-d121-1633-98d3cdbca3de@linux.intel.com>
+
+On Fri, 17 Nov 2023, Bjorn Helgaas wrote:
+
+> On Fri, Nov 17, 2023 at 11:44:19AM +0200, Ilpo Järvinen wrote:
+> > The rtlwifi driver comes with custom code to write into PCIe Link
+> > Control register. RMW access for the Link Control register requires
+> > locking that is already provided by the standard PCIe capability
+> > accessors.
+> > 
+> > Convert the custom RMW code writing into LNKCTL register to standard
+> > RMW capability accessors. The accesses are changed to cover the full
+> > LNKCTL register instead of touching just a single byte of the register.
+> > 
+> > After custom LNKCTL access code is removed, .num4bytes in the struct
+> > mp_adapter is no longer needed.
+> 
+> Looks like some nice fixes here.  I confess they're not all obvious to
+> me.
+
+It took a while to figure out what it is doing, yes... and while figuring
+it out, I found more and more to cleanup... And seems you also found some
+more... ;-) lol.
+
+When going all the way with cleanups, I tend run this kind of things that 
+are not all that obvious but those are usually the most valuable cleanups 
+(and normally cannot be automated either so we'll have a lot less people 
+looking at them).
+
+> > @@ -164,21 +164,27 @@ static bool _rtl_pci_platform_switch_device_pci_aspm(
+> >  	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+> >  	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+> >  
+> > +	value &= PCI_EXP_LNKCTL_ASPMC;
+> > +
+> >  	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
+> >  		value |= 0x40;
+> 
+> I guess this 0x40 is PCI_EXP_LNKCTL_CCC?
+
+Good point, I forgot to change that in 2/7 and it belongs logically into 
+this patch anyway so I'll add it to this patch.
+
+> > -	pci_write_config_byte(rtlpci->pdev, 0x80, value);
+> > +	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
+> 
+> PCI_EXP_LNKCTL is 0x10, so I guess we know somehow that the PCIe
+> Capability is at 0x70?
+
+It's what I inferred based on the offsets of LNKCTL & DEVCTL2. And if 
+that assumption does not hold with all these devices, the writes would 
+just wreck some random havoc. :-/
+
+> > +					   PCI_EXP_LNKCTL_ASPMC | value,
+> > +					   value);
+> >  
+> >  	return false;
+> >  }
+> >  
+> >  /*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
+> > -static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
+> > +static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
+> >  {
+> >  	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+> >  	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+> >  
+> > -	pci_write_config_byte(rtlpci->pdev, 0x81, value);
+> > +	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
+> > +					   PCI_EXP_LNKCTL_CLKREQ_EN,
+> 
+> Depends on the fact that the caller only passes 0 or 1.  Ugly, but
+> looks true, and I see you clean this up a little more later.  I like
+> how you made it explicit in _rtl_pci_platform_switch_device_pci_aspm()
+> above by masking the value to set.
+
+I thought of adding the masking here too but since it wasn't strictly 
+necessary, I didn't. But I can add that now and I'll also update the 
+comment to match the code :-).
+
+These code fragments hopefully die anyway once I get the ASPM from 
+drivers to core series done.
+
+> > @@ -268,13 +267,14 @@ static void rtl_pci_enable_aspm(struct ieee80211_hw *hw)
+> >  	if (pcibridge_vendor == PCI_BRIDGE_VENDOR_INTEL)
+> >  		u_pcibridge_aspmsetting &= ~BIT(0);
+> >  
+> > -	pci_write_config_byte(rtlpci->pdev, (num4bytes << 2),
+> > -			      u_pcibridge_aspmsetting);
+> > +	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
+> > +					   PCI_EXP_LNKCTL_ASPMC,
+> > +					   u_pcibridge_aspmsetting &
+> > +					   PCI_EXP_LNKCTL_ASPMC);
+> >  
+> >  	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
+> > -		"PlatformEnableASPM(): Write reg[%x] = %x\n",
+> > -		(pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10),
+> > -		u_pcibridge_aspmsetting);
+> > +		"PlatformEnableASPM(): Write ASPM = %x\n",
+> > +		u_pcibridge_aspmsetting & PCI_EXP_LNKCTL_ASPMC);
+> >  
+> >  	udelay(50);
+
+> > @@ -2030,8 +2031,6 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
+> >  		    PCI_FUNC(bridge_pdev->devfn);
+> >  		pcipriv->ndis_adapter.pcibridge_pciehdr_offset =
+> >  		    pci_pcie_cap(bridge_pdev);
+> > -		pcipriv->ndis_adapter.num4bytes =
+> > -		    (pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10) / 4;
+> 
+> I don't understand what's going on here.  Are we caching the PCIe
+> Capability offset of the *upstream bridge* here?  And then computing
+> the dword offset of the *bridge's* LNKCTL? And then writing a byte to
+> the rtlwifi device (not the bridge) at the dword offset << 2, i.e., the
+> byte offset?  I must be out to lunch, because how could that ever
+> work?
+>
+> If we were using the bridge capability location to write to the
+> rtlwifi device, that would clearly be a bug fix that would merit its
+> own patch.
+
+Oh no, I entirely missed it because of those nice comments which tell it's 
+trying to update bridge's ASPM so I didn't pay attention to which device 
+it passes for real...
+
+Now I'm left to wonder what would be the best course of action here...
+Since it has never really written to bridge's ASPM at all, perhaps that's 
+not needed and those writes could just be dropped rather than point them 
+to the correct device.
+
+> Maybe this num4bytes thing could be its own patch, too.  Seems so
+> cumbersome that it makes me wonder if the device has issues with
+> larger accesses.
+
+I thought of that but since it was just 2 extra context blocks which are 
+clearly disjoint from the rest, I didn't separate the removal of the 
+member variable to its own patch.
+
+
 -- 
-Do you see my message? I sent you an email but no response what happen.
+ i.
+--8323329-1911404933-1700466388=:2032--
