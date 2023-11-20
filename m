@@ -2,97 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1632E7F17E8
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 16:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D237F1987
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 18:15:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234020AbjKTPyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Nov 2023 10:54:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44282 "EHLO
+        id S231959AbjKTRPi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Nov 2023 12:15:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234019AbjKTPye (ORCPT
+        with ESMTP id S230177AbjKTRPf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Nov 2023 10:54:34 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6300A10E
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 07:54:31 -0800 (PST)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AKFN62Z008480;
-        Mon, 20 Nov 2023 15:54:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=Ecz2MTpk2YTNo6aoiceIM9H2ckiTAOo6tol6IfP7ZHM=;
- b=jYoCIic+TjuavC/qxP16SnEKHh86iOYoBnkM3SGo2pfKdNtbMagW48sq4Q0CjkBTZGfq
- 5posC0Lf683Cby7+gP1cQSrIP+kjYXGaJnftX9I8qFLUoGyVuaPDIwkVt6cNRkkncODT
- xQA/yhNbjoQG8WONF6jqsWSqkxDzrPKjzs/IaOXCQ7lPpE26Fv2R//A4/WSc/uiNDq8j
- ulqC0xbaZ+ecTJhqQRe/Ja2wkZiTw+7sNF8wH+Q4VTb88t0UQYx5yESoi4EhVCmqLg5x
- Yt+Giu1b9WwMgC4w3vfxYV2Ip4ActU1nabPs7tRgmVvpD+sHzzRCAYEAINJdi4EAeAxy Rg== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uem80mg5k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Nov 2023 15:54:29 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AKFsSr4010481
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Nov 2023 15:54:29 GMT
-Received: from [10.110.116.223] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 20 Nov
- 2023 07:54:27 -0800
-Message-ID: <03dace08-3916-4332-bd31-b82b627ae847@quicinc.com>
-Date:   Mon, 20 Nov 2023 07:54:27 -0800
+        Mon, 20 Nov 2023 12:15:35 -0500
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1134AED
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 09:15:32 -0800 (PST)
+Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3b2e73a17a0so3067135b6e.3
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 09:15:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700500531; x=1701105331; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ql0g3tzh+gqE/f9mnzNJDTzWt5oirUW3agwQcz0Uqj8=;
+        b=cHmgS9DMcqguA83cEP6A8u/j0kG1XNpjYPSJ4efBTnwSEWebZ2sDxsAj8Za6pYfmMr
+         kNh3kL2sXs++5t1SnfqFZRB6bAPri7TVftYYXgd/fODUCkXU3WGXx7jkUwyN2zNJAcIq
+         BZI0eRU/vxuKuJ56D9EO2SqwNZBbKcGtgOY2AVgYy1WZN5Xoa14Xy8B4gOCSYzjTFpKS
+         y90alluSfcQx7zZ8NhGk/QukS8OkUFL/eru9TYCTblLFEIWL26TaxAY2W6NcAMiC39Hq
+         1YXSIDP+IY5clls9UyxheVYZTW1DEQVzn5juCBEYy43Gr/Xz5pB0qLIXkkJmvC9msQl4
+         juwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700500531; x=1701105331;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ql0g3tzh+gqE/f9mnzNJDTzWt5oirUW3agwQcz0Uqj8=;
+        b=t64MA5hiS4TN3S1zHtYXDG+MmOZ18/hW5WJh+Nmss+ReDnrVMSaNGYXrpUa5yZ4+Ir
+         81sVz467/KKeBRZTRA0a3+p0NvCWaIOHCONohsIpLhL5Y3KXdEXHWE6nQEo/Wwh28K/t
+         Sm4dNkFhIllrwM3ed51aOdiGcGenegxGwFDhCLhKWawksgImgactjpHnkEvgQwn4Dnfh
+         +qD8v9vsb2pWq/rX8H8hBExpC3Lgkxk0VUOOueEk4TtPAGVoGr3WaTSMGtNl2VjImno5
+         RBIjnRi3H33CQq7lgjWN0O0/9/vuVt17eUYqY3zCrukJjICMqDBJnYI+TQ9EpIe+4K4Y
+         Ub8w==
+X-Gm-Message-State: AOJu0Yy4Hbhy0WnoXmJ9ME2m3o4IzgVfbe+G3brLPard8KzvEKxtW4J6
+        n4vnB2PP9iB5I82CGKn/kG+mMlYqu68=
+X-Google-Smtp-Source: AGHT+IEFMyChMtM4klEjCNMbFimxh5/PdhKrcJEqKBRt5zRU8b+XiodB67OGO+kwN/5uLCYe6pS/og==
+X-Received: by 2002:a05:6808:de7:b0:3a9:bb08:d468 with SMTP id g39-20020a0568080de700b003a9bb08d468mr8982453oic.55.1700500530928;
+        Mon, 20 Nov 2023 09:15:30 -0800 (PST)
+Received: from [10.102.4.159] (50-78-19-50-static.hfc.comcastbusiness.net. [50.78.19.50])
+        by smtp.gmail.com with ESMTPSA id ka8-20020a05622a440800b0041b7f007546sm2762384qtb.82.2023.11.20.09.15.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Nov 2023 09:15:30 -0800 (PST)
+Message-ID: <304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com>
+Date:   Mon, 20 Nov 2023 09:15:28 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] wifi: ath12k: set IRQ affinity to CPU0 in case of one
- MSI vector
 Content-Language: en-US
-To:     Kang Yang <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20231120101543.4369-1-quic_kangyang@quicinc.com>
- <20231120101543.4369-8-quic_kangyang@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231120101543.4369-8-quic_kangyang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-wireless@vger.kernel.org
+Cc:     ath10k@lists.infradead.org
+From:   James Prestwood <prestwoj@gmail.com>
+Subject: Power save setting while interface is down
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: T12yydX1ezDFwHH1FsE7EmcBSrCCBCtu
-X-Proofpoint-ORIG-GUID: T12yydX1ezDFwHH1FsE7EmcBSrCCBCtu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-20_16,2023-11-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=920
- adultscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- impostorscore=0 lowpriorityscore=0 mlxscore=0 spamscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311200112
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/20/2023 2:15 AM, Kang Yang wrote:
-> With VT-d disabled on Intel platform, ath12k gets only one MSI
-> vector. In that case, ath12k does not free IRQ when doing suspend,
-> hence the kernel has to migrate it to CPU0 (if it was affine to
-> other CPUs) and allocates a new MSI vector. However, ath12k has
-> no chance to reconfig it to HW srngs during this phase, thus
-> ath12k fails to resume.
-> 
-> This issue can be fixed by setting IRQ affinity to CPU0 before
-> request_irq is called. With such affinity, migration will not
-> happen and thus the vector keeps unchanged during suspend/resume.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Hi,
+
+I've noticed a somewhat rare behavior (<1% of the time) where bringing 
+an interface up fails after disabling power save. This is done by IWD 
+when a user-option is enabled, and follows an interface 
+removal/creation. The sequence is:
+
+1. Remove default interface
+
+2. Create new interface
+
+3. Disable power save on new interface
+
+4. Bring up new interface (rarely fails with -110).
+
+iwd[1286641]: src/netdev.c:netdev_disable_ps_cb() Disabled power save 
+for ifindex 54
+kernel: ath10k_pci 0000:02:00.0: wmi service ready event not received
+iwd[1286641]: Error bringing interface 54 up: Connection timed out
+kernel: ath10k_pci 0000:02:00.0: Could not init core: -110
+
+I'm thinking maybe there is a race between creating the fresh interface 
+and disabling PS, then bringing the interface back up?
+
+Setting PS after the interface is up (so far) seems to be 100% reliable 
+and have not yet seen this behavior. Regardless of any kernel fixes I'll 
+need to reorder the command sequence in IWD to support existing kernels, 
+but before I work around this issue I wanted to point it out so its not 
+hidden from view.
+
+Thanks,
+
+James
 
