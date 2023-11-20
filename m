@@ -2,178 +2,196 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 685587F116C
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 12:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 045F27F128B
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 12:57:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232735AbjKTLMh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Nov 2023 06:12:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45016 "EHLO
+        id S232025AbjKTL5k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Nov 2023 06:57:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232711AbjKTLMe (ORCPT
+        with ESMTP id S229635AbjKTL5j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Nov 2023 06:12:34 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99C11A0
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 03:12:23 -0800 (PST)
-X-UUID: aa849b50879511eea33bb35ae8d461a2-20231120
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=OV8s5wCvnPXepXNDZfhDStlrcZJfc8V8KOxPfWMOlBQ=;
-        b=h/ZU3OKUoEC8r6eZLyQdYAmyeCBSHKtZC9r8A/Ch3aXqAhF3Vmep7p+qGHc7uvPIufyZS9woqViHJCotbT2zDQRrFzAV5SObRjYSC7DMTu0XAf+rxM8SKmGiRzPgUemE3hFII5dYVUK44TiCLwGc3HphpctLO381hPXaupyhFE4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:596d4f74-aa05-41b8-8ad2-14e77a2bbe98,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:364b77b,CLOUDID:3984db72-1bd3-4f48-b671-ada88705968c,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
-        DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: aa849b50879511eea33bb35ae8d461a2-20231120
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <mingyen.hsieh@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 611086345; Mon, 20 Nov 2023 19:12:17 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 20 Nov 2023 19:12:15 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 20 Nov 2023 19:12:15 +0800
-From:   Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo@kernel.org>
-CC:     <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-        <Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>,
-        <Ryder.Lee@mediatek.com>, <Shayne.Chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Subject: [PATCH 3/3] wifi: mt76: mt7921: fix wrong 6Ghz power type
-Date:   Mon, 20 Nov 2023 19:12:12 +0800
-Message-ID: <20231120111212.4478-4-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20231120111212.4478-1-mingyen.hsieh@mediatek.com>
-References: <20231120111212.4478-1-mingyen.hsieh@mediatek.com>
+        Mon, 20 Nov 2023 06:57:39 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BE1A2;
+        Mon, 20 Nov 2023 03:57:35 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-40836ea8cbaso13385625e9.0;
+        Mon, 20 Nov 2023 03:57:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1700481453; x=1701086253; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wlRM7s7AwJA6jQyeAzn6w32c4a5iZMAHFFyfe3I5QmU=;
+        b=HdLVKroHtY2CZQ0pXiFpnOXUvn6lh4uHrgbfO6NuDrLs2JER7K0L1cSsoY5TyIxqHl
+         v023miMr4rBYintXOUMKYUgfQwBEUrC5NSK+ZOnWfsj3baVNqCBbsLG1QasMQaHTxQHM
+         zSfDRaFsud29nLsnBtQnLSuYzdd4h8nLTDsaJDwS53CnNcr8+/o3oBftxGRHwAugcmn+
+         vbl4HAfvYB6+WCj3+XgcoGokv3Wc80s2/EB2aTxpKy/Pwriqs8cIXNfgPtK/6tmySy5c
+         DrE7Z9oIRDEAOT4r6azLvZLytv93rNdYaYYm07H4o0mufjSHJakEFLpjJ3Sv2knf1voB
+         yG+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700481453; x=1701086253;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wlRM7s7AwJA6jQyeAzn6w32c4a5iZMAHFFyfe3I5QmU=;
+        b=E6dY/mY9qaDrevwAWxyjRxrQrbIVET7y2H8I4ysF62Pno5b8nhUh5S2RsycT/hTzvM
+         Q6SSqTU0Mafq4Br9abpclGWYGPBRMxiYB88EcpeskmtKjOlPJZV1xQwq3MNbug5nWZQ+
+         EId4IaOE/mWA/4BxXDoIo0/unLMksWu2WlQveEiTxp4M4OYzFtSBbDFNgNAPc70MFzpB
+         zoKhc6X/pDnL9v84lL25pCAnznND8DlxOw/JJ5lNGHXhDA1HLmDikbb008S7dYzgyGBP
+         aR2hwiWoiO5Jk2o+ZK8tmLhdvD7Y3MLiNJIRjicwGv6RT1ATJlvU1VlfdXw23KwMHY++
+         aMIw==
+X-Gm-Message-State: AOJu0YwKDXx3Z/BNw7oMRMtC1DYi+LxL0yzE9if7UkcDuwAHnVItPMYg
+        djGYic68jQtZIa08D7u/KS8JCFCxquk=
+X-Google-Smtp-Source: AGHT+IHEIwHg7IkYNWnHYgq6LARx+aHWJhyL4OTkjM5joRlRC++kgOnEm66BG8nqkmNK396J5byWxQ==
+X-Received: by 2002:a05:600c:81e:b0:40a:463c:1de0 with SMTP id k30-20020a05600c081e00b0040a463c1de0mr5862005wmp.34.1700481453133;
+        Mon, 20 Nov 2023 03:57:33 -0800 (PST)
+Received: from localhost.localdomain (dynamic-2a02-3100-91c1-d400-0000-0000-0000-0e63.310.pool.telefonica.de. [2a02:3100:91c1:d400::e63])
+        by smtp.googlemail.com with ESMTPSA id r14-20020a05600c35ce00b004094d4292aesm13149635wmq.18.2023.11.20.03.57.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Nov 2023 03:57:32 -0800 (PST)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, jernej.skrabec@gmail.com,
+        pkshih@realtek.com, ulf.hansson@linaro.org, kvalo@kernel.org,
+        tony0620emma@gmail.com, lukas@mntre.com,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH v3] wifi: rtw88: sdio: Honor the host max_req_size in the RX path
+Date:   Mon, 20 Nov 2023 12:57:26 +0100
+Message-ID: <20231120115726.1569323-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--2.369800-8.000000
-X-TMASE-MatchedRID: wYuucKnWdZKg1DExZSWfTbMsPmSZxbpkKx5ICGp/WtEJ3+GAlbGRqAqu
-        sGnv+h2ZtYR/uNxnStF+dfwnt/TnE4UAIpgcoJ8i4pdq9sdj8LVYN1akkye0qPNhzIgXtFJVgSk
-        lFxt6Wp2H28JBgchGjm9GkFdCqJAxP7LjmHZ8wWoSEYfcJF0pRf+UEb65dgmQ6T1ArrMwNVo24Y
-        TX/Id5m+LzNWBegCW2wgn7iDBesS3CttcwYNipX/oJlcuVXWZJ7jyjm1f34QZJ6hNgdZiMhcGwO
-        w4TdvP2jibUVL84QmPfrB7j8MNpHdTADK205/2/CrWTGf5pYzFTvu037c9oG2HPe5i7P4xgdmtR
-        sRmKkASJZPT2ZDPuzPD2QfzMDLjho65UufHcDvg=
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--2.369800-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: BF0AABC720A9DE1C6F18CD7511A24874FD237868D08DC61C8EAE41FE2093A96B2000:8
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Lukas reports skb_over_panic errors on his Banana Pi BPI-CM4 which comes
+with an Amlogic A311D (G12B) SoC and a RTL8822CS SDIO wifi/Bluetooth
+combo card. The error he observed is identical to what has been fixed
+in commit e967229ead0e ("wifi: rtw88: sdio: Check the HISR RX_REQUEST
+bit in rtw_sdio_rx_isr()") but that commit didn't fix Lukas' problem.
 
-To avoid using incorrect 6g power settings after disconnection,
-it should to update back to the default state when disconnected.
+Lukas found that disabling or limiting RX aggregation works around the
+problem for some time (but does not fully fix it). In the following
+discussion a few key topics have been discussed which have an impact on
+this problem:
+- The Amlogic A311D (G12B) SoC has a hardware bug in the SDIO controller
+  which prevents DMA transfers. Instead all transfers need to go through
+  the controller SRAM which limits transfers to 1536 bytes
+- rtw88 chips don't split incoming (RX) packets, so if a big packet is
+  received this is forwarded to the host in it's original form
+- rtw88 chips can do RX aggregation, meaning more multiple incoming
+  packets can be pulled by the host from the card with one MMC/SDIO
+  transfer. This Depends on settings in the REG_RXDMA_AGG_PG_TH
+  register (BIT_RXDMA_AGG_PG_TH limits the number of packets that will
+  be aggregated, BIT_DMA_AGG_TO_V1 configures a timeout for aggregation
+  and BIT_EN_PRE_CALC makes the chip honor the limits more effectively)
 
-Fixes: 51ba0e3a15eb ("wifi: mt76: mt7921: add 6GHz power type support for clc")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Use multiple consecutive reads in rtw_sdio_read_port() and limit the
+number of bytes which are copied by the host from the card in one
+MMC/SDIO transfer. This allows receiving a buffer that's larger than
+the hosts max_req_size (number of bytes which can be transferred in
+one MMC/SDIO transfer). As a result of this the skb_over_panic error
+is gone as the rtw88 driver is now able to receive more than 1536 bytes
+from the card (either because the incoming packet is larger than that
+or because multiple packets have been aggregated).
+
+In case of an receive errors (-EILSEQ has been observed by Lukas) we
+need to drain the remaining data from the card's buffer, otherwise the
+card will return corrupt data for the next rtw_sdio_read_port() call.
+
+Fixes: 65371a3f14e7 ("wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets")
+Reported-by: Lukas F. Hartmann <lukas@mntre.com>
+Closes: https://lore.kernel.org/linux-wireless/CAFBinCBaXtebixKbjkWKW_WXc5k=NdGNaGUjVE8NCPNxOhsb2g@mail.gmail.com/
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 ---
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 38 +++++++++++++++++--
- 1 file changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 510a575a973b..0645417e0582 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -683,17 +683,45 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- }
- 
- static void
--mt7921_regd_set_6ghz_power_type(struct ieee80211_vif *vif)
-+mt7921_calc_vif_num(void *priv, u8 *mac, struct ieee80211_vif *vif)
-+{
-+	u32 *num = priv;
-+
-+	if (!priv)
-+		return;
-+
-+	switch (vif->type) {
-+	case NL80211_IFTYPE_STATION:
-+	case NL80211_IFTYPE_P2P_CLIENT:
-+	case NL80211_IFTYPE_AP:
-+	case NL80211_IFTYPE_P2P_GO:
-+		*num += 1;
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static void
-+mt7921_regd_set_6ghz_power_type(struct ieee80211_vif *vif, bool is_add)
+Changes since v2 at [2]:
+- Don't initialize err to zero as that intiial value is never used.
+  Thanks Ping-Ke for spotting this!
+- Add a comment explaning why we need to continue reading but still
+  have to return an error to the caller of rtw_sdio_read_port()
+
+Changes since v1 at [0]:
+- We need to read all bytes if we split the transaction into multiple
+  smaller reads. This is even the case when one of N reads reports an
+  error. Otherwise the next read port call will return garbage (partially
+  containing zeros, ...). A similar-ish approach can be found in the
+  vendor driver, see [1] (specifically the call to sdio_recv_and_drop())
+- Update the patch description accordingly
+
+With a preliminary version of this updated patch Lukas reported off-
+list: "i've been using this laptop for almost 3 hours with heavy wifi
+usage and so far no problems"
+
+
+[0] https://lore.kernel.org/lkml/169089906853.212423.17095176293160428610.kvalo@kernel.org/T/
+[1] https://github.com/chewitt/RTL8822CS/blob/ad1391e219b59314485739a499fb442d5bbc069e/hal/rtl8822c/sdio/rtl8822cs_io.c#L468-L477
+[2] https://lore.kernel.org/linux-wireless/20230806181656.2072792-1-martin.blumenstingl@googlemail.com/
+
+
+ drivers/net/wireless/realtek/rtw88/sdio.c | 35 ++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index 2c1fb2dabd40..0cae5746f540 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -500,19 +500,40 @@ static u32 rtw_sdio_get_tx_addr(struct rtw_dev *rtwdev, size_t size,
+ static int rtw_sdio_read_port(struct rtw_dev *rtwdev, u8 *buf, size_t count)
  {
- 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
- 	struct mt792x_phy *phy = mvif->phy;
- 	struct mt792x_dev *dev = phy->dev;
-+	u32 valid_vif_num = 0;
+ 	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
++	struct mmc_host *host = rtwsdio->sdio_func->card->host;
+ 	bool bus_claim = rtw_sdio_bus_claim_needed(rtwsdio);
+ 	u32 rxaddr = rtwsdio->rx_addr++;
+-	int ret;
++	int ret = 0, err;
++	size_t bytes;
+ 
+ 	if (bus_claim)
+ 		sdio_claim_host(rtwsdio->sdio_func);
+ 
+-	ret = sdio_memcpy_fromio(rtwsdio->sdio_func, buf,
+-				 RTW_SDIO_ADDR_RX_RX0FF_GEN(rxaddr), count);
+-	if (ret)
+-		rtw_warn(rtwdev,
+-			 "Failed to read %zu byte(s) from SDIO port 0x%08x",
+-			 count, rxaddr);
++	while (count > 0) {
++		bytes = min_t(size_t, host->max_req_size, count);
 +
-+	ieee80211_iterate_active_interfaces(mt76_hw(dev),
-+					    IEEE80211_IFACE_ITER_RESUME_ALL,
-+					    mt7921_calc_vif_num, &valid_vif_num);
- 
--	if (hweight64(dev->mt76.vif_mask) > 1) {
-+	if (valid_vif_num > 1) {
- 		phy->power_type = MT_AP_DEFAULT;
- 		goto out;
- 	}
- 
-+	if (!is_add)
-+		vif->bss_conf.power_type = IEEE80211_REG_UNSET_AP;
++		err = sdio_memcpy_fromio(rtwsdio->sdio_func, buf,
++					 RTW_SDIO_ADDR_RX_RX0FF_GEN(rxaddr),
++					 bytes);
++		if (err) {
++			rtw_warn(rtwdev,
++				 "Failed to read %zu byte(s) from SDIO port 0x%08x: %d",
++				 bytes, rxaddr, err);
 +
- 	switch (vif->bss_conf.power_type) {
- 	case IEEE80211_REG_SP_AP:
- 		phy->power_type = MT_AP_SP;
-@@ -705,6 +733,8 @@ mt7921_regd_set_6ghz_power_type(struct ieee80211_vif *vif)
- 		phy->power_type = MT_AP_LPI;
- 		break;
- 	case IEEE80211_REG_UNSET_AP:
-+		phy->power_type = MT_AP_UNSET;
-+		break;
- 	default:
- 		phy->power_type = MT_AP_DEFAULT;
- 		break;
-@@ -749,7 +779,7 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	if (ret)
- 		return ret;
- 
--	mt7921_regd_set_6ghz_power_type(vif);
-+	mt7921_regd_set_6ghz_power_type(vif, true);
- 
- 	mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
- 
-@@ -811,6 +841,8 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		list_del_init(&msta->wcid.poll_list);
- 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
- 
-+	mt7921_regd_set_6ghz_power_type(vif, false);
++			 /* Signal to the caller that reading did not work and
++			  * that the data in the buffer is short/corrupted.
++			  */
++			ret = err;
 +
- 	mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
- }
- EXPORT_SYMBOL_GPL(mt7921_mac_sta_remove);
++			/* Don't stop here - instead drain the remaining data
++			 * from the card's buffer, else the card will return
++			 * corrupt data for the next rtw_sdio_read_port() call.
++			 */
++		}
++
++		count -= bytes;
++		buf += bytes;
++	}
+ 
+ 	if (bus_claim)
+ 		sdio_release_host(rtwsdio->sdio_func);
 -- 
-2.18.0
+2.42.1
 
