@@ -2,99 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02C9C7F0FDF
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 11:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4243E7F0FDA
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 11:07:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233089AbjKTKIE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Nov 2023 05:08:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40798 "EHLO
+        id S232954AbjKTKHp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Nov 2023 05:07:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232565AbjKTKHw (ORCPT
+        with ESMTP id S233011AbjKTKHf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Nov 2023 05:07:52 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9AB10E;
-        Mon, 20 Nov 2023 02:07:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700474868; x=1732010868;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=xR0+UQoJfM6pZ/tg70OOBb2loJbFmI+VNTmfYo2c9eU=;
-  b=Yw0pCCNQGCl11r68DBlu13se7+NPskXNO9ClNsUKWXM8TXQ9P11i/8WR
-   DBG41m/Ctn34SK1Thz/wMhMjS14X32+V6Z1W0wc1k424qThEO+Rhp+wKe
-   XtdosEi0v8kFAYlHKzm9jSoKLRL2lQeEHGAMugdP68an0DU1VzXv89dxQ
-   ncnKVwPNN5JYqqb9UckHKy/oXhKM9LwiiM80iISAlMxv5uJwyW6ei7Vfv
-   TyANepkn7exfbV5R+MN0u0VGZrizhNSmrFXeAM68vRwowm4WJAlqPZHt/
-   e2wy8dXmqRIWCjDYHLhmB9BQyGcEIxHf7s12k5TATGh7VqndKOpMWGCSJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="477800373"
-X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
-   d="scan'208";a="477800373"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 02:06:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
-   d="scan'208";a="14548591"
-Received: from akeren-mobl.ger.corp.intel.com ([10.252.40.26])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 02:06:19 -0800
-Date:   Mon, 20 Nov 2023 12:06:17 +0200 (EET)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-cc:     "John W. Linville" <linville@tuxdriver.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 7/7] rtlwifi: rtl8821ae: Access full PMCS reg and use
- pci_regs.h
-In-Reply-To: <20231117224842.GA96270@bhelgaas>
-Message-ID: <553cda39-ffe7-e9b3-a38b-d1f3381b485@linux.intel.com>
-References: <20231117224842.GA96270@bhelgaas>
+        Mon, 20 Nov 2023 05:07:35 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C8EEF2
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 02:07:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=ACBikKPIRqzr9payxhpI5XM4jMhbiP2iolHg18i3IrE=;
+        t=1700474851; x=1701684451; b=IuS+7nmA+l2gANpc9/2dO9gdATaCsGryH/0IWSJviJcFh9t
+        hCbx1fr5JHjcZu1teORbuDsa/RZkdZ625bblBHyzwnE/UXq14sIWztCXzOc6peeBISE8bfx2K9rG3
+        vY5/Hss/BKoBy4hlZfvaqU9u2AJNwzefymUWlsd8Q1NrWJ8E5O95s6Gkqwt0fjff90eRFGWhvkdlH
+        GfP1nayk4Z1Kk6wMcrZtpHs+1juGqzx14L+K3U3Is7X6rHoZpgXCAQgDaa2h1B0it5NHEfDujQZ+T
+        A1a7bgn6NtKGYbGrJT1B0IJ0rSMcH+aONQD7a3NJtBPgOhUSG2NI0Mi2mZ3YjiNg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1r51Be-0000000F5C6-06Ta;
+        Mon, 20 Nov 2023 11:07:26 +0100
+Message-ID: <f246e61a32590b8b543f02fa810da32f2d1c9a81.camel@sipsolutions.net>
+Subject: Re: [PATCH v2,2/2] wifi: mac80211: Refactor STA CSA parsing flow
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Michael-cy Lee =?UTF-8?Q?=28=E6=9D=8E=E5=B3=BB=E5=AE=87=29?= 
+        <Michael-cy.Lee@mediatek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     "linux-mediatek@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        "nbd@nbd.name" <nbd@nbd.name>,
+        Evelyn Tsai =?UTF-8?Q?=28=E8=94=A1=E7=8F=8A=E9=88=BA=29?= 
+        <Evelyn.Tsai@mediatek.com>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>,
+        Money Wang =?UTF-8?Q?=28=E7=8E=8B=E4=BF=A1=E5=AE=89=29?= 
+        <Money.Wang@mediatek.com>
+Date:   Mon, 20 Nov 2023 11:07:25 +0100
+In-Reply-To: <e56d4b60d6b0e7305cc9db4f4b1e33fc44317ce5.camel@mediatek.com>
+References: <20231113021107.13110-1-michael-cy.lee@mediatek.com>
+         <20231113021107.13110-2-michael-cy.lee@mediatek.com>
+         <2eaa04080702230b8dbe3b3541d6d831484c4f1f.camel@sipsolutions.net>
+         <e56d4b60d6b0e7305cc9db4f4b1e33fc44317ce5.camel@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1384141213-1700474781=:2032"
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Michael,
 
---8323329-1384141213-1700474781=:2032
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+> I will fix the typos and change all the =E2=80=9CIE =E2=80=9D to =E2=80=
+=9CElement=E2=80=9D. The TODO
+> for 320 MHz bandwidth is used for internal tests, I=E2=80=99ll remove it,=
+ too.
 
-On Fri, 17 Nov 2023, Bjorn Helgaas wrote:
+Sounds good.
 
-> On Fri, Nov 17, 2023 at 11:44:25AM +0200, Ilpo Järvinen wrote:
-> > _rtl8821ae_clear_pci_pme_status() accesses the upper byte of the Power
-> > Management Control/Status register (PMCS) with literal 5 offset.
-> > 
-> > Access the entire PMCS register using defines from pci_regs.h to
-> > improve code readability.
-> > 
-> > While at it, remove the obvious comment and tweak debug prints
-> > slightly to not sound misleading.
-> 
-> OK, ignore my previous comments ;)  I should read all the way through
-> before responding.
+> We had checked the D4.1, and unfortunately, the additional description
+> for WBCS Element in D3.2 9.4.2.159 is removed. In other words, D4.1
+> does not change the definitions of WBCS Element and WBCS Element should
+> be parsed as VHT operating information regardless of the BSS being VHT,
+> HE, or EHT.
 
-Please don't do that because then you'll just end up forgetting useful 
-comments. :-)
+Right, I thought there were going to be some changes here.
 
-I had this all in one patch initially but thought it's better to split it 
-a bit.
+> After parsing the WBCS Element, the STA needs to check whether the new
+> channel fits its capabilities according to the operating mode
+> (VHT/HE/EHT).
+> However, the existing flow only checks the VHT capability after the
+> WBCS Element parsing, which is incorrect when the BSS is HE/EHT or the
+> band is 6 GHz.
+> =20
+> In summary, I will refactor the WBCS Element parsing part of this
+> patch, along with other fixes.
 
-Thanks a lot for reviewing.
+Sounds good.
 
--- 
- i.
+We'll have to figure this out separately, but I'm also working on
+something else that will certainly affect this code. I noticed very
+recently that the whole STA_DISABLE_* flags are very messy, and am
+working on some improvements along these lines. The current version
+looks like this, but it doesn't even compile yet:
 
---8323329-1384141213-1700474781=:2032--
+https://p.sipsolutions.net/ccb552810b020745.txt
+
+No idea if this would help/hinder you in any way, but I figured since it
+has some overlap I'd let you know. I don't think you need to worry about
+it for now, it'll take me some more time to work on it.
+
+johannes
