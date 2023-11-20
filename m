@@ -2,112 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBAAB7F1339
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 13:27:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5EF17F1358
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 13:31:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233232AbjKTM1v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Nov 2023 07:27:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35160 "EHLO
+        id S232738AbjKTMbU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Nov 2023 07:31:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232607AbjKTM1v (ORCPT
+        with ESMTP id S232135AbjKTMbT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Nov 2023 07:27:51 -0500
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E19BCE5
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 04:27:46 -0800 (PST)
-Received: by mail-qk1-x733.google.com with SMTP id af79cd13be357-778940531dbso275964285a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 04:27:46 -0800 (PST)
+        Mon, 20 Nov 2023 07:31:19 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3550100
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 04:31:15 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-4079ed65582so13927125e9.1
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 04:31:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700483266; x=1701088066; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IvzJUnFYD87lMKX7ZfI614acA27mho8juoGTE8Crpj4=;
-        b=ItPFJrfIMdDCFLOOaE+vLMGSNnNeE0d7i9VGo52t8NeU2qhzFquG9CiUht1bxOq+by
-         HUxtH+6TpXmLpIOytA5NH/nlxjEWsBMGeejkYnfXkvLUQbPpTstWwmnO+CXY7k3QCrN3
-         MDbsn38UgclKlrz0klXrLnN61dUWlIVe3HRdo9DSBBrC++QlwrjiQk/ElFbfiC9lhM1W
-         aSfoOogTgrrbYT8WKejcVvdqTXYgIT773lp3mMJheWOafXj6wE+ILA6hTV4JwtPfjseC
-         0qXHNe81g7dgiZ1KSSEbp+B/+TStumR6iwLq4349cG2MdTx87KONEXXXvUa+V2i8KYAh
-         14kw==
+        d=linaro.org; s=google; t=1700483474; x=1701088274; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=U+ygfjyW2dtt7SNYdGG+a1RKbTlkp8CN0gh3juIVK50=;
+        b=gpu1ivGulkhKvdk5so7NtuqUMLlTWTuX2mLaMv/JBLnR0LBsI2dEjcgi7Qp7MSKHn2
+         FygvSfqECuoRMQCyIuRPi9ZOLY9a5PMZppkIIzTLBbYmgvtY8jF2jBTmhqSVXhsZS+yS
+         csbso2McCRZwKQgOsE69KSLlhM2kpAm++D1lLEoCWTdEz23Pnov9FSY60q90uSx+L6u9
+         oA8nK54+DUqOlEBcLBGLwtqoORc8Q1uVQj7lX4ET3zsOODF86cTNubXKLLPmtv0ciQyz
+         0JmQBuNQxfgrF6DXu5vx0NrivkQ9ed6rxwGA4DSVX4qZUD0GMneKiXEmSYnw4AFoVgHJ
+         WHlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700483266; x=1701088066;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IvzJUnFYD87lMKX7ZfI614acA27mho8juoGTE8Crpj4=;
-        b=aGrV2A2vkrE4P16RWf4ybNPLO2pDQ29rrSwOWyhDv6rpvJc3LAH73YXNmBQOOMtAJf
-         Tk8fzBsSjzUxwXrzP/maq7a0m/uPRvZz620HLx29olo6w6/gkxAcuq2/rXUF3USsHE4q
-         mt0x7hU/Rz8UZG7xBXulviwql1rIAHa/KOnGGRZtqujILcSA2hX0VOe4RUeqo4zQ0mj4
-         haF6YbyEh05NYlAOMegr8HEhKodwHXnDrtssQqPvSDgUR5tZoNHqWJ4x0Zn/EC4/2NEG
-         4JQA8KhAeS+W6IyOgrDZ+FJbh2h9KCFog4xffWPPd0BbJoscZfMb9GsxCy2yTwTq6x5H
-         3gvA==
-X-Gm-Message-State: AOJu0YzQXw6lxPeMPNuKfGHSV7pjIW0cTeFitbIZvyaZd8gid61BwcMA
-        xZqcDGOHl78eveS29JzxDCLzFuM1OvU=
-X-Google-Smtp-Source: AGHT+IGWyjHqTqvBY6AvrAphkxBgCpkIpxEkM6WASvL/biWvECCDgzaOIMx8COdqRVgk/TRqkENFsg==
-X-Received: by 2002:ad4:5f89:0:b0:679:d3eb:1469 with SMTP id jp9-20020ad45f89000000b00679d3eb1469mr5058619qvb.49.1700483265914;
-        Mon, 20 Nov 2023 04:27:45 -0800 (PST)
-Received: from [10.102.4.159] (50-78-19-50-static.hfc.comcastbusiness.net. [50.78.19.50])
-        by smtp.gmail.com with ESMTPSA id kh13-20020a056214514d00b00679df2f6d11sm496507qvb.59.2023.11.20.04.27.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Nov 2023 04:27:45 -0800 (PST)
-Message-ID: <0f79edbc-c727-44b6-8b9e-493026313b83@gmail.com>
-Date:   Mon, 20 Nov 2023 04:27:42 -0800
+        d=1e100.net; s=20230601; t=1700483474; x=1701088274;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U+ygfjyW2dtt7SNYdGG+a1RKbTlkp8CN0gh3juIVK50=;
+        b=BoFL6r+uYxNP/W3XGoMWrz5K7bmOxCcffQjEIoY0Hw6nwQk1jYLSMYcHLnAwxhDQVW
+         bkmOnsHfTZCQuHnNzEzE6CYvUkirUBGba/xLF1sJxlAAUPDim5ffNyJIcQDNPkT7Kgi+
+         /qxfYfrIOZxEPc1oPFMSj9fZvXDaAkPRIdhSi6fZPpGgxEvwdu2NOoGxnF4mF608gpSn
+         CiD2WavPDN5oEGQ7PcDElDrgxZfjNTdGlw31prjmHjN++GxgVYbSj3zziQTCG2OtswAp
+         YVlznKDnu6aeUuP5rae+vjwpXLIvQCQzvmJrnricY/0ogLhTxnPcG2UAEGmRCyFEwnES
+         jVCQ==
+X-Gm-Message-State: AOJu0YyhSeBeE+ht2z7eofu8y5GezBgN7AegoVeJ/pHCn09CFFzUQq0d
+        FCYvLjUvdkMzSoIW3P6HsEIPVg==
+X-Google-Smtp-Source: AGHT+IFH5ZY2W8nrgFtr/VHzEM4XPB2oiuC34QYENqeI3k2VGALPT0oPN0iCaxJHt7hbpyaLHA4VRA==
+X-Received: by 2002:a5d:4382:0:b0:32d:a7b0:62b with SMTP id i2-20020a5d4382000000b0032da7b0062bmr3677437wrq.26.1700483474267;
+        Mon, 20 Nov 2023 04:31:14 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id d4-20020a5d4f84000000b0032d96dd703bsm11077492wru.70.2023.11.20.04.31.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Nov 2023 04:31:13 -0800 (PST)
+Date:   Mon, 20 Nov 2023 07:31:10 -0500
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Su Hui <suhui@nfschina.com>,
+        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] wifi: rtl8xxxu: correct the error value of 'timeout'
+Message-ID: <456145f7-9c6e-4231-aec4-9c02511b6550@suswa.mountain>
+References: <20231113054917.96894-1-suhui@nfschina.com>
+ <e8b847437ab242d18108d9364360bb8a@realtek.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: ath11k: use select for CRYPTO_MICHAEL_MIC
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <20231113153544.282461-1-prestwoj@gmail.com>
- <343af05d-eab9-4411-a016-8d7d96f78379@quicinc.com>
- <87pm04947x.fsf@kernel.org>
-From:   James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <87pm04947x.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e8b847437ab242d18108d9364360bb8a@realtek.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/20/23 01:14, Kalle Valo wrote:
-> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
->
->> On 11/13/2023 7:35 AM, James Prestwood wrote:
->>> Let ath11k select this option automatically which makes building
->>> more intuitive if the user enables this driver (rather than the
->>> driver not building unless CRYPTO_MICAEL_MIC is explicitly enabled)
->> s/MICAEL/MICHAEL/
->>
->> add hard stop
->>
->> Also suggest you include (or summarize) the information that Kalle
->> shared that ath is the outlier here:
->>
->> Further investigation shows that ath11k and ath12k are the only who use
->> 'depends on' with CRYPTO_MICHAEL_MIC:
->>
->> ./drivers/net/wireless/intel/ipw2x00/Kconfig:	select CRYPTO_MICHAEL_MIC
->> ./drivers/net/wireless/intersil/hostap/Kconfig:	select CRYPTO_MICHAEL_MIC
->> ./drivers/net/wireless/intersil/orinoco/Kconfig:	select CRYPTO_MICHAEL_MIC
->> ./drivers/net/wireless/ath/ath11k/Kconfig:	depends on CRYPTO_MICHAEL_MIC
->> ./drivers/net/wireless/ath/ath12k/Kconfig:	depends on CRYPTO_MICHAEL_MIC
->> ./drivers/staging/rtl8192e/Kconfig:	select CRYPTO_MICHAEL_MIC
->> ./drivers/staging/ks7010/Kconfig:	select CRYPTO_MICHAEL_MIC
->>
->> consider these comments apply to ath12k change as well :)
-> BTW I can add these changes in the pending branch, no need to resend
-> because of this.
+On Tue, Nov 14, 2023 at 06:42:50AM +0000, Ping-Ke Shih wrote:
+> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > index 43ee7592bc6e..9cab8b1dc486 100644
+> > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> > @@ -4757,6 +4757,12 @@ void rtl8xxxu_gen1_init_aggregation(struct rtl8xxxu_priv *priv)
+> >          *   RxAggPageTimeout = 4 or 6 (absolute time 34ms/(2^6))
+> >          */
+> > 
+> > +       /* REG_RXDMA_AGG_PG_TH + 1 seems to be the timeout register on
+> > +        * gen2 chips and rtl8188eu. The rtl8723au seems unhappy if we
+> > +        * don't set it, so better set both.
+> > +        */
+> > +       timeout = 4;
+> > +
+> >         page_thresh = (priv->fops->rx_agg_buf_size / 512);
+> >         if (rtl8xxxu_dma_agg_pages >= 0) {
+> >                 if (rtl8xxxu_dma_agg_pages <= page_thresh)
+> 
+> The logic here is:
+> 
+> 	page_thresh = (priv->fops->rx_agg_buf_size / 512);
+> 	if (rtl8xxxu_dma_agg_pages >= 0) {
+> 		if (rtl8xxxu_dma_agg_pages <= page_thresh)
+> 			timeout = page_thresh;
+> 
+> Do you know why 'timeout = page_thresh;'? Intuitively, units of 'timeout' and
+> 'thresh' are different. Maybe, we should correct here instead?
+> 
 
-Works for me. Had a few things come up and hadn't circled back here yet.
+Yeah.  That's strange.  I'm not convinced this fix is correct.  I'm
+hesitant to suggest this but maybe the following is the correct fix?
+It just silences the warning but doesn't change runtime.
 
-Thanks,
+I don't know.  *shrug*.  One thing that we could do is just leave the
+warning as-is until someone who knows better than we do can take a look
+at it.
 
-James
+regards,
+dan carpenter
 
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 43ee7592bc6e..68d9b4a0ee63 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4759,16 +4759,16 @@ void rtl8xxxu_gen1_init_aggregation(struct rtl8xxxu_priv *priv)
+ 
+ 	page_thresh = (priv->fops->rx_agg_buf_size / 512);
+ 	if (rtl8xxxu_dma_agg_pages >= 0) {
+-		if (rtl8xxxu_dma_agg_pages <= page_thresh)
+-			timeout = page_thresh;
+-		else if (rtl8xxxu_dma_agg_pages <= 6)
+-			dev_err(&priv->udev->dev,
+-				"%s: dma_agg_pages=%i too small, minimum is 6\n",
+-				__func__, rtl8xxxu_dma_agg_pages);
+-		else
+-			dev_err(&priv->udev->dev,
+-				"%s: dma_agg_pages=%i larger than limit %i\n",
+-				__func__, rtl8xxxu_dma_agg_pages, page_thresh);
++		if (rtl8xxxu_dma_agg_pages > page_thresh) {
++			if (rtl8xxxu_dma_agg_pages <= 6)
++				dev_err(&priv->udev->dev,
++					"%s: dma_agg_pages=%i too small, minimum is 6\n",
++					__func__, rtl8xxxu_dma_agg_pages);
++			else
++				dev_err(&priv->udev->dev,
++					"%s: dma_agg_pages=%i larger than limit %i\n",
++					__func__, rtl8xxxu_dma_agg_pages, page_thresh);
++		}
+ 	}
+ 	rtl8xxxu_write8(priv, REG_RXDMA_AGG_PG_TH, page_thresh);
+ 	/*
