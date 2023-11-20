@@ -2,44 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 458337F0EFC
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 10:25:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61A137F0FB6
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 11:04:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbjKTJZN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Nov 2023 04:25:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57182 "EHLO
+        id S232791AbjKTKEU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Nov 2023 05:04:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231997AbjKTJZM (ORCPT
+        with ESMTP id S232176AbjKTKEQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Nov 2023 04:25:12 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5F4DCD;
-        Mon, 20 Nov 2023 01:25:08 -0800 (PST)
+        Mon, 20 Nov 2023 05:04:16 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B591B95;
+        Mon, 20 Nov 2023 02:04:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700472308; x=1732008308;
+  t=1700474652; x=1732010652;
   h=date:from:to:cc:subject:in-reply-to:message-id:
    references:mime-version:content-id;
-  bh=BVUYYQ1JYAQmJwUnfzncwjq61tORuEuESunZjowyk9o=;
-  b=RoO18/ZUgKH+IGafBqYuRiwNfDVEkPmNmRc0YsFPvqJ6ALrkh2I5Fpbk
-   U5/Krds5dG7rsKf+vImHCYkUWVgf2YfSOpgNXqfmlFb5woNZM45fgzbHo
-   lw5FjVIfVQs2+geGQMsfVliUtNhsvlECTydNvTPSFd2infdrl0/fl38uB
-   XOsuajJQy10sBu8T5QVq1nVyFNOckUzrjvnFyTHi3yZeBo8pWQC+PmjXJ
-   QWP1iCkr6x3u5bc1VV8kPsd8CNq7I2HuXT4LfaFweWwgOfHcZps+FpiYS
-   w4Bzfg2dwGd1XPtB9VB/zeTZoe1pysD5Q3Y/Y9DZh3G/m/otpwzmSkRhJ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="4765284"
+  bh=Q5vDujUu2jQVmhCwOqd7SDr4yeZ+2NBNFFCi8xPFKlY=;
+  b=bV3q0rqqbbrJyWKTKCN4gB1BcaBkK4a7w895lz4PvF8dalrT0iTcIzJw
+   qPcEhISWJNjScj30pEoyrtyyoMF0vEhS7JEywIMZHsN0gNcDUsY5EJzCg
+   XcI1JYiXCx1ZboofA/L6FnQ2QCBzbXZPk5ouFZspumVcL9Rfelh7RHM8u
+   D8yG2Bb39psp8leC0dlpemtIC9jYfLfBKFn7p0ZC6DaN6hhbeC0CPcqq7
+   WC0AhF27fbkqyOhF53tlu4l41hkJZ/geUrJXhBxXKCpe/54I2SZcVfY5a
+   0ioJTIvC0Vp6Rg0+CL8TKYICPgn/DCc07Muq7P9HsIy5ATXdZgT7AyCcP
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="455914983"
 X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
-   d="scan'208";a="4765284"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 01:25:08 -0800
+   d="scan'208";a="455914983"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 01:59:09 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="795418486"
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="889872771"
 X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
-   d="scan'208";a="795418486"
+   d="scan'208";a="889872771"
 Received: from akeren-mobl.ger.corp.intel.com ([10.252.40.26])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 01:25:05 -0800
-Date:   Mon, 20 Nov 2023 11:25:03 +0200 (EET)
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2023 01:59:06 -0800
+Date:   Mon, 20 Nov 2023 11:59:04 +0200 (EET)
 From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To:     Bjorn Helgaas <helgaas@kernel.org>
 cc:     "John W. Linville" <linville@tuxdriver.com>,
@@ -48,17 +48,18 @@ cc:     "John W. Linville" <linville@tuxdriver.com>,
         linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/7] wifi: rtlwifi: Convert LNKCTL change to PCIe cap
- RMW accessors
-In-Reply-To: <20231117222416.GA94936@bhelgaas>
-Message-ID: <bcb6c224-c279-bfa3-5bf0-d1e7512f44cb@linux.intel.com>
-References: <20231117222416.GA94936@bhelgaas>
+Subject: Re: [PATCH 4/7] rtlwifi: rtl8821ae: Reverse PM capability exists
+ check
+In-Reply-To: <20231117224407.GA95935@bhelgaas>
+Message-ID: <34385eee-b08c-8ff9-db47-75c3d2be681@linux.intel.com>
+References: <20231117224407.GA95935@bhelgaas>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1911404933-1700466388=:2032"
-Content-ID: <118f9d3-aec8-f64a-2857-2dfad61f381c@linux.intel.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; BOUNDARY="8323329-1927733487-1700473754=:2032"
+Content-ID: <2366eb98-2abd-5792-be3d-ea2e2c2d16fb@linux.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -68,147 +69,75 @@ X-Mailing-List: linux-wireless@vger.kernel.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-1911404933-1700466388=:2032
+--8323329-1927733487-1700473754=:2032
 Content-Type: text/plain; CHARSET=ISO-8859-15
 Content-Transfer-Encoding: 8BIT
-Content-ID: <79bf996f-ae7-d121-1633-98d3cdbca3de@linux.intel.com>
+Content-ID: <9fa8dab0-fcc-f0b0-f269-af6933aa9b6@linux.intel.com>
 
 On Fri, 17 Nov 2023, Bjorn Helgaas wrote:
 
-> On Fri, Nov 17, 2023 at 11:44:19AM +0200, Ilpo Järvinen wrote:
-> > The rtlwifi driver comes with custom code to write into PCIe Link
-> > Control register. RMW access for the Link Control register requires
-> > locking that is already provided by the standard PCIe capability
-> > accessors.
+> On Fri, Nov 17, 2023 at 11:44:22AM +0200, Ilpo Järvinen wrote:
+> > Check if PM capability does not exists and return early which follows
+> > the usual error handling pattern.
 > > 
-> > Convert the custom RMW code writing into LNKCTL register to standard
-> > RMW capability accessors. The accesses are changed to cover the full
-> > LNKCTL register instead of touching just a single byte of the register.
+> > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> > ---
+> >  .../wireless/realtek/rtlwifi/rtl8821ae/hw.c   | 45 ++++++++++---------
+> >  1 file changed, 23 insertions(+), 22 deletions(-)
 > > 
-> > After custom LNKCTL access code is removed, .num4bytes in the struct
-> > mp_adapter is no longer needed.
-> 
-> Looks like some nice fixes here.  I confess they're not all obvious to
-> me.
-
-It took a while to figure out what it is doing, yes... and while figuring
-it out, I found more and more to cleanup... And seems you also found some
-more... ;-) lol.
-
-When going all the way with cleanups, I tend run this kind of things that 
-are not all that obvious but those are usually the most valuable cleanups 
-(and normally cannot be automated either so we'll have a lot less people 
-looking at them).
-
-> > @@ -164,21 +164,27 @@ static bool _rtl_pci_platform_switch_device_pci_aspm(
-> >  	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
-> >  	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+> > diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
+> > index 6ae37d61a2a2..53cfeed0b030 100644
+> > --- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
+> > +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
+> > @@ -2305,30 +2305,31 @@ static void _rtl8821ae_clear_pci_pme_status(struct ieee80211_hw *hw)
+> >  		}
+> >  	} while (cnt++ < 200);
 > >  
-> > +	value &= PCI_EXP_LNKCTL_ASPMC;
+> > -	if (cap_id == 0x01) {
+> > -		/* Get the PM CSR (Control/Status Register),
+> > -		 * The PME_Status is located at PM Capatibility offset 5, bit 7
+> > -		 */
+> > -		pci_read_config_byte(rtlpci->pdev, cap_pointer + 5, &pmcs_reg);
+> > -
+> > -		if (pmcs_reg & BIT(7)) {
+> > -			/* Clear PME_Status with write */
+> > -			pci_write_config_byte(rtlpci->pdev, cap_pointer + 5,
+> > -					      pmcs_reg);
+> > -			/* Read it back to check */
+> > -			pci_read_config_byte(rtlpci->pdev, cap_pointer + 5,
+> > -					     &pmcs_reg);
+> > -			rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+> > -				"Clear PME status 0x%2x to 0x%2x\n",
+> > -				cap_pointer + 5, pmcs_reg);
+> > -		} else {
+> > -			rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+> > -				"PME status(0x%2x) = 0x%2x\n",
+> > -				cap_pointer + 5, pmcs_reg);
+> > -		}
+> > -	} else {
+> > +	if (cap_id != 0x01) {
+> >  		rtl_dbg(rtlpriv, COMP_INIT, DBG_WARNING,
+> >  			"Cannot find PME Capability\n");
+> > +		return;
+> > +	}
 > > +
-> >  	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
-> >  		value |= 0x40;
+> > +	/* Get the PM CSR (Control/Status Register),
+> > +	 * The PME_Status is located at PM Capatibility offset 5, bit 7
+
+> But this is PCI_PM_CTRL and PCI_PM_CTRL_PME_STATUS (with a word read),
+> right?  No need for a comment then.
 > 
-> I guess this 0x40 is PCI_EXP_LNKCTL_CCC?
+> I don't know why the driver needs to do this, but I'm skeptical.  The
+> only other drivers that look at PCI_PM_CTRL_PME_STATUS themselves are
+> bnx2x and ksz884xp (ksz884x.c), so this is highly suspicious.
 
-Good point, I forgot to change that in 2/7 and it belongs logically into 
-this patch anyway so I'll add it to this patch.
+I hope you are not asking from me because I'm just the poor guy who tries 
+to cleanup this mess. ;-) ...So all I can do is shrug and say, I 
+unfortunately don't know the answer.
 
-> > -	pci_write_config_byte(rtlpci->pdev, 0x80, value);
-> > +	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-> 
-> PCI_EXP_LNKCTL is 0x10, so I guess we know somehow that the PCIe
-> Capability is at 0x70?
-
-It's what I inferred based on the offsets of LNKCTL & DEVCTL2. And if 
-that assumption does not hold with all these devices, the writes would 
-just wreck some random havoc. :-/
-
-> > +					   PCI_EXP_LNKCTL_ASPMC | value,
-> > +					   value);
-> >  
-> >  	return false;
-> >  }
-> >  
-> >  /*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
-> > -static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
-> > +static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
-> >  {
-> >  	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
-> >  	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
-> >  
-> > -	pci_write_config_byte(rtlpci->pdev, 0x81, value);
-> > +	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-> > +					   PCI_EXP_LNKCTL_CLKREQ_EN,
-> 
-> Depends on the fact that the caller only passes 0 or 1.  Ugly, but
-> looks true, and I see you clean this up a little more later.  I like
-> how you made it explicit in _rtl_pci_platform_switch_device_pci_aspm()
-> above by masking the value to set.
-
-I thought of adding the masking here too but since it wasn't strictly 
-necessary, I didn't. But I can add that now and I'll also update the 
-comment to match the code :-).
-
-These code fragments hopefully die anyway once I get the ASPM from 
-drivers to core series done.
-
-> > @@ -268,13 +267,14 @@ static void rtl_pci_enable_aspm(struct ieee80211_hw *hw)
-> >  	if (pcibridge_vendor == PCI_BRIDGE_VENDOR_INTEL)
-> >  		u_pcibridge_aspmsetting &= ~BIT(0);
-> >  
-> > -	pci_write_config_byte(rtlpci->pdev, (num4bytes << 2),
-> > -			      u_pcibridge_aspmsetting);
-> > +	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-> > +					   PCI_EXP_LNKCTL_ASPMC,
-> > +					   u_pcibridge_aspmsetting &
-> > +					   PCI_EXP_LNKCTL_ASPMC);
-> >  
-> >  	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
-> > -		"PlatformEnableASPM(): Write reg[%x] = %x\n",
-> > -		(pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10),
-> > -		u_pcibridge_aspmsetting);
-> > +		"PlatformEnableASPM(): Write ASPM = %x\n",
-> > +		u_pcibridge_aspmsetting & PCI_EXP_LNKCTL_ASPMC);
-> >  
-> >  	udelay(50);
-
-> > @@ -2030,8 +2031,6 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
-> >  		    PCI_FUNC(bridge_pdev->devfn);
-> >  		pcipriv->ndis_adapter.pcibridge_pciehdr_offset =
-> >  		    pci_pcie_cap(bridge_pdev);
-> > -		pcipriv->ndis_adapter.num4bytes =
-> > -		    (pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10) / 4;
-> 
-> I don't understand what's going on here.  Are we caching the PCIe
-> Capability offset of the *upstream bridge* here?  And then computing
-> the dword offset of the *bridge's* LNKCTL? And then writing a byte to
-> the rtlwifi device (not the bridge) at the dword offset << 2, i.e., the
-> byte offset?  I must be out to lunch, because how could that ever
-> work?
->
-> If we were using the bridge capability location to write to the
-> rtlwifi device, that would clearly be a bug fix that would merit its
-> own patch.
-
-Oh no, I entirely missed it because of those nice comments which tell it's 
-trying to update bridge's ASPM so I didn't pay attention to which device 
-it passes for real...
-
-Now I'm left to wonder what would be the best course of action here...
-Since it has never really written to bridge's ASPM at all, perhaps that's 
-not needed and those writes could just be dropped rather than point them 
-to the correct device.
-
-> Maybe this num4bytes thing could be its own patch, too.  Seems so
-> cumbersome that it makes me wonder if the device has issues with
-> larger accesses.
-
-I thought of that but since it was just 2 extra context blocks which are 
-clearly disjoint from the rest, I didn't separate the removal of the 
-member variable to its own patch.
+Hopefully somebody more familiar with the devices could chime in.
 
 
 -- 
  i.
---8323329-1911404933-1700466388=:2032--
+--8323329-1927733487-1700473754=:2032--
