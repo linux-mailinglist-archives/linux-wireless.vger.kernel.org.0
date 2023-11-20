@@ -2,66 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 906B87F107D
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 11:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98C5B7F10BF
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Nov 2023 11:48:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233076AbjKTKfS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Nov 2023 05:35:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53636 "EHLO
+        id S232658AbjKTKsK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Nov 2023 05:48:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232849AbjKTKfP (ORCPT
+        with ESMTP id S232582AbjKTKsJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Nov 2023 05:35:15 -0500
+        Mon, 20 Nov 2023 05:48:09 -0500
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C85F2
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 02:35:12 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9A9285
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 02:48:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1700476511;
+        s=mimecast20190719; t=1700477284;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WDa5Zifa699JA7DgA6NqBUl602nqWvF/0Qs0z1ItO6s=;
-        b=XSX1aJAVxBnOE2QsM2OlWcbguDnWIqcnzEwk4C6NS2+mS729v+8oKcOCLdy1Juu1GZQQNc
-        KxatyVcpqvAGDK8EfbhR7yZp8tCmMBkZKQDVyK/DFpwo/E7DQEzxvxFO1Mt65zQxxSaZGZ
-        E5holZuu05dxMyNK0CdKu6eLLPrL+vc=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=0fmHCyTLsVBo0Kc83TqxxdVsk2B46TkdS7UkGLyTjj8=;
+        b=XQ58ML01UX5qi91CnrI/IHjoNDPUU0mERtRPzD0lgNZXBLnHSqO+xruvSbPYIEdq6hPcAX
+        F6VTRS/QG1Dc7O3fgBTQW+QBKbghCwp+Cb359566YwfjM08l/wLb5ylaY/f87lWbr+kmbn
+        fJoQtbtv9OeCSGbYk2D0CV9eFnUr8ZQ=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-340-hJpcSBxlObWHzmTANMAyeQ-1; Mon, 20 Nov 2023 05:35:09 -0500
-X-MC-Unique: hJpcSBxlObWHzmTANMAyeQ-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-9d30a6a67abso304559266b.2
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 02:35:09 -0800 (PST)
+ us-mta-680--jTSOt7cMjyHXiLPZnjA9Q-1; Mon, 20 Nov 2023 05:48:01 -0500
+X-MC-Unique: -jTSOt7cMjyHXiLPZnjA9Q-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-548d22b854eso399351a12.3
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Nov 2023 02:48:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700476508; x=1701081308;
+        d=1e100.net; s=20230601; t=1700477281; x=1701082081;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WDa5Zifa699JA7DgA6NqBUl602nqWvF/0Qs0z1ItO6s=;
-        b=NVPAocpX8JovBNYBlEJO5rzm+00TKfQBaPj2bV0OfxLOiLRWMjVpMi4sT+tb4LzbSE
-         rznB7dSpiv10AHyMYFf4eIAHTW068TzJaCAdjaj2/HrhvB/dR6qokeWQwVXmh57djlTt
-         n66dSuK+z4dbR4RUf0toIr4HDMZ2UgHhhQh5zTsd3mAOMSsGeqCifuBKZPyrUl7TBmpN
-         lCS8A2Nw1TbMcm3E4Z1DG+XQQk+FfQv/e/OrkJkBMWcz9dIBXm63/ohaMbMlj9cXe7gX
-         v70E7FLtSEqu2hL4digbK9hg8fPlnOAqaBB6/jr0yp2pFTKWYrOiWgVXNiOX+ZGlBsCx
-         NoYA==
-X-Gm-Message-State: AOJu0YwnjBQLokSFOQ3NEH+MchMQudiKLgKwFID+cJv7UU9JJSsIDcVw
-        IDeplarI0RpjxsRiVjS97z82pVNfkcfjyDpIv6CnCOZuH1T2knjZUOwCEDLvoC+eUsSY3bJh6uB
-        L4A2QXHGB97jzfOrnyNjv3WadRmo=
-X-Received: by 2002:a17:907:c24b:b0:9ae:6ad0:f6db with SMTP id tj11-20020a170907c24b00b009ae6ad0f6dbmr6930268ejc.71.1700476508608;
-        Mon, 20 Nov 2023 02:35:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFtYB3LpQ2jUhXembvmGnwIAULaeNK5MwYtq0w1lhRVzSiXtm7qVIWAoEoosVuqDagxql3aow==
-X-Received: by 2002:a17:907:c24b:b0:9ae:6ad0:f6db with SMTP id tj11-20020a170907c24b00b009ae6ad0f6dbmr6930238ejc.71.1700476507968;
-        Mon, 20 Nov 2023 02:35:07 -0800 (PST)
+        bh=0fmHCyTLsVBo0Kc83TqxxdVsk2B46TkdS7UkGLyTjj8=;
+        b=EvU/q0QMU5+t/wIMF4Y5IFKDhrtdLgH0RNOD8bpSBkgX9NkAYWml7sjUvIPujYeER0
+         Es/FennaJjlY8XSeEaXkdZg5d5I0vKr3uUMpJI7dkrl2mkFjpdZqgYlBRq0wT2l3Zw1L
+         oRhx3JWBOeb9eXNDZOjFKzC5CDAOqfWqwUBmheIQhhk52G+x00gZ0yidAzKfGjtGmUGk
+         WJ0QuVdK8Kae/DvDmcYJrGGg0r8qt3VWeeQtBNx2s4AfZRqkDEX5v3dZquhjvj+aIeOf
+         DBqtDChRrXtGGrMngaru+RLjPr31k3gWTUqKuMLc5Nlb/Jb3OBAzB9WcX7YKIG3Vu8GV
+         hlbw==
+X-Gm-Message-State: AOJu0YzVzuFjFgkSKAmkVGRjavz+Ko5tS5lbGCtEiLFbQw3j/5oic5TD
+        gp/1UxvTaBtE4iZsh1XSJBuz3xmo9ZhKreQN9kka94Nbh7RWv9I/8ZwfYOFxwtY98gfF1tEyf1H
+        JnNwbSYf5NZfXv83327JG5o8nsI8=
+X-Received: by 2002:aa7:c702:0:b0:548:b824:1cb8 with SMTP id i2-20020aa7c702000000b00548b8241cb8mr1156606edq.38.1700477280742;
+        Mon, 20 Nov 2023 02:48:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGOKYlrVDNsMyV/4F65dLvuDm38zuCaU8IqDF/1O3DU8ss3iUrOKIxHJ5ajO+kL3lmaO+RtpQ==
+X-Received: by 2002:aa7:c702:0:b0:548:b824:1cb8 with SMTP id i2-20020aa7c702000000b00548b8241cb8mr1156590edq.38.1700477280434;
+        Mon, 20 Nov 2023 02:48:00 -0800 (PST)
 Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id p27-20020a1709060ddb00b009fc50ebb062sm1745968eji.4.2023.11.20.02.35.06
+        by smtp.gmail.com with ESMTPSA id u24-20020aa7d998000000b00548b55f5ffdsm1059461eds.16.2023.11.20.02.47.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Nov 2023 02:35:07 -0800 (PST)
-Message-ID: <db2051d0-c847-4d3b-98da-4f4f68a5b30b@redhat.com>
-Date:   Mon, 20 Nov 2023 11:35:06 +0100
+        Mon, 20 Nov 2023 02:47:59 -0800 (PST)
+Message-ID: <e74b7896-2915-47bf-803e-25897cbb8eed@redhat.com>
+Date:   Mon, 20 Nov 2023 11:47:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 1/9] Documentation/driver-api: Add document about WBRF
- mechanism
+Subject: Re: [PATCH v12 2/9] platform/x86/amd: Add support for AMD ACPI based
+ Wifi band RFI mitigation feature
 Content-Language: en-US, nl
 To:     Ma Jun <Jun.Ma2@amd.com>, amd-gfx@lists.freedesktop.org,
         lenb@kernel.org, johannes@sipsolutions.net, davem@davemloft.net,
@@ -70,11 +70,12 @@ To:     Ma Jun <Jun.Ma2@amd.com>, amd-gfx@lists.freedesktop.org,
         mario.limonciello@amd.com
 Cc:     majun@amd.com, netdev@vger.kernel.org,
         linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc@vger.kernel.org, platform-driver-x86@vger.kernel.org
+        linux-doc@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Evan Quan <quanliangl@hotmail.com>
 References: <20231017025358.1773598-1-Jun.Ma2@amd.com>
- <20231017025358.1773598-2-Jun.Ma2@amd.com>
+ <20231017025358.1773598-3-Jun.Ma2@amd.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20231017025358.1773598-2-Jun.Ma2@amd.com>
+In-Reply-To: <20231017025358.1773598-3-Jun.Ma2@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -91,109 +92,197 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 Hi,
 
 On 10/17/23 04:53, Ma Jun wrote:
-> Add documentation about AMD's Wifi band RFI mitigation (WBRF) mechanism
-> explaining the theory and how it is used.
+> Due to electrical and mechanical constraints in certain platform designs
+> there may be likely interference of relatively high-powered harmonics of
+> the (G-)DDR memory clocks with local radio module frequency bands used
+> by Wifi 6/6e/7.
 > 
+> To mitigate this, AMD has introduced a mechanism that devices can use to
+> notify active use of particular frequencies so that other devices can make
+> relative internal adjustments as necessary to avoid this resonance.
+> 
+> Co-Developed-by: Evan Quan <quanliangl@hotmail.com>
+> Signed-off-by: Evan Quan <quanliangl@hotmail.com>
 > Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-> ---
->  Documentation/driver-api/wbrf.rst | 73 +++++++++++++++++++++++++++++++
->  1 file changed, 73 insertions(+)
->  create mode 100644 Documentation/driver-api/wbrf.rst
-> 
-> diff --git a/Documentation/driver-api/wbrf.rst b/Documentation/driver-api/wbrf.rst
-> new file mode 100644
-> index 000000000000..8561840263b3
-> --- /dev/null
-> +++ b/Documentation/driver-api/wbrf.rst
-> @@ -0,0 +1,73 @@
-> +.. SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +=================================
-> +WBRF - Wifi Band RFI Mitigations
-> +=================================
-> +Due to electrical and mechanical constraints in certain platform designs
-> +there may be likely interference of relatively high-powered harmonics of
-> +the GPU memory clocks with local radio module frequency bands used by
-> +certain Wifi bands.
-> +
-> +To mitigate possible RFI interference producers can advertise the
-> +frequencies in use and consumers can use this information to avoid using
-> +these frequencies for sensitive features.
-> +
-> +When a platform is known to have this issue with any contained devices,
-> +the platform designer will advertise the availability of this feature via
-> +ACPI devices with a device specific method (_DSM).
-> +* Producers with this _DSM will be able to advertise the frequencies in use.
-> +* Consumers with this _DSM will be able to register for notifications of
-> +frequencies in use.
-> +
-> +Some general terms
-> +==================
-> +Producer: such component who can produce high-powered radio frequency
-> +Consumer: such component who can adjust its in-use frequency in
-> +           response to the radio frequencies of other components to
-> +           mitigate the possible RFI.
-> +
-> +To make the mechanism function, those producers should notify active use
-> +of their particular frequencies so that other consumers can make relative
-> +internal adjustments as necessary to avoid this resonance.
-> +
-> +ACPI interface
-> +==============
-> +Although initially used by for wifi + dGPU use cases, the ACPI interface
-> +can be scaled to any type of device that a platform designer discovers
-> +can cause interference.
-> +
-> +The GUID used for the _DSM is 7B7656CF-DC3D-4C1C-83E9-66E721DE3070.
-> +
-> +3 functions are available in this _DSM:
-> +
-> +* 0: discover # of functions available
-> +* 1: record RF bands in use
-> +* 2: retrieve RF bands in use
-> +
-> +Driver programming interface
-> +============================
-> +.. kernel-doc:: drivers/platform/x86/amd/wbrf.c
-> +
-> +Sample Usage
-> +=============
-> +The expected flow for the producers:
-> +1) During probe, call `acpi_amd_wbrf_supported_producer` to check if WBRF
-> +can be enabled for the device.
-> +2) On using some frequency band, call `acpi_amd_wbrf_add_remove` with 'add'
-> +param to get other consumers properly notified.
-> +3) Or on stopping using some frequency band, call
-> +`acpi_amd_wbrf_add_remove` with 'remove' param to get other consumers notified.
-> +
-> +The expected flow for the consumers:
-> +1) During probe, call `acpi_amd_wbrf_supported_consumer` to check if WBRF
-> +can be enabled for the device.
-> +2) Call `amd_wbrf_register_notifier` to register for notification
-> +of frequency band change(add or remove) from other producers.
 
-> +3) Call the `amd_wbrf_retrieve_freq_band` intentionally to retrieve
-> +current active frequency bands considering some producers may broadcast
-> +such information before the consumer is up.
+<snip>
 
-"intentionally" in this sentence should be "initially" (I presume).
+> +bool acpi_amd_wbrf_supported_producer(struct device *dev)
+> +{
+> +	struct acpi_device *adev = ACPI_COMPANION(dev);
+> +
+> +	if (!adev)
+> +		return false;
+> +
+> +	if (!acpi_amd_wbrf_supported_system())
+> +		return false;
+> +
+> +
+> +	return acpi_check_dsm(adev->handle, &wifi_acpi_dsm_guid,
+> +			      WBRF_REVISION,
+> +			      BIT(WBRF_RECORD));
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_amd_wbrf_supported_producer);
 
-With that fixed and Ilpo's review comments addressed you may add my:
+So until here you use acpi_dsm methods (1), which matches
+with patch 1/9 which says that both producers and consumers
+use a _DSM for WBRF.
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+1) With the exception of the weird acpi_amd_wbrf_supported_system()
+helper.
 
-to this patch.
+> +static union acpi_object *
+> +acpi_evaluate_wbrf(acpi_handle handle, u64 rev, u64 func)
+> +{
+> +	acpi_status ret;
+> +	struct acpi_buffer buf = {ACPI_ALLOCATE_BUFFER, NULL};
+> +	union acpi_object params[4];
+> +	struct acpi_object_list input = {
+> +		.count = 4,
+> +		.pointer = params,
+> +	};
+> +
+> +	params[0].type = ACPI_TYPE_INTEGER;
+> +	params[0].integer.value = rev;
+> +	params[1].type = ACPI_TYPE_INTEGER;
+> +	params[1].integer.value = func;
+> +	params[2].type = ACPI_TYPE_PACKAGE;
+> +	params[2].package.count = 0;
+> +	params[2].package.elements = NULL;
+> +	params[3].type = ACPI_TYPE_STRING;
+> +	params[3].string.length = 0;
+> +	params[3].string.pointer = NULL;
+> +
+> +	ret = acpi_evaluate_object(handle, "WBRF", &input, &buf);
+> +	if (ACPI_FAILURE(ret))
+> +		return NULL;
+> +
+> +	return buf.pointer;
+> +}
+
+But now all of a sudden you start calling a WBRF method
+directly instead of calling a _DSM by GUID, which seems
+to be intended for consumers.
+
+This contradicts with the documentation which says that
+consumers also use the _DSM.
+
+And this looks a lot like acpi_evaluate_dsm and
+... (continued below)
+
+> +
+> +static bool check_acpi_wbrf(acpi_handle handle, u64 rev, u64 funcs)
+> +{
+> +	int i;
+> +	u64 mask = 0;
+> +	union acpi_object *obj;
+> +
+> +	if (funcs == 0)
+> +		return false;
+> +
+> +	obj = acpi_evaluate_wbrf(handle, rev, 0);
+> +	if (!obj)
+> +		return false;
+> +
+> +	if (obj->type != ACPI_TYPE_BUFFER)
+> +		return false;
+> +
+> +	/*
+> +	 * Bit vector providing supported functions information.
+> +	 * Each bit marks support for one specific function of the WBRF method.
+> +	 */
+> +	for (i = 0; i < obj->buffer.length && i < 8; i++)
+> +		mask |= (u64)obj->buffer.pointer[i] << i * 8;
+> +
+> +	ACPI_FREE(obj);
+> +
+> +	if ((mask & BIT(WBRF_ENABLED)) && (mask & funcs) == funcs)
+> +		return true;
+> +
+> +	return false;
+> +}
+
+This looks exactly like acpi_check_dsm().
+
+> +
+> +/**
+> + * acpi_amd_wbrf_supported_consumer - determine if the WBRF can be enabled
+> + *                                    for the device as a consumer
+> + *
+> + * @dev: device pointer
+> + *
+> + * Determine if the platform equipped with necessary implementations to
+> + * support WBRF for the device as a consumer.
+> + *
+> + * Return:
+> + * true if WBRF is supported, otherwise returns false.
+> + */
+> +bool acpi_amd_wbrf_supported_consumer(struct device *dev)
+> +{
+> +	struct acpi_device *adev = ACPI_COMPANION(dev);
+> +
+> +	if (!adev)
+> +		return false;
+> +
+> +	if (!acpi_amd_wbrf_supported_system())
+> +		return false;
+> +
+> +	return check_acpi_wbrf(adev->handle,
+> +			       WBRF_REVISION,
+> +			       BIT(WBRF_RETRIEVE));
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_amd_wbrf_supported_consumer);
+
+So I would expect this to just use acpi_check_dsm like
+is done for the producers.
+
+> +
+> +/**
+> + * amd_wbrf_retrieve_freq_band - retrieve current active frequency
+> + *                                     bands
+> + *
+> + * @dev: device pointer
+> + * @out: output structure containing all the active frequency bands
+> + *
+> + * Retrieve the current active frequency bands which were broadcasted
+> + * by other producers. The consumer who calls this API should take
+> + * proper actions if any of the frequency band may cause RFI with its
+> + * own frequency band used.
+> + *
+> + * Return:
+> + * 0 for getting wifi freq band successfully.
+> + * Returns a negative error code for failure.
+> + */
+> +int amd_wbrf_retrieve_freq_band(struct device *dev,
+> +				      struct wbrf_ranges_in_out *out)
+> +{
+> +	struct acpi_device *adev = ACPI_COMPANION(dev);
+> +	struct amd_wbrf_ranges_out acpi_out = {0};
+> +	union acpi_object *obj;
+> +	int ret = 0;
+> +
+> +	if (!adev)
+> +		return -ENODEV;
+> +
+> +	obj = acpi_evaluate_wbrf(adev->handle,
+> +				 WBRF_REVISION,
+> +				 WBRF_RETRIEVE);
+> +	if (!obj)
+> +		return -EINVAL;
+
+And I would expect this to use acpi_evaluate_dsm(), or
+preferably if possible acpi_evaluate_dsm_typed().
+
+Is there any reason why the code is directly calling
+a method called WBRF here instead of going through
+the _DSM method ?
+
+And if there is such a reason then please update
+the documentation to say so, instead of having
+the docs clam that consumers also use the _DSM method.
 
 Regards,
 
 Hans
 
-
-
-
-> +4) On receiving a notification for frequency band change, run
-> +`amd_wbrf_retrieve_freq_band` again to retrieve the latest
-> +active frequency bands.
-> +5) During driver cleanup, call `amd_wbrf_unregister_notifier` to
-> +unregister the notifier.
 
