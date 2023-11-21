@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB9E67F2C0B
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Nov 2023 12:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BCE67F2C0D
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Nov 2023 12:50:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233777AbjKULuI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Nov 2023 06:50:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35846 "EHLO
+        id S233798AbjKULu7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Nov 2023 06:50:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233592AbjKULuH (ORCPT
+        with ESMTP id S231977AbjKULu6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Nov 2023 06:50:07 -0500
+        Tue, 21 Nov 2023 06:50:58 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 438D4D1
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Nov 2023 03:50:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700CAC433C7;
-        Tue, 21 Nov 2023 11:50:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24483100
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Nov 2023 03:50:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CFAC433C7;
+        Tue, 21 Nov 2023 11:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700567403;
-        bh=TctL7ube5UouPXuNkuXmxJ9dst6jjdEmdZ8tTRazoOY=;
+        s=k20201202; t=1700567454;
+        bh=7eQWip1qheX65/nr9TveALEmgmfW2FIiutNAulouSHA=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=GeyDXz5Raso7UvKamvDSPVf2gXeu/HV0DEtApSwItxC/BGDzGclV8+4HAVJiJwy0F
-         Ong1awnNfpcY/cIXr7cxDEntQbKqWK9idtmP6dwuSUYUNfkbU7TWBPTe1zj1ThI1yO
-         zsudFhsAN+sbTHhoJTAjjZND3AnW8VDpgfUNyiwm+YalH4kkjecqkhKMZaq2hM85pq
-         veAQ0ek8AuVTbrCjG7qSGy1gyKC2f+Cu/Gu2FxsleAZeX/yQ5WsLfSU3bvRcsYjs4Q
-         sGs1HRXgviGPAsvgpMY4/xyOIb6VgE8Ud9A2FAbU0uK8bgGLO3C2uhxC07P9lGfx6v
-         gOjfZScGSucbQ==
+        b=Rz8zMMY++dyndiyxej6nfDplsG+c4q5OX3GhFJKCL5UiudrrvF4mfW9tBuq2t/Uqx
+         +0kdqVZHf+ElwxMCAbTGyaLFTdr/mM0Zi7wuGjwIuSUVPiBvceZtZjL6P8GJ0DIhYc
+         q3HttFKN6Q6bJ4wuoaU91tC8HUWZgKW3FbsAkxqyoKAE9ROtrRkl9GuWBoo9eQacTC
+         37bdQeNE7jAsKB91vseaEhhcdeGI+CqG+okKAGrnsOdeqhfwidNvlWSGeYZk1T4aIf
+         lK/YYJ+3ezsVL979NqS++sz8LOuWHZ1crVCKslv4MJhvRbRe8JA9TQnQOn4lmp/gFH
+         DmyowzlHVS4Sg==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Mingyen Hsieh <mingyen.hsieh@mediatek.com>
 Cc:     <nbd@nbd.name>, <lorenzo@kernel.org>, <deren.wu@mediatek.com>,
@@ -37,12 +37,14 @@ Cc:     <nbd@nbd.name>, <lorenzo@kernel.org>, <deren.wu@mediatek.com>,
         <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
         <Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH 0/3] wifi: mt76: mt7921: series with CLC patches
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7921: fix country count limitation
+ for CLC
 References: <20231120111212.4478-1-mingyen.hsieh@mediatek.com>
-Date:   Tue, 21 Nov 2023 13:49:58 +0200
-In-Reply-To: <20231120111212.4478-1-mingyen.hsieh@mediatek.com> (Mingyen
-        Hsieh's message of "Mon, 20 Nov 2023 19:12:09 +0800")
-Message-ID: <878r6r8gwp.fsf@kernel.org>
+        <20231120111212.4478-2-mingyen.hsieh@mediatek.com>
+Date:   Tue, 21 Nov 2023 13:50:48 +0200
+In-Reply-To: <20231120111212.4478-2-mingyen.hsieh@mediatek.com> (Mingyen
+        Hsieh's message of "Mon, 20 Nov 2023 19:12:10 +0800")
+Message-ID: <874jhf8gvb.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -58,18 +60,25 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Mingyen Hsieh <mingyen.hsieh@mediatek.com> writes:
 
-> From: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
+> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 >
-> Sync internal mt7921 patches for CLC.
+> Due to the increase in the number of power tables on CLC, the variable
+> nr_country is no longer sufficient to represent the total quantity.
+> Therefore, we have switched to calculating the length of clc buf to
+> obtain the correct power table. Additionally, the version number has
+> been incremented to 1.
+>
+> Fixes: 23bdc5d8cadf ("wifi: mt76: mt7921: introduce Country Location Control support")
+> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+>
+> v2:
+>  - Convert type of buf_len from "__le16" to "u16"
 >
 > ---
->
-> Ming Yen Hsieh (3):
->   wifi: mt76: mt7921: fix country count limitation for CLC
->   wifi: mt76: mt7921: fix CLC command timeout when suspend/resume
->   wifi: mt76: mt7921: fix wrong 6Ghz power type
+>  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 
-v2 missing from subject. Please carefully read the wiki link below.
+The changelog ('v2:....') should be after '---' line.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
