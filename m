@@ -2,97 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC6F77F333E
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Nov 2023 17:08:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3F297F33E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Nov 2023 17:36:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231248AbjKUQIc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Nov 2023 11:08:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47928 "EHLO
+        id S229436AbjKUQgO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Nov 2023 11:36:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230497AbjKUQIb (ORCPT
+        with ESMTP id S233556AbjKUQgK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Nov 2023 11:08:31 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81CC4BC
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Nov 2023 08:08:28 -0800 (PST)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ALE1mMh010901;
-        Tue, 21 Nov 2023 16:08:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=1mdyPrsu67APsNDZfjHYJQPGl02sxbUb5zyREZHDels=;
- b=OBzNaT2D46sjOq73mu4aBCaRB6N5bUt7i+AjxmwzCDIrS2OrwFCN5/TP/LVXYknlFqMT
- vdw8doCk921d+tnxw7J3cjchVVYmBxMpe4dWeezMfgi1RC99YkcZrZxUXJfvHfUkT1aJ
- mt0SuB4jJkGLHcSaefrxRAhk11KutnrkcM7MpF/5PJ/rukmUEyZ2TwRCSgk1lDGu0AgF
- YbqHShl1NcD947CwUwXrSGcFBwFCSZ+jr+7UR0mi3vcXWRQgsT5P9bMWfpRkioEBOCSs
- feau3LisC0DCFR9LuqdERMa1hLVek9k8mymIg4LPOgQQlsaZHpWqV1ns8zG4FkjXA/WZ ZQ== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ugvt2gkjv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 21 Nov 2023 16:08:26 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3ALG8QS5003817
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 21 Nov 2023 16:08:26 GMT
-Received: from [10.110.116.223] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 21 Nov
- 2023 08:08:25 -0800
-Message-ID: <de71ff67-c840-479f-9d06-5a2a7364cc09@quicinc.com>
-Date:   Tue, 21 Nov 2023 08:08:25 -0800
+        Tue, 21 Nov 2023 11:36:10 -0500
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6882D4D;
+        Tue, 21 Nov 2023 08:36:06 -0800 (PST)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-5c9ea2ec8deso27201887b3.0;
+        Tue, 21 Nov 2023 08:36:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700584566; x=1701189366; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=opRF3HI9iR1tOh502sQV3zy4KipFZOtaQ8YiI2ePgfU=;
+        b=Bt8xfJCUqmJ4qDLUvdO/UVSLfvdODqyTAgSpdNyNMMiJqncTwaAelTLZcLEE3f5hoy
+         zYhtkVjMEjNpn9+TF9x6EFusZH69B9jus4A3xEJh2Pf/nRUaolR3gPgyBrD1UhY+UfKQ
+         Rwsy3l0FS7BbOa8Om5kaNqq8XdcfOOrS17DmRuYVwjuYYbO+cs363uIoXopsgWbd2UvM
+         rScNYoyr3VYHucU9b7EEZ1dKIqIkKWFD/Crt7cCEfvc6bjfQprEhBXc1wPlcxV2JS8wV
+         svH0tEXSmro7I1R/O3ewxsmpHxxjNKHMFzjXw7854eFWYgW1WqzS/uIEGh7tPIn1LUPd
+         LI+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700584566; x=1701189366;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=opRF3HI9iR1tOh502sQV3zy4KipFZOtaQ8YiI2ePgfU=;
+        b=Kph3HJaB5izxU5D1tl42piTNu4MRQlFzLsaODvtCCdgKD32DGwdW4/ydGoxGIxWZTT
+         xkFIX448FBZXRH26OyuSFXNEoWxafrJAUTXv5sl98+ldLejUTbbBsbjLvq0lHInGbhrZ
+         leh+4pOpev59yrIUagGm8cAP0MWzHdOyX4JY/VK94uA+MgObwW4YFUAahZk5XbVvAWkg
+         JthupfxnPz3k+4/Wq3P9CtR3iIYEZCGcy+UdnDOdoyS47F9BFoJ+raf0l9rPVwJK5YnB
+         epFH1d0VSRie2Qk5sBdqQ3zFM3Yh6h9Jvvdpu4Ygto3WBoraLdfFozONyUBcqymdMPUb
+         +wEg==
+X-Gm-Message-State: AOJu0Yy7fzOdA0RObqVP/ESIftPEhn8151h2iOcvvMWvK8Ji4ziL7Sum
+        F3sK0flX0Qv8ITgN1QmnD9I=
+X-Google-Smtp-Source: AGHT+IFNHwwELprTDsHUGjfjGbs5039qmlFSUWH64MnHs1X/fR3tPVjej4du8LTpUEsFqN5XQNpe5A==
+X-Received: by 2002:a05:690c:884:b0:5ca:e8a:adb1 with SMTP id cd4-20020a05690c088400b005ca0e8aadb1mr8158748ywb.1.1700584565985;
+        Tue, 21 Nov 2023 08:36:05 -0800 (PST)
+Received: from localhost ([2601:344:8301:57f0:e005:b808:45e:1b60])
+        by smtp.gmail.com with ESMTPSA id y7-20020a0def07000000b005a247c18403sm3169406ywe.37.2023.11.21.08.36.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Nov 2023 08:36:05 -0800 (PST)
+Date:   Tue, 21 Nov 2023 08:36:04 -0800
+From:   Yury Norov <yury.norov@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-kernel@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
+        Kalle Valo <kvalo@kernel.org>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        linux-wireless@vger.kernel.org, Jan Kara <jack@suse.cz>,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Matthew Wilcox <willy@infradead.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Maxim Kuvyrkov <maxim.kuvyrkov@linaro.org>,
+        Alexey Klimov <klimov.linux@gmail.com>
+Subject: Re: [PATCH 12/34] wifi: intel: use atomic find_bit() API where
+ appropriate
+Message-ID: <ZVzcdKb1plk/Qose@yury-ThinkPad>
+References: <20231118155105.25678-1-yury.norov@gmail.com>
+ <20231118155105.25678-13-yury.norov@gmail.com>
+ <098e2983ac299cb3b33bd0a8e33aaab8d6235909.camel@sipsolutions.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/7] wifi: ath12k: set IRQ affinity to CPU0 in case of
- one MSI vector
-Content-Language: en-US
-To:     Kang Yang <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20231121021304.12966-1-quic_kangyang@quicinc.com>
- <20231121021304.12966-8-quic_kangyang@quicinc.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231121021304.12966-8-quic_kangyang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 0W-Wx5wOHjcWBUwhHnFsHnxwsqVO2Sgq
-X-Proofpoint-ORIG-GUID: 0W-Wx5wOHjcWBUwhHnFsHnxwsqVO2Sgq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-21_09,2023-11-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 lowpriorityscore=0 adultscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 mlxscore=0 spamscore=0 phishscore=0
- impostorscore=0 mlxlogscore=920 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311210126
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <098e2983ac299cb3b33bd0a8e33aaab8d6235909.camel@sipsolutions.net>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/20/2023 6:13 PM, Kang Yang wrote:
-> With VT-d disabled on Intel platform, ath12k gets only one MSI
-> vector. In that case, ath12k does not free IRQ when doing suspend,
-> hence the kernel has to migrate it to CPU0 (if it was affine to
-> other CPUs) and allocates a new MSI vector. However, ath12k has
-> no chance to reconfig it to HW srngs during this phase, thus
-> ath12k fails to resume.
+On Sun, Nov 19, 2023 at 08:58:25PM +0100, Johannes Berg wrote:
+> On Sat, 2023-11-18 at 07:50 -0800, Yury Norov wrote:
+> > iwlegacy and iwlwifi code opencodes atomic bit allocation/traversing by
+> > using loops. 
 > 
-> This issue can be fixed by setting IRQ affinity to CPU0 before
-> request_irq is called. With such affinity, migration will not
-> happen and thus the vector keeps unchanged during suspend/resume.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> That's really just due to being lazy though, it could use a non-atomic
+> __test_and_set_bit() would be just fine in all of this, there's always a
+> mutex held around it that protects the data.
 
+Ok, then I'll drop the patch.
+
+> Not that it means that the helper is _wrong_, it's just unnecessary, and
+> you don't have non-atomic versions of these, do you?
+
+Not yet. If atomic find_bit() will get merged, and there will be a
+set of potential users of non-atomic version, I may need to revisit
+it and add those non-atomic functions.
+
+Thanks,
+        Yury
