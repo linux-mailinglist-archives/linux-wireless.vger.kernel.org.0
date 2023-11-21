@@ -2,114 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BBD07F391E
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Nov 2023 23:27:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AA437F396B
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Nov 2023 23:47:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjKUW1o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Nov 2023 17:27:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41284 "EHLO
+        id S234642AbjKUWrS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Nov 2023 17:47:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjKUW1n (ORCPT
+        with ESMTP id S229728AbjKUWrQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Nov 2023 17:27:43 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C64EA113
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Nov 2023 14:27:32 -0800 (PST)
-X-UUID: 25910f5488bd11eea33bb35ae8d461a2-20231122
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=L6PMXu10MLRu+/xj7efDZZLFc5lRarqbArV5DfgMobU=;
-        b=UL5th2HCo8wPRuhabcdQxMkwXQYHnsuQgqA3B/bsr+7KG8pJ1SQ7N8qi8s6CbRCFArxcCSev/6EHH7ToRfPtjYCdIbWJIbtCWAY/UDyJDs6Z4/vVIH2d4Lqe9mImX0BdB61NTRW/AKiRCcMg++jHD9FhUnAzFmVPAqw0ERniYg8=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:ad24fa00-4d2c-4bae-86c3-c57807b48860,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:364b77b,CLOUDID:7928a895-10ce-4e4b-85c2-c9b5229ff92b,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-        NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULN,TF_CID_SPAM_SNR
-X-UUID: 25910f5488bd11eea33bb35ae8d461a2-20231122
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1222772833; Wed, 22 Nov 2023 06:27:25 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 22 Nov 2023 06:27:24 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Wed, 22 Nov 2023 06:27:24 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
-        <druth@google.com>, <abhishekpandit@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] wifi: mt76: mt7921: reduce the size of MCU firmware download Rx queue
-Date:   Wed, 22 Nov 2023 06:27:22 +0800
-Message-ID: <e68bcca1cd1132e1d0f10436a5fbc2eb4910ef46.1700605083.git.sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
+        Tue, 21 Nov 2023 17:47:16 -0500
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E57E71A3
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Nov 2023 14:47:12 -0800 (PST)
+Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-5c194b111d6so4707499a12.0
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Nov 2023 14:47:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700606832; x=1701211632; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=OX6uBa5cz0afY3NVUY5EgRcp9PQhwE8tcaCWpv6PS7A=;
+        b=ZPNlajVHWqoyHs1RhsvfA0gTD20nDXYKA9r/9bIaNzROO+rw+8zbepFawmCES8PAlg
+         3Xi1VL1dgYJk/eSz3asbAPM4RhjN7zvq11q7bO+Ju5KwtxDIP0zhd8Y+K7fYdUVjMEj0
+         YXWd3b2RMGyVZtksb1Vl91+9F/g/naKM25ggHyZtDu6IX2YcGTJQCFeGM34LDYyVEPLt
+         g248nbLWeJkCdSugNRCKALhMVZ4elgg4Rqve11qmPr8puSnAc3Uo51e2CJd88XxEXxx6
+         NQ8AO+Xpf11eAJT7PtImCzQ8nx16mf1ldQlUNQQkMCcJZhr/4fMcJoOZ1rc7z3RCNcB3
+         sgxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700606832; x=1701211632;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OX6uBa5cz0afY3NVUY5EgRcp9PQhwE8tcaCWpv6PS7A=;
+        b=CFaAEwOZIsyXzr5b2xgOC8SY/e4wVFHuyY33hGhkSf4S/5PgsR5k4Yvs/tbeNpXwPK
+         RAi5zGd605bVxTwN9abExvphzpkd7dmfs3K74opO0TRtI5Ez1aXDN9CF8BcRy0byNp3u
+         o6LV59tLDFqFtxwwaANSSXu5FtgDAdnFgqbWhGTuXkgeO4+/MnRlLDiKjAz72yRBSWWw
+         aT+D1g5PietyYnfKgOG4FDhG/J6MEFjjgTPPAHvixRLb8TTgrtbiGtbJMisAXjfAxId8
+         IaEMHxYIcB6kLAqKg9Fsyb+KE6et1lFeD+FD4+CCJoAetyIa3uXq7ARdjZDVRBDVqQta
+         JD0g==
+X-Gm-Message-State: AOJu0YybOrvDbL3EZbUHwQ1z4atYNx8z7sR+AER9ErwI6zCg3EhJ1Qfm
+        etKz8zZr8ma1tZbnyDXGe1oQFbqS+m5JcA==
+X-Google-Smtp-Source: AGHT+IEZUUan3rnq6i9r25dIcHCtem5aolnG1LVwaWtru2sH1+I12gEqah2pFnsWDT3g04DAJpUf7Q==
+X-Received: by 2002:a05:6a20:3947:b0:18b:3c9b:f186 with SMTP id r7-20020a056a20394700b0018b3c9bf186mr152118pzg.30.1700606832228;
+        Tue, 21 Nov 2023 14:47:12 -0800 (PST)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id 13-20020a17090a01cd00b002851e283c21sm51528pjd.12.2023.11.21.14.47.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Nov 2023 14:47:11 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <84dc9e8b-0850-4724-a55b-582c994d042f@lwfinger.net>
+Date:   Tue, 21 Nov 2023 16:47:10 -0600
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: EFUSE in RTW8723DS
+Content-Language: en-US
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <f3505110-b76b-4152-8375-37fa3184d3c1@lwfinger.net>
+ <748b045e7aaa43eb9a7fb83ad924614f@realtek.com>
+ <CAFBinCD=iLbyfWWTqQjLQ5CiqOn08r4UaVqyKHve8AoW_xeFEw@mail.gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <CAFBinCD=iLbyfWWTqQjLQ5CiqOn08r4UaVqyKHve8AoW_xeFEw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On 11/20/23 13:55, Martin Blumenstingl wrote:
+> Ping-Ke is right: the eFuse is split into two sections:
+> 1. common (RF calibration, EEPROM version, antenna information,
+> country code, ...) which is independent of the HCI (host controller
+> interface)
+> 2. HCI specific bits (PCI vendor/device IDs, USB vendor/device IDs,
+> SDIO specifics)
+> 
+> #1 has already existed for a long time and I didn't have to touch it
+> since it's the same for the PCIe, USB and SDIO variant of a wireless
+> chip.
+> 
+> For #2 there are no (known to me) SDIO specific bits other than the
+> MAC address. That's why I only added the MAC address for SDIO. If
+> there's more it can still be added.
+> Note that the MAC address has different offsets depending on whether
+> the HCI is PCIe, USB or SDIO.
 
-We actually don't need the reserve the 512 entries for the MCU firmware
-download Rx queue because the queue was only used in the firmware download
-phase to save the most of space and the reduction can significantly help
-with reducing latency we spent by ~20% further in resetting the Rx queue
-as the device was waking up from deep sleep mode.
+Martin,
 
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c    | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+As shown in 
+https://github.com/lwfinger/rtw88/issues/157#issuecomment-1820421821, driver 
+rtw88 shows a lot worse performance than the vendor driver for a chip with a 
+properly encoded EFUSE. Is this not a case of incorrect setting of the 
+calibration data?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index f28621121927..fcca93b3e14c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -12,7 +12,8 @@
- #define MT7921_TX_FWDL_RING_SIZE	128
- 
- #define MT7921_RX_RING_SIZE		1536
--#define MT7921_RX_MCU_RING_SIZE		512
-+#define MT7921_RX_MCU_RING_SIZE		8
-+#define MT7921_RX_MCU_WA_RING_SIZE	512
- 
- #define MT7921_EEPROM_SIZE		3584
- #define MT7921_TOKEN_SIZE		8192
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 6f83c4c5fce2..9bdaddd310be 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -200,7 +200,7 @@ static int mt7921_dma_init(struct mt792x_dev *dev)
- 	/* Change mcu queue after firmware download */
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
- 			       MT7921_RXQ_MCU_WM,
--			       MT7921_RX_MCU_RING_SIZE,
-+			       MT7921_RX_MCU_WA_RING_SIZE,
- 			       MT_RX_BUF_SIZE, MT_WFDMA0(0x540));
- 	if (ret)
- 		return ret;
--- 
-2.25.1
+Larry
 
