@@ -2,105 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6503A7F417D
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Nov 2023 10:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C55807F474A
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Nov 2023 14:02:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235126AbjKVJW2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Nov 2023 04:22:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48328 "EHLO
+        id S1343956AbjKVNCS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Nov 2023 08:02:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229631AbjKVJW0 (ORCPT
+        with ESMTP id S1343868AbjKVNCR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Nov 2023 04:22:26 -0500
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A936B83;
-        Wed, 22 Nov 2023 01:22:22 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id 610CD5C0111;
-        Wed, 22 Nov 2023 04:22:19 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 22 Nov 2023 04:22:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1700644939; x=1700731339; bh=ay
-        8h41bmlYZ1BdZhviMyvO1VouxncVOl1ol7RHGvguc=; b=hrbzriWgfWicypi6oM
-        BRZWopSWGxYO/uNJTDhtttfYkJzgG0DcNCRGQG6zIzELPvno/3iAzgsuKKdUyN0F
-        IpCofc16WxUGnFkBchmgQkyOfz+vcUtgYLpuXvmGCS9trfgikMLd+4ZmXJYwn2WH
-        fcd+rerHZTGaI+s/wTK1HTQTIcbMvNks9Z9Z/svkV88pgPoEyGAtCfxXAc842WFZ
-        aP/TvDBgUwFV9yBELQ6/TSvEBeC8Oo56M+y8b4uBRjz6OLYJ7bdaMbu9ZoirxR2J
-        bOEv3dtWwtCL9lMB28E288WaMQywvjStEKBmNNnA5WmiSbB0JeXZyKnrxzXoHxZc
-        fv1g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1700644939; x=1700731339; bh=ay8h41bmlYZ1B
-        dZhviMyvO1VouxncVOl1ol7RHGvguc=; b=Vt5Dn8hM28RK+U2AdrXoog5WhSem3
-        T8PtkeQrqYdF5BrsyC7cVe7+6ldJRxU0K7vtwJke1HCUjCNs3YehMliGswxP+gk+
-        Tb+4oxxpVd0Ho9JUyNg3nGhAu0WtY/r0WSwyatbJYO9dSyM6XB9YlWXVXqAccDns
-        ytcUWUhVHaz9/lOwdHksGKTgKMKdhwRZ29/Fntll9hSfPIImtnSDZPz3DPLsgqnv
-        JWMVo8XVhMYchv87BrpHOH/JUJ/5IfCWIzwSsZlBKPu12ERt+Ca7jrtGmrNmuS0y
-        6fhe4TIsqUiIU3EyX5GS+iHFqZ51mg39Iv0QhpD3rh7Ebg08CULtS+1Qw==
-X-ME-Sender: <xms:S8hdZS6cwdf3YcZmTieJXu70oi-CjiZ4BDVZ-4UHurehyCzu617aYQ>
-    <xme:S8hdZb7vHvYV84KMKYyOZWPNVn_MEZ1UWf0cKqkSFlZtEd21K8W3Pa9hlYFe3D6Ex
-    3oupLgt0QzX0nd_GMc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudehuddgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:S8hdZRcgGVWlwJTDjg3H9OwkDUhvIQqRJVAGVt92p7t9ark_eUXHgQ>
-    <xmx:S8hdZfK_npqo-0uKQEjgHd8yOAb5XEv4-B-Q7SDC038bw_R7uM-j0w>
-    <xmx:S8hdZWLqZoHzENjDjD-iV_7nRYgin8L880y5P6TTKsJbJSBVcYBa3g>
-    <xmx:S8hdZS3PqjbhSPuw1OLRgVb-IUHFn0tGjEZE9F7gOMNKLEFidvMLjQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 224FDB60089; Wed, 22 Nov 2023 04:22:19 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1229-gdd3e08e26c-fm-20231121.001-gdd3e08e2
+        Wed, 22 Nov 2023 08:02:17 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB32191
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Nov 2023 05:02:12 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-40b31232bf0so5529055e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Nov 2023 05:02:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700658131; x=1701262931; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zAYBW/dYtjxj/mIFheTLcX/YTMyi0LyyXwltchBNxB0=;
+        b=elLTQnSm9XJcVRx/bhUqjBEm8bMjSnlwe2U09kiu4T3UZthjhCyQIdHEoZ5G0bLVY3
+         I6A+PC4GeGvd8r6Sl2x8/RVux5iMsz4TuhX2gry807Q8DGhNIp8DoLcToPirL/tFy+Cv
+         8Q+Efj9qANkBAShtZNIItmh7POAQR0+V94968m6W/7h3N+ONZ70aj26lSKjKBCFWS+t2
+         Mjr8HH25H53fkUlf8Y8q41p0l/rhYsrLPbWJMiO1ic3VL3kAHM/1BO1MrC6GBM6L+XZX
+         I2LXvDpZvGu54DB4YuBCmCqxKl4+MqCnFYjswmET9slqhKNrcnmL422eUolzpdPiDJ/c
+         Z+Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700658131; x=1701262931;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zAYBW/dYtjxj/mIFheTLcX/YTMyi0LyyXwltchBNxB0=;
+        b=F4lbxXkA2/DNm2zizGorqukK4hjpHEeWPpFMDVN4EYZCdg0saLyQeAPOVKqLBzTpfB
+         UibwhGMCnh8e9i7mP1driPdnRijnMcVObMxrGKTl2ADjxR2x2ROt0ingFWdlwNpEdrSP
+         18/kjl1f83tPkAl1gBGZ+8ltvZXH8h3sLgb9Q9H2CMXe21iKi2RJtXwH6omageGKUG3C
+         p+IQZiNOScTTQLCAzDg8XsM2jWLrz7N8ulOWmKcXakBDVuOteAqNWm3oGMjGLSZHGyjT
+         D7Ux+fZt05KgnX6nVWgV54SWKrsmaHKQOsziJj3d7Qt+rm45bkJcnBIqLxn1U145fQtl
+         AmHA==
+X-Gm-Message-State: AOJu0YwnApFSZZnQAgFyrGxVEBgMZWhSywrRFH/23HJSxTpGoosHvN69
+        5mpHTzP5R4xacOuctqxCffaGvw==
+X-Google-Smtp-Source: AGHT+IFm/gvzWYz8Z3gyoz/52Dw4SJ4D1BBYzMbXvuiTFLxpBZfbv3NItqBLCI+UzFq90ikS/hTasA==
+X-Received: by 2002:a5d:6843:0:b0:32f:e1a2:526a with SMTP id o3-20020a5d6843000000b0032fe1a2526amr266266wrw.67.1700658131308;
+        Wed, 22 Nov 2023 05:02:11 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id x11-20020adfffcb000000b003316b8607cesm16215688wrs.1.2023.11.22.05.02.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Nov 2023 05:02:10 -0800 (PST)
+Date:   Wed, 22 Nov 2023 08:02:06 -0500
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Su Hui <suhui@nfschina.com>
+Cc:     pkshih@realtek.com, kvalo@kernel.org, nathan@kernel.org,
+        ndesaulniers@google.com, trix@redhat.com, lizetao1@huawei.com,
+        linville@tuxdriver.com, Larry.Finger@lwfinger.net,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH wireless-next 2/2] rtlwifi: rtl8821ae: phy: fix an
+ undefined bitwise shift behavior
+Message-ID: <2ec14802-78b0-4a3f-a730-19e95ec8d359@suswa.mountain>
+References: <20231122090210.951185-1-suhui@nfschina.com>
+ <20231122090210.951185-2-suhui@nfschina.com>
 MIME-Version: 1.0
-Message-Id: <6270c14a-6b65-44f5-a820-43cb72f8f2b7@app.fastmail.com>
-In-Reply-To: <20231122083047.12774-1-lukas.bulwahn@gmail.com>
-References: <20231122083047.12774-1-lukas.bulwahn@gmail.com>
-Date:   Wed, 22 Nov 2023 10:21:57 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Lukas Bulwahn" <lukas.bulwahn@gmail.com>,
-        "Kalle Valo" <kvalo@kernel.org>, libertas-dev@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: libertas: fix config name in dependency for SDIO support
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231122090210.951185-2-suhui@nfschina.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 22, 2023, at 09:30, Lukas Bulwahn wrote:
-> Commit 4b478bf6bdd8 ("wifi: libertas: drop 16-bit PCMCIA support") reworks
-> the dependencies for config LIBERTAS, and adds alternative dependencies for
-> USB, SDIO and SPI.
->
-> The config option SDIO however does not exist in the kernel tree. It was
-> probably intended to refer to the config option MMC, which represents
-> "MMC/SD/SDIO card support" and is used as dependency by various other
-> drivers that use SDIO.
->
-> Fix the dependency to the config option MMC for declaring the requirement
-> on provision of SDIO support.
->
-> Fixes: 4b478bf6bdd8 ("wifi: libertas: drop 16-bit PCMCIA support")
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+On Wed, Nov 22, 2023 at 05:02:12PM +0800, Su Hui wrote:
+> Clang staic checker warning:
+> drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:184:49:
+> 	The result of the left shift is undefined due to shifting by '32',
+> 	which is greater or equal to the width of type 'u32'.
+> 	[core.UndefinedBinaryOperatorResult]
+> 
+> If the value of the right operand is negative or is greater than or
+> equal to the width of the promoted left operand, the behavior is
+> undefined.[1][2]
+> 
+> For example, when using different gcc's compilation optimizaation options
+> (-O0 or -O2), the result of '(u32)data << 32' is different. One is 0, the
+> other is old value of data. Adding an u64 cast to fix this problem.
+> 
+> [1]:https://stackoverflow.com/questions/11270492/what-does-the-c-
+> standard-say-about-bitshifting-more-bits-than-the-width-of-type
+> [2]:https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf
+> 
+> Fixes: 21e4b0726dc6 ("rtlwifi: rtl8821ae: Move driver from staging to regular tree")
+> Signed-off-by: Su Hui <suhui@nfschina.com>
+> ---
+>  drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> index 6df270e29e66..89713e0587b5 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> @@ -106,7 +106,7 @@ u32 rtl8821ae_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
+>  		regaddr, bitmask);
+>  	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+>  	bitshift = _rtl8821ae_phy_calculate_bit_shift(bitmask);
+> -	returnvalue = (originalvalue & bitmask) >> bitshift;
+> +	returnvalue = (u64)(originalvalue & bitmask) >> bitshift;
 
-Good catch
+This is a right shift, not a left shift. << vs >>.
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+>  
+>  	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+>  		"BBR MASK=0x%x Addr[0x%x]=0x%x\n",
+> @@ -128,7 +128,7 @@ void rtl8821ae_phy_set_bb_reg(struct ieee80211_hw *hw,
+>  		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+>  		bitshift = _rtl8821ae_phy_calculate_bit_shift(bitmask);
+>  		data = ((originalvalue & (~bitmask)) |
+> -			((data << bitshift) & bitmask));
+> +			(((u64)data << bitshift) & bitmask));
+
+The checker is printing an accurate warning, however, I'm not sure the
+fix is correct.  Obviously, shift wrapping is bad and your patch would
+eliminate that possibility.  However, data is a u32 so we end up
+discarding the high 32 bits.  I can imagine a different static checker
+would complain about that.
+
+Perhaps, a better way to silence the warning is to just change
+_rtl8821ae_phy_calculate_bit_shift() to not return 32 bits?  Do we
+really ever pass bitmask 0?  No idea...
+
+regards,
+dan carpenter
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+index 5323ead30db0..42885e3a458f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+@@ -29,9 +29,7 @@ static void _rtl8821ae_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 					   u32 data);
+ static u32 _rtl8821ae_phy_calculate_bit_shift(u32 bitmask)
+ {
+-	u32 i = ffs(bitmask);
+-
+-	return i ? i - 1 : 32;
++	return ffs(bitmask) - 1;
+ }
+ static bool _rtl8821ae_phy_bb8821a_config_parafile(struct ieee80211_hw *hw);
+ /*static bool _rtl8812ae_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);*/
