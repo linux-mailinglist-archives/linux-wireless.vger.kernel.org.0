@@ -2,41 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 775117F3DEB
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Nov 2023 07:06:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52D8C7F3DF7
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Nov 2023 07:15:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234597AbjKVGGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Nov 2023 01:06:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44718 "EHLO
+        id S229631AbjKVGPf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Nov 2023 01:15:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbjKVGGM (ORCPT
+        with ESMTP id S229561AbjKVGPe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Nov 2023 01:06:12 -0500
+        Wed, 22 Nov 2023 01:15:34 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A641A4
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Nov 2023 22:06:08 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AM662c442079027, This message is accepted by code: ctloc85258
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F851A4
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Nov 2023 22:15:28 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AM6FK9k82081039, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AM662c442079027
+        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AM6FK9k82081039
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 22 Nov 2023 14:06:02 +0800
+        Wed, 22 Nov 2023 14:15:20 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 22 Nov 2023 14:06:02 +0800
+ 15.1.2507.17; Wed, 22 Nov 2023 14:15:20 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 22 Nov
- 2023 14:06:02 +0800
+ 2023 14:15:20 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
-CC:     <jamie_chen@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 4/4] wifi: rtw89: debug: remove wrapper of rtw89_debug()
-Date:   Wed, 22 Nov 2023 14:04:58 +0800
-Message-ID: <20231122060458.30878-5-pkshih@realtek.com>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw88: debug: remove wrapper of rtw_dbg()
+Date:   Wed, 22 Nov 2023 14:14:29 +0800
+Message-ID: <20231122061429.34487-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231122060458.30878-1-pkshih@realtek.com>
-References: <20231122060458.30878-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -56,56 +54,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The wrapper of rtw89_debug() is unnecessary, so just remove it.
+Remove unnecessary wrapper of rtw_dbg(), and just call it directly.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/debug.c | 7 +++----
- drivers/net/wireless/realtek/rtw89/debug.h | 6 ++----
- 2 files changed, 5 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtw88/debug.c | 6 +++---
+ drivers/net/wireless/realtek/rtw88/debug.h | 6 ++----
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index f914c0750576..9780af8e296d 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -3947,9 +3947,8 @@ void rtw89_debugfs_init(struct rtw89_dev *rtwdev)
- #endif
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index 35bc37a3c469..1b2ad81838be 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -1314,8 +1314,8 @@ void rtw_debugfs_init(struct rtw_dev *rtwdev)
  
- #ifdef CONFIG_RTW89_DEBUGMSG
--void __rtw89_debug(struct rtw89_dev *rtwdev,
--		   enum rtw89_debug_mask mask,
--		   const char *fmt, ...)
-+void rtw89_debug(struct rtw89_dev *rtwdev, enum rtw89_debug_mask mask,
-+		 const char *fmt, ...)
+ #ifdef CONFIG_RTW88_DEBUG
+ 
+-void __rtw_dbg(struct rtw_dev *rtwdev, enum rtw_debug_mask mask,
+-	       const char *fmt, ...)
++void rtw_dbg(struct rtw_dev *rtwdev, enum rtw_debug_mask mask,
++	     const char *fmt, ...)
  {
  	struct va_format vaf = {
- 	.fmt = fmt,
-@@ -3965,5 +3964,5 @@ void __rtw89_debug(struct rtw89_dev *rtwdev,
+ 		.fmt = fmt,
+@@ -1330,6 +1330,6 @@ void __rtw_dbg(struct rtw_dev *rtwdev, enum rtw_debug_mask mask,
  
  	va_end(args);
  }
--EXPORT_SYMBOL(__rtw89_debug);
-+EXPORT_SYMBOL(rtw89_debug);
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.h b/drivers/net/wireless/realtek/rtw89/debug.h
-index a4cdc3c8c622..800ea59873a1 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.h
-+++ b/drivers/net/wireless/realtek/rtw89/debug.h
-@@ -59,12 +59,10 @@ static inline void rtw89_debugfs_init(struct rtw89_dev *rtwdev) {}
+-EXPORT_SYMBOL(__rtw_dbg);
++EXPORT_SYMBOL(rtw_dbg);
  
- #ifdef CONFIG_RTW89_DEBUGMSG
- extern unsigned int rtw89_debug_mask;
--#define rtw89_debug(rtwdev, a...) __rtw89_debug(rtwdev, ##a)
+ #endif /* CONFIG_RTW88_DEBUG */
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.h b/drivers/net/wireless/realtek/rtw88/debug.h
+index a03ced11bbe0..f20c0471c82a 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.h
++++ b/drivers/net/wireless/realtek/rtw88/debug.h
+@@ -43,10 +43,8 @@ static inline void rtw_debugfs_init(struct rtw_dev *rtwdev) {}
+ #ifdef CONFIG_RTW88_DEBUG
  
  __printf(3, 4)
--void __rtw89_debug(struct rtw89_dev *rtwdev,
--		   enum rtw89_debug_mask mask,
--		   const char *fmt, ...);
-+void rtw89_debug(struct rtw89_dev *rtwdev, enum rtw89_debug_mask mask,
-+		 const char *fmt, ...);
- static inline void rtw89_hex_dump(struct rtw89_dev *rtwdev,
- 				  enum rtw89_debug_mask mask,
- 				  const char *prefix_str,
+-void __rtw_dbg(struct rtw_dev *rtwdev, enum rtw_debug_mask mask,
+-	       const char *fmt, ...);
+-
+-#define rtw_dbg(rtwdev, a...) __rtw_dbg(rtwdev, ##a)
++void rtw_dbg(struct rtw_dev *rtwdev, enum rtw_debug_mask mask,
++	     const char *fmt, ...);
+ 
+ static inline bool rtw_dbg_is_enabled(struct rtw_dev *rtwdev,
+ 				      enum rtw_debug_mask mask)
 -- 
 2.25.1
 
