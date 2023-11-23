@@ -1,46 +1,47 @@
-Return-Path: <linux-wireless+bounces-7-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836937F68FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Nov 2023 23:28:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408FC7F6902
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Nov 2023 23:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C864281241
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Nov 2023 22:28:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4EF0B212CD
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Nov 2023 22:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA442FC4D;
-	Thu, 23 Nov 2023 22:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BE24A9BE;
+	Thu, 23 Nov 2023 22:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uyEeSJYE"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="c8Wu3P6n"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE026D54
-	for <linux-wireless@vger.kernel.org>; Thu, 23 Nov 2023 14:27:54 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4310BD60
+	for <linux-wireless@vger.kernel.org>; Thu, 23 Nov 2023 14:27:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:To:From:Content-Type:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=mP8Wq6CXAMqmmi4Cc2dRJlLYRuw/4wvj4uk52hARVCc=; t=1700778474; x=1701988074; 
-	b=uyEeSJYERZBZrETKMLCry62pGLFDJepvpMMDtQN/4TFRa/uQBYCXkKWL4M5pjF92XvGya89aSBe
-	djt5MMHDmUHNOetRw+TcUBCc6P5+0WaNSVGib4zgrlaW7TT4zRM2I+cca/2neATpfwYQ1K0jA+m2t
-	W8koakGICDtFpTul0GlIxitHgpb7qbSBmaxevymW9Xs4VV4oub6HKJm2lFAhG3+hZ1+Of1VckxqE6
-	s7uY74ePbtHlWIGDAua59LwUpE6newR2wZf1KYAVj0/0/wDdUarIEVYhfAYMJ5lEf/s2drWtyqZ3R
-	PKC5lpP5MMdvWafA0grhWiVZZbwoodzUfO7w==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=otmmcFLnOKUc8cSls2Dv7CYsJv5mMEEslURXO+VqiEU=;
+	t=1700778476; x=1701988076; b=c8Wu3P6nAt6dU8X14DteKH2ZhSx0KJFwGJmiPgR3ht5hRiN
+	EWgzmj0Q0oJVBGh1xWzYiF8oodEJUQFNBSXbL6l4H/vJHwAI1F6bjWJ1C7ZfFMMYaLm8uaNoBiLlN
+	ijdLPGZd0jp5uxpgNSSxCmFkuA1FIMZKPQUUbg9cmuRRVq6AK6kyvaZPFd2FM+4W3fR0jcr5bvbVY
+	jaanFmg3ueU+A5UObIZ49eL1OJ/hqpyOiN4772dfayGhN5tq5RAI4O78k5kMrkbiXSvzcBgRNBsm/
+	psXWehxI21EEiVYRB1lVL+o0svIvWag2MrblIpkvSV7ZLxBHGjY65GOM5qi0jA/Q==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1r6IAq-00000001Y53-1UQi
-	for linux-wireless@vger.kernel.org;
-	Thu, 23 Nov 2023 23:27:52 +0100
+	id 1r6IAq-00000001Y53-44vE;
+	Thu, 23 Nov 2023 23:27:53 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
-Subject: [RFC PATCH v2 00/13] refactor and wider-BW OFDMA support
-Date: Thu, 23 Nov 2023 23:14:37 +0100
-Message-ID: <20231123221436.143254-14-johannes@sipsolutions.net>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [RFC PATCH v2 01/13] wifi: mac80211: simplify ieee80211_config_bw() prototype
+Date: Thu, 23 Nov 2023 23:14:38 +0100
+Message-ID: <20231123231436.d16617c03e0f.I8bd5ee848074029a9f0495c95e4339546ad8fe15@changeid>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231123221436.143254-14-johannes@sipsolutions.net>
+References: <20231123221436.143254-14-johannes@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -49,60 +50,59 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Johannes Berg <johannes.berg@intel.com>
 
-Continuing the work I already began in [1] (but hadn't so far posted
-a v2 of), this shows what really was the purpose of me looking at it,
-which I had alluded to earlier: supporting wider-bandwidth OFDMA in
-mac80211.
+The only user of this function passes a lot of pointers
+directly from the parsed elements, so it's simpler to
+just pass the entire elements parsing struct. This also
+shows that the ht_cap is actually unused.
 
-While starting to work on it more after the channel request, I saw
-that the code that determines the channels etc. in the MLME is not
-really very amenable to the kinds of things I needed to have here,
-so I've done some major refactoring of that code, that's in patch 7.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/mlme.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-Note that patch 5 breaks two hwsim tests, but the reason is that the
-code in wpa_supplicant doesn't take the HE/EHT operation into account
-when calculating the expected throughput, only the capabilities, so I
-believe that's just a bug there.
-
-Note also that I think that patch 8 shouldn't be there, an AP that
-drops any of HT/VHT/HE/EHT operation while doing a channel switch
-doesn't really seem quite reasonable to me. As noted there, that's
-affecting 8 more tests, and I've split out the workaround into this
-patch to show more obviously what's going on.
-
-Also, the refactor patch (patch 7) introduces a FIXME for puncturing,
-as it doesn't configure it properly from the start, but will then
-only reconfigure it when the first beacon is parsed. There were some
-additional patches about puncturing [2], and I need to take a look
-at those. I believe patch 3 there is already covered by what I've
-done in my patch 7 (partially it's the same), but I probably still
-need patch 1/2 in some way, and of course the driver patch isn't
-related at all.
-However, the right fix for the puncturing is to put it into the
-chandef as Aloka had originally suggested, but I questioned and
-somehow managed to convince her that it shouldn't be - I was quite
-clearly wrong about that. I already said I'd need to move it into
-the chandef, and at that point the FIXME in this code basically is
-addressed automatically. I didn't want to introduce any workarounds
-to this code instead.
-
-So ... yes I realize that these are some big changes, but I tend to
-think that they make the code better to understand/maintain, in
-particular the 'connection mode' struct that's easier to track.
-
-The hwsim tests seem to run cleanly apart from what I mentioned
-above, although I have 9 tests that always fail for me, and for
-some reason I cannot run the wmediumd tests right now.
-
-johannes
-
-[1] https://lore.kernel.org/r/20231109003040.4b25d42b8b14.I60d093b2fc81ca1853925a4d0ac3a2337d5baa5b@changeid
-[2] https://lore.kernel.org/linux-wireless/20230928055022.9670-1-quic_kangyang@quicinc.com/
-[3] https://lore.kernel.org/linux-wireless/20230928055022.9670-4-quic_kangyang@quicinc.com/
-
-
-
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 887b496f2b81..778eef2f06f1 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -481,15 +481,15 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ }
+ 
+ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+-			       const struct ieee80211_ht_cap *ht_cap,
+-			       const struct ieee80211_vht_cap *vht_cap,
+-			       const struct ieee80211_ht_operation *ht_oper,
+-			       const struct ieee80211_vht_operation *vht_oper,
+-			       const struct ieee80211_he_operation *he_oper,
+-			       const struct ieee80211_eht_operation *eht_oper,
+-			       const struct ieee80211_s1g_oper_ie *s1g_oper,
++			       struct ieee802_11_elems *elems,
+ 			       const u8 *bssid, u64 *changed)
+ {
++	const struct ieee80211_vht_cap *vht_cap = elems->vht_cap_elem;
++	const struct ieee80211_ht_operation *ht_oper = elems->ht_operation;
++	const struct ieee80211_vht_operation *vht_oper = elems->vht_operation;
++	const struct ieee80211_he_operation *he_oper = elems->he_operation;
++	const struct ieee80211_eht_operation *eht_oper = elems->eht_operation;
++	const struct ieee80211_s1g_oper_ie *s1g_oper = elems->s1g_oper;
+ 	struct ieee80211_sub_if_data *sdata = link->sdata;
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+@@ -6340,11 +6340,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 
+ 	changed |= ieee80211_recalc_twt_req(sdata, sband, link, link_sta, elems);
+ 
+-	if (ieee80211_config_bw(link, elems->ht_cap_elem,
+-				elems->vht_cap_elem, elems->ht_operation,
+-				elems->vht_operation, elems->he_operation,
+-				elems->eht_operation,
+-				elems->s1g_oper, bssid, &changed)) {
++	if (ieee80211_config_bw(link, elems, bssid, &changed)) {
+ 		sdata_info(sdata,
+ 			   "failed to follow AP %pM bandwidth change, disconnect\n",
+ 			   bssid);
+-- 
+2.42.0
 
 
