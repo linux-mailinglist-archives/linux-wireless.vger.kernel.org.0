@@ -1,130 +1,243 @@
-Return-Path: <linux-wireless+bounces-5-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91CCE7F57D6
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Nov 2023 06:48:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143337F5944
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Nov 2023 08:33:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C7032817BF
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Nov 2023 05:48:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E8BFB20BE9
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Nov 2023 07:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A17EBE5D;
-	Thu, 23 Nov 2023 05:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B7B168C3;
+	Thu, 23 Nov 2023 07:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jss7zVHo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ImdjScD8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4F011F
-	for <linux-wireless@vger.kernel.org>; Wed, 22 Nov 2023 21:48:43 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c871d566cfso5523981fa.3
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Nov 2023 21:48:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700718521; x=1701323321; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=90wieb6M2VCCvedLkH0yxZnXyP84LqC+5ZlCgC+WSG0=;
-        b=Jss7zVHo230Tx5BkpXEooENuwF9QVNJ3o+zFJolJB7afsa2xvK7GEQHcJSkVpxeHw/
-         aqg+e8kz2Ll4vlIkupEMvp8Hh4utYJh07oHVSRN5uBDsJfvEb15C6rQ2/3Rsa+sncZ/h
-         SDmQxEPKBpEoY97eSYno1NurQ+xiT0JU2GgfSLG5614ExqivkeIay/GoAo7xpirmp3wi
-         vuFOl6zDlKOoy8q7XUAWeyvPh9WuqeU9sWKe9vfl9i1hXGnkyKeLNnagUghWv/ovjD6A
-         XTh4+T1my9NHgzNqj0gkACEHyFiPqaR5vRKKdNoiCUYS/ucM5RxzTni7cxYz9Goy16wU
-         5pmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700718521; x=1701323321;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=90wieb6M2VCCvedLkH0yxZnXyP84LqC+5ZlCgC+WSG0=;
-        b=r0OXZQYV/kChUfoxPzqhQz4GjGvz7Aq1E49pr464COkBR2H4Z37FhQ5Sr+2KwDrkpF
-         ikq1NhWtSYDCurZ7FxpJlzXb8vAjvtBRQgsDXosu2P82l6yxwMT+t7rgKvph0Z/lNsDu
-         Th0S2Hr7wMV1PHIG4Fm8PI0mfehdFn+YtqV0RRbPdZs/f8iDsAVXAuZXpHqeE/rY3KL8
-         cUfIAitog1YTTvxzymHHXmZLG2A973Q9cgGhvKj34IQl9reDqnm+Rym2oYws8Ec2lEPL
-         FI3RuHTLiuPgGpGnasNRPZpqesmbtddqnCY9u8QK+vG3MUe/PxeRV6yBKG7jrV6hxPUz
-         Q0sA==
-X-Gm-Message-State: AOJu0Ywl+4FLwgcTfYcPRU6UDInnvjWY2P5IOnYZp6vvIkIj/QIaKdj+
-	FMQxAM38lzICuKMV4RZlWTN2mw==
-X-Google-Smtp-Source: AGHT+IHybDEjVgqWWR627nXsgR1xndJTpRSJuSd2v2BEMphvSQGkt9g0NQ3OT7NrcfzcnPXWmVl/DA==
-X-Received: by 2002:a2e:9797:0:b0:2b6:df71:cff1 with SMTP id y23-20020a2e9797000000b002b6df71cff1mr1515717lji.52.1700718521202;
-        Wed, 22 Nov 2023 21:48:41 -0800 (PST)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id hg15-20020a05600c538f00b0040849ce7116sm1424154wmb.43.2023.11.22.21.48.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Nov 2023 21:48:40 -0800 (PST)
-Date: Thu, 23 Nov 2023 08:48:36 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Su Hui <suhui@nfschina.com>
-Cc: pkshih@realtek.com, kvalo@kernel.org, nathan@kernel.org,
-	ndesaulniers@google.com, trix@redhat.com, lizetao1@huawei.com,
-	linville@tuxdriver.com, Larry.Finger@lwfinger.net,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH wireless-next 2/2] rtlwifi: rtl8821ae: phy: fix an
- undefined bitwise shift behavior
-Message-ID: <caf95d1d-f893-4553-9d0a-91d16f04182d@suswa.mountain>
-References: <2ec14802-78b0-4a3f-a730-19e95ec8d359@suswa.mountain>
- <a9032c3a-8221-11fb-ed15-2c57c3933d28@nfschina.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD4010C;
+	Wed, 22 Nov 2023 23:33:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700724808; x=1732260808;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=KFnT+3ZOcxIo0opmuG6dG12wC5L8YFGBuIeAXAf23bY=;
+  b=ImdjScD8yBwdbYyo49Ot8N1/fz0kBEeupn5W89Iijh6FJDxn7ziAueHk
+   yiomkzQxGUZaOio4iPWFmjIjfYiUIji53V+5hZ1rNBdxoQx+7BfUFPKvy
+   6XT1ZbOZ94SOBYCHeXJXV5igQRyC3tLKo8w7hCgPbvSfe58haS510u5AJ
+   m+JZtHWX+OZqYW98VUQHnv5e618hd0Tp0kVXeEgcAMJTUjjIcqjDSbmmO
+   cV68QC4CyVe/QAUiicPNB+gA8c16TMblpYpG1htd+ooYlcJ52ukyFIu48
+   qAiNE6AiJHjvHp0LyNraLXmXMKdG6kw2BXBHc4YBmxOCOf6mlK/WDQgen
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="458711809"
+X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
+   d="scan'208";a="458711809"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 23:33:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
+   d="scan'208";a="8566101"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 22 Nov 2023 23:33:28 -0800
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Wed, 22 Nov 2023 23:33:27 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Wed, 22 Nov 2023 23:33:27 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Wed, 22 Nov 2023 23:33:27 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TZFe0GQJ0q7WCJHI7u9JWUv/1YwBoXw1O8pahWrYEm2eehreTr90pL8b39QSd195d+LTyCL9vhUmzipi9pmLP54x694bo7EgB2QB1rYDMPZGdVr5O7WP7B6EHdTqtBr8yFNy3x6FKIgpSlV5pyOKyWJd3aQi6uBqttEP/M4VxQYfGpkAmQ17xyfq0GuigGWwp1j2ZBnj6ffhADAhqPp6dbtw6UGTwtlILQFMAtKnTWDP9gOstdkRaJAyQjbl57+JcmKPn3YdQR+jL0ZPwavX22WbkEXfrZDoSRqEiIOJiekDV3JAh9ve7N9jVCRiPoaXLqYFjRFA80LgUi5i8phBLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oqIekfbYCgDnjx3lYAQIEmWMhHsGCkTsm6zm99SvEgc=;
+ b=XqFjZlOt8bp7PBB5YGXAA+fUW+jLi1fM7H/7adc0wyE5rbfZFvQsYdJxmq4gx1mehFO27JrL/H7d4EZXO0QuOlpRj/TDku553+mNDyGtQjwDq26c2ifW9tuOWr94zyr6nNdx4sic9gs3wtDOUNYDmB3xLHy55rg30NmaKIhSaPy+8zGZLqwtiIA5dgAsE8jB7KGSbVMd4flV+/xJtnoTUWFAlxJ2w2MS5DJoiZf5ANO5oYkYER/HQhYH8q7G+mO6n7ozTktYun564dGlYlGykv2BjcGeZ5dbCs16oA3NPyUsUG2BwwnXru4CsGkogkoJJVRCvUt68vH2N7+4Rvrvsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by SN7PR11MB7512.namprd11.prod.outlook.com (2603:10b6:806:345::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.20; Thu, 23 Nov
+ 2023 07:33:20 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::1236:9a2e:5acd:a7f]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::1236:9a2e:5acd:a7f%3]) with mapi id 15.20.7002.027; Thu, 23 Nov 2023
+ 07:33:20 +0000
+Date: Thu, 23 Nov 2023 15:33:12 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
+	<linux-wireless@vger.kernel.org>, <oliver.sang@intel.com>
+Subject: [linus:master] [wifi]  97c19e42b2:
+ hwsim.dpp_qr_code_chan_list_unicast2.fail
+Message-ID: <202311231403.9eb0b714-oliver.sang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-ClientProxiedBy: SI2PR01CA0015.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::15) To LV3PR11MB8603.namprd11.prod.outlook.com
+ (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a9032c3a-8221-11fb-ed15-2c57c3933d28@nfschina.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|SN7PR11MB7512:EE_
+X-MS-Office365-Filtering-Correlation-Id: c014b390-b44a-46b8-bffd-08dbebf676d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vw+swSR6yQkeFc0Wo003bYUN6ZqtlOo0aWa+GKWEHK7aF1JdIC04cTH1UaXKnT8t28RyFHaIbeV/ReT8C/2XoNg7Hwi0crOJ8E1cuuKZrs6CsqYo9QnxdPk4mQunArvylU+ut95igs4+1rWDD/tH/2K7OU/TYNeW7ChSWAkNkSJ2vesggmYdB4G+LXHC6COki+xguZJnfWOWMwU2PcDe1fPKkBCYzrJTeJ+s8vspzZ46QOPAunA8bC5h8sLNUN0Gq106GOvsZFJwpFi62/eVm11QFlZ5lX4V9qnVuuuHol7DNUjF3RRv/iwRkyg6OUgsmiLiKOrf4jUZedGxx98Ff7SkE+fiH3ySSFhz9IvaPVLrZvShvTVeBEBYpllg4u+OJ0ZCBctwt1Qm02kqMiaAtJrNdqOxwlWsPr8Dd03MYq0AObcm4QVykOXi6KAYZ5piaaOvbu0UFrcxvBrzi4meP4pRiDW74sV6tcgpmLusQWXD/jjGXhS/xL7cy33dNaz++2MkKzY515YPkRHvlte2PkBw8zLq8QnfnDf9X8nqBZVI8X5JzJHIu4n02Eh7tzD0AIPLl0LcZGTWBnhc+oXrDa6Om32w1ZE4/rbON2pScBXRkxqejNgrw8VickHgpxBD1fMZOhMye5OzIIAOkArjkQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(136003)(366004)(376002)(396003)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(86362001)(5660300002)(38100700002)(26005)(1076003)(83380400001)(82960400001)(6666004)(107886003)(316002)(6506007)(6512007)(2616005)(6862004)(6636002)(4326008)(66556008)(66946007)(66476007)(37006003)(8676002)(8936002)(41300700001)(4001150100001)(966005)(6486002)(478600001)(36756003)(2906002)(568244002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?oMtJuEs+TSDsrN1WVjU7iCY4aTlUPMyfLBnOKv6BHndJYRV7xsJ1PhOl8EQp?=
+ =?us-ascii?Q?92QNSMhIXForVcYSw3zfZ3aBucJYktu9MyjZ2ESdZD4u2lSAim85hHI5EZc6?=
+ =?us-ascii?Q?7vLbYbCULzUaFt13L9A6Hfp2Z6GsB2nXxNRf3Tll51lpPvyf3NWXcabgH+fQ?=
+ =?us-ascii?Q?L0m8kpvtUsNKf4Una/DMysa91DzU/p0o+wrRF6UaeGokh9qEdVkofbZvUUUa?=
+ =?us-ascii?Q?+qCkqMA7+gtkWLtY66phi+U88c7UC8HIgA0AYhcTPqIY4JT+Z2sugmma78lF?=
+ =?us-ascii?Q?u3GwI7jn7Lm3amf7SsZmMc1h6hQUplm876bg9TEmawdb66QnQsMWtLMjmYms?=
+ =?us-ascii?Q?S+vtP/AgY2QsQOpOVMzTfVkJbUhqtGz3h6frDLdioCKTB4CjahRUI6PZkaIk?=
+ =?us-ascii?Q?2nCzZrmIqxTlO4fUh2ZkuIPRZSxYerOh462iiZm7UNuAI1HlDWIIjeAjILlM?=
+ =?us-ascii?Q?g+eOmBh+CWig5i+AaQ3W9SB6rOecZgiGb3FossTBa2j9w5MZbecGn9R+b26Q?=
+ =?us-ascii?Q?ISTviiHfW01alqdrVivYtOVI/yliqRqfBkulwYBaM5IxY3Do4SH8+rZhDdvD?=
+ =?us-ascii?Q?3AIusOMDMkzWnCTBiWEATHYPXj4+hUpTzCON50KaKuYhJ2dj5fETOsluUf6i?=
+ =?us-ascii?Q?BHViUVw4vn27h/RcX3LjPUU0+cNR4cgxkDl3XhzRCS3B3wsuR8qSjCj3S9ld?=
+ =?us-ascii?Q?7j+42C0T8x8jiATBc288qkJM8LaQOgEG5Mz4XVKwNexIReJz9Q7vfZdUHWIv?=
+ =?us-ascii?Q?uM0Oc8JTx+8qeEr+OcHw+O9ahvwm/qf6b6jelpmOJEWIbkaQVQ11uS8vpd6Z?=
+ =?us-ascii?Q?mU7bsgkvJmH9+yE7k44P4QXtbCOStUFIyrk71tdWTRSxHYLkMR/FA9NMs4+Q?=
+ =?us-ascii?Q?KRUpEUhCpEvDpvpjx+leCjPLToEi8Rs6+/GzlH6NEkElTFAI05SCFCkYSdJE?=
+ =?us-ascii?Q?vAN3lWjqh9izj8i2i1aD2NOZpGa7pt2jG74RupaOG0Hi9/m5i1kxEuIZU5QW?=
+ =?us-ascii?Q?TzFNtTKacIOcw7bIH/7dJB6QInxlVgxEdlrs2zXmWFLw8JUpyVDqTvUjDKvs?=
+ =?us-ascii?Q?afVH5jPml2Lac+tEWOXsf9KeqFIAd1ZRgIEtpXUKCc/FTZjtupIYShPUMBnA?=
+ =?us-ascii?Q?uwMWvHtbfVza4xl06ub9Whzx/WRrPjSRu1RP5Zot6/j5CBcbgOpt0vMOE1im?=
+ =?us-ascii?Q?Du4CylTSOrOtaBSjEOeR1Eo1o+Q/Bvf5MkkVjee4cHS9fjDP+HSaxNPuq1G1?=
+ =?us-ascii?Q?DZYvyrAUTD2cdoz08asz02I2TY0gJjFrhyDxjepkUusDX0FmPGdlClonEW1c?=
+ =?us-ascii?Q?LA3FBdrXhEYvkCwhnNVZWf5VWB1YCmqu4zg2afGdrg7VGeB1ZQgdny4yQoza?=
+ =?us-ascii?Q?1gWkRUwk1FEry57eg1msklyxZukdiBHWvAzrc56sRLRfHnUVBQqIIOeLCSbv?=
+ =?us-ascii?Q?F7Zye3CwpzFm6ujVsYmE76V5ExZGTsDsUgCnnA5GhNPAYXzTNRc97ixo8miS?=
+ =?us-ascii?Q?zbq+dsItZYhvQrs9J2+HZOXyyLyMOJ+s8zN3+fiBf59Zlcp+EEKloJ6Zk+7S?=
+ =?us-ascii?Q?r38dBz3pEvoTuVTMN9kSNr+1cpqKX2tOGEjo6s86Pi5vJWxUoTjNoBvSt5TP?=
+ =?us-ascii?Q?YA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c014b390-b44a-46b8-bffd-08dbebf676d4
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2023 07:33:19.2054
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Fa81Q9qH17GW+TS90oZMb9BM+o89UC21kcr6CmRxAesg2qoxkej+/V/1Gwzhv1vfsGIZBYNwkXnICjIh563R7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7512
+X-OriginatorOrg: intel.com
 
-On Thu, Nov 23, 2023 at 09:33:06AM +0800, Su Hui wrote:
-> On 2023/11/22 21:02, Dan Carpenter wrote:
-> > On Wed, Nov 22, 2023 at 05:02:12PM +0800, Su Hui wrote:
-> > > Clang staic checker warning:
-> > > drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:184:49:
-> > > 	The result of the left shift is undefined due to shifting by '32',
-> > > 	which is greater or equal to the width of type 'u32'.
-> > > 	[core.UndefinedBinaryOperatorResult]
-> > > 
-> > > If the value of the right operand is negative or is greater than or
-> > > equal to the width of the promoted left operand, the behavior is
-> > > undefined.[1][2]
-> > > 
-> > > For example, when using different gcc's compilation optimizaation options
-> > > (-O0 or -O2), the result of '(u32)data << 32' is different. One is 0, the
-> > > other is old value of data. Adding an u64 cast to fix this problem.
-> > > 
-> > > [1]:https://stackoverflow.com/questions/11270492/what-does-the-c-
-> > > standard-say-about-bitshifting-more-bits-than-the-width-of-type
-> > > [2]:https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf
-> > > 
-> > > Fixes: 21e4b0726dc6 ("rtlwifi: rtl8821ae: Move driver from staging to regular tree")
-> > > Signed-off-by: Su Hui <suhui@nfschina.com>
-> > > ---
-> > >   drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 8 ++++----
-> > >   1 file changed, 4 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-> > > index 6df270e29e66..89713e0587b5 100644
-> > > --- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-> > > +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-> > > @@ -106,7 +106,7 @@ u32 rtl8821ae_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
-> > >   		regaddr, bitmask);
-> > >   	originalvalue = rtl_read_dword(rtlpriv, regaddr);
-> > >   	bitshift = _rtl8821ae_phy_calculate_bit_shift(bitmask);
-> > > -	returnvalue = (originalvalue & bitmask) >> bitshift;
-> > > +	returnvalue = (u64)(originalvalue & bitmask) >> bitshift;
-> > This is a right shift, not a left shift. << vs >>.
-> 
-> Hi,
-> 
-> It's same for right shift and having a really weird result.
-> 
-> The result of '(u32)data >> 32' is different when using different compiler.
-> Clang: "(unsigned int)41 >> 32" = 2077469672
-> Gcc: "(unsigned int)41 >> 32" = 0
 
-Ah.  Sorry.  I had forgotten that it was undefined either way...
+hi, Johannes Berg,
 
-regards,
-dan carpenter
+we reported
+"[linux-next:master] [wifi]  97c19e42b2: hwsim.dpp_test_vector_p_256_b.fail"
+in
+https://lore.kernel.org/all/202309251502.aa08a357-oliver.sang@intel.com/
+
+now we noticed the commit is already in maineline, and we found more issues.
+
+for this one, still not always happen, we observed 19 times failure out of
+30 runs, while parent keeps clean.
+
+730538edc8e0eb14 97c19e42b264e6b71a9ff9deea0
+---------------- ---------------------------
+       fail:runs  %reproduction    fail:runs
+           |             |             |
+           :30          63%          19:30    hwsim.dpp_qr_code_chan_list_unicast2.fail
+
+below detail report FYI.
+
+
+Hello,
+
+kernel test robot noticed "hwsim.dpp_qr_code_chan_list_unicast2.fail" on:
+
+commit: 97c19e42b264e6b71a9ff9deea04c19f621805b9 ("wifi: mac80211: move offchannel works to wiphy work")
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+
+[test failed on linux-next/master eff99d8edbed7918317331ebd1e365d8e955d65e]
+
+in testcase: hwsim
+version: hwsim-x86_64-717e5d7-1_20230720
+with following parameters:
+
+	test: dpp_qr_code_chan_list_unicast2
+
+
+
+compiler: gcc-12
+test machine: 8 threads 1 sockets Intel(R) Core(TM) i7-4790 v3 @ 3.60GHz (Haswell) with 6G memory
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202311231403.9eb0b714-oliver.sang@intel.com
+
+group: group-25, test: dpp_qr_code_chan_list_unicast2
+2023-11-22 09:35:12 export USER=root
+2023-11-22 09:35:12 ./build.sh
+Building TNC testing tools
+Building wlantest
+Building hs20-osu-client
+Building hostapd
+Building wpa_supplicant
+2023-11-22 09:36:08 ./start.sh
+2023-11-22 09:36:10 ./run-tests.py dpp_qr_code_chan_list_unicast2
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START dpp_qr_code_chan_list_unicast2 1/1
+Test: DPP QR Code and 2.4 GHz channels (unicast 2)
+dev0 displays QR Code
+dev1 scans QR Code and initiates DPP Authentication
+DPP authentication did not succeed (Responder)
+Traceback (most recent call last):
+  File "/lkp/benchmarks/hwsim/tests/hwsim/./run-tests.py", line 531, in main
+    t(dev, apdev)
+  File "/lkp/benchmarks/hwsim/tests/hwsim/test_dpp.py", line 4581, in test_dpp_qr_code_chan_list_unicast2
+    run_dpp_qr_code_chan_list(dev, apdev, True, 2417,
+  File "/lkp/benchmarks/hwsim/tests/hwsim/test_dpp.py", line 4617, in run_dpp_qr_code_chan_list
+    wait_auth_success(dev[0], dev[1], timeout=timeout, configurator=dev[1],
+  File "/lkp/benchmarks/hwsim/tests/hwsim/test_dpp.py", line 4878, in wait_auth_success
+    raise Exception("DPP authentication did not succeed (Responder)")
+Exception: DPP authentication did not succeed (Responder)
+FAIL dpp_qr_code_chan_list_unicast2 5.345945 2023-11-22 09:36:17.829496
+passed 0 test case(s)
+skipped 0 test case(s)
+failed tests: dpp_qr_code_chan_list_unicast2
+2023-11-22 09:36:17 ./stop.sh
+
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20231123/202311231403.9eb0b714-oliver.sang@intel.com
+
+
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
