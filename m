@@ -1,41 +1,41 @@
-Return-Path: <linux-wireless+bounces-26-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567017F6CBD
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Nov 2023 08:18:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 604907F6CBE
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Nov 2023 08:18:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BACE1B20E60
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Nov 2023 07:18:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A04BB20D5D
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Nov 2023 07:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3D67465;
-	Fri, 24 Nov 2023 07:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA33C8F63;
+	Fri, 24 Nov 2023 07:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D7A9A
-	for <linux-wireless@vger.kernel.org>; Thu, 23 Nov 2023 23:18:13 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AO7I5XV03551130, This message is accepted by code: ctloc85258
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2F06D5E
+	for <linux-wireless@vger.kernel.org>; Thu, 23 Nov 2023 23:18:14 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AO7I73M03551149, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AO7I5XV03551130
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AO7I73M03551149
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Nov 2023 15:18:05 +0800
+	Fri, 24 Nov 2023 15:18:07 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 24 Nov 2023 15:18:06 +0800
+ 15.1.2507.17; Fri, 24 Nov 2023 15:18:08 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 24 Nov
- 2023 15:18:05 +0800
+ 2023 15:18:07 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/8] wifi: rtw89: mac: add to get DLE reserved quota
-Date: Fri, 24 Nov 2023 15:16:57 +0800
-Message-ID: <20231124071703.132549-3-pkshih@realtek.com>
+Subject: [PATCH 3/8] wifi: rtw89: add reserved size as factor of DLE used size
+Date: Fri, 24 Nov 2023 15:16:58 +0800
+Message-ID: <20231124071703.132549-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231124071703.132549-1-pkshih@realtek.com>
 References: <20231124071703.132549-1-pkshih@realtek.com>
@@ -54,141 +54,69 @@ X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 
-The reserved quota of DLE (data link engine) is used for processing next
-packet. Add this to get quota number, and then WiFi 7 chips can use them.
+DLE stands for Double Link Engine that is used to maintain buffer page.
+To avoid linking to wrong pages, we check the used page size during
+initialization and stop driver probe if the used size is unexpected.
+
+Currently, we check the page size used by PLE (payload engine) and WDE
+(WiFi descriptor engine). For coming WiFi 7 chips, additional reserved
+size is added for BB as buffer to run LA mode, so add and check the
+reserved size as well.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h |  2 +
- drivers/net/wireless/realtek/rtw89/mac.c  | 55 +++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/mac.h  | 19 ++++++++
- 3 files changed, 76 insertions(+)
+ drivers/net/wireless/realtek/rtw89/mac.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 4a8331cf2c2d..4fcad17dd9b7 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3791,8 +3791,10 @@ enum rtw89_hcifc_mode {
- };
- 
- struct rtw89_dle_info {
-+	const struct rtw89_rsvd_quota *rsvd_qt;
- 	enum rtw89_qta_mode qta_mode;
- 	u16 ple_pg_size;
-+	u16 ple_free_pg;
- 	u16 c0_rx_qta;
- 	u16 c1_rx_qta;
- };
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index b93a00f56cb9..ac14865a114a 100644
+index ac14865a114a..bdd9c152951f 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1555,7 +1555,9 @@ static const struct rtw89_dle_mem *get_dle_mem_cfg(struct rtw89_dev *rtwdev,
- 		return NULL;
- 	}
- 
-+	mac->dle_info.rsvd_qt = cfg->rsvd_qt;
- 	mac->dle_info.ple_pg_size = cfg->ple_size->pge_size;
-+	mac->dle_info.ple_free_pg = cfg->ple_size->lnk_pge_num;
- 	mac->dle_info.qta_mode = mode;
- 	mac->dle_info.c0_rx_qta = cfg->ple_min_qt->cma0_dma;
- 	mac->dle_info.c1_rx_qta = cfg->ple_min_qt->cma1_dma;
-@@ -1563,6 +1565,59 @@ static const struct rtw89_dle_mem *get_dle_mem_cfg(struct rtw89_dev *rtwdev,
- 	return cfg;
+@@ -1672,11 +1672,21 @@ static bool mac_is_txq_empty(struct rtw89_dev *rtwdev)
+ 	return (val32 & msk32) == msk32;
  }
  
-+int rtw89_mac_get_dle_rsvd_qt_cfg(struct rtw89_dev *rtwdev,
-+				  enum rtw89_mac_dle_rsvd_qt_type type,
-+				  struct rtw89_mac_dle_rsvd_qt_cfg *cfg)
-+{
-+	struct rtw89_dle_info *dle_info = &rtwdev->mac.dle_info;
-+	const struct rtw89_rsvd_quota *rsvd_qt = dle_info->rsvd_qt;
+-static inline u32 dle_used_size(const struct rtw89_dle_size *wde,
+-				const struct rtw89_dle_size *ple)
++static inline u32 dle_used_size(const struct rtw89_dle_mem *cfg)
+ {
+-	return wde->pge_size * (wde->lnk_pge_num + wde->unlnk_pge_num) +
++	const struct rtw89_dle_size *wde = cfg->wde_size;
++	const struct rtw89_dle_size *ple = cfg->ple_size;
++	u32 used;
 +
-+	switch (type) {
-+	case DLE_RSVD_QT_MPDU_INFO:
-+		cfg->pktid = dle_info->ple_free_pg;
-+		cfg->pg_num = rsvd_qt->mpdu_info_tbl;
-+		break;
-+	case DLE_RSVD_QT_B0_CSI:
-+		cfg->pktid = dle_info->ple_free_pg + rsvd_qt->mpdu_info_tbl;
-+		cfg->pg_num = rsvd_qt->b0_csi;
-+		break;
-+	case DLE_RSVD_QT_B1_CSI:
-+		cfg->pktid = dle_info->ple_free_pg +
-+			     rsvd_qt->mpdu_info_tbl + rsvd_qt->b0_csi;
-+		cfg->pg_num = rsvd_qt->b1_csi;
-+		break;
-+	case DLE_RSVD_QT_B0_LMR:
-+		cfg->pktid = dle_info->ple_free_pg +
-+			     rsvd_qt->mpdu_info_tbl + rsvd_qt->b0_csi + rsvd_qt->b1_csi;
-+		cfg->pg_num = rsvd_qt->b0_lmr;
-+		break;
-+	case DLE_RSVD_QT_B1_LMR:
-+		cfg->pktid = dle_info->ple_free_pg +
-+			     rsvd_qt->mpdu_info_tbl + rsvd_qt->b0_csi + rsvd_qt->b1_csi +
-+			     rsvd_qt->b0_lmr;
-+		cfg->pg_num = rsvd_qt->b1_lmr;
-+		break;
-+	case DLE_RSVD_QT_B0_FTM:
-+		cfg->pktid = dle_info->ple_free_pg +
-+			     rsvd_qt->mpdu_info_tbl + rsvd_qt->b0_csi + rsvd_qt->b1_csi +
-+			     rsvd_qt->b0_lmr + rsvd_qt->b1_lmr;
-+		cfg->pg_num = rsvd_qt->b0_ftm;
-+		break;
-+	case DLE_RSVD_QT_B1_FTM:
-+		cfg->pktid = dle_info->ple_free_pg +
-+			     rsvd_qt->mpdu_info_tbl + rsvd_qt->b0_csi + rsvd_qt->b1_csi +
-+			     rsvd_qt->b0_lmr + rsvd_qt->b1_lmr + rsvd_qt->b0_ftm;
-+		cfg->pg_num = rsvd_qt->b1_ftm;
-+		break;
-+	default:
-+		return -EINVAL;
++	used = wde->pge_size * (wde->lnk_pge_num + wde->unlnk_pge_num) +
+ 	       ple->pge_size * (ple->lnk_pge_num + ple->unlnk_pge_num);
++
++	if (cfg->rsvd0_size && cfg->rsvd1_size) {
++		used += cfg->rsvd0_size->size;
++		used += cfg->rsvd1_size->size;
 +	}
 +
-+	cfg->size = (u32)cfg->pg_num * dle_info->ple_pg_size;
-+
-+	return 0;
-+}
-+
- static bool mac_is_txq_empty(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_mac_dle_dfi_qempty qempty;
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 511ee5dc4240..b16fa9bbd412 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -650,6 +650,22 @@ struct rtw89_mac_dle_dfi_qempty {
- 	u32 qempty;
- };
++	return used;
+ }
  
-+enum rtw89_mac_dle_rsvd_qt_type {
-+	DLE_RSVD_QT_MPDU_INFO,
-+	DLE_RSVD_QT_B0_CSI,
-+	DLE_RSVD_QT_B1_CSI,
-+	DLE_RSVD_QT_B0_LMR,
-+	DLE_RSVD_QT_B1_LMR,
-+	DLE_RSVD_QT_B0_FTM,
-+	DLE_RSVD_QT_B1_FTM,
-+};
-+
-+struct rtw89_mac_dle_rsvd_qt_cfg {
-+	u16 pktid;
-+	u16 pg_num;
-+	u32 size;
-+};
-+
- enum rtw89_mac_error_scenario {
- 	RTW89_RXI300_ERROR		= 1,
- 	RTW89_WCPU_CPU_EXCEPTION	= 2,
-@@ -1254,5 +1270,8 @@ int rtw89_mac_resize_ple_rx_quota(struct rtw89_dev *rtwdev, bool wow);
- int rtw89_mac_ptk_drop_by_band_and_wait(struct rtw89_dev *rtwdev,
- 					enum rtw89_mac_idx band);
- void rtw89_mac_hw_mgnt_sec(struct rtw89_dev *rtwdev, bool wow);
-+int rtw89_mac_get_dle_rsvd_qt_cfg(struct rtw89_dev *rtwdev,
-+				  enum rtw89_mac_dle_rsvd_qt_type type,
-+				  struct rtw89_mac_dle_rsvd_qt_cfg *cfg);
+ static u32 dle_expected_used_size(struct rtw89_dev *rtwdev,
+@@ -1898,8 +1908,7 @@ static int dle_init(struct rtw89_dev *rtwdev, enum rtw89_qta_mode mode,
+ 		ext_wde_min_qt_wcpu = ext_cfg->wde_min_qt->wcpu;
+ 	}
  
- #endif
+-	if (dle_used_size(cfg->wde_size, cfg->ple_size) !=
+-	    dle_expected_used_size(rtwdev, mode)) {
++	if (dle_used_size(cfg) != dle_expected_used_size(rtwdev, mode)) {
+ 		rtw89_err(rtwdev, "[ERR]wd/dle mem cfg\n");
+ 		ret = -EINVAL;
+ 		goto error;
+@@ -3037,8 +3046,7 @@ static int dle_quota_change(struct rtw89_dev *rtwdev, enum rtw89_qta_mode mode)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (dle_used_size(cfg->wde_size, cfg->ple_size) !=
+-	    dle_expected_used_size(rtwdev, mode)) {
++	if (dle_used_size(cfg) != dle_expected_used_size(rtwdev, mode)) {
+ 		rtw89_err(rtwdev, "[ERR]wd/dle mem cfg\n");
+ 		return -EINVAL;
+ 	}
 -- 
 2.25.1
 
