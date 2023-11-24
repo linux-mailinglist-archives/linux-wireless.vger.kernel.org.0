@@ -1,41 +1,41 @@
-Return-Path: <linux-wireless+bounces-30-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241107F6CC5
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Nov 2023 08:18:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BE47F6CC3
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Nov 2023 08:18:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 730F0B20D43
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Nov 2023 07:18:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA04D1C20A0A
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Nov 2023 07:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859C6AD4B;
-	Fri, 24 Nov 2023 07:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD26B64A;
+	Fri, 24 Nov 2023 07:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9CAD9A
-	for <linux-wireless@vger.kernel.org>; Thu, 23 Nov 2023 23:18:18 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AO7ICLa83551162, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AO7ICLa83551162
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A97D6E
+	for <linux-wireless@vger.kernel.org>; Thu, 23 Nov 2023 23:18:19 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AO7ICrxC3551165, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AO7ICrxC3551165
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Fri, 24 Nov 2023 15:18:12 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 24 Nov 2023 15:18:13 +0800
+ 15.1.2375.32; Fri, 24 Nov 2023 15:18:13 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 24 Nov
- 2023 15:18:10 +0800
+ 2023 15:18:11 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/8] wifi: rtw89: mac: check queue empty according to chip gen
-Date: Fri, 24 Nov 2023 15:17:00 +0800
-Message-ID: <20231124071703.132549-6-pkshih@realtek.com>
+Subject: [PATCH 6/8] wifi: rtw89: mac: move code related to hardware engine to individual functions
+Date: Fri, 24 Nov 2023 15:17:01 +0800
+Message-ID: <20231124071703.132549-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231124071703.132549-1-pkshih@realtek.com>
 References: <20231124071703.132549-1-pkshih@realtek.com>
@@ -53,237 +53,169 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+WiFi 7 chips will use the same functionalities but different registers to
+control hardware components, so move these stuff into functions, and then
+we can implement these for WiFi 7 chips later. This patch doesn't change
+logic.
 
-This function, currently called by WoWLAN flow, polls until specific HW
-queues are empty. The polling bit definitions are not totally the same
-between WiFi 6 and 7 chips. In addition, the check conditions are also
-a little different. So, we differentiate the implementations according to
-chip gen.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c    | 17 +++++---
- drivers/net/wireless/realtek/rtw89/mac.h    |  7 +++
- drivers/net/wireless/realtek/rtw89/mac_be.c | 47 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/reg.h    | 30 +++++++++++++
- 4 files changed, 94 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac.c | 65 +++++++++++++++++-------
+ 1 file changed, 48 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index b5e32b830a17..074c1edb0d25 100644
+index 074c1edb0d25..be063f73573b 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -174,8 +174,8 @@ static int dle_dfi_quota(struct rtw89_dev *rtwdev,
+@@ -901,7 +901,7 @@ static int hfc_pub_ctrl(struct rtw89_dev *rtwdev)
  	return 0;
  }
  
--static int dle_dfi_qempty(struct rtw89_dev *rtwdev,
--			  struct rtw89_mac_dle_dfi_qempty *qempty)
-+int rtw89_mac_dle_dfi_qempty_cfg(struct rtw89_dev *rtwdev,
-+				 struct rtw89_mac_dle_dfi_qempty *qempty)
+-static int hfc_upd_mix_info(struct rtw89_dev *rtwdev)
++static void hfc_get_mix_info(struct rtw89_dev *rtwdev)
  {
- 	struct rtw89_mac_dle_dfi_ctrl ctrl;
- 	u32 ret;
-@@ -220,7 +220,7 @@ static void rtw89_mac_dump_qta_lost(struct rtw89_dev *rtwdev)
- 	qempty.dle_type = DLE_CTRL_TYPE_PLE;
- 	qempty.grpsel = 0;
- 	qempty.qempty = ~(u32)0;
--	ret = dle_dfi_qempty(rtwdev, &qempty);
-+	ret = rtw89_mac_dle_dfi_qempty_cfg(rtwdev, &qempty);
- 	if (ret)
- 		rtw89_warn(rtwdev, "%s: query DLE fail\n", __func__);
- 	else
-@@ -1618,7 +1618,7 @@ int rtw89_mac_get_dle_rsvd_qt_cfg(struct rtw89_dev *rtwdev,
- 	return 0;
- }
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	const struct rtw89_page_regs *regs = chip->page_regs;
+@@ -910,11 +910,6 @@ static int hfc_upd_mix_info(struct rtw89_dev *rtwdev)
+ 	struct rtw89_hfc_prec_cfg *prec_cfg = &param->prec_cfg;
+ 	struct rtw89_hfc_pub_info *info = &param->pub_info;
+ 	u32 val;
+-	int ret;
+-
+-	ret = rtw89_mac_check_mac_en(rtwdev, RTW89_MAC_0, RTW89_DMAC_SEL);
+-	if (ret)
+-		return ret;
  
--static bool mac_is_txq_empty(struct rtw89_dev *rtwdev)
-+static bool mac_is_txq_empty_ax(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_mac_dle_dfi_qempty qempty;
- 	u32 grpnum, qtmp, val32, msk32;
-@@ -1629,7 +1629,7 @@ static bool mac_is_txq_empty(struct rtw89_dev *rtwdev)
- 
- 	for (i = 0; i < grpnum; i++) {
- 		qempty.grpsel = i;
--		ret = dle_dfi_qempty(rtwdev, &qempty);
-+		ret = rtw89_mac_dle_dfi_qempty_cfg(rtwdev, &qempty);
- 		if (ret) {
- 			rtw89_warn(rtwdev, "dle dfi acq empty %d\n", ret);
- 			return false;
-@@ -1644,7 +1644,7 @@ static bool mac_is_txq_empty(struct rtw89_dev *rtwdev)
- 	}
- 
- 	qempty.grpsel = rtwdev->chip->wde_qempty_mgq_grpsel;
--	ret = dle_dfi_qempty(rtwdev, &qempty);
-+	ret = rtw89_mac_dle_dfi_qempty_cfg(rtwdev, &qempty);
- 	if (ret) {
- 		rtw89_warn(rtwdev, "dle dfi mgq empty %d\n", ret);
- 		return false;
-@@ -5797,6 +5797,7 @@ void rtw89_mac_pkt_drop_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- int rtw89_mac_ptk_drop_by_band_and_wait(struct rtw89_dev *rtwdev,
- 					enum rtw89_mac_idx band)
- {
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	struct rtw89_pkt_drop_params params = {0};
- 	bool empty;
- 	int i, ret = 0, try_cnt = 3;
-@@ -5805,7 +5806,7 @@ int rtw89_mac_ptk_drop_by_band_and_wait(struct rtw89_dev *rtwdev,
- 	params.sel = RTW89_PKT_DROP_SEL_BAND_ONCE;
- 
- 	for (i = 0; i < try_cnt; i++) {
--		ret = read_poll_timeout(mac_is_txq_empty, empty, empty, 50,
-+		ret = read_poll_timeout(mac->is_txq_empty, empty, empty, 50,
- 					50000, false, rtwdev);
- 		if (ret && !RTW89_CHK_FW_FEATURE(NO_PACKET_DROP, &rtwdev->fw))
- 			rtw89_fw_h2c_pkt_drop(rtwdev, &params);
-@@ -5864,5 +5865,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
- 	.cnv_efuse_state = rtw89_cnv_efuse_state_ax,
- 
- 	.get_txpwr_cr = rtw89_mac_get_txpwr_cr_ax,
-+
-+	.is_txq_empty = mac_is_txq_empty_ax,
- };
- EXPORT_SYMBOL(rtw89_mac_gen_ax);
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index b16fa9bbd412..8beb278934bf 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -537,6 +537,9 @@ enum rtw89_mac_bf_rrsc_rate {
- #define B_CMAC1_MGQ_NO_PWRSAV	BIT(11)
- #define B_CMAC1_CPUMGQ		BIT(12)
- 
-+#define B_CMAC0_MGQ_NORMAL_BE	BIT(2)
-+#define B_CMAC1_MGQ_NORMAL_BE	BIT(30)
-+
- #define QEMP_ACQ_GRP_MACID_NUM	8
- #define QEMP_ACQ_GRP_QSEL_SH	4
- #define QEMP_ACQ_GRP_QSEL_MASK	0xF
-@@ -910,6 +913,8 @@ struct rtw89_mac_gen_def {
- 	bool (*get_txpwr_cr)(struct rtw89_dev *rtwdev,
- 			     enum rtw89_phy_idx phy_idx,
- 			     u32 reg_base, u32 *cr);
-+
-+	bool (*is_txq_empty)(struct rtw89_dev *rtwdev);
- };
- 
- extern const struct rtw89_mac_gen_def rtw89_mac_gen_ax;
-@@ -1015,6 +1020,8 @@ int rtw89_mac_check_mac_en(struct rtw89_dev *rtwdev, u8 band,
- 			   enum rtw89_mac_hwmod_sel sel);
- int rtw89_mac_write_lte(struct rtw89_dev *rtwdev, const u32 offset, u32 val);
- int rtw89_mac_read_lte(struct rtw89_dev *rtwdev, const u32 offset, u32 *val);
-+int rtw89_mac_dle_dfi_qempty_cfg(struct rtw89_dev *rtwdev,
-+				 struct rtw89_mac_dle_dfi_qempty *qempty);
- int rtw89_mac_add_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *vif);
- int rtw89_mac_port_update(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif);
- void rtw89_mac_port_tsf_sync(struct rtw89_dev *rtwdev,
-diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index 1c607316f652..612baa8b83d9 100644
---- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -405,6 +405,51 @@ static void rtw89_mac_bf_assoc_be(struct rtw89_dev *rtwdev,
- 	}
- }
- 
-+static bool mac_is_txq_empty_be(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_mac_dle_dfi_qempty qempty;
-+	u32 val32, msk32;
-+	u32 grpnum;
-+	int ret;
-+	int i;
-+
-+	grpnum = rtwdev->chip->wde_qempty_acq_grpnum;
-+	qempty.dle_type = DLE_CTRL_TYPE_WDE;
-+
-+	for (i = 0; i < grpnum; i++) {
-+		qempty.grpsel = i;
-+		ret = rtw89_mac_dle_dfi_qempty_cfg(rtwdev, &qempty);
-+		if (ret) {
-+			rtw89_warn(rtwdev,
-+				   "%s: failed to dle dfi acq empty: %d\n",
-+				   __func__, ret);
-+			return false;
-+		}
-+
-+		/* Each acq group contains 32 queues (8 macid * 4 acq),
-+		 * but here, we can simply check if all bits are set.
-+		 */
-+		if (qempty.qempty != MASKDWORD)
-+			return false;
-+	}
-+
-+	qempty.grpsel = rtwdev->chip->wde_qempty_mgq_grpsel;
-+	ret = rtw89_mac_dle_dfi_qempty_cfg(rtwdev, &qempty);
-+	if (ret) {
-+		rtw89_warn(rtwdev, "%s: failed to dle dfi mgq empty: %d\n",
-+			   __func__, ret);
-+		return false;
-+	}
-+
-+	msk32 = B_CMAC0_MGQ_NORMAL_BE | B_CMAC1_MGQ_NORMAL_BE;
-+	if ((qempty.qempty & msk32) != msk32)
-+		return false;
-+
-+	msk32 = B_BE_WDE_EMPTY_QUE_OTHERS;
-+	val32 = rtw89_read32(rtwdev, R_BE_DLE_EMPTY0);
-+	return (val32 & msk32) == msk32;
+ 	val = rtw89_read32(rtwdev, regs->pub_page_info1);
+ 	info->g0_used = u32_get_bits(val, B_AX_G0_USE_PG_MASK);
+@@ -959,6 +954,18 @@ static int hfc_upd_mix_info(struct rtw89_dev *rtwdev)
+ 	val = rtw89_read32(rtwdev, regs->pub_page_ctrl1);
+ 	pub_cfg->grp0 = u32_get_bits(val, B_AX_PUBPG_G0_MASK);
+ 	pub_cfg->grp1 = u32_get_bits(val, B_AX_PUBPG_G1_MASK);
 +}
 +
- const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
- 	.band1_offset = RTW89_MAC_BE_BAND_REG_OFFSET,
- 	.filter_model_addr = R_BE_FILTER_MODEL_ADDR,
-@@ -435,5 +480,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
- 	.cnv_efuse_state = rtw89_cnv_efuse_state_be,
- 
- 	.get_txpwr_cr = rtw89_mac_get_txpwr_cr_be,
++static int hfc_upd_mix_info(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_hfc_param *param = &rtwdev->mac.hfc_param;
++	int ret;
 +
-+	.is_txq_empty = mac_is_txq_empty_be,
- };
- EXPORT_SYMBOL(rtw89_mac_gen_be);
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 7a9ae6cd86e5..31b65322368c 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -4144,6 +4144,36 @@
- #define B_BE_LTR_CMAC1_RX_USE_PG_TH_MASK GENMASK(27, 16)
- #define B_BE_LTR_CMAC0_RX_USE_PG_TH_MASK GENMASK(11, 0)
- 
-+#define R_BE_DLE_EMPTY0 0x8430
-+#define B_BE_PLE_EMPTY_QTA_DMAC_H2D BIT(27)
-+#define B_BE_PLE_EMPTY_QTA_DMAC_CPUIO BIT(26)
-+#define B_BE_PLE_EMPTY_QTA_DMAC_MPDU_TX BIT(25)
-+#define B_BE_PLE_EMPTY_QTA_DMAC_WLAN_CPU BIT(24)
-+#define B_BE_PLE_EMPTY_QTA_DMAC_H2C BIT(23)
-+#define B_BE_PLE_EMPTY_QTA_DMAC_B1_TXPL BIT(22)
-+#define B_BE_PLE_EMPTY_QTA_DMAC_B0_TXPL BIT(21)
-+#define B_BE_WDE_EMPTY_QTA_DMAC_CPUIO BIT(20)
-+#define B_BE_WDE_EMPTY_QTA_DMAC_PKTIN BIT(19)
-+#define B_BE_WDE_EMPTY_QTA_DMAC_DATA_CPU BIT(18)
-+#define B_BE_WDE_EMPTY_QTA_DMAC_WLAN_CPU BIT(17)
-+#define B_BE_WDE_EMPTY_QTA_DMAC_HIF BIT(16)
-+#define B_BE_WDE_EMPTY_QUE_CMAC_B1_HIQ BIT(15)
-+#define B_BE_WDE_EMPTY_QUE_CMAC_B1_MBH BIT(14)
-+#define B_BE_WDE_EMPTY_QUE_CMAC_B0_OTHERS BIT(13)
-+#define B_BE_WDE_EMPTY_QUE_DMAC_MLO_ACQ BIT(12)
-+#define B_BE_WDE_EMPTY_QUE_DMAC_MLO_MISC BIT(11)
-+#define B_BE_WDE_EMPTY_QUE_DMAC_PKTIN BIT(10)
-+#define B_BE_PLE_EMPTY_QUE_DMAC_SEC_TX BIT(9)
-+#define B_BE_PLE_EMPTY_QUE_DMAC_MPDU_TX BIT(8)
-+#define B_BE_WDE_EMPTY_QUE_OTHERS BIT(7)
-+#define B_BE_WDE_EMPTY_QUE_CMAC_WMM3 BIT(6)
-+#define B_BE_WDE_EMPTY_QUE_CMAC_WMM2 BIT(5)
-+#define B_BE_WDE_EMPTY_QUE_CMAC0_WMM1 BIT(4)
-+#define B_BE_WDE_EMPTY_QUE_CMAC0_WMM0 BIT(3)
-+#define B_BE_WDE_EMPTY_QUE_CMAC1_MBH BIT(2)
-+#define B_BE_WDE_EMPTY_QUE_CMAC0_MBH BIT(1)
-+#define B_BE_WDE_EMPTY_QUE_CMAC0_ALL_AC BIT(0)
++	ret = rtw89_mac_check_mac_en(rtwdev, RTW89_MAC_0, RTW89_DMAC_SEL);
++	if (ret)
++		return ret;
 +
- #define R_BE_PLE_DBG_FUN_INTF_CTL 0x9110
- #define B_BE_PLE_DFI_ACTIVE BIT(31)
- #define B_BE_PLE_DFI_TRGSEL_MASK GENMASK(19, 16)
++	hfc_get_mix_info(rtwdev);
+ 
+ 	ret = hfc_pub_info_chk(rtwdev);
+ 	if (param->en && ret)
+@@ -1780,6 +1787,23 @@ static int dle_mix_cfg(struct rtw89_dev *rtwdev, const struct rtw89_dle_mem *cfg
+ 	return 0;
+ }
+ 
++static int chk_dle_rdy(struct rtw89_dev *rtwdev, bool wde_or_ple)
++{
++	u32 reg, mask;
++	u32 ini;
++
++	if (wde_or_ple) {
++		reg = R_AX_WDE_INI_STATUS;
++		mask = WDE_MGN_INI_RDY;
++	} else {
++		reg = R_AX_PLE_INI_STATUS;
++		mask = PLE_MGN_INI_RDY;
++	}
++
++	return read_poll_timeout(rtw89_read32, ini, (ini & mask) == mask, 1,
++				2000, false, rtwdev, reg);
++}
++
+ #define INVALID_QT_WCPU U16_MAX
+ #define SET_QUOTA_VAL(_min_x, _max_x, _module, _idx)			\
+ 	do {								\
+@@ -1884,7 +1908,6 @@ static int dle_init(struct rtw89_dev *rtwdev, enum rtw89_qta_mode mode,
+ 	const struct rtw89_dle_mem *cfg, *ext_cfg;
+ 	u16 ext_wde_min_qt_wcpu = INVALID_QT_WCPU;
+ 	int ret = 0;
+-	u32 ini;
+ 
+ 	ret = rtw89_mac_check_mac_en(rtwdev, RTW89_MAC_0, RTW89_DMAC_SEL);
+ 	if (ret)
+@@ -1926,17 +1949,13 @@ static int dle_init(struct rtw89_dev *rtwdev, enum rtw89_qta_mode mode,
+ 
+ 	dle_func_en(rtwdev, true);
+ 
+-	ret = read_poll_timeout(rtw89_read32, ini,
+-				(ini & WDE_MGN_INI_RDY) == WDE_MGN_INI_RDY, 1,
+-				2000, false, rtwdev, R_AX_WDE_INI_STATUS);
++	ret = chk_dle_rdy(rtwdev, true);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "[ERR]WDE cfg ready\n");
+ 		return ret;
+ 	}
+ 
+-	ret = read_poll_timeout(rtw89_read32, ini,
+-				(ini & WDE_MGN_INI_RDY) == WDE_MGN_INI_RDY, 1,
+-				2000, false, rtwdev, R_AX_PLE_INI_STATUS);
++	ret = chk_dle_rdy(rtwdev, false);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "[ERR]PLE cfg ready\n");
+ 		return ret;
+@@ -3598,11 +3617,10 @@ static int rtw89_mac_enable_cpu_ax(struct rtw89_dev *rtwdev, u8 boot_reason,
+ 	return 0;
+ }
+ 
+-static int rtw89_mac_dmac_pre_init(struct rtw89_dev *rtwdev)
++static void rtw89_mac_hci_func_en(struct rtw89_dev *rtwdev)
+ {
+ 	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+ 	u32 val;
+-	int ret;
+ 
+ 	if (chip_id == RTL8852C)
+ 		val = B_AX_MAC_FUNC_EN | B_AX_DMAC_FUNC_EN | B_AX_DISPATCHER_EN |
+@@ -3611,6 +3629,12 @@ static int rtw89_mac_dmac_pre_init(struct rtw89_dev *rtwdev)
+ 		val = B_AX_MAC_FUNC_EN | B_AX_DMAC_FUNC_EN | B_AX_DISPATCHER_EN |
+ 		      B_AX_PKT_BUF_EN;
+ 	rtw89_write32(rtwdev, R_AX_DMAC_FUNC_EN, val);
++}
++
++static void rtw89_mac_dmac_func_pre_en(struct rtw89_dev *rtwdev)
++{
++	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
++	u32 val;
+ 
+ 	if (chip_id == RTL8851B)
+ 		val = B_AX_DISPATCHER_CLK_EN | B_AX_AXIDMA_CLK_EN;
+@@ -3619,7 +3643,7 @@ static int rtw89_mac_dmac_pre_init(struct rtw89_dev *rtwdev)
+ 	rtw89_write32(rtwdev, R_AX_DMAC_CLK_EN, val);
+ 
+ 	if (chip_id != RTL8852C)
+-		goto dle;
++		return;
+ 
+ 	val = rtw89_read32(rtwdev, R_AX_HAXI_INIT_CFG1);
+ 	val &= ~(B_AX_DMA_MODE_MASK | B_AX_STOP_AXI_MST);
+@@ -3634,8 +3658,15 @@ static int rtw89_mac_dmac_pre_init(struct rtw89_dev *rtwdev)
+ 			  B_AX_STOP_CH12 | B_AX_STOP_ACH2);
+ 	rtw89_write32_clr(rtwdev, R_AX_HAXI_DMA_STOP2, B_AX_STOP_CH10 | B_AX_STOP_CH11);
+ 	rtw89_write32_set(rtwdev, R_AX_PLATFORM_ENABLE, B_AX_AXIDMA_EN);
++}
++
++static int rtw89_mac_dmac_pre_init(struct rtw89_dev *rtwdev)
++{
++	int ret;
++
++	rtw89_mac_hci_func_en(rtwdev);
++	rtw89_mac_dmac_func_pre_en(rtwdev);
+ 
+-dle:
+ 	ret = dle_init(rtwdev, RTW89_QTA_DLFW, rtwdev->mac.qta_mode);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "[ERR]DLE pre init %d\n", ret);
 -- 
 2.25.1
 
