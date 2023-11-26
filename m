@@ -1,129 +1,77 @@
-Return-Path: <linux-wireless+bounces-83-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-84-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FC57F9523
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Nov 2023 20:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D051A7F95CB
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Nov 2023 23:26:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8536B20995
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Nov 2023 19:54:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61A03B20A39
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Nov 2023 22:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C7812B91;
-	Sun, 26 Nov 2023 19:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC04C14A9C;
+	Sun, 26 Nov 2023 22:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b="fpUYTo3S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFVwuBD+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F910101
-	for <linux-wireless@vger.kernel.org>; Sun, 26 Nov 2023 11:54:03 -0800 (PST)
-Received: (wp-smtpd smtp.wp.pl 33874 invoked from network); 26 Nov 2023 20:53:59 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1701028439; bh=fIw6JBfGJ9D5jHE9lajyY1rU5jBFF2lCoAqnAfgMKRc=;
-          h=From:To:Subject;
-          b=fpUYTo3SHk6fJO34OesHPy8eHRjENQHbKRIWa9fWrPXzoPgU0oQzUn0xQbhn8NZya
-           SX54UAzcZTjocePhwNTzyHVdq2yrSah6jUeU5wfi/EgU4/mMHo5xhbWSmkrq57g6dt
-           KnadqtQcjUK4RotcNkdqD/5gDtHIq9fEdnMS9pSw=
-Received: from 89-64-13-169.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.13.169])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <linux-wireless@vger.kernel.org>; 26 Nov 2023 20:53:59 +0100
-From: stf_xl@wp.pl
-To: linux-wireless@vger.kernel.org,
-	Shiji Yang <yangshiji66@outlook.com>
-Subject: [PATCH] wifi: rt2x00: make watchdog param per device
-Date: Sun, 26 Nov 2023 20:53:58 +0100
-Message-Id: <20231126195358.500259-1-stf_xl@wp.pl>
-X-Mailer: git-send-email 2.25.4
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11CC12E58
+	for <linux-wireless@vger.kernel.org>; Sun, 26 Nov 2023 22:26:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3C8C433C8;
+	Sun, 26 Nov 2023 22:26:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701037596;
+	bh=WYWHeUOvyvzljTzqy0dHZNjOtP4h9rbjEwP36PpU3qI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UFVwuBD+/k7MMP+f0hM6mEmyn9+uXqakr0oLim/czrNpsPLNUal1bRwVX2Mn/KB/L
+	 S/5DhaEjz3X7iZQ7T6AUaFFbjjkDQbHHnpqPp+bx7td/3ZiKhDxiMxJtvh1z7mG5FW
+	 q9SnfiTB0L5mk1pZDvufkehsnuQdmGsO2KpaQKJRCCPj4tVOP4WYxrEpMFeTTOCSJ5
+	 FtIQ1dwZHh/0uKJASBMEPW0GHK1whKjiHYSz3pt6GX11CUpD2I6xPECpu/p2Jr9bOJ
+	 +vv9oIZYguLSUQvBQ9sj1ylaQvC1mDNk/CtbXxXH3xek7ZhiWlT72I/fmPxiL7nMsm
+	 dastMCp0EamLQ==
+Date: Sun, 26 Nov 2023 14:26:34 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: cristian_ci <cristian_ci@protonmail.com>
+Cc: "kvalo@kernel.org" <kvalo@kernel.org>, "matthias.bgg@gmail.com"
+ <matthias.bgg@gmail.com>, "angelogioacchino.delregno@collabora.com"
+ <angelogioacchino.delregno@collabora.com>, "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>
+Subject: Re: [BUG] wireless: mt7601u: probe failed with error -110
+Message-ID: <20231126142634.3a100e2c@kernel.org>
+In-Reply-To: <Bnwq2et4CBU1_MS8X3rFeejMDmKf2dr_BNq60IzBcGKbjTxHG1CjJ0zB_wZjn8_iLJsi7fCx6_Eh01ozYBqPA-cEZXMZE_X98E0b7yotXCg=@protonmail.com>
+References: <Bnwq2et4CBU1_MS8X3rFeejMDmKf2dr_BNq60IzBcGKbjTxHG1CjJ0zB_wZjn8_iLJsi7fCx6_Eh01ozYBqPA-cEZXMZE_X98E0b7yotXCg=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: d7c4fa389bb79fa560c20e13cf665e13
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000B [cXNE]                               
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Stanislaw Gruszka <stf_xl@wp.pl>
+On Sat, 25 Nov 2023 13:03:45 +0000 cristian_ci wrote:
+> I'm not the only one to have experienced this bug. I've been
+> suggested to report that to kernel mailing list by linux support
+> channels.
+> 
+> I've tested this bug against upstream 6.6.2 kernel tarball from the
+> latest stable branch [1].
+> 
+> To solve this issue. I've also tried to patch mt7601u driver
+> disabling mcu calibration. Which doesn't seem a wise idea because
+> apparently it fixes probing but also hangs completely the machine
+> after some seconds (so, it needs a hard/forced shutdown).
 
-We can run PCI/MMIO devices together with USB devices in the system.
-Make watchdog parameter per device to avoid situation when plugin
-USB device change modparam_watchdog for PCI/MMIO device.
+Does it work with the vendor driver? The upstream driver is just 
+a rewrite of the vendor driver, I don't know much about the device
+internals.
 
-Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
----
-Shiji, could you please test it on your setup and give Tested-by: tag ?
-
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c  | 11 +++++------
- drivers/net/wireless/ralink/rt2x00/rt2x00.h     |  2 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00link.c |  2 +-
- 3 files changed, 7 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index 44127a036ac1..f93c7844dd42 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -1353,10 +1353,10 @@ void rt2800_watchdog(struct rt2x00_dev *rt2x00dev)
- 	if (test_bit(DEVICE_STATE_SCANNING, &rt2x00dev->flags))
- 		return;
- 
--	if (modparam_watchdog & RT2800_WATCHDOG_DMA_BUSY)
-+	if (rt2x00dev->link.watchdog & RT2800_WATCHDOG_DMA_BUSY)
- 		reset = rt2800_watchdog_dma_busy(rt2x00dev);
- 
--	if (modparam_watchdog & RT2800_WATCHDOG_HANG)
-+	if (rt2x00dev->link.watchdog & RT2800_WATCHDOG_HANG)
- 		reset = rt2800_watchdog_hung(rt2x00dev) || reset;
- 
- 	if (reset)
-@@ -12058,14 +12058,13 @@ int rt2800_probe_hw(struct rt2x00_dev *rt2x00dev)
- 		__set_bit(REQUIRE_TASKLET_CONTEXT, &rt2x00dev->cap_flags);
- 	}
- 
-+	rt2x00dev->link.watchdog = modparam_watchdog;
- 	/* USB NICs don't support DMA watchdog as INT_SOURCE_CSR is invalid */
- 	if (rt2x00_is_usb(rt2x00dev))
--		modparam_watchdog &= ~RT2800_WATCHDOG_DMA_BUSY;
--	if (modparam_watchdog) {
-+		rt2x00dev->link.watchdog &= ~RT2800_WATCHDOG_DMA_BUSY;
-+	if (rt2x00dev->link.watchdog) {
- 		__set_bit(CAPABILITY_RESTART_HW, &rt2x00dev->cap_flags);
- 		rt2x00dev->link.watchdog_interval = msecs_to_jiffies(100);
--	} else {
--		rt2x00dev->link.watchdog_disabled = true;
- 	}
- 
- 	/*
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00.h b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-index 62fed38f41c0..82af01448a0a 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-@@ -334,7 +334,7 @@ struct link {
- 	 */
- 	struct delayed_work watchdog_work;
- 	unsigned int watchdog_interval;
--	bool watchdog_disabled;
-+	unsigned int watchdog;
- 
- 	/*
- 	 * Work structure for scheduling periodic AGC adjustments.
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00link.c b/drivers/net/wireless/ralink/rt2x00/rt2x00link.c
-index 6cf7e7c997c2..fb23d409fba8 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00link.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00link.c
-@@ -384,7 +384,7 @@ void rt2x00link_start_watchdog(struct rt2x00_dev *rt2x00dev)
- 	struct link *link = &rt2x00dev->link;
- 
- 	if (test_bit(DEVICE_STATE_PRESENT, &rt2x00dev->flags) &&
--	    rt2x00dev->ops->lib->watchdog && !link->watchdog_disabled)
-+	    rt2x00dev->ops->lib->watchdog && link->watchdog)
- 		ieee80211_queue_delayed_work(rt2x00dev->hw,
- 					     &link->watchdog_work,
- 					     link->watchdog_interval);
--- 
-2.42.0
-
+Maybe Lorenzo or Felix have some ideas.
 
