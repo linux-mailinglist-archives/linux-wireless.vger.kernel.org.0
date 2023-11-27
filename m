@@ -1,108 +1,129 @@
-Return-Path: <linux-wireless+bounces-106-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-107-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1270C7FA5FA
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 17:15:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C75B7FA627
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 17:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EA48281780
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 16:15:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 083C328125E
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 16:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8D536AE9;
-	Mon, 27 Nov 2023 16:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0419436AF8;
+	Mon, 27 Nov 2023 16:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="M27fwTqH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTY5d9bd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E678BBF;
-	Mon, 27 Nov 2023 08:15:05 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ARDYXi4027431;
-	Mon, 27 Nov 2023 16:15:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : date :
- subject : mime-version : content-type : content-transfer-encoding :
- message-id : references : in-reply-to : to : cc; s=qcppdkim1;
- bh=kwToAWSsG2Wjvvvrx5hqYxwihGFRZTC8Kd2uja4WkAw=;
- b=M27fwTqHpg6Fn8J0CnVY+j1pN7Wxnb69mJsBd6BikxSukmBYTTyO0Jf0RjCGYf7ur9Gz
- rwGH0v/Wob59NhbA//xSITaAHHNYUZYwmxoapdYcjMixzk6zwYn8ieDI2jQUOjkgq/X/
- EOmSlwmq28A8jLYuq83Ev3i0d2iKzFUyBq8mlE8g15qfmxSr/7jWALY7yxj5+gLlG49I
- 85IeF0R8wXQYl75Vb0kj4MZo2X0+0/cbfxwo1b4wCQA0T+Te9v7eG9oXcihqxPC5LfEs
- Kxp53aA31cTt9Sps1rOkxGc5FnhIDBS6bkvGpMZ3hpYMXnS8/SZjiEmvHhhH+WF5GgA+ zA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3umsvagtwd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 16:14:50 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3ARGEoQS010142
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 16:14:50 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 27 Nov
- 2023 08:14:49 -0800
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Mon, 27 Nov 2023 08:14:50 -0800
-Subject: [PATCH 4/4] wifi: ath11k: Use DECLARE_FLEX_ARRAY() for
- ath11k_htc_record
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54CD36AF4;
+	Mon, 27 Nov 2023 16:20:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500F2C43395;
+	Mon, 27 Nov 2023 16:20:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701102025;
+	bh=Z3NXOof2eRrfFmizeCVpeB9sXefpEKLjnDTpPAKUtmE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QTY5d9bdSSSIFrsCI99T+x4ZtlVlyH+tYoAWxqM28/1oGVAA6Y9G0wh1KPC93PRQg
+	 DX4tBfsyZ62TSGRKp+lmp2shWbbj7cd056knxIEGuIdcK5iumFru67i0Mf5OziAMA1
+	 t+Xkd1TaJEBkAtna9alo8vp1EO8Qefty+yPCDq/0eGKMim1WkMXjCTEv/HrX866P9Y
+	 6N+4mA3g97SbfBavsTr0wt9bACzC+YxFAzSHN5ukKRh1RHnH/NrGjxWoA0ESBkeAef
+	 LS3PFiyjt6aOoAe8/PV9Zo5RArQ4sa+SnySTKQU48aEPBFGL+4FI69flPcljhB8KuZ
+	 m4IMSzu+/tLLA==
+From: Kalle Valo <kvalo@kernel.org>
+To: mhi@lists.linux.dev
+Cc: ath11k@lists.infradead.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH RFC v2 0/8] wifi: ath11k: hibernation support
+Date: Mon, 27 Nov 2023 18:20:14 +0200
+Message-Id: <20231127162022.518834-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20231127-flexarray-htc_record-v1-4-6be1f36126fd@quicinc.com>
-References: <20231127-flexarray-htc_record-v1-0-6be1f36126fd@quicinc.com>
-In-Reply-To: <20231127-flexarray-htc_record-v1-0-6be1f36126fd@quicinc.com>
-To: Kalle Valo <kvalo@kernel.org>
-CC: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook
-	<keescook@chromium.org>, <ath10k@lists.infradead.org>,
-        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.12.3
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 3YsRphUjGQyFMrivjZixZ2k4DeZXtLBf
-X-Proofpoint-GUID: 3YsRphUjGQyFMrivjZixZ2k4DeZXtLBf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-27_14,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 spamscore=0 mlxlogscore=402 phishscore=0
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311270112
+Content-Transfer-Encoding: 8bit
 
-Transform the zero-length array in ath11k_htc_record into a proper
-flexible array via the DECLARE_FLEX_ARRAY() macro. This helps with
-ongoing efforts to globally enable -Warray-bounds.
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/htc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Currently in ath11k we keep the firmware running on the WLAN device when the
+network interface (wlan0) is down. The problem is that this will break
+hibernation, obviously the firmware can't be running after the whole system is
+powered off. To power down the ath11k firmware for suspend/hibernation some
+changes both in MHI subsystem and ath11k is needed.
 
-diff --git a/drivers/net/wireless/ath/ath11k/htc.h b/drivers/net/wireless/ath/ath11k/htc.h
-index 84971cc9251c..e0434b29df70 100644
---- a/drivers/net/wireless/ath/ath11k/htc.h
-+++ b/drivers/net/wireless/ath/ath11k/htc.h
-@@ -151,7 +151,7 @@ struct ath11k_htc_credit_report {
- struct ath11k_htc_record {
- 	struct ath11k_htc_record_hdr hdr;
- 	union {
--		struct ath11k_htc_credit_report credit_report[0];
-+		DECLARE_FLEX_ARRAY(struct ath11k_htc_credit_report, credit_report);
- 	};
- } __packed __aligned(4);
- 
+This patchset fixes a longstanding bug report about broken hibernation support:
 
+https://bugzilla.kernel.org/show_bug.cgi?id=214649
+
+This patchset is marked as RFC as it requires changes in MHI subsystem. Also
+this has been tested only on WCN6855, need to test also on more AP based
+chipsets like IPQ8074 and QCN9074.
+
+The patches are also available at:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/log/?h=ath11k-hibernation-support
+
+Earlier versions of this patchset have been tested by multiple users with
+positive results.
+
+v2:
+
+* rebase to ath-202311221826 (6.7.0-rc2-wt-ath+)
+
+* 'bus: mhi: host: add mhi_power_down_no_destroy()': fix null state string for
+   DEV_ST_TRANSITION_DISABLE_DESTROY_DEVICE
+
+* 'bus: mhi: host: add new interfaces to handle MHI channels
+  directly': fix typos in comments
+
+* 'bus: mhi: host: add new interfaces to handle MHI channels directly': honour
+   initial autoqueue configuration
+
+* 'bus: mhi: host: add new interfaces to handle MHI channels
+   directly': don't prepare/unprepare MHI devices that don't match
+   with a MHI client driver
+
+* 'wifi: ath11k: remove MHI LOOPBACK channels': remove LOOPBACK channels for QCN9074 as well
+
+v1: https://lore.kernel.org/mhi/20231110102202.3168243-1-kvalo@kernel.org/
+
+Baochen Qiang (7):
+  bus: mhi: host: add mhi_power_down_no_destroy()
+  bus: mhi: host: add new interfaces to handle MHI channels directly
+  wifi: ath11k: handle irq enable/disable in several code path
+  wifi: ath11k: remove MHI LOOPBACK channels
+  wifi: ath11k: do not dump SRNG statistics during resume
+  wifi: ath11k: fix warning on DMA ring capabilities event
+  wifi: ath11k: support hibernation
+
+Kalle Valo (1):
+  wifi: ath11k: thermal: don't try to register multiple times
+
+ drivers/bus/mhi/host/init.c               |   1 +
+ drivers/bus/mhi/host/internal.h           |   1 +
+ drivers/bus/mhi/host/main.c               | 107 ++++++++++++++++++++++
+ drivers/bus/mhi/host/pm.c                 |  26 ++++--
+ drivers/net/wireless/ath/ath11k/ahb.c     |   8 +-
+ drivers/net/wireless/ath/ath11k/core.c    |  44 +++++----
+ drivers/net/wireless/ath/ath11k/core.h    |   2 +
+ drivers/net/wireless/ath/ath11k/hif.h     |  12 +--
+ drivers/net/wireless/ath/ath11k/mhi.c     |  77 ++++------------
+ drivers/net/wireless/ath/ath11k/mhi.h     |   4 +-
+ drivers/net/wireless/ath/ath11k/pci.c     |  55 +++++++++--
+ drivers/net/wireless/ath/ath11k/qmi.c     |   7 +-
+ drivers/net/wireless/ath/ath11k/thermal.c |   3 +
+ drivers/net/wireless/ath/ath11k/wmi.c     |   1 +
+ include/linux/mhi.h                       |  47 +++++++++-
+ 15 files changed, 285 insertions(+), 110 deletions(-)
+
+
+base-commit: 16a212b4f33c4edd9ce9a9e0953b5389216e8ed9
 -- 
-2.42.0
+2.39.2
 
 
