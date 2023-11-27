@@ -1,198 +1,144 @@
-Return-Path: <linux-wireless+bounces-126-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-127-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBE77FAB10
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 21:10:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 193247FAB3E
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 21:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D32EB21016
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 20:10:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AD211C20DD3
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 20:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163043E490;
-	Mon, 27 Nov 2023 20:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFA545C0E;
+	Mon, 27 Nov 2023 20:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="dRxXjHWO";
-	dkim=permerror (0-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="wMD+7x0V"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QumiNdTh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.80])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0E191B4;
-	Mon, 27 Nov 2023 12:10:37 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1701115655; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=j9Dnl2feQikME50AveMe2VIAx+6WIxyk5Llq+7xwrjbq9aMuX3z7kdJAXfMxwW1KtC
-    CAVylr5ngDTnNNO2xjhpt79kSn6boZ/0dUHzRMWC31behifoXmSJyjGgoLtyQ0gCyvcs
-    Vv+5Bn2ealkVw+E9A121ocxqwwsOYPI0at8y+S26ookxj5w1WHW3wCQv+iKgdi/I7rF4
-    fNH2loc48rcDq2gM9wv7TDO/GqGCsQcZqBCzTztGZC+mPPHg/NbD8oM/slg6hTGGd9Pe
-    QXuaLTsjdAFi2jxtd/+gRAjcIKYBB7tfTl8X1hkNFVjVK6FLLCtUw9BTxOJHUqruwyhd
-    j91w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1701115655;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=v/YEJb75BXKWSsirkyffSVuJJ2grcB36hXol/hZ9KLk=;
-    b=ZUgtJtWVyz1PjQtKX6lm0GUT9hBwESh1E5gah98jsmbEc7ehf0xhPVP1G19nLczlBF
-    3jPVGJYJJF1NDEizh8WNKW06potRqC4tw1XH4UzPs28c709Ed9DO8RBdlypTtWP+e4yP
-    X8oeacDrZoiZ0hZWRpJIG54WuKI7/M3wUirPstf4s1m5K9j3R7E5gRRjjUd/QfXzoSMO
-    At7X/39SC+s9mVikv39qV7LmILmvqpZRi46brLanKwlc0BYh25SszAjD8pD5ma1MYI67
-    2BbnTl0m1TfTEn4HTXn2LT18a9rwqvFU3KyH3X7CWWZCmPRAD6oeA9s14roqpOU0quJQ
-    IR2A==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1701115655;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=v/YEJb75BXKWSsirkyffSVuJJ2grcB36hXol/hZ9KLk=;
-    b=dRxXjHWOUI2KreqKJg9Mf2I/iqUZv7koheEFKJpWNrOs7lAldQgkxmEXgXLSJBlJbL
-    cYsWaSoPlQpU4yQl0adBeOr7TcaKFL3qUjJ7LTw7LX80tr4o0ak3HBUtJIr/JDKpTAM2
-    a0oCh563ChFQHR+f/yV8iUrYBen9q/2DPbIUwtRUrT0j8aQT6WLjsJINGtOr35Y4NwtR
-    0843PRDOC9GGb4brb4XmP0NkbNAGgXqBP6j8fWh/clczSOhNLGxdioh4tu44NSRCI4Bv
-    h7+YHuHM73gsEt+HToEejFcWMx7a1hpBNxYhxDiCaxJWxKSj3oAGzz79TjFZ8aU2HV55
-    8Xqg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1701115655;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=v/YEJb75BXKWSsirkyffSVuJJ2grcB36hXol/hZ9KLk=;
-    b=wMD+7x0VImS6FeN3bgL/Mo5n0Z4sHlIqS2YxbdSBRy6fgGL2ul2mfpAM10fSiQvVGr
-    6mQoRDwJA0e0TXX+TgDw==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA8paF1A=="
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.9.1 DYNA|AUTH)
-    with ESMTPSA id t3efe7zARK7XjVD
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 27 Nov 2023 21:07:33 +0100 (CET)
-Date: Mon, 27 Nov 2023 21:07:28 +0100
-From: Stephan Gerhold <stephan@gerhold.net>
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: Loic Poulain <loic.poulain@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/4] dt-bindings: remoteproc: qcom: wcnss: Add WCN3680B
- compatible
-Message-ID: <ZWT3APJlNQaKVyJU@gerhold.net>
-References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
- <CAMZdPi-S2_UQO-rD38-thwta-YgH3W78Ecd1Du7Q_US=J7k0ew@mail.gmail.com>
- <ZS1MTAHq6GLW6RAK@gerhold.net>
- <1868698.tdWV9SEqCh@z3ntu.xyz>
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3528919A2;
+	Mon, 27 Nov 2023 12:20:52 -0800 (PST)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ARGf8ni000705;
+	Mon, 27 Nov 2023 20:20:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=PykEI3kBnGArX6ZTILAiHR5jrndvm6I7RF6QCjTaLxM=;
+ b=QumiNdThgZdTCIo6a1bU6S1RLbFHn6GQHpsQD4eeqMVdotC+FiuIeJHLi4USf20BbLRE
+ iiY1zguvESxyfjQPvuRkEz6rC8gafRyuiVgvtHqzQa7orgWyZuLL7vmeZbV7Q2jFpPHm
+ Pt5CF6Qm66uN+TfK5pt3jXcOem9bbC4UvGIXhptov40KJJ6aCwr1MwGLY0eqLaV9tIdz
+ fOe8sG0kykhLehwK+H+B/eicjbLPH5RAuj+QYivh7E9Nxny5UJVRAxebzLSqK57/vn+d
+ ZH2hU/BXOlhJGhYLR1JVWMdyAVFjF9TsVckKCPxHkk93eZ9hvzkebLm4khJ7xfFQvOgW DQ== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uk69udqu8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Nov 2023 20:20:45 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3ARKKirc022822
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Nov 2023 20:20:44 GMT
+Received: from [10.110.63.243] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 27 Nov
+ 2023 12:20:43 -0800
+Message-ID: <13582287-09b3-4da8-8d5e-5521777b2758@quicinc.com>
+Date: Mon, 27 Nov 2023 12:20:43 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1868698.tdWV9SEqCh@z3ntu.xyz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: fix layout of scan_flags in struct
+ ath12k_wmi_scan_req_arg
+Content-Language: en-US
+To: Nicolas Escande <nico.escande@gmail.com>, Kalle Valo <kvalo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <ath12k@lists.infradead.org>
+References: <20231127180425.1695427-1-nico.escande@gmail.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231127180425.1695427-1-nico.escande@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: _z9fHolTNOK7Dv0jbk9V-CUe-wvBjoTz
+X-Proofpoint-GUID: _z9fHolTNOK7Dv0jbk9V-CUe-wvBjoTz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-27_19,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ adultscore=0 spamscore=0 mlxlogscore=997 mlxscore=0 phishscore=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 impostorscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311270141
 
-On Sat, Nov 25, 2023 at 01:25:22PM +0100, Luca Weiss wrote:
-> On Montag, 16. Oktober 2023 16:44:28 CET Stephan Gerhold wrote:
-> > On Mon, Oct 16, 2023 at 03:16:14PM +0200, Loic Poulain wrote:
-> > > On Mon, 16 Oct 2023 at 07:35, Krzysztof Kozlowski
-> > > 
-> > > <krzysztof.kozlowski@linaro.org> wrote:
-> > > > On 15/10/2023 22:03, Luca Weiss wrote:
-> > > > > Add a compatible for the iris subnode in the WCNSS PIL.
-> > > > > 
-> > > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > > > ---
-> > > > > 
-> > > > >  Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml | 1
-> > > > >  +
-> > > > >  1 file changed, 1 insertion(+)
-> > > > > 
-> > > > > diff --git
-> > > > > a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > > > b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > > > index 45eb42bd3c2c..0e5e0b7a0610 100644
-> > > > > --- a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > > > +++ b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > > > 
-> > > > > @@ -111,6 +111,7 @@ properties:
-> > > > >            - qcom,wcn3660
-> > > > >            - qcom,wcn3660b
-> > > > >            - qcom,wcn3680
-> > > > > 
-> > > > > +          - qcom,wcn3680b
-> > > > 
-> > > > Looks like this should be made as compatible with qcom,wcn3680 (so with
-> > > > fallback).
-> > > 
-> > > Yes, agree, let's do a regular fallback as there is nothing 'b'
-> > > specific in the driver:
-> > > `compatible = "qcom,wcn3680b", "qcom,wcn3680";`
-> > > 
-> > > And yes, we should also have done that for qcom,wcn3660b...
-> > 
-> > I don't think this would have worked properly for qcom,wcn3660b:
-> > 
-> >  - It's not compatible with "qcom,wcn3660", because they have different
-> >    regulator voltage requirements. wcn3660(a?) needs vddpa with
-> >    2.9-3.0V, but wcn3660b needs 3.3V. That's why wcn3660b uses the
-> >    wcn3680_data in qcom_wcnss.iris.c. Otherwise if you would run an
-> >    older kernel that knows "qcom,wcn3660" but not "qcom,wcn3660b" it
-> >    would apply the wrong voltage.
-> > 
-> >  - It's not compatible with "qcom,wcn3680" either because that is used
-> >    as indication if 802.11ac is supported (wcn3660b doesn't).
-> > 
-> > The main question here is: What does the current "qcom,wcn3680"
-> > compatible actually represent? It's defined with vddpa = 3.3V in the
-> > driver, which would suggest that:
-> > 
-> >  1. It's actually meant to represent WCN3680B, which needs 3.3V vddpa
-> >     like WCN3660B, or
-> > 
-> >  2. WCN3680(A?) has different requirements than WCN3660(A?) and also
-> >     needs 3.3V vddpa. But then what is the difference between
-> >     WCN3680(A?) and WCN3680B? Is there even a variant without ...B?
-> > 
-> > There is public documentation for WCN3660B and WCN3680B but the non-B
-> > variants are shrouded in mystery.
+On 11/27/2023 10:04 AM, Nicolas Escande wrote:
+> There is a layout mismatch between the bitfield representing scan_flags in
+> struct ath12k_wmi_scan_req_arg & the bits as defined in the WMI_SCAN_XXX
+> macros. Fix it by making the biefield match de #define values.
 > 
-> Hi Stephan (and everyone),
+> I especialy checked by adding WMI_SCAN_FLAG_FORCE_ACTIVE_ON_DFS to
+> scan_flags and the firmware started to unconditionnaly send probe request
+> on DFS channels during scan.
 > 
-> Do you have a suggestion how to move this patchset forward? Is the fallback 
-> compatible that was suggested okay for the wcn3680b situation?
+> Tested-on: QCN9274 hw2.0 PCI CI_WLAN.WBE.1.2.1-00148.1-QCAHKSWPL_SILICONZ-7
 > 
->   compatible = "qcom,wcn3680b", "qcom,wcn3680";
+> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/wmi.h | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> If so, I'll make v2 with that implemented.
-> 
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+> index 629373d67421..2b5b46f8898e 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.h
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.h
+> @@ -3307,17 +3307,17 @@ struct ath12k_wmi_scan_req_arg {
+>  			    scan_f_filter_prb_req:1,
+>  			    scan_f_bypass_dfs_chn:1,
+>  			    scan_f_continue_on_err:1,
+> +			    scan_f_promisc_mode:1,
+> +			    scan_f_force_active_dfs_chn:1,
+> +			    scan_f_add_tpc_ie_in_probe:1,
+> +			    scan_f_add_ds_ie_in_probe:1,
+> +			    scan_f_add_spoofed_mac_in_probe:1,
+>  			    scan_f_offchan_mgmt_tx:1,
+>  			    scan_f_offchan_data_tx:1,
+> -			    scan_f_promisc_mode:1,
+>  			    scan_f_capture_phy_err:1,
+>  			    scan_f_strict_passive_pch:1,
+>  			    scan_f_half_rate:1,
+>  			    scan_f_quarter_rate:1,
+> -			    scan_f_force_active_dfs_chn:1,
+> -			    scan_f_add_tpc_ie_in_probe:1,
+> -			    scan_f_add_ds_ie_in_probe:1,
+> -			    scan_f_add_spoofed_mac_in_probe:1,
+>  			    scan_f_add_rand_seq_in_probe:1,
+>  			    scan_f_en_ie_whitelist_in_probe:1,
+>  			    scan_f_forced:1,
 
-Personally, I would just go with what exists already and use the
-existing "qcom,wcn3680" compatible as-is. No one has provided evidence
-that there is actually something like a WCN3680(A), without a 'B' at the
-end. Also, all existing users of the "qcom,wcn3680" compatible upstream
-actually seem to refer to WCN3680B (I'm quite sure apq8039-t2 has
-WCN3680B, MSM8974 isn't entirely clear but iirc you mentioned there was
-some schematic of a MSM8974 device which says WCN3680B as well).
++ath12k mailing list
 
-It would be nice to have the compatible perfectly correct and complete,
-but I see no point to extend it with additional information that we
-can't properly verify.
+Repeating my same message from the ath11k patch:
 
-Or do you actually need a different compatible to customize something in
-the driver?
+You are convoluting two different data structures.
 
-Thanks,
-Stephan
+struct ath12k_wmi_scan_req_arg is used to represent a scan request
+within the host driver. This does not use the WMI_SCAN_XXX macros.
+
+struct wmi_start_scan_cmd is used to represent the scan request command
+sent to firmware. This struct uses the WMI_SCAN_XXX macros to fill some
+members of this struct in ath12k_wmi_copy_scan_event_cntrl_flags().
+
+So your change has no effect on the driver operation and incorrectly
+tries to foist the firmware definition upon the host internal
+representation.
+
+So NAK to this patch.
+
+/jeff
 
