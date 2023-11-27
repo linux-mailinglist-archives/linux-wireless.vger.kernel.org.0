@@ -1,49 +1,54 @@
-Return-Path: <linux-wireless+bounces-123-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-124-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA787FA93B
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 19:49:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CB87FA958
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 19:57:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 373E9B20F10
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 18:49:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBC3E28164C
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 18:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2BA31A6E;
-	Mon, 27 Nov 2023 18:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA20364CD;
+	Mon, 27 Nov 2023 18:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IN8gShE+"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="tEUjaGnn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61C2D4D
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Nov 2023 10:49:21 -0800 (PST)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR8wSUO007676;
-	Mon, 27 Nov 2023 18:49:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=RPAoCY4Yz2IAN2+mroe9auOkhni0k+RBCqloksd9vA4=;
- b=IN8gShE+P0KvlvTrSTx/26HTKOhUksrjiCuN1/7TWISkWDSlG1pye5p8tSYa2Qjg5sMM
- o+/weMgLqlbUNAGykjUovBkIBL7sbbLVrHY4kFguQNEhj9rO59qX5QNbbS0F6+siYkLr
- zxmatxtZ8++JpN890gLE+ZzB7D4kZfdc9qItaGnx9iEtrAuiC9CB2lL2QzaaGakt3lwW
- X90Hr/RM6t6qPRidkLRHOboxoChy3aSqlhFqaDCgqbwu5winGUjtQ46WUqYCfR6tJ+WQ
- R1eeH1DCFFR7l4Z9DGm3cja4kAcNDvvdlpsHHewArrZ7oFnT00q+8grpRguValQTcCe7 LQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uk69udh37-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 18:49:08 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3ARIn7Sa005072
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 18:49:07 GMT
-Received: from [10.110.63.243] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 27 Nov
- 2023 10:49:07 -0800
-Message-ID: <c59e408f-1e44-4c23-b073-19f85cb28383@quicinc.com>
-Date: Mon, 27 Nov 2023 10:49:06 -0800
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F182D59
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Nov 2023 10:57:29 -0800 (PST)
+Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
+	by cmsmtp with ESMTPS
+	id 7dtyrr0ojgpyE7gnQrGG2r; Mon, 27 Nov 2023 18:57:28 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id 7gnPrpder97pz7gnPrRBda; Mon, 27 Nov 2023 18:57:27 +0000
+X-Authority-Analysis: v=2.4 cv=ULDOoQTy c=1 sm=1 tr=0 ts=6564e697
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=HVNVOb/M/amC2CTWMSx8Ww==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=wYkD_t78qR0A:10 a=vaJtXVxTAAAA:8
+ a=3YZUj2ziSbBTNNMtSn8A:9 a=QEXdDO2ut3YA:10
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=D+uEK9scvuvtsKJby+Bqflyj1NKw0ggctZxP2qGB2Pw=; b=tEUjaGnnYGgmncb4bamR1wOvDP
+	GuMHeV0O8h+84PUk3esRi4cvKoXyBpazQmS2KX/EPM1NNTx067re/86E7MEKScKKlmgZZLb3GEXSx
+	tKT7bxjxW2R/Zj5dxyHJHrBYsKf9rkMiqPXP1qlEw5+lZSfYP31RjXjVg2Kx8Nh+ujaX9j/eP5qla
+	/CqmR8eQb2iIlcfYhXXs8ZCUe0h/g3cleIkMYI3Ahg2fWrn3HMarX+xcM81wDgIBKUj+CS9+P92EW
+	n5ta4MP2J2+6wj4uN/bvTj1mok5FAJy6CQmiZDHw08SoK/ySRNXfevFQy3VqPmIzmcr/AuLB/c5yA
+	hUCSuckg==;
+Received: from 189.215.210.122.cable.dyn.cableonline.com.mx ([189.215.210.122]:11511 helo=[192.168.0.9])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1r7gnO-001W9i-2P;
+	Mon, 27 Nov 2023 12:57:26 -0600
+Message-ID: <d556055f-64f0-4f98-9d1a-6ea1f74f8461@embeddedor.com>
+Date: Mon, 27 Nov 2023 12:57:25 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -51,107 +56,164 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 0/8] wifi: ath11k: hibernation support
+Subject: Re: [PATCH] wifi: mac80211: use __counted_by for the rest of flexible
+ array members
 Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>, <mhi@lists.linux.dev>
-CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20231127162022.518834-1-kvalo@kernel.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231127162022.518834-1-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To: Dmitry Antipov <dmantipov@yandex.ru>,
+ Johannes Berg <johannes@sipsolutions.net>
+Cc: "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+ linux-wireless@vger.kernel.org
+References: <20231127112601.42636-1-dmantipov@yandex.ru>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20231127112601.42636-1-dmantipov@yandex.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: K4MWfMf1VtJWfZdNggP2cnN_KrJQzQM5
-X-Proofpoint-GUID: K4MWfMf1VtJWfZdNggP2cnN_KrJQzQM5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-27_16,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- adultscore=0 spamscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 impostorscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311270129
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.215.210.122
+X-Source-L: No
+X-Exim-ID: 1r7gnO-001W9i-2P
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 189.215.210.122.cable.dyn.cableonline.com.mx ([192.168.0.9]) [189.215.210.122]:11511
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 1
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGhdYEmjbB1hpWssPO8aOB0EH7CgbPPuOGjRdxGrGc9vUX44b6tLMkMCBNKgMUv1k86tp4IJesPy3npkzr30fkwd4sjoE0NVQuNK3h3tKdciWizSU9PO
+ K0+hWXhSy8bDzKtJjjSuZux+gZMXmO1BpOomAiHkbry+o7PSos8Ul3b2T2nHm0xQoj/eB2314pTZfI7domnwSW/3XDfGIhXg16oEbu3w2gc+8b9Jg2gDRyPt
 
-On 11/27/2023 8:20 AM, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> Currently in ath11k we keep the firmware running on the WLAN device when the
-> network interface (wlan0) is down. The problem is that this will break
-> hibernation, obviously the firmware can't be running after the whole system is
-> powered off. To power down the ath11k firmware for suspend/hibernation some
-> changes both in MHI subsystem and ath11k is needed.
-> 
-> This patchset fixes a longstanding bug report about broken hibernation support:
-> 
-> https://bugzilla.kernel.org/show_bug.cgi?id=214649
-> 
-> This patchset is marked as RFC as it requires changes in MHI subsystem. Also
-> this has been tested only on WCN6855, need to test also on more AP based
-> chipsets like IPQ8074 and QCN9074.
-> 
-> The patches are also available at:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/log/?h=ath11k-hibernation-support
-> 
-> Earlier versions of this patchset have been tested by multiple users with
-> positive results.
-> 
-> v2:
-> 
-> * rebase to ath-202311221826 (6.7.0-rc2-wt-ath+)
-> 
-> * 'bus: mhi: host: add mhi_power_down_no_destroy()': fix null state string for
->    DEV_ST_TRANSITION_DISABLE_DESTROY_DEVICE
-> 
-> * 'bus: mhi: host: add new interfaces to handle MHI channels
->   directly': fix typos in comments
-> 
-> * 'bus: mhi: host: add new interfaces to handle MHI channels directly': honour
->    initial autoqueue configuration
-> 
-> * 'bus: mhi: host: add new interfaces to handle MHI channels
->    directly': don't prepare/unprepare MHI devices that don't match
->    with a MHI client driver
-> 
-> * 'wifi: ath11k: remove MHI LOOPBACK channels': remove LOOPBACK channels for QCN9074 as well
-> 
-> v1: https://lore.kernel.org/mhi/20231110102202.3168243-1-kvalo@kernel.org/
-> 
-> Baochen Qiang (7):
->   bus: mhi: host: add mhi_power_down_no_destroy()
->   bus: mhi: host: add new interfaces to handle MHI channels directly
->   wifi: ath11k: handle irq enable/disable in several code path
->   wifi: ath11k: remove MHI LOOPBACK channels
->   wifi: ath11k: do not dump SRNG statistics during resume
->   wifi: ath11k: fix warning on DMA ring capabilities event
->   wifi: ath11k: support hibernation
-> 
-> Kalle Valo (1):
->   wifi: ath11k: thermal: don't try to register multiple times
-> 
->  drivers/bus/mhi/host/init.c               |   1 +
->  drivers/bus/mhi/host/internal.h           |   1 +
->  drivers/bus/mhi/host/main.c               | 107 ++++++++++++++++++++++
->  drivers/bus/mhi/host/pm.c                 |  26 ++++--
->  drivers/net/wireless/ath/ath11k/ahb.c     |   8 +-
->  drivers/net/wireless/ath/ath11k/core.c    |  44 +++++----
->  drivers/net/wireless/ath/ath11k/core.h    |   2 +
->  drivers/net/wireless/ath/ath11k/hif.h     |  12 +--
->  drivers/net/wireless/ath/ath11k/mhi.c     |  77 ++++------------
->  drivers/net/wireless/ath/ath11k/mhi.h     |   4 +-
->  drivers/net/wireless/ath/ath11k/pci.c     |  55 +++++++++--
->  drivers/net/wireless/ath/ath11k/qmi.c     |   7 +-
->  drivers/net/wireless/ath/ath11k/thermal.c |   3 +
->  drivers/net/wireless/ath/ath11k/wmi.c     |   1 +
->  include/linux/mhi.h                       |  47 +++++++++-
->  15 files changed, 285 insertions(+), 110 deletions(-)
-> 
-> 
-> base-commit: 16a212b4f33c4edd9ce9a9e0953b5389216e8ed9
 
-Series LGTM. Will add appropriate tags when this is no longer RFC
 
+On 11/27/23 05:25, Dmitry Antipov wrote:
+> Following commit 9118796dfa67 ("wifi: mac80211: Add __counted_by for struct
+> ieee802_11_elems and use struct_size()"), use an incoming '__counted_by()'
+> attribute for the flexible array members of 'struct probe_resp', 'struct
+> fils_discovery_data', 'struct unsol_bcast_probe_resp_data', 'struct
+> ieee80211_mgd_auth_data' and 'struct ieee80211_mgd_assoc_data', as well as
+> 'struct_size()' helper to allocate an instances of them where appropriate.
+> This also introduces reordering of statements in 'ieee80211_mgd_auth()'
+> and 'ieee80211_mgd_assoc()' because the counter field should (is better
+> to?) be adjusted before touching the corresponding '__counted_by()' area.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+>   net/mac80211/cfg.c         |  7 ++++---
+>   net/mac80211/ieee80211_i.h | 10 +++++-----
+>   net/mac80211/mlme.c        | 17 +++++++++--------
+>   3 files changed, 18 insertions(+), 16 deletions(-)
+
+[..]
+
+>   struct ieee80211_sta_tx_tspec {
+> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+> index 887b496f2b81..41a4719fb413 100644
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -7322,8 +7322,9 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+>   	}
+>   	rcu_read_unlock();
+>   
+> -	auth_data = kzalloc(sizeof(*auth_data) + req->auth_data_len +
+> -			    req->ie_len, GFP_KERNEL);
+> +	auth_data = kzalloc(struct_size(auth_data, data,
+> +					req->auth_data_len +
+> +					req->ie_len), GFP_KERNEL);
+
+I think we can use size_add() here.
+
+>   	if (!auth_data)
+>   		return -ENOMEM;
+>   
+> @@ -7340,9 +7341,9 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+>   			auth_data->sae_trans = le16_to_cpu(pos[0]);
+>   			auth_data->sae_status = le16_to_cpu(pos[1]);
+>   		}
+> +		auth_data->data_len += req->auth_data_len - 4;
+>   		memcpy(auth_data->data, req->auth_data + 4,
+>   		       req->auth_data_len - 4);
+> -		auth_data->data_len += req->auth_data_len - 4;
+>   	}
+>   
+>   	/* Check if continuing authentication or trying to authenticate with the
+> @@ -7354,9 +7355,9 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+>   		    ifmgd->auth_data->link_id == req->link_id;
+>   
+>   	if (req->ie && req->ie_len) {
+> +		auth_data->data_len += req->ie_len;
+>   		memcpy(&auth_data->data[auth_data->data_len],
+
+This introduces a bug. Now, memcpy() will copy data into `data[]` after the
+offset is updated, which will cause an overwrite bug.
+
+ From a piece of code above it seems that
+
+if (req->auth_data_len >= 4)
+	memcpy(&auth_data->data[req->auth_data_len - 4], ..);
+else
+	memcpy(&auth_data->data[0], ..);
+
+So, we should probably use an auxiliary variable like this
+
++               auth_data->data_len += req->auth_data_len - 4;
+                 memcpy(auth_data->data, req->auth_data + 4,
+                        req->auth_data_len - 4);
+-               auth_data->data_len += req->auth_data_len - 4;
+         }
++       aux_len = auth_data->data_len;
+
+and then
+
+         if (req->ie && req->ie_len) {
+-               memcpy(&auth_data->data[auth_data->data_len],
+-                      req->ie, req->ie_len);
+                 auth_data->data_len += req->ie_len;
++               memcpy(&auth_data->data[aux_len], req->ie, req->ie_len);
+         }
+
+
+--
+Gustavo
+
+>   		       req->ie, req->ie_len);
+> -		auth_data->data_len += req->ie_len;
+>   	}
+>   
+>   	if (req->key && req->key_len) {
+> @@ -7637,16 +7638,16 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+>   	struct ieee80211_bss *bss;
+>   	bool override;
+>   	int i, err;
+> -	size_t size = sizeof(*assoc_data) + req->ie_len;
+> +	size_t extra = req->ie_len;
+>   
+>   	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++)
+> -		size += req->links[i].elems_len;
+> +		extra += req->links[i].elems_len;
+>   
+>   	/* FIXME: no support for 4-addr MLO yet */
+>   	if (sdata->u.mgd.use_4addr && req->link_id >= 0)
+>   		return -EOPNOTSUPP;
+>   
+> -	assoc_data = kzalloc(size, GFP_KERNEL);
+> +	assoc_data = kzalloc(struct_size(assoc_data, ie, extra), GFP_KERNEL);
+>   	if (!assoc_data)
+>   		return -ENOMEM;
+>   
+> @@ -7811,8 +7812,8 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+>   	       sizeof(ifmgd->s1g_capa_mask));
+>   
+>   	if (req->ie && req->ie_len) {
+> -		memcpy(assoc_data->ie, req->ie, req->ie_len);
+>   		assoc_data->ie_len = req->ie_len;
+> +		memcpy(assoc_data->ie, req->ie, req->ie_len);
+>   		assoc_data->ie_pos = assoc_data->ie + assoc_data->ie_len;
+>   	} else {
+>   		assoc_data->ie_pos = assoc_data->ie;
 
