@@ -1,174 +1,142 @@
-Return-Path: <linux-wireless+bounces-128-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-129-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560FD7FAB68
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 21:27:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F24867FAC27
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 22:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F912281BDF
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 20:27:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EC10B20DE8
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 21:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F015046449;
-	Mon, 27 Nov 2023 20:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C00A3EA60;
+	Mon, 27 Nov 2023 21:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="CITmsuf4"
+	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="uOgFudrt";
+	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="OObMAF9W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2987E19A6;
-	Mon, 27 Nov 2023 12:27:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-	t=1701116852; bh=wjGIuleQ8kD0z2aVCMJjHMNPVmJYR139BLY4d6XpI1Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CITmsuf4OwScTPbofNMOSgAtZ0drI/A4I02RxAI8Q9XCGQdfw8Gjn+WBillie3caD
-	 E5iR5ev6U/j/hvZOmRcTns+y0IavwYPaRysGzBKB6OUZwCyRkp36FWeFNF1qhkWbRg
-	 GE9GZ06SNeLT41ez/Go5UlAPQVoL/XsYOlZYg24s=
-From: Luca Weiss <luca@z3ntu.xyz>
-To: Stephan Gerhold <stephan@gerhold.net>
-Cc: Loic Poulain <loic.poulain@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
- linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject:
- Re: [PATCH 1/4] dt-bindings: remoteproc: qcom: wcnss: Add WCN3680B compatible
-Date: Mon, 27 Nov 2023 21:27:30 +0100
-Message-ID: <5919350.DvuYhMxLoT@z3ntu.xyz>
-In-Reply-To: <ZWT3APJlNQaKVyJU@gerhold.net>
-References:
- <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
- <1868698.tdWV9SEqCh@z3ntu.xyz> <ZWT3APJlNQaKVyJU@gerhold.net>
+X-Greylist: delayed 400 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Nov 2023 13:02:20 PST
+Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F02C0
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Nov 2023 13:02:20 -0800 (PST)
+Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
+   signature) header.d=sapience.com header.i=@sapience.com 
+   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
+   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
+Received: from srv8.prv.sapience.com (srv8.prv.sapience.com [x.x.x.x])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by s1.sapience.com (Postfix) with ESMTPS id 74432480A86;
+	Mon, 27 Nov 2023 15:55:38 -0500 (EST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1701118538;
+ h=message-id : date : mime-version : to : from : subject :
+ content-type : content-transfer-encoding : from;
+ bh=KrqJHHZlhcMPs21jM++pfkaSqj8xH+Q8Qn59eDqhwOU=;
+ b=uOgFudrtiuy/3Zljq65eSv529kpo39Hc7H39rHKlfm0NNHLOqwPlILspeympNukfi5Lac
+ eyAPj0BHwCgcbp/Dw==
+ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1701118538;
+	cv=none; b=XcqmLnQbOz5zyC5cTLmwZH7Dc9gIV1wjycKnWZLL4gydp6YJA5Bn9ftYpYs8OoqQzdgxyj08eVsP1l1R9T46TjjgdgAF4JZRrtOVEdpaMqoJeMtUlCd2T/lLCeL9OMqFWJuIE/oZNHJo29zzMKjFCw6zHUq2JUQl+VyRE+JWBDaVqpTkxeRCKeXKZBSnOHPk27gOjar8QvRlHTq+eFnY0WATK6yCb5gpDd/jIXzpTg7UOeARjgz49iLXfT3EjVJeMp3euBqvLRYrHjAZzyc7cGew0xsOQOEofxSPjqGFm+zB2ITRI1xn3AjzNJC1KEWEpgsNMt6F085UbadxzBxMsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
+	t=1701118538; c=relaxed/simple;
+	bh=muQihC0eeNu3uKr3AXbBkhAcsPU7nCNDqbNK21KQbPI=;
+	h=DKIM-Signature:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Content-Language:To:From:Subject:Content-Type:
+	 Content-Transfer-Encoding; b=Yd/6oD+eBLMamvDfs++RJr1MrnS4K063Rcv+SpPWA33ywlxJm/RnsC2hdE8WnZGJJG4fhpOdcD9tpmrCtaiUJCVGDaAKkoY8RDdEE0wJNfNRAB4BdVcFQZhHDG8eeLf/i80L3yhn+2lEm3LQVwptlA4a/tJwfrKTlQ0mvb5YbG+Rnttr9vD5lq+L5aM7mqqQxmvfJfliFNeq9bAZtbVhgBH257B0AW2gRSIqj9UEMGbfT6K21sT9rIXtZqIqPXS/4qZiE4Pq8TOGTFP7nmrdCWwMUe9/8aB4sPi2HqRLy9CekgFSo5sIraxEuoe6yxcXp/0J+myPuFmtRk0XzIxGVw==
+ARC-Authentication-Results: i=1; arc-srv8.sapience.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1701118538;
+ h=message-id : date : mime-version : to : from : subject :
+ content-type : content-transfer-encoding : from;
+ bh=KrqJHHZlhcMPs21jM++pfkaSqj8xH+Q8Qn59eDqhwOU=;
+ b=OObMAF9WbCkfhmcH8pnBqjV8rAP9qvhk6pdTk6pQ5IGpDbpOf6B67dPTTQgjaXvKl+Swc
+ 2l4kOWq6I8Msm3gqU9NY8rQkJKwYAfNfJfsRZ2VfNhWJdz+CyVwbPIiGDqrzJdD1cPPiAjx
+ EONrz6FZ246uiyBGoYUqryRTq97eTrQSyN55B93Vfzskgu4V0842VDaDZ5UCukU5tXWYFtE
+ JE7PP9Qe/mWFLUoPIqe/zDxHYaZ8oCMZCxOxnejT0CTVXHaYKcpAviRAnUaEE5f/QpONf41
+ 21kxlraeqqdOn3mwYHQT8LPTfn7gQhCduSvP2QoooEST7vCqv6BeTQilxZVQ==
+Message-ID: <c46a6462-8263-455c-a6ea-1860020f5fab@sapience.com>
+Date: Mon, 27 Nov 2023 15:55:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-
-On Montag, 27. November 2023 21:07:28 CET Stephan Gerhold wrote:
-> On Sat, Nov 25, 2023 at 01:25:22PM +0100, Luca Weiss wrote:
-> > On Montag, 16. Oktober 2023 16:44:28 CET Stephan Gerhold wrote:
-> > > On Mon, Oct 16, 2023 at 03:16:14PM +0200, Loic Poulain wrote:
-> > > > On Mon, 16 Oct 2023 at 07:35, Krzysztof Kozlowski
-> > > > 
-> > > > <krzysztof.kozlowski@linaro.org> wrote:
-> > > > > On 15/10/2023 22:03, Luca Weiss wrote:
-> > > > > > Add a compatible for the iris subnode in the WCNSS PIL.
-> > > > > > 
-> > > > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > > > > ---
-> > > > > > 
-> > > > > >  Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > > > >  | 1
-> > > > > >  +
-> > > > > >  1 file changed, 1 insertion(+)
-> > > > > > 
-> > > > > > diff --git
-> > > > > > a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > > > > b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> > > > > > index 45eb42bd3c2c..0e5e0b7a0610 100644
-> > > > > > ---
-> > > > > > a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yam
-> > > > > > l
-> > > > > > +++
-> > > > > > b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yam
-> > > > > > l
-> > > > > > 
-> > > > > > @@ -111,6 +111,7 @@ properties:
-> > > > > >            - qcom,wcn3660
-> > > > > >            - qcom,wcn3660b
-> > > > > >            - qcom,wcn3680
-> > > > > > 
-> > > > > > +          - qcom,wcn3680b
-> > > > > 
-> > > > > Looks like this should be made as compatible with qcom,wcn3680 (so
-> > > > > with
-> > > > > fallback).
-> > > > 
-> > > > Yes, agree, let's do a regular fallback as there is nothing 'b'
-> > > > specific in the driver:
-> > > > `compatible = "qcom,wcn3680b", "qcom,wcn3680";`
-> > > > 
-> > > > And yes, we should also have done that for qcom,wcn3660b...
-> > > 
-> > > I don't think this would have worked properly for qcom,wcn3660b:
-> > >  - It's not compatible with "qcom,wcn3660", because they have different
-> > >  
-> > >    regulator voltage requirements. wcn3660(a?) needs vddpa with
-> > >    2.9-3.0V, but wcn3660b needs 3.3V. That's why wcn3660b uses the
-> > >    wcn3680_data in qcom_wcnss.iris.c. Otherwise if you would run an
-> > >    older kernel that knows "qcom,wcn3660" but not "qcom,wcn3660b" it
-> > >    would apply the wrong voltage.
-> > >  
-> > >  - It's not compatible with "qcom,wcn3680" either because that is used
-> > >  
-> > >    as indication if 802.11ac is supported (wcn3660b doesn't).
-> > > 
-> > > The main question here is: What does the current "qcom,wcn3680"
-> > > compatible actually represent? It's defined with vddpa = 3.3V in the
-> > > 
-> > > driver, which would suggest that:
-> > >  1. It's actually meant to represent WCN3680B, which needs 3.3V vddpa
-> > >  
-> > >     like WCN3660B, or
-> > >  
-> > >  2. WCN3680(A?) has different requirements than WCN3660(A?) and also
-> > >  
-> > >     needs 3.3V vddpa. But then what is the difference between
-> > >     WCN3680(A?) and WCN3680B? Is there even a variant without ...B?
-> > > 
-> > > There is public documentation for WCN3660B and WCN3680B but the non-B
-> > > variants are shrouded in mystery.
-> > 
-> > Hi Stephan (and everyone),
-> > 
-> > Do you have a suggestion how to move this patchset forward? Is the
-> > fallback
-> > compatible that was suggested okay for the wcn3680b situation?
-> > 
-> >   compatible = "qcom,wcn3680b", "qcom,wcn3680";
-> > 
-> > If so, I'll make v2 with that implemented.
-> 
-> Personally, I would just go with what exists already and use the
-> existing "qcom,wcn3680" compatible as-is. No one has provided evidence
-> that there is actually something like a WCN3680(A), without a 'B' at the
-> end. Also, all existing users of the "qcom,wcn3680" compatible upstream
-> actually seem to refer to WCN3680B (I'm quite sure apq8039-t2 has
-> WCN3680B, MSM8974 isn't entirely clear but iirc you mentioned there was
-> some schematic of a MSM8974 device which says WCN3680B as well).
-> 
-> It would be nice to have the compatible perfectly correct and complete,
-> but I see no point to extend it with additional information that we
-> can't properly verify.
-> 
-> Or do you actually need a different compatible to customize something in
-> the driver?
-
-No it should be fine with qcom,wcn3680.
-
-I'll send v2 in the coming days then, thanks for your input!
-
-Regards
-Luca
-
-> 
-> Thanks,
-> Stephan
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: tglx@linutronix.de, linux-kernel@vger.kernel.org,
+ gregory.greenman@intel.com, kvalo@kernel.org, linux-wireless@vger.kernel.org
+From: Genes Lists <lists@sapience.com>
+Subject: crash with 6.7 rc2 and rc3
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
+lenovo laptop boots fine under 6.7rc1 and older including 6.6.2 stable.
+but not for 6.7 rc2 or rc3.
+
+It has a intel 7260 (rev 3) wireless and :
+
+cpu family	: 6
+model		: 60
+model name	: Intel(R) Core(TM) i7-4800MQ CPU @ 2.70GHz
+stepping	: 3
+microcode	: 0x28
 
 
+As of 6.7 rc2 / rc3 it crashes towards the end of boot bringing up 
+services -  some parts of crash scrolled off the screen so I apologize 
+if this (manually transcribed) trace didn't catch the first part.
+
+I did a git bisect between rc1 and rc2 but was unable to reproduce the 
+crash for some reason. (I did not do make clean between each bisects).
+
+During the bisect it booted every time, but networking was not 
+functional for any of the bisects.
+
+Hope it's okay to report even though git bisect didn't get anywhere.
+
+Gene
+
+This is the what I got from screen :
+
+CS: 0010 DS: 000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f30cf49ba38 CR3: 000000025b620004 CR4: 00000000001706f0
+Call Trace:
+  <IRQ>
+  ? die_addr+0x36/0x90
+  ? exc_general_protection+0x1c5/0x430
+  ? asm_exc_gemeral_protection+0x26/0x30
+  ? iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
+  ? __kmem_cache_alloc_node+0x1d5/0x2b0
+  ? iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
+  ? iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
+  __kmalloc_node_track_caller+0x51/0x160
+  kmemdup+0x20/0x50
+  iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
+  iwl_wait_phy_db_entry+0x2f/0x40 [iwlmvm]
+  iwl_notification_wait+0xb0/0xf0 [iwlwifi]
+  iwl_mvm_rx_common+0x8e/0x320 [iwlwifi]
+  iwl_pcie_napi_poll+0x2d/0x150 [iwlwifi]
+  __napi_poll+0x2b/0x1c0
+  net_rx_action+0x2b4/0x320
+  __do_softirq+0xff/0x339
+  net_rx_action+0x2b4/0x320
+  __do_softirq.part.0+0x88/0xa0
+</IRQ>
+<TASK>
+__local_bh_enable_ip+0x91/0xa0
+iwl_pcie_irq_handler+0x58d/0xc40 [iwlwifi]
+? __pfx_irq_thread_fn+0x10/0x10
+irq_thread_fn+0x23/0x60
+irq_thread+0xfe/0x60
+? __pfx_irq_thread_dtor+0x10/0x10
+? __pfx_irq_thread+0x10/0x10
+kthread+0xfa/0x130
+? pff_kthread+0x10/0x10
+ret_from_fork+0x34/0x50
+? __pfx_kthread+0x10/0x10
+ret_from_fork_asm+0x1b/0x30
 
