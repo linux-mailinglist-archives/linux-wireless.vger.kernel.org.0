@@ -1,45 +1,47 @@
-Return-Path: <linux-wireless+bounces-107-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-108-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C75B7FA627
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 17:20:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A827FA629
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 17:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 083C328125E
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 16:20:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DAA22817F7
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 16:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0419436AF8;
-	Mon, 27 Nov 2023 16:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 209AA36B09;
+	Mon, 27 Nov 2023 16:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTY5d9bd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZkJKFT4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54CD36AF4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B5B364D7;
+	Mon, 27 Nov 2023 16:20:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB99C433C7;
 	Mon, 27 Nov 2023 16:20:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500F2C43395;
-	Mon, 27 Nov 2023 16:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701102025;
-	bh=Z3NXOof2eRrfFmizeCVpeB9sXefpEKLjnDTpPAKUtmE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=QTY5d9bdSSSIFrsCI99T+x4ZtlVlyH+tYoAWxqM28/1oGVAA6Y9G0wh1KPC93PRQg
-	 DX4tBfsyZ62TSGRKp+lmp2shWbbj7cd056knxIEGuIdcK5iumFru67i0Mf5OziAMA1
-	 t+Xkd1TaJEBkAtna9alo8vp1EO8Qefty+yPCDq/0eGKMim1WkMXjCTEv/HrX866P9Y
-	 6N+4mA3g97SbfBavsTr0wt9bACzC+YxFAzSHN5ukKRh1RHnH/NrGjxWoA0ESBkeAef
-	 LS3PFiyjt6aOoAe8/PV9Zo5RArQ4sa+SnySTKQU48aEPBFGL+4FI69flPcljhB8KuZ
-	 m4IMSzu+/tLLA==
+	s=k20201202; t=1701102026;
+	bh=YAdkjq83QHNmK1xM3DlfzXQzyIjuMXcCdzBqx4MLxSM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OZkJKFT4s0YdXmb6Wctps9iT0fdI769gub61B9SVDV5vSTqOgEOtb8b/d3SqBxHds
+	 a4WA6ZgUX1GV87Hq4mItxwNKHVOZ6+X+i5Mv+WUioAOLly/Gl6uygSjRcvhykJFiJO
+	 WqF0PvYV9SGNQXO0i9YHKuBgSto3s5Y/79MbEyMvXh6NUIikJjvso3CYko61MU9F7X
+	 D/OcHcGaynRHZsEJkvU6WzeK/mTSP64iInO1OW+nWJq/vKM3lEnp0uWoZNDYmyRa4t
+	 XOZRzP9sd67HUuFjuIR7m/gMLa7K7mDdh7y2ybt+D+IoUnNe86R6lOzKMI6LJWDnfq
+	 +vUSx5F2rHjyg==
 From: Kalle Valo <kvalo@kernel.org>
 To: mhi@lists.linux.dev
 Cc: ath11k@lists.infradead.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH RFC v2 0/8] wifi: ath11k: hibernation support
-Date: Mon, 27 Nov 2023 18:20:14 +0200
-Message-Id: <20231127162022.518834-1-kvalo@kernel.org>
+Subject: [PATCH RFC v2 1/8] bus: mhi: host: add mhi_power_down_no_destroy()
+Date: Mon, 27 Nov 2023 18:20:15 +0200
+Message-Id: <20231127162022.518834-2-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231127162022.518834-1-kvalo@kernel.org>
+References: <20231127162022.518834-1-kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -48,81 +50,197 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-Currently in ath11k we keep the firmware running on the WLAN device when the
-network interface (wlan0) is down. The problem is that this will break
-hibernation, obviously the firmware can't be running after the whole system is
-powered off. To power down the ath11k firmware for suspend/hibernation some
-changes both in MHI subsystem and ath11k is needed.
+If ath11k tries to call mhi_power_up() during resume it fails:
 
-This patchset fixes a longstanding bug report about broken hibernation support:
+ath11k_pci 0000:06:00.0: timeout while waiting for restart complete
 
-https://bugzilla.kernel.org/show_bug.cgi?id=214649
+This happens because when calling mhi_power_up() the MHI subsystem eventually
+calls device_add() from mhi_create_devices() but the device creation is
+deferred:
 
-This patchset is marked as RFC as it requires changes in MHI subsystem. Also
-this has been tested only on WCN6855, need to test also on more AP based
-chipsets like IPQ8074 and QCN9074.
+mhi mhi0_IPCR: Driver qcom_mhi_qrtr force probe deferral
 
-The patches are also available at:
+The reason for deferring device creation is explained in dpm_prepare():
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/log/?h=ath11k-hibernation-support
+	/*
+	 * It is unsafe if probing of devices will happen during suspend or
+	 * hibernation and system behavior will be unpredictable in this case.
+	 * So, let's prohibit device's probing here and defer their probes
+	 * instead. The normal behavior will be restored in dpm_complete().
+	 */
 
-Earlier versions of this patchset have been tested by multiple users with
-positive results.
+Because the device probe is deferred, the qcom_mhi_qrtr_probe() is not called and
+qcom_mhi_qrtr_dl_callback() fails silently as qdev is zero:
 
-v2:
+static void qcom_mhi_qrtr_dl_callback(struct mhi_device *mhi_dev,
+				      struct mhi_result *mhi_res)
+{
+	struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
+	int rc;
 
-* rebase to ath-202311221826 (6.7.0-rc2-wt-ath+)
+	if (!qdev || mhi_res->transaction_status)
+		return;
 
-* 'bus: mhi: host: add mhi_power_down_no_destroy()': fix null state string for
-   DEV_ST_TRANSITION_DISABLE_DESTROY_DEVICE
+So what this means that QRTR is not delivering messages and the QMI connection
+is not working between ath11k and the firmware, resulting a failure in firmware
+initialisation.
 
-* 'bus: mhi: host: add new interfaces to handle MHI channels
-  directly': fix typos in comments
+To fix this add new function mhi_power_down_no_destroy() which does not destroy
+the devices during power down. This way mhi_power_up() can be called during
+resume and we can get ath11k hibernation working with the following patches.
 
-* 'bus: mhi: host: add new interfaces to handle MHI channels directly': honour
-   initial autoqueue configuration
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
 
-* 'bus: mhi: host: add new interfaces to handle MHI channels
-   directly': don't prepare/unprepare MHI devices that don't match
-   with a MHI client driver
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+---
+ drivers/bus/mhi/host/init.c     |  1 +
+ drivers/bus/mhi/host/internal.h |  1 +
+ drivers/bus/mhi/host/pm.c       | 26 +++++++++++++++++++-------
+ include/linux/mhi.h             | 29 +++++++++++++++++++++++++++--
+ 4 files changed, 48 insertions(+), 9 deletions(-)
 
-* 'wifi: ath11k: remove MHI LOOPBACK channels': remove LOOPBACK channels for QCN9074 as well
-
-v1: https://lore.kernel.org/mhi/20231110102202.3168243-1-kvalo@kernel.org/
-
-Baochen Qiang (7):
-  bus: mhi: host: add mhi_power_down_no_destroy()
-  bus: mhi: host: add new interfaces to handle MHI channels directly
-  wifi: ath11k: handle irq enable/disable in several code path
-  wifi: ath11k: remove MHI LOOPBACK channels
-  wifi: ath11k: do not dump SRNG statistics during resume
-  wifi: ath11k: fix warning on DMA ring capabilities event
-  wifi: ath11k: support hibernation
-
-Kalle Valo (1):
-  wifi: ath11k: thermal: don't try to register multiple times
-
- drivers/bus/mhi/host/init.c               |   1 +
- drivers/bus/mhi/host/internal.h           |   1 +
- drivers/bus/mhi/host/main.c               | 107 ++++++++++++++++++++++
- drivers/bus/mhi/host/pm.c                 |  26 ++++--
- drivers/net/wireless/ath/ath11k/ahb.c     |   8 +-
- drivers/net/wireless/ath/ath11k/core.c    |  44 +++++----
- drivers/net/wireless/ath/ath11k/core.h    |   2 +
- drivers/net/wireless/ath/ath11k/hif.h     |  12 +--
- drivers/net/wireless/ath/ath11k/mhi.c     |  77 ++++------------
- drivers/net/wireless/ath/ath11k/mhi.h     |   4 +-
- drivers/net/wireless/ath/ath11k/pci.c     |  55 +++++++++--
- drivers/net/wireless/ath/ath11k/qmi.c     |   7 +-
- drivers/net/wireless/ath/ath11k/thermal.c |   3 +
- drivers/net/wireless/ath/ath11k/wmi.c     |   1 +
- include/linux/mhi.h                       |  47 +++++++++-
- 15 files changed, 285 insertions(+), 110 deletions(-)
-
-
-base-commit: 16a212b4f33c4edd9ce9a9e0953b5389216e8ed9
+diff --git a/drivers/bus/mhi/host/init.c b/drivers/bus/mhi/host/init.c
+index 65ceac1837f9..e626b03ffafa 100644
+--- a/drivers/bus/mhi/host/init.c
++++ b/drivers/bus/mhi/host/init.c
+@@ -43,6 +43,7 @@ const char * const dev_state_tran_str[DEV_ST_TRANSITION_MAX] = {
+ 	[DEV_ST_TRANSITION_FP] = "FLASH PROGRAMMER",
+ 	[DEV_ST_TRANSITION_SYS_ERR] = "SYS ERROR",
+ 	[DEV_ST_TRANSITION_DISABLE] = "DISABLE",
++	[DEV_ST_TRANSITION_DISABLE_DESTROY_DEVICE] = "DISABLE (DESTROY DEVICE)",
+ };
+ 
+ const char * const mhi_ch_state_type_str[MHI_CH_STATE_TYPE_MAX] = {
+diff --git a/drivers/bus/mhi/host/internal.h b/drivers/bus/mhi/host/internal.h
+index 30ac415a3000..3f45c9c447bd 100644
+--- a/drivers/bus/mhi/host/internal.h
++++ b/drivers/bus/mhi/host/internal.h
+@@ -69,6 +69,7 @@ enum dev_st_transition {
+ 	DEV_ST_TRANSITION_FP,
+ 	DEV_ST_TRANSITION_SYS_ERR,
+ 	DEV_ST_TRANSITION_DISABLE,
++	DEV_ST_TRANSITION_DISABLE_DESTROY_DEVICE,
+ 	DEV_ST_TRANSITION_MAX,
+ };
+ 
+diff --git a/drivers/bus/mhi/host/pm.c b/drivers/bus/mhi/host/pm.c
+index a2f2feef1476..8833b0248393 100644
+--- a/drivers/bus/mhi/host/pm.c
++++ b/drivers/bus/mhi/host/pm.c
+@@ -458,7 +458,8 @@ static int mhi_pm_mission_mode_transition(struct mhi_controller *mhi_cntrl)
+ }
+ 
+ /* Handle shutdown transitions */
+-static void mhi_pm_disable_transition(struct mhi_controller *mhi_cntrl)
++static void mhi_pm_disable_transition(struct mhi_controller *mhi_cntrl,
++				      bool destroy_device)
+ {
+ 	enum mhi_pm_state cur_state;
+ 	struct mhi_event *mhi_event;
+@@ -520,8 +521,10 @@ static void mhi_pm_disable_transition(struct mhi_controller *mhi_cntrl)
+ 	dev_dbg(dev, "Waiting for all pending threads to complete\n");
+ 	wake_up_all(&mhi_cntrl->state_event);
+ 
+-	dev_dbg(dev, "Reset all active channels and remove MHI devices\n");
+-	device_for_each_child(&mhi_cntrl->mhi_dev->dev, NULL, mhi_destroy_device);
++	if (destroy_device) {
++		dev_dbg(dev, "Reset all active channels and remove MHI devices\n");
++		device_for_each_child(&mhi_cntrl->mhi_dev->dev, NULL, mhi_destroy_device);
++	}
+ 
+ 	mutex_lock(&mhi_cntrl->pm_mutex);
+ 
+@@ -806,7 +809,10 @@ void mhi_pm_st_worker(struct work_struct *work)
+ 			mhi_pm_sys_error_transition(mhi_cntrl);
+ 			break;
+ 		case DEV_ST_TRANSITION_DISABLE:
+-			mhi_pm_disable_transition(mhi_cntrl);
++			mhi_pm_disable_transition(mhi_cntrl, false);
++			break;
++		case DEV_ST_TRANSITION_DISABLE_DESTROY_DEVICE:
++			mhi_pm_disable_transition(mhi_cntrl, true);
+ 			break;
+ 		default:
+ 			break;
+@@ -1160,7 +1166,8 @@ int mhi_async_power_up(struct mhi_controller *mhi_cntrl)
+ }
+ EXPORT_SYMBOL_GPL(mhi_async_power_up);
+ 
+-void mhi_power_down(struct mhi_controller *mhi_cntrl, bool graceful)
++void __mhi_power_down(struct mhi_controller *mhi_cntrl, bool graceful,
++		      bool destroy_device)
+ {
+ 	enum mhi_pm_state cur_state, transition_state;
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+@@ -1196,14 +1203,19 @@ void mhi_power_down(struct mhi_controller *mhi_cntrl, bool graceful)
+ 	write_unlock_irq(&mhi_cntrl->pm_lock);
+ 	mutex_unlock(&mhi_cntrl->pm_mutex);
+ 
+-	mhi_queue_state_transition(mhi_cntrl, DEV_ST_TRANSITION_DISABLE);
++	if (destroy_device)
++		mhi_queue_state_transition(mhi_cntrl,
++					   DEV_ST_TRANSITION_DISABLE_DESTROY_DEVICE);
++	else
++		mhi_queue_state_transition(mhi_cntrl,
++					   DEV_ST_TRANSITION_DISABLE);
+ 
+ 	/* Wait for shutdown to complete */
+ 	flush_work(&mhi_cntrl->st_worker);
+ 
+ 	disable_irq(mhi_cntrl->irq[0]);
+ }
+-EXPORT_SYMBOL_GPL(mhi_power_down);
++EXPORT_SYMBOL_GPL(__mhi_power_down);
+ 
+ int mhi_sync_power_up(struct mhi_controller *mhi_cntrl)
+ {
+diff --git a/include/linux/mhi.h b/include/linux/mhi.h
+index d0f9b522f328..ae092bc8b97e 100644
+--- a/include/linux/mhi.h
++++ b/include/linux/mhi.h
+@@ -648,12 +648,37 @@ int mhi_async_power_up(struct mhi_controller *mhi_cntrl);
+  */
+ int mhi_sync_power_up(struct mhi_controller *mhi_cntrl);
+ 
++void __mhi_power_down(struct mhi_controller *mhi_cntrl, bool graceful,
++		    bool destroy_device);
++
+ /**
+- * mhi_power_down - Start MHI power down sequence
++ * mhi_power_down - Start MHI power down sequence. See also
++ * mhi_power_down_no_destroy() which is a variant of this for suspend.
++ *
+  * @mhi_cntrl: MHI controller
+  * @graceful: Link is still accessible, so do a graceful shutdown process
+  */
+-void mhi_power_down(struct mhi_controller *mhi_cntrl, bool graceful);
++static inline void mhi_power_down(struct mhi_controller *mhi_cntrl, bool graceful)
++{
++	__mhi_power_down(mhi_cntrl, graceful, true);
++}
++
++/**
++ * mhi_power_down_no_destroy - Start MHI power down sequence but don't
++ * destroy struct devices. This is a variant for mhi_power_down() and is a
++ * workaround to make it possible to use mhi_power_up() in a resume
++ * handler. When using this variant the caller must also call
++ * mhi_prepare_all_for_transfer_autoqueue() and
++ * mhi_unprepare_all_from_transfer().
++ *
++ * @mhi_cntrl: MHI controller
++ * @graceful: Link is still accessible, so do a graceful shutdown process
++ */
++static inline void mhi_power_down_no_destroy(struct mhi_controller *mhi_cntrl,
++					     bool graceful)
++{
++	__mhi_power_down(mhi_cntrl, graceful, false);
++}
+ 
+ /**
+  * mhi_unprepare_after_power_down - Free any allocated memory after power down
 -- 
 2.39.2
 
