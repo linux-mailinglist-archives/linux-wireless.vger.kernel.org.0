@@ -1,117 +1,421 @@
-Return-Path: <linux-wireless+bounces-118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-119-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A737FA674
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 17:33:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA707FA880
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 19:01:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B52441C20BAA
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 16:33:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30B0BB20F20
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 18:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED098364D0;
-	Mon, 27 Nov 2023 16:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684A73BB3E;
+	Mon, 27 Nov 2023 18:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="czaiz0QH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJdsyrd+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C9F99;
-	Mon, 27 Nov 2023 08:33:08 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ARD9P3X020717;
-	Mon, 27 Nov 2023 16:32:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=QLA/171HhAOE/egCjy+Rmr5mzz8RCpW9xnlC5Re56ko=;
- b=czaiz0QHPHMLIgofj03Opd1tPrG07Wcb2I+E/cHXMgTeTrzraZ83raTFMaLcCRtTT0ZB
- SIUsik8Sf3yfSwK4D4/rA9Oceg5SgK33xsWV2vvwfc8qSrQ46JlQcfPb4nhF7j18GIb/
- FBxexQ5a0hCK/b+bNXNgqTCFOL1FnwY5tHaTPaqeqwIUkvujt9MKO7CacGJbSndGbkiH
- H4esM93yfW4FmxDrcOab5Tam9xXMsMwfrEyE35HqXuxJULVepnBg2JmYl0hD0tQ1+hih
- J/kqo+zn16jticgzddTjePhY0cRmJwnuR5WzFDRS+NTIM2m76SmrnvzMAZscmy+qch24 Vw== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3umsvagvxd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 16:32:53 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3ARGWrSE026568
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 16:32:53 GMT
-Received: from [10.110.63.243] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 27 Nov
- 2023 08:32:52 -0800
-Message-ID: <c5555ad6-6991-4fca-864f-355d2fae9ae1@quicinc.com>
-Date: Mon, 27 Nov 2023 08:32:51 -0800
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448C73717F;
+	Mon, 27 Nov 2023 18:00:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B48DC433C8;
+	Mon, 27 Nov 2023 18:00:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701108056;
+	bh=mdiRTD5LAJNoXk0V204XHP3AYNLNJeeGfJwNb809q1I=;
+	h=From:Subject:To:Cc:Date:From;
+	b=UJdsyrd+mMXDB/IwNHw32uG1pqLMqAAkxhEwBHlR7qRWVXoxkBxz0FucsubtOmo0c
+	 48D/Fd4lCxSSrQWjst5UTjbDIzx2zNgThdf9/7rThJk4zgtQrRMsROhfdkgAZD9mtx
+	 gxcl3RpJDGPbn8DxG4O/IieJ9pRoYZvu6jleTecz4EvSfaFWkxualWO+O2mz+f52Vt
+	 6jErA/W58OmNWAYpVc3ynkIUCLY/3dDZ3RFy/wOOmZNUccbvVdJ25Q0IjONkqwkLLw
+	 PbQd+3mtyWLAqLJ3lCdHkqWet1ueHinLs5NDl26zV5f/b84cu3sqXqpHScMcvshsGR
+	 lKits/Iw4xPdA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] wifi: ath11k: Use DECLARE_FLEX_ARRAY() for
- ath11k_htc_record
-Content-Language: en-US
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kalle Valo
-	<kvalo@kernel.org>
-CC: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook
-	<keescook@chromium.org>, <ath10k@lists.infradead.org>,
-        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20231127-flexarray-htc_record-v1-0-6be1f36126fd@quicinc.com>
- <20231127-flexarray-htc_record-v1-4-6be1f36126fd@quicinc.com>
- <4f2a486c-c6de-43e4-8bb6-bdd3f819b0a9@embeddedor.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <4f2a486c-c6de-43e4-8bb6-bdd3f819b0a9@embeddedor.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: NBTLP5sNQY8IOwWyfKdHtu993kgLMr8X
-X-Proofpoint-GUID: NBTLP5sNQY8IOwWyfKdHtu993kgLMr8X
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-27_15,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 spamscore=0 mlxlogscore=571 phishscore=0
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311270113
+Content-Transfer-Encoding: 8bit
+From: Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-next-2023-11-27
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Message-Id: <20231127180056.0B48DC433C8@smtp.kernel.org>
+Date: Mon, 27 Nov 2023 18:00:55 +0000 (UTC)
 
-On 11/27/2023 8:23 AM, Gustavo A. R. Silva wrote:
-> 
-> 
-> On 11/27/23 10:14, Jeff Johnson wrote:
->> Transform the zero-length array in ath11k_htc_record into a proper
->> flexible array via the DECLARE_FLEX_ARRAY() macro. This helps with
->> ongoing efforts to globally enable -Warray-bounds.
->>
->> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath11k/htc.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath11k/htc.h b/drivers/net/wireless/ath/ath11k/htc.h
->> index 84971cc9251c..e0434b29df70 100644
->> --- a/drivers/net/wireless/ath/ath11k/htc.h
->> +++ b/drivers/net/wireless/ath/ath11k/htc.h
->> @@ -151,7 +151,7 @@ struct ath11k_htc_credit_report {
->>   struct ath11k_htc_record {
->>   	struct ath11k_htc_record_hdr hdr;
->>   	union {
->> -		struct ath11k_htc_credit_report credit_report[0];
->> +		DECLARE_FLEX_ARRAY(struct ath11k_htc_credit_report, credit_report);
->>   	};
-> 
-> Why not removing the `union` and just do a direct transformation [0] -> [ ] ?
+Hi,
 
-No reason other than staying consistent with ath10k.
-Will see if Kalle has an opinion on this.
+here's a pull request to net-next tree, more info below. Please let me know if
+there are any problems.
 
-/jeff
+Kalle
+
+The following changes since commit cc54d2e2c58a40a82dfd39afa95d3d27f3d6509d:
+
+  MAINTAINERS: Remove linuxwwan@intel.com mailing list (2023-10-26 22:20:58 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2023-11-27
+
+for you to fetch changes up to 0cc3f50f42d262d6175ee2834aeb56e98934cfcc:
+
+  wifi: nl80211: Documentation update for NL80211_CMD_PORT_AUTHORIZED event (2023-11-24 20:34:43 +0100)
+
+----------------------------------------------------------------
+wireless-next patches for v6.8
+
+The first features pull request for v6.8. Not so big in number of
+commits but we removed quite a few ancient drivers: libertas 16-bit
+PCMCIA support, atmel, hostap, zd1201, orinoco, ray_cs, wl3501 and
+rndis_wlan.
+
+Major changes:
+
+cfg80211/mac80211
+
+* extend support for scanning while Multi-Link Operation (MLO) connected
+
+----------------------------------------------------------------
+Arnd Bergmann (10):
+      wifi: libertas: drop 16-bit PCMCIA support
+      wifi: atmel: remove wext style at76c50x drivers
+      wifi: remove orphaned cisco/aironet driver
+      wifi: remove obsolete hostap driver
+      wifi: remove orphaned zd1201 driver
+      wifi: remove orphaned orinoco driver
+      wifi: remove orphaned ray_cs driver
+      wifi: remove orphaned wl3501 driver
+      wifi: remove orphaned rndis_wlan driver
+      wifi: libertas: stop selecting wext
+
+Bjorn Helgaas (1):
+      wifi: rtlwifi: drop unused const_amdpci_aspm
+
+Chih-Kang Chang (1):
+      wifi: rtw88: fix RX filter in FIF_ALLMULTI flag
+
+Dan Carpenter (1):
+      wifi: plfxlc: check for allocation failure in plfxlc_usb_wreq_async()
+
+Dmitry Antipov (10):
+      wifi: rtlwifi: cleanup struct rtl_hal
+      wifi: rtlwifi: cleanup struct rtl_phy
+      wifi: rtlwifi: rtl92ee_dm_dynamic_primary_cca_check(): fix typo in function name
+      wifi: rtw89: fix timeout calculation in rtw89_roc_end()
+      wifi: wilc1000: simplify remain on channel support
+      wifi: wilc1000: always release SDIO host in wilc_sdio_cmd53()
+      wifi: wilc1000: cleanup struct wilc_conn_info
+      wifi: wilc1000: simplify wilc_scan()
+      wifi: rtw88: simplify __rtw_tx_work()
+      wifi: rtlwifi: simplify rtl_action_proc() and rtl_tx_agg_start()
+
+Gregory Greenman (1):
+      MAINTAINERS: update iwlwifi maintainers
+
+Ilan Peer (2):
+      wifi: cfg80211: Extend support for scanning while MLO connected
+      wifi: mac80211: Extend support for scanning while MLO connected
+
+Jiapeng Chong (1):
+      wifi: iwlegacy: Remove the unused variable len
+
+Justin Stitt (3):
+      wifi: brcm80211: replace deprecated strncpy with strscpy
+      wifi: brcmsmac: replace deprecated strncpy with memcpy
+      wifi: airo: replace deprecated strncpy with strscpy_pad
+
+Liam Kearney (1):
+      wifi: ieee80211: fix PV1 frame control field name
+
+Ping-Ke Shih (24):
+      wifi: rtw89: 8922ae: add 8922AE PCI entry and basic info
+      wifi: rtw89: pci: define PCI ring address for WiFi 7 chips
+      wifi: rtw89: pci: add new RX ring design to determine full RX ring efficiently
+      wifi: rtw89: pci: generalize code of PCI control DMA IO for WiFi 7
+      wifi: rtw89: set entry size of address CAM to H2C field by chip
+      wifi: rtw89: consider RX info for WiFi 7 chips
+      wifi: rtw89: extend PHY status parser to support WiFi 7 chips
+      wifi: rtw89: pci: add PCI generation information to pci_info for each chip
+      wifi: rtw89: pci: use gen_def pointer to configure mac_{pre,post}_init and clear PCI ring index
+      wifi: rtw89: pci: implement PCI mac_pre_init for WiFi 7 chips
+      wifi: rtw89: pci: add LTR v2 for WiFi 7 chip
+      wifi: rtw89: pci: implement PCI mac_post_init for WiFi 7 chips
+      wifi: rtw89: coex: use struct assignment to replace memcpy() to append TDMA content
+      wifi: rtw89: pci: add pre_deinit to be called after probe complete
+      wifi: rtw89: pci: generalize interrupt status bits of interrupt handlers
+      wifi: rtw89: 8922ae: add v2 interrupt handlers for 8922AE
+      wifi: rtw89: pci: correct interrupt mitigation register for 8852CE
+      wifi: rtw89: pci: update interrupt mitigation register for 8922AE
+      wifi: rtw89: 8922a: add 8922A basic chip info
+      wifi: rtw89: mac: use mac_gen pointer to access about efuse
+      wifi: rtw89: mac: add to access efuse for WiFi 7 chips
+      wifi: rtw89: 8852c: read RX gain offset from efuse for 6GHz channels
+      wifi: rtw89: 8922a: read efuse content via efuse map struct from logic map
+      wifi: rtw89: 8922a: read efuse content from physical map
+
+Shiji Yang (4):
+      wifi: rt2x00: introduce DMA busy check watchdog for rt2800
+      wifi: rt2x00: disable RTS threshold for rt2800 by default
+      wifi: rt2x00: restart beacon queue when hardware reset
+      wifi: rt2x00: correct wrong BBP register in RxDCOC calibration
+
+Su Hui (1):
+      wifi: mwifiex: mwifiex_process_sleep_confirm_resp(): remove unused priv variable
+
+Thomas Weißschuh (1):
+      rfkill: return ENOTTY on invalid ioctl
+
+Vinayak Yadawad (1):
+      wifi: nl80211: Documentation update for NL80211_CMD_PORT_AUTHORIZED event
+
+Zong-Zhe Yang (6):
+      wifi: rtw89: configure PPDU max user by chip
+      wifi: rtw89: pci: reset BDRAM according to chip gen
+      wifi: rtw89: pci: stop/start DMA for level 1 recovery according to chip gen
+      wifi: rtw89: acpi: process 6 GHz band policy from DSM
+      wifi: rtw89: regd: handle policy of 6 GHz according to BIOS
+      wifi: rtw89: regd: update regulatory map to R65-R44
+
+ .../networking/device_drivers/wifi/index.rst       |    1 -
+ .../networking/device_drivers/wifi/ray_cs.rst      |  165 -
+ MAINTAINERS                                        |   42 +-
+ drivers/net/wireless/Kconfig                       |    3 -
+ drivers/net/wireless/Makefile                      |    2 -
+ drivers/net/wireless/atmel/Kconfig                 |   35 -
+ drivers/net/wireless/atmel/Makefile                |    4 -
+ drivers/net/wireless/atmel/atmel.c                 | 4452 -----------
+ drivers/net/wireless/atmel/atmel.h                 |   31 -
+ drivers/net/wireless/atmel/atmel_cs.c              |  292 -
+ drivers/net/wireless/atmel/atmel_pci.c             |   65 -
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         |    2 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.c |    2 +-
+ .../wireless/broadcom/brcm80211/brcmsmac/channel.c |    6 +-
+ .../net/wireless/broadcom/brcm80211/brcmsmac/dma.c |    3 +-
+ .../wireless/broadcom/brcm80211/brcmsmac/main.c    |    4 +-
+ drivers/net/wireless/cisco/Kconfig                 |   59 -
+ drivers/net/wireless/cisco/Makefile                |    3 -
+ drivers/net/wireless/cisco/airo.c                  | 8288 --------------------
+ drivers/net/wireless/cisco/airo.h                  |   10 -
+ drivers/net/wireless/cisco/airo_cs.c               |  218 -
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c     |    6 -
+ drivers/net/wireless/intersil/Kconfig              |    2 -
+ drivers/net/wireless/intersil/Makefile             |    2 -
+ drivers/net/wireless/intersil/hostap/Kconfig       |   95 -
+ drivers/net/wireless/intersil/hostap/Makefile      |    8 -
+ drivers/net/wireless/intersil/hostap/hostap.h      |   98 -
+ .../net/wireless/intersil/hostap/hostap_80211.h    |   97 -
+ .../net/wireless/intersil/hostap/hostap_80211_rx.c | 1116 ---
+ .../net/wireless/intersil/hostap/hostap_80211_tx.c |  554 --
+ drivers/net/wireless/intersil/hostap/hostap_ap.c   | 3277 --------
+ drivers/net/wireless/intersil/hostap/hostap_ap.h   |  264 -
+ .../net/wireless/intersil/hostap/hostap_common.h   |  420 -
+ .../net/wireless/intersil/hostap/hostap_config.h   |   49 -
+ drivers/net/wireless/intersil/hostap/hostap_cs.c   |  710 --
+ .../net/wireless/intersil/hostap/hostap_download.c |  810 --
+ drivers/net/wireless/intersil/hostap/hostap_hw.c   | 3387 --------
+ drivers/net/wireless/intersil/hostap/hostap_info.c |  509 --
+ .../net/wireless/intersil/hostap/hostap_ioctl.c    | 3847 ---------
+ drivers/net/wireless/intersil/hostap/hostap_main.c | 1123 ---
+ drivers/net/wireless/intersil/hostap/hostap_pci.c  |  445 --
+ drivers/net/wireless/intersil/hostap/hostap_plx.c  |  617 --
+ drivers/net/wireless/intersil/hostap/hostap_proc.c |  411 -
+ drivers/net/wireless/intersil/hostap/hostap_wlan.h | 1051 ---
+ drivers/net/wireless/intersil/orinoco/Kconfig      |  143 -
+ drivers/net/wireless/intersil/orinoco/Makefile     |   15 -
+ drivers/net/wireless/intersil/orinoco/airport.c    |  268 -
+ drivers/net/wireless/intersil/orinoco/cfg.c        |  291 -
+ drivers/net/wireless/intersil/orinoco/cfg.h        |   15 -
+ drivers/net/wireless/intersil/orinoco/fw.c         |  387 -
+ drivers/net/wireless/intersil/orinoco/fw.h         |   21 -
+ drivers/net/wireless/intersil/orinoco/hermes.c     |  778 --
+ drivers/net/wireless/intersil/orinoco/hermes.h     |  534 --
+ drivers/net/wireless/intersil/orinoco/hermes_dld.c |  477 --
+ drivers/net/wireless/intersil/orinoco/hermes_dld.h |   52 -
+ drivers/net/wireless/intersil/orinoco/hermes_rid.h |  165 -
+ drivers/net/wireless/intersil/orinoco/hw.c         | 1362 ----
+ drivers/net/wireless/intersil/orinoco/hw.h         |   60 -
+ drivers/net/wireless/intersil/orinoco/main.c       | 2414 ------
+ drivers/net/wireless/intersil/orinoco/main.h       |   50 -
+ drivers/net/wireless/intersil/orinoco/mic.c        |   89 -
+ drivers/net/wireless/intersil/orinoco/mic.h        |   23 -
+ drivers/net/wireless/intersil/orinoco/orinoco.h    |  251 -
+ drivers/net/wireless/intersil/orinoco/orinoco_cs.c |  350 -
+ .../net/wireless/intersil/orinoco/orinoco_nortel.c |  314 -
+ .../net/wireless/intersil/orinoco/orinoco_pci.c    |  257 -
+ .../net/wireless/intersil/orinoco/orinoco_pci.h    |   54 -
+ .../net/wireless/intersil/orinoco/orinoco_plx.c    |  362 -
+ .../net/wireless/intersil/orinoco/orinoco_tmd.c    |  237 -
+ .../net/wireless/intersil/orinoco/orinoco_usb.c    | 1787 -----
+ drivers/net/wireless/intersil/orinoco/scan.c       |  259 -
+ drivers/net/wireless/intersil/orinoco/scan.h       |   21 -
+ .../net/wireless/intersil/orinoco/spectrum_cs.c    |  328 -
+ drivers/net/wireless/intersil/orinoco/wext.c       | 1428 ----
+ drivers/net/wireless/intersil/orinoco/wext.h       |   13 -
+ drivers/net/wireless/legacy/Kconfig                |   55 -
+ drivers/net/wireless/legacy/Makefile               |    6 -
+ drivers/net/wireless/legacy/ray_cs.c               | 2824 -------
+ drivers/net/wireless/legacy/ray_cs.h               |   74 -
+ drivers/net/wireless/legacy/rayctl.h               |  734 --
+ drivers/net/wireless/legacy/rndis_wlan.c           | 3760 ---------
+ drivers/net/wireless/legacy/wl3501.h               |  615 --
+ drivers/net/wireless/legacy/wl3501_cs.c            | 2036 -----
+ drivers/net/wireless/marvell/libertas/Kconfig      |    9 +-
+ drivers/net/wireless/marvell/libertas/Makefile     |    1 -
+ drivers/net/wireless/marvell/libertas/if_cs.c      |  957 ---
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c      |    8 -
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c |   24 +-
+ drivers/net/wireless/microchip/wilc1000/hif.c      |   46 +-
+ drivers/net/wireless/microchip/wilc1000/hif.h      |   42 +-
+ drivers/net/wireless/microchip/wilc1000/sdio.c     |    9 +-
+ drivers/net/wireless/purelifi/plfxlc/usb.c         |    5 +-
+ drivers/net/wireless/ralink/rt2x00/rt2800.h        |    4 +
+ drivers/net/wireless/ralink/rt2x00/rt2800lib.c     |   83 +-
+ drivers/net/wireless/ralink/rt2x00/rt2x00.h        |    3 +
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c     |    3 +
+ drivers/net/wireless/ralink/rt2x00/rt2x00mac.c     |   11 +
+ drivers/net/wireless/realtek/rtlwifi/base.c        |    8 -
+ drivers/net/wireless/realtek/rtlwifi/pci.c         |    1 -
+ drivers/net/wireless/realtek/rtlwifi/pci.h         |    1 -
+ .../net/wireless/realtek/rtlwifi/rtl8188ee/sw.c    |    3 -
+ .../wireless/realtek/rtlwifi/rtl8192c/phy_common.c |    4 -
+ .../net/wireless/realtek/rtlwifi/rtl8192ce/sw.c    |    3 -
+ .../net/wireless/realtek/rtlwifi/rtl8192de/sw.c    |    3 -
+ .../net/wireless/realtek/rtlwifi/rtl8192ee/dm.c    |   11 +-
+ .../net/wireless/realtek/rtlwifi/rtl8192ee/hw.c    |    1 -
+ .../net/wireless/realtek/rtlwifi/rtl8192ee/sw.c    |    3 -
+ .../net/wireless/realtek/rtlwifi/rtl8192se/sw.c    |    3 -
+ .../net/wireless/realtek/rtlwifi/rtl8723ae/sw.c    |    3 -
+ .../net/wireless/realtek/rtlwifi/rtl8723be/sw.c    |    3 -
+ .../net/wireless/realtek/rtlwifi/rtl8821ae/sw.c    |    3 -
+ drivers/net/wireless/realtek/rtlwifi/wifi.h        |   17 -
+ drivers/net/wireless/realtek/rtw88/mac80211.c      |    4 +-
+ drivers/net/wireless/realtek/rtw88/tx.c            |    3 +-
+ drivers/net/wireless/realtek/rtw89/acpi.c          |   81 +-
+ drivers/net/wireless/realtek/rtw89/acpi.h          |   32 +-
+ drivers/net/wireless/realtek/rtw89/cam.c           |   16 +-
+ drivers/net/wireless/realtek/rtw89/coex.c          |    4 +-
+ drivers/net/wireless/realtek/rtw89/core.c          |   95 +-
+ drivers/net/wireless/realtek/rtw89/core.h          |   40 +-
+ drivers/net/wireless/realtek/rtw89/debug.h         |    1 +
+ drivers/net/wireless/realtek/rtw89/efuse.c         |   11 +-
+ drivers/net/wireless/realtek/rtw89/efuse.h         |   17 +-
+ drivers/net/wireless/realtek/rtw89/efuse_be.c      |  420 +
+ drivers/net/wireless/realtek/rtw89/mac.c           |   16 +-
+ drivers/net/wireless/realtek/rtw89/mac.h           |    4 +
+ drivers/net/wireless/realtek/rtw89/mac_be.c        |    4 +
+ drivers/net/wireless/realtek/rtw89/pci.c           |  323 +-
+ drivers/net/wireless/realtek/rtw89/pci.h           |  515 ++
+ drivers/net/wireless/realtek/rtw89/pci_be.c        |  509 ++
+ drivers/net/wireless/realtek/rtw89/phy.h           |   16 +
+ drivers/net/wireless/realtek/rtw89/reg.h           |  437 ++
+ drivers/net/wireless/realtek/rtw89/regd.c          |  175 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c      |    5 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851be.c     |    3 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c      |    5 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852ae.c     |    4 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c      |    5 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852be.c     |    4 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c      |   29 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.h      |   20 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852ce.c     |    4 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c      |  363 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.h      |   73 +
+ drivers/net/wireless/realtek/rtw89/rtw8922ae.c     |   88 +
+ drivers/net/wireless/realtek/rtw89/sar.c           |    4 +-
+ drivers/net/wireless/realtek/rtw89/ser.c           |    6 +
+ drivers/net/wireless/realtek/rtw89/txrx.h          |    4 +
+ drivers/net/wireless/zydas/Kconfig                 |   19 -
+ drivers/net/wireless/zydas/Makefile                |    2 -
+ drivers/net/wireless/zydas/zd1201.c                | 1909 -----
+ drivers/net/wireless/zydas/zd1201.h                |  144 -
+ include/linux/ieee80211.h                          |    4 +-
+ include/net/cfg80211.h                             |    3 +
+ include/uapi/linux/nl80211.h                       |   22 +-
+ net/mac80211/scan.c                                |   48 +-
+ net/rfkill/core.c                                  |    4 +-
+ net/wireless/nl80211.c                             |    1 +
+ 158 files changed, 3424 insertions(+), 58838 deletions(-)
+ delete mode 100644 Documentation/networking/device_drivers/wifi/ray_cs.rst
+ delete mode 100644 drivers/net/wireless/atmel/atmel.c
+ delete mode 100644 drivers/net/wireless/atmel/atmel.h
+ delete mode 100644 drivers/net/wireless/atmel/atmel_cs.c
+ delete mode 100644 drivers/net/wireless/atmel/atmel_pci.c
+ delete mode 100644 drivers/net/wireless/cisco/Kconfig
+ delete mode 100644 drivers/net/wireless/cisco/Makefile
+ delete mode 100644 drivers/net/wireless/cisco/airo.c
+ delete mode 100644 drivers/net/wireless/cisco/airo.h
+ delete mode 100644 drivers/net/wireless/cisco/airo_cs.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/Kconfig
+ delete mode 100644 drivers/net/wireless/intersil/hostap/Makefile
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_80211.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_80211_rx.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_80211_tx.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_ap.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_ap.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_common.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_config.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_cs.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_download.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_hw.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_info.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_ioctl.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_main.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_pci.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_plx.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_proc.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_wlan.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/Kconfig
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/Makefile
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/airport.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/cfg.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/cfg.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/fw.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/fw.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes_dld.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes_dld.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes_rid.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/hw.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/hw.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/main.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/main.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/mic.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/mic.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_cs.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_nortel.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_pci.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_pci.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_plx.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_tmd.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/scan.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/scan.h
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/spectrum_cs.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/wext.c
+ delete mode 100644 drivers/net/wireless/intersil/orinoco/wext.h
+ delete mode 100644 drivers/net/wireless/legacy/Kconfig
+ delete mode 100644 drivers/net/wireless/legacy/Makefile
+ delete mode 100644 drivers/net/wireless/legacy/ray_cs.c
+ delete mode 100644 drivers/net/wireless/legacy/ray_cs.h
+ delete mode 100644 drivers/net/wireless/legacy/rayctl.h
+ delete mode 100644 drivers/net/wireless/legacy/rndis_wlan.c
+ delete mode 100644 drivers/net/wireless/legacy/wl3501.h
+ delete mode 100644 drivers/net/wireless/legacy/wl3501_cs.c
+ delete mode 100644 drivers/net/wireless/marvell/libertas/if_cs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/efuse_be.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/pci_be.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922a.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922a.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922ae.c
+ delete mode 100644 drivers/net/wireless/zydas/zd1201.c
+ delete mode 100644 drivers/net/wireless/zydas/zd1201.h
+
 
