@@ -1,123 +1,91 @@
-Return-Path: <linux-wireless+bounces-171-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-172-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE907FC05C
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 18:37:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E517FC300
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 19:23:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8984282B31
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 17:37:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BC8E1C20BA2
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 18:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7F25CD3A;
-	Tue, 28 Nov 2023 17:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFC741C67;
+	Tue, 28 Nov 2023 18:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="IKl5a6XW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25976D5B;
-	Tue, 28 Nov 2023 09:37:38 -0800 (PST)
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-1fa619735c1so1176032fac.0;
-        Tue, 28 Nov 2023 09:37:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701193057; x=1701797857;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=euvcKpX30ZVsmfkaXJTTyAJfHCgabkUtlIpVB4OOtdk=;
-        b=xOe/8aW/yzPAouFlm/9KNzmqQCl7sYE76Cm6nOsqAty0nH+f4Et94IyIv2NSZizNXG
-         8VQ3ueyHpVc99OI1n5jU9li3vmKpCI1qup5fCVb56W8N6RSmOIAEbwd2rmu7TxTJCPb6
-         RfNhN4DODohegHTJJrPl2gvWOWLk2SHQkzsOfB9LnwDWw5NcmSv2CNTwJPgt4yJgd7f/
-         2Nxc68g7qVmLitpy/CnoGCXHEXxIZ1eD+cM+okXYj86GOiwkdHxn94rZayHjwRrYQFwz
-         F7g1hKAszsiRMQ66Xw0mLfnVmnYnsg2ruIYww5z7wqhxT6akWe+JecvtXOMJsYtmP3n5
-         Dt+w==
-X-Gm-Message-State: AOJu0YwtJd0DkDnVpm12DZ0u6B5D3zbXBQ01WKrPF/f3RbaZWkTMhiPq
-	WVffMz/IOvbsoFC7keosVw==
-X-Google-Smtp-Source: AGHT+IFqYYn9X2TZT97zZ6qFLfge2tyuoZxVF9rjnkiko+nm/6218G7n1xYaCVZdrESr/DQLfEbS8w==
-X-Received: by 2002:a05:6870:d3cb:b0:1b0:2f63:4ff6 with SMTP id l11-20020a056870d3cb00b001b02f634ff6mr22471768oag.1.1701193057389;
-        Tue, 28 Nov 2023 09:37:37 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id wx20-20020a0568707e1400b001fa38903b92sm1518933oab.15.2023.11.28.09.37.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Nov 2023 09:37:36 -0800 (PST)
-Received: (nullmailer pid 3544147 invoked by uid 1000);
-	Tue, 28 Nov 2023 17:37:35 -0000
-Date: Tue, 28 Nov 2023 11:37:35 -0600
-From: Rob Herring <robh@kernel.org>
-To: Peter Chiu <chui-hao.chiu@mediatek.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Ryder Lee <ryder.Lee@mediatek.com>, Evelyn Tsai <evelyn.tsai@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, Sam Shih <sam.shih@mediatek.com>, linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: net: wireless: mt76: add interrupts
- description for MT7986
-Message-ID: <20231128173735.GA3537931-robh@kernel.org>
-References: <20231128035723.5217-1-chui-hao.chiu@mediatek.com>
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F9CF137
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Nov 2023 10:23:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=BCXc20s1plcFTytV/cegq28ifk8bqegXX0VUq1tziks=;
+	t=1701195802; x=1702405402; b=IKl5a6XWBjUA3EP3sy41LBrLNFIHz8UVRZjflJzTHqL3wSO
+	GdVaMEKRGHEHlCyUlpaiPrH/6cmrSLpDrRq9KLQYkZohYSzlgCSLo8niLRrcJbvj5PH4kqcdQoHPY
+	mpmyQNZ+s1AUdeS0pmUeEI4/3NTZkZwq3dgpZScggv10alpPhDWmo+seyi8z5GKP/IkwVWmsIVa4o
+	U4sfpt0qoULnfUvTLK+cfze7vFaL9/TsDiyFfSifjYiXlNAUbxx8rn48rMCAqUDmYeRAb16O2Gr3N
+	pygYlXp0txoWtoZeS9I5WwVLK76mXh8XT3mgpP3B20X/V84HXu9jbYcsbp9G9BXQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1r82jv-00000007bYl-2JEZ;
+	Tue, 28 Nov 2023 19:23:19 +0100
+Message-ID: <1c37d99f722f891a50c540853e54d4e36bdf0157.camel@sipsolutions.net>
+Subject: Re: [RFC PATCH] wifi: cfg80211: fix CQM for non-range use
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Michael Walle <mwalle@kernel.org>
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, 
+	linux-wireless@vger.kernel.org, Max Schulze <max.schulze@online.de>
+Date: Tue, 28 Nov 2023 19:23:18 +0100
+In-Reply-To: <202311090752.hWcJWAHL-lkp@intel.com>
+References: <202311090752.hWcJWAHL-lkp@intel.com>
+	 <202311090752.hWcJWAHL-lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231128035723.5217-1-chui-hao.chiu@mediatek.com>
+X-malware-bazaar: not-scanned
 
-On Tue, Nov 28, 2023 at 11:57:23AM +0800, Peter Chiu wrote:
-> The mt7986 can support four interrupts to distribute the interrupts
-> to different CPUs.
-> 
-> Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-> ---
->  .../bindings/net/wireless/mediatek,mt76.yaml  | 24 +++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-> index 252207adbc54..20f5f2ead265 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-> @@ -19,9 +19,6 @@ description: |
->    Alternatively, it can specify the wireless part of the MT7628/MT7688
->    or MT7622/MT7986 SoC.
->  
-> -allOf:
-> -  - $ref: ieee80211.yaml#
-> -
->  properties:
->    compatible:
->      enum:
-> @@ -38,7 +35,8 @@ properties:
->        MT7986 should contain 3 regions consys, dcm, and sku, in this order.
->  
->    interrupts:
-> -    maxItems: 1
-> +    minItems: 1
-> +    maxItems: 4
->  
->    power-domains:
->      maxItems: 1
-> @@ -219,6 +217,24 @@ required:
->  
->  unevaluatedProperties: false
->  
-> +allOf:
-> +  - $ref: ieee80211.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - mediatek,mt7986-wmac
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          minItems: 1
-> +          items:
-> +            - description: major interrupt for rings
-> +            - description: addditional interrupt for ring 19
-> +            - description: addditional interrupt for ring 4
-> +            - description: addditional interrupt for ring 5
+On Tue, 2023-11-28 at 15:44 +0100, Michael Walle wrote:
+> Hi,
+>=20
+> > net/wireless/nl80211.c: In function 'nl80211_set_cqm_rssi.isra':
+> > net/wireless/nl80211.c:12892:17: warning: 'memcpy' specified bound
+> > 18446744073709551615 exceeds maximum object size 9223372036854775807
+> > [-Wstringop-overflow=3D]
+>=20
+> FWIW, I'm getting the same error with the current next (next-20231128).
+>=20
 
-This list belongs in the top level. The if/then schema needs to set 
-'maxItems: 1' for the cases with only 1 interrupt and 'minItems: 4' for 
-the cases with 4 interrupts.
+I actually forgot about that, but does anyone actually know what this is
+trying to tell me?
 
-Rob
+The code seems to be
+
+        if (n_thresholds) {
+                cqm_config =3D kzalloc(struct_size(cqm_config, rssi_thresho=
+lds,
+                                                 n_thresholds),
+                                     GFP_KERNEL);
+                if (!cqm_config)
+                        return -ENOMEM;
+
+                cqm_config->rssi_hyst =3D hysteresis;
+                cqm_config->n_rssi_thresholds =3D n_thresholds;
+                memcpy(cqm_config->rssi_thresholds, thresholds,
+                       flex_array_size(cqm_config, rssi_thresholds,
+                                       n_thresholds));
+
+
+Or does it just want to say n_thresholds shouldn't be a signed variable?
+
+johannes
 
