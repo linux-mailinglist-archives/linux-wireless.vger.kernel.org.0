@@ -1,112 +1,105 @@
-Return-Path: <linux-wireless+bounces-137-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-138-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E8D7FAF7A
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 02:21:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066C37FB03C
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 03:55:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F2A1C20AAD
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 01:21:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37CDD1C20A67
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 02:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA8817F8;
-	Tue, 28 Nov 2023 01:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958355693;
+	Tue, 28 Nov 2023 02:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CVxW7gz0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9FAD59
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Nov 2023 17:21:24 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3AS1LKYk81664603, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3AS1LKYk81664603
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Nov 2023 09:21:20 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 28 Nov 2023 09:21:20 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Tue, 28 Nov 2023 09:21:19 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Tue, 28 Nov 2023 09:21:19 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ali Ghandour <gandour.ali@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: Lenovo LOQ rtw_8852be
-Thread-Topic: Lenovo LOQ rtw_8852be
-Thread-Index: AQHaH+dudVZVMpW7Qk6t1f3PxKDyKLCNY6tQ///EsACAAAT0AIAAh+ZQ
-Date: Tue, 28 Nov 2023 01:21:19 +0000
-Message-ID: <b4cfd676c0b24d98b82302aefac7f379@realtek.com>
-References: <1700948088-16140-mlmmj-666d2532@vger.kernel.org>
- <CAOE0c97T1cVvqFkqfrP_h53X08yQ7kLinZP09L35nVHc_V89+g@mail.gmail.com>
- <5abfc98859504795b50f7f343784c886@realtek.com>
- <CAOE0c96uJ9x8gbJZdHiMEiOM5gTd_ZqM_rUV7Cs1NyA_t0Ncfg@mail.gmail.com>
- <CAOE0c97fDaLTfsMJVmEh4HxOAPY19kD60qsV5AKJbWW5nnqWzw@mail.gmail.com>
-In-Reply-To: <CAOE0c97fDaLTfsMJVmEh4HxOAPY19kD60qsV5AKJbWW5nnqWzw@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96035191
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Nov 2023 18:55:02 -0800 (PST)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AS2Lthn023213;
+	Tue, 28 Nov 2023 02:54:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=5bVWElZbJVzUBT6C363eH2FeGH4ewMadW4Zi62UQpGI=;
+ b=CVxW7gz0+o9LRtFUJGNQUDxcPRxRMUrb2kjCq9hq5HVkfrcEe6bBKdWvfX58ApP3As/G
+ 7sxFNz+4PPwm9mUrNRsPhuK5OlLIA3zoKLd8+X6DCg46zM77pCHZGi/V4WfswpFwWDMu
+ mh9/LUwlBA5OeirZ3X2ulowvyv9VdDfT/ybcxdBbV0Ft9fXLffqp4KSvBSCcp1/PRx/R
+ ZeTMsYjMXVLGJ1H8FHpN37f6oLlCJkYydz+9k/xnwB56OzkcfkJtnPIU92wL0Kk/dKSe
+ DvNEvdz37/yZ76NIrKNTjj61Rati+xNgJU9BCV7n+sHlBLn5BeIbgLONIxEk/cQwvFPN XQ== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3un586r9bh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 02:54:56 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AS2stBg015578
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 02:54:55 GMT
+Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 27 Nov 2023 18:54:54 -0800
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/3] wifi: ath12k: some improvement to RX throughput
+Date: Tue, 28 Nov 2023 10:54:37 +0800
+Message-ID: <20231128025440.46988-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: qyPMbjw6FpeIyexg8KoKfLLu-DcFwDRW
+X-Proofpoint-GUID: qyPMbjw6FpeIyexg8KoKfLLu-DcFwDRW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_01,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=434 priorityscore=1501 spamscore=0 impostorscore=0
+ adultscore=0 mlxscore=0 phishscore=0 suspectscore=0 clxscore=1011
+ bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311280021
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQWxpIEdoYW5kb3VyIDxn
-YW5kb3VyLmFsaUBnbWFpbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwgTm92ZW1iZXIgMjcsIDIwMjMg
-MjoxOSBQTQ0KPiBUbzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IENjOiBs
-aW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IExlbm92byBMT1Eg
-cnR3Xzg4NTJiZQ0KPiANCj4gc2VlbXMgbGlrZSB0aGUgc2FtZSBlcnJvciBwZXJzaXN0cyBhZnRl
-ciBkb3duZ3JhZGluZzoNCj4gDQo+ICQgdW5hbWUgLXINCj4gNS4xNy4wLTEwMzUtb2VtDQo+IA0K
-PiAkIHN1ZG8gZG1lc2cgfCBncmVwIHJ0dw0KPiBbICAgIDQuODU5ODQ4XSBydHc4OV84ODUyYmUg
-MDAwMDowOTowMC4wOiBsb2FkZWQgZmlybXdhcmUNCj4gcnR3ODkvcnR3ODg1MmJfZnctMS5iaW4N
-Cj4gWyAgICA0Ljg2MDIxNF0gcnR3ODlfODg1MmJlIDAwMDA6MDk6MDAuMDogZW5hYmxpbmcgZGV2
-aWNlICgwMDAwIC0+IDAwMDMpDQo+IFsgICAgNC44NjE1NDZdIHJ0dzg5Xzg4NTJiZSAwMDAwOjA5
-OjAwLjA6IEZpcm13YXJlIHZlcnNpb24gMC4yOS4yOS41DQo+IChkYTg3Y2NjZCksIGNtZCB2ZXJz
-aW9uIDAsIHR5cGUgNQ0KPiBbICAgIDQuODYxNTUwXSBydHc4OV84ODUyYmUgMDAwMDowOTowMC4w
-OiBGaXJtd2FyZSB2ZXJzaW9uIDAuMjkuMjkuNQ0KPiAoZGE4N2NjY2QpLCBjbWQgdmVyc2lvbiAw
-LCB0eXBlIDMNCj4gWyAgICA0Ljg2MTU1Nl0gcnR3ODlfODg1MmJlIDAwMDA6MDk6MDAuMDogTUFD
-IGhhcyBhbHJlYWR5IHBvd2VyZWQgb24NCj4gWyAgICA0Ljg2NzI0Nl0gcnR3ODlfODg1MmJlIDAw
-MDA6MDk6MDAuMDogW0VSUl1wY2kgY29uZmlnIHJlYWQgNzE5DQoNCldlIGRpZCBjaGFuZ2VzIGFm
-dGVyIDUuMTgsIGJ1dCB5b3VyIDUuMTcgcHJpbnQgb3V0IGVycm9yIHdpdGgNCiJwY2kgY29uZmln
-IHJlYWQiIGluc3RlYWQgb2YgImRiaV9yOF9wY2llIi4gDQoNCi0gICAgICAgcmV0ID0gcnR3ODlf
-ZGJpX3JlYWQ4KHJ0d2RldiwgUlRXODlfUENJRV9MMV9DVFJMLCAmYmRyX29yaSk7DQorICAgICAg
-IHJldCA9IHJ0dzg5X3BjaV9yZWFkX2NvbmZpZ19ieXRlKHJ0d2RldiwgUlRXODlfUENJRV9MMV9D
-VFJMLCAmYmRyX29yaSk7DQogICAgICAgIGlmIChyZXQpIHsNCi0gICAgICAgICAgICAgICBydHc4
-OV9lcnIocnR3ZGV2LCAiW0VSUl1kYmlfcjhfcGNpZSAlWFxuIiwgUlRXODlfUENJRV9MMV9DVFJM
-KTsgIC8vIDUuMTcNCisgICAgICAgICAgICAgICBydHc4OV9lcnIocnR3ZGV2LCAiW0VSUl1wY2kg
-Y29uZmlnIHJlYWQgJVhcbiIsIFJUVzg5X1BDSUVfTDFfQ1RSTCk7IC8vIDUuMTgNCiAgICAgICAg
-ICAgICAgICByZXR1cm4gcmV0Ow0KICAgICAgICB9DQoNClVoLiBJIGtub3cgdGhlIHJlYXNvbiB3
-aHkgeW91IHNlZSB0aGUgbmV3IG9uZSwgYmVjYXVzZSA4ODUyYmUgaXMgc3VwcG9ydGVkDQpieSBr
-ZXJuZWwgNi4yLCBhbmQgZGlzdHJvIGJhY2twb3J0IHRoZSBkcml2ZXIgdG8gb2xkIGtlcm5lbC4N
-Cg0KDQpJZiB5b3UgY2FuIGJ1aWxkIGRyaXZlciB5b3Vyc2VsZiwgcGxlYXNlIHJldmVydCBiZWxv
-dyBwYXRjaCBhbmQgdHJ5IGFnYWluLg0KRml4ZXM6IGRiMzhkOWNkMjZjOSAoInJ0dzg5OiB1c2Ug
-cGNpX3JlYWQvd3JpdGVfY29uZmlnIGluc3RlYWQgb2YgZGJpIHJlYWQvd3JpdGUiKQ0KDQo+ID4N
-Cj4gPiAkIGxzcGNpIC10dg0KPiA+IC1bMDAwMDowMF0tKy0wMC4wICBJbnRlbCBDb3Jwb3JhdGlv
-biBEZXZpY2UgYTcxNQ0KDQpJIHdpbGwgdHJ5IHRvIEdvb2dsZSB0byBzZWUgaWYgSSBjYW4gZmlu
-ZCBzb21lIGluZm9ybWF0aW9uIGFib3V0IHRoaXMgUENJIGhvc3QgY29udHJvbGxlci4NCg0KQ2Fu
-IEkga25vdyB0aGUgdHlwZSBvZiB5b3VyIHBsYXRvZm9ybSBMZW5vdm8gTE9RPyBJcyBpdCBhIHJl
-Z3VsYXIgbm90ZWJvb2sgY29tcHV0ZXI/DQoNCj4gPg0KPiA+ICQgc3VkbyBsc3BjaSAtcyAwOTow
-MC4wIC14eHh4DQo+ID4gMDk6MDAuMCBOZXR3b3JrIGNvbnRyb2xsZXI6IFJlYWx0ZWsgU2VtaWNv
-bmR1Y3RvciBDby4sIEx0ZC4gRGV2aWNlIGI4NTINCg0KWy4uLl0NCg0KPiA+IGYwOiAwMCAwMCAw
-MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMA0KDQpJbiBteSBzaWRlLCBs
-c3BjaSB3aXRoICcteHh4eCcsIGl0IGNhbiBkaXNwbGF5IFBDSSBjb25maWd1cmF0aW9uIHNwYWNl
-IDAgfiBmZjAuDQpJbiB5b3VyIHNpZGUsIGxzcGNpIGhhcyB0aGUgc2FtZSBiZWhhdmlvciBhcyBk
-cml2ZXIgdGhhdCBjYW4ndCByZWFkIDB4NzE5Lg0KDQpUaGUgUENJIEVYVCBjYXBhYmlsaXRpZXMg
-bG9jYXRlIGZyb20gMTAwaC4gTm90IHN1cmUgaWYgaG9zdCBjb250cm9sbGVyIGRyaXZlcg0KbGlt
-aXRzIHRvIGRpc3BsYXkgdGhlbT8gDQoNClBpbmctS2UNCg0K
+Some fields of hal_reo_update_rx_queue are wrongly
+defined, fix it in the first patch.
+
+Currently the maximum block ACK window size is 256,
+with the second patch, it is extended to BA1024.
+
+The small MAC buffer ring becomes the bottle neck
+in RX throughput test, so enlarge its size to get
+a better peak result. This is done is the third patch.
+
+With above three changes, more than 6% increase is
+seen in RX throughput test.
+
+Baochen Qiang (3):
+  wifi: ath12k: fix wrong definitions of hal_reo_update_rx_queue
+  wifi: ath12k: add support for BA1024
+  wifi: ath12k: change MAC buffer ring size to 2048
+
+ drivers/net/wireless/ath/ath12k/dp.h       |  3 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c    |  2 +-
+ drivers/net/wireless/ath/ath12k/hal_desc.h | 42 ++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/hal_rx.c   | 11 ++++--
+ drivers/net/wireless/ath/ath12k/mac.c      |  2 +-
+ 5 files changed, 47 insertions(+), 13 deletions(-)
+
+
+base-commit: 16a212b4f33c4edd9ce9a9e0953b5389216e8ed9
+-- 
+2.25.1
+
 
