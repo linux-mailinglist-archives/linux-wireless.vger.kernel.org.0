@@ -1,181 +1,99 @@
-Return-Path: <linux-wireless+bounces-132-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-133-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E614E7FADB9
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 23:54:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FEB27FAEF8
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 01:22:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83F1D281B44
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Nov 2023 22:54:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1A1B1C20B28
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 00:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E0245BFE;
-	Mon, 27 Nov 2023 22:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DB27EB;
+	Tue, 28 Nov 2023 00:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VcVZtacn"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="gHW7zeIR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF90CD4B;
-	Mon, 27 Nov 2023 14:54:19 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-40b4746ae3bso8659545e9.0;
-        Mon, 27 Nov 2023 14:54:19 -0800 (PST)
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E36FE18B
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Nov 2023 16:22:12 -0800 (PST)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6cb4d366248so4076878b3a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Nov 2023 16:22:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701125658; x=1701730458; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QIZZjVzYyIfXfJZDLrm8sokZX3uH1Dv9Mf0lFv/fkno=;
-        b=VcVZtacneuv7akSQtibtXNqmROl+tlNMDBMcq5fRN/6NYaEK+nnXX4w3aB73fkLGME
-         g/IZfcRz7CIboALlR7j/aP/JrqlfcfTOVzseh7tWHr5QM0lJ2uqreaCwmhF8YcBs6Pgi
-         vWSP9o99dHye6KQPu2EWe+mpbCnNx3XExqEcPofM1Gs8TsrZLQCjaA+LLp89gD54Bw6K
-         y8YHARW9oXbhNXNNM/4vHHvI+L8zCIBI4T3IZCBSuho2XqhyDLMwQEpJL0qi6w05vQRS
-         UeBNeUdCwEz1Jphq5bkEGAUAg6uJJNm8TegpLTWV12YE7Vz917kDpKFQCHgqdo5aUyOp
-         L9DQ==
+        d=chromium.org; s=google; t=1701130932; x=1701735732; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FcF7EbG17wMf5A1vywn815C2rgzGBSTBqW3p8rKvm+Q=;
+        b=gHW7zeIRSF2utN8brgCdiO6Rlba0fYGpE5dOK8IlsXWocIGrDthTK5MYK0qlDsXkw7
+         gFpNyvoRmnbTa9zIL+TKPdtU+tCYSBjZCzJl7etvG6bAJe4ozoVqClXacnhoUodVz1en
+         hBAKMVsquMEFYQFKpaTNhfdkxzuY5rGCExqIQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701125658; x=1701730458;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QIZZjVzYyIfXfJZDLrm8sokZX3uH1Dv9Mf0lFv/fkno=;
-        b=URVulUO1sErCG7EAAsB4fCPsCPLZelRnd3MzWfoMTOSJAZ5SVcciK07wZdXV+CvowW
-         WcVIFCXGkZC1RHIOoW92uVk2nVT5Qt33W2TBsJM2bgDfkVQJk4cLozhOeBMlz2wnb6+p
-         hGOxusU36zT39FIVhepHqHIL2ii4z2RofBSSytxxcBD9Ffhq0ytJh3wtCsaCWLLyE/I+
-         b54CG4t8ksaX3ad53ta6vKOTnELs+cBzRMMY+rFR7oNeBsHCk2J0HjVvit5B4y6UfuGj
-         nzK4biNtAPwJ6D+rFOS7arNHsh2mg2Sb1MxPwN1TpqDWZdLla4hjHVVZM3kttJ6yvYzK
-         OCMQ==
-X-Gm-Message-State: AOJu0Yz3GWumdroVYbads8RYARvDhcegtfhX/mcxACJDvOxgcSnMwv8d
-	7khaztMon6AB/zapeah2/Qo=
-X-Google-Smtp-Source: AGHT+IEOptO9tc+DnBiK8/x4iOCPqjUwNymCAFCsQEo5iBKNgEhWeaNKzV748GEliI/QGLFHM8rUoQ==
-X-Received: by 2002:a5d:6352:0:b0:332:d360:5df5 with SMTP id b18-20020a5d6352000000b00332d3605df5mr8416414wrw.54.1701125657881;
-        Mon, 27 Nov 2023 14:54:17 -0800 (PST)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id u12-20020a05600c138c00b004063c9f68f2sm15238589wmf.26.2023.11.27.14.54.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Nov 2023 14:54:17 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701130932; x=1701735732;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FcF7EbG17wMf5A1vywn815C2rgzGBSTBqW3p8rKvm+Q=;
+        b=eVhWAKYonWMHfbulGAr4E+N0xAgr1hxY8CVUqnF2goFZiG+lpbNmzdoWCfw+u2O9UV
+         NyzV9vBEAzGCiPGT2sF6GQd6IFcFz4TEv+M/ZxD2TEHoJmzqG/ukw1PTqfEEsO3K7aVm
+         UNswZuDqltu223YZVQ+w2vOVscVTUV90mgadnTLadN65Ffmf6q+nNRGBYJ+YTxSmkU3L
+         DnHPDeb3MJqBcP82BGTWrC4yakrb9BDF51INm/rCk0WmNkzMHjAQQ7+ksGVKVdXcKPKE
+         HvXbLLBgC2Qlv0lenDbM7e5ZMmFV09kqFkWWAMyToj/vvHeHY0lRdS1IkDvGb2m6fDsX
+         e+IQ==
+X-Gm-Message-State: AOJu0Yw6EHotYPyI2kmUx/Maxziy9uNFLH+uL23mjlimn5GqaxaAoX1+
+	YMvHCxrgMp8cYSHZxUTlNZuOeuvec/e/03AK0dlUiA==
+X-Google-Smtp-Source: AGHT+IGUgQLH74WqDwY1dXBnMXs3poKbhgyhnJWjJs8YpFTvm4lBIManweCNuXmLfe1LHnljM+TKyg==
+X-Received: by 2002:a05:6a00:88f:b0:6b3:f29c:dde1 with SMTP id q15-20020a056a00088f00b006b3f29cdde1mr14055045pfj.21.1701130932417;
+        Mon, 27 Nov 2023 16:22:12 -0800 (PST)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id fh23-20020a056a00391700b006cc02a6d18asm4752811pfb.61.2023.11.27.16.22.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Nov 2023 16:22:11 -0800 (PST)
+Date: Mon, 27 Nov 2023 16:22:11 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Will Deacon <will@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] uapi: propagate __struct_group() attributes to the
+ container union
+Message-ID: <202311271620.B0CB21B@keescook>
+References: <20231120110607.98956-1-dmantipov@yandex.ru>
+ <f0bebfe0f7e02bb51676d8f6a80be0444e2b8662.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 27 Nov 2023 23:54:17 +0100
-Message-Id: <CX9YPUDTAT1N.23DMRB5O9FEAO@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <ath11k@lists.infradead.org>
-Subject: Re: [PATCH] wifi: ath11k: fix layout of scan_flags in struct
- scan_req_params
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Jeff Johnson" <quic_jjohnson@quicinc.com>, "Kalle Valo"
- <kvalo@kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20231127180559.1696041-1-nico.escande@gmail.com>
- <bdcdbd06-e9bd-4a92-b27b-d94b2d8fb52d@quicinc.com>
-In-Reply-To: <bdcdbd06-e9bd-4a92-b27b-d94b2d8fb52d@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f0bebfe0f7e02bb51676d8f6a80be0444e2b8662.camel@sipsolutions.net>
 
-On Mon Nov 27, 2023 at 7:38 PM CET, Jeff Johnson wrote:
-> On 11/27/2023 10:05 AM, Nicolas Escande wrote:
-> > The is a layout mismatch between the bitfield representing scan_flags i=
-n
-> > struct scan_req_params & the bits as defined in the WMI_SCAN_XXX macros=
-.
-> > Lets fix it by making the struct match the #defines.
-> >=20
-> > I tried to correct it by making the struct match the #define and it=20
-> > worked for WMI_SCAN_FLAG_FORCE_ACTIVE_ON_DFS / scan_f_force_active_dfs_=
-chn
-> > so I'm assuming this is the right thing to do.
-> >=20
-> > Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> >=20
-> > Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-> > ---
-> >  drivers/net/wireless/ath/ath11k/wmi.h | 10 +++++-----
-> >  1 file changed, 5 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wirele=
-ss/ath/ath11k/wmi.h
-> > index 100bb816b592..0b4e6c2f7860 100644
-> > --- a/drivers/net/wireless/ath/ath11k/wmi.h
-> > +++ b/drivers/net/wireless/ath/ath11k/wmi.h
-> > @@ -3348,17 +3348,17 @@ struct scan_req_params {
-> >  			    scan_f_filter_prb_req:1,
-> >  			    scan_f_bypass_dfs_chn:1,
-> >  			    scan_f_continue_on_err:1,
-> > +			    scan_f_promisc_mode:1,
-> > +			    scan_f_force_active_dfs_chn:1,
-> > +			    scan_f_add_tpc_ie_in_probe:1,
-> > +			    scan_f_add_ds_ie_in_probe:1,
-> > +			    scan_f_add_spoofed_mac_in_probe:1,
-> >  			    scan_f_offchan_mgmt_tx:1,
-> >  			    scan_f_offchan_data_tx:1,
-> > -			    scan_f_promisc_mode:1,
-> >  			    scan_f_capture_phy_err:1,
-> >  			    scan_f_strict_passive_pch:1,
-> >  			    scan_f_half_rate:1,
-> >  			    scan_f_quarter_rate:1,
-> > -			    scan_f_force_active_dfs_chn:1,
-> > -			    scan_f_add_tpc_ie_in_probe:1,
-> > -			    scan_f_add_ds_ie_in_probe:1,
-> > -			    scan_f_add_spoofed_mac_in_probe:1,
-> >  			    scan_f_add_rand_seq_in_probe:1,
-> >  			    scan_f_en_ie_whitelist_in_probe:1,
-> >  			    scan_f_forced:1,
->
-> You are convoluting two different data structures.
+On Fri, Nov 24, 2023 at 06:37:14PM +0100, Johannes Berg wrote:
+> On Mon, 2023-11-20 at 14:05 +0300, Dmitry Antipov wrote:
+> > Recently the kernel test robot has reported an ARM-specific BUILD_BUG_ON()
+> > in an old and unmaintained wil6210 wireless driver.
+> > 
+> 
+> Heh. I guess it wasn't unmaintained enough for someone to touch it and
+> add struct_group() to it...
 
-So maybe I'm missing something and please correct me where I'm wrong.
+It needed it since it was using memcpy across fields. But it's been a
+while since that change happened, so finding this bug now is pretty
+impressive. :)
 
-> struct scan_req_params is used to represent a scan request within the
-> host driver. This does not use the WMI_SCAN_XXX macros.
->
+> 
+> >  include/uapi/linux/stddef.h | 2 +-
+> > 
+> 
+> No idea what tree this should go through, but I guess wireless isn't
+> appropriate.
 
-In mac.c when we start a scan with ath11k_mac_op_hw_scan() for example we f=
-irst
-initialize a struct scan_req_params with ath11k_wmi_start_scan_init().
-ath11k_wmi_start_scan_init() by itself does use the WMI_SCAN_XXX macros
+I'll take it; thanks for the find Dmitry!
 
-	arg->scan_flags |=3D WMI_SCAN_CHAN_STAT_EVENT;
-
-Then later on in ath11k_mac_op_hw_scan() we either use the bitfield like wi=
-th
-
-	arg->scan_f_add_spoofed_mac_in_probe =3D 1;
-
-or we directly modify scan_flags like with
-
-	arg->scan_flags |=3D WMI_SCAN_FLAG_PASSIVE;
-
-So is it not expected to use those flags there ?
-
-> struct wmi_start_scan_cmd is used to represent the scan request command
-> sent to firmware. This struct uses the WMI_SCAN_XXX macros to fill some
-> members of this struct in ath11k_wmi_copy_scan_event_cntrl_flags().
-
-Indeed ath11k_wmi_copy_scan_event_cntrl_flags() copies from struct
-scan_req_params to struct wmi_start_scan_cmd but this time we do not use=20
-scan_flags directly, only ever use the bitfield that is in the same union
-as scan_flags
-
-So having the bitfield out of sync does cause the struct wmi_start_scan_cmd=
- that
-gets sent to the driver to not reflect the desired state set in scan_req_pa=
-rams.
-
-> So your change has no effect on the driver operation and incorrectly
-> tries to foist the firmware definition upon the host internal
-> representation.
-
-So either we should not use WMI_SCAN_XXX with scan_req_params.scan_flags ev=
-er
-and only use the bitfield to set scan parameters or if we use WMI_SCAN_XXX =
-with
-scan_req_params.scan_flags they need to match the corresponding bitfield.
-
->
-> So NAK to this patch.
->
-> /jeff
+-- 
+Kees Cook
 
