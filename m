@@ -1,128 +1,175 @@
-Return-Path: <linux-wireless+bounces-143-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-144-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFC27FB0BE
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 04:57:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0BE7FB13C
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 06:31:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1F728168F
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 03:57:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 886721C209C2
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 05:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71D5DDDE;
-	Tue, 28 Nov 2023 03:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB579748F;
+	Tue, 28 Nov 2023 05:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="qyQxmlqG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="le8QwU0j"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 704099D;
-	Mon, 27 Nov 2023 19:57:32 -0800 (PST)
-X-UUID: 3df51cae8da211eea33bb35ae8d461a2-20231128
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=w0zhHTFWA03x1O2f6LVHcIebtJwTLXkrPBnvPfMfwzE=;
-	b=qyQxmlqGylU2osV2eA6wtV8gzbzWqj4P+xxrSOMQMoEWazGMR1cdDJsqeHs+3CVvt6TKwQ66/eClsLFJYQJQsPJtMD7RBJmjCK5KGdck9g/ox2ccL6A9Yto5trgLwdDPo0UH0aycgt1+KN6XwBIfWN5Vf1hLoA7N1ZEDDDj27Xk=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.34,REQID:503b0d0a-46f5-4a19-9b4f-51ee8082b2eb,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:abefa75,CLOUDID:d507e395-10ce-4e4b-85c2-c9b5229ff92b,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
-	DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 3df51cae8da211eea33bb35ae8d461a2-20231128
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
-	(envelope-from <chui-hao.chiu@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1451637348; Tue, 28 Nov 2023 11:57:25 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 28 Nov 2023 11:57:24 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 28 Nov 2023 11:57:24 +0800
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>, Rob Herring <robh+dt@kernel.org>
-CC: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Ryder Lee
-	<ryder.Lee@mediatek.com>, Evelyn Tsai <evelyn.tsai@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, Sam Shih <sam.shih@mediatek.com>,
-	<linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<devicetree@vger.kernel.org>, Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH] dt-bindings: net: wireless: mt76: add interrupts description for MT7986
-Date: Tue, 28 Nov 2023 11:57:23 +0800
-Message-ID: <20231128035723.5217-1-chui-hao.chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63D11E6;
+	Mon, 27 Nov 2023 21:31:23 -0800 (PST)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6b20a48522fso4073685b3a.1;
+        Mon, 27 Nov 2023 21:31:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701149483; x=1701754283; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EEPi9c7ppkLgBeiuzKlkFix1rYtohwubig6Zzx1D7yA=;
+        b=le8QwU0jCDY9ZG8m19L67XVIZKrDXN9fQ84HljH7vOr4IqtzYe1Yksg3pY6zeTVGI8
+         T6O1R+2/4mUObwgGo1vTrDWY0diQ9ecKmi2IOHGctPkIFQCjbVy29GVapssYOll5eozF
+         bPVNO0hh1P3Gh5w7EfXg6uTYYz/4JcJUwLwVwpLBmEUYGHUrr0oa78FNTxBaOP2K/kVh
+         X2MygYRlOCAauQ3ziWKI2T4M9mHwMzDtUKlafPlUCchZHg+QY9lpyuvRr7vy118MO8qF
+         HRHPqzoKdf1uFTB6PKl0PrTxOQq7xrgni/7T/+NXGBIWCYUDyQUN510YNrCETwoN5rvO
+         fHAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701149483; x=1701754283;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EEPi9c7ppkLgBeiuzKlkFix1rYtohwubig6Zzx1D7yA=;
+        b=JSvqB77eFKeuTfDTcDKklnpmkb1vsmSjbw1mSHbRN12cMcS0/MKH1NbDzCCZtMklVD
+         ATixskBk+Vh6f4PCBAaY99KJr7WGX8zwfNxITElIrbLuBsN+FIHwPtcjTYhUHWlebIkj
+         NXy9WNtKXgkVPdtdrBshRGDguTImiG75saqZHxiVs4J3T6FsoO6zLYRId7IQ4tk0e3Uq
+         HISR3Eglh/zDFBZBBAenBkAd3NgQeN73XgKoyrnxVNSsk9bo1cf1CS/vyLTKFAQK7BSA
+         CkkLq90+E3mzEZWV6AXXGKHAqSN4BBfIju4TeZEsRpnv+fhSZKoXixw5aiYKYU0lq6xh
+         ssZA==
+X-Gm-Message-State: AOJu0YxGAmZTGhgACfZoNfYluiOyJmV73Ej2LgmbsOoCWGPemDaf7Ztx
+	mBT70rUAYrryjz+EiHxIIMQ=
+X-Google-Smtp-Source: AGHT+IGlXC8UReAEZX2Q21EENrre/8ig09+Y/pOPN2cMuhsa5digs3NrGSN7fY2BDBGQ+2jchBphmQ==
+X-Received: by 2002:a05:6a20:1445:b0:18c:5c04:5564 with SMTP id a5-20020a056a20144500b0018c5c045564mr8897440pzi.60.1701149482790;
+        Mon, 27 Nov 2023 21:31:22 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id m10-20020a170902db0a00b001cfde3ee4e8sm1655108plx.125.2023.11.27.21.31.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Nov 2023 21:31:22 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 024731143686A; Tue, 28 Nov 2023 12:31:19 +0700 (WIB)
+Date: Tue, 28 Nov 2023 12:31:19 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Genes Lists <lists@sapience.com>, tglx@linutronix.de,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	gregory.greenman@intel.com, kvalo@kernel.org,
+	Linux Wireless <linux-wireless@vger.kernel.org>
+Cc: Linux Regressions <regressions@lists.linux.dev>
+Subject: Re: crash with 6.7 rc2 and rc3
+Message-ID: <ZWV7JworMrjHJHsO@archie.me>
+References: <c46a6462-8263-455c-a6ea-1860020f5fab@sapience.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sEcx6aMYousCg2QL"
+Content-Disposition: inline
+In-Reply-To: <c46a6462-8263-455c-a6ea-1860020f5fab@sapience.com>
 
-The mt7986 can support four interrupts to distribute the interrupts
-to different CPUs.
 
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
----
- .../bindings/net/wireless/mediatek,mt76.yaml  | 24 +++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+--sEcx6aMYousCg2QL
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-index 252207adbc54..20f5f2ead265 100644
---- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-@@ -19,9 +19,6 @@ description: |
-   Alternatively, it can specify the wireless part of the MT7628/MT7688
-   or MT7622/MT7986 SoC.
- 
--allOf:
--  - $ref: ieee80211.yaml#
--
- properties:
-   compatible:
-     enum:
-@@ -38,7 +35,8 @@ properties:
-       MT7986 should contain 3 regions consys, dcm, and sku, in this order.
- 
-   interrupts:
--    maxItems: 1
-+    minItems: 1
-+    maxItems: 4
- 
-   power-domains:
-     maxItems: 1
-@@ -219,6 +217,24 @@ required:
- 
- unevaluatedProperties: false
- 
-+allOf:
-+  - $ref: ieee80211.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - mediatek,mt7986-wmac
-+    then:
-+      properties:
-+        interrupts:
-+          minItems: 1
-+          items:
-+            - description: major interrupt for rings
-+            - description: addditional interrupt for ring 19
-+            - description: addditional interrupt for ring 4
-+            - description: addditional interrupt for ring 5
-+
- examples:
-   - |
-     pcie0 {
--- 
-2.18.0
+On Mon, Nov 27, 2023 at 03:55:37PM -0500, Genes Lists wrote:
+>=20
+> lenovo laptop boots fine under 6.7rc1 and older including 6.6.2 stable.
+> but not for 6.7 rc2 or rc3.
+>=20
+> It has a intel 7260 (rev 3) wireless and :
+>=20
+> cpu family	: 6
+> model		: 60
+> model name	: Intel(R) Core(TM) i7-4800MQ CPU @ 2.70GHz
+> stepping	: 3
+> microcode	: 0x28
+>=20
+>=20
+> As of 6.7 rc2 / rc3 it crashes towards the end of boot bringing up servic=
+es
+> -  some parts of crash scrolled off the screen so I apologize if this
+> (manually transcribed) trace didn't catch the first part.
+>=20
+> I did a git bisect between rc1 and rc2 but was unable to reproduce the cr=
+ash
+> for some reason. (I did not do make clean between each bisects).
+>=20
+> During the bisect it booted every time, but networking was not functional
+> for any of the bisects.
+>=20
+> Hope it's okay to report even though git bisect didn't get anywhere.
+>=20
+> Gene
+>=20
+> This is the what I got from screen :
+>=20
+> CS: 0010 DS: 000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f30cf49ba38 CR3: 000000025b620004 CR4: 00000000001706f0
+> Call Trace:
+>  <IRQ>
+>  ? die_addr+0x36/0x90
+>  ? exc_general_protection+0x1c5/0x430
+>  ? asm_exc_gemeral_protection+0x26/0x30
+>  ? iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
+>  ? __kmem_cache_alloc_node+0x1d5/0x2b0
+>  ? iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
+>  ? iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
+>  __kmalloc_node_track_caller+0x51/0x160
+>  kmemdup+0x20/0x50
+>  iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
+>  iwl_wait_phy_db_entry+0x2f/0x40 [iwlmvm]
+>  iwl_notification_wait+0xb0/0xf0 [iwlwifi]
+>  iwl_mvm_rx_common+0x8e/0x320 [iwlwifi]
+>  iwl_pcie_napi_poll+0x2d/0x150 [iwlwifi]
+>  __napi_poll+0x2b/0x1c0
+>  net_rx_action+0x2b4/0x320
+>  __do_softirq+0xff/0x339
+>  net_rx_action+0x2b4/0x320
+>  __do_softirq.part.0+0x88/0xa0
+> </IRQ>
+> <TASK>
+> __local_bh_enable_ip+0x91/0xa0
+> iwl_pcie_irq_handler+0x58d/0xc40 [iwlwifi]
+> ? __pfx_irq_thread_fn+0x10/0x10
+> irq_thread_fn+0x23/0x60
+> irq_thread+0xfe/0x60
+> ? __pfx_irq_thread_dtor+0x10/0x10
+> ? __pfx_irq_thread+0x10/0x10
+> kthread+0xfa/0x130
+> ? pff_kthread+0x10/0x10
+> ret_from_fork+0x34/0x50
+> ? __pfx_kthread+0x10/0x10
+> ret_from_fork_asm+0x1b/0x30
 
+Do you have any full system logs that can be attached?
+
+Anyway, thanks for the regression report. I'm adding it to regzbot:
+
+#regzbot ^introduced: v6.7-rc1..v6.7-rc2
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--sEcx6aMYousCg2QL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZWV7IgAKCRD2uYlJVVFO
+o02/AQDz9zBxC7l3PA7XiPWORmbSKTBUjAJWCjZ4HQCsGtw9ZgEA7Zige0E/cGXL
+q1/LpBIwpT3tfL752nITIl7B/mcKdwg=
+=C092
+-----END PGP SIGNATURE-----
+
+--sEcx6aMYousCg2QL--
 
