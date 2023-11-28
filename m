@@ -1,175 +1,150 @@
-Return-Path: <linux-wireless+bounces-144-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-146-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0BE7FB13C
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 06:31:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB147FB40C
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 09:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 886721C209C2
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 05:31:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DFFA28222A
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Nov 2023 08:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB579748F;
-	Tue, 28 Nov 2023 05:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F033918033;
+	Tue, 28 Nov 2023 08:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="le8QwU0j"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Dq8fdjEH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63D11E6;
-	Mon, 27 Nov 2023 21:31:23 -0800 (PST)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6b20a48522fso4073685b3a.1;
-        Mon, 27 Nov 2023 21:31:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701149483; x=1701754283; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EEPi9c7ppkLgBeiuzKlkFix1rYtohwubig6Zzx1D7yA=;
-        b=le8QwU0jCDY9ZG8m19L67XVIZKrDXN9fQ84HljH7vOr4IqtzYe1Yksg3pY6zeTVGI8
-         T6O1R+2/4mUObwgGo1vTrDWY0diQ9ecKmi2IOHGctPkIFQCjbVy29GVapssYOll5eozF
-         bPVNO0hh1P3Gh5w7EfXg6uTYYz/4JcJUwLwVwpLBmEUYGHUrr0oa78FNTxBaOP2K/kVh
-         X2MygYRlOCAauQ3ziWKI2T4M9mHwMzDtUKlafPlUCchZHg+QY9lpyuvRr7vy118MO8qF
-         HRHPqzoKdf1uFTB6PKl0PrTxOQq7xrgni/7T/+NXGBIWCYUDyQUN510YNrCETwoN5rvO
-         fHAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701149483; x=1701754283;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EEPi9c7ppkLgBeiuzKlkFix1rYtohwubig6Zzx1D7yA=;
-        b=JSvqB77eFKeuTfDTcDKklnpmkb1vsmSjbw1mSHbRN12cMcS0/MKH1NbDzCCZtMklVD
-         ATixskBk+Vh6f4PCBAaY99KJr7WGX8zwfNxITElIrbLuBsN+FIHwPtcjTYhUHWlebIkj
-         NXy9WNtKXgkVPdtdrBshRGDguTImiG75saqZHxiVs4J3T6FsoO6zLYRId7IQ4tk0e3Uq
-         HISR3Eglh/zDFBZBBAenBkAd3NgQeN73XgKoyrnxVNSsk9bo1cf1CS/vyLTKFAQK7BSA
-         CkkLq90+E3mzEZWV6AXXGKHAqSN4BBfIju4TeZEsRpnv+fhSZKoXixw5aiYKYU0lq6xh
-         ssZA==
-X-Gm-Message-State: AOJu0YxGAmZTGhgACfZoNfYluiOyJmV73Ej2LgmbsOoCWGPemDaf7Ztx
-	mBT70rUAYrryjz+EiHxIIMQ=
-X-Google-Smtp-Source: AGHT+IGlXC8UReAEZX2Q21EENrre/8ig09+Y/pOPN2cMuhsa5digs3NrGSN7fY2BDBGQ+2jchBphmQ==
-X-Received: by 2002:a05:6a20:1445:b0:18c:5c04:5564 with SMTP id a5-20020a056a20144500b0018c5c045564mr8897440pzi.60.1701149482790;
-        Mon, 27 Nov 2023 21:31:22 -0800 (PST)
-Received: from archie.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id m10-20020a170902db0a00b001cfde3ee4e8sm1655108plx.125.2023.11.27.21.31.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Nov 2023 21:31:22 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id 024731143686A; Tue, 28 Nov 2023 12:31:19 +0700 (WIB)
-Date: Tue, 28 Nov 2023 12:31:19 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Genes Lists <lists@sapience.com>, tglx@linutronix.de,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	gregory.greenman@intel.com, kvalo@kernel.org,
-	Linux Wireless <linux-wireless@vger.kernel.org>
-Cc: Linux Regressions <regressions@lists.linux.dev>
-Subject: Re: crash with 6.7 rc2 and rc3
-Message-ID: <ZWV7JworMrjHJHsO@archie.me>
-References: <c46a6462-8263-455c-a6ea-1860020f5fab@sapience.com>
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2054.outbound.protection.outlook.com [40.107.14.54])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0295391;
+	Tue, 28 Nov 2023 00:26:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Bu4EAMEuhQ38wqWNZ/WJyCEBFqM0CVnmlVzdwKAkNKwje5mkCEfp8Uo2J1ZMKxhYlTsSW1lWUym2B18Pqgd+kLkDOTHE63133byWIu9hPQHGcsjLVWTlBb148rNpu5G/Fol4cJLXzL4rrwvjZ3x8q7/uMKisp+B9pdgJB5/A3qavZPvSCcZukycOEWJzkapgExIhXNVpW9SztWf0lcDZWV2M/G4/iwOBBcgJ3zEY8hELakPniW0nNX/3xfJ0NKPnDFVAZjMXLLkUkWtq1XC57jgzH1iMeUAKvvtXR8oMe6cHp8DymHZFJ2YBgNbasOeuDFzP0N3+f/fWI1LrJxnt5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JTJlh2esIs0J3zdwZT62A3siivnz7gZnEojPswGLlvk=;
+ b=LeWTHjlpLgLJcAQBhd6W0n2xxAvEqP3yE1aP8N4ok7FCcXBxcSw/B+Z4MTIf/PgCeMkP8sDNkYOaNFowSHzgLXHoW1+WSiZ3wmPuJwr8nWVRQCVR055nNWbv+S1WI5+npS4OmUtsi2aOsJQ1h6B1s/CYVrG+B3ibm9o6vFAYNnlkudWOrceQUsFOxbx5J8hAy9hQu2bffWUJGUrp3WQxR1pofl/OGJqKLcqH+CROcqDm7WRyH3HJ4pKXptaCrj7gxZ0JhPru+nsag0U4T6bjmDMBGTESbIP6DEM148i8qOFKRnQPMjgUQd4YXpv8cJmgdhjDXzx6+gCgwOfkyl7TEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JTJlh2esIs0J3zdwZT62A3siivnz7gZnEojPswGLlvk=;
+ b=Dq8fdjEHrpN8TaVkPEPt8pkzhAZB24pKOQ4KBT6prMmwL7Svj92nvGjciAsullkSNn/snqYd1A1XxnmA4xEQDFzUk2inG2cq10Q0h4q/kRwaWodaK/wgyKO1OVIE7uqE7Pm873Z9NxwhFTx1oCbT+PZyfeTEhxkelOQFwul5lNg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
+ by PAXPR04MB8653.eurprd04.prod.outlook.com (2603:10a6:102:21c::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.22; Tue, 28 Nov
+ 2023 08:26:47 +0000
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::34dd:289e:9e8b:9c9b]) by PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::34dd:289e:9e8b:9c9b%7]) with mapi id 15.20.7046.015; Tue, 28 Nov 2023
+ 08:26:47 +0000
+From: David Lin <yu-hao.lin@nxp.com>
+To: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	briannorris@chromium.org,
+	kvalo@kernel.org,
+	francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com,
+	David Lin <yu-hao.lin@nxp.com>
+Subject: [PATCH] wifi: mwifiex: added extra delay for firmware ready.
+Date: Tue, 28 Nov 2023 16:25:44 +0800
+Message-Id: <20231128082544.613179-1-yu-hao.lin@nxp.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYAPR03CA0004.apcprd03.prod.outlook.com
+ (2603:1096:404:14::16) To PA4PR04MB9638.eurprd04.prod.outlook.com
+ (2603:10a6:102:273::20)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sEcx6aMYousCg2QL"
-Content-Disposition: inline
-In-Reply-To: <c46a6462-8263-455c-a6ea-1860020f5fab@sapience.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|PAXPR04MB8653:EE_
+X-MS-Office365-Filtering-Correlation-Id: e43a317b-4b2c-4654-659a-08dbefebc2da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Y3yFcHA2xnIi/ZVI65ZBi9Dp8tE5Y/4OJckVvpfoR9VqwP9Jw+r6peizFz9VOCJIr8HgIUQ+pp3ro1DPdKwwlTTUzc54HDxiSwW40CkkPUvCI33AXB3p+cOBZOkQcrbPfN0LNAjuBQOZrCZH+zFt7KIyhPWAi6hLxRPDSCn2r5nsik7p8rgc1UmyfX0GMxsTlHRUpsqf7OAcdnz8xUd6SVytNXe4LHrRcGdC3IcX9M+cjf9HIxxci7drnTxXMPZNqnXsCol0oJET/tCm2jP2mkzOmO6U69BXBkWXc56mnU7KBhDtGw9+hBHYtPXsFOkj6A6xMRwN4Ju6+6M5uppT/1RHzdGJoe+4028bHivFoxX7fo0sxAmpZGrZUtQOiHEIn5yBZWodoXhYcF9jxLnSarBRrdqOSD886GOvfA/+3lMYzW5B7YtWIqwR5Y1p3li7UQi05zOlAV7Q/+YPhD8PXj/rKIp/Rr9eMdc69ki2FIA7r1Rw3Zrc2I4Nd1wVN391PMEijXCSqK7Fw1j0gzIy8Hp07Vp0J+sIiPdve4IzpuEloy2dOpdTFuygWEKqIxij
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(39860400002)(136003)(396003)(346002)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(5660300002)(38100700002)(4744005)(2906002)(36756003)(41300700001)(86362001)(316002)(6916009)(66476007)(6666004)(66556008)(66946007)(52116002)(6486002)(6512007)(478600001)(1076003)(2616005)(6506007)(8936002)(8676002)(4326008);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?pfpJbVgXLHM7YejGv+l969IZAhnFy/dqlfc6p0+IqPAYr+nXEsPqT3yFXye1?=
+ =?us-ascii?Q?Oh/vqgeK4IcoVD6VNHZl4leBdHHZfwRud5yvuisYZWarPhAQpG/yY9ALKxUC?=
+ =?us-ascii?Q?R5/XMYPD0+t9MV9YEbGLwepS1jinUoWCdiaRMcV2Q7DxWrwh1gKmTPyiplyo?=
+ =?us-ascii?Q?hcIeDYZZLzVaasb87fn0yS1Sx/iARBAHRwxkCMgz6KR57eEvCjWWc+cUfZLb?=
+ =?us-ascii?Q?DNe4TKUGqCu/iEQGZ5Q4t/5KkN37sFUVgvIytm+8kElcOQvK88a7MyxYRJSw?=
+ =?us-ascii?Q?A8ulZH9a+joHgdV7apOOM0sNiCt7gh0nziCsNJoTv14ZjF9mOk/MyqVAf9a2?=
+ =?us-ascii?Q?d7tpGboOpBQSCHdK0m8SQhe4M4sVK0yaIxYwzt3hjNxvp4yyxhY95Yi0hzeY?=
+ =?us-ascii?Q?wmz8vh89P4hj7S4BXztGxiDtdwWlwWfhiAI68pvi4aWwagGZ/d0kphLQ2kfj?=
+ =?us-ascii?Q?KKLVOpcmhagHFqMzIoBhxQIj3XX3UXk8rwCOcRwTGMcpWwV8ywvPdc6ZCyhb?=
+ =?us-ascii?Q?yg6762DUxJV2K6eDG2ROl0pbQ146lvzoDZ/G1GLxUa+uoLnfK198QUdYcoIw?=
+ =?us-ascii?Q?8qsVTDDYA4p6G3mw6FF5AttMusqM0JiRXGCfhVM9+41YeejgdrUCOxROrGlh?=
+ =?us-ascii?Q?m3A+7rmMoLJfnH8H+oEu5LWzQ3KA/PTqeDO5EmoQktmPbatUqCvaqZ+7hDn6?=
+ =?us-ascii?Q?hm+u4vb1XkYm5evWhYkG5QMW5Hyuf/pN/yXF47Ji1El0voTqGsrXA67tP76G?=
+ =?us-ascii?Q?iVQKwP3uawOzBwRwSNxk1W9j6TUJFFRDZrWe7RC8H2VfOPsAQU1wHauOTlWd?=
+ =?us-ascii?Q?0+Ao5i3YDaTBuDi+KaXDoA007izha6eUwg9HQu21T2sYh+k1q5Ys2IrSXeLr?=
+ =?us-ascii?Q?ghQtBWSf2TwmAttvKur8Rsk0KlSyq7xYW1utawIWijlw2SrAnRuTprUuv5Nh?=
+ =?us-ascii?Q?IYoAhEfRcHduVGuL3AsqF2U3anZmXQnWLZRFJnHLjEBJt3mumjLGMncuxpEC?=
+ =?us-ascii?Q?feGWZS1JTAuz4ZldpoMiU7uBksh0iuLD62fr2qvZv7hMc8PGU7++xNaZ5yjS?=
+ =?us-ascii?Q?5fqz7OOlxuapSoAig9Z9ae7VZQiAkENgYFGY8BxtiQoOjbmJfWb2PQi311ot?=
+ =?us-ascii?Q?/XXxnWlnKqumPLyPxvGTVRrxnyv8GgbBfedo5PCCV53f3dT8AnL5rsHv5z2n?=
+ =?us-ascii?Q?1WEOYGwWkulYpRt2kYUzVOMtRk7vF/MLjQ1FGc1FFQmC3wNnSpqG0OXNJCqS?=
+ =?us-ascii?Q?Cam/6EWheeQGuDH9k5iLruBN6pzhF3NUWsM/guiugmvG/6oSzv/8FMZD1//h?=
+ =?us-ascii?Q?tC+UInmZXmeaWG2bnMWcQuo3niWcUuekp7BXbEa8qyvr2L4Vujs5L/4rMbyN?=
+ =?us-ascii?Q?laWUjxHba37UutVTmtyJYmk6E9ICnn19thj06x7YEpHGzzXGcpKXkdblxA94?=
+ =?us-ascii?Q?9+fgBmwfN0y8iTTVfWxijpKIdVvcFHfPWtmHTUKtmT6StdPVx6cyIETwCq6I?=
+ =?us-ascii?Q?jDNswN7LCoAY5b1A1OUB48t4mUfMrXk+fXeiG2fsgazrHu8vYCS+HevmW8pF?=
+ =?us-ascii?Q?OGcZrZEBoS3tYIYi3A+YqqzBcsLx4RfUQDR4x/IWk7I8BI81+atfvgixk8+f?=
+ =?us-ascii?Q?temCMrCU8A1uOawStcT+UO2uM+bsBhLaj6qdELhMKY9g?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e43a317b-4b2c-4654-659a-08dbefebc2da
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2023 08:26:47.1790
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3+Rz+52l2mqxYo8thzIBWuo3O4Q7y2Vql2JJ203ZzGKilqcJH1QPoou2HQcptPl0cuzQSG2HGIIuJxZtgysz4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8653
 
+For SDIO IW416, in a corner case FW may return ready before complete full
+initialization.
+Command timeout may occur at driver load after reboot.
+Workaround by adding 100ms delay at checking FW status.
 
---sEcx6aMYousCg2QL
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+---
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-On Mon, Nov 27, 2023 at 03:55:37PM -0500, Genes Lists wrote:
->=20
-> lenovo laptop boots fine under 6.7rc1 and older including 6.6.2 stable.
-> but not for 6.7 rc2 or rc3.
->=20
-> It has a intel 7260 (rev 3) wireless and :
->=20
-> cpu family	: 6
-> model		: 60
-> model name	: Intel(R) Core(TM) i7-4800MQ CPU @ 2.70GHz
-> stepping	: 3
-> microcode	: 0x28
->=20
->=20
-> As of 6.7 rc2 / rc3 it crashes towards the end of boot bringing up servic=
-es
-> -  some parts of crash scrolled off the screen so I apologize if this
-> (manually transcribed) trace didn't catch the first part.
->=20
-> I did a git bisect between rc1 and rc2 but was unable to reproduce the cr=
-ash
-> for some reason. (I did not do make clean between each bisects).
->=20
-> During the bisect it booted every time, but networking was not functional
-> for any of the bisects.
->=20
-> Hope it's okay to report even though git bisect didn't get anywhere.
->=20
-> Gene
->=20
-> This is the what I got from screen :
->=20
-> CS: 0010 DS: 000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f30cf49ba38 CR3: 000000025b620004 CR4: 00000000001706f0
-> Call Trace:
->  <IRQ>
->  ? die_addr+0x36/0x90
->  ? exc_general_protection+0x1c5/0x430
->  ? asm_exc_gemeral_protection+0x26/0x30
->  ? iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
->  ? __kmem_cache_alloc_node+0x1d5/0x2b0
->  ? iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
->  ? iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
->  __kmalloc_node_track_caller+0x51/0x160
->  kmemdup+0x20/0x50
->  iwl_phy_db_set_section+0xd6/0x1f0 [iwlwifi]
->  iwl_wait_phy_db_entry+0x2f/0x40 [iwlmvm]
->  iwl_notification_wait+0xb0/0xf0 [iwlwifi]
->  iwl_mvm_rx_common+0x8e/0x320 [iwlwifi]
->  iwl_pcie_napi_poll+0x2d/0x150 [iwlwifi]
->  __napi_poll+0x2b/0x1c0
->  net_rx_action+0x2b4/0x320
->  __do_softirq+0xff/0x339
->  net_rx_action+0x2b4/0x320
->  __do_softirq.part.0+0x88/0xa0
-> </IRQ>
-> <TASK>
-> __local_bh_enable_ip+0x91/0xa0
-> iwl_pcie_irq_handler+0x58d/0xc40 [iwlwifi]
-> ? __pfx_irq_thread_fn+0x10/0x10
-> irq_thread_fn+0x23/0x60
-> irq_thread+0xfe/0x60
-> ? __pfx_irq_thread_dtor+0x10/0x10
-> ? __pfx_irq_thread+0x10/0x10
-> kthread+0xfa/0x130
-> ? pff_kthread+0x10/0x10
-> ret_from_fork+0x34/0x50
-> ? __pfx_kthread+0x10/0x10
-> ret_from_fork_asm+0x1b/0x30
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index 6462a0ffe698..744e9403430a 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -783,6 +783,9 @@ static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
+ 		ret = -1;
+ 	}
+ 
++	if (!ret)
++		msleep(100);
++
+ 	return ret;
+ }
+ 
 
-Do you have any full system logs that can be attached?
+base-commit: 783004b6dbda2cfe9a552a4cc9c1d168a2068f6c
+-- 
+2.25.1
 
-Anyway, thanks for the regression report. I'm adding it to regzbot:
-
-#regzbot ^introduced: v6.7-rc1..v6.7-rc2
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---sEcx6aMYousCg2QL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZWV7IgAKCRD2uYlJVVFO
-o02/AQDz9zBxC7l3PA7XiPWORmbSKTBUjAJWCjZ4HQCsGtw9ZgEA7Zige0E/cGXL
-q1/LpBIwpT3tfL752nITIl7B/mcKdwg=
-=C092
------END PGP SIGNATURE-----
-
---sEcx6aMYousCg2QL--
 
