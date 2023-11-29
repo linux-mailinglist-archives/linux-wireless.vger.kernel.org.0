@@ -1,263 +1,183 @@
-Return-Path: <linux-wireless+bounces-219-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-220-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B070F7FD71D
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Nov 2023 13:50:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 413737FD745
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Nov 2023 13:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 562DA282F67
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Nov 2023 12:50:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3963B20FCC
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Nov 2023 12:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E2C1D540;
-	Wed, 29 Nov 2023 12:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3331DFC9;
+	Wed, 29 Nov 2023 12:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UoNrcirY"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZsUjp5RX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A3FAD44
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Nov 2023 04:50:51 -0800 (PST)
-Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-3b2ec9a79bdso4405326b6e.3
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Nov 2023 04:50:51 -0800 (PST)
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4855BA
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Nov 2023 04:57:53 -0800 (PST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5d2d0661a8dso1390737b3.2
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Nov 2023 04:57:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1701262250; x=1701867050; darn=vger.kernel.org;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QloJutLdUWDtbgtt7v9JSFeYg5x5HY0WpF0Z7br7LNc=;
-        b=UoNrcirYsWeZH1w1/3/m6MU+CQaJ9nxnL3L7hLrmrDvpl8MIfTeiU3GSwnq2qevIIr
-         aFnrPSgLE6Jp4CE/FTgm+9g9+JQz+G6GC18gMf8BrOs3wTk76krY/OFP8/8w37A/wi/6
-         rPx0uMsQDZdNGNAn+C8eZG33RQpaiGLQR/RpU=
+        d=broadcom.com; s=google; t=1701262673; x=1701867473; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wEslNNtdBmS1QHFRQbk3gJLGhWtArQc5W/0t56HnWdU=;
+        b=ZsUjp5RXgp/GnAjDdg74Whwz8b5KLjQgoNg//nTdTrN/03d/K9eS/fCA3+CClaREkI
+         SpnL6TH6BUnPLv/JP9IywV4TEmdTDA5k8Pgm2rFST11HCAwqZ0L5EqnX9Z7OpDaxbw0D
+         wQC0xESFIWs4oL/iWhVnV40RuBTnSeThLKkuc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701262250; x=1701867050;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QloJutLdUWDtbgtt7v9JSFeYg5x5HY0WpF0Z7br7LNc=;
-        b=KufSkHAuUCmhXb1jHRUceni+q6nsXTszT8FTSuRYq7MbZr3Owkd264LPSzV23ivYXf
-         nUnYDbs2mM8KBm2/mVFb80Ufo9BTZwruQqkvpKl61nbDou+rHYiP99yhaR8gL00Qb/Ua
-         VQBzWScbg+VowRErhXy6AGGq/rWEwxbfL5lK6/6/Avq8knvwQOHOSOp3aMv+bqC8dCHs
-         K77CCy4EDjQH70Uu2FBu9Jiw3hgdjlPN61VgHlpQz0Q3x9JDoWKTswOsQwW7BtouzcTc
-         0sxUMxnXrdonK2bgvbaUPK4cgooXlTv/IoDb6B2Lj7OCD247aYlp825H8cWjc3Zg7fnR
-         VX2g==
-X-Gm-Message-State: AOJu0Yw553t1uQ8UDDsQaq20TbbXR0Rkm5XLVXwnYf13Bx0jelvUqWPK
-	4VuMRm209qwcWidpcT9SQPhw+w==
-X-Google-Smtp-Source: AGHT+IGlPzk76rVmAwhhVxa0w5c+EBKRP8yyA1bZM10N/7XqMYMZUwX0njfUQ2Y50qaLi3iNoJZPYA==
-X-Received: by 2002:a05:6808:3009:b0:3a8:7c67:7f5 with SMTP id ay9-20020a056808300900b003a87c6707f5mr23698333oib.1.1701262250466;
-        Wed, 29 Nov 2023 04:50:50 -0800 (PST)
-Received: from ibnvda0196.ibn.broadcom.net ([192.19.252.250])
-        by smtp.gmail.com with ESMTPSA id m1-20020a63fd41000000b005891f3af36asm11312812pgj.87.2023.11.29.04.50.48
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Nov 2023 04:50:49 -0800 (PST)
-From: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	jithu.jance@broadcom.com,
-	Vinayak Yadawad <vinayak.yadawad@broadcom.com>
-Subject: [PATCH v4 1/1] wifi: nl80211: Extend del pmksa support for SAE and OWE security
-Date: Wed, 29 Nov 2023 18:20:43 +0530
-Message-Id: <ecdae726459e0944c377a6a6f6cb2c34d2e057d0.1701262123.git.vinayak.yadawad@broadcom.com>
-X-Mailer: git-send-email 2.32.0
+        d=1e100.net; s=20230601; t=1701262673; x=1701867473;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wEslNNtdBmS1QHFRQbk3gJLGhWtArQc5W/0t56HnWdU=;
+        b=hdTFT03zXVllVXK1Ezfksn2Bx46cI4gdPS+sgkNYxrsRbBwpddUL590TrmmQWTFh4H
+         w1ux9Z1m+fU7ot+A3xhqyeWGFq+weBN55tJaflhxFvFBPlsGRtTEBCB3AljjxWzQY5cK
+         i5vQ2Lztm5uJf6wevLnUKP8P5BVtOEsQh/CvCNwmJaFaB8wYP5Aqe91/ZOgXif3dEFIY
+         xmd6BS5SJ17c/c/pPxcdsF9WZjfJr681o7E+ldwF222N8RMmaoeBz5uNkFOBy/2pwAm7
+         +gvipueJRxMcBG9mtGDXIngO1day2D1GU0YRbKFqT9xBW+FoPLi5cWrhiREquiCdZj1l
+         9QBw==
+X-Gm-Message-State: AOJu0YzILK5mtSPhr5fcJok8oZR4+wwwDSnygyCyRXk6nt5UNIkgCCSX
+	D0vl53CrFS1gBX/7wkHA+Tldihtx/jkccykgNQK+Jvv/VFtTrGf1
+X-Google-Smtp-Source: AGHT+IGApyF2bwqBXbzQd/ThF72Xv7iV903+aC7axkwJLK9Im9i/CfmrylW6+M0GUnczjgBz/hrF0jPQyi1dZp1bl/w=
+X-Received: by 2002:a25:248f:0:b0:db3:64ee:94b6 with SMTP id
+ k137-20020a25248f000000b00db364ee94b6mr17872321ybk.64.1701262672759; Wed, 29
+ Nov 2023 04:57:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <ff0778a86574b552769027496f12596e2e627931.1699530774.git.vinayak.yadawad@broadcom.com>
+ <da6f058b85f91af5d4abd10bc56034f8d7811e86.camel@sipsolutions.net>
+In-Reply-To: <da6f058b85f91af5d4abd10bc56034f8d7811e86.camel@sipsolutions.net>
+From: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+Date: Wed, 29 Nov 2023 18:27:40 +0530
+Message-ID: <CAMLe8U_zqptHJ4vaHwhu_bY1ifJjvcwqg6yVdy8UB=HizRgY1w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] wifi: nl80211: Extend del pmksa support for SAE
+ and OWE security
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, jithu.jance@broadcom.com
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000207a3e060b49fc85"
+	boundary="0000000000004d4822060b4a15ee"
 
---000000000000207a3e060b49fc85
-Content-Transfer-Encoding: 8bit
+--0000000000004d4822060b4a15ee
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Current handling of del pmksa with SSID is limited to FILS
-security. In the current change the del pmksa support is extended
-to SAE/OWE security offloads as well. For OWE/SAE offloads, the
-PMK is generated and cached at driver/FW, so user app needs the
-capability to request cache deletion based on SSID for drivers
-supporting SAE/OWE offload.
+Hi Johannes,
 
-Signed-off-by: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
----
-v1->v2: Addressed review comments for indentation
-v2->v3: Addressed review comments for version update in header
-v3->v4: Addressed review comments to split nl80211_setdel_pmksa
-function
----
- include/uapi/linux/nl80211.h |  3 +-
- net/wireless/nl80211.c       | 92 +++++++++++++++++++++++++++---------
- 2 files changed, 71 insertions(+), 24 deletions(-)
+Thanks for the review comments.
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index dced2c49daec..b0000875e34e 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -568,7 +568,8 @@
-  * @NL80211_CMD_DEL_PMKSA: Delete a PMKSA cache entry, using %NL80211_ATTR_MAC
-  *	(for the BSSID) and %NL80211_ATTR_PMKID or using %NL80211_ATTR_SSID,
-  *	%NL80211_ATTR_FILS_CACHE_ID, and %NL80211_ATTR_PMKID in case of FILS
-- *	authentication.
-+ *	authentication. Additionally in case of SAE offload and OWE offloads
-+ *	PMKSA entry can be deleted using %NL80211_ATTR_SSID.
-  * @NL80211_CMD_FLUSH_PMKSA: Flush all PMKSA cache entries.
-  *
-  * @NL80211_CMD_REG_CHANGE: indicates to userspace the regulatory domain
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 569234bc2be6..4e9a008cd338 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12173,16 +12173,20 @@ static int nl80211_wiphy_netns(struct sk_buff *skb, struct genl_info *info)
- 	return err;
- }
- 
--static int nl80211_setdel_pmksa(struct sk_buff *skb, struct genl_info *info)
-+static int nl80211_set_pmksa(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	int (*rdev_ops)(struct wiphy *wiphy, struct net_device *dev,
- 			struct cfg80211_pmksa *pmksa) = NULL;
- 	struct net_device *dev = info->user_ptr[1];
- 	struct cfg80211_pmksa pmksa;
-+	bool ap_pmksa_caching_support = false;
- 
- 	memset(&pmksa, 0, sizeof(struct cfg80211_pmksa));
- 
-+	ap_pmksa_caching_support = wiphy_ext_feature_isset(&rdev->wiphy,
-+		NL80211_EXT_FEATURE_AP_PMKSA_CACHING);
-+
- 	if (!info->attrs[NL80211_ATTR_PMKID])
- 		return -EINVAL;
- 
-@@ -12191,16 +12195,15 @@ static int nl80211_setdel_pmksa(struct sk_buff *skb, struct genl_info *info)
- 	if (info->attrs[NL80211_ATTR_MAC]) {
- 		pmksa.bssid = nla_data(info->attrs[NL80211_ATTR_MAC]);
- 	} else if (info->attrs[NL80211_ATTR_SSID] &&
--		   info->attrs[NL80211_ATTR_FILS_CACHE_ID] &&
--		   (info->genlhdr->cmd == NL80211_CMD_DEL_PMKSA ||
--		    info->attrs[NL80211_ATTR_PMK])) {
-+	           info->attrs[NL80211_ATTR_FILS_CACHE_ID] &&
-+	           info->attrs[NL80211_ATTR_PMK]) {
- 		pmksa.ssid = nla_data(info->attrs[NL80211_ATTR_SSID]);
- 		pmksa.ssid_len = nla_len(info->attrs[NL80211_ATTR_SSID]);
--		pmksa.cache_id =
--			nla_data(info->attrs[NL80211_ATTR_FILS_CACHE_ID]);
-+		pmksa.cache_id = nla_data(info->attrs[NL80211_ATTR_FILS_CACHE_ID]);
- 	} else {
- 		return -EINVAL;
- 	}
-+
- 	if (info->attrs[NL80211_ATTR_PMK]) {
- 		pmksa.pmk = nla_data(info->attrs[NL80211_ATTR_PMK]);
- 		pmksa.pmk_len = nla_len(info->attrs[NL80211_ATTR_PMK]);
-@@ -12212,28 +12215,71 @@ static int nl80211_setdel_pmksa(struct sk_buff *skb, struct genl_info *info)
- 
- 	if (info->attrs[NL80211_ATTR_PMK_REAUTH_THRESHOLD])
- 		pmksa.pmk_reauth_threshold =
--			nla_get_u8(
--				info->attrs[NL80211_ATTR_PMK_REAUTH_THRESHOLD]);
-+			nla_get_u8(info->attrs[NL80211_ATTR_PMK_REAUTH_THRESHOLD]);
- 
- 	if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_STATION &&
- 	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_CLIENT &&
--	    !(dev->ieee80211_ptr->iftype == NL80211_IFTYPE_AP &&
--	      wiphy_ext_feature_isset(&rdev->wiphy,
--				      NL80211_EXT_FEATURE_AP_PMKSA_CACHING)))
-+	    !((dev->ieee80211_ptr->iftype == NL80211_IFTYPE_AP ||
-+	       dev->ieee80211_ptr->iftype == NL80211_IFTYPE_P2P_GO) &&
-+	       ap_pmksa_caching_support))
- 		return -EOPNOTSUPP;
- 
--	switch (info->genlhdr->cmd) {
--	case NL80211_CMD_SET_PMKSA:
--		rdev_ops = rdev->ops->set_pmksa;
--		break;
--	case NL80211_CMD_DEL_PMKSA:
--		rdev_ops = rdev->ops->del_pmksa;
--		break;
--	default:
--		WARN_ON(1);
--		break;
-+	rdev_ops = rdev->ops->set_pmksa;
-+	if (!rdev_ops)
-+		return -EOPNOTSUPP;
-+
-+	return rdev_ops(&rdev->wiphy, dev, &pmksa);
-+}
-+
-+static int nl80211_del_pmksa(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	int (*rdev_ops)(struct wiphy *wiphy, struct net_device *dev, 
-+		struct cfg80211_pmksa *pmksa) = NULL; 
-+	struct net_device *dev = info->user_ptr[1];
-+	struct cfg80211_pmksa pmksa;
-+	bool sae_offload_support = false;
-+	bool owe_offload_support = false;
-+	bool ap_pmksa_caching_support = false;
-+
-+	memset(&pmksa, 0, sizeof(struct cfg80211_pmksa));
-+
-+	sae_offload_support = wiphy_ext_feature_isset(&rdev->wiphy,
-+		NL80211_EXT_FEATURE_SAE_OFFLOAD);
-+	owe_offload_support = wiphy_ext_feature_isset(&rdev->wiphy,
-+		NL80211_EXT_FEATURE_OWE_OFFLOAD);
-+	ap_pmksa_caching_support = wiphy_ext_feature_isset(&rdev->wiphy,
-+		NL80211_EXT_FEATURE_AP_PMKSA_CACHING);
-+
-+	if (info->attrs[NL80211_ATTR_PMKID])
-+		pmksa.pmkid = nla_data(info->attrs[NL80211_ATTR_PMKID]);
-+
-+	if (info->attrs[NL80211_ATTR_MAC]) {
-+		pmksa.bssid = nla_data(info->attrs[NL80211_ATTR_MAC]);
-+	} else if (info->attrs[NL80211_ATTR_SSID]) {
-+		/* SSID based pmksa flush suppported only for FILS,
-+		 * OWE/SAE OFFLOAD cases
-+		 */
-+		if (info->attrs[NL80211_ATTR_FILS_CACHE_ID] &&
-+		    info->attrs[NL80211_ATTR_PMK]) {
-+			pmksa.cache_id = nla_data(info->attrs[NL80211_ATTR_FILS_CACHE_ID]);
-+		} else if (!sae_offload_support && !owe_offload_support) {
-+			return -EINVAL;
-+		}
-+		pmksa.ssid = nla_data(info->attrs[NL80211_ATTR_SSID]);
-+		pmksa.ssid_len = nla_len(info->attrs[NL80211_ATTR_SSID]);
-+	} else {
-+		return -EINVAL;
- 	}
- 
-+	if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_STATION &&
-+	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_CLIENT &&
-+	    !((dev->ieee80211_ptr->iftype == NL80211_IFTYPE_AP ||
-+	       dev->ieee80211_ptr->iftype == NL80211_IFTYPE_P2P_GO) &&
-+	       ap_pmksa_caching_support))
-+		return -EOPNOTSUPP;
-+
-+	rdev_ops = rdev->ops->del_pmksa;
- 	if (!rdev_ops)
- 		return -EOPNOTSUPP;
- 
-@@ -16911,7 +16957,7 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 	{
- 		.cmd = NL80211_CMD_SET_PMKSA,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
--		.doit = nl80211_setdel_pmksa,
-+		.doit = nl80211_set_pmksa,
- 		.flags = GENL_UNS_ADMIN_PERM,
- 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP |
- 					 NL80211_FLAG_CLEAR_SKB),
-@@ -16919,7 +16965,7 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 	{
- 		.cmd = NL80211_CMD_DEL_PMKSA,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
--		.doit = nl80211_setdel_pmksa,
-+		.doit = nl80211_del_pmksa,
- 		.flags = GENL_UNS_ADMIN_PERM,
- 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
- 	},
--- 
-2.32.0
+>Maybe it'd be better to split set/del now? The code kind of looks
+>awkward now, don't you think?
+>Or split this part of the parsing depending on set or del?
+As suggested, set and del pmksa handling is split.
+
+>The indentation here is also really awful ... I'd rather go over 80
+>columns than break like that. But you could just have local variables
+>for all the feature checks too.
+>And if you don't split set/del, I'd recommend a variable for that too,
+>set at the beginning, perhaps moving the "rdev_ops" thing up? But I'm
+>thinking it's probably nicer to split it. See how that looks like?
+Addressed comments by splitting set and del pmksa and using local
+variables for feature checks.
+
+>Then again, that isn't even relevant for DEL, is it? Should we even
+>parse it? Does anyone want to "delete only if it's exactly this PMK"?
+Removed this handling for DEL pmksa.
+
+>Also seems like this should come with some nl80211.h updates though?
+Added additional description for the DEL pmksa documentation.
+
+Regards,
+Vinayak
 
 
---000000000000207a3e060b49fc85
+On Sat, Nov 25, 2023 at 12:28=E2=80=AFAM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+>
+> On Thu, 2023-11-09 at 18:00 +0530, Vinayak Yadawad wrote:
+> >
+> > +++ b/net/wireless/nl80211.c
+> > @@ -12183,24 +12183,37 @@ static int nl80211_setdel_pmksa(struct sk_buf=
+f *skb, struct genl_info *info)
+> >
+> >       memset(&pmksa, 0, sizeof(struct cfg80211_pmksa));
+> >
+> > -     if (!info->attrs[NL80211_ATTR_PMKID])
+> > +     if ((info->genlhdr->cmd =3D=3D NL80211_CMD_SET_PMKSA) &&
+> > +         (!info->attrs[NL80211_ATTR_PMKID]))
+> >               return -EINVAL;
+>
+> Maybe it'd be better to split set/del now? The code kind of looks
+> awkward now, don't you think?
+>
+> Or split this part of the parsing depending on set or del?
+>
+> > -     pmksa.pmkid =3D nla_data(info->attrs[NL80211_ATTR_PMKID]);
+> > +     if (info->attrs[NL80211_ATTR_PMKID])
+> > +             pmksa.pmkid =3D nla_data(info->attrs[NL80211_ATTR_PMKID])=
+;
+> >
+> >       if (info->attrs[NL80211_ATTR_MAC]) {
+> >               pmksa.bssid =3D nla_data(info->attrs[NL80211_ATTR_MAC]);
+> > -     } else if (info->attrs[NL80211_ATTR_SSID] &&
+> > -                info->attrs[NL80211_ATTR_FILS_CACHE_ID] &&
+> > -                (info->genlhdr->cmd =3D=3D NL80211_CMD_DEL_PMKSA ||
+> > +     } else if (info->attrs[NL80211_ATTR_SSID]) {
+> > +             /* SSID based pmksa flush suppported only for FILS,
+> > +              * OWE/SAE OFFLOAD cases
+> > +              */
+> > +             if (info->attrs[NL80211_ATTR_FILS_CACHE_ID] &&
+> > +                 (info->genlhdr->cmd =3D=3D NL80211_CMD_DEL_PMKSA ||
+> >                   info->attrs[NL80211_ATTR_PMK])) {
+> > +                     pmksa.cache_id =3D
+> > +                             nla_data(info->attrs[NL80211_ATTR_FILS_CA=
+CHE_ID]);
+> > +             } else if ((info->genlhdr->cmd =3D=3D NL80211_CMD_DEL_PMK=
+SA) &&
+> > +                 (!wiphy_ext_feature_isset(
+> > +                 &rdev->wiphy, NL80211_EXT_FEATURE_SAE_OFFLOAD) &&
+> > +                 (!wiphy_ext_feature_isset(
+> > +                 &rdev->wiphy,NL80211_EXT_FEATURE_OWE_OFFLOAD)))){
+>
+>
+> The indentation here is also really awful ... I'd rather go over 80
+> columns than break like that. But you could just have local variables
+> for all the feature checks too.
+>
+> And if you don't split set/del, I'd recommend a variable for that too,
+> set at the beginning, perhaps moving the "rdev_ops" thing up? But I'm
+> thinking it's probably nicer to split it. See how that looks like?
+>
+> > +                     return -EINVAL;
+> > +             }
+> >               pmksa.ssid =3D nla_data(info->attrs[NL80211_ATTR_SSID]);
+> >               pmksa.ssid_len =3D nla_len(info->attrs[NL80211_ATTR_SSID]=
+);
+> > -             pmksa.cache_id =3D
+> > -                     nla_data(info->attrs[NL80211_ATTR_FILS_CACHE_ID])=
+;
+> >       } else {
+> >               return -EINVAL;
+> >       }
+> > +
+> >       if (info->attrs[NL80211_ATTR_PMK]) {
+>
+> Then again, that isn't even relevant for DEL, is it? Should we even
+> parse it? Does anyone want to "delete only if it's exactly this PMK"?
+>
+>
+> Also seems like this should come with some nl80211.h updates though?
+>
+> johannes
+
+--0000000000004d4822060b4a15ee
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -328,14 +248,14 @@ BTl38q8FNdCLAiM1OD+blhu7LqMLVaAEEeoUGhRxdNkvMGss1Z7/ZefenAfm9IpiaGR0PQhBwI7c
 spqD/wIJUULcXiaj0eatDUjsrx3QN9OZOh3iubCt0uBoxCQUGuvxqd3Qz4FVKMSzEIzs8v/hwR+T
 nTkxggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNh
 MTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxIxd7r
-XtHLz48aMtQwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIGsss6GmEOk2IoqU6d4d
-KzO6/BIpG4tdwyGWN5AAmdwlMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
-MQ8XDTIzMTEyOTEyNTA1MFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUD
+XtHLz48aMtQwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIOlPzeI9pKRecZXSzieS
+uCuOIrlnt0egRRhTbQB6wMOWMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
+MQ8XDTIzMTEyOTEyNTc1M1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUD
 BAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsG
-CWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBQR72VHYzfp+A/euR7U5+cLCOhaDtT87O/bfmX
-OdSrJtfdTt2DXyZFgcZRnZsSgO4SMI419j+qs+RQTTM3wAxySNlf/0z0SgaT0KvQDpQuMJcbHPEC
-YLPtSOkdpfwwLGQPAat/tdEIOqbxTGpSCKXN3yzBT7iYNs4o1GKly7NAxhsthqSKAqylDVYn5epD
-ACuLSebOod/+2BalIHp6pz2P520vFG/HtK/joZNIOo7KBSl5c4s7a/vWywi7tBqkxAZtqnSVbJWp
-NcsMH++KWRFmwkyQdI/k9yKmhbT1QS3SH6xkZiOi7YTsUsmrGl66qUNlFtoNm6fGxd1kcJzdiROp
---000000000000207a3e060b49fc85--
+CWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQA9Ukg3uv308UgncNeZRuqOrR943/kS1S2DCqHe
+94p8We9d2hbeCYNwsTXmkdMeX51QhR8p3PETASAfADIs4NXfWh6oa/Wp4tGz0MYmAc+vdnwzbtbU
+fRXhdPjaPgIdW9w8UL71EWEoM/5nhXcRRBJNHQ/k70/yJ8mtDtwgUEVlksu8FC4UcERASk4Kv5V7
+AIGQJrqh85SGZCIaAzbFQnZwPuO9qjrMaF4Ou0F491vh7+JiimV77MonpbQs6r/LUeUowTpyrbEf
+6KSFIULQm6wnglR71zZQqT3uzNK7/JbmF1TEMS7InFJVj42UapCJGxE+W6zZXaQHhqvSRaQXgr1S
+--0000000000004d4822060b4a15ee--
 
