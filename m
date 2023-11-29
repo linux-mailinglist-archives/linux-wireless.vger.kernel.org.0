@@ -1,137 +1,206 @@
-Return-Path: <linux-wireless+bounces-184-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-186-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A347FCC87
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Nov 2023 03:04:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD447FCE6F
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Nov 2023 06:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FED91F20FAF
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Nov 2023 02:04:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2756CB21413
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Nov 2023 05:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD3B3C3F;
-	Wed, 29 Nov 2023 02:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2506FCB;
+	Wed, 29 Nov 2023 05:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="obvLAY/m"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="k2RBnBmh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01BCA10EB
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Nov 2023 18:04:41 -0800 (PST)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AT0tEkx014733;
-	Wed, 29 Nov 2023 02:04:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=97vaNmadfX1/6483iZHJLkzWazWIa7J0SV2L+hEWg+A=;
- b=obvLAY/mL4Z/MhySgXuzCEbtjYJWFL+oK9AeRsDzCcUPPJroDcu9/dwXRi0m41LW3zHj
- HZcVM1D5Kkx+WNzWumnkai9ZX/wSoZFDtO4CfGgIWAX1gkGK2RUewsF5XAbu2ADNKT/b
- P9GG9Z54soJVpguplkqYpGMM2XOrFeLjbXwnhopgvy4YOxh4P9+IYH5n0UprBk+PGna4
- IVm2sXCusKn+keqdNK0pkMWnB+MulsltT9KlRREgPYAZLv9zDCCaDUi6SFsbyPLUJTgx
- b63OQfpbhDJahOgA/v+kRk/RbYJ80+f8i8PMCQCCrdOpvHnL8L1r20rrRUa/VMkyDrtS IA== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3unkens941-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Nov 2023 02:04:38 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AT24cug013347
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Nov 2023 02:04:38 GMT
-Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BAAA171D
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Nov 2023 21:43:41 -0800 (PST)
+X-UUID: 3c0f9aa88e7a11ee8051498923ad61e6-20231129
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=g1e1GiCglxw0G5nYW7W1hnHGQdgv+R0rMWtNcKzW+jo=;
+	b=k2RBnBmhorIxcm6+AFtQdGRcVYI1Wy3AXCjM1qDpOdMAGFLkGLjNuvk8VRmPEDQWWlGhRHkRzHDm1O1OLRtyuOCNXbEioCZeP50MLQtXxkr3WLasJbmnpsw/PKfIS2kwF8XYMPAE2UetSo6XZ7UINhpbVOm1q4f9hGDightarQE=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.34,REQID:f30d0ac1-92b3-471e-ab56-ce40f513571e,IP:0,U
+	RL:0,TC:0,Content:0,EDM:-30,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-30
+X-CID-META: VersionHash:abefa75,CLOUDID:eaafef95-10ce-4e4b-85c2-c9b5229ff92b,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:2,IP:nil,UR
+	L:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:N
+	O,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 3c0f9aa88e7a11ee8051498923ad61e6-20231129
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+	(envelope-from <michael-cy.lee@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 2046252504; Wed, 29 Nov 2023 13:43:33 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 28 Nov 2023 18:04:37 -0800
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 3/3] wifi: ath12k: change MAC buffer ring size to 2048
-Date: Wed, 29 Nov 2023 10:04:14 +0800
-Message-ID: <20231129020414.56425-4-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231129020414.56425-1-quic_bqiang@quicinc.com>
-References: <20231129020414.56425-1-quic_bqiang@quicinc.com>
+ 15.2.1118.26; Wed, 29 Nov 2023 13:43:32 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Wed, 29 Nov 2023 13:43:32 +0800
+From: Michael-CY Lee <michael-cy.lee@mediatek.com>
+To: linux-wireless <linux-wireless@vger.kernel.org>
+CC: Johannes Berg <johannes@sipsolutions.net>, Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, Money Wang <money.wang@mediatek.com>,
+	linux-mediatek <linux-mediatek@lists.infradead.org>, Michael-CY Lee
+	<michael-cy.lee@mediatek.com>
+Subject: [PATCH v3,1/2] wifi: mac80211: add utility for converting op_class into chandef
+Date: Wed, 29 Nov 2023 13:43:20 +0800
+Message-ID: <20231129054321.10199-1-michael-cy.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Y3aeE_ELnRkDxs4SwImiar4V4y0G3gdS
-X-Proofpoint-ORIG-GUID: Y3aeE_ELnRkDxs4SwImiar4V4y0G3gdS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-28_27,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- impostorscore=0 mlxscore=0 phishscore=0 spamscore=0 priorityscore=1501
- bulkscore=0 mlxlogscore=840 lowpriorityscore=0 adultscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311290014
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--5.327500-8.000000
+X-TMASE-MatchedRID: +2zAcmHD8Q7LmQtq4MlK+Y+emiGnyeDRUK80YYUAl4sXdhT0BAdFzjC0
+	pJIQUiJOsRIB98XGTDmkeU7arquyzm94Ipa1otxo0Xw0ILvo/uUK3n1SHen81Wd6vNuG6Cqy56y
+	iAZYPrXdKlBq8feLAYQ1Ica/LQEH+98hoZRVgb5WNzYJBKgDdEbyfV74eQpk+myiLZetSf8mfop
+	0ytGwvXiq2rl3dzGQ1l3+bAt/YFVQDy43aFjnGUlGC9ibFzrTKGL9TwHJQaVYXM+5GWf5LWWgGZ
+	NLBHGNe
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--5.327500-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: 19297579BCC92BAE0016C51A172C30A1E11B4BE1367D236699A885C686B08E212000:8
 
-For WCN7850, there is a SRNG named MAC buffer ring, i.e.,
-dp->rx_mac_buf_ring. During initialization, it is setup
-by host and then under control of firmware. During RX
-process, firmware fetches buffers from
-dp->rx_refill_buf_ring to fill that MAC buffer ring,
-and those buffers are taken by RXDMA to carry real WLAN
-frames received from air.
+This utility is used in STA CSA handling. The op_class in the ECSA
+Element can be converted into chandef.
 
-Currently a low RX throughput is observed. Checking
-firmware log, lots of errors are reported by MAC buffer
-ring, complaining that it is running out of buffers,
-which further indicates that RXDMA is suffering from
-starvation. Currently the size of dp->rx_mac_buf_ring
-is configured as 1024. After changing it to 2048, those
-error messages are reduced, and a 6.4% increase is seen
-in peak throughput. Note that 2048 is an empirical
-value. It is chosen here because the RX throughput
-meets our expectation after the change.
-
-This change only applies to WCN7850 since other
-chips don't have a MAC buffer ring.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
+Signed-off-by: Money Wang <money.wang@mediatek.com>
 ---
-v2:
- no change.
+v3:
+  There were two utilities for op_class conversion in version 2.
+  This version combines them into one.
+---
+ include/net/cfg80211.h | 13 ++++++++
+ net/wireless/util.c    | 76 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
 
- drivers/net/wireless/ath/ath12k/dp.h    | 1 +
- drivers/net/wireless/ath/ath12k/dp_rx.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index 50db1403ebce..ce55cb550379 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -165,6 +165,7 @@ struct ath12k_pdev_dp {
- #define DP_REO_CMD_RING_SIZE		128
- #define DP_REO_STATUS_RING_SIZE		2048
- #define DP_RXDMA_BUF_RING_SIZE		4096
-+#define DP_RX_MAC_BUF_RING_SIZE		2048
- #define DP_RXDMA_REFILL_RING_SIZE	2048
- #define DP_RXDMA_ERR_DST_RING_SIZE	1024
- #define DP_RXDMA_MON_STATUS_RING_SIZE	1024
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 9f831e3971f9..f6fbe867bbd4 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -4110,7 +4110,7 @@ int ath12k_dp_rx_alloc(struct ath12k_base *ab)
- 			ret = ath12k_dp_srng_setup(ab,
- 						   &dp->rx_mac_buf_ring[i],
- 						   HAL_RXDMA_BUF, 1,
--						   i, 1024);
-+						   i, DP_RX_MAC_BUF_RING_SIZE);
- 			if (ret) {
- 				ath12k_warn(ab, "failed to setup rx_mac_buf_ring %d\n",
- 					    i);
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index b137a33a1b68..0ea1f1a53324 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -8669,6 +8669,19 @@ void cfg80211_ch_switch_started_notify(struct net_device *dev,
+ bool ieee80211_operating_class_to_band(u8 operating_class,
+ 				       enum nl80211_band *band);
+ 
++/**
++ * ieee80211_operating_class_to_chandef - convert operating class to chandef
++ *
++ * @operating_class: the operating class to convert
++ * @chan: the ieee80211_channel to convert
++ * @chandef: a pointer to the resulting chandef
++ *
++ * Returns %true if the conversion was successful, %false otherwise.
++ */
++bool ieee80211_operating_class_to_chandef(u8 operating_class,
++					  struct ieee80211_channel *chan,
++					  struct cfg80211_chan_def *chandef);
++
+ /**
+  * ieee80211_chandef_to_operating_class - convert chandef to operation class
+  *
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 626b858b4b35..edcc6f202c19 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -2017,6 +2017,82 @@ bool ieee80211_operating_class_to_band(u8 operating_class,
+ }
+ EXPORT_SYMBOL(ieee80211_operating_class_to_band);
+ 
++bool ieee80211_operating_class_to_chandef(u8 operating_class,
++					  struct ieee80211_channel *chan,
++					  struct cfg80211_chan_def *chandef)
++{
++	u32 control_freq, offset = 0;
++	enum nl80211_band band;
++
++	if (!ieee80211_operating_class_to_band(operating_class, &band) ||
++	    !chan || band != chan->band)
++		return false;
++
++	control_freq = chan->center_freq;
++	chandef->chan = chan;
++
++	if (control_freq >= 5955)
++		offset = control_freq - 5955;
++	else if (control_freq >= 5745)
++		offset = control_freq - 5745;
++	else if (control_freq >= 5180)
++		offset = control_freq - 5180;
++	offset /= 20;
++
++	switch (operating_class) {
++	case 81:  /* 2 GHz band; 20 MHz; channels 1..13 */
++	case 82:  /* 2 GHz band; 20 MHz; channel 14 */
++	case 115: /* 5 GHz band; 20 MHz; channels 36,40,44,48 */
++	case 118: /* 5 GHz band; 20 MHz; channels 52,56,60,64 */
++	case 121: /* 5 GHz band; 20 MHz; channels 100..144 */
++	case 124: /* 5 GHz band; 20 MHz; channels 149,153,157,161 */
++	case 125: /* 5 GHz band; 20 MHz; channels 149..177 */
++	case 131: /* 6 GHz band; 20 MHz; channels 1..233*/
++	case 136: /* 6 GHz band; 20 MHz; channel 2 */
++		chandef->center_freq1 = control_freq;
++		chandef->width = NL80211_CHAN_WIDTH_20;
++		return true;
++	case 83:  /* 2 GHz band; 40 MHz; channels 1..9 */
++	case 116: /* 5 GHz band; 40 MHz; channels 36,44 */
++	case 119: /* 5 GHz band; 40 MHz; channels 52,60 */
++	case 122: /* 5 GHz band; 40 MHz; channels 100,108,116,124,132,140 */
++	case 126: /* 5 GHz band; 40 MHz; channels 149,157,165,173 */
++		chandef->center_freq1 = control_freq + 10;
++		chandef->width = NL80211_CHAN_WIDTH_40;
++		return true;
++	case 84:  /* 2 GHz band; 40 MHz; channels 5..13 */
++	case 117: /* 5 GHz band; 40 MHz; channels 40,48 */
++	case 120: /* 5 GHz band; 40 MHz; channels 56,64 */
++	case 123: /* 5 GHz band; 40 MHz; channels 104,112,120,128,136,144 */
++	case 127: /* 5 GHz band; 40 MHz; channels 153,161,169,177 */
++		chandef->center_freq1 = control_freq - 10;
++		chandef->width = NL80211_CHAN_WIDTH_40;
++		return true;
++	case 132: /* 6 GHz band; 40 MHz; channels 1,5,..,229*/
++		chandef->center_freq1 = control_freq + 10 - (offset & 1) * 20;
++		chandef->width = NL80211_CHAN_WIDTH_40;
++		return true;
++	case 128: /* 5 GHz band; 80 MHz; channels 36..64,100..144,149..177 */
++	case 133: /* 6 GHz band; 80 MHz; channels 1,5,..,229 */
++		chandef->center_freq1 = control_freq + 30 - (offset & 3) * 20;
++		chandef->width = NL80211_CHAN_WIDTH_80;
++		return true;
++	case 129: /* 5 GHz band; 160 MHz; channels 36..64,100..144,149..177 */
++	case 134: /* 6 GHz band; 160 MHz; channels 1,5,..,229 */
++		chandef->center_freq1 = control_freq + 70 - (offset & 7) * 20;
++		chandef->width = NL80211_CHAN_WIDTH_160;
++		return true;
++	case 130: /* 5 GHz band; 80+80 MHz; channels 36..64,100..144,149..177 */
++	case 135: /* 6 GHz band; 80+80 MHz; channels 1,5,..,229 */
++		  /* The center_freq2 of 80+80 MHz is unknown */
++	case 137: /* 6 GHz band; 320 MHz; channels 1,5,..,229 */
++		  /* 320-1 or 320-2 channelization is unknown */
++	default:
++		return false;
++	}
++}
++EXPORT_SYMBOL(ieee80211_operating_class_to_chandef);
++
+ bool ieee80211_chandef_to_operating_class(struct cfg80211_chan_def *chandef,
+ 					  u8 *op_class)
+ {
 -- 
 2.25.1
 
