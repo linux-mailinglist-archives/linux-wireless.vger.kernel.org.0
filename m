@@ -1,81 +1,154 @@
-Return-Path: <linux-wireless+bounces-242-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-243-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF157FF857
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 18:33:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1247FF96C
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 19:32:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7F32281690
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 17:33:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 531B71F20F9B
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 18:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540F256459;
-	Thu, 30 Nov 2023 17:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C9F5A0EC;
+	Thu, 30 Nov 2023 18:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U65o5Om9"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="kzu5AqKx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3754847A5A
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 17:33:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8230C433C7;
-	Thu, 30 Nov 2023 17:33:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701365596;
-	bh=t8uwdWXJ/C0JLH2QtDk8ksHVHtSvg4O875BSx0Lnepo=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=U65o5Om96swNnsEc4VWBBVrKn+jJlHiJwetMhFbmNLXe21f81nW1mxyUmiOr8kuer
-	 p2ZCdwAm1lUz5pBg11I5fkT5M6OdqRR100/Sn0pFOP4hmYQSaMKbuIsIOgdKJ6tpHI
-	 mzDvskPaC8jO2bGjRVDlaKMv/isO2xNBT3WnEySjiMIDIE0huKngOIm95A1cck8JHT
-	 vMz2Rihy+j1tyFTITKW4m6AqeBrHqu+GEt/6FAG/CePxwKVqPmt2uTkBa1xbQOAV5y
-	 923yJJZQG5PSn1Tlx9uQ1lKNyhAR3bGUxAnH7nd19fGkrcNmDjHihju59hb+nQE40L
-	 aLx32waVWA8jA==
-Content-Type: text/plain; charset="utf-8"
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B6FD6C
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 10:32:45 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1cf7a8ab047so11708645ad.1
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 10:32:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1701369164; x=1701973964; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6DrkoL2F5FXMoIgI5kw+SZgzVJ3LqRocSDHuCIuRWOs=;
+        b=kzu5AqKxrC7SXq8lqR17R4IvKOtctnBAUsntB5cuvZoMaH/UQuHAn45XvU/y359gMg
+         8TpKUCfMMY5uxNVufp6MN3KX6bVvCyBYLj939jj4hcCrSK8BtZTKCz73PavzUTKYltdJ
+         5CIxC9Grx3SP+CnbmG8xTZfRztvhFGuxSi72U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701369164; x=1701973964;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6DrkoL2F5FXMoIgI5kw+SZgzVJ3LqRocSDHuCIuRWOs=;
+        b=MM1U+i4Yn1JuBgfEL//LzkqtGT4q6E+t1EyyKPaZrsbFm/fJsUE+yuD8hYZvf04lbQ
+         pvEoUr0XSXJEQUkX1g/xz9ewsyb2LV5HWbuzn7zLpKEcFduREEoUY1aW7OOiApIoEWlq
+         a6JKZkFHm8y+3Ybv4kDEwsYmEfEebdXoCcPV3N+BcgtXV/NcARJIVAv8UoqhLiMhrHqY
+         XK4XyWCuQ/xYEadAYqR0EwxAHvRrRZ5rKX59iLZ9IoBapj3M8Wuw/KI8vK04orGkJz06
+         l0g0pm9gAO8UODoVKSdyHoIS4v8cea4iO+oJGxw8zwgJAzTAvJNaxUL7WxBg+MFH8TYt
+         MIeg==
+X-Gm-Message-State: AOJu0Yx6TK2XG2bXo6RRSdS+00GvbR8viBwvPh5IUTzfIzJIOEE/doyb
+	FyoaZVihzyjWpn8yxI+i1ELrzw==
+X-Google-Smtp-Source: AGHT+IHeBC52IDY3dqw4t7rZkCKWHU87e7hS517ioPtc4SJRTR1BaOjh3Ut1PKX8KJpkr+JHyuM4Hg==
+X-Received: by 2002:a17:902:bb85:b0:1d0:38f6:9188 with SMTP id m5-20020a170902bb8500b001d038f69188mr2035644pls.58.1701369164544;
+        Thu, 30 Nov 2023 10:32:44 -0800 (PST)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id d13-20020a170902cecd00b001cfa3022adcsm1726452plg.47.2023.11.30.10.32.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Nov 2023 10:32:44 -0800 (PST)
+Date: Thu, 30 Nov 2023 10:32:43 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	Michael Walle <mwalle@kernel.org>, lkp@intel.com,
+	oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+	Max Schulze <max.schulze@online.de>
+Subject: Re: [RFC PATCH] wifi: cfg80211: fix CQM for non-range use
+Message-ID: <202311301016.84D0010@keescook>
+References: <202311090752.hWcJWAHL-lkp@intel.com>
+ <202311090752.hWcJWAHL-lkp@intel.com>
+ <1c37d99f722f891a50c540853e54d4e36bdf0157.camel@sipsolutions.net>
+ <fc1dbe4a-a810-445c-9398-60a5e55990a2@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: fix the issue that the multicast/broadcast
- indicator is not read correctly for WCN7850
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231118134538.19545-1-quic_lingbok@quicinc.com>
-References: <20231118134538.19545-1-quic_lingbok@quicinc.com>
-To: Lingbo Kong <quic_lingbok@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <lingbok@qti.qualcomm.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170136559355.1566939.2533583060106709722.kvalo@kernel.org>
-Date: Thu, 30 Nov 2023 17:33:15 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fc1dbe4a-a810-445c-9398-60a5e55990a2@quicinc.com>
 
-Lingbo Kong <quic_lingbok@quicinc.com> wrote:
-
-> We observe some packets are discarded in ieee80211_rx_handlers_result
-> function for WCN7850. This is because the way to get multicast/broadcast
-> indicator with RX_MSDU_END_INFO5_DA_IS_MCBC & info5 is incorrect. It should
-> use RX_MSDU_END_INFO13_MCAST_BCAST & info13 to get multicast/broadcast
-> indicator.
+On Tue, Nov 28, 2023 at 01:01:20PM -0800, Jeff Johnson wrote:
+> On 11/28/2023 10:23 AM, Johannes Berg wrote:
+> > On Tue, 2023-11-28 at 15:44 +0100, Michael Walle wrote:
+> >> Hi,
+> >>
+> >>> net/wireless/nl80211.c: In function 'nl80211_set_cqm_rssi.isra':
+> >>> net/wireless/nl80211.c:12892:17: warning: 'memcpy' specified bound
+> >>> 18446744073709551615 exceeds maximum object size 9223372036854775807
+> >>> [-Wstringop-overflow=]
+> >>
+> >> FWIW, I'm getting the same error with the current next (next-20231128).
+> >>
+> > 
+> > I actually forgot about that, but does anyone actually know what this is
+> > trying to tell me?
+> > 
+> > The code seems to be
+> > 
+> >         if (n_thresholds) {
+> >                 cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
+> >                                                  n_thresholds),
+> >                                      GFP_KERNEL);
+> >                 if (!cqm_config)
+> >                         return -ENOMEM;
+> > 
+> >                 cqm_config->rssi_hyst = hysteresis;
+> >                 cqm_config->n_rssi_thresholds = n_thresholds;
+> >                 memcpy(cqm_config->rssi_thresholds, thresholds,
+> >                        flex_array_size(cqm_config, rssi_thresholds,
+> >                                        n_thresholds));
+> > 
+> > 
+> > Or does it just want to say n_thresholds shouldn't be a signed variable?
 > 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> +Kees for flex array education :)
 
-ALWAYS run ath12k-check:
+Yeah, I would expect this to mean that there is a code path that
+GCC found where the value could overflow. It does this when a variable
+"value range" gets bounded (e.g. an int isn't the full -INT_MAX to INT_MAX
+range).And flex_array_size() was designed to saturate at SIZE_MIX rather
+than wrapping around to an unexpected small value, so these are playing
+together it seems.
 
-drivers/net/wireless/ath/ath12k/hal.c:892:16: warning: cast to restricted __le16
-drivers/net/wireless/ath/ath12k/hal.c:892:16: warning: cast from restricted __le32
+However, I would have expected the kzalloc() to blow up _first_.
 
-Patch set to Changes Requested.
+Regardless, I suspect the addition of "if (n_thresholds > 1)" is what is
+tripping GCC.
+
+                int len = nla_len(attrs[NL80211_ATTR_CQM_RSSI_THOLD]);
+		...
+                return nl80211_set_cqm_rssi(info, thresholds, len / 4,
+                                            hysteresis);
+
+Now it "knows" there is a path where n_threasholds could be [2,
+INT_MAX].
+
+Does this warning go away if "len" is made unsigned?
+
+Does adding an upper bounds sanity check help as a work-around, like:
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d0f499227c29..2cb78ac44b6c 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12855,6 +12855,9 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 	s32 prev = S32_MIN;
+ 	int i, err;
+ 
++	if (n_thresholds > INT_MAX / sizeof(*thresholds))
++		return -EINVAL;
++
+ 	/* Check all values negative and sorted */
+ 	for (i = 0; i < n_thresholds; i++) {
+ 		if (thresholds[i] > 0 || thresholds[i] <= prev)
+
+
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231118134538.19545-1-quic_lingbok@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Kees Cook
 
