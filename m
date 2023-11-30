@@ -1,128 +1,113 @@
-Return-Path: <linux-wireless+bounces-250-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-251-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCD37FFA9F
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 20:00:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE507FFAED
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 20:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E5171C20FC5
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 19:00:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB325281776
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 19:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA09F5FEF5;
-	Thu, 30 Nov 2023 19:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E1922063;
+	Thu, 30 Nov 2023 19:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="WBOmF01E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QcpwT9cr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3960194;
-	Thu, 30 Nov 2023 11:00:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=vsYR7scdNZIludsndTghewaH2HznFu0Os5QUOPvM1nM=;
-	t=1701370851; x=1702580451; b=WBOmF01E6Upq82AIEmzqAngGCrNPVkhshRmAxIeVvBTF4nx
-	Veh+JmsSERVzV9RvCVUzxiogMcru/K+SLZvZrvR6iLCzIjP/IvBT+pIJhuSV9O0jt7zm6bB49Q4FV
-	AscWjSx1MXLL6PXq7yRehSL2VWcTkdf2GrttAF1AAZ+9PCFHZVOdLaxQL/pH145geHnjAAOVIZQbu
-	wMwfKdg3WnstNcLrMG3HmCjJOhlCfs9DmAB5Azk9qLOWsKzrVQUNuM16DKDF5D/Blsfdt0FPf5IST
-	jK4Mb7GBrsIx/AghSXg5Hh20TTLzfBMz1TnlVGlU1oM+DeYvcRztFqO33UCsVncw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1r8mHF-0000000A9bL-1Kjt;
-	Thu, 30 Nov 2023 20:00:45 +0100
-Message-ID: <bbfd6f959e7ff4b567084ef3d962bf255aa25c85.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH] wifi: cfg80211: fix CQM for non-range use
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kees Cook <keescook@chromium.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, Michael Walle
- <mwalle@kernel.org>,  lkp@intel.com, oe-kbuild-all@lists.linux.dev,
- linux-wireless@vger.kernel.org,  Max Schulze <max.schulze@online.de>,
- netdev@vger.kernel.org
-Date: Thu, 30 Nov 2023 20:00:44 +0100
-In-Reply-To: <202311301054.0049306B7@keescook>
-References: <202311090752.hWcJWAHL-lkp@intel.com>
-	 <202311090752.hWcJWAHL-lkp@intel.com>
-	 <1c37d99f722f891a50c540853e54d4e36bdf0157.camel@sipsolutions.net>
-	 <fc1dbe4a-a810-445c-9398-60a5e55990a2@quicinc.com>
-	 <202311301016.84D0010@keescook>
-	 <01e3663e9e1418a183ee86251e0352256494ee28.camel@sipsolutions.net>
-	 <202311301054.0049306B7@keescook>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A629F22061
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 19:13:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C40CC433C8;
+	Thu, 30 Nov 2023 19:13:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701371598;
+	bh=Byw3Ja8D98qaaMIkq6NR0yFqF4YxOUcmr+nbGdlYZbA=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=QcpwT9cr6VnKlFKhpZTU8AJ6xS/OkxTlZHu897PUrxvEb73G+gy4AhQ1b2TCp9cGe
+	 KiG3QwWb64sxola+sTovgNLk3SzvK4/rVT5CC4OfjeXQOQ5ZDIbJ+41GtdcnU84Kpp
+	 Vh1xYgFovu9ScfxihtLf7I9Ej39BWAx+OSLPyK+tWdAt3FKv++Z+K5T5BqJebq7kvO
+	 DJyDgINL1G+sAyc2E8JkOaLyKBJ8mEKotWKsTkRibVZwOU6TURBLhDuxE//MpOvbH/
+	 d84hGgDW/B4nVNdf7YzTeb3DGrEzxRyt5qK+Z08VjafR7LfmB7r/TI/mGjq+2MNNuw
+	 CX/rhxWXCzzhg==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3] wifi: rtw88: sdio: Honor the host max_req_size in the
+ RX
+ path
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231120115726.1569323-1-martin.blumenstingl@googlemail.com>
+References: <20231120115726.1569323-1-martin.blumenstingl@googlemail.com>
+To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ jernej.skrabec@gmail.com, pkshih@realtek.com, ulf.hansson@linaro.org,
+ tony0620emma@gmail.com, lukas@mntre.com,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170137159397.1963309.4329648460865757143.kvalo@kernel.org>
+Date: Thu, 30 Nov 2023 19:13:15 +0000 (UTC)
 
-On Thu, 2023-11-30 at 10:55 -0800, Kees Cook wrote:
-> On Thu, Nov 30, 2023 at 07:40:26PM +0100, Johannes Berg wrote:
-> > On Thu, 2023-11-30 at 10:32 -0800, Kees Cook wrote:
-> > > Yeah, I would expect this to mean that there is a code path that
-> > > GCC found where the value could overflow. It does this when a variabl=
-e
-> > > "value range" gets bounded (e.g. an int isn't the full -INT_MAX to IN=
-T_MAX
-> > > range).And flex_array_size() was designed to saturate at SIZE_MIX rat=
-her
-> > > than wrapping around to an unexpected small value, so these are playi=
-ng
-> > > together it seems.
-> > >=20
-> > > However, I would have expected the kzalloc() to blow up _first_.
-> >=20
-> > Hmm.
-> >=20
-> > > Regardless, I suspect the addition of "if (n_thresholds > 1)" is what=
- is
-> > > tripping GCC.
-> > >=20
-> > >                 int len =3D nla_len(attrs[NL80211_ATTR_CQM_RSSI_THOLD=
-]);
-> > > 		...
-> > >                 return nl80211_set_cqm_rssi(info, thresholds, len / 4=
-,
-> > >                                             hysteresis);
-> > >=20
-> > > Now it "knows" there is a path where n_threasholds could be [2,
-> > > INT_MAX].
-> >=20
-> > Yeah, it's not _really_ bounded, apart from the message length? But the=
-n
-> > struct_size() should saturate and fail? But I guess it cannot know that=
-,
-> > and limits the object size to 1<<63 - 1 whereas the copy is 1<<64 - 1..=
-.
-> >=20
-> > > Does this warning go away if "len" is made unsigned?
->=20
-> Actually, this alone fixes it too:
->=20
-> diff --git a/include/net/netlink.h b/include/net/netlink.h
-> index 167b91348e57..c59679524705 100644
-> --- a/include/net/netlink.h
-> +++ b/include/net/netlink.h
-> @@ -1214,9 +1214,9 @@ static inline void *nla_data(const struct nlattr *n=
-la)
->   * nla_len - length of payload
->   * @nla: netlink attribute
->   */
-> -static inline int nla_len(const struct nlattr *nla)
-> +static inline u16 nla_len(const struct nlattr *nla)
->  {
-> -	return nla->nla_len - NLA_HDRLEN;
-> +	return nla->nla_len > NLA_HDRLEN ? nla->nla_len - NLA_HDRLEN : 0;
->  }
->=20
+Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
 
-Heh. If you can sell that to Jakub I don't mind, but that might be a
-harder sell than the int/u32 in our code...
+> Lukas reports skb_over_panic errors on his Banana Pi BPI-CM4 which comes
+> with an Amlogic A311D (G12B) SoC and a RTL8822CS SDIO wifi/Bluetooth
+> combo card. The error he observed is identical to what has been fixed
+> in commit e967229ead0e ("wifi: rtw88: sdio: Check the HISR RX_REQUEST
+> bit in rtw_sdio_rx_isr()") but that commit didn't fix Lukas' problem.
+> 
+> Lukas found that disabling or limiting RX aggregation works around the
+> problem for some time (but does not fully fix it). In the following
+> discussion a few key topics have been discussed which have an impact on
+> this problem:
+> - The Amlogic A311D (G12B) SoC has a hardware bug in the SDIO controller
+>   which prevents DMA transfers. Instead all transfers need to go through
+>   the controller SRAM which limits transfers to 1536 bytes
+> - rtw88 chips don't split incoming (RX) packets, so if a big packet is
+>   received this is forwarded to the host in it's original form
+> - rtw88 chips can do RX aggregation, meaning more multiple incoming
+>   packets can be pulled by the host from the card with one MMC/SDIO
+>   transfer. This Depends on settings in the REG_RXDMA_AGG_PG_TH
+>   register (BIT_RXDMA_AGG_PG_TH limits the number of packets that will
+>   be aggregated, BIT_DMA_AGG_TO_V1 configures a timeout for aggregation
+>   and BIT_EN_PRE_CALC makes the chip honor the limits more effectively)
+> 
+> Use multiple consecutive reads in rtw_sdio_read_port() and limit the
+> number of bytes which are copied by the host from the card in one
+> MMC/SDIO transfer. This allows receiving a buffer that's larger than
+> the hosts max_req_size (number of bytes which can be transferred in
+> one MMC/SDIO transfer). As a result of this the skb_over_panic error
+> is gone as the rtw88 driver is now able to receive more than 1536 bytes
+> from the card (either because the incoming packet is larger than that
+> or because multiple packets have been aggregated).
+> 
+> In case of an receive errors (-EILSEQ has been observed by Lukas) we
+> need to drain the remaining data from the card's buffer, otherwise the
+> card will return corrupt data for the next rtw_sdio_read_port() call.
+> 
+> Fixes: 65371a3f14e7 ("wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets")
+> Reported-by: Lukas F. Hartmann <lukas@mntre.com>
+> Closes: https://lore.kernel.org/linux-wireless/CAFBinCBaXtebixKbjkWKW_WXc5k=NdGNaGUjVE8NCPNxOhsb2g@mail.gmail.com/
+> Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-johannes
+Did this fix Lukas' problem? I couldn't see any answer to Ping's
+question.
+
+Patch set to Deferred.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20231120115726.1569323-1-martin.blumenstingl@googlemail.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
