@@ -1,86 +1,130 @@
-Return-Path: <linux-wireless+bounces-229-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-230-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5B07FE677
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 03:03:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 485587FE7D6
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 04:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57D0D2820B6
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 02:03:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3281B20E48
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 03:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB96749D;
-	Thu, 30 Nov 2023 02:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4987B134D8;
+	Thu, 30 Nov 2023 03:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V4W0xKW3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAD9E10CE;
-	Wed, 29 Nov 2023 18:03:32 -0800 (PST)
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-1fa619735c1so207750fac.0;
-        Wed, 29 Nov 2023 18:03:32 -0800 (PST)
+Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5FDFD67;
+	Wed, 29 Nov 2023 19:52:06 -0800 (PST)
+Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6d7e6df999fso318412a34.1;
+        Wed, 29 Nov 2023 19:52:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701316326; x=1701921126; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aZ7N9YtES1a0DlRuZSgil/lx/WENnW1vYXJvjd/eox4=;
+        b=V4W0xKW3JubweiYTxAW19gX4PehpQMcwk/exiru+ZKlKvHkXFUtIXUqOBSyG4eEydm
+         ND0iYDOtM/yERpsXF1Lb8YRsply1HxgwI4Fbwk00uTY3YSJzOwJOtBI62TqBW3C+pxrs
+         7aYh+x8L1zP616QXk5R4jOQfR0TanUs+JFDNFJlVcyVNlZHRjwkyv/tqBe8Z6e+iQALE
+         yGvLCaKgOCS5g36CpnX/rLUNYKEqR47tMTrRxuyxrr+9G04LbAmZbrC8ZaRIANAE+A+4
+         CsVO/oeaCgY1umXBEDXt4OPYFQ5FBurHRNLLsm9DZGzRQ3eFW69hJQyjpRjNYre19pqu
+         00EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701309812; x=1701914612;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8Q2vNmGuGh5CrrcXwq2zhKRBlmkvD1yCFiwOjfu4SPE=;
-        b=oisCcIh9XQ0mDGa45Yzn/+14pwhVHbzkYRpWYH7+qluJTmZ56yIJAaY0TCgxqn6hkw
-         0IaNJNIYM0s0AJGYGbjOJl5z4MJ33/W1334R1thzDSX4w7ax+HY58b+zewbBAXuDIC+N
-         nKet4NT1e1VGQBCaDXYUVK7ZH8IEdUITQZycwCUlmYEJWDT6WVg7T5ee07HsO2YmCp50
-         LUECLCswXjvcZHXsZqo9sMZtgMIS9obE+3j9kC7Tr3IxlYaaujtW97wjSyQDvtGCrYE0
-         87+XecosiyuuYiHjYIDuhly6wL+0sgyYs8UgDHoj2Xd14capzALIm5k9EOWDE4Vck6Cx
-         xhkw==
-X-Gm-Message-State: AOJu0Ywlpt7z0Lyzrc6lbysR7+Sm+2ZaUb0ju9b6rf2RafsgaW3/RtpH
-	lPMy2aMXPN7zFdxMXim7SZkIRVqVEt+6I5kKRqc=
-X-Google-Smtp-Source: AGHT+IFeBw5C9KhItRvNqkQlIigQafVlG4P8xPVIFw8uY++6NCKs10HkkZbCf246Q6s6P9IIzfZpjTtKmOGok6pCVqU=
-X-Received: by 2002:a05:6871:2309:b0:1ea:2c8b:e18b with SMTP id
- sf9-20020a056871230900b001ea2c8be18bmr24543836oab.35.1701309811728; Wed, 29
- Nov 2023 18:03:31 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701316326; x=1701921126;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aZ7N9YtES1a0DlRuZSgil/lx/WENnW1vYXJvjd/eox4=;
+        b=L0lPvSIVIO9ZW+MX87XUVqXkPz2MV/SE0o6addUa5Rqucqfq2BmtXnh+VO6ww0ZceK
+         JvHib5QBHGyyNP9oAm4veQvr8GduxH+n1cop0nyuJK1O6XufoEYumNMUZnBcyInSTf0S
+         NfCQNaQwuWcQRFLZ1/BUSbSAir4/JrNh3CQDuJwW9SQpV1Gb5wLWZvIF1ONSlaobvof3
+         GQmjGYirSg3BDZhabu4eOFhk3cDhyObMCHgBIVrqSG02auCFnmK5l0lIyaKCsKMu7CKf
+         DXvF8phgrEHAERa+atUvuCpaTmxO0nlJhfvjDz0OE8K+fmoWKLGyMrseoIrLJOjgE1or
+         Fejg==
+X-Gm-Message-State: AOJu0Yzjd8rYjEATZlxl9+illFi96PYq0m7nQKYXtoYTDuLYFv0unyjN
+	t2QeM4KMGeSe7hhIjOBDiYkC+CvO/c6oeQ==
+X-Google-Smtp-Source: AGHT+IHbHvpjIEjrCitzC7tr5ZCNCJ6mcLNgd03Agutg6T8XrYdJeQAzDJL77sXh7LMNpxIKOJEwBw==
+X-Received: by 2002:a05:6830:1450:b0:6d8:53a5:7033 with SMTP id w16-20020a056830145000b006d853a57033mr3186774otp.0.1701316326204;
+        Wed, 29 Nov 2023 19:52:06 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id c11-20020a65674b000000b005c259cef481sm171441pgu.59.2023.11.29.19.52.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Nov 2023 19:52:05 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id A2CBD10205C43; Thu, 30 Nov 2023 10:52:03 +0700 (WIB)
+Date: Thu, 30 Nov 2023 10:52:03 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Genes Lists <lists@sapience.com>, tglx@linutronix.de,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	gregory.greenman@intel.com, kvalo@kernel.org,
+	Linux Wireless <linux-wireless@vger.kernel.org>
+Cc: Linux Regressions <regressions@lists.linux.dev>
+Subject: Re: crash with 6.7 rc2 and rc3
+Message-ID: <ZWgG48xjHEgG3u9w@archie.me>
+References: <c46a6462-8263-455c-a6ea-1860020f5fab@sapience.com>
+ <ZWV7JworMrjHJHsO@archie.me>
+ <cf2dcc97-845d-4860-be4d-5822d2ebbfca@sapience.com>
+ <022c67aa-b90a-4756-8725-5f7fba7dc780@sapience.com>
+ <2ce6a24f-fc9b-45d2-8a11-73a3e69ffa13@sapience.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Len Brown <lenb@kernel.org>
-Date: Wed, 29 Nov 2023 21:03:20 -0500
-Message-ID: <CAJvTdKkcxJss=DM2sxgv_MR5BeZ4_OC-3ad6tA40TYH2yqHCWw@mail.gmail.com>
-Subject: iwlwifi: WRT: Invalid buffer destination
-To: Johannes Berg <johannes.berg@intel.com>, 
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
-	Gregory Greenman <gregory.greenman@intel.com>
-Cc: Linux PM list <linux-pm@vger.kernel.org>, 
-	"open list:NETWORKING DRIVERS (WIRELESS)" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="KxZoA7PtHbqu5DUy"
+Content-Disposition: inline
+In-Reply-To: <2ce6a24f-fc9b-45d2-8a11-73a3e69ffa13@sapience.com>
 
-Automated suspend/resume testing is grumpy about iwlwifi, because
-iwlwifi dmesg's with the words "Invalid" and "Failed", which our
-heuristics highlight as issues a human should review.
 
-If this is normal, can you delete the messages?  If this is a failure,
-can we fix it?
+--KxZoA7PtHbqu5DUy
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-thanks,
--Len
+On Wed, Nov 29, 2023 at 12:53:28PM -0500, Genes Lists wrote:
+> On 11/28/23 14:56, Genes Lists wrote:
+> > On 11/28/23 05:39, Genes Lists wrote:
+> > > On 11/28/23 00:31, Bagas Sanjaya wrote:
+> > > > On Mon, Nov 27, 2023 at 03:55:37PM -0500, Genes Lists wrote:
+> > > > >=20
+> > > > > lenovo laptop boots fine under 6.7rc1 and older including 6.6.2 s=
+table.
+> > > > > but not for 6.7 rc2 or rc3.
+> > > > >=20
+> > > > > ...
+> >=20
+> >=20
+>=20
+> This appears to be build related. Starting from scratch with builds and t=
+hey
+> are now working fine.
+>=20
+> My sincere apologies - please ignore/close this as (silly) user error.
+>=20
 
-[20168.810433] iwlwifi 0000:00:14.3: WRT: Invalid buffer destination
-[20168.967756] iwlwifi 0000:00:14.3: WFPM_UMAC_PD_NOTIFICATION: 0x20
-[20168.967806] iwlwifi 0000:00:14.3: WFPM_LMAC2_PD_NOTIFICATION: 0x1f
-[20168.967857] iwlwifi 0000:00:14.3: WFPM_AUTH_KEY_0: 0x90
-[20168.967919] iwlwifi 0000:00:14.3: CNVI_SCU_SEQ_DATA_DW9: 0x0
-[20168.969387] iwlwifi 0000:00:14.3: RFIm is deactivated, reason = 4
-[20169.074918] iwlwifi 0000:00:14.3: Failed to create debugfs
-directory under netdev:wlp0s20f3
-[20169.076354] iwlwifi 0000:00:14.3: Failed to create debugfs
-directory under netdev:p2p-dev-wlp0s20
+Telling regzbot:
 
-ps.
+#regzbot resolve: fixed by clean build
 
-lenb@lenb-Dell-XPS-13-9315:~/src/linux$ grep IWLWIFI .config
-CONFIG_IWLWIFI=m
-CONFIG_IWLWIFI_LEDS=y
-CONFIG_IWLWIFI_OPMODE_MODULAR=y
-# CONFIG_IWLWIFI_DEBUG is not set
-CONFIG_IWLWIFI_DEBUGFS=y
-CONFIG_IWLWIFI_DEVICE_TRACING=y
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--KxZoA7PtHbqu5DUy
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZWgG3wAKCRD2uYlJVVFO
+o5kHAP4uvok9RabEEM91N9uXtEExho0ks8Br/ecWYC+dAMAingEAurtRwwGCaZI5
+/OMmCilhJPR5UnBxrnD6Mkc7OgBfHgY=
+=4mkp
+-----END PGP SIGNATURE-----
+
+--KxZoA7PtHbqu5DUy--
 
