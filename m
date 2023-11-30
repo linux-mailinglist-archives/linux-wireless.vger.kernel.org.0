@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-241-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-242-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046707FF7BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 18:06:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF157FF857
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 18:33:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 984C8B20D82
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 17:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7F32281690
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 17:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54D155788;
-	Thu, 30 Nov 2023 17:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540F256459;
+	Thu, 30 Nov 2023 17:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g4XTjG8y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U65o5Om9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83DE46432
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 17:06:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190DFC433C7;
-	Thu, 30 Nov 2023 17:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3754847A5A
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 17:33:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8230C433C7;
+	Thu, 30 Nov 2023 17:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701363967;
-	bh=C9xNgVVhXRSyE0l4y+M6+IWYv5jkCVWMh6VIt0VA/fs=;
+	s=k20201202; t=1701365596;
+	bh=t8uwdWXJ/C0JLH2QtDk8ksHVHtSvg4O875BSx0Lnepo=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=g4XTjG8y9knI3NBpjmTbY0jzFw1mcc8iGTdhzD7XCC86xTR66ytM4U3sCJEbptvGC
-	 WaURhaPOoe0YRt72iQB5S8OT3kTeOHpJXFqqkUoRlXzw107QCz1bBK/pnOq6Wu5WGd
-	 3mRQBGy355RRvxnoF7KEwJXXbOQIbdkVQ7kr4qJ8Phe34meaoksvynwBQb9DYmbops
-	 L9FzU5EVrZOTLUm5oKo6v2XcyzO8V3qlzqSIT3yAO5/8Z2yMAhkKT3YB8T6W7W+wMf
-	 tovsKxEmGSU0L59zRi5GhbYqwnwGbn8MFHx+xplKXYD5q1hwU8wwCbBXU1LZHU0/2P
-	 FfJUYY21ujKOw==
+	b=U65o5Om96swNnsEc4VWBBVrKn+jJlHiJwetMhFbmNLXe21f81nW1mxyUmiOr8kuer
+	 p2ZCdwAm1lUz5pBg11I5fkT5M6OdqRR100/Sn0pFOP4hmYQSaMKbuIsIOgdKJ6tpHI
+	 mzDvskPaC8jO2bGjRVDlaKMv/isO2xNBT3WnEySjiMIDIE0huKngOIm95A1cck8JHT
+	 vMz2Rihy+j1tyFTITKW4m6AqeBrHqu+GEt/6FAG/CePxwKVqPmt2uTkBa1xbQOAV5y
+	 923yJJZQG5PSn1Tlx9uQ1lKNyhAR3bGUxAnH7nd19fGkrcNmDjHihju59hb+nQE40L
+	 aLx32waVWA8jA==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -39,44 +39,42 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH wifi-next 1/6] wifi: ath11k: Convert to platform remove
- callback returning void
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: ath12k: fix the issue that the multicast/broadcast
+ indicator is not read correctly for WCN7850
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231117093056.873834-9-u.kleine-koenig@pengutronix.de>
-References: <20231117093056.873834-9-u.kleine-koenig@pengutronix.de>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?=  <u.kleine-koenig@pengutronix.de>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, ath11k@lists.infradead.org,
- linux-wireless@vger.kernel.org, kernel@pengutronix.de
+In-Reply-To: <20231118134538.19545-1-quic_lingbok@quicinc.com>
+References: <20231118134538.19545-1-quic_lingbok@quicinc.com>
+To: Lingbo Kong <quic_lingbok@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ <lingbok@qti.qualcomm.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170136396402.1435047.15867746880964995534.kvalo@kernel.org>
-Date: Thu, 30 Nov 2023 17:06:05 +0000 (UTC)
+Message-ID: <170136559355.1566939.2533583060106709722.kvalo@kernel.org>
+Date: Thu, 30 Nov 2023 17:33:15 +0000 (UTC)
 
-Uwe Kleine-König  <u.kleine-koenig@pengutronix.de> wrote:
+Lingbo Kong <quic_lingbok@quicinc.com> wrote:
 
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code. However the value returned is ignored (apart
-> from emitting a warning) and this typically results in resource leaks.
+> We observe some packets are discarded in ieee80211_rx_handlers_result
+> function for WCN7850. This is because the way to get multicast/broadcast
+> indicator with RX_MSDU_END_INFO5_DA_IS_MCBC & info5 is incorrect. It should
+> use RX_MSDU_END_INFO13_MCAST_BCAST & info13 to get multicast/broadcast
+> indicator.
 > 
-> To improve here there is a quest to make the remove callback return
-> void. In the first step of this quest all drivers are converted to
-> .remove_new(), which already returns void. Eventually after all drivers
-> are converted, .remove_new() will be renamed to .remove().
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 > 
-> Trivially convert this driver from always returning zero in the remove
-> callback to the void returning variant.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
 > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+ALWAYS run ath12k-check:
 
-62e31362033e wifi: ath11k: Convert to platform remove callback returning void
+drivers/net/wireless/ath/ath12k/hal.c:892:16: warning: cast to restricted __le16
+drivers/net/wireless/ath/ath12k/hal.c:892:16: warning: cast from restricted __le32
+
+Patch set to Changes Requested.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231117093056.873834-9-u.kleine-koenig@pengutronix.de/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231118134538.19545-1-quic_lingbok@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
