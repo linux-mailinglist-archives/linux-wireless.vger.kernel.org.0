@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-256-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748927FFB18
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 20:21:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 375C47FFB22
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 20:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63AC9B20E42
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 19:21:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6884E1C20CAC
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 19:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E61522063;
-	Thu, 30 Nov 2023 19:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D383922066;
+	Thu, 30 Nov 2023 19:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evZYHgvK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONSjEr2c"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4D25FEED;
-	Thu, 30 Nov 2023 19:21:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A20C433C7;
-	Thu, 30 Nov 2023 19:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B640322063
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 19:21:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E35FC433C8;
+	Thu, 30 Nov 2023 19:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701372062;
-	bh=/nNbmxvYk4PeLj0IKIcflNHFfHDHygDe5UG7/BtZX4I=;
+	s=k20201202; t=1701372102;
+	bh=xFJaBUGhTRuqos9uOdVZgNT7AXqJONxi3TV6qgLPhjE=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=evZYHgvKxtZnJ6tt6nMpok91Q3GDWFWPRI9wFkU6HApfzdy/66JaQUjWZeqJfa8ak
-	 qA6ariFYlPv/LzTjFU7LXv9liNM31hJmSYDZqmi5O6uXUa/le4IHlJFv5nFWS3MZcU
-	 x3okcbNxvsSjX+cA9FlYfsfnbRcADNPj6Lf9uKta6BIE4JHnGTBZOu90t4l4xlYFT0
-	 Nulb8Bzil/jIuUEKcT3HGyXVmh8Eq9s+mrYbrGUDIPjZO4Bf/A7Uhzvw+JntIbqD4h
-	 pMu7r6Xf+J1UehZeJ6JiAX7rGy5VEAWcUU3q+gHJhbgg05ChHM9lcUUvbB1/t4tXFr
-	 6RHCyJmwDwV/g==
+	b=ONSjEr2crneS7MCJyTlRbdfXdOwiyT4E+4vzk3eQZUeV5B2IWSlLEeSmx/7KNLNik
+	 2n1q3L9SKgyQYmHlHuBwEx0h2b45KVwD/ysN8R0Cf4T5EUgSQDa5/Ys88YZgaWOMng
+	 +gbFjLMXFAvhCAKDK+KpDxPri+bwTXZ63FE+DKJXEyafIV8mgHZe+v4kgEDxPXsgmn
+	 RTbIfGGYDayr01NBXDUcqBj3YBDMMASpARwE2ObSX1PlpKE2iWwjo6HccCcLWUgaNx
+	 SxpmD3i4KvVgUIVYR+QmXBWoPPoqhYDGQPceurVDJc2cJluIRR/O42tKnn1HvUx0yZ
+	 BPG9L2VO+kXtQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -39,44 +39,31 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: libertas: fix config name in dependency for SDIO
- support
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 6/6] bcma: Use PCI_HEADER_TYPE_MASK instead of literal
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231122083047.12774-1-lukas.bulwahn@gmail.com>
-References: <20231122083047.12774-1-lukas.bulwahn@gmail.com>
-To: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, libertas-dev@lists.infradead.org,
- linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lukas Bulwahn <lukas.bulwahn@gmail.com>
+In-Reply-To: <20231124090919.23687-6-ilpo.jarvinen@linux.intel.com>
+References: <20231124090919.23687-6-ilpo.jarvinen@linux.intel.com>
+To: =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170137205913.1963309.7623759233878146525.kvalo@kernel.org>
-Date: Thu, 30 Nov 2023 19:21:01 +0000 (UTC)
+Message-ID: <170137209833.1963309.16652947115996666871.kvalo@kernel.org>
+Date: Thu, 30 Nov 2023 19:21:41 +0000 (UTC)
 
-Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> wrote:
 
-> Commit 4b478bf6bdd8 ("wifi: libertas: drop 16-bit PCMCIA support") reworks
-> the dependencies for config LIBERTAS, and adds alternative dependencies for
-> USB, SDIO and SPI.
+> Replace literal 0x7f with PCI_HEADER_TYPE_MASK.
 > 
-> The config option SDIO however does not exist in the kernel tree. It was
-> probably intended to refer to the config option MMC, which represents
-> "MMC/SD/SDIO card support" and is used as dependency by various other
-> drivers that use SDIO.
-> 
-> Fix the dependency to the config option MMC for declaring the requirement
-> on provision of SDIO support.
-> 
-> Fixes: 4b478bf6bdd8 ("wifi: libertas: drop 16-bit PCMCIA support")
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
 Patch applied to wireless-next.git, thanks.
 
-18814f723f92 wifi: libertas: fix config name in dependency for SDIO support
+ac586b8401c9 bcma: Use PCI_HEADER_TYPE_MASK instead of literal
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231122083047.12774-1-lukas.bulwahn@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231124090919.23687-6-ilpo.jarvinen@linux.intel.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
