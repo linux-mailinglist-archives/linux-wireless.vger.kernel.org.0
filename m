@@ -1,109 +1,128 @@
-Return-Path: <linux-wireless+bounces-248-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-249-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2437FFA72
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 19:56:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 430917FFA77
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 19:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C9CD1C20FCF
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 18:56:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1EAD281AA3
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Nov 2023 18:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E3F39AE5;
-	Thu, 30 Nov 2023 18:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D4E52F63;
+	Thu, 30 Nov 2023 18:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="glQyclz3"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="hawQL+mB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21AA5B9
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 10:54:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=1mZwmuNrX1XZCTolturnka409we6fnCrGdbywyYe9/A=;
-	t=1701370489; x=1702580089; b=glQyclz36MwCxOiESQjIq+Dw7Nrax0HZW7/IsRAcxXjJ5r5
-	Hv2Ot84qwZhsqtQ1aQ1d9uRUR/cWpsHqGUSg/O0KwaJwI31Lv6J/zu9fGBUmVX3NhX9aMMdNW/q/n
-	lodtEIh5g8q9YiLgofSo0NXG8sYGAlIQCnwrlnCgl6aduJQi1xSshe8ojx4Ggfr6oolmIWhigGMK0
-	yIu/HCoN9R7WUbtOj9gyJbkEYWrcojS+CuiBkXRBLidxA1z11fi0z9jFs/rn79Y/jE7KfzqaJ0Hxo
-	1RPpVW7C20pCeLDpEmAzoMGUL/bqmFtSalG8CbYBzJWQUEeJhGRHDkRxMaO7f62Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1r8mBP-0000000A9Pi-0vNM;
-	Thu, 30 Nov 2023 19:54:43 +0100
-Message-ID: <1cddf5467c79c0d3ab1e9ba67266d302f63b3fa4.camel@sipsolutions.net>
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E39D1B9
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 10:55:17 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1d048d38881so3772305ad.2
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Nov 2023 10:55:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1701370517; x=1701975317; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o/bzlkcxWIvJcapDgBF0UDoZol+j+J/d9ElDaLghBao=;
+        b=hawQL+mB3Vnn9+MHvxrIcDi7bIY+9/pSmY5L34FlNEX4YWa05gJIx8WFVVoDzuY7AW
+         fUruq12wxwxgaKBjnbj5oskSHMWbYXqVjTXEIUESAeHen5Q7YeTiwkNAstZSIGIY7IKN
+         gtVk4EtyK8AcNURP0aiOZO7NHivBzxqFwgV8A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701370517; x=1701975317;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o/bzlkcxWIvJcapDgBF0UDoZol+j+J/d9ElDaLghBao=;
+        b=HgTvraYS/mvjXeA1MBsG0ayD+wEjGA3g9yxTVcx0VWSdYIwUcYtv1CkOBI4Sjw0Ddn
+         5Lf0CYGMADOCVZVMPrACTBG4Ozpom0tuugpqqamvAe+XKyfWigG+p7rcFddkqb8+oH+Y
+         0IPTdwASDt5rRKBt/Z3Ri2T9H0HfJVf38iv+2F2gCoRNwJTNs5ynumKa4u/F1K6rlc5G
+         +rbEAzo0Lq1hhCOVpOulKFAPZLPdwqtSKuisDsIm9y8O545cOHf0ofCWor8nGaSTKhea
+         LAUZPUr+zwI14EKlo4RzLRSrYdHjwmymvisCCpHQ55hbidZZ2ZHFFiGnrXQ+j7b4z8+6
+         kZMQ==
+X-Gm-Message-State: AOJu0Yy4/6pfmHn7nYuYQmPTJK6AC7xQgPKaTyCi7d+bpmqWp5hjT4BP
+	pVjNlU2bz7edqPsywIAeSzLBXQ==
+X-Google-Smtp-Source: AGHT+IG9wFLvlwyxfm/BW91USfaiVHUUl147jWOXSej9Wr/vbn4JU0jdWKnBu9zl2klYM+Jj8oAI9Q==
+X-Received: by 2002:a17:902:c1d5:b0:1cc:45df:4710 with SMTP id c21-20020a170902c1d500b001cc45df4710mr21374814plc.40.1701370517354;
+        Thu, 30 Nov 2023 10:55:17 -0800 (PST)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id w9-20020a170902904900b001bd28b9c3ddsm1727297plz.299.2023.11.30.10.55.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Nov 2023 10:55:16 -0800 (PST)
+Date: Thu, 30 Nov 2023 10:55:16 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Michael Walle <mwalle@kernel.org>, lkp@intel.com,
+	oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+	Max Schulze <max.schulze@online.de>
 Subject: Re: [RFC PATCH] wifi: cfg80211: fix CQM for non-range use
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kees Cook <keescook@chromium.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, Michael Walle
- <mwalle@kernel.org>,  lkp@intel.com, oe-kbuild-all@lists.linux.dev,
- linux-wireless@vger.kernel.org,  Max Schulze <max.schulze@online.de>
-Date: Thu, 30 Nov 2023 19:54:41 +0100
-In-Reply-To: <202311301050.C4BFFB9837@keescook>
+Message-ID: <202311301054.0049306B7@keescook>
 References: <202311090752.hWcJWAHL-lkp@intel.com>
-	 <202311090752.hWcJWAHL-lkp@intel.com>
-	 <1c37d99f722f891a50c540853e54d4e36bdf0157.camel@sipsolutions.net>
-	 <fc1dbe4a-a810-445c-9398-60a5e55990a2@quicinc.com>
-	 <202311301016.84D0010@keescook>
-	 <01e3663e9e1418a183ee86251e0352256494ee28.camel@sipsolutions.net>
-	 <202311301050.C4BFFB9837@keescook>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ <202311090752.hWcJWAHL-lkp@intel.com>
+ <1c37d99f722f891a50c540853e54d4e36bdf0157.camel@sipsolutions.net>
+ <fc1dbe4a-a810-445c-9398-60a5e55990a2@quicinc.com>
+ <202311301016.84D0010@keescook>
+ <01e3663e9e1418a183ee86251e0352256494ee28.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <01e3663e9e1418a183ee86251e0352256494ee28.camel@sipsolutions.net>
 
-On Thu, 2023-11-30 at 10:52 -0800, Kees Cook wrote:
->=20
-> I was able to see it with Ubuntu's GCC 12.3.0 and their config. This
-> fixed it for me:
+On Thu, Nov 30, 2023 at 07:40:26PM +0100, Johannes Berg wrote:
+> On Thu, 2023-11-30 at 10:32 -0800, Kees Cook wrote:
+> > Yeah, I would expect this to mean that there is a code path that
+> > GCC found where the value could overflow. It does this when a variable
+> > "value range" gets bounded (e.g. an int isn't the full -INT_MAX to INT_MAX
+> > range).And flex_array_size() was designed to saturate at SIZE_MIX rather
+> > than wrapping around to an unexpected small value, so these are playing
+> > together it seems.
+> > 
+> > However, I would have expected the kzalloc() to blow up _first_.
+> 
+> Hmm.
+> 
+> > Regardless, I suspect the addition of "if (n_thresholds > 1)" is what is
+> > tripping GCC.
+> > 
+> >                 int len = nla_len(attrs[NL80211_ATTR_CQM_RSSI_THOLD]);
+> > 		...
+> >                 return nl80211_set_cqm_rssi(info, thresholds, len / 4,
+> >                                             hysteresis);
+> > 
+> > Now it "knows" there is a path where n_threasholds could be [2,
+> > INT_MAX].
+> 
+> Yeah, it's not _really_ bounded, apart from the message length? But then
+> struct_size() should saturate and fail? But I guess it cannot know that,
+> and limits the object size to 1<<63 - 1 whereas the copy is 1<<64 - 1...
+> 
+> > Does this warning go away if "len" is made unsigned?
 
-OK. I guess kernel tree also mattered somehow, and I got confused
-because I'd applied the patch on wireless, where the robot did it on
-wireless-next. Not sure how that's different, but OK.
+Actually, this alone fixes it too:
 
+diff --git a/include/net/netlink.h b/include/net/netlink.h
+index 167b91348e57..c59679524705 100644
+--- a/include/net/netlink.h
++++ b/include/net/netlink.h
+@@ -1214,9 +1214,9 @@ static inline void *nla_data(const struct nlattr *nla)
+  * nla_len - length of payload
+  * @nla: netlink attribute
+  */
+-static inline int nla_len(const struct nlattr *nla)
++static inline u16 nla_len(const struct nlattr *nla)
+ {
+-	return nla->nla_len - NLA_HDRLEN;
++	return nla->nla_len > NLA_HDRLEN ? nla->nla_len - NLA_HDRLEN : 0;
+ }
+ 
+ /**
 
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index d0f499227c29..7735d178a393 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -12845,7 +12845,7 @@ static int cfg80211_cqm_rssi_update(struct cfg802=
-11_registered_device *rdev,
->  }
-> =20
->  static int nl80211_set_cqm_rssi(struct genl_info *info,
-> -				const s32 *thresholds, int n_thresholds,
-> +				const s32 *thresholds, u32 n_thresholds,
->  				u32 hysteresis)
->  {
->  	struct cfg80211_registered_device *rdev =3D info->user_ptr[0];
-> @@ -12948,7 +12948,7 @@ static int nl80211_set_cqm(struct sk_buff *skb, s=
-truct genl_info *info)
->  	    attrs[NL80211_ATTR_CQM_RSSI_HYST]) {
->  		const s32 *thresholds =3D
->  			nla_data(attrs[NL80211_ATTR_CQM_RSSI_THOLD]);
-> -		int len =3D nla_len(attrs[NL80211_ATTR_CQM_RSSI_THOLD]);
-> +		u32 len =3D nla_len(attrs[NL80211_ATTR_CQM_RSSI_THOLD]);
->  		u32 hysteresis =3D nla_get_u32(attrs[NL80211_ATTR_CQM_RSSI_HYST]);
-> =20
->  		if (len % 4)
->=20
->=20
-> If that's sensible, I can send a proper patch?
-
-Sure, that seems reasonable.
-
-> (Oh, it looks like nla_len is actually u16 ... should I use that instead
-> of u32?)
-
-Yeah it's a 16-bit field in the message format. Doesn't really matter?
-
-johannes
+-- 
+Kees Cook
 
