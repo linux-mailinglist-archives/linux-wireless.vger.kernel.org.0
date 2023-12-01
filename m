@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-309-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-310-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E678016D4
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 23:44:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA3C8016DC
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 23:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E1671F21046
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 22:44:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7648D1F21061
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 22:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39253F8D0;
-	Fri,  1 Dec 2023 22:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569522AD1C;
+	Fri,  1 Dec 2023 22:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ia3oZoVl"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="O0at6Hz+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2071.outbound.protection.outlook.com [40.107.13.71])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C5CBE0;
-	Fri,  1 Dec 2023 14:44:47 -0800 (PST)
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2059.outbound.protection.outlook.com [40.107.247.59])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8958B95;
+	Fri,  1 Dec 2023 14:47:43 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=S5N8Lh8TxcKVZwBG6ipQJE4X5eBwedf7W8sKu/xzdwuCLFpThL4s3Z9iCixymdp2EAerAT7c8A6/eg7AzPPXiBpcwdtXD9jfwmXhUJnNA62UFq6DAge8jQpk9XkLoPEeNrOWeHcS/rJDK93b7mi7aEY+danU22eW0B68O9kRrY1sznvooXAIBV1zbh+JrWOPLr8JQFmBNNoJ1MBqT/msd57dhNKfekh7M8asO83oNtu4XgqU/e9L0TpqoIDu80iCeOrGVHN0pnCm4z8TG2xdwZjV2cYAUJnpBFbl9nv7FgKX/NzE6EsnG5sJ9VgJLhlg6MuTZK8ggxVphqDZKJe/7A==
+ b=IMvv5o7kjx++t6tgFR5o+JipaKwTPaGzgNAxohrhhIjz+xTh8yhhJn9Gar2vL1q7bicA0UkQb9FXYFxh+rqlAnJJl0WesI6o47EAHsi6hfUT2jKIEeECc5lv/9CJVWpeurPIcyRCOkXztkyyLJFMNxsKgwpjINYVBAHDo4BYhDY8o7MgXNs9UjvWdkSXzZNJLBmuKUbFLjms8WX0c06y/Ws0zrggtcBpzRRmX4Mm4kdxUKJ6b5OesWj2RWe5i8uYMAYQ+qEcwo6KeUjyN7zgbF0CFS5nDSQdINAvATQaIQVf+pspGoqD+HkKeM4L3VdGq9haKdYu1TRLtDfAil0umw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GURLO4MnwgNHQ37o6tar2dUe6cxVT9KGhqm//1jQP+c=;
- b=Zwej7/fmgMITwhZ/myP0aCsdE/3CmkiWYDos+KVvl7CYIaC2Z0LxRcbfdO7jjCcwBy9fkrqIUdIU6067dCwg2nSu+99mX/yh+qNYouMMMaNdiLcMR+cD+7/bAlFO4LfEZEguEUEDIc49X1wznOzU7pTfdyD+guj0bevGGZkn3XLrG/Ky+yQyoUG3J8GMwFNVfzZyhdhYoKQaNqzHIW/jq70KC32xZHXjqQtb5s28gBUrK6xwbS6grfqpSqw74Uoy+B8KcvrsctgW9aJnoZefBbafXdJq5TAvILo1186W71NxFXBrY4EFkAECKwTvRAOlOglCjeN28hNTQuymCDeJ3A==
+ bh=Xed+qbTgJPIvSgMNPpZzwYp0N1JPSJ9YbW8S2mgC7vo=;
+ b=Q+0bITwn34yss0ytsGZ2+zlsGQvfrOTVj91Yt1iIwVgM6hWzSgnw3GjDUzXxMk/2MD4Bom99flLREQliRaza2EanVQVO4H0hwvI6Z+U1dmGpdkSGdbOsQp082Kxeo2/2kMJNPkXpy+Wby+DtYI53o/PMqEgylkpO9rm6rTrl8iiTF/mFpDLmm6xf8iO6ZXwErl4oLLsmSytImMLYgpjYAF6ib7lqXgLGKNzFYWrYeV/AmvpWAviWz7Ts3EZaIU7GMIf3/+7//WeXorL3QYWpILPJ7EW5029U6ZYZUu28S9TX+fL7zF/F9SsCsJVb5FtkYqd2pbAScztZcPqnc4MXjw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GURLO4MnwgNHQ37o6tar2dUe6cxVT9KGhqm//1jQP+c=;
- b=Ia3oZoVlDaAGrkRk5D/qc6vRRr7q+8rGsLHowhmVJM65F/BG8G6/2m2T95hy5u5Kdi1UJ8tY/kIoZia0FAnOKfQr/LzYPmtN04jgpUZi7nO1aV0h7TgO+kWglI5JXCX2QZ2GejaTZFnEd8/p5dd6+AfoRUrsfbXNND4K85TK0fM=
+ bh=Xed+qbTgJPIvSgMNPpZzwYp0N1JPSJ9YbW8S2mgC7vo=;
+ b=O0at6Hz+nvU9Nod3nWLkaCZTgetE68AaJRtW2tMvkAhl0hyBEmLiQZ8Oul7JdCJCPRz4f5OZ+MFg9Bodv+8cYw8UKtri0FFiaHaKWPXXtxEovetNnjZ9lsyk20nKworc0kKOS3fmFPxMoAcldwIUX2W8zxJ3RoDVbuvJo5pgmi8=
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
  by AM8PR04MB7875.eurprd04.prod.outlook.com (2603:10a6:20b:236::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.16; Fri, 1 Dec
- 2023 22:44:45 +0000
+ 2023 22:47:41 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b%7]) with mapi id 15.20.7068.012; Fri, 1 Dec 2023
- 22:44:45 +0000
+ 22:47:41 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: Francesco Dolcini <francesco@dolcini.it>
 CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"briannorris@chromium.org" <briannorris@chromium.org>, "kvalo@kernel.org"
 	<kvalo@kernel.org>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: RE: [EXT] Re: [PATCH v7 03/12] wifi: mwifiex: fixed reassocation
- issue for WPA3.
-Thread-Topic: [EXT] Re: [PATCH v7 03/12] wifi: mwifiex: fixed reassocation
- issue for WPA3.
-Thread-Index: AQHaIdVW2Rgv+lAi50uctTuVAqJuI7CUO6GAgADQDPA=
-Date: Fri, 1 Dec 2023 22:44:44 +0000
+Subject: RE: [EXT] Re: [PATCH v7 04/12] wifi: mwifiex: fixed missing WMM IE
+ for assoc req.
+Thread-Topic: [EXT] Re: [PATCH v7 04/12] wifi: mwifiex: fixed missing WMM IE
+ for assoc req.
+Thread-Index: AQHaIdVYu6BJedWzZkuajUNTuEil2bCUO9iAgADQvWA=
+Date: Fri, 1 Dec 2023 22:47:41 +0000
 Message-ID:
- <PA4PR04MB963809171278A338C8048D15D181A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <PA4PR04MB963816B99845D943B4D061E2D181A@PA4PR04MB9638.eurprd04.prod.outlook.com>
 References: <20231128083115.613235-1-yu-hao.lin@nxp.com>
- <20231128083115.613235-4-yu-hao.lin@nxp.com>
- <ZWmy0799XL9Vy4zT@francesco-nb.int.toradex.com>
-In-Reply-To: <ZWmy0799XL9Vy4zT@francesco-nb.int.toradex.com>
+ <20231128083115.613235-5-yu-hao.lin@nxp.com>
+ <ZWmzAWlh7o4bLZB8@francesco-nb.int.toradex.com>
+In-Reply-To: <ZWmzAWlh7o4bLZB8@francesco-nb.int.toradex.com>
 Accept-Language: zh-TW, en-US
 Content-Language: zh-TW
 X-MS-Has-Attach:
@@ -67,43 +67,43 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|AM8PR04MB7875:EE_
-x-ms-office365-filtering-correlation-id: c107b420-8af8-46b4-c4ce-08dbf2bf1d78
+x-ms-office365-filtering-correlation-id: 8b1bb55d-34a2-4e74-5967-08dbf2bf8684
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info:
- Dh5JYTGx6Zvv+ReaoLqsLHMFEQW1kaqyBCHTZqC9ncxfhOXbygIS/JDU3ZLZqz/MBYaORxhTEdQzJ/RrCBxhlRCkT6S9ka1MggoaMkyucT2yMrqkqkw8A/ethlVNuL4vSUbCrfGsBJKVq7hEFlVXkESAJdR9qY1iEXoo0JqCcTs8vjzOGm5l/3cuBOg+vPHBIq29KqWGVRaxvCUHt1OfybplgUV+cQ3PRiMolVaL+PFb+VOG0fXOzPWCBxvNUbQJR/YaJI2T8/zxX9Iy4/ZytqNYgV7qLp4JRlAgJdIYc6bZIg5adAGSRiumy3xnfqjbqdyuHNSO9Lfg4a+Yhb4uP0cUhaNVb0Vc9sF0K9POW5E+E7NpskRnAqG9JqFEiopFOIdAyUOUhhs0P0gWiimTvdl9q2PNVV8IJzYwR2Z/qAgppi9pOcebtqWkcvKpZyS9lDMJ4PBk/QvbVhJnidCTQ2uezfWRd5JPeLU/G8nEZy1RPW9ZqKiiYGW9MioLMpj2d+0uwA3zS3THE2MKPmeMihdqPT9EmItMdWikk1WuxSdt8Q56DxYiwnBp8F34WG/K+WO4DgL2wOabSE8M06lBVDsrodstDk4qXbAp2Y9v5nogETsWhRP2TwIYT852a5iE1/6yyzABaCQ9a5K9W/seh5A+JLBW84qtALyLw9UfDTw=
+ 0guO3v4sbrd6Y1NBJ0IoyWDCh3oJsMS3mTbpSO4YEOmMAOgvn67Zc0BKSks8/VAzHB2sOBXMWV5I1ZlLdIKDHaRGxlLHBt3CQk/NZxXu3Uj/YsaAZJVMDVRBXEwUDYKQDYcMt6J76gNyVJd2TfGrHn1I0lw0gz5dD0DvPcDR66V8xG9tar13UZtIawGwioxHa0/g0cF7k5dtzRfYJJTudLp7YPedrMedULHrIpoGKF4NLqhZuPv2Ke3jm7P7d8WQ+K29GRPSvnBU5upueepkvYm1sR+vOMalQiW8XYANlIR7CrBGWaCXlwK6IeRzCzp881TslMppwlY/qB3mWdd1NO9n1ljR0VrMfDwblxP9Wiapq4QVzqbbsctQsuGYSEefaW/8PAKubFsHVrAtoXk6NAl9vTjXVGZ64HtEr1aY+OS9ZunBfzvxI8Cm6dd7vInGSAfveLmHzUt9qNRQ4zHrPNXVnfM2IOvkW5LX+gACojx9i2bZi8zAxcBM8hGZJCmVzRahpHLOe76k+OWEbioa+ZmTPJAHRpf5Q2FK/eftNyZ9INVp21a1jHdkNnWO0MPzA6Czt/l1V0ezKcIniLxKFrGnUBCOMeNb2GqFSWhkCFAh/A8IFfzv2kOPToZqsrCL0bvjf588+QmHo4WDuheryEWIP/el/j9fahQZfQOAjcE=
 x-forefront-antispam-report:
  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(376002)(396003)(136003)(346002)(230173577357003)(230273577357003)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(66946007)(26005)(53546011)(83380400001)(6506007)(8676002)(7696005)(8936002)(4326008)(71200400001)(478600001)(41300700001)(52536014)(9686003)(86362001)(2906002)(38070700009)(55016003)(122000001)(76116006)(316002)(64756008)(66476007)(54906003)(66446008)(66556008)(33656002)(6916009)(38100700002)(5660300002);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?YhjT1dzLMMeHWKHIrX8JOMSnDTyo13EsJZNgeM0WAUcNPhxQtM4r69aAkhW8?=
- =?us-ascii?Q?pTs9E78h9bvpBHtS+stgVxTzh+pzk9pUgVGkunMEk0q0rpsCbsuD7RQh8r/0?=
- =?us-ascii?Q?Co8iq6SepEuT/GB94xaRYhf3DOipYvTzeSFyZlxIL5ITvvUiCxAJjuHO8Osg?=
- =?us-ascii?Q?NMxZKetJtGZv64ZqiymBUT9KJBc1RLgJiNyoC+kYB7tawvDKjfwH/SU1eQsq?=
- =?us-ascii?Q?8SczQQPqEah+xVPHn+3qq2tX7SMa3gHQCqyYJ8e2KZPzdu/HMN8X6nGyO0Rl?=
- =?us-ascii?Q?HZmQt9aAcDciq67vcK1FGsnLDcLG5wfqFHqS3uGpd4fzWdLbiJ/IzEcAfMMx?=
- =?us-ascii?Q?4Ha6rbEnEAqSmbnVC6AnxzgG3UMx8N5KXsxNAMRh3WkvQ8PDzwqavbFVUkwW?=
- =?us-ascii?Q?P9ttWke1XAXBF86HvyuOiUTakzEsVEuC7ENVsqkzh9vv4d5OIzfhdn790t84?=
- =?us-ascii?Q?wn3Th5FM1caFzUJA9FQYeBNjQpm4J/N6F3CM1kJxpZie0fKWhbESXDCIBMxG?=
- =?us-ascii?Q?GXjfu/865pRiZvfcapbwlzR2DshqYMFRTzxIvaOegoEtBbCpEvrMOPdRvvju?=
- =?us-ascii?Q?Q57MqdBp+SiQbLWYs6iAidtruYyLH31a3135OrD8LmfGxDLue/6vIYIvDKZ7?=
- =?us-ascii?Q?bTDRaZ/kjl4ourT6nSMWjTtejX2rfnR8TUwjYhtkQsDGII8LUKR0msoBrrwV?=
- =?us-ascii?Q?mpuFy+oq9KsuMA1Cp7aL4RFgVwWa9wsdTi3P/QIhG3v8e3ytZ23BjvtUoK8y?=
- =?us-ascii?Q?2p5HHt5PCPgk5Biz33dDbXxUizfGqOj8pFI2hcQPWEUjEr/wkQnl7luXtOfI?=
- =?us-ascii?Q?HzClaUwx5qgPDCOgZGbZ0vVyIKDI1g72jb5NbHgn15ewCUh2LeWBQfYJuHnd?=
- =?us-ascii?Q?2+6MCG83qi+KpLhFh7UcsJZzc+8XR+IJzkoZmKegBb8G2j0Nz1SwwIXdh7De?=
- =?us-ascii?Q?/bVR2py+5EzYvvGkkSwBrqS9XpTr8BOlMrBltAxOIwdmRU6bSPSjtYa+3jji?=
- =?us-ascii?Q?K0NxrGdswbphGX479gLV8osIaXNZWsQqQV6k5v0tzgqF5zfCMWfRhnb6SJhG?=
- =?us-ascii?Q?Mwzz4OV25TiYwbYTZ0DrcdR+3UFcfqHEiUdeqDklHpDYUn74TUSuN2PfDU6f?=
- =?us-ascii?Q?A2rw+PvFVWS0wI17nvlKrVSpEdkKfXxsNQNgj+y0/u6CzlIbpGH9WAzj4zR4?=
- =?us-ascii?Q?sregCpggqmsPATfS47MIwq2O+wTI0y7p6Ito1mPxn+fPBbiaJwtKi4UA5AAH?=
- =?us-ascii?Q?uIUlhl5sqgw1YoPeLgfJS0uHkCt2VkqOFlblu2zYwsLtt46hhxg4KhVf8quX?=
- =?us-ascii?Q?4Ut877cVTPB+si/qaBNiEYTBtFicplfKi0+YwDKRcH7PrzhHwwattXQxOoHd?=
- =?us-ascii?Q?ks1a89RFYjNj10rKIEeGyqL6Ii7OZlNzCdKXfWyQ09z4rGTNzBvEQtyuJgKX?=
- =?us-ascii?Q?kGmsyJ/ApoYpff3E+CdQHTEUR5qQg44kiA0NkC0Al3oLea7xKu+xinH1HlBa?=
- =?us-ascii?Q?eDeJ2TDiUnM94wVeK5HmnNfz+Jv649uhxW3KsKrw3SFyyKhN9qNlyBBnoc+W?=
- =?us-ascii?Q?4h72uD93Np+XAlE5P4h6xe9AIDD4HzOmuLfQYSZ/?=
+ =?us-ascii?Q?ey3NMK/NQg/yS7S6OCvUPLFWEhYni8I1aSRnK/j+qIoiTb6ecsUWIv2/gIqh?=
+ =?us-ascii?Q?4iFglLInDw2p1sO5xEr0VLzjpoBFVRUgvtCWKOXM5FquTm4IRXfG4x/T/PFk?=
+ =?us-ascii?Q?MaUhbKSV9A+JOiMf3vM8+CfzH2CkiKbfSabPbmjAxQoeOPF3yX+u1quINwe4?=
+ =?us-ascii?Q?PTwMk6MyAQRLEeniG6OjXAj74GHACU3/2KaxIeDlwePNFF5ljEbpYh+7Rz+N?=
+ =?us-ascii?Q?kFO2x0pUaFuu4O2N1dAQklkkEsWl/Rj+2/RuAhC9bk7/NQrXRZKRe446V3w/?=
+ =?us-ascii?Q?t70cmTq8L5syLHxDTrFB58S24Mehdjb3cDm4H2dleOuR5oGZtiRdUDH8rTrr?=
+ =?us-ascii?Q?fTFTMbiErHSuAO77nVMCIwhcq+6QmBGElwEtMaTM4rBooYekpjpv9NNklcjv?=
+ =?us-ascii?Q?NNvxLqaaCKFFQ/hhObVQuDwhiu01PTdGyv6nNnloMRBu4FNBvxfW9Mv43Iu1?=
+ =?us-ascii?Q?iGhrUjGuxEjEMoyocSfaKy9Yu6oxkt/M7jdZYuMc5OdM02+1IxE6wmqNgyJL?=
+ =?us-ascii?Q?kw/xIBjpfhEmZbgViOT2dnte2Oj2j6v8CYzrviLXVrXt0QGnxWDgUTEuXTZ+?=
+ =?us-ascii?Q?xFImKoIG5zS+FP6wFpo/oTSdM4ROzgFyq3BKOS+qtGLme3go6H1PoSq+ZMCW?=
+ =?us-ascii?Q?nMymVABjc/mKNDdJnq6gLgVwZJiGLCW0d6f0YhdQctCo04fjlMG17Igw5Iu9?=
+ =?us-ascii?Q?HDfAmia8ZDkrp0aMRJadc/BCXgGg1whpFkworS1OICmSC4qUb2l9geSW0S4H?=
+ =?us-ascii?Q?C8CYjAxVbUuL6YYerNr2IIt3EgS2IOxsR1zQw6wf5HRBTW3ee6D+tvcZ5Pi3?=
+ =?us-ascii?Q?TLW4ckNQwF9o2Vo1MMfKIwk7EqWAqhS0hlEUimJD4xiP9KKiFgzRs47BRC3e?=
+ =?us-ascii?Q?VGLCRILiO6iF2YJRSfezWNjEks1TpXVElH08iIb3KIkqNgxKsbz3mfQjZ57v?=
+ =?us-ascii?Q?dJjYTALXP7eAwj5dkVjHQ1z2m+J81I+i/QKkOVfotaRx5qme/S5arNL8boGc?=
+ =?us-ascii?Q?rgm0T5t4FL4p71+gcspKLgj1pmfDY4Ywu72T4MgCTlFQoeo3lHJfS7UymgQ1?=
+ =?us-ascii?Q?cGKVP4swLuUHYqK1CaLSaPfQ4c7kzCvcRCxI1HM7ire31RJu4vu/M/cRoeyH?=
+ =?us-ascii?Q?XcRs1zXpmJYVpXwMJH4nygMA1QqlDIhUEAY3hxX7XNdsND3awdqav/8Wx89i?=
+ =?us-ascii?Q?ukwqFmCBHU3P1tIT9P1CRtvC9LgSI4pP3OHAGJJuBtCkNTw4bK1Hv3weRkhC?=
+ =?us-ascii?Q?RYuudhT9lbPCaZRAxsW1ibm5tYcvueZjTUjv2PJrIZa3kyGAij3D2L/55Df4?=
+ =?us-ascii?Q?epx+CE1kjNwjtyp047JDyjTYeehQPRUxnacbnvT0KX93vvphLWVIJrY/YwR0?=
+ =?us-ascii?Q?iAEQWN4dclIW7iwwo5t2mF41nTIfR2XD/gMh79qfF6u5bUQqi7yS2GfVvDVj?=
+ =?us-ascii?Q?6cs/FeF4GNQH054c0bfTm9AZ6KV9wRBvdlBLVPM/fx74nNd7UACNPdLJz04Z?=
+ =?us-ascii?Q?vZdu87U7JIn4BQOtUvTYOd5D0853kXite85iZo0PEIBOYOzW3maimunsirge?=
+ =?us-ascii?Q?WLclQrorUoQ658IxaelymIP0spFCFjwvDzB90frm?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -115,24 +115,24 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c107b420-8af8-46b4-c4ce-08dbf2bf1d78
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Dec 2023 22:44:44.9870
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b1bb55d-34a2-4e74-5967-08dbf2bf8684
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Dec 2023 22:47:41.2224
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +THjE9hiYh0g/PBNdDbna6Csnqq+FBSOH5bIqqcShkXkIH8ux3CSOb7uDBBXJjPBT/hkES43B2KUWSZIjr/oQg==
+X-MS-Exchange-CrossTenant-userprincipalname: to7y17SdUf1wjZL/KYgUIwH6Ad7VDIbWGZXqonzjvuS2tyGnPV7ijDafpTkLIM8lPP5oSZ/fmyvfnwqoUo92jQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7875
 
 > From: Francesco Dolcini <francesco@dolcini.it>
-> Sent: Friday, December 1, 2023 6:18 PM
+> Sent: Friday, December 1, 2023 6:19 PM
 > To: David Lin <yu-hao.lin@nxp.com>
 > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
 > briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it; Pete
 > Hsieh <tsung-hsien.hsieh@nxp.com>
-> Subject: [EXT] Re: [PATCH v7 03/12] wifi: mwifiex: fixed reassocation iss=
-ue for
-> WPA3.
+> Subject: [EXT] Re: [PATCH v7 04/12] wifi: mwifiex: fixed missing WMM IE f=
+or
+> assoc req.
 >=20
 > Caution: This is an external email. Please take care when clicking links =
 or
@@ -140,23 +140,17 @@ or
 > this email' button
 >=20
 >=20
-> On Tue, Nov 28, 2023 at 04:31:06PM +0800, David Lin wrote:
-> > This issue is related to resatart/reconfigure AP.
-> >
-> > When AP is restarted or reconfigured, wpa_supplilcant will use cached
-> > PMKSA to do association to AP.
-> > Because association failure does not report to
-> > cfg80211/wpa_supplicant, wpa_supplicant will always use cached PMKSA
-> to do assocaiton.
-> > Connection can't be established under this way.
+> On Tue, Nov 28, 2023 at 04:31:07PM +0800, David Lin wrote:
+> > Remain on channel must be removed after authentication is done.
+> > Otherwise WMM setting for assoiation request will be removed.
 >=20
 > Same comment as patch 2, this seems a fixup of commit 1, you should fix
 > that patch, not add a followup fixup commit.
->
 
-This patch is due to QA test result of patch 1, I wonder why this patch sho=
-uld be merged with patch 1?
-=20
+So you think patch 1 to 4 should be merged as a single patch? In fact, patc=
+h 2 to 4 is issues reported by our QA for patch 1. If you insisted merge al=
+l of them, I can do this for patch v8.
+>=20
 > Francesco
 
 
