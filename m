@@ -1,85 +1,122 @@
-Return-Path: <linux-wireless+bounces-303-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-304-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E225E800EFF
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 17:06:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E46801269
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 19:17:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50637B20D4B
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 16:06:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A141C20996
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 18:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F27D4BA8C;
-	Fri,  1 Dec 2023 16:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CEF4F1EA;
+	Fri,  1 Dec 2023 18:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s5NNSwTx"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ME+7xuSh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC984BA85
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Dec 2023 16:06:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC67C433C8;
-	Fri,  1 Dec 2023 16:06:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701446809;
-	bh=V60OBAVdP05ZqICoOO8Mq9RmBiuJ+VOy+KYCJ7A4KzQ=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=s5NNSwTxawpDkFx2TtNYPNTKv+QKWlKOlWuZH9xr0WzTCCEu1VVEsJJqk8z4EyPK/
-	 5M0PwGjYn1dNTVOEmuPQMoRquKdkJlRGvje+R5vlfgLFtKJ/eHbZ8debnmpO1eJw4I
-	 rzjanSeAm5rryMNlW5yf7AFwPDYjtj0CBMaUGRUu859wC4DDF2vqMnJuHUMIaWaoQe
-	 KN287t6DE3DPGvtAl9epRRJfShFisl7F6BZxanlDP9JqYDaAyZS2QGrRdpzjvrIoj5
-	 exKrlb7m9YPc8l/x2MdF1SM8GbsTf1JMeLWXWyRFE9fGnVre2g9WCyklj9PmghfLRn
-	 LuisceKNVE1lw==
-Content-Type: text/plain; charset="utf-8"
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B9EF10D
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Dec 2023 10:17:04 -0800 (PST)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1d065be370aso3981525ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 01 Dec 2023 10:17:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1701454624; x=1702059424; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=80BOfbzU3jRYQRqKUun9qybGXNm0Ak9QPhMAb8Oq5lY=;
+        b=ME+7xuShkkCd0062a9EL0L48UcVgl2XNVW5BRL6HrY/mg3DiShxSdpn7IJmQxj/w1W
+         y6Kih+9DYWaLfoqYp+5pe938En1UXK6dzqyoieMKZZnN5wPV/Uq1I9TVzm7jMnnSzyry
+         5cZjnWvfXpQLdgXob0ttJuENteq2/BltyHmws=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701454624; x=1702059424;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=80BOfbzU3jRYQRqKUun9qybGXNm0Ak9QPhMAb8Oq5lY=;
+        b=uTsyHrYLT3ExY6GPdVP/2OVCe7yCtwYs1YGqNeKMx/8WCkJKc/qEgEkGxpkNS+LOQt
+         SmxCkQlWqYhhKP8KjUQ2HAsCivAcQkboYHLhMTVGFZA0Yp9+jpJvQE4fmJ78uW0jHpc8
+         WS84++UJIaROmW5UjEAkXNwlOmE0DDAw1jnyU2qgvphiOj65QsMgkonVmqrOvia7HTKO
+         xSqL7+ZlT/lXb0o+Vb3FsHMrUecsU0WDhOs+Z76EyIUFuGSDBdfpj1i3VcrxDAcspgRD
+         hrrEOFie8XgBAVxIc39rylyX/wWc2k+7UVU7CPAu6AL0JNRVAshrIKIeknUmrsBfiVb9
+         mdeA==
+X-Gm-Message-State: AOJu0YzM4guJtav8m1KGS3MBY3FFko+pbEgFzs/zzohDQKRIXUz+nHsj
+	w+49B2oorp33hj7dh9fuTYIYKi2J/c6NTcGXjV8=
+X-Google-Smtp-Source: AGHT+IHL4QH3wU1zQC3wiy9r3528WOQq1iSHFfDCieTdatztPnIyrMoq50t3CKZORUjazAX/9P8zkg==
+X-Received: by 2002:a17:902:db06:b0:1cf:c376:6d7f with SMTP id m6-20020a170902db0600b001cfc3766d7fmr26246754plx.42.1701454623948;
+        Fri, 01 Dec 2023 10:17:03 -0800 (PST)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id l6-20020a170902d34600b001cfb99d8b82sm1570921plk.136.2023.12.01.10.17.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Dec 2023 10:17:03 -0800 (PST)
+Date: Fri, 1 Dec 2023 10:17:02 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: kernel test robot <lkp@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Max Schulze <max.schulze@online.de>, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] netlink: Return unsigned value for nla_len()
+Message-ID: <202312010953.BEDC06111@keescook>
+References: <20231130200058.work.520-kees@kernel.org>
+ <20231130172520.5a56ae50@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH wifi-next 2/6] wifi: ath5k: Convert to platform remove
- callback returning void
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231117093056.873834-10-u.kleine-koenig@pengutronix.de>
-References: <20231117093056.873834-10-u.kleine-koenig@pengutronix.de>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?=  <u.kleine-koenig@pengutronix.de>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Nick Kossifidis <mickflemm@gmail.com>,
- Luis Chamberlain <mcgrof@kernel.org>, linux-wireless@vger.kernel.org,
- kernel@pengutronix.de
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170144680660.2201420.10875151176323453923.kvalo@kernel.org>
-Date: Fri,  1 Dec 2023 16:06:48 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231130172520.5a56ae50@kernel.org>
 
-Uwe Kleine-König  <u.kleine-koenig@pengutronix.de> wrote:
-
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code. However the value returned is ignored (apart
-> from emitting a warning) and this typically results in resource leaks.
+On Thu, Nov 30, 2023 at 05:25:20PM -0800, Jakub Kicinski wrote:
+> On Thu, 30 Nov 2023 12:01:01 -0800 Kees Cook wrote:
+> > This has the additional benefit of being defensive in the face of nlattr
+> > corruption or logic errors (i.e. nla_len being set smaller than
+> > NLA_HDRLEN).
 > 
-> To improve here there is a quest to make the remove callback return
-> void. In the first step of this quest all drivers are converted to
-> .remove_new(), which already returns void. Eventually after all drivers
-> are converted, .remove_new() will be renamed to .remove().
+> As Johannes predicted I'd rather not :(
 > 
-> Trivially convert this driver from always returning zero in the remove
-> callback to the void returning variant.
+> The callers should put the nlattr thru nla_ok() during validation
+> (nla_validate()), or walking (nla_for_each_* call nla_ok()).
 > 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> > -static inline int nla_len(const struct nlattr *nla)
+> > +static inline u16 nla_len(const struct nlattr *nla)
+> >  {
+> > -	return nla->nla_len - NLA_HDRLEN;
+> > +	return nla->nla_len > NLA_HDRLEN ? nla->nla_len - NLA_HDRLEN : 0;
+> >  }
+> 
+> Note the the NLA_HDRLEN is the length of struct nlattr.
+> I mean of the @nla object that gets passed in as argument here.
+> So accepting that nla->nla_len may be < NLA_HDRLEN means
+> that we are okay with dereferencing a truncated object...
+> 
+> We can consider making the return unsinged without the condition maybe?
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Yes, if we did it without the check, it'd do "less" damage on
+wrap-around. (i.e. off by U16_MAX instead off by INT_MAX).
 
-b5418d170b7c wifi: ath5k: Convert to platform remove callback returning void
-8cc18a70913f wifi: wcn36xx: Convert to platform remove callback returning void
+But I'd like to understand: what's the harm in adding the clamp? The
+changes to the assembly are tiny:
+https://godbolt.org/z/Ecvbzn1a1
+
+i.e. a likely dropped-from-the-pipeline xor and a "free" cmov (checking
+the bit from the subtraction). I don't think it could even get measured
+in real-world cycle counts. This is much like the refcount_t work:
+checking for the overflow condition has almost 0 overhead.
+
+(It looks like I should use __builtin_sub_overflow() to correctly hint
+GCC, but Clang gets it right without such hinting. Also I changed
+NLA_HDRLEN to u16 to get the best result, which suggests there might be
+larger savings throughout the code base just from that change...)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231117093056.873834-10-u.kleine-koenig@pengutronix.de/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Kees Cook
 
