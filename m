@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-296-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-297-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D199800B3D
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 13:42:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A237E800B3E
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 13:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1CB7B20C34
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 12:42:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C78D2817D6
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 12:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C271CF87;
-	Fri,  1 Dec 2023 12:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B78C1C685;
+	Fri,  1 Dec 2023 12:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGes+BSB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwGAq+f5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F8F1C685
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Dec 2023 12:42:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3A1C433C9;
-	Fri,  1 Dec 2023 12:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AF25954E
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Dec 2023 12:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACACC433C7;
+	Fri,  1 Dec 2023 12:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701434569;
-	bh=CtiSCjURkWMe8ITnZMluTnnP2YCNvb5gqkCS/m6xU5w=;
+	s=k20201202; t=1701434611;
+	bh=nSbNkpbRGEwX7lv4Och+jke3HjWo9mb+MhtexQmZ1sc=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=XGes+BSBynJBlPYl+f0fdwqcc+pQ6BHz9RKG818Wf9ujBcRD/rkbevpIT+paMiUUP
-	 Ur0b6iSCNLfITRZOyvgaXCanXL6+Icdp/XCUyPhqosyxNE12rq+mHhLH4CxxdMOd1Z
-	 eaLNCbvlE9vjM+ut2QdVN4mM+PoDnnyGvsE+KWgR4jo5iMd2yTDc+ipVMSWGJ+32TH
-	 gJj/4ac+QucJZ2YQygRDSfSvEO4aSfsQ4vv5eoq+rJDWK4OtdyjnS/jmzBAB0mH6hz
-	 Z2i+fX1CN++Rxtfc/D5nTfg6mgFkH1Wsi3QZXq/LnL3U71qgoL0FIAG1TIKuXBaP5o
-	 z9OCuGSOK3olg==
+	b=jwGAq+f5LNTKGLtGKb+XO0AsSgzzjrIjn/BZB7i/pg3m31y4e08RbKOOgIT9KPPQV
+	 8JT1/uYZ6r0q+U8kapkDa+mnOsDA5UfCrg6o+lzgrQoXJJNlEzT6steiJriDlfua5l
+	 FyONzauvX++cXp4/TrcJICprr0HTvezfjSydRYUMzQpXKT1wq2Td7YPp6vk4uQZvWo
+	 tVJ8iRfUA21d9DL+OUal9vMsd5ZyXACfkTcyakvE/Yw4QbBTH2+/hjC6Icaqqtzn47
+	 5F4trhIM1z8WY/P219T8BTEAf8IGLlwhq3sOV0znHp46phRg8FBeaG1JNIX5w6f9UU
+	 jK9xxXaj3iWow==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -40,33 +40,38 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rt2x00: make watchdog param per device
+Subject: Re: [PATCH 1/4] wifi: rtw89: fix not entering PS mode after AP stops
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231126195358.500259-1-stf_xl@wp.pl>
-References: <20231126195358.500259-1-stf_xl@wp.pl>
-To: stf_xl@wp.pl
-Cc: linux-wireless@vger.kernel.org, Shiji Yang <yangshiji66@outlook.com>
+In-Reply-To: <20231129070046.18443-2-pkshih@realtek.com>
+References: <20231129070046.18443-2-pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <gary.chang@realtek.com>, <phhuang@realtek.com>,
+ <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170143456710.2072551.16697678854955960698.kvalo@kernel.org>
-Date: Fri,  1 Dec 2023 12:42:48 +0000 (UTC)
+Message-ID: <170143460861.2072551.13745611906714696058.kvalo@kernel.org>
+Date: Fri,  1 Dec 2023 12:43:30 +0000 (UTC)
 
-stf_xl@wp.pl wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Stanislaw Gruszka <stf_xl@wp.pl>
+> From: Po-Hao Huang <phhuang@realtek.com>
 > 
-> We can run PCI/MMIO devices together with USB devices in the system.
-> Make watchdog parameter per device to avoid situation when plugin
-> USB device change modparam_watchdog for PCI/MMIO device.
+> The attempt to enter power save mode might fail if there are still
+> beacons pending in the queue. This sometimes happens after stopping
+> P2P GO or AP mode. Extend stop AP function and flush all beacons to
+> resolve this.
 > 
-> Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
-> Tested-by: Shiji Yang <yangshiji66@outlook.com>
+> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+4 patches applied to wireless-next.git, thanks.
 
-62ad3b976cd7 wifi: rt2x00: make watchdog param per device
+0052b3c401cd wifi: rtw89: fix not entering PS mode after AP stops
+2f3eaccc6621 wifi: rtw89: Refine active scan behavior in 6 GHz
+e46987ce819d wifi: rtw89: refine remain on channel flow to improve P2P connection
+756b31203d48 wifi: rtw89: fix misbehavior of TX beacon in concurrent mode
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231126195358.500259-1-stf_xl@wp.pl/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231129070046.18443-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
