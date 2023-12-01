@@ -1,76 +1,107 @@
-Return-Path: <linux-wireless+bounces-271-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-272-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00438800546
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 09:17:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE54980080B
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 11:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC65D281624
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 08:17:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B7F1282765
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 10:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E803B171DF;
-	Fri,  1 Dec 2023 08:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="B4CcsHeU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D78208C3;
+	Fri,  1 Dec 2023 10:15:40 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A29E010FF
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Dec 2023 00:17:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=5DWagvj1CA8MScOkBkQIcrlMwt66VS+jBzwsb4mHB34=;
-	t=1701418639; x=1702628239; b=B4CcsHeU9O5uPUhlj098kjVKeGX5Tr9YdoKzNmQziEsg1a4
-	5B2IlM61KZrUdXai2lLbqHcC1ayG/801P9/SzUeUgY1eh6rb6dWLSCAlwdLwojrWeftH2z2DV/NGC
-	juBh4gbGg7XQje4/hHwU0cQzqXLJK8AdENz0Usm89xjbj+iBvOInKU41m/ndMsN0ztk8ySiGqABDi
-	X0fb0RzAZXaUZ8zBe1+3R40+WMEGH/f1IYHhi3v6jUpcqvKyOFrZr/PizeuXcKp//7qSnmqTEOupo
-	a2eMNBLjJ8HpS3i1bfxxC2Z9az6VN5eLeXaQ0n+PAcGLrXbwBepGZb3v7DbxUc8w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1r8yi5-0000000B7B0-217x;
-	Fri, 01 Dec 2023 09:17:17 +0100
-Message-ID: <12f110339b4daeb5ab920369a2226dc33ab7e058.camel@sipsolutions.net>
-Subject: Re: [wireless-regdb] [ANN] wireless-regdb: master-2023-09-01
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Seth Forshee <sforshee@kernel.org>
-Cc: Chen-Yu Tsai <wens@kernel.org>, wireless-regdb@lists.infradead.org, 
-	linux-wireless@vger.kernel.org
-Date: Fri, 01 Dec 2023 09:17:15 +0100
-In-Reply-To: <ZVqTTC2rqNpKHptJ@ubuntu-x1>
-References: <ZPJF1/2YA4dP+ggY@ubuntu-x1>
-	 <CAGb2v657baNMPKU3QADijx7hZa=GUcSv2LEDdn6N=QQaFX8r-g@mail.gmail.com>
-	 <ZUAUahZakEvOXpip@do-x1extreme>
-	 <CAGb2v66cVj2O89G9qhKCqca+jyBK9ic3866giL=LZX4mQo-eDg@mail.gmail.com>
-	 <ZVqTTC2rqNpKHptJ@ubuntu-x1>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE64884;
+	Fri,  1 Dec 2023 02:15:35 -0800 (PST)
+Received: from francesco-nb.int.toradex.com (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 732F220645;
+	Fri,  1 Dec 2023 11:15:33 +0100 (CET)
+Date: Fri, 1 Dec 2023 11:15:31 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	briannorris@chromium.org, kvalo@kernel.org, francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com
+Subject: Re: [PATCH v7 02/12] wifi: mwifiex: fixed group rekey issue for WPA3.
+Message-ID: <ZWmyQ9ilyAPGJmft@francesco-nb.int.toradex.com>
+References: <20231128083115.613235-1-yu-hao.lin@nxp.com>
+ <20231128083115.613235-3-yu-hao.lin@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231128083115.613235-3-yu-hao.lin@nxp.com>
 
-On Sun, 2023-11-19 at 16:59 -0600, Seth Forshee wrote:
-> On Tue, Oct 31, 2023 at 05:32:15PM +0800, Chen-Yu Tsai wrote:
-> > > Johannes will be the one who needs to accept your key into the kernel=
-,
-> > > so we should wait for a +1 from him at least before we really get the
-> > > ball rolling.
-> >=20
-> > +Johannes for his opinion.
->=20
-> Johannes, we haven't heard from you. Let us know if you have any
-> objections, otherwise I'm going to start moving forward on this.
->=20
+On Tue, Nov 28, 2023 at 04:31:05PM +0800, David Lin wrote:
+> If host mlme is enabled, gropu rekey offload should be disabled.
+> 
+> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/cfg80211.c | 3 +++
+>  drivers/net/wireless/marvell/mwifiex/main.c     | 4 ++++
+>  drivers/net/wireless/marvell/mwifiex/util.c     | 7 +++++++
+>  3 files changed, 14 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> index 40c39e4765f7..3d59e6a441b9 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> @@ -3657,6 +3657,9 @@ static int mwifiex_set_rekey_data(struct wiphy *wiphy, struct net_device *dev,
+>  	if (!ISSUPP_FIRMWARE_SUPPLICANT(priv->adapter->fw_cap_info))
+>  		return -EOPNOTSUPP;
+>  
+> +	if (priv->adapter->host_mlme)
+> +		return 0;
 
-Sorry! I fell way behind on email :( Yeah I'm happy with this.
+this is a fixup of the previous patch, you should not introduce an issue
+and fix it in the following patch. Please make it correct in the first
+place fixing up that patch.
 
-johannes
+
+> +
+>  	return mwifiex_send_cmd(priv, HostCmd_CMD_GTK_REKEY_OFFLOAD_CFG,
+>  				HostCmd_ACT_GEN_SET, 0, data, true);
+>  }
+> diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+> index d99127dc466e..3bebb6c37604 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/main.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/main.c
+> @@ -802,6 +802,10 @@ mwifiex_bypass_tx_queue(struct mwifiex_private *priv,
+>  			    "bypass txqueue; eth type %#x, mgmt %d\n",
+>  			     ntohs(eth_hdr->h_proto),
+>  			     mwifiex_is_skb_mgmt_frame(skb));
+> +		if (ntohs(eth_hdr->h_proto) == ETH_P_PAE)
+> +			mwifiex_dbg(priv->adapter, MSG,
+> +				    "key: send EAPOL to %pM\n",
+> +				    eth_hdr->h_dest);
+
+this is just debug code, at a first glance not sure i
+> diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+> index 23675c1cecae..ff1b2f162c30 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/util.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/util.c
+> @@ -482,8 +482,15 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+>  				return 0;
+>  
+>  			if (ieee80211_is_deauth(ieee_hdr->frame_control)) {
+> +				mwifiex_dbg(priv->adapter, MSG,
+> +					    "auth: receive deauth from %pM\n",
+> +					    ieee_hdr->addr3);
+ditto
+
+>  				priv->auth_flag = 0;
+>  				priv->auth_alg = 0xFFFF;
+> +			} else {
+> +				mwifiex_dbg(priv->adapter, MSG,
+> +					    "assoc: receive disasso from %pM\n",
+> +					    ieee_hdr->addr3);
+ditto
+
 
