@@ -1,200 +1,76 @@
-Return-Path: <linux-wireless+bounces-288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0CD800906
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 11:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4316800A10
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 12:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66F15B20DD3
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 10:50:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 735F8B20E48
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 11:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D12219E2;
-	Fri,  1 Dec 2023 10:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sx7I83Mw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590882135D;
+	Fri,  1 Dec 2023 11:49:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC80C1726;
-	Fri,  1 Dec 2023 02:49:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=rDc7S3TGwDRkuN19FCwRpWlUg/012zfS/c7UoSCfhOg=;
-	t=1701427798; x=1702637398; b=sx7I83MwXTI5q1y3hsEdV1kcfKxOdHCD1XKDrnSv3DIMDNU
-	8COzLqD8xB+QrS+dvmNK6rDwPexvgf/y74xWxx0IvW6y5yD9AUm7rmYc8ygxGiq7BqyQ1dUTUzila
-	drXGLx3zmqD4vTq7FlhkdsZbC3tdxFi5f3ldoWBUW5mbT7pWXMwpDRbDeG7ykl1ieqR8C08Y7D4dZ
-	nP4zx6iHfAFlz3mdxufCo0oEAu54QzMmrYSJdjc6XNeuhdcewG8RGecH+pImX/aaIv8v499cjiv4C
-	UgcqX5iEj38X/M9R3plurEx1II/VAbk1/GYCdXqZ3aKDdYNnuKFdZnJD/MdNJJ5Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1r915n-0000000BBjV-3rZk;
-	Fri, 01 Dec 2023 11:49:56 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: hostap@lists.infradead.org,
-	netdev@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wpa_suppplicant 2/2] driver_nl82011: wait for rtnetlink event with carrier_up_count
-Date: Fri,  1 Dec 2023 11:49:09 +0100
-Message-ID: <20231201114952.420b40a5f188.I75677b755f36ca63f8289d84de29b212f4c37ec0@changeid>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231201104952.26254-4-johannes@sipsolutions.net>
-References: <346b21d87c69f817ea3c37caceb34f1f56255884.camel@sipsolutions.net>
- <20231201104952.26254-4-johannes@sipsolutions.net>
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B931170E;
+	Fri,  1 Dec 2023 03:49:08 -0800 (PST)
+Received: from francesco-nb.int.toradex.com (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 264AC20645;
+	Fri,  1 Dec 2023 12:49:06 +0100 (CET)
+Date: Fri, 1 Dec 2023 12:49:04 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	briannorris@chromium.org, kvalo@kernel.org, francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com
+Subject: Re: [PATCH v7 00/12] wifi: mwifiex: added code to support host mlme.
+Message-ID: <ZWnIMGytEdDCySS8@francesco-nb.int.toradex.com>
+References: <20231128083115.613235-1-yu-hao.lin@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231128083115.613235-1-yu-hao.lin@nxp.com>
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hello Lin,
+thanks for the patches here, I can clearly see that this code is going
+through some real testing given the improvements you did lately.
 
-There's a race (see the comment in the code) between the
-kernel and userspace that can lead to dropping TX packets
-after the associated event was already received.
+I have commented on the single patches, and honestly I did not look into
+the code details at the moment.
 
-If the kernel indicates the carrier_up_count, wait for
-the corresponding rtnetlink event to reach that count.
-This fixes the race since the rtnetlink event is sent
-after the async processing that's needed in the kernel
-before a frame can be transmitted.
+The major feedback from me is the following:
+ 1 - you should not add code with a bug and than fix a bug in the same
+     series, you should have a non buggy patch in the first place (e.g.
+     git --amend). (this applies till the patch is not merged into the
+     maintainer tree, of course).
+ 2 - point 1 applies also to reviewer comments
+ 3 - if you have fixes that are not connected to the feature addition
+     you are doing is beneficial to have those separated, this makes
+     reviewing easier, they can be "prioritized" to some extent (given
+     that they are fixes) and follow a slightly different patch flow
+     (they can get applied, depending on the maintainers decision, when the
+     merge window is closed and should be backported). Not to mention
+     that smaller patch series are appreciated, "Maximum of 7-12 patches
+     per patchset " from [1]
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- src/drivers/driver_nl80211.c       |  7 ++++
- src/drivers/driver_nl80211.h       |  2 ++
- src/drivers/driver_nl80211_event.c | 52 ++++++++++++++++++++++++++++++
- 3 files changed, 61 insertions(+)
+In general I would suggest you to have a look at [1], not sure how up to
+date is that compared to the in-tree Documentation/process/.
 
-diff --git a/src/drivers/driver_nl80211.c b/src/drivers/driver_nl80211.c
-index 03d54222bb52..b442dee1e710 100644
---- a/src/drivers/driver_nl80211.c
-+++ b/src/drivers/driver_nl80211.c
-@@ -1365,6 +1365,7 @@ static void wpa_driver_nl80211_event_rtm_newlink(void *ctx,
- 	char ifname[IFNAMSIZ + 1];
- 	char extra[100], *pos, *end;
- 	int init_failed;
-+	u32 carrier_up_count = 0;
- 
- 	extra[0] = '\0';
- 	pos = extra;
-@@ -1396,6 +1397,9 @@ static void wpa_driver_nl80211_event_rtm_newlink(void *ctx,
- 			pos += os_snprintf(pos, end - pos, " linkmode=%u",
- 					   nla_get_u32((struct nlattr *) attr));
- 			break;
-+		case IFLA_CARRIER_UP_COUNT:
-+			carrier_up_count = nla_get_u32((struct nlattr *) attr);
-+			break;
- 		}
- 		attr = RTA_NEXT(attr, attrlen);
- 	}
-@@ -1415,6 +1419,9 @@ static void wpa_driver_nl80211_event_rtm_newlink(void *ctx,
- 	if (init_failed)
- 		return; /* do not update interface state */
- 
-+	if (carrier_up_count)
-+		drv->carrier_up_count = carrier_up_count;
-+
- 	if (!drv->if_disabled && !(ifi->ifi_flags & IFF_UP)) {
- 		namebuf[0] = '\0';
- 		if (if_indextoname(ifi->ifi_index, namebuf) &&
-diff --git a/src/drivers/driver_nl80211.h b/src/drivers/driver_nl80211.h
-index f82f604e9017..874988715b21 100644
---- a/src/drivers/driver_nl80211.h
-+++ b/src/drivers/driver_nl80211.h
-@@ -201,6 +201,8 @@ struct wpa_driver_nl80211_data {
- 	unsigned int puncturing:1;
- 	unsigned int qca_ap_allowed_freqs:1;
- 
-+	u32 carrier_up_count;
-+
- 	u32 ignore_next_local_disconnect;
- 	u32 ignore_next_local_deauth;
- 
-diff --git a/src/drivers/driver_nl80211_event.c b/src/drivers/driver_nl80211_event.c
-index 60b4fb51fcd8..4ff25b57ceeb 100644
---- a/src/drivers/driver_nl80211_event.c
-+++ b/src/drivers/driver_nl80211_event.c
-@@ -19,6 +19,7 @@
- #include "common/ieee802_11_defs.h"
- #include "common/ieee802_11_common.h"
- #include "driver_nl80211.h"
-+#include "netlink.h"
- 
- 
- static void
-@@ -256,6 +257,49 @@ static void nl80211_parse_wmm_params(struct nlattr *wmm_attr,
- }
- 
- 
-+/*
-+ * Wait for an RTM newlink event with corresponding carrier up count
-+ *
-+ * There's a race condition with mac80211 and the network stack, which
-+ * mostly hits depending on scheduling in time-simulation (tests),
-+ * which is that mac80211 will both indicate carrier on to the network
-+ * stack and send the associated/... event to userspace. Now, the
-+ * internal kernel function netif_carrier_ok() immediately returns
-+ * true after this, however, the linkwatch work still needs to run
-+ * and change the TX queue qdisc away from noop (which drops all TX
-+ * packets).
-+ *
-+ * When the race happens, userspace (and in particular tests) can see
-+ * the associated/... event and immediately try to send a frame, at a
-+ * time that the linkwatch work hasn't run yet, causing the frame to
-+ * be dropped.
-+ *
-+ * Thus, if the kernel indicated the current carrier_up_count in an
-+ * event, wait here for an RTM newlink event for our interface, so in
-+ * in addition to seeing the associated/... event, we also know the
-+ * carrier state has actually changed sufficiently to send packets,
-+ * if it was meant to change.
-+ *
-+ * This works because the event to userspace is also sent from the
-+ * asynchronous linkwatch work.
-+ */
-+static void
-+nl80211_wait_for_carrier_up_count(struct wpa_driver_nl80211_data *drv,
-+				  u32 carrier_up_count)
-+{
-+#define WRAPPED_U32_LESS(x, y)	((s32)(y) - (s32)(x) < 0)
-+
-+	if (WRAPPED_U32_LESS(drv->carrier_up_count, carrier_up_count))
-+		netlink_process_one_event(drv->global->netlink, 100);
-+
-+	if (WRAPPED_U32_LESS(drv->carrier_up_count, carrier_up_count))
-+		wpa_printf(MSG_ERROR,
-+			   "nl80211: %s: carrier up count %u not seen (got %u)\n",
-+			   drv->first_bss->ifname, carrier_up_count,
-+			   drv->carrier_up_count);
-+}
-+
-+
- static void mlme_event_assoc(struct wpa_driver_nl80211_data *drv,
- 			     const u8 *frame, size_t len, struct nlattr *wmm,
- 			     struct nlattr *req_ie)
-@@ -3845,6 +3889,14 @@ static void do_process_drv_event(struct i802_bss *bss, int cmd,
- 	     cmd == NL80211_CMD_SCAN_ABORTED))
- 		nl80211_restore_ap_mode(bss);
- 
-+	/* see comment above wpa_driver_nl80211_own_ifname() */
-+	if (tb[NL80211_ATTR_CARRIER_UP_COUNT]) {
-+		u32 carrier_up_count =
-+			nla_get_u32(tb[NL80211_ATTR_CARRIER_UP_COUNT]);
-+
-+		nl80211_wait_for_carrier_up_count(drv, carrier_up_count);
-+	}
-+
- 	switch (cmd) {
- 	case NL80211_CMD_TRIGGER_SCAN:
- 		wpa_dbg(drv->ctx, MSG_DEBUG, "nl80211: Scan trigger");
--- 
-2.43.0
+On Tue, Nov 28, 2023 at 04:31:03PM +0800, David Lin wrote:
+> 5. Address reviewer comments.
+You should list the changes you did, something that generic is forcing
+the reviewer to compare v7 vs v6 to known what changed.
+
+
+[1] https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+Francesco
 
 
