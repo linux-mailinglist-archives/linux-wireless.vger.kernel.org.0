@@ -1,93 +1,105 @@
-Return-Path: <linux-wireless+bounces-267-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-268-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42808003DF
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 07:31:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B17D38004F5
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 08:45:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E55D31C20AD3
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 06:31:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C94C71C20B47
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 07:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A210311712;
-	Fri,  1 Dec 2023 06:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523BF156FC;
+	Fri,  1 Dec 2023 07:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ps3CcdnF"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QjecOg2F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8267511702
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Dec 2023 06:31:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E36FC433C9;
-	Fri,  1 Dec 2023 06:31:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701412288;
-	bh=eoUyQsJT94DAWILg6gFccaj7bIJfUqiZc2gWBO/o6VM=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Ps3CcdnFwsNIRZWMmICTP+/qiWhzaD+LXiB4Hat1zsHawebK9CasjLlUXfsJaw4q6
-	 2q6bAiMbUU7B5YSD+HApMNprQp2a9eT6aDaECF3+9aDf/ztvef+n3bsWU8slMLdZXB
-	 zfN690Ts0L+3liM7Y7uoFUjHL4zwtIvB750MufLs79aouNWFrds8rGuTv5EpODkcJ5
-	 SjfF4GuCGRxbACDIaITk0QgbzrMwjxfPjL3kgmk8r2+jIH6ZhT68yOue+QRlOTNDGe
-	 dMoWP0s5or96SAkIPMjcxaw/UsGHV7jZ7KN60aVqPktRb5uovk8V0Lbob8c2MKM9XJ
-	 hT+srA8xN9CZA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "Lukas F. Hartmann" <lukas@mntre.com>,  Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>,  "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>,  "jernej.skrabec@gmail.com"
- <jernej.skrabec@gmail.com>,  "ulf.hansson@linaro.org"
- <ulf.hansson@linaro.org>,  "tony0620emma@gmail.com"
- <tony0620emma@gmail.com>
-Subject: Re: [PATCH v3] wifi: rtw88: sdio: Honor the host max_req_size in
- the RX path
-References: <20231120115726.1569323-1-martin.blumenstingl@googlemail.com>
-	<170137159397.1963309.4329648460865757143.kvalo@kernel.org>
-	<87edg7ujhi.fsf@mntre.com>
-	<98c69e6e8bb449ffae253840910df07f@realtek.com>
-Date: Fri, 01 Dec 2023 08:31:23 +0200
-In-Reply-To: <98c69e6e8bb449ffae253840910df07f@realtek.com> (Ping-Ke Shih's
-	message of "Fri, 1 Dec 2023 00:33:46 +0000")
-Message-ID: <87cyvqsabo.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FDB10F3;
+	Thu, 30 Nov 2023 23:45:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Fze+dSazAwvNZzKpBF9Q5uOjyS8ti7UuRJvbkjk9hxY=;
+	t=1701416738; x=1702626338; b=QjecOg2FLIWGgodx+Yy28HYl4ITWCTbF7UY37KY2dsMogzv
+	d3W4iP/7q/VhxJ6j6B8iOKzEniI+H35k95JG6iwjJRLKz0DMkSEZVPVl3+MDNI7AerH05stwSN6nw
+	to7cNqD52F+h26sVMXsVbdYYb9h48KNC4fg1VlvdoVySsRA2dmSmMYFbND5Vqvs7Wp7d6+HQx7ze0
+	4A5aFkJmjApNLyEfUy/q8U2Fks7vapRBrw15RXb7gTyKIxVs9zc2riHjlSz/lT3tt2tak2FLXGH/L
+	7q1kEWW/syr94aKYmLHei0S3AvcbUbBHNEpGnXyjkdpvjHdf6u2MVnAKd1NwJPtQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1r8yDJ-0000000B6CO-20Qj;
+	Fri, 01 Dec 2023 08:45:29 +0100
+Message-ID: <313903974b14e94a2fb0dd5962362dba39bb3dea.camel@sipsolutions.net>
+Subject: Re: [PATCH] netlink: Return unsigned value for nla_len()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jakub Kicinski <kuba@kernel.org>, Kees Cook <keescook@chromium.org>
+Cc: kernel test robot <lkp@intel.com>, "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Jeff Johnson <quic_jjohnson@quicinc.com>,  Michael
+ Walle <mwalle@kernel.org>, Max Schulze <max.schulze@online.de>,
+ netdev@vger.kernel.org,  linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-hardening@vger.kernel.org
+Date: Fri, 01 Dec 2023 08:45:28 +0100
+In-Reply-To: <20231130172520.5a56ae50@kernel.org>
+References: <20231130200058.work.520-kees@kernel.org>
+	 <20231130172520.5a56ae50@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+On Thu, 2023-11-30 at 17:25 -0800, Jakub Kicinski wrote:
+> On Thu, 30 Nov 2023 12:01:01 -0800 Kees Cook wrote:
+> > This has the additional benefit of being defensive in the face of nlatt=
+r
+> > corruption or logic errors (i.e. nla_len being set smaller than
+> > NLA_HDRLEN).
+>=20
+> As Johannes predicted I'd rather not :(
 
->> sorry for my late reply. Yes, this patch fixes my original problems and
->> I have usable WiFi now. There are still some remaining problems like
->> connection dropouts every minute or so, but it's unrelated and a topic
->> of further investigation.
->> 
->> Tested-by: Lukas F. Hartmann <lukas@mntre.com>
->> 
->
-> Would you mind to take my acked-by and Lukas' tested-by and send v4?
-> That would be easier to Kalle to merge this patch.
+:)
 
-Actually no need to send v4 as patchwork includes Tested-by and Acked-by
-automatically:
+> The callers should put the nlattr thru nla_ok() during validation
+> (nla_validate()), or walking (nla_for_each_* call nla_ok()).
 
-$ curl https://patchwork.kernel.org/project/linux-wireless/patch/20231120115726.1569323-1-martin.blumenstingl@googlemail.com/mbox/ | grep -- -by:
-Reported-by: Lukas F. Hartmann <lukas@mntre.com>
-Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Tested-by: Lukas F. Hartmann <lukas@mntre.com>
+Which we do, since we have just normal input validation on generic
+netlink. Actually nla_validate() only does it via walking either ;-)
 
-But thanks for considering my workload, very much appreciated :)
+The thing is that's something the compiler can't really see, it happens
+out-of-line in completely different code (generic netlink) before you
+even get into nl80211.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+> > -static inline int nla_len(const struct nlattr *nla)
+> > +static inline u16 nla_len(const struct nlattr *nla)
+> >  {
+> > -	return nla->nla_len - NLA_HDRLEN;
+> > +	return nla->nla_len > NLA_HDRLEN ? nla->nla_len - NLA_HDRLEN : 0;
+> >  }
+>=20
+> Note the the NLA_HDRLEN is the length of struct nlattr.
+> I mean of the @nla object that gets passed in as argument here.
+> So accepting that nla->nla_len may be < NLA_HDRLEN means
+> that we are okay with dereferencing a truncated object...
+>=20
+> We can consider making the return unsinged without the condition maybe?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+That seems problematic too though - better for an (unvalidated)
+attribute with a bad size to actually show up with a negative payload
+length rather than an underflow to a really big size.
+
+Anyway I really don't mind the workaround in nl80211 (which was to make
+the variables holding this unsigned), since we *do* know that we
+validated there, that's not an issue wrt. the length.
+
+johannes
 
