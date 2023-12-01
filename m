@@ -1,335 +1,232 @@
-Return-Path: <linux-wireless+bounces-307-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-308-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD9A80134F
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 20:06:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 839548016C9
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 23:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F1E61C20995
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 19:06:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A160A1C20ACC
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 22:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634454C3BD;
-	Fri,  1 Dec 2023 19:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F833F8CE;
+	Fri,  1 Dec 2023 22:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="gcC2lV92"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="KksAv5MZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1393BAD
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Dec 2023 11:06:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=WgDIh/adQPejnn5S24A8QEMPbeBHKjlxVd2GYiT7ls8=;
-	t=1701457575; x=1702667175; b=gcC2lV92X21rGectLn+P9IZlYuCT+PUhEc8Vf7CYyZPWQ0U
-	fvOeYoGtgR/hANqJkrf4HQtBKI4+j7iPrjsdr1/y72MJEowpJqMK7qdNEaqrqr7UOoGL4ipP3XmCK
-	8nO33qU+ZAr5i7wwqWM7cKdByYFCAp5lW4TvsV0GkWLI/7UjCW4cV0UYYMA9nsCXTLZDTMk9qZlVV
-	Yqb5rTA2zIGGbm0BLpCx7VUO8M2ThqI4RQr22LDxAPIq/VKffVviWa4FomouHqTFzPz+QYx2nwjKw
-	MKXRlQ2T7M5prpXWLpki4f0gThsuJG/aoWODlpKfDtVMLgcc/SoFsLfuOWXEJNwA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1r98q3-0000000BPwk-36Sn;
-	Fri, 01 Dec 2023 20:06:11 +0100
-Message-ID: <575322249ff9b9d062edfc3bd6aa234a085d6a94.camel@sipsolutions.net>
-Subject: Re: [PATCH v3,2/2] wifi: mac80211: refactor STA CSA parsing flows
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Michael-CY Lee <michael-cy.lee@mediatek.com>, linux-wireless
-	 <linux-wireless@vger.kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Evelyn Tsai <evelyn.tsai@mediatek.com>, Money Wang
- <money.wang@mediatek.com>, linux-mediatek
- <linux-mediatek@lists.infradead.org>
-Date: Fri, 01 Dec 2023 20:06:10 +0100
-In-Reply-To: <20231129054321.10199-2-michael-cy.lee@mediatek.com>
-References: <20231129054321.10199-1-michael-cy.lee@mediatek.com>
-	 <20231129054321.10199-2-michael-cy.lee@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2053.outbound.protection.outlook.com [40.107.13.53])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A65D63;
+	Fri,  1 Dec 2023 14:41:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oQvCZrIHk8exYWqfGlLiNKzcP8J5pHArLStqMNt9c7S3AbQ2rseFroLDEp5thVOV0mmleOgm06PWhH4iuFtUjtvyjowTQ9m49AUi3vPq2hTZkWduHCLuXtWrhV86e2kso4ZMrYul16aiotj5G7P+ksk0e0GZC2iMNzvNVbxU+9H7EZLNR/xp6a4xs3Ptxl2qonsN6/Dr+2QhF6q9OnRNToPg3LKBforLorvnKqCRItyq7eY3jL49UD91PxD0SXNMXNr+AmWoUYx68l4DTavq8NQRrPCGy3S7Cv0BVOuikz/fNQyqHl4aba7LN7HvFzQ2WwJlx67UXd9d5PJuYbsLTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HNg42//TVRN5IL68zQ/mHR21Juhxc5SbYdecRttFX0Q=;
+ b=HXw3m6DiFIytnOLkbMHTbRw8DnrhBG5jiQ9jvJuDRo4dcNP7j9o1RHi9jeJ0dXdctSAz7eFLRuAPBaihwELYK7geZ6sJt9rAatyT/8CjdC/gDYwIfeSQVkSZDJtVmFVeUbAfCWfA09HTpIVUVs2BxC75NLpz0WB2fkaHuVoAZOHiXgzPEYxApsX8lTp/K94Mq1tO9CDxVSQNpjFwbWrt8hSHA7he72v1GigA4aVzOuLz8dC5oFQnI8bA9JDfK7mUxgLyhNXXlYzBjHBog91FohPcec9eqVwAcUyE8cTmrVrvCKHtzGpGduM/vm98MtQLKuj6J+VaMatwtqGrMeCqdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HNg42//TVRN5IL68zQ/mHR21Juhxc5SbYdecRttFX0Q=;
+ b=KksAv5MZONc78m6NUjGFikWT6csGUHmo8eTYl8N1oME9BHip+Am2T3RiLEjWE+06W6MwHFDAPVTnpRFHEHGV74tsYLZzvZuSwiL+GE0kAp6bS9TED5x5NkowSXc95d3IYwLnYddBiNOmU2M4O9EY/Ptkgi11JL6PXmKB8uxkwFs=
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
+ by AM8PR04MB7875.eurprd04.prod.outlook.com (2603:10a6:20b:236::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.16; Fri, 1 Dec
+ 2023 22:41:47 +0000
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::34dd:289e:9e8b:9c9b]) by PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::34dd:289e:9e8b:9c9b%7]) with mapi id 15.20.7068.012; Fri, 1 Dec 2023
+ 22:41:47 +0000
+From: David Lin <yu-hao.lin@nxp.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"briannorris@chromium.org" <briannorris@chromium.org>, "kvalo@kernel.org"
+	<kvalo@kernel.org>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: RE: [EXT] Re: [PATCH v7 02/12] wifi: mwifiex: fixed group rekey issue
+ for WPA3.
+Thread-Topic: [EXT] Re: [PATCH v7 02/12] wifi: mwifiex: fixed group rekey
+ issue for WPA3.
+Thread-Index: AQHaIdVU9t1lQPz4s0eWS+tlGSPAM7CUOvWAgADPRyA=
+Date: Fri, 1 Dec 2023 22:41:47 +0000
+Message-ID:
+ <PA4PR04MB9638C4474BE296DF113F22C2D181A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <20231128083115.613235-1-yu-hao.lin@nxp.com>
+ <20231128083115.613235-3-yu-hao.lin@nxp.com>
+ <ZWmyQ9ilyAPGJmft@francesco-nb.int.toradex.com>
+In-Reply-To: <ZWmyQ9ilyAPGJmft@francesco-nb.int.toradex.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|AM8PR04MB7875:EE_
+x-ms-office365-filtering-correlation-id: abb1aacf-593c-44bf-77e3-08dbf2beb3ae
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 2KFKpqVrv4NUprU+kOUc61RJXbwN7tXcofoiPDLGcMRbCw4Agf1XyWElfr9r+rKoWlFnpF8/gKM3MCYDWWWtwYMYgxWc7eOIO52VLf25eZgXapVUvUt74vfOU6gtIpwgNHNZUUGelUcNIavRI+IittGrflflVOfBDFbeac9LWZgub+Xi4axNLyCxetbpVJ9SjzVRMcWit9P6yM0RpAI6iVIWnZddqb4jYSh0MCdA03+glUPcUwRwuVnLpo7LAbbY2cxPdB5EodYvL720bbGeKCyooZJDxw/kvdnSgphNB/PrGAvTnxA6zhFBiQeke6BoQXIjNXCMZ31INbNYzpkfmncyfP1PRICm6Kv7qD4qUuY7UP2iClznjZYCKCCW6s9p0mExGo3kkqiA1ZbuOiI2EaUwwPz1+HrmnbBrzDz6Zmuudhciq55bqFqo05ebrGVRC1yC5u6FIFY7veYbFgknTYA8F4IfQ/Ui3/wTXWL/vCNA6l7kPc6kk17+syA5FVPJrDaQ0twPxck140AOHZrkCmqLX6nw+Qjl3biMb49qVCRkRt3jGR0kaXnnRg0+MFwm5MCe25iSPB0Qj9QTBFHnYK8D3t8oSIh5eheA36PcwkXPXOAqCGmrDjRfp257rU78Mx8q89ArEI0gYVGVWp/xYGpAFvdLrZpChaPNoSFLedY=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(376002)(396003)(136003)(346002)(230173577357003)(230273577357003)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(66946007)(26005)(53546011)(83380400001)(6506007)(8676002)(7696005)(8936002)(4326008)(71200400001)(478600001)(41300700001)(52536014)(9686003)(86362001)(2906002)(38070700009)(55016003)(122000001)(76116006)(316002)(64756008)(66476007)(54906003)(66446008)(66556008)(33656002)(6916009)(38100700002)(5660300002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?DLcT2nENcTh0M8hhp3BOTpZeuRH9Ltx/P8wvPB8oPPy3wprahxukT8gMIsi/?=
+ =?us-ascii?Q?R5I2pRXyfld4Ej6+SBFO3AU54t5sRj/xfFQgta4HAVW5eK+rdoL+UYnyuPAz?=
+ =?us-ascii?Q?b0oCG6QYColF1kDHrhx0C/HHO6UA1UYOd96omtKlCh8aE3GhIeG4Yuq7sagm?=
+ =?us-ascii?Q?rw0tuVslnrBpwUs/FcdZTv1MBPdsqdDEuOqEvgcbn1cFidSmBe1IVSdAfwEB?=
+ =?us-ascii?Q?V6TfOIi40QeERZAldLKEuUpDCjNYJ+BmUFCh9KsbM3R8569ElW95MjRNODDL?=
+ =?us-ascii?Q?Gqw/0Z1azSPIlOxdGWCJNVYuMMNuoPmy2YPPGpRLPwZus42t4EoVudttMUzR?=
+ =?us-ascii?Q?wBQlTkJbdp6cbRYb8mTvgVv5LHZ4JAEH3GMDLufpYt9nLtJHUx4DMkoZxe7m?=
+ =?us-ascii?Q?o3RX/MR9PxOv5PrQCbkmPzi4s4kpUbycvEOEo5I4qBpqxN1IIOm1s5L56dR+?=
+ =?us-ascii?Q?vZkuOfCeDn6363vpOp9FGK0ODM85TJwcKOlB5Tu9wIA4G0P/vMLX+XdLLmcb?=
+ =?us-ascii?Q?OtF9dEEbe56nL5buxH210P7JC2KzIU8tPFh/3VXu/qZl14uSHTQX3hhNyPH1?=
+ =?us-ascii?Q?99iELXjLOBwonN/NmyoOe2+a/JkaXWSvwvdQ4GE56v2D3TS0K1CDaSW5BNu2?=
+ =?us-ascii?Q?eukrhffVJStK+TrgSaA6Am/2rha6WokEVGvPeim3vDpoj8DQt5PosFUnPTd1?=
+ =?us-ascii?Q?qNkSecfKKweD/1yZ+p1ManoVb8GgWTL+omaDoz+J38QlvgrSOYvlRfKvLd9j?=
+ =?us-ascii?Q?IUmIHm5YnmIY+5Rmg7eDFpRnLCquK42/hmrfWJ+a8IPhRzywue49iONMTdyq?=
+ =?us-ascii?Q?ULsKPG5DrHThnzhr0IZro17HM01h0AM3O0ZJa0RFu+CayM4bGWZ/08yB8yrL?=
+ =?us-ascii?Q?xaUAzQXcZOXt+1kTbg52wpVY6g48ar9RT7IMnbjYn2fC0UfHi4MxTKu4LDe6?=
+ =?us-ascii?Q?38OV/2DK6TbLl9PIUIXYRAxrDKjhCnuPnMgJvBARPipowYvQGbwVHgH2bxL2?=
+ =?us-ascii?Q?KczceN0VhhN/NX8s0PFAhfdnRqSHyy/r4g2cQAnrNjOn7wsjkMjzxe4lb38h?=
+ =?us-ascii?Q?DiJtnS6BoimQu7sk1fT7J5aqPSI/cF4U3VQHmoQcsGU0EMPzQ/yzg4EtHw3x?=
+ =?us-ascii?Q?F1QuP9JhCueBCgMLnPX9mWEPdFDo/rQnefdzgL+OxmSWsj7rWuynQ9kWFzP+?=
+ =?us-ascii?Q?lqhxvsFYZ3PPHLkYUNrLfz+sZABohUIf63CbwSG55SZeOwUXuQ1LSwpHFuxp?=
+ =?us-ascii?Q?/WKnoI30WgbOWS+7sOi4ht6hVUM5F3bb23PDDO64QpPItGTpviMVa8bfyoaB?=
+ =?us-ascii?Q?cGPLPg8iLY4J0nfXEuVYbB59qOoO51lLvijDJBV6irGC0qejKKhb1orhV2qt?=
+ =?us-ascii?Q?JAfZtCs5meq9e24X2YvwTEu2TTSxQINsFthdaAKGPV0kW/qVG0mT4j9UsITU?=
+ =?us-ascii?Q?1zwXTC+s8X5e891pwCzI1fl23+8rUBrowQUW4ww5lLYoZgsdKPnLpEIBImNh?=
+ =?us-ascii?Q?LQ2Lyk6GETGUJoz6MRVxlXFbT8Cuy1/IOJ6J3WaeHEim0zjaNd013YvGleQU?=
+ =?us-ascii?Q?Q/xJf0n117DapzMRui8l1CYudDm8iKfq0EgeNK8F?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: abb1aacf-593c-44bf-77e3-08dbf2beb3ae
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Dec 2023 22:41:47.4797
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: oeiYWW0T/6ol2jFrkTse5dQZ9k4WgebPr8UhUn5Vex+Hzh83u5HdjUc+khU0lW8l9lvqpCrJsn2HXVRN2sZhcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7875
 
-Hi,
-
-So looking at this ... I'm not sure I want the operating class parsing?
-
-On Wed, 2023-11-29 at 13:43 +0800, Michael-CY Lee wrote:
-> The new Wi-Fi Standard (IEEE P80211be D4.1) specifies that the Wide
-> Bandwidth Channel Switch (WBCS) Element subfields have the same
-> definitions as VHT operation information if the operating band is not
-> S1G.
-
-Actually that's already in REVme, no?
-
-"If the New Operating Class field in the frame [...] does not indicate
-an S1G band, the subfields New Channel Width, New Channel Center
-Frequency Segment 0 and New Channel Center Frequency Segment 1 have the
-same definition, respectively, as Channel Width, Channel Center
-Frequency Segment 0, Channel Center Freqauency Segment 1 in the VHT
-Operation Information field, described in Table 9-313 (VHT Operation
-Information subfields)."
-
-> The problem comes when the BSS is in 6 GHz band, the STA parses the WBCS
-> Element by ieee80211_chandef_vht_oper(), which checks the capabilities fo=
-r
-> HT/VHT mode, not HE/EHT mode.
-
-OK, but that's an implementation issue, we can make it look at HE
-capabilities too, for 6 GHz?
-
-> This patch refactors STA CSA parsing flow so that the corresponding
-> capabilities can be checked.
-
-That seems fine.
-
-
-> Also, it adds the way to use op_class in ECSA
-> Element to build a new chandef.
-
-Not sure why that?
-
-> In summary, the new steps for STA to handle CSA event are:
-> 1. build the new chandef from the CSA-related Elements.
->    (CSA, ECSA, WBCS, etc.)
-
-Actually that's not what you do? The logic is more like
-
- - if BWI present: use only that
- - if operating class/channel can be used: use only that
- - if WBCS is present: use only that
- - otherwise: use (ext) chanswitch element info from before
-
-
-Given that I just got a report of an MTK AP that has a broken WCBS
-element, I'm not sure I'm happy with that logic ;-)
-
-Seems to me the operating class use should maybe be further down the
-list, and perhaps (if it's there) validate the other elements against
-it, to make sure the AP isn't confused?
-
-So perhaps better:
- - use, in this order: BWI, WBCS, ECSA, CSA (according to the mode
-   we parse as, and our own capabilities)
- - if present, check that operating class agrees
-
-no?
-
-> Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
-> Signed-off-by: Money Wang <money.wang@mediatek.com>
-
-Seems that might be in the wrong order and/or should have Co-developed-
-by?
-
-> +static inline void
-> +wbcs_ie_to_chandef(const struct ieee80211_wide_bw_chansw_ie *wbcs_ie,
-> +		   struct cfg80211_chan_def *chandef)
-
-I'd prefer if we generally switched to "element" instead of "IE" since
-the spec did that. Yeah we didn't go back and rename all existing code
-(unlike the spec), but still?
-
-Please also drop the 'inline', compiler will do it if it makes sense.
-
-> +{
-> +	u8 ccfs0 =3D wbcs_ie->new_center_freq_seg0;
-> +	u8 ccfs1 =3D wbcs_ie->new_center_freq_seg1;
-> +	u32 cf0 =3D ieee80211_channel_to_frequency(ccfs0, chandef->chan->band);
-> +	u32 cf1 =3D ieee80211_channel_to_frequency(ccfs1, chandef->chan->band);
-> +
-> +	switch (wbcs_ie->new_channel_width) {
-> +	case IEEE80211_VHT_CHANWIDTH_160MHZ:
-> +		chandef->width =3D NL80211_CHAN_WIDTH_160;
-> +		chandef->center_freq1 =3D cf0;
-
-maybe add a note that this encoding is deprecated?
-
-> +		break;
-> +	case IEEE80211_VHT_CHANWIDTH_80P80MHZ:
-> +		chandef->width =3D NL80211_CHAN_WIDTH_80P80;
-> +		chandef->center_freq1 =3D cf0;
-> +		chandef->center_freq2 =3D cf1;
-
-and not sure I remember well, but this one too? at least going by this:
-
-> +		break;
-> +	case IEEE80211_VHT_CHANWIDTH_80MHZ:
-> +		chandef->width =3D NL80211_CHAN_WIDTH_80;
-> +		chandef->center_freq1 =3D cf0;
-> +
-> +		if (ccfs1) {
-> +			u8 diff =3D abs(ccfs0 - ccfs1);
-> +
-> +			if (diff =3D=3D 8) {
-> +				chandef->width =3D NL80211_CHAN_WIDTH_160;
-> +				chandef->center_freq1 =3D cf1;
-> +			} else if (diff > 8) {
-> +				chandef->width =3D NL80211_CHAN_WIDTH_80P80;
-> +				chandef->center_freq2 =3D cf1;
-> +			}
-> +		}
-> +		break;
-
-
-> +static inline int
-> +validate_chandef_by_ht_vht_oper(struct ieee80211_sub_if_data *sdata,
-
-same here about 'inline'
-
-> +				ieee80211_conn_flags_t conn_flags,
-> +				u32 vht_cap_info,
-> +				struct cfg80211_chan_def *chandef)
-> +{
-> +	u32 control_freq, center_freq1, center_freq2;
-> +	enum nl80211_chan_width chan_width;
-> +	struct ieee80211_ht_operation *ht_oper =3D NULL;
-> +	struct ieee80211_vht_operation *vht_oper =3D NULL;
-
-No point initializing those to NULL?
-
-> +	if (conn_flags & (IEEE80211_CONN_DISABLE_HT |
-> +			  IEEE80211_CONN_DISABLE_40MHZ)) {
-> +		chandef->chan =3D NULL;
-> +		return 0;
-> +	}
-> +
-> +	control_freq =3D chandef->chan->center_freq;
-> +	center_freq1 =3D chandef->center_freq1;
-> +	center_freq2 =3D chandef->center_freq2;
-> +	chan_width =3D chandef->width;
-> +
-> +	ht_oper =3D kzalloc(sizeof(*ht_oper), GFP_KERNEL);
-> +	if (!ht_oper)
-> +		return -ENOMEM;
-
-Not sure I see value in putting this on the heap, it's tiny?
-
-> +	vht_oper =3D kzalloc(sizeof(*vht_oper), GFP_KERNEL);
-
-same here
-
-> +	if (!vht_oper) {
-> +		kfree(ht_oper);
-> +		return -ENOMEM;
-
-and if you have these gone, you no longer need a return value either,
-which is nice.
-
-> +static inline int
-
-same here
-
-> +validate_chandef_by_6ghz_he_eht_oper(struct ieee80211_sub_if_data *sdata=
-,
-> +				     ieee80211_conn_flags_t conn_flags,
-> +				     struct cfg80211_chan_def *chandef)
-> +{
-> +	u32 size, control_freq, center_freq1, center_freq2;
-> +	enum nl80211_chan_width chan_width;
-> +	struct ieee80211_he_operation *he_oper =3D NULL;
-> +	struct ieee80211_eht_operation *eht_oper =3D NULL;
-
-same here about =3DNULL, and for the allocations too
-
-> +	case NL80211_CHAN_WIDTH_80P80:
-> +		he_6ghz_oper->control =3D
-> +			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_160MHZ;
-
-Is that right? Do HE/EHT even still do 80+80?
-
->  int ieee80211_parse_ch_switch_ie(struct ieee80211_sub_if_data *sdata,
->  				 struct ieee802_11_elems *elems,
->  				 enum nl80211_band current_band,
-> @@ -27,13 +257,14 @@ int ieee80211_parse_ch_switch_ie(struct ieee80211_su=
-b_if_data *sdata,
->  				 struct ieee80211_csa_ie *csa_ie)
->  {
->  	enum nl80211_band new_band =3D current_band;
-> -	int new_freq;
-> -	u8 new_chan_no;
-> +	int new_freq, ret;
-> +	u8 new_chan_no =3D 0, new_op_class =3D 0;
->  	struct ieee80211_channel *new_chan;
-> -	struct cfg80211_chan_def new_vht_chandef =3D {};
-> +	struct cfg80211_chan_def new_chandef =3D {};
->  	const struct ieee80211_sec_chan_offs_ie *sec_chan_offs;
->  	const struct ieee80211_wide_bw_chansw_ie *wide_bw_chansw_ie;
->  	const struct ieee80211_bandwidth_indication *bwi;
-> +	const struct ieee80211_ext_chansw_ie *ext_chansw_ie;
->  	int secondary_channel_offset =3D -1;
-> =20
->  	memset(csa_ie, 0, sizeof(*csa_ie));
-> @@ -41,6 +272,7 @@ int ieee80211_parse_ch_switch_ie(struct ieee80211_sub_=
-if_data *sdata,
->  	sec_chan_offs =3D elems->sec_chan_offs;
->  	wide_bw_chansw_ie =3D elems->wide_bw_chansw_ie;
->  	bwi =3D elems->bandwidth_indication;
-> +	ext_chansw_ie =3D elems->ext_chansw_ie;
-> =20
->  	if (conn_flags & (IEEE80211_CONN_DISABLE_HT |
->  			  IEEE80211_CONN_DISABLE_40MHZ)) {
-> @@ -51,26 +283,30 @@ int ieee80211_parse_ch_switch_ie(struct ieee80211_su=
-b_if_data *sdata,
->  	if (conn_flags & IEEE80211_CONN_DISABLE_VHT)
->  		wide_bw_chansw_ie =3D NULL;
-> =20
-> -	if (elems->ext_chansw_ie) {
-> -		if (!ieee80211_operating_class_to_band(
-> -				elems->ext_chansw_ie->new_operating_class,
-> -				&new_band)) {
-> -			sdata_info(sdata,
-> -				   "cannot understand ECSA IE operating class, %d, ignoring\n",
-> -				   elems->ext_chansw_ie->new_operating_class);
-> +	if (ext_chansw_ie) {
-> +		new_op_class =3D ext_chansw_ie->new_operating_class;
-> +		if (!ieee80211_operating_class_to_band(new_op_class, &new_band)) {
-> +			new_op_class =3D 0;
-> +			sdata_info(sdata, "cannot understand ECSA IE "
-> +					  "operating class, %d, ignoring\n",
-
-please don't break strings like that, the previous way this was done was
-just fine
-
-> +	/* parse one of the Elements to build a new chandef */
-
-except you don't really, as discussed above
-
-I'd actually kind of like to have these validated against each other,
-but that's for another day, and we don't build the strictest
-implementation.
-
-Though I probably will make the implementation optionally stricter in
-some places like this, and enable that for all testing/certification in
-the future.
-
-> +	} else if (!ieee80211_operating_class_to_chandef(new_op_class, new_chan=
-,
-> +							 &new_chandef)) {
-> +		if (wide_bw_chansw_ie)
-> +			wbcs_ie_to_chandef(wide_bw_chansw_ie, &new_chandef);
-> +		else
-> +			new_chandef =3D csa_ie->chandef;
-
-So like I said above, this starts to ignore WBCS if you have things from
-operating class, why? Is the only reason it doesn't work against your
-broken AP now? ;-)
-
->  	if (elems->max_channel_switch_time)
->  		csa_ie->max_switch_time =3D
->  			(elems->max_channel_switch_time[0] << 0) |
-> -			(elems->max_channel_switch_time[1] <<  8) |
-> +			(elems->max_channel_switch_time[1] << 8) |
+> From: Francesco Dolcini <francesco@dolcini.it>
+> Sent: Friday, December 1, 2023 6:16 PM
+> To: David Lin <yu-hao.lin@nxp.com>
+> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it; Pete
+> Hsieh <tsung-hsien.hsieh@nxp.com>
+> Subject: [EXT] Re: [PATCH v7 02/12] wifi: mwifiex: fixed group rekey issu=
+e for
+> WPA3.
 >=20
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report
+> this email' button
+>=20
+>=20
+> On Tue, Nov 28, 2023 at 04:31:05PM +0800, David Lin wrote:
+> > If host mlme is enabled, gropu rekey offload should be disabled.
+> >
+> > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> > ---
+> >  drivers/net/wireless/marvell/mwifiex/cfg80211.c | 3 +++
+> >  drivers/net/wireless/marvell/mwifiex/main.c     | 4 ++++
+> >  drivers/net/wireless/marvell/mwifiex/util.c     | 7 +++++++
+> >  3 files changed, 14 insertions(+)
+> >
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > index 40c39e4765f7..3d59e6a441b9 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > @@ -3657,6 +3657,9 @@ static int mwifiex_set_rekey_data(struct wiphy
+> *wiphy, struct net_device *dev,
+> >       if (!ISSUPP_FIRMWARE_SUPPLICANT(priv->adapter->fw_cap_info))
+> >               return -EOPNOTSUPP;
+> >
+> > +     if (priv->adapter->host_mlme)
+> > +             return 0;
+>=20
+> this is a fixup of the previous patch, you should not introduce an issue =
+and
+> fix it in the following patch. Please make it correct in the first place =
+fixing up
+> that patch.
+>
 
-No need, I guess, but hey, doesn't matter much. How'd you find this
-anyway? :)
+This is the main fix for this issue. If host mlme is enabled, there is no n=
+eed for firmware to do group rekey off load.
+=20
+>=20
+> > +
+> >       return mwifiex_send_cmd(priv,
+> HostCmd_CMD_GTK_REKEY_OFFLOAD_CFG,
+> >                               HostCmd_ACT_GEN_SET, 0, data,
+> true);  }
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/main.c
+> > b/drivers/net/wireless/marvell/mwifiex/main.c
+> > index d99127dc466e..3bebb6c37604 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/main.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/main.c
+> > @@ -802,6 +802,10 @@ mwifiex_bypass_tx_queue(struct mwifiex_private
+> *priv,
+> >                           "bypass txqueue; eth type %#x, mgmt
+> %d\n",
+> >                            ntohs(eth_hdr->h_proto),
+> >                            mwifiex_is_skb_mgmt_frame(skb));
+> > +             if (ntohs(eth_hdr->h_proto) =3D=3D ETH_P_PAE)
+> > +                     mwifiex_dbg(priv->adapter, MSG,
+> > +                                 "key: send EAPOL to %pM\n",
+> > +                                 eth_hdr->h_dest);
+>=20
+> this is just debug code, at a first glance not sure i
 
-johannes
+It will be helpful for driver to print out authentication, association and =
+EAPoL key handshaking.
+This kind of information will only be printed out when station is associate=
+d to AP. It won't affect
+TP of driver.
+
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/util.c
+> > b/drivers/net/wireless/marvell/mwifiex/util.c
+> > index 23675c1cecae..ff1b2f162c30 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/util.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/util.c
+> > @@ -482,8 +482,15 @@ mwifiex_process_mgmt_packet(struct
+> mwifiex_private *priv,
+> >                               return 0;
+> >
+> >                       if
+> > (ieee80211_is_deauth(ieee_hdr->frame_control)) {
+> > +                             mwifiex_dbg(priv->adapter, MSG,
+> > +                                         "auth: receive deauth
+> from %pM\n",
+> > +                                         ieee_hdr->addr3);
+> ditto
+>=20
+> >                               priv->auth_flag =3D 0;
+> >                               priv->auth_alg =3D 0xFFFF;
+> > +                     } else {
+> > +                             mwifiex_dbg(priv->adapter, MSG,
+> > +                                         "assoc: receive disasso
+> from %pM\n",
+> > +                                         ieee_hdr->addr3);
+> ditto
+
 
