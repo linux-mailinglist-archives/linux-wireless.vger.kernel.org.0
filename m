@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-313-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-314-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C31801745
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 00:05:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93D080175E
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 00:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9ACD1F2104D
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 23:05:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837C9281F61
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 23:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421FB38DD2;
-	Fri,  1 Dec 2023 23:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C0F3F8EF;
+	Fri,  1 Dec 2023 23:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="OCaI6AGI"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="EXTfsjK4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2058.outbound.protection.outlook.com [40.107.241.58])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D21619A;
-	Fri,  1 Dec 2023 15:05:50 -0800 (PST)
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2074.outbound.protection.outlook.com [40.107.14.74])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC3BE1AD;
+	Fri,  1 Dec 2023 15:12:55 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eph80xybHxlowNTNViLvBOfMMAX0SQhWhNbI5knh5IPGH7rVAkfDUYSDbrKsdz+1H82+FCzDAha/0ka5JgPx3MNQgrkV5JjaR0bM5JGzvSEYirmBUvxon7/itOh/zs8fBXW9Tm+O1AMezQ7LpsIbadzWjMWXlwXHRJxVOXLr6uFWifmY7H+O0Cdo9IHz+vbPlclg6owFfrALkNTEWi6vN9973cEDF/tJb+LfeRXZ2Ykd8y3AijmCCFqJVgl8pqsM7SnZKv3YRIdchyqA+bRK5De/J4iXhGMITGmOi5a14H5gXngAIk3o0uxJvzczCOgHT99xDdGhRywNCu434Yo1og==
+ b=CunmPTeG8IqwhLlPhjEREiiqZMdPut9br+QVXtdNqtZ5bd5vPjUzNEqh0zPaq+2aaecbDBxzw7pfGFhpoYfBx3nURxOLrlW8s9I7pZZPOE/YtsBvJmKRiBVyAzeleDB7x2Bco8hXjpudE57BPJiGEa/gfa2f6t669oEgtE23avwyHeJfSdWqw6sRJ4SJjRtPMCVng+CmWETsIlJwnSsZ2Lf7mAUCW3CySNAhh8OPRjvpByfgPb/SE0SBF7C5tjGAV8piU9ONwhY/pz8dIWQk7oOfkxjA97Yn4LTenzZirdFNHdTK4GRAWuuad+AyTN5d1kgn+g3gw09kD9VUl+eWOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PIf+YKhmGz3ApciR4E/FvSgEUExpsnaEuPtww00r9/c=;
- b=X9sgMFjz1P/BdqRazEjTnfhHkspwbvzshAmf5tFHnv0yE084LObtKJzcBdRtgSToA8gt5NdRBL6pSGLXG/2FpQQ8HcWWS0MeIww/ne5nZy6zEa1vC03ORIxnvqAEi5hlJekz6iiQUJJzpc2QHzCbS8zpc/g0pkWTsM1/opM9GDg++1zkkFi8huzrLkWSPLtrECGEzr0XHpDPQKsPpATxDSw5nmDLE2rXtwv7RpO+fnyWUtgHfyFZKMZsQgcKnUnfU+sL2NuX1sTvRy37zLXpqUXv4ox5NRWGU8Tr/PifgafQe1SOdnsK8lrXQ8DVTCd+XnniN8xRMCwhprL1B6rGqQ==
+ bh=BJpaWabB7OGlx10laEFBEBQ7Z5ItxMEAQV/cVFjFAQk=;
+ b=do9NH8eroPk8fbc2yt/4HQAT/hDJnvVgXqvOuOzekzFjsXVeZXxKUvjokpTeGBrD3jUYTw010hCNLTMfbLklgPbOR3TrBsRrUxhCFzAX23ZCxWjCMSBuG8f+lzx6Uf1br2Yv3GblMzYjq9PXy3fqvNbPgLA5JryZO796kDBWqqLUxWCy/43mvcjftPh5F3kk0Hd3J300FfHMw8NZyiZfO4PIbeR9Haz7XZegf2lZeEyqXFtfLQtiawR/L/nxXfqeGK6bgm+mMyLfxER0+sBz8YxMFVmCjKNdzuYUABDn7/gzSNz6HMRlK45oBIUOHluhBRIJaV+gdX68DKcnepqR7w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PIf+YKhmGz3ApciR4E/FvSgEUExpsnaEuPtww00r9/c=;
- b=OCaI6AGIeDUZx8g7Tnz6vpizyVy4X3HEWBReUmcdN/29S6z4+3lvW4iuUXvsP7HiNlCEfCwaUdEQIRiO5FY1V03EMCx7ASh6Te56TgQ/Yw3vjlxaU2wG4dcPDkQnYvJUtH6ELmU8W1VHcFXrqu9js9xUFyrpbL/m0DwJ+X+gpL4=
+ bh=BJpaWabB7OGlx10laEFBEBQ7Z5ItxMEAQV/cVFjFAQk=;
+ b=EXTfsjK4G817EcGfhJh1dz4KHZ5QfXd69RA1dX9+iXbicnWtJz9ao3XXQkCYJGNWEHsscXLZUC0TYpSeL0myyIs7ejeqCuCvr1pdpG32cGdaFY1qmiXd2WdJdm3ZGgEa4QpkIsGPfJvY7xlc2L80KOurqjroS1zDNK3MWTu2At8=
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by AS4PR04MB9267.eurprd04.prod.outlook.com (2603:10a6:20b:4e2::21) with
+ by AM0PR04MB6930.eurprd04.prod.outlook.com (2603:10a6:208:186::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.8; Fri, 1 Dec
- 2023 23:05:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.18; Fri, 1 Dec
+ 2023 23:12:52 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b%7]) with mapi id 15.20.7068.012; Fri, 1 Dec 2023
- 23:05:47 +0000
+ 23:12:52 +0000
 From: David Lin <yu-hao.lin@nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
+To: Kalle Valo <kvalo@kernel.org>, Francesco Dolcini <francesco@dolcini.it>
 CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"briannorris@chromium.org" <briannorris@chromium.org>, "kvalo@kernel.org"
-	<kvalo@kernel.org>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+	"briannorris@chromium.org" <briannorris@chromium.org>, Pete Hsieh
+	<tsung-hsien.hsieh@nxp.com>
 Subject: RE: [EXT] Re: [PATCH v7 00/12] wifi: mwifiex: added code to support
  host mlme.
 Thread-Topic: [EXT] Re: [PATCH v7 00/12] wifi: mwifiex: added code to support
  host mlme.
-Thread-Index: AQHaIdVRwVjPeSM2JEKuatsKwEyar7CUVRkAgAC6w/A=
-Date: Fri, 1 Dec 2023 23:05:47 +0000
+Thread-Index: AQHaIdVRwVjPeSM2JEKuatsKwEyar7CUVRkAgAAKKSqAALP1IA==
+Date: Fri, 1 Dec 2023 23:12:52 +0000
 Message-ID:
- <PA4PR04MB9638E6F1128DE4ED977E0D07D181A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <PA4PR04MB963866B6DCE66489F177B8F8D181A@PA4PR04MB9638.eurprd04.prod.outlook.com>
 References: <20231128083115.613235-1-yu-hao.lin@nxp.com>
- <ZWnIMGytEdDCySS8@francesco-nb.int.toradex.com>
-In-Reply-To: <ZWnIMGytEdDCySS8@francesco-nb.int.toradex.com>
+	<ZWnIMGytEdDCySS8@francesco-nb.int.toradex.com> <878r6ertxx.fsf@kernel.org>
+In-Reply-To: <878r6ertxx.fsf@kernel.org>
 Accept-Language: zh-TW, en-US
 Content-Language: zh-TW
 X-MS-Has-Attach:
@@ -65,44 +65,44 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|AS4PR04MB9267:EE_
-x-ms-office365-filtering-correlation-id: 669ebc39-8877-4c14-c5b5-08dbf2c20dff
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|AM0PR04MB6930:EE_
+x-ms-office365-filtering-correlation-id: e309dc4c-4a67-443e-e467-08dbf2c30b7a
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info:
- IRGsk44QQGoQYyCD/MHIRR9Cf5YfUhBqi9MCsKvpSrEaJ4gHaKhvBv/VBlvyt1t7sDgrdWOytShKL4xwbtgmWu8jt+0gN91OOHKMuhvlgAfTz+AfA9HXyYxYUeiP4RN+exZtvbEMcrjDpDlFPBMzRb1qFWH/KyKR4F+LAUhJILXDdpG54ShR9C4k+h5pOZSK1Smfi3t9o7NjtJf6P1hx3lB2DtpKq9MQ/TcxffBVHB36nk6PToXz3DgBoJg3nZc03qKOWAVLNO/GCEXYg2R1TxCcchY6/sbnZEEQ05hHr0Aj2bmWSNezBL9+HdsHxjKMayEhifZhhBdVp12mCdxsw/luVwUh8g1/21SmVoLlStPqyUJvJM9JBMMcDmcmzSXxW9pn6KDBnZBgK0iDg6QmQuhA+mkxy0zHCRyCHQgQ5PRC5J5TmD51mXTghPOH8KrCn5pLpzgAm0AKoHetR/Gj9Ko24wWI3sbgbslIRsrBckzkKAQncLmqSOniS8/KZDVWslIOSUd5uuLPiEZ8B0DeYAJwDokMFGzUzKqe8p46iBQGeKzkiGByTeiOt9LQHWgyWsO0gSbqwa2L13Z6/QBN5d28A/6B989lHuaQ1G6v7D2blzyPTQBmovz0hGr+ekqcugyZVZ1P5ib69zQ0/yc5+HwLlCueKv2ZRjaBxqGBGTM=
+ YkeQ7wNug3kB3mLkd1DTAnx5gnGX1yKyxKTBYrVnLXOL52Ftd8hcd2xDc+jnEkgTR1v2O6JAqB/7S6zpynon2V+dUN7PsP4bO39IgLpO7/uNDykgkcF9u3L3p0yoU2wBRsG6ERQJ2+V034aIgRhozQcWML/oZJ0mMC71Ctus6ESxEVNQFKdPLKicBrDN25JUbEKLF9vQQSOGkBae0bTTSCnu6IjWEvUoIRljUr7Q1lXsVYJLOejKh/xRzlTSdc6y2Evm1Sxl7rOHrPbORC7cXm1ZTwskubJzuPtKE9D7OKXuIsQe2h9l6PciuOiRfKiWu4rRAdPkZB6aZ2uJ07QxUUfHAJRvEUDej6yY+8j73dNCBg1mfE9JX6/s2uwi/H3riD1Gudn3ORbIbDNieISTKhhMNveOy5x8GIVvKVeG2nvh6SqczXbQZ05E3DIFZpIP2AnMm4Irl52pcIH6cvsyLX/oNfPlYkcL/SmIRzAgre9XiY/Cq1fn+48f5ccmAO2UrLcykNSGuYCTMJzjSFeuMnJmNLo683AKZJLSqICWG3MAf5zrmOtb4J4HRFpptdAbQ75SD8wN7NO+5tCnmBUYa+c7BbwtdKe8lNQCU5FfzuZIXc9WFWHt+wLSdwFGTLZlTjs3mfrBK6ElooZc4t/WbQ==
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(366004)(376002)(396003)(39860400002)(230173577357003)(230922051799003)(230273577357003)(451199024)(64100799003)(186009)(1800799012)(55016003)(38070700009)(54906003)(86362001)(64756008)(66446008)(66476007)(76116006)(6916009)(66556008)(66946007)(38100700002)(33656002)(9686003)(83380400001)(26005)(6506007)(53546011)(7696005)(122000001)(8676002)(2906002)(966005)(5660300002)(316002)(45080400002)(478600001)(52536014)(71200400001)(41300700001)(8936002)(4326008);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(376002)(346002)(396003)(136003)(84040400005)(230173577357003)(230922051799003)(230273577357003)(64100799003)(1800799012)(451199024)(186009)(5660300002)(55016003)(110136005)(54906003)(316002)(4326008)(66446008)(64756008)(66946007)(66556008)(76116006)(66476007)(38100700002)(41300700001)(83380400001)(26005)(8676002)(8936002)(33656002)(7696005)(86362001)(52536014)(71200400001)(45080400002)(2906002)(38070700009)(966005)(122000001)(9686003)(478600001)(6506007)(53546011);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?XQ2hkEDJRsobu21KgIzPRktt5pq2KlS5JVDMsgGC8EMWzmwx3wYvhVGDKUT8?=
- =?us-ascii?Q?DkMlQOzfpZzaKRuUqGqodaPVFwjRgoj1NfE8Yv4L/5XCvDaJBIYtsaeax/if?=
- =?us-ascii?Q?GGaB3Uu/s/w27kQqdlH8vCK6FPduKu+mP9n6zcCJ6drl0ptoIozxpQSpBcS2?=
- =?us-ascii?Q?MevE9zs5qCpz+v/FphSKzeEtS/k7rA0f3DJ6WOlEHZr22jwR6x7iq2IWo59y?=
- =?us-ascii?Q?logeCWUGVSjPQpbIPTv8ly4PZNe/bnPm33yvMDmEbOBkV5C+jjRZdqgc90y8?=
- =?us-ascii?Q?ibk//4l+4DwTWK2gnNIUTUPzjJloax9p6VStbA+WPUKu0Wte1boORWBBtaC/?=
- =?us-ascii?Q?RgMWKDrz/b6R/hdq6nIoRkWgHIPNSnJshxlNNQT0gHlkgAnJODv/a09r3FCl?=
- =?us-ascii?Q?MgV1vpoIdv3lifaKKm1gWR7iRfsH5mHn3f2AWPfVaXrOPTCP3PEq7Spmlb+x?=
- =?us-ascii?Q?RjhJG/AXjRlxCn3pblJxyLBWgzv9oJCFUcHklj0bprkZxaPP7+ZJeOHGhx+u?=
- =?us-ascii?Q?tJyUitjh2U5o8xMNHigv2vfYE/fP4WUsWGnlCriSrgWt05tiZqrccMdnvNpJ?=
- =?us-ascii?Q?E93pZrrdmKk43zvWY6Z2GCtzL1tHg7z+4374IHC7ejNmaSHg6EhfFEzqV7Uf?=
- =?us-ascii?Q?RFDQwwYLVlu5D6xKtuwgDKWoIuCi51d25E5Ub8D3yTpZjZDSWT8XRQqmPpKX?=
- =?us-ascii?Q?9n+R+n/5O0jgM7wQWYE0pfdG4JTSXCsqfQPkDvt7taiTv1ec38z9TegUVUIG?=
- =?us-ascii?Q?6QN87GM58lJMnmglU1gfN5mI5A6DEpTHrx2dll//+jGqREAt9s9etqYAdwfC?=
- =?us-ascii?Q?b/flo/ckEu9MveAILigpZ2QVjTbrq1lvjf2LYJv8IKu3UHFGCX3SiMtC4P6R?=
- =?us-ascii?Q?g6ba3htrY0YbAkr2Fba4dUrQPKSKxVE/v+wDuXMRAWEqgJna9dDImhhR3YaL?=
- =?us-ascii?Q?sEe2xQtLosVneqLK5dyuwxT2X6nM6IxkFwfMdoT/5w1ZSeR6kJ9wZGZJKoKg?=
- =?us-ascii?Q?wLxSXLr+o+41pGYn/c8UTF2XFqArpjBL0OWHmowKD/zoIzebhgiZ8Y8m/qYL?=
- =?us-ascii?Q?/ANZeMTQd73HgaGNmNb+fvf5a9s29Y3mw2DqDHFI2+60xWxGSEfWjD2QSDRH?=
- =?us-ascii?Q?PGkjGWgtTc7JzvGLYPGvNTDoUXq/NojVqxzGM0SJeV3Wbm01D3InEss5QFQm?=
- =?us-ascii?Q?DcCCSmLAYNeeqAFqFJQhmxrIotyJuwS3ncE/ulOtLgTJB8+gAn2HmA9vk0wJ?=
- =?us-ascii?Q?ipOovnJn4Ibh73F7hnoDk21mlcT3aUcgOK2bIroLMm78iJHhumHD6NWQZvXd?=
- =?us-ascii?Q?Cw8W2KN0NHbNrDBgyDeAOHRctmwCQRXH5s+21gkb9+X9zEIsnhMAaE2BMZQK?=
- =?us-ascii?Q?L6zMlE1UrY9hv79ydP1mAiZ5T+t3BF18c0TLgdxpxFoF3PVO1kITDweHcKHd?=
- =?us-ascii?Q?RWr9yUbGGD53LMNlK3IcGrZnVzz6gkpLRwqurBblVxHjtgfbrCS2Zydl1ZOp?=
- =?us-ascii?Q?3bqPjMzogYv5du1b67pz3d10X2W1kD6NHNo2Tdt53B3ci9LUGkVVgxGRjQsI?=
- =?us-ascii?Q?6CQqG2e2NtU/ilxVmtysVefcyn5TdsAURzFbGIZ4?=
+ =?us-ascii?Q?W80PVVy3sxlznWIiRdvrwp082Elnh4tjqxiXDHFLI/ntYt1WxtknNEGo7vFd?=
+ =?us-ascii?Q?7YcLMRF0rSZQZPmMq5xNhu/9FkQZ2gKDg+B941GPMHiK38R2XpEYMdwkf2Kh?=
+ =?us-ascii?Q?/yut1C2YKEcSYALbE4aBbf/seMcF3U7+OyirNsLrqM8vk84naJUx/Gs5zpZl?=
+ =?us-ascii?Q?Z+Ejo4ULfg64PY0TYmRQ8d54Nv8zNXHv6kXSu+GsS4SX2vOhhYShrP8pNX7O?=
+ =?us-ascii?Q?ZJfwN6Th3AWzABzE/R4X5AGXgWcmJC/QEJ46O5UpLfhyYHKiAwSi1jJ1eO57?=
+ =?us-ascii?Q?xJSJvWRF3ROHqtO6T++DLR81YjPUfTTB1inpkqYCGWeMpBfO61JEPMk8i5G3?=
+ =?us-ascii?Q?atPGYeb9ogq8paC7JqdQZvnaR63SRMwxFiJg6teWGJ9pwVJ3+uKMcC600UVe?=
+ =?us-ascii?Q?7rtiKhGXpHcL2fpWJVxl0nguysjsZxX1NfyVDRzfMTnrGbDRsEYxhU8nYj3o?=
+ =?us-ascii?Q?QU0D2rLJZxER1narMSY9Udeip8B6jzykOtx0F6tfqFpq3ut5wezXi0+Rw5V3?=
+ =?us-ascii?Q?zYHl90z1djNvCTXUtOCmooM4+3grgoQRinnK/AUP4cLBoTLiAq6xmUcPhqQk?=
+ =?us-ascii?Q?7kpznsxodXbkzD/YTp/18BHGLiL0kDJ/MLQei4aN9RpVqAnb/mV4cS8KDMA9?=
+ =?us-ascii?Q?oSgGoUhLWpaICEOEn4LZTTqAIx+wBIMKniLAAtRERkgsxEA93Om0uYbmz+d9?=
+ =?us-ascii?Q?Cqx7rEvgHyKJYYDunPLM/DU+/nKLGzXyKTRixX4ajg8dMivq3nIHjxwIBO2l?=
+ =?us-ascii?Q?9/PI9UDso3ae7mBMj6B/p2sytD0VKP3j6ft5HiSEWSEpRkHrIr2reGLPbqXN?=
+ =?us-ascii?Q?UTlf4Wi1ikEJuYOYoBefd/+6cmH2aBtdxsoOIS9795kI+Giqq6yv6GBH+6c2?=
+ =?us-ascii?Q?3kZSlr1U+B21g0lxvPUuyq3Fg1pvOLOYxdK62OqkxUt/co4jzWarXZxA5759?=
+ =?us-ascii?Q?7b38alQSqGPnMDeqPiZLdqhyh6k/C/NvzoGiTU2xaM6VJWKyjqrHdxhxRy6V?=
+ =?us-ascii?Q?UgbSuPozxb6vJvu2A3nI8hyMalnPjGCncxe87+Z39rEUaVYsYt184SekJ27d?=
+ =?us-ascii?Q?PYRmZ6Vgj/Fay8yasARFTnZxmY05jxKf21wKKnEhFmlf0gbjNdapfcfTRY76?=
+ =?us-ascii?Q?OTQdJMJsoBAuQ8bsU16Ahblx/e07nWY0XsZiHYZhEdm/mle0vLHm3CBfTh2O?=
+ =?us-ascii?Q?w6BMzfxex6QWTrxDciiIJu8NjFtSRhKB3ZRfH4pn2YgJHsrnvp1IdvMGlic1?=
+ =?us-ascii?Q?mkOdblrz0zP+ECF5cIZSkg/kTlQCb0syHZpCXAkhY1/7r6Y1lk3pOROp15ho?=
+ =?us-ascii?Q?hxNxo3Zr6rQJ8yoNsXJYUxB7BWqT+RvhclurUgzUo4pg+2enxxYtS2wZVJeP?=
+ =?us-ascii?Q?uMbE8+Ymn15cjA5rvdFWrZtZ23LqddlRTUt7LtEZw7yZciYlDO0Krz5GuKD4?=
+ =?us-ascii?Q?uW3L4ecTWWjlkHYfHCYAwVvviaKuZ2cQP/L9858dNMcw69DeOy9VPooOdvdQ?=
+ =?us-ascii?Q?PTGSqGsPRnWzcpQZC8j+rnljnPOf4w5nUkCQOC6D4/S5tOgtne4ebuV6T5wh?=
+ =?us-ascii?Q?WYZuGQQGdMBrK+WD8VRpSp6g6D+0viz4UeP04vn9?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -114,21 +114,21 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 669ebc39-8877-4c14-c5b5-08dbf2c20dff
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Dec 2023 23:05:47.5315
+X-MS-Exchange-CrossTenant-Network-Message-Id: e309dc4c-4a67-443e-e467-08dbf2c30b7a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Dec 2023 23:12:52.7787
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5zkiCe+q2Gz2gbyu9lYwhueVlgsPbkPkPdLxMqPKLmhJQkog8+38vDOPbTh1Ut8wR0j9d19S/6A817x0HCE7kA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9267
+X-MS-Exchange-CrossTenant-userprincipalname: aaa9NSLNr3fG0XZAKAE6aniwoXXXZzAUFtSmTYkGXga66UzoOFIM9eDZX7wjRJZIJ+sVe6cyi8X8BhZ1jERxeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6930
 
-> From: Francesco Dolcini <francesco@dolcini.it>
-> Sent: Friday, December 1, 2023 7:49 PM
-> To: David Lin <yu-hao.lin@nxp.com>
-> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
-> briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it; Pete
-> Hsieh <tsung-hsien.hsieh@nxp.com>
+> From: Kalle Valo <kvalo@kernel.org>
+> Sent: Friday, December 1, 2023 8:25 PM
+> To: Francesco Dolcini <francesco@dolcini.it>
+> Cc: David Lin <yu-hao.lin@nxp.com>; linux-wireless@vger.kernel.org;
+> linux-kernel@vger.kernel.org; briannorris@chromium.org; Pete Hsieh
+> <tsung-hsien.hsieh@nxp.com>
 > Subject: [EXT] Re: [PATCH v7 00/12] wifi: mwifiex: added code to support
 > host mlme.
 >=20
@@ -138,61 +138,66 @@ or
 > this email' button
 >=20
 >=20
-> Hello Lin,
-> thanks for the patches here, I can clearly see that this code is going th=
-rough
-> some real testing given the improvements you did lately.
+> Francesco Dolcini <francesco@dolcini.it> writes:
 >=20
-> I have commented on the single patches, and honestly I did not look into =
-the
-> code details at the moment.
->=20
-> The major feedback from me is the following:
->  1 - you should not add code with a bug and than fix a bug in the same
->      series, you should have a non buggy patch in the first place (e.g.
->      git --amend). (this applies till the patch is not merged into the
->      maintainer tree, of course).
->  2 - point 1 applies also to reviewer comments
->  3 - if you have fixes that are not connected to the feature addition
->      you are doing is beneficial to have those separated, this makes
->      reviewing easier, they can be "prioritized" to some extent (given
->      that they are fixes) and follow a slightly different patch flow
->      (they can get applied, depending on the maintainers decision, when
+> > Hello Lin,
+> > thanks for the patches here, I can clearly see that this code is going
+> > through some real testing given the improvements you did lately.
+> >
+> > I have commented on the single patches, and honestly I did not look
+> > into the code details at the moment.
+> >
+> > The major feedback from me is the following:
+> >  1 - you should not add code with a bug and than fix a bug in the same
+> >      series, you should have a non buggy patch in the first place (e.g.
+> >      git --amend). (this applies till the patch is not merged into the
+> >      maintainer tree, of course).
+> >  2 - point 1 applies also to reviewer comments
+> >  3 - if you have fixes that are not connected to the feature addition
+> >      you are doing is beneficial to have those separated, this makes
+> >      reviewing easier, they can be "prioritized" to some extent (given
+> >      that they are fixes) and follow a slightly different patch flow
+> >      (they can get applied, depending on the maintainers decision, when
 > the
->      merge window is closed and should be backported). Not to mention
->      that smaller patch series are appreciated, "Maximum of 7-12 patches
->      per patchset " from [1]
+> >      merge window is closed and should be backported). Not to mention
+> >      that smaller patch series are appreciated, "Maximum of 7-12 patche=
+s
+> >      per patchset " from [1]
+> >
+> > In general I would suggest you to have a look at [1], not sure how up
+> > to date is that compared to the in-tree Documentation/process/.
 >=20
-> In general I would suggest you to have a look at [1], not sure how up to =
-date
-> is that compared to the in-tree Documentation/process/.
+> I haven't looked at the actual patches but a generic comment from me is t=
+hat
+> usually it's not a good idea for newcomers to submit a huge patchset like
+> this. Start with something small, just with one patch first, learn the pr=
+ocess
+> and what we require from patches. After you have gained more knowledge
+> you can start doing more complex stuff.
 >=20
-> On Tue, Nov 28, 2023 at 04:31:03PM +0800, David Lin wrote:
-> > 5. Address reviewer comments.
-> You should list the changes you did, something that generic is forcing th=
-e
-> reviewer to compare v7 vs v6 to known what changed.
 
-Can I summary what should I do and hopefully I can make agreement with you:
+Can you help to check this patch?
 
-1. Separate patch v7 6/12 as a single patch.
-2. Merged all other patches as a single patch for host mlme.
+https://patchwork.kernel.org/project/linux-wireless/patch/20231128082544.61=
+3179-1-yu-hao.lin@nxp.com/
 
-So there should be no patch v8 and only have two patches, one for host mlme=
- and another one to fix hostap restart issue.
-
+This is a very small patch and it really fixed issue of mwifiex.
+> --
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpatch=
+w
+> ork.kernel.org%2Fproject%2Flinux-wireless%2Flist%2F&data=3D05%7C01%7Cyu-
+> hao.lin%40nxp.com%7C47171ff92b204d48d7be08dbf26894c4%7C686ea1d3b
+> c2b4c6fa92cd99c5c301635%7C0%7C0%7C638370303262144837%7CUnknown
+> %7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haW
+> wiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=3D%2FwH3UEUxKckAwlAVJkh
+> 5LpR2L76a1uyOmxXVWiyTUmQ%3D&reserved=3D0
 >=20
->=20
-> [1]
 > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwirel=
 es
 > s.wiki.kernel.org%2Fen%2Fdevelopers%2Fdocumentation%2Fsubmittingpatch
-> es&data=3D05%7C01%7Cyu-hao.lin%40nxp.com%7Cde461eef26c44e28e80c08d
-> bf2638639%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63837028
-> 1495779090%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIj
-> oiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=3Dy
-> OW9SndPm%2FDuI%2BZU8fxBieerDxVZp5RzefQiSfFA%2BW0%3D&reserved=3D0
->=20
-> Francesco
-
+> es&data=3D05%7C01%7Cyu-hao.lin%40nxp.com%7C47171ff92b204d48d7be08d
+> bf26894c4%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63837030
+> 3262144837%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIj
+> oiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=3DF
+> I%2BwsMoSatv3woPhT2yWhHeFIi5pP1uzFQYUrynAZO0%3D&reserved=3D0
 
