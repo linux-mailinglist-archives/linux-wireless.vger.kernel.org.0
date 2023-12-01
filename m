@@ -1,78 +1,106 @@
-Return-Path: <linux-wireless+bounces-297-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-298-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A237E800B3E
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 13:43:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DAB800DE5
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 16:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C78D2817D6
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 12:43:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CD54281B8D
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Dec 2023 15:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B78C1C685;
-	Fri,  1 Dec 2023 12:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0753E49C;
+	Fri,  1 Dec 2023 15:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwGAq+f5"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KrwHhOV2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AF25954E
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Dec 2023 12:43:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACACC433C7;
-	Fri,  1 Dec 2023 12:43:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701434611;
-	bh=nSbNkpbRGEwX7lv4Och+jke3HjWo9mb+MhtexQmZ1sc=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=jwGAq+f5LNTKGLtGKb+XO0AsSgzzjrIjn/BZB7i/pg3m31y4e08RbKOOgIT9KPPQV
-	 8JT1/uYZ6r0q+U8kapkDa+mnOsDA5UfCrg6o+lzgrQoXJJNlEzT6steiJriDlfua5l
-	 FyONzauvX++cXp4/TrcJICprr0HTvezfjSydRYUMzQpXKT1wq2Td7YPp6vk4uQZvWo
-	 tVJ8iRfUA21d9DL+OUal9vMsd5ZyXACfkTcyakvE/Yw4QbBTH2+/hjC6Icaqqtzn47
-	 5F4trhIM1z8WY/P219T8BTEAf8IGLlwhq3sOV0znHp46phRg8FBeaG1JNIX5w6f9UU
-	 jK9xxXaj3iWow==
-Content-Type: text/plain; charset="utf-8"
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 628E3A8;
+	Fri,  1 Dec 2023 07:05:16 -0800 (PST)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B1CFHMs001243;
+	Fri, 1 Dec 2023 15:05:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=vIyqDqrpQXUkJiwj/1Jen/Rv0bmhnV8/I/dv8ILzzho=;
+ b=KrwHhOV2d/5gLpeiKL3r6002hHTeWUMmQcxV9m3wdUYZG5CCfCe2x6YoQipUAdPDJ9SK
+ DEeHW5oD1Ycku62DEQ8baLByYgbs6bkrcC2r4LyYJZjetnnZyRMSF2ZwoGKV9S01BZ3v
+ I/xPr1sty0/OU7JR+dj4irquW8+51SloSqHSKTjMv6hxuFtxwb9p78IcrsoLkaek0Q+3
+ 2490SgCmyY2t/3qvyDtiLhMyJW+15a51qMfM9Jyd+GbgV4Lzrtjq74n8yIkdAKCazjp6
+ VO3qE6uWC6yp9oxiIDLQuWgMT31yhfvVm3loqwHAkjaQoFpp+TxXS/bz9utEEHss/5nt xw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uprhduwqw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Dec 2023 15:05:05 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3B1F5481007104
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 1 Dec 2023 15:05:04 GMT
+Received: from [10.110.26.250] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 1 Dec
+ 2023 07:05:03 -0800
+Message-ID: <8d720940-5cd1-4d53-bdf2-97334069a5b8@quicinc.com>
+Date: Fri, 1 Dec 2023 07:05:02 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 02/12] wifi: mwifiex: fixed group rekey issue for WPA3.
+Content-Language: en-US
+To: Francesco Dolcini <francesco@dolcini.it>, David Lin <yu-hao.lin@nxp.com>
+CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <briannorris@chromium.org>, <kvalo@kernel.org>,
+        <tsung-hsien.hsieh@nxp.com>
+References: <20231128083115.613235-1-yu-hao.lin@nxp.com>
+ <20231128083115.613235-3-yu-hao.lin@nxp.com>
+ <ZWmyQ9ilyAPGJmft@francesco-nb.int.toradex.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <ZWmyQ9ilyAPGJmft@francesco-nb.int.toradex.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/4] wifi: rtw89: fix not entering PS mode after AP stops
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231129070046.18443-2-pkshih@realtek.com>
-References: <20231129070046.18443-2-pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: <gary.chang@realtek.com>, <phhuang@realtek.com>,
- <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170143460861.2072551.13745611906714696058.kvalo@kernel.org>
-Date: Fri,  1 Dec 2023 12:43:30 +0000 (UTC)
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: EGQ6AB49ZtW8Zu2PaIFByA0gyvCZfjoY
+X-Proofpoint-GUID: EGQ6AB49ZtW8Zu2PaIFByA0gyvCZfjoY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-01_12,2023-11-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 suspectscore=0 impostorscore=0 mlxlogscore=999
+ clxscore=1011 mlxscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2312010103
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+On 12/1/2023 2:15 AM, Francesco Dolcini wrote:
+> On Tue, Nov 28, 2023 at 04:31:05PM +0800, David Lin wrote:
 
-> From: Po-Hao Huang <phhuang@realtek.com>
+>> diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+>> index d99127dc466e..3bebb6c37604 100644
+>> --- a/drivers/net/wireless/marvell/mwifiex/main.c
+>> +++ b/drivers/net/wireless/marvell/mwifiex/main.c
+>> @@ -802,6 +802,10 @@ mwifiex_bypass_tx_queue(struct mwifiex_private *priv,
+>>  			    "bypass txqueue; eth type %#x, mgmt %d\n",
+>>  			     ntohs(eth_hdr->h_proto),
+>>  			     mwifiex_is_skb_mgmt_frame(skb));
+>> +		if (ntohs(eth_hdr->h_proto) == ETH_P_PAE)
+>> +			mwifiex_dbg(priv->adapter, MSG,
+>> +				    "key: send EAPOL to %pM\n",
+>> +				    eth_hdr->h_dest);
 > 
-> The attempt to enter power save mode might fail if there are still
-> beacons pending in the queue. This sometimes happens after stopping
-> P2P GO or AP mode. Extend stop AP function and flush all beacons to
-> resolve this.
-> 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> this is just debug code, at a first glance not sure i
 
-4 patches applied to wireless-next.git, thanks.
+not only that, the usual pattern is:
+if (eth_hdr->h_proto == htons(ETH_P_PAE))
 
-0052b3c401cd wifi: rtw89: fix not entering PS mode after AP stops
-2f3eaccc6621 wifi: rtw89: Refine active scan behavior in 6 GHz
-e46987ce819d wifi: rtw89: refine remain on channel flow to improve P2P connection
-756b31203d48 wifi: rtw89: fix misbehavior of TX beacon in concurrent mode
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231129070046.18443-2-pkshih@realtek.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+you want to do endian conversion on a constant when possible since that
+is a compile-time conversion and not a runtime conversion
 
 
