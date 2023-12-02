@@ -1,156 +1,132 @@
-Return-Path: <linux-wireless+bounces-325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A57801C4C
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 11:49:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BB1801C6E
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 12:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04D8D1F21194
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 10:49:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73050B20D34
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 11:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2EE15AE1;
-	Sat,  2 Dec 2023 10:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC667493;
+	Sat,  2 Dec 2023 11:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FEcmzQh0"
+	dkim=pass (2048-bit key) header.d=w1.fi header.i=@w1.fi header.b="NMLTDYYg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9D81124;
-	Sat,  2 Dec 2023 02:49:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=F8PhHlQpw1agE8e4gUoZBwCoedJwGCZUllve+ZMs9lU=; t=1701514184; x=1702723784; 
-	b=FEcmzQh0bsIjqk6r5t6yevD+khvz0zRxqI/Z8MWgdf23sUSCiyk43o3BM9PqKEyalOwcHEaIfyy
-	DNZqH03AVZbpgEk4oCoBqxwRY2mNAAxwTw16oCn72GLqUUSAXhPbWi3/3VqqAwEHwu1/RQvFryYBs
-	ufe1zCpDMIve+8rsG6ZlGl1hLz8wLrUmHMB+qzi48aIisx7DEF6p66nVf/gi0N+aMHsoxuhtWEW2F
-	dh9SEIR/hNoPEqpYmm6isFSsDvFaUCCVLarxGQocf26lQBR91jv7djvLD0e7wG6MIjLzOXrZ4omev
-	eTAXFa37SnH+v2NgaSEiisljkw/WWrkNh1fQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1r9NZ7-0000000CR3d-3PqU;
-	Sat, 02 Dec 2023 11:49:42 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-kernel@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] Revert "debugfs: annotate debugfs handlers vs. removal with lockdep"
-Date: Sat,  2 Dec 2023 11:49:37 +0100
-Message-ID: <20231202114936.fd55431ab160.I911aa53abeeca138126f690d383a89b13eb05667@changeid>
-X-Mailer: git-send-email 2.43.0
+Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1D9C18C
+	for <linux-wireless@vger.kernel.org>; Sat,  2 Dec 2023 03:29:27 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.w1.fi (Postfix) with ESMTP id 85568115C5;
+	Sat,  2 Dec 2023 11:29:25 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from mail.w1.fi ([127.0.0.1])
+	by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id pw7LQ74DMHku; Sat,  2 Dec 2023 11:28:52 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Sat, 02 Dec 2023 13:28:49 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
+	t=1701516531; bh=HAjiXQeAJyyFes4evo++aSo9ud1EFo2Ky0J/WGZANfE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NMLTDYYg90gbGzP0qynQ/PNgOM0mpGltICFJojIKTL8YUlK5cvjQUopqRxB9heQ5s
+	 p/u9kvxJkL8tqwp6YN8WD5NUXS3CAl3ZHr/LZir8jwDEvDac1xsQGAiZ2+jiKnkl5j
+	 M7yKrwYblfdsZuWI01WyZYZXwnlJgXGAY6yzv1voQSXlgvmjMhJ3P/M6gTWUxSCx0c
+	 DcuFPmdX7mfKfJyy5GFZ5kuoFRZRjiU/l0caSFdnECNkRn4yyIHksrNSnLg063dnGl
+	 EFlqH/mIYviip4idV1kEPQMR6lyZ/g0yG24Xd8PpdSme+GxV1jDk11iGcAxUn7pRkO
+	 wzM310ZNG9uWg==
+Date: Sat, 2 Dec 2023 13:28:49 +0200
+From: Jouni Malinen <j@w1.fi>
+To: gregory.greenman@intel.com
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+	Avraham Stern <avraham.stern@intel.com>
+Subject: Re: [PATCH] wifi: mac80211: don't drop all unprotected public action
+ frames
+Message-ID: <ZWsU8T2c9GHQUsE9@w1.fi>
+References: <20231016145213.2973e3c8d3bb.I6198b8d3b04cf4a97b06660d346caec3032f232a@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231016145213.2973e3c8d3bb.I6198b8d3b04cf4a97b06660d346caec3032f232a@changeid>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Mon, Oct 16, 2023 at 02:52:48PM +0300, gregory.greenman@intel.com wrote:
+> Not all public action frames have a protected variant. When MFP is
+> enabled drop only public action frames that have a dual protected
+> variant.
 
-This reverts commit f4acfcd4deb1 ("debugfs: annotate debugfs handlers
-vs. removal with lockdep"), it appears to have false positives and
-really shouldn't have been in the -rc series with the fixes anyway.
+That description sounds accurate..
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- fs/debugfs/file.c     | 10 ----------
- fs/debugfs/inode.c    |  7 -------
- fs/debugfs/internal.h |  6 ------
- 3 files changed, 23 deletions(-)
+> diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+> +/**
+> + * ieee80211_is_protected_dual_of_public_action - check if skb contains a
+> + * protected dual of public action management frame
+> + * @skb: the skb containing the frame, length will be checked
+> + *
+> + * Return: true if the skb contains a protected dual of public action
+> + * management frame, false otherwise.
+> + */
 
-diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
-index a5ade8c16375..5063434be0fc 100644
---- a/fs/debugfs/file.c
-+++ b/fs/debugfs/file.c
-@@ -108,12 +108,6 @@ int debugfs_file_get(struct dentry *dentry)
- 			kfree(fsd);
- 			fsd = READ_ONCE(dentry->d_fsdata);
- 		}
--#ifdef CONFIG_LOCKDEP
--		fsd->lock_name = kasprintf(GFP_KERNEL, "debugfs:%pd", dentry);
--		lockdep_register_key(&fsd->key);
--		lockdep_init_map(&fsd->lockdep_map, fsd->lock_name ?: "debugfs",
--				 &fsd->key, 0);
--#endif
- 		INIT_LIST_HEAD(&fsd->cancellations);
- 		mutex_init(&fsd->cancellations_mtx);
- 	}
-@@ -132,8 +126,6 @@ int debugfs_file_get(struct dentry *dentry)
- 	if (!refcount_inc_not_zero(&fsd->active_users))
- 		return -EIO;
- 
--	lock_map_acquire_read(&fsd->lockdep_map);
--
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(debugfs_file_get);
-@@ -151,8 +143,6 @@ void debugfs_file_put(struct dentry *dentry)
- {
- 	struct debugfs_fsdata *fsd = READ_ONCE(dentry->d_fsdata);
- 
--	lock_map_release(&fsd->lockdep_map);
--
- 	if (refcount_dec_and_test(&fsd->active_users))
- 		complete(&fsd->active_users_drained);
- }
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index e4e7fe1bd9fb..034a617cb1a5 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -243,10 +243,6 @@ static void debugfs_release_dentry(struct dentry *dentry)
- 
- 	/* check it wasn't a dir (no fsdata) or automount (no real_fops) */
- 	if (fsd && fsd->real_fops) {
--#ifdef CONFIG_LOCKDEP
--		lockdep_unregister_key(&fsd->key);
--		kfree(fsd->lock_name);
--#endif
- 		WARN_ON(!list_empty(&fsd->cancellations));
- 		mutex_destroy(&fsd->cancellations_mtx);
- 	}
-@@ -755,9 +751,6 @@ static void __debugfs_file_removed(struct dentry *dentry)
- 	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
- 		return;
- 
--	lock_map_acquire(&fsd->lockdep_map);
--	lock_map_release(&fsd->lockdep_map);
--
- 	/* if we hit zero, just wait for all to finish */
- 	if (!refcount_dec_and_test(&fsd->active_users)) {
- 		wait_for_completion(&fsd->active_users_drained);
-diff --git a/fs/debugfs/internal.h b/fs/debugfs/internal.h
-index 0c4c68cf161f..dae80c2a469e 100644
---- a/fs/debugfs/internal.h
-+++ b/fs/debugfs/internal.h
-@@ -7,7 +7,6 @@
- 
- #ifndef _DEBUGFS_INTERNAL_H_
- #define _DEBUGFS_INTERNAL_H_
--#include <linux/lockdep.h>
- #include <linux/list.h>
- 
- struct file_operations;
-@@ -25,11 +24,6 @@ struct debugfs_fsdata {
- 		struct {
- 			refcount_t active_users;
- 			struct completion active_users_drained;
--#ifdef CONFIG_LOCKDEP
--			struct lockdep_map lockdep_map;
--			struct lock_class_key key;
--			char *lock_name;
--#endif
- 
- 			/* protect cancellations */
- 			struct mutex cancellations_mtx;
+But this comment and the function name feel quite misleading. This does
+not return true if the skb contains a Protected Dual of Public Action
+frame; this returns true if the skb contains a Public Action frame for
+which a Protected Dual of Public Action frame is defined. Or well, that
+is what this function should do for the mac80211 change to work
+correctly, but it does not really do that..
+
+> +static inline bool
+> +ieee80211_is_protected_dual_of_public_action(struct sk_buff *skb)
+> +{
+> +	u8 action;
+> +
+> +	if (!ieee80211_is_public_action((void *)skb->data, skb->len) ||
+> +	    skb->len < IEEE80211_MIN_ACTION_SIZE + 1)
+> +		return false;
+> +
+> +	action = *(u8 *)(skb->data + IEEE80211_MIN_ACTION_SIZE);
+> +
+> +	return action != WLAN_PUB_ACTION_20_40_BSS_COEX &&
+> +		action != WLAN_PUB_ACTION_DSE_REG_LOC_ANN &&
+> +		action != WLAN_PUB_ACTION_MSMT_PILOT &&
+> +		action != WLAN_PUB_ACTION_TDLS_DISCOVER_RES &&
+> +		action != WLAN_PUB_ACTION_LOC_TRACK_NOTI &&
+> +		action != WLAN_PUB_ACTION_FTM_REQUEST &&
+> +		action != WLAN_PUB_ACTION_FTM_RESPONSE &&
+> +		action != WLAN_PUB_ACTION_FILS_DISCOVERY;
+> +}
+
+What is this list of Public Action frames based on? The "Reserved" rows
+of the Protected Dual of Public Action frames from some snapshot of the
+IEEE 802.11 standard? That is neither robust nor correct way of doing
+this. It would be more robust (in a sense of not breaking things in
+future) to make this match against cases for which there is a known
+protected variant instead of assuming that there is a protected variant
+for everything that is known to not have one yet defined.
+
+Furthermore, this is completely wrong for Vendor Specific Public Action
+frames. There is a Protected Vendor Specific value for Protected Dual of
+Public Action frame, but that value is used on case by case basis for
+each different type of vendor specific frame. In other words, this part
+would need to look at the OUI:subtype combination to search which vendor
+specific cases have a protected variant. I'd expect there to be a very
+limited, if any, such cases, i.e., more or less all vendor specific
+Public Action frames should be allowed to be processed in mac80211 even
+when MFP has been negotiated for an association.
+
+In practice, this patch (well, a commit in wireless-next.git now) leaves
+Vendor Specific Public Action frame cases broken. For example, DPP does
+not work correctly with this. hostap.git test case
+dpp_conn_status_success_hostapd_configurator can demonstrate that issue.
+
+In addition, this would break more recently added Public Action frames
+with Action field values larger than 34 broken. There are quite a few
+such frames defined and none of them seem to have a matching protected
+dual.
+
 -- 
-2.43.0
-
+Jouni Malinen                                            PGP id EFC895FA
 
