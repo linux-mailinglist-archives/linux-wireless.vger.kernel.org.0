@@ -1,223 +1,169 @@
-Return-Path: <linux-wireless+bounces-321-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-322-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417CA801B05
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 07:37:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7393801BA4
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 10:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D2B51C20A2B
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 06:37:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81B601F210AE
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 09:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA778C0B;
-	Sat,  2 Dec 2023 06:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0129A1118C;
+	Sat,  2 Dec 2023 09:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="jDsHLwNP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G/g/I9MK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 323A5D67
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Dec 2023 22:37:41 -0800 (PST)
-Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6d7eb7ff384so991015a34.0
-        for <linux-wireless@vger.kernel.org>; Fri, 01 Dec 2023 22:37:41 -0800 (PST)
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C700E9E
+	for <linux-wireless@vger.kernel.org>; Sat,  2 Dec 2023 01:24:08 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-9e1021dbd28so419341466b.3
+        for <linux-wireless@vger.kernel.org>; Sat, 02 Dec 2023 01:24:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1701499060; x=1702103860; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fU6qRJtgEbT1G/wePVSX2m3ILhzk5zEbcdCS9Xw6g4o=;
-        b=jDsHLwNPtt0rjbkRzHdLkNbvUdByfdthmCZ3/mu6mLiwIjsQ8Ot8brblxgDGyC597I
-         F5IrwguHH5Pr817AJTjACsNmdhoajyWVtHfiO6M57LmRLEX/EpIx9saOTKR4mhMCCPA+
-         Z+TDa7y3bCajc4IMSyCPqlkZ56+5bvQocmWG0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701499060; x=1702103860;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1701509047; x=1702113847; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fU6qRJtgEbT1G/wePVSX2m3ILhzk5zEbcdCS9Xw6g4o=;
-        b=ReK8ut2A4Cef4uwDb4ni/di46Y1G6j/AZ4Ay7m1P5/miOI8wnTKvU0jvvLIW4sSuOa
-         dNiAQy8Br4qSZFEsNSFayJJJyjc9F0AszDa7ImYwYy12S18ZfoRwM26SqSW3VZuNwHKF
-         nuZDkuW370DmkE0lUzPsRMCfIngtOws6xKhL8z6QaSK9DHA/nRPjeXJxjdAvNknHue3F
-         XQlWsdtuleEWpkRzWAHCwo0KSvPLHprlk8fub438N4QiFX86ruCKEUgPRX4m8G9UiKss
-         ArsMAQW4oFzkpf3Pz4QluhxVz/rWptvKYj00d+gucb09UwPagm+s4Vtuoa1FpyGMROFX
-         BRAg==
-X-Gm-Message-State: AOJu0YzBhXF7tdNbUIIMUhYrV0a1SPf3Hs6Fe/Tjspu1aL7vxyuxIrwa
-	D0FBDMlcawN1czT1/bVnCowmgQ==
-X-Google-Smtp-Source: AGHT+IHnEp3NIeb+BoU6LcDHhI9xngPKkOaRLjSefVBiChRgLsiCllOprO6iu5BrunNCLL0JFKAnkw==
-X-Received: by 2002:a05:6830:3a87:b0:6d8:74e2:634d with SMTP id dj7-20020a0568303a8700b006d874e2634dmr708294otb.39.1701499060469;
-        Fri, 01 Dec 2023 22:37:40 -0800 (PST)
-Received: from google.com (KD124209171220.ppp-bb.dion.ne.jp. [124.209.171.220])
-        by smtp.gmail.com with ESMTPSA id 13-20020a056a00072d00b006cdb8ef2db6sm4028316pfm.94.2023.12.01.22.37.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Dec 2023 22:37:39 -0800 (PST)
-Date: Sat, 2 Dec 2023 15:37:35 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Nicolai Stange <nicstange@gmail.com>,
-	Ben Greear <greearb@candelatech.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Minchan Kim <minchan@kernel.org>
-Subject: Re: [RFC PATCH 2/6] debugfs: annotate debugfs handlers vs. removal
- with lockdep
-Message-ID: <20231202063735.GD404241@google.com>
-References: <20231109212251.213873-7-johannes@sipsolutions.net>
- <20231109222251.a62811ebde9b.Ia70a49792c448867fd61b0234e1da507b0f75086@changeid>
+        bh=2cyRhIR0A6aTSPQR5JFcskpSPit5SlzMxXdXuH/hceE=;
+        b=G/g/I9MKLSapR2AeUJ+ddEmW+QtfLnzk55PA6ZSPkt9tz6BlTmk/k2/J9hgw1GxKOO
+         fy7UMDwQ0zVJNaX+O0YcZUrFbD8W2bIprTzTrMyYvGrFqqfuNmWC+lULZ9Of/VTEnu67
+         yCpG3zfAOw3V38znD1xDbbLHiC2FCK/jxr2HQsd70tAH5N6u0k1zDMU5hOUYCPOP/gxr
+         WFGwnjsjPQCtgz6GdEKchlZ7c/C5JhIYkUaERZhs/4rp2ZnDFiUesWBj95TwgMlvoCqU
+         v0lbUxfA1OLWOx4Z6kJz1ailDQ3VWVB8xhS1gsX7SogKECuSOgBXexltMasgVMQKAhRR
+         ++Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701509047; x=1702113847;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2cyRhIR0A6aTSPQR5JFcskpSPit5SlzMxXdXuH/hceE=;
+        b=dEj0/H7az5LN6LgN+hSCSxYh0gOw0qbGFmSrhPIvbF+0RRvecGAkjMyFDMpv4lfNLH
+         LVQw+pcz/Z17Hd7RVyIqojMPNxsUNUvlsTfcJ5khhxOOUXnUyZ+JfYzCy0ZVOdInpYTp
+         +7p1twNkKml/nXq5OnX0fjNq6UP1yeyddWY6j7krk/G9O9VQ+Tylpnz1fZ5up1NahGhn
+         Ozeae4syxv9EBnGd/wf7IVDoeX4KRWzcNUdOqo/CSXNw0Ffu8o2ab8q/XLND0faXiiku
+         k+4YmgFBZDhDhuSsVWVc/UGbVONxX1PMPWIX6vuHCLOpA4iwFGCbnKqwV7TWcQTx8F9d
+         +nBw==
+X-Gm-Message-State: AOJu0YzRxocVM4Zgh73CYLy38ZI0kL4Dqy6X5GkSqsUcLqaDZ5EAymtD
+	rn7hbH3UAygaRpXIJCnRCEpjWXk5dH5Dnsh67J/hQb0o/ZMd3g==
+X-Google-Smtp-Source: AGHT+IFQfQiUQR2iMs1/xKDSvr3J3tfTKOHyVW01kw8JtaBhcX+qdEyhaiKv9DPs/D14LqMVwzI1zu/XaDa/q+4BR0A=
+X-Received: by 2002:a17:906:81d9:b0:a19:a19b:c716 with SMTP id
+ e25-20020a17090681d900b00a19a19bc716mr1481452ejx.102.1701509046995; Sat, 02
+ Dec 2023 01:24:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231109222251.a62811ebde9b.Ia70a49792c448867fd61b0234e1da507b0f75086@changeid>
+References: <1700948088-16140-mlmmj-666d2532@vger.kernel.org>
+ <CAOE0c97T1cVvqFkqfrP_h53X08yQ7kLinZP09L35nVHc_V89+g@mail.gmail.com>
+ <5abfc98859504795b50f7f343784c886@realtek.com> <CAOE0c96uJ9x8gbJZdHiMEiOM5gTd_ZqM_rUV7Cs1NyA_t0Ncfg@mail.gmail.com>
+ <CAOE0c97fDaLTfsMJVmEh4HxOAPY19kD60qsV5AKJbWW5nnqWzw@mail.gmail.com> <b4cfd676c0b24d98b82302aefac7f379@realtek.com>
+In-Reply-To: <b4cfd676c0b24d98b82302aefac7f379@realtek.com>
+From: Ali Ghandour <gandour.ali@gmail.com>
+Date: Sat, 2 Dec 2023 11:23:54 +0200
+Message-ID: <CAOE0c97NvXFhttfNNm3+NsXw9SKV7sC-nJriwF43pujvJugvSg@mail.gmail.com>
+Subject: Re: Lenovo LOQ rtw_8852be
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On (23/11/09 22:22), Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> When you take a lock in a debugfs handler but also try
-> to remove the debugfs file under that lock, things can
-> deadlock since the removal has to wait for all users
-> to finish.
-> 
-> Add lockdep annotations in debugfs_file_get()/_put()
-> to catch such issues.
+>> Can I know the type of your platoform Lenovo LOQ? Is it a regular notebo=
+ok computer?
 
-So this triggers when I reset zram device (zsmalloc compiled with
-CONFIG_ZSMALLOC_STAT).
+LOQ 15IRH8 - Type 82XV
+I am using a dual boot with Windows and Ubuntu 22.04
 
-debugfs_create_file() and debugfs_remove_recursive() are called
-under zram->init_lock, and zsmalloc never calls into zram code.
-What I don't really get is where does the
-	`debugfs::classes -> zram->init_lock`
-dependency come from?
+>> The PCI EXT capabilities locate from 100h. Not sure if host controller d=
+river limits to display them?
+I did not get your question. Can you say it again please?
 
-[   47.283364] ======================================================
-[   47.284790] WARNING: possible circular locking dependency detected
-[   47.286217] 6.7.0-rc3-next-20231201+ #239 Tainted: G                 N
-[   47.287723] ------------------------------------------------------
-[   47.289145] zram-test.sh/727 is trying to acquire lock:
-[   47.290350] ffff88814b824070 (debugfs:classes){++++}-{0:0}, at: remove_one+0x65/0x210
-[   47.292202] 
-[   47.292202] but task is already holding lock:
-[   47.293554] ffff88812fe7ee48 (&sb->s_type->i_mutex_key#2){++++}-{3:3}, at: simple_recursive_removal+0x217/0x3a0
-[   47.295895] 
-[   47.295895] which lock already depends on the new lock.
-[   47.295895] 
-[   47.297757] 
-[   47.297757] the existing dependency chain (in reverse order) is:
-[   47.299498] 
-[   47.299498] -> #4 (&sb->s_type->i_mutex_key#2){++++}-{3:3}:
-[   47.301129]        down_write+0x40/0x80
-[   47.302028]        start_creating+0xa5/0x1b0
-[   47.303024]        debugfs_create_dir+0x16/0x240
-[   47.304104]        zs_create_pool+0x5da/0x6f0
-[   47.305123]        disksize_store+0xce/0x320
-[   47.306129]        kernfs_fop_write_iter+0x1cb/0x270
-[   47.307279]        vfs_write+0x42f/0x4c0
-[   47.308205]        ksys_write+0x8f/0x110
-[   47.309129]        do_syscall_64+0x40/0xe0
-[   47.310100]        entry_SYSCALL_64_after_hwframe+0x62/0x6a
-[   47.311403] 
-[   47.311403] -> #3 (&zram->init_lock){++++}-{3:3}:
-[   47.312856]        down_write+0x40/0x80
-[   47.313755]        zram_reset_device+0x22/0x2b0
-[   47.314814]        reset_store+0x15b/0x190
-[   47.315788]        kernfs_fop_write_iter+0x1cb/0x270
-[   47.316946]        vfs_write+0x42f/0x4c0
-[   47.317869]        ksys_write+0x8f/0x110
-[   47.318787]        do_syscall_64+0x40/0xe0
-[   47.319754]        entry_SYSCALL_64_after_hwframe+0x62/0x6a
-[   47.321051] 
-[   47.321051] -> #2 (&of->mutex){+.+.}-{3:3}:
-[   47.322374]        __mutex_lock+0x97/0x810
-[   47.323338]        kernfs_seq_start+0x34/0x190
-[   47.324387]        seq_read_iter+0x1e1/0x6c0
-[   47.325389]        vfs_read+0x38f/0x420
-[   47.326295]        ksys_read+0x8f/0x110
-[   47.327200]        do_syscall_64+0x40/0xe0
-[   47.328164]        entry_SYSCALL_64_after_hwframe+0x62/0x6a
-[   47.329460] 
-[   47.329460] -> #1 (&p->lock){+.+.}-{3:3}:
-[   47.330740]        __mutex_lock+0x97/0x810
-[   47.331717]        seq_read_iter+0x5c/0x6c0
-[   47.332696]        seq_read+0xfe/0x140
-[   47.333577]        full_proxy_read+0x90/0x110
-[   47.334598]        vfs_read+0xfb/0x420
-[   47.335482]        ksys_read+0x8f/0x110
-[   47.336382]        do_syscall_64+0x40/0xe0
-[   47.337344]        entry_SYSCALL_64_after_hwframe+0x62/0x6a
-[   47.338636] 
-[   47.338636] -> #0 (debugfs:classes){++++}-{0:0}:
-[   47.340056]        __lock_acquire+0x20b1/0x3b50
-[   47.341117]        lock_acquire+0xe3/0x210
-[   47.342072]        remove_one+0x7d/0x210
-[   47.342991]        simple_recursive_removal+0x325/0x3a0
-[   47.344210]        debugfs_remove+0x40/0x60
-[   47.345181]        zs_destroy_pool+0x4e/0x3d0
-[   47.346199]        zram_reset_device+0x151/0x2b0
-[   47.347272]        reset_store+0x15b/0x190
-[   47.348257]        kernfs_fop_write_iter+0x1cb/0x270
-[   47.349426]        vfs_write+0x42f/0x4c0
-[   47.350350]        ksys_write+0x8f/0x110
-[   47.351273]        do_syscall_64+0x40/0xe0
-[   47.352239]        entry_SYSCALL_64_after_hwframe+0x62/0x6a
-[   47.353536] 
-[   47.353536] other info that might help us debug this:
-[   47.353536] 
-[   47.355381] Chain exists of:
-[   47.355381]   debugfs:classes --> &zram->init_lock --> &sb->s_type->i_mutex_key#2
-[   47.355381] 
-[   47.358105]  Possible unsafe locking scenario:
-[   47.358105] 
-[   47.359484]        CPU0                    CPU1
-[   47.360545]        ----                    ----
-[   47.361599]   lock(&sb->s_type->i_mutex_key#2);
-[   47.362665]                                lock(&zram->init_lock);
-[   47.364146]                                lock(&sb->s_type->i_mutex_key#2);
-[   47.365781]   lock(debugfs:classes);
-[   47.366626] 
-[   47.366626]  *** DEADLOCK ***
-[   47.366626] 
-[   47.368005] 5 locks held by zram-test.sh/727:
-[   47.369028]  #0: ffff88811420c420 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xff/0x4c0
-[   47.370873]  #1: ffff8881346e1090 (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x126/0x270
-[   47.372932]  #2: ffff88810b7bfb38 (kn->active#50){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x137/0x270
-[   47.375052]  #3: ffff88810b3e60b0 (&zram->init_lock){++++}-{3:3}, at: zram_reset_device+0x22/0x2b0
-[   47.377131]  #4: ffff88812fe7ee48 (&sb->s_type->i_mutex_key#2){++++}-{3:3}, at: simple_recursive_removal+0x217/0x3a0
-[   47.379599] 
-[   47.379599] stack backtrace:
-[   47.380619] CPU: 39 PID: 727 Comm: zram-test.sh Tainted: G                 N 6.7.0-rc3-next-20231201+ #239
-[   47.382836] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[   47.384976] Call Trace:
-[   47.385565]  <TASK>
-[   47.386074]  dump_stack_lvl+0x6e/0xa0
-[   47.386942]  check_noncircular+0x1b6/0x1e0
-[   47.387910]  ? lockdep_unlock+0x96/0x130
-[   47.388838]  __lock_acquire+0x20b1/0x3b50
-[   47.389789]  ? d_walk+0x3c3/0x410
-[   47.390589]  lock_acquire+0xe3/0x210
-[   47.391449]  ? remove_one+0x65/0x210
-[   47.392301]  ? preempt_count_sub+0x14/0xc0
-[   47.393264]  ? _raw_spin_unlock+0x29/0x40
-[   47.394214]  ? d_walk+0x3c3/0x410
-[   47.395005]  ? remove_one+0x65/0x210
-[   47.395866]  remove_one+0x7d/0x210
-[   47.396675]  ? remove_one+0x65/0x210
-[   47.397523]  ? d_invalidate+0xbe/0x170
-[   47.398412]  simple_recursive_removal+0x325/0x3a0
-[   47.399521]  ? debugfs_remove+0x60/0x60
-[   47.400430]  debugfs_remove+0x40/0x60
-[   47.401302]  zs_destroy_pool+0x4e/0x3d0
-[   47.402214]  zram_reset_device+0x151/0x2b0
-[   47.403187]  reset_store+0x15b/0x190
-[   47.404043]  ? sysfs_kf_read+0x170/0x170
-[   47.404968]  kernfs_fop_write_iter+0x1cb/0x270
-[   47.406015]  vfs_write+0x42f/0x4c0
-[   47.406829]  ksys_write+0x8f/0x110
-[   47.407642]  do_syscall_64+0x40/0xe0
-[   47.408491]  entry_SYSCALL_64_after_hwframe+0x62/0x6a
+
+Ali
+
+On Tue, Nov 28, 2023 at 3:21=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Ali Ghandour <gandour.ali@gmail.com>
+> > Sent: Monday, November 27, 2023 2:19 PM
+> > To: Ping-Ke Shih <pkshih@realtek.com>
+> > Cc: linux-wireless@vger.kernel.org
+> > Subject: Re: Lenovo LOQ rtw_8852be
+> >
+> > seems like the same error persists after downgrading:
+> >
+> > $ uname -r
+> > 5.17.0-1035-oem
+> >
+> > $ sudo dmesg | grep rtw
+> > [    4.859848] rtw89_8852be 0000:09:00.0: loaded firmware
+> > rtw89/rtw8852b_fw-1.bin
+> > [    4.860214] rtw89_8852be 0000:09:00.0: enabling device (0000 -> 0003=
+)
+> > [    4.861546] rtw89_8852be 0000:09:00.0: Firmware version 0.29.29.5
+> > (da87cccd), cmd version 0, type 5
+> > [    4.861550] rtw89_8852be 0000:09:00.0: Firmware version 0.29.29.5
+> > (da87cccd), cmd version 0, type 3
+> > [    4.861556] rtw89_8852be 0000:09:00.0: MAC has already powered on
+> > [    4.867246] rtw89_8852be 0000:09:00.0: [ERR]pci config read 719
+>
+> We did changes after 5.18, but your 5.17 print out error with
+> "pci config read" instead of "dbi_r8_pcie".
+>
+> -       ret =3D rtw89_dbi_read8(rtwdev, RTW89_PCIE_L1_CTRL, &bdr_ori);
+> +       ret =3D rtw89_pci_read_config_byte(rtwdev, RTW89_PCIE_L1_CTRL, &b=
+dr_ori);
+>         if (ret) {
+> -               rtw89_err(rtwdev, "[ERR]dbi_r8_pcie %X\n", RTW89_PCIE_L1_=
+CTRL);  // 5.17
+> +               rtw89_err(rtwdev, "[ERR]pci config read %X\n", RTW89_PCIE=
+_L1_CTRL); // 5.18
+>                 return ret;
+>         }
+>
+> Uh. I know the reason why you see the new one, because 8852be is supporte=
+d
+> by kernel 6.2, and distro backport the driver to old kernel.
+>
+>
+> If you can build driver yourself, please revert below patch and try again=
+.
+> Fixes: db38d9cd26c9 ("rtw89: use pci_read/write_config instead of dbi rea=
+d/write")
+>
+> > >
+> > > $ lspci -tv
+> > > -[0000:00]-+-00.0  Intel Corporation Device a715
+>
+> I will try to Google to see if I can find some information about this PCI=
+ host controller.
+>
+> Can I know the type of your platoform Lenovo LOQ? Is it a regular noteboo=
+k computer?
+>
+> > >
+> > > $ sudo lspci -s 09:00.0 -xxxx
+> > > 09:00.0 Network controller: Realtek Semiconductor Co., Ltd. Device b8=
+52
+>
+> [...]
+>
+> > > f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>
+> In my side, lspci with '-xxxx', it can display PCI configuration space 0 =
+~ ff0.
+> In your side, lspci has the same behavior as driver that can't read 0x719=
+.
+>
+> The PCI EXT capabilities locate from 100h. Not sure if host controller dr=
+iver
+> limits to display them?
+>
+> Ping-Ke
+>
 
