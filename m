@@ -1,92 +1,90 @@
-Return-Path: <linux-wireless+bounces-319-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-320-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FAA6801AD8
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 06:16:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A03801AF3
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 07:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB74F1F21170
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 05:16:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD710281D7F
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Dec 2023 06:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9FD8F7D;
-	Sat,  2 Dec 2023 05:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="awNc6pr/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAE7BA37;
+	Sat,  2 Dec 2023 06:08:00 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7662F619BF;
-	Sat,  2 Dec 2023 05:16:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1FEC433CA;
-	Sat,  2 Dec 2023 05:16:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701494179;
-	bh=a5C2kC+KSpawAbx8lhoz4O1Yt38hNED4Gqe/bJLIJXs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=awNc6pr/csIVFZadi+dsjlFqJH0vMZ2ya0aZlzFChyv3Oe81+rw4R9lfv5pE6X1Wu
-	 zJDPqLj3FNIO9IyUbrp9totzo/CPWBzfCCb8Jxd7tqbqWcbkcimAEFCaE1bzClx5Mz
-	 ZmQN3rKeEA4xL5k9EXnOiUohZVbj+iOBVa2GaOzC/Y5QGV29IIXPr8dbfiQcehiCWq
-	 uaigaHSZhkJ0BrxfRrH4qXSBzLdLSLdxIn00RkSYMhqY+RePTkHFLfTYcV+S9knhEK
-	 5ZCDev0zcE2qBfG3SoETXSspt3Iy0lIqg82doFYapGl5rokjwF7PtgkttShxOF/xdI
-	 92qvdxwXfvHDw==
-Date: Fri, 1 Dec 2023 21:16:17 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kees Cook <keescook@chromium.org>
-Cc: kernel test robot <lkp@intel.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, Jeff
- Johnson <quic_jjohnson@quicinc.com>, Michael Walle <mwalle@kernel.org>, Max
- Schulze <max.schulze@online.de>, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] netlink: Return unsigned value for nla_len()
-Message-ID: <20231201211617.30371d79@kernel.org>
-In-Reply-To: <202312012026.A0178237@keescook>
-References: <20231130200058.work.520-kees@kernel.org>
-	<20231130172520.5a56ae50@kernel.org>
-	<202312010953.BEDC06111@keescook>
-	<20231201104505.44ec5c89@kernel.org>
-	<202312012026.A0178237@keescook>
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D57E01A6;
+	Fri,  1 Dec 2023 22:07:56 -0800 (PST)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1r9JAL-0004CP-41; Sat, 02 Dec 2023 07:07:49 +0100
+Message-ID: <af62295b-b757-49ec-83ce-9d3ef93e24af@leemhuis.info>
+Date: Sat, 2 Dec 2023 07:07:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Fwd: iwlwifi: rfkill locking up kernel 6.5.12, 6.6.2
+Content-Language: en-US, de-DE
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Eliad Peller <eliad@wizery.com>, "John W. Linville"
+ <linville@tuxdriver.com>, Gregory Greenman <gregory.greenman@intel.com>,
+ Linus Lotz <register+kernelbugzilla@lotz.li>,
+ Darrell Enns <darrell@darrellenns.com>, Bagas Sanjaya
+ <bagasdotme@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Regressions <regressions@lists.linux.dev>,
+ Linux Wireless <linux-wireless@vger.kernel.org>
+References: <5ef14fe7-84a5-407f-b514-1527f7279ecd@gmail.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <5ef14fe7-84a5-407f-b514-1527f7279ecd@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1701497276;b17a3993;
+X-HE-SMSGID: 1r9JAL-0004CP-41
 
-On Fri, 1 Dec 2023 20:39:44 -0800 Kees Cook wrote:
-> > We are reading nla->nla_len, which is the first 2 bytes of the structure.
-> > And then we check if the structure is... there?  
+Hi!
+
+On 30.11.23 09:23, Bagas Sanjaya wrote:
 > 
-> I'm not debating whether it's there or not -- I'm saying the _contents_ of
-> "nlattr::nla_len", in the face of corruption or lack of initialization,
-> may be less than NLA_HDRLEN. (There's a lot of "but that's can't happen"
-> that _does_ happen in the kernel, so I'm extra paranoid.)
-
-nlattr is not an object someone has allocated. It's a header of a TLV
-in a byte stream of nested TLVs which comes from user space.
-If the attr did not go thru nla_ok() or some other careful validation
-we're toast regardless.
-
-> > If we don't trust that struct nlattr which gets passed here is at least
-> > NLA_HDRLEN (4B) then why do we think it's safe to read nla_len (the
-> > first 2B of it)?  
+> I notice a regression report on Bugzilla [1]. Quoting from it:
 > 
-> Type confusion (usually due to Use-after-Free flaws) means that a memory
-> region is valid (i.e. good pointer), but that the contents might have
-> gotten changed through other means. (To see examples of this with
-> struct msg_msg, see: https://syst3mfailure.io/wall-of-perdition/)
+>> Rfkilling the iwlwifi can lock up my machine, rfkill will not
+>> respond and other networking related things (e.g. ip a or ip r) I
+>> see this on 6.5.12 and 6.6.2 (fedora kernel). On 6.5.11 it does not
+>> lockup AFAICT, but also shows kernel oops. WiFi Hardware: AC 8265
+> 
+> [...]
+> 
+> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=218206
 
-A bit of a long read.
+TWIMC: More people that seem to be affected by the same problem joined
+the report. And one user performed a bisection on 6.6.y. According to
+that the problem is caused by a 6.6.y-backport of 37fb29bd1f90f1 ("wifi:
+iwlwifi: pcie: synchronize IRQs before NAPI") [v6.7-rc1] from Johannes.
 
-> (On a related note, why does nla_len start at 4 instead of 0? i.e. why
-> does it include the size of nlattr? That seems redundant based on the
-> same logic you're using here.)
+Another reported user also stated that the same problem happens on
+6.7-rc3 as well. No confirmation yet that 37fb29bd1f90f1 causes it
+there, but it seems likely.
 
-Beats me.
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+P.S.: Due to the above I'll wrt to regression tracking for now assume
+that 37fb29bd1f90f1 causes the problem.
+
+#regzbot introduced: 37fb29bd1f90f1
+
+
+
+
 
