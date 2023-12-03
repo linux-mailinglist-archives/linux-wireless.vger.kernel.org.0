@@ -1,50 +1,51 @@
-Return-Path: <linux-wireless+bounces-339-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-340-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C48802657
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 19:42:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD529802663
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 19:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D18EB208A1
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 18:42:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59A541F20FC5
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 18:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08281772A;
-	Sun,  3 Dec 2023 18:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A27517983;
+	Sun,  3 Dec 2023 18:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="N2CiwKqC"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qW2pjun2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA28BDA
-	for <linux-wireless@vger.kernel.org>; Sun,  3 Dec 2023 10:42:16 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC8CDA;
+	Sun,  3 Dec 2023 10:51:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=p/8UcPAe70JifGu13w1d83XhVtMoxVKdXJga8AEOLs8=;
-	t=1701628936; x=1702838536; b=N2CiwKqCikp/3WsPDEkKtZk3EDM/r1UQ8ezjuVdNhf/fFBk
-	j7xvab5EhhLxmXlMYmUC3yGMH8Uc/EhXEJCvbHiYDSdLE5jZI5UqruSOVeIU0AidPMJTTyDsOG92m
-	0JyKs+eMV0iJtbZmbHchwIPvjYHfRlWfP/WtQx/FQ/4HHkA3tAg8AUODW/FS/D0P0X5XSMDJW3mVD
-	SXeLJlylWSJThvnYsZ8yaxZjS1lpDzDVWAAWc3ETyQT9GH+/qN4pMSFkdEBYpk/+vkg7bsipcojsr
-	6UUkPDEuHhlQjJEpMXh1yk6G+9i5/t0UUBlpSNgHmMrkdAix6ToeHheLxoj8BWTg==;
+	Resent-Cc:Resent-Message-ID; bh=QtIyW3E7F8b3M4DB9PWxzuQJmSmGS9EQPoqv9FPpM1U=;
+	t=1701629492; x=1702839092; b=qW2pjun2tRXyr19yfLBkGwYew6Y3r9bPL8/A1+kUKplDeZ/
+	ldV0TjT8AuTI6EQf5FdMCs8UydjJ7/wcK16uVGcGEQaPH1/V+ePaTPiXhGh0yDmlt8HXGCY+oypML
+	GxAjWy9sUmxhqQab/5yTX0UilJ8KYQqjIyFrb/DMwTW9xcwNZFJrtGDUIrTXfKsW42OkHEwSrRCIK
+	96vhJpnlc0s5UUVRTjglvwx0ZmbUJJFOZonjgZHDOKXCuX+j0vB1T+/lXgTwoSD5pDFekeeCb7NZ1
+	v0W8K6zNHREu+E2lHN39L0kh8ZCp659iMY24kQWvWRrbu1MIDSCjBSR+vqTt0YuA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1r9rPw-0000000DmDK-3rhR;
-	Sun, 03 Dec 2023 19:42:13 +0100
-Message-ID: <b9228e2e292c36d3328d09abdc0b61bcb724135f.camel@sipsolutions.net>
-Subject: Re: [PATCH 14/16] wifi: mac80211: Modify type of "changed" variable.
+	id 1r9rYv-0000000DmPt-3GxJ;
+	Sun, 03 Dec 2023 19:51:30 +0100
+Message-ID: <efd89dee78a4c42b7825fa55bbceafad9bb9df36.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next 0/3] netlink carrier race workaround
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, gregory.greenman@intel.com
-Cc: linux-wireless@vger.kernel.org, Anjaneyulu
-	 <pagadala.yesu.anjaneyulu@intel.com>
-Date: Sun, 03 Dec 2023 19:42:11 +0100
-In-Reply-To: <f31decec-f6a1-472b-8e35-001bbf18b668@quicinc.com>
-References: <20230604091128.609335-1-gregory.greenman@intel.com>
-	 <20230604120651.10354a05eaf1.If19359262fe2728dd523ea6d7c3aa7dc50940411@changeid>
-	 <4baf4dcd-26e5-47d6-bb17-4e23ccc8c12d@quicinc.com>
-	 <f31decec-f6a1-472b-8e35-001bbf18b668@quicinc.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date: Sun, 03 Dec 2023 19:51:28 +0100
+In-Reply-To: <20231202104655.68138ab4@kernel.org>
+References: 
+	<346b21d87c69f817ea3c37caceb34f1f56255884.camel@sipsolutions.net>
+	 <20231201104329.25898-5-johannes@sipsolutions.net>
+	 <20231201162844.14d1bbb0@kernel.org>
+	 <339c73a6318bf94803a821d5e8ea7d4c736dc78e.camel@sipsolutions.net>
+	 <20231202104655.68138ab4@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -56,31 +57,77 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Sun, 2023-12-03 at 08:48 -0800, Jeff Johnson wrote:
-> Apologies for reporting an issue that has already been (somewhat) fixed
-> by 6e48ebffc2db ("wifi: mac80211: fix mesh id corruption on 32 bit
-> systems"). Issue was found internally in a backported kernel and that
-> fix was not present.
+On Sat, 2023-12-02 at 10:46 -0800, Jakub Kicinski wrote:
+> On Sat, 02 Dec 2023 11:06:36 +0100 Johannes Berg wrote:
+> > > Would it work if we exposed "linkwatch is pending" / "link is
+> > > transitioning" bit to user space? =20
+> >=20
+> > Not sure, not by much or more than what this did? It's basically the
+> > same, I think: I exposed the carrier_up_count at the kernel time, so if
+> > userspace hasn't seen an event with a value >=3D that it knows the link=
+ is
+> > transitioning.
 >=20
-> But note that fix did not use DECLARE_BITMAP which I still think is the
-> right thing to do everywhere we are using bitops.
+> The benefit being that it'd work for everyone, without having to add
+> the carrier count in random events?
+
+Well, true. You'd still have to add random rtnl_getlink() calls to your
+userspace, and then wait for an event if it's transitioning? Actually a
+bit _more_ complicated since then we'd have to do rtnl_getlink() after
+receiving the assoc event, and then wait if still transitioning. Or I
+guess we could do it when sending a frame there in the tests, but it's
+another call into the kernel vs. getting the information we need in the
+event.
+
+But yeah honestly I don't mind that either, and maybe it helps address
+some other use cases like what Andrew had in mind in his reply to my
+original thread.
+
+> > > Even crazier, would it help if we had rtnl_getlink() run
+> > > linkwatch for the target link if linkwatch is pending? =20
+> >=20
+> > Sure, if we were to just synchronize that at the right time (doesn't
+> > even need to be rtnl_getlink, could be a new operation) that'd solve th=
+e
+> > issue too, perhaps more easily.
 >=20
+> I was wondering about the new op, too, but "synchronize things please"
+> op feels a little hacky.
 
-The mesh use here is a bit weird with the atomic ops on it, everything
-else just uses plain ops (|=3D etc.). I think that there could be done
-with cmpxchg64(), but you can't assume that on 32-bit machines ...
+Agree ... but then again it's all a bit hacky. You can even read
+"carrier is on" when it's really not yet ready...
 
-However, I think the whole trick is really no longer needed? A quick
-look at the callers of ieee80211_mbss_info_change_notify() suggests that
-they all can sleep and also already hold wiphy mutex, so there's not
-even any need to bounce through the workqueue *again*? IOW, we can
-remove that whole thing? Do you see anything to the contrary?
+> rtnl_getlink returns link state, so it feels
+> somewhat natural for it to do the sync, to make sure that what it
+> returns is in fact correct information.
 
-So realistically I think rather than paper over it again with
-DECLARE_BITMAP() and all the right thing here to do is actually try to
-understand the code again and make some cleanups, since it's grown and
-(mostly?) survived two major locking restructurings, but has not been
-adjusted to any of that.
+Yeah that's a good point that I just mentioned above though - today the
+kernel will happily return a state that it's not actually willing to
+honour yet, i.e. if you actively read the state, you'll see carrier on
+before the kernel is actually willing to transmit packets on the link.
+
+Fixing that _would_ be nice, but I'm somewhat worried that it will cause
+performance regressions to always sync there? OTOH, it would hopefully
+not actually have to wait most of the time since link_watch isn't always
+pending...
+
+> rtnl_getlink does return a lot, so maybe a new rtnl_getcarrier op?
+
+Does it matter? Just another attribute ...
+
+> Or we can make reading sysfs "carrier" do the sync?
+
+I think I wouldn't mind now, and perhaps if we want to sync in netlink
+we should also do this here so that it's consistent, but I'm not sure
+I'd want this to be the only way to do it, I might imagine that someone
+might want this in some kind of container that doesn't necessarily have
+(full) access there? Dunno.
+
+
+We _could_ also use an input attribute on the rtnl_getlink() call to
+have userspace explicitly opt in to doing the sync before returning
+information?
+
 
 johannes
 
