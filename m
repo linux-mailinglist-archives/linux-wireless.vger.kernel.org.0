@@ -1,149 +1,64 @@
-Return-Path: <linux-wireless+bounces-344-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-345-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0838026CB
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 20:33:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB508026DC
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 20:33:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D7871C20943
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 19:33:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5153A1F21103
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 19:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26B218636;
-	Sun,  3 Dec 2023 19:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65961C6B0;
+	Sun,  3 Dec 2023 19:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrkrSono"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CLVoDE06"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29F12E3;
-	Sun,  3 Dec 2023 11:33:12 -0800 (PST)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-5d81c24cef2so5020787b3.2;
-        Sun, 03 Dec 2023 11:33:12 -0800 (PST)
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BE3F1B9;
+	Sun,  3 Dec 2023 11:33:29 -0800 (PST)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5cdc0b3526eso31270867b3.1;
+        Sun, 03 Dec 2023 11:33:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701631990; x=1702236790; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1701632007; x=1702236807; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HmvgTcSgTSYSGQ9OhXSlfMgozAivgkoJ1Cnrtk56obw=;
-        b=IrkrSonodykAw39/+MwjHWDI+97PidIKPur7BWdzSboCV3J0UP6PxT855kFC9amrxI
-         OM8mqFyqllnsGlUhKf5bKW1gYNULqCbot1URgDnRnJKbkRgFQrbP/gHmi+wIDLB+fDV2
-         PpbYzHEqkGn8hNl07gl2gaJfsNeS1V+6T99ZDEuRf+Q2nfEIJB7eJ0mIgFuI3/deLTmR
-         UMZmQmVq192L4Ul1o/vqlkDsAKgKoVmqw1/rsIwIhAolyhgDgx7qFYx57jo/nu3NQUKo
-         yPKItUoGYvHz3x/5cEag9UviH9o/znXzNC7drtll9WITH971VPhJ+Uu6RP3s8KqK3Dwu
-         uvPA==
+        bh=GfnViHUiQRdwcyME4SHx6F8gnhZe+b7onoGZNvEd7Lo=;
+        b=CLVoDE06/t7TFnnUngsr17zC9Qcw6Vmyt2yrp9ryZaZN7Sx7Ew2VX4izCIgSrXanMz
+         xIx0/FOjQ53WIVrAdpFetdOy1B1FWe76LqL8tjXuj/ZpuVqcl++zOORBlBXG+3y/mt0O
+         sS7XlBLi0TcSniDEwXKMd9UELELXhnvEOaHsuBPTqN07jzqo6LMksM6qJyZJdT7R0TwN
+         EdvNzik6dW0z+nCFCXCwgHM/BVmw8uS6HeFc5hpBvKTM7rJ3raazptCS+/oqM3LoKQnE
+         LsYUrNlheIDlFe9q4D5mNTwKMdcfaLMsNNsyJ47cKj5k+1uNq7uyuEhJcG4czt56nB33
+         AhGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701631990; x=1702236790;
+        d=1e100.net; s=20230601; t=1701632007; x=1702236807;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HmvgTcSgTSYSGQ9OhXSlfMgozAivgkoJ1Cnrtk56obw=;
-        b=fTlgyy7np1MoKnXeEs+c9Gx7CwXzrSmE5FBgPgP6QYzBBQa6augtSGdxix+1aqBn8h
-         oCf4R+Ifm/OWAmyW8J5wg0JJikad64rOE8QEoE/VewCg1b+1Z+Wt88tuMUywFSw//193
-         Ccr2exGQSYH+xsFumHdSPDLiLs7nYkeTij8KZpWkFShEspuN6cIBzTMBlpst0CkOX5Uq
-         eozFxOX4QjBtqffNFjqSDrkTe5o0/I4wgwEauZHF6lG4XRCj9iEXZYwWBu3sGfc5lWvZ
-         JkZxs0h60D1ntQ+6mdJBg+87BHrVM6yEusrI+V/qsNVcP7ts157ka8U0trOqjHrigrYm
-         Zinw==
-X-Gm-Message-State: AOJu0Yz752gRRgMoD6y32JobW8IoYPB6y0OdTfpG9YHNZ1Ii60is2MpQ
-	vcBvR/nNB+sV9AxqKfPSk7TA929CmPp9CQ==
-X-Google-Smtp-Source: AGHT+IH9dK5SBG1KTg95TkMNRGGX2LRFyEvXVyFKexhpvkq8MjiOjaHQrHY4kI3iqaUaVcCxIhY+og==
-X-Received: by 2002:a05:690c:c11:b0:5d1:6370:b2cf with SMTP id cl17-20020a05690c0c1100b005d16370b2cfmr2746902ywb.29.1701631990366;
-        Sun, 03 Dec 2023 11:33:10 -0800 (PST)
+        bh=GfnViHUiQRdwcyME4SHx6F8gnhZe+b7onoGZNvEd7Lo=;
+        b=Ps3jD5MCHdfRWZj4+7Fo51+GyagCp3tlxdoxdF7UX1tmoYUubxurvuVt6E9Vdd0+SR
+         MWL/7ZTuKqXHzygJq3qJUMoAGA1spqjFwb2gRbbEXT1uIk1iBR57obm8VoMkXkbQuQUD
+         jFpmcG7W9PGf65XgTz83K3B04E/QWGOFp6OVaTlp57VyJYFND+vphWRi16pQ98saKccq
+         gT0mjq4dZZh7HcEIb9lXsZP0jQLFIlgcIozVIzHheL7xU3R8f6l6X4tV5BdSuEAf8Hig
+         oFtCL413+ar+t2s03DX0XCFJgm3TtR9P2ivkSP7W8zgatqtByk0e84kYH1IJfUy2s+AD
+         3E/g==
+X-Gm-Message-State: AOJu0YzGt5Ul1Qsz0N22sug7KVzmOfwMQXRTNzyo9RXCs2K/LbrydL7S
+	rCkLHUwsWl+9anJjI78ECO4z529MKdGKcA==
+X-Google-Smtp-Source: AGHT+IG6vqhh+2ikOpv4+3EIQGSuGL/ROzm2e227H32GQng8dg5JFKm7uLPR9UVsyHGBiPnhm3niaQ==
+X-Received: by 2002:a81:af07:0:b0:5d4:90a:566d with SMTP id n7-20020a81af07000000b005d4090a566dmr1786895ywh.4.1701632007152;
+        Sun, 03 Dec 2023 11:33:27 -0800 (PST)
 Received: from localhost ([2601:344:8301:57f0:cb98:c3e:57c:8191])
-        by smtp.gmail.com with ESMTPSA id d143-20020a814f95000000b005d795822dc7sm1042135ywb.35.2023.12.03.11.33.09
+        by smtp.gmail.com with ESMTPSA id t9-20020a817809000000b005d3500ea9fasm2730455ywc.10.2023.12.03.11.33.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Dec 2023 11:33:09 -0800 (PST)
+        Sun, 03 Dec 2023 11:33:26 -0800 (PST)
 From: Yury Norov <yury.norov@gmail.com>
 To: linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Disseldorp <ddiss@suse.de>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jiri Slaby <jirislaby@kernel.org>,
 	Kalle Valo <kvalo@kernel.org>,
-	Karsten Graul <kgraul@linux.ibm.com>,
-	Karsten Keil <isdn@linux-pingi.de>,
-	Kees Cook <keescook@chromium.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Martin Habets <habetsm.xilinx@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Rich Felker <dalias@libc.org>,
-	Rob Herring <robh@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	alsa-devel@alsa-project.org,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	ath10k@lists.infradead.org,
-	dmaengine@vger.kernel.org,
-	iommu@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-net-drivers@amd.com,
-	linux-pci@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	mpi3mr-linuxdrv.pdl@broadcom.com,
-	netdev@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	x86@kernel.org
+	linux-wireless@vger.kernel.org
 Cc: Yury Norov <yury.norov@gmail.com>,
 	Jan Kara <jack@suse.cz>,
 	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
@@ -154,12 +69,13 @@ Cc: Yury Norov <yury.norov@gmail.com>,
 	Alexey Klimov <klimov.linux@gmail.com>,
 	Bart Van Assche <bvanassche@acm.org>,
 	Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: [PATCH v2 02/35] lib/find: add test for atomic find_bit() ops
-Date: Sun,  3 Dec 2023 11:32:34 -0800
-Message-Id: <20231203193307.542794-1-yury.norov@gmail.com>
+Subject: [PATCH v2 11/35] ath10k: optimize ath10k_snoc_napi_poll() by using find_bit()
+Date: Sun,  3 Dec 2023 11:32:43 -0800
+Message-Id: <20231203193307.542794-10-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231203192422.539300-1-yury.norov@gmail.com>
+In-Reply-To: <20231203193307.542794-1-yury.norov@gmail.com>
 References: <20231203192422.539300-1-yury.norov@gmail.com>
+ <20231203193307.542794-1-yury.norov@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -168,92 +84,34 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add basic functionality test for new API.
+ath10k_snoc_napi_poll() traverses pending_ce_irqs bitmap bit by bit.
+We can do it faster by using for_each_test_and_clear_bit() iterator.
 
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- lib/test_bitmap.c | 61 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ drivers/net/wireless/ath/ath10k/snoc.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
-index 65f22c2578b0..277e1ca9fd28 100644
---- a/lib/test_bitmap.c
-+++ b/lib/test_bitmap.c
-@@ -221,6 +221,65 @@ static void __init test_zero_clear(void)
- 	expect_eq_pbl("", bmap, 1024);
- }
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 2c39bad7ebfb..a1db5a973780 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1237,11 +1237,10 @@ static int ath10k_snoc_napi_poll(struct napi_struct *ctx, int budget)
+ 		return done;
+ 	}
  
-+static void __init test_find_and_bit(void)
-+{
-+	unsigned long w, w_part, bit, cnt = 0;
-+	DECLARE_BITMAP(bmap, EXP1_IN_BITS);
-+
-+	/*
-+	 * Test find_and_clear{_next}_bit() and corresponding
-+	 * iterators
-+	 */
-+	bitmap_copy(bmap, exp1, EXP1_IN_BITS);
-+	w = bitmap_weight(bmap, EXP1_IN_BITS);
-+
-+	for_each_test_and_clear_bit(bit, bmap, EXP1_IN_BITS)
-+		cnt++;
-+
-+	expect_eq_uint(w, cnt);
-+	expect_eq_uint(0, bitmap_weight(bmap, EXP1_IN_BITS));
-+
-+	bitmap_copy(bmap, exp1, EXP1_IN_BITS);
-+	w = bitmap_weight(bmap, EXP1_IN_BITS);
-+	w_part = bitmap_weight(bmap, EXP1_IN_BITS / 3);
-+
-+	cnt = 0;
-+	bit = EXP1_IN_BITS / 3;
-+	for_each_test_and_clear_bit_from(bit, bmap, EXP1_IN_BITS)
-+		cnt++;
-+
-+	expect_eq_uint(bitmap_weight(bmap, EXP1_IN_BITS), bitmap_weight(bmap, EXP1_IN_BITS / 3));
-+	expect_eq_uint(w_part, bitmap_weight(bmap, EXP1_IN_BITS));
-+	expect_eq_uint(w - w_part, cnt);
-+
-+	/*
-+	 * Test find_and_set{_next}_bit() and corresponding
-+	 * iterators
-+	 */
-+	bitmap_copy(bmap, exp1, EXP1_IN_BITS);
-+	w = bitmap_weight(bmap, EXP1_IN_BITS);
-+	cnt = 0;
-+
-+	for_each_test_and_set_bit(bit, bmap, EXP1_IN_BITS)
-+		cnt++;
-+
-+	expect_eq_uint(EXP1_IN_BITS - w, cnt);
-+	expect_eq_uint(EXP1_IN_BITS, bitmap_weight(bmap, EXP1_IN_BITS));
-+
-+	bitmap_copy(bmap, exp1, EXP1_IN_BITS);
-+	w = bitmap_weight(bmap, EXP1_IN_BITS);
-+	w_part = bitmap_weight(bmap, EXP1_IN_BITS / 3);
-+	cnt = 0;
-+
-+	bit = EXP1_IN_BITS / 3;
-+	for_each_test_and_set_bit_from(bit, bmap, EXP1_IN_BITS)
-+		cnt++;
-+
-+	expect_eq_uint(EXP1_IN_BITS - bitmap_weight(bmap, EXP1_IN_BITS),
-+			EXP1_IN_BITS / 3 - bitmap_weight(bmap, EXP1_IN_BITS / 3));
-+	expect_eq_uint(EXP1_IN_BITS * 2 / 3 - (w - w_part), cnt);
-+}
-+
- static void __init test_find_nth_bit(void)
- {
- 	unsigned long b, bit, cnt = 0;
-@@ -1273,6 +1332,8 @@ static void __init selftest(void)
- 	test_for_each_clear_bitrange_from();
- 	test_for_each_set_clump8();
- 	test_for_each_set_bit_wrap();
-+
-+	test_find_and_bit();
- }
+-	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
+-		if (test_and_clear_bit(ce_id, ar_snoc->pending_ce_irqs)) {
+-			ath10k_ce_per_engine_service(ar, ce_id);
+-			ath10k_ce_enable_interrupt(ar, ce_id);
+-		}
++	for_each_test_and_clear_bit(ce_id, ar_snoc->pending_ce_irqs, CE_COUNT) {
++		ath10k_ce_per_engine_service(ar, ce_id);
++		ath10k_ce_enable_interrupt(ar, ce_id);
++	}
  
- KSTM_MODULE_LOADERS(test_bitmap);
+ 	done = ath10k_htt_txrx_compl_task(ar, budget);
+ 
 -- 
 2.40.1
 
