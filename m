@@ -1,79 +1,86 @@
-Return-Path: <linux-wireless+bounces-338-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-339-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBD48025E4
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 18:12:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C48802657
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 19:42:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54927280DAD
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 17:12:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D18EB208A1
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Dec 2023 18:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04D3171A4;
-	Sun,  3 Dec 2023 17:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08281772A;
+	Sun,  3 Dec 2023 18:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="N2CiwKqC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F50FD
-	for <linux-wireless@vger.kernel.org>; Sun,  3 Dec 2023 09:12:08 -0800 (PST)
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-3b892926906so2815303b6e.0
-        for <linux-wireless@vger.kernel.org>; Sun, 03 Dec 2023 09:12:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701623527; x=1702228327;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mnOA559cJsD74+jDbOxr5NeqaYT/3Or+g749X6dWlG8=;
-        b=npeegZC4Zvb7hYVFK7yw06ti5bLYZC+ZIV3WlqHIOKzBSwv3NZxmEUZikpQYL4GACa
-         5nXmUdttuJxHdFyxjzKQFBEcCOsZBjKSGp2C1MaZVTvleSQTSVhlfcwa/iC877o74/xH
-         PfnNOgPVetADuQgAlwnsJzuQFdwx7t3+OO8vbXh4nshoK4LCrbebx3q9EbWF43X280G/
-         +gZDeeF/011JH5uYBz9Af4jjlOBi61znB3YvvDY3kTs9/p9NeEqjZvpaH5+7hF+JvnhS
-         3ewUjYd4rr3GzdUoPKPLpoUtENtdf25wmsKomfMFe25wWD7iWHgSPmslQjoQpW+mUfK/
-         RUPA==
-X-Gm-Message-State: AOJu0YykOEdDVZaYa5as7qiZBaHODRT7RMr4i2t4tGCW0ptirhwGDYvf
-	3YcGYlNTGJ0kDBgyZ0zZOhO7dUctF4Z3LkA+2fzlYw2U9Yj+
-X-Google-Smtp-Source: AGHT+IH3w+druH4uU8r+K5NJ9qcpom8kNoVM9v6ZZSeyWL37VhQJ0+itbXF4vhBXyRu7Z4vNSKIwSHKDrjDQp8ZxDNH4icrTItQ3
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA28BDA
+	for <linux-wireless@vger.kernel.org>; Sun,  3 Dec 2023 10:42:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=p/8UcPAe70JifGu13w1d83XhVtMoxVKdXJga8AEOLs8=;
+	t=1701628936; x=1702838536; b=N2CiwKqCikp/3WsPDEkKtZk3EDM/r1UQ8ezjuVdNhf/fFBk
+	j7xvab5EhhLxmXlMYmUC3yGMH8Uc/EhXEJCvbHiYDSdLE5jZI5UqruSOVeIU0AidPMJTTyDsOG92m
+	0JyKs+eMV0iJtbZmbHchwIPvjYHfRlWfP/WtQx/FQ/4HHkA3tAg8AUODW/FS/D0P0X5XSMDJW3mVD
+	SXeLJlylWSJThvnYsZ8yaxZjS1lpDzDVWAAWc3ETyQT9GH+/qN4pMSFkdEBYpk/+vkg7bsipcojsr
+	6UUkPDEuHhlQjJEpMXh1yk6G+9i5/t0UUBlpSNgHmMrkdAix6ToeHheLxoj8BWTg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1r9rPw-0000000DmDK-3rhR;
+	Sun, 03 Dec 2023 19:42:13 +0100
+Message-ID: <b9228e2e292c36d3328d09abdc0b61bcb724135f.camel@sipsolutions.net>
+Subject: Re: [PATCH 14/16] wifi: mac80211: Modify type of "changed" variable.
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, gregory.greenman@intel.com
+Cc: linux-wireless@vger.kernel.org, Anjaneyulu
+	 <pagadala.yesu.anjaneyulu@intel.com>
+Date: Sun, 03 Dec 2023 19:42:11 +0100
+In-Reply-To: <f31decec-f6a1-472b-8e35-001bbf18b668@quicinc.com>
+References: <20230604091128.609335-1-gregory.greenman@intel.com>
+	 <20230604120651.10354a05eaf1.If19359262fe2728dd523ea6d7c3aa7dc50940411@changeid>
+	 <4baf4dcd-26e5-47d6-bb17-4e23ccc8c12d@quicinc.com>
+	 <f31decec-f6a1-472b-8e35-001bbf18b668@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:aca:2b15:0:b0:3b8:b1e3:c576 with SMTP id
- i21-20020aca2b15000000b003b8b1e3c576mr1312744oik.5.1701623527802; Sun, 03 Dec
- 2023 09:12:07 -0800 (PST)
-Date: Sun, 03 Dec 2023 09:12:07 -0800
-In-Reply-To: <000000000000bcd80b06046a98ac@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ea98f3060b9e19c3@google.com>
-Subject: Re: [syzbot] [wireless?] WARNING in ieee80211_link_release_channel
-From: syzbot <syzbot+9817a610349542589c42@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, emmanuel.grumbach@intel.com, 
-	gregory.greenman@intel.com, jiri@nvidia.com, johannes.berg@intel.com, 
-	johannes@sipsolutions.net, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Level: **
+X-malware-bazaar: not-scanned
 
-syzbot suspects this issue was fixed by commit:
+On Sun, 2023-12-03 at 08:48 -0800, Jeff Johnson wrote:
+> Apologies for reporting an issue that has already been (somewhat) fixed
+> by 6e48ebffc2db ("wifi: mac80211: fix mesh id corruption on 32 bit
+> systems"). Issue was found internally in a backported kernel and that
+> fix was not present.
+>=20
+> But note that fix did not use DECLARE_BITMAP which I still think is the
+> right thing to do everywhere we are using bitops.
+>=20
 
-commit 88717def36f7b19f12d6ad6644e73bf91cf86375
-Author: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Date:   Wed Sep 13 11:56:51 2023 +0000
+The mesh use here is a bit weird with the atomic ops on it, everything
+else just uses plain ops (|=3D etc.). I think that there could be done
+with cmpxchg64(), but you can't assume that on 32-bit machines ...
 
-    wifi: iwlwifi: mvm: add a debug print when we get a BAR
+However, I think the whole trick is really no longer needed? A quick
+look at the callers of ieee80211_mbss_info_change_notify() suggests that
+they all can sleep and also already hold wiphy mutex, so there's not
+even any need to bounce through the workqueue *again*? IOW, we can
+remove that whole thing? Do you see anything to the contrary?
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=161d9230e80000
-start commit:   d68b4b6f307d Merge tag 'mm-nonmm-stable-2023-08-28-22-48' ..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c45ae22e154d76fa
-dashboard link: https://syzkaller.appspot.com/bug?extid=9817a610349542589c42
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=128eab18680000
+So realistically I think rather than paper over it again with
+DECLARE_BITMAP() and all the right thing here to do is actually try to
+understand the code again and make some cleanups, since it's grown and
+(mostly?) survived two major locking restructurings, but has not been
+adjusted to any of that.
 
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: wifi: iwlwifi: mvm: add a debug print when we get a BAR
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+johannes
 
