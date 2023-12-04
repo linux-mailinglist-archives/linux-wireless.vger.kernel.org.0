@@ -1,52 +1,53 @@
-Return-Path: <linux-wireless+bounces-398-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-399-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0E2803FC1
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 21:35:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE66803FC3
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 21:35:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F958B20AD8
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 20:35:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A8302812FF
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 20:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491DA35EE3;
-	Mon,  4 Dec 2023 20:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CE935EE9;
+	Mon,  4 Dec 2023 20:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="crkR8a/a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UT9UkkpK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B38364AE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FFD364C2;
+	Mon,  4 Dec 2023 20:35:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85967C433CC;
 	Mon,  4 Dec 2023 20:35:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B87C433BC;
-	Mon,  4 Dec 2023 20:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701722134;
-	bh=i49s+DcY45DOcgp3WZwxJD37Nuiyf9nVIer8Ct53ez0=;
+	s=k20201202; t=1701722136;
+	bh=sb94vGji52NuT8tbvozdWSvvBLunX3rybx4F6h+mUsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crkR8a/anvbWyM1ILL6d2LQFwgvPJkGLuAr3r4vDVcxcXoDQYIBdI2Uqc1L0kTA/h
-	 ETxvX+zSepRO6pD4hm8AL4xEB3K2722ZcPkeW79Tufmx66bi0d0hq8G3poJIue/I/k
-	 Hrl7/HRTMrqPYUdVuZZ/ylEhDYCl6UVk2y7deCZ/y3qiH8ii4JtZDcgyP1/L4EX4yN
-	 QL89PqTK7/3RkhioLHhXlH5hl10sjcM1t5N8h5menRjBZAX2eDIL7sGDLfjVQEteQW
-	 slkeCTU5e5UY32mIkb/8603+bRc9arXibLm7+vProgvJKkfW8AYCZEiOxbBs2sBPk1
-	 L4q/xUN3IBN8w==
+	b=UT9UkkpKj0cpY+MrFKdb3D717ZyfB20OfK365o0u4J2mfBh2HRE3Jk4NdRaHD6zZE
+	 gV1fuC+wCyYmhnWoAA7bxvN/j0L6x3Kiv1cSpli+qTYjkXfVlPTnbTGR9p3JXNeax0
+	 NKAXGFqVE2nEltXPloKvNgAHusvMKpcE4rDx70Svmq8N+JtsabdXDYHR0xZEFqD4Yv
+	 hiJ1wWL478IEt0s7j9ewW6GuN1MOZge/GC/0qH7+9kWrkgRon/gfoYaOJxMBMB1IPk
+	 CA7O+4dUuVp5KFvHLSJPK7RyqxdY1dz7Zr9Lv6tOUrpStF5EDPyLBYj82dK2sXqztL
+	 RwoY8/QSmQ5Kg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michael-CY Lee <michael-cy.lee@mediatek.com>,
+Cc: Ben Greear <greearb@candelatech.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 06/17] wifi: avoid offset calculation on NULL pointer
-Date: Mon,  4 Dec 2023 15:34:51 -0500
-Message-ID: <20231204203514.2093855-6-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 07/17] wifi: mac80211: handle 320 MHz in ieee80211_ht_cap_ie_to_sta_ht_cap
+Date: Mon,  4 Dec 2023 15:34:52 -0500
+Message-ID: <20231204203514.2093855-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231204203514.2093855-1-sashal@kernel.org>
 References: <20231204203514.2093855-1-sashal@kernel.org>
@@ -61,43 +62,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.65
 Content-Transfer-Encoding: 8bit
 
-From: Michael-CY Lee <michael-cy.lee@mediatek.com>
+From: Ben Greear <greearb@candelatech.com>
 
-[ Upstream commit ef5828805842204dd0259ecfc132b5916c8a77ae ]
+[ Upstream commit 00f7d153f3358a7c7e35aef66fcd9ceb95d90430 ]
 
-ieee80211_he_6ghz_oper() can be passed a NULL pointer
-and checks for that, but already did the calculation
-to inside of it before. Move it after the check.
+The new 320 MHz channel width wasn't handled, so connecting
+a station to a 320 MHz AP would limit the station to 20 MHz
+(on HT) after a warning, handle 320 MHz to fix that.
 
-Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
-Link: https://lore.kernel.org/r/20231122030237.31276-1-michael-cy.lee@mediatek.com
-[rewrite commit message]
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+Link: https://lore.kernel.org/r/20231109182201.495381-1-greearb@candelatech.com
+[write a proper commit message]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/ht.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 870ae4cd82029..dce105f67b4d8 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -2658,12 +2658,14 @@ ieee80211_he_oper_size(const u8 *he_oper_ie)
- static inline const struct ieee80211_he_6ghz_oper *
- ieee80211_he_6ghz_oper(const struct ieee80211_he_operation *he_oper)
- {
--	const u8 *ret = (const void *)&he_oper->optional;
-+	const u8 *ret;
- 	u32 he_oper_params;
- 
- 	if (!he_oper)
- 		return NULL;
- 
-+	ret = (const void *)&he_oper->optional;
-+
- 	he_oper_params = le32_to_cpu(he_oper->he_oper_params);
- 
- 	if (!(he_oper_params & IEEE80211_HE_OPERATION_6GHZ_OP_INFO))
+diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
+index ae42e956eff5a..9bfe128ada47d 100644
+--- a/net/mac80211/ht.c
++++ b/net/mac80211/ht.c
+@@ -271,6 +271,7 @@ bool ieee80211_ht_cap_ie_to_sta_ht_cap(struct ieee80211_sub_if_data *sdata,
+ 	case NL80211_CHAN_WIDTH_80:
+ 	case NL80211_CHAN_WIDTH_80P80:
+ 	case NL80211_CHAN_WIDTH_160:
++	case NL80211_CHAN_WIDTH_320:
+ 		bw = ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 ?
+ 				IEEE80211_STA_RX_BW_40 : IEEE80211_STA_RX_BW_20;
+ 		break;
 -- 
 2.42.0
 
