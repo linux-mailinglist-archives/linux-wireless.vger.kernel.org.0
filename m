@@ -1,70 +1,78 @@
-Return-Path: <linux-wireless+bounces-382-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-383-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9868039C9
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 17:10:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F154803A1A
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 17:24:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F581B20B01
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 16:10:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A50EAB208C5
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 16:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC212D627;
-	Mon,  4 Dec 2023 16:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0779E2DF73;
+	Mon,  4 Dec 2023 16:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X9ndRfET"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZDRxVbwm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDE55395
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Dec 2023 16:10:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192FDC433C8;
-	Mon,  4 Dec 2023 16:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C532D796;
+	Mon,  4 Dec 2023 16:23:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE7CC433C7;
+	Mon,  4 Dec 2023 16:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701706243;
-	bh=fig6ieXW1XulwQyCT6GtiXhbfC/2IiymZ4gHvMLq4n0=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=X9ndRfETgBPRCQnSBGKLV458fEQI04b3+8qi+CsvqwIMrnhB9htMN5uBpartX2m3E
-	 sv/EZzL2bYJr/1mc2qEjoAU/Mli436R4obJnnKR5MqSmbrHWaEu2uDxQnjvEjC7tPI
-	 nlOMHG3WR3aaAMcVfViBub8h0VhKkV3GP+DHtZDlN3d6cBNqkXOFUyW1gFk5s2/Mvy
-	 ZoidaXiEvyCQHS/raPNERzK4RGWB0KiazcYAp0bMZSStq+XqXC1ilSSo7a3XYOZvin
-	 quQlF9hVfz9WYnpOxFztcnV9wv44KtsrCznZSXOrCN7FvE8qKKHZLq17h+6LCOVuYJ
-	 q5zWB0aWIZLGg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>,
-  linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: wfx: fix possible NULL pointer dereference in
- wfx_set_mfp_ap()
-References: <20231204155558.133839-1-dmantipov@yandex.ru>
-Date: Mon, 04 Dec 2023 18:10:40 +0200
-In-Reply-To: <20231204155558.133839-1-dmantipov@yandex.ru> (Dmitry Antipov's
-	message of "Mon, 4 Dec 2023 18:55:37 +0300")
-Message-ID: <87cyvmq77j.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1701707035;
+	bh=ZbKR/GiibxinMTwe3e1OL0Fk+/8nfwiJudNZL/nfcCA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZDRxVbwm2GN/xBSUZOmrGkqtv7Xp4TMPCwMyiF8S+KkDBJdk/IpcWQEcnhiefUhsd
+	 vXiT1+vs/5+5wUEvZF06zYVGojR9mtQyIY3YEzIFl+geUIUFptBqvGLglTr4E6IYd1
+	 dYuJX7RZ57RMJ44NyozolZIJ96w81GC2xyi987CgMlRLSVPml+YiaIJDcbR8KURw0m
+	 idCPWULoSF0cYuB0IRdMpIteazE7pd+yK3FdqTbkCyf93rgLT/IqQoCfxz9/5yjECJ
+	 pDBgdQJ3YKuS4kzSeJjIzdIgiJFMnjmFN+FxmyDL6mmnxFgrJxg8D7Lox4LFq3jRqq
+	 RuKWcGYgFZ3wA==
+Date: Mon, 4 Dec 2023 08:23:54 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH wireless-next 0/3] netlink carrier race workaround
+Message-ID: <20231204082354.78122161@kernel.org>
+In-Reply-To: <efd89dee78a4c42b7825fa55bbceafad9bb9df36.camel@sipsolutions.net>
+References: <346b21d87c69f817ea3c37caceb34f1f56255884.camel@sipsolutions.net>
+	<20231201104329.25898-5-johannes@sipsolutions.net>
+	<20231201162844.14d1bbb0@kernel.org>
+	<339c73a6318bf94803a821d5e8ea7d4c736dc78e.camel@sipsolutions.net>
+	<20231202104655.68138ab4@kernel.org>
+	<efd89dee78a4c42b7825fa55bbceafad9bb9df36.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+On Sun, 03 Dec 2023 19:51:28 +0100 Johannes Berg wrote:
+> I think I wouldn't mind now, and perhaps if we want to sync in netlink
+> we should also do this here so that it's consistent, but I'm not sure
+> I'd want this to be the only way to do it, I might imagine that someone
+> might want this in some kind of container that doesn't necessarily have
+> (full) access there? Dunno.
 
-> Since 'ieee80211_beacon_get()' can return NULL, 'wfx_set_mfp_ap()'
-> should check the return value before examining skb data. So convert
-> the latter to return an appropriate error code and propagate it to
-> return from 'wfx_start_ap()' as well. Compile tested only.
->
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Also dunno :) We can add a "sync" version of netif_carrier_ok()
+and then call if from whatever places we need.
 
-Patches like this should be tested on a real device.
+> We _could_ also use an input attribute on the rtnl_getlink() call to
+> have userspace explicitly opt in to doing the sync before returning
+> information?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Yeah, maybe.. IMHO a more "Rusty Russell API levels" thing to do would
+be to allow opting out, as those who set the magic flag "know what they
+are doing" and returning unsync'ed carrier may be surprising.
+Also a "don't sync flag" we can add later, once someone who actually
+cares appears, avoiding uAPI growth =F0=9F=98=81=EF=B8=8F
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Anyway, up to you :)
 
