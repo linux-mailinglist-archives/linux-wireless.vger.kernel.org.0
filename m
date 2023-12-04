@@ -1,90 +1,89 @@
-Return-Path: <linux-wireless+bounces-405-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-406-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80438040EB
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 22:18:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5C8804136
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 22:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8335828129E
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 21:18:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C02D01C20AC2
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 21:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB1C364C5;
-	Mon,  4 Dec 2023 21:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3DC2E82B;
+	Mon,  4 Dec 2023 21:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FuzYr1L8"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="bV+7ca6P"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54AE990;
-	Mon,  4 Dec 2023 13:17:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QT7k7kPIr5wnFnF5J7GwSeJplbrxHWX0xcDBoBtByho=;
-	t=1701724676; x=1702934276; b=FuzYr1L8FSX4+4trriOxugbZ+34dVOrmBOI/C08hx0KDy9b
-	/AHSRBy2/kqlYubEFefRYpq/5l5wZw9rrDKe9AIdTcX/C98R5t1UGcPmSYdzlcPmbwkIeOHmoSPJS
-	lOfLWSOH27p5BpDw4QhOdLhGC7NEiThC34LvidKWpSaJeCumPtuJKOdwtLsuo9GtZ6sgyNi5ZSPy2
-	dVgVgXAPrM9W+fjqtJkp7+90OKmdvA5wF9FmJSnLj/uDPk/VHO4DyugUDiKLqstQzRir9CvrljvK+
-	EwDHC+mJR2HIm/dlnyHcTK3op+rKTqx8pbg8HX6WdDhO7yqnmsdrh04eJTZAon+g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rAGK7-0000000FGSR-0u4f;
-	Mon, 04 Dec 2023 22:17:51 +0100
-Message-ID: <95265243715c2f7cbb5ef94083d64e1a17d8ee04.camel@sipsolutions.net>
-Subject: Re: Thinkpad P17 keep hanging in ipv6_addrconf addrconf_verify_work
- / netlink in 6.4 and 6.6
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Marc MERLIN <marc@merlins.org>, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ilw@linux.intel.com, 
-	intel-wired-lan@lists.osuosl.org, Tony Nguyen <anthony.l.nguyen@intel.com>
-Date: Mon, 04 Dec 2023 22:17:50 +0100
-In-Reply-To: <20231204131615.26b57722@kernel.org>
-References: <20231202171326.GB24486@merlins.org>
-	 <20231204004003.GB29484@merlins.org> <20231204073515.GA9208@merlins.org>
-	 <69717129398d05b18df1c1300bfb41da268c52a0.camel@sipsolutions.net>
-	 <20231204131615.26b57722@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.1 (3.50.1-1.fc39) 
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39FF0C3
+	for <linux-wireless@vger.kernel.org>; Mon,  4 Dec 2023 13:57:38 -0800 (PST)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id AAF2F34006E;
+	Mon,  4 Dec 2023 21:57:35 +0000 (UTC)
+Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 1B51713C2B0;
+	Mon,  4 Dec 2023 13:57:34 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1B51713C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1701727054;
+	bh=YL628h7K/5M+EdyCbLFzVox94gVS0nqqnuGkK8VQVzQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bV+7ca6P3EA0qBntWgUSlxDJQEqgZ+Wje1tXeIH+afYoje6N0fcB3z8W9e77xHCG1
+	 O69IQMPhc5jY3pP53m4P1mh79TzO7KnE9/+cPQGr+wx8g4WsvkPSnBGYIuTjI9s7Xq
+	 r27SDOENR83j9cDBPkqa0X3UXvGR1CmVa/1KzSlU=
+Message-ID: <ae3f3bdb-0de3-e15c-f447-6d1d33478051@candelatech.com>
+Date: Mon, 4 Dec 2023 13:57:33 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 4/8] wifi: mt76: mt7996: switch to mcu command for TX GI
+ report
+Content-Language: en-US
+To: Shayne Chen <shayne.chen@mediatek.com>, Felix Fietkau <nbd@nbd.name>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
+ Evelyn Tsai <evelyn.tsai@mediatek.com>,
+ linux-mediatek <linux-mediatek@lists.infradead.org>,
+ Benjamin Lin <benjamin-jw.lin@mediatek.com>
+References: <20231102100302.22160-1-shayne.chen@mediatek.com>
+ <20231102100302.22160-4-shayne.chen@mediatek.com>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20231102100302.22160-4-shayne.chen@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1701727057-f0WhdgNOBJci
+X-MDID-O:
+ us5;at1;1701727057;f0WhdgNOBJci;<greearb@candelatech.com>;dbba72c6a891d3e8767bcea3b0305f22
 
-On Mon, 2023-12-04 at 13:16 -0800, Jakub Kicinski wrote:
-> > > > [  363.945511]  __mutex_lock.constprop.0+0x18b/0x291
-> > > >=20
-> > > > [  363.945531]  igc_resume+0x18b/0x1ca [igc 1a96e277f8878a2a3c95992=
-26acd0eeb7de577b7] =20
-> >=20
-> > this is trying to acquire the RTNL, by looking at the code
-> >=20
-> > > > [  363.945566]  __rpm_callback+0x7a/0xe7
-> > > > [  363.945578]  rpm_callback+0x35/0x64
-> > > > [  363.945587]  ? __pfx_pci_pm_runtime_resume+0x40/0x40
-> > > > [  363.945592]  rpm_resume+0x342/0x44a
-> > > > [  363.945600]  ? __kmem_cache_alloc_node+0x123/0x154
-> > > > [  363.945614]  __pm_runtime_resume+0x5a/0x7a
-> > > > [  363.945624]  dev_ethtool+0x15a/0x24e7 =20
-> >=20
-> > but this already holds it
-> >=20
-> > So looks like bug in the 'igc' driver wrt. runtime PM locking.
-> >=20
+On 11/2/23 03:02, Shayne Chen wrote:
+> From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+> 
+> During runtime, the GI value in the WTBL is not updated in real-time. To
+> obtain the latest results for the TX GI, switch to use an MCU command.
 
-So actually maybe it shouldn't be a bug there, I posted this:
+Hello,
 
-https://patchwork.kernel.org/project/netdevbpf/patch/20231204200710.40c291e=
-60cea.I2deb5804ef1739a2af307283d320ef7d82456494@changeid/
+I do not see this callback happening on my system.  What firmware version
+is needed for this to work?
 
-but I don't know this driver at all, and ethtool not that well ...
+And where to find it...
 
-johannes
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
+
 
