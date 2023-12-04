@@ -1,111 +1,95 @@
-Return-Path: <linux-wireless+bounces-372-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-373-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01ED802DF4
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 10:12:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A055A802E3C
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 10:14:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 670451F2110D
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 09:12:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8EEAB20969
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Dec 2023 09:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B07125BE;
-	Mon,  4 Dec 2023 09:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC9F11718;
+	Mon,  4 Dec 2023 09:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="YEnvCHmZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iNDJvDno"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3CD1CD;
-	Mon,  4 Dec 2023 01:12:09 -0800 (PST)
-X-UUID: 2dd54a82928511ee8051498923ad61e6-20231204
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=/uzFrjt8aUKTbxRLxmdKkdFySY3RzU5L+0QmsGF+qqA=;
-	b=YEnvCHmZ3gS12RzwrrOzj6SLxflwouk/XBuF9Q1AOfRPOs7D77wi3rSNIOfGwkV1woztgLNkLvBjKljghAAEroRM8Wlqx0hEQUwrWISzUW9K9safCjQTR5cfvzkygcDIDhjEcC8LawYjN5rQ+LmYOvrZcZsjaBGo2tF3tF47o5A=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.34,REQID:32bffc3b-33b5-4140-8e21-b0aa60661ec3,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:abefa75,CLOUDID:c569ca60-c89d-4129-91cb-8ebfae4653fc,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
-	DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 2dd54a82928511ee8051498923ad61e6-20231204
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-	(envelope-from <chui-hao.chiu@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 407980655; Mon, 04 Dec 2023 17:11:59 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 4 Dec 2023 17:11:57 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 4 Dec 2023 17:11:57 +0800
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>, Rob Herring <robh+dt@kernel.org>
-CC: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Ryder Lee
-	<ryder.Lee@mediatek.com>, Evelyn Tsai <evelyn.tsai@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, Sam Shih <sam.shih@mediatek.com>,
-	<linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<devicetree@vger.kernel.org>, Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH v2] dt-bindings: net: wireless: mt76: add interrupts description for MT7986
-Date: Mon, 4 Dec 2023 17:11:56 +0800
-Message-ID: <20231204091156.6535-1-chui-hao.chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED814CD
+	for <linux-wireless@vger.kernel.org>; Mon,  4 Dec 2023 01:14:25 -0800 (PST)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2c9c18e7990so56170071fa.2
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Dec 2023 01:14:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701681264; x=1702286064; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4xxujmofWxEQvFwC/3YQS6TR/Uv0cAMVegQiWNYCdZI=;
+        b=iNDJvDnonGZjxbb6dNbfa3hfn+IIYEi492XJjE1QwKtSqmzxuqGfTBVaq2P8OZX39H
+         WdcLSFxhc1+Bgbi1vJkEzSfFCKHXHe1s2kKsZIfFuOXoUhJp964CISBEbax2iEUaZK6x
+         JUb9x+zY4ozYcrx7Yn8aLlQ0Chh+kDJL/SZww4Kod5WxVwCEiCtOcoI72ND/92yli7g3
+         cnO9unaxHzPLq9Gk4fRdLSshOIiZ07Fua5DicVTGyrZAk5S5VnREi9e8XGBEKs+uy+iT
+         XdBfQ5Y3LHSUu2ovAKlGr9RQJKNOAysCS+FyAEOHg4w9UhwpL3Bz6g/bhF52J9x+3+pL
+         6h6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701681264; x=1702286064;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4xxujmofWxEQvFwC/3YQS6TR/Uv0cAMVegQiWNYCdZI=;
+        b=vfen2UKaUUNVK1XGT89uYCKVAZB+O1xqaf/irA3vz1jwIMo2u3yX9904yX5HCM2Q0T
+         XrZ0dhX6odCc0dwv1Bva1gHMigQKdLlAMSGY+geDaYZEkUQaL6I4kabhNdf2x6p/tJQU
+         vFviw+q0mBPbr0Ud3srKbxiHMYKJb/TjuJFHFJXuVISACOk/hYf4Iw5MgGYfjrLa35Q8
+         WmbJEiO5vIoPHfLKO1T1IEZYdG8tVTi8hKOBSWQYAhfvuaiHfPgZstgTQ5w0i1DD4foS
+         C/gQtGP0ie+Y3QPqfVKeT0gI1lnzN1zT2rz7tv2DAcQzniV/DxUvrYMsck04LuT9V8Ix
+         Tgog==
+X-Gm-Message-State: AOJu0Yw58wukI+Toi/JiqwLb8xQ2S/JzUL8g8pJvRggU4xPg0+GAwPfk
+	RaAAPC+IH4r2BgWO/t0DkzSxm9+Mfe5hMjLJ47MWlzvNQSn0cg==
+X-Google-Smtp-Source: AGHT+IGb8wOVG08rSpwuYICimqQES/PbT0iSm0SNPPwVZ9fVoNHKk/nAX/WdzDZUsR3+pOSFstPesf6kqVtvqNDxl7I=
+X-Received: by 2002:a2e:3814:0:b0:2c9:f71f:c00f with SMTP id
+ f20-20020a2e3814000000b002c9f71fc00fmr1115485lja.30.1701681263898; Mon, 04
+ Dec 2023 01:14:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--4.679900-8.000000
-X-TMASE-MatchedRID: v+sphrBU45F2W20gLTzAqYei/mZCYVwuONP4Z3dggBYY0A95tjAn+/pZ
-	jWQiqBlhCqcYnzgqPbt4xIuyG0zHEJDCbn5v5k09Y7jepwkpr699LQinZ4QefPcjNeVeWlqY+gt
-	Hj7OwNO34ZhR52Rc1au7UdPYHaiHyW5kMCPJeUiSb6ByuLYX+T07zv/KPifYCLRhCjkNLcoSRBq
-	5lu6PnXv3uL/cp+ftvKHEBTVoCjqueU8bDRAXvQkma3zYT97IFAYfQIAUhBayZvmCbKVb49sZL6
-	x5U/HridGByp+zdaDg=
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--4.679900-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP:
-	34C5B0D5B06512149F2AAE3C5D7C8D78FEA92A61C60D7458B60A76B5E78195422000:8
-X-MTK: N
+From: Weng Lin Puah <wlpuah@gmail.com>
+Date: Mon, 4 Dec 2023 17:14:12 +0800
+Message-ID: <CAD73Kh8_Ks0Fb6EsG6ks0oKKONfwr98uRccV5bbmEb15PLPvow@mail.gmail.com>
+Subject: [PATCH] wifi: ath12k: fix wrong definition of ath12k_hw_ring_mask_qcn9274
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The mt7986 can support four interrupts to distribute the interrupts
-to different CPUs.
+ath12k_hw_ring_mask_qcn9274.tx[3] does not match with its counterpart
+wbm_ring_num. This will cause the corresponding
+ath12k_dp_tx_completion_handler is not entered. Thus, some of the dma
+memory is not free and eventually runs out of the dma memory.
 
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.2.1-00148-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: WL Puah <wl_puah@compex.com.sg>
+
 ---
-v2: Change to use description instead of using items.
----
- .../devicetree/bindings/net/wireless/mediatek,mt76.yaml     | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/hw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-index 252207adbc54..933bc7bdda01 100644
---- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-@@ -38,7 +38,11 @@ properties:
-       MT7986 should contain 3 regions consys, dcm, and sku, in this order.
- 
-   interrupts:
--    maxItems: 1
-+    minItems: 1
-+    maxItems: 4
-+    description:
-+      MT7986 provides up to 4 interrupts including one primary interrupt and
-+      three additional interrupts for ring 4, 5, and 19.
- 
-   power-domains:
-     maxItems: 1
+diff --git a/drivers/net/wireless/ath/ath12k/hw.c
+b/drivers/net/wireless/ath/ath12k/hw.c
+index ea3eda1f1948..2b35c8aa6273 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.c
++++ b/drivers/net/wireless/ath/ath12k/hw.c
+@@ -536,7 +536,7 @@ static const struct ath12k_hw_ring_mask
+ath12k_hw_ring_mask_qcn9274 = {
+         ATH12K_TX_RING_MASK_0,
+         ATH12K_TX_RING_MASK_1,
+         ATH12K_TX_RING_MASK_2,
+-        ATH12K_TX_RING_MASK_3,
++        ATH12K_TX_RING_MASK_4,
+     },
+     .rx_mon_dest = {
+         0, 0, 0,
 -- 
-2.18.0
-
+2.34.1
 
