@@ -1,197 +1,138 @@
-Return-Path: <linux-wireless+bounces-440-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-441-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86722806007
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 22:02:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A476680601F
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 22:05:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 316321F215C4
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 21:02:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A65F1F211FF
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 21:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FCC6A030;
-	Tue,  5 Dec 2023 21:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5329C6E2A3;
+	Tue,  5 Dec 2023 21:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YSYmIgJQ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="GCJobkAR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E68B188;
-	Tue,  5 Dec 2023 13:02:47 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-54c79968ffbso4491534a12.3;
-        Tue, 05 Dec 2023 13:02:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701810166; x=1702414966; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x74SPMcY0OIkNHNYKVP8zxIa11SKy/rAVbNbtzbNtj4=;
-        b=YSYmIgJQFm8WVfJNnAu/BP/5dxy3jM1T5ZNttRmYT71/aIP4z/4zHWILfCe2PMfIGU
-         Z+xO3JeEBnHUSxa4kTFLPjcvcOnGlwseETZ6W+B1Jn6vfgwZUfbtV6ipOycJGccSZcHY
-         R2Q0/60YA8xx8d2uZ2dKaF0l0X3wKM6uq48GDjpLWslVCXRnoRmFTxCvPnCmY55j2CIZ
-         mWEMtaSROUpEEI3Bvhvt80TPDBrMJ764TSErtPfk2x/DxyQS6KoUCeXaDSpCkcrlSvJa
-         9jLPPCh4/0HweJS4mn8esaniMY/OzfDABmekF8E/4jTBt2AcR5gTVkIBCfgeQw2ErCuY
-         38gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701810166; x=1702414966;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x74SPMcY0OIkNHNYKVP8zxIa11SKy/rAVbNbtzbNtj4=;
-        b=eS0TDeQIA/UT5QoTkT2Y/ZSX4OPqhnKlfxGuY40MvGXQU/y4srEZv5lRiThAAkWoo8
-         ynbFo5njPvnYe6yVf6HAci+PM/LbSWDyWdgdxtGutnev/x/p+ia2fGn1Vv/6mwk/f03L
-         0TslqqLjEATD1jQjTTqmgpr4ByF+2yot8ouXJfaS9XGjEiqoJYtMGEINa3n3ImzrNXr5
-         oMokcbk3K1YnNj+jdLpoCMvvPfIwYhqQ0rhwPuabzqVoa8DuYijv/J973gmC4DPvzNtb
-         aaX/XgH/35PDIc6dVdsMgpH9gO8lkRaFfrIobuC9WwPwiGjSijUU7Kwj18IXXZxYKEMx
-         wnUw==
-X-Gm-Message-State: AOJu0Ywv715e/2bLn8WLHoUmkpazFxwWSNXyaVL+mkOEmQZKJ7Oa05l5
-	UjoA5WMQW8zTHj+YjxiqiQ==
-X-Google-Smtp-Source: AGHT+IG5JtxIrogBnXD/l1CGXaxKHhGDtxgkWosjh9HL/9HZZJhkIHXQQIJ/lKfBp8Yigv9Jot5ZjA==
-X-Received: by 2002:aa7:dad5:0:b0:54c:c1e4:3d3 with SMTP id x21-20020aa7dad5000000b0054cc1e403d3mr2465047eds.33.1701810165848;
-        Tue, 05 Dec 2023 13:02:45 -0800 (PST)
-Received: from U4.lan ([2a02:810b:f40:4300:d9b0:71c0:990:192e])
-        by smtp.gmail.com with ESMTPSA id i21-20020a50fc15000000b0054ca3df2257sm1552836edr.36.2023.12.05.13.02.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 13:02:45 -0800 (PST)
-From: Alex Bee <knaerzche@gmail.com>
-To: Amitkumar Karwar <akarwar@marvell.com>,
-	Ganapathi Bhat <gbhat@marvell.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alex Bee <knaerzche@gmail.com>
-Subject: [PATCH] wifi: mwifiex: Restore USB8897 chipset support
-Date: Tue,  5 Dec 2023 22:02:37 +0100
-Message-ID: <20231205210237.209332-1-knaerzche@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E10C18F
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Dec 2023 13:05:47 -0800 (PST)
+Received: from eig-obgw-6003a.ext.cloudfilter.net ([10.0.30.151])
+	by cmsmtp with ESMTPS
+	id AcOxrv8Z7hqFdAcbzrpejM; Tue, 05 Dec 2023 21:05:47 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id Acbxr0wp9AKScAcbyrQXAV; Tue, 05 Dec 2023 21:05:46 +0000
+X-Authority-Analysis: v=2.4 cv=N6w6qkxB c=1 sm=1 tr=0 ts=656f90aa
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=c601a17RXwP2wWhsnozrzA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=wYkD_t78qR0A:10 a=COk6AnOGAAAA:8
+ a=VwQbUJbxAAAA:8 a=WpM5r4VfDJVWwtKGMAgA:9 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22 a=AjGcO6oz07-iQ99wixmX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ELdMRvfVbTlW4kh57y4d7piETNWbebEO5+bLxPrF7YA=; b=GCJobkARQ6TF4IAWotopoUVOpf
+	/EQA2Dc/8TfM/qBS7oBrxg4wOG44/4m03M3aCDiTXDExUH5de8o+3ErsK7IYSy+f3wmlIRslsDmht
+	1HnI3uXcvu0W6QPvk88XNe99o0ELx4wGxXUofvpwCyDRuqcYMY6rKgCHA1mKqRe9jnXVW94gMKaxP
+	d1Oe1tdsXWNmWQzOzWrZSWHmYImFZdnm/aM4o+E+otDrGBwq3LNvdMZjVz8SUE8eBsOyJXRa1BhjR
+	G2JD1zMlg0ZkoZwCsxl8vOXYRTiNhVkdHSSZGrjCuMWNuc/Ut328cMSdbQE8QPnD2DWYhVzjJs0I2
+	Ets8AZWw==;
+Received: from 187.184.159.186.cable.dyn.cableonline.com.mx ([187.184.159.186]:21005 helo=[192.168.0.10])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1rAcbx-001EZc-0n;
+	Tue, 05 Dec 2023 15:05:45 -0600
+Message-ID: <7ac54136-28a2-4ee4-ab10-4c52134bb515@embeddedor.com>
+Date: Tue, 5 Dec 2023 15:05:43 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath11k: Fix ath11k_htc_record flexible record
+Content-Language: en-US
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Kees Cook <keescook@chromium.org>, ath11k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231205-flexarray-htc_record-v2-1-fbb56d436951@quicinc.com>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20231205-flexarray-htc_record-v2-1-fbb56d436951@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.184.159.186
+X-Source-L: No
+X-Exim-ID: 1rAcbx-001EZc-0n
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187.184.159.186.cable.dyn.cableonline.com.mx ([192.168.0.10]) [187.184.159.186]:21005
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 2
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfCaKFC5N49Zmbu0k6zUub0zhNC4FjrdD/mzO/lZ0AvW6Ry4JrPcH9uufl4EVksp3WucCc+CoNLSk+Rq8PYX+4exYQ1CTcwZJhImFbtovyrPNZr34E2gd
+ mGT7GVruIvWdIVI3gdIR64isJZObTL/8FZs8xa21+h4vasVm5Aec+qE83Ad+7CZ/kXY8j70/GDBR9v6UPsG4Nmcg4vfrc4RsmW+Zgzxo2LoU5ce48T8qdAbL
 
-This patch restores USB8897 support which was removed with
-Commit 60a188a2715f ("mwifiex: remove USB8897 chipset support")
 
-There are quite some devices which use this chipset with USB interface.
-The firmware still exits in linux upstream firmware repo and this simple
-patch is all what is required to support it in upstream linux (again).
 
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
----
-Recently I upstreamed support for Geniatec XPI-3128 SBC which actually
-has one any of those boards soldered to the onboard USB Host controller.
-Geniatech has some boards [0], [1], [2] (maybe more) which have this
-variant soldered the same way. (optional)
-I've also read that "Xbox Wireless adapter for Windows" uses this chipset
-(unverified).
-I've also CC'ed Ganapathi Bhat who last updated the firmware for SDIO and
-PCIe variant of this chipset: It would be great if the firmware
-for USB variant could get an update too, as the one which we currently
-have is quite old - version 15.68.4.p103, while other have some 16.*
-firmware. 
+On 12/5/23 15:00, Jeff Johnson wrote:
+> Transform the zero-length ath11k_htc_record::credit_report array into
+> a proper flexible array. Since this is the only array in
+> ath11k_htc_record, remove the unnecessary union.
+> 
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[0] https://www.geniatech.com/product/xpi-3288/
-[1] https://www.geniatech.com/product/xpi-imx8mm/
-[2] https://www.geniatech.com/product/xpi-s905x/
- 
- drivers/net/wireless/marvell/mwifiex/Kconfig |  4 ++--
- drivers/net/wireless/marvell/mwifiex/usb.c   | 14 ++++++++++++++
- drivers/net/wireless/marvell/mwifiex/usb.h   |  3 +++
- 3 files changed, 19 insertions(+), 2 deletions(-)
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/Kconfig b/drivers/net/wireless/marvell/mwifiex/Kconfig
-index b182f7155d66..277b75eaf91e 100644
---- a/drivers/net/wireless/marvell/mwifiex/Kconfig
-+++ b/drivers/net/wireless/marvell/mwifiex/Kconfig
-@@ -35,12 +35,12 @@ config MWIFIEX_PCIE
- 	  mwifiex_pcie.
- 
- config MWIFIEX_USB
--	tristate "Marvell WiFi-Ex Driver for USB8766/8797/8997"
-+	tristate "Marvell WiFi-Ex Driver for USB8766/8797/8897/8997"
- 	depends on MWIFIEX && USB
- 	select FW_LOADER
- 	help
- 	  This adds support for wireless adapters based on Marvell
--	  8797/8997 chipset with USB interface.
-+	  8797/8897/8997 chipset with USB interface.
- 
- 	  If you choose to build it as a module, it will be called
- 	  mwifiex_usb.
-diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
-index d3ab9572e711..061be9c2ed2f 100644
---- a/drivers/net/wireless/marvell/mwifiex/usb.c
-+++ b/drivers/net/wireless/marvell/mwifiex/usb.c
-@@ -28,6 +28,11 @@ static const struct usb_device_id mwifiex_usb_table[] = {
- 	{USB_DEVICE_AND_INTERFACE_INFO(USB8XXX_VID, USB8801_PID_2,
- 				       USB_CLASS_VENDOR_SPEC,
- 				       USB_SUBCLASS_VENDOR_SPEC, 0xff)},
-+	/* 8897 */
-+	{USB_DEVICE(USB8XXX_VID, USB8897_PID_1)},
-+	{USB_DEVICE_AND_INTERFACE_INFO(USB8XXX_VID, USB8897_PID_2,
-+				       USB_CLASS_VENDOR_SPEC,
-+				       USB_SUBCLASS_VENDOR_SPEC, 0xff)},
- 	/* 8997 */
- 	{USB_DEVICE(USB8XXX_VID, USB8997_PID_1)},
- 	{USB_DEVICE_AND_INTERFACE_INFO(USB8XXX_VID, USB8997_PID_2,
-@@ -409,12 +414,14 @@ static int mwifiex_usb_probe(struct usb_interface *intf,
- 	case USB8766_PID_1:
- 	case USB8797_PID_1:
- 	case USB8801_PID_1:
-+	case USB8897_PID_1:
- 	case USB8997_PID_1:
- 		card->usb_boot_state = USB8XXX_FW_DNLD;
- 		break;
- 	case USB8766_PID_2:
- 	case USB8797_PID_2:
- 	case USB8801_PID_2:
-+	case USB8897_PID_2:
- 	case USB8997_PID_2:
- 		card->usb_boot_state = USB8XXX_FW_READY;
- 		break;
-@@ -1318,6 +1325,12 @@ static int mwifiex_register_dev(struct mwifiex_adapter *adapter)
- 		strcpy(adapter->fw_name, USB8997_DEFAULT_FW_NAME);
- 		adapter->ext_scan = true;
- 		break;
-+	case USB8897_PID_1:
-+	case USB8897_PID_2:
-+		adapter->tx_buf_size = MWIFIEX_TX_DATA_BUF_SIZE_4K;
-+		strcpy(adapter->fw_name, USB8897_DEFAULT_FW_NAME);
-+		adapter->ext_scan = true;
-+		break;
- 	case USB8766_PID_1:
- 	case USB8766_PID_2:
- 		adapter->tx_buf_size = MWIFIEX_TX_DATA_BUF_SIZE_2K;
-@@ -1615,4 +1628,5 @@ MODULE_LICENSE("GPL v2");
- MODULE_FIRMWARE(USB8766_DEFAULT_FW_NAME);
- MODULE_FIRMWARE(USB8797_DEFAULT_FW_NAME);
- MODULE_FIRMWARE(USB8801_DEFAULT_FW_NAME);
-+MODULE_FIRMWARE(USB8897_DEFAULT_FW_NAME);
- MODULE_FIRMWARE(USB8997_DEFAULT_FW_NAME);
-diff --git a/drivers/net/wireless/marvell/mwifiex/usb.h b/drivers/net/wireless/marvell/mwifiex/usb.h
-index 7e920b51994c..b7dba256e9f8 100644
---- a/drivers/net/wireless/marvell/mwifiex/usb.h
-+++ b/drivers/net/wireless/marvell/mwifiex/usb.h
-@@ -19,6 +19,8 @@
- #define USB8797_PID_2		0x2044
- #define USB8801_PID_1		0x2049
- #define USB8801_PID_2		0x204a
-+#define USB8897_PID_1		0x2045
-+#define USB8897_PID_2		0x2046
- #define USB8997_PID_1		0x2052
- #define USB8997_PID_2		0x204e
- 
-@@ -35,6 +37,7 @@
- #define USB8766_DEFAULT_FW_NAME	"mrvl/usb8766_uapsta.bin"
- #define USB8797_DEFAULT_FW_NAME	"mrvl/usb8797_uapsta.bin"
- #define USB8801_DEFAULT_FW_NAME	"mrvl/usb8801_uapsta.bin"
-+#define USB8897_DEFAULT_FW_NAME	"mrvl/usb8897_uapsta.bin"
- #define USB8997_DEFAULT_FW_NAME	"mrvl/usbusb8997_combo_v4.bin"
- 
- #define FW_DNLD_TX_BUF_SIZE	620
--- 
-2.43.0
+Thanks!
+--
+Gustavo
 
+> ---
+> Changes in v2:
+> - Original patches 1/4 2/4 3/4 already accepted
+> - This is original patch 4/4, updated to incorporate Gustavo's review
+>    comment, removing the `union` and just do a direct transformation
+>    [0] -> [ ]
+> - Link to v1: https://lore.kernel.org/r/20231127-flexarray-htc_record-v1-0-6be1f36126fd@quicinc.com
+> ---
+>   drivers/net/wireless/ath/ath11k/htc.h | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/htc.h b/drivers/net/wireless/ath/ath11k/htc.h
+> index d5864a35e75b..86f77eacaea7 100644
+> --- a/drivers/net/wireless/ath/ath11k/htc.h
+> +++ b/drivers/net/wireless/ath/ath11k/htc.h
+> @@ -151,9 +151,7 @@ struct ath11k_htc_credit_report {
+>   
+>   struct ath11k_htc_record {
+>   	struct ath11k_htc_record_hdr hdr;
+> -	union {
+> -		struct ath11k_htc_credit_report credit_report[0];
+> -	};
+> +	struct ath11k_htc_credit_report credit_report[];
+>   } __packed __aligned(4);
+>   
+>   enum ath11k_htc_svc_gid {
+> 
+> ---
+> base-commit: c8a5f34ad811743d1b3aeb5c54198eebd413bc6d
+> change-id: 20231116-flexarray-htc_record-ae46f039d4bf
+> 
 
