@@ -1,94 +1,106 @@
-Return-Path: <linux-wireless+bounces-409-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-410-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6F180437F
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 01:40:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6D3804553
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 03:50:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E5A6B20B16
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 00:40:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9755AB2098D
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 02:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE99A812;
-	Tue,  5 Dec 2023 00:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DC43FC7;
+	Tue,  5 Dec 2023 02:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TNHLE38R"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03EC2AC
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Dec 2023 16:39:56 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3B50dpjiF2419579, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3B50dpjiF2419579
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 Dec 2023 08:39:51 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Tue, 5 Dec 2023 08:39:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 5 Dec 2023 08:39:52 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Tue, 5 Dec 2023 08:39:52 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ali Ghandour <gandour.ali@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: Lenovo LOQ rtw_8852be
-Thread-Topic: Lenovo LOQ rtw_8852be
-Thread-Index: AQHaH+dudVZVMpW7Qk6t1f3PxKDyKLCNY6tQ///EsACAAAT0AIAAh+ZQgAeHaQCABKhgsA==
-Date: Tue, 5 Dec 2023 00:39:51 +0000
-Message-ID: <1ad457d646ba4d9d99dc2f5cb8a1b590@realtek.com>
-References: <1700948088-16140-mlmmj-666d2532@vger.kernel.org>
- <CAOE0c97T1cVvqFkqfrP_h53X08yQ7kLinZP09L35nVHc_V89+g@mail.gmail.com>
- <5abfc98859504795b50f7f343784c886@realtek.com>
- <CAOE0c96uJ9x8gbJZdHiMEiOM5gTd_ZqM_rUV7Cs1NyA_t0Ncfg@mail.gmail.com>
- <CAOE0c97fDaLTfsMJVmEh4HxOAPY19kD60qsV5AKJbWW5nnqWzw@mail.gmail.com>
- <b4cfd676c0b24d98b82302aefac7f379@realtek.com>
- <CAOE0c97NvXFhttfNNm3+NsXw9SKV7sC-nJriwF43pujvJugvSg@mail.gmail.com>
-In-Reply-To: <CAOE0c97NvXFhttfNNm3+NsXw9SKV7sC-nJriwF43pujvJugvSg@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D8520E8
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Dec 2023 02:50:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F54C433D9
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Dec 2023 02:50:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701744618;
+	bh=ULpntSrxY40uh1Zf8syjVkac9wphSqfByi5sZ3iJ2qw=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=TNHLE38Rf1VN6YiHq1WYAbFFWL8oEptdItLUpEwGRKt8E5G0aqbm9hrUBYTJe8t5u
+	 OstFfMddoJHYY1XN6iBWrbM7QvVEMnGX3gZso6tqz1c0N8mxpscwHvqqf1CBSIR0WX
+	 TV880oI96NzBiWDNz4+GvUqRB4LO1X2NtFl4/tvm8sIv5fHYxaoNMgEt983VqwK1Nd
+	 L1BYf+/ErBn97kB1n2cLEQqEJBX2Igmn+X4h+HciYat4jcHLQE9TjvbkTEn8/vzfAt
+	 4xmNCuhzCtBaD1RG19Fi6SkYUnIEpnnQBB5nUtjapITAS8w4Ugkj/JqtnWkfRpDRFA
+	 Xh6E+wRtNkJZA==
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2866e4ac34bso2675708a91.1
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Dec 2023 18:50:18 -0800 (PST)
+X-Gm-Message-State: AOJu0YyP97UR5+qHzX40SY/2/u0zA1kx6JKhIRFMKCCx6iAsEPzpkhqm
+	V/dH0xKoKZ3G7kfvsSEmq0CT2zbK3XiaIa8o+o8=
+X-Google-Smtp-Source: AGHT+IEXQZlOAFGrn4d7v71+WbE227957zpUCn1GfwYl18kJYruA+a2hF3nicrEBJlzYKrwzsRG3s7M/YMxgnXBLYNo=
+X-Received: by 2002:a17:90b:4a08:b0:286:6cc0:cad7 with SMTP id
+ kk8-20020a17090b4a0800b002866cc0cad7mr591557pjb.78.1701744617643; Mon, 04 Dec
+ 2023 18:50:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+References: <CAE+BM3=Neb_g3QPMiGjpmkkpUK6wupM1FX06DyZOtDnQgBz_YA@mail.gmail.com>
+In-Reply-To: <CAE+BM3=Neb_g3QPMiGjpmkkpUK6wupM1FX06DyZOtDnQgBz_YA@mail.gmail.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Tue, 5 Dec 2023 10:50:06 +0800
+X-Gmail-Original-Message-ID: <CAGb2v673ZhHiCDGCbTLVqQqaJLr2xTvJYQwtLTJUFwTKBJa9SA@mail.gmail.com>
+Message-ID: <CAGb2v673ZhHiCDGCbTLVqQqaJLr2xTvJYQwtLTJUFwTKBJa9SA@mail.gmail.com>
+Subject: Re: [wireless-regdb] Add extra check in regdb scripts
+To: Rusty Howell <rustyhowell@gmail.com>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQWxpIEdoYW5kb3VyIDxn
-YW5kb3VyLmFsaUBnbWFpbC5jb20+DQo+IFNlbnQ6IFNhdHVyZGF5LCBEZWNlbWJlciAyLCAyMDIz
-IDU6MjQgUE0NCj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiBDYzog
-bGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBMZW5vdm8gTE9R
-IHJ0d184ODUyYmUNCj4gDQo+ID4gPiA+ICQgbHNwY2kgLXR2DQo+ID4gPiA+IC1bMDAwMDowMF0t
-Ky0wMC4wICBJbnRlbCBDb3Jwb3JhdGlvbiBEZXZpY2UgYTcxNQ0KPiA+PiBDYW4gSSBrbm93IHRo
-ZSB0eXBlIG9mIHlvdXIgcGxhdG9mb3JtIExlbm92byBMT1E/IElzIGl0IGEgcmVndWxhciBub3Rl
-Ym9vayBjb21wdXRlcj8NCj4gDQo+IExPUSAxNUlSSDggLSBUeXBlIDgyWFYNCj4gSSBhbSB1c2lu
-ZyBhIGR1YWwgYm9vdCB3aXRoIFdpbmRvd3MgYW5kIFVidW50dSAyMi4wNA0KDQpJIHN0aWxsIGNh
-bid0IGZpbmQgaW5mb3JtYXRpb24gYWJvdXQgdGhlIGRldmljZSBhNzE1IHRoYXQgSSBhbHNvIGNh
-bid0IGZpbmQNCnRoaXMgSUQgaW4ga2VybmVsIHNvdXJjZSBjb2RlLiBJIHdpbGwgZGlnIGtlcm5l
-bCBmdXJ0aGVyIHdoZW4gSSBoYXZlIGZyZWUgdGltZS4gDQoNCj4gDQo+ID4+IFRoZSBQQ0kgRVhU
-IGNhcGFiaWxpdGllcyBsb2NhdGUgZnJvbSAxMDBoLiBOb3Qgc3VyZSBpZiBob3N0IGNvbnRyb2xs
-ZXIgZHJpdmVyIGxpbWl0cyB0byBkaXNwbGF5IHRoZW0/DQo+IEkgZGlkIG5vdCBnZXQgeW91ciBx
-dWVzdGlvbi4gQ2FuIHlvdSBzYXkgaXQgYWdhaW4gcGxlYXNlPw0KDQpJIG1lYW50IG9mZnNldCAx
-MDBoIG9mIFBDSSBjb25maWd1cmF0aW9uIHNwYWNlIGlzIGEgc3RhbmRhcmQgYXJlYSBbMV0uIA0K
-DQoiUENJIEV4cHJlc3MgZXh0ZW5kcyB0aGUgQ29uZmlndXJhdGlvbiBTcGFjZSB0byA0MDk2IGJ5
-dGVzIHBlciBGdW5jdGlvbiBhcyBjb21wYXJlZCB0byAyNTYgYnl0ZXMNCmFsbG93ZWQgYnkgUENJ
-IExvY2FsIEJ1cyBTcGVjaWZpY2F0aW9uLiBQQ0kgRXhwcmVzcyBDb25maWd1cmF0aW9uIFNwYWNl
-IGlzIGRpdmlkZWQgaW50byBhIFBDSSAzLjANCmNvbXBhdGlibGUgcmVnaW9uLCB3aGljaCBjb25z
-aXN0cyBvZiB0aGUgZmlyc3QgMjU2IGJ5dGVzIG9mIGEgRnVuY3Rpb27igJlzIENvbmZpZ3VyYXRp
-b24gU3BhY2UsIGFuZCBhDQpQQ0kgRXhwcmVzcyBFeHRlbmRlZCBDb25maWd1cmF0aW9uIFNwYWNl
-IHdoaWNoIGNvbnNpc3RzIG9mIHRoZSByZW1haW5pbmcgQ29uZmlndXJhdGlvbiBTcGFjZQ0KNSAo
-c2VlIEZpZ3VyZSA3LTMpLiINCg0KSSBkb24ndCBrbm93IHdoeSB0aGUgUENJIGNvbnRyb2xsZXIg
-aW4geW91ciBwbGF0Zm9ybSBkb2Vzbid0IHJlY29nbml6ZSB0aGUgcmVnaW9uLA0KYW5kIHRoZW4g
-X3Bvc3NpYmx5XyBjYXVzZSBkcml2ZXIgZmFpbGVkIHRvIGFjY2VzcyA3MTloLg0KDQoNClsxXSBo
-dHRwczovL2Jsb2cuY3Nkbi5uZXQvaHVhbmdrYW5neWluZy9hcnRpY2xlL2RldGFpbHMvNTA1NzA2
-MTINCg0KDQo=
+Hi,
+
+On Thu, Sep 14, 2023 at 12:16=E2=80=AFPM Rusty Howell <rustyhowell@gmail.co=
+m> wrote:
+>
+> From 434588b8f06f78a3188909c298a6f6671dab7b3f Mon Sep 17 00:00:00 2001
+> From: Rusty Howell <rhowell@control4.com>
+> Date: Thu, 7 Sep 2023 12:56:47 -0600
+> Subject: [PATCH] Add same check that kernel uses to check reg domain
+>
+> The kernel will reject a regulatory domain if the max bandwidth is greate=
+r than
+> the span from start to end. We should catch this error when compiling the
+> regulatory database.
+> ---
+>  dbparse.py | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/dbparse.py b/dbparse.py
+> index 5f7e082..1e87813 100755
+> --- a/dbparse.py
+> +++ b/dbparse.py
+> @@ -218,6 +218,9 @@ class DBParser(object):
+>                  self._syntax_error("Inverted freq range (%d - %d)" %
+> (start, end))
+>              if start =3D=3D end:
+>                  self._syntax_error("Start and end freqs are equal
+> (%d)" % start)
+> +            if bw > (end - start):
+> +                self._syntax_error("Max bandwidth must not exceed the
+> range from start to end")
+> +
+>          except ValueError:
+>              self._syntax_error("band must have frequency range")
+>
+> --
+> 2.25.1
+
+It looks like this patch was incorrectly line wrapped (by Gmail maybe).
+Can you resend?
+
+
+Thanks
+ChenYu
 
