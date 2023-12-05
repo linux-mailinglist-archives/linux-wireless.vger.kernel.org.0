@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-425-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-426-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909B380582C
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 16:06:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C0C805843
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 16:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A96E281B4B
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 15:06:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E8CB281D0F
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 15:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B28567E81;
-	Tue,  5 Dec 2023 15:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E4167E88;
+	Tue,  5 Dec 2023 15:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ayT6Ffhp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p2bHu2G/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14D758101
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Dec 2023 15:06:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708B4C433C8;
-	Tue,  5 Dec 2023 15:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C2555C1F
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Dec 2023 15:10:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD14C433C7;
+	Tue,  5 Dec 2023 15:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701788760;
-	bh=6XNlK8LiAolYKHBxWx4NVArki/Uu6MojnCM41SR+luI=;
+	s=k20201202; t=1701789000;
+	bh=YpmLEyUZCZpUEOzslM23kiDsHRP5zwc+nXw2molgSLw=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=ayT6Ffhpsc7mLa0pDG9oXhR7w6GsqIM5JnJhmeFABlRsvjvkRGRe/LVdF1lcVYYd/
-	 qW9b8F4uHVvMlqmGNl7DusWF7fmW2XeTW61mMSePnHf6HvN61npRXFJh7gPAvj/8MF
-	 i4JNSRkvGY5YvdWTzdKnpXE5QpjjhacaTbER+vUCB9fceYR1uiYd9zqqZru9aYFHru
-	 Fl8lzKY8ewUnwexb9+Z5spdEi1IOXgQu/rDdc7iB+cK7U0k3RU7SPZ4txn4iUSh6ru
-	 S7h4O53MlrzLPjgAuqEsFFx8MTLT9mGRJ/B6khv/V3aMr+OpFju3F13MH28P97IQ5i
-	 ccke1p0W2pLcQ==
+	b=p2bHu2G/hNeE3aWt/FUmXv2emFu3yXIztnALlPyTeBsZieTbj9HEH5iyLg9kKm6Z/
+	 auZcN3cNcKiRe06W/n5DjLwLzla8cStz+ZJNSyDS10ApGiDtZD1oOU97h6YAZfpyX4
+	 tYHLjge0rde5ZcJQHm+1KBW0tb+KjmlkxRbAsUvR0Pl6EWgdqhyaznXXZ6E2v+1AEw
+	 Xi1ZFFj4nUJYneLbi2KeUM4RPz3cYkwif5D3LNZeDn4ENykYxp3PBzHbj3GDLKOR51
+	 1TmVWBeu0zRmDvK92HhBYwteSNRlgJTu5mJFgoVN2k+J3lWKGPnr4JpbGh8y1/EpSS
+	 bcQtYCVDBdJ3Q==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -40,36 +40,39 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/7] wifi: ath12k: get msi_data again after request_irq
- is
- called
+Subject: Re: [PATCH v2] wifi: ath12k: fix and enable AP mode for WCN7850
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231121021304.12966-2-quic_kangyang@quicinc.com>
-References: <20231121021304.12966-2-quic_kangyang@quicinc.com>
+In-Reply-To: <20231121022459.17209-1-quic_kangyang@quicinc.com>
+References: <20231121022459.17209-1-quic_kangyang@quicinc.com>
 To: Kang Yang <quic_kangyang@quicinc.com>
 Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
  <quic_kangyang@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170178875768.2413512.746840226279919618.kvalo@kernel.org>
-Date: Tue,  5 Dec 2023 15:05:59 +0000 (UTC)
+Message-ID: <170178899778.2418939.15506998345561558345.kvalo@kernel.org>
+Date: Tue,  5 Dec 2023 15:09:59 +0000 (UTC)
 
 Kang Yang <quic_kangyang@quicinc.com> wrote:
 
-> The reservation mode of interrupts in kernel assigns a dummy vector
-> when the interrupt is allocated and assigns a real vector when the
-> request_irq is called. The reservation mode helps to ease vector
-> pressure when devices with a large amount of queues/interrupts are
-> initialized, but only a minimal subset of those queues/interrupts
-> is actually used.
+> For AP mode, the peer is created earlier in ath12k_mac_op_add_interface() but
+> ath12k_mac_op_assign_vif_chanctx() will try to create peer again.  Then an
+> error will return which makes AP mode startup fail.
 > 
-> So on reservation mode, the msi_data may change after request_irq is
-> called, then it will lead to spurious interrupt. But when VT-d in
-> BIOS is enabled and ath12k can get 32 MSI vectors, ath12k always get
-> the same msi_data before and after request_irq.
+> Kernel log:
 > 
-> So in case of one MSI vector, ath12k need read msi_data again after
-> request_irq is called, and then the correct msi_data is programmed
-> into WCN7850 hardware components.
+> [ 5017.665006] ath12k_pci 0000:04:00.0: failed to create peer after vdev start delay: -22
+> 
+> wpa_supplicant log:
+> 
+> Failed to set beacon parameters
+> Interface initialization failed
+> wls1: interface state UNINITIALIZED->DISABLED
+> wls1: AP-DISABLED
+> wls1: Unable to setup interface.
+> Failed to initialize AP interface
+> wls1: interface state DISABLED->DISABLED
+> wls1: AP-DISABLED
+> 
+> So fix this check and enable AP mode for WCN7850, as now AP mode works normally.
 > 
 > Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 > 
@@ -77,18 +80,12 @@ Kang Yang <quic_kangyang@quicinc.com> wrote:
 > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-7 patches applied to ath-next branch of ath.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-1b66601d1416 wifi: ath12k: get msi_data again after request_irq is called
-604308a34487 wifi: ath12k: add CE and ext IRQ flag to indicate irq_handler
-1f1f7d548a00 wifi: ath12k: use ATH12K_PCI_IRQ_DP_OFFSET for DP IRQ
-6711b2a80b9a wifi: ath12k: refactor multiple MSI vector implementation
-8398654398c2 wifi: ath12k: add support one MSI vector
-08d52ba29678 wifi: ath12k: do not restore ASPM in case of single MSI vector
-a3012f206d07 wifi: ath12k: set IRQ affinity to CPU0 in case of one MSI vector
+ed7e818a7b50 wifi: ath12k: fix and enable AP mode for WCN7850
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231121021304.12966-2-quic_kangyang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231121022459.17209-1-quic_kangyang@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
