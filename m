@@ -1,113 +1,87 @@
-Return-Path: <linux-wireless+bounces-434-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-435-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C42805AAF
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 18:06:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5B1805EC5
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 20:46:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 710721C20DB6
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 17:06:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC756281F4D
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 19:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846036928B;
-	Tue,  5 Dec 2023 17:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="hGdueItI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228516AB9A;
+	Tue,  5 Dec 2023 19:46:54 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D07083
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Dec 2023 09:06:37 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-3333131e08dso4520800f8f.2
-        for <linux-wireless@vger.kernel.org>; Tue, 05 Dec 2023 09:06:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1701795996; x=1702400796; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ugvsFKAItoLjKrCDlNdSuts7Cy16Xu5/2UPE/n5rav4=;
-        b=hGdueItIYsb0IklhxfY7lgRwFdsSfVpM50G6FbA9fvWS/Jj9MzhMYzpzN14Y9g9oS9
-         ZeQRsYt70kvKVpEwINhUgVR6eAXg/c7kTZDHfeQucgv2Y+UT0SFJXYPV2j1QvvQZkCiX
-         X4Miui3+c3+PTyYqblbQILCBoks+wCjVD2v4Wuo+K5uAvm2Q7yMspXodAuvUkMznp8C9
-         ZUdksj/6SPs9/GTdXgj2ukSLdAsAAMBXLfxodGxq1sJQEx1ce/ZeLMwq3DU0jLjgq7DP
-         UMLobjTrBZ8xwLh9vbrwup3n0nxOkjLq6VKlXzbP4f6++kxSnQDB0rjqTzNd8WkjsdUj
-         HQxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701795996; x=1702400796;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ugvsFKAItoLjKrCDlNdSuts7Cy16Xu5/2UPE/n5rav4=;
-        b=uMmeFCV+15zEj6v6gJYq8vmS5eD7LjFadytwKcbs9ZKbtGVF4CGS+FrT0yVxz4gPTB
-         XOFhpz4h1L+9HZKKtQQcyrNFN08FPaLGRKD4HkgRptU+4F3NsK5kgeVnJrtLQl1/d+WH
-         1s2OmqRzCqoe6TicrTX1AqhshBeHuJhoWpZikug9mZxTKFh1gMZ+r7dDjzIWI2A10aXZ
-         uuwtHgoMfSsB5i9K1CT0tIGU+rRJaCFDbjlAD6MQqOb8gduTmP8BI2/zb4sXf9W730WS
-         tPsQ9El+VbQXP25M5EWUypcgAvQ/2ozmw6KplIvyFGYHyK/iocqW8VWTPUXVm8Yd3pAW
-         AT4A==
-X-Gm-Message-State: AOJu0YyI/9yCboXKrqJGS61UtahMzFsGcNEBRJt/shKskJvCJtZV3ON5
-	WNUuUKysvB2727k2J8R0RPxNFw==
-X-Google-Smtp-Source: AGHT+IG+R60Nr0QhTNVmoezS3c4T8UEQKi0hHB3s288YAdhH7cBiBcFIaQIX7knoHmNK5qYeYG63rA==
-X-Received: by 2002:a05:600c:1f90:b0:40b:337d:cad6 with SMTP id je16-20020a05600c1f9000b0040b337dcad6mr675246wmb.29.1701795995896;
-        Tue, 05 Dec 2023 09:06:35 -0800 (PST)
-Received: from hyang-ThinkStation-P620.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id g10-20020a05600c4eca00b0040596352951sm22922250wmq.5.2023.12.05.09.06.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 09:06:35 -0800 (PST)
-From: Hancheng Yang <hyang@freebox.fr>
-To: toke@toke.dk
-Cc: hyang@freebox.fr,
-	linux-wireless@vger.kernel.org,
-	kvalo@kernel.org
-Subject: [PATCH 1/1] ath9k: reset survey of current channel after a scan started
-Date: Tue,  5 Dec 2023 18:06:23 +0100
-Message-Id: <20231205170623.3029689-1-hyang@freebox.fr>
-X-Mailer: git-send-email 2.34.1
+Received: from mail11.truemail.it (mail11.truemail.it [IPv6:2001:4b7e:0:8::81])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2CEDC9;
+	Tue,  5 Dec 2023 11:46:50 -0800 (PST)
+Received: from francesco-nb.int.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id F3F9C1F8F7;
+	Tue,  5 Dec 2023 20:46:48 +0100 (CET)
+Date: Tue, 5 Dec 2023 20:46:43 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"briannorris@chromium.org" <briannorris@chromium.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>,
+	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v7 00/12] wifi: mwifiex: added code to support
+ host mlme.
+Message-ID: <ZW9+Iz9a3tEv3CpM@francesco-nb.int.toradex.com>
+References: <20231128083115.613235-1-yu-hao.lin@nxp.com>
+ <ZWnIMGytEdDCySS8@francesco-nb.int.toradex.com>
+ <PA4PR04MB9638E6F1128DE4ED977E0D07D181A@PA4PR04MB9638.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PA4PR04MB9638E6F1128DE4ED977E0D07D181A@PA4PR04MB9638.eurprd04.prod.outlook.com>
 
-In the `ath_set_channel()` function, we only reset surveys that are not
-from the current channel. This leads to the accumulation of survey data for
-the current channel indefinitely. This may not be the most optimal 
-approach, as we want the ACS to rely on the most recent survey.
-So reset the survey data for the current channel at the start of each scan.
+On Fri, Dec 01, 2023 at 11:05:47PM +0000, David Lin wrote:
+> > On Tue, Nov 28, 2023 at 04:31:03PM +0800, David Lin wrote:
+> > > 5. Address reviewer comments.
+> > You should list the changes you did, something that generic is forcing the
+> > reviewer to compare v7 vs v6 to known what changed.
+> 
+> Can I summary what should I do and hopefully I can make agreement with you:
+> 
+> 1. Separate patch v7 6/12 as a single patch.
+> 2. Merged all other patches as a single patch for host mlme.
 
-Signed-off-by: Hancheng Yang <hyang@freebox.fr>
----
- drivers/net/wireless/ath/ath9k/main.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+I would suggest to proceed the following way:
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 859210b586c2..bb94b0dd86bb 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -2383,7 +2383,22 @@ static void ath9k_sw_scan_start(struct ieee80211_hw *hw,
- {
- 	struct ath_softc *sc = hw->priv;
- 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
-+	struct cfg80211_chan_def *chandef = &sc->cur_chan->chandef;
-+	struct ieee80211_channel *chan = chandef->chan;
-+	int pos = chan->hw_value;
- 	set_bit(ATH_OP_SCANNING, &common->op_flags);
-+
-+	/* Reset current survey */
-+	if (!sc->cur_chan->offchannel) {
-+		if (sc->cur_survey != &sc->survey[pos]) {
-+			if (sc->cur_survey)
-+				sc->cur_survey->filled &= ~SURVEY_INFO_IN_USE;
-+			sc->cur_survey = &sc->survey[pos];
-+		}
-+
-+		memset(sc->cur_survey, 0, sizeof(struct survey_info));
-+		sc->cur_survey->filled |= SURVEY_INFO_IN_USE;
-+	}
- }
- 
- static void ath9k_sw_scan_complete(struct ieee80211_hw *hw,
--- 
-2.34.1
+ 1. v8 of this series should have only 2 patches
+   - PATCH v8 1/2 : add host mle station support.
+   - PATCH v8 2/2 : add host mle AP support.
+
+   Any kind of fix on these 2 new functionalities should be squashed in
+   these single 2 patches. No commit to add a functionality with a bug
+   that is fixed with a follow-up commit. If you discover bugs during
+   your testing this is great, just amend the original commit that
+   introduced it.
+
+   I am assuming that is fair to implement station and AP support in
+   separated patches, please speak up if this is not the case.
+
+ 2.  PATCH v7 06/12: this should be send as a new separate patch, with a
+     Fixes: tag and Cc:stable. 
+
+> So there should be no patch v8 and only have two patches, one for host
+> mlme and another one to fix hostap restart issue.
+
+It's ok to have a v8, restarting another series will be even more
+confusing IMO.
+
+
+Thanks!
+
+Francesco
 
 
