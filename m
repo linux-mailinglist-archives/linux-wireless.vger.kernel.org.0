@@ -1,137 +1,137 @@
-Return-Path: <linux-wireless+bounces-421-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-422-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786B6805426
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 13:29:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 550D1805584
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 14:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31E5928172A
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 12:29:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B4F91F21336
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 13:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B28C5B5B9;
-	Tue,  5 Dec 2023 12:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K1PNPdrg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C23D5C901;
+	Tue,  5 Dec 2023 13:10:17 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED913B798;
-	Tue,  5 Dec 2023 12:29:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC69AC433C7;
-	Tue,  5 Dec 2023 12:29:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701779376;
-	bh=sQfnpXdP3ZuhtY6P7yHJiQsXf+TlE9wlb2bR43cDiMM=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=K1PNPdrg+nKHRnEPaHvq1lvbaaQs0VkDae7/YEVtktDoMCG2Tr3gdxOH9//bWObym
-	 PsvVVgP13UrWiGV6TdoSBtPHPli0/bosbyB0QpnCAmQabrMlHd47JcIh52KySaYm3z
-	 pGCpKvalVR3vVO1O9/fDjnWoQCjlH7Crw9fJiCCkwymSEoaxL7hge3t/AdgtscjjFP
-	 Jm6Zs2Z4vhqF9slH2xwgIIDvNasmugdaxDMDimVwGr4xP9nqeH7jAzxwQR/ysVmbtC
-	 UI4hSONLCyr5EyX+UDz02VjQr98cvXEq3vr+dzyHz20HRhxu5VU4bH75hZ6/NxVmVJ
-	 ZI+pGsw38nKMA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: mhi@lists.linux.dev,  ath11k@lists.infradead.org,
-  linux-wireless@vger.kernel.org
-Subject: Re: [PATCH RFC v2 1/8] bus: mhi: host: add mhi_power_down_no_destroy()
-References: <20231127162022.518834-1-kvalo@kernel.org>
-	<20231127162022.518834-2-kvalo@kernel.org>
-	<20231130054250.GC3043@thinkpad>
-Date: Tue, 05 Dec 2023 14:29:33 +0200
-In-Reply-To: <20231130054250.GC3043@thinkpad> (Manivannan Sadhasivam's message
-	of "Thu, 30 Nov 2023 11:12:50 +0530")
-Message-ID: <87v89cq1ci.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB143196;
+	Tue,  5 Dec 2023 05:10:13 -0800 (PST)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3331752d2b9so4241187f8f.3;
+        Tue, 05 Dec 2023 05:10:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701781812; x=1702386612;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aoMOngnmcG1wcfaImof1Sk2kMIQCM6E0o7Z7Gu86VXk=;
+        b=Ail3r3/4IPTyHYnKWUB89NIS9Mx/CIYqZWUBzWNGIqIx2L6u/SDE2nwyfM3XeRj0PT
+         jtR69mzI13OD3Bvyk+YGrT4ehPwyaCltyaMz4iOYHpmfUcO1x9+Um0jwz7yFJYLmOyu3
+         j5aWXEkCoWWYRl4IpwzGSj8C1cXMnFhsbqE92iWnJEVCR0zVQTXcW0svCcv45cpeS+uK
+         QeV29MJNYJkRNx8KyI2wOaimTBXg71qaGoDGOQgV9zLsaz3J2e6nER99VHJRxkPtfZck
+         2eON0eAFI6McvwH1jtk61/83KUOlm9/7oxqE8RpZSvEZqT8WI13Xif/rAa/l4JWOThm/
+         4EJg==
+X-Gm-Message-State: AOJu0YxV5ksdARUfDSqCP0Z4jb6fui59ZwY0PC8cxH1m7pDvx4EyibqD
+	Eop5WrraLXI/qJDMaGhBgfg=
+X-Google-Smtp-Source: AGHT+IGiMToIymjBrSeZIydp/9TmShEhJvDrGelJl+gXZRtBKyzyKGihxG4ihhwtFbIy7I1O8aQH4g==
+X-Received: by 2002:a05:6000:1f9b:b0:333:3c4d:7ff4 with SMTP id bw27-20020a0560001f9b00b003333c4d7ff4mr3390444wrb.69.1701781811976;
+        Tue, 05 Dec 2023 05:10:11 -0800 (PST)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id t16-20020a5d5350000000b0033338c3ba42sm9545676wrv.111.2023.12.05.05.10.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Dec 2023 05:10:11 -0800 (PST)
+Message-ID: <dde1fdb0-c905-4c46-baf6-cdc1011df4cc@kernel.org>
+Date: Tue, 5 Dec 2023 14:10:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ath5k: remove unused ath5k_eeprom_info::ee_antenna
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Felix Fietkau <nbd@openwrt.org>, Nick Kossifidis <mickflemm@gmail.com>,
+ Luis Chamberlain <mcgrof@kernel.org>
+References: <20231205111515.21470-1-jirislaby@kernel.org>
+ <874jgwrgxu.fsf@kernel.org>
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <874jgwrgxu.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Manivannan Sadhasivam <mani@kernel.org> writes:
+On 05. 12. 23, 13:07, Kalle Valo wrote:
+> "Jiri Slaby (SUSE)" <jirislaby@kernel.org> writes:
+> 
+>> clang-struct [1] found that ee_antenna in struct ath5k_eeprom_info is
+>> unused. The commit 1048643ea94d ("ath5k: Clean up eeprom
+>> parsing and add missing calibration data") added it, but did not use it
+>> in any way. Neither, there is a later user.
+>>
+>> So remove that unused member.
+>>
+>> [1] https://github.com/jirislaby/clang-struct
+> 
+> clang-struct looks really nice, especially if it can also find unused
+> structures.
 
-> On Mon, Nov 27, 2023 at 06:20:15PM +0200, Kalle Valo wrote:
->
->> From: Baochen Qiang <quic_bqiang@quicinc.com>
->> 
->> If ath11k tries to call mhi_power_up() during resume it fails:
->> 
->> ath11k_pci 0000:06:00.0: timeout while waiting for restart complete
->> 
->> This happens because when calling mhi_power_up() the MHI subsystem eventually
->> calls device_add() from mhi_create_devices() but the device creation is
->> deferred:
->> 
->> mhi mhi0_IPCR: Driver qcom_mhi_qrtr force probe deferral
->> 
->> The reason for deferring device creation is explained in dpm_prepare():
->> 
->> 	/*
->> 	 * It is unsafe if probing of devices will happen during suspend or
->> 	 * hibernation and system behavior will be unpredictable in this case.
->> 	 * So, let's prohibit device's probing here and defer their probes
->> 	 * instead. The normal behavior will be restored in dpm_complete().
->> 	 */
->> 
->> Because the device probe is deferred, the qcom_mhi_qrtr_probe() is not called and
->> qcom_mhi_qrtr_dl_callback() fails silently as qdev is zero:
->> 
->> static void qcom_mhi_qrtr_dl_callback(struct mhi_device *mhi_dev,
->> 				      struct mhi_result *mhi_res)
->> {
->> 	struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
->> 	int rc;
->> 
->> 	if (!qdev || mhi_res->transaction_status)
->> 		return;
->> 
->> So what this means that QRTR is not delivering messages and the QMI connection
->> is not working between ath11k and the firmware, resulting a failure in firmware
->> initialisation.
->> 
->> To fix this add new function mhi_power_down_no_destroy() which does not destroy
->> the devices during power down. This way mhi_power_up() can be called during
->> resume and we can get ath11k hibernation working with the following patches.
->> 
->> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
->> 
->> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
->> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
->
-> Any reason for reposting this series without discussing the suggestion from
-> Mayank?
+It can...
 
-Baochen quickly sent me fixes for the v1 review comments, as I have been
-out of office for some time I didn't want to sit on Baochen's fixes for
-too long. Better to get them out of the door as soon as possible. I will
-definitely look at Mayank's proposal but that will take longer.
+> What about unused defines or enums, any chance to find those
+> in the future? :)
 
-> As I said in the internal thread, this patch breaks the Linux device
-> driver model by not destroying the "struct device" when the actual
-> device gets removed.
+All of that is IMO possible (I'm not completely sure about macros, 
+despite clang ASTs provide a lot of info. Incl. info about them and 
+their expansion).
 
-This patchset has been tested by several people, I'm even using this
-patchset on main laptop every day, and we haven't noticed any issues.
+It's all limited only by man-force: me.
 
-Can you elaborate more about this driver model? We are not removing any
-ath11k devices, we just want to power down the ath11k (and in the future
-ath12k) devices for suspend and power up during resume.
-
-> We should try to explore alternate options instead of persisting with
-> this solution.
-
-What other options we have here? At least Baochen is not optimistic that
-using PM_POST_HIBERNATION as a workaround would work. The issue we have
-here is that mhi_power_up() doesn't work in the resume handler and
-that's what we should try to fix, not make workarounds.
-
+thanks,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+js
+suse labs
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
