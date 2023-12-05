@@ -1,197 +1,141 @@
-Return-Path: <linux-wireless+bounces-442-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-443-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97295806024
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 22:07:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0AB8062C8
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 00:15:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C89E31C20E98
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 21:07:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70244B20E6D
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 23:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6BF6E2A3;
-	Tue,  5 Dec 2023 21:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="COPgiI9/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC96405EB;
+	Tue,  5 Dec 2023 23:15:17 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C58188;
-	Tue,  5 Dec 2023 13:07:08 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-54bfa9b3ffaso7890084a12.1;
-        Tue, 05 Dec 2023 13:07:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701810427; x=1702415227; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x74SPMcY0OIkNHNYKVP8zxIa11SKy/rAVbNbtzbNtj4=;
-        b=COPgiI9/aWIyacDSbgSGPgRq4wsvpYGF+lZQtluFjSitxG05E5J4uKRQUkAVFIgHCC
-         LS6rDJLgW81G31iT6qH/RDddjxboFGCmZDdrVTddRT6gvc5B7b8PcBSVIa7AhMmFaT43
-         Wm0NUiIV8+gsM3MRBLxC0cLEvhRNk9uX84yBo81jOwoZwECoFOrw4wsjeRVeLEwp6BQv
-         KVdQ7czXrdoFHcdi1rVCKhpVC5RHgKBYrf2pDHJJZGutkPBp8ieuQK98GWZ3vwzhCu1t
-         USKbPJR/rtA1L/eiKUxfjBnwlKzlM5xP6NhWX+WVb2QcHCCKxX/psuMNHdj+SaEQMO+c
-         pIBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701810427; x=1702415227;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x74SPMcY0OIkNHNYKVP8zxIa11SKy/rAVbNbtzbNtj4=;
-        b=IR4RTxxansXVbJKFyWOOZdYDRbvYBjNOgm34Fbl1r0n2sCnZcP+3YXREo+ym+H99DF
-         iBhUg/4vdvvHaZqfaUFQxRm7QhA8mL7l1xdXY1QNYcEJ5ThACb/+eKw2Df9MXZky0ohm
-         aunPMEZZuBeYpaRrlqcGr72qKddktTMxNH+uCj4wqn9gRGaWSneQP40ccUDPahGthqgg
-         5H45n2uStNf0g9AAfcg5ZoMmhB9sa+K/gjAie5fkVtoAKqyN/0C9v5sfxFURTmq0BXF7
-         5CHNj9tdY8lGaajRuKIQCORs+H5hJXN0P1ugUQ0Ov3+QpIngYIGPwWHTbFc9EchhEIAP
-         UYZQ==
-X-Gm-Message-State: AOJu0YzYYmNj7OApiAYpZeHg4aOGKCsfPz5LlleqeqzHJOPS3hWRaH9w
-	VoQt5190cv2FR7pdV2EOmA==
-X-Google-Smtp-Source: AGHT+IHkH5GZG8pFrRCk2/oY21EPtFifTXv8buO1kDY7Mx9lU/9yMV3qiqndEcQvV5LdEnXc9J3Y0w==
-X-Received: by 2002:a50:d75a:0:b0:54c:4837:9a85 with SMTP id i26-20020a50d75a000000b0054c48379a85mr4078032edj.44.1701810426428;
-        Tue, 05 Dec 2023 13:07:06 -0800 (PST)
-Received: from U4.lan ([2a02:810b:f40:4300:d9b0:71c0:990:192e])
-        by smtp.gmail.com with ESMTPSA id o24-20020aa7c518000000b005485282a520sm1549596edq.75.2023.12.05.13.07.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 13:07:06 -0800 (PST)
-From: Alex Bee <knaerzche@gmail.com>
-To: Amitkumar Karwar <amitkumar.karwar@nxp.com>,
-	Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alex Bee <knaerzche@gmail.com>
-Subject: [RESEND PATCH] wifi: mwifiex: Restore USB8897 chipset support
-Date: Tue,  5 Dec 2023 22:07:02 +0100
-Message-ID: <20231205210702.209444-1-knaerzche@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Received: from mail1.merlins.org (magic.merlins.org [209.81.13.136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69244AC;
+	Tue,  5 Dec 2023 15:15:13 -0800 (PST)
+Received: from c-76-132-34-178.hsd1.ca.comcast.net ([76.132.34.178]:39188 helo=sauron.svh.merlins.org)
+	by mail1.merlins.org with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.94.2 #2)
+	id 1rAedB-0004yz-W0 by authid <merlins.org> with srv_auth_plain; Tue, 05 Dec 2023 15:15:09 -0800
+Received: from merlin by sauron.svh.merlins.org with local (Exim 4.92)
+	(envelope-from <marc@merlins.org>)
+	id 1rAedB-000naT-BZ; Tue, 05 Dec 2023 15:15:09 -0800
+Date: Tue, 5 Dec 2023 15:15:09 -0800
+From: Marc MERLIN <marc@merlins.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	linux-wireless@vger.kernel.org, ilw@linux.intel.com,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Re: [RFC PATCH] net: ethtool: do runtime PM outside RTNL
+Message-ID: <20231205231509.GA181276@merlins.org>
+References: <20231204200710.40c291e60cea.I2deb5804ef1739a2af307283d320ef7d82456494@changeid>
+ <20231204200038.GA9330@merlins.org>
+ <a6ac887f7ce8af0235558752d0c781b817f1795a.camel@sipsolutions.net>
+ <20231204203622.GB9330@merlins.org>
+ <24577c9b8b4d398fe34bd756354c33b80cf67720.camel@sipsolutions.net>
+ <20231204205439.GA32680@merlins.org>
+ <20231204212849.GA25864@merlins.org>
+ <20231205024652.GA12805@merlins.org>
+ <1d986c73c1d39b0cced7d8d2119fba4b2a02418b.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1d986c73c1d39b0cced7d8d2119fba4b2a02418b.camel@sipsolutions.net>
+X-Sysadmin: BOFH
+X-URL: http://marc.merlins.org/
+X-SA-Exim-Connect-IP: 76.132.34.178
+X-SA-Exim-Mail-From: marc@merlins.org
 
-This patch restores USB8897 support which was removed with
-Commit 60a188a2715f ("mwifiex: remove USB8897 chipset support")
+On Tue, Dec 05, 2023 at 08:33:02PM +0100, Johannes Berg wrote:
+> On Mon, 2023-12-04 at 18:46 -0800, Marc MERLIN wrote:
+> > 
+> > [13323.572484] iwlwifi 0000:09:00.0: TB bug workaround: copied 152 bytes from 0xffffff68 to 0xfd080000
+> > [13328.000825] iwlwifi 0000:09:00.0: TB bug workaround: copied 1272 bytes from 0xfffffb08 to 0xff42c000
+> > [13367.278564] iwlwifi 0000:09:00.0: TB bug workaround: copied 1328 bytes from 0xfffffad0 to 0xfec41000
+> > [13389.737971] iwlwifi 0000:09:00.0: TB bug workaround: copied 572 bytes from 0xfffffdc4 to 0xff091000
+> > [13389.860480] iwlwifi 0000:09:00.0: TB bug workaround: copied 148 bytes from 0xffffff6c to 0xfe412000
+> > [13393.435354] iwlwifi 0000:09:00.0: TB bug workaround: copied 360 bytes from 0xfffffe98 to 0xfedcd000
+> > [13409.827199] iwlwifi 0000:09:00.0: TB bug workaround: copied 1348 bytes from 0xfffffabc to 0xfd057000
+> 
+> That's fine, just working around a HW bug on 2^32 address boundaries.
+> 
+> I had a patch a long time ago to make those messages not appear ... not
+> sure where it ended up.
 
-There are quite some devices which use this chipset with USB interface.
-The firmware still exits in linux upstream firmware repo and this simple
-patch is all what is required to support it in upstream linux (again).
+About this wifi chip (AX210/AX211/AX411), one last issue I have with it is when I go to
+batteries, it burns a lot of power:
+> The battery reports a discharge rate of 36.8 W
+> The power consumed was 772 J
+> The estimated remaining time is 1 hours, 56 minutes
+> 
+> Summary: 1657.3 wakeups/second,  0.0 GPU ops/seconds, 0.0 VFS ops/sec and 121.5% CPU use
+> 
+> Power est.              Usage       Events/s    Category       Description
+>   24.1 W     59.6 pkts/s                Device         Network interface: wlp9s0 (iwlwifi)
+>   200 mW     80.6%                      Device         Display backlight
+>   139 mW      0.0 µs/s      0.00        Process        [PID 8005] /usr/bin/pipewire
+>  5.37 mW     18.0 ms/s     537.1        Timer          tick_sched_timer
+> 
+> 
+> The battery reports a discharge rate of 36.1 W
+> The power consumed was 744 J
+> System baseline power is estimated at 28.9 W
+> 
+> Power est.    Usage     Device name
+>   24.0 W    100.0%        Radio device: iwlwifi
+>   4.43 W    205.2%        CPU core
+>   230 mW    100.0%        Audio codec alsa:hwC0D0: thinkpad (Realtek) (pipewire )
+> 
+> autosuspend is on:
+>    Good          Runtime PM for PCI Device Intel Corporation Wi-Fi 6 AX210/AX211/AX411 160MHz
 
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
----
-Recently I upstreamed support for Geniatec XPI-3128 SBC which actually
-has one any of those boards soldered to the onboard USB Host controller.
-Geniatech has some boards [0], [1], [2] (maybe more) which have this
-variant soldered the same way. (optional)
-I've also read that "Xbox Wireless adapter for Windows" uses this chipset
-(unverified).
-I've also CC'ed Ganapathi Bhat who last updated the firmware for SDIO and
-PCIe variant of this chipset: It would be great if the firmware
-for USB variant could get an update too, as the one which we currently
-have is quite old - version 15.68.4.p103, while other have some 16.*
-firmware. 
 
-[0] https://www.geniatech.com/product/xpi-3288/
-[1] https://www.geniatech.com/product/xpi-imx8mm/
-[2] https://www.geniatech.com/product/xpi-s905x/
- 
- drivers/net/wireless/marvell/mwifiex/Kconfig |  4 ++--
- drivers/net/wireless/marvell/mwifiex/usb.c   | 14 ++++++++++++++
- drivers/net/wireless/marvell/mwifiex/usb.h   |  3 +++
- 3 files changed, 19 insertions(+), 2 deletions(-)
+Obviously unloading iwlwifi fixes it:
+> The battery reports a discharge rate of 26.0 W
+> The power consumed was 534 J
+> The estimated remaining time is 2 hours, 40 minutes
+> 
+> Summary: 927.2 wakeups/second,  0.0 GPU ops/seconds, 0.0 VFS ops/sec and 85.5% CPU use
+> 
+> Power est.              Usage       Events/s    Category       Description
+>   6.95 W    100.0%                      Device         USB device: Yubico Gnubby (gnubby1) (Yubico)
+>   2.09 W      0.0 µs/s      0.00        Process        [PID 8005] /usr/bin/pipewire
+>   185 mW     80.6%                      Device         Display backlight
+> 
+> The battery reports a discharge rate of 26.0 W
+> The power consumed was 534 J
+> System baseline power is estimated at 11.5 W
+> 
+> Power est.    Usage     Device name
+>   6.95 W    100.0%        USB device: Yubico Gnubby (gnubby1) (Yubico)
+>   2.09 W    100.0%        Audio codec alsa:hwC0D0: thinkpad (Realtek) (pipewire )
+>   2.02 W     85.5%        CPU core
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/Kconfig b/drivers/net/wireless/marvell/mwifiex/Kconfig
-index b182f7155d66..277b75eaf91e 100644
---- a/drivers/net/wireless/marvell/mwifiex/Kconfig
-+++ b/drivers/net/wireless/marvell/mwifiex/Kconfig
-@@ -35,12 +35,12 @@ config MWIFIEX_PCIE
- 	  mwifiex_pcie.
- 
- config MWIFIEX_USB
--	tristate "Marvell WiFi-Ex Driver for USB8766/8797/8997"
-+	tristate "Marvell WiFi-Ex Driver for USB8766/8797/8897/8997"
- 	depends on MWIFIEX && USB
- 	select FW_LOADER
- 	help
- 	  This adds support for wireless adapters based on Marvell
--	  8797/8997 chipset with USB interface.
-+	  8797/8897/8997 chipset with USB interface.
- 
- 	  If you choose to build it as a module, it will be called
- 	  mwifiex_usb.
-diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
-index d3ab9572e711..061be9c2ed2f 100644
---- a/drivers/net/wireless/marvell/mwifiex/usb.c
-+++ b/drivers/net/wireless/marvell/mwifiex/usb.c
-@@ -28,6 +28,11 @@ static const struct usb_device_id mwifiex_usb_table[] = {
- 	{USB_DEVICE_AND_INTERFACE_INFO(USB8XXX_VID, USB8801_PID_2,
- 				       USB_CLASS_VENDOR_SPEC,
- 				       USB_SUBCLASS_VENDOR_SPEC, 0xff)},
-+	/* 8897 */
-+	{USB_DEVICE(USB8XXX_VID, USB8897_PID_1)},
-+	{USB_DEVICE_AND_INTERFACE_INFO(USB8XXX_VID, USB8897_PID_2,
-+				       USB_CLASS_VENDOR_SPEC,
-+				       USB_SUBCLASS_VENDOR_SPEC, 0xff)},
- 	/* 8997 */
- 	{USB_DEVICE(USB8XXX_VID, USB8997_PID_1)},
- 	{USB_DEVICE_AND_INTERFACE_INFO(USB8XXX_VID, USB8997_PID_2,
-@@ -409,12 +414,14 @@ static int mwifiex_usb_probe(struct usb_interface *intf,
- 	case USB8766_PID_1:
- 	case USB8797_PID_1:
- 	case USB8801_PID_1:
-+	case USB8897_PID_1:
- 	case USB8997_PID_1:
- 		card->usb_boot_state = USB8XXX_FW_DNLD;
- 		break;
- 	case USB8766_PID_2:
- 	case USB8797_PID_2:
- 	case USB8801_PID_2:
-+	case USB8897_PID_2:
- 	case USB8997_PID_2:
- 		card->usb_boot_state = USB8XXX_FW_READY;
- 		break;
-@@ -1318,6 +1325,12 @@ static int mwifiex_register_dev(struct mwifiex_adapter *adapter)
- 		strcpy(adapter->fw_name, USB8997_DEFAULT_FW_NAME);
- 		adapter->ext_scan = true;
- 		break;
-+	case USB8897_PID_1:
-+	case USB8897_PID_2:
-+		adapter->tx_buf_size = MWIFIEX_TX_DATA_BUF_SIZE_4K;
-+		strcpy(adapter->fw_name, USB8897_DEFAULT_FW_NAME);
-+		adapter->ext_scan = true;
-+		break;
- 	case USB8766_PID_1:
- 	case USB8766_PID_2:
- 		adapter->tx_buf_size = MWIFIEX_TX_DATA_BUF_SIZE_2K;
-@@ -1615,4 +1628,5 @@ MODULE_LICENSE("GPL v2");
- MODULE_FIRMWARE(USB8766_DEFAULT_FW_NAME);
- MODULE_FIRMWARE(USB8797_DEFAULT_FW_NAME);
- MODULE_FIRMWARE(USB8801_DEFAULT_FW_NAME);
-+MODULE_FIRMWARE(USB8897_DEFAULT_FW_NAME);
- MODULE_FIRMWARE(USB8997_DEFAULT_FW_NAME);
-diff --git a/drivers/net/wireless/marvell/mwifiex/usb.h b/drivers/net/wireless/marvell/mwifiex/usb.h
-index 7e920b51994c..b7dba256e9f8 100644
---- a/drivers/net/wireless/marvell/mwifiex/usb.h
-+++ b/drivers/net/wireless/marvell/mwifiex/usb.h
-@@ -19,6 +19,8 @@
- #define USB8797_PID_2		0x2044
- #define USB8801_PID_1		0x2049
- #define USB8801_PID_2		0x204a
-+#define USB8897_PID_1		0x2045
-+#define USB8897_PID_2		0x2046
- #define USB8997_PID_1		0x2052
- #define USB8997_PID_2		0x204e
- 
-@@ -35,6 +37,7 @@
- #define USB8766_DEFAULT_FW_NAME	"mrvl/usb8766_uapsta.bin"
- #define USB8797_DEFAULT_FW_NAME	"mrvl/usb8797_uapsta.bin"
- #define USB8801_DEFAULT_FW_NAME	"mrvl/usb8801_uapsta.bin"
-+#define USB8897_DEFAULT_FW_NAME	"mrvl/usb8897_uapsta.bin"
- #define USB8997_DEFAULT_FW_NAME	"mrvl/usbusb8997_combo_v4.bin"
- 
- #define FW_DNLD_TX_BUF_SIZE	620
+What's very interesting is if I re-insert the iwlwifi module after that, 
+it works and used a lot less power last time I tried, but this time around
+it's still shown as high although probably with a wrong Watt value because powertop
+is confused somehow:
+  28.8 W    470.9 pkts/s                Device         Network interface: wlp9s0 (iwlwifi)
+
+  24.4 W    100.0%        Radio device: iwlwifi
+
+Is this something I should persue separately on
+linux-wireless@vger.kernel.org or ilw@linux.intel.com or elsewhere?
+
+Thanks,
+Marc
 -- 
-2.43.0
-
+"A mouse is a device used to point at the xterm you want to type in" - A.S.R.
+ 
+Home page: http://marc.merlins.org/                       | PGP 7F55D5F27AAF9D08
 
