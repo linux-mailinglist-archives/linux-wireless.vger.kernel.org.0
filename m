@@ -1,214 +1,85 @@
-Return-Path: <linux-wireless+bounces-508-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-509-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FBB8079D1
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 21:52:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEE38079D9
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 21:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFC621C21011
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 20:52:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B69121F218F3
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 20:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1DA41859;
-	Wed,  6 Dec 2023 20:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D47441868;
+	Wed,  6 Dec 2023 20:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="p6N0g2Ss"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dpdQQ+fm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76963D47
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 12:52:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=WceqjfMGEMiBB3nOBuWFcIs8l2PO3jnf+DRjfRyxayk=;
-	t=1701895948; x=1703105548; b=p6N0g2Ss6e8BE9s8RXgB9Z0DElQpKvDmNYrE64Vem7uAB1L
-	ZiZoeUq/YGDKkbCSTqE+7iGkvpKGVB46bKd+fDf/mR8Fq4QObNwOfh/XtsIRh3sxv9asd0bfsfxBk
-	asH+MxZr6mf8ruffXDDCMaIMuM1uYseV9/4IVSWIXmQYuHMtokPU+zNTao4zEkg2m6MCba2kCt2jS
-	6DkvykhlSQ2g0aB8Q3CKX/azZYcTkvMK5E+OvcBLw5asm6+whIeTK87DBJWX9goNCv3izgELK6xwb
-	59WLXNxrKpLN76/V58mABSq8B+XsNTrERXxcSKBE7kt53iBDL/tF1CaQ5BHMaO4A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rAysa-00000000HmL-39Bq;
-	Wed, 06 Dec 2023 21:52:24 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: regressions@lists.linux.dev,
-	Linus Lotz <register+kernelbugzilla@lotz.li>,
-	Darrell Enns <darrell@darrellenns.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [RFC PATCH] wifi: iwlwifi: pcie: don't synchronize IRQs from IRQ
-Date: Wed,  6 Dec 2023 21:52:07 +0100
-Message-ID: <20231206215211.95907305c9b2.Iadfe154d6248e7f9dfd69522e5429dbbd72925d7@changeid>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <af62295b-b757-49ec-83ce-9d3ef93e24af@leemhuis.info>
-References: <af62295b-b757-49ec-83ce-9d3ef93e24af@leemhuis.info>
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BDAAA
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 12:55:02 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1d06d4d685aso1448655ad.3
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Dec 2023 12:55:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1701896102; x=1702500902; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rNhyFZvgFU5pptzAoScDKDcqRFNRihHR3+C5yAvq3i8=;
+        b=dpdQQ+fmm01yl31ISyJHQGHrbxrvNM8dLD2TJp9+8FcVryQ9r3QrrMZns4koWWr4UV
+         qBWkgzupTEp+3a5ZzvxsmwrwRlkfh2fq6fEx4JyiNcZCCqrqS4KmXEmYiOAcmkEsya45
+         LMsGsJPaOftS54Sfooe+Jf4U2Of2/b1YurXbA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701896102; x=1702500902;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rNhyFZvgFU5pptzAoScDKDcqRFNRihHR3+C5yAvq3i8=;
+        b=cE8I+rfqCZDgmHdLYPPTdHYKEsaoskGbqRhnVGfDOOVgRQ3FStsfuLaXOjmaOvvGNi
+         dSASY3Lqdl0ORNYlaTFWIoGKtsYlN4jA9fp1KYf6lus6hDQVK9+aIUAhCnkqTfsfUje2
+         073XcbqCqiyjrhn87MD+Trwh9wqdFsckuBj9lR0RwhDkaKS3rj8ALO7lquYNaqNdIKvQ
+         jMdjxtEE0DW1QozSydGNv04Dc5ktvN2wedou3CkJ0baxoq455zvrCb2zbXeWj3g/aRyI
+         0dmf7dCJS8TzVwoN9388tx5JuxNq3oKZlH1v1yl8uPlPKK/UqAF6dAG8LbteUy36sTGc
+         eehA==
+X-Gm-Message-State: AOJu0Yyz2A91dDsUDihBvk3ab6jtwpFI0yaTL6jR+hQQuYeS6aqd5qaz
+	mzoZkD3TsfIxu8fo9nNNvlf/RjSTNb9Zy7S6FZs=
+X-Google-Smtp-Source: AGHT+IESvAmw3QtseZWIPzrCzbkkkb/Z+GYXQ98I6b/gn42T97kIpEWeyyjO6ixFA/04YDmDNFb3lw==
+X-Received: by 2002:a17:903:110c:b0:1cf:b4ac:633e with SMTP id n12-20020a170903110c00b001cfb4ac633emr1371958plh.51.1701896102054;
+        Wed, 06 Dec 2023 12:55:02 -0800 (PST)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id v6-20020a1709029a0600b001cfc618d76csm248569plp.70.2023.12.06.12.55.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Dec 2023 12:55:01 -0800 (PST)
+Date: Wed, 6 Dec 2023 12:55:01 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Kalle Valo <kvalo@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: ath11k: Fix ath11k_htc_record flexible record
+Message-ID: <202312061254.085B4755@keescook>
+References: <20231205-flexarray-htc_record-v2-1-fbb56d436951@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231205-flexarray-htc_record-v2-1-fbb56d436951@quicinc.com>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Tue, Dec 05, 2023 at 01:00:17PM -0800, Jeff Johnson wrote:
+> Transform the zero-length ath11k_htc_record::credit_report array into
+> a proper flexible array. Since this is the only array in
+> ath11k_htc_record, remove the unnecessary union.
+> 
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-On older devices (before unified image!) we can end up calling
-stop_device from an rfkill interrupt. However, in stop_device
-we attempt to synchronize IRQs, which then of course deadlocks.
+Heh, looks good. I wonder why this was a union to begin with?
 
-Avoid this by checking the context, if running from the IRQ
-thread then don't synchronize. This wouldn't be correct on a
-new device since RSS is supported, but older devices only have
-a single interrupt/queue.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Fixes: 37fb29bd1f90 ("wifi: iwlwifi: pcie: synchronize IRQs before NAPI")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- .../net/wireless/intel/iwlwifi/pcie/internal.h  |  4 ++--
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c    |  8 ++++----
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 17 +++++++++--------
- 3 files changed, 15 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-index 56def20374f3..7805a42948af 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-@@ -770,7 +770,7 @@ static inline void iwl_enable_rfkill_int(struct iwl_trans *trans)
- 	}
- }
- 
--void iwl_pcie_handle_rfkill_irq(struct iwl_trans *trans);
-+void iwl_pcie_handle_rfkill_irq(struct iwl_trans *trans, bool from_irq);
- 
- static inline bool iwl_is_rfkill_set(struct iwl_trans *trans)
- {
-@@ -817,7 +817,7 @@ static inline bool iwl_pcie_dbg_on(struct iwl_trans *trans)
- 	return (trans->dbg.dest_tlv || iwl_trans_dbg_ini_valid(trans));
- }
- 
--void iwl_trans_pcie_rf_kill(struct iwl_trans *trans, bool state);
-+void iwl_trans_pcie_rf_kill(struct iwl_trans *trans, bool state, bool from_irq);
- void iwl_trans_pcie_dump_regs(struct iwl_trans *trans);
- 
- #ifdef CONFIG_IWLWIFI_DEBUGFS
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 146bc7bd14fb..a0d10df0c11a 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1783,7 +1783,7 @@ static u32 iwl_pcie_int_cause_ict(struct iwl_trans *trans)
- 	return inta;
- }
- 
--void iwl_pcie_handle_rfkill_irq(struct iwl_trans *trans)
-+void iwl_pcie_handle_rfkill_irq(struct iwl_trans *trans, bool from_irq)
- {
- 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 	struct isr_statistics *isr_stats = &trans_pcie->isr_stats;
-@@ -1807,7 +1807,7 @@ void iwl_pcie_handle_rfkill_irq(struct iwl_trans *trans)
- 	isr_stats->rfkill++;
- 
- 	if (prev != report)
--		iwl_trans_pcie_rf_kill(trans, report);
-+		iwl_trans_pcie_rf_kill(trans, report, from_irq);
- 	mutex_unlock(&trans_pcie->mutex);
- 
- 	if (hw_rfkill) {
-@@ -1947,7 +1947,7 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
- 
- 	/* HW RF KILL switch toggled */
- 	if (inta & CSR_INT_BIT_RF_KILL) {
--		iwl_pcie_handle_rfkill_irq(trans);
-+		iwl_pcie_handle_rfkill_irq(trans, true);
- 		handled |= CSR_INT_BIT_RF_KILL;
- 	}
- 
-@@ -2370,7 +2370,7 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
- 
- 	/* HW RF KILL switch toggled */
- 	if (inta_hw & MSIX_HW_INT_CAUSES_REG_RF_KILL)
--		iwl_pcie_handle_rfkill_irq(trans);
-+		iwl_pcie_handle_rfkill_irq(trans, true);
- 
- 	if (inta_hw & MSIX_HW_INT_CAUSES_REG_HW_ERR) {
- 		IWL_ERR(trans,
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index a468e5efeecd..f43a8923af9e 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -1082,7 +1082,7 @@ bool iwl_pcie_check_hw_rf_kill(struct iwl_trans *trans)
- 	report = test_bit(STATUS_RFKILL_OPMODE, &trans->status);
- 
- 	if (prev != report)
--		iwl_trans_pcie_rf_kill(trans, report);
-+		iwl_trans_pcie_rf_kill(trans, report, false);
- 
- 	return hw_rfkill;
- }
-@@ -1237,7 +1237,7 @@ static void iwl_pcie_init_msix(struct iwl_trans_pcie *trans_pcie)
- 	trans_pcie->hw_mask = trans_pcie->hw_init_mask;
- }
- 
--static void _iwl_trans_pcie_stop_device(struct iwl_trans *trans)
-+static void _iwl_trans_pcie_stop_device(struct iwl_trans *trans, bool from_irq)
- {
- 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 
-@@ -1264,7 +1264,8 @@ static void _iwl_trans_pcie_stop_device(struct iwl_trans *trans)
- 	if (test_and_clear_bit(STATUS_DEVICE_ENABLED, &trans->status)) {
- 		IWL_DEBUG_INFO(trans,
- 			       "DEVICE_ENABLED bit was set and is now cleared\n");
--		iwl_pcie_synchronize_irqs(trans);
-+		if (!from_irq)
-+			iwl_pcie_synchronize_irqs(trans);
- 		iwl_pcie_rx_napi_sync(trans);
- 		iwl_pcie_tx_stop(trans);
- 		iwl_pcie_rx_stop(trans);
-@@ -1454,7 +1455,7 @@ void iwl_trans_pcie_handle_stop_rfkill(struct iwl_trans *trans,
- 		clear_bit(STATUS_RFKILL_OPMODE, &trans->status);
- 	}
- 	if (hw_rfkill != was_in_rfkill)
--		iwl_trans_pcie_rf_kill(trans, hw_rfkill);
-+		iwl_trans_pcie_rf_kill(trans, hw_rfkill, false);
- }
- 
- static void iwl_trans_pcie_stop_device(struct iwl_trans *trans)
-@@ -1469,12 +1470,12 @@ static void iwl_trans_pcie_stop_device(struct iwl_trans *trans)
- 	mutex_lock(&trans_pcie->mutex);
- 	trans_pcie->opmode_down = true;
- 	was_in_rfkill = test_bit(STATUS_RFKILL_OPMODE, &trans->status);
--	_iwl_trans_pcie_stop_device(trans);
-+	_iwl_trans_pcie_stop_device(trans, false);
- 	iwl_trans_pcie_handle_stop_rfkill(trans, was_in_rfkill);
- 	mutex_unlock(&trans_pcie->mutex);
- }
- 
--void iwl_trans_pcie_rf_kill(struct iwl_trans *trans, bool state)
-+void iwl_trans_pcie_rf_kill(struct iwl_trans *trans, bool state, bool from_irq)
- {
- 	struct iwl_trans_pcie __maybe_unused *trans_pcie =
- 		IWL_TRANS_GET_PCIE_TRANS(trans);
-@@ -1487,7 +1488,7 @@ void iwl_trans_pcie_rf_kill(struct iwl_trans *trans, bool state)
- 		if (trans->trans_cfg->gen2)
- 			_iwl_trans_pcie_gen2_stop_device(trans);
- 		else
--			_iwl_trans_pcie_stop_device(trans);
-+			_iwl_trans_pcie_stop_device(trans, from_irq);
- 	}
- }
- 
-@@ -2887,7 +2888,7 @@ static ssize_t iwl_dbgfs_rfkill_write(struct file *file,
- 	IWL_WARN(trans, "changing debug rfkill %d->%d\n",
- 		 trans_pcie->debug_rfkill, new_value);
- 	trans_pcie->debug_rfkill = new_value;
--	iwl_pcie_handle_rfkill_irq(trans);
-+	iwl_pcie_handle_rfkill_irq(trans, false);
- 
- 	return count;
- }
 -- 
-2.43.0
-
+Kees Cook
 
