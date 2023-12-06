@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-445-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-446-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E5980646A
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 02:53:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CBB8064E6
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 03:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47AEB1F213EB
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 01:53:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1994282210
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 02:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5EE3FE6;
-	Wed,  6 Dec 2023 01:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C2D5695;
+	Wed,  6 Dec 2023 02:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="mOhgWW6j"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="hlvfl9x9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2084.outbound.protection.outlook.com [40.107.8.84])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 838729A;
-	Tue,  5 Dec 2023 17:53:06 -0800 (PST)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2051.outbound.protection.outlook.com [40.107.21.51])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 863EBD44;
+	Tue,  5 Dec 2023 18:19:28 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fMWQFuc/S2YB5nKBZCXqLYZq0e0Lkq55wJ5hn9MiHRLdX1R3P2PrNK3DPWe3XbSXjUs3TEvJN/k0s0iK5XHGZkcuUqsHaQ7qNmSfT55sXBrQVOrPznMIeYlyov2d0e8PCL7AUckArk/pTpWGc1WsKUtTiSa9a2yOFx2waLXex242aSV0Cg2GtjrBTRhoLgdKCiv+QEXv7kOlKts/IpyjZnkQhOFU450iTYnX/mfIraxSsxWIW0B6LKTZ44Hg6+GH0d30bq2LxN+UiBf7AKE+Q9tu/pxcGzwCoLMU7ytqNuIwmnZUCYQLiZTvX+g674pesGUnn3MzYG7VGn1ud2UWNA==
+ b=RRtbUwzkTEwkqqL3sVHNYerqIn9xRrDJy+jfSKR7/1pqUuUvX7hRT3kXQ+kMdMy53V7GQmaH9k5vyG/pkmn4eft8/Jhu3hVEtkAIvonpRUp1jO299zKSVilBWdo8cK1E2bebgD4lMMZlyV7BXWRD8PoK1Sc4xXWZcG+24ZEwkYuN+qyzBZtOcS4vcF9LxoZD1qdmmpSTQgxbFpNlCuOC0lu3aHSaIxwl50hXA5t9cbQl+HfymtccBOsUz48k2jxDel7PGctSNVFCC8RkVHeppJtiBtdhm/1hBLUwaDPbNbTxt9ZjFu6DrPlVQqyTdhztTGj6DTlCut8j+vsdkSNMIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=22Bh43JvnNykipc6gPj4nExRfa3NEnIt51/RSY2955I=;
- b=CTxXmSFLjVq1c9AkCqlp760UeZ1+xJdglSVlsMJoxPm4AL2asYHnyh0mcs2JPh3/hCWLX0G8f75u6Z5EYEqHONW2huVQmNrzMx/1E3YCPHdlFfw0jB9y62lvWp0luTlI6616FI1D+KJk6jX9sc736p6g3HXaEm507Ve93M5dgKmTR/GmuasKQq46Ps1XPyy9esVdmnhmMXItl+MxaaLzLbmOwI55qG8QWVyF/dZx5zb5AGxDLv8NJE46Oa+rCKL7V1X1EnCqUZBXzzzusxu71HM8i6Xc1Ml9/yT/4clgo7/so+1e9trtKj3gE4+VdKiuKoYIJ1fSI5NctBqdQ5wo1A==
+ bh=Ix20dz5bEEk/+aVwlkaPG6Ldj8IbnkFZJ4DWG9a0Yts=;
+ b=SNF05W66isR0u1SaCuFpUeU3tDuA3kB4J3BmKZTzGK/MlN+PIWmWjMFYzi++D5XckbqlamG9srZzQ0RMMmA9M/EiGGrgFbkiaurrnnRA+ZXKtF2tCfzSnJNuT9MceaIvsNJqjXYdobKJUwRgCOtggejFXj6VN0lSegxC0Z23LzMeru1etP8nU6EeCQBiMyNDuxlB6DVfnVS0xLLC3xGFETBQd4bdXdDBy5hKyS5H+UMA4HztpgVKAD7eu29Panko0umnDd6SLUtYIvQgNb9/fEAZBljrneJEwp4mFBlRGyFzpwx5uijKPBQem/KNLuMyFDVptKIgRBDH/lR6Vv3f6g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=22Bh43JvnNykipc6gPj4nExRfa3NEnIt51/RSY2955I=;
- b=mOhgWW6j7Nr0DION/9Kx+AZdM9JVyca8NXTPoe8g1hiA6yUr040garHUzundk09aL5IsjSH8Kd87i1PQld5XwJaweRnrYisyOYAuYhX37soEUIWoxEXkaHskgESbdwlrOGRrsxefb7kT6cZPLdFUlSQCh9ODxtu1RFcd2rGjdy8=
+ bh=Ix20dz5bEEk/+aVwlkaPG6Ldj8IbnkFZJ4DWG9a0Yts=;
+ b=hlvfl9x912kVCHkoJfq2eRVH6fpK+Yz2JD01W5rqE/O+5moMGdexBdS6a1Snll18eKHqfAx+p2QM82ax3Bqf57ux7Ruuy2hSWtPiC+dbzAUyCUBrQ/YlvjqZtH40o2dv+bUVKkp48H2C+INsif0AwiyUiOlrNjY1i4TfILnSnWY=
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by AS8PR04MB8181.eurprd04.prod.outlook.com (2603:10a6:20b:3f5::15) with
+ by AS8PR04MB7814.eurprd04.prod.outlook.com (2603:10a6:20b:2a1::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.24; Wed, 6 Dec
- 2023 01:53:04 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.22; Wed, 6 Dec
+ 2023 02:19:26 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b%7]) with mapi id 15.20.7068.022; Wed, 6 Dec 2023
- 01:53:04 +0000
+ 02:19:26 +0000
 From: David Lin <yu-hao.lin@nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
+To: Brian Norris <briannorris@chromium.org>
 CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"briannorris@chromium.org" <briannorris@chromium.org>, "kvalo@kernel.org"
-	<kvalo@kernel.org>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+	"kvalo@kernel.org" <kvalo@kernel.org>, "francesco@dolcini.it"
+	<francesco@dolcini.it>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>
 Subject: RE: [EXT] Re: [PATCH] wifi: mwifiex: added extra delay for firmware
  ready.
 Thread-Topic: [EXT] Re: [PATCH] wifi: mwifiex: added extra delay for firmware
  ready.
-Thread-Index: AQHaIdSgkWy+z6AqY0y9BY3vh1TVyLCbJ8SAgABhuSA=
-Date: Wed, 6 Dec 2023 01:53:03 +0000
+Thread-Index: AQHaIdSgkWy+z6AqY0y9BY3vh1TVyLCbLwIAgABiMeA=
+Date: Wed, 6 Dec 2023 02:19:25 +0000
 Message-ID:
- <PA4PR04MB963836544F03B5D5D3514355D184A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <PA4PR04MB9638E447753FE4D08A5677E3D184A@PA4PR04MB9638.eurprd04.prod.outlook.com>
 References: <20231128082544.613179-1-yu-hao.lin@nxp.com>
- <ZW+BZRHDta7vKZgs@francesco-nb.int.toradex.com>
-In-Reply-To: <ZW+BZRHDta7vKZgs@francesco-nb.int.toradex.com>
+ <ZW-HeGCvxpqzBukB@google.com>
+In-Reply-To: <ZW-HeGCvxpqzBukB@google.com>
 Accept-Language: zh-TW, en-US
 Content-Language: zh-TW
 X-MS-Has-Attach:
@@ -65,44 +65,44 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|AS8PR04MB8181:EE_
-x-ms-office365-filtering-correlation-id: acd63203-7a01-425c-7999-08dbf5fe15e1
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|AS8PR04MB7814:EE_
+x-ms-office365-filtering-correlation-id: 3bda7a58-7fc3-4dcb-7545-08dbf601c4cb
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info:
- ZEuPP2MfJQbvoEju7ACwAj2S8IanNDepcCtcki13BDUGzjzxaTLfG3r7k0kp5gbJcybSGrhXaWGo6iadRTMVMbsyaFTyujDD3xFny13cyt8uXazJtMzEa2Wy0QAZ7TzEPga+/HC6ABjNSfpTZAwls2aWNPW30dtuVPro5pC3/osGA+IMcAqxsvhrJG4bQp8iLiKPGopuQy7XNr9uxI/WbKOpqNiCTGEkTskP87URXUB0z6Ru8sB8Dv2W4gxoMuZrCW5mV2oXuqKeGazZfqBgLKmvU8IMHx27BYjr2CNlPoLKci0KtuVLb0LF8iyPKDPYMZLmW8TUtF6V8iBviGP/6n4LyMOKoI+F6h6pCqbtttSbqXSCa+RCrKbl6TGFZsjFr8HD3k3vf6m/XQvu8Poo2wNZe8zengaT84e2Rsawy+YICM4siM+Ly/hCF9P4aDseMkitdDrv45c9T5/y7fdKH7KSP6jvli35pmBl33qifJ+I/O9k+uO/Bu0MXRsEcaVjRoND8pgJ2QCzNqAm5Wjc3C6eNIggedYihJ28FCmIBuD12ODGh1jH6cfV3SoNG5yUrE6ASey8lwdDJ8IjXKYnmKOFETahftFAFO9Htsj3zcoUqFilMsqXyhqN8CqgehlJzelFGNzNT6oWY/4hHCGf6G/WLT2TA0EUl1fCd9BeMJY=
+ iJLV8EIvhC2EKffFVHPFwVyV/W108bR97A3jZP8UtyE4ylyQPDT0ciF2p8OXcCy3TTEO9VG2yL10p3eE0t5covCj+h0k7G1U0SMI9/aPpcFmRbutcM53KGlLCDLZI+KvV/m1dpoxPW9JG01JUW9gu4oZW3gG3w9JZXrrRp0OemIg7pQ30dQtEZd6X+hoXQaycCDKAdD/Y2qVBAwgHIj8BY6j3Nz3eVmhU92Wxz3Vpn4lvNVXig+RmsDoewVlEQ8e+TYy5Wh0iCuYPJyg9/plAScp/I4fr49ZyZU8mCEdcfVZY9SSLhj12HGyto7oXDKhcoz3uxkO0KIw+61EV4xBX7qf/65Yp7vZkvMhVA6ujq7voD3NnW71V3ok0g2OTJpCxY69iUb/gXnls91yzYvKOnxRKoA6lbgyOBJIP6STjVIjpbtJWQLorNH+GIMVXzHvzTkG9eRKPu6ogliT758iJW1kepRsYd6jm0badoc/xcXvqYVyqa6NgAYvkKJPMaRrNe7b2HVIalUQD6rlNSdZX+FiO5cF941I36CnAG2tH3ucBZdsq84YlhG+p5TK3VvaMjnDtI1SNX/tP50ytDFyFF5Cz8Y6ILQ2gK1FysM/dLNHYAT78dFa1LxCq9eokSrIpPUzI27pYpQ9hUXWwog/DXBHapX3LBCL3ubRmTLTFv4=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39860400002)(376002)(346002)(366004)(396003)(230922051799003)(230173577357003)(230273577357003)(451199024)(186009)(1800799012)(64100799003)(8936002)(8676002)(4326008)(7696005)(6506007)(53546011)(52536014)(71200400001)(26005)(9686003)(54906003)(66946007)(316002)(66556008)(76116006)(66476007)(64756008)(6916009)(66446008)(478600001)(41300700001)(38070700009)(5660300002)(2906002)(86362001)(38100700002)(122000001)(33656002)(55016003)(83380400001);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(396003)(376002)(346002)(136003)(230922051799003)(230273577357003)(230173577357003)(1800799012)(64100799003)(186009)(451199024)(122000001)(9686003)(478600001)(8676002)(4326008)(66946007)(66446008)(38100700002)(6916009)(76116006)(316002)(66476007)(54906003)(66556008)(64756008)(8936002)(83380400001)(26005)(55016003)(71200400001)(7696005)(6506007)(53546011)(52536014)(86362001)(5660300002)(2906002)(41300700001)(38070700009)(33656002);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?tmTXIwZEFpLOirNoE7+UyxZPfUg4FJ5xSQbQOep6rDPhsipnbZeCgFIn56pF?=
- =?us-ascii?Q?p8Gw/1XlQYTSZlfrTAKAuSRDGTD7iR5JeoJJP9w22W0xWaxsV9nuItUnT+R6?=
- =?us-ascii?Q?5NQglm0XpdPrYx7o1ywoQPlMcjI3L5aR5xOpXBjl39pEwM3bkChUp5DjrdDr?=
- =?us-ascii?Q?G61hwPsX1KiTdtmNZ1gmiMn2LUAJNw47e3iskJjbUx6TdJ7DkcBLp7Od2BJC?=
- =?us-ascii?Q?JkjevgppgbEcBXzWPa1gJLhG7pRmWQlUY3CjOLtJ9vnnTceanR2QRu44hd4Y?=
- =?us-ascii?Q?IxHhJjBlT+7RSVyPAkOCwBzIZXPRVBBHzjQGPWFE0l5izo2s/k5kOu/Svqf7?=
- =?us-ascii?Q?uNn1+xMthoH39nMYyOD1s2mZVpVy9bMO6O7tmab1qucSlpN+O6QxTPqlAH+C?=
- =?us-ascii?Q?vsx7YotEj11Ve2uSI3dqRj4NGQluZbzAG0pJ5RM6acZPT3vdCW5MgnsL0Hqq?=
- =?us-ascii?Q?xrt99IiaJKcUZTKGgKkEz4zRLYlgsmvM+haFYAGDt9nl3zD4fRExnraSrX3H?=
- =?us-ascii?Q?ZSpA9tN1hfwssphH5h1wV8NhjAa0O1C3rio9RmFSzESlnA2ZOxmPECX6YfWp?=
- =?us-ascii?Q?CKx5wqZZjgNXVrK+SOvqmtP3NY1PgxpZRvGMens/1AlUg0x36t20wpFjf0Ab?=
- =?us-ascii?Q?nab+K57DW/tTlMyGeV+IcH+SCtFf87agBfUcvvmA0fq7ZP0C/MT0KHRh/TiX?=
- =?us-ascii?Q?IZlY1JgMkYs0BlZLES3CGtc9W6hSjsCmw7jwKoOs5bTiFG6hQAlm7g9qe2Sq?=
- =?us-ascii?Q?rIRUEwQgml0nN2nWHWqLfqGr5fz3sq/e/YB1JnMsF+iK6FntCdUjYiP8op12?=
- =?us-ascii?Q?3A+T7dK4fZVtxYNen1Y2GQpPXT0YZoGmwMW9L0ZRc+QIpnykTOjMLEFcA0ky?=
- =?us-ascii?Q?R/Q6rOcyYl8DshWu4q1gJzlBXOlClF0gD9LBAOv5MWQXHttxAHjacMmnkBiz?=
- =?us-ascii?Q?O86iHyLpzBUP8jvku9Vd6PZHAXIp4nintNKwW5EaQohHFWZITcio0Uv2sbyi?=
- =?us-ascii?Q?TdQViet/dGwcQ55z5q5GeFmmjWetj26b4iOncJ4UWzKCfV7ADnHB1VLBW650?=
- =?us-ascii?Q?WFkMQOFXfhLlzNvfyy8sY+NUYnAcb5bSRlEoOON7KXwCNXKV1+h95w/qzM7V?=
- =?us-ascii?Q?DYBatd5XBh31HiOOy7vEsLQH+mKYIJS0diMTe9j3goSgNZPVRmlmAQov2EkL?=
- =?us-ascii?Q?HhIhnl1aYYt+mI9wEv222iWQFH8VOWl/VylMPUa0XsQA5NEAcXcvn9+/C0C8?=
- =?us-ascii?Q?0/QkRU6AbRS7kdzXqsfvGKbEET/FJcMhl4BjCwMouiAp8ES7kgc0V4o/8Ae2?=
- =?us-ascii?Q?441IyutRG9kD4bdYmhX13wh5oIX71lonlMbdSEtEmA5qhA6AF/edugxVx9xT?=
- =?us-ascii?Q?IPSjw2ChFydHFhYw8Qi9V92bSF1db0Co4qj/oPS/+T+s6CzwUaZDOQvLYcYT?=
- =?us-ascii?Q?KRGL+DVa2WloRbdS+3qlC2UXvPukOtnFvUQZHNVmQE5RzvSayEttkQ6tXMFw?=
- =?us-ascii?Q?bWyjoIpEYiqi8HErECaTIIXMlTrCpDJgw4r2rflXTP4zheFujLhOzm2/PH8Z?=
- =?us-ascii?Q?CgkPBNoJP9l7uGuyuYc1vHOnBjVoFvANshux/8x2?=
+ =?us-ascii?Q?KTa76epgemksWi94kBRZ0kp/8QsIkqBKVFe54uIWv6v1c1LFmM8o38UXa7Y5?=
+ =?us-ascii?Q?q4SVr1R4HaRtlS7t4t3RxTJ8yLQn2HpO4cJyW1VNIYXAuR6kp5DkZ83G/Rux?=
+ =?us-ascii?Q?CzgBH29UgeksFklwWfoLTd2KwBqgj9DNl+dWDArgAdM8txE9Bx/II8Ndn7UR?=
+ =?us-ascii?Q?yPhZ1A/gNq4+0/0l0JvgirHsivQ8Q6icylnw57Xr0KKAx2IG53PNZm1b9yih?=
+ =?us-ascii?Q?rAVlN7Wz8IhrdNOt+s7KFOZfQCWuSa1ebHbQohkhTOYEQXXnmvGMw7WxtIt5?=
+ =?us-ascii?Q?r98YDRxmO30bEuqN4jeeOi0ycseADTonQxGlUcEvioe2LQNYs2iImBUYkP0F?=
+ =?us-ascii?Q?TkcGcEE5PRGD8kxks7mE05CZNOM7WJqGSjce7Yf9B9z762MmasI/t8ROjw4i?=
+ =?us-ascii?Q?Ymuro71nySFvVF8whqUpFepAYXSPdi3z3T1rvdnQ/dix1OE+O+pXM0eVMJ1d?=
+ =?us-ascii?Q?Q6bUt8AqFFh+pP6gPyy0MwsZe3UQ7Ek0K7nw3VIQkCHuXl6By8Q6KeZxWmkS?=
+ =?us-ascii?Q?AA6/PaL3Ql/Q0mz5bcWlLwdvLxRaxa2//CuuMIKznhXxA0H0WoPId8faUfwp?=
+ =?us-ascii?Q?ao/FoE4fSsCg909DOoOgNSdxGMPQVe4K+fN+u2++3XK54Sxnjo06GkgLdDwA?=
+ =?us-ascii?Q?qH6KUms5cJ79Kbzo8T4+AGtle89FoXKlOL4vePfv05u0SlSyC5XeoQ5upthY?=
+ =?us-ascii?Q?Hj1IyD+iO+7QhgXwL9cP5rzSt9is4eJG1pUK1LnBBhZp6M1tncGpNIFAZ+3P?=
+ =?us-ascii?Q?Yb3zkW/Jg1VgLPkH/sQyiSRWzuKAZk+JX3jo+OH0Ki2wx5lune7CK2J2ie3V?=
+ =?us-ascii?Q?Uo/ywXNam9LG9J9dnmnmE481NofWNXlHY1GlH8Nx8hpj+tusIjAISISGssbG?=
+ =?us-ascii?Q?vUmvArH38TwSNinrDzlXaUj2IpCySzVFFRsocvawiacoKXBbp3VH3r8Vtlvx?=
+ =?us-ascii?Q?A85qPZkqcMr/1r/g75cibS0tF7NALhdNFG7/Y6Rp5MpjAUwQl87cE7UXzlwO?=
+ =?us-ascii?Q?nqSA+IoINudjorJ4xt75Am/NKuiRrq/GSFEkVumyP1eISFnJFxURzRAv6cyF?=
+ =?us-ascii?Q?+P9UZ1VKGzV5bfSqOndq+AHCw/efvWf/X+IYACeqErcAk9RGZHuhFw9T0ENG?=
+ =?us-ascii?Q?RbI8/bV/ncupatyf6yoaSVAInANkFTsly1E7zHEc4DorT9/uBmsYQvFnCXyN?=
+ =?us-ascii?Q?jmJQxP9C+r4fJmsRLO5GjxzABhOepmgrQ/MVBmbBD3LxtOa+lpDibhFF89ZU?=
+ =?us-ascii?Q?NeeCqKcwgsElA2QYnPOlTOCsLlPs59GgMEgVcMvVm0JHeuV6dcDsFJWZwpft?=
+ =?us-ascii?Q?J53f4yzTJGuLIanQ16Wt8w96Kgwn1vS/BmNwT4gKHK+88wF4OkqSrh2jOXNG?=
+ =?us-ascii?Q?bqQab8e5wRvNetwuKDOgS4d0zhcvsnhoaFlsxMX4qFEqyiudwCX8hhn76xrg?=
+ =?us-ascii?Q?dpfmqi2Sv91m3WOu9YozcUNqq8nOX40EuA6rsIyq7IVHam4gvNZlDljCOROP?=
+ =?us-ascii?Q?j7Jp6S1MnghjyyF4V1vt+SrKP53abA/gsqW10SwpAyfUozgo/YZjdk7A9ob2?=
+ =?us-ascii?Q?MGhIehu9eNkpWET/AZlnTw71v5BcW1SyULru3Ibo?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -114,21 +114,21 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: acd63203-7a01-425c-7999-08dbf5fe15e1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2023 01:53:04.0020
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3bda7a58-7fc3-4dcb-7545-08dbf601c4cb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2023 02:19:25.9936
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vQvY9XU9huB6nB7QXafjlZlBcHkuP64FnCkVXJwIKeUt3qfRxL2luVD5zblr50CCfpqL6vOxh6VZOL9czYExpQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8181
+X-MS-Exchange-CrossTenant-userprincipalname: fOSN3fGXYlQnJbishTyc4dvc+jPNaXTVcU3MdREm+6RPKZwaeRO/2NyBhMYI5N0KMAS3S/J3uElEEeyvmWnTJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7814
 
-> From: Francesco Dolcini <francesco@dolcini.it>
-> Sent: Wednesday, December 6, 2023 4:01 AM
+> From: Brian Norris <briannorris@chromium.org>
+> Sent: Wednesday, December 6, 2023 4:27 AM
 > To: David Lin <yu-hao.lin@nxp.com>
 > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
-> briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it; Pete
-> Hsieh <tsung-hsien.hsieh@nxp.com>
+> kvalo@kernel.org; francesco@dolcini.it; Pete Hsieh
+> <tsung-hsien.hsieh@nxp.com>
 > Subject: [EXT] Re: [PATCH] wifi: mwifiex: added extra delay for firmware =
 ready.
 >=20
@@ -138,71 +138,29 @@ or
 > this email' button
 >=20
 >=20
-> Hello David,
->=20
-> thanks for your patch. Planning to run some test on this over the next da=
-ys and
-> we'll provide some actual feedback if this really solves the issue we are
-> affected by.
->=20
-> Just a couple of nitpicky comments on the actual patch.
->=20
->=20
-> On the commit message you should use imperative mood, e.g.
->=20
-> `wifi: mwifiex: add extra delay for firmware ready`
->=20
-> with no period at the end of the line.
->=20
-
-Thanks. I will fix it in patch v2.
-
 > On Tue, Nov 28, 2023 at 04:25:44PM +0800, David Lin wrote:
 > > For SDIO IW416, in a corner case FW may return ready before complete
 > > full initialization.
 > > Command timeout may occur at driver load after reboot.
+>=20
+> Do you have any idea why? Is it specific to this chip and/or firmware?
+> I'm hesitant to add magic sleeps to everything, just because you have one
+> buggy chip/firmware.
+>=20
+> If it's a known issue with a single chip, it seems like you should add a =
+flag to
+> struct mwifiex_sdio_device / mwifiex_sdio_sd8978.
+>=20
+
+This issue is reported by customer
+We confirmed it's specific to this chip and 100ms is sufficient and relativ=
+ely safe/easy then change FW.=20
+
+Will add flag to struct mwifiex_sdio_device / mwifiex_sdio_sd8978
+
+> Brian
+>=20
 > > Workaround by adding 100ms delay at checking FW status.
 > >
 > > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
->=20
-> Add
->=20
-> Cc: stable@...
->=20
-
-Thanks. I will add "cc: stable" in patch v2.
-
-> > ---
-> >  drivers/net/wireless/marvell/mwifiex/sdio.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > index 6462a0ffe698..744e9403430a 100644
-> > --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > @@ -783,6 +783,9 @@ static int mwifiex_check_fw_status(struct
-> mwifiex_adapter *adapter,
-> >               ret =3D -1;
-> >       }
-> >
-> > +     if (!ret)
-> > +             msleep(100);
-> > +
->=20
-> you could just add the delay after
->=20
->   if (firmware_stat =3D=3D FIRMWARE_READY_SDIO) {
->=20
-> this would be more read-able to me. Adding also a short comment like
->=20
->   /* Firmware might pretend to be ready, when it's not.
->    * Wait a little bit more as a workaround */
->=20
-
-O.K.
-
->=20
-> Francesco
-
 
