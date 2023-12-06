@@ -1,178 +1,124 @@
-Return-Path: <linux-wireless+bounces-448-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-449-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB03806537
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 03:43:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0F0806543
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 03:48:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07AA51F20FDA
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 02:43:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD8C91C20DF1
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 02:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F303EEC9;
-	Wed,  6 Dec 2023 02:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DADD6AA7;
+	Wed,  6 Dec 2023 02:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="McuL+LZu"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="e4g9PBgZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A1D1AA
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Dec 2023 18:43:46 -0800 (PST)
-Received: by mail-qv1-xf43.google.com with SMTP id 6a1803df08f44-677fba00a49so3576286d6.1
-        for <linux-wireless@vger.kernel.org>; Tue, 05 Dec 2023 18:43:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701830625; x=1702435425; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CHKQqyZy+g524fgsbEY/VwWQxSo6h1c/KOycwt/arPo=;
-        b=McuL+LZu4skcCn2SfTVF58xZdqER4VPJWNUe06dbLBgZRALJlOsyXI2JqiEJDAiFp2
-         eVTUghAdoJsPP43I0orlUTwV32sKGfkEVsaMrh2gLfH1ypvNpJwYwtgRDWEdKWm0yeQq
-         b5pck0Lw930J34f80745M0ABDS4tlqD8PLRiK+dHg4Yf7tFB93POrlEiGGVrwECk3pOE
-         A0cJyqUg4bzCSfhT9ndDEXbDE23nyYhSPjLk1XGkvxNKC4AJVyNbvMp7oNCu95lEgKnq
-         ct5XIXGFrHSxr2FvtqiW77qa8XKIIJEfK4/O+UI3QGISkRjNUV4wmyCoFsTiknpvWXX0
-         JOIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701830625; x=1702435425;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CHKQqyZy+g524fgsbEY/VwWQxSo6h1c/KOycwt/arPo=;
-        b=YJvCd7HZpmAV+lNa6hrjkuseFNp0np5tNFiRCje/+IdWAaE5cV83JL/Vg8vbDZfP+h
-         wxIUY2Jj6AComPWPL3VaUasIGSewSQZm0Psb9SvajC0ZP40yNRWhrt5oCBTD2+ZqAs2U
-         UCgQC59EX423iVdmxjNgbDsLtZIZL4afQRqOxzhHzrN5vP1gbx11LTXFTHbqc9oOslDt
-         89HD3pi5dHLj7WVnwX6IeeaoyiaaVntE4UaWMA4kMa9ZmuK/4W0bKuO5YnVliWbgUDlj
-         Jzyqpl+pZrylWgmHIwPxyDu3E4SiMsDQPoidSH5XfCPnh1ok4XJrL+omlXWqTkhfcyNA
-         XPhg==
-X-Gm-Message-State: AOJu0Yx4LoskVd7FFpbjh3OcFT+5ST68gD8GdlRNR0+mot8m9oFH/988
-	XP68pGFgWD2yMdW7minGwY8=
-X-Google-Smtp-Source: AGHT+IGIaQYxmKovTvb6RA2ApPZOvr488kuKkXz5uSLu+X8THLgukkQscvjv1FJ0krvV6wp3T+2a4g==
-X-Received: by 2002:a05:6214:f2c:b0:67a:a532:d33a with SMTP id iw12-20020a0562140f2c00b0067aa532d33amr4168215qvb.0.1701830625143;
-        Tue, 05 Dec 2023 18:43:45 -0800 (PST)
-Received: from localhost.localdomain ([2600:1700:9850:b60:48c0:d784:7e4c:676])
-        by smtp.gmail.com with ESMTPSA id b16-20020a0ccd10000000b0067acbd864e0sm2015561qvm.69.2023.12.05.18.43.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 18:43:42 -0800 (PST)
-From: Zhenghao Gu <imguzh@gmail.com>
-To: ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-	Zhenghao Gu <imguzh@gmail.com>
-Subject: [PATCH] wifi: ath11k: fix IOMMU errors on buffer rings
-Date: Tue,  5 Dec 2023 20:43:25 -0600
-Message-ID: <20231206024325.27283-1-imguzh@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA73C181
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Dec 2023 18:48:28 -0800 (PST)
+X-UUID: e97cdf2293e111ee8051498923ad61e6-20231206
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=lkky2+2gf5KSjnXjeHOkgH+At/uP60zFAcftF3L3xOA=;
+	b=e4g9PBgZx87IB85KjcL0tXwXwl/rxKFGuGJnRxg3KeukwExqMxyzsIRSAJnihVmYRHIEam1v2OzBVqfqmbQgKJABH3fPY/AKURn/LsyOn6Lc/4GhoHw9j3jfM0mrGzlg+3dor6/fp32Ju46JGsTU6w6qfq+7UoH8C/zHFaf/e1M=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.34,REQID:dfb8e913-44c4-4133-b6d2-d8298963f142,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:abefa75,CLOUDID:129455fd-4a48-46e2-b946-12f04f20af8c,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+	NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: e97cdf2293e111ee8051498923ad61e6-20231206
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+	(envelope-from <allen.ye@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1297972835; Wed, 06 Dec 2023 10:48:18 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Wed, 6 Dec 2023 10:48:16 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Wed, 6 Dec 2023 10:48:16 +0800
+From: Allen Ye <allen.ye@mediatek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: Johannes Berg <johannes.berg@intel.com>, Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, "Money . Wang" <money.wang@mediatek.com>,
+	<linux-mediatek@lists.infradead.org>, Allen.Ye <allen.ye@mediatek.com>
+Subject: [PATCH] wifi: mac80211: Fix SMPS action frame ht cap check
+Date: Wed, 6 Dec 2023 10:47:08 +0800
+Message-ID: <20231206024708.24831-1-allen.ye@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10-4.650400-8.000000
+X-TMASE-MatchedRID: MfleD8Y7obIiXL+V+zm5iRz2MDiYujy5J/I0ITC6MIXtrvVsQ0WdM3VR
+	68i/XPHyIeBgEHp7T0GISleZ//blDUl8m7ENQmOXGfRQPgZTkiosL3b83U5aWdEsTITobgNEU7g
+	EPucszGePqQJ9fQR1zo3/d0NuPcI1dzV8xDXMCuTuykw7cfAoIFY5BBJri9sdmyiLZetSf8mfop
+	0ytGwvXiq2rl3dzGQ19+9ZqEp9FTiOzrPFOrvm+E2taTfkzTK6SSmgndBeJfEt5C8QACngQ6Axq
+	h5n9t0n/POc2x/QXMENRquzAcsw5jW1wfllTMfMEm//fmW4iWAXRoPmWO3jekxwdkPqCq7vDEyN
+	+J8hd+jCS9WgDXVPCvqy+VVvqH2X
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10-4.650400-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP:
+	C38E01A2F9F061E7AA757A5702C2F5699F2967AF10FCF3B65BEAD53E233032E82000:8
+X-MTK: N
 
-virt_to_phys doesn't work on systems with IOMMU enabled,
-which have non-identity physical-to-IOVA mappings.
-It leads to IO_PAGE_FAULTs like this:
-[IO_PAGE_FAULT domain=0x0023 address=0x1cce00000 flags=0x0020]
-and no link can be established.
+From: "Allen.Ye" <allen.ye@mediatek.com>
 
-This patch changes that to dma_map_single(), which works correctly.
+Since there is no HT BSS in 6GHz, the HT Cap check would stop 6G HE/EHT
+BSS from processing the HT action frame for SM Power Save which can be
+also used in an HE BSS. Therefore, we remove the HT Cap check in 6GHz and
+add the HE check accordingly.
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-Signed-off-by: Zhenghao Gu <imguzh@gmail.com>
+Signed-off-by: Money.Wang <money.wang@mediatek.com>
+Signed-off-by: Allen.Ye <allen.ye@mediatek.com>
 ---
- drivers/net/wireless/ath/ath11k/dp.c  | 19 ++++++++++++++++---
- drivers/net/wireless/ath/ath11k/hal.c | 20 ++++++++++++++++++--
- drivers/net/wireless/ath/ath11k/hal.h |  2 ++
- 3 files changed, 36 insertions(+), 5 deletions(-)
+ net/mac80211/rx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
-index d070bcb3f..c74230e4c 100644
---- a/drivers/net/wireless/ath/ath11k/dp.c
-+++ b/drivers/net/wireless/ath/ath11k/dp.c
-@@ -104,11 +104,14 @@ void ath11k_dp_srng_cleanup(struct ath11k_base *ab, struct dp_srng *ring)
- 	if (!ring->vaddr_unaligned)
- 		return;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 64352e4e6d00..f8cd14dc58ec 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3482,7 +3482,8 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 	switch (mgmt->u.action.category) {
+ 	case WLAN_CATEGORY_HT:
+ 		/* reject HT action frames from stations not supporting HT */
+-		if (!rx->link_sta->pub->ht_cap.ht_supported)
++		if (status->band != NL80211_BAND_6GHZ &&
++		    !rx->link_sta->pub->ht_cap.ht_supported)
+ 			goto invalid;
  
--	if (ring->cached)
-+	if (ring->cached) {
-+		dma_unmap_single(ab->dev, ring->paddr_unaligned, ring->size,
-+				 DMA_FROM_DEVICE);
- 		kfree(ring->vaddr_unaligned);
--	else
-+	} else {
- 		dma_free_coherent(ab->dev, ring->size, ring->vaddr_unaligned,
- 				  ring->paddr_unaligned);
-+	}
+ 		if (sdata->vif.type != NL80211_IFTYPE_STATION &&
+@@ -3502,6 +3503,12 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 			enum ieee80211_smps_mode smps_mode;
+ 			struct sta_opmode_info sta_opmode = {};
  
- 	ring->vaddr_unaligned = NULL;
- }
-@@ -249,7 +252,17 @@ int ath11k_dp_srng_setup(struct ath11k_base *ab, struct dp_srng *ring,
- 
- 		if (cached) {
- 			ring->vaddr_unaligned = kzalloc(ring->size, GFP_KERNEL);
--			ring->paddr_unaligned = virt_to_phys(ring->vaddr_unaligned);
-+			if (!ring->vaddr_unaligned)
-+				return -ENOMEM;
++			if (status->band == NL80211_BAND_6GHZ &&
++			    rx->link_sta->pub->he_cap.has_he &&
++			    !(rx->link_sta->pub->he_cap.he_cap_elem.mac_cap_info[5] &
++			    IEEE80211_HE_MAC_CAP5_HE_DYNAMIC_SM_PS))
++				goto invalid;
 +
-+			ring->paddr_unaligned =
-+				dma_map_single(ab->dev, ring->vaddr_unaligned,
-+					       ring->size, DMA_FROM_DEVICE);
-+			if (dma_mapping_error(ab->dev, ring->paddr_unaligned)) {
-+				kfree(ring->vaddr_unaligned);
-+				ring->vaddr_unaligned = NULL;
-+				return -ENOMEM;
-+			}
- 		}
- 	}
- 
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index 0a99aa7dd..bd4cccdba 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -628,15 +628,31 @@ u32 *ath11k_hal_srng_dst_peek(struct ath11k_base *ab, struct hal_srng *srng)
- 	return NULL;
- }
- 
-+u32 *ath11k_hal_srng_dst_peek_with_dma(struct ath11k_base *ab,
-+				       struct hal_srng *srng, dma_addr_t *paddr)
-+{
-+	lockdep_assert_held(&srng->lock);
-+
-+	if (srng->u.dst_ring.tp != srng->u.dst_ring.cached_hp) {
-+		*paddr = (srng->ring_base_paddr +
-+			  sizeof(*srng->ring_base_vaddr) * srng->u.dst_ring.tp);
-+		return (srng->ring_base_vaddr + srng->u.dst_ring.tp);
-+	}
-+
-+	return NULL;
-+}
-+
- static void ath11k_hal_srng_prefetch_desc(struct ath11k_base *ab,
- 					  struct hal_srng *srng)
- {
- 	u32 *desc;
-+	dma_addr_t desc_paddr;
-+
- 
- 	/* prefetch only if desc is available */
--	desc = ath11k_hal_srng_dst_peek(ab, srng);
-+	desc = ath11k_hal_srng_dst_peek_with_dma(ab, srng, &desc_paddr);
- 	if (likely(desc)) {
--		dma_sync_single_for_cpu(ab->dev, virt_to_phys(desc),
-+		dma_sync_single_for_cpu(ab->dev, desc_paddr,
- 					(srng->entry_size * sizeof(u32)),
- 					DMA_FROM_DEVICE);
- 		prefetch(desc);
-diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
-index 1942d41d6..facaf8fe0 100644
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -943,6 +943,8 @@ void ath11k_hal_srng_get_params(struct ath11k_base *ab, struct hal_srng *srng,
- u32 *ath11k_hal_srng_dst_get_next_entry(struct ath11k_base *ab,
- 					struct hal_srng *srng);
- u32 *ath11k_hal_srng_dst_peek(struct ath11k_base *ab, struct hal_srng *srng);
-+u32 *ath11k_hal_srng_dst_peek_with_dma(struct ath11k_base *ab,
-+				       struct hal_srng *srng, dma_addr_t *paddr);
- int ath11k_hal_srng_dst_num_free(struct ath11k_base *ab, struct hal_srng *srng,
- 				 bool sync_hw_ptr);
- u32 *ath11k_hal_srng_src_peek(struct ath11k_base *ab, struct hal_srng *srng);
+ 			if (sdata->vif.type != NL80211_IFTYPE_AP &&
+ 			    sdata->vif.type != NL80211_IFTYPE_AP_VLAN)
+ 				goto handled;
+-- 
+2.18.0
+
 
