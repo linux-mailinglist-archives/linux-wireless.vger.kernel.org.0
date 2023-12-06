@@ -1,44 +1,74 @@
-Return-Path: <linux-wireless+bounces-460-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-461-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E988680672D
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 07:10:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB2F806840
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 08:30:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2DA52819EB
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 06:10:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1507D1C2119A
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 07:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F8610978;
-	Wed,  6 Dec 2023 06:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70014171B4;
+	Wed,  6 Dec 2023 07:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="VwPjwfx+"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fUE3/BWd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [178.154.239.83])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB52D40
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Dec 2023 22:10:39 -0800 (PST)
-Received: from mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0d:61f:0:640:a9f7:0])
-	by forward100a.mail.yandex.net (Yandex) with ESMTP id C2D2E463C7;
-	Wed,  6 Dec 2023 09:10:36 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id aAVo4vAXrCg0-w5kjTKdw;
-	Wed, 06 Dec 2023 09:10:36 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1701843036; bh=bHHl20MsGa/zK0CRXkIvj96+AvefUGhmJvDA+EDk0nE=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=VwPjwfx+WeEqaTvuJUwG1mELDA7haEae/uZSJR06aHB0CcIjjbSY9dGkRcohk5R4B
-	 B5/u10zUOMAvqF1M6ECUodSM6koT5lpEijgzRd/KqL4if0E+0MlVKTf0380aRwfWKL
-	 QzPwMc8MeCyRP6cLUuBWCHYRqZooXdc+n3ElcdOY=
-Authentication-Results: mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: mac80211: cleanup airtime arithmetic with ieee80211_sta_keep_active()
-Date: Wed,  6 Dec 2023 09:09:27 +0300
-Message-ID: <20231206060935.612241-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.43.0
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2040.outbound.protection.outlook.com [40.107.96.40])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C78DB122;
+	Tue,  5 Dec 2023 23:30:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NBXDCjLmlZH34FJlpHavtbpJAzxPhuBXfJyk0eaAOCS9eIiDno/Wm+1aVeY9BMFXlDJlPAJ4nV2JZKtcQr1IYSu8CQAXmyxaKi85NJfwuFVSiycStaN4fWn0pZtruBmfnnmJ6JjZOZfPm8uH6mlA7T9MOzhRhTLrBma5mLWunvZK20zX+Kv3Qw3EgvyCsErjBx+U4ipcD7G4WAJtiyLRWbm/gmFM8CjRpsU3NDnv+LiP+ALDtKxG3RQ2QlKLEGxgJrWN334WkNLWvFn9QE1HYuE+8zeUmkKBBnyFaqh8DKkMkC25mxU4RSrIy2jCH3xykNvaqBasu6qFR7BCEFaxJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/LBQSltf/OuAZAA9ULfOf6/A0ofBoKAwEgYhsLQhqIE=;
+ b=f0+8QAcKlSfp3SZj76yHy4h0SL4jrhNwD60vWNPE3/RKrXC4uFIFstvh7z50RIzwN/QUrwPwXKNMdSKxpftbsfNDigtwAYznj90ouX1q193z5igtcbT6hDE3DMxAJCGLodRr9hGbNIyT+8+5/NRbw9suEcIbTb6dsKg4DWLoOSEyPBPS4ywu8i1i9AIPFjKRYrb7J0MgcIAUN/OxW7uOhlK8/Y9GiiCHzPX+PuL/l36aSYm6Yb5IWEd60DVPlmW9XD53habJ2TAWCWoNLYHBb0oWEkSMPm+bGfEBc4Dd6/ojqAgbe5UNQzlQ9UbOnzzGMg1GRAj1Au6seu3n08dGIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/LBQSltf/OuAZAA9ULfOf6/A0ofBoKAwEgYhsLQhqIE=;
+ b=fUE3/BWd3/me426geUIGYHgl1ojXyg9FHG3ka8DGk0sR0vKH1dm5pDC3ohANuZB8GUc/OSaRpLPaBi0C2+fz/X8pgCHyngV2BxUfkXGnb7BPu2At0tkCtA3L8ALazXdUcwRR/uzQ4/D9VmZBl8ugSi3gcQCYFn+7/BHVXqxv1jI=
+Received: from MW4PR03CA0217.namprd03.prod.outlook.com (2603:10b6:303:b9::12)
+ by BN9PR12MB5179.namprd12.prod.outlook.com (2603:10b6:408:11c::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Wed, 6 Dec
+ 2023 07:30:21 +0000
+Received: from CO1PEPF000044F6.namprd21.prod.outlook.com
+ (2603:10b6:303:b9:cafe::fe) by MW4PR03CA0217.outlook.office365.com
+ (2603:10b6:303:b9::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34 via Frontend
+ Transport; Wed, 6 Dec 2023 07:30:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044F6.mail.protection.outlook.com (10.167.241.196) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7091.2 via Frontend Transport; Wed, 6 Dec 2023 07:30:20 +0000
+Received: from compile-server.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 6 Dec
+ 2023 01:30:15 -0600
+From: Ma Jun <Jun.Ma2@amd.com>
+To: <amd-gfx@lists.freedesktop.org>, <lenb@kernel.org>, <hdegoede@redhat.com>,
+	<johannes@sipsolutions.net>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <alexander.deucher@amd.com>,
+	<Lijo.Lazar@amd.com>, <mario.limonciello@amd.com>, <netdev@vger.kernel.org>,
+	<linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>
+CC: <majun@amd.com>, Ma Jun <Jun.Ma2@amd.com>
+Subject: [PATCH v15 0/9] Enable Wifi RFI interference mitigation feature support
+Date: Wed, 6 Dec 2023 15:29:38 +0800
+Message-ID: <20231206072947.1331729-1-Jun.Ma2@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -46,110 +76,93 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F6:EE_|BN9PR12MB5179:EE_
+X-MS-Office365-Filtering-Correlation-Id: e75513e2-bf47-42ec-485a-08dbf62d3404
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	I7JyOu4YB/qWG/04CJl19LwJQFd+A9ThrANVEr7GuZOL77jVxANYz/Ebfg34zKvDd/NUoaz3C4ZFcNjlxlqS4wAXn+AEWMkR9Qbq53blOsSygDFLyzT2E2vmRgXSExloE4N4AA1yJrwogiOG2q90pumIg9j9Ce0kRmSg/cn3tzSIa3Jeckc0bioIeMU3EXbLFzBAroW+jMDKmvKnGYyb4MkxlAaxX80gV2W6D2LTQp/Ne2UHSGhZCcny8UdoZvw0pFktG5AZK4+o70MIFHyLnCkOVGGqqarBzXSYvHnrzbNOQKo6vGWdzbH+B9lYN8i5LaPHhk6ZF2oTf1cGx8lpxj0Tah8O8ZlKX2jpbgxwVRYX9vT4xw/JY8mU3FEcglzu/umlr82oHuGiAC0a7ijmeedPkoRQJc93Ce8+efLjUBsvNm31QiHnd2951+jUNwf+B+HNX9w/QdAG7pGRH0h6OERkVaHG3/x/gj8TMHeDaeZYtGGsvjVvjAIRO5/pcyViNqgfZStvDi02ASf8l3T2WPLgJ62uKixUDIRs+7Y+kzjeqd2UA0KktSV25Biwq2BKrQy9laip6vrKG4DRvoZOPDBxLpMyUUI5bT6cyeFcaSRmRvotlH/c1una/SKz24WxqqXUvoPN47YUUgzy+j++WOy0q3BNqhjJ++k5QjvjYQlD57En2bIcrPt1eOtiGDhokoC5TGNJTOgpttQBkD1yvp4tU0CybAY7oBSQI0tdx6mUjDqmeRLtMckG0D93A9QuwDO+V0inksvZNSAPbB7oEUYl9OmTUGcS2fSz7JG0Fgc=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(396003)(39860400002)(136003)(376002)(230922051799003)(82310400011)(1800799012)(64100799003)(451199024)(186009)(40470700004)(46966006)(36840700001)(82740400003)(356005)(81166007)(478600001)(5660300002)(2906002)(40480700001)(36860700001)(7416002)(47076005)(83380400001)(86362001)(426003)(2616005)(40460700003)(26005)(1076003)(41300700001)(36756003)(54906003)(70206006)(921008)(110136005)(316002)(70586007)(7696005)(8936002)(6666004)(8676002)(4326008)(16526019)(336012)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 07:30:20.7995
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e75513e2-bf47-42ec-485a-08dbf62d3404
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044F6.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5179
 
-Prefer native jiffies-wide 'unsigned long' for the 'last_active' field of
-'struct airtime_info' and introduce 'ieee80211_sta_keep_active()' for airtime
-check in 'ieee80211_txq_keep_active()' and 'ieee80211_sta_register_airtime()'.
+Due to electrical and mechanical constraints in certain platform designs there
+may be likely interference of relatively high-powered harmonics of the (G-)DDR
+memory clocks with local radio module frequency bands used by Wifi 6/6e/7. To
+mitigate possible RFI interference we introuduced WBRF(Wifi Band RFI mitigation Feature).
+Producers can advertise the frequencies in use and consumers can use this information
+to avoid using these frequencies for sensitive features.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- net/mac80211/ieee80211_i.h | 13 ++++++++-----
- net/mac80211/sta_info.c    |  4 +---
- net/mac80211/sta_info.h    |  2 +-
- net/mac80211/tx.c          |  7 ++-----
- 4 files changed, 12 insertions(+), 14 deletions(-)
+The whole patch set is based on Linux 6.7.0-rc4 With some brief introductions
+as below:
+Patch1:      Document about WBRF
+Patch2:      Core functionality setup for WBRF feature support
+Patch3 - 4:  Bring WBRF support to wifi subsystem.
+Patch5 - 9:  Bring WBRF support to AMD graphics driver.
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 84df104f272b..d284dd570190 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -92,11 +92,14 @@ enum ieee80211_status_data {
- 	IEEE80211_STATUS_SUBDATA_MASK	= 0xff0,
- };
- 
--/*
-- * Keep a station's queues on the active list for deficit accounting purposes
-- * if it was active or queued during the last 100ms
-- */
--#define AIRTIME_ACTIVE_DURATION (HZ / 10)
-+static inline bool
-+ieee80211_sta_keep_active(struct sta_info *sta, u8 ac)
-+{
-+	/* Keep a station's queues on the active list for deficit accounting
-+	 * purposes if it was active or queued during the last 100ms.
-+	 */
-+	return time_before_eq(jiffies, sta->airtime[ac].last_active + HZ / 10);
-+}
- 
- struct ieee80211_bss {
- 	u32 device_ts_beacon, device_ts_presp;
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 0ba613dd1cc4..27ccdfea5c6a 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -2268,7 +2268,6 @@ void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
- 	struct ieee80211_local *local = sta->sdata->local;
- 	u8 ac = ieee80211_ac_from_tid(tid);
- 	u32 airtime = 0;
--	u32 diff;
- 
- 	if (sta->local->airtime_flags & AIRTIME_USE_TX)
- 		airtime += tx_airtime;
-@@ -2279,8 +2278,7 @@ void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
- 	sta->airtime[ac].tx_airtime += tx_airtime;
- 	sta->airtime[ac].rx_airtime += rx_airtime;
- 
--	diff = (u32)jiffies - sta->airtime[ac].last_active;
--	if (diff <= AIRTIME_ACTIVE_DURATION)
-+	if (ieee80211_sta_keep_active(sta, ac))
- 		sta->airtime[ac].deficit -= airtime;
- 
- 	spin_unlock_bh(&local->active_txq_lock[ac]);
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 7acf2223e47a..5ef1554f991f 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -138,7 +138,7 @@ enum ieee80211_agg_stop_reason {
- struct airtime_info {
- 	u64 rx_airtime;
- 	u64 tx_airtime;
--	u32 last_active;
-+	unsigned long last_active;
- 	s32 deficit;
- 	atomic_t aql_tx_pending; /* Estimated airtime for frames pending */
- 	u32 aql_limit_low;
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index ed4fdf655343..314998fdb1a5 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4013,14 +4013,13 @@ ieee80211_txq_set_active(struct txq_info *txqi)
- 		return;
- 
- 	sta = container_of(txqi->txq.sta, struct sta_info, sta);
--	sta->airtime[txqi->txq.ac].last_active = (u32)jiffies;
-+	sta->airtime[txqi->txq.ac].last_active = jiffies;
- }
- 
- static bool
- ieee80211_txq_keep_active(struct txq_info *txqi)
- {
- 	struct sta_info *sta;
--	u32 diff;
- 
- 	if (!txqi->txq.sta)
- 		return false;
-@@ -4029,9 +4028,7 @@ ieee80211_txq_keep_active(struct txq_info *txqi)
- 	if (ieee80211_sta_deficit(sta, txqi->txq.ac) >= 0)
- 		return false;
- 
--	diff = (u32)jiffies - sta->airtime[txqi->txq.ac].last_active;
--
--	return diff <= AIRTIME_ACTIVE_DURATION;
-+	return ieee80211_sta_keep_active(sta, txqi->txq.ac);
- }
- 
- struct ieee80211_txq *ieee80211_next_txq(struct ieee80211_hw *hw, u8 ac)
+Evan Quan (6):
+  cfg80211: expose nl80211_chan_width_to_mhz for wide sharing
+  wifi: mac80211: Add support for WBRF features
+  drm/amd/pm: update driver_if and ppsmc headers for coming wbrf feature
+  drm/amd/pm: setup the framework to support Wifi RFI mitigation feature
+  drm/amd/pm: add flood detection for wbrf events
+  drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.7
+
+Ma Jun (3):
+  Documentation/driver-api: Add document about WBRF mechanism
+  platform/x86/amd: Add support for AMD ACPI based Wifi band RFI
+    mitigation feature
+  drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.0
+
+ Documentation/driver-api/wbrf.rst             |  78 +++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h           |   2 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c       |  17 +
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 208 ++++++++++++
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  42 +++
+ .../inc/pmfw_if/smu13_driver_if_v13_0_0.h     |   3 +-
+ .../inc/pmfw_if/smu13_driver_if_v13_0_7.h     |   3 +-
+ .../pm/swsmu/inc/pmfw_if/smu_v13_0_0_ppsmc.h  |   5 +-
+ .../pm/swsmu/inc/pmfw_if/smu_v13_0_7_ppsmc.h  |   3 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h  |   3 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h  |   4 +
+ .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c    |  48 +++
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  |  22 ++
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  |  13 +
+ drivers/gpu/drm/amd/pm/swsmu/smu_internal.h   |   3 +
+ drivers/platform/x86/amd/Kconfig              |  14 +
+ drivers/platform/x86/amd/Makefile             |   1 +
+ drivers/platform/x86/amd/wbrf.c               | 317 ++++++++++++++++++
+ include/linux/acpi_amd_wbrf.h                 |  91 +++++
+ include/net/cfg80211.h                        |   9 +
+ net/mac80211/Makefile                         |   2 +
+ net/mac80211/chan.c                           |   9 +
+ net/mac80211/ieee80211_i.h                    |   7 +
+ net/mac80211/main.c                           |   2 +
+ net/mac80211/wbrf.c                           |  95 ++++++
+ net/wireless/chan.c                           |   3 +-
+ 26 files changed, 996 insertions(+), 8 deletions(-)
+ create mode 100644 Documentation/driver-api/wbrf.rst
+ create mode 100644 drivers/platform/x86/amd/wbrf.c
+ create mode 100644 include/linux/acpi_amd_wbrf.h
+ create mode 100644 net/mac80211/wbrf.c
+
 -- 
-2.43.0
+2.34.1
 
 
