@@ -1,39 +1,39 @@
-Return-Path: <linux-wireless+bounces-488-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-489-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E7F806E4D
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 12:48:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B590807006
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 13:42:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B2FB1C209AE
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 11:48:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26509281BC7
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 12:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA4034552;
-	Wed,  6 Dec 2023 11:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E2A36AF3;
+	Wed,  6 Dec 2023 12:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=zerobeat@gmx.de header.b="U0Y3VTBE"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="g+IjfALa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45866112
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 03:48:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1701863299; x=1702468099; i=zerobeat@gmx.de;
-	bh=HlzYTxyJM6e6XJ3nYflroePul9idSjxW95FtA152fjY=;
-	h=X-UI-Sender-Class:Date:From:Subject:Cc:To;
-	b=U0Y3VTBE8bAwwidoQMCNBregDclxBPOkqdTTpINy9Z6vdGDRiPx1RMtR4f27ZT2g
-	 /57abovHDifLKCn7ABkx5DOfFJ5XBlnRRZ+Py3Xg0wRowmY+/58oDUdqFrkRWMMiL
-	 jj8UShWGlIJKt9pb2o2pGgClWyR/GH3lg9GfC4+1Ggndj+WRRPc2HLyDGRE4FZJXq
-	 BcGbXOTP7MUfzA1FJoUnIe2MHzp8NhTpkxigxU8/+ZKzQFz1kM/PIUEqkZbbmXABD
-	 b25JHdStxtUBBD4lBPBlAqNB5xPAS5lqJMxSFmlEugriq/GEhKq5DrIyGmJ2cCND9
-	 T8M/HEjHP6mz85y/Pw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.2] ([217.244.252.215]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M3DO3-1rEP9z43LB-003ftQ; Wed, 06
- Dec 2023 12:48:19 +0100
-Message-ID: <5fe2c3dd-5eb8-45df-9717-87808537ff6b@gmx.de>
-Date: Wed, 6 Dec 2023 12:48:18 +0100
+Received: from nbd.name (nbd.name [46.4.11.11])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F65D45
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 04:42:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
+	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=x9WO/b0P+taS6YPKVe/k91Pob2M2MGRPHBtjDtnO9AU=; b=g+IjfALaAiVoIZuRwBvpPF0ECe
+	6kbCsHp2rBLnm9KvRjJjPWecFW8hhETm4+4Ex3PTAzJU70GAOjh/UHeVdJa4NaThAQ5hiK8eSLpiZ
+	KgBEkwkd1hSHDR1MqxmLicbA2m75qBwAhRoVUZraLIlXe0XraiAVGBPH8QAUtjoPpvSw=;
+Received: from p4ff13178.dip0.t-ipconnect.de ([79.241.49.120] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <nbd@nbd.name>)
+	id 1rArE6-009tEU-Uw; Wed, 06 Dec 2023 13:42:07 +0100
+Message-ID: <ddf6f7d8-c4a8-41bb-b34c-65ad0dd92a01@nbd.name>
+Date: Wed, 6 Dec 2023 13:42:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -41,129 +41,223 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: de-DE, en-US, fr-FR
-From: ZeroBeat <ZeroBeat@gmx.de>
-Subject: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
-Cc: Jes.Sorensen@gmail.com
-To: linux-wireless@vger.kernel.org
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------hp1HxFeJf544bPaqdaUh21ei"
-X-Provags-ID: V03:K1:3DLyDw3lG7ZiccNR90YM92kVn5GPspuTpHtqP0RjMTKfIRQxXA1
- t6wVDTpZkPEES2pD/QN2JEgG7zx/gAVupwCikDO63xsTyL/6rnxkwqws9uonYIrgLB9nBxV
- xprlbApGIjfY0EERxDP1BpbEpbV8fZFf+fvhU7QhFTvw3MSCIU65nL3p9nS+xUBAoYmasZk
- E4wxEWp7SrE4lUGrLUP+g==
-UI-OutboundReport: notjunk:1;M01:P0:755svPSACps=;ucTf8hskGeI9djHP0qrB+X/ELmT
- wYTl2luDFPHvVjKASCv+XWRg28FfrN2Gq9gJtc0uSKo3A15ow4rQbLngkA9/9qknLNLx+RCgc
- jkUGZPhOkfGM68qfuPRfis30bfc2ijR0LtC5h749dhD8qLvVc+N/XfYY25ttG2AgCrs9zVsq0
- +EBJLlFLoHgF61bjOhBfpzicc5fDXseTwZkQgOfpdwvNRS31lz9i1qLSM8/AJ5rwdc/ipof0A
- zJsKvqTJQ8J6b6vSpEPPscfGrnGDelIqx2kzPyYDyJYg1SbtJyBYGm9vA22Ez4DwLtot7U7Ox
- X/yhIACrj8MmEQg/FF15JTERdEFvcKu9hRhpZc3WDiZKSVOOBsXMw7yW9Vw4jkqf6apdxwHVO
- eWNyF/FG1gQz6GdcanIcGi8X0eOHrIs857Y3458pGdv4umqCOD0lKtIEwRV7AHA615UuhqYij
- AvgXxvHSYCDB97mdLqAZLhwWPgIBkRZU8cN5Qzu5LbfTKxGDWNpYjemFgkX6OdGP5CdzV7Ef6
- NU4VPwmWoVDUJCwVor8VTz0ne+2lV1cSkMTbPMX1IpNVVG3P3O94TEpbr2apb9q/G4ZzG9x0b
- 5+zEW1SDpNw8oCMKnKGZ5i34fNnISt8v4WljrtIWdW7nON1NAi4NpteDkN1GV/SJ99nngwHM1
- 7xUPKA19Ys/L3IQN/FzTZaUWCIppW23XwQyx9Fd1SvedSyU8UjEVrWvvTRERK2RnXa60lW442
- md0pEGb1u0QxKcTGl7vf4jxEAK1SWLzK2H6ukLrU3TFWHkW2ke0YfRo+fC715YG490EgnZFJG
- IliyNMuUVqfnEUSNiB2JWg7Yg5tGH02YeU+zXCUnOMFgtPgJD0NXC3WXeVg2u3hd/mZpRMVdu
- hqxbDzSbctm74lMTAo0XmOyPL4BWTVP2u5Gpx1rO1Oqpr/1TJ/yCU0LMpmLkxmMu03Tr9AuzF
- Q4jHY7NizslcHU3RF1YmdVs2Dn4=
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------hp1HxFeJf544bPaqdaUh21ei
-Content-Type: multipart/mixed; boundary="------------UUHZ120Ou9lnKdtUdVR9CP00";
- protected-headers="v1"
-From: ZeroBeat <ZeroBeat@gmx.de>
-To: linux-wireless@vger.kernel.org
-Cc: Jes.Sorensen@gmail.com
-Message-ID: <5fe2c3dd-5eb8-45df-9717-87808537ff6b@gmx.de>
-Subject:  [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
-
---------------UUHZ120Ou9lnKdtUdVR9CP00
-Content-Type: multipart/mixed; boundary="------------j1ma7gwnakpNZGCOZ8VU0Uix"
-
---------------j1ma7gwnakpNZGCOZ8VU0Uix
+From: Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76 2023-12-06
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>
+Content-Language: en-US
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 
-RnJvbTogTWljaGFlbCBEaWVja21hbm4gKGh0dHBzOi8vZ2l0aHViLmNvbS9aZXJCZWEpDQpU
-bzogbGludXgtd2lyZWxlc3MNCg0KU3ViamVjdDogW1BBVENIXSB3aWZpOiBSZWFsdGVrOiBy
-dGw4eHh4dSBBZGQgbmV3IGRldmljZSBJRA0KDQpUaGlzIHBhdGNoIHdpbGwgYWRkIGEgbmV3
-IGRldmljZSBJRC4NClBhdGNoIHdpbGwgY2xvc2U6IGh0dHBzOi8vYnVnemlsbGEua2VybmVs
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MjE4MjMxDQoNCg0KVFAtTGluayBUTC1XTjgyMDBORChV
-TikgdjMuMA0KSUQgMjM1NzowMTI2IFRQLUxpbmsgODAyLjExbiBOSUMNCmh0dHBzOi8vd3d3
-LnRwLWxpbmsuY29tL2RlL2hvbWUtbmV0d29ya2luZy9hZGFwdGVyL3RsLXduODIwMG5kLw0K
-U29sZCBpbiBHZXJtYW55Lg0KDQoNCi0tLSBsaW51eC9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYy5vcmlnCTIwMjMtMTItMDYgMTI6Mzg6
-NTEuOTI5NDg0MjUyICswMTAwDQorKysgbGludXgvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMJMjAyMy0xMi0wNiAxMTo1NDoxMi41MjQz
-MDIyNzYgKzAxMDANCkBAIC03OTU3LDYgKzc5NTcsOCBAQCBzdGF0aWMgY29uc3Qgc3RydWN0
-IHVzYl9kZXZpY2VfaWQgZGV2X3RhDQogIC8qIGZvdW5kIGluIHJ0bDgxOTJldSB2ZW5kb3Ig
-ZHJpdmVyICovDQogIHtVU0JfREVWSUNFX0FORF9JTlRFUkZBQ0VfSU5GTygweDIzNTcsIDB4
-MDEwNywgMHhmZiwgMHhmZiwgMHhmZiksDQogIAkuZHJpdmVyX2luZm8gPSAodW5zaWduZWQg
-bG9uZykmcnRsODE5MmV1X2ZvcHN9LA0KK3tVU0JfREVWSUNFX0FORF9JTlRFUkZBQ0VfSU5G
-TygweDIzNTcsIDB4MDEyNiwgMHhmZiwgMHhmZiwgMHhmZiksDQorCS5kcml2ZXJfaW5mbyA9
-ICh1bnNpZ25lZCBsb25nKSZydGw4MTkyZXVfZm9wc30sDQogIHtVU0JfREVWSUNFX0FORF9J
-TlRFUkZBQ0VfSU5GTygweDIwMTksIDB4YWIzMywgMHhmZiwgMHhmZiwgMHhmZiksDQogIAku
-ZHJpdmVyX2luZm8gPSAodW5zaWduZWQgbG9uZykmcnRsODE5MmV1X2ZvcHN9LA0KICB7VVNC
-X0RFVklDRV9BTkRfSU5URVJGQUNFX0lORk8oVVNCX1ZFTkRPUl9JRF9SRUFMVEVLLCAweDgx
-OGMsIDB4ZmYsIDB4ZmYsIDB4ZmYpLA0KDQoNClRoYW5rcyBmb3IgbWFpbnRhaW5pbmcgdGhp
-cyBkcml2ZXIuDQpCZXN0IHJlZ2FyZHMNCk1pY2hhZWwgRGllY2ttYW5uDQo=
---------------j1ma7gwnakpNZGCOZ8VU0Uix
-Content-Type: application/pgp-keys; name="OpenPGP_0x375516A45DB88630.asc"
-Content-Disposition: attachment; filename="OpenPGP_0x375516A45DB88630.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+Hi Kalle,
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+here's my first request for 6.8
 
-xsBNBE5aUQ0BCADlsVJE1z92lgySX+Nro7RSqTCAd6y41EljlISd8fGCoFbu0UBO
-OPHFVQ1RYvjdRf29IUqfrtGjzucMBFs0Z061rna+omw4LqwMeMlMk1GLMWttCAnm
-PQIYqj5BcqtIp5jh1vRggdg3Am6DTHhjqAAnGO+94sW2XnBLESRayGdBrQtUH2UL
-Qe1XvTtG066HB3RtzPNO7irB/UDBs7PfJgXmvF1sQB7UyqEMaMr1Oi5DzYGn8AVa
-zWTjuN7nQ5D8w3hnGbXmtPwm8dhKUO/UQjtOty8K95/0dP4Py/roBUTbNxzrC+Iz
-FAiU5t4l83T1cg8fERl9a3kBB++A0y3OFmi7ABEBAAHNGlplcm9CZWF0IDxaZXJv
-QmVhdEBnbXguZGU+wsB4BBMBAgAiBQJOWlENAhsjBgsJCAcDAgYVCAIJCgsEFgID
-AQIeAQIXgAAKCRA3VRakXbiGMJLfB/4uTRxIRDrMrKXoy5IshxbyPpcKPt2fFsyJ
-7lwozr8bZbYJfbrdXpYH2Arzegqy+gStJ94UNw3e2heihS0x+x8ukOHJ4XmzocDT
-TgQDiciLF/y/T9GwvEeHiaws024hZ729w5eA/Gaa046lkYt6eqfW9+VIkzWMAl0V
-/pNa63QVfHhZWBuj8EYIyCVhysxBa0tDyRPK1Ulih42lDXWCd1yN/ddaKE+m/+Nu
-yWSybV2w/yaboWLQWZNVRRLcdFnognXUo2P3+MM8XNP6EePtQgJaKQ7vfm7RmM8F
-3R8gX6lOiDIPZCoatsbSyPdlQ/rVkIDZ6FT0VW9yfdkV1RRLoCd5zsBNBE5aUQ0B
-CADV1OCkQeXFo+C76N4QMxGf72FGrbbdTMQcyTtVAEgMh5Kkzuuf5OfP5FCGxOtw
-YVXFe8mZeO3C6RrYid2GR0HFkx/wV4w/W68bRa85Hb6hxVddgmPhwvsJQpXItTaX
-AjKH5soPHBmPZcl+3KUfqfL/nA4x4JrUJeMaM/X8Gek+uVbTKhwTvObSxPG6DvOd
-mfHyUM0bhFV48ooC6IIc+VaHwyY1cgCLliErHrpKhIqP/N+UZpwDtZ+r0fFYIkuw
-eJvU+qJmgEgyKrSHY06GspHOMSk5OclLQ8vxvyPbTeemz7fnnYlDc+yBLUfi5/wf
-hW0vBI/pAhFVIvTCOtuLbgVhABEBAAHCwF8EGAECAAkFAk5aUQ0CGwwACgkQN1UW
-pF24hjC74gf/V9YDe9ZnOUobCghW5qMK0wT2EGcl85rAQ878Awt0/ZMiHaCyAvXp
-gsXVKeBFwfGzLdp5RGZJGYnEv3SltrF8uPslcCVmiFe+sZzR8RP61b6fdtRj8x+u
-UMKMojonhQWNbkGcFtjbFZcbL91kjTwXJP8QV/KRaw6w2BtZf8he4LiCU3Mj1VVw
-DIu16iodSb84NyvRRJtoW9qRakS78aDCHhJuPV0o8dDhZie1OqJDFODrlRsfPSCK
-59xYsi6FMxT1fTp9mnh52Qre1YEvOtYgaps8mvtLI0wuJ4QwLgbGPk5WJvooGkKS
-9e9rzZBHTO1QuH+ZvMR4+BDER+Pj9nXw4Q=3D=3D
-=3D5ikK
------END PGP PUBLIC KEY BLOCK-----
+- Felix
 
---------------j1ma7gwnakpNZGCOZ8VU0Uix--
+The following changes since commit 756b31203d482d2dd1aa6c208978b0410dc7530f:
 
---------------UUHZ120Ou9lnKdtUdVR9CP00--
+   wifi: rtw89: fix misbehavior of TX beacon in concurrent mode (2023-12-01 14:43:14 +0200)
 
---------------hp1HxFeJf544bPaqdaUh21ei
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+are available in the Git repository at:
 
------BEGIN PGP SIGNATURE-----
+   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2023-12-06
 
-wsB5BAABCAAjFiEEWSDOHFZ5SK/SwKm3N1UWpF24hjAFAmVwX4IFAwAAAAAACgkQN1UWpF24hjCN
-YQf/ZYmFier0OKwF3GYLM6Id+KAzRil1cy6CM1ppzlHN4OfqUfler2+IN0PHue1anoQUG3OiuOfo
-zCH9iJYfYG/bhCLqVkfLrhED1SP6YnBwOCpsK6xSsnXx7YIaxfAhbDFk1+gO0z5IErcSRQGDfO/F
-2zuuzs0p8u6zTtw/C1AXqBMYljPN1bOYj5maUCE71nsQgY2DtRgGcHBgHaMN18v9GKDiGOnmnKs7
-Ef6hOyXtrUGEa5P0aF+Hua5lDoMA/jGl+YuoRdqCyj8qKXtCLy4YJg1lBORPsFEq28DWJ1hE77Yq
-LFmft5aAYmCvObpLypGSlmCCoibDrbLYbR9ConIvHA==
-=K+6K
------END PGP SIGNATURE-----
+for you to fetch changes up to 131c05dd91da2a13df20d4e5671e7c90d510bf69:
 
---------------hp1HxFeJf544bPaqdaUh21ei--
+   wifi: mt76: mt7921: fix wrong 6Ghz power type (2023-12-06 13:40:37 +0100)
+
+----------------------------------------------------------------
+mt76 patches for 6.8
+
+* fixes
+* nvmem eeprom improvements
+* mt7996 eht improvements
+* mt7996 wed support
+* mt7996 36-bit DMA support
+
+----------------------------------------------------------------
+Allen Ye (2):
+       wifi: mt76: use chainmask for power delta calculation
+       wifi: mt76: connac: add beacon protection support for mt7996
+
+Arnd Bergmann (1):
+       wifi: mt76: mt7996: fix mt7996_mcu_all_sta_info_event struct packing
+
+Benjamin Lin (3):
+       wifi: mt76: mt7996: switch to mcu command for TX GI report
+       wifi: mt76: mt7996: add DMA support for mt7992
+       wifi: mt76: connac: add new definition of tx descriptor
+
+Bo Jiao (1):
+       wifi: mt76: mt7996: add wed rx support
+
+Christian Marangi (6):
+       wifi: mt76: fix broken precal loading from MTD for mt7915
+       wifi: mt76: fix typo in mt76_get_of_eeprom_from_nvmem function
+       wifi: mt76: limit support of precal loading for mt7915 to MTD only
+       wifi: mt76: make mt76_get_of_eeprom static again
+       wifi: mt76: permit to use alternative cell name to eeprom NVMEM load
+       wifi: mt76: permit to load precal from NVMEM cell for mt7915
+
+Howard Hsu (4):
+       wifi: mt76: mt7996: add TX statistics for EHT mode in debugfs
+       wifi: mt76: connac: add thermal protection support for mt7996
+       wifi: mt76: mt7996: add thermal sensor device support
+       wifi: mt76: connac: set fixed_bw bit in TX descriptor for fixed rate frames
+
+Lorenzo Bianconi (13):
+       wifi: mt76: mmio: move mt76_mmio_wed_{init,release}_rx_buf in common code
+       wifi: mt76: move mt76_mmio_wed_offload_{enable,disable} in common code
+       wifi: mt76: move mt76_net_setup_tc in common code
+       wifi: mt76: introduce mt76_queue_is_wed_tx_free utility routine
+       wifi: mt76: introduce wed pointer in mt76_queue
+       wifi: mt76: increase MT_QFLAG_WED_TYPE size
+       wifi: mt76: dma: introduce __mt76_dma_queue_reset utility routine
+       wifi: mt76: mt7996: use u16 for val field in mt7996_mcu_set_rro signature
+       wifi: mt76: move wed reset common code in mt76 module
+       wifi: mt76: mt7996: add wed reset support
+       wifi: mt76: mt7996: add wed rro delete session garbage collector
+       wifi: mt76: mt7915: fallback to non-wed mode if platform_get_resource fails in mt7915_mmio_wed_init()
+       wifi: mt76: mt7925: remove iftype from mt7925_init_eht_caps signature
+
+MeiChia Chiu (2):
+       wifi: mt76: mt7996: fix rate usage of inband discovery frames
+       wifi: mt76: connac: fix EHT phy mode check
+
+Ming Yen Hsieh (3):
+       wifi: mt76: mt7921: fix country count limitation for CLC
+       wifi: mt76: mt7921: fix CLC command timeout when suspend/resume
+       wifi: mt76: mt7921: fix wrong 6Ghz power type
+
+Peter Chiu (4):
+       wifi: mt76: mt7996: adjust WFDMA settings to improve performance
+       wifi: mt76: mt7996: handle IEEE80211_RC_SMPS_CHANGED
+       wifi: mt76: mt7996: align the format of fixed rate command
+       wifi: mt76: mt7996: rework ampdu params setting
+
+Rong Yan (1):
+       wifi: mt76: mt7921: support 5.9/6GHz channel config in acpi
+
+Ryder Lee (1):
+       wifi: mt76: add ability to explicitly forbid LED registration with DT
+
+Sean Wang (1):
+       wifi: mt76: mt7921: reduce the size of MCU firmware download Rx queue
+
+Shayne Chen (4):
+       wifi: mt76: mt7996: add support for variants with auxiliary RX path
+       wifi: mt76: change txpower init to per-phy
+       wifi: mt76: mt7996: add txpower setting support
+       wifi: mt76: mt7996: introduce mt7996_band_valid()
+
+StanleyYP Wang (9):
+       wifi: mt76: connac: add beacon duplicate TX mode support for mt7996
+       wifi: mt76: mt7996: fix alignment of sta info event
+       wifi: mt76: mt7915: fix EEPROM offset of TSSI flag on MT7981
+       wifi: mt76: mt7915: also MT7981 is 3T3R but nss2 on 5 GHz band
+       wifi: mt76: connac: add firmware support for mt7992
+       wifi: mt76: mt7996: rework register offsets for mt7992
+       wifi: mt76: mt7996: support mt7992 eeprom loading
+       wifi: mt76: mt7996: adjust interface num and wtbl size for mt7992
+       wifi: mt76: mt7996: add PCI IDs for mt7992
+
+Sujuan Chen (3):
+       wifi: mt76: mt7996: add wed tx support
+       wifi: mt76: mt7996: fix the size of struct bss_rate_tlv
+       wifi: mt76: mt7996: set DMA mask to 36 bits for boards with more than 4GB of RAM
+
+Uwe Kleine-König (1):
+       wifi: mt76: Convert to platform remove callback returning void
+
+Wang Zhao (1):
+       wifi: mt76: mt7921s: fix workqueue problem causes STA association fail
+
+Wu Yunchuan (1):
+       wifi: mt76: Remove unnecessary (void*) conversions
+
+Yi-Chia Hsieh (1):
+       wifi: mt76: mt7996: fix uninitialized variable in parsing txfree
+
+  drivers/net/wireless/mediatek/mt76/dma.c              | 252 ++++++++++++++++++++++++++++++++++++++++----------------
+  drivers/net/wireless/mediatek/mt76/dma.h              |  54 ++++++++++++
+  drivers/net/wireless/mediatek/mt76/eeprom.c           |  22 ++---
+  drivers/net/wireless/mediatek/mt76/mac80211.c         |  60 ++++++++++----
+  drivers/net/wireless/mediatek/mt76/mmio.c             | 106 ++++++++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt76.h             | 105 +++++++++++++++++++++---
+  drivers/net/wireless/mediatek/mt76/mt7603/dma.c       |   9 +-
+  drivers/net/wireless/mediatek/mt76/mt7603/soc.c       |   7 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/dma.c       |   6 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c       |   4 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/sdio.c      |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/soc.c       |   6 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac.h      |   8 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h |   7 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c  |   5 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c  |   5 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h  |  29 ++++++-
+  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c     |   5 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/dma.c       |  46 ++++-------
+  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c    |   7 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h    |   3 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/init.c      |  30 ++++---
+  drivers/net/wireless/mediatek/mt76/mt7915/mac.c       |   6 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/main.c      |  21 +----
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c       |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h       |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/mmio.c      | 118 ++------------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h    |   3 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/soc.c       |   6 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/init.c      |  23 ++++--
+  drivers/net/wireless/mediatek/mt76/mt7921/main.c      |  38 ++++++++-
+  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c       |  17 ++--
+  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h    |   4 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/pci.c       |   7 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c      |   4 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c  |   3 +-
+  drivers/net/wireless/mediatek/mt76/mt7925/main.c      |   5 +-
+  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c       |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7925/pci.c       |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt792x.h           |   6 ++
+  drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c  |  53 ++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h  |   2 +
+  drivers/net/wireless/mediatek/mt76/mt792x_mac.c       |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c   |   5 +-
+  drivers/net/wireless/mediatek/mt76/mt7996/dma.c       | 398 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------
+  drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c    |  38 +++++++--
+  drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h    |   3 +
+  drivers/net/wireless/mediatek/mt76/mt7996/init.c      | 520 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------
+  drivers/net/wireless/mediatek/mt76/mt7996/mac.c       | 215 +++++++++++++++++++++++++++++++-----------------
+  drivers/net/wireless/mediatek/mt76/mt7996/main.c      |  89 +++++++++++++++++---
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c       | 642 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.h       | 249 +++++++++++++++++++++++++++++++++++++++++++++++++++++--
+  drivers/net/wireless/mediatek/mt76/mt7996/mmio.c      | 295 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h    | 160 ++++++++++++++++++++++++++++++++----
+  drivers/net/wireless/mediatek/mt76/mt7996/pci.c       |  79 +++++++++++++-----
+  drivers/net/wireless/mediatek/mt76/mt7996/regs.h      | 182 +++++++++++++++++++++++++++++++++-------
+  drivers/net/wireless/mediatek/mt76/sdio.c             |  18 ++--
+  57 files changed, 3254 insertions(+), 743 deletions(-)
 
