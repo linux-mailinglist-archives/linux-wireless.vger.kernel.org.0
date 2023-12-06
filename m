@@ -1,150 +1,63 @@
-Return-Path: <linux-wireless+bounces-515-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-516-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54BB807ACC
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 22:51:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3DA807BAE
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 23:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3A261C20C24
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 21:51:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58E43281839
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 22:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0567096C;
-	Wed,  6 Dec 2023 21:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5209A70997;
+	Wed,  6 Dec 2023 22:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J313xbSo"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="upHrR79U"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C339ED42;
-	Wed,  6 Dec 2023 13:51:06 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-40c0a074e71so2837955e9.1;
-        Wed, 06 Dec 2023 13:51:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701899465; x=1702504265; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N+bw+tDNuJiNTA9scoos2n9st92UmYYFOHAL4nx5iZ4=;
-        b=J313xbSoS1m3cM2WaV05RHtiFfUrxfrv/qVPgWc3kwXjXz0X9F6zckN9QPvykWg+U4
-         adogJ9HtDeEso7OPso8EvwGpbk0lR+uVR4atPO0ekIGoDkrhfado2v/n1J9jzsEx/L19
-         oWCdj5E+Kc4n0xah7bKvW+DK7f5uQDZ13UwvHTgLyheOl0ZVW/p42u5JOHTPXvH4Pqu4
-         uoYEuNin6ZK8gKDVFkC1aYf9cFPZRz/aecFkRTGsLxQICbD3zrgsm/b6NoUhAHyS0ifS
-         IILrYIKQ+srs+vmNwq/eCAVrHFXmv01Za8Z4yhJiEYfyiqj9m3dBBq+t3URI06+fMwne
-         9M7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701899465; x=1702504265;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N+bw+tDNuJiNTA9scoos2n9st92UmYYFOHAL4nx5iZ4=;
-        b=T0Ns+ScTgmQt1w/jvJaSW/zIMdbOunygEyAq42DWYkKMENIWVGYW0CHfNxfvYrOag5
-         S+DzgOPwMeAkKp2S41nZ6nZS6lJxvbEsKmq+fJDZmrs0GYl9SJ+yo43tgKSzYYHCiw+p
-         MgEV1Uz1sXjttxGlivqgiMlTjwH5TNKxwdugQtMBFapFBLbfbAARM9G7dZ7W92qAXTIR
-         nIN3DYNMnA7/7N5U7GBEmMjrq6SxwGAZCloeQ2jDZPuP9RN10kjYoMIAiv9vr+6EJj1d
-         ikldhyns297teje3P6GMwJf/f4tdH58avgkt+ap/dVbXxo4XayzHJSaj0Pd11ShZfiXm
-         SSTg==
-X-Gm-Message-State: AOJu0YweM4uh99MoPpVQANQPgfhJ0F0FatKWpEMu6atTxV/rCMteZmg0
-	QBtoIjkVD45J9pZE1gosZQ==
-X-Google-Smtp-Source: AGHT+IEJyjduAoDIjiSdjCLDQ4kqY7Z90qAE5DWZ31X/60ZKW7AEBCZ7dtzC4hGPJXDyw7i5gN2VZw==
-X-Received: by 2002:a05:6000:1e86:b0:32d:14c5:643d with SMTP id dd6-20020a0560001e8600b0032d14c5643dmr1075022wrb.5.1701899464752;
-        Wed, 06 Dec 2023 13:51:04 -0800 (PST)
-Received: from ?IPV6:2a02:810b:f40:4300:5c34:4983:d206:9f? ([2a02:810b:f40:4300:5c34:4983:d206:9f])
-        by smtp.gmail.com with ESMTPSA id o15-20020a5d408f000000b00333381c6e12sm613661wrp.40.2023.12.06.13.51.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Dec 2023 13:51:04 -0800 (PST)
-Message-ID: <f0f3a0fd-8019-4950-8682-902cf985a81e@gmail.com>
-Date: Wed, 6 Dec 2023 22:51:03 +0100
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D452D18D
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 14:52:42 -0800 (PST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1701903160; bh=DczOegt1+I90oTxtgqgKOl5ZDtesbrsjx0yi+MFHP4w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=upHrR79UXAAIfnW8H2OGD+SXGNkVNOcLdv2Pn708Pf1X2hi9SeX0m0/du/9Avatdj
+	 m7OHomMIcA1rnDR6S+0fmceOxvPPwhxBXmoURWm7g1oLTnVdnJG1EpMkcvnQ38hNWp
+	 DtnumeHZ26pRzvAViR4pQQQdpQsYAxUvW3pEvGdDfbxsTs8Ro1IhjDsMw82/iqDE1C
+	 H5y4QTV7qCBBmu+Rye5IXCLHK6W8a71sODE/Di0qpyE8cZ+uoAUhbe1ZeF2NvvI6dk
+	 /0mvxGWQpnFGi4HB/WLqe2Aa9Hpb9AGyHFU9ZwyyqhZlgSUp8G6WXlVDh3bPpJuvxx
+	 mGCroeL2WvgQQ==
+To: Dmitry Antipov <dmantipov@yandex.ru>, Johannes Berg
+ <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, Dmitry Antipov <dmantipov@yandex.ru>
+Subject: Re: [PATCH] wifi: mac80211: cleanup airtime arithmetic with
+ ieee80211_sta_keep_active()
+In-Reply-To: <20231206060935.612241-1-dmantipov@yandex.ru>
+References: <20231206060935.612241-1-dmantipov@yandex.ru>
+Date: Wed, 06 Dec 2023 23:52:39 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87v89bkkp4.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mwifiex: Restore USB8897 chipset support
-Content-Language: en-US
-To: Brian Norris <briannorris@chromium.org>
-Cc: Amitkumar Karwar <amitkumar.karwar@nxp.com>,
- Ganapathi Bhat <ganapathi.bhat@nxp.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20231205210237.209332-1-knaerzche@gmail.com>
- <ZXDHgo5QnZjb237S@google.com> <ZXDH5S7rM32y48Fc@google.com>
-From: Alex Bee <knaerzche@gmail.com>
-In-Reply-To: <ZXDH5S7rM32y48Fc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Brian,
+Dmitry Antipov <dmantipov@yandex.ru> writes:
 
-Am 06.12.23 um 20:13 schrieb Brian Norris:
-> (Altering CC list; sorry, I didn't notice the RESEND at first)
+> Prefer native jiffies-wide 'unsigned long' for the 'last_active' field of
+> 'struct airtime_info' and introduce 'ieee80211_sta_keep_active()' for air=
+time
+> check in 'ieee80211_txq_keep_active()' and 'ieee80211_sta_register_airtim=
+e()'.
 >
-> On Wed, Dec 06, 2023 at 11:12:02AM -0800, Brian Norris wrote:
->> On Tue, Dec 05, 2023 at 10:02:37PM +0100, Alex Bee wrote:
->>> This patch restores USB8897 support which was removed with
->>> Commit 60a188a2715f ("mwifiex: remove USB8897 chipset support")
->> Did you look at the reason for that removal?
-I did. And honestly I didn't understand it - in the first place.
->> "if both mwifiex_pcie and mwifiex_usb modules are enabled by user,
->> sometimes mwifiex_usb wins the race even if user wants wlan interface to
->> be on PCIe and USB for bluetooth. This patch solves the problem."
->>
->> That sounds like a legitimate problem, even if the solution isn't
->> perfect. Do you have any alternatives?
->>
->> I don't have such hardware, so I don't know its behaviors nor can I test
->> it. But it'd be nice if we could differentiate USB-only vs PCIe+USB
->> somehow.
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-I re-tried to decipher the commit message and re-checked everything and 
-I think the patch is fine as is:
+Sure, this seems like a reasonable cleanup!
 
-What they probably mean in the commit message is: There is an USB id 
-clash for 1286:2046 with their "Marvell NFC-over-USB driver" [0]. So 
-that has nothing to do with bluetooth :)
-However Commit 8a81a96bd116 ("NFC: nfcmrvl: update USB device id") 
-restricted the InterfaceSubClass and the InterfaceProtocol for those 
-devices, so that this clash does no longer exist. This patch here takes 
-the correct ones fot this wifi adapter (I checked with lsusb).
-
-If it's not that I really don't know what they mean: Neither 1286:2045 
-nor 1286:2046 usb ids are used anywhere else tree-wide.
-
-[0] https://cateee.net/lkddb/web-lkddb/NFC_MRVL_USB.html
-
-Fine?
-
-Alex
-
->>> There are quite some devices which use this chipset with USB interface.
->>> The firmware still exits in linux upstream firmware repo and this simple
->>> patch is all what is required to support it in upstream linux (again).
->>>
->>> Signed-off-by: Alex Bee <knaerzche@gmail.com>
->>> ---
->>> Recently I upstreamed support for Geniatec XPI-3128 SBC which actually
->>> has one any of those boards soldered to the onboard USB Host controller.
->>> Geniatech has some boards [0], [1], [2] (maybe more) which have this
->>> variant soldered the same way. (optional)
->>> I've also read that "Xbox Wireless adapter for Windows" uses this chipset
->>> (unverified).
->>> I've also CC'ed Ganapathi Bhat who last updated the firmware for SDIO and
->>> PCIe variant of this chipset: It would be great if the firmware
->>> for USB variant could get an update too, as the one which we currently
->>> have is quite old - version 15.68.4.p103, while other have some 16.*
->>> firmware.
->> The old maintainers here seem to have gone AWOL, so I wouldn't hold my
->> breath on getting any support from them.
->>
->> Brian
->>
->>> [0] https://www.geniatech.com/product/xpi-3288/
->>> [1] https://www.geniatech.com/product/xpi-imx8mm/
->>> [2] https://www.geniatech.com/product/xpi-s905x/
->>>   
->>>   drivers/net/wireless/marvell/mwifiex/Kconfig |  4 ++--
->>>   drivers/net/wireless/marvell/mwifiex/usb.c   | 14 ++++++++++++++
->>>   drivers/net/wireless/marvell/mwifiex/usb.h   |  3 +++
->>>   3 files changed, 19 insertions(+), 2 deletions(-)
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
 
