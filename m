@@ -1,141 +1,190 @@
-Return-Path: <linux-wireless+bounces-443-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-444-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0AB8062C8
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 00:15:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330BE806463
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 02:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70244B20E6D
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Dec 2023 23:15:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B48251F20FF0
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 01:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC96405EB;
-	Tue,  5 Dec 2023 23:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75EC220F9;
+	Wed,  6 Dec 2023 01:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="grYKTf2Q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail1.merlins.org (magic.merlins.org [209.81.13.136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69244AC;
-	Tue,  5 Dec 2023 15:15:13 -0800 (PST)
-Received: from c-76-132-34-178.hsd1.ca.comcast.net ([76.132.34.178]:39188 helo=sauron.svh.merlins.org)
-	by mail1.merlins.org with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.94.2 #2)
-	id 1rAedB-0004yz-W0 by authid <merlins.org> with srv_auth_plain; Tue, 05 Dec 2023 15:15:09 -0800
-Received: from merlin by sauron.svh.merlins.org with local (Exim 4.92)
-	(envelope-from <marc@merlins.org>)
-	id 1rAedB-000naT-BZ; Tue, 05 Dec 2023 15:15:09 -0800
-Date: Tue, 5 Dec 2023 15:15:09 -0800
-From: Marc MERLIN <marc@merlins.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	linux-wireless@vger.kernel.org, ilw@linux.intel.com,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [RFC PATCH] net: ethtool: do runtime PM outside RTNL
-Message-ID: <20231205231509.GA181276@merlins.org>
-References: <20231204200710.40c291e60cea.I2deb5804ef1739a2af307283d320ef7d82456494@changeid>
- <20231204200038.GA9330@merlins.org>
- <a6ac887f7ce8af0235558752d0c781b817f1795a.camel@sipsolutions.net>
- <20231204203622.GB9330@merlins.org>
- <24577c9b8b4d398fe34bd756354c33b80cf67720.camel@sipsolutions.net>
- <20231204205439.GA32680@merlins.org>
- <20231204212849.GA25864@merlins.org>
- <20231205024652.GA12805@merlins.org>
- <1d986c73c1d39b0cced7d8d2119fba4b2a02418b.camel@sipsolutions.net>
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2045.outbound.protection.outlook.com [40.107.247.45])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9C51AA;
+	Tue,  5 Dec 2023 17:49:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PvSK+tJvYLIWednmPMRvTGojWy7MXWEH/MOKYXHl8IUD2wOGWZSQ8bK2WjjgDX+PUodo3NCCnrLmB1Uf2Xmq1dvOA9vfudLJgbDTi2IJZgApT5RqhOyUvdbKK6Siepj80nBx6bVLGVoTk6Vzsy2F0YVwZ5lNEPcOg5KARzoZYMhSkFbJTuNQjSD+jdQ6wJ/l9IuOACZATgTUSweZquZ+gry7dweVHD2wd8C99DM8LVSbMHrjcJNaper5aHPWaBWFIlASGkXPICeBAtNNkGomIuBYYU0dPLkUDBTNYA7CeAsOeyDlDShbfq74/JH1eRjQ77Xk5Z1fxzNQK5eKRM/IEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6F47MIrjxAU2QIwCv45okn59g2XwUWaKijM5SOaAf7U=;
+ b=SNcefvwOXujVzZjX+hQ3tZvo/EWubO2lHFTbtdwe8daUSCyG6oUyrDahXb1P5fOsYi6MdPFbblg0iBarY66rqSt4VmBn7ViLP5ilMAtD2mqalG7g+JSkKOPK0LQY1hPCv07gFGwWmrbPKEk1lHprflew/yBVTtgWgwh8x7JpHwtm7jiO2H2ZL31zTtPb0kV8lh7UE/F6aGx2y8WpJpoXRJNUwbKGZdqzPHzEJgrgBrpxjS51BTttsfldSZM0E0Dgl8ZknZ13j0+yclaz7d9Nch8BWQ2u+bFtCRTrcrQw1VqU1UrA4r291E3pxjet0S28Ae1T7lphKP5lDRAowD6dNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6F47MIrjxAU2QIwCv45okn59g2XwUWaKijM5SOaAf7U=;
+ b=grYKTf2QPMcYmWou5L0XmJpyTCf7Im5MtJjOQ0yfwteuTDWY3fFUaAAjH/ikZWSbCSwLJU/tqX/wTKLypqoX4mzOtgxH35IZAbzZlqAx3PDTEuFDrtPoEeh7DG0da1Bki5FJXWK1fnmS3DCDCNX+EtQhMbVfd0YKMiVYmyjfCt4=
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
+ by AS8PR04MB8181.eurprd04.prod.outlook.com (2603:10a6:20b:3f5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.24; Wed, 6 Dec
+ 2023 01:49:35 +0000
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::34dd:289e:9e8b:9c9b]) by PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::34dd:289e:9e8b:9c9b%7]) with mapi id 15.20.7068.022; Wed, 6 Dec 2023
+ 01:49:35 +0000
+From: David Lin <yu-hao.lin@nxp.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"briannorris@chromium.org" <briannorris@chromium.org>, "kvalo@kernel.org"
+	<kvalo@kernel.org>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: RE: [EXT] Re: [PATCH v7 00/12] wifi: mwifiex: added code to support
+ host mlme.
+Thread-Topic: [EXT] Re: [PATCH v7 00/12] wifi: mwifiex: added code to support
+ host mlme.
+Thread-Index: AQHaIdVRwVjPeSM2JEKuatsKwEyar7CUVRkAgAC6w/CABhQEgIAAZSfw
+Date: Wed, 6 Dec 2023 01:49:35 +0000
+Message-ID:
+ <PA4PR04MB9638E7962C38BC839F1E2826D184A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <20231128083115.613235-1-yu-hao.lin@nxp.com>
+ <ZWnIMGytEdDCySS8@francesco-nb.int.toradex.com>
+ <PA4PR04MB9638E6F1128DE4ED977E0D07D181A@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZW9+Iz9a3tEv3CpM@francesco-nb.int.toradex.com>
+In-Reply-To: <ZW9+Iz9a3tEv3CpM@francesco-nb.int.toradex.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|AS8PR04MB8181:EE_
+x-ms-office365-filtering-correlation-id: 81c7f5d8-5219-48b6-4f70-08dbf5fd9993
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ pesOtiSSnYeEBjcPZUg78Z7TnHcvCuqjGeVAht20JPoVJFc5PEXykAkCg21iCssZq1EuvPnhFAuBH0S10Nd+WfpqW6I//X4Rs1E7EhBxtYIpoUCoEPrycwEFKjmrNCRXj3z1nYjok8aEJ7k+rqBgQweMuu+9Ig5gW/VZi8WFp64VSXLh4hGO4ULaWJVHy6epCLu5CzRqigffTPvOV7NPB7slnUsCg8MRNUsoMO+Oul79HTYdFdjHkfMvwKAQDXzZNI+nENDSInQcFNfi/pOjJpulA8hAe5gqupddR//3mgC+Py+bvMkd0IzTdfDYM9fKBInHR0a6BiO8OaNOoqXpXpDbduJwkteaZcGzIvf3VadD1KlzE93Jto8p+nIcu8CCRhEBvxhY8rULV5z+NtVrSPKRAJL8OBHbsM1C7JlJEJZuaar42vlvBZiErPc/v/c9q6sVMFFqR7Xm/nYy5j6svPmuyjT+PGqZXIuLQnAb0TaH9rt/cjEaDz7KWIfEyc6Nt7GuFPJnNiD4SEM0iMT3gWzGNaHDfE4p6Gf8wR2W7OlUoky76+6+gsSYUvakXkBuc6NRJbQu82249DQgxj4b89uKe2u+Bq2qHIreYtuBHKpHcG0fqkgMJVyVxTBnHjLXHJxcs5177vGgnmBPGtxkMzGDVuaWdGCJ7sQY85qBM1c=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39860400002)(376002)(346002)(366004)(396003)(230922051799003)(230173577357003)(230273577357003)(451199024)(186009)(1800799012)(64100799003)(8936002)(8676002)(4326008)(7696005)(6506007)(53546011)(52536014)(71200400001)(26005)(9686003)(54906003)(66946007)(316002)(66556008)(76116006)(66476007)(64756008)(6916009)(66446008)(478600001)(41300700001)(38070700009)(5660300002)(2906002)(86362001)(38100700002)(122000001)(33656002)(55016003)(83380400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Zur8bME9BAkymyycFqpbTxU0FwKNGlCrUIIAZLw48CyEqkaP6d9s0m9qaga8?=
+ =?us-ascii?Q?PjcT2tKEkQNXamLImNRGocA6/phZPuUoc5DHf4bwVnpeVO5auO/lwZcVh4Vl?=
+ =?us-ascii?Q?k7czIZXOxPnhg4dl94kJSheQdUzHtZ+640gn9qKObSmrSgKSQojBsLyqTyLy?=
+ =?us-ascii?Q?oL3PCQrHuQPlOmb9ugSWdOSO831ZZHqB62qC46Q4bVPsMFgChbFqR+RCVpxc?=
+ =?us-ascii?Q?qhvQyhohQisNGhQPzO7+86YFleo1LXVpYO0eXfCGAYxG07Q7iIe0u+Ui1qSb?=
+ =?us-ascii?Q?1ScZ4aJOqcSNgHfGUrA+izeu/N1Y6HMGUuEtGTanlaaJHVJ9Gf0DqUKQVqj4?=
+ =?us-ascii?Q?qNZbBpVYBviwxJFCgAAYpZElgeoWQZKzsSqUQnJZP0wbOLMG4EmxbvTayS3h?=
+ =?us-ascii?Q?0JuuF5Y5ZjTfKa6Ibxi0pwfOLIOl1RNWjE9zwzpE/u0Fj72sKr/tDHcnhmnb?=
+ =?us-ascii?Q?kM9WAh8lnWdr6+Er+o0jKDv+50+jUS8BY4Py5VaS0/t1wVi///5cV1VMOqoJ?=
+ =?us-ascii?Q?8BrhfZCccGchjXBA47KmE9GOsB8qbv0jqYFVzI4ek2CaJIxie53IoPJPqHfJ?=
+ =?us-ascii?Q?mBtaIuNRGJPTzWgzOHIXB+ttpiIi3mCHpwiToH8A8z5FdwjcM4n1Peua0ore?=
+ =?us-ascii?Q?2sfvB0PEdoOIj1Pf3EhfCa8w3CfFETvFsjlJ/Nhr7tdiW4ZeIhaJO2iMH+Zu?=
+ =?us-ascii?Q?sdKcj/ZqUcveBU/3805W4gwcbzivUOI2Av0k/z3OdeO4+mPaTJ8xrwWjyMpc?=
+ =?us-ascii?Q?vTnEnhhmLmNvyU3Ulv1NrGy6Qirawi9jIJ35SsGIN1QWXavwoL6UWKcnHOi8?=
+ =?us-ascii?Q?FekUBqsJHe67jR8a1mNHQ3MOM4AsehGoPIZ4sdZpbQEnHSzIJ828a+VqQHcv?=
+ =?us-ascii?Q?f2GBiFMA5dLCbPxg7uxOcyFGVyGTU6cw+DX54Ih6uHT6qcLQpUsWFhZSrgyH?=
+ =?us-ascii?Q?wTOdnvt3fUjGuL9dSmFAahzuZ1wLEcX27FYtwlB7iGpdcGUCT6vsCCxFBUPm?=
+ =?us-ascii?Q?AkN8z9mWiShsMCdDVEK/SsVUzVnN+6gjBEvQ0l9aeoAJCq4LDlX6pWKw0Tkr?=
+ =?us-ascii?Q?Y6ulDWtIbyfAK6tFvd4MmVY1b2GddFCrTPxU3gbPr6ZPSAXFzl2fRgt6SoEK?=
+ =?us-ascii?Q?P+FfGkvuNE1RumNPoufN5Q7UsxKjM1kzv4n3UE/EjIap1Ut14AqwU/Jq3sco?=
+ =?us-ascii?Q?muKqBWEqMIgTYf2fo5XqTDd24x3i/fCWSBHelfMoDKKfDZuUB4UlfIes/HE0?=
+ =?us-ascii?Q?6fUdPUVvlLqyrCnQ//Xry7D4I26npl2QeX/HYKqm3JC2GQxUHo1BYrFl2953?=
+ =?us-ascii?Q?RFUtwPYaI+zc0gY7mtWHgy45e0xqdAV+lzY2ZiT8u3X70W8oXvUVTK9SaS0U?=
+ =?us-ascii?Q?yXHOoK2gEDpo4c4TJBFnGgP1MQ7c0+ss1M/6d0H+EkFoLPfc6P7hY/EYYIvK?=
+ =?us-ascii?Q?6n4UhCuMwWF/HdEPpOF+64Hc1rSuF1lRh8u/YN4mAPt7CTV5elaFxYBOWgx6?=
+ =?us-ascii?Q?Mw7MOUUma3dKeyENZYRUCOxp3id5QZ48Lyl3hLys6ASLwTUDg/2m37plP0Ci?=
+ =?us-ascii?Q?tAOHE2pzEN500oDncsonz2UTnEMrlpUs0ul2Ci9C?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d986c73c1d39b0cced7d8d2119fba4b2a02418b.camel@sipsolutions.net>
-X-Sysadmin: BOFH
-X-URL: http://marc.merlins.org/
-X-SA-Exim-Connect-IP: 76.132.34.178
-X-SA-Exim-Mail-From: marc@merlins.org
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81c7f5d8-5219-48b6-4f70-08dbf5fd9993
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2023 01:49:35.4575
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qGOzyrMO1Ip3ci8EbUjSMd0Qke972NJAWc/ZhEGKqxsWJFKiS7P8sF5NEiLA0Rh4zsT2eN6zYAlIwk/3WzjBwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8181
 
-On Tue, Dec 05, 2023 at 08:33:02PM +0100, Johannes Berg wrote:
-> On Mon, 2023-12-04 at 18:46 -0800, Marc MERLIN wrote:
-> > 
-> > [13323.572484] iwlwifi 0000:09:00.0: TB bug workaround: copied 152 bytes from 0xffffff68 to 0xfd080000
-> > [13328.000825] iwlwifi 0000:09:00.0: TB bug workaround: copied 1272 bytes from 0xfffffb08 to 0xff42c000
-> > [13367.278564] iwlwifi 0000:09:00.0: TB bug workaround: copied 1328 bytes from 0xfffffad0 to 0xfec41000
-> > [13389.737971] iwlwifi 0000:09:00.0: TB bug workaround: copied 572 bytes from 0xfffffdc4 to 0xff091000
-> > [13389.860480] iwlwifi 0000:09:00.0: TB bug workaround: copied 148 bytes from 0xffffff6c to 0xfe412000
-> > [13393.435354] iwlwifi 0000:09:00.0: TB bug workaround: copied 360 bytes from 0xfffffe98 to 0xfedcd000
-> > [13409.827199] iwlwifi 0000:09:00.0: TB bug workaround: copied 1348 bytes from 0xfffffabc to 0xfd057000
-> 
-> That's fine, just working around a HW bug on 2^32 address boundaries.
-> 
-> I had a patch a long time ago to make those messages not appear ... not
-> sure where it ended up.
+> From: Francesco Dolcini <francesco@dolcini.it>
+> Sent: Wednesday, December 6, 2023 3:47 AM
+> To: David Lin <yu-hao.lin@nxp.com>
+> Cc: Francesco Dolcini <francesco@dolcini.it>; linux-wireless@vger.kernel.=
+org;
+> linux-kernel@vger.kernel.org; briannorris@chromium.org; kvalo@kernel.org;
+> Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+> Subject: Re: [EXT] Re: [PATCH v7 00/12] wifi: mwifiex: added code to supp=
+ort
+> host mlme.
+>=20
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report
+> this email' button
+>=20
+>=20
+> On Fri, Dec 01, 2023 at 11:05:47PM +0000, David Lin wrote:
+> > > On Tue, Nov 28, 2023 at 04:31:03PM +0800, David Lin wrote:
+> > > > 5. Address reviewer comments.
+> > > You should list the changes you did, something that generic is
+> > > forcing the reviewer to compare v7 vs v6 to known what changed.
+> >
+> > Can I summary what should I do and hopefully I can make agreement with
+> you:
+> >
+> > 1. Separate patch v7 6/12 as a single patch.
+> > 2. Merged all other patches as a single patch for host mlme.
+>=20
+> I would suggest to proceed the following way:
+>=20
+>  1. v8 of this series should have only 2 patches
+>    - PATCH v8 1/2 : add host mle station support.
+>    - PATCH v8 2/2 : add host mle AP support.
+>=20
+>    Any kind of fix on these 2 new functionalities should be squashed in
+>    these single 2 patches. No commit to add a functionality with a bug
+>    that is fixed with a follow-up commit. If you discover bugs during
+>    your testing this is great, just amend the original commit that
+>    introduced it.
+>=20
+>    I am assuming that is fair to implement station and AP support in
+>    separated patches, please speak up if this is not the case.
+>=20
+>  2.  PATCH v7 06/12: this should be send as a new separate patch, with a
+>      Fixes: tag and Cc:stable.
+>=20
+> > So there should be no patch v8 and only have two patches, one for host
+> > mlme and another one to fix hostap restart issue.
+>=20
+> It's ok to have a v8, restarting another series will be even more confusi=
+ng IMO.
+>=20
 
-About this wifi chip (AX210/AX211/AX411), one last issue I have with it is when I go to
-batteries, it burns a lot of power:
-> The battery reports a discharge rate of 36.8 W
-> The power consumed was 772 J
-> The estimated remaining time is 1 hours, 56 minutes
-> 
-> Summary: 1657.3 wakeups/second,  0.0 GPU ops/seconds, 0.0 VFS ops/sec and 121.5% CPU use
-> 
-> Power est.              Usage       Events/s    Category       Description
->   24.1 W     59.6 pkts/s                Device         Network interface: wlp9s0 (iwlwifi)
->   200 mW     80.6%                      Device         Display backlight
->   139 mW      0.0 µs/s      0.00        Process        [PID 8005] /usr/bin/pipewire
->  5.37 mW     18.0 ms/s     537.1        Timer          tick_sched_timer
-> 
-> 
-> The battery reports a discharge rate of 36.1 W
-> The power consumed was 744 J
-> System baseline power is estimated at 28.9 W
-> 
-> Power est.    Usage     Device name
->   24.0 W    100.0%        Radio device: iwlwifi
->   4.43 W    205.2%        CPU core
->   230 mW    100.0%        Audio codec alsa:hwC0D0: thinkpad (Realtek) (pipewire )
-> 
-> autosuspend is on:
->    Good          Runtime PM for PCI Device Intel Corporation Wi-Fi 6 AX210/AX211/AX411 160MHz
+Thanks for your suggestions. I will follow your suggestions to generate fol=
+lowing patches.
 
+>=20
+> Thanks!
+>=20
+> Francesco
 
-Obviously unloading iwlwifi fixes it:
-> The battery reports a discharge rate of 26.0 W
-> The power consumed was 534 J
-> The estimated remaining time is 2 hours, 40 minutes
-> 
-> Summary: 927.2 wakeups/second,  0.0 GPU ops/seconds, 0.0 VFS ops/sec and 85.5% CPU use
-> 
-> Power est.              Usage       Events/s    Category       Description
->   6.95 W    100.0%                      Device         USB device: Yubico Gnubby (gnubby1) (Yubico)
->   2.09 W      0.0 µs/s      0.00        Process        [PID 8005] /usr/bin/pipewire
->   185 mW     80.6%                      Device         Display backlight
-> 
-> The battery reports a discharge rate of 26.0 W
-> The power consumed was 534 J
-> System baseline power is estimated at 11.5 W
-> 
-> Power est.    Usage     Device name
->   6.95 W    100.0%        USB device: Yubico Gnubby (gnubby1) (Yubico)
->   2.09 W    100.0%        Audio codec alsa:hwC0D0: thinkpad (Realtek) (pipewire )
->   2.02 W     85.5%        CPU core
-
-What's very interesting is if I re-insert the iwlwifi module after that, 
-it works and used a lot less power last time I tried, but this time around
-it's still shown as high although probably with a wrong Watt value because powertop
-is confused somehow:
-  28.8 W    470.9 pkts/s                Device         Network interface: wlp9s0 (iwlwifi)
-
-  24.4 W    100.0%        Radio device: iwlwifi
-
-Is this something I should persue separately on
-linux-wireless@vger.kernel.org or ilw@linux.intel.com or elsewhere?
-
-Thanks,
-Marc
--- 
-"A mouse is a device used to point at the xterm you want to type in" - A.S.R.
- 
-Home page: http://marc.merlins.org/                       | PGP 7F55D5F27AAF9D08
 
