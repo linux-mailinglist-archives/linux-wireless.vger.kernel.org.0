@@ -1,112 +1,101 @@
-Return-Path: <linux-wireless+bounces-501-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-502-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F603807220
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 15:18:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CAF807291
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 15:36:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 718A91C20A6C
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 14:18:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62406B20E95
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 14:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA603DBA4;
-	Wed,  6 Dec 2023 14:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IOWyNIhn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA5E3EA76;
+	Wed,  6 Dec 2023 14:36:03 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D55E1A2
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 06:18:23 -0800 (PST)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B63vqlo028777;
-	Wed, 6 Dec 2023 14:18:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=n2zx7nVpjTZl2imYMKYHRPzs0K7FPXPfMqVrqz5Ph4c=;
- b=IOWyNIhnN/8r70bIL+DP7q750P2F1YTdwe2LX3jysRVxIVqZFvePhj8FQNp+S2WDrfZl
- BwCnqLLqexF2IPNqdQITzK747HRmyAJrhKZ8pI+eOzYOt3ZutXgebyinRQpC9qVrXh5F
- jeOl/Q1DZCoVwdWNFvx9n8UVCrUgaXQ9HIrawx7Yl+9hdTc3Cv05j+5ICu03z72KX24R
- ZLDjWmtGsGGts6k1nkhlvj1yj26PTeCH0tGQSDKOq5qT+2D36CCpbycsX2bOTtRgVCvt
- zvbzv3k1+0AVImH6exV8czgPbS0T7/ooz1cEujUAjhEuwzx3muugOJYwV9IpPcxJPPC/ 1g== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3utdadsxku-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Dec 2023 14:18:18 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3B6EIHS2010490
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 6 Dec 2023 14:18:17 GMT
-Received: from lingbok-HP-EliteBook-8460p.qca.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 6 Dec 2023 06:18:10 -0800
-From: Lingbo Kong <quic_lingbok@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
-Subject: [PATCH v2] wifi: ath12k: fix the issue that the multicast/broadcast indicator is not read correctly for WCN7850
-Date: Wed, 6 Dec 2023 22:17:59 +0800
-Message-ID: <20231206141759.5430-1-quic_lingbok@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F175FD5F
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 06:35:58 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1rAt0G-000789-Ha; Wed, 06 Dec 2023 15:35:56 +0100
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1rAt0F-00Dz2R-IV; Wed, 06 Dec 2023 15:35:55 +0100
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1rAt0F-000EYR-1c;
+	Wed, 06 Dec 2023 15:35:55 +0100
+Message-ID: <d45a52e356766b6f90122e75d53089cd17a0e9d3.camel@pengutronix.de>
+Subject: Re: [PATCH] net: rfkill: gpio: set GPIO direction
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, Johannes Berg
+	 <johannes@sipsolutions.net>, Josua Mayer <josua@solid-run.com>, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
+	kernel@pengutronix.de, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	 <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
+Date: Wed, 06 Dec 2023 15:35:55 +0100
+In-Reply-To: <6e3049e37b00e2e5a5f02bff7b75d6c9282973b5.camel@pengutronix.de>
+References: <20231206131336.3099727-1-r.czerwinski@pengutronix.de>
+	 <cd25fd96fa391d3c8a5811d995d166cbb0b0efe5.camel@sipsolutions.net>
+	 <6e3049e37b00e2e5a5f02bff7b75d6c9282973b5.camel@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: CqCkTtYq3IqQzIuAPnbM_RgMrsoSSoOR
-X-Proofpoint-ORIG-GUID: CqCkTtYq3IqQzIuAPnbM_RgMrsoSSoOR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-06_11,2023-12-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
- priorityscore=1501 bulkscore=0 phishscore=0 adultscore=0 impostorscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 suspectscore=0
- mlxlogscore=731 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312060115
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-We observe some packets are discarded in ieee80211_rx_handlers_result
-function for WCN7850. This is because the way to get multicast/broadcast
-indicator with RX_MSDU_END_INFO5_DA_IS_MCBC & info5 is incorrect. It should
-use RX_MSDU_END_INFO13_MCAST_BCAST & info13 to get multicast/broadcast
-indicator.
+Hi Rouven,
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+On Mi, 2023-12-06 at 14:24 +0100, Rouven Czerwinski wrote:
+> Hi Johannes,
+>=20
+> On Wed, 2023-12-06 at 14:16 +0100, Johannes Berg wrote:
+> > On Wed, 2023-12-06 at 14:13 +0100, Rouven Czerwinski wrote:
+> > >=20
+> > > +++ b/net/rfkill/rfkill-gpio.c
+> > > @@ -126,6 +126,16 @@ static int rfkill_gpio_probe(struct
+> > > platform_device *pdev)
+> > > =C2=A0		return -EINVAL;
+> > > =C2=A0	}
+> > > =C2=A0
+> > > +	if (rfkill->reset_gpio)
+> > > +		ret =3D gpiod_direction_output(rfkill->reset_gpio,
+> > > true);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	if (rfkill->shutdown_gpio)
+> > > +		ret =3D gpiod_direction_output(rfkill-
+> > > > shutdown_gpio, true);
+> > > +	if (ret)
+> > > +		return ret;
+> > >=20
+> >=20
+> > That's weird, you need ret to be inside the if. It's even entirely
+> > uninitialized if you don't have ACPI, if you don't have
+> > reset/shutdown.
+>=20
+> Thanks for the review, you are totally right, I didn't look at the ret
+> initialization. I moved it inside the if for v2.
 
-Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
----
-v2:
-1.change __le16_to_cpu to __le32_to_cpu
-2.always run ath12k-check
+The if-block is not required at all, gpiod_direction_output(NULL, ...)
+will just return 0 from VALIDATE_DESC().
 
- drivers/net/wireless/ath/ath12k/hal.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
-index ca6f1d0db31e..a489369d8068 100644
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -889,8 +889,8 @@ static u8 *ath12k_hw_wcn7850_rx_desc_mpdu_start_addr2(struct hal_rx_desc *desc)
- 
- static bool ath12k_hw_wcn7850_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
- {
--	return __le16_to_cpu(desc->u.wcn7850.msdu_end.info5) &
--	       RX_MSDU_END_INFO5_DA_IS_MCBC;
-+	return __le32_to_cpu(desc->u.wcn7850.msdu_end.info13) &
-+	       RX_MSDU_END_INFO13_MCAST_BCAST;
- }
- 
- static void ath12k_hw_wcn7850_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
-
-base-commit: 0dbdc9383054fd3ecbcacfeb364aace3db744314
--- 
-2.34.1
-
+regards
+Philipp
 
