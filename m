@@ -1,157 +1,118 @@
-Return-Path: <linux-wireless+bounces-511-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-512-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68447807A45
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 22:22:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22357807A48
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 22:23:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E05FFB21032
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 21:22:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 527C51C20A6E
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 21:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72066F626;
-	Wed,  6 Dec 2023 21:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA5A6EB6E;
+	Wed,  6 Dec 2023 21:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uUv8xPkf"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="wK+2HNzm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8307D5B
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 13:22:15 -0800 (PST)
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C972CD5F
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 13:23:35 -0800 (PST)
+Received: from eig-obgw-6005a.ext.cloudfilter.net ([10.0.30.201])
+	by cmsmtp with ESMTPS
+	id AwILr8cmWVly7AzMlr3Ap2; Wed, 06 Dec 2023 21:23:35 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id AzMkrmPNf8KNvAzMkro7tx; Wed, 06 Dec 2023 21:23:34 +0000
+X-Authority-Analysis: v=2.4 cv=dp3Itns4 c=1 sm=1 tr=0 ts=6570e656
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=c601a17RXwP2wWhsnozrzA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=wYkD_t78qR0A:10 a=COk6AnOGAAAA:8
+ a=VwQbUJbxAAAA:8 a=_Wotqz80AAAA:8 a=cm27Pg_UAAAA:8 a=jzDRcfw_wAzovSFxW3EA:9
+ a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22 a=AjGcO6oz07-iQ99wixmX:22
+ a=buJP51TR1BpY-zbLSsyS:22 a=xmb-EsYY8bH0VWELuYED:22
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=hQDt/mCiqHwxmsk920LwKsAfseHmxHfQq29gSIXxa7M=;
-	t=1701897735; x=1703107335; b=uUv8xPkfYUYLcP2vX5ucJMbxd1navNYdF9/IsAM7RsaJKHN
-	T69f3pP/yjIunzsfIy+BWPMH++f0viBwBUZXnACHcPzlNfnwAZpmn2o3fzj3QKWk7fmraZG5Hc1ui
-	9pUam5xnvDB3CDnJndA0ENNoRt2TltXh+R875g2Rn7Hg9BoOhJ/zcl3OF7VDqmftutYs2cN5hwm0K
-	xIlFPIEhnU2rbbQzj+EFRXWAAFECIkjya/V7AP87XX//pJOHmnU8uqVxyaGeXe6FdvocI58vtOYz3
-	T1xPR6elR5HIiIBOeWProZXyuqW8bGdGdprWw0HOKDCY7WyONc8+yFFrnDDhjdKQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rAzLQ-00000000IhK-43iT;
-	Wed, 06 Dec 2023 22:22:13 +0100
-Message-ID: <33245ce2d2842d115003f183b0441822733a5447.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: don't drop all unprotected public
- action frames
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jouni Malinen <j@w1.fi>, gregory.greenman@intel.com
-Cc: linux-wireless@vger.kernel.org, Avraham Stern <avraham.stern@intel.com>
-Date: Wed, 06 Dec 2023 22:22:12 +0100
-In-Reply-To: <ZWsU8T2c9GHQUsE9@w1.fi>
-References: 
-	<20231016145213.2973e3c8d3bb.I6198b8d3b04cf4a97b06660d346caec3032f232a@changeid>
-	 <ZWsU8T2c9GHQUsE9@w1.fi>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.1 (3.50.1-1.fc39) 
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Z89JbXvFtxvpHgG4/D9TvUPfBOX7E1w1eYXh8GBdDDg=; b=wK+2HNzmisO4AOviFMz6pFLxZv
+	x5za6lFwlYdRe0LTXGbkDAoy3uHP03x6WQMPjzUArkHQFU0vlSa6f/cgkDrqkorNWDTOpgZxxd+MO
+	aUwSlLvSKv0H1BHTwaeTW1BK5/af50yVTOUPQDZasXrXtsFAG4ayPBekTLlXaNli0XkKUpza0ds06
+	WxHbLiW5h7IWvo/jp4EZtKYuz3ms8ahCOG1qbgcxMw9qJNJFw1UjIGgFs/DqHUtanU/5NSiBPVc5z
+	bv4cLz47JSY4+1cxw4iAmoyny7Ppr5MGLGoP2cfmQsOAccFpbBJAL4369hZ5kQZ7kperBj30ANg9n
+	nIfaBQQw==;
+Received: from 187.184.159.186.cable.dyn.cableonline.com.mx ([187.184.159.186]:15648 helo=[192.168.0.10])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1rAzMj-002Gl6-1K;
+	Wed, 06 Dec 2023 15:23:33 -0600
+Message-ID: <69be3198-16f1-45ec-8262-1ed269f1f6ea@embeddedor.com>
+Date: Wed, 6 Dec 2023 15:23:31 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-
-On Sat, 2023-12-02 at 13:28 +0200, Jouni Malinen wrote:
->=20
-> But this comment and the function name feel quite misleading. This does
-> not return true if the skb contains a Protected Dual of Public Action
-> frame; this returns true if the skb contains a Public Action frame for
-> which a Protected Dual of Public Action frame is defined. Or well, that
-> is what this function should do for the mac80211 change to work
-> correctly, but it does not really do that..
->=20
-> > +static inline bool
-> > +ieee80211_is_protected_dual_of_public_action(struct sk_buff *skb)
-> > +{
-> > +	u8 action;
-> > +
-> > +	if (!ieee80211_is_public_action((void *)skb->data, skb->len) ||
-> > +	    skb->len < IEEE80211_MIN_ACTION_SIZE + 1)
-> > +		return false;
-> > +
-> > +	action =3D *(u8 *)(skb->data + IEEE80211_MIN_ACTION_SIZE);
-> > +
-> > +	return action !=3D WLAN_PUB_ACTION_20_40_BSS_COEX &&
-> > +		action !=3D WLAN_PUB_ACTION_DSE_REG_LOC_ANN &&
-> > +		action !=3D WLAN_PUB_ACTION_MSMT_PILOT &&
-> > +		action !=3D WLAN_PUB_ACTION_TDLS_DISCOVER_RES &&
-> > +		action !=3D WLAN_PUB_ACTION_LOC_TRACK_NOTI &&
-> > +		action !=3D WLAN_PUB_ACTION_FTM_REQUEST &&
-> > +		action !=3D WLAN_PUB_ACTION_FTM_RESPONSE &&
-> > +		action !=3D WLAN_PUB_ACTION_FILS_DISCOVERY;
-> > +}
->=20
-> What is this list of Public Action frames based on? The "Reserved" rows
-> of the Protected Dual of Public Action frames from some snapshot of the
-> IEEE 802.11 standard?
-
-I guess?
-
-We actually went back and forth on this a bit, Avi wrote it to be
-similar to _ieee80211_is_robust_mgmt_frame() which has a list of "known
-not to be robust".
-
-> That is neither robust nor correct way of doing this.
-> It would be more robust (in a sense of not breaking things in
-> future) to make this match against cases for which there is a known
-> protected variant instead of assuming that there is a protected variant
-> for everything that is known to not have one yet defined.
-
-Right, it would work both ways. But then the argument was that we've
-basically done the same for _ieee80211_is_robust_mgmt_frame() and
-decided that we'd rather treat them as robust if we don't know? Maybe
-this case is more likely to define something new that's not, since it's
-about public action frames? OTOH, it's OK anyway if they're not
-exchanged within an existing connection.
-
-> Furthermore, this is completely wrong for Vendor Specific Public Action
-> frames. There is a Protected Vendor Specific value for Protected Dual of
-> Public Action frame, but that value is used on case by case basis for
-> each different type of vendor specific frame. In other words, this part
-> would need to look at the OUI:subtype combination to search which vendor
-> specific cases have a protected variant. I'd expect there to be a very
-> limited, if any, such cases, i.e., more or less all vendor specific
-> Public Action frames should be allowed to be processed in mac80211 even
-> when MFP has been negotiated for an association.
-
-Agree, that'd be up to the implementation to figure out whether it wants
-that or not. The kernel doesn't process them anyway, and should
-hopefully give you enough information out to userspace to see if they
-were protected or not.
-
-So certainly adding WLAN_PUB_ACTION_VENDOR_SPECIFIC here makes sense.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath11k: Fix ath11k_htc_record flexible record
+Content-Language: en-US
+To: Kees Cook <keescook@chromium.org>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Kalle Valo <kvalo@kernel.org>, "Gustavo A. R. Silva"
+ <gustavoars@kernel.org>, ath11k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231205-flexarray-htc_record-v2-1-fbb56d436951@quicinc.com>
+ <202312061254.085B4755@keescook>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <202312061254.085B4755@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.184.159.186
+X-Source-L: No
+X-Exim-ID: 1rAzMj-002Gl6-1K
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187.184.159.186.cable.dyn.cableonline.com.mx ([192.168.0.10]) [187.184.159.186]:15648
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 2
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJWwUDGDzsses6UZedCCWgmeG9dMdcU2G1AC99F6UG5Gj4EBC/L32D4BUde70WxP9yUn7luUL8k1Aj7di73/CSmorUyoKDJTirDIHLN6ZH3t6DwLJQ+U
+ /xaziya+caWujNcdgcLUhtYjzokrO5PvQ36lzpe12kfZmee7XcnEugQahb/OvrctU1BjpjylQpmPfHvJwT+mYwLk7gycWvWbEBnf0f1UzenDchhl9EmLK7tK
 
 
-> In practice, this patch (well, a commit in wireless-next.git now) leaves
-> Vendor Specific Public Action frame cases broken. For example, DPP does
-> not work correctly with this. hostap.git test case
-> dpp_conn_status_success_hostapd_configurator can demonstrate that issue.
 
-Which would fix that.
+On 12/6/23 14:55, Kees Cook wrote:
+> On Tue, Dec 05, 2023 at 01:00:17PM -0800, Jeff Johnson wrote:
+>> Transform the zero-length ath11k_htc_record::credit_report array into
+>> a proper flexible array. Since this is the only array in
+>> ath11k_htc_record, remove the unnecessary union.
+>>
+>> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> 
+> Heh, looks good. I wonder why this was a union to begin with?
 
-> In addition, this would break more recently added Public Action frames
-> with Action field values larger than 34 broken. There are quite a few
-> such frames defined and none of them seem to have a matching protected
-> dual.
+It used to contain a couple of members:
 
-DCS is for (E?)DMG which ... we don't support well, let's say? The next
-ones also don't seem like we'd support them (don't even know where 1.08
-GHz channels are used.) Agree that On-channel Tunnel request should be
-included here.
+https://lore.kernel.org/linux-wireless/20231127-flexarray-htc_record-v1-3-6be1f36126fd@quicinc.com/
+https://lore.kernel.org/linux-wireless/4f2a486c-c6de-43e4-8bb6-bdd3f819b0a9@embeddedor.com/
 
-But this similarly applies to _ieee80211_is_robust_mgmt_frame(), and we
-haven't even added HE to that list yet.
+--
+Gustavo
 
-So it's always going to be a case where the list is necessarily wrong in
-the face of future enhancements. Perhaps the kernel should not care
-about it for frames that it doesn't know about (and will therefore not
-process), but then arguably both of the functions should list out the
-frames that *are* robust and have protected dual respectively, rather
-than that are not robust and don't have protected dual, I'd think?
-
-johannes
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> 
 
