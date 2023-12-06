@@ -1,88 +1,462 @@
-Return-Path: <linux-wireless+bounces-499-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-500-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0668070CD
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 14:24:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BBC80712F
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 14:50:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81B9AB20D9C
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 13:24:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19A791F212D5
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 13:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688B7381AB;
-	Wed,  6 Dec 2023 13:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5676C364B9;
+	Wed,  6 Dec 2023 13:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cfJwZECV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4883790
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 05:24:20 -0800 (PST)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <r.czerwinski@pengutronix.de>)
-	id 1rArsv-0002sd-JQ; Wed, 06 Dec 2023 14:24:17 +0100
-Message-ID: <6e3049e37b00e2e5a5f02bff7b75d6c9282973b5.camel@pengutronix.de>
-Subject: Re: [PATCH] net: rfkill: gpio: set GPIO direction
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-To: Johannes Berg <johannes@sipsolutions.net>, Josua Mayer
- <josua@solid-run.com>,  linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
-	kernel@pengutronix.de, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	 <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
-Date: Wed, 06 Dec 2023 14:24:16 +0100
-In-Reply-To: <cd25fd96fa391d3c8a5811d995d166cbb0b0efe5.camel@sipsolutions.net>
-References: <20231206131336.3099727-1-r.czerwinski@pengutronix.de>
-	 <cd25fd96fa391d3c8a5811d995d166cbb0b0efe5.camel@sipsolutions.net>
-Autocrypt: addr=r.czerwinski@pengutronix.de; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.1 
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB1CDD47
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 05:50:38 -0800 (PST)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B66vc3v001308;
+	Wed, 6 Dec 2023 13:50:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=4JYaQlxqIS0NtCMmU/Vlsz2J1I0jWr7PeFnDobSu9IA=;
+ b=cfJwZECVW/PZOEDCBaMi31xYLRr/bjhWCnn7TnxihdOUAlzI33phN6EH6uRW/J7OPlDz
+ 4x8X2KOyF7MwmZxIJFhyLr6VDdnSDuFlBaT7CUiiNKbsH+rjOb/mtjYqidUneXpSilgg
+ qHz40PDiriTLcF18rqIXypNNraYjXyG8Enw3HUOnBmccUacnjx1XcaaEbyH8/gjfT4Vy
+ DxQMYgULD7EGTVadK5EmcTW1LVczMo5dfR6BgPl5Y7Z27vN5NvwvaW/M1DyxvK8e+RgC
+ azzH6xCjVdSIKKqSbecvHwnmNBwq+i50J7uaVYO/BPlx27xI6NKCgEjcyYUaLLZGh/Eg Mw== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3utd1whwsk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Dec 2023 13:50:32 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3B6DoTP2018442
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 6 Dec 2023 13:50:31 GMT
+Received: from lingbok-HP-EliteBook-8460p.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Wed, 6 Dec 2023 05:47:04 -0800
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
+Subject: [PATCH] wifi: ath12k: report tx bitrate for iw dev xxx station dump
+Date: Wed, 6 Dec 2023 21:46:54 +0800
+Message-ID: <20231206134654.24662-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: r.czerwinski@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: plMb3aE9o6Jb2bYU9CDqcz-1H6YDEpzE
+X-Proofpoint-ORIG-GUID: plMb3aE9o6Jb2bYU9CDqcz-1H6YDEpzE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-06_10,2023-12-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 mlxscore=0 phishscore=0 clxscore=1011 impostorscore=0
+ adultscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312060111
 
-Hi Johannes,
+The tx bitrate of "iw dev xxx station dump" always show an invalid value
+"tx bitrate: 6.0MBit/s".
 
-On Wed, 2023-12-06 at 14:16 +0100, Johannes Berg wrote:
-> On Wed, 2023-12-06 at 14:13 +0100, Rouven Czerwinski wrote:
-> >=20
-> > +++ b/net/rfkill/rfkill-gpio.c
-> > @@ -126,6 +126,16 @@ static int rfkill_gpio_probe(struct
-> > platform_device *pdev)
-> > =C2=A0		return -EINVAL;
-> > =C2=A0	}
-> > =C2=A0
-> > +	if (rfkill->reset_gpio)
-> > +		ret =3D gpiod_direction_output(rfkill->reset_gpio,
-> > true);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	if (rfkill->shutdown_gpio)
-> > +		ret =3D gpiod_direction_output(rfkill-
-> > >shutdown_gpio, true);
-> > +	if (ret)
-> > +		return ret;
-> >=20
->=20
-> That's weird, you need ret to be inside the if. It's even entirely
-> uninitialized if you don't have ACPI, if you don't have
-> reset/shutdown.
+To address this issue, parse the tx complete report from firmware and
+indicate the tx rate to mac80211.
 
-Thanks for the review, you are totally right, I didn't look at the ret
-initialization. I moved it inside the if for v2.
+After that, "iw dev xxx station dump" show the correct tx bitrate such as:
+tx bitrate: 104.0 MBit/s MCS 13
+tx bitrate: 144.4 MBit/s MCS 15 short GI
+tx bitrate: 626.9 MBit/s 80MHz HE-MCS 6 HE-NSS 2 HE-GI 0 HE-DCM 0
+tx bitrate: 1921.5 MBit/s 160MHz HE-MCS 9 HE-NSS 2 HE-GI 0 HE-DCM 0
 
-Thanks,
-Rouven
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/core.h   |   1 +
+ drivers/net/wireless/ath/ath12k/dp_mon.c |   2 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c  |   6 +-
+ drivers/net/wireless/ath/ath12k/dp_tx.c  | 128 ++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/hal_tx.h |   7 +-
+ drivers/net/wireless/ath/ath12k/mac.c    |  92 ++++++++++++++++
+ drivers/net/wireless/ath/ath12k/mac.h    |   3 +
+ 7 files changed, 230 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 8458dc292821..0598d18c51a6 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -417,6 +417,7 @@ struct ath12k_sta {
+ 	struct ath12k_rx_peer_stats *rx_stats;
+ 	struct ath12k_wbm_tx_stats *wbm_tx_stats;
+ 	u32 bw_prev;
++	u32 peer_nss;
+ };
+ 
+ #define ATH12K_MIN_5G_FREQ 4150
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+index be4b39f5fa80..f5be951a165e 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -290,7 +290,7 @@ static void ath12k_dp_mon_parse_he_sig_b1_mu(u8 *tlv_data,
+ 
+ 	ru_tones = u32_get_bits(info0,
+ 				HAL_RX_HE_SIG_B1_MU_INFO_INFO0_RU_ALLOCATION);
+-	ppdu_info->ru_alloc = ath12k_he_ru_tones_to_nl80211_he_ru_alloc(ru_tones);
++	ppdu_info->ru_alloc = ath12k_mac_phy_he_ru_to_nl80211_he_ru_alloc(ru_tones);
+ 	ppdu_info->he_RU[0] = ru_tones;
+ 	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_MU_MIMO;
+ }
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 1ee83f765929..60e10a4893cc 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -1416,10 +1416,10 @@ ath12k_update_per_peer_tx_stats(struct ath12k *ar,
+ 		arsta->txrate.mcs = mcs;
+ 		arsta->txrate.flags = RATE_INFO_FLAGS_HE_MCS;
+ 		arsta->txrate.he_dcm = dcm;
+-		arsta->txrate.he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
++		arsta->txrate.he_gi = ath12k_mac_he_gi_to_nl80211_he_gi(sgi);
+ 		tones = le16_to_cpu(user_rate->ru_end) -
+ 			le16_to_cpu(user_rate->ru_start) + 1;
+-		v = ath12k_he_ru_tones_to_nl80211_he_ru_alloc(tones);
++		v = ath12k_mac_phy_he_ru_to_nl80211_he_ru_alloc(tones);
+ 		arsta->txrate.he_ru_alloc = v;
+ 		break;
+ 	}
+@@ -2328,7 +2328,7 @@ static void ath12k_dp_rx_h_rate(struct ath12k *ar, struct hal_rx_desc *rx_desc,
+ 		}
+ 		rx_status->encoding = RX_ENC_HE;
+ 		rx_status->nss = nss;
+-		rx_status->he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
++		rx_status->he_gi = ath12k_mac_he_gi_to_nl80211_he_gi(sgi);
+ 		rx_status->bw = ath12k_mac_bw_to_mac80211_bw(bw);
+ 		break;
+ 	}
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index 62f9cdbb811c..6313851b1a40 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -8,6 +8,8 @@
+ #include "dp_tx.h"
+ #include "debug.h"
+ #include "hw.h"
++#include "peer.h"
++#include "mac.h"
+ 
+ static enum hal_tcl_encap_type
+ ath12k_dp_tx_get_encap_type(struct ath12k_vif *arvif, struct sk_buff *skb)
+@@ -443,6 +445,106 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
+ 	}
+ }
+ 
++static void ath12k_dp_tx_update_txcompl(struct ath12k *ar, struct hal_tx_status *ts)
++{
++	struct ath12k_base *ab = ar->ab;
++	struct ath12k_peer *peer;
++	struct ath12k_sta *arsta;
++	struct ieee80211_sta *sta;
++	u16 rate;
++	u8 rate_idx = 0;
++	int ret;
++
++	spin_lock_bh(&ab->base_lock);
++	peer = ath12k_peer_find_by_id(ab, ts->peer_id);
++	if (!peer || !peer->sta) {
++		ath12k_dbg(ab, ATH12K_DBG_DP_TX,
++			   "failed to find the peer by id %u\n", ts->peer_id);
++		goto err_out;
++	}
++
++	sta = peer->sta;
++	arsta = ath12k_sta_to_arsta(sta);
++
++	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
++
++	/* This is to prefer choose the real NSS value arsta->last_txrate.nss,
++	 * if it is invalid, then choose the NSS value while assoc.
++	 */
++	if (arsta->last_txrate.nss)
++		arsta->txrate.nss = arsta->last_txrate.nss;
++	else
++		arsta->txrate.nss = arsta->peer_nss;
++
++	if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11A ||
++	    ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11B) {
++		ret = ath12k_mac_hw_ratecode_to_legacy_rate(ts->mcs,
++							    ts->pkt_type,
++							    &rate_idx,
++							    &rate);
++		if (ret < 0)
++			goto err_out;
++
++		arsta->txrate.legacy = rate;
++	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11N) {
++		if (ts->mcs > 7)
++			goto err_out;
++
++		if (arsta->txrate.nss != 0)
++			arsta->txrate.mcs = ts->mcs + 8 * (arsta->txrate.nss - 1);
++		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
++		if (ts->sgi)
++			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
++	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AC) {
++		if (ts->mcs > 9)
++			goto err_out;
++
++		arsta->txrate.mcs = ts->mcs;
++		arsta->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
++		if (ts->sgi)
++			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
++	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AX) {
++		if (ts->mcs > 11)
++			goto err_out;
++
++		arsta->txrate.mcs = ts->mcs;
++		arsta->txrate.flags = RATE_INFO_FLAGS_HE_MCS;
++		arsta->txrate.he_gi = ath12k_mac_he_gi_to_nl80211_he_gi(ts->sgi);
++	}
++
++	arsta->txrate.bw = ath12k_mac_bw_to_mac80211_bw(ts->bw);
++	if (ts->ofdma && ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AX) {
++		arsta->txrate.bw = RATE_INFO_BW_HE_RU;
++		arsta->txrate.he_ru_alloc =
++			ath12k_mac_he_ru_tones_to_nl80211_he_ru_alloc(ts->ru_tones);
++	}
++
++err_out:
++	spin_unlock_bh(&ab->base_lock);
++}
++
++static void ath12k_dp_tx_update(struct ath12k *ar, struct hal_tx_status *ts)
++{
++	if (!ar->ab->hw_params->single_pdev_only)
++		return;
++
++	if (ar->last_ppdu_id == 0)
++		goto update_last_ppdu_id;
++
++	if (ar->last_ppdu_id == ts->ppdu_id ||
++	    ar->cached_ppdu_id == ar->last_ppdu_id) {
++		ar->cached_ppdu_id = ar->last_ppdu_id;
++		ar->cached_stats.is_ampdu = true;
++	} else {
++		ar->cached_stats.is_ampdu = false;
++	}
++
++	ath12k_dp_tx_update_txcompl(ar, ts);
++
++update_last_ppdu_id:
++	ar->last_ppdu_id = ts->ppdu_id;
++}
++
+ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
+ 				       struct sk_buff *msdu,
+ 				       struct hal_tx_status *ts)
+@@ -498,6 +600,8 @@ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
+ 	 * Might end up reporting it out-of-band from HTT stats.
+ 	 */
+ 
++	ath12k_dp_tx_update(ar, ts);
++
+ 	ieee80211_tx_status_skb(ar->hw, msdu);
+ 
+ exit:
+@@ -522,10 +626,26 @@ static void ath12k_dp_tx_status_parse(struct ath12k_base *ab,
+ 
+ 	ts->ppdu_id = le32_get_bits(desc->info1,
+ 				    HAL_WBM_COMPL_TX_INFO1_TQM_STATUS_NUMBER);
+-	if (le32_to_cpu(desc->rate_stats.info0) & HAL_TX_RATE_STATS_INFO0_VALID)
+-		ts->rate_stats = le32_to_cpu(desc->rate_stats.info0);
+-	else
+-		ts->rate_stats = 0;
++
++	if (le32_to_cpu(desc->info2) & HAL_WBM_COMPL_TX_INFO2_FIRST_MSDU)
++		ts->flags |= HAL_TX_STATUS_FLAGS_FIRST_MSDU;
++
++	ts->peer_id = le32_get_bits(desc->info3, HAL_WBM_COMPL_TX_INFO3_PEER_ID);
++
++	if (le32_to_cpu(desc->rate_stats.info0) & HAL_TX_RATE_STATS_INFO0_VALID) {
++		ts->pkt_type = le32_get_bits(desc->rate_stats.info0,
++					     HAL_TX_RATE_STATS_INFO0_PKT_TYPE);
++		ts->mcs = le32_get_bits(desc->rate_stats.info0,
++					HAL_TX_RATE_STATS_INFO0_MCS);
++		ts->sgi = le32_get_bits(desc->rate_stats.info0,
++					HAL_TX_RATE_STATS_INFO0_SGI);
++		ts->bw = le32_get_bits(desc->rate_stats.info0,
++				       HAL_TX_RATE_STATS_INFO0_BW);
++		ts->ru_tones = le32_get_bits(desc->rate_stats.info0,
++					     HAL_TX_RATE_STATS_INFO0_TONES_IN_RU);
++		ts->ofdma = le32_get_bits(desc->rate_stats.info0,
++					  HAL_TX_RATE_STATS_INFO0_OFDMA_TX);
++	}
+ }
+ 
+ void ath12k_dp_tx_completion_handler(struct ath12k_base *ab, int ring_id)
+diff --git a/drivers/net/wireless/ath/ath12k/hal_tx.h b/drivers/net/wireless/ath/ath12k/hal_tx.h
+index 7c837094a6f7..4ffd5c82fcfd 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_tx.h
++++ b/drivers/net/wireless/ath/ath12k/hal_tx.h
+@@ -63,7 +63,12 @@ struct hal_tx_status {
+ 	u8 try_cnt;
+ 	u8 tid;
+ 	u16 peer_id;
+-	u32 rate_stats;
++	enum hal_tx_rate_stats_pkt_type pkt_type;
++	enum hal_tx_rate_stats_sgi sgi;
++	enum ath12k_supported_bw bw;
++	u8 mcs;
++	u16 ru_tones;
++	u8 ofdma;
+ };
+ 
+ #define HAL_TX_PHY_DESC_INFO0_BF_TYPE		GENMASK(17, 16)
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 88cec54c6c2e..40aa00002885 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -2225,8 +2225,12 @@ static void ath12k_peer_assoc_prepare(struct ath12k *ar,
+ 				      struct ath12k_wmi_peer_assoc_arg *arg,
+ 				      bool reassoc)
+ {
++	struct ath12k_sta *arsta;
++
+ 	lockdep_assert_held(&ar->conf_mutex);
+ 
++	arsta = ath12k_sta_to_arsta(sta);
++
+ 	memset(arg, 0, sizeof(*arg));
+ 
+ 	reinit_completion(&ar->peer_assoc_done);
+@@ -2243,6 +2247,7 @@ static void ath12k_peer_assoc_prepare(struct ath12k *ar,
+ 	ath12k_peer_assoc_h_phymode(ar, vif, sta, arg);
+ 	ath12k_peer_assoc_h_smps(sta, arg);
+ 
++	arsta->peer_nss = arg->peer_nss;
+ 	/* TODO: amsdu_disable req? */
+ }
+ 
+@@ -7691,3 +7696,90 @@ void ath12k_mac_destroy(struct ath12k_base *ab)
+ 		pdev->ar = NULL;
+ 	}
+ }
++
++enum nl80211_he_ru_alloc ath12k_mac_phy_he_ru_to_nl80211_he_ru_alloc(u16 ru_phy)
++{
++	enum nl80211_he_ru_alloc ret;
++
++	switch (ru_phy) {
++	case RU_26:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_26;
++		break;
++	case RU_52:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_52;
++		break;
++	case RU_106:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_106;
++		break;
++	case RU_242:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_242;
++		break;
++	case RU_484:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_484;
++		break;
++	case RU_996:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_996;
++		break;
++	default:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_26;
++		break;
++	}
++
++	return ret;
++}
++
++enum nl80211_he_ru_alloc ath12k_mac_he_ru_tones_to_nl80211_he_ru_alloc(u16 ru_tones)
++{
++	enum nl80211_he_ru_alloc ret;
++
++	switch (ru_tones) {
++	case 26:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_26;
++		break;
++	case 52:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_52;
++		break;
++	case 106:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_106;
++		break;
++	case 242:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_242;
++		break;
++	case 484:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_484;
++		break;
++	case 996:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_996;
++		break;
++	case (996 * 2):
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
++		break;
++	default:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_26;
++		break;
++	}
++
++	return ret;
++}
++
++enum nl80211_he_gi ath12k_mac_he_gi_to_nl80211_he_gi(u8 sgi)
++{
++	enum nl80211_he_gi ret;
++
++	switch (sgi) {
++	case RX_MSDU_START_SGI_0_8_US:
++		ret = NL80211_RATE_INFO_HE_GI_0_8;
++		break;
++	case RX_MSDU_START_SGI_1_6_US:
++		ret = NL80211_RATE_INFO_HE_GI_1_6;
++		break;
++	case RX_MSDU_START_SGI_3_2_US:
++		ret = NL80211_RATE_INFO_HE_GI_3_2;
++		break;
++	default:
++		ret = NL80211_RATE_INFO_HE_GI_0_8;
++		break;
++	}
++
++	return ret;
++}
+diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
+index 7c63bb628adc..061a41b33641 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.h
++++ b/drivers/net/wireless/ath/ath12k/mac.h
+@@ -76,4 +76,7 @@ enum ath12k_supported_bw ath12k_mac_mac80211_bw_to_ath12k_bw(enum rate_info_bw b
+ enum hal_encrypt_type ath12k_dp_tx_get_encrypt_type(u32 cipher);
+ int ath12k_mac_rfkill_enable_radio(struct ath12k *ar, bool enable);
+ int ath12k_mac_rfkill_config(struct ath12k *ar);
++u32 ath12k_mac_he_gi_to_nl80211_he_gi(u8 sgi);
++enum nl80211_he_ru_alloc ath12k_mac_phy_he_ru_to_nl80211_he_ru_alloc(u16 ru_phy);
++enum nl80211_he_ru_alloc ath12k_mac_he_ru_tones_to_nl80211_he_ru_alloc(u16 ru_tones);
+ #endif
+
+base-commit: 0dbdc9383054fd3ecbcacfeb364aace3db744314
+-- 
+2.34.1
+
 
