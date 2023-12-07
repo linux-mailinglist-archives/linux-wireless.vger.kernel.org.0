@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-522-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-521-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2689807E3E
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 03:15:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DC1807E3D
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 03:14:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97C841C20C4D
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 02:15:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 717D81C20BE2
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 02:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79533185A;
-	Thu,  7 Dec 2023 02:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D355615C9;
+	Thu,  7 Dec 2023 02:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RYjUfdwl"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Zzb+vb2n"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C5061A5
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 18:14:47 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B6NdpDR031505;
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BAC1181
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 18:14:46 -0800 (PST)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B71pCQS018413;
 	Thu, 7 Dec 2023 02:14:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : mime-version : content-transfer-encoding :
  content-type; s=qcppdkim1;
  bh=vg1SReULXvwsJ1gyTPmlR3j5V3l8AS+/N6krz2lEp1A=;
- b=RYjUfdwlcZp6HrnlJ2OIQ4YF5AJDdz2VfwBg7tPJXBC7WQzRhwUonbKiwpz28rzXMo1z
- lhOvfxr9vl2FlEXeGCK6F1watHabORUyCiS/X6Q/UsMIkUa/cgynv7jpEVit5uW7hOtR
- DC6lpGcCE19HNZ2MSN5E0pzx0OQkm1CUsunlm9xc9onGM5yN8Vyxe1GLd/M8UOgqeqxc
- FES+R7mil8P5n5mjpiWungaDx80MIEWJlyOIngC2AkjE+hp6jxe4eZLdHMxucqkXcxJl
- c4/TYK8uZcPTM8OfUx4vWNOnRYyjglu8NGWw4YWp/EQyIRLigNS4T0HPHdmwyg6/IAwR vg== 
+ b=Zzb+vb2nrjVcjRc74z+UKTrIKvRSzSSeH6D9yV71MCmarvMVWWZ+aB6v7N28QzCLDF2u
+ GCmZqU6dl1zwMTOurU6cTokv7qKKpEgXfhl/sMA/ib3N5KqUM/x4ll+ZPNKDDUq+yiKN
+ vclCTXMlzMpIGhEe8TxuM5tTHU69XewOOqQOl7ShGtqzWQpJHPACT+u4fG3SzlK2Z9Pq
+ f2VPfSSvnGxWHXLa+JzKZp+KQa0I+vOpPR7hYJPGViBswShLuv72VmYcBhdqVDizoO+k
+ ceEGRMI+J+IjOSNhNisxmS1+ti+jhruX2k0NiW2TziiEcMy//FwCInYI+TxAPu4xJNT1 uw== 
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uu0w50equ-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3utrwq1vqm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 07 Dec 2023 02:14:42 +0000
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3B72Efu8006863
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3B72EeuZ006840
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 7 Dec 2023 02:14:41 GMT
 Received: from lingbok-HP-EliteBook-8460p.qca.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 6 Dec 2023 18:10:33 -0800
+ 15.2.1118.40; Wed, 6 Dec 2023 18:12:05 -0800
 From: Lingbo Kong <quic_lingbok@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
 Subject: [PATCH v2] wifi: ath12k: report tx bitrate for iw dev xxx station dump
-Date: Thu, 7 Dec 2023 10:10:23 +0800
-Message-ID: <20231207021023.13056-1-quic_lingbok@quicinc.com>
+Date: Thu, 7 Dec 2023 10:11:55 +0800
+Message-ID: <20231207021155.13125-1-quic_lingbok@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -57,20 +57,20 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: IvbbrB3gFAsVZ31QB2EgQlVZitZGZTBx
-X-Proofpoint-ORIG-GUID: IvbbrB3gFAsVZ31QB2EgQlVZitZGZTBx
+X-Proofpoint-ORIG-GUID: dp_LfCaDK3nPCbEVHrctgxsrrxe5QGoz
+X-Proofpoint-GUID: dp_LfCaDK3nPCbEVHrctgxsrrxe5QGoz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-06_22,2023-12-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312070015
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ adultscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
+ suspectscore=0 mlxscore=0 priorityscore=1501 clxscore=1015 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2312070015
 
 The tx bitrate of "iw dev xxx station dump" always show an invalid value
 "tx bitrate: 6.0MBit/s".
